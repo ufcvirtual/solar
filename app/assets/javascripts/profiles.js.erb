@@ -1,0 +1,84 @@
+function profile_save() {
+  $('form#profile_form').serialize_and_submit({
+    replace_list: $('.list_profiles')
+  });
+}
+
+function profile_delete(profile_id) {
+  $(".tb_list tr[data-profile-id=" + profile_id + "]").nice_delete({
+    complete: function() {
+      $.fancybox.close();
+    }
+  });
+}
+
+function profile_permissions_edition_reset() {
+  $("tr.added-permission .ckb_resource").prop("checked", false);
+  $("tr.removed-permission .ckb_resource").prop("checked", true);
+
+  $("tr.added-permission").removeClass('added-permission');
+  $("tr.removed-permission").removeClass('removed-permission');
+}
+
+function profile_permissions_edition_save_state() {
+  $("tr.added-permission").removeClass('added-permission').addClass("permission");
+  $("tr.removed-permission").removeClass('removed-permission').removeClass("permission");
+
+  profile_permission_cancel_edition();
+}
+
+function profile_permissions_clear_edition_in_check(ck) {
+  $(ck).closest('tr').removeClass('added-permission');
+  $(ck).closest('tr').removeClass('removed-permission');
+}
+
+function profile_permissions_change_status_of_permission(ck) {
+  profile_permissions_clear_edition_in_check(ck);
+
+  if (ck.checked && $(ck).closest('tr').hasClass("permission")) // check mas já tinha permissao
+    return false;
+
+  if (!ck.checked && $(ck).closest('tr').hasClass("permission")) // retirando o check
+    $(ck).closest('tr').addClass('removed-permission');
+
+  if (ck.checked) // dando nova permissao
+    $(ck).closest('tr').addClass('added-permission');
+}
+
+function profile_permission_back() {
+  erase_flash_messages();
+
+  $(".profiles-list").show();
+  $(".profile-permissions-list").hide();
+}
+
+function profile_permission_enable_edition() {
+  $(".block_content_toolbar").addClass("edition-enabled");
+  $(":checkbox").attr("disabled", false);
+  $(".edit-enable").hide();
+  $(".edit-cancel, .edit-save").show();
+}
+
+function profile_permission_cancel_edition() {
+  $(".block_content_toolbar").removeClass("edition-enabled");
+  $(":checkbox").attr("disabled", true);
+  $(".edit-enable").show();
+  $(".edit-cancel, .edit-save").hide();
+
+  profile_permissions_edition_reset();
+}
+
+function profile_permission_save() {
+  var resources = $('.ckb_resource:checked').map(function() { return this.value; }).get();
+  $.post($(".edit-save").data("save-url"), {resources: resources}, function(data){
+    profile_permissions_edition_save_state()
+
+    if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
+      flash_message(data.notice, 'notice');
+
+  }).error(function(data){
+    var response = JSON.parse(data.responseText);
+    if (typeof(response.alert) != "undefined")
+      flash_message(response.alert, 'alert');
+  });
+}

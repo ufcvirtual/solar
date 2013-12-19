@@ -3073,7 +3073,6 @@
                 $(document).ready(function(){
                 setTimeout(function()
                     {
-                        console.log("Passou aqui no ready");
                         maxWindows = Math.floor(($(window).width()/217.00) - 1) ;
                                           number_chatbox = $(".chatbox").length - 1;
 

@@ -6,15 +6,15 @@
   .block_title
     %h2= t(".permissions")
     .block_toolbar_right
-      = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin'), "profile_permission_back()", :"data-tooltip" => t(:back), class: "btn"
+      = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin'), "profile_permission_back()", "data-tooltip" => t(:back), class: "btn"
   .block_content_toolbar.block_content_text
     .block_toolbar_left
-      = label "permission", "search", t(".filter")
+      = label "permission", "search", t(".filter"), class: "permissions-search-text"
       = text_field_tag "permission_search"
     .block_toolbar_right
-      = link_to_function content_tag(:i, nil, class: 'icon-edit'), "profile_permission_enable_edition()", :"data-tooltip" => t(".edit"), class: "btn edit-enable"
-      = link_to_function content_tag(:i, nil, class: 'icon-cross'), "profile_permission_cancel_edition()", :"data-tooltip" => t(".cancel"), class: "btn edit-cancel"
-      = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), "profile_permission_save()", :"data-tooltip" => t(".save"), class: "btn edit-save"
+      = link_to_function content_tag(:i, nil, class: 'icon-edit'), "profile_permission_enable_edition()", "data-tooltip" => t(".edit"), class: "btn edit-enable"
+      = link_to_function content_tag(:i, nil, class: 'icon-cross'), "profile_permission_cancel_edition()", "data-tooltip" => t(".cancel"), class: "btn edit-cancel"
+      = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), "profile_permission_save()", "data-tooltip" => t(".save"), "data-save-url" => permissions_grant_profile_path, class: "btn edit-save"
 
   .block_content
     - unless @resources.blank?
@@ -30,117 +30,16 @@
             %tr.lines{class: permission ? "permission" : ""}
               %td= r[:controller].classify.constantize.model_name.human
               %td= r[:description]
-              %td= check_box_tag "resource", r.id, permission, disabled: true, onchange: "javascript:mudeminhacor(this);", class: "ckb_resource"
+              %td= check_box_tag "resource", r.id, permission, disabled: true, onchange: "javascript:profile_permissions_change_status_of_permission(this);", class: "ckb_resource"
 
-= javascript_include_tag "tablesorter"
-
-:css
-  .added-permission {
-    color: green !important;
-  }
-
-  .removed-permission {
-    color: blue !important;
-  }
-
-  .permission {
-    color: red;
-  }
-
-  .edition-enabled {
-    background-color: #fefae6;
-  }
+= javascript_include_tag "tablesorter", "profiles"
 
 :javascript
 
-  function profile_permissions_edition_reset() {
-    $("tr.added-permission .ckb_resource").prop("checked", false);
-    $("tr.removed-permission .ckb_resource").prop("checked", true);
-
-    $("tr.added-permission").removeClass('added-permission');
-    $("tr.removed-permission").removeClass('removed-permission');
-  }
-
-  function profile_permissions_edition_save_state() {
-    $("tr.added-permission").removeClass('added-permission').addClass("permission");
-    $("tr.removed-permission").removeClass('removed-permission').removeClass("permission");
-
-    profile_permission_cancel_edition();
-  }
-
-
-
-
-  function clear_edition_in_check(ck) {
-    $(ck).closest('tr').removeClass('added-permission');
-    $(ck).closest('tr').removeClass('removed-permission');
-  }
-
-  function mudeminhacor(ck) {
-    clear_edition_in_check(ck);
-
-    if (ck.checked && $(ck).closest('tr').hasClass("permission")) // check mas já tinha permissao
-      return false;
-
-    if (!ck.checked && $(ck).closest('tr').hasClass("permission")) // retirei o check
-      $(ck).closest('tr').addClass('removed-permission');
-
-    if (ck.checked) // dando nova permissao
-      $(ck).closest('tr').addClass('added-permission');
-  }
-
-
-
-
-
-
-
-
-
-
-
-  $(".edit-cancel, .edit-save").hide();
-
-  $("#permission_search").nice_table_filter({
-    table: "table.tb_list.permissions"
-  });
-
-  function profile_permission_back() {
-    $(".profiles-list").show();
-    $(".profile-permissions-list").hide();
-  }
-
-  function profile_permission_enable_edition() {
-    $(".block_content_toolbar").addClass("edition-enabled");
-
-    $(":checkbox").attr("disabled", false);
-
-    $(".edit-enable").hide();
-    $(".edit-cancel, .edit-save").show();
-  }
-
-  function profile_permission_cancel_edition() {
-    $(".block_content_toolbar").removeClass("edition-enabled");
-    $(":checkbox").attr("disabled", true);
-
-    $(".edit-enable").show();
+  $(function(){
     $(".edit-cancel, .edit-save").hide();
-  }
 
-  function profile_permission_save() {
-    var resources = $('.ckb_resource:checked').map(function() { return this.value; }).get();
-    $.post("#{permissions_grant_profile_path}", {resources: resources}, function(data){
-  
-      profile_permissions_edition_save_state()
-
-      if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
-        flash_message(data.notice, 'notice');
-
-    }).error(function(data){
-      var response = JSON.parse(data.responseText);
-      if (typeof(response.alert) != "undefined")
-        flash_message(response.alert, 'alert');
+    $("#permission_search").nice_table_filter({
+      table: "table.tb_list.permissions"
     });
-  }
-
-
+  });

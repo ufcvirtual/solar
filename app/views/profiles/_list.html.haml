@@ -4,10 +4,10 @@
       %tr.lines
         %th= t(:name)
         %th{style: "width: 60%"}= t(:description)
-        %th.no_sort{style: 'width: 75px;'}
+        %th.no_sort{style: 'width: 80px;'}
     %tbody
       - @all_profiles.each do |profile|
-        %tr.lines{"data-profile-id" => profile.id, "data-link-delete" => profile_path(profile)}
+        %tr.lines{"data-profile-id" => profile.id, "data-link-delete" => "#{profile_path(profile)}.json"}
           %td= profile.name
           %td= profile.description
           %td{style: 'align:right'}
@@ -19,6 +19,7 @@
   $(function(){
     $(".show-permissions").click(function(e){
       e.preventDefault();
+      erase_flash_messages();
 
       $(".profiles-list").hide();
       $(".profile-permissions-list").load($(this).data("show-link"), function(){

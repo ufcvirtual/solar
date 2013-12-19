@@ -24,3 +24,25 @@ tr.lines {
 .border {
 	border-top: 1px solid #dedede;
 }
+
+.added-permission {
+  color: blue !important;
+}
+
+.removed-permission {
+  color: red !important;
+}
+
+.permission {
+  color: green;
+}
+
+.edition-enabled {
+  background-color: #fefae6;
+}
+
+
+label.permissions-search-text {
+	width: 50px;
+	font-size: 10pt;
+}
