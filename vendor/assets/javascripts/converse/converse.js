@@ -734,23 +734,27 @@
 
                 }
 
-                chatboxes = $("#collective-xmpp-chat-data .chatbox:not(:first)");
-                chatboxes_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):visible");
-                chatboxes_invisible = $("#collective-xmpp-chat-data .chatbox:not(:first):not(:visible)");
-                if(chatboxes_visible.length <= maxWindows)
+                setTimeout(function()
                 {
-                    for(i = 0; i < chatboxes_invisible.length; i++)
-                     {
+                    chatboxes = $("#collective-xmpp-chat-data .chatbox:not(:first)");
+                    chatboxes_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):visible");
+                    chatboxes_invisible = $("#collective-xmpp-chat-data .chatbox:not(:first):not(:visible)");
+                    if(chatboxes_visible.length <= maxWindows)
+                    {
+                        for(i = 0; i < chatboxes_invisible.length; i++)
+                         {
 
-                        chatbox_visible = chatboxes_invisible[i];
-                        if(typeof(chatbox_visible) !== 'undefined' && chatbox_visible != null)
-                            if(chatbox_visible.title !="fechado")
-                            {
-                              $(chatbox_visible).css("display","inline");
-                                break;
-                            }
-                     }                
-                }         
+                            chatbox_visible = chatboxes_invisible[i];
+                            if(typeof(chatbox_visible) !== 'undefined' && chatbox_visible != null)
+                                if(chatbox_visible.title !="fechado")
+                                {
+                                  $(chatbox_visible).css("display","inline");
+                                    break;
+                                }
+                         }                
+                     
+                    }
+                },200);         
             },
 
             updateVCard: function () {
@@ -3087,7 +3091,7 @@
 
                             }
                         }
-                    },800);
+                    },850);
                 });
 
                 window.onresize = function(event)
