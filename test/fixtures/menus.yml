@@ -155,7 +155,7 @@ ger_perfis_admin:
   id: 602
   parent_id: 60
   name: menu_manage_profiles
-  resource_id: 160
+  resource_id: 155
   order: 2
 
 indicar_user_admin:
