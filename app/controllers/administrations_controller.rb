@@ -36,6 +36,7 @@ class AdministrationsController < ApplicationController
   def show_user
     begin
       authorize! :update_user, Administration
+
       @user = User.find(params[:id])
       respond_to do |format|
         format.html
@@ -58,10 +59,14 @@ class AdministrationsController < ApplicationController
   def update_user
     begin 
       authorize! :update_user, Administration
+
       @user = User.find(params[:id])
-      active = (params[:status]=="1") ? true : false
-      @user.update_attributes(active: active, name: params[:name], email: params[:email])
-      render json: {status: "ok"}
+      if @user.update_attributes(active: (params[:status] == "1"), name: params[:name], email: params[:email])
+        render json: {success: true}, status: :ok
+      else
+        render json: {success: false, alert: @user.errors.full_messages.uniq.compact}, status: :unprocessable_entity
+      end
+
     rescue CanCan::AccessDenied
       render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
     end

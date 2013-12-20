@@ -193,6 +193,10 @@ class User < ActiveRecord::Base
     allocation_tags.map {|at| at.related(all: true, objects: objects)}.flatten.uniq
   end
 
+  def status
+    active ? I18n.t(:active) : I18n.t(:blocked)
+  end
+
   def to_msg
     {
       id: id,

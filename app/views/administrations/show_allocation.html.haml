@@ -2,7 +2,7 @@
 %td= type(@allocation.allocation_tag)
 %td= name_allocation_status(@allocation.status)
 %td.right_buttons
-	= link_to_function content_tag(:i, nil, class: 'icon-edit'), "manage(this)", :"show-link" => show_allocation_administrations_path(@allocation), :"edit-link" => edit_allocation_administrations_path(@allocation), class:  "btn btn_manage_allocation"
+	= link_to_function content_tag(:i, nil, class: 'icon-edit'), "manage(this)", :"show-link" => admin_allocation_path(@allocation), :"edit-link" => edit_admin_allocation_path(@allocation), class:  "btn btn_manage_allocation"
 
 :javascript
 	eval("#{show_flash}")

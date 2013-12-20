@@ -382,7 +382,7 @@ admin:
   id: 15
   username: admin
   email: admin@com.br
-  name: admin
+  name: Administrador
   nick: Admin
   birthdate: 1900-03-02
   cpf: 42804565696

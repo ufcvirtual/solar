@@ -3,7 +3,7 @@ $(function() {
 	// --- exclusivo da admin de usuario
   
   $("#search_user").click(function() {
-    var url_for = "<%= Rails.application.routes.url_helpers.search_users_administrations_path %>";
+    var url_for = "<%= Rails.application.routes.url_helpers.search_admin_users_path %>";
     if ($("#text_search").val().length != 0)
     {
       var data = { user: encodeURIComponent($("#text_search").val()), type_search: $("#type_search").val()  };
