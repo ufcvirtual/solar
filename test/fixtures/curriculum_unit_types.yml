@@ -35,3 +35,9 @@ pos_distancia:
   description: Curso de Pos-Graduacao a Distancia
   allows_enrollment: FALSE
   icon_name: icon_type_dist_grad.png
+
+edx:
+  id: 7
+  description: Curso Publico
+  allows_enrollment: TRUE
+  icon_name: icon_type_public_course.gif

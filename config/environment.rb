@@ -6,6 +6,10 @@ mailer_config = YAML::load(File.open('config/mailer.yml'))
 
 Fb_Config = YAML::load_file(File.open('config/facebook.yml'))
 
+# KEY
+HASH_KEY = "t0w#p69f+c$=%1!0d&%ov+$7!=%ph^%e1@1gxc)x+59$k#7^tw"
+
+
 # configuracoes do action mailer para o gmail - porta: 465 ou 587
 ActionMailer::Base.perform_deliveries   = true
 ActionMailer::Base.delivery_method      = :smtp

@@ -23,6 +23,25 @@
               = link_to curriculum_unit.name, options, html_options
             - else
               .disabled{:title => (curriculum_unit.offers.empty? ? t(:my_solar_uc_without_offer) : t(:my_solar_uc_without_group))}= curriculum_unit.name
+      
+      - my_edx_courses = my_courses(current_user.username) 
+      - if my_edx_courses.length > 0
+        - my_edx_courses.each do |my_edx_course|
+          %li
+            %form{action: "http://solaredxstd.virtual.ufc.br/solaredx/login/?next="+ my_edx_course['course_absolute_url'], method: "post", target:"_blank"}
+              %input{name: "username", type: "hidden", value: current_user.username}/
+              %input{name: "token", type: "hidden", value: Digest::HMAC.hexdigest(current_user.username, HASH_KEY, Digest::SHA1)}/
+              = link_to my_edx_course['display_name'], "#", class: "open-edx-class link_content"
 
-      - else
+
+      - if curriculum_units.length == 0 and edx.length == 0
         = t(:my_solar_curriculum_without) 
+
+      
+:javascript
+  $(function(){
+    $(".open-edx-class").click(function(e){
+      e.preventDefault();
+      $(this).closest("form").submit();
+    });
+  });

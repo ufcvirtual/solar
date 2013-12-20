@@ -1,8 +1,12 @@
 class EnrollmentsController < ApplicationController
+   include EdxHelper
 
   def index
     authorize! :index, Enrollment
     student_profile = Profile.student_profile
+
+     
+    @courses_edx = available_courses()
 
     @groups = ["fdf"]
     @types  = CurriculumUnitType.order(:name)
@@ -17,5 +21,12 @@ class EnrollmentsController < ApplicationController
       @groups = Enrollment.enrollments_of_user(current_user, student_profile, @search_status, @search_category, @search_curriculum_unit)
     end
   end
+
+  def edx
+    course = Base64.decode64(params[:course])
+    action = params[:enroll_action]
+    enroll_or_unenroll(current_user.username,course, action)
+    redirect_to enrollments_path    
+  end  
 
 end

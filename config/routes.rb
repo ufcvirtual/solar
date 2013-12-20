@@ -151,7 +151,9 @@ Solar::Application.routes.draw do
     get :history_access, on: :member
   end
 
-  resources :enrollments, only: :index
+  resources :enrollments, only: :index do 
+    post "edx/:course/:enroll_action", to: "enrollments#edx", as: :edx, on: :collection
+  end
   resources :courses do 
     get :list_combobox, to: :index, combobox: true, as: :list_combobox, on: :collection
   end

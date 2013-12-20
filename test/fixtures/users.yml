@@ -151,7 +151,7 @@ professor:
 
 aluno1:
   id: 7
-  username: aluno1
+  username: pedrorafa
   email: aluno1@solar.ufc.br
   alternate_email: aluno1other@email.com
   name: Aluno 1
@@ -180,7 +180,7 @@ aluno1:
 
 aluno2:
   id: 8
-  username: aluno2
+  username: ptronico
   email: aluno2@solar.ufc.br
   alternate_email: aluno2@gmail.com
   name: Aluno 2
@@ -348,6 +348,7 @@ basico:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: ppbT4Ue132asgpkCAB1q
+
 
 editor:
   id: 14
