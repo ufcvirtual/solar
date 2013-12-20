@@ -6,7 +6,23 @@ module EdxHelper
     @@version = 'dev';
 
 
-     #empty quando não tem nada!
+    def user_edx(username)
+      url = URI.parse('http://solaredxstd.virtual.ufc.br/solaredx/api/'+@@version+'/user/')
+      req = Net::HTTP::Get.new(url.path)
+      res = Net::HTTP.start(url.host, url.port) {|http| 
+        http.request(req)
+      }
+      users = JSON.parse(res.body)
+
+      users_edx = Array.new
+      
+      users['objects'].each do|u|
+        users_edx << u['username']
+      end
+      
+      return users_edx.include?(username)
+    end
+
     def available_courses()
       url = URI.parse('http://solaredxstd.virtual.ufc.br/solaredx/api/'+@@version+'/course/')
       req = Net::HTTP::Get.new(url.path)
