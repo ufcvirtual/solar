@@ -35,7 +35,7 @@
                 = link_to my_edx_course['display_name'], "#", class: "open-edx-class link_content"
 
 
-      - if curriculum_units.length == 0 and edx.length == 0
+      - if curriculum_units.length == 0 # and edx.length == 0
         = t(:my_solar_curriculum_without) 
 
       

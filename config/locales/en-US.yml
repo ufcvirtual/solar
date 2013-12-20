@@ -1373,6 +1373,8 @@
   blocked: Blocked
   administrations:
     close: Close
+    allocations_user:
+      no_data: No data
     users:
       title: Consult users
       search: Search

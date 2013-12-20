@@ -1,10 +1,12 @@
 class AdministrationsController < ApplicationController
-  layout false, except: [:manage_user, :manage_profiles]
+
+  layout false, except: :users
 
   ## USERS
 
-  def manage_user
-    authorize! :manage_user, Administration
+  def users
+    authorize! :users, Administration
+
     @types = Array.new(2,4)
     @types = [ [t(".name"), '0'], [t(".email"), '1'], [t(".username"), '2'], [t(".cpf"), '3'] ]
   end
@@ -12,7 +14,8 @@ class AdministrationsController < ApplicationController
   # Método chamado por ajax para buscar usuários
   def search_users
     begin
-      authorize! :manage_user, Administration
+      authorize! :users, Administration
+
       type_search = params[:type_search]
       @text_search = URI.unescape(params[:user]) unless params[:user].nil?
 
@@ -72,9 +75,9 @@ class AdministrationsController < ApplicationController
     end
   end
 
-  def change_password
+  def reset_password_user
     begin
-      authorize! :change_password, Administration
+      authorize! :reset_password_user, Administration
       @user = User.find(params[:id])
 
       Thread.new do
@@ -83,7 +86,7 @@ class AdministrationsController < ApplicationController
         end
       end
 
-      render json: {status: "ok", notice: t("administrations.success.email_sent")}
+      render json: {success: true, notice: t("administrations.success.email_sent")}
     rescue CanCan::AccessDenied
       render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
     rescue

@@ -28,7 +28,7 @@
 
           = link_to_function content_tag(:i, nil, class: 'icon-edit'), "manage(this)", class: "btn", :"data-tooltip" => t(:edit, scope: [:administrations, :users]), :"edit-link" => edit_admin_user_path(user), :"show-link" => admin_user_path(user.id)
 
-          = link_to_function content_tag(:i, nil, class: 'icon-key'), "change_password(this)", class: "btn", :"data-tooltip" => t(:change_password, scope: [:administrations, :users]), :"edit-link" => change_password_admin_user_path(user), :"show-link" => admin_user_path(user.id)
+          = link_to_function content_tag(:i, nil, class: 'icon-key'), "change_password(this)", class: "btn", :"data-tooltip" => t(:change_password, scope: [:administrations, :users]), :"edit-link" => reset_password_admin_user_path(user), :"show-link" => admin_user_path(user.id)
 
   .navigation
     = will_paginate @users

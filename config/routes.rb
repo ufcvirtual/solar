@@ -43,32 +43,11 @@ Solar::Application.routes.draw do
     get "users/search", to: "administrations#search_users", as: :search_admin_users
     get "users/:id", to: "administrations#show_user", as: :admin_user
     put "users/:id", to: "administrations#update_user"
-    put "users/:id/password", to: "administrations#change_password", as: :change_password_admin_user
+    put "users/:id/password", to: "administrations#reset_password_user", as: :reset_password_admin_user
     get "users/:id/edit", to: "administrations#edit_user", as: :edit_admin_user
     get "users/:id/allocations", to: "administrations#allocations_user", as: :allocations_admin_user
-    get "users", to: "administrations#manage_user", as: :admin_users
+    get "users", to: "administrations#users", as: :admin_users
   end
-
-  # resources :administrations, only: [] do
-  #   member do
-  #     put "update_allocation"
-  #     put "update_user"
-  #     put "change_password"
-  #   end
-
-  #   collection do
-  #     get :search_users
-  #     get "user/:id/show_user", to: :show_user, as: :show_user
-  #     get "user/:id/edit", to: :edit_user, as: :edit_user
-
-  #     get "allocation/:id/show_allocation", to: :show_allocation, as: :show_allocation
-  #     get "allocation/:id/edit", to: :edit_allocation, as: :edit_allocation
-  #     get :allocations_user
-
-  #     # melhorar
-  #     get :manage_user
-  #   end
-  # end
 
   ## curriculum_units/:id/participants
   ## curriculum_units/:id/informations

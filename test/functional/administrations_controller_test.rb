@@ -12,13 +12,13 @@ class AdministrationsControllerTest < ActionController::TestCase
   end
 
   test "acessar pagina de administracao de usuario" do
-    get :manage_user
+    get :users
     assert_response :success
   end
 
   test "nao acessar administracao de usuario sem permissao" do 
     sign_in @editor
-    get :manage_user
+    get :users
     assert_response :redirect
     assert_redirected_to home_path
     assert_equal flash[:alert], I18n.t(:no_permission)

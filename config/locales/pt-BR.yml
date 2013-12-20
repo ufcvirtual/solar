@@ -1525,6 +1525,8 @@
   blocked: Bloqueado
   administrations:
     close: Fechar
+    allocations_user:
+      no_data: Nenhuma alocação cadastrada
     users:
       title: "Consultar usuários"
       search: Busca

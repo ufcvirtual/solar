@@ -856,7 +856,7 @@ res149:
 res150:
   id: 150
   controller: 'administrations'
-  action: 'manage_user'
+  action: 'users'
   description: 'Buscar/Listar usuários'
 
 res151:
@@ -880,7 +880,7 @@ res153:
 res154:
   id: 154
   controller: 'administrations'
-  action: 'change_password'
+  action: 'reset_password_user'
   description: 'Gerar nova senha para usuário'
 
 ## gerenciar perfis
