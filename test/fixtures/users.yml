@@ -151,7 +151,7 @@ professor:
 
 aluno1:
   id: 7
-  username: pedrorafa
+  username: aluno1
   email: aluno1@solar.ufc.br
   alternate_email: aluno1other@email.com
   name: Aluno 1
@@ -180,7 +180,7 @@ aluno1:
 
 aluno2:
   id: 8
-  username: ptronico
+  username: aluno2
   email: aluno2@solar.ufc.br
   alternate_email: aluno2@gmail.com
   name: Aluno 2

@@ -29,9 +29,10 @@
         - if my_edx_courses.length > 0
           - my_edx_courses.each do |my_edx_course|
             %li
+              - edx = YAML::load(File.open('config/edx.yml'))
               %form{action: "http://solaredxstd.virtual.ufc.br/solaredx/login/?next="+ my_edx_course['course_absolute_url_lms'], method: "post", target:"_blank"}
                 %input{name: "username", type: "hidden", value: current_user.username}/
-                %input{name: "token", type: "hidden", value: Digest::HMAC.hexdigest(current_user.username, HASH_KEY, Digest::SHA1)}/
+                %input{name: "token", type: "hidden", value: Digest::HMAC.hexdigest(current_user.username, edx['hash_key'], Digest::SHA1)}/
                 = link_to my_edx_course['display_name'], "#", class: "open-edx-class link_content"
 
 
