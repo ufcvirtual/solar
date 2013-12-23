@@ -4,9 +4,9 @@ $(document).ready(function(){
   var sliderSettings = $(".slider-settings");
   $(sliderSettings).click(function(){
     var slideMain = $(this).parents(".block_facebook").find(".slide-main"),
-      settingsSlide = $(this).parents(".block_facebook").find(".slide-settings"),
-      settingsWidth = $(settingsSlide).outerWidth(),
-      settingsStatus = $(settingsSlide).data("status");
+    settingsSlide = $(this).parents(".block_facebook").find(".slide-settings"),
+    settingsWidth = $(settingsSlide).outerWidth(),
+    settingsStatus = $(settingsSlide).data("status");
     if ( settingsStatus === "closed" ) {
       unit = "-=";
       $(settingsSlide).data("status","opened");
@@ -41,5 +41,12 @@ $(document).ready(function(){
     $(post).find(".new_comment").slideDown('slow', function(){
       $(this).focus();
     });
+  });
+});
+
+/*Voltar para news feed quando clicar em algun grupo */
+$(document).ready(function() {
+  $('.commondark a, .info a').click(function(){
+    $('.slider-settings').click();
   });
 });
