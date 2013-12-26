@@ -19,7 +19,7 @@
     %h2= t(".curriculum_unit")
   .block_content
     %table.tb_list.enrollment_list
-      - unless @groups.empty? #and @courses_edx.empty?
+      - unless @groups.empty?
         %thead
           %tr.lines
             %th= t(".curriculum_unit")
@@ -56,41 +56,28 @@
                     = label_tag "lb_rejected", t(".rejected"), class: 'enrollment_label'
                   - else
                     = button_to t(".enroll"), {controller: "allocations", action: "create", allocation_tag_id: group.allocation_tag.id, user_id: current_user.id}, class: 'btn btn_default', disabled: not(period_info[:is_active])
-          - if user_edx(current_user.username)  
-            - courses_current_user = array_my_courses(current_user.username)          
-            - @courses_edx.each do |course_edx|
-              - course = Base64.encode64(course_edx['course_id']) 
-              %tr.lines
-                %td= course_edx['display_name']
-                %td
-                  = image_tag(CurriculumUnitType.find(7).icon_name)
-                  = CurriculumUnitType.find(7).description
-                - course_edx_id = course_edx['course_id'].split("/")  
-                %td= course_edx_id[2]
-                %td= course_edx_id[1]   
-                %td= l(course_edx['enrollment_start'].to_date , format: :default) +" - "+ l(course_edx['enrollment_end'].to_date , format: :default) if course_edx['enrollment_start'] and course_edx['enrollment_end']
-                - unless courses_current_user.include?(course_edx['course_id'])      
-                  %td
-                    = button_to t(".enroll"), edx_enrollments_path(course: course, enroll_action: 'add') ,class: 'btn btn_default'
-                -else 
-                  %td
-                    = button_to t(".cancel"), edx_enrollments_path(course: course, enroll_action: 'remove') , class: 'btn btn_caution'   
-       
 
       - else
         %td.any_found.text_none= t(".no_curriculum_unit_found")
 
 :javascript
-   $(function(){
-      $("#curriculum_unit, #type, #status").combobox();
-      $("#curriculum_unit").combobox('value', "#{@search_curriculum_unit}");
-      $("#type").combobox('value', "#{@search_category}");
-      $("#status").combobox('value', "#{@search_status}");
+  $(function(){
+    $("#curriculum_unit, #type, #status").combobox();
+    $("#curriculum_unit").combobox('value', "#{@search_curriculum_unit}");
+    $("#type").combobox('value', "#{@search_category}");
+    $("#status").combobox('value', "#{@search_status}");
 
-      $('#status').combobox({
-        change: function(event, ui) {
-          if(ui.item == null)
-            $(this).combobox('value', 'all');
-        }
-      });
+    $('#status').combobox({
+      change: function(event, ui) {
+        if(ui.item == null)
+          $(this).combobox('value', 'all');
+      }
     });
+  });
+
+  // EDX
+  $(function(){
+    $.get("#{available_edx_courses_path}", function(data) {
+      $(".tb_list.enrollment_list tbody").append(data);
+    });
+  });

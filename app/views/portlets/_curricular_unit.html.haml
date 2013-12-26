@@ -10,7 +10,7 @@
 
     %ul#mysolar_curriculum_unit_wrapper
       - if curriculum_units.length > 0
-        - curriculum_units.each do |curriculum_unit| 
+        - curriculum_units.each do |curriculum_unit|
           %li
             - unless curriculum_unit.offers.empty? or curriculum_unit.groups.empty?
               - if ((user_session[:tabs][:opened].length >= Max_Tabs_Open.to_i) and (!user_session[:tabs][:opened].has_key?(curriculum_unit.name)))
@@ -23,27 +23,16 @@
               = link_to curriculum_unit.name, options, html_options
             - else
               .disabled{:title => (curriculum_unit.offers.empty? ? t(:my_solar_uc_without_offer) : t(:my_solar_uc_without_group))}= curriculum_unit.name
-      
-      - if user_edx(current_user.username)
-        - my_edx_courses = my_courses(current_user.username) 
-        - if my_edx_courses.length > 0
-          - my_edx_courses.each do |my_edx_course|
-            %li
-              - edx = YAML::load(File.open('config/edx.yml'))
-              %form{action: "http://solaredxstd.virtual.ufc.br/solaredx/login/?next="+ my_edx_course['course_absolute_url_lms'], method: "post", target:"_blank"}
-                %input{name: "username", type: "hidden", value: current_user.username}/
-                %input{name: "token", type: "hidden", value: Digest::HMAC.hexdigest(current_user.username, edx['hash_key'], Digest::SHA1)}/
-                = link_to my_edx_course['display_name'], "#", class: "open-edx-class link_content"
 
+      - if curriculum_units.length == 0
+        .no-data
+          = t(:my_solar_curriculum_without)
 
-      - if curriculum_units.length == 0 # and edx.length == 0
-        = t(:my_solar_curriculum_without) 
-
-      
 :javascript
+
+  // EDX
   $(function(){
-    $(".open-edx-class").click(function(e){
-      e.preventDefault();
-      $(this).closest("form").submit();
+    $.get("#{my_edx_courses_path}", function(data) {
+      $("#mysolar_curriculum_unit_wrapper").append(data);
     });
   });

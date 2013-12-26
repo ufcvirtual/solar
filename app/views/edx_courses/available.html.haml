@@ -1,0 +1,18 @@
+
+- @courses.each do |course_edx|
+  - course = Base64.encode64(course_edx['course_id']) 
+  %tr.lines.edx
+    %td= course_edx['display_name']
+    %td
+      = image_tag(CurriculumUnitType.find(7).icon_name)
+      = CurriculumUnitType.find(7).description
+    - course_edx_id = course_edx['course_id'].split("/")  
+    %td= course_edx_id[2]
+    %td= course_edx_id[1]   
+    %td= l(course_edx['enrollment_start'].to_date , format: :default) + " - " + l(course_edx['enrollment_end'].to_date, format: :default) if course_edx['enrollment_start'] and course_edx['enrollment_end']
+    - unless @my_courses.include?(course_edx['course_id'])
+      %td
+        = button_to t(:enroll, scope: "enrollments.index"), enroll_edx_courses_path(course: course), class: 'btn btn_default'
+    - else
+      %td
+        = button_to t(:cancel, scope: "enrollments.index"), unenroll_edx_courses_path(course: course), class: 'btn btn_caution'

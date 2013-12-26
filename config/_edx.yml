@@ -1,2 +1,20 @@
 
-hash_key: "hash here"
+common: &common
+  hash_key: "hash here"
+  login: "http://urledx"
+
+development:
+  <<: *common
+  urls:
+    enroll_or_unenroll: "http://urledx"
+    list_available_courses: "http://urledx"
+    list_users: "http://urledx"
+    list_users_courses: "http://urledx"
+
+production:
+  <<: *common
+  urls:
+    enroll_or_unenroll: "http://urledx"
+    list_available_courses: "http://urledx"
+    list_users: "http://urledx"
+    list_users_courses: "http://urledx"
