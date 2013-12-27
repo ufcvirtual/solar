@@ -1,14 +1,13 @@
 class AdministrationsController < ApplicationController
 
-  layout false, except: :users
+  layout false, except: [:users, :users_indication]
 
   ## USERS
 
   def users
     authorize! :users, Administration
 
-    @types = Array.new(2,4)
-    @types = [ [t(".name"), '0'], [t(".email"), '1'], [t(".username"), '2'], [t(".cpf"), '3'] ]
+    @types = [ [t(".name"), 'name'], [t(".email"), 'email'], [t(".username"), 'username'], [t(".cpf"), 'cpf'] ]
   end
 
   # Método chamado por ajax para buscar usuários
@@ -18,19 +17,7 @@ class AdministrationsController < ApplicationController
 
       type_search = params[:type_search]
       @text_search = URI.unescape(params[:user]) unless params[:user].nil?
-
-      unless @text_search.nil?
-        case type_search
-          when "0"
-            @users = User.where("lower(name) ~ '#{@text_search.downcase}'").paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
-          when "1"
-            @users = User.where("lower(email) ~ '#{@text_search.downcase}'").paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
-          when "2"
-            @users = User.where("lower(username) ~ '#{@text_search.downcase}'").paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
-          else
-            @users = User.where("lower(cpf) ~ '#{@text_search.downcase}'").paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
-        end
-      end
+      @users = User.where("lower(#{type_search}) ~ '#{@text_search.downcase}'").paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) unless @text_search.nil?
     rescue CanCan::AccessDenied
       render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
     end
@@ -149,6 +136,13 @@ class AdministrationsController < ApplicationController
     rescue CanCan::AccessDenied
       render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
     end
+  end
+
+  ## INDICATION USERS
+
+  def users_indication
+    authorize! :users_indication, Administration
+    @types = CurriculumUnitType.all
   end
 
 end

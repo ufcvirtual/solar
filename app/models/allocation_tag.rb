@@ -29,10 +29,10 @@ class AllocationTag < ActiveRecord::Base
       select(:allocation_tag_id).
       joins(:profile).
       where(
-      :user_id => user_id,
-      :status => Allocation_Activated,
-      :profiles => {:status => true},
-      :allocation_tag_id => self.related
+      user_id: user_id,
+      status: Allocation_Activated,
+      profiles: {status: true},
+      allocation_tag_id: self.related
     ).where("(profiles.types & #{Profile_Type_Class_Responsible})::boolean").uniq.empty?
   end
 

@@ -8,26 +8,43 @@ class AllocationsController < ApplicationController
   # GET /allocations/designates
   # GET /allocations/designates.json
   def designates
-    @allocation_tags_ids  = params[:allocation_tags_ids].split(" ")
+    if (not params.include?(:admin) or params.include?(:allocation_tags_ids))
+      @allocation_tags_ids  = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids].split(" ").flatten : [] 
+    elsif params[:groups_id].blank?
+      if params.include?(:semester_id) and (not params[:semester_id] == "")
+        @allocation_tags_ids = [Offer.where(semester_id: params[:semester_id], curriculum_unit_id: params[:curriculum_unit_id], course_id: params[:course_id]).first.allocation_tag.id]
+      elsif params.include?(:curriculum_unit_id) and (not params[:curriculum_unit_id] == "")
+        @allocation_tags_ids = [CurriculumUnit.find(params[:curriculum_unit_id]).allocation_tag.id]
+      elsif params.include?(:course_id) and (not params[:course_id] == "")
+        @allocation_tags_ids = [Course.find(params[:course_id]).allocation_tag.id]
+      end
+    else
+      @allocation_tags_ids = AllocationTag.where(group_id: params[:groups_id]).map(&:id)
+    end
 
     begin    
-      # verifica permissao de acessar alocacao das allocation tags passadas
-      authorize! :designates, Allocation, on: @allocation_tags_ids
+      @admin = true if params.include?(:admin)
       
-      level        = (params[:permissions] != "all") ? "responsible" : nil
-      level_search = level.nil? ? ("not(profiles.types & #{Profile_Type_Student})::boolean and not(profiles.types & #{Profile_Type_Basic})::boolean") : ("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
+      if @admin 
+        authorize! :create_designation, Allocation
+      else
+        authorize! :create_designation, Allocation, on: allocation_tags_ids.flatten
+      end
+
+      level        = (params[:permissions] != "all" and (not params.include?(:admin))) ? "responsible" : nil
+      level_search = level.nil? ? ("not(profiles.types & #{Profile_Type_Basic})::boolean") : ("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
       
       @allocations = Allocation.all(
         :joins => [:profile, :user], 
         :conditions => ["#{level_search} and allocation_tag_id IN (#{@allocation_tags_ids.join(",")}) "],
         :order => ["users.name", "profiles.name"]) 
     rescue CanCan::AccessDenied
-      render json: {success: true, alert: t(:no_permission)}, status: :unprocessable_entity
+      render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue 
+    rescue => error
       respond_to do |format|
-        format.html { render :nothing => true, :status => 500 }
+        format.html { render nothing: true, status: :unprocessable_entity }
       end
     end
   end
@@ -38,6 +55,7 @@ class AllocationsController < ApplicationController
     @text_search         = text
     @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
     @users               = User.where("lower(name) ~ '#{text.downcase}'")
+    @admin               = params[:admin]
   end
 
   # GET /allocations/enrollments
@@ -96,14 +114,18 @@ class AllocationsController < ApplicationController
 
     begin 
       allocation_tags = AllocationTag.where(id: allocation_tags_ids)
-      raise ActiveRecord::AssociationTypeMismatch if allocation_tags.map(&:group).empty? and allocation_tags.map(&:offer).empty?
+      @admin  = params[:admin] 
 
-      # verifica permissao de alocacao nas allocation tags passadas
-      authorize! :create_designation, Allocation, on: allocation_tags_ids.flatten
+      if @admin 
+        authorize! :create_designation, Allocation
+      else
+        authorize! :create_designation, Allocation, on: allocation_tags_ids.flatten
+      end
 
       profile = (params.include?(:profile)) ? params[:profile] : Profile.student_profile
       status  = (params.include?(:status)) ? params[:status] : Allocation_Pending
       ok      = allocate(allocation_tags_ids, params[:user_id], profile, status)
+
 
       respond_to do |format|
         format.html { render :designates, status: (ok ? 200 : :unprocessable_entity) } 

@@ -20,7 +20,6 @@ class Ability
 
     ## a verificacao de permissao para leitura considera todas as at relacionadas
     def have_permission_on_allocation_tags?(user, allocation_tags, read = false)
-      # raise "#{read}"
       (user.allocation_tags.uniq.map { |at| read ? at.related : at.related({lower: true})
         }.flatten.compact.uniq & allocation_tags).sort == allocation_tags.sort
     end # have permission on allocation tags

@@ -1257,6 +1257,8 @@
       activate_user: Activate %{user_name}
       deactivate_user: Deactivate %{user_name}
       designated_on: Desginated on
+      login: Login
+      add_user: Add user
     search_users:
       designate: Designate
       designate_search_no_found: No user found
@@ -1271,11 +1273,13 @@
       allocated: Allocated user
       activated: Activated user
       deactivated: Deactivated user
+      allocations_performed: Allocations performed
     error:
       enrollm_request: Request for enrollment not made
       not_allocated: Cannot allocate user
       not_activated: Cannot activate user
       not_deactivated: Cannot deactivate user
+      allocations_not_performed: Cannot performe allocations
 
   allocation_pending: Pending
 
@@ -1418,6 +1422,15 @@
       email_sent: Email sent sucessfully
     error:
       email_not_sent: Email not sent
+    users_indication:
+      filter: Filter
+      type: "Type*"
+      course: "Course*"
+      curriculum_unit: "Curriculum Unit"
+      module: "Module"
+      semester: "Semester"
+      offer: Offer
+      group: Group
 
   editions:
     filter: Filter

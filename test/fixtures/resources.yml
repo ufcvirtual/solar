@@ -920,3 +920,9 @@ res160:
   controller: 'profiles'
   action: 'grant'
   description: 'Adicionar/Retirar permissões de um perfil'
+
+res161:
+  id: 161
+  controller: 'administrations'
+  action: 'users_indication'
+  description: 'Indicar/Remover usuário de atuação'

@@ -163,6 +163,7 @@ indicar_user_admin:
   parent_id: 60
   name: menu_indicate_user
   order: 3
+  resource_id: 161
 
 relat_admin:
   id: 604

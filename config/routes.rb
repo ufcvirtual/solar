@@ -47,6 +47,14 @@ Solar::Application.routes.draw do
     get "users/:id/edit", to: "administrations#edit_user", as: :edit_admin_user
     get "users/:id/allocations", to: "administrations#allocations_user", as: :allocations_admin_user
     get "users", to: "administrations#users", as: :admin_users
+
+    # get "users", to: "administrations#users_indication", as: :users_indication
+  end 
+
+  resources :administrations do
+    collection do
+      get :users_indication
+    end
   end
 
   ## curriculum_units/:id/participants
@@ -110,6 +118,7 @@ Solar::Application.routes.draw do
   resources :allocations, except: [:new] do
     collection do
       get :designates
+      get :admin_designates, action: :designates, defaults: {admin: true}
       get :enrollments, action: :index
       get :search_users
       post :create_designation

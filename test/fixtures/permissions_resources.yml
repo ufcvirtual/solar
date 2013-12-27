@@ -1333,6 +1333,31 @@ admuser5:
   resource_id: 154
   per_id: false
 
+admuser6:
+  profile_id: 6
+  resource_id: 161
+  per_id: false
+
+admuser7:
+  profile_id: 6
+  resource_id: 61
+  per_id: false
+
+admuser8:
+  profile_id: 6
+  resource_id: 79
+  per_id: false
+
+admuser9:
+  profile_id: 6
+  resource_id: 95
+  per_id: false
+
+admuser10:
+  profile_id: 6
+  resource_id: 9
+  per_id: false
+
 admin_profile1:
   profile_id: 6
   resource_id: 155
@@ -1361,4 +1386,29 @@ admin_profile5:
 admin_profile6:
   profile_id: 6
   resource_id: 160
+  per_id: false
+
+adminallocation1:
+  profile_id: 6
+  resource_id: 90
+  per_id: false
+
+adminallocation2:
+  profile_id: 6
+  resource_id: 91
+  per_id: false
+
+adminallocation3:
+  profile_id: 6
+  resource_id: 92
+  per_id: false
+
+adminallocation4:
+  profile_id: 6
+  resource_id: 93
+  per_id: false
+
+adminallocation5:
+  profile_id: 6
+  resource_id: 94
   per_id: false

@@ -3,8 +3,8 @@ class User < ActiveRecord::Base
   has_one :personal_configuration
 
   has_many :allocations
-  has_many :allocation_tags, :through => :allocations, :uniq => true
-  has_many :profiles, :through => :allocations, :uniq => true, conditions: { profiles: {status: true}, allocations: {status: 1} } # allocation.status = Allocation_Activated
+  has_many :allocation_tags, through: :allocations, uniq: true
+  has_many :profiles, through: :allocations, uniq: true, conditions: { profiles: {status: true}, allocations: {status: 1} } # allocation.status = Allocation_Activated
   has_many :logs
   has_many :lessons
   has_many :discussion_posts, class_name: "Post", foreign_key: "user_id"
@@ -30,21 +30,21 @@ class User < ActiveRecord::Base
   attr_accessible :username, :email, :email_confirmation, :alternate_email, :password, :password_confirmation, :remember_me, :name, :nick, :birthdate,
     :address, :address_number, :address_complement, :address_neighborhood, :zipcode, :country, :state, :city,
     :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music, :movies, :books, :phrase, :site, :photo,
-    :special_needs, :active
+    :special_needs, :active, :allocations_attributes
 
   attr_accessor :login, :has_special_needs
 
   email_format = %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i # regex para validacao de email
 
   validates :cpf, presence: true, uniqueness: true
-  validates :name, presence: true, length: { :within => 6..90 }
-  validates :nick, presence: true, length: { :within => 3..34 }
+  validates :name, presence: true, length: { within: 6..90 }
+  validates :nick, presence: true, length: { within: 3..34 }
   validates :birthdate, presence: true
-  validates :username, presence: true, :length => { :within => 3..20 }, :uniqueness => true
+  validates :username, presence: true, length: { within: 3..20 }, :uniqueness => true
   validates :password, presence: true, confirmation: true, unless: Proc.new { |a| a.password.blank? }
-  validates :alternate_email, :format => { :with => email_format }
-  validates :email, presence: true, confirmation: true, :format => { :with => email_format }, if: Proc.new {|a| a.email_changed? }
-  validates :special_needs, presence: true, :if => :has_special_needs?
+  validates :alternate_email, format: { with: email_format }
+  validates :email, presence: true, confirmation: true, format: { with: email_format }, if: Proc.new {|a| a.email_changed? }
+  validates :special_needs, presence: true, if: :has_special_needs?
 
   validates_length_of :address, :maximum => 99
   validates_length_of :address_neighborhood, :maximum => 49

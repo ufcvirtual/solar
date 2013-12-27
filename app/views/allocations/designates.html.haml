@@ -26,9 +26,9 @@
                 %td= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester.name : allocation.course.name)
 
                 %td
-                  - status, link = (allocation.status == Allocation_Activated) ? ["deactivate", deactivate_allocation_path(id: allocation, text_search: @text_search)] : ["activate", activate_allocation_path(id: allocation, text_search: @text_search)]
+                  - status, link = (allocation.status == Allocation_Activated) ? ["deactivate", deactivate_allocation_path(id: allocation, text_search: @text_search)] : ["activate", activate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)]
 
-                  = button_tag t(".#{status}"), type: :button, class: "btn btn_caution #{status}", alt: t(".#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids.flatten)
+                  = button_tag t(".#{status}"), type: :button, class: "btn btn_caution #{status}", alt: t(".#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids.flatten, admin: @admin)
 
 
   .block_wrapper.search
@@ -50,7 +50,7 @@
   $(document).ready(function() {
 
     $("#search_user").click(function() {
-      var url_for = "#{search_users_allocations_path}";
+      var url_for = "#{search_users_allocations_path(admin: @admin)}";
       var data = { user: encodeURIComponent($("#text_search").val()), allocation_tags_ids: $("#allocation_tags_ids").val() };
       $.get(url_for, data, function(data) { $('#list_users').html(data); });
     });

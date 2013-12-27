@@ -1407,6 +1407,8 @@
       cpf: Cpf
       email: Email
       name: Nome
+      login: Login
+      add_user: Adicionar usuário
     search_users:
       designate: Alocar
       designate_search_no_found: Nenhum usuário encontrado
@@ -1421,11 +1423,13 @@
       allocated: Usuário alocado
       activated: Usuário ativado
       deactivated: Usuário desativado
+      allocations_performed: Alocações realizadas
     error:
       enrollm_request: Pedido de matrícula não realizado
       not_allocated: Não foi possível alocar usuário
       not_activated: Não foi possível ativar usuário
       not_deactivated: Não foi possível desativar usuário
+      allocations_not_performed: Não foi possível realizar alocações
 
   allocation_pending: Pendente
 
@@ -1570,6 +1574,15 @@
       email_sent: Email enviado com sucesso
     error:
       email_not_sent: Não foi possível enviar email
+    users_indication:
+      filter: Filtro
+      type: "Tipo*"
+      course: "Curso*"
+      curriculum_unit: "Unidade Curricular"
+      module: "Módulo"
+      semester: "Semestre"
+      offer: "Oferta"
+      group: "Turma"
 
   editions:
     alert: "Preencha os campos obrigatórios"

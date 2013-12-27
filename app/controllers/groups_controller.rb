@@ -37,7 +37,7 @@ class GroupsController < ApplicationController
     @offer = Offer.find_by_curriculum_unit_id_and_semester_id_and_course_id(params[:curriculum_unit_id], params[:semester_id], params[:course_id])
 
     begin
-      authorize! :list, Group, on: [@offer.allocation_tag.id]
+      authorize! :list, Group#, on: [@offer.allocation_tag.id]
 
       @groups = @offer.groups.order("code")
       render partial: 'groups_checkboxes', locals: { groups: @groups } if params[:checkbox]

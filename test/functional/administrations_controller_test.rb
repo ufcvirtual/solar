@@ -25,21 +25,21 @@ class AdministrationsControllerTest < ActionController::TestCase
   end
 
   test "buscar usuario" do
-    get :search_users, user: 'aluno 1', type_search: 0
+    get :search_users, user: 'aluno 1', type_search: 'name'
     assert_not_nil assigns(:users)
     assert_equal users(:aluno1).name, assigns(:users).first.name
   end
 
   test "nao buscar usuario sem permissao" do 
     sign_in @editor
-    get :search_users, user: 'aluno 1', type_search: 0
+    get :search_users, user: 'aluno 1', type_search: 'name'
     assert_nil assigns(:users)
     assert_response :unauthorized
     assert_equal get_json_response("alert"), I18n.t(:no_permission)
   end
 
   test "buscar usuario nao retorna dados" do
-    get :search_users, user: 'aluno xyz', type_search: 0
+    get :search_users, user: 'aluno xyz', type_search: 'name'
     assert assigns(:users).empty?
   end
 

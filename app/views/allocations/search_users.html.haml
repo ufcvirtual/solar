@@ -9,21 +9,18 @@
         %th{style: 'width:100px'}= ""
     %tbody
     - @users.each do |user|
-      - profiles_allocable = profiles_available_for_allocation(user.id, @allocation_tags_ids.join(","))
-      %tr.lines
-        %td= user.name
-        %td{style: 'width:80px'}= user.cpf
-        %td{style: 'width:200px'}= user.email
-        - unless (profiles_allocable.nil? or profiles_allocable.empty?)
+      - user_profiles = user.allocations.where(allocation_tag_id: @allocation_tags_ids.map(&:to_i)).map(&:profile)
+      - profiles_allocable = ((@admin and can? :users_indication, Administration) ? (Profile.all_except_basic - user_profiles) : profiles_available_for_allocation(user.id, @allocation_tags_ids.join(",")))
+      - unless (profiles_allocable.nil? or profiles_allocable.empty?)
+        %tr.lines
+          %td= user.name
+          %td{style: 'width:80px'}= user.cpf
+          %td{style: 'width:200px'}= user.email
           %td{style: 'width:120px'}
-            = select_tag(:profile_id, options_from_collection_for_select(profiles_allocable, :id, :name))
+            = select_tag(:profile_id, options_from_collection_for_select(profiles_allocable, :id, :name), prompt: "pt-br: Selecionar um...")
           %td{style: 'width:100px'}
             = hidden_field_tag(:user_id, user.id)
-            = button_tag t(".designate"), type: "button", class: "btn btn_default btn_designate", alt: t(".designate_user", user_name: user.name), :"data-link-create" => create_designation_allocations_path(user_id: user.id, status: Allocation_Activated, allocation_tags_ids: @allocation_tags_ids.flatten), :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids.flatten)
-        - else
-          %td{colspan: 2}
-            .unavailable
-              = t(".designate_profile_no_found")
+            = button_tag t(".designate"), type: "button", class: "btn btn_default btn_designate", alt: t(".designate_user", user_name: user.name), :"data-link-create" => create_designation_allocations_path(user_id: user.id, status: Allocation_Activated, allocation_tags_ids: @allocation_tags_ids.flatten, admin: @admin), :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids.flatten, admin: @admin)
 - else
   .block_content_text_list.text_none 
     = t(".designate_search_no_found")
@@ -39,9 +36,7 @@
       $.ajax({
         type: 'POST',
         url: $(this).data("link-create"),
-        data: {
-          profile: profile
-        },
+        data: {profile: profile},
         success: function(data) {
           $.get(url_list, function(data){
             $(".list_designates:last").replaceWith(data);
