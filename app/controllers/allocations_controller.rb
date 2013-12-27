@@ -28,7 +28,7 @@ class AllocationsController < ApplicationController
       if @admin 
         authorize! :create_designation, Allocation
       else
-        authorize! :create_designation, Allocation, on: allocation_tags_ids.flatten
+        authorize! :create_designation, Allocation, on: @allocation_tags_ids.flatten
       end
 
       level        = (params[:permissions] != "all" and (not params.include?(:admin))) ? "responsible" : nil
@@ -42,10 +42,8 @@ class AllocationsController < ApplicationController
       render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue => error
-      respond_to do |format|
-        format.html { render nothing: true, status: :unprocessable_entity }
-      end
+    rescue 
+      render nothing: true, status: :unprocessable_entity
     end
   end
 

@@ -1418,6 +1418,7 @@
       cpf: Cpf
       email: Email
       name: Nome
+      select_profile: Selecione um perfil
     success:
       enrollm_request: Pedido de matrícula realizado
       allocated: Usuário alocado

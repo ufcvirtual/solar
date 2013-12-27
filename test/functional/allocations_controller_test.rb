@@ -173,6 +173,27 @@ class AllocationsControllerTest < ActionController::TestCase
     assert (not allocation_tags(:al5).is_user_class_responsible?(users(:user2).id))
   end
 
+  # Admin
+  test "alocar usuario como editor" do
+    sign_in users(:admin)
+    assert_difference("Allocation.count", 1) do
+      post :create_designation, { allocation_tags_ids:  [allocation_tags(:al5).id], user_id: users(:user2).id, profile:  profiles(:editor).id, status:  Allocation_Activated , admin: true} #oferta
+    end
+
+    assert_response :success
+    assert (not Allocation.where(user_id: users(:user2).id, profile_id: profiles(:editor).id, allocation_tag_id: allocation_tags(:al5).id).empty?)
+  end
+
+  # test "nao alocar usuario como editor parra usuario sem permissao" do
+  #   sign_in users(:editor)
+  #   assert_no_difference("Allocation.count") do
+  #     post :create_designation, { allocation_tags_ids:  [allocation_tags(:al5).id], user_id: users(:user2).id, profile: profiles(:editor).id, status:  Allocation_Activated, admin: true } #oferta
+  #   end
+
+  #   assert_response :unprocessable_entity
+  #   assert (Allocation.where(user_id: users(:user2).id, profile_id: profiles(:editor).id, allocation_tag_id: allocation_tags(:al5).id).empty?)
+  # end
+
   ##
   # Usuário solicitando matrícula
   ##

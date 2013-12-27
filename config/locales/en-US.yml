@@ -1264,6 +1264,7 @@
       designate_search_no_found: No user found
       designate_profile_no_found: No profile available for allocation
       designate_user: Designate %{user_name}
+      select_profile: Select a profile
     profile: Profile
     cpf: Cpf
     email: Email
