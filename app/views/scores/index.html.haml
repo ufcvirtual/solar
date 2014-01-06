@@ -1,30 +1,40 @@
-%div{:style => "width: 700px;"}
-
-  .mysolar_header
-    %h1.mysolar_title
+.block_wrapper
+  .block_title
+    %h2
       %i.icon-suitcase
       = t(:group)
       = @group.code
 
-  / Lista dos alunos com notass
+  / Lista dos alunos com notas
 
-  %div.tb_list
-    %table.tb_list#list_of_studantes{:width => "100%", :cellspacing => "0", :border => "0", :summary => "lista de estudantes"}
+  %div.tb_list_studantes
+    %table.tb_list#list_of_studantes{:cellspacing => "0", :border => "0", :summary => "lista de estudantes"}
       %thead
         %tr.lines
-          %th{:rowspan => "2", :align => "left"}= t(:student)
-          %th{:rowspan => "2", :style => "width: 16%;"}= t(:public_files)
-          %th{:colspan => "#{@assignments.length}", :style => "width: 20%;"}= t(:private_area)
-          %th{:rowspan => "2", :style => "width: 12%;"}= t(:participation)
-          %th{:rowspan => "2", :style => "width: 18%;"}= t(:access_to_the_course)
-        %tr
-          - unless @assignments.empty?
-            - @assignments.each_with_index do |assignment, idx|
-              %th= "#{idx + 1}º"
+          %th{:rowspan => "2", :align => "left", :id => "texte2"}= t(:student)
+          %th{:rowspan => "2", :colspan => "2", :id=>"public_files"}= t(:public_files)
+          %th{:rowspan => "2"}= t(:participation)
+          %th{:rowspan => "2"}= t(:access_to_the_course)
+        %tr#activities
         - @students.each_with_index do |student, idx|
           %tr.lines
-            %td.td_student{:align => "left"}= link_to student.name, student_scores_path(student.id)
-            %td{:align => "center"}= @scores["student_count_public_files"][idx]
+            %td.td_student{:align => "left", :colspan => "2"}= link_to student.name, student_scores_path(student.id)
+            %td{:align => "center", :colspan => "1"}= @scores["student_count_public_files"][idx]
+            %td{:align => "center"}= "-"
+            %td{:align => "center"}= @scores["student_count_access"][idx]
+
+
+  %div.tb_list_jobs
+    %table.tb_list#list_of_studantes{:cellspacing => "0", :border => "0", :summary => "lista de estudantes"}
+      %thead
+        %tr.lines
+          %th{:colspan => "#{@assignments.length}", :style => "width: 20%;", :id => "tests"}= t(:private_area)
+        %tr#activities
+          - unless @assignments.empty?
+            - @assignments.each_with_index do |assignment, idx|
+              %th{'data-tooltip' => t(assignment.name)}= "#{idx + 1}"
+        - @students.each_with_index do |student, idx|
+          %tr.lines
             - @assignments.each_with_index do |assignment, idx2|
               - grade = @scores["students_grades"][idx][idx2]
               - grade_link = t("assignment_#{grade}", :default => grade)
@@ -35,32 +45,30 @@
                   = link_to grade_link, student_assignment_path(assignment.id, :student_id => student.id, :group_id => @scores["students_groups"][idx][idx2]) 
             - if @assignments.empty?
               %td{:align => "center"}= "-"
-            %td{:align => "center"}= "-"
-            %td{:align => "center"}= @scores["student_count_access"][idx]
 
 / Legenda das notas
 #scores_notes.legend_score_footer
-  %div
+  %div.assignment_as
     = t(:assignment_as)
     = t(:assignment_without_correction)
-  %div
+  %div.assignment_an
     = t(:assignment_an)
     = t(:assignment_not_sent)
-  %div
+  %div.assignment_without_group
     = t(:assignment_wg)
     = t(:student_without_group)
 
 / Paginacao
-.legend#scores_pagination{:style => "text-align: center;"}
-  %span=raw render_pagination_bar(@students.size) unless @students.empty?
+/ .legend#scores_pagination{:style => "text-align: center;"}
+/   %span=raw render_pagination_bar(@students.size) unless @students.empty?
 
 / Legenda dos trabalhos
-- unless @assignments.empty?
-  .legend
-    %ul
-      %li
-        %h1= t(:legend_assignments)
-      - @assignments.each_with_index do |assignment, idx|
-        %li
-          = "#{idx + 1}º - "
-          = assignment.name
+/ - unless @assignments.empty?
+/   .legend
+/     %ul
+/       %li
+/         %h1= t(:legend_assignments)
+/       - @assignments.each_with_index do |assignment, idx|
+/         %li
+/           = "#{idx + 1}º - "
+/           = assignment.name

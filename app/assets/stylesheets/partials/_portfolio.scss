@@ -177,7 +177,11 @@
 
 .assignment_sent,
 td.assignment_as a {
-  color: #1CA093;
+  color: #2900c2;
+}
+
+.assignment_as{
+  color: #2900c2;
 }
 
 .assignment_not_sent,
@@ -192,9 +196,12 @@ td.assignment_as a {
 .assignment_send,
 .assignment_pending,
 td.assignment_an a {
-  color: $color_main_text;
+  color: #003e7a;
 }
 
+.assignment_an{
+  color: #003e7a;
+}
 .assignment_without_group,
 td.assignment_without_group a {
   color: #e37073;

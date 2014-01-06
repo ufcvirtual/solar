@@ -52,7 +52,7 @@ table.tb_list {
 
   th {
     /*    font-weight: bold;*/
-    white-space: nowrap;
+    // white-space: nowrap;
     background-color: white;
   }
 
@@ -69,7 +69,7 @@ table.tb_list {
 
   td {
     /*    border-right: 1px solid #d0d0d0;*/
-    white-space: normal;
+    // white-space: normal;
     word-wrap: break-word;
   }
 
@@ -164,4 +164,37 @@ tr.post_content {
 .tablesorter-default thead .sorter-false {
   background-image: none;
   padding: 4px;
+}
+
+#activities th{
+  text-decoration: underline;
+}
+
+#tests{
+  border: 0;
+}
+
+.tb_list_studantes{
+  width:380px;
+  float: left;
+  margin-top: 10px;
+  background-color: #f8fbfe;
+}
+.tb_list_jobs{
+  width: 400px;
+  overflow: auto;
+  background-color: #e6f0fc;
+}
+
+.tb_list_jobs td{
+  border-right: 1px solid #fff;
+}
+
+//Deixar a tabela de acompanhamento do professor zebrada verticalmente
+.tb_list_jobs td:nth-child(2n+1) {
+  background:#cbe0fa;
+}
+
+#public_files{
+  padding-left: 47px;
 }
