@@ -6,6 +6,9 @@
   .calendar#agenda{url_for: agendas_path}
   .calendar_events
 
+
 :javascript
-  var dates_with_events = eval(#{@scheduled_events});
-  $(function() { showAgenda(dates_with_events); });
+  $(function() { 
+    var dates_with_events = eval(#{@scheduled_events.as_json});
+    showAgenda(dates_with_events); 
+  });

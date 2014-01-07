@@ -10,7 +10,7 @@
   //--------------------------------------------
   // Todas as datas que possuem eventos
   //--------------------------------------------
-  var dates_with_events = eval(#{@scheduled_events});
   $(function() {
+    var dates_with_events = eval(#{@scheduled_events.as_json});
     showAgenda(dates_with_events);
   });
