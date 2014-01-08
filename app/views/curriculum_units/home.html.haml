@@ -12,7 +12,7 @@
         - if @responsible
           - @responsible.each do |resp|
             = [resp.name, " (", resp.profile_name, ") "].join
-            / %span= link_to (image_tag "icon_message.png", alt: t(:icon_send_email))
+            %span= link_to (image_tag "icon_message.png", alt: t(:icon_send_email)), new_message_path(user_id: resp.id)
             %br
 
   = render "lesson_portlet"

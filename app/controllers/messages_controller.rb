@@ -24,6 +24,8 @@ class MessagesController < ApplicationController
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     @unreads = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
     @contacts = user_contacts
+
+    @reply_to = [User.find(params[:user_id]).to_msg] unless params[:user_id].nil? # se um usuário for passado, colocá-lo na lista de destinatários
   end
 
   def show
