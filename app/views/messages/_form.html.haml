@@ -79,9 +79,9 @@
       if ($('#message_to').val() == ""){
         event.preventDefault();
         alert("#{I18n.t(:without_recipient, scope: [:messages, :form])}");
-      }else if ($(".cke_contents iframe").contents().find("body").text() == ""){
-        event.preventDefault();
-        alert("#{I18n.t(:must_have_content, scope: [:messages, :form])}"); 
+      } else if ($(".cke_contents iframe").contents().find("body").text() == ""){
+        if (!confirm("#{I18n.t(:no_content, scope: [:messages, :form])}"))
+          event.preventDefault();
       }
     });
 

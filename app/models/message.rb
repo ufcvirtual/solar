@@ -15,8 +15,6 @@ class Message < ActiveRecord::Base
 
   attr_accessor :contacts
 
-  validates :content, presence: true
-  
   scope :by_user, ->(user_id) { joins(:user_messages).where(user_messages: {user_id: user_id}) }
 
   # box = [inbox, outbox, trashbox]

@@ -1920,7 +1920,7 @@
       attach_file: "Anexar um arquivo"
       send: "Enviar"
       without_recipient: "Necessário pelo menos um destinatário."
-      must_have_content: Necessário escrever mensagem
+      no_content: Mensagem sem conteúdo. Continuar?
       discard: "Descartar"
       add_contacts: "Clique aqui para adicionar contatos"
     header:

@@ -1767,7 +1767,7 @@
       attach_file: "Attach a file"
       send: "Send"
       without_recipient: "Need at least one recipient."
-      must_have_content: A message must be written
+      no_content: The message has no content. Continue?
       discard: "Discard"
       add_contacts: "Click here to add contacts"
     header:

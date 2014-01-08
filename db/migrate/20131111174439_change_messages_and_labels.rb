@@ -24,6 +24,13 @@ class ChangeMessagesAndLabels < ActiveRecord::Migration
       l.destroy # destruindo label do sistema
     end
 
+    ## msgs que nao tem label
+    msgs = Message.where("created_at is null and send_date is not null")
+    msgs.each do |m|
+      m.created_at = m.send_date
+      m.save
+    end
+
     change_table :messages do |t|
       t.remove :send_date
     end

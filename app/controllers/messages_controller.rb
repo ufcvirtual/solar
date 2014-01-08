@@ -157,17 +157,19 @@ class MessagesController < ApplicationController
     def user_contacts
       contacts, ucs = [], []
       (current_user.allocations.map(&:allocation_tag).compact.uniq).each do |at|
-        responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(at.related.join(","),
-          Profile_Type_Class_Responsible)
-        participants = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type(at.groups.map(&:allocation_tag).compact.map(&:id).join(","), Profile_Type_Class_Responsible)
-        uc = at.groups.first.curriculum_unit
-        unless ucs.include?(uc)
-          ucs << uc
-          contacts << {
-            id: uc.id,
-            curriculum_unit: uc.name,
-            contacts: (responsible + participants).uniq.map(&:to_msg).sort! {|a, b| a[:name].downcase <=> b[:name].downcase}
-          }
+        unless at.groups.empty?
+          responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(at.related.join(","), Profile_Type_Class_Responsible)
+          participants = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type(at.groups.map(&:allocation_tag).compact.map(&:id).join(","), Profile_Type_Class_Responsible)
+
+          uc = at.groups.first.curriculum_unit
+          unless ucs.include?(uc)
+            ucs << uc
+            contacts << {
+              id: uc.id,
+              curriculum_unit: uc.name,
+              contacts: (responsible + participants).uniq.map(&:to_msg).sort! {|a, b| a[:name].downcase <=> b[:name].downcase}
+            }
+          end
         end
       end
       contacts
