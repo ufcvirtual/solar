@@ -62,16 +62,16 @@ module ApplicationHelper
     curriculum_unit_id = active_tab[:url][:id]
     groups             = Group.find_all_by_curriculum_unit_id_and_user_id(curriculum_unit_id, current_user.id)
     # O grupo (turma) a ter seus fóruns exibidos será o grupo selecionado na aba de seleção ('selected_group')
-    group_selected     = AllocationTag.find(active_tab[:url][:allocation_tag_id]).group_id
+    selected_group_id     = AllocationTag.find(active_tab[:url][:allocation_tag_id]).group_id
     # Se o group_select estiver vazio, ou seja, nenhum grupo foi selecionado pelo usuário,
     # o grupo a ter seus fóruns exibidos será o primeiro grupo encontrado para o usuário em questão
-    group_selected     = groups.first.id if group_selected.blank?
+    selected_group_id     = groups.first.id if selected_group_id.blank?
 
     result = ''
     if (groups.length > 1 and @can_select_group)
       result = "<form accept-charset='UTF-8' action='' method='#{request.method}' name='groupSelectionForm' style='display:inline'>"
       result <<  t(:group) << ":&nbsp"
-      result << select_tag(:selected_group, options_from_collection_for_select(groups, :id, :code_semester, group_selected),
+      result << select_tag(:selected_group, options_from_collection_for_select(groups, :id, :code_semester, selected_group_id),
         {:onchange => "$(this).parent().submit();"} # versao SEM AJAX
         # {:onchange => "reloadContentByForm($(this).parent());"} # versao AJAX
       )
@@ -88,7 +88,7 @@ module ApplicationHelper
       result << " <input name='authenticity_token' value='#{form_authenticity_token}' type='hidden'>"
       result << '</form>'
     else
-      result = t(:group) << ":&nbsp #{groups[0].code_semester}"
+      result = t(:group) << ":&nbsp #{Group.find(selected_group_id).code_semester}"
     end
 
     return result
