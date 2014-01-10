@@ -41,7 +41,7 @@ $.fn.nice_checkbox = function(options) {
 
     children.click(function(){
       var kid = this;
-      var children_checked = $('input:checkbox[name*="' + children_names + '"]:checked', parent_block_div);
+      var children_checked = $('input:checkbox[name^="' + children_names + '"]:checked', parent_block_div);
 
       if (can_enable_or_disable) {
         enable_other_elements(children_checked.length);

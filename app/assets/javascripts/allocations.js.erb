@@ -1,12 +1,6 @@
-$(function() {
-  
-  $('#cbx_all').click(function () {
-    var checked = $(this).is(':checked');            
-    $('.cbx_value').each(function () {
-      $(this).prop('checked', checked);                
-    });
-  });
+jQuery(function($){
 
+  $("#all_allocations").nice_checkbox();
 
   $('.btn_enroll_selected').click(function() {
     var ch = $('.cbx_value:checked');
