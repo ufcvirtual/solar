@@ -40,7 +40,7 @@ class CurriculumUnit < ActiveRecord::Base
              t3.photo_file_name,
              t3.photo_updated_at,
              t3.email,
-             replace(translate(array_agg(t4.name)::text,'{""}',''),',',', ') AS profile_name,
+             replace(translate(array_agg(distinct t4.name)::text,'{""}',''),',',', ') AS profile_name,
              translate(array_agg(t4.id)::text,'{}','') AS profile_id
         FROM allocations     AS t1
         JOIN allocation_tags AS t2 ON t1.allocation_tag_id = t2.id
