@@ -10,8 +10,8 @@
         %tr.lines{"data-profile-id" => profile.id, "data-link-delete" => "#{profile_path(profile)}.json"}
           %td= profile.name
           %td= profile.description
-          %td{style: 'align:right'}
-            = link_to content_tag(:i, nil, class: 'icon-lock'), "#", "data-tooltip" => t(".permissions"), "data-show-link" => permissions_profile_path(profile), class: "btn show-permissions"
+          %td.btn-group{style: 'text-align:right'}
+            = link_to content_tag(:i, nil, class: 'icon-key'), "#", "data-tooltip" => t(".permissions"), "data-show-link" => permissions_profile_path(profile), class: "btn show-permissions"
             = link_to content_tag(:i, nil, class: 'icon-edit'), edit_profile_path(profile), "data-tooltip" => t(".edit"), class: "btn edit-profile"
 
 :javascript

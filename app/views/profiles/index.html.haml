@@ -2,10 +2,9 @@
   .block_wrapper
     .block_title
       %h2= t(:title, :scope => [:administrations, :profiles])
-
-  .block_wrapper
-    .block_content.block_content_toolbar.block_content_text
-      = link_to content_tag(:i, nil, class: 'icon-plus'), new_profile_path, class: "btn btn_main link_new_profile", :"data-tooltip" => t(".new")
+    .block_content_toolbar
+      .block_toolbar_left
+        = link_to content_tag(:i, nil, class: 'icon-plus'), new_profile_path, class: "btn btn_main link_new_profile", :"data-tooltip" => t(".new")
     .block_content
       = render "list"
 
