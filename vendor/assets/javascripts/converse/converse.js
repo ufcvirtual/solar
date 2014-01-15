@@ -40,9 +40,10 @@
     }
 }(this, function ($, _, console) {
     var converse = {};
+    con=converse;
     converse.initialize = function (settings, callback) {
         var converse = this;
-
+        con=converse;
         // Default configuration values
         // ----------------------------
         this.allow_contact_requests = true;
@@ -553,9 +554,12 @@
                     if(contacts[c].attributes.fullname.search(message.attributes.fullname) != -1){
                         v = document.getElementById(this.model.get('box_id'));
                         img = v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
-                        if(contacts[c].attributes.chat_status.search("online")!=-1) img.src=imgOn;
-                        if(contacts[c].attributes.chat_status.search("dnd")!=-1)img.src=imgDnd;
-                        if(contacts[c].attributes.chat_status.search("away")!=-1)img.src=imgAway;
+                        if(contacts[c].attributes.chat_status.search("online")!=-1) 
+                            img.src = imgOn;
+                        if(contacts[c].attributes.chat_status.search("dnd")!=-1)
+                            img.src = imgDnd;
+                        if(contacts[c].attributes.chat_status.search("away")!=-1)
+                            img.src = imgAway;
                         //if(contacts[c].attributes.chat_status.search("offline")!=-1)img.src=imgOff;
                     }
                     c++;    
@@ -578,18 +582,18 @@
                     return;
                 } else {
                     this.appendMessage($chat_content, _.clone(message.attributes));
-                }
-                if ((message.get('sender') != 'me') && (converse.windowState == 'blur')) {
-                    converse.incrementMsgCounter();
-                    //muda imagem status ao receber menssagem no estado onblur
+                    //notifica ao receber mensagem com IM minimizado
                     head = v.childNodes.item(0);
                     if(head.style.top=="300px")
                     {
                         texto = head.childNodes.item(1);
                         texto = texto.childNodes.item(0);
-                        texto.style.color="black";
+                        texto.style.color="white";
                         head.style.backgroundColor = "#1E90FF";
                     }
+                }
+                if ((message.get('sender') != 'me') && (converse.windowState == 'blur')) {
+                    converse.incrementMsgCounter();
                 }
 
                 this.scrollDown();
@@ -817,6 +821,7 @@
                     v.childNodes.item(0).childNodes.item(1).childNodes.item(0).style.color="rgb(255, 255, 255)";
                     v.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
                 }
+                this.scrollDown();
             },
             
             template: _.template(
@@ -2572,7 +2577,7 @@
             tagName: 'dl',
             id: 'converse-roster',
             events: {
-                "keyup #nomeFilt": "buscar",
+                "keyup #nomeFilt": "searchUser",
             },
             rosteritemviews: {},
 
@@ -2580,7 +2585,7 @@
                 '<dt id="xmpp-contact-requests">'+__('Contact requests')+'</dt>'),
 
             contacts_template: _.template(
-                '<div id="buscar">Buscar:<input type="text" id="nomeFilt" name="nomeFilt" placeholder="Buscar Usuário"/></div><dt id="xmpp-contacts" >'+__('My contacts')+'</dt>'),
+                '<div id="buscar"><input type="text" id="nomeFilt" name="nomeFilt" placeholder="Buscar Usuário"/></div><dt id="xmpp-contacts" >'+__('My contacts')+'</dt>'),
 
             pending_contacts_template: _.template(
                 '<dt id="pending-xmpp-contacts" >'+__('Pending contacts')+'</dt>'),
@@ -2613,7 +2618,7 @@
 
                 this.model.fetch({add: true}); // Get the cached roster items from localstorage
             },
-            buscar: function(el){
+            searchUser: function(el){
                 valor=el.target.value;
                 if(valor!=""){
                     rosters=$("dd");

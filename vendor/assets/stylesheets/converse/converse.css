@@ -44,7 +44,8 @@
 #chatpanel {
     z-index: 99; /*--Keeps the panel on top of all other elements--*/
     position: fixed;
-    bottom: 0; right: 0;
+    bottom: 30px; 
+    right: 0;
     height: 332px;
     width: auto;
 }
@@ -52,7 +53,7 @@
 #chatpanel #toggle-controlbox {
     position: fixed;
     font-size: 70%;
-    bottom: 0;
+    bottom: 17px;
     right: 0;
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
@@ -340,7 +341,8 @@
     float: right;
     clear: right;
     height: 22px;
-    padding: 0px 5px 0 0;
+    padding: 0px 0px 0 0;
+    margin:0px;
     color: rgb(79, 79, 79);
 }
 
@@ -476,7 +478,7 @@
 }
 
 #chatpanel #converse-roster {
-    height: 200px;
+    height: 225px;
     overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
@@ -653,7 +655,7 @@
 
 #chatpanel form.set-xmpp-status {
     background: none;
-    padding: 0.5em 0 0.5em 0.5em;
+    padding: 0 0 0 0.12em;
 }
 
 #chatpanel form.add-chatroom {
@@ -905,4 +907,16 @@
 #nomeFilt{
     min-width: 100%;   
     border-radius: 4px 4px 4px 4px;
+    border-style: solid;
+    padding: 5px;
+    border-width: 1px;
+    border-color: rgb(222, 222, 222);
+}
+a{
+    text-decoration: none;
+    color: rgb(0, 62, 122);
+    font-family: 'PT Sans',sans-serif;
+}
+#controlbox{
+    background-color: white;
 }
