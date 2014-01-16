@@ -44,7 +44,7 @@
 #chatpanel {
     z-index: 99; /*--Keeps the panel on top of all other elements--*/
     position: fixed;
-    bottom: 30px; 
+    bottom: 0px; 
     right: 0;
     height: 332px;
     width: auto;
@@ -53,7 +53,7 @@
 #chatpanel #toggle-controlbox {
     position: fixed;
     font-size: 70%;
-    bottom: 17px;
+    bottom: 0px;
     right: 0;
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
@@ -608,7 +608,7 @@
 }
 
 #chatpanel .oc-chat-content {
-    height:274px;
+    height:260px;
     padding: 0;
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px;

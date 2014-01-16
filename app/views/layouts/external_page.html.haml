@@ -75,15 +75,12 @@
           show_controlbox_by_default: true,
           xhr_user_search: false
         });
-
-        function openIM(){
-          $(".xmpp-status-menu .online").click();
-        }
+        //$(".xmpp-status-menu .online").click();
+        //$("#frame_content").contents().find(".xmpp-status-menu .online").click();
         function closeIM(){ 
           $(".xmpp-status-menu .unavailable").click();
           im=$("#chatpanel")[0];
           im.style.display="none";
-          con.xmppstatus.attributes.status="online";
           document.body.removeChild(im);
           delete con;
           con=null;
