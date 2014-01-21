@@ -7,7 +7,6 @@
  */
 
 // AMD/global registrations
-
 (function (root, factory) {
     if (console===undefined || console.log===undefined) {
         console = { log: function () {}, error: function () {} };
@@ -39,57 +38,7 @@
         };
         root.converse = factory(jQuery, _, console || {log: function(){}});
     }
-}(this, function ($, _, OTR, DSA, console) {
-    $.fn.addHyperlinks = function() {
-        if (this.length > 0) {
-            this.each(function(i, obj) {
-                var x = $(obj).html();
-                var list = x.match(/\b(https?:\/\/|www\.|https?:\/\/www\.)[^\s<]{2,200}\b/g );
-                if (list) {
-                    for (i=0; i<list.length; i++) {
-                        var prot = list[i].indexOf('http://') === 0 || list[i].indexOf('https://') === 0 ? '' : 'http://';
-                        x = x.replace(list[i], "<a target='_blank' href='" + prot + list[i] + "'>"+ list[i] + "</a>" );
-                    }
-                }
-                $(obj).html(x);
-            });
-        }
-        return this;
-    };
-    $.fn.addEmoticons = function() {
-        if (converse.show_emoticons) {
-            if (this.length > 0) {
-                this.each(function(i, obj) {
-                    var text = $(obj).html();
-                    text = text.replace(/:\)/g, '<span class="emoticon icon-smiley"></span>');
-                    text = text.replace(/:\-\)/g, '<span class="emoticon icon-smiley"></span>');
-                    text = text.replace(/;\)/g, '<span class="emoticon icon-wink"></span>');
-                    text = text.replace(/;\-\)/g, '<span class="emoticon icon-wink"></span>');
-                    text = text.replace(/:D/g, '<span class="emoticon icon-grin"></span>');
-                    text = text.replace(/:\-D/g, '<span class="emoticon icon-grin"></span>');
-                    text = text.replace(/:P/g, '<span class="emoticon icon-tongue"></span>');
-                    text = text.replace(/:\-P/g, '<span class="emoticon icon-tongue"></span>');
-                    text = text.replace(/:p/g, '<span class="emoticon icon-tongue"></span>');
-                    text = text.replace(/:\-p/g, '<span class="emoticon icon-tongue"></span>');
-                    text = text.replace(/8\)/g, '<span class="emoticon icon-cool"></span>');
-                    text = text.replace(/&gt;:\)/g, '<span class="emoticon icon-evil"></span>');
-                    text = text.replace(/:S/g, '<span class="emoticon icon-confused"></span>');
-                    text = text.replace(/:\\/g, '<span class="emoticon icon-wondering"></span>');
-                    text = text.replace(/:\/ /g, '<span class="emoticon icon-wondering"></span>');
-                    text = text.replace(/&gt;:\(/g, '<span class="emoticon icon-angry"></span>');
-                    text = text.replace(/:\(/g, '<span class="emoticon icon-sad"></span>');
-                    text = text.replace(/:\-\(/g, '<span class="emoticon icon-sad"></span>');
-                    text = text.replace(/:O/g, '<span class="emoticon icon-shocked"></span>');
-                    text = text.replace(/:\-O/g, '<span class="emoticon icon-shocked"></span>');
-                    text = text.replace(/\=\-O/g, '<span class="emoticon icon-shocked"></span>');
-                    text = text.replace(/\(\^.\^\)b/g, '<span class="emoticon icon-thumbs-up"></span>');
-                    text = text.replace(/<3/g, '<span class="emoticon icon-heart"></span>');
-                    $(obj).html(text);
-                });
-            }
-        }
-        return this;
-    };
+}(this, function ($, _, console) {
     var converse = {};
     con=converse;
     converse.initialize = function (settings, callback) {
@@ -109,9 +58,6 @@
         this.i18n = locales.en;
         this.prebind = false;
         this.show_controlbox_by_default = false;
-        this.show_emoticons = true;
-        this.show_toolbar = true;
-        this.use_vcards = true;
         this.show_only_online_users = false;
         this.testing = false; // Exposes sensitive data for testing. Never set to true in production systems!
         this.xhr_custom_status = false;
@@ -134,8 +80,6 @@
             'prebind',
             'rid',
             'show_controlbox_by_default',
-            'show_emoticons',
-            'show_toolbar',
             'show_only_online_users',
             'sid',
             'testing',
@@ -438,14 +382,6 @@
                 this.initRoster();
                 this.chatboxes.onConnected();
                 this.connection.roster.get(function () {});
-                $(document).click(function() {
-                    if ($('.toggle-otr ul').is(':visible')) {
-                        $('.toggle-otr ul', this).slideUp();
-                    }
-                    if ($('.toggle-smiley ul').is(':visible')) {
-                        $('.toggle-smiley ul', this).slideUp();
-                    }
-                });
 
                 $(window).on("blur focus", $.proxy(function(e) {
                     if ((this.windowState != e.type) && (e.type == 'focus')) {
@@ -544,51 +480,8 @@
             events: {
                 'click .close-chatbox-button': 'closeChat',
                 'keypress textarea.chat-textarea': 'keyPressed',
-                'click .chat-head.chat-head-chatbox': 'toggleChatbox',
-                'click .toggle-smiley': 'toggleEmoticonMenu',
-                'click .toggle-smiley ul li': 'insertEmoticon'
+                'click .chat-head.chat-head-chatbox': 'toggleChatbox'
             },
-            template: _.template(
-                '<div class="chat-head chat-head-chatbox">' +
-                    '<a class="close-chatbox-button icons-close"></a>' +
-                    '<a href="#"  class="user">' +
-                        '<div class="chat-title"> {{ fullname }}'+
-                        '<img src="" class="imgStatus" />' +
-                        '</div>' +
-                    '</a>' +
-                    '<p class="user-custom-message" style="display:none" ><p/>' +
-                '</div>' +
-                '<div class="chat-content"></div>' +
-                '<form class="sendXMPPMessage" action="" method="post">' +
-                    '{[ if ('+converse.show_toolbar+') { ]}' +
-                        '<ul class="chat-toolbar no-text-select"></ul>'+
-                    '{[ } ]}' +
-                '<textarea ' +
-                    'type="text" ' +
-                    'class="chat-textarea" ' +
-                    'placeholder="'+__('Personal message')+'"/>'+
-                '</form>'),
-             toolbar_template: _.template(
-                '{[ if (show_emoticons)  { ]}' +
-                    '<li class="toggle-smiley icon-happy" title="Insert a smilery">' +
-                        '<ul>' +
-                            '<li><a class="icon-smiley" href="#" data-emoticon=":)"></a></li>'+
-                            '<li><a class="icon-wink" href="#" data-emoticon=";)"></a></li>'+
-                            '<li><a class="icon-grin" href="#" data-emoticon=":D"></a></li>'+
-                            '<li><a class="icon-tongue" href="#" data-emoticon=":P"></a></li>'+
-                            '<li><a class="icon-cool" href="#" data-emoticon="8)"></a></li>'+
-                            '<li><a class="icon-evil" href="#" data-emoticon=">:)"></a></li>'+
-                            '<li><a class="icon-confused" href="#" data-emoticon=":S"></a></li>'+
-                            '<li><a class="icon-wondering" href="#" data-emoticon=":\\"></a></li>'+
-                            '<li><a class="icon-angry" href="#" data-emoticon=">:("></a></li>'+
-                            '<li><a class="icon-sad" href="#" data-emoticon=":("></a></li>'+
-                            '<li><a class="icon-shocked" href="#" data-emoticon=":O"></a></li>'+
-                            '<li><a class="icon-thumbs-up" href="#" data-emoticon="(^.^)b"></a></li>'+
-                            '<li><a class="icon-heart" href="#" data-emoticon="<3"></a></li>'+
-                        '</ul>' +
-                    '</li>' +
-                '{[ } ]}' 
-            ),
             message_template: _.template(
                                 '<div class="chat-message {{extra_classes}}">' +
                                     '<span class="chat-message-{{sender}}">{{time}} {{username}}:&nbsp;</span>' +
@@ -604,56 +497,7 @@
             new_day_template: _.template(
                                 '<time class="chat-date" datetime="{{isodate}}">{{datestring}}</time>'
                                 ),
-            initialize: function (){
-                this.model.messages.on('add', this.showMessage, this);
-                this.model.on('show', this.show, this);
-                this.model.on('destroy', this.hide, this);
-                this.model.on('change', this.onChange, this);
-                this.updateVCard();
-                this.$el.appendTo(converse.chatboxesview.$el);
-                this.render().show().model.messages.fetch({add: true});
-                if (this.model.get('status')) {
-                    this.showStatusMessage(this.model.get('status'));
-                }
 
-
-            },
-            render: function () {
-                this.$el.attr('id', this.model.get('box_id'))
-                    .html(this.template(this.model.toJSON()));
-                this.renderAvatar();
-                this.renderToolbar().renderAvatar();
-                return this;
-            },
-
-            renderEmoticons: function (text) {
-                if (converse.show_emoticons) {
-                    text = text.replace(/:\)/g, '<span class="emoticon icon-smiley"></span>');
-                    text = text.replace(/:\-\)/g, '<span class="emoticon icon-smiley"></span>');
-                    text = text.replace(/;\)/g, '<span class="emoticon icon-wink"></span>');
-                    text = text.replace(/;\-\)/g, '<span class="emoticon icon-wink"></span>');
-                    text = text.replace(/:D/g, '<span class="emoticon icon-grin"></span>');
-                    text = text.replace(/:\-D/g, '<span class="emoticon icon-grin"></span>');
-                    text = text.replace(/:P/g, '<span class="emoticon icon-tongue"></span>');
-                    text = text.replace(/:\-P/g, '<span class="emoticon icon-tongue"></span>');
-                    text = text.replace(/:p/g, '<span class="emoticon icon-tongue"></span>');
-                    text = text.replace(/:\-p/g, '<span class="emoticon icon-tongue"></span>');
-                    text = text.replace(/8\)/g, '<span class="emoticon icon-cool"></span>');
-                    text = text.replace(/>:\)/g, '<span class="emoticon icon-evil"></span>');
-                    text = text.replace(/:S/g, '<span class="emoticon icon-confused"></span>');
-                    text = text.replace(/:\\/g, '<span class="emoticon icon-wondering"></span>');
-                    text = text.replace(/:\//g, '<span class="emoticon icon-wondering"></span>');
-                    text = text.replace(/>:\(/g, '<span class="emoticon icon-angry"></span>');
-                    text = text.replace(/:\(/g, '<span class="emoticon icon-sad"></span>');
-                    text = text.replace(/:\-\(/g, '<span class="emoticon icon-sad"></span>');
-                    text = text.replace(/:O/g, '<span class="emoticon icon-shocked"></span>');
-                    text = text.replace(/:\-O/g, '<span class="emoticon icon-shocked"></span>');
-                    text = text.replace(/\=\-O/g, '<span class="emoticon icon-shocked"></span>');
-                    text = text.replace(/\(\^.\^\)b/g, '<span class="emoticon icon-thumbs-up"></span>');
-                    text = text.replace(/<3/g, '<span class="emoticon icon-heart"></span>');
-                }
-                return text;
-            },
             appendMessage: function ($el, msg_dict) {
                 var this_date = converse.parseISO8601(msg_dict.time),
                     text = msg_dict.message,
@@ -670,22 +514,14 @@
                     username = sender === 'me' && 'eu' || msg_dict.fullname;
                 }
                 $el.find('div.chat-event').remove();
-                var message = template({
-                    'sender': sender,
-                    'time': this_date.toTimeString().substring(0,5),
-                    'username': username,
-                    'message': '',
-                    'extra_classes': msg_dict.delayed && 'delayed' || ''
-                });
-                var message = template({
-                    'sender': sender,
-                    'time': this_date.toTimeString().substring(0,5),
-                    'username': username,
-                    'message': '',
-                    'extra_classes': msg_dict.delayed && 'delayed' || ''
-                });
-                $el.append($(message).children('.chat-message-content').first().text(text).addHyperlinks().addEmoticons().parent());  
-                return this.scrollDown();
+                $el.append(
+                    template({
+                        'sender': sender,
+                        'time': this_date.toTimeString().substring(0,5),
+                        'message': text,
+                        'username': username,
+                        'extra_classes': msg_dict.delayed && 'delayed' || ''
+                    }));
             },
 
             insertStatusNotification: function (message, replace) {
@@ -761,6 +597,7 @@
                 this.scrollDown();
             },
 
+            
 
             isDifferentDay: function (prev_date, next_date) {
                 return (
@@ -854,24 +691,6 @@
                 }
             },
 
-            insertEmoticon: function (ev) {
-                ev.stopPropagation();
-                this.$el.find('.toggle-smiley ul').slideToggle(200);
-                var $textbox = this.$el.find('textarea.chat-textarea');
-                var value = $textbox.val();
-                var $target = $(ev.target);
-                $target = $target.is('a') ? $target : $target.children('a');
-                if (value && (value[value.length-1] !== ' ')) {
-                    value = value + ' ';
-                }
-                $textbox.focus().val(value+$target.data('emoticon')+' ');
-            },
-
-            toggleEmoticonMenu: function (ev) {
-                ev.stopPropagation();
-                this.$el.find('.toggle-smiley ul').slideToggle(200);
-            },
-
             onChange: function (item, changed) {
                 if (_.has(item.changed, 'chat_status')) {
                     var chat_status = item.get('chat_status'),
@@ -960,7 +779,24 @@
                     );
                 }
             },
-         
+
+            initialize: function (){
+                this.model.messages.on('add', this.showMessage, this);
+                this.model.on('show', this.show, this);
+                this.model.on('destroy', this.hide, this);
+                this.model.on('change', this.onChange, this);
+                this.updateVCard();
+                this.$el.appendTo(converse.chatboxesview.$el);
+                this.render().show().model.messages.fetch({add: true});
+                if (this.model.get('status')) {
+                    this.showStatusMessage(this.model.get('status'));
+                }
+
+
+            },
+
+            
+
             toggleChatbox: function()
             {   
                 v = document.getElementById(this.model.get('box_id'));
@@ -985,26 +821,24 @@
                 }
                 this.scrollDown();
             },
-            renderToolbar: function () {
-                if (converse.show_toolbar) {
-                    var data = this.model.toJSON();
-                    //if (data.otr_status == UNENCRYPTED) {
-                    //    data.otr_tooltip = __('Your messages are not encrypted. Click here to enable OTR encryption.');
-                    //} else if (data.otr_status == UNVERIFIED){
-                    //    data.otr_tooltip = __('Your messages are encrypted, but your buddy has not been verified.');
-                    //} else if (data.otr_status == VERIFIED){
-                    //    data.otr_tooltip = __('Your messages are encrypted and your buddy verified.');
-                    //} else if (data.otr_status == FINISHED){
-                    //    data.otr_tooltip = __('Your buddy has closed their end of the private session, you should do the same');
-                    //}
-                    //data.allow_otr = converse.allow_otr && !this.is_chatroom;
-                    data.show_emoticons = converse.show_emoticons;
-                    //data.otr_translated_status = OTR_TRANSLATED_MAPPING[data.otr_status];
-                    //data.otr_status_class = OTR_CLASS_MAPPING[data.otr_status];
-                    this.$el.find('.chat-toolbar').html(this.toolbar_template(data));
-                }
-                return this;
-            },
+            
+            template: _.template(
+                '<div class="chat-head chat-head-chatbox">' +
+                    '<a class="close-chatbox-button icons-close"></a>' +
+                    '<a href="#"  class="user">' +
+                        '<div class="chat-title"> {{ fullname }}'+
+                        '<img src="" class="imgStatus" />' +
+                        '</div>' +
+                    '</a>' +
+                    '<p class="user-custom-message" style="display:none" ><p/>' +
+                '</div>' +
+                '<div class="chat-content"></div>' +
+                '<form class="sendXMPPMessage" action="" method="post">' +
+                '<textarea ' +
+                    'type="text" ' +
+                    'class="chat-textarea" ' +
+                    'placeholder="'+__('Personal message')+'"/>'+
+                '</form>'),
 
             renderAvatar: function () {
                 if (!this.model.get('image')) {
@@ -1021,6 +855,14 @@
                 img.src = img_src;
                 this.$el.find('.chat-title').before(canvas);
             },
+
+            render: function () {
+                this.$el.attr('id', this.model.get('box_id'))
+                    .html(this.template(this.model.toJSON()));
+                this.renderAvatar();
+                return this;
+            },
+
             focus: function () {
                 this.$el.find('.chat-textarea').focus();
                 return this;
