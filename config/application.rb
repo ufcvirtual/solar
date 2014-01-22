@@ -42,14 +42,6 @@ module Solar
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'
-
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-
-    #config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-
-    #definindo locales#
-    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
-    config.i18n.default_locale = "pt-BR"
     config.time_zone = 'Buenos Aires' # Estamos utilizando 'Buenos Aires' para evitar problemas com horário de verão.
 
     # JavaScript files you want as :defaults (application.js is always included).
