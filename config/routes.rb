@@ -1,4 +1,6 @@
 Solar::Application.routes.draw do 
+  use_doorkeeper
+
   devise_for :users, path_names: {sign_up: :register}
 
   devise_scope :user do

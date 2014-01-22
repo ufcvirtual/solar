@@ -36,6 +36,8 @@ gem "unicorn", "~> 4.6.3", platform: :ruby
 
 gem "rubyzip", "~> 1.0.0"
 
+gem 'doorkeeper', '~> 1.0.0'
+
 group :development do
   gem "rb-readline", "~> 0.5.1"
   gem "net-ssh", "~> 2.6.8" # dependencia capistrano
