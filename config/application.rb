@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require 'grape/rabl'
 
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
@@ -77,5 +78,10 @@ module Solar
 
     #config.action_controller.allow_forgery_protection = false
     #config.gem "koala"
+
+    config.middleware.use(Rack::Config) do |env|
+      env['api.tilt.root'] = Rails.root.join "app", "api", "templates"
+    end
+
   end
 end
