@@ -70,6 +70,11 @@ module Solar
       Devise::PasswordsController.layout "login"
     end
 
+    config.paths.add "app/api", glob: "**/*.rb"
+    config.paths.add "app/services", glob: "**/*.rb"
+    config.autoload_paths += Dir["#{Rails.root}/app/api/*"]
+    config.autoload_paths += Dir["#{Rails.root}/app/services/*"]
+
     #config.action_controller.allow_forgery_protection = false
     #config.gem "koala"
   end

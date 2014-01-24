@@ -374,4 +374,6 @@ Solar::Application.routes.draw do
   # end
 
   root to: 'devise/sessions#new'
+
+  mount ApplicationAPI => '/api'
 end
