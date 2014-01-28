@@ -133,4 +133,8 @@ class Discussion < Event
     return "0" # nao iniciado
   end
 
+  def last_post_date
+    latest_posts.first.try(:updated_at).try(:to_s, :db)
+  end
+
 end

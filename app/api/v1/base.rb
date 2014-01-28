@@ -3,5 +3,7 @@ module V1
     version "v1", using: :path
 
     mount Users
+    mount CurriculumUnits
+    mount Groups
   end
 end
