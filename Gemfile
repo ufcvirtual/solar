@@ -23,7 +23,7 @@ gem "jquery-rails", "~> 2.2.2"
 gem "fancybox2-rails", "~> 0.2.5"
 
 gem "factory_girl_rails", "~> 4.2.1", group: [:development, :test]
-gem "rspec-rails", "~> 2.13.2", group: [:development, :test]
+gem "rspec-rails", "~> 2.14.1", group: [:development, :test]
 
 gem "haml", "~> 4.0.5"
 gem "haml-rails", "~> 0.4", group: :development
