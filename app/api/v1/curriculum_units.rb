@@ -19,14 +19,5 @@ module V1
         # @curriculum_units
       end
     end
-
-    desc "Turmas da UC"
-    params do
-      requires :id, type: Integer, desc: "id é inteiro"
-    end
-    get ":id/groups", rabl: "groups/list" do
-      @groups = CurriculumUnit.where(id: params[:id]).first.try(:groups) || []
-    end
-
   end
 end

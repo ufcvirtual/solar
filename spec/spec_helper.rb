@@ -23,11 +23,6 @@ Spork.prefork do
     config.fixture_path = "#{::Rails.root}/test/fixtures"
     config.include Devise::TestHelpers, type: :controller
     config.use_transactional_fixtures = false
-
-    config.after(:suite) do
-      DatabaseCleaner.clean_with(:truncation)
-    end
-
   end
 
 end
