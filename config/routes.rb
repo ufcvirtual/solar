@@ -1,5 +1,8 @@
 Solar::Application.routes.draw do 
-  use_doorkeeper
+  
+  use_doorkeeper do
+    controllers :applications => 'oauth/applications'
+  end
 
   devise_for :users, path_names: {sign_up: :register}
 

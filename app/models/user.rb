@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  has_many :oauth_applications, class_name: 'Doorkeeper::Application', as: :owner
+
   has_one :personal_configuration
 
   has_many :allocations
