@@ -1,8 +1,8 @@
 module V1
   class Users < Base
-    namespace :users
-
     guard_all!
+
+    namespace :users
 
     get :me, rabl: "user" do
       @user = current_user

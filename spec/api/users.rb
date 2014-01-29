@@ -9,7 +9,7 @@ describe 'users' do
     get "/api/v1/users/me", access_token: token.token
 
     response.status.should eq(200)
-    response.body.should == { name: user.name, username: user.username, email: user.email }.to_json
+    response.body.should == { name: user.name, username: user.username, email: user.email, photo: "/users/#{user.id}/photo" }.to_json
   end
 
   it 'informacoes do usuario logado - sem token' do

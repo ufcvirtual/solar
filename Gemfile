@@ -50,7 +50,6 @@ group :development do
   gem "rvm-capistrano", "~> 1.2.7"
   gem "capistrano", "~> 2.14.2"
   gem "spork", "~> 0.9.2"
-  gem "brakeman", "~> 2.3.1"
 end
 
 group :test do

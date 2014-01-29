@@ -1,19 +1,31 @@
 module V1
   class CurriculumUnits < Base
-    namespace :curriculum_units
-
     guard_all!
 
-    get "/", rabl: "curriculum_units/list" do # Retorna UCs da oferta vigente. Futuramente, poderemos especificar outra oferta
-      @curriculum_units = Semester.all_by_period.map(&:offers).flatten.map(&:curriculum_unit)
+    namespace :curriculum_units
+    
+    segment do
+      before do
+        @curriculum_units = Semester.all_by_period.map(&:offers).flatten.map(&:curriculum_unit) # atual
+      end
+
+      desc "Lista UCs da oferta vigente."
+      get "/", rabl: "curriculum_units/list" do # Futuramente, poderemos especificar outra oferta
+        # @curriculum_units
+      end
+
+      desc "Lista UCs da oferta vigente incluindo as turmas"
+      get "groups", rabl: "curriculum_units/list_with_groups" do
+        # @curriculum_units
+      end
     end
 
-    get "groups", rabl: "curriculum_units/list_with_groups" do # Retorna todas as UCs da oferta vigente incluindo as turmas
-      @curriculum_units = Semester.all_by_period.map(&:offers).flatten.map(&:curriculum_unit)
+    desc "Turmas da UC"
+    params do
+      requires :id, type: Integer, desc: "id é inteiro"
     end
-
-    get ":id/groups", rabl: "groups/list" do # Retorna as turmas da UC
-      @groups = CurriculumUnit.find(params[:id]).groups
+    get ":id/groups", rabl: "groups/list" do
+      @groups = CurriculumUnit.where(id: params[:id]).first.try(:groups) || []
     end
 
   end
