@@ -1955,7 +1955,7 @@
       enable: Habilitado
       permissions: Permissões
       profile: "Perfil: %{profile}"
-      filter: Filtrar
+      filter: "Filtrar:"
       edit: Editar permissões
       save: Salvar permissões
       cancel: Cancelar edição

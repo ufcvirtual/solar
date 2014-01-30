@@ -1,20 +1,17 @@
 .block_wrapper
   .block_title
-    %h2= t(".profile", profile: @profile.name)
-
-.block_wrapper
-  .block_title
-    %h2= t(".permissions")
+    %h2
+      = t(".permissions")
+      = @profile.name
     .block_toolbar_right
       = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin'), "profile_permission_back()", "data-tooltip" => t(:back), class: "btn"
-  .block_content_toolbar.block_content_text
-    .block_toolbar_left
-      = label "permission", "search", t(".filter"), class: "permissions-search-text"
-      = text_field_tag "permission_search"
+  .block_content_toolbar
+    = label "permission", "search", t(".filter"), class: "permissions-search-text"
+    = text_field_tag "permission_search"
     .block_toolbar_right
       = link_to_function content_tag(:i, nil, class: 'icon-edit'), "profile_permission_enable_edition()", "data-tooltip" => t(".edit"), class: "btn edit-enable"
       = link_to_function content_tag(:i, nil, class: 'icon-cross'), "profile_permission_cancel_edition()", "data-tooltip" => t(".cancel"), class: "btn edit-cancel"
-      = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), "profile_permission_save()", "data-tooltip" => t(".save"), "data-save-url" => permissions_grant_profile_path, class: "btn edit-save"
+      = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), "profile_permission_save()", "data-tooltip" => t(".save"), "data-save-url" => permissions_grant_profile_path, class: "btn btn_main edit-save"
 
   .block_content
     - unless @resources.blank?

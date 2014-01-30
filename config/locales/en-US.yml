@@ -1802,7 +1802,7 @@
       enable: Enable
       permissions: Permissions
       profile: "Profile: %{profile}"
-      filter: Filter
+      filter: "Filter:"
       edit: Edit Permissions
       save: Save Permissions
       cancel: Cancel Edition
