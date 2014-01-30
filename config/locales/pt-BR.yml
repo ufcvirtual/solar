@@ -1953,7 +1953,7 @@
       category: Categoria
       permission: Permissão
       enable: Habilitado
-      permissions: Permissões
+      permissions: "Permissões:"
       profile: "Perfil: %{profile}"
       filter: "Filtrar:"
       edit: Editar permissões

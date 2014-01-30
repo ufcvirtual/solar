@@ -1800,7 +1800,7 @@
       category: Category
       permission: Permission
       enable: Enable
-      permissions: Permissions
+      permissions: "Permissions:"
       profile: "Profile: %{profile}"
       filter: "Filter:"
       edit: Edit Permissions
