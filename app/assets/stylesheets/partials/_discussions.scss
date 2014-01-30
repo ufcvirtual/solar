@@ -2,16 +2,20 @@
   width: 85px;
 }
 
-.schedule_dates .left {
-  float: left;
-}
+.schedule_dates {
+	overflow: hidden;
+	
+	.left {
+		float: left;
+	}
 
-.schedule_dates .right{
-  margin-right: 40px;
-}
+	.right {
+		margin-right: 40px;
+	}
 
-.schedule_dates .error{
-  margin-left: 25px;
+	.error {
+		margin-left: 25px;
+	}
 }
 
 .discussion_form{
