@@ -59,6 +59,9 @@ module Solar
     config.assets.compress = true
     config.assets.precompile << /(^[^_\/]|\/[^_])[^\/]*$/
 
+    config.i18n.enforce_available_locales = true
+    I18n.config.enforce_available_locales = true
+
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 

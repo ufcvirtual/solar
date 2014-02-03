@@ -1,0 +1,7 @@
+file1:
+  id: 1
+  discussion_post_id: 7
+  attachment_file_name: "filetest.jpg"
+  attachment_content_type: "image/jpeg"
+  attachment_file_size: 2000
+  attachment_updated_at: <%= Time.now %>

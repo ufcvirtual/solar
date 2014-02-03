@@ -10,36 +10,48 @@ module V1
     end
 
     namespace :posts do
+
+      desc "Criar uma nova postagem"
+      post do
+        # ainda nao feito ==> apenas para teste
+        Post.first.id
+      end
+
+      desc "Lista de arquivos do post"
+      params do
+        requires :id, type: Integer, desc: "Discussion ID."
+      end
+      get ":id/files", rabl: "posts/files" do
+        raise ActiveRecord::RecordNotFound unless current_user.discussion_post_ids.include?(params[:id]) # user is owner
+        @files = Post.find(params[:id]).files
+      end
+
+      desc "Download de arquivo"
+      get "files/:id" do
+      end
+
+      ## DELETE
+
       desc "Delete a post."
       params do
         requires :id, type: Integer, desc: "Post ID."
       end
       delete ':id' do
-        begin
-          current_user.discussion_posts.find(params[:id]).destroy
-        rescue
-          error!({}, 401)
-        end  
+        current_user.discussion_posts.find(params[:id]).destroy # user posts
       end
 
       desc "Delete a file of post."
       params do
         requires :id, type: Integer, desc: "File Post ID."
       end
-
       delete 'files/:id' do
-        begin
-          if current_user.discussion_post_ids.include?(PostFile.find(params[:id]).discussion_post_id) 
-            PostFile.find(params[:id]).destroy 
-          else
-            raise  
-          end 
-        rescue 
-          error!({}, 401)
-        end  
+        pfile = PostFile.find(params[:id])
+
+        raise ActiveRecord::RecordNotFound unless current_user.discussion_post_ids.include?(pfile.discussion_post_id) # user files
+        pfile.destroy
       end
 
     end
-  
+
   end
 end

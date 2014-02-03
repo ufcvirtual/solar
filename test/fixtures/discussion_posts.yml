@@ -59,3 +59,14 @@ post_2_forum_2:
   content: 'Vestibulum a magna nisl, sed pharetra purus. Suspendisse a sapien sit amet magna condimentum dictum facilisis vitae arcu.'
   created_at: <%= Date.today - 19.days %>
   updated_at: <%= Date.today - 19.days %>
+
+post_3_forum_2:
+  id: 7
+  discussion_id: 2
+  user_id: 7
+  profile_id: 1
+  level: 1
+  content: 'Vestibulum a magna nisl, sed pharetra purus. Suspendisse a sapien sit amet magna condimentum dictum facilisis vitae arcu.'
+  created_at: <%= Date.today - 19.days %>
+  updated_at: <%= Date.today - 19.days %>
+
