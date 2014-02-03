@@ -966,6 +966,7 @@
                 v = document.getElementById(this.model.get('box_id'));
                 if(v.childNodes.item(1).style.display != "none")
                 {
+                    v.style.borderRadius = "0px 0px 0px 0px";
                     v.childNodes.item(1).style.display = "none";
                     v.childNodes.item(2).style.display = "none";
                     v.childNodes.item(0).style.top = "300px";
@@ -975,6 +976,7 @@
                     v.style.boxShadow = "0px 0px 0px 0px";
                 }
                 else{
+                    v.style.borderRadius = "4px 4px 4px 4px";
                     v.childNodes.item(1).style.display = "";
                     v.childNodes.item(2).style.display = "";
                     v.childNodes.item(0).style.top = "0px";
@@ -1522,15 +1524,22 @@
                     CP.style.display = "none";
                     TB.style.display = "none";
                     $("#controlbox")[0].style.boxShadow = "0px 0px 0px 0px";
+                    $("#controlbox")[0].style.backgroundColor = "transparent";
+                    $("#controlbox")[0].style.borderRadius = "0px 0px 0px 0px";
+
                     el.style.position = "relative";
                     el.style.top = "300px";
+                    
                 }
                 else{
                     el.style.position = "relative";
                     el.style.top = "0px";
                     CP.style.display = "block";
                     TB.style.display = "block";
+                    $("#controlbox")[0].style.backgroundColor = "white";
+                    $("#controlbox")[0].style.borderRadius = "4px 4px 4px 4px";
                     $("#controlbox")[0].style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
+
                 }
             },
 
