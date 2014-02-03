@@ -50,6 +50,9 @@ function profile_permission_back() {
 
   $(".profiles-list").show();
   $(".profile-permissions-list").hide();
+
+  // removendo breadcrumb
+  $("#breadcrumb .current-ajax").remove();
 }
 
 function profile_permission_enable_edition() {

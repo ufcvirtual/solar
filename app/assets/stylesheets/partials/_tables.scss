@@ -174,7 +174,25 @@ tr.post_content {
   border: 0;
 }
 
-.tb_list_studantes{
+#list_of_students {
+  table-layout: fixed;
+
+  th.access_history, th#public_files {
+    width: 60px;
+  }
+
+  th.participation {
+    width: 80px;
+  }
+
+  .td_student {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.tb_list_students{
   width:380px;
   float: left;
   margin-top: 10px;
@@ -193,8 +211,4 @@ tr.post_content {
 //Deixar a tabela de acompanhamento do professor zebrada verticalmente
 .tb_list_jobs td:nth-child(2n+1) {
   background:#cbe0fa;
-}
-
-#public_files{
-  padding-left: 47px;
 }

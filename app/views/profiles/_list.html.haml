@@ -25,6 +25,9 @@
       $(".profile-permissions-list").load($(this).data("show-link"), function(){
         $(".profile-permissions-list").show();
       });
+
+      // breadcrumbe
+      $("#breadcrumb").append("<span class='current-ajax'>&nbsp;>&nbsp;<span style='text-decoration:underline'><a href='javascript:void(0)'>#{t('.permissions')}</a></span></span>");
     });
 
     $(".btn.edit-profile").call_fancybox();
