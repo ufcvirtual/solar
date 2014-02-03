@@ -46,4 +46,6 @@ Solar::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  # routes.default_url_options = { host: "a definir", port: 80 } ## api precisa
 end

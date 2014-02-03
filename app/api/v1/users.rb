@@ -4,12 +4,8 @@ module V1
 
     namespace :users
 
-    get :me, rabl: "user" do
+    get :me, rabl: "users/show" do
       @user = current_user
     end
-
-    # get ":id/photo" do
-    #   {test: "test"}
-    # end
   end
 end

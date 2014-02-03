@@ -11,11 +11,15 @@ module V1
 
     namespace :posts do
 
+      ## CREATE
+
       desc "Criar uma nova postagem"
       post do
         # ainda nao feito ==> apenas para teste
         Post.first.id
       end
+
+      ## LIST
 
       desc "Lista de arquivos do post"
       params do
@@ -24,10 +28,6 @@ module V1
       get ":id/files", rabl: "posts/files" do
         raise ActiveRecord::RecordNotFound unless current_user.discussion_post_ids.include?(params[:id]) # user is owner
         @files = Post.find(params[:id]).files
-      end
-
-      desc "Download de arquivo"
-      get "files/:id" do
       end
 
       ## DELETE
@@ -40,7 +40,7 @@ module V1
         current_user.discussion_posts.find(params[:id]).destroy # user posts
       end
 
-      desc "Delete a file of post."
+      desc "Delete a file of a post."
       params do
         requires :id, type: Integer, desc: "File Post ID."
       end

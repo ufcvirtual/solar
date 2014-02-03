@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 
   def photo
     file_path = User.find(params[:id]).photo.path(params[:style] || :small)
-    head(:bad_request) and return unless not file_path.nil? and File.exist?(file_path)
+    head(:not_found) and return unless not file_path.nil? and File.exist?(file_path)
     send_file(file_path, { :disposition => 'inline', :content_type => 'image' })
   end
 

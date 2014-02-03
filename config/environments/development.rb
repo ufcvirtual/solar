@@ -52,4 +52,5 @@ Solar::Application.configure do
   config.sass.cache = false
   config.sass.debug_info = true
 
+  routes.default_url_options = { host: "localhost", port: 3000 }
 end

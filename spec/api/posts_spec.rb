@@ -36,11 +36,13 @@ describe "Posts" do
 
         file = Post.find(7).files.first
         response.body.should == [{
-                  id: file.id,
-                  file_name: file.attachment_file_name,
-                  content_type: file.attachment_content_type,
-                  updated_at: file.attachment_updated_at
-                }].to_json
+            id: file.id,
+            name: file.attachment_file_name,
+            content_type: file.attachment_content_type,
+            updated_at: file.attachment_updated_at,
+            size: file.attachment_file_size,
+            url: "http://localhost:3000/posts/#{file.post.id}/post_files/#{file.id}/download"
+          }].to_json
       end
 
     end
