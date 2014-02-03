@@ -356,6 +356,11 @@ you can use the generic selector below, but it's slower:
     right: 0;
     height: 332px;
     width: auto;
+    pointer-events: none;
+}
+
+#chatpanel #collective-xmpp-chat-data > div, #toggle-controlbox {
+    pointer-events: auto;
 }
 
 #chatpanel #toggle-controlbox {
