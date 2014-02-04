@@ -11,6 +11,11 @@ Doorkeeper.configure do
     #   User.find_by_id(session[:user_id]) || redirect_to(new_user_session_url)
   end
 
+  resource_owner_from_credentials do |routes|
+    u = User.find_for_database_authentication(login: params[:login])
+    u if u && u.valid_password?(params[:password])
+  end
+
   # If you want to restrict access to the web interface for adding oauth authorized applications, you need to declare the block below.
   admin_authenticator do
     # Put your admin authentication logic here.
