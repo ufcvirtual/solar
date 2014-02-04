@@ -29,8 +29,15 @@ describe "CurriculumUnits" do
 
     context "without access token" do
 
-      it 'gets an unauthorized error' do
+      it 'gets an unauthorized error to list' do
         get "/api/v1/curriculum_units"
+
+        response.status.should eq(401)
+        response.body.should == {error: "unauthorized"}.to_json
+      end
+
+      it 'gets an unauthorized error to list with groups' do
+        get "/api/v1/curriculum_units/groups"
 
         response.status.should eq(401)
         response.body.should == {error: "unauthorized"}.to_json

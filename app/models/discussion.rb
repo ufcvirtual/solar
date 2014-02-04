@@ -89,11 +89,11 @@ class Discussion < Event
   end
 
   def count_posts_before_period(period)
-    discussion_posts.where("updated_at::timestamp(0) < '#{period.first}'").count 
+    discussion_posts.where("updated_at::timestamp(0) < '#{period.first}'::timestamp(0)").count 
   end
 
   def count_posts_after_period(period)
-    discussion_posts.where("updated_at::timestamp(0) > '#{period.last}'").count
+    discussion_posts.where("updated_at::timestamp(0) > '#{period.last}'::timestamp(0)").count
   end
 
   def self.posts_count_by_user(student_id, allocation_tags)

@@ -47,8 +47,8 @@ post_1_forum_2:
   profile_id: 4
   level: 1
   content: 'Sed quam nisl, commodo eget ullamcorper vel, lacinia vitae nunc.<br />Mauris sed mauris ac orci aliquam aliquet. In vulputate, nibh non semper iaculis, metus odio hendrerit est, vel tincidunt turpis leo commodo libero.<br />Sed quam nisl, commodo eget ullamcorper vel, lacinia vitae nunc.'
-  created_at: <%= Date.today - 20.days %>
-  updated_at: <%= Date.today - 20.days %>
+  created_at: <%= Time.now - 20.days %>
+  updated_at: <%= Time.now - 20.days %>
 
 post_2_forum_2:
   id: 5
@@ -57,8 +57,8 @@ post_2_forum_2:
   profile_id: 1
   level: 1
   content: 'Vestibulum a magna nisl, sed pharetra purus. Suspendisse a sapien sit amet magna condimentum dictum facilisis vitae arcu.'
-  created_at: <%= Date.today - 19.days %>
-  updated_at: <%= Date.today - 19.days %>
+  created_at: <%= Time.now - 19.days %>
+  updated_at: <%= Time.now - 19.days %>
 
 post_3_forum_2:
   id: 7
@@ -67,6 +67,5 @@ post_3_forum_2:
   profile_id: 1
   level: 1
   content: 'Vestibulum a magna nisl, sed pharetra purus. Suspendisse a sapien sit amet magna condimentum dictum facilisis vitae arcu.'
-  created_at: <%= Date.today - 19.days %>
-  updated_at: <%= Date.today - 19.days %>
-
+  created_at: <%= Time.now - 18.days %>
+  updated_at: <%= Time.now - 18.days %>
