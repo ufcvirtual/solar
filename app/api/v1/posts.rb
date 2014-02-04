@@ -7,21 +7,58 @@ module V1
       get ":id/posts", rabl: "posts/list" do
         @posts = Discussion.find(params[:id]).posts
       end
+
+      params do
+        requires :id, type: Integer, desc: "Discussion ID."
+      end
+      post ":id/posts" do
+        discussion = Discussion.find(params[:id])
+        profile_id = current_user.profiles_with_access_on(:create, :posts, discussion.academic_allocations.map(&:allocation_tag).map(&:related), true).first
+
+        discussion_group_ids = discussion.group_ids + discussion.offers.includes(:groups).map(&:group_ids).flatten
+
+        error!({}, 404) if profile_id.nil? or (discussion_group_ids & current_user.groups(profile_id, Allocation_Activated).map(&:id)).empty?
+        error!({}, 401) unless discussion.user_can_interact?(current_user.id)
+
+        @post = discussion.posts.build(params[:post])
+        @post.user = current_user         
+        @post.level = @post.parent.level.to_i + 1 unless @post.parent_id.nil?
+        @post.profile_id = profile_id
+
+        if @post.save
+          { id: @post.id }
+        else
+          error!(@post.errors.full_messages, 422)
+        end
+      end      
     end
 
     namespace :posts do
 
       ## CREATE
 
-      desc "Criar uma nova postagem"
-      post do
-        # ainda nao feito ==> apenas para teste
-        Post.first.id
+      desc "Send files to a post."
+      params do
+        requires :id, type: Integer, desc: "Post ID."
+      end
+      post ':id/files' do
+        post = Post.find(params[:id])
+
+        error!({}, 404) if (post.user_id != current_user.id)
+        error!({}, 401) unless post.discussion.user_can_interact?(current_user.id)
+
+        ids = []
+        [params[:file]].flatten.each do |file|
+          post_attachment = post.files.build(attachment: ActionDispatch::Http::UploadedFile.new(file))
+          ids << post_attachment.id if post_attachment.save
+        end # each
+
+        { ids: ids }
       end
 
       ## LIST
 
-      desc "Lista de arquivos do post"
+      desc "Files of a post."
       params do
         requires :id, type: Integer, desc: "Discussion ID."
       end

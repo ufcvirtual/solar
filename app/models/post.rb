@@ -11,7 +11,7 @@ class Post < ActiveRecord::Base
   belongs_to :discussion
   belongs_to :user
 
-  validates :content, presence: true
+  validates :content, :profile_id, presence: true
 
   validates_each :discussion_id do |record, attr, value|
     parent = record.parent

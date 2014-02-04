@@ -7,6 +7,7 @@ class Discussion < Event
   has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :allocation_tags, through: :academic_allocations
   has_many :groups, through: :allocation_tags
+  has_many :offers, through: :allocation_tags
 
   has_many :discussion_posts, class_name: "Post", foreign_key: "discussion_id"
   has_many :allocations, through: :allocation_tag
