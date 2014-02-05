@@ -11,7 +11,7 @@
     .block_wrapper_groups
       .block_user
         .title_user
-          = t(:group)+":"
+          = t(:group, scope: [:assignment, :group_assignments]) + ":"
         = @group.group_name
       .block_content
         - gp = GroupParticipant.all_by_group_assignment(@group_id)
