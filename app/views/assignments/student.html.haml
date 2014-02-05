@@ -5,6 +5,34 @@
 - btn_edit_class   = @assignment.on_evaluation_period?(@allocation_tag, current_user.id) ? "btn btn_default" : "btn btn_disabled"
 - btn_cancel_class = @assignment.assignment_in_time?(@allocation_tag, current_user.id) ? "btn btn_caution" : "btn btn_disabled"
 
+/ Participantes do grupo
+- if @assignment.type_assignment == Assignment_Type_Group
+  - unless @group.nil?
+    .block_wrapper_groups
+      .block_user
+        .title_user
+          = t(:group)+":"
+        = @group.group_name
+      .block_content
+        - gp = GroupParticipant.all_by_group_assignment(@group_id)
+        - unless gp.empty?
+          %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+            %thead
+              %tr.lines.lines_user
+                %th= t(:participants, :scope => [:assignment, :group_assignments])
+            %tbody
+              - gp.each do |participant|
+                %tr.lines.lines_user
+                  %td= participant.user.name
+        - else
+          .portfolio_div_padding= t(:itens_not_found)
+  / Se for trabalho individual e não for o aluno que estiver na página, exibir de qual aluno é o trabalho
+- elsif @student_id.to_i != @user.id
+  .block_wrapper_groups
+    .block_user
+      .title_user
+        = t(:student)+":"
+      = User.find(@student_id).name
 -# Descricao da atividade 
 .block_wrapper.assingment_info
   .block_title
@@ -73,36 +101,6 @@
     - else
       .portfolio_div_padding= t(:itens_not_found)
 
-/ Participantes do grupo
-- if @assignment.type_assignment == Assignment_Type_Group
-  - unless @group.nil?
-    .block_wrapper
-      .block_title
-        %h2
-          %i.icon-users
-          = @group.group_name
-      .block_content
-        - gp = GroupParticipant.all_by_group_assignment(@group_id)
-        - unless gp.empty?
-          %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
-            %thead
-              %tr.lines
-                %th= t(:participants, :scope => [:assignment, :group_assignments])
-            %tbody
-              - gp.each do |participant|
-                %tr.lines
-                  %td= participant.user.name
-        - else
-          .portfolio_div_padding= t(:itens_not_found)
-  / Se for trabalho individual e não for o aluno que estiver na página, exibir de qual aluno é o trabalho
-- elsif @student_id.to_i != @user.id
-  .block_wrapper
-    .block_title
-      %h2
-        %i.icon-users
-        = t(:student)
-    .block_content
-      = User.find(@student_id).name
 
 / Arquivos enviados pelo aluno
 .block_wrapper
@@ -186,7 +184,7 @@
         %tr
           %td.assignment_comment_form{:colspan => "2"}
             = form_for(:assignment_comment, :html => {:id => 'comment_form', :multipart => true}, :url => send_comment_assignment_path(@assignment.id, :student_id => @student_id, :group_id => @group_id)) do |f|
-              .assignment_inner_content.comment_area= text_area_tag :comment, '', :rows => 4, :cols => 125
+              .assignment_inner_content.comment_area= text_area_tag :comment, '', :rows => 4
               .forum_post_attachment
                 %h3= t(:attached_files, :scope => [:assignment, :files])
                 %ul.comments_files_div
@@ -228,8 +226,8 @@
 
               %td.assignment_comment_form.form_comment{:class => "form_comment_#{comment.id}", :colspan => "2", :style => "display:none"}
                 = form_for(:assignment_comment, :html => {:id => "comment_form_#{comment.id}", :multipart => true}, :url => send_comment_assignment_path(@assignment.id, :student_id => @student_id, :group_id => @group_id, :comment_id => comment.id)) do |f|
-                  .forum_post_inner_content
-                    = text_area_tag :comment, comment.comment, :rows => 4, :cols => 100
+                  .forum_post_inner_content.assignment_inner_content
+                    = text_area_tag :comment, comment.comment, :rows => 4
                     .portfolio_title_button
                       = button_tag(:type => 'button', :class => "btn btn_caution", :id => "btn_cancel_comment_#{comment.id}", :alt => t(:cancel, :scope => [:assignment, :comments]), :onclick => "javascript:btn_cancel_comment('#{comment.id}');") do
                         = content_tag(:span, t(:cancel, :scope => [:assignment, :comments]))

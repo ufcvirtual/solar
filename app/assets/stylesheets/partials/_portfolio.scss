@@ -25,10 +25,13 @@
 
 .assignment_inner_content {
   word-wrap: break-word;
-  width: 100%;
-  padding: 5px 5px 0px 5px;
+  padding: 0 5px 0px 5px;
   min-height: 27px;
   background-color: $color_main_light;
+}
+
+.assignment_inner_content textarea{
+  width: 762px;
 }
 
 .portfolio_title_button,
@@ -37,6 +40,10 @@
 #btn_save_evaluation,
 #btn_evaluate {
   float: right;
+}
+
+.forum_post_inner_content .portfolio_title_button{
+  margin-top: 10px;
 }
 
 .portfolio_comment_button {
