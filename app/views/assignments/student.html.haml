@@ -124,7 +124,7 @@
               %th{:align => "center", :style => "width: 70px"}= t(:sent_by, :scope => [:assignment, :files])
             %th.date_column= t(:sent_on, :scope => [:assignment, :files])
             - if can?(:delete_file, @assignment) and @assignment.user_can_access_assignment(@allocation_tag, @user.id, @student_id, @group_id)
-              %th{:style => "width: 30px"}
+              %th.no_sort{:style => "width: 30px"}
         %tbody
           - @sent_assignment_files.each do |file|
             %tr.lines
