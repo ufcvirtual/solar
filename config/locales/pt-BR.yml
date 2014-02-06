@@ -1167,7 +1167,7 @@
   participation: "Participação"
   access_to_the_course: "Acessos ao Curso"
   group: "Turma"
-  legends: "Legendas"
+  legend: "Legenda"
   legend_assignments: "Legenda dos Trabalhos"
   assignment_without_correction: "Trabalho enviado, mas não corrigido (sem nota)."
   assignment_not_sent: "Trabalho não enviado"

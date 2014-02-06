@@ -133,10 +133,12 @@ tr.post_content {
   border-collapse: collapse;
   padding: 0;*/
 }
+
 .tablesorter-default tfoot th,
 .tablesorter-default tfoot td {
   border: 0;
 }
+
 .tablesorter-default .header,
 .tablesorter-default .tablesorter-header {
   background-image: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
@@ -145,6 +147,7 @@ tr.post_content {
   cursor: pointer;
   white-space: normal;
 }
+
 .tablesorter-default thead .headerSortUp,
 .tablesorter-default thead .tablesorter-headerSortUp,
 .tablesorter-default thead .tablesorter-headerAsc {
@@ -153,6 +156,7 @@ tr.post_content {
   border-bottom: $color_contrast 1px solid;
   color: #000;
 }
+
 .tablesorter-default thead .headerSortDown,
 .tablesorter-default thead .tablesorter-headerSortDown,
 .tablesorter-default thead .tablesorter-headerDesc {
@@ -161,6 +165,7 @@ tr.post_content {
   border-bottom: $color_contrast 1px solid;
   color: #000;
 }
+
 .tablesorter-default thead .sorter-false {
   background-image: none;
   padding: 4px;
@@ -198,6 +203,7 @@ tr.post_content {
   margin-top: 10px;
   background-color: #f8fbfe;
 }
+
 .tb_list_jobs{
   width: 400px;
   overflow: auto;

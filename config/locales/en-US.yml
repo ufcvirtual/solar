@@ -999,7 +999,7 @@
       evaluate: Evaluate
     import_groups:
       cancel: Cancel
-      import_groups: Import groups
+      import_groups: Import groupslegends
       import: Import
       no_participant: Group with no participants
       import_success: Groups imported with success
@@ -1017,7 +1017,7 @@
   assignments: "Assignments"
   access_to_the_course: "Access to the Course"
   group: "Group"
-  legends: "Legends"
+  legend: "Legend"
   legend_assignments: "Legend Of Assignments"
   assignment_without_correction: "Assignment sent, but not corrected (without grade)."
   assignment_not_sent: "Assignment not sent."
