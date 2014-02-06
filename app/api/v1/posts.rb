@@ -20,7 +20,7 @@ module V1
           @posts = @discussion.posts(filtered_params)
 
           @period = if @posts.empty?
-            ["#{filtered_params['date']}", "#{filtered_params['date']}"]
+            ["#{filtered_params['date'] || DateTime.now}", "#{filtered_params['date'] || DateTime.now}"]
           else
             newer_post_date, older_post_date = @posts.first.updated_at, @posts.last.updated_at
             ["#{older_post_date}", "#{newer_post_date}"]

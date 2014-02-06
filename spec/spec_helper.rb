@@ -23,6 +23,7 @@ Spork.prefork do
     config.fixture_path = "#{::Rails.root}/test/fixtures"
     config.include Devise::TestHelpers, type: :controller
     config.use_transactional_fixtures = false
+    config.include Requests::JsonHelpers, type: :request
   end
 
 end
