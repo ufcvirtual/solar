@@ -106,3 +106,67 @@ $(window).load(function(){
     className:"sticky-float"
   })
 })
+
+function showLocalTime(container) {
+  if (!$('#'+container).length) return;
+  updateTime(container, "<%= I18n.l(Time.now, format: :clock_time)%>".split(":"));
+}
+
+function updateTime(el, server_time) {
+  var localtime = new Date(new Date().setHours(server_time[0], server_time[1], server_time[2]))
+  localtime.setSeconds(localtime.getSeconds()+1);
+  $("#"+el).html(formatNumber(localtime.getHours()) + ":" + formatNumber(localtime.getMinutes()) + ":" + formatNumber(localtime.getSeconds()));
+  setTimeout(function(){updateTime(el, [localtime.getHours(), localtime.getMinutes(), localtime.getSeconds()]);}, 1000);
+}
+
+function formatNumber(num) { return (num < 10) ? "0" + num : num; }
+
+function solar_help() {
+  introJs().setOptions({
+    showStepNumbers: false,
+    nextLabel: "<%= I18n.t(:tutorial_next) %>",
+    prevLabel: "<%= I18n.t(:tutorial_previous) %>",
+    skipLabel: "<%= I18n.t(:tutorial_skip) %>",
+    doneLabel: "<%= I18n.t(:tutorial_done) %>",
+    steps: [
+      {
+        element: '#mysolar_logo',
+        intro: 'Bem-vindo ao Solar 2.0.'
+      },
+      {
+        element: '#mysolar_identity',
+        intro: 'Barra superior: Nesta barra você visualiza informações sobre o seu usuário, hora do sistema, ajuda e sair do Solar'
+      },
+      {
+        element: '#mysolar_top_submenu_label_regular',
+        intro: 'Seu usuário atual. Clique para visualizar mais informações, editar seu perfil ou alterar sua foto'
+      },
+      {
+        element: '#mysolar_tabs',
+        intro: 'Abas onde você pode navegar entre o MeuSolar e os Cursos que tiver acessado na sessão'
+      },
+      {
+        element: '#mysolar_languages',
+        intro: 'Aqui você pode escolher o idioma'
+      },
+      {
+        element: '#mysolar_suggestions',
+        position: 'left',
+        intro: 'Aqui você pode enviar suas críticas, sugestões e comentários para que possamos melhorar o Solar 2.0'
+      },
+      {
+        element: '#mysolar_sidebar',
+        intro: 'Menu de navegação'
+      },
+      {
+        element: '#mysolar_content',
+        intro: 'Área de conteúdo'
+      },
+      {
+        element: '#mysolar_top_help',
+        position: 'left',
+        intro: 'Caso deseje ver este tutorial novamente, basta clicar em Ajuda e depois em Contextual.<br><br>Aproveite o novo <b>Solar 2.0!</b>'
+      }
+    ]
+  }).start();
+}

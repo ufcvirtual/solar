@@ -272,7 +272,7 @@ class AssignmentsController < ApplicationController
       flash[:alert] = error.message
     end
 
-    redirect_to request.referer.nil? ? root_url(:only_path => false) : request.referer
+    redirect_to request.referer.nil? ? home_url(:only_path => false) : request.referer
   end
 
   def remove_comment
@@ -335,7 +335,7 @@ class AssignmentsController < ApplicationController
 
     # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
     raise CanCan::AccessDenied unless (assignment.nil? or sent_assignment.nil? or assignment.user_can_access_assignment(allocation_tag, current_user.id, sent_assignment.user_id, sent_assignment.group_assignment_id))
-    redirect = request.referer.nil? ? root_url(:only_path => false) : request.referer
+    redirect = request.referer.nil? ? home_url(:only_path => false) : request.referer
 
     if(file_path)
       download_file(redirect, file_path, file_name)
@@ -383,7 +383,7 @@ class AssignmentsController < ApplicationController
     rescue Exception => error
       flash[:alert] = error.message.split(',')[0]
     end
-    redirect_to (request.referer.nil? ? root_url(:only_path => false) : request.referer)
+    redirect_to (request.referer.nil? ? home_url(:only_path => false) : request.referer)
   end
 
   def delete_file
@@ -415,7 +415,7 @@ class AssignmentsController < ApplicationController
     rescue Exception => error
       flash[:alert] = error.message
     end
-    redirect_to (request.referer.nil? ? root_url(:only_path => false) : request.referer)
+    redirect_to (request.referer.nil? ? home_url(:only_path => false) : request.referer)
   end
 
   ##

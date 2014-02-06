@@ -1,0 +1,224 @@
+!!!
+%html{xmlns: "http://www.w3.org/1999/xhtml"}
+  %head
+    %meta{content: "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
+    %title Solar
+
+    = javascript_include_tag "application"
+    = javascript_tag '$.fx.off = true;' if Rails.env.test?
+    /[if lte IE 9]
+      <haml_loud> stylesheet_link_tag "fonts/fonts-ie" </haml_loud>
+    /[if lte IE 7]
+      <haml_loud> javascript_include_tag 'lte-ie7' </haml_loud>
+      <haml_loud> stylesheet_link_tag "misc/ie7" </haml_loud>
+
+    / IM \
+    = javascript_include_tag "converse/components/strophe/strophe"
+    = javascript_include_tag "converse/components/strophe.roster/index"
+    = javascript_include_tag "converse/components/strophe.muc/index"
+    = javascript_include_tag "converse/components/strophe.vcard/index"
+    = javascript_include_tag "converse/components/strophe.disco/index"
+    = javascript_include_tag "converse/components/underscore/underscore"
+    = javascript_include_tag "converse/components/backbone/backbone"
+    = javascript_include_tag "converse/components/backbone.localStorage/backbone.localStorage"
+    = javascript_include_tag "converse/components/tinysort/src/jquery.tinysort"
+    = javascript_include_tag "converse/components/jed/jed"
+    = javascript_include_tag "converse/locale/en/LC_MESSAGES/en"
+    = javascript_include_tag "converse/locale/pt_BR/LC_MESSAGES/pt_BR"
+    = javascript_include_tag "converse/converse"
+
+    = stylesheet_link_tag "converse/converse"
+    / IM \
+
+    = stylesheet_link_tag "application"
+    = stylesheet_link_tag "themes/theme_blue"
+    = stylesheet_link_tag "fancybox"
+
+    = csrf_meta_tag
+
+  :javascript
+
+    /**
+     * Google Analytics
+     */
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-25482431-1']);
+    _gaq.push(['_setDomainName', '.virtual.ufc.br']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+    // system and clock
+
+    global_config = {
+      'locale': {
+        'I18n': "#{I18n.locale}",
+        'dateFormat': "#{I18n.t :search_format_date}"
+      }
+    };
+
+    jQuery(function($) {
+      /**
+       * System clock
+       */
+      new showLocalTime("server_clock");
+
+      /**
+      * Verificando se existe aula carregada
+      */
+      var lessonsButton = $('#mysolar_open_lesson button');
+      if ( $("#lesson_content", parent.document.body).length == 0 ) {
+        $(lessonsButton).addClass("disabled");
+      } else {
+        $(lessonsButton).removeClass("disabled");
+      }
+
+      /**
+       * Intro
+       */
+      $("#help_context").click(solar_help);
+    });
+
+  %body
+    #mysolar_topbar_wide_background
+    #body_wrapper
+      / topbar
+      #mysolar_topbar
+        #mysolar_identity
+          #mysolar_logo
+            = image_tag 'solar_logo_small.png', :alt => t(:mysolar_alt_img_solar), :id => "solar_logo"
+          %ul#mysolar_top_options
+            %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular
+              = image_tag current_user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{current_user.nick}", :id => "image_user", :onclick => "mysolarTopSubmenuToggle();return false;"
+              - if can? :update, current_user
+                %a#mysolar_top_user_nick.mysolar_top_link{href: "", onclick: "mysolarTopSubmenuToggle();return false;"}= current_user.nick
+            %li#server_clock_wrapper
+              %span#server_clock{name: "server_clock"}
+            %li#mysolar_top_help.mysolar_top_submenu_label_regular
+              %a#help_top.mysolar_top_link{href: "", onclick: "mysolarTopSubmenuHelpToggle();return false;"}
+                = t(:help)
+            %li#mysolar_top_logout
+              = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link logout")
+        / Submenu
+        #mysolar_top_submenu
+          %div
+            = image_tag current_user.photo.url(:forum), :alt => "#{t(:mysolar_alt_img_user)} #{current_user.nick}", :id => "mysolar_top_img_user"
+            #mysolar_top_submenu_username= current_user.name
+            #mysolar_top_submenu_useremail= current_user.email
+          %ul
+            %li
+              = link_to t(:mysolar_edit_profile), edit_user_registration_path, id: 'my_data'
+            %li
+              = link_to t(:mysolar_change_picture), edit_photo_users_path, class: "fancybox.ajax", id: "change_picture"
+            %li
+              = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path)
+        #mysolar_submenu_help
+          %ul
+            %li
+              = link_to t(:context), "#", id: 'help_context'
+            %li
+              = link_to t(:tutorials), tutorials_path, id: 'my_tutorials'
+        / tabs
+        #mysolar_tabs
+          %ul#mysolar_tabs_wrapper= raw render_tabs
+          %ul#mysolar_extras
+            %li#mysolar_suggestions
+              %button.btn{onclick: "javascript:window.open('https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ')"} Sugestões para o Solar 2.0
+            %li#mysolar_open_lesson
+              %button.btn.btn_main.disabled{"data-tooltip" => t(:mysolar_open_lesson), name: t(:mysolar_open_lesson), onclick: "javascript:maximize();", type: "button"}
+                %i.icon-class
+      / sidebar
+      #mysolar_sidebar
+        #mysolar_menu_accordion{style: "z-index:10"}
+          = raw menu(@profiles, @context_id, @context_uc, user_session[:menu][:current]) if user_signed_in?
+
+      / content
+      #mysolar_content
+        / page titles
+        .block_wrapper
+          .flash_message_wrapper
+            - flash.each do |name, msg|
+              #flash_message{class: name}
+                = content_tag :span, msg
+          - active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+          #breadcrumb= raw show_breadcrumb
+          - if is_curriculum_unit_selected?
+            #page_title
+              %h1= t active_tab[:breadcrumb].last[:name] unless active_tab[:breadcrumb].last.nil?
+              %span.block_content_text= raw(render_group_selection)
+          - elsif not(in_mysolar?)
+            #page_title
+              %h1= t active_tab[:breadcrumb].last[:name] unless active_tab[:breadcrumb].last.nil?
+        = yield
+
+        #lesson_external_div.invisible
+
+        - if current_user
+          #chatpanel
+            #collective-xmpp-chat-data{style: "display: none"}
+            #toggle-controlbox
+              %a.chat.toggle-online-users{href: "#"}
+                %strong.conn-feedback
+                  Bate-Papo
+
+      #footer_push{style: "height:35px"}
+      - locales =  %w(pt-BR en-US)
+      - selected = I18n.locale.to_s
+      #footer
+        %ul
+          %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', :target => '_blank'
+          %li= link_to t(:login_footer2), 'http://www.ufc.br', :target => '_blank'
+          %li= t(:login_footer3)
+          %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank'
+          %li.choice-language
+            = link_to t(:login_language), '#', :class => "link-arrow"
+            %ul.choice-language-menu
+              %li{class: "language pt_BR #{(selected == locales.first) ? 'selected' : ''}"}= link_to 'Português (BR)', url_for(locale: locales.first)
+              %li{class: "language en_US #{(selected == locales.last) ? 'selected' : ''}"}= link_to 'English (USA)', url_for(locale: locales.last)
+
+:javascript
+
+  /////////////////// IM \\\\\\\\\\\\\\\\\\\\
+
+  imgOn = "#{image_path('IM_online_Icon.png')}";
+  imgAway = "#{image_path('IM_away_Icon.png')}";
+  imgDnd = "#{image_path('IM_dnd_Icon.png')}";
+  imgOff = "#{image_path('IM_offline_Icon.png')}";
+  imgMessage = "#{image_path('IM_message_Icon.png')}";
+  xmpp_username = "#{current_user.username}";
+  xmpp_ip = "#{@ip}";
+  xmpp_dominio = "#{@dominio}";
+  xmpp_port = "#{@porta}";
+  xmpp_pass = "#{current_user.encrypted_password}";
+  number_chatbox = 0;
+  var con;
+
+  console.log("aquo: " + locales["#{selected}"]);
+
+  converse.initialize({
+    prebind: false,
+    // jid: data.jid,
+    // sid: data.sid,
+    // rid: data.rid,
+    debug: false,
+    auto_list_rooms: false,
+    auto_subscribe: false,
+    bosh_service_url: 'http://'+ xmpp_ip +':' + xmpp_port + '/http-bind/',
+    hide_muc_server: false,
+    i18n: locales["pt_BR"], // Refer to ./locale/locales.js to see which locales are supported
+    allow_contact_requests: false,
+    show_only_online_users: false,
+    show_controlbox_by_default: true,
+    xhr_user_search: false
+  });
+
+  $(function(){
+    $('.mysolar_top_link.logout').click(function(e) {
+      // e.preventDefault(); // um dia vai funcionar
+      $(".xmpp-status-menu .unavailable").click();
+    });
+  })

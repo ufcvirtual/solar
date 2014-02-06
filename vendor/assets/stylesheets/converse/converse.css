@@ -1303,11 +1303,11 @@ ul.chat-toolbar li:hover {
     border-width: 1px;
     border-color: rgb(222, 222, 222);
 }
-a{
+/*#chatpanel a{
     text-decoration: none;
     color: rgb(0, 62, 122);
     font-family: 'PT Sans',sans-serif;
-}
+}*/
 #controlbox{
     background-color: white;
 }

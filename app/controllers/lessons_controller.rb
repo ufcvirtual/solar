@@ -167,7 +167,7 @@ class LessonsController < ApplicationController
 
       if verify_lessons_to_download(params[:lessons_ids].split(',').flatten, true)
         zip_file_path = compress(:under_path => @all_files_paths, :folders_names => @lessons_names)
-        redirect      = request.referer.nil? ? root_url(:only_path => false) : request.referer
+        redirect      = request.referer.nil? ? home_url(:only_path => false) : request.referer
 
         if(zip_file_path)
           zip_file_name = zip_file_path.split("/").last
