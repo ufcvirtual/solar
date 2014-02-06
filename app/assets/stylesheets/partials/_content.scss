@@ -370,3 +370,25 @@ div.block_title {
 .label_right{
   margin-top: 6px;
 }
+
+// Portfólio de grupo e individual
+.block_user{
+  background-color: #FCEBCA;
+  font-size: 10pt;
+  padding: 7px 0 5px 5px;
+}
+
+.title_user{
+  float: left;
+  font-weight: bold;
+  margin-right: 7px;
+}
+
+.block_wrapper_groups{
+  border-left: 2px solid;
+  border-left-color: #EEAC2C;
+} 
+
+tbody tr.lines_user{
+  background-color: #FFFAEF !important;
+}

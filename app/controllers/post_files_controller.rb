@@ -16,10 +16,10 @@ class PostFilesController < ApplicationController
       post       = Post.find(params[:post_id])
       discussion = post.discussion
 
-      if ((not discussion.closed? or discussion.extra_time?(current_user.id)) and (post.user_id == current_user.id))
+      if ((discussion.user_can_interact?(current_user.id)) and (post.user_id == current_user.id))
         files = params[:post_file].is_a?(Hash) ? params[:post_file].values : params[:post_file] # {attachment1 => [valores1], attachment2 => [valores2]} => [valores1, valores2]
         [files].flatten.each do |file|
-          PostFile.create!({ :attachment => file, :discussion_post_id => post.id })
+          PostFile.create!({ attachment: file, discussion_post_id: post.id })
         end
       else
         raise "not_permited"

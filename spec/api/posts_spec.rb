@@ -14,20 +14,20 @@ describe "Posts" do
       let!(:application) { d = Doorkeeper::Application.new(name: "MyApp", redirect_uri: "http://app.com"); d.owner = user; d.save; d }
       let!(:token) { Doorkeeper::AccessToken.create! application_id: application.id, resource_owner_id: user.id }
 
-      it "create a post to add files" do
-        # criar um post aqui
+      it "create a post" do
+        post "/api/v1/discussions/2/posts", access_token: token.token, post:{content:"Qualquer"}
+
+        response.status.should eq(201)
+        response.body.should == {id: Post.first.id}.to_json
       end
 
-      it "create a post and set a file to it" do
+      it "add files to post" do
+        file = fixture_file_upload('/files/file_10k.dat')
+        post "/api/v1/posts/7/files", file: file, access_token: token.token
 
-        # post "/api/v1/posts", access_token: token.token, 
-        # response.status.should eq(201)
-        # post_id = response.body
+        response.status.should eq(201) 
 
-        # raise "#{@post.as_json} -- #{Post.first.as_json}"
-        # file = fixture_file_upload('/files/file_10k.dat')
-        # post "/api/v1/posts/#{@post.id}/files", file: file, access_token: token.token
-
+        response.body.should eq({ids: [PostFile.last.id]}.to_json)
       end
 
       it "gets post files list" do
