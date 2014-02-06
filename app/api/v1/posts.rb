@@ -4,11 +4,20 @@ module V1
     guard_all!
 
     namespace :discussions do
+  
       segment do
-        after do
-          filtered_params = params.select { |k, v| ["date", "order", "limit", "display_mode", "type"].include?(k) }
+        # seta o objeto @discussion e verifica se usuário tem permissão para acessá-lo
+        before do #antes das chamadas dos métodos
           @discussion = Discussion.find(params[:id])
-          @posts = @discussion.posts(filtered_params) # order desc
+          profile_id  = current_user.profiles_with_access_on(:index, :posts, @discussion.academic_allocations.map(&:allocation_tag).map(&:related), true).first
+          discussion_group_ids = @discussion.group_ids + @discussion.offers.includes(:groups).map(&:group_ids).flatten
+
+          error!({}, 404) if profile_id.nil? or (discussion_group_ids & current_user.groups(profile_id, Allocation_Activated).map(&:id)).empty?
+        end #before
+
+        after do #após as chamadas dos métodos
+          filtered_params = params.select { |k, v| ["date", "order", "limit", "display_mode", "type"].include?(k) }
+          @posts = @discussion.posts(filtered_params)
 
           @period = if @posts.empty?
             ["#{filtered_params['date']}", "#{filtered_params['date']}"]
@@ -16,9 +25,9 @@ module V1
             newer_post_date, older_post_date = @posts.first.updated_at, @posts.last.updated_at
             ["#{older_post_date}", "#{newer_post_date}"]
           end
-        end
+        end #after
 
-        params do
+        params do #parâmetros comuns às duas chamadas: new e history
           optional :order, type: String, values: %w(asc desc), default: "desc", desc: "Posts order."
           optional :limit, type: Integer, desc: "Posts limit."
           optional :display_mode, type: String, values: %w(list tree), default: "list", desc: "Posts display mode."
@@ -26,8 +35,8 @@ module V1
 
         desc "Lista dos posts mais novos. Se uma data for passada, aqueles serão a partir dela."
         params { optional :date, type: DateTime, desc: "Posts date." }
-        get ":id/posts/news", rabl: "posts/list_with_counting" do
-          params[:type] = "news"
+        get ":id/posts/new", rabl: "posts/list_with_counting" do
+          params[:type] = "new"
           # @posts
         end
 
@@ -37,7 +46,7 @@ module V1
           params[:type] = "history"
           # @posts
         end
-      end
+      end #segment"
 
       params do
         requires :id, type: Integer, desc: "Discussion ID."
@@ -50,7 +59,6 @@ module V1
 
         error!({}, 404) if profile_id.nil? or (discussion_group_ids & current_user.groups(profile_id, Allocation_Activated).map(&:id)).empty?
         error!({}, 401) unless discussion.user_can_interact?(current_user.id)
-
         @post = discussion.posts.build(params[:post])
         @post.user = current_user         
         @post.level = @post.parent.level.to_i + 1 unless @post.parent_id.nil?
@@ -61,8 +69,9 @@ module V1
         else
           error!(@post.errors.full_messages, 422)
         end
-      end      
-    end
+      end #:id/posts
+
+    end #namespace discussions
 
     namespace :posts do
 
@@ -121,5 +130,5 @@ module V1
 
     end
 
-  end
+  end #namespace posts
 end

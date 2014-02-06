@@ -68,10 +68,10 @@ class Discussion < Event
   end
 
   def posts(opts = {})
-    opts = { "type" => 'news', "order" => 'desc', "limit" => Rails.application.config.items_per_page.to_i,
+    opts = { "type" => 'new', "order" => 'desc', "limit" => Rails.application.config.items_per_page.to_i,
       "display_mode" => 'list', "page" => 1 }.merge(opts)
-    type = (opts["type"] == 'news') ? '>' : '<'
-    innder_order = (opts["type"] == 'news') ? 'asc' : 'desc'
+    type = (opts["type"] == 'new') ? '>' : '<'
+    innder_order = (opts["type"] == 'new') ? 'asc' : 'desc'
 
     query = []
     query << "updated_at::timestamp(0) #{type} '#{opts["date"]}'::timestamp(0)" if opts.include?('date')
