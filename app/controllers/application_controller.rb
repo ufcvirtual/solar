@@ -126,13 +126,15 @@ class ApplicationController < ActionController::Base
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
   end
 
-  def after_sign_in_path_for(resource_or_scope)
-    pages_path
-  end
+  ## tem que retirar o controller pages
+  # def after_sign_in_path_for(resource_or_scope)
+  #   home_path
+  # end
 
-  def after_update_path_for(resource)
-    '/home'
-  end
+  # # after edit profile > nao funciona
+  # def after_update_path_for(resource)
+  #   messages_path
+  # end
 
   def set_locale
     if user_signed_in?
