@@ -2,21 +2,21 @@
   %table.tb_list.tb_allocation
     %thead
       %tr.lines
-        %th= t(".name")
+        %th{style: 'min-width:128px'}= t(".name")
         %th{style: 'width:180px'}= t(".email")
-        %th{style: 'width:100px'}= t(".login")
+        %th{style: 'width:88x'}= t(".login")
         %th{style: 'width:80px'}= t(".cpf")
-        %th.no_sort{style: 'width:75px'}= ""
-        %th.no_sort{style: 'width:150px'}= ""
+        %th.no_sort{style: 'width:105px'}= ""
+        %th.no_sort{style: 'width:135px'}= ""
     %tbody
       - @users.each do |user|
         %tr.lines
           %td= user.name
-          %td{style: 'width:180px'}= user.email
-          %td{style: 'width:100px'}= user.username
-          %td{style: 'width:80px'}= user.cpf
-          %td{style: 'width:75px'}= user.status
-          %td{style: 'width:150px; text-align:right'}
+          %td= user.email
+          %td= user.username
+          %td= user.cpf
+          %td= user.status
+          %td{style: 'text-align:right'}
             %a{class: "info_list btn", :"data-dropdown"=>"#info-dropdown#{user.id}" }= content_tag(:i, nil, class: 'icon-info') + content_tag(:i, nil, class: 'icon-arrow-down-triangle')
             .dropdown.dropdown-tip{ class: "info_list", id: "info-dropdown#{user.id}" }
               %ul{ class: "dropdown-menu" }
