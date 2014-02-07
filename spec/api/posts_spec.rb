@@ -10,13 +10,8 @@ describe "Posts" do
   let!(:token) { Doorkeeper::AccessToken.create! application_id: application.id, resource_owner_id: user.id }
 
   describe ".files" do
-    # include ActionDispatch::TestProcess
 
     context "with access token" do
-
-      # let!(:user) { User.find_by_username("aluno1") }
-      # let!(:application) { d = Doorkeeper::Application.new(name: "MyApp", redirect_uri: "http://app.com"); d.owner = user; d.save; d }
-      # let!(:token) { Doorkeeper::AccessToken.create! application_id: application.id, resource_owner_id: user.id }
 
       it "create a post" do
         post "/api/v1/discussions/2/posts", access_token: token.token, post:{content:"Qualquer"}
