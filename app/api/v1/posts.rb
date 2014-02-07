@@ -12,7 +12,7 @@ module V1
           profile_id  = current_user.profiles_with_access_on(:index, :posts, @discussion.academic_allocations.map(&:allocation_tag).map(&:related), true).first
           discussion_group_ids = @discussion.group_ids + @discussion.offers.includes(:groups).map(&:group_ids).flatten
 
-          error!({}, 404) if profile_id.nil? or (discussion_group_ids & current_user.groups(profile_id, Allocation_Activated).map(&:id)).empty?
+          raise ActiveRecord::RecordNotFound if profile_id.nil? or (discussion_group_ids & current_user.groups(profile_id, Allocation_Activated).map(&:id)).empty?
         end #before
 
         after do #após as chamadas dos métodos
@@ -57,7 +57,7 @@ module V1
 
         discussion_group_ids = discussion.group_ids + discussion.offers.includes(:groups).map(&:group_ids).flatten
 
-        error!({}, 404) if profile_id.nil? or (discussion_group_ids & current_user.groups(profile_id, Allocation_Activated).map(&:id)).empty?
+        raise ActiveRecord::RecordNotFound if profile_id.nil? or (discussion_group_ids & current_user.groups(profile_id, Allocation_Activated).map(&:id)).empty?
         error!({}, 401) unless discussion.user_can_interact?(current_user.id)
         @post = discussion.posts.build(params[:post])
         @post.user = current_user         
@@ -84,7 +84,7 @@ module V1
       post ':id/files' do
         post = Post.find(params[:id])
 
-        error!({}, 404) if (post.user_id != current_user.id)
+        raise ActiveRecord::RecordNotFound if (post.user_id != current_user.id)
         error!({}, 401) unless post.discussion.user_can_interact?(current_user.id)
 
         ids = []
