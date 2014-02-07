@@ -154,7 +154,7 @@ function show_lesson(path) {
 
   lessonFrameContent(path);
   
-  setTimeout('$("#lesson_content",parent.document.body).slideDown("fast");', 5);
+  setTimeout('$("#lesson_content", parent.document.body).slideDown("fast");', 5);
 
   // Exibindo botoes de minimizar e fechar
   lessonFrameButtons();

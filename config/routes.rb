@@ -1,10 +1,10 @@
 Solar::Application.routes.draw do 
-  
-  use_doorkeeper do
-    controllers :applications => 'oauth/applications'
-  end
 
   devise_for :users, path_names: {sign_up: :register}
+
+  authenticated :user do
+    get "/", to: redirect("/home")
+  end
 
   devise_scope :user do
     get  :login, to: "devise/sessions#new"
@@ -14,8 +14,9 @@ Solar::Application.routes.draw do
     resources :sessions, only: [:create]
   end
 
-  ## users/:id/photo
-  ## users/edit_photo
+  get :home, to: "users#mysolar", as: :home
+  get :tutorials, to: "pages#tutorials", as: :tutorials
+
   resources :users do
     get :photo, on: :member
     put :update_photo, on: :member
@@ -211,8 +212,6 @@ Solar::Application.routes.draw do
     end
   end
   get :lesson_files, to: "lesson_files#index", as: :lesson_files
- 
-  mount Ckeditor::Engine => "/ckeditor"
 
   resources :assignments do
     collection do
@@ -296,10 +295,6 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :pages, only: [:index] do
-    # get :team, on: :collection
-  end
-
   resources :lesson_modules, except: [:index, :show] do
     collection do
       get :list
@@ -313,10 +308,6 @@ Solar::Application.routes.draw do
   get :activate_tab, to: "tabs#show", as: :activate_tab
   get :add_tab, to: "tabs#create", as: :add_tab
   get :close_tab, to: "tabs#destroy", as: :close_tab
-
-  get :home, to: "users#mysolar", as: :home
-  get :tutorials, to: "pages#tutorials", as: :tutorials
-  get :user_root, to: 'users#mysolar'
 
   resources :support_material_files do
     get :download, on: :member
@@ -376,7 +367,12 @@ Solar::Application.routes.draw do
   #   end
   # end
 
-  root to: 'devise/sessions#new'
-
+  mount Ckeditor::Engine => "/ckeditor"
+  ## como a API vai ser menos usada, fica mais rapido para o solar rodar sem precisar montar essas rotas
   mount ApplicationAPI => '/api'
+
+  use_doorkeeper do
+    controllers applications: 'oauth/applications'
+  end
+
 end

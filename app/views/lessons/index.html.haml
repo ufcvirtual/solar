@@ -19,20 +19,31 @@
                 = lesson.name
                 = "(#{t(:lesson_closed_short)})"
               - else
-                = link_to lesson.name, {}, :class => "link_content", :onclick => "javascript:show_lesson('#{lesson_path(lesson.id)}')"
+                / = link_to lesson.name, {}, :class => "link_content", :onclick => "javascript:show_lesson('#{lesson_path(lesson.id)}')"
+                = link_to lesson.name, lesson_path(lesson.id), class: "lesson", "data-fancybox-type" => "iframe"
             %td
               - if lesson.schedule.end_date.nil? 
                 = t(:since)
-                = l lesson.schedule.start_date, :format => :normal 
+                = l lesson.schedule.start_date, format: :normal
                 = "-"
                 = t(:no_end_date)
-              - elsif lesson.schedule.end_date >= Date.today 
-                = l lesson.schedule.start_date, :format => :normal
+              - elsif lesson.schedule.end_date >= Date.today
+                = l lesson.schedule.start_date, format: :normal
                 = "-"
-                = l lesson.schedule.end_date, :format => :normal 
+                = l lesson.schedule.end_date, format: :normal
               - elsif lesson.schedule.end_date < Date.today 
-                = l lesson.schedule.start_date, :format => :normal
+                = l lesson.schedule.start_date, format: :normal
                 = "-"
-                = l lesson.schedule.end_date, :format => :normal 
+                = l lesson.schedule.end_date, format: :normal
   - else
     .block_content.block_content_text= t(:lesson_message)
+
+:javascript
+
+  $(function(){
+    $("a.lesson").fancybox({
+        minHeight: '95%',
+        minWidth: '95%',
+        autoScale: true
+    });
+  });
