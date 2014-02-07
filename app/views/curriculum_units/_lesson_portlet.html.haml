@@ -7,7 +7,7 @@
     - unless @lessons.nil? or @lessons.empty?
       - @lessons.each do |lesson|
         - lesson_closed_class = "block_content_line "
-        - lesson_closed_class = lesson_closed_class + "period_ended" if (lesson.closed?) #: "block_content_line period_ended" ? "block_content_line"
+        - lesson_closed_class = lesson_closed_class + "period_ended" if (lesson.closed?)
         %div(class=lesson_closed_class)
         
           %span(class="block_content_gray")
@@ -21,6 +21,17 @@
             = lesson.name
             = "(#{t(:lesson_closed_short)})" if (not(lesson.schedule.end_date.nil?)) and (lesson.schedule.end_date < Date.today)
           - else
-            = link_to lesson.name, {}, :class => "link_content", :onclick => "javascript:show_lesson('#{lesson_path(lesson.id)}')"
+            = link_to lesson.name, lesson_path(lesson.id), class: "link_content lesson", "data-fancybox-type" => "iframe"
     - else
       .block_content.block_content_text= t(:lesson_message)
+
+:javascript
+
+  $(function(){
+    $("a.lesson").fancybox({
+        minHeight: '95%',
+        minWidth: '95%',
+        autoScale: true
+    });
+  });
+

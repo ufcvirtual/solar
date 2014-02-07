@@ -91,16 +91,15 @@ class Lesson < ActiveRecord::Base
   end  
 
   def self.to_open(allocation_tag_ids)
-    Lesson
-      .select(["lessons.id", "lessons.name", :address, "lessons.order", :type_lesson, :schedule_id])
-      .joins([{lesson_module: :academic_allocations}, schedule: {}])
-      .where({
-        status: Lesson_Approved, 
-        academic_allocations: { allocation_tag_id: allocation_tag_ids}
-      })
-      .where("schedules.start_date <= current_date")
-      .order("lessons.order")
-      .uniq
+    select(["lessons.id", "lessons.name", :address, "lessons.order", :type_lesson, :schedule_id])
+    .joins([{lesson_module: :academic_allocations}, schedule: {}])
+    .where({
+      status: Lesson_Approved, 
+      academic_allocations: { allocation_tag_id: allocation_tag_ids}
+    })
+    .where("schedules.start_date <= current_date")
+    .order("lessons.order")
+    .uniq
   end
 
   private

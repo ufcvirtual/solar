@@ -1,13 +1,24 @@
 // Conteúdo e navegacao de aulas
-#lesson_area {
-  border: none;
-  padding: 0;
-  margin: 0;
+
+.show_lesson {
+  display: table;
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
-  position: absolute;
+  overflow: hidden;
+}
+
+.show_lesson .header {
+  display: table-row;
+  height: 55px;
+}
+
+.show_lesson .content {
+  display: table-row;
+  height: auto;
+}
+
+#lesson_area {
+  border: none;
   overflow-x: hidden;
   overflow-Y: hidden;
   background-color: #eee;

@@ -1,15 +1,21 @@
 !!!
 %html
   %head
-    %meta{:charset => "utf-8"}
-    %meta{"http-equiv" => "X-UA-Compatible", :content => "IE=edge,chrome=1"}
-    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
+    %meta{charset: "utf-8"}
+    %meta{"http-equiv" => "X-UA-Compatible", content: "IE=edge,chrome=1"}
+    %meta{name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1"}
     %title= content_for?(:title) ? yield(:title) : "Solar"
-    = stylesheet_link_tag "application"
+
+    = javascript_include_tag "jquery"
+    = javascript_include_tag "lessons"
+
     = stylesheet_link_tag "themes/theme_blue"
-    = javascript_include_tag "application"
+    = stylesheet_link_tag "misc/div_layout", media: "all"
+    = stylesheet_link_tag "fonts/fonts", media: "all"
+
     = csrf_meta_tags
+
     = yield(:head)
+
   %body
-    / lesson
     = yield

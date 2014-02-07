@@ -19,8 +19,7 @@
                 = lesson.name
                 = "(#{t(:lesson_closed_short)})"
               - else
-                / = link_to lesson.name, {}, :class => "link_content", :onclick => "javascript:show_lesson('#{lesson_path(lesson.id)}')"
-                = link_to lesson.name, lesson_path(lesson.id), class: "lesson", "data-fancybox-type" => "iframe"
+                = link_to lesson.name, lesson_path(lesson.id), class: "link_content lesson", "data-fancybox-type" => "iframe"
             %td
               - if lesson.schedule.end_date.nil? 
                 = t(:since)

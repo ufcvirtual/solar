@@ -1,3 +1,5 @@
-%frameset{rows: "52,*", frameborder: 0, framespacing: 0}
-  %frame{name: "frame_lesson_header", src: "#{header_lesson_path(@lesson.id)}", target: "_self", scrolling: "no", noresize: true}
-  %frame{name: "frame_lesson_content", src: "#{content_lesson_path(@lesson.id)}", target:"_self"}
+.show_lesson
+  .header#lesson_area
+    = render "header"
+  .content
+    %iframe#content_lesson{src: @lesson.path, width: "100%", height: "100%", name: "content_lesson", target:"_self", frameborder: 0, framespacing: 0}

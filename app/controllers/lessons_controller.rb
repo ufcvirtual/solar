@@ -1,6 +1,6 @@
 class LessonsController < ApplicationController
 
-  layout false, except: :index
+  layout false, except: [:index]
 
   require 'fileutils'
 
@@ -30,7 +30,6 @@ class LessonsController < ApplicationController
     rescue
       render nothing: true, status: 500
     end
-
   end
 
   # GET /lessons/:id
@@ -40,8 +39,11 @@ class LessonsController < ApplicationController
     else
       authorize! :show, Lesson, {on: [@curriculum_unit.allocation_tag.id], read: true} # apenas para quem faz parte da turma
 
+      @all_lessons = lessons_to_open
+      @lessons = @all_lessons.select { |l| not l.closed? } # user can access
+
       @lesson = Lesson.find(params[:id])
-      render layout: 'lesson_frame'
+      render layout: 'lesson'
     end
   end
 
@@ -156,29 +158,26 @@ class LessonsController < ApplicationController
 
   def show_header
     @lessons = lessons_to_open
-    render layout: 'lesson'
-  end
-
-  def show_content
+    # render layout: 'lesson'
   end
 
   def download_files
-      authorize! :download_files, Lesson, :on => params[:allocation_tags_ids]
+    authorize! :download_files, Lesson, :on => params[:allocation_tags_ids]
 
-      if verify_lessons_to_download(params[:lessons_ids].split(',').flatten, true)
-        zip_file_path = compress(:under_path => @all_files_paths, :folders_names => @lessons_names)
-        redirect      = request.referer.nil? ? home_url(:only_path => false) : request.referer
+    if verify_lessons_to_download(params[:lessons_ids].split(',').flatten, true)
+      zip_file_path = compress(:under_path => @all_files_paths, :folders_names => @lessons_names)
+      redirect      = request.referer.nil? ? home_url(:only_path => false) : request.referer
 
-        if(zip_file_path)
-          zip_file_name = zip_file_path.split("/").last
-          download_file(redirect, zip_file_path, zip_file_name)
-        else
-          redirect_to redirect, alert: t(:file_error_nonexistent_file)
-        end
-        
+      if(zip_file_path)
+        zip_file_name = zip_file_path.split("/").last
+        download_file(redirect, zip_file_path, zip_file_name)
       else
-        render nothing: true
+        redirect_to redirect, alert: t(:file_error_nonexistent_file)
       end
+      
+    else
+      render nothing: true
+    end
   end
 
   # este método serve apenas para retornar um erro ou prosseguir com o download através da chamada ajax da página

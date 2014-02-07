@@ -1,0 +1,25 @@
+.titlebar#lesson_header
+  .inline
+    .breadcrumb
+      %span= "#{@curriculum_unit.name} > #{t(:lesson)}"
+      %span.order= @lesson.order
+      %span= " - #{@all_lessons.count}"
+    .buttons
+      #close_button
+      #min_button
+.other_lessons#lesson_content_header
+  - @all_lessons.each do |lesson|
+    - closed = lesson.closed?
+    %span.lesson_link{"data-order" => lesson.order, "data-link" => (closed ? "" : lesson.path), class: "#{(closed ? "cant" : "can")}_open_lesson" }
+      = lesson.order
+
+:javascript
+  $(function(){
+    $(".other_lessons .lesson_link.cant_open_lesson").click(function(){
+      alert("#{t(:lesson_closed)}"); // css ainda vai ser modificado
+    });
+
+    $(".other_lessons .lesson_link.can_open_lesson").click(function(){
+      open_lesson($(this));
+    });
+  });
