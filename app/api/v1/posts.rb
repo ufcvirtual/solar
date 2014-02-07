@@ -7,9 +7,9 @@ module V1
   
       helpers do
         # return a @discussion object
-        def verify_user_permission_on_discussion_and_set_obj
+        def verify_user_permission_on_discussion_and_set_obj(permission) # permission = [:index, :create, ...]
           @discussion = Discussion.find(params[:id])
-          @profile_id  = current_user.profiles_with_access_on(:index, :posts, @discussion.academic_allocations.map(&:allocation_tag).map(&:related), true).first
+          @profile_id  = current_user.profiles_with_access_on(permission, :posts, @discussion.academic_allocations.map(&:allocation_tag).map(&:related), true).first
           discussion_group_ids = @discussion.group_ids + @discussion.offers.includes(:groups).map(&:group_ids).flatten
 
           raise ActiveRecord::RecordNotFound if @profile_id.nil? or (discussion_group_ids & current_user.groups(@profile_id, Allocation_Activated).map(&:id)).empty?
@@ -20,7 +20,7 @@ module V1
 
       segment do
         before do
-          verify_user_permission_on_discussion_and_set_obj
+          verify_user_permission_on_discussion_and_set_obj(:index)
         end # before
 
         after do
@@ -62,9 +62,9 @@ module V1
         requires :id, type: Integer, desc: "Discussion ID."
       end
       post ":id/posts" do
-        verify_user_permission_on_discussion_and_set_obj
+        verify_user_permission_on_discussion_and_set_obj(:create)
 
-        error!({}, 401) unless @discussion.user_can_interact?(current_user.id)
+        raise MissingTokenError unless @discussion.user_can_interact?(current_user.id) # unauthorized
 
         @post = @discussion.posts.build(params[:post])
         @post.user = current_user         

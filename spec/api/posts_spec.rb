@@ -9,23 +9,36 @@ describe "Posts" do
   let!(:application) { d = Doorkeeper::Application.new(name: "MyApp", redirect_uri: "http://app.com"); d.owner = user; d.save; d }
   let!(:token) { Doorkeeper::AccessToken.create! application_id: application.id, resource_owner_id: user.id }
 
-  describe ".files" do
-
-    context "with access token" do
-
+  describe ".new" do
+    context "with permission" do
       it "create a post" do
-        post "/api/v1/discussions/2/posts", access_token: token.token, post:{content:"Qualquer"}
+        post "/api/v1/discussions/2/posts", post: {content: "content"}, access_token: token.token
 
         response.status.should eq(201)
         response.body.should == {id: Post.first.id}.to_json
       end
+    end
+
+    context "without permission" do
+      it "try to create a post" do
+        token_withou_permission = Doorkeeper::AccessToken.create! application_id: application.id, resource_owner_id: User.find_by_username("admin").id
+        post "/api/v1/discussions/2/posts", post: {content: "content"}, access_token: token_withou_permission.token
+
+        response.status.should eq(404)
+        response.body.should == {}.to_json
+      end
+    end
+  end
+
+  describe ".files" do
+
+    context "with access token" do
 
       it "add files to post" do
         file = fixture_file_upload('/files/file_10k.dat')
         post "/api/v1/posts/7/files", file: file, access_token: token.token
 
         response.status.should eq(201) 
-
         response.body.should eq({ids: [PostFile.last.id]}.to_json)
       end
 
@@ -49,7 +62,7 @@ describe "Posts" do
     context "without access token" do
 
       it 'gets an unauthorized error' do
-        get "/api/v1/users/me"
+        get "/api/v1/posts/7/files"
 
         response.status.should eq(401)
         response.body.should == {error: "unauthorized"}.to_json
