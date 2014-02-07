@@ -5,17 +5,25 @@ module V1
 
     namespace :discussions do
   
-      segment do
-        # seta o objeto @discussion e verifica se usuário tem permissão para acessá-lo
-        before do #antes das chamadas dos métodos
+      helpers do
+        # return a @discussion object
+        def verify_user_permission_on_discussion_and_set_obj
           @discussion = Discussion.find(params[:id])
-          profile_id  = current_user.profiles_with_access_on(:index, :posts, @discussion.academic_allocations.map(&:allocation_tag).map(&:related), true).first
+          @profile_id  = current_user.profiles_with_access_on(:index, :posts, @discussion.academic_allocations.map(&:allocation_tag).map(&:related), true).first
           discussion_group_ids = @discussion.group_ids + @discussion.offers.includes(:groups).map(&:group_ids).flatten
 
-          raise ActiveRecord::RecordNotFound if profile_id.nil? or (discussion_group_ids & current_user.groups(profile_id, Allocation_Activated).map(&:id)).empty?
-        end #before
+          raise ActiveRecord::RecordNotFound if @profile_id.nil? or (discussion_group_ids & current_user.groups(@profile_id, Allocation_Activated).map(&:id)).empty?
+        end
+      end
 
-        after do #após as chamadas dos métodos
+      ## NEW and HISTORY
+
+      segment do
+        before do
+          verify_user_permission_on_discussion_and_set_obj
+        end # before
+
+        after do
           filtered_params = params.select { |k, v| ["date", "order", "limit", "display_mode", "type"].include?(k) }
           @posts = @discussion.posts(filtered_params)
 
@@ -25,9 +33,9 @@ module V1
             newer_post_date, older_post_date = @posts.first.updated_at, @posts.last.updated_at
             ["#{older_post_date}", "#{newer_post_date}"]
           end
-        end #after
+        end # after
 
-        params do #parâmetros comuns às duas chamadas: new e history
+        params do # parâmetros comuns às duas chamadas: new e history
           optional :order, type: String, values: %w(asc desc), default: "desc", desc: "Posts order."
           optional :limit, type: Integer, desc: "Posts limit."
           optional :display_mode, type: String, values: %w(list tree), default: "list", desc: "Posts display mode."
@@ -46,23 +54,22 @@ module V1
           params[:type] = "history"
           # @posts
         end
-      end #segment"
+      end # segment
+
+      ## CREATE
 
       params do
         requires :id, type: Integer, desc: "Discussion ID."
       end
       post ":id/posts" do
-        discussion = Discussion.find(params[:id])
-        profile_id = current_user.profiles_with_access_on(:create, :posts, discussion.academic_allocations.map(&:allocation_tag).map(&:related), true).first
+        verify_user_permission_on_discussion_and_set_obj
 
-        discussion_group_ids = discussion.group_ids + discussion.offers.includes(:groups).map(&:group_ids).flatten
+        error!({}, 401) unless @discussion.user_can_interact?(current_user.id)
 
-        raise ActiveRecord::RecordNotFound if profile_id.nil? or (discussion_group_ids & current_user.groups(profile_id, Allocation_Activated).map(&:id)).empty?
-        error!({}, 401) unless discussion.user_can_interact?(current_user.id)
-        @post = discussion.posts.build(params[:post])
+        @post = @discussion.posts.build(params[:post])
         @post.user = current_user         
         @post.level = @post.parent.level.to_i + 1 unless @post.parent_id.nil?
-        @post.profile_id = profile_id
+        @post.profile_id = @profile_id
 
         if @post.save
           { id: @post.id }
@@ -71,11 +78,11 @@ module V1
         end
       end #:id/posts
 
-    end #namespace discussions
+    end # namespace discussions
 
     namespace :posts do
 
-      ## CREATE
+      ## CREATE files
 
       desc "Send files to a post."
       params do
@@ -96,7 +103,7 @@ module V1
         { ids: ids }
       end
 
-      ## LIST
+      ## LIST files
 
       desc "Files of a post."
       params do
@@ -107,7 +114,7 @@ module V1
         @files = Post.find(params[:id]).files
       end
 
-      ## DELETE
+      ## DELETE post and files
 
       desc "Delete a post."
       params do
@@ -129,6 +136,5 @@ module V1
       end
 
     end
-
-  end #namespace posts
+  end # namespace posts
 end
