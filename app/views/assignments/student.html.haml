@@ -5,27 +5,22 @@
 - btn_edit_class   = @assignment.on_evaluation_period?(@allocation_tag, current_user.id) ? "btn btn_default" : "btn btn_disabled"
 - btn_cancel_class = @assignment.assignment_in_time?(@allocation_tag, current_user.id) ? "btn btn_caution" : "btn btn_disabled"
 
-/ Participantes do grupo
+/ Participantes do grupo ou nome do aluno
 - if @assignment.type_assignment == Assignment_Type_Group
   - unless @group.nil?
     .block_wrapper_groups
       .block_user
-        .title_user
-          = t(:group, scope: [:assignment, :group_assignments]) + ":"
+        .title_user= t("assignment.group_assignments.group") + ":"
         = @group.group_name
-      .block_content
+      .block_user
+        .title_user= t("assignment.group_assignments.participants") + ":"
         - gp = GroupParticipant.all_by_group_assignment(@group_id)
         - unless gp.empty?
-          %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
-            %thead
-              %tr.lines.lines_user
-                %th= t(:participants, :scope => [:assignment, :group_assignments])
-            %tbody
-              - gp.each do |participant|
-                %tr.lines.lines_user
-                  %td= participant.user.name
+          %ul.participants_list
+            - gp.each do |participant|
+              %li= participant.user.name
         - else
-          .portfolio_div_padding= t(:itens_not_found)
+          = t("assignment.group_assignments.no_participant")
   / Se for trabalho individual e não for o aluno que estiver na página, exibir de qual aluno é o trabalho
 - elsif @student_id.to_i != @user.id
   .block_wrapper_groups
@@ -51,11 +46,11 @@
     %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
       %thead
         %tr.lines
-          %th=t(:description, :scope => [:assignment, :information])
-          %th.date_column= t(:begin, :scope => [:assignment, :information])
-          %th.date_column= t(:end, :scope => [:assignment, :information])
-          %th.center{:style => "width:68px"}= t(:situation, :scope => [:assignment, :information])
-          %th.center{:style => "width:50px"}= t(:grade, :scope => [:assignment, :information])
+          %th.no_sort=t(:description, :scope => [:assignment, :information])
+          %th.date_column.no_sort= t(:begin, :scope => [:assignment, :information])
+          %th.date_column.no_sort= t(:end, :scope => [:assignment, :information])
+          %th.center.no_sort{:style => "width:68px"}= t(:situation, :scope => [:assignment, :information])
+          %th.center.no_sort{:style => "width:50px"}= t(:grade, :scope => [:assignment, :information])
       %tbody
         %tr.lines
           %td= @assignment.enunciation
