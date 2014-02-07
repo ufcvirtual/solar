@@ -1,7 +1,7 @@
 %td
-	%input{:type=>"text", :required => true, :id => 'name', :value => @user.name}
+	%input{type: "text", required:  true, id:  'name', value:  @user.name}
 %td
-	%input{:type=>"text", :required => true, :id => 'email', :value => @user.email}
+	%input{type: "text", required:  true, id:  'email', value:  @user.email}
 %td= @user.username
 %td= @user.cpf
 %td= select(:status, :id, user_status.invert.to_a, {selected: @user.active? ? 1 : 0})

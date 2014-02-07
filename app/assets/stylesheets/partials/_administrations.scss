@@ -41,8 +41,11 @@ tr.lines {
   background-color: #fefae6;
 }
 
-
 label.permissions-search-text {
 	font-size: 10pt;
 	vertical-align: text-bottom;
+}
+
+tr.lines > td input{
+	width: 130px;
 }
