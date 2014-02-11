@@ -162,8 +162,8 @@ Solar::Application.routes.draw do
     collection do
       get :my
       get :available
-      post "enroll/:course", to: :enroll, type: "add", as: :enroll
-      post "unenroll/:course", to: :enroll, type: "remove", as: :unenroll
+      post "enroll/:course", to: :enroll, as: :enroll
+      post "unenroll/:course", to: :unenroll, as: :unenroll
     end
   end
 

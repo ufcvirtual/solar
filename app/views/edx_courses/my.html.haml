@@ -1,10 +1,11 @@
-- @courses.each do |my_edx_course|
-  %li
-    - edx = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]
-    %form{action: "#{edx['login']}?next=#{my_edx_course['course_absolute_url_lms']}", method: "post", target:"_blank"}
-      %input{name: "username", type: "hidden", value: current_user.username}/
-      %input{name: "token", type: "hidden", value: Digest::HMAC.hexdigest(current_user.username, edx['hash_key'], Digest::SHA1)}/
-      = link_to my_edx_course['display_name'], "#", class: "open-edx-class link_content"
+- unless @courses.empty?
+  - @courses.each do |my_edx_course|
+    %li
+      - edx = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]
+      %form{action: "#{edx['login']}?next=#{my_edx_course['course_absolute_url_lms']}", method: "post", target:"_blank"}
+        %input{name: "username", type: "hidden", value: current_user.username}/
+        %input{name: "token", type: "hidden", value: Digest::HMAC.hexdigest(current_user.username, edx['hash_key'], Digest::SHA1)}/
+        = link_to my_edx_course['display_name'], "#", class: "open-edx-class link_content"
 
 :javascript
   $(function(){

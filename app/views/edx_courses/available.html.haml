@@ -1,6 +1,5 @@
-
-- @courses.each do |course_edx|
-  - course = Base64.encode64(course_edx['course_id']) 
+- @available_courses.each do |course_edx|
+  - course = Base64.encode64(course_edx['resource_uri']) 
   %tr.lines.edx
     %td= course_edx['display_name']
     %td
