@@ -1,0 +1,12 @@
+common: &common
+  address:
+    - 127.0.0.1
+
+production:
+  <<: *common
+
+test:
+  <<: *common
+
+development:
+  <<: *common
