@@ -216,7 +216,11 @@
 
   $(function(){
     $('.mysolar_top_link.logout').click(function(e) {
-      // e.preventDefault(); // um dia vai funcionar
-      $(".xmpp-status-menu .unavailable").click();
+      e.preventDefault();
+      console.log($(".xmpp-status-menu .unavailable").click());
+      con.xmppstatus.save({'status': 'online'});
+      delete con;
+      con=null;
+      setTimeout(function(){location.href="#{logout_path}";},250); // espera 250 milesegundos para redirecionar para a pagina de logout acho que este é um tempo razoável.
     });
   })
