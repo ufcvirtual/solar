@@ -217,7 +217,7 @@
   $(function(){
     $('.mysolar_top_link.logout').click(function(e) {
       e.preventDefault();
-      console.log($(".xmpp-status-menu .unavailable").click());
+      $(".xmpp-status-menu .unavailable").click();
       con.xmppstatus.save({'status': 'online'});
       delete con;
       con=null;
