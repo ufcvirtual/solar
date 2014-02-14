@@ -85,6 +85,7 @@
                     text = text.replace(/\(\^.\^\)b/g, '<span class="emoticon icon-thumbs-up"></span>');
                     text = text.replace(/<3/g, '<span class="emoticon icon-heart"></span>');
                     $(obj).html(text);
+
                 });
             }
         }
@@ -577,14 +578,14 @@
                             '<li><a class="icon-grin" href="#" data-emoticon=":D"></a></li>'+
                             '<li><a class="icon-tongue" href="#" data-emoticon=":P"></a></li>'+
                             '<li><a class="icon-cool" href="#" data-emoticon="8)"></a></li>'+
-                            '<li><a class="icon-evil" href="#" data-emoticon=">:)"></a></li>'+
+                            //'<li><a class="icon-evil" href="#" data-emoticon=">:)"></a></li>'+
                             '<li><a class="icon-confused" href="#" data-emoticon=":S"></a></li>'+
                             '<li><a class="icon-wondering" href="#" data-emoticon=":\\"></a></li>'+
                             '<li><a class="icon-angry" href="#" data-emoticon=">:("></a></li>'+
                             '<li><a class="icon-sad" href="#" data-emoticon=":("></a></li>'+
                             '<li><a class="icon-shocked" href="#" data-emoticon=":O"></a></li>'+
                             '<li><a class="icon-thumbs-up" href="#" data-emoticon="(^.^)b"></a></li>'+
-                            '<li><a class="icon-heart" href="#" data-emoticon="<3"></a></li>'+
+                            //'<li><a class="icon-heart" href="#" data-emoticon="<3"></a></li>'+
                         '</ul>' +
                     '</li>' +
                 '{[ } ]}' 
