@@ -59,8 +59,12 @@ module Taggable
     AllocationTag.create({self.class.name.underscore.to_sym => self})
   end
 
+  # creates or activates user allocation
   def allocate_user(user_id, profile_id)
-    Allocation.create(:user_id => user_id, :allocation_tag_id => self.allocation_tag.id, :profile_id => profile_id, :status => Allocation_Activated)
+    allocation = Allocation.where(user_id: user_id, allocation_tag_id: self.allocation_tag.id, profile_id: profile_id).first_or_initialize
+    allocation.status = Allocation_Activated
+    allocation.save
+    allocation
   end
 
   def is_only_user_allocated?(user_id)

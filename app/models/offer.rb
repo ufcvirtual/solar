@@ -30,7 +30,7 @@ class Offer < ActiveRecord::Base
   accepts_nested_attributes_for :period_schedule, :enrollment_schedule
 
   attr_accessible :period_schedule_attributes, :enrollment_schedule_attributes, :curriculum_unit_id, :course_id, :semester_id
-  attr_accessor :type_id
+  attr_accessor :type_id, :verify_current_date
 
   def must_be_unique
     equal_offers = Offer.find_all_by_course_id_and_curriculum_unit_id_and_semester_id(course_id, curriculum_unit_id, semester_id)
@@ -46,8 +46,10 @@ class Offer < ActiveRecord::Base
 
   def check_period
     self.period_schedule.check_end_date = true if period_schedule and period_schedule.start_date
-    self.period_schedule.verify_current_date = true if period_schedule
-    self.enrollment_schedule.verify_current_date = true if enrollment_schedule
+    unless verify_current_date == false
+      self.period_schedule.verify_current_date = true if period_schedule
+      self.enrollment_schedule.verify_current_date = true if enrollment_schedule
+    end
   end
 
   def lower_associated_objects

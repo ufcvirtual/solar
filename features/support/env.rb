@@ -30,7 +30,7 @@ Spork.prefork do
   #Capybara.app_host = 'http://localhost:3000'
 
   Capybara.register_driver :selenium do |app|
-    Capybara::Selenium::Driver.new(app, :browser => :chrome)
+    Capybara::Selenium::Driver.new(app, :browser => :firefox)
   end
 
   # By default, any exception happening in your Rails application will bubble up

@@ -12,6 +12,7 @@ class Semester < ActiveRecord::Base
   accepts_nested_attributes_for :offer_schedule, :enrollment_schedule
 
   attr_accessible :name, :offer_schedule_attributes, :enrollment_schedule_attributes, :offer_schedule_id, :enrollment_schedule_id
+  attr_accessor :verify_current_date
 
   after_destroy { |record|
     record.offer_schedule.destroy if record.offer_schedule.try(:can_destroy?)
@@ -19,8 +20,9 @@ class Semester < ActiveRecord::Base
   }
 
   def check_period
-    self.offer_schedule.check_end_date, self.offer_schedule.verify_current_date = true, true if offer_schedule
-    self.enrollment_schedule.verify_current_date = true if enrollment_schedule
+    self.offer_schedule.verify_current_date = true if verify_current_date != false and offer_schedule
+    self.offer_schedule.check_end_date, = true if offer_schedule
+    self.enrollment_schedule.verify_current_date = true if enrollment_schedule and verify_current_date != false
   end
 
   def self.currents(year = nil)

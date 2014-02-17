@@ -20,6 +20,7 @@ module V1
         if semester.new_record?
           semester.build_offer_schedule offer_period
           semester.build_enrollment_schedule start_date: offer_period[:start_date], end_date: offer_period[:start_date] # one day for enrollment
+          semester.verify_current_date = false # don't validates initial date
           semester.save!
         end
 
@@ -31,11 +32,9 @@ module V1
 
         if offer.new_record?
           ss = semester.offer_schedule
-          offer.build_period_schedule(offer_period) if ss.start_date != offer_period[:start_date] or ss.end_date != offer_period[:end_date] # semester offer period != offer period
+          offer.build_period_schedule(offer_period) if ss.start_date.to_date != offer_period[:start_date].to_date or ss.end_date.to_date != offer_period[:end_date].to_date # semester offer period != offer period
+          offer.verify_current_date = false # don't validates initial date
           offer.save!
-        else
-          # o que fazer quando as datas de oferta e semestre são diferentes?
-            ## cadastra as turmas sem mudar a data da oferta? cria uma nova oferta(nao faz muito sentido)? não faz nada e retorna um erro?
         end
 
         offer
@@ -51,9 +50,7 @@ module V1
       def allocate_professors(group, cpfs)
         ## como vai ficar? como saber quem eh professor?
         ## Prof. Titular => 2
-
         professors = User.where(cpf: cpfs)
-
         professors.each do |prof|
           group.allocate_user(prof.id, 2)
         end
@@ -61,42 +58,25 @@ module V1
 
     end
 
-    ## duvidas ##
-
-    # ActiveRecord::RecordInvalid
-    # Offer schedule start date não deve preceder o ano atual, Offer schedule end date não deve preceder o dia de hoje, Enrollment schedule start date não deve preceder o ano atual, Enrollment schedule end date não deve preceder o dia de hoje
-
-    # <load_turma>
-    #   <ano>2014</ano>
-    #   <periodo>2</periodo>
-    #   <cod_disciplina>RM404</cod_disciplina>
-    #   <cod_turma>RM0121</cod_turma>
-    #   <cod_curso>RM404</cod_curso> <!-- graduacao -->
-    #   <data_inicio>15/02/2014</data_inicio>
-    #   <data_fim>01/12/2014</data_fim>
-    #   <professores type="array">
-    #     <value>565656565</value>
-    #     <value>565656566</value>
-    #     <value>600626565</value>
-    #   </professores>
-    # </load_turma>
-
     ## modulo academico :: carga de turmas
+    ## considerando que é passado uma turma por vez
     namespace :load do
       format :xml
       post :groups do
         # valid IPs
         raise ActiveRecord::RecordNotFound unless YAML::load(File.open('config/webserver.yml'))[Rails.env.to_s]['address'].include?(request.env['REMOTE_ADDR'])
 
-        load_group    = params[:load_turma]
+        load_group    = params[:turmas]
         cpfs          = load_group[:professores]
         semester_name = "#{load_group[:ano]}.#{load_group[:periodo]}"
-        offer_period  = { start_date: load_group[:data_inicio].to_date, end_date: load_group[:data_fim].to_date }
-        group_code    = load_group[:cod_turma]
-        course        = Course.find_by_code load_group[:cod_curso]
-        uc            = CurriculumUnit.find_by_code load_group[:cod_disciplina]
+        offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: load_group[:dtFim].to_date }
+        group_code    = load_group[:codigo]
+        course        = Course.find_by_code load_group[:codGraduacao]
+        uc            = CurriculumUnit.find_by_code load_group[:codDisciplina]
 
         begin
+          raise ActiveRecord::RecordNotFound if course.nil? or uc.nil?
+
           semester = verify_or_create_semester(semester_name, offer_period)
           offer    = verify_or_create_offer(semester, course, uc, offer_period)
           group    = verify_or_create_group(offer, group_code)
