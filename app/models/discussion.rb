@@ -70,14 +70,13 @@ class Discussion < Event
   def posts(opts = {})
     opts = { "type" => 'new', "order" => 'desc', "limit" => Rails.application.config.items_per_page.to_i,
       "display_mode" => 'list', "page" => 1 }.merge(opts)
-    type = (opts["type"] == 'new') ? '>' : '<'
-    innder_order = (opts["type"] == 'new') ? 'asc' : 'desc'
-
+    type = (opts["type"] == 'history' ) ? '<' : '>'
+    
     query = []
     query << "updated_at::timestamp(0) #{type} '#{opts["date"]}'::timestamp(0)" if opts.include?('date') and (not opts['date'].blank?)
     query << "parent_id IS NULL" unless opts["display_mode"] == 'list'
 
-    discussion_posts.where(query).order("updated_at #{innder_order}").limit("#{opts['limit']}").offset("#{(opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i}")
+    discussion_posts.where(query).order("updated_at #{opts["order"]}").limit("#{opts['limit']}").offset("#{(opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i}")
   end
 
   def discussion_posts_count(plain_list = true)
