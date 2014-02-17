@@ -45,4 +45,25 @@ describe "CurriculumUnits" do
     end
 
   end
+
+  describe ".load" do
+    context "editors" do
+
+      it "from modulo academico" do
+        editors = {
+          cod_curriculum_unit: "RM404",
+          editors: User.where(username: %w(user3 user4)).map(&:cpf)
+        }.to_xml(root: :load_editors)
+
+        expect{
+          post "/api/v1/curriculum_units/load/editors", editors, "CONTENT_TYPE" => "application/xml"
+
+          response.status.should eq(201)
+          response.body.should == {ok: :ok}.to_xml
+        }.to change{Allocation.count}.by(2)
+      end
+
+    end
+  end
+
 end

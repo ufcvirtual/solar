@@ -85,7 +85,7 @@ module V1
     namespace :load do
       format :xml
       post :groups do
-        # valids IPs
+        # valid IPs
         raise ActiveRecord::RecordNotFound unless YAML::load(File.open('config/webserver.yml'))[Rails.env.to_s]['address'].include?(request.env['REMOTE_ADDR'])
 
         load_group    = params[:load_turma]
