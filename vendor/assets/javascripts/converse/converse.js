@@ -971,9 +971,9 @@
                     v.childNodes.item(1).style.display = "none";
                     v.childNodes.item(2).style.display = "none";
                     v.childNodes.item(0).style.top = "300px";
-                    v.childNodes.item(0).style.backgroundColor="rgb(168, 168, 168)";
+                    v.childNodes.item(0).style.backgroundColor="#404040";
                     v.childNodes.item(0).style.color="rgb(0, 0, 0)";
-                    v.childNodes.item(0).childNodes.item(1).childNodes.item(0).style.color="rgb(0, 0, 0)";
+                    v.childNodes.item(0).childNodes.item(1).childNodes.item(0).style.color="rgb(f, f, f)";
                     v.style.boxShadow = "0px 0px 0px 0px";
                 }
                 else{
@@ -981,7 +981,7 @@
                     v.childNodes.item(1).style.display = "";
                     v.childNodes.item(2).style.display = "";
                     v.childNodes.item(0).style.top = "0px";
-                    v.childNodes.item(0).style.backgroundColor="rgb(14, 125, 216)";
+                    v.childNodes.item(0).style.backgroundColor="rgba(6, 86, 153, 1)";
                     v.childNodes.item(0).style.color="rgb(255, 255, 255)";
                     v.childNodes.item(0).childNodes.item(1).childNodes.item(0).style.color="rgb(255, 255, 255)";
                     v.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
