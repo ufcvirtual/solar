@@ -1,4 +1,4 @@
-// Conteúdo e navegacao de aulas
+// Lesson: content and navigation
 
 .show_lesson {
   display: table;
@@ -14,7 +14,7 @@
 
 .show_lesson .content {
   display: table-row;
-  height: auto;
+  height: 100%;
 }
 
 #lesson_area {

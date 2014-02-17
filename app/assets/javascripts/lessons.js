@@ -1,75 +1,34 @@
-
-/**
- * Código do andrei
- */
-
-// function lessonFrameDim()
-// {
-//   // Esmaecendo a tela
-//   dimmed_div = '<div onclick="javascript:minimize();" id="dimmed_div" name="dimmed_div" style="">&nbsp;</div>';
-//   $("#lesson_external_div", parent.document.body).append(dimmed_div);
-//   $("#dimmed_div", parent.document.body).fadeTo('fast', 0.4);
-// }
-
-// function change_youtube_link_to_embeded(path){
-//   // recupera o texto que "equivale" ao informado, ou seja, match recuperará o caminho de um link para o youtube caso o path o seja
-//   var youtube_link = (path.search("youtube") != -1 && path.search("embed") == -1);
-
-//   if (youtube_link)
-//     path = 'http://www.youtube.com/embed/' + path.split("v=")[1]; // e transformará o link padrão em um "embeded" para ser adicionado ao iframe
-
-//   return path;
-// }
-
-/**
- * User navigation
- */
-
-// function minimize() {
-//   // Botão de exibir aula minimizada
-//   var lessonsButton = $('#frame_content').contents().find('#mysolar_open_lesson button');
-
-//   // Removendo esmaecimento
-//   $("#dimmed_div").fadeOut('fast', function() { $("#dimmed_div").remove(); });
-
-//   // Ocultando o frame da aula
-//   $("#lesson_content").animate({
-//     height: lessonsButton.outerHeight(),
-//     width: lessonsButton.outerWidth(),
-//     top: lessonsButton.offset().top,
-//     left: lessonsButton.offset().left
-//   },500, function(){
-//     $(this).hide();
-//     $(lessonsButton).removeClass("disabled");
-//   });
-
-//   // Removendo botões de minimizar e fechar
-//   $("#min_button, #close_button").remove();
-// }
-
-// function maximize() {
-//   if ( $("#lesson_content", parent.document.body).length != 0 ) {
-//     lessonFrameDim();
-
-//     // Exibindo a aula
-//     $("#lesson_content", parent.document.body).show();
-//     $("#lesson_content", parent.document.body).animate({
-//       left: '1%',
-//       top: '3%',
-//       width: '96%',
-//       height: '94%'
-//     });
-
-//     // Exibindo botoes de minimizar e fechar
-//     lessonFrameButtons()
-//   } else {
-//     event.preventDefault();
-//   }
-// }
+lesson_cookie_id = "_ufc_solar20_lesson_opened";
 
 function open_lesson(obj) {
-  var order = $(obj).data("order");
+  $(".show_lesson .content").attr("data-url", $(obj).data("url"));
 
-  $('.lesson .header .titlebar span.order').html(order);
-  $("iframe#content_lesson").attr("src", $(obj).data("link"));
+  if ($.cookie(lesson_cookie_id))
+    $.cookie(lesson_cookie_id, $(obj).data("url"), { path: '/' });
+
+  $('.show_lesson .header .titlebar span.order').html($(obj).data("order"));
+  $("iframe#content_lesson").prop("src", $(obj).data("link"));
+}
+
+function maximize_lesson(obj) {
+  if (!$.cookie(lesson_cookie_id))
+    return;
+
+  $(obj).nice_open_lesson({ href: $.cookie(lesson_cookie_id) });
+  event.preventDefault();
+}
+
+function minimize_lesson() {
+  // save cookie with the new url
+  var lesson_URL = $(".fancybox-iframe").contents().find(".show_lesson .content").data("url");
+  $.cookie(lesson_cookie_id, lesson_URL);
+
+  $(".fancybox-skin").effect( "transfer", { to: $("#mysolar_open_lesson") }, 750 ); // transfer effect
+  $.fancybox.close();
+  $("#mysolar_open_lesson button").removeClass("disabled");
+}
+
+function close_lesson() {
+  $("#mysolar_open_lesson button").addClass("disabled");
+  $.removeCookie(lesson_cookie_id);
 }

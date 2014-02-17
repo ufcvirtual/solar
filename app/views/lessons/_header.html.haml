@@ -10,7 +10,7 @@
 .other_lessons#lesson_content_header
   - @all_lessons.each do |lesson|
     - closed = lesson.closed?
-    %span.lesson_link{"data-order" => lesson.order, "data-link" => (closed ? "" : lesson.path), class: "#{(closed ? "cant" : "can")}_open_lesson" }
+    %span.lesson_link{"data-order" => lesson.order, "data-link" => (closed ? "" : lesson.path), class: "#{(closed ? "cant" : "can")}_open_lesson", "data-url" => lesson_url(lesson) }
       = lesson.order
 
 :javascript

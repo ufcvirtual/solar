@@ -287,3 +287,21 @@ $.fn.nice_table_filter = function(options) {
       $('tbody > tr', $(options.table)).show();
   });
 }
+
+$.fn.nice_open_lesson = function(options) {
+  if (typeof(options) == "undefined")
+    options = {};
+
+  var default_options = {
+    minHeight: '95%',
+    minWidth: '95%',
+    autoScale: true,
+    afterShow: function() {
+      $("<div class='fancybox-minimize icon-minus-square'></div>").appendTo(this.skin).click(minimize_lesson);
+      $(".fancybox-close").click(close_lesson);
+    }
+  };
+
+  options = $.extend(default_options, options, {live: false} );
+  $.fancybox.open($(this), options);
+}

@@ -129,7 +129,7 @@
             %li#mysolar_suggestions
               %button.btn{onclick: "javascript:window.open('https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ')"} Sugestões para o Solar 2.0
             %li#mysolar_open_lesson
-              %button.btn.btn_main.disabled{"data-tooltip" => t(:mysolar_open_lesson), name: t(:mysolar_open_lesson), onclick: "javascript:maximize();", type: "button"}
+              %button.btn.btn_main.disabled{"data-tooltip" => t(:mysolar_open_lesson), name: t(:mysolar_open_lesson), onclick: "javascript:maximize_lesson(this);", type: "button", "data-fancybox-type" => "iframe"}
                 %i.icon-class
       / sidebar
       #mysolar_sidebar
@@ -181,6 +181,15 @@
               %li{class: "language en_US #{(selected == locales.last) ? 'selected' : ''}"}= link_to 'English (USA)', url_for(locale: locales.last)
 
 :javascript
+
+  // lessons
+  lesson_cookie_id = "_ufc_solar20_lesson_opened";
+
+  $(function(){
+    if ($.cookie(lesson_cookie_id))
+      $("#mysolar_open_lesson button").removeClass("disabled");
+  });
+
 
   /////////////////// IM \\\\\\\\\\\\\\\\\\\\
 
