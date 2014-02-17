@@ -2,11 +2,12 @@
 
 .fancybox-minimize {
   position: absolute;
-  top: -10px;
-  right: 20px;
-  width: 23px;
-  height: 23px;
+  top: -18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
+  background-image: url("/assets/fancybox_minimize.png");
 }
 
 .ui-effects-transfer {

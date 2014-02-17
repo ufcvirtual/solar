@@ -297,7 +297,7 @@ $.fn.nice_open_lesson = function(options) {
     minWidth: '95%',
     autoScale: true,
     afterShow: function() {
-      $("<div class='fancybox-minimize icon-minus-square'></div>").appendTo(this.skin).click(minimize_lesson);
+      $("<a class='fancybox-minimize' title='minimize'></a>").appendTo(this.skin).click(minimize_lesson);
       $(".fancybox-close").click(close_lesson);
     }
   };
