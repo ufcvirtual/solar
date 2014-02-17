@@ -74,9 +74,9 @@ module V1
         course        = Course.find_by_code load_group[:codGraduacao]
         uc            = CurriculumUnit.find_by_code load_group[:codDisciplina]
 
+        raise ActiveRecord::RecordNotFound if course.nil? or uc.nil?
+        
         begin
-          raise ActiveRecord::RecordNotFound if course.nil? or uc.nil?
-
           semester = verify_or_create_semester(semester_name, offer_period)
           offer    = verify_or_create_offer(semester, course, uc, offer_period)
           group    = verify_or_create_group(offer, group_code)
@@ -88,6 +88,38 @@ module V1
           error!({error: error}, 422)
         end
       end
+
+      post :students do
+
+      # <load_editors>
+      #   <cod_curriculum_unit>RM404</cod_curriculum_unit>
+      #   <editors type="array">
+      #     <value>11016853521</value>
+      #     <value>57215688798</value>
+      #   </editors>
+      # </load_editors>
+
+      # valid IPs
+      raise ActiveRecord::RecordNotFound unless YAML::load(File.open('config/webserver.yml'))[Rails.env.to_s]['address'].include?(request.env['REMOTE_ADDR'])
+
+      load_editors  = params[:load_editors]
+      uc            = CurriculumUnit.find_by_code(load_editors[:cod_curriculum_unit])
+      users         = User.where(cpf: load_editors[:editors])
+      prof_editor   = 5
+
+      begin
+        users.each do |user|
+          uc.allocate_user(user.id, prof_editor)
+        end
+
+        {ok: :ok}
+      rescue => error
+        error!({error: error}, 422)
+      end
+
+
+      end
+
     end
 
   end
