@@ -1,5 +1,19 @@
 // Lesson: content and navigation
 
+.fancybox-minimize {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  width: 23px;
+  height: 23px;
+  cursor: pointer;
+}
+
+.ui-effects-transfer {
+  border: 1px dotted black;
+  z-index: 9999999;
+}
+
 .show_lesson {
   display: table;
   width: 100%;

@@ -4,9 +4,6 @@
       %span= "#{@curriculum_unit.name} > #{t(:lesson)}"
       %span.order= @lesson.order
       %span= " - #{@all_lessons.count}"
-    .buttons
-      #close_button
-      #min_button
 .other_lessons#lesson_content_header
   - @all_lessons.each do |lesson|
     - closed = lesson.closed?

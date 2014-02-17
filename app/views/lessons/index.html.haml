@@ -38,28 +38,9 @@
     .block_content.block_content_text= t(:lesson_message)
 
 :javascript
-
-  // mudancas de cookie
-    // ao mudar de aula
-    // ao fechar
-
   $(function(){
     $("a.lesson").click(function(e){
       e.preventDefault();
       $(this).nice_open_lesson();
     });
   });
-
-:css
-  .fancybox-minimize {
-    position: absolute;
-    top: -10px;
-    right: 20px;
-    width: 23px;
-    height: 23px;
-    cursor: pointer;
-  }
-  .ui-effects-transfer {
-    border: 1px dotted black;
-    z-index: 9999999;
-  }

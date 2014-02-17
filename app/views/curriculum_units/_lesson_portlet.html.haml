@@ -28,10 +28,8 @@
 :javascript
 
   $(function(){
-    $("a.lesson").fancybox({
-        minHeight: '95%',
-        minWidth: '95%',
-        autoScale: true
+    $("a.lesson").click(function(e){
+      e.preventDefault();
+      $(this).nice_open_lesson();
     });
   });
-
