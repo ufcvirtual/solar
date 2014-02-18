@@ -1251,6 +1251,10 @@
   new_course_title: Cadastro de Curso
   update_course_title: Atualização de Curso
 
+  #Edx Course
+
+  course_edx_edition: "Cursos"
+
   #Offer
   offer: "Oferta"
   offer_confirm: "Você tem certeza que deseja deletar?"

@@ -1,5 +1,7 @@
 class EditionsController < ApplicationController
 
+  EDX_URLS = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]['urls']
+
   def items
 
     @all_groups_allocation_tags = []
@@ -62,6 +64,13 @@ class EditionsController < ApplicationController
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @courses = (@type.id == 3 ? Course.all_associated_with_curriculum_unit_by_name : Course.all)
   end
+
+  def edx_courses
+    @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
+    url = URI.parse(EDX_URLS["list_available_courses"])
+    res = Net::HTTP.start(url.host, url.port) { |http| http.request(Net::HTTP::Get.new(url.path)) }
+    @edx_courses = JSON.parse(res.body)["objects"]
+  end    
 
   # GET /editions/content
   def content

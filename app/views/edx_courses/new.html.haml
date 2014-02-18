@@ -1,0 +1,15 @@
+%span.form_requirement= t(:required_fields)
+.edx_course_form
+  = form_tag(create_edx_courses_path, method: "post") do
+    %h1#lightBoxDialogTitle= t("courses.index.new")
+    
+    .form-inputs.block_content
+      %label{for: "display_name"} Nome
+      %input#display_name{name: "display_name", type: "text"}
+      .right_buttons
+        = button_to_function t("courses.form.cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+        = button_tag t("courses.form.save"), class: "btn btn_main btn_lightbox", alt: t("courses.form.save"), type: "submit"
+
+
+
+

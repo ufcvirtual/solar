@@ -1,0 +1,28 @@
+= javascript_include_tag "autocomplete"
+= stylesheet_link_tag "autocomplete"
+
+.edition.block_content
+  %p= t(:required_fields)
+  %fieldset#allocation_tag_selection
+    %legend= t("editions.courses.filter")
+    .label
+      = label_tag :type, t("editions.courses.type")
+      %span.type_description= @type.description
+    .filter
+      = label_tag :edx_course, t("editions.courses.course")
+      = select_tag :edx_course, options_for_select(@edx_courses.map { |c| [ c["display_name"], c["resource_uri"]] }), include_blank: true, :"data-optional" => true
+
+    = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => edx_courses_path, id: "search", :"data-load-to" => "edx_courses_list"}
+
+.edx_courses_list
+  = render "edx_courses/index"
+
+= render "back"
+
+:javascript
+
+  $(function(){
+    $("#edx_course").combobox();
+
+    $(".edition").nice_filter();
+  });

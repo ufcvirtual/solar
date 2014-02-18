@@ -158,8 +158,9 @@ Solar::Application.routes.draw do
     get :history_access, on: :member
   end
 
-  resources :edx_courses, only: [] do
+  resources :edx_courses, only: [:index, :new] do
     collection do
+      post :create, as: :create
       get :my
       get :available
       post "enroll/:course", to: :enroll, as: :enroll
@@ -182,6 +183,7 @@ Solar::Application.routes.draw do
       get "academic/:curriculum_unit_type_id/curriculum_units", to: "editions#curriculum_units", as: :academic_uc
       get "academic/:curriculum_unit_type_id/semesters", to: "editions#semesters", as: :academic_semesters
       get "academic/:curriculum_unit_type_id/groups", to: "editions#groups", as: :academic_groups
+      get "academic/:curriculum_unit_type_id/edx_courses", to: "editions#edx_courses", as: :academic_edx_courses
     end
   end
 

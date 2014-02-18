@@ -1,0 +1,26 @@
+.block_wrapper
+
+  .block_title
+    %h2= t(:courses, scope: [:editions, :academic])
+  .block_content_toolbar
+    .block_toolbar_left.btn-group
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_edx_course_path, class: " btn btn_main", id: "new_edx_course", :'data-tooltip' => t("courses.index.new") 
+
+  %table.tb_list
+    %thead
+      %tr.lines
+        %th= t("courses.index.code")
+        %th= t("courses.index.name")
+        %th.no_sort{:width => "12%"}
+    %tbody
+      - @edx_courses.each do |course|
+        %tr.lines
+          - course_edx_id = course["course_id"].split("/")  
+          %td= course_edx_id[1]
+          %td= course["display_name"]
+          
+:javascript
+
+  $(function(){
+      $("#new_edx_course").call_fancybox();
+    });

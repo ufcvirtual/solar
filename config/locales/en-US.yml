@@ -1103,6 +1103,10 @@
   new_course_title: New Course
   update_course_title: Update Course
 
+  #Edx Course
+
+  course_edx_edition: "Courses"
+
   #Offer
   offer: "Offer"
   offers: "Offers"

@@ -1,6 +1,8 @@
 class EdxCoursesController < ApplicationController
 
-  layout false
+  layout false, except: :index
+
+  EDX = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]
 
   EDX_URLS = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]['urls']
 
@@ -15,7 +17,6 @@ class EdxCoursesController < ApplicationController
       unless uri_courses.empty?
         for uri_course in uri_courses do
           res = get_response(EDX_URLS["information_course"].gsub(":resource_uri", uri_course))
-          # res = get_response("http://10.0.4.163:8001"+uri_course)
           my_courses  << res.body << ","
         end
 
@@ -26,7 +27,7 @@ class EdxCoursesController < ApplicationController
     end   
   end
 
-  # listar cursos dispiniveis
+  # listar cursos disponíveis
   def available
     @available_courses, @my_courses = [], []
 
@@ -34,32 +35,14 @@ class EdxCoursesController < ApplicationController
     res = get_response(EDX_URLS["list_available_courses"])
     @available_courses = JSON.parse(res.body)["objects"]
     @my_courses = my.map { |mc| mc['course_id'] } unless my.nil?
-  
+ 
   end
+
 
   # matricular
   def enroll
-    unless check_me
-      user = {
-      "username" => current_user.username, "name" => current_user.name, "email" => current_user.email
-        }.to_json
-       
-      puts user 
-      uri = URI.parse(EDX_URLS["insert_user"])
-      http = Net::HTTP.new(uri.host,uri.port)
-
-      http.set_debug_output($stdout)
-
-      req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
-      req.body = user
-      res = http.request(req)
-
-      puts "Informacoes chamada"
-      puts uri.host
-      puts uri.port
-      puts uri.path
-      puts "FIM"
-    end  
+    create_user_solar_in_edx
+    
     course = {
     "course_resource_uri" => Base64.decode64(params[:course])
       }.to_json
@@ -73,6 +56,7 @@ class EdxCoursesController < ApplicationController
     redirect_to enrollments_path
   end  
 
+  #cancelar matricular
   def unenroll
     course = {
     "course_resource_uri" => Base64.decode64(params[:course])
@@ -87,6 +71,48 @@ class EdxCoursesController < ApplicationController
     redirect_to enrollments_path
   end
 
+
+  #Edição
+  def index
+
+    # Edição acadêmica
+    if (not params[:edx_course_id].blank?)
+      res = get_response(EDX["host"]+params[:edx_course_id])
+      @edx_courses =  JSON.parse("[" +res.body+ "]") 
+    else
+      res = get_response(EDX_URLS["list_available_courses"])
+      @edx_courses = JSON.parse(res.body)["objects"]
+    end
+    render partial: 'edx_courses/index'
+  end  
+
+  def new
+  end
+
+  def create
+    create_user_solar_in_edx
+
+    if Date.today.strftime("%m").to_i < 7
+      semester = Date.today.strftime("%Y") << ".1"
+    else
+      semester = Date.today.strftime("%Y") << ".2"
+    end
+    code = params[:display_name].slice(0..2).upcase 
+    course_id = current_user.institution<<"/"<<code<<"/"<<semester
+
+    course = {"course_id" => course_id , "display_name" => params[:display_name],
+     "course_creator_username" => current_user.username}.to_json
+
+    uri = URI.parse(EDX_URLS["insert_course"])
+    http = Net::HTTP.new(uri.host,uri.port)
+    req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
+    req.body = course
+    res = http.request(req) 
+
+
+    redirect_to  academic_edx_courses_editions_path(7)
+  end 
+   
   private
 
     def get_response(url)
@@ -107,5 +133,20 @@ class EdxCoursesController < ApplicationController
         return false
       end
     end
+
+    def create_user_solar_in_edx
+      unless check_me
+        user = {
+        "username" => current_user.username, "name" => current_user.name, "email" => current_user.email
+          }.to_json
+         
+        uri = URI.parse(EDX_URLS["insert_user"])
+        http = Net::HTTP.new(uri.host,uri.port)
+
+        req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
+        req.body = user
+        res = http.request(req)
+      end  
+    end  
 
 end

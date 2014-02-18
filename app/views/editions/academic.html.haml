@@ -37,6 +37,11 @@
             = link_to(content_tag(:i, nil, class: 'icon-book big'), "#", class: 'btn')
             = link_to t(".groups"), "#"
 
+      .edx_courses
+        .academic_item{:"data-link-to" => academic_edx_courses_editions_path(curriculum_unit_type_id: ':uc_type_id')}
+          = link_to(content_tag(:i, nil, class: 'icon-book big'), "#", class: 'btn')
+          = link_to t(:course_edx_edition), "#"                
+
 :javascript
 
   $(function(){
@@ -63,6 +68,9 @@
 
   function show_items(){
     $('.courses').show();
+    $('.groups').show();
+    $('.semesters').show();
+    $('.edx_courses').hide();
     $('.academic').show();
     $('.curriculum_units a#uc_name').html("#{t('.curriculum_units')}");
     $('.curriculum_units').show();
@@ -71,6 +79,15 @@
     if (id == 3) {
       $('.courses').hide();
       $('.curriculum_units a#uc_name').html("#{t('.courses')}");
-    } else if (id == 4)
+    }
+     else if (id == 4){
       $('.curriculum_units a#uc_name').html("#{t('.modules')}");
+     } 
+      else if (id == 7) {  
+        $('.courses').hide();
+        $('.groups').hide();
+        $('.semesters').hide();
+        $('.curriculum_units').hide();
+        $('.edx_courses').show();
+      }
   }

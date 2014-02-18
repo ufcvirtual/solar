@@ -121,7 +121,7 @@ $.fn.nice_filter = function(options) {
       var filled = required.map(function(){ if (!$(this).is_empty()) return $(this).combobox("value"); });
 
       if (required.length == filled.length) {
-        var combos = combos.map(function(){ if (!$(this).is_empty()) return $(this).prop('name')+'_id: ' + $(this).combobox("value"); }).toArray().join(', ');
+        var combos = combos.map(function(){ if (!$(this).is_empty()) return $(this).prop('name')+'_id: ' + '"' + $(this).combobox("value") + '"'; }).toArray().join(', ');
         var data = eval("({" + combos + "})"); // transformando os valores dos filtros em json
         var url = $(this).data("url-search");
 
