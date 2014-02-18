@@ -32,8 +32,7 @@ module V1
       # </load_editors>
 
       post :editors do
-        # valid IPs
-        raise ActiveRecord::RecordNotFound unless YAML::load(File.open('config/webserver.yml'))[Rails.env.to_s]['address'].include?(request.env['REMOTE_ADDR'])
+        verify_ip_access!
 
         load_editors  = params[:load_editors]
         uc            = CurriculumUnit.find_by_code(load_editors[:cod_curriculum_unit])

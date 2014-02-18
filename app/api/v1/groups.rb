@@ -63,19 +63,16 @@ module V1
     namespace :load do
       format :xml
       post :groups do
-        # valid IPs
-        raise ActiveRecord::RecordNotFound unless YAML::load(File.open('config/webserver.yml'))[Rails.env.to_s]['address'].include?(request.env['REMOTE_ADDR'])
+        verify_ip_access!
 
         load_group    = params[:turmas]
         cpfs          = load_group[:professores]
         semester_name = "#{load_group[:ano]}.#{load_group[:periodo]}"
         offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: load_group[:dtFim].to_date }
         group_code    = load_group[:codigo]
-        course        = Course.find_by_code load_group[:codGraduacao]
-        uc            = CurriculumUnit.find_by_code load_group[:codDisciplina]
+        course        = Course.find_by_code! load_group[:codGraduacao]
+        uc            = CurriculumUnit.find_by_code! load_group[:codDisciplina]
 
-        raise ActiveRecord::RecordNotFound if course.nil? or uc.nil?
-        
         begin
           semester = verify_or_create_semester(semester_name, offer_period)
           offer    = verify_or_create_offer(semester, course, uc, offer_period)
