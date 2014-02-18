@@ -7,7 +7,6 @@ require 'test_helper'
 # funcionais.
 
 class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
-  fixtures :all
   # para poder realizar o "login_as" sabendo que o sign_in do devise não funciona no teste de integração
   include Warden::Test::Helpers 
   # para reconhecer o método "fixture_file_upload" no teste de integração
