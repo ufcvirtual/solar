@@ -970,7 +970,7 @@
                     v.style.borderRadius = "0px 0px 0px 0px";
                     v.childNodes.item(1).style.display = "none";
                     v.childNodes.item(2).style.display = "none";
-                    v.childNodes.item(0).style.top = "300px";
+                    v.childNodes.item(0).style.top = "270px";
                     v.childNodes.item(0).style.backgroundColor="#404040";
                     v.childNodes.item(0).style.color="rgb(0, 0, 0)";
                     v.childNodes.item(0).childNodes.item(1).childNodes.item(0).style.color="rgb(f, f, f)";
@@ -1529,7 +1529,7 @@
                     $("#controlbox")[0].style.borderRadius = "0px 0px 0px 0px";
 
                     el.style.position = "relative";
-                    el.style.top = "300px";
+                    el.style.top = "270px";
                     
                 }
                 else{
