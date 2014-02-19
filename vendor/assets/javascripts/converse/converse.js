@@ -3048,6 +3048,8 @@
                         '<span class="icons-{{ chat_status }}"></span>'+
                         '{{ status_message }}' +
                     '</a>' +
+                    '<a id="arrow-chat" class="choose-xmpp-status {{ chat_status }} icon-arrow-down-thin" data-value="{{status_message}}" href="#" title="'+__('Click to change your chat status')+'">' +
+                    '</a>' +
                     // '<a class="change-xmpp-status-message icons-pencil" href="#" title="'+__('Click here to write a custom status message')+'"></a>' +
                 '</div>'),
 

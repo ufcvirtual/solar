@@ -353,7 +353,7 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
     z-index: 99; /*--Keeps the panel on top of all other elements--*/
     position: fixed;
     bottom: -32px; 
-    right: 0;
+    right: 14px;
     height: 332px;
     width: auto;
     pointer-events: none;
@@ -367,7 +367,7 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
     position: fixed;
     font-size: 70%;
     bottom: 0px;
-    right: 0;
+    right: 14px;
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
     background: #e3e2e2;
@@ -654,7 +654,7 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
     clear: right;
     height: 22px;
     padding: 0px 0px 0 0;
-    margin:0px;
+    margin: 0px;
     color: rgb(79, 79, 79);
 }
 
@@ -791,13 +791,13 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
 }
 
 #chatpanel #converse-roster {
-    height: 226px;
+    height: 224px;
     overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
     margin: 0;
     position: relative;
-    top: 0;
+    top: 3px;
     border: none;
     margin-top: -3px;
 }
@@ -1275,6 +1275,14 @@ ul.chat-toolbar li:hover {
     height: 22px;
     display: inline-block;
     line-height: 24px;
+    width: 100%;
+}
+
+#arrow-chat{
+	width: auto !important;
+	position: relative;
+	top: -28px;
+	left: 178px;
 }
 
 #chatpanel .chatbox .dropdown-im dd ul a:hover {
@@ -1315,6 +1323,6 @@ ul.chat-toolbar li:hover {
 	width: 185px;
 	margin: 0 0 0 0;
 	font-family: 'PT Sans', sans-serif;
-	margin-bottom: 7px;
+	margin-bottom: 5px;
 }
 
