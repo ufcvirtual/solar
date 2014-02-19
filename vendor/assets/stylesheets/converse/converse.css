@@ -1075,7 +1075,7 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     width: 200px;
-    height: auto;
+    height: 55px;
 }
 
 #chatpanel .chatroom form.sendXMPPMessage {

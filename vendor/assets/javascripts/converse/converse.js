@@ -711,7 +711,7 @@
                 v = document.getElementById(this.model.get('box_id'));
                 v.title = "";
                 //adiciona sombra caso precise
-                if( v.childNodes[0].style.top != "300px" )
+                if( v.childNodes[0].style.top != "270px" )
                     v.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
                 img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
                 while(c<contacts.length){
@@ -748,7 +748,7 @@
                     this.appendMessage($chat_content, _.clone(message.attributes));
                     //notifica ao receber mensagem com IM minimizado
                     head = v.childNodes.item(0);
-                    if(head.style.top=="300px")
+                    if(head.style.top=="270px")
                     {
                         texto = head.childNodes.item(1);
                         texto = texto.childNodes.item(0);
