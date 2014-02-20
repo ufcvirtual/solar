@@ -61,7 +61,6 @@ module V1
     ## modulo academico :: carga de turmas
     ## considerando que é passado uma turma por vez
     namespace :load do
-      format :xml
       post :groups do
         verify_ip_access!
 
@@ -89,7 +88,7 @@ module V1
       post :enrollments do
         verify_ip_access!
 
-        load_enrollments = params[:load_enrollments]
+        load_enrollments = params[:matriculas]
         user             = User.find_by_cpf! load_enrollments[:cpf]
         student_profile  = 1 ## Aluno => 1
         groups           = load_enrollments[:turmas]
@@ -107,6 +106,7 @@ module V1
 
           {ok: :ok}
         rescue => error
+          raise "#{error}"
           error!({error: error}, 422)
         end
       end

@@ -47,23 +47,71 @@ describe "CurriculumUnits" do
   end
 
   describe ".load" do
-    context "editors" do
+    
+    describe "editors" do
 
-      it "from modulo academico" do
-        editors = {
-          cod_curriculum_unit: "RM404",
-          editors: User.where(username: %w(user3 user4)).map(&:cpf)
-        }.to_xml(root: :load_editors)
+      context "with valid ip" do
+        context "and existing users" do
+          it {
+            editors = {load_editors: {
+              codDisciplina: "RM404",
+              editors: User.where(username: %w(user3 user4)).map(&:cpf)
+            }}
 
-        expect{
-          post "/api/v1/curriculum_units/load/editors", editors, "CONTENT_TYPE" => "application/xml"
+            expect{
+              post "/api/v1/curriculum_units/load/editors", editors
 
-          response.status.should eq(201)
-          response.body.should == {ok: :ok}.to_xml
-        }.to change{Allocation.count}.by(2)
+              response.status.should eq(201)
+              response.body.should == {ok: :ok}.to_json
+            }.to change{Allocation.count}.by(2)
+          }
+        end
+
+        context "and non existing users" do
+          it {
+            editors = {load_editors: {
+              codDisciplina: "RM404",
+              editors: User.where(username: %w(userDontExist user3)).map(&:cpf) #only one user exists
+            }}
+            
+            expect{
+              post "/api/v1/curriculum_units/load/editors", editors
+
+              response.status.should eq(201)
+              response.body.should == {ok: :ok}.to_json
+            }.to change{Allocation.count}.by(1)
+          }
+        end
+
+        context "and non existing uc" do
+          it {
+            editors = {load_editors: {
+              codDisciplina: "UC01",
+              editors: User.where(username: %w(user3 user4)).map(&:cpf) #only one user exists
+            }}
+            
+            expect{
+              post "/api/v1/curriculum_units/load/editors", editors
+
+              response.status.should eq(404)
+            }.to change{Allocation.count}.by(0)
+          }
+        end
       end
 
-    end
-  end
+      context "with invalid ip" do
+         it "gets a not found error" do
+          editors = {load_editors: {
+            codDisciplina: "RM404",
+            editors: User.where(username: %w(user3 user4)).map(&:cpf)
+          }}
+          post "/api/v1/load/enrollments", editors, "REMOTE_ADDR" => "127.0.0.2"
+          response.status.should eq(404)
+        end
+      end
+
+    end # editors
+
+  end # .load
 
 end

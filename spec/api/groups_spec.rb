@@ -39,12 +39,13 @@ describe "Groups" do
       context "with valid ip" do # ip is included on list of ips with access
 
         context "and new semester" do
-          let!(:xml_data){ {ano: "2014", periodo: "2", codDisciplina: "RM302", codigo: "T01", codGraduacao: "LQUIM", 
+          let!(:json_data){ {turmas: {ano: "2014", periodo: "2", codDisciplina: "RM302", codigo: "T01", codGraduacao: "LQUIM", 
               dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
-              }.to_xml(root: "turmas") }
+              }} }
+
 
           subject{ -> {
-            post "/api/v1/load/groups", xml_data, "CONTENT_TYPE"=> 'application/xml'}
+            post "/api/v1/load/groups", json_data}
           }
 
           it { 
@@ -60,18 +61,19 @@ describe "Groups" do
           it { should change(Allocation,:count).by(3) }
 
           it {
-            post "/api/v1/load/groups", xml_data, "CONTENT_TYPE"=> 'application/xml'
+            post "/api/v1/load/groups", json_data
             response.status.should eq(201) # created
+            response.body.should == {ok: :ok}.to_json
           }
         end
 
         context "and dates smaller then today" do
-          let!(:xml_data){ {ano: "2014", periodo: "2", codDisciplina: "RM302", codigo: "T01", codGraduacao: "LQUIM", 
+          let!(:json_data){ {turmas: {ano: "2014", periodo: "2", codDisciplina: "RM302", codigo: "T01", codGraduacao: "LQUIM", 
               dtInicio: Date.current - 1.month, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
-              }.to_xml(root: "turmas") }
+              }} }
 
           subject{ -> { 
-            post "/api/v1/load/groups", xml_data, "CONTENT_TYPE"=> 'application/xml'} 
+            post "/api/v1/load/groups", json_data} 
           }
 
           it { 
@@ -87,19 +89,20 @@ describe "Groups" do
           it { should change(Allocation,:count).by(3) }
 
           it {
-            post "/api/v1/load/groups", xml_data, "CONTENT_TYPE"=> 'application/xml'
+            post "/api/v1/load/groups", json_data
             response.status.should eq(201) # created
+            response.body.should == {ok: :ok}.to_json
           }
         end
 
 
         context "and existing semester" do
-          let!(:xml_data){ xml_data = {ano: "2013", periodo: "1", codDisciplina: "RM404", codigo: "RM0121", codGraduacao: "RM404", 
+          let!(:json_data){ {turmas: {ano: "2013", periodo: "1", codDisciplina: "RM404", codigo: "RM0121", codGraduacao: "RM404", 
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
-            }.to_xml(root: "turmas") }
+            }} }
 
           subject{ -> { 
-            post "/api/v1/load/groups", xml_data, "CONTENT_TYPE"=> 'application/xml'} 
+            post "/api/v1/load/groups", json_data} 
           }
 
           it { should change(Semester,:count).by(0) }
@@ -112,18 +115,19 @@ describe "Groups" do
           it { should change(Allocation,:count).by(3) }
 
           it {
-            post "/api/v1/load/groups", xml_data, "CONTENT_TYPE"=> 'application/xml'
+            post "/api/v1/load/groups", json_data
             response.status.should eq(201) # created
+            response.body.should == {ok: :ok}.to_json
           }
         end
 
         context "and existing offer" do
-          let!(:xml_data){ xml_data = {ano: "2013", periodo: "1", codDisciplina: "RM414", codigo: "RM0121", codGraduacao: "RM404", 
+          let!(:json_data){ {turmas: {ano: "2013", periodo: "1", codDisciplina: "RM414", codigo: "RM0121", codGraduacao: "RM404", 
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
-            }.to_xml(root: "turmas") }
+            }} }
 
           subject{ -> { 
-            post "/api/v1/load/groups", xml_data, "CONTENT_TYPE"=> 'application/xml'} 
+            post "/api/v1/load/groups", json_data} 
           }
 
           it { should change(Semester,:count).by(0) }
@@ -132,18 +136,19 @@ describe "Groups" do
           it { should change(Allocation,:count).by(3) }
 
           it {
-            post "/api/v1/load/groups", xml_data, "CONTENT_TYPE"=> 'application/xml'
+            post "/api/v1/load/groups", json_data
             response.status.should eq(201) # created
+            response.body.should == {ok: :ok}.to_json
           }
         end
 
         context "and existing group" do
-          let!(:xml_data){ xml_data = {ano: "2011", periodo: "1", codDisciplina: "RM301", codigo: "QM-MAR", codGraduacao: "LQUIM", 
+          let!(:json_data){ {turmas: {ano: "2011", periodo: "1", codDisciplina: "RM301", codigo: "QM-MAR", codGraduacao: "LQUIM", 
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
-            }.to_xml(root: "turmas") }
+            }} }
 
           subject{ -> { 
-            post "/api/v1/load/groups", xml_data, "CONTENT_TYPE"=> 'application/xml'} 
+            post "/api/v1/load/groups", json_data} 
           }
 
           it { should change(Semester,:count).by(0) }
@@ -152,18 +157,19 @@ describe "Groups" do
           it { should change(Allocation,:count).by(3) }
 
           it {
-            post "/api/v1/load/groups", xml_data, "CONTENT_TYPE"=> 'application/xml'
+            post "/api/v1/load/groups", json_data
             response.status.should eq(201) # created
+            response.body.should == {ok: :ok}.to_json
           }
         end
 
         context "and non existing uc" do
-          let!(:xml_data){ xml_data = {ano: "2011", periodo: "1", codDisciplina: "UC01", codigo: "QM-MAR", codGraduacao: "LQUIM", 
+          let!(:json_data){ {turmas: {ano: "2011", periodo: "1", codDisciplina: "UC01", codigo: "QM-MAR", codGraduacao: "LQUIM", 
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
-            }.to_xml(root: "turmas") }
+            }} }
 
           subject{ -> { 
-            post "/api/v1/load/groups", xml_data, "CONTENT_TYPE"=> 'application/xml'} 
+            post "/api/v1/load/groups", json_data} 
           }
 
           it { should change(Semester,:count).by(0) }
@@ -172,7 +178,7 @@ describe "Groups" do
           it { should change(Allocation,:count).by(0) }
 
           it {
-            post "/api/v1/load/groups", xml_data, "CONTENT_TYPE"=> 'application/xml'
+            post "/api/v1/load/groups", json_data
             response.status.should eq(404)
           }
         end
@@ -180,11 +186,11 @@ describe "Groups" do
       end
 
       context "with invalid ip" do # ip isn't included on list of ips with access
-        it 'gets an unauthorized error' do
-          xml_data = {ano: "2013", periodo: "1", codDisciplina: "RM404", codigo: "RM0121", codGraduacao: "RM404", 
+        it "gets a not found error" do
+          json_data = {turmas: {ano: "2013", periodo: "1", codDisciplina: "RM404", codigo: "RM0121", codGraduacao: "RM404", 
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
-            }.to_xml(root: "turmas")
-          post "/api/v1/load/groups", xml_data, "CONTENT_TYPE"=> 'application/xml', "REMOTE_ADDR" => "127.0.0.2"
+            }}
+          post "/api/v1/load/groups", json_data, "REMOTE_ADDR" => "127.0.0.2"
           response.status.should eq(404)
         end
       end
@@ -196,100 +202,91 @@ describe "Groups" do
       context "with valid ip" do
 
         context 'and list of existing groups' do 
-          let!(:xml_data){
-            {cpf: "11016853521", turmas: [ # user3
+          let!(:json_data){
+            { matriculas: {cpf: "11016853521", turmas: [ # user3
               {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "LQUIM"},
               {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "RM301", codGraduacao: "LQUIM"},
               {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "LQUIM"},
               {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "LQUIM"} # repetido propositalmente
-            ]}.to_xml(root: "load_enrollments")
+            ]}}
           }
 
-          subject{ -> {
-            post "/api/v1/load/enrollments", xml_data, "CONTENT_TYPE"=> 'application/xml'}
-          }
-
-          it { should change(Allocation,:count).by(3) }
- 
           it {
-            post "/api/v1/load/enrollments", xml_data, "CONTENT_TYPE"=> 'application/xml'
-            response.status.should eq(201) # created
+            expect{
+              post "/api/v1/load/enrollments", json_data
+
+              response.status.should eq(201)
+              response.body.should == {ok: :ok}.to_json
+            }.to change{Allocation.count}.by(3)
           }
         end
 
         context 'and list of non existing groups' do 
-          let!(:xml_data){
-            {cpf: "11016853521", turmas: [ # user3
+          let!(:json_data){
+            { matriculas: {cpf: "11016853521", turmas: [ # user3
               {periodo: "1", ano: "2011", codigo: "T01", codDisciplina: "RM301", codGraduacao: "LQUIM"}, # turma não existe
               {periodo: "1", ano: "2011", codigo: "T02", codDisciplina: "RM301", codGraduacao: "LQUIM"}, # turma não existe
               {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "LQUIM"} # turma existe
-            ]}.to_xml(root: "load_enrollments")
+            ]}}
           }
 
-          subject{ -> {
-            post "/api/v1/load/enrollments", xml_data, "CONTENT_TYPE"=> 'application/xml'}
-          }
-
-          it { should change(Allocation,:count).by(1) }
- 
           it {
-            post "/api/v1/load/enrollments", xml_data, "CONTENT_TYPE"=> 'application/xml'
-            response.status.should eq(201) # created
+            expect{
+              post "/api/v1/load/enrollments", json_data
+
+              response.status.should eq(201)
+              response.body.should == {ok: :ok}.to_json
+            }.to change{Allocation.count}.by(1)
           }
         end
 
         context 'and non existing uc or course' do 
-          let!(:xml_data){
-            {cpf: "11016853521", turmas: [ # user3
+          let!(:json_data){
+            { matriculas: {cpf: "11016853521", turmas: [ # user3
               {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "C01"}, # uc não existe
               {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "UC01", codGraduacao: "LQUIM"}, # curso não existe
               {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "LQUIM"} # turma existe
-            ]}.to_xml(root: "load_enrollments")
+            ]}}
           }
 
-          subject{ -> {
-            post "/api/v1/load/enrollments", xml_data, "CONTENT_TYPE"=> 'application/xml'}
-          }
-
-          it { should change(Allocation,:count).by(1) }
- 
           it {
-            post "/api/v1/load/enrollments", xml_data, "CONTENT_TYPE"=> 'application/xml'
-            response.status.should eq(201) # created
+            expect{
+              post "/api/v1/load/enrollments", json_data
+
+              response.status.should eq(201)
+              response.body.should == {ok: :ok}.to_json
+            }.to change{Allocation.count}.by(1)
           }
         end
 
         context 'and non existing user' do 
-          let!(:xml_data){
-            {cpf: "cpf", turmas: [ # cpf inválido / usuário não encontrado
+          let!(:json_data){
+            { matriculas: {cpf: "cpf", turmas: [ # cpf inválido / usuário não encontrado
               {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "LQUIM"},
               {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "RM301", codGraduacao: "LQUIM"},
               {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "LQUIM"}
-            ]}.to_xml(root: "load_enrollments")
+            ]}}
           }
 
-          subject{ -> {
-            post "/api/v1/load/enrollments", xml_data, "CONTENT_TYPE"=> 'application/xml'}
-          }
-
-          it { should change(Allocation,:count).by(0) }
- 
           it {
-            post "/api/v1/load/enrollments", xml_data, "CONTENT_TYPE"=> 'application/xml'
-            response.status.should eq(404)
+            expect{
+              post "/api/v1/load/enrollments", json_data
+
+              response.status.should eq(404)
+            }.to change{Allocation.count}.by(0)
           }
         end
 
       end
 
       context "with invalid ip" do
-        it {
-          xml_data = {cpf: "11016853521", turmas: [ # user3
+        it "gets a not found error" do
+          json_data = { matriculas: {cpf: "11016853521", turmas: [ # user3
                         {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "LQUIM"}
-                     ]}.to_xml(root: "load_enrollments")
-          post "/api/v1/load/enrollments", xml_data, "CONTENT_TYPE"=> 'application/xml', "REMOTE_ADDR" => "127.0.0.2"
+                     ]}}
+          post "/api/v1/load/enrollments", json_data, "REMOTE_ADDR" => "127.0.0.2"
           response.status.should eq(404)
-        }
+        end
       end
 
     end # enrollments

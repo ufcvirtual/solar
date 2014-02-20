@@ -21,21 +21,11 @@ module V1
 
     ## curriculum_unit/load/editors
     namespace :load do
-      format :xml
-
-      # <load_editors>
-      #   <cod_curriculum_unit>RM404</cod_curriculum_unit>
-      #   <editors type="array">
-      #     <value>11016853521</value>
-      #     <value>57215688798</value>
-      #   </editors>
-      # </load_editors>
-
       post :editors do
         verify_ip_access!
 
         load_editors  = params[:load_editors]
-        uc            = CurriculumUnit.find_by_code!(load_editors[:cod_curriculum_unit])
+        uc            = CurriculumUnit.find_by_code!(load_editors[:codDisciplina])
         users         = User.where(cpf: load_editors[:editors])
         prof_editor   = 5
 
