@@ -17,19 +17,30 @@ jQuery(function($){
   // recupera o id da aula em questão
   var lesson_id = $("#move_path").attr("value").split("/")[2];
 
+
   // se os cookies armazenados forem de uma aula diferente, são "zerados"
-  if(lesson_id != getCookie("lesson_id")){
-    deleteCookie("dynatree-select");
-    deleteCookie("dynatree-expand");
+  if(lesson_id != $.cookie("lesson_id")){
+    $.cookie("dynatree-expand", new Array());
+    $.cookie("dynatree-select", new Array());
   }
 
   // seta o valor da aula atual
-  setCookie("lesson_id",lesson_id);
+  $.cookie("lesson_id",lesson_id);
 
   // recupera os nós já expandidos existentes nos cookies
-  var nodes_expanded = ((getCookie("dynatree-expand")) ? getCookie("dynatree-expand").split(",") : new Array());
+  if (($.cookie("dynatree-expand") == undefined)){
+    var nodes_expanded = $.cookie("dynatree-expand", new Array());
+  }else{
+    var expand = $.cookie("dynatree-expand").toString();
+    var nodes_expanded = (expand == "" ? expand : expand.split(","));
+  }
   // recupera os nós selecionados existentes nos cookies
-  var nodes_selected = ((getCookie("dynatree-select")) ? getCookie("dynatree-select").split(",") : new Array());
+  if (($.cookie("dynatree-select") == undefined)){
+    var nodes_selected = $.cookie("dynatree-select", new Array());
+  }else{
+    var select = $.cookie("dynatree-select").toString();
+    var nodes_selected = (select == "" ? select : select.split(","));
+  }
 
   /* Inicialização da árvore de arquivos */
   jQuery("#tree").dynatree({

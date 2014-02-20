@@ -6,13 +6,10 @@
     %meta{name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1"}
     %title= content_for?(:title) ? yield(:title) : "Solar"
 
-    = javascript_include_tag "jquery"
-    = javascript_include_tag "jquery.cookie"
-    = javascript_include_tag "lessons"
+    = javascript_include_tag "jquery", "jquery.cookie", "lessons"
 
     = stylesheet_link_tag "themes/theme_blue"
-    = stylesheet_link_tag "misc/div_layout", media: "all"
-    = stylesheet_link_tag "fonts/fonts", media: "all"
+    = stylesheet_link_tag "misc/div_layout", "fonts/fonts", media: "all"
 
     = csrf_meta_tags
 
