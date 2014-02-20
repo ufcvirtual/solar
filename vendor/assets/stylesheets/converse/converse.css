@@ -359,7 +359,8 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
     pointer-events: none;
 }
 
-#chatpanel #collective-xmpp-chat-data > div, #toggle-controlbox {
+#controlbox *,
+.chatbox * {
     pointer-events: auto;
 }
 
