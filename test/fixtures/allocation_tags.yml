@@ -134,3 +134,26 @@ al29:
   id: 29
   group_id: 4
 
+al30:
+  id: 30
+  course_id: 4
+
+al31:
+  id: 31
+  course_id: 5
+
+al32:
+  id: 32
+  course_id: 6
+
+al33:
+  id: 33
+  course_id: 7
+
+al34:
+  id: 34
+  course_id: 8
+
+al35:
+  id: 35
+  course_id: 9

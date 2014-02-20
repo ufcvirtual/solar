@@ -2,14 +2,44 @@
 c1:
   id: 1
   name: Letras Portugues
-  code: LLPT
+  code: 110
 
 c2:
   id: 2
   name: Licenciatura em Quimica
-  code: LQUIM
+  code: 109
 
 c3:
   id: 3
-  name: Introducao a Linguistica
-  code: RM404
+  name: Licenciatura em Matematica
+  code: 108
+
+c4:
+  id: 4
+  name: Bacharelado em Admin
+  code: 107
+
+c5:
+  id: 5
+  name: Letras Ingles
+  code: 111
+
+c6:
+  id: 6
+  name: Licenciatura em Fisica
+  code: 112
+
+c7:
+  id: 7
+  name: Letras Espanhol
+  code: 113
+
+c8:
+  id: 8
+  name: Bacharelado em Ges Publica
+  code: 115
+
+c9:
+  id: 9
+  name: Licenciatura em Pedagogia
+  code: 118
