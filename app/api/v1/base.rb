@@ -8,5 +8,6 @@ module V1
     mount CurriculumUnits
     mount Discussions
     mount Posts
+    mount Loads
   end
 end

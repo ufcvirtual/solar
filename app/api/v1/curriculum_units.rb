@@ -2,9 +2,10 @@ module V1
   class CurriculumUnits < Base
     namespace :curriculum_units
 
+    guard_all!
+
     segment do
       before do
-        guard!
         @curriculum_units = Semester.all_by_period.map(&:offers).flatten.map(&:curriculum_unit) # atual
       end
 
@@ -19,26 +20,5 @@ module V1
       end
     end
 
-    ## curriculum_unit/load/editors
-    namespace :load do
-      post :editors do
-        verify_ip_access!
-
-        load_editors  = params[:load_editors]
-        uc            = CurriculumUnit.find_by_code!(load_editors[:codDisciplina])
-        users         = User.where(cpf: load_editors[:editors])
-        prof_editor   = 5
-
-        begin
-          users.each do |user|
-            uc.allocate_user(user.id, prof_editor)
-          end
-
-          {ok: :ok}
-        rescue => error
-          error!({error: error}, 422)
-        end
-      end
-    end
   end
 end
