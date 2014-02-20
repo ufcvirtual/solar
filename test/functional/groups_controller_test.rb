@@ -27,7 +27,7 @@ class GroupsControllerTest < ActionController::TestCase
   # Usuário com permissão e acesso (remove seu respectivo módulo default, pois não possui aulas)
   test "remover turma" do 
     assert_difference(["Group.count", "LessonModule.count"], -1) do
-      get(:destroy, {id: groups(:g9).id, allocation_tags_ids: [allocation_tags(:al22).id]})
+      delete(:destroy, {id: groups(:g9).id, allocation_tags_ids: [allocation_tags(:al22).id]})
     end
 
     assert_response :success
@@ -36,7 +36,7 @@ class GroupsControllerTest < ActionController::TestCase
   # Usuário com permissão e acesso, mas a turma não permite (possui níveis inferiores)
   test "nao remove turma - niveis inferiores" do
     assert_no_difference(["Group.count", "LessonModule.count"]) do
-      get :destroy, {id: groups(:g1).id}
+      delete :destroy, {id: groups(:g1).id}
     end
 
     assert_response :unprocessable_entity

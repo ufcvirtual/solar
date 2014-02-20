@@ -1,16 +1,19 @@
+require 'active_support/concern'
+
 module Taggable
+  extend ActiveSupport::Concern
 
-  def self.included(base)
-    base.before_destroy :destroy_empty_modules # modulos vazios (default)
-    base.before_destroy :can_destroy?
+  included do
+    before_destroy :destroy_empty_modules # modulos vazios (default)
+    before_destroy :can_destroy?
 
-    base.after_create :allocation_tag_association
-    base.after_create :allocate_profiles
+    after_create :allocation_tag_association
+    after_create :allocate_profiles
 
-    base.has_one :allocation_tag, dependent: :destroy
+    has_one :allocation_tag, dependent: :destroy
 
-    base.has_many :allocations, through: :allocation_tag
-    base.has_many :users,       through: :allocation_tag
+    has_many :allocations, through: :allocation_tag
+    has_many :users,       through: :allocation_tag
 
     attr_accessor :user_id
   end
@@ -30,7 +33,7 @@ module Taggable
       return false
     end
 
-    if not at_most_one_user_allocated? # se possuir mais de um usuario alocado, nao deleta
+    if self.allocations.count > 1 # se possuir mais de um usuario alocado, nao deleta
       errors.add(:base, I18n.t(:dont_destroy_with_many_allocations))
       return false
     end
@@ -39,16 +42,17 @@ module Taggable
       errors.add(:base, I18n.t(:dont_destroy_with_content))
       return false
     end
+
+    return true
   end
 
   ## demais metodos
 
-  def at_most_one_user_allocated?
-    not (self.allocations.select("DISTINCT user_id").count  > 1)
-  end
+  def unallocate_user(user_id, profile_id = nil)
+    query = {user_id: user_id}
+    query.merge!({profile_id: profile_id}) unless profile_id.nil?
 
-  def unallocate_user(user_id)
-    Allocation.destroy_all(user_id: user_id, allocation_tag_id: self.allocation_tag.id)
+    allocations.where(query).destroy_all
   end
 
   def unallocate_user_in_related(user_id)

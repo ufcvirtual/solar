@@ -76,6 +76,11 @@ module Solar
 
     config.paths.add "app/api", glob: "**/*.rb"
     config.paths.add "app/services", glob: "**/*.rb"
+
+    # concerns
+    config.autoload_paths += %W{ #{Rails.root}/app/controllers/concerns #{Rails.root}/app/models/concerns }
+
+    # API
     config.autoload_paths += Dir["#{Rails.root}/app/api/*"]
     config.autoload_paths += Dir["#{Rails.root}/app/services/*"]
 

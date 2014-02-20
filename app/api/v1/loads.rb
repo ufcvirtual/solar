@@ -105,9 +105,9 @@ module V1
       post :editors do
         verify_ip_access!
 
-        load_editors  = params[:load_editors]
+        load_editors  = params[:editores]
         uc            = CurriculumUnit.find_by_code!(load_editors[:codDisciplina])
-        users         = User.where(cpf: load_editors[:editors])
+        users         = User.where(cpf: load_editors[:editores])
         prof_editor   = 5
 
         begin
