@@ -79,6 +79,7 @@ class EdxCoursesController < ApplicationController
     if (not params[:edx_course_id].blank?)
       res = get_response(EDX["host"]+params[:edx_course_id])
       @edx_courses =  JSON.parse("[" +res.body+ "]") 
+      @resource_uri = params[:edx_course_id]
     else
       res = get_response(EDX_URLS["list_available_courses"])
       @edx_courses = JSON.parse(res.body)["objects"]
@@ -88,6 +89,9 @@ class EdxCoursesController < ApplicationController
 
   def new
   end
+
+  def edit 
+  end  
 
   def create
     create_user_solar_in_edx
@@ -112,6 +116,20 @@ class EdxCoursesController < ApplicationController
 
     redirect_to  academic_edx_courses_editions_path(7)
   end 
+
+  def delete
+    course = Base64.decode64(params[:course])
+    
+    data_course = {"confirm" => "true"}.to_json
+
+    uri = URI.parse(EDX["host"]+course)
+    http = Net::HTTP.new(uri.host,uri.port)
+    req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json' , 'X-HTTP-METHOD-OVERRIDE' => 'DELETE'})
+    req.body = data_course
+    res = http.request(req) 
+
+    redirect_to  academic_edx_courses_editions_path(7) 
+  end  
    
   private
 

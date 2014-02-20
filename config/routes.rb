@@ -161,8 +161,10 @@ Solar::Application.routes.draw do
   resources :edx_courses, only: [:index, :new] do
     collection do
       post :create, as: :create
+      post "delete/:course", to: :delete, as: :delete
       get :my
       get :available
+      get :edit
       post "enroll/:course", to: :enroll, as: :enroll
       post "unenroll/:course", to: :unenroll, as: :unenroll
     end

@@ -13,14 +13,35 @@
         %th= t("courses.index.name")
         %th.no_sort{:width => "12%"}
     %tbody
+      - edx = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]
       - @edx_courses.each do |course|
         %tr.lines
-          - course_edx_id = course["course_id"].split("/")  
+          - course_edx_id = course["course_id"].split("/")
+          - if @resource_uri
+            - course_resource_uri =  Base64.encode64(@resource_uri)
+          - else  
+            - course_resource_uri =  Base64.encode64(course["resource_uri"])   
           %td= course_edx_id[1]
           %td= course["display_name"]
+          %td
+            = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_edx_courses_path, class: 'btn link_edit_course edit_edx_courses', :'data-tooltip' => t("courses.index.edit")
+
+            = link_to (content_tag(:i, nil, :class=>'icon-trash')), delete_edx_courses_path(course_resource_uri), class: 'btn btn_caution delete_course', :'data-tooltip' => t("courses.index.delete"), :method => :post
+
+            - action = "#{edx['login']}?next=#{course['course_absolute_url_studio']}"
+            %form{action: action, method: "post", target:"_blank"}
+              %input{name: "username", type: "hidden", value: current_user.username}/
+              %input{name: "token", type: "hidden", value: Digest::HMAC.hexdigest(current_user.username, edx['hash_key'], Digest::SHA1)}/
           
 :javascript
 
   $(function(){
-      $("#new_edx_course").call_fancybox();
+    $(".edit_edx_courses").click(function(e){
+      e.preventDefault();
+
+      $(this).siblings('form').submit();
+      $(this).call_fancybox({open: true});
     });
+
+    $("#new_edx_course").call_fancybox();
+  });
