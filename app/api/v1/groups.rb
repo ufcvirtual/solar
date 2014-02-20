@@ -86,38 +86,30 @@ module V1
         end
       end
 
-      post :students do
+      post :enrollments do
+        verify_ip_access!
 
-      # <load_editors>
-      #   <cod_curriculum_unit>RM404</cod_curriculum_unit>
-      #   <editors type="array">
-      #     <value>11016853521</value>
-      #     <value>57215688798</value>
-      #   </editors>
-      # </load_editors>
+        load_enrollments = params[:load_enrollments]
+        user             = User.find_by_cpf! load_enrollments[:cpf]
+        student_profile  = 1 ## Aluno => 1
+        groups           = load_enrollments[:turmas]
 
-      # valid IPs
-      raise ActiveRecord::RecordNotFound unless YAML::load(File.open('config/webserver.yml'))[Rails.env.to_s]['address'].include?(request.env['REMOTE_ADDR'])
+        begin
+          groups.each do |group_info|
+            group = Group.joins(offer: :semester).where(code: group_info[:codigo], 
+              offers: {curriculum_unit_id: CurriculumUnit.where(code: group_info[:codDisciplina]).first, 
+                       course_id: Course.where(code: group_info[:codGraduacao]).first},
+              semesters: {name: "#{group_info[:ano]}.#{group_info[:periodo]}"
+            }).first
 
-      load_editors  = params[:load_editors]
-      uc            = CurriculumUnit.find_by_code(load_editors[:cod_curriculum_unit])
-      users         = User.where(cpf: load_editors[:editors])
-      prof_editor   = 5
+            group.allocate_user(user.id, student_profile) if group
+          end
 
-      begin
-        users.each do |user|
-          uc.allocate_user(user.id, prof_editor)
+          {ok: :ok}
+        rescue => error
+          error!({error: error}, 422)
         end
-
-        {ok: :ok}
-      rescue => error
-        error!({error: error}, 422)
       end
-
-
-      end
-
     end
-
   end
 end

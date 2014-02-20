@@ -93,8 +93,7 @@ describe "Posts" do
         # recuperar o datetime do último post feito (ou seja, o mais recente) -1 minuto
         # deste modo, apenas ele será retornado como mais novos que a data passada
         newest_post_date = "#{Discussion.find(2).posts.first.updated_at.to_datetime - 1.minute}"
-
-        get "/api/v1/discussions/2/posts/new?date=#{newest_post_date}", access_token: token.token
+        get "/api/v1/discussions/2/posts/new", date: newest_post_date, access_token: token.token
         response.status.should eq(200)
 
         expect(json).to have_key('newer')
@@ -122,7 +121,7 @@ describe "Posts" do
       end
 
       it "lists posts history with old date" do
-        get "/api/v1/discussions/2/posts/history?date=20100204T1416", access_token: token.token
+        get "/api/v1/discussions/2/posts/history", date: "20100204T1416", access_token: token.token
         response.status.should eq(200)
 
         expect(json).to have_key('newer')
@@ -136,7 +135,7 @@ describe "Posts" do
       end
 
       it "lists posts history with new date" do
-        get "/api/v1/discussions/2/posts/history?date=#{DateTime.now}", access_token: token.token
+        get "/api/v1/discussions/2/posts/history", date: DateTime.now, access_token: token.token
         response.status.should eq(200)
 
         expect(json).to have_key('newer')
@@ -159,14 +158,14 @@ describe "Posts" do
     context "without access token" do
 
       it 'gets an unauthorized error' do
-        get "/api/v1/discussions/2/posts/history?date=#{DateTime.now}"
+        get "/api/v1/discussions/2/posts/history", date: DateTime.now
 
         response.status.should eq(401)
         response.body.should == {error: "unauthorized"}.to_json
       end
 
       it 'gets an unauthorized error' do
-        get "/api/v1/discussions/2/posts/new?date=#{DateTime.now}"
+        get "/api/v1/discussions/2/posts/new", date: DateTime.now
 
         response.status.should eq(401)
         response.body.should == {error: "unauthorized"}.to_json
@@ -183,14 +182,14 @@ describe "Posts" do
     context "without access to discussion" do
 
       it 'gets a permission  error' do
-        get "/api/v1/discussions/4/posts/history?date=#{DateTime.now}", access_token: token.token
+        get "/api/v1/discussions/4/posts/history", date: DateTime.now, access_token: token.token
 
         response.status.should eq(404)
         response.body.should == {}.to_json
       end
 
       it 'gets a permission error' do
-        get "/api/v1/discussions/4/posts/new?date=#{DateTime.now}", access_token: token.token
+        get "/api/v1/discussions/4/posts/new", date: DateTime.now, access_token: token.token
 
         response.status.should eq(404)
         response.body.should == {}.to_json
