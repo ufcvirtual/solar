@@ -11,9 +11,9 @@ describe "Loads" do
       context "with valid ip" do
         context "and existing users" do
           it {
-            editors = {load_editors: {
+            editors = {editores: {
               codDisciplina: "RM404",
-              editors: User.where(username: %w(user3 user4)).map(&:cpf)
+              editores: User.where(username: %w(user3 user4)).map(&:cpf)
             }}
 
             expect{
@@ -27,9 +27,9 @@ describe "Loads" do
 
         context "and non existing users" do
           it {
-            editors = {load_editors: {
+            editors = {editores: {
               codDisciplina: "RM404",
-              editors: User.where(username: %w(userDontExist user3)).map(&:cpf) #only one user exists
+              editores: User.where(username: %w(userDontExist user3)).map(&:cpf) #only one user exists
             }}
             
             expect{
@@ -43,9 +43,9 @@ describe "Loads" do
 
         context "and non existing uc" do
           it {
-            editors = {load_editors: {
+            editors = {editores: {
               codDisciplina: "UC01",
-              editors: User.where(username: %w(user3 user4)).map(&:cpf) #only one user exists
+              editores: User.where(username: %w(user3 user4)).map(&:cpf) #only one user exists
             }}
             
             expect{
@@ -59,9 +59,9 @@ describe "Loads" do
 
       context "with invalid ip" do
          it "gets a not found error" do
-          editors = {load_editors: {
+          editors = {editores: {
             codDisciplina: "RM404",
-            editors: User.where(username: %w(user3 user4)).map(&:cpf)
+            editores: User.where(username: %w(user3 user4)).map(&:cpf)
           }}
           post "/api/v1/load/curriculum_units/editors", editors, "REMOTE_ADDR" => "127.0.0.2"
           response.status.should eq(404)
@@ -79,10 +79,9 @@ describe "Loads" do
       context "with valid ip" do # ip is included on list of ips with access
 
         context "and new semester" do
-          let!(:json_data){ {turmas: {ano: "2014", periodo: "2", codDisciplina: "RM302", codigo: "T01", codGraduacao: "LQUIM", 
+          let!(:json_data){ {turmas: {ano: "2014", periodo: "2", codDisciplina: "RM302", codigo: "T01", codGraduacao: "109",
               dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
               }} }
-
 
           subject{ -> {
             post "/api/v1/load/groups", json_data}
@@ -108,7 +107,7 @@ describe "Loads" do
         end
 
         context "and dates smaller then today" do
-          let!(:json_data){ {turmas: {ano: "2014", periodo: "2", codDisciplina: "RM302", codigo: "T01", codGraduacao: "LQUIM", 
+          let!(:json_data){ {turmas: {ano: "2014", periodo: "2", codDisciplina: "RM302", codigo: "T01", codGraduacao: "109",
               dtInicio: Date.current - 1.month, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
               }} }
 
@@ -135,9 +134,8 @@ describe "Loads" do
           }
         end
 
-
         context "and existing semester" do
-          let!(:json_data){ {turmas: {ano: "2013", periodo: "1", codDisciplina: "RM404", codigo: "RM0121", codGraduacao: "RM404", 
+          let!(:json_data){ {turmas: {ano: "2013", periodo: "1", codDisciplina: "RM404", codigo: "RM0121", codGraduacao: "108",
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
             }} }
 
@@ -162,7 +160,7 @@ describe "Loads" do
         end
 
         context "and existing offer" do
-          let!(:json_data){ {turmas: {ano: "2013", periodo: "1", codDisciplina: "RM414", codigo: "RM0121", codGraduacao: "RM404", 
+          let!(:json_data){ {turmas: {ano: "2013", periodo: "1", codDisciplina: "RM414", codigo: "RM0121", codGraduacao: "108",
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
             }} }
 
@@ -183,7 +181,7 @@ describe "Loads" do
         end
 
         context "and existing group" do
-          let!(:json_data){ {turmas: {ano: "2011", periodo: "1", codDisciplina: "RM301", codigo: "QM-MAR", codGraduacao: "LQUIM", 
+          let!(:json_data){ {turmas: {ano: "2011", periodo: "1", codDisciplina: "RM301", codigo: "QM-MAR", codGraduacao: "109",
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
             }} }
 
@@ -204,7 +202,7 @@ describe "Loads" do
         end
 
         context "and non existing uc" do
-          let!(:json_data){ {turmas: {ano: "2011", periodo: "1", codDisciplina: "UC01", codigo: "QM-MAR", codGraduacao: "LQUIM", 
+          let!(:json_data){ {turmas: {ano: "2011", periodo: "1", codDisciplina: "UC01", codigo: "QM-MAR", codGraduacao: "109",
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
             }} }
 
@@ -227,7 +225,7 @@ describe "Loads" do
 
       context "with invalid ip" do # ip isn't included on list of ips with access
         it "gets a not found error" do
-          json_data = {turmas: {ano: "2013", periodo: "1", codDisciplina: "RM404", codigo: "RM0121", codGraduacao: "RM404", 
+          json_data = {turmas: {ano: "2013", periodo: "1", codDisciplina: "RM404", codigo: "RM0121", codGraduacao: "108",
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
             }}
           post "/api/v1/load/groups", json_data, "REMOTE_ADDR" => "127.0.0.2"
@@ -244,10 +242,10 @@ describe "Loads" do
         context 'and list of existing groups' do 
           let!(:json_data){
             { matriculas: {cpf: "11016853521", turmas: [ # user3
-              {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "LQUIM"},
-              {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "RM301", codGraduacao: "LQUIM"},
-              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "LQUIM"},
-              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "LQUIM"} # repetido propositalmente
+              {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"},
+              {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "RM301", codGraduacao: "109"},
+              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "109"},
+              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "109"} # repetido propositalmente
             ]}}
           }
 
@@ -264,9 +262,9 @@ describe "Loads" do
         context 'and list of non existing groups' do 
           let!(:json_data){
             { matriculas: {cpf: "11016853521", turmas: [ # user3
-              {periodo: "1", ano: "2011", codigo: "T01", codDisciplina: "RM301", codGraduacao: "LQUIM"}, # turma não existe
-              {periodo: "1", ano: "2011", codigo: "T02", codDisciplina: "RM301", codGraduacao: "LQUIM"}, # turma não existe
-              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "LQUIM"} # turma existe
+              {periodo: "1", ano: "2011", codigo: "T01", codDisciplina: "RM301", codGraduacao: "109"}, # turma não existe
+              {periodo: "1", ano: "2011", codigo: "T02", codDisciplina: "RM301", codGraduacao: "109"}, # turma não existe
+              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "109"} # turma existe
             ]}}
           }
 
@@ -284,8 +282,8 @@ describe "Loads" do
           let!(:json_data){
             { matriculas: {cpf: "11016853521", turmas: [ # user3
               {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "C01"}, # uc não existe
-              {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "UC01", codGraduacao: "LQUIM"}, # curso não existe
-              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "LQUIM"} # turma existe
+              {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "UC01", codGraduacao: "109"}, # curso não existe
+              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "109"} # turma existe
             ]}}
           }
 
@@ -302,9 +300,9 @@ describe "Loads" do
         context 'and non existing user' do 
           let!(:json_data){
             { matriculas: {cpf: "cpf", turmas: [ # cpf inválido / usuário não encontrado
-              {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "LQUIM"},
-              {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "RM301", codGraduacao: "LQUIM"},
-              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "LQUIM"}
+              {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"},
+              {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "RM301", codGraduacao: "109"},
+              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "109"}
             ]}}
           }
 
@@ -322,7 +320,7 @@ describe "Loads" do
       context "with invalid ip" do
         it "gets a not found error" do
           json_data = { matriculas: {cpf: "11016853521", turmas: [ # user3
-                        {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "LQUIM"}
+                        {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
                      ]}}
           post "/api/v1/load/groups/enrollments", json_data, "REMOTE_ADDR" => "127.0.0.2"
           response.status.should eq(404)

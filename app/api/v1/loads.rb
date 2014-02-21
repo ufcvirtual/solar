@@ -2,6 +2,10 @@ module V1
   class Loads < Base
     namespace :load
 
+    before do
+      verify_ip_access!
+    end
+
     helpers do
       def verify_or_create_semester(name, offer_period)
         semester = Semester.where(name: name).first_or_initialize
@@ -44,14 +48,11 @@ module V1
           group.allocate_user(prof.id, 2)
         end
       end
-
     end
 
     namespace :groups do
       # load/groups
       post "/" do
-        verify_ip_access!
-
         load_group    = params[:turmas]
         cpfs          = load_group[:professores]
         semester_name = "#{load_group[:ano]}.#{load_group[:periodo]}"
@@ -75,8 +76,6 @@ module V1
 
       # load/groups/enrollments
       post :enrollments do
-        verify_ip_access!
-
         load_enrollments = params[:matriculas]
         user             = User.find_by_cpf! load_enrollments[:cpf]
         student_profile  = 1 ## Aluno => 1
@@ -103,8 +102,6 @@ module V1
     namespace :curriculum_units do
       # load/curriculum_units/editors
       post :editors do
-        verify_ip_access!
-
         load_editors  = params[:editores]
         uc            = CurriculumUnit.find_by_code!(load_editors[:codDisciplina])
         users         = User.where(cpf: load_editors[:editores])
