@@ -364,6 +364,10 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
     pointer-events: auto;
 }
 
+#toggle-controlbox{
+	pointer-events: fill;	
+}
+
 #chatpanel #toggle-controlbox {
     position: fixed;
     font-size: 70%;

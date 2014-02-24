@@ -3335,7 +3335,6 @@
             $.proxy(function (e) {
                 e.preventDefault(); 
 
-
                 if ($('.conn-feedback').text() == __('Show') || $('.conn-feedback').text() == __('Hide')){
                     if(aux){
                         $("#collective-xmpp-chat-data").css("display","none");
