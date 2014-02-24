@@ -48,6 +48,13 @@ module V1
           group.allocate_user(prof.id, 2)
         end
       end
+
+      def get_group(curriculum_unit_code, course_code, code, period, year)
+        Group.joins(offer: :semester).where(code: code, 
+          offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, 
+                   course_id: Course.where(code: course_code).first},
+          semesters: {name: "#{year}.#{period}"}).first
+      end
     end
 
     namespace :groups do
@@ -83,12 +90,7 @@ module V1
 
         begin
           groups.each do |group_info|
-            group = Group.joins(offer: :semester).where(code: group_info[:codigo], 
-              offers: {curriculum_unit_id: CurriculumUnit.where(code: group_info[:codDisciplina]).first, 
-                       course_id: Course.where(code: group_info[:codGraduacao]).first},
-              semesters: {name: "#{group_info[:ano]}.#{group_info[:periodo]}"
-            }).first
-
+            group = get_group(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], group_info[:periodo], group_info[:ano])
             group.allocate_user(user.id, student_profile) if group
           end
 
@@ -117,7 +119,44 @@ module V1
           error!({error: error}, 422)
         end
       end
-    end
+    end #curriculum_units
+
+    namespace :allocations do
+      # Recebe usuário, turma e perfil para bloquear.
+      # load/allocations/block_profile
+      post :block_profile do
+        allocation   = params[:allocation]
+        user         = User.find_by_cpf!(allocation[:cpf])
+        new_status   = 2
+        groups       = allocation[:turmas]
+
+        begin
+          groups.each do |group_info|
+            group      = get_group(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], group_info[:periodo], group_info[:ano])
+            profile_id = group_info[:perfil]
+            group.change_allocation_status(user.id, new_status, related: true, profile_id: profile_id) if group
+          end
+
+          {ok: :ok}
+        rescue => error
+          error!({error: error}, 422)
+        end
+
+        # procura em tudo relacionado à turma
+        # alocação cancelada => 2
+        # recebe usuário: cpf
+        # perfil: id
+        # turma:
+          # ano
+          # periodo
+          # codGraduacao
+          # codDisciplina
+          # codigo
+        # Allocation(id: integer, user_id: integer, allocation_tag_id: integer, profile_id: integer, status: integer) 
+
+      end #block_profile
+    end #allocations
 
   end
+
 end
