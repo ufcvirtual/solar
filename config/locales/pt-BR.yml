@@ -2060,7 +2060,7 @@
 
   edx:
     warning:
-     redirected: Você foi redirecionado ao SolarEdx
+     redirected: Você foi redirecionado ao SolarEdx em uma nova janela
     new:
       name: Nome*
     errors:
