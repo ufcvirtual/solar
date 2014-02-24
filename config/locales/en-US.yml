@@ -1906,7 +1906,8 @@
       all_day: all day
 
   edx:
-    redirect_notice: You've been redirected to SolarEdx
+    warning:
+      redirected: You've been redirected to SolarEdx
     new:
       name: Name*
     errors:

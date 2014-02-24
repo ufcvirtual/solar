@@ -76,8 +76,8 @@ class EdxCoursesController < ApplicationController
   def index
     # Edição acadêmica
     if (not params[:edx_course_id].blank?)
-      res = get_response(EDX["host"]+params[:edx_course_id])
-      @edx_courses  = JSON.parse("[" +res.body+ "]")
+      res = get_response(EDX["host"] + params[:edx_course_id])
+      @edx_courses  = JSON.parse("[" + res.body + "]")
       @resource_uri = params[:edx_course_id]
     else
       res = get_response(EDX_URLS["list_available_courses"])
@@ -97,15 +97,13 @@ class EdxCoursesController < ApplicationController
 
     begin
       @course = Course.new(params[:course])
-      @course.edx_course    = true
-      @course.courses_names = @courses_names
+      @course.edx_course, @course.courses_names = true, @courses_names
       @course.save! unless @course.valid?
 
       semester  = Date.today.year.to_s << (Date.today.month < 7 ? ".1" : ".2")
       code      = @course.name.slice(0..2).upcase
       course_id = [current_user.institution,code,semester].join("/")
-      course    = {course_id: course_id , display_name: @course.name,
-                   course_creator_username: current_user.username}.to_json
+      course    = {course_id: course_id , display_name: @course.name, course_creator_username: current_user.username}.to_json
 
       uri  = URI.parse(EDX_URLS["insert_course"])
       http = Net::HTTP.new(uri.host,uri.port)
@@ -120,17 +118,20 @@ class EdxCoursesController < ApplicationController
   end 
 
   def delete
-    course = Base64.decode64(params[:course])
-    
-    data_course = {confirm: "true"}.to_json
+    begin 
+      course      = Base64.decode64(params[:course])
+      data_course = {confirm: "true"}.to_json
 
-    uri  = URI.parse(EDX["host"]+course)
-    http = Net::HTTP.new(uri.host,uri.port)
-    req  = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json' , 'X-HTTP-METHOD-OVERRIDE' => 'DELETE'})
-    req.body = data_course
-    res  = http.request(req) 
+      uri  = URI.parse(EDX["host"]+course)
+      http = Net::HTTP.new(uri.host,uri.port)
+      req  = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json' , 'X-HTTP-METHOD-OVERRIDE' => 'DELETE'})
+      req.body = data_course
+      res  = http.request(req) 
 
-    redirect_to academic_edx_courses_editions_path(7) 
+      render json: {success: true, notice: t(:deleted, scope: [:courses, :success]), url: academic_edx_courses_editions_path(7, layout: false)}
+    rescue
+      render json: {success: false, alert: t(:deleted, scope: [:courses, :error])}, status: :unprocessable_entity
+    end
   end  
    
   private

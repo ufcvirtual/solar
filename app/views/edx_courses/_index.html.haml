@@ -22,7 +22,7 @@
           %td= course["display_name"]
           %td
             = link_to content_tag(:i, nil, class: 'icon-edit'), "#", class: 'btn link_edit_course edit_edx_courses', :'data-tooltip' => t("courses.index.edit")
-            = link_to content_tag(:i, nil, class: 'icon-trash'), delete_edx_courses_path(course_resource_uri), class: 'btn btn_caution delete_course', :'data-tooltip' => t("courses.index.delete"), method: :post
+            = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_edx_course', :"data-link-delete" => delete_edx_courses_path(course_resource_uri), :'data-tooltip' => t("courses.index.delete")
             - action = "#{edx['login']}?next=#{course['course_absolute_url_studio']}"
             %form{action: action, method: "post", target:"_blank"}
               %input{name: "username", type: "hidden", value: current_user.username}/
@@ -34,8 +34,23 @@
     $(".edit_edx_courses").click(function(e){
      e.preventDefault();
      $(this).siblings('form').submit();
-     flash_message("#{t('edx.redirect_notice')}", "notice");
+     flash_message("#{t('edx.warning.redirected')}", "warning");
     });
 
     $("#new_edx_course").call_fancybox();
+
+    $('.delete_edx_course').click(function(e){
+      e.preventDefault();
+      $(this).nice_delete({
+        parent: 'tr.lines', 
+        method_delete: "POST",
+        complement_success: function(data) {
+          var flash_notice = data.notice;
+          $.get(data.url, function(data){
+            $('.edx_courses_list').html($(data).filter(".edx_courses_list"));
+            flash_message(flash_notice, 'notice');
+          });
+        }
+      });
+    });
   });

@@ -10,6 +10,11 @@
   color: #2F4F2F;
 }
 
+.warning {
+  font-weight: bold;
+  color: #FFCC39;
+}
+
 .flash_message_wrapper {
   display: block;
 }
@@ -26,6 +31,9 @@
   }
   &.alert {
     background: url('/assets/alert.gif') no-repeat 5px center #fff6f6;
+  }
+  &.warning {
+    background: url('/assets/warning.png') no-repeat 5px center #FFFFCC;
   }
   .close {
     float: right;

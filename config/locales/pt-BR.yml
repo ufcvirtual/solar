@@ -2059,7 +2059,8 @@
       all_day: dia todo
 
   edx:
-    redirect_notice: Você foi redirecionado ao SolarEdx
+    warning:
+     redirected: Você foi redirecionado ao SolarEdx
     new:
       name: Nome*
     errors:

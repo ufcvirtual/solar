@@ -168,7 +168,7 @@ $.fn.nice_delete = function(options) {
   if (typeof(options) == "undefined")
     options = {};
 
-  options = $.extend({ parent: 'tr', url: $(this).data("link-delete") }, options);
+  options = $.extend({ parent: 'tr', url: $(this).data("link-delete"), method_delete: "DELETE" }, options);
   var parent = $(this).closest(options.parent);
 
   if (typeof(options) != "undefined" && typeof(options.success) == "undefined") { // definir success
@@ -197,7 +197,7 @@ $.fn.nice_delete = function(options) {
     }
 
   $.ajax({
-    method: "DELETE",
+    method: options.method_delete,
     url: options.url,
     success: options.success,
     error: options.error,
