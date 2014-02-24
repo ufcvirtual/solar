@@ -88,14 +88,17 @@ class EdxCoursesController < ApplicationController
 
   def new
     @course = Course.new(params[:course])
+    @courses_names = params[:courses_names]
   end
 
   def create
     create_user_solar_in_edx
+    @courses_names = params[:courses_names]
 
     begin
       @course = Course.new(params[:course])
-      @course.edx_course = true
+      @course.edx_course    = true
+      @course.courses_names = @courses_names
       @course.save! unless @course.valid?
 
       semester  = Date.today.year.to_s << (Date.today.month < 7 ? ".1" : ".2")

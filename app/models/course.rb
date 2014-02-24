@@ -10,8 +10,9 @@ class Course < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: true
   validates :code, presence: true, uniqueness: true, if: "edx_course.nil?"
+  validate :unique_name, unless: "edx_course.nil? or courses_names.nil?"
 
-  attr_accessor :edx_course
+  attr_accessor :edx_course, :courses_names
 
   def has_any_lower_association?
     self.offers.count > 0
@@ -31,6 +32,16 @@ class Course < ActiveRecord::Base
 
   def info
     name
+  end
+
+  def unique_name
+    if courses_names.include?(name)
+      errors.add(:name, I18n.t("edx.errors.existing_name")) 
+    else
+      codes = courses_names.collect{|name| name.slice(0..2).upcase}
+      errors.add(:name, I18n.t("edx.errors.existing_code")) if codes.include?(name.slice(0..2).upcase)
+    end
+      
   end
 
 end

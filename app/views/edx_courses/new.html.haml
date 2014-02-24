@@ -1,6 +1,6 @@
 %span.form_requirement= t(:required_fields)
 .course_form
-  = simple_form_for(@course, url: create_edx_courses_path, method: :post, html: {id: "course_form"}) do |f| 
+  = simple_form_for(@course, url: create_edx_courses_path(courses_names: @courses_names), method: :post, html: {id: "course_form"}) do |f| 
     %h1#lightBoxDialogTitle= t("courses.index.new")
     %span.form_requirement= t(:required_fields)
 

@@ -1909,3 +1909,6 @@
     redirect_notice: You've been redirected to SolarEdx
     new:
       name: Name*
+    errors:
+      existing_name: already exists
+      existing_code: equivalent code already exists

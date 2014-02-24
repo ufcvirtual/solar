@@ -4,7 +4,7 @@
     %h2= t(:courses, scope: [:editions, :academic])
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus'), new_edx_course_path, class: " btn btn_main", id: "new_edx_course", :'data-tooltip' => t("courses.index.new") 
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_edx_course_path(courses_names: @edx_courses.collect{|course| course["display_name"]}), class: " btn btn_main", id: "new_edx_course", :'data-tooltip' => t("courses.index.new") 
 
   %table.tb_list
     %thead

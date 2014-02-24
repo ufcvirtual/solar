@@ -2062,3 +2062,6 @@
     redirect_notice: Você foi redirecionado ao SolarEdx
     new:
       name: Nome*
+    errors:
+      existing_name: já existe
+      existing_code: código equivalente já existe
