@@ -1904,3 +1904,8 @@
       other: Others
       legend: Legend
       all_day: all day
+
+  edx:
+    redirect_notice: You've been redirected to SolarEdx
+    new:
+      name: Name*

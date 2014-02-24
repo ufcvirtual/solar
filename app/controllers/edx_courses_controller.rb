@@ -74,61 +74,60 @@ class EdxCoursesController < ApplicationController
 
   #Edição
   def index
-
     # Edição acadêmica
     if (not params[:edx_course_id].blank?)
       res = get_response(EDX["host"]+params[:edx_course_id])
-      @edx_courses =  JSON.parse("[" +res.body+ "]") 
+      @edx_courses  = JSON.parse("[" +res.body+ "]")
       @resource_uri = params[:edx_course_id]
     else
       res = get_response(EDX_URLS["list_available_courses"])
-      @edx_courses = JSON.parse(res.body)["objects"]
+      @edx_courses  = JSON.parse(res.body)["objects"]
     end
     render partial: 'edx_courses/index'
   end  
 
   def new
+    @course = Course.new(params[:course])
   end
-
-  def edit 
-  end  
 
   def create
     create_user_solar_in_edx
 
-    if Date.today.strftime("%m").to_i < 7
-      semester = Date.today.strftime("%Y") << ".1"
-    else
-      semester = Date.today.strftime("%Y") << ".2"
+    begin
+      @course = Course.new(params[:course])
+      @course.edx_course = true
+      @course.save! unless @course.valid?
+
+      semester  = Date.today.year.to_s << (Date.today.month < 7 ? ".1" : ".2")
+      code      = @course.name.slice(0..2).upcase
+      course_id = [current_user.institution,code,semester].join("/")
+      course    = {course_id: course_id , display_name: @course.name,
+                   course_creator_username: current_user.username}.to_json
+
+      uri  = URI.parse(EDX_URLS["insert_course"])
+      http = Net::HTTP.new(uri.host,uri.port)
+      req  = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
+      req.body = course
+      res  = http.request(req) 
+
+      render json: {success: true, notice: t(:created, scope: [:courses, :success]), url: academic_edx_courses_editions_path(7, layout: false)}
+    rescue => error
+      render :new, layout: false
     end
-    code = params[:display_name].slice(0..2).upcase 
-    course_id = current_user.institution<<"/"<<code<<"/"<<semester
-
-    course = {"course_id" => course_id , "display_name" => params[:display_name],
-     "course_creator_username" => current_user.username}.to_json
-
-    uri = URI.parse(EDX_URLS["insert_course"])
-    http = Net::HTTP.new(uri.host,uri.port)
-    req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
-    req.body = course
-    res = http.request(req) 
-
-
-    redirect_to  academic_edx_courses_editions_path(7)
   end 
 
   def delete
     course = Base64.decode64(params[:course])
     
-    data_course = {"confirm" => "true"}.to_json
+    data_course = {confirm: "true"}.to_json
 
-    uri = URI.parse(EDX["host"]+course)
+    uri  = URI.parse(EDX["host"]+course)
     http = Net::HTTP.new(uri.host,uri.port)
-    req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json' , 'X-HTTP-METHOD-OVERRIDE' => 'DELETE'})
+    req  = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json' , 'X-HTTP-METHOD-OVERRIDE' => 'DELETE'})
     req.body = data_course
-    res = http.request(req) 
+    res  = http.request(req) 
 
-    redirect_to  academic_edx_courses_editions_path(7) 
+    redirect_to academic_edx_courses_editions_path(7) 
   end  
    
   private
@@ -154,16 +153,14 @@ class EdxCoursesController < ApplicationController
 
     def create_user_solar_in_edx
       unless check_me
-        user = {
-        "username" => current_user.username, "name" => current_user.name, "email" => current_user.email
-          }.to_json
+        user = {username: current_user.username, name: current_user.name, email: current_user.email}.to_json
          
-        uri = URI.parse(EDX_URLS["insert_user"])
+        uri  = URI.parse(EDX_URLS["insert_user"])
         http = Net::HTTP.new(uri.host,uri.port)
 
-        req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
+        req  = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
         req.body = user
-        res = http.request(req)
+        res  = http.request(req)
       end  
     end  
 

@@ -2057,3 +2057,8 @@
       other: Outros
       legend: Legenda
       all_day: dia todo
+
+  edx:
+    redirect_notice: Você foi redirecionado ao SolarEdx
+    new:
+      name: Nome*

@@ -1,7 +1,6 @@
 class EditionsController < ApplicationController
 
   def items
-
     @all_groups_allocation_tags = []
 
     if params[:groups_id].blank?
@@ -70,6 +69,7 @@ class EditionsController < ApplicationController
     url = URI.parse(edx_urls["list_available_courses"])
     res = Net::HTTP.start(url.host, url.port) { |http| http.request(Net::HTTP::Get.new(url.path)) }
     @edx_courses = JSON.parse(res.body)["objects"]
+    render layout: false if params.include?(:layout)
   end    
 
   # GET /editions/content

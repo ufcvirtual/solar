@@ -1,15 +1,27 @@
 %span.form_requirement= t(:required_fields)
-.edx_course_form
-  = form_tag(create_edx_courses_path, method: "post") do
+.course_form
+  = simple_form_for(@course, url: create_edx_courses_path, method: :post, html: {id: "course_form"}) do |f| 
     %h1#lightBoxDialogTitle= t("courses.index.new")
-    
+    %span.form_requirement= t(:required_fields)
+
     .form-inputs.block_content
-      %label{for: "display_name"} Nome
-      %input#display_name{name: "display_name", type: "text"}
+      = f.input :name, required: true
       .right_buttons
         = button_to_function t("courses.form.cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
-        = button_tag t("courses.form.save"), class: "btn btn_main btn_lightbox", alt: t("courses.form.save"), type: "submit"
+        = button_tag t("courses.form.save"), class: "btn btn_main btn_lightbox", alt: t("courses.form.save"), type: "button", id: "save_edx_course"
 
-
-
-
+:javascript
+  $(function(){
+    $("#save_edx_course").click(function(){
+      var form = $(this).parents("form#course_form");
+      $(form).serialize_and_submit({
+        complement_success: function(data) {
+          var flash_notice = data.notice;
+          $.get(data.url, function(data){
+            $('.edx_courses_list').html($(data).filter(".edx_courses_list"));
+            flash_message(flash_notice, 'notice');
+          });
+        }
+      });
+    });
+  });

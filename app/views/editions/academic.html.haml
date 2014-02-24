@@ -14,10 +14,10 @@
   %fieldset.academic.invisible
     .items
       .courses
-        / - if can? :index, Course
-        .academic_item{:"data-link-to" => academic_courses_editions_path(curriculum_unit_type_id: ':uc_type_id')}
-          = link_to(content_tag(:i, nil, class: 'icon-book big'), "#", class: 'btn')
-          = link_to t(".courses"), "#"
+        - if can? :index, Course
+          .academic_item{:"data-link-to" => academic_courses_editions_path(curriculum_unit_type_id: ':uc_type_id')}
+            = link_to(content_tag(:i, nil, class: 'icon-book big'), "#", class: 'btn')
+            = link_to t(".courses"), "#"
 
       .curriculum_units
         - if can? :index, CurriculumUnit

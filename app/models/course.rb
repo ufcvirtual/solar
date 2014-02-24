@@ -8,7 +8,10 @@ class Course < ActiveRecord::Base
   has_many :curriculum_units,     through: :offers, uniq: true
   has_many :academic_allocations, through: :allocation_tag
 
-  validates :name, :code, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: true
+  validates :code, presence: true, uniqueness: true, if: "edx_course.nil?"
+
+  attr_accessor :edx_course
 
   def has_any_lower_association?
     self.offers.count > 0
