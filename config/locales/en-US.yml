@@ -1931,7 +1931,7 @@
 
   edx:
     warning:
-      redirected: You've been redirected to SolarEdx
+      redirected: You've been redirected to SolarEdx at a new window
     new:
       name: Name*
     errors:

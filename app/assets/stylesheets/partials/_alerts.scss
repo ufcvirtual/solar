@@ -12,7 +12,7 @@
 
 .warning {
   font-weight: bold;
-  color: #FFCC39;
+  color: #F5BD23;
 }
 
 .flash_message_wrapper {
@@ -33,7 +33,7 @@
     background: url('/assets/alert.gif') no-repeat 5px center #fff6f6;
   }
   &.warning {
-    background: url('/assets/warning.png') no-repeat 5px center #FFFFCC;
+    background: url('/assets/warning.png') no-repeat 5px center #FFFFDE;
   }
   .close {
     float: right;
