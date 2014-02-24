@@ -351,6 +351,16 @@ Solar::Application.routes.draw do
     end
   end
 
+  resources :webconferences, except: :index do
+    collection do
+      get :list
+
+      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "Webconference", as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Webconference", as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Webconference", as: :add_group_to
+    end
+  end
+
   get "/media/lessons/:id/:file.:extension", to: "access_control#lesson", index: true
   get "/media/lessons/:id/:folder/*path", to: "access_control#lesson", index: false
 

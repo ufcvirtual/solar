@@ -988,6 +988,30 @@
       updated: Não foi possível atualizar aviso.
       deleted: Não foi possível deletar aviso.
 
+  webconferences:
+    form:
+      new: "Nova Webconferência"
+      edit: "Editar Webconferência"
+    list:
+      name: Nome
+      availability: Disponibilidade
+      new: "Nova Webconferência"
+      edit: "Editar Webconferência"
+      delete: "Deletar webconferência"
+      no_data: "Nenhum webconferência cadastrada"
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
+      choose_at_least_one: "Selecione, ao menos, um webconferência"
+      choose_one: "Selecione um webconferência"
+    success:
+      created: Aviso criado com sucesso.
+      updated: Aviso atualizado com sucesso.
+      deleted: Aviso deletado com sucesso.
+    error:
+      created: "Não foi possível criar webconferência."
+      updated: "Não foi possível atualizar webconferência."
+      deleted: "Não foi possível deletar webconferência."
+
   navigation_of: " de "
   navigation_next: "Próxima >"
   navigation_previous: "< Anterior"
@@ -1207,7 +1231,7 @@
   menu_portfolio: Portfolio
   menu_test: Prova
   menu_chat: Chat
-  menu_webconference: Webconferencia
+  menu_webconference: Webconferência
   menu_score: Acompanhamento
   menu_general_information: Informações Gerais
   menu_program: Programa
@@ -1609,7 +1633,7 @@
       notification: Aviso
       discussion: Fórum
       chat: Chat
-      videoconference: Videoconferência
+      webconference: Webconferência
       lesson_module: Módulo
       lesson: Aula
       support_material: Material de apoio

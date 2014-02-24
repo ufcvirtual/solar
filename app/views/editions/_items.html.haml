@@ -46,9 +46,9 @@
 
       / - if (can? :lista_de_videoconference, Videoconference, :on => @allocation_tags_ids) and (Videoconference.constants.include?("#{@selected}_PERMISSION".to_sym))
       .uc_item
-        .videoconference
-          = link_to(content_tag(:i, nil, class: 'icon-video-conference big'), "#", class: 'btn disabled', onclick: "javascript:alert('#{t(".in_development")}');")
-          = link_to t(".videoconference"), "#", onclick: "javascript:alert('#{t(".in_development")}');"
+        .webconference{:"data-link" => list_webconferences_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+          = link_to(content_tag(:i, nil, class: 'icon-video-conference big'), "#", class: 'btn')
+          = link_to t(".webconference"), "#"
 
   %fieldset#uc_education
     %legend=t(".education")

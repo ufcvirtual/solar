@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b User:
+  = @webconference.user
+%p
+  %b Title:
+  = @webconference.title
+%p
+  %b Description:
+  = @webconference.description
+%p
+  %b Initial time:
+  = @webconference.initial_time
+%p
+  %b Duration:
+  = @webconference.duration
+
+= link_to 'Edit', edit_webconference_path(@webconference)
+\|
+= link_to 'Back', webconferences_path

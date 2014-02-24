@@ -827,8 +827,8 @@
       no_data: No data
       expand_description: Expand description
       compress_description: Compress description
-      choose_at_least_one: Choose at least one assignment
-      choose_one: Choose a assignment
+      choose_at_least_one: Choose at least one notification
+      choose_one: Choose a notification
     success:
       created: Notification was successfully created.
       updated: Notification was successfully updated.
@@ -837,6 +837,30 @@
       created: Notification wasn't created.
       updated: Notification wasn't updated.
       deleted: Notification wasn't deleted.
+
+  webconferences:
+    form:
+      new: "New Webconference"
+      edit: "Edit Webconference"
+    list:
+      name: Nome
+      availability: Availability
+      new: "New Webconference"
+      edit: "Edit Webconference"
+      delete: "Delete Webconference"
+      no_data: No data
+      expand_description: Expand description
+      compress_description: Compress description
+      choose_at_least_one: Choose at least one webconference
+      choose_one: Choose a webconference
+    success:
+      created: Webconference was successfully created.
+      updated: Webconference was successfully updated.
+      deleted: Webconference was successfully deleted.
+    error:
+      created: Webconference wasn't created.
+      updated: Webconference wasn't updated.
+      deleted: Webconference wasn't deleted.
 
   navigation_of: " of "
   navigation_next: "Next >"
@@ -1461,7 +1485,7 @@
       notification: Notification
       discussion: Discussion
       chat: Chat
-      videoconference: Videoconference
+      webconference: Webconference
       lesson_module: Module
       lesson: Lesson
       support_material: Support material

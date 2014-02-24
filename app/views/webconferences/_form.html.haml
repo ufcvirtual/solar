@@ -1,0 +1,52 @@
+= simple_form_for(@webconference, html: {id: "webconference_form"}) do |f|
+  %span.form_requirement= t(:required_fields)
+  %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit : :new), scope: [:webconferences, :form])
+
+  .form-inputs.block_content
+    = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+
+    = f.input :title
+    = f.input :description
+    = f.input :initial_time
+    = f.input :duration
+
+    - unless @groups_codes.empty?
+      .input.group_label
+        = f.label t(:groups, scope: [:bibliographies, :form])
+        %span.groups
+          - @groups_codes.each do |group_code|
+            %span.collection_check_boxes= group_code
+
+  .form-actions.right_buttons
+    = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
+    = button_to_function t(:save), "save_webconference()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
+
+
+
+
+
+/ = form_for @webconference do |f|
+/   - if @webconference.errors.any?
+/     #error_explanation
+/       %h2= "#{pluralize(@webconference.errors.count, "error")} prohibited this webconference from being saved:"
+/       %ul
+/         - @webconference.errors.full_messages.each do |msg|
+/           %li= msg
+
+/   .field
+/     = f.label :user
+/     = f.text_field :user
+/   .field
+/     = f.label :title
+/     = f.text_field :title
+/   .field
+/     = f.label :description
+/     = f.text_field :description
+/   .field
+/     = f.label :initial_time
+/     = f.datetime_select :initial_time
+/   .field
+/     = f.label :duration
+/     = f.number_field :duration
+/   .actions
+/     = f.submit 'Save'
