@@ -1,0 +1,14 @@
+webc1:
+  id: 1
+  user_id: 14 # editor
+  title: Lorem ipsum dolor sit amet.
+  description: Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
+  initial_time: <%= Time.now + 3.days %>
+  duration: 50
+
+webc2:
+  user_id: 6 # professor
+  title: Lorem ipsum dolor sit amet.
+  description: Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
+  initial_time: <%= Time.now - 3.days %>
+  duration: 30
