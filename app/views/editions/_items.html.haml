@@ -32,7 +32,7 @@
     %legend=t(".comunication")
     .block_content.block_content_alt
 
-      - if (can? :list, Discussion, on: @allocation_tags_ids)  and (Discussion.constants.include?("#{@selected}_PERMISSION".to_sym))
+      - if (can? :list, Discussion, on: @allocation_tags_ids) and (Discussion.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item
           .discussion{:"data-link" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
             = link_to(content_tag(:i, nil, class: 'icon-users big'), "#", class: 'btn')
@@ -44,11 +44,11 @@
             = link_to(content_tag(:i, nil, class: "icon-chat big"), "#", class: "btn")
             = link_to t(".chat"), "#"
 
-      / - if (can? :lista_de_videoconference, Videoconference, :on => @allocation_tags_ids) and (Videoconference.constants.include?("#{@selected}_PERMISSION".to_sym))
-      .uc_item
-        .webconference{:"data-link" => list_webconferences_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
-          = link_to(content_tag(:i, nil, class: 'icon-video-conference big'), "#", class: 'btn')
-          = link_to t(".webconference"), "#"
+      - if ((can? :list, Webconference, on: @allocation_tags_ids) and Webconference.constants.include?("#{@selected}_PERMISSION".to_sym))
+        .uc_item
+          .webconference{:"data-link" => list_webconferences_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+            = link_to(content_tag(:i, nil, class: 'icon-video-conference big'), "#", class: 'btn')
+            = link_to t(".webconference"), "#"
 
   %fieldset#uc_education
     %legend=t(".education")

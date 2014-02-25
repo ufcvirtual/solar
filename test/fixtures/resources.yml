@@ -926,3 +926,35 @@ res161:
   controller: 'administrations'
   action: 'users_indication'
   description: 'Indicar/Remover usuário de atuação'
+
+## Webconference
+
+res162:
+  id: 162
+  controller: 'webconferences'
+  action: 'index'
+  description: 'Lista de webconferências'
+
+res163:
+  id: 163
+  controller: 'webconferences'
+  action: 'list'
+  description: 'Edição - Lista de webconferências'
+
+res164:
+  id: 164
+  controller: 'webconferences'
+  action: 'create'
+  description: 'Criação de webconferência'
+
+res165:
+  id: 165
+  controller: 'webconferences'
+  action: 'update'
+  description: 'Edição de webconferência'
+
+res166:
+  id: 166
+  controller: 'webconferences'
+  action: 'destroy'
+  description: 'Deleção de webconferência'

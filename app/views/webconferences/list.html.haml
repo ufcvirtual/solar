@@ -18,7 +18,8 @@
         %tr.lines
           %th.no_sort{style: 'text-align:center; width: 25px;'}= check_box_tag :all_webconferences, false, false, :"data-children-names" => "ckb_webconference", class: "all_webconferences"
           %th{align: "left"}=t(".name")
-          %th.no_sort{align: "center", style: "width: 26%;"}= t(".availability")
+          %th{align: "center", style: "width: 20%;"}= t(".availability")
+          %th{align: "center", style: "width: 15%;"}= t(".duration")
       %tbody
         - @webconferences.each do |webconference|
           %tr.lines{id: "tr_#{webconference.id}"}
@@ -32,7 +33,8 @@
                     = raw webconference.description
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                 .group_label.invisible= render "groups/groups_tags", groups: webconference.groups, tool: webconference, all_groups: all_groups, paths: {add: add_group_to_webconferences_path(id: "param_id", tool_id: webconference.id), remove: remove_group_from_webconferences_path(id: "param_id", tool_id: webconference.id), unbind: unbind_group_from_webconferences_path(id: "param_id", tool_id: webconference.id)}
-            %td{style: 'text-align:center;'}= webconference.initial_time
+            %td{style: 'text-align:center;'}= l(webconference.initial_time, format: :at_date)
+            %td{style: 'text-align:center;'}= webconference.duration
 
   - else
     .block_content_text.block_content_text_list.text_none= t(".no_data")

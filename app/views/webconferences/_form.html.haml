@@ -2,13 +2,13 @@
   %span.form_requirement= t(:required_fields)
   %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit : :new), scope: [:webconferences, :form])
 
-  .form-inputs.block_content
+  .form-inputs.block_content.webconference
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
     = f.input :title
     = f.input :description
-    = f.input :initial_time
-    = f.input :duration
+    = f.input :initial_time, start_year: Date.today.year
+    = f.input :duration, hint: t(".minutes")
 
     - unless @groups_codes.empty?
       .input.group_label
@@ -21,32 +21,8 @@
     = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
     = button_to_function t(:save), "save_webconference()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
 
-
-
-
-
-/ = form_for @webconference do |f|
-/   - if @webconference.errors.any?
-/     #error_explanation
-/       %h2= "#{pluralize(@webconference.errors.count, "error")} prohibited this webconference from being saved:"
-/       %ul
-/         - @webconference.errors.full_messages.each do |msg|
-/           %li= msg
-
-/   .field
-/     = f.label :user
-/     = f.text_field :user
-/   .field
-/     = f.label :title
-/     = f.text_field :title
-/   .field
-/     = f.label :description
-/     = f.text_field :description
-/   .field
-/     = f.label :initial_time
-/     = f.datetime_select :initial_time
-/   .field
-/     = f.label :duration
-/     = f.number_field :duration
-/   .actions
-/     = f.submit 'Save'
+:css
+  .webconference > .input > select {
+    width: initial;
+    max-width: 100px;
+  }

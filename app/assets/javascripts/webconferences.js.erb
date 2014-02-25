@@ -1,9 +1,4 @@
 function save_webconference(){
-  var content = $('div.ckeditor .cke_contents iframe').contents().find('body').html();
-
-  if (content != "<p><br></p>" && content != "")
-    $('textarea.ckeditor').html(content); // ckeditor nao envia conteudo quando se usa o serialize_and_submit
-
   $('form#webconference_form').serialize_and_submit({
     replace_list: $('.list_webconferences')
   });

@@ -10,6 +10,7 @@ class Webconference < ActiveRecord::Base
   attr_accessible :description, :duration, :initial_time, :title
 
   validates :title, :initial_time, :duration, presence: true
+  validates :title, :description, length: {maximum: 255}
 
   def moderator
     user

@@ -187,6 +187,13 @@ tooldetailstudent4:
   resource_id: 145
   per_id: false
 
+# webconference
+
+webconference1:
+  profile_id: 1
+  resource_id: 162
+  per_id: false
+
 ##############################
 # PROFESSOR TITULAR #
 ##############################
@@ -898,6 +905,28 @@ notificationedit3:
 notificationedit4:
   profile_id: 5
   resource_id: 141
+  per_id: false
+
+## Webconference
+
+webconferenceedit1:
+  profile_id: 5
+  resource_id: 163
+  per_id: false
+
+webconferenceedit2:
+  profile_id: 5
+  resource_id: 164
+  per_id: false
+
+webconferenceedit3:
+  profile_id: 5
+  resource_id: 165
+  per_id: false
+
+webconferenceedit4:
+  profile_id: 5
+  resource_id: 166
   per_id: false
 
 # Editions - Página de edição

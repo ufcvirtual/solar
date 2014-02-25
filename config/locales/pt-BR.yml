@@ -192,6 +192,7 @@
       schedule_event: Evento
       score: Acompanhamento
       support_material_file: Material de Apoio
+      webconference: "Webconferência"
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -349,6 +350,11 @@
         name: Nome
         description: Descrição
         template: Modelo
+      webconference:
+        title: Título
+        description: Descrição
+        initial_time: Data
+        duration: Duração
 
     errors:
       uniqueness: "Registro já existe no sistema"
@@ -992,21 +998,24 @@
     form:
       new: "Nova Webconferência"
       edit: "Editar Webconferência"
+      minutes: " minutos"
     list:
+      webconferences: "Webconferências"
       name: Nome
       availability: Disponibilidade
+      duration: "Duração (min)"
       new: "Nova Webconferência"
       edit: "Editar Webconferência"
-      delete: "Deletar webconferência"
-      no_data: "Nenhum webconferência cadastrada"
+      delete: "Deletar Webconferência"
+      no_data: "Nenhuma webconferência cadastrada"
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
-      choose_at_least_one: "Selecione, ao menos, um webconferência"
-      choose_one: "Selecione um webconferência"
+      choose_at_least_one: "Selecione, ao menos, uma webconferência"
+      choose_one: "Selecione uma webconferência"
     success:
-      created: Aviso criado com sucesso.
-      updated: Aviso atualizado com sucesso.
-      deleted: Aviso deletado com sucesso.
+      created: Webconferência criada com sucesso.
+      updated: Webconferência atualizada com sucesso.
+      deleted: Webconferência deletada com sucesso.
     error:
       created: "Não foi possível criar webconferência."
       updated: "Não foi possível atualizar webconferência."

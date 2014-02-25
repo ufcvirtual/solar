@@ -67,6 +67,7 @@
       schedule_event: Event
       score: Score
       support_material_file: Support Material
+      webconference: Webconference
     attributes:
       user:
         alternate_email: "Alternate e-mail"
@@ -219,6 +220,11 @@
         name: Name
         description: Description
         template: Template
+      webconference:
+        title: Titile
+        description: Description
+        initial_time: Initial Time
+        duration: Duration
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -842,9 +848,12 @@
     form:
       new: "New Webconference"
       edit: "Edit Webconference"
+      minutes: " minutes"
     list:
+      webconferences: Webconferences
       name: Nome
       availability: Availability
+      duration: "Duration (min)"
       new: "New Webconference"
       edit: "Edit Webconference"
       delete: "Delete Webconference"

@@ -351,7 +351,7 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :webconferences, except: :index do
+  resources :webconferences, except: [:index, :show] do
     collection do
       get :list
 
