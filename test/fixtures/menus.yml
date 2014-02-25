@@ -64,6 +64,7 @@ webconf_ativ:
   parent_id: 20
   name: menu_webconference
   order: 6
+  resource_id: 162
 
 portfolio_professor_ativ:
   id: 207

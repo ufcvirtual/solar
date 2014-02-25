@@ -1,6 +1,12 @@
 class WebconferencesController < ApplicationController
 
-  layout false
+  layout false, except: :index
+
+  def index
+    authorize! :index, Webconference, on: [at = active_tab[:url][:allocation_tag_id]]
+
+    @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true) + [at])
+  end
 
   # GET /webconferences/list
   # GET /webconferences/list.json
@@ -33,7 +39,7 @@ class WebconferencesController < ApplicationController
     authorize! :create, Webconference, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
 
     @webconference = Webconference.new(params[:webconference])
-    @webconference.user = current_user
+    @webconference.moderator = current_user
 
     begin
       Webconference.transaction do

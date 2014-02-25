@@ -853,7 +853,9 @@
       webconferences: Webconferences
       name: Nome
       availability: Availability
+      description: Description
       duration: "Duration (min)"
+      min: Min
       new: "New Webconference"
       edit: "Edit Webconference"
       delete: "Delete Webconference"

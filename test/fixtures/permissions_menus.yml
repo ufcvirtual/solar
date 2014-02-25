@@ -310,3 +310,21 @@ pm74:
 pm75:
   profile_id: 6
   menu_id: 603
+
+# webconference
+
+pm76:
+  profile_id: 1
+  menu_id: 206
+
+pm77:
+  profile_id: 2
+  menu_id: 206
+
+pm78:
+  profile_id: 3
+  menu_id: 206
+
+pm79:
+  profile_id: 4
+  menu_id: 206

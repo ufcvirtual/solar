@@ -1,0 +1,24 @@
+.block_wrapper
+  - unless @webconferences.nil? or @webconferences.empty?
+    .block_title
+      %h2
+        %i.icon-webconference
+        = t(:webconferences, scope: [:webconferences, :list])
+    %table.webconferences.tb_list
+      %thead
+        %tr.lines
+          %th{align:"center", style:"width: 20%;"}= t(:name, scope: [:webconferences, :list])
+          %th{align:"center", style:"width: 30%;"}= t(:description, scope: [:webconferences, :list])
+          %th{align:"center", style:"width: 20%;"}= t(:moderator, scope: [:webconferences, :list])
+          %th{align:"center", style:"width: 20%;"}= t(:availability, scope: [:webconferences, :list])
+          %th{align:"center", style:"width: 10%;"}= t(:min, scope: [:webconferences, :list])
+      %tbody
+        - @webconferences.each do |webconference|
+          %tr.lines
+            %td= webconference.link_to_join(current_user)
+            %td= webconference.description
+            %td= raw truncate(webconference.moderator.name, length: 20)
+            %td= l(webconference.initial_time, format: :at_date)
+            %td= webconference.duration
+  - else
+    .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])

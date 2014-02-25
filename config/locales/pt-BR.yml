@@ -1003,7 +1003,9 @@
       webconferences: "Webconferências"
       name: Nome
       availability: Disponibilidade
+      description: "Descrição"
       duration: "Duração (min)"
+      min: "Min"
       new: "Nova Webconferência"
       edit: "Editar Webconferência"
       delete: "Deletar Webconferência"
