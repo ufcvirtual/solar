@@ -189,7 +189,7 @@ tooldetailstudent4:
 
 # webconference
 
-webconference1:
+webconferencealuno1:
   profile_id: 1
   resource_id: 162
   per_id: false
@@ -427,6 +427,32 @@ tooldetailprof4:
   resource_id: 145
   per_id: false
 
+## Webconference
+
+webconferenceprof0:
+  profile_id: 2
+  resource_id: 162
+  per_id: false
+
+webconferenceprof1:
+  profile_id: 2
+  resource_id: 163
+  per_id: false
+
+webconferenceprof2:
+  profile_id: 2
+  resource_id: 164
+  per_id: false
+
+webconferenceprof3:
+  profile_id: 2
+  resource_id: 165
+  per_id: false
+
+webconferenceprof4:
+  profile_id: 2
+  resource_id: 166
+  per_id: false
 
 ##############################
 # TUTOR A DISTANCIA #
@@ -908,6 +934,11 @@ notificationedit4:
   per_id: false
 
 ## Webconference
+
+webconferenceedit0:
+  profile_id: 5
+  resource_id: 162
+  per_id: false
 
 webconferenceedit1:
   profile_id: 5

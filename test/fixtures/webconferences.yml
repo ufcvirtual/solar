@@ -7,6 +7,7 @@ webc1:
   duration: 50
 
 webc2:
+  id: 2
   user_id: 6 # professor
   title: Lorem ipsum dolor sit amet.
   description: Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.

@@ -31,7 +31,8 @@ gem "ckeditor", "~> 4.0.8"
 
 gem "fullcalendar-rails", "~> 1.6.4.0"
 
-gem "xmpp4r", "~> 0.5.5" 
+gem "xmpp4r", "~> 0.5.5"
+gem "bigbluebutton-api-ruby", "~> 1.2.0"
 
 # platform adicionado para evitar que o unicorn tente ser executado no windows
 gem "unicorn", "~> 4.6.3", platform: :ruby
