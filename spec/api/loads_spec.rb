@@ -332,33 +332,13 @@ describe "Loads" do
     describe ".allocations" do
       describe "block_profile" do
 
-
-            # post :block_profile do
-      #   allocation   = params[:allocation]
-      #   uc           = CurriculumUnit.find_by_code!(allocation[:codDisciplina])
-      #   user         = User.find_by_cpf!(allocation[:cpf])
-      #   group_info   = allocation[:group_info]
-      #   group        = get_group(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], group_info[:periodo], group_info[:ano])
-      #   new_status   = 2
-
-      #   begin
-      #     group.allocation_tag.change_allocation_status(user.id, new_status, related: true) if group
-
-      #     {ok: :ok}
-      #   rescue => error
-      #     error!({error: error}, 422)
-      #   end
-        
-
-
         context "with valid ip" do
 
           context 'and list of existing groups' do 
-            let!(:json_data){
-              { allocation: {cpf: "21872285848", turmas: [ # prof
-                {periodo: "1", ano: "2011", codigo: "IL-FOR", codDisciplina: "RM404", codGraduacao: "110", perfil: 2}, # alocação é na oferta
-                {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109", perfil: 3}  # alocação é na turma
-              ]}}
+            let!(:json_data){ # user: prof, profile: tutor a distância
+              { allocation: {cpf: "21872285848", perfil: 1, turma: 
+                {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
+              }}
             }
 
             it {
@@ -372,11 +352,10 @@ describe "Loads" do
           end
 
           context 'and list of non existing groups' do 
-            let!(:json_data){
-              { allocation: {cpf: "21872285848", turmas: [ # prof
-                {periodo: "1", ano: "2011", codigo: "T01", codDisciplina: "RM404", codGraduacao: "110", perfil: 2}, # turma não existe
-                {periodo: "1", ano: "2011", codigo: "T02", codDisciplina: "RM301", codGraduacao: "109", perfil: 3}  # turma não existe
-              ]}}
+            let!(:json_data){ # user: prof, profile: tutor a distância
+              { allocation: {cpf: "21872285848", perfil: 1, turma:
+                {periodo: "1", ano: "2011", codigo: "T02", codDisciplina: "RM301", codGraduacao: "109"}  # turma não existe
+              }}
             }
 
             it {
@@ -389,14 +368,30 @@ describe "Loads" do
             }
           end
 
-          context 'and non existing uc or course' do 
-            let!(:json_data){
-              { allocation: {cpf: "21872285848", turmas: [ # prof
-                {periodo: "1", ano: "2011", codigo: "IL-FOR", codDisciplina: "RM404", codGraduacao: "C01", perfil: 2}, # curso não existe
-                {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "UC01", codGraduacao: "109", perfil: 3}  # uc não existe
-              ]}}
+          context 'and non existing course' do 
+            let!(:json_data){ # user: prof, profile: tutor a distância
+              { allocation: {cpf: "21872285848", perfil: 1, turma:
+                {periodo: "1", ano: "2011", codigo: "IL-FOR", codDisciplina: "RM404", codGraduacao: "C01"}, # curso não existe
+              }}
             }
 
+            it {
+              expect{
+                post "/api/v1/load/allocations/block_profile", json_data
+
+                response.status.should eq(201)
+                response.body.should == {ok: :ok}.to_json
+              }.to change{Allocation.where(status: 2).count}.by(0)
+            }
+          end
+
+          context 'and non existing uc' do 
+            let!(:json_data){ # user: prof, profile: tutor a distância
+              { allocation: {cpf: "21872285848", perfil: 1, turma:
+                {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "UC01", codGraduacao: "109"}  # uc não existe
+              }}
+            }
+          
             it {
               expect{
                 post "/api/v1/load/allocations/block_profile", json_data
@@ -408,11 +403,10 @@ describe "Loads" do
           end
 
           context 'and non existing user' do 
-            let!(:json_data){
-              { allocation: {cpf: "cpf", turmas: [ # cpf inválido
-                {periodo: "1", ano: "2011", codigo: "IL-FOR", codDisciplina: "RM404", codGraduacao: "110", perfil: 2}, # alocação é na oferta
-                {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109", perfil: 3}  # alocação é na turma
-              ]}}
+            let!(:json_data){ # cpf inválido
+              { allocation: {cpf: "cpf", perfil: 1, turma:
+                {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
+              }}
             }
 
             it {
@@ -428,11 +422,10 @@ describe "Loads" do
 
         context "with invalid ip" do
           it "gets a not found error" do
-            json_data =
-              { allocation: {cpf: "21872285848", turmas: [ # prof
-                {periodo: "1", ano: "2011", codigo: "IL-FOR", codDisciplina: "RM404", codGraduacao: "110", perfil: 2}, # alocação é na oferta
-                {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109", perfil: 3}  # alocação é na turma
-              ]}}
+            json_data = # user: prof, profile: tutor a distância
+              { allocation: {cpf: "21872285848", perfil: 1, turma: 
+                {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
+              }}
             post "/api/v1/load/groups/enrollments", json_data, "REMOTE_ADDR" => "127.0.0.2"
             response.status.should eq(404)
           end
