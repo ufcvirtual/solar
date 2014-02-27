@@ -222,9 +222,9 @@ describe "Loads" do
           }
         end
 
-        context "and existing group removing previous professor" do
+        context "and existing group cancelling previous professor allocation" do
           let!(:json_data){ {turmas: {ano: "2011", periodo: "1", codDisciplina: "RM301", codigo: "QM-CAU", codGraduacao: "109",
-            dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "31877336203"] # prof já está alocado, ele deve ser removido
+            dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "31877336203"] # prof já está alocado, ele deve ser cancelado
             }} }
 
           subject{ -> { 
@@ -234,8 +234,8 @@ describe "Loads" do
           it { should change(Semester,:count).by(0) }
           it { should change(Offer,:count).by(0) }
           it { should change(Group,:count).by(0) }
-          it { should change(Allocation,:count).by(1) } # has one, two were added, so the difference is 1
-          it { should change(User.find_by_cpf("21872285848").allocations,:count).by(-1) } # remove existent allocation if user it isn't on cpf list
+          it { should change(Allocation,:count).by(2) } 
+          it { should change(User.find_by_cpf("21872285848").allocations.where(status: 1),:count).by(-1) } # remove existent allocation if user it isn't on cpf list
 
           it {
             post "/api/v1/load/groups", json_data

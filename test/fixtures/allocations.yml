@@ -440,7 +440,7 @@ professor_at_g3:
   user_id: 6
   allocation_tag_id: 3
   profile_id: 2
-  status: 2
+  status: 1
 
 ## tentar retirar editor admin
 
