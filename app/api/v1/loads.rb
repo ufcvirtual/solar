@@ -122,38 +122,28 @@ module V1
     end #curriculum_units
 
     namespace :allocations do
-      # Recebe usuário, turma e perfil para bloquear.
       # load/allocations/block_profile
-      post :block_profile do
-        allocation   = params[:allocation]
-        user         = User.find_by_cpf!(allocation[:cpf])
-        new_status   = 2
-        groups       = allocation[:turmas]
+      post :block_profile do # Receives user's cpf, group and profile to block
+        allocation = params[:allocation]
+        user       = User.find_by_cpf!(allocation[:cpf])
+        new_status = 2 # canceled allocation
+        group_info = allocation[:turma]
+        profile_id = case allocation[:perfil].to_i
+          when 1; 3 # tutor a distância
+          when 2; 4 # tutor presencial
+          when 3; 2 # professor titular
+          when 4; 1 # aluno
+          else allocation[:perfil] # corresponds to profile with id == allocation[:perfil]
+        end
 
         begin
-          groups.each do |group_info|
-            group      = get_group(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], group_info[:periodo], group_info[:ano])
-            profile_id = group_info[:perfil]
-            group.change_allocation_status(user.id, new_status, related: true, profile_id: profile_id) if group
-          end
+          group = get_group(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], group_info[:periodo], group_info[:ano])
+          group.change_allocation_status(user.id, new_status, related: true, profile_id: profile_id) if group
 
           {ok: :ok}
         rescue => error
           error!({error: error}, 422)
         end
-
-        # procura em tudo relacionado à turma
-        # alocação cancelada => 2
-        # recebe usuário: cpf
-        # perfil: id
-        # turma:
-          # ano
-          # periodo
-          # codGraduacao
-          # codDisciplina
-          # codigo
-        # Allocation(id: integer, user_id: integer, allocation_tag_id: integer, profile_id: integer, status: integer) 
-
       end #block_profile
     end #allocations
 
