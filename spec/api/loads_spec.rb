@@ -302,6 +302,31 @@ describe "Loads" do
           }
         end
 
+         context 'and list of existing groups and cancelling allocation' do 
+          let!(:json_data){
+            { matriculas: {cpf: "32305605153", turmas: [ # aluno1
+              {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "RM301", codGraduacao: "109"},
+              {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "RM301", codGraduacao: "78"} # ignorar código de graduação 78
+            ]}}
+          }
+          let!(:user){User.find_by_cpf("32305605153")}
+          let!(:user_allocations){user.allocations.where(status: 1, profile_id: 1)}
+
+          subject{ -> {
+            post "/api/v1/load/groups/enrollments", json_data}
+          }
+
+          it { should change(user.allocations,:count).by(1) } # add one allocation
+          # should change by - (the number of previous allocations (were canceled) -  the number of new allocations)
+          it { should change(user.allocations.where(status: 1, profile_id: 1), :count).by(-(user_allocations.count-1)) } 
+
+          it {
+            post "/api/v1/load/groups/enrollments", json_data
+            response.status.should eq(201) # created
+            response.body.should == {ok: :ok}.to_json
+          }
+        end
+        
         context 'and list of non existing groups' do 
           let!(:json_data){
             { matriculas: {cpf: "11016853521", turmas: [ # user3

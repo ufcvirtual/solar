@@ -55,6 +55,17 @@ module V1
                    course_id: Course.where(code: course_code).first},
           semesters: {name: "#{year}.#{period}"}).first
       end
+
+      # cancel all previous allocations and create new ones to groups
+      def cancel_previous_and_create_allocations(groups, user, profile_id)
+        user.groups(profile_id).each do |group|
+          group.change_allocation_status(user.id, 2, profile_id: profile_id) # cancel all users previous allocations as profile_id
+        end
+
+        groups.each do |group|
+          group.allocate_user(user.id, profile_id)
+        end
+      end
     end
 
     namespace :groups do
@@ -87,13 +98,16 @@ module V1
       post :enrollments do
         load_enrollments = params[:matriculas]
         user             = User.find_by_cpf! load_enrollments[:cpf]
-        student_profile  = 1 ## Aluno => 1
         groups           = load_enrollments[:turmas]
+        student_profile  = 1 # Aluno => 1
 
         begin
-          groups.each do |group_info|
-            group = get_group(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], group_info[:periodo], group_info[:ano])
-            group.allocate_user(user.id, student_profile) if group
+          ActiveRecord::Base.transaction do
+            groups = groups.collect do |group_info| 
+              get_group(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], group_info[:periodo], group_info[:ano]) unless group_info[:codDisciplina]  == 78
+            end # Se cód. graduação for 78, desconsidera (por hora, vem por engano).
+
+            cancel_previous_and_create_allocations(groups.compact, user, student_profile)
           end
 
           {ok: :ok}
@@ -140,7 +154,7 @@ module V1
 
         begin
           group = get_group(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], group_info[:periodo], group_info[:ano])
-          group.change_allocation_status(user.id, new_status, related: true, profile_id: profile_id) if group
+          group.change_allocation_status(user.id, new_status, profile_id: profile_id) if group
 
           {ok: :ok}
         rescue => error
