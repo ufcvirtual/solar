@@ -687,6 +687,11 @@ tooldetailtutordist4:
   resource_id: 145
   per_id: false
 
+webconferencetutordist1:
+  profile_id: 3
+  resource_id: 162
+  per_id: false
+
 ##############################
 # TUTOR PRESENCIAL           #
 ##############################
@@ -698,6 +703,10 @@ uctp:
   resource_id: 11
   per_id: true
 
+webconferencetutorprese1:
+  profile_id: 4
+  resource_id: 162
+  per_id: false
 
 ##############################
 # EDITOR #
