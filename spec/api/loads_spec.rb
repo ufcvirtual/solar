@@ -106,6 +106,27 @@ describe "Loads" do
           }
         end
 
+        context "and new semester but missing group params" do # transaction must undo all changes
+          let!(:json_data){ {turmas: {ano: "2014", periodo: "2", codDisciplina: "RM302", codGraduacao: "109", # missing code
+              dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
+              }} }
+
+          subject{ -> {
+            post "/api/v1/load/groups", json_data}
+          }
+
+          # something happened, so undo all changes and nothing is created
+          it { should change(Semester,:count).by(0) }
+          it { should change(Offer,:count).by(0) }
+          it { should change(Group,:count).by(0) }
+          it { should change(Allocation,:count).by(0) }
+
+          it {
+            post "/api/v1/load/groups", json_data
+            response.status.should eq(422)
+          }
+        end
+
         context "and dates smaller then today" do
           let!(:json_data){ {turmas: {ano: "2014", periodo: "2", codDisciplina: "RM302", codigo: "T01", codGraduacao: "109",
               dtInicio: Date.current - 1.month, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
@@ -193,6 +214,28 @@ describe "Loads" do
           it { should change(Offer,:count).by(0) }
           it { should change(Group,:count).by(0) }
           it { should change(Allocation,:count).by(3) }
+
+          it {
+            post "/api/v1/load/groups", json_data
+            response.status.should eq(201) # created
+            response.body.should == {ok: :ok}.to_json
+          }
+        end
+
+        context "and existing group removing previous professor" do
+          let!(:json_data){ {turmas: {ano: "2011", periodo: "1", codDisciplina: "RM301", codigo: "QM-CAU", codGraduacao: "109",
+            dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "31877336203"] # prof já está alocado, ele deve ser removido
+            }} }
+
+          subject{ -> { 
+            post "/api/v1/load/groups", json_data} 
+          }
+
+          it { should change(Semester,:count).by(0) }
+          it { should change(Offer,:count).by(0) }
+          it { should change(Group,:count).by(0) }
+          it { should change(Allocation,:count).by(1) } # has one, two were added, so the difference is 1
+          it { should change(User.find_by_cpf("21872285848").allocations,:count).by(-1) } # remove existent allocation if user it isn't on cpf list
 
           it {
             post "/api/v1/load/groups", json_data

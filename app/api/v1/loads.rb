@@ -41,8 +41,8 @@ module V1
       end
 
       def allocate_professors(group, cpfs)
-        ## como vai ficar? como saber quem eh professor?
-        ## Prof. Titular => 2
+        group.allocations.where(profile_id: 2).map(&:delete) # removes all previous allocations
+
         professors = User.where(cpf: cpfs)
         professors.each do |prof|
           group.allocate_user(prof.id, 2)
@@ -69,11 +69,13 @@ module V1
         uc            = CurriculumUnit.find_by_code! load_group[:codDisciplina]
 
         begin
-          semester = verify_or_create_semester(semester_name, offer_period)
-          offer    = verify_or_create_offer(semester, course, uc, offer_period)
-          group    = verify_or_create_group(offer, group_code)
+          ActiveRecord::Base.transaction do
+            semester = verify_or_create_semester(semester_name, offer_period)
+            offer    = verify_or_create_offer(semester, course, uc, offer_period)
+            group    = verify_or_create_group(offer, group_code)
 
-          allocate_professors(group, cpfs)
+            allocate_professors(group, cpfs)
+          end
 
           {ok: :ok}
         rescue => error
