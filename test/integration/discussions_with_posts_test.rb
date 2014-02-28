@@ -12,7 +12,7 @@ class DiscussionsWithPostsTest < ActionDispatch::IntegrationTest
     login_as user, scope: :user
   end
 
-  ## API - Mobilis
+  ## API - Mobilis - antigo / pode quebrar
   test "posts de forum criados a partir de uma data" do
     login users(:aluno1)
 

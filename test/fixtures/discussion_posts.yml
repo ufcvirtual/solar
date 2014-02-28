@@ -5,8 +5,8 @@ post_1_forum_1:
   profile_id: 1
   level: 1
   content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-  created_at: <%= Date.today - 20.days %>
-  updated_at: <%= Date.today - 20.days %>
+  created_at: <%= Time.at(Time.now.to_f - 20.days).iso8601(5) %>
+  updated_at: <%= Time.at(Time.now.to_f - 20.days).iso8601(5) %>
 
 post_2_forum_1:
   id: 2
@@ -16,8 +16,8 @@ post_2_forum_1:
   parent_id: 1
   level: 2
   content: 'Praesent quam ipsum, blandit et vehicula quis, gravida non risus. Morbi nec dolor purus.'
-  created_at: <%= Date.today - 19.days %>
-  updated_at: <%= Date.today - 19.days %>
+  created_at: <%= Time.at(Time.now.to_f - 19.days).iso8601(5) %>
+  updated_at: <%= Time.at(Time.now.to_f - 19.days).iso8601(5) %>
 
 post_3_forum_1:
   id: 3
@@ -26,8 +26,8 @@ post_3_forum_1:
   profile_id: 3
   level: 1
   content: 'Sed tempus porttitor felis. Quisque porttitor viverra nisl, eget luctus leo luctus ac.'
-  created_at: <%= Date.today - 18.days %>
-  updated_at: <%= Date.today - 18.days %>
+  created_at: <%= Time.at(Time.now.to_f - 18.days).iso8601(5) %>
+  updated_at: <%= Time.at(Time.now.to_f - 18.days).iso8601(5) %>
 
 post_4_forum_1:
   id: 6
@@ -37,8 +37,8 @@ post_4_forum_1:
   parent_id: 1
   level: 2
   content: 'In hac habitasse platea dictumst.'
-  created_at: <%= Date.today - 17.days %>
-  updated_at: <%= Date.today - 17.days %>
+  created_at: <%= Time.at(Time.now.to_f - 17.days).iso8601(5) %>
+  updated_at: <%= Time.at(Time.now.to_f - 17.days).iso8601(5) %>
 
 post_1_forum_2:
   id: 4
@@ -47,8 +47,8 @@ post_1_forum_2:
   profile_id: 4
   level: 1
   content: 'Sed quam nisl, commodo eget ullamcorper vel, lacinia vitae nunc.<br />Mauris sed mauris ac orci aliquam aliquet. In vulputate, nibh non semper iaculis, metus odio hendrerit est, vel tincidunt turpis leo commodo libero.<br />Sed quam nisl, commodo eget ullamcorper vel, lacinia vitae nunc.'
-  created_at: <%= Time.now - 20.days %>
-  updated_at: <%= Time.now - 20.days %>
+  created_at: <%= Time.at(Time.now.to_f - 20.days).iso8601(5) %>
+  updated_at: <%= Time.at(Time.now.to_f - 20.days).iso8601(5) %>
 
 post_2_forum_2:
   id: 5
@@ -57,8 +57,8 @@ post_2_forum_2:
   profile_id: 1
   level: 1
   content: 'Vestibulum a magna nisl, sed pharetra purus. Suspendisse a sapien sit amet magna condimentum dictum facilisis vitae arcu.'
-  created_at: <%= Time.now - 19.days %>
-  updated_at: <%= Time.now - 19.days %>
+  created_at: <%= Time.at(Time.now.to_f - 19.days).iso8601(5) %>
+  updated_at: <%= Time.at(Time.now.to_f - 19.days).iso8601(5) %>
 
 post_3_forum_2:
   id: 7
@@ -67,5 +67,5 @@ post_3_forum_2:
   profile_id: 1
   level: 1
   content: 'Vestibulum a magna nisl, sed pharetra purus. Suspendisse a sapien sit amet magna condimentum dictum facilisis vitae arcu.'
-  created_at: <%= Time.now - 18.days %>
-  updated_at: <%= Time.now - 18.days %>
+  created_at: <%= Time.at(Time.now.to_f - 18.days).iso8601(5) %>
+  updated_at: <%= Time.at(Time.now.to_f - 18.days).iso8601(5) %>
