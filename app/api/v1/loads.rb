@@ -141,7 +141,7 @@ module V1
 
     namespace :allocations do
       # load/allocations/block_profile
-      post :block_profile do # Receives user's cpf, group and profile to block
+      put :block_profile do # Receives user's cpf, group and profile to block
         allocation = params[:allocation]
         user       = User.find_by_cpf!(allocation[:cpf])
         new_status = 2 # canceled allocation

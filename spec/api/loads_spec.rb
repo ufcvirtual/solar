@@ -411,9 +411,9 @@ describe "Loads" do
 
             it {
               expect{
-                post "/api/v1/load/allocations/block_profile", json_data
+                put "/api/v1/load/allocations/block_profile", json_data
 
-                response.status.should eq(201)
+                response.status.should eq(200)
                 response.body.should == {ok: :ok}.to_json
               }.to change{Allocation.where(status: 2).count}.by(1) #alocações com status cancelado aumentam de número
             }
@@ -428,9 +428,9 @@ describe "Loads" do
 
             it {
               expect{
-                post "/api/v1/load/allocations/block_profile", json_data
+                put "/api/v1/load/allocations/block_profile", json_data
 
-                response.status.should eq(201)
+                response.status.should eq(200)
                 response.body.should == {ok: :ok}.to_json
               }.to change{Allocation.where(status: 2).count}.by(0)
             }
@@ -445,9 +445,9 @@ describe "Loads" do
 
             it {
               expect{
-                post "/api/v1/load/allocations/block_profile", json_data
+                put "/api/v1/load/allocations/block_profile", json_data
 
-                response.status.should eq(201)
+                response.status.should eq(200)
                 response.body.should == {ok: :ok}.to_json
               }.to change{Allocation.where(status: 2).count}.by(0)
             }
@@ -462,9 +462,9 @@ describe "Loads" do
           
             it {
               expect{
-                post "/api/v1/load/allocations/block_profile", json_data
+                put "/api/v1/load/allocations/block_profile", json_data
 
-                response.status.should eq(201)
+                response.status.should eq(200)
                 response.body.should == {ok: :ok}.to_json
               }.to change{Allocation.where(status: 2).count}.by(0)
             }
@@ -479,7 +479,7 @@ describe "Loads" do
 
             it {
               expect{
-                post "/api/v1/load/allocations/block_profile", json_data
+                put "/api/v1/load/allocations/block_profile", json_data
 
                 response.status.should eq(404)
               }.to change{Allocation.where(status: 2).count}.by(0)
@@ -494,7 +494,7 @@ describe "Loads" do
               { allocation: {cpf: "21872285848", perfil: 1, turma: 
                 {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
               }}
-            post "/api/v1/load/groups/enrollments", json_data, "REMOTE_ADDR" => "127.0.0.2"
+            put "/api/v1/load/allocations/block_profile", json_data, "REMOTE_ADDR" => "127.0.0.2"
             response.status.should eq(404)
           end
         end
