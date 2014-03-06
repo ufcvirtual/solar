@@ -399,7 +399,7 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
 }
 
 #chatpanel .chat-head-chatbox {
-    background-color: rgb(6, 86, 153, 1);
+    background-color: rgb(6, 86, 153);
     background-color: rgba(6, 86, 153, 1);
 }
 

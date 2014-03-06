@@ -90,12 +90,15 @@ class Offer < ActiveRecord::Base
   end
 
   def self.currents(year = nil)
-    unless year # se o ano passado for nil, pega os semestres do ano corrente em endiante
-      self.joins(:period_schedule).where("schedules.end_date >= ?", Date.parse("#{Date.today.year}-01-01"))
+    unless year # se o ano passado for nil, pega as ofertas do ano corrente em diante
+      offers = self.joins(:period_schedule).where("schedules.end_date >= ?", Date.today.beginning_of_year).pluck(:id)
     else # se foi definido, pega apenas daquele ano
-      first_day_of_year, last_day_of_year = Date.parse("#{year}-01-01"), Date.parse("#{year}-12-31")
-      self.joins(:period_schedule).where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?)", first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year)
+      first_day_of_year, last_day_of_year = Date.today.beginning_of_year, Date.today.end_of_year
+      offers = self.joins(:period_schedule).where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?)", first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year).pluck(:id)
     end
+    # recupera as ofertas que mantem a data do semestre ativo
+    current_semester_offers = Semester.currents(year).map(&:offers).flatten.select{|offer| offer.id if offer.period_schedule.nil?}
+    Offer.where(id: current_semester_offers+offers)
   end
 
   def has_any_lower_association?

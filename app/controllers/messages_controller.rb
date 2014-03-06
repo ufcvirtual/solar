@@ -160,11 +160,10 @@ class MessagesController < ApplicationController
     def user_contacts
       contacts, ucs = [], []
       currents_groups = Offer.currents.map(&:groups).flatten.compact
-
-      (current_user.allocations.map(&:allocation_tag).compact.uniq).each do |at|
+      current_user.allocation_tags.each do |at|
         groups = (currents_groups & at.groups).flatten.compact
         unless groups.empty?
-          responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(at.related.join(","), Profile_Type_Class_Responsible)
+          responsible  = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(at.related.join(","), Profile_Type_Class_Responsible)
           participants = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type(groups.map(&:allocation_tag).compact.map(&:id).join(","), Profile_Type_Class_Responsible)
 
           uc = at.groups.first.curriculum_unit
