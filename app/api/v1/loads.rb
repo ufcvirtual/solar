@@ -115,6 +115,20 @@ module V1
           error!({error: error}, 422)
         end
       end
+
+      # load/groups/enrollments
+      params do
+        requires :codDisciplina, :codGraduacao, :codTurma, :periodo, :ano
+      end
+      get :enrollments, rabl: "users/enrollments" do
+        group  = get_group(params[:codDisciplina], params[:codGraduacao], params[:codTurma], params[:periodo], params[:ano])
+        raise ActiveRecord::RecordNotFound if group.nil?
+        begin 
+          @users = group.students_participants.map(&:user)
+        rescue  => error
+          error!({error: error}, 422)
+        end
+      end
     end
 
     namespace :curriculum_units do

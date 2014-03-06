@@ -278,7 +278,7 @@ describe "Loads" do
 
     end # groups
 
-    describe "enrollments" do
+    describe "post enrollments" do
 
       context "with valid ip" do
 
@@ -395,7 +395,60 @@ describe "Loads" do
         end
       end
 
-    end # enrollments
+    end # post enrollments
+
+    describe "get enrollments" do
+
+      context "with valid ip" do
+
+        it "gets a list of enrolled users" do
+          get "/api/v1/load/groups/enrollments", periodo: "1", ano: "2011", codTurma: "LB-CAR", codDisciplina: "RM414", codGraduacao: "109" # um aluno alocado
+
+          user = User.find(9)
+          response.status.should eq(200)
+          response.body.should == [{
+              nome: user.name,
+              cpf: user.cpf,
+              email: user.email,
+              dtNascimento: user.birthdate,
+              sexo: user.gender,
+              telefone: user.telephone,
+              celular: user.cell_phone,
+              numero: user.address_number,
+              cep: user.zipcode,
+              bairro: user.address_neighborhood,
+              estado: user.state,
+              municipio: user.city,
+              endereco: user.address_complement.blank? ? user.address : [user.address, user.address_complement].join(", ")
+            }].to_json
+        end
+
+        it "gets an empty list of enrolled users" do
+          get "/api/v1/load/groups/enrollments", periodo: "1", ano: "2011", codTurma: "SP-FOR", codDisciplina: "TS101", codGraduacao: "110" # nenhum aluno alocado
+          response.status.should eq(200)
+          response.body.should == [].to_json
+        end
+
+        it "gets an param error when it's missing a param" do
+          get "/api/v1/load/groups/enrollments", ano: "2011", codTurma: "SP-FOR", codDisciplina: "TS101", codGraduacao: "110" # falta parâmetro
+          response.status.should eq(400)
+        end
+
+        it "gets an empty array when group doesn't exsists" do
+          get "/api/v1/load/groups/enrollments", periodo: "1", ano: "2011", codTurma: "S-FOR", codDisciplina: "TS101", codGraduacao: "110" # turma não existe
+          response.status.should eq(404)
+        end
+
+      end
+
+      context "with invalid ip" do
+        it "gets a not found error" do
+          get "/api/v1/load/groups/enrollments", {periodo: "1", ano: "2011", codTurma: "LB-CAR", codDisciplina: "RM414", codGraduacao: "109"}, {"REMOTE_ADDR" => "127.0.0.2"}
+          response.status.should eq(404)
+        end
+      end
+
+    end # get enrollments
 
     describe ".allocations" do
       describe "block_profile" do

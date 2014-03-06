@@ -114,7 +114,7 @@ professor2:
   zipcode: 60000000
   country: Paraguay
   # state: importado
-  # city: Irmã de Assunção
+  # city: Cidade A
   institution: UFP
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
@@ -165,7 +165,7 @@ aluno1:
   zipcode: 60000000
   country: Paraguay
   # state: importado
-  # city: Irmã de Assunção
+  # city: Cidade A
   institution: UFP
   bio: Lorem ipsum dolor sit amet.
   interests: Lorem ipsum dolor sit amet.
@@ -194,7 +194,7 @@ aluno2:
   zipcode: 60000000
   country: Paraguay
   state: importado
-  city: Irmã de Assunção
+  city: Cidade A
   institution: UFP
   bio: Lorem ipsum dolor sit amet.
   interests: Lorem ipsum dolor sit amet.
@@ -223,7 +223,7 @@ aluno3:
   zipcode: 60000000
   country: Paraguay
   state: importado
-  city: Irmã de Assunção
+  city: Cidade A
   institution: UFP
   bio: Lorem ipsum dolor sit amet.
   interests: Lorem ipsum dolor sit amet.
@@ -252,7 +252,7 @@ tutor_presencial:
   zipcode: 60000000
   country: Paraguay
   state: importado
-  city: Irmã de Assunção
+  city: Cidade A
   institution: UFP
   bio: Lorem ipsum dolor sit amet.
   interests: Lorem ipsum dolor sit amet.
@@ -281,7 +281,7 @@ tutor_distancia:
   zipcode: 60000000
   country: Paraguay
   state: importado
-  city: Irmã de Assunção
+  city: Cidade A
   institution: UFP
   bio: Lorem ipsum dolor sit amet.
   interests: Lorem ipsum dolor sit amet.
@@ -310,7 +310,7 @@ coorddisc:
   zipcode: 60000000
   country: Paraguay
   state: importado
-  city: Irmã de Assunção
+  city: Cidade A
   institution: UFP
   bio: Lorem ipsum dolor sit amet.
   interests: Lorem ipsum dolor sit amet.
