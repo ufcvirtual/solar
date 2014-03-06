@@ -41,9 +41,7 @@ module V1
       end
 
       def allocate_professors(group, cpfs)
-        group.allocations.where(profile_id: 2).map do |allocation| # cancel all previous allocations
-          allocation.update_attribute(:status, 2)
-        end
+        group.allocations.where(profile_id: 2).update_all(status: 2) # cancel all previous allocations
 
         professors = User.where(cpf: cpfs)
         professors.each do |prof|
