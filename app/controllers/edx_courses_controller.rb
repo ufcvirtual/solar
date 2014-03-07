@@ -32,7 +32,7 @@ class EdxCoursesController < ApplicationController
     @available_courses, @my_courses = [], []
 
     res = get_response(EDX_URLS["list_available_courses"])
-    if (params[:type].blank? or params[:type].to_i == 7) and params[:uc].blank? # caso (não seja feita busca ou se busque por cursos públicos) e não se busque por UC
+    if (params[:type].blank? or params[:type].to_i == 7) and params[:uc].blank? # (if no search is made or public courses are searched) and no uc is searched
       @available_courses = JSON.parse(res.body)["objects"]  # all available edx courses
       @my_courses        = my.map { |mc| mc['course_id'] } unless my.nil? # courses ids which user is enrolled
       @available_courses.select!{ |course| course if @my_courses.include?(course["course_id"])} if params[:status] == "enroll" # courses which user is enrolled if searched for enrolled courses
