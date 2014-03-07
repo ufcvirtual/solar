@@ -77,7 +77,15 @@
 
   // EDX
   $(function(){
-    $.get("#{available_edx_courses_path}", function(data) {
+    var search_data = {
+      status: $("#status").val(),
+      type: $("#type").val(),
+      uc: $("#curriculum_unit").val()
+    };
+
+    $.get("#{available_edx_courses_path}", search_data, function(data) {
+      if($(data).length > 0)
+        $(".any_found.text_none").remove();
       $(".tb_list.enrollment_list tbody").append(data);
     });
   });

@@ -9,9 +9,5 @@
     %td= course_edx_id[2]
     %td= course_edx_id[1]   
     %td= l(course_edx['enrollment_start'].to_date , format: :default) + " - " + l(course_edx['enrollment_end'].to_date, format: :default) if course_edx['enrollment_start'] and course_edx['enrollment_end']
-    - unless @my_courses.include?(course_edx['course_id'])
-      %td
-        = button_to t(:enroll, scope: "enrollments.index"), enroll_edx_courses_path(course: course), class: 'btn btn_default'
-    - else
-      %td
-        = button_to t(:cancel, scope: "enrollments.index"), unenroll_edx_courses_path(course: course), class: 'btn btn_caution'
+    - user_enrolled = @my_courses.include?(course_edx['course_id'])
+    %td= button_to t("enrollments.index.#{user_enrolled ? "cancel" : "enroll"}"), eval("#{user_enrolled ? 'unenroll' : 'enroll'}_edx_courses_path(course: course)"), class: "btn #{user_enrolled ? 'btn_caution' : 'btn_default'}"

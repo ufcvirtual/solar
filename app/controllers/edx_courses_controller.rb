@@ -12,17 +12,17 @@ class EdxCoursesController < ApplicationController
 
     if check_me
       res = get_response(EDX_URLS["list_users_courses"].gsub(":username", current_user.username))
-      uri_courses = JSON.parse(res.body) #pega endereço dos cursos
-      my_courses = ""
+      uri_courses = JSON.parse(res.body) # pega endereço dos cursos
+      my_courses  = ""
       unless uri_courses.empty?
         for uri_course in uri_courses do
           res = get_response(EDX_URLS["information_course"].gsub(":resource_uri", uri_course))
-          my_courses  << res.body << ","
+          my_courses << res.body << ","
         end
 
         my_courses = my_courses.chop
         my_courses = "[" + my_courses + "]"
-        @courses = JSON.parse(my_courses)
+        @courses   = JSON.parse(my_courses)
       end
     end   
   end
@@ -31,11 +31,12 @@ class EdxCoursesController < ApplicationController
   def available
     @available_courses, @my_courses = [], []
 
-    ## todos
     res = get_response(EDX_URLS["list_available_courses"])
-    @available_courses = JSON.parse(res.body)["objects"]
-    @my_courses = my.map { |mc| mc['course_id'] } unless my.nil?
- 
+    if (params[:type].blank? or params[:type].to_i == 7) and params[:uc].blank? # caso (não seja feita busca ou se busque por cursos públicos) e não se busque por UC
+      @available_courses = JSON.parse(res.body)["objects"]  # all available edx courses
+      @my_courses        = my.map { |mc| mc['course_id'] } unless my.nil? # courses ids which user is enrolled
+      @available_courses.select!{ |course| course if @my_courses.include?(course["course_id"])} if params[:status] == "enroll" # courses which user is enrolled if searched for enrolled courses
+    end
   end
 
 
@@ -47,11 +48,11 @@ class EdxCoursesController < ApplicationController
     "course_resource_uri" => Base64.decode64(params[:course])
       }.to_json
 
-    uri = URI.parse(EDX_URLS["enroll_or_unenroll"].gsub(":username", current_user.username))
+    uri  = URI.parse(EDX_URLS["enroll_or_unenroll"].gsub(":username", current_user.username))
     http = Net::HTTP.new(uri.host,uri.port)
-    req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
+    req  = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
     req.body = course
-    res = http.request(req)
+    res  = http.request(req)
 
     redirect_to enrollments_path
   end  
@@ -62,11 +63,11 @@ class EdxCoursesController < ApplicationController
     "course_resource_uri" => Base64.decode64(params[:course])
       }.to_json
 
-    uri = URI.parse(EDX_URLS["enroll_or_unenroll"].gsub(":username", current_user.username))
+    uri  = URI.parse(EDX_URLS["enroll_or_unenroll"].gsub(":username", current_user.username))
     http = Net::HTTP.new(uri.host,uri.port)
-    req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json' , 'X-HTTP-METHOD-OVERRIDE' => 'DELETE'})
+    req  = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json' , 'X-HTTP-METHOD-OVERRIDE' => 'DELETE'})
     req.body = course
-    res = http.request(req)
+    res  = http.request(req)
 
     redirect_to enrollments_path
   end
