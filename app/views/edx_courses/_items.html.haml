@@ -1,0 +1,38 @@
+.edx_courses_items
+
+  %fieldset#uc_informations
+    %legend= t("editions.items.application")
+    .block_content.block_content_alt
+
+      - edx = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]      
+      .uc_item
+        .edit_content{:"data-link" => "#"}
+          = link_to(content_tag(:i, nil, class: 'icon-archive big'), "#", class: 'btn')
+          = link_to t("editions.items.edit_content"), "#"
+ 
+          - action = "#{edx['login']}?next=#{@edit_course_url}"
+          %form{id:"edx",action: action, method: "post", target:"_blank"}
+            %input{name: "username", type: "hidden", value: current_user.username}/
+            %input{name: "token", type: "hidden", value: Digest::HMAC.hexdigest(current_user.username, edx['hash_key'], Digest::SHA1)}/
+
+      .uc_item
+        .allocation{:"data-link" => designates_edx_courses_path(course: Base64.encode64(@uri_course) )}
+          = link_to(content_tag(:i, nil, class: 'icon-user-add big'), "#", class: 'btn')
+          = link_to t("editions.items.allocation"), "#"
+
+:javascript
+
+  $(function(){
+    $(".edit_content").click(function(e){
+      e.preventDefault();
+      $('#edx').submit();
+      flash_message("#{t('edx.warning.redirected')}", "warning");
+    });
+
+    $(".allocation").click(function(){
+      $.get($(this).data("link"), function(data){
+        $(".edx_courses_items").html(data);
+        $(".back").removeClass("invisible");
+      });
+    });
+  });

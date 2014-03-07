@@ -19,7 +19,6 @@ class EditionsController < ApplicationController
       @selected = "GROUP"
       @all_groups_ids = params[:all_groups_ids].split(" ") unless params[:all_groups_ids].nil? # todas as turmas existentes no filtro
     end
-
     render partial: "items"
   end
 
@@ -66,9 +65,23 @@ class EditionsController < ApplicationController
     edx_urls = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]['urls']
 
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
-    url = URI.parse(edx_urls["list_available_courses"])
+    url = URI.parse(edx_urls["verify_user"].gsub(":username", current_user.username)+"instructor/")
     res = Net::HTTP.start(url.host, url.port) { |http| http.request(Net::HTTP::Get.new(url.path)) }
-    @edx_courses = JSON.parse(res.body)["objects"]
+      uri_courses = JSON.parse(res.body) #pega endereço dos cursos
+      courses_created_by_current_user = "[]" 
+      unless uri_courses.empty?
+        courses_created_by_current_user = ""
+        for uri_course in uri_courses do
+          url = URI.parse(edx_urls["information_course"].gsub(":resource_uri", uri_course))
+          res = Net::HTTP.start(url.host, url.port) { |http| http.request(Net::HTTP::Get.new(url.path)) }
+          courses_created_by_current_user  << res.body.chop! << ", \"resource_uri\":  \"#{uri_course}\""<<"}, "
+        end
+
+        courses_created_by_current_user = courses_created_by_current_user.chop
+        courses_created_by_current_user = "[" + courses_created_by_current_user.chop! + "]"
+      end
+      @edx_courses = JSON.parse(courses_created_by_current_user)
+
     render layout: false if params.include?(:layout)
   end    
 

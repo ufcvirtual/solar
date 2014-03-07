@@ -21,22 +21,16 @@
           %td= course_edx_id[1]
           %td= course["display_name"]
           %td
-            = link_to content_tag(:i, nil, class: 'icon-edit'), "#", class: 'btn link_edit_course edit_edx_courses', :'data-tooltip' => t("courses.index.edit")
             = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_edx_course', :"data-link-delete" => delete_edx_courses_path(course_resource_uri), :'data-tooltip' => t("courses.index.delete")
             - action = "#{edx['login']}?next=#{course['course_absolute_url_studio']}"
             %form{action: action, method: "post", target:"_blank"}
               %input{name: "username", type: "hidden", value: current_user.username}/
               %input{name: "token", type: "hidden", value: Digest::HMAC.hexdigest(current_user.username, edx['hash_key'], Digest::SHA1)}/
+
           
 :javascript
 
   $(function(){
-    $(".edit_edx_courses").click(function(e){
-     e.preventDefault();
-     $(this).siblings('form').submit();
-     flash_message("#{t('edx.warning.redirected')}", "warning");
-    });
-
     $("#new_edx_course").call_fancybox();
 
     $('.delete_edx_course').click(function(e){

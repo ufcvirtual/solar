@@ -1,0 +1,82 @@
+.list_designates
+  / = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+
+  .block_wrapper.users
+    .block_title
+      %h2= t("allocations.designates.designate_users")
+
+    .block_content.allocations_list
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th= t("allocations.designates.name")
+            %th{style: 'width:80px'}= t("allocations.designates.cpf")
+            %th{style: 'width:200px'}= t("allocations.designates.email")
+            %th{style: 'width:120px'}= t("allocations.designates.profile")
+            %th.no_sort
+        %tbody
+          - unless @instructors.empty?  
+            - @instructors.each do |instructor|
+              %tr.lines
+                - instructor_uri = instructor.split("/")
+                - instructor_username = instructor_uri[5]
+                - instructor = User.find_by_username(instructor_username) 
+                %td= instructor.name
+                %td= instructor.cpf
+                %td= instructor.email
+                %td= t(".professor")
+
+                %td
+                  = button_tag t("edx.designates.deallocate"), type: :button, class: "btn btn_caution btn_deallocate", alt: t("edx.designates.deallocate"),:'data-link-delete' =>  deallocate_edx_courses_path(instructor.username, @uri_course, "instructor"), :"data-link-list" => designates_edx_courses_path(@uri_course)
+
+          - unless @staffs.empty?  
+            - @staffs.each do |staff|
+              %tr.lines
+                - staff_uri = staff.split("/")
+                - staff_username = staff_uri[5]
+                - staff = User.find_by_username(staff_username) 
+                %td= staff.name
+                %td= staff.cpf
+                %td= staff.email
+                %td= t(".tutor")    
+
+                %td
+                  = button_tag t("edx.designates.deallocate"), type: :button, class: "btn btn_caution btn_deallocate", alt: t("edx.designates.deallocate"),:'data-link-delete' =>  deallocate_edx_courses_path(staff.username, @uri_course, "staff"), :"data-link-list" => designates_edx_courses_path(@uri_course) 
+
+
+  .block_wrapper.search
+    .block_title
+      %h2= t("allocations.designates.new_designate")
+
+    .block_content_toolbar
+      %label{:for => "text_search"}
+        = t("allocations.designates.user")
+      = text_field_tag "text_search", @text_search
+      = button_tag t("allocations.designates.search"), type: :button, class: "btn btn_default", id: "search_user", alt: t("allocations.designates.search_users")
+
+    .block_content.allocations_list
+      #list_users
+
+:javascript
+
+$(function(){
+  $("#search_user").click(function() {
+    var url_for = "#{search_users_edx_courses_path(course: params[:course])}";
+    var data = { user: encodeURIComponent($("#text_search").val()) };
+    $.get(url_for, data, function(data) { $('#list_users').html(data); });
+  });
+
+  $(".btn_deallocate").click(function(){
+      var url = $(this).data("link-list");
+      $.post($(this).data("link-delete"), function(data){
+        $.get(url, function(data){
+          $(".list_designates:last").replaceWith(data);
+        });
+
+        flash_message('#{I18n.t(:deallocated, :scope => [:edx, :success])}', 'notice');
+      }).error(function(){
+        flash_message('#{I18n.t(:not_deallocated, :scope => [:edx, :error])}', 'alert');
+      });
+    });
+
+});

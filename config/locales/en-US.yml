@@ -1504,6 +1504,9 @@
       test: Test
       edition_of: Edition of %{of}
       in_development: In development
+      # EDX_items
+      application: Application
+      edit_content: Edit content
     success:
       saved: Saved successfully
       deleted: Deleted successfully
@@ -1948,3 +1951,11 @@
     errors:
       existing_name: already exists
       existing_code: equivalent code already exists
+    designates:
+      instructor: Professor
+      staff: Tutor
+      dealloc: Desalloc 
+    success:
+      deallocated: deallocated user
+    error:
+      not_deallocated: Unable to deallocate user  

@@ -15,5 +15,6 @@
     $(".open-edx-class").click(function(e){
       e.preventDefault();
       $(this).closest("form").submit();
+      flash_message("#{t('edx.warning.redirected')}", "warning");
     });
   });

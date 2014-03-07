@@ -164,9 +164,14 @@ Solar::Application.routes.draw do
       post "delete/:course", to: :delete, as: :delete
       get :my
       get :available
-      get :edit
       post "enroll/:course", to: :enroll, as: :enroll
       post "unenroll/:course", to: :unenroll, as: :unenroll
+      get :content
+      get :search_users
+      get :items
+      get "designates/:course", to: :designates, as: :designates
+      post "allocate/:username/:course/:profile", to: :allocate, as: :allocate
+      post "deallocate/:username/:course/:profile", to: :deallocate, as: :deallocate
     end
   end
 

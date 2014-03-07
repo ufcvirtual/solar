@@ -1443,7 +1443,7 @@
       deactivate_user: Desativar %{user_name}
       designated_on: Alocado em
       profile: Perfil
-      cpf: Cpf
+      cpf: CPF
       email: Email
       name: Nome
       login: Login
@@ -1454,7 +1454,7 @@
       designate_profile_no_found: Nenhum perfil disponível para alocação
       designate_user: Alocar %{user_name}
       profile: Perfil
-      cpf: Cpf
+      cpf: CPF
       email: Email
       name: Nome
       select_profile: Selecione um perfil
@@ -1652,6 +1652,10 @@
       test: Prova
       edition_of: Edição de %{of}
       in_development: Em desenvolvimento
+      # EDX_items
+      application: Aplicação
+      edit_content: Editar conteúdo
+
     success:
       saved: Salvo com sucesso
       deleted: Excluido com sucesso
@@ -2101,3 +2105,11 @@
     errors:
       existing_name: já existe
       existing_code: código equivalente já existe
+    designates:
+      instructor: Professor
+      staff: Tutor  
+      deallocate: Desalocar  
+    success:
+      deallocated: Usuário desalocado
+    error:
+      not_deallocated: Não foi possível desalocar usuário  
