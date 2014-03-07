@@ -450,114 +450,253 @@ describe "Loads" do
 
     end # get enrollments
 
-    describe ".allocations" do
-      describe "block_profile" do
+    describe "block_profile" do
 
-        context "with valid ip" do
+      context "with valid ip" do
 
-          context 'and list of existing groups' do 
-            let!(:json_data){ # user: prof, profile: tutor a distância
-              { allocation: {cpf: "21872285848", perfil: 1, turma: 
-                {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
-              }}
-            }
+        context 'and list of existing groups' do 
+          let!(:json_data){ # user: prof, profile: tutor a distância
+            { allocation: {cpf: "21872285848", perfil: 1, turma: 
+              {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
+            }}
+          }
 
-            it {
-              expect{
-                put "/api/v1/load/allocations/block_profile", json_data
+          it {
+            expect{
+              put "/api/v1/load/groups/block_profile", json_data
 
-                response.status.should eq(200)
-                response.body.should == {ok: :ok}.to_json
-              }.to change{Allocation.where(status: 2).count}.by(1) #alocações com status cancelado aumentam de número
-            }
-          end
-
-          context 'and list of non existing groups' do 
-            let!(:json_data){ # user: prof, profile: tutor a distância
-              { allocation: {cpf: "21872285848", perfil: 1, turma:
-                {periodo: "1", ano: "2011", codigo: "T02", codDisciplina: "RM301", codGraduacao: "109"}  # turma não existe
-              }}
-            }
-
-            it {
-              expect{
-                put "/api/v1/load/allocations/block_profile", json_data
-
-                response.status.should eq(200)
-                response.body.should == {ok: :ok}.to_json
-              }.to change{Allocation.where(status: 2).count}.by(0)
-            }
-          end
-
-          context 'and non existing course' do 
-            let!(:json_data){ # user: prof, profile: tutor a distância
-              { allocation: {cpf: "21872285848", perfil: 1, turma:
-                {periodo: "1", ano: "2011", codigo: "IL-FOR", codDisciplina: "RM404", codGraduacao: "C01"}, # curso não existe
-              }}
-            }
-
-            it {
-              expect{
-                put "/api/v1/load/allocations/block_profile", json_data
-
-                response.status.should eq(200)
-                response.body.should == {ok: :ok}.to_json
-              }.to change{Allocation.where(status: 2).count}.by(0)
-            }
-          end
-
-          context 'and non existing uc' do 
-            let!(:json_data){ # user: prof, profile: tutor a distância
-              { allocation: {cpf: "21872285848", perfil: 1, turma:
-                {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "UC01", codGraduacao: "109"}  # uc não existe
-              }}
-            }
-          
-            it {
-              expect{
-                put "/api/v1/load/allocations/block_profile", json_data
-
-                response.status.should eq(200)
-                response.body.should == {ok: :ok}.to_json
-              }.to change{Allocation.where(status: 2).count}.by(0)
-            }
-          end
-
-          context 'and non existing user' do 
-            let!(:json_data){ # cpf inválido
-              { allocation: {cpf: "cpf", perfil: 1, turma:
-                {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
-              }}
-            }
-
-            it {
-              expect{
-                put "/api/v1/load/allocations/block_profile", json_data
-
-                response.status.should eq(404)
-              }.to change{Allocation.where(status: 2).count}.by(0)
-            }
-          end
-
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+            }.to change{Allocation.where(status: 2).count}.by(1) #alocações com status cancelado aumentam de número
+          }
         end
 
-        context "with invalid ip" do
-          it "gets a not found error" do
-            json_data = # user: prof, profile: tutor a distância
-              { allocation: {cpf: "21872285848", perfil: 1, turma: 
-                {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
-              }}
-            put "/api/v1/load/allocations/block_profile", json_data, "REMOTE_ADDR" => "127.0.0.2"
-            response.status.should eq(404)
-          end
+        context 'and list of non existing groups' do 
+          let!(:json_data){ # user: prof, profile: tutor a distância
+            { allocation: {cpf: "21872285848", perfil: 1, turma:
+              {periodo: "1", ano: "2011", codigo: "T02", codDisciplina: "RM301", codGraduacao: "109"}  # turma não existe
+            }}
+          }
+
+          it {
+            expect{
+              put "/api/v1/load/groups/block_profile", json_data
+
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+            }.to change{Allocation.where(status: 2).count}.by(0)
+          }
         end
 
+        context 'and non existing course' do 
+          let!(:json_data){ # user: prof, profile: tutor a distância
+            { allocation: {cpf: "21872285848", perfil: 1, turma:
+              {periodo: "1", ano: "2011", codigo: "IL-FOR", codDisciplina: "RM404", codGraduacao: "C01"}, # curso não existe
+            }}
+          }
+
+          it {
+            expect{
+              put "/api/v1/load/groups/block_profile", json_data
+
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+            }.to change{Allocation.where(status: 2).count}.by(0)
+          }
+        end
+
+        context 'and non existing uc' do 
+          let!(:json_data){ # user: prof, profile: tutor a distância
+            { allocation: {cpf: "21872285848", perfil: 1, turma:
+              {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "UC01", codGraduacao: "109"}  # uc não existe
+            }}
+          }
+        
+          it {
+            expect{
+              put "/api/v1/load/groups/block_profile", json_data
+
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+            }.to change{Allocation.where(status: 2).count}.by(0)
+          }
+        end
+
+        context 'and non existing user' do 
+          let!(:json_data){ # cpf inválido
+            { allocation: {cpf: "cpf", perfil: 1, turma:
+              {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
+            }}
+          }
+
+          it {
+            expect{
+              put "/api/v1/load/groups/block_profile", json_data
+
+              response.status.should eq(404)
+            }.to change{Allocation.where(status: 2).count}.by(0)
+          }
+        end
 
       end
 
-    end
+      context "with invalid ip" do
+        it "gets a not found error" do
+          json_data = # user: prof, profile: tutor a distância
+            { allocation: {cpf: "21872285848", perfil: 1, turma: 
+              {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
+            }}
+          put "/api/v1/load/groups/block_profile", json_data, "REMOTE_ADDR" => "127.0.0.2"
+          response.status.should eq(404)
+        end
+      end
+    end #block_profile
 
+    describe "allocate_user" do
 
-  end
+      context "with valid ip" do
+
+        context 'and existing user and group' do 
+          let!(:json_data){ # user: aluno3, profile: tutor a distância
+            { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
+          }
+
+          subject{ -> {
+            put "/api/v1/load/groups/allocate_user", json_data}
+          }
+
+          it { should change(Allocation,:count).by(1) }
+          it { should change(User,:count).by(0) }
+
+          it {
+            expect{
+              put "/api/v1/load/groups/allocate_user", json_data
+
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+            }
+          }
+        end
+
+        context 'and existing user and non existing UC' do 
+          let!(:json_data){ # user: aluno3, profile: tutor a distância
+            { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "UC01", codGraduacao: "109"}
+          }
+
+          subject{ -> {
+            put "/api/v1/load/groups/allocate_user", json_data}
+          }
+
+          it { should change(Allocation,:count).by(0) }
+          it { should change(User,:count).by(0) }
+
+          it {
+            expect{
+              put "/api/v1/load/groups/allocate_user", json_data
+
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+            }
+          }
+        end
+
+        context 'and existing user and non existing course' do 
+          let!(:json_data){ # user: aluno3, profile: tutor a distância
+            { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "C01"}
+          }
+
+          subject{ -> {
+            put "/api/v1/load/groups/allocate_user", json_data}
+          }
+
+          it { should change(Allocation,:count).by(0) }
+          it { should change(User,:count).by(0) }
+
+          it {
+            expect{
+              put "/api/v1/load/groups/allocate_user", json_data
+
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+            }
+          }
+        end
+
+        context 'and existing user and non existing group' do 
+          let!(:json_data){ # user: aluno3, profile: tutor a distância
+            { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "T01", codDisciplina: "RM301", codGraduacao: "109"}
+          }
+
+          subject{ -> {
+            put "/api/v1/load/groups/allocate_user", json_data}
+          }
+
+          it { should change(Allocation,:count).by(0) }
+          it { should change(User,:count).by(0) }
+
+          it {
+            expect{
+              put "/api/v1/load/groups/allocate_user", json_data
+
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+            }
+          }
+        end
+      
+        context 'and non existing user' do # futuramente este teste deverá criar um novo usuário a partir do MA (cpf deverá ser válido para usuário no MA)
+          let!(:json_data){ 
+            { cpf: "cpf", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
+          }
+
+          subject{ -> {
+            put "/api/v1/load/groups/allocate_user", json_data}
+          }
+
+          it { should change(Allocation,:count).by(0) }
+          it { should change(User,:count).by(0) }
+
+          it {
+            expect{
+              put "/api/v1/load/groups/allocate_user", json_data
+
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+            }
+          }
+        end
+
+        context 'and existing user and missing param' do 
+          let!(:json_data){ # user: aluno3, profile: tutor a distância
+            { cpf: "47382348113", perfil: 1, ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
+          }
+
+          subject{ -> {
+            put "/api/v1/load/groups/allocate_user", json_data}
+          }
+
+          it { should change(Allocation,:count).by(0) }
+          it { should change(User,:count).by(0) }
+
+          it {
+            expect{
+              put "/api/v1/load/groups/allocate_user", json_data
+              response.status.should eq(404)
+            }
+          }
+        end
+
+      end
+
+      context "with invalid ip" do
+        it "gets a not found error" do
+          json_data = { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
+          put "/api/v1/load/groups/allocate_user", json_data, "REMOTE_ADDR" => "127.0.0.2"
+          response.status.should eq(404)
+        end
+      end
+    end #allocate_user
+
+  end #groups
 
 end

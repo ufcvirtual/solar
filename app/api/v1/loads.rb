@@ -66,6 +66,16 @@ module V1
           group.allocate_user(user.id, profile_id)
         end
       end
+
+      def get_profile_id(profile)
+        case profile.to_i
+          when 1; 3 # tutor a distância
+          when 2; 4 # tutor presencial
+          when 3; 2 # professor titular
+          when 4; 1 # aluno
+          else profile # corresponds to profile with id == allocation[:perfil]
+        end
+      end
     end
 
     namespace :groups do
@@ -117,9 +127,7 @@ module V1
       end
 
       # load/groups/enrollments
-      params do
-        requires :codDisciplina, :codGraduacao, :codTurma, :periodo, :ano
-      end
+      params { requires :codDisciplina, :codGraduacao, :codTurma, :periodo, :ano }
       get :enrollments, rabl: "users/enrollments" do
         group  = get_group(params[:codDisciplina], params[:codGraduacao], params[:codTurma], params[:periodo], params[:ano])
         raise ActiveRecord::RecordNotFound if group.nil?
@@ -129,7 +137,47 @@ module V1
           error!({error: error}, 422)
         end
       end
-    end
+
+      # load/groups/allocate_user
+      params { requires :cpf, :perfil, :codDisciplina, :codGraduacao, :codigo, :periodo, :ano }
+      put :allocate_user do # Receives user's cpf, group and profile to allocate
+        begin
+          user       = User.where(cpf: params[:cpf]).first_or_initialize
+          profile_id = get_profile_id(params[:perfil])
+
+          if user.new_record? # if user don't exists, creates by MA data
+            # acessa webservice e recupera dados para criar usuário
+            # user.save
+          end
+
+          group = get_group(params[:codDisciplina], params[:codGraduacao], params[:codigo], params[:periodo], params[:ano])
+          group.allocate_user(user.id, profile_id)
+
+          {ok: :ok}
+        rescue => error
+          error!({error: error}, 422)
+        end
+      end #allocate_profile
+
+      # load/groups/block_profile
+      put :block_profile do # Receives user's cpf, group and profile to block
+        allocation = params[:allocation]
+        user       = User.find_by_cpf!(allocation[:cpf])
+        new_status = 2 # canceled allocation
+        group_info = allocation[:turma]
+        profile_id = get_profile_id(allocation[:perfil])
+
+        begin
+          group = get_group(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], group_info[:periodo], group_info[:ano])
+          group.change_allocation_status(user.id, new_status, profile_id: profile_id) if group
+
+          {ok: :ok}
+        rescue => error
+          error!({error: error}, 422)
+        end
+      end #block_profile
+
+    end #groups
 
     namespace :curriculum_units do
       # load/curriculum_units/editors
@@ -150,32 +198,6 @@ module V1
         end
       end
     end #curriculum_units
-
-    namespace :allocations do
-      # load/allocations/block_profile
-      put :block_profile do # Receives user's cpf, group and profile to block
-        allocation = params[:allocation]
-        user       = User.find_by_cpf!(allocation[:cpf])
-        new_status = 2 # canceled allocation
-        group_info = allocation[:turma]
-        profile_id = case allocation[:perfil].to_i
-          when 1; 3 # tutor a distância
-          when 2; 4 # tutor presencial
-          when 3; 2 # professor titular
-          when 4; 1 # aluno
-          else allocation[:perfil] # corresponds to profile with id == allocation[:perfil]
-        end
-
-        begin
-          group = get_group(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], group_info[:periodo], group_info[:ano])
-          group.change_allocation_status(user.id, new_status, profile_id: profile_id) if group
-
-          {ok: :ok}
-        rescue => error
-          error!({error: error}, 422)
-        end
-      end #block_profile
-    end #allocations
 
   end
 
