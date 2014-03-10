@@ -40,6 +40,16 @@ $(function(){
         $('label[for="curriculum_unit"]').html("<%=I18n.t(".module")%>");
       else if(ui.item.value == 3)
         $(".curriculum_unit").hide();
+      else if(ui.item.value == 7) {
+        // hide div filter content
+        $(".edition.block_content").fadeOut();
+
+        var url = "<%=Rails.application.routes.url_helpers.content_edx_courses_path%>";
+        $.get(url, function(data) {
+          // show new div with edx content
+          $(".edition.block_content").after(data);
+        });
+      }  
       else
         $('label[for="curriculum_unit"]').html("<%=I18n.t(".curriculum_unit")%>");
 

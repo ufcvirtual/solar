@@ -1,6 +1,6 @@
 class EdxCoursesController < ApplicationController
 
-  layout false, except: [:index, :content, :items]
+  layout false, except: [:index, :items]
 
   EDX = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]
 
@@ -28,7 +28,6 @@ class EdxCoursesController < ApplicationController
       @available_courses.select!{ |course| course if @my_courses.include?(course["course_id"])} if params[:status] == "enroll" # courses which user is enrolled if searched for enrolled courses
     end
   end
-
 
   # matricular
   def enroll

@@ -8,7 +8,7 @@
     .filter
       .curriculum_unit_type
         = label_tag :curriculum_unit_type, t(".type")
-        = select_tag :curriculum_unit_type, options_from_collection_for_select(@types, "id", "description"), include_blank: true
+        = select_tag :curriculum_unit_type, options_from_collection_for_select(@types, "id", "description", params[:type_id]), include_blank: true
 
       .course
         = label_tag :course, t(".course")
@@ -34,7 +34,7 @@
 
       = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => items_editions_path, id: "search", :"data-load-to" => "items_list"}
 
-.items_list
+  .items_list
 
-.back.invisible
-  = render "editions/back_items"
+  .back.invisible
+    = render "editions/back_items"
