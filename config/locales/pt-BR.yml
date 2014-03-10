@@ -2113,3 +2113,9 @@
       deallocated: Usuário desalocado
     error:
       not_deallocated: Não foi possível desalocar usuário  
+
+  users:
+    errors:
+      already_exists_ma: já em uso no Módulo Acadêmico
+      only_by_ma: pode ser alterado apenas pelo Módulo Acadêmico
+      cant_conect_ma: Não pode ser alterado no momento. Conexão incompleta com o Módulo Acadêmico.

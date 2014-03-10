@@ -1959,3 +1959,9 @@
       deallocated: deallocated user
     error:
       not_deallocated: Unable to deallocate user  
+
+  users:
+    errors:
+      already_exists_ma: already exists on Módulo Acadêmico
+      only_by_ma: can be updated only by Módulo Acadêmico
+      cant_conect_ma: Can't be updated at this moment. Incomplete conection with Módulo Acadêmico.

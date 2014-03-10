@@ -19,6 +19,7 @@ user:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: k9Dq7yfax83NZ3QRQoXr
+  integrated: false
 
 user2:
   id: 2
@@ -47,6 +48,7 @@ user2:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: sarqmbpiY2DKWUyRkgzA
+  integrated: false
 
 user3:
   id: 3
@@ -76,6 +78,7 @@ user3:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: kqAgG9hYkBj6TFnps9A2
+  integrated: false
 
 user4:
   id: 4
@@ -97,6 +100,7 @@ user4:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: J3ymer6aYPtTVWQuxJq3
+  integrated: true
 
 professor2:
   id: 5
@@ -119,6 +123,7 @@ professor2:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: 9qUpqgvLDSa7R5EYDPmV
+  integrated: false
 
 professor:
   id: 6
@@ -148,6 +153,7 @@ professor:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: qwBqKTuU6XTAxEZxymjC
+  integrated: false
 
 aluno1:
   id: 7
@@ -177,6 +183,7 @@ aluno1:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: WhxdcZhWhEMVAauWg41h
+  integrated: false
 
 aluno2:
   id: 8
@@ -206,6 +213,7 @@ aluno2:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: aq1pyZWxcphCzouEzGzt
+  integrated: false
 
 aluno3:
   id: 9
@@ -235,6 +243,7 @@ aluno3:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: wdfyBr312os1yqyzhQuf
+  integrated: false
 
 tutor_presencial:
   id: 10
@@ -264,6 +273,7 @@ tutor_presencial:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: 7sec5gtrn5CiiXpqfmrz
+  integrated: false
 
 tutor_distancia:
   id: 11
@@ -293,6 +303,7 @@ tutor_distancia:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: nerd51wudWkq6vk3by3c
+  integrated: false
 
 coorddisc:
   id: 12
@@ -322,6 +333,7 @@ coorddisc:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: ZxChgdpRbQuypvZfMV3x
+  integrated: false
 
 basico:
   id: 13
@@ -348,6 +360,7 @@ basico:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: ppbT4Ue132asgpkCAB1q
+  integrated: false
 
 
 editor:
@@ -377,6 +390,7 @@ editor:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: apbT4Ue132asgpkCAB1q
+  integrated: false
 
 admin:
   id: 15
@@ -405,3 +419,4 @@ admin:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: bbcO4Ue132asgpkCAB1q
+  integrated: false
