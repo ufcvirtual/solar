@@ -30,6 +30,7 @@
       select: function( event, ui ) {
         if (ui.item.value != 7) {
           $(".edition.block_content").fadeIn();
+          $('.curriculum_unit_type #autocomplete-input').val('');
           $(".curriculum_unit_type #autocomplete-input").autocomplete("search", ui.item.innerHTML);
 
           $(".edx.edition.block_content").remove();
