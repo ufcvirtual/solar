@@ -104,7 +104,7 @@ module V1
         end
       end
 
-      # load/groups/enrollments
+      # POST load/groups/enrollments
       post :enrollments do
         load_enrollments = params[:matriculas]
         user             = User.find_by_cpf! load_enrollments[:cpf]
@@ -126,7 +126,7 @@ module V1
         end
       end
 
-      # load/groups/enrollments
+      # GET load/groups/enrollments
       params { requires :codDisciplina, :codGraduacao, :codTurma, :periodo, :ano }
       get :enrollments, rabl: "users/enrollments" do
         group  = get_group(params[:codDisciplina], params[:codGraduacao], params[:codTurma], params[:periodo], params[:ano])
