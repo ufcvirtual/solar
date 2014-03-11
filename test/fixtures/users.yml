@@ -1,4 +1,4 @@
-<% password = Digest::MD5.hexdigest('123456') %>
+<% password = Digest::SHA1.hexdigest('123456') %>
 
 user:
   id: 1

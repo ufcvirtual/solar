@@ -1,4 +1,4 @@
-require Rails.root.join('lib', 'devise', 'encryptors', 'md5')
+require Rails.root.join('lib', 'devise', 'encryptors', 'sha1_without_salt')
 
 # Use this hook to configure devise mailer, warden hooks and so forth. The first
 # four configuration values can also be set straight in your models.
@@ -152,7 +152,7 @@ Devise.setup do |config|
   # :authlogic_sha512 (then you should set stretches above to 20 for default behavior)
   # and :restful_authentication_sha1 (then you should set stretches to 10, and copy
   # REST_AUTH_SITE_KEY to pepper)
-  config.encryptor = :md5 #:sha512
+  config.encryptor = :sha1_without_salt
 
   # ==> Configuration for :token_authenticatable
   # Defines name of the authentication token params key
