@@ -6,6 +6,7 @@
 
     .form-inputs.block_content
       = f.input :name, required: true
+      = f.input :code, required: true
       .right_buttons
         = button_to_function t("courses.form.cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
         = button_tag t("courses.form.save"), class: "btn btn_main btn_lightbox", alt: t("courses.form.save"), type: "button", id: "save_edx_course"
