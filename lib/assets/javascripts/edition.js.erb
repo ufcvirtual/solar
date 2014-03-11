@@ -37,21 +37,22 @@ $(function(){
     select: function( event, ui ) {
       $(".curriculum_unit").show();
       if(ui.item.value == 4)
-        $('label[for="curriculum_unit"]').html("<%=I18n.t(".module")%>");
+        $('label[for="curriculum_unit"]').html("<%=I18n.t(".editions.content.module")%>");
       else if(ui.item.value == 3)
         $(".curriculum_unit").hide();
       else if(ui.item.value == 7) {
-        // hide div filter content
-        $(".edition.block_content").fadeOut();
-
-        var url = "<%=Rails.application.routes.url_helpers.content_edx_courses_path%>";
+        var url = "<%= Rails.application.routes.url_helpers.content_edx_courses_path %>";
         $.get(url, function(data) {
-          // show new div with edx content
-          $(".edition.block_content").after(data);
+          // hide div filter content
+          $(".edition.block_content").fadeOut("slow", function(){
+            // show new div with edx content
+            $(".edition.block_content").after(data);
+            $(".edx_curriculum_unit_type #autocomplete-input").autocomplete("search", $(".curriculum_unit_type #autocomplete-input").val());
+          });
         });
       }  
       else
-        $('label[for="curriculum_unit"]').html("<%=I18n.t(".curriculum_unit")%>");
+        $('label[for="curriculum_unit"]').html("<%=I18n.t(".editions.content.curriculum_unit")%>");
 
       clear_all_combos(true);
       $('#course').combobox("option", { disabled: false });

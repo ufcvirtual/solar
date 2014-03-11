@@ -14,7 +14,7 @@
         = label_tag :edx_course, t("editions.content.course")
         = select_tag :edx_course, options_for_select(@edx_courses.map { |c| [ c["display_name"], c["resource_uri"]] }), include_blank: true
 
-      = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => items_edx_courses_path, id: "search", :"data-load-to" => ".edx.items_list"}  
+      = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => items_edx_courses_path, id: "search", :"data-load-to" => ".edx.items_list"}
 
   .edx.items_list
 
@@ -30,6 +30,8 @@
       select: function( event, ui ) {
         if (ui.item.value != 7) {
           $(".edition.block_content").fadeIn();
+          $(".curriculum_unit_type #autocomplete-input").autocomplete("search", ui.item.innerHTML);
+
           $(".edx.edition.block_content").remove();
         }
       }
