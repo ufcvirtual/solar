@@ -40,10 +40,6 @@ CKEDITOR.dialog.add( 'eqneditorDialog', function(editor)
 			},
 			{
 				type: 'html',
-				html: '<label>Zoom</label>'
-			},
-			{
-				type: 'html',
 				html: '<label>Cor de fundo</label>'
 			},
 			{

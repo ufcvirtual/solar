@@ -18,17 +18,29 @@
 
 /*Minhas alterações*/
 
-#EqnEditor .panel label[for=inline], #inline, input[value = Favoritos], 
-input[value = Histórico], img[alt = '+'], img[alt = 'help'], input[value = "Favorites"], input[value = "History"]
+#EqnEditor .panel label[for=inline], #inline, input[value = Limpar], 
+input[value = Histórico], img[alt = 'help'], input[value = "Clear"], input[value = "History"]
 {
   display: none;
 }
 
+.toolbar_wrapper:nth-child(2) .toolbar{
+  z-index: 24 !important;
+}
+
+.panel:nth-child(4) input{
+  z-index: 10 !important;
+}
+
+#cke_39_uiElement, #cke_63_uiElement{
+  position: absolute;
+  top: 96px;
+}
 
 #panel14{
   position: absolute;
   top: -1px;
-  left: 122px;
+  left: 50px;
 }
 
 #panel13{
@@ -59,8 +71,8 @@ input[value = Histórico], img[alt = '+'], img[alt = 'help'], input[value = "Fav
 
 #panel15{
   position: absolute;
-  left: 344px;
-  top: 34px;
+  left: 361px;
+  top: -1px;
 }
 
 #panel1{
@@ -84,38 +96,38 @@ input[value = Histórico], img[alt = '+'], img[alt = 'help'], input[value = "Fav
 
 #panel11{
   position: absolute;
-  left: 380px;
-  top: 73px;
+  left: 253px;
+  top: 72px;
 }
 
 #panel5{
   position: absolute;
-  left: 223px;
-  top: 107px;
+  left: 422px;
+  top: 73px;
 }
 
 #panel8{
   position: absolute;
   left: 310px;
-  top: 71px;
+  top: 37px;
 }
 
 #panel9{
   position: absolute;
-  left: 223px;
-  top: 70px;
+  left: 513px;
+  top: 72px;
 }
 
 #panel12{
   position: absolute;
   left: 258px;
-  top: 70px;
+  top: 37px;
 }
 
 #panel10{
   position: absolute;
-  left: 240px;
-  top: 34px;
+  left: 257px;
+  top: -1px;
 }
 #font{
   position: absolute;
@@ -126,35 +138,32 @@ input[value = Histórico], img[alt = '+'], img[alt = 'help'], input[value = "Fav
 
 #fontsize{
   position: absolute;
-  left: 0px;
+  left: 111px;
   top: 83px;
   width: 100px;
 }
 
 #dpi{
-  position: absolute;
-  left: 110px;
-  top: 83px;
-  width: 100px;
+  display: none;
 }
 
 #bg{
   position: absolute;
   left: 0px;
-  top: 124px;
+  top: 83px;
   width: 100px;
 }
 
 #compressed{
   position: absolute;
-  left: 110px;
-  top: 127px;
+  left: 0;
+  top: 110px;
 }
 
 label[for = compressed]{
   position: absolute;
-  left: 123px;
-  top: 126px;
+  left: 12px;
+  top: 110px;
   color: #03355f;
 }
 
@@ -169,18 +178,20 @@ select[title = 'Cores da equação'], select[title = "Equation Color"]{
   top: 43px;
   left: 0px;
   width: 100px;
+  z-index: 10;
 }
 
 #cke_34_uiElement, #cke_58_uiElement{
   position: absolute;
-  left: 120px;
+  left: 11px;
+  top: 71px;
   color: #03355f;  
 }
 
 #cke_35_uiElement, #cke_59_uiElement{
   position: absolute;
-  left: 9px;
-  top: 112px; 
+  left: 121px;
+  top: 71px;
   color: #03355f; 
 }
 
@@ -194,7 +205,7 @@ select[title = 'Cores da equação'], select[title = "Equation Color"]{
 #cke_37_uiElement, #cke_61_uiElement{
   position: absolute;
   left: 10px;
-  top: 154px;
+  top: 112px;
   color: #03355f;
 }
 
@@ -241,11 +252,25 @@ select[title = 'Cores da equação'], select[title = "Equation Color"]{
   width: 75px;
 }
 
+a.cke_dialog_ui_button_ok{
+  background: linear-gradient(#005cc0, #003774) !important;
+  border: 0 !important;
+  margin-top: 1px !important;
+}
+
+a.cke_dialog_ui_button_ok:hover{
+  background: linear-gradient(#0074f3, #00448d) !important;
+}
+
+.cke_dialog_ui_html{
+  margin-bottom: 6px;
+}
+
 #cke_65_label, #cke_41_label{
   background-color: #cccacc;
   position: absolute;
-  left: 293px;
-  top: 151px;
+  left: 493px;
+  top: 117px;
   border: 1px solid #7c92a4;
   font-size: 15pt;
   padding-bottom: 1px;
@@ -253,18 +278,17 @@ select[title = 'Cores da equação'], select[title = "Equation Color"]{
 
 select[title = 'Functions']{
   position: absolute;
-  top: -1px;
-  left: 234px;
-  
+  top: 0px;
+  left: 163px;
 }
 
 #bar2{
   position: absolute;
-  z-index: 100000000;
   background-color: #fff;
   height: 139px;
   width: 587px;
   margin-left: -10px;
+  z-index: 20;
 }
 
 img[alt = 'close']{
@@ -297,17 +321,22 @@ input[value = Exemplos], input[value = "Examples"]{
   height: auto;
   border: 1px solid #b4b4b4;
   position: absolute;
-  left:330px; 
-  top:-2px;
+  left: 258px;
+  top: 104px;
 }
 
-input[value = Limpar], input[value = "Clear"]{
-  background: -webkit-gradient(linear, left top, left bottom, from(#dde8f2), to(#316697));
+input[value = Favoritos], input[value = "Favorites"]{
   background-color: #316697;
   color: #fff;
   height: auto;
   border: 1px solid #69859c; 
   position: absolute;
-  top: -2px;
-  left: 53px;
+  top: 104px;
+  left: 330px;
+}
+
+img[alt = '+']{
+  position: absolute;
+  top: 105px;
+  left: 398px;
 }
