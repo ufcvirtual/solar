@@ -1,46 +1,62 @@
 = stylesheet_link_tag "autocomplete"
 = javascript_include_tag "autocomplete"
 
-.edition.block_content
+.edx.edition.block_content
   %p= t(:required_fields)
   %fieldset#allocation_tag_selection
     %legend= t("editions.content.filter")
     .filter
-      .curriculum_unit_type
-        = label_tag :curriculum_unit_type, t("editions.content.type")
-        = select_tag :curriculum_unit_type, options_from_collection_for_select(@types, "id", "description"), include_blank: true
+      .edx_curriculum_unit_type
+        = label_tag :edx_curriculum_unit_type, t("editions.content.type")
+        = select_tag :edx_curriculum_unit_type, options_from_collection_for_select(@types, "id", "description"), include_blank: true
 
       .edx_course
         = label_tag :edx_course, t("editions.content.course")
         = select_tag :edx_course, options_for_select(@edx_courses.map { |c| [ c["display_name"], c["resource_uri"]] }), include_blank: true
 
-      = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => items_edx_courses_path, id: "search", :"data-load-to" => "items_list"}  
+      = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => items_edx_courses_path, id: "search", :"data-load-to" => ".edx.items_list"}
 
-.items_list
+  .edx.items_list
+
+  / .back.invisible
+  /   = render "editions/back_items"
 
 :javascript
 
   $(function(){
-    $("#curriculum_unit_type").combobox();
-    $("#edx_course").combobox();
+    var edx_content = $(".edx.edition.block_content");
 
-    $('#search').click(function(){
+    $("#edx_curriculum_unit_type", edx_content).combobox({
+      select: function( event, ui ) {
+        if (ui.item.value != 7) {
+          $(".edition.block_content").fadeIn();
+          $('.curriculum_unit_type #autocomplete-input').val('');
+          $(".curriculum_unit_type #autocomplete-input").autocomplete("search", ui.item.innerHTML);
+
+          $(".edx.edition.block_content").remove();
+        }
+      }
+    });
+
+    $("#edx_course", edx_content).combobox();
+
+    $("#search", edx_content).click(function(e){
+      e.preventDefault();
+
       var url = $(this).data("url-search");
       var load_to = $(this).data("load-to");
       var course = $("#edx_course").val();
       var combos = 'edx_course_id:"'+course+'"';
-      var data = eval("({" + combos + "})");
-      if(course == null || course == ""){
+
+      if (course == null || course == "") {
         flash_message("<%= I18n.t(:alert, scope: [:editions]) %>", "alert");
-        $('.' + load_to).html('');
-        return false;    
-      }
-      else{
+        $(load_to, edx_content).html('');
+        return false;
+      } else {
+        var data = eval("({" + combos + "})");
         $.get(url, data, function(result){
-            $('.' + load_to).html(result);
+          $(load_to, edx_content).html(result);
         })
       }
     });
   });
-
-   

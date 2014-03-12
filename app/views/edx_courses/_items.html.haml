@@ -23,13 +23,13 @@
 :javascript
 
   $(function(){
-    $(".edit_content").click(function(e){
+    $(".edx_courses_items .edit_content").click(function(e){
       e.preventDefault();
       $('#edx').submit();
       flash_message("#{t('edx.warning.redirected')}", "warning");
     });
 
-    $(".allocation").click(function(){
+    $(".edx_courses_items .allocation").click(function(){
       $.get($(this).data("link"), function(data){
         $(".edx_courses_items").html(data);
         $(".back").removeClass("invisible");

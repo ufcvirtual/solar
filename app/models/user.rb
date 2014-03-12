@@ -1,5 +1,8 @@
 class User < ActiveRecord::Base
 
+  CHANGEABLE_FIELDS = ["bio", "interests", "music", "movies", "books", "phrase", "site", "nick", 
+    "alternate_email", "photo_file_name", "photo_content_type", "photo_file_size", "photo_updated_at"]
+
   has_many :oauth_applications, class_name: 'Doorkeeper::Application', as: :owner
 
   has_one :personal_configuration
@@ -42,35 +45,35 @@ class User < ActiveRecord::Base
   validates :name, presence: true, length: { within: 6..90 }
   validates :nick, presence: true, length: { within: 3..34 }
   validates :birthdate, presence: true
-  validates :username, presence: true, length: { within: 3..20 }, :uniqueness => true
+  validates :username, presence: true, length: { within: 3..20 }, uniqueness: true
   validates :password, presence: true, confirmation: true, unless: Proc.new { |a| a.password.blank? }
   validates :alternate_email, format: { with: email_format }
   validates :email, presence: true, confirmation: true, format: { with: email_format }, if: Proc.new {|a| a.email_changed? }
   validates :special_needs, presence: true, if: :has_special_needs?
 
-  validates_length_of :address, :maximum => 99
-  validates_length_of :address_neighborhood, :maximum => 49
-  validates_length_of :zipcode, :maximum => 9
-  validates_length_of :country,:maximum => 90
-  validates_length_of :city, :maximum => 90
-  validates_length_of :institution, :maximum => 120
+  validates_length_of :address_neighborhood, maximum: 49
+  validates_length_of :zipcode, maximum: 9
+  validates_length_of :country, :city, :address ,maximum: 90
+  validates_length_of :institution, maximum: 120
 
-  validate :cpf_ok, :unless => :already_cpf_error?
+  validate :cpf_ok, unless: :already_cpf_error?
+  validate :integration, if: "integrated"
+  validate :login_integration, if: "username_changed?"
 
   # paperclip uses: file_name, content_type, file_size e updated_at
   # Configuração do paperclip para upload de fotos
   has_attached_file :photo,
-    :styles => { :medium => "72x90#", :small => "25x30#", :forum => "40x40#" },
-    :path => ":rails_root/media/:class/:id/photos/:style.:extension",
-    :url => "/media/:class/:id/photos/:style.:extension",
-    :default_url => "/assets/no_image_:style.png"
+    styles: { medium: "72x90#", small: "25x30#", forum: "40x40#" },
+    path: ":rails_root/media/:class/:id/photos/:style.:extension",
+    url: "/media/:class/:id/photos/:style.:extension",
+    default_url: "/assets/no_image_:style.png"
 
-  validates_attachment_size :photo, :less_than => 700.kilobyte, :message => " " # Esse :message => " " deve permanecer dessa forma enquanto não descobrirmos como passar a mensagem de forma correta. Se o message for vazio a validação não é feita.
+  validates_attachment_size :photo, less_than: 700.kilobyte, message: " " # Esse :message => " " deve permanecer dessa forma enquanto não descobrirmos como passar a mensagem de forma correta. Se o message for vazio a validação não é feita.
   validates_attachment_content_type :photo,
-    :content_type => ['image/jpeg','image/png','image/gif','image/pjpeg'],
-    :message => :invalid_type
+    content_type: ['image/jpeg','image/png','image/gif','image/pjpeg'],
+    message: :invalid_type
 
-  default_scope :order => 'name ASC'
+  default_scope order: 'name ASC'
 
   #Garantindo que o cpf nao será salvo com os separadores.
   #  def cpf=(value)
@@ -82,7 +85,7 @@ class User < ActiveRecord::Base
   # Este método também define as necessidades especiais como sendo vazia caso a pessoa tenha selecionado que não as possui
   ##
   def has_special_needs?
-    self.special_needs = "" unless @has_special_needs
+    self.special_needs = "" unless @has_special_needs or integrated
     @has_special_needs
   end
 
@@ -127,9 +130,24 @@ class User < ActiveRecord::Base
     errors.add(:cpf, I18n.t(:new_user_msg_cpf_error)) unless cpf_verify.valido? unless cpf_verify.nil?
   end
 
+  def integration
+    changed_fields = (changed - CHANGEABLE_FIELDS)
+    errors.add(changed_fields.first.to_sym, I18n.t("users.errors.only_by_ma")) if changed_fields.size > 0
+  end
+
+  def login_integration
+    # se o login for alterado, deve verificar se seu uso disponível no MA
+    # chamada para MA verificando se existe usuário com o login informado
+      # se existe, erro 
+        # errors.add(:username, I18n.t("users.errors.already_exists_ma")) 
+      # se não existe, cria
+      # se MA não responder, erro
+        # errors.add(:username, I18n.t("users.errors.cant_conect_ma"))
+  end
+
   ## Na criação, o usuário recebe o perfil de usuario basico
   def basic_profile_allocation
-    new_allocation_user = Allocation.new :profile_id => Profile.find_by_types(Profile_Type_Basic).id, :status => Allocation_Activated, :user_id => self.id
+    new_allocation_user = Allocation.new profile_id: Profile.find_by_types(Profile_Type_Basic).id, status: Allocation_Activated, user_id: self.id
     new_allocation_user.save!
   end
 
@@ -144,7 +162,7 @@ class User < ActiveRecord::Base
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     login = conditions.delete(:login)
-    where(conditions).where(["translate(cpf,'.-','') = :value OR lower(username) = :value", { :value => login.strip.downcase }]).first
+    where(conditions).where(["translate(cpf,'.-','') = :value OR lower(username) = :value", { value: login.strip.downcase }]).first
   end
 
   def groups(profile_id = nil, status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil)

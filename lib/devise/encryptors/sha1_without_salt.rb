@@ -1,12 +1,12 @@
-# lib/devise/encryptors/md5.rb
-require 'digest/md5'
+# lib/devise/encryptors/sha1_without_salt.rb
+require 'digest/sha1'
 
 module Devise
   module Encryptable
     module Encryptors
-      class Md5 < Base
+      class Sha1WithoutSalt < Base
         def self.digest(password, stretches, salt, pepper)
-          Digest::MD5.hexdigest(password)
+          Digest::SHA1.hexdigest(password)
         end
       end
     end

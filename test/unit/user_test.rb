@@ -69,9 +69,9 @@ class UserTest < ActiveSupport::TestCase
   #   pending "ainda nao feito"
   # end
 
-  test "senha do usuario com md5 correta" do
+  test "senha do usuario com SHA1 sem salt correta" do
     @professor = users(:professor)
-    assert_equal @professor.encrypted_password, Digest::MD5.hexdigest('123456')
+    assert_equal @professor.encrypted_password, Digest::SHA1.hexdigest('123456')
   end
 
 end

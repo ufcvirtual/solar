@@ -1,6 +1,6 @@
 class EdxCoursesController < ApplicationController
 
-  layout false, except: [:index, :content, :items]
+  layout false, except: [:index, :items]
 
   EDX = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]
 
@@ -28,7 +28,6 @@ class EdxCoursesController < ApplicationController
       @available_courses.select!{ |course| course if @my_courses.include?(course["course_id"])} if params[:status] == "enroll" # courses which user is enrolled if searched for enrolled courses
     end
   end
-
 
   # matricular
   def enroll
@@ -160,8 +159,7 @@ class EdxCoursesController < ApplicationController
       @course.save! unless @course.valid?
 
       semester  = Date.today.year.to_s << (Date.today.month < 7 ? ".1" : ".2")
-      code      = @course.name.slice(0..2).upcase
-      course_id = [current_user.institution,code,semester].join("/")
+      course_id = [current_user.institution,params[:course][:code],semester].join("/")
       course    = {course_id: course_id , display_name: @course.name, course_creator_username: current_user.username}.to_json
 
       uri  = URI.parse(EDX_URLS["insert_course"])
