@@ -11,6 +11,7 @@ gem "koala", "1.6.0"
 
 gem "devise", "~> 2.2.8"
 gem "devise-encryptable", "~> 0.1.2"
+gem "devise-i18n", "~> 0.10.3"
 gem "cancan", "~> 1.6.10"
 
 gem "chronic", "0.6.1"
