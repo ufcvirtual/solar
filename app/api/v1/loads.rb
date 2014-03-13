@@ -108,13 +108,13 @@ module V1
       post :enrollments do
         load_enrollments = params[:matriculas]
         user             = User.find_by_cpf! load_enrollments[:cpf]
-        groups           = load_enrollments[:turmas]
+        groups           = JSON.parse(load_enrollments[:turmas])
         student_profile  = 1 # Aluno => 1
 
         begin
           ActiveRecord::Base.transaction do
             groups = groups.collect do |group_info| 
-              get_group(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], group_info[:periodo], group_info[:ano]) unless group_info[:codDisciplina]  == 78
+              get_group(group_info["codDisciplina"], group_info["codGraduacao"], group_info["codigo"], group_info["periodo"], group_info["ano"]) unless group_info["codDisciplina"]  == 78
             end # Se cód. graduação for 78, desconsidera (por hora, vem por engano).
 
             cancel_previous_and_create_allocations(groups.compact, user, student_profile)
