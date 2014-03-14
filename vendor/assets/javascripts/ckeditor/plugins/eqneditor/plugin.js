@@ -21,7 +21,7 @@ CKEDITOR.plugins.add( 'eqneditor', {
 		// First make sure we have loaded the necessary scripts
   	CKEDITOR.scriptLoader.load( [
 		http+'latex.codecogs.com/js/eq_config.js',
-		'/assets/ckeditor/plugins/eqneditor/eq_editor-lite-16.js',
+		'/assets/ckeditor/plugins/eqneditor/eq_editor-lite-17.js',
 		//http+'latex.codecogs.com/js/eq_editor-lite-16.js',
 		]);
 		
