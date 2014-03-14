@@ -13,7 +13,7 @@ CKEDITOR.dialog.add( 'eqneditorDialog', function(editor)
 	var http = ('https:' == document.location.protocol ? 'https://' : 'http://');
 	return {
 		title : editor.lang.eqneditor.title,
-		minWidth : 570,
+		minWidth : 567,
 		minHeight : 430,
 		resizable: CKEDITOR.DIALOG_RESIZE_NONE,
 		contents : [
@@ -59,6 +59,7 @@ CKEDITOR.dialog.add( 'eqneditorDialog', function(editor)
 				type: 'button',
 				id: 'barra',
 				label: '|',
+				title: '\\'+'\Bigg|_ ^ {}',
 				onClick: function()
 				{
 					function insertAtCaret(areaId,text) {

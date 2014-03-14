@@ -1,5 +1,5 @@
 /* The default text style used on every page */
-#hover { padding:2px; position:absolute; display:none; background-color:#FFFFCC; border:1px solid #999999; }
+#hover { padding:2px; position:absolute; display:none !important; background-color:#FFFFCC; border:1px solid #999999;}
 
 #EqnEditor { margin:0 auto; }
 
@@ -24,12 +24,20 @@ input[value = Histórico], img[alt = 'help'], input[value = "Clear"], input[valu
   display: none;
 }
 
+#photos{
+  margin-left: -5px !important;
+}
+
+#CClatex{
+  width: 555px !important;
+}
+
 .toolbar_wrapper:nth-child(2) .toolbar{
   z-index: 24 !important;
 }
 
-.panel:nth-child(4) input{
-  z-index: 10 !important;
+.toolbar_wrapper:nth-child(1) .toolbar{
+  z-index: 18 !important;
 }
 
 #cke_39_uiElement, #cke_63_uiElement{
@@ -278,22 +286,23 @@ a.cke_dialog_ui_button_ok:hover{
 
 select[title = 'Functions']{
   position: absolute;
-  top: 0px;
-  left: 163px;
+  top: 104px;
+  left: 406px;
 }
 
 #bar2{
   position: absolute;
   background-color: #fff;
   height: 139px;
-  width: 587px;
+  width: 571px;
   margin-left: -10px;
   z-index: 20;
 }
 
 img[alt = 'close']{
-  margin-top: -22px;
-  margin-right: -17px;
+  margin-top: -11px;
+  margin-right: -37px;
+  width: 15px;
 }
 
 /* ------- Button formating ------ */
@@ -307,8 +316,9 @@ input.bluebutton, input.lightbluebutton, input.greybutton {
   font-weight: bold;
   text-align: center; 
   cursor:pointer;
-  padding:1px 4px 2px;
+  padding:1px 1px 2px;
   margin: -1px;
+  margin-left: 3px;
 }
 
 input.bluebutton { background-color:#003794; }
@@ -321,7 +331,7 @@ input[value = Exemplos], input[value = "Examples"]{
   height: auto;
   border: 1px solid #b4b4b4;
   position: absolute;
-  left: 258px;
+  left: 253px;
   top: 104px;
 }
 
@@ -332,11 +342,11 @@ input[value = Favoritos], input[value = "Favorites"]{
   border: 1px solid #69859c; 
   position: absolute;
   top: 104px;
-  left: 330px;
+  left: 321px;
 }
 
 img[alt = '+']{
   position: absolute;
   top: 105px;
-  left: 398px;
+  left: 388px;
 }
