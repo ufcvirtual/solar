@@ -19,7 +19,6 @@ nbproject/
 coverage/
 media/
 public/assets
-Gemfile.lock
 db/schema.rb
 config/database.yml
 config/mailer.yml
