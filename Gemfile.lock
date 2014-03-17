@@ -344,7 +344,6 @@ DEPENDENCIES
   haml (~> 4.0.5)
   haml-rails (~> 0.4)
   jquery-rails (~> 2.2.2)
-  json (~> 1.8.1)
   koala (= 1.6.0)
   launchy (= 2.1.0)
   net-ssh (~> 2.6.8)

@@ -6,7 +6,8 @@ $.fn.nice_checkbox = function(options) {
   var parent = this, children_names = $(this).data("children-names"), parent_block_div;
   var can_enable_or_disable = (typeof(options) == "undefined" || typeof(options.cant_enable_elements) == "undefined" || !options.cant_enable_elements); // para nao habilitar opcoes, passar parametro cant_enable_elements
 
-  if (!((parent_block_div = $(parent).parents("table").parent()).length)) // para englobar apenas os filhos do parent
+  // para englobar apenas os filhos do parent
+  if (!((parent_block_div = $(parent).parents("table").parent()).length))
     parent_block_div = $(parent).parents(":nth-of-type(1)");
 
   /**
@@ -71,8 +72,9 @@ $.fn.nice_checkbox = function(options) {
           $(icon).removeClass('icon-checkbox-unchecked').addClass('icon-checkbox-checked');
         else
           $(icon).addClass('icon-checkbox-unchecked').removeClass('icon-checkbox-checked');
-      } else // checkbox normal
+      } else { // checkbox normal
         $(parent).prop("checked", check_parent); // atualiza o pai verificando o status dos filhos
+      }
 
     }); // end kid click
   }; // end f_kids

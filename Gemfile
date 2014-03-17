@@ -8,7 +8,6 @@ gem "rake", "~> 10.1.1"
 gem "pg", "~> 0.15.0"
 gem "foreigner", "~> 1.4.0"
 gem "koala", "1.6.0"
-gem "json", "~> 1.8.1"
 
 gem "devise", "~> 2.2.8"
 gem "devise-encryptable", "~> 0.1.2"
