@@ -88,7 +88,12 @@ class EditionsController < ApplicationController
   # GET /editions/content
   def content
     authorize! :content, Edition
-    @types = CurriculumUnitType.all
+
+    if File.exist?("config/edx.yml") and YAML::load(File.open("config/edx.yml"))[Rails.env.to_s]["integrated"]
+      @types = CurriculumUnitType.all
+    else
+      @types = CurriculumUnitType.where("id <> 7")
+    end
   end
 
 end

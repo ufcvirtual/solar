@@ -1,10 +1,10 @@
 class EdxCoursesController < ApplicationController
-  before_filter :verify_integration
-
-  layout false, except: [:index, :items]
 
   EDX = YAML::load(File.open("config/edx.yml"))[Rails.env.to_s] rescue nil
-  EDX_URLS = EDX['urls'] rescue nil
+  EDX_URLS = EDX["urls"] rescue nil
+
+  layout false, except: [:index, :items]
+  before_filter :verify_integration
 
   def verify_integration
     if ((not(EDX.nil?) and not(EDX["integrated"])) or (EDX.nil? or EDX_URLS.nil?))
@@ -76,7 +76,7 @@ class EdxCoursesController < ApplicationController
   def content
     @types = CurriculumUnitType.all
     res = get_response(EDX_URLS["verify_user"].gsub(":username", current_user.username)+"instructor/")
-    uri_courses = JSON.parse(res.body) #pega endereço dos cursos
+    uri_courses = JSON.parse(res.body)
     @edx_courses = convert_url_course_in_data_course(uri_courses)
   end
 
