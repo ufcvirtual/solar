@@ -1,5 +1,6 @@
 
 common: &common
+  integrated: false
   hash_key: "hash here"
   login: "http://urledx"
 

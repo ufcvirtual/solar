@@ -1,10 +1,17 @@
 class EdxCoursesController < ApplicationController
+  before_filter :verify_integration
 
   layout false, except: [:index, :items]
 
-  EDX = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]
+  EDX = YAML::load(File.open("config/edx.yml"))[Rails.env.to_s] rescue nil
+  EDX_URLS = EDX['urls'] rescue nil
 
-  EDX_URLS = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]['urls']
+  def verify_integration
+    if ((not(EDX.nil?) and not(EDX["integrated"])) or (EDX.nil? or EDX_URLS.nil?))
+      render json: {error: :ok, msg: "Sem integracao com edx"}
+      return false
+    end
+  end
 
   # listar cursos do usuario
   def my
@@ -12,7 +19,7 @@ class EdxCoursesController < ApplicationController
 
     if check_me(current_user.username)
       res = get_response(EDX_URLS["list_users_courses"].gsub(":username", current_user.username))
-      uri_courses = JSON.parse(res.body) #pega endereço dos cursos
+      uri_courses = JSON.parse(res.body)
       @courses = convert_url_course_in_data_course(uri_courses)
     end   
   end
@@ -32,10 +39,7 @@ class EdxCoursesController < ApplicationController
   # matricular
   def enroll
     create_user_solar_in_edx(current_user.username,current_user.name,current_user.email)
-    
-    course = {
-    "course_resource_uri" => Base64.decode64(params[:course])
-      }.to_json
+    course = { "course_resource_uri" => Base64.decode64(params[:course]) }.to_json
 
     uri  = URI.parse(EDX_URLS["enroll_or_unenroll"].gsub(":username", current_user.username))
     http = Net::HTTP.new(uri.host,uri.port)
@@ -46,11 +50,9 @@ class EdxCoursesController < ApplicationController
     redirect_to enrollments_path
   end  
 
-  #cancelar matricular
+  # cancelar matricula
   def unenroll
-    course = {
-    "course_resource_uri" => Base64.decode64(params[:course])
-      }.to_json
+    course = { "course_resource_uri" => Base64.decode64(params[:course]) }.to_json
 
     uri  = URI.parse(EDX_URLS["enroll_or_unenroll"].gsub(":username", current_user.username))
     http = Net::HTTP.new(uri.host,uri.port)
@@ -60,7 +62,6 @@ class EdxCoursesController < ApplicationController
 
     redirect_to enrollments_path
   end
-
 
   #Edição Conteúdo
   def items
@@ -84,9 +85,8 @@ class EdxCoursesController < ApplicationController
     user_uri = "/solaredx/api/v1/#{params[:username]}/"
     user = User.find_by_username(params[:username])
     create_user_solar_in_edx(user.username,user.name,user.email)
-    professor = {
-      user_resource_uri: user_uri
-    }.to_json
+    professor = { user_resource_uri: user_uri }.to_json
+
     uri = URI.parse(EDX_URLS["information_course"].gsub(":resource_uri", uri_course)+params[:profile]+"/")  
     http = Net::HTTP.new(uri.host,uri.port)
     req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
@@ -99,9 +99,8 @@ class EdxCoursesController < ApplicationController
   def deallocate
     uri_course = Base64.decode64(params[:course])
     user_uri = "/solaredx/api/v1/#{params[:username]}/"
-    professor = {
-    "user_resource_uri" => user_uri
-      }.to_json
+    professor = { "user_resource_uri" => user_uri }.to_json
+
     uri = URI.parse(EDX_URLS["information_course"].gsub(":resource_uri", uri_course)+params[:profile]+"/")  
     http = Net::HTTP.new(uri.host,uri.port)
     req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json', 'X-HTTP-METHOD-OVERRIDE' => 'DELETE'})
@@ -123,12 +122,11 @@ class EdxCoursesController < ApplicationController
 
   # Método, chamado por ajax, para buscar usuários para alocação
   def search_users
-    @uri_course = Base64.decode64(params[:course])
-    text                 = URI.unescape(params[:user])
-    @text_search         = text
-    @users               = User.where("lower(name) ~ '#{text.downcase}'")
+    @uri_course  = Base64.decode64(params[:course])
+    text         = URI.unescape(params[:user])
+    @text_search = text
+    @users       = User.where("lower(name) ~ '#{text.downcase}'")
   end
-
 
   # Edição acadêmica
   def index
@@ -138,9 +136,10 @@ class EdxCoursesController < ApplicationController
       @resource_uri = params[:edx_course_id]
     else
       res = get_response(EDX_URLS["verify_user"].gsub(":username", current_user.username)+"instructor/")
-      uri_courses = JSON.parse(res.body) #pega endereço dos cursos
+      uri_courses = JSON.parse(res.body)
       @edx_courses = convert_url_course_in_data_course(uri_courses)
     end
+
     render partial: 'edx_courses/index' 
   end  
 
@@ -204,8 +203,7 @@ class EdxCoursesController < ApplicationController
       courses = "[" + courses.chop! + "]"
     end
     json_courses = JSON.parse(courses)
-  end    
-
+  end
    
   private
 
@@ -221,7 +219,6 @@ class EdxCoursesController < ApplicationController
 
       begin
         res.value
-
         return true
       rescue
         return false
