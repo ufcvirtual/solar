@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
-  CHANGEABLE_FIELDS = ["bio", "interests", "music", "movies", "books", "phrase", "site", "nick", 
-    "alternate_email", "photo_file_name", "photo_content_type", "photo_file_size", "photo_updated_at"]
-  MODULO_ACADEMICO  = YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]
+
+  CHANGEABLE_FIELDS = %W{bio interests music movies books phrase site nick alternate_email photo_file_name photo_content_type photo_file_size photo_updated_at}
+  MODULO_ACADEMICO  = YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s] rescue nil
 
   has_many :oauth_applications, class_name: 'Doorkeeper::Application', as: :owner
 
@@ -57,8 +57,8 @@ class User < ActiveRecord::Base
   validates_length_of :institution, maximum: 120
 
   validate :unique_cpf, if: "cpf_changed?"
-  validate :integration, if: Proc.new{ |a| !a.new_record? and a.integrated }
-  validate :data_integration, if: Proc.new{ |a| !a.new_record? and (username_changed? or email_changed? or cpf_changed?) }
+  validate :integration, if: Proc.new{ |a| !a.new_record? and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and a.integrated }
+  validate :data_integration, if: Proc.new{ |a| !a.new_record? and (username_changed? or email_changed? or cpf_changed?) and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) }
   validate :cpf_ok, unless: :already_cpf_error?
 
   # paperclip uses: file_name, content_type, file_size e updated_at
@@ -103,7 +103,7 @@ class User < ActiveRecord::Base
   end
 
   def unique_cpf
-    users = User.where(cpf: cpf.delete(".").delete("-")) unless cpf.nil? or cpf.delete(".").delete("-") == User.find(id).cpf
+    users = User.where(cpf: cpf.delete(".").delete("-")) if new_record? or cpf.delete(".").delete("-") != User.find(id).cpf
     errors.add(:cpf, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) unless users.nil? or users.empty?
   end
 
@@ -134,22 +134,6 @@ class User < ActiveRecord::Base
   def cpf_ok
     cpf_verify = Cpf.new(self[:cpf])
     errors.add(:cpf, I18n.t(:new_user_msg_cpf_error)) unless cpf_verify.valido? unless cpf_verify.nil?
-  end
-
-  def integration
-    changed_fields = (changed - CHANGEABLE_FIELDS)
-    errors.add(changed_fields.first.to_sym, I18n.t("users.errors.only_by_ma")) if changed_fields.size > 0
-  end
-
-  # chamada para MA verificando se existe usuário com o login, cpf ou email informados
-  def data_integration
-    client   = Savon.client wsdl: MODULO_ACADEMICO["wsdl"]
-    response = client.call MODULO_ACADEMICO["methods"]["user"]["validate"].to_sym, message: {cpf: cpf.delete(".").delete("-"), email: email, login: username } # chamada passando parâmetros
-    validate_user_result(response.to_hash[:validar_usuario_response][:validar_usuario_result], client)
-  rescue HTTPClient::ConnectTimeoutError => error # se MA não responder (timeout)
-    errors.add(:username, I18n.t("users.errors.cant_conect_ma"))
-  rescue => error
-    errors.add(:base, I18n.t("users.errors.problem_accessing_ma"))
   end
 
   ## Na criação, o usuário recebe o perfil de usuario basico
@@ -231,6 +215,24 @@ class User < ActiveRecord::Base
       email: email,
       resume: "#{name} <#{email}>"
     }
+  end
+
+  ### integration MA ###
+
+  def integration
+    changed_fields = (changed - CHANGEABLE_FIELDS)
+    errors.add(changed_fields.first.to_sym, I18n.t("users.errors.only_by_ma")) if changed_fields.size > 0
+  end
+
+  # chamada para MA verificando se existe usuário com o login, cpf ou email informados
+  def data_integration
+    client   = Savon.client wsdl: MODULO_ACADEMICO["wsdl"]
+    response = client.call MODULO_ACADEMICO["methods"]["user"]["validate"].to_sym, message: {cpf: cpf.delete(".").delete("-"), email: email, login: username } # chamada passando parâmetros
+    validate_user_result(response.to_hash[:validar_usuario_response][:validar_usuario_result], client)
+  rescue HTTPClient::ConnectTimeoutError => error # se MA não responder (timeout)
+    errors.add(:username, I18n.t("users.errors.cant_conect_ma"))
+  rescue => error
+    errors.add(:base, I18n.t("users.errors.problem_accessing_ma"))
   end
 
   # user result from validation MA method

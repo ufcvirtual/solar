@@ -63,7 +63,7 @@
       /**
        * System clock
        */
-      new showLocalTime("server_clock");
+      new showLocalTime("server_clock", "#{I18n.l(Time.now, format: :clock_time)}".split(":"));
 
       /**
       * Verificando se existe aula carregada

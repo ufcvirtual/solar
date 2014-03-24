@@ -110,9 +110,9 @@ $(window).load(function(){
   })
 })
 
-function showLocalTime(container) {
+function showLocalTime(container, server_time) {
   if (!$('#'+container).length) return;
-  updateTime(container, "<%= I18n.l(Time.now, format: :clock_time)%>".split(":"));
+  updateTime(container, server_time);
 }
 
 function updateTime(el, server_time) {

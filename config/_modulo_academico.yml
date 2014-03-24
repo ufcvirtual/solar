@@ -1,9 +1,14 @@
 
 common: &common
+  integrated: true
   methods:
     import_user: "method name"
 
 development:
+  <<: *common
+  wsdl: "wsdl url here"
+
+test:
   <<: *common
   wsdl: "wsdl url here"
 
