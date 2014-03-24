@@ -103,7 +103,7 @@ class User < ActiveRecord::Base
   end
 
   def unique_cpf
-    users = User.where(cpf: cpf.delete(".").delete("-")) unless cpf.nil? or cpf == self.cpf
+    users = User.where(cpf: cpf.delete(".").delete("-")) unless cpf.nil? or cpf.delete(".").delete("-") == User.find(id).cpf
     errors.add(:cpf, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) unless users.nil? or users.empty?
   end
 
