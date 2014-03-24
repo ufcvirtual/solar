@@ -3,7 +3,7 @@
 
 #EqnEditor { margin:0 auto; }
 
-#EqnEditor select, inpout { border:1px solid #8fb6bd; font-size:11px; }
+#EqnEditor select { border:1px solid #8fb6bd; font-size:11px; }
 #EqnEditor textarea { border:1px solid #8fb6bd; }
 
 #EqnEditor .top {padding:2px 0; }
@@ -17,6 +17,17 @@
 #intro { position:absolute; left:30px; color:#FF6600; font-size:16px; }
 
 /*Minhas alterações*/
+#codecogs{
+  width: 90px;
+  position: relative;
+  top: 4px;
+  margin-right: 5px;
+}
+
+#codecogs_name{
+  position: relative;
+  top: 1px;
+}
 
 #EqnEditor .panel label[for=inline], #inline, input[value = Limpar], 
 input[value = Histórico], img[alt = 'help'], input[value = "Clear"], input[value = "History"]
@@ -306,7 +317,6 @@ img[alt = 'close']{
 }
 
 /* ------- Button formating ------ */
-
 input.bluebutton, input.lightbluebutton, input.greybutton {
   border-style: solid;
   width: 58px;

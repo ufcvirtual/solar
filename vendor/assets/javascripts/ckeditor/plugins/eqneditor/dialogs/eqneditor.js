@@ -102,7 +102,7 @@ CKEDITOR.dialog.add( 'eqneditorDialog', function(editor)
 			}, 
 			{
 				type :'html',
-				html: '<div style="position:absolute; left:5px; bottom:0; z-index:999"><a href="http://www.codecogs.com" target="_blank">CodeCogs &copy; 2007-2013</a></div><img id="CCequation" src="'+http+'www.codecogs.com/images/spacer.gif" />'					
+				html: '<div style="position:absolute; left:5px; bottom:0; z-index:999"><a href="http://www.codecogs.com" target="_blank"><img src="http://www.codecogs.com/images/poweredbycodecogs.png" id="codecogs" border="0" title="CodeCogs - An Open Source Scientific Library" alt="CodeCogs - An Open Source Scientific Library"></a><a href="http://www.codecogs.com" target="_blank" id="codecogs_name">CodeCogs &copy; 2007-2013</a></div><img id="CCequation" src="'+http+'www.codecogs.com/images/spacer.gif" />'					
 			}
 			]
 		}
