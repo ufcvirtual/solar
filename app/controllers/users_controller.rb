@@ -18,7 +18,22 @@ class UsersController < ApplicationController
       if user
         redirect_to login_path, alert: t(:new_user_cpf_in_use)
       else
-        redirect_to new_user_registration_path(cpf: params[:cpf])
+
+        begin
+          client   = Savon.client(wsdl: User::MODULO_ACADEMICO["wsdl"])
+          response = client.call(User::MODULO_ACADEMICO["methods"]["user"]["validate"].to_sym, message: { cpf: params[:cpf] }) # chamada passando parâmetros
+          user_response = response.to_hash[:validar_usuario_response][:validar_usuario_result]
+          User.new.validate_user_result(user_response)
+          if user_response.nil? # não existe no MA
+            redirect_to new_user_registration_path(cpf: params[:cpf])
+          else
+            flash[:notice] = "use os dados do MA"
+            redirect_to login_path, alert: t(:new_user_cpf_in_use)
+          end  
+        rescue => error
+          # raise "#{error}"
+        end
+
       end
     end
   end
@@ -31,9 +46,9 @@ class UsersController < ApplicationController
 
     ## Portlet do calendario; destacando dias que possuem eventos
     unless allocation_tags.empty?
-      schedules_events = Agenda.events(allocation_tags)
+      schedules_events       = Agenda.events(allocation_tags)
       schedules_events_dates = schedules_events.collect do |schedule_event|
-        schedule_end_date = schedule_event['end_date'].nil? ? "" : schedule_event['end_date'].to_date.to_s()
+        schedule_end_date    = schedule_event['end_date'].nil? ? "" : schedule_event['end_date'].to_date.to_s()
         [schedule_event['start_date'].to_date.to_s(), schedule_end_date]
       end
       @scheduled_events = schedules_events_dates.flatten.uniq

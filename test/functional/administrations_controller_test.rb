@@ -45,7 +45,7 @@ class AdministrationsControllerTest < ActionController::TestCase
 
   test "editar usuario" do
     assert_no_difference(["User.count"]) do
-      put :update_user, { id: @aluno1.id, name: "aluno1 alterado", email: 'email_aluno1@qq.com'}
+      put :update_user, { id: @aluno1.id, name: "aluno1 alterado", email: 'aluno1@solar.ufc.br'} # mantém o email para não tentar acessar o MA
     end
 
     assert_equal "aluno1 alterado", User.find(@aluno1.id).name
@@ -55,7 +55,7 @@ class AdministrationsControllerTest < ActionController::TestCase
     sign_in @editor
     
     assert_no_difference(["User.count"]) do
-      put :update_user, { id: @aluno1.id, name: "aluno1 alterado", email: 'email_aluno1@qq.com'}
+      put :update_user, { id: @aluno1.id, name: "aluno1 alterado", email: 'aluno1@solar.ufc.br'}
     end
     assert_not_equal "aluno1 alterado", User.find(@aluno1.id).name
 

@@ -74,4 +74,19 @@ class UserTest < ActiveSupport::TestCase
     assert_equal @professor.encrypted_password, Digest::SHA1.hexdigest('123456')
   end
 
+  test "usuario integrado nao pode alterar determinados dados" do
+    user      = users(:user4)
+    user.name = "Novo nome"
+
+    assert (not user.valid?)
+    assert_equal user.errors[:name].first, I18n.t("users.errors.only_by_ma")
+  end
+
+  test "usuario nao integrado pode alterar qualquer dado" do
+    user      = users(:user3)
+    user.name = "Novo nome"
+
+    assert user.valid?
+  end
+
 end

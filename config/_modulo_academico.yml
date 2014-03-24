@@ -1,0 +1,12 @@
+
+common: &common
+  methods:
+    import_user: "method name"
+
+development:
+  <<: *common
+  wsdl: "wsdl url here"
+
+production:
+  <<: *common
+  wsdl: "wsdl url here"

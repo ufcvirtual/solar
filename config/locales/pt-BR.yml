@@ -199,7 +199,7 @@
         password: "Senha"
         current_password: "Senha"
         new_password: "Nova Senha"
-        username: "Usuário"
+        username: "Login"
         name: "Nome"
         nick: "Apelido"
         birthdate: "Data de Nascimento"
@@ -2118,4 +2118,5 @@
     errors:
       already_exists_ma: já em uso no Módulo Acadêmico
       only_by_ma: pode ser alterado apenas pelo Módulo Acadêmico
-      cant_conect_ma: Não pode ser alterado no momento. Conexão incompleta com o Módulo Acadêmico.
+      cant_conect_ma: não pode ser alterado no momento. Conexão incompleta com o Módulo Acadêmico.
+      problem_accessing_ma: Ocorreram problemas ao acessar o Módulo Acadêmico. Favor tentar novamente.

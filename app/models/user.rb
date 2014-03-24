@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
-
   CHANGEABLE_FIELDS = ["bio", "interests", "music", "movies", "books", "phrase", "site", "nick", 
     "alternate_email", "photo_file_name", "photo_content_type", "photo_file_size", "photo_updated_at"]
+  MODULO_ACADEMICO  = YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]
 
   has_many :oauth_applications, class_name: 'Doorkeeper::Application', as: :owner
 
@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   validates :username, presence: true, length: { within: 3..20 }, uniqueness: true
   validates :password, presence: true, confirmation: true, unless: Proc.new { |a| a.password.blank? }
   validates :alternate_email, format: { with: email_format }
-  validates :email, presence: true, confirmation: true, format: { with: email_format }, if: Proc.new {|a| a.email_changed? }
+  validates :email, presence: true, confirmation: true, uniqueness: true, format: { with: email_format }, if: Proc.new {|a| a.email_changed? }
   validates :special_needs, presence: true, if: :has_special_needs?
 
   validates_length_of :address_neighborhood, maximum: 49
@@ -56,9 +56,10 @@ class User < ActiveRecord::Base
   validates_length_of :country, :city, :address ,maximum: 90
   validates_length_of :institution, maximum: 120
 
+  validate :unique_cpf, if: "cpf_changed?"
+  validate :integration, if: Proc.new{ |a| !a.new_record? and a.integrated }
+  validate :data_integration, if: Proc.new{ |a| !a.new_record? and (username_changed? or email_changed? or cpf_changed?) }
   validate :cpf_ok, unless: :already_cpf_error?
-  validate :integration, if: "integrated"
-  validate :login_integration, if: "username_changed?"
 
   # paperclip uses: file_name, content_type, file_size e updated_at
   # Configuração do paperclip para upload de fotos
@@ -101,6 +102,11 @@ class User < ActiveRecord::Base
     errors[:cpf].any?
   end
 
+  def unique_cpf
+    users = User.where(cpf: cpf.delete(".").delete("-")) unless cpf.nil? or cpf == self.cpf
+    errors.add(:cpf, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) unless users.nil? or users.empty?
+  end
+
   ##
   # Permite modificação dos dados do usuário sem necessidade de informar a senha - para usuários já logados
   # Define o valor de @has_special_needs na edição de um usuário (update)
@@ -135,14 +141,15 @@ class User < ActiveRecord::Base
     errors.add(changed_fields.first.to_sym, I18n.t("users.errors.only_by_ma")) if changed_fields.size > 0
   end
 
-  def login_integration
-    # se o login for alterado, deve verificar se seu uso disponível no MA
-    # chamada para MA verificando se existe usuário com o login informado
-      # se existe, erro 
-        # errors.add(:username, I18n.t("users.errors.already_exists_ma")) 
-      # se não existe, cria
-      # se MA não responder, erro
-        # errors.add(:username, I18n.t("users.errors.cant_conect_ma"))
+  # chamada para MA verificando se existe usuário com o login, cpf ou email informados
+  def data_integration
+    client   = Savon.client wsdl: MODULO_ACADEMICO["wsdl"]
+    response = client.call MODULO_ACADEMICO["methods"]["user"]["validate"].to_sym, message: {cpf: cpf.delete(".").delete("-"), email: email, login: username } # chamada passando parâmetros
+    validate_user_result(response.to_hash[:validar_usuario_response][:validar_usuario_result], client)
+  rescue HTTPClient::ConnectTimeoutError => error # se MA não responder (timeout)
+    errors.add(:username, I18n.t("users.errors.cant_conect_ma"))
+  rescue => error
+    errors.add(:base, I18n.t("users.errors.problem_accessing_ma"))
   end
 
   ## Na criação, o usuário recebe o perfil de usuario basico
@@ -161,7 +168,7 @@ class User < ActiveRecord::Base
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
-    login = conditions.delete(:login)
+    login      = conditions.delete(:login)
     where(conditions).where(["translate(cpf,'.-','') = :value OR lower(username) = :value", { value: login.strip.downcase }]).first
   end
 
@@ -224,6 +231,40 @@ class User < ActiveRecord::Base
       email: email,
       resume: "#{name} <#{email}>"
     }
+  end
+
+  # user result from validation MA method
+  # receives the response and the WS client
+  def validate_user_result(result, client)
+    unless result.nil?
+      result = result[:int]
+      if result.include?("6") # unavailable cpf, thus already in use by MA
+        response  = client.call(MODULO_ACADEMICO["methods"]["user"]["import"].to_sym, message: { cpf: cpf.delete(".").delete("-") }) # import user
+        user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
+        unless user_data.nil? # if user exists
+          user_data = user_data[:string]
+          # verify if cpf, username or email already exists
+          unless User.find_by_cpf(user_data[0]) or User.find_by_username(user_data[5]) or User.find_by_email(user_data[8])
+            # import all data from MA user
+            self.errors.clear # clear all errors, so the system can import and save user's data
+            self.attributes = {name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == "M"), cell_phone: user_data[17], 
+              nick: (user_data[7].nil? ? ([user_data[2].split(" ")[0], user_data[2].split(" ")[1]].join(" ")) : user_data[7]), telephone: user_data[18], 
+              special_needs: (user_data[19].downcase == "nenhuma" ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13],
+              address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: user_data[5],
+              encrypted_password: user_data[6], email: user_data[8]} #, enrollment_code: user_data[19]
+            self.update_attribute(:integrated, true) # user is set as integrated
+          end
+        end
+      else
+        errors.add(:username, I18n.t("users.errors.already_exists_ma")) if result.include?("1")  # unavailable login/username, thus already in use by MA
+        errors.add(:username, I18n.t("users.errors.invalid"))           if result.include?("2")  # invalid login/username
+        errors.add(:password, I18n.t("users.errors.invalid"))           if result.include?("3")  # invalid password
+        errors.add(:email, I18n.t("users.errors.already_exists_ma"))    if result.include?("4")  # unavailable email, thus already in use by MA
+        errors.add(:email, I18n.t("users.errors.invalid"))              if result.include?("5")  # invalid email
+        errors.add(:cpf, I18n.t("users.errors.invalid"))                if result.include?("7")  # invalid cpf
+        errors.add(:base, I18n.t("users.errors.problem_accessing_ma"))  if result.include?("99") # unknown error
+      end
+    end
   end
 
 end
