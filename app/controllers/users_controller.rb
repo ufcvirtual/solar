@@ -18,22 +18,7 @@ class UsersController < ApplicationController
       if user
         redirect_to login_path, alert: t(:new_user_cpf_in_use)
       else
-
-        begin
-          client   = Savon.client(wsdl: User::MODULO_ACADEMICO["wsdl"])
-          response = client.call(User::MODULO_ACADEMICO["methods"]["user"]["validate"].to_sym, message: { cpf: params[:cpf] }) # chamada passando parâmetros
-          user_response = response.to_hash[:validar_usuario_response][:validar_usuario_result]
-          User.new.validate_user_result(user_response)
-          if user_response.nil? # não existe no MA
-            redirect_to new_user_registration_path(cpf: params[:cpf])
-          else
-            flash[:notice] = "use os dados do MA"
-            redirect_to login_path, alert: t(:new_user_cpf_in_use)
-          end  
-        rescue => error
-          # raise "#{error}"
-        end
-
+        redirect_to new_user_registration_path(cpf: params[:cpf])
       end
     end
   end
