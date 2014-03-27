@@ -32,22 +32,31 @@ function placeholder() {
     }
 }
 
-function open_registration_tab(object) {
+function open_registration_tab() {
     //event.preventDefault();
-    $(object).parent().removeClass("inactive");
+    $("#register-bt").removeClass("inactive");
     $("#login-bt").addClass("inactive");
     $("#login-form").hide();
     $("#login-register").show();
     placeholder();
 }
 
-function open_login_tab(object) {
+function open_login_tab() {
     //event.preventDefault();
     $("#login-form").show();
     $("#login-register").hide();
-    $(object).parent().removeClass("inactive");
+    $("#login-bt").removeClass("inactive");
     $("#register-bt").addClass("inactive");
 }
+
+/* verificando se a URL está direcionando para o painel de registro */
+$(function(){
+    var hashVal = window.location.hash.split("#")[1];
+    if (hashVal == "login-register") {
+        open_registration_tab();
+        $("#cpf-register").focus();
+    }
+});
 
 /****************************************************
  * scripts das áreas de cadastro e login

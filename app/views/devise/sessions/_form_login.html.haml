@@ -1,7 +1,7 @@
 #screen-login
   %ul#login-header
-    %li#login-bt= link_to_function t(:sign_in), "open_login_tab(this)"
-    %li#register-bt.inactive= link_to_function t(:sign_up), "open_registration_tab(this)"
+    %li#login-bt= link_to_function t(:sign_in), "open_login_tab()"
+    %li#register-bt.inactive= link_to_function t(:sign_up), "open_registration_tab()"
   #login-form
     = form_for(resource_name) do |f|
       .form-field= f.text_field :login, id: "login", placeholder: t(:user), tabindex: "1"
