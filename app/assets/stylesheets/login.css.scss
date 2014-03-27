@@ -276,9 +276,7 @@ $header-tab-height: 36px;
   }
 
   #buttons_password_recovery{
-    text-align: right;
     padding-right: 28px;
-    padding-top: 15px;
     padding-bottom: 22px;
   }
 }
@@ -295,6 +293,13 @@ $header-tab-height: 36px;
 }
 
 /* Botão de voltar para o início do esqueceu senha*/
+  #buttons_password_recovery{
+    text-align: right;
+    padding-right: 23px;
+    padding-top: 15px;
+    padding-bottom: 22px;
+  }
+
 .btn_password_recovery {
   font-family: Ubuntu Condensed;
   font-size: 20px;
