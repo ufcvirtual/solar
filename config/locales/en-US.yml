@@ -450,8 +450,8 @@
   pwd_recovery_subtitle: "Forgot your password?"
   change_your_password: "Change your password"
 
-  pwd_recovery_text: "To regain access, type your CPF and the e-mail address that you use to access your Solar account."
-  pwd_recovery_text2: "We will send you a new password for your e-mail shortly."
+  pwd_recovery_text: "To regain access, type your e-mail address that you use to access your Solar account."
+  pwd_recovery_text2: "We will shortly send you some directions to create a new password."
 
   pwd_recovery_email: "Enter your E-mail"
   pwd_recovery_cpf: "Enter your CPF"
@@ -1169,7 +1169,7 @@
     passwords:
       new_password: New password
       confirm_new_password: Confirm new password
-      change_my_password: Change password
+      change_my_password: Change
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'
       updated_not_active: 'Your password was changed successfully.'

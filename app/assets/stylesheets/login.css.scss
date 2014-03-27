@@ -257,6 +257,31 @@ $header-tab-height: 36px;
   margin-left: 27px;
 }
 
+#login_content_password_recovery #block_wrapper{
+  width: 272px;
+
+ h1{
+    margin-left: 33px;
+    margin-bottom: 0;
+  }
+
+  .form-field{
+    input{
+      margin-top: 18px;
+    }
+  }
+
+  #user_password_confirmation{
+    margin-top: 5px;
+  }
+
+  #buttons_password_recovery{
+    text-align: right;
+    padding-right: 28px;
+    padding-top: 15px;
+    padding-bottom: 22px;
+  }
+}
 
 #password_recovery p{
   font-family: 'PT Sans', sans-serif;
@@ -270,13 +295,6 @@ $header-tab-height: 36px;
 }
 
 /* Botão de voltar para o início do esqueceu senha*/
-#buttons_password_recovery{
-  text-align: right;
-  padding-right: 23px;
-  padding-top: 15px;
-  padding-bottom: 15px;
-}
-
 .btn_password_recovery {
   font-family: Ubuntu Condensed;
   font-size: 20px;

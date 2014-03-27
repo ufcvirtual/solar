@@ -601,8 +601,8 @@
   pwd_recovery_subtitle: "Esqueceu a sua senha?"
   change_your_password: "Alterar sua senha"
 
-  pwd_recovery_text: "Para recuperar seu acesso, digite o CPF e o endereço de e-mail que você usa para acessar a conta do Solar."
-  pwd_recovery_text2: "Nós enviaremos a nova senha para o seu e-mail em instantes."
+  pwd_recovery_text: "Para recuperar seu acesso, digite o endereço de e-mail que você usa para acessar a conta do Solar."
+  pwd_recovery_text2: "Nós enviaremos, em instantes, algumas instruções para criação de uma nova senha."
 
   pwd_recovery_email: "Digite seu e-mail"
   pwd_recovery_cpf: "Digite seu CPF"
@@ -1317,7 +1317,7 @@
     passwords:
       new_password: Nova senha
       confirm_new_password: Confirmar nova senha
-      change_my_password: Mudar senha
+      change_my_password: Alterar
       send_instructions: 'Você receberá um email com instruções sobre como resetar sua senha em alguns minutos.'
       updated: 'Sua senha foi modificada com sucesso. Você agora está logado.'
       updated_not_active: 'Sua senha foi modificada com sucesso. Você agora está logado.'
