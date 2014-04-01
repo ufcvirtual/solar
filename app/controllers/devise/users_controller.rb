@@ -5,7 +5,7 @@ class Devise::UsersController < Devise::RegistrationsController
 
     resource_saved  = resource.save
     user_cpf = resource.cpf.delete(".").delete("-")
-    warning  = I18n.t("users.errors.ma.login_email") if resource.email == "#{user_cpf}@email.com" and resource.username == "#{user_cpf}"
+    warning  = I18n.t("users.errors.ma.login_email") if resource.email == "#{user_cpf}@atualize.ufc.br" and resource.username == "#{user_cpf}"
 
     yield resource if block_given?
     if resource_saved

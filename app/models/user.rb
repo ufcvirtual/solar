@@ -241,7 +241,7 @@ class User < ActiveRecord::Base
     errors_messages = errors.full_messages
     # if is new user and happened some problem connecting with MA
     if new_record? and (errors_messages.include?(I18n.t("users.errors.ma.cant_conect")) or errors_messages.include?(I18n.t("users.errors.ma.problem_accessing")))
-      self.attributes = {username: user_cpf, email: "#{user_cpf}@email.com", email_confirmation: "#{user_cpf}@email.com"} # set username and invalid email
+      self.attributes = {username: user_cpf, email: "#{user_cpf}@atualize.ufc.br", email_confirmation: "#{user_cpf}@atualize.ufc.br"} # set username and invalid email
       user_errors     = errors.messages.to_a.collect{|a| a[1]}.flatten.uniq # all errors
       ma_errors       = I18n.t("users.errors.ma").to_a.collect{|a| a[1]}    # ma errors
       if (user_errors - ma_errors).empty? # form doesn't have other errors
@@ -270,7 +270,7 @@ class User < ActiveRecord::Base
               nick: (user_data[7].nil? ? ([user_data[2].split(" ")[0], user_data[2].split(" ")[1]].join(" ")) : user_data[7]), telephone: user_data[18], 
               special_needs: (user_data[19].downcase == "nenhuma" ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13],
               address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: user_data[5],
-              encrypted_password: user_data[6], email: user_data[8], integrated: true} #, enrollment_code: user_data[19] # user is set as integrated
+              encrypted_password: user_data[6], email: (user_data[8].blank? ? "#{user_data[0]}@atualize.ufc.br" : user_data[8]), integrated: true} #, enrollment_code: user_data[19] # user is set as integrated
             (user.nil? ? (user = User.new(ma_attributes)) : (user.attributes = ma_attributes))
             user.errors.clear # clear all errors, so the system can import and save user's data 
             return user.save(validate: false) if user.new_record? # if user don't exist, saves it without validation (all necessary data must come from MA)

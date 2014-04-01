@@ -11,7 +11,7 @@ class ApplicationAPI < Grape::API
   helpers do
     ## only webserver can access
     def verify_ip_access!
-      raise ActiveRecord::RecordNotFound unless YAML::load(File.open('config/webserver.yml'))[Rails.env.to_s]['address'].include?(request.env['REMOTE_ADDR'])
+      raise ActiveRecord::RecordNotFound unless YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]['verified_addresses'].include?(request.env['REMOTE_ADDR'])
     end
   end
 

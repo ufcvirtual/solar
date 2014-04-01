@@ -1979,3 +1979,6 @@
     notices:
       ma: 
         use_ma_data: Please use your Módulo Acadêmico data.
+    warnings:
+      ma:
+        cpf_not_verified: "It wasn't possible to verify your CPF at Módulo Acadêmico. After logged in, synchronize your data."

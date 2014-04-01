@@ -30,10 +30,9 @@ class UsersController < ApplicationController
           else # user was imported and registered with MA data
             redirect_to login_path, notice: t("users.notices.ma.use_ma_data")
           end  
-        rescue HTTPClient::ConnectTimeoutError => error # if MA don't respond (timeout)
-          redirect_to login_path, alert: t("users.errors.ma.cant_conect")
-        rescue => error
-          redirect_to login_path, alert: t("users.errors.ma.problem_accessing")
+        rescue => error # any error during access to MA, user should do the registration anyway
+          flash[:warning] = t("users.warnings.ma.cpf_not_verified")
+          redirect_to new_user_registration_path(cpf: params[:cpf])
         end
       end
     end

@@ -109,6 +109,10 @@
             %button#complete{type: :submit, :value => t(:registration_done)}
               = t(:registration_done)
 
+.flash_message_wrapper
+  - flash.each do |name, msg|
+    #flash_message{class: name}= content_tag :span, msg
+
 #cancel
   %a{href: "/"}
     = t(:registration_cancel)

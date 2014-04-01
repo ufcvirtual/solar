@@ -735,7 +735,7 @@ select option{
   background: url('done.png') no-repeat; 
 }
 
-.error, .alert, .notice, .required_info {
+.error, .alert, .notice, .warning, .required_info {
   font-family: Ubuntu;
   font-style: italic;
   font-size: 10pt;
@@ -748,6 +748,10 @@ select option{
 
 .notice {
   color: #00782D;
+}
+
+.warning {
+  color: #dca727;
 }
 
 .flash_message_wrapper {

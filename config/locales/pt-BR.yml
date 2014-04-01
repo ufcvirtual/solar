@@ -2132,3 +2132,6 @@
     notices:
       ma: 
         use_ma_data: Favor utilizar seus dados do Módulo Acadêmico.
+    warnings:
+      ma:
+        cpf_not_verified: "Não foi possível verificar o CPF no Módulo Acadêmico. Se faz necessário que você, após logado, sincronize seus dados."

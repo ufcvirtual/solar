@@ -192,7 +192,7 @@
           %span.form_field= f.text_field :site, size: field_size, id: "site"
 
   .user_data_form_buttons
-    %input.btn.btn_default.user_data_form_buttons{type: "button",  value: "#{ t(:back) }", onclick: "document.location.href='#{login_path}'"}
+    %input.btn.btn_default.user_data_form_buttons{type: "button",  value: "#{ t(:back) }", onclick: "document.location.href='#{home_path}'"}
     = f.submit t(:confirm), id: "confirm", class: "btn btn_main user_data_form_buttons", alt:  t(:confirm)
 
   = hidden_field_tag :changeable_fields, User::CHANGEABLE_FIELDS
