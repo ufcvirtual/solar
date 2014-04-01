@@ -1,9 +1,9 @@
 Solar::Application.routes.draw do 
 
-  devise_for :users, path_names: {sign_up: :register}
+  devise_for :users, controllers: { registrations: "devise/users" }
 
   authenticated :user do
-    get "/", to: redirect("/home")
+    get "/", to: "users#mysolar"
   end
 
   devise_scope :user do

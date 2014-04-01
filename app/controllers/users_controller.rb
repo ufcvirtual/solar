@@ -1,9 +1,10 @@
 require 'ostruct'
 
 class UsersController < ApplicationController
-
   layout false, only: :show
   load_and_authorize_resource only: [:mysolar, :update_photo]
+
+  after_filter :flash_notice, only: :create
 
   def show
     # authorize! :show, User, on: allocation_tags # todo usuario vai ter permissao para ver todos?
@@ -18,7 +19,22 @@ class UsersController < ApplicationController
       if user
         redirect_to login_path, alert: t(:new_user_cpf_in_use)
       else
-        redirect_to new_user_registration_path(cpf: params[:cpf])
+
+        begin
+          client          = Savon.client(wsdl: User::MODULO_ACADEMICO["wsdl"])
+          response        = client.call(User::MODULO_ACADEMICO["methods"]["user"]["validate"].to_sym, message: { cpf: params[:cpf].delete(".").delete("-"), email: "",  login: ""})
+          user_response   = response.to_hash[:validar_usuario_response][:validar_usuario_result]
+          user_validation = User.validate_user_result(user_response, client, params[:cpf])
+          if user_response.nil? # não existe no MA
+            redirect_to new_user_registration_path(cpf: params[:cpf])
+          else # user was imported and registered with MA data
+            redirect_to login_path, notice: t("users.notices.ma.use_ma_data")
+          end  
+        rescue HTTPClient::ConnectTimeoutError => error # if MA don't respond (timeout)
+          redirect_to login_path, alert: t("users.errors.ma.cant_conect")
+        rescue => error
+          redirect_to login_path, alert: t("users.errors.ma.problem_accessing")
+        end
       end
     end
   end

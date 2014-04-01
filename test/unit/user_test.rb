@@ -79,7 +79,7 @@ class UserTest < ActiveSupport::TestCase
     user.name = "Novo nome"
 
     assert (not user.valid?)
-    assert_equal user.errors[:name].first, I18n.t("users.errors.only_by_ma")
+    assert_equal user.errors[:name].first, I18n.t("users.errors.ma.only_by")
   end
 
   test "usuario nao integrado pode alterar qualquer dado" do

@@ -1204,6 +1204,11 @@
         request: "Someone has requested a link to change your password, and you can do this through the link below."
         ignore: "If you didn't request this, please ignore this email."
         change: "Your password won't change until you access the link above and create a new one."
+    users:
+      user:
+        ma_login_email_msg: "It wasn't possible to verify username and email at Módulo Acadêmico, thus your username and email were defined, respectively, as your CPF and an invalid and random value. Please redefine them."
+        signed_up: 'Welcome! You have signed up successfully.'
+        updated: 'You updated your account successfully.'
 
   # suport material file
   support_folder_name: Support Material
@@ -1963,7 +1968,14 @@
 
   users:
     errors:
-      already_exists_ma: already exists on Módulo Acadêmico
-      only_by_ma: can be updated only by Módulo Acadêmico
-      cant_conect_ma: Can't be updated at this moment. Incomplete conection with Módulo Acadêmico.
-      problem_accessing_ma: Problems happened while accessing Módulo Acadêmico. Please try again.
+      ma:
+        already_exists: already exists on Módulo Acadêmico
+        only_by: can be updated only by Módulo Acadêmico
+        cant_conect: Can't be updated at this moment. Incomplete conection with Módulo Acadêmico.
+        problem_accessing: Problems happened while accessing Módulo Acadêmico. Please try again.
+        login: "It wasn't possible to verify at Módulo Acadêmico, thus it was defined as your CPF. Please, try define it again."
+        email: "It wasn't possible to verify at Módulo Acadêmico, thus it was defined as an invalid and random value. Please, try define it again."
+        login_email: 'ma_login_email_msg'
+    notices:
+      ma: 
+        use_ma_data: Please use your Módulo Acadêmico data.
