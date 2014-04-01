@@ -40,6 +40,18 @@ module V1
         group
       end
 
+      def verify_or_create_user(cpf)
+        user = User.find_by_cpf(cpf)
+        return user if user
+
+        user = User.new cpf: cpf
+        user.data_integration
+
+        raise ActiveRecord::RecordNotFound unless user.valid? and not(user.new_record?)
+
+        user
+      end
+
       def allocate_professors(group, cpfs)
         group.allocations.where(profile_id: 2).update_all(status: 2) # cancel all previous allocations
 
@@ -79,7 +91,7 @@ module V1
     end
 
     namespace :groups do
-      # load/groups
+      # POST load/groups
       post "/" do
         load_group    = params[:turmas]
         cpfs          = load_group[:professores]
@@ -107,14 +119,14 @@ module V1
       # POST load/groups/enrollments
       post :enrollments do
         load_enrollments = params[:matriculas]
-        user             = User.find_by_cpf! load_enrollments[:cpf]
+        user             = verify_or_create_user(load_enrollments[:cpf])
         groups           = JSON.parse(load_enrollments[:turmas])
         student_profile  = 1 # Aluno => 1
 
         begin
           ActiveRecord::Base.transaction do
-            groups = groups.collect do |group_info| 
-              get_group(group_info["codDisciplina"], group_info["codGraduacao"], group_info["codigo"], group_info["periodo"], group_info["ano"]) unless group_info["codDisciplina"]  == 78
+            groups = groups.collect do |group_info|
+              get_group(group_info["codDisciplina"], group_info["codGraduacao"], group_info["codigo"], group_info["periodo"], group_info["ano"]) unless group_info["codDisciplina"] == 78
             end # Se cód. graduação for 78, desconsidera (por hora, vem por engano).
 
             cancel_previous_and_create_allocations(groups.compact, user, student_profile)

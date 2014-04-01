@@ -284,12 +284,17 @@ describe "Loads" do
 
         context 'and list of existing groups' do 
           let!(:json_data){
-            { matriculas: {cpf: "11016853521", turmas: [ # user3
-              {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"},
-              {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "RM301", codGraduacao: "109"},
-              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "109"},
-              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "109"} # repetido propositalmente
-            ]}}
+            { matriculas: {cpf: "11016853521", turmas: # user3
+              %{
+                [
+                  {"periodo": "1", "ano": "2011", "codigo": "QM-CAU", "codDisciplina": "RM301", "codGraduacao": "109"},
+                  {"periodo": "1", "ano": "2011", "codigo": "QM-MAR", "codDisciplina": "RM301", "codGraduacao": "109"},
+                  {"periodo": "1", "ano": "2011", "codigo": "TL-FOR", "codDisciplina": "RM301", "codGraduacao": "109"},
+                  {"periodo": "1", "ano": "2011", "codigo": "TL-FOR", "codDisciplina": "RM301", "codGraduacao": "109"}
+                ]
+              }
+              # repetido propositalmente
+            }}
           }
 
           it {
@@ -304,10 +309,15 @@ describe "Loads" do
 
          context 'and list of existing groups and cancelling allocation' do 
           let!(:json_data){
-            { matriculas: {cpf: "32305605153", turmas: [ # aluno1
-              {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "RM301", codGraduacao: "109"},
-              {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "RM301", codGraduacao: "78"} # ignorar código de graduação 78
-            ]}}
+            { matriculas: {cpf: "32305605153", turmas: # aluno1
+              # ignorar código de graduação 78
+              %{
+                [
+                  {"periodo": "1", "ano": "2011", "codigo": "QM-MAR", "codDisciplina": "RM301", "codGraduacao": "109"},
+                  {"periodo": "1", "ano": "2011", "codigo": "QM-MAR", "codDisciplina": "RM301", "codGraduacao": "78"}
+                ]
+              }
+            }}
           }
           let!(:user){User.find_by_cpf("32305605153")}
           let!(:user_allocations){user.allocations.where(status: 1, profile_id: 1)}
@@ -329,11 +339,15 @@ describe "Loads" do
         
         context 'and list of non existing groups' do 
           let!(:json_data){
-            { matriculas: {cpf: "11016853521", turmas: [ # user3
-              {periodo: "1", ano: "2011", codigo: "T01", codDisciplina: "RM301", codGraduacao: "109"}, # turma não existe
-              {periodo: "1", ano: "2011", codigo: "T02", codDisciplina: "RM301", codGraduacao: "109"}, # turma não existe
-              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "109"} # turma existe
-            ]}}
+            { matriculas: {cpf: "11016853521", turmas: # user3
+              %{
+                [
+                  {"periodo": "1", "ano": "2011", "codigo": "T01", "codDisciplina": "RM301", "codGraduacao": "109"},
+                  {"periodo": "1", "ano": "2011", "codigo": "T02", "codDisciplina": "RM301", "codGraduacao": "109"},
+                  {"periodo": "1", "ano": "2011", "codigo": "TL-FOR", "codDisciplina": "RM301", "codGraduacao": "109"}
+                ]
+              }
+            }}
           }
 
           it {
@@ -348,11 +362,15 @@ describe "Loads" do
 
         context 'and non existing uc or course' do 
           let!(:json_data){
-            { matriculas: {cpf: "11016853521", turmas: [ # user3
-              {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "C01"}, # uc não existe
-              {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "UC01", codGraduacao: "109"}, # curso não existe
-              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "109"} # turma existe
-            ]}}
+            { matriculas: {cpf: "11016853521", turmas: # user3
+              %{
+                [
+                  {"periodo": "1", "ano": "2011", "codigo": "QM-CAU", "codDisciplina": "RM301", "codGraduacao": "C01"},
+                  {"periodo": "1", "ano": "2011", "codigo": "QM-MAR", "codDisciplina": "UC01", "codGraduacao": "109"},
+                  {"periodo": "1", "ano": "2011", "codigo": "TL-FOR", "codDisciplina": "RM301", "codGraduacao": "109"}
+                ]
+              }
+            }}
           }
 
           it {
@@ -365,13 +383,43 @@ describe "Loads" do
           }
         end
 
+        context 'and non existing user and gets from MA' do
+          cpf = "VALID CPF HERE"
+          let!(:json_data){
+            { matriculas: {cpf: cpf, turmas:
+              %{
+                [
+                  {"periodo": "1", "ano": "2011", "codigo": "QM-CAU", "codDisciplina": "RM301", "codGraduacao": "109"},
+                  {"periodo": "1", "ano": "2011", "codigo": "QM-MAR", "codDisciplina": "RM301", "codGraduacao": "109"},
+                  {"periodo": "1", "ano": "2011", "codigo": "TL-FOR", "codDisciplina": "RM301", "codGraduacao": "109"}
+                ]
+              }
+            }}
+          }
+
+          it {
+            expect{
+              post "/api/v1/load/groups/enrollments", json_data
+
+              User.where(cpf: cpf).count.should eq(1)
+
+              response.status.should eq(201)
+              response.body.should == {ok: :ok}.to_json
+            }.to change{Allocation.count}.by(4) # 1 basic + 3 student
+          }
+        end
+
         context 'and non existing user' do 
           let!(:json_data){
-            { matriculas: {cpf: "cpf", turmas: [ # cpf inválido / usuário não encontrado
-              {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"},
-              {periodo: "1", ano: "2011", codigo: "QM-MAR", codDisciplina: "RM301", codGraduacao: "109"},
-              {periodo: "1", ano: "2011", codigo: "TL-FOR", codDisciplina: "RM301", codGraduacao: "109"}
-            ]}}
+            { matriculas: {cpf: "cpf", turmas:
+              %{
+                [
+                  {"periodo": "1", "ano": "2011", "codigo": "QM-CAU", "codDisciplina": "RM301", "codGraduacao": "109"},
+                  {"periodo": "1", "ano": "2011", "codigo": "QM-MAR", "codDisciplina": "RM301", "codGraduacao": "109"},
+                  {"periodo": "1", "ano": "2011", "codigo": "TL-FOR", "codDisciplina": "RM301", "codGraduacao": "109"}
+                ]
+              }
+            }}
           }
 
           it {
@@ -382,7 +430,6 @@ describe "Loads" do
             }.to change{Allocation.count}.by(0)
           }
         end
-
       end
 
       context "with invalid ip" do
