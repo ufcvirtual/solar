@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
     :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music, :movies, :books, :phrase, :site, :photo,
     :special_needs, :active, :allocations_attributes, :integrated, :encrypted_password
 
-  attr_accessor :login, :has_special_needs
+  attr_accessor :login, :has_special_needs, :synchronizing
 
   email_format = %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i # regex para validacao de email
 
@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
   validates_length_of :institution, maximum: 120
 
   validate :unique_cpf, if: "cpf_changed?"
-  validate :integration, if: Proc.new{ |a| !a.new_record? and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and a.integrated }
+  validate :integration, if: Proc.new{ |a| !a.new_record? and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and a.integrated and (a.synchronizing.nil? or not(a.synchronizing))}
   validate :data_integration, if: Proc.new{ |a| a.new_record? or ((username_changed? or email_changed? or cpf_changed?) and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"])) }
   validate :cpf_ok, unless: :already_cpf_error?
 
@@ -265,12 +265,7 @@ class User < ActiveRecord::Base
           user_data = user_data[:string]
           # verify if cpf, username or email already exists
           unless User.find_by_cpf(user_data[0]) or User.find_by_username(user_data[5]) or User.find_by_email(user_data[8])
-            # import all data from MA user
-            ma_attributes = {name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == "M"), cell_phone: user_data[17], 
-              nick: (user_data[7].nil? ? ([user_data[2].split(" ")[0], user_data[2].split(" ")[1]].join(" ")) : user_data[7]), telephone: user_data[18], 
-              special_needs: (user_data[19].downcase == "nenhuma" ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13],
-              address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: user_data[5],
-              encrypted_password: user_data[6], email: (user_data[8].blank? ? "#{user_data[0]}@atualize.ufc.br" : user_data[8]), integrated: true} #, enrollment_code: user_data[19] # user is set as integrated
+            ma_attributes = User.user_ma_attributes(user_data) # import all data from MA user
             (user.nil? ? (user = User.new(ma_attributes)) : (user.attributes = ma_attributes))
             user.errors.clear # clear all errors, so the system can import and save user's data 
             return user.save(validate: false) if user.new_record? # if user don't exist, saves it without validation (all necessary data must come from MA)
@@ -289,6 +284,34 @@ class User < ActiveRecord::Base
         user.errors.add(:base, I18n.t("users.errors.ma.problem_accessing"))  if result.include?("99") # unknown error
       end
     end
+  end
+
+  # synchronizes user data with MA data
+  def synchronize
+    client    = Savon.client(wsdl: User::MODULO_ACADEMICO["wsdl"])
+    response  = client.call(MODULO_ACADEMICO["methods"]["user"]["import"].to_sym, message: { cpf: cpf.delete(".").delete("-") }) # import user
+    user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
+    unless user_data.nil? # if user exists
+      user_data = user_data[:string]
+      ma_attributes = User.user_ma_attributes(user_data)
+      errors.clear # clear all errors, so the system can import and save user's data 
+      self.synchronizing = true
+      update_attributes(ma_attributes)
+      self.synchronizing = false
+      return true
+    else
+      return nil
+    end
+  rescue => errors
+    return false
+  end
+
+  def self.user_ma_attributes(user_data)
+    {name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == "M"), cell_phone: user_data[17], 
+      nick: (user_data[7].nil? ? ([user_data[2].split(" ")[0], user_data[2].split(" ")[1]].join(" ")) : user_data[7]), telephone: user_data[18], 
+      special_needs: (user_data[19].downcase == "nenhuma" ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13],
+      address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]),
+      encrypted_password: user_data[6], email: (user_data[8].blank? ? "#{user_data[0]}@atualize.ufc.br" : user_data[8]), integrated: true} #, enrollment_code: user_data[19] # user is set as integrated
   end
 
 end

@@ -108,12 +108,11 @@
             #mysolar_top_submenu_username= current_user.name
             #mysolar_top_submenu_useremail= current_user.email
           %ul
-            %li
-              = link_to t(:mysolar_edit_profile), edit_user_registration_path, id: 'my_data'
-            %li
-              = link_to t(:mysolar_change_picture), edit_photo_users_path, class: "fancybox.ajax", id: "change_picture"
-            %li
-              = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path)
+            /  icon-cycle
+            %li= link_to t("mysolar.synchronize"), "#", :'data-url' => synchronize_ma_users_path, id: 'synchronize'
+            %li= link_to t(:mysolar_edit_profile), edit_user_registration_path, id: 'my_data'
+            %li= link_to t(:mysolar_change_picture), edit_photo_users_path, class: "fancybox.ajax", id: "change_picture"
+            %li= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path)
         #mysolar_submenu_help
           %ul
             %li
@@ -180,7 +179,7 @@
 
 :javascript
 
-  // lessons
+  // Lessons
   lesson_cookie_id = "_ufc_solar20_lesson_opened";
 
   $(function(){
@@ -189,7 +188,7 @@
   });
 
 
-  /////////////////// IM \\\\\\\\\\\\\\\\\\\\
+  // IM 
 
   imgOn = "#{image_path('IM_online_Icon.png')}";
   imgAway = "#{image_path('IM_away_Icon.png')}";
@@ -233,3 +232,22 @@
       } catch(err) {}
     });
   })
+
+  // Synchronizing user 
+  $(function(){
+    $("#synchronize").click(function(){
+      $.get($(this).data("url"), function(data){
+        if (typeof(data.message) != "undefined" && typeof(data.type_message) != "undefined")
+          flash_message(data.message, data.type_message);
+        if (typeof(data.nick) != "undefined")
+          $("#mysolar_top_user_nick").html(data.nick);
+        if (typeof(data.name) != "undefined")
+          $("#mysolar_top_submenu_username").html(data.name);
+        if (typeof(data.email) != "undefined")
+          $("#mysolar_top_submenu_useremail").html(data.email);
+      }).error(function(data){
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, "alert");
+      });
+    });
+  });

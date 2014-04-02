@@ -18,10 +18,15 @@ Solar::Application.routes.draw do
   get :tutorials, to: "pages#tutorials", as: :tutorials
 
   resources :users do
-    get :photo, on: :member
-    put :update_photo, on: :member
-    get :edit_photo, on: :collection
-    get :verify_cpf, on: :collection
+    member do
+      get :photo
+      put :update_photo
+    end
+    collection do
+      get :edit_photo
+      get :verify_cpf
+      get :synchronize_ma
+    end
   end
 
   resources :social_networks, only: [] do

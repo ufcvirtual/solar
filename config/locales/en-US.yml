@@ -1974,11 +1974,17 @@
         cant_conect: Can't be updated at this moment. Incomplete conection with Módulo Acadêmico.
         problem_accessing: Problems happened while accessing Módulo Acadêmico. Please try again.
         login: "It wasn't possible to verify at Módulo Acadêmico, thus it was defined as your CPF. Please, try define it again."
-        email: "It wasn't possible to verify at Módulo Acadêmico, thus it was defined as an invalid and random value. Please, try define it again."
+        email: "It wasn't possible to verify at Módulo Acadêmico, thus it was defined as an invalid and random value. Please try define it again."
         login_email: 'ma_login_email_msg'
+        synchronize: Error while synchronizing data with Módulo Acadêmico. Please try again.
     notices:
       ma: 
         use_ma_data: Please use your Módulo Acadêmico data.
+        synchronize: Data synchronized successfully.
     warnings:
       ma:
         cpf_not_verified: "It wasn't possible to verify your CPF at Módulo Acadêmico. After logged in, synchronize your data."
+        cpf_not_found: CPF not found at no Módulo Acadêmico
+
+  mysolar:
+    synchronize: Synchronize with Módulo Acadêmico

@@ -2129,9 +2129,15 @@
         login: 'Não foi possível verificar no módulo acadêmico, portanto foi definido como seu CPF. Favor tentar definí-lo novamente.'
         email: 'Não foi possível verificar no módulo acadêmico, portanto foi definido como um valor inválido e aleatório. Favor tentar definí-lo novamente.'
         login_email: 'ma_login_email_msg'
+        synchronize: Erro ao sincronizar dados com o Módulo Acadêmico. Favor tentar novamente.
     notices:
       ma: 
         use_ma_data: Favor utilizar seus dados do Módulo Acadêmico.
+        synchronize: Dados sincronizados com sucesso.
     warnings:
       ma:
         cpf_not_verified: "Não foi possível verificar o CPF no Módulo Acadêmico. Se faz necessário que você, após logado, sincronize seus dados."
+        cpf_not_found: CPF não encontrado no Módulo Acadêmico
+
+  mysolar:
+    synchronize: Sincronizar com Módulo Acadêmico

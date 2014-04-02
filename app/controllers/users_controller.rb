@@ -31,6 +31,7 @@ class UsersController < ApplicationController
             redirect_to login_path, notice: t("users.notices.ma.use_ma_data")
           end  
         rescue => error # any error during access to MA, user should do the registration anyway
+          raise "#{error}"
           flash[:warning] = t("users.warnings.ma.cpf_not_verified")
           redirect_to new_user_registration_path(cpf: params[:cpf])
         end
@@ -86,4 +87,21 @@ class UsersController < ApplicationController
       end
     end
   end
+
+  # synchronize user data with ma
+  def synchronize_ma
+    synchronizing_result = current_user.synchronize
+    if synchronizing_result.nil? # user don't exists at MA
+      render json: {success: false, message: t("users.warnings.ma.cpf_not_found"), type_message: "warning"}
+    elsif synchronizing_result # user synchronized
+      render json: {success: true, message: t("users.notices.ma.synchronize"), type_message: "notice", 
+        name: current_user.name, email: current_user.email, nick: current_user.nick} 
+    else # error
+      render json: {success: false, message: t("users.errors.ma.synchronize")}, status: :unprocessable_entity
+    end
+  rescue => error
+    render json: {success: false, alert: t("users.errors.ma.synchronize")}, status: :unprocessable_entity
+  end
+
 end
+

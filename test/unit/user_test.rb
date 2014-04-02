@@ -89,4 +89,15 @@ class UserTest < ActiveSupport::TestCase
     assert user.valid?
   end
 
+  test "sincronizando usuario existente no MA" do
+    user = User.new(@user_test)
+    user.cpf = "CPF VÁLIDO AQUI"
+    user.save
+    assert user.synchronize # resultado deve ser true
+  end
+
+  test "sincronizando usuario nao existente no MA" do
+    assert (users(:aluno1).synchronize).nil? # resultado deve ser nil
+  end
+
 end
