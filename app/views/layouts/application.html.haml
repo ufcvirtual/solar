@@ -202,6 +202,11 @@
   xmpp_pass = "#{current_user.encrypted_password}";
   number_chatbox = 0;
   var con;
+  if($.cookie("cookie_im"))
+    var cookie_im = JSON.parse($.cookie("cookie_im"));
+  else
+    var cookie_im = JSON.parse('{"IM" : true}');
+  $.cookie("cookie_im",JSON.stringify(cookie_im));
 
   converse.initialize({
     prebind: false,
@@ -216,9 +221,36 @@
     i18n: locales["pt_BR"], // Refer to ./locale/locales.js to see which locales are supported
     allow_contact_requests: false,
     show_only_online_users: false,
-    show_controlbox_by_default: true,
+    show_controlbox_by_default: false,
     xhr_user_search: false
   });
+
+  function getCookie(){
+    cookie_im = JSON.parse($.cookie("cookie_im"));
+  }
+
+  function setCookie(){
+    $.cookie("cookie_im",JSON.stringify(cookie_im));
+  }
+
+  $(document).ready(function(e){
+    if(cookie_im.IM)
+      con.showControlBox();
+  });
+
+  $(function(){
+    $('#toggle-controlbox').click(function(e){
+      if(cookie_im.IM){
+        cookie_im.IM=false;
+        setCookie();
+      }
+      else{
+        cookie_im.IM=true;
+        setCookie();
+        con.showControlBox();
+      }
+    });
+  })
 
   $(function(){
     $('.mysolar_top_link.logout').click(function(e) {
@@ -232,6 +264,7 @@
       } catch(err) {}
     });
   })
+
 
   // Synchronizing user 
   $(function(){
