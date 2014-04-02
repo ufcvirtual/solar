@@ -2225,10 +2225,20 @@
                         } else {
 
                             view = new converse.ChatBoxView({model: item});
-                            //adiciona imagem de status aos ja criados
+                            //adiciona imagem de status aos ja criados e gerencia janelas
                             box = view.$el[0];
                             img = box.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
-                            img.src=imgOff;
+                            contacts = converse.roster.models; //pega lista completa de usuários
+                            var c=0;
+                            while(c<contacts.length){
+                                if(contacts[c].attributes.fullname.search(view.model.attributes.fullname) != -1){
+                                    if(contacts[c].attributes.chat_status.search("online")!=-1) img.src=imgOn;
+                                    if(contacts[c].attributes.chat_status.search("dnd")!=-1)img.src=imgDnd;
+                                    if(contacts[c].attributes.chat_status.search("away")!=-1)img.src=imgAway;
+                                    if(contacts[c].attributes.chat_status.search("offline")!=-1)img.src=imgOff;
+                                }
+                                c++;    
+                            }
                             for(att in cookie_im){
                                 if(att == box.id)
                                     if(!cookie_im[att])
