@@ -1,0 +1,15 @@
+
+common: &common
+  integrated: true
+
+development:
+  <<: *common
+  url: "url here"
+
+test:
+  <<: *common
+  url: "url here"
+
+production:
+  <<: *common
+  url: "url here"

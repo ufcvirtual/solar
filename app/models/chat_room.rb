@@ -1,5 +1,5 @@
 class ChatRoom < Event
-  
+
   GROUP_PERMISSION = true
 
   has_many :messages, class_name: "ChatMessage"
@@ -27,6 +27,10 @@ class ChatRoom < Event
 
   before_destroy :can_destroy?
   after_destroy :delete_schedule
+
+  def url(allocation_id)
+    [YAML::load(File.open('config/chat.yml'))[Rails.env.to_s]["url"], "allocationId=#{allocation_id};roomId=#{id}"].join
+  end
 
   def verify_hours
     errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:chat_rooms, :error])) if end_hour.rjust(5, '0') < start_hour.rjust(5, '0')
