@@ -1,5 +1,4 @@
 .block_wrapper 
-
   .block_title
     %h2= t(".title_my_chats")
   - unless @my_chats.empty?
@@ -12,10 +11,8 @@
         - @my_chats.each do |chat|
           %tr{class: "lines #{'period_ended' if !chat.opened?}"}
             %td
-              - if (chat.opened?)
-                = link_to chat.title, Url_Chat+"allocationId=#{@alloc};roomId=#{chat.id}", {class: 'link_content', target: '_blank' }
-                - url = Url_Chat+"allocationId=#{@alloc};roomId=#{chat.id}"
-                = #link_to chat.title, "", {:onclick => "javascript:window.open('#{url}','','width=700,height=720,resizable,scrollbars,status=false'); return false", :class => 'link_content' }                
+              - if chat.opened?
+                = link_to chat.title, chat.url(@alloc), {class: 'link_content fancybox.iframe', target: '_blank' }
               - else
                 = chat.title
                 = " [" + t(".message_did_not_start")+"]" if chat.start_date.to_date > Date.today
@@ -79,4 +76,8 @@
     - else
       .block_content.block_content_text= t(".message_no_chat")
 
-= javascript_include_tag "chat_rooms"
+:javascript
+
+  $(function(){
+    $('.link_content').fancybox();
+  });
