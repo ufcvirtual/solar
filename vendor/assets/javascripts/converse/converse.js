@@ -905,6 +905,7 @@
                     //TODO fazer o "reaparecimento" das chatboxes que não foram fechadas pelo usuário
 
                     delete cookie_im[this.el.id];
+                    setCookie();
                     box = document.getElementById(this.el.id);
                     box.title = "fechado";
                     this.model.destroy();
