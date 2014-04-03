@@ -154,13 +154,8 @@ module V1
       params { requires :cpf, :perfil, :codDisciplina, :codGraduacao, :codigo, :periodo, :ano }
       put :allocate_user do # Receives user's cpf, group and profile to allocate
         begin
-          user       = User.where(cpf: params[:cpf]).first_or_initialize
+          user = verify_or_create_user(params[:cpf])
           profile_id = get_profile_id(params[:perfil])
-
-          if user.new_record? # if user don't exists, creates by MA data
-            # acessa webservice e recupera dados para criar usuário
-            # user.save
-          end
 
           group = get_group(params[:codDisciplina], params[:codGraduacao], params[:codigo], params[:periodo], params[:ano])
           group.allocate_user(user.id, profile_id)

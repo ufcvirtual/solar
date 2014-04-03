@@ -1,8 +1,8 @@
 
 common: &common
+  integrated: true
   verified_addresses:
     - 127.0.0.1
-  integrated: true
   methods:
     import_user: "method name"
 
