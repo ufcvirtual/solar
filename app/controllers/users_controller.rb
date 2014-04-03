@@ -31,7 +31,6 @@ class UsersController < ApplicationController
             redirect_to login_path, notice: t("users.notices.ma.use_ma_data")
           end  
         rescue => error # any error during access to MA, user should do the registration anyway
-          raise "#{error}"
           flash[:warning] = t("users.warnings.ma.cpf_not_verified")
           redirect_to new_user_registration_path(cpf: params[:cpf])
         end

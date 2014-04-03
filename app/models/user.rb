@@ -292,7 +292,7 @@ class User < ActiveRecord::Base
     response  = client.call(MODULO_ACADEMICO["methods"]["user"]["import"].to_sym, message: { cpf: cpf.delete(".").delete("-") }) # import user
     user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
     unless user_data.nil? # if user exists
-      user_data = user_data[:string]
+      user_data     = user_data[:string]
       ma_attributes = User.user_ma_attributes(user_data)
       errors.clear # clear all errors, so the system can import and save user's data 
       self.synchronizing = true
