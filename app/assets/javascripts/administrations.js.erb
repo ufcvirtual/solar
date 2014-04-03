@@ -2,6 +2,13 @@ $(function() {
 
 	// --- exclusivo da admin de usuario
   
+  $('input#text_search').on('keyup', function(e) {
+    if (e.which == 13) { // when pressend enter
+        e.preventDefault();
+        $("#search_user").click();
+    }
+  });
+
   $("#search_user").click(function() {
     var url_for = "<%= Rails.application.routes.url_helpers.search_admin_users_path %>";
     if ($("#text_search").val().length != 0)

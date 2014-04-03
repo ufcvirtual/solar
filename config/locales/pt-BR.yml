@@ -1346,7 +1346,9 @@
         subject: 'Instruções de desbloqueio'
       msg:
         hello: "Olá %{email}!"
-        request: "Alguém solicitou um link para alterar sua senha, e você pode fazer isso através do link abaixo."
+        request: "Alguém solicitou um link para alterar sua senha. "
+        request_info: "Você pode fazer isso através do link abaixo."
+        request_info_ma: "Como você é um usuário integrado ao Módulo Acadêmico, você deve realizar a recuperação de senha através desse. Para isso, acesse o link abaixo."
         ignore: "Se não foi você quem solicitou este link, por favor ignore este email."
         change: "Sua senha não vai ser modificada enquanto você não acessar o link e criar uma nova."
     users:

@@ -1201,7 +1201,9 @@
         subject: 'Unlock Instructions'
       msg:
         hello: "Hello %{email}!"
-        request: "Someone has requested a link to change your password, and you can do this through the link below."
+        request: "Someone has requested a link to change your password."
+        request_info: "You can do this through the link below."
+        request_info_ma: "As you are an user integrated with Módulo Acadêmico, you must recover your password through it. To do so, access the link below."
         ignore: "If you didn't request this, please ignore this email."
         change: "Your password won't change until you access the link above and create a new one."
     users:
