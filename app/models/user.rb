@@ -225,12 +225,9 @@ class User < ActiveRecord::Base
   end
 
   # chamada para MA verificando se existe usuário com o login, cpf ou email informados
-  def data_integration
+  def data_integration(verify = nil)
     user_cpf = cpf.delete(".").delete("-")
-    client   = Savon.client wsdl: MODULO_ACADEMICO["wsdl"]
-    response = client.call MODULO_ACADEMICO["methods"]["user"]["validate"].to_sym, message: {cpf: user_cpf, email: email, login: username } # chamada passando parâmetros
-    User.validate_user_result(response.to_hash[:validar_usuario_response][:validar_usuario_result], client, cpf, self)
-    previous_errors = errors
+    self.connect_and_validates_user
   rescue HTTPClient::ConnectTimeoutError => error # if MA don't respond (timeout)
     errors.add(:username, I18n.t("users.errors.ma.cant_conect")) if username_changed?
     errors.add(:cpf, I18n.t("users.errors.ma.cant_conect"))      if cpf_changed?
@@ -241,7 +238,8 @@ class User < ActiveRecord::Base
     errors_messages = errors.full_messages
     # if is new user and happened some problem connecting with MA
     if new_record? and (errors_messages.include?(I18n.t("users.errors.ma.cant_conect")) or errors_messages.include?(I18n.t("users.errors.ma.problem_accessing")))
-      self.attributes = {username: user_cpf, email: "#{user_cpf}@atualize.ufc.br", email_confirmation: "#{user_cpf}@atualize.ufc.br"} # set username and invalid email
+      tmp_email       = [user_cpf, MODULO_ACADEMICO["tmp_email_provider"]].join("@")
+      self.attributes = {username: user_cpf, email: tmp_email, email_confirmation: tmp_email} # set username and invalid email
       user_errors     = errors.messages.to_a.collect{|a| a[1]}.flatten.uniq # all errors
       ma_errors       = I18n.t("users.errors.ma").to_a.collect{|a| a[1]}    # ma errors
       if (user_errors - ma_errors).empty? # form doesn't have other errors
@@ -259,10 +257,8 @@ class User < ActiveRecord::Base
     unless result.nil?
       result = result[:int]
       if result.include?("6") # unavailable cpf, thus already in use by MA
-        response  = client.call(MODULO_ACADEMICO["methods"]["user"]["import"].to_sym, message: { cpf: cpf.delete(".").delete("-") }) # import user
-        user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
+        user_data = User.connect_and_import_user(cpf, client)
         unless user_data.nil? # if user exists
-          user_data = user_data[:string]
           # verify if cpf, username or email already exists
           unless User.find_by_cpf(user_data[0]) or User.find_by_username(user_data[5]) or User.find_by_email(user_data[8])
             ma_attributes = User.user_ma_attributes(user_data) # import all data from MA user
@@ -288,11 +284,8 @@ class User < ActiveRecord::Base
 
   # synchronizes user data with MA data
   def synchronize
-    client    = Savon.client(wsdl: User::MODULO_ACADEMICO["wsdl"])
-    response  = client.call(MODULO_ACADEMICO["methods"]["user"]["import"].to_sym, message: { cpf: cpf.delete(".").delete("-") }) # import user
-    user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
+    user_data = User.connect_and_import_user(cpf)
     unless user_data.nil? # if user exists
-      user_data     = user_data[:string]
       ma_attributes = User.user_ma_attributes(user_data)
       errors.clear # clear all errors, so the system can import and save user's data 
       self.synchronizing = true
@@ -311,7 +304,21 @@ class User < ActiveRecord::Base
       nick: (user_data[7].nil? ? ([user_data[2].split(" ")[0], user_data[2].split(" ")[1]].join(" ")) : user_data[7]), telephone: user_data[18], 
       special_needs: (user_data[19].downcase == "nenhuma" ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13],
       address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]),
-      encrypted_password: user_data[6], email: (user_data[8].blank? ? "#{user_data[0]}@atualize.ufc.br" : user_data[8]), integrated: true} #, enrollment_code: user_data[19] # user is set as integrated
+      encrypted_password: user_data[6], email: (user_data[8].blank? ? [user_data[0], MODULO_ACADEMICO["tmp_email_provider"]].join("@") : user_data[8]), integrated: true} #, enrollment_code: user_data[19] # user is set as integrated
+  end
+
+  def connect_and_validates_user
+    user_cpf = cpf.delete(".").delete("-")
+    client   = Savon.client wsdl: MODULO_ACADEMICO["wsdl"]
+    response = client.call MODULO_ACADEMICO["methods"]["user"]["validate"].to_sym, message: {cpf: user_cpf, email: email, login: username } # gets user validation
+    User.validate_user_result(response.to_hash[:validar_usuario_response][:validar_usuario_result], client, user_cpf, self)
+  end
+
+  def self.connect_and_import_user(cpf, client = nil)
+    client    = Savon.client(wsdl: User::MODULO_ACADEMICO["wsdl"]) if client.nil?
+    response  = client.call(MODULO_ACADEMICO["methods"]["user"]["import"].to_sym, message: { cpf: cpf.delete(".").delete("-") }) # import user
+    user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
+    return (user_data.nil? ? nil : user_data[:string])
   end
 
 end

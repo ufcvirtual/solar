@@ -23,7 +23,7 @@ class UsersController < ApplicationController
           raise if not User::MODULO_ACADEMICO["integrated"]
 
           user = User.new cpf: params[:cpf].delete(".").delete("-")
-          user.data_integration
+          user.connect_and_validates_user
 
           if user.new_record? # nao existe no MA
             redirect_to new_user_registration_path(cpf: params[:cpf])
@@ -97,7 +97,7 @@ class UsersController < ApplicationController
       render json: {success: true, message: t("users.notices.ma.synchronize"), type_message: "notice", 
         name: current_user.name, email: current_user.email, nick: current_user.nick} 
     else # error
-      render json: {success: false, message: t("users.errors.ma.synchronize")}, status: :unprocessable_entity
+      render json: {success: false, alert: t("users.errors.ma.synchronize")}, status: :unprocessable_entity
     end
   rescue => error
     render json: {success: false, alert: t("users.errors.ma.synchronize")}, status: :unprocessable_entity

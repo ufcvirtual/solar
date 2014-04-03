@@ -280,6 +280,7 @@
         if (typeof(data.email) != "undefined")
           $("#mysolar_top_submenu_useremail").html(data.email);
       }).error(function(data){
+        var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, "alert");
       });
