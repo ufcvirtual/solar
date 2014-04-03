@@ -1,19 +1,30 @@
 
 common: &common
-  integrated: true
-  verified_addresses:
-    - 127.0.0.1
   methods:
-    import_user: "method name"
+    user:
+      import: "import"
+      validate: "validate"
 
 development:
   <<: *common
+  integrated: true
+  tmp_email_provider: "atualize.ufc.br"
+  verified_addresses:
+    - 127.0.0.1
   wsdl: "wsdl url here"
 
 test:
   <<: *common
+  integrated: true
+  tmp_email_provider: "atualize.ufc.br"
+  verified_addresses:
+    - 127.0.0.1
   wsdl: "wsdl url here"
 
 production:
   <<: *common
+  integrated: false
+  tmp_email_provider: "atualize.ufc.br"
+  verified_addresses:
+    - "IP/URL production"
   wsdl: "wsdl url here"

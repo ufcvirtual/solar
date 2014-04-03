@@ -3,9 +3,11 @@ class Devise::UsersController < Devise::RegistrationsController
   def create
     build_resource(params[:user])
 
-    resource_saved  = resource.save
+    resource_saved = resource.save
     user_cpf = resource.cpf.delete(".").delete("-")
-    warning  = I18n.t("users.errors.ma.login_email") if resource.email == "#{user_cpf}@atualize.ufc.br" and resource.username == "#{user_cpf}"
+    tmp_email = [user_cpf, YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]["tmp_email_provider"]].join("@")
+
+    warning = I18n.t("users.errors.ma.login_email") if resource.email == tmp_email and resource.username == "#{user_cpf}"
 
     yield resource if block_given?
     if resource_saved
@@ -14,7 +16,7 @@ class Devise::UsersController < Devise::RegistrationsController
         sign_up(resource_name, resource)
         redirect_to after_sign_up_path_for(resource)
       else
-        set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" #if is_navigational_format? #is_flashing_format?
+        set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" # if is_navigational_format? #is_flashing_format?
         expire_data_after_sign_in!
         respond_with resource, location: after_inactive_sign_up_path_for(resource)
       end

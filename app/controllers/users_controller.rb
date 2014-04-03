@@ -19,21 +19,22 @@ class UsersController < ApplicationController
       if user
         redirect_to login_path, alert: t(:new_user_cpf_in_use)
       else
-
         begin
-          client          = Savon.client(wsdl: User::MODULO_ACADEMICO["wsdl"])
-          response        = client.call(User::MODULO_ACADEMICO["methods"]["user"]["validate"].to_sym, message: { cpf: params[:cpf].delete(".").delete("-"), email: "",  login: ""})
-          user_response   = response.to_hash[:validar_usuario_response][:validar_usuario_result]
-          user_validation = User.validate_user_result(user_response, client, params[:cpf])
-          if user_response.nil? # não existe no MA
+          raise if not User::MODULO_ACADEMICO["integrated"]
+
+          user = User.new cpf: params[:cpf].delete(".").delete("-")
+          user.data_integration
+
+          if user.new_record? # nao existe no MA
             redirect_to new_user_registration_path(cpf: params[:cpf])
           else # user was imported and registered with MA data
             redirect_to login_path, notice: t("users.notices.ma.use_ma_data")
-          end  
+          end
         rescue => error # any error during access to MA, user should do the registration anyway
           flash[:warning] = t("users.warnings.ma.cpf_not_verified")
           redirect_to new_user_registration_path(cpf: params[:cpf])
         end
+
       end
     end
   end
