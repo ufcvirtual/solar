@@ -225,7 +225,7 @@ class User < ActiveRecord::Base
   end
 
   # chamada para MA verificando se existe usuário com o login, cpf ou email informados
-  def data_integration(verify = nil)
+  def data_integration
     user_cpf = cpf.delete(".").delete("-")
     self.connect_and_validates_user
   rescue HTTPClient::ConnectTimeoutError => error # if MA don't respond (timeout)
