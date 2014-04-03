@@ -1,7 +1,5 @@
-%td
-	%input{type: "text", required:  true, id:  'name', value:  @user.name}
-%td
-	%input{type: "text", required:  true, id:  'email', value:  @user.email}
+%td= @user.integrated? ? @user.name : text_field_tag("name", @user.name, required: true)
+%td= @user.integrated? ? @user.email : text_field_tag("email", @user.email, required: true)
 %td= @user.username
 %td= @user.cpf
 %td= select(:status, :id, user_status.invert.to_a, {selected: @user.active? ? 1 : 0})

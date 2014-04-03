@@ -1,14 +1,6 @@
 $(function() {
 
 	// --- exclusivo da admin de usuario
-  
-  $('input#text_search').on('keyup', function(e) {
-    if (e.which == 13) { // when pressend enter
-        e.preventDefault();
-        $("#search_user").click();
-    }
-  });
-
   $("#search_user").click(function() {
     var url_for = "<%= Rails.application.routes.url_helpers.search_admin_users_path %>";
     if ($("#text_search").val().length != 0)
@@ -83,11 +75,11 @@ function update_allocation(obj) {
 function update_user(obj) {
   var url = $(obj).attr('save-link');
 
-  $.put(url, {
+  $.put(url, {"data": {
     "name": $(obj).closest('tr').find('input[id=name]').val(),
     "email": $(obj).closest('tr').find('input[id=email]').val(),
-    "status": $('#status_id option:selected', $(obj).closest('tr')).val()
-  }, function(data, textStatus, jqXHR){
+    "active": $('#status_id option:selected', $(obj).closest('tr')).val() == "1"
+  }}, function(data, textStatus, jqXHR){
     $(obj).closest('tr').removeClass('active');
     $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
   }).error(function(data){

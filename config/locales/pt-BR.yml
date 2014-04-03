@@ -2140,6 +2140,30 @@
       ma:
         cpf_not_verified: "Não foi possível verificar o CPF no Módulo Acadêmico. Se faz necessário que você, após logado, sincronize seus dados."
         cpf_not_found: CPF não encontrado no Módulo Acadêmico
+    show:
+      not_informed: Não informado
+      detailed: "Informações Detalhadas"
+      personal_data: "Dados Pessoais"
+      contact: Contato
+      gender: "Gênero: "
+      birthdate: "Data de nascimento: "
+      zipcode: "CEP: "
+      telephone: "Telefone: "
+      cell_phone: "Celular: "
+      special_needs: "Necessidades especiais: "
+      others: Outros
+      institution: "Instituição: "
+      additional: Informações Adicionais
+      biography: "Biografia: "
+      interests: "Interesses: "
+      music: "Músicas: "
+      movies: "Filmes: "
+      books: "Livros: "
+      phrase: "Frase: "
+      site: "Site: "
+      integrated: "Integrado com o Módulo Acadêmico: "
+      y: Sim
+      n: Não
 
   mysolar:
     synchronize: Sincronizar com Módulo Acadêmico

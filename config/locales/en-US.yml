@@ -1987,6 +1987,30 @@
       ma:
         cpf_not_verified: "It wasn't possible to verify your CPF at Módulo Acadêmico. After logged in, synchronize your data."
         cpf_not_found: CPF not found at no Módulo Acadêmico
+    show:
+      not_informed: Not informed
+      detailed: Detailed Information
+      personal_data: Personal Data
+      contact: Contact
+      gender: "Gender: "
+      birthdate: "Birthdate: "
+      zipcode: "Zipcode: "
+      telephone: "Telephone: "
+      cell_phone: "Cell Phone: "
+      special_needs: "Special needs: "
+      others: Others
+      institution: "Institution: "
+      additional: Additional Informations
+      biography: "Biography: "
+      interests: "Interests: "
+      music: "Music: "
+      movies: "Movies: "
+      books: "Books: "
+      phrase: "Phrase: "
+      site: "Site: "
+      integrated: "Integrated with Módulo Acadêmico: "
+      y: Yes
+      n: No
 
   mysolar:
     synchronize: Synchronize with Módulo Acadêmico

@@ -51,7 +51,7 @@ class AdministrationsController < ApplicationController
       authorize! :update_user, Administration
 
       @user = User.find(params[:id])
-      if @user.update_attributes(active: (params[:status] == "1"), name: params[:name], email: params[:email])
+      if @user.update_attributes(params[:data])
         render json: {success: true}, status: :ok
       else
         render json: {success: false, alert: @user.errors.full_messages.uniq.compact}, status: :unprocessable_entity

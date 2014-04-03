@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  CHANGEABLE_FIELDS = %W{bio interests music movies books phrase site nick alternate_email photo_file_name photo_content_type photo_file_size photo_updated_at}
+  CHANGEABLE_FIELDS = %W{bio interests music movies books phrase site nick alternate_email photo_file_name photo_content_type photo_file_size photo_updated_at active}
   MODULO_ACADEMICO  = YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s] rescue nil
 
   has_many :oauth_applications, class_name: 'Doorkeeper::Application', as: :owner
