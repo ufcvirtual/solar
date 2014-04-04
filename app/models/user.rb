@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
 
   validate :unique_cpf, if: "cpf_changed?"
   validate :integration, if: Proc.new{ |a| !a.new_record? and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and a.integrated and (a.synchronizing.nil? or not(a.synchronizing))}
-  validate :data_integration, if: Proc.new{ |a| a.new_record? or ((username_changed? or email_changed? or cpf_changed?) and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"])) }
+  validate :data_integration, if: Proc.new{ |a| a.new_record? or ((username_changed? or email_changed? or cpf_changed?) and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"])) and (a.synchronizing.nil? or not(a.synchronizing))}
   validate :cpf_ok, unless: :already_cpf_error?
 
   # paperclip uses: file_name, content_type, file_size e updated_at
@@ -265,6 +265,9 @@ class User < ActiveRecord::Base
             (user.nil? ? (user = User.new(ma_attributes)) : (user.attributes = ma_attributes))
             user.errors.clear # clear all errors, so the system can import and save user's data 
             return user.save(validate: false) if user.new_record? # if user don't exist, saves it without validation (all necessary data must come from MA)
+          else
+            cpf_user = User.find_by_cpf(user_data[0])
+            cpf_user.synchronize(user_data) unless cpf_user.nil? # if exists user with the same cpf, synchronize data
           end
         else
           return nil
@@ -283,8 +286,8 @@ class User < ActiveRecord::Base
   end
 
   # synchronizes user data with MA data
-  def synchronize
-    user_data = User.connect_and_import_user(cpf)
+  def synchronize(user_data = nil)
+    user_data = User.connect_and_import_user(cpf) if user_data.nil?
     unless user_data.nil? # if user exists
       ma_attributes = User.user_ma_attributes(user_data)
       errors.clear # clear all errors, so the system can import and save user's data 

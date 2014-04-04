@@ -206,6 +206,21 @@ module V1
       end
     end #curriculum_units
 
+    namespace :user do
+      params { requires :cpf }
+      # load/user
+      post "/" do
+        begin
+          user = User.new cpf: params[:cpf].delete(".").delete("-")
+          ma_response = user.connect_and_validates_user
+          raise ActiveRecord::RecordNotFound if ma_response.nil? # nao existe no MA
+          {ok: :ok}
+        rescue => error
+          error!({error: error}, 422)
+        end
+      end
+    end
+
   end
 
 end

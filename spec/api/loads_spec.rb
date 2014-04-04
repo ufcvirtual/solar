@@ -746,4 +746,77 @@ describe "Loads" do
 
   end #groups
 
+  describe ".user" do
+
+    describe "post" do
+
+      context "with valid ip" do
+
+        context 'non existing user at Solar must get data from MA' do
+          cpf = "VALID CPF"
+          let!(:json_data){ { cpf: cpf } }
+
+          it {
+            expect{
+              post "/api/v1/load/user/", json_data
+
+              User.where(cpf: cpf).count.should eq(1)
+
+              response.status.should eq(201)
+              response.body.should == {ok: :ok}.to_json
+            }.to change{Allocation.count}.by(1) # 1 basic
+          }
+        end
+
+        context 'existing user at Solar' do
+
+          it "must synchronize with MA" do
+            cpf = "VALID CPF"
+            # MUST CHANGE USER CPF (fixtures) TO THE SAME VALID CPF AT "cpf"
+            post "/api/v1/load/user/", {cpf: cpf}
+
+            user = User.find_by_cpf(cpf)
+            user.email.should eq("PUT MA USER EMAIL HERE")
+
+            response.status.should eq(201)
+            response.body.should == {ok: :ok}.to_json
+          end
+        end
+
+        context 'existing user at Solar with same email' do
+
+          it "must do nothing" do
+            cpf = "VALID CPF"
+            # MUST CHANGE USER EMAIL (fixtures) TO THE SAME USED BY THE MA USER INFORMED
+            post "/api/v1/load/user/", {cpf: cpf}
+
+             user = User.where(cpf: "43463518678").count.should eq(1) # user
+
+            response.status.should eq(201)
+            response.body.should == {ok: :ok}.to_json
+          end
+        end
+
+        context 'non existing user at MA' do
+
+          it "must get an error" do
+            post "/api/v1/load/user/", {cpf: "43463518678"}
+
+            response.status.should eq(422)
+          end
+        end
+      end 
+
+      context "with invalid ip" do
+        it "gets a not found error" do
+          post "/api/v1/load/user/", {cpf: "VALID CPF"}, "REMOTE_ADDR" => "127.0.0.2"
+          response.status.should eq(404)
+        end
+      end
+
+    end #post
+
+
+  end #user
+
 end
