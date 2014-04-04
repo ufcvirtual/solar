@@ -7,6 +7,25 @@ module V1
     end
 
     helpers do
+      def verify_or_create_curriculum_unit(code, name, working_hours, credits, type = 2)
+        uc = CurriculumUnit.where(code: code).first_or_initialize
+
+        uc.attributes = {name: name, working_hours: working_hours, credits: credits, curriculum_unit_type: CurriculumUnitType.find(2)}
+        uc.attributes = {resume: name, objectives: name, syllabus: name} if uc.new_record?
+
+        uc.save!
+
+        uc
+
+        #  CurriculumUnit(id: integer, curriculum_unit_type_id: integer, name: string, code: string, resume: text, syllabus: text, 
+        #  passing_grade: float, objectives: text, prerequisites: text, credits: float, working_hours: integer) 
+
+        # obrigatório: nome, tipo, resumo, objetivo, syllabus (?) OK
+        # codigo: máximo 10, nome: máximo 120 (dar erro ou quebrar tamanho?)
+
+        # Ao criar uma disciplina, gerar uma entrada em allocation_tag. # (automático, não?)
+      end
+
       def verify_or_create_semester(name, offer_period)
         semester = Semester.where(name: name).first_or_initialize
 
@@ -102,7 +121,7 @@ module V1
         uc            = CurriculumUnit.find_by_code! load_group[:codDisciplina]
 
         begin
-          ActiveRecord::Base.transaction do
+          ActiveRecord::Base.transaction do 
             semester = verify_or_create_semester(semester_name, offer_period)
             offer    = verify_or_create_offer(semester, course, uc, offer_period)
             group    = verify_or_create_group(offer, group_code)
@@ -199,6 +218,23 @@ module V1
             uc.allocate_user(user.id, prof_editor)
           end
 
+          {ok: :ok}
+        rescue => error
+          error!({error: error}, 422)
+        end
+      end
+
+      # load/curriculum_units
+      params do 
+        requires :codigo, :nome
+        requires :cargaHoraria, type: Integer
+        requires :creditos, type: Float
+      end
+      post "/" do
+        begin
+          ActiveRecord::Base.transaction do 
+            verify_or_create_curriculum_unit(params[:codigo], params[:nome], params[:cargaHoraria], params[:creditos], params[:tipo])
+          end
           {ok: :ok}
         rescue => error
           error!({error: error}, 422)
