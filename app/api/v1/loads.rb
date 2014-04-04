@@ -45,7 +45,7 @@ module V1
         return user if user
 
         user = User.new cpf: cpf
-        user.data_integration
+        user.connect_and_validates_user
 
         raise ActiveRecord::RecordNotFound unless user.valid? and not(user.new_record?)
 

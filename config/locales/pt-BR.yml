@@ -2114,6 +2114,7 @@
     errors:
       existing_name: já existe
       existing_code: código equivalente já existe
+      cant_connect: Não foi possível conectar ao EDX. Favor tentar novamente.
     designates:
       instructor: Professor
       staff: Tutor  
@@ -2121,14 +2122,14 @@
     success:
       deallocated: Usuário desalocado
     error:
-      not_deallocated: Não foi possível desalocar usuário  
+      not_deallocated: Não foi possível desalocar usuário
 
   users:
     errors:
       ma:
         already_exists: já em uso no Módulo Acadêmico
         only_by: pode ser alterado apenas pelo Módulo Acadêmico
-        cant_conect: não pode ser alterado no momento. Conexão incompleta com o Módulo Acadêmico.
+        cant_connect: não pode ser alterado no momento. Conexão incompleta com o Módulo Acadêmico.
         problem_accessing: Ocorreram problemas ao acessar o Módulo Acadêmico. Favor tentar novamente.
         login: 'Não foi possível verificar no módulo acadêmico, portanto foi definido como seu CPF. Favor tentar definí-lo novamente.'
         email: 'Não foi possível verificar no módulo acadêmico, portanto foi definido como um valor inválido e aleatório. Favor tentar definí-lo novamente.'

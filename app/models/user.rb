@@ -229,15 +229,15 @@ class User < ActiveRecord::Base
     user_cpf = cpf.delete(".").delete("-")
     self.connect_and_validates_user
   rescue HTTPClient::ConnectTimeoutError => error # if MA don't respond (timeout)
-    errors.add(:username, I18n.t("users.errors.ma.cant_conect")) if username_changed?
-    errors.add(:cpf, I18n.t("users.errors.ma.cant_conect"))      if cpf_changed?
-    errors.add(:email, I18n.t("users.errors.ma.cant_conect"))    if email_changed?
+    errors.add(:username, I18n.t("users.errors.ma.cant_connect")) if username_changed?
+    errors.add(:cpf, I18n.t("users.errors.ma.cant_connect"))      if cpf_changed?
+    errors.add(:email, I18n.t("users.errors.ma.cant_connect"))    if email_changed?
   rescue => error
     errors.add(:base, I18n.t("users.errors.ma.problem_accessing"))
   ensure
     errors_messages = errors.full_messages
     # if is new user and happened some problem connecting with MA
-    if new_record? and (errors_messages.include?(I18n.t("users.errors.ma.cant_conect")) or errors_messages.include?(I18n.t("users.errors.ma.problem_accessing")))
+    if new_record? and (errors_messages.include?(I18n.t("users.errors.ma.cant_connect")) or errors_messages.include?(I18n.t("users.errors.ma.problem_accessing")))
       tmp_email       = [user_cpf, MODULO_ACADEMICO["tmp_email_provider"]].join("@")
       self.attributes = {username: user_cpf, email: tmp_email, email_confirmation: tmp_email} # set username and invalid email
       user_errors     = errors.messages.to_a.collect{|a| a[1]}.flatten.uniq # all errors
@@ -315,7 +315,7 @@ class User < ActiveRecord::Base
   end
 
   def self.connect_and_import_user(cpf, client = nil)
-    client    = Savon.client(wsdl: User::MODULO_ACADEMICO["wsdl"]) if client.nil?
+    client    = Savon.client(wsdl: MODULO_ACADEMICO["wsdl"]) if client.nil?
     response  = client.call(MODULO_ACADEMICO["methods"]["user"]["import"].to_sym, message: { cpf: cpf.delete(".").delete("-") }) # import user
     user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
     return (user_data.nil? ? nil : user_data[:string])

@@ -1,5 +1,7 @@
 class EditionsController < ApplicationController
 
+  EDX = YAML::load(File.open("config/edx.yml"))[Rails.env.to_s]
+
   def items
     @all_groups_allocation_tags = []
 
@@ -25,15 +27,14 @@ class EditionsController < ApplicationController
   # GET /editions/academic
   def academic
     authorize! :academic, Edition
-
-    @types = CurriculumUnitType.all
-    @type = params[:type_id]
+    @types = ((File.exist?("config/edx.yml") and EDX["integrated"]) ? CurriculumUnitType.all : CurriculumUnitType.where("id <> 7"))
+    @type  = params[:type_id]
   end
 
   def courses
     authorize! :courses, Edition
 
-    @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
+    @type    = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @courses = Course.all
   end
 
@@ -46,12 +47,12 @@ class EditionsController < ApplicationController
 
   def semesters
     authorize! :semesters, Edition
-    @periods = [[t(:actives, scope: [:editions, :semesters]), "active"], [t(:all, scope: [:editions, :semesters]), "all"]]
+    @periods  = [[t(:actives, scope: [:editions, :semesters]), "active"], [t(:all, scope: [:editions, :semesters]), "all"]]
     @periods += Schedule.joins(:semester_periods).map {|p| [p.start_date.year, p.end_date.year] }.flatten.uniq.sort! {|x,y| y <=> x} # desc
 
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @curriculum_units = @type.curriculum_units
-    @courses = (@type.id == 3 ? Course.all_associated_with_curriculum_unit_by_name : Course.all)
+    @courses   = (@type.id == 3 ? Course.all_associated_with_curriculum_unit_by_name : Course.all)
     @semesters = Semester.all_by_period({period: params[:period]}) # semestres do período informado ou ativos
   end
 
@@ -62,38 +63,38 @@ class EditionsController < ApplicationController
   end
 
   def edx_courses
-    edx_urls = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]['urls']
-
-    @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
+    edx_urls = EDX['urls']
+    @type    = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     url = URI.parse(edx_urls["verify_user"].gsub(":username", current_user.username)+"instructor/")
     res = Net::HTTP.start(url.host, url.port) { |http| http.request(Net::HTTP::Get.new(url.path)) }
       uri_courses = JSON.parse(res.body) #pega endereço dos cursos
       courses_created_by_current_user = "[]" 
       unless uri_courses.empty?
-        courses_created_by_current_user = ""
-        for uri_course in uri_courses do
-          url = URI.parse(edx_urls["information_course"].gsub(":resource_uri", uri_course))
-          res = Net::HTTP.start(url.host, url.port) { |http| http.request(Net::HTTP::Get.new(url.path)) }
-          courses_created_by_current_user  << res.body.chop! << ", \"resource_uri\":  \"#{uri_course}\""<<"}, "
-        end
+        if uri_courses.has_key?("error_message")
+          raise uri_courses["error_message"]
+        else
+          courses_created_by_current_user = ""
+          for uri_course in uri_courses do
+            url = URI.parse(edx_urls["information_course"].gsub(":resource_uri", uri_course))
+            res = Net::HTTP.start(url.host, url.port) { |http| http.request(Net::HTTP::Get.new(url.path)) }
+            courses_created_by_current_user  << res.body.chop! << ", \"resource_uri\":  \"#{uri_course}\""<<"}, "
+          end
 
-        courses_created_by_current_user = courses_created_by_current_user.chop
-        courses_created_by_current_user = "[" + courses_created_by_current_user.chop! + "]"
+          courses_created_by_current_user = courses_created_by_current_user.chop
+          courses_created_by_current_user = "[" + courses_created_by_current_user.chop! + "]"
+        end
       end
       @edx_courses = JSON.parse(courses_created_by_current_user)
 
     render layout: false if params.include?(:layout)
+  rescue => error
+    redirect_to :back, alert: t("edx.errors.cant_connect")
   end    
 
   # GET /editions/content
   def content
     authorize! :content, Edition
-
-    if File.exist?("config/edx.yml") and YAML::load(File.open("config/edx.yml"))[Rails.env.to_s]["integrated"]
-      @types = CurriculumUnitType.all
-    else
-      @types = CurriculumUnitType.where("id <> 7")
-    end
+    @types = ((File.exist?("config/edx.yml") and EDX["integrated"]) ? CurriculumUnitType.all : CurriculumUnitType.where("id <> 7"))
   end
 
 end

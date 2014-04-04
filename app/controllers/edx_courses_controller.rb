@@ -21,7 +21,7 @@ class EdxCoursesController < ApplicationController
       res = get_response(EDX_URLS["list_users_courses"].gsub(":username", current_user.username))
       uri_courses = JSON.parse(res.body)
       @courses = convert_url_course_in_data_course(uri_courses)
-    end   
+    end
   end
 
   # listar cursos disponíveis
@@ -48,6 +48,8 @@ class EdxCoursesController < ApplicationController
     res  = http.request(req)
 
     redirect_to enrollments_path
+  rescue => error
+    redirect_to :back, alert: t("edx.errors.cant_connect")
   end  
 
   # cancelar matricula
@@ -61,12 +63,14 @@ class EdxCoursesController < ApplicationController
     res  = http.request(req)
 
     redirect_to enrollments_path
+  rescue => error
+    redirect_to :back, alert: t("edx.errors.cant_connect")
   end
 
   #Edição Conteúdo
   def items
     @uri_course = params[:edx_course_id]
-    res = get_response(EDX_URLS["information_course"].gsub(":resource_uri", @uri_course))
+    res    = get_response(EDX_URLS["information_course"].gsub(":resource_uri", @uri_course))
     course = JSON.parse(res.body)
     @edit_course_url = course['course_absolute_url_studio']
     render partial: 'items'
@@ -82,30 +86,30 @@ class EdxCoursesController < ApplicationController
 
   def allocate
     uri_course = Base64.decode64(params[:course])
-    user_uri = "/solaredx/api/v1/#{params[:username]}/"
-    user = User.find_by_username(params[:username])
+    user_uri   = "/solaredx/api/v1/#{params[:username]}/"
+    user       = User.find_by_username(params[:username])
     create_user_solar_in_edx(user.username,user.name,user.email)
-    professor = { user_resource_uri: user_uri }.to_json
+    professor  = { user_resource_uri: user_uri }.to_json
 
-    uri = URI.parse(EDX_URLS["information_course"].gsub(":resource_uri", uri_course)+params[:profile]+"/")  
+    uri  = URI.parse(EDX_URLS["information_course"].gsub(":resource_uri", uri_course)+params[:profile]+"/")  
     http = Net::HTTP.new(uri.host,uri.port)
-    req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
+    req  = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
     req.body = professor
-    res = http.request(req)
+    res  = http.request(req)
 
     redirect_to(designates_edx_courses_path(params[:course])) if res.code == "201"
   end
 
   def deallocate
     uri_course = Base64.decode64(params[:course])
-    user_uri = "/solaredx/api/v1/#{params[:username]}/"
-    professor = { "user_resource_uri" => user_uri }.to_json
+    user_uri   = "/solaredx/api/v1/#{params[:username]}/"
+    professor  = { "user_resource_uri" => user_uri }.to_json
 
-    uri = URI.parse(EDX_URLS["information_course"].gsub(":resource_uri", uri_course)+params[:profile]+"/")  
+    uri  = URI.parse(EDX_URLS["information_course"].gsub(":resource_uri", uri_course)+params[:profile]+"/")  
     http = Net::HTTP.new(uri.host,uri.port)
-    req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json', 'X-HTTP-METHOD-OVERRIDE' => 'DELETE'})
+    req  = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json', 'X-HTTP-METHOD-OVERRIDE' => 'DELETE'})
     req.body = professor
-    res = http.request(req)
+    res  = http.request(req)
 
     redirect_to(designates_edx_courses_path(params[:course]))  if res.code == "204"
   end
@@ -113,10 +117,10 @@ class EdxCoursesController < ApplicationController
   def designates
     @uri_course, course_dec = params[:course], Base64.decode64(params[:course])
 
-    instructor = get_response("#{EDX['host']}#{course_dec}instructor/")
+    instructor   = get_response("#{EDX['host']}#{course_dec}instructor/")
     @instructors = JSON.parse(instructor.body)
 
-    staff = get_response("#{EDX['host']}#{course_dec}staff/")
+    staff   = get_response("#{EDX['host']}#{course_dec}staff/")
     @staffs = JSON.parse(staff.body)
   end
 
@@ -136,7 +140,7 @@ class EdxCoursesController < ApplicationController
       @resource_uri = params[:edx_course_id]
     else
       res = get_response(EDX_URLS["verify_user"].gsub(":username", current_user.username)+"instructor/")
-      uri_courses = JSON.parse(res.body)
+      uri_courses  = JSON.parse(res.body)
       @edx_courses = convert_url_course_in_data_course(uri_courses)
     end
 
@@ -174,20 +178,18 @@ class EdxCoursesController < ApplicationController
   end 
 
   def delete
-    begin 
-      course      = Base64.decode64(params[:course])
-      data_course = {confirm: "true"}.to_json
+    course      = Base64.decode64(params[:course])
+    data_course = {confirm: "true"}.to_json
 
-      uri  = URI.parse(EDX["host"]+course)
-      http = Net::HTTP.new(uri.host,uri.port)
-      req  = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json' , 'X-HTTP-METHOD-OVERRIDE' => 'DELETE'})
-      req.body = data_course
-      res  = http.request(req) 
+    uri  = URI.parse(EDX["host"]+course)
+    http = Net::HTTP.new(uri.host,uri.port)
+    req  = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json' , 'X-HTTP-METHOD-OVERRIDE' => 'DELETE'})
+    req.body = data_course
+    res  = http.request(req) 
 
-      render json: {success: true, notice: t(:deleted, scope: [:courses, :success]), url: academic_edx_courses_editions_path(7, layout: false)}
-    rescue
-      render json: {success: false, alert: t(:deleted, scope: [:courses, :error])}, status: :unprocessable_entity
-    end
+    render json: {success: true, notice: t(:deleted, scope: [:courses, :success]), url: academic_edx_courses_editions_path(7, layout: false)}
+  rescue
+    render json: {success: false, alert: t(:deleted, scope: [:courses, :error])}, status: :unprocessable_entity
   end  
 
   def convert_url_course_in_data_course(uris)
