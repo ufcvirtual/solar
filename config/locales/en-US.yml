@@ -1479,6 +1479,8 @@
       semester: "Semester"
       offer: Offer
       group: Group
+    search_users:
+      synchronize: Synchronize with Módulo Acadêmico
 
   editions:
     filter: Filter

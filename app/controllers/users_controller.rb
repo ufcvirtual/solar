@@ -22,11 +22,12 @@ class UsersController < ApplicationController
         begin
           raise if not User::MODULO_ACADEMICO["integrated"]
 
-          user = User.new cpf: params[:cpf].delete(".").delete("-")
+          user_cpf = params[:cpf].delete(".").delete("-")
+          user     = User.new cpf: user_cpf
           user.connect_and_validates_user
 
           if user.new_record? # nao existe no MA
-            redirect_to new_user_registration_path(cpf: params[:cpf])
+            redirect_to new_user_registration_path(cpf: user_cpf)
           else # user was imported and registered with MA data
             redirect_to login_path, notice: t("users.notices.ma.use_ma_data")
           end
@@ -90,12 +91,13 @@ class UsersController < ApplicationController
 
   # synchronize user data with ma
   def synchronize_ma
-    synchronizing_result = current_user.synchronize
+    user = params.include?(:id) ? User.find(params[:id]) : current_user
+    synchronizing_result = user.synchronize
     if synchronizing_result.nil? # user don't exists at MA
       render json: {success: false, message: t("users.warnings.ma.cpf_not_found"), type_message: "warning"}
     elsif synchronizing_result # user synchronized
       render json: {success: true, message: t("users.notices.ma.synchronize"), type_message: "notice", 
-        name: current_user.name, email: current_user.email, nick: current_user.nick} 
+        name: user.name, email: user.email, nick: user.nick, username: user.username}
     else # error
       render json: {success: false, alert: t("users.errors.ma.synchronize")}, status: :unprocessable_entity
     end

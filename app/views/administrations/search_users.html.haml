@@ -23,6 +23,7 @@
                 %li= link_to_function t(:details, scope: [:administrations, :users]), "open_administration(this)", :"data-tooltip" => t(:details, scope: [:administrations, :users]), :"show-link" => user_path(user.id)
                 - if can? :allocations_user, Administration
                   %li= link_to_function t(:allocations, scope: [:administrations, :users]), "open_administration(this)", :"data-tooltip" => t(:allocations, scope: [:administrations, :users]), :"show-link" => allocations_admin_user_path(user.id)
+                %li= link_to_function t(".synchronize"), "synchronize_user(this)", :"data-url" => synchronize_ma_users_path(id: user.id)
                 %li{ class: 'border' }= (label_tag t(:last_accessed, scope: [:administrations, :users]) + ' ' + last_accessed(user.id))
             .btn-group
               = link_to_function content_tag(:i, nil, class: 'icon-edit'), "manage(this)", class: "btn", :"data-tooltip" => t(:edit, scope: [:administrations, :users]), :"edit-link" => edit_admin_user_path(user), :"show-link" => admin_user_path(user.id)
@@ -34,4 +35,20 @@
   .block_content_text_list.text_none 
     = t(:message_not_found, scope: [:administrations, :users])
 
-=javascript_include_tag "tablesorter", "administrations", "tooltip"
+= javascript_include_tag "tablesorter", "administrations", "tooltip"
+
+:javascript
+  function synchronize_user(user_label_div){
+    $.get($(user_label_div).data("url"), function(data){
+      if (typeof(data.message) != "undefined" && typeof(data.type_message) != "undefined")
+        flash_message(data.message, data.type_message);
+      var user_data = $(user_label_div).parents("tr").children("td");
+      $(user_data[0]).html(data.name);
+      $(user_data[1]).html(data.email);
+      $(user_data[2]).html(data.username);
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, "alert");
+    });
+  }

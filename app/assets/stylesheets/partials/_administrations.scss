@@ -1,28 +1,28 @@
 .info_user {
-	.block_left {
-		width: 70px;
-	}
-	.block_left {
-		vertical-align: top;
-	}
-	.block_photo {
-		border: 1px solid #dedede;
-		margin-top: 3px;
-	}
-	div {
-		padding-top: 3px;
-	}
+  .block_left {
+    width: 70px;
+  }
+  .block_left {
+    vertical-align: top;
+  }
+  .block_photo {
+    border: 1px solid #dedede;
+    margin-top: 3px;
+  }
+  div {
+    padding-top: 3px;
+  }
 }
 tr.lines {
-	// input {
-	// 	padding: 5px 0 0 5px;
-	// }
-	td {
-		padding: 6px 8px 4px;
-	}
+  // input {
+  //  padding: 5px 0 0 5px;
+  // }
+  td {
+    padding: 6px 8px 4px;
+  }
 }
 .border {
-	border-top: 1px solid #dedede;
+  border-top: 1px solid #dedede;
 }
 
 .added-permission {
@@ -42,6 +42,10 @@ tr.lines {
 }
 
 label.permissions-search-text {
-	font-size: 10pt;
-	vertical-align: text-bottom;
+  font-size: 10pt;
+  vertical-align: text-bottom;
+}
+
+table.tb_allocation .dropdown ul li a{
+  white-space: inherit;
 }

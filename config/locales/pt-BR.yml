@@ -1630,6 +1630,8 @@
       semester: "Semestre"
       offer: "Oferta"
       group: "Turma"
+    search_users:
+      synchronize: Sincronizar com Módulo Acadêmico
 
   editions:
     alert: "Preencha os campos obrigatórios"
