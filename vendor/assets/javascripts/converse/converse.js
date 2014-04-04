@@ -1527,6 +1527,7 @@
                 TB = $("#toggle-controlbox")[0];
                 if ( CP.style.display != "none" )
                 {   
+                    cookie_im.IM_toggle=false;   
                     CP.style.display = "none";
                     TB.style.display = "none";
                     $("#controlbox")[0].style.boxShadow = "0px 0px 0px 0px";
@@ -1538,6 +1539,7 @@
                     
                 }
                 else{
+                    cookie_im.IM_toggle=true;
                     el.style.position = "relative";
                     el.style.top = "0px";
                     CP.style.display = "block";
@@ -1547,6 +1549,7 @@
                     $("#controlbox")[0].style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
 
                 }
+                setCookie();
             },
 
             switchTab: function (ev) {

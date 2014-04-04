@@ -206,7 +206,7 @@
   if($.cookie("cookie_im"))
     var cookie_im = JSON.parse($.cookie("cookie_im"));
   else
-    var cookie_im = JSON.parse('{"IM" : true}');
+    var cookie_im = JSON.parse('{"IM" : true, "IM_toggle":true}');
   $.cookie("cookie_im",JSON.stringify(cookie_im));
 
   converse.initialize({
@@ -237,6 +237,12 @@
   $(document).ready(function(e){
     if(cookie_im.IM)
       con.showControlBox();
+    if(!cookie_im.IM_toggle){
+      setTimeout(function(){
+        $("#chat").click();
+        },750);
+    }
+    
   });
 
   $(function(){
