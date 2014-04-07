@@ -8,22 +8,14 @@ module V1
 
     helpers do
       def verify_or_create_curriculum_unit(code, name, working_hours, credits, type = 2)
-        uc = CurriculumUnit.where(code: code).first_or_initialize
+        uc = CurriculumUnit.where(code: code.slice(0..9)).first_or_initialize
 
-        uc.attributes = {name: name, working_hours: working_hours, credits: credits, curriculum_unit_type: CurriculumUnitType.find(2)}
+        uc.attributes = {name: name.slice(0..119), working_hours: working_hours, credits: credits, curriculum_unit_type: (CurriculumUnitType.find(type) || CurriculumUnitType.find(2))}
         uc.attributes = {resume: name, objectives: name, syllabus: name} if uc.new_record?
 
         uc.save!
 
         uc
-
-        #  CurriculumUnit(id: integer, curriculum_unit_type_id: integer, name: string, code: string, resume: text, syllabus: text, 
-        #  passing_grade: float, objectives: text, prerequisites: text, credits: float, working_hours: integer) 
-
-        # obrigatório: nome, tipo, resumo, objetivo, syllabus (?) OK
-        # codigo: máximo 10, nome: máximo 120 (dar erro ou quebrar tamanho?)
-
-        # Ao criar uma disciplina, gerar uma entrada em allocation_tag. # (automático, não?)
       end
 
       def verify_or_create_semester(name, offer_period)
@@ -229,11 +221,12 @@ module V1
         requires :codigo, :nome
         requires :cargaHoraria, type: Integer
         requires :creditos, type: Float
+        optional :tipo, type: Integer
       end
       post "/" do
         begin
           ActiveRecord::Base.transaction do 
-            verify_or_create_curriculum_unit(params[:codigo], params[:nome], params[:cargaHoraria], params[:creditos], params[:tipo])
+            verify_or_create_curriculum_unit(params[:codigo], params[:nome], params[:cargaHoraria], params[:creditos], (params[:tipo].nil? ? 2 : params[:tipo]))
           end
           {ok: :ok}
         rescue => error
