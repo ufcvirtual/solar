@@ -904,11 +904,10 @@
             closeChat: function () {
                 if (converse.connection) {
                     //TODO fazer o "reaparecimento" das chatboxes que não foram fechadas pelo usuário
-
+                    box = document.getElementById(this.el.id);
+                    box.title = "fechado";
                     delete cookie_im[this.el.id];
                     setCookie();
-                    //box = document.getElementById(this.el.id);
-                    //box.title = "fechado";
                     this.model.destroy();
                 } else {
                     this.model.trigger('hide');
@@ -962,34 +961,34 @@
             toggleChatbox: function()
             {   
                 box = document.getElementById(this.model.get('box_id'));
-                if(box.title!="fechado"){
-                if(box.childNodes.item(1).style.display != "none")
-                {
-                    box.style.borderRadius = "0px 0px 0px 0px";
-                    box.childNodes.item(1).style.display = "none";
-                    box.childNodes.item(2).style.display = "none";
-                    box.childNodes.item(0).style.top = "270px";
-                    box.childNodes.item(0).style.backgroundColor="#404040";
-                    box.childNodes.item(0).style.color="rgb(0, 0, 0)";
-                    box.childNodes.item(0).childNodes.item(1).childNodes.item(0).style.color="rgb(f, f, f)";
-                    box.style.boxShadow = "0px 0px 0px 0px";
-                    cookie_im[this.el.id] = false;
+                if(box.title != "fechado"){
+                    if(box.childNodes.item(1).style.display != "none")
+                    {
+                        box.style.borderRadius = "0px 0px 0px 0px";
+                        box.childNodes.item(1).style.display = "none";
+                        box.childNodes.item(2).style.display = "none";
+                        box.childNodes.item(0).style.top = "270px";
+                        box.childNodes.item(0).style.backgroundColor="#404040";
+                        box.childNodes.item(0).style.color="rgb(0, 0, 0)";
+                        box.childNodes.item(0).childNodes.item(1).childNodes.item(0).style.color="rgb(f, f, f)";
+                        box.style.boxShadow = "0px 0px 0px 0px";
+                        cookie_im[this.el.id] = false;
+                    }
+                    else{
+                        box.style.borderRadius = "4px 4px 4px 4px";
+                        box.childNodes.item(1).style.display = "";
+                        box.childNodes.item(2).style.display = "";
+                        box.childNodes.item(0).style.top = "0px";
+                        box.childNodes.item(0).style.backgroundColor="rgba(6, 86, 153, 1)";
+                        box.childNodes.item(0).style.color="rgb(255, 255, 255)";
+                        box.childNodes.item(0).childNodes.item(1).childNodes.item(0).style.color="rgb(255, 255, 255)";
+                        box.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
+                        cookie_im[this.el.id] = true;
+                    }
+                    
+                    setCookie();
+                    this.scrollDown();
                 }
-                else{
-                    box.style.borderRadius = "4px 4px 4px 4px";
-                    box.childNodes.item(1).style.display = "";
-                    box.childNodes.item(2).style.display = "";
-                    box.childNodes.item(0).style.top = "0px";
-                    box.childNodes.item(0).style.backgroundColor="rgba(6, 86, 153, 1)";
-                    box.childNodes.item(0).style.color="rgb(255, 255, 255)";
-                    box.childNodes.item(0).childNodes.item(1).childNodes.item(0).style.color="rgb(255, 255, 255)";
-                    box.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
-                    cookie_im[this.el.id] = true;
-                }
-                
-                setCookie();
-                this.scrollDown();
-            }
             },
             renderToolbar: function () {
                 if (converse.show_toolbar) {
@@ -2311,7 +2310,7 @@
                     });
                     //recebe box que foi criada e adiciona sombra e adiciona imagem de status
                     box=document.getElementById(chatbox.attributes.box_id);
-                    //box.title="";
+                    box.title="";
                     box.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
                     img=box.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
                     contacts=converse.roster.models; //pega lista completa de usuários
@@ -2372,7 +2371,7 @@
                     'status': this.model.get('status')
                     });
 
-                aux = true;
+                aux = true;                
             //     if(maxWindows > 0)
             //     {
             //         $lastChatbox = $("#collective-xmpp-chat-data .chatbox:not(:first):visible:last");
