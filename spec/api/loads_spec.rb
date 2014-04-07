@@ -79,7 +79,7 @@ describe "Loads" do
             post "/api/v1/load/curriculum_units/", uc_data
           } }
 
-          it { should change(CurriculumUnit,:count).by(1) }
+          it { should change(CurriculumUnit.where(curriculum_unit_type_id: 2),:count).by(1) }
           it { should change(AllocationTag,:count).by(1) }
 
           it {
@@ -129,6 +129,49 @@ describe "Loads" do
             uc.code.should eq("RM404")
 
             response.status.should eq(400)
+          }
+        end
+
+        context "and existing curriculum_unit changing type" do
+          let!(:uc_data){ {codigo: "RM404", nome: "UC01", cargaHoraria: 80, creditos: 4, tipo: 1} }
+
+          subject{ -> {
+            post "/api/v1/load/curriculum_units/", uc_data
+          } }
+
+          it { should change(CurriculumUnit.where(curriculum_unit_type_id: 3),:count).by(-1) }
+          it { should change(CurriculumUnit.where(curriculum_unit_type_id: 1),:count).by(1) }
+          it { should change(AllocationTag,:count).by(0) }
+
+          it {
+            post "/api/v1/load/curriculum_units/", uc_data
+
+            uc = CurriculumUnit.find_by_code("RM404")
+            uc.name.should eq("UC01")
+            uc.working_hours.should eq(80)
+            uc.credits.should eq(4)
+
+            response.status.should eq(201)
+            response.body.should == {ok: :ok}.to_json
+          }
+        end
+
+        context "and non existing curriculum_unit with code too big" do # code must have less than 11 characters 
+          let!(:uc_data){ {codigo: "UC01UC01UC01", nome: "UC01", cargaHoraria: 80, creditos: 4} }
+
+          subject{ -> {
+            post "/api/v1/load/curriculum_units/", uc_data
+          } }
+
+          it { should change(CurriculumUnit.where(curriculum_unit_type_id: 2),:count).by(1) }
+          it { should change(CurriculumUnit.where(code: "UC01UC01UC"),:count).by(1) } # cut code to fit specified size
+          it { should change(CurriculumUnit.where(code: "UC01UC01UC01"),:count).by(0) }
+          it { should change(AllocationTag,:count).by(1) }
+
+          it {
+            post "/api/v1/load/curriculum_units/", uc_data
+            response.status.should eq(201)
+            response.body.should == {ok: :ok}.to_json
           }
         end
       end
