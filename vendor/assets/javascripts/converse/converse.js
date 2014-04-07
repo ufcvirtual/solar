@@ -907,11 +907,9 @@
 
                     delete cookie_im[this.el.id];
                     setCookie();
-                    box = document.getElementById(this.el.id);
-                    box.title = "fechado";
-                    
+                    //box = document.getElementById(this.el.id);
+                    //box.title = "fechado";
                     this.model.destroy();
-                    
                 } else {
                     this.model.trigger('hide');
 
@@ -2250,7 +2248,7 @@
                             }
                             //ob = box.childNodes[1].scrollTop = box.childNodes[1].scrollHeight;
                         }
-                        // this.views[item.get('id')] = view;
+                         this.views[item.get('id')] = view;
                         //  maxWindows = ($(window).width()/217.00) - 1 ;
                         //   number_chatbox = $(".chatbox").length - 1;
                         //   chatboxes = $("#collective-xmpp-chat-data .chatbox:not(:first)");
@@ -2313,7 +2311,7 @@
                     });
                     //recebe box que foi criada e adiciona sombra e adiciona imagem de status
                     box=document.getElementById(chatbox.attributes.box_id);
-                    box.title="";
+                    //box.title="";
                     box.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
                     img=box.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
                     contacts=converse.roster.models; //pega lista completa de usuários
@@ -2363,6 +2361,7 @@
             },
 
             openChat: function (ev) {
+                ev.preventDefault();
                 x = converse.chatboxesview.showChatBox({
                     'id': this.model.get('jid'),
                     'jid': this.model.get('jid'),
@@ -2399,7 +2398,7 @@
             //     }
                      
             
-            //     ev.preventDefault();
+            //     
             // }
                 
         },
