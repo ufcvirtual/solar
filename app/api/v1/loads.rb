@@ -162,20 +162,22 @@ module V1
       end
 
       # load/groups/allocate_user
-      params { requires :cpf, :perfil, :codDisciplina, :codGraduacao, :codigo, :periodo, :ano }
+      # params { requires :cpf, :perfil, :codDisciplina, :codGraduacao, :codigo, :periodo, :ano }
       put :allocate_user do # Receives user's cpf, group and profile to allocate
         begin
-          user = verify_or_create_user(params[:cpf])
-          profile_id = get_profile_id(params[:perfil])
+          allocation = params[:allocation]
+          user = verify_or_create_user(allocation[:cpf])
+          profile_id = get_profile_id(allocation[:perfil])
 
-          group = get_group(params[:codDisciplina], params[:codGraduacao], params[:codigo], params[:periodo], params[:ano])
+          group = get_group(allocation[:codDisciplina], allocation[:codGraduacao], allocation[:codTurma], allocation[:periodo], allocation[:ano])
+
           group.allocate_user(user.id, profile_id)
 
           {ok: :ok}
         rescue => error
           error!({error: error}, 422)
         end
-      end #allocate_profile
+      end # allocate_profile
 
       # load/groups/block_profile
       put :block_profile do # Receives user's cpf, group and profile to block
@@ -193,9 +195,9 @@ module V1
         rescue => error
           error!({error: error}, 422)
         end
-      end #block_profile
+      end # block_profile
 
-    end #groups
+    end # groups
 
     namespace :curriculum_units do
       # load/curriculum_units/editors
