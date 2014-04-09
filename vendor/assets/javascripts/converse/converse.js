@@ -960,6 +960,7 @@
          
             toggleChatbox: function()
             {   
+
                 box = document.getElementById(this.model.get('box_id'));
                 if(box.title != "fechado"){
                     if(box.childNodes.item(1).style.display != "none")
@@ -2248,37 +2249,6 @@
                             //ob = box.childNodes[1].scrollTop = box.childNodes[1].scrollHeight;
                         }
                          this.views[item.get('id')] = view;
-                        //  maxWindows = ($(window).width()/217.00) - 1 ;
-                        //   number_chatbox = $(".chatbox").length - 1;
-                        //   chatboxes = $("#collective-xmpp-chat-data .chatbox:not(:first)");
-                        //   chatboxes_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):visible");
-                        //   chatboxes_invisible = $("#collective-xmpp-chat-data .chatbox:not(:first):not(:visible)");
-
-                        //     if(chatboxes_visible.length > maxWindows)
-                        //     {
-
-                        //         for(i = number_chatbox - 1 ; i  > maxWindows - 1; i-- )
-                        //         {
-                        //             chatbox_visible = chatboxes_visible[i];
-                        //             $(chatbox_visible).css("display","none");
-
-                        //         }
-                        //     }
-                        //     else
-                        //     {
-                        //         if(chatboxes_visible.length <= maxWindows - 1)
-                        //         {
-                        //             for(i = chatboxes_visible.length; i <= maxWindows - 1 ; i++)
-                        //             {
-                        //                 chatbox_visible = chatboxes[i];
-                        //                 $(chatbox_visible).css("display","inline");
-                        //             }
-                        //         }
-
-                        //     }
-
-
-
                     } else {
                         delete view.model; // Remove ref to old model to help garbage collection
                         view.model = item;
@@ -2370,36 +2340,7 @@
                     'url': this.model.get('url'),
                     'status': this.model.get('status')
                     });
-
-                aux = true;                
-            //     if(maxWindows > 0)
-            //     {
-            //         $lastChatbox = $("#collective-xmpp-chat-data .chatbox:not(:first):visible:last");
-
-                 
-            //     chatboxes_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):visible");
-            //     chatboxes = $("#collective-xmpp-chat-data .chatbox:not(:first)");
-            //     if(chatboxes_visible.length > maxWindows)
-            //     {
-
-            //         for(this.i = 0; i < chatboxes_visible.length - 1; i++)
-            //         {
-            //             if(x.get("box_id") == $(chatboxes_visible[i]).attr("id"))
-            //             {   
-
-            //                 aux = false;
-            //                 break;
-            //             }
-            //         }
-            //         if(aux)
-            //             $lastChatbox.css("display","none");
-                    
-            //     }
-                     
-            
-            //     
-            // }
-                
+                aux = true;                               
         },
 
             removeContact: function (ev) {
@@ -3334,7 +3275,7 @@
 
             authenticate: function () {
 
-                jid = xmpp_username + xmpp_dominio +"/im";
+                jid = xmpp_cpf + xmpp_dominio +"/im";
                 this.connect(jid, xmpp_pass);
 
             },

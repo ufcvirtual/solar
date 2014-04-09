@@ -196,7 +196,7 @@
   imgDnd = "#{image_path('IM_dnd_Icon.png')}";
   imgOff = "#{image_path('IM_offline_Icon.png')}";
   imgMessage = "#{image_path('IM_message_Icon.png')}";
-  xmpp_username = "#{current_user.username}";
+  xmpp_cpf = "#{current_user.cpf}";
   xmpp_ip = "#{@ip}";
   xmpp_dominio = "#{@dominio}";
   xmpp_port = "#{@porta}";
@@ -225,6 +225,7 @@
     show_controlbox_by_default: false,
     xhr_user_search: false
   });
+
 
   function getCookie(){
     cookie_im = JSON.parse($.cookie("cookie_im"));
