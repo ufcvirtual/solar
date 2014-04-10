@@ -180,7 +180,10 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :enrollments, only: :index
+  resources :enrollments, only: :index do
+    get :import_users, to: "enrollments#import_users", on: :collection
+    post :batch_users, on: :collection # create and enroll users
+  end
 
   resources :courses do 
     get :list_combobox, to: :index, combobox: true, as: :list_combobox, on: :collection

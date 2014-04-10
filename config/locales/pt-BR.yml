@@ -2167,6 +2167,15 @@
       integrated: "Integrado com o Módulo Acadêmico: "
       y: Sim
       n: Não
+    import:
+      success: "Usuarios importados com sucesso"
+      success_with_warning: "Foram encontrados erros na importação de alguns usuários<br/><br/>%{log}"
+      invalid_file: "Arquivo inválido"
+      error: "Não foi possível importar usuários"
+      log:
+        success: "SUCCESS: CPF: %{cpf} importado com sucesso"
+        error: "ERROR: CPF: %{cpf} - %{error}"
+        allocation: "ERROR: user: %{user} - Não foi possível criar alocação para allocation tag %{allocation_tag}"
 
   mysolar:
     synchronize: Sincronizar com Módulo Acadêmico

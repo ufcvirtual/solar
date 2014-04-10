@@ -78,9 +78,21 @@
           = link_to(content_tag(:i, nil, class: 'icon-exam big'), "#", class: 'btn disabled', onclick: "javascript:alert('#{t(".in_development")}');")
           = link_to t(".test"), "#", onclick: "javascript:alert('#{t(".in_development")}');"
 
+  - if @selected == "GROUP" and false # quando for usar mesmo esta funcionalidade, retirar "and false"
+    %fieldset#batch
+      %legend=t(".batch")
+      .block_content.block_content_alt
+
+        / - if (can? :batch_users, Enrollment, on: @allocation_tags_ids)
+        .uc_item
+          .import_user{:"data-link" => import_users_enrollments_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+            %p.btn= content_tag(:i, nil, class: 'icon-users big')
+
 :javascript 
 
   $(document).ready(function(){
+
+    $(".uc_item .import_user").call_fancybox({href: $(".uc_item .import_user").data("link")});
 
     $(".edition_items a").not(".disabled").click(function(){
       $.get($($(this).parent()).data("link"), function(data){

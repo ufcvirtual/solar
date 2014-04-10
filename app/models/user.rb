@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
 
   validate :unique_cpf, if: "cpf_changed?"
   validate :integration, if: Proc.new{ |a| !a.new_record? and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and a.integrated and (a.synchronizing.nil? or not(a.synchronizing))}
-  validate :data_integration, if: Proc.new{ |a| a.new_record? or ((username_changed? or email_changed? or cpf_changed?) and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"])) and (a.synchronizing.nil? or not(a.synchronizing))}
+  validate :data_integration, if: Proc.new{ |a| (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and (a.new_record? or username_changed? or email_changed? or cpf_changed?) and (a.synchronizing.nil? or not(a.synchronizing)) }
   validate :cpf_ok, unless: :already_cpf_error?
 
   # paperclip uses: file_name, content_type, file_size e updated_at
@@ -215,6 +215,35 @@ class User < ActiveRecord::Base
       email: email,
       resume: "#{name} <#{email}>"
     }
+  end
+
+  ## import users from csv file
+  def self.import(file, sep = ";")
+    imported = []
+    log = {error: [], success: []}
+    csv = Roo::CSV.new(file.path, csv_options: {col_sep: sep})
+
+    header = csv.row(1)
+    (2..csv.last_row).each do |i|
+      row = Hash[[header, csv.row(i)].transpose]
+
+      user = new
+      user.attributes = row.to_hash.slice(*accessible_attributes)
+
+      user.username = user.cpf if user.username.nil?
+      user.nick = user.username if user.nick.nil?
+      user.birthdate = "1970-01-01" if user.birthdate.nil? # verificar este campo
+      user.password = "123456" if user.password.nil?
+
+      if user.save
+        log[:success] << I18n.t(:success, scope: [:users, :import, :log], cpf: user.cpf)
+        imported << user.id
+      else
+        log[:error] << I18n.t(:error, scope: [:users, :import, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(", "))
+      end
+    end ## each
+
+    {imported: imported, log: log}
   end
 
   ### integration MA ###

@@ -47,6 +47,8 @@ gem "rabl", "~> 0.9.3"
 gem "grape-rabl", "~> 0.2.2"
 gem 'savon', '~> 2.0' # comunicação com ws
 
+gem 'roo', '~> 1.13.2' # csv, excel
+
 group :development do
   gem "rb-readline", "~> 0.5.1"
   gem "net-ssh", "~> 2.6.8" # dependencia capistrano
