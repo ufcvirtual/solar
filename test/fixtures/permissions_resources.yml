@@ -96,10 +96,10 @@ dis4:
   resource_id: 45
   per_id: false
 
-dis5:
-  profile_id: 1
-  resource_id: 46
-  per_id: false
+# dis5:
+#   profile_id: 1
+#   resource_id: 46
+#   per_id: false
 
 dis6:
   profile_id: 1
@@ -143,15 +143,15 @@ ma2:
   resource_id: 55
   per_id: true
 
-ma3:
-  profile_id: 1
-  resource_id: 56
-  per_id: true
+# ma3:
+#   profile_id: 1
+#   resource_id: 56
+#   per_id: true
 
-ma4:
-  profile_id: 1
-  resource_id: 57
-  per_id: true
+# ma4:
+#   profile_id: 1
+#   resource_id: 57
+#   per_id: true
 
 ma11:
   profile_id: 1
@@ -331,10 +331,10 @@ dipt4:
   resource_id: 45
   per_id: false
 
-dipt5:
-  profile_id: 2
-  resource_id: 46
-  per_id: false
+# dipt5:
+#   profile_id: 2
+#   resource_id: 46
+#   per_id: false
 
 dipt6:
   profile_id: 2
@@ -388,15 +388,15 @@ mapt2:
   resource_id: 55
   per_id: false
 
-mapt3:
-  profile_id: 2
-  resource_id: 56
-  per_id: false
+# mapt3:
+#   profile_id: 2
+#   resource_id: 56
+#   per_id: false
 
-mapt4:
-  profile_id: 2
-  resource_id: 57
-  per_id: false
+# mapt4:
+#   profile_id: 2
+#   resource_id: 57
+#   per_id: false
 
 # agenda
 
@@ -591,10 +591,10 @@ dita4:
   resource_id: 45
   per_id: false
 
-dita5:
-  profile_id: 3
-  resource_id: 46
-  per_id: false
+# dita5:
+#   profile_id: 3
+#   resource_id: 46
+#   per_id: false
 
 dita8:
   profile_id: 3
@@ -648,15 +648,15 @@ mata2:
   resource_id: 55
   per_id: false
 
-mata3:
-  profile_id: 3
-  resource_id: 56
-  per_id: false
+# mata3:
+#   profile_id: 3
+#   resource_id: 56
+#   per_id: false
 
-mata4:
-  profile_id: 3
-  resource_id: 57
-  per_id: false
+# mata4:
+#   profile_id: 3
+#   resource_id: 57
+#   per_id: false
 
 # agenda
 
@@ -764,15 +764,15 @@ mapedit2:
   resource_id: 55
   per_id: true
 
-mapedit3:
-  profile_id: 5
-  resource_id: 56
-  per_id: true
+# mapedit3:
+#   profile_id: 5
+#   resource_id: 56
+#   per_id: true
 
-mapedit4:
-  profile_id: 5
-  resource_id: 57
-  per_id: true
+# mapedit4:
+#   profile_id: 5
+#   resource_id: 57
+#   per_id: true
 
 # Material de apoio - Editor
 mapedit5:
@@ -1326,15 +1326,15 @@ pbsc10:
   resource_id: 55
   per_id: false
 
-pbsc11:
-  profile_id: 12
-  resource_id: 56
-  per_id: false
+# pbsc11:
+#   profile_id: 12
+#   resource_id: 56
+#   per_id: false
 
-pbsc12:
-  profile_id: 12
-  resource_id: 57
-  per_id: false
+# pbsc12:
+#   profile_id: 12
+#   resource_id: 57
+#   per_id: false
 
 ########################
 #### Aluno  Monitor ####
