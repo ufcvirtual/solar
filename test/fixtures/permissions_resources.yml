@@ -1315,6 +1315,11 @@ pbsc8:
   resource_id: 17
   per_id: true
 
+pbsc9:
+  profile_id: 12
+  resource_id: 167
+  per_id: false
+
 # Material de apoio
 pbsc9:
   profile_id: 12

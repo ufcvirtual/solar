@@ -35,9 +35,9 @@ class AllocationsController < ApplicationController
       level_search = level.nil? ? ("not(profiles.types & #{Profile_Type_Basic})::boolean") : ("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
       
       @allocations = Allocation.all(
-        :joins => [:profile, :user], 
-        :conditions => ["#{level_search} and allocation_tag_id IN (#{@allocation_tags_ids.join(",")}) "],
-        :order => ["users.name", "profiles.name"]) 
+        joins: [:profile, :user], 
+        conditions: ["#{level_search} and allocation_tag_id IN (#{@allocation_tags_ids.join(",")}) "],
+        order: ["users.name", "profiles.name"]) 
     rescue CanCan::AccessDenied
       render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
     rescue ActiveRecord::AssociationTypeMismatch
@@ -126,21 +126,15 @@ class AllocationsController < ApplicationController
       nil
     end
 
-    @admin  = params[:admin] 
-
-    if @admin
-      authorize! :create_designation, Allocation
-    elsif (not params.include?(:request))
-      authorize! :create_designation, Allocation, on: allocation_tags_ids.flatten
-    end
+    authorize! :create_designation, Allocation if params[:admin] 
+    authorize! :create_designation, Allocation, on: allocation_tags_ids.flatten unless params[:admin] or params.include?(:request)
 
     profile = params.include?(:profile) ? params[:profile] : Profile.student_profile
-    status  = params.include?(:status)  ? params[:status]  : Allocation_Pending
-    user    = params.include?(:user_id) ? params[:user_id] : current_user.id
+    status  = params.include?(:status) ? params[:status]  : Allocation_Pending
+    user    = (params.include?(:user_id) and not(params.include?(:request))) ? params[:user_id] : current_user.id
     raise t("allocations.error.student_or_basic") if profile == Profile.student_profile or (not(profile.blank?) and Profile.find(profile).has_type?(Profile_Type_Basic))
     raise t("allocations.error.profile") if params[:profile].blank?
     ok = allocate(allocation_tags_ids, user, profile, status)
-
 
     unless params.include?(:request)
       render :designates, status: (ok ? 200 : :unprocessable_entity)
@@ -224,21 +218,16 @@ class AllocationsController < ApplicationController
   # DELETE /allocations/1/cancel
   # DELETE /allocations/1/cancel_request
   def destroy
-    @allocation = Allocation.find(params[:id])
-
     authorize! :cancel, Allocation if not params.include?(:type)
     authorize! :cancel_request, Allocation if params.include?(:type) and params[:type] == 'request'
-    # authorize! :cancel_profile_request, Allocation, @allocation if params.include?(:profile)
+
+    @allocation = Allocation.find(params[:id])
 
     begin
       error = false
-      # if @allocation.profile_id == Profile.student_profile
-      #   # offer = @allocation.offer || @allocation.group.offer
-      #   # unless (offer.enrollment_start_date.to_date..(offer.enrollment_end_date.try(:to_date) || offer.end_date.to_date)).include?(Date.today)
-      #   #   error = true 
-      #   #   message = "fora do prazo"
-      #   # end
-      # end
+      raise CanCan::AccessDenied if (@allocation.user_id != current_user.id and params[:type] == "request") or
+        ((@allocation.profile_id == Profile.student_profile or @allocation.profile.has_type?(Profile_Type_Basic)) and params.include?(:profile))
+
       if params.include?(:type) and params[:type] == 'request' and @allocation.status == Allocation_Pending
         @allocation.destroy
         message = (params.include?(:profile) ? t("allocations.success.request_canceled") : t(:enrollm_request_cancel_message))
@@ -246,6 +235,9 @@ class AllocationsController < ApplicationController
         @allocation.update_attribute(:status, Allocation_Cancelled)
         message = (params.include?(:profile) ? t("allocations.success.profile_canceled") : t(:enrollm_cancelled_message))
       end
+    rescue CanCan::AccessDenied
+      error = true
+      message = t(:no_permission)
     rescue Exception => e
       message = (params.include?(:profile) ? t("allocations.error.cancel_request") : t(:enrollm_not_cancelled_message))
       error   = true

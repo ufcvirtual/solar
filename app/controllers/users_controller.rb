@@ -106,7 +106,6 @@ class UsersController < ApplicationController
   end
 
   def profiles
-    # authorize! :request, Profile
     @allocations = current_user.allocations.where("profile_id != 12")
     render layout: false if params[:layout]
   end

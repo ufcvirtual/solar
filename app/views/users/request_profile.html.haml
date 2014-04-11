@@ -65,7 +65,6 @@
           if (typeof(response) != "undefined" && typeof(response.message) != "undefined")
             flash_message(response.message, response.type);
         });
-
       }).error(function(data){
         var response = JSON.parse(data.responseText);
         if (typeof(response.alert) != "undefined")

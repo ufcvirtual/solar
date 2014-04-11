@@ -8,23 +8,27 @@
     %table.tb_list
       %thead
         %tr.lines
-          %th= t(".profile")
+          %th{style: "width: 10%"}= t(".profile")
           %th= t(".type")
           %th= t(".course")
           %th= t(".curriculum_unit")
+          %th= t(".semester")
           %th= t(".group")
-          %th= t(".status")
-          %th.no_sort
+          %th{style: "width: 10%"}= t(".status")
+          %th.no_sort{style: "width: 5%"}
       %tbody
         - @allocations.each do |allocation|
           - allocation_tag_info = allocation.allocation_tag.nil? ? nil : AllocationTag.allocation_tag_details(allocation.allocation_tag, true)
           - status_color = case allocation.status.to_i
-          - when (Allocation_Pending_Reactivate or Allocation_Pending); "#FF6600"
-          - when Allocation_Activated; "#006600"
-          - when (Allocation_Cancelled or Allocation_Rejected); "#FF0000"
+          - when (Allocation_Pending_Reactivate); "#FF6600"
+          - when (Allocation_Activated); "#006600"
+          - when (Allocation_Cancelled); "#FF0000"
+          - when (Allocation_Pending); "#FF6600"
+          - when (Allocation_Rejected); "#FF0000"
           %tr.lines
             %td= allocation.profile.name
             - if allocation_tag_info.nil?
+              %td= t(".not_specified")
               %td= t(".not_specified")
               %td= t(".not_specified")
               %td= t(".not_specified")
@@ -33,6 +37,7 @@
               %td= allocation_tag_info[:curriculum_unit_type]
               %td= allocation_tag_info[:course]
               %td= allocation_tag_info[:curriculum_unit]
+              %td= allocation_tag_info[:semester]
               %td
                 - unless allocation_tag_info[:group].nil? or allocation_tag_info[:group] == t(".not_specified")
                   .groups_tags
@@ -40,17 +45,19 @@
                 - else
                   = t(".not_specified")
             %td{style: "color: #{status_color}"}= name_of(allocation.status, false)
-            %td= link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_cancel', :"data-link-cancel" => cancel_profile_request_allocation_path(allocation), :"data-tooltip" => t(".cancel_profile")#, method: :delete, confirm: t(".confirm")
+            %td= link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_cancel', :"data-link-cancel" => cancel_profile_request_allocation_path(allocation), :"data-tooltip" => t(".cancel_profile"), disabled: allocation.profile_id == Profile.student_profile
 
 :javascript
   $(function(){
     $('#request_profile').call_fancybox();
 
     $(".btn_cancel").click(function(){
+      if ($(this).attr("disabled"))
+        return this;
+      if (!confirm("#{t(".confirm")}"))
+        return this;
       $.delete($(this).data("link-cancel"), function(response){
-        console.log(response);
         $.get($(".profiles_list").data("link-list"), function(data){
-          console.log("oi");
           $(".profiles_list").replaceWith(data);
           flash_message(response.notice, "notice");
         });

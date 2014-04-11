@@ -2050,6 +2050,7 @@
       type: Type
       course: Course
       curriculum_unit: Curriculum Unit
+      semester: Semester
       group: Group
       status: Status
       request_profile: Request profile

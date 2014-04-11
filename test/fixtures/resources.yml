@@ -958,3 +958,9 @@ res166:
   controller: 'webconferences'
   action: 'destroy'
   description: 'Deleção de webconferência'
+
+res167:
+  id: 167
+  controller: 'users'
+  action: 'profiles'
+  description: 'Lista de perfis do usuário'

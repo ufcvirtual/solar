@@ -2204,6 +2204,7 @@
       course: Curso
       curriculum_unit: Unidade Curricular
       group: Turma
+      semester: Semestre
       status: Status
       request_profile: Solicitar perfil
       cancel_profile: Cancelar perfil
