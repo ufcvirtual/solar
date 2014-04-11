@@ -35,7 +35,7 @@ class ChatRoom < Event
     cipher.iv  = chat['IV']
     cipher.key = chat['key']
 
-    [chat["url"], Base64.encode64(cipher.update(chat["params"].gsub("allocation_id", '1').gsub("id", '1')) + cipher.final).gsub("\n",'')].join
+    [chat["url"], Base64.encode64(cipher.update(chat["params"].gsub("allocation_id", allocation_id).gsub("id", id)) + cipher.final).gsub("\n",'')].join
   end
 
   def verify_hours
