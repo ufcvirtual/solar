@@ -124,12 +124,15 @@
   ul {
     border-top-color: #EBEBEB;
   }
+  & > div {
+    overflow: hidden;
+  }
 }
 
 #mysolar_submenu_help{
   width: 80px;
   margin-left: -7px;
-  border-top-color: #EBEBEB; 
+  border-top-color: #EBEBEB;
 }
 
 #mysolar_top_submenu a:hover, #mysolar_submenu_help a:hover {
@@ -139,17 +142,21 @@
 #mysolar_top_submenu ul {
   width: 100%;
   display: block;
-  border-top-width: 3px;
+  border-top-width: 1px;
   border-top-style: solid;
-  margin-top: 5px;
+  margin-top: 12px;
+  padding-top: 5px;
+  font-size: 9pt;
 }
 
 #mysolar_top_submenu ul li, #mysolar_submenu_help ul li {
-  padding: 7px;
+  padding: 7px 7px 7px 0;
 }
 
 #mysolar_top_submenu_username {
-  font-size: 9pt;
+  font-size: 10pt;
+  margin-top: 4px;
+  font-weight: bold;
 }
 
 #mysolar_top_submenu_useremail {
