@@ -29,7 +29,13 @@ class ChatRoom < Event
   after_destroy :delete_schedule
 
   def url(allocation_id)
-    [YAML::load(File.open('config/chat.yml'))[Rails.env.to_s]["url"], "allocationId=#{allocation_id};roomId=#{id}"].join
+    chat = YAML::load(File.open('config/chat.yml'))[Rails.env.to_s] rescue nill
+    cipher = OpenSSL::Cipher::Cipher.new('DES-EDE3-CBC')
+    cipher.encrypt
+    cipher.iv  = chat['IV']
+    cipher.key = chat['key']
+
+    [chat["url"], Base64.encode64(cipher.update(chat["params"].gsub("allocation_id", '1').gsub("id", '1')) + cipher.final).gsub("\n",'')].join
   end
 
   def verify_hours
