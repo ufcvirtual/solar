@@ -3,7 +3,7 @@ class SemestersController < ApplicationController
 
   # GET /semesters
   def index
-    authorize! :index, Semester
+    authorize! :index, Semester unless params[:combobox]
     @type_id = params[:type_id].to_i
 
     if [params[:period], params[:course_id], params[:curriculum_unit_id]].delete_if(&:blank?).empty?

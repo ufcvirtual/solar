@@ -1423,7 +1423,8 @@
     status:
       pending: Pendente
       pending_reactivate: Reat. Pendente
-      activated: Matriculado
+      activated: Ativado
+      enrolled: Matriculado
       cancelled: Cancelado
       rejected: Rejeitado
     manage:
@@ -1436,8 +1437,6 @@
       status: Status
       save: Salvar
       cancel: Cancelar
-    error:
-      student_already_in_group: Aluno já está nesta turma
     designates:
       activate: Ativar
       deactivate: Desativar
@@ -1471,12 +1470,21 @@
       activated: Usuário ativado
       deactivated: Usuário desativado
       allocations_performed: Alocações realizadas
+      requested: Solicitação realizada com sucessso
+      request_canceled: Solicitação cancelada
+      profile_canceled: Perfil cancelado
     error:
+      student_already_in_group: Aluno já está nesta turma
       enrollm_request: Pedido de matrícula não realizado
       not_allocated: Não foi possível alocar usuário
       not_activated: Não foi possível ativar usuário
       not_deactivated: Não foi possível desativar usuário
       allocations_not_performed: Não foi possível realizar alocações
+      student_or_basic: Não é possível solicitar perfil de aluno ou básico
+      profile: É necessário selecionar um perfil
+      cancel_request: Não foi possível realizar cancelamento
+    warning:
+      already_active: Perfil já está ativo
 
   allocation_pending: Pendente
 
@@ -2176,6 +2184,31 @@
         success: "SUCCESS: CPF: %{cpf} importado com sucesso"
         error: "ERROR: CPF: %{cpf} - %{error}"
         allocation: "ERROR: user: %{user} - Não foi possível criar alocação para allocation tag %{allocation_tag}"
+    request_profile:
+      save: Salvar
+      cancel: Cancelar
+      profile: "Perfil* "
+      type: Tipo
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      module: Módulo
+      semester: Semestre
+      offer: Oferta
+      group: Turma
+      new_profile_request: Nova solicitação de perfil
+    profiles:
+      not_specified: Não especificado
+      profiles_list: Listagem de Perfis
+      profile: Perfil
+      type: Tipo
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      group: Turma
+      status: Status
+      request_profile: Solicitar perfil
+      cancel_profile: Cancelar perfil
+      confirm: Tem certeza de que deseja cancelar este perfil?
 
   mysolar:
     synchronize: Sincronizar com Módulo Acadêmico
+    profiles: Perfis

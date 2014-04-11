@@ -26,6 +26,8 @@ Solar::Application.routes.draw do
       get :edit_photo
       get :verify_cpf
       get :synchronize_ma
+      get :profiles
+      get :request_profile
     end
   end
 
@@ -133,10 +135,12 @@ Solar::Application.routes.draw do
       get :enrollments, action: :index
       get :search_users
       post :create_designation
+      post :request_designation, to: :create_designation, defaults: {request: true}
     end
     member do
       delete :cancel, action: :destroy
       delete :cancel_request, action: :destroy, defaults: {type: 'request'}
+      delete :cancel_profile_request, action: :destroy, defaults: {type: 'request', profile: true}
 
       post :reactivate
       put :deactivate

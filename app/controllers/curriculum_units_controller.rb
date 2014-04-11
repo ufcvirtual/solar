@@ -6,7 +6,7 @@ class CurriculumUnitsController < ApplicationController
   before_filter :prepare_for_group_selection, only: [:home, :participants, :informations]
   before_filter :curriculum_data, only: [:home, :informations, :curriculum_data, :participants]
 
-  authorize_resource only: [:index, :new]
+  authorize_resource only: [:new]
   load_and_authorize_resource only: [:edit, :update]
 
   def home
@@ -27,7 +27,6 @@ class CurriculumUnitsController < ApplicationController
     @curriculum_units = []
 
     if params[:combobox]
-
       if @type.id == 3
         course_name = Course.find(params[:course_id]).name
         @curriculum_units = CurriculumUnit.where(name: course_name)
@@ -37,6 +36,7 @@ class CurriculumUnitsController < ApplicationController
 
       render json: { html: render_to_string(partial: 'select_curriculum_unit.html', locals: { curriculum_units: @curriculum_units.uniq! }) }
     else # list
+      authorize! :index, CurriculumUnit
       if not(params[:curriculum_unit_id].blank?)
         @curriculum_units = CurriculumUnit.where(id: params[:curriculum_unit_id])
       else

@@ -147,19 +147,39 @@ class AllocationTag < ActiveRecord::Base
     end
   end
 
-  def self.allocation_tag_details(allocation_tag)
+  def self.allocation_tag_details(allocation_tag, split = false)
     if !allocation_tag.curriculum_unit_id.nil?
-      detail = allocation_tag.curriculum_unit.name
+      detail  = allocation_tag.curriculum_unit.name
+      uc_type = allocation_tag.curriculum_unit.curriculum_unit_type.description
+    elsif !allocation_tag.course_id.nil?
+      detail = allocation_tag.course.name
     elsif !allocation_tag.offer.nil?
-      detail = allocation_tag.offer.course.name + ' | '
-      detail = detail + allocation_tag.offer.curriculum_unit.name + ' | '
-      detail = detail + allocation_tag.offer.semester.name
+      detail  = allocation_tag.offer.course.name + ' | '
+      detail  = detail + allocation_tag.offer.curriculum_unit.name + ' | '
+      detail  = detail + allocation_tag.offer.semester.name
+      uc_type = allocation_tag.offer.curriculum_unit.curriculum_unit_type.description
     elsif !allocation_tag.group.nil?
-      detail = allocation_tag.group.offer.course.name + ' | '
-      detail = detail + allocation_tag.group.offer.curriculum_unit.name + ' | '
-      detail = detail + allocation_tag.group.offer.semester.name + ' | '
-      detail = detail + allocation_tag.group.code
+      detail  = allocation_tag.group.offer.course.name + ' | '
+      detail  = detail + allocation_tag.group.offer.curriculum_unit.name + ' | '
+      detail  = detail + allocation_tag.group.offer.semester.name + ' | '
+      detail  = detail + allocation_tag.group.code
+      uc_type = allocation_tag.group.offer.curriculum_unit.curriculum_unit_type.description
     end
+
+    if split
+      not_specified = I18n.t("users.profiles.not_specified")
+      return {course: not_specified, curriculum_unit: not_specified, semester: not_specified, group: not_specified, curriculum_unit_type: not_specified} if detail.nil?
+      detail = detail.split(" | ")
+      if (detail.size == 1) 
+        detail = allocation_tag.course.nil? ? 
+          {course: not_specified, curriculum_unit: detail[0], semester: not_specified, group: not_specified, curriculum_unit_type: uc_type}
+        : {course: detail[0], curriculum_unit: not_specified, semester: not_specified, group: not_specified, curriculum_unit_type: not_specified}
+      else
+        detail = {course: detail[0], curriculum_unit: detail[1], semester: detail[2], group: detail[3], curriculum_unit_type: uc_type}
+      end
+   end
+
+   return detail
   end
 
   def self.curriculum_unit_type(allocation_tag)

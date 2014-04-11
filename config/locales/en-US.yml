@@ -1279,6 +1279,7 @@
       pending: Pending
       pending_reactivate: Pending React.
       activated: Activated
+      enrolled: Enrolled
       cancelled: Cancelled
       rejected: Rejected
     manage:
@@ -1291,8 +1292,6 @@
       status: Status
       save: Save
       cancel: Cancel
-    error:
-      student_already_in_group: Student is already in the class
     designates:
       activate: Activate
       deactivate: Deactivate
@@ -1322,12 +1321,21 @@
       activated: Activated user
       deactivated: Deactivated user
       allocations_performed: Allocations performed
+      requested: Request made successfully
+      request_canceled: Request canceled
+      profile_canceled: Profile cancelado
     error:
+      student_already_in_group: Student is already in the class
       enrollm_request: Request for enrollment not made
       not_allocated: Cannot allocate user
       not_activated: Cannot activate user
       not_deactivated: Cannot deactivate user
       allocations_not_performed: Cannot performe allocations
+      student_or_basic: It's not possible request student or basic profiles
+      profile: Profile must be choosen
+      cancel_request: It was not possible to cancel
+    warning:
+      already_active: Profile's already active
 
   allocation_pending: Pending
 
@@ -2023,6 +2031,31 @@
         success: "SUCCESS: CPF: %{cpf} successfully imported"
         error: "ERROR: CPF: %{cpf} - %{error}"
         allocation: "ERROR: user: %{user} - Unable to create allocation for allocation tag %{allocation_tag}"
+    request_profile:
+      save: Save
+      cancel: Cancel
+      profile: "Profile* "
+      type: Type
+      course: Course
+      curriculum_unit: Curriculum Unit
+      module: Module
+      semester: Semester
+      offer: Offer
+      group: Group
+      new_profile_request: New profile request
+    profiles:
+      not_specified: Not specified
+      profiles_list: Profiles List
+      profile: Profile
+      type: Type
+      course: Course
+      curriculum_unit: Curriculum Unit
+      group: Group
+      status: Status
+      request_profile: Request profile
+      cancel_profile: Cancel profile
+      confirm: Are you sure you want to cancel this profile?
 
   mysolar:
     synchronize: Synchronize with Módulo Acadêmico
+    profiles: Profiles

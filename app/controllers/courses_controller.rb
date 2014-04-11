@@ -3,13 +3,13 @@ class CoursesController < ApplicationController
   layout false
 
   def index
-    authorize! :index, Course
     @type_id = params[:type_id].to_i
 
     if params[:combobox]
       @courses = (@type_id == 3 ? Course.all_associated_with_curriculum_unit_by_name : Course.all)
       render json: { html: render_to_string(partial: 'select_course', locals: { curriculum_units: @courses.uniq! }) }
     else # list
+      authorize! :index, Course
       if (not params[:course_id].blank?)
         @courses = Course.where(id: params[:course_id])
       else

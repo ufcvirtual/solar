@@ -1,0 +1,64 @@
+.block_wrapper.profiles_list{:"data-link-list" => profiles_users_path(layout: false)}
+  .block_title
+    %h2= t(".profiles_list")
+  .block_content_toolbar
+    .block_toolbar_left
+      = link_to content_tag(:i, nil, class: 'icon-plus'), request_profile_users_path, class: " btn btn_main", id: "request_profile", :"data-tooltip" => t(".request_profile")
+  .block_content
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th= t(".profile")
+          %th= t(".type")
+          %th= t(".course")
+          %th= t(".curriculum_unit")
+          %th= t(".group")
+          %th= t(".status")
+          %th.no_sort
+      %tbody
+        - @allocations.each do |allocation|
+          - allocation_tag_info = allocation.allocation_tag.nil? ? nil : AllocationTag.allocation_tag_details(allocation.allocation_tag, true)
+          - status_color = case allocation.status.to_i
+          - when (Allocation_Pending_Reactivate or Allocation_Pending); "#FF6600"
+          - when Allocation_Activated; "#006600"
+          - when (Allocation_Cancelled or Allocation_Rejected); "#FF0000"
+          %tr.lines
+            %td= allocation.profile.name
+            - if allocation_tag_info.nil?
+              %td= t(".not_specified")
+              %td= t(".not_specified")
+              %td= t(".not_specified")
+              %td= t(".not_specified")
+            - else
+              %td= allocation_tag_info[:curriculum_unit_type]
+              %td= allocation_tag_info[:course]
+              %td= allocation_tag_info[:curriculum_unit]
+              %td
+                - unless allocation_tag_info[:group].nil? or allocation_tag_info[:group] == t(".not_specified")
+                  .groups_tags
+                    .collection_check_boxes= allocation_tag_info[:group]
+                - else
+                  = t(".not_specified")
+            %td{style: "color: #{status_color}"}= name_of(allocation.status, false)
+            %td= link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_cancel', :"data-link-cancel" => cancel_profile_request_allocation_path(allocation), :"data-tooltip" => t(".cancel_profile")#, method: :delete, confirm: t(".confirm")
+
+:javascript
+  $(function(){
+    $('#request_profile').call_fancybox();
+
+    $(".btn_cancel").click(function(){
+      $.delete($(this).data("link-cancel"), function(response){
+        console.log(response);
+        $.get($(".profiles_list").data("link-list"), function(data){
+          console.log("oi");
+          $(".profiles_list").replaceWith(data);
+          flash_message(response.notice, "notice");
+        });
+      }).error(function(data){
+        var response = JSON.parse(data.responseText);
+        if (typeof(response.alert) != "undefined")
+          flash_message(response.alert, 'alert');
+      });
+    });
+    
+  });

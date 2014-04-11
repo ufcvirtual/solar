@@ -1,15 +1,15 @@
 module AllocationsHelper
 
-  def status_hash
-    { Allocation_Pending_Reactivate => t(:pending_reactivate, :scope => [:allocations, :status]),
-      Allocation_Pending => t(:pending, :scope => [:allocations, :status]),
-      Allocation_Activated => t(:activated, :scope => [:allocations, :status]),
-      Allocation_Cancelled => t(:cancelled, :scope => [:allocations, :status]),
-      Allocation_Rejected => t(:rejected, :scope => [:allocations, :status]) }
+  def status_hash(enroll = true)
+    { Allocation_Pending_Reactivate => t("allocations.status.pending_reactivate"),
+      Allocation_Pending            => t("allocations.status.pending"),
+      Allocation_Activated          => (enroll ? t("allocations.status.enrolled") : t("allocations.status.activated")),
+      Allocation_Cancelled          => t("allocations.status.cancelled"),
+      Allocation_Rejected           => t("allocations.status.rejected") }
   end
 
-  def name_of(status)
-    status_hash[status]
+  def name_of(status, enroll = true)
+    status_hash(enroll)[status]
   end
 
   ## Rtorna os perfis disponíveis para alocação de determinado usuário em uma lista de allocations_tags

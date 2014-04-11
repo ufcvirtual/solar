@@ -105,4 +105,17 @@ class UsersController < ApplicationController
     render json: {success: false, alert: t("users.errors.ma.synchronize")}, status: :unprocessable_entity
   end
 
+  def profiles
+    # authorize! :request, Profile
+    @allocations = current_user.allocations.where("profile_id != 12")
+    render layout: false if params[:layout]
+  end
+
+  def request_profile
+    @allocation = Allocation.new
+    @types      = CurriculumUnitType.all
+    @profiles   = Profile.where("types <> ? and id <> ?", Profile_Type_Basic, 1).order("name")
+    render layout: false
+  end
+
 end

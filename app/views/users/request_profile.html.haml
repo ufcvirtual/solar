@@ -1,0 +1,75 @@
+.request_profile
+  %span.form_requirement= t(:required_fields)
+  .request_profile_form
+    = simple_form_for(@allocation, html: {id: "request_profile_form"}) do |f| 
+      %h1#lightBoxDialogTitle= t(".new_profile_request")
+      %span.form_requirement= t(:required_fields)
+      .flash_message_wrapper
+
+      .form-inputs.block_content
+        .profile
+          = label_tag :profile_id, t(".profile")
+          %span= select_tag :profile_id, options_from_collection_for_select(@profiles, "id", "name", params[:profile_id]), include_blank: false
+        .filter
+          .curriculum_unit_type
+            = label_tag :curriculum_unit_type, t(".type")
+            %span= select_tag :curriculum_unit_type, options_from_collection_for_select(@types, "id", "description", params[:type_id]), include_blank: true
+
+          .course
+            = label_tag :course, t(".course")
+            %span= select_tag :course, nil
+
+          .curriculum_unit
+            = label_tag :curriculum_unit, t(".curriculum_unit")
+            = select_tag :curriculum_unit, nil
+
+          .semester
+            = label_tag :semester, t(".semester")
+            = select_tag :semester, nil
+
+          .offer_groups_options
+            .radio_options
+              = radio_button :radio, :option, "offer", disabled: true
+              = label_tag :radio_option_offer, t(".offer")
+
+              = radio_button :radio, :option, "group", disabled: true
+              = label_tag :radio_option_group, t(".group")
+
+            .groups
+        .right_buttons
+          = button_to_function t(".cancel"), "jQuery.fancybox.close(); erase_flash_messages();", class: "btn btn_default btn_lightbox", type: "button"
+          = button_tag t(".save"), class: "btn btn_main btn_lightbox", type: "button", id: "save"
+
+= javascript_include_tag "autocomplete", "edition"
+= stylesheet_link_tag "autocomplete"
+
+:javascript
+
+  $(function(){
+
+    $("#profile_id").combobox();
+
+    $("#save").click(function(){
+      var params = {
+        "profile": $("#profile_id").val(),
+        "curriculum_unit_type": $("#profile_id").val(),
+        "course": $("#course").val(),
+        "curriculum_unit": $("#curriculum_unit").val(),
+        "semester": $("#semester").val(),
+        "groups": $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).toArray()
+      };
+      $.post("#{request_designation_allocations_path}", params, function(response){
+        $.fancybox.close();
+        $.get($(".profiles_list").data("link-list"), function(data){
+          $(".profiles_list").replaceWith(data);
+          if (typeof(response) != "undefined" && typeof(response.message) != "undefined")
+            flash_message(response.message, response.type);
+        });
+
+      }).error(function(data){
+        var response = JSON.parse(data.responseText);
+        if (typeof(response.alert) != "undefined")
+          flash_message(response.alert, 'alert', "request_profile .flash_message_wrapper");
+      });
+    });
+  });

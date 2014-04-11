@@ -93,47 +93,66 @@ class AllocationsController < ApplicationController
   
   # Usado na matrícula
   def create
-    profile = Profile.student_profile
-    status  = Allocation_Pending
-    allocation_tag = AllocationTag.find(params[:allocation_tag_id])
-    allocation = Allocation.where(allocation_tag_id: params[:allocation_tag_id], user_id: params[:user_id], profile_id: profile).first
-    offer   = allocation_tag.offer || allocation_tag.group.offer
-    ok      = (offer.enrollment_start_date.to_date..(offer.enrollment_end_date.try(:to_date) || offer.end_date.to_date)).include?(Date.today)
-    ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status, allocation.try(:id)) if ok
+    profile, status = Profile.student_profile, Allocation_Pending
+    allocation_tag  = AllocationTag.find(params[:allocation_tag_id])
+
+    if profile == Profile.student_profile
+      allocation_tag = AllocationTag.find(params[:allocation_tag_id])
+      offer   = allocation_tag.offer || allocation_tag.group.offer
+      ok      = (offer.enrollment_start_date.to_date..(offer.enrollment_end_date.try(:to_date) || offer.end_date.to_date)).include?(Date.today)
+    end
+
+    ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status) if ok or ok.nil?
     message = ok ? ['notice', 'success'] : ['alert', 'error']
     respond_to do |format|
-      format.html { redirect_to(enrollments_url, message.first.to_sym => t(:enrollm_request, :scope => [:allocations, message.last.to_sym])) }
+      format.html { redirect_to(enrollments_url, message.first.to_sym => t(:enrollm_request, scope: [:allocations, message.last.to_sym])) }
     end
   end
 
   # Usado na alocacao de usuarios
   def create_designation
-    allocation_tags_ids = params[:allocation_tags_ids].split(" ")
-
-    begin 
-      allocation_tags = AllocationTag.where(id: allocation_tags_ids)
-      @admin  = params[:admin] 
-
-      if @admin 
-        authorize! :create_designation, Allocation
-      else
-        authorize! :create_designation, Allocation, on: allocation_tags_ids.flatten
-      end
-
-      profile = (params.include?(:profile)) ? params[:profile] : Profile.student_profile
-      status  = (params.include?(:status)) ? params[:status] : Allocation_Pending
-      ok      = allocate(allocation_tags_ids, params[:user_id], profile, status)
-
-
-      respond_to do |format|
-        format.html { render :designates, status: (ok ? 200 : :unprocessable_entity) } 
-      end
-    rescue
-      respond_to do |format|
-        format.html { render :designates, status: :unprocessable_entity } 
-      end      
+    allocation_tags_ids = case
+    when (not params[:groups].nil?)
+      [Group.where(id: params[:groups]).map(&:allocation_tag).map(&:id)]
+    when (not(params[:semester].blank?) and not(params[:curriculum_unit].blank?) and not(params[:course].blank?))
+      [Offer.where(semester_id: params[:semester], curriculum_unit_id: params[:curriculum_unit], course_id: params[:course]).first.allocation_tag.id]
+    when (not params[:curriculum_unit].blank?)
+      [CurriculumUnit.find(params[:curriculum_unit]).allocation_tag.id]
+    when (not params[:course].blank?)
+      [Course.find(params[:course]).allocation_tag.id]
+    when params.include?(:allocation_tags_ids)
+      params[:allocation_tags_ids].split(" ")
+    else
+      nil
     end
 
+    @admin  = params[:admin] 
+
+    if @admin
+      authorize! :create_designation, Allocation
+    elsif (not params.include?(:request))
+      authorize! :create_designation, Allocation, on: allocation_tags_ids.flatten
+    end
+
+    profile = params.include?(:profile) ? params[:profile] : Profile.student_profile
+    status  = params.include?(:status)  ? params[:status]  : Allocation_Pending
+    user    = params.include?(:user_id) ? params[:user_id] : current_user.id
+    raise t("allocations.error.student_or_basic") if profile == Profile.student_profile or (not(profile.blank?) and Profile.find(profile).has_type?(Profile_Type_Basic))
+    raise t("allocations.error.profile") if params[:profile].blank?
+    ok = allocate(allocation_tags_ids, user, profile, status)
+
+
+    unless params.include?(:request)
+      render :designates, status: (ok ? 200 : :unprocessable_entity)
+    else
+      case ok
+        when nil; render json: {success: true, message: t("allocations.warning.already_active"), type: "warning"}
+        when true; render json: {success: true, message: t("allocations.success.requested"), type: "notice"}
+        when false; render json: {success: false, alert: t("allocations.error.not_allocated")}, status: :unprocessable_entity
+      end
+    end
+  rescue => error
+    render json: {success: false, alert: error.message}, status: :unprocessable_entity
   end
 
   # PUT /allocations/1
@@ -183,13 +202,13 @@ class AllocationsController < ApplicationController
         end # if
       end # transaction
 
-      flash[:notice] = t(:enrollment_successful_update, :scope => [:allocations, :manage])
+      flash[:notice] = t(:enrollment_successful_update, scope: [:allocations, :manage])
     rescue ActiveRecord::RecordNotUnique
       error     = true
-      msg_error = t(:student_already_in_group, :scope => [:allocations, :error])
+      msg_error = t(:student_already_in_group, scope: [:allocations, :error])
     rescue 
       error     = true
-      msg_error = t(:enrollment_unsuccessful_update, :scope => [:allocations, :manage])
+      msg_error = t(:enrollment_unsuccessful_update, scope: [:allocations, :manage])
     end
 
     if error
@@ -205,32 +224,40 @@ class AllocationsController < ApplicationController
   # DELETE /allocations/1/cancel
   # DELETE /allocations/1/cancel_request
   def destroy
+    @allocation = Allocation.find(params[:id])
+
     authorize! :cancel, Allocation if not params.include?(:type)
     authorize! :cancel_request, Allocation if params.include?(:type) and params[:type] == 'request'
-
-    @allocation = Allocation.find(params[:id])
+    # authorize! :cancel_profile_request, Allocation, @allocation if params.include?(:profile)
 
     begin
       error = false
+      # if @allocation.profile_id == Profile.student_profile
+      #   # offer = @allocation.offer || @allocation.group.offer
+      #   # unless (offer.enrollment_start_date.to_date..(offer.enrollment_end_date.try(:to_date) || offer.end_date.to_date)).include?(Date.today)
+      #   #   error = true 
+      #   #   message = "fora do prazo"
+      #   # end
+      # end
       if params.include?(:type) and params[:type] == 'request' and @allocation.status == Allocation_Pending
         @allocation.destroy
-        message = t(:enrollm_request_cancel_message)
+        message = (params.include?(:profile) ? t("allocations.success.request_canceled") : t(:enrollm_request_cancel_message))
       else
-        @allocation.update_attributes!(:status => Allocation_Cancelled)
-        message = t(:enrollm_cancelled_message)
+        @allocation.update_attribute(:status, Allocation_Cancelled)
+        message = (params.include?(:profile) ? t("allocations.success.profile_canceled") : t(:enrollm_cancelled_message))
       end
     rescue Exception => e
-      message = t(:enrollm_not_cancelled_message)
+      message = (params.include?(:profile) ? t("allocations.error.cancel_request") : t(:enrollm_not_cancelled_message))
       error   = true
     end
 
     respond_to do |format|
       unless error
-        format.html { redirect_to(enrollments_url, notice: message) }
-        format.json { head :ok }
+        format.html { redirect_to(:back, notice: message) }
+        format.json { render json: {success: :ok, notice: message} }
       else
-        format.html { redirect_to(enrollments_url, alert: message) }
-        format.json { head :error }
+        format.html { redirect_to(:back, alert: message) }
+        format.json { render json: {success: false, alert: message}, status: :unprocessable_entity }
       end
     end
   end
@@ -297,30 +324,25 @@ class AllocationsController < ApplicationController
       end
     end
 
-    def allocate(allocation_tags_ids, user_id, profile, status, id = nil)
-      return false unless ((params.include?(:allocation_tags_ids) or params.include?(:allocation_tag_id)) and params.include?(:user_id) and (profile != ''))
-
-      total, corrects = 0, 0
-      unless id.nil? and params[:id].nil? # se alocação já existe (id não será nulo), então está desativada e deve ser reativada
-        id = params[:id] if id.nil?
-        allocation        = Allocation.find(id)
-        allocation.status = Allocation_Pending_Reactivate
-        total    = 1
-        corrects = 1 if allocation.save
-      else # se alocação está sendo realizada agora, deve ser criada
-        total = [allocation_tags_ids].compact.flatten.size
-        [allocation_tags_ids].compact.flatten.each do |id|
-          allocation = Allocation.new({
-            :user_id => params[:user_id],
-            :allocation_tag_id => id,
-            :profile_id => profile,
-            :status => status
-          })
-          corrects = corrects + 1 if allocation.save
-        end # allocation_tags_ids.each
-      end # unless params[:id].nil?
-
-      return (corrects == total)
+    def allocate(allocation_tags_ids, user_id, profile, status)
+      success = true
+      [allocation_tags_ids].flatten.each do |allocation_tag_id|
+        allocation = Allocation.where(allocation_tag_id: allocation_tag_id, user_id: user_id, profile_id: profile).first_or_initialize
+        unless allocation.new_record? # existe alocação
+          if allocation.status != Allocation_Activated # não ativa
+            allocation.update_attribute(:status, Allocation_Pending_Reactivate)
+          elsif [allocation_tags_ids].size == 1
+            success = nil
+          end
+        else # não existe alocação
+          allocation.status = status
+          success = false unless allocation.save
+        end
+      end
+    rescue => error
+      success = false
+    ensure
+      return success
     end
 
 end
