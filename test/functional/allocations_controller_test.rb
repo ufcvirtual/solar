@@ -6,6 +6,7 @@ class AllocationsControllerTest < ActionController::TestCase
 
   def setup
     @coordenador = users(:coorddisc)
+    @aluno1      = users(:aluno1)
     sign_in @coordenador
   end
 
@@ -230,5 +231,82 @@ class AllocationsControllerTest < ActionController::TestCase
 
   # end
 
+  test "cancelar alocacao" do
+    sign_in @coordenador
+    assert_difference("Allocation.where('status = 1').count", -1) do
+      assert_no_difference("Allocation.count") do
+        @request.env['HTTP_REFERER'] = "#{::Rails.root.to_s}/users/profiles"
+        delete :destroy, {type: "request", profile: true, id: @coordenador.allocations.first.id, format: :json}
+      end
+    end
+
+    assert_response :success
+    assert_equal I18n.t("allocations.success.profile_canceled"), get_json_response("notice")
+  end
+
+  test "nao cancelar alocacao de outro usuario" do
+    sign_in @aluno1
+    assert_no_difference("Allocation.count") do
+      @request.env['HTTP_REFERER'] = "#{::Rails.root.to_s}/users/profiles"
+      delete :destroy, {type: "request", profile: true, id: allocations(:h).id, format: :json}
+    end
+
+    assert_response :unprocessable_entity
+    assert_equal I18n.t(:no_permission), get_json_response("alert")
+  end
+
+  test "nao cancelar alocacao com perfil de aluno" do
+    sign_in @aluno1
+    assert_no_difference("Allocation.count") do
+      # alocação de aluno para aluno1 em allocation_tag_3
+      @request.env['HTTP_REFERER'] = "#{::Rails.root.to_s}/users/profiles"
+      delete :destroy, {type: "request", profile: true, id: allocations(:l).id, format: :json}
+    end
+
+    assert_response :unprocessable_entity
+    assert_equal I18n.t(:no_permission), get_json_response("alert")
+  end
+
+  test "solicitar nova alocacao geral" do
+    sign_in @aluno1
+    assert_difference("Allocation.count") do
+      post :create_designation, {request: true, profile: profiles(:editor)}
+    end
+
+    assert_equal Allocation.last.status, Allocation_Pending
+    assert_response :success
+    assert_equal I18n.t("allocations.success.requested"), get_json_response("message")
+  end
+
+  test "solicitar nova alocacao em UC" do
+    sign_in @aluno1
+    assert_difference("Allocation.count") do
+      post :create_designation, {request: true, profile: profiles(:editor), curriculum_unit: curriculum_units(:r2).id}
+    end
+
+    assert_equal Allocation.last.status, Allocation_Pending
+    assert_response :success
+    assert_equal I18n.t("allocations.success.requested"), get_json_response("message")
+  end
+
+  test "solicitar alocacao ja ativa" do
+    sign_in @coordenador
+    assert_no_difference("Allocation.count") do
+      post :create_designation, {request: true, profile: profiles(:editor), groups: @coordenador.allocations.where("status=1").first.group.id}
+    end
+
+    assert_response :success
+    assert_equal I18n.t("allocations.warning.already_active"), get_json_response("message")
+  end
+
+  test "nao solicitar nova alocacao sem informar perfil" do
+    sign_in @aluno1
+    assert_no_difference("Allocation.count") do
+      post :create_designation, {request: true, profile: "", curriculum_unit: curriculum_units(:r2).id}
+    end
+
+    assert_response :unprocessable_entity
+    assert_equal I18n.t("allocations.error.profile"), get_json_response("alert")
+  end
 
 end

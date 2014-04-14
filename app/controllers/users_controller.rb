@@ -113,7 +113,7 @@ class UsersController < ApplicationController
   def request_profile
     @allocation = Allocation.new
     @types      = CurriculumUnitType.all
-    @profiles   = Profile.where("types <> ? and id <> ?", Profile_Type_Basic, 1).order("name")
+    @profiles   = Profile.where("types <> ? and id <> ?", Profile_Type_Basic, Profile.student_profile).order("name")
     render layout: false
   end
 

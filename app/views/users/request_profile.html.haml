@@ -67,8 +67,10 @@
         });
       }).error(function(data){
         var response = JSON.parse(data.responseText);
-        if (typeof(response.alert) != "undefined")
+        if (typeof(response.alert) != "undefined"){
+          erase_flash_messages();
           flash_message(response.alert, 'alert', "request_profile .flash_message_wrapper");
+        }
       });
     });
   });
