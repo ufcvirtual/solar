@@ -153,7 +153,7 @@ class Assignment < Event
   end
 
   def students_without_groups(allocation_tag)
-    academic_allocation  = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id,self.id, 'Assignment')  
+    academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id,self.id, 'Assignment')
     students_in_class   = Assignment.list_students_by_allocations(allocation_tag.id).map(&:id)
     students_with_group = (academic_allocation.nil? ? [] : academic_allocation.group_assignments.map(&:group_participants).flatten.map(&:user_id))
     students            = [students_in_class - students_with_group].flatten.compact.uniq

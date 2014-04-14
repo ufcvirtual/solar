@@ -162,8 +162,8 @@ class AssignmentsController < ApplicationController
     @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  #arquivos que fazem parte da descrição da atividade
     @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
     if @assignment.type_assignment == Assignment_Type_Group
-      academic_allocations    = AcademicAllocation.find_all_by_academic_tool_id(@assignment.id)  
-      @groups                 = GroupAssignment.find_all_by_academic_allocation_id(academic_allocations)
+      academic_allocation     = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(@allocation_tag.id, @assignment.id, 'Assignment')
+      @groups                 = GroupAssignment.find_all_by_academic_allocation_id(academic_allocation)
       @students_without_group = @assignment.students_without_groups(@allocation_tag)
     else
       allocation_tags = @allocation_tag.related.join(',')
