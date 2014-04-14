@@ -73,10 +73,10 @@
             = link_to t(".assignment"), "#"
 
       / - if (can? lista_de_tests, Test, :on => @allocation_tags_ids) and (Test.constants.include?("#{@selected}_PERMISSION".to_sym))
-      .uc_item
-        .test
-          = link_to(content_tag(:i, nil, class: 'icon-exam big'), "#", class: 'btn disabled', onclick: "javascript:alert('#{t(".in_development")}');")
-          = link_to t(".test"), "#", onclick: "javascript:alert('#{t(".in_development")}');"
+      /.uc_item
+      /  .test
+      /    = link_to(content_tag(:i, nil, class: 'icon-exam big'), "#", class: 'btn disabled', onclick: "javascript:alert('#{t(".in_development")}');")
+      /    = link_to t(".test"), "#", onclick: "javascript:alert('#{t(".in_development")}');"
 
   - if @selected == "GROUP" and false # quando for usar mesmo esta funcionalidade, retirar "and false"
     %fieldset#batch
@@ -101,4 +101,19 @@
       });
     });
 
+    // se nenhuma opção estiver disponível
+    if( !$("#uc_education .block_content").children().size() && !$("#uc_comunication .block_content").children().size() && !$("#uc_informations .block_content").children().size()){
+      flash_message("#{t(".no_permission_info")}", "warning");
+      $(".edition_items").html("");
+    }
+
+    if( !$("#uc_education .block_content").children().size() )
+      $("#uc_education").remove();
+
+    if( !$("#uc_comunication .block_content").children().size() )
+      $("#uc_comunication").remove();
+
+    if( !$("#uc_informations .block_content").children().size() )
+      $("#uc_informations").remove();
+      
   });

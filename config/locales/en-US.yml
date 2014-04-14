@@ -1522,6 +1522,7 @@
       test: Test
       edition_of: Edition of %{of}
       in_development: In development
+      no_permission_info: You don't have permission at any action with the choosen data
       # EDX_items
       application: Application
       edit_content: Edit content

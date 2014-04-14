@@ -1669,6 +1669,7 @@
       test: Prova
       edition_of: Edição de %{of}
       in_development: Em desenvolvimento
+      no_permission_info: Você não possui permissão em nenhuma ação para os dados escolhidos
       # EDX_items
       application: Aplicação
       edit_content: Editar conteúdo
