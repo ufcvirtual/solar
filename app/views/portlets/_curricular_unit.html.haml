@@ -12,21 +12,24 @@
       - if curriculum_units.length > 0
         - curriculum_units.each do |curriculum_unit|
           %li
-            - unless curriculum_unit.offers.empty? or curriculum_unit.groups.empty?
-              - if ((user_session[:tabs][:opened].length >= Max_Tabs_Open.to_i) and (!user_session[:tabs][:opened].has_key?(curriculum_unit.name)))
+            - if curriculum_unit[:has_offers] and curriculum_unit[:has_groups]
+              - if ((user_session[:tabs][:opened].length >= Max_Tabs_Open.to_i) and (!user_session[:tabs][:opened].has_key?(curriculum_unit["name"])))
                 - options = {} 
-                - html_options = {:onclick => "javascript:alert('"+t(:curriculum_access_alert)+"');return false;", :class=>'link_content' }
+                - html_options = {:onclick => "javascript:alert('"+t(:curriculum_access_alert)+"');return false;", class: 'link_content' }
               - else 
-                - options = add_tab_path(id: curriculum_unit.id, context: Context_Curriculum_Unit, name: curriculum_unit.name.titleize, allocation_tag_id: curriculum_unit.allocation_tag.try(:id))
-                - html_options = {:class=>'link_content'}
+                - options = add_tab_path(id: curriculum_unit["id"], context: Context_Curriculum_Unit, name: curriculum_unit["name"].titleize, allocation_tag_id: curriculum_unit[:allocation_tag_id])
+                - html_options = {class: 'link_content'}
 
-              = link_to curriculum_unit.name.titleize, options, html_options
+              - course = Course.where(id: curriculum_unit[:course_id]).first
+              = link_to (course.nil? ? curriculum_unit["name"].titleize : [course.try(:code), curriculum_unit["name"].titleize].join(" - ")), options, html_options.merge(:"data-tooltip" => (course.nil? ? curriculum_unit["name"].titleize : [course.try(:code), course.try(:name), curriculum_unit["name"].titleize].join(" - ")))
             - else
-              .disabled{:title => (curriculum_unit.offers.empty? ? t(:my_solar_uc_without_offer) : t(:my_solar_uc_without_group))}= curriculum_unit.name
+              .disabled{:title => (curriculum_unit[:has_groups] ? t(:my_solar_uc_without_offer) : t(:my_solar_uc_without_group))}= curriculum_unit["name"]
 
       - if curriculum_units.length == 0
         .no-data
           = t(:my_solar_curriculum_without)
+
+= javascript_include_tag "tooltip"
 
 :javascript
 

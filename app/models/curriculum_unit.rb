@@ -61,21 +61,18 @@ SQL
   ##
   def self.find_default_by_user_id(user_id, as_object = false)
     user_activated_allocations = User.find(user_id).allocations.where(status: Allocation_Activated)
-    allocation_tags_ids        = user_activated_allocations.flatten.map(&:allocation_tag_id).uniq
+    allocation_tags            = user_activated_allocations.flatten.map(&:allocation_tag).uniq.compact
 
-    curriculum_units, offers, groups = [], [], []
-    allocation_tags_ids.each_with_index do |at, idx|
-      curriculum_units[idx] =  CurriculumUnit.joins(:allocation_tag).where("allocation_tags.id = #{at.to_i}").flatten 
-      offers[idx] = Offer.joins(:allocation_tag).where("allocation_tags.id = #{at.to_i}") 
-      curriculum_units[idx] = offers[idx].collect{|offer| offer.curriculum_unit} if curriculum_units[idx].empty?
-      groups[idx] = Group.joins(:allocation_tag).where("allocation_tags.id = #{at.to_i}") 
-      curriculum_units[idx] = groups[idx].collect{|group| group.curriculum_unit} if curriculum_units[idx].empty?
-      curriculum_units[idx] = Course.joins(:allocation_tag).where("allocation_tags.id = #{at.to_i}").collect{|course| course.curriculum_units} if curriculum_units[idx].empty?
-      offers[idx] = offers[idx].empty? ? "" : offers[idx][0].id
-      groups[idx] = groups[idx].empty? ? "" : groups[idx][0].id
+    curriculum_units = allocation_tags.collect do |allocation_tag|
+      case 
+        when allocation_tag.curriculum_unit; allocation_tag.curriculum_unit.attributes.merge(allocation_tag_id: allocation_tag.id, course_id: nil, has_offers: not(allocation_tag.curriculum_unit.offers.empty?), has_groups: not(allocation_tag.curriculum_unit.groups.empty?))
+        when allocation_tag.offer; allocation_tag.offer.curriculum_unit.attributes.merge(allocation_tag_id: allocation_tag.id, course_id: allocation_tag.offer.course.id, has_offers: true, has_groups: not(allocation_tag.offer.groups.empty?))
+        when allocation_tag.group; allocation_tag.group.offer.curriculum_unit.attributes.merge(allocation_tag_id: allocation_tag.id, course_id: allocation_tag.group.offer.course.id, has_offers: true, has_groups: true)
+        when allocation_tag.course; allocation_tag.course.curriculum_units.collect{ |uc| uc.attributes.merge(allocation_tag_id: allocation_tag.id, course_id: allocation_tag.course.id, has_offers: not(uc.offers.empty?), has_groups: not(uc.groups.empty?))}
+      end
     end
 
-    return {"curriculum_units" => curriculum_units.uniq, "allocation_tags_ids" => allocation_tags_ids}
+    curriculum_units.flatten.delete_if{|uc| uc.empty? or uc.nil?}.uniq{|uc| uc["id"]}
   end
 
   ##
