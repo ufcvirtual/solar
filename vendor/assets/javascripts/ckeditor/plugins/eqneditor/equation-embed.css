@@ -192,7 +192,7 @@ label[for = compressed]{
   color: #03355f;
 }
 
-select[title = 'Cores da equação'], select[title = "Equation Color"]{
+select[title = 'Cores da equação'], select[title = "Equation Color"], select[title = "Equation Colour"]{
   position: absolute;
   top: 43px;
   left: 0px;
@@ -345,7 +345,7 @@ input[value = Exemplos], input[value = "Examples"]{
   top: 104px;
 }
 
-input[value = Favoritos], input[value = "Favorites"]{
+input[value = Favoritos], input[value = "Favorites"], input[value = "Favourites"]{
   background-color: #316697;
   color: #fff;
   height: auto;
