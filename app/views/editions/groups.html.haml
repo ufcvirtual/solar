@@ -9,6 +9,8 @@
       = label_tag :type, t(".type")
       %span.type_description= @type.description
     .filter
+      .type
+        = hidden_field_tag :type_id, @type.id
       .course
         = label_tag :course, t(".course")
         = select_tag :course, options_from_collection_for_select(@courses, "id", "code_name"), include_blank: true

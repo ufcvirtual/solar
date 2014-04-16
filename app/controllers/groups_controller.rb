@@ -23,7 +23,7 @@ class GroupsController < ApplicationController
   def mobilis_list
      @groups = current_user.groups
     
-    if params.include?(:curriculum_unit_id)      
+    if params.include?(:curriculum_unit_id)
       @groups = CurriculumUnit.find(params[:curriculum_unit_id]).groups.where(id: @groups)
     end
 
@@ -34,7 +34,11 @@ class GroupsController < ApplicationController
 
   # Edicao
   def list
-    @offer = Offer.find_by_curriculum_unit_id_and_semester_id_and_course_id(params[:curriculum_unit_id], params[:semester_id], params[:course_id])
+    if params[:type_id].to_i == 3
+      @offer = Offer.find_by_semester_id_and_course_id(params[:semester_id], params[:course_id])
+    else
+      @offer = Offer.find_by_curriculum_unit_id_and_semester_id_and_course_id(params[:curriculum_unit_id], params[:semester_id], params[:course_id])
+    end
 
     begin
       authorize! :list, Group unless params[:checkbox]#, on: [@offer.allocation_tag.id]
@@ -48,7 +52,14 @@ class GroupsController < ApplicationController
 
   def new
     authorize! :create, Group
-    offer  = Offer.find_by_curriculum_unit_id_and_semester_id_and_course_id(params[:curriculum_unit_id], params[:semester_id], params[:course_id])
+
+    @type_id = params[:type_id]
+    if @type_id == "3"
+      offer  = Offer.find_by_semester_id_and_course_id(params[:semester_id], params[:course_id])
+    else
+      offer  = Offer.find_by_curriculum_unit_id_and_semester_id_and_course_id(params[:curriculum_unit_id], params[:semester_id], params[:course_id])
+    end
+
     @group = Group.new offer_id: offer.try(:id)
   end
 

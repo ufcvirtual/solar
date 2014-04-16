@@ -9,7 +9,11 @@ $(function(){
   $('.disable_group, .enable_group, .btn_del, .btn_edit').attr("disabled", true);
 
   $('#btn_new_group').click(function(){
-    var url = $(this).data("link-new").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+    if ($('.filter #type_id').val() == "3") // curso livre
+      var url = $(this).data("link-new").replace('type_param', $('.filter #type_id').val()).replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value'));
+    else
+      var url = $(this).data("link-new").replace('type_param', $('.filter #type_id').val()).replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+
     $(this).call_fancybox({href : url, open: true});
   });
 
