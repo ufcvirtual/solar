@@ -28,7 +28,7 @@ class CurriculumUnitsControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
     get :index, {type_id: curriculum_unit_types(:distancia).id}
     assert_response :redirect
-    assert_nil assigns(:curriculum_units)
+    assert assigns(:curriculum_units).empty?
   end
 
   test "cria uc" do
