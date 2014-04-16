@@ -8,9 +8,9 @@
       - @lessons.each do |lesson|
         - lesson_closed_class = "block_content_line "
         - lesson_closed_class = lesson_closed_class + "period_ended" if (lesson.closed?)
-        %div(class=lesson_closed_class)
+        %div{class: lesson_closed_class}
         
-          %span(class="block_content_gray")
+          %span.block_content_gray
             = "#{t(:since)}" if (lesson.schedule.end_date.nil?)
             = [l(lesson.schedule.start_date, format: :normal), (lesson.schedule.end_date.nil? ? t(:no_end_date) : l(lesson.schedule.end_date, format: :normal))].join(" - ")
           - if lesson.closed?  
@@ -18,6 +18,8 @@
             = "(#{t(:lesson_closed_short)})" if (not(lesson.schedule.end_date.nil?)) and (lesson.schedule.end_date < Date.today)
           - else
             = link_to lesson.name, lesson_path(lesson.id), class: "link_content lesson", "data-fancybox-type" => "iframe"
+          - if lesson.is_draft?
+            .test_lesson= "(#{t(:lesson_test)})"
     - else
       .block_content.block_content_text= t(:lesson_message)
 

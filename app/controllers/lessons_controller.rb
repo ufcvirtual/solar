@@ -25,7 +25,7 @@ class LessonsController < ApplicationController
     begin
       authorize! :list, Lesson, on: [allocation_tags].flatten
       @allocation_tags = AllocationTag.where(id: allocation_tags)
-      @allocation_tags_ids = @allocation_tags.map(&:id)
+      @allocation_tags_ids  = @allocation_tags.map(&:id)
       @academic_allocations = AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where(allocation_tag_id: @allocation_tags_ids)
     rescue
       render nothing: true, status: 500
@@ -249,7 +249,7 @@ class LessonsController < ApplicationController
 
     def lessons_to_open(allocation_tags_ids = nil)
       allocation_tags_ids = allocation_tags_ids || AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
-      Lesson.to_open(allocation_tags_ids)
+      Lesson.to_open(allocation_tags_ids, current_user.id)
     end
 
     # define as variáveis e retorna se as aulas são válidas ou não para download

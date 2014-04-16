@@ -555,6 +555,7 @@
   lesson_goto: "Go to lesson"
   lesson_closed: "Lesson closed"
   lesson_closed_short: "closed"
+  lesson_test: test lesson
   since: Since
   no_end_date: "On"
 
