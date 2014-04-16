@@ -58,4 +58,11 @@
   .fancybox-skin {
     background-color: white;
   }
+
+  // fixme andrei
+  // limitando altura do select do filtro para evitar scroll no fancybox
+  .ui-combobox .ui-menu {
+    max-height: 150px;
+    overflow-x: auto;
+  }
 }
