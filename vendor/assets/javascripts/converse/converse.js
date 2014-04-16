@@ -2204,7 +2204,6 @@
             }
         });
 
-        ob = null;
 
         this.ChatBoxesView = Backbone.View.extend({
             el: '#collective-xmpp-chat-data',
@@ -2313,6 +2312,7 @@
                     'resources': [],
                     'status': ''
                 }, attributes);
+                ob = Strophe;
                 attrs.sorted = false;
                 attrs.chat_status = 'offline';
                 this.set(attrs);
@@ -2371,7 +2371,7 @@
             },
 
             template: _.template(
-                '<a class="open-chat" title="'+__('Click to chat with this contact')+'" href="#">'+
+                '<a class="open-chat" href="#" id="{{fullname}}">'+
                     '<span class="icons-{{ chat_status }}" title="{{ status_desc }}"></span>{{ fullname }}'+
                 '</a>'
                 // +'<a class="remove-xmpp-contact icons-remove" title="'+__('Click to remove this contact')+'" href="#"></a>'
@@ -2407,7 +2407,6 @@
                     }, this);
 
                 this.$el.addClass(item.get('chat_status'));
-
                 if (ask === 'subscribe') {
                     this.$el.addClass('pending-xmpp-contact');
                     this.$el.html(this.pending_template(item.toJSON()));
@@ -2740,14 +2739,13 @@
 
                 this.model.on("remove", function (item) { this.removeRosterItemView(item); }, this);
                 this.model.on("destroy", function (item) { this.removeRosterItemView(item); }, this);
-
                 var roster_markup = this.contacts_template();
                 if (converse.allow_contact_requests) {
                     roster_markup = this.requesting_contacts_template() + roster_markup + this.pending_contacts_template();
                 }
                 this.$el.hide().html(roster_markup);
-
                 this.model.fetch({add: true}); // Get the cached roster items from localstorage
+
             },
             searchUser: function(el){
                 valor=el.target.value;
@@ -2847,8 +2845,27 @@
                     view.render();   
                 } else {
                     this.$el.find('#xmpp-contacts').after(view.render().el);
-                    
                 }
+                //Muda Title para Turmas
+                setTimeout(function(){
+                    for(ele in con.connection.roster.items){
+                    if(con.connection.roster.items[ele].jid == item.id){
+                        title = "";
+                        for(grou in con.connection.roster.items[ele].groups){
+                            group = con.connection.roster.items[ele].groups[grou];
+                            if(grou<con.connection.roster.items[ele].groups.length-1)
+                                title = title + group.split("_").pop() + "\n";
+                            else
+                                title = title + group.split("_").pop();
+                        }
+                        item.groups = title;
+                        contactRoster = view.$el[0].childNodes[0];
+                        contactRoster.title = title;
+                    }                    
+                }    
+                },500);
+                
+                
             },
 
             render: function (item) {
@@ -2888,6 +2905,7 @@
                             this.$el.show();
                         }
                     }
+
                 }
                 // Hide the headings if there are no contacts under them
                 _.each([$my_contacts, $contact_requests, $pending_contacts], function (h) {
@@ -2905,6 +2923,7 @@
                 if (!$count.is(':visible')) {
                     $count.show();
                 }
+               
                 return this;
             },
 
@@ -3334,3 +3353,6 @@
         }
     };
 }));
+ob = new Array();
+co = 0;
+it = new Array();
