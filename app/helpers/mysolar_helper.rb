@@ -18,7 +18,7 @@ module MysolarHelper
 
     # re-ordena as uc de acordo com a maior quantidade de acessos nas últimas três semanas
     curriculum_units = curriculum_units.sort_by { |curriculum_unit|
-      -(Log.count(:id, conditions: {log_type: 3, user_id: current_user.id, curriculum_unit_id: curriculum_unit["id"], created_at: 3.week.ago..Time.now}))
+      -(Log.count(:id, conditions: {log_type: Log::TYPE[:course_access], user_id: current_user.id, curriculum_unit_id: curriculum_unit["id"], created_at: 3.week.ago..Time.now}))
     }
 
     return curriculum_units.uniq
