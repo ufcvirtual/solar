@@ -124,6 +124,7 @@ Solar::Application.routes.draw do
   resources :posts, only: [:index] do
     resources :post_files, only: [:new, :create, :destroy, :download] do
       get :download, on: :member
+      get :api_download, on: :member
     end
   end
 

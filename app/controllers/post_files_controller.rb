@@ -2,7 +2,9 @@ include FilesHelper
 
 class PostFilesController < ApplicationController
 
-  load_and_authorize_resource :except => [:new, :create]
+  doorkeeper_for :api_download
+
+  load_and_authorize_resource :except => [:new, :create, :api_download]
   authorize_resource :only => [:new, :create]
 
   def new
@@ -70,6 +72,13 @@ class PostFilesController < ApplicationController
   end
 
   def download
+    redirect_error = posts_path(discussion_id: @post_file.post.discussion_id)
+    download_file(redirect_error, @post_file.attachment.path, @post_file.attachment_file_name)
+  end
+
+  def api_download
+    @post_file = PostFile.find(params[:id])
+
     redirect_error = posts_path(discussion_id: @post_file.post.discussion_id)
     download_file(redirect_error, @post_file.attachment.path, @post_file.attachment_file_name)
   end

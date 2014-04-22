@@ -105,6 +105,7 @@ module V1
 
       ## LIST files
 
+      # GET posts/:id/files
       desc "Files of a post."
       params do
         requires :id, type: Integer, desc: "Discussion ID."
