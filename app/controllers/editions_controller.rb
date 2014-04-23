@@ -70,7 +70,7 @@ class EditionsController < ApplicationController
       uri_courses = JSON.parse(res.body) #pega endereço dos cursos
       courses_created_by_current_user = "[]" 
       unless uri_courses.empty?
-        if uri_courses.has_key?("error_message")
+        if uri_courses.class == Hash and uri_courses.has_key?("error_message")
           raise uri_courses["error_message"]
         else
           courses_created_by_current_user = ""
