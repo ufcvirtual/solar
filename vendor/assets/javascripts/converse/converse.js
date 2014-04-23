@@ -7,7 +7,7 @@
  */
 
 // AMD/global registrations
-
+var bs;
 (function (root, factory) {
     if (console===undefined || console.log===undefined) {
         console = { log: function () {}, error: function () {} };
@@ -423,6 +423,15 @@
             // No create the view which will fetch roster items from
             // localStorage
             this.rosterview = new this.RosterView({'model':this.roster});
+
+            //Verifica se tem contatos. Se não, esconde a controlbox. 
+            setTimeout(function(){
+                 // alert(con.connection.roster.items.length);
+                if (con.connection.roster.items.length === 0){
+                    $('.toggle-online-users').click();
+                };
+            },400);
+                
         };
 
         this.onConnected = function () {
