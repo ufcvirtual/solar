@@ -7,7 +7,7 @@
  */
 
 // AMD/global registrations
-var bs;
+
 (function (root, factory) {
     if (console===undefined || console.log===undefined) {
         console = { log: function () {}, error: function () {} };
@@ -2321,7 +2321,6 @@ var bs;
                     'resources': [],
                     'status': ''
                 }, attributes);
-                ob = Strophe;
                 attrs.sorted = false;
                 attrs.chat_status = 'offline';
                 this.set(attrs);
@@ -3362,6 +3361,3 @@ var bs;
         }
     };
 }));
-ob = new Array();
-co = 0;
-it = new Array();
