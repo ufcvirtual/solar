@@ -18,10 +18,13 @@
     .input
       = label_tag t(".group"), nil, class: "form_label"
       %span.label_info= (@course.nil? ? @group.code : @course[:group])
-    - if @course.nil?
-      .input
-        = label_tag t(".responsibles"), nil, class: "form_label"
+    .input
+      = label_tag t(".responsibles"), nil, class: "form_label"
+      - if @course.nil?
         %span.label_info= (@responsibles.empty? ? t(".not_defined") : @responsibles.map{|r| "#{r.name} (#{r.profile_name})"}.join(", "))
+      - else
+        %span.label_info= (@course[:responsibles].empty? ? t(".not_defined") : @course[:responsibles].join(", "))
+    - if @course.nil?
       .input
         = label_tag t(".syllabus"), nil, class: "form_label"
         %span.label_info= @curriculum_unit.syllabus

@@ -103,7 +103,13 @@
 }
 
 #show_enrollment_info{
+  .input{
+    margin-bottom: 10px;
+  }
   .form_label{
     width: 75px;  
+  }
+  .right_buttons{
+    margin-right: auto;
   }
 }

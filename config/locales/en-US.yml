@@ -508,21 +508,21 @@
       of: "of"
       no_curriculum_unit_found: "No curriculum unit found"
     show:
-      course: "Course: "
-      curriculum_unit: "Curriculum Unit: "
-      responsibles: "Responsibles: "
-      offer_period: "Offer Period: "
-      syllabus: "Syllabus: "
-      working_hours: "Working Hours: "
-      credits: "Credits: "
-      prerequisites: "Prerequisites: "
-      not_defined: "Not Defined"
+      course: Course
+      curriculum_unit: Curriculum Unit
+      responsibles: Responsibles
+      offer_period: Offer Period
+      syllabus: Syllabus
+      working_hours: Working Hours
+      credits: Credits
+      prerequisites: Prerequisites
+      not_defined: Not Defined
       close: Close
       details: Details
-      category: "Category: "
-      enrollment_period: "Enrollment Period: "
-      semester: "Semester: "
-      group: "Group: "
+      category: Category
+      enrollment_period: Enrollment Period
+      semester: Semester
+      group: Group
     not_defined: Not defined
 
   enrollm_cancelled_message: "Enrollment cancelled"

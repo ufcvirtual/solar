@@ -659,21 +659,21 @@
       of: "por"
       no_curriculum_unit_found: "Nenhuma unidade curricular encontrada"
     show:
-      course: "Curso: "
-      curriculum_unit: "Unidade Curricular: "
-      responsibles: "Responsáveis: "
-      offer_period: "Período de Oferta: "
-      syllabus: "Ementa: "
-      working_hours: "Carga Horária: "
-      credits: "Créditos: "
-      prerequisites: "Pré-requisitos: "
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      responsibles: Responsáveis
+      offer_period: Período de Oferta
+      syllabus: Ementa
+      working_hours: Carga Horária
+      credits: Créditos
+      prerequisites: Pré-requisitos
       not_defined: Não definido
-      close: "Fechar"
+      close: Fechar
       details: Informações
-      category: "Categoria: "
-      enrollment_period: "Período de Matrícula: "
-      semester: "Semestre: "
-      group: "Turma: "
+      category: Categoria
+      enrollment_period: Período de Matrícula
+      semester: Semestre
+      group: Turma
     not_defined: Não definido
 
   enrollm_request_cancel_message: "Pedido de matrícula cancelado"  
