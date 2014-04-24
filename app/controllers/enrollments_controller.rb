@@ -44,4 +44,20 @@ class EnrollmentsController < ApplicationController
     render json: {success: false, msg: "#{error}"}
   end
 
+  def show
+    authorize! :index, Enrollment
+
+    if params.include?(:public) and params.include?(:public_course)
+      public_course = params[:public_course]
+      course_id     = public_course["course_id"].split("/")
+      enroll_date   = [l(public_course["enrollment_start"].to_date , format: :default), l(public_course["enrollment_end"].to_date, format: :default)].join(" - ") unless public_course["enrollment_start"].blank? or public_course["enrollment_end"].blank?
+      date          = [l(public_course["start"].to_date , format: :default), l(public_course["end"].to_date, format: :default)].join(" - ") unless public_course["start"].blank? or public_course["end"].blank?
+      @course       = {semester: course_id[2], group: course_id[1], enrollment_date: enroll_date, offer_date: date, name: public_course["display_name"]}
+    else
+      @group           = Group.find(params[:id])
+      @curriculum_unit = @group.offer.curriculum_unit
+      @responsibles    = @group.responsibles
+    end
+  end
+
 end

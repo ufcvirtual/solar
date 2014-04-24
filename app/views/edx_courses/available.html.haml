@@ -1,4 +1,4 @@
-- @available_courses.each do |course_edx|
+- @available_courses.each_with_index do |course_edx, idx|
   - course = Base64.encode64(course_edx['resource_uri']) 
   %tr.lines.edx
     %td= course_edx['display_name']
@@ -9,5 +9,11 @@
     %td= course_edx_id[2]
     %td= course_edx_id[1]   
     %td= l(course_edx['enrollment_start'].to_date , format: :default) + " - " + l(course_edx['enrollment_end'].to_date, format: :default) if course_edx['enrollment_start'] and course_edx['enrollment_end']
+    %td= link_to content_tag(:i, nil, class: 'icon-info'), public_course_enrollments_path(public_course: course_edx), class: "btn", id: "enrollment_info_#{course_edx['course_id']}"
     - user_enrolled = @my_courses.include?(course_edx['course_id'])
     %td= button_to t("enrollments.index.#{user_enrolled ? "cancel" : "enroll"}"), eval("#{user_enrolled ? 'unenroll' : 'enroll'}_edx_courses_path(course: course)"), class: "btn #{user_enrolled ? 'btn_caution' : 'btn_default'}"
+
+:javascript
+  $(function(){
+    $('[id^="enrollment_info"]').call_fancybox();
+  });

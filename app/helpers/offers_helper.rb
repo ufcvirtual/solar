@@ -66,15 +66,14 @@ module OffersHelper
     return {"uc" => ucs.join(", "), "course" => courses.join(", ")}
   end
 
-
-
   def enrollment_info(offer)
-    period = offer.enrollment_period
+    enrollment_period = offer.enrollment_period
 
-    schedule_dates = [I18n.l(period.first, format: :normal), (period.last.nil? ? I18n.t(:no_end_date, scope: :offers) : I18n.l(period.last, format: :normal))].join(" - ")
-    is_active = period.first <= Time.now and (period.last.nil? or period.last >= Time.now)
+    enrollment_dates = [I18n.l(enrollment_period.first, format: :normal), (enrollment_period.last.nil? ? I18n.t(:no_end_date, scope: :offers) : I18n.l(enrollment_period.last, format: :normal))].join(" - ")
+    is_active = enrollment_period.first <= Time.now and (enrollment_period.last.nil? or enrollment_period.last >= Time.now)
 
-    {period: schedule_dates, is_active: is_active}
+    offer_period = [I18n.l(offer.start_date), (offer.end_date.nil? ? I18n.t(:no_end_date, scope: :offers) : I18n.l(offer.end_date))].join(" - ")
+    {period: enrollment_dates, is_active: is_active, offer: offer_period}
   end
 
 end

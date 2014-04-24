@@ -45,4 +45,15 @@ class Group < ActiveRecord::Base
     [offer.course.try(:name), offer.curriculum_unit.try(:name), offer.semester.name, code].compact.join(" - ")
   end
 
+  def responsibles
+    allocation_tags_ids = self.allocation_tag.related({all: false, upper: true})
+    allocation_tags_ids << self.allocation_tag.id
+
+    Allocation.joins(:profile, :user)
+      .where(status: Allocation_Activated, allocation_tag_id: allocation_tags_ids)
+      .where("cast( profiles.types & '#{Profile_Type_Class_Responsible.to_s(2)}' as boolean)")
+      .select("users.name, profiles.name AS profile_name")
+      .uniq
+  end
+
 end

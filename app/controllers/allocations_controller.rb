@@ -67,7 +67,7 @@ class AllocationsController < ApplicationController
       p = params.select { |k, v| ['offer_id', 'group_id', 'status'].include?(k) }
       p['group_id'] = (params.include?('group_id') and groups.include?(params['group_id'].to_i)) ? [params['group_id']] : groups.flatten.compact.uniq
 
-      @allocations = Allocation.enrollments(p)
+      @allocations  = Allocation.enrollments(p)
     end
   end
 
