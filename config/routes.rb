@@ -149,9 +149,8 @@ Solar::Application.routes.draw do
       post :reactivate
       put :deactivate
       put :activate
-      # put :reject, action: :update, defaults: {allocation: {status: 4}}
-      put :reject, action: :accept_or_reject, defaults: {accept: false}
-      put :accept, action: :accept_or_reject, defaults: {accept: true}
+      put :reject, action: :update, defaults: {reject: true, allocation: {status: nil}}
+      put :accept, action: :activate, defaults: {accept: true}
     end
   end
 

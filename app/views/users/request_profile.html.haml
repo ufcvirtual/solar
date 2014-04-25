@@ -46,7 +46,8 @@
 :javascript
 
   $(function(){
-
+    
+    var admin_profile = "#{Profile.where("cast(types & #{Profile_Type_Admin} as boolean)").first.id}"
     $("#profile_id").combobox();
 
     $("#save").click(function(){
@@ -73,4 +74,11 @@
         }
       });
     });
+
+    $( "#profile_id" ).combobox({
+      select: function( event, ui ) {
+        $('#curriculum_unit_type').combobox("option", { disabled: (ui.item.value == admin_profile) });
+      }
+    });
+
   });

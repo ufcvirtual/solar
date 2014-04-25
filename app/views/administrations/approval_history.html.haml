@@ -17,9 +17,9 @@
         %tbody
           - @allocations.each do |allocation|
             - allocation_tag_info = allocation.allocation_tag.nil? ? nil : AllocationTag.allocation_tag_details(allocation.allocation_tag, true)
-            - status_color = case allocation.status.to_i
-            - when (Allocation_Activated); "#006600"
-            - when (Allocation_Rejected); "#FF0000"
+            - status_color        = case allocation.status.to_i
+              - when (Allocation_Activated); "#006600"
+              - when (Allocation_Rejected); "#FF0000"
             %tr.lines
               %td= allocation.user.name
               %td= allocation.profile.name
@@ -41,7 +41,7 @@
                   - else
                     = t("administrations.allocation_approval.not_specified")
               %td{style: "color: #{status_color}"}= name_of(allocation.status, false)
-              %td= l(allocation.updated_at, format: :normal)
+              %td= l(allocation.updated_at, format: :at_date)
     - else
       .block_content.block_content_text= "Não há aceitações ou rejeições recentes"
 

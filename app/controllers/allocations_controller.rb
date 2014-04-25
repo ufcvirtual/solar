@@ -112,6 +112,8 @@ class AllocationsController < ApplicationController
   # Usado na alocacao de usuarios
   def create_designation
     allocation_tags_ids = case
+    when (params.include?(:profile) and Profile.find(params[:profile]).has_type?(Profile_Type_Admin))
+      nil
     when (not params[:groups].nil?)
       [Group.where(id: params[:groups]).map(&:allocation_tag).map(&:id)]
     when (not(params[:semester].blank?) and not(params[:curriculum_unit].blank?) and not(params[:course].blank?))
@@ -163,8 +165,15 @@ class AllocationsController < ApplicationController
     error  = false
     notice = t(:enrollment_successful_update, scope: [:allocations, :manage])
     begin
-      # se usuário não for admin ou for editor, mas não tiver permissão em todas as allocations desejadas, erro de permissão
-      # raise CanCan::AccessDenied unless (current_user.is_admin? or current_user.is_editor_on_allocation_tags(allocations.map(&:allocation_tag_id)))
+
+      if params.include?(:reject)
+        params[:allocation][:status] = Allocation_Rejected
+        if current_user.is_admin?
+          authorize! :accept_or_reject, Allocation
+        else
+          authorize! :accept_or_reject, Allocation, on: [allocation_tag_id].flatten
+        end
+      end
 
       ActiveRecord::Base.transaction do
         # mudanca de turma, nao existe chamada multipla para esta funcionalidade
@@ -186,7 +195,7 @@ class AllocationsController < ApplicationController
             changed_status_to_accepted = ((al.status.to_i != Allocation_Activated.to_i) and (new_status.to_i == Allocation_Activated.to_i))
             al.update_attribute(:status, new_status)
 
-            # notice = t("allocations.success.rejected") if new_status == Allocation_Rejected
+            notice = t("allocations.success.rejected") if new_status == Allocation_Rejected
 
             Thread.new do
               mutex.synchronize {
@@ -281,9 +290,16 @@ class AllocationsController < ApplicationController
     allocation_tag_id = @allocation.allocation_tag_id
 
     begin
-      authorize! :activate, @allocation
-      # se usuário não for admin ou for editor, mas não tiver permissão em todas as allocations desejadas, erro de permissão
-      # raise CanCan::AccessDenied unless (current_user.is_admin? or current_user.is_editor_on_allocation_tags([allocation_tag_id]))
+      if params.include?(:accept)
+        if current_user.is_admin?
+          authorize! :accept_or_reject, Allocation
+        else
+          authorize! :accept_or_reject, Allocation, on: [allocation_tag_id].flatten
+        end
+      else 
+        authorize! :activate, @allocation
+      end
+
       raise "error" unless @allocation.update_attribute(:status, Allocation_Activated)
 
       render json: {success: true, notice: t("allocations.success.activated")}
@@ -308,23 +324,6 @@ class AllocationsController < ApplicationController
         format.json { head :error }
       end
     end
-  end
-
-  def accept_or_reject
-    allocation = Allocation.find(params[:id])
-
-    if current_user.is_admin?
-      authorize! :accept_or_reject, Allocation
-    else
-      authorize! :accept_or_reject, Allocation, on: [allocation.allocation_tag_id]
-    end
-
-    allocation.update_attribute(:status, (params[:accept] ? Allocation_Activated : Allocation_Rejected))
-    render json: {success: true, notice: (params[:accept] ? t("allocations.success.activated") : t("allocations.success.rejected"))}
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
-  rescue 
-    render json: {success: false, alert: t("allocations.manage.enrollment_unsuccessful_update")}, status: :unprocessable_entity
   end
 
   private

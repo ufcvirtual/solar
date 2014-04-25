@@ -189,7 +189,9 @@ class AdministrationsController < ApplicationController
   end
 
   def approval_history
-    @allocations = Allocation.last_changed
+    authorize! :allocation_approval, Administration
+    
+    @allocations = Allocation.last_changed(current_user)
   end
 
 end

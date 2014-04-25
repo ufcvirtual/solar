@@ -46,7 +46,6 @@
               %td
                 = link_to content_tag(:i, nil, class: 'icon-cross'), "#", class: 'btn', :"data-link" => reject_allocation_path(allocation), :"data-tooltip" => t(".reject"), id: "reject#{allocation.id}"
                 = link_to content_tag(:i, nil, class: 'icon-checkmark'), "#", class: 'btn', :"data-link" => accept_allocation_path(allocation), :"data-tooltip" => t(".accept"), id: "accept#{allocation.id}"
-                / activate_allocation_path(allocation)
     - else
       .block_content.block_content_text= t(".none_pending_allocation")
 
