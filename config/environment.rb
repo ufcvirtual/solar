@@ -52,6 +52,7 @@ Profile_Type_Basic              = 0b00000001  # (1o bit = 1)
 Profile_Type_Class_Responsible  = 0b00000010  # (2o bit = 1)
 Profile_Type_Student            = 0b00000100  # (3o bit = 1)
 Profile_Type_Editor             = 0b00001000  # (4o bit = 1)
+Profile_Type_Admin              = 0b00010000  # (5o bit = 1)
 
 # Perfis de editor inicialmente alocados ao criar
 Curriculum_Unit_Initial_Profile = 5
@@ -65,7 +66,8 @@ Discussion_Responsible_Extra_Time   = 3
 Discussion_Post_Max_Indent_Level    = 4
 Assignment_Responsible_Extra_Time   = 3 
 
-Presential_Test     = 1
-Presential_Meeting  = 2
-Recess              = 3
-Holiday             = 4
+# Tipos de eventos
+Presential_Test     = 1 # prova presencial
+Presential_Meeting  = 2 # encontro presencial
+Recess              = 3 # recesso
+Holiday             = 4 # feriado

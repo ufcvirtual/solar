@@ -964,3 +964,15 @@ res167:
   controller: 'users'
   action: 'profiles'
   description: 'Lista de perfis do usuário'
+
+res168:
+  id: 168
+  controller: 'administrations'
+  action: 'allocation_approval'
+  description: 'Lista de alocações pendentes para aceitação'
+
+res169:
+  id: 169
+  controller: 'allocations'
+  action: 'accept_or_reject'
+  description: 'Aceitar/Rejeitar solicitação de alocação'

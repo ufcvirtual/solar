@@ -455,3 +455,9 @@ admin:
   user_id: 15
   profile_id: 6
   status: 1
+
+editor_pending_as_admin:
+  id: 64
+  user_id: 14
+  profile_id: 6
+  status: 0

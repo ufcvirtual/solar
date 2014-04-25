@@ -152,18 +152,20 @@ class AllocationsController < ApplicationController
   # PUT /allocations/1
   # PUT /allocations/1.json
   def update
-    # authorize! :update, Allocation #.find(params[:id]) [authorize pelo authorize_resources]
-
-    mutex = Mutex.new # utilizado para organizar/controlar o comportamento das threads
-    allocations = Allocation.where(id: params[:id].split(","))
+    mutex             = Mutex.new # utilizado para organizar/controlar o comportamento das threads
+    allocations       = Allocation.where(id: params[:id].split(","))
     allocation_tag_id = (params.include?(:allocation) and params[:allocation].include?(:group_id)) ? Group.find(params[:allocation][:group_id]).allocation_tag.id : nil
-    
+
     # verifica se existe mudanca de turma
       # se sim, todas as alocacoes serao canceladas e serao criadas novas com a nova turma
       # se não, somente o status das alocacoes serao modificados
 
-    error = false
+    error  = false
+    notice = t(:enrollment_successful_update, scope: [:allocations, :manage])
     begin
+      # se usuário não for admin ou for editor, mas não tiver permissão em todas as allocations desejadas, erro de permissão
+      # raise CanCan::AccessDenied unless (current_user.is_admin? or current_user.is_editor_on_allocation_tags(allocations.map(&:allocation_tag_id)))
+
       ActiveRecord::Base.transaction do
         # mudanca de turma, nao existe chamada multipla para esta funcionalidade
         if ((not params.include?(:multiple)) and (not allocation_tag_id.nil?) and (allocation_tag_id != allocations.first.allocation_tag_id))
@@ -178,12 +180,13 @@ class AllocationsController < ApplicationController
             }
           end
         else # sem mudanca de turma
-
-          new_status  = params.include?(:enroll) ? Allocation_Activated.to_i : ((params.include?(:allocation) and params[:allocation].include?(:status)) ? params[:allocation][:status] : 0)
+          new_status = params.include?(:enroll) ? Allocation_Activated.to_i : ((params.include?(:allocation) and params[:allocation].include?(:status)) ? params[:allocation][:status] : 0)
 
           allocations.each do |al|
             changed_status_to_accepted = ((al.status.to_i != Allocation_Activated.to_i) and (new_status.to_i == Allocation_Activated.to_i))
             al.update_attribute(:status, new_status)
+
+            # notice = t("allocations.success.rejected") if new_status == Allocation_Rejected
 
             Thread.new do
               mutex.synchronize {
@@ -196,21 +199,26 @@ class AllocationsController < ApplicationController
         end # if
       end # transaction
 
-      flash[:notice] = t(:enrollment_successful_update, scope: [:allocations, :manage])
     rescue ActiveRecord::RecordNotUnique
       error     = true
       msg_error = t(:student_already_in_group, scope: [:allocations, :error])
-    rescue 
+    rescue CanCan::AccessDenied
+      error     = true
+      msg_error = t(:no_permission)
+    rescue
       error     = true
       msg_error = t(:enrollment_unsuccessful_update, scope: [:allocations, :manage])
     end
 
     if error
-      render :js => "javascript:flash_message('#{msg_error}', 'alert');"
+      respond_to do |format|
+        format.js { render js: "javascript:flash_message('#{msg_error}', 'alert');" }
+        format.json { render json: {success: false, alert: msg_error}, status: :unprocessable_entity }
+      end
     else
       respond_to do |format|
-        format.html { render action: :show }
-        format.json { render json: {status: "ok"}  }
+        format.html { render action: :show, notice: notice }
+        format.json { render json: {status: "ok", notice: notice}  }
       end
     end
   end
@@ -274,9 +282,13 @@ class AllocationsController < ApplicationController
 
     begin
       authorize! :activate, @allocation
+      # se usuário não for admin ou for editor, mas não tiver permissão em todas as allocations desejadas, erro de permissão
+      # raise CanCan::AccessDenied unless (current_user.is_admin? or current_user.is_editor_on_allocation_tags([allocation_tag_id]))
       raise "error" unless @allocation.update_attribute(:status, Allocation_Activated)
 
-      render json: {success: true}
+      render json: {success: true, notice: t("allocations.success.activated")}
+    rescue CanCan::AccessDenied
+      render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
     rescue
       render json: {success: false, alert: t(:not_activated, scope: [:allocations, :error])}, status: :unprocessable_entity
     end
@@ -296,7 +308,24 @@ class AllocationsController < ApplicationController
         format.json { head :error }
       end
     end
-  end  
+  end
+
+  def accept_or_reject
+    allocation = Allocation.find(params[:id])
+
+    if current_user.is_admin?
+      authorize! :accept_or_reject, Allocation
+    else
+      authorize! :accept_or_reject, Allocation, on: [allocation.allocation_tag_id]
+    end
+
+    allocation.update_attribute(:status, (params[:accept] ? Allocation_Activated : Allocation_Rejected))
+    render json: {success: true, notice: (params[:accept] ? t("allocations.success.activated") : t("allocations.success.rejected"))}
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+  rescue 
+    render json: {success: false, alert: t("allocations.manage.enrollment_unsuccessful_update")}, status: :unprocessable_entity
+  end
 
   private
 

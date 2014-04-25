@@ -117,6 +117,10 @@ user_user:
   menu_id: 605
   context_id: 1
 
+admin_approval:
+  menu_id: 606
+  context_id: 1
+
 # MENU PAI - 70
 disco_virtual:
   menu_id: 70

@@ -1,5 +1,10 @@
 class User < ActiveRecord::Base
 
+  def ability
+    @ability ||= Ability.new(self)
+  end
+  delegate :can?, :cannot?, to: :ability
+
   CHANGEABLE_FIELDS = %W{bio interests music movies books phrase site nick alternate_email photo_file_name photo_content_type photo_file_size photo_updated_at active}
   MODULO_ACADEMICO  = YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s] rescue nil
 
@@ -356,6 +361,10 @@ class User < ActiveRecord::Base
     response  = client.call(MODULO_ACADEMICO["methods"]["user"]["import"].to_sym, message: { cpf: cpf.delete(".").delete("-") }) # import user
     user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
     return (user_data.nil? ? nil : user_data[:string])
+  end
+
+  def is_admin?
+    (not allocations.joins(:profile).where("cast(types & #{Profile_Type_Admin} as boolean) AND allocations.status = #{Allocation_Activated}").empty?)
   end
 
 end

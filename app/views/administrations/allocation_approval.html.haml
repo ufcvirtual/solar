@@ -1,0 +1,94 @@
+.block_wrapper.allocation_requested_list
+  .block_title{style: "height:0"}
+  .block_content_toolbar
+    .block_toolbar_left
+      = link_to content_tag(:i, nil, class: 'icon-history'), approval_history_administrations_path, class: "btn btn_main", id: "approval_history", :"data-tooltip" => t(".approval_history")
+    .block_toolbar_right
+      = select_tag "type_search", options_for_select(@types, @type_search)
+      = text_field_tag "text_search", @text_search
+      = button_tag t(:search, scope: [:administrations, :users]), type: :button, class: "btn btn_default", id: "search_allocation", :"data-link" => search_allocation_administrations_path
+  .block_content
+    - unless @allocations.empty?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th= t(".nome")
+            %th= t(".profile")
+            %th= t(".type")
+            %th= t(".course")
+            %th= t(".curriculum_unit")
+            %th= t(".semester")
+            %th= t(".group")
+            %th.no_sort{style: "width: 11%"}
+        %tbody
+          - @allocations.each do |allocation|
+            - allocation_tag_info = allocation.allocation_tag.nil? ? nil : AllocationTag.allocation_tag_details(allocation.allocation_tag, true)
+            %tr.lines
+              %td= allocation.user.name
+              %td= allocation.profile.name
+              - if allocation_tag_info.nil?
+                %td= t(".not_specified")
+                %td= t(".not_specified")
+                %td= t(".not_specified")
+                %td= t(".not_specified")
+                %td= t(".not_specified")
+              - else
+                %td= allocation_tag_info[:curriculum_unit_type]
+                %td= allocation_tag_info[:course]
+                %td= allocation_tag_info[:curriculum_unit]
+                %td= allocation_tag_info[:semester]
+                %td
+                  - unless allocation_tag_info[:group].nil? or allocation_tag_info[:group] == t(".not_specified")
+                    .groups_tags
+                      .collection_check_boxes= allocation_tag_info[:group]
+                  - else
+                    = t(".not_specified")
+              %td
+                = link_to content_tag(:i, nil, class: 'icon-cross'), "#", class: 'btn', :"data-link" => reject_allocation_path(allocation), :"data-tooltip" => t(".reject"), id: "reject#{allocation.id}"
+                = link_to content_tag(:i, nil, class: 'icon-checkmark'), "#", class: 'btn', :"data-link" => accept_allocation_path(allocation), :"data-tooltip" => t(".accept"), id: "accept#{allocation.id}"
+                / activate_allocation_path(allocation)
+    - else
+      .block_content.block_content_text= t(".none_pending_allocation")
+
+:javascript
+  $(function(){
+    $('#approval_history').call_fancybox();
+
+    $("[id^='reject'], [id^='accept']").click(function(){
+      var button = $(this);
+      $.put($(this).data("link"), function(data){
+        if (typeof(data.notice) != "undefined")
+          flash_message(data.notice, 'notice');
+        $(button).closest("tr").slideUp().remove();
+        if ( !$(".allocation_requested_list tbody").children("tr").size() ){
+          $(".allocation_requested_list table").remove();
+          $(".allocation_requested_list .block_content").append("<div class='block_content block_content_text'>Não há solicitações pendentes</div>")
+        }
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      });
+    });
+
+    $('.allocation_requested_list input#text_search').keyup(function(e) {
+      if (e.keyCode == 13) { // when pressend enter
+          $("#search_allocation").click();
+          return false;
+      }
+    });
+
+    $("#search_allocation").click(function(){
+      var data = {
+        "type": $("#type_search").val(),
+        "value": $("#text_search").val()
+      };
+      $.get($(this).data("link"), data, function(data){
+        $(".allocation_requested_list").replaceWith(data);
+        console.log(data);
+      }).error(function(data){
+
+      });
+    });
+
+  });

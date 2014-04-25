@@ -1,6 +1,6 @@
 class AdministrationsController < ApplicationController
 
-  layout false, except: [:users, :users_indication]
+  layout false, except: [:users, :users_indication, :allocation_approval]
 
   ## USERS
 
@@ -84,7 +84,6 @@ class AdministrationsController < ApplicationController
 
   ## ALLOCATIONS
 
-
   def allocations_user
     begin
       authorize! :allocations_user, Administration
@@ -143,6 +142,54 @@ class AdministrationsController < ApplicationController
   def users_indication
     authorize! :users_indication, Administration
     @types = CurriculumUnitType.all
+  end
+
+  ## PROFILE APPROVAL
+
+  def allocation_approval
+    authorize! :allocation_approval, Administration
+    @allocations = Allocation.pending(current_user)
+
+    if params.include?(:search)
+      @text_search, @type_search = params[:value], params[:type]
+      @allocations = case @type_search
+      when "name";    @allocations.joins(:user).where("lower(users.name) ~ '#{@text_search.downcase}'")
+      when "profile"; @allocations.joins(:profile).where("lower(profiles.name) ~ '#{@text_search.downcase}'")
+      when "curriculum_unit_type"
+        @allocations.collect do |allocation|
+          uc = allocation.curriculum_unit_related
+          allocation if not(uc.nil?) and uc.curriculum_unit_type.description.downcase.include? @text_search.downcase
+        end
+      when "course"
+        @allocations.collect do |allocation|
+          course = allocation.course_related
+          allocation if not(course.nil?) and course.name.downcase.include? @text_search.downcase
+        end
+      when "curriculum_unit"
+        @allocations.collect do |allocation|
+          uc = allocation.curriculum_unit_related
+          allocation if not(uc.nil?) and uc.curriculum_unit.name.downcase.include? @text_search.downcase
+        end
+      when "semester"
+        @allocations.collect do |allocation|
+          semester = allocation.semester_related
+          allocation if not(semester.nil?) and semester.name.downcase.include? @text_search.downcase
+        end
+      when "group"; @allocations.joins(:group).where("lower(groups.code) ~ '#{@text_search.downcase}'")
+      end
+    end
+
+    @allocations.compact!
+    @types = [ [t("administrations.allocation_approval.name"), 'name'], [t("administrations.allocation_approval.profile"), 'profile'], 
+      [t("administrations.allocation_approval.type"), 'curriculum_unit_type'], [t("administrations.allocation_approval.course"), 'course'], 
+      [t("administrations.allocation_approval.curriculum_unit"), 'curriculum_unit'], [t("administrations.allocation_approval.semester"), 'semester'], 
+      [t("administrations.allocation_approval.group"), 'group'] ]
+
+    render layout: false if params.include?(:search)
+  end
+
+  def approval_history
+    @allocations = Allocation.last_changed
   end
 
 end
