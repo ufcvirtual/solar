@@ -317,7 +317,7 @@ class AllocationsControllerTest < ActionController::TestCase
     sign_in @admin
     assert_difference("Allocation.where('status = #{Allocation_Activated}').count") do
       assert_difference("Allocation.where('status = #{Allocation_Pending}').count", -1) do
-        put :activate, {id: allocations(:ad).id, accept: true}
+        put :accept_or_reject, {id: allocations(:ad).id, accept: true}
       end
     end
 
@@ -329,7 +329,7 @@ class AllocationsControllerTest < ActionController::TestCase
     sign_in @admin
     assert_difference("Allocation.where('status = #{Allocation_Rejected}').count") do
       assert_difference("Allocation.where('status = #{Allocation_Pending}').count", -1) do
-        put :update, {id: allocations(:ad).id, reject: true, allocation: {status: 0}, format: :json}
+        put :accept_or_reject, {id: allocations(:ad).id, accept: false}
       end
     end
 
@@ -341,7 +341,7 @@ class AllocationsControllerTest < ActionController::TestCase
     sign_in @editor
     assert_difference("Allocation.where('status = #{Allocation_Activated}').count") do
       assert_difference("Allocation.where('status = #{Allocation_Pending}').count", -1) do
-        put :activate, {id: allocations(:ad).id, accept: true}
+        put :accept_or_reject, {id: allocations(:ad).id, accept: true}
       end
     end
 
@@ -353,7 +353,7 @@ class AllocationsControllerTest < ActionController::TestCase
     sign_in @editor
     assert_no_difference("Allocation.where('status = #{Allocation_Activated}').count") do
       assert_no_difference("Allocation.where('status = #{Allocation_Pending}').count") do
-        put :activate, {id: allocations(:editor_pending_as_admin).id, accept: true}
+        put :accept_or_reject, {id: allocations(:editor_pending_as_admin).id, accept: true}
       end
     end
 

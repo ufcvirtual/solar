@@ -165,17 +165,6 @@ class AllocationsController < ApplicationController
     error  = false
     notice = t(:enrollment_successful_update, scope: [:allocations, :manage])
     begin
-
-      if params.include?(:reject)
-        params[:allocation][:status] = Allocation_Rejected
-        if current_user.is_admin?
-          authorize! :accept_or_reject, Allocation
-        else
-          authorize! :accept_or_reject, Allocation, on: [allocation_tag_id].flatten
-        end
-      end
-
-
       ActiveRecord::Base.transaction do
         # mudanca de turma, nao existe chamada multipla para esta funcionalidade
         if ((not params.include?(:multiple)) and (not allocation_tag_id.nil?) and (allocation_tag_id != allocations.first.allocation_tag_id))
@@ -195,8 +184,6 @@ class AllocationsController < ApplicationController
           allocations.each do |al|
             changed_status_to_accepted = ((al.status.to_i != Allocation_Activated.to_i) and (new_status.to_i == Allocation_Activated.to_i))
             al.update_attribute(:status, new_status)
-
-            notice = t("allocations.success.rejected") if new_status == Allocation_Rejected
 
             Thread.new do
               mutex.synchronize {
@@ -291,15 +278,7 @@ class AllocationsController < ApplicationController
     allocation_tag_id = @allocation.allocation_tag_id
 
     begin
-      if params.include?(:accept)
-        if current_user.is_admin?
-          authorize! :accept_or_reject, Allocation
-        else
-          authorize! :accept_or_reject, Allocation, on: [allocation_tag_id].flatten
-        end
-      else 
-        authorize! :activate, @allocation
-      end
+      authorize! :activate, @allocation
 
       raise "error" unless @allocation.update_attribute(:status, Allocation_Activated)
 
@@ -325,6 +304,23 @@ class AllocationsController < ApplicationController
         format.json { head :error }
       end
     end
+  end
+
+  def accept_or_reject
+    allocation = Allocation.find(params[:id])
+
+    if current_user.is_admin?
+      authorize! :accept_or_reject, Allocation
+    else
+      authorize! :accept_or_reject, Allocation, on: [allocation.allocation_tag_id]
+    end
+
+    allocation.update_attribute(:status, (params[:accept] ? Allocation_Activated : Allocation_Rejected))
+    render json: {success: true, notice: (params[:accept] ? t("allocations.success.activated") : t("allocations.success.rejected"))}
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+  rescue 
+    render json: {success: false, alert: t("allocations.manage.enrollment_unsuccessful_update")}, status: :unprocessable_entity
   end
 
   private

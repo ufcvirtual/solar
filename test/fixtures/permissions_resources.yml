@@ -1504,10 +1504,5 @@ adminapproval1:
 
 adminapproval2:
   profile_id: 6
-  resource_id: 72
-  per_id: false
-
-adminapproval3:
-  profile_id: 6
   resource_id: 169
   per_id: false
