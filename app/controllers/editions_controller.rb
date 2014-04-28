@@ -1,3 +1,5 @@
+include EdxHelper  
+
 class EditionsController < ApplicationController
 
   EDX = YAML::load(File.open("config/edx.yml"))[Rails.env.to_s]
@@ -65,10 +67,13 @@ class EditionsController < ApplicationController
   def edx_courses
     edx_urls = EDX['urls']
     @type    = CurriculumUnitType.find(params[:curriculum_unit_type_id])
+
+    create_user_solar_in_edx(current_user.username,current_user.name,current_user.email) 
+
     url = URI.parse(edx_urls["verify_user"].gsub(":username", current_user.username)+"instructor/")
     res = Net::HTTP.start(url.host, url.port) { |http| http.request(Net::HTTP::Get.new(url.path)) }
-      uri_courses = JSON.parse(res.body) #pega endereço dos cursos
-      courses_created_by_current_user = "[]" 
+    uri_courses = JSON.parse(res.body) #pega endereço dos cursos
+    courses_created_by_current_user = "[]" 
       unless uri_courses.empty?
         if uri_courses.class == Hash and uri_courses.has_key?("error_message")
           raise uri_courses["error_message"]
