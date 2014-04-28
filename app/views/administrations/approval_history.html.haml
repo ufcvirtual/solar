@@ -43,7 +43,7 @@
               %td{style: "color: #{status_color}"}= name_of(allocation.status, false)
               %td= l(allocation.updated_at, format: :at_date)
     - else
-      .block_content.block_content_text= "Não há aceitações ou rejeições recentes"
+      .block_content.block_content_text= t(".none_recent_approval_history")
 
 .form-actions.right_buttons
   = button_to_function t(".close"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"

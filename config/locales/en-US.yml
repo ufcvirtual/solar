@@ -1525,6 +1525,7 @@
       close: Close
       status: Status
       date: Date
+      none_recent_approval_history: There are no recent aceptance or rejection
 
   editions:
     filter: Filter

@@ -112,7 +112,7 @@ class AllocationsController < ApplicationController
   # Usado na alocacao de usuarios
   def create_designation
     allocation_tags_ids = case
-    when (params.include?(:profile) and Profile.find(params[:profile]).has_type?(Profile_Type_Admin))
+    when (params.include?(:profile) and not(params[:profile].blank?) and Profile.find(params[:profile]).has_type?(Profile_Type_Admin))
       nil
     when (not params[:groups].nil?)
       [Group.where(id: params[:groups]).map(&:allocation_tag).map(&:id)]
@@ -175,6 +175,7 @@ class AllocationsController < ApplicationController
         end
       end
 
+
       ActiveRecord::Base.transaction do
         # mudanca de turma, nao existe chamada multipla para esta funcionalidade
         if ((not params.include?(:multiple)) and (not allocation_tag_id.nil?) and (allocation_tag_id != allocations.first.allocation_tag_id))
@@ -199,7 +200,7 @@ class AllocationsController < ApplicationController
 
             Thread.new do
               mutex.synchronize {
-                Notifier.enrollment_accepted(al.user.email, al.group.code_semester).deliver if changed_status_to_accepted
+                Notifier.enrollment_accepted(al.user.email, al.group.code_semester).deliver if changed_status_to_accepted and not(al.group.nil?)
               }
             end
           end # allocations

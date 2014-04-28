@@ -1676,6 +1676,7 @@
       close: Fechar
       status: Status
       date: Data
+      none_recent_approval_history: Não há aceitações ou rejeições recentes
 
   editions:
     alert: "Preencha os campos obrigatórios"
