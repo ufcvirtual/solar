@@ -39,4 +39,49 @@ class Allocation < ActiveRecord::Base
     user.name
   end
 
+  def self.pending(current_user = nil, include_student = false)
+    query = (include_student ? "" : "NOT cast(profiles.types & #{Profile_Type_Student} as boolean)")
+
+    # recovers all pending allocations disconsidering (or not) students allocations
+    allocations = Allocation.joins(:profile).where("allocations.status = #{Allocation_Pending} OR allocations.status = #{Allocation_Pending_Reactivate}").where(query)
+    # if user was informed and it isn't an admin, remove unrelated allocations; otherwise return allocations
+    ((current_user.nil? or current_user.is_admin?) ? allocations : Allocation.remove_unrelated_allocations(current_user, allocations))
+  end
+
+  def self.last_changed(current_user = nil, include_student = false)
+    query = []
+    query << "(allocations.status = #{Allocation_Activated} OR allocations.status = #{Allocation_Rejected})"
+    query << "(NOT cast(profiles.types & #{Profile_Type_Student} as boolean))" unless include_student
+    query << "(NOT cast(profiles.types & #{Profile_Type_Basic} as boolean))"
+
+    # recovers all activated or rejected allocations disconsidering (or not) students allocations and disconsidering basic allocations
+    allocations = Allocation.joins(:profile).where(query.join(" AND ")).order("allocations.updated_at desc").limit(15)
+    # if user was informed and it isn't an admin, remove unrelated allocations; otherwise return allocations
+    ((current_user.nil? or current_user.is_admin?) ? allocations : Allocation.remove_unrelated_allocations(current_user, allocations))
+  end
+
+  def self.remove_unrelated_allocations(current_user, allocations)
+    # recovers only responsible profiles allocations and remove all allocatios which user has no relation with
+    allocations.where("cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)").delete_if{
+      |allocation| not(current_user.can? :accept_or_reject, Allocation, on: [allocation.allocation_tag_id])
+    } unless current_user.nil? # or current_user.is_admin? # if user was informed and it isn't an admin
+  end
+
+  def curriculum_unit_related
+    return curriculum_unit             unless curriculum_unit.nil?
+    return offer.curriculum_unit       unless offer.nil?
+    return group.offer.curriculum_unit unless group.nil?
+  end
+
+  def course_related
+    return course             unless course.nil?
+    return offer.course       unless offer.nil?
+    return group.offer.course unless group.nil?
+  end
+
+  def semester_related
+    return offer.semester       unless offer.nil?
+    return group.offer.semester unless group.nil?
+  end
+
 end

@@ -839,6 +839,16 @@ allocation5:
   resource_id: 94
   per_id: false
 
+editorapproval1:
+  profile_id: 5
+  resource_id: 168
+  per_id: false
+
+editorapproval2:
+  profile_id: 5
+  resource_id: 169
+  per_id: true
+
 # Unidade Curricular - Editor
 
 ucedit0:
@@ -1472,10 +1482,10 @@ adminallocation2:
   resource_id: 91
   per_id: false
 
-adminallocation3:
-  profile_id: 6
-  resource_id: 92
-  per_id: false
+# adminallocation3:
+#   profile_id: 6
+#   resource_id: 92
+#   per_id: false
 
 adminallocation4:
   profile_id: 6
@@ -1485,4 +1495,14 @@ adminallocation4:
 adminallocation5:
   profile_id: 6
   resource_id: 94
+  per_id: false
+
+adminapproval1:
+  profile_id: 6
+  resource_id: 168
+  per_id: false
+
+adminapproval2:
+  profile_id: 6
+  resource_id: 169
   per_id: false

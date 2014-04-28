@@ -25,6 +25,7 @@ editor:
 admin:
   id: 6
   name: "Administrador"
+  types: 16
 
 coord_tutoria:
   id: 7

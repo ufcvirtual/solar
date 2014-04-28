@@ -86,4 +86,23 @@ class AdministrationsControllerTest < ActionController::TestCase
     assert_equal get_json_response("alert"), I18n.t(:no_permission)
   end
 
+  test "listar solicitacoes de perfis pendentes" do
+    sign_in @admin
+    get :allocation_approval
+    assert_equal 2, assigns(:allocations).count
+    sign_out @admin
+
+    sign_in @editor
+    get :allocation_approval
+    assert_equal 1, assigns(:allocations).count
+  end
+
+  test "nao listar solicitacoes de perfis pendentes" do
+    sign_in users(:professor)
+    get :allocation_approval
+
+    assert_nil assigns(:allocations)
+    assert_response :redirect
+    assert_equal flash[:alert], I18n.t(:no_permission)
+  end
 end

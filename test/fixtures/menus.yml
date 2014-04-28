@@ -179,6 +179,13 @@ admin_user:
   parent_id: 60
   resource_id: 150
 
+admin_requests:
+  id: 606
+  name: menu_admin_approval
+  order: 6
+  parent_id: 60
+  resource_id: 168
+
 # MENU PAI - 70
 disco_virtual:
   id: 70

@@ -49,3 +49,18 @@ label.permissions-search-text {
 table.tb_allocation .dropdown ul li a{
   white-space: inherit;
 }
+
+.allocation_requested_list{
+  .block_toolbar_right{
+    select{
+      vertical-align: top;
+    }
+    input{
+      padding: 2px;
+      vertical-align: middle;
+    }
+    .btn{
+      padding-bottom: 2px;
+    }
+  }
+}

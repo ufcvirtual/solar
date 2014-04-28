@@ -1,0 +1,49 @@
+%h1#lightBoxDialogTitle=t("administrations.allocation_approval.approval_history")
+.block_wrapper{style: "margin-top: 0;"}
+  .block_content
+    - unless @allocations.empty?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th= t("administrations.allocation_approval.name")
+            %th= t("administrations.allocation_approval.profile")
+            %th= t("administrations.allocation_approval.type")
+            %th= t("administrations.allocation_approval.course")
+            %th= t("administrations.allocation_approval.curriculum_unit")
+            %th= t("administrations.allocation_approval.semester")
+            %th= t("administrations.allocation_approval.group")
+            %th= t(".status")
+            %th= t(".date")
+        %tbody
+          - @allocations.each do |allocation|
+            - allocation_tag_info = allocation.allocation_tag.nil? ? nil : AllocationTag.allocation_tag_details(allocation.allocation_tag, true)
+            - status_color        = case allocation.status.to_i
+              - when (Allocation_Activated); "#006600"
+              - when (Allocation_Rejected); "#FF0000"
+            %tr.lines
+              %td= allocation.user.name
+              %td= allocation.profile.name
+              - if allocation_tag_info.nil?
+                %td= t("administrations.allocation_approval.not_specified")
+                %td= t("administrations.allocation_approval.not_specified")
+                %td= t("administrations.allocation_approval.not_specified")
+                %td= t("administrations.allocation_approval.not_specified")
+                %td= t("administrations.allocation_approval.not_specified")
+              - else
+                %td= allocation_tag_info[:curriculum_unit_type]
+                %td= allocation_tag_info[:course]
+                %td= allocation_tag_info[:curriculum_unit]
+                %td= allocation_tag_info[:semester]
+                %td
+                  - unless allocation_tag_info[:group].nil? or allocation_tag_info[:group] == t("administrations.allocation_approval.not_specified")
+                    .groups_tags
+                      .collection_check_boxes= allocation_tag_info[:group]
+                  - else
+                    = t("administrations.allocation_approval.not_specified")
+              %td{style: "color: #{status_color}"}= name_of(allocation.status, false)
+              %td= l(allocation.updated_at, format: :at_date)
+    - else
+      .block_content.block_content_text= t(".none_recent_approval_history")
+
+.form-actions.right_buttons
+  = button_to_function t(".close"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"

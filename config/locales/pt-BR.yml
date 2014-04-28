@@ -1288,6 +1288,7 @@
   menu_academic_edition: Acadêmico
   menu_content_edition: Conteúdo
   menu_admin_user: "Gerência de Usuários"
+  menu_admin_approval: Aprovação de perfis
 
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"
@@ -1490,6 +1491,7 @@
       requested: Solicitação realizada com sucessso
       request_canceled: Solicitação cancelada
       profile_canceled: Perfil cancelado
+      rejected: Solicitação rejeitada
     error:
       student_already_in_group: Aluno já está nesta turma
       enrollm_request: Pedido de matrícula não realizado
@@ -1657,6 +1659,24 @@
       group: "Turma"
     search_users:
       synchronize: Sincronizar com Módulo Acadêmico
+    allocation_approval:
+      not_specified: Não especificado
+      none_pending_allocation: Não há solicitações pendentes
+      group: Turma
+      semester: Semestre
+      course: Curso
+      curriculum_unit: Unid. Curricular
+      type: Tipo
+      name: Nome
+      profile: Perfil
+      approval_history: Histórico das últimas ações
+      reject: Rejeitar
+      accept: Aceitar
+    approval_history:
+      close: Fechar
+      status: Status
+      date: Data
+      none_recent_approval_history: Não há aceitações ou rejeições recentes
 
   editions:
     alert: "Preencha os campos obrigatórios"

@@ -1138,6 +1138,7 @@
   menu_academic_edition: Academic
   menu_content_edition: Content
   menu_admin_user: Manage Users
+  menu_admin_approval: Profiles approval
 
   # Filtro de edição (Places_nav_panel)
 
@@ -1341,6 +1342,7 @@
       requested: Request made successfully
       request_canceled: Request canceled
       profile_canceled: Profile cancelado
+      rejected: Request rejected
     error:
       student_already_in_group: Student is already in the class
       enrollm_request: Request for enrollment not made
@@ -1506,6 +1508,24 @@
       group: Group
     search_users:
       synchronize: Synchronize with Módulo Acadêmico
+    allocation_approval:
+      not_specified: Not specified
+      none_pending_allocation: There are no pending request
+      group: Group
+      semester: Semester
+      course: Course
+      curriculum_unit: Curriculum Unit
+      type: Type
+      name: Name
+      profile: Profile
+      approval_history: Last action history
+      reject: Reject
+      accept: Accept
+    approval_history:
+      close: Close
+      status: Status
+      date: Date
+      none_recent_approval_history: There are no recent aceptance or rejection
 
   editions:
     filter: Filter

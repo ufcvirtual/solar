@@ -7,6 +7,8 @@ class AllocationsControllerTest < ActionController::TestCase
   def setup
     @coordenador = users(:coorddisc)
     @aluno1      = users(:aluno1)
+    @admin       = users(:admin)
+    @editor      = users(:editor)
     sign_in @coordenador
   end
 
@@ -307,6 +309,56 @@ class AllocationsControllerTest < ActionController::TestCase
 
     assert_response :unprocessable_entity
     assert_equal I18n.t("allocations.error.profile"), get_json_response("alert")
+  end
+
+  # Aceitar/Rejeitar solicitação de perfil
+
+  test "aceitar solicitacao de perfil - admin" do
+    sign_in @admin
+    assert_difference("Allocation.where('status = #{Allocation_Activated}').count") do
+      assert_difference("Allocation.where('status = #{Allocation_Pending}').count", -1) do
+        put :accept_or_reject, {id: allocations(:ad).id, accept: true}
+      end
+    end
+
+    assert_response :success
+    assert_equal I18n.t("allocations.success.activated"), get_json_response("notice")
+  end
+
+  test "rejeitar solicitacao de perfil" do
+    sign_in @admin
+    assert_difference("Allocation.where('status = #{Allocation_Rejected}').count") do
+      assert_difference("Allocation.where('status = #{Allocation_Pending}').count", -1) do
+        put :accept_or_reject, {id: allocations(:ad).id, accept: false}
+      end
+    end
+
+    assert_response :success
+    assert_equal I18n.t("allocations.success.rejected"), get_json_response("notice")
+  end
+
+  test "aceitar solicitacao de perfil - editor" do
+    sign_in @editor
+    assert_difference("Allocation.where('status = #{Allocation_Activated}').count") do
+      assert_difference("Allocation.where('status = #{Allocation_Pending}').count", -1) do
+        put :accept_or_reject, {id: allocations(:ad).id, accept: true}
+      end
+    end
+
+    assert_response :success
+    assert_equal I18n.t("allocations.success.activated"), get_json_response("notice")
+  end
+
+  test "nao permitir aceitar solicitacao de perfil - sem relacao" do
+    sign_in @editor
+    assert_no_difference("Allocation.where('status = #{Allocation_Activated}').count") do
+      assert_no_difference("Allocation.where('status = #{Allocation_Pending}').count") do
+        put :accept_or_reject, {id: allocations(:editor_pending_as_admin).id, accept: true}
+      end
+    end
+
+    assert_response :unprocessable_entity
+    assert_equal I18n.t(:no_permission), get_json_response("alert")
   end
 
 end
