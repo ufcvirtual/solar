@@ -128,11 +128,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  # After authentication, log user sign_in at the system
-  def after_database_authentication
-    LogAccess.login(user_id: self.id)
-  end
-
   ##
   # Este método define os atributos na hora de criar um objeto. Logo, redefine os atributos já existentes e define
   # o valor de @has_special_needs a partir do que é passado da página na criação de um usuário (create)
