@@ -1,6 +1,8 @@
 class Post < ActiveRecord::Base
   self.table_name = "discussion_posts"
 
+  include SysLog::Actions
+
   default_scope order: "updated_at DESC" # qualquer busca realizada nos posts de fórum serão ordenadas pela data decrescente
 
   has_many :children, class_name: "Post", foreign_key: "parent_id"

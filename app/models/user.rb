@@ -15,7 +15,8 @@ class User < ActiveRecord::Base
   has_many :allocations
   has_many :allocation_tags, through: :allocations, uniq: true
   has_many :profiles, through: :allocations, uniq: true, conditions: { profiles: {status: true}, allocations: {status: 1} } # allocation.status = Allocation_Activated
-  has_many :logs
+  has_many :log_access
+  has_many :log_actions
   has_many :lessons
   has_many :discussion_posts, class_name: "Post", foreign_key: "user_id"
   has_many :user_messages
@@ -129,7 +130,7 @@ class User < ActiveRecord::Base
 
   # After authentication, log user sign_in at the system
   def after_database_authentication
-    Log.create(log_type: Log::TYPE[:login], user_id: self.id, created_at: Time.now)
+    LogAccess.login(user_id: self.id)
   end
 
   ##

@@ -1,7 +1,7 @@
 class TabsController < ApplicationController
 
   before_filter :clear_breadcrumb_home, only: [:show, :create]
-  before_filter :log_access, only: :create
+  after_filter :log_access, only: :create
 
   def show # activate
     # verifica se a aba que esta sendo acessada esta aberta
@@ -43,7 +43,7 @@ class TabsController < ApplicationController
   private
 
     def log_access
-      Log.create(log_type: Log::TYPE[:course_access], user_id: current_user.id, curriculum_unit_id: params[:id]) if (params[:context].to_i == Context_Curriculum_Unit)
+      LogAccess.course(user_id: current_user.id, allocation_tag_id: AllocationTag.find_by_curriculum_unit_id(params[:id]).id)  if (params[:context].to_i == Context_Curriculum_Unit)
     end
 
 end
