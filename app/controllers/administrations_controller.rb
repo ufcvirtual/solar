@@ -144,11 +144,11 @@ class AdministrationsController < ApplicationController
     @types = CurriculumUnitType.all
   end
 
-  ## PROFILE APPROVAL
+  ## ALLOCATION APPROVAL
   require 'will_paginate/array'
   def allocation_approval
     authorize! :allocation_approval, Administration
-    @allocations = Allocation.pending(current_user)
+    @allocations = Allocation.pending
 
     if params.include?(:search)
       @text_search, @type_search = params[:value], params[:type]
@@ -179,6 +179,9 @@ class AdministrationsController < ApplicationController
       else @allocations
       end
     end
+
+    # if user isn't an admin, remove unrelated allocations
+    @allocations = Allocation.remove_unrelated_allocations(current_user, @allocations) unless current_user.is_admin?
 
     @allocations.compact!
     @allocations = @allocations.paginate(page: params[:page], per_page: 100)

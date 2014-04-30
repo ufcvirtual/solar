@@ -48,6 +48,7 @@ class Allocation < ActiveRecord::Base
     ((current_user.nil? or current_user.is_admin?) ? allocations : Allocation.remove_unrelated_allocations(current_user, allocations))
   end
 
+  # this method returns an array
   def self.remove_unrelated_allocations(current_user, allocations)
     # recovers only responsible profiles allocations and remove all allocatios which user has no relation with
     allocations.where("cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)").delete_if{
