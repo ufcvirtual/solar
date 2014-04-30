@@ -50,6 +50,8 @@
       };
       $.get($(this).data("link"), data, function(data){
         $(".allocation_requested_list").replaceWith(data);
+        $(".tb_list").tablesorter();
+        $("th").last().addClass("sorter-false");
       });
     });
 
