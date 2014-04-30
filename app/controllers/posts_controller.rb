@@ -1,5 +1,7 @@
 class PostsController < ApplicationController
 
+  include SysLog::Actions
+
   before_filter :authenticate_user!
   before_filter :prepare_for_pagination
 

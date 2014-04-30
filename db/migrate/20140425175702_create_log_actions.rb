@@ -4,20 +4,23 @@ class CreateLogActions < ActiveRecord::Migration
       t.integer :log_type, null: false
 
       t.references :user, null: false
-      t.foreign_key :users
 
       t.integer :tool_id # academic_allocation_id
 
-      t.string :description
+      t.text :description
       t.string :ip
 
       t.datetime :created_at
     end
 
-    execute %{ ALTER TABLE log_actions ADD CONSTRAINT log_actions_academic_allocations_id_fkey FOREIGN KEY (tool_id) REFERENCES academic_allocations(id); }
+    add_index :log_actions, :user_id
+    add_index :log_actions, :tool_id
   end
 
   def down
+    remove_index :log_actions, :user_id
+    remove_index :log_actions, :tool_id
+
     drop_table :log_actions
   end
 end

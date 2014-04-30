@@ -18,15 +18,19 @@ class PostFilesController < ApplicationController
       post       = Post.find(params[:post_id])
       discussion = post.discussion
 
+      file_names = []
       if ((discussion.user_can_interact?(current_user.id)) and (post.user_id == current_user.id))
         files = params[:post_file].is_a?(Hash) ? params[:post_file].values : params[:post_file] # {attachment1 => [valores1], attachment2 => [valores2]} => [valores1, valores2]
         [files].flatten.each do |file|
-          PostFile.create!({ attachment: file, discussion_post_id: post.id })
+          f = PostFile.create!({ attachment: file, discussion_post_id: post.id })
+          file_names << "#{f.id} - #{f.attachment_file_name}"
         end
       else
         raise "not_permited"
       end
-    rescue
+
+      LogAction.create(log_type: LogAction::TYPE[:create], user_id: current_user.id, ip: request.remote_ip, description: "post_file: #{file_names.join(', ')}, post: #{post.id}") rescue nil
+    rescue => error
       error = true
     end
 
@@ -56,6 +60,8 @@ class PostFilesController < ApplicationController
     begin
       @post_file.delete
       File.delete(@post_file.attachment.path) if File.exist?(@post_file.attachment.path)
+
+      LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: request.remote_ip, description: "post_file: #{@post_file.id} - #{@post_file.attachment_file_name}, post: #{@post_file.post.id}") rescue nil
     rescue
       error = true
     end

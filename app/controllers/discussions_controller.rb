@@ -1,5 +1,7 @@
 class DiscussionsController < ApplicationController
 
+  include SysLog::Actions
+
   layout false, except: :index # define todos os layouts do controller como falso
 
   authorize_resource only: :index
@@ -41,7 +43,7 @@ class DiscussionsController < ApplicationController
       render json: {success: true, notice: t(:created, scope: [:discussions, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue 
+    rescue => error
       @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
       render :new
     end

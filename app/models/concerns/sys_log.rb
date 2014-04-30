@@ -4,33 +4,51 @@ module SysLog
 
   module Access
     extend ActiveSupport::Concern
-
-    # included do
-    # end
-
-    # After authentication, log user sign_in at the system
-    # def after_database_authentication
-    #   LogAccess.create(log_type: Log::TYPE[:login], user_id: self.id, created_at: Time.now)
-    # end
-
-
   end
 
   module Actions
     extend ActiveSupport::Concern
 
-    # included do
-    #   after_create :log_create
-    # end
+    included do
+      after_filter :log_create, only: [:create, :update, :destroy]
+    end
 
-    # def log_create
-    #   LogAccess.create(log_type: 100, user_id: self.id, created_at: Time.now, description: "criando aqui")
-    # end
+    def log_create
+      sobj = self.class.to_s.sub("Controller", "").downcase.singularize
+      obj = eval("@#{sobj}")
 
-  end
+      if obj.respond_to?(:academic_allocations)
+        obj.academic_allocations.each do |al|
+          LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, created_at: Time.now, tool_id: al.id, ip: request.remote_ip, description: "#{params[sobj.singularize.to_sym]}")
+        end
+      else
 
+        description = if params.has_key?(obj.class.table_name.singularize.to_sym) # criacao de post
+          "#{sobj}: #{obj.id}, #{params[obj.class.table_name.singularize.to_sym]}"
+        elsif params[:id].present?
+          "#{sobj}: #{params[:id]}"
+        end
 
-  # ## sempre que criar algo loga
-  # ## criacao/edicao de post grava o conteudo
+        LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, created_at: Time.now, ip: request.remote_ip, description: description)
+      end
+    rescue => error
+      raise "reitrar? #{error}"
+      # do nothing
+    end
+
+    private
+
+      def request_method(rm)
+        case rm
+          when "POST"
+            :create
+          when "PUT", "PATCH"
+            :update
+          when "DELETE"
+            :destroy
+        end
+      end
+
+  end # Actions
 
 end
