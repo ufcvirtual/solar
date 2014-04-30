@@ -1,0 +1,27 @@
+- @allocations.each do |allocation|
+  - allocation_tag_info = allocation.allocation_tag.nil? ? nil : AllocationTag.allocation_tag_details(allocation.allocation_tag, true)
+  %tr.lines{id: "allocation#{allocation.id}"}
+    %td= allocation.user.name
+    %td= allocation.profile.name
+    - if allocation_tag_info.nil?
+      %td= t(".not_specified")
+      %td= t(".not_specified")
+      %td= t(".not_specified")
+      %td= t(".not_specified")
+      %td= t(".not_specified")
+    - else
+      %td= allocation_tag_info[:curriculum_unit_type]
+      %td= allocation_tag_info[:course]
+      %td= allocation_tag_info[:curriculum_unit]
+      %td= allocation_tag_info[:semester]
+      %td
+        - unless allocation_tag_info[:group].nil? or allocation_tag_info[:group] == t(".not_specified")
+          .groups_tags
+            .collection_check_boxes= allocation_tag_info[:group]
+        - else
+          = t(".not_specified")
+    %td
+      = link_to_function content_tag(:i, nil, class: 'icon-cross'), "accept_or_reject(this)", class: 'btn reject', :"data-link" => reject_allocation_path(allocation), :"data-tooltip" => t(".reject")
+      = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), "accept_or_reject(this)", class: 'btn accept ', :"data-link" => accept_allocation_path(allocation), :"data-tooltip" => t(".accept")
+
+= javascript_include_tag "tooltip"

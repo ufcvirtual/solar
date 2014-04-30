@@ -315,6 +315,8 @@ class AllocationsControllerTest < ActionController::TestCase
 
   test "aceitar solicitacao de perfil - admin" do
     sign_in @admin
+    allocation = allocations(:ad)
+
     assert_difference("Allocation.where('status = #{Allocation_Activated}').count") do
       assert_difference("Allocation.where('status = #{Allocation_Pending}').count", -1) do
         put :accept_or_reject, {id: allocations(:ad).id, accept: true}
@@ -322,23 +324,27 @@ class AllocationsControllerTest < ActionController::TestCase
     end
 
     assert_response :success
-    assert_equal I18n.t("allocations.success.activated"), get_json_response("notice")
+    assert_match I18n.t("allocations.undo_action"), get_json_response("notice")
   end
 
   test "rejeitar solicitacao de perfil" do
     sign_in @admin
+    allocation = allocations(:ad)
+
     assert_difference("Allocation.where('status = #{Allocation_Rejected}').count") do
       assert_difference("Allocation.where('status = #{Allocation_Pending}').count", -1) do
-        put :accept_or_reject, {id: allocations(:ad).id, accept: false}
+        put :accept_or_reject, {id: allocation.id, accept: false}
       end
     end
 
     assert_response :success
-    assert_equal I18n.t("allocations.success.rejected"), get_json_response("notice")
+    assert_match I18n.t("allocations.undo_action"), get_json_response("notice")
   end
 
   test "aceitar solicitacao de perfil - editor" do
     sign_in @editor
+    allocation = allocations(:ad)
+
     assert_difference("Allocation.where('status = #{Allocation_Activated}').count") do
       assert_difference("Allocation.where('status = #{Allocation_Pending}').count", -1) do
         put :accept_or_reject, {id: allocations(:ad).id, accept: true}
@@ -346,11 +352,13 @@ class AllocationsControllerTest < ActionController::TestCase
     end
 
     assert_response :success
-    assert_equal I18n.t("allocations.success.activated"), get_json_response("notice")
+    assert_match I18n.t("allocations.undo_action"), get_json_response("notice")
   end
 
   test "nao permitir aceitar solicitacao de perfil - sem relacao" do
     sign_in @editor
+    allocation = allocations(:editor_pending_as_admin)
+
     assert_no_difference("Allocation.where('status = #{Allocation_Activated}').count") do
       assert_no_difference("Allocation.where('status = #{Allocation_Pending}').count") do
         put :accept_or_reject, {id: allocations(:editor_pending_as_admin).id, accept: true}
@@ -359,6 +367,38 @@ class AllocationsControllerTest < ActionController::TestCase
 
     assert_response :unprocessable_entity
     assert_equal I18n.t(:no_permission), get_json_response("alert")
+  end
+
+  test "desfazer aceitacao de perfil" do
+    sign_in @admin
+    allocation = allocations(:ad)
+    put :accept_or_reject, {id: allocations(:ad).id, accept: true}
+    assert_equal Allocation_Activated, Allocation.find(allocation.id).status
+
+    assert_difference("Allocation.where('status = #{Allocation_Activated}').count", -1) do
+      assert_difference("Allocation.where('status = #{Allocation_Pending}').count") do
+        put :accept_or_reject, {id: allocations(:ad).id, undo: true}
+      end
+    end
+
+    assert_response :success
+    assert_equal I18n.t("allocations.success.undone_action"), get_json_response("notice")
+  end
+
+  test "desfazer rejeicao de perfil" do
+    sign_in @admin
+    allocation = allocations(:ad)
+    put :accept_or_reject, {id: allocations(:ad).id, accept: false}
+    assert_equal Allocation_Rejected, Allocation.find(allocation.id).status
+
+    assert_difference("Allocation.where('status = #{Allocation_Rejected}').count", -1) do
+      assert_difference("Allocation.where('status = #{Allocation_Pending}').count") do
+        put :accept_or_reject, {id: allocations(:ad).id, undo: true}
+      end
+    end
+
+    assert_response :success
+    assert_equal I18n.t("allocations.success.undone_action"), get_json_response("notice")
   end
 
 end

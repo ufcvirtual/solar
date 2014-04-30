@@ -1,0 +1,5 @@
+$('.allocations').append('#{escape_javascript(render partial: "pending_allocations", locals: { allocations: @allocations })}');
+$('a.load-more-allocations').attr('href', '#{allocation_approval_administrations_path page: @allocations.next_page, type: @type_search, value: @text_search}');
+
+- unless @allocations.next_page
+  $('a.load-more-allocations').remove();

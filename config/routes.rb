@@ -68,7 +68,6 @@ Solar::Application.routes.draw do
     collection do
       get :users_indication
       get :allocation_approval
-      get :approval_history
       get :search_allocation, action: :allocation_approval, defaults: {search: true}
     end
   end
@@ -151,6 +150,7 @@ Solar::Application.routes.draw do
       put :activate
       put :reject, action: :accept_or_reject, defaults: {accept: false}
       put :accept, action: :accept_or_reject, defaults: {accept: true}
+      put :undo_action, action: :accept_or_reject, defaults: {undo: true}
     end
   end
 

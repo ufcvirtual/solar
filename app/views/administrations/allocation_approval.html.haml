@@ -1,9 +1,8 @@
 .block_wrapper.allocation_requested_list
+  %span.form_requirement= t(".page_info", url: link_to(t(".user_indication"), users_indication_administrations_path(bread: "menu_indicate_user", mid: 60))).html_safe
   .block_title{style: "height:0"}
   .block_content_toolbar
     .block_toolbar_left
-      = link_to content_tag(:i, nil, class: 'icon-history'), approval_history_administrations_path, class: "btn btn_main", id: "approval_history", :"data-tooltip" => t(".approval_history")
-    .block_toolbar_right
       = select_tag "type_search", options_for_select(@types, @type_search)
       = text_field_tag "text_search", @text_search
       = button_tag t(:search, scope: [:administrations, :users]), type: :button, class: "btn btn_default", id: "search_allocation", :"data-link" => search_allocation_administrations_path
@@ -12,7 +11,7 @@
       %table.tb_list
         %thead
           %tr.lines
-            %th= t(".nome")
+            %th{style: "width: 11%"}= t(".nome")
             %th= t(".profile")
             %th= t(".type")
             %th= t(".course")
@@ -20,54 +19,21 @@
             %th= t(".semester")
             %th= t(".group")
             %th.no_sort{style: "width: 11%"}
-        %tbody
-          - @allocations.each do |allocation|
-            - allocation_tag_info = allocation.allocation_tag.nil? ? nil : AllocationTag.allocation_tag_details(allocation.allocation_tag, true)
-            %tr.lines
-              %td= allocation.user.name
-              %td= allocation.profile.name
-              - if allocation_tag_info.nil?
-                %td= t(".not_specified")
-                %td= t(".not_specified")
-                %td= t(".not_specified")
-                %td= t(".not_specified")
-                %td= t(".not_specified")
-              - else
-                %td= allocation_tag_info[:curriculum_unit_type]
-                %td= allocation_tag_info[:course]
-                %td= allocation_tag_info[:curriculum_unit]
-                %td= allocation_tag_info[:semester]
-                %td
-                  - unless allocation_tag_info[:group].nil? or allocation_tag_info[:group] == t(".not_specified")
-                    .groups_tags
-                      .collection_check_boxes= allocation_tag_info[:group]
-                  - else
-                    = t(".not_specified")
-              %td
-                = link_to content_tag(:i, nil, class: 'icon-cross'), "#", class: 'btn', :"data-link" => reject_allocation_path(allocation), :"data-tooltip" => t(".reject"), id: "reject#{allocation.id}"
-                = link_to content_tag(:i, nil, class: 'icon-checkmark'), "#", class: 'btn', :"data-link" => accept_allocation_path(allocation), :"data-tooltip" => t(".accept"), id: "accept#{allocation.id}"
+        %tbody.allocations
+          = render partial: 'pending_allocations', locals: { allocations: @allocations }
+      = link_to content_tag(:i, nil, class: "icon-ellipsis"), search_allocation_administrations_path(page: @allocations.next_page, type: @type_search, value: @text_search), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(".load_allocations") if @allocations.next_page
     - else
       .block_content.block_content_text= t(".none_pending_allocation")
 
+= javascript_include_tag "jquery.inview.min"
+
 :javascript
   $(function(){
-    $('#approval_history').call_fancybox();
+    var loading_allocations = false;
+    load_allocations();
 
-    $("[id^='reject'], [id^='accept']").click(function(){
-      var button = $(this);
-      $.put($(this).data("link"), function(data){
-        if (typeof(data.notice) != "undefined")
-          flash_message(data.notice, 'notice');
-        $(button).closest("tr").slideUp().remove();
-        if ( !$(".allocation_requested_list tbody").children("tr").size() ){
-          $(".allocation_requested_list table").remove();
-          $(".allocation_requested_list .block_content").append("<div class='block_content block_content_text'>Não há solicitações pendentes</div>")
-        }
-      }).error(function(data){
-        var data = $.parseJSON(data.responseText);
-        if (typeof(data.alert) != "undefined")
-          flash_message(data.alert, 'alert');
-      });
+    $(window).scroll(function(){
+      load_allocations();
     });
 
     $('.allocation_requested_list input#text_search').keyup(function(e) {
@@ -84,10 +50,47 @@
       };
       $.get($(this).data("link"), data, function(data){
         $(".allocation_requested_list").replaceWith(data);
-        console.log(data);
-      }).error(function(data){
-
       });
     });
 
+    function load_allocations(){
+      $('a.load-more-allocations').on('inview', function(e, visible) {
+        if (loading_allocations || !visible)
+          return;
+        loading_allocations = true;
+        return $.getScript($(this).attr('href'), function() {
+          return loading_allocations = false;
+        });
+      });
+    }
+
   });
+
+  function accept_or_reject(button){
+    // if is a button to accept a profile request, the user must confirm his action
+    if ($(button).hasClass("accept") && !confirm("#{I18n.t(:confirm_acceptance)}"))
+      return false;
+
+    $.put($(button).data("link"), function(data){
+      if (typeof(data.notice) != "undefined")
+        flash_message(data.notice, 'notice');
+      var last_removed_tr = $(button).closest("tr").slideUp().remove();
+      if ( !$(".allocation_requested_list tbody").children("tr").size() ){
+        $(".allocation_requested_list table").remove();
+        $(".allocation_requested_list .block_content").append("<div class='block_content block_content_text'>Não há solicitações pendentes</div>")
+      }
+
+      $("tbody.allocations").undo_action_by_flash_message({
+        complement_success: function(data){
+          console.log($(last_removed_tr).html());
+          if (last_removed_tr != "")
+            $("tbody.allocations").prepend("<tr class='lines'>" + $(last_removed_tr).html() + "</div>");
+        }
+      });
+
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    });
+  }

@@ -1491,7 +1491,11 @@
       requested: Solicitação realizada com sucessso
       request_canceled: Solicitação cancelada
       profile_canceled: Perfil cancelado
-      rejected: Solicitação rejeitada
+      rejected: rejeitada
+      accepted: aceita
+      allocation_tag_path: "em %{path}" 
+      request_message: "Solicitação de %{user_name} para perfil de %{profile_name} %{path} foi %{action}. %{undo_url}"
+      undone_action: "Ação desfeita com sucesso"
     error:
       student_already_in_group: Aluno já está nesta turma
       enrollm_request: Pedido de matrícula não realizado
@@ -1504,6 +1508,7 @@
       cancel_request: Não foi possível realizar cancelamento
     warning:
       already_active: Perfil já está ativo
+    undo_action: "(Desfazer ação)"
 
   allocation_pending: Pendente
 
@@ -1669,14 +1674,13 @@
       type: Tipo
       name: Nome
       profile: Perfil
-      approval_history: Histórico das últimas ações
+      load_allocations: Carregar mais alocações
+      page_info: "Esta página tem como finalidade a aceitação/rejeição de solicitações de perfis. Caso você deseje alocar um usuário, acesse a área de %{url}."
+      user_indication: indicação de usuários
+    pending_allocations:
       reject: Rejeitar
       accept: Aceitar
-    approval_history:
-      close: Fechar
-      status: Status
-      date: Data
-      none_recent_approval_history: Não há aceitações ou rejeições recentes
+      not_specified: Não especificado
 
   editions:
     alert: "Preencha os campos obrigatórios"
@@ -1981,6 +1985,7 @@
     newsfeed: Feed de notícias
 
   message_confirm: "Tem certeza de que deseja excluir?"
+  confirm_acceptance: "Confirma aceitação de solicitação?"
 
   messages:
     file_too_big: "Arquivo muito grande!"

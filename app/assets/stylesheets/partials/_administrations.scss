@@ -51,7 +51,7 @@ table.tb_allocation .dropdown ul li a{
 }
 
 .allocation_requested_list{
-  .block_toolbar_right{
+  .block_toolbar_left{
     select{
       vertical-align: top;
     }
@@ -62,5 +62,16 @@ table.tb_allocation .dropdown ul li a{
     .btn{
       padding-bottom: 2px;
     }
+  }
+
+  .load-more-allocations{
+    margin-left: 50%;
+  }
+
+  .form_requirement {
+    position: relative;
+    text-align: center;
+    top: -6px;
+    color: #dca727;
   }
 }

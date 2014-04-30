@@ -145,7 +145,7 @@ class AdministrationsController < ApplicationController
   end
 
   ## PROFILE APPROVAL
-
+  require 'will_paginate/array'
   def allocation_approval
     authorize! :allocation_approval, Administration
     @allocations = Allocation.pending(current_user)
@@ -176,22 +176,22 @@ class AdministrationsController < ApplicationController
           allocation if not(semester.nil?) and semester.name.downcase.include? @text_search.downcase
         end
       when "group"; @allocations.joins(:group).where("lower(groups.code) ~ '#{@text_search.downcase}'")
+      else @allocations
       end
     end
 
     @allocations.compact!
+    @allocations = @allocations.paginate(page: params[:page], per_page: 100)
     @types = [ [t("administrations.allocation_approval.name"), 'name'], [t("administrations.allocation_approval.profile"), 'profile'], 
       [t("administrations.allocation_approval.type"), 'curriculum_unit_type'], [t("administrations.allocation_approval.course"), 'course'], 
       [t("administrations.allocation_approval.curriculum_unit"), 'curriculum_unit'], [t("administrations.allocation_approval.semester"), 'semester'], 
       [t("administrations.allocation_approval.group"), 'group'] ]
 
-    render layout: false if params.include?(:search)
-  end
-
-  def approval_history
-    authorize! :allocation_approval, Administration
-    
-    @allocations = Allocation.last_changed(current_user)
+    respond_to do |format|
+      format.html { render layout: false if params.include?(:search) }
+      format.json { render json: @allocations }
+      format.js
+    end
   end
 
 end

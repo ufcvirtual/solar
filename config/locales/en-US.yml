@@ -1342,7 +1342,11 @@
       requested: Request made successfully
       request_canceled: Request canceled
       profile_canceled: Profile cancelado
-      rejected: Request rejected
+      rejected: rejected
+      accepted: accepted
+      allocation_tag_path: "at %{path}" 
+      request_message: "Request of %{user_name} with profile %{profile_name} %{path} was %{action}. #{undo_url}"
+      undone_action: Action undone successfully
     error:
       student_already_in_group: Student is already in the class
       enrollm_request: Request for enrollment not made
@@ -1355,6 +1359,7 @@
       cancel_request: It was not possible to cancel
     warning:
       already_active: Profile's already active
+    undo_action: "(Undo action)"
 
   allocation_pending: Pending
 
@@ -1518,14 +1523,13 @@
       type: Type
       name: Name
       profile: Profile
-      approval_history: Last action history
+      load_allocations: Load more allocations
+      page_info: "This page has as goal the acceptance/rejection of profiles requests. If you want to allocate an user, access the %{url} area."
+      user_indication: user indication
+    pending_allocations:
       reject: Reject
       accept: Accept
-    approval_history:
-      close: Close
-      status: Status
-      date: Date
-      none_recent_approval_history: There are no recent aceptance or rejection
+      not_specified: Not specified
 
   editions:
     filter: Filter
@@ -1828,6 +1832,7 @@
     newsfeed: News Feed 
 
   message_confirm: "Are you sure you want to delete this?"
+  confirm_acceptance: "Confirm request acceptance?"
 
   messages:
     file_too_big: "File too big"

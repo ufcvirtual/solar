@@ -315,11 +315,21 @@ class AllocationsController < ApplicationController
       authorize! :accept_or_reject, Allocation, on: [allocation.allocation_tag_id]
     end
 
-    allocation.update_attribute(:status, (params[:accept] ? Allocation_Activated : Allocation_Rejected))
-    render json: {success: true, notice: (params[:accept] ? t("allocations.success.activated") : t("allocations.success.rejected"))}
+    if params.include?(:undo)
+      message = t("allocations.success.undone_action")
+      allocation.update_attribute(:status, Allocation_Pending)
+    else
+      path    = allocation.allocation_tag.nil? ? "" : t("allocations.success.allocation_tag_path", path: AllocationTag.allocation_tag_details(allocation.allocation_tag))
+      action  = params[:accept] ? t("allocations.success.accepted") : t("allocations.success.rejected")
+      message = t("allocations.success.request_message", user_name: allocation.user.name, profile_name: allocation.profile.name, path: path, action: action, 
+        undo_url: view_context.link_to(t("allocations.undo_action"), "#", id: :undo_action, :"data-link" => undo_action_allocation_path(allocation)))
+      allocation.update_attribute(:status, (params[:accept] ? Allocation_Activated : Allocation_Rejected))
+    end
+
+    render json: {success: true, notice: message}
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
-  rescue 
+  rescue
     render json: {success: false, alert: t("allocations.manage.enrollment_unsuccessful_update")}, status: :unprocessable_entity
   end
 
