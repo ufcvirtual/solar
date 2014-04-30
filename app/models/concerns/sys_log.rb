@@ -21,10 +21,9 @@ module SysLog
         obj.academic_allocations.each do |al|
           LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, created_at: Time.now, tool_id: al.id, ip: request.remote_ip, description: "#{params[sobj.singularize.to_sym]}")
         end
-      else
-
-        description = if params.has_key?(obj.class.table_name.singularize.to_sym) # criacao de post
-          "#{sobj}: #{obj.id}, #{params[obj.class.table_name.singularize.to_sym]}"
+      else # log generico
+        description = if params.has_key?(tbname = obj.try(:class).try(:table_name).to_s.singularize.to_sym)
+          "#{sobj}: #{obj.id}, #{params[tbname]}"
         elsif params[:id].present?
           "#{sobj}: #{params[:id]}"
         end
@@ -32,7 +31,6 @@ module SysLog
         LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, created_at: Time.now, ip: request.remote_ip, description: description)
       end
     rescue => error
-      raise "reitrar? #{error}"
       # do nothing
     end
 

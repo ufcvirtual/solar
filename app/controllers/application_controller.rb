@@ -127,7 +127,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource_or_scope)
-    LogAccess.login(user_id: current_user.id, ip: request.remote_ip)
+    LogAccess.login(user_id: current_user.id, ip: request.remote_ip) rescue nil
     super
   end
 

@@ -43,7 +43,7 @@ class TabsController < ApplicationController
   private
 
     def log_access
-      LogAccess.course(user_id: current_user.id, allocation_tag_id: AllocationTag.find_by_curriculum_unit_id(params[:id]).id, ip: request.remote_ip)  if (params[:context].to_i == Context_Curriculum_Unit)
+      LogAccess.course(user_id: current_user.id, allocation_tag_id: AllocationTag.find_by_curriculum_unit_id(params[:id]).id, ip: request.remote_ip) rescue nil if (params[:context].to_i == Context_Curriculum_Unit)
     end
 
 end
