@@ -78,13 +78,15 @@
         flash_message(data.notice, 'notice');
       var last_removed_tr = $(button).closest("tr").slideUp().remove();
       if ( !$(".allocation_requested_list tbody").children("tr").size() ){
-        $(".allocation_requested_list table").remove();
+        $(".allocation_requested_list table").hide();
         $(".allocation_requested_list .block_content").append("<div class='block_content block_content_text'>Não há solicitações pendentes</div>")
       }
 
       $("tbody.allocations").undo_action_by_flash_message({
         complement_success: function(data){
-          console.log($(last_removed_tr).html());
+          $(".allocation_requested_list table").show();
+          $(".allocation_requested_list .block_content .block_content").remove();
+
           if (last_removed_tr != "")
             $("tbody.allocations").prepend("<tr class='lines'>" + $(last_removed_tr).html() + "</div>");
         }
