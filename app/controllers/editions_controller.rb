@@ -1,8 +1,6 @@
-include EdxHelper  
+include EdxHelper
 
 class EditionsController < ApplicationController
-
-  EDX = YAML::load(File.open("config/edx.yml"))[Rails.env.to_s]
 
   def items
     @all_groups_allocation_tags = []
@@ -29,7 +27,7 @@ class EditionsController < ApplicationController
   # GET /editions/academic
   def academic
     authorize! :academic, Edition
-    @types = ((File.exist?("config/edx.yml") and EDX["integrated"]) ? CurriculumUnitType.all : CurriculumUnitType.where("id <> 7"))
+    @types = ((not(EDX.nil?) and EDX["integrated"]) ? CurriculumUnitType.all : CurriculumUnitType.where("id <> 7"))
     @type  = params[:type_id]
   end
 
@@ -65,12 +63,11 @@ class EditionsController < ApplicationController
   end
 
   def edx_courses
-    edx_urls = EDX['urls']
     @type    = CurriculumUnitType.find(params[:curriculum_unit_type_id])
 
-    create_user_solar_in_edx(current_user.username,current_user.name,current_user.email) 
+    verify_or_create_user_in_edx(current_user)
 
-    url = URI.parse(edx_urls["verify_user"].gsub(":username", current_user.username)+"instructor/")
+    url = URI.parse(EDX_URLS["verify_user"].gsub(":username", current_user.username)+"instructor/")
     res = Net::HTTP.start(url.host, url.port) { |http| http.request(Net::HTTP::Get.new(url.path)) }
     uri_courses = JSON.parse(res.body) #pega endereço dos cursos
     courses_created_by_current_user = "[]" 
@@ -80,7 +77,7 @@ class EditionsController < ApplicationController
         else
           courses_created_by_current_user = ""
           for uri_course in uri_courses do
-            url = URI.parse(edx_urls["information_course"].gsub(":resource_uri", uri_course))
+            url = URI.parse(EDX_URLS["information_course"].gsub(":resource_uri", uri_course))
             res = Net::HTTP.start(url.host, url.port) { |http| http.request(Net::HTTP::Get.new(url.path)) }
             courses_created_by_current_user  << res.body.chop! << ", \"resource_uri\":  \"#{uri_course}\""<<"}, "
           end
@@ -99,7 +96,7 @@ class EditionsController < ApplicationController
   # GET /editions/content
   def content
     authorize! :content, Edition
-    @types = ((File.exist?("config/edx.yml") and EDX["integrated"]) ? CurriculumUnitType.all : CurriculumUnitType.where("id <> 7"))
+    @types = ((not(EDX.nil?) and EDX["integrated"]) ? CurriculumUnitType.all : CurriculumUnitType.where("id <> 7"))
   end
 
 end

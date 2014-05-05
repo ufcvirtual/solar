@@ -2,9 +2,6 @@ include EdxHelper
 
 class EdxCoursesController < ApplicationController
 
-  EDX = YAML::load(File.open("config/edx.yml"))[Rails.env.to_s] rescue nil
-  EDX_URLS = EDX["urls"] rescue nil
-
   layout false, except: [:index, :items]
   before_filter :verify_integration
 
@@ -40,7 +37,7 @@ class EdxCoursesController < ApplicationController
 
   # matricular
   def enroll
-    create_user_solar_in_edx(current_user.username,current_user.name,current_user.email)
+    verify_or_create_user_in_edx(current_user)
     course = { "course_resource_uri" => Base64.decode64(params[:course]) }.to_json
 
     uri  = URI.parse(EDX_URLS["enroll_or_unenroll"].gsub(":username", current_user.username))
@@ -90,7 +87,7 @@ class EdxCoursesController < ApplicationController
     uri_course = Base64.decode64(params[:course])
     user_uri   = "/solaredx/api/v1/#{params[:username]}/"
     user       = User.find_by_username(params[:username])
-    create_user_solar_in_edx(user.username,user.name,user.email)
+    verify_or_create_user_in_edx(user)
     professor  = { user_resource_uri: user_uri }.to_json
 
     uri  = URI.parse(EDX_URLS["information_course"].gsub(":resource_uri", uri_course)+params[:profile]+"/")  
@@ -155,7 +152,7 @@ class EdxCoursesController < ApplicationController
   end
 
   def create
-    create_user_solar_in_edx(current_user.username,current_user.name,current_user.email)
+    verify_or_create_user_in_edx(current_user)
     @courses_names = params[:courses_names]
 
     begin

@@ -1,6 +1,6 @@
 module EdxHelper
 
-  EDX = YAML::load(File.open("config/edx.yml"))[Rails.env.to_s] rescue nil
+  EDX = YAML::load(File.open("config/edx.yml"))[Rails.env.to_s] rescue nil if File.exist?("config/edx.yml")
   EDX_URLS = EDX["urls"] rescue nil
 
   def get_response(url)
@@ -21,17 +21,17 @@ module EdxHelper
     end
   end
 
-  def create_user_solar_in_edx(username,name,email)
-    unless check_me(username)
-      user = {username: username, name: name, email: email}.to_json
-       
-      uri  = URI.parse(EDX_URLS["insert_user"])
-      http = Net::HTTP.new(uri.host,uri.port)
+  def verify_or_create_user_in_edx(user)
+    return if check_me(user.username)
 
-      req  = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
-      req.body = user
-      res  = http.request(req)
-    end  
+    user = {username: user.username, name: user.name, email: user.email}.to_json
+
+    uri  = URI.parse(EDX_URLS["insert_user"])
+    http = Net::HTTP.new(uri.host,uri.port)
+
+    req  = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
+    req.body = user
+    res  = http.request(req)
   end
 
 end
