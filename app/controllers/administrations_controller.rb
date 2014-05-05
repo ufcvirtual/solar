@@ -1,5 +1,7 @@
 class AdministrationsController < ApplicationController
 
+  include SysLog::Devise
+
   layout false, except: [:users, :users_indication, :allocation_approval]
 
   ## USERS

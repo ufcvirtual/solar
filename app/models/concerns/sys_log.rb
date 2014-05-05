@@ -49,4 +49,32 @@ module SysLog
 
   end # Actions
 
+  module Devise
+    extend ActiveSupport::Concern
+
+    included do
+      # request reset (create/reset_password_user) and  actually reset (update) user password
+      after_filter :log_update, only: [:update]
+      after_filter :log_request, only: [:create, :reset_password_user]
+    end
+
+    def log_update
+      unless not(params[:user].include?(:password)) or params[:user][:password].blank? or params[:user][:password] != params[:user][:password_confirmation]
+        user = (current_user.nil? ? (params[:user].include?(:id) ? User.find(params[:id]) : User.find_by_reset_password_token(params[:user][:reset_password_token])) : current_user)
+        LogAction.update(user_id: user.id, ip: request.remote_ip, description: "user: #{user.id}, password", created_at: Time.now) unless user.nil?
+      end
+    rescue
+      # do nothing
+    end
+
+    def log_request
+      user_email = params.include?(:user) ? User.find_by_email(params[:user][:email]) : User.find(params[:id])
+      user       = (current_user.nil? ?  user_email : current_user)
+      LogAction.request_password(user_id: user.id, ip: request.remote_ip, description: "user: #{user_email.id}, {email: #{user_email.email}}", created_at: Time.now) unless user.nil?
+    rescue
+      # do nothing
+    end
+
+  end
+
 end

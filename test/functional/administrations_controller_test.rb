@@ -5,6 +5,7 @@ class AdministrationsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   def setup
+    raise "#{@controller.as_json}"
     @admin  = users(:admin)
     @editor = users(:editor)
     @aluno1 = users(:aluno1)
@@ -104,5 +105,13 @@ class AdministrationsControllerTest < ActionController::TestCase
     assert_nil assigns(:allocations)
     assert_response :redirect
     assert_equal flash[:alert], I18n.t(:no_permission)
+  end
+
+  test "solicitar senha para usuario" do
+    assert_difference("LogAction.find_all_by_log_type(6).count") do
+      get :reset_password_user, {id: @editor.id}
+    end
+
+    assert_response :success
   end
 end

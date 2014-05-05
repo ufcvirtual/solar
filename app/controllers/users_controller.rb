@@ -1,6 +1,7 @@
 require 'ostruct'
 
 class UsersController < ApplicationController
+
   layout false, only: :show
   load_and_authorize_resource only: [:mysolar, :update_photo]
 

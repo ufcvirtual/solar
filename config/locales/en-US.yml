@@ -1184,7 +1184,7 @@
     sessions:
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
-    passwords:
+    users_passwords:
       new_password: New password
       confirm_new_password: Confirm new password
       change_my_password: Change

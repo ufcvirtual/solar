@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  # include SysLog::User
+
   def ability
     @ability ||= Ability.new(self)
   end
