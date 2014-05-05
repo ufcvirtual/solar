@@ -67,7 +67,7 @@ class EnrollmentsController < ApplicationController
 
       @course       = {semester: course_id[2], group: course_id[1], enrollment_date: enroll_date, offer_date: date, name: public_course["display_name"], responsibles: responsibles.flatten.compact}
     else
-      @group           = Group.find(params[:id])
+      @group           = Group.find(params[:group_id])
       @curriculum_unit = @group.offer.curriculum_unit
       @responsibles    = @group.responsibles
     end

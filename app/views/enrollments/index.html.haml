@@ -41,7 +41,7 @@
               %td= group.offer.semester.name
               %td= group.code
               %td= period_info[:period]
-              %td= link_to content_tag(:i, nil, class: 'icon-info'), enrollment_path(group.id), class: "btn", id: "enrollment_info_#{group.id}"
+              %td= link_to content_tag(:i, nil, class: 'icon-info'), group_enrollments_path(group.id), class: "btn", id: "enrollment_info_#{group.id}"
               %td
                 - allocation = group.allocations.where(user_id: current_user.id, profile_id: 1).first
                 - case allocation.try(:status)

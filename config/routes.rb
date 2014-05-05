@@ -190,10 +190,13 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :enrollments, only: [:index, :show] do
-    get :import_users, to: "enrollments#import_users", on: :collection
-    post :batch_users, on: :collection # create and enroll users
-    get :public_course, action: :show, defaults: {public: true}, on: :collection
+  resources :enrollments, only: :index do
+    collection do
+      get ":group_id", to: :show, as: :group
+      get :import_users, to: "enrollments#import_users"
+      post :batch_users # create and enroll users
+      get :public_course, action: :show, defaults: {public: true}
+    end
   end
 
   resources :courses do 
