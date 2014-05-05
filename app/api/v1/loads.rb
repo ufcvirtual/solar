@@ -66,9 +66,9 @@ module V1
       def allocate_professors(group, cpfs)
         group.allocations.where(profile_id: 2).update_all(status: 2) # cancel all previous allocations
 
-        professors = User.where(cpf: cpfs)
-        professors.each do |prof|
-          group.allocate_user(prof.id, 2)
+        cpfs.each do |cpf|
+          professor = verify_or_create_user(cpf)
+          group.allocate_user(professor.id, 2)
         end
       end
 
