@@ -13,7 +13,9 @@ class AllocationsController < ApplicationController
       @allocation_tags_ids  = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids].split(" ").flatten : [] 
     elsif params[:groups_id].blank?
       if params.include?(:semester_id) and (not params[:semester_id] == "")
-        @allocation_tags_ids = [Offer.where(semester_id: params[:semester_id], curriculum_unit_id: params[:curriculum_unit_id], course_id: params[:course_id]).first.allocation_tag.id]
+        offer = Offer.where(semester_id: params[:semester_id], course_id: params[:course_id])
+        offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
+        @allocation_tags_ids = [offer.first.allocation_tag.id]
       elsif params.include?(:curriculum_unit_id) and (not params[:curriculum_unit_id] == "")
         @allocation_tags_ids = [CurriculumUnit.find(params[:curriculum_unit_id]).allocation_tag.id]
       elsif params.include?(:course_id) and (not params[:course_id] == "")
