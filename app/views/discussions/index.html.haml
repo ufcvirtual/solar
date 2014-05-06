@@ -13,7 +13,7 @@
         - @discussions.each do |discussion|
           %tr{class: "lines #{'period_ended' if discussion.closed? and (not discussion.extra_time?(current_user.id))} "}
             %td
-              - if ((can? :index, Discussion, {on: discussion.allocation_tags.map(&:id), read: true}) and (discussion.opened? or discussion.closed?)) # nao apresenta os nao iniciados
+              - if ((can? :index, Discussion, {on: [@allocation_tag_id], read: true}) and (discussion.opened? or discussion.closed?)) # nao apresenta os nao iniciados
                 = link_to discussion.name, discussion_posts_path(discussion), {:class => 'link_content'}
                 = "(#{t(:forum_closed_short)})" if discussion.closed? and (not discussion.extra_time?(current_user.id))
                 = "(#{t(:discussion_closed_to_students)})" if discussion.extra_time?(current_user.id)

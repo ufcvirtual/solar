@@ -5,13 +5,16 @@ class PostsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :prepare_for_pagination
 
-  load_and_authorize_resource :except => [:index, :show, :create]
+  load_and_authorize_resource except: [:index, :show, :create]
 
   ## GET /discussions/1/posts
   ## GET /discussions/1/posts/20120217/[news, history]/order/asc/limit/10
   def index
     @discussion = Discussion.find(params[:discussion_id])
-    authorize! :index, Discussion, {on: @discussion.allocation_tags.map(&:id), read: true}
+
+    # group allocation tag
+    allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.map(&:id) # procurar problema no mobilis, ele nao envia a allocation tag da turma
+    authorize! :index, Discussion, {on: [allocation_tags], read: true}
 
     @posts = []
     @can_interact = @discussion.user_can_interact?(current_user.id)
