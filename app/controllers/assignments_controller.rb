@@ -377,12 +377,11 @@ class AssignmentsController < ApplicationController
           sent_assignment = SentAssignment.find_or_create_by_academic_allocation_id_and_user_id_and_group_assignment_id!(academic_allocation.id, user_id, group_id)
           file = AssignmentFile.create!({ :attachment => params[:file], :sent_assignment_id => sent_assignment.id, :user_id => current_user.id })
 
-          LogAction.create(log_type: LogAction::TYPE[:create], user_id: current_user.id, ip: request.remote_ip, tool_id: sent_assignment.academic_allocation_id, description: %{assignment_file: #{file.as_json.except("attachment_updated_at", "user_id")}}) rescue nil
+          LogAction.create(log_type: LogAction::TYPE[:create], user_id: current_user.id, ip: request.remote_ip, academic_allocation_id: sent_assignment.academic_allocation_id, description: %{assignment_file: #{file.as_json.except("attachment_updated_at", "user_id")}}) rescue nil
       end # case
 
       flash[:notice] = t(:uploaded_success, :scope => [:assignment, :files])
     rescue => error
-      # raise "#{error}"
       flash[:alert] = error.message.split(',')[0]
     end
     redirect_to (request.referer.nil? ? home_url(:only_path => false) : request.referer)
@@ -415,7 +414,7 @@ class AssignmentsController < ApplicationController
           file = AssignmentFile.find(params[:file_id])
           file.delete_assignment_file
 
-          LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: request.remote_ip, tool_id: file.sent_assignment.academic_allocation_id, description: %{assignment_file: #{file.id}}) rescue nil
+          LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: request.remote_ip, academic_allocation_id: file.sent_assignment.academic_allocation_id, description: %{assignment_file: #{file.id}}) rescue nil
       end
       flash[:notice] = t(:deleted_success, :scope => [:assignment, :files])
     rescue Exception => error
