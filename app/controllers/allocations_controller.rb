@@ -1,5 +1,6 @@
 class AllocationsController < ApplicationController
   include AllocationsHelper
+  include SysLog::Actions
 
   layout false, except: [:index]
 
@@ -102,7 +103,8 @@ class AllocationsController < ApplicationController
       ok      = (offer.enrollment_start_date.to_date..(offer.enrollment_end_date.try(:to_date) || offer.end_date.to_date)).include?(Date.today)
     end
 
-    ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status) if ok or ok.nil?
+    ok =  allocate(params[:allocation_tag_id], params[:user_id], profile, status) if ok or ok.nil?
+
     message = ok ? ['notice', 'success'] : ['alert', 'error']
     respond_to do |format|
       format.html { redirect_to(enrollments_url, message.first.to_sym => t(:enrollm_request, scope: [:allocations, message.last.to_sym])) }
@@ -155,7 +157,7 @@ class AllocationsController < ApplicationController
   # PUT /allocations/1.json
   def update
     mutex             = Mutex.new # utilizado para organizar/controlar o comportamento das threads
-    allocations       = Allocation.where(id: params[:id].split(","))
+    @allocations      = Allocation.where(id: params[:id].split(","))
     allocation_tag_id = (params.include?(:allocation) and params[:allocation].include?(:group_id)) ? Group.find(params[:allocation][:group_id]).allocation_tag.id : nil
 
     # verifica se existe mudanca de turma
@@ -167,9 +169,9 @@ class AllocationsController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         # mudanca de turma, nao existe chamada multipla para esta funcionalidade
-        if ((not params.include?(:multiple)) and (not allocation_tag_id.nil?) and (allocation_tag_id != allocations.first.allocation_tag_id))
+        if ((not params.include?(:multiple)) and (not allocation_tag_id.nil?) and (allocation_tag_id != @allocations.first.allocation_tag_id))
           # criando novas alocacoes e cancelando as antigas
-          allocation = allocations.first
+          allocation = @allocations.first
           allocation.update_attribute(:status, Allocation_Cancelled) # cancelando a anterior
           @allocation = Allocation.create!(allocation.attributes.merge({allocation_tag_id: allocation_tag_id, status: params[:allocation][:status]}))
 
@@ -181,7 +183,7 @@ class AllocationsController < ApplicationController
         else # sem mudanca de turma
           new_status = params.include?(:enroll) ? Allocation_Activated.to_i : ((params.include?(:allocation) and params[:allocation].include?(:status)) ? params[:allocation][:status] : 0)
 
-          allocations.each do |al|
+          @allocations.each do |al|
             changed_status_to_accepted = ((al.status.to_i != Allocation_Activated.to_i) and (new_status.to_i == Allocation_Activated.to_i))
             al.update_attribute(:status, new_status)
 
@@ -192,7 +194,7 @@ class AllocationsController < ApplicationController
             end
           end # allocations
 
-          @allocation = allocations.first
+          @allocation = @allocations.first
         end # if
       end # transaction
 
@@ -264,7 +266,12 @@ class AllocationsController < ApplicationController
     @text_search = params[:text_search]
 
     begin 
-      authorize! :deactivate, @allocation
+      if current_user.is_admin?
+        authorize! :deactivate, Allocation
+      else
+        authorize! :deactivate, @allocation
+      end
+
       raise "error" unless @allocation.update_attribute(:status, Allocation_Cancelled)
 
       render json: {success: true}
@@ -278,7 +285,11 @@ class AllocationsController < ApplicationController
     allocation_tag_id = @allocation.allocation_tag_id
 
     begin
-      authorize! :activate, @allocation
+      if current_user.is_admin?
+        authorize! :activate, Allocation
+      else
+        authorize! :activate, @allocation
+      end
 
       raise "error" unless @allocation.update_attribute(:status, Allocation_Activated)
 
@@ -307,23 +318,23 @@ class AllocationsController < ApplicationController
   end
 
   def accept_or_reject
-    allocation = Allocation.find(params[:id])
+    @allocation = Allocation.find(params[:id])
 
     if current_user.is_admin?
       authorize! :accept_or_reject, Allocation
     else
-      authorize! :accept_or_reject, Allocation, on: [allocation.allocation_tag_id]
+      authorize! :accept_or_reject, Allocation, on: [@allocation.allocation_tag_id]
     end
 
     if params.include?(:undo)
       message = t("allocations.success.undone_action")
-      allocation.update_attribute(:status, Allocation_Pending)
+      @allocation.update_attribute(:status, Allocation_Pending)
     else
-      path    = allocation.allocation_tag.nil? ? "" : t("allocations.success.allocation_tag_path", path: AllocationTag.allocation_tag_details(allocation.allocation_tag))
+      path    = @allocation.allocation_tag.nil? ? "" : t("allocations.success.allocation_tag_path", path: AllocationTag.allocation_tag_details(@allocation.allocation_tag))
       action  = params[:accept] ? t("allocations.success.accepted") : t("allocations.success.rejected")
-      message = t("allocations.success.request_message", user_name: allocation.user.name, profile_name: allocation.profile.name, path: path, action: action, 
-        undo_url: view_context.link_to(t("allocations.undo_action"), "#", id: :undo_action, :"data-link" => undo_action_allocation_path(allocation)))
-      allocation.update_attribute(:status, (params[:accept] ? Allocation_Activated : Allocation_Rejected))
+      message = t("allocations.success.request_message", user_name: @allocation.user.name, profile_name: @allocation.profile.name, path: path, action: action, 
+        undo_url: view_context.link_to(t("allocations.undo_action"), "#", id: :undo_action, :"data-link" => undo_action_allocation_path(@allocation)))
+      @allocation.update_attribute(:status, (params[:accept] ? Allocation_Activated : Allocation_Rejected))
     end
 
     render json: {success: true, notice: message}
@@ -356,14 +367,16 @@ class AllocationsController < ApplicationController
       [allocation_tags_ids].flatten.each do |allocation_tag_id|
         allocation = Allocation.where(allocation_tag_id: allocation_tag_id, user_id: user_id, profile_id: profile).first_or_initialize
         unless allocation.new_record? # existe alocação
-          if allocation.status != Allocation_Activated # não ativa
+          if allocation.status != Allocation_Activated # não ativada
             allocation.update_attribute(:status, Allocation_Pending_Reactivate)
+            LogAction.update(user_id: current_user.id, created_at: Time.now, allocation_tag_id: allocation.allocation_tag.try(:id), ip: request.remote_ip, description: "allocation: #{allocation.attributes}") if success
           elsif [allocation_tags_ids].size == 1
             success = nil
           end
         else # não existe alocação
           allocation.status = status
           success = false unless allocation.save
+          LogAction.creation(user_id: current_user.id, created_at: Time.now, allocation_tag_id: allocation.allocation_tag.try(:id), ip: request.remote_ip, description: "allocation: #{allocation.attributes}") if success
         end
       end
     rescue => error

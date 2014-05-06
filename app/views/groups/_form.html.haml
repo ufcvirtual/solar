@@ -32,7 +32,7 @@
     $("#save").click(function(){
       $('form#group_form').serialize_and_submit({
         complement_success: function(data) {
-          var url = "#{list_groups_path(type: @type_id, curriculum_unit_id: 'curriculum_unit_param', course_id: 'course_param', semester_id: 'semester_param')}".replace('curriculum_unit_param', $('#curriculum_unit').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('semester_param', $('#semester').combobox('value'));
+          var url = "#{list_groups_path(type_id: @type_id, curriculum_unit_id: 'curriculum_unit_param', course_id: 'course_param', semester_id: 'semester_param')}".replace('curriculum_unit_param', $('#curriculum_unit').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('semester_param', $('#semester').combobox('value'));
 
           $.get(url, function(data) {
             $('.groups_list').html(data);

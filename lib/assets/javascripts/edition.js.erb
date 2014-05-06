@@ -123,7 +123,7 @@ $(function(){
   // ----------------------------------------------------------------------------------------------------
 
   $("#radio_option_group").click(function(){
-    var url = "<%=Rails.application.routes.url_helpers.list_groups_path(checkbox: true , type: "type_param", semester_id: "semester_param", course_id: "course_param", curriculum_unit_id: "curriculum_unit_param")%>"
+    var url = "<%=Rails.application.routes.url_helpers.list_groups_path(checkbox: true , type_id: "type_param", semester_id: "semester_param", course_id: "course_param", curriculum_unit_id: "curriculum_unit_param")%>"
       .replace("type_param", $("#curriculum_unit_type").combobox("value"))
       .replace("semester_param", $("#semester").combobox("value"))
       .replace("course_param", $("#course").combobox("value"))

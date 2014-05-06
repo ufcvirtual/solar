@@ -30,4 +30,9 @@ class LogAction < ActiveRecord::Base
     create(params)
   end
 
+  def self.creation(params)
+    params.merge!(log_type: TYPE[:create])
+    create(params)
+  end
+
 end

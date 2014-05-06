@@ -10,26 +10,36 @@ module SysLog
     extend ActiveSupport::Concern
 
     included do
-      after_filter :log_create, only: [:create, :update, :destroy]
+      after_filter :log_create, only: [:create, :update, :destroy, :update_user, :activate, :deactivate, :accept_or_reject]
     end
 
     def log_create
-      sobj = self.class.to_s.sub("Controller", "").downcase.singularize
-      obj = eval("@#{sobj}")
+      model = self.class.to_s.sub("Controller", "")
+      sobj  = model.downcase
+      objs  = eval("@#{sobj}") # created/updated/destroyied objects could be a list
+      sobj  = sobj.singularize
+      objs  = [eval("@#{sobj}")].compact if objs.nil?
 
-      if obj.respond_to?(:academic_allocations)
-        obj.academic_allocations.each do |al|
-          LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, tool_id: al.id, ip: request.remote_ip, description: "#{sobj}: #{params[sobj.singularize.to_sym]}")
-        end
-      else # log generico # multiple deletion
-        description = if params.has_key?(tbname = obj.try(:class).try(:table_name).to_s.singularize.to_sym)
-          "#{sobj}: #{obj.id}, #{params[tbname]}"
-        elsif params[:id].present?
-          "#{sobj}: #{params[:id]}"
-        end
+      # if some error happened, don't save log
+      response_status = JSON.parse(response.body) rescue nil
+      return false if (not(response_status.nil?) and response_status.has_key?("success") and response_status["success"] == false)
 
-        LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: request.remote_ip, description: description)
+      if not(objs.empty?)
+        objs.each do |obj|
+          if obj.respond_to?(:academic_allocations)
+            obj.academic_allocations.each do |al|
+              LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, created_at: Time.now, academic_allocation_id: al.id, ip: request.remote_ip, description: "#{params[sobj.singularize.to_sym]}")
+            end
+          elsif obj.respond_to?(:allocation_tag)
+            LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, created_at: Time.now, allocation_tag_id: obj.allocation_tag.try(:id), ip: request.remote_ip, description: "#{sobj.singularize}: #{obj.attributes}")
+          else # generic log
+            generic_log(sobj, obj)
+          end
+        end
+      else
+        generic_log(sobj)
       end
+
     rescue => error
       # do nothing
     end
@@ -45,6 +55,17 @@ module SysLog
           when "DELETE"
             :destroy
         end
+      end
+
+      def generic_log(sobj, obj = nil)
+         description = if params.has_key?(tbname = obj.try(:class).try(:table_name).to_s.singularize.to_sym) and not(obj.nil?)
+          "#{sobj}: #{obj.id}, #{params[tbname]}"
+        elsif params[:id].present?
+          # gets any extra information if exists
+          info = params.except(:controller, :action, :id)
+          "#{sobj}: #{[params[:id], info.first.last].compact.join(", ")}"
+        end
+        LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, created_at: Time.now, ip: request.remote_ip, description: description)
       end
 
   end # Actions
