@@ -350,14 +350,13 @@ class AssignmentsController < ApplicationController
 
   def upload_file
     begin
-      allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])  
-      file = case params[:type]
-
+      allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+      case params[:type]
         when "public"
           raise CanCan::AccessDenied unless Profile.student_from_class?(current_user.id, allocation_tag.id)
-          PublicFile.create!({ :attachment => params[:file],
-          :user_id => current_user.id,
-          :allocation_tag_id => allocation_tag.id })
+          file = PublicFile.create!({ attachment: params[:file], user_id: current_user.id, allocation_tag_id: allocation_tag.id })
+
+          LogAction.create(log_type: LogAction::TYPE[:create], user_id: current_user.id, ip: request.remote_ip, description: %{assignment_file [public]: #{file.as_json.except("attachment_updated_at", "user_id")}}) rescue nil
         when "assignment"
           assignment = Assignment.find(params[:assignment_id])
           authorize! :upload_file, assignment
@@ -376,11 +375,14 @@ class AssignmentsController < ApplicationController
 
           academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id,assignment.id, 'Assignment')
           sent_assignment = SentAssignment.find_or_create_by_academic_allocation_id_and_user_id_and_group_assignment_id!(academic_allocation.id, user_id, group_id)
-          AssignmentFile.create!({ :attachment => params[:file], :sent_assignment_id => sent_assignment.id, :user_id => current_user.id })
-      end
+          file = AssignmentFile.create!({ :attachment => params[:file], :sent_assignment_id => sent_assignment.id, :user_id => current_user.id })
+
+          LogAction.create(log_type: LogAction::TYPE[:create], user_id: current_user.id, ip: request.remote_ip, tool_id: sent_assignment.academic_allocation_id, description: %{assignment_file: #{file.as_json.except("attachment_updated_at", "user_id")}}) rescue nil
+      end # case
 
       flash[:notice] = t(:uploaded_success, :scope => [:assignment, :files])
-    rescue Exception => error
+    rescue => error
+      # raise "#{error}"
       flash[:alert] = error.message.split(',')[0]
     end
     redirect_to (request.referer.nil? ? home_url(:only_path => false) : request.referer)
@@ -399,6 +401,7 @@ class AssignmentsController < ApplicationController
             raise t(:error_delete, :scope => [:assignment, :files])
           end
 
+          LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: request.remote_ip, description: %{assignment_file [public]: #{file.id}, allocation_tag_id: #{active_tab[:url][:allocation_tag_id]}}) rescue nil
         when 'assignment'
           assignment = Assignment.find(params[:assignment_id])
           authorize! :delete_file, assignment
@@ -409,7 +412,10 @@ class AssignmentsController < ApplicationController
           # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
           raise CanCan::AccessDenied unless assignment.user_can_access_assignment(allocation_tag, current_user.id, AssignmentFile.find(params[:file_id]).user_id)
 
-          AssignmentFile.find(params[:file_id]).delete_assignment_file
+          file = AssignmentFile.find(params[:file_id])
+          file.delete_assignment_file
+
+          LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: request.remote_ip, tool_id: file.sent_assignment.academic_allocation_id, description: %{assignment_file: #{file.id}}) rescue nil
       end
       flash[:notice] = t(:deleted_success, :scope => [:assignment, :files])
     rescue Exception => error

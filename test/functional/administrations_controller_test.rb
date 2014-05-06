@@ -5,7 +5,6 @@ class AdministrationsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   def setup
-    raise "#{@controller.as_json}"
     @admin  = users(:admin)
     @editor = users(:editor)
     @aluno1 = users(:aluno1)

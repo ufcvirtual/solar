@@ -15,13 +15,9 @@ class SentAssignment < ActiveRecord::Base
 
   before_save :if_group_assignment_remove_user_id
 
-  ## 
-  # Em situações de trabalho em grupo avaliado a partir de links que tenham um id do aluno, remover o id do aluno no momento de salvar o sent_assignment
-  ##
+  ## Em situações de trabalho em grupo avaliado a partir de links que tenham um id do aluno, remover o id do aluno no momento de salvar o sent_assignment
   def if_group_assignment_remove_user_id
-  	if group_assignment_id
-  		self.user_id = nil
-  	end
+    self.user_id = nil if group_assignment_id
   end
 
   def assignment
