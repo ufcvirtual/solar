@@ -28,7 +28,7 @@
                 %td
                   - status, link = (allocation.status == Allocation_Activated) ? ["deactivate", deactivate_allocation_path(id: allocation, text_search: @text_search)] : ["activate", activate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)]
 
-                  = button_tag t(".#{status}"), type: :button, class: "btn btn_caution #{status}", alt: t(".#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids.flatten, admin: @admin)
+                  = button_tag t(".#{status}"), type: :button, class: "btn btn_caution #{status}", alt: t(".#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => designates_allocations_path(allocation_tags_ids: [@allocation_tags_ids].flatten, admin: @admin)
 
 
   .block_wrapper.search

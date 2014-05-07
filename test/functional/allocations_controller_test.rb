@@ -166,11 +166,9 @@ class AllocationsControllerTest < ActionController::TestCase
   end
 
   test "alocar usuario com perfil tutor a distancia" do
-    assert_difference("Allocation.count", 2) do
-      assert_difference("LogAction.count", 2) do
-        post :create_designation, { allocation_tags_ids:  [allocation_tags(:al5).id], user_id: users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated } #oferta
-        post :create_designation, { allocation_tags_ids:  [allocation_tags(:al4).id], user_id: users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated } #turma
-      end
+    assert_difference(["Allocation.count", "LogAction.count"], 2) do
+      post :create_designation, { allocation_tags_ids:  [allocation_tags(:al5).id], user_id: users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated } #oferta
+      post :create_designation, { allocation_tags_ids:  [allocation_tags(:al4).id], user_id: users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated } #turma
     end
 
     assert_response :success
