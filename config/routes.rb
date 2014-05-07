@@ -46,7 +46,7 @@ Solar::Application.routes.draw do
   scope "/admin" do
     resources :profiles do
       get :permissions, on: :member
-      post "permissions/grant", to: :grant, on: :member
+      put "permissions/grant", to: :grant, on: :member
     end
 
     get "allocations/:id", to: "administrations#show_allocation", as: :admin_allocation

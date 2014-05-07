@@ -27,7 +27,7 @@ class ProfilesControllerTest < ActionController::TestCase
   end
 
   test "cadastrar" do
-    assert_difference(["Profile.count"], 1) do
+    assert_difference(["Profile.count", "LogAction.count"], 1) do
       post :create, {profile: {name: "Lorem", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", template: nil}}
     end
 
@@ -36,7 +36,7 @@ class ProfilesControllerTest < ActionController::TestCase
   end
 
   test "cadastrar com template" do
-    assert_difference(["Profile.count"], 1) do
+    assert_difference(["Profile.count", "LogAction.count"], 1) do
       post :create, {profile: {name: "Lorem", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", template: profiles(:admin).id}}
     end
 
@@ -45,7 +45,7 @@ class ProfilesControllerTest < ActionController::TestCase
   end
 
   test "nao cadastrar sem nome" do
-    assert_no_difference(["Profile.count"]) do
+    assert_no_difference(["Profile.count", "LogAction.count"]) do
       post :create, {profile: {description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", template: profiles(:admin).id}}
     end
 
@@ -57,8 +57,10 @@ class ProfilesControllerTest < ActionController::TestCase
 
     assert_equal profile_admin.description, nil
 
-    assert_no_difference(["Profile.count"]) do
-      put :update, {id: profile_admin.id, profile: {description: "poderes de super vaca"}}
+    assert_no_difference("Profile.count") do
+      assert_difference("LogAction.count") do
+        put :update, {id: profile_admin.id, profile: {description: "poderes de super vaca"}}
+      end
     end
 
     assert_equal assigns(:profile).description, "poderes de super vaca"
@@ -72,7 +74,9 @@ class ProfilesControllerTest < ActionController::TestCase
     profile = assigns(:profile)
 
     assert_difference(["Profile.count"], -1) do
-      delete :destroy, {id: profile.id}
+      assert_difference("LogAction.count") do
+        delete :destroy, {id: profile.id}
+      end
     end
   end
 
@@ -89,7 +93,9 @@ class ProfilesControllerTest < ActionController::TestCase
     resources = profile_admin.resources
 
     assert resources.count > 0
-    post :grant, {id: profile_admin.id, resources: [resources.first]}
+    assert_difference("LogAction.count") do
+      post :grant, {id: profile_admin.id, resources: [resources.first]}
+    end
 
     assert profile_admin.resources.count == 1
   end
