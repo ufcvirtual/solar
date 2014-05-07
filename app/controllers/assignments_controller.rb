@@ -379,7 +379,6 @@ class AssignmentsController < ApplicationController
 
       flash[:notice] = t(:uploaded_success, :scope => [:assignment, :files])
     rescue => error
-      raise "#{error}"
       flash[:alert] = error.message.split(',')[0]
     end
     redirect_to (request.referer.nil? ? home_url(:only_path => false) : request.referer)

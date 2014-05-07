@@ -57,7 +57,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno1))
     get @quimica_tab
     assert_difference("PublicFile.count", +1) do
-      post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
+      post upload_file_assignments_path, {:public_file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
     end
     assert_response :redirect
     assert_equal(flash[:notice], I18n.t(:uploaded_success, :scope => [:assignment, :files]))
@@ -83,7 +83,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:coorddisc))
     get @quimica_tab
     assert_no_difference("PublicFile.count") do
-      post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
+      post upload_file_assignments_path, {:public_file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
     end
     assert_response :redirect
     assert_redirected_to(home_path)
@@ -101,7 +101,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno1))
     get @quimica_tab
     assert_difference("PublicFile.count", +1) do
-      post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
+      post upload_file_assignments_path, {:public_file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
     end
 
     login(users(:professor))
@@ -115,7 +115,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno1))
     get @quimica_tab
     assert_difference("PublicFile.count", +1) do
-      post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste2.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
+      post upload_file_assignments_path, {:public_file => fixture_file_upload('/files/assignments/public_files/teste2.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
     end
 
     login(users(:aluno2))
@@ -132,7 +132,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno1))
     get @quimica_tab
     assert_difference("PublicFile.count", +1) do
-      post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
+      post upload_file_assignments_path, {:public_file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
     end
 
     login(users(:professor2))
@@ -167,7 +167,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno1))
     get @quimica_tab
     assert_difference("PublicFile.count", +1) do
-      post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
+      post upload_file_assignments_path, {:public_file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
     end
 
     login users(:coorddisc)
@@ -190,7 +190,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno1))
     get @quimica_tab
     assert_difference("PublicFile.count", +1) do
-      post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
+      post upload_file_assignments_path, {:public_file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
     end
 
     assert_difference("PublicFile.count", -1) do
@@ -227,7 +227,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno1))
     get @quimica_tab
     assert_difference("PublicFile.count", +1) do
-      post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
+      post upload_file_assignments_path, {:public_file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
     end
 
     login(users(:coorddisc))
@@ -585,7 +585,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao permitir upload de arquivo fora do prazo da atividade" do
     login(users(:aluno1))
     get @quimica_tab
-    post upload_file_assignments_path, {:assignment_id => assignments(:a7).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste5.txt', 'text/plain'), :type => "assignment"}
+    post upload_file_assignments_path, {:assignment_id => assignments(:a7).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste5.txt', 'text/plain'), :type => "assignment"}
     assert_response :redirect
     assert_equal I18n.t(:date_range_expired, :scope => [:assignment, :notifications]), flash[:alert]
   end
@@ -653,7 +653,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno2))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a5).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste2.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a5).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste2.txt', 'text/plain'), :type => "assignment"}
     end
 
     login(users(:aluno1))
@@ -688,7 +688,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno1))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a9).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste1.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a9).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste1.txt', 'text/plain'), :type => "assignment"}
     end
     
     login users(:coorddisc)
@@ -702,7 +702,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno1))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a9).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste1.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a9).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste1.txt', 'text/plain'), :type => "assignment"}
     end
 
     login(users(:professor2))
@@ -716,7 +716,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno3))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a10).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste4.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a10).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste4.txt', 'text/plain'), :type => "assignment"}
     end
 
     login(users(:aluno1))
@@ -730,7 +730,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login (users(:aluno3))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a11).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'),:type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a11).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'),:type => "assignment"}
     end
 
     login(users(:aluno1))
@@ -750,7 +750,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno1))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a9).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste1.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a9).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste1.txt', 'text/plain'), :type => "assignment"}
     end
     
     assignment_file = AssignmentFile.find_by_sent_assignment_id_and_attachment_file_name(sent_assignments(:sa3).id, "teste1.txt")
@@ -768,7 +768,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno1))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a9).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste1.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a9).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste1.txt', 'text/plain'), :type => "assignment"}
     end
 
     assignment_file = AssignmentFile.find_by_sent_assignment_id_and_attachment_file_name(sent_assignments(:sa3).id, "teste1.txt")
@@ -786,7 +786,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login users(:aluno1)
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a9).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste1.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a9).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste1.txt', 'text/plain'), :type => "assignment"}
     end
     assert_response :redirect
     assert_equal(flash[:notice], I18n.t(:uploaded_success, :scope => [:assignment, :files]))
@@ -796,7 +796,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno3))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a11).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a11).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
     end
     
     login(users(:coorddisc))
@@ -813,7 +813,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno3))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a11).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a11).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
     end
 
     assignment_file = AssignmentFile.find_by_sent_assignment_id_and_attachment_file_name(sent_assignments(:sa4).id, "teste3.txt")
@@ -831,7 +831,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno2))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a5).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste2.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a5).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste2.txt', 'text/plain'), :type => "assignment"}
     end
 
     login(users(:professor))
@@ -844,7 +844,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno3))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a11).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a11).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
     end
 
     assert_response :redirect
@@ -853,7 +853,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     
     login(users(:aluno2))
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a5).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste2.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a5).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste2.txt', 'text/plain'), :type => "assignment"}
     end
     assert_response :redirect
     assert_equal(flash[:notice], I18n.t(:uploaded_success, :scope => [:assignment, :files]))
@@ -863,7 +863,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno3))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a11).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a11).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
     end
 
     login(users(:professor2))
@@ -883,7 +883,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno3))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a11).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a11).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
     end
 
     login users(:coorddisc)
@@ -897,7 +897,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno3))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a10).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste4.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a10).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste4.txt', 'text/plain'), :type => "assignment"}
     end
 
     login(users(:coorddisc))
@@ -911,7 +911,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno3))
     get @quimica_tab
     assert_difference('AssignmentFile.count', +1) do
-      post upload_file_assignments_path, {:assignment_id => assignments(:a10).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste4.txt', 'text/plain'), :type => "assignment"}
+      post upload_file_assignments_path, {:assignment_id => assignments(:a10).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste4.txt', 'text/plain'), :type => "assignment"}
     end
     
     login users(:aluno2)
