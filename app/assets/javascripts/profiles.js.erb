@@ -73,11 +73,11 @@ function profile_permission_cancel_edition() {
 
 function profile_permission_save() {
   var resources = $('.ckb_resource:checked').map(function() { return this.value; }).get();
-  $.post($(".edit-save").data("save-url"), {resources: resources}, function(data){
+  $.put($(".edit-save").data("save-url"), {resources: resources}, function(data){
     profile_permissions_edition_save_state()
 
-    if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
-      flash_message(data.notice, 'notice');
+    if (typeof(data) != "undefined" && typeof(data.msg) != "undefined" && typeof(data.type_msg) != "undefined")
+      flash_message(data.msg, data.type_msg);
 
   }).error(function(data){
     var response = JSON.parse(data.responseText);

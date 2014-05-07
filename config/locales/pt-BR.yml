@@ -2066,6 +2066,8 @@
       created: Perfil criado com sucesso.
       updated: Perfil atualizado com sucesso.
       deleted: Perfil deletado com sucesso.
+    warning:
+      nothing_changed: Nada foi alterado no perfil.
     error:
       created: Não foi possível criar perfil.
       updated: Não foi possível atualizar perfil.
