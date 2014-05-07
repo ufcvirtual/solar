@@ -7,8 +7,8 @@
       = t(:period, scope: [:administrations, :allocations])
       = select_tag "period", options_for_select(@periods, @periods.first)
 
-  - unless @profiles.empty?
-    - @profiles.each do |p|
+  - unless @_profiles.empty?
+    - @_profiles.each do |p|
       .block_content
         .block_title
           %h2= p.name

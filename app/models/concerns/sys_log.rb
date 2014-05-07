@@ -10,7 +10,7 @@ module SysLog
     extend ActiveSupport::Concern
 
     included do
-      after_filter :log_create, only: [:create, :update, :destroy, :update_user, :activate, :deactivate, :accept_or_reject]
+      after_filter :log_create, unless: Proc.new {|c| request.get? }
     end
 
     def log_create
@@ -22,16 +22,17 @@ module SysLog
 
       # if some error happened, don't save log
       response_status = JSON.parse(response.body) rescue nil
-      return false if (not(response_status.nil?) and response_status.has_key?("success") and response_status["success"] == false)
+      return false if ((not(response_status.nil?) and response_status.has_key?("success") and response_status["success"] == false) or (params.include?(:success) and params[:success] == false))
 
       if not(objs.empty?)
         objs.each do |obj|
+          description = "#{sobj.singularize}: #{obj.id}, #{obj.attributes.except("updated_at", "created_at")}"
           if obj.respond_to?(:academic_allocations)
             obj.academic_allocations.each do |al|
-              LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, created_at: Time.now, academic_allocation_id: al.id, ip: request.remote_ip, description: "#{params[sobj.singularize.to_sym]}")
+              LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, academic_allocation_id: al.id, ip: request.remote_ip, description: description)
             end
           elsif obj.respond_to?(:allocation_tag)
-            LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, created_at: Time.now, allocation_tag_id: obj.allocation_tag.try(:id), ip: request.remote_ip, description: "#{sobj.singularize}: #{obj.attributes}")
+            LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, allocation_tag_id: obj.allocation_tag.try(:id), ip: request.remote_ip, description: description)
           else # generic log
             generic_log(sobj, obj)
           end
@@ -58,14 +59,25 @@ module SysLog
       end
 
       def generic_log(sobj, obj = nil)
-         description = if params.has_key?(tbname = obj.try(:class).try(:table_name).to_s.singularize.to_sym) and not(obj.nil?)
+        academic_allocation_id = nil
+        description = if params.has_key?(tbname = obj.try(:class).try(:table_name).to_s.singularize.to_sym) and not(obj.nil?)
           "#{sobj}: #{obj.id}, #{params[tbname]}"
         elsif params[:id].present?
           # gets any extra information if exists
           info = params.except(:controller, :action, :id)
-          "#{sobj}: #{[params[:id], info.first.last].compact.join(", ")}"
+          "#{sobj}: #{[params[:id], info].compact.join(", ")}"
+        else # controllers saving other objects. ex: assingments -> student files
+          d = []
+          variables = self.instance_variable_names.to_ary.delete_if { |v| v.to_s.start_with?("@_") or ["@current_user", "@current_ability"].include?(v) }
+          variables.each do |v|
+            o = eval(v)
+            academic_allocation_id = o.academic_allocation.id if o.respond_to?(:academic_allocation) # assignment_file
+            d << %{#{v.sub("@", "")}: #{o.as_json}} unless ["Array", "String"].include?(o.class)
+          end
+          d.join(",")
         end
-        LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, created_at: Time.now, ip: request.remote_ip, description: description)
+
+        LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: request.remote_ip, academic_allocation_id: academic_allocation_id, description: description)
       end
 
   end # Actions

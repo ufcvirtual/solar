@@ -72,9 +72,9 @@ class ApplicationController < ActionController::Base
     set_tab_by_context
 
     is_mysolar  = (params[:action] == 'mysolar')
-    @profiles   = current_user.profiles.map(&:id).join(',')
-    @context_id = is_mysolar ? Context_General : active_tab[:url][:context]
-    @context_uc = is_mysolar ? nil : active_tab[:url][:id]
+    @_profiles   = current_user.profiles.map(&:id).join(',')
+    @_context_id = is_mysolar ? Context_General : active_tab[:url][:context]
+    @_context_uc = is_mysolar ? nil : active_tab[:url][:id]
   end
 
   def current_menu
@@ -181,8 +181,8 @@ class ApplicationController < ActionController::Base
 
     def init_xmpp_im
       conf = YAML::load_file(File.join("config/",'im.yml'))
-      @dominio = conf["dominio"]
-      @ip = conf["ip"]
-      @porta = conf["porta"]
+      @_dominio = conf["dominio"]
+      @_ip = conf["ip"]
+      @_porta = conf["porta"]
     end
 end

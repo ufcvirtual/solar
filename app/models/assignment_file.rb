@@ -4,6 +4,7 @@ class AssignmentFile < ActiveRecord::Base
   belongs_to :sent_assignment
 
   has_one :assignment, :through => :sent_assignment
+  has_one :academic_allocation, :through => :sent_assignment
 
   validates :attachment_file_name, :presence => true
 

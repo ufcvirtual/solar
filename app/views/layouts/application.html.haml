@@ -131,7 +131,7 @@
       / sidebar
       #mysolar_sidebar
         #mysolar_menu_accordion{style: "z-index:10"}
-          = raw menu(@profiles, @context_id, @context_uc, user_session[:menu][:current]) if user_signed_in?
+          = raw menu(@_profiles, @_context_id, @_context_uc, user_session[:menu][:current]) if user_signed_in?
 
       / content
       #mysolar_content
@@ -196,9 +196,9 @@
   imgOff = "#{image_path('IM_offline_Icon.png')}";
   imgMessage = "#{image_path('IM_message_Icon.png')}";
   xmpp_cpf = "#{current_user.cpf}";
-  xmpp_ip = "#{@ip}";
-  xmpp_dominio = "#{@dominio}";
-  xmpp_port = "#{@porta}";
+  xmpp_ip = "#{@_ip}";
+  xmpp_dominio = "#{@_dominio}";
+  xmpp_port = "#{@_porta}";
   xmpp_pass = "#{current_user.encrypted_password}";
   number_chatbox = 0;
   var con;

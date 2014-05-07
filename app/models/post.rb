@@ -3,13 +3,15 @@ class Post < ActiveRecord::Base
 
   default_scope order: "updated_at DESC" # qualquer busca realizada nos posts de fórum serão ordenadas pela data decrescente
 
-  has_many :children, class_name: "Post", foreign_key: "parent_id"
-  has_many :files, class_name: "PostFile", foreign_key: "discussion_post_id"
-
   belongs_to :profile
   belongs_to :parent, class_name: "Post"
   belongs_to :discussion
   belongs_to :user
+
+  has_many :academic_allocations, through: :discussion
+
+  has_many :children, class_name: "Post", foreign_key: "parent_id"
+  has_many :files, class_name: "PostFile", foreign_key: "discussion_post_id"
 
   validates :content, :profile_id, presence: true
 

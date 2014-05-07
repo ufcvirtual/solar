@@ -146,7 +146,7 @@
           - group_assignment_id = @group_participants.first.group_assignment_id unless @group_participants.nil?
           = form_for(:assignment, :url => upload_file_assignments_path(:assignment_id => @assignment.id, :type => 'assignment'), :html => { :onsubmit => "return btn_upload_file();" }) do |f|
             %p
-              = f.file_field :file, :name => :file
+              = f.file_field :assignment_file, :name => :assignment_file
               .portfolio_title_button
                 = f.submit t(:send), :class => (@assignment.assignment_in_time?(@allocation_tag, current_user.id) ? "btn btn_main" : "btn btn_disabled")
                 = button_tag(:type => :button, :class => "btn btn_caution", :onclick => "javascript:toggle_upload_div();") do

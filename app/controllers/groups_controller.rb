@@ -1,5 +1,7 @@
 class GroupsController < ApplicationController
 
+  include SysLog::Actions
+
   layout false, except: [:index]
 
   # Mobilis
