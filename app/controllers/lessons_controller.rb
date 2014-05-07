@@ -1,5 +1,7 @@
 class LessonsController < ApplicationController
 
+  include SysLog::Actions
+
   layout false, except: [:index]
 
   require 'fileutils'
@@ -125,10 +127,11 @@ class LessonsController < ApplicationController
   def change_status
     authorize! :update, Lesson, on: params[:allocation_tags_ids].split(" ")
 
-    ids = params[:id].split(',').map(&:to_i)
+    ids = params[:id].split(',').map(&:to_i).flatten
 
     msg = nil
-    Lesson.where(id: [ids].flatten).find_each do |lesson|
+    @lessons = Lesson.where(id: ids)
+    @lessons.each do |lesson|
       lesson.status = params[:status].to_i
       msg = lesson.errors.full_messages unless lesson.save
     end
@@ -140,9 +143,10 @@ class LessonsController < ApplicationController
     authorize! :destroy, Lesson, on: params[:allocation_tags_ids].split(" ")
 
     test_lesson = false
+    @lessons = Lesson.where(id: params[:id].split(","))
     Lesson.transaction do
       begin
-        Lesson.where(id: params[:id].split(",")).each do |lesson|
+        @lessons.each do |lesson|
           unless lesson.destroy
             lesson.status = Lesson_Test # a aula nao foi deletada, mas vai ser transformada em rascunho
             test_lesson = true

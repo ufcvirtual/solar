@@ -2,6 +2,8 @@ class Lesson < ActiveRecord::Base
 
   GROUP_PERMISSION, OFFER_PERMISSION = true, true
 
+  has_many :academic_allocations, through: :lesson_module
+
   belongs_to :lesson_module
   belongs_to :user
   belongs_to :schedule
@@ -25,7 +27,7 @@ class Lesson < ActiveRecord::Base
   # Na expressão regular os protocolos http, https e ftp podem aparecer somente uma vez ou não aparecer.
   validates_format_of :address, :with => /^((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$/ix,
   :allow_nil => true, :allow_blank => true, :if => :is_link?
-  
+
   FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
 
   def initial_file_setted

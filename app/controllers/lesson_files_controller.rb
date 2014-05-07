@@ -1,5 +1,7 @@
 class LessonFilesController < ApplicationController
 
+  # include SysLog::Actions
+
   layout false
 
   require 'fileutils' # utilizado na remoção de diretórios, pois o "Dir.rmdir" não remove diretórios que não estejam vazis
@@ -48,7 +50,8 @@ class LessonFilesController < ApplicationController
       elsif params[:type] == 'upload' # upload de arquivos
 
         ActiveRecord::Base.transaction do # só executa se estiverem todos ok
-          params[:lesson_files][:files].each do |file|
+          @files = params[:lesson_files][:files]
+          @files.each do |file|
             # verificações caso "passe" pelas que existem no javascript
             raise 'error' if file.tempfile.size > 200.megabytes # de tamanho
             raise 'error' if Solar::Application.config.black_list[:extensions].include?(file.original_filename.split(".").last) # de extensão

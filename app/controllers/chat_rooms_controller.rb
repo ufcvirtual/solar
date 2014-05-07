@@ -1,5 +1,7 @@
 class ChatRoomsController < ApplicationController
 
+  include SysLog::Actions
+
   layout false, except: :list 
   authorize_resource only: :list
 
@@ -20,19 +22,19 @@ class ChatRoomsController < ApplicationController
   end
 
   def create
-    authorize! :create, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    authorize! :create, ChatRoom, on: allocation_tags_ids = params[:allocation_tags_ids].split(" ")
     @chat_room = ChatRoom.new params[:chat_room]
 
     begin
       ChatRoom.transaction do
         @chat_room.save!
-        @chat_room.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
+        @chat_room.academic_allocations.create allocation_tags_ids.map {|at| {allocation_tag_id: at}}
       end
       render json: {success: true, notice: t(:created, scope: [:chat_rooms, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten})
+      groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [allocation_tags_ids].flatten})
       @allocations = groups.map(&:students_participants).flatten.uniq
       @groups_codes = groups.map(&:code).uniq
       render :new

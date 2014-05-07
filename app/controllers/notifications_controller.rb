@@ -1,5 +1,7 @@
 class NotificationsController < ApplicationController
 
+  include SysLog::Actions
+
   layout false
 
   def list

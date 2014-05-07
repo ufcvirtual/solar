@@ -1,5 +1,7 @@
 class LessonModulesController < ApplicationController
 
+  include SysLog::Actions
+
   layout false
 
   def new
@@ -11,16 +13,16 @@ class LessonModulesController < ApplicationController
   def create
     @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     # teste para allocation_tag qualquer apenas para verificar validade dos dados
-    @module = LessonModule.new(:name => params[:lesson_module][:name]) 
+    lesson_module = LessonModule.new(:name => params[:lesson_module][:name])
 
     begin
       authorize! :create, LessonModule, :on => @allocation_tags_ids
-      raise "error" unless @module.valid?
+      raise "error" unless lesson_module.valid?
       
       LessonModule.transaction do
-        lm = LessonModule.create!(:name => params[:lesson_module][:name], is_default: false)  
+        @lesson_module = LessonModule.create!(:name => params[:lesson_module][:name], is_default: false)
         @allocation_tags_ids.each do |id|
-          AcademicAllocation.create!(allocation_tag_id: id, academic_tool_id: lm.id, academic_tool_type: 'LessonModule')
+          AcademicAllocation.create!(allocation_tag_id: id, academic_tool_id: @lesson_module.id, academic_tool_type: 'LessonModule')
         end
       end
 
@@ -32,7 +34,7 @@ class LessonModulesController < ApplicationController
       respond_to do |format|
         format.html{ render :nothing => true, :status => 500 }
       end
-    rescue Exception
+    rescue => error
       @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).uniq
 
       respond_to do |format|
@@ -49,11 +51,12 @@ class LessonModulesController < ApplicationController
   end
 
   def update
-    @module = LessonModule.find(params[:id])
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    @lesson_module = LessonModule.find(params[:id])
+    allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+
     begin
-      authorize! :update, LessonModule, :on => @allocation_tags_ids
-      @module.update_attributes!(:name => params[:lesson_module][:name])
+      authorize! :update, LessonModule, :on => allocation_tags_ids
+      @lesson_module.update_attributes!(:name => params[:lesson_module][:name])
 
       respond_to do |format|
         format.html{ render :nothing => true, :status => 200 }
@@ -65,7 +68,7 @@ class LessonModulesController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render nothing: true, status: :unprocessable_entity
     rescue
-      @groups = @modules.groups
+      @groups = @lesson_module.groups
       respond_to do |format|
         format.html{ render :new, :status => 200 }
       end
@@ -74,13 +77,13 @@ class LessonModulesController < ApplicationController
   end
 
   def destroy
-    @module = LessonModule.find(params[:id])
     authorize! :destroy, LessonModule, :on => params[:allocation_tags_ids]
+    @lesson_module = LessonModule.find(params[:id])
 
-    if @module.destroy
+    if @lesson_module.destroy
       render json: {success: true}, status: :ok
     else
-      render json: {success: false, alert: @module.errors.full_messages}, status: :unprocessable_entity
+      render json: {success: false, alert: @lesson_module.errors.full_messages}, status: :unprocessable_entity
     end
   end
 

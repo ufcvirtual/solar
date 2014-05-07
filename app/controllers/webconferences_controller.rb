@@ -1,5 +1,7 @@
 class WebconferencesController < ApplicationController
 
+  include SysLog::Actions
+
   layout false, except: :index
 
   def index

@@ -15,19 +15,20 @@ module SysLog
 
     def log_create
       model = self.class.to_s.sub("Controller", "")
-      sobj  = model.downcase
+      sobj  = model.tableize
       objs  = eval("@#{sobj}") # created/updated/destroyied objects could be a list
       sobj  = sobj.singularize
-      objs  = [eval("@#{sobj}")].compact if objs.nil?
+      obj   = eval("@#{sobj}")
+      objs  = [eval("@#{sobj}")].compact unless obj.nil? # only if obj doesn't exist, use objs list
 
       # if some error happened, don't save log
       response_status = JSON.parse(response.body) rescue nil
-      return false if ((not(response_status.nil?) and response_status.has_key?("success") and response_status["success"] == false) or (params.include?(:success) and params[:success] == false))
+      return if ((not(response_status.nil?) and response_status.has_key?("success") and response_status["success"] == false) or (params.include?(:success) and params[:success] == false))
 
-      if not(objs.empty?)
+      if not(objs.nil?) and not(objs.empty?)
         objs.each do |obj|
-          description = "#{sobj.singularize}: #{obj.id}, #{obj.attributes.except("updated_at", "created_at")}"
-          if obj.respond_to?(:academic_allocations)
+          description = "#{sobj.singularize}: #{obj.id}, #{obj.attributes.except("updated_at", "created_at")}" rescue nil
+          if obj.respond_to?(:academic_allocations) and not obj.academic_allocations.empty?
             obj.academic_allocations.each do |al|
               LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, academic_allocation_id: al.id, ip: request.remote_ip, description: description)
             end
@@ -60,7 +61,8 @@ module SysLog
 
       def generic_log(sobj, obj = nil)
         academic_allocation_id = nil
-        description = if params.has_key?(tbname = obj.try(:class).try(:table_name).to_s.singularize.to_sym) and not(obj.nil?)
+        tbname = obj.try(:class).try(:table_name).to_s.singularize.to_sym if obj.try(:class).respond_to?(:table_name)
+        description = if not(tbname.nil?) and params.has_key?(tbname) and not(obj.nil?)
           "#{sobj}: #{obj.id}, #{params[tbname]}"
         elsif params[:id].present?
           # gets any extra information if exists
@@ -74,10 +76,10 @@ module SysLog
             academic_allocation_id = o.academic_allocation.id if o.respond_to?(:academic_allocation) # assignment_file
             d << %{#{v.sub("@", "")}: #{o.as_json}} unless ["Array", "String"].include?(o.class)
           end
-          d.join(",")
+          d.join(", ")
         end
 
-        LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: request.remote_ip, academic_allocation_id: academic_allocation_id, description: description)
+        LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: request.remote_ip, academic_allocation_id: academic_allocation_id, description: description) unless description.nil?
       end
 
   end # Actions

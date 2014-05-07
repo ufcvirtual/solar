@@ -1,5 +1,6 @@
 class SupportMaterialFilesController < ApplicationController
 
+  include SysLog::Actions
   include FilesHelper
 
   layout false, except: [:index]
@@ -29,10 +30,10 @@ class SupportMaterialFilesController < ApplicationController
     authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids].split(" ")].flatten
 
     begin
-      @support_material = SupportMaterialFile.new params[:support_material_file]
+      @support_material_file = SupportMaterialFile.new params[:support_material_file]
       SupportMaterialFile.transaction do
-        @support_material.save!
-        @support_material.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
+        @support_material_file.save!
+        @support_material_file.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
       end
 
       render json: {success: true, notice: t(:created, scope: [:support_materials, :success])}
@@ -56,16 +57,16 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def update
-    @support_material = SupportMaterialFile.find(params[:id])
+    @support_material_file = SupportMaterialFile.find(params[:id])
     authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids].split(" ")].flatten
 
     begin
-      @support_material.update_attributes!(params[:support_material_file])
+      @support_material_file.update_attributes!(params[:support_material_file])
       render json: {success: true, notice: t(:updated, scope: [:support_materials, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @groups_codes = @support_material.groups.map(&:code)
+      @groups_codes = @support_material_file.groups.map(&:code)
       render :new
     end
   end
@@ -74,8 +75,10 @@ class SupportMaterialFilesController < ApplicationController
     authorize! :destroy, SupportMaterialFile, on: params[:allocation_tags_ids].uniq
 
     begin
+      @support_material_file = SupportMaterialFile.where(id: params[:id].split(","))
+
       SupportMaterialFile.transaction do
-        SupportMaterialFile.where(id: params[:id].split(",")).map(&:destroy)
+        @support_material_file.destroy_all
       end
       render json: {success: true, notice: t(:deleted, scope: [:support_materials, :success])}
     rescue Exception => e

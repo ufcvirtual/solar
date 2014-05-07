@@ -1,5 +1,7 @@
 class BibliographiesController < ApplicationController
 
+  include SysLog::Actions
+
   layout false, except: :index # define todos os layouts do controller como falso
 
   def list
