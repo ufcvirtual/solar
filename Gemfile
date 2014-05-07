@@ -28,7 +28,7 @@ gem "rspec-rails", "~> 2.14.1", group: [:development, :test]
 
 gem "haml", "~> 4.0.5"
 gem "haml-rails", "~> 0.4", group: :development
-gem "ckeditor", "~> 4.0.8"
+gem "ckeditor", "~> 4.0.11"
 
 gem "fullcalendar-rails", "~> 1.6.4.0"
 
