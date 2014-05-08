@@ -8,7 +8,7 @@ class EditionsController < ApplicationController
     if params[:groups_id].blank?
       if params.include?(:semester_id) and (not params[:semester_id] == "")
         offer = Offer.where(semester_id: params[:semester_id], course_id: params[:course_id])
-        offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
+        offer = offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
         @allocation_tags_ids = [offer.first.allocation_tag.id]
         @selected = "OFFER"
       elsif params.include?(:curriculum_unit_id) and (not params[:curriculum_unit_id] == "")

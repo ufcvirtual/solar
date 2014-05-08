@@ -52,12 +52,13 @@ class OffersControllerTest < ActionController::TestCase
 
   # neste caso, o usuário não terá permissão nem à uc, nem ao curso escolhidos
   test "nao criar oferta - sem acesso" do
-    s = semesters(:s2013_1)
+    sign_in users(:coorddisc)
 
-    c_letras, uc_int_ling = courses(:c3), curriculum_units(:r1)
+    s = semesters(:s2011_1)
+    c_quimica, uc_quimica = courses(:c2), curriculum_units(:r3)
 
     assert_no_difference("Offer.count") do
-      post :create, {offer: {course_id: c_letras.id, curriculum_unit_id: uc_int_ling.id, semester_id: s.id}, format: :json}
+      post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id}, format: :json}
     end   
     assert_response :unauthorized
   end

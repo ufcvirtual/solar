@@ -23,7 +23,7 @@
                 %td= allocation.user.cpf
                 %td= allocation.user.email
                 %td= allocation.profile.name
-                %td= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester.name : allocation.course.name)
+                %td= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester.name : (allocation.course ? allocation.course.name : allocation.curriculum_unit.name))
 
                 %td
                   - status, link = (allocation.status == Allocation_Activated) ? ["deactivate", deactivate_allocation_path(id: allocation, text_search: @text_search)] : ["activate", activate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)]

@@ -43,7 +43,7 @@ class AllocationTag < ActiveRecord::Base
 
   def related(args = {all: true, lower: false, upper: false, objects: false})
     option = self.attributes.delete_if {|key, value| key == 'id' or value.nil?}.map {|k,v| k}.first
-    lower, upper = [], []
+    lower, upper, sibblings = [], [], []
 
     case option
       when 'group_id'
@@ -66,8 +66,9 @@ class AllocationTag < ActiveRecord::Base
         end
       when 'curriculum_unit_id'
         if args[:all] or args[:lower]
-          uc = self.curriculum_unit
+          uc    = self.curriculum_unit
           lower = [uc.offers.map(&:allocation_tag).compact.uniq, uc.groups.map(&:allocation_tag).compact.uniq, self]
+          sibblings = [uc.offers.map(&:course).compact.map(&:allocation_tag)]
         end
 
         if args[:all] or args[:upper]
@@ -76,7 +77,8 @@ class AllocationTag < ActiveRecord::Base
       when 'course_id'
         if args[:all] or args[:lower]
           course = self.course
-          lower = [course.offers.map(&:allocation_tag).compact.uniq, course.groups.map(&:allocation_tag).compact.uniq, self]
+          lower  = [course.offers.map(&:allocation_tag).compact.uniq, course.groups.map(&:allocation_tag).compact.uniq, self]
+          sibblings = [course.offers.map(&:curriculum_unit).compact.map(&:allocation_tag)]
         end
 
         if args[:all] or args[:upper]
@@ -84,7 +86,7 @@ class AllocationTag < ActiveRecord::Base
         end
     end
 
-    at = (lower + upper).flatten.compact.uniq
+    at = (lower + upper + sibblings).flatten.compact.uniq
     return at if args[:objects]
     return at.map(&:id)
   end

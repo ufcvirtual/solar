@@ -176,18 +176,6 @@ aa:
   profile_id: 12
   status: 1
 
-ab:
-  user_id: 12
-  allocation_tag_id: 8
-  profile_id: 5
-  status: 1
-
-ac:
-  user_id: 12
-  allocation_tag_id: 7
-  profile_id: 5
-  status: 1
-
 user_as_professor:
   id: 23
   user_id: 1
@@ -389,7 +377,7 @@ editor_al3:
   profile_id: 5
   status: 1
 
-# acesso do editor ao curso Licenciatura em Quimica
+# acesso do editor ao curso Letras Português
 editor_al19:
   id: 54
   user_id: 14
@@ -397,6 +385,7 @@ editor_al19:
   profile_id: 5
   status: 1
 
+# acesso do editor ao curso Licenciatura em Quimica
 editor_al22:
   id: 55
   user_id: 14

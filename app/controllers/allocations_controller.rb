@@ -14,7 +14,7 @@ class AllocationsController < ApplicationController
     elsif params[:groups_id].blank?
       if params.include?(:semester_id) and (not params[:semester_id] == "")
         offer = Offer.where(semester_id: params[:semester_id], course_id: params[:course_id])
-        offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
+        offer = offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
         @allocation_tags_ids = [offer.first.allocation_tag.id]
       elsif params.include?(:curriculum_unit_id) and (not params[:curriculum_unit_id] == "")
         @allocation_tags_ids = [CurriculumUnit.find(params[:curriculum_unit_id]).allocation_tag.id]
@@ -45,7 +45,7 @@ class AllocationsController < ApplicationController
       render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue 
+    rescue
       render nothing: true, status: :unprocessable_entity
     end
   end
@@ -123,7 +123,7 @@ class AllocationsController < ApplicationController
       Group.where(id: params[:groups]).map(&:allocation_tag).map(&:id)
     when (not(params[:semester].blank?) and not(params[:course].blank?))
       offer = Offer.where(semester_id: params[:semester_id], course_id: params[:course_id])
-      offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
+      offer = offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
       offer.first.allocation_tag.try(:id)
     when (not params[:curriculum_unit].blank?)
       CurriculumUnit.find(params[:curriculum_unit]).allocation_tag.id

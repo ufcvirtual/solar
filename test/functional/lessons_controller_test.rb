@@ -212,6 +212,7 @@ class LessonsControllerTest < ActionController::TestCase
   end
 
   test "nao alterar modulo da aula - sem acesso" do
+    sign_in users(:coorddisc)
     assert_no_difference("LessonModule.find(#{lesson_modules(:module5).id}).lessons.count") do
       assert_no_difference("LessonModule.find(#{lesson_modules(:module1).id}).lessons.count") do
         put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: [allocation_tags(:al10).id, allocation_tags(:al5).id], move_to_module: lesson_modules(:module8).id, lessons_ids: [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}

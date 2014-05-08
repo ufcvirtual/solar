@@ -308,7 +308,7 @@ class AllocationsControllerTest < ActionController::TestCase
   test "solicitar alocacao ja ativa" do
     sign_in @coordenador
     assert_no_difference(["Allocation.count", "LogAction.count"]) do
-      post :create_designation, {request: true, profile: profiles(:editor), groups: @coordenador.allocations.where("status=1").first.group.id}
+      post :create_designation, {request: true, profile: profiles(:editor), groups: groups(:g5).id}
     end
 
     assert_response :success

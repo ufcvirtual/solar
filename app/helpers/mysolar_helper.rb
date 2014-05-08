@@ -10,15 +10,17 @@ module MysolarHelper
     # re-ordena as uc de acordo com o resultado dos tipos de perfil e o nome
     curriculum_units = curriculum_units.sort_by{ |curriculum_unit|
       curriculum_unit[:name] # a verificação do nome vem primeiro para ser sobreposta pela de maior prioridade
+      # ucs without groups or offers has to go to the end
+      (curriculum_unit[:has_groups] and curriculum_unit[:has_offers]) ? 0 : 1
       # array com o resultado da comparação de bit entre o tipo do perfil do usuário em cada uc e o de responsável/aluno
       profile_types = Allocation.where(allocation_tag_id: AllocationTag.find(curriculum_unit[:allocation_tag_id]).related, user_id: current_user.id).compact.map(&:profile).map(&:types).uniq
       profile_types = profile_types.collect{|types| ((types & Profile_Type_Class_Responsible) != 0 or (types & Profile_Type_Student) != 0)}
-      profile_types.include?(true) ? 0 : 1
+      (profile_types.include?(true) ? 0 : 1)
     }
 
-    # re-ordena as uc de acordo com a maior quantidade de acessos nas últimas três semanas
     curriculum_units = curriculum_units.sort_by { |curriculum_unit|
-      -(LogAccess.count(:id, conditions: {log_type: LogAccess::TYPE[:curriculum_unit_access], user_id: current_user.id, allocation_tag_id: curriculum_unit[:allocation_tag_id], created_at: 3.week.ago..Time.now}))
+      # reorder ucs by the one who has most access in the last three weeks
+      -(LogAccess.count(:id, conditions: {log_type: LogAccess::TYPE[:curriculum_unit_access], user_id: current_user.id, allocation_tag_id: curriculum_unit[:uc_allocation_tag_id], created_at: 3.week.ago..Time.now}))
     }
 
     return curriculum_units.uniq
