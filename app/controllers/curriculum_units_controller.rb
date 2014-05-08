@@ -156,7 +156,7 @@ class CurriculumUnitsController < ApplicationController
   def participants
     @student_profile = Profile.student_profile # retorna perfil em que se pede matricula (~aluno)
     allocation_tags  = AllocationTag.find_related_ids(active_tab[:url][:allocation_tag_id])
-    @participants    = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type(allocation_tags.join(','), Profile_Type_Class_Responsible)
+    @participants    = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(allocation_tags.join(','), Profile_Type_Student)
   end
 
   private
@@ -165,8 +165,7 @@ class CurriculumUnitsController < ApplicationController
       authorize! :show, @curriculum_unit = CurriculumUnit.find(active_tab[:url][:id])
 
       @allocation_tag_id = active_tab[:url][:allocation_tag_id]
-      @responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(AllocationTag.find_related_ids(@allocation_tag_id).join(','),
-        Profile_Type_Class_Responsible)
+      @responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(AllocationTag.find_related_ids(@allocation_tag_id).join(','), Profile_Type_Class_Responsible)
     end
 
     def list_portlet_discussion_posts(allocation_tags)

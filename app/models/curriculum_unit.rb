@@ -47,7 +47,7 @@ class CurriculumUnit < ActiveRecord::Base
         JOIN users           AS t3 ON t1.user_id = t3.id
         JOIN profiles        AS t4 ON t4.id = t1.profile_id
        WHERE t2.id IN (#{allocation_tags})
-         AND #{negative} cast(t4.types & '#{profile_flag.to_s(2)}' as boolean)
+         AND #{negative} cast(t4.types & '#{profile_flag}' as boolean)
          AND t1.status = #{Allocation_Activated}
        GROUP BY t3.id, t3.name, t3.photo_file_name, t3.email, t3.photo_updated_at
        ORDER BY t3.name, profile_name
@@ -85,7 +85,6 @@ SQL
           }
       end
     end
-
     curriculum_units.flatten.delete_if{|uc| uc.nil? or uc.empty?}.uniq{|uc| uc["id"]}
   end
 
