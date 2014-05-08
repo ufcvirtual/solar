@@ -40,28 +40,26 @@ class LessonModulesControllerTest < ActionController::TestCase
   # Edit/Update
 
   test 'edita modulo' do 
-    get :edit, {:id => lesson_modules(:module2).id, :allocation_tags_ids => [allocation_tags(:al2).id]} 
-    assert_not_nil assigns(:allocation_tags_ids)
+    get :edit, {:id => lesson_modules(:module2).id, :allocation_tags_ids => [allocation_tags(:al2).id]}
     assert_not_nil assigns(:module)
 
-    put(:update, {:id => assigns(:module).id, :lesson_module => {:name => "Modulo 01"}, :allocation_tags_ids => assigns(:allocation_tags_ids)})
+    put(:update, {:id => assigns(:module).id, :lesson_module => {:name => "Modulo 01"}, :allocation_tags_ids => [allocation_tags(:al2).id]})
 
     assert_response :success
-    assert_equal "Modulo 01", assigns(:module).name
+    assert_equal "Modulo 01", assigns(:lesson_module).name
   end
 
   test 'nao edita modulo - sem permissao' do 
     sign_in @professor
-    get :edit, {:id => lesson_modules(:module2).id, :allocation_tags_ids => [allocation_tags(:al2).id]} 
+    get :edit, {:id => lesson_modules(:module2).id, :allocation_tags_ids => [allocation_tags(:al2).id]}
 
-    assert_not_nil assigns(:allocation_tags_ids)
     assert_response :redirect
     assert_equal flash[:alert], I18n.t(:no_permission)
 
-    put(:update, {:id => lesson_modules(:module2).id, :lesson_module => {:name => "Modulo 01"}, :allocation_tags_ids => assigns(:allocation_tags_ids)})
+    put(:update, {:id => lesson_modules(:module2).id, :lesson_module => {:name => "Modulo 01"}, :allocation_tags_ids => [allocation_tags(:al2).id]})
 
     assert_response :error
-    assert_not_equal "Modulo 01", assigns(:module).name
+    assert_not_equal "Modulo 01", assigns(:lesson_module).name
   end
 
   # Destroy

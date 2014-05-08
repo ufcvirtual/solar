@@ -25,13 +25,18 @@ class LogAction < ActiveRecord::Base
     create(params)
   end
 
-  def self.update(params)
+  def self.creating(params)
+    params.merge!(log_type: TYPE[:create])
+    create(params)
+  end
+
+  def self.updating(params)
     params.merge!(log_type: TYPE[:update])
     create(params)
   end
 
-  def self.creation(params)
-    params.merge!(log_type: TYPE[:create])
+  def self.destroying(params)
+    params.merge!(log_type: TYPE[:destroy])
     create(params)
   end
 
