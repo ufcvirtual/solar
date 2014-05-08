@@ -22,7 +22,7 @@ class LessonsController < ApplicationController
   end
 
   def list
-    allocation_tags    = params[:allocation_tags_ids]
+    allocation_tags = params[:allocation_tags_ids]
 
     begin
       authorize! :list, Lesson, on: [allocation_tags].flatten

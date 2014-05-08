@@ -29,11 +29,10 @@ module SysLog
         objs.each do |obj|
           description = "#{sobj.singularize}: #{obj.id}, #{obj.attributes.except("updated_at", "created_at")}" rescue nil
           if obj.respond_to?(:academic_allocations) and not obj.academic_allocations.empty?
+            allocation_tag_id = params[:allocation_tag_id] || active_tab[:url][:allocation_tag_id] || obj.allocation_tag.id rescue nil
             obj.academic_allocations.each do |al|
-              LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, academic_allocation_id: al.id, ip: request.remote_ip, description: description)
+              LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, academic_allocation_id: al.id, allocation_tag_id: allocation_tag_id, ip: request.remote_ip, description: description)
             end
-          elsif obj.respond_to?(:allocation_tag)
-            LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, allocation_tag_id: obj.allocation_tag.try(:id), ip: request.remote_ip, description: description)
           else # generic log
             generic_log(sobj, obj)
           end
