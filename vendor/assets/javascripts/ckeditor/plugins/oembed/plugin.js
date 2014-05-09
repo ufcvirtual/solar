@@ -286,8 +286,8 @@
 
                                     if (resizeType == "noresize") {
                                         responsiveResize = false;
-                                        maxWidth = null;
-                                        maxHeight = null;
+                                        maxWidth = '560px';
+                                        maxHeight = '315px';
                                     } else if (resizeType == "responsive") {
                                         maxWidth = dialog.getContentElement('general', 'maxWidth').
                                             getInputElement().
