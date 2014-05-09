@@ -210,6 +210,7 @@
             CKEDITOR.dialog.add('oembed', function(editor) {
                 return {
                     title: editor.lang.oembed.title,
+                    resizable: CKEDITOR.DIALOG_RESIZE_NONE,
                     minWidth: CKEDITOR.env.ie && CKEDITOR.env.quirks ? 568 : 550,
                     minHeight: 155,
                     onShow: function() {
