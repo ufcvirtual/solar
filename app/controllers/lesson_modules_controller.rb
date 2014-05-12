@@ -27,18 +27,18 @@ class LessonModulesController < ApplicationController
       end
 
       respond_to do |format|
-        format.html{ render :nothing => true, :status => 200 }
+        format.html{ render nothing: true, status: 200 }
       end
 
     rescue CanCan::AccessDenied
       respond_to do |format|
-        format.html{ render :nothing => true, :status => 500 }
+        format.html{ render nothing: true, status: 500 }
       end
     rescue => error
       @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).uniq
 
       respond_to do |format|
-        format.html{ render :new, :status => 200 }
+        format.html{ render :new, status: 200 }
       end
     end
 

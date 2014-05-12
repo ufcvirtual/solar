@@ -50,6 +50,7 @@ class BibliographiesController < ApplicationController
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
       @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
+      params[:success] = false
       render :new
     end
   end
@@ -67,6 +68,7 @@ class BibliographiesController < ApplicationController
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
       @groups_codes = @bibliography.groups.map(&:code)
+      params[:success] = false
       render :edit
     end
   end

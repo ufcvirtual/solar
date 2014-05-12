@@ -95,6 +95,7 @@ class LessonsController < ApplicationController
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue Exception 
       @groups  = @lesson_module.groups 
+      params[:success] = false
       render :new
     end # rescue
   end
@@ -130,7 +131,12 @@ class LessonsController < ApplicationController
       @schedule_error = @lesson.schedule.errors.full_messages[0] unless @lesson.schedule.valid?
     end
 
-    render (error ? {action: :edit} : {json: {success: true, notice: t(:updated, scope: [:lessons, :success])}})
+    if error
+      params[:success] = false
+      render :edit
+    else
+      render json: {success: true, notice: t(:updated, scope: [:lessons, :success])}
+    end
   end
 
   # PUT /lessons/1/change_status/1

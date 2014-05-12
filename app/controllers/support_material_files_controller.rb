@@ -42,6 +42,7 @@ class SupportMaterialFilesController < ApplicationController
     rescue Exception => error
       if @support_material.is_link?
         @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
+        params[:success] = false
         render :new
       else
         render json: {success: false, alert: @support_material.errors.full_messages.join(' ')}, status: :unprocessable_entity
@@ -67,6 +68,7 @@ class SupportMaterialFilesController < ApplicationController
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
       @groups_codes = @support_material_file.groups.map(&:code)
+      params[:success] = false
       render :new
     end
   end

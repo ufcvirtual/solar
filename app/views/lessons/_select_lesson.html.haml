@@ -1,7 +1,7 @@
 - unless @lessons.empty?
   = select_tag :lesson, options_from_collection_for_select(@lessons, "id", "name", (@lesson.nil? ? @lessons.first.id : @lesson.id))
 - else
-  = "Sem aulas"
+  = t(".no_lessons")
 
 :javascript
   $(function(){

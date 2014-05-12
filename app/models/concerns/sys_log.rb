@@ -41,7 +41,7 @@ module SysLog
         generic_log(sobj)
       end
 
-    rescue => error
+    rescue
       # do nothing
     end
 

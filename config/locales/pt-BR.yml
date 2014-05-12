@@ -790,6 +790,8 @@
     form: 
       cancel: Cancelar
       groups: Turmas
+    select_lesson:
+      no_lessons: Sem Aulas
 
   lesson_modules:
     general_of_offer: "Geral"
