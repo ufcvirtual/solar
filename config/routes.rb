@@ -226,6 +226,7 @@ Solar::Application.routes.draw do
       get :list, action: :list
       get :download_files
       get :verify_download
+      get :get_lessons, as: :get
     end
     resources :files, controller: :lesson_files, except: [:index, :show, :update, :create] do
       collection do

@@ -1,13 +1,12 @@
 lesson_cookie_id = "_ufc_solar20_lesson_opened";
 
-function open_lesson(obj) {
-  $(".show_lesson .content").attr("data-url", $(obj).data("url"));
+function open_lesson(path, url) {
+  $(".show_lesson .content").attr("data-url", url);
 
   if ($.cookie(lesson_cookie_id))
-    $.cookie(lesson_cookie_id, $(obj).data("url"), { path: '/' });
+    $.cookie(lesson_cookie_id, url, { path: '/' });
 
-  $('.show_lesson .header .titlebar span.order').html($(obj).data("order"));
-  $("iframe#content_lesson").prop("src", $(obj).data("link"));
+  $("iframe#content_lesson").prop("src", path);
 }
 
 function maximize_lesson(obj) {

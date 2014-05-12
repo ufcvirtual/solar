@@ -1,39 +1,30 @@
 .block_wrapper
-  - unless @lessons.nil? or @lessons.empty?
-    .block_title
-      %h2
-        %i.icon-class
-        = t(:lesson_title)
-    %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :border => "0"}
-      %thead
-        %tr.lines
-          %th{:align => "left"}=t ".lesson_table_title" 
-          %th.center.date{:style => "width: 30%;"}=t(".lesson_table_date")
-      %tbody
-        - curriculum_unit_id = @curriculum_unit.id
-        - @lessons.each do |lesson|
-          - lesson_closed_class = "period_ended" if lesson.closed?
-          %tr.lines{:class => lesson_closed_class }
-            %td
-              - if lesson.closed?
-                = lesson.name
-                = "(#{t(:lesson_closed_short)})"
-              - else
-                = link_to lesson.name, lesson_path(lesson.id), class: "link_content lesson", "data-fancybox-type" => "iframe"
-            %td
-              - if lesson.schedule.end_date.nil? 
-                = t(:since)
-                = l lesson.schedule.start_date, format: :normal
-                = "-"
-                = t(:no_end_date)
-              - elsif lesson.schedule.end_date >= Date.today
-                = l lesson.schedule.start_date, format: :normal
-                = "-"
-                = l lesson.schedule.end_date, format: :normal
-              - elsif lesson.schedule.end_date < Date.today 
-                = l lesson.schedule.start_date, format: :normal
-                = "-"
-                = l lesson.schedule.end_date, format: :normal
+  - unless @lessons_modules.empty?
+    - @lessons_modules.each do |lmodule|
+      .block_title
+        %h2
+          %i.icon-class
+          = lmodule.name
+      %table.tb_list{cellpadding: "10", cellspacing: "0", width: "100%", border: "0"}
+        %thead
+          %tr.lines
+            %th{align: "left"}=t ".lesson_table_title" 
+            %th.date{style: "width: 30%;"}=t(".lesson_table_date")
+        %tbody
+          - lmodule.lessons_to_open(current_user, true).each do |lesson|
+            - lesson_closed_class = "period_ended" if lesson.closed?
+            %tr.lines{class: lesson_closed_class }
+              %td
+                - if lesson.closed?  
+                  = lesson.name
+                  = "(#{t(:lesson_closed_short)})"
+                - else
+                  = link_to lesson.name, lesson_path(lesson.id), class: "link_content lesson", "data-fancybox-type" => "iframe"
+                - if lesson.is_draft?
+                  .test_lesson= "(#{t(:lesson_test)})"
+              %td
+                = "#{t(:since)}" if (lesson.schedule.end_date.nil?)
+                = [l(lesson.schedule.start_date, format: :normal), (lesson.schedule.end_date.nil? ? t(:no_end_date) : l(lesson.schedule.end_date, format: :normal))].join(" - ")
   - else
     .block_content.block_content_text= t(:lesson_message)
 

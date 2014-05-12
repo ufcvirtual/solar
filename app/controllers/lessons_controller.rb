@@ -16,8 +16,8 @@ class LessonsController < ApplicationController
 
   def index
     authorize! :index, Lesson
-
-    @lessons = lessons_to_open(params[:allocation_tags_ids])
+    allocation_tags  = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+    @lessons_modules = LessonModule.to_select(allocation_tags, current_user, true)
     render layout: false if params[:allocation_tags_ids]
   end
 
@@ -26,7 +26,7 @@ class LessonsController < ApplicationController
 
     begin
       authorize! :list, Lesson, on: [allocation_tags].flatten
-      @allocation_tags = AllocationTag.where(id: allocation_tags)
+      @allocation_tags      = AllocationTag.where(id: allocation_tags)
       @allocation_tags_ids  = @allocation_tags.map(&:id)
       @academic_allocations = AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where(allocation_tag_id: @allocation_tags_ids)
     rescue
@@ -41,12 +41,22 @@ class LessonsController < ApplicationController
     else
       authorize! :show, Lesson, {on: [@curriculum_unit.allocation_tag.id], read: true} # apenas para quem faz parte da turma
 
-      @all_lessons = lessons_to_open
-      @lessons = @all_lessons.select { |l| not l.closed? } # user can access
+      allocation_tags_ids = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+      @lessons_modules    = LessonModule.to_select(allocation_tags_ids, current_user)
+      @lesson       = Lesson.find(params[:id])
+      @lessons      = @lesson.lesson_module.lessons_to_open(current_user)
+      @lessons_info = @lessons.collect{|lesson| {'id' => lesson.id, 'path' => lesson.path, 'url' => lesson_url(lesson), 'name' => lesson.name} }.to_json
 
-      @lesson = Lesson.find(params[:id])
       render layout: 'lesson'
     end
+  end
+
+  def get_lessons
+    lesson_module = LessonModule.find(params[:lesson_module])
+    @lessons      = (lesson_module.nil? ? [] : lesson_module.lessons_to_open(current_user))
+    @lessons_info = @lessons.collect{|lesson| {'id' => lesson.id, 'path' => lesson.path, 'url' => lesson_url(lesson), 'name' => lesson.name} }.to_json
+
+    render partial: 'select_lesson', locals: { lessons: @lessons, lessons_info: @lessons_info }
   end
 
   # GET /lessons/new
@@ -158,11 +168,6 @@ class LessonsController < ApplicationController
         render json: {success: false, alert: t(:deleted, scope: [:lessons, :errors])}, status: :unprocessable_entity
       end
     end
-  end
-
-  def show_header
-    @lessons = lessons_to_open
-    # render layout: 'lesson'
   end
 
   def download_files

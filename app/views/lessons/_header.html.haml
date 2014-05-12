@@ -1,22 +1,29 @@
 .titlebar#lesson_header
   .inline
     .breadcrumb
-      %span= "#{@curriculum_unit.name} > #{t(:lesson)}"
-      %span.order= @lesson.order
-      %span= " - #{@all_lessons.count}"
-.other_lessons#lesson_content_header
-  - @all_lessons.each do |lesson|
-    - closed = lesson.closed?
-    %span.lesson_link{"data-order" => lesson.order, "data-link" => (closed ? "" : lesson.path), class: "#{(closed ? "cant" : "can")}_open_lesson", "data-url" => lesson_url(lesson) }
-      = lesson.order
+      %span= "#{@curriculum_unit.name} >"
+      - if @lessons_modules.size == 1
+        %span= @lessons_modules.first.name
+      - else
+        %span= select_tag :lesson_module, options_from_collection_for_select(@lessons_modules, "id", "name", @lesson.lesson_module.id)
+      %span= " > "
+      %span#select_lesson= render partial: "select_lesson", locals: {lessons: @lessons}
+      %span#lessons{:"data-info" => @lessons_info}
 
 :javascript
   $(function(){
-    $(".other_lessons .lesson_link.cant_open_lesson").click(function(){
-      alert("#{t(:lesson_closed)}"); // css ainda vai ser modificado
-    });
+    var get_lessons_url = "#{get_lessons_path(lesson_module: 'module_param')}";
+    var lessons = null;
 
-    $(".other_lessons .lesson_link.can_open_lesson").click(function(){
-      open_lesson($(this));
+    $("select#lesson_module").change(function(){
+      $.get(get_lessons_url.replace('module_param', $(this).find("option:selected").val()), function(data){
+        // update lesson select options
+        $("#select_lesson").html(data);
+        // get new lesson info
+        lessons = jQuery.parseJSON($("#lessons").data("info"));
+        var lesson_info     = lessons[0];
+        // open first lesson
+        open_lesson(lesson_info.path, lesson_info.url);
+      });
     });
   });

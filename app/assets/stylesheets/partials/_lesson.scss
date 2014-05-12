@@ -24,7 +24,7 @@
 
 .show_lesson .header {
   display: table-row;
-  height: 55px;
+  height: 32px;
 }
 
 .show_lesson .content {
@@ -39,24 +39,19 @@
   background-color: #eee;
 }
 
-#lesson_content_header {
-  font-size: 11px;
-  width: 100%;
-  height: 25px;
-  margin: 0px;
-  padding: 0px 3px 0px 8px;
-  background-color: #dee8ec;
-  color: #000;
-}
-
 #lesson_header {
-  font-size: 12px;
+  font-size: 12pt;
+  font-family: 'PT Sans';
   width: 100%;
-  height: 22px;
+  height: 32px;
   margin: 0px;
   padding: 6px 0px 0px 8px;
   background-color: #1d4786;
   color: #fff;
+  select{
+    margin-left: 3px;
+    margin-right: 3px;
+  }
 }
 
 #lesson_goto {
@@ -82,24 +77,6 @@
   cursor: pointer;
   height: 20px;
   vertical-align: bottom;
-}
-
-.lesson_link {
-  width: 17px;
-  display: inline-block;
-  height: 20px;
-  text-align: center;
-  vertical-align: middle;
-  margin-right: 1px;
-  margin-bottom: 3px;
-  font-size: 12px;
-  text-decoration: none;
-  font-weight: bold;
-  cursor: pointer;
-  border: 0;
-  line-height: 19px;
-  background-color: #b8cbcf;
-  color: #000;
 }
 
 .lesson_description {
@@ -160,4 +137,13 @@
 .test_lesson{
   display: inline-block;
   color: $light_grey;
+}
+
+.lesson_portlet .module{
+  background-color: $background_grey;
+  font-family: 'Ubuntu Condensed';
+  padding: 4px;
+  border-bottom: 1px solid #CCC;
+  color: $text_grey;
+  font-size: 11pt;
 }

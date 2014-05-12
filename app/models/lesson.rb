@@ -79,40 +79,18 @@ class Lesson < ActiveRecord::Base
 
   # pode visualizar
   def open_to_show?
-    started? and not closed?
+    started? and not(closed?)
   end
 
   # já iniciou
   def started?
-    schedule.start_date <= Date.today
+    schedule.start_date.to_date <= Date.today
   end
 
   # fechado
   def closed?
-    not(schedule.end_date.nil?) and (schedule.end_date < Date.today)
+    not(schedule.end_date.nil?) and (schedule.end_date.to_date < Date.today)
   end  
-
-  def self.to_open(allocation_tag_ids, user_id = nil)
-    unless allocation_tag_ids.kind_of?(Array)
-      allocation_tag     = AllocationTag.find(allocation_tag_ids)
-      allocation_tag_ids = allocation_tag.related
-    end
-
-    query = { academic_allocations: { allocation_tag_id: allocation_tag_ids} }
-    query_date = ""
-
-    # if the user is informed and he has permission as responsible, test lessons and lessons not yet started must be shown
-    if user_id.nil? or ( not(allocation_tag.nil?) and not(allocation_tag.is_user_class_responsible?(user_id)) )
-      query      = query.merge({status: Lesson_Approved}) 
-      query_date = "schedules.start_date <= current_date"
-    end
-
-    select(["lessons.id", "lessons.name", :address, "lessons.order", :type_lesson, :status, :schedule_id])
-    .joins([{lesson_module: :academic_allocations}, schedule: {}])
-    .where(query).where(query_date)
-    .order("lessons.order")
-    .uniq
-  end
 
   private
 
