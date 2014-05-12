@@ -16,20 +16,6 @@ class Profile < ActiveRecord::Base
     Profile.where("types <> ?", Profile_Type_Basic).order("name")
   end
 
-  ## recupera uma lista perfis que possuem quaisquer permissões requisitadas
-  def self.authorized_profiles(resources)
-
-    query = <<SQL
-      SELECT DISTINCT p.*
-      from
-        profiles p
-        inner join permissions_resources r on p.id = r.profile_id
-      where
-        r.profile_id in (#{resources.join(',')})
-SQL
-    return self.find_by_sql(query)
-  end
-
   def has_type?(type)
     (self.types & type) == type
   end

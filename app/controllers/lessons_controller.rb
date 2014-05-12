@@ -210,7 +210,7 @@ class LessonsController < ApplicationController
       authorize! :order, Lesson
       success = false
 
-      l1, l2 = Lesson.find(params[:id], params[:change_id])
+      l1, l2 = Lesson.where("id IN (?)", [params[:id], params[:change_id]])
       Lesson.transaction do
         l1.order, l2.order = l2.order, l1.order
         l1.save!

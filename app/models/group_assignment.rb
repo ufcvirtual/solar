@@ -15,7 +15,7 @@ class GroupAssignment < ActiveRecord::Base
     Assignment.all(
       select: [:id, :name, :enunciation, :schedule_id],
       include: [:academic_allocations, :allocation_tags, :schedule, :group_assignments],
-      conditions: ["type_assignment = #{Assignment_Type_Group} AND allocation_tags.group_id = #{group_id}"],
+      conditions: ["type_assignment = ? AND allocation_tags.group_id = ?", Assignment_Type_Group, group_id],
       order: "schedules.start_date")
   end
 

@@ -25,7 +25,7 @@ class Lesson < ActiveRecord::Base
   validates :lesson_module, presence: true
 
   # Na expressão regular os protocolos http, https e ftp podem aparecer somente uma vez ou não aparecer.
-  validates_format_of :address, :with => /^((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$/ix,
+  validates_format_of :address, :with => /\A((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z/ix,
   :allow_nil => true, :allow_blank => true, :if => :is_link?
 
   FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula

@@ -25,10 +25,10 @@ class AllocationsController < ApplicationController
       @allocation_tags_ids = AllocationTag.where(group_id: params[:groups_id]).map(&:id)
     end
 
-    begin    
+    begin
       @admin = true if params.include?(:admin)
       
-      if @admin 
+      if @admin
         authorize! :create_designation, Allocation
       else
         authorize! :create_designation, Allocation, on: @allocation_tags_ids.flatten
@@ -38,8 +38,8 @@ class AllocationsController < ApplicationController
       level_search = level.nil? ? ("not(profiles.types & #{Profile_Type_Basic})::boolean") : ("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
       
       @allocations = Allocation.all(
-        joins: [:profile, :user], 
-        conditions: ["#{level_search} and allocation_tag_id IN (#{@allocation_tags_ids.join(",")}) "],
+        joins: [:profile, :user],
+        conditions: ["#{level_search} and allocation_tag_id IN (?)", @allocation_tags_ids],
         order: ["users.name", "profiles.name"]) 
     rescue CanCan::AccessDenied
       render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
@@ -55,7 +55,7 @@ class AllocationsController < ApplicationController
     text                 = URI.unescape(params[:user])
     @text_search         = text
     @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
-    @users               = User.where("lower(name) ~ '#{text.downcase}'")
+    @users               = User.where("lower(name) ~ ?", text.downcase)
     @admin               = params[:admin]
   end
 

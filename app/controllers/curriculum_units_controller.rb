@@ -148,8 +148,8 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def informations
-    allocation_tags   = AllocationTag.find_related_ids(active_tab[:url][:allocation_tag_id])
-    allocation_offer  = AllocationTag.where("id IN (#{allocation_tags.join(', ')}) AND offer_id IS NOT NULL").first
+    allocation_tags   = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+    allocation_offer  = AllocationTag.where(id: allocation_tags).where("offer_id IS NOT NULL").first
     @offer            = allocation_offer.offer unless allocation_offer.nil?
   end
 

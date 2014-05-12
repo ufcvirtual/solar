@@ -40,13 +40,11 @@ class Assignment < Event
   # não pode dar unbind nem remover se tiver sent_assignment? (eles pertencem a uma academic_allocation)
 
   def student_group_by_student(student_id)
-    #Operador ternário (if) anything ? (então) somenthing :(se não) other thing
-    (self.type_assignment == Assignment_Type_Group) ? 
+    (self.type_assignment == Assignment_Type_Group) ?
       (GroupAssignment.first(
       joins: :academic_allocation,
       include: :group_participants,
-      conditions: ["group_participants.user_id = #{student_id} 
-      AND academic_allocations.academic_tool_id = #{self.id}"])) : nil
+      conditions: ["group_participants.user_id = ? AND academic_allocations.academic_tool_id = ?", student_id, self.id])) : nil
   end
 
   def sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, user_id, group_assignment_id)
@@ -114,11 +112,11 @@ class Assignment < Event
   ## Recupera as atividades de determinado tipo de uma turma e informações da situação de determinado aluno nela
   def self.student_assignments_info(group_id, student_id, type_assignment)
     assignments = Assignment.all(
-      joins: [{academic_allocations: :allocation_tag}, :schedule], 
-      conditions: ["allocation_tags.group_id = #{group_id} AND assignments.type_assignment = #{type_assignment}"], 
+      joins: [{academic_allocations: :allocation_tag}, :schedule],
+      conditions: ["allocation_tags.group_id = ? AND assignments.type_assignment = ?", group_id, type_assignment],
       select: ["assignments.id", "schedule_id", "schedules.end_date", "name", "enunciation", "type_assignment"])
       # atividades da turma do tipo escolhido
-  
+
     assignments_grades, group_assignments_ids, has_comments, situation = [], [], [], [] # informações da situação do aluno
 
     assignments.each_with_index do |assignment, idx|

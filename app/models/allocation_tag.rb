@@ -113,7 +113,7 @@ class AllocationTag < ActiveRecord::Base
 
   def self.user_allocation_tag_related_with_class(class_id, user_id)
     related_allocations = AllocationTag.find_related_ids(Group.find(class_id).allocation_tag.id) # allocations relacionadas à turma
-    allocation = Allocation.first(:conditions => ["allocation_tag_id IN (?) AND user_id = #{user_id}", related_allocations])
+    allocation = Allocation.first(:conditions => ["allocation_tag_id IN (?) AND user_id = ?", related_allocations, user_id])
     return (allocation.nil? ? nil : allocation.allocation_tag)
   end
 

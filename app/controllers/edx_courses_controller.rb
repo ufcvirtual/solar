@@ -128,7 +128,7 @@ class EdxCoursesController < ApplicationController
     @uri_course  = Base64.decode64(params[:course])
     text         = URI.unescape(params[:user])
     @text_search = text
-    @users       = User.where("lower(name) ~ '#{text.downcase}'")
+    @users       = User.where("lower(name) ~ ?", text.downcase)
   end
 
   # Edição acadêmica

@@ -12,7 +12,7 @@ class SupportMaterialFile < ActiveRecord::Base
   validates :attachment, presence: true, unless: :is_link?
   validates :url, presence: true, if: :is_link?
 
-  validates_format_of :url, with: /^((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$/ix, if: :is_link?
+  validates_format_of :url, with: /\A((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z/ix, if: :is_link?
   validates_attachment_size :attachment, less_than: 30.megabyte, message: ""
   validates_attachment_content_type_in_black_list :attachment
 

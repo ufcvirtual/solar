@@ -10,9 +10,9 @@ class ScheduleEvent < Event
 
   validates :title, :type_event, presence: true
 
-  validates :start_hour, :end_hour, :place, presence: true, if:  Proc.new{|event| event.type_event == Presential_Test or event.type_event == Presential_Meeting} 
-  validates_format_of :start_hour, :end_hour, with: /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/, if:  Proc.new{|event| event.type_event == Presential_Test or event.type_event == Presential_Meeting} 
-  validate :verify_hours, unless: Proc.new { |a| a.start_hour.blank? or a.end_hour.blank?}, if:  Proc.new{|event| event.type_event == Presential_Test or event.type_event == Presential_Meeting} 
+  validates :start_hour, :end_hour, :place, presence: true, if:  Proc.new{|event| event.type_event == Presential_Test or event.type_event == Presential_Meeting}
+  validates_format_of :start_hour, :end_hour, with: /\A([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]\z/, if:  Proc.new{|event| event.type_event == Presential_Test or event.type_event == Presential_Meeting}
+  validate :verify_hours, unless: Proc.new { |a| a.start_hour.blank? or a.end_hour.blank?}, if:  Proc.new{|event| event.type_event == Presential_Test or event.type_event == Presential_Meeting}
 
   accepts_nested_attributes_for :schedule
 

@@ -17,7 +17,7 @@ class ChatRoom < Event
 
   validates :title, :start_hour, :end_hour, presence: true
 
-  validates_format_of :start_hour, :end_hour, with: /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/
+  validates_format_of :start_hour, :end_hour, with: /\A([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]\z/
 
   validate :verify_hours, unless: Proc.new { |a| a.start_hour.blank? or a.end_hour.blank?}
 

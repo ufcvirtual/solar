@@ -156,8 +156,8 @@ class AdministrationsController < ApplicationController
     if params.include?(:search)
       @text_search, @type_search = params[:value], params[:type]
       @allocations = case @type_search
-      when "name";    @allocations.joins(:user).where("lower(users.name) ~ '#{@text_search.downcase}'")
-      when "profile"; @allocations.joins(:profile).where("lower(profiles.name) ~ '#{@text_search.downcase}'")
+      when "name";    @allocations.joins(:user).where("lower(users.name) ~ ?", @text_search.downcase)
+      when "profile"; @allocations.joins(:profile).where("lower(profiles.name) ~ ?", @text_search.downcase)
       when "curriculum_unit_type"
         @allocations.collect do |allocation|
           uc = allocation.curriculum_unit_related
@@ -178,7 +178,7 @@ class AdministrationsController < ApplicationController
           semester = allocation.semester_related
           allocation if not(semester.nil?) and semester.name.downcase.include? @text_search.downcase
         end
-      when "group"; @allocations.joins(:group).where("lower(groups.code) ~ '#{@text_search.downcase}'")
+      when "group"; @allocations.joins(:group).where("lower(groups.code) ~ ?", @text_search.downcase)
       else @allocations
       end
     end

@@ -19,7 +19,10 @@ class PublicFile < ActiveRecord::Base
   # Arquivos da area publica
   ##
   def self.all_by_class_id_and_user_id(class_id, user_id)
-    return(PublicFile.all(:conditions => ["users.id = #{user_id} AND allocation_tags.group_id = #{class_id}"], :include => [:allocation_tag, :user], :select => ["attachment_file_name, attachment_content_type, attachment_file_size, attachment_updated_at"]))
+    return(PublicFile.all(
+      :conditions => ["users.id = ? AND allocation_tags.group_id = ?", user_id, class_id],
+      :include => [:allocation_tag, :user],
+      :select => ["attachment_file_name, attachment_content_type, attachment_file_size, attachment_updated_at"]))
   end
 
 end

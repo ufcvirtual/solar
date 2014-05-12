@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     if (not(params[:cpf].present?) or not(Cpf.new(params[:cpf]).valido?))
       redirect_to login_path(cpf: params[:cpf]), alert: t(:new_user_msg_cpf_error)
     else
-      user = User.where("translate(cpf,'.-','') = '#{params[:cpf].gsub(/\D/, '')}'").first
+      user = User.where("translate(cpf,'.-','') = ?", params[:cpf].gsub(/\D/, '')).first
       if user
         redirect_to login_path, alert: t(:new_user_cpf_in_use)
       else
