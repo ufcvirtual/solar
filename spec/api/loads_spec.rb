@@ -904,7 +904,7 @@ describe "Loads" do
             # MUST CHANGE USER EMAIL (fixtures) TO THE SAME USED BY THE MA USER INFORMED
             post "/api/v1/load/user/", {cpf: cpf}
 
-             user = User.where(cpf: "43463518678").count.should eq(1) # user
+            User.where(cpf: "43463518678").count.should eq(1) # user
 
             response.status.should eq(201)
             response.body.should == {ok: :ok}.to_json
