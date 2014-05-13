@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
   validates :username, presence: true, length: { within: 3..20 }, uniqueness: true
   validates :password, presence: true, confirmation: true, unless: Proc.new { |a| a.password.blank? or ((not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and a.integrated)}
   validates :alternate_email, format: { with: email_format }
-  validates :email, presence: true, confirmation: true, uniqueness: true, format: { with: email_format }, if: Proc.new {|a| a.email_changed? }
+  validates :email, presence: true, confirmation: true, uniqueness: true, format: { with: email_format }, unless: Proc.new {|a| a.already_email_error_or_email_not_changed? }
   validates :special_needs, presence: true, if: :has_special_needs?
 
   validates_length_of :address_neighborhood, maximum: 49

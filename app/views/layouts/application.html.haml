@@ -111,7 +111,7 @@
             /  icon-cycle
             - if User::MODULO_ACADEMICO["integrated"]
               %li= link_to t("mysolar.synchronize"), "#", :'data-url' => synchronize_ma_users_path, id: 'synchronize'
-            %li= link_to t(:mysolar_edit_profile), edit_user_registration_path, id: 'my_data'
+            %li= link_to t(:mysolar_edit_profile), edit_user_registration_path(bread: "mysolar_edit_profile"), id: 'my_data'
             %li= link_to t(:mysolar_change_picture), edit_photo_users_path, class: "fancybox.ajax", id: "change_picture"
             %li= link_to t("mysolar.profiles"), profiles_users_path
             %li= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path)
