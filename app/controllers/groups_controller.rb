@@ -43,7 +43,7 @@ class GroupsController < ApplicationController
     end
 
     begin
-      authorize! :list, Group unless params[:checkbox]#, on: [@offer.allocation_tag.id]
+      authorize! :list, Group, on: [@offer.allocation_tag.id] unless params[:checkbox]
 
       @groups = @offer.groups.order("code")
       render partial: 'groups_checkboxes', locals: { groups: @groups } if params[:checkbox]
