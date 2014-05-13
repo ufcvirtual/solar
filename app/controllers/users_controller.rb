@@ -13,31 +13,45 @@ class UsersController < ApplicationController
   end
 
   def verify_cpf
+
     if (not(params[:cpf].present?) or not(Cpf.new(params[:cpf]).valido?))
       redirect_to login_path(cpf: params[:cpf]), alert: t(:new_user_msg_cpf_error)
     else
-      user = User.where("translate(cpf,'.-','') = ?", params[:cpf].gsub(/\D/, '')).first
-      if user
-        redirect_to login_path, alert: t(:new_user_cpf_in_use)
-      else
-        begin
-          raise if not User::MODULO_ACADEMICO["integrated"]
 
-          user_cpf = params[:cpf].delete(".").delete("-")
-          user     = User.new cpf: user_cpf
-          user.connect_and_validates_user
+      user_cpf   = params[:cpf].delete(".").delete("-")
+      integrated = User::MODULO_ACADEMICO["integrated"]
+      user       = User.where("translate(cpf,'.-','') = ?", params[:cpf].gsub(/\D/, '')).first
 
-          if user.new_record? # nao existe no MA
+      begin
+
+        if user and integrated # if user exists and system is integrated
+          begin
+            user_data = User.connect_and_import_user(user_cpf) # try to import
+            raise if user_data.nil? # user don't exist at MA
+            user.synchronize(user_data) # synchronize user with new MA data
+            redirect_to login_path, notice: t("users.notices.ma.use_ma_data")
+          rescue
+            redirect_to login_path, alert: t(:new_user_cpf_in_use)
+          end
+        elsif user and not(integrated) # if user exists and system isn't integrated
+          redirect_to login_path, alert: t(:new_user_cpf_in_use)
+        else # if user don't exist
+          raise if not(integrated)
+          user = User.new cpf: user_cpf
+          user.connect_and_validates_user # try to create user with MA data
+
+          if user.new_record? # doesn't exist at MA
             redirect_to new_user_registration_path(cpf: user_cpf)
           else # user was imported and registered with MA data
             redirect_to login_path, notice: t("users.notices.ma.use_ma_data")
           end
-        rescue => error # any error during access to MA, user should do the registration anyway
-          flash[:warning] = t("users.warnings.ma.cpf_not_verified")
-          redirect_to new_user_registration_path(cpf: params[:cpf])
         end
 
+      rescue
+        flash[:warning] = t("users.warnings.ma.cpf_not_verified") if integrated
+        redirect_to new_user_registration_path(cpf: params[:cpf])
       end
+
     end
   end
 
