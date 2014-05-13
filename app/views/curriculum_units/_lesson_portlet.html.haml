@@ -7,7 +7,7 @@
     - unless @lessons_modules.empty?
       - @lessons_modules.each do |lmodule|
         .module= lmodule.name
-        - lmodule.lessons_to_open(current_user, true).each do |lesson|
+        - lmodule.lessons_to_open(current_user).each do |lesson|
           - lesson_closed_class = "block_content_line "
           - lesson_closed_class = lesson_closed_class + "period_ended" if (lesson.closed?)
           %div{class: lesson_closed_class}
