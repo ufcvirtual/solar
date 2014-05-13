@@ -96,18 +96,23 @@ class CurriculumUnitsController < ApplicationController
     params[:curriculum_unit][:user_id] = current_user.id
 
     @curriculum_unit = CurriculumUnit.new(params[:curriculum_unit])
+    course = Course.new name: @curriculum_unit.name, code: @curriculum_unit.code if @curriculum_unit.curriculum_unit_type_id == 3
+
     authorize! :create, CurriculumUnit
 
-    if @curriculum_unit.save
+    ActiveRecord::Base.transaction do
+      @curriculum_unit.save!
       if @curriculum_unit.curriculum_unit_type_id == 3
-        course = Course.new name: @curriculum_unit.name, code: @curriculum_unit.code
         course.user_id = @curriculum_unit.user_id
-        course.save
+        course.save!
       end
-      render json: {success: true, notice: t(:created, scope: [:curriculum_units, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
-    else
-      render :new
     end
+
+    render json: {success: true, notice: t(:created, scope: [:curriculum_units, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
+  rescue => error
+    # if curso livre, add course errors to curriculum_unit
+    (errors_keys = course.errors.keys).each{|key| @curriculum_unit.errors.add(key, course.errors.messages[key].flatten.first) } if @curriculum_unit.curriculum_unit_type_id == 3 and not(course.valid?)
+    render :new
   end
 
   # GET /curriculum_units/1/edit

@@ -33,6 +33,11 @@
 :javascript
 
   jQuery(function($){
+    var type_id = "#{@curriculum_unit.curriculum_unit_type_id}";
+
+    if (type_id == "3")
+      $("label[for='curriculum_unit_code']").append("*");
+
     $('#save').click(function(){
       $('#curriculum_unit_form').serialize_and_submit({
         complement_success: function(data) {
