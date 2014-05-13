@@ -88,56 +88,44 @@ class AdministrationsController < ApplicationController
   ## ALLOCATIONS
 
   def allocations_user
-    begin
-      authorize! :allocations_user, Administration
-      @allocations_user = User.find(params[:id]).allocations
-                            .joins("LEFT JOIN allocation_tags at ON at.id = allocations.allocation_tag_id")
-                            .where("(at.curriculum_unit_id is not null or at.offer_id is not null or at.group_id is not null )")
-
-      @profiles = @allocations_user.map(&:profile).flatten.uniq
-
-      @periods = [ [t(:active),''] ]
-      @periods += Semester.all.map{|s| s.name}.flatten.uniq.sort! {|x,y| y <=> x}
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-    end
+    authorize! :allocations_user, Administration
+    @allocations_user = User.find(params[:id]).allocations.joins(:profile).where("NOT cast(profiles.types & #{Profile_Type_Basic} as boolean)")
+    @_profiles = @allocations_user.map(&:profile).flatten.uniq
+    @periods  = [ [t(:active),''] ]
+    @periods += Semester.all.map{|s| s.name}.flatten.uniq.sort! {|x,y| y <=> x}
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def show_allocation
-    begin
-      authorize! :update_allocation, Administration
-      @allocation = Allocation.find(params[:id])
-      respond_to do |format|
-        format.html
-        format.json { render json: @allocation}
-      end
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+    authorize! :update_allocation, Administration
+    @allocation = Allocation.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: @allocation}
     end
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def edit_allocation
-    begin
-      authorize! :update_allocation, Administration
-      @allocation = Allocation.find(params[:id])
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-    end
+    authorize! :update_allocation, Administration
+    @allocation = Allocation.find(params[:id])
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def update_allocation
-     begin 
-      authorize! :update_allocation, Administration
-      @allocation = Allocation.find(params[:id])
-      @allocation.update_attribute(:status, params[:status])
+    authorize! :update_allocation, Administration
+    @allocation = Allocation.find(params[:id])
+    @allocation.update_attribute(:status, params[:status])
 
-      respond_to do |format|
-        format.html { render action: :show_allocation, id: params[:id] }
-        format.json { render json: {status: "ok"}  }
-      end
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+    respond_to do |format|
+      format.html { render action: :show_allocation, id: params[:id] }
+      format.json { render json: {status: "ok"}  }
     end
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   ## INDICATION USERS

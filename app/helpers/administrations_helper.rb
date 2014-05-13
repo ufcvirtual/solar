@@ -20,11 +20,11 @@ module AdministrationsHelper
   end
 
   def name_allocation_status(status)
-    name_of(status)
+    name_of(status, false)
   end
 
   def allocation_status
-    status = status_hash
+    status = status_hash(false)
   end
 
   def user_status

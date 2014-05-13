@@ -1,5 +1,5 @@
 %td= allocation_details(@allocation.allocation_tag)
-%td= type(@allocation.allocation_tag)
+%td= ( @allocation.allocation_tag.nil? ? "" : type(@allocation.allocation_tag) )
 %td= select(:status, :id, allocation_status.invert.to_a, {selected: @allocation.status})
 %td.right_buttons
   = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), "update_allocation(this)", :"save-link" => admin_allocation_path(@allocation), :"show-link" => admin_allocation_path(@allocation.id), class:  "btn btn_manage_cancel"

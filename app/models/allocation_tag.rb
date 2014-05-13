@@ -150,6 +150,10 @@ class AllocationTag < ActiveRecord::Base
   end
 
   def self.allocation_tag_details(allocation_tag, split = false)
+    not_specified = I18n.t("users.profiles.not_specified")
+
+    return not_specified if allocation_tag.nil?
+
     if !allocation_tag.curriculum_unit_id.nil?
       detail  = allocation_tag.curriculum_unit.name
       uc_type = allocation_tag.curriculum_unit.curriculum_unit_type.description
@@ -169,7 +173,6 @@ class AllocationTag < ActiveRecord::Base
     end
 
     if split
-      not_specified = I18n.t("users.profiles.not_specified")
       return {course: not_specified, curriculum_unit: not_specified, semester: not_specified, group: not_specified, curriculum_unit_type: not_specified} if detail.nil?
       detail = detail.split(" | ")
       if (detail.size == 1) 
@@ -185,6 +188,8 @@ class AllocationTag < ActiveRecord::Base
   end
 
   def self.curriculum_unit_type(allocation_tag)
+    return I18n.t("users.profiles.not_specified") if allocation_tag.nil?
+
     if !allocation_tag.curriculum_unit_id.nil?
       allocation_tag.curriculum_unit.curriculum_unit_type.description
     elsif !allocation_tag.offer.nil?
@@ -197,6 +202,8 @@ class AllocationTag < ActiveRecord::Base
   end
 
   def self.semester_info(allocation_tag)
+    return 'always_active ' if allocation_tag.nil? # if allocation_tag isn't related to anything, consider active
+
     if !allocation_tag.offer.nil?
       if allocation_tag.offer.semester.offer_schedule.start_date <= Date.today && 
         allocation_tag.offer.semester.offer_schedule.end_date >= Date.today
