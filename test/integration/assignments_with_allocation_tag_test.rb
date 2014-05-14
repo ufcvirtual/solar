@@ -107,7 +107,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:professor))
     get @quimica_tab
     public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno1).id, allocation_tags(:al3).id, "teste3.txt")
-    get download_files_assignments_path(:assignment_id => assignments(:a9).id, :file_id => public_file.id, :type => 'public')
+    get download_public_files_assignments_path(file_id: public_file.id)
     assert_response :success
   end
 
@@ -121,7 +121,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno2))
     get @quimica_tab
     public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno1).id, allocation_tags(:al3).id, "teste2.txt")
-    get download_files_assignments_path(:file_id => public_file.id, :type => 'public')
+    get download_public_files_assignments_path(:file_id => public_file.id)
     assert_response :success
   end
 
@@ -590,17 +590,17 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t(:date_range_expired, :scope => [:assignment, :notifications]), flash[:alert]
   end
 
-    test "nao permitir fazer download de arquivos de comentario para usuario com permissao e sem acesso - atividade em grupo" do
+  test "nao permitir fazer download de arquivos de comentario para usuario com permissao e sem acesso - atividade em grupo" do
     login(users(:tutor_distancia))
     get @quimica_tab
-    assert_difference('CommentFile.count', +1) do
+    assert_difference('CommentFile.count', 1) do
       comment_files = [fixture_file_upload('files/assignments/comment_files/teste2.txt', content_type: 'text/plain')]
       post send_comment_assignment_path(assignments(:a11).id), {:comment_files => comment_files, :group_id => 1, :comment => "comentario"}
     end
 
     comment_file = CommentFile.first
     
-    login(users(:aluno1))
+    login(users(:aluno3))
     get @quimica_tab
     get(download_files_assignments_path, {:assignment_id => assignments(:a11).id, :file_id => comment_file.id, :type => 'comment'})
     assert_redirected_to(home_path)
@@ -625,7 +625,6 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
-
 
    # Comentario
   test "nao permitir fazer download de arquivos de comentario para usuario com permissao e sem acesso" do
@@ -715,7 +714,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao permitir fazer download de arquivos de aluno para usuario com permissao e sem acesso - aluno" do
     login(users(:aluno3))
     get @quimica_tab
-    assert_difference('AssignmentFile.count', +1) do
+    assert_difference('AssignmentFile.count', 1) do
       post upload_file_assignments_path, {:assignment_id => assignments(:a10).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste4.txt', 'text/plain'), :type => "assignment"}
     end
 

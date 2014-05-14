@@ -99,8 +99,8 @@ class AssignmentTest < ActiveSupport::TestCase
   end
 
   test "usuario nao pode acessar atividade que nao tem relacao" do
-    assert not(assignments(:a10).user_can_access_assignment(allocation_tags(:al4), users(:aluno1).id, users(:aluno2).id))
-    assert assignments(:a9).user_can_access_assignment(allocation_tags(:al3), users(:professor).id, users(:aluno1).id)
+    assert not(assignments(:a10).user_can_access_assignment?(allocation_tags(:al4), users(:aluno1).id, users(:aluno2).id))
+    assert assignments(:a9).user_can_access_assignment?(allocation_tags(:al3), users(:professor).id, users(:aluno1).id)
   end
 
   # test "data final de avaliacao deve ser igual ou maior do que a data final da atividade" do 

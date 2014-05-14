@@ -118,7 +118,7 @@
             - if @assignment.type_assignment == Assignment_Type_Group 
               %th{:align => "center", :style => "width: 70px"}= t(:sent_by, :scope => [:assignment, :files])
             %th.date_column= t(:sent_on, :scope => [:assignment, :files])
-            - if can?(:delete_file, @assignment) and @assignment.user_can_access_assignment(@allocation_tag, @user.id, @student_id, @group_id)
+            - if can?(:delete_file, @assignment) and @assignment.user_can_access_assignment?(@allocation_tag, @user.id, @student_id, @group_id)
               %th.no_sort{:style => "width: 30px"}
         %tbody
           - @sent_assignment_files.each do |file|
@@ -135,7 +135,7 @@
     - else
       .portfolio_div_padding= t(:itens_not_found)
     / Enviar arquivos
-    - if can? :upload_file, @assignment and @assignment.user_can_access_assignment(@allocation_tag, @user.id, @student_id, @group_id)
+    - if can? :upload_file, @assignment and @assignment.user_can_access_assignment?(@allocation_tag, @user.id, @student_id, @group_id)
       .assignment_inner_content.upload_files
         - if @assignment.assignment_in_time?(@allocation_tag, current_user.id)
           = link_to content_tag(:i, nil, :class=>'icon-plus'), '#', :class => "image_upload_file", :onclick => "javascript:toggle_upload_div();"

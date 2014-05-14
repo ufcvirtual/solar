@@ -27,7 +27,7 @@ class AccessControlController < ApplicationController
     end
 
     # verifica se tem acesso a arquivo ou se é da mesma turma (definido apenas para arquivos públicos)
-    if (not(sent_assignment.nil?) and sent_assignment.assignment.user_can_access_assignment(current_user.id, sent_assignment.user_id, sent_assignment.group_assignment_id)) or (same_class)
+    if (not(sent_assignment.nil?) and sent_assignment.assignment.user_can_access_assignment?(current_user.id, sent_assignment.user_id, sent_assignment.group_assignment_id)) or (same_class)
       send_file(file.attachment.path, { disposition: 'inline', type: return_type(params[:extension])} )
     else
       raise CanCan::AccessDenied

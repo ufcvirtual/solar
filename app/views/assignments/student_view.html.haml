@@ -125,7 +125,7 @@
           - @public_area.each_with_index do |pa, idx|
             %tr.lines
               %td.file_data_icon{:style => "width: 10px;"}= image_tag icon_attachment(pa["attachment_file_name"]), :alt => " "
-              %td= link_to pa.attachment_file_name, download_files_assignments_path(:file_id => pa["id"], :type => "public"), {:class => 'link_content'}
+              %td= link_to pa.attachment_file_name, download_public_files_assignments_path(:file_id => pa["id"], :type => "public"), {:class => 'link_content'}
               %td.file_data_info{:style => "width: 80px;", :align => "center"}= format('%.2f KB', pa.attachment_file_size.to_i/1024.0)
               %td.file_data_info{:style => "width: 100px;", :align => "center"}
                 - if pa.attachment_updated_at.nil?

@@ -4,12 +4,13 @@ class AssignmentsController < ApplicationController
   include AssignmentsHelper
   include FilesHelper
 
-  layout false, only: [:index, :new, :edit, :create, :update, :destroy, :show]
-
   before_filter :prepare_for_group_selection, :only => [:professor, :student_view]
-  load_and_authorize_resource :only => [:information, :import_groups_page, :import_groups, :manage_groups, :evaluate, :send_comment, :remove_comment]
+  before_filter Proc.new { |c| @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id]) }, only: [:download_public_files, :download_files]
 
+  load_and_authorize_resource :only => [:information, :import_groups_page, :import_groups, :manage_groups, :evaluate, :send_comment, :remove_comment]
   authorize_resource :only => [:download_files, :upload_file, :send_public_files_page, :delete_file]
+
+  layout false, only: [:index, :new, :edit, :create, :update, :destroy, :show]
 
   def index
     @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
@@ -127,7 +128,7 @@ class AssignmentsController < ApplicationController
     @situation       = @assignment.situation_of_student(@allocation_tag.id, @student_id, @group_id)
     @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  # arquivos que fazem parte da descrição da atividade
 
-    raise CanCan::AccessDenied unless @assignment.user_can_access_assignment(@allocation_tag, current_user.id, @student_id, @group_id)
+    raise CanCan::AccessDenied unless @assignment.user_can_access_assignment?(@allocation_tag, current_user.id, @student_id, @group_id)
 
     unless @sent_assignment.nil?
       @sent_assignment_files = @sent_assignment.assignment_files
@@ -294,56 +295,34 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  ## Download dos arquivos do portfolio (seja enviado pelo aluno/grupo, enviado no comentário do professor, que faça parte da descrição da atividade ou arquivo público)
-  def download_files
-    assignment = Assignment.find(params[:assignment_id]) unless params[:assignment_id].nil?
-    authorize! :download_files, assignment unless assignment.nil?
-    allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+  ## Portfolio
+  def download_public_files
+    authorize! :download_files, Assignment
 
-    if params.include?('zip') # se for baixar todos como zip
-      folder_name = ''
-      case params[:type]
-        when 'assignment' # arquivos enviados pelo aluno/grupo
-          sent_assignment = assignment.sent_assignments.where(:user_id => params[:student_id], :group_assignment_id => params[:group_id]).first
-          folder_name     = [assignment.name, (params[:group_id].nil? ? sent_assignment.user.nick : sent_assignment.group_assignment.group_name)].join(' - ')# pasta: "atv1 - aluno1"
-          all_files       = sent_assignment.assignment_files
+    file = PublicFile.find(params[:file_id])
+    raise CanCan::AccessDenied unless @allocation_tag.related.include?(file.allocation_tag_id) # verify participation in class
 
-          raise CanCan::AccessDenied unless assignment.user_can_access_assignment(allocation_tag, current_user.id, params[:student_id], params[:group_id])
-        when 'enunciation' # arquivos que fazem parte da descrição da atividade
-          folder_name = assignment.name # pasta: "atv1"
-          all_files = assignment.assignment_enunciation_files
-      end
-      file_path = compress({ files: all_files, table_column_name: 'attachment_file_name', name_zip_file: folder_name })
-    else
-      case params[:type]
-        when 'comment' # arquivo de um comentário
-          file = CommentFile.find(params[:file_id])
-          sent_assignment = file.assignment_comment.sent_assignment
-        when 'assignment' # arquivo enviado pelo aluno/grupo
-          file = AssignmentFile.find(params[:file_id])
-          sent_assignment = file.sent_assignment
-        when 'enunciation' # arquivo que faz parte da descrição da atividade
-          file = AssignmentEnunciationFile.find(params[:file_id])
-        when 'public'
-          file = PublicFile.find(params[:file_id]) # área pública do aluno
-          group = file.allocation_tag.groups.first
-          raise CanCan::AccessDenied if group.nil? # turma não existe
-          # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(group.id, current_user.id) # verifica se pode acessar turma
-      end
-      file_path = file.attachment.path
-      file_name = file.attachment_file_name unless file.nil?
-    end
-
-    # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
-    raise CanCan::AccessDenied unless (assignment.nil? or sent_assignment.nil? or assignment.user_can_access_assignment(allocation_tag, current_user.id, sent_assignment.user_id, sent_assignment.group_assignment_id))
-    redirect = request.referer.nil? ? home_url(:only_path => false) : request.referer
-
-    if(file_path)
-      download_file(redirect, file_path, file_name)
-    else
-      redirect_to redirect, alert: t(:file_error_nonexistent_file)
-    end
+    download_file(:back, file.attachment.path, file.attachment_file_name)
   end
+
+  ## Portfolio - download files
+  def download_files
+    assignment = Assignment.find(params[:assignment_id])
+    authorize! :download_files, assignment
+
+    student_id = @allocation_tag.is_user_class_responsible?(current_user) ? params[:student_id] : current_user.id
+
+    raise CanCan::AccessDenied unless assignment.user_can_access_assignment?(@allocation_tag, current_user.id, student_id, params[:group_id])
+
+    file_path, file_name = if params[:zip]
+      zipped_file_path_to_download(params[:type], assignment, @allocation_tag)
+    else
+      file_path_to_download(params[:type], params[:file_id], @allocation_tag)
+    end
+
+    redirect = request.referer.nil? ? home_url(only_path: false) : request.referer
+    download_file(redirect, file_path, file_name)
+  end # download files
 
   def send_public_files_page
     render layout: false
@@ -369,7 +348,7 @@ class AssignmentsController < ApplicationController
           user_id  = group.nil? ? current_user.id : nil
 
           # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
-          raise CanCan::AccessDenied unless assignment.user_can_access_assignment(allocation_tag, current_user.id, current_user.id, group_id)
+          raise CanCan::AccessDenied unless assignment.user_can_access_assignment?(allocation_tag, current_user.id, current_user.id, group_id)
           raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment.assignment_in_time?(allocation_tag, current_user.id) # verifica período para envio do arquivo
 
           academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id,assignment.id, 'Assignment')
@@ -404,7 +383,7 @@ class AssignmentsController < ApplicationController
 
           raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment.assignment_in_time?(allocation_tag, current_user.id) # verifica prazo
           # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
-          raise CanCan::AccessDenied unless assignment.user_can_access_assignment(allocation_tag, current_user.id, AssignmentFile.find(params[:file_id]).user_id)
+          raise CanCan::AccessDenied unless assignment.user_can_access_assignment?(allocation_tag, current_user.id, AssignmentFile.find(params[:file_id]).user_id)
 
           @assignment_file = AssignmentFile.find(params[:file_id])
           @assignment_file.delete_assignment_file
@@ -459,6 +438,40 @@ class AssignmentsController < ApplicationController
   end
 
   private
+
+    def zipped_file_path_to_download(type, assignment, allocation_tag)
+      folder_name = ''
+      case type
+        when 'assignment'
+          sent_assignment = assignment.sent_assignments.where(user_id: params[:student_id], group_assignment_id: params[:group_id]).first
+
+          raise CanCan::AccessDenied unless sent_assignment.user_can_access?(current_user, allocation_tag)
+
+          folder_name     = [assignment.name, (params[:group_id].nil? ? sent_assignment.user.nick : sent_assignment.group_assignment.group_name)].join(' - ') # activity I - Student I
+          all_files       = sent_assignment.assignment_files
+        when 'enunciation'
+          folder_name = assignment.name
+          all_files = assignment.assignment_enunciation_files
+      end
+
+      file_path = compress({ files: all_files, table_column_name: 'attachment_file_name', name_zip_file: folder_name })
+      [file_path || nil, nil]
+    end
+
+    def file_path_to_download(type, file_id, allocation_tag)
+      file = case type
+        when 'comment' # arquivo de um comentário
+          CommentFile.find(file_id)
+        when 'assignment' # arquivo enviado pelo aluno/grupo
+          AssignmentFile.find(file_id)
+        when 'enunciation' # arquivo que faz parte da descrição da atividade
+          AssignmentEnunciationFile.find(file_id)
+      end
+
+      raise CanCan::AccessDenied if file.respond_to?(:sent_assignment) and not file.sent_assignment.user_can_access?(current_user, allocation_tag)
+
+      [file.attachment.path, file.attachment_file_name]
+    end
 
     ##
     # Método que realiza as mudanças de um grupo e realiza as trocas de alunos

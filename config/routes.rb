@@ -249,6 +249,7 @@ Solar::Application.routes.draw do
       get :professor
 
       get :download_files
+      get "download_public_files/:file_id", to: :download_public_files, as: :download_public_files
       get :send_public_files_page
 
       post :upload_file
