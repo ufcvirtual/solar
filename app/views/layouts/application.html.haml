@@ -183,7 +183,8 @@
   lesson_cookie_id = "_ufc_solar20_lesson_opened";
 
   $(function(){
-    if ($.cookie(lesson_cookie_id))
+    var home_tab = $(".mysolar_unit_active_tab.general_context").length;
+    if (!home_tab && $.cookie(lesson_cookie_id))
       $("#mysolar_open_lesson button").removeClass("disabled");
   });
 
