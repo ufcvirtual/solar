@@ -723,6 +723,7 @@
   lesson_closed: "Aula encerrada"
   lesson_closed_short: "encerrada"
   lesson_test: aula rascunho
+  lesson_will_open: não iniciada
   since: A partir de
   no_end_date: Em diante
 
@@ -1291,6 +1292,7 @@
   menu_content_edition: Conteúdo
   menu_admin_user: "Gerência de Usuários"
   menu_admin_approval: Aprovação de perfis
+  menu_admin_lessons: Consultar Aulas
 
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"
@@ -1342,6 +1344,8 @@
       updated: 'Sua senha foi modificada com sucesso. Você agora está logado.'
       updated_not_active: 'Sua senha foi modificada com sucesso. Você agora está logado.'
       send_paranoid_instructions: "Um link de recuperação de senha será enviado para seu email, caso ele exista em nossa base de dados."
+    password:
+      change_my_password: Alterar
     confirmations:
       send_instructions: 'Instruções de como confirmar sua conta serão enviados para seu email em alguns minutos.'
       send_paranoid_instructions: 'Instruções de como confirmar sua conta serão enviados para seu email em alguns minutos, caso ele exista em nossa base de dados'
@@ -1655,15 +1659,6 @@
       email_sent: Email enviado com sucesso
     error:
       email_not_sent: Não foi possível enviar email
-    users_indication:
-      filter: Filtro
-      type: "Tipo*"
-      course: "Curso*"
-      curriculum_unit: "Unidade Curricular"
-      module: "Módulo"
-      semester: "Semestre"
-      offer: "Oferta"
-      group: "Turma"
     search_users:
       synchronize: Sincronizar com Módulo Acadêmico
     allocation_approval:
@@ -1749,7 +1744,7 @@
     are_you_sure_of_deletion: Você tem certeza de que deseja excluir?
     cant_delete: Não foi possível excluir
     not_possible_to_access_page_with_data: Não é possível acessar esta página com os dados fornecidos
-    content:
+    content_filter:
       filter: Filtro
       type: "Tipo*"
       course: "Curso*"

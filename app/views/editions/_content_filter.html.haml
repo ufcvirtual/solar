@@ -1,0 +1,41 @@
+= stylesheet_link_tag "autocomplete"
+= javascript_include_tag "edition", "autocomplete"
+
+.edition.block_content
+  %p= t(:required_fields)
+  %fieldset#allocation_tag_selection
+    %legend= t(".filter")
+    .filter
+      .curriculum_unit_type
+        = label_tag :curriculum_unit_type, t(".type")
+        = select_tag :curriculum_unit_type, options_from_collection_for_select(types, "id", "description", type_id), include_blank: true
+
+      .course
+        = label_tag :course, t(".course")
+        = select_tag :course, nil, :'data-optional' => (not(optionals.nil?) and optionals.include?("course"))
+
+      .curriculum_unit
+        = label_tag :curriculum_unit, t(".curriculum_unit")
+        = select_tag :curriculum_unit, nil, :'data-optional' => (not(optionals.nil?) and optionals.include?("curriculum_unit"))
+
+      .semester
+        = label_tag :semester, t(".semester")
+        = select_tag :semester, nil, :'data-optional' => (not(optionals.nil?) and optionals.include?("semester"))
+
+      .offer_groups_options
+        .radio_options
+          = radio_button :radio, :option, "offer", disabled: true
+          = label_tag :radio_option_offer, t(".offer")
+
+          = radio_button :radio, :option, "group", disabled: true
+          = label_tag :radio_option_group, t(".group")
+
+        .groups
+
+      = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => url, id: "search", :"data-load-to" => "#{list_class}"}
+
+  %div{class: "#{list_class}"}
+
+  - if back
+    .back.invisible
+      = render "editions/back_items"

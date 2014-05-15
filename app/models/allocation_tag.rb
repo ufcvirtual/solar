@@ -227,4 +227,29 @@ class AllocationTag < ActiveRecord::Base
     self.send(attributes.delete_if {|k, v| v.nil?}.keys.last.gsub(/_id/, '')).try(:info)
   end
 
+  def self.get_by_params(params, all_groups = false)
+    allocation_tags_ids = []
+
+    if params[:groups_id].blank?
+      if params.include?(:semester_id) and (not params[:semester_id] == "")
+        offer = Offer.where(semester_id: params[:semester_id], course_id: params[:course_id])
+        offer = offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
+        allocation_tags_ids = [offer.first.allocation_tag.id]
+        selected = "OFFER"
+      elsif params.include?(:curriculum_unit_id) and (not params[:curriculum_unit_id] == "")
+        allocation_tags_ids = [CurriculumUnit.find(params[:curriculum_unit_id]).allocation_tag.id]
+        selected = "CURRICULUM_UNIT"
+      elsif params.include?(:course_id) and (not params[:course_id] == "")
+        allocation_tags_ids = [Course.find(params[:course_id]).allocation_tag.id]
+        selected = "COURSE"
+      end
+    else
+      allocation_tags_ids = AllocationTag.where(group_id: params[:groups_id]).map(&:id)
+      selected = "GROUP"
+      all_groups_ids = params[:all_groups_ids].split(" ") unless params[:all_groups_ids].nil? or not(all_groups)
+    end
+
+    {allocation_tags: allocation_tags_ids, selected: selected, all_groups_ids: all_groups_ids}
+  end
+
 end

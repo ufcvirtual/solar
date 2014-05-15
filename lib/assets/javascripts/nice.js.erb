@@ -115,18 +115,20 @@ $.fn.nice_filter = function(options) {
     erase_flash_messages();
 
     var load_to = $(this).data("load-to");
-    var combos = $('.filter select', filter);
+    var combos  = $('.filter select', filter);
 
     if (combos.length) {
       // pegar todas as obrigatorias e checar se tem alguma vazia
       var required = $('.filter select:not([data-optional])', filter);
-      var filled = required.map(function(){ if (!$(this).is_empty()) return $(this).combobox("value"); });
+      $('.filter select[data-optional="false"]', filter).each(function(){ required.push(this); });
+
+      var filled   = required.map(function(){ if (!$(this).is_empty()) return $(this).combobox("value"); });
 
       if (required.length == filled.length) {
         var combos = combos.map(function(){ if (!$(this).is_empty()) return $(this).prop('name')+'_id: ' + '"' + $(this).combobox("value") + '"'; }).toArray().join(', ');
-        combos += ', type_id: "' + $('#type_id').val() + '"';
-        var data = eval("({" + combos + "})"); // transformando os valores dos filtros em json
-        var url = $(this).data("url-search");
+        combos    += ', type_id: "' + $('#type_id').val() + '"';
+        var data   = eval("({" + combos + "})"); // transformando os valores dos filtros em json
+        var url    = $(this).data("url-search");
 
         if (typeof(options) != "undefined" && typeof(options.data_function) == "function") {
           // se selecionou groups, mas não selecionou nenhuma turma, impede de prosseguir

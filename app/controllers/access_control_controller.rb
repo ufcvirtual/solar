@@ -35,8 +35,14 @@ class AccessControlController < ApplicationController
   end
 
   def lesson
-    @lesson = Lesson.find(params[:id])
-    authorize! :show, Lesson, {on: [active_tab[:url][:allocation_tag_id]], read: true}
+    @lesson        = Lesson.find(params[:id])
+    allocation_tag = active_tab[:url][:allocation_tag_id] || @lesson.allocation_tags.map(&:id).compact
+
+    if current_user.is_admin?
+      authorize! :show, Lesson
+    else
+      authorize! :show, Lesson, {on: [allocation_tag], read: true} # apenas para quem faz parte da turma
+    end
 
     if @lesson.path(false).index('.html')
       if params[:index]

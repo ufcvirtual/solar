@@ -3,7 +3,7 @@ class AdministrationsController < ApplicationController
   include SysLog::Devise
   include SysLog::Actions
 
-  layout false, except: [:users, :users_indication, :allocation_approval]
+  layout false, except: [:users, :users_indication, :allocation_approval, :lessons]
 
   ## USERS
 
@@ -186,6 +186,12 @@ class AdministrationsController < ApplicationController
       format.json { render json: @allocations }
       format.js
     end
+  end
+
+  ## Lessons
+  def lessons
+    authorize! :lessons, Administration
+    @types = CurriculumUnitType.all
   end
 
 end

@@ -348,3 +348,9 @@ pm82:
 pm83:
   profile_id: 5
   menu_id: 60
+
+# admin
+
+pm84:
+  profile_id: 6
+  menu_id: 607

@@ -3,26 +3,10 @@ include EdxHelper
 class EditionsController < ApplicationController
 
   def items
-    @all_groups_allocation_tags = []
+    allocation_tags            = AllocationTag.get_by_params(params, true)
+    @allocation_tags_ids       = allocation_tags[:allocation_tags]
+    @selected, @all_groups_ids = allocation_tags[:selected], allocation_tags[:all_groups_ids] # todas as turmas existentes no filtro
 
-    if params[:groups_id].blank?
-      if params.include?(:semester_id) and (not params[:semester_id] == "")
-        offer = Offer.where(semester_id: params[:semester_id], course_id: params[:course_id])
-        offer = offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
-        @allocation_tags_ids = [offer.first.allocation_tag.id]
-        @selected = "OFFER"
-      elsif params.include?(:curriculum_unit_id) and (not params[:curriculum_unit_id] == "")
-        @allocation_tags_ids = [CurriculumUnit.find(params[:curriculum_unit_id]).allocation_tag.id]
-        @selected = "CURRICULUM_UNIT"
-      elsif params.include?(:course_id) and (not params[:course_id] == "")
-        @allocation_tags_ids = [Course.find(params[:course_id]).allocation_tag.id]
-        @selected = "COURSE"
-      end
-    else
-      @allocation_tags_ids = AllocationTag.where(group_id: params[:groups_id]).map(&:id)
-      @selected = "GROUP"
-      @all_groups_ids = params[:all_groups_ids].split(" ") unless params[:all_groups_ids].nil? # todas as turmas existentes no filtro
-    end
     render partial: "items"
   end
 

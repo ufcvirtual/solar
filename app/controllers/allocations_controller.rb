@@ -9,20 +9,10 @@ class AllocationsController < ApplicationController
   # GET /allocations/designates
   # GET /allocations/designates.json
   def designates
-    if (not params.include?(:admin) or params.include?(:allocation_tags_ids))
-      @allocation_tags_ids  = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids].split(" ").flatten : [] 
-    elsif params[:groups_id].blank?
-      if params.include?(:semester_id) and (not params[:semester_id] == "")
-        offer = Offer.where(semester_id: params[:semester_id], course_id: params[:course_id])
-        offer = offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
-        @allocation_tags_ids = [offer.first.allocation_tag.id]
-      elsif params.include?(:curriculum_unit_id) and (not params[:curriculum_unit_id] == "")
-        @allocation_tags_ids = [CurriculumUnit.find(params[:curriculum_unit_id]).allocation_tag.id]
-      elsif params.include?(:course_id) and (not params[:course_id] == "")
-        @allocation_tags_ids = [Course.find(params[:course_id]).allocation_tag.id]
-      end
+    @allocation_tags_ids = if (not params.include?(:admin) or params.include?(:allocation_tags_ids))
+       params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids].split(" ").flatten : [] 
     else
-      @allocation_tags_ids = AllocationTag.where(group_id: params[:groups_id]).map(&:id)
+      AllocationTag.get_by_params(params)[:allocation_tags]
     end
 
     begin

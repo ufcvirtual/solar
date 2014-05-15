@@ -976,3 +976,9 @@ res169:
   controller: 'allocations'
   action: 'accept_or_reject'
   description: 'Aceitar/Rejeitar solicitação de alocação'
+
+res170:
+  id: 170
+  controller: 'administrations'
+  action: 'lessons'
+  description: 'Acessar aulas cadastradas'

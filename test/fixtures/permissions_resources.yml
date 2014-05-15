@@ -1506,3 +1506,18 @@ adminapproval2:
   profile_id: 6
   resource_id: 169
   per_id: false
+
+adminlessons1:
+  profile_id: 6
+  resource_id: 19
+  per_id: false
+
+adminlessons2:
+  profile_id: 6
+  resource_id: 170
+  per_id: false
+
+adminlessons3:
+  profile_id: 6
+  resource_id: 18
+  per_id: false

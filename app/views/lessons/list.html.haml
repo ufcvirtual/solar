@@ -12,21 +12,22 @@
     - @academic_allocations.each_with_index do |academic_allocation, idxm|
 
       - lesson_module = LessonModule.find(academic_allocation.academic_tool_id)
-      - lessons = lessons_by_module(lesson_module.id)
+      - lessons       = lessons_by_module(lesson_module.id)
+      - has_group     = AllocationTag.find(academic_allocation.allocation_tag_id).group
       .block_wrapper.module{id: "module_#{lesson_module.id}"}
         .block_title_module.block_module
           %h2
-            = lesson_module.name            
+            = lesson_module.name
             .block_buttons
               = link_to (content_tag(:i, nil, :class=>'icon-edit')), edit_lesson_module_path(lesson_module, allocation_tags_ids: params[:allocation_tags_ids]), class: 'block_title_button edit_module', :'data-tooltip' => t(".edit_lesson_module")
               = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button delete_module', :'data-link-delete' => lesson_module_path(lesson_module, allocation_tags_ids: params[:allocation_tags_ids]), :'data-tooltip' => t(".delete_lesson_module"), :"data-module-id" => lesson_module.id
-            -if AllocationTag.find(academic_allocation.allocation_tag_id).group
-              - unless lesson_module.is_default 
-                = render "groups/groups_tags", groups: lesson_module.groups, tool: lesson_module, all_groups: all_groups, paths: {add: add_group_to_lesson_modules_path(id: "param_id", tool_id: lesson_module.id), remove: remove_group_from_lesson_modules_path(id: "param_id", tool_id: lesson_module.id), unbind: unbind_group_from_lesson_modules_path(id: "param_id", tool_id: lesson_module.id)}
-              - else
-                .input.groups_tags                
-                  = t(".group")
-                  %span.collection_check_boxes= lesson_module.groups.first.code 
+          -if has_group
+            - unless lesson_module.is_default
+              = render "groups/groups_tags", groups: lesson_module.groups, tool: lesson_module, all_groups: all_groups, paths: {add: add_group_to_lesson_modules_path(id: "param_id", tool_id: lesson_module.id), remove: remove_group_from_lesson_modules_path(id: "param_id", tool_id: lesson_module.id), unbind: unbind_group_from_lesson_modules_path(id: "param_id", tool_id: lesson_module.id)}
+            - else
+              .input.groups_tags
+                = t(".group")
+                %span.collection_check_boxes= lesson_module.groups.first.code
         .block_content_toolbar
           .block_toolbar_left.btn-group
             %a.btn.btn_main{:href => "#", 'data-dropdown' => "#dropdown_#{lesson_module.id}"}
@@ -63,7 +64,7 @@
           %thead
             %tr.lines
               - unless lessons.nil? or lessons.empty?
-                %th.center.no_sort{style: 'width: 25px'}= check_box_tag( 'all', 'all', false, {id: "all_m_#{lesson_module.id}", class: 'lesson_check_all', :"data-children-names" => "m_#{lesson_module.id}", :"data-bla" => "#module_#{lesson_module.id}"} )
+                %th.center.no_sort{style: 'width: 25px'}= check_box_tag( 'all', 'all', false, {id: "all_m_#{lesson_module.id}", class: 'lesson_check_all', :"data-children-names" => "m_#{lesson_module.id}"} )
                 %th.center.no_sort= t(".order")
                 %th= t(".name")
                 %th.center{style: 'width: 10%'}= t(".type")
@@ -83,7 +84,7 @@
                       .lesson_arrow_down= link_to (image_tag "lesson/down_arrow.png"), "#", class: 'down'
 
                   %td
-                    %div= link_to lesson.name, "#", {onclick: "javascript: alert('abre aula');", id: "lesson#{lesson.id}", class: 'link_content' }
+                    %div= link_to lesson.name, lesson.path, class: "link_content lesson", "data-fancybox-type" => "iframe"
                     - if lesson.description
                       %div= lesson.description
 
@@ -110,6 +111,11 @@
     var all_allocation_tags_ids = "#{AllocationTag.where(group_id: params[:all_groups_ids]).map(&:id).join(",")}";
 
   jQuery(function($) {
+
+    $("a.lesson").click(function(e){
+      e.preventDefault();
+      $(this).nice_open_lesson();
+    });
 
     $(".btn_edit, .btn_del, .release_lessons, .download_lesson_zip, .manage_files_lesson").attr("disabled", true);
 

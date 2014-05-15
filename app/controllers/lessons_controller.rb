@@ -15,23 +15,30 @@ class LessonsController < ApplicationController
   before_filter :curriculum_data, except: [:new, :create, :edit, :update, :list, :download_files, :order, :destroy]
 
   def index
+    @admin = current_user.is_admin?
     authorize! :index, Lesson
-    allocation_tags  = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
-    @lessons_modules = LessonModule.to_select(allocation_tags, current_user, true)
-    render layout: false if params[:allocation_tags_ids]
+    
+    if @admin
+      allocation_tags = AllocationTag.get_by_params(params)
+      @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
+      @curriculum_unit_id = params[:curriculum_unit_id]
+    else 
+      @allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+    end
+
+    @lessons_modules = LessonModule.to_select(@allocation_tags_ids, current_user, true)
+    render layout: false if params[:allocation_tags_ids] or @admin
   end
 
   def list
     allocation_tags = params[:allocation_tags_ids]
 
-    begin
-      authorize! :list, Lesson, on: [allocation_tags].flatten
-      @allocation_tags      = AllocationTag.where(id: allocation_tags)
-      @allocation_tags_ids  = @allocation_tags.map(&:id)
-      @academic_allocations = AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where(allocation_tag_id: @allocation_tags_ids)
-    rescue
-      render nothing: true, status: 500
-    end
+    authorize! :list, Lesson, on: [allocation_tags].flatten
+    @allocation_tags      = AllocationTag.where(id: allocation_tags)
+    @allocation_tags_ids  = @allocation_tags.map(&:id)
+    @academic_allocations = AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where(allocation_tag_id: @allocation_tags_ids)
+  rescue
+    render nothing: true, status: 500
   end
 
   # GET /lessons/:id
@@ -39,9 +46,14 @@ class LessonsController < ApplicationController
     unless @curriculum_unit
       render text: t(:curriculum_unit_not_selected, scope: :lessons), status: :not_found
     else
-      authorize! :show, Lesson, {on: [@curriculum_unit.allocation_tag.id], read: true} # apenas para quem faz parte da turma
+      if current_user.is_admin?
+        authorize! :show, Lesson
+      else
+        # apenas para quem faz parte da turma
+        authorize! :show, Lesson, {on: [@curriculum_unit.allocation_tag.id], read: true}
+      end
 
-      allocation_tags_ids = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+      allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
       @lessons_modules    = LessonModule.to_select(allocation_tags_ids, current_user)
       @lesson       = Lesson.find(params[:id])
       @lessons      = @lesson.lesson_module.lessons_to_open(current_user)

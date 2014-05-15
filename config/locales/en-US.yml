@@ -572,6 +572,7 @@
   lesson_closed: "Lesson closed"
   lesson_closed_short: "closed"
   lesson_test: test lesson
+  lesson_will_open: not started
   since: Since
   no_end_date: "On"
 
@@ -1141,6 +1142,7 @@
   menu_content_edition: Content
   menu_admin_user: Manage Users
   menu_admin_approval: Profiles approval
+  menu_admin_lessons: Consult Lessons
 
   # Filtro de edição (Places_nav_panel)
 
@@ -1194,6 +1196,8 @@
       updated: 'Your password was changed successfully. You are now signed in.'
       updated_not_active: 'Your password was changed successfully.'
       send_paranoid_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
+    password:
+      change_my_password: Change
     confirmations:
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       send_paranoid_instructions: 'If your e-mail exists on our database, you will receive an email with instructions about how to confirm your account in a few minutes.'
@@ -1504,15 +1508,6 @@
       email_sent: Email sent sucessfully
     error:
       email_not_sent: Email not sent
-    users_indication:
-      filter: Filter
-      type: "Type*"
-      course: "Course*"
-      curriculum_unit: "Curriculum Unit"
-      module: "Module"
-      semester: "Semester"
-      offer: Offer
-      group: Group
     search_users:
       synchronize: Synchronize with Módulo Acadêmico
     allocation_approval:
@@ -1597,7 +1592,7 @@
     are_you_sure_of_deletion: Are you sure that you want to delete?
     cant_delete: It wasn't possible to delete
     not_possible_to_access_page_with_data: It's not possible to access this page with the given data
-    content:
+    content_filter:
       type: "Type*"
       course: "Course*"
       curriculum_unit: "Curriculum Unit"

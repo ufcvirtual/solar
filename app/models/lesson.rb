@@ -90,7 +90,12 @@ class Lesson < ActiveRecord::Base
   # fechado
   def closed?
     not(schedule.end_date.nil?) and (schedule.end_date.to_date < Date.today)
-  end  
+  end
+
+  # ainda não iniciou
+  def will_open?
+    not(started?) and not(closed?)
+  end
 
   private
 

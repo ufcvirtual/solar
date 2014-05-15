@@ -3,8 +3,10 @@ lesson_cookie_id = "_ufc_solar20_lesson_opened";
 function open_lesson(path, url) {
   $(".show_lesson .content").attr("data-url", url);
 
-  if ($.cookie(lesson_cookie_id))
+  var home_tab = $(".mysolar_unit_active_tab.general_context").length;
+  if (!home_tab && $.cookie(lesson_cookie_id)){
     $.cookie(lesson_cookie_id, url, { path: '/' });
+  }
 
   $("iframe#content_lesson").prop("src", path);
 }
@@ -18,13 +20,16 @@ function maximize_lesson(obj) {
 }
 
 function minimize_lesson() {
-  // save cookie with the new url
-  var lesson_URL = $(".fancybox-iframe").contents().find(".show_lesson .content").data("url");
-  $.cookie(lesson_cookie_id, lesson_URL);
+  var home_tab = $(".mysolar_unit_active_tab.general_context").length;
+  if (!home_tab) {
+    // save cookie with the new url
+    var lesson_URL = $(".fancybox-iframe").contents().find(".show_lesson .content").data("url");
+    $.cookie(lesson_cookie_id, lesson_URL);
 
-  $(".fancybox-skin").effect( "transfer", { to: $("#mysolar_open_lesson") }, 750 ); // transfer effect
+    $(".fancybox-skin").effect( "transfer", { to: $("#mysolar_open_lesson") }, 750 ); // transfer effect
+    $("#mysolar_open_lesson button").removeClass("disabled");
+  }
   $.fancybox.close();
-  $("#mysolar_open_lesson button").removeClass("disabled");
 }
 
 function close_lesson() {
