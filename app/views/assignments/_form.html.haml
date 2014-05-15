@@ -6,6 +6,10 @@
 
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
+    - if @error
+      .field_with_errors
+        %span.error= @error
+
     .form-inputs.block_content.assignments_box
       = f.input :name, required: true
       = f.input :enunciation, required: true

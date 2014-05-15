@@ -1177,8 +1177,8 @@
     notifications:
       student_with_no_group: Você não faz parte de nenhum grupo
       date_range_expired: Prazo expirado
-      final_date_smaller_than_offer: Data final deve ser menor ou igual à  data da oferta (%end_date_offer)
-      start_date_greater_than_offer: Data inicial deve ser maior ou igual à data da oferta (%start_date_offer)
+      final_date_smaller_than_offer: Data final não pode ser maior que a da oferta (%{end_date_offer})
+      start_date_greater_than_offer: Data inicial deve ser maior ou igual à data da oferta (%{start_date_offer})
     group_assignments:
       group: Grupo
       groups: Grupos

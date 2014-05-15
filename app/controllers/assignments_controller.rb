@@ -55,7 +55,9 @@ class AssignmentsController < ApplicationController
       render json: {success: true, notice: t(:created, scope: [:assignments, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
+    rescue => error
+      @error = error.to_s.start_with?("academic_allocation") ? error.to_s.gsub("academic_allocation", "") : nil
+
       @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
 

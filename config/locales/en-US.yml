@@ -1027,8 +1027,8 @@
     notifications:
       student_with_no_group: You aren't in any group
       date_range_expired: Expired date range
-      final_date_smaller_than_offer: Final date must be smaller or equal to offer date (%end_date_offer)
-      start_date_greater_than_offer: Start date mus be greater or equal to offer date (%start_date_offer)
+      final_date_smaller_than_offer: Final date must be smaller or equal to offer date (%{end_date_offer})
+      start_date_greater_than_offer: Start date mus be greater or equal to offer date (%{start_date_offer})
     group_assignments:
       group: Group
       groups: Groups

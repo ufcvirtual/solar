@@ -59,6 +59,8 @@ module SysLog
       end
 
       def generic_log(sobj, obj = nil)
+        return if not(obj.nil?) and obj.new_record? # not saved
+
         academic_allocation_id = nil
         tbname = obj.try(:class).try(:table_name).to_s.singularize.to_sym if obj.try(:class).respond_to?(:table_name)
         description = if not(tbname.nil?) and params.has_key?(tbname) and not(obj.nil?)

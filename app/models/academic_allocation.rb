@@ -16,7 +16,6 @@ class AcademicAllocation < ActiveRecord::Base
   #LessonModule
   before_destroy :move_lessons_to_default, if: :is_lesson_module?
 
-
   def is_assignment?
     academic_tool_type.eql? 'Assignment'
   end
@@ -52,11 +51,15 @@ class AcademicAllocation < ActiveRecord::Base
       errors.add(:base, I18n.t(:uniqueness, scope: [:activerecord, :errors])) unless AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_type: academic_tool_type, academic_tool_id: academic_tool_id).empty?
     end
 
-    #Métodos destinados ao Assignment
+    # Métodos destinados ao Assignment
+
     ## Datas da atividade devem estar no intervalo de datas da oferta
     def verify_assignment_offer_date_range
-      if allocation_tag.group
-        errors.add(:base, I18n.t(:final_date_smaller_than_offer, :scope => [:assignment, :notifications], :end_date_offer => allocation_tag.group.offer.end_date.to_date)) if academic_tool.schedule.end_date > allocation_tag.group.offer.end_date
+      if allocation_tag.group and academic_tool.schedule.end_date.to_date > allocation_tag.group.offer.end_date.to_date
+        message = I18n.t(:final_date_smaller_than_offer, scope: [:assignment, :notifications], end_date_offer: I18n.l(allocation_tag.group.offer.end_date.to_date)).to_s
+
+        errors.add(:base, message)
+        raise "academic_allocation #{message}"
       end
     end
 
