@@ -1346,6 +1346,10 @@
       send_paranoid_instructions: "Um link de recuperação de senha será enviado para seu email, caso ele exista em nossa base de dados."
     password:
       change_my_password: Alterar
+    passwords:
+      new_password: Nova senha
+      confirm_new_password: Confirmar nova senha
+      change_my_password: Alterar
     confirmations:
       send_instructions: 'Instruções de como confirmar sua conta serão enviados para seu email em alguns minutos.'
       send_paranoid_instructions: 'Instruções de como confirmar sua conta serão enviados para seu email em alguns minutos, caso ele exista em nossa base de dados'

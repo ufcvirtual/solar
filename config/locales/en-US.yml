@@ -1198,6 +1198,10 @@
       send_paranoid_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
     password:
       change_my_password: Change
+    passwords:
+      new_password: New password
+      confirm_new_password: Confirm new password
+      change_my_password: Change
     confirmations:
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       send_paranoid_instructions: 'If your e-mail exists on our database, you will receive an email with instructions about how to confirm your account in a few minutes.'
