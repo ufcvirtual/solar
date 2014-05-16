@@ -1,17 +1,23 @@
-- unless @offers.empty?
-  - semester_id = @offers.first.try(:semester).try(:id)
-  %table.tb_list{cellpadding: "10", cellspacing: "0", width: "100%", border: "0", :"data-link-offers" => semester_offers_path(@offers.first.try(:semester), type_id: @type_id), id: "table-offer-#{semester_id}"}
-    %thead
-      %tr.lines
-        %th.no_sort.center
-          %input{id: "all_offers_#{semester_id}", :"data-children-names" => "ckb_offers_#{semester_id}", type: "checkbox"}
-        %th= t(".type")
-        %th= t(".course")
-        - if @type_id != 3
-          %th= t(".curriculum_unit")
-        %th= t(".offer")
-        %th.no_sort
-    %tbody
+- semester_id = @semester.try(:id)
+
+%table.tb_list{cellpadding: "10", cellspacing: "0", width: "100%", border: "0", :"data-link-offers" => semester_offers_path(@semester, type_id: @type_id), id: "table-offer-#{semester_id}"}
+  %thead
+    %tr.lines
+      %th.no_sort.center
+        %input{id: "all_offers_#{semester_id}", :"data-children-names" => "ckb_offers_#{semester_id}", type: "checkbox"}
+      %th= t(".type")
+      %th= t(".course")
+      - if @type_id != 3
+        %th= t(".curriculum_unit")
+      %th= t(".offer")
+      %th.no_sort
+  %tbody
+
+    - if @offers.empty?
+      %tr
+        %td{colspan: 4}
+          .block_content_text_list.text_none= t(".none")
+    - else
       - @offers.each do |offer|
         %tr.lines
           %td= check_box_tag "ckb_offers_#{semester_id}", offer.id, checked = false, {class: 'ckb_offers', :"data-offers-id" => offer.id}
@@ -25,8 +31,6 @@
             %td= [l(offer.period_schedule.start_date, format: :normal), l(offer.period_schedule.end_date, format: :normal)].join(" - ")
           %td
             = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn link_edit_offer', :'data-tooltip' => t(".offer_edit"), disabled: not(can? :edit, Offer, on: [offer.allocation_tag.id]), :"data-semester-name" => offer.semester.name, :"data-link-edit" => edit_offer_path(offer, type_id: @type_id)
-- else
-  .block_content_text_list.text_none= t(".none")
 
 :javascript
 

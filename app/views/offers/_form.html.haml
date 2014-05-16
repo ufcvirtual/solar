@@ -94,6 +94,7 @@
       $('form#offer_form').serialize_and_submit({
         complement_success: function(data) {
           var table = $("#table-offer-#{@offer.semester_id}");
+          console.log("#table-offer-#{@offer.semester_id}");
           var url = table.data('link-offers');
           table.load(url);
         }
@@ -132,6 +133,5 @@
         $('#offer_enrollment_schedule_attributes_start_date').datepicker('setDate', "");
       }
     });
-
 
   });

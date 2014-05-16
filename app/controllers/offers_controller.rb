@@ -10,7 +10,8 @@ class OffersController < ApplicationController
     authorize! :index, Semester # as ofertas aparecem na listagem de semestre
     @type_id = params[:type_id].to_i
 
-    @offers = Semester.find(params[:semester_id]).offers
+    @semester = Semester.find(params[:semester_id])
+    @offers = @semester.offers
   end
 
   def new
