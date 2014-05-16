@@ -52,8 +52,6 @@
         var semester_end = data.semester.end, semester_start = data.semester.start;
         var url = "#{semesters_path(period: 'period_param', curriculum_unit_id: 'curriculum_unit_param', course_id: 'course_param', type_id: @type_id)}".replace('period_param', $("#period").combobox('value')).replace('curriculum_unit_param', $("#curriculum_unit").combobox('value')).replace('course_param', $("#course").combobox('value')).replace(/null/g, "");
 
-        console.log("url: " + url);
-
         $.get(url, function(data) {
           $('.semesters_list').html(data);
             // cria nova uc na lista
