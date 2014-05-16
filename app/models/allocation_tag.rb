@@ -103,6 +103,13 @@ class AllocationTag < ActiveRecord::Base
     ).uniq.empty?
   end
 
+  ## ex: retorna allocation do professor na oferta se tiver checando relacao com uma turma dessa oferta (professor em uma oferta)
+  def user_relation_with_this(user)
+    relation = allocations.where(user_id: user)
+    relation = user.allocations.where(allocation_tag_id: related) if relation.empty?
+    relation
+  end
+
   ##
   # Verifica se o usuário tem bit de aluno no perfil para a allocation_tag
   ##

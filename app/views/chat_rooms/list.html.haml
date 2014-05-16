@@ -60,7 +60,7 @@
                     = chat.description
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_enunciation"))
 
-                - unless chat.chat_type==0 
+                - unless chat.chat_type==0
                   - participants = chat.users
                   %i.icon-users
                   %a{class: "chat_list", :"data-dropdown"=>"#students-dropdown#{chat.id}" }= participants.count.to_s + ' ' + t(:students, :scope => [:chat_rooms, :list])
