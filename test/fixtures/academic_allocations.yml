@@ -408,3 +408,11 @@ webc2:
  allocation_tag_id: 5 # 2011.1
  academic_tool_id: 2
  academic_tool_type: "Webconference"
+
+## Discussion
+
+acaal69:
+  id: 69
+  allocation_tag_id: 22
+  academic_tool_id: 1
+  academic_tool_type: "Discussion"

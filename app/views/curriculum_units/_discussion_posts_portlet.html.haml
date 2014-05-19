@@ -10,11 +10,9 @@
       - @discussion_posts.each do |discussion_post|
         .block_content_line
           %span.block_content_gray
-            - if posted_today?(discussion_post.updated_at.to_datetime)
-              = l(discussion_post.updated_at, format: :today)
-            - else 
-              = l(discussion_post.updated_at, format: :not_today)
-          = link_to discussion_post.user.nick, discussion_posts_path(discussion_post.discussion_id), {class: "link_content"}
+            - date = discussion_post.updated_at.to_datetime
+            = l(date, format: (posted_today?(date) ? :today : :not_today))
+          = link_to discussion_post.user.nick, discussion_posts_path(discussion_post.discussion.id), {class: "link_content"}
           = raw truncate((strip_tags discussion_post.content), length: 110, omission: " (...) ")
     - else
       .block_content_text= t(:forum_no_messages)

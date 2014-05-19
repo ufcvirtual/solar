@@ -5,20 +5,19 @@ class Post < ActiveRecord::Base
 
   belongs_to :profile
   belongs_to :parent, class_name: "Post"
-  belongs_to :discussion
   belongs_to :user
+  
+  has_many :children, class_name: "Post", foreign_key: "parent_id", dependent: :destroy
+  has_many :files, class_name: "PostFile", foreign_key: "discussion_post_id", dependent: :destroy
 
-  has_many :academic_allocations, through: :discussion
-
-  has_many :children, class_name: "Post", foreign_key: "parent_id"
-  has_many :files, class_name: "PostFile", foreign_key: "discussion_post_id"
+  belongs_to :academic_allocation, conditions: {academic_tool_type: 'Discussion'}
 
   validates :content, :profile_id, presence: true
 
-  validates_each :discussion_id do |record, attr, value|
-    parent = record.parent
-    record.errors.add(attr) if not parent.nil? and parent.discussion_id != value
-  end
+  # validates_each :discussion_id do |record, attr, value|
+  #   parent = record.parent
+  #   record.errors.add(attr) if not parent.nil? and parent.discussion.id != value
+  # end
 
   def can_be_answered?
     (self.level < Discussion_Post_Max_Indent_Level)
@@ -31,7 +30,7 @@ class Post < ActiveRecord::Base
     {
       id: id,
       profile_id: profile_id,
-      discussion_id: discussion_id,
+      discussion_id: discussion.id,
       user_id: user_id,
       user_nick: user.nick,
       level: level,
@@ -75,6 +74,10 @@ class Post < ActiveRecord::Base
     end
 
     return posts
+  end
+
+  def discussion
+    Discussion.find(academic_allocation.academic_tool_id)
   end
 
 end

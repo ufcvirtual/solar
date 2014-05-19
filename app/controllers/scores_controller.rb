@@ -35,20 +35,20 @@ class ScoresController < ApplicationController
 
     @student = params.include?(:student_id) ? User.find(params[:student_id]) : current_user
 
-    allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-    group_id = allocation_tag.group_id
+    allocation_tag      = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+    group_id            = allocation_tag.group_id
     related_allocations = allocation_tag.related
 
     authorize! :find, @student # verifica se o usuario logado tem permissao para consultar o usuario informado
 
     @individual_activities = Assignment.student_assignments_info(group_id, @student.id, Assignment_Type_Individual)
-    @group_activities = Assignment.student_assignments_info(group_id, @student.id, Assignment_Type_Group)
-    @discussions = Discussion.posts_count_by_user(@student.id, related_allocations)
+    @group_activities      = Assignment.student_assignments_info(group_id, @student.id, Assignment_Type_Group)
+    @discussions           = Discussion.posts_count_by_user(@student.id, related_allocations)
 
     from_date  = (Date.today << 2) # dois meses atras
     until_date = Date.today
-    at = AllocationTag.find_by_curriculum_unit_id(active_tab[:url][:id]).id
-    @amount = Score.find_amount_access_by_student_id_and_interval(at, @student.id, from_date, until_date)
+    at         = AllocationTag.find_by_curriculum_unit_id(active_tab[:url][:id]).id
+    @amount    = Score.find_amount_access_by_student_id_and_interval(at, @student.id, from_date, until_date)
   end
 
   ##

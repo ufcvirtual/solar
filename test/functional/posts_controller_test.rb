@@ -54,36 +54,4 @@ class PostsControllerTest < ActionController::TestCase
   test "rota para deletar post" do
     assert_routing({method: "delete", path: "/discussions/1/posts/1"}, {controller: "posts", action: "destroy", discussion_id: "1", :id => "1"})
   end
-
-  ## API - Mobilis
-  test "lista posts novos do forum da turma FOR de introducao a linguistica" do
-    get :index, {format: 'json', discussion_id: 1}
-    assert_response :success
-    assert_not_nil assigns(:posts)
-  end
-
-  ## API - Mobilis
-  test "criar novo post no forum da turma FOR de introducao a linguistica" do
-    discussion_id = 1
-    assert_difference('Post.count') do
-      post :create, discussion_id: discussion_id, discussion_post: {content: "postagem de teste"}
-    end
-
-    assert_redirected_to discussion_posts_path(discussion_id)
-  end
-
-  ## API - Mobilis
-  test "deletar post do forum da turma FOR de introducao a linguistica" do
-    discussion_id = 1
-
-    post(:create, discussion_id: discussion_id, discussion_post: {content: "postagem de teste"})
-    @post = assigns(:post)
-
-    assert_difference('Post.count', -1) do
-      delete :destroy, id: @post, discussion_id: discussion_id
-    end
-
-    assert_response :success
-  end
-
 end

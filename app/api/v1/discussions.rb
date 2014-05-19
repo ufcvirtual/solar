@@ -8,7 +8,10 @@ module V1
         requires :id, type: Integer
       end
       get ":id/discussions", rabl: "discussions/list" do
-        @discussions = Discussion.all_by_allocation_tags(AllocationTag.find_by_group_id(params[:id]).related)
+        @group = Group.find(params[:id])
+        raise ActiveRecord::RecordNotFound if @group.nil?
+
+        @discussions = Discussion.all_by_allocation_tags(AllocationTag.find_by_group_id(@group.id).related)
       end
     end
 

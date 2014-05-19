@@ -18,7 +18,7 @@ class PostsController < ApplicationController
 
     @posts = []
     @can_interact = @discussion.user_can_interact?(current_user.id)
-    p = params.select { |k, v| ['date', 'type', 'order', 'limit', 'display_mode', 'page'].include?(k) }
+    p      = params.select { |k, v| ['date', 'type', 'order', 'limit', 'display_mode', 'page'].include?(k) }
 
     @display_mode = p['display_mode'] ||= 'tree'
 
@@ -27,11 +27,11 @@ class PostsController < ApplicationController
       p['page'] ||= @current_page
       p['type'] ||= "history"
       p['date'] = Time.parse(p['date']) if params[:format] == "json" and p.include?('date')
-      @posts = @discussion.posts(p)
+      @posts    = @discussion.posts(p, allocation_tags)
     else
       # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
-      @latest_posts = @discussion.latest_posts
-      @posts = Post.reorder_by_latest_posts(@latest_posts, @discussion.discussion_posts.where(parent_id: nil))
+      @latest_posts = @discussion.latest_posts(allocation_tags)
+      @posts        = Post.reorder_by_latest_posts(@latest_posts, @discussion.posts_by_allocation_tags_ids(allocation_tags).where(parent_id: nil))
     end
 
     respond_to do |format|
@@ -39,9 +39,9 @@ class PostsController < ApplicationController
       format.json  {
         period = (@posts.empty?) ? ["#{p['date']}", "#{p['date']}"] : ["#{@posts.first.updated_at}", "#{@posts.last.updated_at}"].sort
         if params[:mobilis].present?
-          render json: { before: @discussion.count_posts_before_period(period), after: @discussion.count_posts_after_period(period), posts: @posts.map(&:to_mobilis)} 
+          render json: { before: @discussion.count_posts_before_period(period, allocation_tags), after: @discussion.count_posts_after_period(period, allocation_tags), posts: @posts.map(&:to_mobilis)} 
         else          
-          render json: @discussion.count_posts_after_and_before_period(period) + @posts.map(&:to_mobilis)
+          render json: @discussion.count_posts_after_and_before_period(period, allocation_tags) + @posts.map(&:to_mobilis)
         end
       }
     end
@@ -62,7 +62,11 @@ class PostsController < ApplicationController
   def create
     authorize! :create, Post
 
-    params[:discussion_post][:discussion_id] = params[:discussion_id] unless params[:discussion_post].include?(:discussion_id)
+    discussion_id       = params[:discussion_post].include?(:discussion_id) ? params[:discussion_post][:discussion_id] : params[:discussion_id]
+    allocation_tag_ids  = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+    academic_allocation = AcademicAllocation.where(academic_tool_type: "Discussion", academic_tool_id: discussion_id, allocation_tag_id: allocation_tag_ids).first
+    params[:discussion_post][:academic_allocation_id] = academic_allocation.id
+
     @post = Post.new(params[:discussion_post])
 
     @post.user_id    = current_user.id
@@ -71,7 +75,7 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to(discussion_posts_path(Discussion.find(params[:discussion_post][:discussion_id])), notice: t(:created, :scope => [:posts, :create])) }
+        format.html { redirect_to(discussion_posts_path(discussion_id), notice: t(:created, :scope => [:posts, :create])) }
         format.xml  { render xml: @post, status: :created }
         format.json { render json: {result: 1, post_id: @post.id}, status: :created }
       else
@@ -80,7 +84,6 @@ class PostsController < ApplicationController
         format.json { render json: {result: 0}, status: :unprocessable_entity }
       end
     end
-
   end
 
   ## PUT /discussions/:id/posts/1

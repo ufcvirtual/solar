@@ -7,6 +7,7 @@ class AcademicAllocation < ActiveRecord::Base
   #Assignment
   has_many :sent_assignments, dependent: :destroy
   has_many :group_assignments, dependent: :destroy
+  has_many :discussion_posts, class_name: "Post", dependent: :destroy
 
   validate :verify_assignment_offer_date_range, if: :is_assignment?
 

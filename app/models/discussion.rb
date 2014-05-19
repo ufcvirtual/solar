@@ -9,7 +9,7 @@ class Discussion < Event
   has_many :groups, through: :allocation_tags
   has_many :offers, through: :allocation_tags
 
-  has_many :discussion_posts, class_name: "Post", foreign_key: "discussion_id"
+  has_many :discussion_posts, class_name: "Post", through: :academic_allocations
   has_many :allocations, through: :allocation_tag
 
   validates :name, :description, presence: true
@@ -67,7 +67,7 @@ class Discussion < Event
     ((opened? and not(closed?)) or extra_time?(user_id)) # considerando os nao iniciados
   end
 
-  def posts(opts = {})
+  def posts(opts = {}, allocation_tags_ids = nil)
     opts = { "type" => 'new', "order" => 'desc', "limit" => Rails.application.config.items_per_page.to_i,
       "display_mode" => 'list', "page" => 1 }.merge(opts)
     type = (opts["type"] == 'history' ) ? '<' : '>'
@@ -76,30 +76,31 @@ class Discussion < Event
     query << "updated_at::timestamp(0) #{type} '#{opts["date"]}'::timestamp(0)" if opts.include?('date') and (not opts['date'].blank?)
     query << "parent_id IS NULL" unless opts["display_mode"] == 'list'
 
-    discussion_posts.where(query).order("updated_at #{opts["order"]}").limit("#{opts['limit']}").offset("#{(opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i}")
+    posts_by_allocation_tags_ids(allocation_tags_ids).where(query).order("updated_at #{opts["order"]}").limit("#{opts['limit']}").offset("#{(opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i}")
   end
 
-  def discussion_posts_count(plain_list = true)
-    (plain_list ? self.discussion_posts.count : self.discussion_posts.where(parent_id: nil).count)
+  def discussion_posts_count(plain_list = true, allocation_tags_ids)
+    (plain_list ? posts_by_allocation_tags_ids(allocation_tags_ids).count : posts_by_allocation_tags_ids(allocation_tags_ids).where(parent_id: nil).count)
   end
 
-  def count_posts_after_and_before_period(period)
-    [{"before" => count_posts_before_period(period),
-      "after" => count_posts_after_period(period)}]
+  def count_posts_after_and_before_period(period, allocation_tags_ids = nil)
+    [{"before" => count_posts_before_period(period, allocation_tags_ids),
+      "after" => count_posts_after_period(period, allocation_tags_ids)}]
   end
 
-  def count_posts_before_period(period)
-    discussion_posts.where("updated_at::timestamp(0) < '#{period.first}'::timestamp(0)").count 
+  def count_posts_before_period(period, allocation_tags_ids = nil)
+    posts_by_allocation_tags_ids(allocation_tags_ids).where("updated_at::timestamp(0) < '#{period.first.to_time}'::timestamp(0)").count 
   end
 
-  def count_posts_after_period(period)
-    discussion_posts.where("updated_at::timestamp(0) > '#{period.last}'::timestamp(0)").count
+  def count_posts_after_period(period, allocation_tags_ids = nil)
+    posts_by_allocation_tags_ids(allocation_tags_ids).where("updated_at::timestamp(0) > '#{period.last.to_time}'::timestamp(0)").count
   end
 
   def self.posts_count_by_user(student_id, allocation_tags)
-    discussions = joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: allocation_tags})
-    discussions.select("discussions.id AS discussion_id, discussions.name, COUNT(dp.id) AS qtd")
-      .joins("LEFT JOIN discussion_posts AS dp ON dp.discussion_id = discussions.id AND dp.user_id = #{student_id}").group("discussions.id, discussions.name").uniq
+    joins(academic_allocations: :allocation_tag)
+      .joins("LEFT JOIN discussion_posts AS dp ON dp.academic_allocation_id = academic_allocations.id AND dp.user_id = #{student_id}")
+      .where(allocation_tags: {id: allocation_tags}).select("discussions.id AS discussion_id, discussions.name, COUNT(dp.id) AS qtd")
+      .group("discussions.id, discussions.name").order("discussions.name").uniq
   end
 
   def self.all_by_allocation_tags(allocation_tags_ids)
@@ -107,20 +108,27 @@ class Discussion < Event
   end
 
   # devolve a lista com todos os posts de uma discussion em ordem decrescente de updated_at, apenas o filho mais recente de cada post será adiconado à lista
-  def latest_posts
-    discussion_posts.select("DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level")
+  def latest_posts(allocation_tags_ids = nil)
+    posts_by_allocation_tags_ids(allocation_tags_ids).select("DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level")
   end
 
   def can_remove_or_unbind_group?(group)
     discussion_posts.empty? # não pode dar unbind nem remover se fórum possuir posts
   end
 
-  def resume
+  def posts_by_allocation_tags_ids(allocation_tags_ids = nil)
+    allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids).map(&:related).flatten.compact.uniq unless allocation_tags_ids.nil?
+    posts = discussion_posts
+    posts = posts.joins(academic_allocation: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids}) unless allocation_tags_ids.nil?
+    posts
+  end
+
+  def resume(allocation_tags_ids = nil)
     {
       id: id,
       description: description,
       name: name,
-      last_post_date: latest_posts.first.try(:updated_at).try(:to_s, :db),
+      last_post_date: latest_posts(allocation_tags_ids).first.try(:updated_at).try(:to_s, :db),
       status: status,
       start_date: schedule.start_date.try(:to_s, :db),
       end_date: schedule.end_date.try(:to_s, :db)
@@ -133,8 +141,8 @@ class Discussion < Event
     return "0" # nao iniciado
   end
 
-  def last_post_date
-    latest_posts.first.try(:updated_at).try(:to_s, :db)
+  def last_post_date(allocation_tags_ids = nil)
+    latest_posts(allocation_tags_ids).first.try(:updated_at).try(:to_s, :db)
   end
 
 end

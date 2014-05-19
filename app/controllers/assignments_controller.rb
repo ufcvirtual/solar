@@ -351,18 +351,18 @@ class AssignmentsController < ApplicationController
 
           # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
           raise CanCan::AccessDenied unless assignment.user_can_access_assignment?(allocation_tag, current_user.id, current_user.id, group_id)
-          raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment.assignment_in_time?(allocation_tag, current_user.id) # verifica período para envio do arquivo
+          raise t(:date_range_expired, scope: [:assignment, :notifications]) unless assignment.assignment_in_time?(allocation_tag, current_user.id) # verifica período para envio do arquivo
 
           academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id,assignment.id, 'Assignment')
-          sent_assignment = SentAssignment.find_or_create_by_academic_allocation_id_and_user_id_and_group_assignment_id!(academic_allocation.id, user_id, group_id)
-          @assignment_file = AssignmentFile.create!({ :attachment => params[:assignment_file], :sent_assignment_id => sent_assignment.id, :user_id => current_user.id })
+          sent_assignment     = SentAssignment.find_or_create_by_academic_allocation_id_and_user_id_and_group_assignment_id!(academic_allocation.id, user_id, group_id)
+          @assignment_file    = AssignmentFile.create!({ attachment: params[:assignment_file], sent_assignment_id: sent_assignment.id, user_id: current_user.id })
       end # case
 
-      flash[:notice] = t(:uploaded_success, :scope => [:assignment, :files])
+      flash[:notice] = t(:uploaded_success, scope: [:assignment, :files])
     rescue => error
       flash[:alert] = error.message.split(',')[0]
     end
-    redirect_to (request.referer.nil? ? home_url(:only_path => false) : request.referer)
+    redirect_to (request.referer.nil? ? home_url(only_path: false) : request.referer)
   end
 
   def delete_file

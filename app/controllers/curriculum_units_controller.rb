@@ -174,7 +174,7 @@ class CurriculumUnitsController < ApplicationController
     end
 
     def list_portlet_discussion_posts(allocation_tags)
-      Post.joins(discussion: :academic_allocations)
+      Post.joins(:academic_allocation)
         .where(academic_allocations: {allocation_tag_id: allocation_tags})
         .select(%{substring("content" from 0 for 255) AS content}).select('*')
         .order("updated_at DESC").limit(Rails.application.config.items_per_page.to_i)

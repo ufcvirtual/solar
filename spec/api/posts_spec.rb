@@ -12,7 +12,7 @@ describe "Posts" do
   describe ".new" do
     context "with permission" do
       it "create a post" do
-        post "/api/v1/discussions/2/posts", post: {content: "content"}, access_token: token.token
+        post "/api/v1/discussions/2/posts", group_id: 3, post: {content: "content"}, access_token: token.token
 
         response.status.should eq(201)
         response.body.should == {id: Post.first.id}.to_json
@@ -22,7 +22,7 @@ describe "Posts" do
     context "without permission" do
       it "try to create a post" do
         token_withou_permission = Doorkeeper::AccessToken.create! application_id: application.id, resource_owner_id: User.find_by_username("admin").id
-        post "/api/v1/discussions/2/posts", post: {content: "content"}, access_token: token_withou_permission.token
+        post "/api/v1/discussions/2/posts", group_id: 3, post: {content: "content"}, access_token: token_withou_permission.token
 
         response.status.should eq(404)
         response.body.should == {}.to_json
@@ -36,17 +36,17 @@ describe "Posts" do
 
       it "add files to post" do
         file = fixture_file_upload('/files/file_10k.dat')
-        post "/api/v1/posts/7/files", file: file, access_token: token.token
+        post "/api/v1/posts/13/files", group_id: 3, file: file, access_token: token.token
 
         response.status.should eq(201) 
         response.body.should eq({ids: [PostFile.last.id]}.to_json)
       end
 
       it "gets post files list" do
-        get "/api/v1/posts/7/files", access_token: token.token
+        get "/api/v1/posts/13/files", group_id: 3, access_token: token.token
         response.status.should eq(200)
 
-        file = Post.find(7).files.first
+        file = Post.find(13).files.first
         response.body.should == [{
             id: file.id,
             name: file.attachment_file_name,
@@ -62,7 +62,7 @@ describe "Posts" do
     context "without access token" do
 
       it 'gets an unauthorized error' do
-        get "/api/v1/posts/7/files"
+        get "/api/v1/posts/13/files", group_id: 3
 
         response.status.should eq(401)
         response.body.should == {error: "unauthorized"}.to_json
@@ -76,7 +76,7 @@ describe "Posts" do
     context "with access token" do
 
       it "lists new posts" do
-        get "/api/v1/discussions/2/posts/new", access_token: token.token
+        get "/api/v1/discussions/2/posts/new", group_id: 3, access_token: token.token
         response.status.should eq(200)
 
         expect(json).to have_key('newer')
@@ -93,7 +93,7 @@ describe "Posts" do
         # recuperar o datetime do último post feito (ou seja, o mais recente) -1 minuto
         # deste modo, apenas ele será retornado como mais novos que a data passada
         newest_post_date = "#{Discussion.find(2).posts.first.updated_at.to_datetime - 1.minute}"
-        get "/api/v1/discussions/2/posts/new", date: newest_post_date, access_token: token.token
+        get "/api/v1/discussions/2/posts/new", group_id: 3, date: newest_post_date, access_token: token.token
         response.status.should eq(200)
 
         expect(json).to have_key('newer')
@@ -107,7 +107,7 @@ describe "Posts" do
       end
 
       it "lists an empty array" do
-        get "/api/v1/discussions/3/posts/new", access_token: token.token
+        get "/api/v1/discussions/3/posts/new", group_id: 1, access_token: token.token
         response.status.should eq(200)
 
         expect(json).to have_key('newer')
@@ -121,7 +121,7 @@ describe "Posts" do
       end
 
       it "lists posts history with old date" do
-        get "/api/v1/discussions/2/posts/history", date: "20100204T1416", access_token: token.token
+        get "/api/v1/discussions/2/posts/history", group_id: 3, date: "20100204T1416", access_token: token.token
         response.status.should eq(200)
 
         expect(json).to have_key('newer')
@@ -135,7 +135,7 @@ describe "Posts" do
       end
 
       it "lists posts history with new date" do
-        get "/api/v1/discussions/2/posts/history", date: DateTime.now, access_token: token.token
+        get "/api/v1/discussions/2/posts/history", group_id: 3, date: DateTime.now, access_token: token.token
         response.status.should eq(200)
 
         expect(json).to have_key('newer')
@@ -149,7 +149,7 @@ describe "Posts" do
       end
 
       it "don't list posts history without date" do
-        get "/api/v1/discussions/2/posts/history", access_token: token.token
+        get "/api/v1/discussions/2/posts/history", group_id: 3, access_token: token.token
         response.status.should eq(400)
         response.body.should == {error: "date is missing"}.to_json
       end
@@ -158,21 +158,21 @@ describe "Posts" do
     context "without access token" do
 
       it 'gets an unauthorized error' do
-        get "/api/v1/discussions/2/posts/history", date: DateTime.now
+        get "/api/v1/discussions/2/posts/history", group_id: 3, date: DateTime.now
 
         response.status.should eq(401)
         response.body.should == {error: "unauthorized"}.to_json
       end
 
       it 'gets an unauthorized error' do
-        get "/api/v1/discussions/2/posts/new", date: DateTime.now
+        get "/api/v1/discussions/2/posts/new", group_id: 3, date: DateTime.now
 
         response.status.should eq(401)
         response.body.should == {error: "unauthorized"}.to_json
       end
 
       it 'gets an unauthorized error' do
-        get "/api/v1/discussions/2/posts/new"
+        get "/api/v1/discussions/2/posts/new", group_id: 3
 
         response.status.should eq(401)
         response.body.should == {error: "unauthorized"}.to_json
@@ -182,21 +182,21 @@ describe "Posts" do
     context "without access to discussion" do
 
       it 'gets a permission  error' do
-        get "/api/v1/discussions/4/posts/history", date: DateTime.now, access_token: token.token
+        get "/api/v1/discussions/4/posts/history", group_id: 6, date: DateTime.now, access_token: token.token
 
         response.status.should eq(404)
         response.body.should == {}.to_json
       end
 
       it 'gets a permission error' do
-        get "/api/v1/discussions/4/posts/new", date: DateTime.now, access_token: token.token
+        get "/api/v1/discussions/4/posts/new", group_id: 6, date: DateTime.now, access_token: token.token
 
         response.status.should eq(404)
         response.body.should == {}.to_json
       end
 
       it 'gets a permission error' do
-        get "/api/v1/discussions/4/posts/new", access_token: token.token
+        get "/api/v1/discussions/4/posts/new", group_id: 6, access_token: token.token
 
         response.status.should eq(404)
         response.body.should == {}.to_json
