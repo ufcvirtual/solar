@@ -151,10 +151,10 @@ class ApplicationController < ActionController::Base
 
     def set_tab_by_context
       if user_signed_in? 
-        if controller_path == "devise/registrations" # Aba Home para edição de dados do usuário (devise)
+        if controller_path == "devise/users" # Aba Home para edição de dados do usuário (devise)
           set_active_tab_to_home
         elsif params.include?('mid') # Seleciona aba de acordo com o contexto do menu
-          tab_context_id = active_tab[:url][:context]
+          tab_context_id  = active_tab[:url][:context]
           current_menu_id = params[:mid]
           
           if MenusContexts.find_all_by_menu_id_and_context_id(current_menu_id, tab_context_id).empty?
