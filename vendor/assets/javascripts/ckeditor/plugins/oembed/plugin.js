@@ -159,7 +159,12 @@
 						        widget.element.setStyle('text-align', 'center');
 
 						    widget.element.removeStyle('float');
-						} else {
+						}else if (align == 'right') {
+                            if (!widget.inline)
+                                widget.element.setStyle('text-align', 'right');
+
+                            widget.element.removeStyle('float');
+                        } else {
 						    if (!widget.inline)
 						        widget.element.removeStyle('text-align');
 

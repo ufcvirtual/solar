@@ -194,3 +194,7 @@ div.forum_navigation {
 .forum_post_inner_content, .message_div_show {
   @include ckeditor_content;
 }
+
+.embeddedContent{
+  width: 100%;
+}
