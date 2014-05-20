@@ -12,16 +12,18 @@ class Ability
 
     def have_permission?(user, action, object_class, object, options)
       if options.include?(:on) # on allocation_tags
-        return (have_permission_on_allocation_tags?(user, options[:on].flatten.map(&:to_i), !!options[:read]) and have_permission_access?(user, action, object_class, object))
+        return (have_permission_on_allocation_tags?(user, action, object_class, options[:on].flatten.map(&:to_i), !!options[:read]) and have_permission_access?(user, action, object_class, object))
       else
         return have_permission_access?(user, action, object_class, object)
       end
     end # have permission?
 
     ## a verificacao de permissao para leitura considera todas as at relacionadas
-    def have_permission_on_allocation_tags?(user, allocation_tags, read = false)
-      (user.allocation_tags.uniq.map { |at| read ? at.related : at.related({lower: true})
-        }.flatten.compact.uniq & allocation_tags).sort == allocation_tags.sort
+    def have_permission_on_allocation_tags?(user, action, object_class, allocation_tags, read = false)
+      action_profiles = Profile.joins(:resources).where(resources: {action: alias_action(action), controller: object_class.to_s.underscore.pluralize})
+      (user.allocations.where(profile_id: action_profiles.map(&:id), status: Allocation_Activated.to_i).compact.map(&:allocation_tag).compact.uniq.map{ |at|
+        read ? at.related : at.related({lower: true})
+      }.flatten.compact.uniq & allocation_tags).sort == allocation_tags.sort
     end # have permission on allocation tags
 
     def have_permission_access?(user, action, object_class, object)

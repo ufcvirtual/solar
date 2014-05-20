@@ -37,7 +37,7 @@ $(function(){
     select: function( event, ui ) {
       $(".curriculum_unit").show();
       if(ui.item.value == 4)
-        $('label[for="curriculum_unit"]').html("<%=I18n.t(".editions.content.module")%>");
+        $('label[for="curriculum_unit"]').html("<%=I18n.t('editions.content.module')%>");
       else if(ui.item.value == 3)
         $(".curriculum_unit").hide();
       else if(ui.item.value == 7) {
@@ -52,7 +52,7 @@ $(function(){
         });
       }  
       else
-        $('label[for="curriculum_unit"]').html("<%=I18n.t(".editions.content.curriculum_unit")%>");
+        $('label[for="curriculum_unit"]').html("<%=I18n.t('editions.content.curriculum_unit')%>");
 
       clear_all_combos(true);
       $('#course').combobox("option", { disabled: false });
@@ -83,7 +83,7 @@ $(function(){
       $('#curriculum_unit').combobox('value', $("#curriculum_unit").find("option").val());
 
       if(curriculum_unit_type){
-        var url = "<%=Rails.application.routes.url_helpers.list_combobox_semesters_path(period: "all", course_id: "course_param", curriculum_unit_id: "curriculum_unit_param")%>".replace("course_param", $("#course").combobox("value")).replace("curriculum_unit_param", $("#curriculum_unit").combobox("value"));
+        var url = "<%=Rails.application.routes.url_helpers.list_combobox_semesters_path(period: 'all', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')%>".replace("course_param", $("#course").combobox("value")).replace("curriculum_unit_param", $("#curriculum_unit").combobox("value"));
         $('#semester').combobox("update", {url: url});
       }
     }
@@ -100,7 +100,7 @@ $(function(){
     select: function( event, ui ) { 
       clear_combo("semester", false);
       $(".groups").html('');
-      var url = "<%=Rails.application.routes.url_helpers.list_combobox_semesters_path(period: "all", course_id: "course_param", curriculum_unit_id: "curriculum_unit_param")%>".replace("course_param", $("#course").combobox("value")).replace("curriculum_unit_param", $("#curriculum_unit").combobox("value"));
+      var url = "<%=Rails.application.routes.url_helpers.list_combobox_semesters_path(period: 'all', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')%>".replace("course_param", $("#course").combobox("value")).replace("curriculum_unit_param", $("#curriculum_unit").combobox("value"));
       $('#semester').combobox("update", {url: url});
     }
   });
@@ -123,7 +123,7 @@ $(function(){
   // ----------------------------------------------------------------------------------------------------
 
   $("#radio_option_group").click(function(){
-    var url = "<%=Rails.application.routes.url_helpers.list_groups_path(checkbox: true , type_id: "type_param", semester_id: "semester_param", course_id: "course_param", curriculum_unit_id: "curriculum_unit_param")%>"
+    var url = "<%=Rails.application.routes.url_helpers.list_groups_path(checkbox: true , type_id: 'type_param', semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: "curriculum_unit_param")%>"
       .replace("type_param", $("#curriculum_unit_type").combobox("value"))
       .replace("semester_param", $("#semester").combobox("value"))
       .replace("course_param", $("#course").combobox("value"))

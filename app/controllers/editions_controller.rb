@@ -5,9 +5,12 @@ class EditionsController < ApplicationController
   def items
     allocation_tags            = AllocationTag.get_by_params(params, true)
     @allocation_tags_ids       = allocation_tags[:allocation_tags]
+    authorize! :content, Edition, on: @allocation_tags_ids
     @selected, @all_groups_ids = allocation_tags[:selected], allocation_tags[:all_groups_ids] # todas as turmas existentes no filtro
 
     render partial: "items"
+  rescue
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   # GET /editions/academic
@@ -15,6 +18,8 @@ class EditionsController < ApplicationController
     authorize! :academic, Edition
     @types = ((not(EDX.nil?) and EDX["integrated"]) ? CurriculumUnitType.all : CurriculumUnitType.where("id <> 7"))
     @type  = params[:type_id]
+  rescue
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def courses
@@ -22,6 +27,8 @@ class EditionsController < ApplicationController
 
     @type    = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @courses = Course.all
+  rescue
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def curriculum_units
@@ -29,6 +36,8 @@ class EditionsController < ApplicationController
 
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @curriculum_units = @type.curriculum_units
+  rescue
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def semesters
@@ -40,12 +49,16 @@ class EditionsController < ApplicationController
     @curriculum_units = @type.curriculum_units
     @courses   = (@type.id == 3 ? Course.all_associated_with_curriculum_unit_by_name : Course.all)
     @semesters = Semester.all_by_period({period: params[:period]}) # semestres do período informado ou ativos
+  rescue
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def groups
     authorize! :groups, Edition
-    @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
+    @type    = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @courses = (@type.id == 3 ? Course.all_associated_with_curriculum_unit_by_name : Course.all)
+  rescue
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def edx_courses
@@ -83,6 +96,8 @@ class EditionsController < ApplicationController
   def content
     authorize! :content, Edition
     @types = ((not(EDX.nil?) and EDX["integrated"]) ? CurriculumUnitType.all : CurriculumUnitType.where("id <> 7"))
+  rescue
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
 end

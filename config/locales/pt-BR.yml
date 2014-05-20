@@ -1715,7 +1715,6 @@
       # EDX_items
       application: Aplicação
       edit_content: Editar conteúdo
-
     success:
       saved: Salvo com sucesso
       deleted: Excluido com sucesso
@@ -1750,6 +1749,14 @@
     not_possible_to_access_page_with_data: Não é possível acessar esta página com os dados fornecidos
     content_filter:
       filter: Filtro
+      type: "Tipo*"
+      course: "Curso*"
+      curriculum_unit: "Unidade Curricular"
+      module: "Módulo"
+      semester: "Semestre"
+      offer: "Oferta"
+      group: "Turma"
+    content:
       type: "Tipo*"
       course: "Curso*"
       curriculum_unit: "Unidade Curricular"

@@ -1604,6 +1604,14 @@
       semester: "Semester"
       offer: Offer
       group: Group
+    content:
+      type: "Type*"
+      course: "Course*"
+      curriculum_unit: "Curriculum Unit"
+      module: "Module"
+      semester: "Semester"
+      offer: Offer
+      group: Group
 
   curriculum_units:
     success:
