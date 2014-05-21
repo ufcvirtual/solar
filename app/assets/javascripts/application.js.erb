@@ -124,52 +124,54 @@ function updateTime(el, server_time) {
 function formatNumber(num) { return (num < 10) ? "0" + num : num; }
 
 function solar_help() {
-  introJs().setOptions({
-    showStepNumbers: false,
-    nextLabel: "<%= I18n.t(:tutorial_next) %>",
-    prevLabel: "<%= I18n.t(:tutorial_previous) %>",
-    skipLabel: "<%= I18n.t(:tutorial_skip) %>",
-    doneLabel: "<%= I18n.t(:tutorial_done) %>",
-    steps: [
-      {
-        element: '#mysolar_logo',
-        intro: 'Bem-vindo ao Solar 2.0.'
-      },
-      {
-        element: '#mysolar_identity',
-        intro: 'Barra superior: Nesta barra você visualiza informações sobre o seu usuário, hora do sistema, ajuda e sair do Solar'
-      },
-      {
-        element: '#mysolar_top_submenu_label',
-        intro: 'Seu usuário atual. Clique para visualizar mais informações, editar seu perfil ou alterar sua foto'
-      },
-      {
-        element: '#mysolar_tabs',
-        intro: 'Abas onde você pode navegar entre o MeuSolar e os Cursos que tiver acessado na sessão'
-      },
-      {
-        element: '#mysolar_suggestions',
-        position: 'left',
-        intro: 'Aqui você pode enviar suas críticas, sugestões e comentários para que possamos melhorar o Solar 2.0'
-      },
-      {
-        element: '#mysolar_open_lesson',
-        position: 'left',
-        intro: "Aqui você pode acessar a aula que você tiver minimizado"
-      },
-      {
-        element: '#mysolar_sidebar',
-        intro: 'Menu de navegação'
-      },
-      {
-        element: '#mysolar_content',
-        intro: 'Área de conteúdo'
-      },
-      {
-        element: '#mysolar_top_help',
-        position: 'left',
-        intro: 'Caso deseje ver este tutorial novamente, basta clicar em Ajuda e depois em Contextual.<br><br>Aproveite o novo <b>Solar 2.0!</b>'
-      }
-    ]
-  }).start();
+  introJs()
+    .setOptions({
+      showStepNumbers: false,
+      nextLabel: "<%= I18n.t(:tutorial_next) %>",
+      prevLabel: "<%= I18n.t(:tutorial_previous) %>",
+      skipLabel: "<%= I18n.t(:tutorial_skip) %>",
+      doneLabel: "<%= I18n.t(:tutorial_done) %>",
+      steps: [
+        {
+          element: '#mysolar_logo',
+          intro: 'Bem-vindo ao Solar 2.0.'
+        },
+        {
+          element: '#mysolar_identity',
+          intro: 'Barra superior: Nesta barra você visualiza informações sobre o seu usuário, hora do sistema, ajuda e sair do Solar'
+        },
+        {
+          element: '#mysolar_top_submenu_label',
+          intro: 'Seu usuário atual. Clique para visualizar mais informações, editar seu perfil ou alterar sua foto'
+        },
+        {
+          element: '#mysolar_tabs',
+          intro: 'Abas onde você pode navegar entre o MeuSolar e os Cursos que tiver acessado na sessão'
+        },
+        {
+          element: '#mysolar_suggestions',
+          position: 'left',
+          intro: 'Aqui você pode enviar suas críticas, sugestões e comentários para que possamos melhorar o Solar 2.0'
+        },
+        {
+          element: '#mysolar_open_lesson',
+          position: 'left',
+          intro: "Aqui você pode acessar a aula que você tiver minimizado"
+        },
+        {
+          element: '#mysolar_sidebar',
+          intro: 'Menu de navegação'
+        },
+        {
+          element: '#mysolar_content',
+          intro: 'Área de conteúdo'
+        },
+        {
+          element: '#mysolar_top_help',
+          position: 'left',
+          intro: 'Caso deseje ver este tutorial novamente, basta clicar em Ajuda e depois em Contextual.<br><br>Aproveite o novo <b>Solar 2.0!</b>'
+        }
+      ]
+    })
+    .start();
 }
