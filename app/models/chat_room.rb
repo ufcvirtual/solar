@@ -75,7 +75,6 @@ class ChatRoom < Event
 
   def self.chats_user(allocation_tag_id, user_id)
     if responsible?(allocation_tag_id, user_id)
-      raise "qui"
       # responsavel: devolve todas as salas de chat
       ChatRoom.joins(:academic_allocations, :allocation_tags, :schedule)
         .select("chat_rooms.*, schedules.start_date, schedules.end_date")
