@@ -279,20 +279,6 @@ div[name='CCEquationEditor']{
   border: 0;
 }
 
-#cke_48_uiElement, #cke_72_uiElement{
-  background: #005cc0; /* Old browsers */
-  background: -moz-linear-gradient(top, #005cc0 0%, #003774 98%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#005cc0), color-stop(98%,#003774)); /* Chrome,Safari4+ */
-  border-color: #0044cc #0044cc #002a80;
-}
-
-#cke_48_uiElement:hover, #cke_72_uiElement:hover{
-  background: #1d5da3; /* Old browsers */
-  background: -moz-linear-gradient(top, #0074f3 0%, #00448d 98%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0074f3), color-stop(98%,#00448d)); /* Chrome,Safari4+ */
-  border-color: #0044cc #0044cc #002a80;
-}
-
 #CClatex{
   position: absolute;
   top: 226px;  
