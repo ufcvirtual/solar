@@ -1,6 +1,4 @@
 .list_designates
-  = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
-
   .block_wrapper.users
     .block_title
       %h2= t(".designate_users")
@@ -28,7 +26,7 @@
                 %td
                   - status, link = (allocation.status == Allocation_Activated) ? ["deactivate", deactivate_allocation_path(id: allocation, text_search: @text_search)] : ["activate", activate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)]
 
-                  = button_tag t(".#{status}"), type: :button, class: "btn btn_caution #{status}", alt: t(".#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => designates_allocations_path(allocation_tags_ids: [@allocation_tags_ids].flatten, admin: @admin)
+                  = button_tag t(".#{status}"), type: :button, class: "btn btn_caution #{status}", alt: t(".#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids, admin: @admin)
 
 
   .block_wrapper.search
@@ -58,8 +56,8 @@
     });
 
     $("#search_user").click(function() {
-      var url_for = "#{search_users_allocations_path(admin: @admin)}";
-      var data = { user: encodeURIComponent($("#text_search").val()), allocation_tags_ids: $("#allocation_tags_ids").val() };
+      var url_for = "#{search_users_allocations_path(admin: @admin, allocation_tags_ids: @allocation_tags_ids)}";
+      var data = { user: encodeURIComponent($("#text_search").val()) };
       $.get(url_for, data, function(data) { $('#list_users').html(data); });
     });
 

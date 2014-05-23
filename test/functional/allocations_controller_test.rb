@@ -107,7 +107,7 @@ class AllocationsControllerTest < ActionController::TestCase
   end
 
   test "exibir usuarios alocados para um usuario com permissao" do
-    get :designates, { allocation_tags_ids: [allocation_tags(:al5).id] }
+    get :designates, { allocation_tags_ids: "#{allocation_tags(:al5).id}" }
     assert_response :success
     assert_not_nil assigns(:allocations)
 
@@ -128,7 +128,7 @@ class AllocationsControllerTest < ActionController::TestCase
     sign_out @coordenador
     sign_in users(:user2)
 
-    get :designates, { allocation_tags_ids:  [allocation_tags(:al5).id] }
+    get :designates, { allocation_tags_ids:  "#{allocation_tags(:al5).id}" }
     assert_nil assigns(:allocations)
     assert_response :unprocessable_entity
   end
@@ -167,8 +167,8 @@ class AllocationsControllerTest < ActionController::TestCase
 
   test "alocar usuario com perfil tutor a distancia" do
     assert_difference(["Allocation.count", "LogAction.count"], 2) do
-      post :create_designation, { allocation_tags_ids:  [allocation_tags(:al5).id], user_id: users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated } #oferta
-      post :create_designation, { allocation_tags_ids:  [allocation_tags(:al4).id], user_id: users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated } #turma
+      post :create_designation, { allocation_tags_ids:  "#{allocation_tags(:al5).id}", user_id: users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated } #oferta
+      post :create_designation, { allocation_tags_ids:  "#{allocation_tags(:al4).id}", user_id: users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated } #turma
     end
 
     assert_response :success
@@ -181,7 +181,7 @@ class AllocationsControllerTest < ActionController::TestCase
     sign_in users(:professor)
     
     assert_no_difference(["Allocation.count", "LogAction.count"]) do
-      post :create_designation, { allocation_tags_ids: [allocation_tags(:al5).id], user_id:  users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated }
+      post :create_designation, { allocation_tags_ids: "#{allocation_tags(:al5).id}", user_id:  users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated }
     end
     
     assert_response :unprocessable_entity
@@ -192,7 +192,7 @@ class AllocationsControllerTest < ActionController::TestCase
   test "alocar usuario como editor" do
     sign_in users(:admin)
     assert_difference(["Allocation.count", "LogAction.count"]) do
-      post :create_designation, { allocation_tags_ids:  [allocation_tags(:al5).id], user_id: users(:user2).id, profile:  profiles(:editor).id, status:  Allocation_Activated , admin: true} #oferta
+      post :create_designation, { allocation_tags_ids:  "#{allocation_tags(:al5).id}", user_id: users(:user2).id, profile:  profiles(:editor).id, status:  Allocation_Activated , admin: true} #oferta
     end
 
     assert_response :success
@@ -251,7 +251,7 @@ class AllocationsControllerTest < ActionController::TestCase
       assert_no_difference("Allocation.count") do
         assert_difference("LogAction.count") do
           @request.env['HTTP_REFERER'] = "#{::Rails.root.to_s}/users/profiles"
-          delete :destroy, {type: "request", profile: true, id: @coordenador.allocations.first.id, format: :json}
+          delete :destroy, {type: "request", profile: true, id: @coordenador.allocations.where("allocation_tag_id IS NOT null").first.id, format: :json}
         end
       end
     end
@@ -297,7 +297,7 @@ class AllocationsControllerTest < ActionController::TestCase
   test "solicitar nova alocacao em UC" do
     sign_in @aluno1
     assert_difference(["Allocation.count", "LogAction.count"]) do
-      post :create_designation, {request: true, profile: profiles(:editor), curriculum_unit: curriculum_units(:r2).id}
+      post :create_designation, {request: true, profile: profiles(:editor), curriculum_unit_id: curriculum_units(:r2).id}
     end
 
     assert_equal Allocation.last.status, Allocation_Pending
@@ -308,7 +308,7 @@ class AllocationsControllerTest < ActionController::TestCase
   test "solicitar alocacao ja ativa" do
     sign_in @coordenador
     assert_no_difference(["Allocation.count", "LogAction.count"]) do
-      post :create_designation, {request: true, profile: profiles(:editor), groups: groups(:g5).id}
+      post :create_designation, {request: true, profile: profiles(:editor).id, groups_id: "#{groups(:g5).id}"}
     end
 
     assert_response :success
@@ -318,7 +318,7 @@ class AllocationsControllerTest < ActionController::TestCase
   test "nao solicitar nova alocacao sem informar perfil" do
     sign_in @aluno1
     assert_no_difference(["Allocation.count", "LogAction.count"]) do
-      post :create_designation, {request: true, profile: "", curriculum_unit: curriculum_units(:r2).id}
+      post :create_designation, {request: true, profile: "", curriculum_unit_id: curriculum_units(:r2).id}
     end
 
     assert_response :unprocessable_entity

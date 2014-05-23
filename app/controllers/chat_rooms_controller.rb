@@ -6,9 +6,9 @@ class ChatRoomsController < ApplicationController
   authorize_resource only: :list
 
   def index
-    @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
+    @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
     authorize! :index, ChatRoom, on: @allocation_tags_ids
-    @chat_rooms = ChatRoom.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).order("title").uniq
+    @chat_rooms = ChatRoom.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).order("title").uniq
   end
 
   def new
@@ -16,41 +16,42 @@ class ChatRoomsController < ApplicationController
     @chat_room = ChatRoom.new
     @chat_room.build_schedule(start_date: Date.current, end_date: Date.current)
 
-    groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten})
-    @allocations = groups.map(&:students_participants).flatten.uniq
+    groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten})
+    @allocations  = groups.map(&:students_participants).flatten.uniq
     @groups_codes = groups.map(&:code).uniq
   end
 
   def create
-    authorize! :create, ChatRoom, on: allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    authorize! :create, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(",").flatten
     @chat_room = ChatRoom.new params[:chat_room]
 
     begin
       ChatRoom.transaction do
         @chat_room.save!
-        @chat_room.academic_allocations.create allocation_tags_ids.map {|at| {allocation_tag_id: at}}
+        @chat_room.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
       end
       render json: {success: true, notice: t(:created, scope: [:chat_rooms, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [allocation_tags_ids].flatten})
-      @allocations = groups.map(&:students_participants).flatten.uniq
+      groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten})
+      @allocations  = groups.map(&:students_participants).flatten.uniq
       @groups_codes = groups.map(&:code).uniq
+      @allocation_tags_ids = @allocation_tags_ids.join(",")
       render :new
     end
   end
 
   def edit
-    authorize! :update, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :update, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @chat_room = ChatRoom.find(params[:id])
-    @schedule = @chat_room.schedule
-    @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:students_participants).flatten.uniq
+    @schedule  = @chat_room.schedule
+    @allocations  = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).map(&:students_participants).flatten.uniq
     @groups_codes = @chat_room.groups.map(&:code)
   end
 
   def update
-    authorize! :update, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :update, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @chat_room = ChatRoom.find(params[:id])
     
     begin
@@ -60,7 +61,7 @@ class ChatRoomsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:students_participants).flatten.uniq
+      @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).map(&:students_participants).flatten.uniq
       @groups_codes = @chat_room.groups.map(&:code)
       render :edit
     end
@@ -96,7 +97,7 @@ class ChatRoomsController < ApplicationController
   end
 
   def show
-    authorize! :show, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :show, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @chat_room = ChatRoom.find(params[:id])
     @groups_codes = @chat_room.groups.map(&:code)
   end

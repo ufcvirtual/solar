@@ -416,7 +416,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao permitir avaliar atividade individual para usuario com permissao e sem acesso" do
     login users(:professor)
     get @literatura_brasileira_tab
-    post evaluate_assignment_path id: assignments(:a14).id, student_id: users(:aluno1).id, grade: 7
+    post evaluate_assignment_path id: assignments(:a12).id, student_id: users(:aluno1).id, grade: 7
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )

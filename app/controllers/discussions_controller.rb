@@ -27,11 +27,11 @@ class DiscussionsController < ApplicationController
     authorize! :new, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @discussion = Discussion.new
     @discussion.build_schedule(start_date: Date.current, end_date: Date.current)
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
+    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).map(&:code).uniq
   end
 
   def create
-    authorize! :create, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    authorize! :create, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids].split(",").flatten
     @discussion = Discussion.new params[:discussion]
 
     begin
@@ -45,25 +45,25 @@ class DiscussionsController < ApplicationController
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue => error
       @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
+      @allocation_tags_ids = @allocation_tags_ids.join(",")
       render :new
     end
   end
 
   def list
-    @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
-
+    @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
     authorize! :list, Discussion, on: @allocation_tags_ids
-    @discussions = Discussion.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).uniq
+    @discussions = Discussion.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).uniq
   end
 
   def edit
-    authorize! :edit, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :edit, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @discussion = Discussion.find(params[:id])
     @groups_codes = @discussion.groups.map(&:code)
   end
 
   def update
-    authorize! :update, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :update, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids].split(",").flatten
     @discussion = Discussion.find(params[:id])
     begin
       @discussion.allocation_tags_ids = @allocation_tags_ids
@@ -72,6 +72,7 @@ class DiscussionsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue 
+      @allocation_tags_ids = @allocation_tags_ids.join(" ")
       @groups_codes = @discussion.groups.map(&:code)
       render :edit
     end
@@ -95,7 +96,7 @@ class DiscussionsController < ApplicationController
   end
 
   def show
-    authorize! :show, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :show, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @discussion   = Discussion.find(params[:id])
     @groups_codes = @discussion.groups.map(&:code)
   end

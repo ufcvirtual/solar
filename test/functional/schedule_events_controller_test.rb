@@ -15,7 +15,7 @@ class ScheduleEventsControllerTest < ActionController::TestCase
     #turmas
     assert_difference(["ScheduleEvent.count", "Schedule.count"], 1) do
       assert_difference(["AcademicAllocation.count"], 3) do
-        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id} #{allocation_tags(:al11).id} #{allocation_tags(:al22).id}", schedule_event: {title: "Prova", type_event: Presential_Test, start_hour: "10:30", end_hour: "11:30", place: "Polo A", schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
+        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id},#{allocation_tags(:al11).id},#{allocation_tags(:al22).id}", schedule_event: {title: "Prova", type_event: Presential_Test, start_hour: "10:30", end_hour: "11:30", place: "Polo A", schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
       end
     end
 
@@ -51,7 +51,7 @@ class ScheduleEventsControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
 
     assert_no_difference(["ScheduleEvent.count", "Schedule.count", "AcademicAllocation.count"]) do
-      post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id} #{allocation_tags(:al11).id} #{allocation_tags(:al22).id}", schedule_event: {title: "Prova", type_event: Presential_Test, start_hour: "10:30", end_hour: "11:30", place: "Polo A", schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
+      post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id},#{allocation_tags(:al11).id},#{allocation_tags(:al22).id}", schedule_event: {title: "Prova", type_event: Presential_Test, start_hour: "10:30", end_hour: "11:30", place: "Polo A", schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
     end
 
     assert_response :redirect
@@ -61,7 +61,7 @@ class ScheduleEventsControllerTest < ActionController::TestCase
 
   test "editar evento" do
     assert_no_difference(["ScheduleEvent.count", "AcademicAllocation.count"]) do
-      put(:update, {id: schedule_events(:presential_test1).id, schedule_event: {title: "Prova"}, allocation_tags_ids: [allocation_tags(:al3).id]})
+      put(:update, {id: schedule_events(:presential_test1).id, schedule_event: {title: "Prova"}, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     end
 
     assert_equal "Prova", ScheduleEvent.find(schedule_events(:presential_test1).id).title
@@ -73,7 +73,7 @@ class ScheduleEventsControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
 
     assert_no_difference(["ScheduleEvent.count", "AcademicAllocation.count"]) do
-      put(:update, {id: schedule_events(:presential_test1).id, schedule_event: {title: "Prova"}, allocation_tags_ids: [allocation_tags(:al3).id]})
+      put(:update, {id: schedule_events(:presential_test1).id, schedule_event: {title: "Prova"}, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     end
 
     assert_not_equal "Prova", ScheduleEvent.find(schedule_events(:presential_test1).id).title
@@ -84,7 +84,7 @@ class ScheduleEventsControllerTest < ActionController::TestCase
 
   test "deletar um evento" do
     assert_difference(["ScheduleEvent.count", "AcademicAllocation.count"], -1) do
-      delete(:destroy, {id: schedule_events(:presential_test1).id, allocation_tags_ids: [allocation_tags(:al3).id]})
+      delete(:destroy, {id: schedule_events(:presential_test1).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     end
 
     assert_equal I18n.t(:deleted, scope: [:schedule_events, :success]), get_json_response("notice")
@@ -95,7 +95,7 @@ class ScheduleEventsControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
 
     assert_no_difference(["ScheduleEvent.count", "AcademicAllocation.count"]) do
-      delete(:destroy, {id: schedule_events(:presential_test1).id, allocation_tags_ids: [allocation_tags(:al3).id]})
+      delete(:destroy, {id: schedule_events(:presential_test1).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     end
 
     assert_response :redirect
@@ -104,13 +104,13 @@ class ScheduleEventsControllerTest < ActionController::TestCase
   end
 
   test "edicao - ver detalhes" do
-    get(:show, {id: schedule_events(:presential_test1).id, allocation_tags_ids: [allocation_tags(:al3).id]})
+    get(:show, {id: schedule_events(:presential_test1).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     assert_template :show
   end
 
   test "edicao - ver detalhes - aluno" do
     sign_in users(:aluno1)
-    get(:show, {id: schedule_events(:presential_test1).id, allocation_tags_ids: [allocation_tags(:al3).id]})
+    get(:show, {id: schedule_events(:presential_test1).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     assert_template :show
   end
 

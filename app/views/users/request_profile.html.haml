@@ -53,11 +53,11 @@
     $("#save").click(function(){
       var params = {
         "profile": $("#profile_id").val(),
-        "curriculum_unit_type": $("#profile_id").val(),
-        "course": $("#course").val(),
-        "curriculum_unit": $("#curriculum_unit").val(),
-        "semester": $("#semester").val(),
-        "groups": $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).toArray()
+        "curriculum_unit_type_id": $("#profile_id").val(),
+        "course_id": $("#course").val(),
+        "curriculum_unit_id": $("#curriculum_unit").val(),
+        "semester_id": $("#semester").val(),
+        "groups_ids": $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).get().join(",")
       };
       $.post("#{request_designation_allocations_path}", params, function(response){
         $.fancybox.close();

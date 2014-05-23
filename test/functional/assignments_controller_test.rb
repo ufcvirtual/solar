@@ -45,7 +45,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "edicao - listar trabalhos" do
     quimica = allocation_tags(:al3).id
 
-    get :index, {allocation_tags_ids: [quimica]}
+    get :index, {allocation_tags_ids: "#{quimica}"}
     assert_response :success
   end
 
@@ -53,8 +53,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     quimica = allocation_tags(:al3).id
     sign_in users(:aluno1)
 
-    get :index, {allocation_tags_ids: [quimica]}
-
+    get :index, {allocation_tags_ids: "#{quimica}"}
     assert_response :redirect
     assert_redirected_to home_path
     assert_equal flash[:alert], I18n.t(:no_permission)
@@ -63,7 +62,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "edicao - criar trabalho sem arquivos no enunciado" do
     assert_difference(["Assignment.count", "Schedule.count"], 1) do
       assert_difference(["AcademicAllocation.count"], 3) do
-        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id} #{allocation_tags(:al11).id} #{allocation_tags(:al22).id}", assignment: {name: "Testa modulo3", enunciation: "Assignment para testar modulo", type_assignment: 0, schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
+        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id},#{allocation_tags(:al11).id},#{allocation_tags(:al22).id}", assignment: {name: "Testa modulo3", enunciation: "Assignment para testar modulo", type_assignment: 0, schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
       end
     end
 
@@ -73,7 +72,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "edicao - criar trabalho com arquivos no enunciado para varias turmas de Quimica I" do
     assert_difference(["Assignment.count", "Schedule.count"], 1) do
       assert_difference(["AcademicAllocation.count", "AssignmentEnunciationFile.count"], 3) do
-        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id} #{allocation_tags(:al11).id} #{allocation_tags(:al22).id}",
+        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id},#{allocation_tags(:al11).id},#{allocation_tags(:al22).id}",
           assignment: {name: "Testa modulo3", enunciation: "Assignment para testar modulo", type_assignment: 0,
             schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month},
             enunciation_files_attributes: {
@@ -103,25 +102,25 @@ class AssignmentsControllerTest < ActionController::TestCase
 
   test "edicao - deletar um trabalho" do
     assert_difference(["Assignment.count", "AcademicAllocation.count"], -1) do
-      delete(:destroy, {id: assignments(:a4).id, allocation_tags_ids: [allocation_tags(:al3).id]})
+      delete(:destroy, {id: assignments(:a4).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     end
   end
 
   test "edicao - deletar varios trabalhos" do
     assignments = [2,4,6]
     assert_difference(["Assignment.count", "AcademicAllocation.count"], -assignments.count) do
-      delete(:destroy, {id: assignments, allocation_tags_ids: [allocation_tags(:al3).id]})
+      delete(:destroy, {id: assignments, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     end
   end
 
   test "edicao - ver detalhes" do
-    get(:show, {id: assignments(:a2).id, allocation_tags_ids: [allocation_tags(:al3).id]})
+    get(:show, {id: assignments(:a2).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     assert_template :show
   end
 
   test "edicao - ver detalhes - aluno" do
     sign_in users(:aluno1)
-    get(:show, {id: assignments(:a2).id, allocation_tags_ids: [allocation_tags(:al3).id]})
+    get(:show, {id: assignments(:a2).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     assert_template :show
   end
 

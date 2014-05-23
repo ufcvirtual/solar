@@ -78,14 +78,14 @@ class PostFilesController < ApplicationController
   end
 
   def download
-    redirect_error = posts_path(discussion_id: @post_file.post.discussion_id)
+    redirect_error = posts_path(discussion_id: @post_file.post.discussion.id)
     download_file(redirect_error, @post_file.attachment.path, @post_file.attachment_file_name)
   end
 
   def api_download
     @post_file = PostFile.find(params[:id])
 
-    redirect_error = posts_path(discussion_id: @post_file.post.discussion_id)
+    redirect_error = posts_path(discussion_id: @post_file.post.discussion.id)
     download_file(redirect_error, @post_file.attachment.path, @post_file.attachment_file_name)
   end
 

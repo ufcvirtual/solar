@@ -3,16 +3,14 @@ class ScheduleEventsController < ApplicationController
   layout false
   
   def new
-    @allocation_tags_ids = params[:allocation_tags_ids]
     authorize! :new, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @schedule_event = ScheduleEvent.new
     @schedule_event.build_schedule(start_date: Date.current, end_date: Date.current)
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
+    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).map(&:code).uniq
   end
 
   def create
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
-    authorize! :new, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    authorize! :new, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(",").flatten
     @schedule_event = ScheduleEvent.new params[:schedule_event]
 
     begin
@@ -24,22 +22,21 @@ class ScheduleEventsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue 
-      @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
+      @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
+      @allocation_tags_ids = @allocation_tags_ids.join(",")
       render :new
     end
   end
 
   def edit
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    authorize! :edit, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :edit, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @schedule_event = ScheduleEvent.find(params[:id])
-    @schedule = @schedule_event.schedule
-    @groups_codes = @schedule_event.groups.map(&:code)
+    @schedule       = @schedule_event.schedule
+    @groups_codes   = @schedule_event.groups.map(&:code)
   end
 
   def update
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    authorize! :edit, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :edit, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @schedule_event = ScheduleEvent.find(params[:id])
     
     begin
@@ -65,10 +62,9 @@ class ScheduleEventsController < ApplicationController
   end
 
   def show
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    authorize! :show, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :show, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @schedule_event = ScheduleEvent.find(params[:id])
-    @groups_codes = @schedule_event.groups.map(&:code)
+    @groups_codes   = @schedule_event.groups.map(&:code)
   end
 
 end

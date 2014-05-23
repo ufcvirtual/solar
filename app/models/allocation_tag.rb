@@ -237,7 +237,9 @@ class AllocationTag < ActiveRecord::Base
   def self.get_by_params(params, all_groups = false)
     allocation_tags_ids = []
 
-    if params[:groups_id].blank?
+    if params.include?(:allocation_tags_ids)
+      allocation_tags_ids = params[:allocation_tags_ids]
+    elsif params[:groups_id].blank?
       if params.include?(:semester_id) and (not params[:semester_id] == "")
         offer = Offer.where(semester_id: params[:semester_id], course_id: params[:course_id])
         offer = offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
@@ -251,12 +253,15 @@ class AllocationTag < ActiveRecord::Base
         selected = "COURSE"
       end
     else
-      allocation_tags_ids = AllocationTag.where(group_id: params[:groups_id]).map(&:id)
-      selected = "GROUP"
-      all_groups_ids = params[:all_groups_ids].split(" ") unless params[:all_groups_ids].nil? or not(all_groups)
+      selected   = "GROUP"
+      groups_ids = params[:groups_id].split(",")
+      allocation_tags_ids = AllocationTag.where(group_id: groups_ids).map(&:id)
+      offer_id   =  Group.find(groups_ids.first).offer.id
     end
 
-    {allocation_tags: allocation_tags_ids, selected: selected, all_groups_ids: all_groups_ids}
+    allocation_tags_ids = [nil] if allocation_tags_ids.empty?
+
+    {allocation_tags: allocation_tags_ids, selected: selected, offer_id: offer_id}
   end
 
 end

@@ -38,7 +38,7 @@ class LessonsControllerTest < ActionController::TestCase
 
   test "criar e editar uma aula do tipo arquivo" do
     lesson = {name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1}
-    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6), start_date: Time.now, end_date: (Time.now + 1.month)}
+    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: "#{allocation_tags(:al6).id}", start_date: Time.now, end_date: (Time.now + 1.month)}
 
     assert_difference(["Lesson.count", "Schedule.count"], 1) do
       post(:create, params)
@@ -46,7 +46,7 @@ class LessonsControllerTest < ActionController::TestCase
     assert_response :ok
     assert_equal Lesson.last.address, 'index.html'
 
-    update = {id: Lesson.last.id, allocation_tags_ids: allocation_tags(:al6), lesson: {address: 'index2.html'}, start_date: Time.now, end_date: (Time.now + 1.month)}
+    update = {id: Lesson.last.id, allocation_tags_ids: "#{allocation_tags(:al6).id}", lesson: {address: 'index2.html'}, start_date: Time.now, end_date: (Time.now + 1.month)}
 
     assert_no_difference(["Lesson.count", "Schedule.count"]) do
       put(:update, update)
@@ -57,7 +57,7 @@ class LessonsControllerTest < ActionController::TestCase
 
   test "nao criar aula com datas invalidas" do
     lesson = {name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1}
-    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6), start_date: (Time.now + 1.month), end_date: Time.now} 
+    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: "#{allocation_tags(:al6).id}", start_date: (Time.now + 1.month), end_date: Time.now} 
 
     assert_no_difference(["Lesson.count", "Schedule.count"]) do
       post(:create, params)
@@ -71,7 +71,7 @@ class LessonsControllerTest < ActionController::TestCase
     define_lesson_dir(lessons(:pag_index).id)
 
     lessons_ids = [lessons(:pag_index).id.to_s]
-    get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => [allocation_tags(:al6)]})
+    get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => "#{allocation_tags(:al6).id}"})
 
     zip_name = create_zip_name(lessons_ids)
     assert File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name))
@@ -81,7 +81,7 @@ class LessonsControllerTest < ActionController::TestCase
   test "nao permitir zipar e realizar download de arquivos de aulas se nenhuma for selecionada" do
     lessons_ids = []
 
-    get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => [allocation_tags(:al6)]})
+    get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => "#{allocation_tags(:al6).id}"})
     assert_template nothing:true
 
     zip_name = create_zip_name(lessons_ids)
@@ -96,7 +96,7 @@ class LessonsControllerTest < ActionController::TestCase
     zip_name    = create_zip_name(lessons_ids)
     FileUtils.rm File.join(Rails.root.to_s, 'tmp', zip_name), force: true # deleta arquivo para testar se foi criado
 
-    get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => [allocation_tags(:al6)]})
+    get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => "#{allocation_tags(:al6).id}"})
     assert_redirected_to home_path
     assert_equal I18n.t(:no_permission), flash[:alert]
 
@@ -106,7 +106,7 @@ class LessonsControllerTest < ActionController::TestCase
   test "nao permitir zipar e realizar download de arquivos de aulas se todas forem do tipo link" do
     lessons_ids = [lessons(:pag_ufc).id.to_s]
 
-    get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => [allocation_tags(:al6)]})
+    get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => "#{allocation_tags(:al6).id}"})
     assert_template nothing:true
 
     zip_name = create_zip_name(lessons_ids)
@@ -117,7 +117,7 @@ class LessonsControllerTest < ActionController::TestCase
     define_lesson_dir(lessons(:pag_bbc).id, false)
     lessons_ids = [lessons(:pag_bbc).id.to_s]
 
-    get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => [allocation_tags(:al6)]})
+    get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => "#{allocation_tags(:al6).id}"})
     assert_template nothing: true
 
     zip_name = create_zip_name(lessons_ids)
@@ -130,16 +130,15 @@ class LessonsControllerTest < ActionController::TestCase
 
   test "exibir cadastro de modulos e aulas para um usuario com permissao" do
     sign_in @coordenador
-    get :list, { :allocation_tags_ids => [allocation_tags(:al5).id], :what_was_selected => [false, true, false, false] }
+    get :list, { :allocation_tags_ids => "#{allocation_tags(:al5).id}", :what_was_selected => [false, true, false, false] }
     assert_response :success
-    assert_not_nil assigns(:allocation_tags)
+    assert_not_nil assigns(:allocation_tags_ids)
   end
 
   test "nao exibir cadastro de modulos e aulas para um usuario sem permissao" do
     sign_in users(:user2)
 
-    get :list, { :allocation_tags_ids => [allocation_tags(:al5).id], :what_was_selected => [false, true, false, false] }
-    assert_nil assigns(:allocation_tags)
+    get :list, { :allocation_tags_ids => "#{allocation_tags(:al5).id}", :what_was_selected => [false, true, false, false] }
     assert_response :error
   end
 
@@ -165,7 +164,7 @@ class LessonsControllerTest < ActionController::TestCase
 
     assert lesson.is_draft?
 
-    put :change_status, {id: lesson.id, status: Lesson_Approved, allocation_tags_ids: [allocation_tags(:al6).id]}
+    put :change_status, {id: lesson.id, status: Lesson_Approved, allocation_tags_ids: "#{allocation_tags(:al6).id}"}
     assert_response :success
 
     assert_equal Lesson_Approved, Lesson.find(lessons(:pag_index).id).status
@@ -178,7 +177,7 @@ class LessonsControllerTest < ActionController::TestCase
 
     FileUtils.rm_rf(lesson.path(true).to_s)
 
-    put :change_status, {id: lesson.id, status: Lesson_Approved, allocation_tags_ids: [allocation_tags(:al6).id]}
+    put :change_status, {id: lesson.id, status: Lesson_Approved, allocation_tags_ids: "#{allocation_tags(:al6).id}"}
     assert_response :unprocessable_entity
 
     assert_equal Lesson_Test, Lesson.find(lessons(:pag_index).id).status
@@ -191,7 +190,7 @@ class LessonsControllerTest < ActionController::TestCase
     lesson = Lesson.find(lessons(:pag_virtual).id)
     assert_equal Lesson_Approved, lesson.status
 
-    put :change_status, {id: lesson.id, status: Lesson_Test, allocation_tags_ids: [allocation_tags(:al6).id]}
+    put :change_status, {id: lesson.id, status: Lesson_Test, allocation_tags_ids: "#{allocation_tags(:al6).id}"}
     assert_response :success
 
     assert_equal Lesson_Test, Lesson.find(lessons(:pag_virtual).id).status
@@ -204,7 +203,7 @@ class LessonsControllerTest < ActionController::TestCase
   test "alterar modulo da aula" do
     assert_difference("LessonModule.find(#{lesson_modules(:module5).id}).lessons.count", +2) do
       assert_difference("LessonModule.find(#{lesson_modules(:module1).id}).lessons.count", -2) do
-        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: allocation_tags(:al6).id, move_to_module: lesson_modules(:module5).id, lessons_ids: [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
+        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: "#{allocation_tags(:al6).id}", move_to_module: lesson_modules(:module5).id, lessons_ids: [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
       end
     end
 
@@ -215,7 +214,7 @@ class LessonsControllerTest < ActionController::TestCase
     sign_in users(:coorddisc)
     assert_no_difference("LessonModule.find(#{lesson_modules(:module5).id}).lessons.count") do
       assert_no_difference("LessonModule.find(#{lesson_modules(:module1).id}).lessons.count") do
-        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: [allocation_tags(:al10).id, allocation_tags(:al5).id], move_to_module: lesson_modules(:module8).id, lessons_ids: [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
+        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: "#{allocation_tags(:al10).id},#{allocation_tags(:al5).id}", move_to_module: lesson_modules(:module8).id, lessons_ids: [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
       end
     end
 
@@ -226,7 +225,7 @@ class LessonsControllerTest < ActionController::TestCase
     sign_in @professor
     assert_no_difference("LessonModule.find(#{lesson_modules(:module5).id}).lessons.count", +2) do
       assert_no_difference("LessonModule.find(#{lesson_modules(:module1).id}).lessons.count", -2) do
-        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: allocation_tags(:al6).id, move_to_module: lesson_modules(:module5).id, lessons_ids: [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
+        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: "#{allocation_tags(:al6).id}", move_to_module: lesson_modules(:module5).id, lessons_ids: [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
       end
     end
 
@@ -236,7 +235,7 @@ class LessonsControllerTest < ActionController::TestCase
   test "nao alterar modulo da aula - dados invalidos" do
     assert_no_difference("LessonModule.find(#{lesson_modules(:module5).id}).lessons.count", +2) do
       assert_no_difference("LessonModule.find(#{lesson_modules(:module1).id}).lessons.count", -2) do
-        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: allocation_tags(:al6).id, lessons_ids: [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
+        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: "#{allocation_tags(:al6).id}", lessons_ids: [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
       end
     end
 
@@ -244,7 +243,7 @@ class LessonsControllerTest < ActionController::TestCase
 
     assert_no_difference("LessonModule.find(#{lesson_modules(:module5).id}).lessons.count", +2) do
       assert_no_difference("LessonModule.find(#{lesson_modules(:module1).id}).lessons.count", -2) do
-        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: allocation_tags(:al6).id, move_to_module: lesson_modules(:module5).id, format: "json"}
+        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: "#{allocation_tags(:al6).id}", move_to_module: lesson_modules(:module5).id, format: "json"}
       end
     end    
 

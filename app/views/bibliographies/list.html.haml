@@ -1,4 +1,4 @@
-.block_wrapper.list_bibliographies{:"data-link-list" => list_bibliographies_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: params[:all_groups_ids])}
+.block_wrapper.list_bibliographies{:"data-link-list" => list_bibliographies_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
 
   .block_title
     %h2= t(".bibliographies")
@@ -21,10 +21,10 @@
     .block_toolbar_right
       .btn-group
         = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit', :"data-link-edit" => edit_bibliography_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".edit")
-        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_bibliography',  :"data-link-delete" => bibliography_path(id: ':id', :allocation_tags_ids => @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_bibliography',  :"data-link-delete" => bibliography_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
 
   - unless @bibliographies.nil? or @bibliographies.empty?
-    - all_groups = Group.where(id: params[:all_groups_ids])
+    - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
     %table.tb_list
       %thead
         %tr.lines
@@ -50,4 +50,4 @@
 :javascript
 
   var div_list = $(".list_bibliographies");
-  var all_allocation_tags_ids = "#{AllocationTag.where(group_id: params[:all_groups_ids]).map(&:id).join(",")}";
+  var offer_id = "#{params[:offer_id]}";

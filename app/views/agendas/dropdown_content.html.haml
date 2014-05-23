@@ -31,7 +31,7 @@
 
   .btn-group
     .left
-      - if can? :destroy, @model_name, on: @allocation_tags_ids
+      - if can? :destroy, @model_name, on: @allocation_tags_ids.split(" ")
         = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_event', :"data-link-delete" => polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t(".remove"), id: @event.id
     .right{style: (can?(:edit, @model_name, on: @allocation_tags_ids) ? "" : "margin-left: 96px") }
       - if can? :edit, @model_name, on: @allocation_tags_ids

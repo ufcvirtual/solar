@@ -91,7 +91,7 @@ class WebconferencesControllerTest < ActionController::TestCase
     webconference = webconferences(:webc1)
 
     assert_difference(["AcademicAllocation.count", "Webconference.count"], -1) do
-      delete :destroy, {id: webconference.id, allocation_tags_ids: [@quimica]}
+      delete :destroy, {id: webconference.id, allocation_tags_ids: "#{@quimica}"}
     end
   end
 
@@ -100,7 +100,7 @@ class WebconferencesControllerTest < ActionController::TestCase
     webconference = webconferences(:webc2)
 
     assert_no_difference(["AcademicAllocation.count", "Webconference.count"]) do
-      delete :destroy, {id: webconference.id, allocation_tags_ids: [@quimica]}
+      delete :destroy, {id: webconference.id, allocation_tags_ids: "#{@quimica}"}
     end
 
     assert_response :redirect

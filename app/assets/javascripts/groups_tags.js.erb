@@ -36,7 +36,7 @@ $(function(){
         if(!filter_group_checkbox.prop("checked"))
           filter_group_checkbox.click();
 
-        params = {'allocation_tags_ids': all_allocation_tags_ids};
+        params = {'groups_by_offer_id': offer_id};
       }
       
       $.get(div_list.data("link-list"), params, function(data2){

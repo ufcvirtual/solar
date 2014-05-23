@@ -20,14 +20,14 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def new
-    authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
+    authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids]
     
     @support_material = SupportMaterialFile.new material_type: params[:material_type]
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
+    @groups_codes     = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).map(&:code).uniq
   end
 
   def create
-    authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids].split(" ")].flatten
+    authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids].split(",").flatten
 
     begin
       @support_material_file = SupportMaterialFile.new params[:support_material_file]
@@ -42,6 +42,7 @@ class SupportMaterialFilesController < ApplicationController
     rescue Exception => error
       if @support_material.is_link?
         @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
+        @allocation_tags_ids = params[:allocation_tags_ids].join(",")
         params[:success] = false
         render :new
       else
@@ -51,7 +52,7 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def edit
-    authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
+    authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @support_material = SupportMaterialFile.find(params[:id])
     @groups_codes = @support_material.groups.map(&:code)
@@ -59,7 +60,7 @@ class SupportMaterialFilesController < ApplicationController
 
   def update
     @support_material_file = SupportMaterialFile.find(params[:id])
-    authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids].split(" ")].flatten
+    authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     begin
       @support_material_file.update_attributes!(params[:support_material_file])
@@ -74,10 +75,10 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, SupportMaterialFile, on: params[:allocation_tags_ids].uniq
+    authorize! :destroy, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     begin
-      @support_material_file = SupportMaterialFile.where(id: params[:id].split(","))
+      @support_material_file = SupportMaterialFile.where(id: params[:id].split(",").flatten)
 
       SupportMaterialFile.transaction do
         @support_material_file.destroy_all
@@ -89,7 +90,7 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def download
-    allocation_tag_ids = params.include?(:allocation_tag_id) ? params[:allocation_tag_id].split(",").map(&:to_i).uniq : [(file = SupportMaterialFile.find(params[:id])).academic_allocations.map(&:allocation_tag_id)]
+    allocation_tag_ids = params.include?(:allocation_tag_id) ? params[:allocation_tag_id].split(",").flatten.map(&:to_i).uniq : [(file = SupportMaterialFile.find(params[:id])).academic_allocations.map(&:allocation_tag_id)]
     
     if params.include?(:type) # baixando alguma pasta ou todas
 
@@ -122,14 +123,14 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def list
-    @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
+    @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
     authorize! :list, SupportMaterialFile, on: @allocation_tags_ids
 
-    begin
-      @support_materials = SupportMaterialFile.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).order("attachment_updated_at DESC").uniq
-    rescue
-      render nothing: true, status: :unprocessable_entity
-    end
+    @support_materials = SupportMaterialFile.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).order("attachment_updated_at DESC").uniq
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    render nothing: true, status: :unprocessable_entity
   end
 
 end

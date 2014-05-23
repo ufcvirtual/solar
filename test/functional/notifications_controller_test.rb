@@ -36,7 +36,7 @@ class NotificationsControllerTest < ActionController::TestCase
   end
 
   test "edicao - listar" do
-    get :list, {allocation_tags_ids: [@quimica]}
+    get :list, {allocation_tags_ids: "#{@quimica}"}
 
     assert_response :success
     assert_not_nil assigns(:notifications)
@@ -86,7 +86,7 @@ class NotificationsControllerTest < ActionController::TestCase
     end
 
     assert_difference(["AcademicAllocation.count", "Notification.count"], -1) do
-      delete :destroy, {id: Notification.last.id, allocation_tags_ids: [@quimica]}
+      delete :destroy, {id: Notification.last.id, allocation_tags_ids: "#{@quimica}"}
     end
   end
 

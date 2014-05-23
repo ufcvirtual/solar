@@ -51,7 +51,7 @@ class BibliographiesControllerTest < ActionController::TestCase
     assert_not_nil bib = assigns(:bibliography)
 
     assert_difference(["AcademicAllocation.count", "Bibliography.count", "Author.count"], -1) do
-      delete :destroy, {id: bib.id, allocation_tags_ids: [@quimica]}
+      delete :destroy, {id: bib.id, allocation_tags_ids: "#{@quimica}"}
     end
   end
 
@@ -67,14 +67,14 @@ class BibliographiesControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
 
     assert_no_difference(["AcademicAllocation.count", "Bibliography.count", "Author.count"]) do
-      delete :destroy, {id: bibliographies(:livro1).id, allocation_tags_ids: [@quimica]}
+      delete :destroy, {id: bibliographies(:livro1).id, allocation_tags_ids: "#{@quimica}"}
     end
 
     assert_equal flash[:alert], I18n.t(:no_permission)
   end
 
   test "edicao - listar bibliographies" do
-    get :list, {allocation_tags_ids: [@quimica]}
+    get :list, {allocation_tags_ids: "#{@quimica}"}
     assert_response :success
   end
 

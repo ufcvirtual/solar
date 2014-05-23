@@ -1102,6 +1102,7 @@
   no_permission: "You haven't permission to access this page"
   # Mensagem de erro associação entre ferramentas e turma/oferta/uc/curso
   not_associated: This tool isn't associated to the informed data
+  uri_too_long: "Information quantity too large. Reduce the quantity of data passed"
 
 # Menu
   menu_content: Content

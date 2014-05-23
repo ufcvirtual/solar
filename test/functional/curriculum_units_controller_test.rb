@@ -55,7 +55,7 @@ class CurriculumUnitsControllerTest < ActionController::TestCase
       post :create, curriculum_unit: {curriculum_unit_type_id: curriculum_unit_types(:distancia).id, code: "C010", name: "Curso 10", resume: "Curso 10", syllabus: "Curso 10", objectives: "Curso 10"}
     end
 
-    assert_response :redirect
+    assert_template :new
   end
 
   test "editar uc" do

@@ -3,7 +3,7 @@
 = hidden_field_tag :selected, params[:selected]
 = hidden_field_tag :events_path, events_agendas_path
 
-.calendar_schedules{:"data-link-list" => calendar_agendas_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: params[:all_groups_ids], selected: params[:selected])}
+.calendar_schedules{:"data-link-list" => calendar_agendas_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id], selected: params[:selected])}
 
   #calendar{:"data-edition" => "true", :"data-ids" => @access_forms}
 
@@ -46,14 +46,14 @@
     // });
     $("#chat_room")
       .html("#{t(".new_chat")}")
-      .call_fancybox({href: "#{new_chat_room_path(allocation_tags_ids: [params[:allocation_tags_ids]].flatten, calendar: true)}"});
+      .call_fancybox({href: "#{new_chat_room_path(allocation_tags_ids: params[:allocation_tags_ids], calendar: true)}"});
     $("#discussion")
       .html("#{t(".new_discussion")}")
-      .call_fancybox({href: "#{new_discussion_path(allocation_tags_ids: [params[:allocation_tags_ids]].flatten, calendar: true)}"});
+      .call_fancybox({href: "#{new_discussion_path(allocation_tags_ids: params[:allocation_tags_ids], calendar: true)}"});
     $("#assignment")
       .html("#{t(".new_assignment")}")
-      .call_fancybox({href: "#{new_assignment_path(allocation_tags_ids: [params[:allocation_tags_ids]].flatten, calendar: true)}"});
+      .call_fancybox({href: "#{new_assignment_path(allocation_tags_ids: params[:allocation_tags_ids], calendar: true)}"});
     $("#schedule_event")
       .html("#{t(".new_event")}")
-      .call_fancybox({href: "#{new_schedule_event_path(allocation_tags_ids: [params[:allocation_tags_ids]].flatten, calendar: true)}"});
+      .call_fancybox({href: "#{new_schedule_event_path(allocation_tags_ids: params[:allocation_tags_ids], calendar: true)}"});
   });

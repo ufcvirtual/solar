@@ -15,10 +15,7 @@ $(function() {
   var fcSources = {
     calendar: {
         url: url,
-        data: {
-          "allocation_tags_ids": $("#allocation_tags_ids").val(),
-          "all_groups_ids": $("#all_groups_ids").val()
-        },
+        data: { "allocation_tags_ids": $("#allocation_tags_ids").val() },
         textColor: 'black',
         ignoreTimezone: false
     },
@@ -26,7 +23,6 @@ $(function() {
       url: url,
       data: {
         "allocation_tags_ids": $("#allocation_tags_ids").val(),
-        "all_groups_ids": $("#all_groups_ids").val(),
         "list": "true"
       },
       textColor: 'black',

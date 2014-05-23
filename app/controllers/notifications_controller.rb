@@ -5,9 +5,10 @@ class NotificationsController < ApplicationController
   layout false
 
   def list
-    authorize! :list, Notification, on: @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
+    @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
+    authorize! :list, Notification, on: @allocation_tags_ids
 
-    @notifications = Notification.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).uniq
+    @notifications = Notification.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).uniq
   end
 
   # GET /notifications
@@ -43,7 +44,7 @@ class NotificationsController < ApplicationController
     @notification = Notification.new
     @notification.build_schedule(start_date: Date.today, end_date: Date.today)
 
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
+    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).map(&:code).uniq
   end
 
   # GET /notifications/1/edit
@@ -57,7 +58,7 @@ class NotificationsController < ApplicationController
   # POST /notifications
   # POST /notifications.json
   def create
-    authorize! :create, Notification, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    authorize! :create, Notification, on: @allocation_tags_ids = params[:allocation_tags_ids].split(",").flatten
     @notification = Notification.new(params[:notification])
 
     begin
@@ -69,7 +70,8 @@ class NotificationsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
+      @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
+      @allocation_tags_ids = @allocation_tags_ids.join(",")
       params[:success] = false
       render :new
     end
@@ -78,7 +80,7 @@ class NotificationsController < ApplicationController
   # PUT /notifications/1
   # PUT /notifications/1.json
   def update
-    authorize! :update, Notification, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :update, Notification, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @notification = Notification.find(params[:id])
     begin

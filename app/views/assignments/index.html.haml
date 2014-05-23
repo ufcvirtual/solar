@@ -1,17 +1,17 @@
-.block_wrapper.list_assignments{:"data-link-list" => assignments_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: params[:all_groups_ids])}
+.block_wrapper.list_assignments{:"data-link-list" => assignments_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
   .block_title
     %h2= t(:assignment, scope: [:editions, :items])
 
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus'), new_assignment_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main fancybox.ajax", id: "new_assignment", :"data-tooltip" => t(:new, scope: "assignment.list")
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_assignment_path(allocation_tags_ids: @allocation_tags_ids), class: " btn btn_main fancybox.ajax", id: "new_assignment", :"data-tooltip" => t(:new, scope: "assignment.list")
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_assignment', "data-link-to-edit" => edit_assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), "data-edit-title" => t(:edit, scope: "assignment.list"), disabled: true, :"data-tooltip" => t(".edit_assignment")
-        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_assignment', :"data-link-delete" => assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-link-to-list" => assignments_path(allocation_tags_ids: [@allocation_tags_ids]), disabled: true, :"data-tooltip" => t(".delete_assignment")
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_assignment', "data-link-to-edit" => edit_assignment_path(':id', allocation_tags_ids: @allocation_tags_ids), "data-edit-title" => t(:edit, scope: "assignment.list"), disabled: true, :"data-tooltip" => t(".edit_assignment")
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_assignment', :"data-link-delete" => assignment_path(':id', allocation_tags_ids: @allocation_tags_ids), :"data-link-to-list" => assignments_path(allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".delete_assignment")
 
   - unless @assignments.empty? or @assignments.nil?
-    - all_groups = Group.where(id: params[:all_groups_ids])
+    - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
     %table.tb_list
       %thead
         %tr.lines
@@ -69,4 +69,4 @@
 
 :javascript
   var div_list = $(".list_assignments");
-  var all_allocation_tags_ids = "#{AllocationTag.where(group_id: params[:all_groups_ids]).map(&:id).join(",")}";
+  var offer_id = "#{params[:offer_id]}";

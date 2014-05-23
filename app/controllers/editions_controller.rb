@@ -3,10 +3,9 @@ include EdxHelper
 class EditionsController < ApplicationController
 
   def items
-    allocation_tags            = AllocationTag.get_by_params(params, true)
-    @allocation_tags_ids       = allocation_tags[:allocation_tags]
-    authorize! :content, Edition, on: @allocation_tags_ids
-    @selected, @all_groups_ids = allocation_tags[:selected], allocation_tags[:all_groups_ids] # todas as turmas existentes no filtro
+    allocation_tags = AllocationTag.get_by_params(params, true)
+    authorize! :content, Edition, on: (@allocation_tags_ids = allocation_tags[:allocation_tags])
+    @selected, @offer_id = allocation_tags[:selected], allocation_tags[:offer_id]
 
     render partial: "items"
   rescue

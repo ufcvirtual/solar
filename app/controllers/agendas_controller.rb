@@ -5,14 +5,15 @@ class AgendasController < ApplicationController
 
   def index
      # se não estiver em uma uc específica, recupera as allocations tags ativadas do usuário
-    @allocation_tags = (active_tab[:url][:allocation_tag_id].nil?) ? current_user.activated_allocation_tag_ids : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+    @allocation_tags = (active_tab[:url][:allocation_tag_id].nil?) ? current_user.activated_allocation_tag_ids : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.uniq
     @link            = not(params[:list_all_schedule].nil?) # apresentacao dos links de todas as schedules
     @schedule        = Agenda.events(@allocation_tags, true, Date.parse(params[:date])) 
+    @allocation_tags = @allocation_tags.join(",")
     render layout: false
   end
 
   def list
-    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ?  AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : params[:allocation_tags_ids].split(" ")).flatten
+    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ?  AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : params[:allocation_tags_ids])
 
     authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
     render action: :calendar
@@ -20,7 +21,7 @@ class AgendasController < ApplicationController
 
   # calendário de eventos
   def calendar
-    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : params[:allocation_tags_ids].split(" ")).flatten
+    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : params[:allocation_tags_ids])
 
     authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
     @access_forms = Event.descendants.collect{ |model| model.to_s.tableize.singularize if model.constants.include?("#{params[:selected].try(:upcase)}_PERMISSION".to_sym) }.compact.join(",")
@@ -28,7 +29,7 @@ class AgendasController < ApplicationController
 
   # eventos para exibição no calendário
   def events
-    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : params[:allocation_tags_ids].split(" ")).flatten
+    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : params[:allocation_tags_ids].split(",").flatten)
     authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
 
     events = (params.include?("list") ? 
@@ -36,13 +37,14 @@ class AgendasController < ApplicationController
       Event.descendants.map{ |event| event.scoped.between(params['start'], params['end'], @allocation_tags_ids) }.uniq )
     @events = [events].flatten.map(&:schedule_json).uniq
 
+    @allocation_tags_ids = @allocation_tags_ids.join(",")
     render json: @events
   end
 
   def dropdown_content
     @model_name = params[:type].constantize
-    @event = @model_name.find(params[:id])
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    @event      = @model_name.find(params[:id])
+    @allocation_tags_ids = params[:allocation_tags_ids]
   end
 
 end

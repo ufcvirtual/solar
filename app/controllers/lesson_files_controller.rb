@@ -8,19 +8,17 @@ class LessonFilesController < ApplicationController
   include FilesHelper
 
   def index
-    begin 
-      @lesson = Lesson.where(id: params[:lesson_id]).first
-      allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule')
-      .select(:allocation_tag_id).map(&:allocation_tag_id)
+    @lesson = Lesson.where(id: params[:lesson_id]).first
+    allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule')
+    .select(:allocation_tag_id).map(&:allocation_tag_id)
 
-      authorize! :new, Lesson, on: [allocation_tags_ids]
-      @address = @lesson.address
+    authorize! :new, Lesson, on: [allocation_tags_ids]
+    @address = @lesson.address
 
-      raise 'error' unless @lesson and @lesson.type_lesson == Lesson_Type_File
-    rescue
-      error = true
-    end
-
+    raise 'error' unless @lesson and @lesson.type_lesson == Lesson_Type_File
+  rescue
+    error = true
+  ensure
     render error ? {nothing: true, status: 500} : {action: :index, satus: 200}
   end
 

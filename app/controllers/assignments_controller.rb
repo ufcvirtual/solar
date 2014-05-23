@@ -7,42 +7,41 @@ class AssignmentsController < ApplicationController
   before_filter :prepare_for_group_selection, :only => [:professor, :student_view]
   before_filter Proc.new { |c| @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id]) }, only: [:download_public_files, :download_files]
 
-  load_and_authorize_resource :only => [:information, :import_groups_page, :import_groups, :manage_groups, :evaluate, :send_comment, :remove_comment]
+  load_and_authorize_resource :only => [:import_groups_page, :import_groups, :manage_groups, :send_comment, :remove_comment] #, :evaluate
   authorize_resource :only => [:download_files, :upload_file, :send_public_files_page, :delete_file]
 
   layout false, only: [:index, :new, :edit, :create, :update, :destroy, :show]
 
   def index
-    @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
-    authorize! :list, Assignment, on:@allocation_tags_ids
+    @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
+    authorize! :list, Assignment, on: @allocation_tags_ids
 
-    @assignments = Assignment.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).order("name").uniq
+    @assignments = Assignment.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).order("name").uniq
   end
 
   def new
-    authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
+    authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
-    @groups     = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
     @assignment = Assignment.new
     @assignment.build_schedule(start_date: Date.current, end_date: Date.current)
     @assignment.enunciation_files.build
+
+    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids.split(",")].flatten}).map(&:code).uniq
   end
 
   def edit
-    authorize! :update, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
+    authorize! :update, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @assignment = Assignment.find(params[:id])
     @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
 
     @enunciation_files = @assignment.enunciation_files.compact
-
-    @groups = @assignment.groups
-    @schedule = @assignment.schedule
+    @schedule     = @assignment.schedule
+    @groups_codes = @assignment.groups.map(&:code)
   end
 
   def create
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").map(&:to_i)
-    authorize! :create, Assignment, on: @allocation_tags_ids
+    authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].split(",").flatten
 
     @assignment = Assignment.new params[:assignment]
 
@@ -58,8 +57,9 @@ class AssignmentsController < ApplicationController
     rescue => error
       @error = error.to_s.start_with?("academic_allocation") ? error.to_s.gsub("academic_allocation", "") : nil
 
-      @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
+      @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
+      @allocation_tags_ids = @allocation_tags_ids.join(",")
 
       render :new
     end
@@ -67,7 +67,7 @@ class AssignmentsController < ApplicationController
 
   def update
     @assignment = Assignment.find(params[:id])
-    authorize! :update, Assignment, on: [params[:allocation_tags_ids]].flatten.uniq
+    authorize! :update, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     begin
       @assignment.update_attributes!(params[:assignment])
@@ -76,8 +76,7 @@ class AssignmentsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @allocation_tags_ids = params[:allocation_tags_ids].split(" ").map(&:to_i)
-      @groups = @assignment.groups
+      @groups_codes = @assignment.groups.map(&:code)
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
 
       render :edit
@@ -85,11 +84,11 @@ class AssignmentsController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, Assignment, on: params[:allocation_tags_ids].uniq
+    authorize! :destroy, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     begin
       Assignment.transaction do
-        assignments = Assignment.includes(:sent_assignments).where(id: params[:id].split(","), sent_assignments: {id: nil})
+        assignments = Assignment.includes(:sent_assignments).where(id: params[:id].split(",").flatten, sent_assignments: {id: nil})
         raise "error" if assignments.empty?
 
         Assignment.transaction do
@@ -103,7 +102,7 @@ class AssignmentsController < ApplicationController
   end
 
   def show
-    authorize! :show, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :show, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @assignment = Assignment.find(params[:id])
     @enunciation_files = @assignment.enunciation_files.compact
     @groups_codes = @assignment.groups.map(&:code)
@@ -163,6 +162,9 @@ class AssignmentsController < ApplicationController
   # Informações da atividade em grupo escolhida na listagem com a lista dos grupos daquela turma, permitindo seu gerenciamento
   ##
   def information
+    @assignment = Assignment.find(params[:id])
+    authorize! :information, @assignment
+
     @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  #arquivos que fazem parte da descrição da atividade
     @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
     if @assignment.type_assignment == Assignment_Type_Group
@@ -221,6 +223,9 @@ class AssignmentsController < ApplicationController
   end
 
   def evaluate
+    @assignment = Assignment.find(params[:id])
+    authorize! [:evaluate, :update], @assignment
+
     @student_id = (params[:student_id].nil? or params[:student_id].blank?) ? nil : params[:student_id]
     @group_id   = (params[:group_id].nil? or params[:group_id].blank?) ? nil : params[:group_id]
     grade       = params['grade'].blank? ? params['grade'] : params['grade'].tr(',', '.') 

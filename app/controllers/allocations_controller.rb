@@ -10,9 +10,9 @@ class AllocationsController < ApplicationController
   # GET /allocations/designates.json
   def designates
     @allocation_tags_ids = if (not params.include?(:admin) or params.include?(:allocation_tags_ids))
-       params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids].split(" ").flatten : [] 
+       params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : [] 
     else
-      AllocationTag.get_by_params(params)[:allocation_tags]
+      AllocationTag.get_by_params(params)[:allocation_tags].join(",")
     end
 
     begin
@@ -21,7 +21,7 @@ class AllocationsController < ApplicationController
       if @admin
         authorize! :create_designation, Allocation
       else
-        authorize! :create_designation, Allocation, on: @allocation_tags_ids.flatten
+        authorize! :create_designation, Allocation, on: @allocation_tags_ids
       end
 
       level        = (params[:permissions] != "all" and (not params.include?(:admin))) ? "responsible" : nil
@@ -29,7 +29,7 @@ class AllocationsController < ApplicationController
       
       @allocations = Allocation.all(
         joins: [:profile, :user],
-        conditions: ["#{level_search} and allocation_tag_id IN (?)", @allocation_tags_ids],
+        conditions: ["#{level_search} and allocation_tag_id IN (?)", @allocation_tags_ids.split(",").flatten],
         order: ["users.name", "profiles.name"]) 
     rescue CanCan::AccessDenied
       render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
@@ -44,7 +44,7 @@ class AllocationsController < ApplicationController
   def search_users
     text                 = URI.unescape(params[:user])
     @text_search         = text
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    @allocation_tags_ids = params[:allocation_tags_ids]
     @users               = User.where("lower(name) ~ ?", text.downcase)
     @admin               = params[:admin]
   end
@@ -106,27 +106,14 @@ class AllocationsController < ApplicationController
 
   # Usado na alocacao de usuarios
   def create_designation
-    allocation_tags_ids = case
-    when (params.include?(:profile) and not(params[:profile].blank?) and Profile.find(params[:profile]).has_type?(Profile_Type_Admin))
-      nil
-    when (not params[:groups].nil?)
-      Group.where(id: params[:groups]).map(&:allocation_tag).map(&:id)
-    when (not(params[:semester].blank?) and not(params[:course].blank?))
-      offer = Offer.where(semester_id: params[:semester_id], course_id: params[:course_id])
-      offer = offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
-      offer.first.allocation_tag.try(:id)
-    when (not params[:curriculum_unit].blank?)
-      CurriculumUnit.find(params[:curriculum_unit]).allocation_tag.id
-    when (not params[:course].blank?)
-      Course.find(params[:course]).allocation_tag.id
-    when params.include?(:allocation_tags_ids)
-      params[:allocation_tags_ids].split(" ")
+    allocation_tags_ids = if (params.include?(:profile) and not(params[:profile].blank?) and Profile.find(params[:profile]).has_type?(Profile_Type_Admin))
+      [nil]
     else
-      nil
+      AllocationTag.get_by_params(params)[:allocation_tags]
     end
 
     authorize! :create_designation, Allocation if params[:admin] 
-    authorize! :create_designation, Allocation, on: [allocation_tags_ids].flatten.compact unless params[:admin] or params.include?(:request)
+    authorize! :create_designation, Allocation, on: allocation_tags_ids unless params[:admin] or params.include?(:request)
 
     profile = params.include?(:profile) ? params[:profile] : Profile.student_profile
     status  = params.include?(:status) ? params[:status]  : Allocation_Pending
@@ -135,10 +122,14 @@ class AllocationsController < ApplicationController
     raise t("allocations.error.profile") if params[:profile].blank?
     
     allocations = Array.new
-    ok = allocate(allocation_tags_ids, allocations, user, profile, status)
+    ok = allocate(allocation_tags_ids.split(",").flatten, allocations, user, profile, status)
 
     unless params.include?(:request)
-      render :designates, status: (ok ? 200 : :unprocessable_entity)
+      case ok
+        when nil; render json: {success: false, message: t("allocations.warning.already_active"), type: "warning"}
+        when true; render :designates, status: 200
+        when false; render json: {success: false, alert: t("allocations.error.not_allocated")}, status: :unprocessable_entity
+      end
     else
       case ok
         when nil; render json: {success: false, message: t("allocations.warning.already_active"), type: "warning"}

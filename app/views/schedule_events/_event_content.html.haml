@@ -13,7 +13,7 @@
 
   .btn-group
     .left
-      - can? :destroy, event.class, on: allocation_tags_ids
+      - can? :destroy, event.class, on: allocation_tags_ids.split(" ")
         = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_event', :"data-link-delete" => polymorphic_path([event], allocation_tags_ids: allocation_tags_ids), :'data-tooltip' => "deletar", id: event.id
     .right
       - can? :edit, event.class, on: allocation_tags_ids
