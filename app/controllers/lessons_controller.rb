@@ -41,14 +41,14 @@ class LessonsController < ApplicationController
 
   # GET /lessons/:id
   def show
-    unless @curriculum_unit
+    unless @curriculum_unit or params.include?(:edition)
       render text: t(:curriculum_unit_not_selected, scope: :lessons), status: :not_found
     else
       if current_user.is_admin?
         authorize! :show, Lesson
       else
         # apenas para quem faz parte da turma
-        authorize! :show, Lesson, {on: [@curriculum_unit.allocation_tag.id], read: true}
+        authorize! :show, Lesson, {on: (@curriculum_unit.nil? ? params[:allocation_tags_ids] : [@curriculum_unit.allocation_tag.id]), read: true}
       end
 
       allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids].split(",").flatten : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related

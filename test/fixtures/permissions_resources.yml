@@ -1136,6 +1136,12 @@ lessonedit8:
   resource_id: 119
   per_id: false
 
+# ver aula
+lessonedit9:
+  profile_id: 5
+  resource_id: 18
+  per_id: false
+
 # Lessons Modules - Módulos
 
 lmodedit1:

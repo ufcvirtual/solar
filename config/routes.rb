@@ -222,6 +222,7 @@ Solar::Application.routes.draw do
       put "change_status/:status", to: :change_status, as: :change_status
       put "order/:change_id", action: :order, as: :change_order
       put :change_module
+      get :edition, action: :show, defaults: {edition: true}
     end
     collection do
       get :list, action: :list
