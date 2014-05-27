@@ -33,13 +33,7 @@
           = f.input :start_hour, input_html: {size: 10}, required: true
           = f.input :end_hour, input_html: {size: 10}, required: true
 
-      .schedule_dates
-        .left
-          .input.group_label.invisible
-            = f.label t(".groups")
-            %span.groups
-              - @groups_codes.each do |group_code|
-                %span.collection_check_boxes= group_code
+      = render "groups/codes", locals: {groups_codes: @groups_codes}
 
       .schedule_dates{style: "float: right;"}
         .right.right_buttons

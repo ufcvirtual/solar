@@ -19,12 +19,6 @@
           = f.input :start_hour
           = f.input :end_hour
 
-      .input
-        = f.label t(".groups")
-        %span.groups
-          - @groups_codes.each do |group_code|
-            %span.collection_check_boxes= group_code
-
       %div
         = f.label t(".participants")
         %span.participants
@@ -46,6 +40,8 @@
                     %br
               - else
                 = t(".empty_group")
+
+      = render "groups/codes", locals: {groups_codes: @groups_codes}
 
       .right_buttons
         = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"

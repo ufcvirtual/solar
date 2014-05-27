@@ -40,11 +40,7 @@
                 = ef.attachment_file_name
                 %i.icon-cross-circle.warning.remove_file
 
-      .input
-        = f.label t(".groups")
-        %span.groups
-          - @groups_codes.each do |code|
-            %span.collection_check_boxes= code
+      = render "groups/codes", locals: {groups_codes: @groups_codes}
 
       .right_buttons
         = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"

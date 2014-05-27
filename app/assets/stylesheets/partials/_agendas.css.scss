@@ -114,48 +114,55 @@
 
 /* Dropdown */
 
-#calendar .dropdown-tip{
-  width: 435px;
+#calendar {
+  .dropdown-tip{
+    width: 435px;
+    .dropdown-panel{
+        max-width: 417px;
+        margin-bottom: 10px;
+      }
+    .event_details_dropdown{
+      h1, h2, h3, .group_label label{
+        font-family: 'PT Sans', sans-serif;
+        background-color: white;
+        border-bottom: none;
+      }
+      h1{
+        font-weight: bold;
+        text-align: left;
+        font-size: 11pt;
+      }
+      h2, h3, .group_label label{
+        color: $text_grey;
+        font-size: 10pt;
+        font-weight: normal;
+      }
+      h2{
+        margin: 6px;
+      }
+      .line{
+        border-bottom: solid 1px $background_grey;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+      }
+      .btn-group .left{
+        float: left;
+        margin-right: 316px;
+      }
+      .btn-group .right{
+        float: right;
+      }
+      .group_label label{
+        width: 40px;
+        vertical-align: top;
+        padding-top: 5px;
+      }
+    }
+  }
+
   .dropdown-panel{
-      max-width: 417px;
-      margin-bottom: 10px;
-    }
-  .event_details_dropdown{
-    h1, h2, h3, .group_label label{
-      font-family: 'PT Sans', sans-serif;
-      background-color: white;
-      border-bottom: none;
-    }
-    h1{
-      font-weight: bold;
-      text-align: left;
-      font-size: 11pt;
-    }
-    h2, h3, .group_label label{
-      color: $text_grey;
-      font-size: 10pt;
-      font-weight: normal;
-    }
-    h2{
-      margin: 6px;
-    }
-    .line{
-      border-bottom: solid 1px $background_grey;
-      padding-bottom: 5px;
-      margin-bottom: 5px;
-    }
-    .btn-group .left{
-      float: left;
-      margin-right: 316px;
-    }
-    .btn-group .right{
-      float: right;
-    }
-    .group_label label{
-      width: 40px;
-      vertical-align: top;
-      padding-top: 5px;
-    }
+    max-height: 600px;
+    overflow-y: auto;
   }
 }
 

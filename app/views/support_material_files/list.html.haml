@@ -59,10 +59,6 @@
   var offer_id = "#{params[:offer_id]}";
 
   $(function(){
-
-    if ($("#radio_option_group").prop("checked"))
-      $(".groups_tags").show();
-
     $(".link_new_material_file, .link_new_material_link").call_fancybox();
 
     $(".all_support_material").map(function(){ $(this).nice_checkbox() });

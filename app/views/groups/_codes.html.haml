@@ -1,0 +1,27 @@
+- unless @groups_codes.nil? or @groups_codes.empty? 
+  - groups_size = @groups_codes.size
+  .input.group_label.invisible.codes
+    = label_tag t(".groups"), nil, class: "string control-label form_label"
+    %span.groups
+      - @groups_codes[0..Max_Groups_Shown_Tags].each do |group_code|
+        %span.collection_check_boxes= group_code
+      - if groups_size>Max_Groups_Shown_Tags+1
+        .icon= content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".see_all", all: groups_size))
+        .complete.invisible
+          - @groups_codes[Max_Groups_Shown_Tags+1..groups_size].each do |group_code|
+            %span.collection_check_boxes= group_code
+          .icon= content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".see_less", less: Max_Groups_Shown_Tags))
+
+= javascript_include_tag "tooltip"
+
+:javascript
+  $(function(){
+    if ($("#radio_option_group").prop("checked"))
+      $(".group_label").show();
+
+    $(".codes .expand, .codes .compress").click(function(){
+     var parent_div = $($(this).parents(".codes")[0]);
+     parent_div.find(".expand").parent(".icon").slideToggle();
+     parent_div.find(".complete").toggleClass("invisible");
+    });
+  });

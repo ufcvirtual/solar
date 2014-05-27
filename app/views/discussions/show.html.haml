@@ -14,14 +14,9 @@
     .input
       = label_tag t(".end_date"), nil, class: "form_label"
       %span.label_info= l(@discussion.schedule.end_date.to_date, format: :datepicker)
-    .schedule_dates
-      .left
-        .input.group_label.invisible
-          = label_tag t(".groups"), nil, class: "form_label"
-          %span.groups
-            - @groups_codes.each do |group_code|
-              %span.collection_check_boxes= group_code
 
+    = render "groups/codes", locals: {groups_codes: @groups_codes}
+    
     .schedule_dates{style: "float: right;"}
       .right.right_buttons
         = button_to_function t("agendas.close"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"

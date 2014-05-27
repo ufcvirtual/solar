@@ -21,12 +21,8 @@
 
   %h2= truncate((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || "", length: 200, omission: '...')
 
-  .input.group_label.invisible
-    = label_tag t(".groups")
-    %span.groups
-      - @event.groups.map(&:code).each do |group_code|
-        %span.collection_check_boxes= group_code
-
+  = render "groups/codes", locals: {groups_codes: @groups_codes}
+  
   .line
 
   .btn-group
@@ -41,7 +37,7 @@
 
 = javascript_include_tag "tooltip"
 
-= hidden_field_tag :groups_codes, @event.groups.map(&:code)
+= hidden_field_tag :groups_codes, @groups_codes
 
 :javascript
 
@@ -62,9 +58,6 @@
 
       $(this).toggleClass("show_groups").toggleClass("icon-arrow-down-triangle icon-arrow-up-triangle");
     });
-
-    if ($("#radio_option_group").prop("checked"))
-      $(".group_label").show();
 
     $(".delete_event").click(function(){
       if (!confirm("#{I18n.t(:message_confirm)}"))

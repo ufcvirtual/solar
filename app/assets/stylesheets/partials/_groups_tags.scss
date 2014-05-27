@@ -1,6 +1,43 @@
-.groups_tags .title label{
-  display: inline;
-  color: $color_main;
+.groups_tags {
+
+  .title label{
+    display: inline;
+    color: $color_main;
+  }
+
+  .collection_check_boxes {
+    .icon{
+      color: white;
+      padding-right: 0;
+      padding-left: 0;
+      margin-top: -16px;
+      float: right;
+    }
+    .dropdown-menu{
+      min-width: 30px;
+      /*top: -16px;*/
+      margin-top: -17px;
+    }
+    .dropdown-tip:after{
+      top: -22px;
+      left: 2px;
+    }
+    .dropdown-tip:before{
+      top: -23px;
+      left: 1px;
+    }
+  }
+
+  .icon{
+    font-size: 11pt;
+    cursor: pointer;
+  }
+  
+  .add_group{
+    border: 1px solid #C0C0C0;
+    color: grey;
+  }
+
 }
 
 .groups .collection_check_boxes, .groups_tags .collection_check_boxes {
@@ -11,20 +48,13 @@
   display:inline-block;
 }
 
-.groups_tags .collection_check_boxes .icon{
-  color: white;
-  padding-right: 0;
-  padding-left: 0;
-}
-
-.groups_tags .icon{
-  font-size: 11pt;
-  cursor: pointer;
-}
-
-.groups_tags .add_group{
-  border: 1px solid #C0C0C0;
-  color: grey;
+.groups, .groups_tags{
+  .complete{
+    border: 0;
+  }
+  .icon{
+    margin-left: 40%;
+  }
 }
 
 .no_tags .collection_check_boxes{
@@ -34,13 +64,19 @@
   padding: 0;
 }
 
-.groups_tags .collection_check_boxes .dropdown-menu{
-  min-width: 30px;
+.new_groups{
+  display: inline-block;
+  .dropdown{
+    background-color: white;
+    padding: 5px;
+    border: 1px solid #C0C0C0;
+    max-height: 400px;
+    overflow-y: auto;
+    
+    .btn{
+      margin: 5px;
+      float: right;
+    }
+    
+  }
 }
-
-.new_groups .dropdown{
-  background-color: white;
-  padding: 5px;
-  border: 1px solid #C0C0C0;
-}
-

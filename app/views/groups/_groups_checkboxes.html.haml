@@ -1,3 +1,4 @@
+- groups_size = @groups.size
 = hidden_field_tag :all_groups_ids, @groups.map(&:id)
 
 = form_for :group do |f|
@@ -6,18 +7,32 @@
     = label_tag :all, t(".select_all")
   .no_groups= t(".no_groups")
   %div
-    = f.collection_check_boxes :group_id, @groups, :id, :code
+    = f.collection_check_boxes :group_id, @groups[0..Max_Groups_Shown_Filter], :id, :code
+    - if groups_size>Max_Groups_Shown_Filter+1
+      .icon= content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".see_all", all: groups_size))
+      .complete.invisible
+        = f.collection_check_boxes :group_id, @groups[Max_Groups_Shown_Filter+1..groups_size], :id, :code
+        .icon= content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".see_less", less: Max_Groups_Shown_Filter))
+
+= javascript_include_tag "tooltip"
 
 :javascript
 
   $(function(){
     $("#all").nice_checkbox({
-      cant_enable_elements: true
+      cant_enable_elements: true,
+      check_invisible_children: true
     });
 
     if($('[name="group[group_id][]"]').length ==1){
     	$('.select_all_box').remove(); 
     	$(".no_groups").show(); 
     }
+    
+    $("form .expand, form .compress").click(function(){
+     var form = $($(this).parents("form")[0]);
+     form.find(".expand").parent(".icon").slideToggle();
+     form.find(".complete").toggleClass("invisible");
+    });
 
   });

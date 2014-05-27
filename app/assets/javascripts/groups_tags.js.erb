@@ -1,5 +1,23 @@
 $(function(){
 
+  if ($("#radio_option_group").prop("checked"))
+    $(".group_label").show();
+
+  $(".tags.expand").click(function(){
+    $(".groups_tags").show();
+    $(this).hide();
+    $(this).siblings(".complete").show();
+    $(this).siblings(".new_groups").show();
+  });
+
+  $(".tags.compress").click(function(){
+    $(".groups_tags").show();
+    var parent_div = $(this).parent();
+    parent_div.hide();
+    parent_div.siblings(".expand").show();
+    parent_div.siblings(".new_groups").hide();
+  });
+
   $(".unbind, .remove").click(function(){
     var button = $(this);
     // remove/desvincula turma da ferramenta

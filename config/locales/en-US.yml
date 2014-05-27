@@ -1436,6 +1436,9 @@
       add: Add
       cancel: Cancel
       add_group: Add Group
+      see_all: See all %{all} groups
+      see_less: See %{less} groups
+      select_all: Select all
     success:
       created: Group was successfully created.
       updated: Group was successfully updated.
@@ -1455,6 +1458,12 @@
     groups_checkboxes:
       select_all: Select all
       no_groups: "There are no groups"
+      see_all: See all %{all} groups
+      see_less: See %{less} groups
+    codes:
+      see_all: See all %{all} groups
+      see_less: See %{less} groups
+      groups: Groups
 
   simple_form:
     labels:

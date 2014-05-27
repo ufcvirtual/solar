@@ -1587,6 +1587,9 @@
       add: Adicionar
       cancel: Cancelar
       add_group: Adicionar Turma
+      see_all: Ver as %{all} turmas
+      see_less: Ver %{less} turmas
+      select_all: Selecionar todas
     success:
       created: Turma criada com sucesso.
       updated: Turma atualizada com sucesso.
@@ -1606,6 +1609,12 @@
     groups_checkboxes:  
       select_all: Selecionar todas
       no_groups: "Não há turmas"
+      see_all: Ver as %{all} turmas
+      see_less: Ver %{less} turmas
+    codes:
+      see_all: Ver as %{all} turmas
+      see_less: Ver %{less} turmas
+      groups: Turmas
 
   simple_form:
     labels:

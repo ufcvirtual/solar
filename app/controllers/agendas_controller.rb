@@ -42,9 +42,10 @@ class AgendasController < ApplicationController
   end
 
   def dropdown_content
-    @model_name = params[:type].constantize
-    @event      = @model_name.find(params[:id])
+    @model_name   = params[:type].constantize
+    @event        = @model_name.find(params[:id])
     @allocation_tags_ids = params[:allocation_tags_ids]
+    @groups_codes = @event.groups.map(&:code)
   end
 
 end

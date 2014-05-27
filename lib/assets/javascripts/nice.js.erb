@@ -4,11 +4,16 @@
 
 $.fn.nice_checkbox = function(options) {
   var parent = this, children_names = $(this).data("children-names"), parent_block_div;
-  var can_enable_or_disable = (typeof(options) == "undefined" || typeof(options.cant_enable_elements) == "undefined" || !options.cant_enable_elements); // para nao habilitar opcoes, passar parametro cant_enable_elements
+  var can_enable_or_disable    = (typeof(options) == "undefined" || typeof(options.cant_enable_elements) == "undefined" || !options.cant_enable_elements); // para nao habilitar opcoes, passar parametro cant_enable_elements
+  var check_invisible_children = !(typeof(options) == "undefined" || typeof(options.check_invisible_children) == "undefined");
 
   // para englobar apenas os filhos do parent
-  if (!((parent_block_div = $(parent).parents("table").parent()).length))
-    parent_block_div = $(parent).parents(":nth-of-type(1)");
+  if (typeof(options) != "undefined" && typeof(options.parent_div) != "undefined")
+    parent_block_div = options.parent_div;
+  else{
+    if (!((parent_block_div = $(parent).parents("table").parent()).length))
+      parent_block_div = $(parent).parents(":nth-of-type(1)");
+  }
 
   /**
    * Habilita ou desabilita os elementos passados verificando se aceita um ou múltimos itens checkados
@@ -93,7 +98,7 @@ $.fn.nice_checkbox = function(options) {
     } else 
       check = parent.checked;
 
-    children.each(function(i){ if ($(this).is(':visible')) $(this).prop("checked", check); });
+    children.each(function(i){ if (check_invisible_children || $(this).is(':visible')) $(this).prop("checked", check); });
 
     if (can_enable_or_disable) {
       // o botao de edicao devera ser habilitado apenas para um unico objeto

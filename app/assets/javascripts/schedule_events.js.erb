@@ -1,8 +1,5 @@
 $(function(){
 
-  if ($("#radio_option_group").prop("checked"))
-    $(".group_label").show();
-
   var options = $.extend($.datepicker.regional['<%=I18n.locale%>']);
 
   /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */

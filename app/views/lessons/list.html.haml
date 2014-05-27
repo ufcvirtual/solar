@@ -22,7 +22,7 @@
               = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button delete_module', :'data-link-delete' => lesson_module_path(lesson_module, allocation_tags_ids: params[:allocation_tags_ids]), :'data-tooltip' => t(".delete_lesson_module"), :"data-module-id" => lesson_module.id
           -if has_group
             - unless lesson_module.is_default
-              = render "groups/groups_tags", groups: lesson_module.groups, tool: lesson_module, paths: {add: add_group_to_lesson_modules_path(id: "param_id", tool_id: lesson_module.id), remove: remove_group_from_lesson_modules_path(id: "param_id", tool_id: lesson_module.id), unbind: unbind_group_from_lesson_modules_path(id: "param_id", tool_id: lesson_module.id)}
+              = render "groups/groups_tags", all_groups: all_groups, groups: lesson_module.groups, tool: lesson_module, paths: {add: add_group_to_lesson_modules_path(id: "param_id", tool_id: lesson_module.id), remove: remove_group_from_lesson_modules_path(id: "param_id", tool_id: lesson_module.id), unbind: unbind_group_from_lesson_modules_path(id: "param_id", tool_id: lesson_module.id)}
             - else
               .input.groups_tags
                 = t(".group")

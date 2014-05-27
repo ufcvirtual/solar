@@ -45,7 +45,6 @@
 
 div.block_module{
 
-  height: 48px !important;
   padding-top: 6px !important;
   overflow: visible !important;
   border-bottom: 1px solid;
@@ -63,8 +62,8 @@ div.block_module{
 
   .groups_tags{
     background-color: rgb(243, 243, 243);
-    height: 28px;
-    font-size: 14px !important;
+    min-height: 28px;
+    font-size: 12px !important;
 
     .title label{
       color: #000;

@@ -12,11 +12,7 @@
       - else
         = f.file_field :attachment, as: :file, required: true
 
-      .input.group_label.invisible
-        = f.label t(".groups")
-        %span.groups
-          - @groups_codes.each do |group_code|
-            %span.collection_check_boxes= group_code
+      = render "groups/codes", locals: {groups_codes: @groups_codes}
 
       .new_support_material_buttons
         = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
@@ -25,10 +21,6 @@
 :javascript
 
   jQuery(function($){
-
-    if ($("#radio_option_group").prop("checked"))
-      $(".input.group_label").show();
-
     $('#support_material_form:first').keypress(function(event) { if (event.keyCode == 13) { event.preventDefault(); } }); // prevenir enter
 
     $('#save').click(function(){

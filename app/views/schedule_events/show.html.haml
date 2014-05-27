@@ -36,13 +36,7 @@
         = label_tag t(".time"), nil, class: "form_label"
         %span.label_info= [@schedule_event.start_hour, @schedule_event.end_hour].join(t(".to"))
       
-    .schedule_dates
-      .left
-        .input.group_label.invisible
-          = label_tag t(".groups"), nil, class: "form_label"
-          %span.groups
-            - @groups_codes.each do |group_code|
-              %span.collection_check_boxes= group_code
+    = render "groups/codes", locals: {groups_codes: @groups_codes}
 
     .schedule_dates{style: "float: right;"}
       .right.right_buttons
