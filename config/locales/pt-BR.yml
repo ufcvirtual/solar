@@ -472,6 +472,9 @@
   name: "Nome"
   size: "Tamanho"
 
+  #load_itens
+  load_items: "Carregar mais itens"
+
 
   # application controller
   app_controller_require: "Por favor, efetue login!"
@@ -1434,7 +1437,6 @@
   file_error_nonexistent_file: Arquivo não encontrado
 
   ## allocations
-
   allocations:
     index:
       manage: Gerenciar
@@ -1686,7 +1688,6 @@
       type: Tipo
       name: Nome
       profile: Perfil
-      load_allocations: Carregar mais alocações
       page_info: "Esta página tem como finalidade a aceitação/rejeição de solicitações de perfis. Caso você deseje alocar um usuário, acesse a área de %{url}."
       user_indication: indicação de usuários
     pending_allocations:

@@ -1,0 +1,6 @@
+$('.allocations').append('#{escape_javascript(render partial: 'search_users', locals: { users: @users})}');
+$('a.load-more-allocations').attr('href', '#{search_users_allocations_path(page: @users.next_page, admin: @admin, allocation_tags_ids: @allocation_tags_ids, user: @text_search)}');
+$(".tb_list").trigger("update");
+
+- unless @users.next_page
+  $('a.load-more-allocations').remove();

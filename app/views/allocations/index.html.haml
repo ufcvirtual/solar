@@ -12,23 +12,22 @@
   %span.block_actions= button_tag( t(".enroll_selected"), class:  "btn btn_default btn_enroll_selected")
 
 .block_content
-  %table.tb_list.enrollments
-    %thead
-      %tr.lines
-        %th.no_sort.center{style: 'width: 25px;'}= check_box_tag :all_allocations, false, false, :"data-children-names" => "c_"
-        %th= t(".manage_student")
-        %th{style: 'width:120px'}= t(".manage_group")
-        %th{style: 'width:120px'}= t(".manage_curriculum_unit")
-        %th{style: 'width:100px'}= t(".manage_status")
-        %th.no_sort{style: 'width:120px'}= t(".manage_options")
-    %tbody
-      - @allocations.each do |allocation|
+  - unless @allocations.empty?
+    %table.tb_list.enrollments
+      %thead
         %tr.lines
-          %td{style: 'text-align:center;'}= check_box_tag("c_#{allocation.id}", allocation.id, false, {:"status-value" => allocation.status, class: "cbx_value"})
-          %td= allocation.user.name
-          %td= allocation.group.code_semester
-          %td= allocation.group.curriculum_unit.name
-          %td= name_of allocation.status
-          %td= button_to_function t(".manage"), "manage_enrollment(this)", :"show-link" => allocation_path(allocation), :"edit-link" => edit_allocation_path(allocation), class:  "btn btn_default btn_manage_enrollment"
+          %th.no_sort.center{style: 'width: 25px;'}= check_box_tag :all_allocations, false, false, :"data-children-names" => "c_"
+          %th= t(".manage_student")
+          %th{style: 'width:120px'}= t(".manage_group")
+          %th{style: 'width:120px'}= t(".manage_curriculum_unit")
+          %th{style: 'width:100px'}= t(".manage_status")
+          %th.no_sort{style: 'width:120px'}= t(".manage_options")
+      %tbody.allocations
+        = render partial: 'enrollments', locals: { allocations: @allocations }
+    = link_to content_tag(:i, nil, class: "icon-ellipsis"), enrollments_allocations_path(page: @allocations.next_page, offer_id: params[:offer_id], group_id: params[:group_id], status: params[:status]), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @allocations.next_page
+  - else
+    .block_content.block_content_text= t(".none_pending_allocation")
 
 = javascript_include_tag "allocations"
+
+

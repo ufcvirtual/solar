@@ -21,20 +21,12 @@
             %th.no_sort{style: "width: 11%"}
         %tbody.allocations
           = render partial: 'pending_allocations', locals: { allocations: @allocations }
-      = link_to content_tag(:i, nil, class: "icon-ellipsis"), search_allocation_administrations_path(page: @allocations.next_page, type: @type_search, value: @text_search), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(".load_allocations") if @allocations.next_page
+      = link_to content_tag(:i, nil, class: "icon-ellipsis"), search_allocation_administrations_path(page: @allocations.next_page, type: @type_search, value: @text_search), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @allocations.next_page
     - else
       .block_content.block_content_text= t(".none_pending_allocation")
 
-= javascript_include_tag "jquery.inview.min"
-
 :javascript
   $(function(){
-    var loading_allocations = false;
-    load_allocations();
-
-    $(window).scroll(function(){
-      load_allocations();
-    });
 
     $('.allocation_requested_list input#text_search').keyup(function(e) {
       if (e.keyCode == 13) { // when pressend enter
@@ -55,17 +47,6 @@
       });
     });
 
-    function load_allocations(){
-      $('a.load-more-allocations').on('inview', function(e, visible) {
-        if (loading_allocations || !visible)
-          return;
-        loading_allocations = true;
-        return $.getScript($(this).attr('href'), function() {
-          return loading_allocations = false;
-        });
-      });
-    }
-
   });
 
   function accept_or_reject(button){
@@ -79,7 +60,7 @@
       var last_removed_tr = $(button).closest("tr").slideUp().remove();
       if ( !$(".allocation_requested_list tbody").children("tr").size() ){
         $(".allocation_requested_list table").hide();
-        $(".allocation_requested_list .block_content").append("<div class='block_content block_content_text'>#{t(".none_pending_allocation")}</div>")
+        $(".allocation_requested_list .block_content_textntent").append("<div class='block_content block_content_text'>#{t(".none_pending_allocation")}</div>")
       }
 
       $("tbody.allocations").undo_action_by_flash_message({

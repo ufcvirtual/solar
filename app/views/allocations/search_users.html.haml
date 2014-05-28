@@ -7,20 +7,9 @@
         %th{style: 'width:200px'}= t(".email")
         %th.no_sort{style: 'width:120px'}= t(".profile")
         %th.no_sort{style: 'width:100px'}= ""
-    %tbody
-      - @users.each do |user|
-        - user_profiles = user.allocations.where(allocation_tag_id: @allocation_tags_ids.split(",")).map(&:profile)
-        - profiles_allocable = ((@admin and can? :users_indication, Administration) ? (Profile.all_except_basic - user_profiles) : profiles_available_for_allocation(user.id, @allocation_tags_ids))
-        - unless (profiles_allocable.nil? or profiles_allocable.empty?)
-          %tr.lines
-            %td= user.name
-            %td{style: 'width:80px'}= user.cpf
-            %td{style: 'width:200px'}= user.email
-            %td{style: 'width:120px'}
-              = select_tag(:profile_id, options_from_collection_for_select(profiles_allocable, :id, :name), prompt: t(".select_profile"))
-            %td{style: 'width:100px'}
-              = hidden_field_tag(:user_id, user.id)
-              = button_tag t(".designate"), type: "button", class: "btn btn_default btn_designate", alt: t(".designate_user", user_name: user.name), :"data-link-create" => create_designation_allocations_path(user_id: user.id, status: Allocation_Activated, allocation_tags_ids: @allocation_tags_ids, admin: @admin), :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids, admin: @admin)
+    %tbody.allocations
+      = render partial: 'search_users', locals: { users: @users }
+  = link_to content_tag(:i, nil, class: "icon-ellipsis"), search_users_allocations_path(page: @users.next_page, user: @text_search, admin: @admin, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @users.next_page
 - else
   .block_content_text_list.text_none 
     = t(".designate_search_no_found")

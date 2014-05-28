@@ -323,6 +323,9 @@
   name: "Name"
   size: "Size"
 
+  #load_itens
+  load_items: "Load more items"
+
   # application controller
   app_controller_require: "Please log!"
   app_controller_require_no: "Please log out!"
@@ -1535,7 +1538,6 @@
       type: Type
       name: Name
       profile: Profile
-      load_allocations: Load more allocations
       page_info: "This page has as goal the acceptance/rejection of profiles requests. If you want to allocate an user, access the %{url} area."
       user_indication: user indication
     pending_allocations:

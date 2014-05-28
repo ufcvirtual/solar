@@ -1,0 +1,6 @@
+$('.allocations').append('#{escape_javascript(render partial: "enrollments", locals: { allocations: @allocations })}');
+$('a.load-more-allocations').attr('href', '#{enrollments_allocations_path(page: @allocations.next_page, offer_id: params[:offer_id], group_id: params[:group_id], status: params[:status])}');
+$(".tb_list").trigger("update");
+
+- unless @allocations.next_page
+  $('a.load-more-allocations').remove();
