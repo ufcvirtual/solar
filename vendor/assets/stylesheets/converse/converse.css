@@ -772,7 +772,7 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
     clear: both;
 }
 
-#chatpanel #converse-roster dd.current-xmpp-contact span {
+#chatpanel #converse-roster dd.current-xmpp-contact span ,#groups{
     font-size: 16px;
     float: left;
     color: rgb(79, 79, 79);
@@ -795,7 +795,7 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
     padding: 2px 5px 0 0;
 }
 
-#chatpanel #converse-roster {
+#chatpanel #converse-roster,#groups {
     height: 224px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -820,7 +820,7 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
 }
 
 #chatpanel #available-chatrooms dt,
-#chatpanel #converse-roster dt {
+#chatpanel #converse-roster dt{
     font-weight: normal;
     font-size: 13px;
     color: #666;
@@ -932,10 +932,11 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
     border-bottom-left-radius: 4px;
 }
 
+
 #chatpanel .oc-chat-content dd {
     margin-left: 0;
     margin-bottom: 0;
-    padding: 1em;
+    padding: 0em;
 }
 
 #chatpanel .oc-chat-content dd.odd {
@@ -1058,6 +1059,7 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px;
     width: 100%;
+    clear:both;
 }
 
 #chatpanel div#chatrooms {
@@ -1330,4 +1332,67 @@ ul.chat-toolbar li:hover {
 	font-family: 'PT Sans', sans-serif;
 	margin-bottom: 5px;
 }
+#groups summary{
+	color:black;
+	margin: 10px 10px 0 0; 
+}
+#groups summary::-webkit-details-marker{
+	display: none;
+}
 
+summary:before { 
+  content: "+"; 
+  color: #ccc; 
+  float: left; 
+  font-size: 1.5em; 
+  font-weight: bold; 
+  margin: -5px 0 0 0; 
+  padding: 0; 
+  width: 15px;
+}
+details[open] summary:before {
+  content: "-";
+}
+#groups details dl{
+	margin: 5px 0px 0px 20px; 
+}
+#controls{
+	font-size: 15px;
+	display: inline;
+}
+#controls{
+	font-size: 15px;
+	display: inline;
+}
+.menu{
+	background-color: white;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	z-index: 5;
+	right: 25px;
+	box-shadow:1px 1px 1px 1px rgb(0,0,0);
+	border-radius:2px;
+	-webkit-box-shadow:1px 1px 1px 1px rgb(0,0,0);
+	-moz-box-shadow:1px 1px 1px 1px rgb(0,0,0);
+	-o-box-shadow:1px 1px 1px 1px rgb(0,0,0);
+	-webkit-border-radius:2px;
+	-moz-border-radius:2px;
+	-o-border-radius:2px;
+}
+#mostrar{
+	clear: both;
+	float: right;
+	cursor: pointer;
+}
+
+#groups details dl dd{
+	font-weight: bold;
+	font-size: 16px;
+}
+
+#groups details dl dd a span{
+	padding: 0 5px 0 0;
+	color: rgb(79, 79, 79);
+}

@@ -13,23 +13,9 @@
       <haml_loud> stylesheet_link_tag "misc/ie7" </haml_loud>
 
     / IM \
-    = javascript_include_tag "converse/components/strophe/strophe"
-    = javascript_include_tag "converse/components/strophe.roster/index"
-    = javascript_include_tag "converse/components/strophe.muc/index"
-    = javascript_include_tag "converse/components/strophe.vcard/index"
-    = javascript_include_tag "converse/components/strophe.disco/index"
-    = javascript_include_tag "converse/components/underscore/underscore"
-    = javascript_include_tag "converse/components/backbone/backbone"
-    = javascript_include_tag "converse/components/backbone.localStorage/backbone.localStorage"
-    = javascript_include_tag "converse/components/tinysort/src/jquery.tinysort"
-    = javascript_include_tag "converse/components/jed/jed"
-    = javascript_include_tag "converse/locale/en/LC_MESSAGES/en"
-    = javascript_include_tag "converse/locale/pt_BR/LC_MESSAGES/pt_BR"
     = javascript_include_tag "converse/converse"
-
     = stylesheet_link_tag "converse/converse"
     / IM \
-
     = stylesheet_link_tag "application", "themes/theme_blue", "fancybox"
 
     = csrf_meta_tag
@@ -196,7 +182,7 @@
   imgDnd = "#{image_path('IM_dnd_Icon.png')}";
   imgOff = "#{image_path('IM_offline_Icon.png')}";
   imgMessage = "#{image_path('IM_message_Icon.png')}";
-  xmpp_cpf = "#{current_user.cpf}";
+  xmpp_cpf = "#{current_user.username}";
   xmpp_ip = "#{@_ip}";
   xmpp_dominio = "#{@_dominio}";
   xmpp_port = "#{@_porta}";
