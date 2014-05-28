@@ -21,7 +21,7 @@
 
   %h2= truncate((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || "", length: 200, omission: '...')
 
-  = render "groups/codes", locals: {groups_codes: @groups_codes}
+  = render "groups/codes"
   
   .line
 

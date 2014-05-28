@@ -33,7 +33,7 @@
           = f.input :start_hour, input_html: {size: 10}, required: true
           = f.input :end_hour, input_html: {size: 10}, required: true
 
-      = render "groups/codes", locals: {groups_codes: @groups_codes}
+      = render "groups/codes"
 
       .schedule_dates{style: "float: right;"}
         .right.right_buttons

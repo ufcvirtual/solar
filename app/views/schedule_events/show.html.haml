@@ -36,7 +36,7 @@
         = label_tag t(".time"), nil, class: "form_label"
         %span.label_info= [@schedule_event.start_hour, @schedule_event.end_hour].join(t(".to"))
       
-    = render "groups/codes", locals: {groups_codes: @groups_codes}
+    = render "groups/codes"
 
     .schedule_dates{style: "float: right;"}
       .right.right_buttons

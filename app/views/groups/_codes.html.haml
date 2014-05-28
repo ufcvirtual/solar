@@ -10,7 +10,7 @@
         .complete.invisible
           - @groups_codes[Max_Groups_Shown_Tags+1..groups_size].each do |group_code|
             %span.collection_check_boxes= group_code
-          .icon= content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".see_less", less: Max_Groups_Shown_Tags))
+          .icon= content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".see_less", less: Max_Groups_Shown_Tags+1))
 
 = javascript_include_tag "tooltip"
 
@@ -20,8 +20,10 @@
       $(".group_label").show();
 
     $(".codes .expand, .codes .compress").click(function(){
-     var parent_div = $($(this).parents(".codes")[0]);
-     parent_div.find(".expand").parent(".icon").slideToggle();
-     parent_div.find(".complete").toggleClass("invisible");
+      var parent_div = $($(this).parents(".codes")[0]);
+      $(parent_div.find(".expand")[0]).parent(".icon").slideToggle();
+      var complete = $(parent_div.find(".complete")[0]);
+      complete.slideToggle();
+      complete.find(".icon").show();
     });
   });

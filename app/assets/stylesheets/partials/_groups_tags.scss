@@ -38,6 +38,10 @@
     color: grey;
   }
 
+  .tags{
+    display: inline-block;
+  }
+
 }
 
 .groups .collection_check_boxes, .groups_tags .collection_check_boxes {
@@ -46,6 +50,12 @@
   color: #fff;
   white-space: nowrap;
   display:inline-block;
+}
+
+.groups, .new_groups{
+  .group_checkbox{
+    display: inline-block;
+  }
 }
 
 .groups, .groups_tags{
@@ -78,5 +88,11 @@
       float: right;
     }
     
+  }
+}
+
+.fancybox-inner{
+  .compress{
+    float: left;
   }
 }

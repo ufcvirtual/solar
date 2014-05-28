@@ -1431,14 +1431,15 @@
       activation: Activation
     groups_tags:
       groups: Groups
-      unbind: Unbind
-      remove: Remove
       add: Add
       cancel: Cancel
       add_group: Add Group
       see_all: See all %{all} groups
       see_less: See %{less} groups
       select_all: Select all
+    tags:
+      unbind: Unbind
+      remove: Remove
     success:
       created: Group was successfully created.
       updated: Group was successfully updated.

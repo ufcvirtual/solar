@@ -5,9 +5,6 @@ function save_webconference(){
 }
 
 $(function(){
-  if ($("#radio_option_group").prop("checked"))
-    $(".group_label").show();
-
   $(".expand, .compress").click(function(){
     $(this).parents('div:first').hide();
     $($(this).parents('div:first').siblings()[0]).show();

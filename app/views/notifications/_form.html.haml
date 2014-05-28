@@ -22,7 +22,7 @@
 
     = f.input :description, as: :ckeditor, label: false
 
-    = render "groups/codes", locals: {groups_codes: @groups_codes}
+    = render "groups/codes"
 
   .form-actions.right_buttons
     = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)

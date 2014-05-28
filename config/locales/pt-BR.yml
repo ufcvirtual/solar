@@ -1582,14 +1582,15 @@
       activation: Ativação
     groups_tags:
       groups: Turmas
-      unbind: Desvincular
-      remove: Excluir
       add: Adicionar
       cancel: Cancelar
       add_group: Adicionar Turma
       see_all: Ver as %{all} turmas
       see_less: Ver %{less} turmas
       select_all: Selecionar todas
+    tags:
+      unbind: Desvincular
+      remove: Excluir
     success:
       created: Turma criada com sucesso.
       updated: Turma atualizada com sucesso.
