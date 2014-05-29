@@ -8,28 +8,9 @@
         %th{style: 'width:80px'}= t(".cpf")
         %th.no_sort{style: 'width:105px'}= ""
         %th.no_sort{style: 'width:135px'}= ""
-    %tbody
-      - @users.each do |user|
-        %tr.lines
-          %td= user.name
-          %td= user.email
-          %td= user.username
-          %td= user.cpf
-          %td= user.status
-          %td{style: 'text-align:right'}
-            %a{class: "info_list btn", :"data-dropdown"=>"#info-dropdown#{user.id}" }= content_tag(:i, nil, class: 'icon-info') + content_tag(:i, nil, class: 'icon-arrow-down-triangle')
-            .dropdown.dropdown-tip{ class: "info_list", id: "info-dropdown#{user.id}" }
-              %ul{ class: "dropdown-menu" }
-                %li= link_to_function t(:details, scope: [:administrations, :users]), "open_administration(this)", :"data-tooltip" => t(:details, scope: [:administrations, :users]), :"show-link" => user_path(user.id)
-                - if can? :allocations_user, Administration
-                  %li= link_to_function t(:allocations, scope: [:administrations, :users]), "open_administration(this)", :"data-tooltip" => t(:allocations, scope: [:administrations, :users]), :"show-link" => allocations_admin_user_path(user.id)
-                %li= link_to_function t(".synchronize"), "synchronize_user(this)", :"data-url" => synchronize_ma_users_path(id: user.id)
-                %li{ class: 'border' }= (label_tag t(:last_accessed, scope: [:administrations, :users]) + ' ' + last_accessed(user.id))
-            .btn-group
-              = link_to_function content_tag(:i, nil, class: 'icon-edit'), "manage(this)", class: "btn", :"data-tooltip" => t(:edit, scope: [:administrations, :users]), :"edit-link" => edit_admin_user_path(user), :"show-link" => admin_user_path(user.id)
-              = link_to_function content_tag(:i, nil, class: 'icon-key'), "change_password(this)", class: "btn", :"data-tooltip" => t(:change_password, scope: [:administrations, :users]), :"edit-link" => reset_password_admin_user_path(user), :"show-link" => admin_user_path(user.id)
-
-  .navigation= will_paginate @users
+    %tbody.allocations
+      = render partial: 'users', locals: { users: @users }
+  = link_to content_tag(:i, nil, class: "icon-ellipsis"), search_admin_users_path(page: @users.next_page, user: @text_search, type_search: @type_search), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @users.next_page
 
 - else
   .block_content_text_list.text_none 

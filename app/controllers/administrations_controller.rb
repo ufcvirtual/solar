@@ -18,9 +18,14 @@ class AdministrationsController < ApplicationController
     begin
       authorize! :users, Administration
 
-      type_search = params[:type_search]
+      @type_search = params[:type_search]
       @text_search = URI.unescape(params[:user]) unless params[:user].nil?
-      @users = User.where("lower(#{type_search}) ~ '#{@text_search.downcase}'").paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) unless @text_search.nil?
+      @users = User.where("lower(#{@type_search}) ~ '#{@text_search.downcase}'").paginate(page: params[:page], per_page: 100)
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
     rescue CanCan::AccessDenied
       render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
     end

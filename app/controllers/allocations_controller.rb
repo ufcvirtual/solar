@@ -45,7 +45,7 @@ class AllocationsController < ApplicationController
     text                 = URI.unescape(params[:user])
     @text_search         = text
     @allocation_tags_ids = params[:allocation_tags_ids]
-    @users               = User.where("lower(name) ~ ?", text.downcase).order(:name).paginate(page: params[:page], per_page: 3)
+    @users               = User.where("lower(name) ~ ?", text.downcase).order(:name).paginate(page: params[:page], per_page: 100)
     @admin               = params[:admin]
 
     respond_to do |format|
