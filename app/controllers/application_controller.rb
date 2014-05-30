@@ -138,7 +138,7 @@ class ApplicationController < ActionController::Base
       params[:locale] = personal_options.default_locale
     end
 
-    I18n.locale = ['pt-BR', 'en-US'].include?(params[:locale]) ? params[:locale] : I18n.default_locale
+    I18n.locale = ['pt-BR', 'en_US'].include?(params[:locale]) ? params[:locale] : I18n.default_locale
     params.delete(:locale) if user_signed_in?
   end
 
