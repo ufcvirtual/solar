@@ -31,9 +31,6 @@
               %td
                 = "#{t(:since)}" if (lesson.schedule.end_date.nil?)
                 = [l(lesson.schedule.start_date, format: :normal), (lesson.schedule.end_date.nil? ? t(:no_end_date) : l(lesson.schedule.end_date, format: :normal))].join(" - ")
-              %td.center{style: "width: 70px"}
-                - status = [Lesson_Test, Lesson_Approved].delete_if {|v| v == lesson.status}
-                = link_to (image_tag "#{(lesson.status == Lesson_Test) ? 'rejected' : 'released'}.png"), "#", class: 'change_lesson_status', :"data-link-update" => change_status_lesson_path(id: lesson.id, status: status, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => (lesson.status == Lesson_Test ?  t(".draft") :  t(".released")), :"data-module-id" => lesson_module.id
   - else
     .block_content.block_content_text= t(:lesson_message)
 
