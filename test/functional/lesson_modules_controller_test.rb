@@ -16,7 +16,7 @@ class LessonModulesControllerTest < ActionController::TestCase
     sign_in @editor
     get :new, {:allocation_tags_ids => "#{allocation_tags(:al3).id}"} 
     assert_not_nil assigns(:allocation_tags_ids)
-    assert_not_nil assigns(:module)
+    assert_not_nil assigns(:lesson_module)
 
     assert_difference("LessonModule.count", 1) do 
       post(:create, {:lesson_module => {:name => "Modulo 01"}, :allocation_tags_ids => "#{assigns(:allocation_tags_ids)}"})
@@ -29,7 +29,7 @@ class LessonModulesControllerTest < ActionController::TestCase
     sign_in users(:professor)
     get :new, {:allocation_tags_ids => "#{allocation_tags(:al2).id}"}
     assert_not_nil assigns(:allocation_tags_ids)
-    assert_nil assigns(:module)
+    assert_nil assigns(:lesson_module)
 
     assert_no_difference("LessonModule.count") do 
       post(:create, {:lesson_module => {:name => "Modulo 01"}, :allocation_tags_ids => "#{assigns(:allocation_tags_ids)}"})
@@ -42,9 +42,9 @@ class LessonModulesControllerTest < ActionController::TestCase
 
   test 'edita modulo' do 
     get :edit, {:id => lesson_modules(:module2).id, :allocation_tags_ids => "#{allocation_tags(:al2).id}"}
-    assert_not_nil assigns(:module)
+    assert_not_nil assigns(:lesson_module)
 
-    put(:update, {:id => assigns(:module).id, :lesson_module => {:name => "Modulo 01"}, :allocation_tags_ids => "#{allocation_tags(:al2).id}"})
+    put(:update, {:id => assigns(:lesson_module).id, :lesson_module => {:name => "Modulo 01"}, :allocation_tags_ids => "#{allocation_tags(:al2).id}"})
 
     assert_response :success
     assert_equal "Modulo 01", assigns(:lesson_module).name

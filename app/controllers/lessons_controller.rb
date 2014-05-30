@@ -34,7 +34,7 @@ class LessonsController < ApplicationController
     @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids])
 
     authorize! :list, Lesson, on: @allocation_tags_ids
-    @academic_allocations = AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where(allocation_tag_id: @allocation_tags_ids.split(",").flatten)
+    @academic_allocations = AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where(allocation_tag_id: @allocation_tags_ids.split(" ").flatten)
   rescue
     render nothing: true, status: 500
   end
@@ -51,7 +51,7 @@ class LessonsController < ApplicationController
         authorize! :show, Lesson, {on: (@curriculum_unit.nil? ? params[:allocation_tags_ids] : [@curriculum_unit.allocation_tag.id]), read: true}
       end
 
-      allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids].split(",").flatten : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+      allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids].split(" ").flatten : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
       @lessons_modules    = LessonModule.to_select(allocation_tags_ids, current_user)
       @lesson       = Lesson.find(params[:id])
       @lessons      = @lesson.lesson_module.lessons_to_open(current_user)
@@ -83,37 +83,37 @@ class LessonsController < ApplicationController
   # POST /lessons.json
   def create
     authorize! :create, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
-  
-    begin
-      params[:lesson][:lesson_module_id] = params[:lesson_module_id]
-      params[:lesson][:user_id] = current_user.id
-      params[:lesson][:order] = Lesson.where(lesson_module_id: params[:lesson_module_id]).maximum(:order).to_i + 1
-      @lesson_module = LessonModule.find(params[:lesson_module_id]) if params[:lesson_module_id].present?
 
-      @lesson = Lesson.new(params[:lesson])
-     
-      Lesson.transaction do
-        @lesson.schedule = Schedule.create!(start_date: params[:start_date], end_date: params[:end_date])
-        @lesson.save!
-      end
-      
-      @lesson.type_lesson == Lesson_Type_File ? files_and_folders(@lesson) : manage_file = false
+    params[:lesson][:lesson_module_id] = params[:lesson_module_id]
+    params[:lesson][:user_id] = current_user.id
+    params[:lesson][:order] = Lesson.where(lesson_module_id: params[:lesson_module_id]).maximum(:order).to_i + 1
+    @lesson_module = LessonModule.find(params[:lesson_module_id]) if params[:lesson_module_id].present?
 
-      render ((manage_file != false) ? {template: "lesson_files/index"} : {json: {success: true, notice: t(:created, scope: [:lessons, :success])}})
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue Exception 
-      @groups_codes    = @lesson_module.groups.map(&:code)
-      params[:success] = false
-      render :new
-    end # rescue
+    @lesson = Lesson.new(params[:lesson])
+   
+    Lesson.transaction do
+      @lesson.schedule = Schedule.create!(start_date: params[:start_date], end_date: params[:end_date])
+      @lesson.save!
+    end
+    
+    @lesson.type_lesson == Lesson_Type_File ? files_and_folders(@lesson) : manage_file = false
+
+    render ((manage_file != false) ? {template: "lesson_files/index"} : {json: {success: true, notice: t(:created, scope: [:lessons, :success])}})
+  rescue ActiveRecord::AssociationTypeMismatch
+    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue => error 
+    @groups_codes    = @lesson_module.groups.map(&:code)
+    params[:success] = false
+    render :new
   end
 
   # GET /lessons/1/edit
   def edit
     authorize! :update, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
-    @lesson_modules = LessonModule.select("DISTINCT ON (id)""lesson_modules"".*").joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: @allocation_tags_ids.split(",").flatten})
+    @lesson_modules = LessonModule.select("DISTINCT ON (id)""lesson_modules"".*").joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: @allocation_tags_ids.split(" ").flatten})
     @lesson         = Lesson.find(params[:id])
     @groups_codes   = @lesson.lesson_module.groups.map(&:code)
   end
@@ -123,7 +123,7 @@ class LessonsController < ApplicationController
   def update
     authorize! :update, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
-    @lesson_modules = LessonModule.select("DISTINCT ON (id)""lesson_modules"".*").joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: @allocation_tags_ids.split(",").flatten})
+    @lesson_modules = LessonModule.select("DISTINCT ON (id)""lesson_modules"".*").joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: @allocation_tags_ids.split(" ").flatten})
     @lesson = Lesson.find(params[:id])
     error = false
     begin

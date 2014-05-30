@@ -23,11 +23,11 @@ class SupportMaterialFilesController < ApplicationController
     authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids]
     
     @support_material = SupportMaterialFile.new material_type: params[:material_type]
-    @groups_codes     = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).map(&:code).uniq
+    @groups_codes     = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:code).uniq
   end
 
   def create
-    authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids].split(",").flatten
+    authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
 
     begin
       @support_material_file = SupportMaterialFile.new params[:support_material_file]
@@ -42,11 +42,11 @@ class SupportMaterialFilesController < ApplicationController
     rescue Exception => error
       if @support_material.is_link?
         @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
-        @allocation_tags_ids = params[:allocation_tags_ids].join(",")
+        @allocation_tags_ids = params[:allocation_tags_ids].join(" ")
         params[:success] = false
         render :new
       else
-        render json: {success: false, alert: @support_material.errors.full_messages.join(' ')}, status: :unprocessable_entity
+        render json: {success: false, alert: @support_material.errors.full_messages.join(" ")}, status: :unprocessable_entity
       end
     end
   end
@@ -90,7 +90,7 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def download
-    allocation_tag_ids = params.include?(:allocation_tag_id) ? params[:allocation_tag_id].split(",").flatten.map(&:to_i).uniq : [(file = SupportMaterialFile.find(params[:id])).academic_allocations.map(&:allocation_tag_id)]
+    allocation_tag_ids = params.include?(:allocation_tag_id) ? params[:allocation_tag_id].split(" ").flatten.map(&:to_i).uniq : [(file = SupportMaterialFile.find(params[:id])).academic_allocations.map(&:allocation_tag_id)]
     
     if params.include?(:type) # baixando alguma pasta ou todas
 
@@ -126,7 +126,7 @@ class SupportMaterialFilesController < ApplicationController
     @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
     authorize! :list, SupportMaterialFile, on: @allocation_tags_ids
 
-    @support_materials = SupportMaterialFile.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).order("attachment_updated_at DESC").uniq
+    @support_materials = SupportMaterialFile.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).order("attachment_updated_at DESC").uniq
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue

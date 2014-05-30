@@ -15,7 +15,7 @@ class ScheduleEventsControllerTest < ActionController::TestCase
     #turmas
     assert_difference(["ScheduleEvent.count", "Schedule.count"], 1) do
       assert_difference(["AcademicAllocation.count"], 3) do
-        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id},#{allocation_tags(:al11).id},#{allocation_tags(:al22).id}", schedule_event: {title: "Prova", type_event: Presential_Test, start_hour: "10:30", end_hour: "11:30", place: "Polo A", schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
+        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id} #{allocation_tags(:al11).id} #{allocation_tags(:al22).id}", schedule_event: {title: "Prova", type_event: Presential_Test, start_hour: "10:30", end_hour: "11:30", place: "Polo A", schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
       end
     end
 
@@ -51,7 +51,7 @@ class ScheduleEventsControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
 
     assert_no_difference(["ScheduleEvent.count", "Schedule.count", "AcademicAllocation.count"]) do
-      post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id},#{allocation_tags(:al11).id},#{allocation_tags(:al22).id}", schedule_event: {title: "Prova", type_event: Presential_Test, start_hour: "10:30", end_hour: "11:30", place: "Polo A", schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
+      post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id} #{allocation_tags(:al11).id} #{allocation_tags(:al22).id}", schedule_event: {title: "Prova", type_event: Presential_Test, start_hour: "10:30", end_hour: "11:30", place: "Polo A", schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
     end
 
     assert_response :redirect

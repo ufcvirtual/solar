@@ -7,12 +7,12 @@ class LessonModulesController < ApplicationController
   def new
     @allocation_tags_ids = params[:allocation_tags_ids]
     authorize! :new, LessonModule, on: @allocation_tags_ids
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).map(&:code).uniq
-    @module = LessonModule.new
+    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:code).uniq
+    @lesson_module = LessonModule.new
   end
 
   def create
-    @allocation_tags_ids = params[:allocation_tags_ids].split(",").flatten
+    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     # teste para allocation_tag qualquer apenas para verificar validade dos dados
     lesson_module = LessonModule.new(name: params[:lesson_module][:name])
 
@@ -34,14 +34,14 @@ class LessonModulesController < ApplicationController
     render nothing: true, status: 500
   rescue
     @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
-    @allocation_tags_ids = @allocation_tags_ids.join(",")
+    @allocation_tags_ids = @allocation_tags_ids.join(" ")
     render :new, status: 200
   end
 
   def edit
     authorize! :edit, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids]
-    @module = LessonModule.find(params[:id])
-    @groups_codes = @module.groups.map(&:code)
+    @lesson_module = LessonModule.find(params[:id])
+    @groups_codes = @lesson_module.groups.map(&:code)
   end
 
   def update

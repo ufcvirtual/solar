@@ -12,7 +12,7 @@ class Ability
 
     def have_permission?(user, action, object_class, object, options)
       if options.include?(:on) # on allocation_tags
-        return have_permission_on_allocation_tags?(user, action, object_class, options[:on].split(",").flatten.map(&:to_i), !!options[:read])
+        return have_permission_on_allocation_tags?(user, action, object_class, options[:on].split(" ").flatten.map(&:to_i), !!options[:read])
       else
         return have_permission_access?(user, action, object_class, object)
       end
@@ -20,7 +20,7 @@ class Ability
 
     ## a verificacao de permissao para leitura considera todas as at relacionadas
     def have_permission_on_allocation_tags?(user, action, object_class, allocation_tags, read = false)
-      ( user.allocation_tags_ids_with_access_on(alias_action(action.first), object_class.to_s.underscore.pluralize, read) & allocation_tags ).sort == allocation_tags.sort
+      ( allocation_tags - user.allocation_tags_ids_with_access_on(alias_action(action.first), object_class.to_s.underscore.pluralize, read) ).empty?
     end # have permission on allocation tags
 
     def have_permission_access?(user, action, object_class, object)

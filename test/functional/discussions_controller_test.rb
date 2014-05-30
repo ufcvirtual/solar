@@ -54,16 +54,15 @@ class DiscussionsControllerTest < ActionController::TestCase
 
     get :list, {allocation_tags_ids: "#{quimica}"}
 
-    assert_response :redirect
-    assert_redirected_to home_path
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    assert_response :unauthorized
+    assert_equal get_json_response("alert"), I18n.t(:no_permission)
   end
 
   test "criar forum" do
     #turmas
     assert_difference(["Discussion.count", "Schedule.count"], 1) do
       assert_difference(["AcademicAllocation.count"], 3) do
-        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id},#{allocation_tags(:al11).id},#{allocation_tags(:al22).id}", discussion: {name: "Testa modulo3", description: "Assignment para testar modulo", schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
+        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id} #{allocation_tags(:al11).id} #{allocation_tags(:al22).id}", discussion: {name: "Testa modulo3", description: "Assignment para testar modulo", schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
       end
     end
 

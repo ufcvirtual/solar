@@ -27,7 +27,7 @@ class CurriculumUnitsControllerTest < ActionController::TestCase
   test "nao lista ucs - sem permissao" do
     sign_in users(:aluno1)
     get :index, {type_id: curriculum_unit_types(:distancia).id}
-    assert_response :redirect
+    assert_response :unauthorized
     assert assigns(:curriculum_units).empty?
   end
 

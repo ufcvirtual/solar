@@ -6,11 +6,11 @@ class ScheduleEventsController < ApplicationController
     authorize! :new, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @schedule_event = ScheduleEvent.new
     @schedule_event.build_schedule(start_date: Date.current, end_date: Date.current)
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).map(&:code).uniq
+    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:code).uniq
   end
 
   def create
-    authorize! :new, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(",").flatten
+    authorize! :new, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     @schedule_event = ScheduleEvent.new params[:schedule_event]
 
     begin
@@ -23,7 +23,7 @@ class ScheduleEventsController < ApplicationController
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue 
       @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
-      @allocation_tags_ids = @allocation_tags_ids.join(",")
+      @allocation_tags_ids = @allocation_tags_ids.join(" ")
       render :new
     end
   end

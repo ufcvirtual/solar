@@ -12,7 +12,7 @@ class AllocationsController < ApplicationController
     @allocation_tags_ids = if (not params.include?(:admin) or params.include?(:allocation_tags_ids))
        params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : [] 
     else
-      AllocationTag.get_by_params(params)[:allocation_tags].join(",")
+      AllocationTag.get_by_params(params)[:allocation_tags].join(" ")
     end
 
     begin
@@ -29,7 +29,7 @@ class AllocationsController < ApplicationController
       
       @allocations = Allocation.all(
         joins: [:profile, :user],
-        conditions: ["#{level_search} and allocation_tag_id IN (?)", @allocation_tags_ids.split(",").flatten],
+        conditions: ["#{level_search} and allocation_tag_id IN (?)", @allocation_tags_ids.split(" ").flatten],
         order: ["users.name", "profiles.name"]) 
     rescue CanCan::AccessDenied
       render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
@@ -132,7 +132,7 @@ class AllocationsController < ApplicationController
     raise t("allocations.error.profile") if params[:profile].blank?
     
     allocations = Array.new
-    ok = allocate(allocation_tags_ids.split(",").flatten, allocations, user, profile, status)
+    ok = allocate(allocation_tags_ids.split(" ").flatten, allocations, user, profile, status)
 
     unless params.include?(:request)
       case ok

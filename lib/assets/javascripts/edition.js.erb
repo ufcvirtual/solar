@@ -148,7 +148,7 @@ $(function(){
     data_function: function() {
       return {
         radio_option: $("[name='radio[option]']:checked").val(),
-        groups_id: $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).get().join(",") // formato: "id+id+id+id"
+        groups_id: $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).get().join(" ") // formato: "id+id+id+id"
       };
     }
   });

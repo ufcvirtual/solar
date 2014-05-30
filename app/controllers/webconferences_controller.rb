@@ -16,7 +16,7 @@ class WebconferencesController < ApplicationController
     @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
     authorize! :list, Webconference, on: @allocation_tags_ids
 
-    @webconferences = Webconference.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).uniq
+    @webconferences = Webconference.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).uniq
   end
 
   # GET /webconferences/new
@@ -25,7 +25,7 @@ class WebconferencesController < ApplicationController
     authorize! :create, Webconference, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @webconference = Webconference.new
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).map(&:code).uniq
+    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:code).uniq
   end
 
   # GET /webconferences/1/edit
@@ -39,7 +39,7 @@ class WebconferencesController < ApplicationController
   # POST /webconferences
   # POST /webconferences.json
   def create
-    authorize! :create, Webconference, on: @allocation_tags_ids = params[:allocation_tags_ids].split(",").flatten
+    authorize! :create, Webconference, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
 
     @webconference = Webconference.new(params[:webconference])
     @webconference.moderator = current_user
@@ -54,7 +54,7 @@ class WebconferencesController < ApplicationController
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
       @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
-      @allocation_tags_ids = @allocation_tags_ids.join(",")
+      @allocation_tags_ids = @allocation_tags_ids.join(" ")
       params[:success] = false
       render :new
     end

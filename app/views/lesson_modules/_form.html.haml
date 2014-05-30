@@ -1,4 +1,4 @@
-= simple_form_for(@module, html: {id: "module_form"}) do |f|
+= simple_form_for(@lesson_module, html: {id: "module_form"}) do |f|
   %span.form_requirement= t(:required_fields)
   %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit_lesson_module : :new_module), scope: [:lessons, :list])
 

@@ -16,7 +16,7 @@ class AssignmentsController < ApplicationController
     @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
     authorize! :list, Assignment, on: @allocation_tags_ids
 
-    @assignments = Assignment.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).order("name").uniq
+    @assignments = Assignment.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).order("name").uniq
   end
 
   def new
@@ -26,7 +26,7 @@ class AssignmentsController < ApplicationController
     @assignment.build_schedule(start_date: Date.current, end_date: Date.current)
     @assignment.enunciation_files.build
 
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids.split(",")].flatten}).map(&:code).uniq
+    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids.split(" ")].flatten}).map(&:code).uniq
   end
 
   def edit
@@ -41,7 +41,7 @@ class AssignmentsController < ApplicationController
   end
 
   def create
-    authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].split(",").flatten
+    authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
 
     @assignment = Assignment.new params[:assignment]
 
@@ -59,7 +59,7 @@ class AssignmentsController < ApplicationController
 
       @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
-      @allocation_tags_ids = @allocation_tags_ids.join(",")
+      @allocation_tags_ids = @allocation_tags_ids.join(" ")
 
       render :new
     end

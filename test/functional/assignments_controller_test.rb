@@ -62,7 +62,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "edicao - criar trabalho sem arquivos no enunciado" do
     assert_difference(["Assignment.count", "Schedule.count"], 1) do
       assert_difference(["AcademicAllocation.count"], 3) do
-        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id},#{allocation_tags(:al11).id},#{allocation_tags(:al22).id}", assignment: {name: "Testa modulo3", enunciation: "Assignment para testar modulo", type_assignment: 0, schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
+        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id} #{allocation_tags(:al11).id} #{allocation_tags(:al22).id}", assignment: {name: "Testa modulo3", enunciation: "Assignment para testar modulo", type_assignment: 0, schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
       end
     end
 
@@ -72,7 +72,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "edicao - criar trabalho com arquivos no enunciado para varias turmas de Quimica I" do
     assert_difference(["Assignment.count", "Schedule.count"], 1) do
       assert_difference(["AcademicAllocation.count", "AssignmentEnunciationFile.count"], 3) do
-        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id},#{allocation_tags(:al11).id},#{allocation_tags(:al22).id}",
+        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id} #{allocation_tags(:al11).id} #{allocation_tags(:al22).id}",
           assignment: {name: "Testa modulo3", enunciation: "Assignment para testar modulo", type_assignment: 0,
             schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month},
             enunciation_files_attributes: {

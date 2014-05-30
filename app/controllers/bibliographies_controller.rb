@@ -8,7 +8,7 @@ class BibliographiesController < ApplicationController
     @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
     authorize! :list, Bibliography, on: @allocation_tags_ids
 
-    @bibliographies      = Bibliography.all_by_allocation_tags(@allocation_tags_ids.split(",").flatten)
+    @bibliographies      = Bibliography.all_by_allocation_tags(@allocation_tags_ids.split(" ").flatten)
   end
 
   # GET /bibliographies
@@ -25,7 +25,7 @@ class BibliographiesController < ApplicationController
     @bibliography = Bibliography.new type_bibliography: params[:type_bibliography]
     @bibliography.authors.build
 
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(",").flatten}).map(&:code).uniq
+    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:code).uniq
   end
 
   # GET /bibliographies/1/edit
@@ -38,7 +38,7 @@ class BibliographiesController < ApplicationController
 
   # POST /bibliographies
   def create
-    authorize! :create, Bibliography, on: @allocation_tags_ids = params[:allocation_tags_ids].split(",").flatten
+    authorize! :create, Bibliography, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     @bibliography = Bibliography.new(params[:bibliography])
 
     begin
@@ -46,12 +46,12 @@ class BibliographiesController < ApplicationController
         @bibliography.save!
         @bibliography.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
       end
-      render json: {success: true, notice: t(:created, scope: [:bibliographies, :success])}
+    render json: {success: true, notice: t(:created, scope: [:bibliographies, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
       @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
-      @allocation_tags_ids = @allocation_tags_ids.join(",")
+      @allocation_tags_ids = @allocation_tags_ids.join(" ")
       params[:success] = false
       render :new
     end

@@ -8,7 +8,7 @@ class AgendasController < ApplicationController
     @allocation_tags = (active_tab[:url][:allocation_tag_id].nil?) ? current_user.activated_allocation_tag_ids : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.uniq
     @link            = not(params[:list_all_schedule].nil?) # apresentacao dos links de todas as schedules
     @schedule        = Agenda.events(@allocation_tags, true, Date.parse(params[:date])) 
-    @allocation_tags = @allocation_tags.join(",")
+    @allocation_tags = @allocation_tags.join(" ")
     render layout: false
   end
 
@@ -29,7 +29,7 @@ class AgendasController < ApplicationController
 
   # eventos para exibição no calendário
   def events
-    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : params[:allocation_tags_ids].split(",").flatten)
+    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : params[:allocation_tags_ids].split(" ").flatten)
     authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
 
     events = (params.include?("list") ? 
@@ -37,7 +37,7 @@ class AgendasController < ApplicationController
       Event.descendants.map{ |event| event.scoped.between(params['start'], params['end'], @allocation_tags_ids) }.uniq )
     @events = [events].flatten.map(&:schedule_json).uniq
 
-    @allocation_tags_ids = @allocation_tags_ids.join(",")
+    @allocation_tags_ids = @allocation_tags_ids.join(" ")
     render json: @events
   end
 
