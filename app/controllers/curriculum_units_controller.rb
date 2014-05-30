@@ -40,11 +40,14 @@ class CurriculumUnitsController < ApplicationController
       if not(params[:curriculum_unit_id].blank?)
         @curriculum_units = CurriculumUnit.where(id: params[:curriculum_unit_id])
       else
-        @curriculum_units = @type.curriculum_units
+        allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "curriculum_units")
+        @curriculum_units   = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
       end
 
       render partial: 'curriculum_units/index'
     end
+  rescue
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   # Mobilis

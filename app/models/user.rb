@@ -199,6 +199,23 @@ class User < ActiveRecord::Base
     allocation_tags.where(allocations: {status: Allocation_Activated.to_i}).map(&map.to_sym).flatten.uniq
   end
 
+  # Returns all allocation_tags_ids with activated access on informed actions of controller
+  def allocation_tags_ids_with_access_on(actions, controller, all = false)
+    allocations_tags = allocations.joins(profile: :resources)
+      .where(resources: {action: actions, controller: controller}, status: Allocation_Activated)
+      .select("DISTINCT allocation_tag_id").map(&:allocation_tag).compact
+    allocations_tags.map{|at| (all ? at.related : at.related({lower: true}))}.flatten.uniq
+  end
+
+  # Returns user resources list as [{controller: :action}, ...] at informed allocation_tags_ids
+  def resources_by_allocation_tags_ids(allocation_tags_ids)
+    allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids.split(",")).map{|at| at.related({upper: true})}.flatten.uniq
+    profiles.joins(:resources).where("allocations.allocation_tag_id IN (?) AND allocations.status = ?", allocation_tags_ids, Allocation_Activated)
+      .map(&:resources).compact.flatten.map{|resource| 
+        {resource.controller.to_sym => resource.action.to_sym}
+      }
+  end
+
   def active_for_authentication?
     super and self.active
   end

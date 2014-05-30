@@ -67,4 +67,8 @@ class Semester < ActiveRecord::Base
     return (current_semesters + semesters_of_current_offers).uniq
   end
 
+  def offers_by_allocation_tags(allocation_tags_ids, opts = {})
+    offers.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).where(opts.reject { |k,v| v.blank? })
+  end
+
 end

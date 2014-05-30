@@ -33,6 +33,7 @@
 :javascript
 
   jQuery(function($){
+    $("#curriculum_unit").combobox("enable");
     var type_id = "#{@curriculum_unit.curriculum_unit_type_id}";
 
     if (type_id == "3")

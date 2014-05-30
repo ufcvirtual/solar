@@ -27,7 +27,7 @@ class LessonModulesControllerTest < ActionController::TestCase
 
   test 'nao cria modulo - sem permissao' do 
     sign_in users(:professor)
-    get :new, {:allocation_tags_ids => "#{allocation_tags(:al2).id}"} 
+    get :new, {:allocation_tags_ids => "#{allocation_tags(:al2).id}"}
     assert_not_nil assigns(:allocation_tags_ids)
     assert_nil assigns(:module)
 

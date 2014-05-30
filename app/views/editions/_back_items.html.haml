@@ -8,10 +8,9 @@
     erase_flash_messages();
 
     var data = {
-      course_id: $("#course").combobox("value"),
-      curriculum_unit_id: $("#curriculum_unit").combobox("value"),
-      semester_id: $("#semester").combobox("value"),
-      groups_id: $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).get().join(",")
+      allocation_tags_ids: $("#allocation_tags_ids").val(),
+      selected: $("#selected").val(),
+      offer_id: $("#offer_id").val()
     };
 
     $.get($(this).attr("href"), data, function(data){ $(".edition_items").replaceWith(data); });

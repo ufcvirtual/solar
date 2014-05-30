@@ -72,7 +72,7 @@ class DiscussionsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue 
-      @allocation_tags_ids = @allocation_tags_ids.join(" ")
+      @allocation_tags_ids = @allocation_tags_ids.join(",")
       @groups_codes = @discussion.groups.map(&:code)
       render :edit
     end

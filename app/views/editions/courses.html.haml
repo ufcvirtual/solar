@@ -12,7 +12,7 @@
       = label_tag :course, t(".course")
       = select_tag :course, options_from_collection_for_select(@courses, "id", "code_name"), include_blank: true, :"data-optional" => true
 
-    = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => courses_path, id: "search", :"data-load-to" => "courses_list"}
+    = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => courses_path(type_id: @type.id), id: "search", :"data-load-to" => "courses_list"}
 
 .courses_list
   = render "courses/index"

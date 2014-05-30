@@ -15,7 +15,7 @@
 
     - if @offers.empty?
       %tr
-        %td{colspan: 4}
+        %td{colspan: 6}
           .block_content_text_list.text_none= t(".none")
     - else
       - @offers.each do |offer|
@@ -29,8 +29,7 @@
             %td.semester_same_dates= t(".same_dates_from_offer")
           - else
             %td= [l(offer.period_schedule.start_date, format: :normal), l(offer.period_schedule.end_date, format: :normal)].join(" - ")
-          %td
-            = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn link_edit_offer', :'data-tooltip' => t(".offer_edit"), disabled: not(can? :edit, Offer, on: [offer.allocation_tag.id]), :"data-semester-name" => offer.semester.name, :"data-link-edit" => edit_offer_path(offer, type_id: @type_id)
+          %td= link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn link_edit_offer', :'data-tooltip' => t(".offer_edit"), :"data-semester-name" => offer.semester.name, :"data-link-edit" => edit_offer_path(offer, type_id: @type_id)
 
 :javascript
 

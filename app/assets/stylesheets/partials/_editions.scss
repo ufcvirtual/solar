@@ -31,6 +31,8 @@ fieldset {
 
 .ui-autocomplete {
   z-index: 60 !important;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .filter_type .ui-autocomplete, .filter .ui-autocomplete{

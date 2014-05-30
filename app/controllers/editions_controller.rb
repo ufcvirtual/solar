@@ -4,11 +4,13 @@ class EditionsController < ApplicationController
 
   def items
     allocation_tags = AllocationTag.get_by_params(params, true)
-    authorize! :content, Edition, on: (@allocation_tags_ids = allocation_tags[:allocation_tags])
-    @selected, @offer_id = allocation_tags[:selected], allocation_tags[:offer_id]
+    @allocation_tags_ids, @selected, @offer_id = allocation_tags.values_at(:allocation_tags, :selected, :offer_id)
+    authorize! :content, Edition, on: @allocation_tags_ids
+    @user_profiles       = current_user.resources_by_allocation_tags_ids(@allocation_tags_ids)
+    @allocation_tags_ids = @allocation_tags_ids.join(",")
 
     render partial: "items"
-  rescue
+  rescue 
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
@@ -24,8 +26,9 @@ class EditionsController < ApplicationController
   def courses
     authorize! :courses, Edition
 
+    allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "courses")
+    @courses = Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
     @type    = CurriculumUnitType.find(params[:curriculum_unit_type_id])
-    @courses = Course.all
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
@@ -34,7 +37,8 @@ class EditionsController < ApplicationController
     authorize! :curriculum_units, Edition
 
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
-    @curriculum_units = @type.curriculum_units
+    allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "curriculum_units")
+    @curriculum_units   = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
@@ -44,9 +48,11 @@ class EditionsController < ApplicationController
     @periods  = [[t(:actives, scope: [:editions, :semesters]), "active"], [t(:all, scope: [:editions, :semesters]), "all"]]
     @periods += Schedule.joins(:semester_periods).map {|p| [p.start_date.year, p.end_date.year] }.flatten.uniq.sort! {|x,y| y <=> x} # desc
 
+    @allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers")
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
-    @curriculum_units = @type.curriculum_units
-    @courses   = (@type.id == 3 ? Course.all_associated_with_curriculum_unit_by_name : Course.all)
+    
+    @curriculum_units = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
+    @courses   = ( @type.id == 3 ? Course.all_associated_with_curriculum_unit_by_name : @courses = Course.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}) )
     @semesters = Semester.all_by_period({period: params[:period]}) # semestres do período informado ou ativos
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized

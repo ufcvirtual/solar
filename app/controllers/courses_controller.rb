@@ -13,7 +13,8 @@ class CoursesController < ApplicationController
       if (not params[:course_id].blank?)
         @courses = Course.where(id: params[:course_id])
       else
-        @courses = Course.all
+        allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "courses")
+        @courses = Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
       end
       render partial: 'courses/index'
     end

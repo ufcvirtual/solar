@@ -35,7 +35,7 @@
           %td= curriculum_unit.code
           %td= curriculum_unit.name
           %td{:align => "left"}= @type.description
-          %td{:align => "right"}= link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit', :'data-tooltip' => t(".edit", uc_or_module: t_tool_name),  disabled: not(can? :update, curriculum_unit), :"data-link-edit" => edit_curriculum_unit_path(curriculum_unit)
+          %td{:align => "right"}= link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit', :'data-tooltip' => t(".edit", uc_or_module: t_tool_name), :"data-link-edit" => edit_curriculum_unit_path(curriculum_unit)
 
 :javascript
 

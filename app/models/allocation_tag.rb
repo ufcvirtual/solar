@@ -238,7 +238,8 @@ class AllocationTag < ActiveRecord::Base
     allocation_tags_ids = []
 
     if params.include?(:allocation_tags_ids)
-      allocation_tags_ids = params[:allocation_tags_ids]
+      allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
+      selected, offer_id  = params[:selected], params[:offer_id]
     elsif params[:groups_id].blank?
       if params.include?(:semester_id) and (not params[:semester_id] == "")
         offer = Offer.where(semester_id: params[:semester_id], course_id: params[:course_id])

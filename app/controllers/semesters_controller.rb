@@ -11,8 +11,8 @@ class SemestersController < ApplicationController
     else
       p = {}
       p[:course_id] = params[:course_id] if params[:course_id].present?
-      p[:uc_id] = params[:curriculum_unit_id] if params[:curriculum_unit_id].present?
-      p[:period] = params[:period] if params[:period].present?
+      p[:uc_id]     = params[:curriculum_unit_id] if params[:curriculum_unit_id].present?
+      p[:period]    = params[:period] if params[:period].present?
 
       # [active, all, year]
       if params[:period] == "all"
@@ -29,6 +29,7 @@ class SemestersController < ApplicationController
     if params[:combobox]
       render json: { 'html' => render_to_string(partial: 'select_semester.html', locals: { semesters: @semesters }) }
     else
+      @allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers")
       render layout: false
     end
   end
