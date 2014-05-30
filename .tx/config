@@ -1,0 +1,21 @@
+[main]
+host = https://www.transifex.com
+lang_map = en_US: en-US
+
+[solar-2.main]
+file_filter = config/locales/<lang>.yml
+source_file = config/locales/pt-BR.yml
+source_lang = pt_BR
+type = YAML
+
+[solar-2.doorkeeper]
+file_filter = config/locales/doorkeeper/doorkeeper.<lang>.yml
+source_file = config/locales/doorkeeper/doorkeeper.pt-BR.yml
+source_lang = pt_BR
+type = YAML
+
+[solar-2.simple_form]
+file_filter = config/locales/simple_form/simple_form.<lang>.yml
+source_file = config/locales/simple_form/simple_form.pt-BR.yml
+source_lang = pt_BR
+type = YAML
