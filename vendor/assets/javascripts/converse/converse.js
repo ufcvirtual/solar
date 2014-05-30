@@ -11515,7 +11515,7 @@ return parser;
             },
 
             messageReceived: function (message) {
-                alert("foi");
+                
                 var $message = $(message),
                     body = converse.autoLink($message.children('body').text()),
                     from = Strophe.getBareJidFromJid($message.attr('from')),
