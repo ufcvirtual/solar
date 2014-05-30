@@ -182,7 +182,7 @@
   imgDnd = "#{image_path('IM_dnd_Icon.png')}";
   imgOff = "#{image_path('IM_offline_Icon.png')}";
   imgMessage = "#{image_path('IM_message_Icon.png')}";
-  xmpp_cpf = "#{current_user.username}";
+  xmpp_cpf = "#{current_user.cpf}";
   xmpp_ip = "#{@_ip}";
   xmpp_dominio = "#{@_dominio}";
   xmpp_port = "#{@_porta}";
@@ -229,7 +229,11 @@
         $("#chat").click();
         },750);
     }
-    
+    if(cookie_im.Groups){
+      setTimeout(function(e){
+        $("#order").click();
+      },1450);
+    }
   });
 
   $(function(){
