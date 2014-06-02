@@ -32,6 +32,66 @@ en_US:
       discussion_post_hour: "%H:%M h"
       simple_day_and_month: "%d/%b"
       at_date: "%d/%m/%Y at %H:%M"
+  datetime:
+    distance_in_words:
+      half_a_minute: 'half a minute'
+      less_than_x_minutes:
+        one: 'less than one minute'
+        other: 'less than %{count} minutes'
+      x_minutes:
+        one: '1 minute'
+        other: '%{count} minutes'
+      about_x_hours:
+        one: 'approximately 1 hour'
+        other: 'approximately %{count} hours'
+      x_days:
+        one: '1 day'
+        other: '%{count} days'
+      about_x_months:
+        one: 'approximately 1 month'
+        other: 'approximately %{count} months'
+      x_months:
+        one: '1 month'
+        other: '%{count} months'
+      about_x_years:
+        one: 'approximately 1 year'
+        other: 'approximately %{count} years'
+      over_x_years:
+        one: 'over 1 year'
+        other: 'over %{count} years'
+    prompts:
+      year: "Year"
+      month: "Month"
+      day: "Day"
+      hour: "Hour"
+      minute: "Minute"
+      second: "Seconds"
+  number:
+    human:
+      storage_units:
+        units:
+          byte:
+            one: "Byte"
+            other: "Bytes"
+          kb: "KB"
+          mb: "MB"
+          gb: "GB"
+          tb: "TB"
+      decimal_units:
+        units:
+          thousand: "thousand"
+          million:
+            one: million
+            other: millions
+          billion:
+            one: billion
+            other: billions
+          trillion:
+            one: trillion
+            other: trillions
+          quadrillion:
+            one: quadrillion
+            other: quadrillions
   activerecord:
     models:
       course: Course
@@ -64,6 +124,8 @@ en_US:
     attributes:
       user:
         password: "Password"
+        current_password: "Password"
+        new_password: "New Password"
         username: "Login"
         name: "Name"
         nick: "Nick"
@@ -829,6 +891,8 @@ en_US:
     new:
       groups: Groups
     list:
+      'yes': 'Yes'
+      'no': 'No'
       groups: "Groups:"
       new: New Assignment
       edit: Edit Assignment
@@ -1883,6 +1947,8 @@ en_US:
       phrase: "Phrase: "
       site: "Site: "
       integrated: "Integrated with Módulo Acadêmico: "
+      y: 'Yes'
+      n: 'No'
     import:
       success: "Users successfully imported"
       success_with_warning: "Errors found in import of some users<br/><br/>%{log}"
