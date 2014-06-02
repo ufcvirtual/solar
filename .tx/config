@@ -1,6 +1,5 @@
 [main]
 host = https://www.transifex.com
-lang_map = en_US: en-US
 
 [solar-2.main]
 file_filter = config/locales/<lang>.yml

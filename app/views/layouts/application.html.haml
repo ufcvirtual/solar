@@ -149,7 +149,7 @@
                   Bate-Papo
 
       #footer_push{style: "height:35px"}
-      - locales =  %w(pt-BR en_US)
+      - locales =  %w(pt_BR en_US)
       - selected = I18n.locale.to_s
       #footer
         %ul
@@ -175,7 +175,7 @@
   });
 
 
-  // IM 
+  // IM
 
   imgOn = "#{image_path('IM_online_Icon.png')}";
   imgAway = "#{image_path('IM_away_Icon.png')}";
@@ -264,7 +264,7 @@
   })
 
 
-  // Synchronizing user 
+  // Synchronizing user
   $(function(){
     $("#synchronize").click(function(){
       $.get($(this).data("url"), function(data){

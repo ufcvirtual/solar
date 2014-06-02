@@ -1,6 +1,6 @@
 ##########
 # Variaveis de sessao do usuario
-# 
+#
 # user_session {
 #   :current_page,
 #   :menu,
@@ -138,7 +138,7 @@ class ApplicationController < ActionController::Base
       params[:locale] = personal_options.default_locale
     end
 
-    I18n.locale = ['pt-BR', 'en_US'].include?(params[:locale]) ? params[:locale] : I18n.default_locale
+    I18n.locale = ['pt_BR', 'en_US'].include?(params[:locale]) ? params[:locale] : I18n.default_locale
     params.delete(:locale) if user_signed_in?
   end
 
@@ -150,13 +150,13 @@ class ApplicationController < ActionController::Base
   private
 
     def set_tab_by_context
-      if user_signed_in? 
+      if user_signed_in?
         if controller_path == "devise/users" # Aba Home para edição de dados do usuário (devise)
           set_active_tab_to_home
         elsif params.include?('mid') # Seleciona aba de acordo com o contexto do menu
           tab_context_id  = active_tab[:url][:context]
           current_menu_id = params[:mid]
-          
+
           if MenusContexts.find_all_by_menu_id_and_context_id(current_menu_id, tab_context_id).empty?
             menu_context_id = MenusContexts.find_by_menu_id(current_menu_id).context_id
             tab_name = find_tab_by_context(menu_context_id)

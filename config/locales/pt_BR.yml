@@ -1,4 +1,4 @@
-"pt-BR":
+pt_BR:
 
   will_paginate:
     previous_label: "« Anterior"
@@ -18,7 +18,7 @@
     abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, Sáb]
     month_names: [Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
     abbr_month_names: [Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez]
-    order: 
+    order:
         - :day
         - :month
         - :year
@@ -239,10 +239,10 @@
         prerequisites: Pré-requisitos
         resume: Resumo
         passing_grade: Média
-      course: 
+      course:
         name: Nome
-        code: Código   
-      discussion_post: 
+        code: Código
+      discussion_post:
         content: Conteúdo
       public_file:
         attachment_content_type: ""
@@ -679,7 +679,7 @@
       group: Turma
     not_defined: Não definido
 
-  enrollm_request_cancel_message: "Pedido de matrícula cancelado"  
+  enrollm_request_cancel_message: "Pedido de matrícula cancelado"
   enrollm_cancelled_message: "Matrícula cancelada"
   enrollm_not_cancelled_message: "Matrícula não cancelada"
   enrollm_reactivated_message: "Matrícula reativada"
@@ -735,13 +735,13 @@
     index:
       lesson_table_date: Data de acesso
       lesson_table_title: "Aulas disponíveis"
-    list: 
+    list:
       lesson: Aula
       order: Ordem
       name: Nome da aula
       availability: Disponibilidade
       acceptance: Aprovação
-      since: A partir de 
+      since: A partir de
       none: Nenhuma aula cadastrada
       new: Nova aula
       new_lesson: Nova aula
@@ -781,7 +781,7 @@
     files:
       new_folder: Nova Pasta
     errors:
-      cant_delete: "Aula tornou-se rascunho, pois estava disponível para uso dos alunos!"  
+      cant_delete: "Aula tornou-se rascunho, pois estava disponível para uso dos alunos!"
       invalid_lesson_to_download: Apenas aulas do tipo de arquivo e não vazias podem ser baixadas
       deleted: Não foi possível deletar as aulas
       must_select_module: Um módulo destino deve ser selecionado
@@ -791,7 +791,7 @@
       moved: Aulas movidas com sucesso
       created: Aula criada com sucesso.
       updated: Aula atualizada com sucesso.
-    form: 
+    form:
       cancel: Cancelar
       groups: Turmas
     select_lesson:
@@ -1308,7 +1308,7 @@
   places_nav_panel_to_offer: Ofertar
   places_nav_panel_to_manage: Gerenciar
 
-  #Course 
+  #Course
   new_course_title: Cadastro de Curso
   update_course_title: Atualização de Curso
 
@@ -1506,7 +1506,7 @@
       profile_canceled: Perfil cancelado
       rejected: rejeitada
       accepted: aceita
-      allocation_tag_path: "em %{path}" 
+      allocation_tag_path: "em %{path}"
       request_message: "Solicitação de %{user_name} para perfil de %{profile_name} %{path} foi %{action}. %{undo_url}"
       undone_action: "Ação desfeita com sucesso"
     error:
@@ -1538,7 +1538,7 @@
       subject: "[SOLAR] Matrícula aceita"
 
   assignments:
-    index: 
+    index:
       expand_enunciation: Expandir enunciado
       compress_enunciation: Comprimir enunciado
       delete_assignment: Deletar trabalhos
@@ -1609,7 +1609,7 @@
       last_group: Não é possível fazer alteração. Ferramenta deve possuir alguma turma.
       option_not_found: Opção não encontrada.
       cant_transfer_dependencies: Possui dependencias que não podem ser perdidas ou copiadas.
-    groups_checkboxes:  
+    groups_checkboxes:
       select_all: Selecionar todas
       no_groups: "Não há turmas"
       see_all: Ver as %{all} turmas
@@ -1626,7 +1626,7 @@
         code: Código
 
   email: Email
-  cpf: "CPF" 
+  cpf: "CPF"
   active: Ativo
   blocked: Bloqueado
   administrations:
@@ -1639,7 +1639,7 @@
       details: "Informações detalhadas"
       allocations: "Alocações"
       last_accessed: "Último acesso"
-      edit: Editar      
+      edit: Editar
       change_password: Alterar senha
       message_not_found: "Usuário não encontrado"
     informations:
@@ -1860,7 +1860,7 @@
       course: Curso
       curriculum_unit: Unidade Curricular
       date_range: Período
-      enrollment_period: Período de Matrícula 
+      enrollment_period: Período de Matrícula
       semester: Semestre
       options: Opções
       no_groups: Não há turmas
@@ -1876,7 +1876,7 @@
       date_range: Período
       course: Curso
       curriculum_unit: Unidade Curricular
-      to:  a 
+      to:  a
       end_offer: Fim
       all: Todos(as)
       enroll_period: Período de matrícula
@@ -1961,7 +1961,7 @@
       choose_one: Selecione um chat
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
-    form: 
+    form:
       participants: Participantes
       groups: Turmas
       define_participants: Definir participantes
@@ -2190,8 +2190,8 @@
       cant_connect: Não foi possível conectar ao EDX. Favor tentar novamente.
     designates:
       instructor: Professor
-      staff: Tutor  
-      deallocate: Desalocar  
+      staff: Tutor
+      deallocate: Desalocar
     success:
       deallocated: Usuário desalocado
     error:
@@ -2209,7 +2209,7 @@
         login_email: 'ma_login_email_msg'
         synchronize: Erro ao sincronizar dados com o Módulo Acadêmico. Favor tentar novamente.
     notices:
-      ma: 
+      ma:
         use_ma_data: Favor utilizar seus dados do Módulo Acadêmico.
         synchronize: Dados sincronizados com sucesso.
     warnings:
