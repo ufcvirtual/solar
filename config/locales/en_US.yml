@@ -1,10 +1,7 @@
 en_US:
-
   will_paginate:
     previous_label: "« Previous"
     next_label: "Next »"
-
-  # Formatos de data e hora
   date:
     formats:
       default: "%m/%d/%Y"
@@ -16,10 +13,10 @@ en_US:
     abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
     month_names: [January, February, March, April, May, June, July, August, September, October, November, December]
     abbr_month_names: [Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Spt, Oct, Nov, Dec]
-    order: 
-        - :month
-        - :day
-        - :year
+    order:
+    - :month
+    - :day
+    - :year
   time:
     formats:
       clock: "%m/%d/%Y %H:%M:%S"
@@ -35,10 +32,6 @@ en_US:
       discussion_post_hour: "%H:%M h"
       simple_day_and_month: "%d/%b"
       at_date: "%d/%m/%Y at %H:%M"
-    am: "am"
-    pm: "pm"
-
-  # ActiveRecord
   activerecord:
     models:
       course: Course
@@ -67,12 +60,11 @@ en_US:
       schedule_event: Event
       score: Score
       support_material_file: Support Material
-      webconference: Webconference
+      webconference: "Webconference"
     attributes:
       user:
-        alternate_email: "Alternate e-mail"
         password: "Password"
-        username: Login
+        username: "Login"
         name: "Name"
         nick: "Nick"
         birthdate: "Birthdate"
@@ -112,25 +104,18 @@ en_US:
         prerequisites: Prerequisites
         resume: Resume
         passing_grade: Passing grade
-      course: 
+      course:
         name: Name
-        code: Code 
-      discussion_post: 
+        code: Code
+      discussion_post:
         content: Content
       public_file:
-        attachment_content_type: ""
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment_file_name: File
-      discussion_post_file:
-        attachment_content_type: ""
-      message_file:
-        message_content_type: ""
       assignment_file:
-        attachment_content_type: ""
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment_file_name: File
       comment_file:
-        attachment_content_type: ""
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
       group_assignment:
         group_name: "Group name"
@@ -226,7 +211,6 @@ en_US:
         description: Description
         initial_time: Initial Time
         duration: Duration
-
     errors:
       uniqueness: "Record already exists in the system"
       messages:
@@ -247,8 +231,6 @@ en_US:
           attributes:
             photo_content_type:
               invalid_type: "Please send only files of type JPG, GIF or PNG."
-            photo_file_size:
-              invalid_size: "The maximum size of your photo should be up to 700KB."
         assignment_file:
           attributes:
             attachment_content_type:
@@ -281,11 +263,7 @@ en_US:
           attributes:
             attachment_content_type:
               invalid_type: invalid
-
-  ########### GERAL ###############
-
   all: "All"
-  home: "Home"
   of: "Of"
   required_fields: "* required field(s)"
   object_not_found: "Object not found"
@@ -293,21 +271,16 @@ en_US:
   dont_destroy_with_lower_associations: "It has associations which prevent deletion"
   dont_destroy_with_many_allocations: "It has associations with other users"
   dont_destroy_with_content: "It has content"
-
-  #Página de Login
-
   login_description1: "Solar is a virtual learning environment developed by the UFC Virtual Institute at Federal University of Ceará. It is geared towards the teacher and the student, allowing the publication of courses and interaction with them."
   login_description2: "The Solar was developed to enhance the learning process, starting from the interaction with the graphic interface of the environment, and to allow fast access to the pages and the content, easy navigation and browser compatibility. Here, the learner feels safe to explore the available spaces. The environment is supported by a philosophy of interaction, not control."
+  login_title: "Sistema Online de Aprendizagem da Universidade Federal do Ceará"
   login_footer: "UFC Virtual Institute 2011 - Federal University of Ceará | Development Team"
   login_footer1: "UFC Virtual Institute"
   login_footer2: "Federal University of Ceará"
   login_footer3: "Development Team"
   login_language: "Language"
   license_terms: "License Terms"
-  login_title: "Sistema Online de Aprendizagem da Universidade Federal do Ceará"
   UFC_virtual: "Universidade Virtual"
-  #news: "News"
-  #tutorial: "Tutorial"
   home: "Home"
   team: "Team"
   signin: "Sign In"
@@ -322,17 +295,10 @@ en_US:
   expired: "Time expired"
   name: "Name"
   size: "Size"
-
-  #load_itens
   load_items: "Load more items"
-
-  # application controller
   app_controller_require: "Please log!"
   app_controller_require_no: "Please log out!"
-
-  username: Login
-
-  # forms de usuario em geral (para mensagens de validação)
+  username: "Login"
   form_login: "Login"
   form_username: "Login"
   form_alternate_email: "Alternate e-mail"
@@ -345,8 +311,6 @@ en_US:
   form_password_confirmation: "Password confirmation"
   form_email_confirmation: "E-mail confirmation"
   form_email: "E-mail"
-
-  # pagina de cadastro de usuario
   new_user_cpf_in_use: "CPF already in use"
   new_user_title: "New Register"
   new_user_msg_ok: "User created!"
@@ -361,7 +325,7 @@ en_US:
   verify: "Verify"
   back: "Back"
   save: "Save"
-  edit: Edit
+  edit: "Edit"
   destroy: "Delete"
   new_user_msg_cpf_error: " invalid"
   itens_not_found: "No itens to display"
@@ -370,12 +334,8 @@ en_US:
   registration_done: "Finish"
   registration_cancel: "Cancel"
   state_other: "Other"
-
-  # User
   user_error_no_file_sent: No file sent
   user_cannot_login: "This user is blocked. Please, contact the administrator."
-
-  #pagina meus dados
   my_data: "My Data"
   my_personal_data: "Personal"
   my_cadastral_data: "Cadastral"
@@ -383,7 +343,6 @@ en_US:
   alter_data: "Alter Data"
   close: "Close"
   cancel: "Cancel"
-  send: "Send"
   contact: "Contact"
   authentication: "Authentication"
   current_password: "Password"
@@ -393,18 +352,13 @@ en_US:
   special_needs_question: "Do you have any disabilities ?"
   m: Male
   f: Female
-
   empty_old_password: "Old password is empty"
   bad_password_confirmation: "Bad password confirmation"
   incorrect_old_password: "Old password is incorrect"
   successful_update: "Update successful"
   unsuccessful_update: "Update unsuccessful!"
   successful_update_photo: "Photo successfully changed"
-
-  #alteracao de foto do layout
   alter_photo: "Change picture"
-
-  # pagina do meu solar
   mysolar_news: "News"
   mysolar_edit_profile: "Edit profile"
   mysolar_change_picture: "Change picture"
@@ -426,59 +380,32 @@ en_US:
   mysolar_languages: "Languages"
   date_name: Date
   help: "Help"
-
-  #Submenu de ajuda
   tutorials: "Tutorials"
   context: "Contextual"
   tutorial: 'Tutorial'
-
-  # Página de tutoriais
   description: "Description"
   edition: "Edition"
   enrollment: "Enrollment"
-
-  # portlets do meu solar
-  # Unidades curriculares
   my_solar_curriculum_units: "Curriculum Unit"
   my_solar_curriculum_without: "No curriculum unit found."
   my_solar_uc_without_group: There are no groups
   my_solar_uc_without_offer: There are no offers
-
-  # msg de erro ,ainda no login    #
   login_data_invalid: "Login details incorrect!"
-
-  # Página Esqueci Minha Senha
-
   pwd_recovery_security: "Security"
   pwd_recovery_subtitle: "Forgot your password?"
   change_your_password: "Change your password"
-
   pwd_recovery_text: "To regain access, type your e-mail address that you use to access your Solar account."
   pwd_recovery_text2: "We will shortly send you some directions to create a new password."
-
   pwd_recovery_email: "Enter your E-mail"
   pwd_recovery_cpf: "Enter your CPF"
   pwd_recovery_send: "Send"
   pwd_recovery_back: "Back"
-
   pwd_recovery_sucess_msg: "Password sent successfully!"
   pwd_recovery_error_msg: "Could not send a new password. Please try again."
   pwd_recovery_unknown_user_msg: "User not found!"
-
-  pwd_recovery_mail_body: "Dear %{recipient}, \n\nYou requested the recovery of your Solar data access.
-      \n\nYour data to access the environment are:
-      \n    Login: %{login}
-      \n    New password: %{password}
-        \n\nRegards,\nAdministration.
-      \n\n\nSOLAR Virtual Environment: http://www.solar2.virtual.ufc.br
-      \n\n\n[This is an automatic message. Please do not reply.]"
-
-  # Página de alterar foto"
+  pwd_recovery_mail_body: "Dear %{recipient}, \n\nYou requested the recovery of your Solar data access. \n\nYour data to access the environment are: \n    Login: %{login} \n    New password: %{password} \n\nRegards,\nAdministration. \n\n\nSOLAR Virtual Environment: http://www.solar2.virtual.ufc.br \n\n\n[This is an automatic message. Please do not reply.]"
   choose_file: "Choose file"
-  photo_text: "You can upload a JPG, GIF or PNG (Do not upload
-       \n\n pictures containing celebrities, nudity, artwork and images
-       \n\n copyrighted). The maximum size of your photo should be
-       \n\n up to 700KB."
+  photo_text: "You can upload a JPG, GIF or PNG (Do not upload \n\n pictures containing celebrities, nudity, artwork and images \n\n copyrighted). The maximum size of your photo should be \n\n up to 700KB."
   send_photo: "Send your photo:"
   your_computer: "From your computer"
   no_file: "No file sent..."
@@ -486,27 +413,25 @@ en_US:
   external_link: "From an external link"
   url: "Enter here the URL of the image in the textbox above."
   send: "Send"
-
-  # página de matrícula"
   enrollments:
     all: All
     enrolled: Enrolled
     index:
-      search: Search
+      search: "Search"
       search_in: " in "
-      view: View
-      view_all: All
-      view_enrolled: Enrolled
-      cancel: Cancel
-      enroll: Enroll
-      curriculum_unit: Curriculum Unit
-      category: Category
-      group: Class
-      title: Enrollment
-      enrolled: Enrolled
+      view: "View"
+      view_all: "All"
+      view_enrolled: "Enrolled"
+      cancel: "Cancel"
+      enroll: "Enroll"
+      curriculum_unit: "Curriculum Unit"
+      category: "Category"
+      group: "Class"
+      title: "Enrollment"
+      enrolled: "Enrolled"
       rejected: "Enrollment Rejected"
-      confirm: Are you sure you want to cancel?
-      cancel_request: Cancel Request
+      confirm: "Are you sure you want to cancel?"
+      cancel_request: "Cancel Request"
       period: Enrollment period
       of: "of"
       no_curriculum_unit_found: "No curriculum unit found"
@@ -527,26 +452,22 @@ en_US:
       semester: Semester
       group: Group
     not_defined: Not defined
-
+  enrollm_request_cancel_message: "Request for enrollment cancelled"
   enrollm_cancelled_message: "Enrollment cancelled"
   enrollm_not_cancelled_message: "Enrollment not cancelled"
   enrollm_reactivated_message: "Enrollment reactivated"
-  enrollm_request_cancel_message: "Request for enrollment cancelled"
   enrollm_acepted_message: "Enrollment effected."
   enrollm_rejected_message: "Enrollment rejected."
-
-  # informacoes da unidade curricular
-  syllabus: Syllabus
-  objectives: Objectives
-  prerequisites: Prerequisites
-  resume: Resume
-  semester_date: Date
-  passing_grade: Passing Grade
+  syllabus: "Syllabus"
+  objectives: "Objectives"
+  prerequisites: "Prerequisites"
+  resume: "Resume"
+  semester_date: "Date"
+  passing_grade: "Passing Grade"
   error_no_item_selected: No item selected
   curriculum_unit_type_id: Type
-
   curriculum_unit_new_button: New
-  curriculum_unit_new_title: "New Curriculum Unit"
+  curriculum_unit_new_title: New Curriculum Unit
   curriculum_unit_edit_title: Edit Curriculum Unit
   curriculum_unit_delete_confirm: Are you sure you want to delete %{curriculum_unit_name}?
   curriculum_unit_information_title: "Curriculum Unit Informartion"
@@ -564,11 +485,8 @@ en_US:
   curriculum_access_view: "View"
   curriculum_access_new: " new"
   curriculum_access_more: "+ more"
-
   participants_title: "Participants"
   participants_none: "No participant found"
-
-  #Aulas
   lesson_title: "Lessons"
   lesson_message: "No lesson available"
   lesson_goto: "Go to lesson"
@@ -577,12 +495,11 @@ en_US:
   lesson_test: test lesson
   lesson_will_open: not started
   since: Since
-  no_end_date: "On"
-
+  no_end_date: 'On'
   lessons:
     curriculum_unit_not_selected: Curriculum Unit not selected
     index:
-      lesson_table_date: "Access date"
+      lesson_table_date: Access date
       lesson_table_title: "Available Lessons"
     list:
       lesson: Lesson
@@ -598,7 +515,6 @@ en_US:
       new_module: New module
       edit_lesson_module: Edit module
       delete_lesson_module: Delete module
-      no_end_date: On
       move_lesson: Move lesson
       move: Move
       cancel: Cancel
@@ -628,9 +544,9 @@ en_US:
       must_select_a_lesson: One lesson must be selected
       select_only_a_lesson: Select only a lesson
     files:
-      new_folder: "New Folder"
+      new_folder: New Folder
     errors:
-      cant_delete: "Lesson became draft, because it was available to use by students!"     
+      cant_delete: "Lesson became draft, because it was available to use by students!"
       invalid_lesson_to_download: Only not empty and file lessons can be downloaded
       deleted: Lessons weren't deleted
       must_select_module: A destination module must be selected
@@ -640,12 +556,11 @@ en_US:
       moved: Lessons were sucessfully moved
       created: Lesson was sucessfully created
       updated: Lesson was sucessfully updated
-    form: 
+    form:
       cancel: Cancel
       groups: Groups
     select_lesson:
       no_lessons: Sem Aulas
-
   lesson_modules:
     general_of_offer: "General"
     general_of_group: "General of group"
@@ -660,7 +575,6 @@ en_US:
       existing_name: already exists
       cant_delete: "Default module can't be deleted"
       cant_delete_shared: "Shared module has lessons and therefore can not be deleted"
-
   lesson_files:
     root: Root
     delete_confirm: Are you sure you want to delete the selected items?
@@ -677,11 +591,10 @@ en_US:
     items_must_be_selected: One or more items must be selected
     unzip_error: Error on extracting file
     zip_contains_invalid_files: Zip file conatins invalid files
-    file_doesnt_exist: "File doesn't exist"
+    file_doesnt_exist: File doesn't exist
     index:
       cancel: Cancel
       move_to: "Move to:"
-      move: Move
       conclude: Conclude
       all: All
       upload: Upload files
@@ -691,7 +604,7 @@ en_US:
       rename: Rename
       remove: Remove
       move: Move
-      attention_message: 'Attention:' 
+      attention_message: 'Attention:'
       save_automatically_message: ' all changes are save automatically.'
       send_file: Send file
     destination_folder_error: A destination folder must be selected
@@ -708,9 +621,8 @@ en_US:
     must_be_a_file: Must be a file
     must_be_a_zip_file: Must be a zip file
     initial_file_error: It wasn't possibile to define initial file
-    cant_remove_initial_file: "It's not possible to remove the initial file, please first redefine it"
+    cant_remove_initial_file: 'It''s not possible to remove the initial file, please first redefine it'
     define_initial_file_error: A initial file must be defined.
-
   support_material_files:
     list:
       name: "Name"
@@ -724,22 +636,16 @@ en_US:
       none: "No material registered"
     form:
       groups: Groups
-
-  #Foruns
   title: "Title"
-  forum_title: "Discussions"
   forum_table_title: "Available Discussions"
   forum_table_date: "Access date"
   forum_message: "No discussion available"
   forum_no_messages: No discussion post available
   forum: "Discussion"
   forum_new_message: "New Post"
-
   forum_closed: "Discussion closed"
   forum_closed_short: "closed"
   discussion_closed_to_students: "closed to students"
-
-  # FORUNS
   posts:
     index:
       show_plainlist: "Show as List"
@@ -758,12 +664,10 @@ en_US:
     update:
       updated: "Post was successfully updated"
       not_updated: "Post was not updated"
-
   post_files:
     new:
       attach_save: "Save"
       attach_another_file: "Attach another file"
-
   discussions:
     form:
       save: Save
@@ -775,7 +679,7 @@ en_US:
       new: New Discussion
       edit: Edit Discussion
       delete: Delete Discussion
-      choose_at_least_one: Choose at least one discussion
+      choose_at_least_one: "Choose at least one discussion"
       choose_one: Choose a discussion
       expand_description: Expand description
       compress_description: Compress description
@@ -785,14 +689,13 @@ en_US:
       updated: Discussion was successfully updated.
       deleted: Discussion was successfully deleted.
     error:
+      deleted: Discussion wasn't deleted.
       created: Discussion wasn't created.
       updated: Discussion wasn't updated.
-      deleted: Discussion wasn't deleted.
-      existing_name_error: already exists
       range_date_error: must be smaller than the final date
       offer_period: must be on the date range of offer (%{start} - %{end})
-      discussion_with_posts: "Discussion with posts"
-      mandatory_final_date: "Mandatory final date"
+      discussion_with_posts: Discussion with posts
+      mandatory_final_date: Mandatory final date
     show:
       name: Name
       description: Description
@@ -800,7 +703,6 @@ en_US:
       start_date: Start date
       end_date: End date
       discussion_details: Discussion's details
-
   bibliographies:
     author_required: Author required
     type:
@@ -826,7 +728,7 @@ en_US:
       type: Type
       edit: Edit Bibliography
       delete: Delete Bibliography
-      choose_at_least_one: Choose at least one bibliography
+      choose_at_least_one: "Choose at least one bibliography"
       choose_one: Choose a bibliography
       bibliographies: Bibliographies
       no_data: No data
@@ -840,7 +742,6 @@ en_US:
       created: Bibliography item wasn't created.
       updated: Bibliography item wasn't updated.
       deleted: Bibliography item wasn't deleted.
-
   notifications:
     form:
       new: New Notification
@@ -857,7 +758,7 @@ en_US:
       no_data: No data
       expand_description: Expand description
       compress_description: Compress description
-      choose_at_least_one: Choose at least one notification
+      choose_at_least_one: "Choose at least one notification"
       choose_one: Choose a notification
     success:
       created: Notification was successfully created.
@@ -867,47 +768,43 @@ en_US:
       created: Notification wasn't created.
       updated: Notification wasn't updated.
       deleted: Notification wasn't deleted.
-
   webconferences:
     form:
       new: "New Webconference"
       edit: "Edit Webconference"
       minutes: " minutes"
     list:
-      webconferences: Webconferences
+      webconferences: "Webconferences"
       name: Nome
       availability: Availability
-      description: Description
+      description: "Description"
       duration: "Duration (min)"
-      min: Min
+      min: "Min"
       new: "New Webconference"
       edit: "Edit Webconference"
       delete: "Delete Webconference"
-      no_data: No data
+      no_data: "No data"
       expand_description: Expand description
       compress_description: Compress description
-      choose_at_least_one: Choose at least one webconference
-      choose_one: Choose a webconference
+      choose_at_least_one: "Choose at least one webconference"
+      choose_one: "Choose a webconference"
     success:
       created: Webconference was successfully created.
       updated: Webconference was successfully updated.
       deleted: Webconference was successfully deleted.
     error:
-      created: Webconference wasn't created.
-      updated: Webconference wasn't updated.
-      deleted: Webconference wasn't deleted.
-
+      created: "Webconference wasn't created."
+      updated: "Webconference wasn't updated."
+      deleted: "Webconference wasn't deleted."
   navigation_of: " of "
   navigation_next: "Next >"
   navigation_previous: "< Previous"
   navigation_first: "<< First"
   navigation_last: "Last >>"
-
   icon_agenda: "Agenda icon"
   icon_forum: "Forum icon"
   icon_message: "Message icon"
   icon_curriculum_unit: "Curriculum unit icon"
-  icon_lesson: "Lesson icon"
   icon_agenda_event: "Event agenda icon"
   icon_send_email: "Send mail icon"
   icon_participants: "Participants icon"
@@ -916,33 +813,23 @@ en_US:
   icon_add_participant: "Add participant icon"
   icon_lesson: "Lesson icon"
   icon_bibliography: "Bibliography icon"
-
-  #AGENDA
   agenda_title: "Agenda of"
   new_activity: "New activity"
   agenda_null: "No actives programed for this schedule"
-  # discussions: "Discussion"
   lesson: "Lesson"
   schedule_assignment: "Assignment"
-  # schedule_events: "Schedule Event"
   no_events: "No events to selected day"
-
-  # Assignments
   not_started: Not Started
   corrected: Corrected
   sent: Sent
   not_sent: Not Sent
   without_group: Without Group
-
   assignment:
     assignments: Assignments
     new:
       groups: Groups
     list:
-      "yes": Yes
-      "no": No
       groups: "Groups:"
-      none: No assignment registered
       new: New Assignment
       edit: Edit Assignment
       name: Name
@@ -950,14 +837,14 @@ en_US:
       type: Type
       individual: Individual
       group: Group
-      choose_at_least_one: Choose at least one assignment
+      none: No assignment registered
+      choose_at_least_one: "Choose at least one assignment"
       choose_one: Choose a assignment
     information:
       begin: Begin
       end: End
       individual_assignments: Atividades individuais
       group_assignments: Group Activities
-      title: Title
       date_range: Date range
       description: Description
       situation: Situation
@@ -1000,7 +887,7 @@ en_US:
       size: Size
       download_file: Download file %{file_name}
       files: file(s)
-      attached_files : Attachments
+      attached_files: Attachments
       activity_files: Activity files
       name: Name
       delete_msg: Really want to delete this file?
@@ -1009,13 +896,7 @@ en_US:
       error_no_file_sent: File not sent
       send_file: Upload Files To Portfolio
       send_file_obs: Wait for the complete submission of the file. The size should not exceed 5MB.
-      send_file_text: "Allowed file example:<br />
-      &nbsp;&nbsp;- Microsoft Office Documents<br />
-      &nbsp;&nbsp;- OpenOffice.org Documents (ODF)<br />
-      &nbsp;&nbsp;- Archives (.zip, .rar...)<br />
-      &nbsp;&nbsp;- PDF Documents<br />
-      &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br />
-      &nbsp;&nbsp;- Audio Files (mp3, wma...)"
+      send_file_text: "Allowed file example:<br /> &nbsp;&nbsp;- Microsoft Office Documents<br /> &nbsp;&nbsp;- OpenOffice.org Documents (ODF)<br /> &nbsp;&nbsp;- Archives (.zip, .rar...)<br /> &nbsp;&nbsp;- PDF Documents<br /> &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br /> &nbsp;&nbsp;- Audio Files (mp3, wma...)"
       sent_files: Sent files
       error_delete: Error when trying to delete file
       delete_interval_error: Modification of files out of range
@@ -1062,18 +943,13 @@ en_US:
       import: Import
       no_participant: Group with no participants
       import_success: Groups imported with success
-
-  # Assignment Comments
   comment_error_delete_file: Error when trying to delete file
-
-  # acompanhamento
   student: "Student"
   scores_of: "Scores Of"
   public_files: "Public Files"
   tests: "Tests"
   private_area: "Jobs"
   participation: "Participation"
-  assignments: "Assignments"
   access_to_the_course: "Access to the Course"
   group: "Group"
   legend: "Legend"
@@ -1100,14 +976,9 @@ en_US:
   scores_history_access: "Scores History Access"
   assignment_correction_of: "Correction Of"
   error_find_ajax: "Error trying to query. Try again later."
-
-  # Mensagem de erro para permissão
   no_permission: "You haven't permission to access this page"
-  # Mensagem de erro associação entre ferramentas e turma/oferta/uc/curso
   not_associated: This tool isn't associated to the informed data
   uri_too_long: "Information quantity too large. Reduce the quantity of data passed"
-
-# Menu
   menu_content: Content
   menu_lesson: Lessons
   menu_support_material: Support Material
@@ -1138,20 +1009,16 @@ en_US:
   menu_manage_assessment: Manage Assessment
   menu_response_assessment: Response Assessment
   menu_curriculum_unit: Curriculum Unit
+  menu_manage_registration: Manage Registrations
   menu_registration: Registration
   menu_history: History
   menu_group_assignment: Groups
   menu_edition: Edition
   menu_academic_edition: Academic
   menu_content_edition: Content
-  menu_admin_user: Manage Users
+  menu_admin_user: "Manage Users"
   menu_admin_approval: Profiles approval
   menu_admin_lessons: Consult Lessons
-
-  # Filtro de edição (Places_nav_panel)
-
-  # Componente de filtro/busca de allocationTags (places_nav_panel)
-  #Type the courses name or part of it
   places_nav_panel_course_hint: "Type the course's name or part of it"
   places_nav_panel_semester_hint: "Type the semester or part of it"
   places_nav_panel_curriculum_unit_hint: "Type the curriculum unit's name or part of it"
@@ -1160,25 +1027,16 @@ en_US:
   places_nav_panel_empty_text: "No results"
   places_nav_panel_to_offer: Offer
   places_nav_panel_to_manage: Manage
-
-  #Course
   new_course_title: New Course
   update_course_title: Update Course
-
-  #Edx Course
-
   course_edx_edition: "Courses"
-
-  #Offer
   offer: "Offer"
-  offers: "Offers"
   offer_confirm: "Are you sure you want to delete?"
   semester: "Semester"
   start_date: "Start date"
   end_date: "End date"
   course: "Course"
   curriculum_unit: "Curricular Unit"
-
   devise:
     failure:
       already_authenticated: 'You are already signed in.'
@@ -1221,9 +1079,6 @@ en_US:
       send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
       unlocked: 'Your account was successfully unlocked. You are now signed in.'
       send_paranoid_instructions: 'If your account exists, you will receive an email with instructions about how to unlock it in a few minutes.'
-    omniauth_callbacks:
-      success: 'Successfully authorized from %{kind} account.'
-      failure: 'Could not authorize you from %{kind} because "%{reason}".'
     mailer:
       confirmation_instructions:
         subject: 'Confirmation instructions'
@@ -1241,10 +1096,8 @@ en_US:
     users:
       user:
         ma_login_email_msg: "It wasn't possible to verify username and email at Módulo Acadêmico, thus your username and email were defined, respectively, as your CPF and an invalid and random value. Please redefine them."
-        signed_up: 'Welcome! You have signed up successfully.'
         updated: 'You updated your account successfully.'
-
-  # suport material file
+        signed_up: 'Welcome! You have signed up successfully.'
   support_folder_name: Support Material
   support_download_all: Download all as zip
   support_download_all_folder: Download all folders as zip
@@ -1255,14 +1108,12 @@ en_US:
   support_material_sent_on: Sent on
   support_material_size: Size
   support_material_name: Name
-
-  # Support Material File Editor
-  support_delete: Delete
   support_send_document: DOCUMENT
   support_send_link: LINK
   support_create_folder: FOLDER
   support_text_field_link: Paste in here links
   support_new_folder: New Folder
+  support_delete: Delete
   support_add: Add
   support_cancel: Cancel
   support_edit: Edit
@@ -1286,13 +1137,8 @@ en_US:
   support_allocation_curriculum_unit: Curriculum Unit
   support_allocation_offer: Offer
   support_allocation_group: Class
-  support_folder_temporary_message: "This folder is temporary. To conclude it's creation, send a file"
-
-  # File
+  support_folder_temporary_message: 'This folder is temporary. To conclude it''s creation, send a file'
   file_error_nonexistent_file: File not found
-
-  ## allocations
-
   allocations:
     index:
       manage: Manage
@@ -1343,10 +1189,6 @@ en_US:
       designate_profile_no_found: No profile available for allocation
       designate_user: Designate %{user_name}
       select_profile: Select a profile
-    profile: Profile
-    cpf: Cpf
-    email: Email
-    name: Name
     success:
       enrollm_request: Request for enrollment made
       allocated: Allocated user
@@ -1358,9 +1200,9 @@ en_US:
       profile_canceled: Profile cancelado
       rejected: rejected
       accepted: accepted
-      allocation_tag_path: "at %{path}" 
+      allocation_tag_path: "at %{path}"
       request_message: "Request of %{user_name} with profile %{profile_name} %{path} was %{action}. #{undo_url}"
-      undone_action: Action undone successfully
+      undone_action: "Action undone successfully"
     error:
       student_already_in_group: Student is already in the class
       enrollm_request: Request for enrollment not made
@@ -1374,21 +1216,16 @@ en_US:
     warning:
       already_active: Profile's already active
     undo_action: "(Undo action)"
-
   allocation_pending: Pending
-
-  ## CRUD
   successfully_created: '%{register} was successfully created.'
   successfully_updated: '%{register} was successfully updated.'
   successfully_deleted: '%{register} was successfully deleted.'
-  cant_delete: "%{register} has associations and can't be deleted!"
-
+  cant_delete: '%{register} has associations and can''t be deleted!'
   notifier:
     enrollment_accepted:
       subject: "[SOLAR] Enrollment accepted"
-
   assignments:
-    index: 
+    index:
       expand_enunciation: Expand enunciation
       compress_enunciation: Compress enunciation
       delete_assignment: Delete assignments
@@ -1415,7 +1252,6 @@ en_US:
       empty_files: There're no files
       groups: Groups
       assignment_details: Assignment's details
-
   groups:
     list:
       all: All
@@ -1424,9 +1260,9 @@ en_US:
       disable: Disable
       delete: Delete group
       choose_at_least_one: "Choose at least one group"
+      choose_one: Choose a group
       edit: Edit group
       none: No group registered
-      choose_one: Choose a group
     group_list:
       code: Code
       enabled: Enabled
@@ -1468,13 +1304,11 @@ en_US:
       see_all: See all %{all} groups
       see_less: See %{less} groups
       groups: Groups
-
   simple_form:
     labels:
       group:
         semester: Semester
         code: Code
-
   email: Email
   cpf: "CPF"
   active: Active
@@ -1484,17 +1318,17 @@ en_US:
     allocations_user:
       no_data: No data
     users:
-      title: Consult users
+      title: "Consult users"
       search: Search
-      details: Detailed information
+      details: "Detailed information"
       allocations: "Allocations"
       last_accessed: "Last accessed"
       edit: Edit
       change_password: Change password
       message_not_found: "User not found"
     informations:
-      detailed: Detailed Information
-      personal_data: Personal Data
+      detailed: "Detailed Information"
+      personal_data: "Personal Data"
       contact: Contact
       gender: "Gender"
       birthdate: "Birthdate"
@@ -1503,20 +1337,20 @@ en_US:
       cell_phone: Cell Phone
       special_needs: Special needs
       others: Others
-      institution: Institution
+      institution: "Institution"
       additional: "Additional Informations"
       biography: Biography
       interests: Interests
-      music: Music
+      music: "Music"
       movies: Movies
       books: Books
       phrase: Phrase
       site: Site
     allocations:
-      title: Allocations
-      period: Period
-      current: Current
-      allocation: Allocation
+      title: "Allocations"
+      period: "Period"
+      current: "Current"
+      allocation: "Allocation"
       status: "Status"
       active: Active
       blocked: Blocked
@@ -1544,9 +1378,7 @@ en_US:
       reject: Reject
       accept: Accept
       not_specified: Not specified
-
   editions:
-    filter: Filter
     alert: "Fill the required fields"
     academic:
       courses: "Courses"
@@ -1555,10 +1387,6 @@ en_US:
       groups: "Groups"
       modules: "Modules"
       type: "Type*"
-    index:
-      edition: Edition
-      filter: Filter
-      select_something: It's necessary to fill at least one field of the filter
     items:
       information: Information
       education: Education
@@ -1578,15 +1406,14 @@ en_US:
       edition_of: Edition of %{of}
       in_development: In development
       no_permission_info: You don't have permission at any action with the choosen data
-      # EDX_items
       application: Application
       edit_content: Edit content
     success:
       saved: Saved successfully
       deleted: Deleted successfully
     semesters:
-      all: All
-      actives: Actives
+      all: "All"
+      actives: "Actives"
       type: "Type*"
       course: Course
       curriculum_unit: Curriculum Unit
@@ -1615,17 +1442,16 @@ en_US:
       curriculum_unit: "Curriculum Unit"
       module: "Module"
       semester: "Semester"
-      offer: Offer
-      group: Group
+      offer: "Offer"
+      group: "Group"
     content:
       type: "Type*"
       course: "Course*"
       curriculum_unit: "Curriculum Unit"
       module: "Module"
       semester: "Semester"
-      offer: Offer
-      group: Group
-
+      offer: "Offer"
+      group: "Group"
   curriculum_units:
     success:
       created: Curriculum Unit was successfully created.
@@ -1644,9 +1470,9 @@ en_US:
       curriculum_unit: Curriculum Unit
       module: Module
       course: Course
-      choose_at_least_one: Choose at least one curriculum unit
-      cant_edit: Can't edit this curriculum unit
       new: New %{uc_or_module}
+      cant_edit: Can't edit this curriculum unit
+      choose_at_least_one: "Choose at least one curriculum unit"
     form:
       save: Save
       cancel: Cancel
@@ -1656,7 +1482,6 @@ en_US:
       edit_course: Edit Course
       edit_module: Edit Module
       edit_curriculum_unit: Edit Curriculum Unit
-
   semesters:
     success:
       created: Semester was successfully created.
@@ -1666,27 +1491,25 @@ en_US:
       created: Semester wasn't created.
       updated: Semester wasn't updated.
       deleted: Semester wasn't deleted.
-      none: No semester registered
     list:
       new: New Semester
       edit: Edit Semester
       delete: Delete Semester
       new_offer: New Offer
-      period: Period
       delete_offer: Delete offer
+      period: Period
       choose_one_offer: Choose an offer
     form:
       enable_end_date: Enable end date
-
   offers:
     success:
-      created: "Offer was successfully created."
-      updated: "Offer was successfully created."
-      deleted: "Offer was successfully created."
+      created: Offer was successfully created.
+      updated: Offer was successfully created.
+      deleted: Offer was successfully created.
     error:
-      created: "Offer wasn't created."
-      updated: "Offer wasn't updated."
-      deleted: "Offer wasn't deleted."
+      created: Offer wasn't created.
+      updated: Offer wasn't updated.
+      deleted: Offer wasn't deleted.
       already_exist: already exists an offer with informed data
     list:
       type: Type
@@ -1723,21 +1546,20 @@ en_US:
       save: Save
       cancel: Cancel
       date_range: Date range
-      to:  to 
-      end_offer: End 
-      all: All
-      enable_end_date: Enable end date
-      start_date: Start date
       course: Course
       curriculum_unit: Curriculum Unit
+      to: to
+      end_offer: End
+      all: All
       enroll_period: Enrollment date range
+      enable_end_date: Enable end date
+      start_date: Start date
       semester_offer: Semester Offer
       semester_enrollment: Semester Enrollment
       define_different_dates: Define dates different from semester
-    no_end_date: "On"
+    no_end_date: 'On'
     existing_semester: already exists
     schedule_error: must be smaller than end of date range
-
   schedules:
     errors:
       current_year: can't precede current year
@@ -1748,7 +1570,6 @@ en_US:
       lesson: Lesson
       discussions: Discussion
       schedule_events: Schedule Event
-
   courses:
     index:
       new: New course
@@ -1771,7 +1592,6 @@ en_US:
       created: Course wasn't created.
       updated: Course wasn't updated.
       deleted: Course wasn't deleted.
-
   support_materials:
     success:
       created: Support Material was successfully created.
@@ -1780,10 +1600,9 @@ en_US:
     error:
       must_select_something: One or more items must be selected
     index:
-      choose_at_least_one: Choose at least one support material
-      choose_one: Choose a link support material
+      choose_at_least_one: "Choose at least one support material"
+      choose_one: "Choose a link support material"
       must_be_link: Must be a link
-
   chat_rooms:
     list:
       title_my_chats: My Chats
@@ -1806,11 +1625,11 @@ en_US:
       no_chats: There are no chats
       delete_chats: Delete Chats
       hour_period: "%{start_hour}h - %{end_hour}h"
-      choose_at_least_one: Choose at least one chat
+      choose_at_least_one: "Choose at least one chat"
       choose_one: Choose a chat
       expand_description: Expand description
       compress_description: Compress description
-    form: 
+    form:
       participants: Participants
       groups: Groups
       define_participants: Define participants
@@ -1839,9 +1658,6 @@ en_US:
       end_date: End date
       defined_participants: Defined participants
       chat_details: Chat's details
-
-#Facebook
-
   facebook:
     login: Login
     logout: Logout
@@ -1851,29 +1667,22 @@ en_US:
     placeholder: What's on your mind?
     publish: Post
     settings: Settings
-    newsfeed: News Feed 
-
+    newsfeed: News Feed
   message_confirm: "Are you sure you want to delete this?"
   confirm_acceptance: "Confirm request acceptance?"
-
   messages:
     file_too_big: "File too big"
     mail_header: "Sent by: "
     mail_sent: "Message was successfully sent"
-
     new: "New"
     delete: "Delete"
     restore: "Restore"
-
     select_all: "All"
     select_read: "Read"
     select_unread: "Unread"
-
     mark_as_read: "Marck as read"
     mark_as_unread: "Mark as unread"
-
     already_added: already added
-
     none: "No message found"
     no_new: "No new messages"
     no_subject: "(no subject)"
@@ -1910,7 +1719,6 @@ en_US:
       forward: "Forward"
     index:
       filter_selected: "View: "
-
   profiles:
     form:
       select_template: Select a template
@@ -1941,19 +1749,13 @@ en_US:
       created: Profile wasn't created.
       updated: Profile wasn't updated.
       deleted: Profile wasn't deleted.
-
-  #Autocomplete
   autocomplete:
     no_options: There's no option to the selected values
     all_options: All options
-
-  #Tutoriais
   tutorial_next: Next
   tutorial_previous: Previous
   tutorial_skip: Skip
   tutorial_done: Done
-
-  #FullCalendar
   fullcalendar:
     today: today
     future_events: Future events list
@@ -1967,8 +1769,6 @@ en_US:
       day: 'dddd M/d'
     listFormat: 'ddddd, MMMMM dS, yyyy'
     noEvents: There is no future event
-
-  #Eventos da agenda
   schedule_events:
     types:
       presential_test: Presential Test
@@ -1994,12 +1794,11 @@ en_US:
       place: Place
       description: Description
       time: Time
-      to: " to "  
+      to: " to "
       groups: Groups
       start_date: Start
       end_date: End
       event_details: Event's details
-
   agendas:
     dropdown_content:
       chat_rooms: "Chat: "
@@ -2027,7 +1826,6 @@ en_US:
       other: Others
       legend: Legend
       all_day: all day
-
   edx:
     warning:
       redirected: You've been redirected to SolarEdx at a new window
@@ -2040,12 +1838,10 @@ en_US:
     designates:
       instructor: Professor
       staff: Tutor
-      dealloc: Desalloc 
     success:
       deallocated: deallocated user
     error:
-      not_deallocated: Unable to deallocate user  
-
+      not_deallocated: Unable to deallocate user
   users:
     errors:
       ma:
@@ -2054,11 +1850,11 @@ en_US:
         cant_connect: Can't be updated at this moment. Incomplete conection with Módulo Acadêmico.
         problem_accessing: Problems happened while accessing Módulo Acadêmico. Please try again.
         login: 'Connection with Módulo Acadêmico has failed, your CPF was used as username. Please try define it again.'
-        email: "Connection with Módulo Acadêmico has failed, your email was set as an invalid value. Please try define it again."
+        email: 'Connection with Módulo Acadêmico has failed, your email was set as an invalid value. Please try define it again.'
         login_email: 'ma_login_email_msg'
         synchronize: Error while synchronizing data with Módulo Acadêmico. Please try again.
     notices:
-      ma: 
+      ma:
         use_ma_data: Please use your Módulo Acadêmico data.
         synchronize: Data synchronized successfully.
     warnings:
@@ -2067,8 +1863,8 @@ en_US:
         cpf_not_found: CPF not found at no Módulo Acadêmico
     show:
       not_informed: Not informed
-      detailed: Detailed Information
-      personal_data: Personal Data
+      detailed: "Detailed Information"
+      personal_data: "Personal Data"
       contact: Contact
       gender: "Gender: "
       birthdate: "Birthdate: "
@@ -2087,8 +1883,6 @@ en_US:
       phrase: "Phrase: "
       site: "Site: "
       integrated: "Integrated with Módulo Acadêmico: "
-      y: Yes
-      n: No
     import:
       success: "Users successfully imported"
       success_with_warning: "Errors found in import of some users<br/><br/>%{log}"
@@ -2117,13 +1911,12 @@ en_US:
       type: Type
       course: Course
       curriculum_unit: Curriculum Unit
-      semester: Semester
       group: Group
+      semester: Semester
       status: Status
       request_profile: Request profile
       cancel_profile: Cancel profile
       confirm: Are you sure you want to cancel this profile?
-
   mysolar:
     synchronize: Synchronize with Módulo Acadêmico
     profiles: Profiles
