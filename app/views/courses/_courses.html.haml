@@ -1,0 +1,7 @@
+- @courses.each do |course|
+  %tr.lines
+    %td= course.code
+    %td= course.name
+    %td
+      = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_course_path(course), class: 'btn link_edit_course', :'data-tooltip' => t(:edit)
+      = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_course', :"data-link-delete" => course_path(course), :'data-tooltip' => t(:destroy), id: course.id

@@ -27,7 +27,7 @@ class EditionsController < ApplicationController
     authorize! :courses, Edition
 
     allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "courses")
-    @courses = Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
+    @courses = Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).paginate(page: params[:page], per_page: 2)
     @type    = CurriculumUnitType.find(params[:curriculum_unit_type_id])
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized

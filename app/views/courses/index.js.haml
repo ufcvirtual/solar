@@ -1,0 +1,6 @@
+$('.allocations').append('#{escape_javascript(render partial: 'courses', locals: {users: @users})}');
+$('a.load-more-allocations').attr('href', '#{courses_path(page: @courses.next_page, type_id: @type_id)}');
+$(".tb_list").trigger("update");
+
+- unless @courses.next_page
+  $('a.load-more-allocations').remove();

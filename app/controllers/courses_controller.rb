@@ -10,13 +10,17 @@ class CoursesController < ApplicationController
       render json: { html: render_to_string(partial: 'select_course', locals: { curriculum_units: @courses.uniq! }) }
     else # list
       authorize! :index, Course
-      if (not params[:course_id].blank?)
-        @courses = Course.where(id: params[:course_id])
+      @courses = if (not params[:course_id].blank?)
+        Course.where(id: params[:course_id])
       else
         allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "courses")
-        @courses = Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
+        Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).paginate(page: params[:page], per_page: 2)
       end
-      render partial: 'courses/index'
+
+      respond_to do |format|
+        format.html {render partial: 'courses/index'}
+        format.js
+      end
     end
   end
 
