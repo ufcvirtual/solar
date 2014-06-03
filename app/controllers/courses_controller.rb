@@ -14,7 +14,7 @@ class CoursesController < ApplicationController
         Course.where(id: params[:course_id])
       else
         allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "courses")
-        Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).paginate(page: params[:page], per_page: 2)
+        Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).paginate(page: params[:page], per_page: 100)
       end
 
       respond_to do |format|

@@ -28,7 +28,7 @@ class CurriculumUnitsController < ApplicationController
 
     if params[:combobox]
       if @type.id == 3
-        course_name = Course.find(params[:course_id]).name
+        @course_name = Course.find(params[:course_id]).name
         @curriculum_units = CurriculumUnit.where(name: course_name)
       else
         @curriculum_units = CurriculumUnit.joins(:offers).where(curriculum_unit_type_id: @type.id).where(offers: {course_id: params[:course_id]}) if not(params[:course_id].blank?)
@@ -41,10 +41,12 @@ class CurriculumUnitsController < ApplicationController
         @curriculum_units = CurriculumUnit.where(id: params[:curriculum_unit_id])
       else
         allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "curriculum_units")
-        @curriculum_units   = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
+        @curriculum_units   = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).paginate(page: params[:page], per_page: 100)
       end
-
-      render partial: 'curriculum_units/index'
+      respond_to do |format|
+        format.html {render partial: 'curriculum_units/index'}
+        format.js
+      end
     end
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized

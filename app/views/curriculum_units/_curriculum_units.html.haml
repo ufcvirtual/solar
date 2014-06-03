@@ -1,0 +1,7 @@
+- @curriculum_units.each do |curriculum_unit|
+    %tr.lines
+        %td= check_box_tag 'ckb_curriculum_unit', curriculum_unit.id, checked = false, {class: 'selected_curriculum_unit', :"data-curriculum_unit-id" => curriculum_unit.id}
+        %td= curriculum_unit.code
+        %td= curriculum_unit.name
+        %td{:align => "left"}= @type.description
+        %td{:align => "right"}= link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit', :'data-tooltip' => t(:edit, uc_or_module: @type.tool_name), :"data-link-edit" => edit_curriculum_unit_path(curriculum_unit)   
