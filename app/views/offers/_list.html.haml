@@ -35,7 +35,6 @@
 
   $(function(){
     if ("#{semester_id}") { // quando semestre tem ofertas
-      var semester = $(".table-offers#table-#{semester_id}");
       $('.link_edit_offer').click(function(){
         if ($(this).attr('disabled') == 'disabled'){
           flash_message("#{t(".cant_edit")}", "alert");
