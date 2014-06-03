@@ -220,6 +220,7 @@ Solar::Application.routes.draw do
   resources :lessons do
     member do
       put "change_status/:status", to: :change_status, as: :change_status
+      put "responsible_change_status/:status", to: :change_status, as: :responsible_change_status, defaults: {responsible: true}
       put "order/:change_id", action: :order, as: :change_order
       put :change_module
       get :edition, action: :show, defaults: {edition: true}

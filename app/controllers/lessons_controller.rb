@@ -19,15 +19,19 @@ class LessonsController < ApplicationController
     authorize! :index, Lesson
     
     if @admin
-      allocation_tags = AllocationTag.get_by_params(params)
-      @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
+      allocation_tags     = AllocationTag.get_by_params(params)
       @curriculum_unit_id = params[:curriculum_unit_id]
+      @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
     else 
-      @allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+      allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+      @responsible   = allocation_tag.is_user_class_responsible?(current_user.id)
+      @allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : allocation_tag.related
     end
 
-    @lessons_modules = LessonModule.to_select(@allocation_tags_ids, current_user, true)
+    @lessons_modules = LessonModule.to_select(@allocation_tags_ids.split(" ").flatten, current_user, true)
     render layout: false if params[:allocation_tags_ids] or @admin
+
+    @allocation_tags_ids = @allocation_tags_ids.join(" ")
   end
 
   def list
@@ -41,6 +45,9 @@ class LessonsController < ApplicationController
 
   # GET /lessons/:id
   def show
+    @lesson = Lesson.find(params[:id])
+    raise "erro" if @lesson.address.blank?
+
     unless @curriculum_unit or params.include?(:edition)
       render text: t(:curriculum_unit_not_selected, scope: :lessons), status: :not_found
     else
@@ -53,18 +60,21 @@ class LessonsController < ApplicationController
 
       allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids].split(" ").flatten : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
       @lessons_modules    = LessonModule.to_select(allocation_tags_ids, current_user)
-      @lesson       = Lesson.find(params[:id])
       @lessons      = @lesson.lesson_module.lessons_to_open(current_user)
-      @lessons_info = @lessons.collect{|lesson| {'id' => lesson.id, 'path' => lesson.path, 'url' => lesson_url(lesson), 'name' => lesson.name} }.to_json
+      @lessons_info = @lessons.collect{|lesson| {'id' => lesson.id, 'path' => lesson.path, 'url' => lesson_url(lesson), 'name' => lesson.name, 'is_draft' => (lesson.status == Lesson_Test)} }.to_json
+      @student      = AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_student?(current_user.id) unless active_tab[:url][:allocation_tag_id].nil?
 
       render layout: 'lesson'
     end
+  rescue
+    render json: {status: :unprocessable_entity}
   end
 
   def get_lessons
     lesson_module = LessonModule.find(params[:lesson_module])
     @lessons      = (lesson_module.nil? ? [] : lesson_module.lessons_to_open(current_user))
-    @lessons_info = @lessons.collect{|lesson| {'id' => lesson.id, 'path' => lesson.path, 'url' => lesson_url(lesson), 'name' => lesson.name} }.to_json
+    @lessons_info = @lessons.collect{|lesson| {'id' => lesson.id, 'path' => lesson.path, 'url' => lesson_url(lesson), 'name' => lesson.name, 'is_draft' => (lesson.status == Lesson_Test)} }.to_json
+    @student      = AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_student?(current_user.id) unless active_tab[:url][:allocation_tag_id].nil?
 
     render partial: 'select_lesson', locals: { lessons: @lessons, lessons_info: @lessons_info }
   end
@@ -149,18 +159,26 @@ class LessonsController < ApplicationController
 
   # PUT /lessons/1/change_status/1
   def change_status
-    authorize! :update, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :change_status, Lesson, {on: @allocation_tags_ids = params[:allocation_tags_ids], read: params.include?(:responsible)}
+    @responsible = params.include?(:responsible)
 
     ids = params[:id].split(',').map(&:to_i).flatten
-
     msg = nil
     @lessons = Lesson.where(id: ids)
     @lessons.each do |lesson|
       lesson.status = params[:status].to_i
       msg = lesson.errors.full_messages unless lesson.save
     end
-
-    render json: {success: msg.nil?, msg: msg}, status: (msg.nil? ? :ok : :unprocessable_entity)
+ 
+    respond_to do |format|
+      if msg.nil?
+        format.json { render json: {success: true}, status: :ok }
+        format.js
+      else
+        format.json { render json: {success: false, msg: msg}, status: :unprocessable_entity }
+        format.js { render js: "flash_message(#{msg}, 'alert');" }
+      end
+    end
   end
 
   def destroy

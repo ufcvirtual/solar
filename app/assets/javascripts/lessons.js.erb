@@ -1,6 +1,6 @@
 lesson_cookie_id = "_ufc_solar20_lesson_opened";
 
-function open_lesson(path, url) {
+function open_lesson(path, url, is_draft) {
   $(".show_lesson .content").attr("data-url", url);
 
   var home_tab = $(".mysolar_unit_active_tab.general_context").length;
@@ -8,6 +8,9 @@ function open_lesson(path, url) {
     $.cookie(lesson_cookie_id, url, { path: '/' });
 
   $("iframe#content_lesson").prop("src", path);
+  
+  if (is_draft!=undefined)
+    update_status_div(is_draft);
 }
 
 function maximize_lesson(obj) {
@@ -37,4 +40,19 @@ function minimize_lesson() {
 function close_lesson() {
   $("#mysolar_open_lesson button").addClass("disabled");
   $.removeCookie(lesson_cookie_id);
+}
+
+function update_status_div(is_draft) {
+  var status_div = $(".lesson_status").children()[0];
+  var children   = $(status_div).children();
+
+  if (is_draft){
+    $(status_div).attr("class", "draft");
+    $(children[0]).attr("src", "/assets/rejected.png");
+    $(children[1]).html("<%=I18n.t('lessons.index.draft')%>");
+  }else{
+    $(status_div).attr("class", "released");
+    $(children[0]).attr("src", "/assets/released.png");
+    $(children[1]).html("<%=I18n.t('lessons.index.released')%>");
+  }
 }

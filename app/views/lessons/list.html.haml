@@ -83,7 +83,11 @@
                       .lesson_arrow_down= link_to (image_tag "lesson/down_arrow.png"), "#", class: 'down'
 
                   %td
-                    %div= link_to lesson.name, edition_lesson_url(lesson, allocation_tags_ids: @allocation_tags_ids), class: "link_content lesson", "data-fancybox-type" => "iframe"
+                    %div
+                      - if lesson.address.blank?
+                        = lesson.name
+                      - else
+                        = link_to lesson.name, edition_lesson_url(lesson, allocation_tags_ids: @allocation_tags_ids), class: "link_content lesson", "data-fancybox-type" => "iframe"
                     - if lesson.description
                       %div= lesson.description
 

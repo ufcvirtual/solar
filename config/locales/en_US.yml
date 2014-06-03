@@ -563,6 +563,9 @@ en_US:
     index:
       lesson_table_date: Access date
       lesson_table_title: "Available Lessons"
+      acceptance: Acceptance
+      draft: Draft
+      released: Released
     list:
       lesson: Lesson
       order: Order

@@ -27,6 +27,7 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html { redirect_to home_path, alert: t(:no_permission) }
       format.json { render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized }
+      format.js { render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized }
     end
   end
 

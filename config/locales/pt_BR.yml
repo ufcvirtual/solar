@@ -735,7 +735,10 @@ pt_BR:
     index:
       lesson_table_date: Data de acesso
       lesson_table_title: "Aulas disponíveis"
-    list:
+      acceptance: Aprovação
+      draft: Rascunho
+      released: Liberada
+    list: 
       lesson: Aula
       order: Ordem
       name: Nome da aula
