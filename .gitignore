@@ -20,6 +20,7 @@ coverage/
 media/
 public/assets
 db/schema.rb
+config/global.yml
 config/database.yml
 config/mailer.yml
 config/deploy.rb

@@ -32,5 +32,6 @@ Solar::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
-  routes.default_url_options = { host: "localhost", port: 3000 }
+
+  routes.default_url_options = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["url_options"] rescue {}
 end

@@ -52,5 +52,5 @@ Solar::Application.configure do
   config.sass.cache = false
   config.sass.debug_info = true
 
-  routes.default_url_options = { host: "localhost", port: 3000 }
+  routes.default_url_options = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["url_options"] rescue {}
 end
