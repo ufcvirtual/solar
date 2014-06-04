@@ -15,15 +15,16 @@ class LessonsController < ApplicationController
   before_filter :curriculum_data, except: [:new, :create, :edit, :update, :list, :download_files, :order, :destroy]
 
   def index
-    @admin = current_user.is_admin?
-    authorize! :index, Lesson
+    @admin = (current_user.is_admin? and active_tab[:url][:allocation_tag_id].nil?)
     
     if @admin
+      authorize! :index, Lesson
       allocation_tags     = AllocationTag.get_by_params(params)
       @curriculum_unit_id = params[:curriculum_unit_id]
       @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
     else 
-      allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+      authorize! :index, Lesson, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+      allocation_tag = AllocationTag.find(allocation_tag_id)
       @responsible   = allocation_tag.is_user_class_responsible?(current_user.id)
       @allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : allocation_tag.related
     end

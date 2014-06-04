@@ -169,7 +169,7 @@ module V1
           user = verify_or_create_user(allocation[:cpf])
           profile_id = get_profile_id(allocation[:perfil])
 
-          group = get_group(allocation[:codDisciplina], allocation[:codGraduacao], allocation[:codTurma], allocation[:periodo], allocation[:ano])
+          group = get_group(allocation[:codDisciplina], allocation[:codGraduacao], allocation[:codigo], allocation[:periodo], allocation[:ano])
 
           group.allocate_user(user.id, profile_id)
 

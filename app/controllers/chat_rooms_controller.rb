@@ -5,6 +5,8 @@ class ChatRoomsController < ApplicationController
   layout false, except: :list 
   authorize_resource only: :list
 
+  before_filter :prepare_for_group_selection, only: :list
+
   def index
     @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
     authorize! :index, ChatRoom, on: @allocation_tags_ids
@@ -86,9 +88,8 @@ class ChatRoomsController < ApplicationController
   end
 
   def list
-    authorize! :list, ChatRoom
-
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    authorize! :list, ChatRoom, on: [allocation_tag_id]
 
     @alloc = AllocationTag.find(allocation_tag_id).user_relation_with_this(current_user).first.id rescue nil
     @responsible = ChatRoom.responsible?(allocation_tag_id, current_user.id)

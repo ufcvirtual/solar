@@ -166,12 +166,12 @@ class User < ActiveRecord::Base
 
   def groups(profile_id = nil, status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil)
     query = []
-    query << "allocations.status = #{status}" unless status.nil?
-    query << "allocations.profile_id = #{profile_id}" unless profile_id.nil?
-    query << "curriculum_units.id = #{curriculum_unit_id}" unless curriculum_unit_id.nil?
+    query << "allocations.status = #{status}"                        unless status.nil?
+    query << "allocations.profile_id = #{profile_id}"                unless profile_id.nil?
+    query << "curriculum_units.id = #{curriculum_unit_id}"           unless curriculum_unit_id.nil?
     query << "curriculum_unit_types.id = #{curriculum_unit_type_id}" unless curriculum_unit_type_id.nil?
 
-    allocations.includes(allocation_tag: [group: [offer: [curriculum_unit: :curriculum_unit_type]]]).where(query.join(" AND ")).delete_if {|allocation| allocation.allocation_tag.nil? }.map(&:groups).flatten.compact.uniq
+    Group.joins(allocation_tag: :allocations, offer: {curriculum_unit: :curriculum_unit_type}).where(query.join(" AND ")).select("DISTINCT groups.id, groups.*")
   end
 
   def profiles_activated(only_id = false)

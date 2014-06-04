@@ -3,6 +3,7 @@ class BibliographiesController < ApplicationController
   include SysLog::Actions
 
   layout false, except: :index # define todos os layouts do controller como falso
+  before_filter :prepare_for_group_selection, only: [:index]
 
   def list
     @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
