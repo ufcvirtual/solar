@@ -49,7 +49,6 @@ class Group < ActiveRecord::Base
 
   def responsibles
     allocation_tags_ids = self.allocation_tag.related({all: false, upper: true})
-    allocation_tags_ids << self.allocation_tag.id
 
     Allocation.joins(:profile, :user)
       .where(status: Allocation_Activated, allocation_tag_id: allocation_tags_ids)

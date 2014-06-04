@@ -47,18 +47,12 @@ class AllocationTag < ActiveRecord::Base
 
     case option
       when 'group_id'
-        if args[:all] or args[:lower]
-          lower = [self]
-        end
-
         if args[:all] or args[:upper]
           group = self.group
           upper = [group.offer.allocation_tag, group.curriculum_unit.allocation_tag, group.course.allocation_tag]
         end
       when 'offer_id'
-        if args[:all] or args[:lower]
-          lower = [self.offer.groups.map(&:allocation_tag).compact.uniq, self]
-        end
+        lower = [self.offer.groups.map(&:allocation_tag).compact.uniq] if args[:all] or args[:lower]
 
         if args[:all] or args[:upper]
           offer = self.offer
@@ -67,26 +61,18 @@ class AllocationTag < ActiveRecord::Base
       when 'curriculum_unit_id'
         if args[:all] or args[:lower]
           uc    = self.curriculum_unit
-          lower = [uc.offers.map(&:allocation_tag).compact.uniq, uc.groups.map(&:allocation_tag).compact.uniq, self]
+          lower = [uc.offers.map(&:allocation_tag).compact.uniq, uc.groups.map(&:allocation_tag).compact.uniq]
           sibblings = [uc.offers.map(&:course).compact.map(&:allocation_tag)]
-        end
-
-        if args[:all] or args[:upper]
-          upper = [self]
         end
       when 'course_id'
         if args[:all] or args[:lower]
           course = self.course
-          lower  = [course.offers.map(&:allocation_tag).compact.uniq, course.groups.map(&:allocation_tag).compact.uniq, self]
+          lower  = [course.offers.map(&:allocation_tag).compact.uniq, course.groups.map(&:allocation_tag).compact.uniq]
           sibblings = [course.offers.map(&:curriculum_unit).compact.map(&:allocation_tag)]
-        end
-
-        if args[:all] or args[:upper]
-          upper = [self]
         end
     end
 
-    at = (lower + upper + sibblings).flatten.compact.uniq
+    at = ([self] + lower + upper + sibblings).flatten.compact.uniq
     return at if args[:objects]
     return at.map(&:id)
   end

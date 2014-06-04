@@ -209,7 +209,7 @@ class User < ActiveRecord::Base
 
   # Returns user resources list as [{controller: :action}, ...] at informed allocation_tags_ids
   def resources_by_allocation_tags_ids(allocation_tags_ids)
-    allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids.split(" ")).map{|at| at.related({upper: true})}.flatten.uniq
+    allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids.split(" ")).map{|at| at.related(upper: true)}.flatten.uniq
     profiles.joins(:resources).where("allocations.allocation_tag_id IN (?) AND allocations.status = ?", allocation_tags_ids, Allocation_Activated)
       .map(&:resources).compact.flatten.map{|resource| 
         {resource.controller.to_sym => resource.action.to_sym}
