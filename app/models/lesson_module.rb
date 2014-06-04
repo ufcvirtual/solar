@@ -30,8 +30,9 @@ class LessonModule < ActiveRecord::Base
     user_responsible = user.nil? ? false : AllocationTag.find(allocation_tags_ids).compact.map{|at| at.is_user_class_responsible?(user.id) }.include?(true)
     joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tags_ids}).delete_if{ |lmodule|
       lessons               = lmodule.lessons
+      has_open_lesson       = lessons.map(&:closed?).include?(false)
       only_responsible_sees = (lessons.collect{|l| l if (l.will_open? or l.is_draft? or not(l.open_to_show? or list))}.compact).size
-      lessons.empty? or ( not(user_is_admin) and (not(user_responsible) and (only_responsible_sees == lessons.size) ) ) or (not(list) and lessons.size == lessons.map{|l| true if l.address.blank?}.compact.size)
+      lessons.empty? or ( not(user_is_admin) and (not(user_responsible) and (only_responsible_sees == lessons.size) ) ) or (not(list) and lessons.size == lessons.map{|l| true if l.address.blank?}.compact.size) or not(list or has_open_lesson)
     }.compact.uniq
   end
 
