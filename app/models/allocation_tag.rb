@@ -209,24 +209,26 @@ class AllocationTag < ActiveRecord::Base
   end
 
   def self.semester_info(allocation_tag)
-    return 'always_active ' if allocation_tag.nil? # if allocation_tag isn't related to anything, consider active
-
-    if !allocation_tag.offer.nil?
-      if allocation_tag.offer.semester.offer_schedule.start_date <= Date.today && 
-        allocation_tag.offer.semester.offer_schedule.end_date >= Date.today
-        'semester_active ' + allocation_tag.offer.semester.name
+    case 
+      when nil; 'always_active '
+      when not(allocation_tag.offer.nil?)
+        offer  = allocation_tag.offer
+        sclass = offer.semester.name
+        sclass = [sclass, 'semester_active'].join(" ") if offer.is_active?
+      when not(allocation_tag.group.nil?)
+        offer  = allocation_tag.group.offer
+        sclass = offer.semester.name
+        sclass = [sclass, 'semester_active'].join(" ") if offer.is_active?
+      when not(allocation_tag.course.nil?)
+        offers = allocation_tag.course.offers
+        sclass = offers.map(&:semester).map(&:name).uniq.join(" ")
+        sclass = [sclass, 'semester_active'].join(" ") if offers.map(&:is_active?).include?(true)
+      when not(allocation_tag.curriculum_unit.nil?)
+        offers = allocation_tag.curriculum_unit.offers
+        sclass = offers.map(&:semester).map(&:name).uniq.join(" ")
+        sclass = [sclass, 'semester_active'].join(" ") if offers.map(&:is_active?).include?(true)
       else
-        allocation_tag.offer.semester.name
-      end
-    elsif !allocation_tag.group.nil?
-      if allocation_tag.group.offer.semester.offer_schedule.start_date <= Date.today && 
-        allocation_tag.group.offer.semester.offer_schedule.end_date >= Date.today
-        'semester_active ' + allocation_tag.group.offer.semester.name 
-      else
-        allocation_tag.group.offer.semester.name 
-      end
-    else
-      ''
+        ' '
     end
   end
 

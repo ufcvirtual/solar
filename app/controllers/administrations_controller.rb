@@ -89,7 +89,6 @@ class AdministrationsController < ApplicationController
     end
   end
 
-
   ## ALLOCATIONS
 
   def allocations_user

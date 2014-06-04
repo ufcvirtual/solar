@@ -25,13 +25,13 @@ class Semester < ActiveRecord::Base
     self.enrollment_schedule.verify_current_date = true if enrollment_schedule and verify_current_date != false
   end
 
-  def self.currents(year = nil, verify_dates = nil)
+  def self.currents(year = nil, verify_end_date = nil)
     unless year # se o ano passado for nil, pega os semestres do ano corrente em endiante
       self.joins(:offer_schedule).where("schedules.end_date >= ?", Date.today.beginning_of_year)
     else # se foi definido, pega apenas daquele ano
 
-      semesters = if verify_dates
-        self.joins(:offer_schedule).where("( ? BETWEEN schedules.start_date AND schedules.end_date)", Date.today)
+      semesters = if verify_end_date
+        self.joins(:offer_schedule).where("( schedules.end_date > ? )", Date.today)
       else
         first_day_of_year, last_day_of_year = Date.today.beginning_of_year, Date.today.end_of_year
         self.joins(:offer_schedule).where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?)", first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year)

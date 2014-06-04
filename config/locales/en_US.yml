@@ -1393,6 +1393,7 @@ en_US:
       edit: Edit
       change_password: Change password
       message_not_found: "User not found"
+      synchronize: Synchronize with Módulo Acadêmico
     informations:
       detailed: "Detailed Information"
       personal_data: "Personal Data"
@@ -1427,8 +1428,6 @@ en_US:
       email_sent: Email sent sucessfully
     error:
       email_not_sent: Email not sent
-    search_users:
-      synchronize: Synchronize with Módulo Acadêmico
     allocation_approval:
       not_specified: Not specified
       none_pending_allocation: There are no pending request

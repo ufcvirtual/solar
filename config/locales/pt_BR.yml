@@ -1645,6 +1645,7 @@ pt_BR:
       edit: Editar
       change_password: Alterar senha
       message_not_found: "Usuário não encontrado"
+      synchronize: Sincronizar com Módulo Acadêmico
     informations:
       detailed: "Informações Detalhadas"
       personal_data: "Dados Pessoais"
@@ -1679,8 +1680,6 @@ pt_BR:
       email_sent: Email enviado com sucesso
     error:
       email_not_sent: Não foi possível enviar email
-    search_users:
-      synchronize: Sincronizar com Módulo Acadêmico
     allocation_approval:
       not_specified: Não especificado
       none_pending_allocation: Não há solicitações pendentes
