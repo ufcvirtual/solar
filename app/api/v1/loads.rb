@@ -52,7 +52,7 @@ module V1
       end
 
       def verify_or_create_user(cpf)
-        user = User.find_by_cpf(cpf)
+        user = User.find_by_cpf(cpf.delete('.').delete('-'))
         return user if user
 
         user = User.new cpf: cpf
@@ -182,7 +182,7 @@ module V1
       # load/groups/block_profile
       put :block_profile do # Receives user's cpf, group and profile to block
         allocation = params[:allocation]
-        user       = User.find_by_cpf!(allocation[:cpf])
+        user       = User.find_by_cpf!(allocation[:cpf].to_s.delete('.').delete('-'))
         new_status = 2 # canceled allocation
         group_info = allocation[:turma]
         profile_id = get_profile_id(allocation[:perfil])
@@ -204,7 +204,8 @@ module V1
       post :editors do
         load_editors  = params[:editores]
         uc            = CurriculumUnit.find_by_code!(load_editors[:codDisciplina])
-        users         = User.where(cpf: load_editors[:editores])
+        cpf_editores  = load_editors[:editores].map {|c| c.delete('.').delete('-')}
+        users         = User.where(cpf: cpf_editores)
         prof_editor   = 5
 
         begin
@@ -242,7 +243,7 @@ module V1
       # load/user
       post "/" do
         begin
-          user = User.new cpf: params[:cpf].delete(".").delete("-")
+          user = User.new cpf: params[:cpf]
           ma_response = user.connect_and_validates_user
           raise ActiveRecord::RecordNotFound if ma_response.nil? # nao existe no MA
           {ok: :ok}
