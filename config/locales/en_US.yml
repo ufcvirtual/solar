@@ -1160,6 +1160,7 @@ en_US:
         request_info_ma: "As you are an user integrated with Módulo Acadêmico, you must recover your password through it. To do so, access the link below."
         ignore: "If you didn't request this, please ignore this email."
         change: "Your password won't change until you access the link above and create a new one."
+        username_info: "Your username is: %{username}."
     users:
       user:
         ma_login_email_msg: "It wasn't possible to verify username and email at Módulo Acadêmico, thus your username and email were defined, respectively, as your CPF and an invalid and random value. Please redefine them."
