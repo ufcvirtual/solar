@@ -11,7 +11,13 @@ class OffersController < ApplicationController
     @type_id = params[:type_id].to_i
 
     @semester = Semester.find(params[:semester_id])
-    @offers = @semester.offers
+    # @offers = @semester.offers.paginate(page: params[:page], per_page: 3)
+    @offers = @semester.offers_by_allocation_tags(params[:allocation_tags_ids].split(" ")).paginate(page: params[:page], per_page: 100)
+
+    respond_to do |format|
+      format.html {render partial: 'offers/list'}
+      format.js
+    end
   end
 
   def new

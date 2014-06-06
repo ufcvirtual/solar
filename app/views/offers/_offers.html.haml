@@ -1,0 +1,18 @@
+- semester_id = @semester.try(:id)
+- if @offers.nil? or @offers.empty?
+  %tr
+    %td{colspan: 6}
+      .block_content_text_list.text_none= t(".none")
+- else
+  - @offers.each do |offer|
+    %tr.lines
+      %td= check_box_tag "ckb_offers_#{semester_id}", offer.id, checked = false, {class: 'ckb_offers', :"data-offers-id" => offer.id}
+      %td= offer.curriculum_unit.try(:curriculum_unit_type).try(:description)
+      %td= offer.course.try(:name)
+      - if @type_id != 3
+        %td= offer.curriculum_unit.try(:name)
+      - if offer.period_schedule.nil?
+        %td.semester_same_dates= t("offers.list.same_dates_from_offer")
+      - else
+        %td= [l(offer.period_schedule.start_date, format: :normal), l(offer.period_schedule.end_date, format: :normal)].join(" - ")
+      %td= link_to_function (content_tag(:i, nil, class: 'icon-edit')), "edit_offer(this)", class: 'btn link_edit_offer', :'data-tooltip' => t("offers.list.offer_edit"), :"data-semester-name" => offer.semester.name, :"data-link-edit" => edit_offer_path(offer, type_id: @type_id)

@@ -20,14 +20,16 @@
         .block_toolbar_right
           = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'delete_offer btn btn_del', :'data-tooltip' => t(".delete_offer"), :"data-link-delete" => offer_path(id: ':id')
 
-      = render partial: "offers/list", object: @offers = semester.offers_by_allocation_tags(@allocation_tags_ids, {course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id]}), object: @type_id = type_id, object: @semester = semester
+      = render partial: "offers/list", object: @offers = semester.offers_by_allocation_tags(@allocation_tags_ids, {course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id]}).paginate(page: params[:page], per_page: 100), object: @type_id = type_id, object: @semester = semester, object: @allocation_tags_ids = @allocation_tags_ids
 - else
   .block_content_text.text_none= t(".none")
 
 = javascript_include_tag "tooltip"
 
 :javascript
+
   $(function(){
+    
     $('#new_semester, .link_new_offer, [id^="edit_semester_"]').call_fancybox();
 
     $('.btn_del').attr("disabled", true);

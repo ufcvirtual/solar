@@ -1,6 +1,8 @@
 class Offer < ActiveRecord::Base
   include Taggable
 
+  default_scope order: 'id'
+
   belongs_to :course
   belongs_to :curriculum_unit
   belongs_to :semester
