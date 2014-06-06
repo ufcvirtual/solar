@@ -16,7 +16,7 @@ class Allocation < ActiveRecord::Base
   has_many :chat_rooms
 
   def groups
-    allocation_tag.groups
+    allocation_tag.groups unless allocation_tag.nil?
   end
 
   def self.enrollments(args = {})

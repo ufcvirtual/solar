@@ -30,9 +30,9 @@ class Group < ActiveRecord::Base
   end
 
   def self.find_all_by_curriculum_unit_id_and_user_id(curriculum_unit_id, user_id)
-    Group.joins(allocation_tag: :allocations, offer: [:curriculum_unit, :semester])
-      .where(allocations: {user_id: user_id, status: Allocation_Activated}, curriculum_units: {id: curriculum_unit_id})
-      .select("DISTINCT groups.id, groups.*, semesters.name").order("semesters.name DESC, groups.code ASC")
+    Group.joins(offer: [:semester]).where(
+      offers: {curriculum_unit_id: curriculum_unit_id},
+      groups: {id: User.find(user_id).groups(nil, Allocation_Activated).map(&:id)}).order('semesters.name DESC, groups.code ASC')
   end
 
   def has_any_lower_association?
