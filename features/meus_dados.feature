@@ -116,7 +116,7 @@ Cenário:  Acessar Edição de foto
     E que estou em "Meu Solar"
   Quando eu clicar no link "mysolar_top_user_nick"
   Então eu deverei ver "Alterar foto"
-  E eu clicar no link "mysolar_change_picture"
+  E eu clicar no link "change_picture"
   Então eu deverei ver o botao "Enviar"
 
 

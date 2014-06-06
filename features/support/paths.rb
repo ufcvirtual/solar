@@ -14,7 +14,7 @@ module NavigationHelpers
         '/home'
 
       when /Cadastrar usuario/
-        '/users/register'
+        '/users/sign_up'
 
       when /Recuperar senha/
         '/users/password/new'

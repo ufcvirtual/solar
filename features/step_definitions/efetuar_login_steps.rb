@@ -49,15 +49,11 @@ end
 # Teste
 
 Quando /^eu clicar no link de conteudo "([^"]*)"$/ do |link|
-  within_frame 'frame_content' do
-    click_link(link)
-  end  
+  click_link(link)
 end
 
 Entao /^eu deverei visualizar "([^"]*)"$/ do |texto|
-  within_frame 'frame_content' do
-    page.should have_content(texto)
-  end
+  page.should have_content(texto)
 end
 
 Entao /^eu nao deverei ver "([^"]*)"$/ do |text|
