@@ -6,7 +6,12 @@ class GroupsController < ApplicationController
 
   # Mobilis
   def index
-    @groups = ( params.include?(:curriculum_unit_id) ? current_user.groups(nil, nil, params[:curriculum_unit_id]) : current_user.groups )
+    @groups = current_user.groups
+
+    if params.include?(:curriculum_unit_id)
+      ucs_groups = CurriculumUnit.find(params[:curriculum_unit_id]).groups
+      @groups = ucs_groups.select {|g| (ucs_groups.map(&:id) & @groups.map(&:id)).include?(g.id) }
+    end
 
     respond_to do |format|
       format.html
