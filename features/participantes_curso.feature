@@ -15,7 +15,7 @@ Dado que tenho "allocations"
 Cenário: Visualizar participantes da turma
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Introducao a Linguistica"
+  Quando eu clicar no link "110 - Introducao A Linguistica"
     E que eu selecionei "selected_group" com "IL-FOR - 2011.1"
     E eu clicar no link "Informações Gerais"
   Então eu deverei ver "Participantes"

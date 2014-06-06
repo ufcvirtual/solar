@@ -32,8 +32,8 @@ Cenário: Exibir Material de apoio
 Cenário: Trocar material de apoio com a combo
     Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
-        Quando eu clicar no link "Introducao a Linguistica"
-    E que eu selecionei "selected_group" com "FOR - 2012.1"
+        Quando eu clicar no link "110 - Introducao A Linguistica"
+    E que eu selecionei "selected_group" com "IL-FOR - 2012.1"
     Então eu deverei ver "Conteúdo"
         Quando eu clicar no link "Conteúdo"
     Então eu deverei ver o link "Material de Apoio"
@@ -46,8 +46,8 @@ Cenário: Trocar material de apoio com a combo
 Cenário: Trocar material de apoio com a combo - parte 2
     Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
-        Quando eu clicar no link "Introducao a Linguistica"
-    E que eu selecionei "selected_group" com "FOR - 2011.1"
+        Quando eu clicar no link "110 - Introducao A Linguistica"
+    E que eu selecionei "selected_group" com "IL-FOR - 2011.1"
     Então eu deverei ver "Conteúdo"
         Quando eu clicar no link "Conteúdo"
     Então eu deverei ver o link "Material de Apoio"

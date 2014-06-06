@@ -34,7 +34,7 @@ Cenário: Filtro de conteudo
       Então eu deverei ver "LQUIM - Licenciatura em Quimica"
     Dado que eu pressionei a tecla "arrow_down" no campo "autocomplete-input" de "course"
       E que eu pressionei a tecla "enter" no campo "autocomplete-input" de "course"
-      E que eu cliquei em "#search"  
+      E que eu cliquei em "#search"
     Então eu deverei ver "Informação"
       E eu deverei ver "Comunicação"
       E eu deverei ver "Educação"
@@ -94,7 +94,7 @@ Cenário: Filtro academico
       E eu deverei ver "Semestres"
       E eu deverei ver "Turmas"
 
-@javascript 
+@javascript
 Cenário: Filtro academico - cursos
   Dado que estou logado com o usuario "editor" e com a senha "123456"
     E que estou em "Meu Solar"
@@ -122,7 +122,7 @@ Cenário: Filtro academico - cursos
     E eu nao deverei ver a linha de Cursos
       | Codigo        | Nome                          |
       | TS101         | Semipresencial sm nvista      |
-    
+
 
 @javascript
 Cenário: Filtro academico - ucs
@@ -218,7 +218,7 @@ Cenário: Filtro academico - turmas
       Então eu deverei ver "LQUIM - Licenciatura em Quimica"
     Dado que eu pressionei a tecla "arrow_down" no campo "autocomplete-input" de "course"
       E que eu pressionei a tecla "enter" no campo "autocomplete-input" de "course"
-      E que eu cliquei em "#search"  
+      E que eu cliquei em "#search"
       E eu deverei ver "Preencha os campos obrigatórios"
     Dado que eu preenchi "autocomplete-input" de "curriculum_unit" com "Quimica I"
       Então eu deverei ver "RM301 - Quimica I"

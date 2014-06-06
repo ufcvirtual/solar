@@ -18,6 +18,7 @@ Dado que estou logado com o usuario "editor" e com a senha "123456"
     E eu deverei ver a linha de Unidade Curricular
       | Codigo        | Nome                          | Categoria                             |
       | RM301         | Quimica I                     | Curso de Graduacao a Distancia        |
+      | TS101         | Semipresencial sm nvista      | Curso de Graduacao a Distancia        |
     E eu nao deverei ver a linha de Unidade Curricular
       | Codigo        | Nome                          | Categoria                             |
       | RM414         | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial     |
