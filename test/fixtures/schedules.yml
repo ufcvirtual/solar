@@ -238,3 +238,10 @@ sc_for_aviso4:
   id: 46
   start_date: <%= Date.today %>
   end_date: <%= Date.today %>
+
+## para chats_rooms
+
+sc_for_chat3:
+  id: 47
+  start_date: <%= Date.today %>
+  end_date: <%= Date.today + 1.week %>

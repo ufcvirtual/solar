@@ -21,7 +21,7 @@ chat3: # este chat possui mensagens
   title: "Chat 03"
   description: "Chat 03"
   chat_type: 0 # sem participantes definidos
-  schedule_id: 42
+  schedule_id: 47
   start_hour: "10:00"
   end_hour: "14:00"
 
