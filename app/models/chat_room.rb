@@ -28,6 +28,10 @@ class ChatRoom < Event
   before_destroy :can_destroy?
   after_destroy :delete_schedule
 
+  def user_messages
+    messages.where(message_type: 1)
+  end
+
   def url(allocation_id)
     chat = YAML::load(File.open('config/chat.yml'))[Rails.env.to_s] rescue nil
     cipher = OpenSSL::Cipher::Cipher.new('DES-EDE3-CBC')
@@ -47,7 +51,11 @@ class ChatRoom < Event
   end
 
   def can_destroy?
-    self.messages.empty?
+    unless user_messages.empty?
+      errors.add(:base, I18n.t(:chat_has_messages, scope: [:chat_rooms, :error]))
+      return false
+    end
+    return true
   end
 
   def copy_dependencies_from(chat_to_copy)
@@ -55,7 +63,7 @@ class ChatRoom < Event
   end
 
   def can_remove_or_unbind_group?(group)
-    self.messages.empty? # não pode dar unbind nem remover se chat possuir mensagens
+    user_messages.empty? # não pode dar unbind nem remover se chat possuir mensagens
   end
 
   def opened?
