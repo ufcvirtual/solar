@@ -196,7 +196,7 @@ class AllocationTag < ActiveRecord::Base
 
   def self.semester_info(allocation_tag)
     case 
-      when nil; 'always_active '
+      when allocation_tag.nil?; 'always_active '
       when not(allocation_tag.offer.nil?)
         offer  = allocation_tag.offer
         sclass = offer.semester.name
@@ -222,7 +222,8 @@ class AllocationTag < ActiveRecord::Base
     self.send(attributes.delete_if {|k, v| v.nil?}.keys.last.gsub(/_id/, '')).try(:info)
   end
 
-  def self.get_by_params(params, all_groups = false)
+  def self.get_by_params(params, all_groups = false, related = false)
+    map = related ? "related" : "id"
     allocation_tags_ids = []
 
     if params.include?(:allocation_tags_ids)
@@ -232,25 +233,25 @@ class AllocationTag < ActiveRecord::Base
       if params.include?(:semester_id) and (not params[:semester_id] == "")
         offer = Offer.where(semester_id: params[:semester_id], course_id: params[:course_id])
         offer = offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
-        allocation_tags_ids = [offer.first.allocation_tag.id]
+        allocation_tags_ids = [offer.first.allocation_tag].map(&map.to_sym)
         selected = "OFFER"
       elsif params.include?(:curriculum_unit_id) and (not params[:curriculum_unit_id] == "")
-        allocation_tags_ids = [CurriculumUnit.find(params[:curriculum_unit_id]).allocation_tag.id]
+        allocation_tags_ids = [CurriculumUnit.find(params[:curriculum_unit_id]).allocation_tag].map(&map.to_sym)
         selected = "CURRICULUM_UNIT"
       elsif params.include?(:course_id) and (not params[:course_id] == "")
-        allocation_tags_ids = [Course.find(params[:course_id]).allocation_tag.id]
+        allocation_tags_ids = [Course.find(params[:course_id]).allocation_tag].map(&map.to_sym)
         selected = "COURSE"
       end
     else
       selected   = "GROUP"
       groups_ids = params[:groups_id].split(" ")
-      allocation_tags_ids = AllocationTag.where(group_id: groups_ids).map(&:id)
       offer_id   =  Group.find(groups_ids.first).offer.id
+      allocation_tags_ids = AllocationTag.where(group_id: groups_ids).map(&map.to_sym)
     end
 
     allocation_tags_ids = [nil] if allocation_tags_ids.empty?
 
-    {allocation_tags: allocation_tags_ids, selected: selected, offer_id: offer_id}
+    {allocation_tags: allocation_tags_ids.flatten, selected: selected, offer_id: offer_id}
   end
 
 end
