@@ -46,7 +46,7 @@ Cenário: Acessar página de Edição de Dados Cadastrais
 Cenário: Alterar dados Pessoais
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meus Dados"
-    E que eu preenchi "user_bio" com "Bicampeao Estadual em 94 e 95"
+    E que eu preenchi "Bio" com "Bicampeao Estadual em 94 e 95"
     E que eu preenchi "Interesses" com "Leitura e paz mundial"
     E que eu preenchi "Música" com "MPB forró reaggue e Restart"
     E que eu preenchi "Filmes" com "The Fighters 2010"
