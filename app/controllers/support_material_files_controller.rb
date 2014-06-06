@@ -7,9 +7,9 @@ class SupportMaterialFilesController < ApplicationController
   before_filter :prepare_for_group_selection, only: [:index]
 
   def index
-    authorize! :index, SupportMaterialFile
+    authorize! :index, SupportMaterialFile, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
-    @allocation_tag_ids = AllocationTag.find_related_ids(active_tab[:url][:allocation_tag_id])
+    @allocation_tag_ids = AllocationTag.find_related_ids(allocation_tag_id)
     @list_files = SupportMaterialFile.find_files(@allocation_tag_ids)
 
     @folders_list = {}

@@ -14,13 +14,11 @@
             %span.block_content_gray
               = "#{t(:since)}" if (lesson.schedule.end_date.nil?)
               = [l(lesson.schedule.start_date, format: :normal), (lesson.schedule.end_date.nil? ? t(:no_end_date) : l(lesson.schedule.end_date, format: :normal))].join(" - ")
-            - if lesson.closed?  
-              = lesson.name
-              = "(#{t(:lesson_closed_short)})"
-            - else
-              = link_to lesson.name, lesson_path(lesson.id), class: "link_content lesson", "data-fancybox-type" => "iframe"
-            - if lesson.is_draft?
+            = link_to lesson.name, lesson_path(lesson.id), class: "link_content lesson", "data-fancybox-type" => "iframe"
+            -if lesson.is_draft?
               .test_lesson= "(#{t(:lesson_test)})"
+            - if lesson.will_open?
+              .test_lesson= "(#{t(:lesson_will_open)})"
     - else
       .block_content.block_content_text= t(:lesson_message)
 

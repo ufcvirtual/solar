@@ -164,7 +164,7 @@ class LessonsControllerTest < ActionController::TestCase
 
     assert lesson.is_draft?
 
-    put :change_status, {id: lesson.id, status: Lesson_Approved, allocation_tags_ids: "#{allocation_tags(:al6).id}"}
+    put :change_status, {id: lesson.id, status: Lesson_Approved, allocation_tags_ids: "#{allocation_tags(:al6).id}", format: :json}
     assert_response :success
 
     assert_equal Lesson_Approved, Lesson.find(lessons(:pag_index).id).status
@@ -177,7 +177,7 @@ class LessonsControllerTest < ActionController::TestCase
 
     FileUtils.rm_rf(lesson.path(true).to_s)
 
-    put :change_status, {id: lesson.id, status: Lesson_Approved, allocation_tags_ids: "#{allocation_tags(:al6).id}"}
+    put :change_status, {id: lesson.id, status: Lesson_Approved, allocation_tags_ids: "#{allocation_tags(:al6).id}", format: :json}
     assert_response :unprocessable_entity
 
     assert_equal Lesson_Test, Lesson.find(lessons(:pag_index).id).status
@@ -190,10 +190,38 @@ class LessonsControllerTest < ActionController::TestCase
     lesson = Lesson.find(lessons(:pag_virtual).id)
     assert_equal Lesson_Approved, lesson.status
 
-    put :change_status, {id: lesson.id, status: Lesson_Test, allocation_tags_ids: "#{allocation_tags(:al6).id}"}
+    put :change_status, {id: lesson.id, status: Lesson_Test, allocation_tags_ids: "#{allocation_tags(:al6).id}", format: :json}
     assert_response :success
 
     assert_equal Lesson_Test, Lesson.find(lessons(:pag_virtual).id).status
+  end
+
+  test "liberar aula - professor" do
+    sign_in @professor
+    lesson = Lesson.find(lessons(:pag_index).id)
+    FileUtils.touch(lesson.path(true).to_s)
+
+    assert lesson.is_draft?
+
+    put :change_status, {id: lesson.id, status: Lesson_Approved, allocation_tags_ids: "#{allocation_tags(:al6).id}", responsible: true, format: :js}
+    assert_response :success
+
+    assert_equal Lesson_Approved, Lesson.find(lessons(:pag_index).id).status
+    FileUtils.rm_rf(lesson.path(true).to_s)
+  end
+
+  test "nao liberar aula - professor sem acesso" do
+    sign_in users(:professor2)
+    lesson = Lesson.find(lessons(:pag_index).id)
+    FileUtils.touch(lesson.path(true).to_s)
+
+    assert lesson.is_draft?
+
+    put :change_status, {id: lesson.id, status: Lesson_Approved, allocation_tags_ids: "#{allocation_tags(:al6).id}", responsible: true, format: :js}
+    assert_response :unauthorized
+
+    assert_equal Lesson_Test, Lesson.find(lessons(:pag_index).id).status
+    FileUtils.rm_rf(lesson.path(true).to_s)
   end
 
   ##

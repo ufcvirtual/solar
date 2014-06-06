@@ -21,23 +21,6 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_routing({method: :post, path: "/assignments"}, {controller: "assignments", action: "create"})
   end
 
-  test "listar as atividiades de uma turma para usuario com permissao" do 
-    sign_in users(:professor)
-    get :professor
-    assert_response :success
-    assert_not_nil assigns(:individual_activities)
-    assert_not_nil assigns(:group_activities)
-    assert_template :professor
-  end
-
-  test "nao listar as atividiades de uma turma para usuario sem permissao" do 
-    sign_in users(:aluno1)
-    get :professor
-    assert_response :redirect
-    assert_redirected_to home_path
-    assert_equal flash[:alert], I18n.t(:no_permission)
-  end
-
   ##
   # Edicao
   ##

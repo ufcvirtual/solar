@@ -3,6 +3,7 @@ class BibliographiesController < ApplicationController
   include SysLog::Actions
 
   layout false, except: :index # define todos os layouts do controller como falso
+  before_filter :prepare_for_group_selection, only: [:index]
 
   def list
     @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
@@ -15,7 +16,7 @@ class BibliographiesController < ApplicationController
   def index
     authorize! :index, Bibliography, on: [at = active_tab[:url][:allocation_tag_id]]
 
-    @bibliographies = Bibliography.all_by_allocation_tags(AllocationTag.find(at).related(upper: true) + [at]) # tem que listar bibliografias relacionadas para cima
+    @bibliographies = Bibliography.all_by_allocation_tags(AllocationTag.find(at).related(upper: true)) # tem que listar bibliografias relacionadas para cima
   end
 
   # GET /bibliographies/new

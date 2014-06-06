@@ -11,6 +11,8 @@ class CurriculumUnitsController < ApplicationController
 
   def home
     allocation_tags   = AllocationTag.find(@allocation_tag_id).related
+    authorize! :show, CurriculumUnit, on: allocation_tags, read: true
+
     @messages         = Message.user_inbox(current_user.id, @allocation_tag_id, only_unread = true)
     @lessons_modules  = LessonModule.to_select(allocation_tags, current_user)
     @discussion_posts = list_portlet_discussion_posts(allocation_tags.join(', '))
@@ -158,14 +160,16 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def informations
-    allocation_tags   = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+    authorize! :show, CurriculumUnit, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+    allocation_tags  = AllocationTag.find_related_ids(allocation_tag_id)
     allocation_offer  = AllocationTag.where(id: allocation_tags).where("offer_id IS NOT NULL").first
     @offer            = allocation_offer.offer unless allocation_offer.nil?
   end
 
   def participants
+    authorize! :show, CurriculumUnit, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+    allocation_tags  = AllocationTag.find_related_ids(allocation_tag_id)
     @student_profile = Profile.student_profile # retorna perfil em que se pede matricula (~aluno)
-    allocation_tags  = AllocationTag.find_related_ids(active_tab[:url][:allocation_tag_id])
     @participants    = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(allocation_tags.join(','), Profile_Type_Student)
   end
 

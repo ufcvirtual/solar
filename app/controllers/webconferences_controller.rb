@@ -4,10 +4,12 @@ class WebconferencesController < ApplicationController
 
   layout false, except: :index
 
+  before_filter :prepare_for_group_selection, only: :index
+
   def index
     authorize! :index, Webconference, on: [at = active_tab[:url][:allocation_tag_id]]
 
-    @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true) + [at])
+    @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true))
   end
 
   # GET /webconferences/list

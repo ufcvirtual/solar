@@ -45,6 +45,25 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_nil assigns(:individual_assignments_info)
     assert_nil assigns(:group_assignments_info)
   end
+
+  test "listar as atividades de uma turma para usuario com permissao" do 
+    login users(:professor)
+    get @quimica_tab
+    get professor_assignments_path
+    assert_response :success
+    assert_not_nil assigns(:individual_activities)
+    assert_not_nil assigns(:group_activities)
+    assert_template :professor
+  end
+
+  test "nao listar as atividades de uma turma para usuario sem permissao" do 
+    login users(:aluno1)
+    get @quimica_tab
+    get professor_assignments_path
+    assert_response :redirect
+    assert_redirected_to home_path
+    assert_equal flash[:alert], I18n.t(:no_permission)
+  end
   
   ##
   # Upload_file

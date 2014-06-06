@@ -54,9 +54,11 @@ class OffersController < ApplicationController
 
     if @offer.save
       render json: {success: true, notice: t(:created, scope: [:offers, :success])}
-    else 
+    else
       render :new
     end
+  rescue CanCan::AccessDenied
+    render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized
   end
 
   def update

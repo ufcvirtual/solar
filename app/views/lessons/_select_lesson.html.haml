@@ -13,6 +13,6 @@
       var lessons         = jQuery.parseJSON($("#lessons").data("info"));
       var selected_lesson = $(this).find("option:selected").index();
       var lesson_info     = lessons[selected_lesson];
-      open_lesson(lesson_info.path, lesson_info.url);
+      open_lesson(lesson_info.path, lesson_info.url, lesson_info.is_draft);
     });
   });

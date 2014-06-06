@@ -7,9 +7,9 @@ class ScoresController < ApplicationController
   # Lista de informações gerais do acompanhamento de todos os alunos da turma
   ##
   def index
-    authorize! :index, Score # verifica se pode acessar método
-
     curriculum_unit_id, allocation_tag_id = active_tab[:url][:id], active_tab[:url][:allocation_tag_id]
+    authorize! :index, Score, on: [allocation_tag_id] # verifica se pode acessar método
+
     @group = AllocationTag.find(allocation_tag_id).groups.first
     @allocation_tag = AllocationTag.find(allocation_tag_id)
 
@@ -31,11 +31,11 @@ class ScoresController < ApplicationController
   # Lista informacoes de acompanhamento do aluno
   ##
   def show
-    authorize! :show, Score
+    authorize! :show, Score, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
     @student = params.include?(:student_id) ? User.find(params[:student_id]) : current_user
 
-    allocation_tag      = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+    allocation_tag = AllocationTag.find(allocation_tag_id)
     group_id            = allocation_tag.group_id
     related_allocations = allocation_tag.related
 

@@ -1,0 +1,31 @@
+- path = (@admin ? lesson_path(lesson.id, allocation_tags_ids: @allocation_tags_ids.join(" "), curriculum_unit_id: @curriculum_unit_id) : lesson_path(lesson.id))
+%td
+  - if lesson.closed?
+    = (@admin ? (link_to lesson.name, path, class: "link_content lesson", "data-fancybox-type" => "iframe") : lesson.name)
+    = "(#{t(:lesson_closed_short)})"
+  - else
+    - unless lesson.address.blank?
+      = link_to lesson.name, path, class: "link_content lesson", "data-fancybox-type" => "iframe"
+      - if lesson.is_draft?
+        .test_lesson= "(#{t(:lesson_test)})"
+      - if lesson.will_open?
+        .test_lesson= "(#{t(:lesson_will_open)})"
+    - else
+      = lesson.name
+      .test_lesson= "(sem arquivo inicial definido)"
+
+%td{width: "30%"}
+  = "#{t(:since)}" if (lesson.schedule.end_date.nil?)
+  = [l(lesson.schedule.start_date, format: :normal), (lesson.schedule.end_date.nil? ? t(:no_end_date) : l(lesson.schedule.end_date, format: :normal))].join(" - ")
+- if @responsible
+  %td{width: "12%"}
+    - status = [Lesson_Test, Lesson_Approved].delete_if {|v| v == lesson.status}
+    = link_to (image_tag "#{(lesson.status == Lesson_Test) ? 'rejected' : 'released'}.png"), responsible_change_status_lesson_path(id: lesson.id, status: status, allocation_tags_ids: @allocation_tags_ids), remote: true, method: :put, class: 'change_lesson_status', :'data-tooltip' => (lesson.status == Lesson_Test ?  t("lessons.index.draft") :  t("lessons.index.released")), :"data-module-id" => lesson.lesson_module.id
+
+:javascript
+  $(function(){
+    $("a.lesson").click(function(e){
+      e.preventDefault();
+      $(this).nice_open_lesson();
+    });
+  });

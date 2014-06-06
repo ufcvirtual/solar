@@ -47,18 +47,12 @@ class AllocationTag < ActiveRecord::Base
 
     case option
       when 'group_id'
-        if args[:all] or args[:lower]
-          lower = [self]
-        end
-
         if args[:all] or args[:upper]
           group = self.group
           upper = [group.offer.allocation_tag, group.curriculum_unit.allocation_tag, group.course.allocation_tag]
         end
       when 'offer_id'
-        if args[:all] or args[:lower]
-          lower = [self.offer.groups.map(&:allocation_tag).compact.uniq, self]
-        end
+        lower = [self.offer.groups.map(&:allocation_tag).compact.uniq] if args[:all] or args[:lower]
 
         if args[:all] or args[:upper]
           offer = self.offer
@@ -67,26 +61,18 @@ class AllocationTag < ActiveRecord::Base
       when 'curriculum_unit_id'
         if args[:all] or args[:lower]
           uc    = self.curriculum_unit
-          lower = [uc.offers.map(&:allocation_tag).compact.uniq, uc.groups.map(&:allocation_tag).compact.uniq, self]
+          lower = [uc.offers.map(&:allocation_tag).compact.uniq, uc.groups.map(&:allocation_tag).compact.uniq]
           sibblings = [uc.offers.map(&:course).compact.map(&:allocation_tag)]
-        end
-
-        if args[:all] or args[:upper]
-          upper = [self]
         end
       when 'course_id'
         if args[:all] or args[:lower]
           course = self.course
-          lower  = [course.offers.map(&:allocation_tag).compact.uniq, course.groups.map(&:allocation_tag).compact.uniq, self]
+          lower  = [course.offers.map(&:allocation_tag).compact.uniq, course.groups.map(&:allocation_tag).compact.uniq]
           sibblings = [course.offers.map(&:curriculum_unit).compact.map(&:allocation_tag)]
-        end
-
-        if args[:all] or args[:upper]
-          upper = [self]
         end
     end
 
-    at = (lower + upper + sibblings).flatten.compact.uniq
+    at = ([self] + lower + upper + sibblings).flatten.compact.uniq
     return at if args[:objects]
     return at.map(&:id)
   end
@@ -209,24 +195,26 @@ class AllocationTag < ActiveRecord::Base
   end
 
   def self.semester_info(allocation_tag)
-    return 'always_active ' if allocation_tag.nil? # if allocation_tag isn't related to anything, consider active
-
-    if !allocation_tag.offer.nil?
-      if allocation_tag.offer.semester.offer_schedule.start_date <= Date.today && 
-        allocation_tag.offer.semester.offer_schedule.end_date >= Date.today
-        'semester_active ' + allocation_tag.offer.semester.name
+    case 
+      when allocation_tag.nil?; 'always_active '
+      when not(allocation_tag.offer.nil?)
+        offer  = allocation_tag.offer
+        sclass = offer.semester.name
+        sclass = [sclass, 'semester_active'].join(" ") if offer.is_active?
+      when not(allocation_tag.group.nil?)
+        offer  = allocation_tag.group.offer
+        sclass = offer.semester.name
+        sclass = [sclass, 'semester_active'].join(" ") if offer.is_active?
+      when not(allocation_tag.course.nil?)
+        offers = allocation_tag.course.offers
+        sclass = offers.map(&:semester).map(&:name).uniq.join(" ")
+        sclass = [sclass, 'semester_active'].join(" ") if offers.map(&:is_active?).include?(true)
+      when not(allocation_tag.curriculum_unit.nil?)
+        offers = allocation_tag.curriculum_unit.offers
+        sclass = offers.map(&:semester).map(&:name).uniq.join(" ")
+        sclass = [sclass, 'semester_active'].join(" ") if offers.map(&:is_active?).include?(true)
       else
-        allocation_tag.offer.semester.name
-      end
-    elsif !allocation_tag.group.nil?
-      if allocation_tag.group.offer.semester.offer_schedule.start_date <= Date.today && 
-        allocation_tag.group.offer.semester.offer_schedule.end_date >= Date.today
-        'semester_active ' + allocation_tag.group.offer.semester.name 
-      else
-        allocation_tag.group.offer.semester.name 
-      end
-    else
-      ''
+        ' '
     end
   end
 
@@ -234,7 +222,8 @@ class AllocationTag < ActiveRecord::Base
     self.send(attributes.delete_if {|k, v| v.nil?}.keys.last.gsub(/_id/, '')).try(:info)
   end
 
-  def self.get_by_params(params, all_groups = false)
+  def self.get_by_params(params, all_groups = false, related = false)
+    map = related ? "related" : "id"
     allocation_tags_ids = []
 
     if params.include?(:allocation_tags_ids)
@@ -244,25 +233,25 @@ class AllocationTag < ActiveRecord::Base
       if params.include?(:semester_id) and (not params[:semester_id] == "")
         offer = Offer.where(semester_id: params[:semester_id], course_id: params[:course_id])
         offer = offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
-        allocation_tags_ids = [offer.first.allocation_tag.id]
+        allocation_tags_ids = [offer.first.allocation_tag].map(&map.to_sym)
         selected = "OFFER"
       elsif params.include?(:curriculum_unit_id) and (not params[:curriculum_unit_id] == "")
-        allocation_tags_ids = [CurriculumUnit.find(params[:curriculum_unit_id]).allocation_tag.id]
+        allocation_tags_ids = [CurriculumUnit.find(params[:curriculum_unit_id]).allocation_tag].map(&map.to_sym)
         selected = "CURRICULUM_UNIT"
       elsif params.include?(:course_id) and (not params[:course_id] == "")
-        allocation_tags_ids = [Course.find(params[:course_id]).allocation_tag.id]
+        allocation_tags_ids = [Course.find(params[:course_id]).allocation_tag].map(&map.to_sym)
         selected = "COURSE"
       end
     else
       selected   = "GROUP"
       groups_ids = params[:groups_id].split(" ")
-      allocation_tags_ids = AllocationTag.where(group_id: groups_ids).map(&:id)
       offer_id   =  Group.find(groups_ids.first).offer.id
+      allocation_tags_ids = AllocationTag.where(group_id: groups_ids).map(&map.to_sym)
     end
 
     allocation_tags_ids = [nil] if allocation_tags_ids.empty?
 
-    {allocation_tags: allocation_tags_ids, selected: selected, offer_id: offer_id}
+    {allocation_tags: allocation_tags_ids.flatten, selected: selected, offer_id: offer_id}
   end
 
 end

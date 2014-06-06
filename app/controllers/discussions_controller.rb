@@ -15,6 +15,7 @@ class DiscussionsController < ApplicationController
     rescue
       @discussions      = []
     end
+    authorize! :show, Discussion, on: [@allocation_tag_id]
 
     respond_to do |format|
       format.html

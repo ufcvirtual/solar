@@ -1,7 +1,5 @@
 class User < ActiveRecord::Base
 
-  # include SysLog::User
-
   def ability
     @ability ||= Ability.new(self)
   end
@@ -36,7 +34,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :validatable,
     :recoverable, :encryptable, :token_authenticatable # autenticacao por token
 
-  before_save :ensure_authentication_token!, :downcase_username
+  before_save :ensure_authentication_token!, :downcase_username, :remove_mask_from_cpf
 
   @has_special_needs
 
@@ -47,7 +45,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :login, :has_special_needs, :synchronizing
 
-  email_format = %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i # regex para validacao de email
+  email_format = %r{\A((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?\z}i
 
   validates :cpf, presence: true, uniqueness: true
   validates :name, presence: true, length: { within: 6..90 }
@@ -84,11 +82,6 @@ class User < ActiveRecord::Base
 
   default_scope order: 'name ASC'
 
-  #Garantindo que o cpf nao será salvo com os separadores.
-  #  def cpf=(value)
-  #    self[:cpf] = value.gsub(/\D/, '')
-  #  end
-
   ##
   # Verifica se o radio_button escolhido na view é verdadeiro ou falso. 
   # Este método também define as necessidades especiais como sendo vazia caso a pessoa tenha selecionado que não as possui
@@ -111,7 +104,11 @@ class User < ActiveRecord::Base
   end
 
   def unique_cpf
-    users = User.where(cpf: cpf.delete(".").delete("-")) if new_record? or cpf.delete(".").delete("-") != User.find(id).cpf
+    cpf_to_check = cpf_without_mask(cpf)
+    cpf_of_user = cpf_without_mask(User.find(id).cpf) rescue ''
+
+    users = User.where(cpf: cpf_to_check) if new_record? or cpf_to_check != cpf_of_user
+
     errors.add(:cpf, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) unless users.nil? or users.empty?
   end
 
@@ -141,7 +138,7 @@ class User < ActiveRecord::Base
 
   def cpf_ok
     cpf_verify = Cpf.new(self[:cpf])
-    errors.add(:cpf, I18n.t(:new_user_msg_cpf_error)) unless cpf_verify.valido? unless cpf_verify.nil?
+    errors.add(:cpf, I18n.t(:new_user_msg_cpf_error)) if not(cpf_verify.nil?) and not(cpf_verify.valido?)
   end
 
   ## Na criação, o usuário recebe o perfil de usuario basico
@@ -151,11 +148,15 @@ class User < ActiveRecord::Base
   end
 
   def ensure_authentication_token!
-    reset_authentication_token! if authentication_token.blank? 
+    reset_authentication_token! if authentication_token.blank?
   end
 
   def downcase_username
     self.username = self.username.downcase
+  end
+
+  def remove_mask_from_cpf
+    self.cpf = cpf_without_mask(self.cpf)
   end
 
   def self.find_for_database_authentication(warden_conditions)
@@ -166,12 +167,12 @@ class User < ActiveRecord::Base
 
   def groups(profile_id = nil, status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil)
     query = []
-    query << "allocations.status = #{status}" unless status.nil?
-    query << "allocations.profile_id = #{profile_id}" unless profile_id.nil?
-    query << "curriculum_units.id = #{curriculum_unit_id}" unless curriculum_unit_id.nil?
+    query << "allocations.status = #{status}"                        unless status.nil?
+    query << "allocations.profile_id = #{profile_id}"                unless profile_id.nil?
+    query << "curriculum_units.id = #{curriculum_unit_id}"           unless curriculum_unit_id.nil?
     query << "curriculum_unit_types.id = #{curriculum_unit_type_id}" unless curriculum_unit_type_id.nil?
 
-    allocations.includes(allocation_tag: [group: [offer: [curriculum_unit: :curriculum_unit_type]]]).where(query.join(" AND ")).delete_if {|allocation| allocation.allocation_tag.nil? }.map(&:groups).flatten.compact.uniq
+    Group.joins(allocation_tag: :allocations, offer: {curriculum_unit: :curriculum_unit_type}).where(query.join(" AND ")).select("DISTINCT groups.id, groups.*")
   end
 
   def profiles_activated(only_id = false)
@@ -209,7 +210,7 @@ class User < ActiveRecord::Base
 
   # Returns user resources list as [{controller: :action}, ...] at informed allocation_tags_ids
   def resources_by_allocation_tags_ids(allocation_tags_ids)
-    allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids.split(" ")).map{|at| at.related({upper: true})}.flatten.uniq
+    allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids.split(" ")).map{|at| at.related(upper: true)}.flatten.uniq
     profiles.joins(:resources).where("allocations.allocation_tag_id IN (?) AND allocations.status = ?", allocation_tags_ids, Allocation_Activated)
       .map(&:resources).compact.flatten.map{|resource| 
         {resource.controller.to_sym => resource.action.to_sym}
@@ -284,7 +285,7 @@ class User < ActiveRecord::Base
 
   # chamada para MA verificando se existe usuário com o login, cpf ou email informados
   def data_integration
-    user_cpf = cpf.delete(".").delete("-")
+    user_cpf = cpf.delete('.').delete('-')
     self.connect_and_validates_user
   rescue HTTPClient::ConnectTimeoutError => error # if MA don't respond (timeout)
     errors.add(:username, I18n.t("users.errors.ma.cant_connect")) if username_changed?
@@ -369,17 +370,25 @@ class User < ActiveRecord::Base
   end
 
   def connect_and_validates_user
-    user_cpf = cpf.delete(".").delete("-")
+    user_cpf = cpf_without_mask(cpf)
+
     client   = Savon.client wsdl: MODULO_ACADEMICO["wsdl"]
     response = client.call MODULO_ACADEMICO["methods"]["user"]["validate"].to_sym, message: {cpf: user_cpf, email: email, login: username } # gets user validation
+
     User.validate_user_result(response.to_hash[:validar_usuario_response][:validar_usuario_result], client, user_cpf, self)
   end
 
   def self.connect_and_import_user(cpf, client = nil)
     client    = Savon.client wsdl: MODULO_ACADEMICO["wsdl"] if client.nil?
-    response  = client.call(MODULO_ACADEMICO["methods"]["user"]["import"].to_sym, message: { cpf: cpf.delete(".").delete("-") }) # import user
+    response  = client.call(MODULO_ACADEMICO["methods"]["user"]["import"].to_sym, message: { cpf: cpf.delete('.').delete('-') }) # import user
     user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
     return (user_data.nil? ? nil : user_data[:string])
   end
+
+  private
+
+    def cpf_without_mask(cpf)
+      cpf.gsub(/[.-]/, '')
+    end
 
 end

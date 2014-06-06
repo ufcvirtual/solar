@@ -52,6 +52,30 @@
     margin-left: 3px;
     margin-right: 3px;
   }
+  .lesson_status{
+    float: right;
+    color: white;
+    width: 131px;
+    margin-top: -23px;
+    .draft{
+      background-color: #B41717;
+    }
+    .released{
+      background-color: #7DC43F;
+    }
+    .draft, .released{
+      padding: 8px 10px 9px 4px;
+      height: 38px;
+      img{
+        margin-right: 5px;
+        vertical-align: middle;
+      }
+      .type{
+        font-size: 11pt;
+        margin-right: 7px;
+      }
+    }
+  }
 }
 
 #lesson_goto {

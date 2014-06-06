@@ -735,7 +735,10 @@ pt_BR:
     index:
       lesson_table_date: Data de acesso
       lesson_table_title: "Aulas disponíveis"
-    list:
+      acceptance: Aprovação
+      draft: Rascunho
+      released: Liberada
+    list: 
       lesson: Aula
       order: Ordem
       name: Nome da aula
@@ -1383,6 +1386,7 @@ pt_BR:
         request_info_ma: "Como você é um usuário integrado ao Módulo Acadêmico, você deve realizar a recuperação de senha através desse. Para isso, acesse o link abaixo."
         ignore: "Se não foi você quem solicitou este link, por favor ignore este email."
         change: "Sua senha não vai ser modificada enquanto você não acessar o link e criar uma nova."
+        username_info: "Seu login é: %{username}."
     users:
       user:
         ma_login_email_msg: "Não foi possível verificar login e email no módulo acadêmico, portanto seu login e email foram definidos, respectivamente, como seu CPF e um valor inválido e aleatório. Favor redefiní-los."
@@ -1642,6 +1646,7 @@ pt_BR:
       edit: Editar
       change_password: Alterar senha
       message_not_found: "Usuário não encontrado"
+      synchronize: Sincronizar com Módulo Acadêmico
     informations:
       detailed: "Informações Detalhadas"
       personal_data: "Dados Pessoais"
@@ -1676,8 +1681,6 @@ pt_BR:
       email_sent: Email enviado com sucesso
     error:
       email_not_sent: Não foi possível enviar email
-    search_users:
-      synchronize: Sincronizar com Módulo Acadêmico
     allocation_approval:
       not_specified: Não especificado
       none_pending_allocation: Não há solicitações pendentes

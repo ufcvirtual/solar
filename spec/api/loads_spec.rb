@@ -498,7 +498,7 @@ describe "Loads" do
         end
 
         context 'and non existing user and gets from MA' do
-          cpf = "VALID CPF HERE"
+          cpf = "VALID CPF"
           let!(:json_data){
             { matriculas: {cpf: cpf, turmas:
               %{
@@ -719,7 +719,7 @@ describe "Loads" do
 
         context 'and existing user and group' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
+            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -741,7 +741,7 @@ describe "Loads" do
 
         context 'and existing user and non existing UC' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "UC01", codGraduacao: "109"}
+            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "UC01", codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -763,7 +763,7 @@ describe "Loads" do
 
         context 'and existing user and non existing course' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "C01"}
+            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "C01"} }
           }
 
           subject{ -> {
@@ -785,7 +785,7 @@ describe "Loads" do
 
         context 'and existing user and non existing group' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "T01", codDisciplina: "RM301", codGraduacao: "109"}
+            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "T01", codDisciplina: "RM301", codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -807,7 +807,7 @@ describe "Loads" do
       
         context 'and non existing user' do # futuramente este teste deverá criar um novo usuário a partir do MA (cpf deverá ser válido para usuário no MA)
           let!(:json_data){ 
-            { cpf: "cpf", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
+            { allocation: { cpf: "cpf", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -829,7 +829,7 @@ describe "Loads" do
 
         context 'and existing user and missing param' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { cpf: "47382348113", perfil: 1, ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
+            { allocation: { cpf: "47382348113", perfil: 1, ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -851,7 +851,7 @@ describe "Loads" do
 
       context "with invalid ip" do
         it "gets a not found error" do
-          json_data = { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
+          json_data = { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           put "/api/v1/load/groups/allocate_user", json_data, "REMOTE_ADDR" => "127.0.0.2"
           response.status.should eq(404)
         end
@@ -890,7 +890,7 @@ describe "Loads" do
             post "/api/v1/load/user/", {cpf: cpf}
 
             user = User.find_by_cpf(cpf)
-            user.email.should eq("PUT MA USER EMAIL HERE")
+            user.email.should eq("VALID EMAIL")
 
             response.status.should eq(201)
             response.body.should == {ok: :ok}.to_json

@@ -138,9 +138,9 @@ class AssignmentsController < ApplicationController
   end
 
   def professor
-    authorize! :professor, Assignment
+    allocation_tags_ids = params[:allocation_tags_ids] || [active_tab[:url][:allocation_tag_id]]
+    authorize! :professor, Assignment, on: allocation_tags_ids
 
-    allocation_tags_ids    = params[:allocation_tags_ids] || [active_tab[:url][:allocation_tag_id]]
     @individual_activities = Assignment.joins(:academic_allocations, :schedule).where(type_assignment: Assignment_Type_Individual,  academic_allocations: {allocation_tag_id:  allocation_tags_ids}).order(:start_date)
     @group_activities      = Assignment.joins(:academic_allocations, :schedule).where(type_assignment: Assignment_Type_Group,       academic_allocations: {allocation_tag_id:  allocation_tags_ids}).order(:start_date)
 

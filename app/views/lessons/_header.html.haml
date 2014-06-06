@@ -9,6 +9,12 @@
       %span= " > "
       %span#select_lesson= render partial: "select_lesson", locals: {lessons: @lessons}
       %span#lessons{:"data-info" => @lessons_info}
+  - unless @student
+    .lesson_status
+      - lesson_draft = @lesson.status == Lesson_Test
+      %span{class: (lesson_draft ? "draft" : "released")}
+        = image_tag "#{lesson_draft ? 'rejected' : 'released'}.png"
+        %span.type= lesson_draft ?  t("lessons.index.draft") :  t("lessons.index.released")
 
 :javascript
   $(function(){
@@ -23,7 +29,7 @@
         lessons = jQuery.parseJSON($("#lessons").data("info"));
         var lesson_info     = lessons[0];
         // open first lesson
-        open_lesson(lesson_info.path, lesson_info.url);
+        open_lesson(lesson_info.path, lesson_info.url, lesson_info.is_draft);
       });
     });
   });

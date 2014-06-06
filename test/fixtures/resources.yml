@@ -982,3 +982,9 @@ res170:
   controller: 'administrations'
   action: 'lessons'
   description: 'Acessar aulas cadastradas'
+
+res171:
+  id: 171
+  controller: 'lessons'
+  action: 'change_status'
+  description: 'Alterar status da aula (liberada ou rascunho)'
