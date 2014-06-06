@@ -1,0 +1,6 @@
+- groups.each do |group|
+%tr.lines
+  %td
+    = check_box_tag :ckb_group, group.id, false, {class: "ckb_group"}
+    = group.code
+  %td{style: "text-align: center"}= link_to (image_tag "#{(group.status) ? 'released' : 'rejected'}.png"), "#", class: "change_status_group", :'data-tooltip' => (group.status ?  t(".enabled") :  t(".disabled")), :"data-link-status" => group_path(id: group.id, status: (not group.status), multiple: true), disabled: not(can? :update, Group)

@@ -12,7 +12,7 @@
             %th= t(".curriculum_unit")
           %th= t(".offer")
           %th.no_sort
-      %tbody.allocations.allocations_list
+      %tbody.allocations
         = render partial: 'offers/offers'
     = link_to content_tag(:i, nil, class: "icon-ellipsis"), offers_path(page: @offers.next_page, type_id: @type_id, semester_id: @semester.id, allocation_tags_ids: @allocation_tags_ids.join(" ")), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @offers.next_page
 - else
