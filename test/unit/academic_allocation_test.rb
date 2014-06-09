@@ -10,8 +10,8 @@ class AcademicAllocationTest < ActiveSupport::TestCase
     allocation_tag = allocation_tags(:al3)
     academic_allocation = AcademicAllocation.new(allocation_tag: allocation_tag, academic_tool: assignment)
 
-    assert (not academic_allocation.valid?)    
-    assert_equal academic_allocation.errors[:base].first, I18n.t(:final_date_smaller_than_offer, :scope => [:assignment, :notifications], :end_date_offer => allocation_tag.group.offer.start_date.to_date)
+    assert academic_allocation.valid? rescue false
+    assert_equal academic_allocation.errors[:base].first, I18n.t(:final_date_smaller_than_offer, :scope => [:assignment, :notifications], :end_date_offer => I18n.l(allocation_tag.group.offer.end_date.to_date))
   end
 
 end

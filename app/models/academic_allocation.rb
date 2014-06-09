@@ -3,7 +3,7 @@ class AcademicAllocation < ActiveRecord::Base
   belongs_to :allocation_tag
 
   #Relacionamentos extras#
-  
+
   #Assignment
   has_many :sent_assignments, dependent: :destroy
   has_many :group_assignments, dependent: :destroy
@@ -23,7 +23,7 @@ class AcademicAllocation < ActiveRecord::Base
   
   def is_lesson_module?
     academic_tool_type.eql? 'LessonModule'
-  end  
+  end
 
   private
 

@@ -1,87 +1,87 @@
 #reservados para automático dos sistema
-schedule 1:
+schedule1:
   id: 1
   start_date: 2011-06-16
   end_date: 2011-07-13
 
-schedule 2:
+schedule2:
   id: 2
   start_date: 2011-05-12
   end_date: 2011-07-12
 
-schedule 3:
+schedule3:
   id: 3
   start_date: 2011-07-17
   end_date: 2011-08-18
 
-schedule 4:
+schedule4:
   id: 4
   start_date: 2011-07-19
   end_date: 2011-09-19
 
-schedule 5:
+schedule5:
   id: 5
   start_date: 2011-08-16
   end_date: 2011-09-17
 
 #reservados para forum
-schedule 6:
+schedule6:
   id: 6
   start_date: 2011-09-20
   end_date: <%=(Date.today - 3) %>
 
-schedule 7:
+schedule7:
   id: 7
   start_date: 2011-07-25
   end_date: <%= (Date.today + 60) %>
 
 #reservados para aulas
-schedule 8:
+schedule8:
   id: 8
   start_date: 2011-11-23
   end_date: 2011-12-19
 
-schedule 9:
+schedule9:
   id: 9
   start_date: 2011-05-01
   end_date: 2012-12-19
 
-schedule 10:
+schedule10:
   id: 10
   start_date: 2011-05-26
   end_date: 2011-03-10
 
-schedule 11:
+schedule11:
   id: 11
   start_date: 2011-03-05
   end_date: 2011-06-20
 
-schedule 12:
+schedule12:
   id: 12
   start_date: 2011-03-27
   end_date: 2011-06-27
 
-schedule 13:
+schedule13:
   id: 13
   start_date: 2011-03-25
   end_date: 2011-08-27
 
-schedule 14:
+schedule14:
   id: 14
   start_date: 2011-03-16
-  end_date: 2312-08-01
+  end_date: 2012-08-01
 
 schedule15:
   id: 15
   start_date: 2011-03-25
-  end_date: 2315-05-06
+  end_date: 2022-05-06
 
-schedule 16:
+schedule16:
   id: 16
   start_date: 2011-03-25
   end_date: 2011-03-25
 
-schedule 17:
+schedule17:
   id: 17
   start_date: 2011-08-13
   end_date: 2011-09-17 23:59:59
@@ -91,28 +91,28 @@ schedule18:
   start_date: <%= Date.today >> 1 %>
   end_date: <%= Date.today >> 5%>
 
-schedule 19:
+schedule19:
   id: 19
   start_date: <%= Date.today << 2 %>
   end_date: <%= Date.today >> 1 %>
 
-schedule 20:
+schedule20:
   id: 20
   start_date: <%= Date.today << 2 %>
   end_date: <%= Date.today >> 1 %>
 
-schedule 21:
+schedule21:
   id: 21
   start_date: <%= Date.today << 2 %>
   end_date: <%= Date.today >> 1 %>
 
-schedule 22:
+schedule22:
   id: 22
   start_date: <%= Date.today - 2.days %>
   end_date: <%= Date.today - 1.days %>
 
 # para datas posteriores
-schedule 23:
+schedule23:
   id: 23
   start_date: <%= Date.today >> 1 %> # um mes à frente
   end_date: <%= Date.today >> 4 %> # 3 meses depois da data inicial
