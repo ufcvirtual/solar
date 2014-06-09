@@ -1,4 +1,4 @@
-$('.allocations').append('#{escape_javascript(render partial: 'offers', locals: {semester: @semester, type_id: @type_id})}');
+$('.offers').append('#{escape_javascript(render partial: 'offers', locals: {semester: @semester, type_id: @type_id})}');
 $('a.load-more-allocations').attr('href', '#{offers_path(page: @offers.next_page, type_id: @type_id, semester_id: @semester.id, allocation_tags_ids: params[:allocation_tags_ids])}');
 $(".tb_list").trigger("update");
 $("#all_offers_#{@semester.id}").nice_checkbox();

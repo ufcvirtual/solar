@@ -39,7 +39,12 @@ class LessonsController < ApplicationController
     @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids])
 
     authorize! :list, Lesson, on: @allocation_tags_ids
-    @academic_allocations = AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where(allocation_tag_id: @allocation_tags_ids.split(" ").flatten)
+    @academic_allocations = AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where(allocation_tag_id: @allocation_tags_ids.split(" ").flatten).order("academic_tool_id").paginate(page: params[:page], per_page: 100)
+    
+    respond_to do |format|
+      format.html
+      format.js
+    end  
   rescue
     render nothing: true, status: 500
   end

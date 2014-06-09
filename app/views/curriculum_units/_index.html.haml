@@ -19,7 +19,7 @@
         %th{:width => "38%"}= CurriculumUnit.human_attribute_name(:name)
         %th{:width => "28%"}= CurriculumUnit.human_attribute_name(:category)
         %th.no_sort{:width => "12%"}
-    %tbody.allocations
+    %tbody.curriculum_units
       = render partial: 'curriculum_units/curriculum_units'
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), curriculum_units_path(page: @curriculum_units.next_page, type_id: @type.id), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @curriculum_units.next_page
 - else

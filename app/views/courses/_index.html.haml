@@ -12,7 +12,7 @@
         %th= t(".code")
         %th= t(".name")
         %th.no_sort{:width => "12%"}
-    %tbody.allocations
+    %tbody.courses
       = render partial: 'courses/courses', locals: { courses: @courses }
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), courses_path(page: @courses.next_page, type_id: @type_id), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @courses.next_page
 - else

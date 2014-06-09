@@ -1,0 +1,6 @@
+$('.list_lessons').append('#{escape_javascript(render partial: 'modules', locals: {academic_allocations: @academic_allocations, allocation_tags_ids: @allocation_tags_ids})}');
+$('a.load-more-allocations').attr('href', '#{list_lessons_path(page: @academic_allocations.next_page, allocation_tags_ids: @allocation_tags_ids)}');
+$(".tb_list").trigger("update");
+
+- unless @academic_allocations.next_page
+  $('a.load-more-allocations').remove();
