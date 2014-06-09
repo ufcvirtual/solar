@@ -334,12 +334,29 @@
   text-decoration: none;
   line-height: 15px;
   margin-bottom: 5px;
+  .edition.block_content{
+    background-color: #F8FBFE;
+  }
+  .select{
+    margin-top: 5px;
+  }
+}
+
+.contacts-type, .contacts-uc .filter{
+  padding-left: 10px;
+}
+
+#content-div{
+  .block_content p{
+    text-align: right;
+    color: #D5031C;
+    margin-bottom: 0;
+  }
 }
 
 .contacts-list {
   font-size: 10pt;
   overflow: auto;
-  padding: 5px;
   margin-right: 3px;
   margin-top: 1px;
   margin-bottom: 5px;
@@ -362,7 +379,12 @@
   white-space: normal;
   overflow: auto;
   background-color: #fff;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.contacts-list, .contacts-selected{
+  margin: 5px;
+  padding: 5px;
 }
 
 #receiver_already_added {

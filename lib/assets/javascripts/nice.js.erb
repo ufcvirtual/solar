@@ -149,9 +149,9 @@ $.fn.nice_filter = function(options) {
         }
 
         $.get(url, data, function(result){
-          $('.' + load_to).html(result);
+          $('.' + load_to + ':first').html(result);
         }).error(function(data){
-          $('.' + load_to).html('');
+          $('.' + load_to + ':first').html('');
 
           var data = $.parseJSON(data.responseText);
           if (typeof(data.alert) != "undefined")
@@ -159,7 +159,7 @@ $.fn.nice_filter = function(options) {
         });
       } else {
         flash_message("<%= I18n.t(:alert, scope: [:editions]) %>", "alert");
-        $('.' + load_to).html('');
+        $('.' + load_to + ':first').html('');
       }
 
     } else

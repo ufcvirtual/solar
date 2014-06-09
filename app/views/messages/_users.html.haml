@@ -1,0 +1,7 @@
+- unless @users.empty?
+  #users{class: "users_at_#{@allocation_tags_ids}"}
+    = link_to_function "Adicionar todos", "add_all_users(this)", id: "add_all"
+    - @users.each do |user|
+      .contact= link_to_function "#{user.name} <#{user.email}>", "msg_select_contact(this)", "data-user-id" => user.id, "data-selected" => false, "data-at" => @allocation_tags_ids
+- else
+  %div{style: "margin-top:15%; margin-left:32%"}= "Nenhum usuário encontrado"

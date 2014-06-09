@@ -23,9 +23,8 @@ class MessagesController < ApplicationController
 
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     @curriculum_unit_id = AllocationTag.find(@allocation_tag_id).group.curriculum_unit.id unless @allocation_tag_id.nil?
-    @unreads = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
-    @contacts = user_contacts
-
+    @unreads  = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
+    @contacts = current_user.user_contacts.map(&:user)
     @reply_to = [User.find(params[:user_id]).to_msg] unless params[:user_id].nil? # se um usuário for passado, colocá-lo na lista de destinatários
   end
 
@@ -54,7 +53,7 @@ class MessagesController < ApplicationController
       #{@original.content}
     }
 
-    @contacts = user_contacts
+    @contacts = current_user.user_contacts.map(&:user)
     @files = @original.files
 
     @reply_to = []
@@ -121,8 +120,8 @@ class MessagesController < ApplicationController
 
       redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages)
     rescue => error
-      @unreads = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
-      @contacts = user_contacts
+      @unreads  = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
+      @contacts = current_user.user_contacts.map(&:user)
       @message.files.build
 
       render :new
@@ -154,29 +153,39 @@ class MessagesController < ApplicationController
     download_file(inbox_messages_path, file.attachment.path, file.attachment_file_name)
   end
 
-  private
+  def find_users  
+    @allocation_tags_ids = AllocationTag.get_by_params(params, false, true)[:allocation_tags]
 
-    # melhorar para considerar apenas as allocation_tags das ofertas correntes
-    def user_contacts
-      contacts, ucs = [], []
-      currents_groups = Offer.currents.map(&:groups).flatten.compact
-      current_user.allocation_tags.each do |at|
-        groups = (currents_groups & at.groups).flatten.compact
-        unless groups.empty?
-          responsible  = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(at.related.join(","), Profile_Type_Class_Responsible)
-          participants = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type(groups.map(&:allocation_tag).compact.map(&:id).join(","), Profile_Type_Class_Responsible)
+    
 
-          uc = at.groups.first.curriculum_unit
-          unless ucs.include?(uc)
-            ucs << uc
-            contacts << {
-              id: uc.id,
-              curriculum_unit: uc.name.titleize,
-              contacts: (responsible + participants).uniq.map(&:to_msg).sort! {|a, b| a[:name].downcase <=> b[:name].downcase}
-            }
-          end
-        end
-      end
-      contacts
-    end
+    @users = User.joins(:allocations).where(allocations: {status: 1, allocation_tag_id: @allocation_tags_ids}).select("DISTINCT users.id").select("users.name, users.email")
+    @allocation_tags_ids = @allocation_tags_ids.join("_")
+    render partial: "users"
+  end
+
+  # private
+
+    # # melhorar para considerar apenas as allocation_tags das ofertas correntes
+    # def user_contacts
+    #   contacts, ucs = [], []
+    #   currents_groups = Offer.currents.map(&:groups).flatten.compact
+    #   current_user.allocation_tags.each do |at|
+    #     groups = (currents_groups & at.groups).flatten.compact
+    #     unless groups.empty?
+    #       responsible  = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(at.related.join(","), Profile_Type_Class_Responsible)
+    #       participants = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type(groups.map(&:allocation_tag).compact.map(&:id).join(","), Profile_Type_Class_Responsible)
+
+    #       uc = at.groups.first.curriculum_unit
+    #       unless ucs.include?(uc)
+    #         ucs << uc
+    #         contacts << {
+    #           id: uc.id,
+    #           curriculum_unit: uc.name.titleize,
+    #           contacts: (responsible + participants).uniq.map(&:to_msg).sort! {|a, b| a[:name].downcase <=> b[:name].downcase}
+    #         }
+    #       end
+    #     end
+    #   end
+    #   contacts
+    # end
 end

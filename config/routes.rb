@@ -324,6 +324,7 @@ Solar::Application.routes.draw do
       get :outbox,   action: :index, box: "outbox",   as: :outbox
       get :trashbox, action: :index, box: "trashbox", as: :trashbox
       get :count_unread
+      get :find_users
 
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
     end

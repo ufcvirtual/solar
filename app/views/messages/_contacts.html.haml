@@ -4,34 +4,75 @@
       %h1= t(".title")
 
     .block_content
-      .contacts-uc
-        - map_contacts = @contacts.map {|c| [c[:curriculum_unit], c[:id]]}
-        = select_tag "uc", options_for_select(map_contacts, @curriculum_unit_id), onchange: "msg_show_contacts(this); return false;", prompt: t(".contacts")
+      %p= t(:required_fields)
+      .contacts-type
+        = label_tag :contacts_type, "Contatos*"
+        = select_tag :contacts_type, options_for_select([["Contatos do sistema",1],["Contatos pessoais",2]]), selected: 1
 
-      = t(".select")
-      .contacts-list
-        - @contacts.each do |uc|
-          .contacts-group.invisible{id: uc[:id]}
-            - uc[:contacts].each do |contact|
-              .contact= link_to_function contact[:resume], "msg_select_contact(this); return false;", "data-uc-id" => uc[:id], "data-user-id" => contact[:id], "data-selected" => false
+      .contacts-uc
+        = render partial: "editions/content_filter", locals: {list_class: "contacts-list", url: find_users_messages_path, optionals: ["curriculum_unit", "semester"], types: CurriculumUnitType.all, back: false, type_id: nil}
+        .user_contacts.invisible
+          .contacts-list
+            - unless @contacts.empty?
+              = render partial: "users", object: @users = @contacts, object: @allocation_tags_ids = ""
 
       = t(".to")
       .contacts-selected
         - [@reply_to].flatten.compact.each do |contact|
-          .contact= link_to_function contact[:resume], "$(this).parents('div.contact').remove(); return false;", "data-user-id" => contact[:id], "data-selected" => true
+          .contact= link_to_function contact[:resume], "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-selected" => true
 
     .block_buttons
       .right
         = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
         = button_to_function t(:save), "msg_add_contacts()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
 
+= javascript_include_tag "autocomplete", "edition"
+= stylesheet_link_tag "autocomplete"
+
 :javascript
 
   $(function(){
+    $("legend").remove();
+    $(".filter").unwrap();
+    $($(".edition.block_content").find("p")[0]).remove();
+    $(".contacts-list").before("<div class='select'>#{t('.select')}</div>");
+
     // nova msg dentro de uma UC
     if ($('select#uc option:selected').val() != "")
       msg_show_contacts($('select#uc'));
+
+    $( "select#contacts_type" ).combobox({
+      change: function( event, ui ) {
+        if(ui.item == null)
+          $(this).combobox('value', 1);
+      },
+      select: function( event, ui ) { 
+        if(ui.item == null)
+          $(this).combobox('value', 1);
+        else{
+          if(ui.item.value == 2){ // contatos pessoais
+            $(".edition.block_content").hide();
+            $(".user_contacts").removeClass("invisible");
+          }else{
+            if(ui.item.value == 1){ // contatos do sistema
+              $(".edition.block_content").show();
+              $(".user_contacts").addClass("invisible");
+            }
+          }
+          
+        }
+      }
+    });
+    $("select#contacts_type").combobox('value', 1);
   });
+
+  function add_all_users(select_all_link){
+    $(".contacts-uc .contacts-list:visible .contact a").each(function(){
+      msg_select_contact($(this));
+    });
+    if ($(".contacts-list:visible #users").children().length == 1)
+      $(select_all_link).remove();
+  }
 
   function msg_show_contacts(obj) {
     $(".contacts-group").hide();
@@ -41,8 +82,12 @@
   // add e retira usuario da selecao
   function msg_select_contact(contact) {
     // se o usuario esta sendo selecionado ou saindo da selecao
-    var select = ($(contact).data("selected") == false);
+    var select  = ($(contact).data("selected") == false);
     var user_id = $(contact).data("user-id");
+    var contacts_list = $(".contacts-list:visible #users")[0];
+    if (contacts_list == undefined)
+      contacts_list = $(".contacts-list:visible .users_at_")[0];
+
     // se este usuario ja esta selecionado e uma nova tentativa de selecao do mesmo em uma outra UC
     if (($('.contacts-selected .contact a[data-user-id="' + user_id + '"]').length > 0) && select){
       var added_user_msg = $(contact).children(".already_added");
@@ -56,10 +101,22 @@
 
     $(contact).data("selected", select); // marca/desmarca usuario como selecionado
 
-    if (select)
+    if (select){
       $(contact).parents("div.contact:first").appendTo(".contacts-selected");
-    else
-      $(contact).parents("div.contact:first").appendTo(".contacts-list .contacts-group#" + $(contact).data("uc-id"));
+      if ($(contacts_list).children().length == 1)
+        $(contacts_list).find("#add_all").remove();
+    }else{
+      // Se a div de usuários está visível
+      if (!!$(".users_at_"+$(contact).data("at")).is(":visible")){
+        // Se não tiver o link para "adicionar todos"
+        if (!$(contacts_list).find("#add_all").length)
+          $(contacts_list).prepend('<a href="#" id="add_all" onclick="add_all_users(this); return false;">Adicionar todos</a>');
+
+        var users_list = $(".contacts-list .users_at_" + $(contact).data("at"));
+        $(contact).parents("div.contact:first").appendTo(users_list);
+      }else
+        $(contact).parents("div.contact:first").remove();
+    }
   }
 
   function msg_add_contacts() {
