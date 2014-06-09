@@ -25,7 +25,15 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
-      format.html { redirect_to home_path, alert: t(:no_permission) }
+      format.html {
+        begin
+          active_tab[:breadcrumb].delete_at(-1) if active_tab[:breadcrumb].count > 1 # not home
+
+          redirect_to :back, alert: t(:no_permission)
+        rescue # ActionController::RedirectBackError
+          redirect_to home_path, alert: t(:no_permission)
+        end
+      }
       format.json { render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized }
       format.js { render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized }
     end
