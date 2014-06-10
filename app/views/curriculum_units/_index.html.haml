@@ -24,7 +24,7 @@
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), curriculum_units_path(page: @curriculum_units.next_page, type_id: @type.id), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @curriculum_units.next_page
 - else
   .block_content_text_list.text_none 
-    = t(".designate_search_no_found")
+    = t(:item_search_no_found)
 
 
 :javascript

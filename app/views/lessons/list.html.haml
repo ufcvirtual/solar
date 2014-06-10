@@ -13,7 +13,7 @@
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), list_lessons_path(page: @academic_allocations.next_page, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @academic_allocations.next_page
 - else
   .block_content_text_list.text_none 
-    = t(".designate_search_no_found")
+    = t(:item_search_no_found)
 
 = javascript_include_tag "tablesorter", "tooltip", "lessons", "groups_tags"
 

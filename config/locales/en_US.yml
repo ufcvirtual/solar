@@ -333,6 +333,7 @@ en_US:
   dont_destroy_with_lower_associations: "It has associations which prevent deletion"
   dont_destroy_with_many_allocations: "It has associations with other users"
   dont_destroy_with_content: "It has content"
+  item_search_no_found: "No item found"
   login_description1: "Solar is a virtual learning environment developed by the UFC Virtual Institute at Federal University of Ceará. It is geared towards the teacher and the student, allowing the publication of courses and interaction with them."
   login_description2: "The Solar was developed to enhance the learning process, starting from the interaction with the graphic interface of the environment, and to allow fast access to the pages and the content, easy navigation and browser compatibility. Here, the learner feels safe to explore the available spaces. The environment is supported by a philosophy of interaction, not control."
   login_title: "Sistema Online de Aprendizagem da Universidade Federal do Ceará"

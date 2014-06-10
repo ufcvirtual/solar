@@ -17,7 +17,7 @@
     = link_to content_tag(:i, nil, class: "icon-ellipsis"), offers_path(page: @offers.next_page, type_id: @type_id, semester_id: @semester.id, allocation_tags_ids: @allocation_tags_ids.join(" ")), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @offers.next_page
 - else
   .block_content_text_list.text_none 
-    = t(".designate_search_no_found")
+    = t(:item_search_no_found)
 
 :javascript
 

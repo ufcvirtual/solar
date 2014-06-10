@@ -12,7 +12,7 @@
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), search_users_allocations_path(page: @users.next_page, user: @text_search, admin: @admin, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @users.next_page
 - else
   .block_content_text_list.text_none 
-    = t(".designate_search_no_found")
+    = t(:item_search_no_found)
 
 = javascript_include_tag "tablesorter"
 
