@@ -1,5 +1,5 @@
 class SemestersController < ApplicationController
-  layout false, except: :index 
+  layout false, except: :index
 
   # GET /semesters
   def index

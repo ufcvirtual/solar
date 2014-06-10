@@ -222,8 +222,6 @@ $(function(){
       if (!confirm("<%=I18n.t(:message_confirm)%>"))
         return false;
 
-      // tentar melhorar o nice_delete para incluir a delecao de muitas linhas
-
       var assignments = $('.ckb_assignment:checked', $(this).parents("div.list_assignments"));
       var assignments_ids = assignments.map(function() { return this.value; }).get();
       if (assignments_ids.length) {
