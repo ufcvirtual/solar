@@ -1758,6 +1758,15 @@ en_US:
       contacts: "Contacts"
       select: "Select: "
       to: "To: "
+      system_contacts: System Contacts
+      personal_contacts: Personal contacts
+      add_all: Add all
+    users:
+      add_all: Add all
+      no_user_found: No user found
+    errors:
+      recipients: A message must have at least 1 and less than 90 recipients.
+      permission: You don't have access to informed data.
     subject:
       reply: "Re: "
       forward: "Fwd: "

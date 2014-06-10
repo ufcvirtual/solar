@@ -140,7 +140,7 @@ $.fn.nice_filter = function(options) {
           // se selecionou groups, mas não selecionou nenhuma turma, impede de prosseguir
           if(options.data_function().radio_option == "group" && !options.data_function().groups_id.length){
             flash_message("<%= I18n.t(:alert, scope: [:editions]) %>", "alert");
-            $('.' + load_to).html('');
+            $('.' + load_to + ':first').html('');
             return false;    
           }
 
@@ -154,11 +154,18 @@ $.fn.nice_filter = function(options) {
           $('.' + load_to + ':first').html('');
 
           var data = $.parseJSON(data.responseText);
-          if (typeof(data.alert) != "undefined")
-            flash_message(data.alert, 'alert');
+          if (typeof(data.alert) != "undefined"){
+            if ($(".fancybox-inner").is(":visible"))
+              flash_message(data.alert, 'alert', "fancybox-inner .flash_message_wrapper");
+            else
+              flash_message(data.alert, 'alert');
+          }
         });
       } else {
-        flash_message("<%= I18n.t(:alert, scope: [:editions]) %>", "alert");
+        if ($(".fancybox-inner").is(":visible"))
+          flash_message("<%= I18n.t(:alert, scope: [:editions]) %>", "alert", "fancybox-inner .flash_message_wrapper");
+        else
+          flash_message("<%= I18n.t(:alert, scope: [:editions]) %>", "alert");
         $('.' + load_to + ':first').html('');
       }
 

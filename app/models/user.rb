@@ -276,6 +276,10 @@ class User < ActiveRecord::Base
     (not allocations.joins(:profile).where("cast(types & #{Profile_Type_Admin} as boolean) AND allocations.status = #{Allocation_Activated}").empty?)
   end
 
+  def self.all_at_allocation_tags(allocation_tags_ids, status = Allocation_Activated)
+    joins(:allocations).where(allocations: {status: status, allocation_tag_id: allocation_tags_ids}).select("DISTINCT users.id").select("users.name, users.email")
+  end
+
   ### integration MA ###
 
   def integration

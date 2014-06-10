@@ -2014,20 +2014,15 @@ pt_BR:
     file_too_big: "Arquivo muito grande!"
     mail_header: "Mensagem enviada por: "
     mail_sent: "Mensagem enviada com sucesso."
-
     new: "Nova"
     delete: "Excluir"
     restore: "Restaurar"
-
     select_all: "Todas"
     select_read: "Lidas"
     select_unread: "Não lidas"
-
     mark_as_read: "Marcar como lida"
     mark_as_unread: "Marcar como não lida"
-
     already_added: já adicionado
-
     none: "Nenhuma mensagem encontrada"
     no_new: "Sem novas mensagens"
     no_subject: "(sem assunto)"
@@ -2036,6 +2031,15 @@ pt_BR:
       contacts: "Contatos"
       select: "Selecionar: "
       to: "Para: "
+      system_contacts: Contatos do Sistema
+      personal_contacts: Contatos Pessoais
+      add_all: Adicionar todos
+    users:
+      add_all: Adicionar todos
+      no_user_found: Nenhum usuário encontrado
+    errors:
+      recipients: Uma mensagem deve possuir, no mínimo, 1 e, no máximo, 90 destinatários.
+      permission: Você não tem acesso aos dados informados.
     subject:
       reply: "Res: "
       forward: "Enc: "
