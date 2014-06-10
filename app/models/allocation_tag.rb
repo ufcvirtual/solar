@@ -32,7 +32,7 @@ class AllocationTag < ActiveRecord::Base
       user_id: user_id,
       status: Allocation_Activated,
       profiles: {status: true},
-      allocation_tag_id: self.related
+      allocation_tag_id: (self.nil? ? self : self.related)
     ).where("(profiles.types & #{Profile_Type_Class_Responsible})::boolean").uniq.empty?
   end
 

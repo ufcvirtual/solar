@@ -249,6 +249,11 @@ ucpt10:
   resource_id: 171
   per_id: false
 
+ucpt11:
+  profile_id: 2
+  resource_id: 172
+  per_id: false
+
 # assignments
 assigpt1:
   profile_id: 2
@@ -1151,6 +1156,11 @@ lessonedit9:
 lessonedit10:
   profile_id: 5
   resource_id: 171
+  per_id: false
+
+lessonedit11:
+  profile_id: 5
+  resource_id: 172
   per_id: false
 
 # Lessons Modules - Módulos

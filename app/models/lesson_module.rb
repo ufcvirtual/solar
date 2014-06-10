@@ -27,7 +27,9 @@ class LessonModule < ActiveRecord::Base
 
   def self.to_select(allocation_tags_ids, user = nil, list = false)
     user_is_admin    = user.nil? ? false : user.is_admin?
-    user_responsible = user.nil? ? false : AllocationTag.find(allocation_tags_ids).compact.map{|at| at.is_user_class_responsible?(user.id) }.include?(true)
+    user_responsible = user.nil? ? false : not(user.profiles_with_access_on("see_drafts", "lessons", allocation_tags_ids, true).empty?)
+    
+    # current_user.profiles_with_access_on("see_drafts", "lessons", allocation_tags_ids, true).empty?
     joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tags_ids}).delete_if{ |lmodule|
       lessons               = lmodule.lessons
       has_open_lesson       = lessons.map(&:closed?).include?(false)
@@ -38,7 +40,7 @@ class LessonModule < ActiveRecord::Base
 
   def lessons_to_open(user = nil, list = false)
     user_is_admin    = user.is_admin?
-    user_responsible = allocation_tags.map{|at| at.is_user_class_responsible?(user.id) }.include?(true) unless user.nil?
+    user_responsible = user.nil? ? false : not(user.profiles_with_access_on("see_drafts", "lessons", nil, true).empty?)
     lessons.order("lessons.order").collect{ |lesson|
       lesson_with_address = (list or not(lesson.address.blank?))
       # if (lesson can open to show or list is true) or (is draft or will_open and is responsible) or user is admin 

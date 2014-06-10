@@ -988,3 +988,9 @@ res171:
   controller: 'lessons'
   action: 'change_status'
   description: 'Alterar status da aula (liberada ou rascunho)'
+
+res172:
+  id: 172
+  controller: 'lessons'
+  action: 'see_drafts'
+  description: 'Visualizar aulas de rascunho'
