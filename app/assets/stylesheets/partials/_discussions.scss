@@ -21,3 +21,20 @@
 .discussion_form{
   text-align: left;
 }
+
+
+.forum_post_content{
+	.forum_post_wrapper{
+		.forum_post_inner_content{
+
+			overflow: hidden;
+
+			p{
+				img{
+					max-height: 500px;
+					max-width: 400px;
+				}
+			}
+		}
+	}
+}
