@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   layout false, only: :show
   load_and_authorize_resource only: [:mysolar, :update_photo]
 
+  before_filter :set_active_tab_to_home, only: :profiles
   after_filter :flash_notice, only: :create
 
   def show
