@@ -31,15 +31,30 @@ Quando /^eu clicar em "([^"]*)"$/ do |button|
 end
 
 Quando /^eu clicar no link "([^"]*)"$/ do |link|
-  click_link(link)
+  first(:link, link).click
 end
 
 Entao /^eu deverei ver "([^"]*)"$/ do |text|
   	if page.respond_to? :should
   		page.should have_content(text)
+      #find('body').has_content?(text)
   	else
   		assert page.has_content?(text)
   	end
+end
+
+Entao /^eu deverei ver o alerta "([^"]*)"$/ do |text|
+  if page.respond_to? :should
+    expect(page).to have_content(text)
+  end
+end
+
+Entao /^eu deverei ver a categoria de titulo "([^"]*)"$/ do |text|
+  find('legend', :text => text)
+end
+
+Entao /^eu deverei ver a coluna de titulo "([^"]*)"$/ do |text|
+  first('th>div', :text => text)
 end
 
 Entao /^eu deverei ver o campo "([^"]*)"/ do |selector|
@@ -54,6 +69,20 @@ end
 
 Entao /^eu deverei visualizar "([^"]*)"$/ do |texto|
   page.should have_content(texto)
+end
+
+Entao 'eu deverei ter option com valor "$texto"' do |texto|
+  #assert_equal texto, page.find_field('')
+  #page.find_field(texto).value
+  find_by_id('status', :visible => false).find('option', :visible => false, :text => texto)
+  #find_link(texto, :visible => false)
+  #find_by_id('ui-id-6')
+  #page.find(".ui-widget-content.ui-combobox-input.ui-autocomplete-input", :value => texto)
+end
+
+Entao 'eu deverei ver input com valor "$text" em "$parent"' do |text, parent|
+  #find_field(texto)
+  find(parent).value.should eq text
 end
 
 Entao /^eu nao deverei ver "([^"]*)"$/ do |text|

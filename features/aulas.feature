@@ -16,6 +16,5 @@ Cenário: Listar aulas do curso
   Quando eu clicar no link "Aulas"
   Então eu deverei ver "Aulas disponíveis"
   E eu deverei ver a linha de aulas disponiveis
-    | AulasDisponiveis  | DataAcesso | DataAcesso | DataAcesso |
-    | aula 4            | 16/03/2011 |      -     | 01/08/2312 |
-    | aula 5            | 25/03/2011 |      -     | 06/05/2315 |
+    | AulasDisponiveis     | DataAcesso | DataAcesso | DataAcesso |
+    | aula 5               | 25/03/2011 |      -     | 06/05/2022 |

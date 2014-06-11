@@ -42,10 +42,10 @@ Cenario: Exibir primeiro forum
     E eu deverei ver "User 2"
     E eu deverei ver "Tutor Presencial"
     E eu deverei ver "Aluno"
-    E eu deverei ver o botao "Excluir"
-    E eu deverei ver o botao "Editar"
-    E eu deverei ver o botao "Responder"
-    E eu deverei ver o botao "Anexar"
+    E eu deverei ver o botao "Anexar" em mensagem com id "11"
+    E eu deverei ver o botao "Excluir" em mensagem com id "11"
+    E eu deverei ver o botao "Editar" em mensagem com id "11"
+    E eu deverei ver o botao "Responder" em mensagem com id "11"
 
 Cenario: Exibir forum encerrado para aluno
   Dado que estou logado com o usuario "user" e com a senha "123456"

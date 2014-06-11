@@ -59,9 +59,10 @@ end
 
 group :test do
   gem "webrat", "0.7.3"
-  gem "capybara", "1.1.2"
+  gem "capybara", "2.3.0"
   gem "database_cleaner", "0.7.2"
   gem "cucumber-rails", "~> 1.3.1", require: false
+  gem "selenium-webdriver", "~> 2.42.0"
   gem "launchy", "2.1.0"
   gem "nokogiri", "1.5.5"
   gem "spreewald", "0.8.4" # collection of cucumber steps

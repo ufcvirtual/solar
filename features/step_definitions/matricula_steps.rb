@@ -26,9 +26,10 @@ Entao /^eu nao deverei visualizar a linha de opcao de matricula$/ do |tabela|
 	 end
 end
 
-Quando /^eu clicar na opcao "([^"]*)" do item de matricula "([^"]*)"$/ do |link, texto|
-  xpath = "//table/tbody/tr[ child::td[contains(.,'#{texto}')] ]"
+Quando /^eu clicar na opcao "([^"]*)" do item de matricula "([^"]*)" do semestre "([^"]*)"$/ do |link, texto, semestre|
+  xpath = "//table/tbody/tr[ child::td[contains(.,'#{texto}')] and child::td[contains(.,'#{semestre}')] ]"
   within(:xpath, xpath) do
     find_button("#{link}").click
   end
+  #find("table tbody tr td", :text => texto)
 end

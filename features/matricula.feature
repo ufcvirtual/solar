@@ -14,8 +14,9 @@ Cenário: Acessar página de matricula
     E eu deverei visualizar "Categoria"
     E eu deverei visualizar "Turma"
     E eu deverei visualizar "Buscar"
-    E eu deverei visualizar "Todos"
-    E eu deverei visualizar "Matriculados"
+    E eu deverei ter option com valor "Todos"
+    E eu deverei ter option com valor "Matriculados"
+    E eu deverei ver input com valor "Todos" em "#status + .ui-combobox input"
 
 @javascript
 Cenário: Listar cursos matriculados ou disponíveis
@@ -36,7 +37,7 @@ Cenário: Listar cursos matriculados ou disponíveis
 Cenário: Pedir cancelamento de matricula
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Matricula"
-  Quando eu clicar na opcao "Cancelar" do item de matricula "Introducao a Linguistica"
+  Quando eu clicar na opcao "Cancelar" do item de matricula "Introducao a Linguistica" do semestre "2011.1"
   Então eu deverei ver a linha de opcao de matricula
     | UnidadeCurricular             | Categoria                           | Turma   | Matricula       |
     | Introducao a Linguistica      | Curso Livre                         | IL-FOR  | Matricular      |
@@ -47,7 +48,7 @@ Cenário: Pedir cancelamento de matricula
 Cenário: Pedir matricula em curso disponível
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Matricula"
-  Quando eu clicar na opcao "Matricular" do item de matricula "Teoria da Literatura I"
+  Quando eu clicar na opcao "Matricular" do item de matricula "Teoria da Literatura I" do semestre "2011.1"
   Então eu deverei ver a linha de opcao de matricula
     | UnidadeCurricular             | Categoria                           | Turma   | Matricula       |
     | Introducao a Linguistica      | Curso Livre                         | IL-FOR  | Cancelar        |
@@ -58,7 +59,7 @@ Cenário: Pedir matricula em curso disponível
 Cenário: Cancelar pedido de matricula
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Matricula"
-  Quando eu clicar na opcao "Cancelar pedido" do item de matricula "Literatura Brasileira I"
+  Quando eu clicar na opcao "Cancelar pedido" do item de matricula "Literatura Brasileira I" do semestre "2011.1"
   Então eu deverei ver a linha de opcao de matricula
     | UnidadeCurricular             | Categoria                           | Turma   | Matricula       |
     | Introducao a Linguistica      | Curso Livre                         | IL-FOR  | Cancelar        |

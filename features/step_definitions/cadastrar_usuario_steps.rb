@@ -10,7 +10,12 @@ Dado /^eu clico no link "([^"]*)"$/ do |link|
 end
 
 Entao /^eu deverei ver o botao "([^"]*)"$/ do |botao|
+  #first(:button, botao).should_not be_nil
   find_button(botao).should_not be_nil
+end
+
+Entao /^eu deverei ver o botao "([^"]*)" em mensagem com id "([^"]*)"$/ do |botao, message_id|
+  find('#'+message_id).find_button(botao).should_not be_nil
 end
 
 Dado /^que eu preenchi "([^"]*)" com "([^"]*)"$/ do |selector, value|

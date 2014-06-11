@@ -24,7 +24,7 @@ Cenário: Exibir Agenda
     Então eu deverei ver "Recesso"
     E eu deverei ver "Avaliação"
     E eu deverei ver "Feriado"
-  Dado que eu cliquei em elemento de texto "Recesso"
+  Dado que eu cliquei em elemento de texto "Recesso" em "span.fc-event-title"
     Entao eu deverei ver "Evento: Recesso"
     E eu deverei ver "Licenciatura em Quimica - Quimica I - 2011.1 - QM-CAU"
     E eu deverei ver "dia todo"
@@ -44,7 +44,7 @@ Cenário: Exibir Agenda do professor
   Quando eu clicar no link "Agenda"
     Entao eu deverei ver "Forum 7"
     E eu deverei ver "Atividade individual VII"
-  Dado que eu cliquei em elemento de texto "Forum 7"
+  Dado que eu cliquei em elemento de texto "Forum 7" em "span.fc-event-title"
     Entao eu deverei ver "Fórum: Forum 7"
     E eu deverei ver "Letras Portugues - Teoria da Literatura I - 2011.1 - TL-CAU"
     E eu deverei ver "dia todo"
@@ -79,7 +79,7 @@ Cenário: Verificar tipos de visualizacoes da agenda e botoes de navegacao
     Entao eu devo ver o nome deste mes
   Quando eu clicar no botao de icone com classe "icon-arrow-right-thin"
     Entao eu devo ver o nome mes que vem
-  Dado que eu cliquei em elemento de texto "hoje"
+  Dado que eu cliquei no botao com texto "hoje"
     Entao eu devo ver o nome deste mes
 
 @javascript
@@ -92,7 +92,7 @@ Cenário: Verificar abertura do lightbox com exibição dos detalhes
     Entao eu deverei ver o link "Agenda"
   Quando eu clicar no link "Agenda"
     Entao eu deverei ver "Forum 7"
-  Dado que eu cliquei em elemento de texto "Forum 7"
+  Dado que eu cliquei em elemento de texto "Forum 7" em "span.fc-event-title"
     Entao eu deverei ver "Fórum: Forum 7"
     E eu deverei ver "Letras Portugues - Teoria da Literatura I - 2011.1 - TL-CAU"
     E eu deverei ver "dia todo"

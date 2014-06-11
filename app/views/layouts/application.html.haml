@@ -20,53 +20,6 @@
 
     = csrf_meta_tag
 
-  :javascript
-
-    /**
-     * Google Analytics
-     */
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-25482431-1']);
-    _gaq.push(['_setDomainName', '.virtual.ufc.br']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-
-    // system and clock
-
-    global_config = {
-      'locale': {
-        'I18n': "#{I18n.locale}",
-        'dateFormat': "#{I18n.t :search_format_date}"
-      }
-    };
-
-    jQuery(function($) {
-      /**
-       * System clock
-       */
-      new showLocalTime("server_clock", "#{I18n.l(Time.now, format: :clock_time)}".split(":"));
-
-      /**
-      * Verificando se existe aula carregada
-      */
-      var lessonsButton = $('#mysolar_open_lesson button');
-      if ( $("#lesson_content", parent.document.body).length == 0 ) {
-        $(lessonsButton).addClass("disabled");
-      } else {
-        $(lessonsButton).removeClass("disabled");
-      }
-
-      /**
-       * Intro
-       */
-      $("#help_context").click(solar_help);
-    });
-
   %body
     #mysolar_topbar_wide_background
     #body_wrapper
@@ -163,123 +116,168 @@
               %li{class: "language pt_BR #{(selected == locales.first) ? 'selected' : ''}"}= link_to 'Português (BR)', url_for(locale: locales.first)
               %li{class: "language en_US #{(selected == locales.last) ? 'selected' : ''}"}= link_to 'English (USA)', url_for(locale: locales.last)
 
-:javascript
+  :javascript
 
-  // Lessons
-  lesson_cookie_id = "_ufc_solar20_lesson_opened";
+    /**
+     * Google Analytics
+     */
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-25482431-1']);
+    _gaq.push(['_setDomainName', '.virtual.ufc.br']);
+    _gaq.push(['_trackPageview']);
 
-  $(function(){
-    var home_tab = $(".mysolar_unit_active_tab.general_context").length;
-    if (!home_tab && $.cookie(lesson_cookie_id))
-      $("#mysolar_open_lesson button").removeClass("disabled");
-  });
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+    // system and clock
+
+    global_config = {
+      'locale': {
+        'I18n': "#{I18n.locale}",
+        'dateFormat': "#{I18n.t :search_format_date}"
+      }
+    };
+
+    jQuery(function($) {
+      /**
+       * System clock
+       */
+      new showLocalTime("server_clock", "#{I18n.l(Time.now, format: :clock_time)}".split(":"));
+
+      /**
+      * Verificando se existe aula carregada
+      */
+      var lessonsButton = $('#mysolar_open_lesson button');
+      if ( $("#lesson_content", parent.document.body).length == 0 ) {
+        $(lessonsButton).addClass("disabled");
+      } else {
+        $(lessonsButton).removeClass("disabled");
+      }
+
+      /**
+       * Intro
+       */
+      $("#help_context").click(solar_help);
+    });
+
+    // Lessons
+    lesson_cookie_id = "_ufc_solar20_lesson_opened";
+
+    $(function(){
+      var home_tab = $(".mysolar_unit_active_tab.general_context").length;
+      if (!home_tab && $.cookie(lesson_cookie_id))
+        $("#mysolar_open_lesson button").removeClass("disabled");
+    });
 
 
-  // IM
+    // IM
 
-  imgOn = "#{image_path('IM_online_Icon.png')}";
-  imgAway = "#{image_path('IM_away_Icon.png')}";
-  imgDnd = "#{image_path('IM_dnd_Icon.png')}";
-  imgOff = "#{image_path('IM_offline_Icon.png')}";
-  imgMessage = "#{image_path('IM_message_Icon.png')}";
-  xmpp_cpf = "#{current_user.cpf}";
-  xmpp_ip = "#{@_ip}";
-  xmpp_dominio = "#{@_dominio}";
-  xmpp_port = "#{@_porta}";
-  xmpp_pass = "#{current_user.encrypted_password}";
-  number_chatbox = 0;
-  var con;
-  if($.cookie("cookie_im"))
-    var cookie_im = JSON.parse($.cookie("cookie_im"));
-  else
-    var cookie_im = JSON.parse('{"IM" : true, "IM_toggle":true}');
-  $.cookie("cookie_im",JSON.stringify(cookie_im));
-
-  converse.initialize({
-    prebind: false,
-    // jid: data.jid,
-    // sid: data.sid,
-    // rid: data.rid,
-    debug: false,
-    auto_list_rooms: false,
-    auto_subscribe: false,
-    bosh_service_url: 'http://'+ xmpp_ip +':' + xmpp_port + '/http-bind/',
-    hide_muc_server: false,
-    i18n: locales["pt_BR"], // Refer to ./locale/locales.js to see which locales are supported
-    allow_contact_requests: false,
-    show_only_online_users: false,
-    show_controlbox_by_default: false,
-    xhr_user_search: false
-  });
-
-
-  function getCookie(){
-    cookie_im = JSON.parse($.cookie("cookie_im"));
-  }
-
-  function setCookie(){
+    imgOn = "#{image_path('IM_online_Icon.png')}";
+    imgAway = "#{image_path('IM_away_Icon.png')}";
+    imgDnd = "#{image_path('IM_dnd_Icon.png')}";
+    imgOff = "#{image_path('IM_offline_Icon.png')}";
+    imgMessage = "#{image_path('IM_message_Icon.png')}";
+    xmpp_cpf = "#{current_user.cpf}";
+    xmpp_ip = "#{@_ip}";
+    xmpp_dominio = "#{@_dominio}";
+    xmpp_port = "#{@_porta}";
+    xmpp_pass = "#{current_user.encrypted_password}";
+    number_chatbox = 0;
+    var con;
+    if($.cookie("cookie_im"))
+      var cookie_im = JSON.parse($.cookie("cookie_im"));
+    else
+      var cookie_im = JSON.parse('{"IM" : true, "IM_toggle":true}');
     $.cookie("cookie_im",JSON.stringify(cookie_im));
-  }
 
-  $(document).ready(function(e){
-    if(cookie_im.IM)
-      con.showControlBox();
-    if(!cookie_im.IM_toggle){
-      setTimeout(function(){
-        $("#chat").click();
-        },750);
-    }
-    if(cookie_im.Groups){
-      setTimeout(function(e){
-        $("#order").click();
-      },1450);
-    }
-  });
+    converse.initialize({
+      prebind: false,
+      // jid: data.jid,
+      // sid: data.sid,
+      // rid: data.rid,
+      debug: false,
+      auto_list_rooms: false,
+      auto_subscribe: false,
+      bosh_service_url: 'http://'+ xmpp_ip +':' + xmpp_port + '/http-bind/',
+      hide_muc_server: false,
+      i18n: locales["pt_BR"], // Refer to ./locale/locales.js to see which locales are supported
+      allow_contact_requests: false,
+      show_only_online_users: false,
+      show_controlbox_by_default: false,
+      xhr_user_search: false
+    });
 
-  $(function(){
-    $('#toggle-controlbox').click(function(e){
-      if(cookie_im.IM){
-        cookie_im.IM=false;
-        setCookie();
-      }
-      else{
-        cookie_im.IM=true;
-        setCookie();
+
+    function getCookie(){
+      cookie_im = JSON.parse($.cookie("cookie_im"));
+    }
+
+    function setCookie(){
+      $.cookie("cookie_im",JSON.stringify(cookie_im));
+    }
+
+    $(document).ready(function(e){
+      if(cookie_im.IM)
         con.showControlBox();
+      if(!cookie_im.IM_toggle){
+        setTimeout(function(){
+          $("#chat").click();
+          },750);
+      }
+      if(cookie_im.Groups){
+        setTimeout(function(e){
+          $("#order").click();
+        },1450);
       }
     });
-  })
 
-  $(function(){
-    $('.mysolar_top_link.logout').click(function(e) {
-      try {
-        $(".xmpp-status-menu .unavailable").click();
-        con.xmppstatus.save({'status': 'online'});
-        delete con;
-        con=null;
-        setTimeout(function(){location.href="#{logout_path}";},250); // espera 250 milesegundos para redirecionar para a pagina de logout acho que este é um tempo razoável.
-        e.preventDefault();
-      } catch(err) {}
-    });
-  })
+    $(function(){
+      $('#toggle-controlbox').click(function(e){
+        if(cookie_im.IM){
+          cookie_im.IM=false;
+          setCookie();
+        }
+        else{
+          cookie_im.IM=true;
+          setCookie();
+          con.showControlBox();
+        }
+      });
+    })
+
+    $(function(){
+      $('.mysolar_top_link.logout').click(function(e) {
+        try {
+          $(".xmpp-status-menu .unavailable").click();
+          con.xmppstatus.save({'status': 'online'});
+          delete con;
+          con=null;
+          setTimeout(function(){location.href="#{logout_path}";},250); // espera 250 milesegundos para redirecionar para a pagina de logout acho que este é um tempo razoável.
+          e.preventDefault();
+        } catch(err) {}
+      });
+    })
 
 
-  // Synchronizing user
-  $(function(){
-    $("#synchronize").click(function(){
-      $.get($(this).data("url"), function(data){
-        if (typeof(data.message) != "undefined" && typeof(data.type_message) != "undefined")
-          flash_message(data.message, data.type_message);
-        if (typeof(data.nick) != "undefined")
-          $("#mysolar_top_user_nick").html(data.nick);
-        if (typeof(data.name) != "undefined")
-          $("#mysolar_top_submenu_username").html(data.name);
-        if (typeof(data.email) != "undefined")
-          $("#mysolar_top_submenu_useremail").html(data.email);
-      }).error(function(data){
-        var data = $.parseJSON(data.responseText);
-        if (typeof(data.alert) != "undefined")
-          flash_message(data.alert, "alert");
+    // Synchronizing user
+    $(function(){
+      $("#synchronize").click(function(){
+        $.get($(this).data("url"), function(data){
+          if (typeof(data.message) != "undefined" && typeof(data.type_message) != "undefined")
+            flash_message(data.message, data.type_message);
+          if (typeof(data.nick) != "undefined")
+            $("#mysolar_top_user_nick").html(data.nick);
+          if (typeof(data.name) != "undefined")
+            $("#mysolar_top_submenu_username").html(data.name);
+          if (typeof(data.email) != "undefined")
+            $("#mysolar_top_submenu_useremail").html(data.email);
+        }).error(function(data){
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, "alert");
+        });
       });
     });
-  });

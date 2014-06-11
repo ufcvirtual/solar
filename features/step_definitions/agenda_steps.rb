@@ -1,11 +1,10 @@
 # Clica em um elemento a partir de seu texto, por exemplo um botão de texto "Salvar"
-Dado /^que eu cliquei em elemento de texto "([^\"]+)"$/ do |text|
-  matcher = ['*', { :text => text }]
-  element = page.find(:css, *matcher)
-  while better_match = element.first(:css, *matcher)
-    element = better_match
-  end
-  element.click
+Dado /^que eu cliquei em elemento de texto "([^\"]+)" em "([^"]*)"$/ do |text, selector|
+  first(selector, :text => text).click
+end
+
+Dado /^que eu cliquei no botao com texto "([^\"]+)"$/ do |text|
+  find(".btn", :text => text).click
 end
 
 # Útil para botões que não são botões (são links)
