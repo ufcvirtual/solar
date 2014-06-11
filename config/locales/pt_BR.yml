@@ -2039,7 +2039,7 @@ pt_BR:
       add_all: Adicionar todos
       no_user_found: Nenhum usuário encontrado
     errors:
-      recipients: Uma mensagem deve possuir, no mínimo, 1 e, no máximo, 90 destinatários.
+      recipients: "Uma mensagem deve possuir, no mínimo, 1 e, no máximo, %{limit} destinatários."
       permission: Você não tem acesso aos dados informados.
     subject:
       reply: "Res: "

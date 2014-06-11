@@ -46,6 +46,8 @@ Message_Filter_Read     = 0b00000010   # 00000010 -> lida      (2o bit = 1)
 Message_Filter_Restore  = 0b11111011   # 11111011 -> ñ lixeira (3o bit = 0)
 Message_Filter_Trash    = 0b00000100   # 00000100 -> lixeira   (3o bit = 1)
 
+Message_Limit_Of_Recipients = 90
+
 # Tipos de perfil
 Profile_Type_No_Type            = 0
 Profile_Type_Basic              = 0b00000001  # (1o bit = 1)
