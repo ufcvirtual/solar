@@ -1,23 +1,24 @@
-- semester_id = @semester.try(:id)
-- unless @offers.nil? or @offers.empty?
-  .block_content.allocations_list
-    %table.tb_list{cellpadding: "10", cellspacing: "0", width: "100%", border: "0", :"data-link-offers" => semester_offers_path(@semester, type_id: @type_id), id: "table-offer-#{semester_id}"}
-      %thead
-        %tr.lines
-          %th.no_sort.center
-            %input{id: "all_offers_#{semester_id}", :"data-children-names" => "ckb_offers_#{semester_id}", type: "checkbox"}
-          %th= t(".type")
-          %th= t(".course")
-          - if @type_id != 3
-            %th= t(".curriculum_unit")
-          %th= t(".offer")
-          %th.no_sort
-      %tbody.offers
-        = render partial: 'offers/offers'
-    = link_to content_tag(:i, nil, class: "icon-ellipsis"), offers_path(page: @offers.next_page, type_id: @type_id, semester_id: @semester.id, allocation_tags_ids: @allocation_tags_ids.join(" ")), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @offers.next_page
-- else
-  .block_content_text_list.text_none 
-    = t(:item_search_no_found)
+.list_offer{id: "offers-#{@semester.id}", :"data-link-list" => offers_path(semester_id: @semester.id, type_id: @type_id, page: @offers.current_page)}
+  - semester_id = @semester.try(:id)
+  - unless @offers.nil? or @offers.empty?
+    .block_content.allocations_list
+      %table.tb_list{cellpadding: "10", cellspacing: "0", width: "100%", border: "0", :"data-link-offers" => semester_offers_path(@semester, type_id: @type_id, allocation_tags_ids: @allocation_tags_ids, page: @offers.current_page), id: "table-offer-#{semester_id}"}
+        %thead
+          %tr.lines
+            %th.no_sort.center
+              %input{id: "all_offers_#{semester_id}", :"data-children-names" => "ckb_offers_#{semester_id}", type: "checkbox"}
+            %th= t(".type")
+            %th= t(".course")
+            - if @type_id != 3
+              %th= t(".curriculum_unit")
+            %th= t(".offer")
+            %th.no_sort
+        %tbody.offers
+          = render partial: 'offers/offers'
+      = link_to content_tag(:i, nil, class: "icon-ellipsis"), offers_path(page: @offers.next_page, type_id: @type_id, semester_id: @semester.id), class: "load-more-offers-#{semester_id}", remote: true, :"data-tooltip" => t(:load_items) if @offers.next_page
+  - else
+    .block_content_text_list.text_none 
+      = t(:item_search_no_found)
 
 :javascript
 
@@ -25,7 +26,7 @@
 
     if ("#{semester_id}") { // quando semestre tem ofertas
       var semester = $(".table-offers#table-#{semester_id}");
-      $("#all_offers_#{semester_id}").nice_checkbox();
+      $("#all_offers_#{semester_id}").nice_checkbox({parent_div: $("#semester-#{semester_id}")});
     }
   });
 

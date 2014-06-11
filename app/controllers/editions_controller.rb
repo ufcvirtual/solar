@@ -54,6 +54,8 @@ class EditionsController < ApplicationController
     @curriculum_units = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
     @courses   = ( @type.id == 3 ? Course.all_associated_with_curriculum_unit_by_name : @courses = Course.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}) )
     @semesters = Semester.all_by_period({period: params[:period]}) # semestres do período informado ou ativos
+    
+    @allocation_tags_ids = @allocation_tags_ids.join(" ")
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end

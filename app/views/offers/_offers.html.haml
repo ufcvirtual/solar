@@ -1,4 +1,3 @@
-- semester_id = @semester.try(:id)
 - if @offers.nil? or @offers.empty?
   %tr
     %td{colspan: 6}
@@ -6,7 +5,7 @@
 - else
   - @offers.each do |offer|
     %tr.lines
-      %td= check_box_tag "ckb_offers_#{semester_id}", offer.id, checked = false, {class: 'ckb_offers', :"data-offers-id" => offer.id}
+      %td= check_box_tag "ckb_offers_#{@semester.try(:id)}", offer.id, checked = false, {class: 'ckb_offers', :"data-offers-id" => offer.id}
       %td= offer.curriculum_unit.try(:curriculum_unit_type).try(:description)
       %td= offer.course.try(:name)
       - if @type_id != 3

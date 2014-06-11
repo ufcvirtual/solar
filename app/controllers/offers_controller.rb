@@ -8,11 +8,10 @@ class OffersController < ApplicationController
   # GET /semester/:id/offers
   def index
     authorize! :index, Semester # as ofertas aparecem na listagem de semestre
-    @type_id = params[:type_id].to_i
-
+    @type_id  = params[:type_id].to_i
     @semester = Semester.find(params[:semester_id])
-    # @offers = @semester.offers.paginate(page: params[:page], per_page: 3)
-    @offers = @semester.offers_by_allocation_tags(params[:allocation_tags_ids].split(" ")).paginate(page: params[:page], per_page: 100)
+    @allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers").join(" ")
+    @offers   = @semester.offers_by_allocation_tags(@allocation_tags_ids.split(" ")).paginate(page: params[:page], per_page: 100)
 
     respond_to do |format|
       format.html {render partial: 'offers/list'}
@@ -45,11 +44,11 @@ class OffersController < ApplicationController
     @offer.user_id = current_user.id
 
     optional_authorize(:create)
-    @type_id = params[:offer][:type_id].to_i
+    @type_id       = params[:offer][:type_id].to_i
     @offer.type_id = @type_id
 
     # periodo de oferta e matricula ficam no semestre \ esses dados ficam na tabela de oferta apenas se diferirem dos dados do semestre
-    @offer.period_schedule.try(:destroy) if @offer.period_schedule.try(:start_date).nil?
+    @offer.period_schedule.try(:destroy)     if @offer.period_schedule.try(:start_date).nil?
     @offer.enrollment_schedule.try(:destroy) if @offer.enrollment_schedule.try(:start_date).nil?
 
     if @offer.save
@@ -99,14 +98,16 @@ class OffersController < ApplicationController
   end
 
   def destroy
-    offer = Offer.find(params[:id])
-    authorize! :destroy, Offer, on: [offer.allocation_tag.id]
+    offers = Offer.where(id: params[:id].split(",").flatten)
+    authorize! :destroy, Offer, on: offers.map(&:allocation_tag).map(&:id)
 
-    if offer.destroy
-      render json: {success: true, notice: t(:deleted, scope: [:offers, :success])}
-    else
-      render json: {success: false, alert: t(:deleted, scope: [:offers, :error])}, status: :unprocessable_entity
+    Offer.transaction do
+      offers.destroy_all
     end
+
+    render json: {success: true, notice: t(:deleted, scope: [:offers, :success])}
+  rescue
+    render json: {success: false, alert: t(:deleted, scope: [:offers, :error])}, status: :unprocessable_entity
   end
 
   def deactivate_groups

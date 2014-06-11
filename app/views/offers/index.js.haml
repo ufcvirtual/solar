@@ -1,7 +1,7 @@
-$('.offers').append('#{escape_javascript(render partial: 'offers', locals: {semester: @semester, type_id: @type_id})}');
-$('a.load-more-allocations').attr('href', '#{offers_path(page: @offers.next_page, type_id: @type_id, semester_id: @semester.id, allocation_tags_ids: params[:allocation_tags_ids])}');
+$("#table-offer-#{@semester.id}").append('#{escape_javascript(render partial: 'offers/offers', locals: {semester: @semester, type_id: @type_id})}');
+$("a.load-more-offers-#{@semester.id}").attr('href', '#{offers_path(page: @offers.next_page, type_id: @type_id, semester_id: @semester.id)}');
 $(".tb_list").trigger("update");
 $("#all_offers_#{@semester.id}").nice_checkbox();
 
 - unless @offers.next_page
-  $('a.load-more-allocations').remove();
+  $("a.load-more-offers-#{@semester.id}").remove();
