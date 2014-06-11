@@ -17,6 +17,8 @@ class Offer < ActiveRecord::Base
 
   after_create :set_default_lesson_module # modulo default da oferta
 
+  before_destroy :can_destroy?
+
   after_destroy { |record|
     record.period_schedule.destroy if record.period_schedule.try(:can_destroy?)
     record.enrollment_schedule.destroy if record.enrollment_schedule.try(:can_destroy?)
@@ -56,6 +58,10 @@ class Offer < ActiveRecord::Base
 
   def lower_associated_objects
     groups
+  end
+
+  def can_destroy?
+    lower_associated_objects.empty?
   end
 
   def set_default_lesson_module

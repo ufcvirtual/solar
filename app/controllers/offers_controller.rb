@@ -108,6 +108,8 @@ class OffersController < ApplicationController
     end
 
     render json: {success: true, notice: t(:deleted, scope: [:offers, :success])}
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
     render json: {success: false, alert: t(:deleted, scope: [:offers, :error])}, status: :unprocessable_entity
   end
