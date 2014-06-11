@@ -3,19 +3,19 @@
 }
 
 .schedule_dates {
-	overflow: hidden;
-	
-	.left {
-		float: left;
-	}
+  overflow: hidden;
+  
+  .left {
+    float: left;
+  }
 
-	.right {
-		margin-right: 40px;
-	}
+  .right {
+    margin-right: 40px;
+  }
 
-	.error {
-		margin-left: 25px;
-	}
+  .error {
+    margin-left: 25px;
+  }
 }
 
 .discussion_form{
@@ -24,17 +24,15 @@
 
 
 .forum_post_content{
-	.forum_post_wrapper{
-		.forum_post_inner_content{
+  .forum_post_wrapper{
+    .forum_post_inner_content{
+      margin-bottom: 10px;
+      overflow: hidden;
 
-			overflow: hidden;
-
-			p{
-				img{
-					max-height: 500px;
-					max-width: 400px;
-				}
-			}
-		}
-	}
+      p img{
+        max-height: 500px;
+        max-width: 400px;
+      }
+    }
+  }
 }
