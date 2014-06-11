@@ -15,6 +15,7 @@
   %span.form_requirement= t(:required_fields)
 
   .form-inputs.block_content
+    .flash_message_wrapper
     = f.input :type_id, as: :hidden, input_html: {value: @type_id}
     = f.association :semester, as: :hidden, input_html: {value: @offer.semester_id}
     - if @type_id != 3

@@ -48,7 +48,7 @@ class EditionsController < ApplicationController
     @periods  = [[t(:actives, scope: [:editions, :semesters]), "active"], [t(:all, scope: [:editions, :semesters]), "all"]]
     @periods += Schedule.joins(:semester_periods).map {|p| [p.start_date.year, p.end_date.year] }.flatten.uniq.sort! {|x,y| y <=> x} # desc
 
-    @allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers")
+    @allocation_tags_ids = AllocationTag.where(id: current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers")).map{|at| at.related}.flatten.uniq
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     
     @curriculum_units = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})

@@ -9,11 +9,12 @@
       = label_tag :type, t(".type")
       %span.type_description= @type.description
     .filter
-      .course
-        = label_tag :course, t(".course")
-        = select_tag :course, options_from_collection_for_select(@courses, "id", "name"), include_blank: true, :"data-optional" => true
+      - unless @type.id == 3
+        .course
+          = label_tag :course, t(".course")
+          = select_tag :course, options_from_collection_for_select(@courses, "id", "name"), include_blank: true, :"data-optional" => true
       .curriculum_unit
-        = label_tag :curriculum_unit, t(".curriculum_unit")
+        = label_tag :curriculum_unit, @type.tool_name
         = select_tag :curriculum_unit, options_from_collection_for_select(@curriculum_units, "id", "name"), include_blank: true, :"data-optional" => true
       .period
         = label_tag :period, t(".period")
