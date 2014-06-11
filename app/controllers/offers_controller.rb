@@ -11,7 +11,9 @@ class OffersController < ApplicationController
     @type_id  = params[:type_id].to_i
     @semester = Semester.find(params[:semester_id])
     @allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers").join(" ")
-    @offers   = @semester.offers_by_allocation_tags(@allocation_tags_ids.split(" ")).paginate(page: params[:page], per_page: 100)
+    @offers   = @semester.offers_by_allocation_tags(@allocation_tags_ids.split(" "), 
+      {curriculum_units: {curriculum_unit_type_id: @type_id}, course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id]})
+      .paginate(page: params[:page], per_page: 100)
 
     respond_to do |format|
       format.html {render partial: 'offers/list'}

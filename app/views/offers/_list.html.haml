@@ -1,4 +1,4 @@
-.list_offer{id: "offers-#{@semester.id}", :"data-link-list" => offers_path(semester_id: @semester.id, type_id: @type_id, page: @offers.current_page)}
+.list_offer{id: "offers-#{@semester.id}", :"data-link-list" => semester_offers_path(@semester, type_id: @type_id, page: @offers.current_page, curriculum_units: {curriculum_unit_type_id: @type_id}, course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id])}
   - semester_id = @semester.try(:id)
   - unless @offers.nil? or @offers.empty?
     .block_content.allocations_list
@@ -15,7 +15,7 @@
             %th.no_sort
         %tbody.offers
           = render partial: 'offers/offers'
-      = link_to content_tag(:i, nil, class: "icon-ellipsis"), offers_path(page: @offers.next_page, type_id: @type_id, semester_id: @semester.id), class: "load-more-offers-#{semester_id}", remote: true, :"data-tooltip" => t(:load_items) if @offers.next_page
+      = link_to content_tag(:i, nil, class: "icon-ellipsis"), semester_offers_path(@semester, page: @offers.next_page, type_id: @type_id, curriculum_units: {curriculum_unit_type_id: @type_id}, course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id]), class: "load-more-offers-#{semester_id}", remote: true, :"data-tooltip" => t(:load_items) if @offers.next_page
   - else
     .block_content_text_list.text_none 
       = t(:item_search_no_found)

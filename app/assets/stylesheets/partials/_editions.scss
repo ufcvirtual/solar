@@ -48,6 +48,10 @@ fieldset {
   @include item_button;
 }
 
+.ucs_list .block_wrapper{
+  margin-bottom: 0;
+}
+
 .block_title.edition {
   border-bottom: solid 1px;
   border-bottom-color: #D0D0D0;
