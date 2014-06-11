@@ -767,6 +767,8 @@ pt_BR:
       draft: Rascunho
       released: Liberada
       group: Turma
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
     new:
       draft: rascunho
       approved: liberada

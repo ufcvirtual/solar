@@ -594,6 +594,8 @@ en_US:
       draft: Draft
       released: Released
       group: Group
+      expand_description: Expand description
+      compress_description: Compress description
     new:
       draft: draft
       approved: approved

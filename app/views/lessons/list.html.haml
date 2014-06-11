@@ -23,6 +23,11 @@
 
   jQuery(function($) {
 
+    $(".expand, .compress").click(function(){
+      $(this).parent().hide();
+      $($(this).parent().siblings()[0]).show();
+    });
+
     $("a.lesson").click(function(e){
       e.preventDefault();
       $(this).nice_open_lesson();

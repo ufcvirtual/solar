@@ -47,19 +47,19 @@
                           = radio_button_tag(:move_to_module, lmodule.id)
                           = lmodule.name
                   .control_buttons{align: "right"}
-                    = button_tag t(".cancel"), type: :button, class: 'btn', id: "btn-cancel-move-#{lesson_module.id}"
-                    = button_tag t(".move"), type: :button, class: 'btn btn_main move_lessons', :"data-module-id" => lesson_module.id, :"data-link-move" => change_module_lesson_path(id: lesson_module.id, allocation_tags_ids: @allocation_tags_ids, lessons_ids: 'lessons_param', move_to_module: 'module_param')
+                    = button_tag t("lessons.list.cancel"), type: :button, class: 'btn', id: "btn-cancel-move-#{lesson_module.id}"
+                    = button_tag t("lessons.list.move"), type: :button, class: 'btn btn_main move_lessons', :"data-module-id" => lesson_module.id, :"data-link-move" => change_module_lesson_path(id: lesson_module.id, allocation_tags_ids: @allocation_tags_ids, lessons_ids: 'lessons_param', move_to_module: 'module_param')
       / Lessons list
       %table.tb_list{:"data-default-module" => lesson_module.is_default, class: "table-module-#{lesson_module.id}"}
         %thead
           %tr.lines
             - unless lessons.nil? or lessons.empty?
               %th.center.no_sort{style: 'width: 25px'}= check_box_tag( 'all', 'all', false, {id: "all_m_#{lesson_module.id}", class: 'lesson_check_all', :"data-children-names" => "m_#{lesson_module.id}"} )
-              %th.center.no_sort= t(".order")
-              %th= t(".name")
-              %th.center{style: 'width: 10%'}= t(".type")
-              %th.center.no_sort= t(".availability")
-              %th.center.no_sort= t(".acceptance")
+              %th.center.no_sort= t("lessons.list.order")
+              %th= t("lessons.list.name")
+              %th.center{style: 'width: 10%'}= t("lessons.list.type")
+              %th.center.no_sort= t("lessons.list.availability")
+              %th.center.no_sort= t("lessons.list.acceptance")
 
         %tbody
           - unless lessons.nil? or lessons.empty?
@@ -79,18 +79,24 @@
                       = lesson.name
                     - else
                       = link_to lesson.name, edition_lesson_url(lesson, allocation_tags_ids: @allocation_tags_ids), class: "link_content lesson", "data-fancybox-type" => "iframe"
-                  - if lesson.description
-                    %div= lesson.description
-
-                %td= (lesson.type_lesson == Lesson_Type_File ? t(".file_type") : t(".link_type"))
+                    - if lesson.description
+                      .description
+                        .minimun
+                          = simple_format(lesson.description.truncate(200))
+                          - if lesson.description.size>200
+                            = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t("lessons.list.expand_description"))
+                        .complete.invisible
+                          = simple_format(lesson.description)
+                          = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t("lessons.list.compress_description"))
+                %td= (lesson.type_lesson == Lesson_Type_File ? t("lessons.list.file_type") : t("lessons.list.link_type"))
 
                 %td.center{style: "width: 160px"}
-                  = t(".since") unless not(lesson.schedule.end_date.nil?)
+                  = t("lessons.list.since") unless not(lesson.schedule.end_date.nil?)
                   = [l(lesson.schedule.start_date, format: :normal), (lesson.has_end_date? ? l(lesson.schedule.end_date, format: :normal) : t(:no_end_date, scope: [:lessons, :list]))].join(" - ")
 
                 %td.center{style: "width: 70px"}
                   - status = [Lesson_Test, Lesson_Approved].delete_if {|v| v == lesson.status}
-                  = link_to (image_tag "#{(lesson.status == Lesson_Test) ? 'rejected' : 'released'}.png"), "#", class: 'change_lesson_status', :"data-link-update" => change_status_lesson_path(id: lesson.id, status: status, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => (lesson.status == Lesson_Test ?  t(".draft") :  t(".released")), :"data-module-id" => lesson_module.id
+                  = link_to (image_tag "#{(lesson.status == Lesson_Test) ? 'rejected' : 'released'}.png"), "#", class: 'change_lesson_status', :"data-link-update" => change_status_lesson_path(id: lesson.id, status: status, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => (lesson.status == Lesson_Test ?  t("lessons.list.draft") :  t("lessons.list.released")), :"data-module-id" => lesson_module.id
           - else
             %tr.lines
               %td.lesson_description.block_content_text_list.text_none{colspan: 5}= t(:none, scope: [:lessons, :list])
