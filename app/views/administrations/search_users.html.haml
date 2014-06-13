@@ -8,10 +8,7 @@
         %th{style: 'width:80px'}= t(".cpf")
         %th.no_sort{style: 'width:105px'}= ""
         %th.no_sort{style: 'width:135px'}= ""
-    %tbody.users
-      - @users.each do |user|
-        %tr.lines
-          = render partial: 'user', locals: {user: user}
+    %tbody.users= render partial: 'users', locals: {users: @users}
 
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), search_admin_users_path(page: @users.next_page, user: @text_search, type_search: @type_search), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @users.next_page
 
