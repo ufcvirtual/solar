@@ -14,15 +14,47 @@
         %th.no_sort{:width => "12%"}
     %tbody.courses
       = render partial: 'courses/courses', locals: { courses: @courses }
-  = link_to content_tag(:i, nil, class: "icon-ellipsis"), courses_path(page: @courses.next_page, type_id: @type_id), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @courses.next_page
+  = link_to content_tag(:i, nil, class: "icon-ellipsis"), courses_path(page: @courses.next_page, type_id: @type_id), class: 'load-more-courses', remote: true, :"data-tooltip" => t(:load_items) if @courses.next_page
 - else
   .block_content_text_list.text_none 
     = t(:item_search_no_found)
 
 :javascript
 
+  function edit_course(button){
+    $(button).call_fancybox({
+      href: $(button).data("link-edit"),
+      open: true
+    });
+  }
+
+  function delete_course(button){
+    if ($(button).attr('disabled')){
+      flash_message("#{t(".cant_delete")}", "alert");
+      return false;
+    }
+
+    var curriculum_unit_id = $(button).attr("id");
+    $(button).nice_delete({
+      parent: 'tr.lines',
+      complement_success: function(data) {
+
+        // se eu tiver selecionado no autocomplete o curso que quero deletar
+        if(curriculum_unit_id == $("#code_name").combobox('value')){
+          // atualiza o conteúdo da lista e do autocomplete selecionado
+          $.get("#{courses_path(type: @type)}", function(data) {
+            $('.courses_list').html(data);
+            $("#autocomplete-input").val("");
+          });
+        }
+
+        $('option[value="'+curriculum_unit_id+'"]').remove();
+      }
+    });
+  }
+
   $(function(){
-    $("#new_course, .link_edit_course").click(function(e){
+    $("#new_course").click(function(e){
       e.preventDefault();
       if ($(this).attr('disabled')){
         flash_message("#{t(".cant_edit")}", "alert");
@@ -30,31 +62,5 @@
       }
 
       $(this).call_fancybox({open: true});
-    });
-
-    $('.delete_course').click(function(e){
-      e.preventDefault();
-      if ($(this).attr('disabled')){
-        flash_message("#{t(".cant_delete")}", "alert");
-        return false;
-      }
-
-      var curriculum_unit_id = $(this).attr("id");
-      $(this).nice_delete({
-        parent: 'tr.lines',
-        complement_success: function(data) {
-
-          // se eu tiver selecionado no autocomplete o curso que quero deletar
-          if(curriculum_unit_id == $("#code_name").combobox('value')){
-            // atualiza o conteúdo da lista e do autocomplete selecionado
-            $.get("#{courses_path(type: @type)}", function(data) {
-              $('.courses_list').html(data);
-              $("#autocomplete-input").val("");
-            });
-          }
-
-          $('option[value="'+curriculum_unit_id+'"]').remove();
-        }
-      });
     });
   });

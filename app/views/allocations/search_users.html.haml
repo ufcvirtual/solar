@@ -18,23 +18,20 @@
 
 :javascript
 
-  $(function(){
+  function designates(button){
+    var profile = $("#profile_id", $(button).parents("tr")).val();
+    var url_list = $(button).data("link-list");
 
-    $(".btn_designate").click(function(){
-      var profile = $("#profile_id", $(this).parents("tr")).val();
-      var url_list = $(this).data("link-list");
-
-      $.post($(this).data("link-create"), {profile: profile}, function(data){
-        if (typeof(data) != "undefined" && typeof(data.message) != "undefined" && typeof(data.type) != "undefined")
-          flash_message(data.message, data.type);
-        else{
-          $.get(url_list, function(data){
-            $(".list_designates:last").replaceWith(data);
-          });
-          flash_message('#{I18n.t(:allocated, :scope => [:allocations, :success])}', 'notice');
-        }
-      }).error(function(){
-          flash_message('#{I18n.t(:not_allocated, :scope => [:allocations, :error])}', 'alert');
-      });
+    $.post($(button).data("link-create"), {profile: profile}, function(data){
+      if (typeof(data) != "undefined" && typeof(data.message) != "undefined" && typeof(data.type) != "undefined")
+        flash_message(data.message, data.type);
+      else{
+        $.get(url_list, function(data){
+          $(".list_designates:last").replaceWith(data);
+        });
+        flash_message('#{I18n.t(:allocated, :scope => [:allocations, :success])}', 'notice');
+      }
+    }).error(function(){
+        flash_message('#{I18n.t(:not_allocated, :scope => [:allocations, :error])}', 'alert');
     });
-  });
+  }

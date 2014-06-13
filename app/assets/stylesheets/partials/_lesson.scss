@@ -20,16 +20,17 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-}
-
-.show_lesson .header {
-  display: table-row;
-  height: 32px;
-}
-
-.show_lesson .content {
-  display: table-row;
-  height: 100%;
+  select{
+    max-width: 400px;
+  }
+  .header {
+    display: table-row;
+    height: 32px;
+  }
+  .content {
+    display: table-row;
+    height: 100%;
+  }
 }
 
 #lesson_area {

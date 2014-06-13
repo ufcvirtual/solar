@@ -1,6 +1,7 @@
-$('.curriculum_units').append('#{escape_javascript(render partial: 'curriculum_units', locals: {curriculum_units: @curriculum_units, type: @type})}');
-$('a.load-more-allocations').attr('href', '#{curriculum_units_path(page: @curriculum_units.next_page, type_id: @type.id)}');
+$('tbody.curriculum_units').append('#{escape_javascript(render partial: 'curriculum_units', locals: {curriculum_units: @curriculum_units, type: @type})}');
+$('a.load-more-ucs').attr('href', '#{curriculum_units_path(page: @curriculum_units.next_page, type_id: @type.id)}');
 $(".tb_list").trigger("update");
+$('#all_curriculum_unit').nice_checkbox({can_enable_elements: true});
 
 - unless @curriculum_units.next_page
-  $('a.load-more-allocations').remove();
+  $('a.load-more-ucs').remove();
