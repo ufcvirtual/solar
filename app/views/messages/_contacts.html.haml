@@ -78,9 +78,11 @@
     if (allocation_tag_id != ""){
       $(".edition.block_content .select").remove();
       $(".edition.block_content .contacts-list").remove();
+      $("#search").remove();
 
       //desabilitar todos os combobox
       $("#curriculum_unit_type, #course, #curriculum_unit, #semester, #contacts_type").combobox( "option", { disabled: true } );
+      $(".ui-combobox input").each(function(){ $(this).prop("disabled", true) });
 
       var group    = $("#group_code").val();
       var semester = $("#semester_name").val();
@@ -145,7 +147,7 @@
       if (!!$(".users_at_"+$(contact).data("at")).is(":visible")){
         // Se não tiver o link para "adicionar todos"
         if (!$(contacts_list).find("#add_all").length)
-          $(contacts_list).prepend('<a href="#" id="add_all" onclick="add_all_users(this); return false;">"#{t('.add_all')}"</a>');
+          $(contacts_list).prepend('<a href="#" id="add_all" onclick="add_all_users(this); return false;">#{t('.add_all')}</a>');
 
         var users_list = $(".contacts-list .users_at_" + $(contact).data("at"));
         // verifica se foi filtrado novamente, para nao repetir dados
