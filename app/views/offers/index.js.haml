@@ -1,7 +1,7 @@
 $("#table-offer-#{@semester.id}").append('#{escape_javascript(render partial: 'offers/offers', locals: {semester: @semester, type_id: @type_id})}');
 $("a.load-more-offers-#{@semester.id}").attr('href', '#{offers_path(page: @offers.next_page, type_id: @type_id, semester_id: @semester.id, curriculum_units: {curriculum_unit_type_id: @type_id}, course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id])}');
 $(".tb_list").trigger("update");
-$("#all_offers_#{@semester.id}").nice_checkbox();
+$("#all_offers_#{@semester.id}").nice_checkbox({parent_div: $("#semester-#{@semester.id}")});
 
 - unless @offers.next_page
   $("a.load-more-offers-#{@semester.id}").remove();

@@ -38,7 +38,7 @@ class AllocationTag < ActiveRecord::Base
 
   ## Deprecated - use related
   def self.find_related_ids(allocation_tag_id)
-    AllocationTag.find(allocation_tag_id).related
+    allocation_tag_id.nil? ? nil : AllocationTag.find(allocation_tag_id).related
   end
 
   def related(args = {all: true, lower: false, upper: false, objects: false})
@@ -49,14 +49,17 @@ class AllocationTag < ActiveRecord::Base
       when 'group_id'
         if args[:all] or args[:upper]
           group = self.group
-          upper = [group.offer.allocation_tag, group.curriculum_unit.allocation_tag, group.course.allocation_tag]
+          upper = [group.offer.allocation_tag, 
+            (group.curriculum_unit.nil? ? nil : group.curriculum_unit.allocation_tag), 
+            (group.course.nil? ? nil : group.course.allocation_tag)
+          ]
         end
       when 'offer_id'
         lower = [self.offer.groups.map(&:allocation_tag).compact.uniq] if args[:all] or args[:lower]
 
         if args[:all] or args[:upper]
           offer = self.offer
-          upper = [offer.curriculum_unit.allocation_tag, offer.course.allocation_tag]
+          upper = [(offer.curriculum_unit.nil? ? nil : offer.curriculum_unit.allocation_tag), (offer.course.nil? ? nil : offer.course.allocation_tag)]
         end
       when 'curriculum_unit_id'
         if args[:all] or args[:lower]

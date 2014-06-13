@@ -65,7 +65,7 @@ SQL
     current_offers             = Offer.currents(Date.today.year, true).map(&:id) # get current offers considering semesters
 
     curriculum_units = allocation_tags.collect do |allocation_tag|
-      case 
+      case
         when allocation_tag.curriculum_unit
           offers = allocation_tag.curriculum_unit.offers
           uc     = allocation_tag.curriculum_unit
@@ -73,11 +73,11 @@ SQL
         when allocation_tag.offer
           offer = allocation_tag.offer
           uc    = offer.curriculum_unit
-          uc.attributes.merge(allocation_tag_id: allocation_tag.id, uc_allocation_tag_id: uc.allocation_tag.id, course_id: offer.course.id, has_offers: true, has_groups: not(offer.groups.empty?)) if current_offers.include?(offer.id)
+          uc.attributes.merge(allocation_tag_id: allocation_tag.id, uc_allocation_tag_id: uc.allocation_tag.id, course_id: (offer.course.nil? ? nil : offer.course.id), has_offers: true, has_groups: not(offer.groups.empty?)) if not(uc.nil?) and current_offers.include?(offer.id)
         when allocation_tag.group
           offer = allocation_tag.group.offer
-          uc    = offer.curriculum_unit 
-          uc.attributes.merge(allocation_tag_id: allocation_tag.id, uc_allocation_tag_id: uc.allocation_tag.id, course_id: offer.course.id, has_offers: true, has_groups: true) if current_offers.include?(offer.id)
+          uc    = offer.curriculum_unit
+          uc.attributes.merge(allocation_tag_id: allocation_tag.id, uc_allocation_tag_id: uc.allocation_tag.id, course_id: (offer.course.nil? ? nil : offer.course.id), has_offers: true, has_groups: true) if not(uc.nil?) and current_offers.include?(offer.id)
         when allocation_tag.course
           allocation_tag.course.curriculum_units.collect{ |uc| 
             offers = uc.offers
@@ -85,6 +85,7 @@ SQL
           }
       end
     end
+
     curriculum_units.flatten.delete_if{|uc| uc.nil? or uc.empty?}.uniq{|uc| uc["id"]}
   end
 
