@@ -44,14 +44,16 @@
   font-size: 12pt;
   font-family: 'PT Sans';
   width: 100%;
-  height: 32px;
+  /*height: 32px;*/
+  min-height: 24px;
   margin: 0px;
-  padding: 6px 0px 0px 8px;
+  padding: 6px 0px 7px 8px;
   background-color: #1d4786;
   color: #fff;
   select{
     margin-left: 3px;
     margin-right: 3px;
+    margin-bottom: 3px;
   }
   .lesson_status{
     float: right;
@@ -65,7 +67,7 @@
       background-color: #7DC43F;
     }
     .draft, .released{
-      padding: 8px 10px 9px 4px;
+      padding: 11px 10px 9px 4px;
       height: 38px;
       img{
         margin-right: 5px;
