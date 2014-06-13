@@ -15,34 +15,31 @@ class AdministrationsController < ApplicationController
 
   # Método chamado por ajax para buscar usuários
   def search_users
-    begin
-      authorize! :users, Administration
+    authorize! :users, Administration
 
-      @type_search = params[:type_search]
-      @text_search = URI.unescape(params[:user]) unless params[:user].nil?
-      @users = User.where("lower(#{@type_search}) ~ '#{@text_search.downcase}'").paginate(page: params[:page], per_page: 100)
+    @type_search = params[:type_search]
+    @text_search = URI.unescape(params[:user]) unless params[:user].nil?
+    @users = User.where("lower(#{@type_search}) ~ '#{@text_search.downcase}'").paginate(page: params[:page], per_page: 100)
 
     respond_to do |format|
       format.html
       format.js
     end
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-    end
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def show_user
-    begin
-      authorize! :update_user, Administration
+    authorize! :update_user, Administration
 
-      @user = User.find(params[:id])
-      respond_to do |format|
-        format.html
-        format.json { render json: @user }
-      end
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+    @user = User.find(params[:id])
+
+    respond_to do |format|
+      format.html { render "_user", locals: {user: @user} }
+      format.json { render json: @user }
     end
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def edit_user
