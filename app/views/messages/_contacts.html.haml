@@ -55,7 +55,7 @@
         if(ui.item == null)
           $(this).combobox('value', 1);
       },
-      select: function( event, ui ) { 
+      select: function( event, ui ) {
         if(ui.item == null)
           $(this).combobox('value', 1);
         else{
@@ -74,7 +74,7 @@
 
     $("select#contacts_type").combobox('value', 1);
 
-    // se estiver dentro de uma turma específica    
+    // se estiver dentro de uma turma específica
     if (allocation_tag_id != ""){
       $(".edition.block_content .select").remove();
       $(".edition.block_content .contacts-list").remove();
@@ -148,7 +148,11 @@
           $(contacts_list).prepend('<a href="#" id="add_all" onclick="add_all_users(this); return false;">"#{t('.add_all')}"</a>');
 
         var users_list = $(".contacts-list .users_at_" + $(contact).data("at"));
-        $(contact).parents("div.contact:first").appendTo(users_list);
+        // verifica se foi filtrado novamente, para nao repetir dados
+        if (!$('.contact a[data-user-id=' + $(contact).data('user-id') + ']', users_list).length)
+          $(contact).parents("div.contact:first").appendTo(users_list);
+        else
+          $(contact).parents("div.contact:first").remove();
       }else
         $(contact).parents("div.contact:first").remove();
     }
