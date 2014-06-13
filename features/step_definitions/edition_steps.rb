@@ -11,8 +11,8 @@ end
 
 Dado 'que eu cliquei em "$elemento"' do |elemento|
 	find(elemento).click
-  # FIXME: remover, sleep apenas debug
-  sleep(inspection_time=5)
+  # FIXME: sleep apenas debug, remover quando não for mais necessário
+  # sleep(inspection_time=5)
 end
 
 Dado 'que eu preenchi "$element" de "$parent_div" com "$texto"' do |element, parent_div, texto|
@@ -23,10 +23,6 @@ Dado 'que eu preenchi "$element" de "$parent_div" com "$texto"' do |element, par
 end
 
 Dado 'que eu cliquei no link "$element" de "$parent_div"' do |element, parent_div|
-  # xpath = "//div[@class='#{parent_div}']"
-  # within(:xpath, xpath) do
-  #   find(element).click
-  # end
   find('.'+parent_div).find_link(element).click
 end
 

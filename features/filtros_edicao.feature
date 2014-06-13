@@ -91,7 +91,7 @@ Cenário: Filtro academico
     E que eu cliquei em "#search"
       Então eu deverei ver "Cursos"
       # FIXME: ao buscar por Módulos o teste quebra, não sei por que
-      #E eu deverei ver "Módulos"
+      E eu deverei ver "Módulos"
       E eu deverei ver "Semestres"
       E eu deverei ver "Turmas"
 
