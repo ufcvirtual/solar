@@ -43,3 +43,8 @@ c9:
   id: 9
   name: Licenciatura em Pedagogia
   code: 118
+
+c10:
+  id: 10
+  name: Introducao a Linguistica
+  code: RM404

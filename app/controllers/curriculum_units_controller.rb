@@ -31,7 +31,7 @@ class CurriculumUnitsController < ApplicationController
     if params[:combobox]
       if @type.id == 3
         @course_name = Course.find(params[:course_id]).name
-        @curriculum_units = CurriculumUnit.where(name: course_name)
+        @curriculum_units = CurriculumUnit.where(name: @course_name)
       else
         @curriculum_units = CurriculumUnit.joins(:offers).where(curriculum_unit_type_id: @type.id).where(offers: {course_id: params[:course_id]}) if not(params[:course_id].blank?)
       end

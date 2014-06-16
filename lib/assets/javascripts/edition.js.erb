@@ -38,9 +38,10 @@ $(function(){
       $(".curriculum_unit").show();
       if(ui.item.value == 4)
         $('label[for="curriculum_unit"]').html("<%=I18n.t('editions.content.module')%>");
-      else if(ui.item.value == 3)
+      else if(ui.item.value == 3) {// curso livre
         $(".curriculum_unit").hide();
-      else if(ui.item.value == 7) {
+        $(".curriculum_unit select:first").attr("data-optional", "true");
+      } else if(ui.item.value == 7) { // edx
         var url = "<%= Rails.application.routes.url_helpers.content_edx_courses_path %>";
         $.get(url, function(data) {
           // hide div filter content

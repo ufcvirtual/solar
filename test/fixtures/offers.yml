@@ -64,3 +64,9 @@ of10:
   curriculum_unit_id: 5 # literatura brasileira I
   course_id: 3 # Introducao a Linguistica
   semester_id: 4 # 2013.1
+
+of11:
+  id: 11
+  curriculum_unit_id: 1 # Introducao a Linguistica
+  course_id: 10 # Introducao a Linguistica
+  semester_id: 5 # 2014.1

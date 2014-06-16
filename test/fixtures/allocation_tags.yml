@@ -157,3 +157,13 @@ al34:
 al35:
   id: 35
   course_id: 9
+
+## curso livre
+
+al36:
+  id: 36
+  offer_id: 11
+
+al37:
+  id: 37
+  group_id: 11

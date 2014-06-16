@@ -56,4 +56,10 @@ g10: # turma que não está disponível para matrícula
   id: 10
   offer_id: 8
   code: 'SP-CAU'
-  status: TRUE  
+  status: TRUE
+
+g11: # turma curso livre | Introducao a Linguistica
+  id: 11
+  offer_id: 11
+  code: 'IL-MAR'
+  status: TRUE

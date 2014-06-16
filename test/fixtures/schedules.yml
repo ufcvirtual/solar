@@ -245,3 +245,15 @@ sc_for_chat3:
   id: 47
   start_date: <%= Date.today %>
   end_date: <%= Date.today + 1.week %>
+
+## curso livre - 2014.1
+
+sc_for_c_livre_offer:
+  id: 48
+  start_date: '2014-02-01'
+  end_date: '2014-07-31'
+
+sc_for_c_livre_enroll:
+  id: 49
+  start_date: '2014-02-01'
+  end_date: '2014-03-31'

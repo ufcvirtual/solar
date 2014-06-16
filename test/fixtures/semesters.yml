@@ -21,3 +21,9 @@ s2013_1:
   name: '2013.1'
   offer_schedule_id: 39
   enrollment_schedule_id: 40
+
+s2014_1:
+  id: 5
+  name: '2014.1'
+  offer_schedule_id: 48
+  enrollment_schedule_id: 49
