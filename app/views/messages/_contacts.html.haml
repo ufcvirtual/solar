@@ -34,9 +34,6 @@
   = hidden_field_tag :course_name,   @group.offer.course.name
   = hidden_field_tag :uc_type,       @group.offer.curriculum_unit.curriculum_unit_type.description
 
-= javascript_include_tag "autocomplete", "edition"
-= stylesheet_link_tag "autocomplete"
-
 :javascript
 
   $(function(){
