@@ -1419,6 +1419,226 @@ editmon1:
   resource_id: 89
   per_id: false
 
+# Unidade Curricular
+
+ucmon1:
+  profile_id: 13
+  resource_id: 11
+  per_id: false
+
+ucmon2:
+  profile_id: 13
+  resource_id: 12
+  per_id: false
+
+ucmon3:
+  profile_id: 13
+  resource_id: 13
+  per_id: false
+
+ucmon4:
+  profile_id: 13
+  resource_id: 18
+  per_id: false
+
+ucmon5:
+  profile_id: 13
+  resource_id: 19
+  per_id: false
+
+ucmon6:
+  profile_id: 13
+  resource_id: 20
+  per_id: false
+
+ucmon7:
+  profile_id: 13
+  resource_id: 21
+  per_id: false
+
+ucmon8:
+  profile_id: 13
+  resource_id: 22
+  per_id: false
+
+ucmon9:
+  profile_id: 13
+  resource_id: 23
+  per_id: false
+
+# assignments
+# visão aluno
+assigmon1:
+  profile_id: 13
+  resource_id: 27
+  per_id: true
+
+assigmon2:
+  profile_id: 13
+  resource_id: 30
+  per_id: true
+
+assigmon3:
+  profile_id: 13
+  resource_id: 34
+  per_id: true
+
+assigmon4:
+  profile_id: 13
+  resource_id: 35
+  per_id: true
+
+assigmon5:
+  profile_id: 13
+  resource_id: 36
+  per_id: true
+
+assigmon6:
+  profile_id: 13
+  resource_id: 37
+  per_id: true
+
+# visão prof
+assigmon7:
+  profile_id: 13
+  resource_id: 24
+  per_id: true
+
+assigmon8:
+  profile_id: 13
+  resource_id: 28
+  per_id: true
+
+# discussion
+dismon1:
+  profile_id: 13
+  resource_id: 42
+  per_id: false
+
+dismon2:
+  profile_id: 13
+  resource_id: 43
+  per_id: true
+
+dismon3:
+  profile_id: 13
+  resource_id: 44
+  per_id: true
+
+dismon4:
+  profile_id: 13
+  resource_id: 45
+  per_id: false
+
+dismon6:
+  profile_id: 13
+  resource_id: 49
+  per_id: false
+
+dismon7:
+  profile_id: 13
+  resource_id: 50
+  per_id: false
+
+dismon8:
+  profile_id: 13
+  resource_id: 51
+  per_id: true
+
+dismon9:
+  profile_id: 13
+  resource_id: 53
+  per_id: false
+
+# acompanhamento
+
+# visão aluno
+
+acomon1:
+  profile_id: 13
+  resource_id: 47
+  per_id: true
+
+acomon2:
+  profile_id: 13
+  resource_id: 52
+  per_id: true
+
+# visão professor
+
+acmon1:
+  profile_id: 13
+  resource_id: 48
+  per_id: false
+
+acmon2: # consultar dados
+  profile_id: 13
+  resource_id: 52
+  per_id: false
+
+# Material de apoio
+mamon1:
+  profile_id: 13
+  resource_id: 54
+  per_id: true
+
+mamon2:
+  profile_id: 13
+  resource_id: 55
+  per_id: true
+
+mamon11:
+  profile_id: 13
+  resource_id: 69
+  per_id: true
+
+# agenda
+
+agendastudentmon1:
+  profile_id: 13
+  resource_id: 146
+  per_id: false
+
+# detalhes de ferramentas
+
+tooldetailstudentmon1:
+  profile_id: 13
+  resource_id: 142
+  per_id: false
+
+tooldetailstudentmon2:
+  profile_id: 13
+  resource_id: 143
+  per_id: false
+
+tooldetailstudentmon3:
+  profile_id: 13
+  resource_id: 144
+  per_id: false
+
+tooldetailstudentmon4:
+  profile_id: 13
+  resource_id: 145
+  per_id: false
+
+# webconference
+
+webconferencealunomon1:
+  profile_id: 13
+  resource_id: 162
+  per_id: false
+
+# chat
+
+chatlistmon1:
+  profile_id: 13
+  resource_id: 133
+  per_id: false
+
+###############
+#### Admin ####
+###############
+
 admuser1:
   profile_id: 6
   resource_id: 150

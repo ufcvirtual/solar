@@ -354,3 +354,65 @@ pm83:
 pm84:
   profile_id: 6
   menu_id: 607
+
+# aluno monitor
+
+pm89:
+  profile_id: 13
+  menu_id: 10
+
+pm90:
+  profile_id: 13
+  menu_id: 101
+
+pm91:
+  profile_id: 13
+  menu_id: 20
+
+pm92:
+  profile_id: 13
+  menu_id: 201
+
+pm93:
+  profile_id: 13
+  menu_id: 206
+
+pm94:
+  profile_id: 13
+  menu_id: 205
+
+pm95:
+  profile_id: 13
+  menu_id: 30
+
+pm96:
+  profile_id: 13
+  menu_id: 301
+
+pm97:
+  profile_id: 13
+  menu_id: 303
+
+pm98:
+  profile_id: 13
+  menu_id: 304
+
+pm99:
+  profile_id: 13
+  menu_id: 50
+
+pm100:
+  profile_id: 13
+  menu_id: 302
+
+pm101:
+  profile_id: 13
+  menu_id: 102
+
+pm102:
+  profile_id: 13
+  menu_id: 207
+
+pm103:
+  profile_id: 13
+  menu_id: 208
