@@ -1,15 +1,7 @@
 = javascript_include_tag "autocomplete"
 = stylesheet_link_tag "autocomplete"
 
-- tool_name = case @type.id
-  - when 3
-  - t(".course")
-  - when 7
-  - t(".course")
-  - when 4
-  - t(".module")
-  - else
-  - t(".curriculum_unit")
+- tool_name = @type.tool_name
 
 .edition.block_content
   %p= t(:required_fields)
@@ -20,7 +12,7 @@
       %span.type_description= @type.description
     .filter
       = label_tag :curriculum_unit, tool_name
-      = select_tag :curriculum_unit, options_from_collection_for_select(@curriculum_units, "id", "code_name"), include_blank: true, :"data-optional" => true
+      = select_tag :curriculum_unit, options_from_collection_for_select(@search_curriculum_units, "id", "code_name"), include_blank: true, :"data-optional" => true
 
     = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => curriculum_units_path(type_id: @type.id), id: "search", :"data-load-to" => "ucs_list"}
 

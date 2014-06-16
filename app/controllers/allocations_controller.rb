@@ -45,7 +45,7 @@ class AllocationsController < ApplicationController
     text                 = URI.unescape(params[:user])
     @text_search         = text
     @allocation_tags_ids = params[:allocation_tags_ids]
-    @users               = User.where("lower(name) ~ ?", text.downcase).order(:name).paginate(page: params[:page], per_page: 100)
+    @users               = User.where("lower(name) ~ ?", text.downcase).order(:name).paginate(page: params[:page])
     @admin               = params[:admin]
 
     respond_to do |format|
@@ -65,7 +65,7 @@ class AllocationsController < ApplicationController
       p = params.select { |k, v| ['offer_id', 'group_id', 'status'].include?(k) }
       p['group_id'] = (params.include?('group_id') and groups.include?(params['group_id'].to_i)) ? [params['group_id']] : groups.flatten.compact.uniq
 
-      @allocations  = Allocation.enrollments(p).paginate(page: params[:page], per_page: 100)
+      @allocations  = Allocation.enrollments(p).paginate(page: params[:page])
 
       respond_to do |format|
         format.html

@@ -13,7 +13,7 @@ class OffersController < ApplicationController
     @allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers").join(" ")
     @offers   = @semester.offers_by_allocation_tags(@allocation_tags_ids.split(" "), 
       {curriculum_units: {curriculum_unit_type_id: @type_id}, course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id]})
-      .paginate(page: params[:page], per_page: 100)
+      .paginate(page: params[:page])
 
     respond_to do |format|
       format.html {render partial: 'offers/list'}
@@ -133,7 +133,7 @@ class OffersController < ApplicationController
 
     def optional_authorize(method)
       at_c, at_uc = nil
-      at_c = AllocationTag.find_by_course_id(params[:offer][:course_id]).try(:id) unless params[:offer][:course_id].blank?
+      at_c  = AllocationTag.find_by_course_id(params[:offer][:course_id]).try(:id)                   unless params[:offer][:course_id].blank?
       at_uc = AllocationTag.find_by_curriculum_unit_id(params[:offer][:curriculum_unit_id]).try(:id) unless params[:offer][:curriculum_unit_id].blank?
 
       if at_c.nil? and at_uc.nil?

@@ -11,10 +11,10 @@ class CoursesController < ApplicationController
     else # list
       authorize! :index, Course
       @courses = if (not params[:course_id].blank?)
-        Course.where(id: params[:course_id])
+        Course.where(id: params[:course_id]).paginate(page: params[:page])
       else
         allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "courses")
-        Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).paginate(page: params[:page], per_page: 100)
+        Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).paginate(page: params[:page])
       end
 
       respond_to do |format|

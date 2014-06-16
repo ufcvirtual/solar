@@ -40,10 +40,10 @@ class CurriculumUnitsController < ApplicationController
     else # list
       authorize! :index, CurriculumUnit
       if not(params[:curriculum_unit_id].blank?)
-        @curriculum_units = CurriculumUnit.where(id: params[:curriculum_unit_id])
+        @curriculum_units = CurriculumUnit.where(id: params[:curriculum_unit_id]).paginate(page: params[:page])
       else
         allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "curriculum_units")
-        @curriculum_units   = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).paginate(page: params[:page], per_page: 100)
+        @curriculum_units   = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).paginate(page: params[:page])
       end
       respond_to do |format|
         format.html {render partial: 'curriculum_units/index'}

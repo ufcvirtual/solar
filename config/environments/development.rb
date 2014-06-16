@@ -53,4 +53,6 @@ Solar::Application.configure do
   config.sass.debug_info = true
 
   routes.default_url_options = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["url_options"] rescue {}
+
+  WillPaginate.per_page = 100
 end

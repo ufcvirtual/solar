@@ -27,7 +27,8 @@ class EditionsController < ApplicationController
     authorize! :courses, Edition
 
     allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "courses")
-    @courses = Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).paginate(page: params[:page], per_page: 100)
+    @search_courses = Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
+    @courses = @search_courses.paginate(page: params[:page])
     @type    = CurriculumUnitType.find(params[:curriculum_unit_type_id])
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
@@ -38,7 +39,8 @@ class EditionsController < ApplicationController
 
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "curriculum_units")
-    @curriculum_units   = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).paginate(page: params[:page], per_page: 100)
+    @search_curriculum_units = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
+    @curriculum_units   = @search_curriculum_units.paginate(page: params[:page])
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end

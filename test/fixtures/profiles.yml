@@ -55,4 +55,4 @@ basico:
 aluno_monitor:
   id: 13
   name: "Aluno Monitor"
-  types: 12
+  types: 6

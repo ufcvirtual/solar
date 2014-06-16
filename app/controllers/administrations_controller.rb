@@ -19,7 +19,7 @@ class AdministrationsController < ApplicationController
 
     @type_search = params[:type_search]
     @text_search = URI.unescape(params[:user]) unless params[:user].nil?
-    @users = User.where("lower(#{@type_search}) ~ '#{@text_search.downcase}'").paginate(page: params[:page], per_page: 100)
+    @users = User.where("lower(#{@type_search}) ~ '#{@text_search.downcase}'").paginate(page: params[:page])
 
     respond_to do |format|
       format.html
@@ -170,7 +170,7 @@ class AdministrationsController < ApplicationController
     @allocations = Allocation.remove_unrelated_allocations(current_user, @allocations) unless current_user.is_admin?
 
     @allocations.compact!
-    @allocations = @allocations.paginate(page: params[:page], per_page: 100)
+    @allocations = @allocations.paginate(page: params[:page])
     @types = [ [t("administrations.allocation_approval.name"), 'name'], [t("administrations.allocation_approval.profile"), 'profile'], 
       [t("administrations.allocation_approval.type"), 'curriculum_unit_type'], [t("administrations.allocation_approval.course"), 'course'], 
       [t("administrations.allocation_approval.curriculum_unit"), 'curriculum_unit'], [t("administrations.allocation_approval.semester"), 'semester'], 

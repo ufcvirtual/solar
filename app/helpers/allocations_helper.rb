@@ -14,12 +14,10 @@ module AllocationsHelper
 
   ## Rtorna os perfis disponíveis para alocação de determinado usuário em uma lista de allocations_tags
   def profiles_available_for_allocation(user_id, allocation_tags_ids)
-    profiles_allocated = Profile.all(:joins => [:allocations], 
-      :conditions => ["allocation_tag_id IN (#{allocation_tags_ids.gsub(/ /, ',')}) AND user_id = (#{user_id})"])
-
+    profiles_allocated = Profile.joins(:allocations).where("allocation_tag_id IN (?) AND user_id = ?", allocation_tags_ids.gsub(/ /, ','), user_id)
     query = profiles_allocated.empty? ? '' : " AND id NOT IN (#{profiles_allocated.map(&:id).join(',')})"
 
-    profiles_available = Profile.all( :conditions => ["(types & #{Profile_Type_Class_Responsible})::boolean" + query] )
+    profiles_available = Profile.where("cast(types & #{Profile_Type_Class_Responsible} as boolean)" + query)
   end
 
 end
