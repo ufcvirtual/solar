@@ -36,8 +36,12 @@ $(function(){
     },
     select: function( event, ui ) {
       $(".curriculum_unit").show();
-      if(ui.item.value == 4)
-        $('label[for="curriculum_unit"]').html("<%=I18n.t('editions.content.module')%>");
+      if(ui.item.value == 4){
+        var curriculum_unit_label = "<%=I18n.t('editions.content.module')%>";
+        if ($("#curriculum_unit").data("optional") == false)
+          curriculum_unit_label = curriculum_unit_label + "*";
+        $('label[for="curriculum_unit"]').html(curriculum_unit_label);
+      }
       else if(ui.item.value == 3) {// curso livre
         $(".curriculum_unit").hide();
         $(".curriculum_unit select:first").attr("data-optional", "true");
@@ -52,8 +56,12 @@ $(function(){
           });
         });
       }  
-      else
-        $('label[for="curriculum_unit"]').html("<%=I18n.t('editions.content.curriculum_unit')%>");
+      else{
+        var curriculum_unit_label = "<%=I18n.t('editions.content.curriculum_unit')%>";
+        if ($("#curriculum_unit").data("optional") == false)
+          curriculum_unit_label = curriculum_unit_label + "*";
+        $('label[for="curriculum_unit"]').html(curriculum_unit_label);
+      }
 
       clear_all_combos(true);
       $('#course').combobox("option", { disabled: false });
