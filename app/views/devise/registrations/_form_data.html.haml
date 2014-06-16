@@ -57,9 +57,9 @@
           %span.form_label= f.label "#{t(:form_special_needs)}*"
           %span.for
             - condition_special_needs = @user.special_needs.blank? && msg_special_needs.blank?
-            = f.radio_button(:has_special_needs, true, checked: !condition_special_needs, onclick: "show_special_needs('#special_needs_line')", disabled: @user.integrated)
+            = f.radio_button(:has_special_needs, true, checked: !condition_special_needs, onclick: "show_special_needs('#special_needs_line')", disabled: @user.integrated?)
             = label_tag("has_special_needs", t('special_needs_yes'), class: "form_inner_label")
-            = f.radio_button(:has_special_needs, false, checked: condition_special_needs, onclick: "hide_special_needs('#special_needs_line')", disabled: @user.integrated)
+            = f.radio_button(:has_special_needs, false, checked: condition_special_needs, onclick: "hide_special_needs('#special_needs_line')", disabled: @user.integrated?)
             = label_tag("has_special_needs", t('special_needs_no'), class: "form_inner_label")
         - unless condition_special_needs
           - display_special_needs_line = "display: inline-block;"
@@ -203,7 +203,7 @@
   $(".base_msg").remove();
 
   var changeable_fields = $("#changeable_fields").val().split(" ");
-  var user_integrated   = "#{@user.integrated == true}";
+  var user_integrated   = "#{@user.integrated?}";
   var form_fields_ids   = $(".form_field input").map(function(){return $(this).attr("id");}).get();
   var form_selects_ids  = $(".form_field select").map(function(){return $(this).attr("id");}).get();
 

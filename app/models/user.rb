@@ -389,6 +389,10 @@ class User < ActiveRecord::Base
     return (user_data.nil? ? nil : user_data[:string])
   end
 
+  def integrated?
+    (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and integrated
+  end
+
   private
 
     def cpf_without_mask(cpf)
