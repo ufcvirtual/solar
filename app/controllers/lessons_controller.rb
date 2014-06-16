@@ -182,7 +182,7 @@ class LessonsController < ApplicationController
         format.js
       else
         format.json { render json: {success: false, msg: msg}, status: :unprocessable_entity }
-        format.js { render js: "flash_message(#{msg}, 'alert');" }
+        format.js { render js: "flash_message(#{msg}, 'alert');", status: :unprocessable_entity }
       end
     end
   end

@@ -211,7 +211,7 @@ class LessonsControllerTest < ActionController::TestCase
   end
 
   test "nao liberar aula - professor sem acesso" do
-    sign_in users(:professor2)
+    sign_in users(:user)
     lesson = Lesson.find(lessons(:pag_index).id)
     FileUtils.touch(lesson.path(true).to_s)
 

@@ -49,17 +49,14 @@ class AllocationTag < ActiveRecord::Base
       when 'group_id'
         if args[:all] or args[:upper]
           group = self.group
-          upper = [group.offer.allocation_tag, 
-            (group.curriculum_unit.nil? ? nil : group.curriculum_unit.allocation_tag), 
-            (group.course.nil? ? nil : group.course.allocation_tag)
-          ]
+          upper = [group.offer.allocation_tag, group.curriculum_unit.try(:allocation_tag), group.course.try(:allocation_tag)]
         end
       when 'offer_id'
         lower = [self.offer.groups.map(&:allocation_tag).compact.uniq] if args[:all] or args[:lower]
 
         if args[:all] or args[:upper]
           offer = self.offer
-          upper = [(offer.curriculum_unit.nil? ? nil : offer.curriculum_unit.allocation_tag), (offer.course.nil? ? nil : offer.course.allocation_tag)]
+          upper = [offer.curriculum_unit.try(:allocation_tag), offer.course.try(:allocation_tag)]
         end
       when 'curriculum_unit_id'
         if args[:all] or args[:lower]
@@ -150,22 +147,20 @@ class AllocationTag < ActiveRecord::Base
 
     return not_specified if allocation_tag.nil?
 
+    detail = ''
     if !allocation_tag.curriculum_unit_id.nil?
       detail  = allocation_tag.curriculum_unit.name
       uc_type = allocation_tag.curriculum_unit.curriculum_unit_type.description
     elsif !allocation_tag.course_id.nil?
       detail = allocation_tag.course.name
     elsif !allocation_tag.offer.nil?
-      detail  = allocation_tag.offer.course.name + ' | '
-      detail  = detail + allocation_tag.offer.curriculum_unit.name + ' | '
-      detail  = detail + allocation_tag.offer.semester.name
-      uc_type = allocation_tag.offer.curriculum_unit.curriculum_unit_type.description
+      offer   = allocation_tag.offer
+      detail  = [offer.course.try(:name), offer.curriculum_unit.try(:name), offer.semester.name].join(" | ") unless offer.nil?
+      uc_type = offer.curriculum_unit.try(:curriculum_unit_type).try(:description) unless offer.nil?
     elsif !allocation_tag.group.nil?
-      detail  = allocation_tag.group.offer.course.name + ' | '
-      detail  = detail + allocation_tag.group.offer.curriculum_unit.name + ' | '
-      detail  = detail + allocation_tag.group.offer.semester.name + ' | '
-      detail  = detail + allocation_tag.group.code
-      uc_type = allocation_tag.group.offer.curriculum_unit.curriculum_unit_type.description
+      offer   = allocation_tag.group.offer
+      detail  = [offer.course.try(:name), offer.curriculum_unit.try(:name), offer.semester.name].join(" | ") unless offer.nil?
+      uc_type = offer.curriculum_unit.try(:curriculum_unit_type).try(:description) unless offer.nil?
     end
 
     if split
@@ -184,13 +179,17 @@ class AllocationTag < ActiveRecord::Base
   end
 
   def self.curriculum_unit_type(allocation_tag)
-    return I18n.t("users.profiles.not_specified") if allocation_tag.nil?
+    not_specified = I18n.t("users.profiles.not_specified")
+
+    return not_specified if allocation_tag.nil?
 
     if !allocation_tag.curriculum_unit_id.nil?
       allocation_tag.curriculum_unit.curriculum_unit_type.description
     elsif !allocation_tag.offer.nil?
+      return not_specified if allocation_tag.offer.curriculum_unit.nil?
       allocation_tag.offer.curriculum_unit.curriculum_unit_type.description
     elsif !allocation_tag.group.nil?
+      return not_specified if allocation_tag.group.offer.curriculum_unit.nil?
       allocation_tag.group.offer.curriculum_unit.curriculum_unit_type.description
     else
       ''
