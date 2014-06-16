@@ -35,7 +35,7 @@ class AdministrationsController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
-      format.html { render "_user", locals: {user: @user} }
+      format.html { render partial: "user", locals: {user: @user} }
       format.json { render json: @user }
     end
   rescue CanCan::AccessDenied
@@ -43,47 +43,41 @@ class AdministrationsController < ApplicationController
   end
 
   def edit_user
-    begin
-      authorize! :update_user, Administration
-      @user = User.find(params[:id])
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-    end
+    authorize! :update_user, Administration
+    @user = User.find(params[:id])
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def update_user
-    begin 
-      authorize! :update_user, Administration
+    authorize! :update_user, Administration
 
-      @user = User.find(params[:id])
-      if @user.update_attributes(params[:data])
-        render json: {success: true}, status: :ok
-      else
-        render json: {success: false, alert: @user.errors.full_messages.uniq.compact}, status: :unprocessable_entity
-      end
-
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+    @user = User.find(params[:id])
+    if @user.update_attributes(params[:data])
+      render json: {success: true}, status: :ok
+    else
+      render json: {success: false, alert: @user.errors.full_messages.uniq.compact}, status: :unprocessable_entity
     end
+
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def reset_password_user
-    begin
-      authorize! :reset_password_user, Administration
-      @user = User.find(params[:id])
+    authorize! :reset_password_user, Administration
+    @user = User.find(params[:id])
 
-      Thread.new do
-        Mutex.new.synchronize do
-          @user.send_reset_password_instructions
-        end
+    Thread.new do
+      Mutex.new.synchronize do
+        @user.send_reset_password_instructions
       end
-
-      render json: {success: true, notice: t("administrations.success.email_sent")}
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-    rescue
-      render json: {success: false, alert: t("administrations.success.email_not_sent")}
     end
+
+    render json: {success: true, notice: t("administrations.success.email_sent")}
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    render json: {success: false, alert: t("administrations.success.email_not_sent")}
   end
 
   ## ALLOCATIONS
