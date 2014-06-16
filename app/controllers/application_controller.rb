@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  before_filter :authenticate_user!, except: :verify_cpf # devise
+  before_filter :authenticate_user!, except: [:verify_cpf, :api_download] # devise
   before_filter :init_xmpp_im, :set_locale, :start_user_session, :application_context, :current_menu, :another_level_breadcrumb
 
   rescue_from CanCan::AccessDenied do |exception|
