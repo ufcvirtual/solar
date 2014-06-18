@@ -293,9 +293,7 @@
           flash_message(data.flash_msg, data.flash_class);
           no_comments_div();
         }
+      }).error(function(){
+        flash_message("#{t(:no_permission)}", "alert");
       });
   }
-
-  $(document).ajaxError(function() {
-    flash_message("#{t(:no_permission)}", "alert");
-  }); 

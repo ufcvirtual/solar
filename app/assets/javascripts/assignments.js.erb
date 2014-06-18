@@ -187,7 +187,9 @@ function update_evaluation(){
         }
       }
     }
-  }); // ajax
+  }).error(function(){
+    flash_message("<%= I18n.t(:no_permission) %>", "alert");
+  });
 }
 
 
