@@ -21,8 +21,9 @@
 
   %h2= truncate((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || "", length: 200, omission: '...')
 
-  = render "groups/codes"
-  
+  - if can? :edit, @model_name
+    = render "groups/codes"
+
   .line
 
   .btn-group
@@ -37,14 +38,14 @@
 
 = javascript_include_tag "tooltip"
 
-= hidden_field_tag :groups_codes, @groups_codes
+= hidden_field_tag :groups_codes, @groups_codes.join(" ")
 
 :javascript
 
   $(function(){
-    var groups = $("#groups_codes").val().split(" ");
-
     $(".toggle_groups").unbind().click(function(){
+
+      groups = $($($(this).parents(".dropdown-panel")[0]).children("#groups_codes")[0]).val().split(" ");
 
       if( $(this).hasClass("icon-arrow-down-triangle") ){
         var groups_div = $("<span class='groups'></span>");

@@ -60,7 +60,7 @@ class UsersController < ApplicationController
     set_active_tab_to_home
 
     @user = current_user
-    allocation_tags = @user.allocation_tags.where(allocations: {status: Allocation_Activated.to_i}).compact.uniq.map(&:related).flatten.uniq.sort
+    allocation_tags = @user.activated_allocation_tag_ids(true, true)
 
     ## Portlet do calendario; destacando dias que possuem eventos
     unless allocation_tags.empty?

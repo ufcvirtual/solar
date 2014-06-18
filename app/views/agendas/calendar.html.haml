@@ -20,20 +20,20 @@
 = stylesheet_link_tag "fullcalendar.css"
 
 :javascript
-  var monthNames = '#{t("date.month_names").join(",")}'.split(",");
+  var monthNames      = '#{t("date.month_names").join(",")}'.split(",");
   var monthNamesShort =  '#{t("date.abbr_month_names").join(",")}'.split(",");
-  var dayNames = '#{t("date.day_names").join(",")}'.split(",");
-  var dayNamesShort = '#{t("date.abbr_day_names").join(",")}'.split(",");
-  var allDay = '#{t(".all_day")}';
-  var today = '#{t("fullcalendar.today")}';
-  var monthTitle = '#{t("fullcalendar.titleFormat.month")}';
-  var weekTitle = '#{t("fullcalendar.titleFormat.week")}';
-  var dayTitle = '#{t("fullcalendar.titleFormat.day")}';
-  var monthColumn = '#{t("fullcalendar.columnFormat.month")}';
-  var weekColumn = '#{t("fullcalendar.columnFormat.week")}';
-  var dayColumn = '#{t("fullcalendar.columnFormat.day")}';
-  var futureEvents = '#{t("fullcalendar.future_events")}';
-  var listFormat = '#{t("fullcalendar.listFormat")}';
+  var dayNames        = '#{t("date.day_names").join(",")}'.split(",");
+  var dayNamesShort   = '#{t("date.abbr_day_names").join(",")}'.split(",");
+  var allDay          = '#{t(".all_day")}';
+  var today           = '#{t("fullcalendar.today")}';
+  var monthTitle      = '#{t("fullcalendar.titleFormat.month")}';
+  var weekTitle       = '#{t("fullcalendar.titleFormat.week")}';
+  var dayTitle        = '#{t("fullcalendar.titleFormat.day")}';
+  var monthColumn     = '#{t("fullcalendar.columnFormat.month")}';
+  var weekColumn      = '#{t("fullcalendar.columnFormat.week")}';
+  var dayColumn       = '#{t("fullcalendar.columnFormat.day")}';
+  var futureEvents    = '#{t("fullcalendar.future_events")}';
+  var listFormat      = '#{t("fullcalendar.listFormat")}';
   var noEventsMessage = '#{t("fullcalendar.noEvents")}';
 
 = javascript_include_tag "fullcalendar", "calendar"

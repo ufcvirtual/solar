@@ -4,6 +4,7 @@ class Agenda < ActiveRecord::Base
     where, where_hash = [], {}
     where_date = []
     unless allocation_tags.nil?
+      allocation_tags = AllocationTag.find(allocation_tags.split(" ").flatten).map(&:related).flatten.uniq
       where_hash[:allocation_tags] = allocation_tags
       where << "allocation_tags.id IN (:allocation_tags)"
     end

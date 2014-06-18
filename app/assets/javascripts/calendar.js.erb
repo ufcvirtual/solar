@@ -93,8 +93,7 @@ function show_info_dropdown(event, div){
   if(!dropdown_panel.length){
     var dropdown_content = $('<div class="dropdown-panel"></div>');
     var url = event.dropdown_path.replace('all_params', $("#allocation_tags_ids").val().replace(/ /g, ","));
-    $.get(url, function(data){$(dropdown_content).append(data);});
-
+    $.get(url, function(data){ $(dropdown_content).append(data); });
     var dropdown = $("<div class='dropdown dropdown-tip' id='dropdown_details_"+event.type+"_"+event.id+"' style='z-index: 999;'></div>");
     $(dropdown).append(dropdown_content);
     $(div).after(dropdown);

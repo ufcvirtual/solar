@@ -195,9 +195,11 @@ class User < ActiveRecord::Base
   end
 
   # Retorna os ids das allocations_tags ativadas de um usuário
-  def activated_allocation_tag_ids(related = true)
-    map = related ? "related" : "id"
-    allocation_tags.where(allocations: {status: Allocation_Activated.to_i}).map(&map.to_sym).flatten.uniq
+  def activated_allocation_tag_ids(related = true, interacts = false)
+    map   = related   ? "related" : "id"
+    query = interacts ? "cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)" : ""
+
+    allocations.joins(:profile).where(allocations: {status: Allocation_Activated.to_i}).where(query).map(&:allocation_tag).compact.map(&map.to_sym).flatten.uniq
   end
 
   # Returns all allocation_tags_ids with activated access on informed actions of controller
