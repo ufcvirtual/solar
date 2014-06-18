@@ -73,4 +73,14 @@ class Allocation < ActiveRecord::Base
     return group.offer.semester unless group.nil?
   end
 
+  def status_color
+    case status.to_i
+      when (Allocation_Pending_Reactivate); "#FF6600"
+      when (Allocation_Activated); "#006600"
+      when (Allocation_Cancelled); "#FF0000"
+      when (Allocation_Pending); "#FF6600"
+      when (Allocation_Rejected); "#FF0000"
+    end
+  end
+
 end

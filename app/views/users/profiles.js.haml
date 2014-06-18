@@ -1,0 +1,6 @@
+$('tbody.allocations').append('#{escape_javascript(render partial: "profiles", locals: { allocations: @allocations })}');
+$('a.load-more-allocations').attr('href', '#{profiles_users_path(page: @allocations.next_page)}');
+$(".tb_list").trigger("update");
+
+- unless @allocations.next_page
+  $('a.load-more-allocations').remove();

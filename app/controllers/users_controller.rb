@@ -122,8 +122,11 @@ class UsersController < ApplicationController
   end
 
   def profiles
-    @allocations = current_user.allocations.where("profile_id != 12")
-    render layout: false if params[:layout]
+    @allocations = current_user.allocations.where("profile_id != 12").order("profile_id").paginate(page: params[:page])
+    respond_to do |format|
+      format.html { render layout: false if params[:layout] }
+      format.js
+    end
   end
 
   def request_profile
