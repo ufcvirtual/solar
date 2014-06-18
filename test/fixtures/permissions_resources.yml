@@ -1768,3 +1768,8 @@ adminlessons3:
   profile_id: 6
   resource_id: 18
   per_id: false
+
+admin_log1:
+  profile_id: 6
+  resource_id: 173
+  per_id: false

@@ -40,4 +40,22 @@ class LogAction < ActiveRecord::Base
     create(params)
   end
 
+  ## traduzir
+  def type_name
+    case log_type
+      when 1
+        I18n.t(:create, scope: [:administrations, :logs, :types])
+      when 2
+        I18n.t(:update, scope: [:administrations, :logs, :types])
+      when 3
+        I18n.t(:destroy, scope: [:administrations, :logs, :types])
+      when 4
+        I18n.t(:new_user, scope: [:administrations, :logs, :types])
+      when 5
+        I18n.t(:block_user, scope: [:administrations, :logs, :types])
+      when 6
+        I18n.t(:request_password, scope: [:administrations, :logs, :types])
+    end
+  end
+
 end

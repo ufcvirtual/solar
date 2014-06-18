@@ -1303,6 +1303,7 @@ pt_BR:
   menu_admin_user: "Gerência de Usuários"
   menu_admin_approval: Aprovação de perfis
   menu_admin_lessons: Consultar Aulas
+  menu_admin_logs: Logs
 
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"
@@ -1700,6 +1701,26 @@ pt_BR:
       reject: Rejeitar
       accept: Aceitar
       not_specified: Não especificado
+    logs:
+      log_type: Tipo
+      course: Curso
+      types:
+        login: "Login"
+        curriculum_unit_access: "Acesso ao curso"
+        create: "Criação"
+        update: "Atualização"
+        destroy: "Remoção"
+        new_user: "Novo usuário"
+        block_user: "Bloqueio de usuário"
+        request_password: "Recuperação de senha"
+      name: Nome
+      description: Descrição
+      created_at: Data
+      actions: Ações
+      accesses: Acessos
+      search: Busca
+      user: Usuário
+      log_not_found: Sem logs para exibir
 
   editions:
     alert: "Preencha os campos obrigatórios"

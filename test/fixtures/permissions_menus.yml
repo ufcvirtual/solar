@@ -416,3 +416,9 @@ pm102:
 pm103:
   profile_id: 13
   menu_id: 208
+
+# admin / logs
+
+pm104:
+  profile_id: 6
+  menu_id: 608

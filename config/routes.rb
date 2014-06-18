@@ -62,6 +62,9 @@ Solar::Application.routes.draw do
     get "users", to: "administrations#users", as: :admin_users
 
     # get "users", to: "administrations#users_indication", as: :users_indication
+
+    get :logs, to: "administrations#logs", as: :logs
+    get "logs/type/:type", to: "administrations#search_logs", as: :search_logs
   end 
 
   resources :administrations do

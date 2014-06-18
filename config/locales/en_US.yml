@@ -1089,6 +1089,8 @@ en_US:
   menu_admin_user: "Manage Users"
   menu_admin_approval: Profiles approval
   menu_admin_lessons: Consult Lessons
+  menu_admin_logs: Logs
+
   places_nav_panel_course_hint: "Type the course's name or part of it"
   places_nav_panel_semester_hint: "Type the semester or part of it"
   places_nav_panel_curriculum_unit_hint: "Type the curriculum unit's name or part of it"
@@ -1448,6 +1450,26 @@ en_US:
       reject: Reject
       accept: Accept
       not_specified: Not specified
+    logs:
+      log_type: Type
+      course: Course
+      types:
+        login: "Login"
+        curriculum_unit_access: "Access to the course"
+        create: "Create"
+        update: "Update"
+        destroy: "Destroy"
+        new_user: "New User"
+        block_user: "User Block"
+        request_password: "Request Password"
+      name: Name
+      description: Description
+      created_at: Date
+      actions: Actions
+      accesses: Accesses
+      search: Search
+      user: User
+      log_not_found: Log not found
   editions:
     alert: "Fill the required fields"
     academic:

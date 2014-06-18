@@ -994,3 +994,11 @@ res172:
   controller: 'lessons'
   action: 'see_drafts'
   description: 'Visualizar aulas de rascunho'
+
+# admin / logs
+
+res173:
+  id: 173
+  controller: 'administrations'
+  action: 'logs'
+  description: 'Visualizar logs dos usuários'

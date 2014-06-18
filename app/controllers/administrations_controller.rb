@@ -3,7 +3,8 @@ class AdministrationsController < ApplicationController
   include SysLog::Devise
   include SysLog::Actions
 
-  layout false, except: [:users, :users_indication, :allocation_approval, :lessons]
+  layout false, except: [:users, :users_indication, :allocation_approval, :lessons, :logs]
+  before_filter :set_active_tab_to_home, only: :logs
 
   ## USERS
 
@@ -187,6 +188,24 @@ class AdministrationsController < ApplicationController
   def lessons
     authorize! :lessons, Administration
     @types = CurriculumUnitType.all
+  end
+
+  ## LOGS
+
+  def logs
+    authorize! :logs, Administration
+
+    @types = [ [t(:actions, scope: [:administrations, :logs]), 'actions'], [t(:accesses, scope: [:administrations, :logs]), 'access'] ]
+  end
+
+  def search_logs
+    authorize! :logs, Administration
+
+    date = Date.parse(params[:date]) rescue Date.today
+    users = params[:user].blank? ? [current_user] : User.where("lower(name) ~ lower(?)", URI.unescape(params[:user])) # current user if nil
+    log = params[:type] == 'actions' ? LogAction : LogAccess
+
+    @logs = log.where(user_id: users.map(&:id)).where("date(created_at) = ?", date.to_s).order("created_at").last(100)
   end
 
 end

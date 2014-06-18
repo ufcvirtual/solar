@@ -193,6 +193,13 @@ admin_lessons:
   parent_id: 60
   resource_id: 170
 
+admin_logs:
+  id: 608
+  name: menu_admin_logs
+  order: 8
+  parent_id: 60
+  resource_id: 173
+
 # MENU PAI - 70
 disco_virtual:
   id: 70
