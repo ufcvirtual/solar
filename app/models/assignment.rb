@@ -138,14 +138,14 @@ class Assignment < Event
   end
 
   def user_can_access_assignment?(allocation_tag, current_user_id, user_id, group_assignment_id = nil)
-    current_user_id = current_user_id.to_i
+    current_user_id   = current_user_id.to_i
     student_of_class  = !allocations.where(profile_id: Profile.student_profile).where(:user_id => current_user_id).empty?
     class_responsible = allocation_tag.is_user_class_responsible?(current_user_id)
     can_access = (user_id.to_i == current_user_id)
 
     if type_assignment == Assignment_Type_Group
       academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id, id, 'Assignment')
-      group_assignment = GroupAssignment.find_by_id_and_academic_allocation_id(group_assignment_id, academic_allocation.id)
+      group_assignment    = GroupAssignment.find_by_id_and_academic_allocation_id(group_assignment_id, academic_allocation.id)
       can_access = group_assignment.group_participants.map(&:user_id).include?(current_user_id) unless group_assignment.nil?
     end
     return (class_responsible or (student_of_class and can_access))

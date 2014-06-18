@@ -391,20 +391,16 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao exibir pagina de avaliacao da atividade individual para usuario com permissao e sem acesso" do
     login users(:aluno2)
     get @quimica_tab
-    get student_assignment_path :id => assignments(:a9).id, :student_id => users(:aluno1).id
+    get student_assignment_path(assignments(:a9), student_id: users(:aluno1).id)
     assert_response :redirect
-    # assert_equal I18n.t(:no_permission), flash[:alert]
-    # Expected response to be a redirect to <http://test.host/home> but was a redirect to <http://test.host/>
-    # assert_redirected_to(home_path)
-    #<"Você precisa logar antes de continuar."> expected but was
-    # <"Você não tem permissão para acessar esta página">.
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Perfil com permissao e usuario sem acesso a atividade
   test "nao exibir pagina de avaliacao da atividade em grupo para usuario com permissao e sem acesso" do
-    login users(:aluno3)
+    login users(:user)
     get @quimica_tab
-    get student_assignment_path id: assignments(:a6).id, student_id: users(:aluno2).id, group_id: group_assignments(:ga6).id
+    get student_assignment_path id: assignments(:a6).id, group_id: group_assignments(:ga6).id
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
@@ -604,7 +600,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao permitir upload de arquivo fora do prazo da atividade" do
     login(users(:aluno1))
     get @quimica_tab
-    post upload_file_assignments_path, {:assignment_id => assignments(:a7).id, :assignment_file => fixture_file_upload('files/assignments/sent_assignment_files/teste5.txt', 'text/plain'), :type => "assignment"}
+    post upload_file_assignments_path, {assignment_id: assignments(:a7).id, assignment_file: fixture_file_upload('files/assignments/sent_assignment_files/teste5.txt', 'text/plain'), :type => "assignment"}
     assert_response :redirect
     assert_equal I18n.t(:date_range_expired, :scope => [:assignment, :notifications]), flash[:alert]
   end
@@ -614,14 +610,14 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     get @quimica_tab
     assert_difference('CommentFile.count', 1) do
       comment_files = [fixture_file_upload('files/assignments/comment_files/teste2.txt', content_type: 'text/plain')]
-      post send_comment_assignment_path(assignments(:a11).id), {:comment_files => comment_files, :group_id => 1, :comment => "comentario"}
+      post send_comment_assignment_path(assignments(:a11).id), {comment_files: comment_files, group_id: 1, comment: "comentario"}
     end
 
     comment_file = CommentFile.first
     
-    login(users(:aluno3))
+    login(users(:user))
     get @quimica_tab
-    get(download_files_assignments_path, {:assignment_id => assignments(:a11).id, :file_id => comment_file.id, :type => 'comment'})
+    get(download_files_assignments_path, {assignment_id: assignments(:a11).id, file_id: comment_file.id, type: 'comment'})
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
@@ -661,7 +657,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
 
-    login(users(:aluno3))
+    login(users(:user))
     get(download_files_assignments_path, {:assignment_id => assignments(:a9).id, :file_id => comment_file.id, :type => 'comment'})
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
