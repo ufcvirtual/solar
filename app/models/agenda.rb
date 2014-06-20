@@ -3,11 +3,6 @@ class Agenda < ActiveRecord::Base
   def self.events(allocation_tags, period = false, date_search = nil)
     where, where_hash = [], {}
     where_date = []
-    unless allocation_tags.nil?
-      allocation_tags = AllocationTag.find(allocation_tags.split(" ").flatten).map(&:related).flatten.uniq
-      where_hash[:allocation_tags] = allocation_tags
-      where << "allocation_tags.id IN (:allocation_tags)"
-    end
     unless date_search.nil?
       where_hash[:date_search] = date_search.to_s(:db)
 

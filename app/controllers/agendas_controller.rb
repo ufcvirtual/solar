@@ -30,7 +30,7 @@ class AgendasController < ApplicationController
 
   # eventos para exibição no calendário
   def events
-    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? AllocationTag.find(active_tab[:url][:allocation_tag_id]).map(&:related).flatten : params[:allocation_tags_ids].split(" ").flatten).uniq
+    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? AllocationTag.where(id: active_tab[:url][:allocation_tag_id]).map(&:related).flatten : params[:allocation_tags_ids].split(" ").flatten).uniq
     authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
 
     events = (params.include?("list") ? 
