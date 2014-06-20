@@ -3,7 +3,7 @@
     = t ".#{@model_name.to_s.tableize}"
     = @event.respond_to?(:name) ? @event.name : @event.title
   / se for a visualização de aluno/professor
-  - unless can? :edit, @model_name
+  .related_user_path.invisible
     / verifica se o "caminho" da ferramenta já é uma string
     - if @event.parents_path.is_a?(String)
       / se for, é uma ferramenta para mais de uma turma
@@ -21,8 +21,9 @@
 
   %h2= truncate((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || "", length: 200, omission: '...')
 
-  - if can? :edit, @model_name
-    = render "groups/codes"
+  .edition_groups.invisible
+    - if can? :edit, @model_name
+      = render "groups/codes"
 
   .line
 
@@ -43,6 +44,16 @@
 :javascript
 
   $(function(){
+    // se não for a área de edição
+    if (!$(".filter").length){
+      $(".edition_groups, .delete_event, .edit_event").remove();
+      $(".show_event").css("margin-left", "66px");
+      $(".related_user_path").removeClass("invisible");
+    }else{
+      $(".edition_groups").removeClass("invisible");
+      $(".related_user_path").remove();
+    }
+
     $(".toggle_groups").unbind().click(function(){
 
       groups = $($($(this).parents(".dropdown-panel")[0]).children("#groups_codes")[0]).val().split(" ");
