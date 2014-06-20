@@ -121,13 +121,13 @@
           });
         }).error(function(data) {
           if(typeof(module_id) != "undefined"){
-            $.get($('.list_lessons').data('link-list'), function(data){
-              $('.list_lessons:first').replaceWith(data);
+            $.get($('.list_lessons').data('link-list'), function(data2){
+              $('.list_lessons:first').replaceWith(data2);
+            if (typeof(data.responseText) != "undefined")
+              flash_message(JSON.parse(data.responseText).msg, 'alert');
             });
           }
 
-          if (typeof(data.responseText) != "undefined")
-            flash_message(JSON.parse(data.responseText).msg, 'alert');
         });
       }
 

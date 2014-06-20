@@ -20,7 +20,6 @@ class Lesson < ActiveRecord::Base
   after_destroy :delete_schedule, :delete_files
 
   validates :name, :type_lesson, presence: true
-  validates :address, presence: true, :if => :is_link?
   validate  :initial_file_setted
   validates :lesson_module, presence: true
 
@@ -31,6 +30,7 @@ class Lesson < ActiveRecord::Base
   FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
 
   def initial_file_setted
+    errors.add(:base, I18n.t("lessons.errors.url_must_be_informed")) if is_link? and address.blank? and status != Lesson_Test 
     unless is_draft? or is_link?
       errors.add(:base, I18n.t(:define_initial_file_error, scope: [:lesson_files])) unless is_file? and address.present? and File.exist?(path(true).to_s)
     end
@@ -49,7 +49,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def url_protocol
-    self.address = 'http://' + self.address if (self.address =~ URI::regexp(["ftp", "http", "https"])).nil? 
+    self.address = 'http://' + self.address if not(address.blank?) and (self.address =~ URI::regexp(["ftp", "http", "https"])).nil?
   end 
 
   def path(full = false, with_address = true)

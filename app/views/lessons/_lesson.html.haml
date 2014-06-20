@@ -12,7 +12,7 @@
         .test_lesson= "(#{t(:lesson_will_open)})"
     - else
       = lesson.name
-      .test_lesson= "(sem arquivo inicial definido)"
+      .test_lesson= "(#{ (lesson.is_file? ? t(:lesson_without_initial_file) : t(:lesson_without_url)) })"
 
 %td{width: "30%"}
   = "#{t(:since)}" if (lesson.schedule.end_date.nil?)

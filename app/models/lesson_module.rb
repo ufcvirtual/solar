@@ -29,7 +29,6 @@ class LessonModule < ActiveRecord::Base
     user_is_admin    = user.nil? ? false : user.is_admin?
     user_responsible = user.nil? ? false : not(user.profiles_with_access_on("see_drafts", "lessons", allocation_tags_ids, true).empty?)
     
-    # current_user.profiles_with_access_on("see_drafts", "lessons", allocation_tags_ids, true).empty?
     joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tags_ids}).delete_if{ |lmodule|
       lessons               = lmodule.lessons
       has_open_lesson       = lessons.map(&:closed?).include?(false)
@@ -44,7 +43,7 @@ class LessonModule < ActiveRecord::Base
     lessons.order("lessons.order").collect{ |lesson|
       lesson_with_address = (list or not(lesson.address.blank?))
       # if (lesson can open to show or list is true) or (is draft or will_open and is responsible) or user is admin 
-      lesson if ( user_is_admin or (user_responsible and (lesson.is_draft? or lesson.will_open?) and lesson_with_address ) or (not(lesson.is_draft?) and ((list and not(lesson.will_open?)) or lesson.open_to_show?) and lesson_with_address) )
+      lesson if ( user_is_admin or (user_responsible and (lesson.is_draft? or lesson.will_open?) ) or (not(lesson.is_draft?) and ((list and not(lesson.will_open?)) or lesson.open_to_show?)) ) and lesson_with_address
     }.compact.uniq
   end
  

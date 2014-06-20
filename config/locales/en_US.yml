@@ -557,6 +557,8 @@ en_US:
   lesson_closed_short: "closed"
   lesson_test: test lesson
   lesson_will_open: not started
+  lesson_without_initial_file: no initial file defined
+  lesson_without_url: no url defined
   since: Since
   no_end_date: 'On'
   lessons:
@@ -618,6 +620,7 @@ en_US:
       invalid_lesson_to_download: Only not empty and file lessons can be downloaded
       deleted: Lessons weren't deleted
       must_select_module: A destination module must be selected
+      url_must_be_informed: An URL must be defined
     success:
       saved_as_draft: Lessons were sucessfully created or saved as draft
       deleted: Lessons were successfully created

@@ -12,11 +12,6 @@ class LessonTest < ActiveSupport::TestCase
   end
 
   test "aula deve ter url valida se for de link" do
-    lesson = Lesson.create(lesson_module_id: lesson_modules(:module1).id, name: "Lorem ipsum", order: 99, type_lesson: Lesson_Type_Link)
-
-    assert not(lesson.valid?)
-    assert_equal lesson.errors[:address].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
-
     lesson = Lesson.create(lesson_module_id: lesson_modules(:module1).id, name: "Lorem ipsum", order: 99, type_lesson: Lesson_Type_Link, address: "google")
 
     assert not(lesson.valid?)

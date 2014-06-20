@@ -42,7 +42,7 @@
           =f.select :type_lesson, ([ [t(:link, :scope => [:lessons, :new]), Lesson_Type_Link], [t(:archive, :scope => [:lessons, :new]),Lesson_Type_File] ]), :include_blank => false
       - if (@lesson_modules.nil? or @lesson.type_lesson == Lesson_Type_Link)
         .url_lesson
-          =f.input :address, :required => true
+          =f.input :address
           .disabled
             =f.label " "
             =t(:example, :scope => [:lessons, :new])

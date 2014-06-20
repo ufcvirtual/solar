@@ -728,6 +728,8 @@ pt_BR:
   lesson_closed_short: "encerrada"
   lesson_test: aula rascunho
   lesson_will_open: não iniciada
+  lesson_without_initial_file: sem arquivo inicial definido
+  lesson_without_url: sem url definida
   since: A partir de
   no_end_date: Em diante
 
@@ -791,6 +793,7 @@ pt_BR:
       invalid_lesson_to_download: Apenas aulas do tipo de arquivo e não vazias podem ser baixadas
       deleted: Não foi possível deletar as aulas
       must_select_module: Um módulo destino deve ser selecionado
+      url_must_be_informed: Uma URL deve ser definida
     success:
       saved_as_draft: Aulas deletadas ou salvas como rascunho com sucesso
       deleted: Aulas deletadas com sucesso
