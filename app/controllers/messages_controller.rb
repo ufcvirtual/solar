@@ -108,7 +108,7 @@ class MessagesController < ApplicationController
           @message.user_messages.build(user: user, status: Message_Filter_Receiver)
         end
 
-        raise "error" if users.size > 90 or users.empty?
+        raise "error" if users.empty?
 
         ## files ##
 

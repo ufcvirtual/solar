@@ -79,9 +79,6 @@
       if ($('#message_to').val() == ""){
         event.preventDefault();
         alert("#{I18n.t(:without_recipient, scope: [:messages, :form])}");
-      } else if ($('#message_to').val().split(",").length > #{Message_Limit_Of_Recipients}){
-        event.preventDefault();
-        alert("#{I18n.t('messages.errors.recipients', limit: Message_Limit_Of_Recipients)}");
       } else if ($(".cke_contents iframe").contents().find("body").text() == ""){
         if (!confirm("#{I18n.t(:no_content, scope: [:messages, :form])}"))
           event.preventDefault();

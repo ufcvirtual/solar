@@ -1790,7 +1790,7 @@ en_US:
       add_all: Add all
       no_user_found: No user found
     errors:
-      recipients: "A message must have at least 1 and less than %{limit} recipients."
+      recipients: "A message must have at least 1 recipient."
       permission: You don't have access to informed data.
     subject:
       reply: "Re: "
