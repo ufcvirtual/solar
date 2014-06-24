@@ -63,9 +63,17 @@ Solar::Application.routes.draw do
 
     # get "users", to: "administrations#users_indication", as: :users_indication
 
+    ## logs
     get :logs, to: "administrations#logs", as: :logs
     get "logs/type/:type", to: "administrations#search_logs", as: :search_logs
-  end 
+
+    ## users
+    get "/import/users", to: "administrations#import_users", as: :import_users
+    get "/file/users", to: "administrations#file_users", as: :file_users
+    post "/batch/users", to: "administrations#batch_users", as: :batch_users
+    get "logs/download/:file", to: "administrations#download_logs", as: :admin_log_import
+
+  end
 
   resources :administrations do
     collection do
@@ -197,8 +205,6 @@ Solar::Application.routes.draw do
   resources :enrollments, only: :index do
     collection do
       get ":group_id", to: :show, as: :group
-      get :import_users, to: "enrollments#import_users"
-      post :batch_users # create and enroll users
       get :public_course, action: :show, defaults: {public: true}
     end
   end

@@ -1,0 +1,22 @@
+
+= render partial: "editions/content_filter", locals: {list_class: "lessons", url: file_users_path, optionals: nil, types: @types, back: false, type_id: nil}
+
+/ = form_tag batch_users_path(allocation_tags_ids: @allocation_tags_ids), multipart: true, class: "import_users_form" do
+/   = file_field_tag :file
+
+/   .form-actions.right_buttons
+/     = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
+/     = button_to_function t(:save), "import_users()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
+
+/ :javascript
+
+/   function import_users() {
+/     $('form.import_users_form').serialize_and_submit({
+/       files: true,
+/       success: function(data) {
+/         $.fancybox(data.msg);
+/       }
+/     });
+
+/     $.fancybox("<p>aguarde...<p/>");
+/   }

@@ -200,6 +200,13 @@ admin_logs:
   parent_id: 60
   resource_id: 173
 
+admin_import_users:
+  id: 609
+  name: menu_admin_import_users
+  order: 9
+  parent_id: 60
+  # resource_id: AINDA SEM RESOURCE
+
 # MENU PAI - 70
 disco_virtual:
   id: 70

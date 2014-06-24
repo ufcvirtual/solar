@@ -32,6 +32,7 @@ en_US:
       discussion_post_hour: "%H:%M h"
       simple_day_and_month: "%d/%b"
       at_date: "%d/%m/%Y at %H:%M"
+      log: "%d%m%Y%H%M%S"
   datetime:
     distance_in_words:
       half_a_minute: 'half a minute'
@@ -1995,9 +1996,9 @@ en_US:
       invalid_file: "Invalid file"
       error: "Unable to import users"
       log:
-        success: "SUCCESS: CPF: %{cpf} successfully imported"
-        error: "ERROR: CPF: %{cpf} - %{error}"
-        allocation: "ERROR: user: %{user} - Unable to create allocation for allocation tag %{allocation_tag}"
+        success: "[SUCCESS]: CPF: %{cpf} successfully imported"
+        error: "[ERROR]: CPF: %{cpf} - %{error}"
+        allocation: "[ERROR]: user: %{user} - Unable to create allocation for allocation tag %{allocation_tag}"
     request_profile:
       save: Save
       cancel: Cancel

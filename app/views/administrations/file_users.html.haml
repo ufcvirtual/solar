@@ -1,0 +1,21 @@
+%fieldset#import-form
+  %legend= t(".select_file")
+  .block_content.block_content_alt
+
+    .import-users
+      = simple_form_for :batch, url: batch_users_path, html: {multipart: true, id: "import_users"} do |f|
+        = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+        = f.input :delimiter, collection: [';', ','], include_blank: false
+        = f.input "file", as: :file
+        = button_to_function t(:import, scope: [:administrations, :import_users]), "import_users(); return false;", class: "btn btn_main btn_lightbox", type: "button"
+
+:javascript
+
+  function import_users() {
+    $('form#import_users').serialize_and_submit({
+      files: true,
+      success: function(data) {
+        $("fieldset#import-form").replaceWith(data);
+      }
+    });
+  }

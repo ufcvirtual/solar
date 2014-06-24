@@ -78,16 +78,6 @@
       /    = link_to(content_tag(:i, nil, class: 'icon-exam big'), "#", class: 'btn disabled', onclick: "javascript:alert('#{t(".in_development")}');")
       /    = link_to t(".test"), "#", onclick: "javascript:alert('#{t(".in_development")}');"
 
-  - if @selected == "GROUP" and false # quando for usar mesmo esta funcionalidade, retirar "and false"
-    %fieldset#batch
-      %legend=t(".batch")
-      .block_content.block_content_alt
-
-        / - if (@user_profiles.include?(enrollments: :batch_users))
-        .uc_item
-          .import_user{:"data-link" => import_users_enrollments_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id)}
-            %p.btn= content_tag(:i, nil, class: 'icon-users big')
-
 = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 = hidden_field_tag :selected, @selected
 = hidden_field_tag :offer_id, @offer_id

@@ -17,7 +17,6 @@ class LogAccess < ActiveRecord::Base
     create(params)
   end
 
-  ## traduzir
   def type_name
     case log_type
       when 1
@@ -26,6 +25,5 @@ class LogAccess < ActiveRecord::Base
         I18n.t(:curriculum_unit_access, scope: [:administrations, :logs, :types])
     end
   end
-
 
 end

@@ -37,6 +37,7 @@ pt_BR:
       discussion_post_hour: "%H:%M h"
       simple_day_and_month: "%d/%b"
       at_date: "%d/%m/%Y às %H:%M"
+      log: "%d%m%Y%H%M%S"
     am: ''
     pm: ''
 
@@ -2280,9 +2281,9 @@ pt_BR:
       invalid_file: "Arquivo inválido"
       error: "Não foi possível importar usuários"
       log:
-        success: "SUCCESS: CPF: %{cpf} importado com sucesso"
-        error: "ERROR: CPF: %{cpf} - %{error}"
-        allocation: "ERROR: user: %{user} - Não foi possível criar alocação para allocation tag %{allocation_tag}"
+        success: "[SUCESSO]: CPF: %{cpf} importado com sucesso"
+        error: "[ERRO]: CPF: %{cpf} - %{error}"
+        allocation: "[ERRO]: user: %{user} - Não foi possível criar alocação para allocation tag %{allocation_tag}"
     request_profile:
       save: Salvar
       cancel: Cancelar

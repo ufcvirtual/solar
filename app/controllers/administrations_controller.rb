@@ -1,10 +1,11 @@
 class AdministrationsController < ApplicationController
 
+  include FilesHelper
   include SysLog::Devise
   include SysLog::Actions
 
-  layout false, except: [:users, :users_indication, :allocation_approval, :lessons, :logs]
-  before_filter :set_active_tab_to_home, only: :logs
+  layout false, except: [:users, :users_indication, :allocation_approval, :lessons, :logs, :import_users]
+  before_filter :set_active_tab_to_home, only: [:logs, :import_users]
 
   ## USERS
 
@@ -187,6 +188,7 @@ class AdministrationsController < ApplicationController
   ## Lessons
   def lessons
     authorize! :lessons, Administration
+
     @types = CurriculumUnitType.all
   end
 
@@ -207,5 +209,74 @@ class AdministrationsController < ApplicationController
 
     @logs = log.where(user_id: users.map(&:id)).where("date(created_at) = ?", date.to_s).order("created_at").last(100)
   end
+
+
+
+  ## USERS
+
+
+  def import_users
+    # authorize! :import_users, Administration
+
+    @types = CurriculumUnitType.all
+  end
+
+  def file_users
+    # authorize! :import_users, Administration
+
+    ## verificar se as turmas foram passadas
+    @allocation_tags_ids = AllocationTag.where(group_id: params[:groups_id].split(" ")).map(&:id)
+
+    render layout: false
+  end
+
+  def batch_users
+    # authorize! :import_users, Administration
+
+    raise t(:invalid_file, scope: [:users, :import]) if (file = params[:batch][:file]).nil?
+
+    result = User.import(file)
+    users = result[:imported]
+    log = result[:log]
+
+    users.each do |u|
+      params[:allocation_tags_ids].split(' ').compact.uniq.map(&:to_i).each do |at|
+        allocation = Allocation.new user_id: u, profile_id: 1, allocation_tag_id: at, status: Allocation_Activated
+        log[:error] << t(:allocation, scope: [:users, :import, :log], user: u, allocation_tag: at) unless allocation.save
+      end
+    end
+
+    @log_success = "#{log[:success].count} usuários cadastrados com sucesso" if log[:success].count > 0
+    @log_errors = log[:error]
+
+    @log_link = save_log_into_file(log[:success] + log[:error])
+
+  #   raise %{#{t(:success_with_warning, scope: [:users, :import], log: log[:error].join("<br/>"))}} unless log[:error].empty? or log[:error].nil?
+  #   render json: {success: true, msg: t(:success, scope: [:users, :import])}
+  rescue => error
+    render json: {success: false, msg: "#{error}"}, status: :unprocessable_entity
+  end
+
+  def download_logs
+    authorize! :import_users, Administration
+
+    filename = "#{params[:file]}.txt"
+    filepath = File.join(Rails.root.to_s, "media/admin/logs/users/import", filename)
+
+    ## validar para nao redirecionar para home no caso de erro, para permanecer na mesma pagina
+
+    download_file(home_path, filepath, filename)
+  end
+
+  private
+
+    def save_log_into_file(logs)
+      filename = "log-#{I18n.l(Time.now, format: :log)}"
+      FileUtils.mkdir_p(dir = "#{Rails.root.to_s}/media/admin/logs/users/import")
+      File.open(File.join(dir, "#{filename}.txt"), "w") do |f|
+        f.puts(logs)
+      end
+      filename
+    end
 
 end

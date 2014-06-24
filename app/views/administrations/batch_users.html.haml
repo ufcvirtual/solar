@@ -1,0 +1,32 @@
+.block_wrapper.import-log
+
+  .block_title
+    %h2= t(".import_log")
+  .block_content_toolbar
+    = link_to "Download logs", admin_log_import_path(@log_link), type: "button", class: "btn", id: "download_logs"
+
+  .block_content.block_content_alt
+    %table.tb_list.tb_log
+      %tbody
+        - if @log_success
+          %tr.lines
+            %td.success= @log_success
+
+        - @log_errors.each do |error|
+          %tr.lines
+            %td.error= error
+
+:css
+
+  td.success {
+    color: #459101
+  }
+
+:javascript
+
+  $(function(){
+    $("#download_logs").click(function(e){
+      // e.preventDefault();
+      console.log(this);
+    });
+  });
