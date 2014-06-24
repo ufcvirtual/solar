@@ -159,7 +159,7 @@ class AllocationTag < ActiveRecord::Base
       uc_type = offer.curriculum_unit.try(:curriculum_unit_type).try(:description) unless offer.nil?
     elsif !allocation_tag.group.nil?
       offer   = allocation_tag.group.offer
-      detail  = [offer.course.try(:name), offer.curriculum_unit.try(:name), offer.semester.name].join(" | ") unless offer.nil?
+      detail  = [offer.course.try(:name), offer.curriculum_unit.try(:name), offer.semester.name, allocation_tag.group.code].join(" | ") unless offer.nil?
       uc_type = offer.curriculum_unit.try(:curriculum_unit_type).try(:description) unless offer.nil?
     end
 
