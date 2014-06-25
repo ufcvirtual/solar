@@ -4,7 +4,7 @@ post_1_ac_1:
   user_id: 1
   profile_id: 1
   level: 1
-  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+  content: 'Por outro lado, a consolidação das estruturas exige a precisão e a definição do sistema de formação de quadros que corresponde às necessidades.'
   created_at: <%= Time.at(Time.now.to_f - 20.days).iso8601(5) %>
   updated_at: <%= Time.at(Time.now.to_f - 20.days).iso8601(5) %>
 
@@ -15,7 +15,7 @@ post_2_ac_1:
   profile_id: 2
   parent_id: 1
   level: 2
-  content: 'Praesent quam ipsum, blandit et vehicula quis, gravida non risus. Morbi nec dolor purus.'
+  content: 'É importante questionar o quanto a necessidade de renovação processual maximiza as possibilidades por conta do levantamento das variáveis envolvidas.'
   created_at: <%= Time.at(Time.now.to_f - 19.days).iso8601(5) %>
   updated_at: <%= Time.at(Time.now.to_f - 19.days).iso8601(5) %>
 
@@ -25,7 +25,7 @@ post_3_ac_1:
   user_id: 1
   profile_id: 3
   level: 1
-  content: 'Sed tempus porttitor felis. Quisque porttitor viverra nisl, eget luctus leo luctus ac.'
+  content: 'Neste sentido, o acompanhamento das preferências de consumo apresenta tendências no sentido de aprovar a manutenção das formas de ação.'
   created_at: <%= Time.at(Time.now.to_f - 18.days).iso8601(5) %>
   updated_at: <%= Time.at(Time.now.to_f - 18.days).iso8601(5) %>
 
@@ -36,7 +36,7 @@ post_4_ac_1:
   profile_id: 2
   parent_id: 1
   level: 2
-  content: 'In hac habitasse platea dictumst.'
+  content: 'As experiências acumuladas demonstram que a crescente influência da mídia auxilia a preparação e a composição da gestão inovadora da qual fazemos parte.'
   created_at: <%= Time.at(Time.now.to_f - 17.days).iso8601(5) %>
   updated_at: <%= Time.at(Time.now.to_f - 17.days).iso8601(5) %>
 
@@ -46,7 +46,7 @@ post_1_ac2:
   user_id: 1
   profile_id: 1
   level: 1
-  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+  content: 'Por outro lado, a consolidação das estruturas exige a precisão e a definição do sistema de formação de quadros que corresponde às necessidades.'
   created_at: <%= Time.at(Time.now.to_f - 20.days).iso8601(5) %>
   updated_at: <%= Time.at(Time.now.to_f - 20.days).iso8601(5) %>
 
@@ -57,7 +57,7 @@ post_2_ac2:
   profile_id: 2
   parent_id: 7
   level: 2
-  content: 'Praesent quam ipsum, blandit et vehicula quis, gravida non risus. Morbi nec dolor purus.'
+  content: 'É importante questionar o quanto a necessidade de renovação processual maximiza as possibilidades por conta do levantamento das variáveis envolvidas.'
   created_at: <%= Time.at(Time.now.to_f - 19.days).iso8601(5) %>
   updated_at: <%= Time.at(Time.now.to_f - 19.days).iso8601(5) %>
 
@@ -67,7 +67,7 @@ post_3_ac2:
   user_id: 1
   profile_id: 3
   level: 1
-  content: 'Sed tempus porttitor felis. Quisque porttitor viverra nisl, eget luctus leo luctus ac.'
+  content: 'Neste sentido, o acompanhamento das preferências de consumo apresenta tendências no sentido de aprovar a manutenção das formas de ação.'
   created_at: <%= Time.at(Time.now.to_f - 18.days).iso8601(5) %>
   updated_at: <%= Time.at(Time.now.to_f - 18.days).iso8601(5) %>
 
@@ -78,7 +78,7 @@ post_4_ac2:
   profile_id: 2
   parent_id: 7
   level: 2
-  content: 'In hac habitasse platea dictumst.'
+  content: 'As experiências acumuladas demonstram que a crescente influência da mídia auxilia a preparação e a composição da gestão inovadora da qual fazemos parte.'
   created_at: <%= Time.at(Time.now.to_f - 17.days).iso8601(5) %>
   updated_at: <%= Time.at(Time.now.to_f - 17.days).iso8601(5) %>
 
@@ -89,7 +89,7 @@ post_1_forum_2:
   user_id: 1
   profile_id: 4
   level: 1
-  content: 'Sed quam nisl, commodo eget ullamcorper vel, lacinia vitae nunc.<br />Mauris sed mauris ac orci aliquam aliquet. In vulputate, nibh non semper iaculis, metus odio hendrerit est, vel tincidunt turpis leo commodo libero.<br />Sed quam nisl, commodo eget ullamcorper vel, lacinia vitae nunc.'
+  content: 'Neste sentido, o acompanhamento das preferências de consumo apresenta tendências no sentido de aprovar a manutenção das formas de ação.'
   created_at: <%= Time.at(Time.now.to_f - 20.days).iso8601(5) %>
   updated_at: <%= Time.at(Time.now.to_f - 20.days).iso8601(5) %>
 
@@ -99,7 +99,7 @@ post_2_forum_2:
   user_id: 2
   profile_id: 1
   level: 1
-  content: 'Vestibulum a magna nisl, sed pharetra purus. Suspendisse a sapien sit amet magna condimentum dictum facilisis vitae arcu.'
+  content: 'Não obstante, a adoção de políticas descentralizadoras agrega valor ao estabelecimento do investimento em reciclagem técnica. Assim mesmo, a complexidade dos estudos efetuados possibilita uma melhor visão global de todos os recursos funcionais envolvidos.'
   created_at: <%= Time.at(Time.now.to_f - 19.days).iso8601(5) %>
   updated_at: <%= Time.at(Time.now.to_f - 19.days).iso8601(5) %>
 
@@ -109,6 +109,6 @@ post_3_forum_2:
   user_id: 7
   profile_id: 1
   level: 1
-  content: 'Vestibulum a magna nisl, sed pharetra purus. Suspendisse a sapien sit amet magna condimentum dictum facilisis vitae arcu.'
+  content: 'As experiências acumuladas demonstram que a estrutura atual da organização talvez venha a ressaltar a relatividade do investimento em reciclagem técnica.'
   created_at: <%= Time.at(Time.now.to_f - 18.days).iso8601(5) %>
   updated_at: <%= Time.at(Time.now.to_f - 18.days).iso8601(5) %>

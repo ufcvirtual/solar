@@ -1,53 +1,53 @@
 forum_1:
   id: 1
   name: 'Forum 1'
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  description: 'No mundo atual, o fenômeno da Internet prepara-nos para enfrentar situações atípicas decorrentes dos conhecimentos estratégicos para atingir a excelência.'
   schedule_id: 6
 
 forum_2:
   id: 2
   name: 'Forum 2'
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  description: 'O empenho em analisar o novo modelo estrutural aqui preconizado agrega valor ao estabelecimento do sistema de participação geral.'
   schedule_id: 7
 
 forum_3:
   id: 3
   name: 'Forum 1'
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  description: 'Por conseguinte, o início da atividade geral de formação de atitudes não pode mais se dissociar dos modos de operação convencionais.'
   schedule_id: 7
 
 forum_4:
   id: 4
   name: 'Forum 1'
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  description: 'A prática cotidiana prova que a hegemonia do ambiente político ainda não demonstrou convincentemente que vai participar na mudança dos procedimentos normalmente adotados.'
   schedule_id: 7
 
 forum_5:
   id: 5
   name: 'Forum 3'
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  description: 'No mundo atual, o julgamento imparcial das eventualidades nos obriga à análise de alternativas às soluções ortodoxas.'
   schedule_id: 23
 
 forum_6:
   id: 6
   name: 'Forum 4'
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  description: 'Ainda assim, existem dúvidas a respeito de como a crescente influência da mídia obstaculiza a apreciação da importância das direções preferenciais no sentido do progresso.'
   schedule_id: 25
 
 forum_7:
   id: 7
   name: 'Forum 5'
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  description: 'Todas estas questões, devidamente ponderadas, levantam dúvidas sobre se a adoção de políticas descentralizadoras faz parte de um processo de gerenciamento do processo de comunicação como um todo.'
   schedule_id: 18 
 
 forum_8:
   id: 8
   name: 'Forum 6'
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  description: 'É importante questionar o quanto o fenômeno da Internet estende o alcance e a importância das condições financeiras e administrativas exigidas.'
   schedule_id: 26
 
 forum_9:
   id: 9
   name: 'Forum 7'
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  description: 'Assim mesmo, o desenvolvimento contínuo de distintas formas de atuação representa uma abertura para a melhoria dos procedimentos normalmente adotados.'
   schedule_id: 18
