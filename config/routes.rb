@@ -67,12 +67,12 @@ Solar::Application.routes.draw do
     get :logs, to: "administrations#logs", as: :logs
     get "logs/type/:type", to: "administrations#search_logs", as: :search_logs
 
-    ## users
-    get "/import/users", to: "administrations#import_users", as: :import_users
-    get "/file/users", to: "administrations#file_users", as: :file_users
-    post "/batch/users", to: "administrations#batch_users", as: :batch_users
-    get "logs/download/:file", to: "administrations#download_logs", as: :admin_log_import
+    ## import users
 
+    get "/import/users/filter", to: "administrations#import_users", as: :import_users_filter
+    get "/import/users/form", to: "administrations#import_users_form", as: :import_users_form
+    post "/import/users/batch", to: "administrations#import_users_batch", as: :import_users_batch
+    get "/import/users/log/:file", to: "administrations#import_users_log", as: :import_users_log
   end
 
   resources :administrations do

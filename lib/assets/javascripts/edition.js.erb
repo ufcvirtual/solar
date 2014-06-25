@@ -123,8 +123,12 @@ $(function(){
       if(ui.item == null)
         clear_radioboxes(true);
       else{
-        $("#radio_option_offer").click();
-        $("input[id^=radio_option]").prop("disabled", false);
+        if (!$("#semester").data("permit-offer")) { // nao permite selecao de oferta => importacao de usuarios
+          $("input#radio_option_group").prop("disabled", false).click();
+        } else {
+          $("#radio_option_offer").click();
+          $("input[id^=radio_option]").prop("disabled", false);
+        }
       }
     }
   });

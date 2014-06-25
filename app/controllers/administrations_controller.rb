@@ -5,7 +5,6 @@ class AdministrationsController < ApplicationController
   include SysLog::Actions
 
   layout false, except: [:users, :users_indication, :allocation_approval, :lessons, :logs, :import_users]
-  before_filter :set_active_tab_to_home, only: [:logs, :import_users]
 
   ## USERS
 
@@ -210,28 +209,26 @@ class AdministrationsController < ApplicationController
     @logs = log.where(user_id: users.map(&:id)).where("date(created_at) = ?", date.to_s).order("created_at").last(100)
   end
 
+  ## IMPORT USERS
 
-
-  ## USERS
-
-
+  # GET /import/users/filter
   def import_users
-    # authorize! :import_users, Administration
+    authorize! :import_users, Administration
 
     @types = CurriculumUnitType.all
   end
 
-  def file_users
-    # authorize! :import_users, Administration
+  # GET /import/users/form
+  def import_users_form
+    authorize! :import_users, Administration
 
     ## verificar se as turmas foram passadas
     @allocation_tags_ids = AllocationTag.where(group_id: params[:groups_id].split(" ")).map(&:id)
-
-    render layout: false
   end
 
-  def batch_users
-    # authorize! :import_users, Administration
+  # POST /import/users/batch
+  def import_users_batch
+    authorize! :import_users, Administration
 
     raise t(:invalid_file, scope: [:users, :import]) if (file = params[:batch][:file]).nil?
 
@@ -248,8 +245,7 @@ class AdministrationsController < ApplicationController
 
     @log_success = "#{log[:success].count} usuários cadastrados com sucesso" if log[:success].count > 0
     @log_errors = log[:error]
-
-    @log_link = save_log_into_file(log[:success] + log[:error])
+    @log_file = save_log_into_file(log[:success] + log[:error])
 
   #   raise %{#{t(:success_with_warning, scope: [:users, :import], log: log[:error].join("<br/>"))}} unless log[:error].empty? or log[:error].nil?
   #   render json: {success: true, msg: t(:success, scope: [:users, :import])}
@@ -257,15 +253,12 @@ class AdministrationsController < ApplicationController
     render json: {success: false, msg: "#{error}"}, status: :unprocessable_entity
   end
 
-  def download_logs
+  # GET /import/users/log
+  def import_users_log
     authorize! :import_users, Administration
 
-    filename = "#{params[:file]}.txt"
-    filepath = File.join(Rails.root.to_s, "media/admin/logs/users/import", filename)
-
-    ## validar para nao redirecionar para home no caso de erro, para permanecer na mesma pagina
-
-    download_file(home_path, filepath, filename)
+    filepath = File.join(Rails.root.to_s, "media/admin/logs/users/import", "#{current_user.id}-#{params[:file]}.txt")
+    download_file(home_path, filepath, "import-log.txt")
   end
 
   private
@@ -273,7 +266,7 @@ class AdministrationsController < ApplicationController
     def save_log_into_file(logs)
       filename = "log-#{I18n.l(Time.now, format: :log)}"
       FileUtils.mkdir_p(dir = "#{Rails.root.to_s}/media/admin/logs/users/import")
-      File.open(File.join(dir, "#{filename}.txt"), "w") do |f|
+      File.open(File.join(dir, "#{current_user.id}-#{filename}.txt"), "w") do |f|
         f.puts(logs)
       end
       filename

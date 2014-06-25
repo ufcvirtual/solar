@@ -531,3 +531,6 @@
 .icon-checkbox-unchecked:before {
 	content: "\e606";
 }
+.icon-download:before {
+	content: "\e073";
+}

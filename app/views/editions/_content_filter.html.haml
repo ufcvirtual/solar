@@ -22,7 +22,7 @@
       .semester
         - s_optional = (not(optionals.nil?) and optionals.include?("semester"))
         = label_tag :semester, [t(".semester"), s_optional ? '' : '*'].join
-        = select_tag :semester, nil, :'data-optional' => s_optional
+        = select_tag :semester, nil, :'data-optional' => s_optional, :'data-permit-offer' => defined?(permit_offer).nil? ? true : permit_offer
 
       .offer_groups_options
         .radio_options

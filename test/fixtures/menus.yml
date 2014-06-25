@@ -205,7 +205,7 @@ admin_import_users:
   name: menu_admin_import_users
   order: 9
   parent_id: 60
-  # resource_id: AINDA SEM RESOURCE
+  resource_id: 174
 
 # MENU PAI - 70
 disco_virtual:

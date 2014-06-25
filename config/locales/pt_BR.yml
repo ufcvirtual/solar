@@ -1308,6 +1308,7 @@ pt_BR:
   menu_admin_approval: Aprovação de perfis
   menu_admin_lessons: Consultar Aulas
   menu_admin_logs: Logs
+  menu_admin_import_users: Importação de usuários
 
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"
@@ -1705,6 +1706,12 @@ pt_BR:
       reject: Rejeitar
       accept: Aceitar
       not_specified: Não especificado
+    import_users:
+      select_file: "Seleção do arquivo"
+      delimiter: "Delimitador CSV"
+      import: "Importar"
+      import_log: "Resultado da importação de usuários"
+      download_log: "Download Log"
     logs:
       log_type: Tipo
       course: Curso

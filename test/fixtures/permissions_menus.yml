@@ -422,3 +422,15 @@ pm103:
 pm104:
   profile_id: 6
   menu_id: 608
+
+# import users
+
+# admin
+pm105:
+  profile_id: 6
+  menu_id: 609
+
+# editor
+pm106:
+  profile_id: 5
+  menu_id: 609

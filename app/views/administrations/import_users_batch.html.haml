@@ -1,9 +1,13 @@
 .block_wrapper.import-log
 
   .block_title
-    %h2= t(".import_log")
+    %h2
+      %i.icon-database
+      = t(:import_log, scope: [:administrations, :import_users])
+
   .block_content_toolbar
-    = link_to "Download logs", admin_log_import_path(@log_link), type: "button", class: "btn", id: "download_logs"
+    - link = raw [content_tag(:i, nil, class: "icon-download"), t(:download_log, scope: [:administrations, :import_users])].join
+    = link_to link, import_users_log_path(@log_file), type: "button", class: "btn", id: "download_logs"
 
   .block_content.block_content_alt
     %table.tb_list.tb_log

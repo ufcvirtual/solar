@@ -1094,6 +1094,7 @@ en_US:
   menu_admin_approval: Profiles approval
   menu_admin_lessons: Consult Lessons
   menu_admin_logs: Logs
+  menu_admin_import_users: Importing Users
 
   places_nav_panel_course_hint: "Type the course's name or part of it"
   places_nav_panel_semester_hint: "Type the semester or part of it"

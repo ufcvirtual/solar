@@ -1002,3 +1002,11 @@ res173:
   controller: 'administrations'
   action: 'logs'
   description: 'Visualizar logs dos usuários'
+
+# admin / import users
+
+res174:
+  id: 174
+  controller: 'administrations'
+  action: 'import_users'
+  description: 'Importar usuários de uma planilha'
