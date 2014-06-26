@@ -21,26 +21,25 @@ module V1
 
     namespace :event do
 
-      # # PUT integration/event/:id
-      # params do
-      #   requires :id, type: Integer, desc: "Event ID."
-      #   requires :DataInicio, :Tipo, :HoraInicio, :HoraFim, :Polo
-      # end
-      # put ":id" do
-      #   begin
-      #     event = ScheduleEvent.find(params[:id])
+      # PUT integration/event/:id
+      params do
+        requires :id, type: Integer, desc: "Event ID."
+        requires :Data, :HoraInicio, :HoraFim
+      end
+      put ":id" do
+        begin
+          event = ScheduleEvent.find(params[:id])
 
-      #     ActiveRecord::Base.transaction do
-      #       event.schedule.update_attributes! start_date: event[:DataInicio], end_date: (event.include?(:DataFim) ? event[:DataFim] : event[:DataInicio])
-      #       event.update_attributes! place: event[:Polo], start_hour: event[:HoraInicio], end_hour: event[:HoraFim]
-      #     end
+          ActiveRecord::Base.transaction do
+            event.schedule.update_attributes! start_date: params[:Data], end_date: params[:Data]
+            event.update_attributes! start_hour: params[:HoraInicio], end_hour: params[:HoraFim]
+          end
 
-      #     {ok: :ok}
-      #   rescue => error
-      #     raise "Erro: #{error}"
-      #     error!({error: error}, 422)
-      #   end
-      # end # put :id
+          {ok: :ok}
+        rescue => error
+          error!({error: error}, 422)
+        end
+      end # put :id
 
     end
 
@@ -78,19 +77,20 @@ module V1
       end # /
 
       # DELETE integration/events/:ids
-      params { requires :ids, type: String, desc: "Events IDs." }
-      delete ":ids" do
+      # params { requires :ids, type: String, desc: "Events IDs." }
+      # delete ":ids" do
+      delete "/" do
         begin
           ScheduleEvent.transaction do
-            ScheduleEvent.where(id: params[:ids].split(",")).destroy_all
+            # ScheduleEvent.where(id: params[:ids].split(",")).destroy_all
+            ScheduleEvent.where(id: params[:ids].collect{|param| param[:id]}.compact).destroy_all
           end
 
           {ok: :ok}
         rescue => error
-          raise "erro#{error}"
           error!({error: error}, 422)
         end
-      end # put :id
+      end # delete :id
 
     end
 

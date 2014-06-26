@@ -36,8 +36,11 @@ describe "Integrations" do
       context "with valid ip" do
         context "and existing events" do
           it {
+            events = {ids: [{id: 2}, {id: 3}]}
+
             expect{
-              delete "/api/v1/integration/events/2,3"
+              # delete "/api/v1/integration/events/2,3", events
+              delete "/api/v1/integration/events/", events
 
               response.status.should eq(200)
               response.body.should == {ok: :ok}.to_json
@@ -49,5 +52,37 @@ describe "Integrations" do
     end # :ids
 
   end # .events
+
+  describe ".event" do
+
+    describe "put :id" do
+
+      context "with valid ip" do
+        context "and existing event" do
+          it {
+            event = { Data: (Date.today - 1.day).to_s, HoraInicio: "10:00", HoraFim: "11:00" }
+
+            expect{
+              put "/api/v1/integration/event/3", event
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+              expect(ScheduleEvent.find(3).as_json).to eq({
+                description: "Encontro Presencial marcado para esse período", # não é alterado
+                end_hour: "11:00",
+                id: 3,
+                place: "Polo A", # não é alterado
+                schedule_id: 27,
+                start_hour: "10:00",
+                title: "Encontro Presencial", # não é alterado
+                type_event: 2 # não é alterado
+              }.as_json)
+            }.to change{ScheduleEvent.count}.by(0)
+          }
+        end
+      end
+
+    end # PUT :id
+
+  end # .event
 
 end
