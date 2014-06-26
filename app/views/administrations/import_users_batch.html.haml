@@ -12,11 +12,11 @@
   .block_content.block_content_alt
     %table.tb_list.tb_log
       %tbody
-        - if @log_success
+        - if ((lcount = @log[:success].count) > 0)
           %tr.lines
-            %td.success= @log_success
+            %td.success= t(:registered_success, scope: [:administrations, :import_users], count: lcount)
 
-        - @log_errors.each do |error|
+        - @log[:error].each do |error|
           %tr.lines
             %td.error= error
 
@@ -25,12 +25,3 @@
   td.success {
     color: #459101
   }
-
-:javascript
-
-  $(function(){
-    $("#download_logs").click(function(e){
-      // e.preventDefault();
-      console.log(this);
-    });
-  });

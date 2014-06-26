@@ -232,41 +232,41 @@ class AdministrationsController < ApplicationController
 
     raise t(:invalid_file, scope: [:users, :import]) if (file = params[:batch][:file]).nil?
 
-    result = User.import(file)
+    delimiter = [';', ','].include?(params[:batch][:delimiter]) ? params[:batch][:delimiter] : ';'
+    result = User.import(file, delimiter)
     users = result[:imported]
-    log = result[:log]
+    @log = result[:log]
 
     users.each do |u|
       params[:allocation_tags_ids].split(' ').compact.uniq.map(&:to_i).each do |at|
         allocation = Allocation.new user_id: u, profile_id: 1, allocation_tag_id: at, status: Allocation_Activated
-        log[:error] << t(:allocation, scope: [:users, :import, :log], user: u, allocation_tag: at) unless allocation.save
+        @log[:error] << t(:allocation, scope: [:users, :import, :log], user: u, allocation_tag: at) unless allocation.save
       end
     end
 
-    @log_success = "#{log[:success].count} usuários cadastrados com sucesso" if log[:success].count > 0
-    @log_errors = log[:error]
-    @log_file = save_log_into_file(log[:success] + log[:error])
-
-  #   raise %{#{t(:success_with_warning, scope: [:users, :import], log: log[:error].join("<br/>"))}} unless log[:error].empty? or log[:error].nil?
-  #   render json: {success: true, msg: t(:success, scope: [:users, :import])}
+    @log_file = save_log_into_file(@log[:success] + @log[:error])
   rescue => error
-    render json: {success: false, msg: "#{error}"}, status: :unprocessable_entity
+    render json: {success: false, alert: "#{error}"}, status: :unprocessable_entity
   end
 
   # GET /import/users/log
   def import_users_log
     authorize! :import_users, Administration
 
-    filepath = File.join(Rails.root.to_s, "media/admin/logs/users/import", "#{current_user.id}-#{params[:file]}.txt")
-    download_file(home_path, filepath, "import-log.txt")
+    media_path = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["import_users"]["media_path"]
+    file_path = File.join(Rails.root.to_s, media_path, params[:file])
+
+    download_file(home_path, file_path, "import-log.txt")
   end
 
   private
 
     def save_log_into_file(logs)
-      filename = "log-#{I18n.l(Time.now, format: :log)}"
-      FileUtils.mkdir_p(dir = "#{Rails.root.to_s}/media/admin/logs/users/import")
-      File.open(File.join(dir, "#{current_user.id}-#{filename}.txt"), "w") do |f|
+      filename = "#{current_user.id}-log-#{I18n.l(Time.now, format: :log)}"
+      media_path = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["import_users"]["media_path"]
+
+      FileUtils.mkdir_p(dir = File.join(Rails.root.to_s, media_path))
+      File.open(File.join(dir, filename), "w") do |f|
         f.puts(logs)
       end
       filename

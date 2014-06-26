@@ -1707,6 +1707,10 @@ pt_BR:
       accept: Aceitar
       not_specified: Não especificado
     import_users:
+      wait: "Carregando..."
+      warning: "<b>Importante:</b> para importação de usuários, baixe o modelo e obedeça o padrão da planilha de exemplo (%{link})"
+      model: "Download do modelo"
+      registered_success: "%{count} usuários cadastrados com sucesso"
       select_file: "Seleção do arquivo"
       delimiter: "Delimitador CSV"
       import: "Importar"

@@ -1,2 +1,14 @@
+.import-warning
+  - link = link_to(t(:model, scope: [:administrations, :import_users]), "/modelo-importacao.csv")
+  = raw t(:warning, scope: [:administrations, :import_users], link: link)
 
 = render partial: "editions/content_filter", locals: {list_class: "import-users", url: import_users_form_path, optionals: nil, types: @types, back: false, type_id: nil, permit_offer: false}
+
+:css
+
+  .import-warning {
+    background-color: #E8EFF6;
+    color: #4B4B4B;
+    padding: 5px 5px 5px 5px;
+    font-size: 12px;
+  }

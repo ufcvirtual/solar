@@ -250,12 +250,14 @@ class User < ActiveRecord::Base
     imported = []
     log = {error: [], success: []}
     csv = Roo::CSV.new(file.path, csv_options: {col_sep: sep})
-
     header = csv.row(1)
+
+    raise I18n.t(:invalid_file, scope: [:users, :import]) unless header.join(';') == YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["import_users"]["header"]
+
     (2..csv.last_row).each do |i|
       row = Hash[[header, csv.row(i)].transpose]
-
       user = new
+
       user.attributes = row.to_hash.slice(*accessible_attributes)
 
       user.username = user.cpf if user.username.nil?

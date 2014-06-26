@@ -1455,6 +1455,16 @@ en_US:
       reject: Reject
       accept: Accept
       not_specified: Not specified
+    import_users:
+      wait: "Wait..."
+      warning: "<b>Important:</b> for importing users, download the template and obey the standard sample worksheet (%{link})"
+      model: "Download sample"
+      registered_success: "%{count} registered users successfully"
+      select_file: "File Selection"
+      delimiter: "CSV delimiter"
+      import: "Import"
+      import_log: "Result Of Importing Users"
+      download_log: "Download Log"
     logs:
       log_type: Type
       course: Course

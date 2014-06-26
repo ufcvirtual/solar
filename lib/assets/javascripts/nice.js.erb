@@ -261,6 +261,15 @@ $.fn.serialize_and_submit = function(options) {
     }
   }
 
+  if (typeof(options) != "undefined" && typeof(options.error) == "undefined") { // definir error
+    options.error = function(data) {
+      $.fancybox.close();
+      var response = JSON.parse(data.responseText);
+      if (typeof(response.alert) != "undefined")
+        flash_message(response.alert, 'alert');
+    }
+  }
+
   if (typeof(options) != "undefined" && typeof(options.files) != "undefined")
     var data = (new FormData($(this)[0]));
   else
@@ -271,12 +280,7 @@ $.fn.serialize_and_submit = function(options) {
     url: $(this).attr('action'),
     data: data,
     success: options.success,
-    error: function(data) {
-      $.fancybox.close();
-      var response = JSON.parse(data.responseText);
-      if (typeof(response.alert) != "undefined")
-        flash_message(response.alert, 'alert');
-    }
+    error: options.error
   };
 
   if (typeof(options.files) != "undefined") {

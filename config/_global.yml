@@ -1,15 +1,24 @@
 
 production:
+  import_users:
+    media_path: "/media/admin/logs/users/import"
+    header: "name;cpf;gender;email;address;country;state;city;institution"
   url_options:
     :host: "localhost"
     :port: 3000
 
 development:
+  import_users:
+    media_path: "/media/admin/logs/users/import"
+    header: "name;cpf;gender;email;address;country;state;city;institution"
   url_options:
     :host: "localhost"
     :port: 3000
 
 test:
+  import_users:
+    media_path: "/media/admin/logs/users/import"
+    header: "name;cpf;gender;email;address;country;state;city;institution"
   url_options:
     :host: "localhost"
     :port: 3000
