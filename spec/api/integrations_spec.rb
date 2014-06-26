@@ -31,6 +31,23 @@ describe "Integrations" do
 
     end # /
 
+    describe ":ids" do
+
+      context "with valid ip" do
+        context "and existing events" do
+          it {
+            expect{
+              delete "/api/v1/integration/events/2,3"
+
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+            }.to change{ScheduleEvent.count}.by(-2)
+          }
+        end
+      end
+
+    end # :ids
+
   end # .events
 
 end
