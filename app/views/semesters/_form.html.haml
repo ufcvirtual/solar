@@ -35,15 +35,19 @@
 
 :javascript
 
-  // datepicker
-  var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
+  $(function(){
+    // datepicker
+    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
 
-  // impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final
-  $('#offer_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_end_date').datepicker("option", "minDate", selected); } }) );
-  $('#offer_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_start_date').datepicker("option", "maxDate", selected); } }) );
+    // impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final
+    $('#offer_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_end_date').datepicker("option", "minDate", selected); } }) );
+    $('#offer_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_start_date').datepicker("option", "maxDate", selected); } }) );
 
-  $('#enrollment_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#enrollment_end_date').datepicker("option", "minDate", selected); } }) );
-  $('#enrollment_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#enrollment_start_date').datepicker("option", "maxDate", selected); } }) );
+    $('#enrollment_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#enrollment_end_date').datepicker("option", "minDate", selected); } }) );
+    $('#enrollment_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#enrollment_start_date').datepicker("option", "maxDate", selected); } }) );
+
+    $('#enrollment_end_date').datepicker('setDate', "#{l((@semester.enrollment_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}");
+  });
 
   $('#save').click(function(){
     $('form#semester_form').serialize_and_submit({
