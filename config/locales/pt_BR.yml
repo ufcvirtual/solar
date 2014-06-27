@@ -2172,6 +2172,7 @@ pt_BR:
       presential_meeting: Encontro Presencial
       recess: Recesso
       holiday: Feriado
+      webconference_lesson: Aula de Webconferência
     form:
       groups: Turmas
       new: Novo evento
@@ -2209,6 +2210,7 @@ pt_BR:
       edit: Editar
       details: Ver detalhes
       see_groups: Ver turmas
+      cant_change: "Evento integrado, não pode ser alterado."
     close: Fechar
     calendar:
       new_chat: Novo Chat
@@ -2220,6 +2222,7 @@ pt_BR:
       assignment: Trabalho
       presential_meeting: Encontro Presencial
       presential_test: Prova Presencial
+      webconference_lesson: Aula de Webconferência
       recess_or_holiday: Recesso ou Feriado
       other: Outros
       legend: Legenda

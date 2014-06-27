@@ -1,4 +1,4 @@
-- show_fields = (@schedule_event.type_event == Presential_Meeting or @schedule_event.type_event == Presential_Test)
+- show_fields = [Presential_Meeting, Presential_Test, WebConferenceLesson].include?(@schedule_event.type_event)
 
 .show_event
   %h1#lightBoxDialogTitle= t(".event_details")
@@ -8,13 +8,9 @@
       = label_tag t(".title"), nil, class: "form_label"
       %span.label_info= @schedule_event.title
 
-    - types = {:"#{t(:presential_meeting, scope: [:schedule_events, :types])}" => Presential_Meeting, 
-      :"#{t(:presential_test, scope: [:schedule_events, :types])}" => Presential_Test, 
-      :"#{t(:recess, scope: [:schedule_events, :types])}" => Recess, 
-      :"#{t(:holiday, scope: [:schedule_events, :types])}" => Holiday}
     .input
       = label_tag t(".type_event"), nil, class: "form_label"
-      %span.label_info= types.key(@schedule_event.type_event)
+      %span.label_info= @schedule_event.type_name
 
     .input{style: show_fields ? "" : "display: none"}
       = label_tag t(".place"), nil, class: "form_label"

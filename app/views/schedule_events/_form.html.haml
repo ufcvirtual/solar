@@ -1,4 +1,4 @@
-- show_fields = (@schedule_event.type_event == Presential_Meeting or @schedule_event.type_event == Presential_Test)
+- show_fields = [Presential_Meeting, Presential_Test, WebConferenceLesson].include?(@schedule_event.type_event)
 
 .new_event
   = simple_form_for @schedule_event, html: {id: 'event_form', multipart: true} do |f|
@@ -11,6 +11,7 @@
       = f.input :title, maxlength: 250, required: true
       - types = {:"#{t(:presential_meeting, scope: [:schedule_events, :types])}" => Presential_Meeting, 
         :"#{t(:presential_test, scope: [:schedule_events, :types])}" => Presential_Test, 
+        :"#{t(:webconference_lesson, scope: [:schedule_events, :types])}" => WebConferenceLesson,
         :"#{t(:recess, scope: [:schedule_events, :types])}" => Recess, 
         :"#{t(:holiday, scope: [:schedule_events, :types])}" => Holiday}
       - if @schedule_event.persisted?

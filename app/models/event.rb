@@ -42,11 +42,13 @@ class Event < ActiveRecord::Base
         when "Discussion"
           "#CAFCCC"
         when "ScheduleEvent"
-          if type_event == 1
+          if type_event == Presential_Test
             "#F5D5EF"
-          elsif type_event == 2
+          elsif type_event == Presential_Meeting
             "#FFD9E0"
-          else
+          elsif type_event == WebConferenceLesson
+            "#F5DA81"
+          else # Recess or Holiday
             "#E3E3E3"
           end
         else

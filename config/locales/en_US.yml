@@ -1891,6 +1891,7 @@ en_US:
       presential_meeting: Presential Meeting
       recess: Recess
       holiday: Holiday
+      webconference_lesson: Webconference Lesson
     form:
       groups: Groups
       new: New event
@@ -1927,6 +1928,7 @@ en_US:
       edit: Edit
       details: See details
       see_groups: See groups
+      cant_change: "Integrated event, can't be changed."
     close: Close
     calendar:
       new_chat: New Chat
@@ -1938,6 +1940,7 @@ en_US:
       assignment: Assignment
       presential_meeting: Presential Meeting
       presential_test: Presential Test
+      webconference_lesson: Webconference Lesson
       recess_or_holiday: Recess or Holiday
       other: Others
       legend: Legend

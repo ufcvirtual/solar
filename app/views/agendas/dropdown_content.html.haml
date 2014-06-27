@@ -28,12 +28,15 @@
   .line
 
   .btn-group
+    - can_change = (not(@event.respond_to?(:can_change?)) or @event.can_change?)
     .left
       - if can? :destroy, @model_name, on: @allocation_tags_ids.split(" ")
-        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_event', :"data-link-delete" => polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t(".remove"), id: @event.id
+        = link_to_if can_change, (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_event', :"data-link-delete" => polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t(".remove"), id: @event.id do
+          = button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution disabled', :'data-tooltip' => t(".cant_change")
     .right{style: (can?(:edit, @model_name, on: @allocation_tags_ids) ? "" : "margin-left: 96px") }
       - if can? :edit, @model_name, on: @allocation_tags_ids
-        = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids, calendar: true), class: 'btn edit_event', :'data-tooltip' => t(".edit"), id: @event.id
+        = link_to_if can_change, (content_tag(:i, nil, class: 'icon-edit')), edit_polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids, calendar: true), class: 'btn edit_event', :'data-tooltip' => t(".edit"), id: @event.id do
+          = button_tag (content_tag(:i, nil, class: 'icon-edit')), class: 'btn disabled', :'data-tooltip' => t(".cant_change")
       - if can? :show, @model_name, on: @allocation_tags_ids
         = link_to (content_tag(:i, nil, class: 'icon-eye')), polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), class: 'btn btn_main show_event', :'data-tooltip' => t(".details"), id: @event.id
 
