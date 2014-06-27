@@ -113,4 +113,75 @@ class AdministrationsControllerTest < ActionController::TestCase
 
     assert_response :success
   end
+
+  ## import users
+
+  test "importacao de users - acessar pagina inicial" do
+    get :import_users
+    assert_response :success
+  end
+
+  test "importacao de users - tentar enviar arquivo invalido" do
+    # curso livre - turma IL-MAR
+    assert_no_difference("User.count") do
+      assert_no_difference("Allocation.count") do
+        post :import_users_batch, {
+          allocation_tags_ids: "#{allocation_tags(:al37).id}",
+          batch: {file: fixture_file_upload('files/import-users/invalid-header.csv')}
+        }
+      end
+    end
+
+    assert_equal get_json_response("alert"), I18n.t(:invalid_file, scope: [:administrations, :import_users])
+  end
+
+  test "importacao de users - importar users para uma turma e baixar log" do
+    # curso livre - turma IL-MAR
+    assert_difference("User.count", 3) do
+      assert_difference("Allocation.count", 6) do
+        post :import_users_batch, {
+          allocation_tags_ids: "#{allocation_tags(:al37).id}",
+          batch: {file: fixture_file_upload('files/import-users/new.csv')}
+        }
+      end
+    end
+
+    assert_not_nil file = assigns(:log_file)
+
+    get :import_users_log, file: file
+    assert_response :success
+  end
+
+  test "importacao de users - importar users existentes para uma turma" do
+    # curso livre - turma IL-MAR
+    assert_difference("User.count", 3) do
+      assert_difference("Allocation.count", 6) do
+        post :import_users_batch, {
+          allocation_tags_ids: "#{allocation_tags(:al37).id}",
+          batch: {file: fixture_file_upload('files/import-users/new.csv')}
+        }
+      end
+    end
+
+    # curso livre - turma IL-MAR
+    assert_no_difference("User.count") do
+      assert_no_difference("Allocation.count") do
+        post :import_users_batch, {
+          allocation_tags_ids: "#{allocation_tags(:al37).id}",
+          batch: {file: fixture_file_upload('files/import-users/existents.csv')}
+        }
+      end
+    end
+
+    # quimica I - QM-MAR
+    assert_no_difference("User.count") do
+      assert_difference("Allocation.count", 1) do
+        post :import_users_batch, {
+          allocation_tags_ids: "#{allocation_tags(:al11).id}",
+          batch: {file: fixture_file_upload('files/import-users/existents.csv')}
+        }
+      end
+    end
+  end
+
 end

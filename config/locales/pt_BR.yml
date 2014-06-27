@@ -1710,12 +1710,18 @@ pt_BR:
       wait: "Carregando..."
       warning: "<b>Importante:</b> para importação de usuários, baixe o modelo e obedeça o padrão da planilha de exemplo (%{link})"
       model: "Download do modelo"
-      registered_success: "%{count} usuários cadastrados com sucesso"
+      registered_success: "%{count} usuários importados com sucesso"
       select_file: "Seleção do arquivo"
       delimiter: "Delimitador CSV"
       import: "Importar"
       import_log: "Resultado da importação de usuários"
       download_log: "Download Log"
+      invalid_file: "Arquivo inválido"
+      log:
+        success: "[SUCESSO]: CPF: %{cpf}, importado com sucesso"
+        error: "[ERRO]: CPF: %{cpf}, %{error}"
+        allocation_success: "[SUCESSO]: CPF: %{cpf}, Matriculado em %{allocation_tag}"
+        allocation_error: "[ERRO]: CPF: %{cpf}, Não foi possível matricular"
     logs:
       log_type: Tipo
       course: Curso
@@ -2289,15 +2295,6 @@ pt_BR:
       integrated: "Integrado com o Módulo Acadêmico: "
       y: Sim
       n: Não
-    import:
-      success: "Usuarios importados com sucesso"
-      success_with_warning: "Foram encontrados erros na importação de alguns usuários<br/><br/>%{log}"
-      invalid_file: "Arquivo inválido"
-      error: "Não foi possível importar usuários"
-      log:
-        success: "[SUCESSO]: CPF: %{cpf} importado com sucesso"
-        error: "[ERRO]: CPF: %{cpf} - %{error}"
-        allocation: "[ERRO]: user: %{user} - Não foi possível criar alocação para allocation tag %{allocation_tag}"
     request_profile:
       save: Salvar
       cancel: Cancelar

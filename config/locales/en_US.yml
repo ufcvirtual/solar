@@ -1465,6 +1465,12 @@ en_US:
       import: "Import"
       import_log: "Result Of Importing Users"
       download_log: "Download Log"
+      invalid_file: "Invalid file"
+      log:
+        success: "[SUCESSO]: CPF: %{cpf}, successfully imported"
+        error: "[ERRO]: CPF: %{cpf}, %{error}"
+        allocation_success: "[SUCESSO]: CPF: %{cpf}, enrolled in %{allocation_tag}"
+        allocation_error: "[ERRO]: CPF: %{cpf}, not been possible to enroll"
     logs:
       log_type: Type
       course: Course
@@ -2004,15 +2010,6 @@ en_US:
       integrated: "Integrated with Módulo Acadêmico: "
       y: 'Yes'
       n: 'No'
-    import:
-      success: "Users successfully imported"
-      success_with_warning: "Errors found in import of some users<br/><br/>%{log}"
-      invalid_file: "Invalid file"
-      error: "Unable to import users"
-      log:
-        success: "[SUCCESS]: CPF: %{cpf} successfully imported"
-        error: "[ERROR]: CPF: %{cpf} - %{error}"
-        allocation: "[ERROR]: user: %{user} - Unable to create allocation for allocation tag %{allocation_tag}"
     request_profile:
       save: Save
       cancel: Cancel

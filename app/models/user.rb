@@ -252,11 +252,13 @@ class User < ActiveRecord::Base
     csv = Roo::CSV.new(file.path, csv_options: {col_sep: sep})
     header = csv.row(1)
 
-    raise I18n.t(:invalid_file, scope: [:users, :import]) unless header.join(';') == YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["import_users"]["header"]
+    raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) unless header.join(';') == YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["import_users"]["header"]
 
     (2..csv.last_row).each do |i|
       row = Hash[[header, csv.row(i)].transpose]
-      user = new
+
+      user_exist = where(cpf: row['cpf']).first
+      user = user_exist.nil? ? new : user_exist
 
       user.attributes = row.to_hash.slice(*accessible_attributes)
 
@@ -264,12 +266,13 @@ class User < ActiveRecord::Base
       user.nick = user.username if user.nick.nil?
       user.birthdate = "1970-01-01" if user.birthdate.nil? # verificar este campo
       user.password = "123456" if user.password.nil?
+      user.active = true
 
       if user.save
-        log[:success] << I18n.t(:success, scope: [:users, :import, :log], cpf: user.cpf)
-        imported << user.id
+        log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
+        imported << user
       else
-        log[:error] << I18n.t(:error, scope: [:users, :import, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(", "))
+        log[:error] << I18n.t(:error, scope: [:administrations, :import_users, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(", "))
       end
     end ## each
 

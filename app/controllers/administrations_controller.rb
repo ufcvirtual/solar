@@ -230,17 +230,21 @@ class AdministrationsController < ApplicationController
   def import_users_batch
     authorize! :import_users, Administration
 
-    raise t(:invalid_file, scope: [:users, :import]) if (file = params[:batch][:file]).nil?
+    raise t(:invalid_file, scope: [:administrations, :import_users]) if (file = params[:batch][:file]).nil?
 
     delimiter = [';', ','].include?(params[:batch][:delimiter]) ? params[:batch][:delimiter] : ';'
     result = User.import(file, delimiter)
     users = result[:imported]
     @log = result[:log]
 
-    users.each do |u|
+    users.each do |user|
       params[:allocation_tags_ids].split(' ').compact.uniq.map(&:to_i).each do |at|
-        allocation = Allocation.new user_id: u, profile_id: 1, allocation_tag_id: at, status: Allocation_Activated
-        @log[:error] << t(:allocation, scope: [:users, :import, :log], user: u, allocation_tag: at) unless allocation.save
+        begin
+          AllocationTag.find(at).group.allocate_user(user.id, Profile.student_profile)
+          @log[:success] << t(:allocation_success, scope: [:administrations, :import_users, :log], cpf: user.cpf, allocation_tag: at)
+        rescue => error
+          @log[:error] << t(:allocation_error, scope: [:administrations, :import_users, :log], cpf: user.cpf)
+        end
       end
     end
 
