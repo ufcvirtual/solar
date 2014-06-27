@@ -4,6 +4,7 @@ recess1:
   description: Recesso institucional
   schedule_id: 27 #2
   type_event: 3
+  integrated: false
 
 presential_test1:
   id: 2
@@ -14,6 +15,7 @@ presential_test1:
   start_hour: "10:30"
   end_hour: "12:30"
   place: "Polo A"
+  integrated: true
 
 presential_meeting1:
   id: 3
@@ -24,6 +26,7 @@ presential_meeting1:
   start_hour: "10:30"
   end_hour: "12:30"
   place: "Polo A"
+  integrated: true
 
 holiday1:
   id: 4
@@ -31,3 +34,4 @@ holiday1:
   description: Feriado nesse período
   schedule_id: 27 #5
   type_event: 4
+  integrated: false

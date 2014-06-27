@@ -78,11 +78,11 @@ module V1
 
       # DELETE integration/events/:ids
       # params { requires :ids, type: String, desc: "Events IDs." }
+      params { requires :ids, type: Array, desc: "Events IDs." }
       # delete ":ids" do
       delete "/" do
         begin
           ScheduleEvent.transaction do
-            # ScheduleEvent.where(id: params[:ids].split(",")).destroy_all
             ScheduleEvent.where(id: params[:ids].collect{|param| param[:id]}.compact).destroy_all
           end
 

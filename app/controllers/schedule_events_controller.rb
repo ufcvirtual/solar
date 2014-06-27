@@ -40,7 +40,7 @@ class ScheduleEventsController < ApplicationController
     @schedule_event = ScheduleEvent.find(params[:id])
     
     begin
-      @schedule_event.update_attributes!(params[:schedule_event])
+      @schedule_event.update_attributes!(params[:schedule_event]) if @schedule_event.can_change?
 
       render json: {success: true, notice: t(:updated, scope: [:schedule_events, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
@@ -54,7 +54,8 @@ class ScheduleEventsController < ApplicationController
   def destroy
     authorize! :destroy, ScheduleEvent, on: params[:allocation_tags_ids]
     begin
-      ScheduleEvent.find(params[:id]).try(:destroy)
+      schedule_event = ScheduleEvent.find(params[:id])
+      schedule_event.try(:destroy) if schedule_event.can_change?
       render json: {success: true, notice: t(:deleted, scope: [:schedule_events, :success])}
     rescue
       render json: {success: false, alert: t(:deleted, scope: [:schedule_events, :error])}, status: :unprocessable_entity

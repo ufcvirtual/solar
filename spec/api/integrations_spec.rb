@@ -14,19 +14,52 @@ describe "Integrations" do
             events = {
               CodigoDisciplina: "RM301", CodigoCurso: "109", Periodo: "2011.1", DataInserida: {
                 Tipo: 1, Data: "2014-11-01", Polo: "Pindamanhangaba", HoraInicio: "10:00", HoraFim: "11:00" },
-              Turmas: ["QM-MAR", "TL-FOR", "QM-MAR"]
+              Turmas: ["QM-CAU", "TL-FOR", "QM-MAR"]
             }
 
             expect{
               post "/api/v1/integration/events/", events
 
               response.status.should eq(201)
-              response.body.should == [ {Codigo: "QM-MAR", id: ScheduleEvent.last(3).first.id}, 
+              response.body.should == [ {Codigo: "QM-CAU", id: ScheduleEvent.last(3).first.id}, 
                 {Codigo: "TL-FOR", id: ScheduleEvent.last(2).first.id}, {Codigo: "QM-MAR", id: ScheduleEvent.last.id}
               ].to_json
             }.to change{ScheduleEvent.count}.by(3)
           }
         end
+
+        context "and not existing group" do
+          it {
+            events = {
+              CodigoDisciplina: "RM301", CodigoCurso: "109", Periodo: "2011.1", DataInserida: {
+                Tipo: 1, Data: "2014-11-01", Polo: "Pindamanhangaba", HoraInicio: "10:00", HoraFim: "11:00" },
+              Turmas: ["T01", "TL-FOR", "QM-MAR"]
+            }
+
+            expect{
+              post "/api/v1/integration/events/", events
+
+              response.status.should eq(422)
+            }.to change{ScheduleEvent.count}.by(0)
+          }
+        end
+
+        context "and missing event params" do
+          it {
+            events = {
+              CodigoDisciplina: "RM301", CodigoCurso: "109", Periodo: "2011.1", DataInserida: {
+                Tipo: 1, Polo: "Pindamanhangaba", HoraInicio: "10:00", HoraFim: "11:00" },
+              Turmas: ["QM-CAU", "TL-FOR", "QM-MAR"]
+            }
+
+            expect{
+              post "/api/v1/integration/events/", events
+
+              response.status.should eq(422)
+            }.to change{ScheduleEvent.count}.by(0)
+          }
+        end
+
       end # with valid ip
 
     end # /
@@ -42,6 +75,7 @@ describe "Integrations" do
               # delete "/api/v1/integration/events/2,3", events
               delete "/api/v1/integration/events/", events
 
+              # raise "#{response.body}"
               response.status.should eq(200)
               response.body.should == {ok: :ok}.to_json
             }.to change{ScheduleEvent.count}.by(-2)
@@ -74,7 +108,8 @@ describe "Integrations" do
                 schedule_id: 27,
                 start_hour: "10:00",
                 title: "Encontro Presencial", # não é alterado
-                type_event: 2 # não é alterado
+                type_event: 2, # não é alterado
+                integrated: true
               }.as_json)
             }.to change{ScheduleEvent.count}.by(0)
           }

@@ -18,9 +18,6 @@ class ScheduleEvent < Event
 
   attr_accessible :title, :description, :schedule_attributes, :schedule_id, :type_event, :start_hour, :end_hour, :place
 
-  before_save :can_change?
-  before_destroy :can_change?
-
   def verify_hours
     errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:schedule_events, :error])) if end_hour.rjust(5, '0') < start_hour.rjust(5, '0')
   end
