@@ -55,12 +55,27 @@ describe "Integrations" do
             expect{
               post "/api/v1/integration/events/", events
 
-              response.status.should eq(422)
+              response.status.should eq(400)
             }.to change{ScheduleEvent.count}.by(0)
           }
         end
 
       end # with valid ip
+
+      context "with invalid ip" do
+        it "gets a not found error" do
+          events = {
+            CodigoDisciplina: "RM301", CodigoCurso: "109", Periodo: "2011.1", DataInserida: {
+              Tipo: 1, Data: "2014-11-01", Polo: "Pindamanhangaba", HoraInicio: "10:00", HoraFim: "11:00" },
+            Turmas: ["QM-CAU", "TL-FOR", "QM-MAR"]
+          }
+
+          expect{
+            post "/api/v1/integration/events/", events, "REMOTE_ADDR" => "127.0.0.2"
+            response.status.should eq(404)
+            }.to change{ScheduleEvent.count}.by(0)
+        end
+      end
 
     end # /
 
@@ -75,11 +90,49 @@ describe "Integrations" do
               # delete "/api/v1/integration/events/2,3", events
               delete "/api/v1/integration/events/", events
 
-              # raise "#{response.body}"
               response.status.should eq(200)
               response.body.should == {ok: :ok}.to_json
             }.to change{ScheduleEvent.count}.by(-2)
           }
+        end
+
+        context "and non existing events" do
+          it {
+            events = {ids: [{id: 122}]}
+
+            expect{
+              # delete "/api/v1/integration/events/122", events
+              delete "/api/v1/integration/events/", events
+
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+            }.to change{ScheduleEvent.count}.by(0)
+          }
+        end
+
+        context "and missing params" do
+          it {
+            events = {id: 2}
+
+            expect{
+              # delete "/api/v1/integration/events/122", events
+              delete "/api/v1/integration/events/", events
+
+              response.status.should eq(400)
+            }.to change{ScheduleEvent.count}.by(0)
+          }
+        end        
+      end # valid ip
+
+      context "with invalid ip" do
+        it "gets a not found error" do
+          events = {ids: [{id: 2}, {id: 3}]}
+
+          expect{
+            # delete "/api/v1/integration/events/2,3", events, "REMOTE_ADDR" => "127.0.0.2"
+            delete "/api/v1/integration/events/", events, "REMOTE_ADDR" => "127.0.0.2"
+            response.status.should eq(404)
+            }.to change{ScheduleEvent.count}.by(0)
         end
       end
 
@@ -113,6 +166,39 @@ describe "Integrations" do
               }.as_json)
             }.to change{ScheduleEvent.count}.by(0)
           }
+        end
+
+        context "and non existing event" do
+          it {
+            event = { Data: (Date.today - 1.day).to_s, HoraInicio: "10:00", HoraFim: "11:00" }
+
+            expect{
+              put "/api/v1/integration/event/333", event
+              response.status.should eq(422)
+            }.to change{ScheduleEvent.count}.by(0)
+          }
+        end
+
+        context "and missing params" do
+          it {
+            event = { Data: (Date.today - 1.day).to_s, HoraInicio: "10:00" }
+
+            expect{
+              put "/api/v1/integration/event/3", event
+              response.status.should eq(400)
+            }.to change{ScheduleEvent.count}.by(0)
+          }
+        end
+      end # valid ip
+
+      context "with invalid ip" do
+        it "gets a not found error" do
+          event = { Data: (Date.today - 1.day).to_s, HoraInicio: "10:00", HoraFim: "11:00" }
+
+          expect{
+            put "/api/v1/integration/event/3", event, "REMOTE_ADDR" => "127.0.0.2"
+            response.status.should eq(404)
+            }.to change{ScheduleEvent.count}.by(0)
         end
       end
 

@@ -48,7 +48,10 @@ module V1
       # POST integration/events
       params do
         requires :Turmas, type: Array
-        requires :DataInserida, :CodigoCurso, :CodigoDisciplina, :Periodo
+        requires :CodigoCurso, :CodigoDisciplina, :Periodo
+        requires :DataInserida do
+          requires :Data, :HoraInicio, :HoraFim, :Polo, :Tipo
+        end
       end
       post "/" do
         groups_events_ids = []
