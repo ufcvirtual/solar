@@ -15,7 +15,7 @@ presential_test1:
   start_hour: "10:30"
   end_hour: "12:30"
   place: "Polo A"
-  integrated: true
+  integrated: false
 
 presential_meeting1:
   id: 3

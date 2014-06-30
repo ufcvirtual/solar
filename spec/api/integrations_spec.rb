@@ -24,7 +24,7 @@ describe "Integrations" do
               response.body.should == [ {Codigo: "QM-CAU", id: ScheduleEvent.last(3).first.id}, 
                 {Codigo: "TL-FOR", id: ScheduleEvent.last(2).first.id}, {Codigo: "QM-MAR", id: ScheduleEvent.last.id}
               ].to_json
-            }.to change{ScheduleEvent.count}.by(3)
+            }.to change{ScheduleEvent.where(integrated: true).count}.by(3)
           }
         end
 
@@ -84,11 +84,8 @@ describe "Integrations" do
       context "with valid ip" do
         context "and existing events" do
           it {
-            events = {ids: [{id: 2}, {id: 3}]}
-
             expect{
-              # delete "/api/v1/integration/events/2,3", events
-              delete "/api/v1/integration/events/", events
+              delete "/api/v1/integration/events/2,3"
 
               response.status.should eq(200)
               response.body.should == {ok: :ok}.to_json
@@ -98,11 +95,8 @@ describe "Integrations" do
 
         context "and non existing events" do
           it {
-            events = {ids: [{id: 122}]}
-
             expect{
-              # delete "/api/v1/integration/events/122", events
-              delete "/api/v1/integration/events/", events
+              delete "/api/v1/integration/events/122"
 
               response.status.should eq(200)
               response.body.should == {ok: :ok}.to_json
@@ -112,13 +106,10 @@ describe "Integrations" do
 
         context "and missing params" do
           it {
-            events = {id: 2}
-
             expect{
-              # delete "/api/v1/integration/events/122", events
-              delete "/api/v1/integration/events/", events
+              delete "/api/v1/integration/events/"
 
-              response.status.should eq(400)
+              response.status.should eq(405)
             }.to change{ScheduleEvent.count}.by(0)
           }
         end        
@@ -126,11 +117,8 @@ describe "Integrations" do
 
       context "with invalid ip" do
         it "gets a not found error" do
-          events = {ids: [{id: 2}, {id: 3}]}
-
           expect{
-            # delete "/api/v1/integration/events/2,3", events, "REMOTE_ADDR" => "127.0.0.2"
-            delete "/api/v1/integration/events/", events, "REMOTE_ADDR" => "127.0.0.2"
+            delete "/api/v1/integration/events/2,3", nil, "REMOTE_ADDR" => "127.0.0.2"
             response.status.should eq(404)
             }.to change{ScheduleEvent.count}.by(0)
         end
@@ -157,12 +145,12 @@ describe "Integrations" do
                 description: "Encontro Presencial marcado para esse período", # não é alterado
                 end_hour: "11:00",
                 id: 3,
+                integrated: true,
                 place: "Polo A", # não é alterado
                 schedule_id: 27,
                 start_hour: "10:00",
                 title: "Encontro Presencial", # não é alterado
-                type_event: 2, # não é alterado
-                integrated: true
+                type_event: 2 # não é alterado
               }.as_json)
             }.to change{ScheduleEvent.count}.by(0)
           }

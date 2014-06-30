@@ -16,7 +16,7 @@ class ScheduleEvent < Event
 
   accepts_nested_attributes_for :schedule
 
-  attr_accessible :title, :description, :schedule_attributes, :schedule_id, :type_event, :start_hour, :end_hour, :place
+  attr_accessible :title, :description, :schedule_attributes, :schedule_id, :type_event, :start_hour, :end_hour, :place, :integrated
 
   def verify_hours
     errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:schedule_events, :error])) if end_hour.rjust(5, '0') < start_hour.rjust(5, '0')

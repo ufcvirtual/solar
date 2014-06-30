@@ -26,13 +26,14 @@ module V1
         requires :id, type: Integer, desc: "Event ID."
         requires :Data, :HoraInicio, :HoraFim
       end
-      put ":id" do
+      put "/:id" do
         begin
           event = ScheduleEvent.find(params[:id])
 
           ActiveRecord::Base.transaction do
+            start_hour, end_hour = params[:HoraInicio].split(":"), params[:HoraFim].split(":")
             event.schedule.update_attributes! start_date: params[:Data], end_date: params[:Data]
-            event.update_attributes! start_hour: params[:HoraInicio], end_hour: params[:HoraFim]
+            event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
           end
 
           {ok: :ok}
@@ -63,10 +64,12 @@ module V1
             event_info = get_event_type_and_description(event_data[:Tipo])
 
             params[:Turmas].each do |code|
+              start_hour, end_hour = event_data[:HoraInicio].split(":"), event_data[:HoraFim].split(":")
               group    = get_offer_group(offer, code)
               schedule = Schedule.create! start_date: event_data[:Data], end_date: event_data[:Data]
               event    = ScheduleEvent.create! title: event_info[:title], type_event: event_info[:type],
-                place: event_data[:Polo], start_hour: event_data[:HoraInicio], end_hour: event_data[:HoraFim], sechedule_id: schedule.id, integrated: true
+                place: event_data[:Polo], start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":"),
+                schedule_id: schedule.id, integrated: true
               event.academic_allocations.create! allocation_tag_id: group.allocation_tag.id
               groups_events_ids << {Codigo: group.code, id: event.id}
             end
@@ -80,13 +83,11 @@ module V1
       end # /
 
       # DELETE integration/events/:ids
-      # params { requires :ids, type: String, desc: "Events IDs." }
-      params { requires :ids, type: Array, desc: "Events IDs." }
-      # delete ":ids" do
-      delete "/" do
+      params { requires :ids, type: String, desc: "Events IDs." }
+      delete "/:ids" do
         begin
           ScheduleEvent.transaction do
-            ScheduleEvent.where(id: params[:ids].collect{|param| param[:id]}.compact).destroy_all
+            ScheduleEvent.where(id: params[:ids].split(",")).destroy_all
           end
 
           {ok: :ok}
