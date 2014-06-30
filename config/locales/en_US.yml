@@ -9,6 +9,7 @@ en_US:
       month_and_year: "%b %Y"
       day_and_month: "%d/%b"
       bibliography: "%d %b, %Y"
+      mask: "99/99/9999"
     day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
     abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
     month_names: [January, February, March, April, May, June, July, August, September, October, November, December]

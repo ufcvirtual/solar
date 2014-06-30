@@ -202,9 +202,9 @@ class AdministrationsController < ApplicationController
   def search_logs
     authorize! :logs, Administration
 
-    date = Date.parse(params[:date]) rescue Date.today
+    date  = Date.parse(params[:date]) rescue Date.today
     users = params[:user].blank? ? [current_user] : User.where("lower(name) ~ lower(?)", URI.unescape(params[:user])) # current user if nil
-    log = params[:type] == 'actions' ? LogAction : LogAccess
+    log   = params[:type] == 'actions' ? LogAction : LogAccess
 
     @logs = log.where(user_id: users.map(&:id)).where("date(created_at) = ?", date.to_s).order("created_at").last(100)
   end

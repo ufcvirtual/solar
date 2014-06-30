@@ -14,6 +14,7 @@ pt_BR:
       month_and_year: "%b %Y"
       day_and_month: "%d/%b"
       bibliography: "%d %b, %Y"
+      mask: "99/99/9999"
     day_names: [Domingo, Segunda, Terça, Quarta, Quinta, Sexta, Sábado]
     abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, Sáb]
     month_names: [Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]

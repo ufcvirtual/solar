@@ -16,8 +16,16 @@
 
   var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
   $("#search_date").datepicker();
+  $("#search_date").mask("#{I18n.t(:mask, scope: "date.formats")}");
 
   $(function(){
+
+    $('input#search_user, input#search_date').keyup(function(e) {
+      if (e.keyCode == 13) { // when pressend enter
+          $("#search_log").click();
+          return false;
+      }
+    });
 
     $("#search_log").click(function(){
       var url_for = $(this).data("url-search").replace(":type", $("#log_type").val());
