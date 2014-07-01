@@ -39,8 +39,10 @@ module Taggable
     end
 
     if academic_allocations.count > 0 # verifica se possui conteudo
-      errors.add(:base, I18n.t(:dont_destroy_with_content))
-      return false
+      unless academic_allocations.size == 1 and not(academic_allocations.where(academic_tool_type: "LessonModule").empty?)
+        errors.add(:base, I18n.t(:dont_destroy_with_content))
+        return false
+      end
     end
 
     return true
@@ -92,10 +94,10 @@ module Taggable
     where = {user_id: user_id}
     where.merge!({profile_id: opts[:profile_id]}) if opts.include?(:profile_id) and not opts[:profile_id].nil?
 
-    if opts.include?(:related) and opts[:related]
-      all = Allocation.where(allocation_tag_id: allocation_tag.related({lower: true})).where(where)
+    all = if opts.include?(:related) and opts[:related]
+      Allocation.where(allocation_tag_id: allocation_tag.related({lower: true})).where(where)
     else
-      all = allocations.where(where)
+      allocations.where(where)
     end
 
     all.update_all(status: new_status)
