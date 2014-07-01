@@ -203,10 +203,13 @@ class AdministrationsController < ApplicationController
     authorize! :logs, Administration
 
     date  = Date.parse(params[:date]) rescue Date.today
-    users = params[:user].blank? ? [current_user] : User.where("lower(name) ~ lower(?)", URI.unescape(params[:user])) # current user if nil
     log   = params[:type] == 'actions' ? LogAction : LogAccess
+    
+    query = []
+    query << "user_id IN (#{User.where("lower(name) ~ lower(?)", URI.unescape(params[:user])).map(&:id).join(",")})" unless params[:user].blank?
+    query << "date(created_at) = '#{date.to_s}'"
 
-    @logs = log.where(user_id: users.map(&:id)).where("date(created_at) = ?", date.to_s).order("created_at").last(100)
+    @logs = log.where(query.join(" AND ")).order("created_at DESC").last(100)
   end
 
   ## IMPORT USERS
