@@ -804,6 +804,28 @@ describe "Loads" do
             }
           }
         end
+
+        context 'and existing user and existing course without offer and group' do 
+          let!(:json_data){ # user: aluno3, profile: tutor a distância
+            { allocation: { cpf: "47382348113", perfil: 1, codGraduacao: "109"} }
+          }
+
+          subject{ -> {
+            put "/api/v1/load/groups/allocate_user", json_data}
+          }
+
+          it { should change(Course.find_by_code("109").allocations,:count).by(1) }
+          it { should change(User,:count).by(0) }
+
+          it {
+            expect{
+              put "/api/v1/load/groups/allocate_user", json_data
+
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+            }
+          }
+        end
       
         context 'and non existing user' do # futuramente este teste deverá criar um novo usuário a partir do MA (cpf deverá ser válido para usuário no MA)
           let!(:json_data){ 

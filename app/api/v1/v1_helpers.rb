@@ -40,6 +40,19 @@ module V1::V1Helpers
                course_id: Course.where(code: course_code).first, semesters: {name: semester}).first
   end
 
+  def get_destination(curriculum_unit_code, course_code, code, period, year)
+    case
+      when not(code.blank?)
+        get_group(curriculum_unit_code, course_code, code, period, year)
+      when not(year.blank?)
+        get_offer(curriculum_unit_code, course_code, period, year)
+      when not(curriculum_unit_code.blank?)
+        CurriculumUnit.find_by_code(curriculum_unit_code)
+      when not(course_code.blank?)
+        Course.find_by_code(course_code)
+      end
+  end
+
   def get_offer_group(offer, group_code)
     offer.groups.where(code: group_code).first
   end

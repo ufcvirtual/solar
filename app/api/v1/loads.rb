@@ -118,12 +118,11 @@ module V1
       put :allocate_user do # Receives user's cpf, group and profile to allocate
         begin
           allocation = params[:allocation]
-          user = verify_or_create_user(allocation[:cpf])
+          user       = verify_or_create_user(allocation[:cpf])
           profile_id = get_profile_id(allocation[:perfil])
 
-          group = get_group(allocation[:codDisciplina], allocation[:codGraduacao], allocation[:codigo], allocation[:periodo], allocation[:ano])
-
-          group.allocate_user(user.id, profile_id)
+          destination = get_destination(allocation[:codDisciplina], allocation[:codGraduacao], allocation[:codigo], allocation[:periodo], allocation[:ano])
+          destination.allocate_user(user.id, profile_id)
 
           {ok: :ok}
         rescue => error
@@ -140,8 +139,8 @@ module V1
         profile_id = get_profile_id(allocation[:perfil])
 
         begin
-          group = get_group(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], group_info[:periodo], group_info[:ano])
-          group.change_allocation_status(user.id, new_status, profile_id: profile_id) if group
+          destination = get_destination(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], group_info[:periodo], group_info[:ano])
+          destination.change_allocation_status(user.id, new_status, profile_id: profile_id) if destination
 
           {ok: :ok}
         rescue => error
