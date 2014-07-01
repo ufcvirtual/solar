@@ -1,3 +1,4 @@
+- today_date = l(Date.today, format: :datepicker)
 .block_wrapper.search
   .block_title
     %h2= t(:search, scope: [:administrations, :logs])
@@ -5,7 +6,7 @@
   .block_content_toolbar
     = select_tag "log_type", options_for_select(@types)
     = text_field_tag "search_user", nil, placeholder: t(:user, scope: [:administrations, :logs])
-    = text_field_tag "search_date", l(Date.today, format: :datepicker), placeholder: t(:created_at, scope: [:administrations, :logs])
+    = text_field_tag "search_date", today_date, placeholder: t(:created_at, scope: [:administrations, :logs])
 
     = button_tag t(:search, scope: [:administrations, :logs]), type: :button, class: "btn btn_default", id: "search_log", :"data-url-search" => search_logs_path(type: ":type")
 
@@ -13,12 +14,10 @@
     #list_logs
 
 :javascript
-
-  var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
-  $("#search_date").datepicker();
-  $("#search_date").mask("#{I18n.t(:mask, scope: "date.formats")}");
-
   $(function(){
+    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
+    $("#search_date").datepicker();
+    $("#search_date").mask("#{I18n.t(:mask, scope: "date.formats")}");
 
     $('input#search_user, input#search_date').keyup(function(e) {
       if (e.keyCode == 13) { // when pressend enter
@@ -28,6 +27,9 @@
     });
 
     $("#search_log").click(function(){
+      if($("#search_date").val() == "")
+        $("#search_date").datepicker('setDate', "#{today_date}");
+
       var url_for = $(this).data("url-search").replace(":type", $("#log_type").val());
       var data = { user: encodeURIComponent($("#search_user").val()), date: $("#search_date").val() };
 
