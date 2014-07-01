@@ -172,8 +172,7 @@ class User < ActiveRecord::Base
     query << "curriculum_units.id = #{curriculum_unit_id}"           unless curriculum_unit_id.nil?
     query << "curriculum_unit_types.id = #{curriculum_unit_type_id}" unless curriculum_unit_type_id.nil?
 
-    ats = allocations.includes(allocation_tag: [group: [offer: {curriculum_unit: :curriculum_unit_type}]]).where(query.join(" AND ")).map(&:allocation_tag_id).compact.flatten
-    Group.joins(:allocation_tag).where(id: ats)
+    allocations.includes(allocation_tag: [group: [offer: {curriculum_unit: :curriculum_unit_type}]]).where(query.join(" AND ")).map(&:groups).compact.flatten
   end
 
   def profiles_activated(only_id = false)

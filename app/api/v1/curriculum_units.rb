@@ -6,7 +6,7 @@ module V1
 
     segment do
       before do
-        @u_groups = current_user.groups.where(offer_id: Offer.currents.map(&:id))
+        @u_groups = Group.where(id: current_user.groups.map(&:id), offer_id: Offer.currents.map(&:id))
         @curriculum_units = CurriculumUnit.joins(:groups).where(groups: {id: @u_groups.map(&:id)})
       end
 
