@@ -22,7 +22,7 @@
         = label_tag :semester, t(".semester")
         = select_tag :semester, nil
 
-      %div= link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => list_groups_path, id: "search", :"data-load-to" => "groups_list"}
+      %div= link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => list_groups_path(type_id: @type.id), id: "search", :"data-load-to" => "groups_list"}
 
 .groups_list
 
