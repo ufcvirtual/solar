@@ -2,6 +2,4 @@ object @user
 
 attributes :id, :name, :username, :email
 
-node :photo do
-  photo_user_url(@user.id)
-end
+node (:photo) { "/api/v1/users/#{@user.id}/photo" }
