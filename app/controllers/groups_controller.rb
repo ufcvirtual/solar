@@ -36,7 +36,7 @@ class GroupsController < ApplicationController
 
   # Edicao
   def list
-    if params[:type_id].to_i == 3
+    if (@type_id = params[:type_id].to_i) == 3
       @offer = Offer.find_by_semester_id_and_course_id(params[:semester_id], params[:course_id])
     else
       @offer = Offer.find_by_curriculum_unit_id_and_semester_id_and_course_id(params[:curriculum_unit_id], params[:semester_id], params[:course_id])
@@ -55,8 +55,7 @@ class GroupsController < ApplicationController
   def new
     authorize! :create, Group
 
-    @type_id = params[:type_id]
-    if @type_id == "3"
+    if (@type_id = params[:type_id]) == "3"
       offer  = Offer.find_by_semester_id_and_course_id(params[:semester_id], params[:course_id])
     else
       offer  = Offer.find_by_curriculum_unit_id_and_semester_id_and_course_id(params[:curriculum_unit_id], params[:semester_id], params[:course_id])
@@ -67,12 +66,12 @@ class GroupsController < ApplicationController
 
   def edit
     authorize! :update, Group
-    @group = Group.find(params[:id])
+    @group, @type_id = Group.find(params[:id]), params[:type_id]
   end
 
   def create
     params[:group][:user_id] = current_user.id
-    @group = Group.new(params[:group])
+    @group, @type_id = Group.new(params[:group]), params[:type_id]
     authorize! :create, Group, on: [@group.offer.allocation_tag.id]
 
     if @group.save
@@ -83,7 +82,7 @@ class GroupsController < ApplicationController
   end
 
   def update
-    @group = Group.where(id: params[:id].split(","))
+    @group, @type_id = Group.where(id: params[:id].split(",")), params[:type_id]
     authorize! :update, Group, on: [@group.first.offer.allocation_tag.id]
 
     if params[:multiple]
@@ -100,16 +99,15 @@ class GroupsController < ApplicationController
   end
 
   def destroy
-    @group = Group.where(id: params[:id].split(","))
+    @group, @type_id = Group.where(id: params[:id].split(",")), params[:type_id]
     authorize! :destroy, Group, on: [@group.first.offer.allocation_tag.id]
 
     Group.transaction do 
       begin
-        @group.each do |group|
-          raise "erro" unless group.destroy
-        end
+        raise "erro" if @group.map(&:can_destroy?).include?(false)
+        @group.destroy_all
         render json: {success: true, notice: t(:deleted, scope: [:groups, :success])}
-      rescue
+      rescue => error
         render json: {success: false, alert: t(:deleted, scope: [:groups, :error])}, status: :unprocessable_entity
       end
     end
