@@ -21,7 +21,7 @@ describe "Discussions" do
             id: 9,
             status: "0",
             name: "Forum 7",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.",
+            description: "Assim mesmo, o desenvolvimento de distintas formas representa uma abertura para a melhoria dos procedimentos normalmente adotados.",
             last_post_date: nil,
             start_date: (Date.today >> 1).to_time,
             end_date: (Date.today >> 5).to_time

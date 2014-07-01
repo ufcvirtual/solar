@@ -6,7 +6,8 @@ module V1
 
     segment do
       before do
-        @curriculum_units = Semester.all_by_period.map(&:offers).flatten.map(&:curriculum_unit) # atual
+        @u_groups = current_user.groups.where(offer_id: Offer.currents.map(&:id))
+        @curriculum_units = CurriculumUnit.joins(:groups).where(groups: {id: @u_groups.map(&:id)})
       end
 
       desc "Lista UCs da oferta vigente."
@@ -16,7 +17,7 @@ module V1
 
       desc "Lista UCs da oferta vigente incluindo as turmas"
       get "groups", rabl: "curriculum_units/list_with_groups" do
-        # @curriculum_units
+        # @curriculum_units, @u_groups
       end
     end
 

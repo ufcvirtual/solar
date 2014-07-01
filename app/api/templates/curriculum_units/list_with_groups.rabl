@@ -2,8 +2,12 @@ collection @curriculum_units
 
 extends "curriculum_units/list"
 
-child :groups do |groups|
-  groups.each do |group|
-    extends 'groups/show', locals: {group: group}
-  end
+node :groups do |uc|
+  uc.groups.where(id: @u_groups).map { |group|
+    {
+      id: group.id,
+      code: group.code,
+      semester: group.offer.semester.name
+    }
+  }
 end

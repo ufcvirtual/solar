@@ -142,7 +142,7 @@ class Discussion < Event
   end
 
   def last_post_date(allocation_tags_ids = nil)
-    latest_posts(allocation_tags_ids).first.try(:updated_at).try(:to_s, :db)
+    latest_posts(allocation_tags_ids).first.try(:updated_at)
   end
 
 end
