@@ -39,7 +39,7 @@ Cenário: Exibir página e atualizar conteudo em div
       Então eu deverei ver "Informação"
       E eu deverei ver "Comunicação"
       E eu deverei ver "Educação"
-    Dado que eu cliquei no link dentro de ".lesson"
+    Dado que eu cliquei no link "a.btn" dentro de ".lesson"
       Então eu deverei ver "Ordem"
       E eu deverei ver "Nome da aula"
       E eu deverei ver "Disponibilidade"

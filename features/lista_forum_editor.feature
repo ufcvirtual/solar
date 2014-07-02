@@ -39,5 +39,5 @@ Cenário: Exibir página e atualizar conteudo em div
       Então eu deverei ver "Informação"
       E eu deverei ver "Comunicação"
       E eu deverei ver "Educação"
-    Dado que eu cliquei no link dentro de ".discussion"
+    Dado que eu cliquei no link "a.btn" dentro de ".discussion"
       E eu deverei ver "Fóruns"
