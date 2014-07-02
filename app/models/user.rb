@@ -262,11 +262,11 @@ class User < ActiveRecord::Base
 
       user.attributes = row.to_hash.slice(*accessible_attributes)
 
-      user.username = user.cpf if user.username.nil?
-      user.nick = user.username if user.nick.nil?
-      user.birthdate = "1970-01-01" if user.birthdate.nil? # verificar este campo
-      user.password = "123456" if user.password.nil?
-      user.active = true
+      user.username  = user.cpf      if user.username.nil?
+      user.nick      = user.username if user.nick.nil?
+      user.birthdate = "1970-01-01"  if user.birthdate.nil? # verificar este campo
+      user.password  = "123456"      if user.password.nil?
+      user.active    = true
 
       if user.save
         log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)

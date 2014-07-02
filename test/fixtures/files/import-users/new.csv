@@ -1,4 +1,4 @@
 name;cpf;gender;email;address;country;state;city;institution
-Elenora W. Conners;55585737406;F;elenorawconners@mail1.com;Avenida Mercedes Martins Vieira, 351;Brasil;Ceará;Fortaleza;UFC
-Erick Ribeiro Rodrigues;42595435639;M;rodrigues@mail.com;Travessa Visconde de Cachoeira, 112;Brasil;Ceará;Fortaleza;UFC
-Luana Barbosa Dias;38624632811;F;luana@mail.com;Rua C, 963;Brasil;Ceará;Fortaleza;UFC
+Elenora W. Conners;55585737406;F;elenorawconners@mail1.com;"Avenida Mercedes Martins Vieira, 351";Brasil;Ceará;Fortaleza;UFC
+Erick Ribeiro Rodrigues;42595435639;M;rodrigues@mail.com;"Travessa Visconde de Cachoeira, 112";Brasil;Ceará;Fortaleza;UFC
+Luana Barbosa Dias;38624632811;F;luana@mail.com;"Rua C, 963";Brasil;Ceará;Fortaleza;UFC

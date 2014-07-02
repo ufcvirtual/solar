@@ -237,8 +237,7 @@ class AdministrationsController < ApplicationController
 
     delimiter = [';', ','].include?(params[:batch][:delimiter]) ? params[:batch][:delimiter] : ';'
     result = User.import(file, delimiter)
-    users = result[:imported]
-    @log = result[:log]
+    users, @log = result[:imported], result[:log]
 
     users.each do |user|
       params[:allocation_tags_ids].split(' ').compact.uniq.map(&:to_i).each do |at|
