@@ -36,6 +36,10 @@
 
       = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => url, id: "search", :"data-load-to" => "#{list_class}"}
 
+  - if back
+    .back.invisible
+      = render "editions/back_items"
+      
   %div{class: "#{list_class}"}
 
   - if back

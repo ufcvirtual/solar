@@ -5,7 +5,7 @@
   .list_lessons{:"data-link-list" => list_lessons_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
     = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
 
-    = link_to t(".new_module"), new_lesson_module_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t(".new_module"), class: "btn btn_default link_new_module", id: "new-discussion" 
+    = link_to t(".new_module"), new_lesson_module_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t(".new_module"), class: "link_new_module", id: "new-discussion" 
     
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
 
