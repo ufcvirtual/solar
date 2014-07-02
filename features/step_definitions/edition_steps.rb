@@ -26,6 +26,10 @@ Dado 'que eu cliquei no link "$element" de "$parent_div"' do |element, parent_di
   find('.'+parent_div).find_link(element).click
 end
 
+Dado 'que eu cliquei no link dentro de "$parent_div"' do |parent_div|
+  find(parent_div+' a.btn').click
+end
+
 Entao /^eu deverei ver a linha de Cursos$/ do |tabela| 
   tabela.hashes.each do |linha|
     xpath = "//table/tbody/tr[ child::td[contains(., '#{linha[:Codigo]}')] and child::td[contains(., '#{linha[:Nome]}')] ]"

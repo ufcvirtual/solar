@@ -1,6 +1,6 @@
 # language: pt
 
-Funcionalidade: Página de edição
+Funcionalidade: Página de edição: Fórum
   Como um usuario do solar
   Eu quero visualizar os itens da página de edição que tenho permissão
   Para poder acessá-los
@@ -10,7 +10,7 @@ Contexto:
     | user_id  | allocation_tag_id  | profile_id  | status |
     | 14       |                    | 5           | 1      |
 
- @javascript
+@javascript
 Cenário: Exibir página e atualizar conteudo em div
   Dado que estou logado com o usuario "editor" e com a senha "123456"
     E que estou em "Meu Solar"
@@ -39,5 +39,5 @@ Cenário: Exibir página e atualizar conteudo em div
       Então eu deverei ver "Informação"
       E eu deverei ver "Comunicação"
       E eu deverei ver "Educação"
-    Dado que eu cliquei em ".discussion"
+    Dado que eu cliquei no link dentro de ".discussion"
       E eu deverei ver "Fóruns"

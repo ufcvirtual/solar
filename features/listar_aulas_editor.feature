@@ -1,6 +1,6 @@
 # language: pt
 
-Funcionalidade: Página de edição
+Funcionalidade: Página de edição: Aulas
   Como um usuario do solar
   Eu quero visualizar os itens da página de edição que tenho permissão
   Para poder acessá-los
@@ -39,7 +39,7 @@ Cenário: Exibir página e atualizar conteudo em div
       Então eu deverei ver "Informação"
       E eu deverei ver "Comunicação"
       E eu deverei ver "Educação"
-    Dado que eu cliquei em ".lesson"
+    Dado que eu cliquei no link dentro de ".lesson"
       Então eu deverei ver "Ordem"
       E eu deverei ver "Nome da aula"
       E eu deverei ver "Disponibilidade"
