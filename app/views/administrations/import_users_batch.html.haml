@@ -12,9 +12,9 @@
   .block_content.block_content_alt
     %table.tb_list.tb_log
       %tbody
-        - if ((lcount = @log[:success].count) > 0)
+        - if (@count_imported > 0)
           %tr.lines
-            %td.success= t(:registered_success, scope: [:administrations, :import_users], count: lcount)
+            %td.success= t(:registered_success, scope: [:administrations, :import_users], count: @count_imported)
 
         - @log[:error].each do |error|
           %tr.lines

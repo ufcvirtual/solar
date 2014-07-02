@@ -225,7 +225,6 @@ class AdministrationsController < ApplicationController
   def import_users_form
     authorize! :import_users, Administration
 
-    ## verificar se as turmas foram passadas
     @allocation_tags_ids = AllocationTag.where(group_id: params[:groups_id].split(" ")).map(&:id)
   end
 
@@ -237,7 +236,9 @@ class AdministrationsController < ApplicationController
 
     delimiter = [';', ','].include?(params[:batch][:delimiter]) ? params[:batch][:delimiter] : ';'
     result = User.import(file, delimiter)
-    users, @log = result[:imported], result[:log]
+    users = result[:imported]
+    @log = result[:log]
+    @count_imported = result[:log][:success].count
 
     users.each do |user|
       params[:allocation_tags_ids].split(' ').compact.uniq.map(&:to_i).each do |at|

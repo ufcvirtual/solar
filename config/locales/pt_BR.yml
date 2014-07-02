@@ -1721,7 +1721,7 @@ pt_BR:
       log:
         success: "[SUCESSO]: CPF: %{cpf}, importado com sucesso"
         error: "[ERRO]: CPF: %{cpf}, %{error}"
-        allocation_success: "[SUCESSO]: CPF: %{cpf}, Matriculado em %{allocation_tag}"
+        allocation_success: "[SUCESSO]: CPF: %{cpf}, matriculado em %{allocation_tag}"
         allocation_error: "[ERRO]: CPF: %{cpf}, Não foi possível matricular"
     logs:
       log_type: Tipo
