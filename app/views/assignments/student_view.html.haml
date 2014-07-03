@@ -6,7 +6,7 @@
       =t :individual_assignments, :scope => [:assignment, :information]
   .block_content
     - unless @individual_assignments_info["assignments"].empty?
-      %table.tb_list
+      %table.tb_list#assignment_individual
         %thead
           %tr.lines
             %th= t(:description, :scope => [:assignment, :information])
@@ -55,7 +55,7 @@
       =t :group_assignments, :scope => [:assignment, :information]
   .block_content
     - unless @group_assignments_info["assignments"].empty?
-      %table.tb_list
+      %table.tb_list#assignment_group
         %thead
           %tr.lines
             %th=t(:description, :scope => [:assignment, :information])
@@ -108,7 +108,6 @@
                   %i.icon-comment.big
                 - else
                   %i.icon-comment.big.empty
-                  
     - else
       .block_content.block_content_text= t(:itens_not_found)
 

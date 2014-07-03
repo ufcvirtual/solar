@@ -4,7 +4,7 @@ Funcionalidade: Exibir Portfolio
   Como um usuario do solar
   Eu quero visualizar o portfolio
   Para poder acessá-los
-Cenário: Exibir Portfolio e atividade como aluno
+Cenário: Exibir Portfolio e atividades individuais como aluno
     Dado que estou logado com o usuario "aluno1" e com a senha "123456"
         E que estou em "Meu Solar"
     Quando eu clicar no link "Quimica I"
@@ -16,10 +16,16 @@ Cenário: Exibir Portfolio e atividade como aluno
         E eu deverei ver "Atividades individuais"
         E eu deverei ver "Descrição"
         E eu deverei ver o link "Atividade III"
-        E I should see a table with the following rows
-            | Descrição                 | Período                 | Situação     | Nota           | Comentários |            
-            | Atividade individual VI * | 13/08/2011 * 17/09/2011 | Não Enviado  | -              | *           |
-            | Atividade III*            | *                       | Corrigido    | 6.3            | *           | 
+        # FIXME: as datas das atividades II, III e atividade individual VI, VI, V, I estão com diferença de 2 dias em relação ao que é visualizado, não sei por que
+        E eu deverei ver os seguintes dados na tabela "#assignment_individual":
+            | Descrição                 | Período                 | Situação     | Nota           | Comentários |
+            | Atividade individual VI   | 13/08/2011 17/09/2011   | Não Enviado  | -              |             |
+            | Atividade II              | 03/08/2014 03/12/2014   | Não Iniciado | -              |             |
+            | Atividade III             | 03/05/2014 03/08/2014   | Corrigido    | 6.3            |             |
+            | Atividade individual VII  | 01/07/2014 02/07/2014   | Enviado      | -              |             |
+            | Atividade individual IV   | 03/08/2014 03/12/2014   | Não Iniciado | -              |             |
+            | Atividade individual V    | 03/05/2014 03/08/2014   | Enviado      | -              |             |
+            | Atividade I               | 03/05/2014 03/08/2014   | Enviar       | -              |             |
     Quando eu clicar no link "Atividade III"
         Então eu deverei ver "Atividade III"
             E eu deverei ver "Descrição"
@@ -32,7 +38,7 @@ Cenário: Exibir Portfolio e atividade como aluno
         E eu deverei ver "Comentários"
             E eu deverei ver "Sem itens para exibir"
 
-Cenário: Exibir Listagem de Atividades de Portifólio como Professor
+Cenário: Exibir Listagem de Atividades Individuais de Portifólio como Professor
 Dado que estou logado com o usuario "prof" e com a senha "123456"
         E que estou em "Meu Solar"
     Quando eu clicar no link "Quimica I"
@@ -44,10 +50,16 @@ Dado que estou logado com o usuario "prof" e com a senha "123456"
         E eu deverei ver "Atividades individuais"
         E eu deverei ver "Descrição"
         E eu deverei ver o link "Atividade III"
-        E I should see a table with the following rows
-            | Descrição                 | Período                 |
-            | Atividade individual VI   | 13/08/2011 - 17/09/2011 |
-            | Atividade III             | *                       |            
+        # FIXME: as datas das atividades II, III e atividade individual VI, VI, V, I estão com diferença de 2 dias em relação ao que é visualizado, não sei por que
+        E eu deverei ver os seguintes dados na tabela "#assignment_individual":
+            | Descrição                 | Período                   |
+            | Atividade individual VI   | 13/08/2011 - 17/09/2011   |
+            | Atividade I               | 03/05/2014 - 03/08/2014   |
+            | Atividade III             | 03/05/2014 - 03/08/2014   |
+            | Atividade individual V    | 03/05/2014 - 03/08/2014   |
+            | Atividade individual VII  | 01/07/2014 - 02/07/2014   |
+            | Atividade individual IV   | 03/08/2014 - 03/12/2014   |
+            | Atividade II              | 03/08/2014 - 03/12/2014   |
     Quando eu clicar no link "Atividade III"
         Então eu deverei ver "Atividade III"
             E eu deverei ver "Descrição"

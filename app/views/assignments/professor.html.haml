@@ -6,7 +6,7 @@
   / Atividades individuais
   .block_content
     - unless @individual_activities.nil? or @individual_activities.empty?
-      %table.tb_list
+      %table.tb_list#assignment_individual
         %thead
           %tr.lines
             %th= t(:description, :scope => [:assignment, :information])
@@ -31,7 +31,7 @@
   / Atividades em grupo
   .block_content
     - unless @group_activities.nil? or @group_activities.empty?
-      %table.tb_list
+      %table.tb_list#assignment_group
         %thead
           %tr.lines
             %th= t(:description, :scope => [:assignment, :information])
