@@ -14,13 +14,12 @@ class AdministrationsController < ApplicationController
     @types = [ [t(".name"), 'name'], [t(".email"), 'email'], [t(".username"), 'username'], [t(".cpf"), 'cpf'] ]
   end
 
-  # Método chamado por ajax para buscar usuários
   def search_users
     authorize! :users, Administration
 
     @type_search = params[:type_search]
-    @text_search = URI.unescape(params[:user]) unless params[:user].nil?
-    @users = User.where("lower(#{@type_search}) ~ '#{@text_search.downcase}'").paginate(page: params[:page])
+    @text_search = [URI.unescape(params[:user]).split(" ").compact.join(":*&"), ":*"].join unless params[:user].blank?
+    @users = User.where("to_tsvector('simple', unaccent(#{@type_search})) @@ to_tsquery('simple', unaccent(?))", @text_search).paginate(page: params[:page])
 
     respond_to do |format|
       format.html
@@ -138,9 +137,16 @@ class AdministrationsController < ApplicationController
     @allocations = Allocation.pending
 
     if params.include?(:search)
-      @text_search, @type_search = params[:value], params[:type]
+      @text_search, @type_search = URI.unescape(params[:value]), params[:type]
+
       @allocations = case @type_search
-      when "name";    @allocations.joins(:user).where("lower(users.name) ~ ?", @text_search.downcase)
+      when "name"
+        if @text_search.blank?
+          @allocations.joins(:user)
+        else
+          text = [@text_search.split(" ").compact.join(":*&"), ":*"].join
+          @allocations.joins(:user).where("to_tsvector('simple', unaccent(users.name)) @@ to_tsquery('simple', unaccent(?))", text)
+        end
       when "profile"; @allocations.joins(:profile).where("lower(profiles.name) ~ ?", @text_search.downcase)
       when "curriculum_unit_type"
         @allocations.collect do |allocation|
@@ -202,14 +208,20 @@ class AdministrationsController < ApplicationController
   def search_logs
     authorize! :logs, Administration
 
-    date  = Date.parse(params[:date]) rescue Date.today
-    log   = params[:type] == 'actions' ? LogAction : LogAccess
-    
-    query = []
-    query << "user_id IN (#{User.where("lower(name) ~ lower(?)", URI.unescape(params[:user])).map(&:id).join(",")})" unless params[:user].blank?
-    query << "date(created_at) = '#{date.to_s}'"
+    @logs = []
+    date = Date.parse(params[:date]) rescue Date.today
+    log  = params[:type] == 'actions' ? LogAction : LogAccess
 
-    @logs = log.where(query.join(" AND ")).order("created_at DESC").last(100)
+    text_search = [URI.unescape(params[:user]).split(" ").compact.join(":*&"), ":*"].join unless params[:user].blank?
+    user_ids = User.where("to_tsvector('simple', unaccent(name || ' ' || cpf)) @@ to_tsquery('simple', unaccent(?))", text_search).map(&:id).join(',')
+
+    unless user_ids.blank?
+      query = []
+      query << "user_id IN (#{user_ids})"
+      query << "date(created_at) = '#{date.to_s}'"
+
+      @logs = log.where(query.join(" AND ")).order("created_at DESC").last(100)
+    end
   end
 
   ## IMPORT USERS
