@@ -7,7 +7,7 @@ module V1
       end
       get ":id/groups", rabl: "groups/list" do
         guard!
-        @groups = CurriculumUnit.where(id: params[:id]).first.try(:groups) || []
+        @groups = CurriculumUnit.find(params[:id]).groups.where(groups: {id: current_user.groups.map(&:id), offer_id: Offer.currents.map(&:id)}) rescue []
       end
     end
   end
