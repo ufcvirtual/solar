@@ -178,9 +178,9 @@ Solar::Application.routes.draw do
 
   resources :scores, only: [:index, :show] do
     collection do 
-    get "student/:student_id", action: :show, as: :student
-    get :amount_history_access
-    get "history_access/:id", action: :history_access
+      get "student/:student_id", action: :show, as: :student
+      get :amount_history_access
+      get "history_access/:id", action: :history_access
     end
     get :history_access, on: :member
   end

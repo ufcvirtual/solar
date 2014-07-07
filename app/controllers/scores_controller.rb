@@ -45,10 +45,9 @@ class ScoresController < ApplicationController
     @group_activities      = Assignment.student_assignments_info(group_id, @student.id, Assignment_Type_Group)
     @discussions           = Discussion.posts_count_by_user(@student.id, related_allocations)
 
-    from_date  = (Date.today << 2) # dois meses atras
-    until_date = Date.today
-    at         = AllocationTag.find_by_curriculum_unit_id(active_tab[:url][:id]).id
-    @amount    = Score.find_amount_access_by_student_id_and_interval(at, @student.id, from_date, until_date)
+    from_date, until_date  = (Date.today << 2), Date.today # dois meses atras
+    at      = AllocationTag.find_by_curriculum_unit_id(active_tab[:url][:id]).id
+    @amount = Score.find_amount_access_by_student_id_and_interval(at, @student.id, from_date, until_date)
   end
 
   ##

@@ -16,8 +16,9 @@
   .block_title.forum_navigation
     %span#forum_new_message
       - if @can_interact
-        = button_tag(:type => 'button', :onclick => "javascript:new_post(this);", :class => "btn btn_main", :id => "button_new_post", :"data-tooltip" => t(:forum_new_message)) do
-          = content_tag(:i, nil, :class=>'icon-edit')
+        - if @can_post
+          = button_tag(:type => 'button', :onclick => "javascript:new_post(this);", :class => "btn btn_main", :id => "button_new_post", :"data-tooltip" => t(:forum_new_message)) do
+            = content_tag(:i, nil, :class=>'icon-edit')
       - else
         #forum_closed= t("forum_closed")
 

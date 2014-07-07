@@ -18,6 +18,7 @@ class PostsController < ApplicationController
 
     @posts = []
     @can_interact = @discussion.user_can_interact?(current_user.id)
+    @can_post = (can? :create, Post, on: [allocation_tags])
     p      = params.select { |k, v| ['date', 'type', 'order', 'limit', 'display_mode', 'page'].include?(k) }
 
     @display_mode = p['display_mode'] ||= 'tree'
