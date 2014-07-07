@@ -719,7 +719,7 @@ describe "Loads" do
 
         context 'and existing user and group' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
+            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -741,7 +741,7 @@ describe "Loads" do
 
         context 'and existing user and non existing UC' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "UC01", codGraduacao: "109"} }
+            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "UC01", codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -763,7 +763,7 @@ describe "Loads" do
 
         context 'and existing user and non existing course' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "C01"} }
+            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "C01"} }
           }
 
           subject{ -> {
@@ -785,7 +785,7 @@ describe "Loads" do
 
         context 'and existing user and non existing group' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "T01", codDisciplina: "RM301", codGraduacao: "109"} }
+            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codTurma: "T01", codDisciplina: "RM301", codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -829,7 +829,7 @@ describe "Loads" do
       
         context 'and non existing user' do # futuramente este teste deverá criar um novo usuário a partir do MA (cpf deverá ser válido para usuário no MA)
           let!(:json_data){ 
-            { allocation: { cpf: "cpf", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
+            { allocation: { cpf: "cpf", perfil: 1, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -851,7 +851,7 @@ describe "Loads" do
 
         context 'and existing user and missing param' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { allocation: { cpf: "47382348113", perfil: 1, ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
+            { allocation: { cpf: "47382348113", perfil: 1, ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           }
 
           subject{ -> {

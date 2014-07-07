@@ -114,14 +114,14 @@ module V1
       end
 
       # load/groups/allocate_user
-      # params { requires :cpf, :perfil, :codDisciplina, :codGraduacao, :codigo, :periodo, :ano }
+      # params { requires :cpf, :perfil, :codDisciplina, :codGraduacao, :codTurma, :periodo, :ano }
       put :allocate_user do # Receives user's cpf, group and profile to allocate
         begin
           allocation = params[:allocation]
           user       = verify_or_create_user(allocation[:cpf])
           profile_id = get_profile_id(allocation[:perfil])
 
-          destination = get_destination(allocation[:codDisciplina], allocation[:codGraduacao], allocation[:codigo], allocation[:periodo], allocation[:ano])
+          destination = get_destination(allocation[:codDisciplina], allocation[:codGraduacao], allocation[:codTurma], allocation[:periodo], allocation[:ano])
           destination.allocate_user(user.id, profile_id)
 
           {ok: :ok}
