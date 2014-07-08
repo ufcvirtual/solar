@@ -1,13 +1,18 @@
 module V1
   class Groups < Base
     namespace :curriculum_units do
-      desc "Turmas da UC"
+
+      guard_all!
+
+      desc "Turmas de uma UC do usuario"
       params do
         requires :id, type: Integer
       end
       get ":id/groups", rabl: "groups/list" do
-        guard!
-        @groups = CurriculumUnit.find(params[:id]).groups.where(groups: {id: current_user.groups.map(&:id), offer_id: Offer.currents.map(&:id)}) rescue []
+        user_groups = current_user.groups.map(&:id)
+        current_offers = Offer.currents.map(&:id)
+
+        @groups = CurriculumUnit.find(params[:id]).groups.where(groups: {id: user_groups, offer_id: current_offers}) rescue []
       end
     end
   end

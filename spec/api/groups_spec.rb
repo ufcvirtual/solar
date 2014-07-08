@@ -13,10 +13,10 @@ describe "Groups" do
       let!(:token) { Doorkeeper::AccessToken.create! application_id: application.id, resource_owner_id: user.id }
 
       it "gets list of groups by UC" do
-        get "/api/v1/curriculum_units/5/groups", access_token: token.token
+        get "/api/v1/curriculum_units/1/groups", access_token: token.token
 
         response.status.should eq(200)
-        response.body.should == [ { id: 5, code: "LB-CAR", semester: "2011.1" } ].to_json
+        response.body.should == [{id: 1, code: "IL-FOR", semester: "2011.1"}].to_json
       end
     end
 
