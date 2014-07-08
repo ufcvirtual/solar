@@ -33,7 +33,19 @@ class AllocationTag < ActiveRecord::Base
       status: Allocation_Activated,
       profiles: {status: true},
       allocation_tag_id: (self.nil? ? self : self.related)
-    ).where("(profiles.types & #{Profile_Type_Class_Responsible})::boolean").uniq.empty?
+    ).where("cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)").uniq.empty?
+  end
+
+  def is_observer_or_responsible?(user_id)
+    not Allocation.
+      select(:allocation_tag_id).
+      joins(:profile).
+      where(
+      user_id: user_id,
+      status: Allocation_Activated,
+      profiles: {status: true},
+      allocation_tag_id: (self.nil? ? self : self.related)
+    ).where("cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean) OR cast(profiles.types & #{Profile_Type_Observer} as boolean)").uniq.empty?
   end
 
   ## Deprecated - use related

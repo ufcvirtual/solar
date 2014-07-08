@@ -19,7 +19,8 @@ class AdministrationsController < ApplicationController
 
     @type_search = params[:type_search]
     @text_search = [URI.unescape(params[:user]).split(" ").compact.join(":*&"), ":*"].join unless params[:user].blank?
-    @users = User.where("to_tsvector('simple', unaccent(#{@type_search})) @@ to_tsquery('simple', unaccent(?))", @text_search).paginate(page: params[:page])
+    @users    = User.where("to_tsvector('simple', unaccent(#{@type_search})) @@ to_tsquery('simple', unaccent(?))", @text_search).paginate(page: params[:page])
+    @is_admin = current_user.is_admin?
 
     respond_to do |format|
       format.html
@@ -88,6 +89,7 @@ class AdministrationsController < ApplicationController
     @profiles = @allocations_user.map(&:profile).flatten.uniq
     @periods  = [ [t(:active),''] ]
     @periods += Semester.all.map{|s| s.name}.flatten.uniq.sort! {|x,y| y <=> x}
+    @is_admin = params[:admin] == "true" if params.include?(:admin)
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end

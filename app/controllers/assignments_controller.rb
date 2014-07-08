@@ -317,7 +317,7 @@ class AssignmentsController < ApplicationController
     assignment = Assignment.find(params[:assignment_id])
     authorize! :download_files, assignment
 
-    student_id = @allocation_tag.is_user_class_responsible?(current_user) ? params[:student_id] : current_user.id
+    student_id = @allocation_tag.is_observer_or_responsible?(current_user) ? params[:student_id] : current_user.id
     raise CanCan::AccessDenied unless assignment.user_can_access_assignment?(@allocation_tag, current_user.id, student_id, params[:group_id])
 
     file_path, file_name = if params[:zip]
