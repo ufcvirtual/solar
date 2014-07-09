@@ -218,7 +218,9 @@ class LessonsControllerTest < ActionController::TestCase
     assert lesson.is_draft?
 
     put :change_status, {id: lesson.id, status: Lesson_Approved, allocation_tags_ids: "#{allocation_tags(:al6).id}", responsible: true, format: :js}
-    assert_response :unauthorized
+    assert_response :success
+
+    assert_equal "flash_message('#{I18n.t(:no_permission)}', 'alert');", @response.body
 
     assert_equal Lesson_Test, Lesson.find(lessons(:pag_index).id).status
     FileUtils.rm_rf(lesson.path(true).to_s)

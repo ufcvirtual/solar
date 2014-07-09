@@ -4,11 +4,11 @@ class LogAccess < ActiveRecord::Base
 
   TYPE = {
     login: 1,
-    curriculum_unit_access: 2
+    offer_access: 2
   }
 
-  def self.course(params)
-    params.merge!(log_type: TYPE[:curriculum_unit_access])
+  def self.offer(params)
+    params.merge!(log_type: TYPE[:offer_access])
     create(params)
   end
 
@@ -22,7 +22,7 @@ class LogAccess < ActiveRecord::Base
       when 1
         I18n.t(:login, scope: [:administrations, :logs, :types])
       when 2
-        I18n.t(:curriculum_unit_access, scope: [:administrations, :logs, :types])
+        I18n.t(:offer_access, scope: [:administrations, :logs, :types])
     end
   end
 
