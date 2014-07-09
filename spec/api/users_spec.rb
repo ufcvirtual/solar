@@ -16,7 +16,7 @@ describe "Users" do
         get "/api/v1/users/me", access_token: token.token
 
         response.status.should eq(200)
-        response.body.should == { id: user.id, name: user.name, username: user.username, email: user.email, photo: "http://localhost:3000/users/#{user.id}/photo" }.to_json
+        response.body.should == { id: user.id, name: user.name, username: user.username, email: user.email, photo: "/api/v1/users/#{user.id}/photo" }.to_json
       end
     end
 
