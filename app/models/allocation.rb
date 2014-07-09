@@ -73,6 +73,13 @@ class Allocation < ActiveRecord::Base
     return group.offer.semester unless group.nil?
   end
 
+  def offers_related
+    return curriculum_unit.offers      unless curriculum_unit.nil?
+    return course.offers               unless course.nil?
+    return [offer]                     unless offer.nil?
+    return [group.offer]               unless group.nil?
+  end
+
   def status_color
     case status.to_i
       when (Allocation_Pending_Reactivate); "#FF6600"

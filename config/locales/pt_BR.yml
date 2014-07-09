@@ -1728,7 +1728,7 @@ pt_BR:
       course: Curso
       types:
         login: "Login"
-        curriculum_unit_access: "Acesso ao curso"
+        offer_access: "Acesso ao curso"
         create: "Criação"
         update: "Atualização"
         destroy: "Remoção"
@@ -1856,6 +1856,8 @@ pt_BR:
       edit_course: Editar Curso
       edit_module: Editar Módulo
       edit_curriculum_unit: Editar Unidade Curricular
+    informations:
+      warning: "Este curso não possui uma unidade curricular, portanto algumas informações não estão disponíveis."
 
   semesters:
     success:

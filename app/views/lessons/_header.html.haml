@@ -1,7 +1,7 @@
 .titlebar#lesson_header
   .inline
     .breadcrumb
-      %span= "#{@curriculum_unit.name} >"
+      %span= "#{@offer.parent_name} >"
       - if @lessons_modules.size == 1
         %span= @lessons_modules.first.name
       - else
@@ -18,7 +18,7 @@
 
 :javascript
   $(function(){
-    var get_lessons_url = "#{get_lessons_path(curriculum_unit_id: @curriculum_unit_id, lesson_module: 'module_param')}";
+    var get_lessons_url = "#{get_lessons_path(offer_id: @offer.id, lesson_module: 'module_param')}";
     var lessons = null;
 
     $("select#lesson_module").change(function(){

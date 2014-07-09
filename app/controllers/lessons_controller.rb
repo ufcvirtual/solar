@@ -12,15 +12,15 @@ class LessonsController < ApplicationController
   include LessonsHelper
 
   before_filter :prepare_for_group_selection, only: [:index, :download_files]
-  before_filter :curriculum_data, except: [:new, :create, :edit, :update, :list, :download_files, :order, :destroy]
+  before_filter :offer_data, only: [:show, :get_lessons]
 
   def index
     @admin = (current_user.is_admin? and active_tab[:url][:allocation_tag_id].nil?)
-    
+
     if @admin
       authorize! :index, Lesson
-      allocation_tags     = AllocationTag.get_by_params(params)
-      @curriculum_unit_id = params[:curriculum_unit_id]
+      allocation_tags = AllocationTag.get_by_params(params)
+      @offer          = Offer.find(allocation_tags[:offer_id])
       @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
     else 
       authorize! :index, Lesson, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
@@ -54,14 +54,14 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
     raise "erro" if @lesson.address.blank?
 
-    unless @curriculum_unit or params.include?(:edition)
+    unless @offer or params.include?(:edition)
       render text: t(:curriculum_unit_not_selected, scope: :lessons), status: :not_found
     else
       if current_user.is_admin?
         authorize! :show, Lesson
       else
         # apenas para quem faz parte da turma
-        authorize! :show, Lesson, {on: (@curriculum_unit.nil? ? params[:allocation_tags_ids] : [@curriculum_unit.allocation_tag.id]), read: true}
+        authorize! :show, Lesson, {on: (@offer.nil? ? params[:allocation_tags_ids] : [@offer.allocation_tag.id]), read: true}
       end
 
       allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids].split(" ").flatten : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
@@ -72,7 +72,7 @@ class LessonsController < ApplicationController
 
       render layout: 'lesson'
     end
-  rescue
+  rescue => error
     render json: {status: :unprocessable_entity}
   end
 
@@ -290,8 +290,8 @@ class LessonsController < ApplicationController
 
   private
 
-    def curriculum_data
-      @curriculum_unit = CurriculumUnit.where(id: (params[:curriculum_unit_id] || active_tab[:url][:id])).first
+    def offer_data
+      @offer = Offer.find(params[:offer_id] || active_tab[:url][:id])
     end
 
     def lessons_to_open(allocation_tags_ids = nil)

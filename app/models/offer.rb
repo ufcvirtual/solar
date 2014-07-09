@@ -125,4 +125,8 @@ class Offer < ActiveRecord::Base
     Date.today <= end_date 
   end
 
+  def parent_name
+    curriculum_unit.nil? ? course.name : curriculum_unit.name
+  end
+
 end

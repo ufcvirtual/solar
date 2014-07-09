@@ -1477,7 +1477,7 @@ en_US:
       course: Course
       types:
         login: "Login"
-        curriculum_unit_access: "Access to the course"
+        offer_access: "Access to the course"
         create: "Create"
         update: "Update"
         destroy: "Destroy"
@@ -1596,6 +1596,8 @@ en_US:
       edit_course: Edit Course
       edit_module: Edit Module
       edit_curriculum_unit: Edit Curriculum Unit
+    informations:
+      warning: "This course has no curriculum unit, therefore some information are not available."
   semesters:
     success:
       created: Semester was successfully created.

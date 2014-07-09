@@ -7,7 +7,7 @@ class ScoresController < ApplicationController
   # Lista de informações gerais do acompanhamento de todos os alunos da turma
   ##
   def index
-    curriculum_unit_id, allocation_tag_id = active_tab[:url][:id], active_tab[:url][:allocation_tag_id]
+    allocation_tag_id = active_tab[:url][:allocation_tag_id]
     authorize! :index, Score, on: [allocation_tag_id] # verifica se pode acessar método
 
     @group = AllocationTag.find(allocation_tag_id).groups.first
@@ -16,7 +16,7 @@ class ScoresController < ApplicationController
     raise CanCan::AccessDenied if @group.nil? # turma nao existe
     # authorize! :related_with_allocation_tag, AllocationTag.user_allocation_tag_related_with_class(@group.id, current_user.id) # verifica se pode acessar turma
 
-    @curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
+    # @offer = CurriculumUnit.find(curriculum_unit_id)
     @assignments = Assignment.all(:joins => [{academic_allocations: :allocation_tag}, :schedule],
       :conditions => ["allocation_tags.group_id = #{@group.id}"], 
       :select => ["assignments.id", "schedule_id", "type_assignment", "name"])
@@ -36,8 +36,7 @@ class ScoresController < ApplicationController
     @student = params.include?(:student_id) ? User.find(params[:student_id]) : current_user
 
     allocation_tag = AllocationTag.find(allocation_tag_id)
-    group_id            = allocation_tag.group_id
-    related_allocations = allocation_tag.related
+    group_id, related_allocations = allocation_tag.group_id, allocation_tag.related
 
     authorize! :find, @student # verifica se o usuario logado tem permissao para consultar o usuario informado
 
@@ -46,7 +45,7 @@ class ScoresController < ApplicationController
     @discussions           = Discussion.posts_count_by_user(@student.id, related_allocations)
 
     from_date, until_date  = (Date.today << 2), Date.today # dois meses atras
-    at      = AllocationTag.find_by_curriculum_unit_id(active_tab[:url][:id]).id
+    at      = AllocationTag.find_by_offer_id(active_tab[:url][:id]).id
     @amount = Score.find_amount_access_by_student_id_and_interval(at, @student.id, from_date, until_date)
   end
 
@@ -64,7 +63,7 @@ class ScoresController < ApplicationController
     from_date  = date_valid?(params['from-date']) ? Date.parse(params['from-date']) : (Date.today << 2)
     until_date = date_valid?(params['until-date']) ? Date.parse(params['until-date']) : Date.today
 
-    at = AllocationTag.find_by_curriculum_unit_id(active_tab[:url][:id]).id
+    at      = AllocationTag.find_by_offer_id(active_tab[:url][:id]).id
     @amount = Score.find_amount_access_by_student_id_and_interval(at, @student_id, from_date, until_date)
 
     render :layout => false
@@ -84,7 +83,7 @@ class ScoresController < ApplicationController
     from_date  = (date_valid?(params['from-date']) ? Date.parse(params['from-date']) : (Date.today << 2))
     until_date = (date_valid?(params['until-date']) ? Date.parse(params['until-date']) : Date.today)
 
-    at = AllocationTag.find_by_curriculum_unit_id(active_tab[:url][:id]).id
+    at       = AllocationTag.find_by_offer_id(active_tab[:url][:id]).id
     @history = Score.history_student_id_and_interval(at, student_id, from_date, until_date).order("created_at DESC")
 
     render :layout => false

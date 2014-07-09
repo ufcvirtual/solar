@@ -10,15 +10,15 @@
       = link_to_function content_tag(:i, nil, class: 'icon-trash'), "delete_curriculum_unit(this)", class: 'btn btn_del', :'data-tooltip' => t(".delete", uc_or_module: t_tool_name), :"data-link-delete" => curriculum_unit_path(id: ':id'), disabled: true
 
 - unless @curriculum_units.nil? or @curriculum_units.empty?
-  %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
+  %table.tb_list{cellpadding: "10", cellspacing: "0", width: "100%", style: "table-layout: fixed"}
     %thead
       %tr.lines
-        %th.no_sort.center{:style => "width:25px"}
+        %th.no_sort.center{style: "width:25px"}
           %input#all_curriculum_unit{type: "checkbox", :"data-children-names" => "ckb_curriculum_unit"}
-        %th.no_sort{:width => "12%"}= CurriculumUnit.human_attribute_name(:code)
-        %th{:width => "38%"}= CurriculumUnit.human_attribute_name(:name)
-        %th{:width => "28%"}= CurriculumUnit.human_attribute_name(:category)
-        %th.no_sort{:width => "12%"}
+        %th.no_sort{width: "12%"}= CurriculumUnit.human_attribute_name(:code)
+        %th{width: "38%"}= CurriculumUnit.human_attribute_name(:name)
+        %th{width: "28%"}= CurriculumUnit.human_attribute_name(:category)
+        %th.no_sort{width: "12%"}
     %tbody.curriculum_units
       = render partial: 'curriculum_units/curriculum_units'
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), curriculum_units_path(page: @curriculum_units.next_page, type_id: @type.id), class: 'load-more-ucs', remote: true, :"data-tooltip" => t(:load_items) if @curriculum_units.next_page

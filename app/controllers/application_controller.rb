@@ -129,7 +129,7 @@ class ApplicationController < ActionController::Base
     unless params[:selected_group].present? and !!(allocation_tag_id_group = AllocationTag.find_by_group_id(params[:selected_group]).try(:id))
       allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
       params[:selected_group] = allocation_tag.group_id
-      allocation_tag_id_group = (allocation_tag.group_id.nil?) ? Group.find_all_by_curriculum_unit_id_and_user_id(active_tab[:url][:id], current_user.id).first.allocation_tag.id : allocation_tag.id
+      allocation_tag_id_group = (allocation_tag.group_id.nil?) ? Group.find_all_by_offer_id_and_user_id(active_tab[:url][:id], current_user.id).first.allocation_tag.id : allocation_tag.id
     end
 
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
@@ -179,8 +179,8 @@ class ApplicationController < ActionController::Base
       (user_session[:tabs][:opened].has_key?(tab_name)) or (user_session[:tabs][:opened].length < Max_Tabs_Open.to_i)
     end
 
-    def set_session_opened_tabs(tab_name, hash_url, params_url)
-      user_session[:tabs][:opened][tab_name] = { breadcrumb: [{name: params[:name], url: params_url}], url: hash_url }
+    def set_session_opened_tabs(tab_name, hash_url, params_url, page_title = nil)
+      user_session[:tabs][:opened][tab_name] = { breadcrumb: [{name: (page_title.blank? ? params[:name] : page_title), url: params_url}], url: hash_url }
       set_active_tab tab_name
     end
 

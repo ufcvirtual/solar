@@ -57,39 +57,6 @@ SQL
   end
 
   ##
-  # Retorna as unidades curriculares que o usuário atual está relacionado
-  ##
-  def self.find_default_by_user_id(user_id, as_object = false)
-    user_activated_allocations = User.find(user_id).allocations.where(status: Allocation_Activated)
-    allocation_tags            = user_activated_allocations.flatten.map(&:allocation_tag).uniq.compact
-    current_offers             = Offer.currents(Date.today.year, true).map(&:id) # get current offers considering semesters
-
-    curriculum_units = allocation_tags.collect do |allocation_tag|
-      case
-        when allocation_tag.curriculum_unit
-          offers = allocation_tag.curriculum_unit.offers
-          uc     = allocation_tag.curriculum_unit
-          uc.attributes.merge(allocation_tag_id: allocation_tag.id, uc_allocation_tag_id: uc.allocation_tag.id, course_id: nil, has_offers: not(offers.empty?), has_groups: not(uc.groups.empty?)) if (offers.empty? or (current_offers & offers.map(&:id)).size > 0)
-        when allocation_tag.offer
-          offer = allocation_tag.offer
-          uc    = offer.curriculum_unit
-          uc.attributes.merge(allocation_tag_id: allocation_tag.id, uc_allocation_tag_id: uc.allocation_tag.id, course_id: (offer.course.nil? ? nil : offer.course.id), has_offers: true, has_groups: not(offer.groups.empty?)) if not(uc.nil?) and current_offers.include?(offer.id)
-        when allocation_tag.group
-          offer = allocation_tag.group.offer
-          uc    = offer.curriculum_unit
-          uc.attributes.merge(allocation_tag_id: allocation_tag.id, uc_allocation_tag_id: uc.allocation_tag.id, course_id: (offer.course.nil? ? nil : offer.course.id), has_offers: true, has_groups: true) if not(uc.nil?) and current_offers.include?(offer.id)
-        when allocation_tag.course
-          allocation_tag.course.curriculum_units.collect{ |uc| 
-            offers = uc.offers
-            uc.attributes.merge(allocation_tag_id: allocation_tag.id, uc_allocation_tag_id: uc.allocation_tag.id, course_id: allocation_tag.course.id, has_offers: not(offers.empty?), has_groups: not(uc.groups.empty?)) if (offers.empty? or (current_offers & offers.map(&:id)).size > 0)
-          }
-      end
-    end
-
-    curriculum_units.flatten.delete_if{|uc| uc.nil? or uc.empty?}.uniq{|uc| uc["id"]}
-  end
-
-  ##
   # Todas as UCs do usuario, atraves das allocations
   ##
   def self.all_by_user(user)

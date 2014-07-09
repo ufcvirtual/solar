@@ -29,10 +29,11 @@ class Group < ActiveRecord::Base
     allocations.joins(:profile).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean)").where(status: Allocation_Activated).uniq
   end
 
-  def self.find_all_by_curriculum_unit_id_and_user_id(curriculum_unit_id, user_id)
-    Group.joins(offer: [:semester]).where(
-      offers: {curriculum_unit_id: curriculum_unit_id},
-      groups: {id: User.find(user_id).groups(nil, Allocation_Activated).map(&:id)}).order('semesters.name DESC, groups.code ASC')
+  def self.find_all_by_offer_id_and_user_id(offer_id, user_id)
+    Group.joins(offer: :semester).where(
+      groups: {
+        id: User.find(user_id).groups(nil, Allocation_Activated).map(&:id), offer_id: offer_id
+      } ).select("DISTINCT groups.id, semesters.*, groups.*").order('semesters.name DESC, groups.code ASC')
   end
 
   def has_any_lower_association?

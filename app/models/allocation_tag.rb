@@ -10,7 +10,6 @@ class AllocationTag < ActiveRecord::Base
   has_many :academic_allocations, dependent: :restrict # nao posso deletar uma ferramenta academica se tiver conteudo
 
   has_many :users,  through: :allocations, uniq: true
-  has_many :offers, through: :curriculum_unit
 
   has_many :groups, finder_sql: Proc.new {
     if not group_id.nil?
@@ -21,6 +20,18 @@ class AllocationTag < ActiveRecord::Base
       %Q{ SELECT DISTINCT t1.* FROM groups AS t1 JOIN offers AS t2 ON t2.id = t1.offer_id WHERE t2.curriculum_unit_id = #{curriculum_unit_id} }
     elsif not course_id.nil?
       %Q{ SELECT DISTINCT t1.* FROM groups AS t1 JOIN offers AS t2 ON t2.id = t1.offer_id WHERE t2.course_id = #{course_id} }
+    end
+  }
+
+  has_many :offers, finder_sql: Proc.new {
+    if not group_id.nil?
+      %Q{ SELECT t1.* FROM offers AS t1 JOIN groups AS t2 ON t2.offer_id = t1.id WHERE t2.id = #{group_id} }
+    elsif not offer_id.nil?
+      %Q{ SELECT offers.* FROM offers WHERE id = #{offer_id} }
+    elsif not curriculum_unit_id.nil?
+      %Q{ SELECT offers.* FROM offers WHERE curriculum_unit_id = #{curriculum_unit_id} }
+    elsif not course_id.nil?
+      %Q{ SELECT offers.* FROM offers WHERE course_id = #{course_id} }
     end
   }
 
@@ -183,25 +194,39 @@ class AllocationTag < ActiveRecord::Base
     end
   end
 
-  def self.allocation_tag_details(allocation_tag, split = false)
+  def self.allocation_tag_details(allocation_tag, split = false, with_code = false, semester_first = false)
     not_specified = I18n.t("users.profiles.not_specified")
 
     return not_specified if allocation_tag.nil?
 
     detail = ''
+
     if !allocation_tag.curriculum_unit_id.nil?
-      detail  = allocation_tag.curriculum_unit.name
+
+      detail  = ( with_code ? allocation_tag.curriculum_unit.code_name : allocation_tag.curriculum_unit.name )
       uc_type = allocation_tag.curriculum_unit.curriculum_unit_type.description
+
     elsif !allocation_tag.course_id.nil?
-      detail = allocation_tag.course.name
-    elsif !allocation_tag.offer.nil?
-      offer   = allocation_tag.offer
-      detail  = [offer.course.try(:name), offer.curriculum_unit.try(:name), offer.semester.name].join(" | ") unless offer.nil?
+
+      detail  = ( with_code ? allocation_tag.course.code_name : allocation_tag.course.name )
+
+    else
+
+      offer  = ( !allocation_tag.offer.nil? ? allocation_tag.offer : allocation_tag.group.offer )
+      uc     = offer.curriculum_unit
+      course = offer.course
+
+      detail  = if not(offer.nil?) and uc.try(:curriculum_unit_type_id) == 3
+        [ (semester_first ? offer.semester.name : nil), (with_code ? course.try(:code_name) : course.try(:name)),
+          (semester_first ? nil : offer.semester.name)].compact.join(" | ")
+      else
+        [ (semester_first ? offer.semester.name : nil), (with_code ? course.try(:code_name) : course.try(:name)),
+          (with_code ? uc.try(:code_name) : uc.try(:name)), (semester_first ? nil : offer.semester.name),
+          (allocation_tag.group.nil? ? nil : allocation_tag.group.code) ].compact.join(" | ")
+      end
+
       uc_type = offer.curriculum_unit.try(:curriculum_unit_type).try(:description) unless offer.nil?
-    elsif !allocation_tag.group.nil?
-      offer   = allocation_tag.group.offer
-      detail  = [offer.course.try(:name), offer.curriculum_unit.try(:name), offer.semester.name, allocation_tag.group.code].join(" | ") unless offer.nil?
-      uc_type = offer.curriculum_unit.try(:curriculum_unit_type).try(:description) unless offer.nil?
+
     end
 
     if split
@@ -286,15 +311,14 @@ class AllocationTag < ActiveRecord::Base
         selected = "COURSE"
       end
     else
-      selected   = "GROUP"
-      groups_ids = params[:groups_id].split(" ")
-      offer_id   =  Group.find(groups_ids.first).offer.id
-      allocation_tags_ids = AllocationTag.where(group_id: groups_ids).map(&map.to_sym)
+      selected, groups_ids = "GROUP", params[:groups_id].split(" ")
+      allocation_tags_ids  = AllocationTag.where(group_id: groups_ids).map(&map.to_sym)
+      offer = [Group.find(groups_ids.try(:first)).try(:offer)] if offer.nil? and not(groups_ids.blank?)
     end
 
     allocation_tags_ids = [nil] if allocation_tags_ids.empty?
 
-    {allocation_tags: allocation_tags_ids.flatten, selected: selected, offer_id: offer_id}
+    {allocation_tags: allocation_tags_ids.flatten, selected: selected, offer_id: offer.try(:first).try(:id)}
   end
 
 end

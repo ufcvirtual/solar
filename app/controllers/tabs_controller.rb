@@ -18,14 +18,12 @@ class TabsController < ApplicationController
   end
 
   def create # add
-    authorize! :show, CurriculumUnit.find(params[:id])
-
     id, tab_name, context_id = params[:id], params[:name], params[:context].to_i # Home, Curriculum_Unit ou outro nao mapeado
     redirect = home_path # se estourou numero de abas, volta para mysolar # Context_General
 
     # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
     if opened_or_new_tab?(tab_name)
-      set_session_opened_tabs(tab_name, {id: id, context: context_id, allocation_tag_id: params[:allocation_tag_id]}, params)
+      set_session_opened_tabs(tab_name, {id: id, context: context_id, allocation_tag_id: params[:allocation_tag_id]}, params, params[:title_name])
       redirect = home_curriculum_unit_path(id) if context_id == Context_Curriculum_Unit
     end
 
@@ -43,7 +41,7 @@ class TabsController < ApplicationController
   private
 
     def log_access
-      LogAccess.course(user_id: current_user.id, allocation_tag_id: AllocationTag.find_by_curriculum_unit_id(params[:id]).id, ip: request.remote_ip) rescue nil if (params[:context].to_i == Context_Curriculum_Unit)
+      LogAccess.offer(user_id: current_user.id, allocation_tag_id: AllocationTag.find_by_offer_id(params[:id]).id, ip: request.remote_ip) rescue nil if (params[:context].to_i == Context_Curriculum_Unit)
     end
 
 end
