@@ -42,7 +42,12 @@ def checar_dados_tabela(table_selector, table_data, options = {})
             #   puts "itens"
             #   puts i
             # end
-            value = value.join(" - ")
+            if !options[:student]
+              value = value.join(" - ")
+            else
+              value = value.join(" ")
+            end
+
 
             # debug
             # puts "array teste"
@@ -55,8 +60,14 @@ def checar_dados_tabela(table_selector, table_data, options = {})
   end
 end
 
-Então 'eu deverei ver os seguintes dados na tabela "$table_id":' do |table_id, table|
-  checar_dados_tabela(table_id, table)
+Então 'eu deverei ver os seguintes dados na tabela "$table_id" como aluno:' do |table_id, table|
+  checar_dados_tabela(table_id, table, :student => true)
+  # Exemplo caso a tabela não possua headers
+  # checar_dados_tabela(table_id, table, :headers => false)
+end
+
+Então 'eu deverei ver os seguintes dados na tabela "$table_id" como professor:' do |table_id, table|
+  checar_dados_tabela(table_id, table, :student => false)
   # Exemplo caso a tabela não possua headers
   # checar_dados_tabela(table_id, table, :headers => false)
 end
