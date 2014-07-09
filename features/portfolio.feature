@@ -20,12 +20,12 @@ Cenário: Exibir Portfolio e atividades individuais como aluno
         E eu deverei ver os seguintes dados na tabela "#assignment_individual":
             | Descrição                 | Período                 | Situação     | Nota           | Comentários |
             | Atividade individual VI   | 13/08/2011 17/09/2011   | Não Enviado  | -              |             |
-            | Atividade II              | 03/08/2014 03/12/2014   | Não Iniciado | -              |             |
-            | Atividade III             | 03/05/2014 03/08/2014   | Corrigido    | 6.3            |             |
-            | Atividade individual VII  | 01/07/2014 02/07/2014   | Enviado      | -              |             |
-            | Atividade individual IV   | 03/08/2014 03/12/2014   | Não Iniciado | -              |             |
-            | Atividade individual V    | 03/05/2014 03/08/2014   | Enviado      | -              |             |
-            | Atividade I               | 03/05/2014 03/08/2014   | Enviar       | -              |             |
+            | Atividade II              | Date.today >> 1 ; Date.today >> 5   | Não Iniciado | -              |             |
+            | Atividade III             | 07/05/2014 07/08/2014   | Corrigido    | 6.3            |             |
+            | Atividade individual VII  | 05/07/2014 06/07/2014   | Enviado      | -              |             |
+            | Atividade individual IV   | 07/08/2014 07/12/2014   | Não Iniciado | -              |             |
+            | Atividade individual V    | 07/05/2014 07/08/2014   | Enviado      | -              |             |
+            | Atividade I               | 07/05/2014 07/08/2014   | Enviar       | -              |             |
     Quando eu clicar no link "Atividade III"
         Então eu deverei ver "Atividade III"
             E eu deverei ver "Descrição"
@@ -52,14 +52,14 @@ Dado que estou logado com o usuario "prof" e com a senha "123456"
         E eu deverei ver o link "Atividade III"
         # FIXME: as datas das atividades II, III e atividade individual VI, VI, V, I estão com diferença de 2 dias em relação ao que é visualizado, não sei por que
         E eu deverei ver os seguintes dados na tabela "#assignment_individual":
-            | Descrição                 | Período                   |
-            | Atividade individual VI   | 13/08/2011 - 17/09/2011   |
-            | Atividade I               | 03/05/2014 - 03/08/2014   |
-            | Atividade III             | 03/05/2014 - 03/08/2014   |
-            | Atividade individual V    | 03/05/2014 - 03/08/2014   |
-            | Atividade individual VII  | 01/07/2014 - 02/07/2014   |
-            | Atividade individual IV   | 03/08/2014 - 03/12/2014   |
-            | Atividade II              | 03/08/2014 - 03/12/2014   |
+            | Descrição                 | Período                                   |
+            | Atividade individual VI   | 13/08/2011 - 17/09/2011                   |
+            | Atividade I               | Date.today << 2 ; Date.today >> 1         |
+            | Atividade individual V    | Date.today << 2 ; Date.today >> 1         |
+            | Atividade III             | Date.today << 2 ; Date.today >> 1         |
+            | Atividade individual VII  | Date.today - 2.days ; Date.today - 1.days |
+            | Atividade II              | Date.today >> 1 ; Date.today >> 5         |
+            | Atividade individual IV   | Date.today >> 1 ; Date.today >> 5         |
     Quando eu clicar no link "Atividade III"
         Então eu deverei ver "Atividade III"
             E eu deverei ver "Descrição"

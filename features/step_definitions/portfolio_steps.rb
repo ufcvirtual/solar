@@ -24,15 +24,30 @@ def checar_dados_tabela(table_selector, table_data, options = {})
     end
 
     within("tbody") do
-      puts "row_count"
-      puts row_count
-      puts "table_data"
-      puts table_data.raw
+      # debug: descomentar p/ exibir conteúdo da tabela
+      # puts "table_data"
+      # puts table_data.raw
       all("tr").size.should == row_count
 
       xpath_base = './/tr[%i]/td[%i]';
       table_rows.each_with_index do |row, index|
         row.each_with_index do |value, column|
+          # para os testes de datas de portfolio/atividades
+          if value.include? "Date.today"
+
+            value = value.split(" ; ")
+            value.collect! { |item| eval(item).strftime("%d/%m/%Y") }
+            # debug
+            # value.each do | i |
+            #   puts "itens"
+            #   puts i
+            # end
+            value = value.join(" - ")
+
+            # debug
+            # puts "array teste"
+            # puts value
+          end
           find(:xpath, xpath_base % [index + 1, header_map[column] + 1]).should have_content(value)
         end
       end
