@@ -66,7 +66,7 @@ group :test do
   gem "selenium-webdriver", "~> 2.42.0"
   gem "launchy", "2.1.0"
   gem "nokogiri", "1.5.5"
-  gem "spreewald", "0.8.4" # collection of cucumber steps
+  # gem "spreewald", "0.8.4" # collection of cucumber steps
   # gem "simplecov", ">= 0.5.3", :require => false
 end
 
