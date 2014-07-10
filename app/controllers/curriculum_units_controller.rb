@@ -163,7 +163,7 @@ class CurriculumUnitsController < ApplicationController
 
   def informations
     authorize! :show, CurriculumUnit, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-    allocation_tags  = AllocationTag.find_related_ids(allocation_tag_id)
+    allocation_tags   = AllocationTag.find_related_ids(allocation_tag_id)
     allocation_offer  = AllocationTag.where(id: allocation_tags).where("offer_id IS NOT NULL").first
     @offer            = allocation_offer.offer unless allocation_offer.nil?
   end
@@ -178,10 +178,9 @@ class CurriculumUnitsController < ApplicationController
   private
 
     def curriculum_data
-      authorize! :show, @curriculum_unit = CurriculumUnit.find(active_tab[:url][:id])
-
+      @curriculum_unit   = Offer.find(active_tab[:url][:id]).curriculum_unit
       @allocation_tag_id = active_tab[:url][:allocation_tag_id]
-      @responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(AllocationTag.find_related_ids(@allocation_tag_id).join(','), Profile_Type_Class_Responsible)
+      @responsible       = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(AllocationTag.find_related_ids(@allocation_tag_id).join(','), Profile_Type_Class_Responsible)
     end
 
     def list_portlet_discussion_posts(allocation_tags)

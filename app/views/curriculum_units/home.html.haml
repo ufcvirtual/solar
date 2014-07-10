@@ -7,7 +7,7 @@
         %h2= t(:curriculum_unit_responsible)
     .block_content
       .block_left
-        = @curriculum_unit.resume
+        = @curriculum_unit.try(:resume)
       .block_right
         - if @responsible
           - @responsible.each do |resp|

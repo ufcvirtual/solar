@@ -1,26 +1,33 @@
 module MysolarHelper
 
   ##
-  # Retorna as unidades curriculares que o usuário atual está relacionado na seguinte ordenação:
-  # Maior quantidade de acessos nas últimas 3 semanas > Ter perfil de aluno ou responsável > Nome
+  # Retorna as ofertas que o usuário atual está relacionado e que são correntes na seguinte ordenação:
+  # Maior quantidade de acessos nas últimas 3 semanas > Ter turmas > Nome ASC
   ##
   def load_curriculum_unit_data
-    curriculum_units = CurriculumUnit.find_default_by_user_id(current_user.id)
+    currents = Offer.currents(Date.today.year, true)
+    u_offers = AllocationTag.where(id: current_user.allocations.where(status: Allocation_Activated).uniq.pluck(:allocation_tag_id)).map(&:offers).flatten.compact
+    offers   = (currents & u_offers)
 
-    # re-ordena as uc de acordo com o resultado dos tipos de perfil e o nome
-    curriculum_units = curriculum_units.sort_by{ |curriculum_unit|
-      curriculum_unit[:name] # a verificação do nome vem primeiro para ser sobreposta pela de maior prioridade
-      # array com o resultado da comparação de bit entre o tipo do perfil do usuário em cada uc e o de responsável/aluno
-      profile_types = Allocation.where(allocation_tag_id: AllocationTag.find(curriculum_unit[:allocation_tag_id]).related, user_id: current_user.id).compact.map(&:profile).map(&:types).uniq
-      profile_types = profile_types.collect{|types| ((types & Profile_Type_Class_Responsible) != 0 or (types & Profile_Type_Student) != 0)}
-      (profile_types.include?(true) ? 0 : 1)
-      # ucs without groups or offers has to go to the end
-      (curriculum_unit[:has_groups] and curriculum_unit[:has_offers]) ? 0 : 1
-      # reorder ucs by the one who has most access in the last three weeks
-      -(LogAccess.count(:id, conditions: {log_type: LogAccess::TYPE[:curriculum_unit_access], user_id: current_user.id, allocation_tag_id: curriculum_unit[:uc_allocation_tag_id], created_at: 3.week.ago..Time.now}))
-    }
+    allocations_info = offers.collect{ |offer| 
+        {
+          id: offer.id,
+          info: AllocationTag.allocation_tag_details(offer.allocation_tag, false, false, true),
+          info_code: AllocationTag.allocation_tag_details(offer.allocation_tag, false, true, true),
+          at: offer.allocation_tag.id,
+          name: offer.curriculum_unit.try(:name) || offer.course.try(:name),
+          has_groups: not(offer.groups.empty?)
+        }
+    }.flatten
 
-    return curriculum_units.uniq
+    allocations_info.sort_by! do |allocation|
+      allocation[:info]
+      allocation[:has_groups]
+      -(LogAccess.count(:id, conditions: {log_type: LogAccess::TYPE[:offer_access], user_id: current_user.id,
+        allocation_tag_id: allocation[:uc_at], created_at: 3.week.ago..Time.now}))
+    end
+
+    return allocations_info
   end
 
 end

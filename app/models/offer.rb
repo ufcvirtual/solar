@@ -1,7 +1,7 @@
 class Offer < ActiveRecord::Base
   include Taggable
 
-  default_scope order: 'id'
+  # default_scope order: 'offers.id'
 
   belongs_to :course
   belongs_to :curriculum_unit
@@ -123,6 +123,10 @@ class Offer < ActiveRecord::Base
 
   def is_active?
     Date.today <= end_date 
+  end
+
+  def parent_name
+    curriculum_unit.nil? ? course.name : curriculum_unit.name
   end
 
 end

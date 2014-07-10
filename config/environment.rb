@@ -55,6 +55,7 @@ Profile_Type_Class_Responsible  = 0b00000010  # (2o bit = 1)
 Profile_Type_Student            = 0b00000100  # (3o bit = 1)
 Profile_Type_Editor             = 0b00001000  # (4o bit = 1)
 Profile_Type_Admin              = 0b00010000  # (5o bit = 1)
+Profile_Type_Observer           = 0b00100000  # (6o bit = 1)
 
 # Perfis de editor inicialmente alocados ao criar
 Curriculum_Unit_Initial_Profile = 5

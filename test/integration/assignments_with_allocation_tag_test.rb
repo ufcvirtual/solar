@@ -14,7 +14,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
 
   def setup
     @quimica_tab = add_tab_path(id: 3, context:2, allocation_tag_id: 3)
-    @literatura_brasileira_tab = add_tab_path(id: 8, context:2, allocation_tag_id: 8)
+    @literatura_brasileira_tab = add_tab_path(id: 5, context:2, allocation_tag_id: 8)
   end
 
   def login(user)

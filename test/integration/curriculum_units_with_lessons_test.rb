@@ -8,8 +8,8 @@ class CurriculumUnitsWithLessonsTest < ActionDispatch::IntegrationTest
   def setup
     login_as users(:aluno1), scope: :user
 
-    @quimica_tab = add_tab_path(id: 3, context:2, allocation_tag_id: 13)
-    @teoria_lite = add_tab_path(id: 2, context:2, allocation_tag_id: 12)
+    @quimica_tab = add_tab_path(id: 3, context:2, allocation_tag_id: 6)
+    @teoria_lite = add_tab_path(id: 2, context:2, allocation_tag_id: 5)
   end
 
   ##
@@ -30,11 +30,11 @@ class CurriculumUnitsWithLessonsTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "nao acessar aula sem acessar unidade curricular primeiro" do
+  test "nao acessar aula sem acessar oferta primeiro" do
     get lesson_path(4)
-    assert_response :not_found
+    assert_response :redirect
 
-    assert_equal response.body, I18n.t(:curriculum_unit_not_selected, scope: :lessons)
+    assert_equal flash[:alert], I18n.t(:object_not_found)
   end
 
 end

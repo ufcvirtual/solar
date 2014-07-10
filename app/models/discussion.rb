@@ -59,7 +59,7 @@ class Discussion < Event
   end
 
   def extra_time?(user_id)
-    ((self.allocation_tags.map {|at| at.is_user_class_responsible?(user_id)}).include?(true) and self.closed?) ?
+    ((self.allocation_tags.map {|at| at.is_observer_or_responsible?(user_id)}).include?(true) and self.closed?) ?
       ((self.schedule.end_date.to_date + Discussion_Responsible_Extra_Time) >= Date.today) : false
   end
 

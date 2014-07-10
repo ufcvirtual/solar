@@ -81,6 +81,7 @@ schedule16:
   start_date: 2011-03-25
   end_date: 2011-03-25
 
+# atividades (portfolio)
 schedule17:
   id: 17
   start_date: 2011-08-13
@@ -89,7 +90,7 @@ schedule17:
 schedule18:
   id: 18
   start_date: <%= Date.today >> 1 %>
-  end_date: <%= Date.today >> 5%>
+  end_date: <%= Date.today >> 5 %>
 
 schedule19:
   id: 19

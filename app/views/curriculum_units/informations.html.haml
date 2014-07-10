@@ -1,5 +1,8 @@
 .block_wrapper
   
+  - if @curriculum_unit.nil?
+    .title-warning= t(".warning")
+
   .block_title
     %h2
       %i.icon-docs
@@ -9,26 +12,23 @@
     %tbody
       %tr.lines
         %td{:style => "width: 20%;"}= t(:syllabus) 
-        %td= @curriculum_unit.syllabus 
+        %td= @curriculum_unit.try(:syllabus)
       %tr.lines
         %td= t(:objectives)
-        %td= @curriculum_unit.objectives
+        %td= @curriculum_unit.try(:objectives)
       %tr.lines
         %td= t(:prerequisites) 
-        %td= @curriculum_unit.prerequisites 
+        %td= @curriculum_unit.try(:prerequisites)
       %tr.lines
         %td= t(:resume) 
-        %td= @curriculum_unit.resume 
+        %td= @curriculum_unit.try(:resume)
       - unless @offer.nil?
         %tr.lines
           %td= t(:semester_date) 
-          %td
-            =l @offer.start_date
-            = "-"
-            =l @offer.end_date 
+          %td= [l(@offer.start_date), l(@offer.end_date)].join(" - ")
       %tr.lines
         %td= t(:passing_grade) 
-        %td= @curriculum_unit.passing_grade 
+        %td= @curriculum_unit.try(:passing_grade)
       %tr.lines
         %td= t(:curriculum_unit_responsible) 
         %td

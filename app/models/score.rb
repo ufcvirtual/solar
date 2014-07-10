@@ -9,7 +9,7 @@ class Score < ActiveRecord::Base
 
   ## historico de acessos
   def self.history_student_id_and_interval(allocation_tag_id, student_id, from_date, until_date)
-    LogAccess.where(log_type: LogAccess::TYPE[:curriculum_unit_access], user_id: student_id, allocation_tag_id: allocation_tag_id, created_at: from_date.beginning_of_day..until_date.end_of_day)
+    LogAccess.where(log_type: LogAccess::TYPE[:offer_access], user_id: student_id, allocation_tag_id: allocation_tag_id, created_at: from_date.beginning_of_day..until_date.end_of_day)
   end
 
   ## informações de todos os alunos para todas as atividades de uma turma
@@ -35,7 +35,7 @@ class Score < ActiveRecord::Base
 
       students_grades[idx] = assignments_grades
       students_groups[idx] = groups_ids
-      student_count_access[idx] = LogAccess.find_all_by_user_id_and_log_type_and_allocation_tag_id(student.id, 3, group.curriculum_unit.allocation_tag.id).size
+      student_count_access[idx]       = LogAccess.find_all_by_user_id_and_log_type_and_allocation_tag_id(student.id, LogAccess::TYPE[:offer_access], group.offer.curriculum_unit.allocation_tag.id).size
       student_count_public_files[idx] = PublicFile.find_all_by_user_id_and_allocation_tag_id(student.id, group.allocation_tag.id).size
     end
 

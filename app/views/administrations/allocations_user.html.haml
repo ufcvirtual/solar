@@ -26,8 +26,9 @@
                   %td= allocation_details(a.allocation_tag)
                   %td= ( a.allocation_tag.nil? ? "" : type(a.allocation_tag) )
                   %td= name_allocation_status(a.status)
-                  %td.right_buttons.manage
-                    = link_to_function content_tag(:i, nil, class: 'icon-edit'), "manage(this)", :"show-link" => admin_allocation_path(a), :"edit-link" => edit_admin_allocation_path(a), class:  "btn btn_manage_allocation"
+                  - if @is_admin
+                    %td.right_buttons.manage
+                      = link_to_function content_tag(:i, nil, class: 'icon-edit'), "manage(this)", :"show-link" => admin_allocation_path(a), :"edit-link" => edit_admin_allocation_path(a), class:  "btn btn_manage_allocation"
   - else
     .block_content_text.block_content_text_list.text_none= t(".no_data")
 

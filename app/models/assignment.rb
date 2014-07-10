@@ -82,7 +82,7 @@ class Assignment < Event
   end
 
   def extra_time?(allocation_tag, user_id)
-    (allocation_tag.is_user_class_responsible?(user_id) and closed?)
+    (allocation_tag.is_observer_or_responsible?(user_id) and closed?)
   end
 
   def on_evaluation_period?(allocation_tag, user_id)
@@ -92,8 +92,7 @@ class Assignment < Event
 
   ## Verifica período que o responsável pode alterar algo na atividade
   def assignment_in_time?(allocation_tag, user_id)
-    can_access_assignment = allocation_tag.is_user_class_responsible?(user_id) and (closed? and extra_time?(allocation_tag, user_id)) # verifica se possui tempo extra
-    (verify_date_range(schedule.start_date, schedule.end_date, Date.current) or can_access_assignment)
+    (verify_date_range(schedule.start_date, schedule.end_date, Date.current) or extra_time?(allocation_tag, user_id))
   end
 
   ## Verifica se uma data esta em um intervalo de outras
@@ -138,9 +137,9 @@ class Assignment < Event
   end
 
   def user_can_access_assignment?(allocation_tag, current_user_id, user_id, group_assignment_id = nil)
-    current_user_id   = current_user_id.to_i
-    student_of_class  = !allocations.where(profile_id: Profile.student_profile).where(:user_id => current_user_id).empty?
-    class_responsible = allocation_tag.is_user_class_responsible?(current_user_id)
+    current_user_id         = current_user_id.to_i
+    student_of_class        = !allocations.where(profile_id: Profile.student_profile).where(:user_id => current_user_id).empty?
+    responsible_or_observer = allocation_tag.is_observer_or_responsible?(current_user_id)
     can_access = (user_id.to_i == current_user_id)
 
     if type_assignment == Assignment_Type_Group
@@ -148,7 +147,7 @@ class Assignment < Event
       group_assignment    = GroupAssignment.find_by_id_and_academic_allocation_id(group_assignment_id, academic_allocation.id)
       can_access = group_assignment.group_participants.map(&:user_id).include?(current_user_id) unless group_assignment.nil?
     end
-    return (class_responsible or (student_of_class and can_access))
+    return (responsible_or_observer or (student_of_class and can_access))
   end
 
   def students_without_groups(allocation_tag)

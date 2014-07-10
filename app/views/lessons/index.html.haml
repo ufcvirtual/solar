@@ -17,9 +17,6 @@
               %th.no_sort{width: "12%"}=t(".acceptance")
         %tbody
           - lmodule.lessons_to_open(current_user, true).each do |lesson|
-            - lesson_closed_class = "period_ended" if lesson.closed?
-            - path = (@admin ? lesson_path(lesson.id, allocation_tags_ids: @allocation_tags_ids.join(" "), curriculum_unit_id: @curriculum_unit_id) : lesson_path(lesson.id))
-            %tr.lines{class: lesson_closed_class, id:"lesson_#{lesson.id}"}
-              = render(lesson)
+            %tr.lines{class: lesson.closed? ? "period_ended" : "", id:"lesson_#{lesson.id}"}= render(lesson)
   - else
     .block_content.block_content_text= t(:lesson_message)

@@ -45,3 +45,20 @@
   - if back
     .back.invisible
       = render "editions/back_items"
+
+:javascript
+  $(function(){
+    $(".back_btn").click(function(){
+      erase_flash_messages();
+
+      var data = {
+        allocation_tags_ids: $("#allocation_tags_ids").val(),
+        selected: $("#selected").val(),
+        offer_id: $("#offer_id").val()
+      };
+
+      $.get($(this).attr("href"), data, function(data){ $(".edition_items").replaceWith(data); });
+      $(".back").addClass("invisible");
+      return false;
+    });
+  });

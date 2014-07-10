@@ -9,6 +9,7 @@ gem "pg", "~> 0.15.0"
 gem "foreigner", "~> 1.4.0"
 gem "koala", "1.6.0"
 
+
 gem "devise", "~> 2.2.8"
 gem "devise-encryptable", "~> 0.1.2"
 gem "devise-i18n", "~> 0.10.3"
@@ -65,7 +66,7 @@ group :test do
   gem "selenium-webdriver", "~> 2.42.0"
   gem "launchy", "2.1.0"
   gem "nokogiri", "1.5.5"
-  gem "spreewald", "0.8.4" # collection of cucumber steps
+  # gem "spreewald", "0.8.4" # collection of cucumber steps
   # gem "simplecov", ">= 0.5.3", :require => false
 end
 

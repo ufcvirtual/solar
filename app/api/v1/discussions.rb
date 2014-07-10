@@ -11,7 +11,7 @@ module V1
         @group = Group.find(params[:id])
         raise ActiveRecord::RecordNotFound if @group.nil?
 
-        @discussions = Discussion.all_by_allocation_tags(AllocationTag.find_by_group_id(@group.id).related)
+        @discussions = Discussion.all_by_allocation_tags(@group.allocation_tag.related)
       end
     end
 

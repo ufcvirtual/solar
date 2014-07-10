@@ -1,19 +1,5 @@
 .block_wrapper
-  = link_to t(:back), items_editions_path, {class: "btn", id: "back"}
+  = link_to t(:back), items_editions_path, {class: "btn back_btn"}
 
 :javascript
   $(".back").addClass("invisible");
-
-  $("#back").click(function(){
-    erase_flash_messages();
-
-    var data = {
-      allocation_tags_ids: $("#allocation_tags_ids").val(),
-      selected: $("#selected").val(),
-      offer_id: $("#offer_id").val()
-    };
-
-    $.get($(this).attr("href"), data, function(data){ $(".edition_items").replaceWith(data); });
-    $(".back").addClass("invisible");
-    return false;
-  });

@@ -30,7 +30,7 @@
             = image_tag 'solar_logo_small.png', :alt => t(:mysolar_alt_img_solar), :id => "solar_logo"
           %ul#mysolar_top_options
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular
-              = image_tag current_user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{current_user.nick}", :id => "image_user", :onclick => "mysolarTopSubmenuToggle();return false;"
+              = image_tag current_user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", onclick: "mysolarTopSubmenuToggle();return false;"
               - if can? :update, current_user
                 %a#mysolar_top_user_nick.mysolar_top_link{href: "", onclick: "mysolarTopSubmenuToggle();return false;"}= current_user.nick
             %li#server_clock_wrapper
@@ -39,11 +39,11 @@
               %a#help_top.mysolar_top_link{href: "", onclick: "mysolarTopSubmenuHelpToggle();return false;"}
                 = t(:help)
             %li#mysolar_top_logout
-              = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link logout")
+              = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, class: "mysolar_top_link logout")
         / Submenu
         #mysolar_top_submenu
           %div
-            = image_tag current_user.photo.url(:forum), :alt => "#{t(:mysolar_alt_img_user)} #{current_user.nick}", :id => "mysolar_top_img_user"
+            = image_tag current_user.photo.url(:forum), alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "mysolar_top_img_user"
             #mysolar_top_submenu_username= current_user.name
             #mysolar_top_submenu_useremail= current_user.email
           %ul
@@ -78,17 +78,17 @@
         .block_wrapper
           .flash_message_wrapper
             - flash.each do |name, msg|
-              #flash_message{class: name}
-                = content_tag :span, msg
+              #flash_message{class: name}= content_tag :span, msg
           - active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+          - name = active_tab[:breadcrumb].last[:name].gsub(".", "-") unless active_tab[:breadcrumb].last[:name].nil?
           #breadcrumb= raw show_breadcrumb
           - if is_curriculum_unit_selected?
             #page_title
-              %h1= t active_tab[:breadcrumb].last[:name] unless active_tab[:breadcrumb].last.nil?
+              %h1{:"data-tooltip" => t(name)}=t name
               %span.block_content_text= raw(render_group_selection)
           - elsif not(in_mysolar?)
             #page_title
-              %h1= t active_tab[:breadcrumb].last[:name] unless active_tab[:breadcrumb].last.nil?
+              %h1{:"data-tooltip" => t(name)}=t name
         = yield
 
         #lesson_external_div.invisible
@@ -98,20 +98,19 @@
             #collective-xmpp-chat-data{style: "display: none"}
             #toggle-controlbox
               %a.chat.toggle-online-users{href: "#"}
-                %strong.conn-feedback
-                  Bate-Papo
+                %strong.conn-feedback="Bate-Papo"
 
       #footer_push{style: "height:35px"}
-      - locales =  %w(pt_BR en_US)
+      - locales  =  %w(pt_BR en_US)
       - selected = I18n.locale.to_s
       #footer
         %ul
-          %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', :target => '_blank'
-          %li= link_to t(:login_footer2), 'http://www.ufc.br', :target => '_blank'
+          %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', target: '_blank'
+          %li= link_to t(:login_footer2), 'http://www.ufc.br', target: '_blank'
           %li= t(:login_footer3)
           %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank'
           %li.choice-language
-            = link_to t(:login_language), '#', :class => "link-arrow"
+            = link_to t(:login_language), '#', class: "link-arrow"
             %ul.choice-language-menu
               %li{class: "language pt_BR #{(selected == locales.first) ? 'selected' : ''}"}= link_to 'Português (BR)', url_for(locale: locales.first)
               %li{class: "language en_US #{(selected == locales.last) ? 'selected' : ''}"}= link_to 'English (USA)', url_for(locale: locales.last)
@@ -246,9 +245,7 @@
           con.showControlBox();
         }
       });
-    })
 
-    $(function(){
       $('.mysolar_top_link.logout').click(function(e) {
         try {
           $(".xmpp-status-menu .unavailable").click();
@@ -259,11 +256,8 @@
           e.preventDefault();
         } catch(err) {}
       });
-    })
 
-
-    // Synchronizing user
-    $(function(){
+      // Synchronizing user
       $("#synchronize").click(function(){
         $.get($(this).data("url"), function(data){
           if (typeof(data.message) != "undefined" && typeof(data.type_message) != "undefined")
@@ -280,4 +274,6 @@
             flash_message(data.alert, "alert");
         });
       });
+
+      $($("#page_title h1").children("span")[0]).removeAttr("title")
     });

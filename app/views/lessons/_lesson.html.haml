@@ -1,4 +1,4 @@
-- path = (@admin ? lesson_path(lesson.id, allocation_tags_ids: @allocation_tags_ids.join(" "), curriculum_unit_id: @curriculum_unit_id) : lesson_path(lesson.id))
+- path = (@admin ? lesson_path(lesson.id, allocation_tags_ids: @allocation_tags_ids.join(" "), offer_id: @offer.id) : lesson_path(lesson.id))
 %td
   - if lesson.closed?
     = (@admin ? (link_to lesson.name, path, class: "link_content lesson", "data-fancybox-type" => "iframe") : lesson.name)

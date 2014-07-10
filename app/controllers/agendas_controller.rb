@@ -43,8 +43,14 @@ class AgendasController < ApplicationController
   end
 
   def dropdown_content
-    @model_name   = params[:type].constantize
-    @event        = @model_name.find(params[:id])
+    @model_name = case params[:type]
+      when "Assignment"; Assignment
+      when "Discussion"; Discussion
+      when "ChatRoom"; ChatRoom
+      when "ScheduleEvent"; ScheduleEvent
+    end
+
+    @event = @model_name.find(params[:id])
     @allocation_tags_ids = params[:allocation_tags_ids]
     @groups_codes = @event.groups.map(&:code)
   end

@@ -78,7 +78,7 @@ class ChatRoom < Event
   end
 
   def self.responsible?(allocation_tag_id, user_id)
-    AllocationTag.find(allocation_tag_id).is_user_class_responsible?(user_id)
+    AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(user_id)
   end
 
   def self.chats_user(allocation_tag_id, user_id)

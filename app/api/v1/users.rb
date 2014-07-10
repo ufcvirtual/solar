@@ -4,14 +4,14 @@ module V1
 
     namespace :users
 
+    # GET /users/me
+    get "/me", rabl: "users/show" do
+      @user = current_user
+    end
+
     # GET /users/1
     get "/:id", rabl: "users/show" do
       @user = User.find(params[:id])
-    end
-
-    # GET /users/me
-    get :me, rabl: "users/show" do
-      @user = current_user
     end
 
     # GET /users/1/photo
