@@ -91,9 +91,10 @@ class UserTest < ActiveSupport::TestCase
 
   test "sincronizando usuario existente no MA" do
     user = User.new(@user_test)
-    user.cpf = "CPF VÁLIDO AQUI"
-    user.save
-    assert user.synchronize # resultado deve ser true
+    assert_difference("User.count") do
+      user.cpf = "VALID CPF"
+      assert user.synchronize # resultado deve ser true
+    end
   end
 
   test "sincronizando usuario nao existente no MA" do
