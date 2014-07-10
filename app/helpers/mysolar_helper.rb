@@ -24,7 +24,7 @@ module MysolarHelper
       allocation[:info]
       allocation[:has_groups]
       -(LogAccess.count(:id, conditions: {log_type: LogAccess::TYPE[:offer_access], user_id: current_user.id,
-        allocation_tag_id: allocation[:uc_at], created_at: 3.week.ago..Time.now}))
+        allocation_tag_id: allocation[:at], created_at: 3.week.ago..Time.now}))
     end
 
     return allocations_info
