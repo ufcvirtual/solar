@@ -450,3 +450,11 @@ editor_pending_as_admin:
   user_id: 14
   profile_id: 6
   status: 0
+
+# acesso do editor à uc de introducao a linguistica (curso livre)
+editor_at7:
+  id: 65
+  user_id: 14
+  allocation_tag_id: 7
+  profile_id: 5
+  status: 1

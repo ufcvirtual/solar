@@ -2,7 +2,7 @@
 of1:
   id: 1
   curriculum_unit_id: 1
-  course_id: 1
+  course_id: 10
   semester_id: 2
 
 of2:
@@ -36,7 +36,7 @@ of5:
 of6:
   id: 6 
   curriculum_unit_id: 1
-  course_id: 1
+  course_id: 10
   semester_id: 3 # 2012.1
 
 of7: # não possui dependências, apenas módulo default

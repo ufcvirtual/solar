@@ -167,3 +167,7 @@ al36:
 al37:
   id: 37
   group_id: 11
+
+al38:
+  id: 38
+  course_id: 10
