@@ -32,8 +32,9 @@ class CurriculumUnitsController < ApplicationController
       if @type.id == 3
         @course_name = Course.find(params[:course_id]).name
         @curriculum_units = CurriculumUnit.where(name: @course_name)
+                                           .order(:name)
       else
-        @curriculum_units = CurriculumUnit.joins(:offers).where(curriculum_unit_type_id: @type.id).where(offers: {course_id: params[:course_id]}) if not(params[:course_id].blank?)
+        @curriculum_units = CurriculumUnit.joins(:offers).where(curriculum_unit_type_id: @type.id).where(offers: {course_id: params[:course_id]}).order(:name) if not(params[:course_id].blank?)
       end
 
       render json: { html: render_to_string(partial: 'select_curriculum_unit.html', locals: { curriculum_units: @curriculum_units.uniq! }) }
@@ -50,7 +51,8 @@ class CurriculumUnitsController < ApplicationController
         format.js
       end
     end
-  rescue
+  rescue => error
+    raise "#{error}"
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
