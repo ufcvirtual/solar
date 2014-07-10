@@ -245,9 +245,7 @@
           con.showControlBox();
         }
       });
-    })
 
-    $(function(){
       $('.mysolar_top_link.logout').click(function(e) {
         try {
           $(".xmpp-status-menu .unavailable").click();
@@ -258,11 +256,8 @@
           e.preventDefault();
         } catch(err) {}
       });
-    })
 
-
-    // Synchronizing user
-    $(function(){
+      // Synchronizing user
       $("#synchronize").click(function(){
         $.get($(this).data("url"), function(data){
           if (typeof(data.message) != "undefined" && typeof(data.type_message) != "undefined")
@@ -279,4 +274,6 @@
             flash_message(data.alert, "alert");
         });
       });
+
+      $($("#page_title h1").children("span")[0]).removeAttr("title")
     });
