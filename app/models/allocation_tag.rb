@@ -45,11 +45,6 @@ class AllocationTag < ActiveRecord::Base
     check_if_user_has_profile_type(user_id, observer = true)
   end
 
-  ## Deprecated - use related
-  def self.find_related_ids(allocation_tag_id)
-    allocation_tag_id.nil? ? nil : find(allocation_tag_id).related
-  end
-
   ## return group, offer, course or curriculum_unit
   def refer_to
     self.attributes.keep_if {|k,v| k != "id" and not(v.nil?)}.keys.first.sub(/\_id/, '')
@@ -111,18 +106,6 @@ class AllocationTag < ActiveRecord::Base
     return result.map(&:id)
   end
 
-  def unallocate_user_in_related(user_id)
-    Allocation.destroy_all(user_id: user_id, allocation_tag_id: self.related)
-  end
-
-  def is_only_user_allocated_in_related?(user_id)
-    Allocation.
-      select(:allocation_tag_id).
-      where("user_id != ?", user_id).
-      where(:allocation_tag_id => self.related
-    ).uniq.empty?
-  end
-
   ## ex: retorna allocation do professor na oferta se tiver checando relacao com uma turma dessa oferta (professor em uma oferta)
   def user_relation_with_this(user)
     relation = allocations.where(user_id: user)
@@ -130,50 +113,44 @@ class AllocationTag < ActiveRecord::Base
     relation
   end
 
-  ##
-  # Verifica se o usuário tem bit de aluno no perfil para a allocation_tag
-  ##
   def is_student?(user_id)
-    allocation = Allocation.find_by_user_id_and_allocation_tag_id(user_id, id)
-    return allocation.nil? ? false : (allocation.profile.types & Profile_Type_Student) == Profile_Type_Student
+    allocations.joins(:profile).where(user_id: user_id).where("cast(profiles.types & ? as boolean)", Profile_Type_Student).count > 0
   end
 
-  def self.user_allocation_tag_related_with_class(class_id, user_id)
-    related_allocations = AllocationTag.find_related_ids(Group.find(class_id).allocation_tag.id) # allocations relacionadas à turma
-    allocation = Allocation.first(:conditions => ["allocation_tag_id IN (?) AND user_id = ?", related_allocations, user_id])
-    return (allocation.nil? ? nil : allocation.allocation_tag)
+  def info
+    self.send(refer_to).try(:info)
   end
 
-  ##
-  # Recupera os ids das allocations_tags verificando o curso, uc, oferta e turma passados
-  ##
-  def self.by_course_and_curriculum_unit_and_offer_and_group(course_id, curriculum_unit_id, offer_id, group_id)
-    offer           = Offer.find(offer_id) unless offer_id.nil? or offer_id == "all" or offer_id == 0
-    course          = Course.find(course_id) unless course_id.nil? or course_id == "all" or course_id == 0
-    curriculum_unit = CurriculumUnit.find(curriculum_unit_id) unless curriculum_unit_id.nil? or curriculum_unit_id == "all" or curriculum_unit_id == 0
-
-    allocations_tags_ids = Array.new
-
-    if group_id != 0 and group_id != "all" # alguma turma específica
-      allocations_tags_ids = [Group.find(group_id).allocation_tag.id]
-    elsif group_id == "all" # todas as turmas da oferta
-      if offer_id != 0 and offer_id != "all" # alguma oferta específica
-        allocations_tags_ids = offer.groups.where("status = #{true}").collect{|group| group.allocation_tag.id }  
-      elsif offer_id == "all" # todas as ofertas do curso e uc 
-        allocations_tags_ids << course.offers.collect{|offer| offer.groups.collect{|group| group.allocation_tag.id}} unless course.nil?
-        allocations_tags_ids << curriculum_unit.offers.collect{|offer| offer.groups.collect{|group| group.allocation_tag.id}} unless curriculum_unit.nil?
-      end
-    else # nenhuma turma selecionada
-      if offer_id != 0 and offer_id != "all" # alguma oferta específica
-        allocations_tags_ids = offer.allocation_tag.id
-      elsif offer_id == "all" # todas as ofertas do curso e uc 
-        allocations_tags_ids << course.offers.collect{|offer| offer.allocation_tag.id} unless course.nil?
-        allocations_tags_ids << curriculum_unit.offers.collect{|offer| offer.allocation_tag.id} unless curriculum_unit.nil?
-      else # nenhuma oferta selecionada
-        allocations_tags_ids << course.allocation_tag.id unless course.nil?
-        allocations_tags_ids << curriculum_unit.allocation_tag.id unless curriculum_unit.nil?
-      end
+  def curriculum_unit_type
+    case refer_to
+    when 'group'
+      CurriculumUnitType.joins(curriculum_units: {offers: :groups}).where(groups: {id: group_id}).first.description
+    when 'offer'
+      CurriculumUnitType.joins(curriculum_units: :offers).where(offers: {id: offer_id}).first.description
+    when 'curriculum_unit'
+      CurriculumUnitType.joins(:curriculum_units).where(curriculum_units: {id: curriculum_unit_id}).first.description
+    when 'course'; ''
     end
+  rescue
+    I18n.t("users.profiles.not_specified")
+  end
+
+  def semester_info
+    info = case refer_to
+    when 'group'
+      g_offer = group.offer
+      sclass = [g_offer.semester.name]
+      sclass << 'semester_active' if g_offer.is_active?
+    when 'offer'
+      sclass = [offer.semester.name]
+      sclass << 'semester_active' if offer.is_active?
+    when 'curriculum_unit', 'course'
+      c_offers = offers
+      slcass = Semester.joins(:offers).where(offers: {id: c_offers.map(&:id)}).map(&:name).uniq.join(" ")
+      sclass << 'semester_active' if c_offers.map(&:is_active?).include?(true)
+    end
+
+    info.join(" ")
   end
 
   def self.allocation_tag_details(allocation_tag, split = false, with_code = false, semester_first = false)
@@ -224,53 +201,6 @@ class AllocationTag < ActiveRecord::Base
    end
 
    return detail
-  end
-
-  def self.curriculum_unit_type(allocation_tag)
-    not_specified = I18n.t("users.profiles.not_specified")
-
-    return not_specified if allocation_tag.nil?
-
-    if !allocation_tag.curriculum_unit_id.nil?
-      allocation_tag.curriculum_unit.curriculum_unit_type.description
-    elsif !allocation_tag.offer.nil?
-      return not_specified if allocation_tag.offer.curriculum_unit.nil?
-      allocation_tag.offer.curriculum_unit.curriculum_unit_type.description
-    elsif !allocation_tag.group.nil?
-      return not_specified if allocation_tag.group.offer.curriculum_unit.nil?
-      allocation_tag.group.offer.curriculum_unit.curriculum_unit_type.description
-    else
-      ''
-    end
-  end
-
-  def self.semester_info(allocation_tag)
-    case 
-      when allocation_tag.nil?; 'always_active '
-      when not(allocation_tag.offer.nil?)
-        offer  = allocation_tag.offer
-        sclass = offer.semester.name
-        sclass = [sclass, 'semester_active'].join(" ") if offer.is_active?
-      when not(allocation_tag.group.nil?)
-        offer  = allocation_tag.group.offer
-        sclass = offer.semester.name
-        sclass = [sclass, 'semester_active'].join(" ") if offer.is_active?
-      when not(allocation_tag.course.nil?)
-        offers = allocation_tag.course.offers
-        sclass = offers.map(&:semester).map(&:name).uniq.join(" ")
-        sclass = [sclass, 'semester_active'].join(" ") if offers.map(&:is_active?).include?(true)
-      when not(allocation_tag.curriculum_unit.nil?)
-        offers = allocation_tag.curriculum_unit.offers
-        sclass = offers.map(&:semester).map(&:name).uniq.join(" ")
-        sclass = [sclass, 'semester_active'].join(" ") if offers.map(&:is_active?).include?(true)
-      else
-        ' '
-    end
-  end
-
-  def info
-    # self.send(attributes.delete_if {|k, v| v.nil?}.keys.last.gsub(/_id/, '')).try(:info)
-    self.send(refer_to).try(:info)
   end
 
   def self.get_by_params(params, all_groups = false, related = false)

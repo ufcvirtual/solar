@@ -62,7 +62,7 @@
         </div>
 
         <div class="participant_role">
-          <% if part.profile_id.to_s != @student_profile.to_s %>
+          <% if part.profile_id.to_s != Profile.student_profile.to_s %>
             <%= raw("(#{part.profile_name})") %>
           <% else %>
             <br/>

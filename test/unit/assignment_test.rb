@@ -24,7 +24,7 @@ class AssignmentTest < ActiveSupport::TestCase
   end
 
   test "retorna alunos presentes em uma turma" do
-    allocation_tags          = AllocationTag.find_related_ids(assignments(:a7).academic_allocations.first.allocation_tag_id).join(',')
+    allocation_tags          = AllocationTag.find(assignments(:a7).academic_allocations.first.allocation_tag_id).related.join(',')
     students_of_class_method = Assignment.list_students_by_allocations(allocation_tags)
     students_of_class        = Allocation.all(:include => [:allocation_tag, :user, :profile], :conditions => ["cast( profiles.types & '#{Profile_Type_Student}' as boolean) 
       AND allocations.status = #{Allocation_Activated} AND allocation_tags.group_id IS NOT NULL AND allocation_tags.id IN (#{allocation_tags})"]).map(&:user_id)

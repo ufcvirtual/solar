@@ -8,7 +8,7 @@ class ScoreTest < ActiveSupport::TestCase
   test "informacoes de todos os alunos para todas as atividades de uma turma" do
     assignments = Assignment.all(:joins => [{academic_allocations: :allocation_tag}, :schedule], :conditions => ["allocation_tags.group_id = 
         #{groups(:g3).id}"], :select => ["assignments.id", "schedule_id", "type_assignment", "name"]) #assignments da turma
-    ats = AllocationTag.find_related_ids(allocation_tags(:al3).id).join(',')
+    ats = AllocationTag.find(allocation_tags(:al3).id).related.join(',')
     students = Assignment.list_students_by_allocations(ats)
     scores = Score.students_information(students, assignments, allocation_tags(:al3).group) #dados dos alunos nas atividades
 

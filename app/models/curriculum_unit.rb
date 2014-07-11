@@ -31,7 +31,7 @@ class CurriculumUnit < ActiveRecord::Base
     class_participants_by_allocations(allocation_tags, profile_flag)
   end
 
-  def self.class_participants_by_allocations(allocation_tags, profile_flag, have_profile = true )
+  def self.class_participants_by_allocations(allocation_tags, profile_flag, have_profile = true)
     negative = have_profile ? '' : 'NOT'
 
     query = <<SQL

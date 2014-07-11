@@ -14,15 +14,13 @@ class ScoresController < ApplicationController
     @allocation_tag = AllocationTag.find(allocation_tag_id)
 
     raise CanCan::AccessDenied if @group.nil? # turma nao existe
-    # authorize! :related_with_allocation_tag, AllocationTag.user_allocation_tag_related_with_class(@group.id, current_user.id) # verifica se pode acessar turma
 
-    # @offer = CurriculumUnit.find(curriculum_unit_id)
     @assignments = Assignment.all(:joins => [{academic_allocations: :allocation_tag}, :schedule],
       :conditions => ["allocation_tags.group_id = #{@group.id}"], 
       :select => ["assignments.id", "schedule_id", "type_assignment", "name"])
 
-       # atividades da turma
-    allocation_tags = AllocationTag.find_related_ids(allocation_tag_id).join(',')
+    # atividades da turma
+    allocation_tags = AllocationTag.find(allocation_tag_id).related.join(',')
     @students = Assignment.list_students_by_allocations(allocation_tags)
     @scores = Score.students_information(@students, @assignments, @group) # dados dos alunos nas atividades
   end
@@ -58,8 +56,7 @@ class ScoresController < ApplicationController
     @student_id = params[:id]
 
     authorize! :find, User.find(@student_id) # verifica autorizacao para consultar dados do usuario
-    # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(group_id, current_user.id) # verifica se pode acessar turma
-    
+
     from_date  = date_valid?(params['from-date']) ? Date.parse(params['from-date']) : (Date.today << 2)
     until_date = date_valid?(params['until-date']) ? Date.parse(params['until-date']) : Date.today
 
@@ -76,10 +73,9 @@ class ScoresController < ApplicationController
     authorize! :show, Score
 
     student_id = params[:id]
-    
+
     authorize! :find, User.find(student_id) # verifica autorizacao para consultar dados do usuario
-    # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(class_id, current_user.id) # verifica se pode acessar turma
-    
+
     from_date  = (date_valid?(params['from-date']) ? Date.parse(params['from-date']) : (Date.today << 2))
     until_date = (date_valid?(params['until-date']) ? Date.parse(params['until-date']) : Date.today)
 

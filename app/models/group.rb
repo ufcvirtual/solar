@@ -7,6 +7,7 @@ class Group < ActiveRecord::Base
 
   has_one :curriculum_unit, through: :offer
   has_one :course,          through: :offer
+  has_one :semester,          through: :offer
 
   has_many :academic_allocations, through: :allocation_tag
   has_many :lesson_modules,       through: :academic_allocations, source: :academic_tool, source_type: "LessonModule"

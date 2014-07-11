@@ -85,7 +85,8 @@ class AdministrationsController < ApplicationController
 
   def allocations_user
     authorize! :allocations_user, Administration
-    @allocations_user = User.find(params[:id]).allocations.joins(:profile).where("NOT cast(profiles.types & #{Profile_Type_Basic} as boolean)")
+
+    @allocations_user = User.find(params[:id]).allocations.joins(:profile).where("NOT cast(profiles.types & ? as boolean)", Profile_Type_Basic)
     @profiles = @allocations_user.map(&:profile).flatten.uniq
     @periods  = [ [t(:active),''] ]
     @periods += Semester.all.map{|s| s.name}.flatten.uniq.sort! {|x,y| y <=> x}
