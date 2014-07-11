@@ -5,35 +5,67 @@
     %h2
       %i.icon-docs
       = t(:my_solar_curriculum_units)
+    %span.slider-block{style: 'float: right; margin-top: 4px'}
+      %i.icon-settings{:"data-tooltip" => "Filtrar dados"}
 
   .mysolar_portlets_content
 
-    %ul#mysolar_curriculum_unit_wrapper
-      - if offers.length > 0
-        - offers.each do |offer|
-          %li
-            - if offer[:has_groups]
-              - if ((user_session[:tabs][:opened].length >= Max_Tabs_Open.to_i) and (!user_session[:tabs][:opened].has_key?((offer[:name]))))
-                - options = {} 
-                - html_options = {:onclick => "javascript:alert('"+t(:curriculum_access_alert)+"');return false;", class: 'link_content' }
-              - else 
-                - options = add_tab_path(id: offer[:id], context: Context_Curriculum_Unit, name: (offer[:name].titleize), allocation_tag_id: offer[:at], title_name: offer[:info].titleize)
-                - html_options = {class: 'link_content'}
-              = link_to offer[:info].titleize, options, html_options.merge(:"data-tooltip" => offer[:info_code].titleize)
+    .block_wrapper#mysolar_curriculum_unit_wrapper
+      .block_content
+        
+        / = text_field_tag :search_offer, nil, :"data-column" => "all", type: :search, class: "search"
+        %table.tb_list
+          %thead
+            %tr.lines
+              %th{style: "width: 6.5%"}= "Tipo"
+              %th{style: "display: none"}
+              %th{style: "width: 8%"}= "Código"
+              %th{style: "width: 35%"}= "Nome"
+              %th{style: "width: 35%"}= "Curso"
+              %th= "Semestre"
+              %th{style: "display: none"}
+          %tbody.offers
+            - unless offers.empty?
+              - offers.each do |offer|
+                - if ((user_session[:tabs][:opened].length >= Max_Tabs_Open.to_i) and (!user_session[:tabs][:opened].has_key?((offer[:name]))))
+                  - link = {}
+                  - html_options = {onclick: "javascript:alert('"+t(:curriculum_access_alert)+"');return false;", class: 'link_content' }
+                - else 
+                  - link = add_tab_path(id: offer[:id], context: Context_Curriculum_Unit, name: (offer[:name]), allocation_tag_id: offer[:at], title_name: offer[:info])
+                  - html_options = {}
+                - livre = offer[:uc].try(:curriculum_unit_type_id) == 3
+                %tr.lines
+                  %td{:"data-tooltip" => offer[:uc].try(:curriculum_unit_type).try(:description)}= image_tag(offer[:uc].try(:curriculum_unit_type).try(:icon_name))
+                  %td{style: "display: none"}= offer[:uc].try(:curriculum_unit_type).try(:description)
+                  - unless livre
+                    %td= offer[:has_groups] ? link_to(offer[:uc].try(:code), link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:uc].try(:code)
+                    %td= offer[:has_groups] ? link_to(offer[:uc].try(:name), link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:uc].try(:name)
+                  - else
+                    %td{style: "text-align: center"}= " - "
+                    %td{style: "text-align: center"}= " - "
+                  %td= livre ? link_to(offer[:course].try(:code_name), link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:course].try(:code_name)
+                  %td= link_to(offer[:semester_name], link, html_options.merge(:"data-tooltip" => offer[:info_code]))
+                  %td{style: "display: none"}= offer[:profiles]
             - else
-              .disabled{title: t(:my_solar_uc_without_group)}= offer[:info]
-
-      - if offers.length == 0
-        .no-data
-          = t(:my_solar_curriculum_without)
+              .no-data= t(:my_solar_curriculum_without)          
+        
+          .slide.slide-block
+            = label_tag :search_offer, "Busca:", class: "title"
+            = text_field_tag :search_offer, nil, :"data-column" => "all", type: :search, class: "search"
+            = label_tag :filter, "Filtro:", class: "title"
+            = label_tag :type, "Tipo", class: "subtitle"
+            = select_tag :type, options_for_select(CurriculumUnitType.all.map{ |c| [c.description, c.description] }), prompt: "Todos", class: "tablesorter-filter search", :"data-column"=>"1"
+            = label_tag :profile, "Perfil", class: "subtitle"
+            = select_tag :profile, options_from_collection_for_select(@user.profiles_activated(false, true), "name", "name"), prompt: "Todos", class: "tablesorter-filter search", :"data-column"=>"6"
 
 = javascript_include_tag "tooltip"
 
 :javascript
 
-  // EDX
   $(function(){
+
     $.get("#{my_edx_courses_path}", function(data) {
       $("#mysolar_curriculum_unit_wrapper").append(data);
     });
+
   });

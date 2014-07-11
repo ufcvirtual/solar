@@ -175,8 +175,12 @@ class User < ActiveRecord::Base
     allocations.includes(allocation_tag: [group: [offer: {curriculum_unit: :curriculum_unit_type}]]).where(query.join(" AND ")).map(&:groups).compact.flatten
   end
 
-  def profiles_activated(only_id = false)
-    profiles = self.profiles.where("allocations.status = ?", Allocation_Activated).uniq
+  def profiles_activated(only_id = false, related_to_something = false)
+    query = []
+    query << "allocations.status = #{Allocation_Activated}"
+    query << "allocations.allocation_tag_id IS NOT NULL" if related_to_something
+
+    profiles = self.profiles.where(query.join(" AND ")).uniq
     return (only_id) ? profiles.map(&:id) : profiles
   end
 
