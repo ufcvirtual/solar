@@ -37,28 +37,12 @@ class AllocationTag < ActiveRecord::Base
     end
   end
 
-  def is_user_class_responsible?(user_id)
-    not Allocation.
-      select(:allocation_tag_id).
-      joins(:profile).
-      where(
-      user_id: user_id,
-      status: Allocation_Activated,
-      profiles: {status: true},
-      allocation_tag_id: (self.nil? ? self : self.related)
-    ).where("cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)").uniq.empty?
+  def is_responsible?(user_id)
+    check_if_user_has_profile_type(user_id)
   end
 
   def is_observer_or_responsible?(user_id)
-    not Allocation.
-      select(:allocation_tag_id).
-      joins(:profile).
-      where(
-      user_id: user_id,
-      status: Allocation_Activated,
-      profiles: {status: true},
-      allocation_tag_id: (self.nil? ? self : self.related)
-    ).where("cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean) OR cast(profiles.types & #{Profile_Type_Observer} as boolean)").uniq.empty?
+    check_if_user_has_profile_type(user_id, observer = true)
   end
 
   ## Deprecated - use related
@@ -285,7 +269,8 @@ class AllocationTag < ActiveRecord::Base
   end
 
   def info
-    self.send(attributes.delete_if {|k, v| v.nil?}.keys.last.gsub(/_id/, '')).try(:info)
+    # self.send(attributes.delete_if {|k, v| v.nil?}.keys.last.gsub(/_id/, '')).try(:info)
+    self.send(refer_to).try(:info)
   end
 
   def self.get_by_params(params, all_groups = false, related = false)
@@ -318,5 +303,26 @@ class AllocationTag < ActiveRecord::Base
 
     {allocation_tags: allocation_tags_ids.flatten, selected: selected, offer_id: offer.try(:first).try(:id)}
   end
+
+  private
+
+    def check_if_user_has_profile_type(user_id, responsible = true, observer = false)
+      query = {
+        user_id: user_id,
+        status: Allocation_Activated,
+        allocation_tag_id: self.related(upper: true),
+        profiles: { status: true }
+      }
+
+      query_type = []
+      query_type << "cast(profiles.types & :responsible as boolean)" if responsible
+      query_type << "cast(profiles.types & :observer as boolean)" if observer
+
+      return false if query_type.empty?
+
+      Allocation.joins(:profile)
+        .where(query)
+        .where(query_type.join(" OR "), responsible: Profile_Type_Class_Responsible, observer: Profile_Type_Observer).count > 0
+    end
 
 end

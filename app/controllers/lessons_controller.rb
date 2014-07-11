@@ -25,7 +25,7 @@ class LessonsController < ApplicationController
     else 
       authorize! :index, Lesson, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
       allocation_tag = AllocationTag.find(allocation_tag_id)
-      @responsible   = allocation_tag.is_user_class_responsible?(current_user.id)
+      @responsible   = allocation_tag.is_responsible?(current_user.id)
       @allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : allocation_tag.related
     end
 
