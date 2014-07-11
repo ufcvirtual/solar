@@ -2046,3 +2046,14 @@ en_US:
   mysolar:
     synchronize: Synchronize with Módulo Acadêmico
     profiles: Profiles
+  portlets:
+    curricular_unit:
+      type: Type
+      code: Code
+      name: Name
+      course: Course
+      semester: Semester
+      profile: Profile
+      all: All
+      search: "Search:"
+      filter: "Filter:"

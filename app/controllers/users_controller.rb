@@ -59,7 +59,8 @@ class UsersController < ApplicationController
   def mysolar
     set_active_tab_to_home
 
-    @user = current_user
+    @user   = current_user
+    @offers = Offer.offers_info_from_user(@user)
     allocation_tags = @user.activated_allocation_tag_ids(true, true)
 
     ## Portlet do calendario; destacando dias que possuem eventos

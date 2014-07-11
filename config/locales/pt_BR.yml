@@ -2332,3 +2332,15 @@ pt_BR:
   mysolar:
     synchronize: Sincronizar com Módulo Acadêmico
     profiles: Perfis
+
+  portlets:
+    curricular_unit:
+      type: Tipo
+      code: Código
+      name: Nome
+      course: Curso
+      semester: Semestre
+      profile: Perfil
+      all: Todos
+      search: "Busca:"
+      filter: "Filtro:"
