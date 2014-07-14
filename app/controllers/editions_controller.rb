@@ -3,7 +3,7 @@ include EdxHelper
 class EditionsController < ApplicationController
 
   def items
-    allocation_tags = AllocationTag.get_by_params(params, true)
+    allocation_tags = AllocationTag.get_by_params(params)
     @allocation_tags_ids, @selected, @offer_id = allocation_tags.values_at(:allocation_tags, :selected, :offer_id)
     authorize! :content, Edition, on: @allocation_tags_ids
     @user_profiles       = current_user.resources_by_allocation_tags_ids(@allocation_tags_ids)

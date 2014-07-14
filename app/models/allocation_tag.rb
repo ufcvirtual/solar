@@ -203,35 +203,39 @@ class AllocationTag < ActiveRecord::Base
    return detail
   end
 
-  def self.get_by_params(params, all_groups = false, related = false)
-    map = related ? "related" : "id"
-    allocation_tags_ids = []
+  def self.get_by_params(params, related = false)
+    map_attr = related ? :related : :id
 
-    if params.include?(:allocation_tags_ids)
-      allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(" ") : params[:allocation_tags_ids])
-      selected, offer_id  = (params[:selected].blank? ? nil : params[:selected]), (params[:offer_id].blank? ? nil : params[:offer_id])
-    elsif params[:groups_id].blank?
-      if params.include?(:semester_id) and (not params[:semester_id] == "")
-        offer = Offer.where(semester_id: params[:semester_id], course_id: params[:course_id])
-        offer = offer.where(curriculum_unit_id: params[:curriculum_unit_id]) if params.include?(:curriculum_unit_id)
-        allocation_tags_ids = [offer.first.allocation_tag].map(&map.to_sym)
-        selected = "OFFER"
-      elsif params.include?(:curriculum_unit_id) and (not params[:curriculum_unit_id] == "")
-        allocation_tags_ids = [CurriculumUnit.find(params[:curriculum_unit_id]).allocation_tag].map(&map.to_sym)
-        selected = "CURRICULUM_UNIT"
-      elsif params.include?(:course_id) and (not params[:course_id] == "")
-        allocation_tags_ids = [Course.find(params[:course_id]).allocation_tag].map(&map.to_sym)
-        selected = "COURSE"
+    allocation_tags_ids, selected, offer_id = if not params[:allocation_tags_ids].blank? # o proprio params ja contem as ats
+
+      [params.fetch(:allocation_tags_ids, '').split(' ').flatten.map(&:to_i), params.fetch(:selected, nil), params.fetch(:offer_id, nil)]
+
+    elsif params[:groups_id].blank? # nao informa turma
+      if not params[:semester_id].blank? # informa offer
+        query = { semester_id: params[:semester_id] }
+        query[:curriculum_unit_id] = params[:curriculum_unit_id] unless params[:curriculum_unit_id].blank?
+        query[:course_id] = params[:course_id] unless params[:course_id].blank?
+
+        at_offer = joins(:offer).where(offers: query).first
+
+        [at_offer.send(map_attr), 'OFFER', at_offer.offer_id]
+      elsif not params[:curriculum_unit_id].blank? # informa uc
+
+        [find_by_curriculum_unit_id(params[:curriculum_unit_id]).send(map_attr), 'CURRICULUM_UNIT', nil]
+
+      elsif not params[:course_id].blank? # informa course
+
+        [find_by_course_id(params[:course_id]).send(map_attr), 'COURSE', nil]
+
       end
-    else
-      selected, groups_ids = "GROUP", params[:groups_id].split(" ")
-      allocation_tags_ids  = AllocationTag.where(group_id: groups_ids).map(&map.to_sym)
-      offer = [Group.find(groups_ids.try(:first)).try(:offer)] if offer.nil? and not(groups_ids.blank?)
+    else # informa as turmas
+      groups_id = params[:groups_id].split(' ').flatten.map(&:to_i)
+      at_groups = find_all_by_group_id(groups_id)
+
+      [at_groups.map(&map_attr).flatten.uniq, 'GROUP', at_groups.first.group.offer_id]
     end
 
-    allocation_tags_ids = [nil] if allocation_tags_ids.empty?
-
-    {allocation_tags: allocation_tags_ids.flatten, selected: selected, offer_id: offer.try(:first).try(:id)}
+    {allocation_tags: [allocation_tags_ids].flatten, selected: selected, offer_id: offer_id}
   end
 
   private
