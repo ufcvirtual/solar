@@ -12489,6 +12489,7 @@ return parser;
                 'click #mostrar' : 'mostrar',
                 'click #orderDl' : 'redirect'
             },
+
             initialize: function () {
                 this.$el.appendTo(converse.chatboxesview.$el);
                 this.model.on('change', $.proxy(function (item, changed) {
@@ -12541,7 +12542,7 @@ return parser;
                 '</div>'+
                 '<div class="controlbox-panes"><div id="mostrar" class="icon-settings"></div> '+
                     '<ul class= "menu" style="display:none;">'+
-                        '<dl id="orderDl"><input id="order" type="checkbox" value="groups">Ordenar por grupos</dl>'+
+                        '<dl id="orderDl"><input id="order" type="checkbox" value="groups">Ordenar por Grupos</dl>'+
                     '</ul>'+
                 '</div>'
             ),
@@ -12608,7 +12609,15 @@ return parser;
                     divGroups.style.display = "none";
                     rosters.style.display = "block";
                     groups = con.groups;
+                    var contacts = con.ListView.el.childNodes;
+                    for(index = 2; index < contacts.length; index++){
+                       var id = contacts[index].childNodes[0].id + xmpp_dominio;
+                       var rosterGroups = con.roster._byId[id].groups;
+                      for(indexGroups in rosterGroups)
+                        contacts[index].childNodes[0].title = contacts[index].childNodes[0].title +rosterGroups[indexGroups]+"\n";
+                    }
                 }
+
                 var m = $(".menu")[0];
                 m.style.display="none";
                 setCookie();
@@ -14068,7 +14077,7 @@ return parser;
                 $count.text('('+this.model.getNumOnlineContacts()+')');
                 if (!$count.is(':visible')) {
                     $count.show();
-                }
+                }       
                 //renderRosterItem(item,view);
                 return view;//MUDEI
                 //return this;
