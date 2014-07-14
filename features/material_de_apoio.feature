@@ -27,33 +27,36 @@ Cenário: Exibir Material de apoio
       E eu deverei ver "OUTRA PASTA"
       E eu deverei ver o link "3.pdf"
 
+# TODO: esses testes de trocar de material de apoio com a combobox de turma
+# não funcionam mais pois a UC não possui mais turmas
+
 #COMBOBOX-TESTE1
-@javascript
-Cenário: Trocar material de apoio com a combo
-    Dado que estou logado com o usuario "user" e com a senha "123456"
-    E que estou em "Meu Solar"
-        Quando eu clicar no link "110 - Introducao A Linguistica"
-    E que eu selecionei "selected_group" com "IL-FOR - 2012.1"
-    Então eu deverei ver "Conteúdo"
-        Quando eu clicar no link "Conteúdo"
-    Então eu deverei ver o link "Material de Apoio"
-        Quando eu clicar no link "Material de Apoio"
-            Então eu deverei ver "AULAS"
-            E eu deverei ver o link "1.pdf"
+#@javascript
+#Cenário: Trocar material de apoio com a combo
+#    Dado que estou logado com o usuario "user" e com a senha "123456"
+#    E que estou em "Meu Solar"
+#        Quando eu clicar no link "2011.1 | Introducao A Linguistica"
+#    E que eu selecionei "selected_group" com "IL-FOR - 2012.1"
+#    Então eu deverei ver "Conteúdo"
+#        Quando eu clicar no link "Conteúdo"
+#    Então eu deverei ver o link "Material de Apoio"
+#        Quando eu clicar no link "Material de Apoio"
+#            Então eu deverei ver "AULAS"
+#            E eu deverei ver o link "1.pdf"
 
 #COMBOBOX-TESTE2
-@javascript
-Cenário: Trocar material de apoio com a combo - parte 2
-    Dado que estou logado com o usuario "user" e com a senha "123456"
-    E que estou em "Meu Solar"
-        Quando eu clicar no link "110 - Introducao A Linguistica"
-    E que eu selecionei "selected_group" com "IL-FOR - 2011.1"
-    Então eu deverei ver "Conteúdo"
-        Quando eu clicar no link "Conteúdo"
-    Então eu deverei ver o link "Material de Apoio"
-        Quando eu clicar no link "Material de Apoio"
-            Então eu deverei ver "AULAS"
-            E eu deverei ver o link "1.jpg"
+#@javascript
+#Cenário: Trocar material de apoio com a combo - parte 2
+#    Dado que estou logado com o usuario "user" e com a senha "123456"
+#    E que estou em "Meu Solar"
+#        Quando eu clicar no link "2011.1 | Introducao A Linguistica"
+#    E que eu selecionei "selected_group" com "IL-FOR - 2011.1"
+#    Então eu deverei ver "Conteúdo"
+#        Quando eu clicar no link "Conteúdo"
+#    Então eu deverei ver o link "Material de Apoio"
+#        Quando eu clicar no link "Material de Apoio"
+#            Então eu deverei ver "AULAS"
+#            E eu deverei ver o link "1.jpg"
 
 
 ####### EDITOR ########
