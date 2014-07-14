@@ -15,12 +15,12 @@
         %table.tb_list
           %thead
             %tr.lines
-              %th{style: "width: 4px"}= t(".type")
+              %th{style: "width: 5%"}= t(".type")
               %th{style: "display: none"}
-              %th{style: "width: 13px"}= t(".code")
-              %th{style: "width: 70px"}= t(".name")
-              %th{style: "width: 70px"}= t(".course")
-              %th{style: "width: 13px"}= t(".semester")
+              %th{style: "width: 10%px"}= t(".code")
+              %th{style: "width: 37.5%"}= t(".name")
+              %th{style: "width: 37.5%"}= t(".course")
+              %th{style: "width: 10%px"}= t(".semester")
               %th{style: "display: none"}
           %tbody.offers
             - unless @offers.empty?
@@ -33,16 +33,16 @@
                   - html_options = {}
                 - livre = offer[:uc].try(:curriculum_unit_type_id) == 3
                 %tr.lines
-                  %td{style: "width: 4px", :"data-tooltip" => offer[:uc].try(:curriculum_unit_type).try(:description)}= image_tag(offer[:uc].try(:curriculum_unit_type).try(:icon_name))
+                  %td{:"data-tooltip" => offer[:uc].try(:curriculum_unit_type).try(:description)}= image_tag(offer[:uc].try(:curriculum_unit_type).try(:icon_name))
                   %td{style: "display: none"}= offer[:uc].try(:curriculum_unit_type).try(:description)
                   - unless livre
-                    %td{style: "width: 13px"}= offer[:has_groups] ? link_to(offer[:uc].try(:code), link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:uc].try(:code)
-                    %td{style: "width: 70px"}= offer[:has_groups] ? link_to(offer[:uc].try(:name), link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:uc].try(:name)
+                    %td= offer[:has_groups] ? link_to(offer[:uc].try(:code), link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:uc].try(:code)
+                    %td= offer[:has_groups] ? link_to(offer[:uc].try(:name), link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:uc].try(:name)
                   - else
-                    %td{style: "text-align: center; width: 13px;"}= " - "
-                    %td{style: "text-align: center; width: 70px;"}= " - "
-                  %td{style: "width: 70px"}= livre ? link_to(offer[:course].try(:code_name), link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:course].try(:code_name)
-                  %td{style: "width: 13px"}= link_to(offer[:semester_name], link, html_options.merge(:"data-tooltip" => offer[:info_code]))
+                    %td{style: "text-align: center"}= " - "
+                    %td{style: "text-align: center"}= " - "
+                  %td= livre ? link_to(offer[:course].try(:code_name), link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:course].try(:code_name)
+                  %td= link_to(offer[:semester_name], link, html_options.merge(:"data-tooltip" => offer[:info_code]))
                   %td{style: "display: none"}= offer[:profiles]
             - else
               .no-data= t(:my_solar_curriculum_without)          
