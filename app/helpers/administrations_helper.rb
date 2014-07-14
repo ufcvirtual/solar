@@ -7,10 +7,6 @@ module AdministrationsHelper
     last_accessed.nil? ? " - " : l(last_accessed.created_at.to_date, format: :default).to_s 
   end
 
-  def allocation_details(allocation_tag)
-    AllocationTag.allocation_tag_details(allocation_tag)
-  end
-
   def type(allocation_tag)
     return I18n.t("users.profiles.not_specified") if allocation_tag.nil?
     allocation_tag.curriculum_unit_type

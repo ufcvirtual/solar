@@ -121,6 +121,10 @@ class AllocationTag < ActiveRecord::Base
     self.send(refer_to).try(:info)
   end
 
+  def detailed_info
+    self.send(refer_to).try(:detailed_info)
+  end
+
   def curriculum_unit_type
     case refer_to
     when 'group'
@@ -136,7 +140,7 @@ class AllocationTag < ActiveRecord::Base
   end
 
   def semester_info
-    info = case refer_to
+    sinfo = case refer_to
     when 'group'
       g_offer = group.offer
       sclass = [g_offer.semester.name]
@@ -150,57 +154,7 @@ class AllocationTag < ActiveRecord::Base
       sclass << 'semester_active' if c_offers.map(&:is_active?).include?(true)
     end
 
-    info.join(" ")
-  end
-
-  def self.allocation_tag_details(allocation_tag, split = false, with_code = false, semester_first = false)
-    not_specified = I18n.t("users.profiles.not_specified")
-
-    return not_specified if allocation_tag.nil?
-
-    detail = ''
-
-    if !allocation_tag.curriculum_unit_id.nil?
-
-      detail  = ( with_code ? allocation_tag.curriculum_unit.code_name : allocation_tag.curriculum_unit.name )
-      uc_type = allocation_tag.curriculum_unit.curriculum_unit_type.description
-
-    elsif !allocation_tag.course_id.nil?
-
-      detail  = ( with_code ? allocation_tag.course.code_name : allocation_tag.course.name )
-
-    else
-
-      offer  = ( !allocation_tag.offer.nil? ? allocation_tag.offer : allocation_tag.group.offer )
-      uc     = offer.curriculum_unit
-      course = offer.course
-
-      detail  = if not(offer.nil?) and uc.try(:curriculum_unit_type_id) == 3
-        [ (semester_first ? offer.semester.name : nil), (with_code ? course.try(:code_name) : course.try(:name)),
-          (semester_first ? nil : offer.semester.name)].compact.join(" | ")
-      else
-        [ (semester_first ? offer.semester.name : nil), (with_code ? course.try(:code_name) : course.try(:name)),
-          (with_code ? uc.try(:code_name) : uc.try(:name)), (semester_first ? nil : offer.semester.name),
-          (allocation_tag.group.nil? ? nil : allocation_tag.group.code) ].compact.join(" | ")
-      end
-
-      uc_type = offer.curriculum_unit.try(:curriculum_unit_type).try(:description) unless offer.nil?
-
-    end
-
-    if split
-      return {course: not_specified, curriculum_unit: not_specified, semester: not_specified, group: not_specified, curriculum_unit_type: not_specified} if detail.nil?
-      detail = detail.split(" | ")
-      if (detail.size == 1) 
-        detail = allocation_tag.course.nil? ? 
-          {course: not_specified, curriculum_unit: detail[0], semester: not_specified, group: not_specified, curriculum_unit_type: uc_type}
-        : {course: detail[0], curriculum_unit: not_specified, semester: not_specified, group: not_specified, curriculum_unit_type: not_specified}
-      else
-        detail = {course: detail[0], curriculum_unit: detail[1], semester: detail[2], group: detail[3], curriculum_unit_type: uc_type}
-      end
-   end
-
-   return detail
+    sinfo.join(" ")
   end
 
   def self.get_by_params(params, related = false)

@@ -1,5 +1,5 @@
 - @allocations.each do |allocation|
-  - allocation_tag_info = allocation.allocation_tag.nil? ? nil : AllocationTag.allocation_tag_details(allocation.allocation_tag, true)
+  - allocation_tag_info = allocation.allocation_tag.nil? ? nil : allocation.allocation_tag.detailed_info
   %tr.lines{id: "allocation#{allocation.id}"}
     %td= allocation.user.name
     %td= allocation.profile.name

@@ -1,5 +1,5 @@
 - @allocations.each do |allocation|
-  - allocation_tag_info = allocation.allocation_tag.nil? ? nil : AllocationTag.allocation_tag_details(allocation.allocation_tag, true)
+  - allocation_tag_info = allocation.allocation_tag.nil? ? nil : allocation.allocation_tag.detailed_info
   - status_color = allocation.status_color
   %tr.lines
     %td= allocation.profile.name

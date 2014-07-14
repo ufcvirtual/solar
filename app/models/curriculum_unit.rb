@@ -81,8 +81,11 @@ SQL
     code.blank? ? name : [code, name].join(' - ')
   end
 
-  def info
-    name
+  def detailed_info
+    {
+      curriculum_unit_type: curriculum_unit_type.description,
+      curriculum_unit: name
+    }
   end
 
 end

@@ -1,4 +1,4 @@
-%td= allocation_details(@allocation.allocation_tag)
+%td= @allocation.allocation_tag.try(:info)
 %td= ( @allocation.allocation_tag.nil? ? "" : type(@allocation.allocation_tag) )
 %td= name_allocation_status(@allocation.status)
 %td.right_buttons

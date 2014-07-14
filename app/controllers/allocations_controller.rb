@@ -308,10 +308,10 @@ class AllocationsController < ApplicationController
 
     respond_to do |format|
       if (ok and @allocation.update_attribute(:status, Allocation_Pending_Reactivate))
-        format.html { redirect_to(enrollments_url, notice: t(:enrollm_request, :scope => [:allocations, :success])) }        
+        format.html { redirect_to(enrollments_url, notice: t(:enrollm_request, :scope => [:allocations, :success])) }
         format.json { head :ok }
       else
-        format.html { redirect_to(enrollments_url, alert: t(:enrollm_request, :scope => [:allocations, :error])) }        
+        format.html { redirect_to(enrollments_url, alert: t(:enrollm_request, :scope => [:allocations, :error])) }
         format.json { head :error }
       end
     end
@@ -330,7 +330,7 @@ class AllocationsController < ApplicationController
       message = t("allocations.success.undone_action")
       @allocation.update_attribute(:status, Allocation_Pending)
     else
-      path    = @allocation.allocation_tag.nil? ? "" : t("allocations.success.allocation_tag_path", path: AllocationTag.allocation_tag_details(@allocation.allocation_tag))
+      path    = @allocation.allocation_tag.nil? ? "" : t("allocations.success.allocation_tag_path", path: @allocation.allocation_tag.try(:info))
       action  = params[:accept] ? t("allocations.success.accepted") : t("allocations.success.rejected")
       message = t("allocations.success.request_message", user_name: @allocation.user.name, profile_name: @allocation.profile.name, path: path, action: action, 
         undo_url: view_context.link_to(t("allocations.undo_action"), "#", id: :undo_action, :"data-link" => undo_action_allocation_path(@allocation)))

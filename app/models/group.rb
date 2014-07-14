@@ -54,8 +54,14 @@ class Group < ActiveRecord::Base
     {offer_id: offer_id, course_id: result['course_id'], curriculum_unit_id: result['curriculum_unit_id']}
   end
 
-  def info
-    [offer.course.try(:name), offer.curriculum_unit.try(:name), offer.semester.name, code].compact.join(" - ")
+  def detailed_info
+    {
+      curriculum_unit_type: offer.curriculum_unit_type.try(:description),
+      course: offer.course.try(:name),
+      curriculum_unit: offer.curriculum_unit.try(:name),
+      semester: offer.semester.name,
+      group: code
+    }
   end
 
   def responsibles

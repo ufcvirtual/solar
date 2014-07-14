@@ -10,6 +10,8 @@ class Offer < ActiveRecord::Base
   belongs_to :period_schedule,      class_name: "Schedule", foreign_key: "offer_schedule_id"
   belongs_to :enrollment_schedule,  class_name: "Schedule", foreign_key: "enrollment_schedule_id"
 
+  has_one :curriculum_unit_type, through: :curriculum_unit
+
   has_many :groups
   has_many :academic_allocations, through: :allocation_tag
   has_many :lesson_modules,       through: :academic_allocations, source: :academic_tool, source_type: "LessonModule"
@@ -117,8 +119,13 @@ class Offer < ActiveRecord::Base
     self.groups.count > 0
   end
 
-  def info
-    [course.try(:name), curriculum_unit.try(:name), semester.name].compact.join(" - ")
+  def detailed_info
+    {
+      curriculum_unit_type: curriculum_unit_type.try(:description),
+      course: course.try(:name),
+      curriculum_unit: curriculum_unit.try(:name),
+      semester: semester.name
+    }
   end
 
   def is_active?
@@ -142,8 +149,7 @@ class Offer < ActiveRecord::Base
       ats = offer.allocation_tag.related
         {
           id: offer.id,
-          info: AllocationTag.allocation_tag_details(offer.allocation_tag, false, false, true).titleize,
-          info_code: AllocationTag.allocation_tag_details(offer.allocation_tag, false, true, true).titleize,
+          info: offer.allocation_tag.info,
           at: offer.allocation_tag.id,
           name: offer.curriculum_unit.try(:name).titleize || offer.course.try(:name).titleize,
           has_groups: not(offer.groups.empty?),

@@ -24,7 +24,7 @@
             %tbody
               - @allocations_user.where("profile_id="+p.id.to_s).each do |a|
                 %tr.lines.allocations{class: semester(a.allocation_tag)}
-                  %td= allocation_details(a.allocation_tag)
+                  %td= a.allocation_tag.try(:info)
                   %td= ( a.allocation_tag.nil? ? "" : type(a.allocation_tag) )
                   %td= name_allocation_status(a.status)
                   - if @is_admin
