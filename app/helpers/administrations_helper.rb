@@ -12,11 +12,17 @@ module AdministrationsHelper
   end
 
   def type(allocation_tag)
-    AllocationTag.curriculum_unit_type(allocation_tag)
+    return I18n.t("users.profiles.not_specified") if allocation_tag.nil?
+    allocation_tag.curriculum_unit_type
+  rescue
+    ''
   end
 
   def semester(allocation_tag)
-    AllocationTag.semester_info(allocation_tag)
+    return 'allocation_tag' if allocation_tag.nil?
+    allocation_tag.semester_info
+  rescue
+    ''
   end
 
   def name_allocation_status(status)

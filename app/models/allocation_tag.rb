@@ -6,69 +6,55 @@ class AllocationTag < ActiveRecord::Base
   belongs_to :group
 
   has_many :schedule_events
-  has_many :allocations,          dependent: :destroy
+  has_many :allocations, dependent: :destroy
   has_many :academic_allocations, dependent: :restrict # nao posso deletar uma ferramenta academica se tiver conteudo
 
-  has_many :users,  through: :allocations, uniq: true
+  has_many :users, through: :allocations, uniq: true
 
-  has_many :groups, finder_sql: Proc.new {
-    if not group_id.nil?
-      %Q{ SELECT * FROM groups WHERE id = #{group_id} }
-    elsif not offer_id.nil?
-      %Q{ SELECT * FROM groups WHERE offer_id = #{offer_id} }
-    elsif not curriculum_unit_id.nil?
-      %Q{ SELECT DISTINCT t1.* FROM groups AS t1 JOIN offers AS t2 ON t2.id = t1.offer_id WHERE t2.curriculum_unit_id = #{curriculum_unit_id} }
-    elsif not course_id.nil?
-      %Q{ SELECT DISTINCT t1.* FROM groups AS t1 JOIN offers AS t2 ON t2.id = t1.offer_id WHERE t2.course_id = #{course_id} }
+  def groups
+    case refer_to
+    when 'group'
+      [group]
+    when 'offer'
+      Group.where(offer_id: offer_id)
+    when 'curriculum_unit'
+      Group.joins(:offer).where(offers: {curriculum_unit_id: curriculum_unit_id})
+    when 'course'
+      Group.joins(:offer).where(offers: {course_id: course_id})
     end
-  }
+  end
 
-  has_many :offers, finder_sql: Proc.new {
-    if not group_id.nil?
-      %Q{ SELECT t1.* FROM offers AS t1 JOIN groups AS t2 ON t2.offer_id = t1.id WHERE t2.id = #{group_id} }
-    elsif not offer_id.nil?
-      %Q{ SELECT offers.* FROM offers WHERE id = #{offer_id} }
-    elsif not curriculum_unit_id.nil?
-      %Q{ SELECT offers.* FROM offers WHERE curriculum_unit_id = #{curriculum_unit_id} }
-    elsif not course_id.nil?
-      %Q{ SELECT offers.* FROM offers WHERE course_id = #{course_id} }
+  def offers
+    case refer_to
+    when 'group'
+      Offer.joins(:groups).where(groups: {id: group_id})
+    when 'offer'
+      [offer]
+    when 'curriculum_unit'
+      Offer.where(curriculum_unit_id: curriculum_unit_id)
+    when 'course'
+      Offer.where(course_id: course_id)
     end
-  }
+  end
 
-  def is_user_class_responsible?(user_id)
-    not Allocation.
-      select(:allocation_tag_id).
-      joins(:profile).
-      where(
-      user_id: user_id,
-      status: Allocation_Activated,
-      profiles: {status: true},
-      allocation_tag_id: (self.nil? ? self : self.related)
-    ).where("cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)").uniq.empty?
+  def is_responsible?(user_id)
+    check_if_user_has_profile_type(user_id)
   end
 
   def is_observer_or_responsible?(user_id)
-    not Allocation.
-      select(:allocation_tag_id).
-      joins(:profile).
-      where(
-      user_id: user_id,
-      status: Allocation_Activated,
-      profiles: {status: true},
-      allocation_tag_id: (self.nil? ? self : self.related)
-    ).where("cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean) OR cast(profiles.types & #{Profile_Type_Observer} as boolean)").uniq.empty?
+    check_if_user_has_profile_type(user_id, observer = true)
   end
 
-  ## Deprecated - use related
-  def self.find_related_ids(allocation_tag_id)
-    allocation_tag_id.nil? ? nil : find(allocation_tag_id).related
+  ## return group, offer, course or curriculum_unit
+  def refer_to
+    self.attributes.keep_if {|k,v| k != "id" and not(v.nil?)}.keys.first.sub(/\_id/, '')
   end
 
   def related(args = {all: true, lower: false, upper: false, objects: false})
-    academic_tool = self.attributes.delete_if {|key, value| key == 'id' or value.nil?}.map {|k,v| k}.first
+    academic_tool = refer_to
 
     result = case academic_tool
-    when 'group_id'
+    when 'group'
       if args[:all] or args[:upper]
         association_ids = self.group.association_ids
 
@@ -78,7 +64,7 @@ class AllocationTag < ActiveRecord::Base
 
         self.class.where(query.join(" OR "), association_ids)
       end
-    when 'offer_id'
+    when 'offer'
       o = self.offer
       lower = self.class.where(group_id: o.groups.map(&:id)) if args[:all] or args[:lower]
 
@@ -93,31 +79,22 @@ class AllocationTag < ActiveRecord::Base
       end
 
       [lower, upper]
-    when 'curriculum_unit_id'
+    when 'curriculum_unit', 'course'
       if args[:all] or args[:lower]
-        uc = self.curriculum_unit
-        offers = uc.offers.map(&:id).uniq
-        groups = uc.groups.map(&:id).uniq
-        courses = Course.joins(:offers).where(offers: {id: offers}).map(&:id).uniq # sibblings
-
-        association_ids = { offer_id: offers, group_id: groups, course_id: courses }
+        at_offers = self.offers.map(&:id).uniq
+        at_groups = self.groups.map(&:id).uniq
 
         query = ["offer_id IN (:offer_id) OR group_id IN (:group_id)"]
-        query << "course_id IN (:course_id)" unless courses.nil?
 
-        self.class.where(query.join(" OR "), association_ids)
-      end
-    when 'course_id'
-      if args[:all] or args[:lower]
-        course = self.course
-        offers = course.offers.map(&:id).uniq
-        groups = course.groups.map(&:id).uniq
-        ucs = CurriculumUnit.joins(:offers).where(offers: {id: offers}).map(&:id).uniq # sibblings
+        if academic_tool == 'curriculum_unit'
+          siblings = Course.joins(:offers).where(offers: {id: at_offers}).map(&:id).uniq # siblings
+          query << "course_id IN (:siblings)" unless siblings.nil?
+        else
+          siblings = CurriculumUnit.joins(:offers).where(offers: {id: at_offers}).map(&:id).uniq # siblings
+          query << "curriculum_unit_id IN (:siblings)" unless siblings.nil?
+        end
 
-        association_ids = { offer_id: offers, group_id: groups, curriculum_unit_id: ucs }
-
-        query = ["offer_id IN (:offer_id) OR group_id IN (:group_id)"]
-        query << "curriculum_unit_id IN (:curriculum_unit_id)" unless courses.nil?
+        association_ids = { offer_id: at_offers, group_id: at_groups, siblings: siblings }
 
         self.class.where(query.join(" OR "), association_ids)
       end
@@ -129,18 +106,6 @@ class AllocationTag < ActiveRecord::Base
     return result.map(&:id)
   end
 
-  def unallocate_user_in_related(user_id)
-    Allocation.destroy_all(user_id: user_id, allocation_tag_id: self.related)
-  end
-
-  def is_only_user_allocated_in_related?(user_id)
-    Allocation.
-      select(:allocation_tag_id).
-      where("user_id != ?", user_id).
-      where(:allocation_tag_id => self.related
-    ).uniq.empty?
-  end
-
   ## ex: retorna allocation do professor na oferta se tiver checando relacao com uma turma dessa oferta (professor em uma oferta)
   def user_relation_with_this(user)
     relation = allocations.where(user_id: user)
@@ -148,50 +113,44 @@ class AllocationTag < ActiveRecord::Base
     relation
   end
 
-  ##
-  # Verifica se o usuário tem bit de aluno no perfil para a allocation_tag
-  ##
   def is_student?(user_id)
-    allocation = Allocation.find_by_user_id_and_allocation_tag_id(user_id, id)
-    return allocation.nil? ? false : (allocation.profile.types & Profile_Type_Student) == Profile_Type_Student
+    allocations.joins(:profile).where(user_id: user_id).where("cast(profiles.types & ? as boolean)", Profile_Type_Student).count > 0
   end
 
-  def self.user_allocation_tag_related_with_class(class_id, user_id)
-    related_allocations = AllocationTag.find_related_ids(Group.find(class_id).allocation_tag.id) # allocations relacionadas à turma
-    allocation = Allocation.first(:conditions => ["allocation_tag_id IN (?) AND user_id = ?", related_allocations, user_id])
-    return (allocation.nil? ? nil : allocation.allocation_tag)
+  def info
+    self.send(refer_to).try(:info)
   end
 
-  ##
-  # Recupera os ids das allocations_tags verificando o curso, uc, oferta e turma passados
-  ##
-  def self.by_course_and_curriculum_unit_and_offer_and_group(course_id, curriculum_unit_id, offer_id, group_id)
-    offer           = Offer.find(offer_id) unless offer_id.nil? or offer_id == "all" or offer_id == 0
-    course          = Course.find(course_id) unless course_id.nil? or course_id == "all" or course_id == 0
-    curriculum_unit = CurriculumUnit.find(curriculum_unit_id) unless curriculum_unit_id.nil? or curriculum_unit_id == "all" or curriculum_unit_id == 0
-
-    allocations_tags_ids = Array.new
-
-    if group_id != 0 and group_id != "all" # alguma turma específica
-      allocations_tags_ids = [Group.find(group_id).allocation_tag.id]
-    elsif group_id == "all" # todas as turmas da oferta
-      if offer_id != 0 and offer_id != "all" # alguma oferta específica
-        allocations_tags_ids = offer.groups.where("status = #{true}").collect{|group| group.allocation_tag.id }  
-      elsif offer_id == "all" # todas as ofertas do curso e uc 
-        allocations_tags_ids << course.offers.collect{|offer| offer.groups.collect{|group| group.allocation_tag.id}} unless course.nil?
-        allocations_tags_ids << curriculum_unit.offers.collect{|offer| offer.groups.collect{|group| group.allocation_tag.id}} unless curriculum_unit.nil?
-      end
-    else # nenhuma turma selecionada
-      if offer_id != 0 and offer_id != "all" # alguma oferta específica
-        allocations_tags_ids = offer.allocation_tag.id
-      elsif offer_id == "all" # todas as ofertas do curso e uc 
-        allocations_tags_ids << course.offers.collect{|offer| offer.allocation_tag.id} unless course.nil?
-        allocations_tags_ids << curriculum_unit.offers.collect{|offer| offer.allocation_tag.id} unless curriculum_unit.nil?
-      else # nenhuma oferta selecionada
-        allocations_tags_ids << course.allocation_tag.id unless course.nil?
-        allocations_tags_ids << curriculum_unit.allocation_tag.id unless curriculum_unit.nil?
-      end
+  def curriculum_unit_type
+    case refer_to
+    when 'group'
+      CurriculumUnitType.joins(curriculum_units: {offers: :groups}).where(groups: {id: group_id}).first.description
+    when 'offer'
+      CurriculumUnitType.joins(curriculum_units: :offers).where(offers: {id: offer_id}).first.description
+    when 'curriculum_unit'
+      CurriculumUnitType.joins(:curriculum_units).where(curriculum_units: {id: curriculum_unit_id}).first.description
+    when 'course'; ''
     end
+  rescue
+    I18n.t("users.profiles.not_specified")
+  end
+
+  def semester_info
+    info = case refer_to
+    when 'group'
+      g_offer = group.offer
+      sclass = [g_offer.semester.name]
+      sclass << 'semester_active' if g_offer.is_active?
+    when 'offer'
+      sclass = [offer.semester.name]
+      sclass << 'semester_active' if offer.is_active?
+    when 'curriculum_unit', 'course'
+      c_offers = offers
+      slcass = Semester.joins(:offers).where(offers: {id: c_offers.map(&:id)}).map(&:name).uniq.join(" ")
+      sclass << 'semester_active' if c_offers.map(&:is_active?).include?(true)
+    end
+
+    info.join(" ")
   end
 
   def self.allocation_tag_details(allocation_tag, split = false, with_code = false, semester_first = false)
@@ -244,52 +203,6 @@ class AllocationTag < ActiveRecord::Base
    return detail
   end
 
-  def self.curriculum_unit_type(allocation_tag)
-    not_specified = I18n.t("users.profiles.not_specified")
-
-    return not_specified if allocation_tag.nil?
-
-    if !allocation_tag.curriculum_unit_id.nil?
-      allocation_tag.curriculum_unit.curriculum_unit_type.description
-    elsif !allocation_tag.offer.nil?
-      return not_specified if allocation_tag.offer.curriculum_unit.nil?
-      allocation_tag.offer.curriculum_unit.curriculum_unit_type.description
-    elsif !allocation_tag.group.nil?
-      return not_specified if allocation_tag.group.offer.curriculum_unit.nil?
-      allocation_tag.group.offer.curriculum_unit.curriculum_unit_type.description
-    else
-      ''
-    end
-  end
-
-  def self.semester_info(allocation_tag)
-    case 
-      when allocation_tag.nil?; 'always_active '
-      when not(allocation_tag.offer.nil?)
-        offer  = allocation_tag.offer
-        sclass = offer.semester.name
-        sclass = [sclass, 'semester_active'].join(" ") if offer.is_active?
-      when not(allocation_tag.group.nil?)
-        offer  = allocation_tag.group.offer
-        sclass = offer.semester.name
-        sclass = [sclass, 'semester_active'].join(" ") if offer.is_active?
-      when not(allocation_tag.course.nil?)
-        offers = allocation_tag.course.offers
-        sclass = offers.map(&:semester).map(&:name).uniq.join(" ")
-        sclass = [sclass, 'semester_active'].join(" ") if offers.map(&:is_active?).include?(true)
-      when not(allocation_tag.curriculum_unit.nil?)
-        offers = allocation_tag.curriculum_unit.offers
-        sclass = offers.map(&:semester).map(&:name).uniq.join(" ")
-        sclass = [sclass, 'semester_active'].join(" ") if offers.map(&:is_active?).include?(true)
-      else
-        ' '
-    end
-  end
-
-  def info
-    self.send(attributes.delete_if {|k, v| v.nil?}.keys.last.gsub(/_id/, '')).try(:info)
-  end
-
   def self.get_by_params(params, all_groups = false, related = false)
     map = related ? "related" : "id"
     allocation_tags_ids = []
@@ -320,5 +233,26 @@ class AllocationTag < ActiveRecord::Base
 
     {allocation_tags: allocation_tags_ids.flatten, selected: selected, offer_id: offer.try(:first).try(:id)}
   end
+
+  private
+
+    def check_if_user_has_profile_type(user_id, responsible = true, observer = false)
+      query = {
+        user_id: user_id,
+        status: Allocation_Activated,
+        allocation_tag_id: self.related(upper: true),
+        profiles: { status: true }
+      }
+
+      query_type = []
+      query_type << "cast(profiles.types & :responsible as boolean)" if responsible
+      query_type << "cast(profiles.types & :observer as boolean)" if observer
+
+      return false if query_type.empty?
+
+      Allocation.joins(:profile)
+        .where(query)
+        .where(query_type.join(" OR "), responsible: Profile_Type_Class_Responsible, observer: Profile_Type_Observer).count > 0
+    end
 
 end

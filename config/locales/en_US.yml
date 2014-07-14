@@ -1472,6 +1472,11 @@ en_US:
         error: "[ERRO]: CPF: %{cpf}, %{error}"
         allocation_success: "[SUCESSO]: CPF: %{cpf}, enrolled in %{allocation_tag}"
         allocation_error: "[ERRO]: CPF: %{cpf}, not been possible to enroll"
+    search_users:
+      name: Name
+      email: Email
+      cpf: Cpf
+      login: Username
     logs:
       log_type: Type
       course: Course
@@ -2041,3 +2046,14 @@ en_US:
   mysolar:
     synchronize: Synchronize with Módulo Acadêmico
     profiles: Profiles
+  portlets:
+    curricular_unit:
+      type: Type
+      code: Code
+      name: Name
+      course: Course
+      semester: Semester
+      profile: Profile
+      all: All
+      search: "Search:"
+      filter: "Filter:"

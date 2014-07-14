@@ -1396,3 +1396,8 @@ details[open] summary:before {
 	padding: 0 5px 0 0;
 	color: rgb(79, 79, 79);
 }
+#orderDl{
+	cursor: pointer;
+	color:rgba(6, 86, 153, 1);
+	font-family: 'PT Sans', sans-serif;
+}

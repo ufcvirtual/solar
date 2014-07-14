@@ -9,7 +9,7 @@ class SupportMaterialFilesController < ApplicationController
   def index
     authorize! :index, SupportMaterialFile, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
-    @allocation_tag_ids = AllocationTag.find_related_ids(allocation_tag_id)
+    @allocation_tag_ids = AllocationTag.find(allocation_tag_id).related
     @list_files = SupportMaterialFile.find_files(@allocation_tag_ids)
 
     @folders_list = {}

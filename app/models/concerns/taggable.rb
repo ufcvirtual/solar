@@ -57,10 +57,6 @@ module Taggable
     allocations.where(query).destroy_all
   end
 
-  def unallocate_user_in_related(user_id)
-    self.allocation_tag.unallocate_user_in_related(user_id)
-  end
-
   def allocation_tag_association
     AllocationTag.create({self.class.name.underscore.to_sym => self})
   end
@@ -71,10 +67,6 @@ module Taggable
     allocation.status = Allocation_Activated
     allocation.save
     allocation
-  end
-
-  def is_only_user_allocated?(user_id)
-    self.allocation_tag.is_only_user_allocated_in_related?(user_id)
   end
 
   ## criacao de lesson module default :: devera ser chamada apenas por groups e offers

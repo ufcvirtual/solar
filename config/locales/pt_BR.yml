@@ -1723,6 +1723,11 @@ pt_BR:
         error: "[ERRO]: CPF: %{cpf}, %{error}"
         allocation_success: "[SUCESSO]: CPF: %{cpf}, matriculado em %{allocation_tag}"
         allocation_error: "[ERRO]: CPF: %{cpf}, Não foi possível matricular"
+    search_users:
+      name: Nome
+      email: Email
+      cpf: Cpf
+      login: Login
     logs:
       log_type: Tipo
       course: Curso
@@ -2327,3 +2332,15 @@ pt_BR:
   mysolar:
     synchronize: Sincronizar com Módulo Acadêmico
     profiles: Perfis
+
+  portlets:
+    curricular_unit:
+      type: Tipo
+      code: Código
+      name: Nome
+      course: Curso
+      semester: Semestre
+      profile: Perfil
+      all: Todos
+      search: "Busca:"
+      filter: "Filtro:"

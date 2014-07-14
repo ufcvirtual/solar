@@ -22,15 +22,7 @@
 
 #mysolar_curriculum_unit_wrapper {
   margin: 0;
-  padding: 5px 10px;
-}
-
-#mysolar_curriculum_unit_wrapper li {
-  padding-bottom: 5px;
-}
-
-#mysolar_curriculum_unit_wrapper li > .disabled {
-  padding-left: 0;
+  width: 100%;
 }
 
 /**
@@ -189,4 +181,63 @@ table tr.block_title th {
 // removendo margem do ultimo portlet (terceiro) da linha
 .block_wrapper > .block_small:nth-child(3) {
     margin-right: 0;
+}
+
+/* Slider */
+.slide-block{
+  width: 170px;
+  height: 164px;
+  background-color: #000000;
+  opacity: 0.8;
+  float: right;
+  padding: 1px;
+  display: none;
+
+  label{
+    color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  label.title{
+    font-family: 'Ubuntu Condensed';
+    font-size: 14px;
+    padding-top: 4px;
+   }
+
+   label.subtitle{
+      font-family: 'PT Sans';
+      font-size: 12px;
+      padding-left: 8px;
+   }
+
+  input{
+    height: 16px;
+  }
+
+  select{
+    height: 21px;
+  }
+
+  #type, #profile{
+    margin-left: 9px;
+    margin-right: 9px;
+    width: 152px;
+    margin-bottom: 3px;
+  }
+
+  #search_offer{
+    margin-left: 8px;
+    margin-right: 8px;
+    width: 143px;
+    margin-bottom: 8px;
+    padding-bottom: 0;
+  }
+
+}
+
+.block_title{
+  i.icon-settings{
+    cursor: pointer;
+  }
 }

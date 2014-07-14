@@ -172,8 +172,8 @@ class AllocationsControllerTest < ActionController::TestCase
     end
 
     assert_response :success
-    assert allocation_tags(:al5).is_user_class_responsible?(users(:user2).id)    
-    assert allocation_tags(:al4).is_user_class_responsible?(users(:user2).id)    
+    assert allocation_tags(:al5).is_responsible?(users(:user2).id)
+    assert allocation_tags(:al4).is_responsible?(users(:user2).id)
   end
 
   test "nao alocar usuario com perfil tutor a distancia para usuario sem permissao" do
@@ -185,7 +185,7 @@ class AllocationsControllerTest < ActionController::TestCase
     end
     
     assert_response :unprocessable_entity
-    assert (not allocation_tags(:al5).is_user_class_responsible?(users(:user2).id))
+    assert (not allocation_tags(:al5).is_responsible?(users(:user2).id))
   end
 
   # Admin
