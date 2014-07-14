@@ -1,4 +1,5 @@
 require 'ostruct'
+include EdxHelper
 
 class UsersController < ApplicationController
 
