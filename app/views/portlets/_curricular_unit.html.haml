@@ -52,7 +52,7 @@
             = text_field_tag :search_offer, nil, :"data-column" => "all", type: :search, class: "search"
             = label_tag :filter, t(".filter"), class: "title"
             = label_tag :type, t(".type"), class: "subtitle"
-            = select_tag :type, options_for_select(CurriculumUnitType.all.map{ |c| [c.description, c.description] }), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"1"
+            = select_tag :type, options_for_select(@types.map{ |c| [c.description, c.description] }), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"1"
             = label_tag :profile, t(".profile"), class: "subtitle"
             = select_tag :profile, options_from_collection_for_select(@user.profiles_activated(false, true), "name", "name"), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"6"
 

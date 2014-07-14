@@ -1,11 +1,19 @@
 - unless @courses.empty?
+  - public_course = CurriculumUnitType.find(7)
   - @courses.each do |my_edx_course|
-    %li
-      - edx = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]
-      %form{action: "#{edx['login']}?next=#{my_edx_course['course_absolute_url_lms']}", method: "post", target:"_blank"}
-        %input{name: "username", type: "hidden", value: current_user.username}/
-        %input{name: "token", type: "hidden", value: Digest::HMAC.hexdigest(current_user.username, edx['hash_key'], Digest::SHA1)}/
-        = link_to my_edx_course['display_name'], "#", class: "open-edx-class link_content"
+    %tr.lines
+      %td{:"data-tooltip" => public_course.description}= image_tag(public_course.icon_name)
+      %td{style: "display: none"}= public_course.description
+      %td{style: "text-align: center"}= " - "
+      %td{style: "text-align: center"}= " - "
+      %td
+        - edx = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]
+        %form{action: "#{edx['login']}?next=#{my_edx_course['course_absolute_url_lms']}", method: "post", target:"_blank"}
+          %input{name: "username", type: "hidden", value: current_user.username}
+          %input{name: "token", type: "hidden", value: Digest::HMAC.hexdigest(current_user.username, edx['hash_key'], Digest::SHA1)}
+          = link_to my_edx_course['display_name'], "#", {class: "open-edx-class link_content", :"data-tooltip" => my_edx_course['display_name']}
+      %td= #semestre
+      %td{style: "display: none"}= #perfis
 
 :javascript
   $(function(){

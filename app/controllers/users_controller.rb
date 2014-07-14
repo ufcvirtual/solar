@@ -61,6 +61,7 @@ class UsersController < ApplicationController
 
     @user   = current_user
     @offers = Offer.offers_info_from_user(@user)
+    @types  = ((not(EDX.nil?) and EDX["integrated"]) ? CurriculumUnitType.all : CurriculumUnitType.where("id <> 7"))
     allocation_tags = @user.activated_allocation_tag_ids(true, true)
 
     ## Portlet do calendario; destacando dias que possuem eventos
