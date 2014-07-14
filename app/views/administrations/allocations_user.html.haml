@@ -20,6 +20,7 @@
                 %th{style: 'width:120px'}= ''
                 %th{style: 'width:80px'}= t(:status, scope: [:administrations, :allocations])
                 %th{style: 'width:80px'}= ''
+                %th.no_sort
             %tbody
               - @allocations_user.where("profile_id="+p.id.to_s).each do |a|
                 %tr.lines.allocations{class: semester(a.allocation_tag)}
@@ -34,6 +35,8 @@
 
   .right_buttons
     = button_to_function t(:close, scope: [:administrations]), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+
+= javascript_include_tag "tablesorter"
 
 :javascript
   show_semester();

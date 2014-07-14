@@ -1,5 +1,9 @@
 class CurriculumUnitType < ActiveRecord::Base
+
+  default_scope order: "description"
+
   has_many :curriculum_units
+  
   def tool_name
     tool_name = case id
       when 3; "course"
