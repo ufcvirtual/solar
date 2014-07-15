@@ -50,62 +50,6 @@ class AllocationTag < ActiveRecord::Base
     self.attributes.keep_if {|k,v| k != "id" and not(v.nil?)}.keys.first.sub(/\_id/, '')
   end
 
-  def related(args = {all: true, lower: false, upper: false, objects: false})
-    academic_tool = refer_to
-
-    result = case academic_tool
-    when 'group'
-      if args[:all] or args[:upper]
-        association_ids = self.group.association_ids
-
-        query = ["offer_id = :offer_id"]
-        query << "course_id = :course_id" unless association_ids[:course_id].nil?
-        query << "curriculum_unit_id = :curriculum_unit_id" unless association_ids[:curriculum_unit_id].nil?
-
-        self.class.where(query.join(" OR "), association_ids)
-      end
-    when 'offer'
-      o = self.offer
-      lower = self.class.where(group_id: o.groups.map(&:id)) if args[:all] or args[:lower]
-
-      if args[:all] or args[:upper]
-        association_ids = { course_id: o.course_id, curriculum_unit_id: o.curriculum_unit_id }
-
-        query = []
-        query << "course_id = :course_id" unless o.course_id.nil?
-        query << "curriculum_unit_id = :curriculum_unit_id" unless o.curriculum_unit_id.nil?
-
-        upper = self.class.where(query.join(" OR "), association_ids)
-      end
-
-      [lower, upper]
-    when 'curriculum_unit', 'course'
-      if args[:all] or args[:lower]
-        at_offers = self.offers.map(&:id).uniq
-        at_groups = self.groups.map(&:id).uniq
-
-        query = ["offer_id IN (:offer_id) OR group_id IN (:group_id)"]
-
-        if academic_tool == 'curriculum_unit'
-          siblings = Course.joins(:offers).where(offers: {id: at_offers}).map(&:id).uniq # siblings
-          query << "course_id IN (:siblings)" unless siblings.nil?
-        else
-          siblings = CurriculumUnit.joins(:offers).where(offers: {id: at_offers}).map(&:id).uniq # siblings
-          query << "curriculum_unit_id IN (:siblings)" unless siblings.nil?
-        end
-
-        association_ids = { offer_id: at_offers, group_id: at_groups, siblings: siblings }
-
-        self.class.where(query.join(" OR "), association_ids)
-      end
-    end
-
-    result = [self, result].flatten.compact.uniq
-
-    return result if args[:objects]
-    return result.map(&:id)
-  end
-
   ## ex: retorna allocation do professor na oferta se tiver checando relacao com uma turma dessa oferta (professor em uma oferta)
   def user_relation_with_this(user)
     relation = allocations.where(user_id: user)
@@ -139,23 +83,89 @@ class AllocationTag < ActiveRecord::Base
     I18n.t("users.profiles.not_specified")
   end
 
+  ## ex: '2014.2 2015.1 semester_active'
   def semester_info
-    sinfo = case refer_to
+    s_info = case refer_to
     when 'group'
-      g_offer = group.offer
-      sclass = [g_offer.semester.name]
-      sclass << 'semester_active' if g_offer.is_active?
+      g_offer = offers.first
+      [g_offer.semester.name, ('semester_active' if g_offer.is_active?)]
     when 'offer'
-      sclass = [offer.semester.name]
-      sclass << 'semester_active' if offer.is_active?
+      [offer.semester.name, ('semester_active' if offer.is_active?)]
     when 'curriculum_unit', 'course'
       c_offers = offers
-      slcass = Semester.joins(:offers).where(offers: {id: c_offers.map(&:id)}).map(&:name).uniq.join(" ")
-      sclass << 'semester_active' if c_offers.map(&:is_active?).include?(true)
+      semesters = Semester.joins(:offers).where(offers: {id: c_offers.map(&:id)})
+      [semesters.map(&:name).uniq.join(' '), ('semester_active' if c_offers.map(&:is_active?).include?(true))]
     end
 
-    sinfo.join(" ")
+    s_info.compact.join(' ')
   end
+
+  ## related functions - begin ##
+
+  def related(args = {})
+    args = {lower: false, upper: false, objects: false}.merge(args)
+    args = args.merge({lower: true, upper: true}) if not(args[:lower] or args[:upper])
+
+    academic_tool = refer_to
+
+    result = case academic_tool
+    when 'group'
+      group_related if args[:upper]
+    when 'offer'
+      offer_related(args[:lower], args[:upper])
+    when 'curriculum_unit', 'course'
+      uc_or_course_related(academic_tool) if args[:lower]
+    end
+
+    result = [self, result].flatten.compact.uniq
+
+    return result if args[:objects]
+    return result.map(&:id)
+  end
+
+  def group_related
+    association_ids = self.group.association_ids
+
+    query = ["offer_id = :offer_id"]
+    query << "course_id = :course_id" unless association_ids[:course_id].nil?
+    query << "curriculum_unit_id = :curriculum_unit_id" unless association_ids[:curriculum_unit_id].nil?
+
+    self.class.where(query.join(" OR "), association_ids)
+  end
+
+  def offer_related(lower = true, upper = true)
+    r_offer = self.offer
+
+    r_lower = self.class.where(group_id: r_offer.groups.map(&:id)) if lower
+    r_upper = if upper
+      association_ids = { course_id: r_offer.course_id, curriculum_unit_id: r_offer.curriculum_unit_id }
+
+      query = []
+      query << "course_id = :course_id" unless association_ids[:course_id].nil?
+      query << "curriculum_unit_id = :curriculum_unit_id" unless association_ids[:curriculum_unit_id].nil?
+
+      self.class.where(query.join(" OR "), association_ids)
+    end
+
+    [r_lower, r_upper]
+  end
+
+  def uc_or_course_related(academic_tool)
+    at_offers = offers.map(&:id).uniq
+    at_groups = groups.map(&:id).uniq
+
+    sibling_tool = (academic_tool == 'course') ? CurriculumUnit : Course
+    siblings = sibling_tool.joins(:offers).where(offers: {id: at_offers}).map(&:id).uniq
+
+    query = ["offer_id IN (:offer_id) OR group_id IN (:group_id)"]
+    query << "#{sibling_tool.to_s.underscore}_id IN (:siblings)" unless siblings.nil?
+
+    association_ids = { offer_id: at_offers, group_id: at_groups, siblings: siblings }
+
+    self.class.where(query.join(" OR "), association_ids)
+  end
+
+  ## related functions - end ##
 
   def self.get_by_params(params, related = false)
     map_attr = related ? :related : :id

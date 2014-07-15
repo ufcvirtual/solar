@@ -180,7 +180,7 @@ class CurriculumUnitsController < ApplicationController
     def curriculum_data
       @curriculum_unit   = Offer.find(active_tab[:url][:id]).curriculum_unit
       @allocation_tag_id = active_tab[:url][:allocation_tag_id]
-      @allocation_tags = AllocationTag.find(@allocation_tag_id).related(all: true, objects: true)
+      @allocation_tags = AllocationTag.find(@allocation_tag_id).related(objects: true)
 
       at_ids = @allocation_tags.map(&:id).join(",")
 
