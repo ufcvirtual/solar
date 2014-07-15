@@ -79,7 +79,7 @@ class Discussion < Event
     posts_by_allocation_tags_ids(allocation_tags_ids).where(query).order("updated_at #{opts["order"]}").limit("#{opts['limit']}").offset("#{(opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i}")
   end
 
-  def discussion_posts_count(plain_list = true, allocation_tags_ids)
+  def discussion_posts_count(plain_list = true, allocation_tags_ids = nil)
     (plain_list ? posts_by_allocation_tags_ids(allocation_tags_ids).count : posts_by_allocation_tags_ids(allocation_tags_ids).where(parent_id: nil).count)
   end
 

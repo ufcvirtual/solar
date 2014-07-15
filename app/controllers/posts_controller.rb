@@ -13,12 +13,12 @@ class PostsController < ApplicationController
     @discussion = Discussion.find(params[:discussion_id])
 
     # group allocation tag
-    allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.map(&:id) # procurar problema no mobilis, ele nao envia a allocation tag da turma
-    authorize! :index, Discussion, {on: [allocation_tags], read: true}
+    @allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.map(&:id) # procurar problema no mobilis, ele nao envia a allocation tag da turma
+    authorize! :index, Discussion, {on: [@allocation_tags], read: true}
 
     @posts = []
     @can_interact = @discussion.user_can_interact?(current_user.id)
-    @can_post = (can? :create, Post, on: [allocation_tags])
+    @can_post = (can? :create, Post, on: [@allocation_tags])
     p      = params.select { |k, v| ['date', 'type', 'order', 'limit', 'display_mode', 'page'].include?(k) }
 
     @display_mode = p['display_mode'] ||= 'tree'
@@ -28,11 +28,11 @@ class PostsController < ApplicationController
       p['page'] ||= @current_page
       p['type'] ||= "history"
       p['date'] = Time.parse(p['date']) if params[:format] == "json" and p.include?('date')
-      @posts    = @discussion.posts(p, allocation_tags)
+      @posts    = @discussion.posts(p, @allocation_tags)
     else
       # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
-      @latest_posts = @discussion.latest_posts(allocation_tags)
-      @posts        = Post.reorder_by_latest_posts(@latest_posts, @discussion.posts_by_allocation_tags_ids(allocation_tags).where(parent_id: nil))
+      @latest_posts = @discussion.latest_posts(@allocation_tags)
+      @posts        = Post.reorder_by_latest_posts(@latest_posts, @discussion.posts_by_allocation_tags_ids(@allocation_tags).where(parent_id: nil))
     end
 
     respond_to do |format|
