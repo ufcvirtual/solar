@@ -21,8 +21,8 @@ class ScoresController < ApplicationController
 
     # atividades da turma
     allocation_tags = AllocationTag.find(allocation_tag_id).related.join(',')
-    @students = Assignment.list_students_by_allocations(allocation_tags)
-    @scores = Score.students_information(@students, @assignments, @group) # dados dos alunos nas atividades
+    @students       = Assignment.list_students_by_allocations(allocation_tags)
+    @scores         = Score.students_information(@students, @assignments, @group) # dados dos alunos nas atividades
   end
 
   ##

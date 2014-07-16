@@ -20,7 +20,7 @@
           %tr.lines
             %td.td_student{:align => "left", 'data-tooltip' => t(student.name)}= link_to student.name, student_scores_path(student.id)
             %td{:align => "center"}= @scores["student_count_public_files"][idx]
-            %td{:align => "center"}= "-"
+            %td{:align => "center"}= @scores["student_count_posts"][idx]
             %td{:align => "center"}= @scores["student_count_access"][idx]
 
 

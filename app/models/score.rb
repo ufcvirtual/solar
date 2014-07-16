@@ -14,7 +14,7 @@ class Score < ActiveRecord::Base
 
   ## informações de todos os alunos para todas as atividades de uma turma
   def self.students_information(students, assignments, group)
-    students_grades, students_groups, student_count_access, student_count_public_files = [], [], [], [] # informações do aluno
+    students_grades, students_groups, student_count_access, student_count_public_files, students_count_posts = [], [], [], [], [] # informações do aluno
 
     students.each_with_index do |student, idx|
 
@@ -35,11 +35,15 @@ class Score < ActiveRecord::Base
 
       students_grades[idx] = assignments_grades
       students_groups[idx] = groups_ids
-      student_count_access[idx]       = LogAccess.find_all_by_user_id_and_log_type_and_allocation_tag_id(student.id, LogAccess::TYPE[:offer_access], group.offer.curriculum_unit.allocation_tag.id).size
+      student_count_access[idx]       = LogAccess.find_all_by_user_id_and_log_type_and_allocation_tag_id(student.id, LogAccess::TYPE[:offer_access], group.offer.allocation_tag.id).size
       student_count_public_files[idx] = PublicFile.find_all_by_user_id_and_allocation_tag_id(student.id, group.allocation_tag.id).size
+      students_count_posts[idx]       = Post.joins(:academic_allocation).where("academic_allocations.academic_tool_type='Discussion' AND allocation_tag_id IN (?) AND discussion_posts.user_id=?", 
+                                        group.allocation_tag.related, student.id).size
     end
 
-    return {"students_grades" => students_grades, "students_groups" => students_groups, "student_count_access" => student_count_access, "student_count_public_files" => student_count_public_files}
+    return {
+      "students_grades" => students_grades, "students_groups" => students_groups, "student_count_access" => student_count_access, 
+      "student_count_public_files" => student_count_public_files, "student_count_posts" => students_count_posts}
   end
   
   # Numero de estudantes por turma
