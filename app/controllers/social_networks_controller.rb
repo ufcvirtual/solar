@@ -55,7 +55,7 @@ class SocialNetworksController < ApplicationController
 
   def fb_logout
     user_session.delete(:fb_token)
-    redirect_to :pages
+    redirect_to :home
   end
 
   def fb_post_wall
