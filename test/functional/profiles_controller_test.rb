@@ -11,13 +11,6 @@ class ProfilesControllerTest < ActionController::TestCase
     sign_in @admin
   end
 
-  test "listagem de perfis" do
-    get :index
-
-    assert_response :success
-    assert_not_nil assigns(:all_profiles)
-  end
-
   test "sem permissao - listagem de perfis" do
     sign_in @aluno1
 

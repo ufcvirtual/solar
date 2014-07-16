@@ -13,14 +13,10 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   include ActionDispatch::TestProcess
 
   def setup
-    @quimica_tab = add_tab_path(id: 3, context:2, allocation_tag_id: 3)
+    @quimica_tab               = add_tab_path(id: 3, context:2, allocation_tag_id: 3)
     @literatura_brasileira_tab = add_tab_path(id: 5, context:2, allocation_tag_id: 8)
-    @from_date = Date.current
+    @from_date  = Date.current
     @until_date = Date.current
-  end
-
-  def login(user)
-    login_as user, :scope => :user
   end
 
   ##
@@ -32,6 +28,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "listar as atividades de um aluno para usuario com permissao e acesso - aluno" do 
     login(users(:aluno1))
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get student_scores_path(users(:aluno1).id)
     assert_response :success
     assert_not_nil assigns(:individual_activities)
@@ -45,6 +42,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "listar as atividades de um aluno para usuario com permissao e acesso - professor" do 
     login(users(:professor))
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get student_scores_path(users(:aluno1).id)
     assert_response :success
     assert_not_nil assigns(:individual_activities)
@@ -59,6 +57,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao listar as atividades de um aluno para usuario com permissao e sem acesso - aluno" do 
     login(users(:aluno1))
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get student_scores_path(users(:aluno2).id)
     assert_response :redirect
     assert_redirected_to(home_path)
@@ -88,6 +87,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao listar as atividades de um aluno para usuario sem permissao" do 
     login(users(:coorddisc))
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get student_scores_path(users(:aluno1).id)
     assert_response :redirect
     assert_redirected_to(home_path)

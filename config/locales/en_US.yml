@@ -1104,6 +1104,7 @@ en_US:
   no_permission: "You haven't permission to access this page"
   not_associated: This tool isn't associated to the informed data
   uri_too_long: "Information quantity too large. Reduce the quantity of data passed"
+  cant_build_page: Wasn't possible to access informed page
   menu_content: Content
   menu_lesson: Lessons
   menu_support_material: Support Material

@@ -70,7 +70,7 @@
       / sidebar
       #mysolar_sidebar
         #mysolar_menu_accordion{style: "z-index:10"}
-          = raw menu(@_profiles, @_context_id, @_context_uc, user_session[:menu][:current]) if user_signed_in?
+          = raw menu if user_signed_in?
 
       / content
       #mysolar_content

@@ -14,7 +14,7 @@ class TabsController < ApplicationController
       redirect = active_tab[:breadcrumb].last[:url] if active_tab[:url][:context].to_i == Context_Curriculum_Unit.to_i
     end
 
-    redirect_to redirect, :flash => flash
+    redirect_to redirect, flash: flash
   end
 
   def create # add
@@ -35,7 +35,7 @@ class TabsController < ApplicationController
     set_active_tab_to_home if user_session[:tabs][:active] == tab_name
     user_session[:tabs][:opened].delete(tab_name)
 
-    redirect_to((active_tab[:url][:context] == Context_Curriculum_Unit) ? home_curriculum_unit_path(active_tab[:url][:id]) : home_path, :flash => flash)
+    redirect_to((active_tab[:url][:context] == Context_Curriculum_Unit) ? home_curriculum_unit_path(active_tab[:url][:id]) : home_path, flash: flash)
   end
 
   private

@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :authenticate_user!, except: [:verify_cpf, :api_download] # devise
-  before_filter :init_xmpp_im, :set_locale, :start_user_session, :application_context, :current_menu, :another_level_breadcrumb
+  before_filter :init_xmpp_im, :set_locale, :start_user_session, :current_menu, :another_level_breadcrumb
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
@@ -54,6 +54,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  rescue_from ActionView::Template::Error do |exception|
+    respond_to do |format|
+      format.html { redirect_to home_path, alert: t(:cant_build_page) }
+      format.json { render json: {msg: t(:cant_build_page)}, status: :unauthorized }
+    end
+  end
+
   def start_user_session
     return unless user_signed_in?
 
@@ -78,15 +85,17 @@ class ApplicationController < ActionController::Base
   def application_context
     return unless user_signed_in?
 
-    set_tab_by_context
+    is_mysolar    = (params[:action] == 'mysolar')
+    user_profiles = Profile.joins(:allocations).where("allocations.user_id = ? AND allocations.status = ?", current_user.id, Allocation_Activated)
 
-    is_mysolar  = (params[:action] == 'mysolar')
-    @_profiles   = current_user.profiles.map(&:id).join(',')
-    @_context_id = is_mysolar ? Context_General : active_tab[:url][:context]
-    @_context_uc = is_mysolar ? nil : active_tab[:url][:id]
+    user_session[:uc_profiles]  = user_profiles.where("allocations.allocation_tag_id IN (?)", AllocationTag.find(active_tab[:url][:allocation_tag_id]).related).pluck(:id).join(",") if active_tab[:url][:context] == Context_Curriculum_Unit.to_i
+    user_session[:all_profiles] = user_profiles.pluck(:id).join(',')
+    user_session[:context_id]   = is_mysolar ? Context_General : active_tab[:url][:context]
+    user_session[:context_uc]   = is_mysolar ? nil : active_tab[:url][:id]
   end
 
   def current_menu
+    set_tab_by_context
     user_session[:menu] = { current: params[:mid] } if user_signed_in? and params[:mid].present?
     user_session[:menu] = { current: nil } if params[:context].present?
   end
@@ -133,6 +142,8 @@ class ApplicationController < ActionController::Base
     end
 
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
+    
+    application_context
   end
 
   def after_sign_in_path_for(resource_or_scope)

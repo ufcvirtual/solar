@@ -1266,6 +1266,8 @@ pt_BR:
   # Mensagem de erro associação entre ferramentas e turma/oferta/uc/curso
   not_associated: Esta ferramenta não está associada aos dados informados
   uri_too_long: "Quantidade de informações muito grande. Diminua a quantidade de dados passados"
+  # Mensagem de erro ao não conseguir construir tela
+  cant_build_page: "Não foi possível acessar a página desejada"
 
   # Menu
   menu_content: Conteúdo

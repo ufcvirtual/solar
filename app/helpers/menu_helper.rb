@@ -10,23 +10,26 @@ module MenuHelper
   #         li.mysolar_menu_list
   #           a
 
-  def menu(profile_id, context_id, id = nil, current_menu = nil)
-    menus = Menu.list_by_profile_id_and_context_id(profile_id, context_id)
+  def menu
+    all_profiles_ids, profiles_ids = user_session[:all_profiles], (user_session[:uc_profiles]) 
+    context_id, id, current_menu   = user_session[:context_id], user_session[:context_uc], user_session[:menu][:current]
+
+    menus = Menu.list_by_profile_id_and_context_id(all_profiles_ids, profiles_ids, context_id)
     divs_group, div_group_opened, previous_parent_id = [], false, 0
 
     menus.each do |menu|
-      access_controller = {:controller => "/#{menu["controller"]}", :action => menu["action"], :mid => menu['parent_id'], :bread => menu['parent']}
+      access_controller = {controller: "/#{menu["controller"]}", action: menu["action"], mid: menu['parent_id'], bread: menu['parent']}
       div_group_opened  = false if (previous_parent_id != menu['parent_id'].to_i) # quando o pai muda, outra div deve ser criada
 
       unless div_group_opened # menu pai
         div_group_opened = true
         link_class = ['mysolar_menu_title', ((menu['parent_id'].to_i == current_menu.to_i and params.include?(:mid)) ? 'open_menu' : nil)].compact.join(' ')
-        a_link     = ((menu['child'].nil?) ? link_to(t(menu['parent'].to_sym), access_controller, :class => link_class) : %{<a href="#" class="#{link_class}">#{t(menu['parent'].to_sym)}</a>})
+        a_link     = ((menu['child'].nil?) ? link_to(t(menu['parent'].to_sym), access_controller, class: link_class) : %{<a href="#" class="#{link_class}">#{t(menu['parent'].to_sym)}</a>})
 
         divs_group[menu['parent_id'].to_i] = {
-          :ul => {
-            :li => {
-              :id => "parent_#{menu['parent_id']}", :a => a_link, :ul => []
+          ul: {
+            li: {
+              id: "parent_#{menu['parent_id']}", a: a_link, ul: []
             }
           }
         }

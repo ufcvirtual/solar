@@ -9,4 +9,8 @@ class ActiveSupport::TestCase
   def get_json_response(param)
     return JSON.parse(@response.body)[param]
   end
+
+  def login(user)
+    login_as user, scope: :user
+  end
 end

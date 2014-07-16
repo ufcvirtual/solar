@@ -40,9 +40,9 @@ class PostsController < ApplicationController
       format.json  {
         period = (@posts.empty?) ? ["#{p['date']}", "#{p['date']}"] : ["#{@posts.first.updated_at}", "#{@posts.last.updated_at}"].sort
         if params[:mobilis].present?
-          render json: { before: @discussion.count_posts_before_period(period, allocation_tags), after: @discussion.count_posts_after_period(period, allocation_tags), posts: @posts.map(&:to_mobilis)} 
+          render json: { before: @discussion.count_posts_before_period(period, @allocation_tags), after: @discussion.count_posts_after_period(period, @allocation_tags), posts: @posts.map(&:to_mobilis)} 
         else          
-          render json: @discussion.count_posts_after_and_before_period(period, allocation_tags) + @posts.map(&:to_mobilis)
+          render json: @discussion.count_posts_after_and_before_period(period, @allocation_tags) + @posts.map(&:to_mobilis)
         end
       }
     end

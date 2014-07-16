@@ -13,12 +13,8 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   include ActionDispatch::TestProcess
 
   def setup
-    @quimica_tab = add_tab_path(id: 3, context:2, allocation_tag_id: 3)
+    @quimica_tab               = add_tab_path(id: 3, context:2, allocation_tag_id: 3)
     @literatura_brasileira_tab = add_tab_path(id: 5, context:2, allocation_tag_id: 8)
-  end
-
-  def login(user)
-    login_as user, :scope => :user
   end
 
   ##
@@ -28,6 +24,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "listar as atividades de um aluno para usuario com permissao" do 
     login(users(:aluno1))
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get student_view_assignments_path
     assert_response :success
     assert_template :student
@@ -38,6 +35,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test 'nao listar as atividades de um aluno para usuario sem permissao' do 
     login(users(:professor))
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get student_view_assignments_path
     assert_response :redirect
     assert_redirected_to(home_path)
@@ -49,6 +47,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "listar as atividades de uma turma para usuario com permissao" do 
     login users(:professor)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get professor_assignments_path
     assert_response :success
     assert_not_nil assigns(:individual_activities)
@@ -59,6 +58,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao listar as atividades de uma turma para usuario sem permissao" do 
     login users(:aluno1)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get professor_assignments_path
     assert_response :redirect
     assert_redirected_to home_path
@@ -266,6 +266,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test 'exibir pagina de importacao de grupos entre atividades para usuario com permissao' do
     login(users(:professor))
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get import_groups_page_assignment_path(assignments(:a6).id)
     assert_response :success
     assert_not_nil assigns(:assignments)
@@ -275,6 +276,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test 'nao exibir pagina de importacao de grupos entre atividades para usuario sem permissao' do
     login(users(:aluno1))
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get import_groups_page_assignment_path(assignments(:a6).id)
     assert_response :redirect
     assert_equal I18n.t(:no_permission), flash[:alert]
@@ -297,6 +299,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "exibir informacoes da atividade individual para usuario com permissao" do
     login users(:professor)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get information_assignment_path :id => assignments(:a9).id
     assert_response :success
     assert_not_nil assigns(:assignment)
@@ -311,6 +314,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "exibir informacoes da atividade em grupo para usuario com permissao" do
     login users(:professor)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get information_assignment_path :id => assignments(:a6).id
     assert_response :success
     assert_not_nil assigns(:assignment)
@@ -325,6 +329,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao exibir informacoes da atividade individual para usuario sem permissao" do
     login users(:aluno1)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get information_assignment_path(assignments(:a9))
     assert_response :redirect
     assert_redirected_to(home_path)
@@ -335,6 +340,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao exibir informacoes da atividade em grupo para usuario sem permissao" do
     login users(:aluno1)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get information_assignment_path(assignments(:a6))
     assert_response :redirect
     assert_redirected_to(home_path)
@@ -345,6 +351,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao exibir informacoes da atividade para usuario com permissao e sem acesso" do
     login users(:professor)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get information_assignment_path(assignments(:a12))
     assert_response :redirect
     assert_redirected_to(home_path)
@@ -359,6 +366,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "exibir pagina de avaliacao da atividade individual para usuario com permissao" do
     login users(:professor)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get student_assignment_path id: assignments(:a9).id, student_id: users(:aluno1).id
     assert_response :success
     assert_not_nil assigns(:student_id)
@@ -375,6 +383,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "exibir pagina de avaliacao da atividade em grupo para usuario com permissao" do
     login users(:professor)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get student_assignment_path :id => assignments(:a6).id, :student_id => users(:aluno1).id, :group_id => group_assignments(:ga6).id
     assert_response :success
     assert_nil assigns(:student_id)
@@ -391,6 +400,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao exibir pagina de avaliacao da atividade individual para usuario com permissao e sem acesso" do
     login users(:aluno2)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get student_assignment_path(assignments(:a9), student_id: users(:aluno1).id)
     assert_response :redirect
     assert_equal I18n.t(:no_permission), flash[:alert]
@@ -400,6 +410,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao exibir pagina de avaliacao da atividade em grupo para usuario com permissao e sem acesso" do
     login users(:user)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     get student_assignment_path id: assignments(:a6).id, group_id: group_assignments(:ga6).id
     assert_response :redirect
     assert_redirected_to(home_path)
@@ -542,6 +553,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "permitir remover comentario para usuario com permissao e com acesso" do
     login users(:professor)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     assert_difference("AssignmentComment.count", -1) do
       delete remove_comment_assignment_path(assignments(:a9).id), {:comment_id => assignment_comments(:ac2).id}
     end
@@ -555,6 +567,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao permitir remover comentario para usuario com permissao e com acesso e atividade fora do periodo" do
     login users(:professor)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     assert_no_difference("AssignmentComment.count") do
        delete remove_comment_assignment_path(assignments(:a14).id), {:comment_id => assignment_comments(:ac2).id}
     end
@@ -564,6 +577,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao permitir remover comentario para usuario com permissao e sem acesso" do
     login users(:professor2)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     assert_no_difference("AssignmentComment.count") do
        delete remove_comment_assignment_path(assignments(:a9).id), {:comment_id => assignment_comments(:ac2).id}
     end
@@ -580,6 +594,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao permitir remover comentario para usuario sem permissao e com acesso" do
     login users(:aluno1)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     assert_no_difference("AssignmentComment.count") do
       delete remove_comment_assignment_path(assignments(:a9).id), {:comment_id => assignment_comments(:ac2).id}
     end
@@ -943,6 +958,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test 'permitir a gerenciamento de grupos para usuario com permissao' do
     login users(:professor)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     groups_hash = {"0"=>{"group_id"=>group_assignments(:ga6).id, "group_name"=>"grupo 1", "student_ids"=>"7 8"}, "1"=>{"group_id"=>"0", "group_name"=>"grupo 2", "student_ids"=>"9"}}
     post(manage_groups_assignment_path(assignments(:a6)), {groups: groups_hash})
     assert_response :success
@@ -963,6 +979,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test 'nao permitir o gerenciamento de grupos para usuario com permissao e sem acesso' do
     login users(:professor)
     get @literatura_brasileira_tab
+    get home_curriculum_unit_path(5)
     groups_hash = {"0"=>{"group_id"=>group_assignments(:ga7).id, "group_name"=>"grupo 1", "student_ids"=>"7 8"}, "1"=>{"group_id"=>"0", "group_name"=>"grupo 2", "student_ids"=>"9"}}
     post(manage_groups_assignment_path(assignments(:a12)), {groups: groups_hash})
     assert_redirected_to(home_path)
@@ -985,6 +1002,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test 'nao permitir o gerenciamento de grupos para usuario sem permissao e com acesso' do
     login users(:aluno3)
     get @quimica_tab
+    get home_curriculum_unit_path(3)
     groups_hash = {"0"=>{"group_id"=>group_assignments(:ga7).id, "group_name"=>"grupo 1", "student_ids"=>"7 8"}, "1"=>{"group_id"=>"0", "group_name"=>"grupo 2", "student_ids"=>"9"}}
     post(manage_groups_assignment_path(assignments(:a11)), {groups: groups_hash})
     assert_redirected_to(home_path)
@@ -1038,14 +1056,5 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
-
-
-
-
-
-
-
-
-
 
 end

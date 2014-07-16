@@ -1,16 +1,18 @@
 require 'test_helper'
 
-class UsersControllerTest < ActionController::TestCase
-  
-  include Devise::TestHelpers
+class UsersControllerTest < ActionDispatch::IntegrationTest
+
+  # para poder realizar o "login_as" sabendo que o sign_in do devise não funciona no teste de integração
+  include Warden::Test::Helpers 
 
   def setup
     @user = users(:user)
-    sign_in @user
+    login(@user)
+    get home_path # acessa a home do usuário antes de qualquer ação
   end
 
   test "acessar pagina de perfis do usuario" do
-    get :profiles
+    get profiles_users_path
     assert_not_nil assigns(:allocations)
     assert_equal assigns(:allocations).size, users(:user).allocations.count-1 # todas as alocações menos a básica
 
@@ -18,7 +20,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "acessar tela de solicitação de perfil" do
-    get :request_profile
+    get request_profile_users_path
 
     assert_not_nil assigns(:allocation)
     assert_not_nil assigns(:types)

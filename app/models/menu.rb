@@ -9,23 +9,29 @@ class Menu < ActiveRecord::Base
   has_many :resources
   has_and_belongs_to_many :contexts
 
-  # Lista com os menus do perfil do usuario dependendo do contexto
-  def self.list_by_profile_id_and_context_id(profile_id, context_id)
+  # Lista com os menus do perfil do usuario dependendo do contexto e dos perfis
+  def self.list_by_profile_id_and_context_id(all_profiles_ids, profiles_ids, context_id)
     # consulta para recuperar os dados do menu
     query = "
       WITH cte_menus AS (
        SELECT DISTINCT
-              t1.id    AS parent_id,
-              t1.order AS parent_order,
-              t1.name  AS parent,
-              t2.id    AS child_id,
-              t2.order AS child_order,
-              t2.name  AS child,
-              t2.resource_id
+              t1.id         AS parent_id,
+              t1.order      AS parent_order,
+              t1.name       AS parent,
+              t2.id         AS child_id,
+              t2.order      AS child_order,
+              t2.name       AS child,
+              t2.resource_id,
+              t4.context_id
          FROM menus             AS t1                           -- menu pai
          JOIN menus             AS t2 ON (t2.parent_id = t1.id) -- menu filho
          JOIN permissions_menus AS t3 ON (t3.menu_id = t2.id) -- verifica permissoes aos menus filhos
-        WHERE t2.status = TRUE AND t3.profile_id IN (#{profile_id}) -- permissoes para os menus filhos
+    LEFT JOIN menus_contexts    AS t4 ON (t4.menu_id = t1.id)
+        WHERE t2.status = TRUE AND 
+          ( t3.profile_id IN" + ( all_profiles_ids.nil? ?  "('0')" : "(#{all_profiles_ids})" ) + " AND t4.context_id = #{Context_General})
+          OR
+          ( t3.profile_id IN" + ( profiles_ids.nil? ?  "('0')" : "(#{profiles_ids})" ) + " )
+           -- permissoes para os menus filhos
       ), -- menus filhos com permissoes associadas
       --
       cte_all_parents AS (
@@ -42,7 +48,11 @@ class Menu < ActiveRecord::Base
             JOIN permissions_menus AS t2 ON (t2.menu_id = t1.id AND t1.parent_id IS NULL) -- verifica permissoes aos menus pais
        LEFT JOIN cte_menus         AS t3 ON (t3.parent_id = t1.id)
        LEFT JOIN menus_contexts    AS t4 ON (t4.menu_id = t1.id)
-           WHERE t1.status = TRUE AND t2.profile_id IN (#{profile_id}) -- permissoes para os menus pais
+           WHERE t1.status = TRUE AND 
+            ( t2.profile_id IN" + ( all_profiles_ids.nil? ?  "('0')" : "(#{all_profiles_ids})" ) + " AND t4.context_id = #{Context_General})
+            OR
+            ( t2.profile_id IN" + ( profiles_ids.nil? ?  "('0')" : "(#{profiles_ids})" ) + " )
+             -- permissoes para os menus pais
       )
       SELECT DISTINCT ON (t1.parent_order, t1.child_order, t1.parent_id, t1.parent)
              t1.parent_id,

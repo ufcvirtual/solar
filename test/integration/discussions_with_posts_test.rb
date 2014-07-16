@@ -4,10 +4,6 @@ class DiscussionsWithPostsTest < ActionDispatch::IntegrationTest
   # para poder realizar o "login_as" sabendo que o sign_in do devise não funciona no teste de integração
   include Warden::Test::Helpers 
 
-  def login(user)
-    login_as user, scope: :user
-  end
-
   def setup
     @qm_cau_tab = add_tab_path(id: 3, context:2, allocation_tag_id: 3)  # turma qm cau
     @qm_mar_tab = add_tab_path(id: 3, context:2, allocation_tag_id: 11) # turma qm mar
