@@ -7,7 +7,7 @@ gem "rack", "~> 1.4.5"
 gem "rake", "~> 10.1.1"
 gem "pg", "~> 0.15.0"
 gem "foreigner", "~> 1.4.0"
-gem "koala", "1.6.0"
+gem "koala", "1.2.0"
 
 
 gem "devise", "~> 2.2.8"

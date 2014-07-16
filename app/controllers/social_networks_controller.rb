@@ -16,7 +16,7 @@ class SocialNetworksController < ApplicationController
     @oauth_redirect_url = oauth.url_for_oauth_code()
 
     user_session[:fb_token] = oauth.get_access_token(params[:code]) if params[:code].present?
-    redirect_to :pages
+    redirect_to :home
   end
 
   def fb_feed
