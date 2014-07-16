@@ -14,7 +14,7 @@ Contexto:
 Cenário: Acessar pagina de informacoes do curso
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
-    Quando eu clicar no link "2011.1 | Introducao A Linguistica"
+    Quando eu clicar no link "RM404 - Introducao a Linguistica"
     #E que eu selecionei "selected_group" com "IL-FOR - 2011.1"
     Então eu deverei ver "Turma: IL-FOR"
     E eu deverei ver "Informações Gerais"

@@ -37,7 +37,7 @@ Cenário: Exibir Agenda
 Cenário: Exibir Agenda do professor
   Dado que estou logado com o usuario "prof" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "2011.1 | Letras Portugues | Teoria Da Literatura I"
+  Quando eu clicar no link "Teoria da Literatura I"
     Entao eu deverei ver "Informações Gerais"
   Quando eu clicar no link "Informações Gerais"
     Entao eu deverei ver o link "Agenda"
@@ -59,7 +59,7 @@ Cenário: Exibir Agenda do professor
 Cenário: Verificar tipos de visualizacoes da agenda e botoes de navegacao
   Dado que estou logado com o usuario "prof" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "2011.1 | Letras Portugues | Teoria Da Literatura I"
+  Quando eu clicar no link "Teoria da Literatura I"
     Entao eu deverei ver "Informações Gerais"
   Quando eu clicar no link "Informações Gerais"
     Entao eu deverei ver o link "Agenda"
@@ -89,7 +89,7 @@ Cenário: Verificar tipos de visualizacoes da agenda e botoes de navegacao
 Cenário: Verificar abertura do lightbox com exibição dos detalhes
   Dado que estou logado com o usuario "prof" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "2011.1 | Letras Portugues | Teoria Da Literatura I"
+  Quando eu clicar no link "Teoria da Literatura I"
     Entao eu deverei ver "Informações Gerais"
   Quando eu clicar no link "Informações Gerais"
     Entao eu deverei ver o link "Agenda"

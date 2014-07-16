@@ -13,8 +13,8 @@ Contexto:
 Cenário: Acessar pagina de unidade curricular
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
-    Quando eu clicar no link "2011.1 | Introducao A Linguistica"
-    Entao eu deverei ver a migalha de pao "Home" > "2011.1 | Introducao A Linguistica"
+    Quando eu clicar no link "RM404 - Introducao a Linguistica"
+    Entao eu deverei ver a migalha de pao "Home" > "Introducao a Linguistica - 2011.1"
     E eu deverei ver "Unidade Curricular"
     E eu deverei ver "Responsáveis"
     E eu deverei ver "Aulas"
