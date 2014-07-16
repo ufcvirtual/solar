@@ -23,6 +23,13 @@
 #mysolar_curriculum_unit_wrapper {
   margin: 0;
   width: 100%;
+
+  table th {
+    padding: 6px 6px 4px;
+  }
+  .type, .semester {
+    text-align: center;
+  }
 }
 
 /**
