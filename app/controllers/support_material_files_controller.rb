@@ -7,10 +7,10 @@ class SupportMaterialFilesController < ApplicationController
   before_filter :prepare_for_group_selection, only: [:index]
 
   def index
-    authorize! :index, SupportMaterialFile, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+    authorize! :index, SupportMaterialFile, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
-    @allocation_tag_ids = AllocationTag.find(allocation_tag_id).related
-    @list_files = SupportMaterialFile.find_files(@allocation_tag_ids)
+    allocation_tag_ids = AllocationTag.find(@allocation_tag_id).related
+    @list_files = SupportMaterialFile.find_files(allocation_tag_ids)
 
     @folders_list = {}
     @list_files.collect { |file|
@@ -90,34 +90,30 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def download
-    allocation_tag_ids = params.include?(:allocation_tag_id) ? params[:allocation_tag_id].split(" ").flatten.map(&:to_i).uniq : [(file = SupportMaterialFile.find(params[:id])).academic_allocations.map(&:allocation_tag_id)]
-    
-    if params.include?(:type) # baixando alguma pasta ou todas
+    file = SupportMaterialFile.find(params[:id]) unless params[:id].blank?
 
-      # se quiser baixar os arquivos em um curso, basta ter permissão na turma
-      groups = AllocationTag.where(id: allocation_tag_ids).map(&:group)
-      authorize! :download, SupportMaterialFile, on: groups.compact.map(&:allocation_tag).map(&:id)
+    allocation_tag_ids = if not((current_at = active_tab[:url][:allocation_tag_id]).blank?) # dentro de uma UC
+      ats = AllocationTag.find(current_at).related
+      # se tenho acesso ao arquivo de dentro da UC que estou acessando
+      file.nil? ? ats : file.academic_allocations.map(&:allocation_tag_id) & ats
+    else # fora da UC
+      file.academic_allocations.map(&:allocation_tag_id)
+    end
 
+    authorize! :download, SupportMaterialFile, on: allocation_tag_ids, read: true
+
+    if not params[:type].blank? # folder ou all
       redirect_error = support_material_files_path
-      all_files = case params[:type]
-      when :folder
-        SupportMaterialFile.find_files(allocation_tag_ids, params[:folder])
-      else
-        SupportMaterialFile.find_files(allocation_tag_ids)
-      end
 
-      path_zip = compress({ files: all_files, table_column_name: 'attachment_file_name' })
-      if(path_zip)
+      folder = (params[:type] == :folder and not params[:folder].blank?) ? params[:folder] : nil
+      path_zip = compress({ files: SupportMaterialFile.find_files(allocation_tag_ids, folder), table_column_name: 'attachment_file_name' })
+
+      if path_zip
         download_file(redirect_error, path_zip)
       else
         redirect_to redirect_error, alert: t(:file_error_nonexistent_file)
       end
     else # baixando um arquivo individualmente
-
-      # se for no cadastro de material de apoio ou um único arquivo, deve ter permissão em todas as allocation_tags (mesmo que seja apenas a do arquivo)
-      authorize! :download, SupportMaterialFile, {on: allocation_tag_ids, read: true}
-
-      file ||= SupportMaterialFile.find(params[:id])
       download_file(support_material_files_path, file.attachment.path, file.attachment_file_name)
     end
   end

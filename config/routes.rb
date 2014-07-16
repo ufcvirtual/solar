@@ -354,7 +354,6 @@ Solar::Application.routes.draw do
   get :close_tab, to: "tabs#destroy", as: :close_tab
 
   resources :support_material_files do
-    get :download, on: :member
     collection do
       get :list
       get "at/:allocation_tag_id/download", to: :download, type: :all, as: :download_all
@@ -365,6 +364,7 @@ Solar::Application.routes.draw do
       put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "SupportMaterialFile", as: :remove_group_from
       put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "SupportMaterialFile", as: :add_group_to
     end
+    get :download, on: :member
   end
 
   resources :bibliographies, except: [:new, :show] do

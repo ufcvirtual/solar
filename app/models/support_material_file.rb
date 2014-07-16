@@ -33,9 +33,10 @@ class SupportMaterialFile < ActiveRecord::Base
   end
 
   def self.find_files(allocation_tag_ids, folder_name = nil)
-    in_folder = "folder = '#{folder_name}'" unless folder_name.nil?
+    in_folder = "folder = ?" unless folder_name.nil?
+
     joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tag_ids})
-      .where(in_folder).order("folder, attachment_content_type, attachment_file_name")
+      .where(in_folder, folder_name).order("folder, attachment_content_type, attachment_file_name")
   end
 
   def define_fixed_values

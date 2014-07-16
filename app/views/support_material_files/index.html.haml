@@ -1,5 +1,5 @@
 %div{:style => "margin-bottom:5px"}
-  %button#download_all.btn.btn_default{"data-tooltip" => t("support_download_all"), :onclick => "javascript:window.location.href='#{download_all_support_material_files_path(allocation_tag_id: @allocation_tag_ids.join(','), :type => "all")}'", :type => "button", :value => t("support_download_all")}
+  %button#download_all.btn.btn_default{"data-tooltip" => t("support_download_all"), :onclick => "javascript:window.location.href='#{download_all_support_material_files_path(allocation_tag_id: @allocation_tag_id, :type => "all")}'", :type => "button", :value => t("support_download_all")}
     %i.icon-archive
 - @folders_list.each do |folder_name, folder_content|
   .block_wrapper
@@ -7,7 +7,7 @@
       - unless folder_name == 'LINKS'
         %h2.support_material_title= folder_name
         %span.block_actions
-          %button#download_folder.btn{"data-tooltip" => t("support_download_folder"), :onclick => "javascript:window.location.href='#{download_folder_support_material_files_path(folder: (folder_name || 'nil'), allocation_tag_id: @allocation_tag_ids.join(','))}'", :type => "button", :value => t("support_download_folder")}
+          %button#download_folder.btn{"data-tooltip" => t("support_download_folder"), :onclick => "javascript:window.location.href='#{download_folder_support_material_files_path(folder: (folder_name || 'nil'), allocation_tag_id: @allocation_tag_id)}'", :type => "button", :value => t("support_download_folder")}
             %i.icon-install
       - else
         %h2= folder_name
