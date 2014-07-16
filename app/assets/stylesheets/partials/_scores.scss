@@ -9,3 +9,30 @@
 #history-body {
   padding: 7px 0 5px 0;
 }
+
+tr#activities{
+  th{
+    text-align: center;
+  }
+}
+
+.tb_list_jobs{
+  tr.lines#tests{
+    border-bottom: 1px solid white;
+  }
+  tr.lines{
+    border-top: 1px solid #B4B2B1;
+    th#tests{
+      border: none;
+      width: 20%;
+      text-align: center;
+    }
+    td.assignment_an{
+      text-align: center;
+    }
+  }
+}
+
+table#list_of_students thead{
+  height: 48px;
+}

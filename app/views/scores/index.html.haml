@@ -27,8 +27,8 @@
   %div.tb_list_jobs
     %table.tb_list#list_of_students{:cellspacing => "0", :border => "0", :summary => "lista de estudantes"}
       %thead
-        %tr.lines
-          %th{:colspan => "#{@assignments.length}", :style => "width: 20%;", :id => "tests"}= t(:private_area)
+        %tr.lines#tests
+          %th#tests{:colspan => "#{@assignments.length}"}= t(:private_area)
         %tr#activities
           - unless @assignments.empty?
             - @assignments.each_with_index do |assignment, idx|
