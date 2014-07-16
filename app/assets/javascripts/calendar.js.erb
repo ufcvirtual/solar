@@ -1,13 +1,7 @@
 $(function() {
 
-  var url = $("#events_path").val();
-
-  var date = new Date();
-  var d = date.getDate();
-  var m = date.getMonth();
-  var y = date.getFullYear();
-
-  var edition_param = $("#calendar").attr("data-edition");
+  var url                = $("#events_path").val();
+  var edition_param      = $("#calendar").attr("data-edition");
   var ids_to_forms_param = $("#calendar").attr("data-ids");
   var lastView;
 
