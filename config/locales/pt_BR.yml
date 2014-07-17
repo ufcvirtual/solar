@@ -1746,6 +1746,8 @@ pt_BR:
       search: Busca
       user: Usuário
       log_not_found: Sem logs para exibir
+    allocations_user:
+      type: Tipo
 
   editions:
     alert: "Preencha os campos obrigatórios"

@@ -17,10 +17,9 @@
             %thead
               %tr.lines
                 %th= t(:allocation, scope: [:administrations, :allocations])
-                %th{style: 'width:120px'}= ''
+                %th{style: 'width:120px'}= t(".type")
                 %th{style: 'width:80px'}= t(:status, scope: [:administrations, :allocations])
-                %th{style: 'width:80px'}= ''
-                %th.no_sort
+                %th.no_sort{style: 'width:80px'}
             %tbody
               - @allocations_user.where("profile_id="+p.id.to_s).each do |a|
                 %tr.lines.allocations{class: semester(a.allocation_tag)}
@@ -39,13 +38,18 @@
 = javascript_include_tag "tablesorter"
 
 :javascript
-  show_semester();
 
-  $("#period")
-    .change(function () {
-      show_semester();
-  })
-  .change();
+  $(function(){
+    show_semester();
+
+    $("#period")
+      .change(function () {
+        show_semester();
+    })
+    .change();
+  });
+
+
 
   function show_semester() {
     var semester = $('#period option:selected').val();

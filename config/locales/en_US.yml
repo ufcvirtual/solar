@@ -1554,6 +1554,8 @@ en_US:
       search: Search
       user: User
       log_not_found: Log not found
+    allocations_user:
+      type: Type
   editions:
     alert: "Fill the required fields"
     academic:
