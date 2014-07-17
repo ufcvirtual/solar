@@ -45,7 +45,8 @@
                   %td.semester= link_to(offer[:semester_name], link, html_options.merge(:"data-tooltip" => offer[:info_code]))
                   %td{style: "display: none"}= offer[:profiles]
             - else
-              .no-data= t(:my_solar_curriculum_without)          
+              %tr.lines
+                %td{colspan: 5, align: "center"}= t(:my_solar_curriculum_without)
         
           .slide.slide-block
             = label_tag :search_offer, t(".search"), class: "title"
