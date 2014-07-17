@@ -36,13 +36,13 @@
  * Retira o menu de usuário na barra superior ao clicar em outro canto da tela
  */
 
-$(function() {
+ $(function() {
   $("#change_picture").fancybox({
     maxWidth  : 500
   });
 });
 
-$(function(){
+ $(function(){
   $("body").click(function(e) {
     if((e.target.id !== 'mysolar_top_submenu') && (e.target.id !== 'mysolar_top_user_nick') && (e.target.id !== 'image_user')){
       $("#mysolar_top_submenu").slideUp(150);
@@ -52,7 +52,7 @@ $(function(){
   });
 });
 
-$(function(){
+ $(function(){
   $("body").click(function(e) {
     if((e.target.id !== 'mysolar_submenu_help') && (e.target.id !== 'help_top')){
       $("#mysolar_submenu_help").slideUp(150);
@@ -65,7 +65,7 @@ $(function(){
 /**
  * Menu Accordion
  */
-$(function() {
+ $(function() {
   $('.mysolar_menu_title').click(function() {
     // verificando se o item do menu já está ativo
     if ( $(this).parent().hasClass('mysolar_menu_title_active') == false ) {
@@ -73,18 +73,9 @@ $(function() {
       $('.mysolar_menu_title').each(function(){
         $(this).parent().removeClass('mysolar_menu_title_active').removeClass('mysolar_menu_title_single_active');
         $(this).find('div').removeClass('menu_icon_animate');
-        $(this).next('.submenu').slideUp('fast');
       });
     }
-    // verificando se o item possui filhos
-    if ( $(this).parent().hasClass('mysolar_menu_title_single') == false ) {
-      // adicionando icone da seta
-      $(this).parents('li').find('.menu_icon_arrow').addClass('menu_icon_animate');
-      // tornando o item ativo
-      $(this).parent().addClass('mysolar_menu_title_active');
-      // exibindo submenu
-      $(this).next('.submenu').slideDown('fast');
-    } else {
+    else {
       // adicionando icone da bolinhaaaaaa
       $(this).parents('li').find('.menu_icon_circle').addClass('.menu_icon_animate');
       // tornando o item ativo
@@ -92,11 +83,23 @@ $(function() {
     }
   });
 
-  if($('.mysolar_menu_title_single > a').children("div.menu_icon_circle").length == 0)
-    $('.mysolar_menu_title_single > a').prepend('<div class="menu_icon_circle">&bull;</div>');
+  // adicionando highlight do menu lateral
+  $('.mysolar_menu_list a').click(function (event) {
+    $(this).closest('li').addClass('mysolar_menu_active');
+  });
 
-  if($('.mysolar_menu_title_multiple > a').children("div.menu_icon_arrow").length == 0)
-    $('.mysolar_menu_title_multiple > a').prepend('<div class="menu_icon_arrow">&#8227;</div>');
+  $('.mysolar_menu_list a').each(function(index) {
+    if(this.href.trim() == window.location){
+      $(this).closest('li').addClass("mysolar_menu_active");
+    }
+  });
+
+
+if($('.mysolar_menu_title_single > a').children("div.menu_icon_circle").length == 0)
+  $('.mysolar_menu_title_single > a').prepend('<div class="menu_icon_circle">&bull;</div>');
+
+if($('.mysolar_menu_title_multiple > a').children("div.menu_icon_arrow").length == 0)
+  $('.mysolar_menu_title_multiple > a').prepend('<div class="menu_icon_arrow">&#8227;</div>');
 
   // abre menu corrente
   $('.open_menu').click();
@@ -129,53 +132,53 @@ function formatNumber(num) { return (num < 10) ? "0" + num : num; }
 
 function solar_help() {
   introJs()
-    .setOptions({
-      showStepNumbers: false,
-      nextLabel: "<%= I18n.t(:tutorial_next) %>",
-      prevLabel: "<%= I18n.t(:tutorial_previous) %>",
-      skipLabel: "<%= I18n.t(:tutorial_skip) %>",
-      doneLabel: "<%= I18n.t(:tutorial_done) %>",
-      steps: [
-        {
-          element: '#mysolar_logo',
-          intro: 'Bem-vindo ao Solar 2.0.'
-        },
-        {
-          element: '#mysolar_identity',
-          intro: 'Barra superior: Nesta barra você visualiza informações sobre o seu usuário, hora do sistema, ajuda e sair do Solar'
-        },
-        {
-          element: '#mysolar_top_submenu_label',
-          intro: 'Seu usuário atual. Clique para visualizar mais informações, editar seu perfil ou alterar sua foto'
-        },
-        {
-          element: '#mysolar_tabs',
-          intro: 'Abas onde você pode navegar entre o MeuSolar e os Cursos que tiver acessado na sessão'
-        },
-        {
-          element: '#mysolar_suggestions',
-          position: 'left',
-          intro: 'Aqui você pode enviar suas críticas, sugestões e comentários para que possamos melhorar o Solar 2.0'
-        },
-        {
-          element: '#mysolar_open_lesson',
-          position: 'left',
-          intro: "Aqui você pode acessar a aula que você tiver minimizado"
-        },
-        {
-          element: '#mysolar_sidebar',
-          intro: 'Menu de navegação'
-        },
-        {
-          element: '#mysolar_content',
-          intro: 'Área de conteúdo'
-        },
-        {
-          element: '#mysolar_top_help',
-          position: 'left',
-          intro: 'Caso deseje ver este tutorial novamente, basta clicar em Ajuda e depois em Contextual.<br><br>Aproveite o novo <b>Solar 2.0!</b>'
-        }
-      ]
-    })
-    .start();
+  .setOptions({
+    showStepNumbers: false,
+    nextLabel: "<%= I18n.t(:tutorial_next) %>",
+    prevLabel: "<%= I18n.t(:tutorial_previous) %>",
+    skipLabel: "<%= I18n.t(:tutorial_skip) %>",
+    doneLabel: "<%= I18n.t(:tutorial_done) %>",
+    steps: [
+    {
+      element: '#mysolar_logo',
+      intro: 'Bem-vindo ao Solar 2.0.'
+    },
+    {
+      element: '#mysolar_identity',
+      intro: 'Barra superior: Nesta barra você visualiza informações sobre o seu usuário, hora do sistema, ajuda e sair do Solar'
+    },
+    {
+      element: '#mysolar_top_submenu_label',
+      intro: 'Seu usuário atual. Clique para visualizar mais informações, editar seu perfil ou alterar sua foto'
+    },
+    {
+      element: '#mysolar_tabs',
+      intro: 'Abas onde você pode navegar entre o MeuSolar e os Cursos que tiver acessado na sessão'
+    },
+    {
+      element: '#mysolar_suggestions',
+      position: 'left',
+      intro: 'Aqui você pode enviar suas críticas, sugestões e comentários para que possamos melhorar o Solar 2.0'
+    },
+    {
+      element: '#mysolar_open_lesson',
+      position: 'left',
+      intro: "Aqui você pode acessar a aula que você tiver minimizado"
+    },
+    {
+      element: '#mysolar_sidebar',
+      intro: 'Menu de navegação'
+    },
+    {
+      element: '#mysolar_content',
+      intro: 'Área de conteúdo'
+    },
+    {
+      element: '#mysolar_top_help',
+      position: 'left',
+      intro: 'Caso deseje ver este tutorial novamente, basta clicar em Ajuda e depois em Contextual.<br><br>Aproveite o novo <b>Solar 2.0!</b>'
+    }
+    ]
+  })
+.start();
 }
