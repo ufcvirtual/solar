@@ -216,7 +216,6 @@ function Calendar(element, options, eventSources) {
   var absoluteViewElement;
   var resizeUID = 0;
   var ignoreWindowResize = 0;
-  var date = new Date();
   var events = [];
   var _dragElement;
   
@@ -1586,10 +1585,6 @@ var dateFormatters = {
   dddd: function(d,o) { return o.dayNames[d.getDay()] },
   ddddd: function(d,o) { return o.dayNames[d.getDay()].toLowerCase() },
   de: function(d,o){ return "de"},
-  // th: function(d,o){return "th"},
-  // st: function(d,o){return "st"},
-  // nd: function(d,o){return "nd"},
-  // rd: function(d,o){return "rd"},
   M : function(d) { return d.getMonth() + 1 },
   MM  : function(d) { return zeroPad(d.getMonth() + 1) },
   MMM : function(d,o) { return o.monthNamesShort[d.getMonth()] },

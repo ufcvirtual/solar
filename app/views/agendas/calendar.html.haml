@@ -21,10 +21,7 @@
 = stylesheet_link_tag "fullcalendar.css"
 
 :javascript
-  var date = new Date();
-  var d    = date.getDate();
-  var m    = date.getMonth();
-  var y    = date.getFullYear();
+  var date = new Date("#{(Date.current)}");
   var monthNames      = '#{t("date.month_names").join(",")}'.split(",");
   var monthNamesShort =  '#{t("date.abbr_month_names").join(",")}'.split(",");
   var dayNames        = '#{t("date.day_names").join(",")}'.split(",");
