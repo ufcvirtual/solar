@@ -16,23 +16,46 @@ tr#activities{
   }
 }
 
-.tb_list_jobs{
-  tr.lines#tests{
-    border-bottom: 1px solid white;
-  }
-  tr.lines{
-    border-top: 1px solid #B4B2B1;
-    th#tests{
-      border: none;
-      width: 20%;
-      text-align: center;
-    }
-    td.assignment_an{
-      text-align: center;
-    }
-  }
-}
-
 table#list_of_students thead{
   height: 48px;
+}
+
+.tb_list_students{
+  margin-top: 10px;
+  background-color: #f8fbfe;
+
+  table{
+    table-layout: fixed;
+    th, td{
+      text-align: center;
+    }
+    td.td_student{
+      text-align: left;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    td[class^='assignment_']{
+      background-color: #e6f0fc;
+    }
+    td[class^='assignment_']:nth-child(2n+1){
+      background:#cbe0fa;
+    }
+    th#assignment{
+      width: 20px;
+      text-decoration: underline;
+    }
+    th.access_history, th#public_files {
+      width: 60px;
+    }
+    th.participation {
+      width: 80px;
+    }
+  }
+  #assignment_title{
+    background-color: white;
+    float: right;
+    font-size: 10pt;
+    color: #787878;
+  }
 }

@@ -6,47 +6,38 @@
       = @group.code
 
   / Lista dos alunos com notas
-
-  %div.tb_list_students
-    %table.tb_list#list_of_students{:cellspacing => "0", :border => "0", :summary => "lista de estudantes"}
+  .tb_list_students
+    %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: "lista de estudantes"}
       %thead
         %tr.lines
-          %th{:align => "left", :id => "texte2"}= t(:student)
-          %th{:id=>"public_files"}= t(:public_files)
-          %th.participation= t(:participation)
-          %th.access_history= t(:access_to_the_course)
+          %th#student= t(".student")
+          %th#public_files= t(".public_files")
+          %th.participation= t(".participation")
+          %th.access_history= t(".access_to_the_course")
+          #assignment_title{style: "padding-right: #{@assignments.size*15}px"}= t(".assignments")
+          - @assignments.each_with_index do |assignment, idx|
+            %th#assignment{'data-tooltip' => assignment.name}= "#{idx + 1}"
       %tbody
-        - @students.each_with_index do |student, idx|
+        - unless @students.empty?
+          - @students.each_with_index do |student, idx|
+            %tr.lines
+              %td.td_student{'data-tooltip' => student.name}= link_to student.name, student_scores_path(student.id)
+              %td= @scores["student_count_public_files"][idx]
+              %td= @scores["student_count_posts"][idx]
+              %td= @scores["student_count_access"][idx]
+              - @assignments.each_with_index do |assignment, idx2|
+                - grade      = @scores["students_grades"][idx][idx2]
+                - grade_link = t("assignment_#{grade}", default: grade)
+                %td{class: "assignment_#{grade}"}
+                  - if grade == "without_group"
+                    = link_to t(:assignment_wg), information_assignment_path(assignment.id)
+                  - else
+                    = link_to grade_link, student_assignment_path(assignment.id, student_id: student.id, group_id: @scores["students_groups"][idx][idx2])     
+              - if @assignments.empty?
+                %td= "-"
+        - else
           %tr.lines
-            %td.td_student{:align => "left", 'data-tooltip' => t(student.name)}= link_to student.name, student_scores_path(student.id)
-            %td{:align => "center"}= @scores["student_count_public_files"][idx]
-            %td{:align => "center"}= @scores["student_count_posts"][idx]
-            %td{:align => "center"}= @scores["student_count_access"][idx]
-
-
-  %div.tb_list_jobs
-    %table.tb_list#list_of_students{:cellspacing => "0", :border => "0", :summary => "lista de estudantes"}
-      %thead
-        %tr.lines#tests
-          %th#tests{:colspan => "#{@assignments.length}"}= t(:private_area)
-        %tr#activities
-          - unless @assignments.empty?
-            - @assignments.each_with_index do |assignment, idx|
-              %th{'data-tooltip' => t(assignment.name)}= "#{idx + 1}"
-          - else
-            %th{:style => "padding-top: 24px;"}
-        - @students.each_with_index do |student, idx|
-          %tr.lines
-            - @assignments.each_with_index do |assignment, idx2|
-              - grade = @scores["students_grades"][idx][idx2]
-              - grade_link = t("assignment_#{grade}", :default => grade)
-              %td{:align => "center", :class => "assignment_#{grade}"}
-                - if grade == "without_group"
-                  = link_to t(:assignment_wg), information_assignment_path(assignment.id)
-                - else
-                  = link_to grade_link, student_assignment_path(assignment.id, :student_id => student.id, :group_id => @scores["students_groups"][idx][idx2]) 
-            - if @assignments.empty?
-              %td{:align => "center"}= "-"
+            %td{colspan: 4+@assignments.size}= t(".no_students")
 
 / Legenda das notas
 %div.legend

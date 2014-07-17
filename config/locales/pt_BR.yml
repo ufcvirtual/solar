@@ -1228,14 +1228,10 @@ pt_BR:
   comment_error_delete_file: Erro ao tentar excluir arquivo
 
   # acompanhamento
-  student: "Aluno"
   scores_of: "Acompanhamento de"
-  public_files: "Arquivos Publicos"
   tests: "Provas"
-  private_area: "Trabalhos"
-  participation: "Participação"
-  access_to_the_course: "Acessos ao Curso"
   group: "Turma"
+  student: "Aluno"
   legend: "Legenda"
   legend_assignments: "Legenda dos Trabalhos"
   assignment_without_correction: "Trabalho enviado, mas não corrigido (sem nota)."
@@ -2346,3 +2342,12 @@ pt_BR:
       all: Todos
       search: "Busca:"
       filter: "Filtro:"
+
+  scores:
+    index:
+      assignments: "Trabalhos"
+      student: "Aluno"
+      public_files: "Arquivos Publicos"
+      participation: "Participações em Fóruns"
+      access_to_the_course: "Acessos ao Curso"
+      no_students: Não há alunos

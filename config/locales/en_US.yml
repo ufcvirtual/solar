@@ -1069,15 +1069,11 @@ en_US:
       no_participant: Group with no participants
       import_success: Groups imported with success
   comment_error_delete_file: Error when trying to delete file
-  student: "Student"
-  scores_of: "Scores Of"
-  public_files: "Public Files"
-  tests: "Tests"
-  private_area: "Jobs"
-  participation: "Participation"
-  access_to_the_course: "Access to the Course"
   group: "Group"
+  student: Student
   legend: "Legend"
+  scores_of: "Scores Of"
+  tests: "Tests"
   legend_assignments: "Legend Of Assignments"
   assignment_without_correction: "Assignment sent, but not corrected (without grade)."
   assignment_not_sent: "Assignment not sent."
@@ -2126,3 +2122,11 @@ en_US:
       all: All
       search: "Search:"
       filter: "Filter:"
+  scores:
+    index:
+      assignments: Assignments
+      student: "Student"
+      public_files: "Public Files"
+      participation: "Participations in Discussions"
+      access_to_the_course: "Access to the Course"
+      no_students: There are no students
