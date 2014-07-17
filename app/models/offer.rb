@@ -129,7 +129,7 @@ class Offer < ActiveRecord::Base
   end
 
   def is_active?
-    Date.today <= end_date 
+    Date.today <= end_date
   end
 
   def parent_name

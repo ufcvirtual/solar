@@ -6,19 +6,25 @@ class EnrollmentsController < ApplicationController
 
   def index
     authorize! :index, Enrollment
-    student_profile = Profile.student_profile
-    @groups = ["fdf"]
-    @types  = CurriculumUnitType.order(:name)
-    @status = [[t(:all, scope: [:enrollments]), "all"], [t(:enrolled, scope: [:enrollments]), "enroll"]]
-    @search_status  = params[:status] || @status.first[1]
-    @curriculum_units = Enrollment.enrollments_of_user(current_user, student_profile, "all").map(&:offer).map(&:curriculum_unit)
 
-    if current_user and (@student_profile != '')
-      # recebe params[:offer] se foi pela pesquisa - MATRICULADOS e/ou ATIVOS
-      @search_category = params[:type] if params.include?(:type)
-      @search_curriculum_unit = params[:curriculum_unit] if params.include?(:curriculum_unit)
-      @groups = Enrollment.enrollments_of_user(current_user, student_profile, @search_status, @search_category, @search_curriculum_unit)
-    end
+    # recebe params[:offer] se foi pela pesquisa - MATRICULADOS e/ou ATIVOS
+    @uc_type_id = params[:type] unless params[:type].blank?
+    @uc_id = params[:curriculum_unit] unless params[:curriculum_unit].blank?
+    @enroll_type = params[:status] || 'all'
+
+    current_offers = Offer.joins(curriculum_unit: :curriculum_unit_type)
+                          .where(curriculum_unit_types: {allows_enrollment: true}).currents
+
+    args = {
+      user: current_user,
+      enroll_type: @enroll_type, # enroll or all
+      offers: current_offers,
+      uc_type_id: @uc_type_id,
+      uc_id: @uc_id
+    }
+
+    @curriculum_units = CurriculumUnit.joins(:offers).where(offers: {id: current_offers.map(&:id)})
+    @groups = Enrollment.enrollments_of_user args
   end
 
   def show

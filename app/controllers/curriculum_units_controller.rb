@@ -13,15 +13,10 @@ class CurriculumUnitsController < ApplicationController
     allocation_tags = @allocation_tags.map(&:id)
     authorize! :show, CurriculumUnit, on: allocation_tags, read: true
 
-    @messages         = Message.user_inbox(current_user.id, @allocation_tag_id, only_unread = true)
-    @lessons_modules  = LessonModule.to_select(allocation_tags, current_user)
+    @messages = Message.user_inbox(current_user.id, @allocation_tag_id, only_unread = true)
+    @lessons_modules = LessonModule.to_select(allocation_tags, current_user)
     @discussion_posts = list_portlet_discussion_posts(allocation_tags.join(', '))
-
-    schedules_events  = Agenda.events(allocation_tags)
-    @scheduled_events = schedules_events.collect { |schedule_event|
-      schedule_end_date = schedule_event['end_date'].nil? ? "" : schedule_event['end_date'].to_date
-      [schedule_event['start_date'].to_date, schedule_end_date]
-    }.flatten.uniq
+    @scheduled_events  = Agenda.events_detailed(allocation_tags)
   end
 
   def index
@@ -31,8 +26,7 @@ class CurriculumUnitsController < ApplicationController
     if params[:combobox]
       if @type.id == 3
         @course_name = Course.find(params[:course_id]).name
-        @curriculum_units = CurriculumUnit.where(name: @course_name)
-                                           .order(:name)
+        @curriculum_units = CurriculumUnit.where(name: @course_name).order(:name)
       else
         @curriculum_units = CurriculumUnit.joins(:offers).where(curriculum_unit_type_id: @type.id).where(offers: {course_id: params[:course_id]}).order(:name) if not(params[:course_id].blank?)
       end
@@ -51,7 +45,7 @@ class CurriculumUnitsController < ApplicationController
         format.js
       end
     end
-  rescue => error
+  rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 

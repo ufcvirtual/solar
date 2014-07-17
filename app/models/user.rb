@@ -166,11 +166,11 @@ class User < ActiveRecord::Base
   end
 
   def groups(profile_id = nil, status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil)
-    query = []
-    query << "allocations.status = #{status}"                        unless status.nil?
-    query << "allocations.profile_id = #{profile_id}"                unless profile_id.nil?
-    query << "curriculum_units.id = #{curriculum_unit_id}"           unless curriculum_unit_id.nil?
-    query << "curriculum_unit_types.id = #{curriculum_unit_type_id}" unless curriculum_unit_type_id.nil?
+    query = ["allocations.allocation_tag_id IS NOT NULL"]
+    query << "allocations.status = #{status}"                        unless status.blank?
+    query << "allocations.profile_id = #{profile_id}"                unless profile_id.blank?
+    query << "curriculum_units.id = #{curriculum_unit_id}"           unless curriculum_unit_id.blank?
+    query << "curriculum_unit_types.id = #{curriculum_unit_type_id}" unless curriculum_unit_type_id.blank?
 
     allocations.includes(allocation_tag: [group: [offer: {curriculum_unit: :curriculum_unit_type}]]).where(query.join(" AND ")).map(&:groups).compact.flatten
   end

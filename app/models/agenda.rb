@@ -25,4 +25,13 @@ class Agenda < ActiveRecord::Base
     return events
   end
 
+  def self.events_detailed(allocation_tags, period = false, date_search = nil)
+    e = events(allocation_tags, period, date_search)
+    e.collect { |schedule_event|
+      schedule_end_date = schedule_event['end_date'].nil? ? "" : schedule_event['end_date'].to_date
+      [schedule_event['start_date'].to_date, schedule_end_date]
+    }.flatten.uniq
+
+  end
+
 end
