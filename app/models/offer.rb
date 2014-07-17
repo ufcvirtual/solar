@@ -100,19 +100,25 @@ class Offer < ActiveRecord::Base
   end
 
   def self.currents(year = nil, verify_end_date = nil)
-    unless year # se o ano passado for nil, pega as ofertas do ano corrente em diante
-      offers = self.joins(:period_schedule).where("schedules.end_date >= ?", Date.today.beginning_of_year).pluck(:id)
+    first_day_of_year = Date.today.beginning_of_year
+
+    offers = joins(:period_schedule)
+    offers = unless year # se o ano passado for nil, pega as ofertas do ano corrente em diante
+      offers.where("schedules.end_date >= ?", first_day_of_year)
     else # se foi definido, pega apenas daquele ano
-      offers = if verify_end_date
-        self.joins(:period_schedule).where("( schedules.end_date >= ? )", Date.today).pluck(:id)
+      if verify_end_date
+        offers.where("( schedules.end_date >= ? )", Date.today)
       else
-        first_day_of_year, last_day_of_year = Date.today.beginning_of_year, Date.today.end_of_year
-        self.joins(:period_schedule).where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?)", first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year).pluck(:id)
+        last_day_of_year = Date.today.end_of_year
+        offers.where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?)", first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year)
       end
     end
+
     # recupera as ofertas que mantem a data do semestre ativo
-    current_semester_offers = Semester.currents(year, verify_end_date).map(&:offers).flatten.select{|offer| offer.id if offer.period_schedule.nil?}
-    Offer.where(id: current_semester_offers+offers)
+    c_s = Semester.currents(year, verify_end_date).pluck(:id)
+    current_semester_offers = joins(:semester).where(semesters: {id: c_s}).where("offers.offer_schedule_id IS NULL").pluck(:id) # period schedule is null
+
+    where(id: [current_semester_offers, offers.pluck(:id)].flatten)
   end
 
   def has_any_lower_association?

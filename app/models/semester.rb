@@ -26,18 +26,18 @@ class Semester < ActiveRecord::Base
   end
 
   def self.currents(year = nil, verify_end_date = nil)
-    unless year # se o ano passado for nil, pega os semestres do ano corrente em endiante
-      self.joins(:offer_schedule).where("schedules.end_date >= ?", Date.today.beginning_of_year)
+    first_day_of_year = Date.today.beginning_of_year
+
+    semesters = joins(:offer_schedule)
+    semesters = unless year # se o ano passado for nil, pega os semestres do ano corrente em endiante
+      semesters.where("schedules.end_date >= ?", first_day_of_year)
     else # se foi definido, pega apenas daquele ano
-
-      semesters = if verify_end_date
-        self.joins(:offer_schedule).where("( schedules.end_date > ? )", Date.today)
+      if verify_end_date
+        semesters.where("( schedules.end_date > ? )", Date.today)
       else
-        first_day_of_year, last_day_of_year = Date.today.beginning_of_year, Date.today.end_of_year
-        self.joins(:offer_schedule).where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?)", first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year)
+        last_day_of_year = Date.today.end_of_year
+        semesters.where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?)", first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year)
       end
-
-      semesters
     end
   end
 
