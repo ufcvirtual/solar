@@ -11574,7 +11574,6 @@ return parser;
                     '<a class="close-chatbox-button icons-close"></a>' +
                     '<a href="#"  class="user">' +
                         '<div class="chat-title"> {{ fullname }}'+
-                        '<img src="" class="imgStatus" />' +
                         '</div>' +
                     '</a>' +
                     '<p class="user-custom-message" style="display:none" ><p/>' +
@@ -11732,21 +11731,6 @@ return parser;
                 //adiciona sombra caso precise
                 if( box.childNodes[0].style.top != "270px" )
                     box.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
-                img= box.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
-                while(c<contacts.length){
-                    if(contacts[c].attributes.fullname.search(message.attributes.fullname) != -1){
-                        v = document.getElementById(this.model.get('box_id'));
-                        img = box.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
-                        if(contacts[c].attributes.chat_status.search("online")!=-1) 
-                            img.src = imgOn;
-                        if(contacts[c].attributes.chat_status.search("dnd")!=-1)
-                            img.src = imgDnd;
-                        if(contacts[c].attributes.chat_status.search("away")!=-1)
-                            img.src = imgAway;
-                        //if(contacts[c].attributes.chat_status.search("offline")!=-1)img.src=imgOff;
-                    }
-                    c++;    
-                }
                 if (idx >= 0) {
                     previous_message = this.model.messages.at(idx);
                     prev_date = converse.parseISO8601(previous_message.get('time'));
@@ -13343,22 +13327,13 @@ return parser;
                             view = new converse.ChatBoxView({model: item});
                             //adiciona imagem de status aos ja criados e gerencia janelas
                             box = view.$el[0];
-                            img = box.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
+                            var divStatus = document.createElement("div");
+                            divStatus.id = "status";
+                            box.childNodes[0].childNodes[1].childNodes[0].appendChild(divStatus);
                             contacts = converse.roster.models; //pega lista completa de usuários
-                            var c=0;
-                            while(c<contacts.length){
-                                if(contacts[c].attributes.fullname.search(view.model.attributes.fullname) != -1){
-                                    if(contacts[c].attributes.chat_status.search("online")!=-1) 
-                                        img.src=imgOn;
-                                    if(contacts[c].attributes.chat_status.search("dnd")!=-1)
-                                        img.src=imgDnd;
-                                    if(contacts[c].attributes.chat_status.search("away")!=-1)
-                                        img.src=imgAway;
-                                    if(contacts[c].attributes.chat_status.search("offline")!=-1)
-                                        img.src=imgOff;
-                                }
-                                c++;    
-                            }
+                            if(!item.attributes.chat_status)
+                              item.attributes.chat_status = "offline";
+                            divStatus.setAttribute("class","status IM"+item.attributes.chat_status);
                             for(att in cookie_im){
                                 if(att == box.id)
                                     if(!cookie_im[att])
@@ -13400,20 +13375,14 @@ return parser;
                     box=document.getElementById(chatbox.attributes.box_id);
                     box.title="";
                     box.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
-                    img=box.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
+                    var divStatus = document.createElement("div");
+                    divStatus.id = "status";
+                    box.childNodes[0].childNodes[1].childNodes[0].appendChild(divStatus);
                     contacts=converse.roster.models; //pega lista completa de usuários
                     var c=0;
                     while(c<contacts.length){
                         if(contacts[c].attributes.fullname.search(chatbox.attributes.fullname) != -1){
-                            box=document.getElementById(this.model.get('box_id'));
-                            if(contacts[c].attributes.chat_status.search("online")!=-1) 
-                                img.src=imgOn;
-                            if(contacts[c].attributes.chat_status.search("dnd")!=-1)
-                                img.src=imgDnd;
-                            if(contacts[c].attributes.chat_status.search("away")!=-1)
-                                img.src=imgAway;
-                            if(contacts[c].attributes.chat_status.search("offline")!=-1)
-                                img.src=imgOff;
+                            divStatus.setAttribute("class","status IM"+contacts[c].attributes.chat_status);
                         }
                         c++;    
                     }
@@ -13928,36 +13897,11 @@ return parser;
             renderRosterItem: function (item, view) {
                 chats = $(".chatbox");
                 //adiciona a imagem de ausente
-                if(item.attributes.chat_status == "dnd"){
-                    for(var c=1;c<chats.length;c++){                        
-                            if(chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[0].data.search(item.attributes.fullname)!=-1){
-                                chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[1].src=imgDnd;
-                            }
-                    }
-                }
-                //adiciona img online
-                if(item.attributes.chat_status == "online"){
-                    for(var c=1;c<chats.length;c++){                        
-                            if(chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[0].data.search(item.attributes.fullname)!=-1){
-                                chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[1].src=imgOn;
-                            }
-                    }
-                }
-                //adiciona img indisponivel
-                if(item.attributes.chat_status == "away"){
-                    for(var c=1;c<chats.length;c++){                        
-                            if(chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[0].data.search(item.attributes.fullname)!=-1){
-                                chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[1].src=imgAway;
-                            }
-                    }
-                }
-                //adiciona img offline
-                if(item.attributes.chat_status == "offline"){
-                    for(var c=1;c<chats.length;c++){                        
-                            if(chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[0].data.search(item.attributes.fullname)!=-1){
-                                chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[1].src=imgOff;
-                            }
-                    }
+                id = con.chatboxes._byId[item.id];
+                if(id){
+                  chat = $("#"+id.attributes.box_id)[0];
+                  var divStatus = $(chat).find("#status")[0];
+                  divStatus.setAttribute("class","status IM"+item.attributes.chat_status);
                 }
                 if ((converse.show_only_online_users) && (item.get('chat_status') !== 'online')) {
                     view.$el.remove();

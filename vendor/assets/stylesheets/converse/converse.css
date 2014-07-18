@@ -1401,3 +1401,24 @@ details[open] summary:before {
 	color:rgba(6, 86, 153, 1);
 	font-family: 'PT Sans', sans-serif;
 }
+.status{
+	position: absolute;
+	top: 11px;
+	left: 8px;
+	width: 11px;
+	height: 11px;
+	border-radius:6px;
+}
+.IMonline{
+	background-color: #32CD32;
+}
+.IMdnd{
+	background-color: #CD0000;
+}
+.IMoffline{
+	background-color: gray;
+}
+.IMaway{
+	background-color: #FFA500;
+}
+
