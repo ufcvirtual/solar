@@ -16,6 +16,7 @@ tutor_distancia:
 tutor_presencial:
   id: 4
   name: "Tutor Presencial"
+  types: 2
 
 editor:
   id: 5

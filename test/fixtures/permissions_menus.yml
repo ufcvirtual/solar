@@ -173,11 +173,6 @@ pm43:
   profile_id: 3
   menu_id: 208
 
-# tutor presencial
-# pm44:
-#   profile_id: 4
-#   menu_id: 209
-
 # editor
 pm45:
   profile_id: 5
@@ -434,3 +429,79 @@ pm105:
 pm106:
   profile_id: 5
   menu_id: 609
+
+# tutor presencial
+
+pm107:
+  profile_id: 4
+  menu_id: 10
+
+pm108:
+  profile_id: 4
+  menu_id: 101
+
+pm109:
+  profile_id: 4
+  menu_id: 102
+
+pm110:
+  profile_id: 4
+  menu_id: 20
+
+pm111:
+  profile_id: 4
+  menu_id: 201
+
+pm112:
+  profile_id: 4
+  menu_id: 205
+
+pm113:
+  profile_id: 4
+  menu_id: 206
+
+pm114:
+  profile_id: 4
+  menu_id: 207
+
+pm115:
+  profile_id: 4
+  menu_id: 208
+
+pm116:
+  profile_id: 4
+  menu_id: 30
+
+pm117:
+  profile_id: 4
+  menu_id: 301
+
+pm118:
+  profile_id: 4
+  menu_id: 302
+
+pm119:
+  profile_id: 4
+  menu_id: 303
+
+pm120:
+  profile_id: 4
+  menu_id: 304
+
+pm121:
+  profile_id: 4
+  menu_id: 50
+
+pm122:
+  profile_id: 4
+  menu_id: 100
+
+# tutor a distância
+
+pm123:
+  profile_id: 3
+  menu_id: 205
+
+pm124:
+  profile_id: 3
+  menu_id: 206

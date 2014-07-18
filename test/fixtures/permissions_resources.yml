@@ -702,6 +702,11 @@ webconferencetutordist1:
   resource_id: 162
   per_id: false
 
+tutor_dist_test_lesson:
+  profile_id: 3
+  resource_id: 172
+  per_id: false
+
 ##############################
 # TUTOR PRESENCIAL           #
 ##############################
@@ -716,6 +721,136 @@ uctp:
 webconferencetutorprese1:
   profile_id: 4
   resource_id: 162
+  per_id: false
+
+tutor_p_1:
+  profile_id: 4
+  resource_id: 12
+  per_id: false
+
+tutor_p_2:
+  profile_id: 4
+  resource_id: 13
+  per_id: false
+
+tutor_p_3:
+  profile_id: 4
+  resource_id: 18
+  per_id: false
+
+tutor_p_4:
+  profile_id: 4
+  resource_id: 19
+  per_id: false
+
+tutor_p_5:
+  profile_id: 4
+  resource_id: 20
+  per_id: false
+
+tutor_p_6:
+  profile_id: 4
+  resource_id: 21
+  per_id: false
+
+tutor_p_7:
+  profile_id: 4
+  resource_id: 22
+  per_id: false
+
+tutor_p_8:
+  profile_id: 4
+  resource_id: 23
+  per_id: false
+
+tutor_p_9:
+  profile_id: 4
+  resource_id: 45
+  per_id: false
+
+tutor_p_10:
+  profile_id: 4
+  resource_id: 47
+  per_id: false
+
+tutor_p_11:
+  profile_id: 4
+  resource_id: 48
+  per_id: false
+
+tutor_p_12:
+  profile_id: 4
+  resource_id: 49
+  per_id: false
+
+tutor_p_13:
+  profile_id: 4
+  resource_id: 54
+  per_id: false
+
+tutor_p_14:
+  profile_id: 4
+  resource_id: 55
+  per_id: false
+
+tutor_p_15:
+  profile_id: 4
+  resource_id: 28
+  per_id: true
+
+tutor_p_16:
+  profile_id: 4
+  resource_id: 30
+  per_id: true
+
+tutor_p_17:
+  profile_id: 4
+  resource_id: 34
+  per_id: true
+
+tutor_p_18:
+  profile_id: 4
+  resource_id: 52
+  per_id: false
+
+tutor_p_19:
+  profile_id: 4
+  resource_id: 69
+  per_id: true
+
+tutor_p_20:
+  profile_id: 4
+  resource_id: 146
+  per_id: false
+
+tutor_p_21:
+  profile_id: 4
+  resource_id: 142
+  per_id: false
+
+tutor_p_22:
+  profile_id: 4
+  resource_id: 143
+  per_id: false
+
+tutor_p_23:
+  profile_id: 4
+  resource_id: 144
+  per_id: false
+
+tutor_p_24:
+  profile_id: 4
+  resource_id: 145
+  per_id: false
+
+tutor_p_25:
+  profile_id: 4
+  resource_id: 24
+  per_id: true
+
+tutor_p_26:
+  profile_id: 4
+  resource_id: 172
   per_id: false
 
 ##############################
