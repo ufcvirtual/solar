@@ -112,30 +112,31 @@
       .block_content.block_content_text= t(:itens_not_found)
 
 / Área Pública
-.block_wrapper
-  .block_title
-    %h2
-      %i.icon-suitcase
-      = t(:public_area, :scope => [:assignment, :information])
-  .block_content
-    - unless @public_area.nil? or @public_area.empty?
-      %table.tb_list
-        %tbody
-          - @public_area.each_with_index do |pa, idx|
-            %tr.lines
-              %td.file_data_icon{:style => "width: 10px;"}= image_tag icon_attachment(pa["attachment_file_name"]), :alt => " "
-              %td= link_to pa.attachment_file_name, download_public_files_assignments_path(:file_id => pa["id"], :type => "public"), {:class => 'link_content'}
-              %td.file_data_info{:style => "width: 80px;", :align => "center"}= format('%.2f KB', pa.attachment_file_size.to_i/1024.0)
-              %td.file_data_info{:style => "width: 100px;", :align => "center"}
-                - if pa.attachment_updated_at.nil?
-                  = " "
-                - else
-                  =l pa.attachment_updated_at, :format => :files
-              %td{:style => "width: 60px", :align => "center"}= button_to t(:delete, :scope => [:assignment, :files]), delete_file_assignments_path(:file_id => pa.id, :type => 'public'), :confirm => t(:delete_msg, :scope => [:assignment, :files]), :class => "btn btn_caution", method: :delete
-    - else
-      .block_content.block_content_text= t(:itens_not_found)
-    %div{:style => "background-color: white; padding-top:6px"}
-      = button_tag t(:upload_on_public_area, :scope => [:assignment, :files]), :class => "btn btn_default", :id => "send_attachment"
+- if can? :send_public_files_page, Assignment
+  .block_wrapper
+    .block_title
+      %h2
+        %i.icon-suitcase
+        = t(:public_area, :scope => [:assignment, :information])
+    .block_content
+      - unless @public_area.nil? or @public_area.empty?
+        %table.tb_list
+          %tbody
+            - @public_area.each_with_index do |pa, idx|
+              %tr.lines
+                %td.file_data_icon{:style => "width: 10px;"}= image_tag icon_attachment(pa["attachment_file_name"]), :alt => " "
+                %td= link_to pa.attachment_file_name, download_public_files_assignments_path(:file_id => pa["id"], :type => "public"), {:class => 'link_content'}
+                %td.file_data_info{:style => "width: 80px;", :align => "center"}= format('%.2f KB', pa.attachment_file_size.to_i/1024.0)
+                %td.file_data_info{:style => "width: 100px;", :align => "center"}
+                  - if pa.attachment_updated_at.nil?
+                    = " "
+                  - else
+                    =l pa.attachment_updated_at, :format => :files
+                %td{:style => "width: 60px", :align => "center"}= button_to t(:delete, :scope => [:assignment, :files]), delete_file_assignments_path(:file_id => pa.id, :type => 'public'), :confirm => t(:delete_msg, :scope => [:assignment, :files]), :class => "btn btn_caution", method: :delete
+      - else
+        .block_content.block_content_text= t(:itens_not_found)
+      %div{:style => "background-color: white; padding-top:6px"}
+        = button_tag t(:upload_on_public_area, :scope => [:assignment, :files]), :class => "btn btn_default", :id => "send_attachment"
 
 :javascript
   $(function(){
