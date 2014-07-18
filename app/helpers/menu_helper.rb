@@ -24,7 +24,7 @@ module MenuHelper
       unless div_group_opened # menu pai
         div_group_opened = true
         link_class = ['mysolar_menu_title', ((menu['parent_id'].to_i == current_menu.to_i and params.include?(:mid)) ? 'open_menu' : nil)].compact.join(' ')
-        a_link     = ((menu['child'].nil?) ? link_to(t(menu['parent'].to_sym), access_controller, class: link_class) : %{<a href="#" class="#{link_class}">#{t(menu['parent'].to_sym)}</a>})
+        a_link     = ((menu['child'].nil?) ? link_to(t(menu['parent'].to_sym), access_controller, class: link_class) : %{#{t(menu['parent'].to_sym)}})
 
         divs_group[menu['parent_id'].to_i] = {
           ul: {
