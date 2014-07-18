@@ -78,7 +78,7 @@
                     - if lesson.address.blank?
                       = lesson.name
                     - else
-                      = link_to lesson.name, edition_lesson_url(lesson, allocation_tags_ids: @allocation_tags_ids), class: "link_content lesson", "data-fancybox-type" => "iframe"
+                      = link_to lesson.name, edition_lesson_url(lesson, allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id]), class: "link_content lesson", "data-fancybox-type" => "iframe"
                     - if lesson.description
                       .description
                         .minimun

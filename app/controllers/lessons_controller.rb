@@ -72,7 +72,7 @@ class LessonsController < ApplicationController
 
       render layout: 'lesson'
     end
-  rescue => error
+  rescue
     render json: {status: :unprocessable_entity}
   end
 
