@@ -123,6 +123,10 @@ class AllocationTag < ActiveRecord::Base
     return result.map(&:id)
   end
 
+  def lower_related
+    related(lower: true)
+  end
+
   def group_related
     association_ids = self.group.association_ids
 
@@ -167,8 +171,13 @@ class AllocationTag < ActiveRecord::Base
 
   ## related functions - end ##
 
-  def self.get_by_params(params, related = false)
-    map_attr = related ? :related : :id
+  def self.get_by_params(params, related = false, lower_related = false)
+    map_attr = case 
+    when lower_related; lower_related
+    when related; related
+    else
+      :id
+    end
 
     allocation_tags_ids, selected, offer_id = if not params[:allocation_tags_ids].blank? # o proprio params ja contem as ats
 

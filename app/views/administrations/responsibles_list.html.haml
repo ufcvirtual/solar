@@ -1,0 +1,40 @@
+.block_wrapper.responsibles_list
+  .block_title
+    %h2{style: "font-size: 12pt;"}= t(".responsibles")
+  / fazer busca por usuário?
+  .block_content_toolbar
+    .block_toolbar_left
+      = label_tag :search, t(".search"), class: "title"
+      = text_field_tag :search, nil, :"data-column" => "all", type: :search, class: "search"
+  /    = text_field_tag "text_search", @text_search
+  /    = button_tag t(:search, scope: [:administrations, :users]), type: :button, class: "btn btn_default", id: "search_allocation", :"data-link" => search_allocation_administrations_path
+  .block_content
+    - unless @allocations.empty?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th{style: "width: 11%"}= t(".name")
+            %th= t(".profile")
+            %th= t(".type")
+            %th= t(".course")
+            %th= t(".curriculum_unit")
+            %th= t(".semester")
+            %th= t(".group")
+        %tbody.allocations
+          - @allocations.each do |allocation|
+            - allocation_tag_info = allocation.allocation_tag.nil? ? nil : allocation.allocation_tag.detailed_info
+            %tr.lines
+              %td= allocation.user.name
+              %td= allocation.profile.name
+              %td= allocation_tag_info[:curriculum_unit_type]
+              %td= allocation_tag_info[:course]
+              %td= allocation_tag_info[:curriculum_unit]
+              %td= allocation_tag_info[:semester]
+              %td
+                - unless allocation_tag_info[:group].nil? or allocation_tag_info[:group] == t(".not_specified")
+                  .groups_tags
+                    .collection_check_boxes= allocation_tag_info[:group]
+    - else
+      .block_content.block_content_text= t(".none_responsible")
+
+= javascript_include_tag "tablesorter"

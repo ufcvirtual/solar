@@ -4,7 +4,7 @@ class AdministrationsController < ApplicationController
   include SysLog::Devise
   include SysLog::Actions
 
-  layout false, except: [:users, :users_indication, :allocation_approval, :lessons, :logs, :import_users]
+  layout false, except: [:users, :users_indication, :allocation_approval, :lessons, :logs, :import_users, :responsibles]
 
   ## USERS
 
@@ -279,6 +279,19 @@ class AdministrationsController < ApplicationController
     file_path = File.join(Rails.root.to_s, media_path, params[:file])
 
     download_file(home_path, file_path, "import-log.txt")
+  end
+
+  def responsibles
+    authorize! :responsibles, Administration
+
+    @types = CurriculumUnitType.all
+  end
+
+  def responsibles_list
+    authorize! :responsibles, Administration
+
+    allocation_tags_ids = AllocationTag.get_by_params(params, false, true)[:allocation_tags]
+    @allocations        = Allocation.responsibles(allocation_tags_ids)
   end
 
   private

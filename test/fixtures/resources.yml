@@ -1010,3 +1010,9 @@ res174:
   controller: 'administrations'
   action: 'import_users'
   description: 'Importar usuários de uma planilha'
+
+res175:
+  id: 175
+  controller: 'administrations'
+  action: 'responsibles'
+  description: 'Visualizar lista de responsáveis em qualquer curso'

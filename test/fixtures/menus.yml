@@ -207,6 +207,13 @@ admin_import_users:
   parent_id: 60
   resource_id: 174
 
+admin_responsibles:
+  id: 610
+  parent_id: 60
+  name: menu_responsibles
+  order: 10
+  resource_id: 175
+
 # MENU PAI - 70
 disco_virtual:
   id: 70

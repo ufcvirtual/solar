@@ -60,6 +60,9 @@ Solar::Application.routes.draw do
     get "users/:id/edit", to: "administrations#edit_user", as: :edit_admin_user
     get "users/:id/allocations", to: "administrations#allocations_user", as: :allocations_admin_user
     get "users", to: "administrations#users", as: :admin_users
+    
+    get "responsibles/filter", to: "administrations#responsibles", as: :admin_responsibles_filter
+    get "responsibles", to: "administrations#responsibles_list", as: :admin_responsibles
 
     # get "users", to: "administrations#users_indication", as: :users_indication
 

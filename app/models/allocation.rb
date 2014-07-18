@@ -90,4 +90,10 @@ class Allocation < ActiveRecord::Base
     end
   end
 
+  def self.responsibles(allocation_tags_ids)
+    includes(:profile, :user)
+      .where("allocation_tag_id IN (?) AND allocations.status = ? AND (cast(profiles.types & ? as boolean))", allocation_tags_ids, Allocation_Activated, Profile_Type_Class_Responsible)
+      .order("users.name")
+  end
+
 end

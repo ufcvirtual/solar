@@ -1308,6 +1308,7 @@ pt_BR:
   menu_admin_lessons: Consultar Aulas
   menu_admin_logs: Logs
   menu_admin_import_users: Importação de usuários
+  menu_responsibles: Consultar Responsáveis
 
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"
@@ -1748,6 +1749,17 @@ pt_BR:
       log_not_found: Sem logs para exibir
     allocations_user:
       type: Tipo
+    responsibles_list:
+      name: Nome
+      profile: Perfil
+      type: Tipo
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      semester: Semestre
+      group: Turma
+      responsibles: Responsáveis
+      none_responsible: Não há responsáveis
+      search: Busca
 
   editions:
     alert: "Preencha os campos obrigatórios"

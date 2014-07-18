@@ -1143,6 +1143,7 @@ en_US:
   menu_admin_lessons: Consult Lessons
   menu_admin_logs: Logs
   menu_admin_import_users: Importing users
+  menu_responsibles: Consult Responsibles
   places_nav_panel_course_hint: "Type the course's name or part of it"
   places_nav_panel_semester_hint: "Type the semester or part of it"
   places_nav_panel_curriculum_unit_hint: "Type the curriculum unit's name or part of it"
@@ -1556,6 +1557,17 @@ en_US:
       log_not_found: Log not found
     allocations_user:
       type: Type
+    responsibles_list:
+      name: Name
+      profile: Profile
+      type: Type
+      course: Course
+      curriculum_unit: Curriculum Unit
+      semester: Semester
+      group: Group
+      responsibles: Responsibles
+      none_responsible: There are no responsibles
+      search: Search
   editions:
     alert: "Fill the required fields"
     academic:
