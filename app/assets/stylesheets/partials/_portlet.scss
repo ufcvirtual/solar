@@ -199,6 +199,8 @@ table tr.block_title th {
   float: right;
   padding: 1px;
   display: none;
+  position: absolute;
+  right: 0;
 
   label{
     color: white;
