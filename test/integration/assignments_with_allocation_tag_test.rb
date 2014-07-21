@@ -985,11 +985,12 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
 
-    # não está dando sign out
     login users(:tutor_presencial)
-    get(information_assignment_path(assignments(:a6)))  
+    get @literatura_brasileira_tab
+    get home_curriculum_unit_path(5)
+    get(information_assignment_path(assignments(:a11)))
     assert_no_tag :tag => "div", 
-      :attributes => { :id => "group_#{group_assignments(:ga6).id}" },
+      :attributes => { :id => "group_#{group_assignments(:ga7).id}" },
       :child => { 
         :tag => "ul",
         :child => {

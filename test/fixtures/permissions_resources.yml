@@ -1920,3 +1920,10 @@ editor_iu1:
   profile_id: 5
   resource_id: 174
   per_id: false
+
+## responsibles
+
+admin_resp:
+  profile_id: 6
+  resource_id: 175
+  per_id: false

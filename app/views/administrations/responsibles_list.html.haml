@@ -1,13 +1,10 @@
 .block_wrapper.responsibles_list
   .block_title
     %h2{style: "font-size: 12pt;"}= t(".responsibles")
-  / fazer busca por usuário?
   .block_content_toolbar
     .block_toolbar_left
       = label_tag :search, t(".search"), class: "title"
       = text_field_tag :search, nil, :"data-column" => "all", type: :search, class: "search"
-  /    = text_field_tag "text_search", @text_search
-  /    = button_tag t(:search, scope: [:administrations, :users]), type: :button, class: "btn btn_default", id: "search_allocation", :"data-link" => search_allocation_administrations_path
   .block_content
     - unless @allocations.empty?
       %table.tb_list
