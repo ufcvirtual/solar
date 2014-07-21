@@ -211,22 +211,27 @@
     function setCookie(){
       $.cookie("cookie_im",JSON.stringify(cookie_im));
     }
-
+    //show
     $(document).ready(function(e){
       if(cookie_im.IM)
         con.showControlBox();
       if(!cookie_im.IM_toggle){
         setTimeout(function(){
           $("#chat").click();
-          },750);
+        },750);
       }
       if(cookie_im.Groups){
         setTimeout(function(e){
           $("#order").click();
         },1450);
+        
       }
     });
 
+    
+    
+
+    // triger isShow
     $(function(){
       $('#toggle-controlbox').click(function(e){
         if(cookie_im.IM){
@@ -239,7 +244,7 @@
           con.showControlBox();
         }
       });
-
+      //logoff
       $('.mysolar_top_link.logout').click(function(e) {
         try {
           $(".xmpp-status-menu .unavailable").click();
@@ -250,7 +255,7 @@
           e.preventDefault();
         } catch(err) {}
       });
-
+      //IM
       // Synchronizing user
       $("#synchronize").click(function(){
         $.get($(this).data("url"), function(data){

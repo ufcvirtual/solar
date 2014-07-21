@@ -12579,8 +12579,10 @@ return parser;
                             dl.appendChild(view.el);
                             this.sortRoster(dl,groups[index][user].attributes.chat_status);
                         }
+                        det.id = index;
                         index = index.replace("'",'');
                         index = index.replace("'",''); 
+                        det.setAttribute("class","detailIM") ;
                         sum.innerHTML=index.split("_")[1]+" _ "+index.split("_")[2]+" _ "+index.split("_")[0];  
                         sum.appendChild(dl);
                         det.appendChild(sum);
@@ -13326,14 +13328,15 @@ return parser;
 
                             view = new converse.ChatBoxView({model: item});
                             //adiciona imagem de status aos ja criados e gerencia janelas
-                            box = view.$el[0];
+                            var box = view.$el[0];
                             var divStatus = document.createElement("div");
                             divStatus.id = "status";
                             box.childNodes[0].childNodes[1].childNodes[0].appendChild(divStatus);
                             contacts = converse.roster.models; //pega lista completa de usuários
-                            if(!item.attributes.chat_status)
-                              item.attributes.chat_status = "offline";
-                            divStatus.setAttribute("class","status IM"+item.attributes.chat_status);
+                            var user = con.roster._byId[item.id]; 
+                            if(!user.attributes.chat_status)
+                              user.attributes.chat_status = "offline";
+                            divStatus.setAttribute("class","status IM"+user.attributes.chat_status);
                             for(att in cookie_im){
                                 if(att == box.id)
                                     if(!cookie_im[att])
@@ -13372,14 +13375,18 @@ return parser;
                         }
                     });
                     //recebe box que foi criada e adiciona sombra e adiciona imagem de status
-                    box=document.getElementById(chatbox.attributes.box_id);
-                    box.title="";
+                    box = document.getElementById(chatbox.attributes.box_id);
+                    box.title = "";
                     box.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
-                    var divStatus = document.createElement("div");
-                    divStatus.id = "status";
-                    box.childNodes[0].childNodes[1].childNodes[0].appendChild(divStatus);
-                    contacts=converse.roster.models; //pega lista completa de usuários
-                    var c=0;
+                    if(!$(box).find("#status")[0]){
+                      var divStatus = document.createElement("div");
+                      divStatus.id = "status";
+                      box.childNodes[0].childNodes[1].childNodes[0].appendChild(divStatus);
+                    }
+                    else
+                      var divStatus = $(box).find("#status")[0];
+                    contacts = converse.roster.models; //pega lista completa de usuários
+                    var c = 0;
                     while(c<contacts.length){
                         if(contacts[c].attributes.fullname.search(chatbox.attributes.fullname) != -1){
                             divStatus.setAttribute("class","status IM"+contacts[c].attributes.chat_status);
