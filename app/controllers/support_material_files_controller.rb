@@ -30,10 +30,10 @@ class SupportMaterialFilesController < ApplicationController
     authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
 
     begin
-      @support_material_file = SupportMaterialFile.new params[:support_material_file]
+      @support_material = SupportMaterialFile.new params[:support_material_file]
       SupportMaterialFile.transaction do
-        @support_material_file.save!
-        @support_material_file.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
+        @support_material.save!
+        @support_material.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
       end
 
       render json: {success: true, notice: t(:created, scope: [:support_materials, :success])}
@@ -42,7 +42,7 @@ class SupportMaterialFilesController < ApplicationController
     rescue Exception => error
       if @support_material.is_link?
         @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
-        @allocation_tags_ids = params[:allocation_tags_ids].join(" ")
+        @allocation_tags_ids = params[:allocation_tags_ids].join(" ") rescue params[:allocation_tags_ids].split(" ")
         params[:success] = false
         render :new
       else
@@ -59,16 +59,16 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def update
-    @support_material_file = SupportMaterialFile.find(params[:id])
-    authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @support_material = SupportMaterialFile.find(params[:id])
+    authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
 
     begin
-      @support_material_file.update_attributes!(params[:support_material_file])
+      @support_material.update_attributes!(params[:support_material_file])
       render json: {success: true, notice: t(:updated, scope: [:support_materials, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @groups_codes = @support_material_file.groups.map(&:code)
+      @groups_codes = @support_material.groups.map(&:code)
       params[:success] = false
       render :new
     end
