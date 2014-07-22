@@ -17,7 +17,7 @@ module MenuHelper
     menus = Menu.list_by_profile_id_and_context_id(all_profiles_ids, profiles_ids, context_id)
     divs_group, div_group_opened, previous_parent_id = [], false, 0
 
-    menus.each do |menu|
+    menus.each_with_index do |menu, idx|
       access_controller = {controller: "/#{menu["controller"]}", action: menu["action"], mid: menu['parent_id'], bread: menu['parent']}
       div_group_opened  = false if (previous_parent_id != menu['parent_id'].to_i) # quando o pai muda, outra div deve ser criada
 
@@ -40,7 +40,7 @@ module MenuHelper
         access_controller[:bread] = menu['child']
         divs_group[menu['parent_id'].to_i][:ul][:li][:ul] << 
           %{
-            <li class="mysolar_menu_list">
+            <li class="mysolar_menu_list" id="menu-#{idx}">
               #{link_to(t(menu['child'].to_sym), access_controller)}
             </li>
           }
