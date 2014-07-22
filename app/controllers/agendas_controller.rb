@@ -13,24 +13,25 @@ class AgendasController < ApplicationController
 
   def list
     @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ?  AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : params[:allocation_tags_ids])
-    @allocation_tags_ids = current_user.activated_allocation_tag_ids(true, true) if @allocation_tags_ids.nil?
-    @allocation_tags_ids = @allocation_tags_ids.join(" ")
+    @allocation_tags_ids = @allocation_tags_ids.join(" ") unless @allocation_tags_ids.nil?
 
-    authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
     render action: :calendar
   end
 
   # calendário de eventos
   def calendar
     @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten.join(" ") : params[:allocation_tags_ids])
-
-    authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
     @access_forms = Event.descendants.collect{ |model| model.to_s.tableize.singularize if model.constants.include?("#{params[:selected].try(:upcase)}_PERMISSION".to_sym) }.compact.join(",")
   end
 
   # eventos para exibição no calendário
   def events
-    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? AllocationTag.where(id: active_tab[:url][:allocation_tag_id]).map(&:related).flatten : params[:allocation_tags_ids].split(" ").flatten).uniq
+    # recupera as allocation_tags relacionadas da turma informada caso esteja em uma turma; se tiver "allocation_tags_ids" sem ser vazio caso esteja na edição; recupera todas as allocation_tag_ids 
+    # que o usuário interage caso seja a agenda geral
+    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? AllocationTag.where(id: active_tab[:url][:allocation_tag_id]).map(&:related).flatten : (
+        (params.include?(:allocation_tags_ids) and not(params[:allocation_tags_ids].blank?)) ? params[:allocation_tags_ids].split(" ").flatten : current_user.activated_allocation_tag_ids(true, true)
+      )
+    ).uniq
     authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
 
     events = (params.include?("list") ? 
