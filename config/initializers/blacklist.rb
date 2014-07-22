@@ -11,7 +11,6 @@ Solar::Application.config.black_list = {:mime_types => [
     'application/msdos-windows',
     'application/bin',
     'application/binary',
-    'application/x-msdownload',
     'application/x-php',
     'text/x-java',
     'application/x-java' # class

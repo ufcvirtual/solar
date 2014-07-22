@@ -10,7 +10,7 @@
       - if @support_material.material_type == Material_Type_Link
         = f.input :url, as: :string, required: true
       - else
-        = f.file_field :attachment, as: :file, required: true
+        = f.file_field :attachment, required: true
 
       = render "groups/codes"
 

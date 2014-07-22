@@ -49,7 +49,7 @@
                           = image_tag( icon_attachment(file.attachment_file_name) )                            
                           = file.attachment_file_name
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_enunciation"))
-                = render "groups/groups_tags", groups: assignment.groups, tool: assignment, all_groups: all_groups, paths: {add: add_group_to_assignments_path(id: "param_id", tool_id: assignment.id), remove: remove_group_from_assignments_path(id: "param_id", tool_id: assignment.id), unbind: unbind_group_from_assignments_path(id: "param_id", tool_id: assignment.id)}
+                .group_label.invisible= render "groups/groups_tags", groups: assignment.groups, tool: assignment, all_groups: all_groups, paths: {add: add_group_to_assignments_path(id: "param_id", tool_id: assignment.id), remove: remove_group_from_assignments_path(id: "param_id", tool_id: assignment.id), unbind: unbind_group_from_assignments_path(id: "param_id", tool_id: assignment.id)}
 
             %td{style: 'text-align:center;'}
               %div.title= t(((assignment.type_assignment.to_i == Assignment_Type_Individual) ? :individual : :group), scope: "assignment.list")
