@@ -12530,7 +12530,6 @@ return parser;
                     '</ul>'+
                 '</div>'
             ),
-            //aqui 
             redirect: function(ev){
                 if(ev.target != $("#order")[0])
                   $("#order")[0].click();
@@ -12549,12 +12548,13 @@ return parser;
                 box = $("#users-im")[0];
                 divGroups = $("#groups")[0];
                 getCookie();
+                getCookieGroups();
                 if(orderGroups.checked){
-                    cookie_im.Groups=true;
-                    rosters.style.display="none";
+                    cookie_im.Groups = true;
+                    rosters.style.display = "none";
                     groups = con.groups;
                     if(divGroups){
-                        divGroups.style.display="block";
+                        divGroups.style.display = "block";
                     }
                     else{
                         div    = document.createElement("div");
@@ -12567,10 +12567,10 @@ return parser;
                     if(!con.views)
                       con.views = {};
                     for(index in groups){                        
-                        det = document.createElement("details");
-                        sum = document.createElement("summary");
-                        dl  = document.createElement("dl");
-                        dt  = document.createElement('dt');
+                        var det = document.createElement("details");
+                        var sum = document.createElement("summary");
+                        var dl  = document.createElement("dl");
+                        var dt  = document.createElement('dt');
                         dt.style.display = "none";
                         dl.appendChild(dt);
                         for(user in groups[index]){
@@ -12588,7 +12588,13 @@ return parser;
                         det.appendChild(sum);
                         det.appendChild(dl);
                         divGroups.appendChild(det);
+                        det.open = cookie_groups[det.id]
                     }
+                    $('.detailIM').click(function(e){
+                      detail = e.target.parentNode;
+                      cookie_groups[detail.id] = !detail.open;                      
+                      setCookieGroups();
+                    });
                 }
                 else{
                     cookie_im.Groups = false;
@@ -12598,7 +12604,7 @@ return parser;
                     var contacts = con.ListView.el.childNodes;
                     for(index = 2; index < contacts.length; index++){
                        var id = contacts[index].childNodes[0].id + xmpp_dominio;
-                       var rosterGroups = con.roster._byId[id].groups;
+                       var rosterGroups = con.roster._byId[id].groups; //bug aqui
                       for(indexGroups in rosterGroups)
                         contacts[index].childNodes[0].title = contacts[index].childNodes[0].title +rosterGroups[indexGroups]+"\n";
                     }

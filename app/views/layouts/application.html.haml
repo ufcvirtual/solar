@@ -179,12 +179,35 @@
     xmpp_port = "#{@_porta}";
     xmpp_pass = "#{current_user.encrypted_password}";
     number_chatbox = 0;
-
+    //cookie IM_geral
     if($.cookie("cookie_im"))
-      var cookie_im = JSON.parse($.cookie("cookie_im"));
+      cookie_im = JSON.parse($.cookie("cookie_im"));
     else
-      var cookie_im = JSON.parse('{"IM" : true, "IM_toggle":true}');
+      cookie_im = JSON.parse('{"IM" : true, "IM_toggle":true}');
+
     $.cookie("cookie_im",JSON.stringify(cookie_im));
+    function getCookie(){
+      cookie_im = JSON.parse($.cookie("cookie_im"));
+    }
+
+    function setCookie(){
+      $.cookie("cookie_im",JSON.stringify(cookie_im));
+    }
+
+    //cookie IM_groups
+    if($.cookie("cookie_groups"))
+      cookie_groups = JSON.parse($.cookie("cookie_groups"));
+    else
+      cookie_groups = JSON.parse('{}');
+
+    $.cookie("cookie_groups",JSON.stringify(cookie_groups));
+    function getCookieGroups(){
+      cookie_groups = JSON.parse($.cookie("cookie_groups"));
+    }
+
+    function setCookieGroups(){
+      $.cookie("cookie_groups",JSON.stringify(cookie_groups));
+    }
 
     converse.initialize({
       prebind: false,
@@ -202,15 +225,6 @@
       show_controlbox_by_default: false,
       xhr_user_search: false
     });
-
-
-    function getCookie(){
-      cookie_im = JSON.parse($.cookie("cookie_im"));
-    }
-
-    function setCookie(){
-      $.cookie("cookie_im",JSON.stringify(cookie_im));
-    }
     //show
     $(document).ready(function(e){
       if(cookie_im.IM)
@@ -224,13 +238,8 @@
         setTimeout(function(e){
           $("#order").click();
         },1450);
-        
       }
     });
-
-    
-    
-
     // triger isShow
     $(function(){
       $('#toggle-controlbox').click(function(e){
