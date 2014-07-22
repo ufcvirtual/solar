@@ -73,6 +73,7 @@ class UsersController < ApplicationController
         schedule_end_date    = schedule_event['end_date'].nil? ? "" : schedule_event['end_date'].to_date.to_s()
         [schedule_event['start_date'].to_date.to_s(), schedule_end_date]
       end
+
       @scheduled_events = schedules_events_dates.flatten.uniq
     end
   end

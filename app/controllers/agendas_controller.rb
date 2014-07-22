@@ -7,7 +7,7 @@ class AgendasController < ApplicationController
      # se não estiver em uma uc específica, recupera as allocations tags ativadas do usuário
     @allocation_tags = (active_tab[:url][:allocation_tag_id].nil?) ? current_user.activated_allocation_tag_ids(true, true) : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.uniq
     @link            = not(params[:list_all_schedule].nil?) # apresentacao dos links de todas as schedules
-    @schedule        = Agenda.events(@allocation_tags, true, Date.parse(params[:date])) 
+    @schedule        = Agenda.events(@allocation_tags, true, Date.parse(params[:date]))
     render layout: false
   end
 
