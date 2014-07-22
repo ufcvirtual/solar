@@ -12603,7 +12603,7 @@ return parser;
                     groups = con.groups;
                     var contacts = con.ListView.el.childNodes;
                     for(index = 2; index < contacts.length; index++){
-                       var id = contacts[index].childNodes[0].id + xmpp_dominio;
+                       var id = contacts[index].childNodes[0].id;
                        var rosterGroups = con.roster._byId[id].groups; //bug aqui
                       for(indexGroups in rosterGroups)
                         contacts[index].childNodes[0].title = contacts[index].childNodes[0].title +rosterGroups[indexGroups]+"\n";
@@ -13473,7 +13473,7 @@ return parser;
             },
 
             template: _.template(
-                '<a class="open-chat" href="#" id="{{fullname}}">'+
+                '<a class="open-chat" href="#" id="{{jid}}">'+
                     '<span class="icons-{{ chat_status }}" title="{{ status_desc }}"></span>{{ fullname }}'+
                 '</a>'
                 // +'<a class="remove-xmpp-contact icons-remove" title="'+__('Click to remove this contact')+'" href="#"></a>'
