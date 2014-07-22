@@ -74,4 +74,13 @@ class Group < ActiveRecord::Base
       .uniq
   end
 
+  def request_enrollment(user_id)
+    # validar periodo de matricula da oferta???
+
+    allocation = Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag.id, profile_id: Profile.student_profile).first_or_initialize
+    allocation.status = Allocation_Pending
+    allocation.save
+    allocation
+  end
+
 end

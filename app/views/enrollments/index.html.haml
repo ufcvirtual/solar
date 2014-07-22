@@ -1,25 +1,88 @@
 = javascript_include_tag "tooltip", "autocomplete"
 = stylesheet_link_tag "autocomplete"
 
-.block_wrapper
-  .block_content.enrollment_bar
-    = form_for :curriculum_unit, url: enrollments_path, method: :get do |f|
+- user_groups = []
+- curriculum_units = []
+
+.allocations.filter
+  .block_content
+    .block_left
       .enrollment_left
         .filter_enrollment
-          = f.label t(".search"), class: "enrollment_label_search"
-          = select_tag(:curriculum_unit, options_from_collection_for_select(@curriculum_units, :id, :code_name), {include_blank: false, class: "select_category", selected: @uc_id})
-          = f.label t(".search_in"), class: "enrollment_label"
-          = select_tag(:type, options_from_collection_for_select(CurriculumUnitType.all, :id, :description), {include_blank: true, class: "select_category", selected: @uc_type_id})
-          = f.label t(".of"), class: "enrollment_label"
-          = select_tag(:status, options_for_select([[t("enrollments.all"), 'all'], [t("enrollments.enrolled"), 'enroll']], 'all'), class: "select_category")
-          = button_tag content_tag(:i, nil, class: 'icon-search', id: "search"), class: 'btn', :"data-url-search" => enrollments_path
+          = label_tag t(".search"), nil, class: "enrollment_label_search"
+          // select_tag UCs -> by js
+
+          = label_tag t(".of"), nil, class: "enrollment_label"
+          = select_tag :type, options_from_collection_for_select(CurriculumUnitType.all, :id, :description), prompt: 'pt-br: categoria'
+
+          = button_tag content_tag(:i, nil, class: 'icon-search', id: "search"), class: 'btn'
 
 .block_wrapper
   .block_title
-    %h2= t(".curriculum_unit")
+    %h2= t('.enrolled')
+  .block_content
+    %table.tb_list.enrollment_list_enrolled
+      - unless @offers.empty?
+        %thead
+          %tr.lines
+            %th= t(".curriculum_unit")
+            %th= t(".category")
+            %th= t(:semester)
+            %th= t(".group")
+            %th.no_sort= t(:mysolar_mn_enrollment)
+        %tbody
+          - @user_requests.where(status: Allocation_Activated).find_each do |allocation|
+            - offer_info = allocation.group.detailed_info
+            %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}"}
+              - user_groups << allocation.group.id
+              - curriculum_units << [offer_info[:curriculum_unit], offer_info[:curriculum_unit].gsub(/\W/, '')]
+              %td= offer_info[:curriculum_unit]
+              %td= offer_info[:curriculum_unit_type]
+              %td= offer_info[:semester]
+              %td= allocation.group.code
+              / verifica se nao aceita mais matricula e se ainda esta no periodo
+              / = label_tag "lb_enrollm", t(".enrolled"), class: 'enrollment_label'
+              %td= link_to t('.cancel'), cancel_allocation_path(allocation), class: 'btn btn_caution allocation_cancel_enroll'
+
+.block_wrapper
+  .block_title
+    %h2= t('.pending')
+  .block_content
+    %table.tb_list.enrollment_list_pending
+      - unless @offers.empty?
+        %thead
+          %tr.lines
+            %th= t(".curriculum_unit")
+            %th= t(".category")
+            %th= t(:semester)
+            %th= t(".group")
+            %th.no_sort= t(:mysolar_mn_enrollment)
+        %tbody
+          - @user_requests.where('status <> ?', Allocation_Activated).find_each do |allocation|
+            - offer_info = allocation.group.detailed_info
+            %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}"}
+              - user_groups << allocation.group.id
+              - curriculum_units << [offer_info[:curriculum_unit], offer_info[:curriculum_unit].gsub(/\W/, '')]
+              %td= offer_info[:curriculum_unit]
+              %td= offer_info[:curriculum_unit_type]
+              %td= offer_info[:semester]
+              %td= allocation.group.code
+              %td
+                - case allocation.try(:status)
+                  - when Allocation_Pending.to_i, Allocation_Pending_Reactivate.to_i
+                    = link_to t('.cancel_request'), cancel_request_allocation_path(allocation), class: 'btn btn_caution allocation_cancel_request'
+                  - when Allocation_Cancelled.to_i
+                    / FALTA VERIFICAR SE AINDA ESTA NO PERIODO DE MATRICULA
+                    = link_to t('.enroll'), reactivate_allocation_path(allocation), class: 'btn btn_default request_enroll'
+                  - when Allocation_Rejected.to_i
+                    = label_tag "lb_rejected", t(".rejected"), class: 'enrollment_label'
+
+.block_wrapper
+  .block_title
+    %h2= t(".ucs_available")
   .block_content
     %table.tb_list.enrollment_list
-      - unless @groups.empty?
+      - unless @offers.empty?
         %thead
           %tr.lines
             %th= t(".curriculum_unit")
@@ -30,53 +93,114 @@
             %th.no_sort
             %th.no_sort= t(:mysolar_mn_enrollment)
         %tbody
-          - @groups.each do |group|
-            - offer = group.offer
+          - @offers.each do |offer|
             - offer_info = offer.detailed_info
-            - period_info = enrollment_info(offer)
-            %tr.lines
-              %td= offer_info[:curriculum_unit]
-              %td= offer_info[:curriculum_unit_type]
-              %td= offer_info[:semseter]
-              %td= group.code
-              %td= period_info[:period]
-              %td= link_to content_tag(:i, nil, class: 'icon-info'), group_enrollments_path(group.id), class: "btn", id: "enrollment_info_#{group.id}"
-              %td
-                - allocation = group.allocations.where(user_id: current_user.id, profile_id: 1).first
-                - case allocation.try(:status)
-                  - when Allocation_Pending.to_i, Allocation_Pending_Reactivate.to_i
-                    = button_to t(".cancel_request"), cancel_request_allocation_path(allocation), method: :delete, confirm: t(".confirm"), class: 'btn btn_caution'
-                  - when Allocation_Activated.to_i
-                    / - if offer.curriculum_unit_type.allows_enrollment # nao aceita mais matricula
-                    = button_to t(".cancel"), cancel_allocation_path(allocation), method: :delete, confirm: t(".confirm"), class: 'btn btn_caution'
-                    / - else
-                    /   = label_tag "lb_enrollm", t(".enrolled"), class: 'enrollment_label'
-                  - when Allocation_Cancelled.to_i
-                    = button_to t(".enroll"), reactivate_allocation_path(allocation), class: 'btn btn_default', disabled: not(period_info[:is_active])
-                  - when Allocation_Rejected.to_i
-                    = label_tag "lb_rejected", t(".rejected"), class: 'enrollment_label'
-                  - else
-                    = button_to t(".enroll"), {controller: "allocations", action: "create", allocation_tag_id: group.allocation_tag.id, user_id: current_user.id}, class: 'btn btn_default', disabled: not(period_info[:is_active])
+            - query = "groups.id NOT IN (?)" unless user_groups.empty?
+            - Group.where(offer_id: offer.id).where(query, user_groups).find_each do |group|
+              %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}"}
+                - curriculum_units << [offer_info[:curriculum_unit], offer_info[:curriculum_unit].gsub(/\W/, '')]
+                %td= offer_info[:curriculum_unit]
+                %td= offer_info[:curriculum_unit_type]
+                %td= offer_info[:semester]
+                %td= group.code
+                %td= [l(Date.parse(offer.enroll_start_date), format: :normal), l(Date.parse(offer.enroll_end_date))].join '-'
+                %td= link_to content_tag(:i, nil, class: 'icon-info'), group_enrollments_path(group.id), class: "btn", id: "enrollment_info_#{group.id}"
+                %td
+                  = link_to t('.enroll'), allocations_path(group_id: group.id), class: 'btn btn_default request_enroll'
 
       - else
         %td.any_found.text_none= t(".no_curriculum_unit_found")
 
 :javascript
+
+  function uc_show_all() {
+    $('tbody tr').show();
+  }
+
+  function combo_change(event, ui) {
+    // verifica UC
+    var uc_class = $("#curriculum_unit option:selected").text().replace(/\W/g, '')
+    var uc_type_class = $("#type option:selected").text().replace(/\W/g, '')
+    var check_class = '';
+
+    if (uc_class != '') // informou uc
+      check_class += '.uc-' + uc_class;
+
+    if (uc_type_class != '') // informou uc type
+      check_class += '.uc-type-' + uc_type_class;
+
+    uc_show_all();
+
+    if (check_class != '')
+      $('tbody tr').not(check_class).hide();
+
+  }
+
   $(function(){
+
+
+    // combobox
+
+    $('#{to_combobox(curriculum_units.uniq, "curriculum_unit")}').insertAfter('.filter_enrollment label:first');
+
     $('[id^="enrollment_info"]').call_fancybox();
 
-    $("#curriculum_unit, #type, #status").combobox();
-    $("#curriculum_unit").combobox('value', "#{@uc_id}");
-    $("#type").combobox('value', "#{@uc_type_id}");
-    $("#status").combobox('value', "#{@enroll_type}");
-
-    $('#status').combobox({
-      change: function(event, ui) {
-        if(ui.item == null)
-          $(this).combobox('value', 'all');
-      }
+    $("#type").combobox({
+      change: combo_change
     });
+
+    $("#curriculum_unit").combobox({
+      change: combo_change
+    });
+
+    // combobox end
+
+    // ------------------- \\
+
+    // requests
+
+    function enroll_error_request(data) {
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+      if (typeof(data.msg) != "undefined")
+        flash_message(data.msg, 'alert');
+    }
+
+
+    function enroll_cancel_request(event) {
+      event.preventDefault();
+
+      if (!confirm("#{I18n.t('.confirm')}"))
+        return false;
+
+      var tr = $(this).closest('tr');
+
+      $.delete($(this).attr('href'), function(data){
+        tr.fadeOut(); 
+        flash_message(data.notice, 'notice');
+      }).error(enroll_error_request);
+    }
+
+    // cancelar matricula e pedido
+    $('.allocation_cancel_request, .allocation_cancel_enroll').click(enroll_cancel_request);
+
+    // pedir matricula
+    $('.request_enroll').click(function(e){
+      e.preventDefault();
+
+      var td = $(this).closest('td');
+      $.post($(this).attr('href'), {format: 'json'}, function(data){
+        link = '<a href="#{cancel_request_allocation_path(':id')}" class="btn btn_caution" data-method="delete" data-confirm="#{t('.confirm')}">#{t('.cancel_request')}</a>'.replace(':id', data.id);
+
+        td.html(link);
+
+        flash_message(data.notice, 'notice');
+      }).error(enroll_error_request);
+    });
+
   });
+
 
   // EDX
   $(function(){

@@ -103,23 +103,4 @@ module ApplicationHelper
     return (params[:action] == "mysolar")
   end
 
-  def slice_content(content, slice_size)        
-    caracter_count = 0
-    position = 0
-    
-    while ((caracter_count < slice_size) && (position < content.length))
-      
-      if (content[position] == '&')
-        begin
-          position +=1
-        end while (content[position] != ';')  
-      end
-      
-      caracter_count +=1
-      position +=1
-    end    
-
-    return content.slice(0..position-1)
-  end
-
 end

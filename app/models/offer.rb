@@ -176,4 +176,44 @@ class Offer < ActiveRecord::Base
     return allocations_info
   end
 
+  # offers.*, enroll_start_date, enroll_end_date
+  def self.to_enroll
+    find_by_sql %{
+      SELECT o.*, COALESCE(os_e.start_date, ss_e.start_date)::date AS enroll_start_date, COALESCE(os_e.end_date, ss_e.end_date, os_p.end_date, ss_p.end_date)::date AS enroll_end_date
+        FROM offers                 AS o
+        JOIN semesters              AS s    ON s.id    = o.semester_id
+        JOIN schedules              AS ss_e ON ss_e.id = s.enrollment_schedule_id -- periodo de matricula do semestre
+        JOIN schedules              AS ss_p ON ss_p.id = s.offer_schedule_id -- periodo do semestre
+        JOIN curriculum_units       AS uc   ON uc.id = o.curriculum_unit_id
+        JOIN curriculum_unit_types  AS ct   ON ct.id = uc.curriculum_unit_type_id
+   LEFT JOIN schedules              AS os_e ON os_e.id = o.enrollment_schedule_id -- periodo de matricula definido na oferta
+   LEFT JOIN schedules              AS os_p ON os_p.id = o.offer_schedule_id -- periodo da oferta
+       WHERE
+          ct.allows_enrollment IS TRUE
+          AND (
+            -- periodo de matricula informada na oferta
+            (
+              o.enrollment_schedule_id IS NOT NULL AND (
+                now() BETWEEN os_e.start_date AND os_e.end_date -- final de matricula na oferta
+                OR
+                now() BETWEEN os_e.start_date AND ss_e.end_date -- final de matricula no semestre
+                OR
+                now() BETWEEN os_e.start_date AND os_p.end_date -- final do periodo da oferta
+                OR
+                now() BETWEEN os_e.start_date AND ss_p.end_date -- final do periodo do semestre
+              )
+            )
+            -- periodo de matricula no semestre
+            OR
+            (
+              -- enrollment no semestre eh obrigatorio
+              now() BETWEEN ss_e.start_date AND ss_e.end_date -- dentro do semestre
+              OR
+              now() BETWEEN ss_e.start_date AND ss_p.end_date -- final do periodo do semestre
+            )
+          )
+        ORDER BY enroll_start_date DESC;
+    }
+  end
+
 end

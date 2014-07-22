@@ -15,6 +15,7 @@ pt_BR:
       day_and_month: "%d/%b"
       bibliography: "%d %b, %Y"
       mask: "99/99/9999"
+      normal: "%d/%m/%Y"
     day_names: [Domingo, Segunda, Terça, Quarta, Quinta, Sexta, Sábado]
     abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, Sáb]
     month_names: [Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
@@ -653,12 +654,14 @@ pt_BR:
       view_enrolled: "Matriculados"
       cancel: "Cancelar"
       enroll: "Matricular"
-      curriculum_unit: "Unidade Curricular"
+      curriculum_unit: "Disciplina"
       category: "Categoria"
       group: "Turma"
       title: "Matrícula"
       enrolled: "Matriculado"
       rejected: "Matricula Rejeitada"
+      pending: Pendente
+      ucs_available: Disciplinas diponíveis
       confirm: "Tem certeza de que deseja cancelar?"
       cancel_request: "Cancelar pedido"
       period: Período de matrícula

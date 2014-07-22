@@ -7,24 +7,8 @@ class EnrollmentsController < ApplicationController
   def index
     authorize! :index, Enrollment
 
-    # recebe params[:offer] se foi pela pesquisa - MATRICULADOS e/ou ATIVOS
-    @uc_type_id = params[:type] unless params[:type].blank?
-    @uc_id = params[:curriculum_unit] unless params[:curriculum_unit].blank?
-    @enroll_type = params[:status] || 'all'
-
-    current_offers = Offer.joins(curriculum_unit: :curriculum_unit_type)
-                          .where(curriculum_unit_types: {allows_enrollment: true}).currents
-
-    args = {
-      user: current_user,
-      enroll_type: @enroll_type, # enroll or all
-      offers: current_offers,
-      uc_type_id: @uc_type_id,
-      uc_id: @uc_id
-    }
-
-    @curriculum_units = CurriculumUnit.joins(:offers).where(offers: {id: current_offers.map(&:id)})
-    @groups = Enrollment.enrollments_of_user args
+    @user_requests = current_user.allocations.where(profile_id: Profile.student_profile).where("allocation_tag_id IS NOT NULL") # dividir entre matriculados e outros
+    @offers = Offer.to_enroll
   end
 
   def show

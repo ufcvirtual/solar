@@ -10,6 +10,7 @@ en_US:
       day_and_month: "%d/%b"
       bibliography: "%d %b, %Y"
       mask: "99/99/9999"
+      normal: "%d/%m/%Y"
     day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
     abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
     month_names: [January, February, March, April, May, June, July, August, September, October, November, December]
@@ -542,6 +543,8 @@ en_US:
       title: "Enrollment"
       enrolled: "Enrolled"
       rejected: "Enrollment Rejected"
+      pending: Pending
+      ucs_available: Curriculum Units Available
       confirm: "Are you sure you want to cancel?"
       cancel_request: "Cancel Request"
       period: Enrollment period
