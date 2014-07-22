@@ -229,15 +229,10 @@
     $(document).ready(function(e){
       if(cookie_im.IM)
         con.showControlBox();
-      if(!cookie_im.IM_toggle){
-        setTimeout(function(){
-          $("#chat").click();
-        },750);
-      }
       if(cookie_im.Groups){
         setTimeout(function(e){
           $("#order").click();
-        },1450);
+        },1700);
       }
     });
     // triger isShow
@@ -259,7 +254,7 @@
           $(".xmpp-status-menu .unavailable").click();
           con.xmppstatus.save({'status': 'online'});
           delete con;
-          con=null;
+          con = null;
           setTimeout(function(){location.href="#{logout_path}";},250); // espera 250 milesegundos para redirecionar para a pagina de logout acho que este é um tempo razoável.
           e.preventDefault();
         } catch(err) {}

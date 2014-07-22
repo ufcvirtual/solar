@@ -12588,7 +12588,7 @@ return parser;
                         det.appendChild(sum);
                         det.appendChild(dl);
                         divGroups.appendChild(det);
-                        det.open = cookie_groups[det.id]
+                        det.open = cookie_groups[det.id];
                     }
                     $('.detailIM').click(function(e){
                       detail = e.target.parentNode;
@@ -12604,7 +12604,7 @@ return parser;
                     var contacts = con.ListView.el.childNodes;
                     for(index = 2; index < contacts.length; index++){
                        var id = contacts[index].childNodes[0].id;
-                       var rosterGroups = con.roster._byId[id].groups; //bug aqui
+                       var rosterGroups = con.roster._byId[id].groups;
                       for(indexGroups in rosterGroups)
                         contacts[index].childNodes[0].title = contacts[index].childNodes[0].title +rosterGroups[indexGroups]+"\n";
                     }
@@ -12613,6 +12613,9 @@ return parser;
                 var m = $(".menu")[0];
                 m.style.display="none";
                 setCookie();
+                if(!cookie_im.IM_toggle){
+                  $("#chat").click();
+                }
             },
             sortRoster: function (dl,chat_status) {
                 con.GroupsView = this;
@@ -12632,7 +12635,7 @@ return parser;
                 CP = el.parentNode.childNodes[1];
                 TB = $("#toggle-controlbox")[0];
                 if ( CP.style.display != "none" )
-                {   
+                {  
                     cookie_im.IM_toggle=false;   
                     CP.style.display = "none";
                     TB.style.display = "none";
@@ -13909,7 +13912,7 @@ return parser;
 
             renderRosterItem: function (item, view) {
                 chats = $(".chatbox");
-                //adiciona a imagem de ausente
+                //atualiza a imagem de status
                 id = con.chatboxes._byId[item.id];
                 if(id){
                   chat = $("#"+id.attributes.box_id)[0];
@@ -13927,7 +13930,6 @@ return parser;
                     this.$el.find('#xmpp-contacts').after(view.render().el);
                 }
                 //Muda Title para Turmas e cria estrutura de grupos
-                //aqui
                 if(!con.groups)
                     con.groups = {};
                 if(!con.views)
@@ -13945,7 +13947,7 @@ return parser;
                                 con.views["'"+view.cid+"'"] = view;
                                 con.groups["'"+group+"'"]["'"+con.connection.roster.items[ele].name+"'"] = item;
                             
-                            if(grou<con.connection.roster.items[ele].groups.length-1)
+                            if(grou < con.connection.roster.items[ele].groups.length - 1)
                                 title = title + group.split("_").pop() + "\n";
                             else
                                 title = title + group.split("_").pop();
@@ -13956,7 +13958,6 @@ return parser;
 
                     }                    
                   }
-                   
                 },500);      
                 //atualiza e reordena clones
                 setTimeout(function(){
