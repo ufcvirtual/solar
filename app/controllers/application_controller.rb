@@ -176,9 +176,8 @@ class ApplicationController < ActionController::Base
         elsif params.include?('mid') # Seleciona aba de acordo com o contexto do menu
           tab_context_id  = active_tab[:url][:context]
           current_menu_id = params[:mid]
-
-          if MenusContexts.find_all_by_menu_id_and_context_id(current_menu_id, tab_context_id).empty?
-            menu_context_id = MenusContexts.find_by_menu_id(current_menu_id).context_id
+          if current_menu_id.to_i == 0 or MenusContexts.find_all_by_menu_id_and_context_id(current_menu_id, tab_context_id).empty?
+            menu_context_id = (current_menu_id.to_i == 0) ? Context_Curriculum_Unit : MenusContexts.find_by_menu_id(current_menu_id).try(:context_id)
             tab_name = find_tab_by_context(menu_context_id)
             set_active_tab(tab_name)
           end

@@ -1309,6 +1309,7 @@ pt_BR:
   menu_admin_logs: Logs
   menu_admin_import_users: Importação de usuários
   menu_responsibles: Consultar Responsáveis
+  menu_home: Início
 
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"

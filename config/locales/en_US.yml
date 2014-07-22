@@ -1144,6 +1144,7 @@ en_US:
   menu_admin_logs: Logs
   menu_admin_import_users: Importing users
   menu_responsibles: Consult Responsibles
+  menu_home: Home
   places_nav_panel_course_hint: "Type the course's name or part of it"
   places_nav_panel_semester_hint: "Type the semester or part of it"
   places_nav_panel_curriculum_unit_hint: "Type the curriculum unit's name or part of it"

@@ -77,8 +77,16 @@ mysolar_cookie_id = "_mysolar_menu_opened";
         $(this).find('div').removeClass('menu_icon_animate');
       });
     }
-    else {
-      // adicionando icone da bolinhaaaaaa
+    // verificando se o item possui filhos
+    if ( $(this).parent().hasClass('mysolar_menu_title_single') == false ) {
+      // adicionando icone da seta
+      $(this).parents('li').find('.menu_icon_arrow').addClass('menu_icon_animate');
+      // tornando o item ativo
+      $(this).parent().addClass('mysolar_menu_title_active');
+      // exibindo submenu
+      $(this).next('.submenu').slideDown('fast');
+    } else {
+      // adicionando icone da bolinha
       $(this).parents('li').find('.menu_icon_circle').addClass('.menu_icon_animate');
       // tornando o item ativo
       $(this).parent().addClass('mysolar_menu_title_single_active');

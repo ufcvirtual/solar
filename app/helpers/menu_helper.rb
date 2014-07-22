@@ -17,8 +17,14 @@ module MenuHelper
     menus = Menu.list_by_profile_id_and_context_id(all_profiles_ids, profiles_ids, context_id)
     divs_group, div_group_opened, previous_parent_id = [], false, 0
 
+    if context_id == Context_Curriculum_Unit
+      active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+      home_menu = {"url" => active_tab[:breadcrumb].first[:url], "parent" => "menu_home", "parent_id" => 0, "child" => nil, "parent_order" => 0, "context_id" => Context_Curriculum_Unit, "resource_id" => 11} #parent: "Inicio"
+      menus.insert(0, home_menu)
+    end
+
     menus.each_with_index do |menu, idx|
-      access_controller = {controller: "/#{menu["controller"]}", action: menu["action"], mid: menu['parent_id'], bread: menu['parent']}
+      access_controller = menu["url"].nil? ? {controller: "/#{menu["controller"]}", action: menu["action"], mid: menu['parent_id'], bread: menu['parent']}  : menu["url"]
       div_group_opened  = false if (previous_parent_id != menu['parent_id'].to_i) # quando o pai muda, outra div deve ser criada
 
       unless div_group_opened # menu pai
