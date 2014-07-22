@@ -386,6 +386,13 @@ a.mysolar_top_link {
   *display: inline;
 }
 
+.menu_icon_arrow{
+  font-size: 10pt;
+  vertical-align: top;
+  padding-left: 3px;
+  margin-right: 0;
+}
+
 /* BUG: icone rotacionado está com problemas no IE 7-8, não testado no 9 */
 .menu_icon_animate {
   -moz-transform: rotate(90deg);
@@ -396,18 +403,20 @@ a.mysolar_top_link {
   transform: rotate(90deg);
 }
 
-.mysolar_menu_title {
+.mysolar_menu_title{
   width: 100%;
   margin: 2px;
-  /*    padding-left: 12px;*/
+  height: 30px;
   cursor: pointer;
   font-weight: normal;
-  height: 30px;
   line-height: 30px;
   font-variant: small-caps;
   font-size: 12pt;
   font-family: 'Ubuntu Condensed', sans-serif;
-  /*    padding-left: 15px;*/
+  color: $color_main_text;
+}
+
+.mysolar_menu_title_multiple{
   color: $color_main_text;
 }
 
@@ -416,18 +425,23 @@ a.mysolar_top_link {
 }
 
 .submenu {
-  display: none;
-  padding: 5px 0 5px 10px;
   margin: 0;
   border-top: 2px solid;
   font-size: 10pt;
-  border-top-color: $color_contrast;
-  background-color: $color_contrast_light; /* alternativa: f5f8fb */
+  border-top-color: #214684;
+  background-color: #F8FBFE; /* alternativa: f5f8fb */
 
   > li {
-    padding: 5px 0;
+    padding: 8px 0 8px 10px;
   }
   a {
     color: #222;
   }
+}
+
+.mysolar_menu_active{
+  background-color: $color_contrast_light;
+  border-right-color: $color_contrast;
+  border-right-width: 2px;
+  border-right-style: solid;
 }
