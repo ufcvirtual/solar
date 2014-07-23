@@ -13,13 +13,13 @@
         .block_title
           %h2= p.name
         %div
-          %table.tb_list
+          %table.tb_list.tablesorter{"data-sortlist" => "[[0,0]]"}
             %thead
               %tr.lines
                 %th= t(:allocation, scope: [:administrations, :allocations])
                 %th{style: 'width:120px'}= t(".type")
                 %th{style: 'width:80px'}= t(:status, scope: [:administrations, :allocations])
-                %th.no_sort{style: 'width:80px'}
+                %th{style: 'width:80px'}= ''
             %tbody
               - @allocations_user.where("profile_id="+p.id.to_s).each do |a|
                 %tr.lines.allocations{class: semester(a.allocation_tag)}
