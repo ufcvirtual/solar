@@ -14433,7 +14433,6 @@ return parser;
             'click',
             $.proxy(function (e) {
                 e.preventDefault(); 
-
                 if ($('.conn-feedback').text() == __('Show') || $('.conn-feedback').text() == __('Hide')){
                     if(aux){
                         $("#collective-xmpp-chat-data").css("display","none");
@@ -14441,9 +14440,16 @@ return parser;
                         aux = !aux;
                     }
                     else{
-                            $("#collective-xmpp-chat-data").css("display","block");
-                            this.giveFeedback(__('Hide'));
-                            aux = !aux;
+                        $("#collective-xmpp-chat-data").css("display","block");
+                        this.giveFeedback(__('Hide'));
+                        aux = !aux;
+                    }
+                }
+                else{
+                    if(cookie_im.Groups){
+                      setTimeout(function(e){
+                        $("#order").click();
+                      },1700);
                     }
                 }
             }, this)
