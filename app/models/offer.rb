@@ -88,8 +88,8 @@ class Offer < ActiveRecord::Base
 
   def enrollment_end_date
     # a oferta pode ou nao ter uma data final para periodo de matricula
-    if enrollment_schedule_id.nil? # se o periodo de matricula na oferta for nulo
-      semester.enrollment_schedule.end_date # o periodo no semestre será utilizado
+    if enrollment_schedule_id.nil? or enrollment_schedule.end_date.nil? # se o periodo de matricula na oferta for nulo
+      semester.enrollment_schedule.end_date || semester.offer_schedule.end_date # o periodo no semestre será utilizado
     else
       enrollment_schedule.end_date
     end

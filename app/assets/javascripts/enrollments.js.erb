@@ -1,0 +1,92 @@
+
+function enroll_combo_change(event, ui) {
+  // verifica UC
+  var uc_class = $("#curriculum_unit option:selected").text().replace(/\W/g, '');
+  var uc_type_class = $("#type option:selected").text().replace(/\W/g, '');
+  var check_class = '';
+
+  if (uc_class != '') // informou uc
+    check_class += '.uc-' + uc_class;
+
+  if (uc_type_class != '') // informou uc type
+    check_class += '.uc-type-' + uc_type_class;
+
+  $('tbody tr').show(); // show all
+
+  if (check_class != '')
+    $('tbody tr').not(check_class).hide();
+
+}
+
+$(function(){
+
+  // combobox
+
+  $('[id^="enrollment_info"]').call_fancybox();
+
+  $("#type, #curriculum_unit").combobox({
+    change: enroll_combo_change
+  });
+
+  // combobox end
+
+  // ------------------- \\
+
+  // requests
+
+  function enroll_error_request(data) {
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert');
+    if (typeof(data.msg) != "undefined")
+      flash_message(data.msg, 'alert');
+  }
+
+  function enroll_cancel_request(event) {
+    event.preventDefault();
+
+    if (!confirm("<%= I18n.t('enrollments.index.confirm') %>"))
+      return false;
+
+    var tr = $(this).closest('tr');
+
+    $.delete($(this).attr('href'), function(data){
+      tr.fadeOut(); 
+      flash_message(data.notice, 'notice');
+    }).error(enroll_error_request);
+  }
+
+  // cancelar matricula e pedido
+  $('.allocation_cancel_request, .allocation_cancel_enroll').click(enroll_cancel_request);
+
+  // pedir matricula
+  $('.request_enroll').click(function(e){
+    e.preventDefault();
+
+    var td = $(this).closest('td');
+    $.post($(this).attr('href'), {format: 'json'}, function(data){
+
+      var cancel_link = '<a href="<%= Rails.application.routes.url_helpers.cancel_request_allocation_path(':id') %>" class="btn btn_caution" data-method="delete" data-confirm="<%= I18n.t('enrollments.index.confirm') %>"><%= I18n.t('enrollments.index.cancel_request') %></a>'.replace(':id', data.id);
+
+      console.log(cancel_link);
+
+      td.html(cancel_link);
+      flash_message(data.notice, 'notice');
+    }).error(enroll_error_request);
+  });
+
+}); // end function jquery
+
+// -- EDX -- \\
+$(function(){
+  var search_data = {
+    type: $("#type").val(),
+    uc: $("#curriculum_unit").val()
+  };
+
+  $.get("<%= Rails.application.routes.url_helpers.available_edx_courses_path %>", search_data, function(data) {
+    if($(data).length > 0)
+      $(".any_found.text_none").remove();
+    $(".tb_list.enrollment_list tbody").append(data);
+  });
+});
