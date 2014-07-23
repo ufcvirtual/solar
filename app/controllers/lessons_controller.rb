@@ -6,7 +6,6 @@ class LessonsController < ApplicationController
 
   require 'fileutils'
 
-  include EditionHelper
   include FilesHelper
   include LessonFileHelper
   include LessonsHelper

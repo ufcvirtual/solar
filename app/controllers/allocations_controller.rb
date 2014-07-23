@@ -98,8 +98,8 @@ class AllocationsController < ApplicationController
   def create
     group = Group.find(params[:group_id])
 
-    if allocation = group.request_enrollment(current_user)
-      render json: {id: allocation.id, notice: t('allocations.success.enrollm_request')}
+    if @allocation = group.request_enrollment(current_user)
+      render json: {id: @allocation.id, notice: t('allocations.success.enrollm_request')}
     else
       render json: {alert: t('allocations.error.enrollm_request')}, status: :unprocessable_entity
     end
@@ -290,7 +290,7 @@ class AllocationsController < ApplicationController
     rescue
       render json: {success: false, alert: t(:not_activated, scope: [:allocations, :error])}, status: :unprocessable_entity
     end
-  end  
+  end
 
   def reactivate
     @allocation = Allocation.find(params[:id])

@@ -216,20 +216,22 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   test "realizar pedido de matricula para aluno - dentro do periodo" do
     login(users(:editor))
     assert_difference(["Allocation.count", "LogAction.count"]) do
-      post allocations_path, {allocation_tag_id: allocation_tags(:al5).id, user_id: users(:editor).id}
+      post allocations_path, {group_id: allocation_tags(:al1).group_id} # Introducao a linguistica
     end
-    assert_response :redirect
-    assert_equal flash[:notice], I18n.t(:enrollm_request, scope:  [:allocations, :success])
+
+    assert_response :success
+    assert_equal I18n.t(:enrollm_request, scope: [:allocations, :success]), get_json_response("notice")
   end
 
   # Usuário solicita matrícula fora do período
   test "nao realizar pedido de matricula para aluno - fora do periodo" do
     login(users(:editor))
     assert_no_difference(["Allocation.count", "LogAction.count"]) do
-      post allocations_path, {allocation_tag_id: allocation_tags(:al8).id, user_id: users(:editor).id}
+      post allocations_path, {group_id: allocation_tags(:al8).group_id} # literatura brasileria I
     end
-    assert_response :redirect
-    assert_equal flash[:alert], I18n.t(:enrollm_request, scope:  [:allocations, :error])
+
+    assert_response :unprocessable_entity
+    assert_equal I18n.t(:enrollm_request, scope: [:allocations, :error]), get_json_response("alert")
   end
 
   # test "mudar aluno de turma" do
