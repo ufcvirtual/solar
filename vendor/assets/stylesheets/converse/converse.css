@@ -353,7 +353,7 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
     z-index: 99; /*--Keeps the panel on top of all other elements--*/
     position: fixed;
     bottom: -32px; 
-    right: 14px;
+    right: 0px;
     height: 332px;
     width: auto;
     pointer-events: none;
@@ -372,7 +372,7 @@ span .icon-thumbs-up:before , li.toggle-smiley .icon-thumbs-up:before {
     position: fixed;
     font-size: 70%;
     bottom: 0px;
-    right: 14px;
+    right: 0px;
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
     background: #e3e2e2;
