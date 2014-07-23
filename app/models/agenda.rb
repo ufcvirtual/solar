@@ -11,8 +11,7 @@ class Agenda < ActiveRecord::Base
 
     events = [schedules_events + assignments_events + discussions_events + lessons_events].flatten.compact.map(&:attributes).sort_by {|e| e['end_date'] || e['start_date'] }
 
-    return events.slice(0,2) if period # apenas os dois primeiros
-    return events
+    events
   end
 
   def self.events_detailed(allocation_tags, period = false, date_search = nil)
@@ -21,7 +20,6 @@ class Agenda < ActiveRecord::Base
       schedule_end_date = schedule_event['end_date'].nil? ? "" : schedule_event['end_date'].to_date
       [schedule_event['start_date'].to_date, schedule_end_date]
     }.flatten.uniq
-
   end
 
 end
