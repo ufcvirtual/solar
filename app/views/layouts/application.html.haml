@@ -230,8 +230,10 @@
       if(cookie_im.IM)
         con.showControlBox();
       if(cookie_im.Groups){
+        $("#chatpanel")[0].style.display = "none";
         setTimeout(function(e){
           $("#order").click();
+          $("#chatpanel")[0].style.display = "block";
         },1700);
       }
     });
@@ -248,7 +250,7 @@
           con.showControlBox();
         }
       });
-      //logoff
+      //logout
       $('.mysolar_top_link.logout').click(function(e) {
         try {
           $(".xmpp-status-menu .unavailable").click();
