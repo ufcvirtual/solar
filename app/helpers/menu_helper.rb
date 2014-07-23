@@ -46,7 +46,7 @@ module MenuHelper
         access_controller[:bread] = menu['child']
         divs_group[menu['parent_id'].to_i][:ul][:li][:ul] << 
           %{
-            <li class="mysolar_menu_list" id="menu-#{idx}">
+            <li class="mysolar_menu_list" id="menu-#{idx}-#{id}">
               #{link_to(t(menu['child'].to_sym), access_controller)}
             </li>
           }
@@ -56,13 +56,14 @@ module MenuHelper
 
     end # end menu each
 
-    return to_html(divs_group)
+    return to_html(divs_group.compact, id)
   end
 
   private
 
-    def to_html(divs)
+    def to_html(divs, offer_id)
       html = ''
+      html << %{<div class="mysolar_menu" data-offer=#{offer_id}>}
       divs.compact.each do |div|
         without_childs = div[:ul][:li][:ul].empty?
         li_class = ['mysolar_menu_title_', (without_childs ? 'single' : 'multiple')].join('')
@@ -79,6 +80,7 @@ module MenuHelper
           </div>
         }
       end
+      html << %{</div>}
       return html
     end # end transforme_to_html
 

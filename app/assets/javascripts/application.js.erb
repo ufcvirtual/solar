@@ -116,10 +116,10 @@ mysolar_cookie_id = "_mysolar_menu_opened";
   // };
 
   function setCookieMenu(menu_id) {
-    $.cookie(mysolar_cookie_id, menu_id, { path: '/' });
+    $.cookie(mysolar_cookie_id+$(".mysolar_menu").data("offer"), menu_id, { path: '/' });
   };
 
-  $('li#' + $.cookie(mysolar_cookie_id)).addClass('mysolar_menu_active');
+  $('li#' + $.cookie(mysolar_cookie_id+$(".mysolar_menu").data("offer"))).addClass('mysolar_menu_active');
 
   // $('.mysolar_menu_list a').each(function() {
   //   console.log('each :' + $.cookie(mysolar_cookie_id));
