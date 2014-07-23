@@ -11386,6 +11386,12 @@ return parser;
             } else {
                 controlbox.trigger('show');
             }
+            if(!cookie_im.IM_toggle && !cookie_im.Groups){
+              setTimeout(function(e){
+                $("#chat").click();  
+              },1000);
+              
+            }
         };
 
         this.toggleControlBox = function () {

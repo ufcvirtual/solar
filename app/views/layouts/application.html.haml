@@ -230,8 +230,10 @@
       if(cookie_im.IM)
         con.showControlBox();
       if(cookie_im.Groups){
+        $("#chatpanel")[0].style.display = "none";
         setTimeout(function(e){
           $("#order").click();
+          $("#chatpanel")[0].style.display = "block";
         },1700);
       }
     });
