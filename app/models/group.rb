@@ -75,7 +75,8 @@ class Group < ActiveRecord::Base
   end
 
   def request_enrollment(user_id)
-    # validar periodo de matricula da oferta???
+    enroll_period = offer.enrollment_period
+    return false unless Time.now.between?(enroll_period.first, enroll_period.last) # verify enrollment period
 
     allocation = Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag.id, profile_id: Profile.student_profile).first_or_initialize
     allocation.status = Allocation_Pending

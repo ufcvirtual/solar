@@ -103,32 +103,6 @@ class AllocationsController < ApplicationController
     else
       render json: {alert: t('allocations.error.enrollm_request')}, status: :unprocessable_entity
     end
-
-    # respond_to do |format|
-    #   if group.request_enrollment(current_user)
-    #     format.html { redirect_to enrollments_url, notice: t('allocations.success.enrollm_request') }
-    #   else
-    #     format.html { redirect_to enrollments_url, alert: t('allocations.error.enrollm_request') }
-    #   end
-    # end
-
-
-    # profile, status = Profile.student_profile, Allocation_Pending
-    # allocation_tag  = AllocationTag.find(params[:allocation_tag_id])
-
-    # if profile == Profile.student_profile
-    #   allocation_tag = AllocationTag.find(params[:allocation_tag_id])
-    #   offer   = allocation_tag.offer || allocation_tag.group.offer
-    #   ok      = (offer.enrollment_start_date.to_date..(offer.enrollment_end_date.try(:to_date) || offer.end_date.to_date)).include?(Date.today)
-    # end
-
-    # @allocations = []
-    # ok =  allocate(params[:allocation_tag_id], @allocations, params[:user_id], profile, status) if ok or ok.nil?
-
-    # message, params[:success] = (ok ? ['notice', 'success'] : ['alert', 'error']), ok
-    # respond_to do |format|
-    #   format.html { redirect_to(enrollments_url, message.first.to_sym => t(:enrollm_request, scope: [:allocations, message.last.to_sym])) }
-    # end
   end
 
   # Usado na alocacao de usuarios
@@ -282,7 +256,7 @@ class AllocationsController < ApplicationController
     @allocation  = Allocation.find(params[:id])
     @text_search = params[:text_search]
 
-    begin 
+    begin
       if current_user.is_admin?
         authorize! :deactivate, Allocation
       else
@@ -298,7 +272,7 @@ class AllocationsController < ApplicationController
   end
 
   def activate
-    @allocation       = Allocation.find(params[:id])
+    @allocation = Allocation.find(params[:id])
     allocation_tag_id = @allocation.allocation_tag_id
 
     begin
@@ -328,18 +302,6 @@ class AllocationsController < ApplicationController
     else
       render json: {alert: t('allocations.error.enrollm_request')}, status: :unprocessable_entity
     end
-
-
-
-    # respond_to do |format|
-    #   if (ok and @allocation.update_attribute(:status, Allocation_Pending_Reactivate))
-    #     format.html { redirect_to(enrollments_url, notice: t(:enrollm_request, :scope => [:allocations, :success])) }
-    #     format.json { head :ok }
-    #   else
-    #     format.html { redirect_to(enrollments_url, alert: t(:enrollm_request, :scope => [:allocations, :error])) }
-    #     format.json { head :error }
-    #   end
-    # end
   end
 
   def accept_or_reject
