@@ -37,7 +37,7 @@ module MenuHelper
         divs_group[menu['parent_id'].to_i] = {
           ul: {
             li: {
-              id: "menu-parent_#{menu['parent_id']}-#{id}", a: a_link, ul: [], :"data-menu" => "menu-parent_#{menu['parent_id']}-"
+              id: "menu-parent_#{menu['parent_id']}-#{id}", menu: "menu-parent_#{menu['parent_id']}-", a: a_link, ul: []
             }
           }
         }
@@ -76,7 +76,7 @@ module MenuHelper
         html << %{
           <div class="mysolar_menu_group">
             <ul>
-              <li class="#{li_class}" id="#{div[:ul][:li][:id]}">
+              <li class="#{li_class}" id="#{div[:ul][:li][:id]}" data-menu="#{div[:ul][:li][:menu]}">
                 #{div[:ul][:li][:a]}
                 #{submenu}
               </li>
