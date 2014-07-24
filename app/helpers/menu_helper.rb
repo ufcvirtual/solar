@@ -26,6 +26,7 @@ module MenuHelper
     menus.each_with_index do |menu, idx|
       access_controller = menu["url"].nil? ? {controller: "/#{menu["controller"]}", action: menu["action"], mid: menu['parent_id'], bread: menu['parent']}  : menu["url"]
       div_group_opened  = false if (previous_parent_id != menu['parent_id'].to_i) # quando o pai muda, outra div deve ser criada
+      menu_div_id       = (menu['context_id'] == Context_Curriculum_Unit.to_s ? "menu-#{idx}-#{id}" : "menu-#{idx}-")
 
       unless div_group_opened # menu pai
         div_group_opened = true
@@ -35,7 +36,7 @@ module MenuHelper
         divs_group[menu['parent_id'].to_i] = {
           ul: {
             li: {
-              id: "parent_#{menu['parent_id']}", a: a_link, ul: []
+              id: "menu-parent_#{menu['parent_id']}-#{id}", a: a_link, ul: [], :"data-menu" => "menu-parent_#{menu['parent_id']}-"
             }
           }
         }
@@ -44,9 +45,10 @@ module MenuHelper
       if div_group_opened and (not menu['child'].nil?) # filhos do menu pai
         access_controller[:id]    = id unless id.nil?
         access_controller[:bread] = menu['child']
+
         divs_group[menu['parent_id'].to_i][:ul][:li][:ul] << 
           %{
-            <li class="mysolar_menu_list" id="menu-#{idx}-#{id}">
+            <li class="mysolar_menu_list" id="#{menu_div_id}" data-menu="menu-#{idx}-">
               #{link_to(t(menu['child'].to_sym), access_controller)}
             </li>
           }
@@ -55,6 +57,7 @@ module MenuHelper
       previous_parent_id = menu['parent_id'].to_i
 
     end # end menu each
+
 
     return to_html(divs_group.compact, id)
   end

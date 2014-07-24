@@ -11,10 +11,11 @@ module ApplicationHelper
 
     tabs_opened.map { |name, link|
       general_context = tabs_opened[name][:url][:context] == Context_General
+      active_tab      = tabs_opened[name][:breadcrumb].first[:url][:id] rescue ""
       %{
         <li class="#{'mysolar_unit%s_tab' % [('_active' if (user_session[:tabs][:active] == name))]} #{'general_context' if general_context}">
           #{link_to(name, activate_tab_path(name: name))}
-          #{link_to_if(not(general_context), '', close_tab_path(name: name), {:class => 'tabs_close'})}
+          #{link_to_if(not(general_context), '', close_tab_path(name: name), {class: 'tabs_close', id: "#{active_tab}" })}
         </li>
       }
     }.join
