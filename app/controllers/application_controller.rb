@@ -89,7 +89,7 @@ class ApplicationController < ActionController::Base
     is_mysolar    = (params[:action] == 'mysolar')
     user_profiles = Profile.joins(:allocations).where("allocations.user_id = ? AND allocations.status = ?", current_user.id, Allocation_Activated)
 
-    user_session[:uc_profiles]  = user_profiles.where("allocations.allocation_tag_id IN (?)", AllocationTag.find(active_tab[:url][:allocation_tag_id]).related).pluck(:id).join(",") if active_tab[:url][:context] == Context_Curriculum_Unit.to_i
+    user_session[:uc_profiles]  = user_profiles.where("allocations.allocation_tag_id IN (?)", AllocationTag.find(active_tab[:url][:allocation_tag_id]).related).pluck(:id).compact.join(",") if active_tab[:url][:context] == Context_Curriculum_Unit.to_i
     user_session[:all_profiles] = user_profiles.pluck(:id).join(',')
     user_session[:context_id]   = is_mysolar ? Context_General : active_tab[:url][:context]
     user_session[:context_uc]   = is_mysolar ? nil : active_tab[:url][:id]

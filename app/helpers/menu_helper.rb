@@ -12,7 +12,8 @@ module MenuHelper
 
   def menu
     all_profiles_ids, profiles_ids = user_session[:all_profiles], (user_session[:uc_profiles]) 
-    context_id, id, current_menu   = user_session[:context_id], user_session[:context_uc], user_session[:menu][:current]
+    id, current_menu = user_session[:context_uc], user_session[:menu][:current]
+    context_id = user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:context]
 
     menus = Menu.list_by_profile_id_and_context_id(all_profiles_ids, profiles_ids, context_id)
     divs_group, div_group_opened, previous_parent_id = [], false, 0
