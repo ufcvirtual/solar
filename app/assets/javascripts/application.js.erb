@@ -71,15 +71,14 @@ mysolar_cookie_id = "_mysolar_menu_opened";
  $(function() {
   var menu_id, li;
 
-  //Highlight dos menus
+  // Ao clicar nos menus
   $('.mysolar_menu_list a, .mysolar_menu_title').click(function () {
     li = $(this).closest('li');
-    // o li tem um data menu, que somado ao id da oferta, deve corresponder ao cookie
+    // o li tem um data menu, que, acrescido ao id da oferta, deve corresponder ao cookie
     menu_div_id  = li.data('menu');
     cookie_value = menu_div_id+$(".mysolar_menu").data("offer");
-
-    //se for menu interno à uc
-    if (cookie_value == li.prop("id")) 
+    
+    if (cookie_value == li.prop("id")) //se for menu interno à uc
       setCookieMenu(cookie_value);
     else // se for menu geral
       setCookieMenu(menu_div_id, "");
@@ -88,7 +87,7 @@ mysolar_cookie_id = "_mysolar_menu_opened";
     li.addClass('mysolar_menu_active');
   });
 
-  // clicar para abrir aba
+  // Ao clicar para abrir aba
   $("tbody.offers td a").click(function(){
     id = $(this).prop("href").split("&")[2].split("=")[1];
     setCookieMenu("menu-parent_0-"+id, id);
@@ -97,17 +96,19 @@ mysolar_cookie_id = "_mysolar_menu_opened";
   });
 
   $("#breadcrumb a").click(function(){
-    // links que possuem id são referentes a aba de UC
-    id = $(this).prop("href").split("&")[2].split("=")[1];
-    // links que possuem mid são referentes a algo no menu;
-    mid = getURLParameter($(this).prop("href"), "mid");
+    id  = $(this).prop("href").split("&")[2].split("=")[1]; // links que possuem id são referentes a aba de UC
+    mid = getURLParameter($(this).prop("href"), "mid");     // links que possuem mid são referentes a algo no menu
     if (id!=null && mid==null) // se for um link para o início da uc
       setCookieMenu("menu-parent_0-"+id);
   });
 
   // NÃO TÁ FUNCIONANDO
+  // só funciona no segundo clique
   // ao clicar na aba "home"
-  $(".general_context a").click(function(){
+  $("li.general_context a").click(function(){
+    console.log('removendo: ' + mysolar_cookie_id);
+    console.log('valor: ' + $.cookie(mysolar_cookie_id));
+
     $.removeCookie(mysolar_cookie_id);
   });
 
@@ -115,31 +116,34 @@ mysolar_cookie_id = "_mysolar_menu_opened";
     return (RegExp(name + '=' + '(.+?)(&|$)').exec(url)||[,null])[1];
   };
 
-  //Função de criação do cookie
+  // Função de criação do cookie em uma aba
   function setCookieMenu(cookie_value, tab) {
-    console.log("setando cookie "+cookie_value+" - "+ tab);
-    if (tab == undefined)
+    if (tab == undefined) // se a aba não for informada, recupera a partir do menu
       tab = $(".mysolar_menu").data("offer");
+
+    console.log('setando: ' + mysolar_cookie_id+tab);
+    console.log('valor: ' + cookie_value);
 
     $.cookie(mysolar_cookie_id+tab, cookie_value, { path: '/' });
   };
 
-  //Adição das classes de menu ativo enquanto o cookie existir
-  li_id = $.cookie(mysolar_cookie_id+$(".mysolar_menu").data("offer"));
-  // $(".mysolar_menu_active").removeClass("mysolar_menu_active");
-  $('li#'+li_id).addClass('mysolar_menu_active').addClass('mysolar_title_menu_active');
+  // Adição das classes de menu ativo enquanto o cookie existir
+  var li_id = $.cookie(mysolar_cookie_id+$(".mysolar_menu").data("offer"));
+
+  console.log('lendo: ' + mysolar_cookie_id+$(".mysolar_menu").data("offer"));
+  console.log('valor: ' + li_id);
+
+  $('li#'+li_id).addClass('mysolar_menu_active');
 
   // NÃO TÁ FUNCIONANDO QD TÁ NO INÍCIO
   // remover o cookie ao fechar aba
   $(".tabs_close").click(function(){
-    console.log("oi");
     console.log($(this).prop("id"));
     console.log(mysolar_cookie_id);
     console.log(mysolar_cookie_id+$(this).prop("id"))
 
-    // oi application.js:33430
-    // 119 application.js:33431
-    // _mysolar_menu_opened application.js:33432
+    // 119
+    // _mysolar_menu_opened
     // _mysolar_menu_opened119
 
     // _mysolar_menu_opened119
@@ -154,8 +158,7 @@ mysolar_cookie_id = "_mysolar_menu_opened";
   if($('.mysolar_menu_title_multiple').children("div.menu_icon_arrow").length == 0)
     $('.mysolar_menu_title_multiple').prepend('<div class="menu_icon_arrow">&#9662;</div>');
 
-  // abre menu corrente
-  $('.open_menu').click();
+  $('.open_menu').click(); // abre menu corrente
 });
 
 /**
