@@ -403,31 +403,30 @@ a.mysolar_top_link {
   transform: rotate(90deg);
 }
 
-.mysolar_menu_title{
+.mysolar_menu_title, .mysolar_menu_title_multiple{
   width: 100%;
   margin: 2px;
-  height: 30px;
-  cursor: pointer;
   font-weight: normal;
-  line-height: 30px;
   font-variant: small-caps;
   font-size: 12pt;
   font-family: 'Ubuntu Condensed', sans-serif;
   color: $color_main_text;
 }
 
-.mysolar_menu_title_multiple{
-  color: $color_main_text;
+.mysolar_menu_title{
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer;
 }
+
 
 .mysolar_menu_title_active > a {
   color: $color_contrast_text;
 }
 
 .submenu {
-  margin: 0;
+  margin-bottom: 10px;
   border-top: 2px solid;
-  font-size: 10pt;
   border-top-color: #214684;
   background-color: #F8FBFE; /* alternativa: f5f8fb */
 
@@ -435,7 +434,10 @@ a.mysolar_top_link {
     padding: 8px 0 8px 10px;
   }
   a {
+    font-size: 10pt;
     color: #222;
+    font-variant: initial;
+    font-family: 'PT Sans', sans-serif;
   }
 }
 
