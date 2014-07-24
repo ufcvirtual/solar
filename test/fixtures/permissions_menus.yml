@@ -505,3 +505,10 @@ pm123:
 pm124:
   profile_id: 3
   menu_id: 206
+
+# responsibles
+
+# admin
+pm125:
+  profile_id: 6
+  menu_id: 610
