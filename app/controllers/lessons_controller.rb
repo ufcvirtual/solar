@@ -39,11 +39,11 @@ class LessonsController < ApplicationController
 
     authorize! :list, Lesson, on: @allocation_tags_ids
     @academic_allocations = AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where(allocation_tag_id: @allocation_tags_ids.split(" ").flatten).order("academic_tool_id").paginate(page: params[:page], per_page: 30)
-    
+
     respond_to do |format|
       format.html
       format.js
-    end  
+    end
   rescue
     render nothing: true, status: 500
   end
