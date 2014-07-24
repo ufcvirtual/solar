@@ -65,86 +65,40 @@ mysolar_cookie_id = "_mysolar_menu_opened";
 });
 
 /**
- * Menu Accordion
+ * Menu Lateral
  */
- $(function() {
-  $('.mysolar_menu_title').click(function() {
-    // verificando se o item do menu já está ativo
-    if ( $(this).parent().hasClass('mysolar_menu_title_active') == false ) {
-      // limpando o menu, removendo itens ativos e ocultando submenu
-      $('.mysolar_menu_title').each(function(){
-        $(this).parent().removeClass('mysolar_menu_title_active').removeClass('mysolar_menu_title_single_active');
-        $(this).find('div').removeClass('menu_icon_animate');
-      });
-    } else {
-      $(this).parents('li').find('.menu_icon_circle').addClass('.menu_icon_animate');
-      // tornando o item ativo
-      $(this).parent().addClass('mysolar_menu_title_single_active');
-    }
-  });
 
-  // adicionando highlight do menu lateral
-  // var home_tab = $(".mysolar_unit_active_tab.general_context").length;
-  // var menu_URL = $("#mysolar_content").contents().find("#breadcrumb .block_wrapper").data("url");
+ $(function() {
 
   var menu_id, li;
 
+  //Highlight dos menus filho
   $('.mysolar_menu_list a').click(function () {
     li = $(this).closest('li');
     menu_id = li.attr('id');
 
     setCookieMenu(menu_id);
+    $('.mysolar_menu_title_single').removeClass('mysolar_menu_active').removeClass('mysolar_title_menu_active');    
     li.addClass('mysolar_menu_active');
   });
 
-  // $('#breadcrumb a').click(function (e){
-  //   // e.preventDefault(); // FIXME: debug, remover quando setar o valor do atributo mid na url
+  //Highlight dos menus pai
+  $('.mysolar_menu_title').click(function () {
+    li = $(this).closest('li');
+    menu_id = li.attr('id');
 
-  //   var breadcrumbHref = $(this).attr('href');
-  //   menu_id = getURLParameter(breadcrumbHref, 'mid');
-  //   //console.info(getURLParameter(href, 'mid'));
-  //   if (!menu_id) {
-  //     setCookieMenu(null);
-  //   } else {
-  //     setCookieMenu(menu_id);
-  //   };
+    setCookieMenu(menu_id);
+    $('.mysolar_menu_list').removeClass('mysolar_menu_active'); 
+    li.addClass('mysolar_menu_active').addClass('mysolar_title_menu_active');
+  });
 
-  // });
-
-  // function getURLParameter(url, name) {
-  //   return (RegExp(name + '=' + '(.+?)(&|$)').exec(url)||[,null])[1];
-  // };
-
+  //Função de criação do cookie
   function setCookieMenu(menu_id) {
     $.cookie(mysolar_cookie_id+$(".mysolar_menu").data("offer"), menu_id, { path: '/' });
   };
 
-  $('li#' + $.cookie(mysolar_cookie_id+$(".mysolar_menu").data("offer"))).addClass('mysolar_menu_active');
-
-  // $('.mysolar_menu_list a').each(function() {
-  //   console.log('each :' + $.cookie(mysolar_cookie_id));
-
-  //   var li = $(this).closest('li');
-  //   if ($.cookie(mysolar_cookie_id) == li.attr('id')){
-  //     li.addClass("mysolar_menu_active");
-  //   }
-  // });
-
-
-
-  // function mysolar_highlight() {
-  //   if (!home_tab) {
-  //     // save cookie with the new url
-  //     var menu_URL = $("#mysolar_content").contents().find("#breadcrumb .block_wrapper").data("url");
-  //     $.cookie(mysolar_cookie_id, menu_URL);
-
-  //     $('.mysolar_menu_list').addClass('mysolar_menu_active');
-
-  //   }
-  //   else
-  // }
-
-
+  //Adição das classes enquanto o cookie existir
+  $('li#' + $.cookie(mysolar_cookie_id+$(".mysolar_menu").data("offer"))).addClass('mysolar_menu_active').addClass('mysolar_title_menu_active');
 
   if($('.mysolar_menu_title_single > a').children("div.menu_icon_circle").length == 0)
     $('.mysolar_menu_title_single > a').prepend('<div class="menu_icon_circle">&bull;</div>');
