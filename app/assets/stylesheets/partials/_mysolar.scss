@@ -439,6 +439,10 @@ a.mysolar_top_link {
   }
 }
 
+.mysolar_menu_title_single.mysolar_menu_active > a{
+  color: #000;
+}
+
 .mysolar_menu_active{
   background-color: $color_contrast_light;
   border-right-color: $color_contrast;

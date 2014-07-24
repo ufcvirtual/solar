@@ -55,6 +55,7 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from ActionView::Template::Error do |exception|
+    raise "#{exception}"
     respond_to do |format|
       format.html { redirect_to home_path, alert: t(:cant_build_page) }
       format.json { render json: {msg: t(:cant_build_page)}, status: :unauthorized }
@@ -105,6 +106,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_active_tab_to_home
+    # refazer menu
     clear_breadcrumb_home
     set_active_tab('Home')
   end
