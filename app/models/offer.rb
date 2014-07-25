@@ -153,8 +153,7 @@ class Offer < ActiveRecord::Base
 
     allocations_info = offers.collect{ |offer| 
       ats = offer.allocation_tag.related
-      uc = offer.curriculum_unit
-      course = offer.course
+      uc, course = offer.curriculum_unit, offer.course
         {
           id: offer.id,
           info: offer.allocation_tag.info,
