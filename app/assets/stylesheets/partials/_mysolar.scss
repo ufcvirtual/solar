@@ -406,6 +406,7 @@ a.mysolar_top_link {
 .mysolar_menu_title, .mysolar_menu_title_multiple{
   width: 100%;
   margin: 2px;
+  margin-top: 10px;
   font-weight: normal;
   font-variant: small-caps;
   font-size: 12pt;
@@ -425,7 +426,7 @@ a.mysolar_top_link {
 }
 
 .submenu {
-  margin-bottom: 10px;
+
   border-top: 2px solid;
   border-top-color: #214684;
   background-color: #F8FBFE; /* alternativa: f5f8fb */
