@@ -7,16 +7,21 @@
 
   / Lista dos alunos com notas
   .tb_list_students
-    %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: "lista de estudantes"}
+    %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.list_of_students')}
       %thead
         %tr.lines
           %th#student= t(".student")
           %th#public_files= t(".public_files")
           %th.participation= t(".participation")
           %th.access_history= t(".access_to_the_course")
-          #assignment_title{style: "padding-right: #{@assignments.size*15}px"}= t(".assignments")
-          - @assignments.each_with_index do |assignment, idx|
-            %th#assignment{'data-tooltip' => assignment.name}= "#{idx + 1}"
+          - padding_title = @assignments.size > 1 ? @assignments.size * 15 : 20
+          #assignment_title{style: "padding-right: #{padding_title}px"}= t(".assignments")
+          - unless @assignments.empty?
+            - style_th_width = @assignments.size < 4 ? "width: #{40/@assignments.size}px;" : ''
+            - @assignments.each_with_index do |assignment, idx|
+              %th#assignment{style: style_th_width, 'data-tooltip' => assignment.name}= "#{idx + 1}"
+          - else
+            %th.no_sort{style: 'width: 5%'}= '-'
       %tbody
         - unless @students.empty?
           - @students.each_with_index do |student, idx|

@@ -21,8 +21,8 @@ table#list_of_students thead{
 }
 
 .tb_list_students{
+  overflow-y: auto;
   margin-top: 10px;
-  background-color: #f8fbfe;
 
   table{
     table-layout: fixed;
@@ -31,8 +31,6 @@ table#list_of_students thead{
     }
     td.td_student{
       text-align: left;
-      overflow: hidden;
-      text-overflow: ellipsis;
       white-space: nowrap;
     }
     td[class^='assignment_']{
@@ -41,8 +39,11 @@ table#list_of_students thead{
     td[class^='assignment_']:nth-child(2n+1){
       background:#cbe0fa;
     }
-    th#assignment{
-      width: 20px;
+    th#student {
+      width: 120px;
+    }
+    th#assignment {
+      width: 10px;
       text-decoration: underline;
     }
     th.access_history, th#public_files {
