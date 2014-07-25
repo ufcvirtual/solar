@@ -12,9 +12,9 @@
     <% @responsible.each do |resp| %>
       <div class="participants_list_item">
         <% if resp.photo_file_name %>
-          <%=image_tag resp.photo.url(:medium), :alt => t(:mysolar_alt_img_user) + ' ' + resp.name %>
+          <%=image_tag resp.photo.url(:medium), :alt => t(:mysolar_alt_img_user) %>
         <% else %>
-          <%=image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user) + ' ' + resp.name %>
+          <%=image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user) %>
         <% end %>
 
         <div class="participant_name" title="<%=resp.name%>">
@@ -48,9 +48,9 @@
     <% @participants.each do |part| %>
       <div class="participants_list_item">
         <% unless part.photo_file_name.nil? %>
-          <%=image_tag part.photo.url(:medium), :alt => t(:mysolar_alt_img_user) + ' ' + part.name %>
+          <%=image_tag part.photo.url(:medium), :alt => t(:mysolar_alt_img_user) %>
         <% else %>
-          <%=image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user) + ' ' + part.name %>
+          <%=image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user) %>
         <% end %>
 
         <div class="participant_name" title="<%=part.name%>">
