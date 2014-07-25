@@ -47,7 +47,7 @@ module MenuHelper
       if div_group_opened and (not menu['child'].nil?) # filhos do menu pai
         access_controller[:id]    = id unless id.nil?
         access_controller[:bread] = menu['child']
-        path       = (context_id == Context_Curriculum_Unit) ? "/" : URI(url_for(access_controller)).path
+        path = URI(url_for(access_controller)).path
 
         divs_group[menu['parent_id'].to_i][:ul][:li][:ul] << 
           %{
