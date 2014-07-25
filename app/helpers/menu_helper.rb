@@ -33,11 +33,12 @@ module MenuHelper
         div_group_opened = true
         link_class = ['mysolar_menu_title', ((menu['parent_id'].to_i == current_menu.to_i and params.include?(:mid)) ? 'open_menu' : nil)].compact.join(' ')
         a_link     = ((menu['child'].nil?) ? link_to(t(menu['parent'].to_sym), access_controller, class: link_class) : %{#{t(menu['parent'].to_sym)}})
+        path       = (context_id == Context_Curriculum_Unit) ? "/curriculum_units/#{id}" : URI(url_for(access_controller)).path
 
         divs_group[menu['parent_id'].to_i] = {
           ul: {
             li: {
-              id: "menu-parent_#{menu['parent_id']}-#{id}", menu: "menu-parent_#{menu['parent_id']}-", a: a_link, ul: []
+              id: "menu-parent_#{menu['parent_id']}-#{id}", menu: "menu-parent_#{menu['parent_id']}-", a: a_link, ul: [], path: path
             }
           }
         }
@@ -46,10 +47,11 @@ module MenuHelper
       if div_group_opened and (not menu['child'].nil?) # filhos do menu pai
         access_controller[:id]    = id unless id.nil?
         access_controller[:bread] = menu['child']
+        path       = (context_id == Context_Curriculum_Unit) ? "/" : URI(url_for(access_controller)).path
 
         divs_group[menu['parent_id'].to_i][:ul][:li][:ul] << 
           %{
-            <li class="mysolar_menu_list" id="#{menu_div_id}" data-menu="menu-#{idx}-">
+            <li class="mysolar_menu_list" id="#{menu_div_id}" data-menu="menu-#{idx}-" data-path="#{path}">
               #{link_to(t(menu['child'].to_sym), access_controller)}
             </li>
           }
@@ -76,7 +78,7 @@ module MenuHelper
         html << %{
           <div class="mysolar_menu_group">
             <ul>
-              <li class="#{li_class}" id="#{div[:ul][:li][:id]}" data-menu="#{div[:ul][:li][:menu]}">
+              <li class="#{li_class}" id="#{div[:ul][:li][:id]}" data-menu="#{div[:ul][:li][:menu]}" data-path="#{div[:ul][:li][:path]}">
                 #{div[:ul][:li][:a]}
                 #{submenu}
               </li>

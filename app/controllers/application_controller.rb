@@ -105,7 +105,6 @@ class ApplicationController < ActionController::Base
   end
 
   def set_active_tab_to_home
-    # refazer menu
     clear_breadcrumb_home
     set_active_tab('Home')
   end
@@ -179,6 +178,7 @@ class ApplicationController < ActionController::Base
           current_menu_id = params[:mid]
           if current_menu_id.to_i == 0 or MenusContexts.find_all_by_menu_id_and_context_id(current_menu_id, tab_context_id).empty?
             menu_context_id = (current_menu_id.to_i == 0) ? Context_Curriculum_Unit : MenusContexts.find_by_menu_id(current_menu_id).try(:context_id)
+            user_session[:context_uc] = nil if Context_General == menu_context_id
             tab_name = find_tab_by_context(menu_context_id)
             set_active_tab(tab_name)
           end

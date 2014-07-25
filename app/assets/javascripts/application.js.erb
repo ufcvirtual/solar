@@ -73,13 +73,13 @@ mysolar_cookie_id = "_mysolar_menu_opened";
 
   // Ao clicar nos menus
   $('.mysolar_menu_list a, .mysolar_menu_title').click(function () {
-    li = $(this).closest('li');
+    var li = $(this).closest('li');
     // o li tem um data menu, que, acrescido ao id da oferta, deve corresponder ao cookie
-    menu_div_id  = li.data('menu');
-    cookie_value = menu_div_id+$(".mysolar_menu").data("offer");
+    var menu_div_id  = li.data('menu');
+    var cookie_value = menu_div_id+$(".mysolar_menu").data("offer");
     
     if (cookie_value == li.prop("id")) //se for menu interno à uc
-      setCookieMenu(cookie_value);
+      setCookieMenu(cookie_value, null, li.data("path"));
     else // se for menu geral
       setCookieMenu(menu_div_id, "");
 
@@ -89,26 +89,23 @@ mysolar_cookie_id = "_mysolar_menu_opened";
 
   // Ao clicar para abrir aba
   $("tbody.offers td a").click(function(){
-    id = $(this).prop("href").split("&")[2].split("=")[1];
-    setCookieMenu("menu-parent_0-"+id, id);
+    var id = $(this).prop("href").split("&")[2].split("=")[1];
+    setCookieMenu("menu-parent_0-"+id, id, $(this).data("path"));
     $('li#parent_0').addClass('mysolar_menu_active'); // seta o Inicio
     $.removeCookie(mysolar_cookie_id); // remove cookie de home
   });
 
+  // Ao clicar no breadcrumb
   $("#breadcrumb a").click(function(){
-    id  = $(this).prop("href").split("&")[2].split("=")[1]; // links que possuem id são referentes a aba de UC
-    mid = getURLParameter($(this).prop("href"), "mid");     // links que possuem mid são referentes a algo no menu
-    if (id!=null && mid==null) // se for um link para o início da uc
+    var id  = $(this).prop("href").split("&")[2].split("=")[1]; // links que possuem id são referentes a aba de UC
+    var mid = getURLParameter($(this).prop("href"), "mid");     // links que possuem mid são referentes a algo no menu
+    if (id!=null && mid==null){ // se for um link para o início da uc
       setCookieMenu("menu-parent_0-"+id);
+    }
   });
 
-  // NÃO TÁ FUNCIONANDO
-  // só funciona no segundo clique
-  // ao clicar na aba "home"
+  // Ao clicar na aba "home"
   $("li.general_context a").click(function(){
-    console.log('removendo: ' + mysolar_cookie_id);
-    console.log('valor: ' + $.cookie(mysolar_cookie_id));
-
     $.removeCookie(mysolar_cookie_id);
   });
 
@@ -117,37 +114,23 @@ mysolar_cookie_id = "_mysolar_menu_opened";
   };
 
   // Função de criação do cookie em uma aba
-  function setCookieMenu(cookie_value, tab) {
-    if (tab == undefined) // se a aba não for informada, recupera a partir do menu
+  function setCookieMenu(cookie_value, tab, path) {
+    if (tab == undefined || tab == null) // se a aba não for informada, recupera a partir do menu
       tab = $(".mysolar_menu").data("offer");
 
-    console.log('setando: ' + mysolar_cookie_id+tab);
-    console.log('valor: ' + cookie_value);
+    if (path == undefined) // se nenhum href for passado, path é "/" por padrão
+      var path = "/";
 
-    $.cookie(mysolar_cookie_id+tab, cookie_value, { path: '/' });
+    $.cookie(mysolar_cookie_id+tab, cookie_value, { path: path });
   };
 
   // Adição das classes de menu ativo enquanto o cookie existir
   var li_id = $.cookie(mysolar_cookie_id+$(".mysolar_menu").data("offer"));
 
-  console.log('lendo: ' + mysolar_cookie_id+$(".mysolar_menu").data("offer"));
-  console.log('valor: ' + li_id);
-
   $('li#'+li_id).addClass('mysolar_menu_active');
 
-  // NÃO TÁ FUNCIONANDO QD TÁ NO INÍCIO
-  // remover o cookie ao fechar aba
+  // Remoção do cookie ao fechar aba
   $(".tabs_close").click(function(){
-    console.log($(this).prop("id"));
-    console.log(mysolar_cookie_id);
-    console.log(mysolar_cookie_id+$(this).prop("id"))
-
-    // 119
-    // _mysolar_menu_opened
-    // _mysolar_menu_opened119
-
-    // _mysolar_menu_opened119
-
     var cookie_value = mysolar_cookie_id+$(this).prop("id");
     $.removeCookie(cookie_value);
   });

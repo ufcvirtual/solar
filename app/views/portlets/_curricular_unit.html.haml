@@ -30,7 +30,7 @@
                   - html_options = {onclick: "javascript:alert('"+t(:curriculum_access_alert)+"');return false;", class: 'link_content' }
                 - else 
                   - link = add_tab_path(id: offer[:id], context: Context_Curriculum_Unit, name: (offer[:name]), allocation_tag_id: offer[:at], title_name: offer[:info])
-                  - html_options = {}
+                  - html_options = {:"data-path" => "/curriculum_units/#{offer[:id]}"}
                 - livre = offer[:uc].try(:curriculum_unit_type_id) == 3
                 %tr.lines
                   %td.type{:"data-tooltip" => offer[:uc].try(:curriculum_unit_type).try(:description)}= image_tag(offer[:uc].try(:curriculum_unit_type).try(:icon_name))
