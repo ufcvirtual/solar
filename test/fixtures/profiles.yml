@@ -31,10 +31,12 @@ admin:
 coord_tutoria:
   id: 7
   name: "Coordenador de Tutoria"
+  types: 2
 
 coord_grad:
   id: 8
   name: "Coord. Graduacao"
+  types: 2
 
 coord_polo:
   id: 9
@@ -47,6 +49,7 @@ avaliador:
 secretaria:
   id: 11
   name: "Secretaria"
+  types: 32
 
 basico:
   id: 12

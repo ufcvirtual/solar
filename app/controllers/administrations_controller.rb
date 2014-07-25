@@ -90,7 +90,7 @@ class AdministrationsController < ApplicationController
     @profiles = @allocations_user.map(&:profile).flatten.uniq
     @periods  = [ [t(:active),''] ]
     @periods += Semester.all.map{|s| s.name}.flatten.uniq.sort! {|x,y| y <=> x}
-    @is_admin = params[:admin] == "true" if params.include?(:admin)
+    @is_admin = current_user.is_admin?
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
