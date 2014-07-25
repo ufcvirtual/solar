@@ -1705,8 +1705,8 @@ pt_BR:
       type: Tipo
       name: Nome
       profile: Perfil
-      page_info: "Esta página tem como finalidade a aceitação/rejeição de solicitações de perfis. Caso você deseje alocar um usuário, acesse a área de %{url}."
-      user_indication: indicação de usuários
+      page_info: "<b>Importante:</b> Esta página tem como finalidade a aceitação/rejeição de solicitações de perfis. Caso você deseje alocar um usuário, acesse a área de %{url}."
+      user_indication: "indicação de usuários"
     pending_allocations:
       reject: Rejeitar
       accept: Aceitar
@@ -1879,7 +1879,7 @@ pt_BR:
       edit_module: Editar Módulo
       edit_curriculum_unit: Editar Unidade Curricular
     informations:
-      warning: "Este curso não possui uma unidade curricular, portanto algumas informações não estão disponíveis."
+      warning: "<b>Importante:</b> Este curso não possui uma unidade curricular, portanto algumas informações não estão disponíveis."
 
   semesters:
     success:
