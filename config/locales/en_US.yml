@@ -1513,7 +1513,7 @@ en_US:
       type: Type
       name: Name
       profile: Profile
-      page_info: "This page has as goal the acceptance/rejection of profiles requests. If you want to allocate an user, access the %{url} area."
+      page_info: "<b>Important:</b> This page has as goal the acceptance/rejection of profiles requests. If you want to allocate an user, access the %{url} area."
       user_indication: user indication
     pending_allocations:
       reject: Reject
@@ -1684,7 +1684,7 @@ en_US:
       edit_module: Edit Module
       edit_curriculum_unit: Edit Curriculum Unit
     informations:
-      warning: "This course has no curriculum unit, therefore some information is not available."
+      warning: "<b>Important:</b> This course has no curriculum unit, therefore some information is not available."
   semesters:
     success:
       created: Semester was successfully created.

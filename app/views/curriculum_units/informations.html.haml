@@ -1,8 +1,6 @@
+- if @curriculum_unit.nil?
+  .title-warning=raw t(".warning")
 .block_wrapper
-  
-  - if @curriculum_unit.nil?
-    .title-warning= t(".warning")
-
   .block_title
     %h2
       %i.icon-docs

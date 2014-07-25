@@ -153,14 +153,16 @@ class Offer < ActiveRecord::Base
 
     allocations_info = offers.collect{ |offer| 
       ats = offer.allocation_tag.related
+      uc = offer.curriculum_unit
+      course = offer.course
         {
           id: offer.id,
           info: offer.allocation_tag.info,
           at: offer.allocation_tag.id,
-          name: offer.curriculum_unit.try(:name).titleize || offer.course.try(:name).titleize,
+          name: (uc.nil? ? course.name.titleize : uc.name.titleize),
           has_groups: not(offer.groups.empty?),
-          uc: offer.curriculum_unit,
-          course: offer.course,
+          uc: uc,
+          course: course,
           semester_name: offer.semester.name,
           profiles: user.allocations.where("allocation_tag_id IN (?)", ats).select("DISTINCT profile_id, allocations.*").map(&:profile).map(&:name).join(", ")
         }

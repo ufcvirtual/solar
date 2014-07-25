@@ -36,8 +36,8 @@
                   %td.type{:"data-tooltip" => offer[:uc].try(:curriculum_unit_type).try(:description)}= image_tag(offer[:uc].try(:curriculum_unit_type).try(:icon_name))
                   %td{style: "display: none"}= offer[:uc].try(:curriculum_unit_type).try(:description)
                   - unless livre
-                    %td= offer[:has_groups] ? link_to(offer[:uc].try(:code), link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:uc].try(:code)
-                    %td= offer[:has_groups] ? link_to(offer[:uc].try(:name), link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:uc].try(:name)
+                    %td= offer[:has_groups] ? link_to(offer[:uc].try(:code) || "-", link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:uc].try(:code)
+                    %td= offer[:has_groups] ? link_to(offer[:uc].try(:name) || "-", link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:uc].try(:name)
                   - else
                     %td{style: "text-align: center"}= " - "
                     %td{style: "text-align: center"}= " - "
