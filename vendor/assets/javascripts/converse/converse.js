@@ -11446,7 +11446,7 @@ return parser;
                 if (con.connection.roster.items.length === 0){
                     $('.toggle-online-users').click();
                 };
-            },800);
+            },1200);
                 
         };
 
