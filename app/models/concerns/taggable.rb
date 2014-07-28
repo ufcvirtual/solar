@@ -19,33 +19,24 @@ module Taggable
   end
 
   ## verificando destroy
-
   def destroy_empty_modules
-    if respond_to?(:lesson_modules) and lesson_modules.map(&:lessons).flatten.empty?
+    if respond_to?(:lesson_modules) and Lesson.where(lesson_module_id: lesson_modules.pluck(:id)).pluck(:id).flatten.empty?
       lesson_modules.map(&:academic_allocations).flatten.map(&:delete) # usando delete para nao chamar callbacks
       lesson_modules.map(&:delete)
     end
   end
 
   def can_destroy?
-    if self.has_any_lower_association?
-      errors.add(:base, I18n.t(:dont_destroy_with_lower_associations))
-      return false
+    errors.add(:base, I18n.t(:dont_destroy_with_lower_associations)) if self.has_any_lower_association?
+    errors.add(:base, I18n.t(:dont_destroy_with_many_allocations)) if self.allocations.count > 1 # se possuir mais de um usuario alocado, nao deleta
+
+    alc = academic_allocations.count
+    if alc > 0 # tem conteudo
+      # pode destruir somente se o conteudo for apenas um modulo de aula
+      errors.add(:base, I18n.t(:dont_destroy_with_content)) unless alc == 1 and not(academic_allocations.where(academic_tool_type: 'LessonModule').empty?)
     end
 
-    if self.allocations.count > 1 # se possuir mais de um usuario alocado, nao deleta
-      errors.add(:base, I18n.t(:dont_destroy_with_many_allocations))
-      return false
-    end
-
-    if academic_allocations.count > 0 # verifica se possui conteudo
-      unless academic_allocations.size == 1 and not(academic_allocations.where(academic_tool_type: "LessonModule").empty?)
-        errors.add(:base, I18n.t(:dont_destroy_with_content))
-        return false
-      end
-    end
-
-    return true
+    return errors.empty?
   end
 
   ## demais metodos
@@ -144,15 +135,16 @@ module Taggable
     detailed_info.except(except).values.uniq.join " #{params[:separator]} "
   end
 
-  ## Após criar algum elemento taggable (uc, curso, turma, oferta), verifica todos os perfis que o usuário possui 
+  ## Após criar algum elemento taggable (uc, curso, turma, oferta), verifica todos os perfis que o usuário possui
   ## e, para cada um daqueles que possuem permissão de realizar a ação previamente realizada, é criada uma alocação
   def allocate_profiles
-    if user_id
-      profiles_with_access = User.find(user_id).profiles.joins(:resources).where(resources: {action: 'create', controller: self.class.name.underscore << 's'}).flatten
+    return unless user_id
 
-      profiles_with_access.each do |profile|
-        allocate_user(user_id, profile.id)
-      end
+    controller_name = self.class.name.underscore << 's'
+    profiles_with_access = User.find(user_id).profiles.joins(:resources).where(resources: {action: 'create', controller: controller_name}).pluck(:id)
+
+    profiles_with_access.each do |profile|
+      allocate_user(user_id, profile)
     end
   end
 
