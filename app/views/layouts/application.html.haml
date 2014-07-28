@@ -185,13 +185,13 @@
     else
       cookie_im = JSON.parse('{"IM" : true, "IM_toggle":true}');
 
-    $.cookie("cookie_im",JSON.stringify(cookie_im));
+    $.cookie("cookie_im",JSON.stringify(cookie_im),{path : "/"});  
     function getCookie(){
       cookie_im = JSON.parse($.cookie("cookie_im"));
     }
 
     function setCookie(){
-      $.cookie("cookie_im",JSON.stringify(cookie_im));
+      $.cookie("cookie_im",JSON.stringify(cookie_im),{path : "/"});
     }
 
     //cookie IM_groups
@@ -200,13 +200,13 @@
     else
       cookie_groups = JSON.parse('{}');
 
-    $.cookie("cookie_groups",JSON.stringify(cookie_groups));
+    $.cookie("cookie_groups",JSON.stringify(cookie_groups),{path : "/"});
     function getCookieGroups(){
       cookie_groups = JSON.parse($.cookie("cookie_groups"));
     }
 
     function setCookieGroups(){
-      $.cookie("cookie_groups",JSON.stringify(cookie_groups));
+      $.cookie("cookie_groups",JSON.stringify(cookie_groups),{path : "/"});
     }
 
     converse.initialize({
