@@ -9,20 +9,20 @@ class SemestersController < ApplicationController
     if [params[:period], params[:course_id], params[:curriculum_unit_id]].delete_if(&:blank?).empty?
       @semesters = []
     else
-      p = {}
-      p[:course_id] = params[:course_id] if params[:course_id].present?
+      p = {type_id: @type_id}
+      p[:course_id] = params[:course_id]          if params[:course_id].present?
       p[:uc_id]     = params[:curriculum_unit_id] if params[:curriculum_unit_id].present?
-      p[:period]    = params[:period] if params[:period].present?
+      p[:period]    = params[:period]             if params[:period].present?
 
       # [active, all, year]
       if params[:period] == "all"
         if p.has_key?(:course_id) or p.has_key?(:uc_id)
-          @semesters = Semester.all_by_uc_or_course(p)
+          @semesters = Semester.all_by_uc_or_course(p, params[:combobox])
         else
           @semesters = []
         end
       else
-        @semesters = Semester.all_by_period(p) # semestres do período informado ou ativos
+        @semesters = Semester.all_by_period(p, params[:combobox]) # semestres do período informado ou ativos
       end
     end
 

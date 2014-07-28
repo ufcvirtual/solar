@@ -36,42 +36,39 @@ class GroupsController < ApplicationController
 
   # Edicao
   def list
-    if (@type_id = params[:type_id].to_i) == 3
-      @offer = Offer.find_by_semester_id_and_course_id(params[:semester_id], params[:course_id])
-    else
-      @offer = Offer.find_by_curriculum_unit_id_and_semester_id_and_course_id(params[:curriculum_unit_id], params[:semester_id], params[:course_id])
+    @type_id = params[:type_id].to_i
+    offer    = Offer.find(params[:offer_id]) if params.include?(:offer_id)
+
+    if offer.nil?
+      query = []
+      query << (params[:course_id].blank? ? "course_id IS NULL" : "course_id = #{params[:course_id]}")
+      query << (@type_id == 3 ? "" : (params[:curriculum_unit_id].blank? ? "curriculum_unit_id IS NULL" : "curriculum_unit_id = #{params[:curriculum_unit_id]}"))
+      offer = Offer.where(semester_id: params[:semester_id]).where(query.join(" AND ")).first
     end
 
-    begin
-      authorize! :list, Group, on: [@offer.allocation_tag.id] unless params[:checkbox]
+    authorize! :list, Group, on: [offer.allocation_tag.id] unless params[:checkbox]
 
-      @groups = @offer.groups.order("code")
-      render partial: 'groups_checkboxes', locals: { groups: @groups } if params[:checkbox]
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-    end
+    @groups   = offer.groups.order("code")
+    @offer_id = offer.id
+    render partial: 'groups_checkboxes', locals: { groups: @groups } if params[:checkbox]
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def new
     authorize! :create, Group
-
-    if (@type_id = params[:type_id]) == "3"
-      offer  = Offer.find_by_semester_id_and_course_id(params[:semester_id], params[:course_id])
-    else
-      offer  = Offer.find_by_curriculum_unit_id_and_semester_id_and_course_id(params[:curriculum_unit_id], params[:semester_id], params[:course_id])
-    end
-
-    @group = Group.new offer_id: offer.try(:id)
+    @offer_id = params[:offer_id]
+    @group = Group.new offer_id: @offer_id
   end
 
   def edit
     authorize! :update, Group
-    @group, @type_id = Group.find(params[:id]), params[:type_id]
+    @group, @type_id, @offer_id = Group.find(params[:id]), params[:type_id], params[:offer_id]
   end
 
   def create
     params[:group][:user_id] = current_user.id
-    @group, @type_id = Group.new(params[:group]), params[:type_id]
+    @group, @type_id, @offer_id = Group.new(params[:group]), params[:type_id], (params.include?(:offer_id) ? params[:offer_id] : params[:group][:offer_id])
     authorize! :create, Group, on: [@group.offer.allocation_tag.id]
 
     if @group.save
@@ -82,7 +79,7 @@ class GroupsController < ApplicationController
   end
 
   def update
-    @group, @type_id = Group.where(id: params[:id].split(",")), params[:type_id]
+    @group, @type_id, @offer_id = Group.where(id: params[:id].split(",")), params[:type_id], (params.include?(:offer_id) ? params[:offer_id] : params[:group][:offer_id])
     authorize! :update, Group, on: [@group.first.offer.allocation_tag.id]
 
     if params[:multiple]
@@ -99,7 +96,7 @@ class GroupsController < ApplicationController
   end
 
   def destroy
-    @group, @type_id = Group.where(id: params[:id].split(",")), params[:type_id]
+    @group, @type_id, @offer_id = Group.where(id: params[:id].split(",")), params[:type_id], params[:offer_id]
     authorize! :destroy, Group, on: [@group.first.offer.allocation_tag.id]
 
     Group.transaction do 

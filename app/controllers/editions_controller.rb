@@ -66,6 +66,7 @@ class EditionsController < ApplicationController
     authorize! :groups, Edition
     @type    = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @courses = (@type.id == 3 ? Course.all_associated_with_curriculum_unit_by_name : Course.all)
+    @curriculum_units = (@type.id == 3 ? [] : CurriculumUnit.where(curriculum_unit_type_id: @type))
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end

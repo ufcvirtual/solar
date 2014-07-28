@@ -11,7 +11,7 @@
         = select_tag :contacts_type, options_for_select([[t(".system_contacts"),1],[t(".personal_contacts"),2]]), selected: 1
 
       .contacts-uc
-        = render partial: "editions/content_filter", locals: {list_class: "contacts-list", url: find_users_messages_path, optionals: ["curriculum_unit", "semester"], types: CurriculumUnitType.all, back: false, type_id: nil}
+        = render partial: "editions/content_filter", locals: {list_class: "contacts-list", url: find_users_messages_path, optionals: ["semester"], types: CurriculumUnitType.all, back: false, type_id: nil}
         .user_contacts{class: @group.nil? ? "invisible" : ""}
           .contacts-list
             - unless @contacts.empty?

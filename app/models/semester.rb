@@ -41,24 +41,20 @@ class Semester < ActiveRecord::Base
     end
   end
 
-  def self.all_by_uc_or_course(params = {})
+  def self.all_by_uc_or_course(params = {}, combobox=false)
     query = []
-    query << "offers.course_id = #{params[:course_id]}"      unless params[:course_id].blank? or params[:course_id] == "null"
-    query << "offers.curriculum_unit_id = #{params[:uc_id]}" unless params[:uc_id].blank? or params[:uc_id] == "null"
+    query << ((params[:course_id].blank? or params[:course_id] == "null") ? "offers.course_id IS NULL" : "offers.course_id = #{params[:course_id]}")
+    query << ( (params[:type_id] == 3 ? "" : (params[:uc_id].blank? or params[:uc_id] == "null") ? "offers.curriculum_unit_id IS NULL" : "offers.curriculum_unit_id = #{params[:uc_id]}") )
 
     joins(:offers).where(query.join(" AND ")).uniq.order("name DESC")
   end
 
-  def self.all_by_period(params = {})
+  def self.all_by_period(params = {}, combobox=false)
     query = []
-    query << "offers.course_id = #{params[:course_id]}" unless params[:course_id].blank?
-    query << "offers.curriculum_unit_id = #{params[:uc_id]}" unless params[:uc_id].blank?
+    query << ((params[:course_id].blank? or params[:course_id] == "null") ? "offers.course_id IS NULL" : "offers.course_id = #{params[:course_id]}")
+    query << ( (params[:type_id] == 3 ? "" : (params[:uc_id].blank? or params[:uc_id] == "null") ? "offers.curriculum_unit_id IS NULL" : "offers.curriculum_unit_id = #{params[:uc_id]}") )
 
-    begin
-      year = Date.parse("#{params[:period]}-01-01").year
-    rescue
-      year = Date.today.year
-    end
+    year = Date.parse("#{params[:period]}-01-01").year rescue Date.today.year
 
     current_semesters = Semester.joins("LEFT JOIN offers ON offers.semester_id = semesters.id").currents(year).where(query.join(" AND "))
     query << "semester_id NOT IN (#{current_semesters.map(&:id).join(',')})" unless current_semesters.empty? # retirando semestres ja listados
