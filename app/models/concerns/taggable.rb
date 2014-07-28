@@ -20,15 +20,21 @@ module Taggable
 
   ## verificando destroy
   def destroy_empty_modules
-    if respond_to?(:lesson_modules) and Lesson.where(lesson_module_id: lesson_modules.pluck(:id)).pluck(:id).flatten.empty?
+    return unless respond_to?(:lesson_modules)
+
+    # modules without lessons
+    lm_ids = lesson_modules.pluck(:id)
+    lm_lessons = Lesson.where(lesson_module_id: lm_ids).pluck(:id).flatten
+
+    if lm_lessons.empty?
       lesson_modules.map(&:academic_allocations).flatten.map(&:delete) # usando delete para nao chamar callbacks
       lesson_modules.map(&:delete)
     end
   end
 
   def can_destroy?
-    errors.add(:base, I18n.t(:dont_destroy_with_lower_associations)) if self.has_any_lower_association?
-    errors.add(:base, I18n.t(:dont_destroy_with_many_allocations)) if self.allocations.count > 1 # se possuir mais de um usuario alocado, nao deleta
+    errors.add(:base, I18n.t(:dont_destroy_with_lower_associations)) if has_any_lower_association?
+    errors.add(:base, I18n.t(:dont_destroy_with_many_allocations)) if allocations.count > 1 # se possuir mais de um usuario alocado, nao deleta
 
     alc = academic_allocations.count
     if alc > 0 # tem conteudo
