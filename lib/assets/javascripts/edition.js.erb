@@ -34,7 +34,13 @@ function update_combobox(url, combobox){
 }
 
 function data_optional(combo_name, optional){
-  $("#"+combo_name).attr("data-optional", optional);
+  $("#"+combo_name).attr("data-optional", optional); // defines data-optional as informed
+  var label = $($("label[for='"+combo_name+"']")[0]);
+  var new_label = label.html().split("*");
+  if (!!optional)
+    label.html(new_label[0]);
+  else
+    label.html(new_label[0] + "*");
 }
 
 $(function(){

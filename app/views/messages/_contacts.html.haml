@@ -30,9 +30,9 @@
 - unless @group.nil?
   = hidden_field_tag :group_code,    @group.code
   = hidden_field_tag :semester_name, @group.offer.semester.name
-  = hidden_field_tag :uc_name,       @group.offer.curriculum_unit.name
-  = hidden_field_tag :course_name,   @group.offer.course.name
-  = hidden_field_tag :uc_type,       @group.offer.curriculum_unit.curriculum_unit_type.description
+  = hidden_field_tag :uc_name,       @group.offer.curriculum_unit.try(:name)
+  = hidden_field_tag :course_name,   @group.offer.course.try(:name)
+  = hidden_field_tag :uc_type,       @group.offer.curriculum_unit.try(:curriculum_unit_type).try(:description)
 
 :javascript
 

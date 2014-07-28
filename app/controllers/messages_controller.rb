@@ -25,7 +25,7 @@ class MessagesController < ApplicationController
     unless @allocation_tag_id.nil?
       allocation_tag      = AllocationTag.find(@allocation_tag_id)
       @group              = allocation_tag.group
-      @curriculum_unit_id = @group.curriculum_unit.id
+      # @curriculum_unit_id = @group.curriculum_unit.id
       @contacts           = User.all_at_allocation_tags(allocation_tag.related)
     else
       @contacts = current_user.user_contacts.map(&:user)
