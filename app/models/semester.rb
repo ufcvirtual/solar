@@ -43,16 +43,18 @@ class Semester < ActiveRecord::Base
 
   def self.all_by_uc_or_course(params = {}, combobox=false)
     query = []
-    query << ((params[:course_id].blank? or params[:course_id] == "null") ? "offers.course_id IS NULL" : "offers.course_id = #{params[:course_id]}")
-    query << ( (params[:type_id] == 3 ? "" : (params[:uc_id].blank? or params[:uc_id] == "null") ? "offers.curriculum_unit_id IS NULL" : "offers.curriculum_unit_id = #{params[:uc_id]}") )
+    query << ( (params[:course_id].blank? or params[:course_id] == "null") ? (combobox ? "offers.course_id IS NULL" : nil) : "offers.course_id = #{params[:course_id]}" )
+    query << ( (params[:type_id] == 3 ? "" : (params[:uc_id].blank? or params[:uc_id] == "null") ? (combobox ? "offers.curriculum_unit_id IS NULL" : nil) : "offers.curriculum_unit_id = #{params[:uc_id]}") )
+    query.compact!
 
     joins(:offers).where(query.join(" AND ")).uniq.order("name DESC")
   end
 
   def self.all_by_period(params = {}, combobox=false)
     query = []
-    query << ((params[:course_id].blank? or params[:course_id] == "null") ? "offers.course_id IS NULL" : "offers.course_id = #{params[:course_id]}")
-    query << ( (params[:type_id] == 3 ? "" : (params[:uc_id].blank? or params[:uc_id] == "null") ? "offers.curriculum_unit_id IS NULL" : "offers.curriculum_unit_id = #{params[:uc_id]}") )
+    query << ( (params[:course_id].blank? or params[:course_id] == "null") ? (combobox ? "offers.course_id IS NULL" : nil) : "offers.course_id = #{params[:course_id]}" )
+    query << ( (params[:type_id] == 3 ? "" : (params[:uc_id].blank? or params[:uc_id] == "null") ? (combobox ? "offers.curriculum_unit_id IS NULL" : nil) : "offers.curriculum_unit_id = #{params[:uc_id]}") )
+    query.compact!
 
     year = Date.parse("#{params[:period]}-01-01").year rescue Date.today.year
 
