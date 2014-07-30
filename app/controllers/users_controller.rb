@@ -113,6 +113,7 @@ class UsersController < ApplicationController
   # synchronize user data with ma
   def synchronize_ma
     user = params.include?(:id) ? User.find(params[:id]) : current_user
+    raise ActiveRecord::RecordNotFound if user.on_blacklist?
     synchronizing_result = user.synchronize
     if synchronizing_result.nil? # user don't exists at MA
       render json: {success: false, message: t("users.warnings.ma.cpf_not_found"), type_message: "warning"}
@@ -122,7 +123,9 @@ class UsersController < ApplicationController
     else # error
       render json: {success: false, alert: t("users.errors.ma.synchronize")}, status: :unprocessable_entity
     end
-  rescue => error
+  rescue ActiveRecord::RecordNotFound
+    render json: {success: false, message: t("users.warnings.ma.not_possible_syncrhonize"), type_message: "warning"}
+  rescue
     render json: {success: false, alert: t("users.errors.ma.synchronize")}, status: :unprocessable_entity
   end
 
