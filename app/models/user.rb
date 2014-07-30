@@ -379,6 +379,10 @@ class User < ActiveRecord::Base
     return false
   end
 
+  def can_synchronize?
+    not(on_blacklist?) and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"])
+  end
+
   def self.user_ma_attributes(user_data)
     {name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == "M"), cell_phone: user_data[17], 
       nick: (user_data[7].nil? ? ([user_data[2].split(" ")[0], user_data[2].split(" ")[1]].join(" ")) : user_data[7]), telephone: user_data[18], 
@@ -404,7 +408,7 @@ class User < ActiveRecord::Base
   end
 
   def integrated?
-    not(on_blacklist?) and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and integrated
+    can_synchronize? and integrated
   end
 
   def on_blacklist?

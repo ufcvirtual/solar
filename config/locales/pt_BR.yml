@@ -2320,6 +2320,7 @@ pt_BR:
       phrase: "Frase: "
       site: "Site: "
       integrated: "Integrado com o Módulo Acadêmico: "
+      blacklist: "Presente na Blacklist: "
       y: Sim
       n: Não
       reset_password_url: "Url de recuperação de senha: "
