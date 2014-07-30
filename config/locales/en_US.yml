@@ -2079,6 +2079,7 @@ en_US:
       ma:
         cpf_not_verified: "It wasn't possible to verify your CPF at Módulo Acadêmico. After logged in, synchronize your data."
         cpf_not_found: CPF not found at no Módulo Acadêmico
+        not_possible_syncrhonize: It wasn't possible to syncrhonize with Módulo Acadêmico.
     show:
       not_informed: Not informed
       detailed: "Detailed Information"

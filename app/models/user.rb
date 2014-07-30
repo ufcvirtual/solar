@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
   validates :nick, presence: true, length: { within: 3..34 }
   validates :birthdate, presence: true
   validates :username, presence: true, length: { within: 3..20 }, uniqueness: true
-  validates :password, presence: true, confirmation: true, unless: Proc.new { |a| a.password.blank? or ((not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and a.integrated)}
+  validates :password, presence: true, confirmation: true, unless: Proc.new { |a| a.password.blank? or a.integrated?}
   validates :alternate_email, format: { with: email_format }
   validates :email, presence: true, confirmation: true, uniqueness: true, format: { with: email_format }, unless: Proc.new {|a| a.already_email_error_or_email_not_changed? }
   validates :special_needs, presence: true, if: :has_special_needs?
@@ -63,8 +63,8 @@ class User < ActiveRecord::Base
   validates_length_of :institution, maximum: 120
 
   validate :unique_cpf, if: "cpf_changed?"
-  validate :integration, if: Proc.new{ |a| !a.new_record? and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and a.integrated and (a.synchronizing.nil? or not(a.synchronizing))}
-  validate :data_integration, if: Proc.new{ |a| (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and (a.new_record? or username_changed? or email_changed? or cpf_changed?) and (a.synchronizing.nil? or not(a.synchronizing)) }
+  validate :integration, if: Proc.new{ |a| !a.new_record? and not(a.on_blacklist?) and a.integrated? and (a.synchronizing.nil? or not(a.synchronizing))}
+  validate :data_integration, if: Proc.new{ |a| not(a.on_blacklist?) and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and (a.new_record? or username_changed? or email_changed? or cpf_changed?) and (a.synchronizing.nil? or not(a.synchronizing)) }
   validate :cpf_ok, unless: :already_cpf_error?
 
   # paperclip uses: file_name, content_type, file_size e updated_at
@@ -363,6 +363,7 @@ class User < ActiveRecord::Base
 
   # synchronizes user data with MA data
   def synchronize(user_data = nil)
+    return nil if on_blacklist?
     user_data = User.connect_and_import_user(cpf) if user_data.nil?
     unless user_data.nil? # if user exists
       ma_attributes = User.user_ma_attributes(user_data)
@@ -374,7 +375,7 @@ class User < ActiveRecord::Base
     else
       return nil
     end
-  rescue => errors
+  rescue
     return false
   end
 
@@ -403,7 +404,11 @@ class User < ActiveRecord::Base
   end
 
   def integrated?
-    (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and integrated
+    not(on_blacklist?) and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and integrated
+  end
+
+  def on_blacklist?
+    UserBlacklist.all.map(&:cpf).include?(cpf_without_mask(cpf))
   end
 
   private

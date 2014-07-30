@@ -2297,6 +2297,7 @@ pt_BR:
       ma:
         cpf_not_verified: "Não foi possível verificar o CPF no Módulo Acadêmico. Se faz necessário que você, após logado, sincronize seus dados."
         cpf_not_found: CPF não encontrado no Módulo Acadêmico
+        not_possible_syncrhonize: Não foi possível sincronizar com o Módulo Acadêmico.
     show:
       not_informed: Não informado
       detailed: "Informações Detalhadas"
