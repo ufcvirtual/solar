@@ -11386,12 +11386,6 @@ return parser;
             } else {
                 controlbox.trigger('show');
             }
-            if(!cookie_im.IM_toggle && !cookie_im.Groups){
-              setTimeout(function(e){
-                $("#chat").click();  
-              },1000);
-              
-            }
         };
 
         this.toggleControlBox = function () {
@@ -12481,6 +12475,7 @@ return parser;
             },
 
             initialize: function () {
+
                 this.$el.appendTo(converse.chatboxesview.$el);
                 this.model.on('change', $.proxy(function (item, changed) {
                     var i;
@@ -12507,6 +12502,7 @@ return parser;
                 if (this.model.get('visible')) {
                     this.show();
                 }
+
             },
 
             featureAdded: function (feature) {
@@ -12642,7 +12638,7 @@ return parser;
                 TB = $("#toggle-controlbox")[0];
                 if ( CP.style.display != "none" )
                 {  
-                    cookie_im.IM_toggle=false;   
+                    cookie_im.IM_toggle = false;   
                     CP.style.display = "none";
                     TB.style.display = "none";
                     $("#controlbox")[0].style.boxShadow = "0px 0px 0px 0px";
@@ -12654,7 +12650,7 @@ return parser;
                     
                 }
                 else{
-                    cookie_im.IM_toggle=true;
+                    cookie_im.IM_toggle = true;
                     el.style.position = "relative";
                     el.style.top = "0px";
                     CP.style.display = "block";
@@ -12705,7 +12701,10 @@ return parser;
                         this.roomspanel.render();
                     }
                 }
-
+                getCookie();
+                if(!cookie_im.IM_toggle && !cookie_im.Groups){
+                  $("#chat").click();  
+                }
                 return this;
             }
         });
@@ -13979,7 +13978,6 @@ return parser;
                     }
                   }     
                 },100);
-                
             },
 
             render: function (item) {
@@ -14425,7 +14423,6 @@ return parser;
                 this.$el.parent().empty();
             }
         });
-
         // Initialization
         // --------------
 
