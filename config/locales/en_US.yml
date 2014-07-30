@@ -2102,6 +2102,7 @@ en_US:
       phrase: "Phrase: "
       site: "Site: "
       integrated: "Integrated with Módulo Acadêmico: "
+      blacklist: "Exists at Blacklist: "
       y: 'Yes'
       n: 'No'
       reset_password_url: "Recovery password url: "

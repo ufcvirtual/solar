@@ -41,6 +41,7 @@
       %h2= t(".others")
     %div= t(".institution") + (@user.institution.nil? ? t(".not_informed") : @user.institution.to_s)
     %div= t(".integrated") + (@user.integrated ? t(".y") : t(".n"))
+    %div= t(".blacklist") + (@user.on_blacklist? ? t(".y") : t(".n"))
     %div= t(".reset_password_url") + ( @user.integrated? ? "https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do" : (  @user.reset_password_token.nil? ? t(".reset_password_not_required") : edit_password_url(@user, reset_password_token: @user.reset_password_token ) ) )
 
   .block_content
