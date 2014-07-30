@@ -1661,6 +1661,7 @@ pt_BR:
       change_password: Alterar senha
       message_not_found: "Usuário não encontrado"
       synchronize: Sincronizar com Módulo Acadêmico
+      import: Importar dados do Módulo Acadêmico
     informations:
       detailed: "Informações Detalhadas"
       personal_data: "Dados Pessoais"
@@ -2320,6 +2321,8 @@ pt_BR:
       integrated: "Integrado com o Módulo Acadêmico: "
       y: Sim
       n: Não
+      reset_password_url: "Url de recuperação de senha: "
+      reset_password_not_required: Não foi solicitada recuperação de senha.
     request_profile:
       save: Salvar
       cancel: Cancelar

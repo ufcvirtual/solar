@@ -1469,6 +1469,7 @@ en_US:
       change_password: Change password
       message_not_found: "User not found"
       synchronize: Synchronize with Módulo Acadêmico
+      import: Import data from Módulo Acadêmico
     informations:
       detailed: "Detailed Information"
       personal_data: "Personal Data"
@@ -2102,6 +2103,8 @@ en_US:
       integrated: "Integrated with Módulo Acadêmico: "
       y: 'Yes'
       n: 'No'
+      reset_password_url: "Recovery password url: "
+      reset_password_not_required: It wasn't requested any password recovery.
     request_profile:
       save: Save
       cancel: Cancel

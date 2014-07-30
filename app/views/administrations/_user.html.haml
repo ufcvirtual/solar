@@ -11,7 +11,7 @@
       - if can? :allocations_user, Administration
         %li= link_to_function t(:allocations, scope: [:administrations, :users]), "open_administration(this)", :"data-tooltip" => t(:allocations, scope: [:administrations, :users]), :"show-link" => allocations_admin_user_path(user.id)
       - if User::MODULO_ACADEMICO["integrated"] and @is_admin
-        %li= link_to_function t("administrations.users.synchronize"), "synchronize_user(this)", :"data-url" => synchronize_ma_users_path(id: user.id)
+        %li= link_to_function (user.integrated? ? t("administrations.users.synchronize") : t("administrations.users.import")), "synchronize_user(this)", :"data-url" => synchronize_ma_users_path(id: user.id)
       %li{ class: 'border' }= (label_tag t(:last_accessed, scope: [:administrations, :users]) + ' ' + last_accessed(user.id))
   - if @is_admin
     .btn-group
