@@ -41,8 +41,8 @@
               - if @assignments.empty?
                 %td= "-"
         - else
-          %tr.lines
-            %td{colspan: 4+@assignments.size}= t(".no_students")
+          %tr.lines.text_none
+            %td{colspan: 5+@assignments.size}= t(".no_students")
 
 / Legenda das notas
 %div.legend

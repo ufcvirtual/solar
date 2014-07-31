@@ -19,7 +19,8 @@
     %h2= t('.enrolled')
   .block_content
     %table.tb_list.enrollment_list_enrolled
-      - unless @offers.empty?
+      - offer_enrolled = @user_requests.where(status: Allocation_Activated)
+      - unless offer_enrolled.nil? or offer_enrolled.empty?
         %thead
           %tr.lines
             %th= t(".curriculum_unit")
@@ -28,7 +29,7 @@
             %th= t(".group")
             %th.no_sort= t(:mysolar_mn_enrollment)
         %tbody
-          - @user_requests.where(status: Allocation_Activated).find_each do |allocation|
+          - offer_enrolled.find_each do |allocation|
 
             - group = allocation.group
             - user_groups << group.id
@@ -46,13 +47,17 @@
                   = link_to t('.cancel'), cancel_allocation_path(allocation), class: 'btn btn_caution allocation_cancel_enroll'
                 - else
                   = label_tag "lb_enrollm", t(".enrolled"), class: 'enrollment_label'
+      - else
+        .block_content_text_list.text_none 
+          = t(:item_search_no_found)            
 
 .block_wrapper
   .block_title
     %h2= t('.pending')
   .block_content
     %table.tb_list.enrollment_list_pending
-      - unless @offers.empty?
+      - offer_pending = @user_requests.where('status <> ?', Allocation_Activated)
+      - unless offer_pending.nil? or offer_pending.empty?
         %thead
           %tr.lines
             %th= t(".curriculum_unit")
@@ -62,7 +67,7 @@
             %th.no_sort
             %th.no_sort= t(:mysolar_mn_enrollment)
         %tbody
-          - @user_requests.where('status <> ?', Allocation_Activated).find_each do |allocation|
+          - offer_pending.find_each do |allocation|
 
             - group = allocation.group
             - offer_info = group.detailed_info
@@ -86,14 +91,17 @@
                       \ -
                   - when Allocation_Rejected.to_i
                     = label_tag "lb_rejected", t(".rejected"), class: 'enrollment_label'
+      - else
+        .block_content_text_list.text_none 
+          = t(:item_search_no_found)      
 
 .block_wrapper
   .block_title
     %h2= t(".ucs_available")
   .block_content
-    %table.tb_list.enrollment_list
-      - unless @offers.empty?
-        %thead
+    %table.tb_list.enrollment_list.table_ucs
+      - unless @offers.nil? or @offers.empty?
+        %thead.thead_ucs
           %tr.lines
             %th= t(".curriculum_unit")
             %th= t(".category")
@@ -118,14 +126,29 @@
                 %td= [l(Date.parse(offer.enroll_start_date), format: :normal), l(Date.parse(offer.enroll_end_date))].join '-'
                 %td= link_to content_tag(:i, nil, class: 'icon-info'), group_enrollments_path(group.id), class: "btn", id: "enrollment_info_#{group.id}"
                 %td= link_to t('.enroll'), allocations_path(group_id: group.id), class: 'btn btn_default request_enroll'
-
+        .block_content_text_list.text_none.empty_message.hide_message 
+          = t(".no_curriculum_unit_found")
       - else
-        %td.any_found.text_none= t(".no_curriculum_unit_found")
+        .block_content_text_list.text_none 
+          = t(".no_curriculum_unit_found")
 
 :javascript
 
   $(function(){
     $('#{to_combobox(curriculum_units.uniq, "curriculum_unit")}').insertAfter('.filter_enrollment label:first');
+  });
+
+  //Exibir mensagem de tabela vazia caso clique pra pesquisar por uc e não tenha nenhuma disponível
+  $(".btn").click(function () {
+    var rowCount = $('.table_ucs>tbody>tr:visible').length;
+    if (rowCount == 0){
+      $('.thead_ucs').hide();
+      $('.empty_message').removeClass("hide_message");
+    }
+    else{
+      $('.thead_ucs').show();
+      $('.empty_message').addClass("hide_message")
+    }
   });
 
 = javascript_include_tag "autocomplete", "enrollments"

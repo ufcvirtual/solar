@@ -21,7 +21,7 @@
                 = '-'
                 = l(individual_activity.schedule.end_date, :format => :normal)
     - else
-      .block_content.block_content_text= t(:itens_not_found)
+      .block_content.block_content_text.text_none= t(:itens_not_found)
 
 .block_wrapper
   .block_title
@@ -46,4 +46,4 @@
                 = '-'
                 = l(group_activity.schedule.end_date, :format => :normal)
     - else
-      .block_content.block_content_text= t(:itens_not_found)
+      .block_content.block_content_text.text_none= t(:itens_not_found)

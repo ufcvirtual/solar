@@ -17,7 +17,7 @@
 
   - part1, part2 = @groups.in_groups(2, false)
 
-  - if @groups.count
+  - unless @groups.nil? or @groups.empty?
     .block_content.groups
       .block_left
         = render "group_list", groups: part1
