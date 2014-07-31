@@ -41,7 +41,7 @@ class UsersController < ApplicationController
         else # if user don't exist
           raise if not(integrated)
           user = User.new cpf: user_cpf
-          user.connect_and_validates_user # try to create user with MA data
+          user.connect_and_validates_user unless user.on_blacklist? # try to create user with MA data
 
           if user.new_record? # doesn't exist at MA
             redirect_to new_user_registration_path(cpf: user_cpf)
