@@ -330,6 +330,7 @@ class User < ActiveRecord::Base
   # user result from validation MA method
   # receives the response and the WS client
   def self.validate_user_result(result, client, cpf, user = nil)
+    return nil if on_blacklist?
     unless result.nil?
       result = result[:int]
       if result.include?("6") # unavailable cpf, thus already in use by MA
@@ -401,6 +402,7 @@ class User < ActiveRecord::Base
   end
 
   def self.connect_and_import_user(cpf, client = nil)
+    return nil if on_blacklist?
     client    = Savon.client wsdl: MODULO_ACADEMICO["wsdl"] if client.nil?
     response  = client.call(MODULO_ACADEMICO["methods"]["user"]["import"].to_sym, message: { cpf: cpf.delete('.').delete('-') }) # import user
     user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
@@ -412,7 +414,7 @@ class User < ActiveRecord::Base
   end
 
   def on_blacklist?
-    UserBlacklist.all.map(&:cpf).include?(cpf_without_mask(cpf))
+    not(UserBlacklist.find_by_cpf(cpf_without_mask(cpf)).nil?)
   end
 
   private
