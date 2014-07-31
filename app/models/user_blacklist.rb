@@ -3,5 +3,6 @@ class UserBlacklist < ActiveRecord::Base
 
   attr_accessible :cpf, :name
 
-  validates :cpf, :name, presence: true, uniqueness: true
+  validates :cpf, presence: true
+  validates :cpf, :name, uniqueness: true
 end

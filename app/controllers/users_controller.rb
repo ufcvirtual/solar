@@ -51,7 +51,7 @@ class UsersController < ApplicationController
         end
 
       rescue
-        flash[:warning] = t("users.warnings.ma.cpf_not_verified") if integrated
+        flash[:warning] = t("users.warnings.ma.cpf_not_verified") if integrated and not(User.new(cpf: user_cpf).on_blacklist?)
         redirect_to new_user_registration_path(cpf: params[:cpf])
       end
 

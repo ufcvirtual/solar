@@ -92,13 +92,21 @@ class UserTest < ActiveSupport::TestCase
   test "sincronizando usuario existente no MA" do
     user = User.new(@user_test)
     assert_difference("User.count") do
-      user.cpf = "VALID CPF"
+      user.cpf = "VALID CPF HERE"
       assert user.synchronize # resultado deve ser true
     end
   end
 
   test "sincronizando usuario nao existente no MA" do
     assert (users(:aluno1).synchronize).nil? # resultado deve ser nil
+  end
+
+  test "nao sincronizar usuario existente no MA, mas existe na blacklist" do
+    cpf = "VALID CPF HERE"
+    UserBlacklist.create cpf: cpf
+    @user_test[:cpf] = cpf
+    user = User.new(@user_test)
+    assert (user.synchronize).nil?
   end
 
 end

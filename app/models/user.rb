@@ -364,7 +364,6 @@ class User < ActiveRecord::Base
 
   # synchronizes user data with MA data
   def synchronize(user_data = nil)
-    return nil if on_blacklist?
     user_data = User.connect_and_import_user(cpf) if user_data.nil?
     unless user_data.nil? # if user exists
       ma_attributes = User.user_ma_attributes(user_data)
@@ -402,7 +401,7 @@ class User < ActiveRecord::Base
   end
 
   def self.connect_and_import_user(cpf, client = nil)
-    return nil if on_blacklist?
+    return nil if User.new(cpf: cpf).on_blacklist?
     client    = Savon.client wsdl: MODULO_ACADEMICO["wsdl"] if client.nil?
     response  = client.call(MODULO_ACADEMICO["methods"]["user"]["import"].to_sym, message: { cpf: cpf.delete('.').delete('-') }) # import user
     user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
