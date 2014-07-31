@@ -330,7 +330,7 @@ class User < ActiveRecord::Base
   # user result from validation MA method
   # receives the response and the WS client
   def self.validate_user_result(result, client, cpf, user = nil)
-    return nil if on_blacklist?
+    return nil if User.new(cpf: cpf).on_blacklist?
     unless result.nil?
       result = result[:int]
       if result.include?("6") # unavailable cpf, thus already in use by MA
