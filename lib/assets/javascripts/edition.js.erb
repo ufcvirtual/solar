@@ -90,8 +90,10 @@ $(function(){
       $('#course').combobox("update", {url: url});
 
       // atualiza ucs
-      var url = "<%=Rails.application.routes.url_helpers.list_combobox_curriculum_units_path(type_id: 'type_param')%>".replace('type_param', $('#curriculum_unit_type').combobox('value'));
-      $('#curriculum_unit').combobox("update", {url: url});
+      if ($("#curriculum_unit_type").combobox("value") != "3"){
+        var url = "<%=Rails.application.routes.url_helpers.list_combobox_curriculum_units_path(type_id: 'type_param')%>".replace('type_param', $('#curriculum_unit_type').combobox('value'));
+        $('#curriculum_unit').combobox("update", {url: url});
+      }
     }
   });
 
@@ -120,7 +122,7 @@ $(function(){
         $('#curriculum_unit').combobox("update", {url: url});
       }
 
-      var url = "<%=Rails.application.routes.url_helpers.list_combobox_semesters_path(period: 'all', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')%>".replace("course_param", $("#course").combobox("value")).replace("curriculum_unit_param", $("#curriculum_unit").combobox("value"));
+      var url = "<%=Rails.application.routes.url_helpers.list_combobox_semesters_path(period: 'all', type_id: 'type_param', course_id: 'course_param')%>".replace('type_param', $('#curriculum_unit_type').combobox('value')).replace("course_param", $("#course").combobox("value"));
       $('#semester').combobox("update", {url: url});
     }
   });
@@ -138,6 +140,7 @@ $(function(){
       clear_combo("semester", false);
       data_optional("course", true); // se escolher uma uc, curso passa a ser opcional
       $(".groups").html('');
+      var url = "<%=Rails.application.routes.url_helpers.list_combobox_semesters_path(period: 'all', type_id: 'type_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')%>".replace('type_param', $('#curriculum_unit_type').combobox('value')).replace("course_param", $("#course").combobox("value")).replace("curriculum_unit_param", $("#curriculum_unit").combobox("value"));
       var url = "<%=Rails.application.routes.url_helpers.list_combobox_semesters_path(period: 'all', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')%>".replace("course_param", $("#course").combobox("value")).replace("curriculum_unit_param", $("#curriculum_unit").combobox("value"));
       $('#semester').combobox("update", {url: url});
     }
