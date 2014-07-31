@@ -42,8 +42,8 @@ class GroupsController < ApplicationController
     if offer.nil?
       query = []
       query << (params[:course_id].blank? ? "course_id IS NULL" : "course_id = #{params[:course_id]}")
-      query << (@type_id == 3 ? "" : (params[:curriculum_unit_id].blank? ? "curriculum_unit_id IS NULL" : "curriculum_unit_id = #{params[:curriculum_unit_id]}"))
-      offer = Offer.where(semester_id: params[:semester_id]).where(query.join(" AND ")).first
+      query << (@type_id == 3 ? nil : (params[:curriculum_unit_id].blank? ? "curriculum_unit_id IS NULL" : "curriculum_unit_id = #{params[:curriculum_unit_id]}"))
+      offer = Offer.where(semester_id: params[:semester_id]).where(query.compact.join(" AND ")).first
     end
 
     authorize! :list, Group, on: [offer.allocation_tag.id] unless params[:checkbox]
