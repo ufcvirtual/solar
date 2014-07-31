@@ -82,6 +82,34 @@ class User < ActiveRecord::Base
 
   default_scope order: 'name ASC'
 
+
+
+  ## profiles: [], contexts: [], general_context: true
+  def menu_list(args = {})
+    # sempre carrega contexto geral independente do perfil do usuario
+
+    user_profiles = profiles.pluck(:id)
+
+    args = {profiles: [], contexts: [], general_context: true}.merge(args)
+
+    args[:profiles] << user_profiles
+    args[:profiles] = args[:profiles].flatten
+
+    args[:contexts] << Context_General if args[:general_context]
+
+    query_contexts = 'menus_contexts.context_id IN (:contexts)' unless args[:contexts].empty?
+
+    # resources do usuario
+    # resources_id = profiles.joins(:resources).where(query_profiles, profiles: args[:profiles]).pluck(:resource_id).uniq
+    resources_id = Resource.joins(:profiles).where(profiles: {id: args[:profiles]})
+
+    # menus do usuario pelos resources
+    # includes resources to view menu - mais rapido
+    Menu.joins(:menus_contexts).includes(:resource).where(resource_id: resources_id, status: true).where(query_contexts, contexts: args[:contexts]).order('menus.parent_id, menus.order')
+  end
+
+
+
   ##
   # Verifica se o radio_button escolhido na view é verdadeiro ou falso. 
   # Este método também define as necessidades especiais como sendo vazia caso a pessoa tenha selecionado que não as possui

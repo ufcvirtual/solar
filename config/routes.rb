@@ -96,10 +96,11 @@ Solar::Application.routes.draw do
       get :list_informations
       get :list_participants
       get :list_combobox, to: :index, combobox: true, as: :list_combobox
-    end
-    member do
+
       get :participants
       get :informations
+    end
+    member do
       get :home
     end
     resources :groups, only: [:index] do
@@ -181,6 +182,7 @@ Solar::Application.routes.draw do
 
   resources :scores, only: [:index, :show] do
     collection do 
+      get "/show", action: :show
       get "student/:student_id", action: :show, as: :student
       get :amount_history_access
       get "history_access/:id", action: :history_access

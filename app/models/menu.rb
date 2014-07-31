@@ -1,13 +1,15 @@
 class Menu < ActiveRecord::Base
 
+  belongs_to :resource
+
   # auto-relacionamento
   has_many :children, :class_name => "Menu", :foreign_key => "parent_id"
   belongs_to :parent, :class_name => "Menu"
 
   # outros relacionamentos
   has_many :permissions_menus
-  has_many :resources
-  has_and_belongs_to_many :contexts
+  has_many :menus_contexts
+  has_many :contexts, through: :menus_contexts
 
   # Lista com os menus do perfil do usuario dependendo do contexto e dos perfis
   def self.list_by_profile_id_and_context_id(all_profiles_ids, profiles_ids, context_id)

@@ -85,7 +85,7 @@ class ProfilesController < ApplicationController
     has_changes       = not(profile_resources == params[:resources].sort!)
 
     Profile.transaction do
-      params[:removed], params[:added], params[:name] = (profile_resources  - params[:resources]), (params[:resources] - profile_resources), @profile.name
+      params[:removed], params[:added], params[:name] = (profile_resources - params[:resources]), (params[:resources] - profile_resources), @profile.name
 
       if has_changes # if something has changed
         @profile.resources.delete_all

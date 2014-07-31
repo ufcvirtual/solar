@@ -54,12 +54,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  rescue_from ActionView::Template::Error do |exception|
-    respond_to do |format|
-      format.html { redirect_to home_path, alert: t(:cant_build_page) }
-      format.json { render json: {msg: t(:cant_build_page)}, status: :unauthorized }
-    end
-  end
+  # rescue_from ActionView::Template::Error do |exception|
+  #   respond_to do |format|
+  #     format.html { redirect_to home_path, alert: t(:cant_build_page) }
+  #     format.json { render json: {msg: t(:cant_build_page)}, status: :unauthorized }
+  #   end
+  # end
 
   def start_user_session
     return unless user_signed_in?
@@ -82,17 +82,17 @@ class ApplicationController < ActionController::Base
   end
 
   ## contexto para definir os links do menu
-  def application_context
-    return unless user_signed_in?
+  # def application_context
+  #   return unless user_signed_in?
 
-    is_mysolar    = (params[:action] == 'mysolar')
-    user_profiles = Profile.joins(:allocations).where("allocations.user_id = ? AND allocations.status = ?", current_user.id, Allocation_Activated)
+  #   is_mysolar    = (params[:action] == 'mysolar')
+  #   user_profiles = Profile.joins(:allocations).where("allocations.user_id = ? AND allocations.status = ?", current_user.id, Allocation_Activated)
 
-    user_session[:uc_profiles]  = user_profiles.where("allocations.allocation_tag_id IN (?)", AllocationTag.find(active_tab[:url][:allocation_tag_id]).related).pluck(:id).compact.join(",") if active_tab[:url][:context] == Context_Curriculum_Unit.to_i
-    user_session[:all_profiles] = user_profiles.pluck(:id).join(',')
-    user_session[:context_id]   = is_mysolar ? Context_General : active_tab[:url][:context]
-    user_session[:context_uc]   = is_mysolar ? nil : active_tab[:url][:id]
-  end
+  #   user_session[:uc_profiles]  = user_profiles.where("allocations.allocation_tag_id IN (?)", AllocationTag.find(active_tab[:url][:allocation_tag_id]).related).pluck(:id).compact.join(",") if active_tab[:url][:context] == Context_Curriculum_Unit.to_i
+  #   user_session[:all_profiles] = user_profiles.pluck(:id).join(',')
+  #   user_session[:context_id]   = is_mysolar ? Context_General : active_tab[:url][:context]
+  #   user_session[:context_uc]   = is_mysolar ? nil : active_tab[:url][:id]
+  # end
 
   def current_menu
     set_tab_by_context
@@ -143,7 +143,7 @@ class ApplicationController < ActionController::Base
 
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
     
-    application_context
+    # application_context
   end
 
   def after_sign_in_path_for(resource_or_scope)
@@ -176,8 +176,8 @@ class ApplicationController < ActionController::Base
         elsif params.include?('mid') # Seleciona aba de acordo com o contexto do menu
           tab_context_id  = active_tab[:url][:context]
           current_menu_id = params[:mid]
-          if current_menu_id.to_i == 0 or MenusContexts.find_all_by_menu_id_and_context_id(current_menu_id, tab_context_id).empty?
-            menu_context_id = (current_menu_id.to_i == 0) ? Context_Curriculum_Unit : MenusContexts.find_by_menu_id(current_menu_id).try(:context_id)
+          if current_menu_id.to_i == 0 or MenusContext.find_all_by_menu_id_and_context_id(current_menu_id, tab_context_id).empty?
+            menu_context_id = (current_menu_id.to_i == 0) ? Context_Curriculum_Unit : MenusContext.find_by_menu_id(current_menu_id).try(:context_id)
             user_session[:context_uc] = nil if Context_General == menu_context_id
             tab_name = find_tab_by_context(menu_context_id)
             set_active_tab(tab_name)
