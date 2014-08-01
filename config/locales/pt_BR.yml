@@ -2291,7 +2291,7 @@ pt_BR:
         synchronize: Erro ao sincronizar dados com o Módulo Acadêmico. Favor tentar novamente.
     notices:
       ma:
-        use_ma_data: Favor utilizar seus dados do Módulo Acadêmico.
+        use_ma_data: "Seus dados de acesso foram importados do Módulo Acadêmico. Para alterar ou recuperar seus dados de acesso, vá ao endereço: <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>."
         synchronize: Dados sincronizados com sucesso.
     warnings:
       ma:

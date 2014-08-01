@@ -2073,7 +2073,7 @@ en_US:
         synchronize: Error while synchronizing data with Módulo Acadêmico. Please try again.
     notices:
       ma:
-        use_ma_data: Please use your Módulo Acadêmico data.
+        use_ma_data: "Your access data were imported from Módulo Acadêmico. To change or recover your access data, go to the address: <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>."
         synchronize: Data synchronized successfully.
     warnings:
       ma:

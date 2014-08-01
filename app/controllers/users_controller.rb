@@ -32,7 +32,7 @@ class UsersController < ApplicationController
             user_data = User.connect_and_import_user(user_cpf) # try to import
             raise if user_data.nil? # user don't exist at MA
             user.synchronize(user_data) # synchronize user with new MA data
-            redirect_to login_path, notice: t("users.notices.ma.use_ma_data")
+            redirect_to login_path, notice: t("users.notices.ma.use_ma_data").html_safe
           rescue
             redirect_to login_path, alert: t(:new_user_cpf_in_use)
           end
@@ -46,7 +46,7 @@ class UsersController < ApplicationController
           if user.new_record? # doesn't exist at MA
             redirect_to new_user_registration_path(cpf: user_cpf)
           else # user was imported and registered with MA data
-            redirect_to login_path, notice: t("users.notices.ma.use_ma_data")
+            redirect_to login_path, notice: t("users.notices.ma.use_ma_data").html_safe
           end
         end
 
