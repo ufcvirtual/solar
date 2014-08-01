@@ -119,30 +119,33 @@
         %i.icon-users
         =t :participants, :scope => [:assignment, :group_assignments]
     .block_content
-      %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
-        %thead
-          %tr.lines
-            %th=t :students, :scope => [:assignment, :information]
-            %th{:align => "center", :style => "width:30px"}=t :date, :scope => [:assignment, :information]
-            %th{:align => "right", :style => "width:80px"}=t :situation, :scope => [:assignment, :information]
-            %th{:align => "right", :style => "width:30px"}=t :grade, :scope => [:assignment, :information]
-            %th{:align => "center", :style => "width:50px"}=t :comments, :scope => [:assignment, :comments]
-        %tbody
-          - @students.each_with_index do |student, idx|
-            - student_info = assignment_participant_info(student.id, @assignment, @allocation_tag.id)
+      - unless @students.empty?
+        %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+          %thead
             %tr.lines
-              %td
-                = link_to student.name, student_assignment_path(@assignment.id, :student_id => student.id), :class => :link_content
-              %td{:align => "center"}
-                = student_info["file_delivery_date"]
-              %td{:class => "assignment_#{student_info["situation"]}"}
-                = t(student_info["situation"].to_sym)
-              %td{:align => "center"}= student_info["grade"]
-              %td{:align => "center"}
-                - if student_info["have_comments"] == false
-                  %i.icon-comment.big.empty
-                - else
-                  %i.icon-comment.big
+              %th=t :students, :scope => [:assignment, :information]
+              %th{:align => "center", :style => "width:30px"}=t :date, :scope => [:assignment, :information]
+              %th{:align => "right", :style => "width:80px"}=t :situation, :scope => [:assignment, :information]
+              %th{:align => "right", :style => "width:30px"}=t :grade, :scope => [:assignment, :information]
+              %th{:align => "center", :style => "width:50px"}=t :comments, :scope => [:assignment, :comments]
+          %tbody
+            - @students.each_with_index do |student, idx|
+              - student_info = assignment_participant_info(student.id, @assignment, @allocation_tag.id)
+              %tr.lines
+                %td
+                  = link_to student.name, student_assignment_path(@assignment.id, :student_id => student.id), :class => :link_content
+                %td{:align => "center"}
+                  = student_info["file_delivery_date"]
+                %td{:class => "assignment_#{student_info["situation"]}"}
+                  = t(student_info["situation"].to_sym)
+                %td{:align => "center"}= student_info["grade"]
+                %td{:align => "center"}
+                  - if student_info["have_comments"] == false
+                    %i.icon-comment.big.empty
+                  - else
+                    %i.icon-comment.big
+      - else
+        .portfolio_div_padding=t :itens_not_found
 
 
 :javascript
