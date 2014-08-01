@@ -115,13 +115,13 @@
   white-space: pre-wrap;
 }
 
-#user_address_number,
-#user_address_neighborhood,
-#user_country,
-#user_telephone,
-#user_address_complement,
-#user_zipcode,
-#user_cell_phone{
+form #address_number,
+form #address_neighborhood,
+form #country,
+form #telephone,
+form #address_complement,
+form #zipcode,
+form #cell_phone{
   width: 128px;
 }
 

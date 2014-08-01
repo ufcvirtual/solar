@@ -41,18 +41,18 @@
       %ul.form_user_content
         %li
           %span.form_label= f.label :name
-          %span.form_field= f.text_field :name, id: 'user_name', size: field_size
+          %span.form_field= f.text_field :name, id: 'name', size: field_size
           %span.form_error= msg_name 
         %li
           %span.form_label= f.label :cpf
-          %span.form_field= f.text_field :cpf, size: field_size, id: 'user_cpf'
+          %span.form_field= f.text_field :cpf, size: field_size, id: 'cpf'
           %span.form_error= msg_cpf 
         %li
           %span.form_label= f.label :birthdate, class: 'label_usuario'
-          %span.form_field= f.date_select :birthdate, start_year: Time.now.year - 2, end_year: 1900, id: 'user_birthdate'
+          %span.form_field= f.date_select :birthdate, start_year: Time.now.year - 2, end_year: 1900, id: 'birthdate'
         %li
           %span.form_label= f.label :gender, class: 'label_gender'
-          %span.form_field= f.select :gender, ([["M", true], ["F", false]]) , id: 'user_gender', size: 2
+          %span.form_field= f.select :gender, ([["M", true], ["F", false]]) , id: 'gender', size: 2
         %li
           %span.form_label= f.label "#{t(:form_special_needs)}*"
           %span.for
@@ -77,12 +77,12 @@
       %ul
         %li
           %span.form_label= f.label :nick
-          %span.form_field= f.text_field :nick, id: 'user_nick', size: field_size
+          %span.form_field= f.text_field :nick, id: 'nick', size: field_size
           %span.form_error= msg_nick 
       %ul
         %li
           %span.form_label= f.label :username
-          %span.form_field= f.text_field :username, id: 'user_login', size: field_size
+          %span.form_field= f.text_field :username, id: 'login', size: field_size
           %span.form_error= msg_login 
       %ul
         %li
@@ -92,7 +92,7 @@
       %ul
         %li
           %span.form_label= f.label :new_password
-          %span.form_field= f.password_field :password, size: "15", id: 'user_new_password'
+          %span.form_field= f.password_field :password, size: "15", id: 'new_password'
           %span.form_error= msg_password 
       %ul
         %li
@@ -101,16 +101,16 @@
       %ul
         %li
           %span.form_label= f.label :email
-          %span.form_field= f.text_field :email, id: 'user_email', size: field_size
+          %span.form_field= f.text_field :email, id: 'email', size: field_size
           %span.form_error= msg_email 
       %ul
         %li
           %span.form_label= f.label :email_confirmation, :class=>'label_usuario'
-          %span.form_field= f.text_field :email_confirmation, id: 'user_email_confirmation', size: field_size
+          %span.form_field= f.text_field :email_confirmation, id: 'email_confirmation', size: field_size
       %ul
         %li
           %span.form_label= f.label :alternate_email, :class=>'label_usuario'
-          %span.form_field= f.text_field :alternate_email, size: field_size, id: 'user_alternate_email'
+          %span.form_field= f.text_field :alternate_email, size: field_size, id: 'alternate_email'
         %td.form_error= msg_alternate_email
 
   / Dados de Contato
@@ -121,21 +121,21 @@
       %ul
         %li
           %span.form_label= f.label :address 
-          %span.form_field= f.text_field :address , id: 'user_address', size: field_size
+          %span.form_field= f.text_field :address , id: 'address', size: field_size
           %span.form_e
         %li
           %span.form_label= f.label :address_number 
-          %span.form_field= f.text_field :address_number , id: 'user_address_number', size: 10
+          %span.form_field= f.text_field :address_number , id: 'address_number', size: 10
           %span.form_label= f.label :address_complement 
-          %span.form_field= f.text_field :address_complement, id: 'user_address_complement', size: 16
+          %span.form_field= f.text_field :address_complement, id: 'address_complement', size: 16
         %li
           %span.form_label= f.label :address_neighborhood 
-          %span.form_field= f.text_field :address_neighborhood, id: 'user_address_neighborhood', size: 10
+          %span.form_field= f.text_field :address_neighborhood, id: 'address_neighborhood', size: 10
           %span.form_label= f.label :zipcode 
-          %span.form_field= f.text_field :zipcode, size: 16, id: 'user_zipcode'
+          %span.form_field= f.text_field :zipcode, size: 16, id: 'zipcode'
         %li
           %span.form_label= f.label :country 
-          %span.form_field= f.text_field :country, id: 'user_country', size: 10
+          %span.form_field= f.text_field :country, id: 'country', size: 10
           %span.form_label= f.label :state 
           %span.form_field= f.select :state, ([["AC", "AC"], ["AL", "AL"], ["AP", "AP"], 
                 ["AM", "AM"], ["BA", "BA"], ["CE", "CE"], ["DF", "DF"], ["ES", "ES"],
@@ -145,12 +145,12 @@
                 ["SC", "SC"], ["SP", "SP"], ["SE", "SE"], ["TO", "TO"]]), include_blank: true
         %li
           %span.form_label= f.label :city 
-          %span.form_field= f.text_field :city, id: 'user_city', size: field_size
+          %span.form_field= f.text_field :city, id: 'city', size: field_size
         %li
           %span.form_label= f.label :telephone 
-          %span.form_field= f.text_field :telephone, size: 10, id: 'user_telephone'
+          %span.form_field= f.text_field :telephone, size: 10, id: 'telephone'
           %span.form_label= f.label :cell_phone 
-          %span.form_field= f.text_field :cell_phone, size: 16, id: 'user_cell_phone'
+          %span.form_field= f.text_field :cell_phone, size: 16, id: 'cell_phone'
 
   / Dados de Instituição
   .block_wrapper
@@ -160,7 +160,7 @@
       %ul
         %li
           %span.form_label= f.label :institution
-          %span.form_field= f.text_field :institution, id: 'user_institution', size: field_size
+          %span.form_field= f.text_field :institution, id: 'institution', size: field_size
           %span.form_error= msg_institution
 
   / Pessoais
@@ -171,25 +171,25 @@
       %ul.form_user_content
         %li
           %span.form_label.form_label_multiline= f.label :bio
-          %span.form_field= f.text_area :bio, id: 'user_bio', rows: 2
+          %span.form_field= f.text_area :bio, id: 'bio', rows: 2
         %li
           %span.form_label.form_label_multiline= f.label :interests
-          %span.form_field= f.text_area :interests, id: 'user_interests', rows: 2
+          %span.form_field= f.text_area :interests, id: 'interests', rows: 2
         %li
           %span.form_label.form_label_multiline= f.label :music, class: 'label_usuario'
-          %span.form_field= f.text_area :music, id: 'user_music', rows: 2
+          %span.form_field= f.text_area :music, id: 'music', rows: 2
         %li
           %span.form_label.form_label_multiline= f.label :movies
-          %span.form_field= f.text_area :movies, id: 'user_movies', rows: 2
+          %span.form_field= f.text_area :movies, id: 'movies', rows: 2
         %li
           %span.form_label.form_label_multiline= f.label :books
-          %span.form_field= f.text_area :books, id: 'user_books', rows: 2
+          %span.form_field= f.text_area :books, id: 'books', rows: 2
         %li
           %span.form_label.form_label_multiline= f.label :phrase
-          %span.form_field= f.text_area :phrase, id: 'user_phrase', rows: 2
+          %span.form_field= f.text_area :phrase, id: 'phrase', rows: 2
         %li
           %span.form_label.form_label_multiline= f.label :site
-          %span.form_field= f.text_field :site, id: 'user_site', size: field_size
+          %span.form_field= f.text_field :site, id: 'site', size: field_size
 
   .user_data_form_buttons
     %input.btn.btn_default.user_data_form_buttons{type: "button",  value: "#{ t(:back) }", onclick: "document.location.href='#{home_path}'"}
@@ -206,6 +206,7 @@
   var user_integrated   = "#{@user.integrated?}";
   var form_fields_ids   = $(".form_field input").map(function(){return $(this).attr("id");}).get();
   var form_selects_ids  = $(".form_field select").map(function(){return $(this).attr("id");}).get();
+  var form_texts_ids   = $(".form_field textarea").map(function(){return $(this).attr("id");}).get();
 
   // se usuário for integrado, deixa todos os campos q não inclusos em um array, desabilitados
   if(user_integrated == "true"){
@@ -214,5 +215,8 @@
     });
     $(_(form_selects_ids).difference(changeable_fields)).each(function(){
       $("#"+this).prop("disabled", true).css("color", "gray");
+    });
+    $(_(form_texts_ids).difference(changeable_fields)).each(function(){
+      $("#"+this).prop("disabled", true);
     });
   }
