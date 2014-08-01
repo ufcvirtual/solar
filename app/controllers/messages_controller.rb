@@ -127,7 +127,7 @@ class MessagesController < ApplicationController
 
         Thread.new do
           Mutex.new.synchronize do # utilizado para organizar/controlar o comportamento das threads
-            Notifier.send_mail(users.map(&:email).join(","), @message.subject, msg, @message.files).deliver
+            Notifier.send_mail(users.map(&:email).join(","), @message.subject, msg, @message.files, current_user.email).deliver
           end
         end
       end
