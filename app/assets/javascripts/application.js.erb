@@ -33,18 +33,14 @@
 // = require loading_items
 
 /**
- * Retira o menu de usuário na barra superior ao clicar em outro canto da tela
+ * General
  */
 
-mysolar_cookie_id = "_mysolar_menu_opened";
-
- $(function() {
+$(function() {
   $("#change_picture").fancybox({
     maxWidth  : 500
   });
-});
 
- $(function(){
   $("body").click(function(e) {
     if((e.target.id !== 'mysolar_top_submenu') && (e.target.id !== 'mysolar_top_user_nick') && (e.target.id !== 'image_user')){
       $("#mysolar_top_submenu").slideUp(150);
@@ -52,9 +48,7 @@ mysolar_cookie_id = "_mysolar_menu_opened";
       $('#mysolar_top_submenu_label').addClass('mysolar_top_submenu_label_regular');
     }
   });
-});
 
- $(function(){
   $("body").click(function(e) {
     if((e.target.id !== 'mysolar_submenu_help') && (e.target.id !== 'help_top')){
       $("#mysolar_submenu_help").slideUp(150);
@@ -65,88 +59,9 @@ mysolar_cookie_id = "_mysolar_menu_opened";
 });
 
 /**
- * Menu Lateral
- */
-
- $(function() {
-  var menu_id, li;
-
-  // Ao clicar nos menus
-  $('.mysolar_menu_list a, .mysolar_menu_title').click(function () {
-    var li = $(this).closest('li');
-    // o li tem um data menu, que, acrescido ao id da oferta, deve corresponder ao cookie
-    var menu_div_id  = li.data('menu');
-    var cookie_value = menu_div_id+$(".mysolar_menu").data("offer");
-    
-    if (cookie_value == li.prop("id")) //se for menu interno à uc
-      setCookieMenu(cookie_value, null, li.data("path"));
-    else // se for menu geral
-      setCookieMenu(menu_div_id, "");
-
-    $(".mysolar_menu_active").removeClass("mysolar_menu_active")
-    li.addClass('mysolar_menu_active');
-  });
-
-  // Ao clicar para abrir aba
-  $("tbody.offers td a").click(function(){
-    var id = $(this).prop("href").split("&")[2].split("=")[1];
-    setCookieMenu("menu-parent_0-"+id, id, $(this).data("path"));
-    $('li#parent_0').addClass('mysolar_menu_active'); // seta o Inicio
-    $.removeCookie(mysolar_cookie_id); // remove cookie de home
-  });
-
-  // Ao clicar no breadcrumb
-  $("#breadcrumb a").click(function(){
-    var id  = $(this).prop("href").split("&")[2].split("=")[1]; // links que possuem id são referentes a aba de UC
-    var mid = getURLParameter($(this).prop("href"), "mid");     // links que possuem mid são referentes a algo no menu
-    if (id!=null && mid==null){ // se for um link para o início da uc
-      setCookieMenu("menu-parent_0-"+id);
-    }
-  });
-
-  // Ao clicar na aba "home"
-  $("li.general_context a").click(function(){
-    $.removeCookie(mysolar_cookie_id);
-  });
-
-  function getURLParameter(url, name) {
-    return (RegExp(name + '=' + '(.+?)(&|$)').exec(url)||[,null])[1];
-  };
-
-  // Função de criação do cookie em uma aba
-  function setCookieMenu(cookie_value, tab, path) {
-    if (tab == undefined || tab == null) // se a aba não for informada, recupera a partir do menu
-      tab = $(".mysolar_menu").data("offer");
-
-    if (path == undefined) // se nenhum href for passado, path é "/" por padrão
-      var path = "/";
-
-    $.cookie(mysolar_cookie_id+tab, cookie_value, { path: path });
-  };
-
-  // Adição das classes de menu ativo enquanto o cookie existir
-  var li_id = $.cookie(mysolar_cookie_id+$(".mysolar_menu").data("offer"));
-
-  $('li#'+li_id).addClass('mysolar_menu_active');
-
-  // Remoção do cookie ao fechar aba
-  $(".tabs_close").click(function(){
-    var cookie_value = mysolar_cookie_id+$(this).prop("id");
-    $.removeCookie(cookie_value);
-  });
-
-  if($('.mysolar_menu_title_single > a').children("div.menu_icon_circle").length == 0)
-    $('.mysolar_menu_title_single > a').prepend('<div class="menu_icon_circle">&bull;</div>');
-
-  if($('.mysolar_menu_title_multiple').children("div.menu_icon_arrow").length == 0)
-    $('.mysolar_menu_title_multiple').prepend('<div class="menu_icon_arrow">&#9662;</div>');
-
-  $('.open_menu').click(); // abre menu corrente
-});
-
-/**
 * Alertas
 */
+
 $(window).load(function(){
   $(".flash_message_wrapper").sticky({
     topSpacing: 0,
@@ -221,3 +136,91 @@ function solar_help() {
   })
 .start();
 }
+
+
+
+/**
+ * Cookies: Menu Lateral
+ */
+
+mysolar_menu_cookie_id = "_mysolar_menu_opened";
+
+$(function() {
+
+  // create/update cookie list {aba: menu}
+  function menu_cookie_update_tab(new_menu_value) {
+    var ck_menu_tabs = {}; // cria se nao existe
+    try {
+      ck_menu_tabs = JSON.parse($.cookie(mysolar_menu_cookie_id));
+    } catch(e) {}
+
+    $.extend(ck_menu_tabs, new_menu_value); // new values
+    $.cookie(mysolar_menu_cookie_id, JSON.stringify(ck_menu_tabs), { path: '/' }); // update cookies
+  }
+
+  // clear menu tab key
+  function menu_cookie_remove_tab(tab_key) {
+    try {
+      var ck_menu_tabs = JSON.parse($.cookie(mysolar_menu_cookie_id));
+
+      delete ck_menu_tabs[tab_key];
+      $.cookie(mysolar_menu_cookie_id, JSON.stringify(ck_menu_tabs), { path: '/' }); // update cookies
+    } catch(e) {}
+  }
+
+  function menu_cookie_set_tab_to_home(tab_key) {
+    menu_cookie_update_tab(JSON.parse('{"' + tab_key + '":"menu_home"}'));
+  }
+
+  // click in menu
+  $('.mysolar_menu a').click(function(e){
+    var li = $(this).closest('li');
+    var menu_value = li.data('menu-id');
+
+    var active_tab = $('.mysolar_unit_active_tab').data('tab-id');
+    var new_menu_value = JSON.parse('{"' + active_tab + '":"'+ menu_value +'"}');
+
+    menu_cookie_update_tab(new_menu_value);
+
+    $('.mysolar_menu_active').removeClass('mysolar_menu_active');
+    li.addClass('mysolar_menu_active');
+  });
+
+  // click in home or remove tab, clear cookie
+  $("#mysolar_tabs_wrapper li.general_context a, #mysolar_tabs_wrapper li a.tabs_close").click(function(e){
+    menu_cookie_remove_tab($(this).closest('li').data('tab-id'));
+  });
+
+  // click in offers
+  $("tbody.offers td a").click(function(){
+    menu_cookie_set_tab_to_home($(this).closest('tr').data('tab-id'));
+  });
+
+  // level 0
+    // system home
+  // level 1
+    // menu_home
+  // level 2
+    // permanece na pagina
+  $("#breadcrumb a").click(function(e){
+    var bread_level = $(this).closest('span').data('level');
+    if (bread_level == 1) // offer/uc home
+      menu_cookie_set_tab_to_home($('.mysolar_unit_active_tab').data('tab-id'));
+  });
+
+  // remove menu cookies
+  $('.mysolar_top_link.logout').click(function(){
+    $.removeCookie(mysolar_menu_cookie_id);
+  });
+
+  // set current menu
+  try {
+    var opened_menus = JSON.parse($.cookie(mysolar_menu_cookie_id));
+    var active_tab = $('.mysolar_unit_active_tab').data('tab-id');
+
+    $('li[data-menu-id=' + opened_menus[active_tab] + ']').addClass('mysolar_menu_active');
+  } catch(e) {}
+
+});
+
+

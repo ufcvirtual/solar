@@ -78,7 +78,7 @@
             - if active_tab[:url][:context] == Context_Curriculum_Unit
               .mysolar_menu_group
                 %ul
-                  %li.mysolar_menu_title_single= link_to t(:menu_home), active_tab[:breadcrumb].first[:url], class: 'mysolar_menu_title'
+                  %li.mysolar_menu_title_single{'data-menu-id'=>'menu_home'}= link_to t(:menu_home), active_tab[:breadcrumb].first[:url], class: 'mysolar_menu_title'
 
             = raw menu_list
 

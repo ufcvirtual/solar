@@ -15,7 +15,7 @@ module BreadCrumbHelper
       unless bread.nil?
         link = link_to(((idx == 0)? bread[:name] : t((bread[:name] || '').to_sym, :default => bread[:name])), bread[:url])
         text_bread << '&nbsp;>&nbsp;' if idx > 0
-        text_bread << %{<span style="text-decoration: underline;">#{link}</span>}
+        text_bread << %{<span style="text-decoration: underline;" data-level="#{idx}" =>#{link}</span>}
       end
     end
 
