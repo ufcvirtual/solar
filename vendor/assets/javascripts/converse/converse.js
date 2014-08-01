@@ -11715,6 +11715,8 @@ return parser;
             },
 
             showMessage: function (message) {
+              // aqui
+              //alert("foi");
                 var time = message.get('time'),
                     times = this.model.messages.pluck('time'),
                     this_date = converse.parseISO8601(time),
@@ -11725,9 +11727,17 @@ return parser;
                 // prior, then indicate it on the chatbox.
                 idx = _.indexOf(times, time) - 1;
                 contacts = converse.roster.models; //pega lista completa de usuários
-                var c = 0;
                 box = document.getElementById(this.model.get('box_id'));
                 box.title = "";
+                if(!$(box).find("#status")[0]){
+                  var divStatus = document.createElement("div");
+                  divStatus.id = "status";
+                  box.childNodes[0].childNodes[1].childNodes[0].appendChild(divStatus);
+                  var user = con.roster._byId[this.model.id]; 
+                  if(!user.attributes.chat_status)
+                    user.attributes.chat_status = "offline";
+                  divStatus.setAttribute("class","status IM"+user.attributes.chat_status);
+                }             
                 //adiciona sombra caso precise
                 if( box.childNodes[0].style.top != "270px" )
                     box.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
@@ -12684,6 +12694,7 @@ return parser;
             },
 
             render: function () {
+                //render controlbox
                 //chat_status = this.model.get('status') || 'online';
                 if ((!converse.prebind) && (!converse.connection)) {
                     // Add login panel if the user still has to authenticate
@@ -13343,9 +13354,12 @@ return parser;
                             view = new converse.ChatBoxView({model: item});
                             //adiciona imagem de status aos ja criados e gerencia janelas
                             var box = view.$el[0];
-                            var divStatus = document.createElement("div");
-                            divStatus.id = "status";
-                            box.childNodes[0].childNodes[1].childNodes[0].appendChild(divStatus);
+                            if(!$(box).find("#status")[0]){
+                              var divStatus = document.createElement("div");
+                              box.childNodes[0].childNodes[1].childNodes[0].appendChild(divStatus);  
+                            }
+                            else
+                              var divStatus = $(box).find("#status")[0]
                             contacts = converse.roster.models; //pega lista completa de usuários
                             var user = con.roster._byId[item.id]; 
                             if(!user.attributes.chat_status)
