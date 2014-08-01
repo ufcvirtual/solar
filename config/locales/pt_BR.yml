@@ -1060,6 +1060,8 @@ pt_BR:
       created: "Não foi possível criar webconferência."
       updated: "Não foi possível atualizar webconferência."
       deleted: "Não foi possível deletar webconferência."
+    index:
+      rnp: "Para acessar a webconferência da RNP, vá ao endereço: <a href='http://webconf2.rnp.br/uab_ufc' target='_blank'>http://webconf2.rnp.br/uab_ufc</a>."
 
   navigation_of: " de "
   navigation_next: "Próxima >"

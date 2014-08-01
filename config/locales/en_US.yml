@@ -922,6 +922,8 @@ en_US:
       created: "Webconference wasn't created."
       updated: "Webconference wasn't updated."
       deleted: "Webconference wasn't deleted."
+    index:
+      rnp: "To access RNP's webconference, go to the address: <a href='http://webconf2.rnp.br/uab_ufc' target='_blank'>http://webconf2.rnp.br/uab_ufc</a>."
   navigation_of: " of "
   navigation_next: "Next >"
   navigation_previous: "< Previous"
