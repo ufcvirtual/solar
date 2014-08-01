@@ -1,7 +1,15 @@
+.flash_message_wrapper.instructions{style: "width: 550px; text-align: justify; padding: 5px; height: 200px; overflow: auto; margin-bottom: 24px;"}
+  #flash_message.notice
+    =raw "<center>Caros usuários,</center> <br/><br/> Aos que possuem problemas de acesso, sugerimos as seguintes alternativas: <br/> 1. Se você é aluno ou professor dos cursos da UAB: <br/> 1.1 Dirija-se ao Módulo Acadêmico a fim de recuperar sua senha: https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do <br/> 1.2 Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Módulo Acadêmico. <br/> 1.3 Se você não consegue recuperar sua senha, favor dirigir-se à secretaria de seu curso. <br/><br/> 2. Se você não é aluno, nem professor dos cursos da UAB, mas é tutor ou coordenador: <br/> 2.1 Primeiramente, procure tentar efetuar o login com os dados prévios do Solar 1.2 <br/> 2.2 Se você possuir acesso ao Módulo Acadêmico, deve realizar o mesmo procedimento indicado no tópico 1. <br/> 2.3 Se você nunca usou o Módulo Acadêmico ou não consegue recuperar sua senha nele, deve acessar o link 'Esqueceu a sua senha?' nesta tela, de modo que possa gerar uma nova senha. <br/> 2.4 Caso o acesso ao 'Esqueceu sua senha?' informe que seu email não existe, você deve dirigir-se ao 'atendimento@virtual.ufc.br', informando nome, cpf e email correto, de modo que seu email possa ser atualizado.<br/> 2.5 Após entrar em contato com o 'atendimento@virtual.ufc.br' e receber o retorno deste, acessar o link 'Esqueceu a sua senha?' novamente e digitar o email informado ao atendimento de modo que possa gerar uma nova senha.<br/> 2.6 Caso o atendimento informe que seu usuário não pode ser alterado devido a integração com o Módulo Acadêmico, seguir os passos abaixo. Caso isto não funcione, retornar ao tópico 2.3.<br/> 2.6.1 Acesse o Módulo Acadêmico: https://www.moduloacademico.ufc.br/moduloacademico/ <br/> 2.6.2 Coloque, no login, o número do seu CPF e, na senha, seu primeiro nome em letras maiúsculas. <br/> 2.6.3 Após conseguir acesso, atualize seus dados, principalmente email, login e senha. <br/> 2.6.4 Retorne ao Solar 2.0 e, nesta tela, clique em 'Cadastrar' e informe seu cpf. Isto irá atualizar seus dados no Solar 2.0. <br/> 2.6.5 Após ter seus dados atualizados, acesse o ambiente normalmente. <br/><br/> 3. Quaisquer outros usuários<br/> 3.1 Procurar recuperar a senha acessando o link 'Esqueceu a sua senha?'. <br/> 3.2 Qualquer dificuldade encontrada, entrar em contato com o 'atendimento@virtual.ufc.br' informando nome e cpf e relatando o ocorrido."
+
+  #link
+    #link-password= link_to_function "Não tenho problemas de acesso", "access_without_problems()"
+
 #screen-login
   %ul#login-header
     %li#login-bt= link_to_function t(:sign_in), "open_login_tab()"
     %li#register-bt.inactive= link_to_function t(:sign_up), "open_registration_tab()"
+
   #login-form
     = form_for(resource_name) do |f|
       .form-field= f.text_field :login, id: "login", placeholder: t(:user), tabindex: "1"
@@ -24,3 +32,9 @@
   .fb-like
     %script{src: "http://connect.facebook.net/en_US/all.js#xfbml=1"}
     %fb:like{"data-href" => YAML::load(File.open('config/facebook.yml'))['data-fanpage'], layout: "button_count", "data-show_faces" => "false", "data-width" => "450"}
+
+:javascript
+  function access_without_problems(){
+    $(".instructions").hide();
+    $("#screen-login").removeClass("invisible");
+  }
