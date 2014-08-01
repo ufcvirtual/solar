@@ -11715,8 +11715,6 @@ return parser;
             },
 
             showMessage: function (message) {
-              // aqui
-              //alert("foi");
                 var time = message.get('time'),
                     times = this.model.messages.pluck('time'),
                     this_date = converse.parseISO8601(time),
