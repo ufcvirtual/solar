@@ -33,7 +33,7 @@ class AdministrationsController < ApplicationController
   def show_user
     authorize! :update_user, Administration
 
-    @user = User.find(params[:id])
+    @user, @is_admin = User.find(params[:id]), current_user.is_admin?
 
     respond_to do |format|
       format.html { render partial: "user", locals: {user: @user} }
