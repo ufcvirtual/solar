@@ -42,7 +42,7 @@
               %div= t(".hour_period", start_hour: chat.start_hour, end_hour: chat.end_hour)
 
   - else
-    .block_content.block_content_text= t(".no_chats")
+    .block_content_text_list.text_none= t(".no_chats")
 
 = javascript_include_tag "tablesorter", "chat_rooms", "tooltip", "groups_tags"
 

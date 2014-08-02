@@ -1,5 +1,5 @@
-.title-warning= t(".page_info", url: link_to(t(".user_indication").html_safe, users_indication_administrations_path(bread: "menu_indicate_user", mid: 60))).html_safe
 .block_wrapper.allocation_requested_list
+  .title-warning= t(".page_info", url: link_to(t(".user_indication").html_safe, users_indication_administrations_path(bread: "menu_indicate_user", mid: 60))).html_safe
   .block_title{style: "height:0"}
   .block_content_toolbar
     .block_toolbar_left
@@ -23,7 +23,7 @@
           = render partial: 'pending_allocations', locals: { allocations: @allocations }
       = link_to content_tag(:i, nil, class: "icon-ellipsis"), search_allocation_administrations_path(page: @allocations.next_page, type: @type_search, value: @text_search), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @allocations.next_page
     - else
-      .block_content.block_content_text= t(".none_pending_allocation")
+      .block_content_text_list.text_none= t(".none_pending_allocation")
 
 :javascript
   $(function(){

@@ -4,25 +4,25 @@
   .block_content_toolbar
     .block_toolbar_left
       = link_to content_tag(:i, nil, class: 'icon-plus'), request_profile_users_path, class: " btn btn_main", id: "request_profile", :"data-tooltip" => t(".request_profile")
-- unless @allocations.nil? or @allocations.empty?
-  .block_content
-    %table.tb_list
-      %thead
-        %tr.lines
-          %th{style: "width: 10%"}= t(".profile")
-          %th= t(".type")
-          %th= t(".course")
-          %th= t(".curriculum_unit")
-          %th= t(".semester")
-          %th= t(".group")
-          %th{style: "width: 10%"}= t(".status")
-          %th.no_sort{style: "width: 5%"}
-      %tbody.allocations
-        = render partial: 'profiles'
-    = link_to content_tag(:i, nil, class: "icon-ellipsis"), profiles_users_path(page: @allocations.next_page), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @allocations.next_page
-- else
-  .block_content_text_list.text_none 
-    = t(:item_search_no_found)
+  - unless @allocations.nil? or @allocations.empty?
+    .block_content
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th{style: "width: 10%"}= t(".profile")
+            %th= t(".type")
+            %th= t(".course")
+            %th= t(".curriculum_unit")
+            %th= t(".semester")
+            %th= t(".group")
+            %th{style: "width: 10%"}= t(".status")
+            %th.no_sort{style: "width: 5%"}
+        %tbody.allocations
+          = render partial: 'profiles'
+      = link_to content_tag(:i, nil, class: "icon-ellipsis"), profiles_users_path(page: @allocations.next_page), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @allocations.next_page
+  - else
+    .block_content_text_list.text_none 
+      = t(:item_search_no_found)
         
 :javascript
   $(function(){

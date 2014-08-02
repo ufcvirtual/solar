@@ -895,8 +895,8 @@ pt_BR:
   title: "Título"
   forum_table_title: "Fóruns disponíveis"
   forum_table_date: "Data de acesso"
-  forum_message: "Nenhum fórum disponível"
-  forum_no_messages: Nenhuma postagem em fórum disponível
+  forum_message: "Nenhum fórum cadastrado"
+  forum_no_messages: Nenhuma postagem em fórum
   forum: "Fórum"
   forum_new_message: "Nova Postagem"
   forum_closed: "Fórum encerrado"
@@ -1506,6 +1506,7 @@ pt_BR:
       name: Nome
       login: Login
       add_user: Adicionar usuário
+      no_allocated_user: Nenhum usuário alocado
     search_users:
       designate: Alocar
       designate_search_no_found: Nenhum usuário encontrado
@@ -1516,6 +1517,7 @@ pt_BR:
       email: Email
       name: Nome
       select_profile: Selecione um perfil
+      no_user_found: Nenhum usuário encontrado
     success:
       enrollm_request: Pedido de matrícula realizado
       allocated: Usuário alocado
@@ -1662,7 +1664,7 @@ pt_BR:
       last_accessed: "Último acesso"
       edit: Editar
       change_password: Alterar senha
-      message_not_found: "Usuário não encontrado"
+      message_not_found: Nenhum usuário encontrado
       synchronize: Sincronizar com Módulo Acadêmico
       import: Importar dados do Módulo Acadêmico
     informations:
@@ -1767,7 +1769,7 @@ pt_BR:
       semester: Semestre
       group: Turma
       responsibles: Responsáveis
-      none_responsible: Não há responsáveis
+      none_responsible: Nenhum responsável alocado
       search: Busca
 
   editions:
@@ -2018,7 +2020,7 @@ pt_BR:
       title_other_chats: Outros Chats
       detail: Detalhes
       availability: Disponibilidade
-      message_no_chat: Nenhum chat disponível
+      message_no_chat: Nenhum chat cadastrado
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
       students: Alunos
@@ -2031,7 +2033,7 @@ pt_BR:
       chat_name: Nome do chat
       availability: Disponibilidade
       groups: "Turmas: "
-      no_chats: Não há chats
+      no_chats: Nenhum chat cadastrado
       delete_chats: Deletar Chats
       hour_period: "%{start_hour}h - %{end_hour}h"
       choose_at_least_one: "Selecione, ao menos, um chat"

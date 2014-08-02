@@ -764,8 +764,8 @@ en_US:
   title: "Title"
   forum_table_title: "Available Discussions"
   forum_table_date: "Access date"
-  forum_message: "No discussion available"
-  forum_no_messages: No discussion post available
+  forum_message: "No discussion registered"
+  forum_no_messages: No discussion post
   forum: "Discussion"
   forum_new_message: "New Post"
   forum_closed: "Discussion closed"
@@ -857,7 +857,7 @@ en_US:
       choose_at_least_one: "Choose at least one bibliography"
       choose_one: Choose a bibliography
       bibliographies: Bibliographies
-      no_data: No data
+      no_data: No bibliography registered
       accessed_in: "Accessed in:"
       available_in: "Available em:"
     success:
@@ -867,7 +867,7 @@ en_US:
     error:
       created: Bibliography item wasn't created.
       updated: Bibliography item wasn't updated.
-      deleted: Bibliography item wasn't deleted.
+      deleted: Bibliography item wasn't deleoted.
   notifications:
     form:
       new: New Notification
@@ -881,7 +881,7 @@ en_US:
       new: New notification
       edit: Edit notification
       delete: Delete notification
-      no_data: No data
+      no_data: No notification registered
       expand_description: Expand description
       compress_description: Compress description
       choose_at_least_one: "Choose at least one notification"
@@ -909,7 +909,7 @@ en_US:
       new: "New Webconference"
       edit: "Edit Webconference"
       delete: "Delete Webconference"
-      no_data: "No data"
+      no_data: "No webconference registered"
       expand_description: Expand description
       compress_description: Compress description
       choose_at_least_one: "Choose at least one webconference"
@@ -1323,6 +1323,7 @@ en_US:
       name: Name
       login: Login
       add_user: Add user
+      no_allocated_user: No allocated user
     search_users:
       designate: Designate
       designate_search_no_found: No user found
@@ -1333,6 +1334,7 @@ en_US:
       email: Email
       name: Name
       select_profile: Select a profile
+      no_user_found: No user found
     success:
       enrollm_request: Request for enrollment made
       allocated: Allocated user
@@ -1470,7 +1472,7 @@ en_US:
       last_accessed: "Last accessed"
       edit: Edit
       change_password: Change password
-      message_not_found: "User not found"
+      message_not_found: No user found
       synchronize: Synchronize with Módulo Acadêmico
       import: Import data from Módulo Acadêmico
     informations:
@@ -1575,7 +1577,7 @@ en_US:
       semester: Semester
       group: Group
       responsibles: Responsibles
-      none_responsible: There are no responsibles
+      none_responsible: No allocated responsible
       search: Search
   editions:
     alert: "Fill the required fields"
@@ -1817,7 +1819,7 @@ en_US:
       title_other_chats: Other Chats
       detail: Details
       availability: Availability
-      message_no_chat: No chat available
+      message_no_chat: No chat registered
       expand_description: Expand description
       compress_description: Compress description
       students: Students
@@ -1830,7 +1832,7 @@ en_US:
       chat_name: Chat's name
       availability: Availability
       groups: "Groups: "
-      no_chats: There are no chats
+      no_chats: No chat registered
       delete_chats: Delete Chats
       hour_period: "%{start_hour}h - %{end_hour}h"
       choose_at_least_one: "Choose at least one chat"
