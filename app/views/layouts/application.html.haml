@@ -58,6 +58,7 @@
           %ul
             %li= link_to t(:context), "#", id: 'help_context'
             %li= link_to t(:tutorials), tutorials_path, id: 'my_tutorials'
+            %li= link_to t(:videos), "http://www.youtube.com/embed/videoseries?list=PLymN3BhGXshU5s4NYY2EzYkpHuVtigaoP", class: "fancybox.iframe", id: "playlist"
         / tabs
         #mysolar_tabs
           %ul#mysolar_tabs_wrapper= raw render_tabs
@@ -160,6 +161,8 @@
        * Intro
        */
       $("#help_context").click(solar_help);
+
+      $('#playlist').fancybox();
     });
 
     // Lessons
@@ -173,7 +176,7 @@
 
 
     // IM
-    xmpp_cpf = "#{current_user.cpf}";
+    xmpp_cpf = "#{current_user.username}";
     xmpp_ip = "#{@_ip}";
     xmpp_dominio = "#{@_dominio}";
     xmpp_port = "#{@_porta}";
