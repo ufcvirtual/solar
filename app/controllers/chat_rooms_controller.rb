@@ -88,13 +88,13 @@ class ChatRoomsController < ApplicationController
   end
 
   def list
-    allocation_tag_id = active_tab[:url][:allocation_tag_id]
-    authorize! :list, ChatRoom, on: [allocation_tag_id]
+    @allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    authorize! :list, ChatRoom, on: [@allocation_tag_id]
 
-    @alloc = AllocationTag.find(allocation_tag_id).user_relation_with_this(current_user).first.id rescue nil
-    @responsible = ChatRoom.responsible?(allocation_tag_id, current_user.id)
-    @my_chats = ChatRoom.chats_user(allocation_tag_id, current_user.id)
-    @other_chats = ChatRoom.chats_other_users(allocation_tag_id, current_user.id) unless @responsible
+    @alloc = AllocationTag.find(@allocation_tag_id).user_relation_with_this(current_user).first.id rescue nil
+    @responsible = ChatRoom.responsible?(@allocation_tag_id, current_user.id)
+    @my_chats = ChatRoom.chats_user(@allocation_tag_id, current_user.id)
+    @other_chats = ChatRoom.chats_other_users(@allocation_tag_id, current_user.id) unless @responsible
   end
 
   def show

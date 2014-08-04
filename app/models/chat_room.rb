@@ -2,12 +2,11 @@ class ChatRoom < Event
 
   GROUP_PERMISSION = true
 
-  has_many :messages, class_name: "ChatMessage"
-  has_many :participants, class_name: "ChatParticipant", dependent: :destroy
   has_many :academic_allocations, as: :academic_tool, dependent: :destroy
+  has_many :messages, class_name: "ChatMessage", through: :academic_allocations, source: :chat_messages
+  has_many :participants, class_name: "ChatParticipant", dependent: :destroy
   has_many :allocation_tags, through: :academic_allocations
   has_many :groups, through: :allocation_tags
-
   has_many :users, through: :participants, select: [:name, :nick], order: :name
   has_many :allocations, through: :participants
 
@@ -32,14 +31,14 @@ class ChatRoom < Event
     messages.where(message_type: 1)
   end
 
-  def url(allocation_id)
+  def url(allocation_id, academic_allocation_id)
     chat = YAML::load(File.open('config/chat.yml'))[Rails.env.to_s] rescue nil
     cipher = OpenSSL::Cipher::Cipher.new('DES-EDE3-CBC')
     cipher.encrypt
     cipher.iv  = chat['IV']
     cipher.key = chat['key']
 
-    [chat["url"], Base64.encode64(cipher.update(chat["params"].gsub("allocation_id", allocation_id.to_s).gsub("id", id.to_s)) + cipher.final).gsub("\n",'')].join
+    [chat["url"], Base64.encode64(cipher.update(chat["params"].gsub("allocation_id", allocation_id.to_s).gsub("academic_id", academic_allocation_id.to_s)) + cipher.final).gsub("\n",'')].join
   end
 
   def verify_hours

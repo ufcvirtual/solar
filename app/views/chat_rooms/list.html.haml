@@ -12,7 +12,8 @@
           %tr{class: "lines #{'period_ended' if !chat.opened?}"}
             %td
               - if chat.opened?
-                = link_to chat.title, chat.url(@alloc), {class: 'link_content fancybox.iframe', target: '_blank' }
+                - academic_allocation = chat.academic_allocations.where(allocation_tag_id: @allocation_tag_id).first.id
+                = link_to chat.title, chat.url(@alloc, academic_allocation), {class: 'link_content fancybox.iframe', target: '_blank' }
               - else
                 = chat.title
                 = " [" + t(".message_did_not_start")+"]" if chat.start_date.to_date > Date.today
