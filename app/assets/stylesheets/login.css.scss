@@ -755,7 +755,7 @@ select option{
 }
 
 .flash_message_wrapper {
-  margin: 20px auto 0 auto;
+  margin: 20px auto 20px auto;
   width: $login_width;
   @include filter-gradient(#f5f5f5, #e6e8ec); /* IE */
   @include background-image(linear-gradient(#f5f5f5, #e6e8ec)); /* CSS3 */
