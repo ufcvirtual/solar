@@ -11753,6 +11753,7 @@ return parser;
                     }
                 }
                 if (message.get('composing')) {
+                    ob = message;
                     this.insertStatusNotification(__('%1$s está digitando', message.get('fullname')));               
                     return;
                 } else {
@@ -12593,7 +12594,7 @@ return parser;
                         index = index.replace("'",'');
                         index = index.replace("'",''); 
                         det.setAttribute("class","detailIM") ;
-                        sum.innerHTML=index.split("_")[1]+" _ "+index.split("_")[2]+" _ "+index.split("_")[0];  
+                        sum.innerHTML= index.split("_")[1] + " _ " + index.split("_")[2] + " _ " + index.split("_")[0];  
                         sum.appendChild(dl);
                         det.appendChild(sum);
                         det.appendChild(dl);
@@ -12616,7 +12617,7 @@ return parser;
                        var id = contacts[index].childNodes[0].id;
                        var rosterGroups = con.roster._byId[id].groups;
                       for(indexGroups in rosterGroups)
-                        contacts[index].childNodes[0].title = contacts[index].childNodes[0].title +rosterGroups[indexGroups]+"\n";
+                        contacts[index].childNodes[0].title = contacts[index].childNodes[0].title + rosterGroups[indexGroups].split("_")[1] + " _ " + rosterGroups[indexGroups].split("_")[2] + "\n";
                     }
                 }
 
@@ -13965,9 +13966,9 @@ return parser;
                                 con.groups["'"+group+"'"]["'"+con.connection.roster.items[ele].name+"'"] = item;
                             
                             if(grou < con.connection.roster.items[ele].groups.length - 1)
-                                title = title + group.split("_").pop() + "\n";
+                                title = title + group.split("_")[1] + " _ " + group.split("_")[2] + "\n";
                             else
-                                title = title + group.split("_").pop();
+                                title = title + group.split("_")[1] + " _ " + group.split("_")[2];
                         }
                         item.groups   = con.connection.roster.items[ele].groups;
                         contactRoster = view.$el[0].childNodes[0];
