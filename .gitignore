@@ -6,6 +6,7 @@ tmp/*
 *-min.js
 .DS_Store
 .project
+.bundle/
 .idea/
 .dotest/
 .config
