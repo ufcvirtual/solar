@@ -11753,7 +11753,6 @@ return parser;
                     }
                 }
                 if (message.get('composing')) {
-                    ob = message;
                     this.insertStatusNotification(__('%1$s está digitando', message.get('fullname')));               
                     return;
                 } else {
@@ -12554,21 +12553,21 @@ return parser;
                   m.style.display="inline";
             },
             orderByGroups: function(ev){
-                orderGroups = ev.currentTarget;
-                rosters = $("#converse-roster")[0];
-                box = $("#users-im")[0];
-                divGroups = $("#groups")[0];
+                var orderGroups = ev.currentTarget;
+                var rosters = $("#converse-roster")[0];
+                var box = $("#users-im")[0];
+                var divGroups = $("#groups")[0];
                 getCookie();
                 getCookieGroups();
                 if(orderGroups.checked){
                     cookie_im.Groups = true;
                     rosters.style.display = "none";
-                    groups = con.groups;
+                    var groups = con.groups;
                     if(divGroups){
                         divGroups.style.display = "block";
                     }
                     else{
-                        div    = document.createElement("div");
+                        var div    = document.createElement("div");
                         div.id = "groups";
                         box.appendChild(div);
                         divGroups = $("#groups")[0];
@@ -12602,7 +12601,7 @@ return parser;
                         det.open = cookie_groups[det.id];
                     }
                     $('.detailIM').click(function(e){
-                      detail = e.target.parentNode;
+                      var detail = e.target.parentNode;
                       cookie_groups[detail.id] = !detail.open;                      
                       setCookieGroups();
                     });
@@ -12611,7 +12610,7 @@ return parser;
                     cookie_im.Groups = false;
                     divGroups.style.display = "none";
                     rosters.style.display = "block";
-                    groups = con.groups;
+                    var groups = con.groups;
                     var contacts = con.ListView.el.childNodes;
                     for(index = 2; index < contacts.length; index++){
                        var id = contacts[index].childNodes[0].id;
@@ -12642,9 +12641,9 @@ return parser;
             
             minimizarChat: function(ev){
                 //Minimiza e maximiza a chat box
-                el = $("#chat")[0];
-                CP = el.parentNode.childNodes[1];
-                TB = $("#toggle-controlbox")[0];
+                var el = $("#chat")[0];
+                var CP = el.parentNode.childNodes[1];
+                var TB = $("#toggle-controlbox")[0];
                 if ( CP.style.display != "none" )
                 {  
                     cookie_im.IM_toggle = false;   
@@ -13351,15 +13350,16 @@ return parser;
                         } else {
 
                             view = new converse.ChatBoxView({model: item});
+                            contacts = converse.roster.models; //pega lista completa de usuários
                             //adiciona imagem de status aos ja criados e gerencia janelas
                             var box = view.$el[0];
                             if(!$(box).find("#status")[0]){
                               var divStatus = document.createElement("div");
+                              divStatus.id = "status";
                               box.childNodes[0].childNodes[1].childNodes[0].appendChild(divStatus);  
                             }
                             else
                               var divStatus = $(box).find("#status")[0]
-                            contacts = converse.roster.models; //pega lista completa de usuários
                             var user = con.roster._byId[item.id]; 
                             if(!user.attributes.chat_status)
                               user.attributes.chat_status = "offline";
@@ -13933,7 +13933,7 @@ return parser;
                 //atualiza a imagem de status
                 id = con.chatboxes._byId[item.id];
                 if(id){
-                  chat = $("#"+id.attributes.box_id)[0];
+                  var chat = $("#"+id.attributes.box_id)[0];
                   var divStatus = $(chat).find("#status")[0];
                   divStatus.setAttribute("class","status IM"+item.attributes.chat_status);
                 }
@@ -13957,7 +13957,7 @@ return parser;
                     if(con.connection.roster.items[ele].jid == item.id){
                         title = "";
                         for(grou in con.connection.roster.items[ele].groups){
-                            group = con.connection.roster.items[ele].groups[grou];
+                            var group = con.connection.roster.items[ele].groups[grou];
                             if(!con.groups["'"+group+"'"])
                                 con.groups["'"+group+"'"] = {};
                             
