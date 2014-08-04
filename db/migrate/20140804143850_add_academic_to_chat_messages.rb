@@ -5,18 +5,18 @@ class AddAcademicToChatMessages < ActiveRecord::Migration
       t.index :academic_allocation_id
     end
 
-    ChatMessage.find_each do |msg|
-      academic_allocations = AcademicAllocation.where(academic_tool_type: "ChatRoom", academic_tool_id: msg.chat_room_id)
-      academic_allocations.each_with_index do |academic_allocation, idx|
-        if idx == 0 # pessoas de turmas diferentes podem ter respondido ao mesmo chat, devemos duplicar
-          msg.update_attribute(:academic_allocation_id, academic_allocation.id)
-        else # duplica msgs... pessoas de turmas diferentes
-          ChatMessage.create(msg.attributes.merge(academic_allocation_id: academic_allocation.id))
-        end
-      end
-    end
+    # ChatMessage.find_each do |msg|
+    #   academic_allocations = AcademicAllocation.where(academic_tool_type: "ChatRoom", academic_tool_id: msg.chat_room_id)
+    #   academic_allocations.each_with_index do |academic_allocation, idx|
+    #     if idx == 0 # pessoas de turmas diferentes podem ter respondido ao mesmo chat, devemos duplicar
+    #       msg.update_attribute(:academic_allocation_id, academic_allocation.id)
+    #     else # duplica msgs... pessoas de turmas diferentes
+    #       ChatMessage.create(msg.attributes.merge(academic_allocation_id: academic_allocation.id))
+    #     end
+    #   end
+    # end
 
-    remove_column :chat_messages, :chat_room_id
+    # remove_column :chat_messages, :chat_room_id
   end
 
   def down
