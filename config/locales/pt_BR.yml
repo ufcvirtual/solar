@@ -549,6 +549,8 @@ pt_BR:
   m: Masculino
   f: Feminino
 
+  videos: Vídeos
+
   empty_old_password: "Senha antiga vazia"
   bad_password_confirmation: "A nova senha e a confirmação não conferem!"
   incorrect_old_password: "Senha antiga incorreta"
@@ -585,7 +587,6 @@ pt_BR:
   #Submenu de ajuda
   tutorials: "Tutoriais"
   context: "Contextual"
-  tutorial: 'Tutorial'
 
   # Página de tutoriais
   description: "Descrição"

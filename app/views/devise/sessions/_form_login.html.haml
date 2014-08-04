@@ -26,6 +26,8 @@
     - flash.each do |name, msg|
       #flash_message{class: name}= content_tag :span, msg
 
+  = link_to image_tag("help-solar-grande.png"), "http://www.youtube.com/embed/videoseries?list=PLymN3BhGXshU5s4NYY2EzYkpHuVtigaoP", id: "playlist", class: "fancybox.iframe"
+
   #link
     %a#link-password{href: new_user_password_path}= t(:pwd_recovery_subtitle)
 
@@ -37,4 +39,5 @@
   function access_without_problems(){
     $(".instructions").hide();
     $("#screen-login").removeClass("invisible");
+    $('#playlist').fancybox();
   }

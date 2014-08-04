@@ -465,6 +465,7 @@ en_US:
   special_needs_question: "Do you have any disabilities ?"
   m: Male
   f: Female
+  videos: Videos
   empty_old_password: "Old password is empty"
   bad_password_confirmation: "Bad password confirmation"
   incorrect_old_password: "Old password is incorrect"
@@ -495,7 +496,6 @@ en_US:
   help: "Help"
   tutorials: "Tutorials"
   context: "Contextual"
-  tutorial: 'Tutorial'
   description: "Description"
   edition: "Edition"
   enrollment: "Enrollment"

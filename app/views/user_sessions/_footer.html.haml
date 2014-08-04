@@ -15,10 +15,10 @@
       %li= link_to t(:login_footer3), "#team", :class => 'panel-link'
       %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank'
       %li.choice-tutorial
-        = link_to t(:tutorial), '#', :class => "link-arrow"
+        = link_to t(:help), '#', :class => "link-arrow"
         %ul.choice-tutorial-menu
-          %li.tutorial_login
-            %a{href: "/tutorials/login.pdf", target: "_blank"} Login
+          %li= link_to t(:videos), "http://www.youtube.com/embed/videoseries?list=PLymN3BhGXshU5s4NYY2EzYkpHuVtigaoP", class: "fancybox.iframe", id: "playlist"
+
       %li.choice-language
         = link_to t(:login_language), '#', :class => "link-arrow"
         %ul.choice-language-menu
@@ -30,3 +30,7 @@
 :javascript
   var div = '<footer><div class="menu_footer">'+ $('.menu_footer').html() +'</div></footer>';
   $('.panel').append(div);
+
+  $(function(){
+    $('#playlist').fancybox();
+  });
