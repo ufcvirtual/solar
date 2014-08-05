@@ -1,6 +1,6 @@
 chat3_msg1:
   id: 1
-  chat_room_id: 3
+  academic_allocation_id: 22
   allocation_id: 11 # aluno1 - QM-CAU
   message_type: 0 # system
   text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -8,7 +8,7 @@ chat3_msg1:
 
 chat3_msg2:
   id: 2
-  chat_room_id: 3
+  academic_allocation_id: 22
   allocation_id: 11 # aluno1 - QM-CAU
   message_type: 1 # user
   text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -16,7 +16,7 @@ chat3_msg2:
 
 chat3_msg3:
   id: 3
-  chat_room_id: 3
+  academic_allocation_id: 22
   allocation_id: 15 # aluno2 - QM-CAU
   message_type: 0 # system
   text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -24,7 +24,7 @@ chat3_msg3:
 
 chat3_msg4:
   id: 4
-  chat_room_id: 3
+  academic_allocation_id: 22
   allocation_id: 15 # aluno2 - QM-CAU
   message_type: 1 # user
   text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -32,7 +32,7 @@ chat3_msg4:
 
 chat3_msg5:
   id: 5
-  chat_room_id: 3
+  academic_allocation_id: 22
   allocation_id: 15 # aluno2 - QM-CAU
   message_type: 1 # user
   text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
