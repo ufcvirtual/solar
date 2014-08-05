@@ -22,7 +22,7 @@ module MenuHelper
     }
     menus.each_with_index do |menu, idx|
 
-      menu_item_link = link_to(t(menu.name), url_for({controller: menu.resource.controller, action: menu.resource.action, bread: menu.name}), class: menu.parent.nil? ? 'mysolar_menu_title' : '')
+      menu_item_link = link_to(t(menu.name), url_for({controller: "/#{menu.resource.controller}", action: menu.resource.action, bread: menu.name}), class: menu.parent.nil? ? 'mysolar_menu_title' : '')
       menu_item = {id: menu.id, contexts: menu.contexts.pluck(:id), link: menu_item_link}
 
       if menu.parent.nil?

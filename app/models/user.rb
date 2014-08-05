@@ -86,10 +86,9 @@ class User < ActiveRecord::Base
 
   ## profiles: [], contexts: [], general_context: true
   def menu_list(args = {})
-    # sempre carrega contexto geral independente do perfil do usuario
-
     user_profiles = profiles.pluck(:id)
 
+    # sempre carrega contexto geral independente do perfil do usuario
     args = {profiles: [], contexts: [], general_context: true}.merge(args)
 
     args[:profiles] << user_profiles

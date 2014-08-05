@@ -59,7 +59,7 @@ class ApplicationController < ActionController::Base
       format.html { redirect_to home_path, alert: t(:cant_build_page) }
       format.json { render json: {msg: t(:cant_build_page)}, status: :unauthorized }
     end
-  end
+  end if Rails.env == 'production'
 
   def start_user_session
     return unless user_signed_in?

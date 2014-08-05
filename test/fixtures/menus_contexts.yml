@@ -125,6 +125,18 @@ admin_lesson:
   menu_id: 607
   context_id: 1
 
+admin_logs:
+  menu_id: 608
+  context_id: 1
+
+admin_import_users:
+  menu_id: 609
+  context_id: 1
+
+admin_responsibles:
+  menu_id: 610
+  context_id: 1
+
 # MENU PAI - 70
 disco_virtual:
   menu_id: 70
@@ -162,10 +174,10 @@ edition:
   menu_id: 130
   context_id: 1
 
-edition_academic: 
+edition_academic:
   menu_id: 131
   context_id: 1
 
-edition_content: 
+edition_content:
   menu_id: 132
   context_id: 1
