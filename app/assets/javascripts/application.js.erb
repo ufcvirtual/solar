@@ -185,7 +185,7 @@ $(function() {
     } else { // o menu vai ser aberto na aba home
       var tab_key = 'home';
     }
-    var new_menu_value = JSON.parse('{"' + tab_key + '":"'+ li.data('menu-id') +'"}');
+    var new_menu_value = JSON.parse('{"' + tab_key + '":"'+ li.data('menu-bread') +'"}');
 
     menu_cookie_update_tab(new_menu_value);
 
@@ -220,12 +220,23 @@ $(function() {
     $.removeCookie(mysolar_menu_cookie_id);
   });
 
+  /**
+   * Portlets
+   */
+
+  $('.portlet').on('click', 'a.can-update-menu', function(){
+    var active_tab = $('.mysolar_unit_active_tab').data('tab-id');
+    var new_menu_value = JSON.parse('{"' + active_tab + '":"'+ $(this).data('menu-bread') +'"}');
+
+    menu_cookie_update_tab(new_menu_value);
+  });
+
   // set current menu
   try {
     var opened_menus = JSON.parse($.cookie(mysolar_menu_cookie_id));
     var active_tab = $('.mysolar_unit_active_tab').data('tab-id');
 
-    $('li[data-menu-id=' + opened_menus[active_tab] + ']').addClass('mysolar_menu_active');
+    $('li[data-menu-bread=' + opened_menus[active_tab] + ']').addClass('mysolar_menu_active');
   } catch(e) {}
 
 });

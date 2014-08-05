@@ -1,5 +1,5 @@
 - message_is_present = (not @messages.nil? and not @messages.empty?)
-#block_messages.block_small
+#block_messages.block_small.portlet
   .block_title
     %h2
       %i.icon-mail
@@ -13,11 +13,11 @@
         .block_content_line
           %span.block_content_gray
             = l message.created_at, format: ((message.created_at.to_date == Date.today) ? :today : :not_today)
-          = link_to message.sent_by.name.truncate(13), message_path(id: message.id, bread: :menu_messages, box: :inbox), {class: 'link_content'}
+          = link_to message.sent_by.name.truncate(13), message_path(id: message.id, bread: :menu_messages, box: :inbox), {class: 'link_content can-update-menu', 'data-menu-bread' => 'menu_messages'}
           = raw message.subject.truncate(63)
     - else
       .block_content_text= t(:no_new, scope: :messages)
   .block_messages_opt
-    = link_to t(:curriculum_access_message_inbox), messages_path(bread: :menu_messages), {class: "link_content_gray"}
+    = link_to t(:curriculum_access_message_inbox), messages_path(bread: :menu_messages), {class: 'link_content_gray can-update-menu', 'data-menu-bread' => 'menu_messages'}
     \ |
-    = link_to t(:curriculum_access_message_new), new_message_path(bread: :menu_messages), {class: "link_content_gray"}
+    = link_to t(:curriculum_access_message_new), new_message_path(bread: :menu_messages), {class: 'link_content_gray can-update-menu', 'data-menu-bread' => 'menu_messages'}

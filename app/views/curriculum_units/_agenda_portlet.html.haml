@@ -1,4 +1,4 @@
-#block_schedule.block_small
+#block_schedule.block_small.portlet
   .block_title
     %h2
       %i.icon-calendar
@@ -6,9 +6,9 @@
   .calendar#agenda{url_for: agendas_path}
   .calendar_events
 
-
 :javascript
-  $(function() { 
+
+  $(function() {
     var dates_with_events = eval(#{@scheduled_events.as_json});
-    showAgenda(dates_with_events); 
+    showAgenda(dates_with_events);
   });

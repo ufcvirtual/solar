@@ -151,7 +151,7 @@ class ApplicationController < ActionController::Base
 
   ## Parametros de locale para paginas externas
   def default_url_options(options={})
-    params.include?('locale') ? {:locale => params[:locale]} : {}
+    params.include?('locale') ? {locale: params[:locale]} : {}
   end
 
   private
@@ -166,9 +166,9 @@ class ApplicationController < ActionController::Base
     end
 
     def init_xmpp_im
-      conf = YAML::load_file(File.join("config/",'im.yml'))
-      @_dominio = conf["dominio"]
-      @_ip = conf["ip"]
-      @_porta = conf["porta"]
+      conf = YAML::load_file(File.join('config','im.yml'))
+      @_dominio = conf['dominio']
+      @_ip = conf['ip']
+      @_porta = conf['porta']
     end
 end

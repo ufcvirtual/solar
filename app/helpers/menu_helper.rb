@@ -4,13 +4,13 @@ module MenuHelper
   #   1: {
   #     name: "link",
   #     children: [
-  #       {id: 1, link: link1},
-  #       {id: 2, link: link2}
+  #       {contexts: [1], bread: bread, link: link1},
+  #       {contexts: [1,2], bread: bread, link: link2},
   #     ]
   #   }
   # },
   # singles: [
-  #   {id: 1, link: link1}
+  #   {contexts: [1,2], bread: bread, link: link},
   # ]
   def menu_list
     context_id = user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:context]
@@ -21,9 +21,10 @@ module MenuHelper
       parents: {}
     }
     menus.each_with_index do |menu, idx|
-      contexts = menu.contexts.pluck(:id).join(',') rescue ''
-      menu_item_link = link_to(t(menu.name), url_for({controller: "/#{menu.resource.controller}", action: menu.resource.action, bread: menu.name, contexts: contexts}), class: menu.parent.nil? ? 'mysolar_menu_title' : '')
-      menu_item = {id: menu.id, contexts: menu.contexts.pluck(:id), link: menu_item_link}
+      contexts = menu.contexts.pluck(:id)
+      menu_item_link = link_to(t(menu.name), url_for({controller: "/#{menu.resource.controller}", action: menu.resource.action,
+        bread: menu.name, contexts: contexts.join(',')}), class: menu.parent.nil? ? 'mysolar_menu_title' : '')
+      menu_item = {contexts: contexts, bread: menu.name, link: menu_item_link}
 
       if menu.parent.nil?
         menu_list[:singles] << menu_item
@@ -71,7 +72,7 @@ module MenuHelper
     def create_link(link, parent_id = nil, type = 'single')
       li_class = (type == 'single') ? 'mysolar_menu_title_single' : 'mysolar_menu_list'
       %{
-        <li class="#{li_class}" data-contexts="#{link[:contexts]}" data-parent-id="#{parent_id}" data-menu-id="#{link[:id]}">
+        <li class="#{li_class}" data-contexts="#{link[:contexts]}" data-menu-bread="#{link[:bread]}">
           #{link[:link]}
         </li>
       }
