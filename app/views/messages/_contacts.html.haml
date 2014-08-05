@@ -6,6 +6,7 @@
     .flash_message_wrapper
 
     .block_content
+      .help= link_to "Enviar mensagem para o atendimento?", "#"
       .contacts-type
         = label_tag :contacts_type, t(".contacts") + "*"
         = select_tag :contacts_type, options_for_select([[t(".system_contacts"),1],[t(".personal_contacts"),2]]), selected: 1
@@ -37,11 +38,18 @@
 :javascript
 
   $(function(){
+
     $("legend").remove();
     $(".filter").unwrap();
     $($(".edition.block_content").find("p")[0]).remove();
     $(".contacts-list").before("<div class='select'>#{t('.select')}</div>");
     var allocation_tag_id = "#{@allocation_tag_id}";
+
+    $(".help a").click(function(){
+      if (!$(".contact.help:visible").length){
+        $('<div class="contact help"><a data-at="" data-selected="true" href="#" onclick="$(this).parent().remove(); return false;">Atendimento &lt;atendimento@virtual.ufc.br&gt;</a></div>').appendTo(".contacts-selected");
+      }
+    });
 
     // nova msg dentro de uma UC
     if ($('select#uc option:selected').val() != "")
