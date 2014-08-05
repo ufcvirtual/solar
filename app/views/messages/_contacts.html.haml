@@ -6,7 +6,7 @@
     .flash_message_wrapper
 
     .block_content
-      .help= link_to "Enviar mensagem para o atendimento?", "#"
+      .help_link= link_to t(".help_message"), "#"
       .contacts-type
         = label_tag :contacts_type, t(".contacts") + "*"
         = select_tag :contacts_type, options_for_select([[t(".system_contacts"),1],[t(".personal_contacts"),2]]), selected: 1
@@ -21,7 +21,7 @@
       = t(".to")
       .contacts-selected
         - [@reply_to].flatten.compact.each do |contact|
-          .contact= link_to_function contact[:resume], "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-selected" => true
+          .contact{class: contact[:id].nil? ? "help" : ""}= link_to_function contact[:resume], "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-selected" => true
 
     .block_buttons
       .right
@@ -45,9 +45,9 @@
     $(".contacts-list").before("<div class='select'>#{t('.select')}</div>");
     var allocation_tag_id = "#{@allocation_tag_id}";
 
-    $(".help a").click(function(){
+    $(".help_link a").click(function(){
       if (!$(".contact.help:visible").length){
-        $('<div class="contact help"><a data-at="" data-selected="true" href="#" onclick="$(this).parent().remove(); return false;">Atendimento &lt;atendimento@virtual.ufc.br&gt;</a></div>').appendTo(".contacts-selected");
+        $('<div class="contact help"><a data-at="" data-selected="true" href="#" onclick="$(this).parent().remove(); return false;">#{I18n.t(".messages.support_html")}</a></div>').appendTo(".contacts-selected");
       }
     });
 

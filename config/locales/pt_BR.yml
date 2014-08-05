@@ -587,6 +587,7 @@ pt_BR:
   #Submenu de ajuda
   tutorials: "Tutoriais"
   context: "Contextual"
+  contact: Entrar em contato
 
   # Página de tutoriais
   description: "Descrição"
@@ -2103,6 +2104,8 @@ pt_BR:
     none: "Nenhuma mensagem encontrada"
     no_new: "Sem novas mensagens"
     no_subject: "(sem assunto)"
+    support: "Atendimento <atendimento@virtual.ufc.br>"
+    support_html: "Atendimento &lt;atendimento@virtual.ufc.br&gt;"
     contacts:
       title: "Seleção de contatos"
       contacts: "Contatos"
@@ -2111,6 +2114,7 @@ pt_BR:
       system_contacts: Contatos do Sistema
       personal_contacts: Contatos Pessoais
       add_all: Adicionar todos
+      help_message: Enviar mensagem para o atendimento?
     users:
       add_all: Adicionar todos
       no_user_found: Nenhum usuário encontrado

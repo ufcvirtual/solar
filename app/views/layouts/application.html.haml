@@ -59,6 +59,7 @@
             %li= link_to t(:context), "#", id: 'help_context'
             %li= link_to t(:tutorials), tutorials_path, id: 'my_tutorials'
             %li= link_to t(:videos), "http://www.youtube.com/embed/videoseries?list=PLymN3BhGXshU5s4NYY2EzYkpHuVtigaoP", class: "fancybox.iframe", id: "playlist"
+            %li= link_to t(:contact), support_new_messages_path
         / tabs
         #mysolar_tabs
           %ul#mysolar_tabs_wrapper= raw render_tabs

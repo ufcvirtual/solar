@@ -32,6 +32,7 @@ class MessagesController < ApplicationController
 
     @unreads  = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
     @reply_to = [User.find(params[:user_id]).to_msg] unless params[:user_id].nil? # se um usuário for passado, colocá-lo na lista de destinatários
+    @reply_to = [{resume: t("messages.support")}] unless params[:support].nil?
   end
 
   def show

@@ -496,6 +496,7 @@ en_US:
   help: "Help"
   tutorials: "Tutorials"
   context: "Contextual"
+  contact: Contact us
   description: "Description"
   edition: "Edition"
   enrollment: "Enrollment"
@@ -1896,6 +1897,8 @@ en_US:
     none: "No message found"
     no_new: "No new messages"
     no_subject: "(no subject)"
+    support: "Support <atendimento@virtual.ufc.br>"
+    support_html: "Support &lt;atendimento@virtual.ufc.br&gt;"
     contacts:
       title: "Selection of contacts"
       contacts: "Contacts"
@@ -1904,6 +1907,7 @@ en_US:
       system_contacts: System Contacts
       personal_contacts: Personal Contacts
       add_all: Add all
+      help_message: Send message to support?
     users:
       add_all: Add all
       no_user_found: No user found
