@@ -83,7 +83,7 @@
           update_combobox(url, 'curriculum_unit');
         }
         $("#semester").combobox( "option", { disabled: false } );
-        var url = "#{list_combobox_semesters_path(period: 'all', course_id: 'course_param')}".replace('course_param', $('#course').combobox('value'));
+        var url = "#{list_combobox_semesters_path(type_id: @type.id, period: 'all', course_id: 'course_param')}".replace('course_param', $('#course').combobox('value'));
         update_combobox(url, 'semester');
       }
     });
