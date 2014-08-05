@@ -175,10 +175,17 @@ $(function() {
   // click in menu
   $('.mysolar_menu a').click(function(e){
     var li = $(this).closest('li');
-    var menu_value = li.data('menu-id');
-
+    var menu_contexts = li.data('contexts');
+    var active_tab_context = $('.mysolar_unit_active_tab').data('tab-context');
     var active_tab = $('.mysolar_unit_active_tab').data('tab-id');
-    var new_menu_value = JSON.parse('{"' + active_tab + '":"'+ menu_value +'"}');
+
+    // verifica se o menu esta no mesmo contexto da aba ativa
+    if ($.inArray(active_tab_context, menu_contexts) > -1) {
+      var tab_key = active_tab;
+    } else { // o menu vai ser aberto na aba home
+      var tab_key = 'home';
+    }
+    var new_menu_value = JSON.parse('{"' + tab_key + '":"'+ li.data('menu-id') +'"}');
 
     menu_cookie_update_tab(new_menu_value);
 

@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :authenticate_user!, except: [:verify_cpf, :api_download] # devise
-  before_filter :init_xmpp_im, :set_locale, :start_user_session, :current_menu, :another_level_breadcrumb
+  before_filter :init_xmpp_im, :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
@@ -39,27 +39,29 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  rescue_from ActiveRecord::RecordNotFound do |exception|
-    # logar: exception.message
-    respond_to do |format|
-      format.html { redirect_to home_path, alert: t(:object_not_found) }
-      format.json { render json: {msg: t(:object_not_found)}, status: :not_found }
+  if Rails.env == 'production'
+    rescue_from ActiveRecord::RecordNotFound do |exception|
+      # logar: exception.message
+      respond_to do |format|
+        format.html { redirect_to home_path, alert: t(:object_not_found) }
+        format.json { render json: {msg: t(:object_not_found)}, status: :not_found }
+      end
+    end
+
+    rescue_from ActiveRecord::AssociationTypeMismatch do |exception|
+      respond_to do |format|
+        format.html { redirect_to home_path, alert: t(:not_associated) }
+        format.json { render json: {msg: t(:not_associated)}, status: :unauthorized }
+      end
+    end
+
+    rescue_from ActionView::Template::Error do |exception|
+      respond_to do |format|
+        format.html { redirect_to home_path, alert: t(:cant_build_page) }
+        format.json { render json: {msg: t(:cant_build_page)}, status: :unauthorized }
+      end
     end
   end
-
-  rescue_from ActiveRecord::AssociationTypeMismatch do |exception|
-    respond_to do |format|
-      format.html { redirect_to home_path, alert: t(:not_associated) }
-      format.json { render json: {msg: t(:not_associated)}, status: :unauthorized }
-    end
-  end
-
-  rescue_from ActionView::Template::Error do |exception|
-    respond_to do |format|
-      format.html { redirect_to home_path, alert: t(:cant_build_page) }
-      format.json { render json: {msg: t(:cant_build_page)}, status: :unauthorized }
-    end
-  end if Rails.env == 'production'
 
   def start_user_session
     return unless user_signed_in?
@@ -72,8 +74,6 @@ class ApplicationController < ActionController::Base
         }
       }, active: 'Home'
     } unless user_session.include?(:tabs)
-
-    user_session[:menu] = { current: nil } if user_session[:menu].blank?
   end
 
   def another_level_breadcrumb
@@ -81,23 +81,12 @@ class ApplicationController < ActionController::Base
     user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb][same_level_for_all] = { name: params[:bread], url: params } if params[:bread].present?
   end
 
-  ## contexto para definir os links do menu
-  # def application_context
-  #   return unless user_signed_in?
+  def current_menu_context
+    return unless user_signed_in?
 
-  #   is_mysolar    = (params[:action] == 'mysolar')
-  #   user_profiles = Profile.joins(:allocations).where("allocations.user_id = ? AND allocations.status = ?", current_user.id, Allocation_Activated)
-
-  #   user_session[:uc_profiles]  = user_profiles.where("allocations.allocation_tag_id IN (?)", AllocationTag.find(active_tab[:url][:allocation_tag_id]).related).pluck(:id).compact.join(",") if active_tab[:url][:context] == Context_Curriculum_Unit.to_i
-  #   user_session[:all_profiles] = user_profiles.pluck(:id).join(',')
-  #   user_session[:context_id]   = is_mysolar ? Context_General : active_tab[:url][:context]
-  #   user_session[:context_uc]   = is_mysolar ? nil : active_tab[:url][:id]
-  # end
-
-  def current_menu
-    set_tab_by_context
-    user_session[:menu] = { current: params[:mid] } if user_signed_in? and params[:mid].present?
-    user_session[:menu] = { current: nil } if params[:context].present?
+    # contexto indicado eh diferente do contexto da aba ativa
+    contexts = params['contexts'].split(',').map(&:to_i) rescue []
+    set_active_tab_to_home if ((not(contexts.empty?) and not(contexts.include?(active_tab[:url][:context]))) or controller_path == 'devise/users')
   end
 
   def set_active_tab(tab_name)
@@ -142,8 +131,6 @@ class ApplicationController < ActionController::Base
     end
 
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
-    
-    # application_context
   end
 
   def after_sign_in_path_for(resource_or_scope)
@@ -169,23 +156,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-    def set_tab_by_context
-      if user_signed_in?
-        if controller_path == "devise/users" # Aba Home para edição de dados do usuário (devise)
-          set_active_tab_to_home
-        elsif params.include?('mid') # Seleciona aba de acordo com o contexto do menu
-          tab_context_id  = active_tab[:url][:context]
-          current_menu_id = params[:mid]
-          if current_menu_id.to_i == 0 or MenusContext.find_all_by_menu_id_and_context_id(current_menu_id, tab_context_id).empty?
-            menu_context_id = (current_menu_id.to_i == 0) ? Context_Curriculum_Unit : MenusContext.find_by_menu_id(current_menu_id).try(:context_id)
-            user_session[:context_uc] = nil if Context_General == menu_context_id
-            tab_name = find_tab_by_context(menu_context_id)
-            set_active_tab(tab_name)
-          end
-        end
-      end
-    end
-
     def opened_or_new_tab?(tab_name)
       (user_session[:tabs][:opened].has_key?(tab_name)) or (user_session[:tabs][:opened].length < Max_Tabs_Open.to_i)
     end
@@ -193,10 +163,6 @@ class ApplicationController < ActionController::Base
     def set_session_opened_tabs(tab_name, hash_url, params_url, page_title = nil)
       user_session[:tabs][:opened][tab_name] = { breadcrumb: [{name: (page_title.blank? ? params[:name] : page_title), url: params_url}], url: hash_url }
       set_active_tab tab_name
-    end
-
-    def find_tab_by_context(context_id)
-      user_session[:tabs][:opened].each { |tab| return tab[0] if (tab[1][:url][:context].to_i == context_id.to_i) }
     end
 
     def init_xmpp_im
