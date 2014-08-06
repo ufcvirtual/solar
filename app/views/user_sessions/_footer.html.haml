@@ -17,7 +17,7 @@
       %li.choice-tutorial
         = link_to t(:help), '#', :class => "link-arrow"
         %ul.choice-tutorial-menu
-          %li= link_to t(:videos), "http://www.youtube.com/embed/videoseries?list=PLymN3BhGXshU5s4NYY2EzYkpHuVtigaoP", class: "fancybox.iframe", id: "playlist"
+          %li= link_to t(:videos), "http://youtu.be/tpu1NywBzmQ?list=PLymN3BhGXshU5s4NYY2EzYkpHuVtigaoP", target: "_blank"
 
       %li.choice-language
         = link_to t(:login_language), '#', :class => "link-arrow"
@@ -30,7 +30,3 @@
 :javascript
   var div = '<footer><div class="menu_footer">'+ $('.menu_footer').html() +'</div></footer>';
   $('.panel').append(div);
-
-  $(function(){
-    $('#playlist').fancybox();
-  });

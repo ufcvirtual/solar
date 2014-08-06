@@ -1,9 +1,4 @@
-// = require jquery
-// = require jquery.qtip.min
-// = require jquery-ui
-
 // = require menus
-// = require fancybox
 
 /* Implementando método alternativo ao placeholder no IE < 9 */
 function placeholder() {
