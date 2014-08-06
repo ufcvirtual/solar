@@ -2,7 +2,6 @@ class Profile < ActiveRecord::Base
 
   has_many :users, through: :allocations
   has_many :allocations, dependent: :restrict
-  has_many :permissions_menus, dependent: :destroy
 
   has_and_belongs_to_many :resources, join_table: "permissions_resources"
 

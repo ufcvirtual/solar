@@ -1118,7 +1118,8 @@ en_US:
   menu_test: Tests
   menu_chat: Chat
   menu_webconference: Webconference
-  menu_score: Scores
+  menu_score_student: Scores
+  menu_score_professor: Scores
   menu_general_information: General Information
   menu_program: Program
   menu_agenda: Agenda

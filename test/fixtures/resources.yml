@@ -274,18 +274,26 @@ res45:
   description: 'Exibe todos os posts'
 
 # Acompanhamento
+
+res46:
+  id: 46
+  controller: 'scores'
+  action: 'info'
+  description: 'Acompanhamento - informacoes' # aluno
+
 res47:
   id: 47
   controller: 'scores'
-  action: 'show'
-  description: 'Exibicao dos dados do aluno'
+  action: 'student_info'
+  description: 'Professor/Acompanhamento - informacoes por aluno' # professor
 
-# Acompanhamento do responsável - parte 1
 res48:
   id: 48
   controller: 'scores'
   action: 'index'
-  description: 'Lista dos alunos da turma'
+  description: 'Professor/Acompanhamento - Lista de alunos da turma' # professor
+
+# Arquivos
 
 res49:
   id: 49

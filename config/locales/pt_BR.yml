@@ -1284,7 +1284,8 @@ pt_BR:
   menu_test: Prova
   menu_chat: Chat
   menu_webconference: Webconferência
-  menu_score: Acompanhamento
+  menu_score_student: Acompanhamento
+  menu_score_professor: Acompanhamento
   menu_general_information: Informações Gerais
   menu_program: Programa
   menu_agenda: Agenda

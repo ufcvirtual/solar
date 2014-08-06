@@ -26,7 +26,7 @@
         - unless @students.empty?
           - @students.each_with_index do |student, idx|
             %tr.lines
-              %td.td_student{'data-tooltip' => student.name}= link_to student.name, student_scores_path(student.id)
+              %td.td_student{'data-tooltip' => student.name}= link_to student.name, student_info_scores_path(student.id)
               %td= @scores["student_count_public_files"][idx]
               %td= @scores["student_count_posts"][idx]
               %td= @scores["student_count_access"][idx]
@@ -37,7 +37,7 @@
                   - if grade == "without_group"
                     = link_to t(:assignment_wg), information_assignment_path(assignment.id)
                   - else
-                    = link_to grade_link, student_assignment_path(assignment.id, student_id: student.id, group_id: @scores["students_groups"][idx][idx2])     
+                    = link_to grade_link, student_assignment_path(assignment.id, student_id: student.id, group_id: @scores["students_groups"][idx][idx2])
               - if @assignments.empty?
                 %td= "-"
         - else

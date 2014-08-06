@@ -180,12 +180,12 @@ Solar::Application.routes.draw do
     get :list, on: :collection
   end
 
-  resources :scores, only: [:index, :show] do
-    collection do 
-      get "/show", action: :show
-      get "student/:student_id", action: :show, as: :student
+  resources :scores, only: [:index] do
+    collection do
+      get :info
+      get "student/:student_id/info", to: :student_info, as: :student_info
+
       get :amount_history_access
-      get "history_access/:id", action: :history_access
     end
     get :history_access, on: :member
   end

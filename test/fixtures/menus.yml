@@ -48,9 +48,9 @@ prova_ativ:
 acomp_ativ:
   id: 204
   parent_id: 20
-  name: menu_score
+  name: menu_score_student
   order: 4
-  resource_id: 47
+  resource_id: 46
 
 chat_ativ:
   id: 205
@@ -76,7 +76,7 @@ portfolio_professor_ativ:
 acomp_ativ_teacher:
   id: 208
   parent_id: 20
-  name: menu_score
+  name: menu_score_professor
   order: 8
   resource_id: 48
 

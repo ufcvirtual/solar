@@ -29,66 +29,52 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:aluno1))
     get @quimica_tab
     get home_curriculum_unit_path(3)
-    get student_scores_path(users(:aluno1).id)
+    get info_scores_path
+
     assert_response :success
     assert_not_nil assigns(:individual_activities)
     assert_not_nil assigns(:group_activities)
     assert_not_nil assigns(:discussions)
     assert_not_nil assigns(:student)
     assert_not_nil assigns(:amount)
-    assert_template :show
+    assert_template :info
   end
 
   test "listar as atividades de um aluno para usuario com permissao e acesso - professor" do 
     login(users(:professor))
     get @quimica_tab
     get home_curriculum_unit_path(3)
-    get student_scores_path(users(:aluno1).id)
+    get student_info_scores_path(users(:aluno1).id)
     assert_response :success
     assert_not_nil assigns(:individual_activities)
     assert_not_nil assigns(:group_activities)
     assert_not_nil assigns(:discussions)
     assert_not_nil assigns(:student)
     assert_not_nil assigns(:amount)
-    assert_template :show    
+    assert_template :info
   end
 
   # Usuário com permissão e sem acesso
   test "nao listar as atividades de um aluno para usuario com permissao e sem acesso - aluno" do 
     login(users(:aluno1))
+
     get @quimica_tab
     get home_curriculum_unit_path(3)
-    get student_scores_path(users(:aluno2).id)
+    get student_info_scores_path(users(:aluno2).id)
+
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
-    assert_nil assigns(:individual_activities)
-    assert_nil assigns(:group_activities)
-    assert_nil assigns(:discussions)
-    assert_not_nil assigns(:student)
-    assert_nil assigns(:amount)
   end
-
-  # test "nao listar as atividades de um aluno para usuario com permissao e sem acesso - professor" do 
-  #   login(users(:professor))
-  #   get @literatura_brasileira_tab
-  #   get student_scores_path(users(:aluno3).id)
-  #   assert_response :redirect
-  #   assert_redirected_to(home_path)
-  #   assert_equal I18n.t(:no_permission), flash[:alert]
-  #   assert_nil assigns(:individual_activities)
-  #   assert_nil assigns(:group_activities)
-  #   assert_nil assigns(:discussions)
-  #   assert_not_nil assigns(:student)
-  #   assert_nil assigns(:amount)
-  # end
 
   # Usuário sem permissão
   test "nao listar as atividades de um aluno para usuario sem permissao" do 
     login(users(:coorddisc))
+
     get @quimica_tab
     get home_curriculum_unit_path(3)
-    get student_scores_path(users(:aluno1).id)
+    get student_info_scores_path(users(:aluno1).id)
+
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
@@ -97,7 +83,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_nil assigns(:discussions)
     assert_nil assigns(:student)
     assert_nil assigns(:amount)
-  end  
+  end
 
   ##
   # Amount_history_access
@@ -109,7 +95,8 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "exibir quantidade de acessos do aluno a unidade curricular para usuario com permissao e acesso - aluno" do 
     login(users(:aluno1))
     get @quimica_tab
-    get "/scores/amount_history_access", id: users(:aluno1).id, from_date: @from_date, until_date: @until_date.to_param
+    get amount_history_access_scores_path(id: users(:aluno1).id, from_date: @from_date, until_date: @until_date.to_param)
+
     assert_response :success
     assert_not_nil assigns(:student_id)
     assert_not_nil assigns(:amount)
@@ -136,19 +123,6 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_nil assigns(:amount)
   end
 
-  # test "nao exibir quantidade de acessos do aluno a unidade curricular para usuario com permissao e sem acesso - professor" do 
-  #   login(users(:professor))
-  #   get @literatura_brasileira_tab
-  #   get "/scores/amount_history_access/#{users(:aluno1).id}?#{@from_date.to_param}&#{@until_date.to_param}"
-  #   assert_response :redirect
-  #   assert_redirected_to(home_path)
-  #   assert_equal I18n.t(:no_permission), flash[:alert]
-  #   assert_nil assigns(:from_date)
-  #   assert_nil assigns(:until_date)
-  #   assert_not_nil assigns(:student_id)
-  #   assert_nil assigns(:amount)
-  # end  
-
   # Usuário sem permissão
 
   test "nao exibir quantidade de acessos do aluno a unidade curricular para usuario sem permissao" do 
@@ -174,13 +148,15 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "exibir historico de acesso do aluno para usuario com permissao e acesso" do 
     login(users(:aluno1))
     get @quimica_tab
-    get "/scores/history_access/#{users(:aluno1).id}?#{@from_date.to_param}&#{@until_date.to_param}"
+    get history_access_score_path(id: users(:aluno1).id, from_date: @from_date, until_date: @until_date.to_param)
+
     assert_response :success
     assert_not_nil assigns(:history)
 
     login(users(:professor))
     get @quimica_tab
-    get "/scores/history_access/#{users(:aluno1).id}?#{@from_date.to_param}&#{@until_date.to_param}"
+    get history_access_score_path(id: users(:aluno1).id, from_date: @from_date, until_date: @until_date.to_param)
+
     assert_response :success
     assert_not_nil assigns(:history)
   end
@@ -189,29 +165,21 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao exibir historico de acesso do aluno para usuario com permissao e sem acesso - aluno" do 
     login(users(:aluno1))
     get @quimica_tab
-    get "/scores/history_access/#{users(:aluno3).id}?#{@from_date.to_param}&#{@until_date.to_param}"
+    get history_access_score_path(id: users(:aluno3).id, from_date: @from_date, until_date: @until_date.to_param)
+
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
     assert_nil assigns(:history)
   end
 
-  # test "nao exibir historico de acesso do aluno para usuario com permissao e sem acesso - professor" do 
-  #   login(users(:professor))
-  #   get @literatura_brasileira_tab
-  #   get "/scores/history_access/#{users(:aluno3).id}?#{@from_date.to_param}&#{@until_date.to_param}"
-  #   assert_response :redirect
-  #   assert_redirected_to(home_path)
-  #   assert_equal I18n.t(:no_permission), flash[:alert]
-  #   assert_nil assigns(:history)
-  # end
-
   # Usuário sem permissão
 
   test "nao exibir historico de acesso do aluno para usuario sem permissao" do 
     login(users(:coorddisc))
     get @quimica_tab
-    get "/scores/history_access/#{users(:aluno3).id}?#{@from_date.to_param}&#{@until_date.to_param}"
+    get history_access_score_path(id: users(:aluno3).id, from_date: @from_date, until_date: @until_date.to_param)
+
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
@@ -234,20 +202,6 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_not_nil assigns(:scores)
     assert_template :index
   end
-
-  # Usuário com permissão e sem acesso
-  # test "nao exibir acompanhamento de uma turma para usuario com permissao e sem acesso" do 
-  #   login(users(:professor))
-  #   get @literatura_brasileira_tab
-  #   get scores_path
-  #   assert_response :redirect
-  #   assert_redirected_to(home_path)
-  #   assert_equal I18n.t(:no_permission), flash[:alert]
-  #   assert_not_nil assigns(:group)
-  #   assert_nil assigns(:assignments)
-  #   assert_nil assigns(:students)
-  #   assert_nil assigns(:scores)
-  # end
 
   # Usuário sem permissão
   test "nao exibir acompanhamento de uma turma para usuario sem permissao" do 
