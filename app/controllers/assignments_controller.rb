@@ -211,14 +211,14 @@ class AssignmentsController < ApplicationController
             change_students_group(group_assignment, group_participants_ids, academic_allocation.id) unless ((not GroupAssignment.can_remove_group?(group_id)) and deleted_groups_ids.include?("#{group_id}"))
           end
           @students_without_group = @assignment.students_without_groups(@allocation_tag)
-          render 'group_assignment_content_div', layout: false
+          render partial: 'group_assignment_content_div'
         end
       rescue Exception => error
         render :json => { success: false, flash_msg: error.message, flash_class: 'alert'}
       end
     else # clicou em "cancelar"
       @students_without_group = @assignment.students_without_groups(@allocation_tag)
-      render 'group_assignment_content_div', layout: false
+      render partial: 'group_assignment_content_div'
     end
   end
 

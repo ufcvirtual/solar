@@ -51,6 +51,10 @@
   padding-bottom: 7px;
 }
 
+.group_participants_manage, .group_participants{
+  height: 166px;
+}
+
 .group_assignments_manage_buttons {
   background-color: #f7f7f7;
   ul {
@@ -69,24 +73,33 @@
 .group_participants ul,
 .group_participants_manage ul {
   padding: 7px;
-  height: 100px;
+  height: 109px;
   overflow: auto;
+}
+
+.group_participants_manage ul {
+  height: 127px;
+}
+
+.group_information_manage{
+  display: none;
 }
 
 [class^="group_name"],
 .group_name_manage,
-.group_assignments_manage_buttons_title,
 .edit_group_true,
+.group_assignments_manage_buttons_title,
 .disabled_groups_assignments_name {
   font-weight: normal;
   height: 20px;
-  padding: 6px 7px 2px 7px;
+  padding: 5px 7px 1px 7px;
 }
 
 .group_name_manage,
 .edit_group_true {
   background-color: #fcd927;
   color: #000000;
+  height: 24px;
 }
 
 //[class^="group_name"], TODO: qual o background-color correto, este ou o seguinte?
@@ -162,17 +175,14 @@
 
 .rename_group {
   width: 180px;
-  height: 8px;
-  border: 0;
-  margin-top: -5px;
+  border: 0px none;
+  margin-bottom: 15px;
+  font-size: 10pt;
+  padding: 2px 7px 0px;
 }
 
 .remove_group {
   cursor: pointer;
-}
-
-.group_elements_float {
-  margin-top: -2px;
 }
 
 .group_elements_float,

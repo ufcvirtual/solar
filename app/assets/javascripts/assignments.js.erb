@@ -25,6 +25,8 @@ function undo_btn_comment_changes(comment_id){
     $("#btn_save_comment_new").hide();
     no_comments_div();
   }else{
+    if(comment_id == undefined)
+      comment_id = $("textarea#comment").filter(":visible:first").data("comment-id");
     $(".btn_edit_comment_"+comment_id).fadeIn();
     $(".comment_"+comment_id).fadeIn();
     $(".form_comment").hide();
@@ -88,7 +90,8 @@ function undo_files_upload(comment_id){
 }
 
 // remover o conteúdo do text_field de comentário
-function undo_comment_content(comment_id, comment_content){
+function undo_comment_content(comment_id){
+  var comment_content = $(".assignment_comment_form .comment_"+comment_id).data("value");
   if(comment_id == "new"){
     $('#comment_form > .assignment_inner_content > #comment').val(comment_content);  
   }else{
@@ -111,9 +114,9 @@ function btn_comment(){
   $("#btn_save_comment_new").fadeIn();
 }
 
-function btn_edit_comment(this_div, comment_id, comment_content){
+function btn_edit_comment(this_div, comment_id){
   undo_everything();
-  undo_comment_content(comment_id, comment_content);
+  undo_comment_content(comment_id);
   $(".comment_"+comment_id).hide();
   $(".form_comment_"+comment_id).fadeIn(); 
 }

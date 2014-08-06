@@ -99,7 +99,7 @@ function save_management(url){
             $("#body_wrapper").html(data);
           // erro na hora de salvar
           }else{
-            $('.manage_groups').html(data);
+            $('.group_management').html(data);
             flash_message('<%= I18n.t(:management_success, :scope => [:assignment, :group_assignments]) %>', 'notice');
             // redefine o array de grupos excluídos para vazio
             deleted_groups = new Array();
@@ -118,7 +118,7 @@ function cancel_management(url){
       type: 'POST',
       data:  {'btn_cancel': 'true'},
       success: function(data) {
-        $('.manage_groups').html(data);
+        $('.group_management').html(data);
         flash_message('<%= I18n.t(:management_cancel, :scope => [:assignment, :group_assignments]) %>', 'notice');
         // redefine o array de grupos excluídos para vazio
         deleted_groups = new Array();

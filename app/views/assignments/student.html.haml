@@ -96,7 +96,6 @@
     - else
       .portfolio_div_padding= t(:itens_not_found)
 
-
 / Arquivos enviados pelo aluno
 .block_wrapper
   .block_title
@@ -201,10 +200,10 @@
           %tr
             %td.assignment_comment_form.assignment_comment{:class => "comment_#{comment.id}", :colspan => "2"}
               .assignment_inner_content
-                = comment.comment
+                %span{class: "comment_#{comment.id}", :'data-value' => comment.comment}=simple_format comment.comment
                 .portfolio_comment_button
                   - if can? :send_comment, comment
-                    = button_tag t(:edit, :scope => [:assignment, :comments]), :class => btn_edit_class + " btn_edit_comment_#{comment.id}", :onclick => "javascript:btn_edit_comment(this, #{comment.id}, '#{comment.comment}');", :disabled => (not @assignment.on_evaluation_period?(@allocation_tag, current_user.id))
+                    = button_tag t(:edit, :scope => [:assignment, :comments]), :class => btn_edit_class + " btn_edit_comment_#{comment.id}", :onclick => "javascript:btn_edit_comment(this, #{comment.id});", :disabled => (not @assignment.on_evaluation_period?(@allocation_tag, current_user.id))
                   - if can? :remove_comment, comment and can? :remove_comment, @assignment
                     - btn_remove = @assignment.on_evaluation_period?(@allocation_tag, current_user.id) ? "btn btn_caution" : "btn btn_disabled"
                     = button_tag t(:delete, :scope => [:assignment, :comments]), :class => btn_remove, :onclick => "javascript:remove_comment(#{comment.id}, #{@assignment.id});", :disabled => (not @assignment.on_evaluation_period?(@allocation_tag, current_user.id))
@@ -222,7 +221,7 @@
               %td.assignment_comment_form.form_comment{:class => "form_comment_#{comment.id}", :colspan => "2", :style => "display:none"}
                 = form_for(:assignment_comment, :html => {:id => "comment_form_#{comment.id}", :multipart => true}, :url => send_comment_assignment_path(@assignment.id, :student_id => @student_id, :group_id => @group_id, :comment_id => comment.id)) do |f|
                   .forum_post_inner_content.assignment_inner_content
-                    = text_area_tag :comment, comment.comment, :rows => 4
+                    = text_area_tag :comment, comment.comment, rows: 4, :'data-comment-id' => comment.id
                     .portfolio_title_button
                       = button_tag(:type => 'button', :class => "btn btn_caution", :id => "btn_cancel_comment_#{comment.id}", :alt => t(:cancel, :scope => [:assignment, :comments]), :onclick => "javascript:btn_cancel_comment('#{comment.id}');") do
                         = content_tag(:span, t(:cancel, :scope => [:assignment, :comments]))

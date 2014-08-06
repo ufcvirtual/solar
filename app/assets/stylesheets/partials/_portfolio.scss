@@ -36,7 +36,6 @@
 }
 
 .portfolio_title_button,
-.portfolio_comment_button,
 #btn_cancel_evaluation,
 #btn_save_evaluation,
 #btn_evaluate {
@@ -48,7 +47,7 @@
 }
 
 .portfolio_comment_button {
-  margin-right: 10px;
+  text-align: right;
 }
 
 .comments_files {
