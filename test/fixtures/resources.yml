@@ -279,19 +279,19 @@ res46:
   id: 46
   controller: 'scores'
   action: 'info'
-  description: 'Acompanhamento - informacoes' # aluno
+  description: 'Listar informacoes' # aluno
 
 res47:
   id: 47
   controller: 'scores'
   action: 'student_info'
-  description: 'Professor/Acompanhamento - informacoes por aluno' # professor
+  description: 'Professor - Informacoes por aluno' # professor
 
 res48:
   id: 48
   controller: 'scores'
   action: 'index'
-  description: 'Professor/Acompanhamento - Lista de alunos da turma' # professor
+  description: 'Professor - Lista de alunos da turma' # professor
 
 # Arquivos
 

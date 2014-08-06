@@ -55,7 +55,8 @@
             = label_tag :type, t(".type"), class: "subtitle"
             = select_tag :type, options_for_select(@types.map{ |c| [c.description, c.description] }), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"1"
             = label_tag :profile, t(".profile"), class: "subtitle"
-            = select_tag :profile, options_from_collection_for_select(@user.profiles_activated(false, true), "name", "name"), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"6"
+            - profiles = @user.profiles.where('allocations.allocation_tag_id IS NOT NULL')
+            = select_tag :profile, options_from_collection_for_select(profiles, "name", "name"), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"6"
 
 = javascript_include_tag "tooltip"
 

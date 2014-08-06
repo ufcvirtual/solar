@@ -14,7 +14,9 @@ module MenuHelper
   # ]
   def menu_list
     context_id = user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:context]
-    menus = current_user.menu_list({contexts: [context_id]})
+    allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id]
+
+    menus = current_user.menu_list({contexts: [context_id], allocation_tag_id: allocation_tag_id})
 
     menu_list = {
       singles: [],
@@ -45,7 +47,7 @@ module MenuHelper
         %{
           <div class="mysolar_menu_group">
             <ul>
-              <li class="mysolar_menu_title_multiple" data-menu-id=#{p_id}>
+              <li class="mysolar_menu_title_multiple">
                 #{father[:name]}
                 <ul class="submenu">
                   #{children.join}
