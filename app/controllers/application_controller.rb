@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  if Rails.env == 'production'
+  if Rails.env != 'development'
     rescue_from ActiveRecord::RecordNotFound do |exception|
       # logar: exception.message
       respond_to do |format|
