@@ -597,7 +597,7 @@ pt_BR:
   f: Feminino
   videos: Vídeos
   video_tutorials: "Tutoriais em vídeos"
-  video_tutorials_link: "Clique <a href='http://youtu.be/tpu1NywBzmQ?list=PLymN3BhGXshU5s4NYY2EzYkpHuVtigaoP' target= '_blank'>aqui</a> para acessar os tutoriais em vídeo do Solar 2.0"
+  video_tutorials_link: "<a href='video_tutorials.html' target= '_blank'>Acessar os tutoriais em vídeo do Solar 2.0</a>"
   empty_old_password: "Senha antiga vazia"
   bad_password_confirmation: "A nova senha e a confirmação não conferem!"
   incorrect_old_password: "Senha antiga incorreta"

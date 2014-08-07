@@ -469,6 +469,7 @@ en_US:
   f: Female
   videos: Videos
   video_tutorials: "Video tutorials"
+  video_tutorials_link: "<a href='video_tutorials.html' target= '_blank'>Access Solar 2.0 video tutorials</a>"
   empty_old_password: "Old password is empty"
   bad_password_confirmation: "Bad password confirmation"
   incorrect_old_password: "Old password is incorrect"
