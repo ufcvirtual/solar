@@ -188,6 +188,7 @@ en_US:
         alternate_email: "Alternate e-mail"
         photo_content_type: "Invalid file type"
         photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
+        reset_password_token: "Reset password token"
       curriculum_unit:
         name: Name
         code: Code
@@ -342,6 +343,8 @@ en_US:
               not_found: "not found"
             photo_content_type:
               invalid_type: "Please send only files of type JPG, GIF or PNG."
+            reset_password_token:
+              expired: "expired"
         assignment_file:
           attributes:
             attachment_content_type:

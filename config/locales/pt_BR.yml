@@ -231,6 +231,7 @@ pt_BR:
         alternate_email: "E-mail alternativo"
         photo_content_type: "Tipo de arquivo inválido."
         photo_file_size: "Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB."
+        reset_password_token: "Token de recuperação de senha"
       curriculum_unit:
         name: Nome
         code: Código
@@ -395,6 +396,8 @@ pt_BR:
               not_found: "não encontrado"
             photo_content_type:
               invalid_type: "Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG."
+            reset_password_token:
+              expired: "expirado"
         assignment_file:
           attributes:
             attachment_content_type:
