@@ -326,7 +326,7 @@ class AllocationsController < ApplicationController
 
     render json: {success: true, notice: message}
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
     render json: {success: false, alert: t("allocations.manage.enrollment_unsuccessful_update")}, status: :unprocessable_entity
   end

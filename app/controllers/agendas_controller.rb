@@ -13,6 +13,7 @@ class AgendasController < ApplicationController
 
   def list
     @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ?  AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : params[:allocation_tags_ids])
+    authorize! :edition, Agenda, on: @allocation_tags if params.include?(:allocation_tags_ids)
     @allocation_tags_ids = @allocation_tags_ids.join(" ") unless @allocation_tags_ids.nil?
 
     render action: :calendar

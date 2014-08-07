@@ -59,34 +59,32 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def update
-    @support_material = SupportMaterialFile.find(params[:id])
-    authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    @allocation_tags_ids, @support_material = params[:allocation_tags_ids], SupportMaterialFile.find(params[:id])
+    authorize! :update, SupportMaterialFile, on: @support_material.academic_allocations.pluck(:allocation_tag_id)
 
-    begin
-      @support_material.update_attributes!(params[:support_material_file])
-      render json: {success: true, notice: t(:updated, scope: [:support_materials, :success])}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
-      @groups_codes = @support_material.groups.map(&:code)
-      params[:success] = false
-      render :new
-    end
+    @support_material.update_attributes!(params[:support_material_file])
+    render json: {success: true, notice: t(:updated, scope: [:support_materials, :success])}
+  rescue ActiveRecord::AssociationTypeMismatch
+    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    @groups_codes = @support_material.groups.map(&:code)
+    params[:success] = false
+    render :new
   end
 
   def destroy
-    authorize! :destroy, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @allocation_tags_ids, @support_material_files = params[:allocation_tags_ids], SupportMaterialFile.where(id: params[:id].split(",").flatten)
+    authorize! :destroy, SupportMaterialFile, on: @support_material_files.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
-    begin
-      @support_material_file = SupportMaterialFile.where(id: params[:id].split(",").flatten)
+    @support_material_files.destroy_all
 
-      SupportMaterialFile.transaction do
-        @support_material_file.destroy_all
-      end
-      render json: {success: true, notice: t(:deleted, scope: [:support_materials, :success])}
-    rescue Exception => e
-      render json: {success: false, msg: e.messages}, status: :unprocessable_entity
-    end
+    render json: {success: true, notice: t(:deleted, scope: [:support_materials, :success])}
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue Exception => e
+    render json: {success: false, msg: e.messages}, status: :unprocessable_entity
   end
 
   def download

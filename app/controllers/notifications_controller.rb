@@ -80,33 +80,34 @@ class NotificationsController < ApplicationController
   # PUT /notifications/1
   # PUT /notifications/1.json
   def update
-    authorize! :update, Notification, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @allocation_tags_ids, @notification = params[:allocation_tags_ids], Notification.find(params[:id])
+    authorize! :update, Notification, on: @notification.academic_allocations.pluck(:allocation_tag_id)
 
-    @notification = Notification.find(params[:id])
-    begin
-      @notification.update_attributes!(params[:notification])
+    @notification.update_attributes!(params[:notification])
 
-      render json: {success: true, notice: t(:updated, scope: [:notifications, :success])}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
-      @groups_codes = @notification.groups.map(&:code)
-      params[:success] = false
-      render :edit
-    end
+    render json: {success: true, notice: t(:updated, scope: [:notifications, :success])}
+  rescue ActiveRecord::AssociationTypeMismatch
+    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    @groups_codes = @notification.groups.map(&:code)
+    params[:success] = false
+    render :edit
   end
 
   # DELETE /notifications/1
   # DELETE /notifications/1.json
   def destroy
-    authorize! :destroy, Notification, on: params[:allocation_tags_ids]
+    @notifications = Notification.where(id: params[:id].split(","))
+    authorize! :destroy, Notification, on: @notifications.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
-    @notification = Notification.where(id: params[:id].split(","))
-    unless @notification.empty?
-      @notification.destroy_all
-      render json: {success: true, notice: t(:deleted, scope: [:notifications, :success])}
-    else
-      render json: {success: false, alert: t(:deleted, scope: [:notifications, :error])}, status: :unprocessable_entity
-    end
+    @notifications.destroy_all
+
+    render json: {success: true, notice: t(:deleted, scope: [:notifications, :success])}
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    render json: {success: false, alert: t(:deleted, scope: [:notifications, :error])}, status: :unprocessable_entity
   end
 end

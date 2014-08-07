@@ -65,6 +65,8 @@ class CoursesController < ApplicationController
     else
       render :edit
     end
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def destroy
@@ -76,5 +78,7 @@ class CoursesController < ApplicationController
     else
       render json: {success: false, alert: t(:deleted, scope: [:courses, :error])}, status: :unprocessable_entity
     end
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 end

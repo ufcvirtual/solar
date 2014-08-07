@@ -699,6 +699,8 @@ en_US:
       save: Save
       cancel: Cancel
       groups: Groups
+    success: 
+      deleted: Module deleted successfully
     errors:
       existing_name: already exists
       cant_delete: "Default module can't be deleted"

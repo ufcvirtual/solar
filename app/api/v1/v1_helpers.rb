@@ -18,11 +18,11 @@ module V1::V1Helpers
   end
 
   def allocate_professors(group, cpfs)
-    group.allocations.where(profile_id: 2).update_all(status: 2) # cancel all previous allocations
+    group.allocations.where(profile_id: 17).update_all(status: 2) # cancel all previous allocations
 
     cpfs.each do |cpf|
       professor = verify_or_create_user(cpf)
-      group.allocate_user(professor.id, 2)
+      group.allocate_user(professor.id, 17)
     end
   end
 
@@ -70,10 +70,13 @@ module V1::V1Helpers
 
   def get_profile_id(profile)
     case profile.to_i
-      when 1; 3 # tutor a distância
-      when 2; 4 # tutor presencial
-      when 3; 2 # professor titular
-      when 4; 1 # aluno
+      when 1; 17 # professor titular UAB
+      when 2; 18 # tutor a distância UAB
+      when 3; 19 # tutor presencial UAB
+      when 4; 1  # aluno
+      when 17; 2 # professor titular
+      when 18; 3 # tutor a distância
+      when 19; 4 # tutor presencial
       else profile # corresponds to profile with id == allocation[:perfil]
     end
   end

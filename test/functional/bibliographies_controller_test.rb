@@ -70,7 +70,8 @@ class BibliographiesControllerTest < ActionController::TestCase
       delete :destroy, {id: bibliographies(:livro1).id, allocation_tags_ids: "#{@quimica}"}
     end
 
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    assert_response :unauthorized
+    assert_equal get_json_response('alert'), I18n.t(:no_permission)
   end
 
   test "edicao - listar bibliographies" do

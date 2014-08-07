@@ -96,8 +96,8 @@ class ChatRoomsControllerTest < ActionController::TestCase
 
     assert_equal chat_rooms(:chat2).participants, ChatParticipant.find_all_by_chat_room_id(chat_rooms(:chat2).id)
 
-    assert_response :redirect
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    assert_response :unauthorized
+    assert_equal get_json_response('alert'), I18n.t(:no_permission)
   end
 
   test "nao criar chat para oferta ou uc ou curso" do
@@ -145,8 +145,8 @@ class ChatRoomsControllerTest < ActionController::TestCase
       delete :destroy, {allocation_tags_ids: "3 11 22", id: chat_rooms(:chat2).id}
     end
 
-    assert_response :redirect
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    assert_response :unauthorized
+    assert_equal get_json_response('alert'), I18n.t(:no_permission)
   end
 
   test "edicao - ver detalhes" do

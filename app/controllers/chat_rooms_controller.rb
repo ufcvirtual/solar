@@ -53,38 +53,37 @@ class ChatRoomsController < ApplicationController
   end
 
   def update
-    authorize! :update, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
-    @chat_room = ChatRoom.find(params[:id])
-    
-    begin
-      @chat_room.update_attributes!(params[:chat_room])
+    @allocation_tags_ids, @chat_room = params[:allocation_tags_ids], ChatRoom.find(params[:id])
+    authorize! :update, ChatRoom, on: @chat_room.academic_allocations.pluck(:allocation_tag_id)
+  
+    @chat_room.update_attributes!(params[:chat_room])
 
-      render json: {success: true, notice: t(:updated, scope: [:chat_rooms, :success])}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
-      @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:students_participants).flatten.uniq
-      @groups_codes = @chat_room.groups.map(&:code)
-      render :edit
-    end
-
+    render json: {success: true, notice: t(:updated, scope: [:chat_rooms, :success])}
+  rescue ActiveRecord::AssociationTypeMismatch
+    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:students_participants).flatten.uniq
+    @groups_codes = @chat_room.groups.map(&:code)
+    render :edit
   end
 
   def destroy
-    authorize! :destroy, ChatRoom, on: params[:allocation_tags_ids]
+    @chat_rooms = ChatRoom.where(id: params[:id].split(","))
+    authorize! :destroy, ChatRoom, on: @chat_rooms.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
-    begin
-      @chat_rooms = ChatRoom.where(id: params[:id].split(","))
-      raise has_messages = true if @chat_rooms.map(&:can_destroy?).include?(false)
+    raise has_messages = true if @chat_rooms.map(&:can_destroy?).include?(false)
 
-      ChatRoom.transaction do
-        @chat_rooms.destroy_all
-      end
-
-      render json: {success: true, notice: t(:deleted, scope: [:chat_rooms, :success])}
-    rescue
-      render json: {success: false, alert: (has_messages ? t(:chat_has_messages, scope: [:chat_rooms, :error]) : t(:deleted, scope: [:chat_rooms, :error]))}, status: :unprocessable_entity
+    ChatRoom.transaction do
+      @chat_rooms.destroy_all
     end
+
+    render json: {success: true, notice: t(:deleted, scope: [:chat_rooms, :success])}
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    render json: {success: false, alert: (has_messages ? t(:chat_has_messages, scope: [:chat_rooms, :error]) : t(:deleted, scope: [:chat_rooms, :error]))}, status: :unprocessable_entity
   end
 
   def list

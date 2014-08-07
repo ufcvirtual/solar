@@ -66,36 +66,36 @@ class DiscussionsController < ApplicationController
   end
 
   def update
-    authorize! :update, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    @discussion = Discussion.find(params[:id])
-    begin
-      @discussion.allocation_tags_ids = @allocation_tags_ids
-      @discussion.update_attributes!(params[:discussion])
-      render json: {success: true, notice: t(:updated, scope: [:discussions, :success])}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue 
-      @allocation_tags_ids = @allocation_tags_ids.join(" ")
-      @groups_codes = @discussion.groups.map(&:code)
-      render :edit
-    end
+    @allocation_tags_ids, @discussion = params[:allocation_tags_ids], Discussion.find(params[:id])
+    authorize! :update, Discussion, on: @discussion.academic_allocations.pluck(:allocation_tag_id)
+
+    @discussion.update_attributes!(params[:discussion])
+
+    render json: {success: true, notice: t(:updated, scope: [:discussions, :success])}
+  rescue ActiveRecord::AssociationTypeMismatch
+    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue 
+    @groups_codes = @discussion.groups.map(&:code)
+    render :edit
   end
 
   def destroy
-    authorize! :destroy, Discussion, on: params[:allocation_tags_ids]
+    @discussions = Discussion.where(id: params[:id].split(","))
+    authorize! :destroy, Discussion, on: @discussions.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
-    begin
-      @discussions = Discussion.where(id: params[:id].split(","))
-      raise has_posts = true if @discussions.map(&:can_destroy?).include?(false)
+    raise has_posts = true if @discussions.map(&:can_destroy?).include?(false)
 
-      Discussion.transaction do
-        @discussions.destroy_all
-      end
-
-      render json: {success: true, notice: t(:deleted, scope: [:discussions, :success])}
-    rescue
-      render json: {success: false, alert: (has_posts ? t(:discussion_with_posts, scope: [:discussions, :error]) : t(:deleted, scope: [:discussions, :error]))}, status: :unprocessable_entity
+    Discussion.transaction do
+      @discussions.destroy_all
     end
+
+    render json: {success: true, notice: t(:deleted, scope: [:discussions, :success])}
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    render json: {success: false, alert: (has_posts ? t(:discussion_with_posts, scope: [:discussions, :error]) : t(:deleted, scope: [:discussions, :error]))}, status: :unprocessable_entity
   end
 
   def show

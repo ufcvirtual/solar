@@ -65,34 +65,33 @@ class WebconferencesController < ApplicationController
   # PUT /webconferences/1
   # PUT /webconferences/1.json
   def update
-    authorize! :update, Webconference, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @allocation_tags_ids, @webconference = params[:allocation_tags_ids], Webconference.find(params[:id])
+    authorize! :update, Webconference, on: @webconference.academic_allocations.pluck(:allocation_tag_id)
 
-    @webconference = Webconference.find(params[:id])
-    begin
-      @webconference.update_attributes!(params[:webconference])
+    @webconference.update_attributes!(params[:webconference])
 
-      render json: {success: true, notice: t(:updated, scope: [:webconferences, :success])}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
-      @groups_codes = @webconference.groups.map(&:code)
-      params[:success] = false
-      render :edit
-    end
+    render json: {success: true, notice: t(:updated, scope: [:webconferences, :success])}
+  rescue ActiveRecord::AssociationTypeMismatch
+    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    @groups_codes = @webconference.groups.map(&:code)
+    params[:success] = false
+    render :edit
   end
 
   # DELETE /webconferences/1
   # DELETE /webconferences/1.json
   def destroy
-    authorize! :destroy, Webconference, on: params[:allocation_tags_ids]
+    @webconferences = Webconference.where(id: params[:id].split(",").flatten)
+    authorize! :destroy, Webconference, on: @webconferences.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
-    @webconference = Webconference.where(id: params[:id].split(",").flatten)
-
-    unless @webconference.empty?
-      @webconference.destroy_all
-      render json: {success: true, notice: t(:deleted, scope: [:webconferences, :success])}
-    else
-      render json: {success: false, alert: t(:deleted, scope: [:webconferences, :error])}, status: :unprocessable_entity
-    end
+    @webconferences.destroy_all
+    render json: {success: true, notice: t(:deleted, scope: [:webconferences, :success])}
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    render json: {success: false, alert: t(:deleted, scope: [:webconferences, :error])}, status: :unprocessable_entity
   end
 end

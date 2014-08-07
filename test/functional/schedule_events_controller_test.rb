@@ -77,9 +77,8 @@ class ScheduleEventsControllerTest < ActionController::TestCase
     end
 
     assert_not_equal "Prova", ScheduleEvent.find(schedule_events(:presential_test1).id).title
-    assert_response :redirect
-    assert_redirected_to home_path
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    assert_response :unauthorized
+    assert_equal get_json_response("alert"), I18n.t(:no_permission)
   end
 
   test "deletar um evento" do
@@ -97,10 +96,9 @@ class ScheduleEventsControllerTest < ActionController::TestCase
     assert_no_difference(["ScheduleEvent.count", "AcademicAllocation.count"]) do
       delete(:destroy, {id: schedule_events(:presential_test1).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     end
-
-    assert_response :redirect
-    assert_redirected_to home_path
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    
+    assert_response :unauthorized
+    assert_equal get_json_response("alert"), I18n.t(:no_permission)
   end
 
   test "edicao - ver detalhes" do

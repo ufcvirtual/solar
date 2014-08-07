@@ -74,8 +74,8 @@ class WebconferencesControllerTest < ActionController::TestCase
       put :update, {id: webconference.id, allocation_tags_ids: "#{@quimica}", webconference: {title: "new title"}}
     end
 
-    assert_response :redirect
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    assert_response :unauthorized
+    assert_equal get_json_response('alert'), I18n.t(:no_permission)
   end
 
   test "edition - do not update if data is invalid" do
@@ -103,8 +103,8 @@ class WebconferencesControllerTest < ActionController::TestCase
       delete :destroy, {id: webconference.id, allocation_tags_ids: "#{@quimica}"}
     end
 
-    assert_response :redirect
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    assert_response :unauthorized
+    assert_equal get_json_response('alert'), I18n.t(:no_permission)
   end
 
 end

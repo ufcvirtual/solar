@@ -60,33 +60,33 @@ class BibliographiesController < ApplicationController
 
   # PUT /bibliographies/1
   def update
-    authorize! :update, Bibliography, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @allocation_tags_ids, @bibliography = params[:allocation_tags_ids], Bibliography.find(params[:id])
+    authorize! :update, Bibliography, on: @bibliography.academic_allocations.pluck(:allocation_tag_id)
 
-    @bibliography = Bibliography.find(params[:id])
-    begin
-      @bibliography.update_attributes!(params[:bibliography])
+    @bibliography.update_attributes!(params[:bibliography])
 
-      render json: {success: true, notice: t(:updated, scope: [:bibliographies, :success])}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
-      @groups_codes = @bibliography.groups.map(&:code)
-      params[:success] = false
-      render :edit
-    end
+    render json: {success: true, notice: t(:updated, scope: [:bibliographies, :success])}
+  rescue ActiveRecord::AssociationTypeMismatch
+    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    @groups_codes = @bibliography.groups.map(&:code)
+    params[:success] = false
+    render :edit
   end
 
   # DELETE /bibliographies/1
   def destroy
-    authorize! :destroy, Bibliography, on: params[:allocation_tags_ids]
+    @bibliographies = Bibliography.where(id: params[:id].split(","))
+    authorize! :destroy, Bibliography, on: @bibliographies.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
-    begin
-      @bibliography = Bibliography.where(id: params[:id].split(","))
-      @bibliography.destroy_all
+    @bibliographies.destroy_all
 
-      render json: {success: true, notice: t(:deleted, scope: [:bibliographies, :success])}
-    rescue
-      render json: {success: false, alert: t(:deleted, scope: [:bibliographies, :error])}, status: :unprocessable_entity
-    end
+    render json: {success: true, notice: t(:deleted, scope: [:bibliographies, :success])}
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    render json: {success: false, alert: t(:deleted, scope: [:bibliographies, :error])}, status: :unprocessable_entity
   end
 end

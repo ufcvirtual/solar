@@ -107,7 +107,7 @@ class CoursesControllerTest < ActionController::TestCase
       delete :destroy, {id: Course.first.id}
     end
 
-    assert_response :redirect
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    assert_response :unauthorized
+    assert_equal get_json_response('alert'), I18n.t(:no_permission)
   end
 end

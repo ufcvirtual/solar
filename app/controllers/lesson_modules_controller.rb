@@ -45,8 +45,9 @@ class LessonModulesController < ApplicationController
   end
 
   def update
-    @lesson_module = LessonModule.find(params[:id])
-    authorize! :update, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @allocation_tags_ids, @lesson_module = params[:allocation_tags_ids], LessonModule.find(params[:id])
+    authorize! :update, LessonModule, on: @lesson_module.academic_allocations.pluck(:allocation_tag_id)
+
     @lesson_module.update_attributes!(name: params[:lesson_module][:name])
 
     render nothing: true, status: 200
@@ -60,14 +61,16 @@ class LessonModulesController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, LessonModule, on: params[:allocation_tags_ids]
     @lesson_module = LessonModule.find(params[:id])
+    authorize! :destroy, LessonModule, on: @lesson_module.academic_allocations.pluck(:allocation_tag_id)
 
     if @lesson_module.destroy
-      render json: {success: true}, status: :ok
+      render json: {success: true, notice: t("lesson_modules.success.deleted")}, status: :ok
     else
       render json: {success: false, alert: @lesson_module.errors.full_messages}, status: :unprocessable_entity
     end
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
 end

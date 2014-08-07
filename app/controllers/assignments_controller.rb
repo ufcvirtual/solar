@@ -66,39 +66,37 @@ class AssignmentsController < ApplicationController
   end
 
   def update
-    @assignment = Assignment.find(params[:id])
-    authorize! :update, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @allocation_tags_ids, @assignment = params[:allocation_tags_ids], Assignment.find(params[:id])
+    authorize! :update, Assignment, on: @assignment.academic_allocations.pluck(:allocation_tag_id)
 
-    begin
-      @assignment.update_attributes!(params[:assignment])
+    @assignment.update_attributes!(params[:assignment])
 
-      render json: {success: true, notice: t(:updated, scope: [:assignments, :success])}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
-      @groups_codes = @assignment.groups.map(&:code)
-      @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
-
-      render :edit
-    end
+    render json: {success: true, notice: t(:updated, scope: [:assignments, :success])}
+  rescue ActiveRecord::AssociationTypeMismatch
+    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    @groups_codes = @assignment.groups.map(&:code)
+    @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
+    render :edit
   end
 
   def destroy
-    authorize! :destroy, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @allocation_tags_ids, assignments = params[:allocation_tags_ids], Assignment.includes(:sent_assignments).where(id: params[:id].split(",").flatten, sent_assignments: {id: nil})
+    @bibliographies = Bibliography.where(id: params[:id].split(","))
+    authorize! :destroy, Assignment, on: assignments.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
-    begin
-      Assignment.transaction do
-        assignments = Assignment.includes(:sent_assignments).where(id: params[:id].split(",").flatten, sent_assignments: {id: nil})
-        raise "error" if assignments.empty?
-
-        Assignment.transaction do
-          assignments.destroy_all
-        end
-      end
-      render json: {success: true, notice: t(:deleted, scope: [:assignments, :success])}
-    rescue
-      render json: {success: false, alert: t(:deleted, scope: [:assignments, :error])}, status: :unprocessable_entity
+    Assignment.transaction do
+      raise "error" if assignments.empty?
+      assignments.destroy_all
     end
+    
+    render json: {success: true, notice: t(:deleted, scope: [:assignments, :success])}
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    render json: {success: false, alert: t(:deleted, scope: [:assignments, :error])}, status: :unprocessable_entity
   end
 
   def show

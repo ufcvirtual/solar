@@ -871,6 +871,8 @@ pt_BR:
       save: Salvar
       cancel: Cancelar
       groups: Turmas
+    success: 
+      deleted: Módulo excluído com sucesso
     errors:
       existing_name: já existe
       cant_delete: "Módulo padrão não pode ser excluído"
