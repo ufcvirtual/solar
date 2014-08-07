@@ -2,40 +2,40 @@
 %h4.title= t(:forgot_password)
 .invisible
 	%h4.title_child_first= t(:UAB_courses)
-	%p.title_child_first= t(:answer_UAB_courses).html_safe
+	%p.title_child_first=raw t(:answer_UAB_courses)
 	%h4.title_child_first= t(:tutor)
 	%h4.title_child_second= t(:signin_modulo_academico)
-	%p.title_child_second= t(:answer_signin_modulo_academico).html_safe
+	%p.title_child_second=raw t(:answer_signin_modulo_academico)
 	%h4.title_child_second= t(:without_modulo_academico)
-	%p.title_child_second= t(:answer_without_modulo_academico).html_safe
+	%p.title_child_second=raw t(:answer_without_modulo_academico)
 	%h4.title_child_third= t(:received_message)
-	%p.title_child_third= t(:answer_received_message).html_safe
+	%p.title_child_third=raw t(:answer_received_message)
 	%h4.title_child_third= t(:received_message_instructions)
 	%p.title_child_third= t(:answer_received_message_instructions)
 	%h4.title_child_third= t(:received_message_email)
-	%p.title_child_third= t(:answer_received_message_email).html_safe
+	%p.title_child_third=raw t(:answer_received_message_email)
 	%h4.title_child_first= t(:without_UAB_courses)
-	%p.title_child_first= t(:answer_without_UAB_courses).html_safe
+	%p.title_child_first=raw t(:answer_without_UAB_courses)
 
 %h4.title= t(:first_time_solar)
 .invisible
 	%h4.title_child_first= t(:student_UAB)
 	%p.title_child_first= t(:answer_student_UAB)
 	%h4.title_child_second= t(:user_or_password)
-	%p.title_child_second= t(:answer_user_or_password).html_safe
+	%p.title_child_second=raw t(:answer_user_or_password)
 	%h4.title_child_third= t(:received_message_data)
 	%p.title_child_third= t(:answer_received_message_data)
 	%h4.title_child_first= t(:tutor)
 	%p.title_child_first= t(:answer_no_student_UAB)
 	%h4.title_child_second= t(:user_or_password)
-	%p.title_child_second= t(:answer_user_or_password).html_safe
+	%p.title_child_second=raw t(:answer_user_or_password)
 	%h4.title_child_third= t(:received_message_data)
 	%h4.title_child_fourth= t(:without_modulo_academico)
-	%p.title_child_fourth= t(:answer_received_message).html_safe
+	%p.title_child_fourth=raw t(:answer_received_message)
 	%h4.title_child_fifth= t(:message_support)
-	%p.title_child_fifth= t(:answer_message_support).html_safe
+	%p.title_child_fifth=raw t(:answer_message_support)
 	%h4.title_child_fourth= t(:signin_modulo_academico)
-	%p.title_child_fourth= t(:answer_received_message_data).html_safe
+	%p.title_child_fourth=raw t(:answer_received_message_data)
 	%h4.title_child_third= t(:no_message)
 	%p.title_child_third= t(:answer_no_message)
 	%h4.title_child_first= t(:without_UAB_courses)
@@ -46,23 +46,26 @@
 	%h4.title_child_first= t(:integrated_module)
 	%p.title_child_first= t(:answer_integrated_module)
 	%h4.title_child_second= t(:persistent_error)
-	%p.title_child_second= t(:answer_persistent_error).html_safe
+	%p.title_child_second=raw t(:answer_persistent_error)
 	%h4.title_child_first= t(:no_integrated_module)
 	%p.title_child_first= t(:answer_no_integrated_module)
 	%h4.title_child_first= t(:email_wrong)
-	%p.title_child_first= t(:answer_received_message).html_safe
+	%p.title_child_first=raw t(:answer_received_message)
 
 %h4.title= t(:solar_erro)
 .invisible
 	%p= t(:answer_solar_erro)
 	%h4.title_child_first= t(:firefox_user)
-	%p.title_child_first= t(:answer_firefox_user).html_safe
+	%p.title_child_first=raw t(:answer_firefox_user)
 	%h4.title_child_first= t(:chrome_user)
-	%p.title_child_first= t(:answer_chrome_user).html_safe
+	%p.title_child_first=raw t(:answer_chrome_user)
 
 %h4.title= t(:faq_no_answer)
 .invisible
-	%p= t(:answer_faq_no_answer).html_safe
+	%p=raw t(:answer_faq_no_answer)
+
+%h1= t(:video_tutorials)
+%p=raw t(:video_tutorials_link)
 
 
 :javascript

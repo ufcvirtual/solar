@@ -468,6 +468,7 @@ en_US:
   m: Male
   f: Female
   videos: Videos
+  video_tutorials: "Video tutorials"
   empty_old_password: "Old password is empty"
   bad_password_confirmation: "Bad password confirmation"
   incorrect_old_password: "Old password is incorrect"

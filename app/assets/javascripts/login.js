@@ -68,10 +68,10 @@ $(function() {
         $(".menu_footer a").removeClass("current_menu");
         $(".panel").fadeOut();
     });
-    $(".menu_footer a.panel-link").click(function(event) {
+    $(".panel-link").click(function(event) {
         event.preventDefault();
         var painelId = $(this).attr("href");
-        $(".menu_footer a.panel-link").removeClass("current_menu");
+        $(".panel-link").removeClass("current_menu");
         $("a[href=" + painelId + "]").addClass("current_menu");
         if ($(painelId).css("display") == "block") {
             $(painelId).fadeOut(800);
