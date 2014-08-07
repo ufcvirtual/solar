@@ -60,3 +60,18 @@ aluno_monitor:
   id: 13
   name: "Aluno Monitor"
   types: 6
+
+prof_titular_uab:
+  id: 17
+  name: "Prof. Titular UAB"
+  types: 2
+
+tutor_distancia_uab:
+  id: 18
+  name: "Tutor a Distancia UAB"
+  types: 2
+
+tutor_presencial_uab:
+  id: 19
+  name: "Tutor Presencial UAB"
+  types: 2

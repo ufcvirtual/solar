@@ -380,7 +380,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
       end
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unauthorized
     assert_equal I18n.t(:no_permission), get_json_response("alert")
   end
 

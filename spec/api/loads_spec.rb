@@ -498,7 +498,7 @@ describe "Loads" do
         end
 
         context 'and non existing user and gets from MA' do
-          cpf = "VALID CPF"
+          cpf = "VALID CPF HERE"
           let!(:json_data){
             { matriculas: {cpf: cpf, turmas:
               %{
@@ -617,7 +617,7 @@ describe "Loads" do
 
         context 'and list of existing groups' do 
           let!(:json_data){ # user: prof, profile: tutor a distância
-            { allocation: {cpf: "21872285848", perfil: 1, turma: 
+            { allocation: {cpf: "21872285848", perfil: 18, turma: 
               {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
             }}
           }
@@ -634,7 +634,7 @@ describe "Loads" do
 
         context 'and list of non existing groups' do 
           let!(:json_data){ # user: prof, profile: tutor a distância
-            { allocation: {cpf: "21872285848", perfil: 1, turma:
+            { allocation: {cpf: "21872285848", perfil: 18, turma:
               {periodo: "1", ano: "2011", codigo: "T02", codDisciplina: "RM301", codGraduacao: "109"}  # turma não existe
             }}
           }
@@ -651,7 +651,7 @@ describe "Loads" do
 
         context 'and non existing course' do 
           let!(:json_data){ # user: prof, profile: tutor a distância
-            { allocation: {cpf: "21872285848", perfil: 1, turma:
+            { allocation: {cpf: "21872285848", perfil: 18, turma:
               {periodo: "1", ano: "2011", codigo: "IL-FOR", codDisciplina: "RM404", codGraduacao: "C01"}, # curso não existe
             }}
           }
@@ -668,7 +668,7 @@ describe "Loads" do
 
         context 'and non existing uc' do 
           let!(:json_data){ # user: prof, profile: tutor a distância
-            { allocation: {cpf: "21872285848", perfil: 1, turma:
+            { allocation: {cpf: "21872285848", perfil: 18, turma:
               {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "UC01", codGraduacao: "109"}  # uc não existe
             }}
           }
@@ -685,7 +685,7 @@ describe "Loads" do
 
         context 'and non existing user' do 
           let!(:json_data){ # cpf inválido
-            { allocation: {cpf: "cpf", perfil: 1, turma:
+            { allocation: {cpf: "cpf", perfil: 18, turma:
               {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
             }}
           }
@@ -704,7 +704,7 @@ describe "Loads" do
       context "with invalid ip" do
         it "gets a not found error" do
           json_data = # user: prof, profile: tutor a distância
-            { allocation: {cpf: "21872285848", perfil: 1, turma: 
+            { allocation: {cpf: "21872285848", perfil: 18, turma: 
               {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
             }}
           put "/api/v1/load/groups/block_profile", json_data, "REMOTE_ADDR" => "127.0.0.2"
@@ -719,7 +719,7 @@ describe "Loads" do
 
         context 'and existing user and group' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
+            { allocation: { cpf: "47382348113", perfil: 18, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -741,7 +741,7 @@ describe "Loads" do
 
         context 'and existing user and non existing UC' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "UC01", codGraduacao: "109"} }
+            { allocation: { cpf: "47382348113", perfil: 18, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "UC01", codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -763,7 +763,7 @@ describe "Loads" do
 
         context 'and existing user and non existing course' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "C01"} }
+            { allocation: { cpf: "47382348113", perfil: 18, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "C01"} }
           }
 
           subject{ -> {
@@ -785,7 +785,7 @@ describe "Loads" do
 
         context 'and existing user and non existing group' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codTurma: "T01", codDisciplina: "RM301", codGraduacao: "109"} }
+            { allocation: { cpf: "47382348113", perfil: 18, periodo: "1", ano: "2011", codTurma: "T01", codDisciplina: "RM301", codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -807,7 +807,7 @@ describe "Loads" do
 
         context 'and existing user and existing course without offer and group' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { allocation: { cpf: "47382348113", perfil: 1, codGraduacao: "109"} }
+            { allocation: { cpf: "47382348113", perfil: 18, codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -829,7 +829,7 @@ describe "Loads" do
       
         context 'and non existing user' do # futuramente este teste deverá criar um novo usuário a partir do MA (cpf deverá ser válido para usuário no MA)
           let!(:json_data){ 
-            { allocation: { cpf: "cpf", perfil: 1, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
+            { allocation: { cpf: "cpf", perfil: 18, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -851,7 +851,7 @@ describe "Loads" do
 
         context 'and existing user and missing param' do 
           let!(:json_data){ # user: aluno3, profile: tutor a distância
-            { allocation: { cpf: "47382348113", perfil: 1, ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
+            { allocation: { cpf: "47382348113", perfil: 18, ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           }
 
           subject{ -> {
@@ -873,7 +873,7 @@ describe "Loads" do
 
       context "with invalid ip" do
         it "gets a not found error" do
-          json_data = { allocation: { cpf: "47382348113", perfil: 1, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
+          json_data = { allocation: { cpf: "47382348113", perfil: 18, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           put "/api/v1/load/groups/allocate_user", json_data, "REMOTE_ADDR" => "127.0.0.2"
           response.status.should eq(404)
         end
@@ -889,7 +889,7 @@ describe "Loads" do
       context "with valid ip" do
 
         context 'non existing user at Solar must get data from MA' do
-          cpf = "VALID CPF"
+          cpf = "VALID CPF HERE"
           let!(:json_data){ { cpf: cpf } }
 
           it {
@@ -907,12 +907,12 @@ describe "Loads" do
         context 'existing user at Solar' do
 
           it "must synchronize with MA" do
-            cpf = "VALID CPF"
+            cpf = "VALID CPF HERE"
             # MUST CHANGE USER CPF (fixtures) TO THE SAME VALID CPF AT "cpf"
             post "/api/v1/load/user/", {cpf: cpf}
 
             user = User.find_by_cpf(cpf)
-            user.email.should eq("VALID EMAIL")
+            user.email.should eq("VALID EMAIL HERE")
 
             response.status.should eq(201)
             response.body.should == {ok: :ok}.to_json
@@ -922,7 +922,7 @@ describe "Loads" do
         context 'existing user at Solar with same email' do
 
           it "must do nothing" do
-            cpf = "VALID CPF"
+            cpf = "VALID CPF HERE"
             # MUST CHANGE USER EMAIL (fixtures) TO THE SAME USED BY THE MA USER INFORMED
             post "/api/v1/load/user/", {cpf: cpf}
 
@@ -945,7 +945,7 @@ describe "Loads" do
 
       context "with invalid ip" do
         it "gets a not found error" do
-          post "/api/v1/load/user/", {cpf: "VALID CPF"}, "REMOTE_ADDR" => "127.0.0.2"
+          post "/api/v1/load/user/", {cpf: "VALID CPF HERE"}, "REMOTE_ADDR" => "127.0.0.2"
           response.status.should eq(404)
         end
       end

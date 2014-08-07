@@ -465,3 +465,10 @@ tutor_dis_al16:
   allocation_tag_id: 16
   profile_id: 4
   status: 1
+
+professor_as_uab:
+  id: 67
+  user_id: 6
+  allocation_tag_id: 3
+  profile_id: 17
+  status: 1
