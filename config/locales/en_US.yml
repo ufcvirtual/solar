@@ -390,6 +390,8 @@ en_US:
   login_footer1: "UFC Virtual Institute"
   login_footer2: "Federal University of Ceará"
   login_footer3: "Development Team"
+  login_faq: FAQ
+  faq: "Frequently asked questions"
   login_language: "Language"
   license_terms: "License Terms"
   UFC_virtual: "Universidade Virtual"

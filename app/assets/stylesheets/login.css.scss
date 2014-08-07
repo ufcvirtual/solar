@@ -52,6 +52,10 @@ a img {
   display: none;
 }
 
+.visible {
+  display: block;
+}
+
   /*caixa principal que engloba login e cadastro*/
 $login_width: 287px;
 
@@ -425,7 +429,7 @@ footer{
   z-index: 50;
 }
 
-#team, #license-terms {
+#team, #license-terms, #faq {
   background: #ffffff url('ufc-virtual.png') 10% 16% no-repeat;
 }
 
@@ -448,6 +452,57 @@ footer{
   cursor: pointer;
 }
 
+#faq h4{
+  margin-bottom: 2px;
+}
+
+#faq p{
+  margin-top: 2px;
+  margin-bottom: 0;
+  text-align: initial;
+}
+
+#faq .content {
+  width: 650px;
+}
+
+#faq .title{
+  border: 1px solid #d3d3d3;
+  background: rgba(245,245,245,1);
+  background: -moz-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(245,245,245,1)), color-stop(100%, rgba(255,255,255,1)));
+  background: -webkit-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
+  background: -o-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
+  background: -ms-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
+  background: linear-gradient(to bottom, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
+  font-weight: normal;
+  color: #363636;
+  margin: 10px 0 0 0;
+  padding: .5em .5em .5em .7em;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.title_child_first{
+  margin-left: 15px;
+}
+
+.title_child_second{
+  margin: 5px 0 0 30px;
+}
+
+.title_child_third{
+  margin: 5px 0 0 45px;
+}
+
+.title_child_fourth{
+  margin: 5px 0 0 60px;
+}
+
+.title_child_fifth{
+  margin: 5px 0 0 75px;
+}
+
 .panel h1{
   font-family: Ubuntu Condensed;
   font-size: 25px;
@@ -458,8 +513,8 @@ footer{
   font-family:PT Sans;
   font-size: 16px;
   color:#616162;
-  text-align: justify;
 }
+
 
 /* Menu de idiomas */
 .link-arrow{

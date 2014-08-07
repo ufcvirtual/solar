@@ -7,6 +7,11 @@
     = render template: "/pages/team"
   = image_tag("arrow.png", :class => "arrow")
 
+#faq.panel
+  .content
+    = render template: "/pages/faq"
+  = image_tag("arrow.png", :class => "arrow")
+
 %footer
   .menu_footer
     %ul
@@ -17,8 +22,8 @@
       %li.choice-tutorial
         = link_to t(:help), '#', :class => "link-arrow"
         %ul.choice-tutorial-menu
+          %li= link_to t(:login_faq), "#faq", :class => 'panel-link'
           %li= link_to t(:videos), "http://youtu.be/tpu1NywBzmQ?list=PLymN3BhGXshU5s4NYY2EzYkpHuVtigaoP", target: "_blank"
-
       %li.choice-language
         = link_to t(:login_language), '#', :class => "link-arrow"
         %ul.choice-language-menu
