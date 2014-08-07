@@ -47,6 +47,7 @@ Solar::Application.configure do
   # Desabilitando compressão de assets
   config.assets.enabled = true
   config.assets.compress = false
+  config.assets.digest = false # fingerprinting or cache busting
 
   # Habilitando debug_info do SASS, permitindo uma análise mais fácil através do FireSASS
   config.sass.line_comments = false
