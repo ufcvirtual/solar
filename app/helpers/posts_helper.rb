@@ -1,13 +1,13 @@
 module PostsHelper
 
-  def post_html(post, latest_posts, display_mode = 'list', can_interact = false)
+  def post_html(post, latest_posts, display_mode = 'list', can_interact = false, can_post = false)
     user     = post.user
     children = post.children
     children = Post.reorder_by_latest_posts(latest_posts, children) unless (display_mode == 'list') # obtendo e reordenando os posts a partir dos seus "filhos/netos"
     editable = ((post.user_id == current_user.id) && (children.count == 0))
 
     child_html = ''
-    children.each { |child| child_html << post_html(child, latest_posts, true, can_interact)} unless display_mode == 'list'
+    children.each { |child| child_html << post_html(child, latest_posts, true, can_interact, can_post)} unless display_mode == 'list'
 
     html = <<HTML
       <table border="0" cellpadding="0" cellspacing="0" class="forum_post" id="#{post.id}">
@@ -36,7 +36,7 @@ module PostsHelper
               #{raw(post.content)}
               </div>
               #{attachments(post, editable, can_interact)}
-              #{buttons(post, editable, can_interact)}
+              #{buttons(post, editable, can_interact, can_post)}
               <div class="forum_post_reply"></div>
             </div>
             #{child_html}
@@ -76,7 +76,7 @@ HTML
 HTML
   end
 
-  def buttons(post, editable = false, can_interact = false)
+  def buttons(post, editable = false, can_interact = false, can_post = false)
     post_string = '<div class="forum_post_buttons">'
     post_string << "<div class='btn-group'>"
     if can_interact
@@ -92,7 +92,7 @@ HTML
         post_string << "</button>"
       end
 
-      if post.can_be_answered?
+      if post.can_be_answered? and can_post
         post_string << "<button type='button' level='#{post.level}' class='btn response_post' onclick='javascript:new_post(this, #{post.id})' data-tooltip='#{t(".answer")}' value='#{t(".answer")}'>"
         post_string << (content_tag(:i, nil, :class=>'icon-reply'))
         post_string << "</button>"
