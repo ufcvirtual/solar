@@ -1,0 +1,22 @@
+%h1#lightBoxDialogTitle= "Mensagens do chat tal"
+.chat_messages
+  - unless @messages.empty?
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th= "De"
+          %th= "Para"
+          %th= "Mensagem"
+          %th= "Data"
+          %th= "Horário"
+      %tbody
+        - @messages.each do |message|
+          %tr.lines
+            %td= message.user_name + "(" + message.profile_name + ")"
+            %td= message.user.nil? ? "Todos" : message.user.name
+            %td= message.text
+            %td= l(message.created_at.to_datetime, format: :normal)
+            %td= l(message.created_at.to_datetime, format: :clock_time)
+
+  - else
+    .block_content_text_list.text_none= "Nenhuma mensagem"

@@ -91,3 +91,13 @@
 .chat_list .dropdown-link a{
  vertical-align:bottom;
 }
+
+.chat_messages{
+  width: 700px;
+  table{
+    th{
+      text-align: center;
+    }
+    text-align: center;
+  }
+}
