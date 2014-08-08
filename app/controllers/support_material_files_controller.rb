@@ -84,7 +84,7 @@ class SupportMaterialFilesController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue Exception => e
-    render json: {success: false, msg: e.messages}, status: :unprocessable_entity
+    render json: {success: false, alert: e.messages}, status: :unprocessable_entity
   end
 
   def download

@@ -100,8 +100,10 @@
           $.delete($(this).data('link-delete').replace(':id', materials_ids), function(data){
             flash_message(data.notice, 'notice');
             materials.parents('tr').fadeOut().remove();
-          }).error(function(){
-            flash_message(data.alert, 'alert');
+          }).error(function(data){
+          var data = $.parseJSON(data.responseText);
+            if (typeof(data.alert) != "undefined")
+              flash_message(data.alert, 'alert');
           })
         }else
           return false;
