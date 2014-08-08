@@ -769,6 +769,8 @@ en_US:
       edit_link: "Edit Link"
       new_file: "New File"
       none: "No material registered"
+      edit: Edit material
+      delete: Remove material
     form:
       groups: Groups
   title: "Title"

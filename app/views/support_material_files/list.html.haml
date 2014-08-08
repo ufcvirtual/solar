@@ -14,8 +14,8 @@
 
       .block_toolbar_right
         .btn-group
-          = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_material', :"data-link-edit" => edit_support_material_file_path(':id', allocation_tags_ids: @allocation_tags_ids), "data-edit-title" => t(".edit_link"), disabled: true
-          = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_material', :"data-link-delete" => support_material_file_path(':id', allocation_tags_ids: @allocation_tags_ids), disabled: true
+          = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_material', :"data-link-edit" => edit_support_material_file_path(':id', allocation_tags_ids: @allocation_tags_ids), "data-edit-title" => t(".edit_link"), disabled: true, :'data-tooltip' => t(".edit")
+          = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_material', :"data-link-delete" => support_material_file_path(':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
 
     - unless @support_materials.empty?
       %table.tb_list

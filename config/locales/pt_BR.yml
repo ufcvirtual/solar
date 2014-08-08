@@ -942,6 +942,8 @@ pt_BR:
       edit_link: "Editar Link"
       new_file: "Novo Arquivo"
       none: "Nenhum material cadastrado"
+      edit: Editar material
+      delete: Remover material
     form:
       groups: Turmas
 
