@@ -9,6 +9,8 @@ Neste tutorial apresentamos o módulo de Matricula e as seguintes funcionalidade
 - `Acesso à matrícula`_
 - `Solicitar matrícula em uma oferta`_
 - `Cancelar matrícula em uma Unidade Curricular`_
+- `Gerenciar matrícula de usuários`_
+
 
 .. _enrollment-info:
 
@@ -53,6 +55,7 @@ A quarta e última área é uma lista com todas as ofertas correntes (ou seja, c
 
 .. image:: images/enrollment-lightbox.png
 
+
 .. _enrollment-request:
 
 Solicitar matrícula em uma oferta
@@ -66,6 +69,7 @@ Ao clicar no botão informado, a seguinte mensagem de sucesso aparecerá.
 
 .. image:: images/enrollment-request-success.png
 
+
 .. _enrollment-cancel:
 
 Cancelar matrícula em uma Unidade Curricular
@@ -78,3 +82,44 @@ Para cancelar a matricula de Unidade Curricular, basta clicar no botão **Cancel
 Será enviada uma mensagem de confirmação em seguida.
 
 .. image:: images/enrollment-cancel-02.png
+
+
+.. _enrollment-manage:
+
+Gerenciar matrícula de usuários
+-------------------------------
+
+.. _note: Esta funcionalidade está disponível para o seguinte perfil: **Editor**
+
+Após efetuar o devido Login no Solar 2.0, na página inicial (*Home*), o link de acesso à *Gerenciar Matrículas* está localizado no menu de navegação à esquerda.
+
+.. image:: images/enrollment-manage-01.png
+
+Verificando status dos matriculados
+```````````````````````````````````
+
+Nesta página é listado o estado de matrícula de todos os alunos do sistema.
+
+.. image:: images/enrollment-manage-02.png
+
+Caso deseje filtrar esta lista, basta utilizar a lista de opções de **status**, que a lista será filtrada automaticamente.
+
+.. image:: images/enrollment-manage-03.png
+
+Matriculando aluno(s)
+`````````````````````
+
+.. _note: Caso seja acionado o botão **Gerenciar** ou o botão **Matricular Selecionados** sem que nenhum aluno tenha sido selecionado, a mensagem **Nenhum registro selecionado** será exibida.
+
+
+Para matricular um aluno, basta pressionar o botão **Gerenciar** . Serão exibidas as opções do aluno conforme apresentado abaixo.
+
+.. image:: images/enrollment-manage-04.png
+
+1. No item 1 escolha a turma
+2. No item 2 escolha se deseja o status de: *MATRICULADO* ou *CANCELADO*.
+3. Após escolhidas às opções clique em **Salvar**.
+
+Para matricular vários alunos, basta marcar a caixa de seleção ao lado do nome de cada aluno e o botão **Matricular Selecionados** . Não serão exibidas as opções do aluno.
+
+.. image:: images/enrollment-manage-05.png
