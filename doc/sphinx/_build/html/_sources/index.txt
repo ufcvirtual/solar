@@ -22,60 +22,10 @@ Universidade Federal do Ceará
 Índice:
 -------
 
-* :ref:`access-docs`
-* :ref:`enrollment-docs`
-* :ref:`features-docs`
-* :ref:`editor-docs`
-* :ref:`admin-docs`
-* :ref:`faq-docs`
-
-.. _access-docs:
-
-Acesso ao Sistema
-~~~~~~~~~~~~~~~~~
-
 .. toctree::
   :maxdepth: 3
 
   access
-
-.. _enrollment-docs:
-
-Matrícula
-~~~~~~~~~
-
-.. toctree::
-  :maxdepth: 3
-
   enrollment
-
-.. _features-docs:
-
-Funcionalidades comuns
-~~~~~~~~~~~~~~~~~~~~~~
-
-.. toctree::
-  :maxdepth: 3
-
   features
-
-
-.. _editor-docs:
-
-Edição
-~~~~~~
-
-.. _admin-docs:
-
-Administração
-~~~~~~~~~~~~~
-
-.. _faq-docs:
-
-Perguntas Frequentes
-~~~~~~~~~~~~~~~~~~~~
-
-.. toctree::
-  :maxdepth: 3
-
   faq

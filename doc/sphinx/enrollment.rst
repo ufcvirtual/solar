@@ -11,6 +11,8 @@ Neste tutorial apresentamos o módulo de Matricula e as seguintes funcionalidade
 - `Cancelar matrícula em uma Unidade Curricular`_
 - `Gerenciar matrícula de usuários`_
 
+  - `Verificando status dos matriculados`_
+  - `Matriculando aluno(s)`_
 
 .. _enrollment-info:
 
@@ -89,7 +91,8 @@ Será enviada uma mensagem de confirmação em seguida.
 Gerenciar matrícula de usuários
 -------------------------------
 
-.. _note: Esta funcionalidade está disponível para o seguinte perfil: **Editor**
+.. warning::
+  Esta funcionalidade está disponível para o seguinte perfil: **Editor**
 
 Após efetuar o devido Login no Solar 2.0, na página inicial (*Home*), o link de acesso à *Gerenciar Matrículas* está localizado no menu de navegação à esquerda.
 
@@ -109,8 +112,8 @@ Caso deseje filtrar esta lista, basta utilizar a lista de opções de **status**
 Matriculando aluno(s)
 `````````````````````
 
-.. _note: Caso seja acionado o botão **Gerenciar** ou o botão **Matricular Selecionados** sem que nenhum aluno tenha sido selecionado, a mensagem **Nenhum registro selecionado** será exibida.
-
+.. note::
+  Caso seja acionado o botão **Gerenciar** ou o botão **Matricular Selecionados** sem que nenhum aluno tenha sido selecionado, a mensagem **Nenhum registro selecionado** será exibida.
 
 Para matricular um aluno, basta pressionar o botão **Gerenciar** . Serão exibidas as opções do aluno conforme apresentado abaixo.
 
