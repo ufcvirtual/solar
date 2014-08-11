@@ -445,7 +445,7 @@ en_US:
   edit: "Edit"
   show: "View"
   destroy: "Delete"
-  new_user_msg_cpf_error: " invalid"
+  new_user_msg_cpf_error: "invalid"
   itens_not_found: "No itens to display"
   registration_next: "Next"
   registration_previous: "Previous"

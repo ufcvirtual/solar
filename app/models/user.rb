@@ -67,6 +67,7 @@ class User < ActiveRecord::Base
 
   validate :unique_cpf, if: "cpf_changed?"
   validate :cpf_ok, unless: Proc.new { errors[:cpf].any? }
+  validate :login_differ_from_cpf
 
   # paperclip uses: file_name, content_type, file_size e updated_at
   has_attached_file :photo,
@@ -435,6 +436,17 @@ class User < ActiveRecord::Base
 
     def cpf_without_mask(cpf)
       cpf.gsub(/[.-]/, '') rescue nil
+    end
+
+    def login_differ_from_cpf
+      any_user = User.where(cpf: cpf_without_mask(username))
+      error = if new_record?
+        true if any_user.any?
+      else
+        true if any_user.where('id <> ?', id).any? # update
+      end
+
+      errors.add(:username, I18n.t(:new_user_msg_cpf_error)) if error
     end
 
 end

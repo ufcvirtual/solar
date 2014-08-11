@@ -568,7 +568,7 @@ pt_BR:
   edit: "Editar"
   show: "Visualizar"
   destroy: "Excluir"
-  new_user_msg_cpf_error: "Inválido"
+  new_user_msg_cpf_error: "inválido"
   itens_not_found: "Sem itens para exibir"
   registration_next: "Próximo"
   registration_previous: "Anterior"
