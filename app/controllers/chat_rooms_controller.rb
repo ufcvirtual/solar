@@ -103,15 +103,20 @@ class ChatRoomsController < ApplicationController
   end
 
   def messages
+    @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
+    authorize! :show, ChatRoom, on: [allocation_tag_id]
+    academic_allocation_id = AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_id: params[:id], academic_tool_type: "ChatRoom").pluck(:id).first
 
-    chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
-    # authorize
-    academic_allocation = AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_id: params[:id], academic_tool_type: "ChatRoom").first
-    @messages = ChatMessage.joins(allocation: [:user, :profile]).where(academic_allocation_id: academic_allocation.id) #, message_type: 1
+    ## aguardando corrigir tabela de participantes ##
+    # all_participants = ChatParticipant.where(academic_allocation_id: academic_allocation.id)
+    # raise CanCan::AccessDenied unless all_participants.empty? or not(all_participants.joins(allocation: :user).where(user: {id: current_user.id}).empty?)
+    ## aguardando corrigir tabela de participantes ##
+
+    @messages = ChatMessage.joins(allocation: [:user, :profile]).where(academic_allocation_id: academic_allocation_id, message_type: 1)
       .select("users.name AS user_name, profiles.name AS profile_name, text, chat_messages.user_id, chat_messages.created_at")
       .order("created_at DESC")
-
-      # ChatMessage(id: integer, chat_room_id: integer, allocation_id: integer, message_type: integer, text: text, created_at: datetime, user_id: integer, academic_allocation_id: integer) 
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
 end

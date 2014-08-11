@@ -93,11 +93,21 @@
 }
 
 .chat_messages{
-  width: 700px;
+  min-width: 700px;
+  max-width: 800px;
   table{
     th{
       text-align: center;
     }
     text-align: center;
+    td.profile{
+      color: #989898;
+      font-size: 9pt;
+      font-style: italic;
+      padding-right: 0;
+    }
+    td.user{
+      /*padding-left: 0;*/
+    }
   }
 }
