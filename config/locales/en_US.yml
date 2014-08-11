@@ -470,7 +470,7 @@ en_US:
   special_needs_question: "Do you have any disabilities ?"
   m: Male
   f: Female
-  videos: Videos
+  videos: Video tutorials
   video_tutorials: "Video tutorials"
   video_tutorials_link: "<a href='video_tutorials.html' target= '_blank'>Access Solar 2.0 video tutorials</a>"
   empty_old_password: "Old password is empty"

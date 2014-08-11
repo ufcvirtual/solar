@@ -598,7 +598,7 @@ pt_BR:
   special_needs_question: "Portador de necessidades especiais?"
   m: Masculino
   f: Feminino
-  videos: Vídeos
+  videos: Vídeos tutoriais
   video_tutorials: "Tutoriais em vídeos"
   video_tutorials_link: "<a href='video_tutorials.html' target= '_blank'>Acessar os tutoriais em vídeo do Solar 2.0</a>"
   empty_old_password: "Senha antiga vazia"
