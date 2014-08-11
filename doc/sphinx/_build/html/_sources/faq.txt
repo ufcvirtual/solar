@@ -1,17 +1,20 @@
+Perguntas Frequentes (FAQ)
+==========================
+
 O que fazer se esqueci minha senha?
-===================================
+-----------------------------------
 
 Sou aluno ou professor dos cursos da UAB
-----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Dirija-se ao Módulo Acadêmico a fim de recuperar sua senha: https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do. Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Módulo Acadêmico. Se você não consegue recuperar sua senha no Módulo Acadêmico, favor dirigir-se à secretaria de seu curso.
+Dirija-se à `recuperação de senha do Módulo Acadêmico`_ a fim de recuperar sua senha. Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Módulo Acadêmico. Se você não consegue recuperar sua senha no Módulo Acadêmico, favor dirigir-se à secretaria de seu curso.
 
 Não sou aluno nem professor dos cursos da UAB, mas sou tutor ou coordenador
----------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Possuo acesso ao Módulo Acadêmico
 
-  Dirija-se ao Módulo Acadêmico a fim de recuperar sua senha: https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do
+  Dirija-se à `recuperação de senha do Módulo Acadêmico`_ a fim de recuperar sua senha.
 
   Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Módulo Acadêmico.
 
@@ -32,16 +35,16 @@ Não sou aluno nem professor dos cursos da UAB, mas sou tutor ou coordenador
     Entre em contato com o atendimento@virtual.ufc.br relatando a situação, informe o cpf e aguarde um email para recuperação de senha.
 
 Não estou vinculado aos cursos da UAB
--------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Na tela de login do `Solar 2.0`_, clique em **Esqueceu a sua senha?**, informe o email cadastrado e clique em 'Enviar'. Aguarde o email para recuperação de senha.
 
 
 O que fazer para acessar o Solar 2.0 pela primeira vez?
-=======================================================
+-------------------------------------------------------
 
 Sou aluno ou professor dos cursos da UAB
-----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Utilize o mesmo login e senha do Módulo Acadêmico.
 
@@ -54,7 +57,7 @@ Utilize o mesmo login e senha do Módulo Acadêmico.
   Seus dados foram importados do Módulo Acadêmico. Utilize o mesmo login e senha do Módulo Acadêmico para efetuar o login no sistema.
 
 Não sou aluno nem professor dos cursos da UAB, mas sou tutor ou coordenador
----------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Tente efetuar o login com os dados prévios do Solar 1.2
 
@@ -70,7 +73,7 @@ Tente efetuar o login com os dados prévios do Solar 1.2
 
       - O atendimento me retornou informando que meus dados não podem ser alterados?
 
-        Acesse o Módulo Acadêmico: https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do. Coloque, no login, o número do seu CPF e, na senha, seu primeiro nome em letras maiúsculas. Após conseguir acesso no Módulo Acadêmico, atualize seus dados, principalmente email, login e senha. Retorne ao Solar 2.0 e, na tela de login, clique em 'Cadastrar' e informe seu cpf. Isto irá atualizar seus dados no Solar 2.0. Após ter seus dados atualizados, acesse o ambiente com o login e senha definidos no Módulo Acadêmico. 
+        Acesse a `recuperação de senha do Módulo Acadêmico`_. Coloque, no login, o número do seu CPF e, na senha, seu primeiro nome em letras maiúsculas. Após conseguir acesso no Módulo Acadêmico, atualize seus dados, principalmente email, login e senha. Retorne ao Solar 2.0 e, na tela de login, clique em 'Cadastrar' e informe seu cpf. Isto irá atualizar seus dados no Solar 2.0. Após ter seus dados atualizados, acesse o ambiente com o login e senha definidos no Módulo Acadêmico. 
 
     - Possuo acesso ao Módulo Acadêmico
 
@@ -81,16 +84,16 @@ Tente efetuar o login com os dados prévios do Solar 1.2
     Preencha os campos do cadastro e prossiga até a conclusão do cadastro.
 
 Não estou vinculado aos cursos da UAB
--------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Acesse a aba **Cadastrar**, clique em **Verificar**, preencha os campos do cadastro e prossiga até a conclusão do cadastro.
 
 
 Meus dados estão incorretos no sistema?
-=======================================
+---------------------------------------
 
 Sou integrado com o Módulo Acadêmico
-------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Após efetuar o login, acesse o menu superior. Clique em seu nome. No submenu, clique em **Sincronizar com Módulo Acadêmico**. Seus dados serão importados do Módulo Acadêmico.
 
@@ -99,18 +102,18 @@ Após efetuar o login, acesse o menu superior. Clique em seu nome. No submenu, c
   Acesse o Módulo Acadêmico (https://www.moduloacademico.ufc.br/moduloacademico) e atualize seus dados nesse. Retorne ao Solar 2.0 e, novamente, tente **Sincronizar com Módulo Acadêmico**.
 
 Não sou integrado com o Módulo Acadêmico
-----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Após efetuar o login, acesse o menu superior. Clique em seu nome. No submenu, clique em **Editar perfil**. Edite seus dados e clique em **Confirmar**.
 
 Não consigo efetuar o login no sistema e meu email está incorreto
------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Entre em contato com o atendimento@virtual.ufc.br relatando a situação e aguarde um email para recuperação de senha.
 
 
 Meu ambiente está com comportamento de modo estranho?
-=====================================================
+-----------------------------------------------------
 
 Se você não possui acesso a menus ou links, ou os vídeos tutoriais ocupam a tela toda do sistema ou demais comportamentos inadequados, é provável que houve uma atualização no ambiente. Quando o ambiente Solar 2.0 é atualizado, às vezes se faz necessária uma limpeza da memória cache do navegador utilizado pelo usuário. Para isto, siga os passos abaixo:
 
@@ -136,10 +139,12 @@ Se você não possui acesso a menus ou links, ou os vídeos tutoriais ocupam a t
 
 
 Não encontrei minha dúvida neste FAQ?
-=====================================
+-------------------------------------
 
 Entre em contato com o atendimento@virtual.ufc.br relatando sua situação, informando nome, cpf e email.
 
 .. lista de links
 
 .. _Solar 2.0: http://www.solar.virtual.ufc.br
+.. _recuperação de senha do Módulo Acadêmico: https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do
+.. _Módulo Acadêmico: https://www.moduloacademico.ufc.br/moduloacademico

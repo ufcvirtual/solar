@@ -91,7 +91,7 @@ Será enviada uma mensagem de confirmação em seguida.
 Gerenciar matrícula de usuários
 -------------------------------
 
-.. warning::
+.. attention::
   Esta funcionalidade está disponível para o seguinte perfil: **Editor**
 
 Após efetuar o devido Login no Solar 2.0, na página inicial (*Home*), o link de acesso à *Gerenciar Matrículas* está localizado no menu de navegação à esquerda.

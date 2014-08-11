@@ -21,7 +21,7 @@ Ambiente
 --------
 
 .. toctree::
-  :maxdepth: 3
+  :maxdepth: 2
 
   access
   enrollment
@@ -35,11 +35,3 @@ Funcionalidades
   :maxdepth: 3
 
   forum
-
-Perguntas Frequentes (FAQ)
---------------------------
-
-.. toctree::
-  :maxdepth: 3
-
-  faq
