@@ -71,12 +71,11 @@ module V1::V1Helpers
   def get_profile_id(profile)
     case profile.to_i
       when 1; 18 # tutor a distância UAB
-      when 2; 19 # tutor presencial UAB
+      when 2; 4 # tutor presencial
       when 3; 17 # professor titular UAB
       when 4; 1  # aluno
       when 17; 2 # professor titular
       when 18; 3 # tutor a distância
-      when 19; 4 # tutor presencial
       else profile # corresponds to profile with id == allocation[:perfil]
     end
   end
