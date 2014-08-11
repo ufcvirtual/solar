@@ -1830,14 +1830,16 @@ en_US:
     list:
       title_my_chats: My Chats
       title_other_chats: Other Chats
+      message_no_chat: No chat registered
+    chats:
       detail: Details
       availability: Availability
-      message_no_chat: No chat registered
       expand_description: Expand description
       compress_description: Compress description
       students: Students
       message_ended: Ended
       message_did_not_start: Did not start
+      message_history: Message's history
     index:
       chats: Chats
       new_chat: New Chat
@@ -1881,6 +1883,15 @@ en_US:
       end_date: End date
       defined_participants: Defined participants
       chat_details: Chat's details
+    messages:
+      history: "Message's history: %{chat_name}"
+      from: From
+      to: To
+      message: Message
+      date: Date
+      time: Time
+      no_message: No messages
+      all: All
   facebook:
     login: Login
     logout: Logout
