@@ -11,13 +11,16 @@
           %th= t(".time")
       %tbody
         - @messages.each do |message|
+          - user = message.user
           %tr.lines
             %td.profile= "(" + message.profile_name + ")"
-            %td.user= message.user_name
-            %td= message.user.nil? ? "Todos" : message.user.name
-            %td{style: "width: 40%"}= message.text.html_safe
+            %td.user{:'data-tooltip' => message.user_name}= message.user_nick
+            %td{:'data-tooltip' => user.try(:name)}= user.try(:nick) || t(".all")
+            %td.message= message.text.html_safe
             %td= l(message.created_at.to_datetime, format: :normal)
             %td= l(message.created_at.to_datetime, format: :clock_time)
 
   - else
     .block_content_text_list.text_none= t(".no_message")
+
+= javascript_include_tag "tooltip"

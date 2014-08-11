@@ -104,6 +104,7 @@ class ChatRoomsController < ApplicationController
 
   def messages
     @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
+
     authorize! :show, ChatRoom, on: [allocation_tag_id]
     academic_allocation_id = AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_id: params[:id], academic_tool_type: "ChatRoom").pluck(:id).first
 
@@ -113,7 +114,7 @@ class ChatRoomsController < ApplicationController
     ## aguardando corrigir tabela de participantes ##
 
     @messages = ChatMessage.joins(allocation: [:user, :profile]).where(academic_allocation_id: academic_allocation_id, message_type: 1)
-      .select("users.name AS user_name, profiles.name AS profile_name, text, chat_messages.user_id, chat_messages.created_at")
+      .select("users.name AS user_name, users.nick AS user_nick, profiles.name AS profile_name, text, chat_messages.user_id, chat_messages.created_at")
       .order("created_at DESC")
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
