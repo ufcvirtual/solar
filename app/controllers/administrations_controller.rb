@@ -211,20 +211,18 @@ class AdministrationsController < ApplicationController
   def search_logs
     authorize! :logs, Administration
 
-    @logs = []
+    @logs, query = [], []
     date = Date.parse(params[:date]) rescue Date.today
     log  = params[:type] == 'actions' ? LogAction : LogAccess
 
-    text_search = [URI.unescape(params[:user]).split(" ").compact.join(":*&"), ":*"].join unless params[:user].blank?
-    user_ids = User.where("to_tsvector('simple', unaccent(name || ' ' || cpf)) @@ to_tsquery('simple', unaccent(?))", text_search).map(&:id).join(',')
-
-    unless user_ids.blank?
-      query = []
-      query << "user_id IN (#{user_ids})"
-      query << "date(created_at) = '#{date.to_s}'"
-
-      @logs = log.where(query.join(" AND ")).order("created_at DESC").last(100)
+    unless params[:user].blank?
+      text_search = [URI.unescape(params[:user]).split(" ").compact.join(":*&"), ":*"].join 
+      user_ids    = User.where("to_tsvector('simple', unaccent(name || ' ' || cpf)) @@ to_tsquery('simple', unaccent(?))", text_search).map(&:id).join(',')
+      query << "user_id IN (#{user_ids})" unless user_ids.blank?
     end
+
+    query << "date(created_at) = '#{date.to_s}'"
+    @logs = log.where(query.join(" AND ")).order("created_at DESC").last(100)
   end
 
   ## IMPORT USERS
