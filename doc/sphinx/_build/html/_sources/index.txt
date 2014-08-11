@@ -3,10 +3,8 @@
 	 You can adapt this file completely to your liking, but it should at least
 	 contain the root `toctree` directive.
 
-Projeto SOLAR Versão: 2.0 versão Comunitária!
-=============================================
-
-Termo de Licença de Uso do Sistema Online de Aprendizagem Solar versão Comunitária
+Projeto Solar 2.0
+==================
 
 O Sistema Online de Aprendizagem Solar foi desenvolvido pela equipe de Sistemas Web do Instituto UFC Virtual, pertencente à Universidade Federal do Ceará. Seu código-fonte se encontra licenciado segundo termos da Licença Pública do GNU (GPL) versão 3.0, conforme arquivo em no endereço http://www.gnu.org/licenses/gpl-3.0.txt.
 
@@ -19,13 +17,29 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este
 Instituto UFC Virtual
 Universidade Federal do Ceará
 
-Índice:
--------
+Ambiente
+--------
 
 .. toctree::
   :maxdepth: 3
 
   access
   enrollment
-  features
+  faq
+
+
+Funcionalidades
+---------------
+
+.. toctree::
+  :maxdepth: 3
+
+  forum
+
+Perguntas Frequentes (FAQ)
+--------------------------
+
+.. toctree::
+  :maxdepth: 3
+
   faq
