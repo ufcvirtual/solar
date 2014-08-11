@@ -11,11 +11,10 @@
 
     .block_wrapper#mysolar_curriculum_unit_wrapper
       .block_content
-        
-        %table.tb_list
+        %table.tb_list.user-courses
           %thead
             %tr.lines
-              %th{style: "width: 9.5%"}= t(".type")
+              %th.no_sort{style: "width: 9.5%"}= t(".type")
               %th{style: "display: none"}
               %th{style: "width: 12%"}= t(".code")
               %th{style: "width: 31.5%"}= t(".name")
@@ -25,25 +24,27 @@
           %tbody.offers
             - unless @offers.empty?
               - @offers.each do |offer|
-                - if ((user_session[:tabs][:opened].length >= Max_Tabs_Open.to_i) and (!user_session[:tabs][:opened].has_key?((offer[:name]))))
-                  - link = {}
-                  - html_options = {onclick: "javascript:alert('"+t(:curriculum_access_alert)+"');return false;", class: 'link_content' }
-                - else
-                  - link = add_tab_path(id: offer[:id], context: Context_Curriculum_Unit, name: (offer[:name]), allocation_tag_id: offer[:at], title_name: offer[:info])
-                  - html_options = {:"data-path" => "/curriculum_units/#{offer[:id]}"}
+
+                - link = add_tab_path(id: offer[:id], context: Context_Curriculum_Unit, name: (offer[:name]), allocation_tag_id: offer[:at], title_name: offer[:info])
                 - livre = offer[:uc].try(:curriculum_unit_type_id) == 3
-                %tr.lines{'data-tab-id' => offer[:id]}
-                  %td.type{:"data-tooltip" => offer[:uc].try(:curriculum_unit_type).try(:description)}= image_tag(offer[:uc].try(:curriculum_unit_type).try(:icon_name))
-                  %td{style: "display: none"}= offer[:uc].try(:curriculum_unit_type).try(:description)
-                  - unless livre
-                    %td= offer[:has_groups] ? link_to(offer[:uc].try(:code) || " - ", link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:uc].try(:code)
-                    %td= offer[:has_groups] ? link_to(offer[:uc].try(:name) || " - ", link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:uc].try(:name)
+
+                %tr.lines.offer{'data-tab-id' => offer[:id], 'data-tab-link' => link, 'data-has-groups' => offer[:has_groups].to_s}
+
+                  - uc_description = offer[:uc].try(:curriculum_unit_type).try(:description)
+                  %td.type{'data-tooltip' => uc_description}= image_tag(offer[:uc].try(:curriculum_unit_type).try(:icon_name))
+                  %td{style: "display: none"}= uc_description
+
+                  - if livre
+                    %td.uc-code{style: "text-align: center"}= ' - '
+                    %td.uc-name{style: "text-align: center"}= ' - '
                   - else
-                    %td{style: "text-align: center"}= " - "
-                    %td{style: "text-align: center"}= " - "
-                  %td.course= livre ? link_to(offer[:course].try(:code_name), link, html_options.merge(:"data-tooltip" => offer[:info_code])) : offer[:course].try(:code_name)
-                  %td.semester= link_to(offer[:semester_name], link, html_options.merge(:"data-tooltip" => offer[:info_code]))
-                  %td{style: "display: none"}= offer[:profiles]
+                    %td.uc-code= offer[:uc].code rescue ' - '
+                    %td.uc-name= offer[:uc].name rescue ' - '
+
+                  %td.course= offer[:course].code_name rescue ' - '
+                  %td.semester= offer[:semester_name]
+                  %td.profiles{style: "display: none"}= offer[:profiles]
+
             - else
               %tr.lines
                 %td{colspan: 5, align: "center"}= t(:my_solar_curriculum_without)
@@ -64,7 +65,22 @@
 
   $(function(){
 
-    $.get("#{my_edx_courses_path}", function(data) {
+    $('table.user-courses tbody.offers').on('click', '.offer', function(){
+      var count_tabs_open = $('#mysolar_tabs_wrapper li').length;
+      var max_tabs_open = "#{Max_Tabs_Open.to_i}";
+
+      // limite de abas abertas atingido
+      if ((count_tabs_open >= max_tabs_open) && ($('#mysolar_tabs_wrapper li[data-tab-id=' + $(this).data('tab-id') + ']').length < 1))
+        flash_message("#{t(:curriculum_access_alert)}", 'alert');
+      else if ($(this).data('has-groups'))
+        window.location = $(this).data('tab-link');
+      else
+        flash_message('Oferta sem turmas', 'alert');
+    });
+
+    // refazer codigo do edx
+
+    $.get("#{my_edx_courses_path}", function(data){
       $("#mysolar_curriculum_unit_wrapper").append(data);
     });
 

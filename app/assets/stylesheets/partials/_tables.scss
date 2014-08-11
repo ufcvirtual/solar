@@ -94,6 +94,11 @@ table.tb_list {
   }
 }
 
+table.user-courses tbody.offers .offer {
+  cursor: pointer;
+  color: #21578b;
+}
+
 .file_icon {
   margin-right: 3px;
   vertical-align: bottom;

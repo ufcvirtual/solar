@@ -199,8 +199,8 @@ $(function() {
   });
 
   // click in offers
-  $("tbody.offers td a").click(function(){
-    menu_cookie_set_tab_to_home($(this).closest('tr').data('tab-id'));
+  $("tbody.offers tr").click(function(){
+    menu_cookie_set_tab_to_home($(this).data('tab-id'));
   });
 
   // level 0

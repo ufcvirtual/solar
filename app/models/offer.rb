@@ -163,7 +163,7 @@ class Offer < ActiveRecord::Base
           uc: uc,
           course: course,
           semester_name: offer.semester.name,
-          profiles: user.allocations.where("allocation_tag_id IN (?)", ats).select("DISTINCT profile_id, allocations.*").map(&:profile).map(&:id).join(", ")
+          profiles: user.allocations.where("allocation_tag_id IN (?)", ats).select("DISTINCT profile_id, allocations.*").map(&:profile).map(&:id).uniq.join(", ")
         }
     }.flatten
 
