@@ -22,21 +22,21 @@ Universidade Federal do Ceará
 Índice:
 -------
 
-* :ref:`general-docs`
+* :ref:`access-docs`
 * :ref:`features-docs`
 * :ref:`editor-docs`
 * :ref:`admin-docs`
 * :ref:`faq-docs`
 
-.. _general-docs:
+.. _access-docs:
 
-Geral
-~~~~~
+Acesso ao Sistema
+~~~~~~~~~~~~~~~~~
 
 .. toctree::
   :maxdepth: 3
 
-  general
+  access
 
 .. _features-docs:
 
