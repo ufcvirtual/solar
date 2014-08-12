@@ -25,6 +25,7 @@ Ambiente
 
   access
   enrollment
+  messages
   faq
 
 
