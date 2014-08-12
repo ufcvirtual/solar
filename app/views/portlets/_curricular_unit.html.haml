@@ -71,11 +71,11 @@
 
       // limite de abas abertas atingido
       if ((count_tabs_open >= max_tabs_open) && ($('#mysolar_tabs_wrapper li[data-tab-id=' + $(this).data('tab-id') + ']').length < 1))
-        flash_message("#{t(:curriculum_access_alert)}", 'alert');
+        flash_message("#{t(:curriculum_access_alert)}", 'warning');
       else if ($(this).data('has-groups'))
         window.location = $(this).data('tab-link');
       else
-        flash_message('Oferta sem turmas', 'alert');
+        flash_message("#{t(:curriculum_access_without_groups)}", 'warning');
     });
 
     // refazer codigo do edx
