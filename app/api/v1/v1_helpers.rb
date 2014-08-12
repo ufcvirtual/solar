@@ -59,7 +59,8 @@ module V1::V1Helpers
 
   # cancel all previous allocations and create new ones to groups
   def cancel_previous_and_create_allocations(groups, user, profile_id)
-    user.groups(profile_id).each do |group|
+    # only curriculum units which type is 2
+    user.groups(profile_id, nil, nil, 2).each do |group|
       group.change_allocation_status(user.id, 2, profile_id: profile_id) # cancel all users previous allocations as profile_id
     end
 

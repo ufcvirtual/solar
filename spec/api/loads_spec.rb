@@ -434,7 +434,7 @@ describe "Loads" do
             }}
           }
           let!(:user){User.find_by_cpf("32305605153")}
-          let!(:user_allocations){user.allocations.where(status: 1, profile_id: 1)}
+          let!(:user_allocations){user.groups(1, 1, nil, 2)}
 
           subject{ -> {
             post "/api/v1/load/groups/enrollments", json_data}
