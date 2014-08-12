@@ -16,18 +16,19 @@ Mensagens recebidas
 
 Nesta página constam todas as mensagens recebidas pelo usuário.
 
-.. teste de imagem com legenda
-
 .. figure:: images/messages-inbox.png
   :align: center
-  :figclass: align-center
 
   Tela inicial de Mensagens
 
 No link **Visualizar** podemos filtrar as mensagens entre três tipo: Todas, Lidas, Não Lidas.
 
-.. image:: images/messages-filter.png
+.. figure:: images/messages-filter.png
   :align: center
+
+  Filtrar mensagens por status
+
+
 
 Mensagens enviadas
 ------------------
@@ -46,21 +47,25 @@ Criar uma nova mensagem
 
 Para criar uma nova mensagem clique no botão |btn_new_message| (*Nova Mensagem*), onde será apresentado um editor para você compor seu texto.
 
-.. image:: images/messages-compose.png
+.. figure:: images/messages-compose.png
   :align: center
+
+  Composição de mensagem
 
 Ao clicar no campo **Para** lhe será apresentado uma janela para selecionar a quais contatos deseja enviar a mensagem, onde primeiramente você de qual Unidade Curricular eles pertencem. Para escolher para quem se deseja enviar a mensagem, basta clicar no nome do usuário. O nome escolhido irá para caixa inferior.
 
-.. image:: images/messages-compose-lightbox.png
+.. figure:: images/messages-compose-lightbox.png
   :align: center
+
+  Lightbox de seleção de contatos
 
 Para enviar a mensagem basta clicar no botão **Enviar**, da mesma forma podemos cancelar o processo clicando no botão **Descartar**.
 
 .. imagens inline
 
 .. |btn_new_message| image:: images/messages-btn-new.png
-  :height: 23
-  :width: 25
+  :height: 27
+  :width: 30
 
 .. |btn_restore_message| image:: images/messages-btn-restore.png
   :height: 27
