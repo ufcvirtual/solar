@@ -4,18 +4,16 @@
 	 contain the root `toctree` directive.
 
 Projeto Solar 2.0
-==================
+=================
 
-O Sistema Online de Aprendizagem Solar foi desenvolvido pela equipe de Sistemas Web do Instituto UFC Virtual, pertencente à Universidade Federal do Ceará. Seu código-fonte se encontra licenciado segundo termos da Licença Pública do GNU (GPL) versão 3.0, conforme arquivo em no endereço http://www.gnu.org/licenses/gpl-3.0.txt.
+Diante das dimensões dos recursos e das ferramentas disponibilizadas pela versão 2 do **Solar**, iniciaremos através desse tutorial e de seu conteúdo, que integra: imagens, textos e vídeos, o compartilhamento de informações e a divulgação de atualizações do ambiente **Solar 2**.
 
-O Sistema Online de Aprendizagem Solar versão Comunitária é um software livre; você pode redistribui-lo e/ou modificá-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); na versão 3 da Licença.
+Este manual possui como um dos seus principais focos o detalhamento das funcionalidades disponíveis para cada perfil de usuário, seja elas: Fóruns, Chats, Webconferências, administração de usuários, etc. Além disso, temos ainda em suas páginas uma lista de :doc:`faq` , que será atualizada progressivamente.
 
-Este programa é distribuído na esperança que possa ser útil, mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a Licença Pública Geral GNU (GPLv3) para maiores detalhes. 
+Sendo o **Solar 2** um AVA (Ambiente Virtual de Aprendizagem), gradativamente irá incorporar outras redes sociais, ferramentas de edição e simuladores; servindo dessa forma como elemento convergente de aplicações voltadas e/ou desenvolvidas para aprendizagem. Com essa perspectiva e necessária a existência de um local que dinamize a compreensão e a assimilação rápida e eficaz de todos os componentes do sistema.
+Nosso desejo é que esse espaço sirva para esclarecimentos, tira-dúvidas e suporte para capacitações e/ou treinamentos.
 
-Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
-
-Instituto UFC Virtual
-Universidade Federal do Ceará
+*Instituto UFC Virtual, Universidade Federal do Ceará*
 
 Ambiente
 --------
@@ -29,13 +27,15 @@ Ambiente
   faq
 
 
-Usuário
--------
+Funcionalidades Gerais
+----------------------
 
 .. toctree::
   :maxdepth: 3
 
-  forum
+  user/curricular_unit
+  user/lessons
+  user/forum
 
 Editor
 ------
@@ -43,8 +43,8 @@ Editor
 .. toctree::
   :maxdepth: 3
 
-  editor-academic
-  editor-content
+  editor/academic
+  editor/content
 
 Administrador
 -------------
@@ -52,5 +52,5 @@ Administrador
 .. toctree::
   :maxdepth: 3
 
-  user-import
-  profile-approval
+  admin/user-import
+  admin/profile-approval
