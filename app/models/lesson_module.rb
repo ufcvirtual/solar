@@ -29,7 +29,7 @@ class LessonModule < ActiveRecord::Base
     user_is_admin    = user.nil? ? false : user.is_admin?
     user_responsible = user.nil? ? false : not(user.profiles_with_access_on("see_drafts", "lessons", allocation_tags_ids, true).empty?)
     
-    joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tags_ids}).delete_if{ |lmodule|
+    joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tags_ids}).order("id").delete_if{ |lmodule|
       lessons               = lmodule.lessons
       has_open_lesson       = lessons.map(&:closed?).include?(false)
       only_responsible_sees = (lessons.collect{|l| l if (l.will_open? or l.is_draft? or not(l.open_to_show? or list))}.compact).size
