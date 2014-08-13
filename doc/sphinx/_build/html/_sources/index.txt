@@ -29,10 +29,28 @@ Ambiente
   faq
 
 
-Funcionalidades
----------------
+Usuário
+-------
 
 .. toctree::
   :maxdepth: 3
 
   forum
+
+Editor
+------
+
+.. toctree::
+  :maxdepth: 3
+
+  editor-academic
+  editor-content
+
+Administrador
+-------------
+
+.. toctree::
+  :maxdepth: 3
+
+  user-import
+  profile-approval
