@@ -1,0 +1,50 @@
+.block_wrapper
+  .block_title
+    %h2= t(:curriculum_unit_responsible)
+  .block_content.block_content_overflow
+    - if @responsible
+      - if @responsible.length == 0
+        .participants_list_none= t(:participants_none)
+      - @responsible.each do |resp|
+        .participants_list_item
+          - if resp.photo_file_name
+            = image_tag resp.photo.url(:medium), :alt => t(:mysolar_alt_img_user)
+          - else
+            = image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user)
+          .participant_name{title: resp.name}
+            - if resp.name.length > 20
+              = resp.name.slice(0..10) + '...'
+            - else
+              = resp.name
+            %span= link_to (content_tag(:i, nil, class: 'icon-mail participants_messages')), new_message_path(user_id: resp.id, bread: 'menu_messages'), class: 'can-update-menu', 'data-menu-bread' => 'menu_messages'
+          .participant_role
+            = raw("(#{resp.profile_name})")
+
+    - else
+      .participants_list_none= t(:participants_none)
+.block_wrapper
+  .block_title
+    %h2= t(:curriculum_unit_participants)
+  .block_content.block_content_overflow
+    - if @participants
+      - if @participants.length == 0
+        .participants_list_none= t(:participants_none)
+      - @participants.each do |part|
+        .participants_list_item
+          - unless part.photo_file_name.nil?
+            = image_tag part.photo.url(:medium), :alt => t(:mysolar_alt_img_user)
+          - else
+            = image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user)
+          .participant_name{title: part.name}
+            - if part.name.length > 20
+              = part.name.slice(0..19) + '...'
+            - else
+              = part.name
+              %span= link_to (content_tag(:i, nil, class: 'icon-mail participants_messages')), new_message_path(user_id: part.id, bread: 'menu_messages'), class: 'can-update-menu', 'data-menu-bread' => 'menu_messages'
+          .participant_role
+            - if part.profile_id.to_s != Profile.student_profile.to_s
+              = raw("(#{part.profile_name})")
+            - else
+              %br/
+    - else
+      .participants_list_none= t(:participants_none)

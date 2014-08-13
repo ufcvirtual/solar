@@ -12,7 +12,7 @@
         - if @responsible
           - @responsible.each do |resp|
             = [resp.name, " (", resp.profile_name, ") "].join
-            %span= link_to (image_tag "icon_message.png", alt: t(:icon_send_email)), new_message_path(user_id: resp.id, bread: 'menu_messages'), class: 'can-update-menu', 'data-menu-bread' => 'menu_messages'
+            %span= link_to (content_tag(:i, nil, class: 'icon-mail participants_messages')), new_message_path(user_id: resp.id, bread: 'menu_messages'), class: 'can-update-menu', 'data-menu-bread' => 'menu_messages'
             %br
 
   = render "lesson_portlet"
