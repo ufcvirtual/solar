@@ -608,8 +608,11 @@ en_US:
   curriculum_access_view: "View"
   curriculum_access_new: " new"
   curriculum_access_more: "+ more"
+  curriculum_access_without_groups: Offer without groups
+
   participants_title: "Participants"
   participants_none: "No participant found"
+
   lesson_title: "Lessons"
   lesson_message: "No lesson available"
   lesson_goto: "Go to lesson"

@@ -773,6 +773,7 @@ pt_BR:
   curriculum_access_view: "Visualizar"
   curriculum_access_new: " novas"
   curriculum_access_more: "+ mais"
+  curriculum_access_without_groups: Oferta sem turmas
 
   participants_title: "Participantes"
   participants_none: "Nenhum participante encontrado"
