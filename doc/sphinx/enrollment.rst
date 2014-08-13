@@ -73,11 +73,13 @@ Solicitar matrícula em uma oferta
 
 Para solicitar sua matrícula em alguma oferta de disciplina disponível, basta clicar em **Matricular**.
 
-.. image:: images/enrollment-request.png
+.. figure:: images/enrollment-request.png
+  :align: center
 
 Ao clicar no botão informado, a seguinte mensagem de sucesso aparecerá.
 
 .. image:: images/enrollment-request-success.png
+  :align: center
 
 
 .. _enrollment-cancel:
@@ -88,10 +90,12 @@ Cancelar matrícula em uma Unidade Curricular
 Para cancelar a matricula de Unidade Curricular, basta clicar no botão **Cancelar pedido**.
 
 .. image:: images/enrollment-cancel-01.png
+  :align: center
 
 Será enviada uma mensagem de confirmação em seguida.
 
 .. image:: images/enrollment-cancel-02.png
+  :align: center
 
 
 .. _enrollment-manage:
@@ -105,6 +109,7 @@ Gerenciar matrícula de usuários
 Após efetuar o devido Login no Solar 2.0, na página inicial (*Home*), o link de acesso à *Gerenciar Matrículas* está localizado no menu de navegação à esquerda.
 
 .. image:: images/enrollment-manage-01.png
+  :align: center
 
 Verificando status dos matriculados
 ```````````````````````````````````
@@ -112,10 +117,12 @@ Verificando status dos matriculados
 Nesta página é listado o estado de matrícula de todos os alunos do sistema.
 
 .. image:: images/enrollment-manage-02.png
+  :align: center
 
 Caso deseje filtrar esta lista, basta utilizar a lista de opções de **status**, que a lista será filtrada automaticamente.
 
 .. image:: images/enrollment-manage-03.png
+  :align: center
 
 Matriculando aluno(s)
 `````````````````````
@@ -126,6 +133,7 @@ Matriculando aluno(s)
 Para matricular um aluno, basta pressionar o botão **Gerenciar** . Serão exibidas as opções do aluno conforme apresentado abaixo.
 
 .. image:: images/enrollment-manage-04.png
+  :align: center
 
 1. No item 1 escolha a turma
 2. No item 2 escolha se deseja o status de: *MATRICULADO* ou *CANCELADO*.
@@ -134,3 +142,4 @@ Para matricular um aluno, basta pressionar o botão **Gerenciar** . Serão exibi
 Para matricular vários alunos, basta marcar a caixa de seleção ao lado do nome de cada aluno e o botão **Matricular Selecionados** . Não serão exibidas as opções do aluno.
 
 .. image:: images/enrollment-manage-05.png
+  :align: center
