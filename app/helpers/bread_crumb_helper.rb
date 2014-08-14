@@ -12,9 +12,7 @@ module BreadCrumbHelper
     text_bread = ''
     [breadcrumb].flatten.each_with_index do |bread, idx|
       unless bread.nil?
-        name = bread[:name]
-        link_name = (idx < 2) ? name.titleize : t(name.to_sym, default: name)
-        link = link_to(link_name, bread[:url])
+        link = link_to(t(bread[:name].to_sym, default: bread[:name].titleize), bread[:url])
 
         text_bread << '&nbsp;>&nbsp;' if idx > 0
         text_bread << %{<span data-level="#{idx}">#{link}</span>}
