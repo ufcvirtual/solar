@@ -31,28 +31,32 @@ Para se cadastrar basta clicar em **Cadastrar**. Na tela seguinte será solicita
 
 1. Inserir um CPF válido
 
+
 .. image:: images/register-01.png
-  :align: center
+  :align: left
+
 
 2. Inserir dados pessoais
 
+
 .. image:: images/register-02.png
-  :align: center
+  :align: left
+
 
 3. Inserir dados de acesso
 
 .. image:: images/register-03.png
-  :align: center
+  :align: left
 
 4. Inserir dados de contato
 
 .. image:: images/register-04.png
-  :align: center
+  :align: left
 
 5. Informar a instituição na qual você pertence
 
 .. image:: images/register-05.png
-  :align: center
+  :align: left
 
 Depois de concluído o cadastro o usuário já pode entrar no sistema normalmente. 
 

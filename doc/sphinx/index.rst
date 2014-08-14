@@ -35,6 +35,7 @@ Funcionalidades Gerais
 
   user/curricular_unit
   user/lessons
+  user/support_material
   user/forum
 
 Editor
