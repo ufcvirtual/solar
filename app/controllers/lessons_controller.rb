@@ -31,8 +31,6 @@ class LessonsController < ApplicationController
     render layout: false if params[:allocation_tags_ids] or @not_offer_area
 
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def list

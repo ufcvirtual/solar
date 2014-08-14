@@ -2443,6 +2443,7 @@ pt_BR:
       all: Todos
       search: "Busca:"
       filter: "Filtro:"
+      filter_data: Filtrar dados
 
   scores:
     index:

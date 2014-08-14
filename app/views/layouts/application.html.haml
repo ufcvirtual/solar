@@ -95,7 +95,7 @@
           - if is_curriculum_unit_selected?
             #page_title
               %h1=t(name, default: name.titleize)
-              %span.block_content_text= raw(render_group_selection)
+              .block_content_text= raw(render_group_selection)
           - elsif not(in_mysolar?)
             #page_title
               %h1=t(name, default: name.titleize)

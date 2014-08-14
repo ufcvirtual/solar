@@ -2181,6 +2181,7 @@ en_US:
       all: All
       search: "Search:"
       filter: "Filter:"
+      filter_data: Filter data
   scores:
     index:
       assignments: Assignments

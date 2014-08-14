@@ -8,6 +8,7 @@
   border-bottom-color: #d0d0d0;
   overflow: hidden;
   padding-bottom: 5px;
+  position: relative;
 
   h1 {
     font-size: 14pt;
@@ -15,5 +16,6 @@
     display: inline-block;
     *display: inline;
     float: left;
+    max-width: 590px;
   }
 }

@@ -153,8 +153,10 @@ div.legend h1 {
     border: none;
     font-size: 9pt;
     padding: 4px 0 0 4px;
-    float: right;
     color: #666666;
+    position: absolute;
+    right: 0;
+    bottom: 5px;
   }
   > .block_content_text:hover, > .block_content_text:hover select {
     color: #000000;
@@ -163,6 +165,7 @@ div.legend h1 {
     font-size: 9pt;
     border: none;
     color: #666666;
+    max-width: 145px;
   }
 }
 
