@@ -1,8 +1,7 @@
 Unidade Curricular
 ==================
 
-.. danger::
-  MATERIAL INCOMPLETO
+.. danger:: MATERIAL INCOMPLETO
 
 Ao acessar uma unidade curricular, você será apresentado a seguinte tela:
 

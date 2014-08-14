@@ -1,0 +1,46 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}Ambiente}{3}{chapter.1}
+\contentsline {section}{\numberline {1.1}Acesso ao Sistema}{3}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}Login}{3}{subsection.1.1.1}
+\contentsline {subsection}{\numberline {1.1.2}Cadastro de usu\IeC {\'a}rio}{4}{subsection.1.1.2}
+\contentsline {subsection}{\numberline {1.1.3}Recupera\IeC {\c c}\IeC {\~a}o de senha}{6}{subsection.1.1.3}
+\contentsline {subsection}{\numberline {1.1.4}Saindo do sistema}{6}{subsection.1.1.4}
+\contentsline {section}{\numberline {1.2}Matr\IeC {\'\i }cula}{7}{section.1.2}
+\contentsline {subsection}{\numberline {1.2.1}Informa\IeC {\c c}\IeC {\~o}es gerais}{7}{subsection.1.2.1}
+\contentsline {subsection}{\numberline {1.2.2}Acesso \IeC {\`a} matr\IeC {\'\i }cula}{8}{subsection.1.2.2}
+\contentsline {subsection}{\numberline {1.2.3}Solicitar matr\IeC {\'\i }cula em uma oferta}{9}{subsection.1.2.3}
+\contentsline {subsection}{\numberline {1.2.4}Cancelar matr\IeC {\'\i }cula em uma Unidade Curricular}{9}{subsection.1.2.4}
+\contentsline {subsection}{\numberline {1.2.5}Gerenciar matr\IeC {\'\i }cula de usu\IeC {\'a}rios}{10}{subsection.1.2.5}
+\contentsline {subsubsection}{Verificando status dos matriculados}{10}{subsubsection*.3}
+\contentsline {subsubsection}{Matriculando aluno(s)}{11}{subsubsection*.4}
+\contentsline {section}{\numberline {1.3}Mensagens}{12}{section.1.3}
+\contentsline {subsection}{\numberline {1.3.1}Mensagens recebidas}{12}{subsection.1.3.1}
+\contentsline {subsection}{\numberline {1.3.2}Mensagens enviadas}{12}{subsection.1.3.2}
+\contentsline {subsection}{\numberline {1.3.3}Mensagens exclu\IeC {\'\i }das}{12}{subsection.1.3.3}
+\contentsline {subsection}{\numberline {1.3.4}Criar uma nova mensagem}{14}{subsection.1.3.4}
+\contentsline {section}{\numberline {1.4}Perguntas Frequentes (FAQ)}{14}{section.1.4}
+\contentsline {subsection}{\numberline {1.4.1}O que fazer se esqueci minha senha?}{14}{subsection.1.4.1}
+\contentsline {subsubsection}{Sou aluno ou professor dos cursos da UAB}{14}{subsubsection*.5}
+\contentsline {subsubsection}{N\IeC {\~a}o sou aluno nem professor dos cursos da UAB, mas sou tutor ou coordenador}{16}{subsubsection*.6}
+\contentsline {subsubsection}{N\IeC {\~a}o estou vinculado aos cursos da UAB}{16}{subsubsection*.7}
+\contentsline {subsection}{\numberline {1.4.2}O que fazer para acessar o Solar 2.0 pela primeira vez?}{16}{subsection.1.4.2}
+\contentsline {subsubsection}{Sou aluno ou professor dos cursos da UAB}{16}{subsubsection*.8}
+\contentsline {subsubsection}{N\IeC {\~a}o sou aluno nem professor dos cursos da UAB, mas sou tutor ou coordenador}{16}{subsubsection*.9}
+\contentsline {subsubsection}{N\IeC {\~a}o estou vinculado aos cursos da UAB}{17}{subsubsection*.10}
+\contentsline {subsection}{\numberline {1.4.3}Meus dados est\IeC {\~a}o incorretos no sistema?}{17}{subsection.1.4.3}
+\contentsline {subsubsection}{Sou integrado com o M\IeC {\'o}dulo Acad\IeC {\^e}mico}{17}{subsubsection*.11}
+\contentsline {subsubsection}{N\IeC {\~a}o sou integrado com o M\IeC {\'o}dulo Acad\IeC {\^e}mico}{17}{subsubsection*.12}
+\contentsline {subsubsection}{N\IeC {\~a}o consigo efetuar o login no sistema e meu email est\IeC {\'a} incorreto}{17}{subsubsection*.13}
+\contentsline {subsection}{\numberline {1.4.4}Meu ambiente est\IeC {\'a} com comportamento de modo estranho?}{18}{subsection.1.4.4}
+\contentsline {subsection}{\numberline {1.4.5}N\IeC {\~a}o encontrei minha d\IeC {\'u}vida neste FAQ?}{18}{subsection.1.4.5}
+\contentsline {chapter}{\numberline {2}Funcionalidades Gerais}{19}{chapter.2}
+\contentsline {section}{\numberline {2.1}Unidade Curricular}{19}{section.2.1}
+\contentsline {section}{\numberline {2.2}Aulas}{20}{section.2.2}
+\contentsline {section}{\numberline {2.3}Forum}{20}{section.2.3}
+\contentsline {chapter}{\numberline {3}Editor}{23}{chapter.3}
+\contentsline {section}{\numberline {3.1}Editor: Acad\IeC {\^e}mico}{23}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Cursos}{23}{subsection.3.1.1}
+\contentsline {section}{\numberline {3.2}Editor: Conte\IeC {\'u}do}{23}{section.3.2}
+\contentsline {chapter}{\numberline {4}Administrador}{25}{chapter.4}
+\contentsline {section}{\numberline {4.1}Importa\IeC {\c c}\IeC {\~a}o de usu\IeC {\'a}rios}{25}{section.4.1}
+\contentsline {section}{\numberline {4.2}Aprova\IeC {\c c}\IeC {\~a}o de perfis}{25}{section.4.2}

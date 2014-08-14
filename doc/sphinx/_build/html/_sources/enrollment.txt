@@ -132,8 +132,10 @@ Matriculando aluno(s)
 
 Para matricular um aluno, basta pressionar o botão **Gerenciar** . Serão exibidas as opções do aluno conforme apresentado abaixo.
 
+
 .. image:: images/enrollment-manage-04.png
-  :align: center
+  :align: left
+
 
 1. No item 1 escolha a turma
 2. No item 2 escolha se deseja o status de: *MATRICULADO* ou *CANCELADO*.

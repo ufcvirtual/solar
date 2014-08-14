@@ -19,14 +19,15 @@
                 %th= t(:allocation, scope: [:administrations, :allocations])
                 %th{style: 'width:120px'}= t(".type")
                 %th{style: 'width:80px'}= t(:status, scope: [:administrations, :allocations])
-                %th{style: 'width:80px'}= ''
+                - if @can_change
+                  %th.no_sort{style: 'width:80px'}= ''
             %tbody
               - @allocations_user.where("profile_id="+p.id.to_s).each do |a|
                 %tr.lines.allocations{class: semester(a.allocation_tag)}
                   %td= a.allocation_tag.try(:info)
                   %td= ( a.allocation_tag.nil? ? "" : type(a.allocation_tag) )
                   %td= name_allocation_status(a.status)
-                  - if @is_admin
+                  - if @can_change
                     %td.right_buttons.manage
                       = link_to_function content_tag(:i, nil, class: 'icon-edit'), "manage(this)", :"show-link" => admin_allocation_path(a), :"edit-link" => edit_admin_allocation_path(a), class:  "btn btn_manage_allocation"
   - else

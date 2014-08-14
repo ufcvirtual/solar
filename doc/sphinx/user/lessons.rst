@@ -1,13 +1,9 @@
 Aulas
 =====
 
-.. danger::
-  MATERIAL INCOMPLETO
-
 Neste item estarão dispostas as aulas da Unidade Curricular escolhida, informando nome e o período em que ela estará disponível.
 
-.. note::
-  Caso a aula uma data final, então seu acesso será bloqueado após esta data.
+.. note:: Caso a aula possua uma data final, então seu acesso será bloqueado após esta data.
 
 .. image:: ../images/user/lessons-list.png
   :align: center

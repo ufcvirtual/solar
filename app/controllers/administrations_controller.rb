@@ -17,11 +17,11 @@ class AdministrationsController < ApplicationController
   def search_users
     authorize! :users, Administration
 
-    @type_search = params[:type_search]
-    @text_search = [URI.unescape(params[:user]).split(" ").compact.join(":*&"), ":*"].join unless params[:user].blank?
-    @users    = User.where("to_tsvector('simple', unaccent(#{@type_search})) @@ to_tsquery('simple', unaccent(?))", @text_search).paginate(page: params[:page])
-    @is_admin = current_user.is_admin?
-
+    @type_search, @text_search = params[:type_search], [URI.unescape(params[:user]).split(" ").compact.join(":*&"), ":*"].join unless params[:user].blank?
+    allocation_tags_ids = current_user.allocation_tags_ids_with_access_on(["users"], "administrations", true, true)
+    @users      = User.find_by_text_ignoring_characters(@text_search, @type_search, allocation_tags_ids).paginate(page: params[:page])
+    @can_change = not(current_user.profiles_with_access_on("update_user", "administrations").empty?)
+    
     respond_to do |format|
       format.html
       format.js
@@ -32,8 +32,7 @@ class AdministrationsController < ApplicationController
 
   def show_user
     authorize! :update_user, Administration
-
-    @user, @is_admin = User.find(params[:id]), current_user.is_admin?
+    @user, @can_change = User.find(params[:id]), true
 
     respond_to do |format|
       format.html { render partial: "user", locals: {user: @user} }
@@ -86,11 +85,14 @@ class AdministrationsController < ApplicationController
   def allocations_user
     authorize! :allocations_user, Administration
 
-    @allocations_user = User.find(params[:id]).allocations.joins(:profile).where("NOT cast(profiles.types & ? as boolean)", Profile_Type_Basic)
+    allocation_tags_ids = current_user.allocation_tags_ids_with_access_on(["allocations_user"], "administrations", false, true) # if has nil, exists an allocation with allocation_tag_id nil
+    query = allocation_tags_ids.include?(nil) ? "" : "allocation_tag_id IN (#{allocation_tags_ids.join(",")})"
+
+    @allocations_user = User.find(params[:id]).allocations.joins(:profile).where("NOT cast(profiles.types & ? as boolean)", Profile_Type_Basic).where(query)
     @profiles = @allocations_user.map(&:profile).flatten.uniq
     @periods  = [ [t(:active),''] ]
     @periods += Semester.all.map{|s| s.name}.flatten.uniq.sort! {|x,y| y <=> x}
-    @is_admin = current_user.is_admin?
+    @can_change = not(current_user.profiles_with_access_on("update_allocation", "administrations").empty?)
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
@@ -236,14 +238,17 @@ class AdministrationsController < ApplicationController
 
   # GET /import/users/form
   def import_users_form
-    authorize! :import_users, Administration
-
     @allocation_tags_ids = AllocationTag.where(group_id: params[:groups_id].split(" ")).map(&:id)
+    authorize! :import_users, Administration, on: @allocation_tags_ids, accepts_general_profile: true
+
+  rescue CanCan::AccessDenied
+    render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized
   end
 
   # POST /import/users/batch
   def import_users_batch
-    authorize! :import_users, Administration
+    allocation_tags_ids = params[:allocation_tags_ids].split(' ').compact.uniq.map(&:to_i)
+    authorize! :import_users, Administration, on: allocation_tags_ids, accepts_general_profile: true
 
     raise t(:invalid_file, scope: [:administrations, :import_users]) if (file = params[:batch][:file]).nil?
 
@@ -254,7 +259,7 @@ class AdministrationsController < ApplicationController
     @count_imported = result[:log][:success].count
 
     users.each do |user|
-      params[:allocation_tags_ids].split(' ').compact.uniq.map(&:to_i).each do |at|
+      allocation_tags_ids.each do |at|
         begin
           AllocationTag.find(at).group.allocate_user(user.id, Profile.student_profile)
           @log[:success] << t(:allocation_success, scope: [:administrations, :import_users, :log], cpf: user.cpf, allocation_tag: at)
@@ -265,6 +270,8 @@ class AdministrationsController < ApplicationController
     end
 
     @log_file = save_log_into_file(@log[:success] + @log[:error])
+  rescue CanCan::AccessDenied
+    render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized
   rescue => error
     render json: {success: false, alert: "#{error}"}, status: :unprocessable_entity
   end
@@ -286,10 +293,13 @@ class AdministrationsController < ApplicationController
   end
 
   def responsibles_list
-    authorize! :responsibles, Administration
-
     allocation_tags_ids = AllocationTag.get_by_params(params, false, true)[:allocation_tags]
-    @allocations        = Allocation.responsibles(allocation_tags_ids)
+    authorize! :responsibles, Administration, {on: allocation_tags_ids, accepts_general_profile: true}
+
+    @allocations = Allocation.responsibles(allocation_tags_ids)
+
+  rescue CanCan::AccessDenied
+    render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized
   end
 
   private

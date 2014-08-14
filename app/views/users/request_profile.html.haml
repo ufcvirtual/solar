@@ -25,7 +25,7 @@
 
           .semester
             = label_tag :semester, t(".semester")
-            = select_tag :semester, nil
+            = select_tag :semester, nil, :'data-permit-offer' => true
 
           .offer_groups_options
             .radio_options
@@ -57,7 +57,7 @@
         "course_id": $("#course").val(),
         "curriculum_unit_id": $("#curriculum_unit").val(),
         "semester_id": $("#semester").val(),
-        "groups_ids": $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).get().join(" ")
+        "groups_id": $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).get().join(" ")
       };
       $.post("#{request_designation_allocations_path}", params, function(response){
         $.fancybox.close();
