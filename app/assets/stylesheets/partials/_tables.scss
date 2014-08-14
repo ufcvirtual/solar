@@ -94,9 +94,11 @@ table.tb_list {
   }
 }
 
-table.user-courses tbody.offers .offer {
-  cursor: pointer;
-  color: #003e7a;
+table.user-courses tbody.offers {
+  .offer, .open-edx-class{
+    cursor: pointer;
+    color: #003e7a;
+  }
 }
 
 .file_icon {
