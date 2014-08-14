@@ -238,14 +238,17 @@ class AdministrationsController < ApplicationController
 
   # GET /import/users/form
   def import_users_form
-    authorize! :import_users, Administration
-
     @allocation_tags_ids = AllocationTag.where(group_id: params[:groups_id].split(" ")).map(&:id)
+    authorize! :import_users, Administration, on: @allocation_tags_ids, accepts_general_profile: true
+
+  rescue CanCan::AccessDenied
+    render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized
   end
 
   # POST /import/users/batch
   def import_users_batch
-    authorize! :import_users, Administration
+    allocation_tags_ids = params[:allocation_tags_ids].split(' ').compact.uniq.map(&:to_i)
+    authorize! :import_users, Administration, on: allocation_tags_ids, accepts_general_profile: true
 
     raise t(:invalid_file, scope: [:administrations, :import_users]) if (file = params[:batch][:file]).nil?
 
@@ -256,7 +259,7 @@ class AdministrationsController < ApplicationController
     @count_imported = result[:log][:success].count
 
     users.each do |user|
-      params[:allocation_tags_ids].split(' ').compact.uniq.map(&:to_i).each do |at|
+      allocation_tags_ids.each do |at|
         begin
           AllocationTag.find(at).group.allocate_user(user.id, Profile.student_profile)
           @log[:success] << t(:allocation_success, scope: [:administrations, :import_users, :log], cpf: user.cpf, allocation_tag: at)
@@ -267,6 +270,8 @@ class AdministrationsController < ApplicationController
     end
 
     @log_file = save_log_into_file(@log[:success] + @log[:error])
+  rescue CanCan::AccessDenied
+    render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized
   rescue => error
     render json: {success: false, alert: "#{error}"}, status: :unprocessable_entity
   end

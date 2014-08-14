@@ -115,6 +115,7 @@ class AllocationsController < ApplicationController
     raise t("allocations.error.student_or_basic") if profile == Profile.student_profile or (not(profile.blank?) and Profile.find(profile).has_type?(Profile_Type_Basic))
     raise t("allocations.error.profile") if params[:profile].blank?
     
+
     allocations = Array.new
     ok = allocate(allocation_tags_ids.split(" ").flatten, allocations, user, profile, status)
 
