@@ -14,13 +14,12 @@ class LessonsController < ApplicationController
   before_filter :offer_data, only: [:show, :get_lessons]
 
   def index
-    @admin = (current_user.is_admin? and active_tab[:url][:allocation_tag_id].nil?)
-
-    if @admin
-      authorize! :index, Lesson
+    @not_offer_area = active_tab[:url][:allocation_tag_id].nil?  # if user is not at offer area
+    if @not_offer_area
       allocation_tags = AllocationTag.get_by_params(params)
-      @offer          = Offer.find(allocation_tags[:offer_id])
       @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
+      authorize! :index, Lesson, {on: @allocation_tags_ids, accepts_general_profile: true, read: true}
+      @offer = Offer.find(allocation_tags[:offer_id])
     else 
       authorize! :index, Lesson, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
       allocation_tag = AllocationTag.find(allocation_tag_id)
@@ -29,9 +28,11 @@ class LessonsController < ApplicationController
     end
 
     @lessons_modules = LessonModule.to_select(@allocation_tags_ids.split(" ").flatten, current_user, true)
-    render layout: false if params[:allocation_tags_ids] or @admin
+    render layout: false if params[:allocation_tags_ids] or @not_offer_area
 
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def list
@@ -56,12 +57,7 @@ class LessonsController < ApplicationController
     unless @offer or params.include?(:edition)
       render text: t(:curriculum_unit_not_selected, scope: :lessons), status: :not_found
     else
-      if current_user.is_admin?
-        authorize! :show, Lesson
-      else
-        # apenas para quem faz parte da turma
-        authorize! :show, Lesson, {on: (@offer.nil? ? params[:allocation_tags_ids] : [@offer.allocation_tag.id]), read: true}
-      end
+      authorize! :show, Lesson, {on: (@offer.nil? ? params[:allocation_tags_ids] : [@offer.allocation_tag.id]), read: true, accepts_general_profile: true}
 
       allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids].split(" ").flatten : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
       @lessons_modules    = LessonModule.to_select(allocation_tags_ids, current_user)
@@ -71,7 +67,7 @@ class LessonsController < ApplicationController
 
       render layout: 'lesson'
     end
-  rescue
+  rescue => error
     render json: {status: :unprocessable_entity}
   end
 

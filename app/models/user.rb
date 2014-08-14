@@ -238,11 +238,16 @@ class User < ActiveRecord::Base
   end
 
   # Returns all allocation_tags_ids with activated access on informed actions of controller
-  def allocation_tags_ids_with_access_on(actions, controller, all = false)
+  # if all is true         => recover all related
+  # if include_nil is true => include nil if some allocation is not rellated to any allocation_tag
+  def allocation_tags_ids_with_access_on(actions, controller, all=false, include_nil=false)
     allocations_tags = allocations.joins(profile: :resources)
       .where(resources: {action: actions, controller: controller}, status: Allocation_Activated)
-      .select("DISTINCT allocation_tag_id").map(&:allocation_tag).compact
-    allocations_tags.map{|at| (all ? at.related : at.related({lower: true}))}.flatten.uniq
+      .select("DISTINCT allocation_tag_id").map(&:allocation_tag)
+    has_nil = (include_nil and allocations_tags.include?(nil))
+    allocations_tags = allocations_tags.compact.map{|at| (all ? at.related : at.related({lower: true}))}.flatten.uniq
+    allocations_tags = [allocation_tags, nil].flatten if has_nil
+    allocations_tags
   end
 
   # Returns user resources list as [{controller: :action}, ...] at informed allocation_tags_ids
@@ -266,6 +271,14 @@ class User < ActiveRecord::Base
     query = interacts ? "cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)" : ""
     joins(allocations: :profile).where(allocations: {status: status, allocation_tag_id: allocation_tags_ids}).where(query)
     .select("DISTINCT users.id").select("users.name, users.email")
+  end
+
+  # Searches all users which "type" column includes "text"
+  # if allocation_tags_ids is informed and doesn't include nil => searches users allocated at the allocation_tags_ids
+  def self.find_by_text_ignoring_characters(text, type='name', allocation_tags_ids=[])
+    users = where("to_tsvector('simple', unaccent(#{type})) @@ to_tsquery('simple', unaccent(?))", text)
+    users = users.joins(:allocations).where("allocation_tag_id IN (?)", allocation_tags_ids) unless allocation_tags_ids.blank? or allocation_tags_ids.include?(nil)
+    users.select("DISTINCT users.id").select("users.*").order("name")
   end
 
   ################################

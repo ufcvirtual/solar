@@ -16,13 +16,7 @@ class AllocationsController < ApplicationController
     end
 
     begin
-      @admin = true if params.include?(:admin)
-      
-      if @admin
-        authorize! :create_designation, Allocation
-      else
-        authorize! :create_designation, Allocation, on: @allocation_tags_ids
-      end
+      authorize! :create_designation, Allocation, {on: @allocation_tags_ids, accepts_general_profile: true}
 
       level        = (params[:permissions] != "all" and (not params.include?(:admin))) ? "responsible" : nil
       level_search = level.nil? ? ("not(profiles.types & #{Profile_Type_Basic})::boolean") : ("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
@@ -31,22 +25,21 @@ class AllocationsController < ApplicationController
         joins: [:profile, :user],
         conditions: ["#{level_search} and allocation_tag_id IN (?)", @allocation_tags_ids.split(" ").flatten],
         order: ["users.name", "profiles.name"]) 
+
+      @admin = params[:admin]
     rescue CanCan::AccessDenied
       render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
-      render nothing: true, status: :unprocessable_entity
     end
   end
 
   def search_users
-    @text_search = URI.unescape(params[:user])
+    @text_search, @admin = URI.unescape(params[:user]), params[:admin]
 
     text = [@text_search.split(" ").compact.join(":*&"), ":*"].join unless params[:user].blank?
     @allocation_tags_ids = params[:allocation_tags_ids]
-    @users = User.where("to_tsvector('simple', unaccent(name)) @@ to_tsquery('simple', unaccent(?))", text).order(:name).paginate(page: params[:page])
-    @admin = params[:admin]
+    @users = User.find_by_text_ignoring_characters(text).paginate(page: params[:page])
 
     respond_to do |format|
       format.html
