@@ -198,7 +198,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'Solar.tex', u'Solar Documentation',
+  ('index', 'Solar.tex', u'Documentação Solar 2',
    u'Universidade Federal do Ceara, Instituto Universidade Virtual', 'manual'),
 ]
 
@@ -228,7 +228,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'solar', u'Solar Documentation',
+    ('index', 'solar', u'Documentação Solar 2',
      [u'Universidade Federal do Ceara, Instituto Universidade Virtual'], 1)
 ]
 
@@ -242,9 +242,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'Solar', u'Solar Documentation',
-   u'Universidade Federal do Ceara, Instituto Universidade Virtual', 'Solar', 'One line description of project.',
-   'Miscellaneous'),
+  ('index', 'Solar', u'Documentação Solar 2',
+   u'Universidade Federal do Ceara, Instituto Universidade Virtual', 'Solar', 'Ambiente Virtual de Aprendizagem Solar 2',
+   'Education'),
 ]
 
 # Documents to append as an appendix to all manuals.
