@@ -1,0 +1,23 @@
+- if users.blank?
+  = t(:participants_none)
+- else
+  - users.each do |user|
+    .participants_list_item
+      - if user.photo_file_name
+        = image_tag user.photo.url(:medium), alt: t(:mysolar_alt_img_user) 
+      - else
+        = image_tag 'no_image.png', alt: t(:mysolar_alt_img_user)
+      .options
+        = link_to (content_tag(:i, nil, class: 'icon-mail')), new_message_path(user_id: user.id, bread: 'menu_messages'), class: 'can-update-menu', :'data-menu-bread' => 'menu_messages', :'data-tooltip' => t(".message") # mensagem ao usuário
+        = link_to (content_tag(:i, nil, class: 'icon-folder')), public_area_user_path(user, bread: 'menu_portfolio'), class: 'can-update-menu', :'data-menu-bread' => 'menu_portfolio', :'data-tooltip' => t(".public_files") # área pública do usuário
+        / futuramente link para visualizar o perfil do usuário
+      .participant_name{title: user.name}
+        - if user.name.length > 20
+          = user.name.slice(0..10) + '...'
+        - else
+          = user.name
+      .participant_role{title: user.profile_name}
+        - if user.profile_name.length > 20
+          = ["(",user.profile_name,")"].join.slice(0..20) + '...'
+        - else          
+          = raw("(#{user.profile_name})")

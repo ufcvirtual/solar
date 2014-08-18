@@ -1024,3 +1024,9 @@ res175:
   controller: 'administrations'
   action: 'responsibles'
   description: 'Visualizar lista de responsáveis em qualquer curso'
+
+res177:
+  id: 177
+  controller: 'users'
+  action: 'public_area'
+  description: 'Visualizar área pública dos participantes'

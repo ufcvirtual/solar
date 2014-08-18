@@ -224,7 +224,7 @@ $(function() {
    * Portlets
    */
 
-  $('.portlet').on('click', 'a.can-update-menu', function(){
+  $('.portlet, .block_wrapper').on('click', 'a.can-update-menu', function(){
     var active_tab = $('.mysolar_unit_active_tab').data('tab-id');
     var new_menu_value = JSON.parse('{"' + active_tab + '":"'+ $(this).data('menu-bread') +'"}');
 

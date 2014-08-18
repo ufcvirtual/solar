@@ -144,4 +144,10 @@ class UsersController < ApplicationController
     render layout: false
   end
 
+  def public_area
+    allocation_tag_id, @user = active_tab[:url][:allocation_tag_id], User.find(params[:id])
+    authorize! :public_area, User, on: [allocation_tag_id]
+    @public_files = PublicFile.where user_id: @user.id, allocation_tag_id: allocation_tag_id
+  end
+
 end

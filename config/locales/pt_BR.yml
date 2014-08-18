@@ -1646,6 +1646,8 @@ pt_BR:
       empty_files: Não há arquivos
       groups: Turmas
       assignment_details: Detalhes do trabalho
+    send_public_files_page:
+      title: Envio de arquivos públicos
 
   groups:
     list:
@@ -1944,6 +1946,9 @@ pt_BR:
       edit_curriculum_unit: Editar Unidade Curricular
     informations:
       warning: "<b>Importante:</b> Este curso não possui uma unidade curricular, portanto algumas informações não estão disponíveis."
+    users:
+      message: Enviar mensagem
+      public_files: Visualizar arquivos públicos
 
   semesters:
     success:
@@ -2427,6 +2432,11 @@ pt_BR:
       request_profile: Solicitar perfil
       cancel_profile: Cancelar perfil
       confirm: Tem certeza de que deseja cancelar este perfil?
+    public_area:
+      title: "Área pública de %{name}"
+      file: Arquivo
+      size: Tamanho
+      sent_on: Enviado em
 
   mysolar:
     synchronize: Sincronizar com Módulo Acadêmico

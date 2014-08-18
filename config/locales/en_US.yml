@@ -1415,6 +1415,8 @@ en_US:
       empty_files: There're no files
       groups: Groups
       assignment_details: Assignment's details
+    send_public_files_page:
+      title: Upload of public files
   groups:
     list:
       all: All
@@ -1707,6 +1709,9 @@ en_US:
       edit_curriculum_unit: Edit Curriculum Unit
     informations:
       warning: "<b>Important:</b> This course has no curriculum unit, therefore some information is not available."
+    users:
+      message: Send message
+      public_files: See public files
   semesters:
     success:
       created: Semester was successfully created.
@@ -2167,6 +2172,11 @@ en_US:
       request_profile: Request profile
       cancel_profile: Cancel profile
       confirm: Are you sure you want to cancel this profile?
+    public_area:
+      title: "Public area of %{name}"
+      file: File
+      size: Size
+      sent_on: Sent on
   mysolar:
     synchronize: Synchronize with Módulo Acadêmico
     profiles: Profiles

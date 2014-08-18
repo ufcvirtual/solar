@@ -141,8 +141,9 @@ class AssignmentsController < ApplicationController
 
     @individual_activities = Assignment.joins(:academic_allocations, :schedule).where(type_assignment: Assignment_Type_Individual,  academic_allocations: {allocation_tag_id:  allocation_tags_ids}).order(:start_date)
     @group_activities      = Assignment.joins(:academic_allocations, :schedule).where(type_assignment: Assignment_Type_Group,       academic_allocations: {allocation_tag_id:  allocation_tags_ids}).order(:start_date)
+    @public_files          = PublicFile.where(user_id: current_user.id).where("allocation_tag_id IN (?)", allocation_tags_ids)
 
-    render :layout => false if params[:allocation_tags_ids]
+    render layout: false if params[:allocation_tags_ids]
   end
 
   def student_view
@@ -302,12 +303,18 @@ class AssignmentsController < ApplicationController
 
   ## Portfolio
   def download_public_files
-    authorize! :download_files, Assignment
+    allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    authorize! :download_files, Assignment, on: [allocation_tag_id]
 
-    file = PublicFile.find(params[:file_id])
-    raise CanCan::AccessDenied unless @allocation_tag.related.include?(file.allocation_tag_id) # verify participation in class
+    file_path, file_name = if params.include?(:zip)
+      user, all_files = User.find(params[:user_id]), PublicFile.where(user_id: params[:user_id], allocation_tag_id: allocation_tag_id)
+      [compress({ files: all_files, table_column_name: 'attachment_file_name', name_zip_file: "Arquivos" }), "Arquivos_Publicos_#{user.name}"]
+    else 
+      file = PublicFile.find(params[:file_id])
+      [file.attachment.path, file.attachment_file_name]
+    end
 
-    download_file(:back, file.attachment.path, file.attachment_file_name)
+    download_file(:back, file_path, file_name)
   end
 
   ## Portfolio - download files
@@ -337,7 +344,7 @@ class AssignmentsController < ApplicationController
       allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
       case params[:type]
         when "public"
-          raise CanCan::AccessDenied unless Profile.student_from_class?(current_user.id, allocation_tag.id)
+          authorize! :upload_file, Assignment, on: [allocation_tag.id]
           @public_file = PublicFile.create!({ attachment: params[:public_file], user_id: current_user.id, allocation_tag_id: allocation_tag.id })
         when "assignment"
           assignment = Assignment.find(params[:assignment_id])

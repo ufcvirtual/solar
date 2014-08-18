@@ -21,6 +21,7 @@ Solar::Application.routes.draw do
     member do
       get :photo
       put :update_photo
+      get :public_area
     end
     collection do
       get :edit_photo
@@ -267,6 +268,7 @@ Solar::Application.routes.draw do
 
       get :download_files
       get "download_public_files/:file_id", to: :download_public_files, as: :download_public_files
+      get "download_public_files/zipped/:user_id", to: :download_public_files, as: :download_zipped_public_files, defaults: {zip: true}
       get :send_public_files_page
 
       post :upload_file

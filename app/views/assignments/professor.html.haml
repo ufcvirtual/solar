@@ -47,3 +47,5 @@
                 = l(group_activity.schedule.end_date, :format => :normal)
     - else
       .block_content.block_content_text.text_none= t(:itens_not_found)
+
+= render partial: "public_area", locals: {public_area: @public_files}
