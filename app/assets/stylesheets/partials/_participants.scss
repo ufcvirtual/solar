@@ -19,6 +19,17 @@
   vertical-align: bottom;
 }
 
+.options .public_files{
+  font-size: 7pt;
+  position: relative;
+  right: 8px;
+  bottom: 3px;
+  color: white;
+  background-color: #003E7A;
+  border-radius: 4px;
+  padding: 0px 2px;
+}
+
 .participant_name {
   line-height: 11pt;
   font-variant: small-caps;

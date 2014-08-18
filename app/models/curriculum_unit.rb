@@ -40,12 +40,14 @@ class CurriculumUnit < ActiveRecord::Base
              t3.photo_file_name,
              t3.photo_updated_at,
              t3.email,
+             COUNT(t5.id) AS public_files,
              replace(translate(array_agg(distinct t4.name)::text,'{""}',''),',',', ') AS profile_name,
              translate(array_agg(t4.id)::text,'{}','') AS profile_id
         FROM allocations     AS t1
         JOIN allocation_tags AS t2 ON t1.allocation_tag_id = t2.id
         JOIN users           AS t3 ON t1.user_id = t3.id
         JOIN profiles        AS t4 ON t4.id = t1.profile_id
+   LEFT JOIN public_files    AS t5 ON t5.user_id = t3.id AND t5.allocation_tag_id IN (#{allocation_tags})
        WHERE t2.id IN (#{allocation_tags})
          AND #{negative} cast(t4.types & '#{profile_flag}' as boolean)
          AND t1.status = #{Allocation_Activated}
