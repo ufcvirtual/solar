@@ -1949,6 +1949,7 @@ pt_BR:
     users:
       message: Enviar mensagem
       public_files: Visualizar arquivos públicos
+      no_public_files: Nenhum arquivo público
 
   semesters:
     success:
@@ -2082,6 +2083,7 @@ pt_BR:
       title_my_chats: Meus Chats
       title_other_chats: Outros Chats
       message_no_chat: Nenhum chat cadastrado
+      students: Participantes
     chats:
       detail: Detalhes
       availability: Disponibilidade

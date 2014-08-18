@@ -8,10 +8,12 @@
       - else
         = image_tag 'no_image.png', alt: t(:mysolar_alt_img_user)
       .options
+        - no_public_files = (user.public_files.to_i == 0)
         = link_to (content_tag(:i, nil, class: 'icon-mail')), new_message_path(user_id: user.id, bread: 'menu_messages'), class: 'can-update-menu', :'data-menu-bread' => 'menu_messages', :'data-tooltip' => t(".message") # mensagem ao usuário
-        = content_tag(:a, class: 'can-update-menu', href: public_area_user_path(user, bread: 'menu_portfolio'), :'data-menu-bread' => 'menu_portfolio', :'data-tooltip' => t(".public_files")) do # área pública do usuário
+        = content_tag(:a, class: "can-update-menu #{no_public_files ? 'disabled' : ''}", href: public_area_user_path(user, bread: 'menu_portfolio'), :'data-menu-bread' => 'menu_portfolio', :'data-tooltip' => no_public_files ? t(".no_public_files") : t(".public_files")) do # área pública do usuário
           %i.icon-folder
-          /%span.public_files= user.public_files
+          - unless no_public_files
+            %span.public_files= user.public_files
         / futuramente link para visualizar o perfil do usuário
       .participant_name{title: user.name}
         - if user.name.length > 20
@@ -25,3 +27,10 @@
           = raw("(#{user.profile_name})")
 
 = javascript_include_tag "tooltip"
+
+:javascript
+  $(function(){
+    $("a.disabled").click(function(){
+      return false;
+    });
+  });

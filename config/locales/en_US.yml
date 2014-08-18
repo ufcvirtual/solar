@@ -1712,6 +1712,7 @@ en_US:
     users:
       message: Send message
       public_files: See public files
+      no_public_files: No public files
   semesters:
     success:
       created: Semester was successfully created.
@@ -1839,6 +1840,7 @@ en_US:
       title_my_chats: My Chats
       title_other_chats: Other Chats
       message_no_chat: No chat registered
+      students: Students
     chats:
       detail: Details
       availability: Availability
