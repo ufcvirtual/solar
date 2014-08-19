@@ -50,13 +50,6 @@ class AllocationTag < ActiveRecord::Base
     self.attributes.keep_if {|k,v| k != "id" and not(v.nil?)}.keys.first.sub(/\_id/, '')
   end
 
-  ## ex: retorna allocation do professor na oferta se tiver checando relacao com uma turma dessa oferta (professor em uma oferta)
-  def user_relation_with_this(user)
-    relation = allocations.where(user_id: user)
-    relation = user.allocations.where(allocation_tag_id: related) if relation.empty?
-    relation
-  end
-
   def is_student?(user_id)
     allocations.joins(:profile).where(user_id: user_id).where("cast(profiles.types & ? as boolean)", Profile_Type_Student).count > 0
   end
