@@ -90,9 +90,10 @@ class ChatRoomsController < ApplicationController
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     authorize! :list, ChatRoom, on: [@allocation_tag_id]
 
-    @alloc = AllocationTag.find(@allocation_tag_id).user_relation_with_this(current_user).first.id rescue nil
+    permited_profiles = current_user.profiles_with_access_on('list', 'chat_rooms', AllocationTag.find(@allocation_tag_id).related, true)
+    @alloc = current_user.allocations.where(profile_id: permited_profiles).first.id
     @responsible = ChatRoom.responsible?(@allocation_tag_id, current_user.id)
-    @my_chats = ChatRoom.chats_user(@allocation_tag_id, current_user.id)
+    @my_chats    = ChatRoom.chats_user(@allocation_tag_id, current_user.id)
     @other_chats = ChatRoom.chats_other_users(@allocation_tag_id, current_user.id) unless @responsible
   end
 
