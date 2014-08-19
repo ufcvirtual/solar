@@ -21,7 +21,7 @@
 
 .options{ 
   .public_files{
-    font-size: 7pt;
+    font-size: 8pt;
     position: relative;
     right: 8px;
     bottom: 3px;
@@ -29,6 +29,7 @@
     background-color: #003E7A;
     border-radius: 4px;
     padding: 0px 2px;
+    font-family: bold;
   }
   a.disabled {
    cursor: default;
