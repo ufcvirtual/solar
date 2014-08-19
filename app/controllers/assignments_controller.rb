@@ -308,8 +308,8 @@ class AssignmentsController < ApplicationController
 
     file_path, file_name = if params.include?(:zip)
       user, all_files = User.find(params[:user_id]), PublicFile.where(user_id: params[:user_id], allocation_tag_id: allocation_tag_id)
-      [compress({ files: all_files, table_column_name: 'attachment_file_name', name_zip_file: "Arquivos" }), "Arquivos_Publicos_#{user.name}"]
-    else 
+      [compress({ files: all_files, table_column_name: 'attachment_file_name', name_zip_file: "Arquivos" }) || '', "Arquivos_Publicos_#{user.name}"]
+    else
       file = PublicFile.find(params[:file_id])
       [file.attachment.path, file.attachment_file_name]
     end
