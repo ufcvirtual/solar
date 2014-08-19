@@ -1,5 +1,5 @@
 - if users.blank?
-  = t(:participants_none)
+  .text_none= t(:participants_none)
 - else
   - users.each do |user|
     .participants_list_item
@@ -15,16 +15,10 @@
           - unless no_public_files
             %span.public_files= user.public_files
         / futuramente link para visualizar o perfil do usuário
-      .participant_name{title: user.name}
-        - if user.name.length > 20
-          = user.name.slice(0..10) + '...'
-        - else
-          = user.name
-      .participant_role{title: user.profile_name}
-        - if user.profile_name.length > 20
-          = ["(",user.profile_name,")"].join.slice(0..20) + '...'
-        - else          
-          = raw("(#{user.profile_name})")
+      .participant_name{:'data-tooltip' => user.name}
+        = (user.name.length > 20 ? user.name.truncate(14) : user.name)
+      .participant_role{:'data-tooltip' => user.profile_name}
+        = (user.profile_name.length > 20 ? ["(",user.profile_name,")"].join.truncate(23) : raw("(#{user.profile_name})") )
 
 = javascript_include_tag "tooltip"
 
