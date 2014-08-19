@@ -1,8 +1,6 @@
 Forum
 =====
 
-.. danger:: MATERIAL INCOMPLETO
-
 Nesta página são listadas os fóruns disponíveis sobre conteúdos vinculados à disciplina escolhida, sendo informado o nome e período de disponibilidade de acesso.
 
 .. note:: Após a data final o fórum será bloqueado, tendo seu acesso restrito apenas para leitura, onde apenas o responsável pela disciplina terá uma semana adicional para realizar novas postagens.
@@ -52,7 +50,12 @@ Para responder a uma postagem basta clicar no botão |btn_forum_reply| (*Respond
 Inserir anexo
 -------------
 
-Ao realizar uma postagem (seja ela nova ou uma resposta) podemos anexar arquivos a ela, basta clicar no botão |btn_forum_attach| (*Anexar arquivo*). Em seguida será exibida a seguinte janela:
+Ao realizar uma postagem (seja ela nova ou uma resposta) podemos anexar arquivos a ela, basta clicar no botão |btn_forum_attach| (*Anexar arquivo*).
+
+.. image:: ../images/user/forum_post_attachment.png
+  :align: center
+
+Em seguida será exibida a seguinte janela:
 
 .. image:: ../images/user/forum_attachment_lightbox.png
   :align: center
@@ -69,17 +72,29 @@ Caso deseje apagar um arquivo clique no ícone |btn_forum_attach_remove| (*Remov
 .. image:: ../images/user/forum_attachment_remove.png
   :align: center
 
-.. warning:: A ação de remover um anexo é **IRREVERSÍVEL**.
+.. danger:: A ação de remover um anexo é **IRREVERSÍVEL**.
 
 Editar postagem
 ---------------
 
-asdf
+Para editar uma postagem basta clicar no botão |btn_forum_edit| (*Editar*), localizado no canto inferior direito de qualquer postagem.
+
+.. warning:: Só é possível editar a postagem caso ela **NÃO** possua réplica.
+
+.. image:: ../images/user/forum_post_edit.png
+  :align: center
 
 Apagar postagem
 ---------------
 
-asdf
+Para apagar uma postagem basta clicar no botão |btn_forum_delete| (*Apagar*), localizado no canto inferior direito de qualquer postagem.
+
+.. warning:: Só é possível apagar a postagem caso ela **NÃO** possua réplica.
+
+.. danger:: A ação de apagar uma postagem é **IRREVERSÍVEL**.
+
+.. image:: ../images/user/forum_post_delete.png
+  :align: center
 
 .. imagens inline
 .. |btn_forum_new_post| image:: ../images/user/forum_btn_new_post.png
@@ -96,4 +111,12 @@ asdf
 
 .. |btn_forum_attach_remove| image:: ../images/user/forum_btn_attach_remove.png
   :height: 30
+  :width: 30
+
+.. |btn_forum_edit| image:: ../images/user/forum_btn_edit.png
+  :height: 26
+  :width: 30
+
+.. |btn_forum_delete| image:: ../images/user/forum_btn_delete.png
+  :height: 26
   :width: 30
