@@ -75,6 +75,11 @@ assig6:
   resource_id: 37
   per_id: true
 
+assig7:
+  profile_id: 1
+  resource_id: 177
+  per_id: false
+
 # discussion
 dis1:
   profile_id: 1
@@ -323,6 +328,16 @@ assigpt13:
   profile_id: 2
   resource_id: 41
   per_id: true
+
+assigpt14:
+  profile_id: 2
+  resource_id: 36
+  per_id: false
+
+assigpt15:
+  profile_id: 2
+  resource_id: 177
+  per_id: false
 
 #discussion
 dipt1:
@@ -584,15 +599,25 @@ assigta11:
   resource_id: 39
   per_id: true
 
-assigpt12:
+assigta12:
   profile_id: 3
   resource_id: 40
   per_id: true
 
-assigpt13:
+assigta13:
   profile_id: 3
   resource_id: 41
   per_id: true
+
+assigta14:
+  profile_id: 3
+  resource_id: 36
+  per_id: false
+
+assigta15:
+  profile_id: 3
+  resource_id: 177
+  per_id: false
 
 # discussion
 dita1:
