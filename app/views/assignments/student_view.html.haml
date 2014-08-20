@@ -111,7 +111,7 @@
     - else
       .block_content.block_content_text= t(:itens_not_found)
 
-= render partial: "public_area", locals: {public_files: @public_area}
+= render partial: "public_area", locals: {public_area: @public_area}
 
 :javascript
   $(function(){
