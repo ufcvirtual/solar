@@ -3,30 +3,64 @@
 	<head>
 		<title>Solar 2.0 - Vídeo Tutoriais</title>
 		<link href="ytv/ytv.css" type="text/css" rel="stylesheet" />
+        <link href="/assets/login.css" media="all" rel="stylesheet" type="text/css">
 		<style type="text/css">
 			body{
 				margin: 0;
 				padding: 0;
+                background: radial-gradient(circle at center center , #56729C 0%, #204882 100%) repeat scroll 0% 0% transparent;
 			}
+            #content {
+                margin: 0 auto;
+                text-align: center;
+                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            #logo {
+                margin-bottom: 25px;
+            }
+            #content h1 {
+                font-family: "Ubuntu", sans-serif;
+                font-weight: normal;
+                font-size: 25px;
+                color: #7385a0;
+                margin-top: 0;
+            }
+            #content #links {
+                background-image: linear-gradient(#F5F5F5, #E6E8EC);
+                box-shadow: 0px 2px 8px #222427;
+                border-radius: 10px;
+                display: inline-block;
+                padding: 25px 40px;
+            }
+            #content a {
+                display: block;
+                width: 250px;
+                background-image: linear-gradient(#EBE2C0, #F0CF65);
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid #AE8711;
+                text-decoration: none;
+                color: #A38322;
+                font-family: "Ubuntu Condensed";
+                font-size: 25px;
+            }
+            #content a:hover {
+                background-image: linear-gradient(#ebe2c0,#ffd242);
+            }
 		</style>
 	</head>
 	<body>
-		<div id="frame"></div>
-
-		<script type="text/javascript" src="ytv/ytv.js"></script>
-		<script>
-			window.onload = function(){
-
-				window.controller = new YTV('frame', {
-					user: 'UCWgsxdZCjjrk6UmYBG6hkSQ',
-					accent: '#F9DB43',
-					autoplay: false,
-					controls: true,
-					fullscreen: true,
-					playlist: 'PLymN3BhGXshU5s4NYY2EzYkpHuVtigaoP'
-				});
-
-			};
-		</script>
+        <div id="content">
+            <div id="logo">
+                <img alt="Logo do Solar" src="/assets/logo.png">
+            </div>
+            <div id="links">
+                <h1>Qual seu perfil?</h1>
+                <a href="video_tutorials_aluno.html" style="margin-bottom: 15px;">Aluno</a>
+                <a href="video_tutorials_professor.html">Professor/Tutor</a>
+            </div>
+        </div>
 	</body>
 </html>

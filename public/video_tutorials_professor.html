@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+	<head>
+		<title>Solar 2.0 - Vídeo Tutoriais - Professor</title>
+		<link href="ytv/ytv.css" type="text/css" rel="stylesheet" />
+		<style type="text/css">
+			body{
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="frame"></div>
+
+		<script type="text/javascript" src="ytv/ytv.js"></script>
+		<script>
+			window.onload = function(){
+
+				window.controller = new YTV('frame', {
+					user: 'Solar2ufc',
+					accent: '#F9DB43',
+					autoplay: false,
+					controls: true,
+					fullscreen: true,
+					playlist: 'PL79md4kx41yXEKEeBlnhS2QdCyzFvkn-y'
+				});
+
+			};
+		</script>
+	</body>
+</html>
