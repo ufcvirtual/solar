@@ -39,10 +39,7 @@
                     %span= link_to material.name, material.name, target: '_blank'
                   - else
                     %span= image_tag(icon_attachment(material.name))
-                    - if can?(:download, SupportMaterialFile, on: [material.academic_allocations.map(&:allocation_tag_id)]) and File.exists?(material.attachment.path)
-                      %span= link_to material.name, download_support_material_file_path(id: material.id)
-                    - else
-                      %span.title= material.name
+                    %span= link_to material.name, download_support_material_file_path(id: material.id)
                   .group_label.invisible= render "groups/groups_tags", groups: material.groups, tool: material, all_groups: all_groups, paths: {add: add_group_to_support_material_files_path(id: "param_id", tool_id: material.id), remove: remove_group_from_support_material_files_path(id: "param_id", tool_id: material.id), unbind: unbind_group_from_support_material_files_path(id: "param_id", tool_id: material.id)}
               %td{style: 'text-align:center;'}
                 %div= l(material.attachment_updated_at, format: :normal)
