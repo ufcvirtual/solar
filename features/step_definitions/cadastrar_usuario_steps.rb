@@ -15,7 +15,7 @@ Entao /^eu deverei ver o botao "([^"]*)"$/ do |botao|
 end
 
 Entao /^eu deverei ver o botao "([^"]*)" em mensagem com id "([^"]*)"$/ do |botao, message_id|
-  find('#'+message_id).find_button(botao).should_not be_nil
+  find(:xpath, "//table[@id=#{message_id}]").find_button(botao).should_not be_nil
 end
 
 Dado /^que eu preenchi "([^"]*)" com "([^"]*)"$/ do |selector, value|
