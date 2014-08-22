@@ -5,13 +5,12 @@ Funcionalidade: Exibir Chats
   Eu quero visualizar os chats
   Para poder acessá-los
 
+@javascript
 Cenário: Acessar listagem de chat
   Dado que estou logado com o usuario "aluno1" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Quimica I"
-    Então eu deverei ver "Atividades"
-  Quando eu clicar no link "Atividades"
-    Então eu deverei ver o link "Chat"
+  Dado que eu cliquei em elemento de texto "109 - Licenciatura em Quimica" em "td.course"
+    Então eu deverei ver "Chat"
   Quando eu clicar no link "Chat"
     Então eu deverei ver os meus chats
     | Chat            | Data                     | Hora          |

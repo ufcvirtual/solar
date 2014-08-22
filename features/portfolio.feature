@@ -4,13 +4,13 @@ Funcionalidade: Exibir Portfolio
   Como um usuario do solar
   Eu quero visualizar o portfolio
   Para poder acessá-los
+
+@javascript
 Cenário: Exibir Portfolio e Atividades Individuais como Aluno
     Dado que estou logado com o usuario "aluno1" e com a senha "123456"
         E que estou em "Meu Solar"
-    Quando eu clicar no link "Quimica I"
-        Então eu deverei ver "Atividades"
-    Quando eu clicar no link "Atividades"
-        Então eu deverei ver o link "Portfolio"
+    Dado que eu cliquei em elemento de texto "109 - Licenciatura em Quimica" em "td.course"
+        Então eu deverei ver "Portfolio"
     Quando eu clicar no link "Portfolio"
         Então eu deverei ver "Portfolio"
         E eu deverei ver "Atividades individuais"
@@ -37,13 +37,12 @@ Cenário: Exibir Portfolio e Atividades Individuais como Aluno
         E eu deverei ver "Comentários"
             E eu deverei ver "Sem itens para exibir"
 
+@javascript
 Cenário: Exibir Listagem de Atividades Individuais de Portifólio como Professor
 Dado que estou logado com o usuario "prof" e com a senha "123456"
         E que estou em "Meu Solar"
-    Quando eu clicar no link "Quimica I"
-        Então eu deverei ver "Atividades"
-    Quando eu clicar no link "Atividades"
-        Então eu deverei ver o link "Portfolio"
+    Dado que eu cliquei em elemento de texto "109 - Licenciatura em Quimica" em "td.course"
+        Então eu deverei ver "Portfolio"
     Quando eu clicar no link "Portfolio"
         Então eu deverei ver "Portfolio"
         E eu deverei ver "Atividades individuais"

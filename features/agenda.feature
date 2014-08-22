@@ -16,10 +16,8 @@ Contexto:
 Cenário: Exibir Agenda
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Quimica I"
+  Dado que eu cliquei em elemento de texto "109 - Licenciatura em Quimica" em "td.course"
     Então eu deverei ver "Informações Gerais"
-  Quando eu clicar no link "Informações Gerais"
-    Então eu deverei ver o link "Agenda"
   Quando eu clicar no link "Agenda"
     Então eu deverei ver "Recesso"
     E eu deverei ver "Avaliação"
@@ -37,10 +35,8 @@ Cenário: Exibir Agenda
 Cenário: Exibir Agenda do professor
   Dado que estou logado com o usuario "prof" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Teoria da Literatura I"
+  Dado que eu cliquei em elemento de texto "110 - Letras Portugues" em "td.course"
     Entao eu deverei ver "Informações Gerais"
-  Quando eu clicar no link "Informações Gerais"
-    Entao eu deverei ver o link "Agenda"
   Quando eu clicar no link "Agenda"
     Entao eu deverei ver "Atividade individual VII"
   # botão próximo
@@ -59,10 +55,8 @@ Cenário: Exibir Agenda do professor
 Cenário: Verificar tipos de visualizacoes da agenda e botoes de navegacao
   Dado que estou logado com o usuario "prof" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Teoria da Literatura I"
+  Dado que eu cliquei em elemento de texto "110 - Letras Portugues" em "td.course"
     Entao eu deverei ver "Informações Gerais"
-  Quando eu clicar no link "Informações Gerais"
-    Entao eu deverei ver o link "Agenda"
   Quando eu clicar no link "Agenda"
     #E eu clicar no botao de icone com classe "icon-arrow-right-thin"
     Entao eu deverei ver "Atividade individual VII"
@@ -89,10 +83,8 @@ Cenário: Verificar tipos de visualizacoes da agenda e botoes de navegacao
 Cenário: Verificar abertura do lightbox com exibição dos detalhes
   Dado que estou logado com o usuario "prof" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Teoria da Literatura I"
+  Dado que eu cliquei em elemento de texto "110 - Letras Portugues" em "td.course"
     Entao eu deverei ver "Informações Gerais"
-  Quando eu clicar no link "Informações Gerais"
-    Entao eu deverei ver o link "Agenda"
   Quando eu clicar no link "Agenda"
     E eu clicar no botao de icone com classe "icon-arrow-right-thin"
     Entao eu deverei ver "Forum 7"

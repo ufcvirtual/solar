@@ -5,13 +5,11 @@ Funcionalidade: Exibir Foruns
   Eu quero visualizar os foruns
   Para poder acessá-los
 
+@javascript
 Cenário: Exibir Foruns e entrar em fórum em andamento
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Quimica I"
-    Então eu deverei ver "Atividades"
-  Quando eu clicar no link "Atividades"
-    Então eu deverei ver o link "Fórum"
+  Dado que eu cliquei em elemento de texto "109 - Licenciatura em Quimica" em "td.course"
   Quando eu clicar no link "Fórum"
     Então eu deverei ver "Fóruns disponíveis"
     E eu deverei ver "Data de acesso"
@@ -24,13 +22,11 @@ Cenário: Exibir Foruns e entrar em fórum em andamento
     E eu deverei ver "Aluno"
     E eu deverei ver "Tutor Presencial"
 
+@javascript
 Cenario: Exibir primeiro forum
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Quimica I"
-    Então eu deverei ver "Atividades"
-  Quando eu clicar no link "Atividades"
-    Então eu deverei ver o link "Fórum"
+  Dado que eu cliquei em elemento de texto "109 - Licenciatura em Quimica" em "td.course"
   Quando eu clicar no link "Fórum"
     Então eu deverei ver "Fóruns disponíveis"
     E eu deverei ver "Data de acesso"
@@ -46,13 +42,11 @@ Cenario: Exibir primeiro forum
     E eu deverei ver o botao "Editar" em mensagem com id "11"
     E eu deverei ver o botao "Responder" em mensagem com id "11"
 
+@javascript
 Cenario: Exibir forum encerrado para aluno
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Quimica I"
-    Então eu deverei ver "Atividades"
-  Quando eu clicar no link "Atividades"
-    Então eu deverei ver o link "Fórum"
+  Dado que eu cliquei em elemento de texto "109 - Licenciatura em Quimica" em "td.course"
   Quando eu clicar no link "Fórum"
     Então eu deverei ver "Fóruns disponíveis"
     E eu deverei ver "Data de acesso"
@@ -66,13 +60,11 @@ Cenario: Exibir forum encerrado para aluno
     E eu deverei ver "Aluno"
     E eu deverei ver "Fórum encerrado"
 
+@javascript
 Cenário: Acessar Fórum como professor em período Extra
   Dado que estou logado com o usuario "tutordist" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Quimica I"
-    Então eu deverei ver "Atividades"
-  Quando eu clicar no link "Atividades"
-    Então eu deverei ver o link "Fórum"
+  Dado que eu cliquei em elemento de texto "109 - Licenciatura em Quimica" em "td.course"
   Quando eu clicar no link "Fórum"
     Então eu deverei ver "Fóruns disponíveis"
     E eu deverei ver "Data de acesso"

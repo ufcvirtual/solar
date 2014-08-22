@@ -14,9 +14,6 @@ Contexto:
 Cenário: Exibir página e atualizar conteudo em div
   Dado que estou logado com o usuario "editor" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Edição"
-    Então eu deverei ver "Acadêmico"
-    E eu deverei ver "Conteúdo"
   Quando eu clicar no link "Conteúdo"
     E eu deverei ver "Filtro"
     Dado que eu preenchi "autocomplete-input" de "curriculum_unit_type" com "Curso de Graduacao a Distancia"

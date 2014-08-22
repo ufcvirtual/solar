@@ -12,20 +12,19 @@ Dado que tenho "allocations"
   |    7    |         2         |     5      |    1   |
   |    7    |         3         |     5      |    1   |
 
+@javascript
 Cenário: Exibir Material de apoio
    Dado que estou logado com o usuario "user" e com a senha "123456"
    E que estou em "Meu Solar"
-       Quando eu clicar no link "Quimica I"
-   Então eu deverei ver "Conteúdo"
-       Quando eu clicar no link "Conteúdo"
-   Então eu deverei ver o link "Material de Apoio"
-       Quando eu clicar no link "Material de Apoio"
-   Então eu deverei ver "AULAS"
-      E eu deverei ver o link "2.pdf"
-      E eu deverei ver "LINKS"
-      E eu deverei ver o link "http://www.google.com"
-      E eu deverei ver "OUTRA PASTA"
-      E eu deverei ver o link "3.pdf"
+   Dado que eu cliquei em elemento de texto "109 - Licenciatura em Quimica" em "td.course"
+     Então eu deverei ver o link "Material de Apoio"
+   Quando eu clicar no link "Material de Apoio"
+     Então eu deverei ver "AULAS"
+     E eu deverei ver o link "2.pdf"
+     E eu deverei ver "LINKS"
+     E eu deverei ver o link "http://www.google.com"
+     E eu deverei ver "OUTRA PASTA"
+     E eu deverei ver o link "3.pdf"
 
 # TODO: esses testes de trocar de material de apoio com a combobox de turma
 # não funcionam mais pois a UC não possui mais turmas

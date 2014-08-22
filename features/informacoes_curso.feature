@@ -14,12 +14,10 @@ Contexto:
 Cenário: Acessar pagina de informacoes do curso
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
-    Quando eu clicar no link "RM404 - Introducao a Linguistica"
+  Dado que eu cliquei em elemento de texto "RM404 - Introducao a Linguistica" em "td.course"
     #E que eu selecionei "selected_group" com "IL-FOR - 2011.1"
     Então eu deverei ver "Turma: IL-FOR"
     E eu deverei ver "Informações Gerais"
-  Quando eu clicar no link "Informações Gerais"
-    Então eu deverei ver "Programa"
   Quando eu clicar no link "Programa"
     Então eu deverei ver "Ementa"
     E eu deverei ver "Como Deleuze eloquentemente mostrou, o inicio da atividade geral de formacao de conceitos obstaculiza a apreciacao da importancia dos paradigmas filosoficos."

@@ -9,9 +9,8 @@ Funcionalidade: Exibir aulas de curso
 Cenário: Listar aulas do curso
   Dado que estou logado com o usuario "aluno1" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Quimica I"
+  Dado que eu cliquei em elemento de texto "109 - Licenciatura em Quimica" em "td.course"
     Então eu deverei ver "Aulas"
-  Quando eu clicar no link "Conteúdo"
     Então eu deverei ver "Material de Apoio"        
   Quando eu clicar no link "Aulas"
   Então eu deverei ver "Aulas disponíveis"

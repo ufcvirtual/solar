@@ -5,13 +5,12 @@ Funcionalidade: Exibir biliografias da oferta
   Eu quero visualizar as bibliografias da oferta
   Para poder acessá-las
 
+@javascript
 Cenário: Exibir bibliografia
   Dado que estou logado com o usuario "aluno1" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Quimica I"
-    Então eu deverei ver "Informações Gerais"
-  Quando eu clicar no link "Informações Gerais"
-    Então eu deverei ver o link "Bibliografia"
+  Dado que eu cliquei em elemento de texto "109 - Licenciatura em Quimica" em "td.course"
+    Então eu deverei ver "Bibliografia"
   Quando eu clicar no link "Bibliografia"
     Então eu deverei ver "Itens Bibliográficos"
     Então eu deverei ver "Item"

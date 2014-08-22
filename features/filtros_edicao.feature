@@ -14,9 +14,6 @@ Contexto:
 Cenário: Filtro de conteudo
   Dado que estou logado com o usuario "editor" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Edição"
-    Então eu deverei ver "Acadêmico"
-    E eu deverei ver "Conteúdo"
   Quando eu clicar no link "Conteúdo"
     E eu deverei ver "Filtro"
     Dado que eu cliquei em "#search"
@@ -60,9 +57,6 @@ Cenário: Filtro de conteudo
 Cenário: Filtro academico - Vazio, Grad a Distancia, Livre
   Dado que estou logado com o usuario "editor" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Edição"
-    Então eu deverei ver "Acadêmico"
-    E eu deverei ver "Conteúdo"
   Quando eu clicar no link "Acadêmico"
     E eu deverei ver "Filtro"
     Dado que eu cliquei em "#search"
@@ -91,10 +85,7 @@ Cenário: Filtro academico - Vazio, Grad a Distancia, Livre
 Cenário: Filtro academico - Extensao
   Dado que estou logado com o usuario "editor" e com a senha "123456"
    E que estou em "Meu Solar"
-  Quando eu clicar no link "Edição"
-    Então eu deverei ver "Acadêmico"
-    E eu deverei ver "Conteúdo"
-    Quando eu clicar no link "Acadêmico"
+  Quando eu clicar no link "Acadêmico"
     E eu deverei ver "Filtro"
     # Curso de Extensao
     Dado que eu preenchi "autocomplete-input" de "filter_type" com "Curso de Extensao"
@@ -111,8 +102,6 @@ Cenário: Filtro academico - Extensao
 Cenário: Filtro academico - Grad a Distancia: Cursos
   Dado que estou logado com o usuario "editor" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Edição"
-    Então eu deverei ver "Acadêmico"
   Quando eu clicar no link "Acadêmico"
     E eu deverei ver "Filtro"
     Dado que eu preenchi "autocomplete-input" de "filter_type" com "Curso de Graduacao a Distancia"
@@ -141,8 +130,6 @@ Cenário: Filtro academico - Grad a Distancia: Cursos
 Cenário: Filtro academico - Grad a Distancia: UCs
   Dado que estou logado com o usuario "editor" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Edição"
-    Então eu deverei ver "Acadêmico"
   Quando eu clicar no link "Acadêmico"
     E eu deverei ver "Filtro"
   Dado que eu preenchi "autocomplete-input" de "filter_type" com "Curso de Graduacao a Distancia"
@@ -171,8 +158,6 @@ Cenário: Filtro academico - Grad a Distancia: UCs
 Cenário: Filtro academico - Grad a Distancia: Semestres
   Dado que estou logado com o usuario "editor" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Edição"
-    Então eu deverei ver "Acadêmico"
   Quando eu clicar no link "Acadêmico"
     E eu deverei ver "Filtro"
   Dado que eu preenchi "autocomplete-input" de "filter_type" com "Curso de Graduacao a Distancia"
@@ -208,8 +193,6 @@ Cenário: Filtro academico - Grad a Distancia: Semestres
 Cenário: Filtro academico - Grad a Distancia: Turmas
   Dado que estou logado com o usuario "editor" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Edição"
-    Então eu deverei ver "Acadêmico"
   Quando eu clicar no link "Acadêmico"
     E eu deverei ver "Filtro"
   Dado que eu preenchi "autocomplete-input" de "filter_type" com "Curso de Graduacao a Distancia"
