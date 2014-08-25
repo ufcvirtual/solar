@@ -128,7 +128,7 @@ en_US:
   activerecord:
     models:
       course: Course
-      curriculum_unit: Curriculum Unit
+      curriculum_unit: Subject
       offer: Offer
       semester: Semester
       group: Group
@@ -244,7 +244,7 @@ en_US:
         offer: Offer
         enrollment: Enrollment
         course: Course
-        curriculum_unit: Curriculum Unit
+        curriculum_unit: Subject
         start_date: Start date
         end_date: End date
         semester: Semester
@@ -507,8 +507,8 @@ en_US:
   description: "Description"
   edition: "Edition"
   enrollment: "Enrollment"
-  my_solar_curriculum_units: "Curriculum Unit"
-  my_solar_curriculum_without: "No curriculum unit found."
+  my_solar_curriculum_units: "Subject"
+  my_solar_curriculum_without: "No subjects found."
   my_solar_uc_without_group: There are no groups
   my_solar_uc_without_offer: There are no offers
   login_data_invalid: "Login details incorrect!"
@@ -545,22 +545,22 @@ en_US:
       view_enrolled: "Enrolled"
       cancel: "Cancel"
       enroll: "Enroll"
-      curriculum_unit: "Curriculum Unit"
+      curriculum_unit: "Subject"
       category: "Category"
       group: "Class"
       title: "Enrollment"
       enrolled: "Enrolled"
       rejected: "Enrollment Rejected"
       pending: Pending
-      ucs_available: Curriculum Units Available
+      ucs_available: Subjects Available
       confirm: "Are you sure you want to cancel?"
       cancel_request: "Cancel Request"
       period: Enrollment period
       of: "of"
-      no_curriculum_unit_found: "No curriculum unit found"
+      no_curriculum_unit_found: "No subject found"
     show:
       course: Course
-      curriculum_unit: Curriculum Unit
+      curriculum_unit: Subject
       responsibles: Responsibles
       offer_period: Offer Period
       syllabus: Syllabus
@@ -590,10 +590,10 @@ en_US:
   error_no_item_selected: No item selected
   curriculum_unit_type_id: Type
   curriculum_unit_new_button: New
-  curriculum_unit_new_title: New Curriculum Unit
-  curriculum_unit_edit_title: Edit Curriculum Unit
+  curriculum_unit_new_title: New Subject
+  curriculum_unit_edit_title: Edit Subject
   curriculum_unit_delete_confirm: Are you sure you want to delete %{curriculum_unit_name}?
-  curriculum_unit_information_title: "Curriculum Unit Informartion"
+  curriculum_unit_information_title: "Subject Informartion"
   curriculum_unit_responsible: "Responsible"
   curriculum_unit_participants: "Participants"
   curriculum_access_alert: "Number of tabs exceeded. Please close a tab to open a new one."
@@ -603,7 +603,7 @@ en_US:
   curriculum_access_message_new: "New Message"
   curriculum_access_message_more: "more"
   curriculum_access_forum: "Forum"
-  curriculum_access_curriculum_unit: "Curriculum Unit"
+  curriculum_access_curriculum_unit: "Subject"
   curriculum_access_agenda: "Agenda"
   curriculum_access_view: "View"
   curriculum_access_new: " new"
@@ -625,7 +625,7 @@ en_US:
   since: Since
   no_end_date: 'On'
   lessons:
-    curriculum_unit_not_selected: Curriculum Unit not selected
+    curriculum_unit_not_selected: Subject not selected
     index:
       lesson_table_date: Access date
       lesson_table_title: "Available Lessons"
@@ -947,7 +947,7 @@ en_US:
   icon_agenda: "Agenda icon"
   icon_forum: "Forum icon"
   icon_message: "Message icon"
-  icon_curriculum_unit: "Curriculum unit icon"
+  icon_curriculum_unit: "Subject icon"
   icon_agenda_event: "Event agenda icon"
   icon_send_email: "Send mail icon"
   icon_participants: "Participants icon"
@@ -1152,7 +1152,7 @@ en_US:
   menu_institucional_assessment: Institutional Assessment
   menu_manage_assessment: Manage Assessment
   menu_response_assessment: Response Assessment
-  menu_curriculum_unit: Curriculum Unit
+  menu_curriculum_unit: Subject
   menu_manage_registration: Manage Registrations
   menu_registration: Registration
   menu_history: History
@@ -1169,7 +1169,7 @@ en_US:
   menu_home: Home
   places_nav_panel_course_hint: "Type the course's name or part of it"
   places_nav_panel_semester_hint: "Type the semester or part of it"
-  places_nav_panel_curriculum_unit_hint: "Type the curriculum unit's name or part of it"
+  places_nav_panel_curriculum_unit_hint: "Type the subject's name or part of it"
   places_nav_panel_group_hint: "Type the group's code or part of it"
   places_nav_panel_searching_text: "Searching..."
   places_nav_panel_empty_text: "No results"
@@ -1184,7 +1184,7 @@ en_US:
   start_date: "Start date"
   end_date: "End date"
   course: "Course"
-  curriculum_unit: "Curricular Unit"
+  curriculum_unit: "Subject"
   devise:
     failure:
       already_authenticated: 'You are already signed in.'
@@ -1286,7 +1286,7 @@ en_US:
   support_folder_renamed: Folder renamed successfully
   support_no_changes: No change made
   support_download_folder: Download folder
-  support_allocation_curriculum_unit: Curriculum Unit
+  support_allocation_curriculum_unit: Subject
   support_allocation_offer: Offer
   support_allocation_group: Class
   support_folder_temporary_message: 'This folder is temporary. To conclude it''s creation, send a file'
@@ -1297,7 +1297,7 @@ en_US:
       manage_title: Registrations requested
       manage_student: Student
       manage_group: Group
-      manage_curriculum_unit: Curriculum Unit
+      manage_curriculum_unit: Subject
       manage_status: Status
       manage_options: Options
       enroll_selected: Enroll Selected
@@ -1533,7 +1533,7 @@ en_US:
       group: Group
       semester: Semester
       course: Course
-      curriculum_unit: Curriculum Unit
+      curriculum_unit: Subject
       type: Type
       name: Name
       profile: Profile
@@ -1591,7 +1591,7 @@ en_US:
       profile: Profile
       type: Type
       course: Course
-      curriculum_unit: Curriculum Unit
+      curriculum_unit: Subject
       semester: Semester
       group: Group
       responsibles: Responsibles
@@ -1601,7 +1601,7 @@ en_US:
     alert: "Fill the required fields"
     academic:
       courses: "Courses"
-      curriculum_units: "Curriculum Units"
+      curriculum_units: "Subjects"
       semesters: "Semesters"
       groups: "Groups"
       modules: "Modules"
@@ -1637,9 +1637,9 @@ en_US:
       actives: "Actives"
       type: "Type*"
       course: Course
-      curriculum_unit: Curriculum Unit
+      curriculum_unit: Subject
       period: Period
-      warning: "Select a Curriculum Unit or a Course to search for all."
+      warning: "Select a Subject or a Course to search for all."
     courses:
       filter: Filter
       type: "Type*"
@@ -1648,12 +1648,12 @@ en_US:
       filter: Filter
       course: Course
       type: "Type*"
-      curriculum_unit: Curriculum Unit
+      curriculum_unit: Subject
     groups:
       filter: Filter
       type: "Type*"
       course: "Course*"
-      curriculum_unit: "Curriculum Unit*"
+      curriculum_unit: "Subject*"
       semester: "Semester*"
       warning: All items must be selected to search.
     cant_save: It wasn't possible to save
@@ -1664,7 +1664,7 @@ en_US:
       filter: Filter
       type: "Type*"
       course: "Course*"
-      curriculum_unit: "Curriculum Unit"
+      curriculum_unit: "Subject"
       module: "Module"
       semester: "Semester"
       offer: "Offer"
@@ -1672,43 +1672,43 @@ en_US:
     content:
       type: "Type*"
       course: "Course*"
-      curriculum_unit: "Curriculum Unit"
+      curriculum_unit: "Subject"
       module: "Module"
       semester: "Semester"
       offer: "Offer"
       group: "Group"
   curriculum_units:
     success:
-      created: Curriculum Unit was successfully created.
-      updated: Curriculum Unit was successfully updated.
-      deleted: Curriculum Unit was successfully deleted.
+      created: Subject was successfully created.
+      updated: Subject was successfully updated.
+      deleted: Subject was successfully deleted.
     error:
-      created: Curriculum Unit wasn't created.
-      updated: Curriculum Unit wasn't updated.
-      deleted: Curriculum Unit wasn't deleted.
+      created: Subject wasn't created.
+      updated: Subject wasn't updated.
+      deleted: Subject wasn't deleted.
     index:
       new_course: New Course
       new_module: New Module
-      new_curriculum_unit: New Curriculum Unit
+      new_curriculum_unit: New Subject
       edit: Edit %{uc_or_module}
       delete: Delete %{uc_or_module}
-      curriculum_unit: Curriculum Unit
+      curriculum_unit: Subject
       module: Module
       course: Course
       new: New %{uc_or_module}
-      cant_edit: Can't edit this curriculum unit
-      choose_at_least_one: "Choose at least one curriculum unit"
+      cant_edit: Can't edit this subject
+      choose_at_least_one: "Choose at least one subject"
     form:
       save: Save
       cancel: Cancel
       new_course: New Course
       new_module: New Module
-      new_curriculum_unit: New Curriculum Unit
+      new_curriculum_unit: New Subject
       edit_course: Edit Course
       edit_module: Edit Module
-      edit_curriculum_unit: Edit Curriculum Unit
+      edit_curriculum_unit: Edit Subject
     informations:
-      warning: "<b>Important:</b> This course has no curriculum unit, therefore some information is not available."
+      warning: "<b>Important:</b> This course has no subject, therefore some information is not available."
     users:
       message: Send message
       public_files: See public files
@@ -1746,7 +1746,7 @@ en_US:
     list:
       type: Type
       course: Course
-      curriculum_unit: Curriculum Unit
+      curriculum_unit: Subject
       offer: Offer
       offer_edit: Edit Offer
       offer_delete: Delete Offer
@@ -1762,7 +1762,7 @@ en_US:
       edit: Edit
       delete: Delete
       course: Course
-      curriculum_unit: Curriculum Unit
+      curriculum_unit: Subject
       date_range: Date range
       enrollment_period: Enrollment date range
       semester: Semester
@@ -1779,7 +1779,7 @@ en_US:
       cancel: Cancel
       date_range: Date range
       course: Course
-      curriculum_unit: Curriculum Unit
+      curriculum_unit: Subject
       to: to
       end_offer: End
       all: All
@@ -2155,7 +2155,7 @@ en_US:
       profile: "Profile* "
       type: Type
       course: Course
-      curriculum_unit: Curriculum Unit
+      curriculum_unit: Subject
       module: Module
       semester: Semester
       offer: Offer
@@ -2167,7 +2167,7 @@ en_US:
       profile: Profile
       type: Type
       course: Course
-      curriculum_unit: Curriculum Unit
+      curriculum_unit: Subject
       group: Group
       semester: Semester
       status: Status

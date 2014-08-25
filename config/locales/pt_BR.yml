@@ -170,7 +170,7 @@ pt_BR:
   activerecord:
     models:
       course: Curso
-      curriculum_unit: Unidade Curricular
+      curriculum_unit: Disciplina
       offer: Oferta
       semester: Semestre
       group: Turma
@@ -296,7 +296,7 @@ pt_BR:
         offer: Oferta
         enrollment: Matrícula
         course: Curso
-        curriculum_unit: Unidade Curricular
+        curriculum_unit: Disciplina
         start_date: Data inicial
         end_date: Data final
         semester: Semestre
@@ -645,9 +645,9 @@ pt_BR:
   enrollment: "Matrícula"
 
   # portlets do meu solar
-  # Unidades curriculares
-  my_solar_curriculum_units: "Unidade Curricular"
-  my_solar_curriculum_without: "Nenhuma unidade curricular encontrada."
+  # Disciplina
+  my_solar_curriculum_units: "Disciplina"
+  my_solar_curriculum_without: "Nenhuma disciplina encontrada."
   my_solar_uc_without_group: Não há turmas
   my_solar_uc_without_offer: Não há ofertas
 
@@ -718,10 +718,10 @@ pt_BR:
       cancel_request: "Cancelar pedido"
       period: Período de matrícula
       of: "por"
-      no_curriculum_unit_found: "Nenhuma unidade curricular encontrada"
+      no_curriculum_unit_found: "Nenhuma disciplina encontrada"
     show:
       course: Curso
-      curriculum_unit: Unidade Curricular
+      curriculum_unit: Disciplina
       responsibles: Responsáveis
       offer_period: Período de Oferta
       syllabus: Ementa
@@ -744,7 +744,7 @@ pt_BR:
   enrollm_acepted_message: "Matrícula efetivada."
   enrollm_rejected_message: "Matrícula rejeitada."
 
-  # informacoes da unidade curricular
+  # informacoes da disciplina
   syllabus: "Ementa"
   objectives: "Objetivos"
   prerequisites: "Pré-requisitos"
@@ -755,10 +755,10 @@ pt_BR:
   curriculum_unit_type_id: Categoria
   curriculum_unit_new_button: Nova
 
-  curriculum_unit_new_title: Nova Unidade Curricular
-  curriculum_unit_edit_title: Editar Unidade Curricular
+  curriculum_unit_new_title: Nova Disciplina
+  curriculum_unit_edit_title: Editar Disciplina
   curriculum_unit_delete_confirm: Tem certeza de que deseja excluir %{curriculum_unit_name}?
-  curriculum_unit_information_title: "Informações da Unidade Curricular"
+  curriculum_unit_information_title: "Informações da Disciplina"
   curriculum_unit_responsible: "Responsáveis"
   curriculum_unit_participants: "Participantes da turma"
   curriculum_access_alert: "Número de abas excedido. Por favor, feche uma aba para abrir uma nova."
@@ -768,7 +768,7 @@ pt_BR:
   curriculum_access_message_new: "Nova Mensagem"
   curriculum_access_message_more: "mais"
   curriculum_access_forum: "Fórum"
-  curriculum_access_curriculum_unit: "Unidade Curricular"
+  curriculum_access_curriculum_unit: "Disciplina"
   curriculum_access_agenda: "Agenda"
   curriculum_access_view: "Visualizar"
   curriculum_access_new: " novas"
@@ -792,7 +792,7 @@ pt_BR:
   no_end_date: Em diante
 
   lessons:
-    curriculum_unit_not_selected: Unidade Curricular não selecionada
+    curriculum_unit_not_selected: Disciplina não selecionada
     index:
       lesson_table_date: Data de acesso
       lesson_table_title: "Aulas disponíveis"
@@ -1129,7 +1129,7 @@ pt_BR:
   icon_agenda: "Ícone da agenda"
   icon_forum: "Ícone do fórum"
   icon_message: "Ícone de mensagem"
-  icon_curriculum_unit: "Ícone de unidade curricular"
+  icon_curriculum_unit: "Ícone de disciplina"
   icon_lesson: "Ícone de aula"
   icon_agenda_event: "Ícone de evento da agenda"
   icon_send_email: "Ícone de enviar email"
@@ -1359,7 +1359,7 @@ pt_BR:
   menu_institucional_assessment: Avaliacao Institucional
   menu_manage_assessment: Gerenciar Avaliacoes
   menu_response_assessment: Responder Avaliação
-  menu_curriculum_unit: Unidade Curricular
+  menu_curriculum_unit: Disciplina
   menu_manage_registration: Gerenciar Matrículas
   menu_registration: Matrícula
   menu_history: Historico
@@ -1400,7 +1400,7 @@ pt_BR:
   start_date: "Data inicial"
   end_date: "Data final"
   course: "Curso"
-  curriculum_unit: "Unidade Curricular"
+  curriculum_unit: "Disciplina"
 
   devise:
     failure:
@@ -1507,7 +1507,7 @@ pt_BR:
   support_folder_renamed: Pasta renomeada com sucesso
   support_no_changes: Nenhuma alteração feita
   support_download_folder: Baixar pasta
-  support_allocation_curriculum_unit: Unidade Curricular
+  support_allocation_curriculum_unit: Disciplina
   support_allocation_offer: Oferta
   support_allocation_group: Turma
   support_folder_temporary_message: 'Esta pasta é temporária. Para concluir sua criação, envie um arquivo'
@@ -1522,7 +1522,7 @@ pt_BR:
       manage_title: Matrículas Solicitadas
       manage_student: Aluno
       manage_group: Turma
-      manage_curriculum_unit: Unidade Curricular
+      manage_curriculum_unit: Disciplina
       manage_status: Status
       manage_options: Opções
       enroll_selected: Matricular Selecionados
@@ -1766,7 +1766,7 @@ pt_BR:
       group: Turma
       semester: Semestre
       course: Curso
-      curriculum_unit: Unid. Curricular
+      curriculum_unit: Disciplina
       type: Tipo
       name: Nome
       profile: Perfil
@@ -1824,7 +1824,7 @@ pt_BR:
       profile: Perfil
       type: Tipo
       course: Curso
-      curriculum_unit: Unidade Curricular
+      curriculum_unit: Disciplina
       semester: Semestre
       group: Turma
       responsibles: Responsáveis
@@ -1835,7 +1835,7 @@ pt_BR:
     alert: "Preencha os campos obrigatórios"
     academic:
       courses: "Cursos"
-      curriculum_units: "Unidades Curriculares"
+      curriculum_units: "Disciplinas"
       semesters: "Semestres"
       groups: "Turmas"
       modules: "Módulos"
@@ -1872,9 +1872,9 @@ pt_BR:
       actives: "Ativos"
       type: "Tipo*"
       course: Curso
-      curriculum_unit: Unidade Curricular
+      curriculum_unit: Disciplina
       period: Período
-      warning: "Selecione uma Unidade Curricular ou um Curso para pesquisar por todos."
+      warning: "Selecione uma Disciplina ou um Curso para pesquisar por todos."
     courses:
       filter: Filtro
       type: "Tipo*"
@@ -1883,12 +1883,12 @@ pt_BR:
       filter: Filtro
       course: Curso
       type: "Tipo*"
-      curriculum_unit: Unidade Curricular
+      curriculum_unit: Disciplina
     groups:
       filter: Filtro
       type: "Tipo*"
       course: "Curso*"
-      curriculum_unit: "Unidade Curricular*"
+      curriculum_unit: "Disciplina*"
       semester: "Semestre*"
       warning: Todos os itens devem ser selecionados para realizar a pesquisa.
     cant_save: Não foi possível salvar
@@ -1899,7 +1899,7 @@ pt_BR:
       filter: Filtro
       type: "Tipo*"
       course: "Curso*"
-      curriculum_unit: "Unidade Curricular"
+      curriculum_unit: "Disciplina"
       module: "Módulo"
       semester: "Semestre"
       offer: "Oferta"
@@ -1907,7 +1907,7 @@ pt_BR:
     content:
       type: "Tipo*"
       course: "Curso*"
-      curriculum_unit: "Unidade Curricular"
+      curriculum_unit: "Disciplina"
       module: "Módulo"
       semester: "Semestre"
       offer: "Oferta"
@@ -1915,36 +1915,36 @@ pt_BR:
 
   curriculum_units:
     success:
-      created: Unidade Curricular criada com sucesso.
-      updated: Unidade Curricular atualizada com sucesso.
-      deleted: Unidade Curricular deletada com sucesso.
+      created: Disciplina criada com sucesso.
+      updated: Disciplina atualizada com sucesso.
+      deleted: Disciplina deletada com sucesso.
     error:
-      created: Não foi possível criar Unidade Curricular.
-      updated: Não foi possível atualizar Unidade Curricular.
-      deleted: Não foi possível deletar Unidade Curricular.
+      created: Não foi possível criar Disciplina.
+      updated: Não foi possível atualizar Disciplina.
+      deleted: Não foi possível deletar Disciplina.
     index:
       new_course: Novo Curso
       new_module: Novo Módulo
-      new_curriculum_unit: Nova Unidade Curricular
+      new_curriculum_unit: Nova Disciplina
       edit: Editar %{uc_or_module}
       delete: Excluir %{uc_or_module}
-      curriculum_unit: Unidade Curricular
+      curriculum_unit: Disciplina
       module: Módulo
       course: Curso
       new: Novo %{uc_or_module}
-      cant_edit: Não é possível editar esta unidade curricular
-      choose_at_least_one: "Selecione, ao menos, uma unidade curricular"
+      cant_edit: Não é possível editar esta disciplina
+      choose_at_least_one: "Selecione, ao menos, uma disciplina"
     form:
       save: Salvar
       cancel: Cancelar
       new_course: Novo Curso
       new_module: Novo Módulo
-      new_curriculum_unit: Nova Unidade Curricular
+      new_curriculum_unit: Nova Disciplina
       edit_course: Editar Curso
       edit_module: Editar Módulo
-      edit_curriculum_unit: Editar Unidade Curricular
+      edit_curriculum_unit: Editar Disciplina
     informations:
-      warning: "<b>Importante:</b> Este curso não possui uma unidade curricular, portanto algumas informações não estão disponíveis."
+      warning: "<b>Importante:</b> Este curso não possui uma disciplina, portanto algumas informações não estão disponíveis."
     users:
       message: Enviar mensagem
       public_files: Visualizar arquivos públicos
@@ -1984,7 +1984,7 @@ pt_BR:
     list:
       type: Tipo
       course: Curso
-      curriculum_unit: Unidade Curricular
+      curriculum_unit: Disciplina
       offer: Oferta
       offer_edit: Editar Oferta
       offer_delete: Deletar Oferta
@@ -2000,7 +2000,7 @@ pt_BR:
       edit: Editar
       delete: Excluir
       course: Curso
-      curriculum_unit: Unidade Curricular
+      curriculum_unit: Disciplina
       date_range: Período
       enrollment_period: Período de Matrícula
       semester: Semestre
@@ -2017,7 +2017,7 @@ pt_BR:
       cancel: Cancelar
       date_range: Período
       course: Curso
-      curriculum_unit: Unidade Curricular
+      curriculum_unit: Disciplina
       to:  a
       end_offer: Fim
       all: Todos(as)
@@ -2414,7 +2414,7 @@ pt_BR:
       profile: "Perfil* "
       type: Tipo
       course: Curso
-      curriculum_unit: Unidade Curricular
+      curriculum_unit: Disciplina
       module: Módulo
       semester: Semestre
       offer: Oferta
@@ -2426,7 +2426,7 @@ pt_BR:
       profile: Perfil
       type: Tipo
       course: Curso
-      curriculum_unit: Unidade Curricular
+      curriculum_unit: Disciplina
       group: Turma
       semester: Semestre
       status: Status
