@@ -28,8 +28,14 @@ end
 
 Quando /^eu clicar na opcao "([^"]*)" do item de matricula "([^"]*)" do semestre "([^"]*)"$/ do |link, texto, semestre|
   xpath = "//table/tbody/tr[ child::td[contains(.,'#{texto}')] and child::td[contains(.,'#{semestre}')] ]"
+  # page.should have_xpath(xpath)
   within(:xpath, xpath) do
-    find_button("#{link}").click
+    find_link("#{link}").click
   end
+  # page.driver.browser.switch_to.alert.accept
   #find("table tbody tr td", :text => texto)
+end
+
+E /^eu confirmarei a ação$/ do
+  page.driver.browser.switch_to.alert.accept
 end

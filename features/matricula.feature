@@ -31,15 +31,17 @@ Cenário: Listar cursos matriculados ou disponíveis
     | Teoria da Literatura I        | Curso de Graduacao Presencial       | SP-CAU  | Matricular  |
     # A última linha a não ser apresentada faz referência à uma oferta cujo período de matrícula tem fim indefinido e data final da oferta anterior ao dia atual
 
+@javascript
 Cenário: Pedir cancelamento de matricula
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Matricula"
   Quando eu clicar na opcao "Cancelar" do item de matricula "Introducao a Linguistica" do semestre "2011.1"
+  E eu confirmarei a ação
   Então eu deverei ver a linha de opcao de matricula
     | Disciplina                    | Categoria                           | Turma   | Matricula       |
     | Introducao a Linguistica      | Curso Livre                         | IL-FOR  | Matricular      |
     | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | LB-CAR  | Cancelar pedido |
-    | Quimica I                     | Curso de Graduacao a Distancia      | QM-CAU  | Matriculado     |
+    | Quimica I                     | Curso de Graduacao a Distancia      | QM-CAU  | Cancelar        |
     | Teoria da Literatura I        | Curso de Graduacao Presencial       | TL-CAU  | Matricular      |
 
 Cenário: Pedir matricula em curso disponível
@@ -47,7 +49,7 @@ Cenário: Pedir matricula em curso disponível
     E que estou em "Matricula"
   Quando eu clicar na opcao "Matricular" do item de matricula "Teoria da Literatura I" do semestre "2011.1"
   Então eu deverei ver a linha de opcao de matricula
-    | UnidadeCurricular             | Categoria                           | Turma   | Matricula       |
+    | Disciplina                    | Categoria                           | Turma   | Matricula       |
     | Introducao a Linguistica      | Curso Livre                         | IL-FOR  | Cancelar        |
     | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | LB-CAR  | Cancelar pedido |
     | Quimica I                     | Curso de Graduacao a Distancia      | QM-CAU  | Matriculado     |
