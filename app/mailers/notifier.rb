@@ -21,4 +21,10 @@ class Notifier < ActionMailer::Base
          subject: t(:subject, scope: [:notifier, :enrollment_accepted]))
   end
 
+  def new_user(user, password)
+    @user, @password = user, password
+    mail(to: @user.email,
+         subject: "[SOLAR] Novo Cadastro")
+  end
+
 end

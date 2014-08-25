@@ -194,4 +194,29 @@ describe "Integrations" do
 
   end # .event
 
+
+  describe ".user" do
+
+    describe "/" do
+
+      context "with valid ip" do
+        context "and valid data" do
+          it {
+            user = {
+              name: "Usuario novo", nick: "usuario novo", cpf: "69278278203", birthdate: "1980-10-17", gender: true, email: "email@email.com"
+            }
+
+            expect{
+              post "/api/v1/integration/user/", user
+
+              response.status.should eq(201)
+            }.to change{User.where(cpf: "69278278203").count}.by(1)
+          }
+        end
+      end
+
+    end
+
+  end # .user
+
 end

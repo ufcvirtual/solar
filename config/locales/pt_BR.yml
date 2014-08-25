@@ -1617,7 +1617,6 @@ pt_BR:
   notifier:
     enrollment_accepted:
       subject: "[SOLAR] Matrícula aceita"
-
   assignments:
     index:
       expand_enunciation: Expandir enunciado

@@ -1,0 +1,11 @@
+!!!
+%html
+  %head
+    %meta{:charset => "utf-8"}
+    %meta{"http-equiv" => "X-UA-Compatible", :content => "IE=edge,chrome=1"}
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
+    %title= "Solar"
+    = yield(:head)
+  %body
+    %p= raw "Caro #{@user.name}, <br/><br/> Foi realizado um cadastro para este email no AVA - Ambiente Virtual de Aprendizagem, SOLAR 2.0. <br/> Para acessar o ambiente, acesse o link 'Acesso ao Solar' abaixo com os seguintes dados: <br/> Login: #{@user.username}  <br/> Senha: #{@password}"
+    %p= = link_to('Acesso ao Solar', home_url(only_path: false))
