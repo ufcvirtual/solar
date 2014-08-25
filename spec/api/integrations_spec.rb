@@ -202,9 +202,7 @@ describe "Integrations" do
       context "with valid ip" do
         context "and valid data" do
           it {
-            user = {
-              name: "Usuario novo", nick: "usuario novo", cpf: "69278278203", birthdate: "1980-10-17", gender: true, email: "email@email.com"
-            }
+            user = { name: "Usuario novo", nick: "usuario novo", cpf: "69278278203", birthdate: "1980-10-17", gender: true, email: "email@email.com" }
 
             expect{
               post "/api/v1/integration/user/", user
@@ -212,6 +210,29 @@ describe "Integrations" do
               response.status.should eq(201)
             }.to change{User.where(cpf: "69278278203").count}.by(1)
           }
+        end
+
+        context "and invalid data" do
+          it {
+            user = { name: "Usuario novo", nick: "usuario novo", cpf: "69278278203", birthdate: "1980-10-17", gender: true } # missing email
+
+            expect{
+              post "/api/v1/integration/user/", user
+
+              response.status.should eq(400)
+            }.to change{User.where(cpf: "69278278203").count}.by(0)
+          }
+        end
+      end
+
+      context "with invalid ip" do
+        it "gets a not found error" do
+          user = { name: "Usuario novo", nick: "usuario novo", cpf: "69278278203", birthdate: "1980-10-17", gender: true, email: "email@email.com" }
+
+          expect{
+            post "/api/v1/integration/user/", user, "REMOTE_ADDR" => "127.0.0.2"
+            response.status.should eq(404)
+          }.to change{User.where(cpf: "69278278203").count}.by(0)
         end
       end
 

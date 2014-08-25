@@ -118,9 +118,9 @@ module V1
             user.update_attribute :password, nil
 
             Thread.new do
-              Mutex.new.synchronize do # utilizado para organizar/controlar o comportamento das threads
-                Notifier.new_user(user.email, new_password).deliver
-              end
+              Mutex.new.synchronize {
+                Notifier.new_user(user, new_password).deliver
+              }
             end
           end
 

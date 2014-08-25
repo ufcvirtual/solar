@@ -7,5 +7,5 @@
     %title= "Solar"
     = yield(:head)
   %body
-    %p= raw "Caro #{@user.name}, <br/><br/> Foi realizado um cadastro para este email no AVA - Ambiente Virtual de Aprendizagem, SOLAR 2.0. <br/> Para acessar o ambiente, acesse o link 'Acesso ao Solar' abaixo com os seguintes dados: <br/> Login: #{@user.username}  <br/> Senha: #{@password}"
-    %p= = link_to('Acesso ao Solar', home_url(only_path: false))
+    %p= raw "Caro(a) #{@user.name}, <br/><br/> Foi realizado um cadastro para este email no AVA - Ambiente Virtual de Aprendizagem, SOLAR 2.0. <br/> Para acessar o ambiente, acesse o link 'Acesso ao Solar' abaixo com os seguintes dados: <br/> Usuário: #{@user.username}  <br/> Senha: #{@password}"
+    %p= link_to('Acesso ao Solar', home_url(only_path: false))
