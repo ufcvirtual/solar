@@ -325,13 +325,13 @@ acaal55:
  id: 55
  allocation_tag_id: 6
  academic_tool_id: 1
- academic_tool_type: "LessonModule" 
+ academic_tool_type: "LessonModule"
 
 acaal56:
  id: 56
  allocation_tag_id: 6
  academic_tool_id: 2
- academic_tool_type: "LessonModule"                  
+ academic_tool_type: "LessonModule"
 
 acaal57:
   id: 57

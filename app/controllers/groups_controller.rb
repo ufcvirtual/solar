@@ -114,16 +114,16 @@ class GroupsController < ApplicationController
     groups = Group.where(id: params[:id].split(","))
     authorize! :change_tool, Group, on: [groups.map(&:allocation_tag).map(&:id)]
 
-    begin 
+    begin
 
       if params[:type] == "add"
-        AcademicAllocation.transaction do 
+        AcademicAllocation.transaction do
           AcademicAllocation.create! groups.map {|group| {allocation_tag_id: group.allocation_tag.id, academic_tool_id: params[:tool_id], academic_tool_type: params[:tool_type]}}
         end
       else
         group = groups.first
         academic_allocation = AcademicAllocation.where(allocation_tag_id: group.allocation_tag.id, academic_tool_type: params[:tool_type], academic_tool_id: params[:tool_id]).first
-        
+
         tool_model = params[:tool_type].constantize
         tool = tool_model.find(params[:tool_id])
 
@@ -152,11 +152,11 @@ class GroupsController < ApplicationController
       render json: {success: true, notice: t("#{params[:type]}", scope: [:groups, :success])}
     rescue ActiveRecord::RecordNotSaved
       render json: {success: false, alert: t(:academic_allocation_already_exists, scope: [:groups, :error])}, status: :unprocessable_entity
-    rescue Exception => error
+    rescue => error
       error_message = I18n.translate!("#{error.message}", scope: [:groups, :error], :raise => true) rescue t("tool_change", scope: [:groups, :error])
       render json: {success: false, alert: error_message}, status: :unprocessable_entity
     end
-    
+
   end
 
 end

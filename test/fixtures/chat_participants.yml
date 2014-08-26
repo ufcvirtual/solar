@@ -1,14 +1,14 @@
-participant_chat2_user: 
+participant_chat2_user:
   id: 1
-  chat_room_id: 2
+  academic_allocation_id: 19 # group 3
   allocation_id: 2
 
 participant_chat2_aluno3:
   id: 2
-  chat_room_id: 2
+  academic_allocation_id: 19 # group 3
   allocation_id: 19
 
-participant_chat2_aluno1: 
+participant_chat2_aluno1:
   id: 3
-  chat_room_id: 2
+  academic_allocation_id: 19 # group 3
   allocation_id: 11

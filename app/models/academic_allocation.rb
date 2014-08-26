@@ -8,10 +8,17 @@ class AcademicAllocation < ActiveRecord::Base
   has_many :group_assignments, dependent: :destroy
 
   # Discussion
-  has_many :discussion_posts, class_name: "Post", dependent: :destroy
+  has_many :discussion_posts, class_name: 'Post', dependent: :destroy
 
   # Chat
+  belongs_to :chat_room, foreign_key: 'academic_tool_id'
+
   has_many :chat_messages, dependent: :destroy
+  has_many :participants, class_name: 'ChatParticipant', inverse_of: :academic_allocation, autosave: true, dependent: :destroy
+
+  accepts_nested_attributes_for :participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == '0' }
+
+  attr_accessible :participants_attributes, :allocation_tag_id, :academic_tool_id, :academic_tool_type
 
   validate :verify_assignment_offer_date_range, if: :is_assignment?
 
@@ -52,7 +59,13 @@ class AcademicAllocation < ActiveRecord::Base
 
     ## verifica se já existe uma AcademicAllocation com todos os dados iguais
     def verify_uniqueness
-      errors.add(:base, I18n.t(:uniqueness, scope: [:activerecord, :errors])) unless AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_type: academic_tool_type, academic_tool_id: academic_tool_id).empty?
+      err = false
+
+      if new_record? or (allocation_tag_id_changed? or academic_tool_type_changed? or academic_tool_id_changed?) # na criacao ou algum campo modificado na atualizacao
+        err = true if AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_type: academic_tool_type, academic_tool_id: academic_tool_id).any?
+      end
+
+      errors.add(:base, I18n.t(:uniqueness, scope: [:activerecord, :errors])) if err
     end
 
     # Métodos destinados ao Assignment

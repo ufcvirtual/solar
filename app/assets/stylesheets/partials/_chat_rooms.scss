@@ -78,18 +78,22 @@
 }
 
 .chat_list .dropdown-menu{
- overflow-y: scroll;
- max-height: 100px;
- padding: 3px;
- padding-top: 6px;
+  overflow-y: scroll;
+  max-height: 100px;
+  padding: 3px;
+  padding-top: 6px;
 }
 
 .chat_list .dropdown-menu li{
- white-space: nowrap;
+  white-space: nowrap;
 }
 
 .chat_list .dropdown-link a{
- vertical-align:bottom;
+  vertical-align:bottom;
+}
+
+a.chat_list {
+  cursor: pointer;
 }
 
 .chat_messages{

@@ -1,8 +1,8 @@
-.block_wrapper 
+.block_wrapper
   .block_title
     %h2= t(".title_my_chats")
   - unless @my_chats.empty?
-    = render partial: "chats", locals: {chats: @my_chats, history: true}
+    = render partial: "chats", locals: {chats: @my_chats, history: true, can_open_link: true}
   - else
     .block_content_text_list.text_none= t(".message_no_chat")
 
@@ -10,7 +10,7 @@
     .block_title
       %h2= t(:title_other_chats, scope: [:chat_rooms, :list])
     - unless @other_chats.empty?
-      = render partial: "chats", locals: {chats: @other_chats, history: false}
+      = render partial: "chats", locals: {chats: @other_chats, history: false, can_open_link: false}
     - else
       .block_content_text_list.text_none= t(".message_no_chat")
 

@@ -1,54 +1,62 @@
 .new_chat
   = simple_form_for @chat_room, html: {id: 'chat_form', multipart: true}, defaults: {required: true} do |f|
-    %h1#lightBoxDialogTitle= t((@chat_room.persisted? ? :edit_chat : :new_chat), scope: "chat_rooms.index")
+    %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit_chat : :new_chat), scope: "chat_rooms.index")
     %span.form_requirement= t(:required_fields)
 
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
     .form-inputs.block_content
-      = f.input :title, :maxlength => 250
+      = f.input :title, maxlength: 250
       = f.input :description, required: false
 
       .schedule_dates
         .left
           = f.fields_for :schedule, defaults: {required: true} do |s|
-            = s.input :start_date, as: :string, input_html: {id: 'chat_start_date', value: l(@chat_room.schedule.start_date.to_date, format: :datepicker)}
-            = s.input :end_date, as: :string, input_html: {id: 'chat_end_date', value: l(@chat_room.schedule.end_date.to_date, format: :datepicker)}
+            = s.input :start_date, as: :string, input_html: {id: 'chat_start_date', value: l(f.object.schedule.start_date.to_date, format: :datepicker)}
+            = s.input :end_date, as: :string, input_html: {id: 'chat_end_date', value: l(f.object.schedule.end_date.to_date, format: :datepicker)}
 
         .right
           = f.input :start_hour
           = f.input :end_hour
 
-      %div
-        = f.label t(".participants")
-        %span.participants
-          = f.check_box :chat_type, {checked: (@chat_room.chat_type == 1), id: :chat_room_type}
-          #participants_box
-            %span{id: (@chat_room.chat_type == 1 ? "tab" : "define_participants")}
-              = f.label :type, t(".define_participants")
-            .box{class: (@chat_room.chat_type == 1 ? "" : "invisible")}
-              - unless @allocations.empty?
-                %div
-                  = check_box_tag :all_participants, false, (@allocations.size == @chat_room.participants.size), {:"data-children-names" => "chat_room[participants_attributes]"}
-                  = label_tag :all_participants, t(".all_participants")
-                  %br
-                  - cr_ids = @chat_room.participants.map(&:allocation_id)
-                  = f.simple_fields_for(:participants, setup_chat_room(@chat_room, @allocations)) do |p|
-                    = p.check_box :_destroy, {checked: (p.object.persisted? or cr_ids.include?(p.object.allocation_id))}, '0', '1'
-                    = p.label :_destroy, p.object.allocation.user_name
-                    = p.hidden_field :allocation_id
-                    %br
-              - else
-                = t(".empty_group")
+      / groups
+      .academic_allocations
+        = f.simple_fields_for :academic_allocations do |f_aca|
+          = f_aca.input :id, as: :hidden
+          = f_aca.hidden_field :allocation_tag_id
 
-      = render "groups/codes"
+          - if @groups_codes.count < 2 # nao apresenta escolha de participantes para mais de uma turma
+
+            %div
+              = f.label t('.participants')
+              %span.participants
+                = f.check_box :chat_type, {checked: (f.object.chat_type == 1), id: :chat_room_type}
+                #participants_box
+                  %span{id: (f.object.chat_type == 1 ? 'tab' : 'define_participants')}
+                    = f.label :type, t('.define_participants')
+                  .box{class: (f.object.chat_type == 1 ? '' : 'invisible')}
+                    - if @allocations.any?
+                      %div
+                        = check_box_tag :all_participants, false, (@allocations.size == f.object.participants.size), {:'data-children-names' => 'chat_room[academic_allocations_attributes][0][participants_attributes]'}
+                        = label_tag :all_participants, t('.all_participants')
+                        %br
+                        - cr_ids = f.object.participants.pluck(:allocation_id)
+                        = f_aca.simple_fields_for :participants, setup_chat_room(f.object, @allocations) do |p|
+                          = p.check_box :_destroy, {checked: (p.object.persisted? or cr_ids.include?(p.object.allocation_id))}, '0', '1'
+                          = p.label :_destroy, p.object.allocation.user_name
+                          = p.hidden_field :allocation_id
+                          %br
+                    - else
+                      = t('.empty_group')
+
+      = render 'groups/codes'
 
       .right_buttons
-        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
-        = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", id: "save"
+        = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
+        = button_tag t(:save), class: 'btn btn_main btn_lightbox', type: 'button', id: 'save'
 
-= javascript_include_tag "chat_rooms"
-    
+= javascript_include_tag 'chat_rooms'
+
 :javascript
 
   var start_date = "#{@chat_room.schedule.start_date}";

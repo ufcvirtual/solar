@@ -42,8 +42,13 @@ class ChatRoomTest < ActiveSupport::TestCase
 
   test "deve cadastrar chat_participants caso escolha algum" do 
     chat = ChatRoom.create(title: "Chat 01", start_hour: "10:10", end_hour: "10:12", schedule_attributes: {start_date: Date.today, end_date: Date.today+1.day}, 
-      participants_attributes: {"0" => {_destroy: 0, allocation_id: 2}})
-    
+      academic_allocations_attributes: {'0' => {
+          allocation_tag_id: 3,
+          participants_attributes: {"0" => {_destroy: 0, allocation_id: 2}}
+        }
+      }
+    )
+
     # allocation_id 2 => Quimica I / Usuário do sistema
 
     assert chat.valid?

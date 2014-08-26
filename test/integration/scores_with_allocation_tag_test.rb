@@ -195,6 +195,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     login(users(:professor))
     get @quimica_tab
     get scores_path
+
     assert_response :success
     assert_not_nil assigns(:group)
     assert_not_nil assigns(:assignments)

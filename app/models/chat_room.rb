@@ -2,17 +2,18 @@ class ChatRoom < Event
 
   GROUP_PERMISSION = true
 
-  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
-  has_many :messages, class_name: "ChatMessage", through: :academic_allocations, source: :chat_messages
-  has_many :participants, class_name: "ChatParticipant", dependent: :destroy
-  has_many :allocation_tags, through: :academic_allocations
-  has_many :groups, through: :allocation_tags
-  has_many :users, through: :participants, select: [:name, :nick], order: :name
-  has_many :allocations, through: :participants
-
   belongs_to :schedule
 
+  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
+  has_many :messages, class_name: "ChatMessage", through: :academic_allocations, source: :chat_messages
+  has_many :participants, class_name: "ChatParticipant", through: :academic_allocations#, source: :chat_participants
+  has_many :allocation_tags, through: :academic_allocations
+  has_many :groups, through: :allocation_tags
+  has_many :users, through: :participants, select: [:name, :nick], order: :name, uniq: true
+  has_many :allocations, through: :participants
+
   accepts_nested_attributes_for :schedule
+  accepts_nested_attributes_for :academic_allocations
 
   validates :title, :start_hour, :end_hour, presence: true
 
@@ -20,9 +21,7 @@ class ChatRoom < Event
 
   validate :verify_hours, unless: Proc.new { |a| a.start_hour.blank? or a.end_hour.blank?}
 
-  accepts_nested_attributes_for :participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == "0" }
-
-  attr_accessible :participants_attributes, :title, :start_hour, :end_hour, :description, :schedule_attributes, :chat_type, :schedule_id
+  attr_accessible :schedule_attributes, :academic_allocations_attributes, :title, :start_hour, :end_hour, :description, :chat_type, :schedule_id
 
   before_destroy :can_destroy?
   after_destroy :delete_schedule
@@ -46,20 +45,20 @@ class ChatRoom < Event
   end
 
   def delete_schedule
-    self.schedule.destroy
+    self.schedule.try(:destroy)
   end
 
   def can_destroy?
-    unless user_messages.empty?
+    if user_messages.any?
       errors.add(:base, I18n.t(:chat_has_messages, scope: [:chat_rooms, :error]))
       return false
     end
     return true
   end
 
-  def copy_dependencies_from(chat_to_copy)
-    ChatParticipant.create! chat_to_copy.participants.map {|participant| participant.attributes.merge({chat_room_id: self.id})} unless chat_to_copy.participants.empty?
-  end
+  # def copy_dependencies_from(chat_to_copy)
+  #   ChatParticipant.create! chat_to_copy.participants.map {|participant| participant.attributes.merge({chat_room_id: self.id})} unless chat_to_copy.participants.empty?
+  # end
 
   def can_remove_or_unbind_group?(group)
     user_messages.empty? # não pode dar unbind nem remover se chat possuir mensagens
@@ -80,35 +79,23 @@ class ChatRoom < Event
     AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(user_id)
   end
 
-  def self.chats_user(allocation_tag_id, user_id)
-    if responsible?(allocation_tag_id, user_id)
-      # responsavel: devolve todas as salas de chat
-      ChatRoom.joins(:academic_allocations, :allocation_tags, :schedule)
-        .select("chat_rooms.*, schedules.start_date, schedules.end_date")
-        .where(allocation_tags: {id: allocation_tag_id})
-        .order("schedules.start_date").uniq
+  def self.chats_user(user_id, allocation_tag_id)
+    all_chats = ChatRoom.joins(:academic_allocations, :schedule) \
+      .select('DISTINCT chat_rooms.*, schedules.start_date, schedules.end_date') \
+      .where(academic_allocations: {allocation_tag_id: allocation_tag_id}) \
+      .order('schedules.start_date')
+
+    my, others = if responsible?(allocation_tag_id, user_id)
+      [all_chats, []]
     else
-      my = ChatRoom.joins(:academic_allocations, :allocation_tags, :participants, :users, :schedule)
-        .select("chat_rooms.*, schedules.start_date, schedules.end_date")
-        .where(allocation_tags: {id: allocation_tag_id}, users: {id: user_id})
-        .order("schedules.start_date").uniq
+      without_user = all_chats.joins('LEFT JOIN chat_participants AS cp ON cp.academic_allocation_id = academic_allocations.id').where('cp.academic_allocation_id IS NULL')
+      my = all_chats.joins(:participants, :allocations).where(allocations: {user_id: user_id})
+      others = (all_chats - without_user) - my
 
-      open = ChatRoom.joins(:academic_allocations, :allocation_tags, :schedule)
-        .select("chat_rooms.*, schedules.start_date, schedules.end_date")
-        .where(allocation_tags: {id: allocation_tag_id}, chat_type: 0)
-        .order("schedules.start_date").uniq
-      
-      my + open # devolve as salas de chat em que o usuário está mais as salas abertas que não definem participantes
+      [(my + without_user), others]
     end
-  end
 
-  def self.chats_other_users(allocation_tag_id, user_id)
-    all = ChatRoom.joins(:academic_allocations, :allocation_tags, :schedule)
-      .select("chat_rooms.*, schedules.start_date, schedules.end_date")
-      .where(allocation_tags: {id: allocation_tag_id})
-      .order("schedules.start_date").uniq
-
-    all - chats_user(allocation_tag_id, user_id) # devolve as salas de chat em que o usuario nao esta
+    {my: my, others: others}
   end
 
 end

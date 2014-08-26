@@ -48,11 +48,13 @@ class GroupsControllerTest < ActionController::TestCase
 
   # Chat
   test "desvincular turma a uma ferramenta - chat" do
+    # g = Group.create(code: 'GROUP-TEST', offer_id: 3)
+
     chat_room2 = chat_rooms(:chat2)
     assert_difference("ChatRoom.count") do
-      assert_difference("ChatParticipant.count", chat_room2.participants.size) do
+      assert_no_difference("ChatParticipant.count") do
         assert_no_difference("AcademicAllocation.count") do
-          put :change_tool, {id: "5", tool_type: "ChatRoom", tool_id: chat_room2.id, type: "unbind"}
+          put :change_tool, {id: "3", tool_type: "ChatRoom", tool_id: chat_room2.id, type: "unbind"}
         end
       end
     end

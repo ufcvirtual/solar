@@ -70,7 +70,7 @@ module Taggable
   def create_default_lesson_module(name)
     LessonModule.transaction do
       lm = LessonModule.create(name: name, is_default: true)
-      lm.academic_allocations.create(allocation_tag: allocation_tag)
+      lm.academic_allocations.create(allocation_tag_id: allocation_tag.id)
     end if respond_to?(:lesson_modules)
   end
 

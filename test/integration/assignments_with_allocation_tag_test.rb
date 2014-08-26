@@ -313,9 +313,11 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   # Perfil com permissao e usuario com acesso a atividade
   test "exibir informacoes da atividade em grupo para usuario com permissao" do
     login users(:professor)
+
     get @quimica_tab
-    get home_curriculum_unit_path(3)
-    get information_assignment_path :id => assignments(:a6).id
+    get home_curriculum_unit_path(3) # quimica
+    get information_assignment_path(assignments(:a6).id)
+
     assert_response :success
     assert_not_nil assigns(:assignment)
     assert_not_nil assigns(:assignment_enunciation_files)

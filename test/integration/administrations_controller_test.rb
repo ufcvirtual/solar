@@ -195,7 +195,8 @@ class AdministrationsControllerTest < ActionDispatch::IntegrationTest
   test "nao acessar pagina de responsaveis sem permissao" do 
     login(@editor)
     get admin_responsibles_path curriculum_unit_type_id: 2, course_id: 2
-    assert_response :redirect
+
+    assert_response :unauthorized
     assert_redirected_to home_path
     assert_equal flash[:alert], I18n.t(:no_permission)
   end

@@ -11,9 +11,9 @@ class Allocation < ActiveRecord::Base
   has_one :offer,           through: :allocation_tag, conditions: ["offer_id is not null"]
   has_one :group,           through: :allocation_tag, conditions: ["group_id is not null"]
 
+  has_many :chat_rooms
   has_many :chat_messages
   has_many :chat_participants
-  has_many :chat_rooms
 
   def groups
     allocation_tag.groups unless allocation_tag.nil?
