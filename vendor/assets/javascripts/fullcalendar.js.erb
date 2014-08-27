@@ -1585,11 +1585,11 @@ var dateFormatters = {
   dddd: function(d,o) { return o.dayNames[d.getDay()] },
   ddddd: function(d,o) { return o.dayNames[d.getDay()].toLowerCase() },
   de: function(d,o){ return "de"},
-  M : function(d) { return d.getMonth() + 1 },
-  MM  : function(d) { return zeroPad(d.getMonth() + 1) },
-  MMM : function(d,o) { return o.monthNamesShort[d.getMonth() + 1] },
-  MMMM: function(d,o) { return o.monthNames[d.getMonth() + 1] },
-  MMMMM: function(d,o) { return o.monthNames[d.getMonth() + 1].toLowerCase() },
+  M : function(d) { return d.getMonth() + 1},
+  MM  : function(d) { return zeroPad(d.getMonth() ) },
+  MMM : function(d,o) { return o.monthNamesShort[d.getMonth() ] },
+  MMMM: function(d,o) { return o.monthNames[d.getMonth() ] },
+  MMMMM: function(d,o) { return o.monthNames[d.getMonth()].toLowerCase() },
   yy  : function(d) { return (d.getFullYear()+'').substring(2) },
   yyyy: function(d) { return d.getFullYear() },
   t : function(d) { return d.getHours() < 12 ? 'a' : 'p' },
@@ -2083,18 +2083,14 @@ fcViews.basicDay = BasicDayView;
 function BasicDayView(element, calendar) {
   var t = this;
   
-  
   // exports
   t.render = render;
-  
-  
+
   // imports
   BasicView.call(t, element, calendar, 'basicDay');
   var opt = t.opt;
   var renderBasic = t.renderBasic;
   var formatDate = calendar.formatDate;
-  
-  
   
   function render(date, delta) {
     if (delta) {
@@ -2788,11 +2784,9 @@ fcViews.agendaDay = AgendaDayView;
 
 function AgendaDayView(element, calendar) {
   var t = this;
-  
-  
+    
   // exports
   t.render = render;
-  
   
   // imports
   AgendaView.call(t, element, calendar, 'agendaDay');
@@ -3131,6 +3125,8 @@ function AgendaView(element, calendar, viewName) {
     var bodyCell;
     var date;
     var today = clearTime(new Date());
+    if (date==undefined)
+      date = today;
     for (i=0; i<colCnt; i++) {
       date = colDate(i);
       headCell = dayHeadCells.eq(i);
@@ -5220,6 +5216,7 @@ fcViews.list = listView;
 defaults.buttonText.list='list';
  
 function listView(element, calendar) {
+        date = new Date();
         var t = this;
  
         // exports
@@ -5235,7 +5232,6 @@ function listView(element, calendar) {
                 addDays(date, delta);
             var start = cloneDate(date, true);
             var end = addDays(cloneDate(start), 1);
-            //       t.title = formatDate(date, opt('titleFormat'));
             t.start = t.visStart = start;
             t.end = t.visEnd = end;
             renderList(1, 1, false);
@@ -5329,22 +5325,12 @@ function listView(element, calendar) {
  
         function setHeight(height) {
             viewHeight = height;
- 
-            var bodyHeight = viewHeight; //- head.height();
-            //        var rowHeight;
-            //        var rowHeightLast;
-            //        var cell;
-         
-            //       rowHeight = Math.floor(bodyHeight / rowCnt);
-            //        rowHeightLast = bodyHeight - rowHeight * (rowCnt - 1);
- 
-            //      unlockHeight();
+            var bodyHeight = viewHeight;
         }
  
  
         function setWidth(width) {
             viewWidth = width;
-            //          colWidth = Math.floor((viewWidth - weekNumberWidth) / colCnt);
         }
  
         var reportEventClear = t.reportEventClear;
@@ -5359,9 +5345,9 @@ function listView(element, calendar) {
               var event = $(events)[i];
               var today = new Date();
               // se o evento inicia de hoje em diante ou termina de hoje em diante
-              if(event.start >= today || event.end >= today){
+              if(greaterOrEqual(event.start, today) || greaterOrEqual(event.end, today)){
                 // se o evento já começou, mas acaba algum dia depois de hoje
-                if(event.start<today && event.end>today){
+                if(lessThan(event.start,today) && greaterThan(event.end,today)){
                   // adiciona um evento à lista informando o evento de hoje e o evento final
                   var today_event = {
                     "id": event.id,
@@ -5418,7 +5404,6 @@ function listView(element, calendar) {
               var oldtm = tm;
               var olddt = dt;
               if (list_events[evt]) {
-
                 dt = formatDate(list_events[evt].start, listFormat);
                 if(list_events[evt].allDay == true)
                   tm = allDay;
@@ -5474,6 +5459,18 @@ function listView(element, calendar) {
  
         function clearEvents() {
             reportEventClear();
+        }
+
+        function greaterOrEqual(date1, date2){
+          return (date1.getDate() >= date2.getDate() && date1.getMonth() >= date2.getMonth() && date1.getYear() >= date2.getYear());
+        }
+
+        function greaterThan(date1, date2){
+          return (date1.getDate() > date2.getDate() && date1.getMonth() > date2.getMonth() && date1.getYear() > date2.getYear());
+        }
+
+        function lessThan(date1, date2){
+          return (date1.getDate() < date2.getDate() && date1.getMonth() < date2.getMonth() && date1.getYear() < date2.getYear()); 
         }
     };
   
