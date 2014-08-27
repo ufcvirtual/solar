@@ -230,7 +230,7 @@ class AllocationsController < ApplicationController
     rescue CanCan::AccessDenied
       error = true
       message = t(:no_permission)
-    rescue Exception => e
+    rescue
       message = (params.include?(:profile) ? t("allocations.error.cancel_request") : t(:enrollm_not_cancelled_message))
       error   = true
     end
@@ -292,7 +292,7 @@ class AllocationsController < ApplicationController
     ok = (offer.enrollment_start_date.to_date..(offer.enrollment_end_date.try(:to_date) || offer.end_date.to_date)).include?(Date.today)
 
     if ok and @allocation.update_attribute(:status, Allocation_Pending_Reactivate)
-      render json: {notice: t('allocations.success.enrollm_request')}
+      render json: {id: @allocation.id, notice: t('allocations.success.enrollm_request')}
     else
       render json: {alert: t('allocations.error.enrollm_request')}, status: :unprocessable_entity
     end

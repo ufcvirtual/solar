@@ -1,3 +1,15 @@
+function enroll_tables_with_no_data() {
+  $('.table_ucs').each(function(){
+    var rowCount = $('tbody>tr:visible', $(this)).length;
+    if (rowCount == 0){
+      $('.empty_message', $(this).closest('.block_content')).removeClass('hide_message');
+      $('.thead_ucs', $(this)).hide();
+    } else {
+      $('.thead_ucs', $(this)).show();
+      $('.empty_message', $(this).closest('.block_content')).addClass('hide_message');
+    }
+  });
+}
 
 function enroll_combo_change(event, ui) {
   // verifica UC
@@ -16,6 +28,7 @@ function enroll_combo_change(event, ui) {
   if (check_class != '')
     $('tbody tr').not(check_class).hide();
 
+  enroll_tables_with_no_data();
 }
 
 $(function(){
@@ -42,36 +55,62 @@ $(function(){
       flash_message(data.msg, 'alert');
   }
 
-  function enroll_cancel_request(event) {
-    event.preventDefault();
+  // ja matriculado e quer cancelar
+  $('.allocation_cancel_enroll').click(function(e){
+    e.preventDefault();
+
+    if (!confirm("<%= I18n.t('enrollments.index.confirm') %>"))
+      return false;
+
+    var reactivate_url = $(this).attr('href').replace('cancel', 'reactivate')
+    var td = $(this).closest('td');
+
+    $.delete($(this).attr('href'), function(data){
+
+      var enroll_link = '<a href="' + reactivate_url + '" class="btn btn_default request_enroll"><%= I18n.t('enrollments.index.enroll') %></a>';
+      td.html(enroll_link);
+
+      flash_message(data.notice, 'notice');
+    }).error(enroll_error_request);
+  });
+
+  // pediu matricula e quer cancelar
+  $('.allocation_cancel_request').click(function(e){
+    e.preventDefault();
 
     if (!confirm("<%= I18n.t('enrollments.index.confirm') %>"))
       return false;
 
     var tr = $(this).closest('tr');
+    var td = $(this).closest('td');
 
     $.delete($(this).attr('href'), function(data){
-      tr.fadeOut(); 
+      var group_id = td.data('group-id');
+      if (group_id) {
+        var enroll_url = $('.allocations.list').data('link-enroll').replace('allocation_group_id', group_id);
+        var enroll_link = '<a href="' + enroll_url + '" class="btn btn_default request_enroll"><%= I18n.t('enrollments.index.enroll') %></a>';
+
+        td.html(enroll_link);
+      } else {
+        td.html('pt-br: pedido de matricula cancelado');
+      }
+
       flash_message(data.notice, 'notice');
     }).error(enroll_error_request);
-  }
-
-  // cancelar matricula e pedido
-  $('.allocation_cancel_request, .allocation_cancel_enroll').click(enroll_cancel_request);
+  });
 
   // pedir matricula
-  $('.request_enroll').click(function(e){
+  $('table tbody tr.lines').on('click', 'a.request_enroll', function(e){
     e.preventDefault();
 
     var td = $(this).closest('td');
     $.post($(this).attr('href'), {format: 'json'}, function(data){
-
-      var cancel_link = '<a href="<%= Rails.application.routes.url_helpers.cancel_request_allocation_path(':id') %>" class="btn btn_caution" data-method="delete" data-confirm="<%= I18n.t('enrollments.index.confirm') %>"><%= I18n.t('enrollments.index.cancel_request') %></a>'.replace(':id', data.id);
-
-      console.log(cancel_link);
+      var cancel_url = $('.allocations.list').data('link-cancel-request').replace(':allocation_id', data.id);
+      var cancel_link = '<a href="' + cancel_url + '" class="btn btn_caution" data-method="delete" data-confirm="<%= I18n.t('enrollments.index.confirm') %>"><%= I18n.t('enrollments.index.cancel_request') %></a>';
 
       td.html(cancel_link);
       flash_message(data.notice, 'notice');
+
     }).error(enroll_error_request);
   });
 

@@ -54,6 +54,7 @@ group :development do
   gem "spork", "~> 0.9.2"
   gem "thin" # server local melhor
   gem "better_errors"
+  gem "binding_of_caller" # better 'better errors'
   gem "quiet_assets" # nao mostra log de assets em development
 end
 
