@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
 
     rescue_from ActionView::Template::Error do |exception|
       respond_to do |format|
-        format.html { redirect_to home_path, alert: t(:cant_build_page) }
+        format.html { redirect_to((user_signed_in? ? home_path : login_path), alert: t(:cant_build_page)) }
         format.json { render json: {msg: t(:cant_build_page)}, status: :unauthorized }
       end
     end

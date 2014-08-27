@@ -6,6 +6,7 @@ class Event < ActiveRecord::Base
     ((schedules.end_date < ?) OR (schedules.start_date < ?)) AND ((schedules.start_date > ?) OR (schedules.end_date > ?))
     AND allocation_tags.id IN (?)", 
     format_date(end_time), format_date(end_time), format_date(start_time), format_date(start_time), allocation_tags] }}
+
   # recupera os eventos que vão iniciar "de hoje em diante" ou já começaram, mas ainda vão terminar
   scope :after, lambda {|today, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
     ((schedules.start_date >= ?) OR (schedules.end_date >= ?)) AND allocation_tags.id IN (?)", 

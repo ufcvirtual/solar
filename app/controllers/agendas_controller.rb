@@ -36,7 +36,7 @@ class AgendasController < ApplicationController
     authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
 
     events = (params.include?("list") ? 
-      Event.descendants.map{ |event| event.scoped.after(Date.current, @allocation_tags_ids) }.uniq : 
+      Event.descendants.map{ |event| event.scoped.after(Date.today, @allocation_tags_ids) }.uniq : 
       Event.descendants.map{ |event| event.scoped.between(params['start'], params['end'], @allocation_tags_ids) }.uniq )
     @events = [events].flatten.map(&:schedule_json).uniq
 

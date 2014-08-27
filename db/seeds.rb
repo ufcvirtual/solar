@@ -10,6 +10,8 @@ if Rails.env == 'production'
 
   admin = User.new email: 'admin@admin.com', name: 'Administrator', nick: 'Admin', username: 'admin', password: '123456', cpf: '48248246566', birthdate: Date.today
   admin.save
+
+  admin.allocations.build(profile_id: 6, status: 1).save
 end
 
 puts " |-- Fixtures ok\n\n"
