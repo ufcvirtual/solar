@@ -315,7 +315,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login users(:professor)
 
     get @quimica_tab
-    get home_curriculum_unit_path(3) # quimica
+    # get home_curriculum_unit_path(3) # quimica
     get information_assignment_path(assignments(:a6).id)
 
     assert_response :success
@@ -492,9 +492,11 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao permitir comentar em atividade individual para usuario com permissao e sem acesso" do
     login users(:professor)
     get @literatura_brasileira_tab
+
     assert_no_difference("AssignmentComment.count") do
       post send_comment_assignment_path(assignments(:a14).id), {:student_id => users(:aluno1).id, :comment => "comentario9"}
     end
+
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
@@ -570,8 +572,9 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login users(:professor)
     get @quimica_tab
     get home_curriculum_unit_path(3)
+
     assert_no_difference("AssignmentComment.count") do
-       delete remove_comment_assignment_path(assignments(:a14).id), {:comment_id => assignment_comments(:ac2).id}
+      delete remove_comment_assignment_path(assignments(:a14).id), {:comment_id => assignment_comments(:ac2).id}
     end
   end
 

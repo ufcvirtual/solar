@@ -7,7 +7,7 @@ class AssignmentsController < ApplicationController
   before_filter :prepare_for_group_selection, :only => [:professor, :student_view]
   before_filter Proc.new { |c| @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id]) }, only: [:download_public_files, :download_files]
 
-  load_and_authorize_resource :only => [:import_groups_page, :import_groups, :manage_groups, :send_comment, :remove_comment] #, :evaluate
+  load_and_authorize_resource :only => [:import_groups_page, :import_groups, :manage_groups, :send_comment] #, :evaluate
   authorize_resource :only => [:download_files, :upload_file, :send_public_files_page, :delete_file]
 
   layout false, only: [:index, :new, :edit, :create, :update, :destroy, :show]
@@ -244,15 +244,19 @@ class AssignmentsController < ApplicationController
   end
 
   def send_comment
-    comment           = params[:comment_id].nil? ? nil : AssignmentComment.find(params[:comment_id]) # verifica se comentário já existe. se sim, é edição; se não, é criação.
+    comment = params[:comment_id].nil? ? nil : AssignmentComment.find(params[:comment_id]) # verifica se comentário já existe. se sim, é edição; se não, é criação.
     authorize! :send_comment, comment unless comment.nil?
+
     student_id        = params[:student_id].nil? ? nil : params[:student_id]
     group_id          = params[:group_id].nil? ? nil : params[:group_id]
     comment_text      = params['comment']
     comment_files     = params['comment_files'].nil? ? [] : params['comment_files']
     deleted_files_ids = params['deleted_files'].nil? ? [] : params['deleted_files'][0].split(",") # ["id_arquivo_del1,id_arquivo_del2"] => ["id_arquivo_del1", "id_arquivo_del2"]
     @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-    academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(@allocation_tag.id,@assignment.id, 'Assignment')      
+    academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(@allocation_tag.id, @assignment.id, 'Assignment')
+
+    raise CanCan::AccessDenied unless academic_allocation
+
     sent_assignment = SentAssignment.find_or_create_by_academic_allocation_id_and_user_id_and_group_assignment_id(academic_allocation.id, student_id, group_id)
     #sent_assignment   = SentAssignment.find_or_create_by_group_assignment_id_and_assignment_id_and_user_id(group_id, @assignment.id, student_id) # busca ou cria sent_assignment ao aluno/grupo
 
@@ -284,11 +288,14 @@ class AssignmentsController < ApplicationController
   end
 
   def remove_comment
-    comment = AssignmentComment.find(params[:comment_id])
+    authorize! :remove_comment, (comment = AssignmentComment.find(params[:comment_id]))
+
+    @assignment = Assignment.find(params[:id])
     @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-    authorize! :remove_comment, comment
+
     begin
-      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.on_evaluation_period?(@allocation_tag,current_user.id) # verifica se está no prazo
+      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.on_evaluation_period?(@allocation_tag, current_user.id) # verifica se está no prazo
+
       ActiveRecord::Base.transaction do
         comment.comment_files.each do |file|
           file.delete_comment_file
@@ -296,7 +303,7 @@ class AssignmentsController < ApplicationController
         comment.delete
       end
       render :json => { :success => true, :flash_msg => t(:removed_comment, :scope => [:assignment, :comments]), :flash_class => 'notice' }
-    rescue Exception => error
+    rescue => error
       render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
     end
   end

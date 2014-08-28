@@ -42,7 +42,7 @@ class AllocationTag < ActiveRecord::Base
   end
 
   def is_observer_or_responsible?(user_id)
-    check_if_user_has_profile_type(user_id, observer = true)
+    check_if_user_has_profile_type(user_id, responsible = true, observer = true)
   end
 
   ## return group, offer, course or curriculum_unit

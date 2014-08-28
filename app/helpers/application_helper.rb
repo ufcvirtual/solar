@@ -22,7 +22,7 @@ module ApplicationHelper
       else
         %{
           <li data-tooltip='#{name}' data-tab-context="#{Context_Curriculum_Unit}" data-tab-id="#{active_tab}" class="#{tab_active_class} mysolar_unit_tab">
-            #{link_to(name.truncate(30), activate_tab_path(name: name))}
+            #{link_to((name.truncate(30) rescue ''), activate_tab_path(name: name))}
             #{link_to('', close_tab_path(name: name), {class: 'tabs_close', id: "#{active_tab}"})}
           </li>
         }
