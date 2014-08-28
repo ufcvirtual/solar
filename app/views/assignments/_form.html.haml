@@ -57,6 +57,8 @@
 
 :javascript
 
+  $("#assignment_start_date, #assignment_end_date").mask("#{I18n.t(:mask, scope: "date.formats")}");
+
   jQuery(function($){
 
     if ($(".file_input:last").length)

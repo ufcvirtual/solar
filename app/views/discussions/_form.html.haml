@@ -24,6 +24,8 @@
 
 :javascript
 
+  $("#from-date, #until-date").mask("#{I18n.t(:mask, scope: "date.formats")}");
+
   var start_date = "#{@discussion.schedule.start_date}";
   var end_date = "#{@discussion.schedule.end_date}";
   var div_to_replace = ("#{params[:calendar]}" == "" ? $(".list_discussions") : $(".calendar_schedules"));

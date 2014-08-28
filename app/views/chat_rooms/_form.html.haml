@@ -62,3 +62,5 @@
   var start_date = "#{@chat_room.schedule.start_date}";
   var end_date = "#{@chat_room.schedule.end_date}";
   var div_to_replace = ("#{params[:calendar]}" == "" ? $(".list_chat_rooms") : $(".calendar_schedules"));
+
+  $("#chat_start_date, #chat_end_date").mask("#{I18n.t(:mask, scope: "date.formats")}");

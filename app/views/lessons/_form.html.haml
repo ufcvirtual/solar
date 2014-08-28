@@ -81,6 +81,8 @@
 
   :javascript
 
+    $("#from_date, #until_date").mask("#{I18n.t(:mask, scope: "date.formats")}");
+
     /* se é o cadastro de uma nova aula, o "new Date" irá considerar o offset do time_zone (-3h) e irá exibir o dia incorreto */
     var new_action = (("#{params[:action]}" == "new" || "#{params[:action]}" == "create")  ? 1 : 0);
 

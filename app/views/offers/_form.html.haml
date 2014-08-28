@@ -74,6 +74,8 @@
 
 :javascript
 
+  $("#offer_period_schedule_attributes_start_date, #offer_period_schedule_attributes_end_date, #offer_enrollment_schedule_attributes_start_date, #offer_enrollment_schedule_attributes_end_date").mask("#{I18n.t(:mask, scope: "date.formats")}");
+
   $(function(){
 
     $("#offer_course_id, #offer_curriculum_unit_id").combobox();

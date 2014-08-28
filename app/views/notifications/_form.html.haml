@@ -38,6 +38,8 @@
       ];
   };
 
+  $("#from-date, #until-date").mask("#{I18n.t(:mask, scope: "date.formats")}");
+
   $(function(){
     $("#from-date, #until-date").datepicker();
   });
