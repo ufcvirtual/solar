@@ -1,0 +1,71 @@
+function solar_help() {
+  var solar_contextual_help = introJs();
+
+  solar_contextual_help.setOptions({
+    showStepNumbers: false,
+    nextLabel: "<%= I18n.t(:tutorial_next) %>",
+    prevLabel: "<%= I18n.t(:tutorial_previous) %>",
+    skipLabel: "<%= I18n.t(:tutorial_skip) %>",
+    doneLabel: "<%= I18n.t(:tutorial_done) %>",
+    steps: [
+      {
+        intro: 'Bem-vindo ao Solar 2.0.'
+      },
+      {
+        element: '#mysolar_identity',
+        intro: 'Barra superior: Nesta barra você visualiza informações sobre o seu usuário, hora do sistema, ajuda e sair do Solar'
+      },
+      {
+        element: '#mysolar_top_submenu_label',
+        intro: 'Seu usuário atual. Clique para visualizar mais informações, editar seu perfil ou alterar sua foto'
+      },
+      {
+        element: '#mysolar_tabs',
+        intro: 'Abas onde você pode navegar entre o MeuSolar e os Cursos que tiver acessado na sessão'
+      },
+      {
+        element: '#mysolar_suggestions',
+        position: 'left',
+        intro: 'Aqui você pode enviar suas críticas, sugestões e comentários para que possamos melhorar o Solar 2.0'
+      },
+      {
+        element: '#mysolar_open_lesson',
+        position: 'left',
+        intro: "Aqui você pode acessar a aula que você tiver minimizado"
+      },
+      {
+        element: '#mysolar_sidebar',
+        intro: 'Menu de navegação'
+      },
+      {
+        element: '#mysolar_content',
+        intro: 'Área de conteúdo. Nesta região será exibido o conteúdo da página que você acessar.'
+      },
+      {
+        element: '#mysolar_curriculum_unit_portlet',
+        intro: 'Este bloco exibe sua lista de disciplinas, permitindo que você as acesse.'
+      },
+      {
+        element: '#block_schedule',
+        intro: 'Este bloco de agenda permite que você visualize facilmente quais dias possuem atividades agendadas.'
+      },
+      {
+        element: '#mysolar_notification_portlet',
+        intro: 'Este bloco exibe os últimos avisos do sistema (como previsões de manutenção, etc).'
+      },
+      {
+        element: '.block_facebook',
+        intro: 'Este bloco lhe permite acessar seu facebook, exibindo sua timeline, grupos, etc. Estas informações serão visíveis apenas para você.'
+      },
+      {
+        element: '#mysolar_top_help',
+        position: 'left',
+        intro: 'Note que cada página possui um tutorial contextual específico. Caso deseje visualizá-lo, basta acessar o item de Ajuda Contextual.'
+      },
+      {
+        intro: 'Aproveite o novo <b>Solar 2.0!</b>'
+      }
+    ]
+    })
+    .start();
+}

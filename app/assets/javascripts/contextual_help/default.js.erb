@@ -1,0 +1,18 @@
+function solar_help() {
+  var solar_contextual_help = introJs();
+
+  solar_contextual_help.setOptions({
+    showStepNumbers: false,
+    nextLabel: "<%= I18n.t(:tutorial_next) %>",
+    prevLabel: "<%= I18n.t(:tutorial_previous) %>",
+    skipLabel: "<%= I18n.t(:tutorial_skip) %>",
+    doneLabel: "<%= I18n.t(:tutorial_done) %>",
+    showBullets: false,
+    steps: [
+      {
+        intro: "Esta página não possui ajuda contextual.<br><br> Favor conferir o <b>manual textual</b> ou os <b>vídeos tutoriais</b>."
+      }
+    ]
+  })
+  .start();
+}
