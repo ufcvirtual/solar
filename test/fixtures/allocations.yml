@@ -472,3 +472,17 @@ professor_as_uab:
   allocation_tag_id: 3
   profile_id: 17
   status: 1
+
+professor2_as_titular:
+  id: 68
+  user_id: 5
+  allocation_tag_id: 39 # qm-sol
+  profile_id: 2
+  status: 1
+
+user_as_student:
+  id: 69
+  user_id: 1
+  allocation_tag_id: 39 # qm-sol
+  profile_id: 1
+  status: 1

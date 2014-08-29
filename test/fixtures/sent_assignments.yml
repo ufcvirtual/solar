@@ -34,3 +34,9 @@ sa7:
   id: 7
   academic_allocation_id: 1 # Letras Portugues - Teoria da Literatura I - TL-CAU - Atividade individual VII - al:2
   user_id: 7
+
+# arquivo enviado por aluno 1 a um trabalho com oferta concluida
+sa8:
+  id: 8
+  academic_allocation_id: 70 # qm-sol - 2011
+  user_id: 1

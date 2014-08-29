@@ -123,7 +123,7 @@ class OffersControllerTest < ActionController::TestCase
   end
 
   test "remover oferta sem remover schedule" do
-    offer_2010_1 = offers(:of9)
+    offer_2010_1 = offers(:of12)
 
     assert_difference("Offer.count", -1) do # schedule compartilhada com semestre
       assert_no_difference("Schedule.count") do

@@ -1,23 +1,37 @@
 ac1:
   id: 1
   sent_assignment_id: 1
-  user_id: 1 #user1
-  comment: "comentário1"
+  user_id: 1 # user1
+  comment: "comentario 1"
 
 ac2:
   id: 2
   sent_assignment_id: 3 # quimica I - Atividade em campo III - sa3
-  user_id: 6 #professor
-  comment: "comentário2"
+  user_id: 6 # professor
+  comment: "comentario 2"
 
 ac3:
   id: 3
   sent_assignment_id: 4 #sa4
-  user_id: 7 #professor2
-  comment: "comentário3"
+  user_id: 7 # professor2
+  comment: "comentario 3"
 
 ac4:
   id: 4
   sent_assignment_id: 4 #sa4
-  user_id: 11 #tutor distância
+  user_id: 11 # tutor distância
   comment: "comentario 4"
+
+ac5:
+  id: 5
+  sent_assignment_id: 6 # sa6
+  user_id: 6 # professor
+  comment: "comentario 5"
+
+# comentario do professor para um trabalho de uma oferta concluida
+
+ac6:
+  id: 6
+  sent_assignment_id: 8 # sa8
+  user_id: 6 # professor
+  comment: "comentario 1"

@@ -416,3 +416,11 @@ acaal69:
   allocation_tag_id: 22
   academic_tool_id: 1
   academic_tool_type: "Discussion"
+
+# atividade de oferta concluida
+
+acaal70:
+ id: 70
+ allocation_tag_id: 39 # qm-sol
+ academic_tool_id: 16
+ academic_tool_type: "Assignment"

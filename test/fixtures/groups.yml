@@ -63,3 +63,9 @@ g11: # turma curso livre | Introducao a Linguistica
   offer_id: 11
   code: 'IL-MAR'
   status: TRUE
+
+g12:
+  id: 12
+  offer_id: 9
+  code: 'QM-SOL'
+  status: TRUE

@@ -288,10 +288,10 @@ class AssignmentsController < ApplicationController
   end
 
   def remove_comment
-    authorize! :remove_comment, (comment = AssignmentComment.find(params[:comment_id]))
+    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+    authorize! :remove_comment, (comment = AssignmentComment.find(params[:comment_id])), on: [@allocation_tag.id]
 
     @assignment = Assignment.find(params[:id])
-    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
 
     begin
       raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.on_evaluation_period?(@allocation_tag, current_user.id) # verifica se está no prazo

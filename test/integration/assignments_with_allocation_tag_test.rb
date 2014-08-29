@@ -1,5 +1,5 @@
 require 'test_helper'
- 
+
 # Aqui estão os testes dos métodos do cotnroller assignments
 # que, para acessá-los, se faz necessário estar em uma unidade
 # curricular. Logo, há a necessidade de acessar o método
@@ -13,7 +13,8 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   include ActionDispatch::TestProcess
 
   def setup
-    @quimica_tab               = add_tab_path(id: 3, context:2, allocation_tag_id: 3)
+    @quimica_tab = add_tab_path(id: 3, context:2, allocation_tag_id: 3)
+    @quimica2_tab  = add_tab_path(id: 9, context:2, allocation_tag_id: 25) ## offer_id, offer_allocation_tag_id
     @literatura_brasileira_tab = add_tab_path(id: 5, context:2, allocation_tag_id: 8)
   end
 
@@ -156,8 +157,9 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
 
     login(users(:professor2))
     get @quimica_tab
-    public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno1).id, allocation_tags(:al3).id, "teste3.txt")
-    get download_files_assignments_path(:file_id => public_file.id, :type => 'public')
+    public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno1).id, allocation_tags(:al3).id, "teste1.txt")
+    get download_public_files_assignments_path(file_id: public_file.id)
+
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
@@ -513,7 +515,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   end
 
   # Editar comentário
-  
+
   # Perfil com permissao e usuario com acesso
   test "permitir editar comentario para usuario com permissao e com acesso" do
     login users(:professor)
@@ -567,15 +569,28 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_template :student
   end
 
-  # Perfil com permissao e usuario com acesso, mas fora do período permitido
-  test "nao permitir remover comentario para usuario com permissao e com acesso e atividade fora do periodo" do
+  test "permitir professor remover comentario para usuario de atividade fora do periodo" do
     login users(:professor)
     get @quimica_tab
-    get home_curriculum_unit_path(3)
+
+    assert_difference("AssignmentComment.count", -1) do
+      delete remove_comment_assignment_path(assignments(:a7).id), {comment_id: assignment_comments(:ac5).id}
+    end
+  end
+
+  # Perfil com permissao e usuario com acesso, mas fora do período permitido (depois da oferta terminar)
+  test "nao permitir professor remover comentario para usuario de atividade fora do periodo da oferta" do
+    login users(:professor2)
+    get @quimica2_tab
+    get home_curriculum_unit_path(9)
+
+    assert_response :success
 
     assert_no_difference("AssignmentComment.count") do
-      delete remove_comment_assignment_path(assignments(:a14).id), {:comment_id => assignment_comments(:ac2).id}
+      delete remove_comment_assignment_path(assignments(:a16).id), {comment_id: assignment_comments(:ac6).id}
     end
+
+    assert_response :success
   end
 
   # Perfil com permissao e usuario sem acesso
@@ -583,16 +598,15 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login users(:professor2)
     get @quimica_tab
     get home_curriculum_unit_path(3)
+
+    assert_response :redirect
+
     assert_no_difference("AssignmentComment.count") do
-       delete remove_comment_assignment_path(assignments(:a9).id), {:comment_id => assignment_comments(:ac2).id}
+      delete remove_comment_assignment_path(assignments(:a9).id), {comment_id: assignment_comments(:ac2).id}
     end
+
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
-
-    # sign_in users(:professor)
-    # get(:student, {:id => assignments(:a9).id, :student_id => users(:aluno1).id})    
-    # assert_response :success
-    # assert_tag :tag => "table", :attributes => { :class => "assignment_comment tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
   end
 
   # Perfil sem permissao e usuario com acesso

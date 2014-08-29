@@ -171,3 +171,13 @@ al37:
 al38:
   id: 38
   course_id: 10
+
+# turma de oferta concluida
+
+al39:
+  id: 39
+  group_id: 12 # quim 2010
+
+al40:
+  id: 40
+  offer_id: 12

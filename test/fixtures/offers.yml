@@ -34,7 +34,7 @@ of5:
   enrollment_schedule_id: 25 # período de matrícula já passou
 
 of6:
-  id: 6 
+  id: 6
   curriculum_unit_id: 1
   course_id: 10
   semester_id: 3 # 2012.1
@@ -70,3 +70,9 @@ of11:
   curriculum_unit_id: 1 # Introducao a Linguistica
   course_id: 10 # Introducao a Linguistica
   semester_id: 5 # 2014.1
+
+of12: # oferta que não deve aparecer para matrícula e para ser deletada nos testes
+  id: 12
+  curriculum_unit_id: 3
+  course_id: 2
+  semester_id: 1

@@ -258,3 +258,10 @@ sc_for_c_livre_enroll:
   id: 49
   start_date: '2014-02-01'
   end_date: '2014-03-31'
+
+# atividade concluida
+
+assig_concluded:
+  id: 50
+  start_date: '2011-03-10'
+  end_date: '2011-04-10'

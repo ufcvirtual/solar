@@ -82,7 +82,25 @@ class Assignment < Event
   end
 
   def extra_time?(allocation_tag, user_id)
-    (allocation_tag.is_observer_or_responsible?(user_id) and closed?)
+    extra = (allocation_tag.is_observer_or_responsible?(user_id) and closed?)
+
+    return false unless extra
+
+    offer = case allocation_tag.refer_to
+    when 'offer'
+      allocation_tag.offer
+    when 'group'
+      allocation_tag.group.offer
+    end
+
+    # periodo pode estar definido na oferta ou no semestre
+    period_end_date = if offer.period_schedule.nil?
+      offer.semester.offer_schedule.end_date
+    else
+      offer.period_schedule.end_date
+    end
+
+    extra and period_end_date.to_date >= Date.today
   end
 
   def on_evaluation_period?(allocation_tag, user_id)
@@ -92,7 +110,7 @@ class Assignment < Event
 
   ## Verifica período que o responsável pode alterar algo na atividade
   def assignment_in_time?(allocation_tag, user_id)
-    (verify_date_range(schedule.start_date, schedule.end_date, Date.current) or extra_time?(allocation_tag, user_id))
+    (verify_date_range(schedule.start_date, schedule.end_date, Date.today) or extra_time?(allocation_tag, user_id))
   end
 
   ## Verifica se uma data esta em um intervalo de outras
