@@ -7,10 +7,13 @@ function solar_help() {
     prevLabel: "<%= I18n.t(:tutorial_previous) %>",
     skipLabel: "<%= I18n.t(:tutorial_skip) %>",
     doneLabel: "<%= I18n.t(:tutorial_done) %>",
-    showBullets: false,
     steps: [
       {
-        intro: "Esta página ainda não possui ajuda contextual.<br><br> Favor conferir o <b>manual textual</b> ou os <b>vídeos tutoriais</b>."
+        element: '#discussion_list',
+        intro: 'Neste bloco são listados fóruns cadastrados nesta disciplina.'
+      },
+      {
+        intro: 'Os fóruns só estarão disponíveis para postagem a partir da data inicial e após a data final eles ficarão bloqueados, sendo possível apenas a visualização.'
       }
     ]
   })

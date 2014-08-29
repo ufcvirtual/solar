@@ -1,4 +1,4 @@
-.block_wrapper
+.block_wrapper#discussion_list
   - unless @discussions.nil? or @discussions.empty?
     .block_title
       %h2
@@ -24,3 +24,5 @@
               = [l(schedule.start_date.to_date), l(schedule.end_date.to_date)].join(" - ")
   - else
     .block_content.block_content_text= t(:forum_message)
+
+= javascript_include_tag "contextual_help/discussion"

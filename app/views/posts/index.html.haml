@@ -5,12 +5,12 @@
 = javascript_include_tag "discussions"
 = javascript_include_tag "jwplayer/jwplayer.js"
 
-.block_wrapper
+.block_wrapper#forum_description
   .block_title
     %h2
       %i.icon-forum
       = @discussion.name
-  #forum_description.block_content.block_content_text= sanitize @discussion.description
+  .block_content.block_content_text= sanitize @discussion.description
 
 .block_wrapper
   .block_title.forum_navigation
@@ -69,3 +69,5 @@
       })
     })
   });
+
+= javascript_include_tag "contextual_help/discussion_posts"
