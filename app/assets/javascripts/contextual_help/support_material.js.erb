@@ -1,0 +1,34 @@
+function solar_help() {
+  var solar_contextual_help = introJs();
+
+  solar_contextual_help.setOptions({
+    showStepNumbers: false,
+    nextLabel: "<%= I18n.t(:tutorial_next) %>",
+    prevLabel: "<%= I18n.t(:tutorial_previous) %>",
+    skipLabel: "<%= I18n.t(:tutorial_skip) %>",
+    doneLabel: "<%= I18n.t(:tutorial_done) %>",
+    steps: [
+      {
+        intro: 'Nesta página são listados os arquivos e links de material complementar desta disciplina.'
+      },
+      {
+        element: '.support_material_folder',
+        intro: 'Os itens estão divididos por categorias.'
+      },
+      {
+        element: 'table td a+a',
+        intro: 'Você pode acessar os itens diretamente...'
+      },
+      {
+        element: '.block_actions button',
+        position: 'left',
+        intro: '... ou realizar o download de toda a categoria ...'
+      },
+      {
+        element: '#download_all',
+        intro: '... ou realizar o download de <b>TODOS</b> os arquivos.'
+      }
+    ]
+  })
+  .start();
+}

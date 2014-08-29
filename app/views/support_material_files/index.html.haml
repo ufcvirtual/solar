@@ -2,7 +2,7 @@
   %button#download_all.btn.btn_default{"data-tooltip" => t("support_download_all"), :onclick => "javascript:window.location.href='#{download_all_support_material_files_path(allocation_tag_id: @allocation_tag_id, :type => "all")}'", :type => "button", :value => t("support_download_all")}
     %i.icon-archive
 - @folders_list.each do |folder_name, folder_content|
-  .block_wrapper
+  .block_wrapper.support_material_folder
     .block_title
       - unless folder_name == 'LINKS'
         %h2.support_material_title= folder_name
@@ -34,3 +34,5 @@
               = l file["attachment_updated_at"].to_date
 - if @folders_list.nil? or @folders_list.empty?
   .block_content.block_content_text= t(:itens_not_found)
+
+= javascript_include_tag "contextual_help/support_material"
