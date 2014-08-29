@@ -1924,9 +1924,15 @@ Strophe.Handler.prototype = {
                               e.line + " - " + e.name + ": " + e.message);
             } else if (e.fileName) {
                 if (typeof(console) != "undefined") {
-                    console.trace();
-                    console.error(this.handler, " - error - ", e, e.message);
-                }
+                    /* console.trace();
+                       console.error(this.handler, " - error - ", e, e.message); 
+
+                     erro do firefox ocorre aqui, pois ele verifica se o console está acessível,
+                     mas desabilitamos as funções do console pelo IM, 
+                     pois o objeto de inicialização do IM está sendo guardado em uma variável 'con' para o logout e criação dos grupos do IM,
+                     a função console.log() retorna uma string que sobrescreve a variável 'con'.
+                    */
+                } 
                 Strophe.fatal("error: " + this.handler + " " +
                               e.fileName + ":" + e.lineNumber + " - " +
                               e.name + ": " + e.message);
