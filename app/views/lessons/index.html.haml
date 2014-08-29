@@ -20,3 +20,5 @@
             %tr.lines{class: lesson.closed? ? "period_ended" : "", id:"lesson_#{lesson.id}"}= render(lesson)
   - else
     .block_content.block_content_text= t(:lesson_message)
+
+= javascript_include_tag "contextual_help/lessons"
