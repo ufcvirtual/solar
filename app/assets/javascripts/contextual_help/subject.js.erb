@@ -9,43 +9,35 @@ function solar_help() {
     doneLabel: "<%= I18n.t(:tutorial_done) %>",
     steps: [
       {
+        element: '#page_title',
+        intro: 'Nome da Unidade Curricular (disciplina) que você está acessando.'
+      },
+      {
+        element: '#page_title .block_content_text',
+        intro: 'Sua turma atual. Caso tenha acesso a várias turmas você poderá selecionar aqui a turma que desejar acessar.'
+      },
+      {
+        element: '#subject_info_portlet',
+        intro: 'Neste bloco são exibidas as informações básicas da disciplina: a ementa e lista de responsáveis.'
+      },
+      {
         element: '.lesson_portlet',
-        intro: 'Bem-vindo ao Solar 2.0.'
+        intro: 'Aqui você pode acessar as aulas que estão disponíveis para visualização.'
       },
       {
-        element: '#mysolar_identity',
-        intro: 'Barra superior: Nesta barra você visualiza informações sobre o seu usuário, hora do sistema, ajuda e sair do Solar'
+        element: '#block_messages',
+        position: 'top',
+        intro: 'Este é o bloco de mensagens, onde são listadas as últimas mensagens recebidas.'
       },
       {
-        element: '#mysolar_top_submenu_label',
-        intro: 'Seu usuário atual. Clique para visualizar mais informações, editar seu perfil ou alterar sua foto'
+        element: '#forum_portlet',
+        position: 'top',
+        intro: 'Neste bloco são listadas as postagens mais recentes nos fóruns desta disciplina.'
       },
       {
-        element: '#mysolar_tabs',
-        intro: 'Abas onde você pode navegar entre o MeuSolar e os Cursos que tiver acessado na sessão'
-      },
-      {
-        element: '#mysolar_suggestions',
-        position: 'left',
-        intro: 'Aqui você pode enviar suas críticas, sugestões e comentários para que possamos melhorar o Solar 2.0'
-      },
-      {
-        element: '#mysolar_open_lesson',
-        position: 'left',
-        intro: "Aqui você pode acessar a aula que você tiver minimizado"
-      },
-      {
-        element: '#mysolar_sidebar',
-        intro: 'Menu de navegação'
-      },
-      {
-        element: '#mysolar_content',
-        intro: 'Área de conteúdo'
-      },
-      {
-        element: '#mysolar_top_help',
-        position: 'left',
-        intro: 'Caso deseje ver este tutorial novamente, basta clicar em Ajuda e depois em Contextual.<br><br>Aproveite o novo <b>Solar 2.0!</b>'
+        element: '#block_schedule',
+        position: 'top',
+        intro: 'Este bloco de agenda permite que você visualize facilmente quais dias possuem atividades agendadas para esta disciplina.'
       }
     ]
   })
