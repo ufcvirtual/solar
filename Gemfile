@@ -15,7 +15,7 @@ gem "devise-i18n", "~> 0.10.3"
 gem "cancan", "~> 1.6.10"
 
 gem "chronic", "0.6.1"
-gem "brazilian-rails", "~> 3.2.0"
+gem "brazilian-rails", "~> 3.3.0"
 gem "simple_form", "~> 2.1.1"
 
 gem "paperclip", "~> 3.4.2"

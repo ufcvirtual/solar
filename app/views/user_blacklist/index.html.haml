@@ -1,0 +1,52 @@
+.block_wrapper.list_user_blacklist{"data-link-list" => blacklist_index_path(layout: false)}
+  .block_title
+    %h2= t('.title')
+  .block_content_toolbar
+    .block_toolbar_left
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_blacklist_path, class: "btn btn_main link_new_user_blacklist", :"data-tooltip" => t(".new")
+  .block_content
+
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th= t(:cpf)
+          %th{style: 'width: 40%;'}= t(:name)
+          %th= t('.created_at')
+          %th.no_sort{style: 'width: 40px;'}
+      %tbody
+        - @user_blacklist.each do |user|
+          %tr.lines
+            %td= user.cpf
+            %td= user.name
+            %td= l user.created_at, format: :normal
+            %td
+              / = link_to 'Show', user
+              / = link_to 'Edit', edit_user_blacklist_path(user_blacklist)
+              / = link_to 'Destroy', user_blacklist, method: :delete, data: { confirm: 'Are you sure?' }
+
+              = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_user_blacklist', :"data-link-delete" => blacklist_path(user), :'data-tooltip' => t('.delete')
+
+:javascript
+
+  $(".link_new_user_blacklist").call_fancybox();
+
+  $(function(){
+
+    $('.delete_user_blacklist').click(function(){
+      if (!confirm("#{I18n.t(:message_confirm)}"))
+        return false;
+
+      var tr = $(this).closest('tr');
+
+      $.delete($(this).data('link-delete'), function(data){
+        flash_message(data.notice, 'notice');
+        tr.fadeOut().remove();
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      });
+
+    });
+
+  });

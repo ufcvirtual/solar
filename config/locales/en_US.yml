@@ -1905,6 +1905,26 @@ en_US:
       time: Time
       no_message: No messages
       all: All
+
+  user_blacklist:
+    remove: 'Remove from Blacklist'
+    add: 'Add to Blacklist'
+    success:
+      created: "CPF '%{cpf}' add to Blacklist."
+      deleted: "CPF '%{cpf}' removed from Blacklist."
+    error:
+      created: "Erro ao adicionar o CPF '%{cpf}' à blacklist."
+      deleted: "Erro ao retirar CPF '%{cpf}' da blacklist."
+    index:
+      title: "Blacklist"
+      new: Add CPF
+      delete: Delete
+      created_at: Created at
+      added_by: Added by
+    new:
+      cpf: CPF
+      name: Name
+
   facebook:
     login: Login
     logout: Logout

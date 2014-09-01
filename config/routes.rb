@@ -45,6 +45,11 @@ Solar::Application.routes.draw do
   end
 
   scope "/admin" do
+
+    resources :blacklist, except: [:show, :edit, :update], controller: :user_blacklist
+    post "/blacklist/add_user/:user_id", to: "user_blacklist#add_user", as: :add_user_blacklist
+    delete "/blacklist/remove_user/:user_cpf", to: "user_blacklist#destroy", type: 'remove', as: :remove_user_from_blacklist
+
     resources :profiles do
       get :permissions, on: :member
       put "permissions/grant", to: :grant, on: :member

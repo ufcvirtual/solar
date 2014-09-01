@@ -2148,6 +2148,25 @@ pt_BR:
       no_message: Nenhuma mensagem
       all: Todos
 
+  user_blacklist:
+    remove: 'Remover da blacklist'
+    add: 'Adicionar à blacklist'
+    success:
+      created: "CPF '%{cpf}' adicionado a blacklist com sucesso."
+      deleted: "CPF '%{cpf}' retirado da blacklist com sucesso."
+    error:
+      created: "Erro ao adicionar o CPF '%{cpf}' à blacklist."
+      deleted: "Erro ao retirar CPF '%{cpf}' da blacklist."
+    index:
+      title: Blacklist
+      new: Adicionar CPF
+      delete: Excluir
+      created_at: Adicionado em
+      add_by: Add Por
+    new:
+      cpf: CPF
+      name: Nome
+
   #Facebook
 
   facebook:

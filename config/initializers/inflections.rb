@@ -10,5 +10,5 @@
 # end
 
  ActiveSupport::Inflector.inflections do |inflect|
-   inflect.irregular 'bibliography', 'bibliographies'
+   inflect.irregular 'user_blacklist', 'user_blacklist'
  end

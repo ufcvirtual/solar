@@ -1,2 +1,0 @@
-class UserBlacklistsController < ApplicationController
-end
