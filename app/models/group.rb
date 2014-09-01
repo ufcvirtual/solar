@@ -17,6 +17,8 @@ class Group < ActiveRecord::Base
 
   validates :code, :offer_id, presence: true
 
+  validates_length_of :code, maximum: 40
+
   def code_semester
     "#{code} - #{offer.semester.name}"
   end
