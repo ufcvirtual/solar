@@ -1,0 +1,43 @@
+function user_blacklist_save(){
+  $('form#user_blacklist_form').serialize_and_submit({
+    replace_list: $('.list_user_blacklist')
+  });
+}
+
+$(function(){
+  $(".link_new_user_blacklist").call_fancybox();
+
+  // search
+  $("#search_user_in_blacklist").click(function(){
+    var data = { "search": $("#text_search").val() };
+
+    $.get($(this).data("link"), data, function(data){
+      $(".block_content.blacklist").html(data);
+      $(".tb_list").tablesorter();
+      $("th").last().addClass("sorter-false");
+    });
+  })
+
+  $("#text_search").keyup(function(e) {
+    if (e.keyCode == 13)
+      $("#search_user_in_blacklist").click();
+    return false;
+  });
+
+  // delete
+  $('.block_content.blacklist').on('click', '.delete_user_blacklist', function(){
+    if (!confirm("<%=I18n.t(:message_confirm)%>"))
+      return false;
+
+    var tr = $(this).closest('tr');
+
+    $.delete($(this).data('link-delete'), function(data){
+      flash_message(data.notice, 'notice');
+      tr.fadeOut().remove();
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    });
+  });
+});

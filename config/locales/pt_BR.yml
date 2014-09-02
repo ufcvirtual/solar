@@ -359,6 +359,9 @@ pt_BR:
         description: Descrição
         initial_time: Data
         duration: Duração
+      user_blacklist:
+        cpf: CPF
+        name: Nome
 
     errors:
       uniqueness: "Registro já existe no sistema"
@@ -2165,6 +2168,7 @@ pt_BR:
       created_at: Adic. Em
       added_by: Adic. Por
     new:
+      new: Adicionar CPF a blacklist
       cpf: CPF
       name: Nome
 

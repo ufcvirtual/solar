@@ -11,20 +11,4 @@
 
     = render 'blacklist'
 
-:javascript
-
-  $(".link_new_user_blacklist").call_fancybox();
-
-  $(function(){
-
-    $("#search_user_in_blacklist").click(function(){
-      var data = { "search": $("#text_search").val() };
-
-      $.get($(this).data("link"), data, function(data){
-        $(".block_content.blacklist").html(data);
-        $(".tb_list").tablesorter();
-        $("th").last().addClass("sorter-false");
-      });
-    });
-
-  });
+= javascript_include_tag "user_blacklist"

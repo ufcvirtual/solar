@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  include PersonCpf
+
   def ability
     @ability ||= Ability.new(self)
   end
@@ -34,7 +36,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :validatable,
     :recoverable, :encryptable, :token_authenticatable # autenticacao por token
 
-  before_save :ensure_authentication_token!, :downcase_username, :remove_mask_from_cpf
+  before_save :ensure_authentication_token!, :downcase_username
 
   @has_special_needs
 
@@ -47,7 +49,6 @@ class User < ActiveRecord::Base
 
   email_format = %r{\A((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?\z}i
 
-  validates :cpf, presence: true, uniqueness: true
   validates :name, presence: true, length: { within: 6..90 }
   validates :nick, presence: true, length: { within: 3..34 }
   validates :birthdate, presence: true
@@ -66,7 +67,6 @@ class User < ActiveRecord::Base
   validate :data_integration, if: Proc.new{ |a| not(a.on_blacklist?) and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and (a.new_record? or username_changed? or email_changed? or cpf_changed?) and (a.synchronizing.nil? or not(a.synchronizing)) }
 
   validate :unique_cpf, if: "cpf_changed?"
-  validate :cpf_ok, unless: Proc.new { errors[:cpf].any? }
   validate :login_differ_from_cpf
 
   # paperclip uses: file_name, content_type, file_size e updated_at
@@ -129,17 +129,12 @@ class User < ActiveRecord::Base
   end
 
   def unique_cpf
-    cpf_to_check = cpf_without_mask(cpf)
-    cpf_of_user = cpf_without_mask(User.find(id).cpf) rescue ''
+    cpf_to_check = self.class.cpf_without_mask(cpf)
+    cpf_of_user = self.class.cpf_without_mask(User.find(id).cpf) rescue ''
 
     users = User.where(cpf: cpf_to_check) if new_record? or cpf_to_check != cpf_of_user
 
     errors.add(:cpf, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) unless users.nil? or users.empty?
-  end
-
-  def cpf_ok
-    cpf_verify = Cpf.new(self[:cpf])
-    errors.add(:cpf, I18n.t(:new_user_msg_cpf_error)) if not(cpf_verify.nil?) and not(cpf_verify.valido?)
   end
 
   def inactive_message
@@ -158,10 +153,6 @@ class User < ActiveRecord::Base
 
   def downcase_username
     self.username = self.username.downcase
-  end
-
-  def remove_mask_from_cpf
-    self.cpf = cpf_without_mask(self.cpf)
   end
 
   def status
@@ -383,7 +374,7 @@ class User < ActiveRecord::Base
   end
 
   def on_blacklist?
-    not(UserBlacklist.find_by_cpf(cpf_without_mask(cpf)).nil?)
+    not(UserBlacklist.find_by_cpf(self.class.cpf_without_mask(cpf)).nil?)
   end
 
   def add_to_blacklist(user_id)
@@ -391,7 +382,7 @@ class User < ActiveRecord::Base
   end
 
   def connect_and_validates_user
-    user_cpf = cpf_without_mask(cpf)
+    user_cpf = self.class.cpf_without_mask(cpf)
 
     client   = Savon.client wsdl: MODULO_ACADEMICO["wsdl"]
     response = client.call MODULO_ACADEMICO["methods"]["user"]["validate"].to_sym, message: {cpf: user_cpf, email: email, login: username } # gets user validation
@@ -451,12 +442,8 @@ class User < ActiveRecord::Base
 
   private
 
-    def cpf_without_mask(cpf)
-      cpf.gsub(/[.-]/, '') rescue nil
-    end
-
     def login_differ_from_cpf
-      any_user = User.where(cpf: cpf_without_mask(username))
+      any_user = User.where(cpf: self.class.cpf_without_mask(username))
       error = if new_record?
         true if any_user.any?
       else

@@ -1,20 +1,11 @@
 = simple_form_for @user_blacklist, url: blacklist_index_path, html: {id: "user_blacklist_form"} do |f|
   %span.form_requirement= t(:required_fields)
-  %h1#lightBoxDialogTitle= t('user_blacklist.new.title')
+  %h1#lightBoxDialogTitle= t('user_blacklist.new.new')
 
   .form-inputs.block_content.user_blacklist
-
     = f.input :cpf
     = f.input :name
 
   .form-actions.right_buttons
     = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
-    = button_to_function t(:save), "save_blacklist()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
-
-:javascript
-
-  function save_blacklist(){
-    $('form#user_blacklist_form').serialize_and_submit({
-      replace_list: $('.list_user_blacklist')
-    });
-  }
+    = button_to_function t(:save), "user_blacklist_save()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"

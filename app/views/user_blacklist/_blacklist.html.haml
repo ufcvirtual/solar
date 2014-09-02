@@ -4,8 +4,8 @@
       %tr.lines
         %th= t(:cpf)
         %th{style: 'width: 40%;'}= t(:name)
-        %th= t('.created_at')
-        %th= t('.added_by')
+        %th= t('user_blacklist.index.created_at')
+        %th= t('user_blacklist.index..added_by')
         %th.no_sort{style: 'width: 40px;'}
     %tbody
       - @user_blacklist.each do |user_bl|
@@ -18,23 +18,3 @@
             = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_user_blacklist', :"data-link-delete" => blacklist_path(user_bl), :'data-tooltip' => t('user_blacklist.index.delete')
   - else
     .block_content_text.block_content_text_list.text_none= t(:item_search_no_found)
-
-:javascript
-
-  $(function(){
-    $('.delete_user_blacklist').click(function(){
-      if (!confirm("#{I18n.t(:message_confirm)}"))
-        return false;
-
-      var tr = $(this).closest('tr');
-
-      $.delete($(this).data('link-delete'), function(data){
-        flash_message(data.notice, 'notice');
-        tr.fadeOut().remove();
-      }).error(function(data){
-        var data = $.parseJSON(data.responseText);
-        if (typeof(data.alert) != "undefined")
-          flash_message(data.alert, 'alert');
-      });
-    });
-  });
