@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  require "em-websocket"
 
   include SysLog::Actions
 
@@ -11,6 +12,7 @@ class PostsController < ApplicationController
   ## GET /discussions/1/posts/20120217/[news, history]/order/asc/limit/10
   def index
     @discussion = Discussion.find(params[:discussion_id])
+    @user = current_user
 
     # group allocation tag
     @allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.map(&:id) # procurar problema no mobilis, ele nao envia a allocation tag da turma
@@ -74,32 +76,28 @@ class PostsController < ApplicationController
     @post.profile_id = current_user.profiles_with_access_on(:create, :posts, @post.discussion.academic_allocations.map(&:allocation_tag).map(&:related), true).first
     @post.level      = @post.parent.level.to_i + 1 unless @post.parent_id.nil?
 
-    respond_to do |format|
-      if @post.save
-        format.html { redirect_to(discussion_posts_path(discussion_id), notice: t(:created, :scope => [:posts, :create])) }
-        format.xml  { render xml: @post, status: :created }
-        format.json { render json: {result: 1, post_id: @post.id}, status: :created }
-      else
-        format.html { redirect_to(discussion_posts_path(@post.discussion), alert: t(:not_created, scope: [:posts, :create])) }
-        format.xml  { render xml: @post.errors, status: :unprocessable_entity }
-        format.json { render json: {result: 0}, status: :unprocessable_entity }
-      end
+
+    if @post.save
+      render json: {result: 1, post_id: @post.id, parent_id: @post.parent_id}, status: :created
+    else
+      render json: {result: 0}, status: :unprocessable_entity
     end
   end
 
   ## PUT /discussions/:id/posts/1
   def update
-    respond_to do |format|
-      if @post.update_attributes(params[:discussion_post])
-        format.html { redirect_to(discussion_posts_path(@post.discussion), :notice => t(:updated, :scope => [:posts, :update])) }
-        format.xml  { head :ok }
-        format.json { head :ok }
-      else
-        format.html { redirect_to(discussion_posts_path(@post.discussion), :alert => t(:not_updated, :scope => [:posts, :update])) }
-        format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
-        format.json { render :json => @post.errors, :status => :unprocessable_entity }
-      end
+    if @post.update_attributes(params[:discussion_post].reject{|k,v| v.blank?})
+      render json: {success: true, post_id: @post.id, parent_id: @post.parent_id}
+    else
+      render json: @post.errors.full_messages, :status => :unprocessable_entity
     end
+  end
+
+  def show
+    post         = Post.find(params[:id])
+    can_interact = post.discussion.user_can_interact?(current_user.id)
+    can_post     = (can? :create, Post, on: [active_tab[:url][:allocation_tag_id]])
+    render partial: "post", locals: {post: post, latest_posts: [], display_mode: "list", can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: params[:new_post]}
   end
 
   ## DELETE /posts/1

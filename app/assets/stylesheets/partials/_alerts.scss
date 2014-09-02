@@ -1,17 +1,14 @@
 // Mensagens flash e alertas
 
 .alert {
-  font-weight: bold;
   color: #660000;
 }
 
 .notice {
-  font-weight: bold;
   color: #2F4F2F;
 }
 
 .warning {
-  font-weight: bold;
   color: #dca727;
 }
 
@@ -21,6 +18,7 @@
 
 #flash_message {
   border-color: #d0d0d0;
+  font-weight: bold;
   border-width: 1px;
   border-style: solid;
   padding: 5px 10px 4px 25px;
@@ -34,6 +32,35 @@
   }
   &.warning {
     background: url('/assets/warning.png') no-repeat 5px center #FFFFDE;
+  }
+  &.blue_warning{
+    background: #E9F3FF;
+    cursor: pointer;
+    padding: 5px 10px 4px 10px;
+    .icon-plus-circle{
+      color: #00448D;
+      vertical-align: top;
+      margin-right: 4px;
+    }
+    .icon-arrow-up-thin, .icon-arrow-down-thin, .icon-arrow-right-thin, .icon-arrow-left-thin{
+      color: #00448D;
+      vertical-align: top;
+      position: relative;
+    }
+    .icon-arrow-up-thin.top-arrow, .icon-arrow-down-thin.top-arrow{
+      top: -2px;
+      margin-left: 20%;
+    }
+    .icon-arrow-right-thin.top-arrow, .icon-arrow-left-thin.top-arrow{
+      margin-left: 10%;
+    }
+    .icon-arrow-up-thin.bottom-arrow, .icon-arrow-down-thin.bottom-arrow{
+      bottom: -2px;
+      margin-left: -18px;
+    }
+    .icon-arrow-left-thin.bottom-arrow, .icon-arrow-right-thin.bottom-arrow{
+      margin-left: -13px;
+    }
   }
   .close {
     float: right;

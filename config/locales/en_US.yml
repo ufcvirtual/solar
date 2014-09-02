@@ -790,14 +790,17 @@ en_US:
     index:
       show_plainlist: "Show as List"
       show_thread: "Show as Thread"
+      attach_file_title: "Send files"
+    post:
+      remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       answer: "Answer"
       edit: "Edit"
       remove: "Remove"
       remove_file: "Remove file"
-      remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       attach_file: "Attach file"
       file_list: "Attachment"
-      attach_file_title: "Send files"
+      new_posts: " new(s) post(s) at discussion"
+      new_posts_page: "1 new post at discussion (page "
     create:
       created: "Post was successfully created"
       not_created: "Post was not created"

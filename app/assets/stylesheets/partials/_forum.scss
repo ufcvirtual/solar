@@ -116,6 +116,14 @@ div.forum_navigation {
   border-bottom: 1px solid;
 }
 
+.forum_post_head.new, .forum_post_icon.new{
+  background-color: #E9F3FF;
+}
+
+.forum_post_wrapper.new{
+  background-color: #b0cce8; 
+}
+
 .forum_post_author {
   float: left;
   padding-left: 5px;
@@ -149,7 +157,6 @@ div.forum_navigation {
 
 .forum_post_buttons {
   text-align: right;
-  background-color: $color_main_light;
 }
 
 .forum_post_attachment {

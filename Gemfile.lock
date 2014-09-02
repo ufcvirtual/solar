@@ -149,6 +149,9 @@ GEM
     diff-lcs (1.2.5)
     doorkeeper (1.0.0)
       railties (>= 3.1)
+    em-websocket (0.5.1)
+      eventmachine (>= 0.12.9)
+      http_parser.rb (~> 0.6.0)
     equalizer (0.0.9)
     erubis (2.7.0)
     eventmachine (1.0.3)
@@ -197,6 +200,7 @@ GEM
     hashie (3.3.1)
     highline (1.6.21)
     hike (1.2.3)
+    http_parser.rb (0.6.0)
     httpclient (2.4.0)
     httpi (2.2.5)
       rack
@@ -410,6 +414,7 @@ DEPENDENCIES
   devise-encryptable (~> 0.1.2)
   devise-i18n (~> 0.10.3)
   doorkeeper (~> 1.0.0)
+  em-websocket
   factory_girl_rails (~> 4.2.1)
   fancybox2-rails (~> 0.2.5)
   foreigner (~> 1.4.0)

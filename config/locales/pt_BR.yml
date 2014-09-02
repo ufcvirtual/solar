@@ -965,14 +965,17 @@ pt_BR:
     index:
       show_plainlist: "Ver em lista"
       show_thread: "Ver em Árvore"
+      attach_file_title: "Envio de arquivos"
+    post:
+      remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
       answer: "Responder"
       edit: "Editar"
       remove: "Excluir"
       remove_file: "Remover arquivo"
-      remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
       attach_file: "Anexar arquivo"
       file_list: "Anexos"
-      attach_file_title: "Envio de arquivos"
+      new_posts: " nova(s) postagem(ns) no fórum"
+      new_posts_page: "1 nova postagem no fórum (página "
     create:
       created: "Postagem criada com sucesso"
       not_created: "A postagem não foi criada"

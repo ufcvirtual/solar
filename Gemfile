@@ -46,6 +46,8 @@ gem "savon", "~> 2.0" # comunicação com ws
 
 gem "roo", "~> 1.13.2" # csv, excel
 
+gem "em-websocket" # websocket pros fóruns
+
 group :development do
   gem "rb-readline", "~> 0.5.1"
   gem "net-ssh", "~> 2.6.8" # dependencia capistrano

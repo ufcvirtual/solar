@@ -1,0 +1,63 @@
+- user     = post.user
+- children = post.children
+- children = Post.reorder_by_latest_posts(latest_posts, children) unless (display_mode == 'list') # obtendo e reordenando os posts a partir dos seus "filhos/netos"
+- editable = ((post.user_id == current_user.id) && (children.count == 0))
+- files    = post.files
+
+%table.forum_post{border:"0", cellpadding:"0", cellspacing:"0", id: "#{post.id}"}
+  %tr
+    %td.forum_post_icon{rowspan: 3, class: (new_post ? "new" : "")}
+      = image_tag(user.photo.url(:forum), alt: t(:mysolar_alt_img_user) + ' ' + user.nick)
+    %td.forum_post_head{class: (new_post ? "new" : "")}
+      .forum_post_author
+        .forum_participant_nick{alt:"#{user.nick}"}
+          = user.nick
+        .forum_participant_profile
+          = (profile = post.profile).nil? ? '' : profile.name
+      .forum_post_date
+        = l(post.updated_at, :format => :discussion_post_date)
+        = l(post.updated_at, :format => :discussion_post_hour)
+  %tr
+    %td.forum_post_content{colspan: 2}
+      .forum_post_wrapper{class: (new_post ? "new" : "")}
+        .forum_post_inner_content
+          = raw(post.content)
+        - unless files.empty?
+          .forum_post_attachment
+            %h3=t(".file_list")
+            %ul.forum_post_attachment_list
+              - files.each do |file|
+                - mimetype_icon  = image_tag( icon_attachment(file.attachment_file_name) )
+                - link_to_down   = (link_to file.attachment_file_name, download_post_post_file_path(post, file))
+                - link_to_remove = (editable and can_interact) ? (link_to (content_tag(:i, nil, class: "icon-cross-circle warning")), post_post_file_path(post, file), confirm: t(".remove_file_confirm"), method: :delete, :'data-tooltip' => t(".remove_file"), class: 'nodecoration') : ''
+                %li
+                  = raw"#{mimetype_icon}&nbsp;&nbsp;#{link_to_down}&nbsp;&nbsp;#{link_to_remove}"
+                  - if file.attachment_content_type.index('audio') or file.attachment_file_name.last(4).eql?('.aac')
+                    .audio{id: "audio-#{file.id}", :'data-type' => file.attachment_file_name.split(".").last, :'data-source'=> download_post_post_file_url(post, file)}
+        .forum_post_buttons
+          .btn-group
+            - if can_interact
+              - if editable
+                = link_to content_tag(:i, nil, class: 'icon-paperclip'), new_post_post_file_path(post), class: "btn forum_button_attachment", :'data-tooltip'=> t(".attach_file")
+                - path = discussion_post_path(post.discussion, post)
+                = link_to_function content_tag(:i, nil, class: 'icon-trash'), "delete_post(this)", class: "btn btn_caution", :'data-url' => path, :'data-post' => post.id, :'data-tooltip'=> t(".remove")
+                = link_to_function content_tag(:i, nil, class: 'icon-edit'), "update_post(this, #{post.id}, #{post.parent_id || 0})", class: "btn update_post", :'data-tooltip'=> t(".edit")
+              - if post.can_be_answered? and can_post
+                = link_to_function content_tag(:i, nil, class: 'icon-reply'), "new_post(this, #{post.id});", class: "btn response_post", level: post.level, :'data-tooltip'=> t(".answer")
+            - else
+              = button_tag content_tag(:i, nil, class: 'icon-trash'), class: "btn btn_disabled", disabled: true, :'data-tooltip'=> t(".remove")
+              = button_tag content_tag(:i, nil, class: 'icon-edit'), class: "btn btn_disabled", disabled: true, :'data-tooltip'=> t(".edit")
+              = button_tag content_tag(:i, nil, class: 'icon-reply'), class: "btn btn_disabled", disabled: true, :'data-tooltip'=> t(".answer")
+        .forum_post_reply
+      - unless display_mode == 'list'
+        - children.each do |child| 
+          = render partial: "post", locals: {post: child, latest_posts: latest_posts, display_mode: display_mode, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: false}
+  %tr
+
+:javascript
+  $(function(){
+    $("table .new").click(function(){
+      $($(this).closest("table")).find(".forum_post_wrapper, .forum_post_head, .forum_post_icon").each(function(){$($(this)[0]).removeClass("new")});
+      add_post_count_warning();
+    });
+  });

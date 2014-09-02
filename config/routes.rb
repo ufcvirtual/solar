@@ -131,7 +131,7 @@ Solar::Application.routes.draw do
       put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Discussion", as: :remove_group_from
       put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Discussion", as: :add_group_to
     end
-    resources :posts, except: [:show, :new, :edit] do
+    resources :posts, except: [:new, :edit] do
       collection do
         get "user/:user_id", to: :show, as: :user
         get ":type/:date(/order/:order(/limit/:limit))", to: :index, defaults: {display_mode: 'list'} # :types => [:news, :history]; :order => [:asc, :desc]

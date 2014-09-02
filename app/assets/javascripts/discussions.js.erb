@@ -13,11 +13,6 @@ CKEDITOR.editorConfig = function (config) {
     config.extraPlugins = 'eqneditor,oembed';
 };
 
-function showUploadForm(url) {
-  showLightBoxURL(url, 400, 250, true, '<%= I18n.t(:attach_file_title, :scope => [:posts, :index]) %>');
-  return false;
-}
-
 function form_post_reset_parameters() {
   var action = $('form#new_post_form').attr('action-default');
   $('form#new_post_form').attr('action', action);
@@ -41,6 +36,7 @@ function append_rich_text(container) {
 }
 
 function cancel_posting() {
+  append_rich_text($(".new_posts"));
   $('#new_post').hide(300);
   $('#new_post').parent().hide(300, function() {
     destroy_editor();
@@ -62,6 +58,9 @@ function new_post(obj, parent) {
     $(postReply).show();
     append_rich_text(postReply); // seletor para reply
   }
+
+  $('form#new_post_form').attr('method', "POST");
+
   return false;
 };
 
@@ -71,15 +70,19 @@ function update_post(obj, post, parent) {
   if (parent > 0) { $('form#new_post_form #discussion_post_parent_id').val(parent); } // post com parent
   var action = $('form#new_post_form').attr('action-to-edit').replace(':id', post);
   $('form#new_post_form').attr('action', action);
+  $('form#new_post_form').attr('method', "PUT");
 
   postEdit = $(obj).closest('.forum_post_wrapper').children(".forum_post_reply");
   $(postEdit).show();
   append_rich_text(postEdit);
   CKEDITOR.instances['discussion_post_content'].setData($(obj).closest('.forum_post_wrapper').children('.forum_post_inner_content').html());
+
   return false;
 }
 
-function delete_post(post_id, url) {
+function delete_post(button) {
+  var post_id = $(button).data("post");
+  var url     = $(button).data("url");
   if (!confirm("<%= I18n.t(:message_confirm) %>")) return;
 
   $.ajax({
@@ -93,5 +96,43 @@ function delete_post(post_id, url) {
     error: function(obj, status) {
       // tratamento de erro ainda nao feito
     }
+  });
+}
+
+function add_post_count_warning(current_page, new_post_page){
+  var count_posts = $(".forum_post_wrapper.new").length;
+  if (count_posts>0)
+    flash_message(count_posts + "<%= I18n.t('posts.post.new_posts') %>", "blue_warning", undefined, "go_to_first_new_post");
+  else
+    if (new_post_page != undefined && current_page != undefined)
+      flash_message("<%= I18n.t('posts.post.new_posts_page') %>" +new_post_page+") ", "blue_warning", undefined, "go_to_first_new_post");
+    else
+      erase_flash_messages();
+
+  $(".blue_warning").prepend('<i class="icon-plus-circle"></i>');
+  
+  var arrow_class = "";
+  var first_new_post = $($(".forum_post_head.new")[0]);
+
+  if (!first_new_post.length) // if there is no new post on this page
+    if (parseInt(current_page) > parseInt(new_post_page))
+      arrow_class = "left";
+    else
+      arrow_class = "right";
+  else{
+    if (first_new_post.offset().top > $(".blue_warning").offset().top)
+      arrow_class = "down";
+    else
+      arrow_class = "up";
+  }
+
+  $(".blue_warning").append('<i class="icon-arrow-'+arrow_class+'-thin top-arrow"></i><i class="icon-arrow-'+arrow_class+'-thin bottom-arrow"></i>');
+}
+
+function go_to_first_new_post(){
+  $("#flash_message.blue_warning").click(function(){
+    var new_post = $($(".forum_post_head.new")[0]).offset();
+    if (new_post)
+      $(window).scrollTop(new_post.top);
   });
 }
