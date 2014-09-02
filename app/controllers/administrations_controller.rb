@@ -218,7 +218,7 @@ class AdministrationsController < ApplicationController
     log  = params[:type] == 'actions' ? LogAction : LogAccess
 
     unless params[:user].blank?
-      text_search = [URI.unescape(params[:user]).split(" ").compact.join(":*&"), ":*"].join 
+      text_search = [URI.unescape(params[:user]).split(" ").compact.join(":*&"), ":*"].join
       user_ids    = User.where("to_tsvector('simple', unaccent(name || ' ' || cpf)) @@ to_tsquery('simple', unaccent(?))", text_search).map(&:id).join(',')
       query << "user_id IN (#{user_ids})" unless user_ids.blank?
     end

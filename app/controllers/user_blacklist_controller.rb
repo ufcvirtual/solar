@@ -16,20 +16,11 @@ class UserBlacklistController < ApplicationController
     @user_blacklist = UserBlacklist.new
   end
 
-  def add_user
-    user = User.find(params[:user_id])
-
-    if user.add_to_blacklist
-      render json: {success: true, notice: t('user_blacklist.success.created', cpf: user.cpf)}
-    else
-      render json: {success: false, alert: t('user_blacklist.error.craeted')}, status: :unprocessable_entity
-    end
-  end
-
   # POST /user_blacklist
   # POST /user_blacklist.json
   def create
     @user_blacklist = UserBlacklist.new(params[:user_blacklist])
+    @user_blacklist.user = current_user
 
     begin
       @user_blacklist.save!
@@ -38,6 +29,22 @@ class UserBlacklistController < ApplicationController
     rescue
       render :new
     end
+  end
+
+  def add_user
+    user = User.find(params[:user_id])
+
+    if user.add_to_blacklist(current_user.id)
+      render json: {success: true, notice: t('user_blacklist.success.created', cpf: user.cpf)}
+    else
+      render json: {success: false, alert: t('user_blacklist.error.created')}, status: :unprocessable_entity
+    end
+  end
+
+  def search
+    @user_blacklist = params[:search].present? ? UserBlacklist.search(params[:search]) : UserBlacklist.all
+
+    render partial: 'blacklist'
   end
 
   # DELETE /user_blacklist/1

@@ -1913,10 +1913,11 @@ en_US:
       created: "CPF '%{cpf}' add to Blacklist."
       deleted: "CPF '%{cpf}' removed from Blacklist."
     error:
-      created: "Erro ao adicionar o CPF '%{cpf}' à blacklist."
-      deleted: "Erro ao retirar CPF '%{cpf}' da blacklist."
+      created: "Error when adding to Blacklist."
+      deleted: "Error when removing from Blacklist."
     index:
-      title: "Blacklist"
+      cpf_or_name: CPF or Name
+      title: Blacklist
       new: Add CPF
       delete: Delete
       created_at: Created at

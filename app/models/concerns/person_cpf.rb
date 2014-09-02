@@ -4,21 +4,14 @@ module PersonCpf
   extend ActiveSupport::Concern
 
   included do
-
-    # before save # remove points from cpf
-    before_save :remove_mask_from_cpf
-
-
-    validates :cpf, presence: true, uniqueness: true
+    before_validation :remove_mask_from_cpf
 
     validate :cpf_ok, unless: Proc.new { errors[:cpf].any? }
-
-    # attr_accessor :user_id
+    validates :cpf, presence: true, uniqueness: true
   end
 
-
   def remove_mask_from_cpf
-    self.cpf = cpf_without_mask(self.cpf)
+    self.cpf = self.class.cpf_without_mask(self.cpf)
   end
 
   def cpf_ok
@@ -26,12 +19,12 @@ module PersonCpf
     errors.add(:cpf, I18n.t(:new_user_msg_cpf_error)) if not(cpf.nil?) and not(cpf.valido?)
   end
 
-  ## buscas por cpf aqui
-
-  private
+  module ClassMethods
 
     def cpf_without_mask(cpf)
       cpf.gsub(/[.-]/, '') rescue nil
     end
+
+  end
 
 end

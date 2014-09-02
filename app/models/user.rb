@@ -386,8 +386,8 @@ class User < ActiveRecord::Base
     not(UserBlacklist.find_by_cpf(cpf_without_mask(cpf)).nil?)
   end
 
-  def add_to_blacklist
-    UserBlacklist.create(cpf: cpf, name: name)
+  def add_to_blacklist(user_id)
+    UserBlacklist.create(cpf: cpf, name: name, user_id: user_id)
   end
 
   def connect_and_validates_user

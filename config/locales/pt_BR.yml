@@ -2155,19 +2155,18 @@ pt_BR:
       created: "CPF '%{cpf}' adicionado a blacklist com sucesso."
       deleted: "CPF '%{cpf}' retirado da blacklist com sucesso."
     error:
-      created: "Erro ao adicionar o CPF '%{cpf}' à blacklist."
-      deleted: "Erro ao retirar CPF '%{cpf}' da blacklist."
+      created: "Erro ao adicionar CPF à blacklist."
+      deleted: "Erro ao retirar CPF da blacklist."
     index:
+      cpf_or_name: CPF ou Nome
       title: Blacklist
       new: Adicionar CPF
       delete: Excluir
-      created_at: Adicionado em
-      add_by: Add Por
+      created_at: Adic. Em
+      added_by: Adic. Por
     new:
       cpf: CPF
       name: Nome
-
-  #Facebook
 
   facebook:
     login: Entrar
