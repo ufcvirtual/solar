@@ -1,6 +1,6 @@
 CKEDITOR.plugins.setLang('oembed', 'pt-br', {
     title: "Conteúdo embed de mídia (foto, vídeo, audio, rich)",
-    button: "Conteúdo embed de mídia de vários sites",
+    button: "Conteúdo embed de mídia",
 	pasteUrl: "Cole aqui a URL (inclusive URLs encurtadas) de um dos sites que o plugin suporta (ex. YouTube, Flickr, Qik, Vimeo, Hulu, Viddler, MyOpera, etc.) ...",
     invalidUrl: "Por favor informe uma URL válida!",
     noEmbedCode: "Nenhum código embed foi encontrado, ou esse site não está na lista dos sites suportados pelo plugin!",

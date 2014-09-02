@@ -6,11 +6,13 @@ CKEDITOR.editorConfig = function (config) {
       { name: 'styles', items : [ 'Styles', 'Format' ] },
       { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] },
       { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] },
-      { name: 'links', items : [ 'Link', 'Unlink', 'Image', 'oembed' ] },
+      { name: 'links', items : [ 'Link', 'Unlink', 'Image', 'oembed', 'Smiley' ] },
       { name: 'insert', items : ['EqnEditor'] },
     ];
 
-    config.extraPlugins = 'eqneditor,oembed';
+    config.extraPlugins = 'eqneditor,oembed,smiley';
+
+    // config.language = locale;
 };
 
 function form_post_reset_parameters() {
