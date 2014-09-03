@@ -34,10 +34,18 @@ class UserBlacklistController < ApplicationController
   def add_user
     user = User.find(params[:user_id])
 
-    if user.add_to_blacklist(current_user.id)
+    begin
+      user_bl = user.add_to_blacklist(current_user.id)
+
+      raise if user_bl.errors.any?
+
       render json: {success: true, notice: t('user_blacklist.success.created', cpf: user.cpf)}
-    else
-      render json: {success: false, alert: t('user_blacklist.error.created')}, status: :unprocessable_entity
+    rescue
+      if user_bl.errors.any?
+        render json: {success: false, alert: user_bl.errors.full_messages}, status: :unprocessable_entity
+      else
+        render json: {success: false, alert: t('user_blacklist.error.created')}, status: :unprocessable_entity
+      end
     end
   end
 

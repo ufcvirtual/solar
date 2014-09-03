@@ -2153,13 +2153,14 @@ pt_BR:
 
   user_blacklist:
     remove: 'Remover da blacklist'
-    add: 'Adicionar à blacklist'
+    add: 'Adicionar a blacklist'
+    cpf_cannot_be_added: 'Não pode ser adicionado a blacklist.'
     success:
       created: "CPF '%{cpf}' adicionado a blacklist com sucesso."
       deleted: "CPF '%{cpf}' retirado da blacklist com sucesso."
     error:
-      created: "Erro ao adicionar CPF à blacklist."
-      deleted: "Erro ao retirar CPF da blacklist."
+      created: Erro ao adicionar CPF a blacklist.
+      deleted: Erro ao retirar CPF da blacklist.
     index:
       cpf_or_name: CPF ou Nome
       title: Blacklist
