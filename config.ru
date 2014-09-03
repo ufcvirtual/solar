@@ -3,3 +3,4 @@
 require ::File.expand_path('../config/environment',  __FILE__)
 
 run Solar::Application
+system "ruby app/services/websocket_server.rb&"
