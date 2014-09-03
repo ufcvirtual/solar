@@ -196,6 +196,7 @@ pt_BR:
       score: Acompanhamento
       support_material_file: Material de Apoio
       webconference: "Webconferência"
+      user_blacklist: Blacklist
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -1378,6 +1379,7 @@ pt_BR:
   menu_admin_lessons: Consultar Aulas
   menu_admin_logs: Logs
   menu_admin_import_users: Importação de usuários
+  menu_admin_blacklist: Blacklist
   menu_responsibles: Consultar Responsáveis
   menu_home: Início
 

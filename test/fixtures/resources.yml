@@ -1030,3 +1030,15 @@ res177:
   controller: 'users'
   action: 'public_area'
   description: 'Visualizar área pública dos participantes'
+
+res178:
+  id: 178
+  controller: 'user_blacklist'
+  action: 'index'
+  description: "Listar CPFs"
+
+res179:
+  id: 179
+  controller: 'user_blacklist'
+  action: 'create'
+  description: 'Adicionar CPF'

@@ -154,6 +154,7 @@ en_US:
       score: Score
       support_material_file: Support Material
       webconference: "Webconference"
+      user_blacklist: Blacklist
     attributes:
       user:
         password: "Password"
@@ -1172,8 +1173,10 @@ en_US:
   menu_admin_lessons: Consult Lessons
   menu_admin_logs: Logs
   menu_admin_import_users: Importing users
+  menu_admin_blacklist: Blacklist
   menu_responsibles: Consult Responsibles
   menu_home: Home
+
   places_nav_panel_course_hint: "Type the course's name or part of it"
   places_nav_panel_semester_hint: "Type the semester or part of it"
   places_nav_panel_curriculum_unit_hint: "Type the subject's name or part of it"
@@ -1182,6 +1185,7 @@ en_US:
   places_nav_panel_empty_text: "No results"
   places_nav_panel_to_offer: Offer
   places_nav_panel_to_manage: Manage
+
   new_course_title: New Course
   update_course_title: Update Course
   course_edx_edition: "Courses"

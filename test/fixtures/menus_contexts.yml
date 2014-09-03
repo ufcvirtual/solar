@@ -137,6 +137,10 @@ admin_responsibles:
   menu_id: 610
   context_id: 1
 
+admin_blacklist:
+  menu_id: 611
+  context_id: 1
+
 # MENU PAI - 70
 disco_virtual:
   menu_id: 70

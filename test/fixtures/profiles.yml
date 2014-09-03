@@ -40,7 +40,7 @@ coord_grad:
 
 coord_polo:
   id: 9
-  name: "Coord. Polo"
+  name: "Atendimento"
 
 avaliador:
   id: 10
@@ -60,6 +60,21 @@ aluno_monitor:
   id: 13
   name: "Aluno Monitor"
   types: 6
+
+editor_uab:
+  id: 14
+  name: "Editor UAB"
+  types: 16
+
+transicao_didatica:
+  id: 15
+  name: "Transição didática"
+  types: 0
+
+financeiro:
+  id: 16
+  name: "Financeiro"
+  types: 32
 
 prof_titular_uab:
   id: 17

@@ -214,6 +214,13 @@ admin_responsibles:
   order: 10
   resource_id: 175
 
+admin_blacklist:
+  id: 611
+  parent_id: 60
+  name: menu_admin_blacklist
+  order: 11
+  resource_id: 178
+
 # MENU PAI - 70
 disco_virtual:
   id: 70

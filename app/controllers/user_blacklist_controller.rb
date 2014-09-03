@@ -1,10 +1,14 @@
 class UserBlacklistController < ApplicationController
 
+  include SysLog::Actions
+
   layout false, except: :index
 
   # GET /user_blacklist
   # GET /user_blacklist.json
   def index
+    authorize! :index, UserBlacklist
+
     @user_blacklist = UserBlacklist.all
 
     render layout: false if params[:layout].present? and params[:layout] == 'false'
@@ -13,12 +17,16 @@ class UserBlacklistController < ApplicationController
   # GET /user_blacklist/new
   # GET /user_blacklist/new.json
   def new
+    authorize! :create, UserBlacklist
+
     @user_blacklist = UserBlacklist.new
   end
 
   # POST /user_blacklist
   # POST /user_blacklist.json
   def create
+    authorize! :create, UserBlacklist
+
     @user_blacklist = UserBlacklist.new(params[:user_blacklist])
     @user_blacklist.user = current_user
 
@@ -32,6 +40,8 @@ class UserBlacklistController < ApplicationController
   end
 
   def add_user
+    authorize! :create, UserBlacklist
+
     user = User.find(params[:user_id])
 
     begin
@@ -41,15 +51,15 @@ class UserBlacklistController < ApplicationController
 
       render json: {success: true, notice: t('user_blacklist.success.created', cpf: user.cpf)}
     rescue
-      if user_bl.errors.any?
-        render json: {success: false, alert: user_bl.errors.full_messages}, status: :unprocessable_entity
-      else
-        render json: {success: false, alert: t('user_blacklist.error.created')}, status: :unprocessable_entity
-      end
+      alert = user_bl.errors.any? ? user_bl.errors.full_messages : t('user_blacklist.error.created')
+
+      render json: {success: false, alert: alert}, status: :unprocessable_entity
     end
   end
 
   def search
+    authorize! :index, UserBlacklist
+
     @user_blacklist = params[:search].present? ? UserBlacklist.search(params[:search]) : UserBlacklist.all
 
     render partial: 'blacklist'
@@ -58,6 +68,8 @@ class UserBlacklistController < ApplicationController
   # DELETE /user_blacklist/1
   # DELETE /user_blacklist/1.json
   def destroy
+    authorize! :create, UserBlacklist
+
     user_blacklist = if params[:type].present? and params[:type] == 'remove'
       UserBlacklist.find_by_cpf(params[:user_cpf])
     else

@@ -1973,6 +1973,16 @@ admin_log1:
   resource_id: 173
   per_id: false
 
+admin_blacklist1:
+  profile_id: 6
+  resource_id: 178
+  per_id: false
+
+admin_blacklist2:
+  profile_id: 6
+  resource_id: 179
+  per_id: false
+
 ## import users
 
 admin_iu1:
