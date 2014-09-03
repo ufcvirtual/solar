@@ -12,7 +12,7 @@ CKEDITOR.dialog.add( 'eqneditorDialog', function(editor)
 {	
 	var http = ('https:' == document.location.protocol ? 'https://' : 'http://');
 	return {
-		title : editor.lang.eqneditor,
+		title : editor.lang.eqneditor.title,
 		minWidth : 567,
 		minHeight : 430,
 		resizable: CKEDITOR.DIALOG_RESIZE_NONE,
