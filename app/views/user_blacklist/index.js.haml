@@ -1,0 +1,6 @@
+$('tbody.user_blacklist').append('#{escape_javascript(render partial: "blacklist_body")}');
+$('a.load-more-user_blacklist').attr('href', '#{blacklist_index_path(page: @user_blacklist.next_page)}');
+$(".tb_list").trigger("update");
+
+- unless @user_blacklist.next_page
+  $('a.load-more-user_blacklist').remove();

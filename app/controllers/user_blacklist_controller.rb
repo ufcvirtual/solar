@@ -9,9 +9,14 @@ class UserBlacklistController < ApplicationController
   def index
     authorize! :index, UserBlacklist
 
-    @user_blacklist = UserBlacklist.all
+    @user_blacklist = UserBlacklist.paginate(page: params[:page])
 
-    render layout: false if params[:layout].present? and params[:layout] == 'false'
+    respond_to do |format|
+      format.html {
+        render layout: false if params[:layout].present? and params[:layout] == 'false'
+      }
+      format.js
+    end
   end
 
   # GET /user_blacklist/new
@@ -42,16 +47,15 @@ class UserBlacklistController < ApplicationController
   def add_user
     authorize! :create, UserBlacklist
 
-    user = User.find(params[:user_id])
-
     begin
-      user_bl = user.add_to_blacklist(current_user.id)
+      user = User.find(params[:user_id])
+      @user_blacklist = user.add_to_blacklist(current_user.id) # variavel para gerar log
 
-      raise if user_bl.errors.any?
+      raise if @user_blacklist.errors.any?
 
       render json: {success: true, notice: t('user_blacklist.success.created', cpf: user.cpf)}
     rescue
-      alert = user_bl.errors.any? ? user_bl.errors.full_messages : t('user_blacklist.error.created')
+      alert = @user_blacklist.errors.any? ? @user_blacklist.errors.full_messages : t('user_blacklist.error.created')
 
       render json: {success: false, alert: alert}, status: :unprocessable_entity
     end
@@ -60,7 +64,7 @@ class UserBlacklistController < ApplicationController
   def search
     authorize! :index, UserBlacklist
 
-    @user_blacklist = params[:search].present? ? UserBlacklist.search(params[:search]) : UserBlacklist.all
+    @user_blacklist = params[:search].present? ? UserBlacklist.search(params[:search]).paginate(page: params[:page]) : UserBlacklist.paginate(page: params[:page])
 
     render partial: 'blacklist'
   end
@@ -70,16 +74,16 @@ class UserBlacklistController < ApplicationController
   def destroy
     authorize! :create, UserBlacklist
 
-    user_blacklist = if params[:type].present? and params[:type] == 'remove'
+    @user_blacklist = if params[:type].present? and params[:type] == 'remove'
       UserBlacklist.find_by_cpf(params[:user_cpf])
     else
       UserBlacklist.find(params[:id])
     end
 
     begin
-      user_blacklist.destroy
+      @user_blacklist.destroy
 
-      render json: {success: true, notice: t('user_blacklist.success.deleted', cpf: user_blacklist.cpf)}
+      render json: {success: true, notice: t('user_blacklist.success.deleted', cpf: @user_blacklist.cpf)}
     rescue
       render json: {success: false, alert: t('user_blacklist.error.deleted')}, status: :unprocessable_entity
     end

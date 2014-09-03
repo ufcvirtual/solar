@@ -7,14 +7,9 @@
         %th= t('user_blacklist.index.created_at')
         %th= t('user_blacklist.index..added_by')
         %th.no_sort{style: 'width: 40px;'}
-    %tbody
-      - @user_blacklist.each do |user_bl|
-        %tr.lines
-          %td= user_bl.cpf
-          %td= user_bl.name
-          %td= l user_bl.created_at, format: :normal
-          %td= user_bl.try(:user).try(:username)
-          %td
-            = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_user_blacklist', :"data-link-delete" => blacklist_path(user_bl), :'data-tooltip' => t('user_blacklist.index.delete')
+    %tbody.user_blacklist
+      = render 'blacklist_body'
   - else
     .block_content_text.block_content_text_list.text_none= t(:item_search_no_found)
+
+= link_to content_tag(:i, nil, class: "icon-ellipsis"), blacklist_index_path(page: @user_blacklist.next_page), class: 'load-more-user_blacklist', remote: true, :"data-tooltip" => t(:load_items) if @user_blacklist.next_page

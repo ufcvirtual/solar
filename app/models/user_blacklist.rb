@@ -2,6 +2,8 @@ class UserBlacklist < ActiveRecord::Base
 
   include PersonCpf
 
+  default_scope order: 'name ASC'
+
   belongs_to :user
 
   validates :name, presence: true
