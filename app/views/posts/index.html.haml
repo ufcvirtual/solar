@@ -46,6 +46,9 @@
 = javascript_include_tag "ckeditor/init", "discussions", "jwplayer/jwplayer.js", "contextual_help/discussion_posts"
 
 :javascript
+
+  var locale = "#{I18n.locale}";
+
   $(function(){
 
     CKEDITOR_BASEPATH  = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
@@ -150,3 +153,5 @@
     });
 
   });
+
+= javascript_include_tag "contextual_help/discussion_posts"

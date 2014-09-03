@@ -1,5 +1,6 @@
 /* configuração da barra de ferramentas do ckeditor */
 CKEDITOR.editorConfig = function (config) {
+  config.language = locale;
   config.toolbar =
     [
       { name: 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
@@ -12,7 +13,6 @@ CKEDITOR.editorConfig = function (config) {
 
     config.extraPlugins = 'eqneditor,oembed,smiley';
 
-    // config.language = locale;
 };
 
 function form_post_reset_parameters() {

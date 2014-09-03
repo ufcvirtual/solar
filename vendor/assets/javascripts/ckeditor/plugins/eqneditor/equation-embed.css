@@ -371,3 +371,7 @@ img[alt = '+']{
   top: 105px;
   left: 388px;
 }
+
+.cke_dark_background{
+  background: white;
+}

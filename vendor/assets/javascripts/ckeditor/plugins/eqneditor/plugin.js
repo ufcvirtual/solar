@@ -9,9 +9,9 @@
  Written by Will Bateman.
 */
 CKEDITOR.plugins.add( 'eqneditor', {
-	lang : "pt-br,en",
-	requires: [ 'dialog' ],
-	icons: "eqneditor",
+	requires: 'dialog',
+	lang : 'pt-br,en',
+	icons: 'eqneditor',
 	
 	init : function(editor)
 	{		
