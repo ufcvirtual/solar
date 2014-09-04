@@ -1,10 +1,3 @@
-:javascript
-  CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
-
-= javascript_include_tag "ckeditor/init"
-= javascript_include_tag "discussions"
-= javascript_include_tag "jwplayer/jwplayer.js"
-
 .block_wrapper#forum_description
   .block_title
     %h2
@@ -50,8 +43,12 @@
     - @posts.each do |post|
       = render partial: "post", locals: {post: post, latest_posts: @latest_posts, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false}
 
+= javascript_include_tag "ckeditor/init", "discussions", "jwplayer/jwplayer.js", "contextual_help/discussion_posts"
+
 :javascript
   $(function(){
+
+    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
 
     $(".forum_button_attachment").call_fancybox();
     var display_list = ("#{@display_mode == 'list'}" == "true");
@@ -76,7 +73,7 @@
     });
 
     /*Conexão com o WebSocket*/
-    var ws = new WebSocket('ws://127.0.0.1:3001/'+ac); // arquivo websocket_server.rb
+    var ws = new WebSocket('ws://127.0.0.1:3001/'+ac); // file websocket_server.rb
     ws.onopen = function (){ }; // ao iniciar ws
     ws.onclose = function () { }; // ao perder conexão com o ws
     ws.onerror = function (err) { }; // ao receber erro no ws
@@ -88,13 +85,13 @@
       $.get("#{discussion_post_path(@discussion.id, ':id')}".replace(':id', data.post_id), {new_post: true}, function(data2){
         var post_table   = $("table#"+data.post_id);
         var parent_table = $("table#"+data.parent_id);
-        if (!!post_table.length)
+        if (!!post_table.length) // if post exists
           post_table.html(data2);
         else
-          if (!!parent_table.length && !display_list)
+          if (!!parent_table.length && !display_list) // if has parent and isn't list view 
             $(parent_table.find("td.forum_post_content .forum_post_wrapper")[0]).after(data2);
-          else
-            if (data.parent_id == null && (parseInt(data.page) == parseInt("#{@current_page}")))
+          else // if hasn't parent and is at the same page or is list view
+            if (data.parent_id == null && (parseInt(data.page) == parseInt("#{@current_page}")) || !!display_list)
               $(".forum_posts_wrapper").prepend(data2);
 
         add_post_count_warning("#{@current_page}", data.page);
@@ -102,8 +99,10 @@
     }
 
     $("#submit_post").click(function(){
-      var form = $($(this).parents("form")[0]);
+      var form    = $($(this).parents("form")[0]);
       var content = CKEDITOR.instances["discussion_post_content"].getData();
+
+      // get parent_id information
       if (form.attr("method") == "POST")
         var parent_table = $($(this).parents("table")[0]);
       if (parent_table == undefined)
@@ -116,7 +115,7 @@
         url: form.attr("action"),
         data: {discussion_post: {parent_id: parent_id, content: content}},
         success: function(data){
-          cancel_posting();
+          cancel_posting(); // remove ckeditor options
 
           $.get("#{discussion_post_path(@discussion.id, ':id')}".replace(':id', data.post_id), {can_post: "#{@can_post}"}, function(data2){
             var post_table = $("table#"+data.post_id);
@@ -128,9 +127,10 @@
               else
                 $(".forum_posts_wrapper").prepend(data2);
             $(".forum_button_attachment").call_fancybox();
+            add_post_count_warning();
           });
 
-          // só mandar msg se for novo post
+          // only send message if is a new post
           if (form.attr("method") == "POST")
             ws.send(JSON.stringify({
               msg: content,
@@ -139,13 +139,12 @@
               page: "#{@current_page}",
               academic_allocation_id: ac
             }));
+
         },
         error: function(data){
+          flash_message("#{t('posts.create.not_created')}", "alert");
         }
       });
     });
 
-
   });
-
-= javascript_include_tag "contextual_help/discussion_posts"

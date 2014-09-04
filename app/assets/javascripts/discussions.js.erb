@@ -106,8 +106,10 @@ function add_post_count_warning(current_page, new_post_page){
   else
     if (new_post_page != undefined && current_page != undefined)
       flash_message("<%= I18n.t('posts.post.new_posts_page') %>" +new_post_page+") ", "blue_warning", undefined, "go_to_first_new_post");
-    else
+    else{
+      console.log("apagou aqui");
       erase_flash_messages();
+    }
 
   $(".blue_warning").prepend('<i class="icon-plus-circle"></i>');
   
