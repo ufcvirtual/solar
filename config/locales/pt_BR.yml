@@ -1379,7 +1379,7 @@ pt_BR:
   menu_admin_lessons: Consultar Aulas
   menu_admin_logs: Logs
   menu_admin_import_users: Importação de usuários
-  menu_admin_blacklist: Blacklist
+  menu_admin_blacklist: Desvincular do MA
   menu_responsibles: Consultar Responsáveis
   menu_home: Início
 
@@ -2154,24 +2154,24 @@ pt_BR:
       all: Todos
 
   user_blacklist:
-    remove: 'Remover da blacklist'
-    add: 'Adicionar a blacklist'
-    cpf_cannot_be_added: 'Não pode ser adicionado a blacklist.'
+    add: Desvincular do MA
+    remove: Voltar vínculo com MA
+    cpf_cannot_be_added: 'Não pode ser desvinculado do Módulo Acadêmico.'
     success:
-      created: "CPF '%{cpf}' adicionado a blacklist com sucesso."
-      deleted: "CPF '%{cpf}' retirado da blacklist com sucesso."
+      created: "CPF '%{cpf}' desvinculado do MA com sucesso."
+      deleted: "CPF '%{cpf}' voltou a ser vinculado ao MA com sucesso."
     error:
-      created: Erro ao adicionar CPF a blacklist.
-      deleted: Erro ao retirar CPF da blacklist.
+      created: Erro ao desvincular CPF do MA.
+      deleted: Erro ao retornar vínculo do CPF com o MA.
     index:
       cpf_or_name: CPF ou Nome
-      title: Blacklist
+      title: CPFs desvinculados do MA
       new: Adicionar CPF
       delete: Excluir
       created_at: Adic. Em
       added_by: Adic. Por
     new:
-      new: Adicionar CPF a blacklist
+      new: Desvincular CPF do MA
       cpf: CPF
       name: Nome
 
@@ -2431,7 +2431,7 @@ pt_BR:
       phrase: "Frase: "
       site: "Site: "
       integrated: "Integrado com o Módulo Acadêmico: "
-      blacklist: "Presente na Blacklist: "
+      blacklist: "Manualmente desvinculado do Módulo Acadêmico: "
       y: Sim
       n: Não
       reset_password_url: "Url de recuperação de senha: "

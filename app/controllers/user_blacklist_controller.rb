@@ -86,7 +86,7 @@ class UserBlacklistController < ApplicationController
       user = User.find_by_cpf(@user_blacklist.cpf)
       @user_blacklist.destroy
 
-      render json: {success: true, notice: t('user_blacklist.success.deleted', cpf: @user_blacklist.cpf), user: render_to_string(partial: 'administrations/user', locals: {user: user})}
+      render json: {success: true, notice: t('user_blacklist.success.deleted', cpf: @user_blacklist.cpf), user: (user ? render_to_string(partial: 'administrations/user', locals: {user: user}) : '')}
     rescue
       render json: {success: false, alert: t('user_blacklist.error.deleted')}, status: :unprocessable_entity
     end

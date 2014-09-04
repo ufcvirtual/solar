@@ -1915,8 +1915,8 @@ en_US:
       all: All
 
   user_blacklist:
-    remove: 'Remove from Blacklist'
     add: 'Add to Blacklist'
+    remove: 'Remove from Blacklist'
     cpf_cannot_be_added: can not be added to the blacklist
     success:
       created: "CPF '%{cpf}' add to Blacklist."
