@@ -32,3 +32,25 @@
         flash_message(data.alert, "alert");
     });
   }
+
+  function add_user_in_blacklist(user) {
+    $.post($(user).data('url'), function(data){
+      flash_message(data.notice, "notice");
+      $(user).closest('tr').html(data.user);
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    });
+  }
+
+  function remove_user_from_blacklist(user) {
+    $.delete($(user).data('url'), function(data){
+      flash_message(data.notice, 'notice');
+      $(user).closest('tr').html(data.user);
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    });
+  }

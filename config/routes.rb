@@ -60,7 +60,6 @@ Solar::Application.routes.draw do
     get "allocations/:id", to: "administrations#show_allocation", as: :admin_allocation
     get "allocations/:id/edit", to: "administrations#edit_allocation", as: :edit_admin_allocation
     put "allocations/:id", to: "administrations#update_allocation"
-
     get "users/search", to: "administrations#search_users", as: :search_admin_users
     get "users/:id", to: "administrations#show_user", as: :admin_user
     put "users/:id", to: "administrations#update_user"

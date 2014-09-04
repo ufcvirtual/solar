@@ -24,26 +24,3 @@
     .btn-group
       = link_to_function content_tag(:i, nil, class: 'icon-edit'), "manage(this)", class: "btn", :"data-tooltip" => t(:edit, scope: [:administrations, :users]), :"edit-link" => edit_admin_user_path(user), :"show-link" => admin_user_path(user.id)
       = link_to_function content_tag(:i, nil, class: 'icon-key'), "change_password(this)", class: "btn", :"data-tooltip" => t(:change_password, scope: [:administrations, :users]), :"edit-link" => reset_password_admin_user_path(user), :"show-link" => admin_user_path(user.id)
-
-
-:javascript
-
-  function add_user_in_blacklist(user) {
-    $.post($(user).data('url'), function(data){
-      flash_message(data.notice, "notice");
-    }).error(function(data){
-      var data = $.parseJSON(data.responseText);
-      if (typeof(data.alert) != "undefined")
-        flash_message(data.alert, 'alert');
-    });
-  }
-
-  function remove_user_from_blacklist(user) {
-    $.delete($(user).data('url'), function(data){
-      flash_message(data.notice, 'notice');
-    }).error(function(data){
-      var data = $.parseJSON(data.responseText);
-      if (typeof(data.alert) != "undefined")
-        flash_message(data.alert, 'alert');
-    });
-  }
