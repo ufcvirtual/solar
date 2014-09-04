@@ -35,7 +35,7 @@ class DiscussionsWithPostsTest < ActionDispatch::IntegrationTest
       post "/discussions/1/posts", discussion_post: {content: "postagem de teste"}
     end
 
-    assert_redirected_to discussion_posts_path(discussion_id)
+    assert_response :success
   end
 
   ## API - Mobilis
