@@ -87,7 +87,7 @@ class MessagesController < ApplicationController
   def create
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     params[:message][:allocation_tag_id] = @allocation_tag_id if @allocation_tag_id
-    contacts = params[:message].delete(:contacts).split(",")
+    contacts = params[:message].delete(:contacts).split(",") if params[:support].blank?
 
     # é uma resposta
     if params[:message][:original].present?
@@ -108,7 +108,7 @@ class MessagesController < ApplicationController
           @message.user_messages.build(user: user, status: Message_Filter_Receiver)
         end
 
-        raise "error" if users.empty?
+        raise "error" if params[:message_to].empty?
 
         ## files ##
 
@@ -128,7 +128,7 @@ class MessagesController < ApplicationController
 
         Thread.new do
           Mutex.new.synchronize do # utilizado para organizar/controlar o comportamento das threads
-            Notifier.send_mail(users.map(&:email).join(","), @message.subject, msg, @message.files, current_user.email).deliver
+            Notifier.send_mail(params[:message_to], @message.subject, msg, @message.files, current_user.email).deliver
           end
         end
       end

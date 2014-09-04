@@ -25,8 +25,9 @@
     - if @original
       = f.input :original, as: :hidden, input_html: {value: @original.id}
     = render "contacts"
-    - if params[:support].nil?
+    - if params[:support].blank?
       = f.input :contacts, as: :hidden, input_html: {value: [@reply_to].flatten.compact.map { |c| c[:id] }.join(", ")}
+    = hidden_field_tag :support, params[:support]
 
     .block_content
       .message_header_new
