@@ -1,8 +1,8 @@
 require "em-websocket"
-class WebsocketServer    
+class WebsocketServer
   EM.run {
     @subs = {} # list with subscribed users
-    EventMachine::WebSocket.start(host: "127.0.0.1", port: 3001) do |ws|
+    EventMachine::WebSocket.start(host: "127.0.0.1", port: 3005) do |ws|
       ws.onopen { |data|
         academic_allocation_id = data.path.split("/")[1]
         ac_subs = @subs[academic_allocation_id.to_sym]

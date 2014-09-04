@@ -1,0 +1,9 @@
+user_bl1:
+  user_id: 15 # admin
+  cpf: 17658651150
+  name: Glenn L. Andrews
+
+user_bl2:
+  user_id: 15 # admin
+  cpf: 93677533651
+  name: Rita C. Dunn
