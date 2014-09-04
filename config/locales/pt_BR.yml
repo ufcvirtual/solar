@@ -2164,6 +2164,7 @@ pt_BR:
       created: Erro ao desvincular CPF do MA.
       deleted: Erro ao retornar vínculo do CPF com o MA.
     index:
+      warning: "<b>Importante:</b> Esses CPFs não necessariamente já estão cadastrados no ambiente."
       cpf_or_name: CPF ou Nome
       title: CPFs desvinculados do MA
       new: Adicionar CPF

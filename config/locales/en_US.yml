@@ -1925,6 +1925,7 @@ en_US:
       created: "Error when adding to Blacklist."
       deleted: "Error when removing from Blacklist."
     index:
+      warning: "<b>Important:</b> Not necessarily those CPF are already registered in the environment."
       cpf_or_name: CPF or Name
       title: Blacklist
       new: Add CPF
