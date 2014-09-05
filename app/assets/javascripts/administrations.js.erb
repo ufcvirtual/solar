@@ -75,6 +75,7 @@ function update_user(obj) {
   $.put(url, {"data": {
     "name": $(obj).closest('tr').find('input[id=name]').val(),
     "email": $(obj).closest('tr').find('input[id=email]').val(),
+    "username": $(obj).closest('tr').find('input[id=username]').val(),
     "active": $('#status_id option:selected', $(obj).closest('tr')).val() == "1"
   }}, function(data, textStatus, jqXHR){
     $(obj).closest('tr').removeClass('active');

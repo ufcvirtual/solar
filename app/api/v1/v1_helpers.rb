@@ -70,10 +70,13 @@ module V1::V1Helpers
   end
 
   def get_profile_id(profile)
+    ma_config = User::MODULO_ACADEMICO
+    distant_professor_profile = (ma_config.nil? or not(ma_config['professor_profile'].present?) ? 17 : ma_config['professor_profile'])
+
     case profile.to_i
       when 1; 18 # tutor a distância UAB
       when 2; 4 # tutor presencial
-      when 3; 17 # professor titular UAB
+      when 3; distant_professor_profile # professor titular UAB
       when 4; 1  # aluno
       when 17; 2 # professor titular
       when 18; 3 # tutor a distância

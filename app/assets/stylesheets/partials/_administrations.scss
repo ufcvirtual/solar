@@ -86,3 +86,18 @@ table.tb_allocation .dropdown ul li a{
     margin-left: 0;
   }
 }
+
+#list_users{
+  input{
+    font-size: 9pt;
+  }
+  input#name{
+    width: 120px;
+  }
+  input#username{
+    width: 69px;
+  }
+  input#email{
+    width: 145px;
+  }
+}

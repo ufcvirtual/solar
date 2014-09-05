@@ -1,6 +1,6 @@
 %td= @user.integrated? ? @user.name : text_field_tag("name", @user.name, required: true)
 %td= @user.integrated? ? @user.email : text_field_tag("email", @user.email, required: true)
-%td= @user.username
+%td= @user.integrated? ? @user.username : text_field_tag("username", @user.username, required: true)
 %td= @user.cpf
 %td= select(:status, :id, user_status.invert.to_a, {selected: @user.active? ? 1 : 0})
 %td{style: 'text-align:right'}
