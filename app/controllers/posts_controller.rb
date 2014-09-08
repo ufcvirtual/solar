@@ -6,7 +6,7 @@ class PostsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :prepare_for_pagination
 
-  load_and_authorize_resource except: [:index, :show, :create]
+  load_and_authorize_resource except: [:index, :user_posts, :create, :show]
 
   ## GET /discussions/1/posts
   ## GET /discussions/1/posts/20120217/[news, history]/order/asc/limit/10
@@ -54,7 +54,7 @@ class PostsController < ApplicationController
 
   ## GET /discussions/1/posts/user/1
   ## all posts of the user
-  def show
+  def user_posts
     @posts = Discussion.find(params[:discussion_id]).discussion_posts.where(:user_id => params[:user_id])
 
     respond_to do |format|

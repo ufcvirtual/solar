@@ -139,7 +139,7 @@ Solar::Application.routes.draw do
     end
     resources :posts, except: [:new, :edit] do
       collection do
-        get "user/:user_id", to: :show, as: :user
+        get "user/:user_id", to: :user_posts, as: :user
         get ":type/:date(/order/:order(/limit/:limit))", to: :index, defaults: {display_mode: 'list'} # :types => [:news, :history]; :order => [:asc, :desc]
       end
     end

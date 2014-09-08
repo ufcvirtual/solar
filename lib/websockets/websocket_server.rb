@@ -1,8 +1,15 @@
 require "em-websocket"
+require "yaml"
+require "rails"
+
+# Sempre que este arquivo for alterado, deve-se matar manualmente o processo em produção e rodar o upgrade do projeto
+# Always when this file is changed, the production proccess must be killed and then the upgrade of project must be done
+
 class WebsocketServer
+  config = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]
   EM.run {
     @subs = {} # list with subscribed users
-    EventMachine::WebSocket.start(host: "127.0.0.1", port: 3005) do |ws|
+    EventMachine::WebSocket.start(host: config["host"], port: config["port"]) do |ws|
       ws.onopen { |data|
         academic_allocation_id = data.path.split("/")[1]
         ac_subs = @subs[academic_allocation_id.to_sym]
