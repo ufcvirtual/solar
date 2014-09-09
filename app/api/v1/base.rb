@@ -12,5 +12,6 @@ module V1
     mount Posts
     mount Loads
     mount Integrations
+    mount Lessons
   end
 end
