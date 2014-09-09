@@ -57,7 +57,7 @@
 
     $(".forum_button_attachment").call_fancybox();
     var display_list = ("#{@display_mode == 'list'}" == "true");
-    var ac = "#{@academic_allocation_id}";
+    var ac = "#{AcademicAllocation.where(academic_tool_id: @discussion.id, academic_tool_type: "Discussion", allocation_tag_id: @allocation_tags).first.id}";
 
     $(".audio").each(function(){
       var audioId = $(this).attr('id');
