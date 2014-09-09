@@ -10,7 +10,7 @@
 */
 CKEDITOR.plugins.add( 'eqneditor', {
 	requires: 'dialog',
-	lang : 'pt-br,en',
+	lang : 'pt-br',
 	icons: 'eqneditor',
 	
 	init : function(editor)
