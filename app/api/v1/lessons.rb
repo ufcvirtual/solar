@@ -12,7 +12,7 @@ module V1
         query_not = 'id > ?'
       end
 
-      lessons = Lesson.where(type_lesson: 1).where("address ~ 'www.virtual.ufc.br'").where(query_not, disconsider)
+      lessons = Lesson.where(type_lesson: Lesson_Type_Link, status: Lesson_Approved).where("address ~ 'www.virtual.ufc.br'").where(query_not, disconsider)
 
       courses = []
       lessons.each do |lesson|
