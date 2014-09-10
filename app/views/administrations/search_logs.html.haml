@@ -16,7 +16,7 @@
           - @logs.each do |log|
             %tr.lines
               %td= log.type_name
-              %td= log.user.name
+              %td= log.user.try(:name)
               - if params[:type] == 'actions'
                 %td.breaking= raw log.description
               - else

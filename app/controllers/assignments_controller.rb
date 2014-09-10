@@ -8,7 +8,7 @@ class AssignmentsController < ApplicationController
   before_filter Proc.new { |c| @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id]) }, only: [:download_public_files, :download_files]
 
   load_and_authorize_resource :only => [:import_groups_page, :import_groups, :manage_groups, :send_comment] #, :evaluate
-  authorize_resource :only => [:download_files, :upload_file, :send_public_files_page, :delete_file]
+  authorize_resource :only => [:download_files, :upload_file, :send_public_files_page]
 
   layout false, only: [:index, :new, :edit, :create, :update, :destroy, :show]
 

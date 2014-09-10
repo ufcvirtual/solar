@@ -130,6 +130,49 @@ module V1
 
       end # /
 
+    end # user
+
+
+    namespace :groups do
+
+      # integration/groups/merge
+      namespace :merge do
+        params do
+          requires :main_group, type: String  
+          requires :secundary_groups, type: Array
+          requires :course, :curriculum_unit, :period
+          requires :type_merge # if true: merge; if false: undo merge
+        end
+
+        put "/" do
+
+          begin
+            # ActiveRecord::Base.transaction do
+              if params[:type_merge]
+                replicate_content_groups, receive_content_groups = params[:secundary_groups], [params[:main_group]]
+              else
+                replicate_content_groups, receive_content_groups = [params[:main_group]], params[:secundary_groups]
+              end
+
+              offer = get_offer(params[:curriculum_unit], params[:course], nil, params[:period])
+              replicate_content_groups.each do |replicate_content_group_code|
+                replicate_content_group = get_offer_group(offer, replicate_content_group_code)
+                receive_content_groups.each do |receive_content_group_code|
+                  receive_content_group = get_offer_group(offer, receive_content_group_code)
+                  replicate_content(replicate_content_group, receive_content_group, params[:type_merge])
+                end
+              end
+            # end
+          rescue => error
+            raise "#{error}"
+            error!({error: error}, 422)
+          end
+
+        end # /
+
+      end # merge
+
+
     end
 
   end

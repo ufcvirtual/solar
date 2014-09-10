@@ -21,7 +21,7 @@ class Score < ActiveRecord::Base
       assignments_grades, groups_ids = [], [] # informações do aluno na atividade
 
       assignments.each do |assignment|
-        student_group = assignment.student_group_by_student(student.id)
+        student_group = assignment.student_group_by_student(student.id, group.allocation_tag.id)
         student_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student.id # se for atividade de groupo, id do aluno é nulo
         groups_ids << (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id
         sent_assignment = assignment.sent_assignment_by_user_id_or_group_assignment_id(group.allocation_tag.id, student_id, groups_ids)

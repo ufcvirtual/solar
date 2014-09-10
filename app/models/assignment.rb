@@ -39,12 +39,12 @@ class Assignment < Event
 
   # não pode dar unbind nem remover se tiver sent_assignment? (eles pertencem a uma academic_allocation)
 
-  def student_group_by_student(student_id)
+  def student_group_by_student(student_id, allocation_tag_id)
     (self.type_assignment == Assignment_Type_Group) ?
       (GroupAssignment.first(
       joins: :academic_allocation,
       include: :group_participants,
-      conditions: ["group_participants.user_id = ? AND academic_allocations.academic_tool_id = ?", student_id, self.id])) : nil
+      conditions: ["group_participants.user_id = ? AND academic_allocations.academic_tool_id = ? AND allocation_tag_id = ?", student_id, self.id, allocation_tag_id])) : nil
   end
 
   def sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, user_id, group_assignment_id)
@@ -53,7 +53,7 @@ class Assignment < Event
 
   ## Recupera situação do aluno na atividade
   def situation_of_student(allocation_tag_id, student_id, group_assignment_id = nil)
-    student_group = student_group_by_student(student_id) unless student_id.nil?
+    student_group = student_group_by_student(student_id, allocation_tag_id) unless student_id.nil?
     user_id = (type_assignment == Assignment_Type_Group) ? nil : student_id
     group_id = (student_group.nil? ? group_assignment_id : student_group.id) # se aluno estiver em grupo, recupera id
     sent_assignment = sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, user_id, group_assignment_id) 
@@ -137,7 +137,7 @@ class Assignment < Event
     assignments_grades, group_assignments_ids, has_comments, situation = [], [], [], [] # informações da situação do aluno
 
     assignments.each_with_index do |assignment, idx|
-      student_group = assignment.student_group_by_student(student_id)
+      student_group = assignment.student_group_by_student(student_id, AllocationTag.where(group_id: group_id).first.id)
 
       user_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student_id
       group_assignments_ids[idx] = (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id deste

@@ -240,4 +240,70 @@ describe "Integrations" do
 
   end # .user
 
+  describe ".groups" do
+
+    describe "merge" do
+
+      context "with valid ip" do
+
+        context 'do merge' do
+          let!(:json_data){ { 
+            main_group: "QM-MAR",
+            secundary_groups: ["QM-CAU"],
+            course: "109",
+            curriculum_unit: "RM301",
+            period: "2011.1",
+            type_merge: true
+          } }
+
+          it {
+            expect{
+              put "/api/v1/integration/groups/merge/", json_data
+              response.status.should eq(200)
+            }.to change{Post.count}.by(4)
+          }
+
+          it{
+            expect{
+              put "/api/v1/integration/groups/merge/", json_data
+              response.status.should eq(200)
+            }.to change{SentAssignment.count}.by(4)
+          }
+
+          it{
+            expect{
+              put "/api/v1/integration/groups/merge/", json_data
+              response.status.should eq(200)
+            }.to change{LogAction.count}.by(1)
+          }
+
+          it{
+            expect{
+              put "/api/v1/integration/groups/merge/", json_data
+              response.status.should eq(200)
+            }.to change{Merge.count}.by(1)
+          }
+
+          it{
+            expect{
+              put "/api/v1/integration/groups/merge/", json_data
+              response.status.should eq(200)
+            }.to change{Group.where(status: false).count}.by(1)
+          }
+        end
+      end
+
+
+
+      # context "with invalid ip" do
+      #   it "gets a not found error" do
+      #     post "/api/v1/load/user/", {cpf: "VALID CPF HERE"}, "REMOTE_ADDR" => "127.0.0.2"
+      #     response.status.should eq(404)
+      #   end
+      # end
+
+    end #merge
+
+  end #groups
+
 end
