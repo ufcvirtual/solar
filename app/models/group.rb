@@ -12,7 +12,8 @@ class Group < ActiveRecord::Base
   has_many :academic_allocations, through: :allocation_tag
   has_many :lesson_modules,       through: :academic_allocations, source: :academic_tool, source_type: "LessonModule"
   has_many :assignments,          through: :academic_allocations, source: :academic_tool, source_type: "Assignment"
-  # has_many :merges
+  has_many :merges_as_main, class_name: "Merge", foreign_key: "main_group_id", dependent: :destroy
+  has_many :merges_as_secundary, class_name: "Merge", foreign_key: "secundary_group_id", dependent: :destroy
 
   after_create :set_default_lesson_module
 
@@ -36,7 +37,8 @@ class Group < ActiveRecord::Base
   def self.find_all_by_offer_id_and_user_id(offer_id, user_id)
     Group.joins(offer: :semester).where(
       groups: {
-        id: User.find(user_id).groups(nil, Allocation_Activated).map(&:id), offer_id: offer_id
+        id: User.find(user_id).groups(nil, Allocation_Activated).map(&:id), offer_id: offer_id,
+        status: true
       } ).select("DISTINCT groups.id, semesters.*, groups.*").order('semesters.name DESC, groups.code ASC')
   end
 
