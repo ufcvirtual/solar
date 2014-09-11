@@ -164,7 +164,6 @@ module V1
               end
             # end
           rescue => error
-            raise "#{error}"
             error!({error: error}, 422)
           end
 
