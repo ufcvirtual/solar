@@ -1,7 +1,6 @@
-.title-warning
-  = raw t('.warning')
-
 .block_wrapper.list_user_blacklist{"data-link-list" => blacklist_index_path(layout: false)}
+  .title-warning
+    = raw t('.warning')
   .block_title
     %h2= t('.title')
   .block_content_toolbar
@@ -11,7 +10,6 @@
       = text_field_tag 'text_search', '', placeholder: t('.cpf_or_name')
       = button_tag t(:search), type: :button, class: "btn btn_default", id: "search_user_in_blacklist", :"data-link" => search_blacklist_index_path
   .block_content.blacklist
-
     = render 'blacklist'
 
 = javascript_include_tag "user_blacklist"
