@@ -18,6 +18,7 @@ class Group < ActiveRecord::Base
   after_create :set_default_lesson_module
 
   validates :code, :offer_id, presence: true
+  validates :code, uniqueness: true
 
   validates_length_of :code, maximum: 40
 
