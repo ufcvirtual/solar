@@ -551,8 +551,9 @@ en_US:
       cancel: "Cancel"
       enroll: "Enroll"
       curriculum_unit: "Subject"
-      category: "Category"
+      type: "Type"
       group: "Class"
+      course: "Course"
       title: "Enrollment"
       enrolled: "Enrolled"
       rejected: "Enrollment Rejected"
@@ -563,6 +564,8 @@ en_US:
       period: Enrollment period
       of: "of"
       no_curriculum_unit_found: "No subject found"
+      enrollment_period_expired: Expired period
+      search_for: "Semester, subject, course or class"
     show:
       course: Course
       curriculum_unit: Subject
@@ -1598,6 +1601,7 @@ en_US:
       log_not_found: Log not found
     allocations_user:
       type: Type
+      no_data: No allocation to informed semester
     responsibles_list:
       name: Name
       profile: Profile

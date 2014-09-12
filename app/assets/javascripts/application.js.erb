@@ -185,4 +185,16 @@ $(function() {
     $('li[data-menu-bread=' + opened_menus[active_tab] + ']').addClass('mysolar_menu_active');
   } catch(e) {}
 
+  /**
+  * Update table data after tablesort search
+  */
+
+  $('input.search').keyup(function(){
+    $(this).change();
+  });
+
+  $("input.search").change(function(){
+    update_tables_with_no_data();
+  });
+
 });

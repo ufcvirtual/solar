@@ -1,52 +1,8 @@
-function enroll_tables_with_no_data() {
-  $('.table_ucs').each(function(){
-    var rowCount = $('tbody>tr:visible', $(this)).length;
-    if (rowCount == 0){
-      $('.empty_message', $(this).closest('.block_content')).removeClass('hide_message');
-      $('.thead_ucs', $(this)).hide();
-    } else {
-      $('.thead_ucs', $(this)).show();
-      $('.empty_message', $(this).closest('.block_content')).addClass('hide_message');
-    }
-  });
-}
-
-function enroll_combo_change(event, ui) {
-  // verifica UC
-  var uc_class = $("#curriculum_unit option:selected").text().replace(/\W/g, '');
-  var uc_type_class = $("#type option:selected").text().replace(/\W/g, '');
-  var check_class = '';
-
-  if (uc_class != '') // informou uc
-    check_class += '.uc-' + uc_class;
-
-  if (uc_type_class != '') // informou uc type
-    check_class += '.uc-type-' + uc_type_class;
-
-  $('tbody tr').show(); // show all
-
-  if (check_class != '')
-    $('tbody tr').not(check_class).hide();
-
-  enroll_tables_with_no_data();
-}
-
 $(function(){
-
-  // combobox
 
   $('[id^="enrollment_info"]').call_fancybox();
 
-  $("#type, #curriculum_unit").combobox({
-    change: enroll_combo_change
-  });
-
-  // combobox end
-
-  // ------------------- \\
-
   // requests
-
   function enroll_error_request(data) {
     var data = $.parseJSON(data.responseText);
     if (typeof(data.alert) != "undefined")

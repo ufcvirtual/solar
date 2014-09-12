@@ -128,6 +128,7 @@ class Offer < ActiveRecord::Base
   def detailed_info
     {
       curriculum_unit_type: curriculum_unit_type.try(:description),
+      curriculum_unit_type_id: curriculum_unit_type.try(:id),
       course: course.try(:name),
       curriculum_unit: curriculum_unit.try(:name),
       semester: semester.name

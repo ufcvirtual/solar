@@ -6,11 +6,10 @@
       .enrollment_left
         .filter_enrollment
           = label_tag t(".search"), nil, class: "enrollment_label_search"
-          / select_tag UCs (js)
+          = text_field_tag :search, nil, :"data-column" => "all", type: :search, class: "search", placeholder: t(".search_for")
 
           = label_tag t(".of"), nil, class: "enrollment_label"
-          = select_tag :type, options_from_collection_for_select(@uc_types, :id, :description)
-          = button_tag content_tag(:i, nil, class: 'icon-search', id: "search"), class: 'btn btn-search'
+          = text_field_tag :type, nil, :"data-column" => "0", type: :search, class: "search", placeholder: t('.type')
 
 .allocations.list{'data-link-cancel-allocation' => cancel_allocation_path(':allocation_id'), 'data-link-cancel-request' => cancel_request_allocation_path(':allocation_id'), 'data-link-reactivate' => reactivate_allocation_path(':allocation_id'), 'data-link-enroll' => allocations_path(group_id: 'allocation_group_id')}
 
@@ -23,8 +22,9 @@
         - if offer_enrolled.any?
           %thead.thead_ucs
             %tr.lines
+              %th= t(".type")
               %th= t(".curriculum_unit")
-              %th= t(".category")
+              %th= t(".course")
               %th= t(:semester)
               %th= t(".group")
               %th.no_sort= t(:mysolar_mn_enrollment)
@@ -37,8 +37,11 @@
               - curriculum_units << [offer_info[:curriculum_unit], offer_info[:curriculum_unit].gsub(/\W/, '')]
 
               %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}"}
-                %td= offer_info[:curriculum_unit]
                 %td= offer_info[:curriculum_unit_type]
+                %td
+                  - unless offer_info[:curriculum_unit_type_id].to_i == 3
+                    = offer_info[:curriculum_unit]
+                %td= offer_info[:course]
                 %td= offer_info[:semester]
                 %td= group.code
                 %td
@@ -62,8 +65,9 @@
         - unless offer_pending.nil? or offer_pending.empty?
           %thead.thead_ucs
             %tr.lines
+              %th= t(".type")
               %th= t(".curriculum_unit")
-              %th= t(".category")
+              %th= t(".course")
               %th= t(:semester)
               %th= t(".group")
               %th.no_sort
@@ -77,8 +81,11 @@
               - curriculum_units << [offer_info[:curriculum_unit], offer_info[:curriculum_unit].gsub(/\W/, '')]
 
               %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}"}
-                %td= offer_info[:curriculum_unit]
                 %td= offer_info[:curriculum_unit_type]
+                %td
+                  - unless offer_info[:curriculum_unit_type_id].to_i == 3
+                    = offer_info[:curriculum_unit]
+                %td= offer_info[:course]
                 %td= offer_info[:semester]
                 %td= group.code
                 %td= link_to content_tag(:i, nil, class: 'icon-info'), group_enrollments_path(group.id), class: "btn", id: "enrollment_info_#{group.id}"
@@ -90,7 +97,7 @@
                       - if group.offer.is_active?
                         = link_to t('.enroll'), reactivate_allocation_path(allocation), class: 'btn btn_default request_enroll'
                       - else
-                        \ -
+                        = t('.enrollment_period_expired')
                     - when Allocation_Rejected.to_i
                       = label_tag "lb_rejected", t(".rejected"), class: 'enrollment_label'
           .block_content_text_list.text_none.empty_message.hide_message
@@ -107,8 +114,9 @@
         - if @offers.any?
           %thead.thead_ucs
             %tr.lines
+              %th= t(".type")
               %th= t(".curriculum_unit")
-              %th= t(".category")
+              %th= t(".course")
               %th= t(:semester)
               %th= t(".group")
               %th.no_sort= t(".period")
@@ -123,8 +131,11 @@
 
               - Group.where(offer_id: offer.id).where(query, user_groups).find_each do |group|
                 %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}"}
-                  %td= offer_info[:curriculum_unit]
                   %td= offer_info[:curriculum_unit_type]
+                  %td
+                    - unless offer_info[:curriculum_unit_type_id].to_i == 3
+                      = offer_info[:curriculum_unit]
+                  %td= offer_info[:course]
                   %td= offer_info[:semester]
                   %td= group.code
                   %td= [l(Date.parse(offer.enroll_start_date), format: :normal), l(Date.parse(offer.enroll_end_date))].join '-'
@@ -135,13 +146,6 @@
         - else
           .block_content_text_list.text_none
             = t(:item_search_no_found)
-
-:javascript
-
-  $(function(){
-    $('#{to_combobox(curriculum_units.uniq, "curriculum_unit")}').insertAfter('.filter_enrollment label:first');
-    enroll_tables_with_no_data();
-  });
 
 = javascript_include_tag "autocomplete", "enrollments"
 = stylesheet_link_tag "autocomplete"

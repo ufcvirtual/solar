@@ -27,25 +27,15 @@
     width: auto;
   }
 
-  #autocomplete-input {
-    height: 17px;
-    width: 193px;
-    font-size: 11px;
-  }
-
-  .icon-search {
-    margin-left: -3px;
-  }
-
-  .btn {
-    margin-bottom: 1px;
-  }
-
-  .ui-autocomplete {
-    width: 198px !important;
-  }
-
   width:800px;
+
+  input#type{
+    width: 33%;
+  }
+
+  input#search{
+    width: 50%;
+  }
 }
 
 .any_found{

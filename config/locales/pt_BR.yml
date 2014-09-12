@@ -711,8 +711,9 @@ pt_BR:
       cancel: "Cancelar"
       enroll: "Matricular"
       curriculum_unit: "Disciplina"
-      category: "Categoria"
+      type: "Tipo"
       group: "Turma"
+      course: "Curso"
       title: "Matrícula"
       enrolled: "Matriculado"
       rejected: "Matricula Rejeitada"
@@ -723,6 +724,8 @@ pt_BR:
       period: Período de matrícula
       of: "por"
       no_curriculum_unit_found: "Nenhuma disciplina encontrada"
+      enrollment_period_expired: Período encerrado
+      search_for: "Semestre, disciplina, curso ou turma"
     show:
       course: Curso
       curriculum_unit: Disciplina
@@ -1828,6 +1831,7 @@ pt_BR:
       log_not_found: Sem logs para exibir
     allocations_user:
       type: Tipo
+      no_data: Nenhuma alocação para o semestre informado
     responsibles_list:
       name: Nome
       profile: Perfil

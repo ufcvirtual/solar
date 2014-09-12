@@ -45,9 +45,13 @@
                   %td.semester= offer[:semester_name]
                   %td.profiles{style: "display: none"}= offer[:profiles]
 
+              .block_content_text_list.text_none.empty_message.hide_message
+                = t(:my_solar_curriculum_without)
+
             - else
               %tr.lines
                 %td{colspan: 5, align: "center"}= t(:my_solar_curriculum_without)
+
         
           .slide.slide-block
             = label_tag :search_offer, t(".search"), class: "title"
