@@ -19,7 +19,7 @@ class Group < ActiveRecord::Base
 
   validates :code, :offer_id, presence: true
 
-  validate :unique_code, unless: "offer_id.nil? or code.nil?"
+  validate :unique_code, unless: "offer_id.nil? or code.nil? or not(code_changed?)"
 
   validates_length_of :code, maximum: 40
 
@@ -92,7 +92,7 @@ class Group < ActiveRecord::Base
   end
 
   def unique_code
-    errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) unless Group.where(offer_id: offer_id, code: code).empty?
+    errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) unless Group.where(offer_id: offer_id, code: code).any?
   end
 
 end
