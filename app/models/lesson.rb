@@ -30,7 +30,7 @@ class Lesson < ActiveRecord::Base
   FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
 
   def initial_file_setted
-    errors.add(:base, I18n.t("lessons.errors.url_must_be_informed")) if is_link? and address.blank? and status != Lesson_Test 
+    errors.add(:base, I18n.t("lessons.errors.url_must_be_informed")) if is_link? and address.blank? and status != Lesson_Test
     unless is_draft? or is_link?
       errors.add(:base, I18n.t(:define_initial_file_error, scope: [:lesson_files])) unless is_file? and address.present? and File.exist?(path(true).to_s)
     end
@@ -50,7 +50,7 @@ class Lesson < ActiveRecord::Base
 
   def url_protocol
     self.address = 'http://' + self.address if not(address.blank?) and (self.address =~ URI::regexp(["ftp", "http", "https"])).nil?
-  end 
+  end
 
   def path(full = false, with_address = true)
     if type_lesson == Lesson_Type_File
@@ -58,7 +58,7 @@ class Lesson < ActiveRecord::Base
       full ? FILES_PATH.join(id.to_s, (with_address ? address : '')) : File.join('', 'media', 'lessons', id.to_s, (with_address ? address : ''))
     else
       #se for vídeo do youtube que não esteja como embeded, altera link
-      return (address.include?("youtube") and !address.include?("embed"))  ? 'http://www.youtube.com/embed/'+address.split("v=")[1] : address 
+      return (address.include?("youtube") and !address.include?("embed"))  ? 'http://www.youtube.com/embed/'+address.split("v=")[1] : address
     end
   end
 
@@ -99,19 +99,19 @@ class Lesson < ActiveRecord::Base
 
   private
 
-    def delete_files
-      if (type_lesson == Lesson_Type_File) and (status == Lesson_Test)
-        file = path(full = true, address = false).to_s
-        FileUtils.remove_dir(file) if File.exist?(file)
-      end
+  def delete_files
+    if (type_lesson == Lesson_Type_File) and (status == Lesson_Test)
+      file = path(full = true, address = false).to_s
+      FileUtils.remove_dir(file) if File.exist?(file)
     end
+  end
 
-    def create_or_update_folder
-      if is_link? and File.exist?(path(true))
-        FileUtils.remove_dir(path(true)) 
-      elsif is_file?
-        FileUtils.mkdir_p(FILES_PATH.join(id.to_s))
-      end
+  def create_or_update_folder
+    if is_link? and File.exist?(path(true))
+      FileUtils.remove_dir(path(true))
+    elsif is_file?
+      FileUtils.mkdir_p(FILES_PATH.join(id.to_s))
     end
+  end
 
 end

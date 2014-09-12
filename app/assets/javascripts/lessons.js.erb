@@ -1,18 +1,5 @@
 lesson_cookie_id = "_ufc_solar20_lesson_opened";
 
-function open_lesson(path, url, is_draft) {
-  $(".show_lesson .content").attr("data-url", url);
-
-  var home_tab = $(".mysolar_unit_active_tab.general_context").length;
-  if (!home_tab && $.cookie(lesson_cookie_id))
-    $.cookie(lesson_cookie_id, url, { path: '/' });
-
-  $("iframe#content_lesson").prop("src", path);
-  
-  if (is_draft!=undefined)
-    update_status_div(is_draft);
-}
-
 function maximize_lesson(obj) {
   var home_tab = $(".mysolar_unit_active_tab.general_context").length;
   if (!$.cookie(lesson_cookie_id) || home_tab)
@@ -26,7 +13,7 @@ function minimize_lesson() {
   var home_tab = $(".mysolar_unit_active_tab.general_context").length;
   if (!home_tab) {
     // save cookie with the new url
-    var lesson_URL = $(".fancybox-iframe").contents().find(".show_lesson .content").data("url");
+    var lesson_URL = $(".fancybox-iframe").contents().find(".lesson .content").data("url");
     $.cookie(lesson_cookie_id, lesson_URL);
 
     $(".fancybox-skin").effect( "transfer", { to: $("#mysolar_open_lesson") }, 750 ); // transfer effect
@@ -42,17 +29,40 @@ function close_lesson() {
   $.removeCookie(lesson_cookie_id);
 }
 
-function update_status_div(is_draft) {
-  var status_div = $(".lesson_status").children()[0];
-  var children   = $(status_div).children();
+function open_new_lesson_on_fancybox(lesson_path, lesson_url) {
+  $('.lesson .content').attr('data-url', lesson_url);
+  $('.lesson .content iframe').attr('src', lesson_path);
 
-  if (is_draft){
-    $(status_div).attr("class", "draft");
-    $(children[0]).attr("src", "/assets/rejected.png");
-    $(children[1]).html("<%=I18n.t('lessons.index.draft')%>");
-  }else{
-    $(status_div).attr("class", "released");
-    $(children[0]).attr("src", "/assets/released.png");
-    $(children[1]).html("<%=I18n.t('lessons.index.released')%>");
+  // update status da lesson
+  var lesson_draft = $('.breadcrumb .lessons #lesson option:selected').data('draft');
+  if (lesson_draft) {
+    $('.lesson_status .draft').removeClass('invisible');
+    $('.lesson_status .released').addClass('invisible');
+  } else {
+    $('.lesson_status .draft').addClass('invisible');
+    $('.lesson_status .released').removeClass('invisible');
   }
 }
+
+$(function(){
+  // select modules
+  $("select#lesson_module").change(function(){
+    var lessons_url = get_module_lessons_url.replace('lesson_module_id', $(this).val());
+    $.get(lessons_url, function(data){
+      $('.breadcrumb .lessons').html(data);
+
+      var lesson_path = $('option:selected', data).data('path');
+      var lesson_url = get_lesson_url.replace('lesson_id', $('.breadcrumb .lessons #lesson').val());
+
+      open_new_lesson_on_fancybox(lesson_path, lesson_url);
+    });
+  });
+
+  // select lessons
+  $('.breadcrumb .lessons').on('change', '#lesson', function(){
+    var lesson_path = $('#lesson option:selected').data('path');
+    var lesson_url = get_lesson_url.replace('lesson_id', $(this).val());
+
+    open_new_lesson_on_fancybox(lesson_path, lesson_url);
+  });
+});

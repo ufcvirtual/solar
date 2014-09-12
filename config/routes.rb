@@ -1,4 +1,4 @@
-Solar::Application.routes.draw do 
+Solar::Application.routes.draw do
 
   devise_for :users, controllers: { registrations: "devise/users", passwords: "devise/users_passwords" }
 
@@ -36,7 +36,7 @@ Solar::Application.routes.draw do
     collection do
       get :fb_authenticate
       get :fb_feed
-      get :fb_logout  
+      get :fb_logout
       get :fb_post_wall
       get "fb_feed/group/:id", to: "social_networks#fb_feed_groups", as: :fb_feed_group
       get "fb_feed/group/:id/news", to: "social_networks#fb_feed_group_news", as: :fb_feed_group_new
@@ -67,7 +67,7 @@ Solar::Application.routes.draw do
     get "users/:id/edit", to: "administrations#edit_user", as: :edit_admin_user
     get "users/:id/allocations", to: "administrations#allocations_user", as: :allocations_admin_user
     get "users", to: "administrations#users", as: :admin_users
-    
+
     get "responsibles/filter", to: "administrations#responsibles", as: :admin_responsibles_filter
     get "responsibles", to: "administrations#responsibles_list", as: :admin_responsibles
 
@@ -97,7 +97,7 @@ Solar::Application.routes.draw do
   ## curriculum_units/:id/participants
   ## curriculum_units/:id/informations
   resources :curriculum_units do
-    collection do 
+    collection do
       get :list
       get :mobilis_list
       get :list_informations
@@ -111,7 +111,7 @@ Solar::Application.routes.draw do
       get :home
     end
     resources :groups, only: [:index] do
-      collection do 
+      collection do
         get :mobilis_list
       end
     end
@@ -120,10 +120,10 @@ Solar::Application.routes.draw do
   ## groups/:id/discussions
   resources :groups, except: [:show] do
     resources :discussions, only: [:index] do
-      collection do 
+      collection do
         get :mobilis_list, to: :index, mobilis: true
       end
-    end  
+    end
     get :list, on: :collection
     get :list_to_edit, to: :list, on: :collection, edition: true
     get :academic_index, on: :collection
@@ -221,7 +221,7 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :courses do 
+  resources :courses do
     get :list_combobox, to: :index, combobox: true, as: :list_combobox, on: :collection
   end
 
@@ -238,6 +238,16 @@ Solar::Application.routes.draw do
     end
   end
 
+  resources :lesson_modules, except: [:index, :show] do
+    get :lessons, to: "lessons#to_filter"
+    collection do
+      get :list
+      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "LessonModule", as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "LessonModule", as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "LessonModule", as: :add_group_to
+    end
+  end
+
   resources :lessons do
     member do
       put "change_status/:status", to: :change_status, as: :change_status
@@ -250,7 +260,6 @@ Solar::Application.routes.draw do
       get :list, action: :list
       get :download_files
       get :verify_download
-      get :get_lessons, as: :get
     end
     resources :files, controller: :lesson_files, except: [:index, :show, :update, :create] do
       collection do
@@ -352,15 +361,6 @@ Solar::Application.routes.draw do
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
 
       get :support_new, to: "messages#new", as: :support_new, support: true
-    end
-  end
-
-  resources :lesson_modules, except: [:index, :show] do
-    collection do
-      get :list
-      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "LessonModule", as: :unbind_group_from
-      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "LessonModule", as: :remove_group_from
-      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "LessonModule", as: :add_group_to
     end
   end
 

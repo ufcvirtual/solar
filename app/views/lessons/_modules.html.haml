@@ -1,4 +1,4 @@
-- unless @academic_allocations.empty?
+- if @academic_allocations.any?
   - @academic_allocations.each_with_index do |academic_allocation, idxm|
 
     - lesson_module = LessonModule.find(academic_allocation.academic_tool_id)

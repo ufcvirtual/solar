@@ -1,17 +1,16 @@
 class LessonsController < ApplicationController
 
-  include SysLog::Actions
-
-  layout false, except: [:index]
+  before_filter :prepare_for_group_selection, only: [:index, :download_files]
+  before_filter :offer_data, only: :show
 
   require 'fileutils'
 
+  include SysLog::Actions
   include FilesHelper
   include LessonFileHelper
   include LessonsHelper
 
-  before_filter :prepare_for_group_selection, only: [:index, :download_files]
-  before_filter :offer_data, only: [:show, :get_lessons]
+  layout false, except: :index
 
   def index
     @not_offer_area = active_tab[:url][:allocation_tag_id].nil?  # if user is not at offer area
@@ -20,7 +19,7 @@ class LessonsController < ApplicationController
       @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
       authorize! :index, Lesson, {on: @allocation_tags_ids, accepts_general_profile: true, read: true}
       @offer = Offer.find(allocation_tags[:offer_id])
-    else 
+    else
       authorize! :index, Lesson, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
       allocation_tag = AllocationTag.find(allocation_tag_id)
       @responsible   = allocation_tag.is_responsible?(current_user.id)
@@ -49,33 +48,23 @@ class LessonsController < ApplicationController
 
   # GET /lessons/:id
   def show
+    authorize! :show, Lesson, {on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true}
+
+    at_ids = params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+
+    @modules = LessonModule.to_select(at_ids, current_user)
     @lesson = Lesson.find(params[:id])
-    raise "erro" if @lesson.address.blank?
 
-    unless @offer or params.include?(:edition)
-      render text: t(:curriculum_unit_not_selected, scope: :lessons), status: :not_found
-    else
-      authorize! :show, Lesson, {on: (@offer.nil? ? params[:allocation_tags_ids] : [@offer.allocation_tag.id]), read: true, accepts_general_profile: true}
-
-      allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids].split(" ").flatten : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
-      @lessons_modules    = LessonModule.to_select(allocation_tags_ids, current_user)
-      @lessons      = @lesson.lesson_module.lessons_to_open(current_user)
-      @lessons_info = @lessons.collect{|lesson| {'id' => lesson.id, 'path' => lesson.path, 'url' => lesson_url(lesson), 'name' => lesson.name, 'is_draft' => (lesson.status == Lesson_Test)} }.to_json
-      @student      = AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_student?(current_user.id) unless active_tab[:url][:allocation_tag_id].nil?
-
-      render layout: 'lesson'
-    end
-  rescue => error
-    render json: {status: :unprocessable_entity}
+    render layout: 'lesson'
+  rescue
+    render text: t('lessons.no_data'), status: :unprocessable_entity
   end
 
-  def get_lessons
-    lesson_module = LessonModule.find(params[:lesson_module])
-    @lessons      = (lesson_module.nil? ? [] : lesson_module.lessons_to_open(current_user))
-    @lessons_info = @lessons.collect{|lesson| {'id' => lesson.id, 'path' => lesson.path, 'url' => lesson_url(lesson), 'name' => lesson.name, 'is_draft' => (lesson.status == Lesson_Test)} }.to_json
-    @student      = AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_student?(current_user.id) unless active_tab[:url][:allocation_tag_id].nil?
+  def to_filter
+    authorize! :show, Lesson
 
-    render partial: 'select_lesson', locals: { lessons: @lessons, lessons_info: @lessons_info }
+    @module = LessonModule.find(params[:lesson_module_id])
+    render partial: "lessons/show/lessons", locals: {lesson_module: @module}
   end
 
   # GET /lessons/new
@@ -99,12 +88,12 @@ class LessonsController < ApplicationController
     @lesson_module = LessonModule.find(params[:lesson_module_id]) if params[:lesson_module_id].present?
 
     @lesson = Lesson.new(params[:lesson])
-   
+
     Lesson.transaction do
       @lesson.schedule = Schedule.create!(start_date: params[:start_date], end_date: params[:end_date])
       @lesson.save!
     end
-    
+
     @lesson.type_lesson == Lesson_Type_File ? files_and_folders(@lesson) : manage_file = false
 
     render ((manage_file != false) ? {template: "lesson_files/index"} : {json: {success: true, notice: t(:created, scope: [:lessons, :success])}})
@@ -112,7 +101,7 @@ class LessonsController < ApplicationController
     render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue => error 
+  rescue => error
     @groups_codes    = @lesson_module.groups.map(&:code)
     params[:success] = false
     render :new
@@ -142,7 +131,7 @@ class LessonsController < ApplicationController
       end
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue 
+    rescue
       @groups_codes = @lesson.lesson_module.groups.map(&:code)
       error = true
       @schedule_error = @lesson.schedule.errors.full_messages[0] unless @lesson.schedule.valid?
@@ -168,7 +157,7 @@ class LessonsController < ApplicationController
       lesson.status = params[:status].to_i
       msg = lesson.errors.full_messages unless lesson.save
     end
- 
+
     respond_to do |format|
       if msg.nil?
         format.json { render json: {success: true}, status: :ok }
@@ -214,7 +203,7 @@ class LessonsController < ApplicationController
       else
         redirect_to redirect, alert: t(:file_error_nonexistent_file)
       end
-      
+
     else
       render nothing: true
     end
@@ -231,7 +220,7 @@ class LessonsController < ApplicationController
     rescue
       status = 500
     end
-    render nothing: true, status: status 
+    render nothing: true, status: status
   end
 
 
@@ -267,7 +256,7 @@ class LessonsController < ApplicationController
   def change_module
     begin
       authorize! :change_module, Lesson, on: params[:allocation_tags_ids]
-      
+
       raise "#{t(:must_select_lessons, scope: [:lessons, :notifications])}" if params[:lessons_ids].empty?
       raise "#{t(:must_select_module, scope: [:lessons, :errors])}" if (params[:move_to_module].nil? || LessonModule.find(params[:move_to_module]).nil?)
 

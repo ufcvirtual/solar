@@ -800,13 +800,14 @@ pt_BR:
 
   lessons:
     curriculum_unit_not_selected: Disciplina não selecionada
+    no_data: "Não foi possível abrir aula"
     index:
       lesson_table_date: Data de acesso
       lesson_table_title: "Aulas disponíveis"
       acceptance: Aprovação
       draft: Rascunho
       released: Liberada
-    list: 
+    list:
       lesson: Aula
       order: Ordem
       name: Nome da aula

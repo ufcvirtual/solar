@@ -1,6 +1,6 @@
 = javascript_include_tag "tooltip"
 
-- unless @academic_allocations.nil? or @academic_allocations.empty?
+- if @academic_allocations.any?
 
   .list_lessons{:"data-link-list" => list_lessons_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
     = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
@@ -12,14 +12,14 @@
     = render partial: 'modules', locals: {all_groups: all_groups}
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), list_lessons_path(page: @academic_allocations.next_page, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @academic_allocations.next_page
 - else
-  .block_content_text_list.text_none 
+  .block_content_text_list.text_none
     = t(:item_search_no_found)
 
 = javascript_include_tag "tablesorter", "tooltip", "lessons", "groups_tags"
 
 :javascript
-    var div_list = $(".list_lessons");
-    var offer_id = "#{params[:offer_id]}";
+  var div_list = $(".list_lessons");
+  var offer_id = "#{params[:offer_id]}";
 
   jQuery(function($) {
 
@@ -39,7 +39,7 @@
       width: '70%'
     });
 
-    $('.lesson_check_all').map(function(){ 
+    $('.lesson_check_all').map(function(){
       $(this).nice_checkbox({
         objects_to_change_status: ['.manage_files_lesson', '.download_lesson_zip', '.release_lessons', '[id^="move_lesson_from"]']
       });
@@ -80,7 +80,7 @@
 
       if(can_do_action(lesson_ids)){
         if(destination_module.length < 1) // se nenhum módulo destino foi selecionado
-          alert("#{I18n.t(:must_select_module, scope: [:lessons, :errors])}"); 
+          alert("#{I18n.t(:must_select_module, scope: [:lessons, :errors])}");
         else{
           var url = $(this).data('link-move').replace('lessons_param', lesson_ids).replace('module_param', destination_module.val()).replace("undefined", "");
 
@@ -106,7 +106,7 @@
       var url = $(this).data("link-update");
 
       if(typeof(module_id) != "undefined" || $(this)[0].className == "change_lesson_status"){
-        
+
         if ($(this)[0].className != "change_lesson_status"){
           var lesson_ids = get_selected_lessons($(this).data('module-id'));
           if(can_do_action(lesson_ids))
@@ -243,4 +243,3 @@
     }else
       return true;
   }
-    

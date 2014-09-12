@@ -634,6 +634,7 @@ en_US:
   no_end_date: 'On'
   lessons:
     curriculum_unit_not_selected: Subject not selected
+    no_data: Could not open lesson
     index:
       lesson_table_date: Access date
       lesson_table_title: "Available Lessons"

@@ -1,5 +1,8 @@
 
 production:
+  websocket:
+    host: '127.0.0.1'
+    port: 3002
   import_users:
     media_path: "/media/admin/logs/users/import"
     header: "name;cpf;gender;email;address;country;state;city;institution"
@@ -8,6 +11,9 @@ production:
     :port: 3000
 
 development:
+  websocket:
+    host: '127.0.0.1'
+    port: 3002
   import_users:
     media_path: "/media/admin/logs/users/import"
     header: "name;cpf;gender;email;address;country;state;city;institution"
@@ -16,6 +22,9 @@ development:
     :port: 3000
 
 test:
+  websocket:
+    host: '127.0.0.1'
+    port: 3002
   import_users:
     media_path: "/media/admin/logs/users/import"
     header: "name;cpf;gender;email;address;country;state;city;institution"
