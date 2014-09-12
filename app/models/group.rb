@@ -18,7 +18,8 @@ class Group < ActiveRecord::Base
   after_create :set_default_lesson_module
 
   validates :code, :offer_id, presence: true
-  validates :code, uniqueness: true
+
+  validate :unique_code, unless: "offer_id.nil? or code.nil?"
 
   validates_length_of :code, maximum: 40
 
@@ -88,6 +89,10 @@ class Group < ActiveRecord::Base
     allocation.status = Allocation_Pending
     allocation.save
     allocation
+  end
+
+  def unique_code
+    errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) unless Group.where(offer_id: offer_id, code: code).empty?
   end
 
 end
