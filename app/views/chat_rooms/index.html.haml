@@ -1,4 +1,7 @@
 .block_wrapper.list_chat_rooms{:"data-link-list" => chat_rooms_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
+  .title-warning
+    = raw t('.warning')
+
   .block_title
     %h2= t(".chats")
 

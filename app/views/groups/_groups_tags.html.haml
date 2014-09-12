@@ -13,7 +13,8 @@
         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".see_less", less: Max_Groups_Shown_Tags+1))
 
   - new_groups = (all_groups - groups).in_groups(2, false)
-  - unless paths.nil? or new_groups.flatten.empty?
+  - can_add_groups = (not tool.respond_to?(:can_add_group?) or tool.can_add_group?)
+  - unless paths.nil? or new_groups.flatten.empty? or not(can_add_groups)
     %span.new_groups{style: (groups_size>Max_Groups_Shown_Tags+1 ? "display: none" : "")}
       = content_tag(:i, nil, class: "icon icon-plus add_group", :"data-dropdown" => ".add_group_dropdown_#{tool.id}", :"data-tooltip" => t(".add_group"))
       %div{id: "dropdown", class: "dropdown dropdown-tip add_group_dropdown_#{tool.id}"}

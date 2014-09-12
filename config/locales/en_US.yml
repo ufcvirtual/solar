@@ -1471,6 +1471,7 @@ en_US:
       last_group: Can't change group. Tool must have at least one group.
       option_not_found: Option not found.
       cant_transfer_dependencies: Has dependencies which can't be lost or copied.
+      cant_add_group: Can't add groups to this tool.
     groups_checkboxes:
       select_all: Select all
       no_groups: "There are no groups"
@@ -1875,6 +1876,7 @@ en_US:
       choose_one: Choose a chat
       expand_description: Expand description
       compress_description: Compress description
+      warning: "<b>Important:</b> Only chat rooms without participants can be shared with other groups."
     form:
       participants: Participants
       groups: Groups

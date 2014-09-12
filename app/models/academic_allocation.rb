@@ -14,7 +14,7 @@ class AcademicAllocation < ActiveRecord::Base
   belongs_to :chat_room, foreign_key: 'academic_tool_id'
 
   has_many :chat_messages, dependent: :destroy
-  has_many :participants, class_name: 'ChatParticipant', inverse_of: :academic_allocation, autosave: true, dependent: :destroy
+  has_many :participants, class_name: 'ChatParticipant', inverse_of: :academic_allocation, dependent: :destroy
 
   accepts_nested_attributes_for :participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == '0' }
 
@@ -59,13 +59,13 @@ class AcademicAllocation < ActiveRecord::Base
 
     ## verifica se já existe uma AcademicAllocation com todos os dados iguais
     def verify_uniqueness
-      err = false
+      # na criacao ou algum campo modificado na atualizacao
+      error = ( 
+        (new_record? or (allocation_tag_id_changed? or academic_tool_type_changed? or academic_tool_id_changed?)) and 
+        AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_type: academic_tool_type, academic_tool_id: academic_tool_id).any?
+      )
 
-      if new_record? or (allocation_tag_id_changed? or academic_tool_type_changed? or academic_tool_id_changed?) # na criacao ou algum campo modificado na atualizacao
-        err = true if AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_type: academic_tool_type, academic_tool_id: academic_tool_id).any?
-      end
-
-      errors.add(:base, I18n.t(:uniqueness, scope: [:activerecord, :errors])) if err
+      errors.add(:base, I18n.t(:uniqueness, scope: [:activerecord, :errors])) if error
     end
 
     # Métodos destinados ao Assignment

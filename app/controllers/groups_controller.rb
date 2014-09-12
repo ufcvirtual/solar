@@ -115,17 +115,18 @@ class GroupsController < ApplicationController
     authorize! :change_tool, Group, on: [groups.map(&:allocation_tag).map(&:id)]
 
     begin
+      tool_model = params[:tool_type].constantize
+      tool = tool_model.find(params[:tool_id])
 
       if params[:type] == "add"
+        raise "cant_add_group" unless (not tool.respond_to?(:can_add_group?) or tool.can_add_group?)
+
         AcademicAllocation.transaction do
           AcademicAllocation.create! groups.map {|group| {allocation_tag_id: group.allocation_tag.id, academic_tool_id: params[:tool_id], academic_tool_type: params[:tool_type]}}
         end
       else
         group = groups.first
         academic_allocation = AcademicAllocation.where(allocation_tag_id: group.allocation_tag.id, academic_tool_type: params[:tool_type], academic_tool_id: params[:tool_id]).first
-
-        tool_model = params[:tool_type].constantize
-        tool = tool_model.find(params[:tool_id])
 
         raise "cant_transfer_dependencies" unless (not tool.respond_to?(:can_remove_or_unbind_group?) or tool.can_remove_or_unbind_group?(group))
 

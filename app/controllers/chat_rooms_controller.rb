@@ -25,7 +25,7 @@ class ChatRoomsController < ApplicationController
 
     groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
     @allocations  = groups.map(&:students_participants).flatten.uniq
-    @groups_codes = groups.map(&:code).uniq
+    @groups_codes = groups.pluck(:code).uniq
   end
 
   def create
@@ -41,7 +41,7 @@ class ChatRoomsController < ApplicationController
     rescue
       groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten})
       @allocations  = groups.map(&:students_participants).flatten.uniq
-      @groups_codes = groups.map(&:code).uniq
+      @groups_codes = groups.pluck(:code).uniq
       @allocation_tags_ids = @allocation_tags_ids.join(" ")
 
       render :new
@@ -54,7 +54,7 @@ class ChatRoomsController < ApplicationController
     @chat_room = ChatRoom.find(params[:id])
     @schedule  = @chat_room.schedule
     @allocations  = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:students_participants).flatten.uniq
-    @groups_codes = @chat_room.groups.map(&:code)
+    @groups_codes = @chat_room.groups.pluck(:code)
   end
 
   def update
@@ -70,7 +70,7 @@ class ChatRoomsController < ApplicationController
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
     @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:students_participants).flatten.uniq
-    @groups_codes = @chat_room.groups.map(&:code)
+    @groups_codes = @chat_room.groups.pluck(:code)
     render :edit
   end
 
@@ -100,16 +100,13 @@ class ChatRoomsController < ApplicationController
     @responsible = ChatRoom.responsible?(@allocation_tag_id, current_user.id)
 
     chats = ChatRoom.chats_user(current_user.id, @allocation_tag_id)
-
-    @my_chats = chats[:my]
-    @other_chats = chats[:others]
+    @my_chats, @other_chats = chats[:my], chats[:others]
   end
 
   def show
     authorize! :show, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
-    @chat_room = ChatRoom.find(params[:id])
-    @groups_codes = @chat_room.groups.map(&:code)
+    @chat_room    = ChatRoom.find(params[:id])
+    @groups_codes = @chat_room.groups.pluck(:code)
   end
 
   def messages

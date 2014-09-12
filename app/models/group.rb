@@ -92,7 +92,7 @@ class Group < ActiveRecord::Base
   end
 
   def unique_code
-    errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) unless Group.where(offer_id: offer_id, code: code).any?
+    errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) if Group.where(offer_id: offer_id, code: code).any?
   end
 
 end

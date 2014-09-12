@@ -6,7 +6,7 @@ class ChatRoom < Event
 
   has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :messages, class_name: "ChatMessage", through: :academic_allocations, source: :chat_messages
-  has_many :participants, class_name: "ChatParticipant", through: :academic_allocations#, source: :chat_participants
+  has_many :participants, class_name: "ChatParticipant", through: :academic_allocations
   has_many :allocation_tags, through: :academic_allocations
   has_many :groups, through: :allocation_tags
   has_many :users, through: :participants, select: [:name, :nick], order: :name, uniq: true
@@ -28,6 +28,10 @@ class ChatRoom < Event
 
   def user_messages
     messages.where(message_type: 1)
+  end
+
+  def can_add_group?
+    chat_type.zero? # only add group to a chat room if current group doesn't have chat type 1
   end
 
   def url(allocation_id, academic_allocation_id)
@@ -56,10 +60,6 @@ class ChatRoom < Event
     return true
   end
 
-  # def copy_dependencies_from(chat_to_copy)
-  #   ChatParticipant.create! chat_to_copy.participants.map {|participant| participant.attributes.merge({chat_room_id: self.id})} unless chat_to_copy.participants.empty?
-  # end
-
   def can_remove_or_unbind_group?(group)
     user_messages.empty? # não pode dar unbind nem remover se chat possuir mensagens
   end
@@ -80,19 +80,19 @@ class ChatRoom < Event
   end
 
   def self.chats_user(user_id, allocation_tag_id)
-    all_chats = ChatRoom.joins(:academic_allocations, :schedule) \
-      .select('DISTINCT chat_rooms.*, schedules.start_date, schedules.end_date') \
-      .where(academic_allocations: {allocation_tag_id: allocation_tag_id}) \
+    all_chats = ChatRoom.joins(:academic_allocations, :schedule)
+      .select('DISTINCT chat_rooms.*, schedules.start_date, schedules.end_date')
+      .where(academic_allocations: {allocation_tag_id: allocation_tag_id})
       .order('schedules.start_date')
 
     my, others = if responsible?(allocation_tag_id, user_id)
       [all_chats, []]
     else
-      without_user = all_chats.joins('LEFT JOIN chat_participants AS cp ON cp.academic_allocation_id = academic_allocations.id').where('cp.academic_allocation_id IS NULL')
+      without_participant = all_chats.joins('LEFT JOIN chat_participants AS cp ON cp.academic_allocation_id = academic_allocations.id').where('cp.academic_allocation_id IS NULL')
       my = all_chats.joins(:participants, :allocations).where(allocations: {user_id: user_id})
-      others = (all_chats - without_user) - my
+      others = (all_chats - without_participant) - my
 
-      [(my + without_user), others]
+      [(my + without_participant), others]
     end
 
     {my: my, others: others}

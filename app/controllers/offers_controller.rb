@@ -123,7 +123,7 @@ class OffersController < ApplicationController
 
       flash[:notice] = t(:all_groups_deactivated, scope: [:offers, :index])
       render json: {success: true}
-    rescue
+    rescue => error
       flash[:alert] = t(:cant_deactivate, scope: [:offers, :index])
       render json: {success: false}, status: :unprocessable_entity
     end

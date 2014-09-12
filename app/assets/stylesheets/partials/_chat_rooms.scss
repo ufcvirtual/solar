@@ -39,7 +39,7 @@
   height: auto;
   padding-right: 5px;
   padding-left: 5px;
-  max-width: 120px;
+  max-width: 122px;
   z-index: 2;
 }
 
@@ -52,10 +52,15 @@
   overflow: auto;
   width: 300px;
   z-index: 1;
+  label{
+    width: auto;
+    max-width: 260px;
+    vertical-align: top;
+  }
 }
 
 #define_participants {
-  margin-top: -20px;
+  margin-top: -25px;
 }
 
 #define_participants label{
@@ -68,9 +73,9 @@
 
 #participants_box{
   width: 312px;
-  margin-left: 98px;
+  margin-left: 108px;
   position: relative;
-  bottom: 18px;
+  bottom: 20px;
 }
 
 .new_chat .required + .error, .optional + .error{
