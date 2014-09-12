@@ -14,11 +14,6 @@ class Post < ActiveRecord::Base
 
   validates :content, :profile_id, presence: true
 
-  # validates_each :discussion_id do |record, attr, value|
-  #   parent = record.parent
-  #   record.errors.add(attr) if not parent.nil? and parent.discussion.id != value
-  # end
-
   def can_be_answered?
     (self.level < Discussion_Post_Max_Indent_Level)
   end

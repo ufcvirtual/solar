@@ -9,9 +9,9 @@ class SentAssignment < ActiveRecord::Base
   belongs_to :group_assignment
 
   has_many :assignment_comments, dependent: :destroy
-  has_many :assignment_files
+  has_many :assignment_files, dependent: :destroy
 
-  validates :grade, :numericality => { :greater_than_or_equal_to => 0, :less_than_or_equal_to => 10, :allow_blank => true}
+  validates :grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true}
 
   before_save :if_group_assignment_remove_user_id
 

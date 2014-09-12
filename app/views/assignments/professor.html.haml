@@ -16,10 +16,7 @@
             %tr.lines
               %td
                 %h4= link_to individual_activity["name"], information_assignment_path(individual_activity["id"]), {:class => 'link_content'}
-              %td.right 
-                = l(individual_activity.schedule.start_date, :format => :normal) 
-                = '-'
-                = l(individual_activity.schedule.end_date, :format => :normal)
+              %td.right= [l(individual_activity.schedule.start_date, :format => :normal), l(individual_activity.schedule.end_date, :format => :normal)].join(" - ")
     - else
       .block_content.block_content_text.text_none= t(:itens_not_found)
 
@@ -41,10 +38,7 @@
             %tr.lines
               %td
                 %h4= link_to group_activity["name"], information_assignment_path(group_activity["id"]), {:class => 'link_content'}
-              %td.right
-                = l(group_activity.schedule.start_date, :format => :normal) 
-                = '-'
-                = l(group_activity.schedule.end_date, :format => :normal)
+              %td.right= [l(group_activity.schedule.start_date, :format => :normal), l(group_activity.schedule.end_date, :format => :normal)].join(" - ")
     - else
       .block_content.block_content_text.text_none= t(:itens_not_found)
 
