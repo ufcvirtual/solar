@@ -13,7 +13,7 @@ class AssignmentsController < ApplicationController
   layout false, only: [:index, :new, :edit, :create, :update, :destroy, :show]
 
   def index
-    @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
+    @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Assignment, on: @allocation_tags_ids
 
     @assignments = Assignment.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).order("name").uniq
@@ -91,7 +91,7 @@ class AssignmentsController < ApplicationController
       raise "error" if assignments.empty?
       assignments.destroy_all
     end
-    
+
     render json: {success: true, notice: t(:deleted, scope: [:assignments, :success])}
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
@@ -122,7 +122,7 @@ class AssignmentsController < ApplicationController
     @assignment      = Assignment.find(params[:id])
     @user            = current_user
     @student_id      = params[:group_id].nil? ? params[:student_id] : nil
-    @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
+    @group_id        = params[:group_id].nil? ? nil : params[:group_id]
     @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? # grupo
     @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id(@allocation_tag.id, @student_id, @group_id)
     @situation       = @assignment.situation_of_student(@allocation_tag.id, @student_id, @group_id)
@@ -180,7 +180,7 @@ class AssignmentsController < ApplicationController
   def manage_groups
     deleted_groups_ids = params['deleted_groups_divs_ids'].blank? ? [] : params['deleted_groups_divs_ids'].collect{ |group| group.tr('_', ' ').split[1] } #"group_2" => 2
     @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-   
+
     unless params['btn_cancel'] # clicou em "salvar"
       begin
         academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(@allocation_tag.id, @assignment.id, 'Assignment')
@@ -228,7 +228,7 @@ class AssignmentsController < ApplicationController
 
     @student_id = (params[:student_id].nil? or params[:student_id].blank?) ? nil : params[:student_id]
     @group_id   = (params[:group_id].nil? or params[:group_id].blank?) ? nil : params[:group_id]
-    grade       = params['grade'].blank? ? params['grade'] : params['grade'].tr(',', '.') 
+    grade       = params['grade'].blank? ? params['grade'] : params['grade'].tr(',', '.')
     begin
       @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
       raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.on_evaluation_period?(@allocation_tag, current_user.id) # verifica se está no prazo
@@ -361,7 +361,7 @@ class AssignmentsController < ApplicationController
           group = GroupAssignment.first(
                   joins: :academic_allocation,
                   include: :group_participants,
-                  conditions: ["group_participants.user_id = #{current_user.id} 
+                  conditions: ["group_participants.user_id = #{current_user.id}
                   AND academic_allocations.academic_tool_id = #{assignment.id}"])
           group_id = group.nil? ? nil : group.id
           user_id  = group.nil? ? current_user.id : nil
@@ -433,9 +433,9 @@ class AssignmentsController < ApplicationController
     allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
     groups_to_import          = GroupAssignment.all_by_assignment_id(import_from_assignment_id, allocation_tag.id) # grupos a serem importados
 
-    begin 
+    begin
       # verifica período para envio do arquivo
-      raise t(:date_range_expired, scope: [:assignment, :notifications]) unless @assignment.assignment_in_time?(allocation_tag, current_user.id) 
+      raise t(:date_range_expired, scope: [:assignment, :notifications]) unless @assignment.assignment_in_time?(allocation_tag, current_user.id)
 
       academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id, import_to_assignment_id, 'Assignment')
 
@@ -510,7 +510,7 @@ class AssignmentsController < ApplicationController
 
           student_can_be_removed_from_current_group = (student_files_current_group.blank? and (current_group_sent_assignment.nil? or current_group_sent_assignment.grade.blank?))
           student_can_be_moved_to_choosen_group     = (choosen_group_sent_assignment.nil? or choosen_group_sent_assignment.grade.nil?)
-          
+
           # se:
             # => aluno não enviou arquivos ao grupo atual E sent_assignment do grupo não existe ou não foi avaliado
             # => novo grupo não tenha sent_assignment ou não tenha sido avaliado
@@ -522,7 +522,7 @@ class AssignmentsController < ApplicationController
                 current_group_participant.update_attribute(:group_assignment_id, group_assignment.id)
               end
             else
-              current_group_participant.delete unless current_group_participant.nil? 
+              current_group_participant.delete unless current_group_participant.nil?
             end
           end # end if
         end

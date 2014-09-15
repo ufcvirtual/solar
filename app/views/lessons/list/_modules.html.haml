@@ -1,0 +1,74 @@
+- if @academic_allocations.any?
+  - @academic_allocations.each do |academic_allocation|
+
+    - lesson_module = academic_allocation.academic_tool
+    / - lessons       = lessons_by_module(lesson_module.id)
+    - lessons       = lesson_module.lessons.order('lessons.order')
+    - has_group     = academic_allocation.allocation_tag.group
+
+    / module
+
+    .block_wrapper.module{id: "module_#{lesson_module.id}"}
+
+      / module title
+
+      .block_title_module.block_module
+        %h2
+          = lesson_module.name
+          .block_buttons
+            = link_to (content_tag(:i, nil, :class=>'icon-edit')), edit_lesson_module_path(lesson_module, allocation_tags_ids: @allocation_tags_ids), class: 'block_title_button edit_module', :'data-tooltip' => t("lessons.list.edit_lesson_module")
+            = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button delete_module', :'data-link-delete' => lesson_module_path(lesson_module, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t("lessons.list.delete_lesson_module"), :"data-module-id" => lesson_module.id
+        - if has_group
+          - if lesson_module.is_default
+            .input.groups_tags
+              = t(".group")
+              %span.collection_check_boxes= lesson_module.groups.first.code
+          - else
+            = render "groups/groups_tags", all_groups: all_groups, groups: lesson_module.groups, tool: lesson_module, paths: {add: add_group_to_lesson_modules_path(id: "param_id", tool_id: lesson_module.id), remove: remove_group_from_lesson_modules_path(id: "param_id", tool_id: lesson_module.id), unbind: unbind_group_from_lesson_modules_path(id: "param_id", tool_id: lesson_module.id)}
+
+      / module toolbar
+
+      .block_content_toolbar
+        .block_toolbar_left.btn-group
+          %a.btn.btn_main{:href => "#", 'data-dropdown' => "#dropdown_#{lesson_module.id}"}
+            = content_tag(:i, nil, :class=>'icon-plus')
+            %i.icon-arrow-down-triangle
+          %div{:id=>"dropdown_#{lesson_module.id}", :class=>"dropdown dropdown-tip"}
+            %ul.dropdown-menu
+              %li= link_to (t(:new_lesson, scope: [:lessons, :list])), new_lesson_path(lesson_module_id: lesson_module.id, allocation_tags_ids: @allocation_tags_ids), class: "link_new_lesson"
+              %li= link_to "Importar aula", "#", onclick: "javascript: alert('importar aula');", id: 'import_lesson'
+        .block_toolbar_right
+          .btn-group{class: "module-#{lesson_module.id}"}
+            = link_to (content_tag(:i, nil, :class=>'icon-move')), "#", :class => 'btn', id: "move_lesson_from_#{lesson_module.id}", :'data-tooltip' => t("lessons.list.move_lesson"), "data-dropdown-alt" => "#move_lesson_dropdown_#{lesson_module.id}", disabled: true
+            = link_to (content_tag(:i, nil, :class=>'icon-archive')), "#", class: 'btn btn_default manage_files_lesson', :"data-module-id" => lesson_module.id, :'data-tooltip' => t("lessons.list.manage_files"), :"data-link-manage" => lesson_files_path(lesson_id: 'lessons_ids'), :'data-single' => true
+            = link_to (content_tag(:i, nil, :class=>'icon-install')), "#", class: 'btn download_lesson_zip', :'data-tooltip' => t("lessons.list.download_zip"), :"data-link-verify" => verify_download_lessons_path(lessons_ids: "lessons_param", allocation_tags_ids: @allocation_tags_ids), :"data-link-download" => download_files_lessons_path(lessons_ids: 'lessons_param', allocation_tags_ids: @allocation_tags_ids), :"data-module-id" => lesson_module.id
+            = link_to (content_tag(:i, nil, :class=>'icon-checkmark')), "#", class: 'btn release_lessons', :"data-module-id" => lesson_module.id, :'data-tooltip' => t("lessons.list.release"), :"data-link-update" => change_status_lesson_path(id: ':id', status: Lesson_Approved, allocation_tags_ids: @allocation_tags_ids)
+            = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn link_edit_lesson btn_edit', :'data-tooltip' => t("lessons.list.edit_lesson"), :"data-module-id" => lesson_module.id, :"data-link-edit" => edit_lesson_path(id: ':id', allocation_tags_ids: @allocation_tags_ids)
+            = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn delete_lesson btn_del', :'data-tooltip' => t("lessons.list.delete_lesson"), :'data-link-delete' => lesson_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), :'data-module_id' => lesson_module.id
+
+            / move lesson to another module
+
+            #lesson_dropdown.dropdown-alt.dropdown-tip
+              .dropdown-panel
+                #dropdown_alert{:style => "display: block"}
+                  %ul
+                  - l_m_ids = academic_allocation.allocation_tag.academic_allocations.joins(:lesson_module).where('academic_tool_id <> ?', lesson_module.id).pluck(:academic_tool_id)
+                  - LessonModule.find(l_m_ids).each do |lmodule|
+                    %li
+                      %span{style: "display: inline"}
+                        = radio_button_tag(:move_to_module, lmodule.id)
+                        = lmodule.name
+
+                  .control_buttons{align: "right"}
+                    = button_tag t("lessons.list.cancel"), type: :button, class: 'btn', id: "btn-cancel-move-#{lesson_module.id}"
+                    = button_tag t("lessons.list.move"), type: :button, class: 'btn btn_main move_lessons', :"data-module-id" => lesson_module.id, :"data-link-move" => change_module_lesson_path(id: lesson_module.id, allocation_tags_ids: @allocation_tags_ids, lessons_ids: 'lessons_param', move_to_module: 'module_param')
+
+      / Lessons list
+
+      - if lessons.any?
+        = render partial: "lessons/list/lessons", locals: {lesson_module: lesson_module, lessons: lessons}
+      - else
+        .block_content_text_list.text_none= t(:none, scope: [:lessons, :list])
+
+- else
+  .block_content.block_content_text= t(:none, scope: [:lesson_modules])

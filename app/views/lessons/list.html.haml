@@ -1,5 +1,3 @@
-= javascript_include_tag "tooltip"
-
 - if @academic_allocations.any?
 
   .list_lessons{:"data-link-list" => list_lessons_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
@@ -7,10 +5,10 @@
 
     = link_to t(".new_module"), new_lesson_module_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t(".new_module"), class: "link_new_module", id: "new-module"
 
-    - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
+    = render partial: 'lessons/list/modules', locals: {all_groups: @all_groups}
 
-    = render partial: 'modules', locals: {all_groups: all_groups}
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), list_lessons_path(page: @academic_allocations.next_page, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @academic_allocations.next_page
+
 - else
   .block_content_text_list.text_none
     = t(:item_search_no_found)

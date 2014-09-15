@@ -21,7 +21,7 @@ class SupportMaterialFilesController < ApplicationController
 
   def new
     authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids]
-    
+
     @support_material = SupportMaterialFile.new material_type: params[:material_type]
     @groups_codes     = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:code).uniq
   end
@@ -117,7 +117,7 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def list
-    @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
+    @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, SupportMaterialFile, on: @allocation_tags_ids
 
     @support_materials = SupportMaterialFile.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).order("attachment_updated_at DESC").uniq

@@ -6,7 +6,7 @@ class BibliographiesController < ApplicationController
   before_filter :prepare_for_group_selection, only: [:index]
 
   def list
-    @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
+    @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Bibliography, on: @allocation_tags_ids
 
     @bibliographies      = Bibliography.all_by_allocation_tags(@allocation_tags_ids.split(" ").flatten)

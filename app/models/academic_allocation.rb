@@ -16,6 +16,9 @@ class AcademicAllocation < ActiveRecord::Base
   has_many :chat_messages, dependent: :destroy
   has_many :participants, class_name: 'ChatParticipant', inverse_of: :academic_allocation, dependent: :destroy
 
+  # Lesson Module
+  belongs_to :lesson_module, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'LessonModule'"]
+
   accepts_nested_attributes_for :participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == '0' }
 
   attr_accessible :participants_attributes, :allocation_tag_id, :academic_tool_id, :academic_tool_type
@@ -31,7 +34,7 @@ class AcademicAllocation < ActiveRecord::Base
   def is_assignment?
     academic_tool_type.eql? 'Assignment'
   end
-  
+
   def is_lesson_module?
     academic_tool_type.eql? 'LessonModule'
   end
@@ -60,8 +63,8 @@ class AcademicAllocation < ActiveRecord::Base
     ## verifica se já existe uma AcademicAllocation com todos os dados iguais
     def verify_uniqueness
       # na criacao ou algum campo modificado na atualizacao
-      error = ( 
-        (new_record? or (allocation_tag_id_changed? or academic_tool_type_changed? or academic_tool_id_changed?)) and 
+      error = (
+        (new_record? or (allocation_tag_id_changed? or academic_tool_type_changed? or academic_tool_id_changed?)) and
         AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_type: academic_tool_type, academic_tool_id: academic_tool_id).any?
       )
 

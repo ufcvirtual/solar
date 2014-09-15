@@ -47,7 +47,7 @@ module ApplicationHelper
 
     unless hash_params.nil?
       # ex: type=index&search=1 2 3
-      hash_params.split("&").each do |item| 
+      hash_params.split("&").each do |item|
         individual_param = item.split("=")
         v = individual_param[1].nil? ? "" : individual_param[1]
         result << '<input id="' << individual_param[0] << '" name="' << individual_param[0] << '" value="' << v << '" type="hidden">'

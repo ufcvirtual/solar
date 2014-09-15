@@ -164,6 +164,10 @@ class AllocationTag < ActiveRecord::Base
 
   ## related functions - end ##
 
+  def self.at_groups_by_offer_id(offer_id, only_id = true)
+    joins(:group).where(groups: {offer_id: offer_id}).pluck(:id)
+  end
+
   def self.get_by_params(params, related=false, lower_related=false)
     map_attr = (lower_related ? :lower_related : (related ? :related : :id))
 

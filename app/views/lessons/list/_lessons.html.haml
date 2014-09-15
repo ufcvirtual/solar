@@ -1,0 +1,42 @@
+%table.tb_list{:"data-default-module" => lesson_module.is_default, class: "table-module-#{lesson_module.id}"}
+  %thead
+    %tr.lines
+      %th.center.no_sort{style: 'width: 25px'}= check_box_tag( 'all', 'all', false, {id: "all_m_#{lesson_module.id}", class: 'lesson_check_all', :"data-children-names" => "m_#{lesson_module.id}"} )
+      %th.center.no_sort= t("lessons.list.order")
+      %th= t("lessons.list.name")
+      %th.center{style: 'width: 10%'}= t("lessons.list.type")
+      %th.center.no_sort= t("lessons.list.availability")
+      %th.center.no_sort= t("lessons.list.acceptance")
+  %tbody
+    - lessons.each_with_index do |lesson, idxl|
+      %tr.lines{lesson_name: lesson.name, lesson_id: lesson.id, lesson_order: lesson.order, lesson_status: lesson.status}
+        %td.center
+          = check_box_tag( "m_#{lesson_module.id}", lesson.id, false, {class: "m_#{lesson_module.id}", :"data-file-type" => lesson.is_file? })
+        %td.center{style: "width: 50px;"}
+          .lesson_arrows
+            .lesson_arrow_up= link_to image_tag("lesson/up_arrow.png"), "#", class: 'up'
+            .lesson_arrow_down= link_to image_tag("lesson/down_arrow.png"), "#", class: 'down'
+        %td
+          %div
+            - if lesson.address.blank?
+              = lesson.name
+            - else
+              = link_to lesson.name, edition_lesson_url(lesson, allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id]), class: "link_content lesson", "data-fancybox-type" => "iframe"
+            - if lesson.description
+              .description
+                .minimun
+                  = simple_format(lesson.description.truncate(200))
+                  - if lesson.description.size>200
+                    = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t("lessons.list.expand_description"))
+                .complete.invisible
+                  = simple_format(lesson.description)
+                  = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t("lessons.list.compress_description"))
+        %td= (lesson.is_file? ? t("lessons.list.file_type") : t("lessons.list.link_type"))
+
+        %td.center{style: "width: 160px"}
+          = t("lessons.list.since") if lesson.schedule.end_date.nil?
+          = [l(lesson.schedule.start_date, format: :normal), (lesson.has_end_date? ? l(lesson.schedule.end_date, format: :normal) : t(:no_end_date, scope: [:lessons, :list]))].join(" - ")
+
+        %td.center{style: "width: 70px"}
+          - new_status, l_img, l_t = lesson.is_draft? ? [Lesson_Approved, 'rejected.png', t('lessons.list.draft')] : [Lesson_Test, 'released.png', t('lessons.list.released')]
+          = link_to image_tag(l_img), "#", class: 'change_lesson_status', :"data-link-update" => change_status_lesson_path(id: lesson.id, status: new_status, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => l_t, :"data-module-id" => lesson_module.id

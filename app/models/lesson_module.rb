@@ -56,4 +56,11 @@ class LessonModule < ActiveRecord::Base
     }.compact.uniq
   end
 
+  def self.academic_allocations_by_ats(allocation_tags_ids, page: 1, per_page: 30)
+    AcademicAllocation.select('DISTINCT ON (academic_tool_id) *').joins(:lesson_module)
+      .where(allocation_tag_id: allocation_tags_ids)
+      .order(:academic_tool_id)
+      .paginate(page: page, per_page: per_page)
+  end
+
 end

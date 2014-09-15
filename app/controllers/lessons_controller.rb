@@ -33,15 +33,11 @@ class LessonsController < ApplicationController
   end
 
   def list
-    @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids])
-
+    @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Lesson, on: @allocation_tags_ids
-    @academic_allocations = AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where(allocation_tag_id: @allocation_tags_ids.split(" ").flatten).order("academic_tool_id").paginate(page: params[:page], per_page: 30)
 
-    respond_to do |format|
-      format.html
-      format.js
-    end
+    @all_groups = Group.where(offer_id: params[:offer_id])
+    @academic_allocations = LessonModule.academic_allocations_by_ats(@allocation_tags_ids.split(' '), page: params[:page])
   rescue
     render nothing: true, status: 500
   end
@@ -50,7 +46,11 @@ class LessonsController < ApplicationController
   def show
     authorize! :show, Lesson, {on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true}
 
-    at_ids = params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+    at_ids = if params[:allocation_tags_ids].present?
+      params[:allocation_tags_ids].split(' ')
+    else
+      AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+    end
 
     @modules = LessonModule.to_select(at_ids, current_user)
     @lesson = Lesson.find(params[:id])

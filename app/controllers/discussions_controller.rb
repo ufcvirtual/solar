@@ -52,8 +52,9 @@ class DiscussionsController < ApplicationController
   end
 
   def list
-    @allocation_tags_ids = ( params.include?(:groups_by_offer_id) ? Offer.find(params[:groups_by_offer_id]).groups.map(&:allocation_tag).map(&:id) : params[:allocation_tags_ids] )
+    @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Discussion, on: @allocation_tags_ids
+
     @discussions = Discussion.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).uniq
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
@@ -76,7 +77,7 @@ class DiscussionsController < ApplicationController
     render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue 
+  rescue
     @groups_codes = @discussion.groups.map(&:code)
     render :edit
   end
