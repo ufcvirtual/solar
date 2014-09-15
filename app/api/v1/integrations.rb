@@ -141,19 +141,19 @@ module V1
           requires :main_group, type: String  
           requires :secundary_groups, type: Array
           requires :course, :curriculum_unit, :period
-          requires :type_merge # if true: merge; if false: undo merge
+          requires :type_merge, type: Boolean # if true: merge; if false: undo merge
         end
 
         put "/" do
 
           begin
-            # ActiveRecord::Base.transaction do
-              if params[:type_merge]
-                replicate_content_groups, receive_content_groups = params[:secundary_groups], [params[:main_group]]
-              else
-                replicate_content_groups, receive_content_groups = [params[:main_group]], params[:secundary_groups]
-              end
+            if params[:type_merge]
+              replicate_content_groups, receive_content_groups = params[:secundary_groups], [params[:main_group]]
+            else
+              replicate_content_groups, receive_content_groups = [params[:main_group]], params[:secundary_groups]
+            end
 
+            ActiveRecord::Base.transaction do
               offer = get_offer(params[:curriculum_unit], params[:course], nil, params[:period])
               replicate_content_groups.each do |replicate_content_group_code|
                 replicate_content_group = get_offer_group(offer, replicate_content_group_code)
@@ -162,17 +162,18 @@ module V1
                   replicate_content(replicate_content_group, receive_content_group, params[:type_merge])
                 end
               end
-            # end
+            end
+            {ok: :ok}
+          rescue ActiveRecord::RecordNotFound
+            error!({error: I18n.t(:object_not_found)}, 404)
           rescue => error
             error!({error: error}, 422)
           end
-
         end # /
 
       end # merge
 
-
-    end
+    end # groups
 
   end
 end

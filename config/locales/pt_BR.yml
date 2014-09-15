@@ -984,6 +984,7 @@ pt_BR:
       file_list: "Anexos"
       new_posts: " nova(s) postagem(ns) no fórum"
       new_posts_page: "1 nova postagem no fórum (página "
+      moved_allocation: "Alocação transferida para outra turma"
     create:
       created: "Postagem criada com sucesso"
       not_created: "A postagem não foi criada"
@@ -1659,7 +1660,8 @@ pt_BR:
       assignment_details: Detalhes do trabalho
     send_public_files_page:
       title: Envio de arquivos públicos
-
+    student:
+      moved_allocation: "Alocação transferida para outra turma"
   groups:
     list:
       all: Selecionar Todos

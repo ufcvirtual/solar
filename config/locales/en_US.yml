@@ -810,6 +810,7 @@ en_US:
       file_list: "Attachment"
       new_posts: " new(s) post(s) at discussion"
       new_posts_page: "1 new post at discussion (page "
+      moved_allocation: "Allocation moved to other class"
     create:
       created: "Post was successfully created"
       not_created: "Post was not created"
@@ -1432,6 +1433,8 @@ en_US:
       assignment_details: Assignment's details
     send_public_files_page:
       title: Upload of public files
+    student:
+      moved_allocation: "Allocation moved to other class"
   groups:
     list:
       all: All

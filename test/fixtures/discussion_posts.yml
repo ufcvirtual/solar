@@ -112,3 +112,13 @@ post_3_forum_2:
   content: 'As experiências acumuladas demonstram que a estrutura atual da organização talvez venha a ressaltar a relatividade do investimento em reciclagem técnica.'
   created_at: <%= Time.at(Time.now.to_f - 18.days).iso8601(5) %>
   updated_at: <%= Time.at(Time.now.to_f - 18.days).iso8601(5) %>
+
+post_1_forum_1_qm_mar:
+  id: 14
+  academic_allocation_id: 71
+  user_id: 7
+  profile_id: 1
+  level: 1
+  content: 'Por outro lado, a consolidação das estruturas exige a precisão e a definição do sistema de formação de quadros que corresponde às necessidades.'
+  created_at: <%= Time.at(Time.now.to_f - 20.days).iso8601(5) %>
+  updated_at: <%= Time.at(Time.now.to_f - 20.days).iso8601(5) %>

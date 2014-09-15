@@ -115,7 +115,8 @@ class AssignmentsController < ApplicationController
   # => alunos: podem enviar/excluir arquivos
   ##
   def student
-    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+    @allocation_tag     = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+    @class_participants = @allocation_tag.group.students_participants.pluck(:user_id)
     authorize! :student, Assignment, on: [@allocation_tag.id]
 
     @assignment      = Assignment.find(params[:id])

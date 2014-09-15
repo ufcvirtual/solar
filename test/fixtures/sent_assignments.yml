@@ -40,3 +40,9 @@ sa8:
   id: 8
   academic_allocation_id: 70 # qm-sol - 2011
   user_id: 1
+
+sa9:
+  id: 9
+  academic_allocation_id: 72 # quimica I - qm-mar - Atividade individual VI
+  user_id: 7
+  grade: 6.3

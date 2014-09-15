@@ -424,3 +424,21 @@ acaal70:
  allocation_tag_id: 39 # qm-sol
  academic_tool_id: 16
  academic_tool_type: "Assignment"
+
+acaal71:
+ id: 71
+ allocation_tag_id: 11 #qm-mar
+ academic_tool_id: 1
+ academic_tool_type: "Discussion"
+
+acaal72:
+ id: 72
+ allocation_tag_id: 11 #qm-mar
+ academic_tool_id: 13
+ academic_tool_type: "Assignment"
+
+acaal73:
+ id: 73
+ allocation_tag_id: 41 #qm-qtn
+ academic_tool_id: 11
+ academic_tool_type: "LessonModule"

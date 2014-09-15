@@ -1,6 +1,6 @@
 = javascript_include_tag "assignments"
 
--# classe utilizada em botões que podem ou não estar desabilitados
+/ classe utilizada em botões que podem ou não estar desabilitados
 - btn_class        = @assignment.on_evaluation_period?(@allocation_tag, current_user.id) ? "btn btn_main" : "btn btn_disabled"
 - btn_edit_class   = @assignment.on_evaluation_period?(@allocation_tag, current_user.id) ? "btn btn_default" : "btn btn_disabled"
 - btn_cancel_class = @assignment.assignment_in_time?(@allocation_tag, current_user.id) ? "btn btn_caution" : "btn btn_disabled"
@@ -18,7 +18,10 @@
         - unless gp.empty?
           %ul.participants_list
             - gp.each do |participant|
-              %li= participant.user.name
+              %li
+                = participant.user.name
+                - unless @class_participants.include? participant.user.id
+                  %span{:"data-tooltip" => t(".moved_allocation")}= content_tag :i, nil, class: "icon-warning moved_allocation" 
         - else
           = t("assignment.group_assignments.no_participant")
   / Se for trabalho individual e não for o aluno que estiver na página, exibir de qual aluno é o trabalho

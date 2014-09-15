@@ -246,6 +246,7 @@ describe "Integrations" do
 
       context "with valid ip" do
 
+        # transfer content from QM-CAU to QM-MAR
         context 'do merge' do
           let!(:json_data){ { 
             main_group: "QM-MAR",
@@ -256,51 +257,155 @@ describe "Integrations" do
             type_merge: true
           } }
 
+          subject{ -> { put "/api/v1/integration/groups/merge/", json_data } } 
+
+          it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Discussion"),:count).by(4) }
+          it { should change(Post,:count).by(4) }
+          it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Assignment"),:count).by(10) }
+          it { should change(SentAssignment,:count).by(4) }
+          it { should change(AssignmentFile,:count).by(3) }
+          it { should change(AssignmentComment,:count).by(3) }
+          it { should change(CommentFile,:count).by(1) }
+          it { should change(GroupAssignment,:count).by(6) }
+          it { should change(GroupParticipant,:count).by(8) }
+          it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "ChatRoom"),:count).by(3) }
+          it { should change(ChatMessage,:count).by(5) }
+          it { should change(PublicFile,:count).by(1) }
+          it { should change(Message,:count).by(1) }
+          it { should change(LogAction,:count).by(1) }
+          it { should change(Merge,:count).by(1) }
+          it { should change(Group.where(status: false),:count).by(1) }
+
           it {
-            expect{
-              put "/api/v1/integration/groups/merge/", json_data
-              response.status.should eq(200)
-            }.to change{Post.count}.by(4)
-          }
-
-          it{
-            expect{
-              put "/api/v1/integration/groups/merge/", json_data
-              response.status.should eq(200)
-            }.to change{SentAssignment.count}.by(4)
-          }
-
-          it{
-            expect{
-              put "/api/v1/integration/groups/merge/", json_data
-              response.status.should eq(200)
-            }.to change{LogAction.count}.by(1)
-          }
-
-          it{
-            expect{
-              put "/api/v1/integration/groups/merge/", json_data
-              response.status.should eq(200)
-            }.to change{Merge.count}.by(1)
-          }
-
-          it{
-            expect{
-              put "/api/v1/integration/groups/merge/", json_data
-              response.status.should eq(200)
-            }.to change{Group.where(status: false).count}.by(1)
+            put "/api/v1/integration/groups/merge/", json_data
+            response.status.should eq(200)
+            response.body.should == {ok: :ok}.to_json
           }
         end
+      
+        # transfer content from QM-MAR to QM-CAU (QM-MAR only has one post and one sent_assignment different from QM-CAU)
+        context 'undo merge' do
+          let!(:json_data){ { 
+            main_group: "QM-MAR",
+            secundary_groups: ["QM-CAU"],
+            course: "109",
+            curriculum_unit: "RM301",
+            period: "2011.1",
+            type_merge: false
+          } }
+
+          subject{ -> { put "/api/v1/integration/groups/merge/", json_data } } 
+
+          # QM-CAU loses all content it have to receive QM-MAR's content
+          it { should change(AcademicAllocation.where(allocation_tag_id: 3, academic_tool_type: "Discussion"),:count).by(0) }
+          it { should change(Post,:count).by(-3) } # it has 4, received 1
+          it { should change(AcademicAllocation.where(allocation_tag_id: 3, academic_tool_type: "Assignment"),:count).by(0) }
+          it { should change(SentAssignment,:count).by(-3) } # it has 4, received 1
+          it { should change(AssignmentFile,:count).by(-3) }
+          it { should change(AssignmentComment,:count).by(-3) }
+          it { should change(CommentFile,:count).by(-1) }
+          it { should change(GroupAssignment,:count).by(-6) }
+          it { should change(GroupParticipant,:count).by(-8) }
+          it { should change(AcademicAllocation.where(allocation_tag_id: 3, academic_tool_type: "ChatRoom"),:count).by(0) }
+          it { should change(ChatMessage,:count).by(-5) }
+          it { should change(PublicFile,:count).by(0) }
+          it { should change(Message,:count).by(0) }
+          it { should change(LogAction,:count).by(1) }
+          it { should change(Merge,:count).by(1) }
+          it { should change(Group.where(status: false),:count).by(0) }
+
+          it {
+            put "/api/v1/integration/groups/merge/", json_data
+            response.status.should eq(200)
+            response.body.should == {ok: :ok}.to_json
+          }
+        end 
       end
 
+      context 'missing params' do
+        let!(:json_data){ { 
+          main_group: "QM-MAR",
+          course: "109",
+          curriculum_unit: "RM301",
+          period: "2011.1",
+          type_merge: true
+        } }
 
+        subject{ -> { put "/api/v1/integration/groups/merge/", json_data } } 
 
-      # context "with invalid ip" do
-      #   it "gets a not found error" do
-      #     post "/api/v1/load/user/", {cpf: "VALID CPF HERE"}, "REMOTE_ADDR" => "127.0.0.2"
-      #     response.status.should eq(404)
-      #   end
-      # end
+        it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Discussion"),:count).by(0) }
+        it { should change(Post,:count).by(0) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Assignment"),:count).by(0) }
+        it { should change(SentAssignment,:count).by(0) }
+        it { should change(AssignmentFile,:count).by(0) }
+        it { should change(AssignmentComment,:count).by(0) }
+        it { should change(CommentFile,:count).by(0) }
+        it { should change(GroupAssignment,:count).by(0) }
+        it { should change(GroupParticipant,:count).by(0) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "ChatRoom"),:count).by(0) }
+        it { should change(ChatMessage,:count).by(0) }
+        it { should change(PublicFile,:count).by(0) }
+        it { should change(Message,:count).by(0) }
+        it { should change(LogAction,:count).by(0) }
+        it { should change(Merge,:count).by(0) }
+        it { should change(Group.where(status: false),:count).by(0) }
+
+        it {
+          put "/api/v1/integration/groups/merge/", json_data
+          response.status.should eq(400)
+        }
+      end
+
+      context 'group doesnt exist' do
+        let!(:json_data){ { 
+          main_group: "QM-MAR",
+          secundary_groups: ["QM-0"],
+          course: "109",
+          curriculum_unit: "RM301",
+          period: "2011.1",
+          type_merge: true
+        } }
+
+        subject{ -> { put "/api/v1/integration/groups/merge/", json_data } } 
+
+        it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Discussion"),:count).by(0) }
+        it { should change(Post,:count).by(0) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Assignment"),:count).by(0) }
+        it { should change(SentAssignment,:count).by(0) }
+        it { should change(AssignmentFile,:count).by(0) }
+        it { should change(AssignmentComment,:count).by(0) }
+        it { should change(CommentFile,:count).by(0) }
+        it { should change(GroupAssignment,:count).by(0) }
+        it { should change(GroupParticipant,:count).by(0) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "ChatRoom"),:count).by(0) }
+        it { should change(ChatMessage,:count).by(0) }
+        it { should change(PublicFile,:count).by(0) }
+        it { should change(Message,:count).by(0) }
+        it { should change(LogAction,:count).by(0) }
+        it { should change(Merge,:count).by(0) }
+        it { should change(Group.where(status: false),:count).by(0) }
+
+        it {
+          put "/api/v1/integration/groups/merge/", json_data
+          response.status.should eq(404) # not found
+        }
+      end
+
+      context "with invalid ip" do
+        let!(:json_data){ { 
+            main_group: "QM-MAR",
+            secundary_groups: ["QM-CAU"],
+            course: "109",
+            curriculum_unit: "RM301",
+            period: "2011.1",
+            type_merge: true
+          } }
+
+        it "gets a not found error" do
+          put "/api/v1/integration/groups/merge/", json_data, "REMOTE_ADDR" => "127.0.0.2"
+          response.status.should eq(404)
+        end
+      end
 
     end #merge
 

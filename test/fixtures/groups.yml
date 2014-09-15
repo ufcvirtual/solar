@@ -69,3 +69,9 @@ g12:
   offer_id: 9
   code: 'QM-SOL'
   status: TRUE
+
+g13: # turma vazia
+  id: 13
+  offer_id: 2
+  code: 'QM-QTN'
+  status: true

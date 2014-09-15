@@ -47,3 +47,8 @@ module10: # não contém aulas
   id: 10
   name: Modulo Geral da Turma - QM MAR
   is_default: true
+
+module11: # não contém aulas
+  id: 11
+  name: Modulo Geral da Turma - QM QTN
+  is_default: true
