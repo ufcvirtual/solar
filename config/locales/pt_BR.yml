@@ -1013,6 +1013,7 @@ pt_BR:
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
       discussions: Fóruns
+      posts: Postagens
     success:
       created: Fórum criado com sucesso.
       updated: Fórum atualizado com sucesso.

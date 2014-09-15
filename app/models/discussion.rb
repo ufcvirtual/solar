@@ -104,7 +104,9 @@ class Discussion < Event
   end
 
   def self.all_by_allocation_tags(allocation_tags_ids)
-    joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).order("schedules.start_date, schedules.end_date, name")
+    joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
+      .select("discussions.*, academic_allocations.id AS ac_id")
+      .order("schedules.start_date, schedules.end_date, name")
   end
 
   # devolve a lista com todos os posts de uma discussion em ordem decrescente de updated_at, apenas o filho mais recente de cada post será adiconado à lista

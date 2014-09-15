@@ -837,6 +837,7 @@ en_US:
       expand_description: Expand description
       compress_description: Compress description
       discussions: Dicussions
+      posts: Posts
     success:
       created: Discussion was successfully created.
       updated: Discussion was successfully updated.
