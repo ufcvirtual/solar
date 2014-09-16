@@ -1,4 +1,4 @@
-- admin_with_groups = (@admin and not(@selected.nil?) and @selected == "GROUP")
+- admin_with_groups = (not(@selected.nil?) and @selected == "GROUP")
 .block_wrapper.list_lessons{:"data-link-list" => lessons_path}
   - unless @lessons_modules.empty?
     - @lessons_modules.each do |lmodule|

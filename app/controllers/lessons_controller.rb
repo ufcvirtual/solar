@@ -1,6 +1,6 @@
 class LessonsController < ApplicationController
 
-  before_filter :prepare_for_group_selection, only: [:index, :download_files]
+  before_filter :prepare_for_group_selection, only: :download_files
   before_filter :offer_data, only: :show
 
   require 'fileutils'
@@ -13,23 +13,17 @@ class LessonsController < ApplicationController
   layout false, except: :index
 
   def index
-    @not_offer_area = active_tab[:url][:allocation_tag_id].nil?  # if user is not at offer area
-    if @not_offer_area
-      allocation_tags = AllocationTag.get_by_params(params)
-      @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
-      authorize! :index, Lesson, {on: @allocation_tags_ids, accepts_general_profile: true, read: true}
-      @offer = Offer.find(allocation_tags[:offer_id])
+    if (@not_offer_area = active_tab[:url][:allocation_tag_id].nil?) # if user is not at offer area / admin access
+      index_admin_permissions
     else
-      authorize! :index, Lesson, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-      allocation_tag = AllocationTag.find(allocation_tag_id)
-      @responsible   = allocation_tag.is_responsible?(current_user.id)
-      @allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : allocation_tag.related
+      prepare_for_group_selection
+      index_interacting_permissions
     end
 
-    @lessons_modules = LessonModule.to_select(@allocation_tags_ids.split(" ").flatten, current_user, true)
-    render layout: false if params[:allocation_tags_ids] or @not_offer_area
+    @lessons_modules = LessonModule.to_select(@allocation_tags_ids.split(' ').flatten, current_user, true)
+    @allocation_tags_ids = @allocation_tags_ids.join(' ') if @allocation_tags_ids.is_a?(Array)
 
-    @allocation_tags_ids = @allocation_tags_ids.join(" ")
+    render layout: false if @not_offer_area
   end
 
   def list
@@ -271,6 +265,22 @@ class LessonsController < ApplicationController
   end
 
   private
+
+    def index_interacting_permissions
+      authorize! :index, Lesson, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+
+      allocation_tag = AllocationTag.find(allocation_tag_id)
+      @responsible   = allocation_tag.is_responsible?(current_user.id)
+      @allocation_tags_ids = params[:allocation_tags_ids].present? ? params[:allocation_tags_ids] : allocation_tag.related
+    end
+
+    def index_admin_permissions
+      allocation_tags = AllocationTag.get_by_params(params)
+      @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
+
+      authorize! :index, Lesson, {on: @allocation_tags_ids, accepts_general_profile: true, read: true}
+      @offer = Offer.find(allocation_tags[:offer_id])
+    end
 
     def offer_data
       @offer = Offer.find(params[:offer_id] || active_tab[:url][:id])

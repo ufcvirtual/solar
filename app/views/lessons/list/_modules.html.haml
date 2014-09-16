@@ -2,7 +2,6 @@
   - @academic_allocations.each do |academic_allocation|
 
     - lesson_module = academic_allocation.academic_tool
-    / - lessons       = lessons_by_module(lesson_module.id)
     - lessons       = lesson_module.lessons.order('lessons.order')
     - has_group     = academic_allocation.allocation_tag.group
 
