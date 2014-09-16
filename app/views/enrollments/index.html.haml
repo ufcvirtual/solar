@@ -129,7 +129,7 @@
               - curriculum_units << [offer_info[:curriculum_unit], offer_info[:curriculum_unit].gsub(/\W/, '')]
               - query = "groups.id NOT IN (?)" unless user_groups.empty?
 
-              - Group.where(offer_id: offer.id).where(query, user_groups).find_each do |group|
+              - Group.where(offer_id: offer.id, status: true).where(query, user_groups).find_each do |group|
                 %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}"}
                   %td= offer_info[:curriculum_unit_type]
                   %td
