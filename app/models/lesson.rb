@@ -39,6 +39,10 @@ class Lesson < ActiveRecord::Base
     end
   end
 
+  def draft!
+    update_attribute('status', Lesson_Test)
+  end
+
   def is_draft?
     status == Lesson_Test
   end
@@ -67,7 +71,8 @@ class Lesson < ActiveRecord::Base
 
   def can_destroy?
     unless is_draft? # aula em rascunho
-      errors.add(:lesson, I18n.t(:cant_delete, :scope => [:lesson, :errors]))
+      draft!
+      errors.add(:base, I18n.t('lessons.errors.cant_delete'))
       return false
     end
   end

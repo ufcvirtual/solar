@@ -142,19 +142,20 @@ class LessonsController < ApplicationController
 
   # PUT /lessons/1/change_status/1
   def change_status
-    authorize! :change_status, Lesson, {on: @allocation_tags_ids = params[:allocation_tags_ids], read: params.include?(:responsible)}
     @responsible = params.include?(:responsible)
+    authorize! :change_status, Lesson, {on: @allocation_tags_ids = params[:allocation_tags_ids], read: @responsible}
 
-    ids = params[:id].split(',').map(&:to_i).flatten
-    msg = nil
+    ids = params[:id].split(',').flatten.map(&:to_i)
+    msg = []
+
     @lessons = Lesson.where(id: ids)
     @lessons.each do |lesson|
       lesson.status = params[:status].to_i
-      msg = lesson.errors.full_messages unless lesson.save
+      msg << lesson.errors[:base] unless lesson.save
     end
 
     respond_to do |format|
-      if msg.nil?
+      if msg.empty?
         format.json { render json: {success: true}, status: :ok }
         format.js
       else
@@ -168,20 +169,18 @@ class LessonsController < ApplicationController
     authorize! :destroy, Lesson, on: params[:allocation_tags_ids]
 
     test_lesson = false
-    @lessons = Lesson.where(id: params[:id].split(","))
-    Lesson.transaction do
-      begin
+    @lessons = Lesson.where(id: params[:id].split(','))
+
+    begin
+      Lesson.transaction do
         @lessons.each do |lesson|
-          unless lesson.destroy
-            lesson.status = Lesson_Test # a aula nao foi deletada, mas vai ser transformada em rascunho
-            test_lesson = true
-            raise "error" unless lesson.save
-          end
+          test_lesson = true unless lesson.destroy # a aula nao foi deletada, mas vai ser transformada em rascunho
         end
-        render json: {success: true, notice: (test_lesson ? t(:saved_as_draft, scope: [:lessons, :success]) : t(:deleted, scope: [:lessons, :success]))}
-      rescue
-        render json: {success: false, alert: t(:deleted, scope: [:lessons, :errors])}, status: :unprocessable_entity
       end
+
+      render json: {success: true, notice: (test_lesson ? t(:saved_as_draft, scope: [:lessons, :success]) : t(:deleted, scope: [:lessons, :success]))}
+    rescue
+      render json: {success: false, alert: t(:deleted, scope: [:lessons, :errors])}, status: :unprocessable_entity
     end
   end
 
@@ -190,15 +189,14 @@ class LessonsController < ApplicationController
 
     if verify_lessons_to_download(params[:lessons_ids].split(',').flatten, true)
       zip_file_path = compress(under_path: @all_files_paths, folders_names: @lessons_names)
-      redirect      = request.referer.nil? ? home_url(:only_path => false) : request.referer
+      redirect = request.referer.nil? ? home_url(only_path: false) : request.referer
 
-      if(zip_file_path)
+      if zip_file_path
         zip_file_name = zip_file_path.split("/").last
         download_file(redirect, zip_file_path, zip_file_name)
       else
         redirect_to redirect, alert: t(:file_error_nonexistent_file)
       end
-
     else
       render nothing: true
     end
@@ -208,7 +206,8 @@ class LessonsController < ApplicationController
   def verify_download
     begin
       authorize! :download_files, Lesson, on: params[:allocation_tags_ids]
-      raise "error" unless verify_lessons_to_download(params[:lessons_ids])
+
+      raise unless verify_lessons_to_download(params[:lessons_ids])
       status = 200
     rescue CanCan::AccessDenied
       status = :unauthorized
@@ -217,7 +216,6 @@ class LessonsController < ApplicationController
     end
     render nothing: true, status: status
   end
-
 
   ## PUT lessons/:id/order/:change_id
   def order
@@ -247,7 +245,6 @@ class LessonsController < ApplicationController
     end
   end
 
-  ##
   def change_module
     begin
       authorize! :change_module, Lesson, on: params[:allocation_tags_ids]
