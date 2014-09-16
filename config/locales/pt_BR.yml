@@ -844,7 +844,7 @@ pt_BR:
       link: Link
       status: Status
       enable_end_date: Habilitar data final
-      example: "(exemplo: http://www.seusite.com.br)"
+      example: "(exemplo: http://www.suaurl.com.br)"
       continue: Prosseguir
       save: Salvar
     notifications:
@@ -883,7 +883,7 @@ pt_BR:
       save: Salvar
       cancel: Cancelar
       groups: Turmas
-    success: 
+    success:
       deleted: Módulo excluído com sucesso
     errors:
       existing_name: já existe

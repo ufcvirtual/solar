@@ -67,7 +67,7 @@ class LessonsController < ApplicationController
     authorize! :new, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @lesson_module = LessonModule.find(params[:lesson_module_id]) if params[:lesson_module_id].present?
-    @groups_codes  = @lesson_module.groups.map(&:code)
+    @groups_codes  = @lesson_module.groups.pluck(:code)
     @lesson = Lesson.new
   end
 
@@ -76,28 +76,29 @@ class LessonsController < ApplicationController
   def create
     authorize! :create, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
-    params[:lesson][:lesson_module_id] = params[:lesson_module_id]
-    params[:lesson][:user_id] = current_user.id
-    params[:lesson][:order] = Lesson.where(lesson_module_id: params[:lesson_module_id]).maximum(:order).to_i + 1
-    @lesson_module = LessonModule.find(params[:lesson_module_id]) if params[:lesson_module_id].present?
+    @lesson_module = LessonModule.find(params[:lesson_module_id])
 
-    @lesson = Lesson.new(params[:lesson])
+    @lesson = @lesson_module.lessons.build(params[:lesson])
+    @lesson.user = current_user
 
     Lesson.transaction do
       @lesson.schedule = Schedule.create!(start_date: params[:start_date], end_date: params[:end_date])
       @lesson.save!
     end
 
-    @lesson.type_lesson == Lesson_Type_File ? files_and_folders(@lesson) : manage_file = false
+    if @lesson.is_file?
+      files_and_folders(@lesson)
 
-    render ((manage_file != false) ? {template: "lesson_files/index"} : {json: {success: true, notice: t(:created, scope: [:lessons, :success])}})
+      render template: "lesson_files/index"
+    else
+      render json: {success: true, notice: t(:created, scope: [:lessons, :success])}
+    end
   rescue ActiveRecord::AssociationTypeMismatch
     render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error
-    @groups_codes    = @lesson_module.groups.map(&:code)
-    params[:success] = false
+    @groups_codes = @lesson_module.groups.pluck(:code)
     render :new
   end
 
@@ -105,9 +106,11 @@ class LessonsController < ApplicationController
   def edit
     authorize! :update, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
-    @lesson_modules = LessonModule.select("DISTINCT ON (id)""lesson_modules"".*").joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: @allocation_tags_ids.split(" ").flatten})
-    @lesson         = Lesson.find(params[:id])
-    @groups_codes   = @lesson.lesson_module.groups.map(&:code)
+    @lesson_modules = LessonModule.select("DISTINCT ON (lesson_modules.id) lesson_modules.*")
+      .joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: @allocation_tags_ids.split(" ").flatten})
+
+    @lesson = Lesson.find(params[:id])
+    @groups_codes = @lesson.lesson_module.groups.pluck(:code)
   end
 
   # PUT /lessons/1
@@ -115,27 +118,25 @@ class LessonsController < ApplicationController
   def update
     authorize! :update, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
-    @lesson_modules = LessonModule.select("DISTINCT ON (id)""lesson_modules"".*").joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: @allocation_tags_ids.split(" ").flatten})
     @lesson = Lesson.find(params[:id])
-    error = false
+
     begin
       Lesson.transaction do
         @lesson.update_attributes!(params[:lesson])
         @lesson.schedule.update_attributes!(start_date: params[:start_date], end_date: params[:end_date])
       end
+
+      render json: {success: true, notice: t(:updated, scope: [:lessons, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @groups_codes = @lesson.lesson_module.groups.map(&:code)
-      error = true
+      @groups_codes = @lesson.lesson_module.groups.pluck(:code)
       @schedule_error = @lesson.schedule.errors.full_messages[0] unless @lesson.schedule.valid?
-    end
 
-    if error
-      params[:success] = false
+      @lesson_modules = LessonModule.select("DISTINCT ON (lesson_modules.id) lesson_modules.*")
+        .joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: @allocation_tags_ids.split(" ").flatten})
+
       render :edit
-    else
-      render json: {success: true, notice: t(:updated, scope: [:lessons, :success])}
     end
   end
 

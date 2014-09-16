@@ -13,15 +13,18 @@ class Lesson < ActiveRecord::Base
   has_many :groups, through: :allocation_tags
   has_many :offers, through: :allocation_tags
 
+  before_create :set_order
   before_save :url_protocol, :if => :is_link?
   after_save :create_or_update_folder
 
   before_destroy :can_destroy?
   after_destroy :delete_schedule, :delete_files
 
-  validates :name, :type_lesson, presence: true
-  validate  :initial_file_setted
   validates :lesson_module, presence: true
+  validates :name, :type_lesson, presence: true
+  validates :address, presence: true, if: "not(is_draft?) and persisted?"
+
+  validate  :initial_file_setted
 
   # Na expressão regular os protocolos http, https e ftp podem aparecer somente uma vez ou não aparecer.
   validates_format_of :address, :with => /\A((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z/ix,
@@ -98,6 +101,10 @@ class Lesson < ActiveRecord::Base
   end
 
   private
+
+  def set_order
+    self.order = lesson_module.next_lesson_order if order.nil?
+  end
 
   def delete_files
     if (type_lesson == Lesson_Type_File) and (status == Lesson_Test)

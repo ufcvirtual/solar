@@ -25,6 +25,10 @@ class LessonModule < ActiveRecord::Base
    end
   end
 
+  def next_lesson_order
+    lessons.maximum(:order).next rescue 1
+  end
+
   def self.to_select(allocation_tags_ids, user = nil, list = false)
     user_is_admin    = user.nil? ? false : user.is_admin?
     user_responsible = user.nil? ? false : user.profiles_with_access_on("see_drafts", "lessons", allocation_tags_ids, true).any?

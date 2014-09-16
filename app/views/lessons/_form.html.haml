@@ -16,6 +16,7 @@
           = f.hint @lesson_module.name
         - elsif @lesson.lesson_module
           = f.hint @lesson.lesson_module.name
+
       =f.input :name
       =f.input :description
       - error_class = "field_with_errors" unless @schedule_error.blank?
@@ -46,14 +47,14 @@
           .disabled
             =f.label " "
             =t(:example, :scope => [:lessons, :new])
-      
+
       - unless @groups_codes.empty?
         .input
           = f.label t(".groups")
           %span.groups
             - @groups_codes.each do |code|
-              %span.collection_check_boxes= code      
-      
+              %span.collection_check_boxes= code
+
       .right_buttons
         = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
         = button_tag t(:save, :scope => [:lessons, :new]), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:lessons, :new]), :type => "button", :id => "save_button"
