@@ -1,54 +1,61 @@
-- start_date, end_date = (@lesson.try(:schedule).try(:start_date) || Date.today), (@lesson.try(:schedule).try(:end_date) || '')
+= simple_form_for(@lesson, html: {id: 'lesson_form'}) do |f|
 
-= simple_form_for(@lesson, :html => {:id => "lesson_form"}) do |f|
-  %h1#lightBoxDialogTitle= t((@lesson.persisted? ? :edit_lesson : :new_lesson), scope: [:lessons, :list])
+  / header
+  %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit_lesson : :new_lesson), scope: [:lessons, :list])
   %span.form_requirement= t(:required_fields)
+
+  / content
   .lesson_form.block_content
     = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
-    = hidden_field_tag(:lesson_module_id, params[:lesson_module_id])
 
     .form-inputs.block_content
       .lesson_module
-        = f.label t(:lesson_module, :scope => [:editions, :items])
-        - if @lesson_modules
+        = f.label t('editions.items.lesson_module')
+        - if f.object.persisted?
           = f.collection_select(:lesson_module_id, @lesson_modules, :id, :name)
-        - elsif @lesson_module
-          = f.hint @lesson_module.name
-        - elsif @lesson.lesson_module
-          = f.hint @lesson.lesson_module.name
+        - else
+          = f.input :lesson_module_id, as: :hidden
+          = f.hint f.object.lesson_module.name
 
-      =f.input :name
-      =f.input :description
-      - error_class = "field_with_errors" unless @schedule_error.blank?
-      .lesson_date{:class => error_class}
-        =f.label :start_date, :required => true
-        =text_field_tag "start_date", "", :id => "from_date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, :format => :datepicker)}", :class => "date_text_field", :size => 10, :required => true
-        %span.end_date{class: (@lesson.has_end_date? ? '' : 'invisible')}
-          .lesson_dates.label= t(:to, scope: [:schedules])
-          .lesson_dates= text_field_tag "end_date", "", :id => "until_date", :title => "#{t(:until_date)}", :value => ("#{l(end_date.to_date, :format => :datepicker)}" if Date.valid?(end_date)), :class => "date_text_field", :size => 10, :required => true
-          %span{:style => "display: inline-block;"}= @schedule_error
+      = f.input :name
+      = f.input :description
+
+      / dates
+      = f.fields_for :schedule do |s|
+        - has_end_date = f.object.has_end_date?
+        - start_date = l(s.object.start_date.to_date, format: :datepicker)
+        - end_date = has_end_date ? l(s.object.end_date.to_date, format: :datepicker) : nil
+
+        .schedule_dates
+          .left
+            = s.input :start_date, as: :string, input_html: {id: 'from-date', required: true, size: 10, value: start_date}
+          .right
+            %span.end_date{class: (has_end_date ? '' : 'invisible')}
+              = s.input :end_date, as: :string, input_html: {id: 'until-date', size: 10, value: end_date}
+
         .select_end_date
-          =f.label " "
-          =check_box "check", "end_date", {id: 'check_end_date', checked: @lesson.has_end_date? }
-          %span.checkbox_label= label_tag "check[end_date]", t(:enable_end_date, :scope => [:lessons, :new])
+          = f.label ' '
+          = check_box "check", "end_date", {id: 'check_end_date', checked: has_end_date }
+          %span.checkbox_label= label_tag "check[end_date]", t('lessons.new.enable_end_date')
 
       .lesson_type
-        =f.label t(:type_lesson, :scope => [:lessons, :new])
-        - if @lesson_modules
-          - if @lesson.type_lesson == Lesson_Type_File
-            =f.hint t(:archive, :scope => [:lessons, :new])
-          -elsif @lesson.type_lesson == Lesson_Type_Link
-            =f.hint t(:link, :scope => [:lessons, :new])
+        = f.label t('lessons.new.type_lesson')
+        - if f.object.persisted?
+          - if f.object.is_file?
+            = f.hint t('lessons.new.archive')
+          -elsif f.object.is_link?
+            = f.hint t('lessons.new.link')
         - else
-          =f.select :type_lesson, ([ [t(:link, :scope => [:lessons, :new]), Lesson_Type_Link], [t(:archive, :scope => [:lessons, :new]),Lesson_Type_File] ]), :include_blank => false
-      - if (@lesson_modules.nil? or @lesson.type_lesson == Lesson_Type_Link)
-        .url_lesson
-          =f.input :address
-          .disabled
-            =f.label " "
-            =t(:example, :scope => [:lessons, :new])
+          = f.select :type_lesson, ([ [t('lessons.new.link'), Lesson_Type_Link], [t('lessons.new.archive'), Lesson_Type_File] ]), include_blank: false
 
-      - unless @groups_codes.empty?
+      - if (@lesson_modules.nil? or @lesson.is_link?)
+        .url_lesson
+          = f.input :address
+          .disabled
+            = f.label ' '
+            = t('lessons.new.example')
+
+      - if @groups_codes.any?
         .input
           = f.label t(".groups")
           %span.groups
@@ -56,93 +63,64 @@
               %span.collection_check_boxes= code
 
       .right_buttons
-        = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
-        = button_tag t(:save, :scope => [:lessons, :new]), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:lessons, :new]), :type => "button", :id => "save_button"
+        = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: 'button'
+        = button_tag t('lessons.new.save'), class: 'btn btn_main btn_lightbox', alt: t('lessons.new.save'), type: 'button', id: 'save_button'
 
-  :css
-    .date_text_field {
-      margin-left: -4px;
-      margin-top: 0;
-      margin-bottom: 4px;
-      padding: 2px;
+:css
+  select {
+    margin-bottom: 4px;
+    margin-left: -4px;
+  }
+
+:javascript
+
+  $("#from-date, #until-date").mask("#{I18n.t(:mask, scope: "date.formats")}");
+
+  /* se é o cadastro de uma nova aula, o "new Date" irá considerar o offset do time_zone (-3h) e irá exibir o dia incorreto */
+  var new_action = (("#{params[:action]}" == "new" || "#{params[:action]}" == "create")  ? 1 : 0);
+
+  $(function(){
+    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
+
+    /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */
+    $('#from-date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#until-date').datepicker("option", "minDate", selected); } }) );
+    $('#until-date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#from-date').datepicker("option", "maxDate", selected); } }) );
+
+    if($("#lesson_type_lesson").val() == '#{Lesson_Type_File}'){
+      $(".url_lesson").hide();
+      if(new_action == 1)
+        $("#save_button").html("#{I18n.t(:continue, :scope => [:lessons, :new])}");
     }
-    .ui-datepicker{
-      width: 15em;
-      padding: .2em .2em 0;
-      display: none;
-      background-color: white;
-    }
-    .visible {
-      display: inline-block;
-    }
-    select {
-      margin-bottom: 4px;
-      margin-left: -4px;
-    }
 
-  :javascript
+    $("#save_button").click(function(){
+      // file: 0, link: 1
+      var file_lesson_page = (new_action && !parseInt($("#lesson_type_lesson").val()));
 
-    $("#from_date, #until_date").mask("#{I18n.t(:mask, scope: "date.formats")}");
+      $("form#lesson_form").serialize_and_submit({
+        dont_remove_lightbox: file_lesson_page,
+        replace_list: $('.list_lessons'),
+        complement_success: function(data){
+          if(file_lesson_page) // atualiza conteúdo do lightbox para a gerência de arquivos
+            $.fancybox(data);
+        }
+      });
+    });
 
-    /* se é o cadastro de uma nova aula, o "new Date" irá considerar o offset do time_zone (-3h) e irá exibir o dia incorreto */
-    var new_action = (("#{params[:action]}" == "new" || "#{params[:action]}" == "create")  ? 1 : 0);
+    $("input:checkbox#check_end_date").change(function() {
+      $(".end_date").toggleClass('invisible');
+      $("#until-date").val(null);
+    });
 
-    $(function(){
-      var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
-
-      /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */
-      $('#from_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#until_date').datepicker("option", "minDate", selected); } }) );
-      $('#until_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#from_date').datepicker("option", "maxDate", selected); } }) );
-
-      if($("#lesson_type_lesson").val() == '#{Lesson_Type_File}'){
+    $("#lesson_type_lesson").change(function(){
+      t = $('#lesson_type_lesson').val();
+      if (t == "#{Lesson_Type_Link}"){
+        $(".url_lesson").show();
+        $("#save_button").html('#{I18n.t(:save, :scope => [:lessons, :new])}');
+      }else{
         $(".url_lesson").hide();
         if(new_action == 1)
           $("#save_button").html("#{I18n.t(:continue, :scope => [:lessons, :new])}");
       }
-
-      $("#save_button").click(function(){
-        // file: 0, link: 1
-        var file_lesson_page = (new_action && !parseInt($("#lesson_type_lesson").val()));
-
-        $("form#lesson_form").serialize_and_submit({
-          dont_remove_lightbox: file_lesson_page,
-          replace_list: $('.list_lessons'),
-          complement_success: function(data){
-            if(file_lesson_page) // atualiza conteúdo do lightbox para a gerência de arquivos
-              $.fancybox(data);
-          }
-        });
-      });
-
-      $("input:checkbox").change(function() {
-        $(".end_date").toggleClass('invisible');
-        $("#until_date").val(null);
-      });
-
-      $("#lesson_type_lesson").change(function(){
-        t = $('#lesson_type_lesson').val();
-        if (t == "#{Lesson_Type_Link}"){
-          $(".url_lesson").show();
-          $("#save_button").html('#{I18n.t(:save, :scope => [:lessons, :new])}');
-        }else{
-          $(".url_lesson").hide();
-          if(new_action == 1)
-            $("#save_button").html("#{I18n.t(:continue, :scope => [:lessons, :new])}");
-        }
-      });
-
-      $('#from_date').blur(function(){
-        if($(this).datepicker("getDate") == null){
-          new_start_date = new Date("#{start_date}");
-          $(this).datepicker("setDate", new Date(new_start_date.getFullYear(), new_start_date.getMonth(), new_start_date.getDate()+new_action));
-        }
-      });
-
-      $('#until_date').blur(function(){
-        if($(this).datepicker("getDate") == null){
-          new_end_date = new Date("#{end_date}");
-          $(this).datepicker("setDate", new Date(new_end_date.getFullYear(), new_end_date.getMonth(), new_end_date.getDate()+new_action));
-        }
-      });
-
     });
+
+  });

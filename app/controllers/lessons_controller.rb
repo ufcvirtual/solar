@@ -40,11 +40,7 @@ class LessonsController < ApplicationController
   def show
     authorize! :show, Lesson, {on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true}
 
-    at_ids = if params[:allocation_tags_ids].present?
-      params[:allocation_tags_ids].split(' ')
-    else
-      AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
-    end
+    at_ids = params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
 
     @modules = LessonModule.to_select(at_ids, current_user)
     @lesson = Lesson.find(params[:id])
@@ -64,11 +60,13 @@ class LessonsController < ApplicationController
   # GET /lessons/new
   # GET /lessons/new.json
   def new
-    authorize! :new, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :create, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
-    @lesson_module = LessonModule.find(params[:lesson_module_id]) if params[:lesson_module_id].present?
-    @groups_codes  = @lesson_module.groups.pluck(:code)
-    @lesson = Lesson.new
+    lesson_module = LessonModule.find(params[:lesson_module_id])
+    @groups_codes  = lesson_module.groups.pluck(:code)
+
+    @lesson = lesson_module.lessons.build # Lesson.new
+    @lesson.build_schedule start_date: Date.today
   end
 
   # POST /lessons
@@ -76,15 +74,9 @@ class LessonsController < ApplicationController
   def create
     authorize! :create, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
-    @lesson_module = LessonModule.find(params[:lesson_module_id])
-
-    @lesson = @lesson_module.lessons.build(params[:lesson])
+    @lesson = Lesson.new(params[:lesson])
     @lesson.user = current_user
-
-    Lesson.transaction do
-      @lesson.schedule = Schedule.create!(start_date: params[:start_date], end_date: params[:end_date])
-      @lesson.save!
-    end
+    @lesson.save!
 
     if @lesson.is_file?
       files_and_folders(@lesson)
@@ -93,13 +85,12 @@ class LessonsController < ApplicationController
     else
       render json: {success: true, notice: t(:created, scope: [:lessons, :success])}
     end
-  rescue ActiveRecord::AssociationTypeMismatch
-    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue => error
-    @groups_codes = @lesson_module.groups.pluck(:code)
+  rescue ActiveRecord::RecordInvalid
+    @groups_codes = @lesson.lesson_module.groups.pluck(:code)
     render :new
+  rescue => error # captura erro generico e retorna com as opcoes do application
+    request.format = :json
+    raise error.class
   end
 
   # GET /lessons/1/edit
@@ -119,25 +110,19 @@ class LessonsController < ApplicationController
     authorize! :update, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @lesson = Lesson.find(params[:id])
+    @lesson.update_attributes!(params[:lesson])
 
-    begin
-      Lesson.transaction do
-        @lesson.update_attributes!(params[:lesson])
-        @lesson.schedule.update_attributes!(start_date: params[:start_date], end_date: params[:end_date])
-      end
+    render json: {success: true, notice: t(:updated, scope: [:lessons, :success])}
+  rescue ActiveRecord::RecordInvalid
+    @groups_codes = @lesson.lesson_module.groups.pluck(:code)
 
-      render json: {success: true, notice: t(:updated, scope: [:lessons, :success])}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
-      @groups_codes = @lesson.lesson_module.groups.pluck(:code)
-      @schedule_error = @lesson.schedule.errors.full_messages[0] unless @lesson.schedule.valid?
+    @lesson_modules = LessonModule.select("DISTINCT ON (lesson_modules.id) lesson_modules.*")
+      .joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: @allocation_tags_ids.split(" ").flatten})
 
-      @lesson_modules = LessonModule.select("DISTINCT ON (lesson_modules.id) lesson_modules.*")
-        .joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: @allocation_tags_ids.split(" ").flatten})
-
-      render :edit
-    end
+    render :edit
+  rescue => error # captura erro generico e retorna com as opcoes do application
+    request.format = :json
+    raise error.class
   end
 
   # PUT /lessons/1/change_status/1
