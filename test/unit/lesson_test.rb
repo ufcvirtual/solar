@@ -21,18 +21,18 @@ class LessonTest < ActiveSupport::TestCase
 
   test "criando aula e verificando arquivos" do
     lesson = Lesson.create(lesson_module_id: lesson_modules(:module1).id, name: "Lorem ipsum", order: 99, type_lesson: Lesson_Type_File, address: "")
-    
+
     assert File.exist?(lesson.path(true))
   end
 
   test "criando aula completando a url com http quando necessario" do
-    lesson = Lesson.create(lesson_module_id: lesson_modules(:module1).id, name: "Lorem ipsum", order: 99, type_lesson: Lesson_Type_Link, address: "www.google.com")
-    
+    lesson = Lesson.create(lesson_module_id: lesson_modules(:module1).id, schedule_id: 1, name: "Lorem ipsum", order: 99, type_lesson: Lesson_Type_Link, address: "www.google.com")
+
     assert lesson.valid?
     assert_equal "http://www.google.com", lesson.address
 
-    lesson = Lesson.create(lesson_module_id: lesson_modules(:module1).id, name: "Lorem ipsum", order: 99, type_lesson: Lesson_Type_Link, address: "https://www.google.com")
-    
+    lesson = Lesson.create(lesson_module_id: lesson_modules(:module1).id, schedule_id: 1, name: "Lorem ipsum", order: 99, type_lesson: Lesson_Type_Link, address: "https://www.google.com")
+
     assert lesson.valid?
     assert_equal "https://www.google.com", lesson.address
   end
@@ -40,9 +40,9 @@ class LessonTest < ActiveSupport::TestCase
   test "alterando tipo e verificando existencia de arquivos" do
     lesson = Lesson.create(lesson_module_id: lesson_modules(:module1).id, name: "Lorem ipsum", order: 99, type_lesson: Lesson_Type_File, address: "")
 
-    
+
     assert File.exist?(lesson.path(true))
-    
+
     lesson.type_lesson = Lesson_Type_Link
     lesson.save
 
@@ -56,7 +56,7 @@ class LessonTest < ActiveSupport::TestCase
 
     assert File.exist?(path)
 
-    lesson.destroy    
+    lesson.destroy
     assert Lesson.where(id: lesson.id).empty?
     assert not(File.exist?(path))
   end

@@ -226,7 +226,7 @@ class LessonsController < ApplicationController
       Lesson.where(id: lesson_ids).update_all(lesson_module_id: new_module_id)
 
       render json: {success: true, msg: t('lessons.success.moved')}
-    rescue error
+    rescue => error
       render json: {success: false, msg: error.message}, status: :unprocessable_entity
     end
   end
