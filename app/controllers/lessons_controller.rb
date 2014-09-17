@@ -80,7 +80,6 @@ class LessonsController < ApplicationController
 
     if @lesson.is_file?
       files_and_folders(@lesson)
-
       render template: "lesson_files/index"
     else
       render json: {success: true, notice: t(:created, scope: [:lessons, :success])}
@@ -97,8 +96,7 @@ class LessonsController < ApplicationController
   def edit
     authorize! :update, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
-    @lesson_modules = LessonModule.select("DISTINCT ON (lesson_modules.id) lesson_modules.*")
-      .joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: @allocation_tags_ids.split(" ").flatten})
+    lesson_modules_by_ats(@allocation_tags_ids)
 
     @lesson = Lesson.find(params[:id])
     @groups_codes = @lesson.lesson_module.groups.pluck(:code)
@@ -114,10 +112,8 @@ class LessonsController < ApplicationController
 
     render json: {success: true, notice: t(:updated, scope: [:lessons, :success])}
   rescue ActiveRecord::RecordInvalid
+    lesson_modules_by_ats(@allocation_tags_ids)
     @groups_codes = @lesson.lesson_module.groups.pluck(:code)
-
-    @lesson_modules = LessonModule.select("DISTINCT ON (lesson_modules.id) lesson_modules.*")
-      .joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: @allocation_tags_ids.split(" ").flatten})
 
     render :edit
   rescue => error # captura erro generico e retorna com as opcoes do application
@@ -204,45 +200,33 @@ class LessonsController < ApplicationController
 
   ## PUT lessons/:id/order/:change_id
   def order
-    begin
-      authorize! :order, Lesson
-      success = false
+    l1, l2 = Lesson.where("id IN (?)", [params[:id], params[:change_id]])
 
-      l1, l2 = Lesson.where("id IN (?)", [params[:id], params[:change_id]])
-      Lesson.transaction do
-        l1.order, l2.order = l2.order, l1.order
-        l1.save!
-        l2.save!
-      end
-      success = true
-    rescue CanCan::AccessDenied
-      status = :unauthorized
-    rescue
-      status = 500
+    authorize! :update, l1
+
+    Lesson.transaction do
+      l1.order, l2.order = l2.order, l1.order
+      l1.save!
+      l2.save!
     end
 
-    respond_to do |format|
-      if success
-        format.json { render json: {success: true} }
-      else
-        format.json { render nothing: true, status: status }
-      end
-    end
+    render json: {success: true}
   end
 
   def change_module
     begin
       authorize! :change_module, Lesson, on: params[:allocation_tags_ids]
 
-      raise "#{t(:must_select_lessons, scope: [:lessons, :notifications])}" if params[:lessons_ids].empty?
-      raise "#{t(:must_select_module, scope: [:lessons, :errors])}" if (params[:move_to_module].nil? || LessonModule.find(params[:move_to_module]).nil?)
+      lesson_ids = params[:lessons_ids].split(',') rescue []
+      new_module_id = LessonModule.find(params[:move_to_module]).id rescue nil
 
-      Lesson.transaction do
-        Lesson.where(id: params[:lessons_ids].split(",")).update_all(lesson_module_id: params[:move_to_module])
-      end
+      raise t('lessons.notifications.must_select_lessons') if lesson_ids.empty?
+      raise t('lessons.errors.must_select_module') if new_module_id.nil?
 
-      render json: {success: true, msg: t(:moved, scope: [:lessons, :success])}
-    rescue Exception => error
+      Lesson.where(id: lesson_ids).update_all(lesson_module_id: new_module_id)
+
+      render json: {success: true, msg: t('lessons.success.moved')}
+    rescue error
       render json: {success: false, msg: error.message}, status: :unprocessable_entity
     end
   end
@@ -265,6 +249,11 @@ class LessonsController < ApplicationController
       @offer = Offer.find(allocation_tags[:offer_id])
     end
 
+    def lesson_modules_by_ats(atgs)
+      @lesson_modules = LessonModule.select("DISTINCT ON (lesson_modules.id) lesson_modules.*")
+        .joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: atgs.split(" ").flatten})
+    end
+
     def offer_data
       @offer = Offer.find(params[:offer_id] || active_tab[:url][:id])
     end
@@ -277,7 +266,8 @@ class LessonsController < ApplicationController
     # define as variáveis e retorna se as aulas são válidas ou não para download
     def verify_lessons_to_download(lessons_ids, download_method = false)
       return false if lessons_ids.empty? # não selecionou nenhuma aula
-      @lessons, @all_files_paths, @lessons_names = [], [], []
+
+      @lessons, @all_files_paths = [], []
 
       lessons_ids.split(",").flatten.each do |lesson_id|
         lesson_dir   = File.join(Lesson::FILES_PATH, lesson_id)
@@ -286,11 +276,11 @@ class LessonsController < ApplicationController
 
         if file_type and (not lesson_empty) # recupera apenas as aulas de arquivo que não estiverem vazias
           @lessons         << lesson_id.to_i # usado para verificação de erro
-          @lessons_names   << Lesson.find(lesson_id.to_i).name  # usado para construção do zip
           @all_files_paths << File.join(Lesson::FILES_PATH, lesson_id) if download_method # recupera apenas se for no método de download / usado na recuperação dos arquivos
         end
-
       end
+
+      @lessons_names = Lesson.find(@lessons).pluck(:name) rescue [] # usado para construção do zip
 
       return false if @lessons.empty?  # se nenhuma aula for do tipo arquivo ou se nenhuma aula possuir arquivos
       return true # se nenhum dos erros acontecer, está tudo ok

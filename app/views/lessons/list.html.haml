@@ -137,13 +137,19 @@
       var row = $(this).parents("tr:first");
       var id1 = row.attr('lesson_id');
 
+      var f_error = function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      };
+
       if ($(this).is(".up")) {
         if (row.prev().attr('lesson_order') == undefined) return false;
 
         var id2 = row.prev().attr('lesson_id');
         var url = "#{change_order_lesson_path(':id1', ':id2')}".replace(':id1', id1).replace(':id2', id2);
 
-        $.put(url, function(){ row.insertBefore(row.prev()); });
+        $.put(url, function(){ row.insertBefore(row.prev()); }).error(f_error);
 
       } else { // down
         if (row.next().attr('lesson_order') == undefined) return false;
@@ -151,7 +157,7 @@
         var id2 = row.next().attr('lesson_id');
         var url = "#{change_order_lesson_path(':id1', ':id2')}".replace(':id1', id1).replace(':id2', id2);
 
-        $.put(url, function(data, t, x){ row.insertAfter(row.next()); });
+        $.put(url, function(data, t, x){ row.insertAfter(row.next()); }).error(f_error);
       }
       return false;
     });
