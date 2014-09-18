@@ -5,7 +5,13 @@
   .form-inputs.block_content
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
     = f.input :name
-    
+
+    / groups
+    .academic_allocations
+      = f.simple_fields_for :academic_allocations do |f_aca|
+        = f_aca.input :id, as: :hidden
+        = f_aca.hidden_field :allocation_tag_id
+
     = render "groups/codes"
 
   .form-actions.right_buttons

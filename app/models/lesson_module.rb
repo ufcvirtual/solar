@@ -15,6 +15,10 @@ class LessonModule < ActiveRecord::Base
 
   validates :name, presence: true
 
+  accepts_nested_attributes_for :academic_allocations
+
+  attr_accessible :academic_allocations_attributes, :name
+
   def verify_situation_module
    if lessons.count > 0  and academic_allocations.count > 1
      errors.add(:base, I18n.t(:cant_delete_shared, :scope => [:lesson_modules, :errors]))

@@ -1,63 +1,44 @@
 class LessonModulesController < ApplicationController
 
+  before_filter only: [:new, :create, :edit, :update] do |controller|
+    authorize! crud_action, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten
+  end
+
   include SysLog::Actions
 
   layout false
 
   def new
-    @allocation_tags_ids = params[:allocation_tags_ids]
-    authorize! :new, LessonModule, on: @allocation_tags_ids
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:code).uniq
+    groups_codes_by_ats(@allocation_tags_ids)
+
     @lesson_module = LessonModule.new
+    @lesson_module.academic_allocations.build @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
   end
 
   def create
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    # teste para allocation_tag qualquer apenas para verificar validade dos dados
-    lesson_module = LessonModule.new(name: params[:lesson_module][:name])
-
-    authorize! :create, LessonModule, on: @allocation_tags_ids
-    raise "error" unless lesson_module.valid?
-    
-    LessonModule.transaction do
-      @lesson_module = LessonModule.create!(name: params[:lesson_module][:name], is_default: false)
-      @allocation_tags_ids.each do |id|
-        AcademicAllocation.create!(allocation_tag_id: id, academic_tool_id: @lesson_module.id, academic_tool_type: 'LessonModule')
-      end
+    @lesson_module = LessonModule.new(params[:lesson_module])
+    if @lesson_module.save
+      render nothing: true
+    else
+      groups_codes_by_ats(@allocation_tags_ids)
+      @allocation_tags_ids = @allocation_tags_ids.join(' ')
+      render :new
     end
-
-    respond_to do |format|
-      format.html{ render nothing: true, status: 200 }
-    end
-
-  rescue CanCan::AccessDenied
-    render nothing: true, status: 500
-  rescue
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
-    @allocation_tags_ids = @allocation_tags_ids.join(" ")
-    render :new, status: 200
   end
 
   def edit
-    authorize! :edit, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @lesson_module = LessonModule.find(params[:id])
-    @groups_codes = @lesson_module.groups.map(&:code)
+    groups_codes_by_lm(@lesson_module)
   end
 
   def update
-    @allocation_tags_ids, @lesson_module = params[:allocation_tags_ids], LessonModule.find(params[:id])
-    authorize! :update, LessonModule, on: @lesson_module.academic_allocations.pluck(:allocation_tag_id)
+    @lesson_module = LessonModule.find(params[:id])
+    @lesson_module.update_attributes!(params[:lesson_module])
 
-    @lesson_module.update_attributes!(name: params[:lesson_module][:name])
-
-    render nothing: true, status: 200
-  rescue CanCan::AccessDenied
-    render nothing: true, status: 500
-  rescue ActiveRecord::AssociationTypeMismatch
-    render nothing: true, status: :unprocessable_entity
-  rescue
-    @groups = @lesson_module.groups
-    render :new, status: 200
+    render nothing: true
+  rescue ActiveRecord::RecordInvalid
+    groups_codes_by_lm(@lesson_module)
+    render :edit
   end
 
   def destroy
@@ -65,12 +46,32 @@ class LessonModulesController < ApplicationController
     authorize! :destroy, LessonModule, on: @lesson_module.academic_allocations.pluck(:allocation_tag_id)
 
     if @lesson_module.destroy
-      render json: {success: true, notice: t("lesson_modules.success.deleted")}, status: :ok
+      render json: {success: true, notice: t("lesson_modules.success.deleted")}
     else
       render json: {success: false, alert: @lesson_module.errors.full_messages}, status: :unprocessable_entity
     end
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue => error
+    request.format = :json
+    raise error.class
   end
+
+  private
+
+    def crud_action
+      case params[:action]
+      when 'new', 'create'
+        :create
+      when 'edit', 'update'
+        :update
+      end
+    end
+
+    def groups_codes_by_ats(ats)
+      @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: ats}).pluck(:code).uniq
+    end
+
+    def groups_codes_by_lm(lm)
+      @groups_codes = lm.groups.pluck(:code)
+    end
 
 end

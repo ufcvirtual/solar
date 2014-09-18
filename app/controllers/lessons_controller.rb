@@ -65,7 +65,7 @@ class LessonsController < ApplicationController
     lesson_module = LessonModule.find(params[:lesson_module_id])
     @groups_codes  = lesson_module.groups.pluck(:code)
 
-    @lesson = lesson_module.lessons.build # Lesson.new
+    @lesson = lesson_module.lessons.build
     @lesson.build_schedule start_date: Date.today
   end
 
