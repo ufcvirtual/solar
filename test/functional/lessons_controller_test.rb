@@ -16,9 +16,10 @@ class LessonsControllerTest < ActionController::TestCase
   # criacao / edicao
 
   test "criar e editar uma aula do tipo link" do
-    lesson = {name: 'lorem ipsum', address: 'http://aulatipolink1.com', type_lesson: Lesson_Type_Link, lesson_module_id: 1}
-    params_group = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: "#{allocation_tags(:al6).id}", start_date: Time.now} # cria aula sem data final - turma
-    params_offer = {lesson: lesson, lesson_module_id: 5, allocation_tags_ids: "#{allocation_tags(:al6).id}", start_date: Time.now} # cria aula sem data final - turma
+    # aula sem data final
+    lesson = {name: 'lorem ipsum', address: 'http://aulatipolink1.com', type_lesson: Lesson_Type_Link, lesson_module_id: 1, schedule_attributes: {start_date: Time.now}}
+    params_group = {lesson: lesson.merge(lesson_module_id: 1), allocation_tags_ids: "#{allocation_tags(:al6).id}"}
+    params_offer = {lesson: lesson.merge(lesson_module_id: 5), allocation_tags_ids: "#{allocation_tags(:al6).id}"}
 
     assert_difference(["Lesson.count", "Schedule.count"], 2) do
       post(:create, params_group)
@@ -27,7 +28,8 @@ class LessonsControllerTest < ActionController::TestCase
     assert_response :ok
     assert_equal Lesson.last.address, 'http://aulatipolink1.com'
 
-    update = {id: Lesson.last.id, allocation_tags_ids: "#{allocation_tags(:al6).id}", lesson: {address: 'http://aulatipolink2.com'}, start_date: Time.now, end_date: (Time.now + 1.month)}
+    last_lesson = Lesson.last
+    update = {id: last_lesson.id, allocation_tags_ids: "#{allocation_tags(:al6).id}", lesson: {address: 'http://aulatipolink2.com', schedule_attributes: {id: last_lesson.schedule.id, start_date: Time.now, end_date: (Time.now + 1.month)}}}
 
     assert_no_difference(["Lesson.count", "Schedule.count"]) do
       put(:update, update)
@@ -37,8 +39,8 @@ class LessonsControllerTest < ActionController::TestCase
   end
 
   test "criar e editar uma aula do tipo arquivo" do
-    lesson = {name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1}
-    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: "#{allocation_tags(:al6).id}", start_date: Time.now, end_date: (Time.now + 1.month)}
+    lesson = {name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1, schedule_attributes: {start_date: Time.now, end_date: (Time.now + 1.month)}}
+    params = {lesson: lesson, allocation_tags_ids: "#{allocation_tags(:al6).id}"}
 
     assert_difference(["Lesson.count", "Schedule.count"], 1) do
       post(:create, params)
@@ -57,7 +59,7 @@ class LessonsControllerTest < ActionController::TestCase
 
   test "nao criar aula com datas invalidas" do
     lesson = {name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1}
-    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: "#{allocation_tags(:al6).id}", start_date: (Time.now + 1.month), end_date: Time.now} 
+    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: "#{allocation_tags(:al6).id}", start_date: (Time.now + 1.month), end_date: Time.now}
 
     assert_no_difference(["Lesson.count", "Schedule.count"]) do
       post(:create, params)
@@ -275,7 +277,7 @@ class LessonsControllerTest < ActionController::TestCase
       assert_no_difference("LessonModule.find(#{lesson_modules(:module1).id}).lessons.count", -2) do
         put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: "#{allocation_tags(:al6).id}", move_to_module: lesson_modules(:module5).id, format: "json"}
       end
-    end    
+    end
 
     assert_response :unprocessable_entity
   end
@@ -287,7 +289,7 @@ class LessonsControllerTest < ActionController::TestCase
       lesson_file_path = File.join(Rails.root, "media", "lessons", lesson_id.to_s)
       Dir.mkdir(lesson_file_path) unless File.exist? lesson_file_path # verifica se diretório existe ou não; se não, cria.
       lesson_content_length = Dir.entries(lesson_file_path).length
-      if with_files 
+      if with_files
          Dir.mkdir(File.join(lesson_file_path, "Nova Pasta")) if lesson_content_length <= 2 # se estiver vazia, cria uma pasta dentro
       else
         FileUtils.rm_rf(lesson_file_path) # remove diretório com todo o seu conteúdo
