@@ -71,6 +71,7 @@ class LessonsControllerTest < ActionController::TestCase
   # Usuário com permissão
   test "permitir zipar e realizar download de arquivos de aulas" do
     define_lesson_dir(lessons(:pag_index).id)
+    FileUtils.touch(lessons(:pag_index).path(true)) # criando arquivo no dir da aula
 
     lessons_ids = [lessons(:pag_index).id.to_s]
     get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => "#{allocation_tags(:al6).id}"})
@@ -84,7 +85,7 @@ class LessonsControllerTest < ActionController::TestCase
     lessons_ids = []
 
     get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => "#{allocation_tags(:al6).id}"})
-    assert_template nothing:true
+    assert_template nothing: true
 
     zip_name = create_zip_name(lessons_ids)
     assert not(File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))

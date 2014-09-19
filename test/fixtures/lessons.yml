@@ -82,3 +82,13 @@ lesson_files_to_delete:
   status: 0
   schedule_id: 15
   lesson_module_id: 3
+
+lesson_without_file:
+  id: 9
+  name: aula 9
+  address: ''
+  type_lesson: 0
+  order: 9
+  status: 0
+  schedule_id: 15
+  lesson_module_id: 3

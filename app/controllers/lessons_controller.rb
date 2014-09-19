@@ -1,14 +1,18 @@
 class LessonsController < ApplicationController
 
-  before_filter :prepare_for_group_selection, only: :download_files
-  before_filter :offer_data, only: :show
-
   require 'fileutils'
 
   include SysLog::Actions
   include FilesHelper
   include LessonFileHelper
   include LessonsHelper
+
+  before_filter :prepare_for_group_selection, only: :download_files
+  before_filter :offer_data, only: :show
+
+  before_filter only: [:new, :create, :edit, :update] do |controller|
+    authorize! crud_action, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
+  end
 
   layout false, except: :index
 
@@ -60,20 +64,15 @@ class LessonsController < ApplicationController
   # GET /lessons/new
   # GET /lessons/new.json
   def new
-    authorize! :create, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
-    lesson_module = LessonModule.find(params[:lesson_module_id])
-    @groups_codes  = lesson_module.groups.pluck(:code)
-
-    @lesson = lesson_module.lessons.build
+    @lesson = Lesson.new lesson_module_id: params[:lesson_module_id]
     @lesson.build_schedule start_date: Date.today
+
+    groups_codes_by_lesson(@lesson)
   end
 
   # POST /lessons
   # POST /lessons.json
   def create
-    authorize! :create, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
     @lesson = Lesson.new(params[:lesson])
     @lesson.user = current_user
     @lesson.save!
@@ -82,41 +81,37 @@ class LessonsController < ApplicationController
       files_and_folders(@lesson)
       render template: "lesson_files/index"
     else
-      render json: {success: true, notice: t(:created, scope: [:lessons, :success])}
+      render json: {success: true, notice: t('lessons.success.created')}
     end
   rescue ActiveRecord::RecordInvalid
-    @groups_codes = @lesson.lesson_module.groups.pluck(:code)
+    groups_codes_by_lesson(@lesson)
     render :new
-  rescue => error # captura erro generico e retorna com as opcoes do application
+  rescue => error
     request.format = :json
     raise error.class
   end
 
   # GET /lessons/1/edit
   def edit
-    authorize! :update, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
     lesson_modules_by_ats(@allocation_tags_ids)
 
     @lesson = Lesson.find(params[:id])
-    @groups_codes = @lesson.lesson_module.groups.pluck(:code)
+    groups_codes_by_lesson(@lesson)
   end
 
   # PUT /lessons/1
   # PUT /lessons/1.json
   def update
-    authorize! :update, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
     @lesson = Lesson.find(params[:id])
     @lesson.update_attributes!(params[:lesson])
 
-    render json: {success: true, notice: t(:updated, scope: [:lessons, :success])}
+    render json: {success: true, notice: t('lessons.success.updated')}
   rescue ActiveRecord::RecordInvalid
     lesson_modules_by_ats(@allocation_tags_ids)
-    @groups_codes = @lesson.lesson_module.groups.pluck(:code)
+    groups_codes_by_lesson(@lesson)
 
     render :edit
-  rescue => error # captura erro generico e retorna com as opcoes do application
+  rescue => error
     request.format = :json
     raise error.class
   end
@@ -124,20 +119,16 @@ class LessonsController < ApplicationController
   # PUT /lessons/1/change_status/1
   def change_status
     @responsible = params.include?(:responsible)
-    authorize! :change_status, Lesson, {on: @allocation_tags_ids = params[:allocation_tags_ids], read: @responsible}
+    @allocation_tags_ids = params[:allocation_tags_ids]
 
-    ids = params[:id].split(',').flatten.map(&:to_i)
-    msg = []
+    authorize! :change_status, Lesson, {on: @allocation_tags_ids, read: @responsible}
 
-    @lessons = Lesson.where(id: ids)
-    @lessons.each do |lesson|
-      lesson.status = params[:status].to_i
-      msg << lesson.errors[:base] unless lesson.save
-    end
+    lesson_ids = params[:id].split(',').flatten
+    msg = change_lessons_status(lesson_ids, params[:status])
 
     respond_to do |format|
       if msg.empty?
-        format.json { render json: {success: true}, status: :ok }
+        format.json { render json: {success: true} }
         format.js
       else
         format.json { render json: {success: false, msg: msg}, status: :unprocessable_entity }
@@ -159,22 +150,21 @@ class LessonsController < ApplicationController
         end
       end
 
-      render json: {success: true, notice: (test_lesson ? t(:saved_as_draft, scope: [:lessons, :success]) : t(:deleted, scope: [:lessons, :success]))}
+      render json: {success: true, notice: (test_lesson ? t('lessons.success.saved_as_draft') : t('lessons.success.deleted'))}
     rescue
-      render json: {success: false, alert: t(:deleted, scope: [:lessons, :errors])}, status: :unprocessable_entity
+      render json: {success: false, alert: t('lessons.errors.deleted')}, status: :unprocessable_entity
     end
   end
 
   def download_files
     authorize! :download_files, Lesson, on: params[:allocation_tags_ids]
 
-    if verify_lessons_to_download(params[:lessons_ids].split(',').flatten, true)
+    if verify_lessons_to_download(params[:lessons_ids], true)
       zip_file_path = compress(under_path: @all_files_paths, folders_names: @lessons_names)
-      redirect = request.referer.nil? ? home_url(only_path: false) : request.referer
 
       if zip_file_path
-        zip_file_name = zip_file_path.split("/").last
-        download_file(redirect, zip_file_path, zip_file_name)
+        redirect = request.referer.nil? ? home_url(only_path: false) : request.referer
+        download_file(redirect, zip_file_path, File.basename(zip_file_path))
       else
         redirect_to redirect, alert: t(:file_error_nonexistent_file)
       end
@@ -189,12 +179,11 @@ class LessonsController < ApplicationController
       authorize! :download_files, Lesson, on: params[:allocation_tags_ids]
 
       raise unless verify_lessons_to_download(params[:lessons_ids])
-      status = 200
-    rescue CanCan::AccessDenied
-      status = :unauthorized
+      status = :ok
     rescue
-      status = 500
+      status = :not_found
     end
+
     render nothing: true, status: status
   end
 
@@ -233,6 +222,16 @@ class LessonsController < ApplicationController
 
   private
 
+    def change_lessons_status(lesson_ids, new_status)
+      msg = []
+      @lessons = Lesson.where(id: lesson_ids)
+      @lessons.each do |lesson|
+        lesson.status = new_status
+        msg << lesson.errors[:base] unless lesson.save
+      end
+      msg
+    end
+
     def index_interacting_permissions
       authorize! :index, Lesson, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
@@ -254,6 +253,10 @@ class LessonsController < ApplicationController
         .joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: atgs.split(" ").flatten})
     end
 
+    def groups_codes_by_lesson(lesson)
+      @groups_codes = lesson.lesson_module.groups.pluck(:code)
+    end
+
     def offer_data
       @offer = Offer.find(params[:offer_id] || active_tab[:url][:id])
     end
@@ -267,23 +270,21 @@ class LessonsController < ApplicationController
     def verify_lessons_to_download(lessons_ids, download_method = false)
       return false if lessons_ids.empty? # não selecionou nenhuma aula
 
-      @lessons, @all_files_paths = [], []
+      @lessons, @lessons_names, @all_files_paths = [], [], []
 
-      lessons_ids.split(",").flatten.each do |lesson_id|
-        lesson_dir   = File.join(Lesson::FILES_PATH, lesson_id)
-        lesson_empty = ((not File.exist?(lesson_dir)) or (Dir.entries(lesson_dir).size <= 2))
-        file_type    = Lesson.find(lesson_id.to_i).type_lesson == Lesson_Type_File
-
-        if file_type and (not lesson_empty) # recupera apenas as aulas de arquivo que não estiverem vazias
-          @lessons         << lesson_id.to_i # usado para verificação de erro
-          @all_files_paths << File.join(Lesson::FILES_PATH, lesson_id) if download_method # recupera apenas se for no método de download / usado na recuperação dos arquivos
+      lessons_files = Lesson.where(id: lessons_ids.split(",").flatten, type_lesson: Lesson_Type_File)
+      lessons_files.each do |lesson|
+        if lesson.valid_file?
+          @lessons << lesson.id # usado para verificação de erro
+          if download_method # recupera apenas se for no método de download / usado na recuperação dos arquivos
+            @lessons_names << lesson.name
+            @all_files_paths << lesson.path(full_path = true, with_address = false).to_s
+          end
         end
       end
 
-      @lessons_names = Lesson.find(@lessons).pluck(:name) rescue [] # usado para construção do zip
-
-      return false if @lessons.empty?  # se nenhuma aula for do tipo arquivo ou se nenhuma aula possuir arquivos
-      return true # se nenhum dos erros acontecer, está tudo ok
+      return false if @lessons.empty? # se nenhuma aula for do tipo arquivo ou se nenhuma aula possuir arquivos
+      return true
     end
 
 end

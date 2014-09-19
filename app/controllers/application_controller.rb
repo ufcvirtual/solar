@@ -171,4 +171,14 @@ class ApplicationController < ActionController::Base
       @_ip = conf['ip']
       @_porta = conf['porta']
     end
+
+    def crud_action
+      case params[:action]
+      when 'new', 'create'
+        :create
+      when 'edit', 'update'
+        :update
+      end
+    end
+
 end

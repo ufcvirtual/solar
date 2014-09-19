@@ -57,15 +57,6 @@ class LessonModulesController < ApplicationController
 
   private
 
-    def crud_action
-      case params[:action]
-      when 'new', 'create'
-        :create
-      when 'edit', 'update'
-        :update
-      end
-    end
-
     def groups_codes_by_ats(ats)
       @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: ats}).pluck(:code).uniq
     end

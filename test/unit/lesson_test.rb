@@ -62,7 +62,7 @@ class LessonTest < ActiveSupport::TestCase
   end
 
   test "nao liberar aula sem arquivo inicial" do
-    lesson = lessons(:pag_index)
+    lesson = lessons(:lesson_without_file)
 
     assert lesson.is_file?
     assert lesson.is_draft?
@@ -70,7 +70,7 @@ class LessonTest < ActiveSupport::TestCase
     lesson.status = Lesson_Approved
     lesson.save
 
-    assert_equal lesson.errors.full_messages.first, "Um arquivo inicial deve ser definido."
+    assert_equal lesson.errors[:base].first, "Um arquivo inicial deve ser definido."
   end
 
   test "aula deve ter um modulo" do
