@@ -22,13 +22,20 @@ class Allocation < ActiveRecord::Base
   def self.enrollments(args = {})
     query = ["profile_id = #{Profile.student_profile}", "allocation_tags.group_id IS NOT NULL"]
 
-    unless args.empty? or args.nil?
-      query << "groups.offer_id = #{args['offer_id']}"        if args.include?('offer_id')
-      query << "groups.id IN (#{args['group_id'].join(',')})" if args.include?('group_id')
-      query << "allocations.status = #{args['status']}"       if args.include?('status') and args['status'] != ''
+    if args.any?
+      query << "groups.offer_id = :offer_id" if args[:offer_id].present?
+      query << "groups.id IN (:group_id)" if args[:group_id].present?
+      query << "allocations.status = :status" if args[:status].present?
+
+      if args[:user_search].present?
+        args[:user_search] = [args[:user_search].split(" ").compact.join(":*&"), ":*"].join
+        query << "to_tsvector('simple', unaccent(users.name)) @@ to_tsquery('simple', unaccent(:user_search))"
+      end
     end
 
-    joins(allocation_tag: {group: :offer}, user: {}).where(query.join(' AND ')).order("users.name")
+    query = query.join(' AND ')
+
+    joins(allocation_tag: {group: :offer}, user: {}).where(query, args).order("users.name")
   end
 
   def self.have_access?(user_id, allocation_tag_id)

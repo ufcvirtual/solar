@@ -1,18 +1,15 @@
-%div
-  = form_for(:enrollments, url: enrollments_allocations_path, method: :get) do |f|
-    = f.hidden_field(:offer_id, {value: params[:offer_id], name: :offer_id}) if params.include?(:offer_id)
-    = f.hidden_field(:group_id, {value: params[:group_id], name: :group_id}) if params.include?(:group_id)
-    = t(:status) + ':'
-    = select(:status, :id, status_hash.invert.to_a, {prompt:  t(:all), selected:  params[:status]},
-                                                    {name:  'status', onchange: "javascript:this.form.submit();"})
-    %span.filter_counter= "(#{t(".total_students", count: @allocations.map(&:user_id).uniq.length)})"
+.block_wrapper
+  .block_title{style: "height:0"}
+  .block_content_toolbar
+    .block_toolbar_left
+      = select_tag :status, options_for_select(status_hash.invert.to_a, @status)
+      = text_field_tag :user_search, '', placeholder: 'pt-br: buscar usuario'
+      = button_tag t(:search), type: :button, class: "btn btn_default", id: "filter_enrollments", :"data-link" => enrollments_allocations_path
+    .block_toolbar_right
+      %span.block_actions= button_tag(t(".enroll_selected"), class: "btn btn_default btn_enroll_selected")
 
-.block_title
-  %h2= t(".manage_title")
-  %span.block_actions= button_tag( t(".enroll_selected"), class:  "btn btn_default btn_enroll_selected")
 
-.block_content
-  - unless @allocations.empty?
+  .block_content
     %table.tb_list.enrollments
       %thead
         %tr.lines
@@ -23,9 +20,26 @@
           %th{style: 'width:100px'}= t(".manage_status")
           %th.no_sort{style: 'width:120px'}= t(".manage_options")
       %tbody.allocations
-        = render partial: 'enrollments', locals: { allocations: @allocations }
-    = link_to content_tag(:i, nil, class: "icon-ellipsis"), enrollments_allocations_path(page: @allocations.next_page, offer_id: params[:offer_id], group_id: params[:group_id], status: params[:status]), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @allocations.next_page
-  - else
-    .block_content.block_content_text= t(".none_pending_allocation")
+        = render partial: 'enrollments'
+
+      = link_to content_tag(:i, nil, class: "icon-ellipsis"), enrollments_allocations_path(page: @allocations.next_page, offer_id: params[:offer_id], group_id: params[:group_id], status: params[:status]), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @allocations.next_page
+
 
 = javascript_include_tag "allocations"
+
+:javascript
+
+  $('#filter_enrollments').click(function(){
+    erase_flash_messages();
+
+    var list_url = $(this).data('link');
+    var data = {
+      filter: true,
+      status: $('#status').val(),
+      user_search: $('#user_search').val()
+    };
+
+    $.get(list_url, data, function(data){
+      $('tbody.allocations').html(data);
+    });
+  });

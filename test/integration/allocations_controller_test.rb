@@ -1,9 +1,9 @@
 require 'test_helper'
 
 class AllocationsControllerTest < ActionDispatch::IntegrationTest
-  
+
   # para poder realizar o "login_as" sabendo que o sign_in do devise não funciona no teste de integração
-  include Warden::Test::Helpers 
+  include Warden::Test::Helpers
   # para reconhecer o método "fixture_file_upload" no teste de integração
   include ActionDispatch::TestProcess
 
@@ -27,14 +27,6 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
 
     get allocations_path
     assert_response :redirect
-  end
-
-  test "exibir quantidade de alunos listados" do
-    get allocations_path
-    assert_response :success
-
-    assert_tag :select, attributes: {id:  "status_id"}, content:  /Todos/
-    assert_select '.filter_counter', "(Total: 4 alunos)"
   end
 
   # turma que o coordenador nao coordena
@@ -90,7 +82,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "cancelar matricula do aluno user na turma FOR - 2011.1" do
-    get allocations_path
+    get allocations_path(status: 1)
     assert_response :success
 
     al_matriculado = assigns(:allocations).select {|al| al.user_id == users(:user).id and al.status == Allocation_Activated and al.allocation_tag_id == allocation_tags(:al1).id}.first
@@ -178,11 +170,11 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
 
   test "nao alocar usuario com perfil tutor a distancia para usuario sem permissao" do
     login(users(:professor))
-    
+
     assert_no_difference(["Allocation.count", "LogAction.count"]) do
       post create_designation_allocations_path, { allocation_tags_ids: "#{allocation_tags(:al5).id}", user_id:  users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated }
     end
-    
+
     assert_response :unprocessable_entity
     assert (not allocation_tags(:al5).is_responsible?(users(:user2).id))
   end

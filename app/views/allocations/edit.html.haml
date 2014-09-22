@@ -11,4 +11,3 @@
 %td
   = button_to_function t(".save"), "save_allocation(this)", :"allocation-id" => @allocation.id, :"save-link" => allocation_path(@allocation), class: "btn btn_main btn_save_allocation"
   = button_to_function t(".cancel"), "manage_cancel(this)", :"show-link" => allocation_path(@allocation), :"edit-link" => edit_allocation_path(@allocation), class: "btn btn_default btn_manage_cancel"
-  

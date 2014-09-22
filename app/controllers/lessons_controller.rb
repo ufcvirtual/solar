@@ -175,15 +175,7 @@ class LessonsController < ApplicationController
 
   # este método serve apenas para retornar um erro ou prosseguir com o download através da chamada ajax da página
   def verify_download
-    begin
-      authorize! :download_files, Lesson, on: params[:allocation_tags_ids]
-
-      raise unless verify_lessons_to_download(params[:lessons_ids])
-      status = :ok
-    rescue
-      status = :not_found
-    end
-
+    status = verify_lessons_to_download(params[:lessons_ids]) ? :ok : :not_found
     render nothing: true, status: status
   end
 

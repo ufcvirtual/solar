@@ -6,4 +6,4 @@
 %td= button_to_function t(:manage, :scope => [:allocations, :index]), "manage_enrollment(this)", class: "btn btn_default btn_manage_enrollment", "show-link" => allocation_path(@allocation), :"edit-link" => edit_allocation_path(@allocation)
 
 :javascript
-  eval("#{show_flash}")
+  eval("#{show_flash}");

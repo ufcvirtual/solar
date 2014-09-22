@@ -2,89 +2,37 @@ class AllocationsController < ApplicationController
   include AllocationsHelper
   include SysLog::Actions
 
-  layout false, except: [:index]
+  layout false, except: :index
 
   authorize_resource except: [:destroy, :designates, :create_designation, :activate, :deactivate]
-
-  # GET /allocations/designates
-  # GET /allocations/designates.json
-  def designates
-    @allocation_tags_ids = if (not params.include?(:admin) or params.include?(:allocation_tags_ids))
-       params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : [] 
-    else
-      AllocationTag.get_by_params(params)[:allocation_tags].join(" ")
-    end
-
-    begin
-      authorize! :create_designation, Allocation, {on: @allocation_tags_ids, accepts_general_profile: true}
-
-      level        = (params[:permissions] != "all" and (not params.include?(:admin))) ? "responsible" : nil
-      level_search = level.nil? ? ("not(profiles.types & #{Profile_Type_Basic})::boolean") : ("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
-      
-      @allocations = Allocation.all(
-        joins: [:profile, :user],
-        conditions: ["#{level_search} and allocation_tag_id IN (?)", @allocation_tags_ids.split(" ").flatten],
-        order: ["users.name", "profiles.name"]) 
-
-      @admin = params[:admin]
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    end
-  end
-
-  def search_users
-    @text_search, @admin = URI.unescape(params[:user]), params[:admin]
-
-    text = [@text_search.split(" ").compact.join(":*&"), ":*"].join unless params[:user].blank?
-    @allocation_tags_ids = params[:allocation_tags_ids]
-    @users = User.find_by_text_ignoring_characters(text).paginate(page: params[:page])
-
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
 
   # GET /allocations/enrollments
   # GET /allocations/enrollments.json
   def index
-    @allocations = []
     groups = groups_that_user_have_permission.map(&:id)
 
-    unless groups.empty?
-      # params['status'] = 0 unless params.include?('status') # para listar somente usuarios pendentes
-      p = params.select { |k, v| ['offer_id', 'group_id', 'status'].include?(k) }
-      p['group_id'] = (params.include?('group_id') and groups.include?(params['group_id'].to_i)) ? [params['group_id']] : groups.flatten.compact.uniq
+    @allocations = []
+    @status = params[:status] || 0 # pendentes
 
-      @allocations  = Allocation.enrollments(p).paginate(page: params[:page])
+    @allocations = Allocation.enrollments(status: @status, group_id: groups, user_search: params[:user_search]).paginate(page: params[:page]) if groups.any?
 
-      respond_to do |format|
-        format.html
-        format.js
-      end
-    end
+    render partial: "enrollments", layout: false if params[:filter]
   end
 
   # GET /allocations/1
   # GET /allocations/1.json
   def show
     @allocation = Allocation.find(params[:id])
-    respond_to do |format|
-      format.html
-      format.json { render json: @allocation }
-    end
   end
 
   # GET /allocations/1/edit
   def edit
     @allocation   = Allocation.find(params[:id])
     @status_hash  = status_hash_of_allocation(@allocation.status)
-    @change_group = (not [Allocation_Cancelled, Allocation_Rejected].include?(@allocation.status))
+    @change_group = not([Allocation_Cancelled, Allocation_Rejected].include?(@allocation.status))
 
     # transicao entre grupos apenas da mesma oferta
-    @groups       = @change_group ? Group.where(:offer_id => @allocation.group.offer_id) : @allocation.group
+    @groups = @change_group ? Group.where(offer_id: @allocation.group.offer_id) : @allocation.group
   end
 
   # Usado na matrícula
@@ -98,113 +46,25 @@ class AllocationsController < ApplicationController
     end
   end
 
-  # Usado na alocacao de usuarios
-  def create_designation
-    allocation_tags_ids = if (params.include?(:profile) and not(params[:profile].blank?) and Profile.find(params[:profile]).has_type?(Profile_Type_Admin))
-      [nil]
-    else
-      AllocationTag.get_by_params(params)[:allocation_tags]
-    end
-
-    authorize! :create_designation, Allocation if params[:admin] 
-    authorize! :create_designation, Allocation, on: allocation_tags_ids unless params[:admin] or params.include?(:request)
-
-    profile = params.include?(:profile) ? params[:profile] : Profile.student_profile
-    status  = params.include?(:status) ? params[:status]  : Allocation_Pending
-    user    = (params.include?(:user_id) and not(params.include?(:request))) ? params[:user_id] : current_user.id
-    raise t("allocations.error.student_or_basic") if profile == Profile.student_profile or (not(profile.blank?) and Profile.find(profile).has_type?(Profile_Type_Basic))
-    raise t("allocations.error.profile") if params[:profile].blank?
-    
-
-    allocations = Array.new
-    ok = allocate(allocation_tags_ids.split(" ").flatten, allocations, user, profile, status)
-
-    unless params.include?(:request)
-      case ok
-        when nil; render json: {success: false, message: t("allocations.warning.already_active"), type: "warning"}
-        when true; render :designates, status: 200
-        when false; render json: {success: false, alert: t("allocations.error.not_allocated")}, status: :unprocessable_entity
-      end
-    else
-      case ok
-        when nil; render json: {success: false, message: t("allocations.warning.already_active"), type: "warning"}
-        when true; render json: {success: true, message: t("allocations.success.requested"), type: "notice"}
-        when false; render json: {success: false, alert: t("allocations.error.not_allocated")}, status: :unprocessable_entity
-      end
-    end
-  rescue => error
-    render json: {success: false, alert: error.message}, status: :unprocessable_entity
-  ensure
-    @allocations = allocations # used at log generation
-  end
-
   # PUT /allocations/1
   # PUT /allocations/1.json
   def update
-    mutex             = Mutex.new # utilizado para organizar/controlar o comportamento das threads
-    @allocations      = Allocation.where(id: params[:id].split(","))
-    allocation_tag_id = (params.include?(:allocation) and params[:allocation].include?(:group_id)) ? Group.find(params[:allocation][:group_id]).allocation_tag.id : nil
+    @allocations = Allocation.where(id: params[:id].split(","))
 
-    # verifica se existe mudanca de turma
-      # se sim, todas as alocacoes serao canceladas e serao criadas novas com a nova turma
-      # se não, somente o status das alocacoes serao modificados
-
-    error  = false
-    notice = t(:enrollment_successful_update, scope: [:allocations, :manage])
-    begin
-      ActiveRecord::Base.transaction do
-        # mudanca de turma, nao existe chamada multipla para esta funcionalidade
-        if ((not params.include?(:multiple)) and (not allocation_tag_id.nil?) and (allocation_tag_id != @allocations.first.allocation_tag_id))
-          # criando novas alocacoes e cancelando as antigas
-          allocation = @allocations.first
-          allocation.update_attribute(:status, Allocation_Cancelled) # cancelando a anterior
-          @allocation = Allocation.create!(allocation.attributes.merge({allocation_tag_id: allocation_tag_id, status: params[:allocation][:status]}))
-
-          Thread.new do
-            mutex.synchronize {
-              Notifier.enrollment_accepted(@allocation.user.email, @allocation.group.code_semester).deliver if params[:allocation][:status].to_i == Allocation_Activated.to_i
-            }
-          end
-        else # sem mudanca de turma
-          new_status = params.include?(:enroll) ? Allocation_Activated.to_i : ((params.include?(:allocation) and params[:allocation].include?(:status)) ? params[:allocation][:status] : 0)
-
-          @allocations.each do |al|
-            changed_status_to_accepted = ((al.status.to_i != Allocation_Activated.to_i) and (new_status.to_i == Allocation_Activated.to_i))
-            al.update_attribute(:status, new_status)
-
-            Thread.new do
-              mutex.synchronize {
-                Notifier.enrollment_accepted(al.user.email, al.group.code_semester).deliver if changed_status_to_accepted and not(al.group.nil?)
-              }
-            end
-          end # allocations
-
-          @allocation = @allocations.first
-        end # if
-      end # transaction
-
-    rescue ActiveRecord::RecordNotUnique
-      error     = true
-      msg_error = t(:student_already_in_group, scope: [:allocations, :error])
-    rescue CanCan::AccessDenied
-      error     = true
-      msg_error = t(:no_permission)
-    rescue
-      error     = true
-      msg_error = t(:enrollment_unsuccessful_update, scope: [:allocations, :manage])
-    end
-
-    if error
-      respond_to do |format|
-        format.js { render js: "javascript:flash_message('#{msg_error}', 'alert');" }
-        format.json { render json: {success: false, alert: msg_error}, status: :unprocessable_entity }
-      end
+    group, new_status = if params[:multiple].present? and params[:enroll].present?
+      [nil, Allocation_Activated]
     else
-      respond_to do |format|
-        format.html { render action: :show, notice: notice }
-        format.json { render json: {status: "ok", notice: notice}  }
-      end
+      [Group.find_by_id(params[:allocation][:group_id]), params[:allocation][:status]]
     end
+
+    change_status_from_allocations(@allocations, new_status, group)
+
+    render partial: "enrollments", notice: t('allocations.manage.enrollment_successful_update'), layout: false
+  rescue ActiveRecord::RecordNotUnique
+    render json: {sucess: false, alert: t('allocations.error.student_already_in_group')}, status: :unprocessable_entity
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   # DELETE /allocations/1/cancel
@@ -243,6 +103,104 @@ class AllocationsController < ApplicationController
         format.html { redirect_to(:back, alert: message) }
         format.json { render json: {success: false, alert: message}, status: :unprocessable_entity }
       end
+    end
+  end
+
+
+
+
+
+
+
+
+  # Usado na alocacao de usuarios
+  def create_designation
+    allocation_tags_ids = if (params.include?(:profile) and not(params[:profile].blank?) and Profile.find(params[:profile]).has_type?(Profile_Type_Admin))
+      [nil]
+    else
+      AllocationTag.get_by_params(params)[:allocation_tags]
+    end
+
+    authorize! :create_designation, Allocation if params[:admin]
+    authorize! :create_designation, Allocation, on: allocation_tags_ids unless params[:admin] or params.include?(:request)
+
+    profile = params.include?(:profile) ? params[:profile] : Profile.student_profile
+    status  = params.include?(:status) ? params[:status]  : Allocation_Pending
+    user    = (params.include?(:user_id) and not(params.include?(:request))) ? params[:user_id] : current_user.id
+    raise t("allocations.error.student_or_basic") if profile == Profile.student_profile or (not(profile.blank?) and Profile.find(profile).has_type?(Profile_Type_Basic))
+    raise t("allocations.error.profile") if params[:profile].blank?
+
+    allocations = Array.new
+    ok = allocate(allocation_tags_ids.split(" ").flatten, allocations, user, profile, status)
+
+    unless params.include?(:request)
+      case ok
+        when nil; render json: {success: false, message: t("allocations.warning.already_active"), type: "warning"}
+        when true; render :designates, status: 200
+        when false; render json: {success: false, alert: t("allocations.error.not_allocated")}, status: :unprocessable_entity
+      end
+    else
+      case ok
+        when nil; render json: {success: false, message: t("allocations.warning.already_active"), type: "warning"}
+        when true; render json: {success: true, message: t("allocations.success.requested"), type: "notice"}
+        when false; render json: {success: false, alert: t("allocations.error.not_allocated")}, status: :unprocessable_entity
+      end
+    end
+  rescue => error
+    render json: {success: false, alert: error.message}, status: :unprocessable_entity
+  ensure
+    @allocations = allocations # used at log generation
+  end
+
+
+
+
+
+
+
+
+
+
+
+
+  # GET /allocations/designates
+  # GET /allocations/designates.json
+  def designates
+    @allocation_tags_ids = if (not params.include?(:admin) or params.include?(:allocation_tags_ids))
+       params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : []
+    else
+      AllocationTag.get_by_params(params)[:allocation_tags].join(" ")
+    end
+
+    begin
+      authorize! :create_designation, Allocation, {on: @allocation_tags_ids, accepts_general_profile: true}
+
+      level        = (params[:permissions] != "all" and (not params.include?(:admin))) ? "responsible" : nil
+      level_search = level.nil? ? ("not(profiles.types & #{Profile_Type_Basic})::boolean") : ("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
+
+      @allocations = Allocation.all(
+        joins: [:profile, :user],
+        conditions: ["#{level_search} and allocation_tag_id IN (?)", @allocation_tags_ids.split(" ").flatten],
+        order: ["users.name", "profiles.name"])
+
+      @admin = params[:admin]
+    rescue CanCan::AccessDenied
+      render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    rescue ActiveRecord::AssociationTypeMismatch
+      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+    end
+  end
+
+  def search_users
+    @text_search, @admin = URI.unescape(params[:user]), params[:admin]
+
+    text = [@text_search.split(" ").compact.join(":*&"), ":*"].join unless params[:user].blank?
+    @allocation_tags_ids = params[:allocation_tags_ids]
+    @users = User.find_by_text_ignoring_characters(text).paginate(page: params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
     end
   end
 
@@ -313,7 +271,7 @@ class AllocationsController < ApplicationController
     else
       path    = @allocation.allocation_tag.nil? ? "" : t("allocations.success.allocation_tag_path", path: @allocation.allocation_tag.try(:info))
       action  = params[:accept] ? t("allocations.success.accepted") : t("allocations.success.rejected")
-      message = t("allocations.success.request_message", user_name: @allocation.user.name, profile_name: @allocation.profile.name, path: path, action: action, 
+      message = t("allocations.success.request_message", user_name: @allocation.user.name, profile_name: @allocation.profile.name, path: path, action: action,
         undo_url: view_context.link_to(t("allocations.undo_action"), "#", id: :undo_action, :"data-link" => undo_action_allocation_path(@allocation)))
       @allocation.update_attribute(:status, (params[:accept] ? Allocation_Activated : Allocation_Rejected))
     end
@@ -327,9 +285,40 @@ class AllocationsController < ApplicationController
 
   private
 
+    def change_status_from_allocations(allocations, new_status, group = nil)
+      # muda todos os status ao mesmo tempo mandando emails
+      allocations.each do |a|
+        a = user_change_group(a, group) if not(group.nil?) and a.group.id != group.id # mudança de turma
+
+        a.update_attribute(:status, new_status)
+        send_email_to_enrolled_user(a) if new_status == Allocation_Activated
+      end
+    end
+
+    def user_change_group(allocation, new_group)
+      # cancela na turma anterior e cria uma nova alocação na nova
+      Allocation.transaction do
+        new_allocation = allocation.dup
+        allocation.update_attribute(:status, Allocation_Cancelled)
+
+        new_allocation.allocation_tag_id = new_group.allocation_tag.id
+        new_allocation.save!
+      end
+
+      new_allocation
+    end
+
+    def send_email_to_enrolled_user(allocation)
+      Thread.new do
+        Mutex.new.synchronize {
+          Notifier.enrollment_accepted(allocation.user.email, allocation.group.code_semester).deliver
+        }
+      end
+    end
+
     def groups_that_user_have_permission
-      profiles = current_user.profiles_with_access_on("index", "allocations").map(&:id)
-      groups = current_user.allocations.where(profile_id: profiles).where("allocation_tag_id IS NOT NULL").map {|a| a.allocation_tag.groups }.flatten.uniq
+      profiles = current_user.profiles_with_access_on("index", "allocations").pluck(:id)
+      groups = current_user.allocations.where(profile_id: profiles).where("allocation_tag_id IS NOT NULL").map { |a| a.groups }.flatten.uniq.compact
     end
 
     def status_hash_of_allocation(allocation_status)

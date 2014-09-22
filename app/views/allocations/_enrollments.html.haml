@@ -1,8 +1,16 @@
-- @allocations.each do |allocation|
+
+- if @allocations.any?
+
+  - @allocations.each do |allocation|
+    %tr.lines
+      %td{style: 'text-align:center;'}= check_box_tag("c_#{allocation.id}", allocation.id, false, {:"status-value" => allocation.status, class: "cbx_value"})
+      %td= allocation.user.name
+      %td= allocation.group.code_semester
+      %td= allocation.group.curriculum_unit.name
+      %td= name_of allocation.status
+      %td= button_to_function t("allocations.index.manage"), "manage_enrollment(this)", :"show-link" => allocation_path(allocation), :"edit-link" => edit_allocation_path(allocation), class:  "btn btn_default btn_manage_enrollment"
+
+- else
   %tr.lines
-    %td{style: 'text-align:center;'}= check_box_tag("c_#{allocation.id}", allocation.id, false, {:"status-value" => allocation.status, class: "cbx_value"})
-    %td= allocation.user.name
-    %td= allocation.group.code_semester
-    %td= allocation.group.curriculum_unit.name
-    %td= name_of allocation.status
-    %td= button_to_function t("allocations.index.manage"), "manage_enrollment(this)", :"show-link" => allocation_path(allocation), :"edit-link" => edit_allocation_path(allocation), class:  "btn btn_default btn_manage_enrollment"
+    %td{colspan: 6}
+      .text_none= t("administrations.allocation_approval.none_pending_allocation")

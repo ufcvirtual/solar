@@ -24,22 +24,23 @@ jQuery(function($){
       }
     }
 
-    var url = "<%= Rails.application.routes.url_helpers.allocation_path('something') %>".replace('something', sel.join(','));
+    var url = "<%= Rails.application.routes.url_helpers.allocation_path('allocations_ids') %>".replace('allocations_ids', sel.join(','));
 
     $.ajax({
       type: 'PUT',
-      url: url + '.json',
+      url: url,
       data: {
         "multiple": "yes",
         "enroll": "all",
       },
       success: function(data) {
-        if (data.status == 'ok') {
-          $(window).attr("location", '<%= Rails.application.routes.url_helpers.enrollments_allocations_path %>');
-        } else {
-          alert('<%= I18n.t(:allocation_manage_enrollment_unsuccessful_update) %>');
-        }
+        var trs_checked = $('.cbx_value:checked').closest('tr.lines');
+        trs_checked.first().replaceWith(data);
+        trs_checked.remove();
+
+        alert("<%= I18n.t('allocations.manage.enrollment_successful_update') %>");
       }
+
     });
   });
 });
@@ -56,10 +57,6 @@ function manage_enrollment(obj) {
 
 function save_allocation(obj) {
   var url = $(obj).attr('save-link');
-  // se o novo status for diferente do selecionado no filtro e o do filtro não for "Todos", atualiza toda a página após alteração; caso contrário, atualiza só a linha
-  var update_all_content = $("form #status_id").val() != "" && $("form #status_id").val() != $('#status_id option:selected', $(obj).closest('tr')).val();
-  if (update_all_content)
-    url = url + ".json";
 
   $.ajax({
     type: 'PUT',
@@ -72,15 +69,14 @@ function save_allocation(obj) {
       }
     },
     success: function(data, textStatus, jqXHR) {
-      if (update_all_content){
-        var url = "<%= Rails.application.routes.url_helpers.enrollments_allocations_path(status: 'param_status') %>"
-        $(window).attr("location", url.replace('param_status', $("form #status_id").val()));
-      } else if (jqXHR.getResponseHeader('Content-Type').split(';')[0] != 'text/javascript') {
-        $(obj).closest('tr').removeClass('active');
-        $(obj).closest('tr').html(data);
-      }
+      $(obj).closest('tr').removeClass('active');
+      $(obj).closest('tr').replaceWith(data);
+    },
+    error: function(data) {
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
     }
   });
-  
 }
 
