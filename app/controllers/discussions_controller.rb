@@ -55,7 +55,7 @@ class DiscussionsController < ApplicationController
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Discussion, on: @allocation_tags_ids
 
-    @discussions = Discussion.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).uniq
+    @discussions = Discussion.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).uniq.select("discussions.*, schedules.start_date AS start_date").order("start_date")
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
