@@ -33,8 +33,8 @@
 
     = render "groups/codes"
 
-    .schedule_dates{style: "float: right;"}
-      .right.right_buttons
+    .schedule_dates
+      .right_buttons
         = button_to_function t("agendas.close"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
 
 = javascript_include_tag "schedule_events"
