@@ -19,7 +19,7 @@
   - same_day = (@event.schedule.start_date == @event.schedule.end_date)
   %h3= (same_day ? l(@event.schedule.start_date, format: :normal) : [l(@event.schedule.start_date, format: :normal), l(@event.schedule.end_date, format: :normal)].join(" - "))
 
-  %h2= truncate((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || "", length: 200, omission: '...')
+  %h3= truncate((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || "", length: 200, omission: '...')
 
   .edition_groups.invisible
     - if can? :edit, @model_name
