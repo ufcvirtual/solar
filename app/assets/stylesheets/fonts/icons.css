@@ -534,3 +534,6 @@
 .icon-download:before {
 	content: "\e073";
 }
+.icon-import:before {
+	content: "\e607";
+}
