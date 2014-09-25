@@ -195,6 +195,7 @@ $.fn.nice_delete = function(options) {
         flash_message(data.notice, 'notice');
 
       parent.slideUp().remove();
+      update_tables_with_no_data();
 
       if (typeof(options.complement_success) == "function")
         options.complement_success(data);
@@ -255,9 +256,14 @@ $.fn.serialize_and_submit = function(options) {
             if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
               flash_message(data.notice, 'notice');
           });
+
+        if (typeof(options.prepend_to_list) != "undefined")
+          options.prepend_to_list.prepend(data);
+
         else if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
           flash_message(data.notice, 'notice');
       }
+      update_tables_with_no_data();
     }
   }
 

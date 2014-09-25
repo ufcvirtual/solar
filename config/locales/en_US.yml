@@ -981,128 +981,6 @@ en_US:
   sent: Sent
   not_sent: Not Sent
   without_group: Without Group
-  assignment:
-    assignments: Assignments
-    new:
-      groups: Groups
-    list:
-      'yes': 'Yes'
-      'no': 'No'
-      groups: "Groups:"
-      new: New Assignment
-      edit: Edit Assignment
-      name: Name
-      availability: Availability
-      type: Type
-      individual: Individual
-      group: Group
-      none: No assignment registered
-      answers: Answers
-      choose_at_least_one: "Choose at least one assignment"
-      choose_one: Choose a assignment
-    information:
-      begin: Begin
-      end: End
-      individual_assignments: Atividades individuais
-      group_assignments: Group Activities
-      date_range: Date range
-      description: Description
-      situation: Situation
-      grade: Grade
-      public_area: Public Area
-      more: more
-      less: less
-      students: Students
-      title: Portfolio of
-      name: Name
-      date: Date
-    comments:
-      save: Save
-      removed_comment: Comment removed sucessfully
-      comments: Comments
-      comments_teacher: Teacher's comments
-      comment: Comment
-      comment_sent_success: Comment sent sucessfully
-      confirm_comment: Confirm comment?
-      cancel_comment: Cancel comment?
-      comment_canceled: Comment canceled
-      new: New
-      edit: Edit
-      cancel: Cancel
-      delete: Delete
-    evaluation:
-      evaluated_success: Evaluation performed successfully
-      confirm_evaluation: Confirm evaluation?
-      cancel_evaluation: Cancel evaluation?
-      evaluation_canceled: Evaluation canceled
-      evaluate: Evaluate
-      change_grade: Change grade
-      evaluation: Evaluation
-      save: Save
-      cancel: Cancel
-    files:
-      remove_file: Remove file %{file_name}
-      recover_file: Recover file %{file_name}
-      sent_by: Sent by
-      size: Size
-      download_file: Download file %{file_name}
-      files: file(s)
-      attached_files: Attachments
-      activity_files: Activity files
-      name: Name
-      delete_msg: Really want to delete this file?
-      uploaded_success: File uploaded successfully
-      deleted_success: File deleted successfully
-      error_no_file_sent: File not sent
-      send_file: Upload Files To Portfolio
-      send_file_obs: Wait for the complete submission of the file. The size should not exceed 5MB.
-      send_file_text: "Allowed file example:<br /> &nbsp;&nbsp;- Microsoft Office Documents<br /> &nbsp;&nbsp;- OpenOffice.org Documents (ODF)<br /> &nbsp;&nbsp;- Archives (.zip, .rar...)<br /> &nbsp;&nbsp;- PDF Documents<br /> &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br /> &nbsp;&nbsp;- Audio Files (mp3, wma...)"
-      sent_files: Sent files
-      error_delete: Error when trying to delete file
-      delete_interval_error: Modification of files out of range
-      send_interval_error: Sending files out of range
-      download_all_files_zip: Download all files (zip)
-      upload_on_public_area: Upload files for public area
-      sent_on: Sent on
-      attach_another: Attach another file
-      delete: Delete
-      must_be_selected: File must be selected
-      click_to_add_file: Click here to add file
-    notifications:
-      student_with_no_group: You aren't in any group
-      date_range_expired: Expired date range
-      final_date_smaller_than_offer: Final date must be smaller or equal to offer date (%{end_date_offer})
-      start_date_greater_than_offer: Start date mus be greater or equal to offer date (%{start_date_offer})
-    group_assignments:
-      group: Group
-      groups: Groups
-      participants: Participants
-      cancel: Cancel
-      new_group: New group
-      import_groups: Import groups
-      save: Save
-      manage_groups: Manage groups
-      remove: Remove group %{group_name}
-      management_cancel: Changes canceled
-      no_participant: Group with no participants
-      students_with_no_group: Students with no group
-      without_group: Without group
-      management_success: Groups managed successfully
-      delete_error: Group can't be removed
-      student_move_error: Student can't be removed
-      assignment_without_groups: Assignment haven't groups
-      already_evaluated: already evaluated
-      already_sent_files: already sent files
-      save_management: Save changes?
-      cancel_management: Cancel changes?
-      existing_name_error: already exists
-      evaluate: Evaluate
-    import_groups:
-      cancel: Cancel
-      import_groups: Import groupslegends
-      import: Import
-      no_participant: Group with no participants
-      import_success: Groups imported with success
   comment_error_delete_file: Error when trying to delete file
   group: "Group"
   student: Student
@@ -1308,6 +1186,8 @@ en_US:
   support_allocation_group: Class
   support_folder_temporary_message: 'This folder is temporary. To conclude it''s creation, send a file'
   file_error_nonexistent_file: File not found
+  send_file_obs: Wait for the complete submission of the file. The size should not exceed 5MB.
+  send_file_text: "Allowed file example:<br /> &nbsp;&nbsp;- Microsoft Office Documents<br /> &nbsp;&nbsp;- OpenOffice.org Documents (ODF)<br /> &nbsp;&nbsp;- Archives (.zip, .rar...)<br /> &nbsp;&nbsp;- PDF Documents<br /> &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br /> &nbsp;&nbsp;- Audio Files (mp3, wma...)"
   allocations:
     index:
       manage: Manage
@@ -1408,20 +1288,36 @@ en_US:
     index:
       expand_enunciation: Expand enunciation
       compress_enunciation: Compress enunciation
-      delete_assignment: Delete assignments
-      edit_assignment: Edit assignment
+      new: New assignment
+      delete: Delete assignments
+      edit: Edit assignment
+      name: Name
+      type: Type
+      answers: Has answers
+      has_answers: Yes
+      no_answers: No
+      availability: Availability
       attached_files: Attached files
+      none: No assignment registered
     form:
       groups: Groups
       files: Files
+      individual: Individual
+      group: Group
+      edit: Edit assignment
+      new: New assignment
     success:
       created: Assignment was successfully created.
       updated: Assignment was successfully updated.
       deleted: Assignment was successfully deleted.
+      evaluated: Assignment was successfully evaluated.
     error:
       created: Assignment wasn't created.
       updated: Assignment wasn't updated.
       deleted: Assignment wasn't deleted.
+      evaluate: Assignment wasn't evaluated.
+      date_range: It was not possible to evaluate. Date range expired.
+      download: It was not possible to download file.
     show:
       name: Name
       enunciation: Enunciation
@@ -1432,10 +1328,150 @@ en_US:
       empty_files: There're no files
       groups: Groups
       assignment_details: Assignment's details
-    send_public_files_page:
-      title: Upload of public files
     student:
       moved_allocation: "Allocation moved to other class"
+      group: "Group: "
+      participants: "Participants: "
+      student: "Student: "
+      no_participants: Group without participants
+      begin: Begin
+      end: End
+      situation: Situation
+      grade: Grade
+    list:
+      individual_assignments: Individual assignments
+      group_assignments: Group assignments
+      description: Description
+      date_range: Date range
+      more: More
+      less: Less
+      situation: Situation
+      grade: Grade
+      comments: Comments
+      sent_on: Sent on
+    assignments:
+      participants: See participants
+      groups: See groups
+      import_groups: Import groups
+      manage_groups: Manage groups
+    groups:
+      title: Groups
+      group: Group
+    participants:
+      title: Participants
+      student: Student
+    info:
+      evaluate: Evaluate
+      edit: Change grade
+      save: Save
+      cancel: Cancel
+      confirm: Confirm grade?
+    files:
+      title: Assignment's files
+      download: Download zip
+  assignment_files:
+    list:
+      title_group: Files sent by group
+      title_student: Files sent by student
+      download: Download zip
+      send: Send file
+      sent_on: Sent on
+      sent_by: Sent by
+      name: Name
+      size: Size
+    file:
+      delete: Remove file
+    new:
+      title: Send new file
+    error:
+      download: It was not possible to download
+      date_range: It was not possible to execute action. Date range expired.
+      remove: It was not possible to remove file
+      new: It was not possible to send file.
+    success:
+      removed: File removed successfully
+  assignment_comments:
+    list:
+      new: New comment
+      title: Comments
+      confirm: Confirm to cancel comment?
+    form:
+      attach_file: Attach file
+      attached_files: Attachments
+    comment:
+      attached_files: Attachments
+      edit: Edit comment
+      remove: Remove comment
+    success:
+      new: Comment created successfully
+      edit: Comment updated successfully
+      remove: Comment removed successfully
+    error:
+      general_message: It was not possible to execute action.
+      date_range_expired: It was not possible to execute action. Date range expired.
+  group_assignments:
+    index:
+      title: Groups management - %{name}
+      warning: Actions here executed are automatically saved
+      groups: Groups
+      new: Create group
+      already_evaluated: "This group was already evaluated, thus it's not possible to remove or add participants to it"
+      participants: Participants
+      select_a_group: Select a group
+      no_participants: No participants
+      students_without_groups: Students without group
+      no_students_without_groups: No students without group
+      add: Add to group
+      remove: Remove from group
+      confirm: Confirm group removal?
+    group:
+      edit: Rename group
+      remove: Remove group
+      cant_remove: It's not possible to remove this group
+    import_list:
+      title: Import groups to %{name}
+      assignments: Assignments
+      groups: Groups
+      participants: Participants
+      select_an_assignment: Select an assignment
+      select_a_group: Select a group
+      import: Import
+    list:
+      no_groups: No groups
+      participants: See participants
+    error:
+      evaluated: It was not possible to execute action. Group already evaluated.
+      has_files: It was not possible to execute action. Student have sent files to group.
+      general_message: It was not possible to execute action.
+      cant_remove: It was not possible to execute action. Group already evaluated or with files.
+      date_range_expired: It was not possible to execute action. Date range expired.
+    success: 
+      imported: Groups and participants imported successfully.
+    new:
+      new_group_name: New group
+  public_files:
+    index:
+      title: "Public area of %{name}"
+      file: Name
+      size: Size
+      sent_on: Sent on
+      download: Download zip
+    file:
+      remove: Remove file
+    list:
+      title: Public area
+      file: Name
+      size: Size
+      sent_on: Sent on
+      new: New public file
+    new:
+      title: Send new public file
+    success:
+      new: File sent successfully
+      removed: File removed successfully
+    error:
+      new: It was not possible to upload file.
+      remove: It was not possible to remove file.
   groups:
     list:
       all: All
@@ -2220,11 +2256,6 @@ en_US:
       request_profile: Request profile
       cancel_profile: Cancel profile
       confirm: Are you sure you want to cancel this profile?
-    public_area:
-      title: "Public area of %{name}"
-      file: File
-      size: Size
-      sent_on: Sent on
   mysolar:
     synchronize: Synchronize with Módulo Acadêmico
     profiles: Profiles

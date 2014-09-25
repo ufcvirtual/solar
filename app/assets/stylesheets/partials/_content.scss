@@ -346,6 +346,7 @@ div.block_title {
 
 /* posicionando objetos alinhados a direita (normalment botoes) */
 .right_buttons {
+  /*float: right;*/
   text-align: right;
 }
 
@@ -354,21 +355,9 @@ div.block_title {
 }
 
 .block_actions {
-  /*position: absolute;
-  right: 0;*/
   float: right;
   font-size: 11px;
 }
-
-/**
-* TODO: código aparentemente inutilizado, verificar
-*
-.page_title {
-  font-family: 'Ubuntu', sans-serif;
-  font-weight: bold;
-  color: $color_main;
-}
-*/
 
 .label_right{
   margin-top: 6px;

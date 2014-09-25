@@ -1,275 +1,128 @@
-// GERENCIAMENTO DE GRUPOS
-
-.group_assignment_content {
-  margin-bottom: 10px;
-  font-size: 13px;
-}
-
-#group_assignments {
-  tr.lines > td {
-    padding: 0;
+.label_display{
+  table{
+    margin-bottom: 50px;
   }
 
-  tr.lines:hover {
-    background-color: $color_main_light;
-  }
-}
-
-  thead tr.lines{
-    color: #6b6b6b;
+  .final_buttons{
+    position: absolute;
+    right: 0;
+    bottom: 0;
   }
 
-  td .title{
-    color: #21578b;
+  td,th{
+    text-align: center;
   }
 
-.group_assignment_title {
-  padding: 6px 10px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $color_main_light_highlight;
-
-  }
-}
-
-.group_assignment_title_contract {
-  background: url('/assets/images/group_assignment_contract.png') no-repeat right center;
-}
-
-.group_participants,
-.group_participants_manage,
-.group_assignments_manage_buttons {
-  min-height: 140px;
-  margin-right: 11px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid;
-  border-bottom-color: #c0c1c2;
-  background-color: #ffffff;
-  float: left;
-  width: 250px;
-  padding-bottom: 7px;
-}
-
-.group_participants_manage, .group_participants{
-  height: 166px;
-}
-
-.group_assignments_manage_buttons {
-  background-color: #f7f7f7;
-  ul {
-    margin-left: 32%;
-    margin-top: 10px;
-  }
-  li {
-    margin-bottom: 7px;
-  }
-}
-
-.btn_new, .btn_import { // TODO: mudar o nome dessas classes, estão muito genéricos
-  margin-top: 30px;
-}
-
-.group_participants ul,
-.group_participants_manage ul {
-  padding: 7px;
-  height: 109px;
-  overflow: auto;
-}
-
-.group_participants_manage ul {
-  height: 127px;
-}
-
-.group_information_manage{
-  display: none;
-}
-
-[class^="group_name"],
-.group_name_manage,
-.edit_group_true,
-.group_assignments_manage_buttons_title,
-.disabled_groups_assignments_name {
-  font-weight: normal;
-  height: 20px;
-  padding: 5px 7px 1px 7px;
-}
-
-.group_name_manage,
-.edit_group_true {
-  background-color: #fcd927;
-  color: #000000;
-  height: 24px;
-}
-
-//[class^="group_name"], TODO: qual o background-color correto, este ou o seguinte?
-.group_assignments_manage_buttons_title,
-.disabled_groups_assignments_name {
-  background-color: #9ea2a3;
-  color: #ffffff;
-}
-
-[class^="group_name"] {
-  background-color: #0d487d;
-  color: #ffffff;
-}
-
-[class^="group_information"],
-.group_information_manage,
-.disabled_groups_assignments_information {
-  color: #000000;
-}
-
-.disabled_groups_assignments_information {
-  background-color: #f7f7f7;
-}
-
-.group_information_manage {
-  background-color: #fdfce1;
-}
-
-[class^="group_information"] {
-  background-color: #f2f6fa;
-}
-
-.group_box_without_info {
-  height: 166px;
-}
-
-[class^="group_information"],
-.group_information_manage,
-.disabled_groups_assignments_information {
-  height: 16px;
-  padding: 6px 10px 2px 7px;
-  font-size: 12px;
-}
-
-.btn.evaluate_group {
-  height: 16px;
-  line-height: 8px;
-}
-
-.group_assignments_import {
-  padding: 10px 6px 5px 8px;
-}
-
-.all_students_to_import {
-  border: 1px solid;
-  border-color: #dedede;
-  background-color: #ffffff;
-  width: 390px;
-  min-height: 100px;
-  margin: 10px 20px 20px 20px;
-  display: inline-block;
-  padding: 6px 6px 5px 8px;
-}
-
-.all_students_to_import li {
-  list-style-type: none;
-}
-
-.import_buttons {
-  margin-left: 20px;
-  margin-bottom: 20px;
-}
-
-.rename_group {
-  width: 180px;
-  border: 0px none;
-  margin-bottom: 15px;
-  font-size: 10pt;
-  padding: 2px 7px 0px;
-}
-
-.remove_group {
-  cursor: pointer;
-}
-
-.group_elements_float,
-.remove_group,
-.download_all_icon {
-  float: right;
-}
-
-.draggable_student {
-  border-bottom: 2px dashed;
-  border-bottom-color: #fdec9c;
-  cursor: move;
-}
-
-tbody .groups, .input .groups{
-  @include tags_div;
-  margin: 0;
-}
-
-tbody .groups{
-  width: auto;
-}
-
-.title i {
-  font-size: 12px;
-  color: #6b6b6b
-}
-
-
-.enunciation {
-  div {
-    margin-bottom: 2px;
-  }
-}
-
-.groups, .groups_tags{
-  font-size: 11px;
-  padding-left: 2px;
-}
-
-.groups_list {
-
-  .block_content.groups {
-    overflow: hidden;
+  .participants_column {
+    td i{
+      color: #DC5869;
+    }
   }
 
-  .block_left, .block_right {
-    padding: 0;
-    width: 49.7%;
+  .students_without_groups_column{
+    td i{
+      color: #003E7A;
+    }
+    input{
+      width: 105px;
+    }
+  }
+
+  .middle_column{
+    width: 35%;
     float: left;
+    margin-left: 40px;
+  }
+
+  .students_without_groups_column, .groups_column, .participants_column{
+    td i{
+      cursor: pointer;
+    }
+  }
+
+  .last_column{
+    width: 46%;
+    float: right;
+  }
+
+  .last_column.of_three{
+    width: 30%;
+  }
+
+  .first_column{
+    width: 46%;
+    float: left; 
+  }
+
+  .first_column.of_three{
+    width: 25%;
+  }
+
+  .labels{
+    font-family: Ubuntu;
+    font-size: 13px;
+    text-align: center;
+    .label{
+      border-radius: 7px;
+      margin: 8px;
+      width: auto;
+      word-wrap: break-word;
+      padding: 5px;
+      background-color: $color_main_light;
+      border: 1px solid #CBCED1;
+      cursor: pointer;
+      .buttons{
+        float: right;
+        .edit{
+          vertical-align: top;
+          font-size: 11pt;
+        }
+        .remove, .cant_remove{
+          line-height: 0.9;
+        }
+        .cant_remove{
+          color: #C0C0C0;
+        }
+      }
+      form{
+        input{
+          height: 14px;
+          width: 115px;
+        }
+        i.save{
+          font-size: 12pt;
+        }
+        i{
+          line-height: 1.7;
+        }
+      }
+    }
+    .selected{
+      background-color: #FDFBE9;
+      border: 1px solid #F9E993; 
+    }
+    .disabled{
+      background-color: #F7F7F7;
+      border: 1px solid #dcdcdc;
+      color: #434343;
+      font-family: Ubuntu;
+      font-size: 13px;
+    }
+    .not_group{
+      background-color: $color_main_light_highlight
+    }
+    .disabled.selected{
+      background-color: #F0F0F0;
+    }
+  }  
+
+  .students_without_groups_column{
+    .text_none.empty_message{
+      margin-top: -50px;
+    }
+  }
+  
+  .text_none.empty_message{
+    text-align: center;
   }
 }
-
-.no_groups{
-  display: none;
-  color: #003e7a;
-  font-size: 10pt;
-}
-
-/**
-* TODO: código aparentemente inutilizado, verificar
-*
-.all_students label {
-  margin-left: 5px;
-  text-align: left;
-  width: 320px;
-  color: #000000;
-}
-
-.group_assignment_buttons {
-  margin-bottom: 20px;
-  clear: both;
-}
-
-.group_assignment_files a {
-  text-decoration: underline;
-  color: #134076;
-}
-
-.no_permission_message {
-  font-size: 10px;
-  text-decoration: italic;
-}
-
-#group_code {
-  width: 255px;
-  margin-left: 5px;
-  margin-bottom: 10px;
-}
-*/

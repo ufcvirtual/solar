@@ -13,8 +13,8 @@ class ScoresController < ApplicationController
 
     raise CanCan::AccessDenied if @group.nil? # turma nao existe
 
-    @assignments = Assignment.joins({academic_allocations: :allocation_tag}).where(allocation_tags: {id: allocation_tag_id})
-      .select("assignments.id, schedule_id, type_assignment, name").order("assignments.name")
+    @assignments = Assignment.joins(:schedule, {academic_allocations: :allocation_tag}).where(allocation_tags: {id: allocation_tag_id})
+      .select("assignments.id, schedule_id, type_assignment, name").order("schedules.start_date, assignments.name")
 
     # atividades da turma
     allocation_tags = AllocationTag.find(allocation_tag_id).related.join(',')

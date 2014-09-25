@@ -1,0 +1,10 @@
+%table.tb_list
+  %tbody
+    - @participants.each do |participant|
+      %tr.lines{:"data-user-id" => participant.id }
+        %td= participant.name
+        - unless @import
+          %td.icon{onclick: "remove_participant(this)", :"data-tooltip" => t("group_assignments.index.remove")}= content_tag(:i, nil, class: "icon-cross-square")
+  .text_none.empty_message{class: @participants.any? ? "hide_message" : ""}= t("group_assignments.index.no_participants")
+
+= javascript_include_tag "tooltip"

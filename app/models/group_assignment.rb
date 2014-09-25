@@ -10,28 +10,24 @@ class GroupAssignment < ActiveRecord::Base
   validates :group_name, presence: true, length: { maximum: 20 }
   validate :unique_group_name
  
-  #retorna atividades de grupo de acordo com a turma
-  def self.all_by_group_id(group_id)
-    Assignment.all(
-      select: [:id, :name, :enunciation, :schedule_id],
-      include: [:academic_allocations, :allocation_tags, :schedule, :group_assignments],
-      conditions: ["type_assignment = ? AND allocation_tags.group_id = ?", Assignment_Type_Group, group_id],
-      order: "schedules.start_date")
+  def can_remove?
+    (sent_assignment.nil? or (sent_assignment.assignment_files.empty? and sent_assignment.grade.blank?))
   end
 
-  ## Caso grupo não tenha sido avaliado ou comentado ou enviado arquivos, pode ser excluído (para tudo isso, um "sent_assignment" deve existir)
-  def self.can_remove_group?(group_id)
-    sent_assignment = SentAssignment.find_by_group_assignment_id(group_id)
-    return (sent_assignment.nil? or (sent_assignment.assignment_files.empty? and sent_assignment.grade.nil?))
-  end
-
-  ## Recupera pelo assignment
   def self.all_by_assignment_id(assignment_id, allocation_tag_id)
     joins(:academic_allocation).where(academic_allocations: {academic_tool_id: assignment_id, allocation_tag_id: allocation_tag_id})
   end
 
-  def assignment_id
-    academic_allocation.academic_tool_id
+  def assignment
+    Assignment.find(academic_allocation.academic_tool_id)
+  end
+
+  def evaluated?
+    not(sent_assignment.nil? or sent_assignment.grade.blank?)
+  end
+
+  def user_in_group?(user_id)
+    group_participants.map(&:user_id).include? user_id.to_i
   end
 
   private

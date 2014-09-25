@@ -41,10 +41,6 @@ webconf_ativ:
   menu_id: 206
   context_id: 2
 
-portfolio_professor_ativ:
-  menu_id: 207
-  context_id: 2
-
 acomp_ativ_teacher:
   menu_id: 208
   context_id: 2

@@ -1,0 +1,5 @@
+- if students.any?
+  - students.each do |student|
+    %tr.lines{:"data-user-id" => student.id }
+      %td= student.name
+      %td.icon{onclick: "add_participant(this)", :"data-tooltip" => t("group_assignments.index.add")}= content_tag(:i, nil, class: "icon-plus-square")

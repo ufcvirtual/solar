@@ -1,0 +1,8 @@
+%tr.lines
+  %td.file_data_icon{style: "width: 10px;"}= image_tag icon_attachment(file.attachment_file_name)
+  %td= link_to file.attachment_file_name, download_public_files_path(id: file.id), {class: 'link_content'}
+  %td.center.file_data_info{style: "width: 80px;"}= format('%.2f KB', file.attachment_file_size.to_i/1024.0)
+  %td.center.file_data_info{style: "width: 100px;"}
+    = (file.attachment_updated_at.nil? ? " " : l(file.attachment_updated_at, format: :files))
+  - if destroy
+    %td.center{style: "width: 60px"}= link_to_function content_tag(:i, nil, class: "icon-trash"), "delete_file(this); return false;", class: "btn btn_caution", :"data-link-delete" => public_file_path(file), :"data-tooltip" => t(".remove")

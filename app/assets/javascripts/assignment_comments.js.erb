@@ -1,0 +1,28 @@
+function edit_comment(button){
+  $("#new_comment, .edit_comment").attr("disabled", "disabled");
+  $($(button).parents("tr.comment")[0]).hide();
+  $.get($(button).data("url"), function(data){
+    $($(button).parents("table")[0]).append(data);
+  });
+}
+
+function remove_comment(button){
+  var button_table = $($(button).parents("table")[0]);
+  if (confirm("Certeza?"))
+    $.delete($(button).data("url"), function(data){
+      flash_message(data.notice, "notice");
+      var parent = button_table.parent();
+      button_table.remove();
+      if (!parent.children(":visible").length)
+        $("#no_itens_message_comment").show();
+    }).error(function(data){
+      show_error(data);
+    });
+}
+
+function cancel_new_comment(){
+  $(".comment_form").html("");
+  $(".new_comment_btns").addClass("invisible");
+  $("#new_comment").show();
+  return false;
+}

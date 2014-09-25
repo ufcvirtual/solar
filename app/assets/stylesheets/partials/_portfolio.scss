@@ -1,19 +1,7 @@
 // PORTFOLIO E TAREFAS (ASSIGNMENTS)
 
-#post_attachment_wrapper div {
-  margin-top: 10px;
-}
-
-#post_attachment_form_submit {
-  text-align: right;
-}
-
 .enunciation_complete, .enunciation_less {
   display: none;
-}
-
-.portfolio_div_padding {
-  padding: 5px;
 }
 
 .assignment_comment_form {
@@ -30,75 +18,11 @@
   background-color: $color_main_light;
 }
 
-.assignment_inner_content textarea{
-  width: 762px;
-  margin-top: 5px;
-}
-
-.portfolio_title_button,
-#btn_cancel_evaluation,
-#btn_save_evaluation,
-#btn_evaluate {
-  float: right;
-}
-
-.forum_post_inner_content .portfolio_title_button{
-  margin-top: 10px;
-}
-
-.portfolio_comment_button {
-  text-align: right;
-}
-
 .comments_files {
   margin: 0px 10px 10px 0px;
 }
 
-.more_comment_files_link {
-  float: center;
-  font-size: 9pt;
-  text-decoration: underline;
-  cursor: pointer;
-  color: #1c4785;
-}
-
-#btn_cancel_evaluation,
-#btn_save_evaluation,
-#btn_cancel_management,
-#btn_save_management,
-[class^="students_import_"],
-[class^="edit_group_"],
-.upload_assignment_files,
-.student_assignment_evaluation,
-.comments_files_div .btn.btn_default.recover_file,
-#btn_cancel_comment, #btn_save_comment_new {
-  display: none;
-}
-
-.link_upload_file {
-  margin-left: 1%;
-}
-
-.image_upload_file {
-  margin-left: 34%;
-}
-
-.assignment_inner_content.upload_files {
-  border-top: 1px solid;
-  border-top-color: #B4B2B1;
-  padding-top: 10px;
-}
-
-.disabled.link_upload_file {
-  text-decoration: line-through;
-}
-
-.upload_assignment_files {
-  padding: 5px 15px 5px 15px;
-}
-
-
-.date_column, .student_assignment_evaluate {
+.student_assignment_evaluate {
   text-align: center;
 }
 
@@ -157,12 +81,11 @@
   height: 22px;
   padding: 0 2px;
   vertical-align: bottom;
-}
-
-.comments_files_div .btn img {
-  width: 20px;
-  padding: 0;
-  margin: 0;
+  img {
+    width: 20px;
+    padding: 0;
+    margin: 0;
+  }
 }
 
 .assignment_without_group, td.assignment_without_group a {
@@ -233,6 +156,49 @@ td.assignment_without_group a
   font-weight: bold;
 }
 
-.download_all_icon { // TODO: mudar o nome dessas classes, está muito genéricos
-  font-size: 13px;
+.tb_list{
+  td{
+    .participants_box{
+      max-height: 300px;
+      overflow: auto;
+      padding: 10px;
+      tbody{
+        background-color: white;
+      }
+    } 
+  }
+}
+
+.assignment_comment_wrapper{
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.assignment_files, .student_files{
+  width: 47%;
+}
+
+.assignment_files.files td, .student_files.files td{
+  color: $text_grey;
+}
+
+.student_files{
+  float:left;
+}
+
+.assignment_files{
+  float:right;
+}
+
+.upload_files{
+  .add_file{
+    margin-left: 25%;
+    margin-bottom: 5px;
+  }
+}
+
+.student_files.files{
+  i{
+    cursor: pointer;
+  }
 }

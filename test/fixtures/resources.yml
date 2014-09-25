@@ -142,8 +142,8 @@ res23:
 res24:
   id: 24
   controller: 'assignments'
-  action: 'professor'
-  description: 'Lista dos trabalhos - visão professor'
+  action: 'list'
+  description: 'Lista de trabalhos'
 
 res25:
   id: 25
@@ -158,95 +158,47 @@ res26:
   description: 'Agenda - lista'
 
 # Assignments - parte 2
-res27:
-  id: 27
-  controller: 'assignments'
-  action: 'student_view'
-  description: 'Lista dos trabalhos - visão aluno'
-
-res28:
-  id: 28
-  controller: 'assignments'
-  action: 'information'
-  description: 'Informacoes basicas sobre a atividade, bem como seus participantes'
-
 res29:
   id: 29
-  controller: 'assignments'
-  action: 'manage_groups'
-  description: 'Metodo de gerenciamento dos grupos de uma atividade'
-
-res30:
-  id: 30
-  controller: 'assignments'
-  action: 'student'
-  description: 'Informacoes completas sobre a atividade do aluno'
+  controller: 'group_assignments'
+  action: 'index'
+  description: 'Gerenciar grupos de um trabalho em grupo'
 
 res31:
   id: 31
   controller: 'assignments'
   action: 'evaluate'
-  description: 'Metodo de avaliacao de uma atividade para aluno/grupo'
+  description: 'Avaliar atividade de um aluno/grupo'
 
 res32:
   id: 32
   controller: 'assignment_comments'
-  action: 'send_comment'
-  description: 'Metodo para envio de comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade - verificacao de acordo com o comentario'
-
-res33:
-  id: 33
-  controller: 'assignment_comments'
-  action: 'remove_comment'
-  description: 'Metodo para remover determinados comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade - verificacao de acordo com o comentario'
+  action: 'create'
+  description: 'Enviar comentários a um trabalho'
 
 res34:
   id: 34
   controller: 'assignments'
-  action: 'download_files'
-  description: 'Metodo para realizar o download de arquivos (publicos ou privados) individualmente ou como zip'
+  action: 'download'
+  description: 'Download dos arquivos (enunciado) de um trabalho'
 
 res35:
   id: 35
-  controller: 'assignments'
-  action: 'send_public_files_page'
-  description: 'Pagina de envio de arquivos publicos (lightbox)'
+  controller: 'public_files'
+  action: 'create'
+  description: 'Enviar arquivo público'
 
 res36:
   id: 36
-  controller: 'assignments'
-  action: 'upload_file'
-  description: 'Upload de arquivo (publico ou privado)'
-
-res37:
-  id: 37
-  controller: 'assignments'
-  action: 'delete_file'
-  description: 'Delecao de arquivo (publico ou privado)'
-
-res38:
-  id: 38
-  controller: 'assignments'
-  action: 'import_groups_page'
-  description: 'Pagina de importacao de grupos entre atividades (lightbox)'
+  controller: 'assignment_files'
+  action: 'create'
+  description: 'Enviar arquivo como resposta de um trabalho'
 
 res39:
   id: 39
-  controller: 'assignments'
-  action: 'import_groups'
-  description: 'Metodo de importacao de grupos entre atividades'
-
-res40:
-  id: 40
-  controller: 'assignments'
-  action: 'send_comment'
-  description: 'Metodo para envio de comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade - verificacao de acordo com a atividade'
-
-res41:
-  id: 41
-  controller: 'assignments'
-  action: 'remove_comment'
-  description: 'Metodo para remover determinados comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade - verificacao de acordo com a atividade'
+  controller: 'group_assignments'
+  action: 'import'
+  description: 'Importar grupos entre trabalhos em grupo'
 
 # Posts
 res42:
@@ -1027,8 +979,8 @@ res175:
 
 res177:
   id: 177
-  controller: 'users'
-  action: 'public_area'
+  controller: 'public_files'
+  action: 'index'
   description: 'Visualizar área pública dos participantes'
 
 res178:

@@ -1,253 +1,59 @@
-function btn_evaluate(this_div, grade_content){
-  undo_everything();
-  $(".student_assignment_evaluate").hide();
-  $(".student_assignment_evaluation").fadeIn();
-  $(this_div).hide();
-  $("#btn_cancel_evaluation").fadeIn();
-  $("#btn_save_evaluation").fadeIn();
-  undo_grade_content(grade_content);
-}
-
-function undo_btn_evaluate_changes(){
-  $(".student_assignment_evaluation").hide();
-  $(".student_assignment_evaluate").fadeIn(); 
-  $("#btn_cancel_evaluation").hide();
-  $("#btn_save_evaluation").hide();
-  $("#btn_evaluate").fadeIn(); 
-}
-
-function undo_btn_comment_changes(comment_id){
-  undo_files_upload(comment_id);
-  if(comment_id == 'new'){
-    $("#btn_comment").fadeIn(); 
-    $(".comment_form").hide();
-    $("#btn_cancel_comment").hide();
-    $("#btn_save_comment_new").hide();
-    no_comments_div();
-  }else{
-    if(comment_id == undefined)
-      comment_id = $("textarea#comment").filter(":visible:first").data("comment-id");
-    $(".btn_edit_comment_"+comment_id).fadeIn();
-    $(".comment_"+comment_id).fadeIn();
-    $(".form_comment").hide();
-    $(".assignment_comment").fadeIn();
-  }
-}
-
-function undo_everything(){
-  undo_files_removal();
-  undo_btn_evaluate_changes();
-  undo_btn_comment_changes("new");
-  undo_btn_comment_changes();
-}
-
-function undo_files_removal(){
-  // todos os arquivos dos comentários
-  var comment_files = $('[class^="link_content link_comment_"]');
-  comment_files.each(function(i){
-    var file_id     = comment_files[i].id;
-    // link_content link_comment_4 disabled_file_2 => ["link", "content link", "comment", "4 disabled", "file", "2"] => "2"
-    var comment_id  = comment_files[i].className.split("_")[5];
-    // div do botão de recuperar arquivo (visível quando o arquivo foi excluído)
-    var button_div  = $("#recover_file_"+file_id);        
-    // desfaz a remoção
-    recover_file(file_id, comment_id, button_div);
-  });
-}
-
-function undo_files_upload(comment_id){
-
-  // se não tiver o id do comentário cancelado (quando executar outra ação e "desfazer" todas as alterações juntas - undo_everything)
-  if(comment_id==null){
-    var comments = $('[class^="assignment_comment tb_comment_"]');
-    // para cada comentário, realiza a ação
-    comments.each(function(i){
-      // assignment_comment tb_comment_5 tb_comments => ["assignment_comment", "tb_comment_5", "tb_comments"] => ["tb_comment_5"] => ["tb", "comment", "5"] => "5"
-      undo_files_upload(comments[i].className.split(" ")[1].split("_")[2]);
-    });
-  }else{
-    if(comment_id == "new"){
-      var div_name = "";
-    }else{
-      var div_name = "_"+comment_id;
-    }
-
-    // todos os inputs de arquivo para um comentário específico
-    var comment_files = $('#comment_form'+div_name+' > .forum_post_attachment > .comments_files_div > .comments_files');   
-
-    // deixa apenas um input de arquivo e limpa seu conteúdo
-    comment_files.each(function(i){
-      if(i>0){
-        $(comment_files[i]).remove();
-      }else{
-        $(comment_files[i]).val("");
-      }
-    });
-
-    // remove todos os "br" que haviam sido adicionados a cada chamada ao "more_files"
-    comment_files.nextAll('br').remove();
-  }
-}
-
-// remover o conteúdo do text_field de comentário
-function undo_comment_content(comment_id){
-  var comment_content = $(".assignment_comment_form .comment_"+comment_id).data("value");
-  if(comment_id == "new"){
-    $('#comment_form > .assignment_inner_content > #comment').val(comment_content);  
-  }else{
-    $('#comment_form_'+comment_id+' > .forum_post_inner_content > #comment').val(comment_content);  
-  }
-}
-
-// remover o conteúdo do text_field da avaliação
-function undo_grade_content(grade_content){
-    $('.student_assignment_evaluation > #evaluation_grade').val(grade_content);  
-}
-
-function btn_comment(){
-  undo_everything();
-  $("#no_itens_message_comment").remove();
-  $("#btn_comment").hide();
-  $(".comment_form").fadeIn();
-  undo_comment_content("new", " ");
-  $("#btn_cancel_comment").fadeIn();
-  $("#btn_save_comment_new").fadeIn();
-}
-
-function btn_edit_comment(this_div, comment_id){
-  undo_everything();
-  undo_comment_content(comment_id);
-  $(".comment_"+comment_id).hide();
-  $(".form_comment_"+comment_id).fadeIn(); 
-}
-
-function remove_file(comment_file_id, comment_id, this_div){
-  $(this_div).hide();
-  $("#recover_file_"+comment_file_id).fadeIn();
-  $(".link_comment_"+comment_file_id).css("text-decoration", "underline line-through");
-  $(".link_comment_"+comment_file_id).addClass("disabled_file_"+comment_id);
-}
-
-function recover_file(comment_file_id, comment_id, this_div){
-  $(this_div).hide();
-  $("#remove_file_"+comment_file_id).fadeIn();
-  $(".link_comment_"+comment_file_id).css("text-decoration", "underline");
-  $(".link_comment_"+comment_file_id).removeClass("disabled_file_"+comment_id);
-}
-
-function more_files(this_div) {
-  var parent_div = $(this_div).parent();
-  $(this_div).remove();
-  $('<br/><input id="comment_files_" class="comments_files" name="comment_files[]" type="file"><a href="#" class="more_comment_files_link" onclick="javascript:more_files(this);" ><%=I18n.t(:attach_another, :scope => [:assignment, :files])%></a>').appendTo(parent_div);
-}
-
-function toggle_upload_div(){
-	$('.upload_assignment_files').slideToggle();
-	$('.link_upload_file').toggle(); 
-  $('.image_upload_file').toggle(); 
-
-}
-
-function btn_upload_file(){
-  if($("#assignment_file").val() == ""){
-		alert("<%= I18n.t(:must_be_selected, :scope => [:assignment, :files]) %>"); //translation missing
-		return false;
-	}else{
-		return true;
-	}
-}
-
-function btn_cancel_evaluation(){
-  if (confirm('<%= I18n.t(:cancel_evaluation, :scope => [:assignment, :evaluation]) %>')) {
-    undo_btn_evaluate_changes();
-    flash_message('<%= I18n.t(:evaluation_canceled, :scope => [:assignment, :evaluation]) %>', 'notice');
-  }
-}
-
-function update_evaluation(){
-  if(!confirm('<%= I18n.t(:confirm_evaluation, :scope => [:assignment, :evaluation]) %>')) return false;
-
-  var evaluation_grade = $("#evaluation_grade").val();
-  var url = "<%= Rails.application.routes.url_helpers.evaluate_assignment_path(':assignment_id') %>".replace(':assignment_id', $("#btn_save_evaluation").attr('data-assignment-id'));
-
-  $.ajax({
-    url: url,
-    type: 'POST',
-    data:  {'grade': evaluation_grade, 'student_id': $("#btn_save_evaluation").attr('data-student-id'), 'group_id': $("#btn_save_evaluation").attr('data-group-id')},
-    success: function(data) {
-      if (data.success == false) {
-        flash_message(data.flash_msg, data.flash_class);
-        if (data.cancel == true) {
-          undo_btn_evaluate_changes();
-        }
-      } else {
-        if ($(".mysolar_portlets_content", data).length != 0) {
-          $("#body_wrapper").html(data);
-        } else {
-          $(".assingment_info").html(data);
-          undo_btn_evaluate_changes();
-          flash_message('<%= I18n.t(:evaluated_success, :scope => [:assignment, :evaluation]) %>', 'notice');
-        }
-      }
-    }
-  }).error(function(){
-    flash_message("<%= I18n.t(:no_permission) %>", "alert");
-  });
-}
-
-
-/* Cadastro de trabalhos */
-
 $(function(){
 
-    $('#all_assignments').nice_checkbox();
+  $('#all_assignments').nice_checkbox();
 
-    $('#new_assignment').call_fancybox();
+  $('#new_assignment').call_fancybox();
 
-    $('.edit_assignment').click(function() {
-      if ($(this).attr('disabled') == 'disabled'){
-        flash_message("<%=I18n.t(:choose_one, scope: [:assignment, :list])%>", "alert");
-        return false;
-      }
-
-      var assignments_ids = $('.ckb_assignment:checked', $(this).parents("div.list_assignments")).map(function() { return this.value; }).get();
-      if (!(!assignments_ids.length || assignments_ids.length > 1)) {
-        var url_edit = $(this).data('link-to-edit').replace(':id', assignments_ids);
-        $(this).call_fancybox({href : url_edit, open: true});
-      }
+  $('.edit_assignment').click(function() {
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%=I18n.t(:choose_one, scope: [:assignment, :list])%>", "alert");
       return false;
-    });
+    }
 
-    $('.delete_assignment').click(function() {
-      if ($(this).attr('disabled') == 'disabled'){
-        flash_message("<%=I18n.t(:choose_at_least_one, scope: [:assignment, :list])%>", "alert");
-        return false;
-      }
-
-      if (!confirm("<%=I18n.t(:message_confirm)%>"))
-        return false;
-
-      var assignments = $('.ckb_assignment:checked', $(this).parents("div.list_assignments"));
-      var assignments_ids = assignments.map(function() { return this.value; }).get();
-      if (assignments_ids.length) {
-        $.delete($(this).data('link-delete').replace(':id', assignments_ids), function(data){
-          flash_message(data.notice, 'notice');
-          assignments.parents('tr').fadeOut().remove();
-
-          $(".btn_edit, .btn_del").attr("disabled", true);
-        }).error(function(data){
-          var data = $.parseJSON(data.responseText);
-          if (typeof(data.alert) != "undefined")
-            flash_message(data.alert, 'alert');
-        });
-      }
-
-      return false;
-    });
-
-    $(".expand, .compress").click(function(){
-      $(this).parent().hide();
-      $($(this).parent().siblings()[0]).show();
-    });
-
+    var assignments_ids = $('.ckb_assignment:checked', $(this).parents("div.list_assignments")).map(function() { return this.value; }).get();
+    if (!(!assignments_ids.length || assignments_ids.length > 1)) {
+      var url_edit = $(this).data('link-to-edit').replace(':id', assignments_ids);
+      $(this).call_fancybox({href : url_edit, open: true});
+    }
+    return false;
   });
+
+  $('.delete_assignment').click(function() {
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%=I18n.t(:choose_at_least_one, scope: [:assignment, :list])%>", "alert");
+      return false;
+    }
+
+    if (!confirm("<%=I18n.t(:message_confirm)%>"))
+      return false;
+
+    var assignments = $('.ckb_assignment:checked', $(this).parents("div.list_assignments"));
+    var assignments_ids = assignments.map(function() { return this.value; }).get();
+    if (assignments_ids.length) {
+      $.delete($(this).data('link-delete').replace(':id', assignments_ids), function(data){
+        flash_message(data.notice, 'notice');
+        assignments.parents('tr').fadeOut().remove();
+
+        $(".btn_edit, .btn_del").attr("disabled", true);
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      });
+    }
+
+    return false;
+  });
+
+  $(".expand, .compress").click(function(){
+    $(this).parent().hide();
+    $($(this).parent().siblings()[0]).show();
+  });
+
+});
+
+function delete_file(button){
+  $(button).nice_delete({
+    parent: 'tr.lines'
+  });
+}

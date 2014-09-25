@@ -224,9 +224,7 @@ class AdministrationsController < ApplicationController
     end
 
     query << "date(created_at) = '#{date.to_s}'"
-    @logs = log.where(query.join(" AND ")).order("created_at DESC").last(100)
-  rescue => error
-    raise "#{error}"
+    @logs = log.where(query.join(" AND ")).order("created_at DESC").limit(100)
   end
 
   ## IMPORT USERS

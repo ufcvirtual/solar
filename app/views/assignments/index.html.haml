@@ -4,11 +4,11 @@
 
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus'), new_assignment_path(allocation_tags_ids: @allocation_tags_ids), class: " btn btn_main fancybox.ajax", id: "new_assignment", :"data-tooltip" => t(:new, scope: "assignment.list")
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_assignment_path(allocation_tags_ids: @allocation_tags_ids), class: " btn btn_main fancybox.ajax", id: "new_assignment", :"data-tooltip" => t(".new")
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_assignment', "data-link-to-edit" => edit_assignment_path(':id', allocation_tags_ids: @allocation_tags_ids), "data-edit-title" => t(:edit, scope: "assignment.list"), disabled: true, :"data-tooltip" => t(".edit_assignment")
-        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_assignment', :"data-link-delete" => assignment_path(':id', allocation_tags_ids: @allocation_tags_ids), :"data-link-to-list" => assignments_path(allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".delete_assignment")
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_assignment', "data-link-to-edit" => edit_assignment_path(':id', allocation_tags_ids: @allocation_tags_ids), "data-edit-title" => t(".edit"), disabled: true, :"data-tooltip" => t(".edit")
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_assignment', :"data-link-delete" => assignment_path(':id', allocation_tags_ids: @allocation_tags_ids), :"data-link-to-list" => assignments_path(allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".delete")
 
   - unless @assignments.empty? or @assignments.nil?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
@@ -17,10 +17,10 @@
         %tr.lines
           %th.center.no_sort
             %input#all_assignments{type: "checkbox", :"data-children-names" => "ckb_assignment"}
-          %th{style: 'text-align:left;'}= t(:name, scope: "assignment.list")
-          %th.center= t(:type, scope: "assignment.list")
-          %th.center.no_sort= t(:availability, scope: "assignment.list")
-          %th.center{:style => "width: 12%"}= t(:answers, scope: "assignment.list")
+          %th{style: 'text-align:left;'}= t(".name")
+          %th.center= t(".type")
+          %th.center.no_sort= t(".availability")
+          %th.center{style: "width: 12%"}= t(".answers")
 
       %tbody
         - @assignments.each do |assignment|
@@ -54,16 +54,13 @@
             %td{style: 'text-align:center;'}
               %div.title= t(((assignment.type_assignment.to_i == Assignment_Type_Individual) ? :individual : :group), scope: "assignment.list")
             %td{style: 'text-align:center;'}
-              %div
-                %span= l(assignment.schedule.start_date, format: :normal)
-                %span= ' - '
-                %span= l(assignment.schedule.end_date, format: :normal)
+              = [l(assignment.schedule.start_date, format: :normal), l(assignment.schedule.end_date, format: :normal)].join(" - ")
 
             %td{style: 'text-align:center;'}
-              %div= can_delete ? t(:no, scope: "assignment.list") : t(:yes, scope: "assignment.list")
+              %div= can_delete ? t(".no_answers") : t(".has_answrs")
 
   - else
-    .block_content_text_list.text_none= t(:none, scope: "assignment.list")
+    .block_content_text_list.text_none= t(".none")
 
 = javascript_include_tag "tablesorter", "tooltip", "assignments", "groups_tags"
 

@@ -1,0 +1,32 @@
+.block_title
+  %h2
+    %i.icon-suitcase
+    = (@assignment.type_assignment == Assignment_Type_Group ? t(".title_group") : t(".title_student"))
+  .right_buttons
+    - unless files.nil? or files.empty?
+      = link_to content_tag(:i, nil, class: "icon-install"), zip_download_assignment_files_path(assignment_id: @assignment.id, student_id: @student_id, group_id: @group_id), class: "btn", :"data-tooltip" => t(".download")
+    - if @own_assignment
+      = button_tag content_tag(:i, nil, class: "icon-plus"), class: "btn btn_main add_file #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t(".send")
+.block_content
+  - no_files = (files.blank?)
+  %table.tb_list
+    %thead{style: (no_files ? "display: none" : "")}
+      %tr.lines
+        %th= t(".name")
+        %th{align: "right", style: "width: 80px"}= t(".size")
+        %th.date_column.center= t(".sent_on")
+        %th.date_column.center= t(".sent_by")
+        - if @own_assignment
+          %th.no_sort
+    %tbody
+      - unless no_files
+        - files.each do |file|
+          = render partial: "assignment_files/file", locals: {file: file}
+  .text_none.empty_message{class: (no_files ? "" : "hide_message")}= t(:itens_not_found)
+  
+:javascript
+  $(function(){
+    $(".add_file").not(".disabled").call_fancybox({
+      href: "#{new_assignment_file_path(assignment_id: @assignment.id, student_id: @student_id, group_id: @group_id)}"
+    });
+  });

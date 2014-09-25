@@ -40,15 +40,4 @@ module AssignmentsHelper
     end
   end
 
-  ## Informações do andamento da atividade de um aluno
-  def assignment_participant_info(student_id, assignment, allocation_tag_id)
-    situation               = assignment.situation_of_student(allocation_tag_id, student_id)
-    sent_assignment         = assignment.sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, student_id, nil)
-    have_comments           = ((not sent_assignment.nil?) and (not sent_assignment.assignment_comments.empty?))
-    grade                   = (sent_assignment.nil? or sent_assignment.grade.nil?) ? '-' : sent_assignment.grade
-    sent_assignment_files   = sent_assignment.nil? ? [] : sent_assignment.assignment_files
-    file_delivery_date      = (sent_assignment.nil? or sent_assignment_files.empty?) ? '-' : sent_assignment_files.first.attachment_updated_at.strftime("%d/%m/%Y") 
-    return {"situation" => situation, "have_comments" => have_comments, "grade" => grade, "file_delivery_date" => file_delivery_date}
-  end
-
 end

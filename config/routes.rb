@@ -21,7 +21,6 @@ Solar::Application.routes.draw do
     member do
       get :photo
       put :update_photo
-      get :public_area
     end
     collection do
       get :edit_photo
@@ -277,14 +276,17 @@ Solar::Application.routes.draw do
   get :lesson_files, to: "lesson_files#index", as: :lesson_files
 
   resources :assignments do
-    collection do
-      get :student_view
-      get :professor
+    member do
+      get :student
+      put :evaluate
+    end
 
-      get :download_files
-      get "download_public_files/:file_id", to: :download_public_files, as: :download_public_files
-      get "download_public_files/zipped/:user_id", to: :download_public_files, as: :download_zipped_public_files, defaults: {zip: true}
-      get :send_public_files_page
+    collection do
+      get :list
+      get :list_without_layout, to: :list, defaults: {layout: true}
+
+      get :download
+      get :zip_download, to: :download, defaults: {zip: true}
 
       post :upload_file
       delete :delete_file
@@ -293,15 +295,38 @@ Solar::Application.routes.draw do
       put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Assignment", as: :remove_group_from
       put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Assignment", as: :add_group_to
     end
+  end
+  
+  resources :assignment_comments do
+    get :download, on: :collection
+  end
+
+  resources :assignment_files do 
+    collection do
+      get :download
+      get :zip_download, to: :download, defaults: {zip: true}
+    end
+  end
+
+  resources :public_files, except: [:edit, :update] do
+    collection do
+      get :download
+      get :zip_download, to: :download, defaults: {zip: true}
+    end
+  end
+
+  resources :group_assignments, except: [:new] do
+    collection do
+      get :students_with_no_group
+      get :import_list
+      get :list
+    end
     member do
-      get :information
-      get :import_groups_page
-      get :student
-      post :evaluate
-      post :send_comment
-      post :manage_groups
-      post :import_groups
-      delete :remove_comment
+      get :import_participants, to: :participants, defaults: {import: true}
+      get :participants
+      put :remove_participant, to: :change_participant
+      put :add_participant, to: :change_participant, defaults: {add: true}
+      post :import
     end
   end
 

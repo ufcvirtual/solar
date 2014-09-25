@@ -1,0 +1,101 @@
+= simple_form_for(@assignment_comment, html: {id: "comment_form", multipart: true}) do |f|
+  = f.hidden_field :sent_assignment_id, value: @assignment_comment.sent_assignment_id
+  = f.hidden_field :user_id, value: @assignment_comment.user_id
+  .assignment_inner_content.comment_area= f.input :comment, as: :ckeditor, label: false
+  .forum_post_attachment
+    = button_tag t(".attach_file"), class: "btn btn-orange new_file"
+
+    .portfolio_comment_button
+      = button_tag t(:cancel), class: "btn btn_caution cancel_comment", type: :button
+      = button_tag t(:save), class: 'btn btn_main save_comment', type: :button
+
+    %h3.attachment_title.invisible= t(".attached_files")
+
+    = f.simple_fields_for :files do |files|
+      .file_input
+        = files.input :_destroy, as: :hidden, input_html: {value: 0, class: "destroy_input_file", :"data-file-id" => files.object.id}
+        = files.input :attachment, label: false, input_html: {id: "fileupload"}
+
+    .input.list_files_to_send
+      - @assignment_comment.files.each do |file|
+        - if file.persisted?
+          .input.files
+            %label
+            %span#file{:"data-file-id" => file.id}
+              = file.attachment_file_name
+              %i.icon-cross-square.warning.remove_file
+
+= javascript_include_tag "ckeditor/init"
+
+:javascript
+
+  $(function(){
+    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+    CKEDITOR.editorConfig = function(config) {
+      config.toolbar =
+        [
+          { name: 'styles', items : [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] },
+          { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+          { name: 'links', items : [ 'Link', 'Unlink', 'Image', 'Smiley' ] },
+          { name: 'insert', items : ['EqnEditor'] }
+        ];
+
+      config.extraPlugins = 'eqneditor,smiley';
+      config.height = '155px';
+    };
+
+    if (!!$(".list_files_to_send").children().length)
+      $(".attachment_title").removeClass("invisible");
+
+    if ($(".file_input:last").length)
+      var nested_form = $(".file_input:first");
+
+    function add_new_file() {
+      var new_form = nested_form.clone();
+      var forms_on_page = $(".file_input").length;
+      var input_name = $("input[type='file']", new_form).attr("name");
+      input_name = input_name.replace(new RegExp(/\[[0-9]+\]/), "[" + forms_on_page + "]");
+      $("input", new_form).attr("name", input_name);
+
+      $(new_form).insertAfter( nested_form.last() );
+      $("input[type='file']", new_form).click();
+      $(".attachment_title").removeClass("invisible");
+
+      $("input[type='file']", new_form).change(function(){
+        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-square warning remove_file'></i> </span> </div>";
+
+        if ($(".list_files_to_send .files:last").lenght)
+          $(".list_files_to_send .files:last").after(new_file_name);
+        else
+          $(".list_files_to_send").append(new_file_name);
+
+        $(".remove_file").click(function(){
+          var span_file = $(this).parents('span#file');
+
+          $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove();
+          $(span_file).parents('div.input.files').remove();
+
+          if (!$(".list_files_to_send").children().length)
+            $(".attachment_title").addClass("invisible");
+        });
+      });
+    }
+
+    $(".remove_file").click(function(){
+      var span_file = $(this).parents('span#file');
+
+      $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove(); // pra edicao nao serve
+      $("input[data-file-id=" + span_file.data("file-id") + "]").val(1); // edicao: colocar o _destroy com valor 1
+      $(span_file).parents('div.input.files').remove();
+
+      if (!$(".list_files_to_send").children().length)
+        $(".attachment_title").addClass("invisible");
+    });
+
+    $(".new_file").click(function(e){
+      e.preventDefault();
+      add_new_file();
+    });
+
+  });

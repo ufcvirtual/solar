@@ -1170,136 +1170,6 @@ pt_BR:
   not_sent: Não Enviado
   without_group: Sem Grupo
 
-  assignment:
-    assignments: Trabalhos
-    new:
-      groups: Turmas
-    list:
-      "yes": Sim
-      "no": Não
-      groups: "Turmas:"
-      new: Novo Trabalho
-      edit: Editar Trabalho
-      name: Nome do Trabalho
-      availability: Disponibilidade
-      type: Tipo
-      individual: Individual
-      group: Grupo
-      none: Nenhum trabalho cadastrado
-      answers: Respostas
-      choose_at_least_one: "Selecione, ao menos, um trabalho"
-      choose_one: Selecione um trabalho
-    information:
-      begin: Início
-      end: Fim
-      individual_assignments: Atividades individuais
-      group_assignments: Atividades em Grupo
-      title: Título
-      date_range: Período
-      description: Descrição
-      situation: Situação
-      grade: Nota
-      public_area: Área Pública
-      more: mais
-      less: menos
-      students: Alunos
-      title: Portfolio de
-      name: Nome
-      date: Data
-    comments:
-      save: Salvar
-      removed_comment: Comentário removido com sucesso
-      comments: Comentários
-      comments_teacher: Comentários do Professor
-      comment: Comentário
-      comment_sent_success: Comentário enviado com sucesso
-      confirm_comment: Confirma comentário?
-      cancel_comment: Cancelar comentário?
-      comment_canceled: Comentário cancelado
-      new: Novo
-      edit: Editar
-      cancel: Cancelar
-      delete: Excluir
-    evaluation:
-      evaluated_success: Avaliação realizada com sucesso
-      confirm_evaluation: Confirma avaliação?
-      cancel_evaluation: Cancelar avaliação?
-      evaluation_canceled: Avaliação cancelada
-      evaluate: Avaliar
-      change_grade: Editar nota
-      evaluation: Avaliação
-      save: Salvar
-      cancel: Cancelar
-    files:
-      remove_file: Remover arquivo %{file_name}
-      recover_file: Recuperar arquivo %{file_name}
-      sent_by: Enviado por
-      size: Tamanho
-      download_file: Baixar arquivo %{file_name}
-      files: arquivo(s)
-      attached_files : Anexos
-      activity_files: Arquivos da atividade
-      name: Nome
-      delete_msg: Deseja realmente excluir este arquivo?
-      uploaded_success: Arquivo enviado com sucesso
-      deleted_success: Arquivo deletado com sucesso
-      error_no_file_sent: Nenhum arquivo enviado
-      send_file: Upload de Arquivos Para Portfolio
-      send_file_obs: Aguarde o envio completo do arquivo. O tamanho não deve exceder 5MB.
-      send_file_text: "Exemplos de arquivos aceitos:<br />
-      &nbsp;&nbsp;- Documentos do Microsoft Office<br />
-      &nbsp;&nbsp;- Documentos do OpenOffice.org (ODF)<br />
-      &nbsp;&nbsp;- Arquivos Compactados (.zip, .rar...)<br />
-      &nbsp;&nbsp;- Documentos PDF<br />
-      &nbsp;&nbsp;- Arquivos de Video (avi, mpeg,...)<br />
-      &nbsp;&nbsp;- Arquivos de Audio (mp3, wma...)"
-      sent_files: Arquivos enviados
-      error_delete: Erro ao tentar excluir arquivo
-      delete_interval_error: Modificação de arquivos fora do intervalo permitido
-      send_interval_error: Envio de arquivos fora do intervalo permitido
-      download_all_files_zip: Baixar todos arquivos (zip)
-      upload_on_public_area: Enviar arquivos para a área pública
-      sent_on: Enviado em
-      attach_another: Anexar outro arquivo
-      delete: Excluir
-      must_be_selected: Arquivo deve ser selecionado
-      click_to_add_file: Clique aqui para adicionar arquivo
-    notifications:
-      student_with_no_group: Você não faz parte de nenhum grupo
-      date_range_expired: Prazo expirado
-      final_date_smaller_than_offer: Data final não pode ser maior que a da oferta (%{end_date_offer})
-      start_date_greater_than_offer: Data inicial deve ser maior ou igual à data da oferta (%{start_date_offer})
-    group_assignments:
-      group: Grupo
-      groups: Grupos
-      participants: Participantes
-      cancel: Cancelar
-      new_group: Novo grupo
-      import_groups: Importar grupos
-      save: Salvar
-      manage_groups: Gerenciar grupos
-      remove: Remover grupo %{group_name}
-      management_cancel: Alterações canceladas
-      no_participant: Grupo sem participantes
-      students_with_no_group: Alunos sem grupo
-      without_group: Sem grupo
-      management_success: Grupos gerenciados com sucesso
-      delete_error: Grupo não pode ser removido
-      student_move_error: Aluno não pode ser removido
-      assignment_without_groups: Atividade não possui grupos
-      already_evaluated: já avaliado
-      already_sent_files: já enviou arquivos
-      save_management: Salvar alterações?
-      cancel_management: Cancelar alterações?
-      existing_name_error: já existe
-      evaluate: Avaliar
-    import_groups:
-      cancel: Cancelar
-      import_groups: Importar grupos
-      import: Importar
-      no_participant: Grupo sem participantes
-      import_success: Grupos importados com sucesso
-
   # Assignment Comments
   comment_error_delete_file: Erro ao tentar excluir arquivo
 
@@ -1528,6 +1398,8 @@ pt_BR:
 
   # Files
   file_error_nonexistent_file: Arquivo não encontrado
+  send_file_obs: Aguarde o envio completo do arquivo. O tamanho não deve exceder 5MB.
+  send_file_text: "Exemplos de arquivos aceitos:<br />&nbsp;&nbsp;- Documentos do Microsoft Office<br />&nbsp;&nbsp;- Documentos do OpenOffice.org (ODF)<br />&nbsp;&nbsp;- Arquivos Compactados (.zip, .rar...)<br />&nbsp;&nbsp;- Documentos PDF<br />&nbsp;&nbsp;- Arquivos de Video (avi, mpeg,...)<br />&nbsp;&nbsp;- Arquivos de Audio (mp3, wma...)"
 
   ## allocations
   allocations:
@@ -1635,20 +1507,36 @@ pt_BR:
     index:
       expand_enunciation: Expandir enunciado
       compress_enunciation: Comprimir enunciado
-      delete_assignment: Deletar trabalhos
-      edit_assignment: Editar trabalho
+      new: Novo trabalho
+      delete: Deletar trabalhos
+      edit: Editar trabalho
+      name: Nome
+      type: Tipo
+      answers: Possui repostas
+      has_answrs: Sim
+      no_answers: Não
+      availability: Disponibilidade
       attached_files: Arquivos em anexo
+      none: Nenhum trabalho cadastrado
     form:
       groups: Turmas
       files: Arquivos
+      individual: Individual
+      group: Grupo
+      edit: Editar trabalho
+      new: Novo trabalho
     success:
       created: Trabalho criado com sucesso.
       updated: Trabalho atualizado com sucesso.
       deleted: Trabalho deletado com sucesso.
+      evaluated: Trabalho avaliado com sucesso.
     error:
       created: Não foi possível criar trabalho.
       updated: Não foi possível atualizar trabalho.
       deleted: Não foi possível deletar trabalho.
+      evaluate: Não foi possível avaliar trabalho.
+      date_range: Não foi possível avaliar trabalho. Período encerrado.
+      download: Não foi possível fazer o download do arquivo.
     show:
       name: Nome
       enunciation: Enunciado
@@ -1659,10 +1547,150 @@ pt_BR:
       empty_files: Não há arquivos
       groups: Turmas
       assignment_details: Detalhes do trabalho
-    send_public_files_page:
-      title: Envio de arquivos públicos
     student:
-      moved_allocation: "Alocação transferida para outra turma"
+      moved_allocation: Alocação transferida para outra turma
+      group: "Grupo: "
+      participants: "Participantes: "
+      student: "Cursista: "
+      no_participants: Grupo sem participantes
+      begin: Início
+      end: Fim
+      situation: Situação
+      grade: Nota
+    list:
+      individual_assignments: Trabalhos individuais
+      group_assignments: Trabalhos em grupo
+      description: Descrição
+      date_range: Período
+      more: Mais
+      less: Menos
+      situation: Situação
+      grade: Nota
+      comments: Comentários
+      sent_on: Enviado em
+    assignments:
+      participants: Ver participantes
+      groups: Ver grupos
+      import_groups: Importar grupos
+      manage_groups: Gerenciar grupos
+    groups:
+      title: Grupos
+      group: Grupo
+    participants:
+      title: Participantes
+      student: Aluno
+    info:
+      evaluate: Avaliar
+      edit: Alterar nota
+      save: Salvar
+      cancel: Cancelar
+      confirm: Confirma avaliação?
+    files:
+      title: Arquivos da atividade
+      download: Baixar zip
+  assignment_files:
+    list:
+      title_group: Arquivos enviados pelo grupo
+      title_student: Arquivos enviados pelo aluno
+      download: Baixar zip
+      send: Enviar arquivo
+      sent_on: Enviado em
+      sent_by: Enviado por
+      name: Nome
+      size: Tamanho
+    file:
+      delete: Deletar arquivo
+    new:
+      title: Enviar novo arquivo
+    error:
+      download: Não foi possível realizar o download
+      date_range: Não foi possível realizar ação. Período encerrado.
+      remove: Não foi possível deletar arquivo
+      new: Não foi possível enviar arquivo.
+    success:
+      removed: Arquivo deletado com sucesso
+  assignment_comments:
+    list:
+      new: Novo comentário
+      title: Comentários
+      confirm: Confirma cancelamento do comentário?
+    form:
+      attach_file: Anexar arquivo
+      attached_files: Anexos
+    comment:
+      attached_files: Anexos
+      edit: Editar comentário
+      remove: Remover comentário
+    success:
+      new: Comentário criado com sucesso
+      edit: Comentário alterado com sucesso
+      remove: Comentário removido com sucesso
+    error:
+      general_message: Não foi possível realizar ação.
+      date_range_expired: Não foi possível realizar ação. Período encerrado.
+  group_assignments:
+    index:
+      title: Gerenciamento de grupos - %{name}
+      warning: As ações aqui efetuadas serão salvas automaticamente
+      groups: Grupos
+      new: Criar grupo
+      already_evaluated: "Este grupo já foi avaliado, portanto não é possível remover ou adicionar participantes a ele"
+      participants: Participantes
+      select_a_group: Selecione um grupo
+      no_participants: Sem participantes
+      students_without_groups: Alunos sem grupo
+      no_students_without_groups: Sem alunos sem grupo
+      add: "Adicionar ao grupo"
+      remove: "Remover do grupo"
+      confirm: Confirma remoção do grupo?
+    group:
+      edit: Renomear grupo
+      remove: Remover grupo
+      cant_remove: Não é possível remover este grupo
+    import_list:
+      title: Importar grupos para %{name}
+      assignments: Trabalhos
+      groups: Grupos
+      participants: Participantes
+      select_an_assignment: Selecione um trabalho
+      select_a_group: Selecione um grupo
+      import: Importar
+    list:
+      no_groups: Sem grupos
+      participants: Ver participantes
+    error:
+      evaluated: Não foi possível realizar ação. Grupo já foi avaliado.
+      has_files: Não foi possível realizar ação. Aluno já enviou arquivo para o grupo.
+      general_message: Não foi possível realizar ação.
+      cant_remove: Não foi possível realizar ação. Grupo já foi avaliado ou possui arquivos.
+      date_range_expired: Não foi possível realizar ação. Período encerrado.
+    success: 
+      imported: Grupos e participantes importados com sucesso.
+    new:
+      new_group_name: Novo grupo
+  public_files:
+    index:
+      title: "Área pública de %{name}"
+      file: Nome
+      size: Tamanho
+      sent_on: Enviado em
+      download: Baixar zip
+    file:
+      remove: Remover arquivo
+    list:
+      title: Área pública
+      file: Nome
+      size: Tamanho
+      sent_on: Enviado em
+      new: Novo arquivo público
+    new:
+      title: Enviar novo arquivo público
+    success:
+      new: Arquivo enviado com sucesso
+      removed: Arquivo removido com sucesso
+    error:
+      new: Não foi possível enviar arquivo.
+      remove: Não foi possível remover arquivo.
   groups:
     list:
       all: Selecionar Todos
@@ -2472,11 +2500,6 @@ pt_BR:
       request_profile: Solicitar perfil
       cancel_profile: Cancelar perfil
       confirm: Tem certeza de que deseja cancelar este perfil?
-    public_area:
-      title: "Área pública de %{name}"
-      file: Arquivo
-      size: Tamanho
-      sent_on: Enviado em
 
   mysolar:
     synchronize: Sincronizar com Módulo Acadêmico

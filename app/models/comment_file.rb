@@ -1,5 +1,4 @@
 class CommentFile < ActiveRecord::Base
-
   belongs_to :assignment_comment
 
   has_one :sent_assignment, through: :assignment_comment
@@ -14,18 +13,4 @@ class CommentFile < ActiveRecord::Base
   validates_attachment_content_type_in_black_list :attachment
 
   default_scope :order => 'attachment_updated_at DESC'
-
-  def delete_comment_file
-    begin
-      file = "#{::Rails.root.to_s}/media/assignment/comments/#{id}_#{attachment_file_name}" #recupera arquivo
-      if delete #se deletar arquivo da base de dados com sucesso
-        File.delete(file) if File.exist?(file) #deleta arquivo do servidor
-      else
-        raise t(:comment_error_delete_file)
-      end
-    rescue Exception => error
-      flash[:alert] = error.message
-    end
-  end
-
 end

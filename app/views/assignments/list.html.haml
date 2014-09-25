@@ -1,0 +1,39 @@
+.assignments_list
+  .block_wrapper
+    .block_title
+      %h2
+        %i.icon-suitcase
+        = t(".individual_assignments")
+    .block_content
+      = render partial: (@student ? "student_assignments" : "assignments"), locals: {assignments: @assignments.where(type_assignment: Assignment_Type_Individual)}
+
+  .block_wrapper
+    .block_title
+      %h2
+        %i.icon-suitcase
+        = t(".group_assignments")
+    .block_content
+      = render partial: (@student ? "student_assignments" : "assignments"), locals: {assignments: @assignments.where(type_assignment: Assignment_Type_Group)}
+   
+  = render partial: "public_files/list", locals: {public_files: @public_files}
+
+:javascript
+  $(function(){
+    $(".enunciation_more").click(function(){
+      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "none");
+      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "block");
+      return false;
+    });
+
+    $(".enunciation_less").click(function(){
+      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "block");
+      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "none");
+      return false;
+    });
+
+    $(".btn.participants").click(function(){
+      $(".participants_box").not("."+$(this).attr("id")).addClass("invisible");
+      $($(this).parents("tr")[0]).find(".participants_box").toggleClass("invisible");
+      return false;
+    });
+  });

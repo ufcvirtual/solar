@@ -10,5 +10,4 @@ class AssignmentEnunciationFile < ActiveRecord::Base
   has_attached_file :attachment,
     :path => ":rails_root/media/assignment/enunciation/:id_:basename.:extension",
     :url => "/media/assignment/enunciation/:id_:basename.:extension"
-
 end

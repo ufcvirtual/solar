@@ -1,7 +1,7 @@
 .new_assignment
 
   = simple_form_for @assignment, html: {id: 'assignment_form'} do |f|
-    %h1#lightBoxDialogTitle= t((@assignment.persisted? ? :edit : :new), scope: "assignment.list")
+    %h1#lightBoxDialogTitle= t((@assignment.persisted? ? ".edit" : ".new"))
     %span.form_requirement= t(:required_fields)
 
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
@@ -19,7 +19,7 @@
           .left= s.input :start_date, as: :string, input_html: {id: 'assignment_start_date', value: l(@assignment.schedule.start_date.to_date, format: :datepicker)}
           .right= s.input :end_date, as: :string, input_html: {id: 'assignment_end_date', value: l(@assignment.schedule.end_date.to_date, format: :datepicker)}
 
-      - types = {:"#{t(:individual, scope: [:assignment, :list])}" => Assignment_Type_Individual, :"#{t(:group, scope: [:assignment, :list])}" => Assignment_Type_Group}
+      - types = {:"#{t('.individual')}" => Assignment_Type_Individual, :"#{t('.group')}" => Assignment_Type_Group}
       = f.input :type_assignment, collection: types, include_blank: false, required: true
 
       .input.files
@@ -38,13 +38,13 @@
               %label
               %span#file{:"data-file-id" => ef.id}
                 = ef.attachment_file_name
-                %i.icon-cross-circle.warning.remove_file
+                %i.icon-cross-square.warning.remove_file
 
       = render "groups/codes"
 
       .right_buttons
         = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
-        = button_tag t(:save), :class => "btn btn_main btn_lightbox", :type => "button", :id => "save"
+        = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "save"
 
 :css
   .schedule_dates .input input, #assignment_type_assignment {
@@ -76,7 +76,7 @@
       $("input[type='file']", new_form).click();
 
       $("input[type='file']", new_form).change(function(){
-        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-circle warning remove_file'></i> </span> </div>";
+        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-square warning remove_file'></i> </span> </div>";
 
         if ($(".list_files_to_send .files:last").lenght)
           $(".list_files_to_send .files:last").after(new_file_name);

@@ -1,0 +1,42 @@
+- if assignments.any?
+  %table.tb_list
+    %thead
+      %tr.lines
+        %th= t("assignments.list.description")
+        %th.center.date{style: "width: 22%;"}= t("assignments.list.date_range")
+        %th{align: "right", style: "width:80px"}= t("assignments.list.situation")
+        %th.center{style: "width:40px"}= t("assignments.list.grade")
+        %th.center.no_sort{style: "width:80px"}= t("assignments.list.comments")
+    %tbody
+      - assignments.each do |assignment|
+        - user_id = current_user.id
+        - info    = assignment.info(user_id, @allocation_tag_id)
+        - link    = student_assignment_path(assignment.id, student_id: user_id, group_id: info[:group_id])
+        %tr.lines
+          %td
+            %div
+              - if info[:situation] == "without_group"
+                .title= assignment.name
+              - else
+                = link_to assignment.name, link, {class: 'link_content'}
+            - if assignment.enunciation.size > 180 
+              .enunciation
+                .enunciation_slice= assignment.enunciation.slice(0..180) << "..."
+                .enunciation_complete= assignment.enunciation
+                .more_or_less
+                  %a.enunciation_more.link_content{href: "#"}= t("assignments.list.more")
+                  %a.enunciation_less.link_content{href: "#"}= t("assignments.list.less")
+            - else
+              = assignment.enunciation
+          %td.center= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
+          %td.center
+            - if info[:situation] == "without_group"
+              %div{class: "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
+            - else
+              = link_to t(info[:situation].to_sym), link, class: "assignment_#{info[:situation]}"
+          %td.center
+            %span.activity_grade= info[:grade] || "-"
+          %td.center= content_tag :i, nil, class: "icon-comment big #{info[:has_comments] ? '' : 'empty'}"
+
+- else
+  .block_content.block_content_text= t(:itens_not_found)

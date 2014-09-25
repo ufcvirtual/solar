@@ -1,0 +1,2 @@
+module PublicFilesHelper
+end

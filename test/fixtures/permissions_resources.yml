@@ -47,13 +47,8 @@ uc9:
 # assignments
 assig1:
   profile_id: 1
-  resource_id: 27
-  per_id: true
-
-assig2:
-  profile_id: 1
-  resource_id: 30
-  per_id: true
+  resource_id: 24
+  per_id: false
 
 assig3:
   profile_id: 1
@@ -68,11 +63,6 @@ assig4:
 assig5:
   profile_id: 1
   resource_id: 36
-  per_id: true
-
-assig6:
-  profile_id: 1
-  resource_id: 37
   per_id: true
 
 assig7:
@@ -269,19 +259,9 @@ assigpt1:
   resource_id: 24
   per_id: true
 
-assigpt2:
-  profile_id: 2
-  resource_id: 28
-  per_id: true
-
 assigpt3:
   profile_id: 2
   resource_id: 29
-  per_id: true
-
-assigpt4:
-  profile_id: 2
-  resource_id: 30
   per_id: true
 
 assigpt5:
@@ -294,11 +274,6 @@ assigpt6:
   resource_id: 32
   per_id: true
 
-assigpt7:
-  profile_id: 2
-  resource_id: 33
-  per_id: true
-
 assigpt8:
   profile_id: 2
   resource_id: 34
@@ -309,24 +284,9 @@ assigpt9:
   resource_id: 35
   per_id: true
 
-assigpt10:
-  profile_id: 2
-  resource_id: 38
-  per_id: true
-
 assigpt11:
   profile_id: 2
   resource_id: 39
-  per_id: true
-
-assigpt12:
-  profile_id: 2
-  resource_id: 40
-  per_id: true
-
-assigpt13:
-  profile_id: 2
-  resource_id: 41
   per_id: true
 
 assigpt14:
@@ -549,19 +509,9 @@ assigta1:
   resource_id: 24
   per_id: true
 
-assigta2:
-  profile_id: 3
-  resource_id: 28
-  per_id: true
-
 assigta3:
   profile_id: 3
   resource_id: 29
-  per_id: true
-
-assigta4:
-  profile_id: 3
-  resource_id: 30
   per_id: true
 
 assigta5:
@@ -574,11 +524,6 @@ assigta6:
   resource_id: 32
   per_id: true
 
-assigta7:
-  profile_id: 3
-  resource_id: 33
-  per_id: true
-
 assigta8:
   profile_id: 3
   resource_id: 34
@@ -589,24 +534,9 @@ assigta9:
   resource_id: 35
   per_id: true
 
-assigta10:
-  profile_id: 3
-  resource_id: 38
-  per_id: true
-
 assigta11:
   profile_id: 3
   resource_id: 39
-  per_id: true
-
-assigta12:
-  profile_id: 3
-  resource_id: 40
-  per_id: true
-
-assigta13:
-  profile_id: 3
-  resource_id: 41
   per_id: true
 
 assigta14:
@@ -836,16 +766,6 @@ tutor_p_14:
   profile_id: 4
   resource_id: 55
   per_id: false
-
-tutor_p_15:
-  profile_id: 4
-  resource_id: 28
-  per_id: true
-
-tutor_p_16:
-  profile_id: 4
-  resource_id: 30
-  per_id: true
 
 tutor_p_17:
   profile_id: 4
@@ -1662,16 +1582,6 @@ ucmon9:
 
 # assignments
 # visão aluno
-assigmon1:
-  profile_id: 13
-  resource_id: 27
-  per_id: true
-
-assigmon2:
-  profile_id: 13
-  resource_id: 30
-  per_id: true
-
 assigmon3:
   profile_id: 13
   resource_id: 34
@@ -1687,20 +1597,10 @@ assigmon5:
   resource_id: 36
   per_id: true
 
-assigmon6:
-  profile_id: 13
-  resource_id: 37
-  per_id: true
-
 # visão prof
 assigmon7:
   profile_id: 13
   resource_id: 24
-  per_id: true
-
-assigmon8:
-  profile_id: 13
-  resource_id: 28
   per_id: true
 
 # discussion

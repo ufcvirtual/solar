@@ -7,6 +7,7 @@ $btn_main-color: #005cc0;
 $btn_caution-color: #ee5f5b;
 $btn-width: 54px; 
 $btn-height: 28px;
+$btn-orange: #ffe6cc;
 
 /* codigo para remover padding extra que o firefox adiciona automaticamente */
 button::-moz-focus-inner {
@@ -364,4 +365,11 @@ $btn-initial-file-color-final: #f9c143;
   .right {
     float: right;
   }
+}
+
+.btn-orange{
+  background: $btn-orange;
+  @include filter-gradient($btn-orange, darken($btn-orange, 10%));
+  @include background-image(linear-gradient($btn-orange, darken($btn-orange, 15%)));
+  background-repeat: repeat-x;
 }

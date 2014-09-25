@@ -1,0 +1,43 @@
+- if assignments.any?
+  %table.tb_list
+    %thead
+      %tr.lines
+        %th= t("assignments.list.description")
+        %th.center.date{style: "width: 22%;"}= t("assignments.list.date_range")
+        %th.no_sort{style: "width: 19%"}
+    %tbody
+      - assignments.each do |assignment|
+        - is_group_type = (assignment.type_assignment == Assignment_Type_Group)
+        %tr.lines
+          %td
+            %div.title= assignment.name
+            - if assignment.enunciation.size > 180 
+              .enunciation
+                .enunciation_slice= assignment.enunciation.slice(0..180) << "..."
+                .enunciation_complete= assignment.enunciation
+                .more_or_less
+                  %a.enunciation_more.link_content{href: "#"}= t("assignments.list.more")
+                  %a.enunciation_less.link_content{href: "#"}= t("assignments.list.less")
+            - else
+              = assignment.enunciation
+            .participants_box.invisible{class: "assignment-#{assignment.id}"}
+              = render partial: (is_group_type ? "groups" : "participants"), locals: {assignment: assignment}
+          %td.center{style: "vertical-align: top;"}= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
+          %td.center{style: "vertical-align: top;"}
+            = link_to content_tag(:i, nil, class: "icon-users"), "#", class: "btn participants", id: "assignment-#{assignment.id}", :"data-tooltip" => (is_group_type ? t(".groups") : t(".participants"))
+            - if is_group_type
+              - in_time = assignment.in_time?(@allocation_tag_id, current_user.id)
+              - if @can_manage
+                = link_to content_tag(:i, nil, class: "icon-user-add"), group_assignments_path(assignment_id: assignment.id), class: "btn manage_groups #{in_time ? '' : 'disabled'}", :"data-tooltip" => t(".manage_groups"), disabled: not(in_time)
+              - if @can_import
+                = link_to content_tag(:i, nil, class: "icon-import"), import_list_group_assignments_path(assignment_id: assignment.id), class: "btn import_groups #{in_time ? '' : 'disabled'}", :"data-tooltip" => t(".import_groups"), disabled: not(in_time)
+
+- else
+  .block_content.block_content_text= t(:itens_not_found)
+
+= javascript_include_tag 'group_assignments'
+ 
+:javascript
+  $(function(){
+    $(".manage_groups, .import_groups").not(".disabled").call_fancybox();
+  });

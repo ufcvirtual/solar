@@ -1,0 +1,23 @@
+- groups = GroupAssignment.all_by_assignment_id(assignment.id, @allocation_tag_id)
+.block_title
+  %h2{align: "center"}= t(".title")
+- unless groups.empty?
+  %table.tb_list
+    %thead
+      %tr.lines
+        %th= t(".group")
+        %th{style: "width: 10%"}= t("assignments.list.sent_on")
+        %th{style: "width:20%"}= t("assignments.list.situation")
+        %th{style: "width:10%"}= t("assignments.list.grade")
+        %th{style: "width:20%"}= t("assignments.list.comments")
+    %tbody
+      - groups.each_with_index do |group|
+        - info = assignment.info(nil, @allocation_tag_id, group.id)
+        %tr
+          %td= link_to group.group_name, student_assignment_path(assignment.id, group_id: group.id), class: :link_content
+          %td= info[:file_sent_date]
+          %td{class: "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
+          %td= info[:grade] || "-"
+          %td= content_tag :i, nil, class: "icon-comment big #{info[:has_comments] ? '' : 'empty'}"
+- else
+  .text_none=t :itens_not_found

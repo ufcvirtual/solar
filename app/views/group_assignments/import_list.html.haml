@@ -1,0 +1,30 @@
+.group_assignments.header
+  %h1#lightBoxDialogTitle= t(".title", name: @assignment.name)
+
+.block_wrapper.label_display
+  .first_column.of_three
+    .block_title
+      %h2= t(".assignments")
+    .labels
+      - @assignments.each do |assignment|
+        .label{onclick: "select_assignment(this)", :"data-url" => list_group_assignments_path(assignment_id: assignment.id), :"data-assignment-id" => assignment.id}= assignment.name
+
+  .groups_column.middle_column
+    .block_title
+      %h2= t(".groups")
+    %table.tb_list
+      %tbody
+        %td.text_none{colspan: 2}= t(".select_an_assignment")
+
+  .participants_column.last_column.of_three
+    .block_title
+      %h2= t(".participants")
+    .block_content
+      %table.tb_list
+        %tbody
+          %td.text_none{colspan: 2}= t(".select_a_group")
+
+  .final_buttons
+    = link_to_function t(".import"), "import_group(this)", class: "btn btn_main", :"data-url" => import_group_assignment_path(@assignment.id, assignment_id: "aid")
+
+= javascript_include_tag "group_assignments"

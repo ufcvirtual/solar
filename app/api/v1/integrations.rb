@@ -145,7 +145,6 @@ module V1
         end
 
         put "/" do
-
           begin
             if params[:type_merge]
               replicate_content_groups, receive_content_groups = params[:secundary_groups], [params[:main_group]]

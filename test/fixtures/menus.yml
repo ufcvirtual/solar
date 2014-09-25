@@ -31,13 +31,13 @@ forum_ativ:
   order: 1
   resource_id: 22
 
-# portfolio do aluno
+# portfolio
 portfolio_ativ:
   id: 202
   parent_id: 20
   name: menu_portfolio
   order: 2
-  resource_id: 27
+  resource_id: 24
 
 prova_ativ:
   id: 203
@@ -65,13 +65,6 @@ webconf_ativ:
   name: menu_webconference
   order: 6
   resource_id: 162
-
-portfolio_professor_ativ:
-  id: 207
-  parent_id: 20
-  name: menu_portfolio
-  order: 7
-  resource_id: 24
 
 acomp_ativ_teacher:
   id: 208

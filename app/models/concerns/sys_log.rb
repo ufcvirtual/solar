@@ -41,7 +41,8 @@ module SysLog
         generic_log(sobj)
       end
 
-    rescue
+    rescue => error
+      raise "#{error}"
       # do nothing
     end
 
@@ -64,7 +65,9 @@ module SysLog
         academic_allocation_id = nil
         tbname = obj.try(:class).try(:table_name).to_s.singularize.to_sym if obj.try(:class).respond_to?(:table_name)
         description = if not(tbname.nil?) and params.has_key?(tbname) and not(obj.nil?)
-          "#{sobj}: #{obj.id}, #{params[tbname]}"
+          "#{sobj}: #{obj.id}, #{obj.attributes}" # quando é assim e envia novo comentário, não manda os arquivos (do outro jeito tb n, mas pelo menos dizia q algo foi enviado ou removido)
+          # "#{sobj}: #{obj.id}, #{params[tbname]}"
+
         elsif params[:id].present?
           # gets any extra information if exists
           info = params.except(:controller, :action, :id)

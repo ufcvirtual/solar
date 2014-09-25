@@ -1,9 +1,0 @@
-%h1#lightBoxDialogTitle= t(".title")
-.block_content{style: "padding: 5px;"}
-  = form_for(:public_area, url: upload_file_assignments_path(type: 'public')) do |f|
-    = f.file_field :public_file, name: :public_file
-    .block_content_gray{style: "padding: 5px;"}
-      %p=raw t(:send_file_obs, scope: [:assignment, :files])
-      %p=raw t(:send_file_text, scope: [:assignment, :files])
-    #post_attachment_form_submit
-      = f.submit t(:save), class: "btn btn_defailt"

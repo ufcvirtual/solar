@@ -96,3 +96,22 @@
     float: left;
   }
 }
+
+.groups{
+  .no_groups {
+    display: none;
+    color: #003E7A;
+    font-size: 10pt;
+  }
+}
+
+tbody .groups, .input .groups{
+  display: inline-block;
+  width: 300px;
+  margin: 0px;
+}
+
+.groups, .groups_tags {
+  font-size: 11px;
+  padding-left: 2px;
+}

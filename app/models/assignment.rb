@@ -37,8 +37,6 @@ class Assignment < Event
     SentAssignment.joins(:academic_allocation).where(academic_allocations: {academic_tool_id: self.id, allocation_tag_id: group.allocation_tag.id}).empty?
   end
 
-  # não pode dar unbind nem remover se tiver sent_assignment? (eles pertencem a uma academic_allocation)
-
   def student_group_by_student(student_id, allocation_tag_id)
     (self.type_assignment == Assignment_Type_Group) ?
       (GroupAssignment.first(
@@ -50,32 +48,6 @@ class Assignment < Event
   def sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, user_id, group_assignment_id)
     SentAssignment.joins(:academic_allocation).where(user_id: user_id, group_assignment_id: group_assignment_id, academic_allocations: {academic_tool_id: self.id, allocation_tag_id: allocation_tag_id}).first
   end   
-
-  ## Recupera situação do aluno na atividade
-  def situation_of_student(allocation_tag_id, student_id, group_assignment_id = nil)
-    student_group = student_group_by_student(student_id, allocation_tag_id) unless student_id.nil?
-    user_id = (type_assignment == Assignment_Type_Group) ? nil : student_id
-    group_id = (student_group.nil? ? group_assignment_id : student_group.id) # se aluno estiver em grupo, recupera id
-    sent_assignment = sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, user_id, group_assignment_id) 
-
-    if schedule.start_date.to_date > Date.current
-      situation = "not_started"  
-    elsif (not sent_assignment.nil? and  not sent_assignment.grade.nil?)
-      situation = "corrected"
-    elsif type_assignment == Assignment_Type_Group and group_id.nil?
-      situation = "without_group"
-    elsif (not sent_assignment.nil? and sent_assignment.assignment_files.size > 0)
-      situation = "sent"
-    elsif (sent_assignment.nil? or sent_assignment.assignment_files.size == 0) and schedule.end_date.to_date >= Date.current
-      situation = "send"
-    elsif (sent_assignment.nil? or sent_assignment.assignment_files.size == 0) and schedule.end_date.to_date < Date.current
-      situation = "not_sent"
-    else
-      situation = "-"
-    end
-
-    return situation
-  end
 
   def closed?
     schedule.end_date.to_date < Date.today
@@ -101,16 +73,16 @@ class Assignment < Event
     end
 
     extra and period_end_date.to_date >= Date.today
-  end
 
-  def on_evaluation_period?(allocation_tag, user_id)
-    #### falta alguma nova verificacao?
-    assignment_in_time?(allocation_tag, user_id)
+    # em fórum tá assim:
+    # ((self.allocation_tags.map {|at| at.is_observer_or_responsible?(user_id)}).include?(true) and self.closed?) ?
+    #   ((self.schedule.end_date.to_date + Discussion_Responsible_Extra_Time) >= Date.today) : false
   end
 
   ## Verifica período que o responsável pode alterar algo na atividade
-  def assignment_in_time?(allocation_tag, user_id)
-    (verify_date_range(schedule.start_date, schedule.end_date, Date.today) or extra_time?(allocation_tag, user_id))
+  #  procurar por assignment_in_time?
+  def in_time?(allocation_tag_id, user_id)
+    (verify_date_range(schedule.start_date, schedule.end_date, Date.today) or extra_time?(AllocationTag.find(allocation_tag_id), user_id))
   end
 
   ## Verifica se uma data esta em um intervalo de outras
@@ -126,50 +98,38 @@ class Assignment < Event
     return students_of_class
   end
 
-  ## Recupera as atividades de determinado tipo de uma turma e informações da situação de determinado aluno nela
-  def self.student_assignments_info(group_id, student_id, type_assignment)
-    assignments = Assignment.all(
-      joins: [{academic_allocations: :allocation_tag}, :schedule],
-      conditions: ["allocation_tags.group_id = ? AND assignments.type_assignment = ?", group_id, type_assignment],
-      select: ["assignments.id", "schedule_id", "schedules.end_date", "name", "enunciation", "type_assignment"])
-      # atividades da turma do tipo escolhido
-
-    assignments_grades, group_assignments_ids, has_comments, situation = [], [], [], [] # informações da situação do aluno
-
-    assignments.each_with_index do |assignment, idx|
-      student_group = assignment.student_group_by_student(student_id, AllocationTag.where(group_id: group_id).first.id)
-
-      user_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student_id
-      group_assignments_ids[idx] = (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id deste
-     
-      allocation_tag_id = AllocationTag.find_by_group_id(group_id).id
-
-      sent_assignment = assignment.sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, user_id,group_assignments_ids[idx])
-
-      assignments_grades[idx] = sent_assignment.nil? ? nil : sent_assignment.grade #se tiver sent_assignment, tenta pegar nota
-      has_comments[idx] = sent_assignment.nil? ? nil :  (not sent_assignment.assignment_comments.empty?) # verifica se há comentários para o aluno
-      situation[idx] = assignment.situation_of_student(allocation_tag_id, student_id)
+  def info(user_id, allocation_tag_id, group_id = nil)
+    academic_allocation = AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_id: self.id, academic_tool_type: "Assignment").first
+    sent_assignments    = academic_allocation.sent_assignments
+    params = if self.type_assignment == Assignment_Type_Group
+      group_id = GroupAssignment.joins(:group_participants).where(group_participants: {user_id: user_id}, group_assignments: {academic_allocation_id: academic_allocation.id}).first.try(:id) if group_id.nil?
+      {group_assignment_id: group_id}
+    else
+      {user_id: user_id}
     end
 
-    return {"assignments" => assignments, "groups_ids" => group_assignments_ids, "assignments_grades" => assignments_grades, "has_comments" => has_comments, "situation" => situation}
+    sent_assignment = sent_assignments.where(params).first
+    grade, comments, files = sent_assignment.try(:grade), sent_assignment.try(:assignment_comments), sent_assignment.try(:assignment_files)
+    has_files = (not(files.nil?) and files.any?)
+    file_sent_date = (has_files ? I18n.l(files.first.attachment_updated_at, format: :normal) : " - ")
+    {situation: self.situation(has_files, not(group_id.nil?), grade), grade: grade, has_comments: (not(comments.nil?) and comments.any?), has_files: has_files, group_id: group_id, file_sent_date: file_sent_date}
   end
 
-  def user_can_access_assignment?(allocation_tag, current_user_id, user_id, group_assignment_id = nil)
-    current_user_id         = current_user_id.to_i
-    student_of_class        = !allocations.where(profile_id: Profile.student_profile).where(:user_id => current_user_id).empty?
-    responsible_or_observer = allocation_tag.is_observer_or_responsible?(current_user_id)
-    can_access = (user_id.to_i == current_user_id)
-
-    if type_assignment == Assignment_Type_Group
-      academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id, id, 'Assignment')
-      group_assignment    = GroupAssignment.find_by_id_and_academic_allocation_id(group_assignment_id, academic_allocation.id)
-      can_access = group_assignment.group_participants.map(&:user_id).include?(current_user_id) unless group_assignment.nil?
+  def situation(has_files, has_group, grade = nil)
+    case
+      when schedule.start_date.to_date > Date.current; "not_started"
+      when not(grade.nil?); "corrected"
+      when has_files; "sent"
+      when (self.type_assignment == Assignment_Type_Group and not(has_group)); "without_group"
+      when (schedule.end_date.to_date >= Date.today); "send"
+      when (schedule.end_date.to_date < Date.today); "not_sent"
+      else
+        "-"
     end
-    return (responsible_or_observer or (student_of_class and can_access))
   end
 
   def students_without_groups(allocation_tag)
-    academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id,self.id, 'Assignment')
+    academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id, self.id, 'Assignment')
     students_in_class   = Assignment.list_students_by_allocations(allocation_tag.id).map(&:id)
     students_with_group = (academic_allocation.nil? ? [] : academic_allocation.group_assignments.map(&:group_participants).flatten.map(&:user_id))
     students            = [students_in_class - students_with_group].flatten.compact.uniq
@@ -177,3 +137,4 @@ class Assignment < Event
   end
 
 end
+

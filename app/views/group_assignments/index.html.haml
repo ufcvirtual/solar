@@ -1,0 +1,46 @@
+.group_assignments.header
+  %h1#lightBoxDialogTitle= t(".title", name: @assignment.name)
+  %span.form_requirement= t(".warning")
+
+.block_wrapper.label_display
+  .groups_column.first_column.of_three
+    .block_title
+      %h2= t(".groups")
+      %span.right_buttons
+        = button_tag content_tag(:i, nil, class: "icon-plus"), class: "btn btn_main new_group", :"data-tooltip" => t(".new")
+
+    .labels
+      - @groups.each do |group|
+        - evaluated = group.evaluated?
+        .label{class: (evaluated ? "disabled" : ""), :"data-url" => participants_group_assignment_path(group.id), onclick: "select_group(this)", :"data-group-id" => group.id, :"data-message" => (evaluated ? t(".already_evaluated") : "")}
+          = render partial: "group", locals: {group: group}
+
+  .participants_column.middle_column
+    .block_title
+      %h2= t(".participants")
+    .block_content
+      %table.tb_list
+        %tbody
+          %td.text_none{colspan: 2}= t(".select_a_group")
+
+  .students_without_groups_column.last_column.of_three
+    .block_title
+      %h2= t(".students_without_groups")
+      / .right_buttons
+      /   = text_field_tag :search_student, nil, :"data-column" => "all", type: :search, class: "search", placeholder: "Buscar aluno", width: 30
+    .block_content
+      %table.tb_list
+        %tbody{:"data-assignment-id" => @assignment.id}
+          = render partial: "students_with_no_group", locals: {students: @students_without_group}
+      .text_none.empty_message{class: (@students_without_group.any? ? "hide_message" : "")}= t(".no_students_without_groups")
+
+= javascript_include_tag "group_assignments", "tooltip"
+
+:javascript
+  $(function(){
+    $(".new_group").click(function(){
+      $.post("#{group_assignments_path(assignment_id: @assignment.id)}", function(data){
+        $(".groups_column .labels").prepend(data);
+      });
+    });
+  });

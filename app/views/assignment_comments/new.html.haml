@@ -1,0 +1,33 @@
+%table.assignment_comment
+  %tr
+    %td.assignment_comment_head
+      .assignment_user_comment= @user.nick
+      .assignment_comment_date=l Date.current
+  %tr
+    %td.assignment_comment_form{colspan: "2"}
+      = render "form"
+
+:javascript
+  $(function(){
+    $(".cancel_comment").click(function(){
+      if(confirm("#{t('assignment_comments.list.confirm')}")){
+        cancel_new_comment();
+        $("#no_itens_message_comment").show();
+      }
+    });
+
+    $(".save_comment").click(function(){
+      var content = $('div.ckeditor .cke_contents iframe').contents().find('body').html();
+      if (content != "<p><br></p>" && content != "")
+        $('textarea.ckeditor').html(content); 
+
+      $('#comment_form').serialize_and_submit({
+        files: true,
+        prepend_to_list: $(".comments_list"),
+        complement_success: function(){
+          cancel_new_comment();
+          flash_message("#{t('assignment_comments.success.new')}", "notice");
+        }
+      });
+    });
+  });

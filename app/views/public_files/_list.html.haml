@@ -1,0 +1,30 @@
+- if can? :create, PublicFile
+  .block_wrapper
+    .block_title
+      %h2
+        %i.icon-suitcase
+        = t(".title")
+      .right_buttons
+        = link_to content_tag(:i, nil, class: "icon-plus"), new_public_file_path, class: "btn btn_main", id: "new_public_file", :"data-tooltip" => t(".new")
+    .block_content
+      - no_files = (public_files.blank?)
+      %table.tb_list
+        %thead{style: (no_files ? "display: none" : "")}
+          %tr.lines
+            %th.no_sort
+            %th= t(".file")
+            %th= t(".size")
+            %th= t(".sent_on")
+            %th.no_sort
+        %tbody.public_files
+          - unless no_files
+            - public_files.each do |file|
+              = render partial: "public_files/file", locals: {file: file, destroy: true}
+      .text_none.empty_message{class: (no_files ? "" : "hide_message")}= t(:itens_not_found)
+
+= javascript_include_tag "assignments"
+
+:javascript
+  $(function(){
+    $("#new_public_file").call_fancybox();
+  });

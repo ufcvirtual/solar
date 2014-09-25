@@ -10,5 +10,27 @@
 }
 
 .schedule_dates .right{
-	margin-right: 100px;
+  margin-right: 100px;
+}
+
+
+.assignments_list{
+  .title{
+    color: #DCA727;
+  }
+}
+
+.new_assignment{
+  .input.files{
+    #file{
+      padding: 10px;
+      margin-left: -150px;
+    }
+  }
+
+  i.remove_file{
+    padding: 5px;
+    color: #DC5869;
+    cursor: pointer;
+  }
 }

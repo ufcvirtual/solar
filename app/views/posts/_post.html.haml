@@ -48,6 +48,7 @@
               - if post.can_be_answered? and can_post
                 = link_to_function content_tag(:i, nil, class: 'icon-reply'), "new_post(this, #{post.id});", class: "btn response_post", level: post.level, :'data-tooltip'=> t(".answer")
             - else
+              = button_tag content_tag(:i, nil, class: 'icon-paperclip'), class: "btn btn_disabled", disabled: true, :'data-tooltip'=> t(".attach_file")
               = button_tag content_tag(:i, nil, class: 'icon-trash'), class: "btn btn_disabled", disabled: true, :'data-tooltip'=> t(".remove")
               = button_tag content_tag(:i, nil, class: 'icon-edit'), class: "btn btn_disabled", disabled: true, :'data-tooltip'=> t(".edit")
               = button_tag content_tag(:i, nil, class: 'icon-reply'), class: "btn btn_disabled", disabled: true, :'data-tooltip'=> t(".answer")

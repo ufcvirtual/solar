@@ -1,0 +1,7 @@
+%tr.lines
+  %td{:"data-tooltip" => file.attachment_file_name}= link_to file.attachment_file_name.truncate(15), download_assignment_files_path(id: file.id), {class: "link_content"}
+  %td.right= format('%.2f KB', file.attachment_file_size/1024.0)
+  %td.center= l(file.attachment_updated_at, format: :at_date)
+  %td.center= file.user.name
+  - if @own_assignment
+    %td.center{:"data-link-delete" => assignment_file_path(file.id), :"data-tooltip" => t(".delete"), onclick: "delete_file(this)"}= content_tag(:i, nil, class: "icon-trash")

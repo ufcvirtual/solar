@@ -92,6 +92,18 @@ table.tb_list {
   td.file_data_info {
     color: #787878;
   }
+
+  td.center, th.center{
+    text-align: center;
+  }
+
+  td .title{
+    color: #21578B;
+  }
+
+  thead tr.lines{
+    color: #6B6B6B;
+  }
 }
 
 table.user-courses tbody.offers {

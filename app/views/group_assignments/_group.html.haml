@@ -1,0 +1,7 @@
+- can_remove = group.can_remove?
+= group.group_name
+.buttons
+  = content_tag(:i, nil, class: "icon-edit edit", onclick: "edit_group(this)", :"data-tooltip" => t(".edit"))
+  = content_tag(:i, nil, class: "icon-cross #{can_remove ? 'remove' : 'cant_remove'}", onclick: (can_remove ? "remove_group(this)" : ""), :"data-tooltip" => (can_remove ? t(".remove") : t(".cant_remove")))
+
+= javascript_include_tag "tooltip"

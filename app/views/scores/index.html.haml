@@ -35,7 +35,7 @@
                 - grade_link = t("assignment_#{grade}", default: grade)
                 %td{class: "assignment_#{grade}"}
                   - if grade == "without_group"
-                    = link_to t(:assignment_wg), information_assignment_path(assignment.id)
+                    = link_to t(:assignment_wg), list_assignments_path
                   - else
                     = link_to grade_link, student_assignment_path(assignment.id, student_id: student.id, group_id: @scores["students_groups"][idx][idx2])
               - if @assignments.empty?
