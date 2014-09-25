@@ -3,16 +3,16 @@
 
   .form-inputs.block_content.show
     .input
-      = label_tag t(".name"), nil, class: "form_label form_label_align"
+      = label_tag t(".name"), nil, class: "form_label"
       %span.label_info= @discussion.name
     .input
-      = label_tag t(".description"), nil, class: "form_label form_label_align"
+      = label_tag t(".description"), nil, class: "form_label"
       %span.label_info= @discussion.description
     .input
-      = label_tag t(".start_date"), nil, class: "form_label form_label_align"
+      = label_tag t(".start_date"), nil, class: "form_label"
       %span.label_info= l(@discussion.schedule.start_date.to_date, format: :datepicker)
     .input
-      = label_tag t(".end_date"), nil, class: "form_label form_label_align"
+      = label_tag t(".end_date"), nil, class: "form_label"
       %span.label_info= l(@discussion.schedule.end_date.to_date, format: :datepicker)
 
     = render "groups/codes"
