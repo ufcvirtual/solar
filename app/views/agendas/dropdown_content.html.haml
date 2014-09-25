@@ -27,7 +27,7 @@
 
   .line
 
-  .btn-group
+  .btn-group{style: "width: 360px;"}
     - can_change = (not(@event.respond_to?(:can_change?)) or @event.can_change?)
     .left
       - if can? :destroy, @model_name, on: @allocation_tags_ids.split(" ")
@@ -50,7 +50,7 @@
     // se não for a área de edição
     if (!$(".filter").length){
       $(".edition_groups, .delete_event, .edit_event").remove();
-      $(".show_event").css("margin-left", "66px");
+      $(".show_event").css("margin-left", "8px");
       $(".related_user_path").removeClass("invisible");
     }else{
       $(".edition_groups").removeClass("invisible");
