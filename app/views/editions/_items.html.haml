@@ -16,7 +16,7 @@
             = link_to(content_tag(:i, nil, class: 'icon-calendar big'), "#", class: 'btn')
             = link_to t(".schedule"), "#"
 
-      - if (@user_profiles.include?(allocations: :designates) and (Allocation.constants.include?("#{@selected}_PERMISSION".to_sym)))
+      - if (@user_profiles.include?(allocations: :manage_profiles) and (Allocation.constants.include?("#{@selected}_PERMISSION".to_sym)))
         .uc_item
           .allocation{:"data-link" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id)}
             = link_to(content_tag(:i, nil, class: 'icon-user-add big'), "#", class: 'btn')
@@ -61,7 +61,7 @@
             = link_to t(".lesson"), "#"
 
       - if (@user_profiles.include?(support_material_files: :list) and (SupportMaterialFile.constants.include?("#{@selected}_PERMISSION".to_sym)))
-        .uc_item 
+        .uc_item
           .support_material{:"data-link" => list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id)}
             = link_to(content_tag(:i, nil, class: 'icon-archive big'), "#", class: 'btn')
             = link_to t(".support_material"), "#"
@@ -82,7 +82,7 @@
 = hidden_field_tag :selected, @selected
 = hidden_field_tag :offer_id, @offer_id
 
-:javascript 
+:javascript
 
   $(document).ready(function(){
 
@@ -109,5 +109,5 @@
 
     if( !$("#uc_informations .block_content").children().size() )
       $("#uc_informations").remove();
-      
+
   });

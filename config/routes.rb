@@ -153,26 +153,51 @@ Solar::Application.routes.draw do
   end
 
   ## allocations/enrollments
-  resources :allocations, except: [:new] do
+  resources :allocations, except: [:new, :update, :destroy] do
     collection do
+
+      get :manage_enrolls, to: redirect('/allocations/enrollments') #"allocations#index"
+
+      # get :manage_enrolls, action: :index
+      get :enrollments, action: :index
+
       get :designates
       get :admin_designates, action: :designates, defaults: {admin: true}
-      get :enrollments, action: :index
       get :search_users
+
       post :create_designation
-      post :request_designation, to: :create_designation, defaults: {request: true}
+      post :profile_request # pedir perfil
     end
     member do
-      delete :cancel, action: :destroy
-      delete :cancel_request, action: :destroy, defaults: {type: 'request'}
-      delete :cancel_profile_request, action: :destroy, defaults: {type: 'request', profile: true}
 
-      post :reactivate
-      put :deactivate
-      put :activate
-      put :reject, action: :accept_or_reject, defaults: {accept: false}
-      put :accept, action: :accept_or_reject, defaults: {accept: true}
-      put :undo_action, action: :accept_or_reject, defaults: {undo: true}
+      put :manage_enrolls
+
+      # delete :cancel, action: :destroy
+      # delete :cancel_request, action: :destroy, defaults: {type: 'request'}
+      # delete :cancel_profile_request, action: :destroy, defaults: {type: 'request', profile: true}
+
+      # post :reactivate
+      # put :deactivate
+      # put :activate
+
+      delete :cancel, to: :update, type: :cancel
+      delete :cancel_request, to: :update, type: :cancel_request
+      delete :cancel_profile_request, action: :update, type: :cancel_profile_request, profile_request: true
+
+      post :reactivate, to: :update, type: :reactivate # renomear (ele apenas pede reativacao)
+      put :deactivate, to: :update, type: :deactivate
+      put :activate, to: :update, type: :activate
+
+      put :reject, to: :update, type: :reject, profile_request: true
+      put :accept, to: :update, type: :accept, profile_request: true
+      put :undo_action, to: :update, type: :pending
+
+
+
+
+      # put :reject, action: :accept_or_reject, defaults: {accept: false}
+      # put :accept, action: :accept_or_reject, defaults: {accept: true}
+      # put :undo_action, action: :accept_or_reject, defaults: {undo: true}
     end
   end
 

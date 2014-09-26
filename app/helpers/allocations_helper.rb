@@ -20,4 +20,16 @@ module AllocationsHelper
     profiles_available = Profile.where("cast(types & #{Profile_Type_Class_Responsible} as boolean)" + query)
   end
 
+
+  def status_hash_of_allocation(allocation_status)
+    case allocation_status
+      when Allocation_Pending, Allocation_Pending_Reactivate
+        status_hash.select { |k,v| [allocation_status, Allocation_Activated, Allocation_Rejected].include?(k) }
+      when Allocation_Activated
+        status_hash.select { |k,v| [allocation_status, Allocation_Cancelled].include?(k) }
+      when Allocation_Cancelled, Allocation_Rejected
+        status_hash.select { |k,v| [allocation_status, Allocation_Activated].include?(k) }
+    end
+  end
+
 end

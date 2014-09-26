@@ -55,8 +55,8 @@
       return false;
 
     $.put($(button).data("link"), function(data){
-      if (typeof(data.notice) != "undefined")
-        flash_message(data.notice, 'notice');
+      if (typeof(data.msg) != "undefined")
+        flash_message(data.msg, 'notice');
       var last_removed_tr = $(button).closest("tr").slideUp().remove();
       if ( !$(".allocation_requested_list tbody").children("tr").size() ){
         $(".allocation_requested_list table").hide();
@@ -75,7 +75,7 @@
 
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
-      if (typeof(data.alert) != "undefined")
-        flash_message(data.alert, 'alert');
+      if (typeof(data.msg) != "undefined")
+        flash_message(data.msg, 'alert');
     });
   }

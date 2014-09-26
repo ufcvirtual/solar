@@ -21,7 +21,7 @@ class AdministrationsController < ApplicationController
     allocation_tags_ids = current_user.allocation_tags_ids_with_access_on(["users"], "administrations", true, true)
     @users      = User.find_by_text_ignoring_characters(@text_search, @type_search, allocation_tags_ids).paginate(page: params[:page])
     @can_change = not(current_user.profiles_with_access_on("update_user", "administrations").empty?)
-    
+
     respond_to do |format|
       format.html
       format.js
@@ -115,6 +115,11 @@ class AdministrationsController < ApplicationController
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
+
+
+
+  ## levar metodo para allocations
+
   def update_allocation
     authorize! :update_allocation, Administration
     @allocation = Allocation.find(params[:id])
@@ -127,6 +132,12 @@ class AdministrationsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
+
+
+
+
+
+
 
   ## INDICATION USERS
 
@@ -178,14 +189,17 @@ class AdministrationsController < ApplicationController
       end
     end
 
+
     # if user isn't an admin, remove unrelated allocations
     @allocations = Allocation.remove_unrelated_allocations(current_user, @allocations) unless current_user.is_admin?
 
+    # raise "#{@allocations.count}"
+
     @allocations.compact!
     @allocations = @allocations.paginate(page: params[:page])
-    @types = [ [t("administrations.allocation_approval.name"), 'name'], [t("administrations.allocation_approval.profile"), 'profile'], 
-      [t("administrations.allocation_approval.type"), 'curriculum_unit_type'], [t("administrations.allocation_approval.course"), 'course'], 
-      [t("administrations.allocation_approval.curriculum_unit"), 'curriculum_unit'], [t("administrations.allocation_approval.semester"), 'semester'], 
+    @types = [ [t("administrations.allocation_approval.name"), 'name'], [t("administrations.allocation_approval.profile"), 'profile'],
+      [t("administrations.allocation_approval.type"), 'curriculum_unit_type'], [t("administrations.allocation_approval.course"), 'course'],
+      [t("administrations.allocation_approval.curriculum_unit"), 'curriculum_unit'], [t("administrations.allocation_approval.semester"), 'semester'],
       [t("administrations.allocation_approval.group"), 'group'] ]
 
     respond_to do |format|

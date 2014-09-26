@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class AdministrationsControllerTest < ActionDispatch::IntegrationTest
-  
+
   def setup
     @admin  = users(:admin)
     @editor = users(:editor)
@@ -15,7 +15,7 @@ class AdministrationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "nao acessar administracao de usuario sem permissao" do 
+  test "nao acessar administracao de usuario sem permissao" do
     login(@editor)
     get admin_users_path
     assert_response :redirect
@@ -29,7 +29,7 @@ class AdministrationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal users(:aluno1).name, assigns(:users).first.name
   end
 
-  test "nao buscar usuario sem permissao" do 
+  test "nao buscar usuario sem permissao" do
     login(@editor)
     get search_admin_users_path, user: 'aluno 1', type_search: 'name'
     assert_nil assigns(:users)
@@ -44,15 +44,15 @@ class AdministrationsControllerTest < ActionDispatch::IntegrationTest
 
   test "editar usuario" do
     assert_no_difference(["User.count"]) do
-      put "/admin/users/#{@aluno1.id}", { data: {name: "aluno1 alterado"}} 
+      put "/admin/users/#{@aluno1.id}", { data: {name: "aluno1 alterado"}}
     end
 
     assert_equal "aluno1 alterado", User.find(@aluno1.id).name
   end
 
-  test "nao editar usuario sem permissao" do 
+  test "nao editar usuario sem permissao" do
     login(@editor)
-    
+
     assert_no_difference(["User.count"]) do
       put "/admin/users/#{@aluno1.id}", { data: { name: "aluno1 alterado", email: 'aluno1@solar.ufc.br'}}
     end
@@ -71,9 +71,9 @@ class AdministrationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal Allocation.find(allocation.id).status, Allocation_Cancelled
   end
 
-  test "nao editar status de alocacao sem permissao" do 
+  test "nao editar status de alocacao sem permissao" do
     login(@editor)
-    
+
     allocation = allocations(:aluno3_al8)
     assert_no_difference(["Allocation.count"]) do
       put "/admin/allocations/#{allocation.id}", {status: Allocation_Cancelled}
@@ -187,7 +187,7 @@ class AdministrationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "nao acessar pagina de responsaveis sem permissao" do 
+  test "nao acessar pagina de responsaveis sem permissao" do
     login(@editor)
     get admin_responsibles_path curriculum_unit_type_id: 2, course_id: 2
 

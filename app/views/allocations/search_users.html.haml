@@ -1,4 +1,5 @@
 - unless @users.nil? or @users.empty?
+
   %table.tb_list.tb_allocation
     %thead
       %tr.lines
@@ -9,7 +10,9 @@
         %th.no_sort{style: 'width:100px'}= ""
     %tbody.users
       = render partial: 'users', locals: { users: @users }
+
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), search_users_allocations_path(page: @users.next_page, user: @text_search, admin: @admin, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @users.next_page
+
 - else
   .block_content_text_list.text_none= t(".no_user_found")
 
@@ -17,20 +20,17 @@
 
 :javascript
 
-  function designates(button){
+  function designate(button){
     var profile = $("#profile_id", $(button).parents("tr")).val();
-    var url_list = $(button).data("link-list");
 
     $.post($(button).data("link-create"), {profile: profile}, function(data){
-      if (typeof(data) != "undefined" && typeof(data.message) != "undefined" && typeof(data.type) != "undefined")
-        flash_message(data.message, data.type);
-      else{
-        $.get(url_list, function(data){
-          $(".list_designates:last").replaceWith(data);
-        });
-        flash_message('#{I18n.t(:allocated, :scope => [:allocations, :success])}', 'notice');
-      }
-    }).error(function(){
-        flash_message('#{I18n.t(:not_allocated, :scope => [:allocations, :error])}', 'alert');
+      var url_list = $(button).data("link-list");
+      $.get(url_list, function(data){ $(".list_designates:last").replaceWith(data); });
+
+      flash_message(data.msg, 'notice');
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.msg) != 'undefined')
+        flash_message(data.msg, 'alert');
     });
   }

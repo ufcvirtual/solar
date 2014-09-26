@@ -12,7 +12,7 @@ $(function(){
   }
 
   // ja matriculado e quer cancelar
-  $('.allocation_cancel_enroll').click(function(e){
+  $('table tbody tr.lines').on('click', 'a.allocation_cancel_enroll', function(e){
     e.preventDefault();
 
     if (!confirm("<%= I18n.t('enrollments.index.confirm') %>"))
@@ -22,16 +22,15 @@ $(function(){
     var td = $(this).closest('td');
 
     $.delete($(this).attr('href'), function(data){
-
       var enroll_link = '<a href="' + reactivate_url + '" class="btn btn_default request_enroll"><%= I18n.t('enrollments.index.enroll') %></a>';
       td.html(enroll_link);
 
-      flash_message(data.notice, 'notice');
+      flash_message(data.msg, 'notice');
     }).error(enroll_error_request);
   });
 
   // pediu matricula e quer cancelar
-  $('.allocation_cancel_request').click(function(e){
+  $('table tbody tr.lines').on('click', 'a.allocation_cancel_request', function(e){
     e.preventDefault();
 
     if (!confirm("<%= I18n.t('enrollments.index.confirm') %>"))
@@ -41,17 +40,15 @@ $(function(){
     var td = $(this).closest('td');
 
     $.delete($(this).attr('href'), function(data){
-      var group_id = td.data('group-id');
+      var group_id = tr.data('group-id');
       if (group_id) {
         var enroll_url = $('.allocations.list').data('link-enroll').replace('allocation_group_id', group_id);
         var enroll_link = '<a href="' + enroll_url + '" class="btn btn_default request_enroll"><%= I18n.t('enrollments.index.enroll') %></a>';
 
         td.html(enroll_link);
-      } else {
-        td.html('pt-br: pedido de matricula cancelado');
       }
 
-      flash_message(data.notice, 'notice');
+      flash_message(data.msg, 'notice');
     }).error(enroll_error_request);
   });
 
@@ -62,10 +59,10 @@ $(function(){
     var td = $(this).closest('td');
     $.post($(this).attr('href'), {format: 'json'}, function(data){
       var cancel_url = $('.allocations.list').data('link-cancel-request').replace(':allocation_id', data.id);
-      var cancel_link = '<a href="' + cancel_url + '" class="btn btn_caution" data-method="delete" data-confirm="<%= I18n.t('enrollments.index.confirm') %>"><%= I18n.t('enrollments.index.cancel_request') %></a>';
+      var cancel_link = '<a href="' + cancel_url + '" class="btn btn_caution allocation_cancel_request"><%= I18n.t('enrollments.index.cancel_request') %></a>';
 
       td.html(cancel_link);
-      flash_message(data.notice, 'notice');
+      flash_message(data.msg, 'notice');
 
     }).error(enroll_error_request);
   });

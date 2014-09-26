@@ -77,29 +77,29 @@ res13:
   action: 'informations'
   description: 'Listar informacoes de uma Unidade Curricular'
 
-res14:
-  id: 14
-  controller: 'allocations'
-  action: 'cancel'
-  description: 'Cancelar matricula'
+# res14:
+#   id: 14
+#   controller: 'allocations'
+#   action: 'cancel'
+#   description: 'Cancelar matricula'
 
-res15:
-  id: 15
-  controller: 'allocations'
-  action: 'reactivate'
-  description: 'Pedir reativacao de matricula'
+# res15:
+#   id: 15
+#   controller: 'allocations'
+#   action: 'reactivate'
+#   description: 'Pedir reativacao de matricula'
 
-res16:
-  id: 16
-  controller: 'allocations'
-  action: 'create'
-  description: 'Pedir matricula'
+# res16:
+#   id: 16
+#   controller: 'allocations'
+#   action: 'create'
+#   description: 'Pedir/Cancelar matrícula'
 
-res17:
-  id: 17
-  controller: 'allocations'
-  action: 'cancel_request'
-  description: 'Cancelar pedido de matricula'
+# res17:
+#   id: 17
+#   controller: 'allocations'
+#   action: 'cancel_request'
+#   description: 'Cancelar pedido de matricula'
 
 res18:
   id: 18
@@ -341,23 +341,23 @@ res66:
   description: 'Deletar material de apoio'
 
 # Edicao de pedidos de matriculas
-res70:
-  id: 70
-  controller: 'allocations'
-  action: 'index'
-  description: 'Lista de pedidos de matricula'
+# res70:
+#   id: 70
+#   controller: 'allocations'
+#   action: 'index'
+#   description: 'Lista de pedidos de matricula'
 
-res71:
-  id: 71
-  controller: 'allocations'
-  action: 'show'
-  description: 'Visualizar pedido de matricula'
+# res71:
+#   id: 71
+#   controller: 'allocations'
+#   action: 'show'
+#   description: 'Visualizar pedido de matricula'
 
-res72:
-  id: 72
-  controller: 'allocations'
-  action: 'update'
-  description: 'Editar matricula'
+# res72:
+#   id: 72
+#   controller: 'allocations'
+#   action: 'update'
+#   description: 'Gerenciar alocações de perfis'
 
 # Unidade Curricular - Editor
 res79:
@@ -427,35 +427,35 @@ res89:
   action: 'content'
   description: 'Edição de conteúdo'
 
-res90:
-  id: 90
-  controller: 'allocations'
-  action: 'designates'
-  description: 'Listar usuarios alocados'
+# res90:
+#   id: 90
+#   controller: 'allocations'
+#   action: 'designates'
+#   description: 'Listar usuarios alocados'
 
-res91:
-  id: 91
-  controller: 'allocations'
-  action: 'deactivate'
-  description: 'Cancelar perfil de usuario'
+# res91:
+#   id: 91
+#   controller: 'allocations'
+#   action: 'deactivate'
+#   description: 'Cancelar perfil de usuario'
 
-res92:
-  id: 92
-  controller: 'allocations'
-  action: 'activate'
-  description: 'Ativar perfil de usuario'
+# res92:
+#   id: 92
+#   controller: 'allocations'
+#   action: 'activate'
+#   description: 'Ativar perfil de usuario'
 
-res93:
-  id: 93
-  controller: 'allocations'
-  action: 'search_users'
-  description: 'Buscar usuario para alocar'
+# res93:
+#   id: 93
+#   controller: 'allocations'
+#   action: 'search_users'
+#   description: 'Buscar usuario para alocar'
 
-res94:
-  id: 94
-  controller: 'allocations'
-  action: 'create_designation'
-  description: 'Alocar perfil para usuario'
+# res94:
+#   id: 94
+#   controller: 'allocations'
+#   action: 'create_designation'
+#   description: 'Alocar perfil para usuario'
 
 res95:
   id: 95
@@ -497,7 +497,7 @@ res101:
   id: 101
   controller: 'lessons'
   action: 'download_files'
-  description: 'Download dos arquivos das aulas selecionadas'  
+  description: 'Download dos arquivos das aulas selecionadas'
 
 res102:
   id: 102
@@ -918,11 +918,11 @@ res168:
   action: 'allocation_approval'
   description: 'Lista de alocações pendentes para aceitação'
 
-res169:
-  id: 169
-  controller: 'allocations'
-  action: 'accept_or_reject'
-  description: 'Aceitar/Rejeitar solicitação de alocação'
+# res169:
+#   id: 169
+#   controller: 'allocations'
+#   action: 'manage_enrolls'
+#   description: 'Gerenciar matrículas'
 
 res170:
   id: 170
@@ -981,3 +981,23 @@ res179:
   controller: 'user_blacklist'
   action: 'create'
   description: 'Adicionar CPF'
+
+# allocations
+
+res180:
+  id: 180
+  controller: 'allocations'
+  action: 'create'
+  description: 'Pedir/Cancelar matrícula'
+
+res181:
+  id: 181
+  controller: 'allocations'
+  action: 'manage_enrolls'
+  description: 'Gerenciar matrículas'
+
+res182:
+  id: 182
+  controller: 'allocations'
+  action: 'manage_profiles'
+  description: 'Gerenciar alocações de perfis'

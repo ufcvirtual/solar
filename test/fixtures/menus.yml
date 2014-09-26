@@ -249,7 +249,7 @@ matricula_uc:
   id: 90
   name: menu_manage_registration
   order: 11
-  resource_id: 70
+  resource_id: 181
 
 # MENU PAI - 100
 registration:

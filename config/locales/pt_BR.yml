@@ -363,6 +363,9 @@ pt_BR:
       user_blacklist:
         cpf: CPF
         name: Nome
+      allocation:
+        profile_id: Perfil
+        user_id: Usuário
 
     errors:
       uniqueness: "Registro já existe no sistema"
@@ -1378,6 +1381,24 @@ pt_BR:
 
   ## allocations
   allocations:
+    change_status:
+      success:
+        activate: "Alocação ativada com sucesso."
+        deactivate: "Alocação desativada com sucesso."
+        reactivate: "Alocação reativada com sucesso."
+        pending: "Ação desfeita com sucesso."
+        cancel: "Alocação cancelada com sucesso."
+        cancel_request: "Pedido de matrícula cancelado com sucesso."
+        cancel_profile_request: "Solicitação de perfil cancelada"
+      error:
+        activate: "Alocação não ativada."
+        deactivate: "Alocação não desativada."
+        reactivate: "Alocação não reativada."
+        pending: "Ação não desfeita."
+        cancel: "Alocação não cancelada."
+        cancel_request: "Cancelamento não realizado."
+        cancel_profile_request: "Solicitação de perfil não cancelada"
+
     index:
       manage: Gerenciar
       manage_title: Matrículas Solicitadas
@@ -1387,10 +1408,6 @@ pt_BR:
       manage_status: Status
       manage_options: Opções
       enroll_selected: Matricular Selecionados
-      total_students:
-        zero: Sem alunos
-        one: 'Total: 1 aluno'
-        other: 'Total: %{count} alunos'
     status:
       pending: Pendente
       pending_reactivate: Reat. Pendente
@@ -1443,7 +1460,9 @@ pt_BR:
       activated: Usuário ativado
       deactivated: Usuário desativado
       allocations_performed: Alocações realizadas
+
       requested: Solicitação realizada com sucessso
+
       request_canceled: Solicitação cancelada
       profile_canceled: Perfil cancelado
       rejected: rejeitada

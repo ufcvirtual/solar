@@ -55,7 +55,8 @@ function manage_enrollment(obj) {
   $.get($(obj).attr('edit-link'), function(data) { $(obj).closest('tr').html(data); });
 }
 
-function save_allocation(obj) {
+
+function magange_allocations_save(obj) {
   var url = $(obj).attr('save-link');
 
   $.ajax({
@@ -64,8 +65,8 @@ function save_allocation(obj) {
     data: {
       "id": $(obj).attr('allocation-id'),
       "allocation": {
-        "status": $('#status_id option:selected', $(obj).closest('tr')).val(),
-        "group_id": $('#code_id option:selected', $(obj).closest('tr')).val()
+        "status": $('#allocation_status option:selected', $(obj).closest('tr')).val(),
+        "group_id": $('#group_id option:selected', $(obj).closest('tr')).val()
       }
     },
     success: function(data, textStatus, jqXHR) {

@@ -1,7 +1,7 @@
 .request_profile{style: "width: 500px;"}
   %span.form_requirement= t(:required_fields)
   .request_profile_form
-    = simple_form_for(@allocation, html: {id: "request_profile_form"}) do |f| 
+    = simple_form_for(@allocation, html: {id: "request_profile_form"}) do |f|
       %h1#lightBoxDialogTitle= t(".new_profile_request")
       %span.form_requirement= t(:required_fields)
       .flash_message_wrapper
@@ -46,9 +46,11 @@
 :javascript
 
   $(function(){
-    
+
     var admin_profile = "#{Profile.where("cast(types & #{Profile_Type_Admin} as boolean)").first.id}"
     $("#profile_id").combobox();
+
+
 
     $("#save").click(function(){
       var params = {
@@ -59,21 +61,25 @@
         "semester_id": $("#semester").val(),
         "groups_id": $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).get().join(" ")
       };
-      $.post("#{request_designation_allocations_path}", params, function(response){
+
+      $.post("#{profile_request_allocations_path}", params, function(response){
         $.fancybox.close();
         $.get($(".profiles_list").data("link-list"), function(data){
           $(".profiles_list").replaceWith(data);
-          if (typeof(response) != "undefined" && typeof(response.message) != "undefined")
-            flash_message(response.message, response.type);
+          if (typeof(response) != "undefined" && typeof(response.msg) != "undefined")
+            flash_message(response.msg, 'notice');
         });
       }).error(function(data){
         var response = JSON.parse(data.responseText);
-        if (typeof(response.alert) != "undefined"){
+        if (typeof(response.msg) != "undefined"){
           erase_flash_messages();
-          flash_message(response.alert, 'alert', "request_profile .flash_message_wrapper");
+          flash_message(response.msg, 'alert', "request_profile .flash_message_wrapper");
         }
       });
     });
+
+
+
 
     $( "#profile_id" ).combobox({
       select: function( event, ui ) {

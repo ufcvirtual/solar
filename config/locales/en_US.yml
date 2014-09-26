@@ -311,6 +311,9 @@ en_US:
       user_blacklist:
         cpf: CPF
         name: Name
+      allocation:
+        profile_id: Profile
+        user_id: User
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -716,7 +719,7 @@ en_US:
       save: Save
       cancel: Cancel
       groups: Groups
-    success: 
+    success:
       deleted: Module deleted successfully
     errors:
       existing_name: already exists
@@ -1170,7 +1173,22 @@ en_US:
   file_error_nonexistent_file: File not found
   send_file_obs: Wait for the complete submission of the file. The size should not exceed 5MB.
   send_file_text: "Allowed file example:<br /> &nbsp;&nbsp;- Microsoft Office Documents<br /> &nbsp;&nbsp;- OpenOffice.org Documents (ODF)<br /> &nbsp;&nbsp;- Archives (.zip, .rar...)<br /> &nbsp;&nbsp;- PDF Documents<br /> &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br /> &nbsp;&nbsp;- Audio Files (mp3, wma...)"
+
   allocations:
+    updated:
+      success:
+        activate: Allocation activated
+        deactivate: Allocation deactivated
+        reactivate: Allocation reactivated
+        cancel_request: Request cancelled
+        cancel: Allocation cancelled
+      error:
+        activate: Allocation not activated
+        deactivate: Allocation not deactivated
+        reactivate: Allocation not reactivated
+        cancel_request: Request not cancelled
+        cancel: Allocation not cancelled
+
     index:
       manage: Manage
       manage_title: Registrations requested
@@ -1180,10 +1198,6 @@ en_US:
       manage_status: Status
       manage_options: Options
       enroll_selected: Enroll Selected
-      total_students:
-        zero: Without students
-        one: 'Total: 1 student'
-        other: 'Total: %{count} students'
     status:
       pending: Pending
       pending_reactivate: Pending React.
@@ -1205,7 +1219,7 @@ en_US:
       activate: Activate
       deactivate: Deactivate
       designate_users: Allocated Users
-      new_designate: Nova Alocação
+      new_designate: New Allocation
       search_users: Search Users
       search: Search
       user: User
@@ -1430,7 +1444,7 @@ en_US:
       cant_remove: It was not possible to execute action. Group already evaluated or with files.
       date_range_expired: It was not possible to execute action. Date range expired.
       unique_name: must be unique.
-    success: 
+    success:
       imported: Groups and participants imported successfully.
     new:
       new_group_name: New group

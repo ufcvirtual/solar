@@ -36,7 +36,7 @@
               - offer_info = group.detailed_info
               - curriculum_units << [offer_info[:curriculum_unit], offer_info[:curriculum_unit].gsub(/\W/, '')]
 
-              %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}"}
+              %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}", 'data-group-id' => group.id}
                 %td= offer_info[:curriculum_unit_type]
                 %td
                   - unless offer_info[:curriculum_unit_type_id].to_i == 3
@@ -80,7 +80,7 @@
               - offer_info = group.detailed_info
               - curriculum_units << [offer_info[:curriculum_unit], offer_info[:curriculum_unit].gsub(/\W/, '')]
 
-              %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}"}
+              %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}", 'data-group-id' => group.id}
                 %td= offer_info[:curriculum_unit_type]
                 %td
                   - unless offer_info[:curriculum_unit_type_id].to_i == 3
@@ -89,7 +89,7 @@
                 %td= offer_info[:semester]
                 %td= group.code
                 %td= link_to content_tag(:i, nil, class: 'icon-info'), group_enrollments_path(group.id), class: "btn", id: "enrollment_info_#{group.id}"
-                %td{'data-group-id' => group.id}
+                %td
                   - case allocation.try(:status)
                     - when Allocation_Pending.to_i, Allocation_Pending_Reactivate.to_i
                       = link_to t('.cancel_request'), cancel_request_allocation_path(allocation), class: 'btn btn_caution allocation_cancel_request'
@@ -130,7 +130,7 @@
               - query = "groups.id NOT IN (?)" unless user_groups.empty?
 
               - Group.where(offer_id: offer.id, status: true).where(query, user_groups).find_each do |group|
-                %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}"}
+                %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}", 'data-group-id' => group.id}
                   %td= offer_info[:curriculum_unit_type]
                   %td
                     - unless offer_info[:curriculum_unit_type_id].to_i == 3

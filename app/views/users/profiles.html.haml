@@ -21,9 +21,9 @@
           = render partial: 'profiles'
       = link_to content_tag(:i, nil, class: "icon-ellipsis"), profiles_users_path(page: @allocations.next_page), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @allocations.next_page
   - else
-    .block_content_text_list.text_none 
+    .block_content_text_list.text_none
       = t(:item_search_no_found)
-        
+
 :javascript
   $(function(){
     $('#request_profile').call_fancybox();
@@ -36,13 +36,13 @@
       $.delete($(this).data("link-cancel"), function(response){
         $.get($(".profiles_list").data("link-list"), function(data){
           $(".profiles_list").replaceWith(data);
-          flash_message(response.notice, "notice");
+          flash_message(response.msg, "notice");
         });
       }).error(function(data){
         var response = JSON.parse(data.responseText);
-        if (typeof(response.alert) != "undefined")
-          flash_message(response.alert, 'alert');
+        if (typeof(response.msg) != "undefined")
+          flash_message(response.msg, 'alert');
       });
     });
-    
+
   });

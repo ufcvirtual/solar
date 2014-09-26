@@ -1,7 +1,8 @@
 - @users.each do |user|
   - user_profiles = user.allocations.where(allocation_tag_id: @allocation_tags_ids.split(" ")).map(&:profile)
   - profiles_allocable = ((@admin and can? :users_indication, Administration) ? (Profile.all_except_basic - user_profiles) : profiles_available_for_allocation(user.id, @allocation_tags_ids))
-  - unless (profiles_allocable.nil? or profiles_allocable.empty?)
+
+  - if profiles_allocable.any?
     %tr.lines
       %td= user.name
       %td{style: 'width:80px'}= user.cpf
@@ -10,4 +11,4 @@
         = select_tag(:profile_id, options_from_collection_for_select(profiles_allocable, :id, :name), prompt: t("allocations.search_users.select_profile"))
       %td{style: 'width:100px'}
         = hidden_field_tag(:user_id, user.id)
-        = link_to_function t("allocations.search_users.designate"), "designates(this)", class: "btn btn_default btn_designate", alt: t("allocations.search_users.designate_user", user_name: user.name), :"data-link-create" => create_designation_allocations_path(user_id: user.id, status: Allocation_Activated, allocation_tags_ids: @allocation_tags_ids, admin: @admin), :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids, admin: @admin)
+        = link_to_function t("allocations.search_users.designate"), "designate(this)", class: "btn btn_default btn_designate", alt: t("allocations.search_users.designate_user", user_name: user.name), :"data-link-create" => create_designation_allocations_path(user_id: user.id, status: Allocation_Activated, allocation_tags_ids: @allocation_tags_ids, admin: @admin), :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids, admin: @admin)

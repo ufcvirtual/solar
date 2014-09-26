@@ -2,12 +2,12 @@
   %input{type: "checkbox", name: @allocation.id, value: @allocation.id, class: "cbx_value"}
 %td= @allocation.user.name
 %td
-  - if @change_group
-    = select(:code, :id, @groups.collect { |g| [g.code, g.id] }, {selected: @allocation.allocation_tag.group_id})
+  - if @allocation.can_change_group?
+    = select_tag(:group_id, options_from_collection_for_select(@allocation.group.offer.groups, :id, :code, @allocation.group.id))
   - else
-    = @groups.code_semester
+    = @allocation.group.code_semester
 %td= @allocation.group.curriculum_unit.name
-%td= select(:status, :id, @status_hash.invert.to_a, {selected: @allocation.status})
+%td= select_tag(:allocation_status, options_for_select(status_hash_of_allocation(@allocation.status).invert.to_a, @allocation.status))
 %td
-  = button_to_function t(".save"), "save_allocation(this)", :"allocation-id" => @allocation.id, :"save-link" => allocation_path(@allocation), class: "btn btn_main btn_save_allocation"
+  = button_to_function t(".save"), "magange_allocations_save(this)", :"allocation-id" => @allocation.id, :"save-link" => manage_enrolls_allocation_path(@allocation), class: "btn btn_main btn_save_allocation"
   = button_to_function t(".cancel"), "manage_cancel(this)", :"show-link" => allocation_path(@allocation), :"edit-link" => edit_allocation_path(@allocation), class: "btn btn_default btn_manage_cancel"
