@@ -12,7 +12,7 @@ class CurriculumUnit < ActiveRecord::Base
 
   after_destroy proc { Course.find_by_name(name).try(:destroy) }, if: "curriculum_unit_type_id == 3"
 
-  validates :code, uniqueness: true, length:  { maximum: 10 }, allow_blank: true
+  validates :code, uniqueness: true, length:  { maximum: 40 }, allow_blank: true
   validates :name, length: { maximum: 120 }
   validates :name, :curriculum_unit_type, :resume, :syllabus, :objectives, presence: true
   validates :passing_grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true}

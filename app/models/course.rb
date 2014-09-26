@@ -12,6 +12,8 @@ class Course < ActiveRecord::Base
   validates :code, presence: true, uniqueness: true, if: "edx_course.nil?"
   validate :unique_name, unless: "edx_course.nil? or courses_names.nil?"
 
+  validates_length_of :code, maximum: 40
+
   attr_accessor :edx_course, :courses_names
 
   def has_any_lower_association?
