@@ -9,25 +9,28 @@ class AccessControlController < ApplicationController
     current_path_split = request.env['PATH_INFO'].split("/") #ex: /media/assignment/public_area/20_crimescene.png => ["", "media", "assignment", "public_area", "20_crimescene.png"]
 
     case current_path_split[current_path_split.size-2] #ex: ["", "media", "assignment", "public_area", "20_crimescene.png"] => public_area
-      when 'comments' #arquivo de um comentário
+      when 'comments' # arquivo de um comentário
         file = CommentFile.find(file_id)
         sent_assignment = file.assignment_comment.sent_assignment
-        authorize! :download_files, sent_assignment.assignment
-      when 'sent_assignment_files' #arquivo enviado pelo aluno/grupo
+        allocation_tags = sent_assignment.academic_allocation.allocation_tag_id
+      when 'sent_assignment_files' # arquivo enviado pelo aluno/grupo
         file = AssignmentFile.find(file_id)
         sent_assignment = file.sent_assignment
-        authorize! :download_files, sent_assignment.assignment
-      when 'enunciation' #arquivo que faz parte da descrição da atividade
+        allocation_tags = sent_assignment.academic_allocation.allocation_tag_id
+      when 'enunciation' # arquivo que faz parte da descrição da atividade
         file = AssignmentEnunciationFile.find(file_id)
-        authorize! :download_files, file.assignment
-      when 'public_area' #área pública do aluno
+        allocation_tags = active_tab[:url][:allocation_tag_id] || file.assignment.allocation_tags.pluck(:id)
+        can_access = (can? :download, Assignment, on: [allocation_tags].flatten)
+      when 'public_area' # área pública do aluno
         file = PublicFile.find(file_id) 
-        authorize! :download_files, Assignment
         same_class = Allocation.find_all_by_user_id(current_user.id).map(&:allocation_tag_id).include?(file.allocation_tag_id)
+        can_access = (can? :index, PublicFile, on: [file.allocation_tag_id])
     end
 
-    # verifica se tem acesso a arquivo ou se é da mesma turma (definido apenas para arquivos públicos)
-    if (not(sent_assignment.nil?) and sent_assignment.assignment.user_can_access_assignment?(current_user.id, sent_assignment.user_id, sent_assignment.group_assignment_id)) or (same_class)
+    is_observer_or_responsible = AllocationTag.find(active_tab[:url][:allocation_tag_id] || allocation_tags).is_observer_or_responsible?(current_user.id)
+    can_access = (( sent_assignment.user_id.to_i == current_user.id or (not(sent_assignment.group.nil?) and sent_assignment.group.user_in_group?(current_user.id)) ) or is_observer_or_responsible) if (can_access.nil?)
+
+    if can_access
       send_file(file.attachment.path, { disposition: 'inline', type: return_type(params[:extension])} )
     else
       raise CanCan::AccessDenied

@@ -1,12 +1,6 @@
 require 'test_helper'
- 
-# Aqui estão os testes dos métodos do controller scores
-# que, para acessá-los, se faz necessário estar em uma unidade
-# curricular. Logo, há a necessidade de acessar o método
-# "add_tab" de outro controller. O que não é permitido em testes
-# funcionais.
 
-class ChatRoomsControllerTest < ActionDispatch::IntegrationTest
+class ChatRoomsWithAllocationTagTest < ActionDispatch::IntegrationTest
   def setup
     @quimica_tab               = add_tab_path(id: 3, context:2, allocation_tag_id: 3)
     @literatura_brasileira_tab = add_tab_path(id: 5, context:2, allocation_tag_id: 8)

@@ -46,3 +46,13 @@ sa9:
   academic_allocation_id: 72 # quimica I - qm-mar - Atividade individual VI
   user_id: 7
   grade: 6.3
+
+sa10:
+  id: 10
+  academic_allocation_id: 7
+  group_assignment_id: 1
+
+sa11:
+  id: 11
+  academic_allocation_id: 74
+  group_assignment_id: 8

@@ -231,19 +231,19 @@ res46:
   id: 46
   controller: 'scores'
   action: 'info'
-  description: 'Listar informacoes' # aluno
+  description: 'Acompanhamento do aluno' # aluno
 
 res47:
   id: 47
   controller: 'scores'
   action: 'student_info'
-  description: 'Professor - Informacoes por aluno' # professor
+  description: 'Acompanhamento de qualquer aluno individualmente' # professor
 
 res48:
   id: 48
   controller: 'scores'
   action: 'index'
-  description: 'Professor - Lista de alunos da turma' # professor
+  description: 'Acompanhamento geral da turma' # professor
 
 # Arquivos
 
@@ -345,13 +345,6 @@ res66:
   controller: 'support_material_files'
   action: 'destroy'
   description: 'Deletar material de apoio'
-
-# acompanhamento do responsável - parte 2
-res69:
-  id: 69
-  controller: 'allocation_tag'
-  action: 'related_with_allocation_tag'
-  description: 'Verificacao relacao com a allocation_tag passada'
 
 # Edicao de pedidos de matriculas
 res70:
@@ -581,7 +574,7 @@ res112:
 res113:
   id: 113
   controller: 'assignments'
-  action: 'list'
+  action: 'index'
   description: 'Edição - Lista de trabalhos'
 
 res114:

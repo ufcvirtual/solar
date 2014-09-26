@@ -19,8 +19,8 @@ class PublicFilesController < ApplicationController
     public_file = PublicFile.create!(params[:public_file].merge({user_id: current_user.id, allocation_tag_id: allocation_tag_id}))
     render partial: "file", locals: {file: public_file, destroy: true}
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
-  rescue
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue => error
     render json: {success: false, alert: t("public_files.error.new")}, status: :unprocessable_entity
   end
 
@@ -35,9 +35,9 @@ class PublicFilesController < ApplicationController
       download_file(:back, file.attachment.path, file.attachment_file_name)
     end
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    render json: {success: false, alert: t("assignment_files.error.download")}, status: :unprocessable_entity
+    render js: "flash_message('#{t(:file_error_nonexistent_file)}', 'alert');"
   end
 
   def destroy
@@ -50,7 +50,7 @@ class PublicFilesController < ApplicationController
       render json: {success: false, alert: t("public_files.error.remove")}, status: :unprocessable_entity
     end
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
     render json: {success: false, alert: t("public_files.error.remove")}, status: :unprocessable_entity
   end

@@ -11,7 +11,7 @@ class DiscussionsController < ApplicationController
   def index
     begin
       @allocation_tag_id = (active_tab[:url].include?(:allocation_tag_id)) ? active_tab[:url][:allocation_tag_id] : AllocationTag.find_by_group_id(params[:group_id] || []).id
-      @discussions = Discussion.all_by_allocation_tags(AllocationTag.find(@allocation_tag_id).related)
+      @discussions = Discussion.all_by_allocation_tags(@allocation_tag_id)
     rescue
       @discussions = []
     end

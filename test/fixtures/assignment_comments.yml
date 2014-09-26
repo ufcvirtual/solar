@@ -35,3 +35,9 @@ ac6:
   sent_assignment_id: 8 # sa8
   user_id: 6 # professor
   comment: "comentario 1"
+
+ac7:
+  id: 7
+  sent_assignment_id: 11
+  user_id: 1 #user 
+  comment: "comentario 7"

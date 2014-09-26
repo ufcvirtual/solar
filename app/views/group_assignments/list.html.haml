@@ -3,7 +3,7 @@
     %tr.lines
       %td= group.group_name
       %td= group.group_participants.count
-      %td.icon{:"data-tooltip" => t(".participants"), onclick: "select_group(this)", :"data-url" => participants_group_assignment_path(group.id), :"data-name" => group.group_name}= content_tag(:i, nil, class: "icon-users")
+      %td.icon{:"data-tooltip" => t(".participants"), onclick: "select_group(this)", :"data-url" => import_participants_group_assignment_path(group.id), :"data-name" => group.group_name}= content_tag(:i, nil, class: "icon-users")
 - else
   %td.text_none{colspan: 2}= t(".no_groups")
 

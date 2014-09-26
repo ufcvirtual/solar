@@ -105,25 +105,25 @@
   color: #378941;
 }
 
-.assignment_sent,
+.assignment_sent, .assignment_sent a, .assignment_corrected a
 td.assignment_as a {
   color: #2900c2;
 }
 
-.assignment_as{
+.assignment_as, .assignment_as a{
   color: #2900c2;
 }
 
-.assignment_not_sent,
+.assignment_not_sent, .assignment_not_sent a,
 .expired {
   color: #e12227;
 }
 
-.assignment_not_started {
+.assignment_not_started, .assignment_not_started a {
   color: #787878;
 }
 
-.assignment_send,
+.assignment_send, .assignment_send a,
 .assignment_pending,
 td.assignment_an a {
   color: #003e7a;
@@ -132,7 +132,7 @@ td.assignment_an a {
 .assignment_an{
   color: #003e7a;
 }
-.assignment_without_group,
+.assignment_without_group, .assignment_without_group a,
 td.assignment_without_group a {
   color: #e37073;
 }
@@ -157,13 +157,21 @@ td.assignment_without_group a
 }
 
 .tb_list{
+  tr > td > .participants_box:not(.invisible){
+    border-bottom: 1px solid #B4B2B1;
+  }
+
   td{
     .participants_box{
-      max-height: 300px;
-      overflow: auto;
       padding: 10px;
+      max-height: 200px;
+      overflow: auto;
       tbody{
         background-color: white;
+        td{
+          padding: 6px 10px 4px 10px;
+          vertical-align: middle;
+        }
       }
     } 
   }
@@ -201,4 +209,37 @@ td.assignment_without_group a
   i{
     cursor: pointer;
   }
+}
+
+.block_wrapper_groups{
+  img {
+    vertical-align: middle;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 30px;
+    box-shadow: 4px 4px 7px #929792;
+  }
+  .block_user{
+    background-color: #FCEBCA;
+    font-size: 10pt;
+  }
+
+  .block_user{
+    display: inline-block;
+    width: 92%;
+    margin-left: 19px;
+    margin-top: 1%;
+    padding: 8px 0px 5px 44px;
+  }
+  
+  .title_user{
+    float: left;
+    font-weight: bold;
+    margin-right: 7px;
+  }
+} 
+
+.block_user .participants_list{
+  margin-left: 85px;
 }

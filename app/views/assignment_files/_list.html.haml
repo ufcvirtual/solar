@@ -4,7 +4,7 @@
     = (@assignment.type_assignment == Assignment_Type_Group ? t(".title_group") : t(".title_student"))
   .right_buttons
     - unless files.nil? or files.empty?
-      = link_to content_tag(:i, nil, class: "icon-install"), zip_download_assignment_files_path(assignment_id: @assignment.id, student_id: @student_id, group_id: @group_id), class: "btn", :"data-tooltip" => t(".download")
+      = link_to content_tag(:i, nil, class: "icon-install"), zip_download_assignment_files_path(assignment_id: @assignment.id, student_id: @student_id, group_id: @group_id), remote: true, class: "btn", :"data-tooltip" => t(".download")
     - if @own_assignment
       = button_tag content_tag(:i, nil, class: "icon-plus"), class: "btn btn_main add_file #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t(".send")
 .block_content

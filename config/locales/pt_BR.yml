@@ -991,6 +991,11 @@ pt_BR:
     update:
       updated: "Postagem atualizada com sucesso"
       not_updated: "A postagem não foi atualizada"
+    user_posts:
+      title: Postagens do %{user} em %{discussion}
+      message: Post
+      date: Data
+      time: Horário
 
   post_files:
     new:
@@ -1172,36 +1177,6 @@ pt_BR:
 
   # Assignment Comments
   comment_error_delete_file: Erro ao tentar excluir arquivo
-
-  # acompanhamento
-  scores_of: "Acompanhamento de"
-  tests: "Provas"
-  group: "Turma"
-  student: "Aluno"
-  legend: "Legenda"
-  legend_assignments: "Legenda dos Trabalhos"
-  assignment_without_correction: "Trabalho enviado, mas não corrigido (sem nota)."
-  assignment_not_sent: "Trabalho não enviado"
-  student_without_group: Aluno sem grupo
-  assignment_as: "TE"
-  assignment_an: "TN"
-  assignment_wg: SG
-  amount: "Qtd"
-  amount_participation_discussions: "Participações em Fóruns"
-  from_date: "Da Data"
-  until_date: "Até a Data"
-  search_format_date: "dd-mm-yy"
-  amount_access: "Quantidade de Acessos"
-  invalid_identifier: "Identificador Inválido"
-  to: "a"
-  for: "Para:"
-  history_search: "Busca"
-  history_find: "Buscar"
-  history_access: "Histórico de Acessos"
-  scores_discussions: "Acompanhamento de Foruns do Aluno"
-  scores_history_access: "Acompanhamento de Histórico de Acesso do Aluno"
-  assignment_correction_of: "Correção de"
-  error_find_ajax: "Erro ao tentar consultar. Tente novamente mais tarde."
 
   # Mensagem de erro para permissão
   no_permission: "Você não tem permissão para acessar esta página"
@@ -2527,3 +2502,36 @@ pt_BR:
       access_to_the_course: "Acessos ao Curso"
       no_students: Não há alunos
       list_of_students: Lista de estudantes
+      assignment_not_sent: TE
+      assignment_without_group: SG
+      assignment_sent: E
+      assignment_send: NE
+      assignment_not_started: NI
+      assignment_not_sent_complete: Trabalho não enviado e com período encerrado 
+      assignment_without_group_complete: Aluno sem grupo
+      assignment_sent_complete: "Trabalho enviado, mas não corrigido (sem nota)"
+      assignment_send_complete: Trabalho não enviado
+      assignment_not_started_complete: Trabalho com período não iniciado
+      subtitle: Legenda
+    info:
+      assignments: Trabalhos
+      date_range: Período
+      situation: Situação
+      grade: Nota
+      discussions: Fóruns
+      amount: Postagens
+      discussions_participation: Participações em fóruns
+      history_access: "Histórico de acessos (total: %{amount})"
+      search: Buscar
+    access:
+      date: Data
+      time: Horário
+      no_access: Nenhum acesso no período informado
+    error:
+      invalid_date: Data inválida.
+
+  group: "Turma"
+  student: "Aluno"
+  legend: "Legenda"
+  to: "a"
+  for: "Para:"

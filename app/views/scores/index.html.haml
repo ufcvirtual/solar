@@ -5,7 +5,6 @@
       = t(:group)
       = @group.code
 
-  / Lista dos alunos com notas
   .tb_list_students
     %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.list_of_students')}
       %thead
@@ -24,51 +23,38 @@
             %th.no_sort{style: 'width: 5%'}= '-'
       %tbody
         - unless @students.empty?
-          - @students.each_with_index do |student, idx|
+          - @students.each do |student|
+            - info = student.info_at_allocation_tag(@allocation_tag_id)
             %tr.lines
               %td.td_student{'data-tooltip' => student.name}= link_to student.name, student_info_scores_path(student.id)
-              %td= @scores["student_count_public_files"][idx]
-              %td= @scores["student_count_posts"][idx]
-              %td= @scores["student_count_access"][idx]
-              - @assignments.each_with_index do |assignment, idx2|
-                - grade      = @scores["students_grades"][idx][idx2]
-                - grade_link = t("assignment_#{grade}", default: grade)
-                %td{class: "assignment_#{grade}"}
-                  - if grade == "without_group"
-                    = link_to t(:assignment_wg), list_assignments_path
-                  - else
-                    = link_to grade_link, student_assignment_path(assignment.id, student_id: student.id, group_id: @scores["students_groups"][idx][idx2])
+              %td= info[:public_files]
+              %td= info[:posts]
+              %td= info[:access]
+              - @assignments.each do |assignment|
+                - info = assignment.info(student.id, @allocation_tag_id)
+                - grade_link = t(".assignment_#{info[:situation]}", default: info[:grade])
+                %td{class: "assignment_#{info[:situation]}"}= link_to grade_link, (info[:situation] == "without_group" ? list_assignments_path : student_assignment_path(assignment.id, student_id: student.id, group_id: info[:group_id]))
               - if @assignments.empty?
-                %td= "-"
+                %td= " - "
         - else
           %tr.lines.text_none
-            %td{colspan: 4+@assignments.size}= t(".no_students")
+            %td{colspan: 4+(@assignments.any? ? @assignments.size : 1)}= t(".no_students")
 
-/ Legenda das notas
 %div.legend
-  = t(:legend)
+  = t(".subtitle")
 #scores_notes.legend_score_footer
-  %div.assignment_as
-    = t(:assignment_as)
-    = t(:assignment_without_correction)
-  %div.assignment_an
-    = t(:assignment_an)
-    = t(:assignment_not_sent)
+  %div.assignment_not_sent
+    = t(".assignment_not_sent")
+    = t(".assignment_not_sent_complete")
   %div.assignment_without_group
-    = t(:assignment_wg)
-    = t(:student_without_group)
-
-/ Paginacao
-/ .legend#scores_pagination{:style => "text-align: center;"}
-/   %span=raw render_pagination_bar(@students.size) unless @students.empty?
-
-/ Legenda dos trabalhos
-/ - unless @assignments.empty?
-/   .legend
-/     %ul
-/       %li
-/         %h1= t(:legend_assignments)
-/       - @assignments.each_with_index do |assignment, idx|
-/         %li
-/           = "#{idx + 1}º - "
-/           = assignment.name
+    = t(".assignment_without_group")
+    = t(".assignment_without_group_complete")
+  %div.assignment_sent
+    = t(".assignment_sent")
+    = t(".assignment_sent_complete")
+  %div.assignment_send
+    = t(".assignment_send")
+    = t(".assignment_send_complete")
+  %div.assignment_not_started
+    = t(".assignment_not_started")
+    = t(".assignment_not_started_complete")

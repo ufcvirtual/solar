@@ -6,8 +6,7 @@ class GroupAssignmentsController < ApplicationController
 
   def index
     @assignment, allocation_tag_id = Assignment.find(params[:assignment_id]), active_tab[:url][:allocation_tag_id]
-    @groups = GroupAssignment.all_by_assignment_id(@assignment.id, allocation_tag_id)
-    @students_without_group = @assignment.students_without_groups(AllocationTag.find(allocation_tag_id))
+    @groups, @students_without_group = @assignment.groups_assignments(allocation_tag_id), @assignment.students_without_groups(AllocationTag.find(allocation_tag_id))
   end
 
   def participants
@@ -30,7 +29,7 @@ class GroupAssignmentsController < ApplicationController
 
     render :new
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
     render json: {success: false, alert: t("group_assignments.error.general_message")}, status: :unprocessable_entity
   end
@@ -40,7 +39,7 @@ class GroupAssignmentsController < ApplicationController
     
     group = GroupAssignment.find(params[:id])
 
-    raise "date_range_expired" unless group.assignment.in_time?(allocation_tag_id, current_user.id)
+    raise "date_range_expired" unless group.assignment.in_time?(allocation_tag_id)
     raise "evaluated" if group.evaluated?
 
     participant = GroupParticipant.where(group_assignment_id: group.id, user_id: params[:user_id]).first_or_create
@@ -52,7 +51,7 @@ class GroupAssignmentsController < ApplicationController
 
     render json: {success: true}
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error
     error_message = I18n.translate!("group_assignments.error.#{error.message}", raise: true) rescue t("group_assignments.error.general_message")
     render json: {success: false, alert: error_message}, status: :unprocessable_entity
@@ -69,7 +68,7 @@ class GroupAssignmentsController < ApplicationController
 
     render json: {success: true}
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error
     render json: {success: false, alert: error.message}, status: :unprocessable_entity 
   end
@@ -89,7 +88,7 @@ class GroupAssignmentsController < ApplicationController
       render json: {success: false, alert: t("group_assignments.error.general_message")}, status: :unprocessable_entity 
     end
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error
     error_message = I18n.translate!("group_assignments.error.#{error}", raise: true) rescue t("group_assignments.error.general_message")
     render json: {success: false, alert: error_message}, status: :unprocessable_entity 
@@ -112,7 +111,7 @@ class GroupAssignmentsController < ApplicationController
 
   def import
     authorize! :import, GroupAssignment, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-    raise "date_range_expired" unless Assignment.find(params[:id]).in_time?(allocation_tag_id, current_user.id)
+    raise "date_range_expired" unless Assignment.find(params[:id]).in_time?(allocation_tag_id)
 
     from_ac  = AcademicAllocation.where(academic_tool_type: "Assignment", academic_tool_id: params[:assignment_id], allocation_tag_id: allocation_tag_id).first
     to_ac_id = AcademicAllocation.where(academic_tool_type: "Assignment", academic_tool_id: params[:id], allocation_tag_id: allocation_tag_id).first.id
@@ -127,7 +126,7 @@ class GroupAssignmentsController < ApplicationController
     end
     render json: {success: true, notice: t("group_assignments.success.imported")}
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error
     error_message = I18n.translate!("group_assignments.error.#{error}", raise: true) rescue t("group_assignments.error.general_message")
     render json: {success: false, alert: error_message}, status: :unprocessable_entity 

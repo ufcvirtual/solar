@@ -190,10 +190,8 @@ Solar::Application.routes.draw do
     collection do
       get :info
       get "student/:student_id/info", to: :student_info, as: :student_info
-
-      get :amount_history_access
+      get :amount_access
     end
-    get :history_access, on: :member
   end
 
   resources :edx_courses, only: [:index, :new] do
@@ -288,9 +286,6 @@ Solar::Application.routes.draw do
       get :download
       get :zip_download, to: :download, defaults: {zip: true}
 
-      post :upload_file
-      delete :delete_file
-
       put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "Assignment", as: :unbind_group_from
       put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Assignment", as: :remove_group_from
       put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Assignment", as: :add_group_to
@@ -308,7 +303,7 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :public_files, except: [:edit, :update] do
+  resources :public_files, except: [:edit, :update, :show] do
     collection do
       get :download
       get :zip_download, to: :download, defaults: {zip: true}
@@ -322,8 +317,8 @@ Solar::Application.routes.draw do
       get :list
     end
     member do
-      get :import_participants, to: :participants, defaults: {import: true}
       get :participants
+      get :import_participants, to: :participants, defaults: {import: true}
       put :remove_participant, to: :change_participant
       put :add_participant, to: :change_participant, defaults: {add: true}
       post :import

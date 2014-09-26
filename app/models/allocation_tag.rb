@@ -203,6 +203,11 @@ class AllocationTag < ActiveRecord::Base
     {allocation_tags: [allocation_tags_ids].flatten, selected: selected, offer_id: offer_id}
   end
 
+  def self.get_students(allocation_tag_id)
+    User.joins(allocations: :profile).where(allocations: {status: Allocation_Activated, allocation_tag_id: allocation_tag_id})
+      .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean )")
+  end
+
   private
 
     def check_if_user_has_profile_type(user_id, responsible = true, observer = false)

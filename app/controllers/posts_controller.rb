@@ -57,11 +57,13 @@ class PostsController < ApplicationController
   ## GET /discussions/1/posts/user/1
   ## all posts of the user
   def user_posts
-    @posts = Discussion.find(params[:discussion_id]).discussion_posts.where(:user_id => params[:user_id])
+    academic_allocation = AcademicAllocation.where(academic_tool_id: params[:discussion_id], academic_tool_type: "Discussion", allocation_tag_id: AllocationTag.find(active_tab[:url][:allocation_tag_id]).related).first
+    @discussion, @user  = Discussion.find(params[:discussion_id]), User.find(params[:user_id])
+    @posts = academic_allocation.discussion_posts.where(user_id: params[:user_id])
 
     respond_to do |format|
-      format.html { render :layout => false }
-      format.json { render :json => @posts }
+      format.html { render layout: false }
+      format.json { render json: @posts }
     end
   end
 

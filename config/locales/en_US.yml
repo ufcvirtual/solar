@@ -817,6 +817,11 @@ en_US:
     update:
       updated: "Post was successfully updated"
       not_updated: "Post was not updated"
+    user_posts:
+      title: Posts from %{user} at %{discussion}
+      message: Post
+      date: Date
+      time: Time
   post_files:
     new:
       attach_save: "Save"
@@ -985,31 +990,8 @@ en_US:
   group: "Group"
   student: Student
   legend: "Legend"
-  scores_of: "Scores Of"
-  tests: "Tests"
-  legend_assignments: "Legend Of Assignments"
-  assignment_without_correction: "Assignment sent, but not corrected (without grade)."
-  assignment_not_sent: "Assignment not sent."
-  student_without_group: Student without group
-  assignment_as: "AS"
-  assignment_an: "AN"
-  assignment_wg: WG
-  amount: "Amount"
-  amount_participation_discussions: "Participation in Discussions"
-  from_date: "From Date"
-  until_date: "Until Date"
-  search_format_date: "yy-mm-dd"
-  amount_access: "Amount Accesses"
-  invalid_identifier: "Invalid Identifier"
   to: "to"
   for: "To:"
-  history_search: "Search"
-  history_find: "Search"
-  history_access: "History Access"
-  scores_discussions: "Scores Discussions Student"
-  scores_history_access: "Scores History Access"
-  assignment_correction_of: "Correction Of"
-  error_find_ajax: "Error trying to query. Try again later."
   no_permission: "You haven't permission to access this page"
   not_associated: This tool isn't associated to the informed data
   uri_too_long: "Information quantity too large. Reduce the quantity of data passed"
@@ -2280,3 +2262,30 @@ en_US:
       access_to_the_course: "Access to the Course"
       no_students: There are no students
       list_of_students: List of students
+      assignment_not_sent: AE
+      assignment_without_group: WG
+      assignment_sent: S
+      assignment_send: NF
+      assignment_not_started: NS
+      assignment_not_sent_complete: No file sent and assignment date range expired
+      assignment_without_group_complete: Student without group
+      assignment_sent_complete: "Has files, but was not evaluated"
+      assignment_send_complete: No file sent
+      assignment_not_started_complete: Assignment not started
+      subtitle: Subtitle
+    info:
+      assignments: Assignments
+      date_range: Date range
+      situation: Situation
+      grade: Grade
+      discussions: Discussions
+      amount: Posts
+      discussions_participation: Discussion's participation
+      history_access: "Access history (total: %{amount})"
+      search: Search
+    access:
+      date: Date
+      time: Time
+      no_access: No access at date range informed
+    error:
+      invalid_date: Invalid date.

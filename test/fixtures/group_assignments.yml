@@ -37,3 +37,8 @@ ga7:
   id: 7
   academic_allocation_id: 14 # ## literatura brasileria I - group id 5 - al8
   group_name: grupo 1
+
+ga8:
+  id: 8
+  academic_allocation_id: 74 # qm-mar
+  group_name: grupo 1

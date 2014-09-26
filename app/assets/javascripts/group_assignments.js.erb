@@ -94,11 +94,8 @@ function select_assignment(label){
 function import_group(button){
   var from_group_id = $($(".label.selected")[0]).data("assignment-id")
   $.post($(button).data("url").replace("aid", from_group_id), function(data1){
-    $.get("<%=Rails.application.routes.url_helpers.list_without_layout_assignments_path%>", function(data2){
-      $.fancybox.close();
-      $(".assignments_list").replaceWith(data2);
-      flash_message(data1.notice, "notice");
-    });   
+    $.fancybox.close();
+    update_list(data1.notice);
   }).error(function(data){
     show_error(data, null, "group_assignments.header");
   });
@@ -118,10 +115,17 @@ function change_participant(td, url, tbody, icon, method){
         var tooltip = '<%=I18n.t("group_assignments.index.add")%>';
       else
         var tooltip = '<%=I18n.t("group_assignments.index.remove")%>';
-      $($(tr).find("td.icon")[0]).replaceWith('<td class="icon" onclick="'+method+'_participant(this)"><i class="icon-'+icon+'"></i></td>');
-      //.data("tooltip", tooltip);
+      $($(tr).find("td.icon")[0]).replaceWith('<td class="icon" onclick="'+method+'_participant(this)" title="'+tooltip+'" data-tooltip="'+tooltip+'"><i class="icon-'+icon+'"></i></td>');
     }).error(function(data){
       show_error(data, null, "group_assignments.header");
     });
   }
+}
+
+function update_list(message){
+  $.get("<%=Rails.application.routes.url_helpers.list_without_layout_assignments_path%>", function(data){
+    $(".assignments_list").replaceWith(data);
+    if (message != undefined)
+      flash_message(message, "notice");
+  });
 }

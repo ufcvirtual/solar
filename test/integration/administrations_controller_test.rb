@@ -2,11 +2,6 @@ require 'test_helper'
 
 class AdministrationsControllerTest < ActionDispatch::IntegrationTest
   
-  # para poder realizar o "login_as" sabendo que o sign_in do devise não funciona no teste de integração
-  include Warden::Test::Helpers 
-  # para reconhecer o método "fixture_file_upload" no teste de integração
-  include ActionDispatch::TestProcess
-
   def setup
     @admin  = users(:admin)
     @editor = users(:editor)

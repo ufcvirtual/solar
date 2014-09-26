@@ -14,10 +14,6 @@ class GroupAssignment < ActiveRecord::Base
     (sent_assignment.nil? or (sent_assignment.assignment_files.empty? and sent_assignment.grade.blank?))
   end
 
-  def self.all_by_assignment_id(assignment_id, allocation_tag_id)
-    joins(:academic_allocation).where(academic_allocations: {academic_tool_id: assignment_id, allocation_tag_id: allocation_tag_id})
-  end
-
   def assignment
     Assignment.find(academic_allocation.academic_tool_id)
   end

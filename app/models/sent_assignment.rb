@@ -19,17 +19,6 @@ class SentAssignment < ActiveRecord::Base
     self.user_id = nil if group_assignment_id
   end
 
-  def sent_by_group?
-    not group_assignment.nil?
-  end
-
-  def user_can_access?(check_user, allocation_tag)
-    return true if allocation_tag.is_observer_or_responsible?(check_user) # responsável ou observador
-    return true if sent_by_group? and group_assignment.group_participants.map(&:user_id).include?(check_user.id) # user is part of the group
-    return true if user == check_user # user that sent assignment
-    return false
-  end
-
   def assignment
     Assignment.find(academic_allocation.academic_tool_id)
   end

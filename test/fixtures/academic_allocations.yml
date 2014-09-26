@@ -442,3 +442,9 @@ acaal73:
  allocation_tag_id: 41 #qm-qtn
  academic_tool_id: 11
  academic_tool_type: "LessonModule"
+
+acaal74:
+ id: 74
+ allocation_tag_id: 11 # qm-mar
+ academic_tool_id: 4 # trabalho em grupo
+ academic_tool_type: "Assignment"

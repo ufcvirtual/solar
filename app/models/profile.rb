@@ -19,11 +19,6 @@ class Profile < ActiveRecord::Base
     (self.types & type) == type
   end
 
-  def self.student_from_class?(user_id, allocation_tag_id)
-    students_of_class = Assignment.list_students_by_allocations(allocation_tag_id).map(&:id)
-    return (students_of_class.include?(user_id))
-  end
-
   def self.student_profile
     find_by_types(Profile_Type_Student).id
   end

@@ -2,8 +2,6 @@ require 'test_helper'
 
 class WebconferencesWithAllocationTagTest < ActionDispatch::IntegrationTest
 
-  include Warden::Test::Helpers
-
   def setup
     login_as users(:aluno1), scope: :user
 

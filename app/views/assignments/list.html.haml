@@ -33,7 +33,14 @@
 
     $(".btn.participants").click(function(){
       $(".participants_box").not("."+$(this).attr("id")).addClass("invisible");
-      $($(this).parents("tr")[0]).find(".participants_box").toggleClass("invisible");
+      $("tr.assignment").attr("style", "border-bottom: 1px solid #B4B2B1;");
+      
+      var box = $(".participants_box."+$(this).attr("id"));
+      box.toggleClass("invisible");
+      if (box.hasClass("invisible"))
+        $(this).parents("tr").first().attr("style", "border-bottom: 1px solid #B4B2B1;");
+      else
+        $(this).parents("tr").first().attr("style", "border-bottom: none");
       return false;
     });
   });

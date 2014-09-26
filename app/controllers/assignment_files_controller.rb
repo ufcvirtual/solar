@@ -25,7 +25,7 @@ class AssignmentFilesController < ApplicationController
 
     render partial: "file", locals: {file: @assignment_file}
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
     error_message = I18n.translate!("assignment_files.error.#{error}", raise: true) rescue t("assignment_files.error.new")
     render json: {success: false, alert: error_message}, status: :unprocessable_entity
@@ -49,9 +49,9 @@ class AssignmentFilesController < ApplicationController
     end
 
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    render json: {success: false, alert: t("assignment_files.error.download")}, status: :unprocessable_entity
+    render js: "flash_message('#{t(:file_error_nonexistent_file)}', 'alert');"
   end
 
   def destroy
@@ -64,7 +64,7 @@ class AssignmentFilesController < ApplicationController
       render json: {success: false, alert: t("assignment_files.error.remove")}, status: :unprocessable_entity
     end
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error
     error_message = I18n.translate!("assignment_files.error.#{error}", raise: true) rescue t("assignment_files.error.remove")
     render json: {success: false, alert: error_message}, status: :unprocessable_entity

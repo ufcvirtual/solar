@@ -96,15 +96,15 @@ class Discussion < Event
     posts_by_allocation_tags_ids(allocation_tags_ids).where("updated_at::timestamp(0) > '#{period.last.to_time}'::timestamp(0)").count
   end
 
-  def self.posts_count_by_user(student_id, allocation_tags)
-    joins(academic_allocations: :allocation_tag)
+  def self.posts_count_by_user(student_id, allocation_tag_id)
+    joins(:schedule, academic_allocations: :allocation_tag)
       .joins("LEFT JOIN discussion_posts AS dp ON dp.academic_allocation_id = academic_allocations.id AND dp.user_id = #{student_id}")
-      .where(allocation_tags: {id: allocation_tags}).select("discussions.id AS discussion_id, discussions.name, COUNT(dp.id) AS qtd")
-      .group("discussions.id, discussions.name").order("discussions.name").uniq
+      .where(allocation_tags: {id: AllocationTag.find(allocation_tag_id).related}).select("discussions.id, discussions.name, COUNT(dp.id) AS posts_count, schedules.start_date AS start_date")
+      .group("discussions.id, discussions.name, start_date").order("start_date").uniq
   end
 
-  def self.all_by_allocation_tags(allocation_tags_ids)
-    joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
+  def self.all_by_allocation_tags(allocation_tag_id)
+    joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: AllocationTag.find(allocation_tag_id).related})
       .select("discussions.*, academic_allocations.id AS ac_id")
       .order("schedules.start_date, schedules.end_date, name")
   end

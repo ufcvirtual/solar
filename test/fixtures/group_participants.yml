@@ -44,3 +44,13 @@ gp9:
   id: 9
   group_assignment_id: 5 #ga5
   user_id: 7 #aluno1
+
+gp10:
+  id: 10
+  group_assignment_id: 8 # qm-mar
+  user_id: 1 #user
+
+gp11:
+  id: 11
+  group_assignment_id: 4
+  user_id: 1 #user

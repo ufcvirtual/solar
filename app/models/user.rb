@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
     content_type: ['image/jpeg','image/png','image/gif','image/pjpeg'],
     message: :invalid_type
 
-  default_scope order: 'name ASC'
+  default_scope order: 'users.name ASC'
 
   ## Este método define os atributos na hora de criar um objeto. Logo, redefine os atributos já existentes e define
   ## o valor de @has_special_needs a partir do que é passado da página na criação de um usuário (create)
@@ -271,6 +271,15 @@ class User < ActiveRecord::Base
     users = where("to_tsvector('simple', unaccent(#{type})) @@ to_tsquery('simple', unaccent(?))", text)
     users = users.joins(:allocations).where("allocation_tag_id IN (?)", allocation_tags_ids) unless allocation_tags_ids.blank? or allocation_tags_ids.include?(nil)
     users.select("DISTINCT users.id").select("users.*").order("name")
+  end
+
+  def info_at_allocation_tag(allocation_tag_id)
+    allocation_tags_ids = AllocationTag.find(allocation_tag_id).related
+    public_files = PublicFile.where(user_id: self.id, allocation_tag_id: allocation_tags_ids).count
+    posts        = Post.joins(:academic_allocation).where(academic_allocations: {academic_tool_type: "Discussion", allocation_tag_id: allocation_tags_ids}, discussion_posts: {user_id: self.id}).count
+    access       = LogAccess.where(allocation_tag_id: allocation_tags_ids, user_id: self.id, log_type: LogAccess::TYPE[:offer_access]).count
+
+    {public_files: public_files, posts: posts, access: access}
   end
 
   ################################

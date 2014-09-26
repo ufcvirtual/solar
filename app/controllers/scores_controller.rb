@@ -3,107 +3,57 @@ class ScoresController < ApplicationController
   before_filter :prepare_for_group_selection, only: :index
   before_filter :prepare_for_pagination, only: :index
 
-  ## Lista de informações gerais do acompanhamento de todos os alunos da turma
   def index
-    allocation_tag_id = active_tab[:url][:allocation_tag_id]
-    authorize! :index, Score, on: [allocation_tag_id] # verifica se pode acessar método
+    authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+    @group = AllocationTag.find(@allocation_tag_id).groups.first
 
-    @group = AllocationTag.find(allocation_tag_id).groups.first
-    @allocation_tag = AllocationTag.find(allocation_tag_id)
-
-    raise CanCan::AccessDenied if @group.nil? # turma nao existe
-
-    @assignments = Assignment.joins(:schedule, {academic_allocations: :allocation_tag}).where(allocation_tags: {id: allocation_tag_id})
-      .select("assignments.id, schedule_id, type_assignment, name").order("schedules.start_date, assignments.name")
-
-    # atividades da turma
-    allocation_tags = AllocationTag.find(allocation_tag_id).related.join(',')
-    @students       = Assignment.list_students_by_allocations(allocation_tags)
-    @scores         = Score.students_information(@students, @assignments, @group) # dados dos alunos nas atividades
+    @assignments = Assignment.joins(:schedule, {academic_allocations: :allocation_tag}).where(allocation_tags: {id: @allocation_tag_id})
+      .order("schedules.start_date, assignments.name")
+    @students    = AllocationTag.get_students(@allocation_tag_id)
   end
 
-  ## Student / current student info
   def info
-    authorize! :info, Score, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-
+    authorize! :info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @student = current_user
-
-    informations(allocation_tag_id)
+    informations(@allocation_tag_id)
   end
 
-  ## Professor / any student info
   def student_info
-    authorize! :student_info, Score, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-    authorize! :find, (@student = User.find(params[:student_id])) # verifica se o usuario logado tem permissao para consultar o usuario informado
-
-    informations(allocation_tag_id)
-
+    authorize! :student_info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+    @student = User.find(params[:student_id])
+    informations(@allocation_tag_id)
     render :info
   end
 
-  ## Quantidade de acessos do aluno a unidade curricular
-  def amount_history_access
+  def amount_access
+    allocation_tag_id = active_tab[:url][:allocation_tag_id]
+
     begin
-      authorize! :info, Score
+      raise CanCan::AccessDenied unless params[:user_id] == current_user.id
     rescue
-      authorize! :student_info, Score
+      authorize! :info, Score, on: [allocation_tag_id]
     end
 
-    @student_id = params[:id]
+    query = []
+    query << "date(created_at) >= '#{params['from-date'].to_date}'" unless params['from-date'].blank?
+    query << "date(created_at) <= '#{params['until-date'].to_date}'" unless params['until-date'].blank?
 
-    authorize! :find, User.find(@student_id) # verifica autorizacao para consultar dados do usuario
+    @access = LogAccess.where(log_type: LogAccess::TYPE[:offer_access], user_id: params[:user_id], allocation_tag_id: AllocationTag.find(allocation_tag_id).related).where(query.join(" AND "))
 
-    from_date  = date_valid?(params['from-date']) ? Date.parse(params['from-date']) : (Date.today << 2)
-    until_date = date_valid?(params['until-date']) ? Date.parse(params['until-date']) : Date.today
+    render partial: "access"
 
-    at      = AllocationTag.find_by_offer_id(active_tab[:url][:id]).id
-    @amount = Score.find_amount_access_by_student_id_and_interval(at, @student_id, from_date, until_date)
-
-    render layout: false
-  end
-
-  ## Historico de acesso do aluno
-  def history_access
-    begin
-      authorize! :info, Score
-    rescue
-      authorize! :student_info, Score
-    end
-
-    student_id = params[:id]
-
-    authorize! :find, User.find(student_id) # verifica autorizacao para consultar dados do usuario
-
-    from_date  = (date_valid?(params['from-date']) ? Date.parse(params['from-date']) : (Date.today << 2))
-    until_date = (date_valid?(params['until-date']) ? Date.parse(params['until-date']) : Date.today)
-
-    at       = AllocationTag.find_by_offer_id(active_tab[:url][:id]).id
-    @history = Score.history_student_id_and_interval(at, student_id, from_date, until_date).order("created_at DESC")
-
-    render layout: false
+  rescue CanCan::AccessDenied
+    render json: {alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    render json: {alert: t("scores.error.invalid_date")}, status: :unauthorized
   end
 
   private
-
     def informations(allocation_tag_id)
-      allocation_tag = AllocationTag.find(allocation_tag_id)
-      group_id, related_allocations = allocation_tag.group_id, allocation_tag.related
-
-      @individual_activities = Assignment.student_assignments_info(group_id, @student.id, Assignment_Type_Individual)
-      @group_activities      = Assignment.student_assignments_info(group_id, @student.id, Assignment_Type_Group)
-      @discussions           = Discussion.posts_count_by_user(@student.id, related_allocations)
-
-      from_date, until_date  = (Date.today << 2), Date.today # dois meses atras
-      at      = AllocationTag.find_by_offer_id(active_tab[:url][:id]).id
-      @amount = Score.find_amount_access_by_student_id_and_interval(at, @student.id, from_date, until_date)
-    end
-
-    def date_valid?(date)
-      begin
-        return true if Date.parse date
-      rescue
-        return false
-      end
+      @assignments = Assignment.joins(:academic_allocations, :schedule).where(academic_allocations: {allocation_tag_id:  allocation_tag_id})
+                               .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date").order("start_date")
+      @discussions = Discussion.posts_count_by_user(@student.id, allocation_tag_id)
+      @access      = LogAccess.where(log_type: LogAccess::TYPE[:offer_access], user_id: @student.id, allocation_tag_id: AllocationTag.find(allocation_tag_id).related).order("created_at DESC")
     end
 
 end

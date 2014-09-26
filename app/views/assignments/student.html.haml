@@ -1,9 +1,10 @@
 .block_wrapper_groups
   - unless @group.nil?
+    = image_tag "group.png", alt: t(:mysolar_alt_img_user)
     .block_user
       .title_user= t(".group")
       = @group.group_name
-    .block_user
+      %div
       .title_user= t(".participants")
       - participants = @group.users
       - unless participants.empty?
@@ -14,11 +15,13 @@
               - unless @class_participants.include? participant.id
                 %span{:"data-tooltip" => t(".moved_allocation")}= content_tag :i, nil, class: "icon-warning moved_allocation" 
       - else
-        = t(".no_participant")
+        = t(".no_participants")
   - else
+    - user = User.find(@student_id)
+    = image_tag (user.photo_file_name ? user.photo.url(:forum) : "no_image.png"), alt: t(:mysolar_alt_img_user) + ' ' + user.nick
     .block_user
       .title_user= t(".student")
-      = User.find(@student_id).name
+      = user.name
 
 .block_wrapper.assingment_info
   .block_title

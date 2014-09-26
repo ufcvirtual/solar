@@ -1,9 +1,17 @@
-#historyposts
-  %table{:width => "100%", :cellpadding => "0", :cellspacing => "0", :border => "0"}
-    %tbody
-      - @posts.each_with_index do |post, idx|
-        %tr{ :class => ((idx % 2 == 0) ? 'post_content' : 'noclass') }
-          %td{ :style => "overflow: auto; float: right; color: #676767; fontsize: 10px;" }
-            =l post['updated_at'], :format => :files
-        %tr{ :class => ((idx % 2 == 0) ? 'post_content' : 'noclass') }
-          %td=raw post['content']
+%h1#lightBoxDialogTitle= t(".title", user: @user.name, discussion: @discussion.name)
+.user_posts
+  - unless @posts.empty?
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th= t(".message")
+          %th.center= t(".date")
+          %th.center= t(".time")
+      %tbody
+        - @posts.each do |post|
+          %tr.lines
+            %td.profile= raw post.content
+            %td.center= l(post.updated_at.to_datetime, format: :normal)
+            %td.center= l(post.updated_at.to_datetime, format: :clock_time)
+  - else
+    .block_content_text_list.text_none= t(".no_posts")

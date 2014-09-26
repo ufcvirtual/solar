@@ -9,7 +9,7 @@ class AssignmentsController < ApplicationController
 
   def index
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
-    authorize! :list, Assignment, on: @allocation_tags_ids
+    authorize! :index, Assignment, on: @allocation_tags_ids
 
     @assignments = Assignment.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).order("name").uniq
   end
@@ -146,7 +146,7 @@ class AssignmentsController < ApplicationController
 
     render json: { success: true, notice: t("assignments.success.evaluated"), html: "#{render_to_string(partial: "info")}" }
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error
     error_message = I18n.translate!("assignments.error.#{error}", raise: true) rescue t("assignments.error.evaluate")
     render json: {success: false, alert: error_message}, status: :unprocessable_entity
@@ -163,9 +163,9 @@ class AssignmentsController < ApplicationController
       download_file(:back, file.attachment.path, file.attachment_file_name)
     end
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    render json: {success: false, alert: t("assignments.error.download")}, status: :unprocessable_entity
+    render js: "flash_message('#{t(:file_error_nonexistent_file)}', 'alert');"
   end
 
 end

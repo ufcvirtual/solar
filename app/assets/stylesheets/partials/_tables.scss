@@ -9,9 +9,6 @@ th {
 }
 
 th, tr.lines td {
-  /*    border-bottom: solid #B4B2B1 1px;*/
-  /*    border-left: solid #B4B2B1 1px;*/
-  /*    padding: 7px 5px 6px 5px;*/
   padding: 6px 10px 4px 10px;
   vertical-align: middle;
 }
@@ -99,6 +96,10 @@ table.tb_list {
 
   td .title{
     color: #21578B;
+  }
+
+  td .title-yellow{
+    color: #DCA727;
   }
 
   thead tr.lines{

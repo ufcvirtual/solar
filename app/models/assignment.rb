@@ -37,14 +37,6 @@ class Assignment < Event
     SentAssignment.joins(:academic_allocation).where(academic_allocations: {academic_tool_id: self.id, allocation_tag_id: group.allocation_tag.id}).empty?
   end
 
-  def student_group_by_student(student_id, allocation_tag_id)
-    (self.type_assignment == Assignment_Type_Group) ?
-      (GroupAssignment.first(
-      joins: :academic_allocation,
-      include: :group_participants,
-      conditions: ["group_participants.user_id = ? AND academic_allocations.academic_tool_id = ? AND allocation_tag_id = ?", student_id, self.id, allocation_tag_id])) : nil
-  end
-
   def sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, user_id, group_assignment_id)
     SentAssignment.joins(:academic_allocation).where(user_id: user_id, group_assignment_id: group_assignment_id, academic_allocations: {academic_tool_id: self.id, allocation_tag_id: allocation_tag_id}).first
   end   
@@ -59,10 +51,8 @@ class Assignment < Event
     return false unless extra
 
     offer = case allocation_tag.refer_to
-    when 'offer'
-      allocation_tag.offer
-    when 'group'
-      allocation_tag.group.offer
+      when 'offer'; allocation_tag.offer
+      when 'group'; allocation_tag.group.offer
     end
 
     # periodo pode estar definido na oferta ou no semestre
@@ -73,29 +63,14 @@ class Assignment < Event
     end
 
     extra and period_end_date.to_date >= Date.today
-
-    # em fórum tá assim:
-    # ((self.allocation_tags.map {|at| at.is_observer_or_responsible?(user_id)}).include?(true) and self.closed?) ?
-    #   ((self.schedule.end_date.to_date + Discussion_Responsible_Extra_Time) >= Date.today) : false
   end
 
-  ## Verifica período que o responsável pode alterar algo na atividade
-  #  procurar por assignment_in_time?
-  def in_time?(allocation_tag_id, user_id)
-    (verify_date_range(schedule.start_date, schedule.end_date, Date.today) or extra_time?(AllocationTag.find(allocation_tag_id), user_id))
+  def in_time?(allocation_tag_id, user_id = nil)
+    (verify_date_range(schedule.start_date, schedule.end_date, Date.today) or (not(user_id.nil?) and extra_time?(AllocationTag.find(allocation_tag_id), user_id)))
   end
 
-  ## Verifica se uma data esta em um intervalo de outras
   def verify_date_range(start_date, end_date, date)
     (date >= start_date.to_date and date <= end_date.to_date)
-  end
-
-  ## Lista de alunos presentes nas turmas
-  def self.list_students_by_allocations(allocations_ids)
-    students_of_class_ids = Allocation.all(:include => [:allocation_tag, :user, :profile], :conditions => ["cast( profiles.types & '#{Profile_Type_Student}' as boolean) 
-      AND allocations.status = #{Allocation_Activated} AND allocation_tags.group_id IS NOT NULL AND allocation_tags.id IN (#{allocations_ids})"]).map(&:user_id)
-    students_of_class = User.select("name, id").find(students_of_class_ids)
-    return students_of_class
   end
 
   def info(user_id, allocation_tag_id, group_id = nil)
@@ -130,10 +105,14 @@ class Assignment < Event
 
   def students_without_groups(allocation_tag)
     academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id, self.id, 'Assignment')
-    students_in_class   = Assignment.list_students_by_allocations(allocation_tag.id).map(&:id)
+    students_in_class   = AllocationTag.get_students(allocation_tag.id).pluck(:id)
     students_with_group = (academic_allocation.nil? ? [] : academic_allocation.group_assignments.map(&:group_participants).flatten.map(&:user_id))
     students            = [students_in_class - students_with_group].flatten.compact.uniq
     return students.empty? ? [] : User.select('id, name').find(students)
+  end
+
+  def groups_assignments(allocation_tag_id)
+    GroupAssignment.joins(:academic_allocation).where(academic_allocations: {academic_tool_id: self.id, allocation_tag_id: allocation_tag_id})
   end
 
 end

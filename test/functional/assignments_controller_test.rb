@@ -12,13 +12,13 @@ class AssignmentsControllerTest < ActionController::TestCase
 
   test "rotas" do
     ## apenas algumas rotas
-    assert_routing({method: :get, path: "/assignments/student_view"}, {controller: "assignments", action: "student_view"})
-    assert_routing({method: :get, path: "/assignments/professor"}, {controller: "assignments", action: "professor"})
-    assert_routing({method: :post, path: "/assignments/upload_file"}, {controller: "assignments", action: "upload_file"})
-    assert_routing({method: :delete, path: "/assignments/delete_file"}, {controller: "assignments", action: "delete_file"})
-    assert_routing({method: :delete, path: "/assignments/1/remove_comment"}, {controller: "assignments", action: "remove_comment", id: "1"})
-    assert_routing({method: :get, path: "/assignments"}, {controller: "assignments", action: "index"})
-    assert_routing({method: :post, path: "/assignments"}, {controller: "assignments", action: "create"})
+    assert_routing({method: :get, path: "/assignments/student"},      {controller: "assignments", action: "student", id: ":id"})
+    assert_routing({method: :get, path: "/assignments/list"},         {controller: "assignments", action: "list"})
+    assert_routing({method: :get, path: "/assignments"},              {controller: "assignments", action: "index"})
+    assert_routing({method: :get, path: "/assignments/download"},     {controller: "assignments", action: "download"})
+    assert_routing({method: :get, path: "/assignments/zip_download"}, {controller: "assignments", action: "download", zip: true})
+    assert_routing({method: :put, path: "/assignments/evaluate"},     {controller: "assignments", action: "evaluate", id: ":id"})
+    assert_routing({method: :post, path: "/assignments"},             {controller: "assignments", action: "create"})
   end
 
   ##
