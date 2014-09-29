@@ -17,7 +17,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "listar pedidos de matricula por um usuario com permissao" do
-    get allocations_path
+    get enrollments_allocations_path
     assert_response :success
     assert_not_nil assigns(:allocations)
   end
@@ -25,13 +25,13 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   test "listar pedidos de matricula por um usuario sem permissao" do
     login(users(:aluno1))
 
-    get allocations_path
+    get enrollments_allocations_path
     assert_response :redirect
   end
 
   # turma que o coordenador nao coordena
   test "nao exibir pedidos de matricula da turma CAU-A" do
-    get allocations_path
+    get enrollments_allocations_path
     assert_response :success
 
     assert_select "table tbody tr" do
@@ -40,7 +40,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "aceitar matricula pendente do aluno user" do
-    get allocations_path
+    get enrollments_allocations_path
     assert_response :success
 
     al_pending = assigns(:allocations).select {|al| al.user_id == users(:user).id and al.status == Allocation_Pending}.first
@@ -61,7 +61,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "rejeitar matricula pendente do aluno user" do
-    get allocations_path
+    get enrollments_allocations_path
     assert_response :success
 
     al_pending = assigns(:allocations).select {|al| al.user_id == users(:user).id and al.status == Allocation_Pending}.first
@@ -82,7 +82,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "cancelar matricula do aluno user na turma FOR - 2011.1" do
-    get allocations_path(status: 1) # lista de gerenciar matriculas
+    get enrollments_allocations_path(status: 1) # lista de gerenciar matriculas
     assert_response :success
 
     al_matriculado = assigns(:allocations).select {|al| al.user_id == users(:user).id and al.status == Allocation_Activated and al.allocation_tag_id == allocation_tags(:al1).id}.first
@@ -161,8 +161,8 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
 
   test "alocar usuario com perfil tutor a distancia" do
     assert_difference(["Allocation.count", "LogAction.count"], 2) do
-      post create_designation_allocations_path, { allocation_tags_ids:  "#{allocation_tags(:al5).id}", user_id: users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated } #oferta
-      post create_designation_allocations_path, { allocation_tags_ids:  "#{allocation_tags(:al4).id}", user_id: users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated } #turma
+      post create_designation_allocations_path, { allocation_tags_ids:  "#{allocation_tags(:al5).id}", user_id: users(:user2).id, profile_id:  profiles(:tutor_distancia).id, status:  Allocation_Activated } #oferta
+      post create_designation_allocations_path, { allocation_tags_ids:  "#{allocation_tags(:al4).id}", user_id: users(:user2).id, profile_id:  profiles(:tutor_distancia).id, status:  Allocation_Activated } #turma
     end
 
     assert_response :success
@@ -174,7 +174,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
     login(users(:professor))
 
     assert_no_difference(["Allocation.count", "LogAction.count"]) do
-      post create_designation_allocations_path(format: :json), { allocation_tags_ids: "#{allocation_tags(:al5).id}", user_id:  users(:user2).id, profile:  profiles(:tutor_distancia).id, status: Allocation_Activated }
+      post create_designation_allocations_path(format: :json), { allocation_tags_ids: "#{allocation_tags(:al5).id}", user_id:  users(:user2).id, profile_id:  profiles(:tutor_distancia).id, status: Allocation_Activated }
     end
 
     assert_response :unauthorized
@@ -185,7 +185,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   test "alocar usuario como editor" do
     login(users(:admin))
     assert_difference(["Allocation.count", "LogAction.count"]) do
-      post create_designation_allocations_path, { allocation_tags_ids:  "#{allocation_tags(:al5).id}", user_id: users(:user2).id, profile:  profiles(:editor).id, status:  Allocation_Activated , admin: true} #oferta
+      post create_designation_allocations_path, { allocation_tags_ids:  "#{allocation_tags(:al5).id}", user_id: users(:user2).id, profile_id:  profiles(:editor).id, status:  Allocation_Activated , admin: true} #oferta
     end
 
     assert_response :success
@@ -200,22 +200,22 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   test "realizar pedido de matricula para aluno - dentro do periodo" do
     login(users(:editor))
     assert_difference(["Allocation.count", "LogAction.count"]) do
-      post allocations_path, {group_id: allocation_tags(:al1).group_id} # Introducao a linguistica
+      post enroll_request_allocations_path(group_id: allocation_tags(:al1).group_id) # Introducao a linguistica
     end
 
     assert_response :success
-    assert_equal I18n.t(:enrollm_request, scope: [:allocations, :success]), get_json_response("msg")
+    assert_equal I18n.t('allocations.request.success.enroll'), get_json_response("msg")
   end
 
   # Usuário solicita matrícula fora do período
   test "nao realizar pedido de matricula para aluno - fora do periodo" do
     login(users(:editor))
     assert_no_difference(["Allocation.count", "LogAction.count"]) do
-      post allocations_path, {group_id: allocation_tags(:al8).group_id} # literatura brasileria I
+      post enroll_request_allocations_path(group_id: allocation_tags(:al8).group_id) # literatura brasileria I
     end
 
     assert_response :unprocessable_entity
-    assert_equal I18n.t(:enrollm_request, scope: [:allocations, :error]), get_json_response("msg")
+    assert_equal I18n.t('allocations.request.error.enroll'), get_json_response("msg")
   end
 
   test "cancelar alocacao" do
@@ -231,7 +231,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
 
-    assert_equal I18n.t('allocations.change_status.success.cancel_profile_request'), get_json_response("msg")
+    assert_equal I18n.t('allocations.request.success.cancel_profile_request'), get_json_response("msg")
   end
 
   test "nao cancelar alocacao de outro usuario" do
@@ -260,49 +260,34 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   test "solicitar nova alocacao geral" do
     login(@aluno1)
     assert_difference(["Allocation.count", "LogAction.count"]) do
-      post profile_request_allocations_path(format: :json), {profile: profiles(:editor).id}
+      post profile_request_allocations_path(profile_id: profiles(:editor).id), format: :json
     end
 
     assert_equal Allocation.last.status, Allocation_Pending
     assert_response :success
 
-    assert_equal I18n.t("allocations.success.requested"), get_json_response("msg")
+    assert_equal I18n.t("allocations.request.success.profile"), get_json_response("msg")
   end
 
   test "solicitar nova alocacao em UC" do
     login(@aluno1)
     assert_difference(["Allocation.count", "LogAction.count"]) do
-      post profile_request_allocations_path, {profile: profiles(:editor).id, curriculum_unit_id: curriculum_units(:r2).id, format: :json}
+      post profile_request_allocations_path(profile_id: profiles(:editor).id, curriculum_unit_id: curriculum_units(:r2).id), format: :json
     end
 
     assert_equal Allocation.last.status, Allocation_Pending
     assert_response :success
 
-    assert_equal I18n.t("allocations.success.requested"), get_json_response("msg")
+    assert_equal I18n.t("allocations.request.success.profile"), get_json_response("msg")
   end
 
   test "solicitar alocacao ja ativa" do
     login(@coordenador)
     assert_no_difference(["Allocation.count", "LogAction.count"]) do
-      post profile_request_allocations_path(format: :json), {profile: profiles(:editor).id, groups_id: "#{groups(:g5).id}"}
+      post profile_request_allocations_path(profile_id: profiles(:editor).id, groups_id: "#{groups(:g5).id}"), format: :json
     end
-
-    # raise "#{response.body}"
 
     assert_equal "Perfil já está em uso", get_json_response("msg")
-
-    # assert_response :success
-    # assert_equal I18n.t("allocations.warning.already_active"), get_json_response("message")
-  end
-
-  test "nao solicitar nova alocacao sem informar perfil" do
-    login(@aluno1)
-    assert_no_difference(["Allocation.count", "LogAction.count"]) do
-      post profile_request_allocations_path(format: :json), {profile: '', curriculum_unit_id: curriculum_units(:r2).id}
-    end
-
-    assert_response :unprocessable_entity
-    assert_equal "Perfil obrigatório(a)", get_json_response("msg")
   end
 
   # Aceitar/Rejeitar solicitação de perfil
@@ -376,7 +361,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_equal I18n.t("allocations.change_status.success.pending"), get_json_response("msg")
+    assert_equal I18n.t("allocations.request.success.pending"), get_json_response("msg")
   end
 
   test "desfazer rejeicao de perfil" do
@@ -392,7 +377,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_equal I18n.t("allocations.change_status.success.pending"), get_json_response("msg")
+    assert_equal I18n.t("allocations.request.success.pending"), get_json_response("msg")
   end
 
 end

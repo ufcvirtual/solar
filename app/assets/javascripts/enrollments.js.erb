@@ -18,7 +18,7 @@ $(function(){
     if (!confirm("<%= I18n.t('enrollments.index.confirm') %>"))
       return false;
 
-    var reactivate_url = $(this).attr('href').replace('cancel', 'reactivate')
+    var reactivate_url = $(this).attr('href').replace('cancel', 'request_reactivate');
     var td = $(this).closest('td');
 
     $.delete($(this).attr('href'), function(data){
@@ -36,14 +36,22 @@ $(function(){
     if (!confirm("<%= I18n.t('enrollments.index.confirm') %>"))
       return false;
 
+    var a = $(this);
     var tr = $(this).closest('tr');
     var td = $(this).closest('td');
 
     $.delete($(this).attr('href'), function(data){
       var group_id = tr.data('group-id');
       if (group_id) {
-        var enroll_url = $('.allocations.list').data('link-enroll').replace('allocation_group_id', group_id);
-        var enroll_link = '<a href="' + enroll_url + '" class="btn btn_default request_enroll"><%= I18n.t('enrollments.index.enroll') %></a>';
+
+        var class_reactivate = '';
+        if (a.hasClass('request_reactivate')) { // verifica se ja tem uma alocacao, mas nao esta ativa
+          var enroll_url = $('.allocations.list').data('link-reactivate').replace(':allocation_id', data.id);
+          class_reactivate = 'request_reactivate';
+        } else {
+          var enroll_url = $('.allocations.list').data('link-enroll').replace('allocation_group_id', group_id);
+        }
+        var enroll_link = '<a href="' + enroll_url + '" class="btn btn_default request_enroll ' + class_reactivate + '"><%= I18n.t('enrollments.index.enroll') %></a>';
 
         td.html(enroll_link);
       }
@@ -56,10 +64,16 @@ $(function(){
   $('table tbody tr.lines').on('click', 'a.request_enroll', function(e){
     e.preventDefault();
 
+    var a = $(this);
     var td = $(this).closest('td');
     $.post($(this).attr('href'), {format: 'json'}, function(data){
       var cancel_url = $('.allocations.list').data('link-cancel-request').replace(':allocation_id', data.id);
-      var cancel_link = '<a href="' + cancel_url + '" class="btn btn_caution allocation_cancel_request"><%= I18n.t('enrollments.index.cancel_request') %></a>';
+
+      var class_reactivate = '';
+      if (a.hasClass('request_reactivate'))
+        class_reactivate = 'request_reactivate';
+
+      var cancel_link = '<a href="' + cancel_url + '" class="btn btn_caution allocation_cancel_request ' + class_reactivate + '"><%= I18n.t('enrollments.index.cancel_request') %></a>';
 
       td.html(cancel_link);
       flash_message(data.msg, 'notice');

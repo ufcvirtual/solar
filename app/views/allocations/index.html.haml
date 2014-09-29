@@ -41,5 +41,6 @@
 
     $.get(list_url, data, function(data){
       $('tbody.allocations').html(data);
+      $("#all_allocations").nice_checkbox();
     });
   });

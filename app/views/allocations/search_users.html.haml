@@ -23,7 +23,7 @@
   function designate(button){
     var profile = $("#profile_id", $(button).parents("tr")).val();
 
-    $.post($(button).data("link-create"), {profile: profile}, function(data){
+    $.post($(button).data("link-create"), {profile_id: profile}, function(data){
       var url_list = $(button).data("link-list");
       $.get(url_list, function(data){ $(".list_designates:last").replaceWith(data); });
 

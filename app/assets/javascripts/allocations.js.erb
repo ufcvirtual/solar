@@ -24,7 +24,7 @@ jQuery(function($){
       }
     }
 
-    var url = "<%= Rails.application.routes.url_helpers.allocation_path('allocations_ids') %>".replace('allocations_ids', sel.join(','));
+    var url = "<%= Rails.application.routes.url_helpers.manage_enrolls_allocation_path('allocations_ids') %>".replace('allocations_ids', sel.join(','));
 
     $.ajax({
       type: 'PUT',
@@ -39,10 +39,14 @@ jQuery(function($){
         trs_checked.remove();
 
         alert("<%= I18n.t('allocations.manage.enrollment_successful_update') %>");
+      },
+      error: function(data) {
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
       }
-
     });
-  });
+  }); // end click
 });
 
 function manage_cancel(obj) {

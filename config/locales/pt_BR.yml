@@ -1381,19 +1381,27 @@ pt_BR:
 
   ## allocations
   allocations:
-    change_status:
+    request:
       success:
+        enroll: "Pedido de matrícula realizado com sucesso."
+        profile: "Solicitação de perfil realizada com sucesso."
+
         activate: "Alocação ativada com sucesso."
         deactivate: "Alocação desativada com sucesso."
-        reactivate: "Alocação reativada com sucesso."
+        request_reactivate: "Pedido de reativação de matrícula realizado com sucesso."
         pending: "Ação desfeita com sucesso."
         cancel: "Alocação cancelada com sucesso."
         cancel_request: "Pedido de matrícula cancelado com sucesso."
         cancel_profile_request: "Solicitação de perfil cancelada"
+
+        accept_reject_msg: "Solicitação de %{user_name} para perfil de %{profile_name} %{path} foi %{action}. %{undo_url}"
       error:
+        enroll: "Pedido de matrícula não realizado."
+        profile: "Solicitação de perfil não realizada."
+
         activate: "Alocação não ativada."
         deactivate: "Alocação não desativada."
-        reactivate: "Alocação não reativada."
+        request_reactivate: "Pedido de reativação de matrícula não realizado."
         pending: "Ação não desfeita."
         cancel: "Alocação não cancelada."
         cancel_request: "Cancelamento não realizado."
@@ -1454,34 +1462,38 @@ pt_BR:
       name: Nome
       select_profile: Selecione um perfil
       no_user_found: Nenhum usuário encontrado
-    success:
-      enrollm_request: Pedido de matrícula realizado
-      allocated: Usuário alocado
-      activated: Usuário ativado
-      deactivated: Usuário desativado
-      allocations_performed: Alocações realizadas
+    # success:
+    #   enrollm_request: Pedido de matrícula realizado
+    #   allocated: Usuário alocado
+    #   activated: Usuário ativado
+    #   deactivated: Usuário desativado
+    #   allocations_performed: Alocações realizadas
 
-      requested: Solicitação realizada com sucessso
+    #   requested: Solicitação realizada com sucessso
 
-      request_canceled: Solicitação cancelada
-      profile_canceled: Perfil cancelado
-      rejected: rejeitada
-      accepted: aceita
-      allocation_tag_path: "em %{path}"
-      request_message: "Solicitação de %{user_name} para perfil de %{profile_name} %{path} foi %{action}. %{undo_url}"
-      undone_action: "Ação desfeita com sucesso"
-    error:
-      student_already_in_group: Aluno já está nesta turma
-      enrollm_request: Pedido de matrícula não realizado
-      not_allocated: Não foi possível alocar usuário
-      not_activated: Não foi possível ativar usuário
-      not_deactivated: Não foi possível desativar usuário
-      allocations_not_performed: Não foi possível realizar alocações
-      student_or_basic: Não é possível solicitar perfil de aluno ou básico
-      profile: É necessário selecionar um perfil
-      cancel_request: Não foi possível realizar cancelamento
+    #   request_canceled: Solicitação cancelada
+    #   profile_canceled: Perfil cancelado
+    #   rejected: rejeitada
+    #   accepted: aceita
+    #   allocation_tag_path: "em %{path}"
+    #   request_message: "Solicitação de %{user_name} para perfil de %{profile_name} %{path} foi %{action}. %{undo_url}"
+    #   undone_action: "Ação desfeita com sucesso"
+    # error:
+    #   student_already_in_group: Aluno já está nesta turma
+    #   enrollm_request: Pedido de matrícula não realizado
+    #   not_allocated: Não foi possível alocar usuário
+    #   not_activated: Não foi possível ativar usuário
+    #   not_deactivated: Não foi possível desativar usuário
+    #   allocations_not_performed: Não foi possível realizar alocações
+    #   student_or_basic: Não é possível solicitar perfil de aluno ou básico
+    #   profile: É necessário selecionar um perfil
+    #   cancel_request: Não foi possível realizar cancelamento
     warning:
       already_active: Perfil já está ativo
+
+    rejected: rejeitada
+    accepted: aceita
+    allocation_tag_path: "em %{path}"
     undo_action: "(Desfazer ação)"
 
   allocation_pending: Pendente

@@ -54,7 +54,7 @@ $.fn.nice_checkbox = function(options) {
 
         if (kid.checked) { // filho selecionado
           enable_deletion();
-          enable_edition();  
+          enable_edition();
           if (children_checked.length == 0 || children_checked.length > 1)
             disable_edition();
         } else { // o evento de click tirou selecao do filho
@@ -95,7 +95,7 @@ $.fn.nice_checkbox = function(options) {
     if ((icon = $('i', parent)).length) {
       $(icon).toggleClass('icon-checkbox-unchecked').toggleClass('icon-checkbox-checked');
       check = !( icon.prop('class') == 'icon-checkbox-unchecked' );
-    } else 
+    } else
       check = parent.checked;
 
     children.each(function(i){ if (check_invisible_children || $(this).is(':visible')) $(this).prop("checked", check); });
@@ -141,7 +141,7 @@ $.fn.nice_filter = function(options) {
           if(options.data_function().radio_option == "group" && !options.data_function().groups_id.length){
             flash_message("<%= I18n.t(:alert, scope: [:editions]) %>", "alert");
             $('.' + load_to + ':first').html('');
-            return false;    
+            return false;
           }
 
           // adiciona os dados das turmas selecionadas, caso haja alguma
@@ -244,7 +244,7 @@ $.fn.serialize_and_submit = function(options) {
         $('' + form_id).replaceWith(data);
       else {
         // se não houver opção indicando que o lightbox deve se manter aberto, o default é fechá-lo
-        if(typeof(options.dont_remove_lightbox) == "undefined" || !options.dont_remove_lightbox) 
+        if(typeof(options.dont_remove_lightbox) == "undefined" || !options.dont_remove_lightbox)
           $.fancybox.close();
 
         if (typeof(options.complement_success) == "function")

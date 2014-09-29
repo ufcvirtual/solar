@@ -152,24 +152,30 @@ Solar::Application.routes.draw do
     end
   end
 
-  ## allocations/enrollments
-  resources :allocations, except: [:new, :update, :destroy] do
+  ## enroll_request: relacionado a pedido de matricula
+  ## profile_request: relacionado a pedido de perfil
+  resources :allocations, only: [:index, :show, :edit] do # except: [:new, :update, :destroy, :create] do
     collection do
 
-      get :manage_enrolls, to: redirect('/allocations/enrollments') #"allocations#index"
 
+      ## menu
+
+      get :manage_enrolls, to: redirect('/allocations/enrollments') #"allocations#index"
       # get :manage_enrolls, action: :index
       get :enrollments, action: :index
+
+
 
       get :designates
       get :admin_designates, action: :designates, defaults: {admin: true}
       get :search_users
 
-      post :create_designation
-      post :profile_request # pedir perfil
+      post :create_designation # admin/editor add perfil
+
+      post "profile/:profile_id", to: :profile_request, type: :profile, profile_request: true, as: :profile_request # pedir perfil
+      post "enroll/:group_id", to: :enroll_request, type: :enroll, enroll_request: true, as: :enroll_request # pedir matricula
     end
     member do
-
       put :manage_enrolls
 
       # delete :cancel, action: :destroy
@@ -180,19 +186,17 @@ Solar::Application.routes.draw do
       # put :deactivate
       # put :activate
 
-      delete :cancel, to: :update, type: :cancel
-      delete :cancel_request, to: :update, type: :cancel_request
+      delete :cancel, to: :update, type: :cancel, enroll_request: true
+      delete :cancel_request, to: :update, type: :cancel_request, enroll_request: true
       delete :cancel_profile_request, action: :update, type: :cancel_profile_request, profile_request: true
 
-      post :reactivate, to: :update, type: :reactivate # renomear (ele apenas pede reativacao)
+      post :request_reactivate, to: :update, type: :request_reactivate, enroll_request: true
       put :deactivate, to: :update, type: :deactivate
       put :activate, to: :update, type: :activate
 
-      put :reject, to: :update, type: :reject, profile_request: true
-      put :accept, to: :update, type: :accept, profile_request: true
+      put :reject, to: :update, type: :reject, acccept_or_reject_profile: true
+      put :accept, to: :update, type: :accept, acccept_or_reject_profile: true
       put :undo_action, to: :update, type: :pending
-
-
 
 
       # put :reject, action: :accept_or_reject, defaults: {accept: false}
