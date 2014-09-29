@@ -120,7 +120,7 @@ class GroupAssignmentsController < ApplicationController
       from_ac.group_assignments.each do |group|
         new_group = GroupAssignment.where(group_name: group.group_name, academic_allocation_id: to_ac_id).first_or_create
         group.group_participants.each do |participant|
-          GroupParticipant.where(user_id: participant.user_id, group_assignment_id: new_group.id).first_or_create
+          GroupParticipant.where(user_id: participant.user_id, group_assignment_id: new_group.id).first_or_create unless GroupAssignment.where(academic_allocation_id: to_ac_id).map(&:users).flatten.map(&:id).include?(participant.user_id)
         end
       end
     end

@@ -233,17 +233,11 @@ res46:
   action: 'info'
   description: 'Acompanhamento do aluno' # aluno
 
-res47:
-  id: 47
-  controller: 'scores'
-  action: 'student_info'
-  description: 'Acompanhamento de qualquer aluno individualmente' # professor
-
 res48:
   id: 48
   controller: 'scores'
   action: 'index'
-  description: 'Acompanhamento geral da turma' # professor
+  description: 'Acompanhamento de uma turma e cada aluno individualmente' # professor
 
 # Arquivos
 

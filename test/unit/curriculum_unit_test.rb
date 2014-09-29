@@ -12,12 +12,12 @@ class  CurriculumUnitTest < ActiveSupport::TestCase
   	assert_equal curriculum_unit.errors[:code].first, I18n.t(:taken, :scope => [:activerecord, :errors, :messages])
 	end
 
-	test "codigo deve ter, no maximo, 10 caracteres" do
-  	curriculum_unit = CurriculumUnit.create(:code => "C0000000010", :name => "Curso 10", :curriculum_unit_type => curriculum_unit_types(:extensao), :resume => "Curso 10", 
+	test "codigo deve ter, no maximo, 40 caracteres" do
+  	curriculum_unit = CurriculumUnit.create(:code => "C00000000000000000000000000000000000000001", :name => "Curso 10", :curriculum_unit_type => curriculum_unit_types(:extensao), :resume => "Curso 10", 
   		:syllabus => "Curso 10", :objectives => "Curso 10")
 
   	assert (not curriculum_unit.valid?)
-  	assert_equal curriculum_unit.errors[:code].first, I18n.t(:too_long, :scope => [:activerecord, :errors, :messages], :count => 10)
+  	assert_equal curriculum_unit.errors[:code].first, I18n.t(:too_long, :scope => [:activerecord, :errors, :messages], :count => 40)
 	end
 
 	test "nome deve ser preenchido" do

@@ -12,12 +12,10 @@ class AssignmentsControllerTest < ActionController::TestCase
 
   test "rotas" do
     ## apenas algumas rotas
-    assert_routing({method: :get, path: "/assignments/student"},      {controller: "assignments", action: "student", id: ":id"})
     assert_routing({method: :get, path: "/assignments/list"},         {controller: "assignments", action: "list"})
     assert_routing({method: :get, path: "/assignments"},              {controller: "assignments", action: "index"})
     assert_routing({method: :get, path: "/assignments/download"},     {controller: "assignments", action: "download"})
     assert_routing({method: :get, path: "/assignments/zip_download"}, {controller: "assignments", action: "download", zip: true})
-    assert_routing({method: :put, path: "/assignments/evaluate"},     {controller: "assignments", action: "evaluate", id: ":id"})
     assert_routing({method: :post, path: "/assignments"},             {controller: "assignments", action: "create"})
   end
 
@@ -85,12 +83,12 @@ class AssignmentsControllerTest < ActionController::TestCase
 
   test "edicao - deletar um trabalho" do
     assert_difference(["Assignment.count", "AcademicAllocation.count"], -1) do
-      delete(:destroy, {id: assignments(:a4).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
+      delete(:destroy, {id: assignments(:a2).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     end
   end
 
   test "edicao - deletar varios trabalhos" do
-    assignments = [2,4,6]
+    assignments = [2,6]
     assert_difference(["Assignment.count", "AcademicAllocation.count"], -assignments.count) do
       delete(:destroy, {id: assignments, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     end

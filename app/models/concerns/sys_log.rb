@@ -10,7 +10,7 @@ module SysLog
     extend ActiveSupport::Concern
 
     included do
-      after_filter :log_create, unless: Proc.new {|c| request.get? }
+      after_filter :log_create, unless: Proc.new {|c| request.get? }, except: :evaluate
     end
 
     def log_create
@@ -41,8 +41,7 @@ module SysLog
         generic_log(sobj)
       end
 
-    rescue => error
-      raise "#{error}"
+    rescue
       # do nothing
     end
 
@@ -65,8 +64,7 @@ module SysLog
         academic_allocation_id = nil
         tbname = obj.try(:class).try(:table_name).to_s.singularize.to_sym if obj.try(:class).respond_to?(:table_name)
         description = if not(tbname.nil?) and params.has_key?(tbname) and not(obj.nil?)
-          "#{sobj}: #{obj.id}, #{obj.attributes}" # quando é assim e envia novo comentário, não manda os arquivos (do outro jeito tb n, mas pelo menos dizia q algo foi enviado ou removido)
-          # "#{sobj}: #{obj.id}, #{params[tbname]}"
+          "#{sobj}: #{obj.id}, #{obj.attributes}" + (obj.respond_to?(:files) ? ", files: #{obj.files.map(&:attributes)}}" : "")
 
         elsif params[:id].present?
           # gets any extra information if exists

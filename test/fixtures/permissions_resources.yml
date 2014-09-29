@@ -117,11 +117,6 @@ dis9:
   per_id: false
 
 # acompanhamento
-# aco1:
-#   profile_id: 1 # aluno
-#   resource_id: 47 # professor
-#   per_id: true
-
 aco2:
   profile_id: 1
   resource_id: 52
@@ -350,11 +345,6 @@ dipt9:
 acpt0:
   profile_id: 1
   resource_id: 46
-  per_id: false
-
-acpt1:
-  profile_id: 2
-  resource_id: 47
   per_id: false
 
 acpt2:
@@ -596,11 +586,6 @@ dita11:
   per_id: false
 
 # acompanhamento
-acotd1:
-  profile_id: 3
-  resource_id: 47
-  per_id: false
-
 acotd2:
   profile_id: 3
   resource_id: 48
@@ -740,11 +725,6 @@ tutor_p_8:
 tutor_p_9:
   profile_id: 4
   resource_id: 45
-  per_id: false
-
-tutor_p_10:
-  profile_id: 4
-  resource_id: 47
   per_id: false
 
 tutor_p_11:
@@ -1647,11 +1627,6 @@ dismon9:
 # acompanhamento
 
 # visão aluno
-
-acomon1:
-  profile_id: 13
-  resource_id: 47
-  per_id: true
 
 acomon2:
   profile_id: 13

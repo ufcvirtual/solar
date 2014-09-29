@@ -26,6 +26,10 @@ class GroupAssignment < ActiveRecord::Base
     group_participants.map(&:user_id).include? user_id.to_i
   end
 
+  def self.by_user_id(user_id, academic_allocation_id)
+    joins(:group_participants).where(academic_allocation_id: academic_allocation_id, group_participants: {user_id: user_id}).first
+  end
+
   private
 
     def unique_group_name

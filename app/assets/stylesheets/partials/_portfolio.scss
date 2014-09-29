@@ -74,6 +74,7 @@
   text-align: left;
   border-bottom: 1px solid;
   border-bottom-color: $color_main;
+  background-color: white;
 }
 
 .comments_files_div .btn {
@@ -180,6 +181,7 @@ td.assignment_without_group a
 .assignment_comment_wrapper{
   max-height: 300px;
   overflow-y: auto;
+  background-color: $color_main_light;
 }
 
 .assignment_files, .student_files{

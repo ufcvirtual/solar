@@ -117,11 +117,11 @@ class AssignmentsController < ApplicationController
     @allocation_tag_id  = active_tab[:url][:allocation_tag_id]
     @class_participants = AllocationTag.find(@allocation_tag_id).group.students_participants.pluck(:user_id)
 
-    @assignment      = Assignment.find(params[:id])
-    @student_id      = params[:group_id].nil? ? params[:student_id] : nil
-    @group_id        = params[:group_id].nil? ? nil : params[:group_id]
-    @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? # grupo
-    @own_assignment = ( @student_id.to_i == current_user.id or (not(@group.nil?) and @group.user_in_group?(current_user.id)) )
+    @assignment     = Assignment.find(params[:id])
+    @student_id     = params[:group_id].nil? ? params[:student_id] : nil
+    @group_id       = params[:group_id].nil? ? nil : params[:group_id]
+    @group          = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
+    @own_assignment = Assignment.owned_by_user?(current_user.id, {student_id: @student_id, group: @group})
     raise CanCan::AccessDenied unless @own_assignment or AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id)
     @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 
@@ -142,7 +142,7 @@ class AssignmentsController < ApplicationController
     @student_id, @group_id, @allocation_tag_id = params[:student_id], params[:group_id], active_tab[:url][:allocation_tag_id]
     @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 
-    LogAction.create(log_type: LogAction::TYPE[(new_sa ? :create : :update)], user_id: current_user.id, ip: request.remote_ip, description: "sent_assignment: #{@sent_assignment.attributes}") rescue nil
+    LogAction.create(log_type: LogAction::TYPE[(new_sa ? :create : :update)], user_id: current_user.id, ip: request.remote_ip, description: "sent_assignment: #{@sent_assignment.attributes.merge({"assignment_id" => @assignment.id})}") rescue nil
 
     render json: { success: true, notice: t("assignments.success.evaluated"), html: "#{render_to_string(partial: "info")}" }
   rescue CanCan::AccessDenied

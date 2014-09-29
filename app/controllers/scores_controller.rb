@@ -19,7 +19,7 @@ class ScoresController < ApplicationController
   end
 
   def student_info
-    authorize! :student_info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+    authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @student = User.find(params[:student_id])
     informations(@allocation_tag_id)
     render :info

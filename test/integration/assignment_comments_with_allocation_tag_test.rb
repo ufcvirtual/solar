@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class GroupAssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
+class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
   def setup
     @quimica_tab  = add_tab_path(id: 3, context:2, allocation_tag_id: 3)  # QM CAU
     @quimica2_tab = add_tab_path(id: 3, context:2, allocation_tag_id: 11) # QM MAR
@@ -61,12 +61,12 @@ class GroupAssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t(:no_permission), get_json_response("alert")
   end
 
-  test "nao envia comentario - periodo encerrado" do
-    # login @prof
-    # get @quimica_tab
+  # test "nao envia comentario - periodo encerrado" do
+  #   # login @prof
+  #   # get @quimica_tab
 
-    # procurar assignment com oferta já encerrada 
-  end
+  #   # procurar assignment com oferta já encerrada 
+  # end
 
   test "edita comentario" do
     login @user
@@ -107,8 +107,8 @@ class GroupAssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t(:no_permission), get_json_response("alert")    
   end
 
-  test "download de arquivos do comentario" do
-    # enviar comentário com arquivo e depois remover
-  end
+  # test "download de arquivos do comentario" do
+  #   # enviar comentário com arquivo e depois remover
+  # end
 
 end

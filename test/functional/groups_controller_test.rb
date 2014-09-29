@@ -247,7 +247,7 @@ class GroupsControllerTest < ActionController::TestCase
   # Assignment
   test "nao desvincular turma a uma ferramenta - unica turma - assignment" do
     # o trabalho de id 4 só tem uma turma
-    atividade_grupo_I = assignments(:a4)
+    atividade_grupo_I = assignments(:a2)
     assert_no_difference(["AcademicAllocation.count", "AssignmentEnunciationFile.count", "Assignment.count"]) do
       put :change_tool, {id: "3", tool_type: "Assignment", tool_id: atividade_grupo_I.id, type: "unbind"}
     end
@@ -258,7 +258,7 @@ class GroupsControllerTest < ActionController::TestCase
 
   test "nao remover turma de uma ferramenta - unica turma - assignment" do
     # o trabalho de id 4 só tem uma turma
-    atividade_grupo_I = assignments(:a4)
+    atividade_grupo_I = assignments(:a2)
     assert_no_difference(["AcademicAllocation.count", "Assignment.count"]) do
       put :change_tool, {id: "3", tool_type: "Assignment", tool_id: atividade_grupo_I.id, type: "remove"}
     end

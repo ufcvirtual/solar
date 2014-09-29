@@ -45,34 +45,13 @@ class  GroupAssignmentTest < ActiveSupport::TestCase
   # Métodos
 
   test "nao pode excluir grupo que seja falso em 'can_remove_group'" do
-    can_remove_group = GroupAssignment.can_remove_group?(group_assignments(:a5).id)
+    can_remove_group = group_assignments(:a5).can_remove?
     assert (not can_remove_group)
   end
 
   test "pode excluir grupo que seja true em 'can_remove_group'" do
-    can_remove_group = GroupAssignment.can_remove_group?(group_assignments(:a4).id)
+    can_remove_group = group_assignments(:a4).can_remove?
     assert (can_remove_group)
-  end
-
-  test "recupera alunos sem grupo" do
-    allocation_tag = groups(:g3).allocation_tag
-    students_without_groups = assignments(:a5).students_without_groups(allocation_tag)
-    academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id,assignments(:a5).id, 'Assignment')
-    students_with_groups    = GroupParticipant.all(conditions: {:group_assignment_id => academic_allocation.group_assignment_ids}).map(&:user_id)
-    students_without_groups.each do |student|
-      assert (not students_with_groups.include?(student.id))
-    end
-  end
-
-  test "recupera todas as atividades de grupo de uma turma" do 
-    all_group_assignments_method = GroupAssignment.all_by_group_id(groups(:g3).id)
-    all_group_assignments = Assignment.all(
-      select: [:id, :name, :enunciation, :schedule_id],
-      include: [:schedule, :group_assignments, :academic_allocations], 
-      conditions: {type_assignment: Assignment_Type_Group, academic_allocations: {allocation_tag_id: groups(:g3).allocation_tag.id}}, 
-      order: ["schedules.start_date"])
-
-    assert_equal(all_group_assignments, all_group_assignments_method)
   end
 
 end

@@ -115,5 +115,16 @@ class Assignment < Event
     GroupAssignment.joins(:academic_allocation).where(academic_allocations: {academic_tool_id: self.id, allocation_tag_id: allocation_tag_id})
   end
 
+  def self.owned_by_user?(user_id, options={})
+    if options[:sent_assignment].present?
+      group = options[:sent_assignment].group_assignment
+      ( options[:sent_assignment].user_id == user_id or (not(group.nil?) and group.user_in_group?(user_id)) )
+    elsif (options.has_key?(:student_id) and options.has_key?(:group))
+      ( options[:student_id].to_i == user_id or (not(options[:group].nil?) and options[:group].user_in_group?(user_id)) )
+    else
+      false
+    end
+  end
+
 end
 
