@@ -1,5 +1,5 @@
-%h1#lightBoxDialogTitle= t(".title", user: @user.name, discussion: @discussion.name)
 .user_posts
+  %h1#lightBoxDialogTitle= t(".title", user: @user.name, discussion: @discussion.name)
   - unless @posts.empty?
     %table.tb_list
       %thead

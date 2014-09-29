@@ -78,7 +78,7 @@ class AssignmentCommentsController < ApplicationController
     is_observer_or_responsible = AllocationTag.find(allocation_tag_id = active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
     file = CommentFile.find(params[:file_id])
     sent_assignment = file.assignment_comment.sent_assignment
-    raise CanCan::AccessDenied unless ( sent_assignment.user_id.to_i == current_user.id or (not(sent_assignment.group.nil?) and sent_assignment.group.user_in_group?(current_user.id)) ) or is_observer_or_responsible
+    raise CanCan::AccessDenied unless Assignment.owned_by_user?(current_user.id, {sent_assignment: sent_assignment}) or is_observer_or_responsible
     download_file(:back, file.attachment.path, file.attachment_file_name)
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized

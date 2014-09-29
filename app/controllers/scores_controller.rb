@@ -31,7 +31,7 @@ class ScoresController < ApplicationController
     begin
       raise CanCan::AccessDenied unless params[:user_id] == current_user.id
     rescue
-      authorize! :info, Score, on: [allocation_tag_id]
+      authorize! :index, Score, on: [allocation_tag_id]
     end
 
     query = []

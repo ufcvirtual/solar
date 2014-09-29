@@ -23,6 +23,7 @@
   }
 
   .middle_column, .first_column, .last_column{
+    max-height: 500px;
     i {
       cursor: pointer;
     }

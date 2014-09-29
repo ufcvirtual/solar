@@ -143,7 +143,11 @@ res24:
   id: 24
   controller: 'assignments'
   action: 'list'
+<<<<<<< Updated upstream
   description: 'Lista de trabalhos'
+=======
+  description: 'Lista dos trabalhos - visão professor'
+>>>>>>> Stashed changes
 
 res25:
   id: 25
@@ -158,6 +162,21 @@ res26:
   description: 'Agenda - lista'
 
 # Assignments - parte 2
+<<<<<<< Updated upstream
+=======
+res27:
+  id: 27
+  controller: 'assignments'
+  action: 'list'
+  description: 'Lista dos trabalhos - visão aluno'
+
+res28:
+  id: 28
+  controller: 'assignments'
+  action: 'information'
+  description: 'Informacoes basicas sobre a atividade, bem como seus participantes'
+
+>>>>>>> Stashed changes
 res29:
   id: 29
   controller: 'group_assignments'

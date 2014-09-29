@@ -1,7 +1,6 @@
 class AssignmentsController < ApplicationController
 
   include SysLog::Actions
-  include AssignmentsHelper
   include FilesHelper
 
   before_filter :prepare_for_group_selection, only: :list

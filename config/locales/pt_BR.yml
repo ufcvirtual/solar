@@ -1493,6 +1493,8 @@ pt_BR:
       availability: Disponibilidade
       attached_files: Arquivos em anexo
       none: Nenhum trabalho cadastrado
+      individual: Individual
+      group: Grupo
     form:
       groups: Turmas
       files: Arquivos

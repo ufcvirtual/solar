@@ -17,7 +17,7 @@
         %tbody
           - @assignments.each do |assignment|
             - info = assignment.info(@student.id, @allocation_tag_id)
-            - link = (assignment.type_assignment == Assignment_Type_Group and info[:group_id].nil? ? list_assignments_path : student_assignment_path(assignment.id, student_id: @student.id))
+            - link = ((assignment.type_assignment == Assignment_Type_Group and info[:group_id].nil?) ? list_assignments_path : student_assignment_path(assignment.id, student_id: @student.id))
             %tr.lines
               %td{align: "left"}
                 = link_to assignment.name, link, {class: 'link_content'}

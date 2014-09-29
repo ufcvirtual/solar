@@ -282,7 +282,6 @@ Solar::Application.routes.draw do
     collection do
       get :list
       get :list_without_layout, to: :list, defaults: {layout: true}
-
       get :download
       get :zip_download, to: :download, defaults: {zip: true}
 
@@ -318,12 +317,15 @@ Solar::Application.routes.draw do
     end
     member do
       get :participants
-      get :import_participants, to: :participants, defaults: {import: true}
       put :remove_participant, to: :change_participant
       put :add_participant, to: :change_participant, defaults: {add: true}
       post :import
     end
+      
   end
+  resources :assignment_comments do
+  end
+
 
   # chat
   resources :chat_rooms do

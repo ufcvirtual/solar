@@ -1281,6 +1281,8 @@ en_US:
       availability: Availability
       attached_files: Attached files
       none: No assignment registered
+      individual: Individual
+      group: Group
     form:
       groups: Groups
       files: Files

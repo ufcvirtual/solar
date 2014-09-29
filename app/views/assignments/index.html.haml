@@ -52,7 +52,7 @@
                 .group_label.invisible= render "groups/groups_tags", groups: assignment.groups, tool: assignment, all_groups: all_groups, paths: {add: add_group_to_assignments_path(id: "param_id", tool_id: assignment.id), remove: remove_group_from_assignments_path(id: "param_id", tool_id: assignment.id), unbind: unbind_group_from_assignments_path(id: "param_id", tool_id: assignment.id)}
 
             %td{style: 'text-align:center;'}
-              %div.title= t(((assignment.type_assignment.to_i == Assignment_Type_Individual) ? :individual : :group), scope: "assignment.list")
+              %div.title= t(((assignment.type_assignment.to_i == Assignment_Type_Individual) ? ".individual" : ".group"))
             %td{style: 'text-align:center;'}
               = [l(assignment.schedule.start_date, format: :normal), l(assignment.schedule.end_date, format: :normal)].join(" - ")
 

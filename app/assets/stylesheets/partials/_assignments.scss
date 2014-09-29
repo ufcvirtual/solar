@@ -13,6 +13,16 @@
   margin-right: 100px;
 }
 
+.tb_list{
+  td{
+    .participants_box{
+      max-height: 300px;
+      overflow: auto;
+      padding: 10px;
+    } 
+  }
+}
+
 .new_assignment{
   .input.files{
     #file{
