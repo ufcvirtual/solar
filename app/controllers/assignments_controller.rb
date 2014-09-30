@@ -89,7 +89,6 @@ class AssignmentsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error
-    raise "#{error}"
     render json: {success: false, alert: t(:deleted, scope: [:assignments, :error])}, status: :unprocessable_entity
   end
 
