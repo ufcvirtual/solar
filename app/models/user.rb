@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   def self.current
     Thread.current[:user]
   end
-  
+
   def self.current=(user)
     Thread.current[:user] = user
   end
@@ -467,11 +467,11 @@ class User < ActiveRecord::Base
   # alocar usuario em uma allocation_tag
 
   # profile, allocation_tags_ids, status
-  def allocate_in(allocation_tag_ids: [], profile: Profile.student_profile, status: Allocation_Pending)
+  def allocate_in(allocation_tag_ids: [], profile: Profile.student_profile, status: Allocation_Pending, by_user: nil)
     result = {success: [], error: []}
     Allocation.transaction do
       allocation_tag_ids.each do |at|
-        al = allocations.build(allocation_tag_id: at, profile_id: profile, status: status)
+        al = allocations.build(allocation_tag_id: at, profile_id: profile, status: status, updated_by_user_id: by_user)
         result[(al.save) ? :success : :error] << al
       end
     end

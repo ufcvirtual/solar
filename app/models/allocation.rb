@@ -5,6 +5,7 @@ class Allocation < ActiveRecord::Base
   belongs_to :allocation_tag
   belongs_to :user
   belongs_to :profile
+  belongs_to :updated_by, class_name: "User", foreign_key: :updated_by_user_id
 
   has_one :course,          through: :allocation_tag, conditions: ["course_id is not null"]
   has_one :curriculum_unit, through: :allocation_tag, conditions: ["curriculum_unit_id is not null"]

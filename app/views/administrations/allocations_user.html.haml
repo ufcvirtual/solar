@@ -19,6 +19,7 @@
                 %th= t(:allocation, scope: [:administrations, :allocations])
                 %th{style: 'width:120px'}= t(".type")
                 %th{style: 'width:80px'}= t(:status, scope: [:administrations, :allocations])
+                %th= "pt-br: Por"
                 - if @can_change
                   %th.no_sort{style: 'width:80px'}= ''
             %tbody
@@ -27,6 +28,7 @@
                   %td= a.allocation_tag.try(:info)
                   %td= ( a.allocation_tag.nil? ? "" : type(a.allocation_tag) )
                   %td= name_allocation_status(a.status)
+                  %td= a.updated_by.try(:username)
                   - if @can_change
                     %td.right_buttons.manage
                       = link_to_function content_tag(:i, nil, class: 'icon-edit'), "manage(this)", :"show-link" => admin_allocation_path(a), :"edit-link" => edit_admin_allocation_path(a), class:  "btn btn_manage_allocation"
@@ -52,7 +54,7 @@
 
   function show_semester() {
     var semester = $('#period option:selected').val();
-    
+
     $(".block_content").show();
     $('.allocations').hide();
     $('.right_buttons.manage').hide();

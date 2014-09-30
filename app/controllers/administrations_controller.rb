@@ -123,7 +123,7 @@ class AdministrationsController < ApplicationController
   def update_allocation
     authorize! :update_allocation, Administration
     @allocation = Allocation.find(params[:id])
-    @allocation.update_attribute(:status, params[:status])
+    @allocation.update_attributes(status: params[:status], updated_by_user_id: current_user.id)
 
     respond_to do |format|
       format.html { render action: :show_allocation, id: params[:id] }

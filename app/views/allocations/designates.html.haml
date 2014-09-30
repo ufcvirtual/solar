@@ -13,6 +13,7 @@
               %th{style: 'width:200px'}= t(".email")
               %th{style: 'width:120px'}= t(".profile")
               %th{style: 'width: 80px'}= t(".designated_on")
+              %th{style: 'width: 80px'}= t(".designated_by")
               %th.no_sort
           %tbody
             - @allocations.each do |allocation|
@@ -22,6 +23,7 @@
                 %td= allocation.user.email
                 %td= allocation.profile.name
                 %td= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester.name : (allocation.course ? allocation.course.name : allocation.curriculum_unit.name))
+                %td= allocation.updated_by.try(:username)
                 %td
                   - status, link = (allocation.status == Allocation_Activated) ? ["deactivate", deactivate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)] : ["activate", activate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)]
                   = button_tag t(".#{status}"), type: :button, class: "btn btn_caution #{status}", alt: t(".#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids, admin: @admin)

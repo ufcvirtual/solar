@@ -1,6 +1,7 @@
 %td= @allocation.allocation_tag.try(:info)
 %td= ( @allocation.allocation_tag.nil? ? "" : type(@allocation.allocation_tag) )
 %td= name_allocation_status(@allocation.status)
+%td= @allocation.updated_by.try(:username)
 %td.right_buttons
   = link_to_function content_tag(:i, nil, class: 'icon-edit'), "manage(this)", :"show-link" => admin_allocation_path(@allocation), :"edit-link" => edit_admin_allocation_path(@allocation), class:  "btn btn_manage_allocation"
 

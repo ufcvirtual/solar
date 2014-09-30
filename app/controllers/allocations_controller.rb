@@ -99,11 +99,10 @@ class AllocationsController < ApplicationController
     begin
       authorize! :manage_profiles, Allocation, {on: @allocation_tags_ids, accepts_general_profile: true}
 
-      level        = (params[:permissions] != "all" and (not params.include?(:admin))) ? "responsible" : nil
+      level = (params[:permissions] != "all" and not(params[:admin].present?)) ? "responsible" : nil
       level_search = level.nil? ? ("not(profiles.types & #{Profile_Type_Basic})::boolean") : ("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
 
-      @allocations = Allocation.all(
-        joins: [:profile, :user],
+      @allocations = Allocation.all(joins: [:profile, :user],
         conditions: ["#{level_search} and allocation_tag_id IN (?)", @allocation_tags_ids.split(" ").flatten],
         order: ["users.name", "profiles.name"])
 
@@ -115,17 +114,12 @@ class AllocationsController < ApplicationController
     end
   end
 
-
-
-
   def create_designation
     if params[:admin] and current_user.is_admin?
       authorize! :manage_profiles, Allocation
     else
       authorize! :manage_profiles, Allocation, on: @allocation_tags_ids
     end
-
-    # verificar quando for perfil sem alocacao em at
 
     allocate_and_render_result(User.find(params[:user_id]), params[:profile_id], params[:status])
   end
@@ -172,6 +166,7 @@ class AllocationsController < ApplicationController
     end
 
     def change_to_new_status(allocation, type)
+      allocation.updated_by_user_id = current_user.id
       case type
         when :activate
           allocation.activate!
@@ -204,7 +199,7 @@ class AllocationsController < ApplicationController
       # muda todos os status ao mesmo tempo mandando emails
       allocations.each do |a|
         a = user_change_group(a, group) if not(group.nil?) and a.group.id != group.id # mudança de turma
-        new_allocations << a if a.update_attributes(status: new_status)
+        new_allocations << a if a.update_attributes(status: new_status, updated_by_user_id: current_user.id)
         send_email_to_enrolled_user(a) if new_status == Allocation_Activated
       end
       new_allocations
@@ -245,7 +240,7 @@ class AllocationsController < ApplicationController
     end
 
     def allocate_and_render_result(user, profile, status, success_message = t("allocations.request.success.allocated"))
-      result = user.allocate_in(allocation_tag_ids: @allocation_tags_ids.split(" ").flatten, profile: profile, status: status)
+      result = user.allocate_in(allocation_tag_ids: @allocation_tags_ids.split(" ").flatten, profile: profile, status: status, by_user: current_user.id)
       render_result_designate(result, success_message)
     end
 
