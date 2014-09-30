@@ -1,7 +1,7 @@
 %table.assignment_comment
   %tr
     %td.assignment_comment_head
-      .assignment_user_comment= @user.nick
+      .assignment_user_comment= current_user.nick
       .assignment_comment_date=l Date.current
   %tr
     %td.assignment_comment_form{colspan: "2"}

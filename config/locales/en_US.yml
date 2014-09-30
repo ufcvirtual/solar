@@ -1429,6 +1429,7 @@ en_US:
       general_message: It was not possible to execute action.
       cant_remove: It was not possible to execute action. Group already evaluated or with files.
       date_range_expired: It was not possible to execute action. Date range expired.
+      unique_name: must be unique.
     success: 
       imported: Groups and participants imported successfully.
     new:

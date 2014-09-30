@@ -25,7 +25,7 @@
       %tbody
         - @assignments.each do |assignment|
           - can_delete = assignment.sent_assignments.count.zero?
-          - has_file = (not assignment.assignment_enunciation_files.empty?)
+          - has_file = (not assignment.enunciation_files.empty?)
           %tr.lines{id: "tr_#{assignment.id}"}
             %td{style: 'text-align:center;'}
               = check_box_tag("ckb_assignment", assignment.id, false, {class: "ckb_assignment", :"data-can-delete" => can_delete})
@@ -44,7 +44,7 @@
                     = assignment.enunciation
                     - if has_file
                       .attached_files=t(".attached_files")
-                      - assignment.assignment_enunciation_files.each do |file|
+                      - assignment.enunciation_files.each do |file|
                         .file
                           = image_tag( icon_attachment(file.attachment_file_name) )                            
                           = file.attachment_file_name

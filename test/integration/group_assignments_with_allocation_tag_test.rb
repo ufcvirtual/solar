@@ -203,7 +203,7 @@ class GroupAssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @prof
     get @quimica_tab
 
-    put group_assignment_path id: @atividadeG2, group_assignments: {group_name: "Novo nome"}
+    put group_assignment_path id: @groupG2.id, group_assignment: {group_name: "Novo nome"}
 
     assert_response :success
   end
@@ -212,7 +212,7 @@ class GroupAssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @aluno1
     get @quimica_tab
 
-    put group_assignment_path id: @atividadeG2, group_assignments: {group_name: "Novo nome"}
+    put group_assignment_path id: @groupG2.id, group_assignment: {group_name: "Novo nome"}
 
     assert_response :unauthorized
     assert_equal I18n.t(:no_permission), get_json_response("alert")
@@ -222,10 +222,39 @@ class GroupAssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @tutor
     get @quimica2_tab
 
-    put group_assignment_path id: @groupG2.id, group_assignments: {group_name: "Novo nome"}
+    put group_assignment_path id: @groupG2.id, group_assignment: {group_name: "Novo nome"}
 
     assert_response :unauthorized
     assert_equal I18n.t(:no_permission), get_json_response("alert")
+  end
+
+  test "nao renomear grupo - sem nome" do
+    login @prof
+    get @quimica_tab
+
+    put group_assignment_path id: @groupG2.id, group_assignment: {group_name: ""}
+
+    assert_response :unprocessable_entity
+    assert_equal I18n.t("activerecord.attributes.group_assignment.group_name") + " " + I18n.t(:blank, scope: [:activerecord, :errors, :messages]), get_json_response("alert")
+  end
+
+  test "nao renomear grupo - nome com mais de 20 caracteres" do
+    login @prof
+    get @quimica_tab
+
+    put group_assignment_path id: @groupG2.id, group_assignment: {group_name: "GrupoNovo GrupoNovo 1111"}
+
+    assert_response :unprocessable_entity
+  end
+
+  test "nao renomear grupo - nome deve ser unico" do
+    login @prof
+    get @quimica_tab
+
+    put group_assignment_path id: @groupG2.id, group_assignment: {group_name: @groupG2.academic_allocation.group_assignments.last.group_name}
+
+    assert_response :unprocessable_entity
+    assert_equal I18n.t("activerecord.attributes.group_assignment.group_name") + " " + I18n.t("group_assignments.error.unique_name"), get_json_response("alert")
   end
 
   ## Remover grupo

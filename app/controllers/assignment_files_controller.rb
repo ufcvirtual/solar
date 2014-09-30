@@ -1,5 +1,7 @@
 class AssignmentFilesController < ApplicationController
 
+  before_filter :set_current_user, only: [:destroy]
+
   include SysLog::Actions
   include FilesHelper
 
@@ -14,12 +16,7 @@ class AssignmentFilesController < ApplicationController
   def create
     authorize! :create, AssignmentFile, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
-    sent_assignment = SentAssignment.find(params[:assignment_file][:sent_assignment_id])
-    @own_assignment, @assignment = Assignment.owned_by_user?(current_user.id, {sent_assignment: sent_assignment}), sent_assignment.assignment
-
-    raise CanCan::AccessDenied unless @own_assignment
-    raise "date_range" unless @assignment.in_time?(allocation_tag_id, current_user.id)
-
+    raise CanCan::AccessDenied unless @own_assignment = Assignment.owned_by_user?(current_user.id, {sent_assignment: SentAssignment.find(params[:assignment_file][:sent_assignment_id])})
     @assignment_file = AssignmentFile.create! params[:assignment_file].merge({user_id: current_user.id})
 
     render partial: "file", locals: {file: @assignment_file}
@@ -48,20 +45,13 @@ class AssignmentFilesController < ApplicationController
 
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue => error
-    raise "#{error}"
+  rescue
     render js: "flash_message('#{t(:file_error_nonexistent_file)}', 'alert');"
   end
 
   def destroy
-    file = AssignmentFile.find(params[:id])
-    raise CanCan::AccessDenied unless file.user_id == current_user.id
-    raise "date_range" unless file.assignment.in_time?(active_tab[:url][:allocation_tag_id], current_user.id)
-    if file.destroy
-      render json: {success: true, notice: t("assignment_files.success.removed")}
-    else
-      render json: {success: false, alert: t("assignment_files.error.remove")}, status: :unprocessable_entity
-    end
+    AssignmentFile.find(params[:id]).destroy
+    render json: {success: true, notice: t("assignment_files.success.removed")}
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error

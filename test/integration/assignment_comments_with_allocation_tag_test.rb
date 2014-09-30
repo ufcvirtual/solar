@@ -21,6 +21,18 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_template :comment
   end
 
+  test "nao envia comentario - sem conteudo" do
+    login @prof
+    get @quimica_tab
+
+    assert_no_difference("AssignmentComment.count") do
+      post assignment_comments_path assignment_comment: {sent_assignment_id: @sa1.id, user_id: @prof.id, comment: ""}
+    end
+
+    assert_response :unprocessable_entity
+    assert_equal I18n.t("activerecord.attributes.assignment_comment.comment") + " " + I18n.t(:blank, :scope => [:activerecord, :errors, :messages]), get_json_response("alert")
+  end
+
   test "envia comentario - sem sent_assignment existente" do
     login @prof
     get @quimica_tab

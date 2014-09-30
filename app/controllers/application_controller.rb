@@ -154,6 +154,10 @@ class ApplicationController < ActionController::Base
     params.include?('locale') ? {locale: params[:locale]} : {}
   end
 
+  def set_current_user
+    User.current = current_user
+  end
+
   private
 
     def opened_or_new_tab?(tab_name)

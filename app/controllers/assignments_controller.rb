@@ -77,8 +77,8 @@ class AssignmentsController < ApplicationController
 
   def destroy
     @allocation_tags_ids, assignments = params[:allocation_tags_ids], Assignment.includes(:sent_assignments).where(id: params[:id].split(",").flatten, sent_assignments: {id: nil})
-    @bibliographies = Bibliography.where(id: params[:id].split(","))
     authorize! :destroy, Assignment, on: assignments.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
+
 
     Assignment.transaction do
       raise "error" if assignments.empty?
@@ -88,7 +88,8 @@ class AssignmentsController < ApplicationController
     render json: {success: true, notice: t(:deleted, scope: [:assignments, :success])}
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
+  rescue => error
+    raise "#{error}"
     render json: {success: false, alert: t(:deleted, scope: [:assignments, :error])}, status: :unprocessable_entity
   end
 

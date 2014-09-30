@@ -87,13 +87,6 @@ class AssignmentsControllerTest < ActionController::TestCase
     end
   end
 
-  test "edicao - deletar varios trabalhos" do
-    assignments = [2,6]
-    assert_difference(["Assignment.count", "AcademicAllocation.count"], -assignments.count) do
-      delete(:destroy, {id: assignments, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
-    end
-  end
-
   test "edicao - ver detalhes" do
     get(:show, {id: assignments(:a2).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     assert_template :show

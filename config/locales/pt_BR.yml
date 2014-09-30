@@ -1641,6 +1641,7 @@ pt_BR:
       general_message: Não foi possível realizar ação.
       cant_remove: Não foi possível realizar ação. Grupo já foi avaliado ou possui arquivos.
       date_range_expired: Não foi possível realizar ação. Período encerrado.
+      unique_name: deve ser único.
     success: 
       imported: Grupos e participantes importados com sucesso.
     new:

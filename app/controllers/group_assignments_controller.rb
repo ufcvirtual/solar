@@ -1,12 +1,14 @@
 class GroupAssignmentsController < ApplicationController
 
+  before_filter :set_current_user, only: [:destroy]
+
   include SysLog::Actions
 
   layout false
 
   def index
     @assignment, allocation_tag_id = Assignment.find(params[:assignment_id]), active_tab[:url][:allocation_tag_id]
-    @groups, @students_without_group = @assignment.groups_assignments(allocation_tag_id), @assignment.students_without_groups(AllocationTag.find(allocation_tag_id))
+    @groups, @students_without_group = @assignment.groups_assignments(allocation_tag_id), @assignment.students_without_groups(allocation_tag_id)
   end
 
   def participants
@@ -17,15 +19,7 @@ class GroupAssignmentsController < ApplicationController
     authorize! :index, GroupAssignment, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
     ac = AcademicAllocation.where(academic_tool_id: params[:assignment_id], academic_tool_type: "Assignment", allocation_tag_id: allocation_tag_id).first.id
-    attributes, count = {academic_allocation_id: ac, group_name: t("group_assignments.new.new_group_name")}, 1
-    @group = GroupAssignment.where(attributes).first_or_initialize
-
-    until @group.new_record?
-      @group = GroupAssignment.where(attributes.merge({group_name: "#{t("group_assignments.new.new_group_name")} #{count}"})).first_or_initialize
-      count += 1
-    end
-    
-    @group.save!
+    @group = GroupAssignment.create!({academic_allocation_id: ac, group_name: t("group_assignments.new.new_group_name")})
 
     render :new
   rescue CanCan::AccessDenied
@@ -36,18 +30,9 @@ class GroupAssignmentsController < ApplicationController
 
   def change_participant
     authorize! :index, GroupAssignment, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-    
-    group = GroupAssignment.find(params[:id])
 
-    raise "date_range_expired" unless group.assignment.in_time?(allocation_tag_id)
-    raise "evaluated" if group.evaluated?
-
-    participant = GroupParticipant.where(group_assignment_id: group.id, user_id: params[:user_id]).first_or_create
-    unless params[:add].present?
-      files = group.sent_assignment.try(:assignment_files)
-      raise "has_files" if (not(files.nil?) and files.any?) and files.map(&:user_id).include? params[:user_id].to_i
-      participant.destroy 
-    end
+    participant = GroupParticipant.where(group_assignment_id: params[:id], user_id: params[:user_id]).first_or_create!
+    participant.destroy unless params[:add].present?
 
     render json: {success: true}
   rescue CanCan::AccessDenied
@@ -63,7 +48,6 @@ class GroupAssignmentsController < ApplicationController
 
   def update
     authorize! :index, GroupAssignment, on: [active_tab[:url][:allocation_tag_id]]
-
     GroupAssignment.find(params[:id]).update_attributes!(params[:group_assignment])
 
     render json: {success: true}
@@ -79,14 +63,8 @@ class GroupAssignmentsController < ApplicationController
 
   def destroy
     authorize! :index, GroupAssignment, on: [active_tab[:url][:allocation_tag_id]]
-
-    group = GroupAssignment.find(params[:id])
-    raise "cant_remove" unless group.can_remove?
-    if group.destroy
-      render json: {success: true}
-    else
-      render json: {success: false, alert: t("group_assignments.error.general_message")}, status: :unprocessable_entity 
-    end
+    GroupAssignment.find(params[:id]).destroy
+    render json: {success: true}
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error
@@ -96,7 +74,7 @@ class GroupAssignmentsController < ApplicationController
 
   def students_with_no_group
     assignment = Assignment.find(params[:assignment_id])
-    students_without_group = assignment.students_without_groups(AllocationTag.find(active_tab[:url][:allocation_tag_id]))
+    students_without_group = assignment.students_without_groups(active_tab[:url][:allocation_tag_id])
     render partial: "students_with_no_group", locals: {students: students_without_group}
   end
   
@@ -111,16 +89,15 @@ class GroupAssignmentsController < ApplicationController
 
   def import
     authorize! :import, GroupAssignment, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-    raise "date_range_expired" unless Assignment.find(params[:id]).in_time?(allocation_tag_id)
 
     from_ac  = AcademicAllocation.where(academic_tool_type: "Assignment", academic_tool_id: params[:assignment_id], allocation_tag_id: allocation_tag_id).first
     to_ac_id = AcademicAllocation.where(academic_tool_type: "Assignment", academic_tool_id: params[:id], allocation_tag_id: allocation_tag_id).first.id
 
     ActiveRecord::Base.transaction do
       from_ac.group_assignments.each do |group|
-        new_group = GroupAssignment.where(group_name: group.group_name, academic_allocation_id: to_ac_id).first_or_create
+        new_group = GroupAssignment.where(group_name: group.group_name, academic_allocation_id: to_ac_id).first_or_create!
         group.group_participants.each do |participant|
-          GroupParticipant.where(user_id: participant.user_id, group_assignment_id: new_group.id).first_or_create unless GroupAssignment.where(academic_allocation_id: to_ac_id).map(&:users).flatten.map(&:id).include?(participant.user_id)
+          GroupParticipant.where(user_id: participant.user_id, group_assignment_id: new_group.id).first_or_create! unless GroupAssignment.where(academic_allocation_id: to_ac_id).map(&:users).flatten.map(&:id).include?(participant.user_id)
         end
       end
     end

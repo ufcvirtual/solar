@@ -160,4 +160,15 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_equal get_json_response("alert"), I18n.t(:no_permission)
   end
 
+  ## Edição ##
+
+  test "edicao - deletar varios trabalhos" do
+    login @editor
+
+    assignments = [2,6]
+    assert_difference(["Assignment.count", "AcademicAllocation.count"], -assignments.count) do
+      delete assignment_path({id: assignments.join(","), allocation_tags_ids: "#{allocation_tags(:al3).id}"})
+    end
+  end
+
 end
