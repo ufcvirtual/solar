@@ -66,38 +66,70 @@ class Allocation < ActiveRecord::Base
     user.name
   end
 
-  def curriculum_unit_related
-    return curriculum_unit             unless curriculum_unit.nil?
-    return offer.curriculum_unit       unless offer.nil?
-    return group.offer.curriculum_unit unless group.nil?
+  def refer_to
+    allocation_tag.refer_to
   end
 
-  def course_related
-    return course             unless course.nil?
-    return offer.course       unless offer.nil?
-    return group.offer.course unless group.nil?
+  def curriculum_unit_related # uc, offer, group
+    return curriculum_unit if refer_to == 'curriculum_unit'
+    send(refer_to).curriculum_unit rescue nil
   end
 
-  def semester_related
-    return offer.semester       unless offer.nil?
-    return group.offer.semester unless group.nil?
+  def course_related # course, offer, group
+    return course if refer_to == 'course'
+    send(refer_to).course rescue nil
   end
 
-  def offers_related
-    return curriculum_unit.offers      unless curriculum_unit.nil?
-    return course.offers               unless course.nil?
-    return [offer]                     unless offer.nil?
-    return [group.offer]               unless group.nil?
+  def semester_related # offer, group
+    send(refer_to).semester rescue nil
+  end
+
+  def offers_related # uc, course, offer, group
+    case refer_to
+    when 'curriculum_unit', 'course'
+      send(refer_to).offers
+    when 'offer'
+      [offer]
+    when 'group'
+      [group.offer]
+    end
   end
 
   def status_color
-    case status.to_i
-      when (Allocation_Pending_Reactivate); "#FF6600"
-      when (Allocation_Activated); "#006600"
-      when (Allocation_Cancelled); "#FF0000"
-      when (Allocation_Pending); "#FF6600"
-      when (Allocation_Rejected); "#FF0000"
+    case status
+      when Allocation_Pending_Reactivate, Allocation_Pending; "#FF6600"
+      when Allocation_Activated; "#006600"
+      when Allocation_Cancelled, Allocation_Rejected; "#FF0000"
     end
+  end
+
+  def change_to_new_status(type, current_user)
+    self.updated_by_user_id = current_user.id
+    case type
+      when :activate
+        activate!
+      when :deactivate
+        deactivate!
+      when :request_reactivate
+
+        raise CanCan::AccessDenied if user_id != current_user.id
+        request_reactivate!
+
+      when :cancel, :cancel_request, :cancel_profile_request
+
+        # apenas quem pede matricula/perfil pode cancelar pedido / perfil de aluno e basico nao pode ser cancelado pela lista de perfis
+        raise CanCan::AccessDenied if user_id != current_user.id or
+          (type == :cancel_profile_request and (profile_id == Profile.student_profile or profile.has_type?(Profile_Type_Basic)))
+        cancel!
+
+      when :reject
+        reject!
+      when :accept
+        activate!
+      when :pending
+        pending!
+    end # case
+    errors.empty?
   end
 
 
@@ -118,9 +150,7 @@ class Allocation < ActiveRecord::Base
       end
     end
 
-    query = query.join(' AND ')
-
-    joins(allocation_tag: {group: :offer}, user: {}).where(query, args).order("users.name")
+    joins(allocation_tag: {group: :offer}, user: {}).where(query.join(' AND '), args).order("users.name")
   end
 
   def self.have_access?(user_id, allocation_tag_id)

@@ -145,7 +145,7 @@ class AllocationsController < ApplicationController
   # aluno pode cancel
   # admin/editor change allocation
   def update
-    if change_to_new_status(@allocation, params[:type])
+    if @allocation.change_to_new_status(params[:type], current_user)
       render json: {success: true, msg: success_msg, id: @allocation.id}
     else
       render json: {success: false, msg: t(params[:type], scope: 'allocations.request.error')}, status: :unprocessable_entity
@@ -165,35 +165,6 @@ class AllocationsController < ApplicationController
       else
         t(params[:type], scope: 'allocations.request.success')
       end
-    end
-
-    def change_to_new_status(allocation, type)
-      allocation.updated_by_user_id = current_user.id
-      case type
-        when :activate
-          allocation.activate!
-        when :deactivate
-          allocation.deactivate!
-        when :request_reactivate
-
-          raise CanCan::AccessDenied if allocation.user_id != current_user.id
-          allocation.request_reactivate!
-
-        when :cancel, :cancel_request, :cancel_profile_request
-
-          # apenas quem pede matricula/perfil pode cancelar pedido / perfil de aluno e basico nao pode ser cancelado pela lista de perfis
-          raise CanCan::AccessDenied if allocation.user_id != current_user.id or
-            (type == :cancel_profile_request and (allocation.profile_id == Profile.student_profile or allocation.profile.has_type?(Profile_Type_Basic)))
-          allocation.cancel!
-
-        when :reject
-          allocation.reject!
-        when :accept
-          allocation.activate!
-        when :pending
-          allocation.pending!
-      end # case
-      allocation.errors.empty?
     end
 
     def change_status_from_allocations(allocations, new_status, group = nil)
