@@ -26,7 +26,6 @@ class Allocation < ActiveRecord::Base
 
   def pending?
     status == Allocation_Pending # problema na delecao reativada
-    # [Allocation_Pending, Allocation_Pending_Reactivate].include?(status)
   end
 
   def pending!
@@ -47,17 +46,11 @@ class Allocation < ActiveRecord::Base
 
   def request_reactivate!
     ## verifica se oferta ou turma estao dentro do prazo
-
     ## se nao for na oferta ou na turma? precisa verificar???
-
     # - if group.offer.is_active? (verificar se funciona)
 
     al_offer = offer || group.offer
-    # ok = (al_offer.enrollment_start_date.to_date..(al_offer.enrollment_end_date.try(:to_date) || al_offer.end_date.to_date)).include?(Date.today)
-    ok = al_offer.enrollment_period.include?(Date.today)
-
-    # if ok and @allocation.update_attribute(:status, Allocation_Pending_Reactivate)
-    update_attributes(status: Allocation_Pending_Reactivate) if ok
+    update_attributes(status: Allocation_Pending_Reactivate) if al_offer.enrollment_period.include?(Date.today)
   end
 
   def cancel!

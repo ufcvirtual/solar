@@ -236,10 +236,6 @@ class AllocationsController < ApplicationController
       groups = current_user.allocations.where(profile_id: profiles).where("allocation_tag_id IS NOT NULL").map { |a| a.groups }.flatten.uniq.compact
     end
 
-
-
-
-    ## rever
     def allocations_to_designate
       @allocation_tags_ids = if (params[:profile_id].present? and Profile.find(params[:profile_id]).has_type?(Profile_Type_Admin))
         [nil]
@@ -248,11 +244,7 @@ class AllocationsController < ApplicationController
       end
     end
 
-
-
-
-
-    def allocate_and_render_result(user, profile, status, success_message = t("allocations.success.allocated"))
+    def allocate_and_render_result(user, profile, status, success_message = t("allocations.request.success.allocated"))
       result = user.allocate_in(allocation_tag_ids: @allocation_tags_ids.split(" ").flatten, profile: profile, status: status)
       render_result_designate(result, success_message)
     end

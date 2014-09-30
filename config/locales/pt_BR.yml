@@ -1383,6 +1383,8 @@ pt_BR:
   allocations:
     request:
       success:
+        allocated: "Usuário alocado com sucesso."
+
         enroll: "Pedido de matrícula realizado com sucesso."
         profile: "Solicitação de perfil realizada com sucesso."
 
@@ -1408,6 +1410,7 @@ pt_BR:
         cancel_profile_request: "Solicitação de perfil não cancelada"
 
     index:
+      filter_user: "Filtrar usuários"
       manage: Gerenciar
       manage_title: Matrículas Solicitadas
       manage_student: Aluno
@@ -1462,32 +1465,7 @@ pt_BR:
       name: Nome
       select_profile: Selecione um perfil
       no_user_found: Nenhum usuário encontrado
-    # success:
-    #   enrollm_request: Pedido de matrícula realizado
-    #   allocated: Usuário alocado
-    #   activated: Usuário ativado
-    #   deactivated: Usuário desativado
-    #   allocations_performed: Alocações realizadas
 
-    #   requested: Solicitação realizada com sucessso
-
-    #   request_canceled: Solicitação cancelada
-    #   profile_canceled: Perfil cancelado
-    #   rejected: rejeitada
-    #   accepted: aceita
-    #   allocation_tag_path: "em %{path}"
-    #   request_message: "Solicitação de %{user_name} para perfil de %{profile_name} %{path} foi %{action}. %{undo_url}"
-    #   undone_action: "Ação desfeita com sucesso"
-    # error:
-    #   student_already_in_group: Aluno já está nesta turma
-    #   enrollm_request: Pedido de matrícula não realizado
-    #   not_allocated: Não foi possível alocar usuário
-    #   not_activated: Não foi possível ativar usuário
-    #   not_deactivated: Não foi possível desativar usuário
-    #   allocations_not_performed: Não foi possível realizar alocações
-    #   student_or_basic: Não é possível solicitar perfil de aluno ou básico
-    #   profile: É necessário selecionar um perfil
-    #   cancel_request: Não foi possível realizar cancelamento
     warning:
       already_active: Perfil já está ativo
 
@@ -1673,7 +1651,7 @@ pt_BR:
       cant_remove: Não foi possível realizar ação. Grupo já foi avaliado ou possui arquivos.
       date_range_expired: Não foi possível realizar ação. Período encerrado.
       unique_name: deve ser único.
-    success: 
+    success:
       imported: Grupos e participantes importados com sucesso.
     new:
       new_group_name: Novo grupo
@@ -2541,7 +2519,7 @@ pt_BR:
       assignment_sent: E
       assignment_send: NE
       assignment_not_started: NI
-      assignment_not_sent_complete: Trabalho não enviado e com período encerrado 
+      assignment_not_sent_complete: Trabalho não enviado e com período encerrado
       assignment_without_group_complete: Aluno sem grupo
       assignment_sent_complete: "Trabalho enviado, mas não corrigido (sem nota)"
       assignment_send_complete: Trabalho não enviado

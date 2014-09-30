@@ -1175,21 +1175,36 @@ en_US:
   send_file_text: "Allowed file example:<br /> &nbsp;&nbsp;- Microsoft Office Documents<br /> &nbsp;&nbsp;- OpenOffice.org Documents (ODF)<br /> &nbsp;&nbsp;- Archives (.zip, .rar...)<br /> &nbsp;&nbsp;- PDF Documents<br /> &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br /> &nbsp;&nbsp;- Audio Files (mp3, wma...)"
 
   allocations:
-    updated:
+    request:
       success:
-        activate: Allocation activated
-        deactivate: Allocation deactivated
-        reactivate: Allocation reactivated
-        cancel_request: Request cancelled
-        cancel: Allocation cancelled
+        allocated: User allocated.
+
+        enroll: Request for enrollment made.
+        profile: Request for profile made.
+
+        activate: Allocation activated.
+        deactivate: Allocation deactivated.
+        request_reactivate: Request for enrollment reactivated made.
+        pending: Undone Action.
+        cancel: Allocation canceled.
+        cancel_request:  Request for enrollment canceled.
+        cancel_profile_request: Profile request canceled.
+
+        accept_reject_msg: "Request of %{user_name} with profile %{profile_name} %{path} was %{action}. #{undo_url}"
       error:
-        activate: Allocation not activated
-        deactivate: Allocation not deactivated
-        reactivate: Allocation not reactivated
-        cancel_request: Request not cancelled
-        cancel: Allocation not cancelled
+        enroll: Request for enrollment not made.
+        profile: Request for profile not made.
+
+        activate: Cannot activate user.
+        deactivate: Cannot deactivate user.
+        request_reactivate: Request for enrollment reactivated not made.
+        pending: Action not undone.
+        cancel: Allocation not canceled.
+        cancel_request: No canceled.
+        cancel_profile_request: Profile request not canceled.
 
     index:
+      filter_user: "Filter Users"
       manage: Manage
       manage_title: Registrations requested
       manage_student: Student
@@ -1244,42 +1259,28 @@ en_US:
       name: Name
       select_profile: Select a profile
       no_user_found: No user found
-    success:
-      enrollm_request: Request for enrollment made
-      allocated: Allocated user
-      activated: Activated user
-      deactivated: Deactivated user
-      allocations_performed: Allocations performed
-      requested: Request made successfully
-      request_canceled: Request canceled
-      profile_canceled: Profile cancelado
-      rejected: rejected
-      accepted: accepted
-      allocation_tag_path: "at %{path}"
-      request_message: "Request of %{user_name} with profile %{profile_name} %{path} was %{action}. #{undo_url}"
-      undone_action: "Action undone successfully"
-    error:
-      student_already_in_group: Student is already in the class
-      enrollm_request: Request for enrollment not made
-      not_allocated: Cannot allocate user
-      not_activated: Cannot activate user
-      not_deactivated: Cannot deactivate user
-      allocations_not_performed: Cannot performe allocations
-      student_or_basic: It's not possible request student or basic profiles
-      profile: Profile must be choosen
-      cancel_request: It was not possible to cancel
+
     warning:
       already_active: Profile's already active
+
+    rejected: rejected
+    accepted: accepted
+    allocation_tag_path: "in %{path}"
     undo_action: "(Undo action)"
+
   allocation_pending: Pending
+
+  ## CRUD
   options: "Options"
   successfully_created: '%{register} was successfully created.'
   successfully_updated: '%{register} was successfully updated.'
   successfully_deleted: '%{register} was successfully deleted.'
   cant_delete: '%{register} has associations and can''t be deleted!'
+
   notifier:
     enrollment_accepted:
       subject: "[SOLAR] Enrollment accepted"
+
   assignments:
     index:
       expand_enunciation: Expand enunciation

@@ -154,17 +154,12 @@ Solar::Application.routes.draw do
 
   ## enroll_request: relacionado a pedido de matricula
   ## profile_request: relacionado a pedido de perfil
-  resources :allocations, only: [:index, :show, :edit] do # except: [:new, :update, :destroy, :create] do
+  resources :allocations, only: [:index, :show, :edit] do
     collection do
 
-
       ## menu
-
       get :manage_enrolls, to: redirect('/allocations/enrollments') #"allocations#index"
-      # get :manage_enrolls, action: :index
       get :enrollments, action: :index
-
-
 
       get :designates
       get :admin_designates, action: :designates, defaults: {admin: true}
@@ -178,14 +173,6 @@ Solar::Application.routes.draw do
     member do
       put :manage_enrolls
 
-      # delete :cancel, action: :destroy
-      # delete :cancel_request, action: :destroy, defaults: {type: 'request'}
-      # delete :cancel_profile_request, action: :destroy, defaults: {type: 'request', profile: true}
-
-      # post :reactivate
-      # put :deactivate
-      # put :activate
-
       delete :cancel, to: :update, type: :cancel, enroll_request: true
       delete :cancel_request, to: :update, type: :cancel_request, enroll_request: true
       delete :cancel_profile_request, action: :update, type: :cancel_profile_request, profile_request: true
@@ -197,11 +184,6 @@ Solar::Application.routes.draw do
       put :reject, to: :update, type: :reject, acccept_or_reject_profile: true
       put :accept, to: :update, type: :accept, acccept_or_reject_profile: true
       put :undo_action, to: :update, type: :pending
-
-
-      # put :reject, action: :accept_or_reject, defaults: {accept: false}
-      # put :accept, action: :accept_or_reject, defaults: {accept: true}
-      # put :undo_action, action: :accept_or_reject, defaults: {undo: true}
     end
   end
 
@@ -319,12 +301,12 @@ Solar::Application.routes.draw do
       put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Assignment", as: :add_group_to
     end
   end
-  
+
   resources :assignment_comments do
     get :download, on: :collection
   end
 
-  resources :assignment_files do 
+  resources :assignment_files do
     collection do
       get :download
       get :zip_download, to: :download, defaults: {zip: true}
@@ -350,7 +332,7 @@ Solar::Application.routes.draw do
       put :add_participant, to: :change_participant, defaults: {add: true}
       post :import
     end
-      
+
   end
   resources :assignment_comments do
   end
