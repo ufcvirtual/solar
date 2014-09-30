@@ -17,6 +17,10 @@ class AllocationsController < ApplicationController
     end
   end
 
+  before_filter only: [:enroll_request, :profile_request] do |controller|
+    authorize! :create, Allocation
+  end
+
 
   ## GERENCIAR MATRICULA
 
@@ -77,8 +81,6 @@ class AllocationsController < ApplicationController
   ## PEDIR PERFIL
 
   def profile_request
-    authorize! :create, Allocation
-
     allocate_and_render_result(current_user, params[:profile_id], Allocation_Pending, t('allocations.request.success.profile'))
   end
 
