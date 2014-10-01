@@ -133,7 +133,6 @@ res26:
   action: 'list'
   description: 'Agenda - lista'
 
-# Assignments - parte 2
 res29:
   id: 29
   controller: 'group_assignments'
