@@ -4,7 +4,17 @@ class AllocationsController < ApplicationController
 
   layout false, except: :index
 
-  before_filter :allocations_to_designate, only: [:create_designation, :profile_request]
+  before_filter only: [:enroll_request, :profile_request] do |controller|
+    authorize! :create, Allocation
+  end
+
+  before_filter only: [:create_designation, :profile_request] do |controller|
+    @allocation_tags_ids = if (params[:profile_id].present? and Profile.find(params[:profile_id]).has_type?(Profile_Type_Admin))
+      []
+    else
+      AllocationTag.get_by_params(params)[:allocation_tags]
+    end
+  end
 
   before_filter only: [:show, :edit, :update] do |controller|
     @allocation = Allocation.find(params[:id])
@@ -15,10 +25,6 @@ class AllocationsController < ApplicationController
       # editor/aluno
       authorize! :manage_profiles, @allocation, on: [@allocation.allocation_tag_id] unless params[:profile_request] or params[:enroll_request] # pedir matricula e perfil nao precisa de permissao
     end
-  end
-
-  before_filter only: [:enroll_request, :profile_request] do |controller|
-    authorize! :create, Allocation
   end
 
 
@@ -92,28 +98,14 @@ class AllocationsController < ApplicationController
   # GET /allocations/designates
   # GET /allocations/admin_designates
   def designates
-    @allocation_tags_ids = if (not(params[:admin].present?) or params[:allocation_tags_ids].present?)
-       params[:allocation_tags_ids] || []
-    else
-      AllocationTag.get_by_params(params)[:allocation_tags].join(" ")
-    end
+    @allocation_tags_ids = atgs_to_designates
+    authorize! :manage_profiles, Allocation, {on: @allocation_tags_ids, accepts_general_profile: true}
 
-    begin
-      authorize! :manage_profiles, Allocation, {on: @allocation_tags_ids, accepts_general_profile: true}
-
-      level = (params[:permissions] != "all" and not(params[:admin].present?)) ? "responsible" : nil
-      level_search = level.nil? ? ("not(profiles.types & #{Profile_Type_Basic})::boolean") : ("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
-
-      @allocations = Allocation.all(joins: [:profile, :user],
-        conditions: ["#{level_search} and allocation_tag_id IN (?)", @allocation_tags_ids.split(" ").flatten],
-        order: ["users.name", "profiles.name"])
-
-      @admin = params[:admin]
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    end
+    @admin = params[:admin]
+    @allocations = Allocation.list_for_designates(@allocation_tags_ids.split(" ").flatten, @admin)
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def create_designation
@@ -155,10 +147,9 @@ class AllocationsController < ApplicationController
   private
 
     def success_msg
-      # aceita/rejeita pedido de perfil
-      msg = if params[:acccept_or_reject_profile]
-        path    = t("allocations.allocation_tag_path", path: @allocation.allocation_tag.info) rescue ''
-        action  = params[:type] == :accept ? t("allocations.accepted") : t("allocations.rejected")
+      if params[:acccept_or_reject_profile] # aceita/rejeita pedido de perfil
+        path = t("allocations.allocation_tag_path", path: @allocation.allocation_tag.info) rescue ''
+        action = params[:type] == :accept ? t("allocations.accepted") : t("allocations.rejected")
 
         t("allocations.request.success.accept_reject_msg", user_name: @allocation.user.name, profile_name: @allocation.profile.name, path: path, action: action,
           undo_url: view_context.link_to(t("allocations.undo_action"), "#", id: :undo_action, :"data-link" => undo_action_allocation_path(@allocation)))
@@ -166,6 +157,9 @@ class AllocationsController < ApplicationController
         t(params[:type], scope: 'allocations.request.success')
       end
     end
+
+
+
 
     def change_status_from_allocations(allocations, new_status, group = nil)
       new_allocations = []
@@ -177,6 +171,9 @@ class AllocationsController < ApplicationController
       end
       new_allocations
     end
+
+
+
 
     def user_change_group(allocation, new_group)
       # cancela na turma anterior e cria uma nova alocação na nova
@@ -191,6 +188,10 @@ class AllocationsController < ApplicationController
       new_allocation
     end
 
+
+
+
+
     def send_email_to_enrolled_user(allocation)
       Thread.new do
         Mutex.new.synchronize {
@@ -204,14 +205,6 @@ class AllocationsController < ApplicationController
       groups = current_user.allocations.where(profile_id: profiles).where("allocation_tag_id IS NOT NULL").map { |a| a.groups }.flatten.uniq.compact
     end
 
-    def allocations_to_designate
-      @allocation_tags_ids = if (params[:profile_id].present? and Profile.find(params[:profile_id]).has_type?(Profile_Type_Admin))
-        [nil]
-      else
-        AllocationTag.get_by_params(params)[:allocation_tags]
-      end
-    end
-
     def allocate_and_render_result(user, profile, status, success_message = t("allocations.request.success.allocated"))
       result = user.allocate_in(allocation_tag_ids: @allocation_tags_ids.split(" ").flatten, profile: profile, status: status, by_user: current_user.id)
       render_result_designate(result, success_message)
@@ -221,11 +214,17 @@ class AllocationsController < ApplicationController
       @allocations = result[:success] # used at log generation
 
       if result[:error].any?
-        alert = result[:error].first.errors.full_messages.uniq.join(', ')
-        render json: {success: false, msg: alert}, status: :unprocessable_entity # apresenta apenas o erro do primeiro problema
+        render json: {success: false, msg: result[:error].first.errors.full_messages.uniq.join(', ')}, status: :unprocessable_entity # apresenta apenas o erro do primeiro problema
       else
         render json: {success: true, msg: success_message, id: result[:success].map(&:id)}
       end
     end
 
+    def atgs_to_designates
+      if (not(params[:admin].present?) or params[:allocation_tags_ids].present?)
+         params[:allocation_tags_ids] || []
+      else
+        AllocationTag.get_by_params(params)[:allocation_tags].join(" ")
+      end
+    end
 end

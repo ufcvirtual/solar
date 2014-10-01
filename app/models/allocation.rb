@@ -137,41 +137,18 @@ class Allocation < ActiveRecord::Base
 
 
   def self.enrollments(args = {})
-    query = ["profile_id = #{Profile.student_profile}", "allocation_tags.group_id IS NOT NULL"]
-
-    if args.any?
-      query << "groups.offer_id = :offer_id" if args[:offer_id].present?
-      query << "groups.id IN (:group_id)" if args[:group_id].present?
-      query << "allocations.status = :status" if args[:status].present?
-
-      if args[:user_search].present?
-        args[:user_search] = [args[:user_search].split(" ").compact.join(":*&"), ":*"].join
-        query << "to_tsvector('simple', unaccent(users.name)) @@ to_tsquery('simple', unaccent(:user_search))"
-      end
-    end
-
-    joins(allocation_tag: {group: :offer}, user: {}).where(query.join(' AND '), args).order("users.name")
+    joins(allocation_tag: {group: :offer}, user: {}).where(query_for_enrollments(args), args).order("users.name")
   end
 
-  def self.have_access?(user_id, allocation_tag_id)
-    not(Allocation.find_by_user_id_and_allocation_tag_id(user_id, allocation_tag_id).nil?)
+  def self.pending
+    joins(:profile)
+      .where("allocations.status IN (?, ?) AND NOT cast(profiles.types & ? as boolean)", Allocation_Pending, Allocation_Pending_Reactivate, Profile_Type_Student)
+      .order("allocations.id")
   end
 
-  def self.pending(current_user = nil, include_student = false)
-    query = (include_student ? "" : "NOT cast(profiles.types & #{Profile_Type_Student} as boolean)")
-
-    # recovers all pending allocations disconsidering (or not) students allocations
-    allocations = Allocation.joins(:profile).where("allocations.status = #{Allocation_Pending} OR allocations.status = #{Allocation_Pending_Reactivate}").where(query).order("id")
-    # if user was informed and it isn't an admin, remove unrelated allocations; otherwise return allocations
-    ((current_user.nil? or current_user.is_admin?) ? allocations : Allocation.remove_unrelated_allocations(current_user, allocations))
-  end
-
-  # this method returns an array
-  def self.remove_unrelated_allocations(current_user, allocations)
+  def self.remove_unrelated_allocations(user, allocations)
     # recovers only responsible profiles allocations and remove all allocatios which user has no relation with
-    allocations.where("cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)").delete_if{
-      |allocation| not(current_user.can? :manage_profiles, Allocation, on: [allocation.allocation_tag_id])
-    } unless current_user.nil?
+    allocations.where("cast(profiles.types & ? as boolean)", Profile_Type_Class_Responsible).select { |a| user.can?(:manage_profiles, Allocation, on: [a.allocation_tag_id]) }
   end
 
   def self.responsibles(allocation_tags_ids)
@@ -180,7 +157,30 @@ class Allocation < ActiveRecord::Base
       .order("users.name")
   end
 
+  def self.list_for_designates(allocation_tags_ids, is_admin = false)
+    query = ["allocation_tag_id IN (?)"]
+    query << (!!is_admin ? "not(profiles.types & #{Profile_Type_Basic})::boolean" : "(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
+
+    joins(:profile, :user).where(query.join(' AND '), allocation_tags_ids).order("users.name, profiles.name")
+  end
+
   private
+
+    def self.query_for_enrollments(args = {})
+      query = ["profile_id = #{Profile.student_profile}", "allocation_tags.group_id IS NOT NULL"]
+
+      if args.any?
+        query << "groups.offer_id = :offer_id" if args[:offer_id].present?
+        query << "groups.id IN (:group_id)" if args[:group_id].present?
+        query << "allocations.status = :status" if args[:status].present?
+
+        if args[:user_search].present?
+          user_search = [args[:user_search].split(" ").compact.join(":*&"), ":*"].join
+          query << "to_tsvector('simple', unaccent(users.name)) @@ to_tsquery('simple', unaccent('#{user_search}'))"
+        end
+      end
+      query.join(' AND ')
+    end
 
     def valid_profile_in_allocation_tag?
       errors.add(:profile_id, 'pt-br: nao pode aluno fora da turma') if profile_id == Profile.student_profile and allocation_tag.refer_to != 'group'

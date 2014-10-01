@@ -124,7 +124,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
 
     get designates_allocations_path, { allocation_tags_ids:  "#{allocation_tags(:al5).id}" }
     assert_nil assigns(:allocations)
-    assert_response :unprocessable_entity
+    assert_response :unauthorized
   end
 
   test "ativar perfil inativo de usuario" do
