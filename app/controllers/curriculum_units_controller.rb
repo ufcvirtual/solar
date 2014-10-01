@@ -146,7 +146,7 @@ class CurriculumUnitsController < ApplicationController
     CurriculumUnit.transaction do
       begin
         @curriculum_unit.each do |curriculum_unit|
-          raise "erro" unless curriculum_unit.destroy
+          raise "error" unless curriculum_unit.destroy
         end
         render json: {success: true, notice: t(:deleted, scope: [:curriculum_units, :success])}
       rescue

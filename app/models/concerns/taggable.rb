@@ -34,7 +34,7 @@ module Taggable
 
   def can_destroy?
     errors.add(:base, I18n.t(:dont_destroy_with_lower_associations)) if has_any_lower_association?
-    errors.add(:base, I18n.t(:dont_destroy_with_many_allocations)) if allocations.count > 1 # se possuir mais de um usuario alocado, nao deleta
+    errors.add(:base, I18n.t(:dont_destroy_with_many_allocations)) if allocations.select("DISTINCT user_id").count > 1 # se possuir mais de um usuario alocado, nao deleta
 
     alc = academic_allocations.count
     if alc > 0 # tem conteudo

@@ -37,27 +37,24 @@ class AssignmentsController < ApplicationController
 
   def create
     authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-
     @assignment = Assignment.new params[:assignment]
 
-    begin
-      Assignment.transaction do
-        @assignment.save!
-        @assignment.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
-      end
-
-      render json: {success: true, notice: t(:created, scope: [:assignments, :success])}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue => error
-      @error = error.to_s.start_with?("academic_allocation") ? error.to_s.gsub("academic_allocation", "") : nil
-
-      @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
-      @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
-      @allocation_tags_ids = @allocation_tags_ids.join(" ")
-
-      render :new
+    Assignment.transaction do
+      @assignment.save!
+      @assignment.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
     end
+
+    render json: {success: true, notice: t(:created, scope: [:assignments, :success])}
+  rescue ActiveRecord::AssociationTypeMismatch
+    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+  rescue => error
+    @error = error.to_s.start_with?("academic_allocation") ? error.to_s.gsub("academic_allocation", "") : nil
+
+    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
+    @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
+    @allocation_tags_ids = @allocation_tags_ids.join(" ")
+
+    render :new
   end
 
   def update

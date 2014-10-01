@@ -115,9 +115,6 @@ class AdministrationsController < ApplicationController
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
-
-
-
   ## levar metodo para allocations
 
   def update_allocation
@@ -132,12 +129,6 @@ class AdministrationsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
-
-
-
-
-
-
 
   ## INDICATION USERS
 
@@ -189,11 +180,8 @@ class AdministrationsController < ApplicationController
       end
     end
 
-
     # if user isn't an admin, remove unrelated allocations
     @allocations = Allocation.remove_unrelated_allocations(current_user, @allocations) unless current_user.is_admin?
-
-    # raise "#{@allocations.count}"
 
     @allocations.compact!
     @allocations = @allocations.paginate(page: params[:page])
