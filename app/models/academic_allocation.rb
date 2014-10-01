@@ -39,6 +39,14 @@ class AcademicAllocation < ActiveRecord::Base
     academic_tool_type.eql? 'LessonModule'
   end
 
+  def copy_group_assignments(to_ac_id)
+    ActiveRecord::Base.transaction do
+      group_assignments.each do |group|
+        group.copy(to_ac_id)
+      end
+    end
+  end
+
   private
 
     ## antes de salvar, verifica se as allocations_tags passadas permitem a ferramenta em questão.

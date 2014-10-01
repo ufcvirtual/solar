@@ -85,18 +85,7 @@ class GroupAssignmentsController < ApplicationController
 
   def import
     authorize! :import, GroupAssignment, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-
-    from_ac  = @ac
-    to_ac_id = AcademicAllocation.where(academic_tool_type: "Assignment", academic_tool_id: params[:id], allocation_tag_id: allocation_tag_id).first.id
-
-    ActiveRecord::Base.transaction do
-      from_ac.group_assignments.each do |group|
-        new_group = GroupAssignment.where(group_name: group.group_name, academic_allocation_id: to_ac_id).first_or_create!
-        group.group_participants.each do |participant|
-          GroupParticipant.where(user_id: participant.user_id, group_assignment_id: new_group.id).first_or_create! unless GroupAssignment.where(academic_allocation_id: to_ac_id).map(&:users).flatten.map(&:id).include?(participant.user_id)
-        end
-      end
-    end
+    @ac.copy_group_assignments(AcademicAllocation.where(academic_tool_type: "Assignment", academic_tool_id: params[:id], allocation_tag_id: allocation_tag_id).first.id)
     render json: {success: true, notice: t("group_assignments.success.imported")}
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized

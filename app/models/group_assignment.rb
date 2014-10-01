@@ -55,4 +55,16 @@ class GroupAssignment < ActiveRecord::Base
     errors.add(:group_name, I18n.t("group_assignments.error.unique_name")) if (new_record? or group_name_changed?) and groups_with_same_name.size > 0
   end
 
+  def copy(to_ac_id)
+    new_group = GroupAssignment.where(group_name: group_name, academic_allocation_id: to_ac_id).first_or_create!
+    copy_participants(new_group.id, to_ac_id)
+  end
+
+  def copy_participants(group_id, ac_id)
+    all_participants = GroupAssignment.where(academic_allocation_id: ac_id).map(&:users).flatten.map(&:id)
+    group_participants.each do |participant|
+      GroupParticipant.where(user_id: participant.user_id, group_assignment_id: group_id).first_or_create! unless all_participants.include? participant.user_id
+    end
+  end
+
 end
