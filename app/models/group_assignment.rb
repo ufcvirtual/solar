@@ -34,7 +34,7 @@ class GroupAssignment < ActiveRecord::Base
   end
 
   def define_name
-    if new_record?
+    if group_name == I18n.t("group_assignments.new.new_group_name")
       count, group = 1, GroupAssignment.where({group_name: "#{I18n.t("group_assignments.new.new_group_name")}", academic_allocation_id: academic_allocation_id}).first_or_initialize
 
       until group.new_record?

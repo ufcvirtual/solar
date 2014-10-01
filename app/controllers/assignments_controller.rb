@@ -2,8 +2,10 @@ class AssignmentsController < ApplicationController
 
   include SysLog::Actions
   include FilesHelper
+  include AssignmentsHelper
 
   before_filter :prepare_for_group_selection, only: :list
+  before_filter :get_ac, only: :evaluate
   layout false, except: [:list, :student]
 
   def index
@@ -79,7 +81,6 @@ class AssignmentsController < ApplicationController
     @allocation_tags_ids, assignments = params[:allocation_tags_ids], Assignment.includes(:sent_assignments).where(id: params[:id].split(",").flatten, sent_assignments: {id: nil})
     authorize! :destroy, Assignment, on: assignments.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
-
     Assignment.transaction do
       raise "error" if assignments.empty?
       assignments.destroy_all
@@ -116,9 +117,8 @@ class AssignmentsController < ApplicationController
     @allocation_tag_id  = active_tab[:url][:allocation_tag_id]
     @class_participants = AllocationTag.find(@allocation_tag_id).group.students_participants.pluck(:user_id)
 
+    @student_id, @group_id = (params[:group_id].nil? ? [params[:student_id], nil] : [nil, params[:group_id]])
     @assignment     = Assignment.find(params[:id])
-    @student_id     = params[:group_id].nil? ? params[:student_id] : nil
-    @group_id       = params[:group_id].nil? ? nil : params[:group_id]
     @group          = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
     @own_assignment = Assignment.owned_by_user?(current_user.id, {student_id: @student_id, group: @group})
     raise CanCan::AccessDenied unless @own_assignment or AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id)
@@ -128,27 +128,22 @@ class AssignmentsController < ApplicationController
   end
 
   def evaluate
-    @assignment, allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
-    authorize! :evaluate, Assignment, on: [allocation_tag_id]
-    raise "date_range" unless @assignment.in_time?(allocation_tag_id, current_user.id)
+    @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
+    authorize! :evaluate, Assignment, on: [@allocation_tag_id]
+    raise "date_range" unless @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 
-    ac = AcademicAllocation.where(academic_tool_id: params[:id], academic_tool_type: "Assignment", allocation_tag_id: allocation_tag_id).first.id
-    @sent_assignment = SentAssignment.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocation_id: ac).first_or_initialize
-    @sent_assignment.attributes = {grade: params[:grade].tr(",", ".")}
-    new_sa = @sent_assignment.new_record?
-    @sent_assignment.save!
+    @sent_assignment = SentAssignment.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocation_id: @ac).first_or_create
+    @sent_assignment.update_attributes! grade: params[:grade].tr(",", ".")
 
-    @student_id, @group_id, @allocation_tag_id = params[:student_id], params[:group_id], active_tab[:url][:allocation_tag_id]
-    @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
+    @student_id, @group_id = params[:student_id], params[:group_id]
 
-    LogAction.create(log_type: LogAction::TYPE[(new_sa ? :create : :update)], user_id: current_user.id, ip: request.remote_ip, description: "sent_assignment: #{@sent_assignment.attributes.merge({"assignment_id" => @assignment.id})}") rescue nil
+    LogAction.create(log_type: LogAction::TYPE[(@sent_assignment.previous_changes.has_key?(:id) ? :create : :update)], user_id: current_user.id, ip: request.remote_ip, description: "sent_assignment: #{@sent_assignment.attributes.merge({"assignment_id" => @assignment.id})}") rescue nil
 
     render json: { success: true, notice: t("assignments.success.evaluated"), html: "#{render_to_string(partial: "info")}" }
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error
-    error_message = I18n.translate!("assignments.error.#{error}", raise: true) rescue t("assignments.error.evaluate")
-    render json: {success: false, alert: error_message}, status: :unprocessable_entity
+    render_json_error(error, "assignments.error", "evaluate", error.message)
   end
 
   def download

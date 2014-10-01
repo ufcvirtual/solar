@@ -328,6 +328,7 @@ Solar::Application.routes.draw do
     end
     member do
       get :participants
+      get :import_participants, to: :participants, defaults: {import: true}
       put :remove_participant, to: :change_participant
       put :add_participant, to: :change_participant, defaults: {add: true}
       post :import

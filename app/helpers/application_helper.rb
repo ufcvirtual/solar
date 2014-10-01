@@ -113,4 +113,9 @@ module ApplicationHelper
     return (params[:action] == "mysolar")
   end
 
+  def render_json_error(error, path, default_error="general_message", message=nil)
+    error_message = I18n.translate!("#{path}.#{error}", raise: true) rescue t("#{path}.#{default_error}")
+    render json: {success: false, alert: (message.nil? ? error_message : error.message)}, status: :unprocessable_entity
+  end
+
 end

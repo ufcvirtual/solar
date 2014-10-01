@@ -1,8 +1,10 @@
 class GroupAssignmentsController < ApplicationController
 
   before_filter :set_current_user, only: [:destroy]
+  before_filter :get_ac, only: [:create, :import, :list]
 
   include SysLog::Actions
+  include AssignmentsHelper
 
   layout false
 
@@ -17,10 +19,7 @@ class GroupAssignmentsController < ApplicationController
 
   def create
     authorize! :index, GroupAssignment, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-
-    ac = AcademicAllocation.where(academic_tool_id: params[:assignment_id], academic_tool_type: "Assignment", allocation_tag_id: allocation_tag_id).first.id
-    @group = GroupAssignment.create!({academic_allocation_id: ac, group_name: t("group_assignments.new.new_group_name")})
-
+    @group = GroupAssignment.create!({academic_allocation_id: @ac.id, group_name: t("group_assignments.new.new_group_name")})
     render :new
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
@@ -38,8 +37,7 @@ class GroupAssignmentsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error
-    error_message = I18n.translate!("group_assignments.error.#{error.message}", raise: true) rescue t("group_assignments.error.general_message")
-    render json: {success: false, alert: error_message}, status: :unprocessable_entity
+    render_json_error(error, "group_assignments.error")
   end
 
   def edit
@@ -68,13 +66,11 @@ class GroupAssignmentsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error
-    error_message = I18n.translate!("group_assignments.error.#{error}", raise: true) rescue t("group_assignments.error.general_message")
-    render json: {success: false, alert: error_message}, status: :unprocessable_entity 
+    render_json_error(error, "group_assignments.error")
   end
 
   def students_with_no_group
-    assignment = Assignment.find(params[:assignment_id])
-    students_without_group = assignment.students_without_groups(active_tab[:url][:allocation_tag_id])
+    students_without_group = Assignment.find(params[:assignment_id]).students_without_groups(active_tab[:url][:allocation_tag_id])
     render partial: "students_with_no_group", locals: {students: students_without_group}
   end
   
@@ -84,13 +80,13 @@ class GroupAssignmentsController < ApplicationController
   end
 
   def list
-    @groups = AcademicAllocation.where(academic_tool_id: params[:assignment_id], academic_tool_type: "Assignment", allocation_tag_id: active_tab[:url][:allocation_tag_id]).first.group_assignments
+    @groups = @ac.group_assignments
   end
 
   def import
     authorize! :import, GroupAssignment, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
-    from_ac  = AcademicAllocation.where(academic_tool_type: "Assignment", academic_tool_id: params[:assignment_id], allocation_tag_id: allocation_tag_id).first
+    from_ac  = @ac
     to_ac_id = AcademicAllocation.where(academic_tool_type: "Assignment", academic_tool_id: params[:id], allocation_tag_id: allocation_tag_id).first.id
 
     ActiveRecord::Base.transaction do
@@ -105,8 +101,7 @@ class GroupAssignmentsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error
-    error_message = I18n.translate!("group_assignments.error.#{error}", raise: true) rescue t("group_assignments.error.general_message")
-    render json: {success: false, alert: error_message}, status: :unprocessable_entity 
+    render_json_error(error, "group_assignments.error")
   end
 
 end

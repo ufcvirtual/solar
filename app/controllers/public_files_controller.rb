@@ -2,6 +2,8 @@ class PublicFilesController < ApplicationController
 
   include FilesHelper
 
+  before_filter :set_current_user, only: [:destroy]
+
   layout false, except: :index
 
   def index
@@ -20,7 +22,7 @@ class PublicFilesController < ApplicationController
     render partial: "file", locals: {file: public_file, destroy: true}
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue => error
+  rescue
     render json: {success: false, alert: t("public_files.error.new")}, status: :unprocessable_entity
   end
 
@@ -41,14 +43,8 @@ class PublicFilesController < ApplicationController
   end
 
   def destroy
-    file = PublicFile.find(params[:id])
-    raise CanCan::AccessDenied unless file.user_id == current_user.id
-
-    if file.destroy
-      render json: {success: true, alert: t("public_files.success.removed")}
-    else
-      render json: {success: false, alert: t("public_files.error.remove")}, status: :unprocessable_entity
-    end
+    PublicFile.find(params[:id]).destroy
+    render json: {success: true, alert: t("public_files.success.removed")}
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue

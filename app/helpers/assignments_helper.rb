@@ -40,4 +40,8 @@ module AssignmentsHelper
     end
   end
 
+  def get_ac
+    @ac = AcademicAllocation.where(academic_tool_type: "Assignment", academic_tool_id: (params[:assignment_id] || params[:id]), allocation_tag_id: active_tab[:url][:allocation_tag_id]).first
+  end
+
 end

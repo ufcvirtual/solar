@@ -83,7 +83,6 @@ class AcademicAllocation < ActiveRecord::Base
     end
 
     # métodos destinados ao Lesson Module
-
     def move_lessons_to_default
       lesson_module = LessonModule.joins(:academic_allocations).where({is_default: true, academic_allocations: {allocation_tag_id: allocation_tag_id}})
       academic_tool.lessons.update_all(lesson_module_id: lesson_module) unless lesson_module.empty?

@@ -1,4 +1,6 @@
 class PublicFile < ActiveRecord::Base
+  before_destroy :can_remove?
+
   belongs_to :user
   belongs_to :allocation_tag
 
@@ -13,4 +15,8 @@ class PublicFile < ActiveRecord::Base
   validates_attachment_content_type_in_black_list :attachment
 
   default_scope order: 'attachment_updated_at DESC'
+
+  def can_remove?
+    raise CanCan::AccessDenied unless user_id == User.current.id
+  end
 end
