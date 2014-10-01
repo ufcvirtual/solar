@@ -1176,6 +1176,7 @@ pt_BR:
   corrected: Corrigido
   sent: Enviado
   not_sent: Não Enviado
+  to_be_sent: A enviar
   without_group: Sem Grupo
 
   # Assignment Comments
@@ -2517,12 +2518,12 @@ pt_BR:
       assignment_not_sent: TE
       assignment_without_group: SG
       assignment_sent: E
-      assignment_send: NE
+      assignment_to_be_sent: NE
       assignment_not_started: NI
       assignment_not_sent_complete: Trabalho não enviado e com período encerrado
       assignment_without_group_complete: Aluno sem grupo
       assignment_sent_complete: "Trabalho enviado, mas não corrigido (sem nota)"
-      assignment_send_complete: Trabalho não enviado
+      assignment_to_be_sent_complete: Trabalho não enviado
       assignment_not_started_complete: Trabalho com período não iniciado
       subtitle: Legenda
     info:

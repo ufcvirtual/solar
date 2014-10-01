@@ -988,6 +988,7 @@ en_US:
   corrected: Corrected
   sent: Sent
   not_sent: Not Sent
+  to_be_sent: To be sent
   without_group: Without Group
   comment_error_delete_file: Error when trying to delete file
   group: "Group"
@@ -2283,12 +2284,12 @@ en_US:
       assignment_not_sent: AE
       assignment_without_group: WG
       assignment_sent: S
-      assignment_send: NF
+      assignment_to_be_sent: NF
       assignment_not_started: NS
       assignment_not_sent_complete: No file sent and assignment date range expired
       assignment_without_group_complete: Student without group
       assignment_sent_complete: "Has files, but was not evaluated"
-      assignment_send_complete: No file sent
+      assignment_to_be_sent_complete: No file sent
       assignment_not_started_complete: Assignment not started
       subtitle: Subtitle
     info:

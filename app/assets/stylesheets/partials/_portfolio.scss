@@ -124,7 +124,7 @@ td.assignment_as a {
   color: #787878;
 }
 
-.assignment_send, .assignment_send a,
+.assignment_to_be_sent, .assignment_to_be_sent a,
 .assignment_pending,
 td.assignment_an a {
   color: #003e7a;
@@ -142,7 +142,7 @@ td.assignment_without_group a {
 .assignment_sent,
 .assignment_not_sent,
 .assignment_not_started,
-.assignment_send,
+.assignment_to_be_sent,
 .assignment_pending,
 .assignment_without_group,
 .expired,

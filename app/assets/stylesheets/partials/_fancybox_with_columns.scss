@@ -1,4 +1,10 @@
 .label_display{
+  .block_content{
+    max-height: 350px;
+    overflow: auto;
+    background-color: white;
+  }
+  
   table{
     margin-bottom: 50px;
   }

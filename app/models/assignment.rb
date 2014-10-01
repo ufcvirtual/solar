@@ -97,7 +97,7 @@ class Assignment < Event
       when not(grade.nil?); "corrected"
       when has_files; "sent"
       when (self.type_assignment == Assignment_Type_Group and not(has_group)); "without_group"
-      when (schedule.end_date.to_date >= Date.today); "send"
+      when (schedule.end_date.to_date >= Date.today); "to_be_sent"
       when (schedule.end_date.to_date < Date.today); "not_sent"
       else
         "-"
