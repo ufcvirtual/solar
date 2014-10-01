@@ -107,7 +107,7 @@ module V1::V1Helpers
         sa.grade = from_sent_assignment.grade # updates grade with most recent copied group
       end
 
-      copy_objects(from_sent_assignment.assignment_comments, {"sent_assignment_id" => new_sa.id}, true, :comment_files)
+      copy_objects(from_sent_assignment.assignment_comments, {"sent_assignment_id" => new_sa.id}, true, :files)
       copy_objects(from_sent_assignment.assignment_files, {"sent_assignment_id" => new_sa.id}, true)
     end
   end
