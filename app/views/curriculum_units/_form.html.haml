@@ -20,7 +20,7 @@
       %span#text_as_label=@curriculum_unit.curriculum_unit_type.description
       = f.association :curriculum_unit_type, as: :hidden, input_html: {value: @curriculum_unit.curriculum_unit_type.id}
       = f.input :name
-      = f.input :code
+      = f.input :code, input_html: {size: 50}
       = f.input :resume 
       = f.input :objectives, :class => "btn btn_default"
       = f.input :syllabus
