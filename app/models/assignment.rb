@@ -75,7 +75,7 @@ class Assignment < Event
     (date >= start_date.to_date and date <= end_date.to_date)
   end
 
-  def info(user_id, allocation_tag_id, group_id = nil)
+   def info(user_id, allocation_tag_id, group_id = nil)
     academic_allocation = AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_id: self.id, academic_tool_type: "Assignment").first
     params = if self.type_assignment == Assignment_Type_Group
       group_id = GroupAssignment.joins(:group_participants).where(group_participants: {user_id: user_id}, group_assignments: {academic_allocation_id: academic_allocation.id}).first.try(:id) if group_id.nil?
@@ -84,11 +84,8 @@ class Assignment < Event
       {user_id: user_id}
     end
 
-    sent_assignment = academic_allocation.sent_assignments.where(params).first
-    grade, comments, files = sent_assignment.try(:grade), sent_assignment.try(:assignment_comments), sent_assignment.try(:assignment_files)
-    has_files = (not(files.nil?) and files.any?)
-    file_sent_date = (has_files ? I18n.l(files.first.attachment_updated_at, format: :normal) : " - ")
-    {situation: self.situation(has_files, not(group_id.nil?), grade), grade: grade, has_comments: (not(comments.nil?) and comments.any?), has_files: has_files, group_id: group_id, file_sent_date: file_sent_date}
+    info = academic_allocation.sent_assignments.where(params).first.try(:info) || {has_files: false, file_sent_date: " - "}
+    {situation: situation(info[:has_files], not(group_id.nil?), info[:grade]), grade: info[:grade], has_comments: (not(info[:comments].nil?) and info[:comments].any?), has_files: info[:has_files], group_id: group_id, file_sent_date: info[:file_sent_date]}
   end
 
   def situation(has_files, has_group, grade = nil)

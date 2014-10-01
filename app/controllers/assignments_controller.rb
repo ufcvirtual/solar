@@ -99,24 +99,21 @@ class AssignmentsController < ApplicationController
   def list
     authorize! :list, Assignment, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
-    allocation_tag = AllocationTag.find(@allocation_tag_id)
-    @student = not(allocation_tag.is_observer_or_responsible?(current_user.id))
+    @student = not(AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id))
     @public_files = PublicFile.where(user_id: current_user.id, allocation_tag_id: @allocation_tag_id)
     @assignments  = Assignment.joins(:academic_allocations, :schedule).where(academic_allocations: {allocation_tag_id:  @allocation_tag_id})
                               .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date").order("start_date")
-    @participants = allocation_tag.group.students_participants.map(&:user)
+    @participants = AllocationTag.get_students(@allocation_tag_id)
     @can_manage, @can_import = (can? :index, GroupAssignment, on: [@allocation_tag_id]), (can? :import, GroupAssignment, on: [@allocation_tag_id])
 
     render layout: false if params[:layout].present?
   end
 
   def student
-    @allocation_tag_id  = active_tab[:url][:allocation_tag_id]
-    @class_participants = AllocationTag.find(@allocation_tag_id).group.students_participants.pluck(:user_id)
-
+    @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
+    @class_participants = AllocationTag.get_students(@allocation_tag_id)
     @student_id, @group_id = (params[:group_id].nil? ? [params[:student_id], nil] : [nil, params[:group_id]])
-    @assignment     = Assignment.find(params[:id])
-    @group          = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
+    @group = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
     @own_assignment = Assignment.owned_by_user?(current_user.id, {student_id: @student_id, group: @group})
     raise CanCan::AccessDenied unless @own_assignment or AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id)
     @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)

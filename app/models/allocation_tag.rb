@@ -204,7 +204,7 @@ class AllocationTag < ActiveRecord::Base
   end
 
   def self.get_students(allocation_tag_id)
-    User.joins(allocations: :profile).where(allocations: {status: Allocation_Activated, allocation_tag_id: allocation_tag_id})
+    User.joins(allocations: :profile).where(allocations: {status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).related})
       .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean )")
   end
 

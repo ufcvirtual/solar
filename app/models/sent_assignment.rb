@@ -23,4 +23,10 @@ class SentAssignment < ActiveRecord::Base
     Assignment.find(academic_allocation.academic_tool_id)
   end
 
+  def info
+    grade, comments, files = try(:grade), try(:assignment_comments), try(:assignment_files)
+    has_files = (not(files.nil?) and files.any?)
+    {grade: grade, comments: comments, has_files: has_files, file_sent_date: (has_files ? I18n.l(files.first.attachment_updated_at, format: :normal) : " - ")}
+  end
+
 end
