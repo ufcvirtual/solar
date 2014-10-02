@@ -37,15 +37,17 @@ module V1
     desc "Todas as turmas por tipo de curso, semestre, curso ou disciplina"
     params do
       requires :semester, type: String
+      optional :course_type_id, type: Integer
       optional :course_id, type: Integer
       optional :discipline_id, type: Integer
     end
     get :groups, rabl: "sav/groups" do
       query = ["semesters.name = :semester", "groups.status IS TRUE"]
+      query << "curriculum_units.curriculum_unit_type_id = :course_type_id" if params[:course_type_id].present?
       query << "offers.course_id = :course_id" if params[:course_id].present?
       query << "offers.curriculum_unit_id = :discipline_id" if params[:discipline_id].present?
 
-      @groups = Group.joins(offer: :semester).where(query.join(' AND '), params.slice(:semester, :course_id, :discipline_id))
+      @groups = Group.joins(offer: [:semester, :curriculum_unit]).where(query.join(' AND '), params.slice(:course_type_id, :semester, :course_id, :discipline_id))
     end
   end
 end
