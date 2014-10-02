@@ -148,9 +148,10 @@ class Offer < ActiveRecord::Base
   # More accesses on the last 3 weeks > Have groups > Offer name ASC
   ##
   def self.offers_info_from_user(user)
-    currents = Offer.currents(Date.today.year, true)
-    u_offers = AllocationTag.where(id: user.allocations.where(status: Allocation_Activated).uniq.pluck(:allocation_tag_id)).map(&:offers).flatten.compact
-    offers   = (currents & u_offers)
+    currents   = Offer.currents(Date.today.year, true)
+    u_profiles = user.profiles_with_access_on("show", "curriculum_units", nil, true)
+    u_offers   = AllocationTag.where(id: user.allocations.where(status: Allocation_Activated, profile_id: u_profiles).uniq.pluck(:allocation_tag_id)).map(&:offers).flatten.compact
+    offers     = (currents & u_offers)
 
     allocations_info = offers.collect{ |offer| 
       ats = offer.allocation_tag.related

@@ -4,7 +4,8 @@
     %h2= t(".webconferences")
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus'), new_webconference_path(allocation_tags_ids: @allocation_tags_ids), class: "btn btn_main link_new_webconference", :"data-tooltip" => t(".new")
+      - can_create = (can? :create, Webconference, on: @allocation_tags_ids)
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_webconference_path(allocation_tags_ids: @allocation_tags_ids), remote: true, class: "btn btn_main link_new_webconference #{can_create ? '' : 'disabled'}", :"data-tooltip" => t(".new"), disabled: not(can_create)
 
     .block_toolbar_right
       .btn-group

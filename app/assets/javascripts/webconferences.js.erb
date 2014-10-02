@@ -10,7 +10,7 @@ $(function(){
     $($(this).parents('div:first').siblings()[0]).show();
   });
 
-  $(".link_new_webconference").call_fancybox();
+  $(".link_new_webconference").not(".disabled").call_fancybox();
 
   $('.delete_webconference').click(function(){
     if ($(this).attr('disabled') == 'disabled'){
