@@ -70,14 +70,11 @@ Solar::Application.routes.draw do
     get "responsibles/filter", to: "administrations#responsibles", as: :admin_responsibles_filter
     get "responsibles", to: "administrations#responsibles_list", as: :admin_responsibles
 
-    # get "users", to: "administrations#users_indication", as: :users_indication
-
     ## logs
     get :logs, to: "administrations#logs", as: :logs
     get "logs/type/:type", to: "administrations#search_logs", as: :search_logs
 
     ## import users
-
     get "/import/users/filter", to: "administrations#import_users", as: :import_users_filter
     get "/import/users/form", to: "administrations#import_users_form", as: :import_users_form
     post "/import/users/batch", to: "administrations#import_users_batch", as: :import_users_batch

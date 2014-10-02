@@ -1,5 +1,5 @@
 class Notification < ActiveRecord::Base
-  GROUP_PERMISSION, OFFER_PERMISSION, CURRICULUM_UNIT_PERMISSION, COURSE_PERMISSION = true, true, true, true
+  GROUP_PERMISSION, OFFER_PERMISSION, CURRICULUM_UNIT_PERMISSION, COURSE_PERMISSION, CURRICULUM_UNIT_TYPE_PERMISSION = true, true, true, true, true
 
   scope :active, -> { joins(:schedule).where("schedules.start_date <= ? and schedules.end_date >= ?", Date.today, Date.today) }
 

@@ -22,7 +22,7 @@
                 %td= allocation.user.cpf
                 %td= allocation.user.email
                 %td= allocation.profile.name
-                %td= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester.name : (allocation.course ? allocation.course.name : allocation.curriculum_unit.name))
+                %td= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester.name : (allocation.course ? allocation.course.name : (allocation.curriculum_unit ? allocation.curriculum_unit.name : allocation.curriculum_unit_type.description)))
                 %td= allocation.updated_by.try(:username)
                 %td
                   - status, link = (allocation.status == Allocation_Activated) ? ["deactivate", deactivate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)] : ["activate", activate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)]

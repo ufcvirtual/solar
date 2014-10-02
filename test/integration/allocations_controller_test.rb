@@ -190,8 +190,21 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert (not Allocation.where(user_id: users(:user2).id, profile_id: profiles(:editor).id, allocation_tag_id: allocation_tags(:al5).id).empty?)
+
+    assert_difference(["Allocation.where(allocation_tag_id: 43).count", "LogAction.count"]) do
+      post create_designation_allocations_path, { allocation_tags_ids:  "#{allocation_tags(:al43).id}", user_id: users(:user2).id, profile_id: profiles(:editor).id, status:  Allocation_Activated, admin: true } # uc_type
+    end
+
+    assert_response :success
   end
 
+  test "nao alocar usuario com perfil editor - sem acesso" do
+    login(users(:editor))
+    assert_no_difference(["Allocation.where(allocation_tag_id: 43).count", "LogAction.count"]) do
+      post create_designation_allocations_path, { allocation_tags_ids:  "#{allocation_tags(:al43).id}", user_id: users(:user2).id, profile_id: profiles(:editor).id, status: Allocation_Activated } # uc_type
+    end
+  end
+  
   ##
   # Usuário solicitando matrícula
   ##

@@ -1385,10 +1385,8 @@ pt_BR:
     request:
       success:
         allocated: "Usuário alocado com sucesso."
-
         enroll: "Pedido de matrícula realizado com sucesso."
         profile: "Solicitação de perfil realizada com sucesso."
-
         activate: "Alocação ativada com sucesso."
         deactivate: "Alocação desativada com sucesso."
         request_reactivate: "Pedido de reativação de matrícula realizado com sucesso."
@@ -1396,12 +1394,10 @@ pt_BR:
         cancel: "Alocação cancelada com sucesso."
         cancel_request: "Pedido de matrícula cancelado com sucesso."
         cancel_profile_request: "Solicitação de perfil cancelada"
-
         accept_reject_msg: "Solicitação de %{user_name} para perfil de %{profile_name} %{path} foi %{action}. %{undo_url}"
       error:
         enroll: "Pedido de matrícula não realizado."
         profile: "Solicitação de perfil não realizada."
-
         activate: "Alocação não ativada."
         deactivate: "Alocação não desativada."
         request_reactivate: "Pedido de reativação de matrícula não realizado."
@@ -1409,7 +1405,6 @@ pt_BR:
         cancel: "Alocação não cancelada."
         cancel_request: "Cancelamento não realizado."
         cancel_profile_request: "Solicitação de perfil não cancelada"
-
     index:
       filter_user: "Filtrar usuários"
       manage: Gerenciar
@@ -1455,6 +1450,7 @@ pt_BR:
       login: Login
       add_user: Adicionar usuário
       no_allocated_user: Nenhum usuário alocado
+      designated_by: Alocado por
     search_users:
       designate: Alocar
       designate_search_no_found: Nenhum usuário encontrado
@@ -1466,15 +1462,14 @@ pt_BR:
       name: Nome
       select_profile: Selecione um perfil
       no_user_found: Nenhum usuário encontrado
-
     warning:
       already_active: Perfil já está ativo
-
+    error:
+      student_in_group: Aluno deve ser alocado em uma turma
     rejected: rejeitada
     accepted: aceita
     allocation_tag_path: "em %{path}"
     undo_action: "(Desfazer ação)"
-
   allocation_pending: Pendente
 
   ## CRUD
@@ -1931,7 +1926,7 @@ pt_BR:
     content_filter:
       filter: Filtro
       type: "Tipo*"
-      course: "Curso*"
+      course: "Curso"
       curriculum_unit: "Disciplina"
       module: "Módulo"
       semester: "Semestre"

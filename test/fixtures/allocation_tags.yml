@@ -185,3 +185,27 @@ al40:
 al41:
   id: 41
   group_id: 13
+
+al42:
+  id: 42
+  curriculum_unit_type_id: 1
+
+al43:
+  id: 43
+  curriculum_unit_type_id: 2
+
+al44:
+  id: 44
+  curriculum_unit_type_id: 3
+
+al45:
+  id: 45
+  curriculum_unit_type_id: 4
+
+al46:
+  id: 46
+  curriculum_unit_type_id: 5
+
+al47:
+  id: 47
+  curriculum_unit_type_id: 6

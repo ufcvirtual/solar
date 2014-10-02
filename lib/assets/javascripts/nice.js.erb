@@ -131,8 +131,8 @@ $.fn.nice_filter = function(options) {
 
       if (required.length == filled.length) {
         var combos = combos.map(function(){ if (!$(this).is_empty()) return $(this).prop('name')+'_id: ' + '"' + $(this).combobox("value") + '"'; }).toArray().join(', ');
-        if ($('#type_id').val() != undefined)
-          combos    += ', type_id: "' + $('#type_id').val() + '"';
+        if ($('#curriculum_unit_type').val() != undefined)
+          combos    += ', curriculum_unit_type_id: "' + $('#curriculum_unit_type').val() + '"';
         var data   = eval("({" + combos + "})"); // transformando os valores dos filtros em json
         var url    = $(this).data("url-search");
 

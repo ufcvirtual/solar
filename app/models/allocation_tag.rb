@@ -1,6 +1,7 @@
 class AllocationTag < ActiveRecord::Base
 
   belongs_to :course
+  belongs_to :curriculum_unit_type
   belongs_to :curriculum_unit
   belongs_to :offer
   belongs_to :group
@@ -13,27 +14,31 @@ class AllocationTag < ActiveRecord::Base
 
   def groups
     case refer_to
-    when 'group'
-      [group]
-    when 'offer'
-      Group.where(offer_id: offer_id)
-    when 'curriculum_unit'
-      Group.joins(:offer).where(offers: {curriculum_unit_id: curriculum_unit_id})
-    when 'course'
-      Group.joins(:offer).where(offers: {course_id: course_id})
+      when 'group'
+        [group]
+      when 'offer'
+        Group.where(offer_id: offer_id)
+      when 'curriculum_unit'
+        Group.joins(:offer).where(offers: {curriculum_unit_id: curriculum_unit_id})
+      when 'course'
+        Group.joins(:offer).where(offers: {course_id: course_id})
+      when 'curriculum_unit_type'
+        Group.joins(offer: :curriculum_unit).where(curriculum_units: {curriculum_unit_type_id: curriculum_unit_type_id})
     end
   end
 
   def offers
     case refer_to
-    when 'group'
-      Offer.joins(:groups).where(groups: {id: group_id})
-    when 'offer'
-      [offer]
-    when 'curriculum_unit'
-      Offer.where(curriculum_unit_id: curriculum_unit_id)
-    when 'course'
-      Offer.where(course_id: course_id)
+      when 'group'
+        Offer.joins(:groups).where(groups: {id: group_id})
+      when 'offer'
+        [offer]
+      when 'curriculum_unit'
+        Offer.where(curriculum_unit_id: curriculum_unit_id)
+      when 'course'
+        Offer.where(course_id: course_id)
+      when 'curriculum_unit_type'
+        Offer.joins(:curriculum_unit).where(curriculum_units: {curriculum_unit_type_id: curriculum_unit_type_id})
     end
   end
 
@@ -62,15 +67,17 @@ class AllocationTag < ActiveRecord::Base
     self.send(refer_to).try(:detailed_info)
   end
 
-  def curriculum_unit_type
+  def curriculum_unit_types
     case refer_to
-    when 'group'
-      CurriculumUnitType.joins(curriculum_units: {offers: :groups}).where(groups: {id: group_id}).first.description
-    when 'offer'
-      CurriculumUnitType.joins(curriculum_units: :offers).where(offers: {id: offer_id}).first.description
-    when 'curriculum_unit'
-      CurriculumUnitType.joins(:curriculum_units).where(curriculum_units: {id: curriculum_unit_id}).first.description
-    when 'course'; ''
+      when 'group'
+        CurriculumUnitType.joins(curriculum_units: {offers: :groups}).where(groups: {id: group_id}).first.description
+      when 'offer'
+        CurriculumUnitType.joins(curriculum_units: :offers).where(offers: {id: offer_id}).first.description
+      when 'curriculum_unit'
+        CurriculumUnitType.joins(:curriculum_units).where(curriculum_units: {id: curriculum_unit_id}).first.description
+      when 'course'; ''
+      when 'curriculum_unit_type'
+        curriculum_unit_type.description
     end
   rescue
     I18n.t("users.profiles.not_specified")
@@ -84,8 +91,8 @@ class AllocationTag < ActiveRecord::Base
       [g_offer.semester.name, ('semester_active' if g_offer.is_active?)]
     when 'offer'
       [offer.semester.name, ('semester_active' if offer.is_active?)]
-    when 'curriculum_unit', 'course'
-      c_offers = offers
+    when 'curriculum_unit', 'course', 'curriculum_unit_type'
+      c_offers  = offers
       semesters = Semester.joins(:offers).where(offers: {id: c_offers.map(&:id)})
       [semesters.map(&:name).uniq.join(' '), ('semester_active' if c_offers.map(&:is_active?).include?(true))]
     end
@@ -107,7 +114,9 @@ class AllocationTag < ActiveRecord::Base
     when 'offer'
       offer_related(args[:lower], args[:upper])
     when 'curriculum_unit', 'course'
-      uc_or_course_related(academic_tool) if args[:lower]
+      uc_or_course_related(academic_tool, args[:lower], args[:upper])
+    when 'curriculum_unit_type'
+      uc_type_related if args[:lower]
     end
 
     result = [self, result].flatten.compact.uniq
@@ -126,6 +135,7 @@ class AllocationTag < ActiveRecord::Base
     query = ["offer_id = :offer_id"]
     query << "course_id = :course_id" unless association_ids[:course_id].nil?
     query << "curriculum_unit_id = :curriculum_unit_id" unless association_ids[:curriculum_unit_id].nil?
+    query << "curriculum_unit_type_id = :curriculum_unit_type_id" unless association_ids[:curriculum_unit_type_id].nil?
 
     self.class.where(query.join(" OR "), association_ids)
   end
@@ -135,11 +145,12 @@ class AllocationTag < ActiveRecord::Base
 
     r_lower = self.class.where(group_id: r_offer.groups.map(&:id)) if lower
     r_upper = if upper
-      association_ids = { course_id: r_offer.course_id, curriculum_unit_id: r_offer.curriculum_unit_id }
+      association_ids = { course_id: r_offer.course_id, curriculum_unit_id: r_offer.curriculum_unit_id, curriculum_unit_type_id: r_offer.curriculum_unit.try(:curriculum_unit_type_id)}
 
       query = []
       query << "course_id = :course_id" unless association_ids[:course_id].nil?
       query << "curriculum_unit_id = :curriculum_unit_id" unless association_ids[:curriculum_unit_id].nil?
+      query << "curriculum_unit_type_id = :curriculum_unit_type_id" unless association_ids[:curriculum_unit_type_id].nil?
 
       self.class.where(query.join(" OR "), association_ids)
     end
@@ -147,17 +158,46 @@ class AllocationTag < ActiveRecord::Base
     [r_lower, r_upper]
   end
 
-  def uc_or_course_related(academic_tool)
-    at_offers = offers.map(&:id).uniq
-    at_groups = groups.map(&:id).uniq
+  def uc_or_course_related(academic_tool, lower = true, upper = true)
+    if lower
+      at_offers = offers.map(&:id).uniq
+      at_groups = groups.map(&:id).uniq
+    end
 
     sibling_tool = (academic_tool == 'course') ? CurriculumUnit : Course
     siblings = sibling_tool.joins(:offers).where(offers: {id: at_offers}).map(&:id).uniq
 
-    query = ["offer_id IN (:offer_id) OR group_id IN (:group_id)"]
-    query << "#{sibling_tool.to_s.underscore}_id IN (:siblings)" unless siblings.nil?
+    if upper
+      uc_type = if (academic_tool == 'course') 
+        self.send(academic_tool.to_sym).curriculum_unit_types
+      else
+        [self.send(academic_tool.to_sym).curriculum_unit_type]
+      end
+    end
 
-    association_ids = { offer_id: at_offers, group_id: at_groups, siblings: siblings }
+    query = []
+    query << "offer_id IN (:offer_id) OR group_id IN (:group_id)"    unless at_offers.nil?
+    query << "#{sibling_tool.to_s.underscore}_id IN (:siblings)"     unless siblings.nil?
+    query << "curriculum_unit_type_id IN (:curriculum_unit_type_id)" unless uc_type.nil?
+
+    association_ids = { offer_id: at_offers, group_id: at_groups, siblings: siblings, curriculum_unit_type_id: uc_type }
+
+    self.class.where(query.join(" OR "), association_ids)
+  end
+
+  def uc_type_related
+    at_offers  = offers.map(&:id).uniq
+    at_groups  = groups.map(&:id).uniq
+    at_courses = curriculum_unit_type.courses.map(&:id)
+    at_ucs     = curriculum_unit_type.curriculum_units.map(&:id)
+
+    query = []
+    query << "group_id           IN (:group_id)"           unless at_groups.nil?
+    query << "offer_id           IN (:offer_id)"           unless at_offers.nil?
+    query << "course_id          IN (:course_id)"          unless at_courses.nil?
+    query << "curriculum_unit_id IN (:curriculum_unit_id)" unless at_ucs.blank?
+
+    association_ids = { offer_id: at_offers, group_id: at_groups, course_id: at_courses, curriculum_unit_id: at_ucs }
 
     self.class.where(query.join(" OR "), association_ids)
   end
@@ -192,6 +232,10 @@ class AllocationTag < ActiveRecord::Base
 
         [find_by_course_id(params[:course_id]).send(map_attr), 'COURSE', nil]
 
+      elsif not params[:curriculum_unit_type_id].blank? # informa curriculum_unit_type
+
+        [find_by_curriculum_unit_type_id(params[:curriculum_unit_type_id]).send(map_attr), 'CURRICULUM_UNIT_TYPE', nil]
+
       end
     else # informa as turmas
       groups_id = params[:groups_id].split(' ').flatten.map(&:to_i)
@@ -206,6 +250,11 @@ class AllocationTag < ActiveRecord::Base
   def self.get_students(allocation_tag_id)
     User.joins(allocations: :profile).where(allocations: {status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).related})
       .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean )")
+  end
+
+  def self.get_participants(allocation_tag_id)
+    User.joins(allocations: :profile).where(allocations: {status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).related})
+      .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean ) OR cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )")
   end
 
   private

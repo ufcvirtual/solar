@@ -43,7 +43,10 @@ class Course < ActiveRecord::Base
       codes = courses_names.collect{|name| name.slice(0..2).upcase}
       errors.add(:name, I18n.t("edx.errors.existing_code")) if codes.include?(name.slice(0..2).upcase)
     end
+  end
 
+  def curriculum_unit_types
+    curriculum_units.map(&:curriculum_unit_type).uniq
   end
 
 end

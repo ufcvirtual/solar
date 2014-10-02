@@ -8,10 +8,9 @@ module AdministrationsHelper
   end
 
   def type(allocation_tag)
-    return I18n.t("users.profiles.not_specified") if allocation_tag.nil?
-    allocation_tag.curriculum_unit_type
+    allocation_tag.curriculum_unit_types
   rescue
-    ''
+    I18n.t("users.profiles.not_specified")
   end
 
   def semester(allocation_tag)

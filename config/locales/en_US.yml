@@ -1179,10 +1179,8 @@ en_US:
     request:
       success:
         allocated: User allocated.
-
         enroll: Request for enrollment made.
         profile: Request for profile made.
-
         activate: Allocation activated.
         deactivate: Allocation deactivated.
         request_reactivate: Request for enrollment reactivated made.
@@ -1190,12 +1188,10 @@ en_US:
         cancel: Allocation canceled.
         cancel_request:  Request for enrollment canceled.
         cancel_profile_request: Profile request canceled.
-
         accept_reject_msg: "Request of %{user_name} with profile %{profile_name} %{path} was %{action}. #{undo_url}"
       error:
         enroll: Request for enrollment not made.
         profile: Request for profile not made.
-
         activate: Cannot activate user.
         deactivate: Cannot deactivate user.
         request_reactivate: Request for enrollment reactivated not made.
@@ -1203,7 +1199,6 @@ en_US:
         cancel: Allocation not canceled.
         cancel_request: No canceled.
         cancel_profile_request: Profile request not canceled.
-
     index:
       filter_user: "Filter Users"
       manage: Manage
@@ -1249,6 +1244,7 @@ en_US:
       login: Login
       add_user: Add user
       no_allocated_user: No allocated user
+      designated_by: Designated by
     search_users:
       designate: Designate
       designate_search_no_found: No user found
@@ -1260,15 +1256,14 @@ en_US:
       name: Name
       select_profile: Select a profile
       no_user_found: No user found
-
+    error:
+      student_in_group: Student must be allocated in a group
     warning:
       already_active: Profile's already active
-
     rejected: rejected
     accepted: accepted
     allocation_tag_path: "in %{path}"
     undo_action: "(Undo action)"
-
   allocation_pending: Pending
 
   ## CRUD
@@ -1721,7 +1716,7 @@ en_US:
     content_filter:
       filter: Filter
       type: "Type*"
-      course: "Course*"
+      course: "Course"
       curriculum_unit: "Subject"
       module: "Module"
       semester: "Semester"

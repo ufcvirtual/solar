@@ -14,18 +14,17 @@ class PostsController < ApplicationController
     @discussion = Discussion.find(params[:discussion_id])
     @user = current_user
 
-    # group allocation tag
     @allocation_tags    = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.map(&:id) # procurar problema no mobilis, ele nao envia a allocation tag da turma
     allocation_tags_ids = [active_tab[:url][:allocation_tag_id], AllocationTag.find_by_offer_id(active_tab[:url][:id]).id]
     @academic_allocation_id = AcademicAllocation.where(academic_tool_id: @discussion.id, academic_tool_type: "Discussion", allocation_tag_id: allocation_tags_ids).first.try(:id)
     authorize! :index, Discussion, {on: [@allocation_tags], read: true}
 
-    @class_participants = AllocationTag.find([@allocation_tags].flatten).map(&:group).map(&:students_participants).flatten.map(&:user_id)
+    @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id])
 
     @posts = []
     @can_interact = @discussion.user_can_interact?(current_user.id)
     @can_post = (can? :create, Post, on: [@allocation_tags])
-    p      = params.select { |k, v| ['date', 'type', 'order', 'limit', 'display_mode', 'page'].include?(k) }
+    p         = params.select { |k, v| ['date', 'type', 'order', 'limit', 'display_mode', 'page'].include?(k) }
 
     @display_mode = p['display_mode'] ||= 'tree'
 
@@ -103,7 +102,7 @@ class PostsController < ApplicationController
     post         = Post.find(params[:id])
     can_interact = post.discussion.user_can_interact?(current_user.id)
     can_post     = (can? :create, Post, on: [active_tab[:url][:allocation_tag_id]])
-    @class_participants = AllocationTag.find(active_tab[:url][:allocation_tag_id]).group.students_participants.pluck(:user_id)
+    @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id])
     render partial: "post", locals: {post: post, latest_posts: [], display_mode: "list", can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: params[:new_post]}
   end
 

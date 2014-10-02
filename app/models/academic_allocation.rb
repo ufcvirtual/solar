@@ -60,6 +60,8 @@ class AcademicAllocation < ActiveRecord::Base
         :CURRICULUM_UNIT_PERMISSION
       when 'course'
         :COURSE_PERMISSION
+      when 'curriculum_unit_type'
+        :CURRICULUM_UNIT_TYPE_PERMISSION
       else
         :NONE
       end

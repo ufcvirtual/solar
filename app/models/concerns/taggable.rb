@@ -136,9 +136,9 @@ module Taggable
 
   def info(args = {})
     params = {separator: '-', include_type: false}.merge(args)
-    except = params[:include_type] ? nil : :curriculum_unit_type
+    except = params[:include_type] ? nil : [:curriculum_unit_type_id, :curriculum_unit_type]
 
-    detailed_info.except(except).values.uniq.join " #{params[:separator]} "
+    detailed_info.except(*except).values.uniq.join " #{params[:separator]} "
   end
 
   ## Após criar algum elemento taggable (uc, curso, turma, oferta), verifica todos os perfis que o usuário possui

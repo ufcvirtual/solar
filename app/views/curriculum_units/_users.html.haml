@@ -8,12 +8,12 @@
       - else
         = image_tag 'no_image.png', alt: t(:mysolar_alt_img_user)
       .options
-        - no_public_files = user.public_files.empty?
+        - no_public_files = user.u_public_files.to_i.zero?
         = link_to (content_tag(:i, nil, class: 'icon-mail')), new_message_path(user_id: user.id, bread: 'menu_messages'), class: 'can-update-menu', :'data-menu-bread' => 'menu_messages', :'data-tooltip' => t(".message") # mensagem ao usuário
         = content_tag(:a, class: "can-update-menu #{no_public_files ? 'disabled' : ''}", href: public_files_path(user_id: user.id, bread: 'menu_participants'), :'data-menu-bread' => 'menu_participants', :'data-tooltip' => no_public_files ? t(".no_public_files") : t(".public_files")) do # área pública do usuário
           %i.icon-folder
           - unless no_public_files
-            %span.public_files= user.public_files.count
+            %span.public_files= user.u_public_files
         / futuramente link para visualizar o perfil do usuário
       .participant_name{:'data-tooltip' => user.name}
         = (user.name.length > 20 ? user.name.truncate(14) : user.name)

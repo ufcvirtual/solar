@@ -38,7 +38,7 @@ class ScoresController < ApplicationController
     query << "date(created_at) >= '#{params['from-date'].to_date}'" unless params['from-date'].blank?
     query << "date(created_at) <= '#{params['until-date'].to_date}'" unless params['until-date'].blank?
 
-    @access = LogAccess.where(log_type: LogAccess::TYPE[:offer_access], user_id: params[:user_id], allocation_tag_id: AllocationTag.find(allocation_tag_id).related).where(query.join(" AND "))
+    @access = LogAccess.where(log_type: LogAccess::TYPE[:offer_access], user_id: params[:user_id], allocation_tag_id: AllocationTag.find(allocation_tag_id).related).where(query.join(" AND ")).order("created_at DESC")
 
     render partial: "access"
 

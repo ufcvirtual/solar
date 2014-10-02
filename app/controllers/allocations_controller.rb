@@ -158,9 +158,6 @@ class AllocationsController < ApplicationController
       end
     end
 
-
-
-
     def change_status_from_allocations(allocations, new_status, group = nil)
       new_allocations = []
       # muda todos os status ao mesmo tempo mandando emails
@@ -171,9 +168,6 @@ class AllocationsController < ApplicationController
       end
       new_allocations
     end
-
-
-
 
     def user_change_group(allocation, new_group)
       # cancela na turma anterior e cria uma nova alocação na nova
@@ -187,10 +181,6 @@ class AllocationsController < ApplicationController
 
       new_allocation
     end
-
-
-
-
 
     def send_email_to_enrolled_user(allocation)
       Thread.new do

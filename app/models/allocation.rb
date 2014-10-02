@@ -7,10 +7,11 @@ class Allocation < ActiveRecord::Base
   belongs_to :profile
   belongs_to :updated_by, class_name: "User", foreign_key: :updated_by_user_id
 
-  has_one :course,          through: :allocation_tag, conditions: ["course_id is not null"]
-  has_one :curriculum_unit, through: :allocation_tag, conditions: ["curriculum_unit_id is not null"]
-  has_one :offer,           through: :allocation_tag, conditions: ["offer_id is not null"]
-  has_one :group,           through: :allocation_tag, conditions: ["group_id is not null"]
+  has_one :course,               through: :allocation_tag, conditions: ["course_id is not null"]
+  has_one :curriculum_unit,      through: :allocation_tag, conditions: ["curriculum_unit_id is not null"]
+  has_one :offer,                through: :allocation_tag, conditions: ["offer_id is not null"]
+  has_one :group,                through: :allocation_tag, conditions: ["group_id is not null"]
+  has_one :curriculum_unit_type, through: :allocation_tag, conditions: ["curriculum_unit_type_id is not null"]
 
   has_many :chat_rooms
   has_many :chat_messages
@@ -183,7 +184,7 @@ class Allocation < ActiveRecord::Base
     end
 
     def valid_profile_in_allocation_tag?
-      errors.add(:profile_id, 'pt-br: nao pode aluno fora da turma') if profile_id == Profile.student_profile and allocation_tag.refer_to != 'group'
+      errors.add(:profile_id, I18n.t("allocations.error.student_in_group")) if profile_id == Profile.student_profile and allocation_tag.refer_to != 'group'
     end
 
 end

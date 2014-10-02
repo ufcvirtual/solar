@@ -53,12 +53,13 @@ class Group < ActiveRecord::Base
   end
 
   def association_ids
-    result = Offer.select("offers.id AS offer_id, t1.id AS course_id, t2.id AS curriculum_unit_id")
+    result = Offer.select("offers.id AS offer_id, t1.id AS course_id, t2.id AS curriculum_unit_id,  t3.id AS curriculum_unit_type_id")
       .joins("LEFT JOIN courses AS t1 ON t1.id = offers.course_id")
       .joins("LEFT JOIN curriculum_units AS t2 ON t2.id = offers.curriculum_unit_id")
+      .joins("LEFT JOIN curriculum_unit_types AS t3 ON t3.id = t2.curriculum_unit_type_id")
       .where(offers: {id: offer_id}).first
 
-    {offer_id: offer_id, course_id: result['course_id'], curriculum_unit_id: result['curriculum_unit_id']}
+    {offer_id: offer_id, course_id: result['course_id'], curriculum_unit_id: result['curriculum_unit_id'], curriculum_unit_type_id: result['curriculum_unit_type_id']}
   end
 
   def detailed_info

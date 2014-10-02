@@ -458,12 +458,6 @@ class User < ActiveRecord::Base
     return (user_data.nil? ? nil : user_data[:string])
   end
 
-
-
-
-
-
-
   # alocar usuario em uma allocation_tag
 
   # profile, allocation_tags_ids, status
@@ -477,16 +471,6 @@ class User < ActiveRecord::Base
     end
     result
   end
-
-
-
-
-
-
-
-
-
-
 
   private
 

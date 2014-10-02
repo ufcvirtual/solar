@@ -11,8 +11,9 @@
         = select_tag :curriculum_unit_type, options_from_collection_for_select(types, "id", "description", type_id), include_blank: true
 
       .course
-        = label_tag :course, t(".course")
-        = select_tag :course, nil, :'data-optional' => (not(optionals.nil?) and optionals.include?("course"))
+        - course_optional = (not(optionals.nil?) and optionals.include?("course"))
+        = label_tag :course, [t(".course"), course_optional ? '' : '*'].join
+        = select_tag :course, nil, :'data-optional' => course_optional
 
       .curriculum_unit
         - uc_optional = (not(optionals.nil?) and optionals.include?("curriculum_unit"))
