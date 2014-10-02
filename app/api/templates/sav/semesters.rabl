@@ -1,0 +1,3 @@
+collection @periods
+
+attributes :name

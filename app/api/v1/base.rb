@@ -13,5 +13,6 @@ module V1
     mount Loads
     mount Integrations
     mount Lessons
+    mount Sav
   end
 end
