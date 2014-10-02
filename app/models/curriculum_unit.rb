@@ -40,7 +40,7 @@ class CurriculumUnit < ActiveRecord::Base
              t3.photo_file_name,
              t3.photo_updated_at,
              t3.email,
-             COUNT(t5.id) AS public_files,
+             COUNT(t5.id) AS u_public_files,
              replace(translate(array_agg(distinct t4.name)::text,'{""}',''),',',', ') AS profile_name,
              translate(array_agg(t4.id)::text,'{}','') AS profile_id
         FROM allocations     AS t1
