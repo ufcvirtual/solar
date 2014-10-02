@@ -2,6 +2,8 @@ class LogAccess < ActiveRecord::Base
   belongs_to :user
   belongs_to :allocation_tag
 
+  default_scope order: 'created_at DESC'
+
   TYPE = {
     login: 1,
     offer_access: 2
