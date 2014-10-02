@@ -1,3 +1,3 @@
-collection @periods
+collection @semesters
 
 attributes :name

@@ -18,7 +18,7 @@ module V1
 
     desc "Todos os semestres"
     get :semesters, rabl: "sav/semesters" do
-      @periods = Semester.order('name desc').uniq
+      @semesters = Semester.order('name desc').uniq
     end
 
     desc "Todas as disciplinas por semestre e curso"
