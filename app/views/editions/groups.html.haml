@@ -32,6 +32,16 @@
 
 :javascript
 
+  function data_optional(combo_name, optional){
+    $("#"+combo_name).attr("data-optional", optional); // defines data-optional as informed
+    var label = $($("label[for='"+combo_name+"']")[0]);
+    var new_label = label.html().split("*");
+    if (!!optional)
+      label.html(new_label[0]);
+    else
+      label.html(new_label[0] + "*");
+  }
+
   function clear_combo_uc(disable) {
     $('#curriculum_unit').combobox('value', null);
     $('#curriculum_unit').combobox("option", { disabled: disable });
@@ -67,7 +77,9 @@
         if(ui.item == null){
           clear_combo_semester(true);
           clear_combo_uc(false);
-          $("#curriculum_unit").attr("data-optional", false);
+          data_optional("curriculum_unit", false);
+          if ($("#curriculum_unit").combobox("value") == null)
+            data_optional("course", false);
 
           var url = "#{list_combobox_curriculum_units_path(type_id: @type.id)}";
           update_combobox(url, 'curriculum_unit');
@@ -76,12 +88,14 @@
       select: function( event, ui ) {
         clear_combo_semester(true);
         clear_combo_uc(false);
-        $("#curriculum_unit").attr("data-optional", true);
+        data_optional("curriculum_unit", true);
+        data_optional("course", false);
         
         if ("#{@type.id}" != '3') { // se for livre, não busca uc
           var url = "#{list_combobox_curriculum_units_path(type_id: @type.id, course_id: 'course_param')}".replace('course_param', $('#course').combobox('value'));
           update_combobox(url, 'curriculum_unit');
         }
+
         $("#semester").combobox( "option", { disabled: false } );
         var url = "#{list_combobox_semesters_path(type_id: @type.id, period: 'all', course_id: 'course_param')}".replace('course_param', $('#course').combobox('value'));
         update_combobox(url, 'semester');
@@ -92,12 +106,17 @@
       change: function(event, ui) {
         if(ui.item == null){
           clear_combo_semester(true);
-          $("#curriculum_unit").attr("data-optional", false);
+          data_optional("course", false);
+          if ($("#course").combobox("value") == null)
+            data_optional("curriculum_unit", false);
         }
       },
       select: function( event, ui ) {
         clear_combo_semester(false);
-        $("#curriculum_unit").attr("data-optional", true);
+        data_optional("curriculum_unit", false);
+        data_optional("course", ($("#course").combobox("value") == null));
+
+        
         var url = "#{list_combobox_semesters_path(period: 'all', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')}".replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
         update_combobox(url, 'semester');
       }
