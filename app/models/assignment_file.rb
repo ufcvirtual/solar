@@ -1,6 +1,6 @@
 class AssignmentFile < ActiveRecord::Base
 
-  before_save :can_change?
+  before_save :can_change?, if: "merge.nil?"
   before_destroy :can_change?, :can_destroy?
 
   belongs_to :user
@@ -19,6 +19,8 @@ class AssignmentFile < ActiveRecord::Base
 
   default_scope order: 'attachment_updated_at DESC'
 
+  attr_accessor :merge
+
   def assignment
     Assignment.find(academic_allocation.academic_tool_id)
   end
@@ -32,7 +34,7 @@ class AssignmentFile < ActiveRecord::Base
   end
 
   def can_destroy?
-    raise CanCan::AccessDenied unless user_id == User.current.id
+    raise CanCan::AccessDenied unless user_id == User.current.try(:id)
   end
 
 end

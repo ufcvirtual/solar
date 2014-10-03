@@ -120,7 +120,7 @@ module V1::V1Helpers
   end
 
   def replicate_content(from_group, to_group, merge = true)
-    raise ActiveRecord::RecordNotFound if from_group.nil? or to_group.nil? 
+    raise ActiveRecord::RecordNotFound if from_group.nil? or to_group.nil?
     from_at, to_at = from_group.allocation_tag.id, to_group.allocation_tag.id
     from_academic_allocations = AcademicAllocation.where(allocation_tag_id: from_at) # recover all from group which will be copied
 
@@ -143,8 +143,8 @@ module V1::V1Helpers
   def remove_all_content(allocation_tag)
     AcademicAllocation.where(academic_tool_type: "Discussion", allocation_tag_id: allocation_tag).map{ |ac| ac.discussion_posts.delete_all }
     AcademicAllocation.where(academic_tool_type: "Assignment", allocation_tag_id: allocation_tag).map{ |ac| 
-      ac.sent_assignments.delete_all
-      ac.group_assignments.delete_all
+      ac.sent_assignments.map(&:delete_with_dependents)
+      ac.group_assignments.map(&:delete_with_dependents)
     }
     AcademicAllocation.where(academic_tool_type: "ChatRoom", allocation_tag_id: allocation_tag).map{ |ac| ac.chat_messages.delete_all }
   end
@@ -163,7 +163,9 @@ module V1::V1Helpers
   end
 
   def copy_object(object_to_copy, merge_attributes={}, is_file = false, nested = nil)
-    new_object = object_to_copy.class.where(object_to_copy.attributes.except("id").merge(merge_attributes)).first_or_create
+    new_object = object_to_copy.class.where(object_to_copy.attributes.except("id").merge(merge_attributes)).first_or_initialize
+    new_object.merge = true if new_object.respond_to?(:merge) # used so call save without callbacks (before_save, before_create)
+    new_object.save
     copy_file(object_to_copy.attachment.path, new_object.attachment.path) if is_file and object_to_copy.respond_to? :attachment
     copy_objects(object_to_copy.send(nested.to_sym), {"#{new_object.class.to_s.tableize.singularize}_id" => new_object.id}, is_file) unless nested.nil?
 

@@ -100,6 +100,8 @@ class Offer < ActiveRecord::Base
   end
 
   def self.currents(year = nil, verify_end_date = nil)
+    year = Date.parse("#{year}-01-01") if year.class == String
+
     first_day_of_year = Date.today.beginning_of_year
 
     offers = joins(:period_schedule)
@@ -107,10 +109,10 @@ class Offer < ActiveRecord::Base
       offers.where("schedules.end_date >= ?", first_day_of_year)
     else # se foi definido, pega apenas daquele ano
       if verify_end_date
-        offers.where("( schedules.end_date >= ? )", Date.today)
+        offers.where("( schedules.end_date >= ? )", year)
       else
-        last_day_of_year = Date.today.end_of_year
-        offers.where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?)", first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year)
+        last_day_of_year = year.end_of_year
+        offers.where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?)", year, last_day_of_year, year, last_day_of_year)
       end
     end
 
@@ -148,7 +150,7 @@ class Offer < ActiveRecord::Base
   # More accesses on the last 3 weeks > Have groups > Offer name ASC
   ##
   def self.offers_info_from_user(user)
-    currents   = Offer.currents(Date.today.year, true)
+    currents   = Offer.currents(Date.today, true)
     u_profiles = user.profiles_with_access_on("show", "curriculum_units", nil, true)
     u_offers   = AllocationTag.where(id: user.allocations.where(status: Allocation_Activated, profile_id: u_profiles).uniq.pluck(:allocation_tag_id)).map(&:offers).flatten.compact
     offers     = (currents & u_offers)

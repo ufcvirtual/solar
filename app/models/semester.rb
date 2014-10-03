@@ -26,6 +26,8 @@ class Semester < ActiveRecord::Base
   end
 
   def self.currents(year = nil, verify_end_date = nil)
+    year = Date.parse("#{year}-01-01") unless year.class == Date
+
     first_day_of_year = Date.today.beginning_of_year
 
     semesters = joins(:offer_schedule)
@@ -33,10 +35,10 @@ class Semester < ActiveRecord::Base
       semesters.where("schedules.end_date >= ?", first_day_of_year)
     else # se foi definido, pega apenas daquele ano
       if verify_end_date
-        semesters.where("( schedules.end_date > ? )", Date.today)
+        semesters.where("( schedules.end_date > ? )", year)
       else
-        last_day_of_year = Date.today.end_of_year
-        semesters.where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?)", first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year)
+        last_day_of_year = year.end_of_year
+        semesters.where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?)", year, last_day_of_year, year, last_day_of_year)
       end
     end
   end
@@ -56,11 +58,9 @@ class Semester < ActiveRecord::Base
     query << ( (params[:type_id] == 3 ? nil : (params[:uc_id].blank? or params[:uc_id] == "null") ? (combobox ? "offers.curriculum_unit_id IS NULL" : nil) : "offers.curriculum_unit_id = #{params[:uc_id]}") )
     query.compact!
 
-    year = Date.parse("#{params[:period]}-01-01").year rescue Date.today.year
-
-    current_semesters = Semester.joins("LEFT JOIN offers ON offers.semester_id = semesters.id").currents(year).where(query.join(" AND "))
+    current_semesters = Semester.joins("LEFT JOIN offers ON offers.semester_id = semesters.id").currents(year || Date.today).where(query.join(" AND "))
     query << "semester_id NOT IN (#{current_semesters.map(&:id).join(',')})" unless current_semesters.empty? # retirando semestres ja listados
-    semesters_of_current_offers = Offer.currents(year).where(query.join(" AND ")).map(&:semester)
+    semesters_of_current_offers = Offer.currents(year || Date.today).where(query.join(" AND ")).map(&:semester)
 
     return (current_semesters + semesters_of_current_offers).uniq
   end

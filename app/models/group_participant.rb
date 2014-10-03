@@ -1,12 +1,14 @@
 class GroupParticipant < ActiveRecord::Base
 
-  before_save :can_change?
+  before_save :can_change?, if: "merge.nil?"
   before_destroy :can_change?
 
   belongs_to :group_assignment
   belongs_to :user
 
   has_many :sent_assignments
+
+  attr_accessor :merge
 
   def can_change?
   	group = group_assignment

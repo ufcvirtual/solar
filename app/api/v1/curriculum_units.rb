@@ -7,7 +7,7 @@ module V1
     segment do
       before do
         user_groups    = current_user.groups(nil, Allocation_Activated).map(&:id)
-        current_offers = Offer.currents(Date.today.year, true).pluck(:id)
+        current_offers = Offer.currents(Date.today, true).pluck(:id)
 
         @u_groups         = Group.where(id: user_groups, offer_id: current_offers)
         @curriculum_units = CurriculumUnit.joins(:groups).where(groups: {id: @u_groups.map(&:id)}).uniq

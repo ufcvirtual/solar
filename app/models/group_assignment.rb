@@ -67,4 +67,9 @@ class GroupAssignment < ActiveRecord::Base
     end
   end
 
+  def delete_with_dependents
+    group_participants.delete_all
+    self.delete
+  end
+
 end
