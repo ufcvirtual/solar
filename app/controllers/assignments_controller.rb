@@ -79,7 +79,6 @@ class AssignmentsController < ApplicationController
     authorize! :destroy, Assignment, on: assignments.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
     Assignment.transaction do
-      raise "error" if assignments.empty?
       assignments.destroy_all
     end
 

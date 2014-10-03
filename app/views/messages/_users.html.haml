@@ -1,7 +1,7 @@
 - unless @users.empty?
   #users{class: "users_at_#{@allocation_tags_ids}"}
-    = link_to_function t(".add_all"), "add_all_users(this)", id: "add_all"
+    = link_to_function t(".add_all"), "add_all_contacts(this)", id: "add_all"
     - @users.each do |user|
-      .contact= link_to_function "#{user.name} <#{user.email}>", "msg_select_contact(this)", "data-user-id" => user.id, "data-selected" => false, "data-at" => @allocation_tags_ids
+      .contact= link_to_function "#{user.name} <#{user.email}>", "add_contact(this, true)", "data-user-id" => user.id, "data-at" => @allocation_tags_ids
 - else
   %div{style: "margin-top:15%; margin-left:32%"}= t(".no_user_found")
