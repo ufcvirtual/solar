@@ -208,19 +208,19 @@ $header-tab-height: 36px;
 
 /*esqueceu a senha?*/
 #link{
-  margin-top: 12px;
+  padding-bottom: 8px;
+  margin-top: -8px;
   text-align: center;
 }
 
 #link-password{
-  text-decoration: none;
   font-family: Ubuntu;
   font-size: 12px;
-  color:#91A9CC;
+  color:#204882;
 }
 
 #link-password:hover{
-  color:#CAD8E8;
+  color:#285596;
 }
 
 #login_content, #login_content_password_recovery{
