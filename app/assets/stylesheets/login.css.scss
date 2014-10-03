@@ -1,17 +1,21 @@
 @import "compass";
 @import "fonts/fonts";
 
+$login_width: 287px;
+$login_main_blue: #204882;
+$login_light_blue: #285596;
+
 html {
   height: 100%;
 }
 
 body {
-  background: #204882;
-  background: -moz-radial-gradient(center, circle cover,  #56729c 0%, #204882 100%); /* FF3.6+ */
-  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#56729c), color-stop(100%,#204882)); /* Chrome,Safari4+ */
-  background: -webkit-radial-gradient(center, circle cover,  #56729c 0%,#204882 100%); /* Chrome10+,Safari5.1+ */
-  background: -ms-radial-gradient(center, circle cover,  #56729c 0%,#204882 100%); /* IE10+ */
-  background: radial-gradient(circle at center,  #56729c 0%,#204882 100%); /* W3C */
+  background: $login_main_blue;
+  background: -moz-radial-gradient(center, circle cover,  #56729c 0%, $login_main_blue 100%); /* FF3.6+ */
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#56729c), color-stop(100%,$login_main_blue)); /* Chrome,Safari4+ */
+  background: -webkit-radial-gradient(center, circle cover,  #56729c 0%,$login_main_blue 100%); /* Chrome10+,Safari5.1+ */
+  background: -ms-radial-gradient(center, circle cover,  #56729c 0%,$login_main_blue 100%); /* IE10+ */
+  background: radial-gradient(circle at center,  #56729c 0%,$login_main_blue 100%); /* W3C */
   margin: 0 auto;
   padding: 0;
   height: auto;
@@ -56,9 +60,7 @@ a img {
   display: block;
 }
 
-  /*caixa principal que engloba login e cadastro*/
-$login_width: 287px;
-
+/*caixa principal que engloba login e cadastro*/
 #screen-login{
   width: $login_width;
   overflow:hidden; 
@@ -216,11 +218,11 @@ $header-tab-height: 36px;
 #link-password{
   font-family: Ubuntu;
   font-size: 12px;
-  color:#204882;
+  color:$login_main_blue;
 }
 
 #link-password:hover{
-  color:#285596;
+  color:$login_light_blue;
 }
 
 #login_content, #login_content_password_recovery{
