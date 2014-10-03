@@ -8,6 +8,8 @@
       .form-field= f.text_field :login, id: "login", placeholder: t(:user), tabindex: "1"
       .form-field= f.password_field :password, id: "password", placeholder: t(:password), tabindex: "2"
       = f.submit t(:signin), id: "submit-login", tabindex: "3"
+    #link
+      %a#link-password{href: new_user_password_path}= t(:pwd_recovery_subtitle)
   #login-register
     = form_tag(verify_cpf_users_path, method: :get) do
       = hidden_field_tag :locale, params[:locale]
@@ -21,8 +23,6 @@
 
   = link_to image_tag("help-solar-grande.png"), "#faq", :class => 'panel-link'
 
-  #link
-    %a#link-password{href: new_user_password_path}= t(:pwd_recovery_subtitle)
 
   .fb-like
     %script{src: "http://connect.facebook.net/en_US/all.js#xfbml=1"}
