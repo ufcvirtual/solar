@@ -126,9 +126,5 @@ class Assignment < Event
     ( assignment_user_id.to_i == user_id.to_i or (not(group.nil?) and group.user_in_group?(user_id.to_i)) )
   end
 
-  def evaluate
-    LogAction.create(log_type: LogAction::TYPE[(new_sa ? :create : :update)], user_id: current_user.id, ip: request.remote_ip, description: "sent_assignment: #{@sent_assignment.attributes.merge({"assignment_id" => @assignment.id})}") rescue nil
-  end
-
 end
 
