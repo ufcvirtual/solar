@@ -47,3 +47,4 @@
 
   var start_date = "#{@schedule_event.schedule.start_date}";
   var end_date = "#{@schedule_event.schedule.end_date}";
+  $("#start_date, #end_date").mask("#{I18n.t(:mask, scope: "date.formats")}");
