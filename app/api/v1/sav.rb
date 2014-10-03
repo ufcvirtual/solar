@@ -21,13 +21,32 @@ module V1
       @semesters = Semester.order('name desc').uniq
     end
 
-    desc "Todas as disciplinas por semestre e curso"
+    desc "Todos os cursos por tipo e semestre"
     params do
       requires :semester, type: String
-      requires :course_id, type: Integer
+      requires :course_type_id, type: Integer
+    end
+    get :courses, rabl: "sav/courses" do
+      # ao colocar campo de tipo de curso em courses, refazer consulta - 10/2014
+      @courses = Course.joins(offers: [:curriculum_unit, :semester]).where("semesters.name = :semester AND curriculum_units.curriculum_unit_type_id = :course_type_id", params.slice(:semester, :course_type_id))
+    end
+
+    desc "Todas as disciplinas por tipo, semestre ou curso"
+    params do
+      requires :semester, type: String
+      optional :course_type_id, type: Integer
+      optional :course_id, type: Integer
     end
     get :disciplines, rabl: "sav/disciplines" do
-      @disciplines = CurriculumUnit.joins(offers: [:course, :semester]).where("semesters.name = ?", params[:semester]).where(courses: {id: params[:course_id]})
+
+      tb_joins = [:semester]
+      tb_joins << :course if params[:course_id].present?
+
+      query = ["semesters.name = :semester"]
+      query << "curriculum_unit_type_id = :course_type_id" if params[:course_type_id].present?
+      query << "courses.id = :course_id" if params[:course_id].present?
+
+      @disciplines = CurriculumUnit.joins(offers: tb_joins).where(query.join(' AND '), params.slice(:semester, :course_type_id, :course_id))
     end
 
     # -- turmas
