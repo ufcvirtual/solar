@@ -673,6 +673,8 @@ en_US:
       released: Released
       expand_description: Expand description
       compress_description: Contract description
+      modules:
+        groups: Groups
     new:
       draft: draft
       approved: approved
@@ -707,8 +709,6 @@ en_US:
       groups: Groups
     select_lesson:
       no_lessons: Sem Aulas
-    modules:
-      group: Group
   lesson_modules:
     general_of_offer: "General"
     general_of_group: "General of group"

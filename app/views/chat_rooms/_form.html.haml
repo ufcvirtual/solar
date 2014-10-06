@@ -12,8 +12,8 @@
       .schedule_dates
         .left
           = f.fields_for :schedule, defaults: {required: true} do |s|
-            = s.input :start_date, as: :string, input_html: {id: 'chat_start_date', value: l(f.object.schedule.start_date.to_date, format: :datepicker)}
-            = s.input :end_date, as: :string, input_html: {id: 'chat_end_date', value: l(f.object.schedule.end_date.to_date, format: :datepicker)}
+            = s.input :start_date, as: :string, input_html: {id: 'chat_start_date', value: l(f.object.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
+            = s.input :end_date, as: :string, input_html: {id: 'chat_end_date', value: l(f.object.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
 
         .right
           = f.input :start_hour

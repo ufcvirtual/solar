@@ -11,8 +11,8 @@
 
       = f.fields_for :schedule, defaults: {required: true} do |s|
         .schedule_dates
-          .left= s.input :start_date, as: :string, input_html: {id: 'from-date', value: l(@discussion.schedule.start_date.to_date, format: :datepicker)}
-          .right= s.input :end_date, as: :string, input_html: {id: 'until-date', value: l(@discussion.schedule.end_date.to_date, format: :datepicker)}
+          .left= s.input :start_date, as: :string, input_html: {id: 'from-date', value: l(@discussion.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
+          .right= s.input :end_date, as: :string, input_html: {id: 'until-date', value: l(@discussion.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
 
       = render "groups/codes"
 

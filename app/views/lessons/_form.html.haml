@@ -20,18 +20,14 @@
       = f.input :name
       = f.input :description
 
-      / dates
       = f.fields_for :schedule do |s|
         - has_end_date = f.object.has_end_date?
-        - start_date = l(s.object.start_date.to_date, format: :datepicker)
-        - end_date = has_end_date ? l(s.object.end_date.to_date, format: :datepicker) : nil
 
         .schedule_dates
-          .left
-            = s.input :start_date, as: :string, input_html: {id: 'from-date', required: true, size: 10, value: start_date}
+          .left= s.input :start_date, as: :string, input_html: {id: 'from-date', value: l(s.object.start_date.try(:to_date) || Date.today, format: :datepicker), required: true, size: 10}
           .right
             %span.end_date{class: (has_end_date ? '' : 'invisible')}
-              = s.input :end_date, as: :string, input_html: {id: 'until-date', size: 10, value: end_date}
+              = s.input :end_date, as: :string, input_html: {id: 'until-date', value: (has_end_date ? l(s.object.end_date.to_date, format: :datepicker) : nil), size: 10}
 
         .select_end_date
           = f.label ' '

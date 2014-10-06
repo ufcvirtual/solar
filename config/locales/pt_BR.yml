@@ -839,6 +839,8 @@ pt_BR:
       released: Liberada
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
+      modules:
+        groups: Turmas
     new:
       draft: rascunho
       approved: liberada
@@ -873,8 +875,6 @@ pt_BR:
       groups: Turmas
     select_lesson:
       no_lessons: Sem Aulas
-    modules:
-      group: Turma
 
   lesson_modules:
     general_of_offer: "Geral"

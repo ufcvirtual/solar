@@ -16,8 +16,8 @@
 
       = f.simple_fields_for :schedule do |s|
         .schedule_dates
-          .left= s.input :start_date, as: :string, input_html: {id: 'assignment_start_date', value: l(@assignment.schedule.start_date.to_date, format: :datepicker)}
-          .right= s.input :end_date, as: :string, input_html: {id: 'assignment_end_date', value: l(@assignment.schedule.end_date.to_date, format: :datepicker)}
+          .left= s.input :start_date, as: :string, input_html: {id: 'assignment_start_date', value: l(@assignment.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
+          .right= s.input :end_date, as: :string, input_html: {id: 'assignment_end_date', value: l(@assignment.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
 
       - types = {:"#{t('.individual')}" => Assignment_Type_Individual, :"#{t('.group')}" => Assignment_Type_Group}
       = f.input :type_assignment, collection: types, include_blank: false, required: true
