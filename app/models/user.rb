@@ -305,11 +305,23 @@ class User < ActiveRecord::Base
     (2..csv.last_row).each do |i|
       row = Hash[[header, csv.row(i)].transpose]
 
-      user_exist = where(cpf: row['cpf']).first
+      user_exist = where(cpf: row['CPF']).first
       user = user_exist.nil? ? new : user_exist
 
       unless user.integrated
-        user.attributes = row.to_hash.slice(*accessible_attributes)
+
+        row = {"email"=>row['Email'], 
+        "name"=>row['Nome'], 
+        "address"=>row['Endereço'], 
+        "country"=>row['País'], 
+        "state"=>row['Estado'], 
+        "city"=>row['Cidade'], 
+        "institution"=>row['Instituição'], 
+        "gender"=>row['Sexo'], 
+        "cpf"=>row['CPF']}
+
+
+        user.attributes = row
 
         user.username = user.cpf if user.username.nil?
         user.nick = user.username if user.nick.nil?
