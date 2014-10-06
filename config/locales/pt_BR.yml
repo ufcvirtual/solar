@@ -1483,6 +1483,7 @@ pt_BR:
   notifier:
     enrollment_accepted:
       subject: "[SOLAR] Matrícula aceita"
+    dont_reply_message: "Esta mensagem é enviada automaticamente, favor não responder. Quaisquer dúvidas ou considerações devem ser encaminhadas para: atendimento@virtual.ufc.br"
   assignments:
     index:
       expand_enunciation: Expandir enunciado

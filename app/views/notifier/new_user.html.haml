@@ -9,3 +9,4 @@
   %body
     %p= raw "Caro(a) #{@user.name}, <br/><br/> Foi realizado um cadastro para este email no AVA - Ambiente Virtual de Aprendizagem, SOLAR 2.0. <br/> Para acessar o ambiente, acesse o link 'Acesso ao Solar' abaixo com os seguintes dados: <br/> Usuário: #{@user.username}  <br/> Senha: #{@password}"
     %p= link_to('Acesso ao Solar', home_url(only_path: false))
+    %p{style: "color: #7C7C7C; font-size: 8pt; padding-top: 10px;"}= I18n.t("notifier.dont_reply_message")
