@@ -336,6 +336,27 @@ describe "Loads" do
           }
         end
 
+        context "and existing disabled group" do
+          let!(:json_data){ {turmas: {ano: "2011", periodo: "1", codDisciplina: "RM301", codigo: "QM-AUR", codGraduacao: "109",
+            dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
+            }} }
+
+          subject{ -> { 
+            post "/api/v1/load/groups", json_data} 
+          }
+
+          it { should change(Semester,:count).by(0) }
+          it { should change(Offer,:count).by(0) }
+          it { should change(Group.where(status: false),:count).by(-1) }
+          it { should change(Allocation,:count).by(3) }
+
+          it {
+            post "/api/v1/load/groups", json_data
+            response.status.should eq(201) # created
+            response.body.should == {ok: :ok}.to_json
+          }
+        end
+
         context "and existing group cancelling previous professor allocation" do
           let!(:json_data){ {turmas: {ano: "2011", periodo: "1", codDisciplina: "RM301", codigo: "QM-CAU", codGraduacao: "109",
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "31877336203"] # prof já está alocado, ele deve ser cancelado

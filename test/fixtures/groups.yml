@@ -75,3 +75,9 @@ g13: # turma vazia
   offer_id: 2
   code: 'QM-QTN'
   status: true
+
+g14:
+  id: 14
+  offer_id: 3
+  code: "QM-AUR"
+  status: false
