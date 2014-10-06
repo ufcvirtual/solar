@@ -44,7 +44,7 @@ class DiscussionsController < ApplicationController
       render json: {success: true, notice: t(:created, scope: [:discussions, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue => error
+    rescue
       @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
       @allocation_tags_ids = @allocation_tags_ids.join(" ")
       render :new
