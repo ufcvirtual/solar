@@ -4,7 +4,7 @@ class UserBlacklistTest < ActiveSupport::TestCase
 
   fixtures :users, :user_blacklist
 
-  test "adicionar CPF a blacklist" do 
+  test "adicionar CPF a blacklist" do
     user_bl = UserBlacklist.new cpf: '20943068363', name: 'Owen B. Wilken'
     assert user_bl.save
 
@@ -55,9 +55,9 @@ class UserBlacklistTest < ActiveSupport::TestCase
   end
 
   test "sincronizar usuario ao retirar seu CPF da blacklist" do
-    cpf = "VALID CPF HERE"
+    valid_cpf = ENV['VALID_CPF']
     user = users(:coorddisc)
-    user.cpf = cpf
+    user.cpf = valid_cpf
 
     assert user.save
 

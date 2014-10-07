@@ -5,6 +5,7 @@ class UserTest < ActiveSupport::TestCase
   fixtures :users
 
   def setup
+    @valid_cpf = ENV['VALID_CPF']
     @user_test = {
       username: 'user_test',
       cpf: '84635766136',
@@ -75,10 +76,10 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "usuario integrado nao pode alterar determinados dados" do
-    user      = users(:user4)
+    user = users(:user4)
     user.name = "Novo nome"
 
-    assert (not user.valid?)
+    assert not(user.valid?) # modulo_academico.yml test: integrated: true
     assert_equal user.errors[:name].first, I18n.t("users.errors.ma.only_by")
   end
 
@@ -92,7 +93,7 @@ class UserTest < ActiveSupport::TestCase
   test "sincronizando usuario existente no MA" do
     user = User.new(@user_test)
     assert_difference("User.count") do
-      user.cpf = "VALID CPF HERE"
+      user.cpf = @valid_cpf
       assert user.synchronize # resultado deve ser true
     end
   end
@@ -102,9 +103,8 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "nao sincronizar usuario existente no MA, mas existe na blacklist" do
-    cpf = "VALID CPF HERE"
-    UserBlacklist.create cpf: cpf
-    @user_test[:cpf] = cpf
+    UserBlacklist.create cpf: @valid_cpf, name: @valid_cpf
+    @user_test[:cpf] = @valid_cpf
     user = User.new(@user_test)
     assert (user.synchronize).nil?
   end

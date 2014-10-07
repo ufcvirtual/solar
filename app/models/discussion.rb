@@ -71,7 +71,7 @@ class Discussion < Event
     opts = { "type" => 'new', "order" => 'desc', "limit" => Rails.application.config.items_per_page.to_i,
       "display_mode" => 'list', "page" => 1 }.merge(opts)
     type = (opts["type"] == 'history' ) ? '<' : '>'
-    
+
     query = []
     query << "updated_at::timestamp(0) #{type} '#{opts["date"]}'::timestamp(0)" if opts.include?('date') and (not opts['date'].blank?)
     query << "parent_id IS NULL" unless opts["display_mode"] == 'list'
@@ -89,11 +89,11 @@ class Discussion < Event
   end
 
   def count_posts_before_period(period, allocation_tags_ids = nil)
-    posts_by_allocation_tags_ids(allocation_tags_ids).where("updated_at::timestamp(0) < '#{period.first.to_time}'::timestamp(0)").count 
+    posts_by_allocation_tags_ids(allocation_tags_ids).where("updated_at::timestamp(0) < '#{period.first.to_datetime}'::timestamp(0)").count
   end
 
   def count_posts_after_period(period, allocation_tags_ids = nil)
-    posts_by_allocation_tags_ids(allocation_tags_ids).where("updated_at::timestamp(0) > '#{period.last.to_time}'::timestamp(0)").count
+    posts_by_allocation_tags_ids(allocation_tags_ids).where("updated_at::timestamp(0) > '#{period.last.to_datetime}'::timestamp(0)").count
   end
 
   def self.posts_count_by_user(student_id, allocation_tag_id)

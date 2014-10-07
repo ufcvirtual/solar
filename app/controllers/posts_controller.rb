@@ -24,7 +24,8 @@ class PostsController < ApplicationController
     @posts = []
     @can_interact = @discussion.user_can_interact?(current_user.id)
     @can_post = (can? :create, Post, on: [@allocation_tags])
-    p         = params.select { |k, v| ['date', 'type', 'order', 'limit', 'display_mode', 'page'].include?(k) }
+
+    p = params.slice(:date, :type, :order, :limit, :display_mode, :page)
 
     @display_mode = p['display_mode'] ||= 'tree'
 
@@ -32,7 +33,7 @@ class PostsController < ApplicationController
       # se for em forma de lista ou para o mobilis, pesquisa pelo método posts
       p['page'] ||= @current_page
       p['type'] ||= "history"
-      p['date'] = Time.parse(p['date']) if params[:format] == "json" and p.include?('date')
+      p['date'] = DateTime.parse(p['date']) if params[:format] == "json" and p.include?('date')
       @posts    = @discussion.posts(p, @allocation_tags)
     else
       # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
@@ -44,9 +45,10 @@ class PostsController < ApplicationController
       format.html
       format.json  {
         period = (@posts.empty?) ? ["#{p['date']}", "#{p['date']}"] : ["#{@posts.first.updated_at}", "#{@posts.last.updated_at}"].sort
+
         if params[:mobilis].present?
-          render json: { before: @discussion.count_posts_before_period(period, @allocation_tags), after: @discussion.count_posts_after_period(period, @allocation_tags), posts: @posts.map(&:to_mobilis)} 
-        else          
+          render json: { before: @discussion.count_posts_before_period(period, @allocation_tags), after: @discussion.count_posts_after_period(period, @allocation_tags), posts: @posts.map(&:to_mobilis)}
+        else
           render json: @discussion.count_posts_after_and_before_period(period, @allocation_tags) + @posts.map(&:to_mobilis)
         end
       }
