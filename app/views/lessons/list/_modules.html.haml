@@ -20,8 +20,9 @@
         - if has_group
           - if lesson_module.is_default
             .input.groups_tags
+              - group = lesson_module.groups.first
               = t(".groups")
-              %span.collection_check_boxes= lesson_module.groups.first.code
+              %span.collection_check_boxes{id: (group.status ? "" : "disabled")}= group.code
           - else
             = render "groups/groups_tags", all_groups: all_groups, groups: lesson_module.groups, tool: lesson_module, paths: {add: add_group_to_lesson_modules_path(id: "param_id", tool_id: lesson_module.id), remove: remove_group_from_lesson_modules_path(id: "param_id", tool_id: lesson_module.id), unbind: unbind_group_from_lesson_modules_path(id: "param_id", tool_id: lesson_module.id)}
 

@@ -6,6 +6,12 @@ class SupportMaterialFilesController < ApplicationController
   layout false, except: [:index]
   before_filter :prepare_for_group_selection, only: [:index]
 
+  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+  before_filter only: [:edit, :update] do |controller|
+    @allocation_tags_ids = params[:allocation_tags_ids]
+    get_groups_by_tool(@support_material = SupportMaterialFile.find(params[:id]))
+  end
+
   def index
     authorize! :index, SupportMaterialFile, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
@@ -23,7 +29,6 @@ class SupportMaterialFilesController < ApplicationController
     authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @support_material = SupportMaterialFile.new material_type: params[:material_type]
-    @groups     = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten})
   end
 
   def create
@@ -41,7 +46,6 @@ class SupportMaterialFilesController < ApplicationController
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue Exception => error
       if @support_material.is_link?
-        @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
         @allocation_tags_ids = params[:allocation_tags_ids].join(" ") rescue params[:allocation_tags_ids].split(" ")
         params[:success] = false
         render :new
@@ -52,16 +56,11 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def edit
-    authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
-    @support_material = SupportMaterialFile.find(params[:id])
-    @groups = @support_material.groups
+    authorize! :update, SupportMaterialFile, on: @allocation_tags_ids
   end
 
   def update
-    @allocation_tags_ids, @support_material = params[:allocation_tags_ids], SupportMaterialFile.find(params[:id])
     authorize! :update, SupportMaterialFile, on: @support_material.academic_allocations.pluck(:allocation_tag_id)
-
     @support_material.update_attributes!(params[:support_material_file])
     render json: {success: true, notice: t(:updated, scope: [:support_materials, :success])}
   rescue ActiveRecord::AssociationTypeMismatch
@@ -69,7 +68,6 @@ class SupportMaterialFilesController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    @groups = @support_material.groups
     params[:success] = false
     render :new
   end

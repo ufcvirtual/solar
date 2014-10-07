@@ -3,9 +3,17 @@ class ChatRoomsController < ApplicationController
   include SysLog::Actions
 
   layout false, except: :list
-  authorize_resource only: :list
 
   before_filter :prepare_for_group_selection, only: :list
+
+  before_filter :get_groups_by_allocation_tags, only: [:new, :create] do |controller|
+    @allocations = @groups.map(&:students_participants).flatten.uniq
+  end
+  before_filter only: [:edit, :update, :show] do |controller|
+    @allocation_tags_ids = params[:allocation_tags_ids]
+    get_groups_by_tool(@chat_room = ChatRoom.find(params[:id]))
+    @allocations = @groups.map(&:students_participants).flatten.uniq
+  end
 
   def index
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
@@ -22,9 +30,6 @@ class ChatRoomsController < ApplicationController
 
     @academic_allocations = @chat_room.academic_allocations.build @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
     @academic_allocations.first.participants.build # escolha de participantes apenas para uma turma
-
-    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
-    @allocations  = @groups.map(&:students_participants).flatten.uniq
   end
 
   def create
@@ -38,24 +43,16 @@ class ChatRoomsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten})
-      @allocations  = @groups.map(&:students_participants).flatten.uniq
       @allocation_tags_ids = @allocation_tags_ids.join(" ")
       render :new
     end
   end
 
   def edit
-    authorize! :update, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
-    @chat_room = ChatRoom.find(params[:id])
-    @schedule  = @chat_room.schedule
-    @allocations  = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:students_participants).flatten.uniq
-    @groups = @chat_room.groups
+    authorize! :update, ChatRoom, on: @allocation_tags_ids
   end
 
   def update
-    @allocation_tags_ids, @chat_room = params[:allocation_tags_ids], ChatRoom.find(params[:id])
     authorize! :update, ChatRoom, on: @chat_room.academic_allocations.pluck(:allocation_tag_id)
 
     @chat_room.update_attributes!(params[:chat_room])
@@ -66,8 +63,6 @@ class ChatRoomsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:students_participants).flatten.uniq
-    @groups = @chat_room.groups
     render :edit
   end
 
@@ -101,9 +96,7 @@ class ChatRoomsController < ApplicationController
   end
 
   def show
-    authorize! :show, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
-    @chat_room    = ChatRoom.find(params[:id])
-    @groups = @chat_room.groups
+    authorize! :show, ChatRoom, on: @allocation_tags_ids
   end
 
   def messages

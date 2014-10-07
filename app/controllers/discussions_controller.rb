@@ -2,11 +2,14 @@ class DiscussionsController < ApplicationController
 
   include SysLog::Actions
 
-  layout false, except: :index # define todos os layouts do controller como falso
-
-  authorize_resource only: :index
+  layout false, except: :index
 
   before_filter :prepare_for_group_selection, only: :index
+
+  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+  before_filter only: [:edit, :update, :show] do |controller|
+    get_groups_by_tool(@discussion = Discussion.find(params[:id]))
+  end
 
   def index
     begin
@@ -28,7 +31,6 @@ class DiscussionsController < ApplicationController
     authorize! :new, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @discussion = Discussion.new
     @discussion.build_schedule(start_date: Date.current, end_date: Date.current)
-    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten})
   end
 
   def create
@@ -45,7 +47,6 @@ class DiscussionsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten})
       @allocation_tags_ids = @allocation_tags_ids.join(" ")
       render :new
     end
@@ -62,12 +63,10 @@ class DiscussionsController < ApplicationController
 
   def edit
     authorize! :edit, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
-    @discussion = Discussion.find(params[:id])
-    @groups = @discussion.groups
   end
 
   def update
-    @allocation_tags_ids, @discussion = params[:allocation_tags_ids], Discussion.find(params[:id])
+    @allocation_tags_ids = params[:allocation_tags_ids]
     authorize! :update, Discussion, on: @discussion.academic_allocations.pluck(:allocation_tag_id)
 
     @discussion.update_attributes!(params[:discussion])
@@ -78,7 +77,6 @@ class DiscussionsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    @groups = @discussion.groups
     render :edit
   end
 
@@ -101,8 +99,6 @@ class DiscussionsController < ApplicationController
 
   def show
     authorize! :show, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
-    @discussion   = Discussion.find(params[:id])
-    @groups = @discussion.groups
   end
 
 end

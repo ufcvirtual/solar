@@ -4,6 +4,12 @@ class NotificationsController < ApplicationController
 
   layout false
 
+  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+  before_filter only: [:edit, :update] do |controller|
+    @allocation_tags_ids = params[:allocation_tags_ids]
+    get_groups_by_tool(@notification = Notification.find(params[:id]))
+  end
+
   def list
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Notification, on: @allocation_tags_ids
@@ -28,8 +34,6 @@ class NotificationsController < ApplicationController
     @notification = Notification.find(params[:id])
     @notification.mark_as_read(current_user)
 
-    # @to = (@notification.allocation_tags & current_user.all_allocation_tags(objects: true)).map(&:info)
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @notification }
@@ -43,16 +47,11 @@ class NotificationsController < ApplicationController
 
     @notification = Notification.new
     @notification.build_schedule(start_date: Date.today, end_date: Date.today)
-
-    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten})
   end
 
   # GET /notifications/1/edit
   def edit
-    authorize! :update, Notification, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
-    @notification = Notification.find(params[:id])
-    @groups = @notification.groups
+    authorize! :update, Notification, on: @allocation_tags_ids
   end
 
   # POST /notifications
@@ -70,7 +69,6 @@ class NotificationsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
       @allocation_tags_ids = @allocation_tags_ids.join(" ")
       params[:success] = false
       render :new
@@ -80,18 +78,14 @@ class NotificationsController < ApplicationController
   # PUT /notifications/1
   # PUT /notifications/1.json
   def update
-    @allocation_tags_ids, @notification = params[:allocation_tags_ids], Notification.find(params[:id])
     authorize! :update, Notification, on: @notification.academic_allocations.pluck(:allocation_tag_id)
-
     @notification.update_attributes!(params[:notification])
-
     render json: {success: true, notice: t(:updated, scope: [:notifications, :success])}
   rescue ActiveRecord::AssociationTypeMismatch
     render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    @groups = @notification.groups
     params[:success] = false
     render :edit
   end

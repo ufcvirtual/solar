@@ -140,6 +140,14 @@ class ApplicationController < ActionController::Base
     super
   end
 
+  def get_groups_by_tool(tool)
+    @groups = tool.groups
+  end
+
+  def get_groups_by_allocation_tags(ats = nil)
+    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: (ats || params[:allocation_tags_ids].split(" ").flatten)})
+  end
+
   def set_locale
     if user_signed_in?
       personal_options = PersonalConfiguration.find_or_create_by_user_id(current_user.id, default_locale: (params[:locale] || I18n.default_locale))

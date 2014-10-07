@@ -6,6 +6,12 @@ class WebconferencesController < ApplicationController
 
   before_filter :prepare_for_group_selection, only: :index
 
+  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+  before_filter only: [:edit, :update] do |controller| # futuramente show aqui também
+    @allocation_tags_ids = params[:allocation_tags_ids]
+    get_groups_by_tool(@webconference = Webconference.find(params[:id]))
+  end
+
   def index
     authorize! :index, Webconference, on: [at = active_tab[:url][:allocation_tag_id]]
 
@@ -27,15 +33,13 @@ class WebconferencesController < ApplicationController
     authorize! :create, Webconference, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @webconference = Webconference.new
-    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten})
   end
 
   # GET /webconferences/1/edit
   def edit
-    authorize! :update, Webconference, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :update, Webconference, on: @allocation_tags_ids
 
     @webconference = Webconference.find(params[:id])
-    @groups  = @webconference.groups
   end
 
   # POST /webconferences
@@ -55,7 +59,6 @@ class WebconferencesController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten})
       @allocation_tags_ids = @allocation_tags_ids.join(" ")
       params[:success] = false
       render :new
@@ -65,7 +68,6 @@ class WebconferencesController < ApplicationController
   # PUT /webconferences/1
   # PUT /webconferences/1.json
   def update
-    @allocation_tags_ids, @webconference = params[:allocation_tags_ids], Webconference.find(params[:id])
     authorize! :update, Webconference, on: @webconference.academic_allocations.pluck(:allocation_tag_id)
 
     @webconference.update_attributes!(params[:webconference])
@@ -76,7 +78,6 @@ class WebconferencesController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    @groups = @webconference.groups
     params[:success] = false
     render :edit
   end

@@ -5,11 +5,17 @@ class BibliographiesController < ApplicationController
   layout false, except: :index # define todos os layouts do controller como falso
   before_filter :prepare_for_group_selection, only: [:index]
 
+  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+  before_filter only: [:edit, :update] do |controller|
+    @allocation_tags_ids = params[:allocation_tags_ids]
+    get_groups_by_tool(@bibliography = Bibliography.find(params[:id]))
+  end
+
   def list
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Bibliography, on: @allocation_tags_ids
 
-    @bibliographies      = Bibliography.all_by_allocation_tags(@allocation_tags_ids.split(" ").flatten)
+    @bibliographies = Bibliography.all_by_allocation_tags(@allocation_tags_ids.split(" ").flatten)
   end
 
   # GET /bibliographies
@@ -25,16 +31,11 @@ class BibliographiesController < ApplicationController
 
     @bibliography = Bibliography.new type_bibliography: params[:type_bibliography]
     @bibliography.authors.build
-
-    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten})
   end
 
   # GET /bibliographies/1/edit
   def edit
-    authorize! :update, Bibliography, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
-    @bibliography = Bibliography.find(params[:id])
-    @groups = @bibliography.groups
+    authorize! :update, Bibliography, on: @allocation_tags_ids
   end
 
   # POST /bibliographies
@@ -51,7 +52,6 @@ class BibliographiesController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
       @allocation_tags_ids = @allocation_tags_ids.join(" ")
       params[:success] = false
       render :new
@@ -60,18 +60,14 @@ class BibliographiesController < ApplicationController
 
   # PUT /bibliographies/1
   def update
-    @allocation_tags_ids, @bibliography = params[:allocation_tags_ids], Bibliography.find(params[:id])
     authorize! :update, Bibliography, on: @bibliography.academic_allocations.pluck(:allocation_tag_id)
-
     @bibliography.update_attributes!(params[:bibliography])
-
     render json: {success: true, notice: t(:updated, scope: [:bibliographies, :success])}
   rescue ActiveRecord::AssociationTypeMismatch
     render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    @groups = @bibliography.groups
     params[:success] = false
     render :edit
   end
