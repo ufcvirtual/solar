@@ -6,12 +6,23 @@
     = check_box_tag :all, :all, false, {:"data-children-names" => "group[group_id][]"}
     = label_tag :all, t(".select_all")
   .no_groups= t(".no_groups")
-  %div
-    = f.collection_check_boxes :group_id, @groups[0..Max_Groups_Shown_Filter], :id, :code, {item_wrapper_tag: "div", item_wrapper_class: "group_checkbox"}
-    - if groups_size>Max_Groups_Shown_Filter+1
+  .ckb_groups
+    = f.collection_check_boxes :group_id, @groups[0..Max_Groups_Shown_Filter], :id, :code do |ckb|
+      - group = Group.find(ckb.value)
+      .group_checkbox
+        = ckb.check_box
+        .collection_check_boxes{id: group.status ? "" : "disabled", :"data-tooltip" => (group.status ? "" : t(".disabled_group"))}
+          = ckb.label
+
+    - if (groups_size>Max_Groups_Shown_Filter+1)
       .icon= content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".see_all", all: groups_size))
       .complete.invisible
-        = f.collection_check_boxes :group_id, @groups[Max_Groups_Shown_Filter+1..groups_size], :id, :code, {item_wrapper_tag: "div", item_wrapper_class: "group_checkbox"}
+        = f.collection_check_boxes :group_id, @groups[Max_Groups_Shown_Filter+1..groups.size], :id, :code do |ckb|
+          - group = Group.find(ckb.value)
+          .group_checkbox
+            = ckb.check_box
+            .collection_check_boxes{id: group.status ? "" : "disabled", :"data-tooltip" => (group.status ? "" : t(".disabled_group"))}
+              = ckb.label
         .icon= content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".see_less", less: Max_Groups_Shown_Filter+1))
 
 = javascript_include_tag "tooltip"
@@ -19,6 +30,8 @@
 :javascript
 
   $(function(){
+    $(".ckb_groups span").not(".select_all_box").remove();
+
     $("#all").nice_checkbox({
       cant_enable_elements: true,
       check_invisible_children: true

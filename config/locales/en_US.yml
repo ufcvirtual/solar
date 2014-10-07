@@ -1524,6 +1524,7 @@ en_US:
       no_groups: "There are no groups"
       see_all: See all %{all} groups
       see_less: See %{less} groups
+      disabled_group: Deactivated group
     codes:
       see_all: See all %{all} groups
       see_less: See %{less} groups

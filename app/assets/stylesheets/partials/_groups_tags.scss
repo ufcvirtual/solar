@@ -44,7 +44,7 @@
 
 }
 
-.groups .collection_check_boxes, .groups_tags .collection_check_boxes {
+.groups .collection_check_boxes, .groups_tags .collection_check_boxes, .group_checkbox .collection_check_boxes, .group_checkbox .collection_check_boxes label{
   @include collection_check_boxes_layout;
   background-color: #0e7dd8;
   color: #fff;
@@ -116,6 +116,10 @@ tbody .groups, .input .groups{
   padding-left: 2px;
 }
 
-.groups_tags .collection_check_boxes#disabled, .group_label .groups .collection_check_boxes#disabled{
+.groups_tags .collection_check_boxes#disabled, .group_label .groups .collection_check_boxes#disabled, .group_checkbox .collection_check_boxes#disabled, .group_checkbox .collection_check_boxes#disabled label{
   background-color: #C0C0C0;
+}
+
+.group_checkbox .collection_check_boxes label{
+  margin: 0;
 }
