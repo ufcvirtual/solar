@@ -100,13 +100,13 @@ function delete_post(button) {
   });
 }
 
-function add_post_count_warning(current_page, new_post_page){
+function add_post_count_warning(current_page){
   var count_posts = $(".forum_post_wrapper.new").length;
   if (count_posts>0)
     flash_message(count_posts + "<%= I18n.t('posts.post.new_posts') %>", "blue_warning", undefined, "go_to_first_new_post");
   else
-    if (new_post_page != undefined && current_page != undefined)
-      flash_message("<%= I18n.t('posts.post.new_posts_page') %>" +new_post_page+") ", "blue_warning", undefined, "go_to_first_new_post");
+    if (current_page != undefined && current_page != 1) // if isn't at first page
+      flash_message("<%= I18n.t('posts.post.new_posts_page') %>" +1+") ", "blue_warning", undefined, "go_to_first_new_post");
     else
       erase_flash_messages();
 
@@ -115,12 +115,10 @@ function add_post_count_warning(current_page, new_post_page){
   var arrow_class = "";
   var first_new_post = $($(".forum_post_head.new")[0]);
 
-  if (!first_new_post.length) // if there is no new post on this page
-    if (parseInt(current_page) > parseInt(new_post_page))
+  if (!first_new_post.length){ // if there is no new post on this page
+    if (parseInt(current_page) != 1)
       arrow_class = "left";
-    else
-      arrow_class = "right";
-  else{
+  }else{
     if (first_new_post.offset().top > $(".blue_warning").offset().top)
       arrow_class = "down";
     else

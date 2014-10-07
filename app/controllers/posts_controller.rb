@@ -100,10 +100,11 @@ class PostsController < ApplicationController
 
   def show
     post         = Post.find(params[:id])
+    post         = Post.find(post.grandparent(level = 1).first["grandparent_id"].to_i) if params[:grandparent] == "true"
     can_interact = post.discussion.user_can_interact?(current_user.id)
     can_post     = (can? :create, Post, on: [active_tab[:url][:allocation_tag_id]])
     @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id]).map(&:id)
-    render partial: "post", locals: {post: post, latest_posts: [], display_mode: "list", can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: params[:new_post]}
+    render partial: "post", locals: {post: post, latest_posts: [], display_mode: nil, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: (params[:new_post] ? params[:id] : nil) }
   end
 
   ## DELETE /posts/1

@@ -1,4 +1,4 @@
-- user     = post.user
+- user, new_post_class = post.user, ((new_post and new_post.to_i == post.id) ? "new" : "")
 - children = post.children
 - children = Post.reorder_by_latest_posts(latest_posts, children) unless (display_mode == 'list') # obtendo e reordenando os posts a partir dos seus "filhos/netos"
 - editable = ((post.user_id == current_user.id) && (children.count == 0))
@@ -7,9 +7,9 @@
 
 %table.forum_post{border:"0", cellpadding:"0", cellspacing:"0", id: "#{post.id}"}
   %tr
-    %td.forum_post_icon{rowspan: 3, class: (new_post ? "new" : "")}
+    %td.forum_post_icon{rowspan: 3, class: new_post_class}
       = image_tag(user.photo.url(:forum), alt: t(:mysolar_alt_img_user) + ' ' + user.nick)
-    %td.forum_post_head{class: (new_post ? "new" : "")}
+    %td.forum_post_head{class: new_post_class}
       .forum_post_author
         .forum_participant_nick{alt:"#{user.nick}"}
           = user.nick
@@ -22,7 +22,7 @@
         = l(post.updated_at, format: :discussion_post_hour)
   %tr
     %td.forum_post_content{colspan: 2}
-      .forum_post_wrapper{class: (new_post ? "new" : "")}
+      .forum_post_wrapper{class: new_post_class}
         .forum_post_inner_content
           = raw(post.content)
         - unless files.empty?
@@ -55,7 +55,7 @@
         .forum_post_reply
       - unless display_mode == 'list'
         - children.each do |child| 
-          = render partial: "post", locals: {post: child, latest_posts: latest_posts, display_mode: display_mode, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: false}
+          = render partial: "post", locals: {post: child, latest_posts: latest_posts, display_mode: display_mode, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: new_post}
   %tr
 
 :javascript
