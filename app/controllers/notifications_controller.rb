@@ -44,7 +44,7 @@ class NotificationsController < ApplicationController
     @notification = Notification.new
     @notification.build_schedule(start_date: Date.today, end_date: Date.today)
 
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:code).uniq
+    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten})
   end
 
   # GET /notifications/1/edit
@@ -52,7 +52,7 @@ class NotificationsController < ApplicationController
     authorize! :update, Notification, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @notification = Notification.find(params[:id])
-    @groups_codes = @notification.groups.map(&:code)
+    @groups = @notification.groups
   end
 
   # POST /notifications
@@ -70,7 +70,7 @@ class NotificationsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
+      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
       @allocation_tags_ids = @allocation_tags_ids.join(" ")
       params[:success] = false
       render :new
@@ -91,7 +91,7 @@ class NotificationsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    @groups_codes = @notification.groups.map(&:code)
+    @groups = @notification.groups
     params[:success] = false
     render :edit
   end

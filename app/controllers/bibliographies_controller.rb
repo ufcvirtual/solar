@@ -26,7 +26,7 @@ class BibliographiesController < ApplicationController
     @bibliography = Bibliography.new type_bibliography: params[:type_bibliography]
     @bibliography.authors.build
 
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:code).uniq
+    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten})
   end
 
   # GET /bibliographies/1/edit
@@ -34,7 +34,7 @@ class BibliographiesController < ApplicationController
     authorize! :update, Bibliography, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @bibliography = Bibliography.find(params[:id])
-    @groups_codes = @bibliography.groups.map(&:code)
+    @groups = @bibliography.groups
   end
 
   # POST /bibliographies
@@ -51,7 +51,7 @@ class BibliographiesController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
+      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
       @allocation_tags_ids = @allocation_tags_ids.join(" ")
       params[:success] = false
       render :new
@@ -71,7 +71,7 @@ class BibliographiesController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    @groups_codes = @bibliography.groups.map(&:code)
+    @groups = @bibliography.groups
     params[:success] = false
     render :edit
   end

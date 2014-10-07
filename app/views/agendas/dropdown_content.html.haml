@@ -42,7 +42,7 @@
 
 = javascript_include_tag "tooltip"
 
-= hidden_field_tag :groups_codes, @groups_codes.join(" ")
+= hidden_field_tag :groups_codes, @groups.map(&:code).join(" ")
 
 :javascript
 

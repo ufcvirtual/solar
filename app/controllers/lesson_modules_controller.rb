@@ -9,7 +9,7 @@ class LessonModulesController < ApplicationController
   layout false
 
   def new
-    groups_codes_by_ats(@allocation_tags_ids)
+    groups_by_ats(@allocation_tags_ids)
 
     @lesson_module = LessonModule.new
     @lesson_module.academic_allocations.build @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
@@ -20,7 +20,7 @@ class LessonModulesController < ApplicationController
     if @lesson_module.save
       render nothing: true
     else
-      groups_codes_by_ats(@allocation_tags_ids)
+      groups_by_ats(@allocation_tags_ids)
       @allocation_tags_ids = @allocation_tags_ids.join(' ')
       render :new
     end
@@ -28,7 +28,7 @@ class LessonModulesController < ApplicationController
 
   def edit
     @lesson_module = LessonModule.find(params[:id])
-    groups_codes_by_lm(@lesson_module)
+    groups_by_lm(@lesson_module)
   end
 
   def update
@@ -37,7 +37,7 @@ class LessonModulesController < ApplicationController
 
     render nothing: true
   rescue ActiveRecord::RecordInvalid
-    groups_codes_by_lm(@lesson_module)
+    groups_by_lm(@lesson_module)
     render :edit
   end
 
@@ -57,12 +57,12 @@ class LessonModulesController < ApplicationController
 
   private
 
-    def groups_codes_by_ats(ats)
-      @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: ats}).pluck(:code).uniq
+    def groups_by_ats(ats)
+      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: ats})
     end
 
-    def groups_codes_by_lm(lm)
-      @groups_codes = lm.groups.pluck(:code)
+    def groups_by_lm(lm)
+      @groups = lm.groups
     end
 
 end

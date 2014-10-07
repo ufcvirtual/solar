@@ -25,7 +25,7 @@
           = f_aca.input :id, as: :hidden
           = f_aca.hidden_field :allocation_tag_id
 
-          - if @groups_codes.count < 2 # nao apresenta escolha de participantes para mais de uma turma
+          - if @groups.count < 2 # nao apresenta escolha de participantes para mais de uma turma
 
             %div
               = f.label t('.participants')

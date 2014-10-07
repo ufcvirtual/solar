@@ -1,7 +1,7 @@
 class Group < ActiveRecord::Base
   include Taggable
 
-  default_scope order: "groups.code"
+  default_scope order: "groups.status, groups.code"
 
   belongs_to :offer
 

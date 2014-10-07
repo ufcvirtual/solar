@@ -27,7 +27,7 @@ class WebconferencesController < ApplicationController
     authorize! :create, Webconference, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @webconference = Webconference.new
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:code).uniq
+    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten})
   end
 
   # GET /webconferences/1/edit
@@ -35,7 +35,7 @@ class WebconferencesController < ApplicationController
     authorize! :update, Webconference, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @webconference = Webconference.find(params[:id])
-    @groups_codes  = @webconference.groups.map(&:code)
+    @groups  = @webconference.groups
   end
 
   # POST /webconferences
@@ -55,7 +55,7 @@ class WebconferencesController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
+      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten})
       @allocation_tags_ids = @allocation_tags_ids.join(" ")
       params[:success] = false
       render :new
@@ -76,7 +76,7 @@ class WebconferencesController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    @groups_codes = @webconference.groups.map(&:code)
+    @groups = @webconference.groups
     params[:success] = false
     render :edit
   end

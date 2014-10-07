@@ -22,7 +22,7 @@ class AssignmentsController < ApplicationController
     @assignment.build_schedule(start_date: Date.current, end_date: Date.current)
     @assignment.enunciation_files.build
 
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids.split(" ")].flatten}).map(&:code).uniq
+    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids.split(" ")].flatten})
   end
 
   def edit
@@ -32,7 +32,7 @@ class AssignmentsController < ApplicationController
     @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
 
     @enunciation_files = @assignment.enunciation_files.compact
-    @schedule, @groups_codes = @assignment.schedule, @assignment.groups.pluck(:code)
+    @schedule, @groups = @assignment.schedule, @assignment.groups
   end
 
   def create
@@ -50,7 +50,7 @@ class AssignmentsController < ApplicationController
   rescue => error
     @error = error.to_s.start_with?("academic_allocation") ? error.to_s.gsub("academic_allocation", "") : nil
 
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
+    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten})
     @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
 
@@ -69,7 +69,7 @@ class AssignmentsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    @groups_codes = @assignment.groups.pluck(:code)
+    @groups = @assignment.groups
     @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
     render :edit
   end
@@ -93,7 +93,7 @@ class AssignmentsController < ApplicationController
   def show
     authorize! :show, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @assignment = Assignment.find(params[:id])
-    @enunciation_files, @groups_codes = @assignment.enunciation_files.compact, @assignment.groups.pluck(:code)
+    @enunciation_files, @groups = @assignment.enunciation_files.compact, @assignment.groups
   end
 
   def list

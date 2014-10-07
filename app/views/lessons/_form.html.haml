@@ -51,11 +51,11 @@
             = f.label ' '
             = t('lessons.new.example')
 
-      - if @groups_codes.any?
+      - if @groups.any?
         .input
           = f.label t(".groups")
           %span.groups
-            - @groups_codes.each do |code|
+            - @groups.each do |code|
               %span.collection_check_boxes= code
 
       .right_buttons

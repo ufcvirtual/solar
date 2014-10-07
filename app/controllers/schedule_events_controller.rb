@@ -6,7 +6,7 @@ class ScheduleEventsController < ApplicationController
     authorize! :new, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @schedule_event = ScheduleEvent.new
     @schedule_event.build_schedule(start_date: Date.current, end_date: Date.current)
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:code).uniq
+    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten})
   end
 
   def create
@@ -22,7 +22,7 @@ class ScheduleEventsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue 
-      @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
+      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
       @allocation_tags_ids = @allocation_tags_ids.join(" ")
       render :new
     end
@@ -32,7 +32,7 @@ class ScheduleEventsController < ApplicationController
     authorize! :edit, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @schedule_event = ScheduleEvent.find(params[:id])
     @schedule       = @schedule_event.schedule
-    @groups_codes   = @schedule_event.groups.map(&:code)
+    @groups   = @schedule_event.groups
   end
 
   def update
@@ -47,7 +47,7 @@ class ScheduleEventsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    @groups_codes = @schedule_event.groups.map(&:code)
+    @groups = @schedule_event.groups
     render :edit
   end
 
@@ -67,7 +67,7 @@ class ScheduleEventsController < ApplicationController
   def show
     authorize! :show, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @schedule_event = ScheduleEvent.find(params[:id])
-    @groups_codes   = @schedule_event.groups.map(&:code)
+    @groups   = @schedule_event.groups
   end
 
 end

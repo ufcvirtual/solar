@@ -1533,6 +1533,8 @@ pt_BR:
       empty_files: Não há arquivos
       groups: Turmas
       assignment_details: Detalhes do trabalho
+      individual: Individual
+      group: Grupo
     student:
       moved_allocation: Alocação transferida para outra turma
       group: "Grupo: "
@@ -1705,6 +1707,7 @@ pt_BR:
     tags:
       unbind: Desvincular
       remove: Excluir
+      disabled_group: Turma desativada
     success:
       created: Turma criada com sucesso.
       updated: Turma atualizada com sucesso.
@@ -1730,6 +1733,7 @@ pt_BR:
     codes:
       see_all: Ver as %{all} turmas
       see_less: Ver %{less} turmas
+      disabled_group: Turma desativada
       groups: Turmas
 
   simple_form:

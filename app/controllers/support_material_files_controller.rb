@@ -23,7 +23,7 @@ class SupportMaterialFilesController < ApplicationController
     authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @support_material = SupportMaterialFile.new material_type: params[:material_type]
-    @groups_codes     = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:code).uniq
+    @groups     = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten})
   end
 
   def create
@@ -41,7 +41,7 @@ class SupportMaterialFilesController < ApplicationController
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue Exception => error
       if @support_material.is_link?
-        @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
+        @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
         @allocation_tags_ids = params[:allocation_tags_ids].join(" ") rescue params[:allocation_tags_ids].split(" ")
         params[:success] = false
         render :new
@@ -55,7 +55,7 @@ class SupportMaterialFilesController < ApplicationController
     authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @support_material = SupportMaterialFile.find(params[:id])
-    @groups_codes = @support_material.groups.map(&:code)
+    @groups = @support_material.groups
   end
 
   def update
@@ -69,7 +69,7 @@ class SupportMaterialFilesController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    @groups_codes = @support_material.groups.map(&:code)
+    @groups = @support_material.groups
     params[:success] = false
     render :new
   end

@@ -67,7 +67,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.new lesson_module_id: params[:lesson_module_id]
     @lesson.build_schedule start_date: Date.today
 
-    groups_codes_by_lesson(@lesson)
+    groups_by_lesson(@lesson)
   end
 
   # POST /lessons
@@ -84,7 +84,7 @@ class LessonsController < ApplicationController
       render json: {success: true, notice: t('lessons.success.created')}
     end
   rescue ActiveRecord::RecordInvalid
-    groups_codes_by_lesson(@lesson)
+    groups_by_lesson(@lesson)
     render :new
   rescue => error
     request.format = :json
@@ -96,7 +96,7 @@ class LessonsController < ApplicationController
     lesson_modules_by_ats(@allocation_tags_ids)
 
     @lesson = Lesson.find(params[:id])
-    groups_codes_by_lesson(@lesson)
+    groups_by_lesson(@lesson)
   end
 
   # PUT /lessons/1
@@ -108,7 +108,7 @@ class LessonsController < ApplicationController
     render json: {success: true, notice: t('lessons.success.updated')}
   rescue ActiveRecord::RecordInvalid
     lesson_modules_by_ats(@allocation_tags_ids)
-    groups_codes_by_lesson(@lesson)
+    groups_by_lesson(@lesson)
 
     render :edit
   rescue => error
@@ -245,8 +245,8 @@ class LessonsController < ApplicationController
         .joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: atgs.split(" ").flatten})
     end
 
-    def groups_codes_by_lesson(lesson)
-      @groups_codes = lesson.lesson_module.groups.pluck(:code)
+    def groups_by_lesson(lesson)
+      @groups = lesson.lesson_module.groups
     end
 
     def offer_data

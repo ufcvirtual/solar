@@ -28,7 +28,7 @@ class DiscussionsController < ApplicationController
     authorize! :new, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @discussion = Discussion.new
     @discussion.build_schedule(start_date: Date.current, end_date: Date.current)
-    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).map(&:code).uniq
+    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten})
   end
 
   def create
@@ -45,7 +45,7 @@ class DiscussionsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
+      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten})
       @allocation_tags_ids = @allocation_tags_ids.join(" ")
       render :new
     end
@@ -63,7 +63,7 @@ class DiscussionsController < ApplicationController
   def edit
     authorize! :edit, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @discussion = Discussion.find(params[:id])
-    @groups_codes = @discussion.groups.map(&:code)
+    @groups = @discussion.groups
   end
 
   def update
@@ -78,7 +78,7 @@ class DiscussionsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
-    @groups_codes = @discussion.groups.map(&:code)
+    @groups = @discussion.groups
     render :edit
   end
 
@@ -102,7 +102,7 @@ class DiscussionsController < ApplicationController
   def show
     authorize! :show, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @discussion   = Discussion.find(params[:id])
-    @groups_codes = @discussion.groups.map(&:code)
+    @groups = @discussion.groups
   end
 
 end

@@ -115,3 +115,7 @@ tbody .groups, .input .groups{
   font-size: 11px;
   padding-left: 2px;
 }
+
+.groups_tags .collection_check_boxes#disabled, .group_label .groups .collection_check_boxes#disabled{
+  background-color: #C0C0C0;
+}

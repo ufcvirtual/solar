@@ -1327,6 +1327,8 @@ en_US:
       empty_files: There're no files
       groups: Groups
       assignment_details: Assignment's details
+      individual: Individual
+      group: Group
     student:
       moved_allocation: "Allocation moved to other class"
       group: "Group: "
@@ -1499,6 +1501,7 @@ en_US:
     tags:
       unbind: Unbind
       remove: Remove
+      disabled_group: Deactivated group
     success:
       created: Group was successfully created.
       updated: Group was successfully updated.
@@ -1524,6 +1527,7 @@ en_US:
     codes:
       see_all: See all %{all} groups
       see_less: See %{less} groups
+      disabled_group: Deactivated group
       groups: Groups
   simple_form:
     labels:

@@ -54,7 +54,7 @@ class AgendasController < ApplicationController
 
     @event = @model_name.find(params[:id])
     @allocation_tags_ids = params[:allocation_tags_ids]
-    @groups_codes = @event.groups.map(&:code)
+    @groups = @event.groups
   end
 
 end
