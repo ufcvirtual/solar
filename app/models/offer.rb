@@ -266,4 +266,14 @@ class Offer < ActiveRecord::Base
     }
   end
 
+  def notify_editors_of_disabled_groups(groups)
+    emails = users_with_profile_type(Profile_Type_Editor).map(&:email)
+    emails << groups.map{|group| group.users_with_profile_type(Profile_Type_Editor).map(&:email)}
+    Thread.new do
+      Mutex.new.synchronize {
+        Notifier.groups_disabled(emails.flatten.uniq.join(", "), groups.map(&:code), info).deliver
+      }
+    end
+  end
+
 end

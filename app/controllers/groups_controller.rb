@@ -83,6 +83,7 @@ class GroupsController < ApplicationController
 
     if params[:multiple]
       @group.update_all(status: params[:status])
+      Offer.find(@offer_id).notify_editors_of_disabled_groups(@group) if params[:status] == "false"
       render json: {success: true, notice: t(:updated, scope: [:groups, :success])}
     else
       @group = @group.first

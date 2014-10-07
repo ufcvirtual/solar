@@ -5,12 +5,7 @@ class Merge < ActiveRecord::Base
   after_create :change_group_status
 
   def change_group_status
-    if type_merge # if merged
-      main_group.update_attribute :status, true       # main group must be activated
-      secundary_group.update_attribute :status, false # secundary group must be deactivated
-    else
-      main_group.update_attribute :status, true      # main group must be activated
-      secundary_group.update_attribute :status, true # secundary group must be activated
-    end
+    main_group.update_attribute :status, true       		  # main group must be activated
+    secundary_group.update_attribute :status, not(type_merge) # secundary group must be deactivated if merge
   end
 end

@@ -1483,6 +1483,9 @@ pt_BR:
   notifier:
     enrollment_accepted:
       subject: "[SOLAR] Matrícula aceita"
+    groups_disabled:
+      subject: "[SOLAR] Turmas desativadas"
+      content: "Notificamos que as seguintes turmas de %{info} foram desativadas: "
     dont_reply_message: "Esta mensagem é enviada automaticamente, favor não responder. Quaisquer dúvidas ou considerações devem ser encaminhadas para: atendimento@virtual.ufc.br"
   assignments:
     index:

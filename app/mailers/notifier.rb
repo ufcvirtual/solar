@@ -27,4 +27,10 @@ class Notifier < ActionMailer::Base
          subject: "[SOLAR] Novo Cadastro")
   end
 
+  def groups_disabled(emails, groups_codes, groups_info)
+    @groups_codes, @groups_info = groups_codes, groups_info
+    mail(to: emails,
+         subject: t("notifier.groups_disabled.subject"))
+  end
+
 end

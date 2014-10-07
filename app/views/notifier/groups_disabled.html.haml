@@ -1,0 +1,12 @@
+!!!
+%html
+  %head
+    %meta{:charset => "utf-8"}
+    %meta{"http-equiv" => "X-UA-Compatible", :content => "IE=edge,chrome=1"}
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
+    %title= "Solar"
+    = yield(:head)
+  %body
+    %p= t("notifier.groups_disabled.content", info: @groups_info)
+    %p= @groups_codes.join(", ") + "."
+    %p{style: "color: #7C7C7C; font-size: 8pt; padding-top: 10px;"}= I18n.t("notifier.dont_reply_message")

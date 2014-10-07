@@ -1276,6 +1276,9 @@ en_US:
   notifier:
     enrollment_accepted:
       subject: "[SOLAR] Enrollment accepted"
+    groups_disabled:
+      subject: "[SOLAR] Deactivated groups"
+      content: "We notify that the following groups of %{info} were deactivated: "
     dont_reply_message: "This message is sent automatically, please don't reply. Any doubts or sugestions must be sent to: atendimento@virtual.ufc.br"
 
   assignments:

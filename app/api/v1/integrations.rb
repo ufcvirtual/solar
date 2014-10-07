@@ -152,8 +152,8 @@ module V1
               replicate_content_groups, receive_content_groups = [params[:main_group]], params[:secundary_groups]
             end
 
+            offer = get_offer(params[:curriculum_unit], params[:course], nil, params[:period])
             ActiveRecord::Base.transaction do
-              offer = get_offer(params[:curriculum_unit], params[:course], nil, params[:period])
               replicate_content_groups.each do |replicate_content_group_code|
                 replicate_content_group = get_offer_group(offer, replicate_content_group_code)
                 receive_content_groups.each do |receive_content_group_code|
@@ -162,6 +162,8 @@ module V1
                 end
               end
             end
+            offer.notify_editors_of_disabled_groups(Group.where(code: params[:secundary_groups])) if params[:type_merge]
+
             {ok: :ok}
           rescue ActiveRecord::RecordNotFound
             error!({error: I18n.t(:object_not_found)}, 404)
