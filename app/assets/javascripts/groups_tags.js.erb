@@ -2,6 +2,8 @@ $(function(){
 
   if ($("#radio_option_group").prop("checked"))
     $(".group_label").show();
+  else
+    $(".group_label").remove();
 
   $(".tags .expand").click(function(){
     $(".groups_tags").show();
