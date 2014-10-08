@@ -346,8 +346,14 @@ div.block_title {
 
 /* posicionando objetos alinhados a direita (normalment botoes) */
 .right_buttons {
-  text-align: right;
+  float: right;
 }
+
+form .right_buttons {
+  text-align: right;
+  float: none;
+}
+
 
 .retreat {
   margin-left: -7px;
