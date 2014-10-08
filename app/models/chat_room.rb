@@ -9,7 +9,7 @@ class ChatRoom < Event
   has_many :participants, class_name: "ChatParticipant", through: :academic_allocations
   has_many :allocation_tags, through: :academic_allocations
   has_many :groups, through: :allocation_tags
-  has_many :users, through: :participants, select: [:name, :nick], order: :name, uniq: true
+  has_many :users, through: :participants, select: ["users.name", "users.nick"], uniq: true
   has_many :allocations, through: :participants
 
   accepts_nested_attributes_for :schedule
@@ -81,8 +81,8 @@ class ChatRoom < Event
 
   def self.chats_user(user_id, allocation_tag_id)
     all_chats = ChatRoom.joins(:academic_allocations, :schedule)
-      .select('DISTINCT chat_rooms.*, schedules.start_date, schedules.end_date')
       .where(academic_allocations: {allocation_tag_id: allocation_tag_id})
+      .select('DISTINCT chat_rooms.*, schedules.start_date, schedules.end_date')
       .order('schedules.start_date')
 
     my, others = if responsible?(allocation_tag_id, user_id)
