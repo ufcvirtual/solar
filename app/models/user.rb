@@ -310,14 +310,14 @@ class User < ActiveRecord::Base
 
       unless user.integrated
 
-        row = {"email"=>row['Email'], 
-        "name"=>row['Nome'], 
-        "address"=>row['Endereço'], 
-        "country"=>row['País'], 
-        "state"=>row['Estado'], 
-        "city"=>row['Cidade'], 
-        "institution"=>row['Instituição'], 
-        "gender"=>row['Sexo'], 
+        row = {"email"=>row['Email'],
+        "name"=>row['Nome'],
+        "address"=>row['Endereço'],
+        "country"=>row['País'],
+        "state"=>row['Estado'],
+        "city"=>row['Cidade'],
+        "institution"=>row['Instituição'],
+        "gender"=>row['Sexo'],
         "cpf"=>row['CPF']}
 
 
@@ -477,7 +477,9 @@ class User < ActiveRecord::Base
     result = {success: [], error: []}
     Allocation.transaction do
       allocation_tag_ids.each do |at|
-        al = allocations.build(allocation_tag_id: at, profile_id: profile, status: status, updated_by_user_id: by_user)
+        al = allocations.build(allocation_tag_id: at, profile_id: profile)
+        al.status = status
+        al.updated_by_user_id = by_user
         result[(al.save) ? :success : :error] << al
       end
     end
