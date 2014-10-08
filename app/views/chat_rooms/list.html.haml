@@ -19,5 +19,6 @@
 :javascript
 
   $(function(){
-    $('.link_content, .history').call_fancybox();
+    $('.link_content').call_fancybox();
+    $(".history").not(".disabled").call_fancybox();
   });
