@@ -66,10 +66,10 @@ class AllocationsController < ApplicationController
     group, new_status = if params[:multiple].present? and params[:enroll].present?
       [nil, Allocation_Activated]
     else
-      [Group.find_by_id(params[:allocation][:group_id]), params[:allocation][:status]]
+      [Group.find_by_id(params[:allocation][:group_id]), params[:allocation][:status].to_i]
     end
 
-    @allocations = change_status_from_allocations(allocations, new_status, group)
+    @allocations = Allocation.change_status_from(allocations, new_status, group: group, by_user: current_user)
 
     render partial: "enrollments", notice: t('allocations.manage.enrollment_successful_update'), layout: false
   rescue => error
@@ -155,38 +155,6 @@ class AllocationsController < ApplicationController
           undo_url: view_context.link_to(t("allocations.undo_action"), "#", id: :undo_action, :"data-link" => undo_action_allocation_path(@allocation)))
       else
         t(params[:type], scope: 'allocations.request.success')
-      end
-    end
-
-    def change_status_from_allocations(allocations, new_status, group = nil)
-      new_allocations = []
-      # muda todos os status ao mesmo tempo mandando emails
-      allocations.each do |a|
-        a = user_change_group(a, group) if not(group.nil?) and a.group.id != group.id # mudança de turma
-        new_allocations << a if a.update_attributes(status: new_status, updated_by_user_id: current_user.id)
-        send_email_to_enrolled_user(a) if new_status == Allocation_Activated
-      end
-      new_allocations
-    end
-
-    def user_change_group(allocation, new_group)
-      # cancela na turma anterior e cria uma nova alocação na nova
-      new_allocation = allocation.dup
-      Allocation.transaction do
-        allocation.cancel!
-
-        new_allocation.allocation_tag_id = new_group.allocation_tag.id
-        new_allocation.save!
-      end
-
-      new_allocation
-    end
-
-    def send_email_to_enrolled_user(allocation)
-      Thread.new do
-        Mutex.new.synchronize {
-          Notifier.enrollment_accepted(allocation.user.email, allocation.group.code_semester).deliver
-        }
       end
     end
 
