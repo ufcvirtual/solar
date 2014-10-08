@@ -34,6 +34,5 @@
         %td{align: "center"}
           %div= [l(chat.schedule.start_date.to_date), l(chat.schedule.end_date.to_date)].join(" - ")
           %div= [(chat.start_hour), (chat.end_hour)].join(" - ")
-        - can_access_history = (participants.map(&:id).include?(current_user.id) or @responsible)
         - if history
-          %td{align: "center"}= link_to content_tag(:i, nil, class: 'icon-history'), messages_chat_room_path(chat), class: "btn history #{can_access_history ? '' : 'disabled'}", :"data-tooltip" => t(".message_history"), disabled: not(can_access_history)
+          %td{align: "center"}= link_to content_tag(:i, nil, class: 'icon-history'), messages_chat_room_path(chat), class: "btn history #{can_access_history ? '' : 'disabled'}", :"data-tooltip" => t(".message_history")
