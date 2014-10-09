@@ -21,16 +21,17 @@ class Event < ActiveRecord::Base
   CANT_EDIT = ["lesson"]
 
   def schedule_json(options = {})
+    has_start_hour, has_end_hour = (respond_to?(:start_hour) and not(start_hour.blank?)), (respond_to?(:end_hour) and not(end_hour.blank?))
     {
       id: id,
       title: respond_to?(:name) ? name : title, # o fullcalendar espera receber title
       description: (respond_to?(:enunciation) ? enunciation : description) || "",
       start: schedule.start_date,
       :end => schedule.end_date,
-      allDay: (not respond_to?(:start_hour) or start_hour.blank?), # se não tiver hora de inicio e fim é do dia todo
-      recurring: (respond_to?(:start_hour) and respond_to?(:end_hour) and not(start_hour.blank? or end_hour.blank?)), # se tiver hora de inicio e fim, é recorrente de todo dia no intervalo
-      start_hour: (respond_to?(:start_hour) ? start_hour : nil),
-      end_hour: (respond_to?(:end_hour) ? end_hour : nil),
+      allDay: not(has_start_hour), # se não tiver hora de inicio e fim é do dia todo
+      recurring: (has_start_hour and has_end_hour), # se tiver hora de inicio e fim, é recorrente de todo dia no intervalo
+      start_hour: (has_start_hour ? start_hour : nil),
+      end_hour: (has_end_hour ? end_hour : nil),
       color: verify_type(self.class.to_s, (respond_to?(:type_event) ? type_event : nil)),
       type: self.class.name,
       dropdown_path: Rails.application.routes.url_helpers.send("dropdown_content_of_#{self.class.name.to_s.tableize.singularize}_path", id: id, allocation_tags_ids: 'all_params')
@@ -40,15 +41,7 @@ class Event < ActiveRecord::Base
   def portlet_json(options = {})
     {
       schedule_type: self.class.to_s.underscore,
-      name: [
-        case
-          when (options.nil? or options[:date].nil?); nil
-          when options[:date].to_date == schedule.start_date.to_date; I18n.t("agendas.begin_of")
-          when options[:date].to_date == schedule.end_date.to_date; I18n.t("agendas.end_of")
-          else nil
-        end,
-        respond_to?(:name) ? name : title
-      ].join(""),
+      name: name_portlet(options),
       description: (respond_to?(:enunciation) ? enunciation : description) || "",
       start_date: schedule.start_date,
       end_date: schedule.end_date
@@ -84,35 +77,10 @@ class Event < ActiveRecord::Base
 
   # recupera o "caminho" o qual a ferramenta pertence
   def parents_path
-    # recupera as allocation_tags
     allocation_tags = self.academic_allocations.map(&:allocation_tag)
-    parents_path = []
+    first_at, count_groups = allocation_tags.first, allocation_tags.count
 
-    # se não for para turmas ou for para uma turma
-    if allocation_tags.map(&:group).include?(nil) or allocation_tags.map(&:group).compact.size == 1
-      allocation_tags.each do |allocation_tag|
-        path = []
-
-        # pode pertencer a uma turma, oferta, curso ou uc
-        group = allocation_tag.group
-        offer = allocation_tag.offer || group.try(:offer)
-        curriculum_unit = allocation_tag.curriculum_unit || offer.try(:curriculum_unit)
-        course = allocation_tag.course || offer.try(:course)
-
-        # monta string com o caminho o qual a ferramenta pertence
-        path.insert(0, group.code) unless group.nil?
-        path.insert(0, offer.semester.name) unless offer.nil?
-        path.insert(0, curriculum_unit.name) unless curriculum_unit.nil?
-        path.insert(0, course.name) unless course.nil?
-
-        parents_path.insert(0, path.join(" - "))
-      end
-      parents_path
-    else
-      # quando tiver mais de uma turma, deve montar o caminho informando a quantidade de turmas
-      first_group = allocation_tags.first.group
-      [first_group.offer.course.name, first_group.offer.curriculum_unit.name, first_group.offer.semester.name, allocation_tags.count.to_s + " turmas"].join(" - ")
-    end
+    ((first_at.group.nil? or count_groups == 1) ? first_at.info : [first_at.group.offer.info,  count_groups.to_s + I18n.t("agendas.dropdown_content.groups")].join(" - "))
   end
 
   def self.all_descendants(allocation_tags_ids, user, list = false, params = {})
@@ -125,6 +93,18 @@ class Event < ActiveRecord::Base
         end
         (limited.nil? ? events : (limited & events))
       }.uniq
+  end
+
+  def name_portlet(options={})
+    [
+      case
+        when (options.nil? or options[:date].nil?); nil
+        when options[:date].to_date == schedule.start_date.to_date; I18n.t("agendas.begin_of")
+        when options[:date].to_date == schedule.end_date.to_date; I18n.t("agendas.end_of")
+        else nil
+      end,
+      respond_to?(:name) ? name : title
+    ].join("")
   end
 
 end

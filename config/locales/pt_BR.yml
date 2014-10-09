@@ -2400,6 +2400,7 @@ pt_BR:
       details: Ver detalhes
       see_groups: Ver turmas
       cant_change: "Evento integrado, não pode ser alterado."
+      groups: " turmas"
     close: Fechar
     calendar:
       new_chat: Novo Chat

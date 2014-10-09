@@ -4,16 +4,10 @@
     = @event.respond_to?(:name) ? @event.name : @event.title
   / se for a visualização de aluno/professor
   .related_user_path.invisible
-    / verifica se o "caminho" da ferramenta já é uma string
-    - if @event.parents_path.is_a?(String)
-      / se for, é uma ferramenta para mais de uma turma
-      %h3
-        = @event.parents_path
+    %h3
+      = @event.parents_path
+      - if @groups.count > 1
         = content_tag(:i, nil, class: "toggle_groups icon-arrow-down-triangle", :"data-tooltip" => t(".see_groups"))
-    - else
-      / se não for, é para uma turma ou oferta ou uc ou curso
-      - @event.parents_path.each do |path|
-        %h3= path
   - recurring = (@event.respond_to?(:start_hour) and @event.respond_to?(:end_hour) and not(@event.start_hour.blank? or @event.end_hour.blank?))
   %h3= (recurring ? "#{@event.start_hour} - #{@event.end_hour}" : t(".all_day"))
   - same_day, start_date, end_date = (@event.schedule.end_date.nil? or @event.schedule.start_date == @event.schedule.end_date), @event.schedule.start_date, @event.schedule.end_date

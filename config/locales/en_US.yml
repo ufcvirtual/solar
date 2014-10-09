@@ -2171,6 +2171,7 @@ en_US:
       details: See details
       see_groups: See groups
       cant_change: "Integrated event, can't be changed."
+      groups: " groups"
     close: Close
     calendar:
       new_chat: New Chat
