@@ -1,4 +1,4 @@
-- path = (@not_offer_area ? lesson_path(lesson.id, allocation_tags_ids: @allocation_tags_ids, offer_id: @offer.id) : lesson_path(lesson.id))
+- path = (@not_offer_area ? open_lesson_path(lesson.id, allocation_tags_ids: @allocation_tags_ids, offer_id: @offer.id) : open_lesson_path(lesson.id))
 %td
   - if lesson.closed?
     = (@not_offer_area ? (link_to lesson.name, path, class: "link_content lesson", "data-fancybox-type" => "iframe") : lesson.name)

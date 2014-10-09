@@ -259,7 +259,8 @@ Solar::Application.routes.draw do
       put "responsible_change_status/:status", to: :change_status, as: :responsible_change_status, defaults: {responsible: true}
       put "order/:change_id", action: :order, as: :change_order
       put :change_module
-      get :edition, action: :show, defaults: {edition: true}
+      get :edition, action: :open, defaults: {edition: true}
+      get :open
     end
     collection do
       get :list, action: :list
@@ -364,6 +365,9 @@ Solar::Application.routes.draw do
       end
       resources :schedule_event, only: [] do
         get "/:allocation_tags_ids", to: "agendas#dropdown_content", type: "ScheduleEvent", as: :dropdown_content_of, on: :member
+      end
+      resources :lesson, only: [] do
+        get "/:allocation_tags_ids", to: "agendas#dropdown_content", type: "Lesson", as: :dropdown_content_of, on: :member
       end
     end
   end

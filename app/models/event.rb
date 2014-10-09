@@ -12,6 +12,14 @@ class Event < ActiveRecord::Base
     ((schedules.start_date >= ?) OR (schedules.end_date >= ?)) AND allocation_tags.id IN (?)", 
     today, today, allocation_tags] }}
 
+  scope :of_today, lambda {|day, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
+    (? BETWEEN schedules.start_date AND schedules.end_date) AND allocation_tags.id IN (?)", 
+    day, allocation_tags] }}
+
+  scope :by_ats, lambda {|allocation_tags| {joins: [academic_allocations: :allocation_tag], conditions: ["allocation_tags.id IN (?)", allocation_tags] }}
+
+  CANT_EDIT = ["lesson"]
+
   def schedule_json(options = {})
     {
       id: id,
@@ -29,6 +37,24 @@ class Event < ActiveRecord::Base
     }
   end
 
+  def portlet_json(options = {})
+    {
+      schedule_type: self.class.to_s.underscore,
+      name: [
+        case
+          when (options.nil? or options[:date].nil?); nil
+          when options[:date].to_date == schedule.start_date.to_date; I18n.t("agendas.begin_of")
+          when options[:date].to_date == schedule.end_date.to_date; I18n.t("agendas.end_of")
+          else nil
+        end,
+        respond_to?(:name) ? name : title
+      ].join(""),
+      description: (respond_to?(:enunciation) ? enunciation : description) || "",
+      start_date: schedule.start_date,
+      end_date: schedule.end_date
+    }
+  end
+
   def self.format_date(date_time)
     Time.at(date_time.to_i).to_formatted_s(:db)
   end
@@ -36,12 +62,9 @@ class Event < ActiveRecord::Base
   def verify_type(model_name, type_event)
     return (
       case model_name
-        when "Assignment"
-          "#CCCCFF"
-        when "ChatRoom"
-          "#A7C1F0"
-        when "Discussion"
-          "#CAFCCC"
+        when "Assignment"; "#FCEBCA"
+        when "ChatRoom"; "#A7C1F0"
+        when "Discussion"; "#CAFCCC"
         when "ScheduleEvent"
           if type_event == Presential_Test
             "#F5D5EF"
@@ -52,8 +75,9 @@ class Event < ActiveRecord::Base
           else # Recess or Holiday
             "#E3E3E3"
           end
+        when "Lesson"; "#A9F0F7"
         else
-          "#FCEBCA"
+          "#CCCCFF"
       end
     )
   end
@@ -89,7 +113,18 @@ class Event < ActiveRecord::Base
       first_group = allocation_tags.first.group
       [first_group.offer.course.name, first_group.offer.curriculum_unit.name, first_group.offer.semester.name, allocation_tags.count.to_s + " turmas"].join(" - ")
     end
-    
+  end
+
+  def self.all_descendants(allocation_tags_ids, user, list = false, params = {})
+      Event.descendants.map{ |event| 
+        limited = event.limited(user, allocation_tags_ids) if event.respond_to?(:limited)
+        events = if list
+          event.scoped.after(Date.today, allocation_tags_ids) 
+        else
+          event.scoped.between(params['start'], params['end'], allocation_tags_ids)  
+        end
+        (limited.nil? ? events : (limited & events))
+      }.uniq
   end
 
 end

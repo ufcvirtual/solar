@@ -875,6 +875,20 @@ pt_BR:
       groups: Turmas
     select_lesson:
       no_lessons: Sem Aulas
+    show:
+      name: Nome
+      description: Descrição
+      type: Tipo
+      link: Link
+      file: Arquivos
+      not_defined: Não definido
+      start_date: Início
+      end_date: Término
+      address: URL
+      status: Situação
+      released: Liberada
+      draft: Rascunho
+      lesson_details: Detalhes da aula
 
   lesson_modules:
     general_of_offer: "Geral"
@@ -2378,6 +2392,7 @@ pt_BR:
       assignments: "Trabalho: "
       discussions: "Fórum: "
       schedule_events: "Evento: "
+      lessons: "Aula: "
       all_day: dia todo
       groups: Turmas
       remove: Remover
@@ -2398,9 +2413,12 @@ pt_BR:
       presential_test: Prova Presencial
       webconference_lesson: Aula de Webconferência
       recess_or_holiday: Recesso ou Feriado
+      lesson: Aula
       other: Outros
       legend: Legenda
       all_day: dia todo
+    end_of: "Término de: "
+    begin_of: "Início de: "
 
   edx:
     warning:

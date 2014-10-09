@@ -127,12 +127,6 @@ res25:
   action: 'index'
   description: 'Mensagens'
 
-res26:
-  id: 26
-  controller: 'agendas'
-  action: 'list'
-  description: 'Agenda - lista'
-
 res29:
   id: 29
   controller: 'group_assignments'

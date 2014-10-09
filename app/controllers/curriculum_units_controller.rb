@@ -16,7 +16,7 @@ class CurriculumUnitsController < ApplicationController
     @messages = Message.user_inbox(current_user.id, @allocation_tag_id, only_unread = true)
     @lessons_modules  = LessonModule.to_select(allocation_tags, current_user)
     @discussion_posts = list_portlet_discussion_posts(allocation_tags.join(', '))
-    @scheduled_events = Agenda.events_detailed(allocation_tags)
+    @scheduled_events = Agenda.events(allocation_tags, nil, true)
   end
 
   def index

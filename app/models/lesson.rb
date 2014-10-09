@@ -1,4 +1,4 @@
-class Lesson < ActiveRecord::Base
+class Lesson < Event
 
   GROUP_PERMISSION, OFFER_PERMISSION = true, true
 
@@ -106,6 +106,13 @@ class Lesson < ActiveRecord::Base
 
     return 'http://www.youtube.com/embed/' + address.split("v=")[1] if address.include?("youtube") and not address.include?("embed")
     address
+  end
+
+  def self.limited(user, ats)
+    query = []
+    query << "lessons.status = 1" if user.profiles_with_access_on("see_drafts", "lessons", ats, true).empty?
+    # recuperar as aulas que o usuário pode acessar usuário
+    Lesson.joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: ats}).where(query.join(" AND "))
   end
 
   private

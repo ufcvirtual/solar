@@ -16,10 +16,10 @@
         %h3= path
   - recurring = (@event.respond_to?(:start_hour) and @event.respond_to?(:end_hour) and not(@event.start_hour.blank? or @event.end_hour.blank?))
   %h3= (recurring ? "#{@event.start_hour} - #{@event.end_hour}" : t(".all_day"))
-  - same_day = (@event.schedule.start_date == @event.schedule.end_date)
-  %h3= (same_day ? l(@event.schedule.start_date, format: :normal) : [l(@event.schedule.start_date, format: :normal), l(@event.schedule.end_date, format: :normal)].join(" - "))
+  - same_day, start_date, end_date = (@event.schedule.end_date.nil? or @event.schedule.start_date == @event.schedule.end_date), @event.schedule.start_date, @event.schedule.end_date
+  %h3= (same_day ? (end_date.nil? ? [l(start_date, format: :normal), t(:no_end_date)].join(" - ") : l(start_date, format: :normal)) : [l(start_date, format: :normal), l(end_date, format: :normal)].join(" - "))
 
-  %h3= truncate((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || "", length: 200, omission: '...')
+  %h3=sanitize simple_format(truncate((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || "", length: 200, omission: '...'))
 
   .edition_groups.invisible
     - if can? :edit, @model_name
@@ -28,13 +28,13 @@
   .line
 
   .btn-group{style: "width: 360px;"}
-    - can_change = (not(@event.respond_to?(:can_change?)) or @event.can_change?)
+    - can_change, can_edit = (not(@event.respond_to?(:can_change?)) or @event.can_change?), not(Event::CANT_EDIT.include?(@model_name.to_s.downcase))
     .left
-      - if can? :destroy, @model_name, on: @allocation_tags_ids.split(" ")
+      - if (can_edit and (can? :destroy, @model_name, on: @allocation_tags_ids.split(" ")))
         = link_to_if can_change, (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_event', :"data-link-delete" => polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t(".remove"), id: @event.id do
           = button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution disabled', :'data-tooltip' => t(".cant_change")
     .right{style: (can?(:edit, @model_name, on: @allocation_tags_ids) ? "" : "margin-left: 96px") }
-      - if can? :edit, @model_name, on: @allocation_tags_ids
+      - if (can_edit and (can? :edit, @model_name, on: @allocation_tags_ids))
         = link_to_if can_change, (content_tag(:i, nil, class: 'icon-edit')), edit_polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids, calendar: true), class: 'btn edit_event', :'data-tooltip' => t(".edit"), id: @event.id do
           = button_tag (content_tag(:i, nil, class: 'icon-edit')), class: 'btn disabled', :'data-tooltip' => t(".cant_change")
       - if can? :show, @model_name, on: @allocation_tags_ids

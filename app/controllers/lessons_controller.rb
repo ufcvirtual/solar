@@ -8,7 +8,7 @@ class LessonsController < ApplicationController
   include LessonsHelper
 
   before_filter :prepare_for_group_selection, only: :download_files
-  before_filter :offer_data, only: :show
+  before_filter :offer_data, only: :open
 
   before_filter only: [:new, :create, :edit, :update] do |controller|
     authorize! crud_action, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
@@ -41,7 +41,7 @@ class LessonsController < ApplicationController
   end
 
   # GET /lessons/:id
-  def show
+  def open
     authorize! :show, Lesson, {on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true}
 
     at_ids = params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
@@ -58,7 +58,7 @@ class LessonsController < ApplicationController
     authorize! :show, Lesson
 
     @module = LessonModule.find(params[:lesson_module_id])
-    render partial: "lessons/show/lessons", locals: {lesson_module: @module}
+    render partial: "lessons/open/lessons", locals: {lesson_module: @module}
   end
 
   # GET /lessons/new
@@ -114,6 +114,11 @@ class LessonsController < ApplicationController
   rescue => error
     request.format = :json
     raise error.class
+  end
+
+  def show
+    authorize! :show, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @lesson = Lesson.find(params[:id])
   end
 
   # PUT /lessons/1/change_status/1

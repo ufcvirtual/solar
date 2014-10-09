@@ -22,6 +22,10 @@
  
 (function($, undefined) {
 
+  function getFormattedDate(date){
+    return new Date(date).toLocaleFormat("%Y-%m-%d");
+  }
+
 var defaults = {
 
   // display
@@ -976,7 +980,7 @@ function EventManager(options, _sources) {
                 var start_hour = event.start_hour.split(":");
                 var end_hour = event.end_hour.split(":");
                 // compara as datas sem considerar o horário
-                while(start_date.getDate() <= end_date.getDate() && start_date.getMonth() <= end_date.getMonth() && start_date.getYear() <= end_date.getYear()){
+                while(getFormattedDate(start_date) <=  getFormattedDate(end_date)){
                   // cria novos eventos
                   var new_event = { 
                     "id": event.id,
@@ -5345,9 +5349,9 @@ function listView(element, calendar) {
               var event = $(events)[i];
               var today = new Date();
               // se o evento inicia de hoje em diante ou termina de hoje em diante
-              if(greaterOrEqual(event.start, today) || greaterOrEqual(event.end, today)){
+              if ((getFormattedDate(event.start) >= getFormattedDate(today)) || (getFormattedDate(event.end) >= getFormattedDate(today))){
                 // se o evento já começou, mas acaba algum dia depois de hoje
-                if(lessThan(event.start,today) && greaterThan(event.end,today)){
+                if ((getFormattedDate(event.start) < getFormattedDate(today)) && (getFormattedDate(event.end) > getFormattedDate(today))){
                   // adiciona um evento à lista informando o evento de hoje e o evento final
                   var today_event = {
                     "id": event.id,
@@ -5461,19 +5465,8 @@ function listView(element, calendar) {
             reportEventClear();
         }
 
-        function greaterOrEqual(date1, date2){
-          return (date1.getDate() >= date2.getDate() && date1.getMonth() >= date2.getMonth() && date1.getYear() >= date2.getYear());
-        }
-
-        function greaterThan(date1, date2){
-          return (date1.getDate() > date2.getDate() && date1.getMonth() > date2.getMonth() && date1.getYear() > date2.getYear());
-        }
-
-        function lessThan(date1, date2){
-          return (date1.getDate() < date2.getDate() && date1.getMonth() < date2.getMonth() && date1.getYear() < date2.getYear()); 
-        }
     };
-  
+
 }
 
 })(jQuery);

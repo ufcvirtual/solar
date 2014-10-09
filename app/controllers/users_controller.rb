@@ -65,17 +65,7 @@ class UsersController < ApplicationController
     @offers = Offer.offers_info_from_user(@user)
     @types  = ((not(EDX.nil?) and EDX["integrated"]) ? CurriculumUnitType.all : CurriculumUnitType.where("id <> 7"))
     allocation_tags = @user.activated_allocation_tag_ids(true, true)
-
-    ## Portlet do calendario; destacando dias que possuem eventos
-    unless allocation_tags.empty?
-      schedules_events       = Agenda.events(allocation_tags)
-      schedules_events_dates = schedules_events.collect do |schedule_event|
-        schedule_end_date    = schedule_event['end_date'].nil? ? "" : schedule_event['end_date'].to_date.to_s()
-        [schedule_event['start_date'].to_date.to_s(), schedule_end_date]
-      end
-
-      @scheduled_events = schedules_events_dates.flatten.uniq
-    end
+    @scheduled_events = Agenda.events(allocation_tags, nil, true) unless allocation_tags.empty?
   end
 
   def photo

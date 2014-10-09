@@ -709,6 +709,20 @@ en_US:
       groups: Groups
     select_lesson:
       no_lessons: Sem Aulas
+    show:
+      name: Name
+      description: Description
+      type: Type
+      link: URL
+      file: Files
+      not_defined: Not defined
+      start_date: Start
+      end_date: End
+      address: URL
+      status: Status
+      released: Released
+      draft: Draft
+      lesson_details: Lesson's details
   lesson_modules:
     general_of_offer: "General"
     general_of_group: "General of group"
@@ -2149,6 +2163,7 @@ en_US:
       assignments: "Assignment: "
       discussions: "Discussion: "
       schedule_events: "Event: "
+      lessons: "Lesson: "
       all_day: all day
       groups: Groups
       remove: Remove
@@ -2169,9 +2184,12 @@ en_US:
       presential_test: Presential Test
       webconference_lesson: Webconference Lesson
       recess_or_holiday: Recess or Holiday
+      lesson: Lesson
       other: Others
       legend: Legend
       all_day: all day
+    end_of: "End of: "
+    begin_of: "Begin of: "
   edx:
     warning:
       redirected: You've been redirected to SolarEdx at a new window

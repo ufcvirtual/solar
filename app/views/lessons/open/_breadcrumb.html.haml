@@ -5,4 +5,4 @@
   = select_tag :lesson_module, options_from_collection_for_select(@modules, 'id', 'name', @lesson.lesson_module_id)
   %span= ">"
 %span.lessons
-  = render partial: "lessons/show/lessons", locals: {lesson_module: @lesson.lesson_module}
+  = render partial: "lessons/open/lessons", locals: {lesson_module: @lesson.lesson_module}

@@ -19,19 +19,19 @@ class CurriculumUnitsWithLessonsTest < ActionDispatch::IntegrationTest
   test "acessar aula tipo link como aluno" do
     get @quimica_tab
 
-    get lesson_path(4)
+    get open_lesson_path(4)
     assert_response :success
   end
 
   test "acessar aula tipo arquivo como aluno" do
     get @teoria_lite
 
-    get lesson_path(7)
+    get open_lesson_path(7)
     assert_response :success
   end
 
   test "nao acessar aula sem acessar oferta primeiro" do
-    get lesson_path(4)
+    get open_lesson_path(4)
     assert_response :redirect
 
     assert_equal flash[:alert], I18n.t(:object_not_found)

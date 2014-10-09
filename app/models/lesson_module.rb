@@ -34,7 +34,7 @@ class LessonModule < ActiveRecord::Base
   end
 
   def self.to_select(allocation_tags_ids, user = nil, list = false)
-    user_is_admin    = user.nil? ? false : user.is_admin?
+    user_is_admin_or_editor    = user.nil? ? false : (user.is_admin? or user.is_editor?)
     user_responsible = user.nil? ? false : user.profiles_with_access_on("see_drafts", "lessons", allocation_tags_ids, true).any?
 
     joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tags_ids}).order("id").delete_if { |lmodule|
@@ -45,7 +45,7 @@ class LessonModule < ActiveRecord::Base
 
       lessons.empty? or (
         # nao eh admin nem responsavel
-        not(user_is_admin) and (not(user_responsible) and (only_responsible_sees == lessons.size) )
+        not(user_is_admin_or_editor) and (not(user_responsible) and (only_responsible_sees == lessons.size) )
       ) or (
         not(list) and lessons.size == lessons.map{ |l| true if l.address.blank? }.compact.size
       ) or not(list or has_open_lesson)
@@ -54,13 +54,13 @@ class LessonModule < ActiveRecord::Base
   end
 
   def lessons_to_open(user = nil, list = false)
-    user_is_admin    = user.is_admin?
-    user_responsible = user.nil? ? false : not(user.profiles_with_access_on("see_drafts", "lessons", nil, true).empty?)
+    user_is_admin_or_editor    = (user.is_admin? or user.is_editor?)
+    user_responsible = user.nil? ? false : not(user.profiles_with_access_on("see_drafts", "lessons", self.allocation_tags.map(&:id), true).empty?)
 
     lessons.order("lessons.order").collect{ |lesson|
       lesson_with_address = (list or not(lesson.address.blank?))
       # if (lesson can open to show or list is true) or (is draft or will_open and is responsible) or user is admin
-      lesson if ( user_is_admin or (user_responsible and (lesson.is_draft? or lesson.will_open?) ) or (not(lesson.is_draft?) and ((list and not(lesson.will_open?)) or lesson.open_to_show?)) ) and lesson_with_address
+      lesson if ( user_is_admin_or_editor or (user_responsible and (lesson.is_draft? or lesson.will_open?) ) or (not(lesson.is_draft?) and ((list and not(lesson.will_open?)) or lesson.open_to_show?)) ) and lesson_with_address
     }.compact.uniq
   end
 

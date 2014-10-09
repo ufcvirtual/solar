@@ -1,7 +1,7 @@
 .titlebar#lesson_header
   .inline
     .breadcrumb
-      = render "lessons/show/breadcrumb"
+      = render "lessons/open/breadcrumb"
     - if can?(:update, @lesson)
       .lesson_status
         %span.draft{class: @lesson.is_draft? ? '' : 'invisible'}

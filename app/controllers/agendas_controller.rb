@@ -7,13 +7,12 @@ class AgendasController < ApplicationController
      # se não estiver em uma uc específica, recupera as allocations tags ativadas do usuário
     @allocation_tags = (active_tab[:url][:allocation_tag_id].nil?) ? current_user.activated_allocation_tag_ids(true, true) : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.uniq
     @link            = not(params[:list_all_schedule].nil?) # apresentacao dos links de todas as schedules
-    @schedule        = Agenda.events(@allocation_tags, true, Date.parse(params[:date]))
+    @schedule        = Agenda.events(@allocation_tags, params[:date])
     render layout: false
   end
 
   def list
-    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ?  AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : params[:allocation_tags_ids])
-    authorize! :edition, Agenda, on: @allocation_tags if params.include?(:allocation_tags_ids)
+    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ?  AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : (params[:allocation_tags_ids].blank? ? current_user.activated_allocation_tag_ids(true, true) : params[:allocation_tags_ids]))
     @allocation_tags_ids = @allocation_tags_ids.join(" ") unless @allocation_tags_ids.nil?
 
     render action: :calendar
@@ -33,28 +32,20 @@ class AgendasController < ApplicationController
         (params.include?(:allocation_tags_ids) and not(params[:allocation_tags_ids].blank?)) ? params[:allocation_tags_ids].split(" ").flatten : current_user.activated_allocation_tag_ids(true, true)
       )
     ).uniq
+
     authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
 
-    events = (params.include?("list") ? 
-      Event.descendants.map{ |event| event.scoped.after(Date.today, @allocation_tags_ids) }.uniq : 
-      Event.descendants.map{ |event| event.scoped.between(params['start'], params['end'], @allocation_tags_ids) }.uniq )
-    @events = [events].flatten.map(&:schedule_json).uniq
-
+    @events = [Event.all_descendants(@allocation_tags_ids, current_user, params.include?("list"), params)].flatten.map(&:schedule_json).uniq
+    
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
     render json: @events
   end
 
   def dropdown_content
-    @model_name = case params[:type]
-      when "Assignment"; Assignment
-      when "Discussion"; Discussion
-      when "ChatRoom"; ChatRoom
-      when "ScheduleEvent"; ScheduleEvent
-    end
-
-    @event = @model_name.find(params[:id])
+    @model_name = params[:type].constantize
+    @event      = @model_name.find(params[:id])
+    @groups     = @event.groups
     @allocation_tags_ids = params[:allocation_tags_ids]
-    @groups = @event.groups
   end
 
 end

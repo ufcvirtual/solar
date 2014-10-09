@@ -155,10 +155,6 @@ agendastudent1:
   resource_id: 146
   per_id: false
 
-agendastudent2:
-  profile_id: 1
-  resource_id: 26
-
 # detalhes de ferramentas
 
 tooldetailstudent1:
@@ -389,10 +385,6 @@ agendaprof1:
   profile_id: 2
   resource_id: 146
   per_id: false
-
-agendaprof2:
-  profile_id: 2
-  resource_id: 26
 
 # detalhes de ferramentas
 
@@ -629,11 +621,6 @@ agendatutordist1:
   resource_id: 146
   per_id: false
 
-agendatutordist2:
-  profile_id: 3
-  resource_id: 26
-  per_id: false
-
 # detalhes de ferramentas
 
 tooldetailtutordist1:
@@ -765,11 +752,6 @@ tutor_p_19:
 tutor_p_20:
   profile_id: 4
   resource_id: 146
-  per_id: false
-
-agendatutor_p_20:
-  profile_id: 4
-  resource_id: 26
   per_id: false
 
 tutor_p_21:
@@ -1284,11 +1266,6 @@ agendaedit1:
   resource_id: 146
   per_id: false
 
-agendaedit2:
-  profile_id: 5
-  resource_id: 26
-  per_id: false
-
 # eventos
 
 eventedit1:
@@ -1595,11 +1572,6 @@ mamon11:
 agendastudentmon1:
   profile_id: 13
   resource_id: 146
-  per_id: false
-
-agendastudentmon2:
-  profile_id: 13
-  resource_id: 26
   per_id: false
 
 # detalhes de ferramentas
