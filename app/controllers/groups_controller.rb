@@ -116,7 +116,7 @@ class GroupsController < ApplicationController
     authorize! :change_tool, Group, on: [groups.map(&:allocation_tag).map(&:id)]
 
     begin
-      tool_model = model_by_tool_type(type)
+      tool_model = model_by_tool_type(params[:tool_type])
       tool = tool_model.find(params[:tool_id])
 
       if params[:type] == "add"
