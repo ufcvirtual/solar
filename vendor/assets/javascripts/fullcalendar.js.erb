@@ -26,6 +26,11 @@
     return new Date(date).toLocaleFormat("%Y-%m-%d");
   }
 
+  function selectButton(icon){
+    $(".fc-state-down").removeClass("fc-state-down");
+    $(".calendar_wrapper .block_content_toolbar td.block_toolbar_right .btn").find(".icon-calendar-"+icon+":first").parent().addClass("fc-state-down");
+  }
+
 var defaults = {
 
   // display
@@ -123,6 +128,7 @@ var fcViews = fc.views = {};
 
 $.fn.fullCalendar = function(options) {
 
+  selectButton("week");
 
   // method calling
   if (typeof options == 'string') {
@@ -766,7 +772,6 @@ function Header(calendar, options) {
                   .click(function() {
                     if (!button.hasClass(tm + '-state-disabled')){
                       if(buttonName == "list"){
-                        button.removeClass(tm + '-state-hover'); // forget why
                         calendar.changeView(buttonName);
                       }else{
                         buttonClick();
@@ -774,13 +779,11 @@ function Header(calendar, options) {
                     }
                   })
                   .mousedown(function() {
+                    $(".fc-state-down").removeClass("fc-state-down");
                     button
                       .not('.' + tm + '-state-active')
                       .not('.' + tm + '-state-disabled')
                       .addClass(tm + '-state-down');
-                  })
-                  .mouseup(function() {
-                    button.removeClass(tm + '-state-down');
                   })
                   .appendTo(e);
               }
