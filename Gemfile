@@ -19,7 +19,7 @@ gem "brazilian-rails", "~> 3.3.0"
 gem "simple_form", "~> 2.1.1"
 
 gem "paperclip", "~> 3.4.2"
-gem "will_paginate", "~> 3.0.5"
+gem "will_paginate", "~> 3.0.7"
 gem "jquery-rails", "~> 2.2.2"
 gem "fancybox2-rails", "~> 0.2.5"
 

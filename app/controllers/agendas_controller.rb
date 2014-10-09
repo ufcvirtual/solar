@@ -26,7 +26,7 @@ class AgendasController < ApplicationController
 
   # eventos para exibição no calendário
   def events
-    # recupera as allocation_tags relacionadas da turma informada caso esteja em uma turma; se tiver "allocation_tags_ids" sem ser vazio caso esteja na edição; recupera todas as allocation_tag_ids 
+    # recupera as allocation_tags relacionadas da turma informada caso esteja em uma turma; se tiver "allocation_tags_ids" sem ser vazio caso esteja na edição; recupera todas as allocation_tag_ids
     # que o usuário interage caso seja a agenda geral
     @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? AllocationTag.where(id: active_tab[:url][:allocation_tag_id]).map(&:related).flatten : (
         (params.include?(:allocation_tags_ids) and not(params[:allocation_tags_ids].blank?)) ? params[:allocation_tags_ids].split(" ").flatten : current_user.activated_allocation_tag_ids(true, true)
@@ -36,16 +36,22 @@ class AgendasController < ApplicationController
     authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
 
     @events = [Event.all_descendants(@allocation_tags_ids, current_user, params.include?("list"), params)].flatten.map(&:schedule_json).uniq
-    
+
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
     render json: @events
   end
 
   def dropdown_content
-    @model_name = params[:type].constantize
+    @model_name = model_by_param_type(params[:type])
     @event      = @model_name.find(params[:id])
     @groups     = @event.groups
     @allocation_tags_ids = params[:allocation_tags_ids]
   end
+
+  private
+
+    def model_by_param_type(type)
+      type.constantize if ['Assignment', 'Discussion', 'ChatRoom', 'ScheduleEvent', 'Lesson'].include?(type)
+    end
 
 end

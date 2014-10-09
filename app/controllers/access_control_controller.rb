@@ -4,8 +4,8 @@ class AccessControlController < ApplicationController
 
   ## Verificação de acesso ao realizar download de um arquivo relacionado à atividades ou um arquivo público
   def assignment
-    attachment_name    = params[:file] 
-    file_id            = attachment_name.slice(0..attachment_name.index("_")-1) 
+    attachment_name    = params[:file]
+    file_id            = attachment_name.slice(0..attachment_name.index("_")-1)
     current_path_split = request.env['PATH_INFO'].split("/") #ex: /media/assignment/public_area/20_crimescene.png => ["", "media", "assignment", "public_area", "20_crimescene.png"]
 
     case current_path_split[current_path_split.size-2] #ex: ["", "media", "assignment", "public_area", "20_crimescene.png"] => public_area
@@ -22,7 +22,7 @@ class AccessControlController < ApplicationController
         allocation_tags = active_tab[:url][:allocation_tag_id] || file.assignment.allocation_tags.pluck(:id)
         can_access = (can? :download, Assignment, on: [allocation_tags].flatten)
       when 'public_area' # área pública do aluno
-        file = PublicFile.find(file_id) 
+        file = PublicFile.find(file_id)
         same_class = Allocation.find_all_by_user_id(current_user.id).map(&:allocation_tag_id).include?(file.allocation_tag_id)
         can_access = (can? :index, PublicFile, on: [file.allocation_tag_id])
     end
@@ -63,9 +63,7 @@ class AccessControlController < ApplicationController
 
   def users
     user = User.find(params[:user_id])
-
-    params[:style].gsub!(/\.\./, '')
-    send_file user.photo.path(params[:style].intern), type: user.photo_content_type, disposition: 'inline'
+    send_file user.photo.path(params[:style]), type: user.photo_content_type, disposition: 'inline'
   end
 
 end

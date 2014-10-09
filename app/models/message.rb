@@ -10,12 +10,14 @@ class Message < ActiveRecord::Base
 
   before_save proc { |record| record.subject = I18n.t(:no_subject, scope: :messages) if record.subject == "" }
 
+  scope :by_user, ->(user_id) { joins(:user_messages).where(user_messages: {user_id: user_id}) }
+
   accepts_nested_attributes_for :user_messages, allow_destroy: true
   accepts_nested_attributes_for :files, allow_destroy: true
 
-  attr_accessor :contacts
+  self.per_page = Rails.application.config.items_per_page
 
-  scope :by_user, ->(user_id) { joins(:user_messages).where(user_messages: {user_id: user_id}) }
+  attr_accessor :contacts
 
   # box = [inbox, outbox, trashbox]
   def was_read?(user_id, box)

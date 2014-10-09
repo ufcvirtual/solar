@@ -116,7 +116,7 @@ class GroupsController < ApplicationController
     authorize! :change_tool, Group, on: [groups.map(&:allocation_tag).map(&:id)]
 
     begin
-      tool_model = params[:tool_type].constantize
+      tool_model = model_by_tool_type(type)
       tool = tool_model.find(params[:tool_id])
 
       if params[:type] == "add"
@@ -158,7 +158,13 @@ class GroupsController < ApplicationController
       error_message = I18n.translate!("#{error.message}", scope: [:groups, :error], :raise => true) rescue t("tool_change", scope: [:groups, :error])
       render json: {success: false, alert: error_message}, status: :unprocessable_entity
     end
-
   end
+
+  private
+
+    def model_by_tool_type(type)
+      type.constantize if ['Discussion', 'LessonModule', 'Assignment', 'ChatRoom', 'SupportMaterialFile', 'Bibliography', 'Notification', 'Webconference'].include?(type)
+    end
+
 
 end

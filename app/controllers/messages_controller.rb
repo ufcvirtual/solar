@@ -8,13 +8,11 @@ class MessagesController < ApplicationController
   def index
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
     @show_system_label = allocation_tag_id.nil?
-    @box = params[:box] || "inbox"
 
+    @box = option_user_box(params[:box])
     @unreads = Message.user_inbox(current_user.id, allocation_tag_id, true).count
 
-    @messages = Message.send("user_#{@box}", current_user.id, allocation_tag_id)
-                        .paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
-                        .order("created_at DESC").uniq
+    @messages = Message.send("user_#{@box}", current_user.id, allocation_tag_id).paginate(page: params[:page] || 1).order("created_at DESC").uniq
   end
 
   def new
@@ -186,5 +184,12 @@ class MessagesController < ApplicationController
   rescue
     render json: {success: false, alert: t("messages.errors.permission")}, status: :unprocessable_entity
   end
+
+  private
+
+    def option_user_box(type)
+      return type if ['outbox', 'trashbox'].include?(type)
+      'inbox'
+    end
 
 end
