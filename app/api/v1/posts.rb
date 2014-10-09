@@ -4,7 +4,7 @@ module V1
     guard_all!
 
     namespace :discussions do
-  
+
       helpers do
         # return a @discussion object
         def verify_user_permission_on_discussion_and_set_obj(permission) # permission = [:index, :create, ...]
@@ -69,7 +69,7 @@ module V1
         academic_allocation = AcademicAllocation.where(academic_tool_type: "Discussion", academic_tool_id: @discussion.id, allocation_tag_id: @group.allocation_tag.related).first
 
         @post = Post.new(params[:discussion_post].except("discussion_id"))
-        @post.user  = current_user         
+        @post.user  = current_user
         @post.level = @post.parent.level.to_i + 1 unless @post.parent_id.nil?
         @post.profile_id = @profile_id
         @post.academic_allocation_id = academic_allocation.id

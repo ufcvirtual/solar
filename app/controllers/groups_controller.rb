@@ -24,7 +24,7 @@ class GroupsController < ApplicationController
   # GET /groups/listando.json
   def mobilis_list
      @groups = current_user.groups
-    
+
     if params.include?(:curriculum_unit_id)
       @groups = CurriculumUnit.find(params[:curriculum_unit_id]).groups.where(id: @groups)
     end
@@ -99,7 +99,7 @@ class GroupsController < ApplicationController
     @group, @type_id, @offer_id = Group.where(id: params[:id].split(",")), params[:type_id], params[:offer_id]
     authorize! :destroy, Group, on: [@group.first.offer.allocation_tag.id]
 
-    Group.transaction do 
+    Group.transaction do
       begin
         raise "erro" if @group.map(&:can_destroy?).include?(false)
         @group.destroy_all

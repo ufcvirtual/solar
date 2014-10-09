@@ -53,7 +53,7 @@
 :javascript
 
   var div_list = $(".list_support_material");
-  var offer_id = "#{params[:offer_id]}";
+  var offer_id = "#{escape_once(params[:offer_id])}";
 
   $(function(){
     $(".link_new_material_file, .link_new_material_link").call_fancybox();
@@ -71,7 +71,7 @@
       var file_checked = checked_material.map(function() { return $(this).data("is-link"); }).get();
       if ($.inArray(true, file_checked)) {
         flash_message("#{I18n.t(:must_be_link, scope: [:support_materials, :index])}", "alert");
-        return false; 
+        return false;
       }
       var url_edit = $(this).data('link-edit').replace(':id', material_ids);
       $(this).call_fancybox({href : url_edit, open: true});

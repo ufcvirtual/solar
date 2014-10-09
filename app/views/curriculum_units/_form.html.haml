@@ -10,7 +10,7 @@
 
 %span.form_requirement= t(:required_fields)
 .curriculum_unit_form
-  = simple_form_for(@curriculum_unit, html: {id: "curriculum_unit_form"}) do |f| 
+  = simple_form_for(@curriculum_unit, html: {id: "curriculum_unit_form"}) do |f|
     - title = [(@curriculum_unit.persisted? ? "edit" : "new"), tool_name].join("_")
     %h1#lightBoxDialogTitle= t(".#{title}")
     %span.form_requirement= t(:required_fields)
@@ -21,12 +21,12 @@
       = f.association :curriculum_unit_type, as: :hidden, input_html: {value: @curriculum_unit.curriculum_unit_type.id}
       = f.input :name
       = f.input :code, input_html: {size: 50}
-      = f.input :resume 
+      = f.input :resume
       = f.input :objectives, :class => "btn btn_default"
       = f.input :syllabus
-      = f.input :prerequisites 
+      = f.input :prerequisites
       = f.input :passing_grade, input_html: { min: 0, max: 10, step: 0.5 }
-      
+
       .form-actions.button-align
         = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
         = button_tag t(".save"), class: "btn btn_main btn_lightbox", alt: t(".save"), type: "button", id: "save"
@@ -35,7 +35,7 @@
 
   jQuery(function($){
     $("#curriculum_unit").combobox("enable");
-    var type_id = "#{@curriculum_unit.curriculum_unit_type_id}";
+    var type_id = "#{escape_once(@curriculum_unit.curriculum_unit_type_id)}";
 
     if (type_id == "3")
       $("label[for='curriculum_unit_code']").append("*");

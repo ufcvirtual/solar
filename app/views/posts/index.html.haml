@@ -25,7 +25,7 @@
         = link_to(content_tag(:i, nil, :class=>'icon-flow-cascade'), discussion_posts_path(@discussion, {:display_mode => 'tree'}), {:class => "btn #{class_t}", :id => 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread")})
 
     #forum_pagination
-      = raw render_pagination_bar(@discussion.discussion_posts_count(@display_mode == "list", @allocation_tags).to_s, "display_mode=#{@display_mode}")
+      = sanitize render_pagination_bar(@discussion.discussion_posts_count(@display_mode == "list", @allocation_tags).to_s, "display_mode=#{@display_mode}")
       .new_posts
         #new_post
           = form_for(:discussion_post, html: { id: "new_post_form", :"action-to-edit" => discussion_post_path(@discussion.id, ':id'), :"action-default" => discussion_posts_path(@discussion.id), method: :put }) do |form|
@@ -56,7 +56,7 @@
     var websocket_port = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["port"]}"
 
     $(".forum_button_attachment").call_fancybox();
-    var display_list = ("#{@display_mode == 'list'}" == "true");
+    var display_list = ("#{escape_once(@display_mode) == 'list'}" == "true");
     var ac = "#{@academic_allocation_id}";
 
     $(".audio").each(function(){
@@ -89,20 +89,20 @@
       var post_table   = $("table#"+data.post_id);
       var parent_table = $("table#"+data.parent_id);
       // recover grandparent if has parent, but it doesn't exists at view (so it must render all tree of posts) and isn't list view and it is at first page
-      var grandparent  = (data.parent_id != null && !parent_table.length && !display_list && (1 == parseInt("#{@current_page}")));
+      var grandparent  = (data.parent_id != null && !parent_table.length && !display_list && (1 == parseInt("#{escape_once(@current_page)}")));
 
       $.get("#{discussion_post_path(@discussion.id, ':id')}".replace(':id', data.post_id), {new_post: true, grandparent: grandparent}, function(data2){
         if (!!post_table.length) // if post exists
           post_table.html(data2);
         else
-          if (!!parent_table.length && !display_list){ // if has parent and isn't list view 
+          if (!!parent_table.length && !display_list){ // if has parent and isn't list view
             $(parent_table.find("td.forum_post_content .forum_post_wrapper")[0]).after(data2);
             parent_table.find(".forum_post_buttons:first").find(".update_post:first, .forum_button_attachment:first, .btn_caution:first").remove();
           }else // if hasn't parent and is at the same page or is list view
-            if (data.parent_id == null && (1 == parseInt("#{@current_page}")) || !!display_list || !!grandparent)
+            if (data.parent_id == null && (1 == parseInt("#{escape_once(@current_page)}")) || !!display_list || !!grandparent)
               $(".forum_posts_wrapper").prepend(data2);
 
-        add_post_count_warning("#{@current_page}");
+        add_post_count_warning("#{escape_once(@current_page)}");
       });
     }
 

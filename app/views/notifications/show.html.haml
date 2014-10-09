@@ -5,18 +5,13 @@
     = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin'), "prev_notification()", class: "prev"
 
   .block_content
-    / .head
-    /   - @to.each do |to|
-    /     %p
-    /       %b= t(:for)
-    /       = to
     .notification
-      = raw @notification.description
+      = sanitize @notification.description
 
   .block_buttons
     .right
       = button_to_function t(:close), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
-      
+
 
 :javascript
   function load_fancy(id) {

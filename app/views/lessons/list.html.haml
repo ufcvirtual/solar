@@ -17,7 +17,7 @@
 
 :javascript
   var div_list = $(".list_lessons");
-  var offer_id = "#{params[:offer_id]}";
+  var offer_id = "#{escape_once(params[:offer_id])}";
 
   jQuery(function($) {
 

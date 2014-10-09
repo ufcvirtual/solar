@@ -19,7 +19,7 @@
     $(".save_comment").click(function(){
       var content = $('div.ckeditor .cke_contents iframe').contents().find('body').html();
       if (content != "<p><br></p>" && content != "")
-        $('textarea.ckeditor').html(content); 
+        $('textarea.ckeditor').html(content);
 
       $('#comment_form').serialize_and_submit({
         files: true,

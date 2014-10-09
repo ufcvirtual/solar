@@ -1,7 +1,7 @@
 class SupportMaterialFile < ActiveRecord::Base
 
   GROUP_PERMISSION, OFFER_PERMISSION = true, true
-  
+
   has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :allocation_tags, through: :academic_allocations
   has_many :groups, through: :allocation_tags
@@ -21,7 +21,7 @@ class SupportMaterialFile < ActiveRecord::Base
     url: "/media/support_material_files/:id_:basename.:extension"
 
   def url_protocol
-    self.url = ['http://', self.url].join if (self.url =~ URI::regexp(["ftp", "http", "https"])).nil? 
+    self.url = ['http://', self.url].join if (self.url =~ URI::regexp(["ftp", "http", "https"])).nil?
   end
 
   def name

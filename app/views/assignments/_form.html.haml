@@ -57,7 +57,7 @@
 
 :javascript
 
-  $("#assignment_start_date, #assignment_end_date").mask("#{I18n.t(:mask, scope: "date.formats")}");
+  $("#assignment_start_date, #assignment_end_date").mask("#{I18n.t('date.formats.mask')}");
 
   jQuery(function($){
 
@@ -111,7 +111,7 @@
     $('#save').click(function(){
       $('#assignment_form:last').serialize_and_submit({
         files: true,
-        replace_list: (("#{params[:calendar]}" == "") ? $(".list_assignments") : $(".calendar_schedules"))
+        replace_list: (("#{escape_once(params[:calendar])}" == "") ? $(".list_assignments") : $(".calendar_schedules"))
       });
     });
 
@@ -120,12 +120,12 @@
     /* se a data ficar vazia, recebe a data que veio ao carregar o formulário ou uma data permitida de acordo com a relação data final - data inicial */
     $('#assignment_end_date').blur(function(){
       if ($(this).datepicker("getDate") == null)
-        $(this).datepicker("setDate", new Date("#{@assignment.schedule.end_date}"));
+        $(this).datepicker("setDate", new Date("#{escape_once(@assignment.schedule.end_date)}"));
     });
 
     $('#assignment_start_date').blur(function(){
       if($(this).datepicker("getDate") == null)
-        $(this).datepicker("setDate", new Date("#{@assignment.schedule.start_date}"));
+        $(this).datepicker("setDate", new Date("#{escape_once(@assignment.schedule.start_date)}"));
     });
 
     var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);

@@ -41,7 +41,7 @@ class ChatRoom < Event
     cipher.iv  = chat['IV']
     cipher.key = chat['key']
 
-    [chat["url"], Base64.encode64(cipher.update(chat["params"].gsub("allocation_id", allocation_id.to_s).gsub("academic_id", academic_allocation_id.to_s)) + cipher.final).gsub("\n",'')].join
+    [chat["url"], Base64.encode64(cipher.update(chat["params"].gsub("allocation_id", allocation_id.to_s).gsub("academic_id", academic_allocation_id.to_s)) + cipher.final).gsub("\n",'')].join.html_safe
   end
 
   def verify_hours
@@ -66,11 +66,11 @@ class ChatRoom < Event
 
   def opened?
     start_hour, end_hour = [Date.today.to_s, self.start_hour].join(" "), [Date.today.to_s, self.end_hour].join(" ")
- 
+
      # para remediar o -3h na comparação com o horário do servidor
      now = DateTime.now
      now = DateTime.new(now.year, now.month, now.day, now.hour, now.minute)
- 
+
     # precisa verificar não só a data mas também a hora
     ((schedule.start_date.to_date..schedule.end_date.to_date).include?(Date.current)) and (start_hour.to_datetime <= now and end_hour.to_datetime >= now)
   end

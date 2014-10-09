@@ -3,8 +3,8 @@
     - tr_class = notification.read?(current_user) ? "read" : "unread"
     %tr.lines{id: notification.id, class: tr_class, "data-link-show" => notification_path(notification), "data-notification-idx" => idx}
       %td
-        .title= raw(truncate notification.title, length: 150)
-        .description= raw(truncate notification.description, length: 200)
+        .title= sanitize truncate(notification.title, length: 150)
+        .description= sanitize truncate(notification.description, length: 200)
 
 :javascript
   $(function(){

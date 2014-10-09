@@ -9,10 +9,10 @@
 
     .form-inputs.block_content
       = f.input :title, maxlength: 250, required: true
-      - types = {:"#{t(:presential_meeting, scope: [:schedule_events, :types])}" => Presential_Meeting, 
-        :"#{t(:presential_test, scope: [:schedule_events, :types])}" => Presential_Test, 
+      - types = {:"#{t(:presential_meeting, scope: [:schedule_events, :types])}" => Presential_Meeting,
+        :"#{t(:presential_test, scope: [:schedule_events, :types])}" => Presential_Test,
         :"#{t(:webconference_lesson, scope: [:schedule_events, :types])}" => WebConferenceLesson,
-        :"#{t(:recess, scope: [:schedule_events, :types])}" => Recess, 
+        :"#{t(:recess, scope: [:schedule_events, :types])}" => Recess,
         :"#{t(:holiday, scope: [:schedule_events, :types])}" => Holiday}
       - if @schedule_event.persisted?
         .input
@@ -29,7 +29,7 @@
           = f.fields_for :schedule, defaults: {required: true, input_html: {size: 10}} do |s|
             = s.input :start_date, as: :string, input_html: {id: 'start_date', value: l(@schedule_event.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
             = s.input :end_date, as: :string, input_html: {id: 'end_date', value: l(@schedule_event.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
-        
+
         .right{style: "margin-left: 60px; margin-right: 30px; #{show_fields ? "" : "display: none"}"}
           = f.input :start_hour, input_html: {size: 10}, required: true
           = f.input :end_hour, input_html: {size: 10}, required: true
@@ -42,9 +42,9 @@
           = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", id: "save"
 
 = javascript_include_tag "schedule_events"
-    
+
 :javascript
 
-  var start_date = "#{@schedule_event.schedule.start_date}";
-  var end_date = "#{@schedule_event.schedule.end_date}";
-  $("#start_date, #end_date").mask("#{I18n.t(:mask, scope: "date.formats")}");
+  var start_date = "#{escape_once(@schedule_event.schedule.start_date)}";
+  var end_date = "#{escape_once(@schedule_event.schedule.end_date)}";
+  $("#start_date, #end_date").mask("#{I18n.t('date.formats.mask')}");

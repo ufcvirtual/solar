@@ -14,7 +14,7 @@
         .forum_participant_nick{alt:"#{user.nick}"}
           = user.nick
           - unless user_at_class
-            %span{:"data-tooltip" => t(".moved_allocation")}= content_tag :i, nil, class: "icon-warning moved_allocation" 
+            %span{:"data-tooltip" => t(".moved_allocation")}= content_tag :i, nil, class: "icon-warning moved_allocation"
         .forum_participant_profile
           = (profile = post.profile).nil? ? '' : profile.name
       .forum_post_date
@@ -24,7 +24,7 @@
     %td.forum_post_content{colspan: 2}
       .forum_post_wrapper{class: new_post_class}
         .forum_post_inner_content
-          = raw(post.content)
+          = sanitize post.content
         - unless files.empty?
           .forum_post_attachment
             %h3=t(".file_list")
@@ -54,7 +54,7 @@
               = button_tag content_tag(:i, nil, class: 'icon-reply'), class: "btn btn_disabled", disabled: true, :'data-tooltip'=> t(".answer")
         .forum_post_reply
       - unless display_mode == 'list'
-        - children.each do |child| 
+        - children.each do |child|
           = render partial: "post", locals: {post: child, latest_posts: latest_posts, display_mode: display_mode, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: new_post}
   %tr
 
