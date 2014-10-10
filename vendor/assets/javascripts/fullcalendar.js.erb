@@ -26,11 +26,6 @@
     return new Date(date).toLocaleFormat("%Y-%m-%d");
   }
 
-  function selectButton(icon){
-    $(".fc-state-down").removeClass("fc-state-down");
-    $(".calendar_wrapper .block_content_toolbar td.block_toolbar_right .btn").find(".icon-calendar-"+icon+":first").parent().addClass("fc-state-down");
-  }
-
 var defaults = {
 
   // display
@@ -127,8 +122,6 @@ var fc = $.fullCalendar = { version: "1.5" };
 var fcViews = fc.views = {};
 
 $.fn.fullCalendar = function(options) {
-
-  selectButton("week");
 
   // method calling
   if (typeof options == 'string') {
@@ -5351,14 +5344,21 @@ function listView(element, calendar) {
             $(events).each(function (i) { 
               var event = $(events)[i];
               var today = new Date();
+              var title = event.title;
+              
               // se o evento inicia de hoje em diante ou termina de hoje em diante
               if ((getFormattedDate(event.start) >= getFormattedDate(today)) || (getFormattedDate(event.end) >= getFormattedDate(today))){
                 // se o evento já começou, mas acaba algum dia depois de hoje
                 if ((getFormattedDate(event.start) < getFormattedDate(today)) && (getFormattedDate(event.end) > getFormattedDate(today))){
+
+                  if (!event.recurring)
+                    if (getFormattedDate(event.end) == getFormattedDate(today))
+                      title = end_of + title;
+
                   // adiciona um evento à lista informando o evento de hoje e o evento final
                   var today_event = {
                     "id": event.id,
-                    "title": event.title,
+                    "title": title,
                     "description": event.description,
                     "start": today,
                     "end": event.end,
@@ -5373,9 +5373,13 @@ function listView(element, calendar) {
                   list_events.push(today_event);
 
                   if(event.allDay == true){
+
+                    if (!event.recurring)
+                      title = end_of + title;
+
                     var end_event = {
                       "id": event.id,
-                      "title": event.title,
+                      "title": title,
                       "description": event.description,
                       "start": event.end,
                       "end": event.end,
@@ -5390,6 +5394,9 @@ function listView(element, calendar) {
                     list_events.push(end_event);
                   }
                 }else{
+                  if (!event.recurring)
+                      event.title = begin_of + title;
+
                   // caso contrário, lista o evento "normal"
                   list_events.push(event);
                 }

@@ -30,25 +30,8 @@ module Taggable
     errors.empty?
   end
 
-  ## demais metodos
-
-  def unallocate_user(user_id, profile_id = nil)
-    query = {user_id: user_id}
-    query.merge!({profile_id: profile_id}) unless profile_id.nil?
-
-    allocations.where(query).destroy_all
-  end
-
   def allocation_tag_association
     AllocationTag.create({self.class.name.underscore.to_sym => self})
-  end
-
-  # creates or activates user allocation
-  def allocate_user(user_id, profile_id)
-    allocation = Allocation.where(user_id: user_id, allocation_tag_id: self.allocation_tag.id, profile_id: profile_id).first_or_initialize
-    allocation.status = Allocation_Activated
-    allocation.save
-    allocation
   end
 
   ## criacao de lesson module default :: devera ser chamada apenas por groups e offers
@@ -59,12 +42,24 @@ module Taggable
     end if respond_to?(:lesson_modules)
   end
 
-  ###
   ## Alocações
-  ###
 
-  ## user_id, new_status, opts = {profile_id, related}
-  def change_allocation_status(user_id, new_status, opts = {})
+  def unallocate_user(user_id, profile_id = nil)
+    query = {user_id: user_id}
+    query.merge!({profile_id: profile_id}) unless profile_id.nil?
+
+    allocations.where(query).destroy_all
+  end
+
+  # creates or activates user allocation
+  def allocate_user(user_id, profile_id)
+    allocation = Allocation.where(user_id: user_id, allocation_tag_id: self.allocation_tag.id, profile_id: profile_id).first_or_initialize
+    allocation.status = Allocation_Activated
+    allocation.save
+    allocation
+  end
+
+  def change_allocation_status(user_id, new_status, opts = {}) # opts = {profile_id, related}
     where = {user_id: user_id}
     where.merge!({profile_id: opts[:profile_id]}) if opts.include?(:profile_id) and not opts[:profile_id].nil?
 

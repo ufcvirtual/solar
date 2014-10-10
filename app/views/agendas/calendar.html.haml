@@ -38,11 +38,17 @@
   var futureEvents    = '#{t("fullcalendar.future_events")}';
   var listFormat      = '#{t("fullcalendar.listFormat")}';
   var noEventsMessage = '#{t("fullcalendar.noEvents")}';
+  var begin_of        = '#{t("agendas.begin_of")}';
+  var end_of          = '#{t("agendas.end_of")}';
 
 = javascript_include_tag "fullcalendar", "calendar"
 
 :javascript
   $(function(){
+
+    $(".fc-state-down").removeClass("fc-state-down");
+    $(".calendar_wrapper .block_content_toolbar td.block_toolbar_right .btn").find(".icon-calendar-week:first").parent().addClass("fc-state-down");
+
     $("#chat_room")
       .html("#{t(".new_chat")}")
       .call_fancybox({href: "#{new_chat_room_path(allocation_tags_ids: escape_once(params[:allocation_tags_ids]), calendar: true)}"});
