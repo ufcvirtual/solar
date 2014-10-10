@@ -2,9 +2,9 @@
   %thead
     %tr.lines
       %th{align: "left"}= t(".detail")
-      %th.center.date{style: "width: 25%"}= t(".availability")
+      %th.center{style: "width: 25%"}= t(".availability")
       - if history
-        %th.center{style: "width: 7%"}= t(".message_history")
+        %th.center.no_sort{style: "width: 7%"}= t(".message_history")
   %tbody
     - chats.each do |chat|
       %tr{class: "lines #{'period_ended' unless chat.opened?}"}
