@@ -156,7 +156,7 @@ class Offer < ActiveRecord::Base
     u_offers   = AllocationTag.where(id: user.allocations.where(status: Allocation_Activated, profile_id: u_profiles).uniq.pluck(:allocation_tag_id)).map(&:offers).flatten.compact
     offers     = (currents & u_offers)
 
-    allocations_info = offers.collect{ |offer| 
+    allocations_info = offers.collect{ |offer|
       ats = offer.allocation_tag.related
       uc, course = offer.curriculum_unit, offer.course
         {
@@ -185,7 +185,7 @@ class Offer < ActiveRecord::Base
   # offers.*, enroll_start_date, enroll_end_date
   def self.to_enroll
     find_by_sql %{
-      SELECT o.*, COALESCE(os_e.start_date, ss_e.start_date)::date AS enroll_start_date, 
+      SELECT o.*, COALESCE(os_e.start_date, ss_e.start_date)::date AS enroll_start_date,
         CASE
           WHEN o.enrollment_schedule_id IS NULL THEN COALESCE(ss_e.end_date, ss_p.end_date)::date
           WHEN o.enrollment_schedule_id IS NOT NULL AND o.offer_schedule_id IS NULL THEN COALESCE(os_e.end_date, ss_e.end_date, ss_p.end_date)::date
@@ -245,16 +245,16 @@ class Offer < ActiveRecord::Base
                 o.enrollment_schedule_id IS NULL AND (
                   -- semestre possui matricula com data final
                   (
-                    ss_e.end_date IS NOT NULL 
-                    AND 
+                    ss_e.end_date IS NOT NULL
+                    AND
                     now() BETWEEN ss_e.start_date AND ss_e.end_date -- usa periodo de matricula
                   )
 
                   OR
 
                   (
-                    ss_e.end_date IS NULL 
-                    AND 
+                    ss_e.end_date IS NULL
+                    AND
                     now() BETWEEN ss_e.start_date AND ss_p.end_date -- usa data final do periodo
                   )
                 )
@@ -270,9 +270,9 @@ class Offer < ActiveRecord::Base
     emails = users_with_profile_type(Profile_Type_Editor).map(&:email)
     emails << groups.map{|group| group.users_with_profile_type(Profile_Type_Editor).map(&:email)}
     Thread.new do
-      Mutex.new.synchronize {
+      Mutex.new.synchronize do
         Notifier.groups_disabled(emails.flatten.uniq.join(", "), groups.map(&:code), info).deliver
-      }
+      end
     end
   end
 

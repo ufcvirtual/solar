@@ -15,8 +15,8 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @groups.map {|g| {id: g.id, code: g.code, semester: g.offer.semester.name} } }
-      format.json  { render :json => @groups.map {|g| {id: g.id, code: g.code, semester: g.offer.semester.name} } }
+      format.xml  { render :xml => map_to_xml_or_json }
+      format.json  { render :json => map_to_xml_or_json }
     end
   end
 
@@ -29,15 +29,13 @@ class GroupsController < ApplicationController
       @groups = CurriculumUnit.find(params[:curriculum_unit_id]).groups.where(id: @groups)
     end
 
-    respond_to do |format|
-      format.json { render json: { groups: @groups.map {|g| {id: g.id, code: g.code, semester: g.offer.semester.name} } } }
-    end
+    render json: { groups: map_to_xml_or_json }
   end
 
   # Edicao
   def list
     @type_id = params[:type_id].to_i
-    offer    = Offer.find(params[:offer_id]) if params.include?(:offer_id)
+    offer = Offer.find(params[:offer_id]) if params.include?(:offer_id)
 
     if offer.nil?
       query = []
@@ -56,58 +54,54 @@ class GroupsController < ApplicationController
 
   def new
     authorize! :create, Group
-    @offer_id = params[:offer_id]
-    @group = Group.new offer_id: @offer_id
+
+    @group = Group.new offer_id: params[:offer_id]
   end
 
   def edit
     authorize! :update, Group
-    @group, @type_id, @offer_id = Group.find(params[:id]), params[:type_id], params[:offer_id]
+
+    @group = Group.find(params[:id])
+    @type_id = params[:type_id]
   end
 
   def create
-    params[:group][:user_id] = current_user.id
-    @group, @type_id, @offer_id = Group.new(params[:group]), params[:type_id], (params.include?(:offer_id) ? params[:offer_id] : params[:group][:offer_id])
+    @group = Group.new(group_params)
+
     authorize! :create, Group, on: [@group.offer.allocation_tag.id]
 
+    @group.user_id = current_user.id
     if @group.save
-      render json: {success: true, notice: t(:created, scope: [:groups, :success])}
+      render json: {success: true, notice: t('groups.success.created')}
     else
       render :new
     end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def update
-    @group, @type_id, @offer_id = Group.where(id: params[:id].split(",")), params[:type_id], (params.include?(:offer_id) ? params[:offer_id] : params[:group][:offer_id])
+    @group = Group.where(id: params[:id].split(","))
     authorize! :update, Group, on: [@group.first.offer.allocation_tag.id]
 
-    if params[:multiple]
-      @group.update_all(status: params[:status])
-      Offer.find(@offer_id).notify_editors_of_disabled_groups(@group) if params[:status] == "false"
-      render json: {success: true, notice: t(:updated, scope: [:groups, :success])}
-    else
-      @group = @group.first
-      if @group.update_attributes(params[:group])
-        render json: {success: true, notice: t(:updated, scope: [:groups, :success])}
-      else
-        render :edit
-      end
-    end
+    @type_id = params[:type_id]
+
+    params[:multiple] ? update_multiple : update_single
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def destroy
-    @group, @type_id, @offer_id = Group.where(id: params[:id].split(",")), params[:type_id], params[:offer_id]
+    @group = Group.where(id: params[:id].split(","))
+
     authorize! :destroy, Group, on: [@group.first.offer.allocation_tag.id]
 
-    Group.transaction do
-      begin
-        raise "erro" if @group.map(&:can_destroy?).include?(false)
-        @group.destroy_all
-        render json: {success: true, notice: t(:deleted, scope: [:groups, :success])}
-      rescue => error
-        render json: {success: false, alert: t(:deleted, scope: [:groups, :error])}, status: :unprocessable_entity
-      end
-    end
+    destroy_multiple
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   # desvincular/remover/adicionar turmas para determinada ferramenta
@@ -162,8 +156,43 @@ class GroupsController < ApplicationController
 
   private
 
+    def group_params
+      params.require(:group).permit(:offer_id, :code)
+    end
+
+    def map_to_xml_or_json
+      @groups.map { |g| {id: g.id, code: g.code, semester: g.offer.semester.name} }
+    end
+
     def model_by_tool_type(type)
       type.constantize if ['Discussion', 'LessonModule', 'Assignment', 'ChatRoom', 'SupportMaterialFile', 'Bibliography', 'Notification', 'Webconference'].include?(type)
+    end
+
+    def update_multiple
+      @group.update_all(status: params[:status])
+      @group.first.offer.notify_editors_of_disabled_groups(@group) if params[:status] == "false"
+
+      render json: {success: true, notice: t(:updated, scope: [:groups, :success])}
+    end
+
+    def update_single
+      @group = @group.first
+      if @group.update_attributes(group_params)
+        render json: {success: true, notice: t(:updated, scope: [:groups, :success])}
+      else
+        render :edit
+      end
+    end
+
+    def destroy_multiple
+      Group.transaction do
+        if @group.map(&:can_destroy?).include?(false)
+          render json: {success: false, alert: t('groups.error.deleted')}, status: :unprocessable_entity
+        else
+          @group.destroy_all
+          render json: {success: true, notice: t('groups.success.deleted')}
+        end
+      end
     end
 
 end

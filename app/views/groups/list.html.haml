@@ -7,7 +7,7 @@
   .block_content_toolbar
     .block_toolbar_left.btn-group
       = link_to content_tag(:i, nil, class: 'icon-plus'), "#", class: " btn btn_main", id: "btn_new_group", :"data-link-new" => new_group_path(type_id: @type_id, offer_id: @offer_id), :"data-tooltip" => t(".new")
-        
+
     .block_toolbar_right
       = link_to (content_tag(:i, nil, class: 'icon-checkbox-unchecked')), "#", id: 'all_groups', class: 'btn', :'data-tooltip' => t(".all"), :"data-children-names" => "ckb_group", disabled: (@groups.empty?)
       = link_to (content_tag(:i, nil, class: 'icon-cross')), "#", class: 'btn disable_group', :'data-tooltip' => t(".disable"), :"data-link-status" => group_path(id: ':id', status: false, multiple: true, type_id: @type_id, offer_id: @offer_id)

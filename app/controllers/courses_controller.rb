@@ -64,7 +64,7 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
     authorize! :update, @course
 
-    if @course.update_attributes!(course_params)
+    if @course.update_attributes(course_params)
       render json: {success: true, notice: t(:updated, scope: [:courses, :success]), code_name: @course.code_name, id: @course.id}
     else
       render :edit

@@ -1,5 +1,6 @@
 class Group < ActiveRecord::Base
   include Taggable
+  include ActiveModel::ForbiddenAttributesProtection
 
   default_scope order: "groups.status, groups.code"
 
@@ -19,7 +20,7 @@ class Group < ActiveRecord::Base
 
   validates :code, :offer_id, presence: true
 
-  validate :unique_code, unless: "offer_id.nil? or code.nil? or not(code_changed?)"
+  validate :unique_code_on_offer, unless: "offer_id.nil? or code.nil? or not(code_changed?)"
 
   validates_length_of :code, maximum: 40
 
@@ -34,14 +35,6 @@ class Group < ActiveRecord::Base
   # recupera os participantes com perfil de estudante
   def students_participants
     allocations.joins(:profile).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean)").where(status: Allocation_Activated).uniq
-  end
-
-  def self.find_all_by_offer_id_and_user_id(offer_id, user_id)
-    Group.joins(offer: :semester).where(
-      groups: {
-        id: User.find(user_id).groups(nil, Allocation_Activated).map(&:id), offer_id: offer_id,
-        status: true
-      } ).select("DISTINCT groups.id, semesters.*, groups.*").order('semesters.name DESC, groups.code ASC')
   end
 
   def has_any_lower_association?
@@ -100,8 +93,23 @@ class Group < ActiveRecord::Base
     result
   end
 
-  def unique_code
-    errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) if Group.where(offer_id: offer_id, code: code).any?
+
+  ## class methods
+
+
+  def self.find_all_by_offer_id_and_user_id(offer_id, user_id)
+    Group.joins(offer: :semester).where(
+      groups: {
+        id: User.find(user_id).groups(nil, Allocation_Activated).map(&:id), offer_id: offer_id,
+        status: true
+      } ).select("DISTINCT groups.id, semesters.*, groups.*").order('semesters.name DESC, groups.code ASC')
   end
+
+
+  private
+
+    def unique_code_on_offer
+      errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) if Group.where(offer_id: offer_id, code: code).any?
+    end
 
 end

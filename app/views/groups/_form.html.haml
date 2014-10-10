@@ -1,10 +1,10 @@
 .new_group
   = simple_form_for @group, html: {id: 'group_form'} do |f|
-    %h1#lightBoxDialogTitle= t((@group.persisted? ? :edit : :new), scope: "groups.list")
+    %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit : :new), scope: "groups.list")
     %span.form_requirement= t(:required_fields)
-    
+
     .form-inputs.block_content
-      = f.input :offer_id, as: :hidden, input_html: {value: @offer_id}
+      = f.input :offer_id, as: :hidden
 
       %div
         = f.label t(:course)
@@ -35,7 +35,7 @@
     $("#save").click(function(){
       $('form#group_form').serialize_and_submit({
         complement_success: function(data) {
-          var url = "#{list_groups_path(type_id: @type_id, offer_id: @offer_id)}";
+          var url = "#{list_groups_path(type_id: @type_id, offer_id: @group.offer_id)}";
 
           $.get(url, function(data) {
             $('.groups_list').html(data);
