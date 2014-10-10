@@ -4,7 +4,7 @@ module Taggable
   extend ActiveSupport::Concern
 
   included do
-    before_destroy :destroy_empty_modules # modulos vazios (default)
+    before_destroy :destroy_empty_modules, if: Proc.new { |ac| ac.respond_to?(:lesson_modules) }
     before_destroy :can_destroy?
 
     after_create :allocation_tag_association
@@ -18,31 +18,16 @@ module Taggable
     attr_accessor :user_id
   end
 
-  ## verificando destroy
   def destroy_empty_modules
-    return unless respond_to?(:lesson_modules)
-
-    # modules without lessons
-    lm_ids = lesson_modules.pluck(:id)
-    lm_lessons = Lesson.where(lesson_module_id: lm_ids).pluck(:id).flatten
-
-    if lm_lessons.empty?
-      lesson_modules.map(&:academic_allocations).flatten.map(&:delete) # usando delete para nao chamar callbacks
-      lesson_modules.map(&:delete)
-    end
+    lesson_modules.map(&:delete_with_academic_allocations) if lesson_modules.map(&:lessons).flatten.empty?
   end
 
   def can_destroy?
     errors.add(:base, I18n.t(:dont_destroy_with_lower_associations)) if has_any_lower_association?
-    errors.add(:base, I18n.t(:dont_destroy_with_many_allocations)) if allocations.select("DISTINCT user_id").count > 1 # se possuir mais de um usuario alocado, nao deleta
-
-    alc = academic_allocations.count
-    if alc > 0 # tem conteudo
-      # pode destruir somente se o conteudo for apenas um modulo de aula
-      errors.add(:base, I18n.t(:dont_destroy_with_content)) unless alc == 1 and not(academic_allocations.where(academic_tool_type: 'LessonModule').empty?)
-    end
-
-    return errors.empty?
+    errors.add(:base, I18n.t(:dont_destroy_with_many_allocations))   if allocations.select("DISTINCT user_id").count > 1 # se possuir mais de um usuario alocado, nao deleta
+    # pode destruir somente se o conteudo for apenas um modulo de aula
+    errors.add(:base, I18n.t(:dont_destroy_with_content))            unless (academic_allocations.count == 0 or (academic_allocations.count == 1 and academic_allocations.where(academic_tool_type: 'LessonModule').any?))
+    errors.empty?
   end
 
   ## demais metodos

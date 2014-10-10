@@ -12,6 +12,7 @@ class Event < ActiveRecord::Base
     ((schedules.start_date >= ?) OR (schedules.end_date >= ?)) AND allocation_tags.id IN (?)", 
     today, today, allocation_tags] }}
 
+  # recupera os eventos que englobam o dia de hoje
   scope :of_today, lambda {|day, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
     (? BETWEEN schedules.start_date AND schedules.end_date) AND allocation_tags.id IN (?)", 
     day, allocation_tags] }}
@@ -32,7 +33,7 @@ class Event < ActiveRecord::Base
       recurring: (has_start_hour and has_end_hour), # se tiver hora de inicio e fim, é recorrente de todo dia no intervalo
       start_hour: (has_start_hour ? start_hour : nil),
       end_hour: (has_end_hour ? end_hour : nil),
-      color: verify_type(self.class.to_s, (respond_to?(:type_event) ? type_event : nil)),
+      color: verify_type,
       type: self.class.name,
       dropdown_path: Rails.application.routes.url_helpers.send("dropdown_content_of_#{self.class.name.to_s.tableize.singularize}_path", id: id, allocation_tags_ids: 'all_params')
     }
@@ -52,9 +53,9 @@ class Event < ActiveRecord::Base
     Time.at(date_time.to_i).to_formatted_s(:db)
   end
 
-  def verify_type(model_name, type_event)
+  def verify_type
     return (
-      case model_name
+      case self.class.to_s
         when "Assignment"; "#FCEBCA"
         when "ChatRoom"; "#A7C1F0"
         when "Discussion"; "#CAFCCC"
@@ -75,7 +76,6 @@ class Event < ActiveRecord::Base
     )
   end
 
-  # recupera o "caminho" o qual a ferramenta pertence
   def parents_path
     allocation_tags = self.academic_allocations.map(&:allocation_tag)
     first_at, count_groups = allocation_tags.first, allocation_tags.count

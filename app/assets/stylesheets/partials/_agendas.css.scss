@@ -139,10 +139,11 @@
         text-align: left;
         font-size: 11pt;
       }
-      h2, h3, .group_label label{
+      h2, h3, .group_label label, h3 p{
         color: $text_grey;
         font-size: 10pt;
         font-weight: normal;
+        text-align: left;
       }
       h2{
         margin: 6px;

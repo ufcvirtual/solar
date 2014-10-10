@@ -71,4 +71,9 @@ class LessonModule < ActiveRecord::Base
       .paginate(page: page, per_page: per_page)
   end
 
+  def delete_with_academic_allocations
+    academic_allocations.delete_all
+    self.delete
+  end
+
 end
