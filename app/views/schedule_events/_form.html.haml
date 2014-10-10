@@ -24,15 +24,15 @@
         = f.input :place, maxlength: 250, required: true
       = f.input :description
 
-      .schedule_dates
-        .left
-          = f.fields_for :schedule, defaults: {required: true, input_html: {size: 10}} do |s|
+      = f.fields_for :schedule, defaults: {required: true, input_html: {size: 10}} do |s|
+        .schedule_dates
+          .left
             = s.input :start_date, as: :string, input_html: {id: 'start_date', value: l(@schedule_event.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
+            = f.input :start_hour, input_html: {size: 10}, required: true
+          
+          .right_form{style: "margin-left: 60px; margin-right: 30px; #{show_fields ? "" : "display: none"}"}
             = s.input :end_date, as: :string, input_html: {id: 'end_date', value: l(@schedule_event.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
-
-        .right{style: "margin-left: 60px; margin-right: 30px; #{show_fields ? "" : "display: none"}"}
-          = f.input :start_hour, input_html: {size: 10}, required: true
-          = f.input :end_hour, input_html: {size: 10}, required: true
+            = f.input :end_hour, input_html: {size: 10}, required: true
 
       = render "groups/codes"
 

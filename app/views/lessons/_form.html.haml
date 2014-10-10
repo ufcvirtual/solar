@@ -25,7 +25,7 @@
 
         .schedule_dates
           .left= s.input :start_date, as: :string, input_html: {id: 'from-date', value: l(s.object.start_date.try(:to_date) || Date.today, format: :datepicker), required: true, size: 10}
-          .right
+          .right_form
             %span.end_date{class: (has_end_date ? '' : 'invisible')}
               = s.input :end_date, as: :string, input_html: {id: 'until-date', value: (has_end_date ? l(s.object.end_date.to_date, format: :datepicker) : nil), size: 10}
 

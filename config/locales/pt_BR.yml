@@ -276,8 +276,8 @@ pt_BR:
         description: Descrição
         schedule: Período
       schedule:
-        start_date: Início
-        end_date: Fim
+        start_date: Período
+        end_date: à
       assignment:
         allocation_tag_id: Turma
         name: Título
@@ -285,8 +285,8 @@ pt_BR:
         enunciation: Enunciado
         end_evaluation_period: Data final do período de avaliação
         schedule: Período
-        start_date: Data de início
-        end_date: Data de término
+        start_date: Período
+        end_date: à
       assignment_enunciation_file:
         attachment: "Arquivos"
       semester:
@@ -298,14 +298,14 @@ pt_BR:
         enrollment: Matrícula
         course: Curso
         curriculum_unit: Disciplina
-        start_date: Data inicial
-        end_date: Data final
+        start_date: Período
+        end_date: à
         semester: Semestre
       lesson:
         name: Nome
         description: Descrição
-        start_date: Início
-        end_date: Fim
+        start_date: Período
+        end_date: à
         status: Status
         address: URL
       lesson_module:
@@ -317,8 +317,8 @@ pt_BR:
       chat_room:
         title: Título
         description: Descrição
-        start_hour: Hora de início
-        end_hour: Hora de término
+        start_hour: Horário
+        end_hour: à
       author:
         name: Autor
       bibliography:
@@ -346,8 +346,8 @@ pt_BR:
         type_event: Tipo
         place: Local
         description: Descrição
-        start_hour: Hora de início
-        end_hour: Hora de término
+        start_hour: Horário
+        end_hour: à
       notification:
         title: Título
         description: Descrição
@@ -1053,8 +1053,8 @@ pt_BR:
       name: Nome
       description: Descrição
       groups: Turmas
-      start_date: Início
-      end_date: Término
+      start_date: Período
+      end_date: à
       discussion_details: Detalhes do fórum
 
   bibliographies:
@@ -1101,7 +1101,7 @@ pt_BR:
     form:
       new: Novo Aviso
       edit: Editar Aviso
-      day_from: De
+      day_from: Período
       day_to: a
     list:
       notifications: Avisos
@@ -1274,8 +1274,8 @@ pt_BR:
   offer: "Oferta"
   offer_confirm: "Você tem certeza que deseja deletar?"
   semester: "Semestre"
-  start_date: "Data inicial"
-  end_date: "Data final"
+  start_date: "Período"
+  end_date: "à"
   course: "Curso"
   curriculum_unit: "Disciplina"
 
@@ -1541,8 +1541,8 @@ pt_BR:
       name: Nome
       enunciation: Enunciado
       type_assignment: Tipo
-      start_date: Início
-      end_date: Término
+      start_date: Período
+      end_date: à
       files: Arquivos
       empty_files: Não há arquivos
       groups: Turmas
@@ -2074,7 +2074,7 @@ pt_BR:
       all: Todos(as)
       enroll_period: Período de matrícula
       enable_end_date: Habilitar data final
-      start_date: Início
+      start_date: Período
       semester_offer: Oferta do Semestre
       semester_enrollment: Matrícula do Semestre
       define_different_dates: Definir datas diferentes do semestre
@@ -2183,8 +2183,8 @@ pt_BR:
       description: Descrição
       time: Horário
       to: " às "
-      start_date: Início
-      end_date: Término
+      start_date: Período
+      end_date: à
       defined_participants: Participantes definidos
       chat_details: Detalhes do chat
     messages:
@@ -2382,8 +2382,8 @@ pt_BR:
       time: Horário
       to: " às "
       groups: Turmas
-      start_date: Início
-      end_date: Término
+      start_date: Período
+      end_date: à
       event_details: Detalhes do evento
 
   agendas:

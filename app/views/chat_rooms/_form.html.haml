@@ -9,15 +9,15 @@
       = f.input :title, maxlength: 250
       = f.input :description, required: false
 
-      .schedule_dates
-        .left
-          = f.fields_for :schedule, defaults: {required: true} do |s|
+      = f.fields_for :schedule, defaults: {required: true} do |s|
+        .schedule_dates
+          .left
             = s.input :start_date, as: :string, input_html: {id: 'chat_start_date', value: l(f.object.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
-            = s.input :end_date, as: :string, input_html: {id: 'chat_end_date', value: l(f.object.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
+            = f.input :start_hour
 
-        .right
-          = f.input :start_hour
-          = f.input :end_hour
+          .right_form
+            = s.input :end_date, as: :string, input_html: {id: 'chat_end_date', value: l(f.object.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
+            = f.input :end_hour
 
       / groups
       .academic_allocations

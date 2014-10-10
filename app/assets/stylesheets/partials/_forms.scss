@@ -44,9 +44,14 @@
   padding-left: 5px;
 }
 
+.right_form label.form_label{
+  width: 20px !important;
+}
+
 .form-inputs .form_label:first-child {
   width: 76px;
 }
+
 
 .space .form_label:first-child{
   width: 80px;
@@ -58,11 +63,11 @@
 
 .form-inputs .input input, .form-inputs > .input > textarea {
   max-width: 340px;
-  min-width: 50px;
+  min-width: 80px;
 }
 
 .form-inputs > .input > select {
-  width: 315px;
+  width: 81%;
 }
 
 .form_inner_label {
@@ -168,10 +173,6 @@ select[disabled] {
   float: left;
 }
 
-#discussion_name{
-  width: 217px;
-}
-
 #curriculum_unit_form{
   width: auto;
 }
@@ -236,7 +237,15 @@ select[disabled] {
     vertical-align: top;
 
     &:first-child {
-      min-width: 240px;
+      min-width: 255px;
+    }
+  }
+}
+
+.form-inputs .inline_bibliography {
+  & > div {
+    &:first-child {
+      min-width: 225px;
     }
   }
 }
@@ -245,15 +254,17 @@ select[disabled] {
  * Para bibliografia
  */
 
-.new_bibliography, .edit_bibliography {
+.new_bibliography,.edit_bibliography {
 
   .form_label:first-child {
     width: 95px;
   }
-
   .error {
     margin-left: 100px;
     margin-bottom: 0;
     padding-left: 0;
   }
+}
+.bibliography_publication_year .form_label:first-child{
+    width: 125px;
 }

@@ -8,7 +8,7 @@
 .inline
   = f.input :volume, as: :string, required: true, input_html: {size: 5}
   = f.input :pages, as: :string, required: true, input_html: {size: 5}, placeholder: "5, 12-20"
-.inline
+.inline.inline_bibliography
   = f.input :publication_month, as: :string, required: true, input_html: {size: 10}
   = f.input :publication_year, as: :string, required: true, input_html: {size: 5}
 

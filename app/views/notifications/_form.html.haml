@@ -10,7 +10,7 @@
   .form-inputs.block_content
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
-    .inline
+    .inline_block
       = f.input :title
       = f.fields_for :schedule, defaults: {required: true} do |s|
         .schedule_dates
@@ -18,7 +18,7 @@
           - end_date = (s.object.end_date.nil?) ? nil : l(s.object.end_date.to_date, format: :datepicker)
 
           .left= s.input :start_date, label: t(".day_from"), as: :string, input_html: {id: 'from-date', size: 10, value: start_date}
-          .right= s.input :end_date, label: t(".day_to"), as: :string, input_html: {id: 'until-date', size: 10, value: end_date}
+          .right_form= s.input :end_date, label: t(".day_to"), as: :string, input_html: {id: 'until-date', size: 10, value: end_date}
 
     = f.input :description, as: :ckeditor, label: false
 
