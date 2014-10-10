@@ -17,6 +17,27 @@ module V1::V1Helpers
     user
   end
 
+  def creates_offer_and_semester(name, offer_period, enrollment_period, params)
+    semester = Semester.where(name: name).first_or_initialize
+
+    enrollment_period = {start_date: enrollment_period[:start_date].try(:to_date) || offer_period[:start_date], end_date: enrollment_period[:end_date].try(:to_date) || offer_period[:end_date]}
+
+    if semester.new_record?
+      semester.build_offer_schedule offer_period
+      semester.build_enrollment_schedule enrollment_period
+      semester.verify_current_date = false # don't validate initial date
+      semester.save!
+    end
+
+    offer = Offer.new params.merge!({semester_id: semester.id})
+    offer.build_period_schedule offer_period          if semester.offer_schedule.start_date.to_date != offer_period[:start_date] or semester.offer_schedule.end_date.to_date != offer_period[:end_date]
+    offer.build_enrollment_schedule enrollment_period if semester.enrollment_schedule.start_date.to_date != enrollment_period[:start_date] or semester.enrollment_schedule.end_date.to_date != enrollment_period[:end_date]
+    offer.verify_current_date = false # don't validates initial date
+    offer.save!
+
+    offer
+  end
+
   def allocate_professors(group, cpfs)
     group.allocations.where(profile_id: 17).update_all(status: 2) # cancel all previous allocations
 

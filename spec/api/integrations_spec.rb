@@ -411,4 +411,187 @@ describe "Integrations" do
 
   end #groups
 
+  describe "bla" do
+   describe ".course" do
+
+    describe "post" do
+
+      context "with valid ip" do
+
+        context 'create course' do
+          let!(:json_data){ { 
+            name: "Curso 01",
+            code: "C01"
+          } }
+
+          subject{ -> { post "/api/v1/integration/course", json_data } } 
+
+          it { should change(Course,:count).by(1) }
+
+          it {
+            post "/api/v1/integration/course", json_data
+            response.status.should eq(201)
+            response.body.should == {id: Course.find_by_code("C01").id}.to_json
+          }
+        end
+
+      end
+
+    end # post
+
+  end # .course
+
+  describe ".curriculum_unit" do
+
+    describe "post" do
+
+      context "with valid ip" do
+
+        context 'create curriculum_unit' do
+          let!(:json_data){ { 
+            name: "UC 01",
+            code: "UC01",
+            curriculum_unit_type_id: 1
+          } }
+
+          subject{ -> { post "/api/v1/integration/curriculum_unit", json_data } } 
+
+          it { should change(CurriculumUnit,:count).by(1) }
+
+          it {
+            post "/api/v1/integration/curriculum_unit", json_data
+            response.status.should eq(201)
+            response.body.should == {id: CurriculumUnit.find_by_code("UC01").id, course_id: nil}.to_json
+          }
+        end
+
+        context 'create curriculum_unit tipo livre' do
+          let!(:json_data){ { 
+            name: "UC 01",
+            code: "UC01",
+            curriculum_unit_type_id: 3
+          } }
+
+          subject{ -> { post "/api/v1/integration/curriculum_unit", json_data } } 
+
+          it { should change(Course,:count).by(1) }
+          it { should change(CurriculumUnit,:count).by(1) }
+
+          it {
+            post "/api/v1/integration/curriculum_unit", json_data
+            response.status.should eq(201)
+            response.body.should == {id: CurriculumUnit.find_by_code("UC01").id, course_id: Course.find_by_code("UC01").id}.to_json
+          }
+        end
+
+      end
+
+    end # post
+
+  end # .curriculum_unit
+
+  describe ".offer" do
+
+    describe "post" do
+
+      context "with valid ip" do
+
+        context 'create offer with new semester' do
+          let!(:json_data){ { 
+            name: "2014",
+            offer_start: Date.today - 1.month,
+            offer_end: Date.today + 1.month,
+            curriculum_unit_id: 3, 
+            course_id: 2
+          } }
+
+          subject{ -> { post "/api/v1/integration/offer", json_data } } 
+
+          it { should change(Semester,:count).by(1) }
+          it { should change(Schedule,:count).by(2) }
+          it { should change(Offer,:count).by(1) }
+
+          it {
+            post "/api/v1/integration/offer", json_data
+            response.status.should eq(201)
+            response.body.should == {id: Offer.last.id}.to_json
+          }
+        end
+
+        context 'create offer with existing semester and same dates' do
+          let!(:json_data){ { 
+            name: "2011.1",
+            offer_start: '2011-03-10',
+            offer_end: '2021-12-01',
+            enrollment_start: '2011-01-01',
+            enrollment_end: '2021-03-02',
+            curriculum_unit_id: 1,
+            course_id: 1
+          } }
+
+          subject{ -> { post "/api/v1/integration/offer", json_data } } 
+
+          it { should change(Semester,:count).by(0) }
+          it { should change(Schedule,:count).by(0) }
+          it { should change(Offer,:count).by(1) }
+
+          it {
+            post "/api/v1/integration/offer", json_data
+            response.status.should eq(201)
+            response.body.should == {id: Offer.last.id}.to_json
+          }
+        end
+
+        context 'create offer with existing semester and same offer dates' do
+          let!(:json_data){ { 
+            name: "2011.1",
+            offer_start: '2011-03-10',
+            offer_end: '2021-12-01',
+            curriculum_unit_id: 1,
+            course_id: 1
+          } }
+
+          subject{ -> { post "/api/v1/integration/offer", json_data } } 
+
+          it { should change(Semester,:count).by(0) }
+          it { should change(Schedule,:count).by(1) }
+          it { should change(Offer,:count).by(1) }
+
+          it {
+            post "/api/v1/integration/offer", json_data
+            response.status.should eq(201)
+            response.body.should == {id: Offer.last.id}.to_json
+          }
+        end
+
+        context 'create offer with existing semester and different dates' do
+          let!(:json_data){ { 
+            name: "2011.1",
+            offer_start: Date.today,
+            offer_end: Date.today+4.month,
+            curriculum_unit_id: 1,
+            course_id: 1
+          } }
+
+          subject{ -> { post "/api/v1/integration/offer", json_data } } 
+
+          it { should change(Semester,:count).by(0) }
+          it { should change(Schedule,:count).by(2) }
+          it { should change(Offer,:count).by(1) }
+
+          it {
+            post "/api/v1/integration/offer", json_data
+            response.status.should eq(201)
+            response.body.should == {id: Offer.last.id}.to_json
+            Offer.last.period_schedule.start_date.to_date.should eq(Date.today.to_date)
+          }
+        end
+        
+      end
+
+    end # post
+
+  end # .offer
+end
+
 end

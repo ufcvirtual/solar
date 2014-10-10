@@ -59,6 +59,13 @@ module Taggable
     allocation
   end
 
+  def remove_allocations(profile_id = nil)
+    query = {}
+    query.merge!({profile_id: profile_id}) unless profile_id.nil?
+
+    allocations.where(query).update_all(satus: Allocation_Cancelled)
+  end
+
   def change_allocation_status(user_id, new_status, opts = {}) # opts = {profile_id, related}
     where = {user_id: user_id}
     where.merge!({profile_id: opts[:profile_id]}) if opts.include?(:profile_id) and not opts[:profile_id].nil?
