@@ -226,15 +226,15 @@ en_US:
         description: Description
         schedule: Date range
       schedule:
-        start_date: Initial date
-        end_date: Final date
+        start_date: Period
+        end_date: To
       assignment:
         name: Title
         type_assignment: Type
         enunciation: Enunciation
         end_evaluation_period: Final date to evaluation period
-        start_date: Data de início
-        end_date: Data de término
+        start_date: Period
+        end_date: To
       assignment_enunciation_file:
         attachment: "Files"
       semester:
@@ -246,14 +246,14 @@ en_US:
         enrollment: Enrollment
         course: Course
         curriculum_unit: Subject
-        start_date: Start date
-        end_date: End date
+        start_date: Period
+        end_date: To
         semester: Semester
       lesson:
         name: Name
         description: Description
-        start_date: Start
-        end_date: End
+        start_date: Period
+        end_date: To
         status: Status
         address: URL
       lesson_module:
@@ -716,8 +716,8 @@ en_US:
       link: URL
       file: Files
       not_defined: Not defined
-      start_date: Start
-      end_date: End
+      start_date: Period
+      end_date: To
       address: URL
       status: Status
       released: Released
@@ -877,8 +877,8 @@ en_US:
       name: Name
       description: Description
       groups: Groups
-      start_date: Start date
-      end_date: End date
+      start_date: Period
+      end_date: To
       discussion_details: Discussion's details
   bibliographies:
     author_required: Author required
@@ -923,7 +923,7 @@ en_US:
     form:
       new: New Notification
       edit: Edit Notification
-      day_from: From
+      day_from: Period
       day_to: to
     list:
       notifications: Notifications
@@ -1076,8 +1076,8 @@ en_US:
   offer: "Offer"
   offer_confirm: "Are you sure you want to delete?"
   semester: "Semester"
-  start_date: "Start date"
-  end_date: "End date"
+  start_date: "Period"
+  end_date: "To"
   course: "Course"
   curriculum_unit: "Subject"
   devise:
@@ -1335,8 +1335,8 @@ en_US:
       name: Name
       enunciation: Enunciation
       type_assignment: Type
-      start_date: Start date
-      end_date: End date
+      start_date: Period
+      end_date: To
       files: Files
       empty_files: There're no files
       groups: Groups
@@ -1861,7 +1861,7 @@ en_US:
       all: All
       enroll_period: Enrollment date range
       enable_end_date: Enable end date
-      start_date: Start date
+      start_date: Period
       semester_offer: Semester Offer
       semester_enrollment: Semester Enrollment
       define_different_dates: Define dates different from semester
@@ -1966,8 +1966,8 @@ en_US:
       description: Description
       time: Time
       to: " to "
-      start_date: Start date
-      end_date: End date
+      start_date: Period
+      end_date: To
       defined_participants: Defined participants
       chat_details: Chat's details
     messages:
@@ -2154,8 +2154,8 @@ en_US:
       time: Time
       to: " to "
       groups: Groups
-      start_date: Start
-      end_date: End
+      start_date: Period
+      end_date: To
       event_details: Event's details
   agendas:
     dropdown_content:
