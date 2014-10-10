@@ -1,8 +1,6 @@
 class CurriculumUnit < ActiveRecord::Base
   include Taggable
 
-  default_scope order: 'name ASC'
-
   belongs_to :curriculum_unit_type
 
   has_many :offers

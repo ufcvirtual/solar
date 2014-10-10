@@ -1,13 +1,11 @@
 class CurriculumUnitType < ActiveRecord::Base
   include Taggable
 
-  default_scope order: "description"
-
   has_many :curriculum_units
   has_many :offers,  through: :curriculum_units, uniq: true
   has_many :groups,  through: :offers, uniq: true
   has_many :courses, through: :offers, uniq: true
-  
+
   def tool_name
     tool_name = case id
       when 3; "course"

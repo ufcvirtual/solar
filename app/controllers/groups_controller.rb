@@ -166,5 +166,4 @@ class GroupsController < ApplicationController
       type.constantize if ['Discussion', 'LessonModule', 'Assignment', 'ChatRoom', 'SupportMaterialFile', 'Bibliography', 'Notification', 'Webconference'].include?(type)
     end
 
-
 end

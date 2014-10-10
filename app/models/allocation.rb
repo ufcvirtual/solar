@@ -18,7 +18,7 @@ class Allocation < ActiveRecord::Base
   has_many :chat_participants
 
   validates :profile_id, :user_id, presence: true
-  validate :valid_profile_in_allocation_tag?
+  validate :valid_profile_in_allocation_tag?, if: "not allocation_tag_id.nil?"
 
   validates_uniqueness_of :profile_id, scope: [:user_id, :allocation_tag_id]
 
@@ -135,6 +135,7 @@ class Allocation < ActiveRecord::Base
 
   def change_group(new_group, by_user)
     return self if group == new_group # sem mudanca de turma
+    self.updated_by_user_id = by_user.try(:id)
 
     # cancela na turma anterior e cria uma nova alocação com a nova turma
     new_allocation = self.dup
@@ -209,7 +210,7 @@ class Allocation < ActiveRecord::Base
     end
 
     def valid_profile_in_allocation_tag?
-      errors.add(:profile_id, I18n.t("allocations.error.student_in_group")) if profile_id == Profile.student_profile and allocation_tag.refer_to != 'group'
+      errors.add(:profile_id, I18n.t("allocations.error.student_in_group")) if profile_id == Profile.student_profile and refer_to != 'group'
     end
 
     def send_email_to_enrolled_user

@@ -57,8 +57,8 @@ class CoursesControllerTest < ActionController::TestCase
       post :create, {course: {code: "T1", name: "Teste 1"}}
     end
 
-    assert_response :redirect
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    assert_response :unauthorized
+    assert_equal get_json_response("alert"), I18n.t(:no_permission)
   end
 
   test "editar" do

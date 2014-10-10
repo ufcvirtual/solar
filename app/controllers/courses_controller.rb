@@ -10,7 +10,7 @@ class CoursesController < ApplicationController
       render json: { html: render_to_string(partial: 'select_course', locals: { curriculum_units: @courses.uniq! }) }
     else # list
       authorize! :index, Course
-      @courses = if (not params[:course_id].blank?)
+      @courses = if params[:course_id].present?
         Course.where(id: params[:course_id]).paginate(page: params[:page])
       else
         allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "courses")
@@ -46,27 +46,32 @@ class CoursesController < ApplicationController
 
   def create
     authorize! :create, Course
-    params[:course][:user_id] = current_user.id
-    @course = Course.new(params[:course])
+
+    @course = Course.new(course_params)
+    @course.user_id = current_user.id
 
     if @course.save
       render json: {success: true, notice: t(:created, scope: [:courses, :success]), code_name: @course.code_name, id: @course.id}
     else
       render :new
     end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def update
     @course = Course.find(params[:id])
     authorize! :update, @course
 
-    if @course.update_attributes(params[:course])
+    if @course.update_attributes!(course_params)
       render json: {success: true, notice: t(:updated, scope: [:courses, :success]), code_name: @course.code_name, id: @course.id}
     else
       render :edit
     end
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def destroy
@@ -81,4 +86,11 @@ class CoursesController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
+
+  private
+
+    def course_params
+      params.require(:course).permit(:name, :code)
+    end
+
 end
