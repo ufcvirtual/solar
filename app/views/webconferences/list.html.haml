@@ -14,7 +14,7 @@
 
   - unless @webconferences.nil? or @webconferences.empty?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
-    %table.tb_list
+    %table.tb_list.tablesorter{"data-sortlist" => "[[2,0]]"}
       %thead
         %tr.lines
           %th.no_sort{style: 'text-align:center; width: 25px;'}= check_box_tag :all_webconferences, false, false, :"data-children-names" => "ckb_webconference", class: "all_webconferences"
