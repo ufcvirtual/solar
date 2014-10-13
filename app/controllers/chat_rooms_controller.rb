@@ -20,6 +20,7 @@ class ChatRoomsController < ApplicationController
     authorize! :index, ChatRoom, on: @allocation_tags_ids
 
     @chat_rooms = ChatRoom.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).select("chat_rooms.*, schedules.start_date AS chat_start_date").order("chat_start_date, title").uniq
+  
   end
 
   def new
