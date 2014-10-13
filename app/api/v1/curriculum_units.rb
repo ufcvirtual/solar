@@ -10,7 +10,7 @@ module V1
         current_offers = Offer.currents(Date.today, true).pluck(:id)
 
         @u_groups         = Group.where(id: user_groups, offer_id: current_offers)
-        @curriculum_units = CurriculumUnit.joins(:groups).where(groups: {id: @u_groups.map(&:id)}).uniq
+        @curriculum_units = CurriculumUnit.joins(:groups).where(groups: {id: @u_groups.map(&:id)}).uniq.order(:name)
       end
 
       desc "Lista UCs da oferta vigente."

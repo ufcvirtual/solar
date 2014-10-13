@@ -52,11 +52,11 @@ class EditionsController < ApplicationController
 
     @allocation_tags_ids = AllocationTag.where(id: current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers")).map{|at| at.related}.flatten.uniq
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
-    
+
     @curriculum_units = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
     @courses   = ( @type.id == 3 ? Course.all_associated_with_curriculum_unit_by_name : @courses = Course.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}) )
     @semesters = Semester.all_by_period({period: params[:period]}) # semestres do período informado ou ativos
-    
+
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
@@ -79,7 +79,7 @@ class EditionsController < ApplicationController
     url = URI.parse(EDX_URLS["verify_user"].gsub(":username", current_user.username)+"instructor/")
     res = Net::HTTP.start(url.host, url.port) { |http| http.request(Net::HTTP::Get.new(url.path)) }
     uri_courses = JSON.parse(res.body) #pega endereço dos cursos
-    courses_created_by_current_user = "[]" 
+    courses_created_by_current_user = "[]"
       unless uri_courses.empty?
         if uri_courses.class == Hash and uri_courses.has_key?("error_message")
           raise uri_courses["error_message"]
@@ -100,7 +100,7 @@ class EditionsController < ApplicationController
     render layout: false if params.include?(:layout)
   rescue => error
     redirect_to :back, alert: t("edx.errors.cant_connect")
-  end    
+  end
 
   # GET /editions/content
   def content

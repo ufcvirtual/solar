@@ -426,7 +426,7 @@ DEPENDENCIES
   grape (~> 0.6.1)
   grape-rabl (~> 0.2.2)
   haml (~> 4.0.5)
-  haml-rails (~> 0.4)
+  haml-rails (~> 0.4.0)
   jquery-rails (~> 2.2.2)
   koala (= 1.2.0)
   launchy (= 2.1.0)

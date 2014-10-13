@@ -27,3 +27,33 @@
     $("#curriculum_unit").combobox();
     $(".edition").nice_filter();
   });
+
+  function edit_curriculum_unit(button){
+    $(button).call_fancybox({href: $(button).data("link-edit"), open: true});
+  }
+
+  function delete_curriculum_unit(button){
+    if ($(button).attr('disabled') == 'disabled'){
+      flash_message("#{t('curriculum_units.index.choose_at_least_one')}", "alert");
+      return false;
+    }
+
+    if (!confirm("#{t(:message_confirm)}"))
+      return false;
+
+    var ucs = $("#ckb_curriculum_unit:checked");
+    var uc_ids = $.map(ucs, function(n){ return ($(n).val()); });
+
+    if (uc_ids.length) {
+      $.delete($(button).data('link-delete').replace(':id', uc_ids), function(data){
+        flash_message(data.notice, 'notice');
+        ucs.parents('tr').fadeOut().remove();
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      });
+    }
+
+    return false;
+  }

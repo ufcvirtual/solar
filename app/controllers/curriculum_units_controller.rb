@@ -1,12 +1,10 @@
 class CurriculumUnitsController < ApplicationController
-  include MessagesHelper
 
-  layout false, only: [:new, :edit, :create]
+  layout false, only: [:new, :edit, :create, :update]
 
   before_filter :prepare_for_group_selection, only: [:home, :participants, :informations]
   before_filter :curriculum_data, only: [:home, :informations, :participants]
 
-  authorize_resource only: [:new]
   load_and_authorize_resource only: [:edit, :update]
 
   def home
@@ -39,7 +37,7 @@ class CurriculumUnitsController < ApplicationController
         @curriculum_units = CurriculumUnit.where(id: params[:curriculum_unit_id]).paginate(page: params[:page])
       else
         allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "curriculum_units")
-        @curriculum_units   = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).paginate(page: params[:page])
+        @curriculum_units = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).paginate(page: params[:page])
       end
       respond_to do |format|
         format.html {render partial: 'curriculum_units/index'}
@@ -69,7 +67,7 @@ class CurriculumUnitsController < ApplicationController
   # GET /curriculum_units/:curriculum_unit_id/groups/mobilis_list.json
   def mobilis_list
     @curriculum_units = CurriculumUnit.all_by_user(current_user).collect {|uc| {id: uc.id, code: uc.code, name: uc.name}}
-    
+
     if params.include?(:search)
       @curriculum_units = @curriculum_units.select {|uc| uc[:code].downcase.include?(params[:search].downcase) or uc[:name].downcase.include?(params[:search].downcase)}
     end
@@ -81,78 +79,56 @@ class CurriculumUnitsController < ApplicationController
   end
 
   # GET /curriculum_units/new
-  # GET /curriculum_units/new.json
   def new
     @curriculum_unit = CurriculumUnit.new(curriculum_unit_type_id: params[:type_id])
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @curriculum_unit }
-    end
   end
 
   # POST /curriculum_units
-  # POST /curriculum_units.json
   def create
-    params[:curriculum_unit].delete('code') if params[:curriculum_unit][:code] == ''
-    params[:curriculum_unit].delete('prerequisites') if params[:curriculum_unit][:prerequisites] == ''
-    params[:curriculum_unit][:user_id] = current_user.id
-
-    @curriculum_unit = CurriculumUnit.new(params[:curriculum_unit])
-    course = Course.new name: @curriculum_unit.name, code: @curriculum_unit.code if @curriculum_unit.curriculum_unit_type_id == 3
-
     authorize! :create, CurriculumUnit
 
-    ActiveRecord::Base.transaction do
-      @curriculum_unit.save!
-      if @curriculum_unit.curriculum_unit_type_id == 3
-        course.user_id = @curriculum_unit.user_id
-        course.save!
-      end
-    end
+    @curriculum_unit = CurriculumUnit.new(curriculum_unit_params)
+    @curriculum_unit.user_id = current_user.id
 
-    render json: {success: true, notice: t(:created, scope: [:curriculum_units, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
+    if @curriculum_unit.save
+      render json: {success: true, notice: t('curriculum_units.success.created'), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
+    else
+      render :new
+    end
   rescue => error
-    # if curso livre, add course errors to curriculum_unit
-    (errors_keys = course.errors.keys).each{|key| @curriculum_unit.errors.add(key, course.errors.messages[key].flatten.first) } if @curriculum_unit.curriculum_unit_type_id == 3 and not(course.valid?)
-    render :new
+    request.format = :json
+    raise error.class
   end
 
   # GET /curriculum_units/1/edit
   def edit
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @curriculum_unit }
-    end
   end
 
   # PUT /curriculum_units/1
-  # PUT /curriculum_units/1.json
   def update
-    params[:curriculum_unit].delete(:code) unless params[:curriculum_unit][:code].present?
-    course = Course.find_by_name(@curriculum_unit.name)
-    if @curriculum_unit.update_attributes(params[:curriculum_unit])
-      course.update_attributes name: @curriculum_unit.name, code: @curriculum_unit.code if @curriculum_unit.curriculum_unit_type_id == 3 and (not course.nil?)
+    if @curriculum_unit.update_attributes(curriculum_unit_params)
       render json: {success: true, notice: t(:updated, scope: [:curriculum_units, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
-      render :edit, layout: false
+      render :edit
     end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def destroy
-    @curriculum_unit = CurriculumUnit.where(id: params[:id].split(","))
-    authorize! :destroy, CurriculumUnit, on: [@curriculum_unit.map(&:allocation_tag).map(&:id).compact.uniq]
+    uc_ids = params[:id].split(",")
+    authorize! :destroy, CurriculumUnit, on: AllocationTag.where(curriculum_unit_id: uc_ids).pluck(:id)
 
-    CurriculumUnit.transaction do
-      begin
-        @curriculum_unit.each do |curriculum_unit|
-          raise "error" unless curriculum_unit.destroy
-        end
-        render json: {success: true, notice: t(:deleted, scope: [:curriculum_units, :success])}
-      rescue
-        render json: {success: false, alert: t(:deleted, scope: [:curriculum_units, :error])}, status: :unprocessable_entity
-      end
+    @curriculum_unit = CurriculumUnit.where(id: uc_ids)
+    if @curriculum_unit.destroy_all.map(&:destroyed?).include?(false)
+      render json: {success: false, alert: t('curriculum_units.error.deleted')}, status: :unprocessable_entity
+    else
+      render json: {success: true, notice: t('curriculum_units.success.deleted')}
     end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   # information about UC from a offer from the group selected
@@ -171,8 +147,12 @@ class CurriculumUnitsController < ApplicationController
 
   private
 
+    def curriculum_unit_params
+      params.require(:curriculum_unit).permit(:code, :name, :curriculum_unit_type_id, :resume, :syllabus, :passing_grade, :objectives, :prerequisites, :credits, :working_hours)
+    end
+
     def curriculum_data
-      @curriculum_unit   = Offer.find(active_tab[:url][:id]).curriculum_unit
+      @curriculum_unit = Offer.find(active_tab[:url][:id]).curriculum_unit
       @allocation_tag_id = active_tab[:url][:allocation_tag_id]
       @allocation_tags = AllocationTag.find(@allocation_tag_id).related(objects: true)
 

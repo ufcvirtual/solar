@@ -24,7 +24,7 @@ gem "jquery-rails", "~> 2.2.2"
 gem "fancybox2-rails", "~> 0.2.5"
 
 gem "haml", "~> 4.0.5"
-gem "haml-rails", "~> 0.4", group: :development
+gem "haml-rails", "~> 0.4.0", group: :development
 gem "ckeditor", "~> 4.0.11"
 
 gem "fullcalendar-rails", "~> 1.6.4.0"

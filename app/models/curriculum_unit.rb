@@ -1,5 +1,6 @@
 class CurriculumUnit < ActiveRecord::Base
   include Taggable
+  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :curriculum_unit_type
 
@@ -8,25 +9,56 @@ class CurriculumUnit < ActiveRecord::Base
   has_many :courses,              through: :offers, uniq: true
   has_many :academic_allocations, through: :allocation_tag
 
-  after_destroy proc { Course.find_by_name(name).try(:destroy) }, if: "curriculum_unit_type_id == 3"
+  after_create  :create_correspondent_course,  if: "curriculum_unit_type_id == 3"
+  before_update :update_correspondent_course,  if: "curriculum_unit_type_id == 3"
+  after_destroy :destroy_correspondent_course, if: "curriculum_unit_type_id == 3"
 
-  validates :code, uniqueness: true, length:  { maximum: 40 }, allow_blank: true
+  validates :code, uniqueness: true, length: { maximum: 40 }, allow_blank: false
   validates :name, length: { maximum: 120 }
   validates :name, :curriculum_unit_type, :resume, :syllabus, :objectives, presence: true
   validates :passing_grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true}
 
-  ##
-  # Participantes que não são TAL TIPO DE PERFIL
-  ##
-  def self.class_participants_by_allocations_tags_and_is_not_profile_type(allocation_tags, profile_flag)
-    class_participants_by_allocations(allocation_tags, profile_flag, false)
+  def has_any_lower_association?
+    self.offers.count > 0
   end
 
-  ##
-  # Participantes que sao determinado tipo de perfil
-  ##
+  def lower_associated_objects
+    offers
+  end
+
+  def code_name
+    [code, name].reject(&:blank?).join ' - '
+  end
+
+  def detailed_info
+    {
+      curriculum_unit_type: curriculum_unit_type.description,
+      curriculum_unit: name
+    }
+  end
+
+  def course
+    Course.find_by_name_and_code(name, code) if curriculum_unit_type_id == 3
+  end
+
+
+  ## class methods
+
+
+  ## Participantes que sao determinado tipo de perfil
   def self.class_participants_by_allocations_tags_and_is_profile_type(allocation_tags, profile_flag)
     class_participants_by_allocations(allocation_tags, profile_flag)
+  end
+
+  ## Todas as UCs do usuario, atraves das allocations
+  def self.all_by_user(user)
+    al              = user.allocations.where(status: Allocation_Activated)
+    my_direct_uc    = al.map(&:curriculum_unit)
+    ucs_by_offers   = al.map(&:offer).compact.map(&:curriculum_unit).uniq
+    ucs_by_courses  = al.map(&:course).compact.map(&:curriculum_units).uniq
+    ucs_by_groups   = al.map(&:group).compact.map(&:curriculum_unit).uniq
+
+    return [my_direct_uc + ucs_by_offers + ucs_by_courses + ucs_by_groups].flatten.compact.uniq.sort
   end
 
   def self.class_participants_by_allocations(allocation_tags, profile_flag, have_profile = true)
@@ -56,36 +88,33 @@ SQL
     User.find_by_sql query
   end
 
-  ##
-  # Todas as UCs do usuario, atraves das allocations
-  ##
-  def self.all_by_user(user)
-    al              = user.allocations.where(status: Allocation_Activated)
-    my_direct_uc    = al.map(&:curriculum_unit)
-    ucs_by_offers   = al.map(&:offer).compact.map(&:curriculum_unit).uniq
-    ucs_by_courses  = al.map(&:course).compact.map(&:curriculum_units).uniq
-    ucs_by_groups   = al.map(&:group).compact.map(&:curriculum_unit).uniq
+  private
 
-    return [my_direct_uc + ucs_by_offers + ucs_by_courses + ucs_by_groups].flatten.compact.uniq.sort
-  end
+    ## para curso livre, é criado um curso com o mesmo nome e codigo da UC
+    def create_correspondent_course
+      course = Course.new code: code, name: name
+      course.user_id = user_id
+      errors.messages.merge!(course.errors.messages) unless course.save
+    end
 
-  def has_any_lower_association?
-    self.offers.count > 0
-  end
+    def update_correspondent_course
+      # changes => {key: [before, after]}
+      return unless self.valid? and changes.any? and (changes.has_key?(:name) or changes.has_key?(:code))
 
-  def lower_associated_objects
-    offers
-  end
+      before_name = changes[:name].nil? ? name : changes[:name].first
+      before_code = changes[:code].nil? ? code : changes[:code].first
 
-  def code_name
-    code.blank? ? name : [code, name].join(' - ')
-  end
+      course = Course.find_by_name_and_code(before_name, before_code)
+      if course and not course.update_attributes(code: code, name: name)
+        errors.messages.merge!(course.errors.messages)
+        return false
+      end
 
-  def detailed_info
-    {
-      curriculum_unit_type: curriculum_unit_type.description,
-      curriculum_unit: name
-    }
-  end
+      true
+    end
+
+    def destroy_correspondent_course
+      course.destroy
+    end
 
 end

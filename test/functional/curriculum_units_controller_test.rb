@@ -55,7 +55,7 @@ class CurriculumUnitsControllerTest < ActionController::TestCase
       post :create, curriculum_unit: {curriculum_unit_type_id: curriculum_unit_types(:distancia).id, code: "C010", name: "Curso 10", resume: "Curso 10", syllabus: "Curso 10", objectives: "Curso 10"}
     end
 
-    assert_template :new
+    assert_response :unauthorized
   end
 
   test "editar uc" do
@@ -110,7 +110,7 @@ class CurriculumUnitsControllerTest < ActionController::TestCase
     assert_no_difference("CurriculumUnit.count") do
       delete :destroy, {id: quimica_organica.id}
     end
-    assert_response :redirect
+    assert_response :unauthorized
   end
 
   test "nao remover uc - dependencias" do
