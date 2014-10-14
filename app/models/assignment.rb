@@ -41,7 +41,7 @@ class Assignment < Event
 
   def sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, user_id, group_assignment_id)
     SentAssignment.joins(:academic_allocation).where(user_id: user_id, group_assignment_id: group_assignment_id, academic_allocations: {academic_tool_id: self.id, allocation_tag_id: allocation_tag_id}).first
-  end   
+  end
 
   def closed?
     schedule.end_date.to_date < Date.today

@@ -45,7 +45,7 @@ class SupportMaterialFilesControllerTest < ActionController::TestCase
       post(:create, {support_material_file: {url: "google.com", material_type: Material_Type_Link}, allocation_tags_ids: "#{allocation_tags(:al19).id}"})
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unauthorized
   end
 
   test "download" do

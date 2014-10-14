@@ -1,10 +1,8 @@
 class SupportMaterialFile < ActiveRecord::Base
+  include AcademicTool
+  include ActiveModel::ForbiddenAttributesProtection
 
   GROUP_PERMISSION, OFFER_PERMISSION = true, true
-
-  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
-  has_many :allocation_tags, through: :academic_allocations
-  has_many :groups, through: :allocation_tags
 
   before_save :url_protocol, if: :is_link?
   before_save :define_fixed_values
@@ -32,16 +30,18 @@ class SupportMaterialFile < ActiveRecord::Base
     (material_type == Material_Type_Link)
   end
 
+  def define_fixed_values
+    self.folder = ((material_type.to_i == Material_Type_Link) ? 'LINKS' : 'GERAL')
+    self.attachment_updated_at = Time.now
+  end
+
+  ## class methods
+
   def self.find_files(allocation_tag_ids, folder_name = nil)
     in_folder = "folder = ?" unless folder_name.nil?
 
     joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tag_ids})
       .where(in_folder, folder_name).order("folder, attachment_content_type, attachment_file_name")
-  end
-
-  def define_fixed_values
-    self.folder = ((material_type.to_i == Material_Type_Link) ? 'LINKS' : 'GERAL')
-    self.attachment_updated_at = Time.now
   end
 
 end

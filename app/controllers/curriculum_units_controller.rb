@@ -96,7 +96,7 @@ class CurriculumUnitsController < ApplicationController
   # PUT /curriculum_units/1
   def update
     if @curriculum_unit.update_attributes(curriculum_unit_params)
-      render json: {success: true, notice: t(:updated, scope: [:curriculum_units, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
+      render json: {success: true, notice: t('curriculum_units.success.updated'), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
       render :edit
     end

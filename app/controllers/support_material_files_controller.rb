@@ -3,10 +3,11 @@ class SupportMaterialFilesController < ApplicationController
   include SysLog::Actions
   include FilesHelper
 
-  layout false, except: [:index]
-  before_filter :prepare_for_group_selection, only: [:index]
+  layout false, except: :index
+  before_filter :prepare_for_group_selection, only: :index
 
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+
   before_filter only: [:edit, :update] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@support_material = SupportMaterialFile.find(params[:id]))
@@ -34,25 +35,17 @@ class SupportMaterialFilesController < ApplicationController
   def create
     authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
 
-    begin
-      @support_material = SupportMaterialFile.new params[:support_material_file]
-      SupportMaterialFile.transaction do
-        @support_material.save!
-        @support_material.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
-      end
+    @support_material = SupportMaterialFile.new support_material_file_params
+    @support_material.allocation_tag_ids_associations = @allocation_tags_ids
 
-      render json: {success: true, notice: t(:created, scope: [:support_materials, :success])}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue Exception => error
-      if @support_material.is_link?
-        @allocation_tags_ids = params[:allocation_tags_ids].join(" ") rescue params[:allocation_tags_ids].split(" ")
-        params[:success] = false
-        render :new
-      else
-        render json: {success: false, alert: @support_material.errors.full_messages.join(" ")}, status: :unprocessable_entity
-      end
+    if @support_material.save
+      render json: {success: true, notice: t('support_materials.success.created')}
+    else
+      render :new
     end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def edit
@@ -61,28 +54,29 @@ class SupportMaterialFilesController < ApplicationController
 
   def update
     authorize! :update, SupportMaterialFile, on: @support_material.academic_allocations.pluck(:allocation_tag_id)
-    @support_material.update_attributes!(params[:support_material_file])
-    render json: {success: true, notice: t(:updated, scope: [:support_materials, :success])}
-  rescue ActiveRecord::AssociationTypeMismatch
-    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    params[:success] = false
-    render :new
+
+    if @support_material.update_attributes(support_material_file_params)
+      render json: {success: true, notice: t('support_materials.success.updated')}
+    else
+      render :edit
+    end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def destroy
-    @allocation_tags_ids, @support_material_files = params[:allocation_tags_ids], SupportMaterialFile.where(id: params[:id].split(",").flatten)
-    authorize! :destroy, SupportMaterialFile, on: @support_material_files.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
+    @support_material_files = SupportMaterialFile.where(id: params[:id].split(",").flatten)
+    @allocation_tags_ids = @support_material_files.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten # params[:allocation_tags_ids]
+
+    authorize! :destroy, SupportMaterialFile, on:@allocation_tags_ids
 
     @support_material_files.destroy_all
 
-    render json: {success: true, notice: t(:deleted, scope: [:support_materials, :success])}
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue Exception => e
-    render json: {success: false, alert: e.messages}, status: :unprocessable_entity
+    render json: {success: true, notice: t('support_materials.success.deleted')}
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def download
@@ -119,10 +113,15 @@ class SupportMaterialFilesController < ApplicationController
     authorize! :list, SupportMaterialFile, on: @allocation_tags_ids
 
     @support_materials = SupportMaterialFile.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).order("attachment_updated_at DESC").uniq
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    render nothing: true, status: :unprocessable_entity
+  rescue => error
+    request.format = :json
+    raise error.class
   end
+
+  private
+
+    def support_material_file_params
+      params.require(:support_material_file).permit(:material_type, :url, :attachment)
+    end
 
 end
