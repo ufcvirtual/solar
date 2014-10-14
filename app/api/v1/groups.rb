@@ -8,9 +8,7 @@ module V1
       namespace :curriculum_units do
 
         desc "Turmas de uma UC do usuario"
-        params do
-          requires :id, type: Integer
-        end
+        params { requires :id, type: Integer }
         get ":id/groups", rabl: "groups/list" do
           user_groups    = current_user.groups(nil, Allocation_Activated).map(&:id)
           current_offers = Offer.currents(Date.today, true).pluck(:id)
@@ -34,9 +32,8 @@ module V1
           namespace :merge do
             desc "Aglutinação/Desaglutinação de turmas"
             params do
-              requires :main_group, type: String  
+              requires :main_group, :course, :curriculum_unit, :period, type: String  
               requires :secundary_groups, type: Array
-              requires :course, :curriculum_unit, :period
               requires :type_merge, type: Boolean # if true: merge; if false: undo merge
             end
 
@@ -158,7 +155,7 @@ module V1
           end
 
           # GET load/groups/enrollments
-          params { requires :codDisciplina, :codGraduacao, :codTurma, :periodo, :ano }
+          params { requires :codDisciplina, :codGraduacao, :codTurma, :periodo, :ano, type: String }
           get :enrollments, rabl: "users/enrollments" do
             group  = get_group(params[:codDisciplina], params[:codGraduacao], params[:codTurma], params[:periodo], params[:ano])
             raise ActiveRecord::RecordNotFound if group.nil?
@@ -182,9 +179,7 @@ module V1
         desc "Todas as turmas por tipo de curso, semestre, curso ou disciplina"
         params do
           requires :semester, type: String
-          optional :course_type_id, type: Integer
-          optional :course_id, type: Integer
-          optional :discipline_id, type: Integer
+          optional :course_type_id, :course_id, :discipline_id, type: Integer
         end
         get :groups, rabl: "sav/groups" do
           query = ["semesters.name = :semester", "groups.status IS TRUE"]

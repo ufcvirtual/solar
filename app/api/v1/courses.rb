@@ -23,7 +23,7 @@ module V1
 
         namespace :course do 
           desc "Criação de curso"
-          params { requires :name, :code }
+          params { requires :name, :code, type: String }
           post "/" do
             begin
               course = Course.create! course_params(params)
@@ -34,7 +34,7 @@ module V1
           end
 
           desc "Edição de curso"
-          params { optional :name, :code }
+          params { optional :name, :code, type: String }
           put ":id" do
             begin
               Course.find(params[:id]).update_attributes! course_params(params)

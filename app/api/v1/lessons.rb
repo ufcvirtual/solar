@@ -2,9 +2,7 @@ module V1
   class Lessons < Base
     namespace :lessons
 
-    before do
-      verify_ip_access!
-    end
+    before { verify_ip_access! }
 
     get "/" do
       if params[:disconsider].present?

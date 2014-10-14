@@ -38,9 +38,8 @@ module V1
           desc "Criação de disciplina"
           params do
             requires :name, :code, type: String
-            requires :curriculum_unit_type_id, type: Integer
-            optional :resume, :syllabus, :objectives
-            optional :passing_grade, :prerequisites, :working_hours, :credits
+            requires :curriculum_unit_type_id, type: Integer, default: 2
+            optional :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
           end
           post "/" do
             begin
@@ -54,8 +53,7 @@ module V1
           desc "Edição de disciplina"
           params do
             optional :name, :code
-            optional :resume, :syllabus, :objectives
-            optional :passing_grade, :prerequisites, :working_hours, :credits
+            optional :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
             # reject uc_type # nao poderia mudar tipo depois de criado
           end
           put ":id" do
@@ -75,7 +73,7 @@ module V1
         namespace :curriculum_units do
           # load/curriculum_units
           params do 
-            requires :codigo, :nome
+            requires :codigo, :nome, type: String
             requires :cargaHoraria, type: Integer
             requires :creditos, type: Float
             optional :tipo, type: Integer
@@ -99,8 +97,7 @@ module V1
         desc "Todas as disciplinas por tipo, semestre ou curso"
         params do
           requires :semester, type: String
-          optional :course_type_id, type: Integer
-          optional :course_id, type: Integer
+          optional :course_type_id, :course_id, type: Integer
         end
         get :disciplines, rabl: "sav/disciplines" do
           tb_joins = [:semester]

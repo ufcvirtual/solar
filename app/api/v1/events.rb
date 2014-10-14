@@ -37,33 +37,23 @@ module V1
           desc "Criação de um ou mais eventos"
           params do
             requires :Turmas, type: Array
-            requires :CodigoCurso, :CodigoDisciplina, :Periodo
+            requires :CodigoCurso, :CodigoDisciplina, :Periodo, type: String
             requires :DataInserida do
               requires :Data, :HoraInicio, :HoraFim, :Polo, :Tipo
             end
           end
           post "/" do
-            groups_events_ids = []
+            group_events = []
             
             begin
               ActiveRecord::Base.transaction do
-                offer      = get_offer(params[:CodigoDisciplina], params[:CodigoCurso], nil, params[:Periodo])
-                event_data = params[:DataInserida]
-                event_info = get_event_type_and_description(event_data[:Tipo])
-
+                offer = get_offer(params[:CodigoDisciplina], params[:CodigoCurso], nil, params[:Periodo])
                 params[:Turmas].each do |code|
-                  start_hour, end_hour = event_data[:HoraInicio].split(":"), event_data[:HoraFim].split(":")
-                  group    = get_offer_group(offer, code)
-                  schedule = Schedule.create! start_date: event_data[:Data], end_date: event_data[:Data]
-                  event    = ScheduleEvent.create! title: event_info[:title], type_event: event_info[:type],
-                    place: event_data[:Polo], start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":"),
-                    schedule_id: schedule.id, integrated: true
-                  event.academic_allocations.create! allocation_tag_id: group.allocation_tag.id
-                  groups_events_ids << {Codigo: group.code, id: event.id}
+                  group_events << create_event(get_offer_group(offer, code), params[:DataInserida])
                 end
               end
 
-              groups_events_ids
+              group_events
             rescue => error
               error!({error: error}, 422)
             end

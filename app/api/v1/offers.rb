@@ -11,12 +11,9 @@ module V1
           desc "Criação de oferta/semestre"
           params do
             requires :name, type: String
-            requires :course_id, type: Integer
-            requires :curriculum_unit_id, type: Integer
-            requires :offer_start, type: Date
-            requires :offer_end, type: Date
-            optional :enrollment_start, type: Date
-            optional :enrollment_end, type: Date
+            requires :course_id, :curriculum_unit_id, type: Integer
+            requires :offer_start, :offer_end, type: Date
+            optional :enrollment_start, :enrollment_end, type: Date
           end
           post "/" do
             begin        
@@ -28,12 +25,7 @@ module V1
           end
 
           desc "Edição de oferta/semestre"
-          params do
-            optional :offer_start, type: Date
-            optional :offer_end, type: Date
-            optional :enrollment_start, type: Date
-            optional :enrollment_end, type: Date
-          end
+          params { optional :offer_start, :offer_end, :enrollment_start, :enrollment_end, type: Date }
           put ":id" do
             begin
               update_dates(Offer.find(params[:id]), params)

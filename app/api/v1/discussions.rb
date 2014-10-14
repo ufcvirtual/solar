@@ -4,9 +4,7 @@ module V1
 
     namespace :groups do
       desc "Lista de fóruns da turma"
-      params do
-        requires :id, type: Integer
-      end
+      params { requires :id, type: Integer }
       get ":id/discussions", rabl: "discussions/list" do
         @group = Group.find(params[:id])
         raise ActiveRecord::RecordNotFound if @group.nil?

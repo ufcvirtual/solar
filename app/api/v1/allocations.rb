@@ -73,8 +73,7 @@ module V1
           desc "Alocação de usuário"
           params do
             requires :type, type: String, values: ["curriculum_unit_type", "curriculum_unit", "course", "offer", "group"], default: "group"
-            requires :user_id, type: Integer
-            requires :profile_id, type: Integer
+            requires :user_id, :profile_id, type: Integer
             requires :remove_previous_allocations, type: Boolean, default: false
           end
           post ":id" do
@@ -92,8 +91,7 @@ module V1
           desc "Desativação de alocação de usuário"
           params do
             requires :type, type: String, values: ["curriculum_unit_type", "curriculum_unit", "course", "offer", "group"], default: "group"
-            requires :user_id, type: Integer
-            optional :profile_id, type: Integer
+            requires :user_id, :profile_id, type: Integer
           end
           delete ":id" do
             begin
