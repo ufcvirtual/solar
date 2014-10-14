@@ -153,8 +153,10 @@ en_US:
       schedule_event: Event
       score: Score
       support_material_file: Support Material
-      webconference: "Webconference"
+      webconference: Webconference
       user_blacklist: Blacklist
+      group_assignment: Group Assignment
+      public_file: Public Area
     attributes:
       user:
         password: "Password"
@@ -2100,8 +2102,6 @@ en_US:
       created: Profile was successfully created.
       updated: Profile was successfully updated.
       deleted: Profile was successfully deleted.
-    warning:
-      nothing_changed: Nothing changed at the profile.
     error:
       created: Profile wasn't created.
       updated: Profile wasn't updated.

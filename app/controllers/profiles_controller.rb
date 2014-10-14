@@ -12,7 +12,6 @@ class ProfilesController < ApplicationController
 
   def new
     authorize! :create, Profile
-
     @profile = Profile.new
   end
 
@@ -23,56 +22,51 @@ class ProfilesController < ApplicationController
 
   def create
     authorize! :create, Profile
-
-    @template = params[:profile].delete(:template)
-    @profile  = Profile.new(params[:profile])
+    @profile = Profile.new(profile_params)
 
     if @profile.save
-      @profile.resources << Profile.find(@template).resources unless @template.blank?
-      params.delete(:profile)
-      render json: {success: true, notice: t(:created, scope: [:profiles, :success])}
+      render json: {success: true, notice: t('profiles.success.created')}
     else
       render :new
-      params[:success] = false
     end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def update
     authorize! :update, Profile
     @profile = Profile.find(params[:id])
 
-    begin
-      @profile.update_attributes!(params[:profile])
-
-      render json: {success: true, notice: t(:updated, scope: [:profiles, :success])}
-    rescue
-      params[:success] = false
+    if @profile.update_attributes(profile_params)
+      render json: {success: true, notice: t('profiles.success.updated')}
+    else
       render :edit
     end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def destroy
     authorize! :destroy, Profile
     @profile = Profile.find(params[:id])
 
-    begin
-      @profile.destroy
-
-      render json: {success: true, notice: t(:deleted, scope: [:profiles, :success])}
-    rescue
-      render json: {success: false, alert: t(:deleted, scope: [:profiles, :error])}, status: :unprocessable_entity
-    end
+    @profile.destroy
+    render json: {success: true, notice: t('profiles.success.deleted')}
+  rescue ActiveRecord::DeleteRestrictionError
+    render json: {success: false, alert: t('profiles.error.deleted')}, status: :unprocessable_entity
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   ## GET /admin/profiles/:id/permissions
   def permissions
     authorize! :permissions, Profile
-    @profile = Profile.find(params[:id]) # verificar se precisa
 
-    @resources = Resource.joins("LEFT JOIN permissions_resources AS pr ON pr.resource_id = resources.id AND pr.profile_id = #{@profile.id}")\
-      .group("resources.controller, resources.action, resources.id, resources.description, pr.profile_id")
-      .select("resources.id, resources.controller, resources.action, resources.description, pr.profile_id AS permission")
-      .order("resources.controller, resources.description")
+    @profile = Profile.find(params[:id])
+    @resources = @profile.all_resources
   end
 
   ## PUT /admin/profiles/:id/permissions/grant
@@ -80,26 +74,19 @@ class ProfilesController < ApplicationController
     authorize! :grant, Profile
     @profile = Profile.find(params[:id])
 
-    raise ActiveRecord::RecordNotFound unless params.include?(:resources) and not params[:resources].blank?
-    profile_resources = @profile.resources.map(&:id).map(&:to_s).sort
-    has_changes       = not(profile_resources == params[:resources].sort!)
+    @profile.resources.delete_all
+    @profile.resources << Resource.find(params[:resources]) if params[:resources].present?
 
-    Profile.transaction do
-      params[:removed], params[:added], params[:name] = (profile_resources - params[:resources]), (params[:resources] - profile_resources), @profile.name
-
-      if has_changes # if something has changed
-        @profile.resources.delete_all
-        @profile.resources << Resource.find(params[:resources]) if params.include?(:resources) and not params[:resources].blank?
-      end
-    end
-
-    unless has_changes # if nothing has changed
-      render json: {success: false, msg: t(:nothing_changed, scope: [:profiles, :warning]), type_msg: "warning"}
-    else
-      render json: {success: true, msg: t(:updated, scope: [:profiles, :success]), type_msg: "notice"}
-    end
+    render json: {success: true, msg: t('profiles.success.updated'), type_msg: "notice"}
   rescue => error
-    render json: {success: false, alert: t(:updated, scope: [:profiles, :error])}, status: :unprocessable_entity
+    request.format = :json
+    raise error.class
   end
+
+  private
+
+    def profile_params
+      params.require(:profile).permit(:name, :description, :types, :status, :template)
+    end
 
 end

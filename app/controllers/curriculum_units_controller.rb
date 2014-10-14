@@ -4,6 +4,7 @@ class CurriculumUnitsController < ApplicationController
 
   before_filter :prepare_for_group_selection, only: [:home, :participants, :informations]
   before_filter :curriculum_data, only: [:home, :informations, :participants]
+  before_filter :ucs_for_list, only: [:list, :mobilis_list]
 
   load_and_authorize_resource only: [:edit, :update]
 
@@ -51,12 +52,6 @@ class CurriculumUnitsController < ApplicationController
   # Mobilis
   # GET /curriculum_units/list.json
   def list
-    @curriculum_units = CurriculumUnit.all_by_user(current_user).collect {|uc| {id: uc.id, code: uc.code, name: uc.name}}
-
-    if params.include?(:search)
-      @curriculum_units = @curriculum_units.select {|uc| uc[:code].downcase.include?(params[:search].downcase) or uc[:name].downcase.include?(params[:search].downcase)}
-    end
-
     respond_to do |format|
       format.json { render json: @curriculum_units }
       format.xml { render xml: @curriculum_units }
@@ -66,12 +61,6 @@ class CurriculumUnitsController < ApplicationController
   # Mobilis
   # GET /curriculum_units/:curriculum_unit_id/groups/mobilis_list.json
   def mobilis_list
-    @curriculum_units = CurriculumUnit.all_by_user(current_user).collect {|uc| {id: uc.id, code: uc.code, name: uc.name}}
-
-    if params.include?(:search)
-      @curriculum_units = @curriculum_units.select {|uc| uc[:code].downcase.include?(params[:search].downcase) or uc[:name].downcase.include?(params[:search].downcase)}
-    end
-
     respond_to do |format|
       format.json { render json: { curriculum_units: @curriculum_units } }
       format.xml { render xml: @curriculum_units }
@@ -166,6 +155,14 @@ class CurriculumUnitsController < ApplicationController
         .where(academic_allocations: {allocation_tag_id: allocation_tags})
         .select(%{substring("content" from 0 for 255) AS content}).select('*')
         .order("updated_at DESC").limit(Rails.application.config.items_per_page.to_i)
+    end
+
+    def ucs_for_list
+      @curriculum_units = CurriculumUnit.all_by_user(current_user).collect {|uc| {id: uc.id, code: uc.code, name: uc.name}}
+
+      if params.include?(:search)
+        @curriculum_units = @curriculum_units.select {|uc| uc[:code].downcase.include?(params[:search].downcase) or uc[:name].downcase.include?(params[:search].downcase)}
+      end
     end
 
 end

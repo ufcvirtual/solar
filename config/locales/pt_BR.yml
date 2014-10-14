@@ -190,13 +190,15 @@ pt_BR:
       lesson_module: Módulos de Aula
       message: Mensagem
       discussion: Fórum
-      post: Fórum - Postagen
+      post: Fórum - Postagem
       post_file: Fórum - Arquivo
       schedule_event: Evento
       score: Acompanhamento
       support_material_file: Material de Apoio
       webconference: "Webconferência"
-      user_blacklist: Blacklist
+      user_blacklist: Desvincular do MA
+      group_assignment: Trabalho em grupo
+      public_file: "Área Públicos"
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -2320,8 +2322,6 @@ pt_BR:
       created: Perfil criado com sucesso.
       updated: Perfil atualizado com sucesso.
       deleted: Perfil deletado com sucesso.
-    warning:
-      nothing_changed: Nada foi alterado no perfil.
     error:
       created: Não foi possível criar perfil.
       updated: Não foi possível atualizar perfil.

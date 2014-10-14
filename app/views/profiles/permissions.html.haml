@@ -25,7 +25,7 @@
           - @resources.each do |r|
             - permission = not(r[:permission].blank?)
             %tr.lines{class: permission ? "permission" : ""}
-              %td= r[:controller].classify.constantize.model_name.human
+              %td= t(r[:controller].singularize, scope: [:activerecord, :models])
               %td= r[:description]
               %td= check_box_tag "resource", r.id, permission, disabled: true, onchange: "javascript:profile_permissions_change_status_of_permission(this);", class: "ckb_resource"
 
