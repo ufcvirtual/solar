@@ -2,17 +2,18 @@ module V1
   class Base < ApplicationAPI
     version "v1", using: :path
 
-    helpers V1::V1Helpers
-
     mount Routes
     mount Users
     mount Groups
+    mount Offers
     mount CurriculumUnits
+    mount Courses
+    mount Allocations
+    mount Profiles
     mount Discussions
+    mount Events
     mount Posts
-    mount Loads
-    mount Integrations
     mount Lessons
-    mount Sav
+    mount Taggable
   end
 end

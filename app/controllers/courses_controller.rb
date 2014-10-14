@@ -85,6 +85,8 @@ class CoursesController < ApplicationController
     end
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    render json: {success: false, alert: I18n.t("courses.error.deleted")}, status: :unprocessable_entity
   end
 
   private

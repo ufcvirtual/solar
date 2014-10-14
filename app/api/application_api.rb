@@ -8,5 +8,6 @@ class ApplicationAPI < Grape::API
     rack_response({}, 404)
   end
 
+  helpers Helpers::V1::All
   mount V1::Base
 end

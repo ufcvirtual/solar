@@ -10,7 +10,6 @@ class Course < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: true
   validates :code, presence: true, uniqueness: true, if: "edx_course.nil?"
-
   validate :unique_name, unless: "edx_course.nil? or courses_names.nil?"
 
   validates_length_of :code, maximum: 40
@@ -41,10 +40,6 @@ class Course < ActiveRecord::Base
       errors.add(:name, I18n.t("edx.errors.existing_code")) if codes.include?(name.slice(0..2).upcase)
     end
   end
-
-
-  ## class methods
-
 
   def self.all_associated_with_curriculum_unit_by_name(type = 3)
     Course.where(name: CurriculumUnit.where(curriculum_unit_type_id: type).pluck(:name))

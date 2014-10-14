@@ -41,10 +41,6 @@ class CurriculumUnit < ActiveRecord::Base
     Course.find_by_name_and_code(name, code) if curriculum_unit_type_id == 3
   end
 
-
-  ## class methods
-
-
   ## Participantes que sao determinado tipo de perfil
   def self.class_participants_by_allocations_tags_and_is_profile_type(allocation_tags, profile_flag)
     class_participants_by_allocations(allocation_tags, profile_flag)

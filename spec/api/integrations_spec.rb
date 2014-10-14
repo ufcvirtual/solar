@@ -411,8 +411,7 @@ describe "Integrations" do
 
   end #groups
 
-  describe "bla" do
-   describe ".course" do
+  describe ".course" do
 
     describe "post" do
 
@@ -592,6 +591,67 @@ describe "Integrations" do
     end # post
 
   end # .offer
-end
+
+  describe ".group" do
+
+    describe "post" do
+
+      context "with valid ip" do
+
+        context 'create group' do
+          let!(:json_data){ { 
+            code: "G01",
+            offer_id: 3
+          } }
+
+          subject{ -> { post "/api/v1/integration/group", json_data } } 
+
+          it { should change(Group,:count).by(1) }
+
+          it {
+            post "/api/v1/integration/group", json_data
+            response.status.should eq(201)
+            response.body.should == {id: Group.find_by_code("G01").id}.to_json
+          }
+        end
+
+      end
+
+    end # post
+
+  end # .group
+
+  describe ".delete" do
+
+    context "with valid ip" do
+
+      context 'delete group' do
+
+        subject{ -> { delete "/api/v1/integration/group/14" } } 
+
+        it { should change(Group,:count).by(-1) }
+
+        it {
+          delete "/api/v1/integration/group/14"
+          response.status.should eq(200)
+          response.body.should == {ok: :ok}.to_json
+        }
+      end
+
+      context 'cant delete course' do
+
+        subject{ -> { delete "/api/v1/integration/course/2" } } 
+
+        it { should change(Course,:count).by(0) }
+
+        it {
+          delete "/api/v1/integration/course/2"
+          response.status.should eq(422)
+        }
+      end
+
+    end
+
+  end # .delete course/uc/offer/group
 
 end
