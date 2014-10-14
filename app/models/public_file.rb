@@ -1,4 +1,6 @@
 class PublicFile < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   before_destroy :can_remove?
 
   belongs_to :user
@@ -19,4 +21,5 @@ class PublicFile < ActiveRecord::Base
   def can_remove?
     raise CanCan::AccessDenied unless user_id == User.current.id
   end
+
 end

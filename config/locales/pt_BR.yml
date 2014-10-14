@@ -198,7 +198,7 @@ pt_BR:
       webconference: "Webconferência"
       user_blacklist: Desvincular do MA
       group_assignment: Trabalho em grupo
-      public_file: "Área Públicos"
+      public_file: "Área Pública"
     attributes:
       user:
         alternate_email: "E-mail alternativo"
