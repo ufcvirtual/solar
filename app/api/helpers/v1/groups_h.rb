@@ -12,8 +12,8 @@ module Helpers::V1::GroupsH
     offer.groups.where(code: group_code).first
   end
 
-  def verify_or_create_group(offer, code)
-    group = Group.where(code: code, offer_id: offer).first_or_initialize
+  def verify_or_create_group(params)
+    group = Group.where(group_params(params)).first_or_initialize
     group.status = true
     group.save!
     group

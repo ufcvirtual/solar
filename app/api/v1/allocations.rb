@@ -46,6 +46,25 @@ module V1
 
         end # groups
 
+        namespace :curriculum_units do
+          # load/curriculum_units/editors
+          post :editors do
+            load_editors  = params[:editores]
+            uc            = CurriculumUnit.find_by_code!(load_editors[:codDisciplina])
+            cpf_editores  = load_editors[:editores].map {|c| c.delete('.').delete('-')}
+
+            begin
+              User.where(cpf: cpf_editores).each do |user|
+                uc.allocate_user(user.id, 5)
+              end
+
+              {ok: :ok}
+            rescue => error
+              error!({error: error}, 422)
+            end
+          end
+        end # curriculum_units
+
       end # load
 
       namespace :integration do

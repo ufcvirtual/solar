@@ -117,15 +117,14 @@ module V1
             cpfs          = load_group[:professores]
             semester_name = load_group[:periodo].blank? ? load_group[:ano] : "#{load_group[:ano]}.#{load_group[:periodo]}"
             offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: load_group[:dtFim].to_date }
-            group_code    = load_group[:codigo]
             course        = Course.find_by_code! load_group[:codGraduacao]
             uc            = CurriculumUnit.find_by_code! load_group[:codDisciplina]
 
             begin
               ActiveRecord::Base.transaction do 
                 semester = verify_or_create_semester(semester_name, offer_period)
-                offer    = verify_or_create_offer(semester, course, uc, offer_period)
-                group    = verify_or_create_group(offer, group_code)
+                offer    = verify_or_create_offer(semester, {curriculum_unit_id: uc.id, course_id: course.id}, offer_period)
+                group    = verify_or_create_group({offer_id: offer.id, code: load_group[:codigo]})
 
                 allocate_professors(group, cpfs)
               end

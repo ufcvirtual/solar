@@ -73,25 +73,6 @@ module V1
       namespace :load do
 
         namespace :curriculum_units do
-          # load/curriculum_units/editors
-          post :editors do
-            load_editors  = params[:editores]
-            uc            = CurriculumUnit.find_by_code!(load_editors[:codDisciplina])
-            cpf_editores  = load_editors[:editores].map {|c| c.delete('.').delete('-')}
-            users         = User.where(cpf: cpf_editores)
-            prof_editor   = 5
-
-            begin
-              users.each do |user|
-                uc.allocate_user(user.id, prof_editor)
-              end
-
-              {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
-            end
-          end
-
           # load/curriculum_units
           params do 
             requires :codigo, :nome

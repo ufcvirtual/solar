@@ -560,6 +560,8 @@ describe "Integrations" do
             post "/api/v1/integration/offer", json_data
             response.status.should eq(201)
             response.body.should == {id: Offer.last.id}.to_json
+            Offer.last.period_schedule.should be_nil
+            Offer.last.enrollment_schedule.should_not be_nil
           }
         end
 
@@ -583,6 +585,7 @@ describe "Integrations" do
             response.status.should eq(201)
             response.body.should == {id: Offer.last.id}.to_json
             Offer.last.period_schedule.start_date.to_date.should eq(Date.today.to_date)
+            Offer.last.period_schedule.end_date.to_date.should eq((Date.today+4.month).to_date)
           }
         end
         

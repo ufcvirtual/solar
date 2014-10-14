@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
   validates :name, presence: true, length: { within: 6..90 }
   validates :nick, presence: true, length: { within: 3..34 }
   validates :birthdate, presence: true
-  # validates :username, presence: true, length: { within: 3..20 }, uniqueness: true
+  validates :username, presence: true, length: { within: 3..20 }, uniqueness: true
   validates :password, presence: true, confirmation: true, unless: Proc.new { |a| a.password.blank? or a.integrated?}
   validates :alternate_email, format: { with: email_format }
   validates :email, presence: true, confirmation: true, uniqueness: true, format: { with: email_format }, unless: Proc.new {|a| a.already_email_error_or_email_not_changed? }
