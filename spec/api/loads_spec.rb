@@ -157,15 +157,15 @@ describe "Loads" do
         end
 
         context "and non existing curriculum_unit with code too big" do # code must have less than 11 characters 
-          let!(:uc_data){ {codigo: "UC01UC01UC01", nome: "UC01", cargaHoraria: 80, creditos: 4} }
+          let!(:uc_data){ {codigo: "UC01UC01UC01UC01UC01UC01UC01UC01UC01UC01UC01", nome: "UC01", cargaHoraria: 80, creditos: 4} }
 
           subject{ -> {
             post "/api/v1/load/curriculum_units/", uc_data
           } }
 
           it { should change(CurriculumUnit.where(curriculum_unit_type_id: 2),:count).by(1) }
-          it { should change(CurriculumUnit.where(code: "UC01UC01UC"),:count).by(1) } # cut code to fit specified size
-          it { should change(CurriculumUnit.where(code: "UC01UC01UC01"),:count).by(0) }
+          it { should change(CurriculumUnit.where(code: "UC01UC01UC01UC01UC01UC01UC01UC01UC01UC01"),:count).by(1) } # cut code to fit specified size
+          it { should change(CurriculumUnit.where(code: "UC01UC01UC01UC01UC01UC01UC01UC01UC01UC01UC01"),:count).by(0) }
           it { should change(AllocationTag,:count).by(1) }
 
           it {

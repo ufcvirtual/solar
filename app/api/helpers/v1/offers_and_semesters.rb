@@ -34,13 +34,11 @@ module Helpers::V1::OffersAndSemesters
   end
 
   def verify_dates(offer, semester, offer_period, enrollment_period = {})
-    ss, es = semester.offer_schedule, semester.enrollment_schedule
-    s_diff_period = ss.start_date.to_date != offer_period[:start_date].try(:to_date)      or ss.end_date.to_date       != offer_period[:end_date].try(:to_date)      # semester offer  period != params offer  period
-    s_diff_enroll = es.start_date.to_date != enrollment_period[:start_date].try(:to_date) or es.end_date.try(:to_date) != enrollment_period[:end_date].try(:to_date) # semester enroll period != params enroll period
+    s_diff_period = different_dates?(semester.offer_schedule, offer_period)           # semester offer  period != params offer  period
+    s_diff_enroll = different_dates?(semester.enrollment_schedule, enrollment_period) # semester enroll period != params enroll period
 
-    ss, es = offer.period_schedule, offer.enrollment_schedule
-    o_diff_period = ss.start_date.to_date != offer_period[:start_date].try(:to_date)      or ss.end_date.to_date       != offer_period[:end_date].try(:to_date)      unless ss.nil? # semester offer  period != params offer  period
-    o_diff_enroll = es.start_date.to_date != enrollment_period[:start_date].try(:to_date) or es.end_date.try(:to_date) != enrollment_period[:end_date].try(:to_date) unless es.nil? # semester enroll period != params enroll period
+    o_diff_period = different_dates?(offer.period_schedule, offer_period)          # offer  period != params offer  period
+    o_diff_enroll = different_dates?(offer.enrollment_schedule, enrollment_period) # enroll period != params enroll period
 
     dates = {}
     dates.merge!({offer_start: offer_period[:start_date], offer_end: offer_period[:end_date]})                     if (o_diff_period.nil? and s_diff_period) or (not(o_diff_period.nil?) and o_diff_period)
@@ -69,5 +67,12 @@ module Helpers::V1::OffersAndSemesters
 
     offer.save!
   end
+
+  private
+
+    def different_dates?(schedule, params)
+      return nil if schedule.nil?
+      schedule.start_date.to_date != params[:start_date].try(:to_date) or schedule.end_date.to_date != params[:end_date].try(:to_date)
+    end
 
 end

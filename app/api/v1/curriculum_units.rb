@@ -38,7 +38,7 @@ module V1
           desc "Criação de disciplina"
           params do
             requires :name, :code, type: String
-            requires :curriculum_unit_type_id, type: Integer, default: 2
+            requires :curriculum_unit_type_id, type: Integer
             optional :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
           end
           post "/" do
@@ -76,12 +76,14 @@ module V1
             requires :codigo, :nome, type: String
             requires :cargaHoraria, type: Integer
             requires :creditos, type: Float
-            optional :tipo, type: Integer
+            optional :tipo, type: Integer, default: 2
           end
           post "/" do
             begin
               ActiveRecord::Base.transaction do 
-                verify_or_create_curriculum_unit(params[:codigo], params[:nome], params[:cargaHoraria], params[:creditos], (params[:tipo].nil? ? 2 : params[:tipo]))
+                verify_or_create_curriculum_unit( {
+                  code: params[:codigo].slice(0..39), name: params[:nome], working_hours: params[:cargaHoraria], credits: params[:creditos], curriculum_unit_type_id: params[:tipo]
+                } )
               end
               {ok: :ok}
             rescue => error
