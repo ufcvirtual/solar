@@ -14,6 +14,10 @@ module V1
 
           raise ActiveRecord::RecordNotFound if @profile_id.nil? or not(current_user.groups(@profile_id, Allocation_Activated).include?(@group))
         end
+
+        def post_params
+          ActionController::Parameters.new(params).require(:discussion_post).permit(:content, :parent_id)
+        end
       end
 
       ## NEW and HISTORY
@@ -66,11 +70,10 @@ module V1
 
         raise MissingTokenError unless @discussion.user_can_interact?(current_user.id) # unauthorized
 
-        academic_allocation = AcademicAllocation.where(academic_tool_type: "Discussion", academic_tool_id: @discussion.id, allocation_tag_id: @group.allocation_tag.related).first
+        academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: @group.allocation_tag.related).first
 
-        @post = Post.new(params[:discussion_post].except("discussion_id"))
-        @post.user  = current_user
-        @post.level = @post.parent.level.to_i + 1 unless @post.parent_id.nil?
+        @post = Post.new(post_params)
+        @post.user = current_user
         @post.profile_id = @profile_id
         @post.academic_allocation_id = academic_allocation.id
 

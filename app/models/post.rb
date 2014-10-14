@@ -1,4 +1,6 @@
 class Post < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   self.table_name = "discussion_posts"
 
   default_scope order: "updated_at DESC" # qualquer busca realizada nos posts de fórum serão ordenadas pela data decrescente
@@ -6,11 +8,14 @@ class Post < ActiveRecord::Base
   belongs_to :profile
   belongs_to :parent, class_name: "Post"
   belongs_to :user
-  
+
+  belongs_to :academic_allocation, conditions: {academic_tool_type: 'Discussion'}
+
   has_many :children, class_name: "Post", foreign_key: "parent_id", dependent: :destroy
   has_many :files, class_name: "PostFile", foreign_key: "discussion_post_id", dependent: :destroy
 
-  belongs_to :academic_allocation, conditions: {academic_tool_type: 'Discussion'}
+  before_create :set_level
+  before_destroy :remove_all_files
 
   validates :content, :profile_id, presence: true
 
@@ -18,10 +23,23 @@ class Post < ActiveRecord::Base
     (self.level < Discussion_Post_Max_Indent_Level)
   end
 
+  ## Retorna o post "avô", ou seja, o post do nível mais alto informado em "post_level"
+  def grandparent(post_level, post = nil)
+    if level == post_level
+      return ["date" => post.updated_at, "grandparent_id" => id]
+    else
+      Post.find(parent_id).grandparent(post_level, (post || self))
+    end
+  end
+
+  def discussion
+    Discussion.find(academic_allocation.academic_tool_id)
+  end
+
   def to_mobilis
     attachments = []
     files.map { |file| attachments << {type: file.attachment_content_type, name: file.attachment_file_name, link: Rails.application.routes.url_helpers.download_post_post_file_path(post_id: id, id: file.id)} }
-    
+
     {
       id: id,
       profile_id: profile_id,
@@ -35,29 +53,24 @@ class Post < ActiveRecord::Base
     }
   end
 
-  ## Retorna o post "avô", ou seja, o post do nível mais alto informado em "post_level"
-  def grandparent(post_level, post = nil)
-    if level == post_level
-      return ["date" => post.updated_at, "grandparent_id" => id]
-    else
-      Post.find(parent_id).grandparent(post_level, (post || self))
-    end
-  end
 
-  ## Recupera os posts mais recentes dos niveis inferiores aos posts analisados e, então, 
+  ## class methods
+
+
+  ## Recupera os posts mais recentes dos niveis inferiores aos posts analisados e, então,
   ## reordena analisando ou as datas dos posts em questão ou a data do "filho/neto" mais recente
-  def self.reorder_by_latest_posts(latest_posts, posts) 
-    unless posts.empty? 
+  def self.reorder_by_latest_posts(latest_posts, posts)
+    unless posts.empty?
       # dos posts mais recentes de uma discussion, recupera sua data e o valor do "avô" de todos os posts que têm level maior que o que estou ordenando
       lp_info = latest_posts.collect{|lp| lp.grandparent(posts.first.level) if lp.level > posts.first.level}
-      # recupera o mais recente dos agrupados, ou seja, se, para um mesmo "post avô", há vários níveis, em cada nível vai ter seu respectivo post mais atual. 
+      # recupera o mais recente dos agrupados, ou seja, se, para um mesmo "post avô", há vários níveis, em cada nível vai ter seu respectivo post mais atual.
       # ao definir quais posts são "netos" do mesmo post do level inicial, pode-se saber qual, realmente, é o mais recente de todos e guardar sua data
       lp_info = lp_info.compact.flatten.group_by{|lp| lp["grandparent_id"]}.collect{|lp| lp[1][0]}
 
       # reordenar os posts a partir de suas datas ou do "neto" mais recente
       posts = posts.sort{|post1, post2|
         # recupera o "neto" mais atualizado do post a ser ordenado
-        lp_info1, lp_info2 = lp_info.find{|lp| lp["grandparent_id"] == post1.id}, lp_info.find{|lp| lp["grandparent_id"] == post2.id} 
+        lp_info1, lp_info2 = lp_info.find{|lp| lp["grandparent_id"] == post1.id}, lp_info.find{|lp| lp["grandparent_id"] == post2.id}
 
         # recupera a data mais recente entre o post a ser ordenado e seu "neto" mais recente
         last_post1 = (((not lp_info1.nil?) and lp_info1["date"] > post1.updated_at) ? lp_info1["date"] : post1.updated_at)
@@ -71,8 +84,17 @@ class Post < ActiveRecord::Base
     return posts
   end
 
-  def discussion
-    Discussion.find(academic_allocation.academic_tool_id)
-  end
+  private
+
+    def set_level
+      self.level = parent.level.to_i + 1 unless parent_id.nil?
+    end
+
+    def remove_all_files
+      files.each do |file|
+        file.delete
+        File.delete(file.attachment.path) if File.exist?(file.attachment.path)
+      end
+    end
 
 end

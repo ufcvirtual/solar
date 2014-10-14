@@ -3,7 +3,7 @@ class PostsController < ApplicationController
 
   include SysLog::Actions
 
-  before_filter :authenticate_user!
+  # before_filter :authenticate_user!
   before_filter :prepare_for_pagination
 
   load_and_authorize_resource except: [:index, :user_posts, :create, :show]
@@ -58,9 +58,11 @@ class PostsController < ApplicationController
   ## GET /discussions/1/posts/user/1
   ## all posts of the user
   def user_posts
-    academic_allocation = AcademicAllocation.where(academic_tool_id: params[:discussion_id], academic_tool_type: "Discussion", allocation_tag_id: AllocationTag.find(active_tab[:url][:allocation_tag_id]).related).first
-    @discussion, @user  = Discussion.find(params[:discussion_id]), User.find(params[:user_id])
-    @posts = academic_allocation.discussion_posts.where(user_id: params[:user_id])
+    @user = User.find(params[:user_id])
+    @discussion = Discussion.find(params[:discussion_id])
+
+    allocation_tags = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+    @posts = @discussion.posts.where(academic_allocations: {allocation_tag_id: allocation_tags}, user_id: @user.id)
 
     respond_to do |format|
       format.html { render layout: false }
@@ -72,19 +74,7 @@ class PostsController < ApplicationController
   def create
     authorize! :create, Post
 
-    discussion_id       = params[:discussion_post].include?(:discussion_id) ? params[:discussion_post][:discussion_id] : params[:discussion_id]
-    allocation_tag_ids  = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
-    academic_allocation = AcademicAllocation.where(academic_tool_type: "Discussion", academic_tool_id: discussion_id, allocation_tag_id: allocation_tag_ids).first
-    params[:discussion_post][:academic_allocation_id] = academic_allocation.id
-
-    @post = Post.new(params[:discussion_post])
-
-    @post.user_id    = current_user.id
-    @post.profile_id = current_user.profiles_with_access_on(:create, :posts, @post.discussion.academic_allocations.map(&:allocation_tag).map(&:related), true).first
-    @post.level      = @post.parent.level.to_i + 1 unless @post.parent_id.nil?
-
-
-    if @post.save
+    if new_post_under_discussion(Discussion.find(params[:discussion_id]))
       render json: {result: 1, post_id: @post.id, parent_id: @post.parent_id}, status: :created
     else
       render json: {result: 0}, status: :unprocessable_entity
@@ -93,36 +83,50 @@ class PostsController < ApplicationController
 
   ## PUT /discussions/:id/posts/1
   def update
-    if @post.update_attributes(params[:discussion_post].reject{|k,v| v.blank?})
+    if @post.update_attributes(post_params)
       render json: {success: true, post_id: @post.id, parent_id: @post.parent_id}
     else
-      render json: @post.errors.full_messages, :status => :unprocessable_entity
+      render json: @post.errors.full_messages, status: :unprocessable_entity
     end
   end
 
+  ## GET /discussions/:id/posts/1
   def show
-    post         = Post.find(params[:id])
-    post         = Post.find(post.grandparent(level = 1).first["grandparent_id"].to_i) if params[:grandparent] == "true"
+    post = Post.find(params[:id])
+    post = Post.find(post.grandparent(level = 1).first["grandparent_id"].to_i) if params[:grandparent] == "true"
+
+    allocation_tag_id = active_tab[:url][:allocation_tag_id]
     can_interact = post.discussion.user_can_interact?(current_user.id)
-    can_post     = (can? :create, Post, on: [active_tab[:url][:allocation_tag_id]])
-    @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id]).map(&:id)
+    can_post = can?(:create, Post, on: [allocation_tag_id])
+
+    @class_participants = AllocationTag.get_participants(allocation_tag_id).pluck(:id)
+
     render partial: "post", locals: {post: post, latest_posts: [], display_mode: nil, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: (params[:new_post] ? params[:id] : nil) }
   end
 
   ## DELETE /posts/1
   def destroy
-    @post.files.each do |file|
-      file.delete
-      File.delete(file.attachment.path) if File.exist?(file.attachment.path)
-    end
-
     @post.destroy
 
-    respond_to do |format|
-      format.html { render :json => {:result => :ok} }
-      format.xml  { head :ok }
-      format.json { render :json => {:result => :ok} }
-    end
+    render json: {result: :ok}
   end
+
+  private
+
+    def post_params
+      params.require(:discussion_post).permit(:content, :parent_id, :discussion_id)
+    end
+
+    def new_post_under_discussion(discussion)
+      allocation_tag_ids  = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+      academic_allocation = discussion.academic_allocations.where(allocation_tag_id: allocation_tag_ids).first
+
+      @post = Post.new(post_params)
+      @post.user_id = current_user.id
+      @post.academic_allocation_id = academic_allocation.id
+      @post.profile_id = current_user.profiles_with_access_on(:create, :posts, allocation_tag_ids, true).first
+
+      @post.save
+    end
 
 end
