@@ -62,9 +62,7 @@ module V1
 
       ## CREATE
 
-      params do
-        requires :id, type: Integer, desc: "Discussion ID."
-      end
+      params { requires :id, type: Integer, desc: "Discussion ID." }
       post ":id/posts" do
         verify_user_permission_on_discussion_and_set_obj(:create)
 
@@ -91,9 +89,7 @@ module V1
       ## CREATE files
 
       desc "Send files to a post."
-      params do
-        requires :id, type: Integer, desc: "Post ID."
-      end
+      params { requires :id, type: Integer, desc: "Post ID." }
       post ':id/files' do
         post = Post.find(params[:id])
 
@@ -113,9 +109,7 @@ module V1
 
       # GET posts/:id/files
       desc "Files of a post."
-      params do
-        requires :id, type: Integer, desc: "Discussion ID."
-      end
+      params { requires :id, type: Integer, desc: "Discussion ID." }
       get ":id/files", rabl: "posts/files" do
         raise ActiveRecord::RecordNotFound unless current_user.discussion_post_ids.include?(params[:id]) # user is owner
         @files = Post.find(params[:id]).files
@@ -124,17 +118,13 @@ module V1
       ## DELETE post and files
 
       desc "Delete a post."
-      params do
-        requires :id, type: Integer, desc: "Post ID."
-      end
+      params { requires :id, type: Integer, desc: "Post ID." }
       delete ':id' do
         current_user.discussion_posts.find(params[:id]).destroy # user posts
       end
 
       desc "Delete a file of a post."
-      params do
-        requires :id, type: Integer, desc: "File Post ID."
-      end
+      params { requires :id, type: Integer, desc: "File Post ID." }
       delete 'files/:id' do
         pfile = PostFile.find(params[:id])
 

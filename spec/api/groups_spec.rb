@@ -239,15 +239,23 @@ describe "Groups" do
 
   describe ".group" do
 
+    context "with invalid ip" do
+      it "gets a not found error" do
+        post "/api/v1/group", {code: "G01", offer_id: 3}, "REMOTE_ADDR" => "127.0.0.2"
+        response.status.should eq(404)
+      end
+      it "gets a not found error" do
+        put "/api/v1/group/3", {code: "G01"}, "REMOTE_ADDR" => "127.0.0.2"
+        response.status.should eq(404)
+      end
+    end
+
     describe "post" do
 
       context "with valid ip" do
 
         context 'create group' do
-          let!(:json_data){ { 
-            code: "G01",
-            offer_id: 3
-          } }
+          let!(:json_data){ { code: "G01", offer_id: 3 } }
 
           subject{ -> { post "/api/v1/group", json_data } } 
 
@@ -257,6 +265,78 @@ describe "Groups" do
             post "/api/v1/group", json_data
             response.status.should eq(201)
             response.body.should == {id: Group.find_by_code("G01").id}.to_json
+          }
+        end
+
+        context 'dont create group - existing code' do
+          let!(:json_data){ { code: "QM-CAU", offer_id: 3 } }
+
+          subject{ -> { post "/api/v1/group", json_data } } 
+
+          it { should change(Group,:count).by(0) }
+
+          it {
+            post "/api/v1/group", json_data
+            response.status.should eq(422)
+          }
+        end
+
+        context 'dont create group - missing params' do
+          let!(:json_data){ { offer_id: 3 } }
+
+          subject{ -> { post "/api/v1/group", json_data } } 
+
+          it { should change(Group,:count).by(0) }
+
+          it {
+            post "/api/v1/group", json_data
+            response.status.should eq(400)
+          }
+        end
+
+      end
+
+    end # post
+
+    describe "put" do
+
+      context "with valid ip" do
+
+        context 'update group' do
+          let!(:json_data){ { code: "G01" } }
+
+          subject{ -> { put "/api/v1/group/3", json_data } } 
+
+          it { should change(Group.where(code: "QM-CAU"),:count).by(-1) }
+
+          it {
+            put "/api/v1/group/3", json_data
+            response.status.should eq(200)
+            response.body.should == {ok: :ok}.to_json
+          }
+        end
+
+        context 'dont update group - existing code' do
+          let!(:json_data){ { code: "QM-MAR" } }
+
+          subject{ -> { put "/api/v1/group/3", json_data } } 
+
+          it { should change(Group.where(code: "QM-CAU"),:count).by(0) }
+
+          it {
+            put "/api/v1/group/3", json_data
+            response.status.should eq(422)
+          }
+        end
+
+        context 'dont update group - missing params' do
+          subject{ -> { put "/api/v1/group/3" } } 
+
+          it { should change(Group.where(code: "QM-CAU"),:count).by(0) }
+
+          it {
+            put "/api/v1/group/3"
+            response.status.should eq(400)
           }
         end
 

@@ -23,7 +23,10 @@ module V1
         end
 
         desc "Edição de oferta/semestre"
-        params { optional :offer_start, :offer_end, :enrollment_start, :enrollment_end, type: Date }
+        params do
+          optional :offer_start, :offer_end, :enrollment_start, :enrollment_end, type: Date
+          at_least_one_of :offer_start, :offer_end, :enrollment_start, :enrollment_end
+        end
         put ":id" do
           begin
             update_dates(Offer.find(params[:id]), params)

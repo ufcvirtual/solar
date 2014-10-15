@@ -1,4 +1,4 @@
-module Helpers::V1::EventsH
+module V1::EventsH
 
   def get_event_type_and_description(type)
     case type.to_i

@@ -1,4 +1,4 @@
-module Helpers::V1::General
+module V1::General
 
   ## only webserver can access
   def verify_ip_access!

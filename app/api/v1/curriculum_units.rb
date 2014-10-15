@@ -52,6 +52,7 @@ module V1
         params do
           optional :name, :code
           optional :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
+          at_least_one_of :code, :name, :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
           # reject uc_type # nao poderia mudar tipo depois de criado
         end
         put ":id" do

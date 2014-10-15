@@ -39,9 +39,9 @@ gem "rubyzip", "~> 1.0.0"
 
 gem "doorkeeper", "~> 1.0.0"
 gem "rack-oauth2", "~> 1.0.7"
-gem "grape", "~> 0.6.1"
-gem "rabl", "~> 0.9.3"
-gem "grape-rabl", "~> 0.2.2"
+gem "grape", "~> 0.9.0"
+gem "rabl", "~> 0.11.0"
+gem "grape-rabl", "~> 0.3.0"
 gem "savon", "~> 2.0" # comunicação com ws
 
 gem "roo", "~> 1.13.2" # csv, excel

@@ -45,7 +45,7 @@ module V1
       namespace :load do
 
         namespace :user do
-          params { requires :cpf }
+          params { requires :cpf, type: String }
           # load/user
           post "/" do
             begin

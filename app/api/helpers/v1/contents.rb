@@ -1,4 +1,4 @@
-module Helpers::V1::Contents
+module V1::Contents
 
   def copy_posts(from_posts, to_at, parent_id=nil)
     from_posts.each do |from_post|

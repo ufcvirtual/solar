@@ -1,4 +1,4 @@
-module Helpers::V1::CurriculumUnitsAndCourses
+module V1::CurriculumUnitsAndCourses
 
   def verify_or_create_curriculum_unit(attributes)
     uc = CurriculumUnit.where(code: attributes[:code]).first_or_initialize

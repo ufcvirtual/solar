@@ -1,4 +1,4 @@
-module Helpers::V1::GroupsH
+module V1::GroupsH
 
   def get_group(curriculum_unit_code, course_code, code, period, year)
     semester = (period.blank? ? year : "#{year}.#{period}")

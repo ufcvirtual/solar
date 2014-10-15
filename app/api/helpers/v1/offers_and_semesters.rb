@@ -1,4 +1,4 @@
-module Helpers::V1::OffersAndSemesters
+module V1::OffersAndSemesters
 
   def creates_offer_and_semester(name, offer_period, enrollment_period, params)
     semester = verify_or_create_semester(name, offer_period, enrollment_period)

@@ -4,48 +4,95 @@ describe "Courses" do
 
   fixtures :all
 
-  describe ".course" do
+  context "with valid ip" do
 
-    describe "post" do
+    context 'create course' do
+      let!(:json_data){ { name: "Curso 01", code: "C01" } }
 
-      context "with valid ip" do
+      subject{ -> { post "/api/v1/course", json_data } } 
 
-        context 'create course' do
-          let!(:json_data){ { 
-            name: "Curso 01",
-            code: "C01"
-          } }
+      it { should change(Course,:count).by(1) }
 
-          subject{ -> { post "/api/v1/course", json_data } } 
+      it {
+        post "/api/v1/course", json_data
+        response.status.should eq(201)
+        response.body.should == {id: Course.find_by_code("C01").id}.to_json
+      }
+    end
 
-          it { should change(Course,:count).by(1) }
+    context 'dont create course - already exist' do
+      let!(:json_data){ { code: "110", name: "Curso01"} }
 
-          it {
-            post "/api/v1/course", json_data
-            response.status.should eq(201)
-            response.body.should == {id: Course.find_by_code("C01").id}.to_json
-          }
-        end
+      subject{ -> { post "/api/v1/course", json_data } } 
 
-      end
+      it { should change(Course,:count).by(0) }
 
-    end # post
+      it {
+        post "/api/v1/course", json_data
+        response.status.should eq(422)
+      }
+    end
 
-    describe "types" do
-      it "list all" do
-        get "/api/v1/course/types"
+    context 'dont create course - code too big' do
+      let!(:json_data){ { code: "1100"*11, name: "Curso01" } }
 
+      subject{ -> { post "/api/v1/course", json_data } } 
+
+      it { should change(Course,:count).by(0) }
+
+      it {
+        post "/api/v1/course", json_data
+        response.status.should eq(422)
+      }
+    end
+
+    context 'dont create course - missing params' do
+      subject{ -> { post "/api/v1/course" } } 
+
+      it { should change(Course,:count).by(0) }
+
+      it {
+        post "/api/v1/course"
+        response.status.should eq(400)
+      }
+    end
+
+    context 'update course' do
+      it {
+        put "/api/v1/course/1", { code: "109.2" }
         response.status.should eq(200)
-        response.body.should == CurriculumUnitType.select('id, description as name').to_json
-      end
+      }
+    end        
 
-      it "gets a not found error" do
-        get "/api/v1/course/types", {}, {"REMOTE_ADDR" => "127.0.0.2"}
-        response.status.should eq(404)
-      end
-    end # describe types
+    context 'dont update course - already exist' do
+      it {
+        put "/api/v1/course/1", { code: "109" }
+        response.status.should eq(422)
+      }
+    end
 
-  end # .course
+    context 'dont update course - missing params' do
+      it {
+        put "/api/v1/course/1"
+        response.status.should eq(400)
+      }
+    end
+
+  end
+
+  describe "types" do
+    it "list all" do
+      get "/api/v1/course/types"
+
+      response.status.should eq(200)
+      response.body.should == CurriculumUnitType.select('id, description as name').to_json
+    end
+
+    it "gets a not found error" do
+      get "/api/v1/course/types", {}, {"REMOTE_ADDR" => "127.0.0.2"}
+      response.status.should eq(404)
+    end
+  end # describe types
 
   describe ".courses" do
     it "list all by type and semester" do

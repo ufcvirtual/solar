@@ -1,4 +1,4 @@
-module Helpers::V1::All
+module V1::All
   include AllocationsH
   include OffersAndSemesters
   include CurriculumUnitsAndCourses

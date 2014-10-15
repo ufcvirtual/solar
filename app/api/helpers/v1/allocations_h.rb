@@ -1,4 +1,4 @@
-module Helpers::V1::AllocationsH
+module V1::AllocationsH
 
   def allocate_professors(group, cpfs)
     group.allocations.where(profile_id: 17).update_all(status: 2) # cancel all previous allocations

@@ -38,8 +38,9 @@ module V1
           params do
             requires :Turmas, type: Array
             requires :CodigoCurso, :CodigoDisciplina, :Periodo, type: String
-            requires :DataInserida do
-              requires :Data, :HoraInicio, :HoraFim, :Polo, :Tipo
+            requires :DataInserida, type: Hash do
+              requires :Data
+              requires :HoraInicio, :HoraFim, :Polo, :Tipo, type: String
             end
           end
           post "/" do

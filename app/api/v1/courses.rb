@@ -42,7 +42,10 @@ module V1
         end
 
         desc "Edição de curso"
-        params { optional :name, :code, type: String }
+        params do
+          optional :name, :code, type: String
+          at_least_one_of :code, :name
+        end
         put ":id" do
           begin
             Course.find(params[:id]).update_attributes! course_params(params)

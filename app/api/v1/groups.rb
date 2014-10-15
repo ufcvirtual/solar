@@ -101,10 +101,10 @@ module V1
         end
 
         desc "Edição de turma"
-        # não edita nome do semestre. se for o caso, deleta a antiga oferta e cria uma nova com o nome certo do semestre
         params do
           optional :code, type: String
           optional :status, type: Boolean
+          at_least_one_of :code, :status
         end
         put ":id" do
           begin
