@@ -128,7 +128,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "ativar perfil inativo de usuario" do
-    assert_difference("LogAction.count") do
+    assert_difference(["LogAction.count", "Allocation.where(status: #{Allocation_Activated}).count"]) do
       put activate_allocation_path(allocations(:ad))
     end
     assert_response :success
@@ -137,7 +137,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   test "nao ativar perfil inativo de usuario para usuario sem permissao" do
     login(users(:professor))
 
-    assert_no_difference("LogAction.count") do
+    assert_no_difference(["LogAction.count", "Allocation.where(status: #{Allocation_Activated}).count"]) do
       put activate_allocation_path(allocations(:ad)), {format: :json}
     end
 
@@ -152,7 +152,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   test "nao desativar perfil de usuario para usuario sem permissao" do
     login(users(:professor))
 
-    assert_no_difference("LogAction.count") do
+    assert_no_difference(["LogAction.count", "Allocation.where(status: #{Allocation_Activated}).count"]) do
       put deactivate_allocation_path(allocations(:g)), {format: :json}
     end
 
@@ -160,7 +160,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "alocar usuario com perfil tutor a distancia" do
-    assert_difference(["Allocation.count", "LogAction.count"], 2) do
+    assert_difference(["Allocation.where(status: #{Allocation_Activated}).count", "LogAction.count"], 2) do
       post create_designation_allocations_path, { allocation_tags_ids: "#{allocation_tags(:al5).id}", user_id: users(:user2).id, profile_id: profiles(:tutor_distancia).id, status: Allocation_Activated } #oferta
       post create_designation_allocations_path, { allocation_tags_ids: "#{allocation_tags(:al4).id}", user_id: users(:user2).id, profile_id: profiles(:tutor_distancia).id, status: Allocation_Activated } #turma
     end
@@ -173,7 +173,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   test "nao alocar usuario com perfil tutor a distancia para usuario sem permissao" do
     login(users(:professor))
 
-    assert_no_difference(["Allocation.count", "LogAction.count"]) do
+    assert_no_difference(["Allocation.where(status: #{Allocation_Activated}).count", "LogAction.count"]) do
       post create_designation_allocations_path(format: :json), { allocation_tags_ids: "#{allocation_tags(:al5).id}", user_id:  users(:user2).id, profile_id:  profiles(:tutor_distancia).id, status: Allocation_Activated }
     end
 
@@ -184,14 +184,14 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   # Admin
   test "alocar usuario como editor" do
     login(users(:admin))
-    assert_difference(["Allocation.count", "LogAction.count"]) do
+    assert_difference(["Allocation.where(status: #{Allocation_Activated}).count", "LogAction.count"]) do
       post create_designation_allocations_path, { allocation_tags_ids:  "#{allocation_tags(:al5).id}", user_id: users(:user2).id, profile_id:  profiles(:editor).id, status:  Allocation_Activated , admin: true} #oferta
     end
 
     assert_response :success
     assert (not Allocation.where(user_id: users(:user2).id, profile_id: profiles(:editor).id, allocation_tag_id: allocation_tags(:al5).id).empty?)
 
-    assert_difference(["Allocation.where(allocation_tag_id: 43).count", "LogAction.count"]) do
+    assert_difference(["Allocation.where(allocation_tag_id: 43, status: 1).count", "LogAction.count"]) do
       post create_designation_allocations_path, { allocation_tags_ids:  "#{allocation_tags(:al43).id}", user_id: users(:user2).id, profile_id: profiles(:editor).id, status:  Allocation_Activated, admin: true } # uc_type
     end
 
@@ -200,7 +200,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
 
   test "nao alocar usuario com perfil editor - sem acesso" do
     login(users(:editor))
-    assert_no_difference(["Allocation.where(allocation_tag_id: 43).count", "LogAction.count"]) do
+    assert_no_difference(["Allocation.where(allocation_tag_id: 43, status: 1).count", "LogAction.count"]) do
       post create_designation_allocations_path, { allocation_tags_ids:  "#{allocation_tags(:al43).id}", user_id: users(:user2).id, profile_id: profiles(:editor).id, status: Allocation_Activated } # uc_type
     end
   end
@@ -212,7 +212,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   # Usuário solicita matrícula dentro do período
   test "realizar pedido de matricula para aluno - dentro do periodo" do
     login(users(:editor))
-    assert_difference(["Allocation.count", "LogAction.count"]) do
+    assert_difference(["Allocation.where(status: #{Allocation_Pending}).count", "LogAction.count"]) do
       post enroll_request_allocations_path(group_id: allocation_tags(:al1).group_id) # Introducao a linguistica
     end
 
@@ -223,7 +223,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
   # Usuário solicita matrícula fora do período
   test "nao realizar pedido de matricula para aluno - fora do periodo" do
     login(users(:editor))
-    assert_no_difference(["Allocation.count", "LogAction.count"]) do
+    assert_no_difference(["Allocation.where(status: #{Allocation_Pending}).count", "LogAction.count"]) do
       post enroll_request_allocations_path(group_id: allocation_tags(:al8).group_id) # literatura brasileria I
     end
 
@@ -233,8 +233,8 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
 
   test "cancelar alocacao" do
     login(@coordenador)
-    assert_difference("Allocation.where('status = 1').count", -1) do
-      assert_no_difference("Allocation.count") do
+    assert_difference("Allocation.where(status: #{Allocation_Activated}).count", -1) do
+      assert_difference("Allocation.where(status: Allocation_Cancelled).count") do
         assert_difference("LogAction.count") do
           @request.env['HTTP_REFERER'] = "#{::Rails.root.to_s}/users/profiles"
           delete cancel_profile_request_allocation_path(@coordenador.allocations.where("allocation_tag_id IS NOT null").first), {format: :json}
@@ -249,7 +249,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
 
   test "nao cancelar alocacao de outro usuario" do
     login(@aluno1)
-    assert_no_difference(["Allocation.count", "LogAction.count"]) do
+    assert_no_difference(["Allocation.where(status: Allocation_Cancelled).count", "LogAction.count"]) do
       @request.env['HTTP_REFERER'] = "#{::Rails.root.to_s}/users/profiles"
       delete cancel_profile_request_allocation_path(allocations(:h)), {format: :json}
     end
@@ -260,7 +260,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
 
   test "nao cancelar alocacao com perfil de aluno" do
     login(@aluno1)
-    assert_no_difference(["Allocation.count", "LogAction.count"]) do
+    assert_no_difference(["Allocation.where(status: Allocation_Cancelled).count", "LogAction.count"]) do
       # alocação de aluno para aluno1 em allocation_tag_3
       @request.env['HTTP_REFERER'] = "#{::Rails.root.to_s}/users/profiles"
       delete cancel_profile_request_allocation_path(allocations(:l)), {format: :json}
@@ -272,7 +272,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
 
   test "solicitar nova alocacao geral" do
     login(@aluno1)
-    assert_difference(["Allocation.count", "LogAction.count"]) do
+    assert_difference(["Allocation.where(status: #{Allocation_Pending}).count", "LogAction.count"]) do
       post profile_request_allocations_path(profile_id: profiles(:editor).id), format: :json
     end
 
@@ -284,7 +284,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
 
   test "solicitar nova alocacao em UC" do
     login(@aluno1)
-    assert_difference(["Allocation.count", "LogAction.count"]) do
+    assert_difference(["Allocation.where(status: #{Allocation_Pending}).count", "LogAction.count"]) do
       post profile_request_allocations_path(profile_id: profiles(:editor).id, curriculum_unit_id: curriculum_units(:r2).id), format: :json
     end
 
@@ -296,7 +296,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
 
   test "solicitar alocacao ja ativa" do
     login(@coordenador)
-    assert_no_difference(["Allocation.count", "LogAction.count"]) do
+    assert_no_difference(["Allocation.where(status: #{Allocation_Activated}).count", "LogAction.count"]) do
       post profile_request_allocations_path(profile_id: profiles(:editor).id, groups_id: "#{groups(:g5).id}"), format: :json
     end
 
@@ -309,8 +309,8 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
     login(@admin)
     allocation = allocations(:ad)
 
-    assert_difference(["Allocation.where('status = #{Allocation_Activated}').count", "LogAction.count"]) do
-      assert_difference("Allocation.where('status = #{Allocation_Pending}').count", -1) do
+    assert_difference(["Allocation.where(status: #{Allocation_Activated}).count", "LogAction.count"]) do
+      assert_difference("Allocation.where(status: #{Allocation_Pending}).count", -1) do
         put accept_allocation_path(allocations(:ad)), {accept: true}
       end
     end
@@ -323,8 +323,8 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
     login(@admin)
     allocation = allocations(:ad)
 
-    assert_difference(["Allocation.where('status = #{Allocation_Rejected}').count", "LogAction.count"]) do
-      assert_difference("Allocation.where('status = #{Allocation_Pending}').count", -1) do
+    assert_difference(["Allocation.where(status: #{Allocation_Rejected}).count", "LogAction.count"]) do
+      assert_difference("Allocation.where(status: #{Allocation_Pending}).count", -1) do
         put reject_allocation_path(allocation.id,), {pt: false}
       end
     end
@@ -337,8 +337,8 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
     login(@editor)
     allocation = allocations(:ad)
 
-    assert_difference(["Allocation.where('status = #{Allocation_Activated}').count", "LogAction.count"]) do
-      assert_difference("Allocation.where('status = #{Allocation_Pending}').count", -1) do
+    assert_difference(["Allocation.where(status: #{Allocation_Activated}).count", "LogAction.count"]) do
+      assert_difference("Allocation.where(status: #{Allocation_Pending}).count", -1) do
         put accept_allocation_path(allocations(:ad))
       end
     end
@@ -351,8 +351,8 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
     login(@editor)
     allocation = allocations(:editor_pending_as_admin)
 
-    assert_no_difference(["Allocation.where('status = #{Allocation_Activated}').count", "LogAction.count"]) do
-      assert_no_difference("Allocation.where('status = #{Allocation_Pending}').count") do
+    assert_no_difference(["Allocation.where(status: #{Allocation_Activated}).count", "LogAction.count"]) do
+      assert_no_difference("Allocation.where(status: #{Allocation_Pending}).count") do
         put accept_allocation_path(allocations(:editor_pending_as_admin)), {format: :json}
       end
     end
@@ -367,8 +367,8 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
     put accept_allocation_path(allocations(:ad)), {accept: true}
     assert_equal Allocation_Activated, Allocation.find(allocation.id).status
 
-    assert_difference("Allocation.where('status = #{Allocation_Activated}').count", -1) do
-      assert_difference(["Allocation.where('status = #{Allocation_Pending}').count", "LogAction.count"]) do
+    assert_difference("Allocation.where(status: #{Allocation_Activated}).count", -1) do
+      assert_difference(["Allocation.where(status: #{Allocation_Pending}).count", "LogAction.count"]) do
         put undo_action_allocation_path(allocations(:ad)), {undo: true}
       end
     end
@@ -383,8 +383,8 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
     put reject_allocation_path(allocations(:ad)), {accept: false}
     assert_equal Allocation_Rejected, Allocation.find(allocation.id).status
 
-    assert_difference("Allocation.where('status = #{Allocation_Rejected}').count", -1) do
-      assert_difference(["Allocation.where('status = #{Allocation_Pending}').count", "LogAction.count"]) do
+    assert_difference("Allocation.where(status: #{Allocation_Rejected}).count", -1) do
+      assert_difference(["Allocation.where(status: #{Allocation_Pending}).count", "LogAction.count"]) do
         put undo_action_allocation_path(allocations(:ad)), {undo: true}
       end
     end

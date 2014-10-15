@@ -160,8 +160,7 @@ class User < ActiveRecord::Base
 
   ## Na criação, o usuário recebe o perfil de usuario basico
   def basic_profile_allocation
-    new_allocation_user = Allocation.new profile_id: Profile.find_by_types(Profile_Type_Basic).id, status: Allocation_Activated, user_id: self.id
-    new_allocation_user.save!
+    Allocation.create profile_id: Profile.find_by_types(Profile_Type_Basic).id, status: Allocation_Activated, user_id: self.id
   end
 
   def downcase_username
@@ -323,7 +322,6 @@ class User < ActiveRecord::Base
         "institution"=>row['Instituição'],
         "gender"=>row['Sexo'],
         "cpf"=>row['CPF']}
-
 
         user.attributes = row
 

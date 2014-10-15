@@ -22,7 +22,7 @@ class Allocation < ActiveRecord::Base
 
   validates_uniqueness_of :profile_id, scope: [:user_id, :allocation_tag_id]
 
-  attr_accessible :user_id, :profile_id, :allocation_tag_id
+  attr_accessible :user_id, :profile_id, :allocation_tag_id, :status
 
   def can_change_group?
     not [Allocation_Cancelled, Allocation_Rejected].include?(status)
