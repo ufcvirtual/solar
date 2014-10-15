@@ -24,6 +24,7 @@ class AgendasController < ApplicationController
   end
 
   def calendar
+    @allocation_tags_ids = @allocation_tags_ids.join(" ")
     @access_forms = Event.descendants.collect{ |model| model.to_s.tableize.singularize if model.constants.include?("#{params[:selected].try(:upcase)}_PERMISSION".to_sym) }.compact.join(",")
   end
 
