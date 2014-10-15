@@ -268,11 +268,13 @@ class Offer < ActiveRecord::Base
 
   def notify_editors_of_disabled_groups(groups)
     emails = users_with_profile_type(Profile_Type_Editor).map(&:email)
-    emails << groups.map{|group| group.users_with_profile_type(Profile_Type_Editor).map(&:email)}
+    emails << groups.map { |group| group.users_with_profile_type(Profile_Type_Editor).map(&:email) }
+
+    offer_info = info # nao colocar objetos AR dentro de threads
+    group_codes = groups.map(&:code).join(', ')
+
     Thread.new do
-      Mutex.new.synchronize do
-        Notifier.groups_disabled(emails.flatten.uniq.join(", "), groups.map(&:code), info).deliver
-      end
+      Notifier.groups_disabled(emails.flatten.uniq.join(", "), group_codes, offer_info).deliver
     end
   end
 

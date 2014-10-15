@@ -8,7 +8,7 @@ Fb_Config = YAML::load_file(File.open('config/facebook.yml'))
 
 # configuracoes do action mailer para o gmail - porta: 465 ou 587
 ActionMailer::Base.perform_deliveries   = true
-ActionMailer::Base.delivery_method      = :smtp
+# ActionMailer::Base.delivery_method      = :smtp
 ActionMailer::Base.default_url_options  = mailer_config['default_url_options']
 ActionMailer::Base.smtp_settings        = mailer_config['smtp_settings']
 
@@ -67,7 +67,7 @@ Context_Curriculum_Unit = 2 #Context.find_by_name('curriculum_unit').id
 # Tempo extra, em dias, para o responsável poder executar uma ação
 Discussion_Responsible_Extra_Time   = 3
 Discussion_Post_Max_Indent_Level    = 4
-Assignment_Responsible_Extra_Time   = 3 
+Assignment_Responsible_Extra_Time   = 3
 
 # Tipos de eventos
 Presential_Test     = 1 # prova presencial
@@ -76,6 +76,6 @@ Recess              = 3 # recesso
 Holiday             = 4 # feriado
 WebConferenceLesson = 5 # aula por web conferência
 
-# número máximo de turmas exibidas sem expansão da div 
+# número máximo de turmas exibidas sem expansão da div
 Max_Groups_Shown_Filter = 30 # no filtro
 Max_Groups_Shown_Tags 	= 15 # nas tags

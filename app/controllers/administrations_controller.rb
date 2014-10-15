@@ -68,9 +68,7 @@ class AdministrationsController < ApplicationController
     @user = User.find(params[:id])
 
     Thread.new do
-      Mutex.new.synchronize do
-        @user.send_reset_password_instructions
-      end
+      @user.send_reset_password_instructions
     end
 
     render json: {success: true, notice: t("administrations.success.email_sent")}

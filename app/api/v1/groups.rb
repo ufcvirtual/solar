@@ -30,7 +30,7 @@ module V1
         namespace :merge do
           desc "Aglutinação/Desaglutinação de turmas"
           params do
-            requires :main_group, :course, :curriculum_unit, :period, type: String  
+            requires :main_group, :course, :curriculum_unit, :period, type: String
             requires :secundary_groups, type: Array
             optional :type, type: Boolean, default: true # if true: merge; if false: undo merge
           end
@@ -85,7 +85,7 @@ module V1
 
       end # groups
 
-      namespace :group do 
+      namespace :group do
         desc "Criação de turma"
         params do
           requires :code, type: String
@@ -132,7 +132,7 @@ module V1
             uc            = CurriculumUnit.find_by_code! load_group[:codDisciplina]
 
             begin
-              ActiveRecord::Base.transaction do 
+              ActiveRecord::Base.transaction do
                 semester = verify_or_create_semester(semester_name, offer_period)
                 offer    = verify_or_create_offer(semester, {curriculum_unit_id: uc.id, course_id: course.id}, offer_period)
                 group    = verify_or_create_group({offer_id: offer.id, code: load_group[:codigo]})
@@ -173,7 +173,7 @@ module V1
           get :enrollments, rabl: "users/enrollments" do
             group  = get_group(params[:codDisciplina], params[:codGraduacao], params[:codTurma], params[:periodo], params[:ano])
             raise ActiveRecord::RecordNotFound if group.nil?
-            begin 
+            begin
               @users = group.students_participants.map(&:user)
             rescue  => error
               error!({error: error}, 422)
@@ -203,7 +203,7 @@ module V1
 
           @groups = Group.joins(offer: [:semester, :curriculum_unit]).where(query.join(' AND '), params.slice(:course_type_id, :semester, :course_id, :discipline_id))
         end
-        
+
       end # sav
 
     end # segment

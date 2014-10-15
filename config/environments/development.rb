@@ -10,7 +10,7 @@ Solar::Application.configure do
 
   # Para poder usar o "descendants" em desenvolvimento:
   # Conforme em http://avinmathew.com/using-rails-descendants-method-in-development,
-  # O "cache_classes = false" definido em desenvolvimento, faz com que a aplicação 
+  # O "cache_classes = false" definido em desenvolvimento, faz com que a aplicação
   # não carregue as classes até que elas sejam referenciadas. Com isso, o método
   # "descendants" pode não retornar todas as classes esperadas. Com as linhas abaixo,
   # todas as classes são carregadas assim que a aplicação é iniciada e, em seguida,
@@ -30,6 +30,8 @@ Solar::Application.configure do
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.delivery_method = :smtp
 
   # Not logging any DEBUG message
   config.log_level = :info

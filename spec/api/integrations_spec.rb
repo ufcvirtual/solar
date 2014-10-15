@@ -21,7 +21,7 @@ describe "Integrations" do
               post "/api/v1/integration/events/", events
 
               response.status.should eq(201)
-              response.body.should == [ {Codigo: "QM-CAU", id: ScheduleEvent.last(3).first.id}, 
+              response.body.should == [ {Codigo: "QM-CAU", id: ScheduleEvent.last(3).first.id},
                 {Codigo: "TL-FOR", id: ScheduleEvent.last(2).first.id}, {Codigo: "QM-MAR", id: ScheduleEvent.last.id}
               ].to_json
             }.to change{ScheduleEvent.where(integrated: true).count}.by(3)
@@ -112,7 +112,7 @@ describe "Integrations" do
               response.status.should eq(400)
             }.to change{ScheduleEvent.count}.by(0)
           }
-        end        
+        end
       end # valid ip
 
       context "with invalid ip" do

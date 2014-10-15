@@ -7,6 +7,6 @@
     %title= "Solar"
     = yield(:head)
   %body
-    %p= t("notifier.groups_disabled.content", info: @groups_info)
-    %p= @groups_codes.join(", ") + "."
+    %p= t("notifier.groups_disabled.content", info: @offer_info)
+    %p= "#{@groups_codes}."
     %p{style: "color: #7C7C7C; font-size: 8pt; padding-top: 10px;"}= I18n.t("notifier.dont_reply_message")

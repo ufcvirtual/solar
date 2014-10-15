@@ -217,9 +217,7 @@ class Allocation < ActiveRecord::Base
       return if status != Allocation_Activated or refer_to != 'group' or profile_id != Profile.student_profile # envia email apenas para alunos sendo matriculados
 
       Thread.new do
-        Mutex.new.synchronize do
-          Notifier.enrollment_accepted(user.email, group.code_semester).deliver
-        end
+        Notifier.enrollment_accepted(user.email, group.code_semester).deliver
       end
       true
     end
