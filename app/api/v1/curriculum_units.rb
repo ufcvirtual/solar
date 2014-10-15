@@ -32,41 +32,37 @@ module V1
 
       before { verify_ip_access! }
 
-      namespace :integration do 
+      namespace :curriculum_unit do 
+        desc "Criação de disciplina"
+        params do
+          requires :name, :code, type: String
+          requires :curriculum_unit_type_id, type: Integer
+          optional :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
+        end
+        post "/" do
+          begin
+            uc = CurriculumUnit.create! curriculum_unit_params(params, true)
+            {id: uc.id, course_id: uc.course.try(:id)}
+          rescue => error
+            error!(error, 422)
+          end
+        end
 
-        namespace :curriculum_unit do 
-          desc "Criação de disciplina"
-          params do
-            requires :name, :code, type: String
-            requires :curriculum_unit_type_id, type: Integer
-            optional :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
+        desc "Edição de disciplina"
+        params do
+          optional :name, :code
+          optional :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
+          # reject uc_type # nao poderia mudar tipo depois de criado
+        end
+        put ":id" do
+          begin
+            CurriculumUnit.find(params[:id]).update_attributes! curriculum_unit_params(params)
+            {ok: :ok}
+          rescue => error
+            error!(error, 422)
           end
-          post "/" do
-            begin
-              uc = CurriculumUnit.create! curriculum_unit_params(params, true)
-              {id: uc.id, course_id: uc.course.try(:id)}
-            rescue => error
-              error!(error, 422)
-            end
-          end
-
-          desc "Edição de disciplina"
-          params do
-            optional :name, :code
-            optional :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
-            # reject uc_type # nao poderia mudar tipo depois de criado
-          end
-          put ":id" do
-            begin
-              CurriculumUnit.find(params[:id]).update_attributes! curriculum_unit_params(params)
-              {ok: :ok}
-            rescue => error
-              error!(error, 422)
-            end
-          end
-        end # curriculum_unit
-
-      end # integration
+        end
+      end # curriculum_unit
 
       namespace :load do
 

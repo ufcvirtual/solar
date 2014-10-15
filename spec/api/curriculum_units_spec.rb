@@ -49,6 +49,55 @@ describe "CurriculumUnits" do
       end
     end
 
-  end
+  end # list
+
+  describe ".curriculum_unit" do
+
+    describe "post" do
+
+      context "with valid ip" do
+
+        context 'create curriculum_unit' do
+          let!(:json_data){ { 
+            name: "UC 01",
+            code: "UC01",
+            curriculum_unit_type_id: 1
+          } }
+
+          subject{ -> { post "/api/v1/curriculum_unit", json_data } } 
+
+          it { should change(CurriculumUnit,:count).by(1) }
+
+          it {
+            post "/api/v1/curriculum_unit", json_data
+            response.status.should eq(201)
+            response.body.should == {id: CurriculumUnit.find_by_code("UC01").id, course_id: nil}.to_json
+          }
+        end
+
+        context 'create curriculum_unit tipo livre' do
+          let!(:json_data){ { 
+            name: "UC 01",
+            code: "UC01",
+            curriculum_unit_type_id: 3
+          } }
+
+          subject{ -> { post "/api/v1/curriculum_unit", json_data } } 
+
+          it { should change(Course,:count).by(1) }
+          it { should change(CurriculumUnit,:count).by(1) }
+
+          it {
+            post "/api/v1/curriculum_unit", json_data
+            response.status.should eq(201)
+            response.body.should == {id: CurriculumUnit.find_by_code("UC01").id, course_id: Course.find_by_code("UC01").id}.to_json
+          }
+        end
+
+      end
+
+    end # post
+
+  end # .curriculum_unit
 
 end

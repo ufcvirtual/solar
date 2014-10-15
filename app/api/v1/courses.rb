@@ -19,33 +19,29 @@ module V1
 
       end # sav
 
-      namespace :integration do
-
-        namespace :course do 
-          desc "Criação de curso"
-          params { requires :name, :code, type: String }
-          post "/" do
-            begin
-              course = Course.create! course_params(params)
-              {id: course.id}
-            rescue => error
-              error!(error, 422)
-            end
+      namespace :course do 
+        desc "Criação de curso"
+        params { requires :name, :code, type: String }
+        post "/" do
+          begin
+            course = Course.create! course_params(params)
+            {id: course.id}
+          rescue => error
+            error!(error, 422)
           end
+        end
 
-          desc "Edição de curso"
-          params { optional :name, :code, type: String }
-          put ":id" do
-            begin
-              Course.find(params[:id]).update_attributes! course_params(params)
-              {ok: :ok}
-            rescue => error
-              error!(error, 422)
-            end
+        desc "Edição de curso"
+        params { optional :name, :code, type: String }
+        put ":id" do
+          begin
+            Course.find(params[:id]).update_attributes! course_params(params)
+            {ok: :ok}
+          rescue => error
+            error!(error, 422)
           end
-        end # course
-
-      end # integration
+        end
+      end # course
 
     end # segment
 

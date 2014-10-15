@@ -24,86 +24,82 @@ module V1
 
       before { verify_ip_access! }
 
-      namespace :integration do 
+      namespace :groups do
 
-        namespace :groups do
+        # integration/groups/merge
+        namespace :merge do
+          desc "Aglutinação/Desaglutinação de turmas"
+          params do
+            requires :main_group, :course, :curriculum_unit, :period, type: String  
+            requires :secundary_groups, type: Array
+            optional :type, type: Boolean, default: true # if true: merge; if false: undo merge
+          end
 
-          # integration/groups/merge
-          namespace :merge do
-            desc "Aglutinação/Desaglutinação de turmas"
-            params do
-              requires :main_group, :course, :curriculum_unit, :period, type: String  
-              requires :secundary_groups, type: Array
-              requires :type_merge, type: Boolean # if true: merge; if false: undo merge
-            end
+          put "/" do
+            begin
+              if params[:type]
+                replicate_content_groups, receive_content_groups = params[:secundary_groups], [params[:main_group]]
+              else
+                replicate_content_groups, receive_content_groups = [params[:main_group]], params[:secundary_groups]
+              end
 
-            put "/" do
-              begin
-                if params[:type_merge]
-                  replicate_content_groups, receive_content_groups = params[:secundary_groups], [params[:main_group]]
-                else
-                  replicate_content_groups, receive_content_groups = [params[:main_group]], params[:secundary_groups]
-                end
-
-                offer = get_offer(params[:curriculum_unit], params[:course], nil, params[:period])
-                ActiveRecord::Base.transaction do
-                  replicate_content_groups.each do |replicate_content_group_code|
-                    replicate_content_group = get_offer_group(offer, replicate_content_group_code)
-                    receive_content_groups.each do |receive_content_group_code|
-                      receive_content_group = get_offer_group(offer, receive_content_group_code)
-                      replicate_content(replicate_content_group, receive_content_group, params[:type_merge])
-                    end
+              offer = get_offer(params[:curriculum_unit], params[:course], nil, params[:period])
+              ActiveRecord::Base.transaction do
+                replicate_content_groups.each do |replicate_content_group_code|
+                  replicate_content_group = get_offer_group(offer, replicate_content_group_code)
+                  receive_content_groups.each do |receive_content_group_code|
+                    receive_content_group = get_offer_group(offer, receive_content_group_code)
+                    replicate_content(replicate_content_group, receive_content_group, params[:type])
                   end
                 end
-                offer.notify_editors_of_disabled_groups(Group.where(code: params[:secundary_groups])) if params[:type_merge]
-
-                {ok: :ok}
-              rescue ActiveRecord::RecordNotFound
-                error!({error: I18n.t(:object_not_found)}, 404)
-              rescue => error
-                error!({error: error}, 422)
               end
-            end # /
-
-          end # merge
-
-        end # groups
-
-        namespace :group do 
-          desc "Criação de turma"
-          params do
-            requires :code, type: String
-            requires :offer_id, type: Integer
-          end
-          post "/" do
-            begin
-              group = Group.create! group_params(params)
-              {id: group.id}
-            rescue => error
-              error!(error, 422)
-            end
-          end
-
-          desc "Edição de turma"
-          # não edita nome do semestre. se for o caso, deleta a antiga oferta e cria uma nova com o nome certo do semestre
-          params do
-            optional :code, type: String
-            optional :status, type: Boolean
-          end
-          put ":id" do
-            begin
-              group = Group.find(params[:id])
-              group.update_attributes! group_params(params)
-              group.offer.notify_editors_of_disabled_groups(group) if params[:status].present? and not(params[:status])
+              offer.notify_editors_of_disabled_groups(Group.where(code: params[:secundary_groups])) if params[:type]
 
               {ok: :ok}
+            rescue ActiveRecord::RecordNotFound
+              error!({error: I18n.t(:object_not_found)}, 404)
             rescue => error
-              error!(error, 422)
+              error!({error: error}, 422)
             end
-          end
-        end # group
+          end # /
 
-      end # integration
+        end # merge
+
+      end # groups
+
+      namespace :group do 
+        desc "Criação de turma"
+        params do
+          requires :code, type: String
+          requires :offer_id, type: Integer
+        end
+        post "/" do
+          begin
+            group = Group.create! group_params(params)
+            {id: group.id}
+          rescue => error
+            error!(error, 422)
+          end
+        end
+
+        desc "Edição de turma"
+        # não edita nome do semestre. se for o caso, deleta a antiga oferta e cria uma nova com o nome certo do semestre
+        params do
+          optional :code, type: String
+          optional :status, type: Boolean
+        end
+        put ":id" do
+          begin
+            group = Group.find(params[:id])
+            group.update_attributes! group_params(params)
+            group.offer.notify_editors_of_disabled_groups(group) if params[:status].present? and not(params[:status])
+
+            {ok: :ok}
+          rescue => error
+            error!(error, 422)
+          end
+        end
+      end # group
 
       namespace :load do
 

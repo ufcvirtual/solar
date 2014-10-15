@@ -86,6 +86,22 @@ describe "Allocations" do
           }
         end
 
+        context 'dont remove allocation - user dont exist' do
+          let!(:json_data){ { 
+            user_id: 6
+          } }
+
+          subject{ -> { delete "/api/v1/allocations/group/3", json_data } } 
+
+          it { should change(Allocation.where(status: 1),:count).by(-3) }
+
+          it {
+            delete "/api/v1/allocations/group/3", json_data
+            response.status.should eq(200)
+            response.body.should == {ok: :ok}.to_json
+          }
+        end
+
       end
 
     end # delete
