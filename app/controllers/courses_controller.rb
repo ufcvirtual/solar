@@ -27,21 +27,11 @@ class CoursesController < ApplicationController
   def new
     authorize! :create, Course
     @course = Course.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @course }
-    end
   end
 
   def edit
     @course = Course.find(params[:id])
     authorize! :update, @course
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @course }
-    end
   end
 
   def create
@@ -51,7 +41,7 @@ class CoursesController < ApplicationController
     @course.user_id = current_user.id
 
     if @course.save
-      render json: {success: true, notice: t(:created, scope: [:courses, :success]), code_name: @course.code_name, id: @course.id}
+      render_success_json('created')
     else
       render :new
     end
@@ -65,7 +55,7 @@ class CoursesController < ApplicationController
     authorize! :update, @course
 
     if @course.update_attributes(course_params)
-      render json: {success: true, notice: t(:updated, scope: [:courses, :success]), code_name: @course.code_name, id: @course.id}
+      render_success_json('updated')
     else
       render :edit
     end
@@ -79,20 +69,23 @@ class CoursesController < ApplicationController
     authorize! :destroy, @course
 
     if @course.destroy
-      render json: {success: true, notice: t(:deleted, scope: [:courses, :success])}
+      render json: {success: true, notice: t('courses.success.deleted')}
     else
-      render json: {success: false, alert: t(:deleted, scope: [:courses, :error])}, status: :unprocessable_entity
+      render json: {success: false, alert: t('courses.error.deleted')}, status: :unprocessable_entity
     end
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    render json: {success: false, alert: I18n.t("courses.error.deleted")}, status: :unprocessable_entity
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   private
 
     def course_params
       params.require(:course).permit(:name, :code)
+    end
+
+    def render_success_json(method)
+      render json: {success: true, notice: t(method, scope: 'courses.success'), code_name: @course.code_name, id: @course.id}
     end
 
 end

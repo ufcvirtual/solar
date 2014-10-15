@@ -137,15 +137,11 @@ class AssignmentsController < ApplicationController
     if params[:zip].present?
       assignment = Assignment.find(params[:assignment_id])
       path_zip = compress({ files: assignment.enunciation_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
-      download_file(:back, path_zip)
+      download_file(:back, path_zip || nil)
     else
       file = AssignmentEnunciationFile.find(params[:id])
       download_file(:back, file.attachment.path, file.attachment_file_name)
     end
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    render js: "flash_message('#{t(:file_error_nonexistent_file)}', 'alert');"
   end
 
 end

@@ -30,7 +30,7 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :unprocessable_entity
-    assert_equal I18n.t("activerecord.attributes.assignment_comment.comment") + " " + I18n.t(:blank, :scope => [:activerecord, :errors, :messages]), get_json_response("alert")
+    assert_equal I18n.t('assignment_comments.error.general_message'), get_json_response("alert")
   end
 
   test "envia comentario - sem sent_assignment existente" do
@@ -77,7 +77,7 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
   #   # login @prof
   #   # get @quimica_tab
 
-  #   # procurar assignment com oferta já encerrada 
+  #   # procurar assignment com oferta já encerrada
   # end
 
   test "edita comentario" do
@@ -104,7 +104,7 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_difference("AssignmentComment.count", -1) do
       delete assignment_comment_path id: @c01.id
     end
-    assert_response :success    
+    assert_response :success
   end
 
   test "nao remove comentario - sem acesso" do
@@ -116,7 +116,7 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :unauthorized
-    assert_equal I18n.t(:no_permission), get_json_response("alert")    
+    assert_equal I18n.t(:no_permission), get_json_response("alert")
   end
 
   # test "download de arquivos do comentario" do

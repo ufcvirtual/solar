@@ -1628,7 +1628,7 @@ pt_BR:
     success:
       new: Comentário criado com sucesso
       edit: Comentário alterado com sucesso
-      remove: Comentário removido com sucesso
+      removed: Comentário removido com sucesso
     error:
       general_message: Não foi possível realizar ação.
       date_range_expired: Não foi possível realizar ação. Período encerrado.

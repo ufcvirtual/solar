@@ -1,12 +1,14 @@
 class AssignmentCommentsController < ApplicationController
 
-  before_filter :set_current_user, only: [:create, :update, :destroy]
-
   include SysLog::Actions
   include FilesHelper
   include AssignmentsHelper
 
   before_filter :get_ac, only: :new
+  before_filter :set_current_user, only: [:create, :update, :destroy]
+  before_filter only: [:edit, :update, :destroy] do |controller|
+    @assignment_comment = AssignmentComment.find(params[:id])
+  end
 
   layout false
 
@@ -30,7 +32,7 @@ class AssignmentCommentsController < ApplicationController
     if @assignment_comment.save
       render partial: "comment", locals: {comment: @assignment_comment}
     else
-      render json: {success: false, alert: @assignment_comment.errors.full_messages.join(', ')}, status: :unprocessable_entity
+      render_error_json
     end
   rescue => error
     request.format = :json
@@ -38,17 +40,14 @@ class AssignmentCommentsController < ApplicationController
   end
 
   def edit
-    @assignment_comment = AssignmentComment.find(params[:id])
     @assignment_comment.files.build if @assignment_comment.files.empty?
   end
 
   def update
-    @assignment_comment = AssignmentComment.find(params[:id])
-
     if @assignment_comment.update_attributes(assignment_comment_params)
-      render json: {success: true, notice: t("assignment_comments.success.edit")}
+      render json: {success: true, notice: t('assignment_comments.success.edit')}
     else
-      render json: {success: false, alert: @assignment_comment.errors.full_messages.join(', ')}, status: :unprocessable_entity
+      render_error_json
     end
   rescue => error
     request.format = :json
@@ -60,10 +59,9 @@ class AssignmentCommentsController < ApplicationController
   end
 
   def destroy
-    @assignment_comment = AssignmentComment.find(params[:id])
     @assignment_comment.destroy
 
-    render json: {success: true, notice: t("assignment_comments.success.remove")}
+    render json: {success: true, notice: t("assignment_comments.success.removed")}
   rescue => error
     request.format = :json
     raise error.class
@@ -80,6 +78,10 @@ class AssignmentCommentsController < ApplicationController
 
     def assignment_comment_params
       params.require(:assignment_comment).permit(:sent_assignment_id, :comment, files_attributes: [:id, :attachment, :_destroy])
+    end
+
+    def render_error_json
+      render json: {success: false, alert: t('assignment_comments.error.general_message')}, status: :unprocessable_entity
     end
 
 end
