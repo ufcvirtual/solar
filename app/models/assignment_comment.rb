@@ -1,10 +1,12 @@
 class AssignmentComment < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   default_scope order: 'updated_at DESC'
 
   before_save :can_save?, if: "merge.nil?"
   before_destroy :can_save?
   before_create :define_user, if: "merge.nil?"
-  
+
   belongs_to :sent_assignment
   belongs_to :user
 
@@ -27,6 +29,7 @@ class AssignmentComment < ActiveRecord::Base
   def can_save?
     raise "date_range_expired" unless assignment.in_time?(allocation_tag.id, user_id)
     raise CanCan::AccessDenied unless user_id == User.current.id or new_record?
+    true
   end
 
   def define_user

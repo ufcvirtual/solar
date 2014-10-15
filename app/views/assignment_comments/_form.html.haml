@@ -1,6 +1,6 @@
 = simple_form_for(@assignment_comment, html: {id: "comment_form", multipart: true}) do |f|
-  = f.hidden_field :sent_assignment_id, value: @assignment_comment.sent_assignment_id
-  = f.hidden_field :user_id, value: @assignment_comment.user_id
+  = f.hidden_field :sent_assignment_id, value: f.object.sent_assignment_id
+
   .assignment_inner_content.comment_area= f.input :comment, as: :ckeditor, label: false
   .forum_post_attachment
     = button_tag t(".attach_file"), class: "btn btn-orange new_file"
@@ -17,7 +17,7 @@
         = files.input :attachment, label: false, input_html: {id: "fileupload"}
 
     .input.list_files_to_send
-      - @assignment_comment.files.each do |file|
+      - f.object.files.each do |file|
         - if file.persisted?
           .input.files
             %label
