@@ -37,11 +37,16 @@ module V1
       namespace :sav do
 
         desc "Todos os semestres"
-        get :semesters, rabl: "sav/semesters" do
+        get :semesters, rabl: "semesters/list" do
           @semesters = Semester.order('name desc').uniq
         end
 
       end # sav
+
+      desc "Todos os semestres"
+      get :semesters, rabl: "semesters/list" do
+        @semesters = Semester.order('name desc').uniq
+      end
 
     end # segment
 

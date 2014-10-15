@@ -110,4 +110,20 @@ describe "Offers" do
 
   end # .offer
 
+  describe "try access with invalid ip" do
+    it "gets a not found error" do
+      get "/api/v1/semesters", {}, {"REMOTE_ADDR" => "127.0.0.2"}
+      response.status.should eq(404)
+    end # describe access
+  end
+
+  describe "semesters" do
+    it "list all" do
+      get "/api/v1/semesters"
+
+      response.status.should eq(200)
+      response.body.should == Semester.order('name desc').uniq.to_json(only: [:name])
+    end
+  end # describe semesters
+
 end

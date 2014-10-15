@@ -21,7 +21,6 @@ describe "Groups" do
     end
 
     context "without access token" do
-
       it 'gets an unauthorized error' do
         get "/api/v1/curriculum_units/5/groups"
 
@@ -197,7 +196,46 @@ describe "Groups" do
 
     end #merge
 
-  end #groups
+    context "list" do
+
+      it "list all by semester" do
+        get "/api/v1/groups", {semester: "2012.1"}
+
+        response.status.should eq(200)
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6},{id: 6, code: "IL-FOR", offer_id: 6}].to_json
+      end
+
+      it "list all by semester and type" do
+        get "/api/v1/groups", {semester: "2012.1", course_type_id: 3}
+
+        response.status.should eq(200)
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6},{id: 6, code: "IL-FOR", offer_id: 6}].to_json
+      end
+
+      it "list all by semester, type and course" do
+        get "/api/v1/groups", {semester: "2012.1", course_type_id: 3, course_id: 10}
+
+        response.status.should eq(200)
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6},{id: 6, code: "IL-FOR", offer_id: 6}].to_json
+      end
+
+      it "list all by semester, type and discipline" do
+        get "/api/v1/groups", {semester: "2012.1", course_type_id: 3, discipline_id: 1}
+
+        response.status.should eq(200)
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6},{id: 6, code: "IL-FOR", offer_id: 6}].to_json
+      end
+
+      it "list all by semester, type, course and discipline" do
+        get "/api/v1/groups", {semester: "2012.1", course_type_id: 3, course_id: 10, discipline_id: 1}
+
+        response.status.should eq(200)
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6},{id: 6, code: "IL-FOR", offer_id: 6}].to_json
+      end
+
+    end # list
+
+  end # groups
 
   describe ".group" do
 

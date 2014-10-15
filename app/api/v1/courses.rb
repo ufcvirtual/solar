@@ -12,12 +12,22 @@ module V1
           requires :semester, type: String
           requires :course_type_id, type: Integer
         end
-        get :courses, rabl: "sav/courses" do
+        get :courses, rabl: "courses/list" do
           # ao colocar campo de tipo de curso em courses, refazer consulta - 10/2014
           @courses = Course.joins(offers: [:curriculum_unit, :semester]).where("semesters.name = :semester AND curriculum_units.curriculum_unit_type_id = :course_type_id", params.slice(:semester, :course_type_id))
         end
 
       end # sav
+
+      desc "Todos os cursos por tipo e semestre"
+      params do
+        requires :semester, type: String
+        requires :course_type_id, type: Integer
+      end
+      get :courses, rabl: "courses/list" do
+        # ao colocar campo de tipo de curso em courses, refazer consulta - 10/2014
+        @courses = Course.joins(offers: [:curriculum_unit, :semester]).where("semesters.name = :semester AND curriculum_units.curriculum_unit_type_id = :course_type_id", params.slice(:semester, :course_type_id))
+      end
 
       namespace :course do 
         desc "Criação de curso"
@@ -40,6 +50,11 @@ module V1
           rescue => error
             error!(error, 422)
           end
+        end
+
+        desc "Todos os tipos de curso"
+        get "types", rabl: "curriculum_units/types" do
+          @types = CurriculumUnitType.all
         end
       end # course
 

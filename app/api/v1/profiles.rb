@@ -3,16 +3,19 @@ module V1
 
     segment do
 
-      before { guard! }
+      before { verify_ip_access! }
+
+      desc "Todos os perfis"
+      get :profiles, rabl: "profiles/list" do
+        @profiles = Profile.all_except_basic
+      end
 
       namespace :sav do
-
         desc "Todos os perfis"
-        get :profiles, rabl: "sav/profiles" do
+        get :profiles, rabl: "profiles/list" do
           @profiles = Profile.all_except_basic
         end
-        
-      end # sav
+      end
 
     end # segment
 

@@ -61,28 +61,28 @@ describe "Sav" do
       get "/api/v1/sav/disciplines", {semester: "2012.1"}
 
       response.status.should eq(200)
-      response.body.should == [{id: 1, name: "Introducao a Linguistica", code: "RM404" }, {id: 3, name: "Quimica I", code: "RM301"}].to_json
+      response.body.should == [{id: 1, code: "RM404", name: "Introducao a Linguistica" }, {id: 3, code: "RM301", name: "Quimica I"}].to_json
     end
 
     it "list all by semester and type" do
       get "/api/v1/sav/disciplines", {semester: "2012.1", course_type_id: 2}
 
       response.status.should eq(200)
-      response.body.should == [{id: 3, name: "Quimica I", code: "RM301"}].to_json
+      response.body.should == [{id: 3, code: "RM301", name: "Quimica I"}].to_json
     end
 
     it "list all by semester and course" do
       get "/api/v1/sav/disciplines", {semester: "2012.1", course_id: 2}
 
       response.status.should eq(200)
-      response.body.should == [{id: 3, name: "Quimica I", code: "RM301"}].to_json
+      response.body.should == [{id: 3, code: "RM301", name: "Quimica I"}].to_json
     end
 
     it "list all by semester, type and course" do
       get "/api/v1/sav/disciplines", {semester: "2013.1", course_type_id: 5, course_id: 3}
 
       response.status.should eq(200)
-      response.body.should == [{id: 5, name: "Literatura Brasileira I", code: "RM414"}].to_json
+      response.body.should == [{id: 5, code: "RM414", name: "Literatura Brasileira I"}].to_json
     end
   end # describe disciplines
 

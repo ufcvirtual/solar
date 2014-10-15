@@ -31,6 +31,29 @@ describe "Courses" do
 
     end # post
 
+    describe "types" do
+      it "list all" do
+        get "/api/v1/course/types"
+
+        response.status.should eq(200)
+        response.body.should == CurriculumUnitType.select('id, description as name').to_json
+      end
+
+      it "gets a not found error" do
+        get "/api/v1/course/types", {}, {"REMOTE_ADDR" => "127.0.0.2"}
+        response.status.should eq(404)
+      end
+    end # describe types
+
   end # .course
+
+  describe ".courses" do
+    it "list all by type and semester" do
+      get "/api/v1/courses", {semester: "2011.1", course_type_id: 3}
+
+      response.status.should eq(200)
+      response.body.should == [{id: 10, name: "Introducao a Linguistica", code: "RM404"}].to_json
+    end
+  end # .courses
 
 end

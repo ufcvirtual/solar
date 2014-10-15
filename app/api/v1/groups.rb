@@ -65,6 +65,24 @@ module V1
 
         end # merge
 
+        # -- turmas
+        #   -- periodo, tipo
+        #   -- periodo, curso
+        #   -- periodo, curso, disciplina
+        desc "Todas as turmas por tipo de curso, semestre, curso ou disciplina"
+        params do
+          requires :semester, type: String
+          optional :course_type_id, :course_id, :discipline_id, type: Integer
+        end
+        get "/", rabl: "groups/index" do
+          query = ["semesters.name = :semester", "groups.status IS TRUE"]
+          query << "curriculum_units.curriculum_unit_type_id = :course_type_id" if params[:course_type_id].present?
+          query << "offers.course_id = :course_id" if params[:course_id].present?
+          query << "offers.curriculum_unit_id = :discipline_id" if params[:discipline_id].present?
+
+          @groups = Group.joins(offer: [:semester, :curriculum_unit]).where(query.join(' AND '), params.slice(:course_type_id, :semester, :course_id, :discipline_id))
+        end
+
       end # groups
 
       namespace :group do 
@@ -177,7 +195,7 @@ module V1
           requires :semester, type: String
           optional :course_type_id, :course_id, :discipline_id, type: Integer
         end
-        get :groups, rabl: "sav/groups" do
+        get :groups, rabl: "groups/index" do
           query = ["semesters.name = :semester", "groups.status IS TRUE"]
           query << "curriculum_units.curriculum_unit_type_id = :course_type_id" if params[:course_type_id].present?
           query << "offers.course_id = :course_id" if params[:course_id].present?

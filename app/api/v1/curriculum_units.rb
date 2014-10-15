@@ -97,7 +97,7 @@ module V1
           requires :semester, type: String
           optional :course_type_id, :course_id, type: Integer
         end
-        get :disciplines, rabl: "sav/disciplines" do
+        get :disciplines, rabl: "curriculum_units/list" do
           tb_joins = [:semester]
           tb_joins << :course if params[:course_id].present?
 
@@ -105,15 +105,31 @@ module V1
           query << "curriculum_unit_type_id = :course_type_id" if params[:course_type_id].present?
           query << "courses.id = :course_id" if params[:course_id].present?
 
-          @disciplines = CurriculumUnit.joins(offers: tb_joins).where(query.join(' AND '), params.slice(:semester, :course_type_id, :course_id))
+          @curriculum_units = CurriculumUnit.joins(offers: tb_joins).where(query.join(' AND '), params.slice(:semester, :course_type_id, :course_id))
         end
 
         desc "Todos os tipos de curso"
-        get "/course/types", rabl: "sav/course_types" do
+        get "/course/types", rabl: "curriculum_units/types" do
           @types = CurriculumUnitType.all
         end
 
       end # sav
+
+      desc "Todas as disciplinas por tipo, semestre ou curso"
+        params do
+          requires :semester, type: String
+          optional :course_type_id, :course_id, type: Integer
+        end
+        get :disciplines, rabl: "curriculum_units/list" do
+          tb_joins = [:semester]
+          tb_joins << :course if params[:course_id].present?
+
+          query = ["semesters.name = :semester"]
+          query << "curriculum_unit_type_id = :course_type_id" if params[:course_type_id].present?
+          query << "courses.id = :course_id" if params[:course_id].present?
+
+          @curriculum_units = CurriculumUnit.joins(offers: tb_joins).where(query.join(' AND '), params.slice(:semester, :course_type_id, :course_id))
+        end
 
     end # segment
 
