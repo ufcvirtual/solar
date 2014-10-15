@@ -44,13 +44,6 @@ module Taggable
 
   ## Alocações
 
-  def unallocate_user(user_id, profile_id = nil)
-    query = {user_id: user_id}
-    query.merge!({profile_id: profile_id}) unless profile_id.nil?
-
-    allocations.where(query).destroy_all
-  end
-
   # creates or activates user allocation
   def allocate_user(user_id, profile_id)
     allocation = Allocation.where(user_id: user_id, allocation_tag_id: self.allocation_tag.id, profile_id: profile_id).first_or_initialize
@@ -59,11 +52,12 @@ module Taggable
     allocation
   end
 
-  def remove_allocations(profile_id = nil)
+  def cancel_allocations(user_id = nil, profile_id = nil)
     query = {}
+    query.merge!({user_id: user_id})       unless user_id.nil?
     query.merge!({profile_id: profile_id}) unless profile_id.nil?
 
-    allocations.where(query).update_all(satus: Allocation_Cancelled)
+    allocations.where(query).update_all(status: Allocation_Cancelled)
   end
 
   def change_allocation_status(user_id, new_status, opts = {}) # opts = {profile_id, related}

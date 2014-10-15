@@ -227,42 +227,6 @@ professor2_as_basic:
   profile_id: 12
   status: 1
 
-# professor_as_basic:
-#   id: 31
-#   user_id: 6
-#   profile_id: 12
-#   status: 1
-
-# aluno1_as_basic:
-#   id: 32
-#   user_id: 7
-#   profile_id: 12
-#   status: 1
-
-# aluno2_as_basic:
-#   id: 33
-#   user_id: 8
-#   profile_id: 12
-#   status: 1
-
-# aluno3_as_basic:
-#   id: 34
-#   user_id: 9
-#   profile_id: 12
-#   status: 1
-
-# tutor_presencial_as_basic:
-#   id: 35
-#   user_id: 10
-#   profile_id: 12
-#   status: 1
-
-# tutor_distancia_as_basic:
-#   id: 36
-#   user_id: 11
-#   profile_id: 12
-#   status: 1
-
 coordenador_as_basic:
   id: 37
   user_id: 12

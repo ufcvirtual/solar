@@ -67,45 +67,42 @@ module V1
 
       end # load
 
-      namespace :integration do
+      namespace :allocations do 
+        desc "Alocação de usuário"
+        params do
+          requires :user_id, :profile_id, type: Integer
+          requires :type, type: String, values: ["curriculum_unit_type", "curriculum_unit", "course", "offer", "group"]
+          optional :remove_previous_allocations, type: Boolean, default: false
+        end
+        post ":type/:id" do
+          begin
+            object = params[:type].capitalize.constantize.find(params[:id])
+            object.cancel_allocations(nil, params[:profile_id]) if params[:remove_previous_allocations]
+            object.allocate_user(params[:user_id], params[:profile_id])
 
-        namespace :allocation do 
-          desc "Alocação de usuário"
-          params do
-            requires :type, type: String, values: ["curriculum_unit_type", "curriculum_unit", "course", "offer", "group"], default: "group"
-            requires :user_id, :profile_id, type: Integer
-            requires :remove_previous_allocations, type: Boolean, default: false
+            {ok: :ok}
+          rescue => error
+            error!(error, 422)
           end
-          post ":id" do
-            begin
-              object = params[:type].capitalize.constantize.find(params[:id])
-              object.allocate_user(params[:user_id], params[:profile_id])
-              object.remove_allocations(params[:profile_id]) if params[:remove_previous_allocations]
+        end
 
-              {ok: :ok}
-            rescue => error
-              error!(error, 422)
-            end
+        desc "Desativação de alocação de usuário"
+        params do
+          requires :type, type: String, values: ["curriculum_unit_type", "curriculum_unit", "course", "offer", "group"]
+          requires :user_id, type: Integer
+          optional :profile_id, type: Integer
+        end
+        delete ":type/:id" do
+          begin
+            object = params[:type].capitalize.constantize.find(params[:id])
+            object.cancel_allocations(params[:user_id], params[:profile_id])
+
+            {ok: :ok}
+          rescue => error
+            error!(error, 422)
           end
-
-          desc "Desativação de alocação de usuário"
-          params do
-            requires :type, type: String, values: ["curriculum_unit_type", "curriculum_unit", "course", "offer", "group"], default: "group"
-            requires :user_id, :profile_id, type: Integer
-          end
-          delete ":id" do
-            begin
-              object = params[:type].capitalize.constantize.find(params[:id])
-              object.unallocate_user(params[:user_id], params[:profile_id])
-
-              {ok: :ok}
-            rescue => error
-              error!(error, 422)
-            end
-          end
-        end # allocation
-
-      end # integration
+        end
+      end # allocation
 
     end # segment
 
