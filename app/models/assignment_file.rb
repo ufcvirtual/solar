@@ -1,12 +1,13 @@
 class AssignmentFile < ActiveRecord::Base
-
-  before_save :can_change?, if: "merge.nil?"
-  before_destroy :can_change?, :can_destroy?
+  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :user
   belongs_to :sent_assignment
 
   has_one :academic_allocation, through: :sent_assignment
+
+  before_save :can_change?, if: "merge.nil?"
+  before_destroy :can_change?, :can_destroy?
 
   validates :attachment_file_name, presence: true
 
