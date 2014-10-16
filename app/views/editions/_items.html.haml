@@ -10,7 +10,7 @@
             = link_to(content_tag(:i, nil, class: 'icon-users big'), "#", class: 'btn')
             = link_to t(".bibliography"), "#"
 
-      - if (@user_profiles.include?(agendas: :list))
+      - if (@user_profiles.include?(agendas: :calendar))
         .uc_item
           .schedule{:"data-link" => calendar_agendas_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id, selected: @selected)}
             = link_to(content_tag(:i, nil, class: 'icon-calendar big'), "#", class: 'btn')
