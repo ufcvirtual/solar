@@ -21,6 +21,7 @@ module V1::AllocationsH
     end
   end
 
+  ## remover
   def get_profile_id(profile)
     ma_config = User::MODULO_ACADEMICO
     distant_professor_profile = (ma_config.nil? or not(ma_config['professor_profile'].present?) ? 17 : ma_config['professor_profile'])
@@ -34,6 +35,34 @@ module V1::AllocationsH
       when 18; 3 # tutor a distância
       else profile # corresponds to profile with id == allocation[:perfil]
     end
+  end
+  ## remover
+
+  def allocate(params, cancel = false)
+    object = ( params[:id].nil? ?  get_destination(params[:curriculum_unit_code], params[:course_code], params[:group_code], params[:semester]) : params[:type].capitalize.constantize.find(params[:id]) )
+    users_ids = get_users(params)
+
+    raise ActiveRecord::RecordNotFound if users_ids.empty?
+
+    object.cancel_allocations(nil, params[:profile_id]) if params[:remove_previous_allocations]
+
+    users_ids.each do |user_id|
+      user_id.cancel_allocations(params[:profile_id]) if params[:remove_user_previous_allocations]
+      object.send(cancel ? :cancel_allocations : :allocate_user, user_id.id, params[:profile_id])
+    end
+  end
+
+  def get_users(params)
+    [case 
+    when params[:user_id].present?
+      User.find(params[:user_id])
+    when params[:users_ids].present?
+      User.where(id: params[:users_ids])
+    when params[:cpf].present?
+      User.where(cpf: params[:cpf].delete('.').delete('-')).first
+    else 
+      User.where(cpf: params[:cpfs])
+    end].compact.flatten
   end
 
 end

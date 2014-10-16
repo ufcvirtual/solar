@@ -1,85 +1,77 @@
 module V1
   class Events < Base
 
-    segment do
+    before { verify_ip_access! }
 
-      before { verify_ip_access! }
+    namespace :event do
+      desc "Edição de evento"
+      params do
+        requires :id, type: Integer
+        requires :date, :start, :end
+      end
+      put "/:id" do
+        begin
+          event = ScheduleEvent.find(params[:id])
 
-      namespace :integration do 
-
-        namespace :event do
-
-          desc "Edição de evento"
-          params do
-            requires :id, type: Integer, desc: "Event ID."
-            requires :Data, :HoraInicio, :HoraFim
+          ActiveRecord::Base.transaction do
+            start_hour, end_hour = params[:start].split(":"), params[:end].split(":")
+            event.schedule.update_attributes! start_date: params[:date], end_date: params[:date]
+            event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
           end
-          put "/:id" do
-            begin
-              event = ScheduleEvent.find(params[:id])
 
-              ActiveRecord::Base.transaction do
-                start_hour, end_hour = params[:HoraInicio].split(":"), params[:HoraFim].split(":")
-                event.schedule.update_attributes! start_date: params[:Data], end_date: params[:Data]
-                event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
-              end
+          {ok: :ok}
+        rescue => error
+          error!({error: error}, 422)
+        end
+      end
 
-              {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
-            end
-          end # put :id
+    end # event
 
-        end # event
-
-        namespace :events do
-          
-          desc "Criação de um ou mais eventos"
-          params do
-            requires :Turmas, type: Array
-            requires :CodigoCurso, :CodigoDisciplina, :Periodo, type: String
-            requires :DataInserida, type: Hash do
-              requires :Data
-              requires :HoraInicio, :HoraFim, :Polo, :Tipo, type: String
+    namespace :events do
+      
+      desc "Criação de um ou mais eventos"
+      params do
+        requires :groups, type: Array
+        requires :course_code, :curriculum_unit_code, :semester, type: String
+        requires :event, type: Hash do
+          requires :date
+          requires :start, :end, :place, type: String
+          requires :type, type: Integer
+        end
+      end
+      post "/" do
+        group_events = []
+        
+        begin
+          ActiveRecord::Base.transaction do
+            offer = get_offer(params[:curriculum_unit_code], params[:course_code], params[:semester])
+            params[:groups].each do |code|
+              group_events << create_event(get_offer_group(offer, code), params[:event])
             end
           end
-          post "/" do
-            group_events = []
-            
-            begin
-              ActiveRecord::Base.transaction do
-                offer = get_offer(params[:CodigoDisciplina], params[:CodigoCurso], nil, params[:Periodo])
-                params[:Turmas].each do |code|
-                  group_events << create_event(get_offer_group(offer, code), params[:DataInserida])
-                end
-              end
 
-              group_events
-            rescue => error
-              error!({error: error}, 422)
-            end
+          group_events
+        rescue => error
+          error!({error: error}, 422)
+        end
 
-          end # /
+      end # /
 
-          desc "Remoção de um ou mais eventos"
-          params { requires :ids, type: String, desc: "Events IDs." }
-          delete "/:ids" do
-            begin
-              ScheduleEvent.transaction do
-                ScheduleEvent.where(id: params[:ids].split(",")).destroy_all
-              end
+      desc "Remoção de um ou mais eventos"
+      params { requires :ids, type: String, desc: "Events IDs." }
+      delete "/:ids" do
+        begin
+          ScheduleEvent.transaction do
+            ScheduleEvent.where(id: params[:ids].split(",")).destroy_all
+          end
 
-              {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
-            end
-          end # delete :id
+          {ok: :ok}
+        rescue => error
+          error!({error: error}, 422)
+        end
+      end # delete :id
 
-        end # events
-
-      end # integration
-
-    end # segment
+    end # events
 
   end
 end

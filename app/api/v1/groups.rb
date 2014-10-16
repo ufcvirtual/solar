@@ -43,7 +43,7 @@ module V1
                 replicate_content_groups, receive_content_groups = [params[:main_group]], params[:secundary_groups]
               end
 
-              offer = get_offer(params[:curriculum_unit], params[:course], nil, params[:period])
+              offer = get_offer(params[:curriculum_unit], params[:course], params[:period])
               ActiveRecord::Base.transaction do
                 replicate_content_groups.each do |replicate_content_group_code|
                   replicate_content_group = get_offer_group(offer, replicate_content_group_code)
@@ -118,93 +118,6 @@ module V1
           end
         end
       end # group
-
-      namespace :load do
-
-        namespace :groups do
-          # POST load/groups
-          post "/" do
-            load_group    = params[:turmas]
-            cpfs          = load_group[:professores]
-            semester_name = load_group[:periodo].blank? ? load_group[:ano] : "#{load_group[:ano]}.#{load_group[:periodo]}"
-            offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: load_group[:dtFim].to_date }
-            course        = Course.find_by_code! load_group[:codGraduacao]
-            uc            = CurriculumUnit.find_by_code! load_group[:codDisciplina]
-
-            begin
-              ActiveRecord::Base.transaction do
-                semester = verify_or_create_semester(semester_name, offer_period)
-                offer    = verify_or_create_offer(semester, {curriculum_unit_id: uc.id, course_id: course.id}, offer_period)
-                group    = verify_or_create_group({offer_id: offer.id, code: load_group[:codigo]})
-
-                allocate_professors(group, cpfs)
-              end
-
-              {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
-            end
-          end
-
-          # POST load/groups/enrollments
-          post :enrollments do
-            load_enrollments = params[:matriculas]
-            user             = verify_or_create_user(load_enrollments[:cpf])
-            groups           = JSON.parse(load_enrollments[:turmas])
-            student_profile  = 1 # Aluno => 1
-
-            begin
-              ActiveRecord::Base.transaction do
-                groups = groups.collect do |group_info|
-                  get_group(group_info["codDisciplina"], group_info["codGraduacao"], group_info["codigo"], group_info["periodo"], group_info["ano"]) unless group_info["codDisciplina"] == 78
-                end # Se cód. graduação for 78, desconsidera (por hora, vem por engano).
-
-                cancel_previous_and_create_allocations(groups.compact, user, student_profile)
-              end
-
-              {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
-            end
-          end
-
-          # GET load/groups/enrollments
-          params { requires :codDisciplina, :codGraduacao, :codTurma, :periodo, :ano, type: String }
-          get :enrollments, rabl: "users/enrollments" do
-            group  = get_group(params[:codDisciplina], params[:codGraduacao], params[:codTurma], params[:periodo], params[:ano])
-            raise ActiveRecord::RecordNotFound if group.nil?
-            begin
-              @users = group.students_participants.map(&:user)
-            rescue  => error
-              error!({error: error}, 422)
-            end
-          end
-
-        end # groups
-
-      end # load
-
-      namespace :sav do
-
-        # -- turmas
-        #   -- periodo, tipo
-        #   -- periodo, curso
-        #   -- periodo, curso, disciplina
-        desc "Todas as turmas por tipo de curso, semestre, curso ou disciplina"
-        params do
-          requires :semester, type: String
-          optional :course_type_id, :course_id, :discipline_id, type: Integer
-        end
-        get :groups, rabl: "groups/index" do
-          query = ["semesters.name = :semester", "groups.status IS TRUE"]
-          query << "curriculum_units.curriculum_unit_type_id = :course_type_id" if params[:course_type_id].present?
-          query << "offers.course_id = :course_id" if params[:course_id].present?
-          query << "offers.curriculum_unit_id = :discipline_id" if params[:discipline_id].present?
-
-          @groups = Group.joins(offer: [:semester, :curriculum_unit]).where(query.join(' AND '), params.slice(:course_type_id, :semester, :course_id, :discipline_id))
-        end
-
-      end # sav
 
     end # segment
 

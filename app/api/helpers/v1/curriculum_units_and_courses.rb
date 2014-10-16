@@ -4,6 +4,7 @@ module V1::CurriculumUnitsAndCourses
     uc = CurriculumUnit.where(code: attributes[:code]).first_or_initialize
     uc.attributes = curriculum_unit_params(uc.attributes.merge!(attributes), true)
     uc.save!
+    uc
   end
 
   def course_params(params)
@@ -12,7 +13,7 @@ module V1::CurriculumUnitsAndCourses
 
   def curriculum_unit_params(params, attributes = false)
   	attributes = (attributes ? {resume: params[:name], syllabus: params[:name], objectives: params[:name]} : {})
-  	attributes.merge!(params.except("route_info"))
+  	attributes.merge!(params.except("route_info", "update_if_exists"))
   end
   
 end

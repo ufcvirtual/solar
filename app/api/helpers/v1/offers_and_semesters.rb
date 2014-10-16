@@ -5,8 +5,7 @@ module V1::OffersAndSemesters
     offer    = verify_or_create_offer(semester, params, offer_period, enrollment_period)
   end
 
-  def get_offer(curriculum_unit_code, course_code, period, year)
-    semester = (period.blank? ? year : "#{year}.#{period}")
+  def get_offer(curriculum_unit_code, course_code, semester)
     Offer.joins(:semester).where(curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, 
                course_id: Course.where(code: course_code).first, semesters: {name: semester}).first
   end

@@ -1,110 +1,105 @@
 module V1
   class Allocations < Base
+    
+    before { verify_ip_access! }
 
-    segment do
+    namespace :allocations do
 
-      before { verify_ip_access! }
+      # , requirements: { id: /[0-9]*/ }
 
-      namespace :load do
+      desc "Alocação de usuário"
+      params do
+        requires :profile_id, type: Integer
+        requires :type, type: String, values: ["curriculum_unit_type", "curriculum_unit", "course", "offer", "group"]
+        optional :user_id, type: Integer
+        optional :cpf, type: String
+        optional :users_ids, :cpfs, type: Array
+        optional :remove_previous_allocations, type: Boolean, default: false
+        optional :remove_user_previous_allocations, type: Boolean, default: false
+        exactly_one_of :cpf, :user_id, :users_ids, :cpfs
+      end
+      segment do
 
-        namespace :groups do
-
-          # load/groups/allocate_user
-          # params { requires :cpf, :perfil, :codDisciplina, :codGraduacao, :codTurma, :periodo, :ano }
-          put :allocate_user do # Receives user's cpf, group and profile to allocate
-            begin
-              allocation = params[:allocation]
-              user       = verify_or_create_user(allocation[:cpf])
-              profile_id = get_profile_id(allocation[:perfil])
-
-              destination = get_destination(allocation[:codDisciplina], allocation[:codGraduacao], allocation[:codTurma], allocation[:periodo], allocation[:ano])
-              destination.allocate_user(user.id, profile_id)
-
-              {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
-            end
-          end # allocate_profile
-
-          # load/groups/block_profile
-          put :block_profile do # Receives user's cpf, group and profile to block
-            allocation = params[:allocation]
-            user       = User.find_by_cpf!(allocation[:cpf].to_s.delete('.').delete('-'))
-            new_status = 2 # canceled allocation
-            group_info = allocation[:turma]
-            profile_id = get_profile_id(allocation[:perfil])
-
-            begin
-              destination = get_destination(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], group_info[:periodo], group_info[:ano])
-              destination.change_allocation_status(user.id, new_status, profile_id: profile_id) if destination
-
-              {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
-            end
-          end # block_profile
-
-        end # groups
-
-        namespace :curriculum_units do
-          # load/curriculum_units/editors
-          post :editors do
-            load_editors  = params[:editores]
-            uc            = CurriculumUnit.find_by_code!(load_editors[:codDisciplina])
-            cpf_editores  = load_editors[:editores].map {|c| c.delete('.').delete('-')}
-
-            begin
-              User.where(cpf: cpf_editores).each do |user|
-                uc.allocate_user(user.id, 5)
-              end
-
-              {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
-            end
-          end
-        end # curriculum_units
-
-      end # load
-
-      namespace :allocations do 
-        desc "Alocação de usuário"
-        params do
-          requires :user_id, :profile_id, type: Integer
-          requires :type, type: String, values: ["curriculum_unit_type", "curriculum_unit", "course", "offer", "group"]
-          optional :remove_previous_allocations, type: Boolean, default: false
-        end
         post ":type/:id" do
           begin
-            object = params[:type].capitalize.constantize.find(params[:id])
-            object.cancel_allocations(nil, params[:profile_id]) if params[:remove_previous_allocations]
-            object.allocate_user(params[:user_id], params[:profile_id])
+            allocate(params)
 
             {ok: :ok}
           rescue => error
             error!(error, 422)
           end
         end
-
-        desc "Desativação de alocação de usuário"
         params do
-          requires :type, type: String, values: ["curriculum_unit_type", "curriculum_unit", "course", "offer", "group"]
-          requires :user_id, type: Integer
-          optional :profile_id, type: Integer
+          optional :curriculum_unit_code, :course_code, :semester, :group_code
+          optional :ma, type: Boolean, default: false
+          at_least_one_of :curriculum_unit_code, :course_code, :semester, :group_code
         end
+        post ":type" do
+          begin
+            allocate(params)      
+            {ok: :ok}
+          rescue => error
+            error!(error, 422)
+          end
+        end
+
+      end # segment
+
+      desc "Desativação de alocação de usuário"
+      params do
+        requires :type, type: String, values: ["curriculum_unit_type", "curriculum_unit", "course", "offer", "group"]
+        optional :profile_id, type: Integer
+        optional :user_id, :id, type: Integer
+        optional :cpf, type: String
+        optional :users_ids, :cpfs, type: Array
+        exactly_one_of :cpf, :user_id, :users_ids, :cpfs
+      end
+      segment do
+
         delete ":type/:id" do
           begin
-            object = params[:type].capitalize.constantize.find(params[:id])
-            object.cancel_allocations(params[:user_id], params[:profile_id])
+            allocate(params, cancel: true)
 
             {ok: :ok}
           rescue => error
             error!(error, 422)
           end
         end
-      end # allocation
 
-    end # segment
+        params do
+          optional :curriculum_unit_code, :course_code, :semester, :group_code
+          at_least_one_of :curriculum_unit_code, :course_code, :semester, :group_code
+        end
+        delete ":type" do
+          begin
+            allocate(params, cancel: true)
+            {ok: :ok}
+          rescue => error
+            error!(error, 422)
+          end
+        end
+
+      end # segment
+
+    end # allocations
+
+    namespace :group do
+
+      desc "Recupera usuários alocados em uma turma"
+      params do
+        optional :profile_id, :group_id, type: Integer
+        optional :curriculum_unit_code, :course_code, :semester, :group_code
+        at_least_one_of :group_id, :group_code
+      end
+      get :allocations, rabl: "users/list" do
+        begin
+          @users = get_group(params).users_with_profile(params[:profile_id])
+        rescue => error
+          error!(error, 422)
+        end
+      end
+
+    end # group
 
   end
 end

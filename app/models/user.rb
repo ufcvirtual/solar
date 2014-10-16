@@ -488,6 +488,14 @@ class User < ActiveRecord::Base
     result
   end
 
+  def cancel_allocations(profile_id = nil, allocation_tag_id = nil)
+    query = {}
+    query.merge!({profile_id: profile_id})               unless profile_id.nil?
+    query.merge!({allocation_tag_id: allocation_tag_id}) unless allocation_tag_id.nil?
+
+    allocations.where(query).update_all(status: Allocation_Cancelled)
+  end
+
   private
 
     def login_differ_from_cpf

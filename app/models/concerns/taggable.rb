@@ -48,7 +48,7 @@ module Taggable
   def allocate_user(user_id, profile_id)
     allocation = Allocation.where(user_id: user_id, allocation_tag_id: self.allocation_tag.id, profile_id: profile_id).first_or_initialize
     allocation.status = Allocation_Activated
-    allocation.save
+    allocation.save!
     allocation
   end
 
@@ -56,6 +56,7 @@ module Taggable
     query = {}
     query.merge!({user_id: user_id})       unless user_id.nil?
     query.merge!({profile_id: profile_id}) unless profile_id.nil?
+
 
     allocations.where(query).update_all(status: Allocation_Cancelled)
   end
@@ -139,5 +140,13 @@ module Taggable
     User.joins(allocations: :profile).where("allocations.allocation_tag_id IN (?)", (related ? self.allocation_tag.related({upper:true}) : self.allocation_tag.id) )
       .where("cast(types & ? as boolean)", profile_type).uniq
   end
+
+  def users_with_profile(profile_id = nil, related = true)
+    query = {}
+    query.merge!({profile_id: profile_id}) unless profile_id.nil?
+
+    User.joins(:allocations).where("allocations.allocation_tag_id IN (?)", (related ? self.allocation_tag.related({upper:true}) : self.allocation_tag.id) )
+      .where(query).uniq
+  end  
 
 end

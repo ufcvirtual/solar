@@ -33,15 +33,21 @@ module V1
       before { verify_ip_access! }
 
       namespace :curriculum_unit do 
+
         desc "Criação de disciplina"
         params do
           requires :name, :code, type: String
-          requires :curriculum_unit_type_id, type: Integer
+          optional :curriculum_unit_type_id, type: Integer, default: 2
           optional :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
+          optional :update_if_exists, type: Boolean, default: false
         end
         post "/" do
           begin
-            uc = CurriculumUnit.create! curriculum_unit_params(params, true)
+            uc = unless params[:update_if_exists]
+              CurriculumUnit.create! curriculum_unit_params(params, true)
+            else
+              verify_or_create_curriculum_unit params
+            end
             {id: uc.id, course_id: uc.course.try(:id)}
           rescue => error
             error!(error, 422)
@@ -50,10 +56,10 @@ module V1
 
         desc "Edição de disciplina"
         params do
-          optional :name, :code
+          optional :name, :code, type: String
+          optional :curriculum_unit_type_id, type: Integer
           optional :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
           at_least_one_of :code, :name, :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
-          # reject uc_type # nao poderia mudar tipo depois de criado
         end
         put ":id" do
           begin
@@ -63,58 +69,8 @@ module V1
             error!(error, 422)
           end
         end
+        
       end # curriculum_unit
-
-      namespace :load do
-
-        namespace :curriculum_units do
-          # load/curriculum_units
-          params do 
-            requires :codigo, :nome, type: String
-            requires :cargaHoraria, type: Integer
-            requires :creditos, type: Float
-            optional :tipo, type: Integer, default: 2
-          end
-          post "/" do
-            begin
-              ActiveRecord::Base.transaction do 
-                verify_or_create_curriculum_unit( {
-                  code: params[:codigo].slice(0..39), name: params[:nome], working_hours: params[:cargaHoraria], credits: params[:creditos], curriculum_unit_type_id: params[:tipo]
-                } )
-              end
-              {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
-            end
-          end
-        end #curriculum_units
-
-      end # load
-
-      namespace :sav do
-
-        desc "Todas as disciplinas por tipo, semestre ou curso"
-        params do
-          requires :semester, type: String
-          optional :course_type_id, :course_id, type: Integer
-        end
-        get :disciplines, rabl: "curriculum_units/list" do
-          tb_joins = [:semester]
-          tb_joins << :course if params[:course_id].present?
-
-          query = ["semesters.name = :semester"]
-          query << "curriculum_unit_type_id = :course_type_id" if params[:course_type_id].present?
-          query << "courses.id = :course_id" if params[:course_id].present?
-
-          @curriculum_units = CurriculumUnit.joins(offers: tb_joins).where(query.join(' AND '), params.slice(:semester, :course_type_id, :course_id))
-        end
-
-        desc "Todos os tipos de curso"
-        get "/course/types", rabl: "curriculum_units/types" do
-          @types = CurriculumUnitType.all
-        end
-
-      end # sav
 
       desc "Todas as disciplinas por tipo, semestre ou curso"
         params do

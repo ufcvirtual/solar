@@ -15,5 +15,7 @@ module V1
     mount Posts
     mount Lessons
     mount Taggable
+
+    mount RemoveAfterChanges
   end
 end
