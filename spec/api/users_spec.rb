@@ -45,6 +45,7 @@ describe "Users" do
               post "/api/v1/user/", user
 
               response.status.should eq(201)
+              response.body.should == {id: User.find_by_cpf("69278278203").id}.to_json
             }.to change{User.where(cpf: "69278278203").count}.by(1)
           }
         end
