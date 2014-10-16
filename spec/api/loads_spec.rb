@@ -31,7 +31,7 @@ describe "Loads" do
               codDisciplina: "RM404",
               editores: User.where(username: %w(userDontExist user3)).map(&:cpf) #only one user exists
             }}
-            
+
             expect{
               post "/api/v1/load/curriculum_units/editors", editors
 
@@ -47,7 +47,7 @@ describe "Loads" do
               codDisciplina: "UC01",
               editores: User.where(username: %w(user3 user4)).map(&:cpf) #only one user exists
             }}
-            
+
             expect{
               post "/api/v1/load/curriculum_units/editors", editors
 
@@ -156,7 +156,7 @@ describe "Loads" do
           }
         end
 
-        context "and non existing curriculum_unit with code too big" do # code must have less than 11 characters 
+        context "and non existing curriculum_unit with code too big" do # code must have less than 11 characters
           let!(:uc_data){ {codigo: "UC01UC01UC01UC01UC01UC01UC01UC01UC01UC01UC01", nome: "UC01", cargaHoraria: 80, creditos: 4} }
 
           subject{ -> {
@@ -181,7 +181,7 @@ describe "Loads" do
           post "/api/v1/load/curriculum_units/", {codigo: "RM404", nome: "UC01", cargaHoraria: 80, creditos: 4}, "REMOTE_ADDR" => "127.0.0.2"
           response.status.should eq(404)
         end
-      end      
+      end
     end # /
 
   end # .curriculum_units
@@ -201,13 +201,13 @@ describe "Loads" do
             post "/api/v1/load/groups", json_data}
           }
 
-          it { 
-            should change(Semester,:count).by(1) 
+          it {
+            should change(Semester,:count).by(1)
             Semester.last.offer_schedule.start_date.to_date.should eq((Date.current + 1.day).to_date)
             Semester.last.offer_schedule.end_date.to_date.should eq((Date.current + 6.months).to_date)
           }
-          it { 
-            should change(Offer,:count).by(1) 
+          it {
+            should change(Offer,:count).by(1)
             Offer.last.period_schedule.should eq(nil)
           }
           it { should change(Group,:count).by(1) }
@@ -246,17 +246,17 @@ describe "Loads" do
               dtInicio: Date.current - 1.month, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
               }} }
 
-          subject{ -> { 
-            post "/api/v1/load/groups", json_data} 
+          subject{ -> {
+            post "/api/v1/load/groups", json_data}
           }
 
-          it { 
-            should change(Semester,:count).by(1) 
+          it {
+            should change(Semester,:count).by(1)
             Semester.last.offer_schedule.start_date.to_date.should eq((Date.current - 1.month).to_date)
             Semester.last.offer_schedule.end_date.to_date.should eq((Date.current + 6.months).to_date)
           }
-          it { 
-            should change(Offer,:count).by(1) 
+          it {
+            should change(Offer,:count).by(1)
             Offer.last.period_schedule.should eq(nil)
           }
           it { should change(Group,:count).by(1) }
@@ -274,13 +274,13 @@ describe "Loads" do
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
             }} }
 
-          subject{ -> { 
-            post "/api/v1/load/groups", json_data} 
+          subject{ -> {
+            post "/api/v1/load/groups", json_data}
           }
 
           it { should change(Semester,:count).by(0) }
-          it { 
-            should change(Offer,:count).by(1) 
+          it {
+            should change(Offer,:count).by(1)
             Offer.last.period_schedule.start_date.to_date.should eq((Date.current + 1.day).to_date)
             Offer.last.period_schedule.end_date.to_date.should eq((Date.current + 6.months).to_date)
           }
@@ -299,8 +299,8 @@ describe "Loads" do
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
             }} }
 
-          subject{ -> { 
-            post "/api/v1/load/groups", json_data} 
+          subject{ -> {
+            post "/api/v1/load/groups", json_data}
           }
 
           it { should change(Semester,:count).by(0) }
@@ -320,8 +320,8 @@ describe "Loads" do
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
             }} }
 
-          subject{ -> { 
-            post "/api/v1/load/groups", json_data} 
+          subject{ -> {
+            post "/api/v1/load/groups", json_data}
           }
 
           it { should change(Semester,:count).by(0) }
@@ -341,8 +341,8 @@ describe "Loads" do
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
             }} }
 
-          subject{ -> { 
-            post "/api/v1/load/groups", json_data} 
+          subject{ -> {
+            post "/api/v1/load/groups", json_data}
           }
 
           it { should change(Semester,:count).by(0) }
@@ -362,14 +362,14 @@ describe "Loads" do
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "31877336203"] # prof já está alocado, ele deve ser cancelado
             }} }
 
-          subject{ -> { 
-            post "/api/v1/load/groups", json_data} 
+          subject{ -> {
+            post "/api/v1/load/groups", json_data}
           }
 
           it { should change(Semester,:count).by(0) }
           it { should change(Offer,:count).by(0) }
           it { should change(Group,:count).by(0) }
-          it { should change(Allocation,:count).by(2) } 
+          it { should change(Allocation,:count).by(2) }
           it { should change(User.find_by_cpf("21872285848").allocations.where(status: 1),:count).by(-1) } # remove existent allocation if user it isn't on cpf list
 
           it {
@@ -384,8 +384,8 @@ describe "Loads" do
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
             }} }
 
-          subject{ -> { 
-            post "/api/v1/load/groups", json_data} 
+          subject{ -> {
+            post "/api/v1/load/groups", json_data}
           }
 
           it { should change(Semester,:count).by(0) }
@@ -417,7 +417,7 @@ describe "Loads" do
 
       context "with valid ip" do
 
-        context 'and list of existing groups' do 
+        context 'and list of existing groups' do
           let!(:json_data){
             { matriculas: {cpf: "11016853521", turmas: # user3
               %{
@@ -442,7 +442,7 @@ describe "Loads" do
           }
         end
 
-         context 'and list of existing groups and cancelling allocation' do 
+         context 'and list of existing groups and cancelling allocation' do
           let!(:json_data){
             { matriculas: {cpf: "32305605153", turmas: # aluno1
               # ignorar código de graduação 78
@@ -463,7 +463,7 @@ describe "Loads" do
 
           it { should change(user.allocations,:count).by(1) } # add one allocation
           # should change by - (the number of previous allocations (were canceled) -  the number of new allocations)
-          it { should change(user.allocations.where(status: 1, profile_id: 1), :count).by(-(user_allocations.count-1)) } 
+          it { should change(user.allocations.where(status: 1, profile_id: 1), :count).by(-(user_allocations.count-1)) }
 
           it {
             post "/api/v1/load/groups/enrollments", json_data
@@ -471,8 +471,8 @@ describe "Loads" do
             response.body.should == {ok: :ok}.to_json
           }
         end
-        
-        context 'and list of non existing groups' do 
+
+        context 'and list of non existing groups' do
           let!(:json_data){
             { matriculas: {cpf: "11016853521", turmas: # user3
               %{
@@ -495,7 +495,7 @@ describe "Loads" do
           }
         end
 
-        context 'and non existing uc or course' do 
+        context 'and non existing uc or course' do
           let!(:json_data){
             { matriculas: {cpf: "11016853521", turmas: # user3
               %{
@@ -519,7 +519,7 @@ describe "Loads" do
         end
 
         context 'and non existing user and gets from MA' do
-          cpf = "VALID CPF HERE"
+          cpf = ENV['VALID_CPF']
           let!(:json_data){
             { matriculas: {cpf: cpf, turmas:
               %{
@@ -544,7 +544,7 @@ describe "Loads" do
           }
         end
 
-        context 'and non existing user' do 
+        context 'and non existing user' do
           let!(:json_data){
             { matriculas: {cpf: "cpf", turmas:
               %{
@@ -636,9 +636,9 @@ describe "Loads" do
 
       context "with valid ip" do
 
-        context 'and list of existing groups' do 
+        context 'and list of existing groups' do
           let!(:json_data){ # user: prof, profile: tutor a distância
-            { allocation: {cpf: "21872285848", perfil: 18, turma: 
+            { allocation: {cpf: "21872285848", perfil: 18, turma:
               {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
             }}
           }
@@ -653,7 +653,7 @@ describe "Loads" do
           }
         end
 
-        context 'and list of non existing groups' do 
+        context 'and list of non existing groups' do
           let!(:json_data){ # user: prof, profile: tutor a distância
             { allocation: {cpf: "21872285848", perfil: 18, turma:
               {periodo: "1", ano: "2011", codigo: "T02", codDisciplina: "RM301", codGraduacao: "109"}  # turma não existe
@@ -670,7 +670,7 @@ describe "Loads" do
           }
         end
 
-        context 'and non existing course' do 
+        context 'and non existing course' do
           let!(:json_data){ # user: prof, profile: tutor a distância
             { allocation: {cpf: "21872285848", perfil: 18, turma:
               {periodo: "1", ano: "2011", codigo: "IL-FOR", codDisciplina: "RM404", codGraduacao: "C01"}, # curso não existe
@@ -687,13 +687,13 @@ describe "Loads" do
           }
         end
 
-        context 'and non existing uc' do 
+        context 'and non existing uc' do
           let!(:json_data){ # user: prof, profile: tutor a distância
             { allocation: {cpf: "21872285848", perfil: 18, turma:
               {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "UC01", codGraduacao: "109"}  # uc não existe
             }}
           }
-        
+
           it {
             expect{
               put "/api/v1/load/groups/block_profile", json_data
@@ -704,7 +704,7 @@ describe "Loads" do
           }
         end
 
-        context 'and non existing user' do 
+        context 'and non existing user' do
           let!(:json_data){ # cpf inválido
             { allocation: {cpf: "cpf", perfil: 18, turma:
               {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
@@ -725,7 +725,7 @@ describe "Loads" do
       context "with invalid ip" do
         it "gets a not found error" do
           json_data = # user: prof, profile: tutor a distância
-            { allocation: {cpf: "21872285848", perfil: 18, turma: 
+            { allocation: {cpf: "21872285848", perfil: 18, turma:
               {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
             }}
           put "/api/v1/load/groups/block_profile", json_data, "REMOTE_ADDR" => "127.0.0.2"
@@ -738,7 +738,7 @@ describe "Loads" do
 
       context "with valid ip" do
 
-        context 'and existing user and group' do 
+        context 'and existing user and group' do
           let!(:json_data){ # user: aluno3, profile: tutor a distância
             { allocation: { cpf: "47382348113", perfil: 18, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           }
@@ -760,7 +760,7 @@ describe "Loads" do
           }
         end
 
-        context 'and existing user and non existing UC' do 
+        context 'and existing user and non existing UC' do
           let!(:json_data){ # user: aluno3, profile: tutor a distância
             { allocation: { cpf: "47382348113", perfil: 18, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "UC01", codGraduacao: "109"} }
           }
@@ -782,7 +782,7 @@ describe "Loads" do
           }
         end
 
-        context 'and existing user and non existing course' do 
+        context 'and existing user and non existing course' do
           let!(:json_data){ # user: aluno3, profile: tutor a distância
             { allocation: { cpf: "47382348113", perfil: 18, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "C01"} }
           }
@@ -804,7 +804,7 @@ describe "Loads" do
           }
         end
 
-        context 'and existing user and non existing group' do 
+        context 'and existing user and non existing group' do
           let!(:json_data){ # user: aluno3, profile: tutor a distância
             { allocation: { cpf: "47382348113", perfil: 18, periodo: "1", ano: "2011", codTurma: "T01", codDisciplina: "RM301", codGraduacao: "109"} }
           }
@@ -826,7 +826,7 @@ describe "Loads" do
           }
         end
 
-        context 'and existing user and existing course without offer and group' do 
+        context 'and existing user and existing course without offer and group' do
           let!(:json_data){ # user: aluno3, profile: tutor a distância
             { allocation: { cpf: "47382348113", perfil: 18, codGraduacao: "109"} }
           }
@@ -847,9 +847,9 @@ describe "Loads" do
             }
           }
         end
-      
+
         context 'and non existing user' do # futuramente este teste deverá criar um novo usuário a partir do MA (cpf deverá ser válido para usuário no MA)
-          let!(:json_data){ 
+          let!(:json_data){
             { allocation: { cpf: "cpf", perfil: 18, periodo: "1", ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           }
 
@@ -870,7 +870,7 @@ describe "Loads" do
           }
         end
 
-        context 'and existing user and missing param' do 
+        context 'and existing user and missing param' do
           let!(:json_data){ # user: aluno3, profile: tutor a distância
             { allocation: { cpf: "47382348113", perfil: 18, ano: "2011", codTurma: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           }
@@ -910,7 +910,7 @@ describe "Loads" do
       context "with valid ip" do
 
         context 'non existing user at Solar must get data from MA' do
-          cpf = "VALID CPF HERE"
+          cpf = ENV['VALID_CPF']
           let!(:json_data){ { cpf: cpf } }
 
           it {
@@ -928,12 +928,12 @@ describe "Loads" do
         context 'existing user at Solar' do
 
           it "must synchronize with MA" do
-            cpf = "VALID CPF HERE"
+            cpf = ENV['VALID_CPF']
             # MUST CHANGE USER CPF (fixtures) TO THE SAME VALID CPF AT "cpf"
             post "/api/v1/load/user/", {cpf: cpf}
 
             user = User.find_by_cpf(cpf)
-            user.email.should eq("VALID EMAIL HERE")
+            user.email.should eq(ENV['VALID_EMAIL'])
 
             response.status.should eq(201)
             response.body.should == {ok: :ok}.to_json
@@ -943,7 +943,7 @@ describe "Loads" do
         context 'existing user at Solar with same email' do
 
           it "must do nothing" do
-            cpf = "VALID CPF HERE"
+            cpf = ENV['VALID_CPF']
             # MUST CHANGE USER EMAIL (fixtures) TO THE SAME USED BY THE MA USER INFORMED
             post "/api/v1/load/user/", {cpf: cpf}
 
@@ -962,11 +962,11 @@ describe "Loads" do
             response.status.should eq(422)
           end
         end
-      end 
+      end
 
       context "with invalid ip" do
         it "gets a not found error" do
-          post "/api/v1/load/user/", {cpf: "VALID CPF HERE"}, "REMOTE_ADDR" => "127.0.0.2"
+          post "/api/v1/load/user/", {cpf: ENV['VALID_CPF']}, "REMOTE_ADDR" => "127.0.0.2"
           response.status.should eq(404)
         end
       end
