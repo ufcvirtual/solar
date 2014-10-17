@@ -11274,7 +11274,6 @@ return parser;
                 converse.log('Connected');
                 converse.onConnected();
             } else if (status === Strophe.Status.DISCONNECTED) {
-
                 v=$("#collective-xmpp-chat-data");
                 v[0].style.display="none";
                 aux = false;
@@ -11417,6 +11416,7 @@ return parser;
 
         this.initRoster = function () {
             // Set up the roster
+
             this.roster = new this.RosterItems();
             this.roster.localStorage = new Backbone.LocalStorage(
                 hex_sha1('converse.rosteritems-'+converse.bare_jid));
@@ -11425,7 +11425,6 @@ return parser;
             this.connection.roster.registerCallback(
                 $.proxy(this.roster.rosterHandler, this.roster),
                 null, 'presence', null);
-
             this.connection.addHandler(
                 $.proxy(this.roster.subscribeToSuggestedItems, this.roster),
                 'http://jabber.org/protocol/rosterx', 'message', null);
@@ -12559,6 +12558,7 @@ return parser;
                   m.style.display="inline";
             },
             orderByGroups: function(ev){
+                //importante
                 var orderGroups = ev.currentTarget;
                 var rosters = $("#converse-roster")[0];
                 var box = $("#users-im")[0];
@@ -12573,44 +12573,45 @@ return parser;
                         divGroups.style.display = "block";
                     }
                     else{
-                        var div    = document.createElement("div");
+                        var div = document.createElement("div");
                         div.id = "groups";
                         box.appendChild(div);
                         divGroups = $("#groups")[0];
-                    }
-                    divGroups.innerHTML = "";
-
-                    if(!con.views)
-                      con.views = {};
-                    for(index in groups){                        
-                        var det = document.createElement("details");
-                        var sum = document.createElement("summary");
-                        var dl  = document.createElement("dl");
-                        var dt  = document.createElement('dt');
-                        dt.style.display = "none";
-                        dl.appendChild(dt);
-                        for(user in groups[index]){
-                            var view = con.rosterview.addRosterItemView(groups[index][user]).render(groups[index][user]);
-                            con.views["'"+view.cid+"'"] = view;
-                            dl.appendChild(view.el);
-                            this.sortRoster(dl,groups[index][user].attributes.chat_status);
+                        divGroups.innerHTML = "";
+                        //Cria grupos
+                        if(!con.views)
+                          con.views = {};
+                        for(index in groups){                        
+                            var det = document.createElement("details");
+                            var sum = document.createElement("summary");
+                            var dl  = document.createElement("dl");
+                            var dt  = document.createElement('dt');
+                            dt.style.display = "none";
+                            dl.appendChild(dt);
+                            for(user in groups[index]){
+                                var view = con.rosterview.addRosterItemView(groups[index][user]).render(groups[index][user]);
+                                con.views["'"+view.cid+"'"] = view;
+                                dl.appendChild(view.el);
+                                this.sortRoster(dl,groups[index][user].attributes.chat_status);
+                            }
+                            det.id = index;
+                            index = index.replace("'",'');
+                            index = index.replace("'",''); 
+                            det.setAttribute("class","detailIM") ;
+                            sum.innerHTML= index.split("_")[1] + " _ " + index.split("_")[2] + " _ " + index.split("_")[0];  
+                            sum.appendChild(dl);
+                            det.appendChild(sum);
+                            det.appendChild(dl);
+                            divGroups.appendChild(det);
+                            det.open = cookie_groups[det.id];
                         }
-                        det.id = index;
-                        index = index.replace("'",'');
-                        index = index.replace("'",''); 
-                        det.setAttribute("class","detailIM") ;
-                        sum.innerHTML= index.split("_")[1] + " _ " + index.split("_")[2] + " _ " + index.split("_")[0];  
-                        sum.appendChild(dl);
-                        det.appendChild(sum);
-                        det.appendChild(dl);
-                        divGroups.appendChild(det);
-                        det.open = cookie_groups[det.id];
+                        $('.detailIM').click(function(e){
+                          var detail = e.target.parentNode;
+                          cookie_groups[detail.id] = !detail.open;                      
+                          setCookieGroups();
+                        });
                     }
-                    $('.detailIM').click(function(e){
-                      var detail = e.target.parentNode;
-                      cookie_groups[detail.id] = !detail.open;                      
-                      setCookieGroups();
-                    });
+                    
                 }
                 else{
                     cookie_im.Groups = false;
@@ -13933,7 +13934,6 @@ return parser;
                 }
                 return this;
             },
-
             renderRosterItem: function (item, view) {
                 chats = $(".chatbox");
                 //atualiza a imagem de status
@@ -13958,31 +13958,35 @@ return parser;
                     con.groups = {};
                 if(!con.views)
                     con.views = {};
-                setTimeout(function(){
-                    for(ele in con.connection.roster.items){
-                    if(con.connection.roster.items[ele].jid == item.id){
-                        title = "";
-                        for(grou in con.connection.roster.items[ele].groups){
-                            var group = con.connection.roster.items[ele].groups[grou];
-                            if(!con.groups["'"+group+"'"])
-                                con.groups["'"+group+"'"] = {};
-                            
-                            if(!con.groups["'"+group+"'"]["'"+con.connection.roster.items[ele].name+"'"])
-                                con.views["'"+view.cid+"'"] = view;
-                                con.groups["'"+group+"'"]["'"+con.connection.roster.items[ele].name+"'"] = item;
-                            
-                            if(grou < con.connection.roster.items[ele].groups.length - 1)
-                                title = title + group.split("_")[1] + " _ " + group.split("_")[2] + "\n";
-                            else
-                                title = title + group.split("_")[1] + " _ " + group.split("_")[2];
-                        }
-                        item.groups   = con.connection.roster.items[ele].groups;
-                        contactRoster = view.$el[0].childNodes[0];
-                        contactRoster.title = title;
-
-                    }                    
-                  }
-                },500);      
+                //Cria estrutura de Grupos do usuário
+                //checkedGroups = false;     
+                //importante             
+                  setTimeout(function(){
+                    if(con.connection.roster.findItem(item.id)){
+                      var rosterItem = con.connection.roster.findItem(item.id);
+                      title = "";
+                      for(groupInterator in rosterItem.groups){
+                          var group = rosterItem.groups[groupInterator];
+                          if(!con.groups["'"+group+"'"])
+                              con.groups["'"+group+"'"] = {};
+                          
+                          if(!con.groups["'"+group+"'"]["'"+rosterItem.name+"'"])
+                              con.views["'"+view.cid+"'"] = view;
+                              con.groups["'"+group+"'"]["'"+rosterItem.name+"'"] = item;
+                          
+                          if(groupInterator < rosterItem.groups.length - 1)
+                              title = title + group.split("_")[1] + " _ " + group.split("_")[2] + "\n";
+                          else
+                              title = title + group.split("_")[1] + " _ " + group.split("_")[2];
+                      }
+                      item.groups   = rosterItem.groups;
+                      contactRoster = view.$el[0].childNodes[0];
+                      contactRoster.title = title;
+                      //checkedGroups = true;
+                    }                          
+                  },600);  
+                 
+                    
                 //atualiza e reordena clones
                 setTimeout(function(){
                   for(index in con.views){      
