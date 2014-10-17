@@ -238,15 +238,23 @@
     });
     //show
     $(document).ready(function(e){
-      if(cookie_im.IM)
+      if(cookie_im.IM){
         con.showControlBox();
-      if(cookie_im.Groups){
-        $("#chatpanel")[0].style.display = "none";
-        setTimeout(function(e){
-          $("#order").click();
-          $("#chatpanel")[0].style.display = "block";
-        },1700);
-      }
+        if(cookie_im.Groups){
+          var time = 0;
+          $("#chatpanel")[0].style.display = "none";
+          var id = setInterval(function(e){
+            if(!con.qtd_rosters_with_groups || !con.roster.length)
+              time++;
+            else if(con.qtd_rosters_with_groups == con.roster.length){
+              $("#order").click();
+              $("#chatpanel")[0].style.display = "block";
+              clearTimeout(id);
+            }
+          },10);
+        delete time;
+        }
+      } 
     });
     // triger isShow
     $(function(){
@@ -268,7 +276,7 @@
           con.xmppstatus.save({'status': 'online'});
           delete con;
           con = null;
-          setTimeout(function(){location.href="#{logout_path}";},250); // espera 250 milesegundos para redirecionar para a pagina de logout acho que este é um tempo razoável.
+          setTimeout(function(){location.href="#{logout_path}";},250); // espera 250 milesegundos para redirecionar para a pagina de logout
           e.preventDefault();
         } catch(err) {}
       });

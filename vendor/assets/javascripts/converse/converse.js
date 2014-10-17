@@ -13958,32 +13958,38 @@ return parser;
                     con.groups = {};
                 if(!con.views)
                     con.views = {};
+                if(!con.qtd_rosters_with_groups)
+                  con.qtd_rosters_with_groups = 0;
                 //Cria estrutura de Grupos do usuário
                 //importante             
-                  setInterval(function(){
+                 var id = setInterval(function(){
                     if(con.connection.roster.findItem(item.id)){
-                      var rosterItem = con.connection.roster.findItem(item.id);
-                      title = "";
-                      for(groupInterator in rosterItem.groups){
-                          var group = rosterItem.groups[groupInterator];
-                          if(!con.groups["'"+group+"'"])
-                              con.groups["'"+group+"'"] = {};
-                          
-                          if(!con.groups["'"+group+"'"]["'"+rosterItem.name+"'"])
-                              con.views["'"+view.cid+"'"] = view;
-                              con.groups["'"+group+"'"]["'"+rosterItem.name+"'"] = item;
-                          
-                          if(groupInterator < rosterItem.groups.length - 1)
-                              title = title + group.split("_")[1] + " _ " + group.split("_")[2] + "\n";
-                          else
-                              title = title + group.split("_")[1] + " _ " + group.split("_")[2];
-                      }
-                      item.groups   = rosterItem.groups;
-                      contactRoster = view.$el[0].childNodes[0];
-                      contactRoster.title = title;
-                      clearTimeout();
-                    }      
-                    // alert(checkedGroups);
+                      if(!item.groups){
+                        var rosterItem = con.connection.roster.findItem(item.id);
+                        title = "";
+                        for(groupInterator in rosterItem.groups){
+                            var group = rosterItem.groups[groupInterator];
+                            if(!con.groups["'"+group+"'"])
+                                con.groups["'"+group+"'"] = {};
+                            
+                            if(!con.groups["'"+group+"'"]["'"+rosterItem.name+"'"]){
+                                con.views["'"+view.cid+"'"] = view;
+                                con.groups["'"+group+"'"]["'"+rosterItem.name+"'"] = item;
+                            }
+                            
+                            if(groupInterator < rosterItem.groups.length - 1)
+                                title = title + group.split("_")[1] + " _ " + group.split("_")[2] + "\n";
+                            else
+                                title = title + group.split("_")[1] + " _ " + group.split("_")[2];
+                        }
+                        item.groups   = rosterItem.groups;
+                        contactRoster = view.$el[0].childNodes[0];
+                        contactRoster.title = title;
+                        con.qtd_rosters_with_groups ++;
+                        clearTimeout(id);
+                      }      
+                    }
+                      
                   },10);  
 
                     
