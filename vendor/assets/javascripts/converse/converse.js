@@ -13959,9 +13959,8 @@ return parser;
                 if(!con.views)
                     con.views = {};
                 //Cria estrutura de Grupos do usuário
-                //checkedGroups = false;     
                 //importante             
-                  setTimeout(function(){
+                  setInterval(function(){
                     if(con.connection.roster.findItem(item.id)){
                       var rosterItem = con.connection.roster.findItem(item.id);
                       title = "";
@@ -13982,10 +13981,11 @@ return parser;
                       item.groups   = rosterItem.groups;
                       contactRoster = view.$el[0].childNodes[0];
                       contactRoster.title = title;
-                      //checkedGroups = true;
-                    }                          
-                  },600);  
-                 
+                      clearTimeout();
+                    }      
+                    // alert(checkedGroups);
+                  },10);  
+
                     
                 //atualiza e reordena clones
                 setTimeout(function(){
