@@ -12592,8 +12592,8 @@ return parser;
                                 var view = con.rosterview.addRosterItemView(groups[index][user]).render(groups[index][user]);
                                 con.views["'"+view.cid+"'"] = view;
                                 dl.appendChild(view.el);
-                                this.sortRoster(dl,groups[index][user].attributes.chat_status);
                             }
+                            this.sortRoster(dl,groups[index][user].attributes.chat_status);
                             det.id = index;
                             index = index.replace("'",'');
                             index = index.replace("'",''); 
@@ -13994,7 +13994,7 @@ return parser;
 
                     
                 //atualiza e reordena clones
-                setTimeout(function(){
+                var id2 = setInterval(function(){
                   for(index in con.views){      
                     if(con.views[index].model.attributes.fullname == item.attributes.fullname){
                       var dd = con.views[index].render().el;
@@ -14004,9 +14004,10 @@ return parser;
                       else{
                           con.ListView.sortRoster(con.views[index].model.attributes.chat_status);
                       }
+                      clearTimeout(id2);
                     }
                   }     
-                },100);
+                },10);
             },
 
             render: function (item) {
