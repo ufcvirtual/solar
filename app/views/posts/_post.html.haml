@@ -35,8 +35,8 @@
                 - link_to_remove = (editable and can_interact) ? (link_to (content_tag(:i, nil, class: "icon-cross-circle warning")), post_post_file_path(post, file), confirm: t(".remove_file_confirm"), method: :delete, :'data-tooltip' => t(".remove_file"), class: 'nodecoration') : ''
                 %li
                   = raw"#{mimetype_icon}&nbsp;&nbsp;#{link_to_down}&nbsp;&nbsp;#{link_to_remove}"
-                  - if file.attachment_content_type.index('audio') or file.attachment_file_name.last(4).eql?('.aac')
-                    .audio{id: "audio-#{file.id}", :'data-type' => file.attachment_file_name.split(".").last, :'data-source'=> download_post_post_file_url(post, file)}
+                  - if file.attachment_content_type.index('audio') or file.attachment_file_name.last(4).eql?('.aac') or file.attachment_file_name.last(4).eql?('.m4a') or file.attachment_content_type.index('video') or file.attachment_file_name.last(4).eql?('.mp4') or file.attachment_file_name.last(4).eql?('.m4v')
+                    .media{id: "media-#{file.id}", :'data-type' => file.attachment_file_name.split(".").last, :'data-source'=> download_post_post_file_url(post, file)}
         .forum_post_buttons
           .btn-group
             - if can_interact

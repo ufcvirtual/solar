@@ -59,23 +59,37 @@
     var display_list = ("#{escape_once(@display_mode) == 'list'}" == "true");
     var ac = "#{@academic_allocation_id}";
 
-    $(".audio").each(function(){
-      var audioId = $(this).attr('id');
-      var audioSrc = $(this).data('source');
+    $(".media").each(function(){
+      var mediaId = $(this).attr('id');
+      var mediaSrc = $(this).data('source');
 
       var type = $(this).data('type');
 
-      jwplayer(audioId).setup({
+      console.info(type);
+
+      if (type == 'm4a') {
+        type = 'aac'
+      }
+
+      if (type == 'mp4') {
+        mediaPlayer(mediaId, mediaSrc, 'mp4', 320, 240);
+      } else {
+        mediaPlayer(mediaId, mediaSrc, type, 240, 30);
+      };
+    });
+
+    function mediaPlayer(id, source, type, width, height) {
+      jwplayer(id).setup({
         playlist: [{
           sources: [{
-            file: audioSrc,
+            file: source,
             type: type
           }]
         }],
-        width: 240,
-        height: 30
+        width: width,
+        height: height
       });
-    });
+    }
 
     /*Conexão com o WebSocket*/
     var ws = new WebSocket('ws://'+websocket_host+':'+websocket_port+'/'+ac); // file websocket_server.rb
