@@ -1,6 +1,5 @@
-include AccessControlHelper
-
 class AccessControlController < ApplicationController
+  include AccessControlHelper
 
   ## Verificação de acesso ao realizar download de um arquivo relacionado à atividades ou um arquivo público
   def assignment
@@ -31,7 +30,7 @@ class AccessControlController < ApplicationController
     can_access = (( sent_assignment.user_id.to_i == current_user.id or (not(sent_assignment.group.nil?) and sent_assignment.group.user_in_group?(current_user.id)) ) or is_observer_or_responsible) if (can_access.nil?)
 
     if can_access
-      send_file(file.attachment.path, { disposition: 'inline', type: return_type(params[:extension])} )
+      send_file(file.attachment.path, { disposition: 'inline', type: return_type(params[:extension])})
     else
       raise CanCan::AccessDenied
     end

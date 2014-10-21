@@ -38,6 +38,9 @@
     #period_schedule{class: (doesnt_have_period ? 'invisible' : '')}
       = f.label :offer, required: true
       = f.simple_fields_for :period_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
+
+        = s.input :_destroy, as: :hidden, input_html: {value: 0}
+
         .offer_schedule_dates= s.input :start_date, required: false, input_html: {value: period_start_date}
         .offer_schedule_dates.label= t(:to, scope: [:schedules])
         .offer_schedule_dates= s.input :end_date, input_html: {value: period_end_date}
@@ -57,6 +60,9 @@
     #enrollment_schedule{class: (doesnt_have_enrollment ? 'invisible' : '')}
       = f.label :enrollment, required: true
       = f.simple_fields_for :enrollment_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
+
+        = s.input :_destroy, as: :hidden, input_html: {value: 0}
+
         .enrollment_schedule_dates= s.input :start_date, required: false, input_html: {value: enroll_start_date}
         // data final da matrícula, caso o usuário escolha seu preenchimento
         %span#enrollment_schedule_end_date{class: (doesnt_have_enroll_end_date ? 'invisible' : '')}
@@ -117,10 +123,15 @@
         $('#period_schedule').show();
         $('#offer_period_schedule_attributes_start_date').datepicker('setDate', "#{period_start_date}");
         $('#offer_period_schedule_attributes_end_date').datepicker('setDate', "#{period_end_date}");
-      }else{
+
+        $('#offer_period_schedule_attributes__destroy').val(0);
+
+      } else {
         $('#period_schedule').hide();
         $('#offer_period_schedule_attributes_start_date').datepicker('setDate', "");
         $('#offer_period_schedule_attributes_end_date').datepicker('setDate', "");
+
+        $('#offer_period_schedule_attributes__destroy').val(1);
       }
     });
 
@@ -129,9 +140,14 @@
         $('#enrollment_schedule').show();
         $('#offer_enrollment_schedule_attributes_start_date').datepicker('setDate', "#{enroll_start_date}");
         $('#offer_enrollment_schedule_attributes_end_date').datepicker('setDate', "#{enroll_end_date}");
-      }else{
+
+        $('#offer_enrollment_schedule_attributes__destroy').val(0);
+
+      } else {
         $('#enrollment_schedule').hide();
         $('#offer_enrollment_schedule_attributes_start_date').datepicker('setDate', "");
+
+        $('#offer_enrollment_schedule_attributes__destroy').val(1);
       }
     });
 

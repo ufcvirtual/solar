@@ -11,7 +11,7 @@ class OffersController < ApplicationController
     @type_id  = params[:type_id].to_i
     @semester = Semester.find(params[:semester_id])
     @allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers").join(" ")
-    @offers   = @semester.offers_by_allocation_tags(@allocation_tags_ids.split(" "), 
+    @offers   = @semester.offers_by_allocation_tags(@allocation_tags_ids.split(" "),
       {curriculum_units: {curriculum_unit_type_id: @type_id}, course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id]})
       .paginate(page: params[:page])
 
@@ -42,56 +42,31 @@ class OffersController < ApplicationController
   end
 
   def create
-    @offer = Offer.new params[:offer]
+    @offer = Offer.new offer_params
     @offer.user_id = current_user.id
 
     optional_authorize(:create)
-    @type_id       = params[:offer][:type_id].to_i
-    @offer.type_id = @type_id
-
-    # periodo de oferta e matricula ficam no semestre \ esses dados ficam na tabela de oferta apenas se diferirem dos dados do semestre
-    @offer.period_schedule.try(:destroy)     if @offer.period_schedule.try(:start_date).nil?
-    @offer.enrollment_schedule.try(:destroy) if @offer.enrollment_schedule.try(:start_date).nil?
 
     if @offer.save
       render json: {success: true, notice: t(:created, scope: [:offers, :success])}
     else
+      @type_id = @offer.type_id
       render :new
     end
-  rescue CanCan::AccessDenied
-    render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def update
     @offer = Offer.find(params[:id])
 
     optional_authorize(:update)
-    @type_id = params[:offer][:type_id].to_i
-    @offer.type_id = @type_id
 
-    begin
-      Offer.transaction do
-        if params[:offer].include?(:period_schedule_attributes) and params[:offer][:period_schedule_attributes][:start_date].blank? and params[:offer][:period_schedule_attributes][:end_date].blank?
-          params[:offer].delete(:period_schedule_attributes)
-
-          schedule = @offer.period_schedule
-          @offer.period_schedule = nil
-          schedule.destroy unless schedule.nil?
-        end
-
-        if params[:offer].include?(:enrollment_schedule_attributes) and params[:offer][:enrollment_schedule_attributes][:start_date].blank? and params[:offer][:enrollment_schedule_attributes][:end_date].blank?
-          params[:offer].delete(:enrollment_schedule_attributes)
-
-          schedule = @offer.enrollment_schedule
-          @offer.enrollment_schedule = nil
-          schedule.destroy unless schedule.nil?
-        end
-
-        @offer.update_attributes!(params[:offer])
-      end
-
+    if @offer.update_attributes!(offer_params)
       render json: {success: true, notice: t(:updated, scope: [:offers, :success])}
-    rescue
+    else
+      @type_id = @offer.type_id
       @offer.build_period_schedule if @offer.period_schedule.nil?
       @offer.build_enrollment_schedule if @offer.enrollment_schedule.nil?
 
@@ -100,25 +75,24 @@ class OffersController < ApplicationController
   end
 
   def destroy
-    offers = Offer.where(id: params[:id].split(",").flatten)
-    authorize! :destroy, Offer, on: offers.map(&:allocation_tag).map(&:id)
+    @offers = Offer.where(id: params[:id].split(",").flatten)
+    authorize! :destroy, Offer, on: @offers.map(&:allocation_tag).map(&:id)
 
-    Offer.transaction do
-      offers.destroy_all
-    end
+    @offers.destroy_all
 
-    render json: {success: true, notice: t(:deleted, scope: [:offers, :success])}
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    render json: {success: false, alert: t(:deleted, scope: [:offers, :error])}, status: :unprocessable_entity
+    render json: {success: true, notice: t('offers.success.deleted')}
+  rescue ActiveRecord::DeleteRestrictionError
+    render json: {success: false, alert: t('offers.error.deleted')}, status: :unprocessable_entity
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def deactivate_groups
     offer = Offer.find(params[:id])
     authorize! :deactivate_groups, Offer, on: [offer.allocation_tag.id]
 
-    begin 
+    begin
       offer.groups.map { |group| group.update_attributes!(status: false) }
 
       flash[:notice] = t(:all_groups_deactivated, scope: [:offers, :index])
@@ -130,6 +104,10 @@ class OffersController < ApplicationController
   end
 
   private
+
+    def offer_params
+      params.require(:offer).permit(:semester_id, :curriculum_unit_id, :course_id, enrollment_schedule_attributes: [:id, :start_date, :end_date, :_destroy], period_schedule_attributes: [:id, :start_date, :end_date, :_destroy])
+    end
 
     def optional_authorize(method)
       at_c, at_uc = nil

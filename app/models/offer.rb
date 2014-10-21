@@ -1,7 +1,6 @@
 class Offer < ActiveRecord::Base
   include Taggable
-
-  # default_scope order: 'offers.id'
+  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :course
   belongs_to :curriculum_unit
@@ -33,9 +32,8 @@ class Offer < ActiveRecord::Base
   validate :define_curriculum_unit, if: "!course.nil? && type_id == 3"
   validate :check_period, :must_be_unique
 
-  accepts_nested_attributes_for :period_schedule, :enrollment_schedule
+  accepts_nested_attributes_for :period_schedule, :enrollment_schedule, reject_if: proc { |s| s[:start_date].blank? and s[:end_date].blank? }, allow_destroy: true
 
-  attr_accessible :period_schedule_attributes, :enrollment_schedule_attributes, :curriculum_unit_id, :course_id, :semester_id
   attr_accessor :type_id, :verify_current_date
 
   def must_be_unique

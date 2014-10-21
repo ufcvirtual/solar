@@ -6,8 +6,8 @@ class Schedule < ActiveRecord::Base
   has_many :chat_rooms
   has_many :notifications
 
-  has_many :offer_periods, class_name: "Offer", foreign_key: "offer_schedule_id"
-  has_many :offer_enrollments, class_name: "Offer", foreign_key: "enrollment_schedule_id"
+  has_many :offer_periods, class_name: "Offer", foreign_key: "offer_schedule_id", dependent: :nullify
+  has_many :offer_enrollments, class_name: "Offer", foreign_key: "enrollment_schedule_id", dependent: :nullify
 
   has_many :semester_periods, class_name: "Semester", foreign_key: "offer_schedule_id"
   has_many :semester_enrollments, class_name: "Semester", foreign_key: "enrollment_schedule_id"

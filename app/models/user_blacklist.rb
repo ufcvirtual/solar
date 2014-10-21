@@ -1,5 +1,5 @@
 class UserBlacklist < ActiveRecord::Base
-
+  include ActiveModel::ForbiddenAttributesProtection
   include PersonCpf
 
   default_scope order: 'name ASC'
@@ -9,8 +9,6 @@ class UserBlacklist < ActiveRecord::Base
   validates :name, presence: true
 
   validate :cpf_can_go_to_blacklist?
-
-  attr_accessible :cpf, :name, :user_id
 
   def self.search(text)
     text = [URI.unescape(text).split(' ').compact.join(":*&"), ":*"].join

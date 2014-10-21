@@ -32,7 +32,7 @@ class UserBlacklistController < ApplicationController
   def create
     authorize! :create, UserBlacklist
 
-    @user_blacklist = UserBlacklist.new(params[:user_blacklist])
+    @user_blacklist = UserBlacklist.new(user_blacklist_params)
     @user_blacklist.user = current_user
 
     begin
@@ -91,4 +91,11 @@ class UserBlacklistController < ApplicationController
       render json: {success: false, alert: t('user_blacklist.error.deleted')}, status: :unprocessable_entity
     end
   end
+
+  private
+
+    def user_blacklist_params
+      params.require(:user_blacklist).permit(:user_id, :cpf, :name)
+    end
+
 end

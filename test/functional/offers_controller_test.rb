@@ -47,7 +47,7 @@ class OffersControllerTest < ActionController::TestCase
 
     assert_difference("Offer.count") do
       post :create, {offer: {course_id: c_letras.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id}}
-    end   
+    end
   end
 
   # neste caso, o usuário não terá permissão nem à uc, nem ao curso escolhidos
@@ -59,7 +59,7 @@ class OffersControllerTest < ActionController::TestCase
 
     assert_no_difference("Offer.count") do
       post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id}, format: :json}
-    end   
+    end
     assert_response :unauthorized
   end
 
@@ -170,7 +170,7 @@ class OffersControllerTest < ActionController::TestCase
   end
 
   ##
-  # Deactivate_groups
+  # Desativar turmas
   ##
 
   test "desativar todas as turmas" do
