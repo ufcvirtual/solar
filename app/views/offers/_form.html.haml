@@ -20,7 +20,7 @@
     = f.association :semester, as: :hidden, input_html: {value: @offer.semester_id}
     - if @type_id != 3
       = f.association :course
-      = f.association :curriculum_unit
+      = f.association :curriculum_unit, collection: CurriculumUnit.where(curriculum_unit_type_id: @type_id)
     - else
       = f.association :course, collection: Course.all_associated_with_curriculum_unit_by_name
 
@@ -77,6 +77,9 @@
   $("#offer_period_schedule_attributes_start_date, #offer_period_schedule_attributes_end_date, #offer_enrollment_schedule_attributes_start_date, #offer_enrollment_schedule_attributes_end_date").mask("#{I18n.t('date.formats.mask')}");
 
   $(function(){
+
+    if ("#{@type_id}" == "4")
+      $('label[for="offer_curriculum_unit_id"]').html("#{t('.module')}");
 
     $("#offer_course_id, #offer_curriculum_unit_id").combobox();
 

@@ -1867,6 +1867,7 @@ en_US:
       semester_offer: Semester Offer
       semester_enrollment: Semester Enrollment
       define_different_dates: Define dates different from semester
+      module: Module
     no_end_date: 'On'
     existing_semester: already exists
     schedule_error: must be smaller than end of date range

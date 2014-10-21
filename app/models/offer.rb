@@ -45,8 +45,8 @@ class Offer < ActiveRecord::Base
   end
 
   def define_curriculum_unit
-    course_name = Course.find(course_id).try(:name)
-    curriculum_unit = CurriculumUnit.find_by_name(course_name)
+    course          = Course.find(course_id)
+    curriculum_unit = CurriculumUnit.find_by_name_and_code(course.try(:name), course.try(:code))
     self.curriculum_unit_id = curriculum_unit.try(:id)
   end
 

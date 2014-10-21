@@ -9,13 +9,13 @@ class CurriculumUnit < ActiveRecord::Base
   has_many :courses,              through: :offers, uniq: true
   has_many :academic_allocations, through: :allocation_tag
 
-  after_create  :create_correspondent_course,  if: "curriculum_unit_type_id == 3"
+  before_create  :create_correspondent_course,  if: "curriculum_unit_type_id == 3"
   before_update :update_correspondent_course,  if: "curriculum_unit_type_id == 3"
   after_destroy :destroy_correspondent_course, if: "curriculum_unit_type_id == 3"
 
   validates :code, uniqueness: true, length: { maximum: 40 }, allow_blank: false
   validates :name, length: { maximum: 120 }
-  validates :name, :curriculum_unit_type, :resume, :syllabus, :objectives, presence: true
+  validates :name, :curriculum_unit_type, :resume, :syllabus, :objectives, :code, presence: true
   validates :passing_grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true}
 
   def has_any_lower_association?
@@ -90,7 +90,9 @@ SQL
     def create_correspondent_course
       course = Course.new code: code, name: name
       course.user_id = user_id
+      course.save
       errors.messages.merge!(course.errors.messages) unless course.save
+      false if errors.any?
     end
 
     def update_correspondent_course

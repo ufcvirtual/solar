@@ -76,14 +76,14 @@ class CurriculumUnitsController < ApplicationController
   def create
     authorize! :create, CurriculumUnit
 
-    @curriculum_unit = CurriculumUnit.new(curriculum_unit_params)
-    @curriculum_unit.user_id = current_user.id
+    @curriculum_unit = CurriculumUnit.new(curriculum_unit_params.merge!({user_id: current_user.id}))
 
     if @curriculum_unit.save
       render json: {success: true, notice: t('curriculum_units.success.created'), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
       render :new
     end
+    
   rescue => error
     request.format = :json
     raise error.class

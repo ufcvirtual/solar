@@ -2080,6 +2080,7 @@ pt_BR:
       semester_offer: Oferta do Semestre
       semester_enrollment: Matrícula do Semestre
       define_different_dates: Definir datas diferentes do semestre
+      module: Módulo
     no_end_date: Em diante
     existing_semester: já existe
     schedule_error: deve ser menor que final do período
