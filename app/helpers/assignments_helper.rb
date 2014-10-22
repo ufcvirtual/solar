@@ -23,7 +23,7 @@ module AssignmentsHelper
         'mimetypes/css.png'
       when '.png', '.jpg', '.jpeg', '.bmp', '.xcf'
         'mimetypes/image.png'
-      when '.mp3', '.wav', '.m4a', '.wav'
+      when '.mp3', '.wav', '.m4a', '.wav', '.aac'
         'mimetypes/audio.png'
       when '.avi', '.mpg', '.mp4'
         'mimetypes/video.png'
