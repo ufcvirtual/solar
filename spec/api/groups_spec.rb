@@ -44,7 +44,7 @@ describe "Groups" do
             secundary_groups: ["QM-CAU"],
             course: "109",
             curriculum_unit: "RM301",
-            period: "2011.1"
+            semester: "2011.1"
           } }
 
           subject{ -> { put "/api/v1/groups/merge/", json_data } } 
@@ -80,7 +80,7 @@ describe "Groups" do
             secundary_groups: ["QM-CAU"],
             course: "109",
             curriculum_unit: "RM301",
-            period: "2011.1",
+            semester: "2011.1",
             type: false
           } }
 
@@ -117,7 +117,7 @@ describe "Groups" do
           main_group: "QM-MAR",
           course: "109",
           curriculum_unit: "RM301",
-          period: "2011.1"
+          semester: "2011.1"
         } }
 
         subject{ -> { put "/api/v1/groups/merge/", json_data } } 
@@ -151,7 +151,7 @@ describe "Groups" do
           secundary_groups: ["QM-0"],
           course: "109",
           curriculum_unit: "RM301",
-          period: "2011.1"
+          semester: "2011.1"
         } }
 
         subject{ -> { put "/api/v1/groups/merge/", json_data } } 
@@ -185,7 +185,7 @@ describe "Groups" do
             secundary_groups: ["QM-CAU"],
             course: "109",
             curriculum_unit: "RM301",
-            period: "2011.1"
+            semester: "2011.1"
           } }
 
         it "gets a not found error" do
@@ -255,43 +255,94 @@ describe "Groups" do
       context "with valid ip" do
 
         context 'create group' do
-          let!(:json_data){ { code: "G01", offer_id: 3 } }
 
-          subject{ -> { post "/api/v1/group", json_data } } 
+          context 'with id' do
+            let!(:json_data){ { code: "G01", offer_id: 3 } }
 
-          it { should change(Group,:count).by(1) }
+            subject{ -> { post "/api/v1/group", json_data } } 
 
-          it {
-            post "/api/v1/group", json_data
-            response.status.should eq(201)
-            response.body.should == {id: Group.find_by_code("G01").id}.to_json
-          }
+            it { should change(Group,:count).by(1) }
+
+            it {
+              post "/api/v1/group", json_data
+              response.status.should eq(201)
+              response.body.should == {id: Group.find_by_code("G01").id}.to_json
+            }
+          end
+
+          context 'with codes' do
+            let!(:json_data){ { 
+              semester: "2011.1",
+              curriculum_unit_code: "RM301",
+              course_code: "109",
+              code: "G01"
+            } }
+            
+            subject{ -> { post "/api/v1/group", json_data } } 
+            
+            it { should change(Group,:count).by(1) }
+
+            it {
+              post "/api/v1/group", json_data
+              response.status.should eq(201)
+              response.body.should == {id: Group.find_by_code("G01").id}.to_json
+            }
+          end
         end
 
-        context 'dont create group - existing code' do
-          let!(:json_data){ { code: "QM-CAU", offer_id: 3 } }
 
-          subject{ -> { post "/api/v1/group", json_data } } 
+        context "dont create group" do
+          context 'existing code' do
+            let!(:json_data){ { code: "QM-CAU", offer_id: 3 } }
 
-          it { should change(Group,:count).by(0) }
+            subject{ -> { post "/api/v1/group", json_data } } 
 
-          it {
-            post "/api/v1/group", json_data
-            response.status.should eq(422)
-          }
-        end
+            it { should change(Group,:count).by(0) }
 
-        context 'dont create group - missing params' do
-          let!(:json_data){ { offer_id: 3 } }
+            it {
+              post "/api/v1/group", json_data
+              response.status.should eq(422)
+            }
+          end
 
-          subject{ -> { post "/api/v1/group", json_data } } 
+          context 'missing params' do
+            let!(:json_data){ { offer_id: 3 } }
 
-          it { should change(Group,:count).by(0) }
+            subject{ -> { post "/api/v1/group", json_data } } 
 
-          it {
-            post "/api/v1/group", json_data
-            response.status.should eq(400)
-          }
+            it { should change(Group,:count).by(0) }
+
+            it {
+              post "/api/v1/group", json_data
+              response.status.should eq(400)
+            }
+          end
+
+          context 'missing params - code or id' do
+            let!(:json_data){ { code: "G01" } }
+
+            subject{ -> { post "/api/v1/group", json_data } } 
+
+            it { should change(Group,:count).by(0) }
+
+            it {
+              post "/api/v1/group", json_data
+              response.status.should eq(400)
+            }
+          end
+
+          context 'too many params' do
+            let!(:json_data){ { code: "G01", offer_id: 3, course_code: "109" } }
+
+            subject{ -> { post "/api/v1/group", json_data } } 
+
+            it { should change(Group,:count).by(0) }
+
+            it {
+              post "/api/v1/group", json_data
+              response.status.should eq(400)
+            }
+          end
         end
 
       end

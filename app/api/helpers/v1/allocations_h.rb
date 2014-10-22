@@ -40,20 +40,20 @@ module V1::AllocationsH
 
   def allocate(params, cancel = false)
     object = ( params[:id].nil? ?  get_destination(params[:curriculum_unit_code], params[:course_code], params[:group_code], params[:semester]) : params[:type].capitalize.constantize.find(params[:id]) )
-    users_ids = get_users(params)
+    users  = get_users(params)
 
-    raise ActiveRecord::RecordNotFound if users_ids.empty?
+    raise ActiveRecord::RecordNotFound if users.empty?
 
     object.cancel_allocations(nil, params[:profile_id]) if params[:remove_previous_allocations]
 
-    users_ids.each do |user_id|
-      user_id.cancel_allocations(params[:profile_id]) if params[:remove_user_previous_allocations]
-      object.send(cancel ? :cancel_allocations : :allocate_user, user_id.id, params[:profile_id])
+    users.each do |user|
+      user.cancel_allocations(params[:profile_id]) if params[:remove_user_previous_allocations]
+      object.send(cancel ? :cancel_allocations : :allocate_user, user.id, params[:profile_id])
     end
   end
 
   def get_users(params)
-    [case 
+    users = [case 
     when params[:user_id].present?
       User.find(params[:user_id])
     when params[:users_ids].present?
@@ -63,6 +63,15 @@ module V1::AllocationsH
     else 
       User.where(cpf: params[:cpfs])
     end].compact.flatten
+
+    if (params[:cpf].present? or params[:cpfs].present?) and params[:ma]
+      users = []
+      [params[:cpf] || params[:cpfs]].flatten.each do |cpf|
+        users << verify_or_create_user(cpf)
+      end
+    end
+
+    users.compact
   end
 
 end

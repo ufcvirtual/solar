@@ -84,7 +84,6 @@ module V1
         end # curriculum_units
 
         namespace :groups do
-          ### FALTA ESSE \/
           # POST load/groups
           post "/" do
             load_group    = params[:turmas]
@@ -108,7 +107,6 @@ module V1
               error!({error: error}, 422)
             end
           end
-          ### FALTA ESSE /\
 
           # POST load/groups/enrollments
           post :enrollments do

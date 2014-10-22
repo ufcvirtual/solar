@@ -20,7 +20,7 @@ describe "Allocations" do
 
             subject{ -> { post "/api/v1/allocations/group/3", json_data } } 
 
-            it { should change(Allocation,:count).by(1) }
+            it { should change(Allocation.where(status: 1),:count).by(1) }
 
             it {
               post "/api/v1/allocations/group/3", json_data
@@ -55,7 +55,26 @@ describe "Allocations" do
 
             subject{ -> { post "/api/v1/allocations/group/3", json_data } } 
 
-            it { should change(Allocation.where(user_id: 3),:count).by(1) }
+            it { should change(Allocation.where(user_id: 3, status: 1),:count).by(1) }
+
+            it {
+              post "/api/v1/allocations/group/3", json_data
+              response.status.should eq(201)
+              response.body.should == {ok: :ok}.to_json
+            }
+          end
+
+          context 'with cpf - import from MA' do
+            let!(:json_data){ { 
+              cpf: ENV['VALID_CPF'],
+              profile_id: 1,
+              ma: true
+            } }
+
+            subject{ -> { post "/api/v1/allocations/group/3", json_data } } 
+
+            it { should change(Allocation.where(status: 1),:count).by(2) }
+            it { should change(User,:count).by(1) }
 
             it {
               post "/api/v1/allocations/group/3", json_data
@@ -72,8 +91,8 @@ describe "Allocations" do
 
             subject{ -> { post "/api/v1/allocations/group/3", json_data } } 
 
-            it { should change(Allocation.where(user_id: 3),:count).by(1) }
-            it { should change(Allocation.where(user_id: 2),:count).by(1) }
+            it { should change(Allocation.where(user_id: 3, status: 1),:count).by(1) }
+            it { should change(Allocation.where(user_id: 2, status: 1),:count).by(1) }
 
             it {
               post "/api/v1/allocations/group/3", json_data
@@ -82,6 +101,24 @@ describe "Allocations" do
             }
           end
 
+          context 'with cpfs - import from MA' do
+            let!(:json_data){ { 
+              cpfs: ENV['VALID_CPFS'].split(","),
+              profile_id: 1,
+              ma: true
+            } }
+
+            subject{ -> { post "/api/v1/allocations/group/3", json_data } } 
+
+            it { should change(Allocation.where(status: 1),:count).by(4) }
+            it { should change(User,:count).by(2) }
+
+            it {
+              post "/api/v1/allocations/group/3", json_data
+              response.status.should eq(201)
+              response.body.should == {ok: :ok}.to_json
+            }
+          end
           context 'with cpfs and codes - course' do
             let!(:json_data){ { 
               cpfs: ["11016853521", "23885393905"],
@@ -91,8 +128,8 @@ describe "Allocations" do
 
             subject{ -> { post "/api/v1/allocations/course", json_data } } 
 
-            it { should change(Allocation.where(user_id: 3),:count).by(1) }
-            it { should change(Allocation.where(user_id: 2),:count).by(1) }
+            it { should change(Allocation.where(user_id: 3, status: 1),:count).by(1) }
+            it { should change(Allocation.where(user_id: 2, status: 1),:count).by(1) }
 
             it {
               post "/api/v1/allocations/course", json_data
@@ -110,7 +147,7 @@ describe "Allocations" do
 
             subject{ -> { post "/api/v1/allocations/curriculum_unit", json_data } } 
 
-            it { should change(Allocation.where(user_id: 3),:count).by(1) }
+            it { should change(Allocation.where(user_id: 3, status: 1),:count).by(1) }
 
             it {
               post "/api/v1/allocations/curriculum_unit", json_data
@@ -130,8 +167,8 @@ describe "Allocations" do
 
             subject{ -> { post "/api/v1/allocations/offer", json_data } } 
 
-            it { should change(Allocation.where(user_id: 2),:count).by(1) }
-            it { should change(Allocation.where(user_id: 3),:count).by(1) }
+            it { should change(Allocation.where(user_id: 2, status: 1),:count).by(1) }
+            it { should change(Allocation.where(user_id: 3, status: 1),:count).by(1) }
 
             it {
               post "/api/v1/allocations/offer", json_data
@@ -152,12 +189,32 @@ describe "Allocations" do
 
             subject{ -> { post "/api/v1/allocations/group", json_data } } 
 
-            it { should change(Allocation.where(user_id: 3),:count).by(1) }
+            it { should change(Allocation.where(user_id: 3, status: 1),:count).by(1) }
 
             it {
               post "/api/v1/allocations/group", json_data
               response.status.should eq(201)
               response.body.should == {ok: :ok}.to_json
+            }
+          end
+
+          context 'if has id, ignores codes' do
+            let!(:json_data){ { 
+              user_id: 3,
+              curriculum_unit_code: "RM301",
+              course_code: "109",
+              semester: "2011.1",
+              group_code: "QM-CAU",
+              profile_id: 2
+            } }
+
+            subject{ -> { post "/api/v1/allocations/group/2", json_data } } 
+
+            it { should change(Allocation.where(user_id: 3, allocation_tag_id: 2),:count).by(1) }
+
+            it {
+              post "/api/v1/allocations/group", json_data
+              response.status.should eq(201)
             }
           end
 
@@ -172,7 +229,7 @@ describe "Allocations" do
 
             subject{ -> { post "/api/v1/allocations/group/3", json_data } } 
 
-            it { should change(Allocation,:count).by(0) }
+            it { should change(Allocation.where(status: 1),:count).by(0) }
 
             it {
               post "/api/v1/allocations/group/3", json_data

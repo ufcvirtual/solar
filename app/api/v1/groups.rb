@@ -30,7 +30,7 @@ module V1
         namespace :merge do
           desc "Aglutinação/Desaglutinação de turmas"
           params do
-            requires :main_group, :course, :curriculum_unit, :period, type: String
+            requires :main_group, :course, :curriculum_unit, :semester, type: String
             requires :secundary_groups, type: Array
             optional :type, type: Boolean, default: true # if true: merge; if false: undo merge
           end
@@ -43,7 +43,7 @@ module V1
                 replicate_content_groups, receive_content_groups = [params[:main_group]], params[:secundary_groups]
               end
 
-              offer = get_offer(params[:curriculum_unit], params[:course], params[:period])
+              offer = get_offer(params[:curriculum_unit], params[:course], params[:semester])
               ActiveRecord::Base.transaction do
                 replicate_content_groups.each do |replicate_content_group_code|
                   replicate_content_group = get_offer_group(offer, replicate_content_group_code)
@@ -89,11 +89,27 @@ module V1
         desc "Criação de turma"
         params do
           requires :code, type: String
-          requires :offer_id, type: Integer
+          optional :offer_id, type: Integer
+          optional :course_code, :curriculum_unit_code, :semester, type: String
+          optional :activate, type: Boolean, default: false
+          exactly_one_of :offer_id, :course_code
+          exactly_one_of :offer_id, :curriculum_unit_code
+          exactly_one_of :offer_id, :semester
         end
         post "/" do
           begin
-            group = Group.create! group_params(params)
+            if params[:course_code].present?
+              offer_id = Offer.where(course_id: Course.find_by_code(params[:course_code]).try(:id), curriculum_unit_id: CurriculumUnit.find_by_code(params[:curriculum_unit_code]).try(:id), 
+                semester_id: Semester.find_by_name(params[:semester]).try(:id)).first.try(:id)
+              params.merge!({offer_id: offer_id})
+            end
+            if params[:activate]
+              group = Group.where(group_params(params)).first_or_initialize
+              group.status = true
+              group.save!
+            else
+              group = Group.create! group_params(params)
+            end
             {id: group.id}
           rescue => error
             error!(error, 422)

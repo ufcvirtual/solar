@@ -5,8 +5,6 @@ module V1
 
     namespace :allocations do
 
-      # , requirements: { id: /[0-9]*/ }
-
       desc "Alocação de usuário"
       params do
         requires :profile_id, type: Integer
@@ -16,14 +14,13 @@ module V1
         optional :users_ids, :cpfs, type: Array
         optional :remove_previous_allocations, type: Boolean, default: false
         optional :remove_user_previous_allocations, type: Boolean, default: false
+        optional :ma, type: Boolean, default: false
         exactly_one_of :cpf, :user_id, :users_ids, :cpfs
       end
       segment do
-
         post ":type/:id" do
           begin
             allocate(params)
-
             {ok: :ok}
           rescue => error
             error!(error, 422)
@@ -31,12 +28,11 @@ module V1
         end
         params do
           optional :curriculum_unit_code, :course_code, :semester, :group_code
-          optional :ma, type: Boolean, default: false
           at_least_one_of :curriculum_unit_code, :course_code, :semester, :group_code
         end
         post ":type" do
           begin
-            allocate(params)      
+            allocate(params)
             {ok: :ok}
           rescue => error
             error!(error, 422)
