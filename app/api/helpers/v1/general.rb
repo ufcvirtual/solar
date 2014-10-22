@@ -17,14 +17,6 @@ module V1::General
     user
   end
 
-  # def get_users(cpfs)
-  #   users = []
-  #   cpfs.each do |cpf|
-  #     users << verify_or_create_user(cpf)
-  #   end
-  #   users
-  # end
-
   def get_destination(curriculum_unit_code, course_code, code, semester)
     case
       when not(code.blank?)

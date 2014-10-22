@@ -83,7 +83,7 @@ class PostsController < ApplicationController
 
   ## PUT /discussions/:id/posts/1
   def update
-    if @post.update_attributes(post_params)
+    if @post.update_attributes(content: params[:discussion_post][:content])
       render json: {success: true, post_id: @post.id, parent_id: @post.parent_id}
     else
       render json: @post.errors.full_messages, status: :unprocessable_entity

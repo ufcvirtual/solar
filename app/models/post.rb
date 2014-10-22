@@ -28,7 +28,7 @@ class Post < ActiveRecord::Base
     if level == post_level
       return ["date" => post.updated_at, "grandparent_id" => id]
     else
-      Post.find(parent_id).grandparent(post_level, (post || self))
+      Post.find(parent_id).grandparent(post_level, (post || self)) unless parent_id.nil?
     end
   end
 
@@ -52,9 +52,6 @@ class Post < ActiveRecord::Base
       attachments: attachments
     }
   end
-
-
-  ## class methods
 
 
   ## Recupera os posts mais recentes dos niveis inferiores aos posts analisados e, então,
