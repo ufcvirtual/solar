@@ -4,4 +4,4 @@ file1:
   attachment_file_name: "filetest.jpg"
   attachment_content_type: "image/jpeg"
   attachment_file_size: 2000
-  attachment_updated_at: <%= Time.now %>
+  attachment_updated_at: <%= Time.now.to_s(:db) %>

@@ -41,7 +41,7 @@ class CoursesController < ApplicationController
     @course.user_id = current_user.id
 
     if @course.save
-      render_success_json('created')
+      render_course_success_json('created')
     else
       render :new
     end
@@ -55,7 +55,7 @@ class CoursesController < ApplicationController
     authorize! :update, @course
 
     if @course.update_attributes(course_params)
-      render_success_json('updated')
+      render_course_success_json('updated')
     else
       render :edit
     end
@@ -84,7 +84,7 @@ class CoursesController < ApplicationController
       params.require(:course).permit(:name, :code)
     end
 
-    def render_success_json(method)
+    def render_course_success_json(method)
       render json: {success: true, notice: t(method, scope: 'courses.success'), code_name: @course.code_name, id: @course.id}
     end
 

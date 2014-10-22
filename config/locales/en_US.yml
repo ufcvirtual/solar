@@ -24,6 +24,7 @@ en_US:
       clock: "%m/%d/%Y %H:%M:%S"
       clock_time: "%H:%M:%S"
       default: "%d/%b/%Y, %H:%M:%S"
+      datepicker: "%d/%m/%Y"
       short: "%d/%b %H:%M"
       today: "%H:%M"
       not_today: "%d/%m"

@@ -99,7 +99,7 @@ class Offer < ActiveRecord::Base
 
   def self.currents(year = nil, verify_end_date = nil)
     unless year.class == Date
-      date = Date.parse("#{year}-01-01") rescue Date.today
+      year = Date.parse("#{year}-01-01") rescue Date.today
     end
 
     offers = joins(:period_schedule)
@@ -111,7 +111,8 @@ class Offer < ActiveRecord::Base
         offers.where("( schedules.end_date >= ? )", year)
       else
         last_day_of_year, first_day_of_year = year.end_of_year, year.beginning_of_year
-        offers.where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?) OR (schedules.start_date <= ? AND schedules.end_date >= ?)", first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year)
+        offers.where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?) OR (schedules.start_date <= ? AND schedules.end_date >= ?)",
+          first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year)
       end
     end
 

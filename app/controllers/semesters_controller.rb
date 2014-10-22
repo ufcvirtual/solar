@@ -35,68 +35,71 @@ class SemestersController < ApplicationController
   end
 
   # GET /semesters/new
-  # GET /semesters/new.json
   def new
     authorize! :create, Semester
     @type_id = params[:type_id].to_i
 
-    @semester = Semester.new
-    @semester.build_offer_schedule
-    @semester.build_enrollment_schedule
+    start_date, end_date = Date.today - 1.month, Date.today + 1.month
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @semester }
-    end
+    @semester = Semester.new
+    @semester.build_offer_schedule start_date: start_date, end_date: end_date
+    @semester.build_enrollment_schedule start_date: start_date
   end
 
   # GET /semesters/1/edit
   def edit
     authorize! :update, Semester
+
     @type_id = params[:type_id].to_i
     @semester = Semester.find(params[:id])
   end
 
   # POST /semesters
-  # POST /semesters.json
   def create
     authorize! :create, Semester
-    @type_id = params[:semester][:type_id].to_i
-    @semester = Semester.new params[:semester]
 
+    @semester = Semester.new semester_params
     if @semester.save
-      render json: {success: true, notice: t(:created, scope: [:semesters, :success]), semester: {start: @semester.offer_schedule.start_date.year, end: @semester.offer_schedule.end_date.year}}
+      render_semester_success_json('created')
     else
+      @type_id = @semester.type_id
       render :new
     end
   end
 
   # PUT /semesters/1
-  # PUT /semesters/1.json
   def update
     authorize! :update, Semester
-    @type_id = params[:semester][:type_id].to_i
-    @semester = Semester.find(params[:id])
 
-    if @semester.update_attributes(params[:semester])
-      render json: {success: true, notice: t(:updated, scope: [:semesters, :success]), semester: {start: @semester.offer_schedule.start_date.year, end: @semester.offer_schedule.end_date.year}}
+    @semester = Semester.find(params[:id])
+    if @semester.update_attributes(semester_params)
+      render_semester_success_json('updated')
     else
+      @type_id = @semester.type_id
       render :edit
     end
   end
 
   # DELETE /semesters/1
-  # DELETE /semesters/1.json
   def destroy
-    @semester = Semester.find(params[:id])
-    @type_id = params[:type_id].to_i
     authorize! :destroy, Semester
+    @semester = Semester.find(params[:id])
 
     if ((@semester.offers.empty? or @semester.offers.map(&:groups).empty?) and @semester.destroy)
-      render json: {success: true, notice: t(:deleted, scope: [:semesters, :success])}
+      render json: {success: true, notice: t('semesters.success.deleted')}
     else
-      render json: {success: false, alert: t(:deleted, scope: [:semesters, :error])}, status: :unprocessable_entity
+      render json: {success: false, alert: t('semesters.error.deleted')}, status: :unprocessable_entity
     end
   end
+
+  private
+
+    def semester_params
+      params.require(:semester).permit(:type_id, :name, offer_schedule_attributes: [:id, :start_date, :end_date, :_destroy], enrollment_schedule_attributes: [:id, :start_date, :end_date, :_destroy])
+    end
+
+    def render_semester_success_json(method)
+      render json: {success: true, notice: t(method, scope: 'semesters.success'), semester: {start: @semester.offer_schedule.start_date.year, end: @semester.offer_schedule.end_date.year}}
+    end
 
 end

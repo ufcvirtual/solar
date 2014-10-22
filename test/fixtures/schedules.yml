@@ -28,12 +28,12 @@ schedule5:
 schedule6:
   id: 6
   start_date: 2011-09-20
-  end_date: <%=(Date.today - 3) %>
+  end_date: <%= (Date.today - 3).to_s(:db) %>
 
 schedule7:
   id: 7
   start_date: 2011-07-25
-  end_date: <%= (Date.today + 60) %>
+  end_date: <%= (Date.today + 60).to_s(:db) %>
 
 #reservados para aulas
 schedule8:
@@ -89,59 +89,59 @@ schedule17:
 
 schedule18:
   id: 18
-  start_date: <%= Date.today >> 1 %>
-  end_date: <%= Date.today >> 5 %>
+  start_date: <%= (Date.today >> 1).to_s(:db) %>
+  end_date: <%= (Date.today >> 5).to_s(:db) %>
 
 schedule19:
   id: 19
-  start_date: <%= Date.today << 2 %>
-  end_date: <%= Date.today >> 1 %>
+  start_date: <%= (Date.today << 2).to_s(:db) %>
+  end_date: <%= (Date.today >> 1).to_s(:db) %>
 
 schedule20:
   id: 20
-  start_date: <%= Date.today << 2 %>
-  end_date: <%= Date.today >> 1 %>
+  start_date: <%= (Date.today << 2).to_s(:db) %>
+  end_date: <%= (Date.today >> 1).to_s(:db) %>
 
 schedule21:
   id: 21
-  start_date: <%= Date.today << 2 %>
-  end_date: <%= Date.today >> 1 %>
+  start_date: <%= (Date.today << 2).to_s(:db) %>
+  end_date: <%= (Date.today >> 1).to_s(:db) %>
 
 schedule22:
   id: 22
-  start_date: <%= Date.today - 2.days %>
-  end_date: <%= Date.today - 1.days %>
+  start_date: <%= (Date.today - 2.days).to_s(:db) %>
+  end_date: <%= (Date.today - 1.days).to_s(:db) %>
 
 # para datas posteriores
 schedule23:
   id: 23
-  start_date: <%= Date.today >> 1 %> # um mes à frente
-  end_date: <%= Date.today >> 4 %> # 3 meses depois da data inicial
+  start_date: <%= (Date.today >> 1).to_s(:db) %> # um mes à frente
+  end_date: <%= (Date.today >> 4).to_s(:db) %> # 3 meses depois da data inicial
 
 schedule24:
   id: 24
-  start_date: <%= Date.today << 5 %>
-  end_date: <%= Date.today >> 2%>
+  start_date: <%= (Date.today << 5).to_s(:db) %>
+  end_date: <%= (Date.today >> 2).to_s(:db) %>
 
 schedule25:
   id: 25
-  start_date: <%= Date.today << 5 %>
-  end_date: <%= Date.today << 2%>
+  start_date: <%= (Date.today << 5).to_s(:db) %>
+  end_date: <%= (Date.today << 2).to_s(:db)%>
 
 schedule26:
   id: 26
-  start_date: <%= Date.today >> 3 %> 
-  end_date: <%= Date.today >> 7 %> 
+  start_date: <%= (Date.today >> 3).to_s(:db) %>
+  end_date: <%= (Date.today >> 7).to_s(:db) %>
 
 schedule27:
   id: 27
-  start_date: <%= Date.today - 2.days %> 
-  end_date: <%= Date.today + 1.days %> 
+  start_date: <%= (Date.today - 2.days).to_s(:db) %>
+  end_date: <%= (Date.today + 1.days).to_s(:db) %>
 
 # sem data final
 schedule28:
   id: 28
-  start_date: <%= Date.today - 2.days %> 
+  start_date: <%= (Date.today - 2.days).to_s(:db) %>
 
 # para as ofertas (período de matrícula)
 schedule29:
@@ -157,7 +157,7 @@ schedule30:
 schedule31:
   id: 31
   start_date: '2011-01-01'
-  end_date: '2021-03-02'  
+  end_date: '2021-03-02'
 
 schedule32:
   id: 32
@@ -167,12 +167,12 @@ schedule32:
 schedule33: # não deve ser utilizado, pois deve ser únicamente utilizado para a oferta7 (para que o teste de remoção funcione adequadamente)
   id: 33
   start_date: '2013-05-01'
-  end_date: 
+  end_date:
 
-schedule34: 
+schedule34:
   id: 34
   start_date: '2013-05-01'
-  end_date: 
+  end_date:
 
 ## para ofertas
 
@@ -198,13 +198,13 @@ sc_for_offers4:
 
 schedule39:
   id: 39
-  start_date: <%= Date.today %>
-  end_date: <%= Date.today + 6.months %>
+  start_date: <%= Date.today.to_s(:db) %>
+  end_date: <%= (Date.today + 6.months).to_s(:db) %>
 
 schedule40:
   id: 40
-  start_date: <%= Date.today %>
-  end_date: <%= Date.today + 1.months %>
+  start_date: <%= Date.today.to_s(:db) %>
+  end_date: <%= (Date.today + 1.months).to_s(:db) %>
 
 ## para chats_rooms
 
@@ -222,30 +222,30 @@ sc_for_chat2:
 
 sc_for_aviso1:
   id: 43
-  start_date: <%= Date.today %>
-  end_date: <%= Date.today + 1.day %>
+  start_date: <%= Date.today.to_s(:db) %>
+  end_date: <%= (Date.today + 1.day).to_s(:db) %>
 
 sc_for_aviso2:
   id: 44
-  start_date: <%= Date.today %>
-  end_date: <%= Date.today + 1.week %>
+  start_date: <%= Date.today.to_s(:db) %>
+  end_date: <%= (Date.today + 1.week).to_s(:db) %>
 
 sc_for_aviso3:
   id: 45
-  start_date: <%= Date.today + 1.day %>
-  end_date: <%= Date.today + 1.week %>
+  start_date: <%= (Date.today + 1.day).to_s(:db) %>
+  end_date: <%= (Date.today + 1.week).to_s(:db) %>
 
 sc_for_aviso4:
   id: 46
-  start_date: <%= Date.today %>
-  end_date: <%= Date.today %>
+  start_date: <%= Date.today.to_s(:db) %>
+  end_date: <%= Date.today.to_s(:db) %>
 
 ## para chats_rooms
 
 sc_for_chat3:
   id: 47
-  start_date: <%= Date.today %>
-  end_date: <%= Date.today + 1.week %>
+  start_date: <%= Date.today.to_s(:db) %>
+  end_date: <%= (Date.today + 1.week).to_s(:db) %>
 
 ## curso livre - 2014.1
 

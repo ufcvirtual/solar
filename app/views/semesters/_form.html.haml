@@ -1,6 +1,5 @@
-- start_date, end_date = Date.today - 1.month, Date.today + 1.month
 = simple_form_for @semester, html: {id: "semester_form"} do |f|
-  %h1#lightBoxDialogTitle= t((@semester.persisted? ? :edit : :new), scope: "semesters.list")
+  %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit : :new), scope: "semesters.list")
   %span.form_requirement= t(:required_fields)
 
   .form-inputs.block_content
@@ -8,23 +7,29 @@
 
     %div{style: "margin-top: 5px"}= f.input :name
 
+    / offer period
+
     %div
       = f.label :offer, required: true
       = f.simple_fields_for :offer_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
-        .offer_schedule_dates= s.input :start_date, input_html: { id: 'offer_start_date', value: "#{l((@semester.offer_schedule.try(:start_date) || start_date).to_date, format: :datepicker)}" }
-        .offer_schedule_dates.label= t(:to, scope: [:schedules])
-        .offer_schedule_dates= s.input :end_date, input_html: { id: 'offer_end_date', value: "#{l((@semester.offer_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}" }
-      .offer_schedule_dates.error= @semester.offer_schedule.errors[:start_date].first || @semester.offer_schedule.errors[:end_date].first unless @semester.offer_schedule.errors.full_messages.empty?
+        .offer_schedule_dates= s.input :start_date, input_html: {id: 'offer_start_date', value: (l(s.object.start_date, format: :datepicker) if s.object.start_date)}
+        .offer_schedule_dates.label= t('schedules.to')
+        .offer_schedule_dates= s.input :end_date, input_html: {id: 'offer_end_date', value: (l(s.object.end_date, format: :datepicker) if s.object.end_date)}
+        .offer_schedule_dates.error= f.object.offer_schedule.errors[:start_date].first || f.object.offer_schedule.errors[:end_date].first unless f.object.offer_schedule.errors.full_messages.empty?
+
+    / enrollment period
 
     %div
-      - dont_have_enroll_end_date = @semester.enrollment_schedule.try(:end_date).nil?
+      - dont_have_enroll_end_date = f.object.enrollment_schedule.try(:end_date).nil?
       = f.label :enrollment, required: true
       = f.simple_fields_for :enrollment_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
-        .enrollment_schedule_dates= s.input :start_date, input_html: { id: 'enrollment_start_date', value: "#{l((@semester.enrollment_schedule.try(:start_date) || start_date).to_date, format: :datepicker)}" }
+        .enrollment_schedule_dates= s.input :start_date, input_html: {id: 'enrollment_start_date', value: (l(s.object.start_date, format: :datepicker) if s.object.start_date)}
         %span#enrollment_schedule_end_date{class: (dont_have_enroll_end_date ? 'invisible' : '')}
-          .enrollment_schedule_dates.label= t(:to, scope: [:schedules])
-          .enrollment_schedule_dates= s.input :end_date, input_html: { id: 'enrollment_end_date' }
-      .enrollment_schedule_dates.error= @semester.enrollment_schedule.errors[:start_date].first || @semester.enrollment_schedule.errors[:end_date].first unless @semester.enrollment_schedule.errors.full_messages.empty?
+          .enrollment_schedule_dates.label= t('schedules.to')
+          .enrollment_schedule_dates= s.input :end_date, input_html: {id: 'enrollment_end_date', value: (l(s.object.end_date, format: :datepicker) if s.object.end_date)}
+
+        .enrollment_schedule_dates.error= f.object.enrollment_schedule.errors[:start_date].first || f.object.enrollment_schedule.errors[:end_date].first unless f.object.enrollment_schedule.errors.full_messages.empty?
+
       .end_date_check_box.period_date
         = check_box_tag :have_end_date, true, not(dont_have_enroll_end_date)
         %span.checkbox_label= label_tag :have_end_date, t('.enable_end_date')
@@ -35,20 +40,16 @@
 
 :javascript
 
-  $("#offer_start_date, #offer_end_date, #enrollment_start_date, #enrollment_end_date").mask("#{I18n.t('date.formats.masks')}");
-
   $(function(){
+    $("#offer_start_date, #offer_end_date, #enrollment_start_date, #enrollment_end_date").mask("#{I18n.t('date.formats.mask')}");
+
     // datepicker
     var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
 
-    // impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final
-    $('#offer_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_end_date').datepicker("option", "minDate", selected); } }) );
-    $('#offer_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_start_date').datepicker("option", "maxDate", selected); } }) );
-
-    $('#enrollment_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#enrollment_end_date').datepicker("option", "minDate", selected); } }) );
-    $('#enrollment_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#enrollment_start_date').datepicker("option", "maxDate", selected); } }) );
-
-    $('#enrollment_end_date').datepicker('setDate', "#{l((@semester.enrollment_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}");
+    $('#offer_start_date').datepicker(options);
+    $('#offer_end_date').datepicker(options);
+    $('#enrollment_start_date').datepicker(options);
+    $('#enrollment_end_date').datepicker(options);
   });
 
   $('#save').click(function(){
@@ -73,11 +74,10 @@
   });
 
   $('input#have_end_date').click(function(){
-    if($("input#have_end_date:checked").val() == 'true'){
+    if ($("input#have_end_date:checked").length) {
       $('#enrollment_schedule_end_date').show();
-      $('#enrollment_end_date').datepicker('setDate', "#{l((@semester.enrollment_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}");
-    }else{
+    } else {
       $('#enrollment_schedule_end_date').hide();
-      $('#enrollment_end_date').datepicker('setDate', "");
+      $('#enrollment_end_date').datepicker('setDate', '');
     }
   });

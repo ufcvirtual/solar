@@ -1,4 +1,6 @@
 class Semester < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   has_many :offers
 
   belongs_to :offer_schedule, class_name: "Schedule", foreign_key: "offer_schedule_id"
@@ -9,10 +11,9 @@ class Semester < ActiveRecord::Base
 
   validate :check_period
 
-  accepts_nested_attributes_for :offer_schedule, :enrollment_schedule
+  accepts_nested_attributes_for :offer_schedule, :enrollment_schedule, allow_destroy: true
 
-  attr_accessible :name, :offer_schedule_attributes, :enrollment_schedule_attributes, :offer_schedule_id, :enrollment_schedule_id
-  attr_accessor :verify_current_date
+  attr_accessor :type_id, :verify_current_date
 
   after_destroy { |record|
     record.offer_schedule.destroy if record.offer_schedule.try(:can_destroy?)
@@ -24,6 +25,14 @@ class Semester < ActiveRecord::Base
     self.offer_schedule.check_end_date, = true if offer_schedule
     self.enrollment_schedule.verify_current_date = true if enrollment_schedule and verify_current_date != false
   end
+
+  def offers_by_allocation_tags(allocation_tags_ids, opts = {})
+    offers.joins(:allocation_tag, :curriculum_unit).where(allocation_tags: {id: allocation_tags_ids}).where(opts.reject { |k,v| v.blank? })
+  end
+
+
+  ## class methods
+
 
   def self.currents(year = nil, verify_end_date = nil)
     unless year.class == Date
@@ -65,10 +74,6 @@ class Semester < ActiveRecord::Base
     semesters_of_current_offers = Offer.currents(year).where(query.join(" AND ")).map(&:semester)
 
     return (current_semesters + semesters_of_current_offers).uniq
-  end
-
-  def offers_by_allocation_tags(allocation_tags_ids, opts = {})
-    offers.joins(:allocation_tag, :curriculum_unit).where(allocation_tags: {id: allocation_tags_ids}).where(opts.reject { |k,v| v.blank? })
   end
 
 end

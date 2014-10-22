@@ -12,11 +12,6 @@
   font-size: 9pt;
 }
 
-.offer_schedule_dates, .enrollment_schedule_dates { // TODO: usado em offers e semesters
-  display: inline-block;
-  color: $label_color;
-}
-
 .block_content_text_list{
     padding: 5px;
     padding-right: 5px;
@@ -46,6 +41,11 @@
 .period_date{
   color: $label_color;
   margin-left: 76px;
+}
+
+.offer_schedule_dates, .enrollment_schedule_dates { // TODO: usado em offers e semesters
+  display: inline-block;
+  color: $label_color;
 }
 
 .offer_schedule_dates .error, .enrollment_schedule_dates .error { // TODO: usado em offers e semesters

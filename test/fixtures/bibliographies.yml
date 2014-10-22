@@ -31,7 +31,7 @@ electronic_doc:
   type_bibliography: <%= Bibliography::TYPE_ELECTRONIC_DOC %>
   title: "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus"
   url: "www.site.com"
-  accessed_in: <%= Date.today %>
+  accessed_in: <%= Date.today.to_s(:db) %>
 
 free:
   id: 5

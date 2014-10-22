@@ -32,9 +32,9 @@ module V1
           @posts = @discussion.posts(filtered_params, @group.allocation_tag.related)
 
           @period = if @posts.empty?
-            ["#{filtered_params['date'] || DateTime.now}", "#{filtered_params['date'] || DateTime.now}"]
+            ["#{filtered_params['date'] || DateTime.now.to_s(:db)}", "#{filtered_params['date'] || DateTime.now.to_s(:db)}"]
           else
-            newer_post_date, older_post_date = @posts.first.updated_at, @posts.last.updated_at.to_date
+            newer_post_date, older_post_date = @posts.first.updated_at.to_s(:db), @posts.last.updated_at.to_date.to_s(:db)
             ["#{older_post_date}", "#{newer_post_date}"]
           end
         end # after

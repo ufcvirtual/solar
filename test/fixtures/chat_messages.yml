@@ -4,7 +4,7 @@ chat3_msg1:
   allocation_id: 11 # aluno1 - QM-CAU
   message_type: 0 # system
   text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  created_at: <%= Date.today - 1.minute %>
+  created_at: <%= (Date.today - 1.minute).to_s(:db) %>
 
 chat3_msg2:
   id: 2
@@ -12,7 +12,7 @@ chat3_msg2:
   allocation_id: 11 # aluno1 - QM-CAU
   message_type: 1 # user
   text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  created_at: <%= Date.today - 1.minute %>
+  created_at: <%= (Date.today - 1.minute).to_s(:db) %>
 
 chat3_msg3:
   id: 3
@@ -20,7 +20,7 @@ chat3_msg3:
   allocation_id: 15 # aluno2 - QM-CAU
   message_type: 0 # system
   text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  created_at: <%= Date.today %>
+  created_at: <%= Date.today.to_s(:db) %>
 
 chat3_msg4:
   id: 4
@@ -28,7 +28,7 @@ chat3_msg4:
   allocation_id: 15 # aluno2 - QM-CAU
   message_type: 1 # user
   text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  created_at: <%= Date.today %>
+  created_at: <%= Date.today.to_s(:db) %>
 
 chat3_msg5:
   id: 5
@@ -36,5 +36,5 @@ chat3_msg5:
   allocation_id: 15 # aluno2 - QM-CAU
   message_type: 1 # user
   text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  created_at: <%= Date.today %>
+  created_at: <%= Date.today.to_s(:db) %>
   user_id: 7 # msg to aluno1

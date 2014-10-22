@@ -38,7 +38,7 @@ describe "Posts" do
         file = fixture_file_upload('/files/file_10k.dat')
         post "/api/v1/posts/13/files", group_id: 3, file: file, access_token: token.token
 
-        response.status.should eq(201) 
+        response.status.should eq(201)
         response.body.should eq({ids: [PostFile.last.id]}.to_json)
       end
 
@@ -92,7 +92,7 @@ describe "Posts" do
       it "lists new posts by date" do
         # recuperar o datetime do último post feito (ou seja, o mais recente) -1 minuto
         # deste modo, apenas ele será retornado como mais novos que a data passada
-        newest_post_date = "#{Discussion.find(2).posts.first.updated_at.to_datetime - 1.minute}"
+        newest_post_date = "#{(Discussion.find(2).posts.first.updated_at.to_datetime - 1.minute)}"
         get "/api/v1/discussions/2/posts/new", group_id: 3, date: newest_post_date, access_token: token.token
         response.status.should eq(200)
 
