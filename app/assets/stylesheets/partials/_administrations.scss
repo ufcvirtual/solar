@@ -101,3 +101,15 @@ table.tb_allocation .dropdown ul li a{
     width: 145px;
   }
 }
+
+.global_item, .specific_item {
+  @include item_button;
+}
+
+.global, .specific{
+  height: 111px;
+}
+
+.global_text, .specific_text{
+  padding-top: 13px;
+}

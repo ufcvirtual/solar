@@ -1,6 +1,6 @@
 - @users.each do |user|
-  - user_profiles = user.allocations.where(allocation_tag_id: @allocation_tags_ids.split(" ")).map(&:profile)
-  - profiles_allocable = ((@admin and can? :users_indication, Administration) ? (Profile.all_except_basic - user_profiles) : profiles_available_for_allocation(user.id, @allocation_tags_ids))
+  - user_profiles = user.allocations.where(allocation_tag_id: (@allocation_tags_ids.nil? ? nil : @allocation_tags_ids.split(" "))).map(&:profile)
+  - profiles_allocable = ((@admin and can? :indication_users, Administration) ? (Profile.all_except_basic - user_profiles) : profiles_available_for_allocation(user.id, @allocation_tags_ids))
 
   - if profiles_allocable.any?
     %tr.lines

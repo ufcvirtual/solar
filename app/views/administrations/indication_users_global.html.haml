@@ -1,8 +1,7 @@
 .list_designates
-  = link_to t(:back), indication_users_administrations_path, {class: "btn"}
   .block_wrapper.users
     .block_title
-      %h2= t(".designate_users")
+      %h2= t(:designate_users, scope: 'allocations.designates')
 
     .block_content.allocations_list
       - unless @allocations.nil? or @allocations.empty?
@@ -13,8 +12,7 @@
               %th{style: 'width:80px'}= t(".cpf")
               %th{style: 'width:200px'}= t(".email")
               %th{style: 'width:120px'}= t(".profile")
-              %th{style: 'width: 80px'}= t(".designated_on")
-              %th{style: 'width: 80px'}= t(".designated_by")
+              %th{style: 'width: 80px'}= t(:designated_by, scope: 'allocations.designates')
               %th.no_sort
           %tbody
             - @allocations.each do |allocation|
@@ -23,23 +21,22 @@
                 %td= allocation.user.cpf
                 %td= allocation.user.email
                 %td= allocation.profile.name
-                %td= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester.name : (allocation.course ? allocation.course.name : (allocation.curriculum_unit ? allocation.curriculum_unit.name : allocation.curriculum_unit_type.description)))
                 %td= allocation.updated_by.try(:username)
                 %td
                   - status, link = (allocation.status == Allocation_Activated) ? ["deactivate", deactivate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)] : ["activate", activate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)]
-                  = button_tag t(".#{status}"), type: :button, class: "btn btn_caution #{status}", alt: t(".#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids, admin: @admin)
+                  = button_tag t("allocations.designates.#{status}"), type: :button, class: "btn btn_caution #{status}", alt: t("allocations.designates.#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => indication_users_global_administrations_path(allocation_tags_ids: @allocation_tags_ids, admin: @admin)
       - else
-        .block_content_text_list.text_none= t(".no_allocated_user")
-
+        .block_content_text_list.text_none= t(:no_allocated_user, scope: 'allocations.designates')
 
   .block_wrapper.search
+    = link_to t(:back), indication_users_administrations_path, {class: "btn"}
     .block_title
-      %h2= t(".new_designate")
+      %h2= t(:new_designate, scope: 'allocations.designates')
 
     .block_content_toolbar
-      %label{for: "text_search"}= t(".user")
+      %label{for: "text_search"}= t(:user, scope: 'allocations.designates')
       = text_field_tag "text_search", @text_search
-      = button_tag t(".search"), type: :button, class: "btn btn_default", id: "search_user", alt: t(".search_users")
+      = button_tag t(:search, scope: 'allocations.designates'), type: :button, class: "btn btn_default", id: "search_user", alt: t(:search_users, scope: 'allocations.designates')
 
     .block_content
       #list_users

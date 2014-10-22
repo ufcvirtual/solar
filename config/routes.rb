@@ -83,7 +83,9 @@ Solar::Application.routes.draw do
 
   resources :administrations do
     collection do
-      get :users_indication
+      get :indication_users
+      get :indication_users_specific
+      get :indication_users_global
       get :allocation_approval
       get :search_allocation, action: :allocation_approval, defaults: {search: true}
       get :lessons

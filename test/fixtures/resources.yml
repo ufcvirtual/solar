@@ -791,8 +791,8 @@ res160:
 res161:
   id: 161
   controller: 'administrations'
-  action: 'users_indication'
-  description: 'Indicar/Remover usuário de atuação'
+  action: 'indication_users'
+  description: 'Escolher entre perfil global e específico'
 
 ## Webconference
 

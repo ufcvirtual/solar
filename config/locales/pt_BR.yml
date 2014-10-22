@@ -1765,6 +1765,12 @@ pt_BR:
   active: Ativo
   blocked: Bloqueado
   administrations:
+    global: Global
+    global_profile: "Perfil Global"
+    global_profile_text: "Perfil que não é específico de uma disciplina ou oferta, que engloba todo o sistema.<br/><em>Exemplo: Administrador</em>"
+    specific: Específico
+    specific_profile: "Perfil Específico"
+    specific_profile_text: "Perfil específico de uma disciplina, oferta ou turma<br/><em>Exemplo: Professor, Tutor</em>"
     close: Fechar
     allocations_user:
       no_data: Nenhuma alocação cadastrada

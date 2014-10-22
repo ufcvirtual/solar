@@ -1,1 +1,4 @@
 = render partial: "editions/content_filter", locals: {list_class: "indication", url: admin_designates_allocations_path, optionals: ["curriculum_unit", "course", "semester"], types: @types, back: false, type_id: nil}
+
+.block_wrapper
+  = link_to t(:back), indication_users_administrations_path, {class: "btn"}

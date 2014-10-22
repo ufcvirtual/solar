@@ -4,7 +4,7 @@ class AdministrationsController < ApplicationController
   include SysLog::Devise
   include SysLog::Actions
 
-  layout false, except: [:users, :users_indication, :allocation_approval, :lessons, :logs, :import_users, :responsibles]
+  layout false, except: [:users, :indication_users, :indication_users_specific, :indication_users_global, :allocation_approval, :lessons, :logs, :import_users, :responsibles]
 
   ## USERS
 
@@ -131,9 +131,17 @@ class AdministrationsController < ApplicationController
 
   ## INDICATION USERS
 
-  def users_indication
-    authorize! :users_indication, Administration
+  def indication_users
+    authorize! :indication_users, Administration
+  end
+  
+  def indication_users_specific
     @types = CurriculumUnitType.all
+  end
+
+  def indication_users_global
+    @allocations = Allocation.joins(:profile).where(allocation_tag_id: nil).where("NOT cast(profiles.types & ? as boolean)", Profile_Type_Basic) 
+    @admin = true
   end
 
   ## ALLOCATION APPROVAL
