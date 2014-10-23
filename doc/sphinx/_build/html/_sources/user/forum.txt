@@ -1,8 +1,6 @@
 Forum
 =====
 
-.. danger:: MATERIAL INCOMPLETO
-
 Nesta página são listadas os fóruns disponíveis sobre conteúdos vinculados à disciplina escolhida, sendo informado o nome e período de disponibilidade de acesso.
 
 .. note:: Após a data final o fórum será bloqueado, tendo seu acesso restrito apenas para leitura, onde apenas o responsável pela disciplina terá uma semana adicional para realizar novas postagens.
