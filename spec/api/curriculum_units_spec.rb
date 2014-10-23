@@ -98,6 +98,53 @@ describe "CurriculumUnits" do
 
     end # post
 
+    describe "put" do
+
+      context "with valid ip" do
+
+        context 'update curriculum_unit' do
+          let!(:json_data){ { code: "UC01" } }
+
+          subject{ -> { put "/api/v1/curriculum_unit/2", json_data } } 
+
+          it { should change(CurriculumUnit.where(code: "RM405"),:count).by(-1) }
+          it { should change(CurriculumUnit.where(code: "UC01"),:count).by(1) }
+
+          it {
+            put "/api/v1/curriculum_unit/2", json_data
+            response.status.should eq(200)
+            response.body.should == {ok: :ok}.to_json
+          }
+        end
+
+        context 'dont update curriculum_unit - existing code' do
+          let!(:json_data){ { code: "RM404" } }
+
+          subject{ -> { put "/api/v1/curriculum_unit/2", json_data } } 
+
+          it { should change(CurriculumUnit.where(code: "RM405"),:count).by(0) }
+
+          it {
+            put "/api/v1/curriculum_unit/2", json_data
+            response.status.should eq(422)
+          }
+        end
+
+        context 'dont update curriculum_unit - missing params' do
+          subject{ -> { put "/api/v1/curriculum_unit/2" } } 
+
+          it { should change(CurriculumUnit.where(code: "RM405"),:count).by(0) }
+
+          it {
+            put "/api/v1/curriculum_unit/2"
+            response.status.should eq(400)
+          }
+        end
+
+      end
+
+    end # put
+
   end # .curriculum_unit
 
   describe "disciplines" do

@@ -26,7 +26,6 @@ module V1
 
       namespace :groups do
 
-        # integration/groups/merge
         namespace :merge do
           desc "Aglutinação/Desaglutinação de turmas"
           params do

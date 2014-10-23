@@ -393,7 +393,7 @@ describe "Groups" do
 
       end
 
-    end # post
+    end # put
 
   end # .group
 

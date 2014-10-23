@@ -55,7 +55,6 @@ module V1
         delete ":type/:id" do
           begin
             allocate(params, cancel: true)
-
             {ok: :ok}
           rescue => error
             error!(error, 422)

@@ -57,28 +57,55 @@ describe "Courses" do
       }
     end
 
-    context 'update course' do
-      it {
-        put "/api/v1/course/1", { code: "109.2" }
-        response.status.should eq(200)
-      }
-    end        
-
-    context 'dont update course - already exist' do
-      it {
-        put "/api/v1/course/1", { code: "109" }
-        response.status.should eq(422)
-      }
-    end
-
-    context 'dont update course - missing params' do
-      it {
-        put "/api/v1/course/1"
-        response.status.should eq(400)
-      }
-    end
-
   end
+
+
+    describe "put" do
+
+      context "with valid ip" do
+
+        context 'update course' do
+          let!(:json_data){ { code: "110.2" } }
+
+          subject{ -> { put "/api/v1/course/1", json_data } } 
+
+          it { should change(Course.where(code: "110"),:count).by(-1) }
+          it { should change(Course.where(code: "110.2"),:count).by(1) }
+
+          it {
+            put "/api/v1/course/1", json_data
+            response.status.should eq(200)
+            response.body.should == {ok: :ok}.to_json
+          }
+        end
+
+        context 'dont update course - existing code' do
+          let!(:json_data){ { code: "109" } }
+
+          subject{ -> { put "/api/v1/course/1", json_data } } 
+
+          it { should change(Course.where(code: "110"),:count).by(0) }
+
+          it {
+            put "/api/v1/course/1", json_data
+            response.status.should eq(422)
+          }
+        end
+
+        context 'dont update course - missing params' do
+          subject{ -> { put "/api/v1/course/1" } } 
+
+          it { should change(Course.where(code: "110"),:count).by(0) }
+
+          it {
+            put "/api/v1/course/1"
+            response.status.should eq(400)
+          }
+        end
+
+      end
+
+    end # put
 
   describe "types" do
     it "list all" do

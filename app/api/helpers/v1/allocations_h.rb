@@ -1,5 +1,6 @@
 module V1::AllocationsH
 
+  ## remover
   def allocate_professors(group, cpfs)
     group.allocations.where(profile_id: 17).update_all(status: 2) # cancel all previous allocations
 
@@ -21,7 +22,6 @@ module V1::AllocationsH
     end
   end
 
-  ## remover
   def get_profile_id(profile)
     ma_config = User::MODULO_ACADEMICO
     distant_professor_profile = (ma_config.nil? or not(ma_config['professor_profile'].present?) ? 17 : ma_config['professor_profile'])
@@ -52,8 +52,8 @@ module V1::AllocationsH
     end
   end
 
-  def get_users(params)
-    users = [case 
+  def get_users(params, users=[])
+    users << case 
     when params[:user_id].present?
       User.find(params[:user_id])
     when params[:users_ids].present?
@@ -62,16 +62,18 @@ module V1::AllocationsH
       User.where(cpf: params[:cpf].delete('.').delete('-')).first
     else 
       User.where(cpf: params[:cpfs])
-    end].compact.flatten
-
-    if (params[:cpf].present? or params[:cpfs].present?) and params[:ma]
-      users = []
-      [params[:cpf] || params[:cpfs]].flatten.each do |cpf|
-        users << verify_or_create_user(cpf)
-      end
     end
 
-    users.compact
+    users << import_users(params) if (params[:cpf].present? or params[:cpfs].present?) and params[:ma]
+    users.compact.flatten
+  end
+
+  def import_users(params)
+    users = []
+    [params[:cpf] || params[:cpfs]].flatten.each do |cpf|
+      users << verify_or_create_user(cpf)
+    end
+    users
   end
 
 end
