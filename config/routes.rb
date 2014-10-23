@@ -465,13 +465,6 @@ Solar::Application.routes.draw do
   get "/media/assignment/public_area/:file.:extension", to: "access_control#assignment"
   get "/media/assignment/enunciation/:file.:extension", to: "access_control#assignment"
 
-  # IM
-  # resources :instant_messages, only: [] do
-  #   collection do
-  #     get :prebind
-  #   end
-  # end
-
   mount Ckeditor::Engine => "/ckeditor"
   ## como a API vai ser menos usada, fica mais rapido para o solar rodar sem precisar montar essas rotas
   mount ApplicationAPI => '/api'

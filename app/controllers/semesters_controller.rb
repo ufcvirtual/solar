@@ -89,7 +89,7 @@ class SemestersController < ApplicationController
     @semester = Semester.find(params[:id])
 
     if @semester.destroy
-      render json: {success: true, notice: t('semesters.success.deleted')}
+      render_semester_success_json('deleted')
     else
       render json: {success: false, alert: t('semesters.error.deleted')}, status: :unprocessable_entity
     end

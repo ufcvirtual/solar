@@ -1,3 +1,0 @@
-class PortletsController < ApplicationController
-    
-end

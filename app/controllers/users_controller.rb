@@ -1,7 +1,8 @@
 require 'ostruct'
-include EdxHelper
 
 class UsersController < ApplicationController
+
+  include EdxHelper
 
   layout false, only: :show
   load_and_authorize_resource only: [:mysolar, :update_photo]
@@ -108,7 +109,7 @@ class UsersController < ApplicationController
     if synchronizing_result.nil? # user don't exists at MA
       render json: {success: false, message: t("users.warnings.ma.cpf_not_found"), type_message: "warning"}
     elsif synchronizing_result # user synchronized
-      render json: {success: true, message: t("users.notices.ma.synchronize"), type_message: "notice", 
+      render json: {success: true, message: t("users.notices.ma.synchronize"), type_message: "notice",
         name: user.name, email: user.email, nick: user.nick, username: user.username}
     else # error
       render json: {success: false, alert: t("users.errors.ma.synchronize")}, status: :unprocessable_entity

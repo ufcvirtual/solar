@@ -71,7 +71,7 @@ class CoursesController < ApplicationController
     authorize! :destroy, @course
 
     if @course.destroy
-      render json: {success: true, notice: t('courses.success.deleted')}
+      render_course_success_json('deleted')
     else
       render json: {success: false, alert: t('courses.error.deleted')}, status: :unprocessable_entity
     end

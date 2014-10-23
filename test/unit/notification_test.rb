@@ -9,6 +9,7 @@ class NotificationTest < ActiveSupport::TestCase
     assert warning.invalid?
 
     warning.title = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    warning.allocation_tag_ids_associations = [allocation_tags(:al3).id]
 
     assert warning.valid?
     assert warning.save
@@ -17,6 +18,7 @@ class NotificationTest < ActiveSupport::TestCase
   test "nao cadastra sem data final" do
     params = {title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", schedule_attributes: {start_date: Date.today}}
     warning = Notification.new params
+    warning.allocation_tag_ids_associations = [allocation_tags(:al3).id]
 
     assert warning.invalid?
     assert warning.errors.messages.has_key?(:"schedule.end_date")

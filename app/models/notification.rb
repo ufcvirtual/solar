@@ -1,23 +1,22 @@
 class Notification < ActiveRecord::Base
-  GROUP_PERMISSION, OFFER_PERMISSION, CURRICULUM_UNIT_PERMISSION, COURSE_PERMISSION, CURRICULUM_UNIT_TYPE_PERMISSION = true, true, true, true, true
+  include AcademicTool
+  include ActiveModel::ForbiddenAttributesProtection
 
-  scope :active, -> { joins(:schedule).where("schedules.start_date <= ? and schedules.end_date >= ?", Date.today, Date.today) }
+  GROUP_PERMISSION = OFFER_PERMISSION = CURRICULUM_UNIT_PERMISSION = COURSE_PERMISSION = CURRICULUM_UNIT_TYPE_PERMISSION = true
+
+  scope :active, -> { joins(:schedule).where("date(schedules.start_date) <= :today and date(schedules.end_date) >= :today", today: Date.today) }
 
   belongs_to :schedule
 
-  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
-  has_many :allocation_tags, through: :academic_allocations
-  has_many :groups, through: :allocation_tags
+  has_and_belongs_to_many :users, join_table: 'read_notifications'
   has_many :read_notifications
 
-  accepts_nested_attributes_for :schedule, allow_destroy: true
+  accepts_nested_attributes_for :schedule
 
-  before_validation proc { self.schedule.check_end_date = true } # data final obrigatoria
+  before_validation proc { self.schedule.check_end_date = true }, if: "schedule" # data final obrigatoria
 
-  validates :title, :description, presence: true
+  validates :title, :description, :schedule, presence: true
   validates :title, length: {maximum: 255}
-
-  attr_accessible :title, :description, :schedule_attributes, :schedule_id
 
   def period
     p = [I18n.l(start_date, format: :normal)]
@@ -34,12 +33,16 @@ class Notification < ActiveRecord::Base
   end
 
   def read?(user)
-    not read_notifications.where(user_id: user).empty?
+    read_notifications.where(user_id: user).any?
   end
 
   def mark_as_read(user)
     read_notifications.create(user: user) unless read?(user)
   end
+
+
+  ## class methods
+
 
   def self.of_user(user)
     active.select("notifications.*, rn.user_id AS read")

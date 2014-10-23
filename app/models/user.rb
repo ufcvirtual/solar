@@ -38,6 +38,8 @@ class User < ActiveRecord::Base
   # has_many :user_contacts, class_name: "UserContact", foreign_key: "user_id"
   has_many :user_contacts, class_name: "UserContact", foreign_key: "user_related_id"
 
+  has_and_belongs_to_many :notifications, join_table: 'read_notifications'
+
   after_create :basic_profile_allocation
 
   # Include default devise modules. Others available are:

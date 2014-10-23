@@ -1,5 +1,7 @@
 class LessonModulesController < ApplicationController
 
+  include SysLog::Actions
+
   before_filter only: [:new, :create, :edit, :update] do |controller|
     authorize! crud_action, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten
   end
@@ -8,8 +10,6 @@ class LessonModulesController < ApplicationController
   before_filter only: [:edit, :update] do |controller|
     get_groups_by_tool(@lesson_module = LessonModule.find(params[:id]))
   end
-
-  include SysLog::Actions
 
   layout false
 

@@ -5,6 +5,7 @@ class NotificationsController < ApplicationController
   layout false
 
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+
   before_filter only: [:edit, :update] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@notification = Notification.find(params[:id]))
@@ -14,18 +15,13 @@ class NotificationsController < ApplicationController
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Notification, on: @allocation_tags_ids
 
-    @notifications = Notification.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).uniq
+    @notifications = Notification.joins(:allocation_tags).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).uniq
   end
 
   # GET /notifications
   # GET /notifications.json
   def index
     @notifications = Notification.of_user(current_user)
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @notifications }
-    end
   end
 
   # GET /notifications/1
@@ -33,11 +29,6 @@ class NotificationsController < ApplicationController
   def show
     @notification = Notification.find(params[:id])
     @notification.mark_as_read(current_user)
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @notification }
-    end
   end
 
   # GET /notifications/new
@@ -55,53 +46,57 @@ class NotificationsController < ApplicationController
   end
 
   # POST /notifications
-  # POST /notifications.json
   def create
-    authorize! :create, Notification, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    @notification = Notification.new(params[:notification])
+    authorize! :create, Notification, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
-    begin
-      Notification.transaction do
-        @notification.save!
-        @notification.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
-      end
-      render json: {success: true, notice: t(:created, scope: [:notifications, :success])}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
-      @allocation_tags_ids = @allocation_tags_ids.join(" ")
-      params[:success] = false
+    @notification = Notification.new notification_params
+    @notification.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten
+
+    if @notification.save
+      render_notification_success_json('created')
+    else
       render :new
     end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   # PUT /notifications/1
-  # PUT /notifications/1.json
   def update
     authorize! :update, Notification, on: @notification.academic_allocations.pluck(:allocation_tag_id)
-    @notification.update_attributes!(params[:notification])
-    render json: {success: true, notice: t(:updated, scope: [:notifications, :success])}
-  rescue ActiveRecord::AssociationTypeMismatch
-    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    params[:success] = false
-    render :edit
+
+    if @notification.update_attributes(notification_params)
+      render_notification_success_json('updated')
+    else
+      render :edit
+    end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   # DELETE /notifications/1
-  # DELETE /notifications/1.json
   def destroy
     @notifications = Notification.where(id: params[:id].split(","))
+
     authorize! :destroy, Notification, on: @notifications.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
     @notifications.destroy_all
-
-    render json: {success: true, notice: t(:deleted, scope: [:notifications, :success])}
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    render json: {success: false, alert: t(:deleted, scope: [:notifications, :error])}, status: :unprocessable_entity
+    render_notification_success_json('deleted')
+  rescue => error
+    request.format = :json
+    raise error.class
   end
+
+  private
+
+    def notification_params
+      params.require(:notification).permit(:title, :description, schedule_attributes: [:id, :start_date, :end_date])
+    end
+
+    def render_notification_success_json(method)
+      render json: {success: true, notice: t(method, scope: 'notifications.success')}
+    end
+
 end
