@@ -57,7 +57,7 @@ Administrador
   admin/profile-approval
   
 API
--------------
+---
 
 .. toctree::
   :maxdepth: 3
