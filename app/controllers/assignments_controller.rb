@@ -103,7 +103,7 @@ class AssignmentsController < ApplicationController
 
   def student
     @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
-    @class_participants = AllocationTag.get_students(@allocation_tag_id)
+    @class_participants = AllocationTag.get_students(@allocation_tag_id).map(&:id)
     @student_id, @group_id = (params[:group_id].nil? ? [params[:student_id], nil] : [nil, params[:group_id]])
     @group = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
     @own_assignment = Assignment.owned_by_user?(current_user.id, {student_id: @student_id, group: @group})
