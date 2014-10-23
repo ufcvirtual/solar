@@ -18,7 +18,7 @@
               %td= log.type_name
               %td= log.user.try(:name)
               - if params[:type] == 'actions'
-                %td.breaking= raw log.description
+                %td.breaking= strip_tags log.description
               - else
                 %td= log.allocation_tag.try(:info)
               %td= l log.created_at, format: :at_date

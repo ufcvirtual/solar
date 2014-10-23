@@ -28,7 +28,7 @@ pt_BR:
     formats:
       clock: "%d/%m/%Y %H:%M:%S"
       clock_time: "%H:%M:%S"
-      default: "%A, %d de %B de %Y, %H:%M h"
+      default: "%d/%m/%Y %H:%M:%S"
       short: "%d/%m %H:%M h"
       today: "%H:%M"
       not_today: "%d/%m"

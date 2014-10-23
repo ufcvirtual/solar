@@ -1,4 +1,7 @@
 class SemestersController < ApplicationController
+
+  include SysLog::Actions
+
   layout false, except: :index
 
   # GET /semesters
@@ -85,7 +88,7 @@ class SemestersController < ApplicationController
     authorize! :destroy, Semester
     @semester = Semester.find(params[:id])
 
-    if ((@semester.offers.empty? or @semester.offers.map(&:groups).empty?) and @semester.destroy)
+    if @semester.destroy
       render json: {success: true, notice: t('semesters.success.deleted')}
     else
       render json: {success: false, alert: t('semesters.error.deleted')}, status: :unprocessable_entity

@@ -1,5 +1,6 @@
 class OffersController < ApplicationController
 
+  include SysLog::Actions
   include ApplicationHelper
   include OffersHelper
 

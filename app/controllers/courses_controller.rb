@@ -1,5 +1,7 @@
 class CoursesController < ApplicationController
 
+  include SysLog::Actions
+
   layout false
 
   def index

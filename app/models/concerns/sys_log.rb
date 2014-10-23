@@ -27,7 +27,7 @@ module SysLog
 
       if not(objs.nil?) and not(objs.empty?)
         objs.each do |obj|
-          description = "#{sobj.singularize}: #{obj.id}, #{obj.attributes.except("updated_at", "created_at")}" rescue nil
+          description = "#{sobj.singularize}: #{obj.id}, #{ActiveSupport::JSON.encode(obj.attributes.except('attachment_updated_at', 'updated_at', 'created_at'))}" rescue nil
           if obj.respond_to?(:academic_allocations) and not obj.academic_allocations.empty?
             allocation_tag_id = params[:allocation_tag_id] || active_tab[:url][:allocation_tag_id] || obj.allocation_tag.id rescue nil
             obj.academic_allocations.each do |al|
@@ -64,11 +64,15 @@ module SysLog
         academic_allocation_id = nil
         tbname = obj.try(:class).try(:table_name).to_s.singularize.to_sym if obj.try(:class).respond_to?(:table_name)
         description = if not(tbname.nil?) and params.has_key?(tbname) and not(obj.nil?)
-          "#{sobj}: #{obj.id}, #{obj.attributes}" + (obj.respond_to?(:files) ? ", files: #{obj.files.map(&:attributes)}}" : "")
 
+          obj_attrs = obj.attributes.except('attachment_updated_at', 'created_at', 'updated_at')
+          obj_attrs.merge!({'files' => obj.files.map {|f| f.attributes.except('attachment_updated_at') } }) if obj.respond_to?(:files) and obj.files.any?
+          obj_attrs = ActiveSupport::JSON.encode(obj_attrs)
+
+          "#{sobj}: #{obj.id}, #{obj_attrs}"
         elsif params[:id].present?
           # gets any extra information if exists
-          info = params.except(:controller, :action, :id)
+          info = ActiveSupport::JSON.encode(params.except(:controller, :action, :id))
           "#{sobj}: #{[params[:id], info].compact.join(", ")}"
         else # controllers saving other objects. ex: assingments -> student files
           d = []

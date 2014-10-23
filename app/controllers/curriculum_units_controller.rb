@@ -1,5 +1,7 @@
 class CurriculumUnitsController < ApplicationController
 
+  include SysLog::Actions
+
   layout false, only: [:new, :edit, :create, :update]
 
   before_filter :prepare_for_group_selection, only: [:home, :participants, :informations]
@@ -83,7 +85,7 @@ class CurriculumUnitsController < ApplicationController
     else
       render :new
     end
-    
+
   rescue => error
     request.format = :json
     raise error.class
@@ -109,8 +111,8 @@ class CurriculumUnitsController < ApplicationController
     uc_ids = params[:id].split(",")
     authorize! :destroy, CurriculumUnit, on: AllocationTag.where(curriculum_unit_id: uc_ids).pluck(:id)
 
-    @curriculum_unit = CurriculumUnit.where(id: uc_ids)
-    if @curriculum_unit.destroy_all.map(&:destroyed?).include?(false)
+    @curriculum_units = CurriculumUnit.where(id: uc_ids)
+    if @curriculum_units.destroy_all.map(&:destroyed?).include?(false)
       render json: {success: false, alert: t('curriculum_units.error.deleted')}, status: :unprocessable_entity
     else
       render json: {success: true, notice: t('curriculum_units.success.deleted')}

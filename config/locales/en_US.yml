@@ -1,7 +1,9 @@
 en_US:
+
   will_paginate:
     previous_label: "« Previous"
     next_label: "Next »"
+
   date:
     formats:
       default: "%m/%d/%Y"
@@ -19,6 +21,7 @@ en_US:
     - :month
     - :day
     - :year
+
   time:
     formats:
       clock: "%m/%d/%Y %H:%M:%S"
@@ -36,6 +39,7 @@ en_US:
       simple_day_and_month: "%d/%b"
       at_date: "%d/%m/%Y at %H:%M"
       log: "%d%m%Y%H%M%S"
+
   datetime:
     distance_in_words:
       half_a_minute: 'half a minute'

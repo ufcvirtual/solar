@@ -67,12 +67,11 @@ class GroupsController < ApplicationController
 
   def create
     @group = Group.new(group_params)
-
     authorize! :create, Group, on: [@group.offer.allocation_tag.id]
 
     @group.user_id = current_user.id
     if @group.save
-      render json: {success: true, notice: t('groups.success.created')}
+      render_group_success_json('created')
     else
       render :new
     end
@@ -94,9 +93,8 @@ class GroupsController < ApplicationController
   end
 
   def destroy
-    @group = Group.where(id: params[:id].split(","))
-
-    authorize! :destroy, Group, on: [@group.first.offer.allocation_tag.id]
+    @groups = Group.where(id: params[:id].split(","))
+    authorize! :destroy, Group, on: [@groups.first.offer.allocation_tag.id]
 
     destroy_multiple
   rescue => error
@@ -172,13 +170,13 @@ class GroupsController < ApplicationController
       @group.update_all(status: params[:status])
       @group.first.offer.notify_editors_of_disabled_groups(@group) if params[:status] == "false"
 
-      render json: {success: true, notice: t(:updated, scope: [:groups, :success])}
+      render_group_success_json('updated')
     end
 
     def update_single
       @group = @group.first
       if @group.update_attributes(group_params)
-        render json: {success: true, notice: t(:updated, scope: [:groups, :success])}
+        render_group_success_json('updated')
       else
         render :edit
       end
@@ -186,13 +184,17 @@ class GroupsController < ApplicationController
 
     def destroy_multiple
       Group.transaction do
-        if @group.map(&:can_destroy?).include?(false)
+        if @groups.map(&:can_destroy?).include?(false)
           render json: {success: false, alert: t('groups.error.deleted')}, status: :unprocessable_entity
         else
-          @group.destroy_all
-          render json: {success: true, notice: t('groups.success.deleted')}
+          @groups.destroy_all
+          render_group_success_json('deleted')
         end
       end
+    end
+
+    def render_group_success_json(method)
+      render json: {success: true, notice: t(method, 'groups.success')}
     end
 
 end

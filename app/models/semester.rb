@@ -2,9 +2,12 @@ class Semester < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
   has_many :offers
+  has_many :groups, through: :offers
 
   belongs_to :offer_schedule, class_name: "Schedule", foreign_key: "offer_schedule_id"
   belongs_to :enrollment_schedule, class_name: "Schedule", foreign_key: "enrollment_schedule_id"
+
+  before_destroy :can_destroy?
 
   validates :name, presence: true, uniqueness: true
   validates :enrollment_schedule, :offer_schedule, presence: true
@@ -28,6 +31,10 @@ class Semester < ActiveRecord::Base
 
   def offers_by_allocation_tags(allocation_tags_ids, opts = {})
     offers.joins(:allocation_tag, :curriculum_unit).where(allocation_tags: {id: allocation_tags_ids}).where(opts.reject { |k,v| v.blank? })
+  end
+
+  def can_destroy?
+    offers.empty? and groups.empty?
   end
 
 
