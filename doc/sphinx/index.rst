@@ -55,3 +55,15 @@ Administrador
 
   admin/user-import
   admin/profile-approval
+  
+API
+-------------
+
+.. toctree::
+  :maxdepth: 3
+
+  api/allocations
+  api/users
+  api/academic
+  api/profiles
+  api/tools
