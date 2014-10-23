@@ -2540,10 +2540,10 @@ pt_BR:
       access_to_the_course: "Acessos ao Curso"
       no_students: Não há alunos
       list_of_students: Lista de estudantes
-      assignment_not_sent: TE
+      assignment_not_sent: TN
       assignment_without_group: SG
-      assignment_sent: E
-      assignment_to_be_sent: NE
+      assignment_sent: TE
+      assignment_to_be_sent: TN
       assignment_not_started: NI
       assignment_not_sent_complete: Trabalho não enviado e com período encerrado
       assignment_without_group_complete: Aluno sem grupo

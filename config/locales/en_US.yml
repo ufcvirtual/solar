@@ -2310,7 +2310,7 @@ en_US:
       access_to_the_course: "Access to the Course"
       no_students: There are no students
       list_of_students: List of students
-      assignment_not_sent: AE
+      assignment_not_sent: NF
       assignment_without_group: WG
       assignment_sent: S
       assignment_to_be_sent: NF
