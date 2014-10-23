@@ -6,7 +6,7 @@
 Projeto Solar 2.0
 =================
 
-Diante das dimensões dos recursos e das ferramentas disponibilizadas pela versão 2 do **Solar**, iniciaremos através desse tutorial e de seu conteúdo, que integra: imagens, textos e vídeos, o compartilhamento de informações e a divulgação de atualizações do ambiente **Solar 2**.
+Diante das dimensões dos recursos e das ferramentas disponibilizadas pela versão 2 do Solar, iniciaremos através desse tutorial e de seu conteúdo, que integra: imagens, textos e vídeos, o compartilhamento de informações e a divulgação de atualizações do ambiente **Solar 2**.
 
 Este manual possui como um dos seus principais focos o detalhamento das funcionalidades disponíveis para cada perfil de usuário, seja elas: Fóruns, Chats, Webconferências, administração de usuários, etc. Além disso, temos ainda em suas páginas uma lista de :doc:`faq` , que será atualizada progressivamente.
 
