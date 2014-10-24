@@ -47,20 +47,17 @@ module V1
         params do
           requires :name, :nick, :cpf, :email, type: String
           requires :gender, type: Boolean
-          requires :birthdate
-          optional :username, :cell_phone, :telephone, :address, :address_number, :address_neighborhood, :zipcode, :country, :state, :city, :special_needs
+          requires :birthdate, type: Date
+          optional :username, :cell_phone, :telephone, :address, :address_number, :address_neighborhood, :zipcode, :country, :state, :city, :special_needs, :institution
         end
 
         post "/" do
           begin
             cpf = params[:cpf].delete('.').delete('-')
-            user = User.find_by_cpf(cpf)
-            if user.nil?
+            if (user = User.find_by_cpf(cpf)).nil?
               ActiveRecord::Base.transaction do
                 new_password = ('0'..'z').to_a.shuffle.first(8).join
-                user = User.new name: params[:name], nick: params[:nick], username: (params.include?(:username) ? params[:username] : cpf), birthdate: params[:birthdate], gender: params[:gender],
-                  cpf: cpf, email: params[:email], password: new_password, cell_phone: params[:cell_phone], telephone: params[:telephone], special_needs: params[:special_needs], address: params[:address],
-                  address_number: params[:address_number], zipcode: params[:zipcode], address_neighborhood: params[:address_neighborhood], country: params[:country], state: params[:state], city: params[:city]
+                user = User.new params.merge!(params.include?(:username) ? {password: new_password} : {password: new_password, username: cpf})
                 user.synchronizing = true # ignore MA
                 user.save!
 
@@ -71,7 +68,6 @@ module V1
                 end
               end
             end
-
             {id: user.id}
           rescue => error
             error!({error: error}, 422)
@@ -81,7 +77,7 @@ module V1
         params { requires :cpf, type: String }
         post "import/:cpf" do
           begin
-            ma_response = User.new(cpf: params[:cpf]).connect_and_validates_user
+            ma_response = User.new(cpf: params[:cpf].delete('.').delete('-')).connect_and_validates_user
             raise ActiveRecord::RecordNotFound if ma_response.nil?
             {ok: :ok}
           rescue => error

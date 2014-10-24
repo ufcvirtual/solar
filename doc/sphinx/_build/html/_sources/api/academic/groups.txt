@@ -69,6 +69,7 @@ Observações
   2. Parâmetros opcionais
     - type: Boolean (por padrão, se não for informado, é definido como true. se for verdadeiro, aglutina; se falso, desaglutina)
   3. Apenas turmas de uma mesma oferta (conjunto de semestre, curso e disciplina) podem ser aglutinadas/desaglutinadas.
+  4. Ao desativar uma turma, um email é enviado aos seus editores responsáveis.
   
 Resposta
 ~~~~~~~~
@@ -195,6 +196,7 @@ Observações
   2. Parâmetros opcionais
     - code: String
     - status: Boolean (se true, a turma é ativada; se false, a turma é desativada)
+  3. Ao desativar uma turma, um email é enviado aos seus editores responsáveis.
   
 Resposta
 ~~~~~~~~

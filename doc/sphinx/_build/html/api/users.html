@@ -53,9 +53,277 @@
   <div class="section" id="usuarios">
 <h1>Usuários<a class="headerlink" href="#usuarios" title="Permalink to this headline">¶</a></h1>
 <p>Neste item estarão dispostas as chamadas, à API, existentes para os dados dos usuários.</p>
-<div class="admonition danger">
-<p class="first admonition-title">Danger</p>
-<p class="last">MATERIAL INCOMPLETO</p>
+<div class="section" id="dados-pessoais">
+<h2>1. Dados pessoais<a class="headerlink" href="#dados-pessoais" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="objetivo">
+<h3>Objetivo<a class="headerlink" href="#objetivo" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Retorna os dados do usuário corrente.</div></blockquote>
+</div>
+<div class="section" id="chamada">
+<h3>Chamada<a class="headerlink" href="#chamada" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>GET users/me</div></blockquote>
+</div>
+<div class="section" id="parametros">
+<h3>Parâmetros<a class="headerlink" href="#parametros" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><em>Nenhum parâmetro se faz necessário.</em></div></blockquote>
+</div>
+<div class="section" id="observacoes">
+<h3>Observações<a class="headerlink" href="#observacoes" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>id: Integer</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Na resposta, o parâmetro photo retorna a url de chamada à api para obter a foto do usuário.</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="resposta">
+<h3>Resposta<a class="headerlink" href="#resposta" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nb">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s">&quot;Nome do usuário&quot;</span><span class="p">,</span>
+  <span class="n">username</span><span class="p">:</span> <span class="s">&quot;Username/Login do usuário&quot;</span><span class="p">,</span>
+  <span class="n">email</span><span class="p">:</span> <span class="s">&quot;Email do usuário&quot;</span><span class="p">,</span>
+  <span class="n">photo</span><span class="p">:</span> <span class="s">&quot;/api/v1/users/1/photo&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="dados-de-um-usuario">
+<h2>2. Dados de um usuário<a class="headerlink" href="#dados-de-um-usuario" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Objetivo<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Retorna os dados de um determinado usuário.</div></blockquote>
+</div>
+<div class="section" id="id2">
+<h3>Chamada<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>GET users/:id</div></blockquote>
+</div>
+<div class="section" id="id3">
+<h3>Parâmetros<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><em>Nenhum parâmetro se faz necessário.</em></div></blockquote>
+</div>
+<div class="section" id="id4">
+<h3>Observações<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>id: Integer</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Na resposta, o parâmetro photo retorna a url de chamada à api para obter a foto do usuário.</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id5">
+<h3>Resposta<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nb">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s">&quot;Nome do usuário&quot;</span><span class="p">,</span>
+  <span class="n">username</span><span class="p">:</span> <span class="s">&quot;Username/Login do usuário&quot;</span><span class="p">,</span>
+  <span class="n">email</span><span class="p">:</span> <span class="s">&quot;Email do usuário&quot;</span><span class="p">,</span>
+  <span class="n">photo</span><span class="p">:</span> <span class="s">&quot;/api/v1/users/1/photo&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="recuperacao-da-foto-de-um-usuario">
+<h2>3. Recuperação da foto de um usuário<a class="headerlink" href="#recuperacao-da-foto-de-um-usuario" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h3>Objetivo<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Recuperar a foto de um usuário.</div></blockquote>
+</div>
+<div class="section" id="id7">
+<h3>Chamada<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>GET users/:id/photo</div></blockquote>
+</div>
+<div class="section" id="id8">
+<h3>Parâmetros<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><em>Nenhum parâmetro se faz necessário.</em></div></blockquote>
+</div>
+<div class="section" id="id9">
+<h3>Observações<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>id: Integer</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="id10">
+<h3>Resposta<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>Foto do usuário.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="criacao-de-usuario">
+<h2>4. Criação de usuário<a class="headerlink" href="#criacao-de-usuario" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id11">
+<h3>Objetivo<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Criar um usuário.</div></blockquote>
+</div>
+<div class="section" id="id12">
+<h3>Chamada<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>POST /user</div></blockquote>
+</div>
+<div class="section" id="id13">
+<h3>Parâmetros<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+ <span class="n">name</span><span class="p">:</span> <span class="s">&quot;Usuário&quot;</span><span class="p">,</span>
+ <span class="n">nick</span><span class="p">:</span> <span class="s">&quot;User&quot;</span><span class="p">,</span>
+ <span class="n">cpf</span><span class="p">:</span> <span class="s">&quot;00000000000&quot;</span><span class="p">,</span>
+ <span class="n">email</span><span class="p">:</span> <span class="s">&quot;usuario@email.com&quot;</span><span class="p">,</span>
+ <span class="n">gender</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+ <span class="n">birthdate</span><span class="p">:</span> <span class="s">&quot;1985-10-15&quot;</span><span class="p">,</span>
+ <span class="n">username</span><span class="p">:</span> <span class="s">&quot;login_do_usuário&quot;</span><span class="p">,</span>
+ <span class="n">cellphone</span><span class="p">:</span> <span class="s">&quot;00000000&quot;</span><span class="p">,</span>
+ <span class="n">telephone</span><span class="p">:</span> <span class="s">&quot;00000000&quot;</span><span class="p">,</span>
+ <span class="n">address</span><span class="p">:</span> <span class="s">&quot;Rua A&quot;</span><span class="p">,</span>
+ <span class="n">address_number</span><span class="p">:</span> <span class="s">&quot;111&quot;</span><span class="p">,</span>
+ <span class="n">address_neighborhood</span><span class="p">:</span> <span class="s">&quot;Bairro A&quot;</span><span class="p">,</span>
+ <span class="n">zipcode</span><span class="p">:</span> <span class="s">&quot;00000000&quot;</span><span class="p">,</span>
+ <span class="n">country</span><span class="p">:</span> <span class="s">&quot;País A&quot;</span><span class="p">,</span>
+ <span class="n">state</span><span class="p">:</span> <span class="s">&quot;Estado A&quot;</span><span class="p">,</span>
+ <span class="n">city</span><span class="p">:</span> <span class="s">&quot;Cidade A&quot;</span><span class="p">,</span>
+ <span class="n">institution</span><span class="p">:</span> <span class="s">&quot;UFC&quot;</span><span class="p">,</span>
+ <span class="n">special_needs</span><span class="p">:</span> <span class="s">&quot;Visual&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id14">
+<h3>Observações<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>name: String (de 6 à 90 caracteres)</li>
+<li>nick: String (de 3 à 34 caracteres)</li>
+<li>cpf, email: String</li>
+<li>gender: Boolean (se true, masculino; se false, feminino)</li>
+<li>birthdate: Date</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Parâmetros opcionais</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>username: String (de 3 à 20 caracteres)</li>
+<li>institution: String (até 120 caracteres)</li>
+<li>country, address, city: String (até 90 caracteres)</li>
+<li>zipcode: String (até 9 caracteres)</li>
+<li>address_neighborhood: String (até 49 caracteres)</li>
+<li>cell_phone, telephone, address_number, state, special_needs</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Se um username (login) não for informado, será definido como sendo o cpf.</li>
+<li>Ao cadastrar o usuário, uma senha aleatória é gerada automaticamente e enviada para o email desse.</li>
+<li>Se o usuário já existir no ambiente, nada dele é alterado e seu id é retornado na resposta.</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id15">
+<h3>Resposta<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span> <span class="nb">id</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="importar-usuario-do-modulo-academico">
+<h2>5. Importar usuário do Módulo Acadêmico<a class="headerlink" href="#importar-usuario-do-modulo-academico" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id16">
+<h3>Objetivo<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Importa usuário do módulo acadêmico. Se usuário existe, atualiza dados; Caso contrário, cria.</div></blockquote>
+</div>
+<div class="section" id="id17">
+<h3>Chamada<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>POST user/import/:cpf</div></blockquote>
+</div>
+<div class="section" id="id18">
+<h3>Parâmetros<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><em>Nenhum parâmetro se faz necessário.</em></div></blockquote>
+</div>
+<div class="section" id="id19">
+<h3>Observações<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>cpf: String</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="id20">
+<h3>Resposta<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">code</span><span class="p">:</span> <span class="s">&quot;Código&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="s">&quot;Nome da disciplina&quot;</span>
+  <span class="p">},</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
 </div>
 </div>
 
@@ -65,6 +333,53 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Usuários</a><ul>
+<li><a class="reference internal" href="#dados-pessoais">1. Dados pessoais</a><ul>
+<li><a class="reference internal" href="#objetivo">Objetivo</a></li>
+<li><a class="reference internal" href="#chamada">Chamada</a></li>
+<li><a class="reference internal" href="#parametros">Parâmetros</a></li>
+<li><a class="reference internal" href="#observacoes">Observações</a></li>
+<li><a class="reference internal" href="#resposta">Resposta</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dados-de-um-usuario">2. Dados de um usuário</a><ul>
+<li><a class="reference internal" href="#id1">Objetivo</a></li>
+<li><a class="reference internal" href="#id2">Chamada</a></li>
+<li><a class="reference internal" href="#id3">Parâmetros</a></li>
+<li><a class="reference internal" href="#id4">Observações</a></li>
+<li><a class="reference internal" href="#id5">Resposta</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#recuperacao-da-foto-de-um-usuario">3. Recuperação da foto de um usuário</a><ul>
+<li><a class="reference internal" href="#id6">Objetivo</a></li>
+<li><a class="reference internal" href="#id7">Chamada</a></li>
+<li><a class="reference internal" href="#id8">Parâmetros</a></li>
+<li><a class="reference internal" href="#id9">Observações</a></li>
+<li><a class="reference internal" href="#id10">Resposta</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#criacao-de-usuario">4. Criação de usuário</a><ul>
+<li><a class="reference internal" href="#id11">Objetivo</a></li>
+<li><a class="reference internal" href="#id12">Chamada</a></li>
+<li><a class="reference internal" href="#id13">Parâmetros</a></li>
+<li><a class="reference internal" href="#id14">Observações</a></li>
+<li><a class="reference internal" href="#id15">Resposta</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#importar-usuario-do-modulo-academico">5. Importar usuário do Módulo Acadêmico</a><ul>
+<li><a class="reference internal" href="#id16">Objetivo</a></li>
+<li><a class="reference internal" href="#id17">Chamada</a></li>
+<li><a class="reference internal" href="#id18">Parâmetros</a></li>
+<li><a class="reference internal" href="#id19">Observações</a></li>
+<li><a class="reference internal" href="#id20">Resposta</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="allocations.html"
                         title="previous chapter">Alocações</a></p>
