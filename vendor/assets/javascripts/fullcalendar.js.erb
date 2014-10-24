@@ -23,7 +23,8 @@
 (function($, undefined) {
 
   function getFormattedDate(date){
-    return new Date(date).toLocaleFormat("%Y-%m-%d");
+    // return new Date(date).toLocaleFormat("%Y-%m-%d"); // toLocateFormat é específico do Firefox e não é suportado por outros navegadores
+    return new moment(date).format("YYYY MM DD");
   }
 
 var defaults = {
