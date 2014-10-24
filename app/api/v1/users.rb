@@ -77,8 +77,7 @@ module V1
         params { requires :cpf, type: String }
         post "import/:cpf" do
           begin
-            ma_response = User.new(cpf: params[:cpf].delete('.').delete('-')).connect_and_validates_user
-            raise ActiveRecord::RecordNotFound if ma_response.nil?
+            verify_or_create_user(params[:cpf].delete('.').delete('-'))
             {ok: :ok}
           rescue => error
             error!({error: error}, 422)
