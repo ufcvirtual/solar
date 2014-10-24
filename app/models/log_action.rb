@@ -1,4 +1,6 @@
 class LogAction < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   belongs_to :user
 
   TYPE = {
@@ -9,6 +11,29 @@ class LogAction < ActiveRecord::Base
     block_user: 5,
     request_password: 6
   }
+
+  def type_name
+    type = case log_type
+      when 1
+        :create
+      when 2
+        :update
+      when 3
+        :destroy
+      when 4
+        :new_user
+      when 5
+        :block_user
+      when 6
+        :request_password
+    end
+
+    I18n.t(type, scope: 'administrations.logs.types')
+  end
+
+
+  ## class methods
+
 
   def self.new_user(params)
     params.merge!(log_type: TYPE[:new_user])
@@ -38,23 +63,6 @@ class LogAction < ActiveRecord::Base
   def self.destroying(params)
     params.merge!(log_type: TYPE[:destroy])
     create(params)
-  end
-
-  def type_name
-    case log_type
-      when 1
-        I18n.t(:create, scope: [:administrations, :logs, :types])
-      when 2
-        I18n.t(:update, scope: [:administrations, :logs, :types])
-      when 3
-        I18n.t(:destroy, scope: [:administrations, :logs, :types])
-      when 4
-        I18n.t(:new_user, scope: [:administrations, :logs, :types])
-      when 5
-        I18n.t(:block_user, scope: [:administrations, :logs, :types])
-      when 6
-        I18n.t(:request_password, scope: [:administrations, :logs, :types])
-    end
   end
 
 end

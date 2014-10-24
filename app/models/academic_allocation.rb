@@ -14,14 +14,15 @@ class AcademicAllocation < ActiveRecord::Base
   belongs_to :chat_room, foreign_key: 'academic_tool_id'
 
   has_many :chat_messages, dependent: :destroy
-  has_many :participants, class_name: 'ChatParticipant', inverse_of: :academic_allocation, dependent: :destroy
+  # has_many :participants, class_name: 'ChatParticipant', inverse_of: :academic_allocation, dependent: :destroy
+  has_many :chat_participants, inverse_of: :academic_allocation, dependent: :destroy
 
   # Lesson Module
   belongs_to :lesson_module, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'LessonModule'"]
 
-  accepts_nested_attributes_for :participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == '0' }
+  accepts_nested_attributes_for :chat_participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == '0' }
 
-  attr_accessible :participants_attributes, :allocation_tag_id, :academic_tool_id, :academic_tool_type
+  attr_accessible :chat_participants_attributes, :allocation_tag_id, :academic_tool_id, :academic_tool_type
 
   validate :verify_assignment_offer_date_range, if: :is_assignment?
 

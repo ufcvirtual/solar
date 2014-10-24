@@ -9,78 +9,11 @@ class ChatRoomsController < ApplicationController
   before_filter :get_groups_by_allocation_tags, only: [:new, :create] do |controller|
     @allocations = @groups.map(&:students_participants).flatten.uniq
   end
+
   before_filter only: [:edit, :update, :show] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@chat_room = ChatRoom.find(params[:id]))
     @allocations = @groups.map(&:students_participants).flatten.uniq
-  end
-
-  def index
-    @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
-    authorize! :index, ChatRoom, on: @allocation_tags_ids
-
-    @chat_rooms = ChatRoom.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).select("chat_rooms.*, schedules.start_date AS chat_start_date").order("chat_start_date, title").uniq
-  end
-
-  def new
-    authorize! :create, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-
-    @chat_room = ChatRoom.new
-    @chat_room.build_schedule(start_date: Date.current, end_date: Date.current)
-
-    @academic_allocations = @chat_room.academic_allocations.build @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
-    @academic_allocations.first.participants.build # escolha de participantes apenas para uma turma
-  end
-
-  def create
-    authorize! :create, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten
-    @chat_room = ChatRoom.new params[:chat_room]
-
-    begin
-      @chat_room.save!
-
-      render json: {success: true, notice: t(:created, scope: [:chat_rooms, :success])}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
-      @allocation_tags_ids = @allocation_tags_ids.join(" ")
-      render :new
-    end
-  end
-
-  def edit
-    authorize! :update, ChatRoom, on: @allocation_tags_ids
-  end
-
-  def update
-    authorize! :update, ChatRoom, on: @chat_room.academic_allocations.pluck(:allocation_tag_id)
-
-    @chat_room.update_attributes!(params[:chat_room])
-
-    render json: {success: true, notice: t(:updated, scope: [:chat_rooms, :success])}
-  rescue ActiveRecord::AssociationTypeMismatch
-    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    render :edit
-  end
-
-  def destroy
-    @chat_rooms = ChatRoom.where(id: params[:id].split(","))
-    authorize! :destroy, ChatRoom, on: @chat_rooms.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
-
-    raise has_messages = true if @chat_rooms.map(&:can_destroy?).include?(false)
-
-    ChatRoom.transaction do
-      @chat_rooms.destroy_all
-    end
-
-    render json: {success: true, notice: t(:deleted, scope: [:chat_rooms, :success])}
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    render json: {success: false, alert: (has_messages ? t(:chat_has_messages, scope: [:chat_rooms, :error]) : t(:deleted, scope: [:chat_rooms, :error]))}, status: :unprocessable_entity
   end
 
   def list
@@ -95,8 +28,73 @@ class ChatRoomsController < ApplicationController
     @my_chats, @other_chats = chats[:my], chats[:others]
   end
 
+  def index
+    @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
+    authorize! :index, ChatRoom, on: @allocation_tags_ids
+
+    @chat_rooms = ChatRoom.to_list_by_ats(@allocation_tags_ids.split(" ").flatten)
+  end
+
   def show
     authorize! :show, ChatRoom, on: @allocation_tags_ids
+  end
+
+  def new
+    authorize! :create, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+
+    @chat_room = ChatRoom.new
+    @chat_room.build_schedule(start_date: Date.today, end_date: Date.today)
+
+    @academic_allocations = @chat_room.academic_allocations.build @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
+    @academic_allocations.first.chat_participants.build # escolha de participantes apenas para uma turma
+  end
+
+  def edit
+    authorize! :update, ChatRoom, on: @allocation_tags_ids
+  end
+
+  def create
+    authorize! :create, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
+
+    @chat_room = ChatRoom.new chat_room_params
+    @chat_room.allocation_tag_ids_associations = @allocation_tags_ids.split(' ').flatten
+
+    if @chat_room.save
+      render_notification_success_json('created')
+    else
+      render :new
+    end
+  rescue => error
+    request.format = :json
+    raise error.class
+  end
+
+  def update
+    authorize! :update, ChatRoom, on: @chat_room.academic_allocations.pluck(:allocation_tag_id)
+
+    if @chat_room.update_attributes(chat_room_params)
+      render_notification_success_json('updated')
+    else
+      render :edit
+    end
+  rescue => error
+    request.format = :json
+    raise error.class
+  end
+
+  def destroy
+    @chat_rooms = ChatRoom.where(id: params[:id].split(","))
+    authorize! :destroy, ChatRoom, on: @chat_rooms.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
+
+    if @chat_rooms.map(&:can_destroy?).include?(false)
+      render json: {success: false, alert: t('chat_rooms.error.chat_has_messages')}, status: :unprocessable_entity
+    else
+      @chat_rooms.destroy_all
+      render_notification_success_json('deleted')
+    end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def messages
@@ -112,8 +110,22 @@ class ChatRoomsController < ApplicationController
       .select('users.name AS user_name, users.nick AS user_nick, profiles.name AS profile_name, text, chat_messages.user_id, chat_messages.created_at')
       .order('created_at DESC')
 
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue => error
+    request.format = :json
+    raise error.class
   end
+
+
+  private
+
+    def chat_room_params
+      params.require(:chat_room).permit(:title, :description, :chat_type, :start_hour, :end_hour,
+        schedule_attributes: [:id, :start_date, :end_date],
+        academic_allocations_attributes: [:id, :allocation_tag_id, chat_participants_attributes: [:id, :allocation_tag_id, :allocation_id, :_destroy]])
+    end
+
+    def render_notification_success_json(method)
+      render json: {success: true, notice: t(method, scope: 'chat_rooms.success')}
+    end
 
 end

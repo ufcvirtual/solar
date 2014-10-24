@@ -8,7 +8,7 @@ module AcademicTool
     has_many :allocation_tags, through: :academic_allocations
     has_many :groups, through: :allocation_tags
 
-    after_create :define_academic_associations
+    after_create :define_academic_associations, unless: "allocation_tag_ids_associations.nil?"
 
     attr_accessor :allocation_tag_ids_associations
   end

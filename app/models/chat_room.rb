@@ -1,27 +1,24 @@
 class ChatRoom < Event
+  include AcademicTool
+  include ActiveModel::ForbiddenAttributesProtection
 
   GROUP_PERMISSION = true
 
   belongs_to :schedule
 
-  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :messages, class_name: "ChatMessage", through: :academic_allocations, source: :chat_messages
-  has_many :participants, class_name: "ChatParticipant", through: :academic_allocations
-  has_many :allocation_tags, through: :academic_allocations
-  has_many :groups, through: :allocation_tags
+  has_many :participants, class_name: "ChatParticipant", through: :academic_allocations, source: :chat_participants
   has_many :users, through: :participants, select: ["users.name", "users.nick"], uniq: true
   has_many :allocations, through: :participants
 
   accepts_nested_attributes_for :schedule
   accepts_nested_attributes_for :academic_allocations
 
-  validates :title, :start_hour, :end_hour, presence: true
+  validates :title, :start_hour, :end_hour, :schedule, presence: true
 
   validates_format_of :start_hour, :end_hour, with: /\A([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]\z/
 
-  validate :verify_hours, unless: Proc.new { |a| a.start_hour.blank? or a.end_hour.blank?}
-
-  attr_accessible :schedule_attributes, :academic_allocations_attributes, :title, :start_hour, :end_hour, :description, :chat_type, :schedule_id
+  validate :verify_hours, unless: Proc.new { |a| a.start_hour.blank? or a.end_hour.blank? }
 
   before_destroy :can_destroy?
   after_destroy :delete_schedule
@@ -77,6 +74,13 @@ class ChatRoom < Event
 
   def self.responsible?(allocation_tag_id, user_id)
     AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(user_id)
+  end
+
+
+  ## class methods
+
+  def self.to_list_by_ats(allocation_tags_ids)
+    joins(:schedule, :allocation_tags).where(allocation_tags: {id: allocation_tags_ids}).select("chat_rooms.*, schedules.start_date AS chat_start_date").order("chat_start_date, title").uniq
   end
 
   def self.chats_user(user_id, allocation_tag_id)

@@ -1,2 +1,2 @@
-class Edition < ActiveRecord::Base
+class Edition # < ActiveRecord::Base
 end

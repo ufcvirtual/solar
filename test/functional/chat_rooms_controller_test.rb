@@ -40,11 +40,11 @@ class ChatRoomsControllerTest < ActionController::TestCase
   test "criar com participants" do
     assert_difference(["ChatRoom.count", "Schedule.count"]) do
       assert_difference("ChatParticipant.count", 2) do
-        post :create, {allocation_tags_ids: "3", chat_room: {title: "Chat 01", start_hour: "10:10", end_hour: "10:12", schedule_attributes: {start_date: Date.today, end_date: Date.today+1.day}, 
+        post :create, {allocation_tags_ids: "3", chat_room: {title: "Chat 01", start_hour: "10:10", end_hour: "10:12", schedule_attributes: {start_date: Date.today, end_date: Date.today+1.day},
           academic_allocations_attributes: {
             '0' => {
               allocation_tag_id: 3,
-              participants_attributes: {"0" => {_destroy: 0, allocation_id: 2}, "1" => {_destroy: 0, allocation_id: 19}}
+              chat_participants_attributes: {"0" => {_destroy: 0, allocation_id: 2}, "1" => {_destroy: 0, allocation_id: 19}}
             }
           }
         }}
@@ -62,35 +62,38 @@ class ChatRoomsControllerTest < ActionController::TestCase
       post :create, {allocation_tags_ids: "3 11 22", chat_room: {title: "Chat 01", start_hour: "10:10", end_hour: "10:12", schedule_attributes: {start_date: Date.today, end_date: Date.today+1.day}}}
     end
 
-    assert_response :redirect
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    assert_response :unauthorized
+    assert_equal get_json_response('alert'), I18n.t(:no_permission)
   end
 
-  ## a corrigir 
-  # test "editar alterando participantes" do
-  #   assert_no_difference(["ChatRoom.count", "Schedule.count"]) do
-  #     assert_difference("ChatParticipant.count", -1) do # remove 2 e adiciona 1
-  #       put :update, {id: chat_rooms(:chat2).id, allocation_tags_ids: "3 11 22",
+  test "editar alterando participantes" do
+    assert_no_difference(["ChatRoom.count", "Schedule.count"]) do
+      assert_difference("ChatParticipant.count", -1) do # remove 2 e adiciona 1
+        put :update, {
+          allocation_tags_ids: "3",
+          id: chat_rooms(:chat2).id,
+          chat_room: {
+            academic_allocations_attributes: {
+              '0' => {
+                id: academic_allocations(:acaal19).id,
+                chat_participants_attributes: {
+                  "0" => {_destroy: 1, allocation_id: 2, id: chat_participants(:participant_chat2_user).id},
+                  "1" => {_destroy: 0, allocation_id: 19, id: chat_participants(:participant_chat2_aluno3).id},
+                  "2" => {_destroy: 1, allocation_id: 11, id: chat_participants(:participant_chat2_aluno1).id},
+                  "3" => {_destroy: 0, allocation_id: 15}
+                }
+              }
+            }
+          } # update
+        }
+      end
+    end
 
-  #         chat_room: {
-  #           participants_attributes: {
-  #             "0" => {_destroy: 1, allocation_id: 2, id: chat_participants(:participant_chat2_user).id}, 
-  #             "1" => {_destroy: 0, allocation_id: 19, id: chat_participants(:participant_chat2_aluno3).id},
-  #             "2" => {_destroy: 1, allocation_id: 11, id: chat_participants(:participant_chat2_aluno1).id},
-  #             "3" => {_destroy: 0, allocation_id: 15}
-  #           }
-  #         }
-  #       }
-  #     end
-  #   end
-
-  #   participants = ChatParticipant.find_all_by_chat_room_id(chat_rooms(:chat2).id)
-  #   assert (not participants.include?(chat_participants(:participant_chat2_user).id)) # verifica remoção do "user"
-  #   assert (not participants.include?(chat_participants(:participant_chat2_aluno1).id)) # verifica remoção do "aluno1"
-  #   assert (participants.include?(ChatParticipant.find_by_allocation_id_and_chat_room_id(15, chat_rooms(:chat2).id))) # verifica acréscimo do "aluno2"
-
-  #   assert_response :success
-  # end
+    participants = chat_rooms(:chat2).participants
+    assert not(participants.include?(chat_participants(:participant_chat2_user).id)) # verifica remoção do "user"
+    assert (not participants.include?(chat_participants(:participant_chat2_aluno1).id)) # verifica remoção do "aluno1"
+    assert (participants.include?(ChatParticipant.find_by_allocation_id_and_academic_allocation_id(15, academic_allocations(:acaal19).id))) # verifica acréscimo do "aluno2"
+  end
 
   test "sem permissao - nao editar" do
     sign_in @aluno1
@@ -101,7 +104,7 @@ class ChatRoomsControllerTest < ActionController::TestCase
 
     academic_allocation = AcademicAllocation.where(academic_tool_type: 'ChatRoom', academic_tool_id: chat_rooms(:chat2).id, allocation_tag_id: '3').first
 
-    assert_equal chat_rooms(:chat2).participants, academic_allocation.participants
+    assert_equal chat_rooms(:chat2).participants, academic_allocation.chat_participants
 
     assert_response :unauthorized
     assert_equal get_json_response('alert'), I18n.t(:no_permission)
@@ -120,14 +123,15 @@ class ChatRoomsControllerTest < ActionController::TestCase
       post(:create, params_c)
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unauthorized
+    assert_equal get_json_response('msg'), I18n.t(:not_associated)
   end
 
 =begin
   test "deletar" do
     assert_difference(["ChatRoom.count", "Schedule.count"]) do
       assert_difference("ChatParticipant.count", 2) do
-        post :create, {allocation_tags_ids: "3 11 22", chat_room: {title: "Chat 01", start_hour: "10:10", end_hour: "10:12", schedule_attributes: {start_date: Date.today, end_date: Date.today+1.day}, 
+        post :create, {allocation_tags_ids: "3 11 22", chat_room: {title: "Chat 01", start_hour: "10:10", end_hour: "10:12", schedule_attributes: {start_date: Date.today, end_date: Date.today+1.day},
         participants_attributes: {"0" => {_destroy: 0, allocation_id: 2}, "1" => {_destroy: 0, allocation_id: 19}}}}
         # Usuário do Sistema e Aluno 3
       end

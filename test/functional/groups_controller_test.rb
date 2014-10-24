@@ -25,7 +25,7 @@ class GroupsControllerTest < ActionController::TestCase
   ##
 
   # Usuário com permissão e acesso (remove seu respectivo módulo default, pois não possui aulas)
-  test "remover turma" do 
+  test "remover turma" do
     assert_difference(["Group.count", "LessonModule.count"], -1) do
       delete(:destroy, {id: groups(:g13).id, allocation_tags_ids: [allocation_tags(:al41).id]})
     end
@@ -124,7 +124,7 @@ class GroupsControllerTest < ActionController::TestCase
       end
     end
 
-     
+
     assert_equal I18n.t(:remove, scope: [:groups, :success]), get_json_response("notice")
     assert_response :success
   end
@@ -194,7 +194,7 @@ class GroupsControllerTest < ActionController::TestCase
     assert_no_difference(["Assignment.count", "AcademicAllocation.count"]) do
       put :change_tool, {id: "3", tool_type: "Assignment", tool_id: atividade_grupo_I.id, type: "remove"}
     end
-     
+
     assert_response :redirect
     assert_equal I18n.t(:no_permission), flash[:alert]
   end

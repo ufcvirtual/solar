@@ -1,4 +1,6 @@
 class LogAccess < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   belongs_to :user
   belongs_to :allocation_tag
 
@@ -9,6 +11,20 @@ class LogAccess < ActiveRecord::Base
     offer_access: 2
   }
 
+  def type_name
+    type = case log_type
+      when 1
+        :login
+      when 2
+        :offer_access
+    end
+    I18n.t(type, scope: 'administrations.logs.types')
+  end
+
+
+  ## class methods
+
+
   def self.offer(params)
     params.merge!(log_type: TYPE[:offer_access])
     create(params)
@@ -17,15 +33,6 @@ class LogAccess < ActiveRecord::Base
   def self.login(params)
     params.merge!(log_type: TYPE[:login])
     create(params)
-  end
-
-  def type_name
-    case log_type
-      when 1
-        I18n.t(:login, scope: [:administrations, :logs, :types])
-      when 2
-        I18n.t(:offer_access, scope: [:administrations, :logs, :types])
-    end
   end
 
 end

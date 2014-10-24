@@ -1,4 +1,5 @@
 class Menu < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :resource
 
@@ -9,5 +10,4 @@ class Menu < ActiveRecord::Base
   # outros relacionamentos
   has_many :menus_contexts
   has_many :contexts, through: :menus_contexts
-
 end

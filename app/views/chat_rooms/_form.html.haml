@@ -37,11 +37,11 @@
                   .box{class: (f.object.chat_type == 1 ? '' : 'invisible')}
                     - if @allocations.any?
                       %div
-                        = check_box_tag :all_participants, false, (@allocations.size == f.object.participants.size), {:'data-children-names' => 'chat_room[academic_allocations_attributes][0][participants_attributes]'}
+                        = check_box_tag :all_participants, false, (@allocations.size == f.object.participants.size), {:'data-children-names' => 'chat_room[academic_allocations_attributes][0][chat_participants_attributes]'}
                         = label_tag :all_participants, t('.all_participants')
                         %br
                         - cr_ids = f.object.participants.pluck(:allocation_id)
-                        = f_aca.simple_fields_for :participants, setup_chat_room(f.object, @allocations) do |p|
+                        = f_aca.simple_fields_for :chat_participants, setup_chat_room(f.object, @allocations) do |p|
                           = p.check_box :_destroy, {checked: (p.object.persisted? or cr_ids.include?(p.object.allocation_id))}, '0', '1'
                           = p.label :_destroy, p.object.allocation.user_name
                           = p.hidden_field :allocation_id
