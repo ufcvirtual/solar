@@ -58,7 +58,7 @@ module V1::Contents
   # remove posts, sent_assignments, group_assignments, chat_messages and dependents
   def remove_all_content(allocation_tag)
     AcademicAllocation.where(academic_tool_type: "Discussion", allocation_tag_id: allocation_tag).map{ |ac| ac.discussion_posts.delete_all }
-    AcademicAllocation.where(academic_tool_type: "Assignment", allocation_tag_id: allocation_tag).map{ |ac| 
+    AcademicAllocation.where(academic_tool_type: "Assignment", allocation_tag_id: allocation_tag).map{ |ac|
       ac.sent_assignments.map(&:delete_with_dependents)
       ac.group_assignments.map(&:delete_with_dependents)
     }
@@ -100,7 +100,7 @@ module V1::Contents
   def replicate_discussions(from_academic_allocations, to_at)
     from_discussions_academic_allocations = from_academic_allocations.where(academic_tool_type: "Discussion")
     create_missing_tools(from_discussions_academic_allocations.pluck(:academic_tool_id), to_at, "Discussion")
-    
+
     from_posts = Post.where(parent_id: nil, academic_allocation_id: from_discussions_academic_allocations.pluck(:id))
     copy_posts(from_posts, to_at)
   end
@@ -132,7 +132,7 @@ module V1::Contents
 
     from_messages_academic_allocations.each do |from_message|
       new_message = copy_object(from_message, {"allocation_tag_id" => to_at})
-      copy_objects(from_message.user_messages, {"message_id" => new_message.id}, false, :user_message_labels)      
+      copy_objects(from_message.user_messages, {"message_id" => new_message.id}, false, :user_message_labels)
       copy_objects(from_message.files, {"message_id" => new_message.id}, true)
     end
   end

@@ -1,4 +1,6 @@
 class MessageLabel < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   belongs_to :user
 
   has_many :user_message_labels, dependent: :destroy
