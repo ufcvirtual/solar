@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>&lt;no title&gt; &mdash; Solar 2.0.0 documentation</title>
+    <title>Turmas &mdash; Solar 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -26,8 +26,8 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="Solar 2.0.0 documentation" href="../../index.html" />
     <link rel="up" title="Acadêmico" href="../academic.html" />
-    <link rel="next" title="Ferramentas" href="../tools.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="offers.html" /> 
+    <link rel="next" title="Métodos gerais a todos os itens acadêmicos" href="general.html" />
+    <link rel="prev" title="Ofertas" href="offers.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,10 +37,10 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../tools.html" title="Ferramentas"
+          <a href="general.html" title="Métodos gerais a todos os itens acadêmicos"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="offers.html" title="&lt;no title&gt;"
+          <a href="offers.html" title="Ofertas"
              accesskey="P">previous</a> |</li>
         <li><a href="../../index.html">Solar 2.0.0 documentation</a> &raquo;</li>
           <li><a href="../academic.html" accesskey="U">Acadêmico</a> &raquo;</li> 
@@ -52,19 +52,375 @@
         <div class="bodywrapper">
           <div class="body">
             
-  
+  <div class="section" id="turmas">
+<h1>Turmas<a class="headerlink" href="#turmas" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="lista-de-turmas-de-uma-disciplina-e-usuario">
+<h2>1. Lista de turmas de uma disciplina e usuário<a class="headerlink" href="#lista-de-turmas-de-uma-disciplina-e-usuario" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="objetivo">
+<h3>Objetivo<a class="headerlink" href="#objetivo" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Retorna a lista de turmas do usuário logado e oferta corrente para a disciplina informada.</div></blockquote>
+</div>
+<div class="section" id="chamada">
+<h3>Chamada<a class="headerlink" href="#chamada" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>GET /curriculum_units/:id/groups</div></blockquote>
+</div>
+<div class="section" id="parametros">
+<h3>Parâmetros<a class="headerlink" href="#parametros" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><em>Nenhum parâmetro se faz necessário.</em></div></blockquote>
+</div>
+<div class="section" id="observacoes">
+<h3>Observações<a class="headerlink" href="#observacoes" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>id: Integer (id da disciplina)</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="resposta">
+<h3>Resposta<a class="headerlink" href="#resposta" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">code</span><span class="p">:</span> <span class="s">&quot;T01&quot;</span><span class="p">,</span>
+    <span class="n">semester</span><span class="p">:</span> <span class="s">&quot;2014&quot;</span>
+  <span class="p">},</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="aglutinacao-desaglutinacao-de-turmas">
+<h2>2. Aglutinação/Desaglutinação de turmas<a class="headerlink" href="#aglutinacao-desaglutinacao-de-turmas" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Objetivo<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Ao aglutinar duas ou mais turmas, o conteúdo das turmas secundárias é replicado à turma principal e aquelas são desativadas.</li>
+<li>Ao desaglutinar duas ou mais turmas, o conteúdo da turma principal é replicado às turmas secundárias e estas são re-ativadas.</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id2">
+<h3>Chamada<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>GET /groups/merge</div></blockquote>
+</div>
+<div class="section" id="id3">
+<h3>Parâmetros<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+  <span class="n">main_group</span><span class="p">:</span> <span class="s">&quot;T01&quot;</span><span class="p">,</span>
+  <span class="n">course</span><span class="p">:</span> <span class="s">&quot;C01&quot;</span><span class="p">,</span>
+  <span class="n">curriculum_unit</span><span class="p">:</span> <span class="s">&quot;UC01&quot;</span><span class="p">,</span>
+  <span class="n">secundary_groups</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;T02&quot;</span><span class="p">,</span> <span class="s">&quot;T03&quot;</span><span class="p">],</span>
+  <span class="n">semester</span><span class="p">:</span> <span class="s">&quot;2014&quot;</span><span class="p">,</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id4">
+<h3>Observações<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>main_group: String (turma principal)</li>
+<li>course, curriculum_unit, semester: String (código do curso, disciplina e nome do semestre das turmas)</li>
+<li>secundary_groups: Array de String (turmas secundárias)</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Parâmetros opcionais</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>type: Boolean (por padrão, se não for informado, é definido como true. se for verdadeiro, aglutina; se falso, desaglutina)</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Apenas turmas de uma mesma oferta (conjunto de semestre, curso e disciplina) podem ser aglutinadas/desaglutinadas.</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id5">
+<h3>Resposta<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre>{ ok: :ok }
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="lista-de-turmas">
+<h2>3. Lista de turmas<a class="headerlink" href="#lista-de-turmas" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h3>Objetivo<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Retorna a lista de turmas de acordo com o tipo de disciplina, curso, disciplina e semestre informados.</div></blockquote>
+</div>
+<div class="section" id="id7">
+<h3>Chamada<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>GET /groups</div></blockquote>
+</div>
+<div class="section" id="id8">
+<h3>Parâmetros<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+ <span class="n">semester</span><span class="p">:</span> <span class="s">&quot;2014.2&quot;</span><span class="p">,</span>
+ <span class="n">course_type_id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+ <span class="n">course_id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+ <span class="n">discipline_id</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id9">
+<h3>Observações<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>semester: String</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Parâmetros opcionais</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>course_type_id: Integer (ver DOC)</li>
+<li>course_id, discipline_id: Integer (curso e disciplina)</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="id10">
+<h3>Resposta<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">code</span><span class="p">:</span> <span class="s">&quot;T01&quot;</span><span class="p">,</span>
+    <span class="n">offer_id</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">},</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="criacao-de-turma">
+<h2>4. Criação de turma<a class="headerlink" href="#criacao-de-turma" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id11">
+<h3>Objetivo<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Criar uma turma.</div></blockquote>
+</div>
+<div class="section" id="id12">
+<h3>Chamada<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>POST /group</div></blockquote>
+</div>
+<div class="section" id="id13">
+<h3>Parâmetros<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+  <span class="n">code</span><span class="p">:</span> <span class="s">&quot;T01&quot;</span><span class="p">,</span>
+  <span class="n">offer_id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="n">course_code</span><span class="p">:</span> <span class="s">&quot;C01&quot;</span><span class="p">,</span>
+  <span class="n">curriculum_unit_code</span><span class="p">:</span> <span class="s">&quot;UC01&quot;</span><span class="p">,</span>
+  <span class="n">semester</span><span class="p">:</span> <span class="s">&quot;2014&quot;</span><span class="p">,</span>
+  <span class="n">activate</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id14">
+<h3>Observações<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>code: String</li>
+<li>offer_id: Integer (id da oferta)</li>
+<li>curriculum_unit_code, course_code, semester: String (código da disciplina, do curso e nome do semestre)</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Parâmetros opcionais</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>activate: Boolean (por padrão, se não for informado, é definido como falso. se for verdadeiro e a turma a ser criada já existir, só ativa e não exibe erro de código já existente; se falso e turma já existir, exibe erro)</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Se offer_id for informado, não será aceito, na mesma chamada, os parâmetros curriculum_unit_code, course_code, semester.</li>
+<li>Se algum dos parâmetros curriculum_unit_code, course_code, semester for informado, não será aceito, na mesma chamada, o parâmetro offer_id.</li>
+<li>Se algum dos parâmetros curriculum_unit_code, course_code, semester for informado, se faz obrigatório que os outros dois também o sejam.</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id15">
+<h3>Resposta<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span> <span class="nb">id</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="edicao-de-turma">
+<h2>5. Edição de turma<a class="headerlink" href="#edicao-de-turma" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id16">
+<h3>Objetivo<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Editar uma turma já existente.</div></blockquote>
+</div>
+<div class="section" id="id17">
+<h3>Chamada<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>PUT group/:id</div></blockquote>
+</div>
+<div class="section" id="id18">
+<h3>Parâmetros<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+ <span class="n">code</span><span class="p">:</span> <span class="s">&quot;T01&quot;</span><span class="p">,</span>
+ <span class="n">status</span><span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id19">
+<h3>Observações<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>id: Integer (id da turma em questão)</li>
+<li>ao menos um dos parâmetros opcionais se faz obrigatório</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Parâmetros opcionais</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>code: String</li>
+<li>status: Boolean (se true, a turma é ativada; se false, a turma é desativada)</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="id20">
+<h3>Resposta<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre>{ ok: :ok }
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+</div>
+
 
           </div>
         </div>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Turmas</a><ul>
+<li><a class="reference internal" href="#lista-de-turmas-de-uma-disciplina-e-usuario">1. Lista de turmas de uma disciplina e usuário</a><ul>
+<li><a class="reference internal" href="#objetivo">Objetivo</a></li>
+<li><a class="reference internal" href="#chamada">Chamada</a></li>
+<li><a class="reference internal" href="#parametros">Parâmetros</a></li>
+<li><a class="reference internal" href="#observacoes">Observações</a></li>
+<li><a class="reference internal" href="#resposta">Resposta</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#aglutinacao-desaglutinacao-de-turmas">2. Aglutinação/Desaglutinação de turmas</a><ul>
+<li><a class="reference internal" href="#id1">Objetivo</a></li>
+<li><a class="reference internal" href="#id2">Chamada</a></li>
+<li><a class="reference internal" href="#id3">Parâmetros</a></li>
+<li><a class="reference internal" href="#id4">Observações</a></li>
+<li><a class="reference internal" href="#id5">Resposta</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lista-de-turmas">3. Lista de turmas</a><ul>
+<li><a class="reference internal" href="#id6">Objetivo</a></li>
+<li><a class="reference internal" href="#id7">Chamada</a></li>
+<li><a class="reference internal" href="#id8">Parâmetros</a></li>
+<li><a class="reference internal" href="#id9">Observações</a></li>
+<li><a class="reference internal" href="#id10">Resposta</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#criacao-de-turma">4. Criação de turma</a><ul>
+<li><a class="reference internal" href="#id11">Objetivo</a></li>
+<li><a class="reference internal" href="#id12">Chamada</a></li>
+<li><a class="reference internal" href="#id13">Parâmetros</a></li>
+<li><a class="reference internal" href="#id14">Observações</a></li>
+<li><a class="reference internal" href="#id15">Resposta</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#edicao-de-turma">5. Edição de turma</a><ul>
+<li><a class="reference internal" href="#id16">Objetivo</a></li>
+<li><a class="reference internal" href="#id17">Chamada</a></li>
+<li><a class="reference internal" href="#id18">Parâmetros</a></li>
+<li><a class="reference internal" href="#id19">Observações</a></li>
+<li><a class="reference internal" href="#id20">Resposta</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="offers.html"
-                        title="previous chapter">&lt;no title&gt;</a></p>
+                        title="previous chapter">Ofertas</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="../tools.html"
-                        title="next chapter">Ferramentas</a></p>
+  <p class="topless"><a href="general.html"
+                        title="next chapter">Métodos gerais a todos os itens acadêmicos</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../../_sources/api/academic/groups.txt"
@@ -94,10 +450,10 @@
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../tools.html" title="Ferramentas"
+          <a href="general.html" title="Métodos gerais a todos os itens acadêmicos"
              >next</a> |</li>
         <li class="right" >
-          <a href="offers.html" title="&lt;no title&gt;"
+          <a href="offers.html" title="Ofertas"
              >previous</a> |</li>
         <li><a href="../../index.html">Solar 2.0.0 documentation</a> &raquo;</li>
           <li><a href="../academic.html" >Acadêmico</a> &raquo;</li> 

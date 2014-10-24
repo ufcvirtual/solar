@@ -27,7 +27,7 @@ module V1
           end
         end
 
-        desc "Edição de oferta/semestre"
+        desc "Edição de oferta"
         params do
           optional :offer_start, :offer_end, :enrollment_start, :enrollment_end, type: Date
           at_least_one_of :offer_start, :offer_end, :enrollment_start, :enrollment_end
@@ -41,15 +41,6 @@ module V1
           end
         end
       end # offer
-
-      namespace :sav do
-
-        desc "Todos os semestres"
-        get :semesters, rabl: "semesters/list" do
-          @semesters = Semester.order('name desc').uniq
-        end
-
-      end # sav
 
       desc "Todos os semestres"
       get :semesters, rabl: "semesters/list" do

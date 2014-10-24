@@ -26,7 +26,7 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="Solar 2.0.0 documentation" href="../../index.html" />
     <link rel="up" title="Acadêmico" href="../academic.html" />
-    <link rel="next" title="Ferramentas" href="../tools.html" />
+    <link rel="next" title="Disciplinas" href="curriculum_units.html" />
     <link rel="prev" title="Acadêmico" href="../academic.html" /> 
   </head>
   <body>
@@ -37,7 +37,7 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../tools.html" title="Ferramentas"
+          <a href="curriculum_units.html" title="Disciplinas"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="../academic.html" title="Acadêmico"
@@ -54,7 +54,178 @@
             
   <div class="section" id="cursos">
 <h1>Cursos<a class="headerlink" href="#cursos" title="Permalink to this headline">¶</a></h1>
-<p>asaisahsauihsauis</p>
+<div class="section" id="lista-de-disciplinas-pela-oferta-corrente">
+<h2>1. Lista de disciplinas pela oferta corrente<a class="headerlink" href="#lista-de-disciplinas-pela-oferta-corrente" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="objetivo">
+<h3>Objetivo<a class="headerlink" href="#objetivo" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Retorna a lista de cursos a partir do semestre e do tipo de disciplina informado.</div></blockquote>
+</div>
+<div class="section" id="chamada">
+<h3>Chamada<a class="headerlink" href="#chamada" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>GET /curriculum_units/</div></blockquote>
+</div>
+<div class="section" id="parametros">
+<h3>Parâmetros<a class="headerlink" href="#parametros" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+  <span class="n">semester</span><span class="p">:</span> <span class="s">&quot;2014&quot;</span><span class="p">,</span>
+  <span class="n">course_type_id</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="observacoes">
+<h3>Observações<a class="headerlink" href="#observacoes" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>semester: String</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Parâmetros opcionais</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>course_type_id: Integer (ver DOC)</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>As disciplinas no ambiente podem ou não, ao serem ofertadas, corresponder a um determinado curso (EX: Curso X oferta as disciplina Y, Z e W). Informando o tipo de disciplina (course_type_id), serão buscados os cursos que ofertam disciplinas deste tipo.</li>
+<li>Serão buscados os cursos que estão sendo ofertados no semestre informado (semester).</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="resposta">
+<h3>Resposta<a class="headerlink" href="#resposta" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">code</span><span class="p">:</span> <span class="s">&quot;C01&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="s">&quot;Curso 01&quot;</span>
+  <span class="p">},</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="criacao-de-curso">
+<h2>2. Criação de curso<a class="headerlink" href="#criacao-de-curso" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Objetivo<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Criar um curso.</div></blockquote>
+</div>
+<div class="section" id="id2">
+<h3>Chamada<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>POST course</div></blockquote>
+</div>
+<div class="section" id="id3">
+<h3>Parâmetros<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+ <span class="n">name</span><span class="p">:</span> <span class="s">&quot;Curso01&quot;</span><span class="p">,</span>
+ <span class="n">code</span><span class="p">:</span> <span class="s">&quot;C01&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id4">
+<h3>Observações<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>name: String</li>
+<li>code: String (máximo de 40 caracteres)</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="id5">
+<h3>Resposta<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span> <span class="nb">id</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="edicao-de-curso">
+<h2>3. Edição de curso<a class="headerlink" href="#edicao-de-curso" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h3>Objetivo<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Editar um curso já existente.</div></blockquote>
+</div>
+<div class="section" id="id7">
+<h3>Chamada<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>PUT course/:id</div></blockquote>
+</div>
+<div class="section" id="id8">
+<h3>Parâmetros<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+ <span class="n">name</span><span class="p">:</span> <span class="s">&quot;Curso01&quot;</span><span class="p">,</span>
+ <span class="n">code</span><span class="p">:</span> <span class="s">&quot;C01&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id9">
+<h3>Observações<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>id: Integer (id do curso em questão)</li>
+<li>ao menos um dos parâmetros opcionais se faz obrigatório</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Parâmetros opcionais</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>name, code: String</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="id10">
+<h3>Resposta<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre>{ ok: :ok }
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
 </div>
 
 
@@ -63,12 +234,43 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Cursos</a><ul>
+<li><a class="reference internal" href="#lista-de-disciplinas-pela-oferta-corrente">1. Lista de disciplinas pela oferta corrente</a><ul>
+<li><a class="reference internal" href="#objetivo">Objetivo</a></li>
+<li><a class="reference internal" href="#chamada">Chamada</a></li>
+<li><a class="reference internal" href="#parametros">Parâmetros</a></li>
+<li><a class="reference internal" href="#observacoes">Observações</a></li>
+<li><a class="reference internal" href="#resposta">Resposta</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#criacao-de-curso">2. Criação de curso</a><ul>
+<li><a class="reference internal" href="#id1">Objetivo</a></li>
+<li><a class="reference internal" href="#id2">Chamada</a></li>
+<li><a class="reference internal" href="#id3">Parâmetros</a></li>
+<li><a class="reference internal" href="#id4">Observações</a></li>
+<li><a class="reference internal" href="#id5">Resposta</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#edicao-de-curso">3. Edição de curso</a><ul>
+<li><a class="reference internal" href="#id6">Objetivo</a></li>
+<li><a class="reference internal" href="#id7">Chamada</a></li>
+<li><a class="reference internal" href="#id8">Parâmetros</a></li>
+<li><a class="reference internal" href="#id9">Observações</a></li>
+<li><a class="reference internal" href="#id10">Resposta</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="../academic.html"
                         title="previous chapter">Acadêmico</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="../tools.html"
-                        title="next chapter">Ferramentas</a></p>
+  <p class="topless"><a href="curriculum_units.html"
+                        title="next chapter">Disciplinas</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../../_sources/api/academic/courses.txt"
@@ -98,7 +300,7 @@
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../tools.html" title="Ferramentas"
+          <a href="curriculum_units.html" title="Disciplinas"
              >next</a> |</li>
         <li class="right" >
           <a href="../academic.html" title="Acadêmico"

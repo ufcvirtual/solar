@@ -212,6 +212,11 @@ module V1
           @groups = Group.joins(offer: [:semester, :curriculum_unit]).where(query.join(' AND '), params.slice(:course_type_id, :semester, :course_id, :discipline_id))
         end
 
+        desc "Todos os semestres"
+        get :semesters, rabl: "semesters/list" do
+          @semesters = Semester.order('name desc').uniq
+        end
+
       end # sav
 
       namespace :integration do 

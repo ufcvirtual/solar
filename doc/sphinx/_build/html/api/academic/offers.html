@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>&lt;no title&gt; &mdash; Solar 2.0.0 documentation</title>
+    <title>Ofertas &mdash; Solar 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -26,8 +26,8 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="Solar 2.0.0 documentation" href="../../index.html" />
     <link rel="up" title="Acadêmico" href="../academic.html" />
-    <link rel="next" title="&lt;no title&gt;" href="groups.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="curriculum_units.html" /> 
+    <link rel="next" title="Turmas" href="groups.html" />
+    <link rel="prev" title="Disciplinas" href="curriculum_units.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,10 +37,10 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="groups.html" title="&lt;no title&gt;"
+          <a href="groups.html" title="Turmas"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="curriculum_units.html" title="&lt;no title&gt;"
+          <a href="curriculum_units.html" title="Disciplinas"
              accesskey="P">previous</a> |</li>
         <li><a href="../../index.html">Solar 2.0.0 documentation</a> &raquo;</li>
           <li><a href="../academic.html" accesskey="U">Acadêmico</a> &raquo;</li> 
@@ -52,19 +52,216 @@
         <div class="bodywrapper">
           <div class="body">
             
-  
+  <div class="section" id="ofertas">
+<h1>Ofertas<a class="headerlink" href="#ofertas" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="lista-de-semestres">
+<h2>1. Lista de semestres<a class="headerlink" href="#lista-de-semestres" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="objetivo">
+<h3>Objetivo<a class="headerlink" href="#objetivo" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Retorna a lista de todos os semestres.</div></blockquote>
+</div>
+<div class="section" id="chamada">
+<h3>Chamada<a class="headerlink" href="#chamada" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>GET /semesters</div></blockquote>
+</div>
+<div class="section" id="parametros">
+<h3>Parâmetros<a class="headerlink" href="#parametros" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><em>Nenhum parâmetro se faz necessário.</em></div></blockquote>
+</div>
+<div class="section" id="observacoes">
+<h3>Observações<a class="headerlink" href="#observacoes" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><em>Nenhuma observação.</em></div></blockquote>
+</div>
+<div class="section" id="resposta">
+<h3>Resposta<a class="headerlink" href="#resposta" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span> <span class="p">{</span> <span class="n">name</span><span class="p">:</span> <span class="s">&quot;2014&quot;</span> <span class="p">},</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span> <span class="p">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="criacao-de-oferta-semestre">
+<h2>2. Criação de oferta/semestre<a class="headerlink" href="#criacao-de-oferta-semestre" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Objetivo<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Criar ofertas e/ou semestres.</div></blockquote>
+</div>
+<div class="section" id="id2">
+<h3>Chamada<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>POST /offer</div></blockquote>
+</div>
+<div class="section" id="id3">
+<h3>Parâmetros<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s">&quot;2015&quot;</span><span class="p">,</span>
+  <span class="n">offer_start</span><span class="p">:</span> <span class="s">&quot;2015-01-01&quot;</span><span class="p">,</span>
+  <span class="n">offer_end</span><span class="p">:</span> <span class="s">&quot;2015-12-31&quot;</span><span class="p">,</span>
+  <span class="n">enrollment_start</span><span class="p">:</span> <span class="s">&quot;2014-10-01&quot;</span><span class="p">,</span>
+  <span class="n">enrollment_end</span><span class="p">:</span> <span class="s">&quot;2014-12-31&quot;</span><span class="p">,</span>
+  <span class="n">course_id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="n">curriculum_unit_id</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="n">curriculum_unit_code</span><span class="p">:</span> <span class="s">&quot;UC01&quot;</span><span class="p">,</span>
+  <span class="n">course_code</span><span class="p">:</span> <span class="s">&quot;C01&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id4">
+<h3>Observações<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>name: String (nome do semestre a ser criado/buscado)</li>
+<li>course_id, curriculum_unit_id: Integer (id do curso e disciplina)</li>
+<li>curriculum_unit_code, course_code: String (código da disciplina e do curso)</li>
+<li>offer_start, offer_end: Date (datas de início e fim da oferta)</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Parâmetros opcionais</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>enrollment_start, enrollment_end: Date (datas de início e fim do período de matrícula.)</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Se course_id for informado, não será aceito, na mesma chamada, o parâmetros course_code.</li>
+<li>Se curriculum_unit_id for informado, não será aceito, na mesma chamada, o parâmetros curriculum_unit_code.</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id5">
+<h3>Resposta<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span> <span class="nb">id</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="editar-oferta">
+<h2>3. Editar oferta<a class="headerlink" href="#editar-oferta" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h3>Objetivo<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Editar uma oferta já existente.</div></blockquote>
+</div>
+<div class="section" id="id7">
+<h3>Chamada<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>PUT offer/:id</div></blockquote>
+</div>
+<div class="section" id="id8">
+<h3>Parâmetros<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+  <span class="n">offer_start</span><span class="p">:</span> <span class="s">&quot;2015-01-01&quot;</span><span class="p">,</span>
+  <span class="n">offer_end</span><span class="p">:</span> <span class="s">&quot;2015-12-31&quot;</span><span class="p">,</span>
+  <span class="n">enrollment_start</span><span class="p">:</span> <span class="s">&quot;2014-10-01&quot;</span><span class="p">,</span>
+  <span class="n">enrollment_end</span><span class="p">:</span> <span class="s">&quot;2014-12-31&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id9">
+<h3>Observações<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Parâmetros obrigatórios</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>id: Integer (id da disciplina em questão)</li>
+<li>ao menos um dos parâmetros opcionais se faz obrigatório</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Parâmetros opcionais</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>offer_start, offer_end: Date (datas de início e fim da oferta)</li>
+<li>enrollment_start, enrollment_end: Date (datas de início e fim do período de matrícula.)</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="id10">
+<h3>Resposta<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Status: 200 OK</p>
+<p>JSON:</p>
+<div class="highlight-python"><div class="highlight"><pre>{ ok: :ok }
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+</div>
+
 
           </div>
         </div>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Ofertas</a><ul>
+<li><a class="reference internal" href="#lista-de-semestres">1. Lista de semestres</a><ul>
+<li><a class="reference internal" href="#objetivo">Objetivo</a></li>
+<li><a class="reference internal" href="#chamada">Chamada</a></li>
+<li><a class="reference internal" href="#parametros">Parâmetros</a></li>
+<li><a class="reference internal" href="#observacoes">Observações</a></li>
+<li><a class="reference internal" href="#resposta">Resposta</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#criacao-de-oferta-semestre">2. Criação de oferta/semestre</a><ul>
+<li><a class="reference internal" href="#id1">Objetivo</a></li>
+<li><a class="reference internal" href="#id2">Chamada</a></li>
+<li><a class="reference internal" href="#id3">Parâmetros</a></li>
+<li><a class="reference internal" href="#id4">Observações</a></li>
+<li><a class="reference internal" href="#id5">Resposta</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#editar-oferta">3. Editar oferta</a><ul>
+<li><a class="reference internal" href="#id6">Objetivo</a></li>
+<li><a class="reference internal" href="#id7">Chamada</a></li>
+<li><a class="reference internal" href="#id8">Parâmetros</a></li>
+<li><a class="reference internal" href="#id9">Observações</a></li>
+<li><a class="reference internal" href="#id10">Resposta</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="curriculum_units.html"
-                        title="previous chapter">&lt;no title&gt;</a></p>
+                        title="previous chapter">Disciplinas</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="groups.html"
-                        title="next chapter">&lt;no title&gt;</a></p>
+                        title="next chapter">Turmas</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../../_sources/api/academic/offers.txt"
@@ -94,10 +291,10 @@
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="groups.html" title="&lt;no title&gt;"
+          <a href="groups.html" title="Turmas"
              >next</a> |</li>
         <li class="right" >
-          <a href="curriculum_units.html" title="&lt;no title&gt;"
+          <a href="curriculum_units.html" title="Disciplinas"
              >previous</a> |</li>
         <li><a href="../../index.html">Solar 2.0.0 documentation</a> &raquo;</li>
           <li><a href="../academic.html" >Acadêmico</a> &raquo;</li> 
