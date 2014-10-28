@@ -6,86 +6,20 @@ class AssignmentsController < ApplicationController
 
   before_filter :prepare_for_group_selection, only: :list
   before_filter :get_ac, only: :evaluate
-  layout false, except: [:list, :student]
-
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+
   before_filter only: [:edit, :update, :show] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@assignment = Assignment.find(params[:id]))
   end
+
+  layout false, except: [:list, :student]
 
   def index
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :index, Assignment, on: @allocation_tags_ids
 
     @assignments = Assignment.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).select("assignments.*, schedules.start_date AS sd").order("sd, name").uniq
-  end
-
-  def new
-    authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
-    @assignment = Assignment.new
-    @assignment.build_schedule(start_date: Date.current, end_date: Date.current)
-    @assignment.enunciation_files.build
-  end
-
-  def edit
-    authorize! :update, Assignment, on: @allocation_tags_ids
-    @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
-  end
-
-  def create
-    authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    @assignment = Assignment.new params[:assignment]
-
-    Assignment.transaction do
-      @assignment.save!
-      @assignment.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
-    end
-
-    render json: {success: true, notice: t(:created, scope: [:assignments, :success])}
-  rescue ActiveRecord::AssociationTypeMismatch
-    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-  rescue => error
-    @error = error.to_s.start_with?("academic_allocation") ? error.to_s.gsub("academic_allocation", "") : nil
-
-    @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
-    @allocation_tags_ids = @allocation_tags_ids.join(" ")
-
-    render :new
-  end
-
-  def update
-    authorize! :update, Assignment, on: @assignment.academic_allocations.pluck(:allocation_tag_id)
-    @assignment.update_attributes!(params[:assignment])
-    render json: {success: true, notice: t(:updated, scope: [:assignments, :success])}
-  rescue ActiveRecord::AssociationTypeMismatch
-    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
-    render :edit
-  end
-
-  def destroy
-    @allocation_tags_ids, assignments = params[:allocation_tags_ids], Assignment.includes(:sent_assignments).where(id: params[:id].split(",").flatten, sent_assignments: {id: nil})
-    authorize! :destroy, Assignment, on: assignments.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
-
-    Assignment.transaction do
-      raise "error" if assignments.empty?
-      assignments.destroy_all
-    end
-
-    render json: {success: true, notice: t(:deleted, scope: [:assignments, :success])}
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue => error
-    render json: {success: false, alert: t(:deleted, scope: [:assignments, :error])}, status: :unprocessable_entity
-  end
-
-  def show
-    authorize! :show, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
   end
 
   def list
@@ -99,6 +33,66 @@ class AssignmentsController < ApplicationController
     @can_manage, @can_import = (can? :index, GroupAssignment, on: [@allocation_tag_id]), (can? :import, GroupAssignment, on: [@allocation_tag_id])
 
     render layout: false if params[:layout].present?
+  end
+
+  def show
+    authorize! :show, Assignment, on: @allocation_tags_ids
+  end
+
+  def new
+    authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
+
+    @assignment = Assignment.new
+    @assignment.build_schedule(start_date: Date.today, end_date: Date.today)
+    @assignment.enunciation_files.build
+  end
+
+  def edit
+    authorize! :update, Assignment, on: @allocation_tags_ids
+
+    @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
+  end
+
+  def create
+    authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
+
+    @assignment = Assignment.new assignment_params
+    @assignment.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten
+
+    if @assignment.save
+      render_assignment_success_json('created')
+    else
+      @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
+      render :new
+    end
+  rescue => error
+    request.format = :json
+    raise error.class
+  end
+
+  def update
+    authorize! :update, Assignment, on: @assignment.academic_allocations.pluck(:allocation_tag_id)
+
+    if @assignment.update_attributes(assignment_params)
+      render_assignment_success_json('updated')
+    else
+      @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
+      render :edit
+    end
+  rescue => error
+    request.format = :json
+    raise error.class
+  end
+
+  def destroy
+    @assignments = Assignment.includes(:sent_assignments).where(id: params[:id].split(",").flatten, sent_assignments: {id: nil})
+    authorize! :destroy, Assignment, on: @assignments.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
+
+    @assignments.destroy_all
+    render_assignment_success_json('deleted')
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def student
@@ -143,5 +137,15 @@ class AssignmentsController < ApplicationController
       download_file(:back, file.attachment.path, file.attachment_file_name)
     end
   end
+
+  private
+
+    def assignment_params
+      params.require(:assignment).permit(:name, :enunciation, :type_assignment, schedule_attributes: [:id, :start_date, :end_date], enunciation_files_attributes: [:id, :attachment, :_destroy])
+    end
+
+    def render_assignment_success_json(method)
+      render json: {success: true, notice: t(method, scope: 'assignments.success')}
+    end
 
 end

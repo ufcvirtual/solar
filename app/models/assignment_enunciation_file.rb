@@ -1,6 +1,8 @@
 class AssignmentEnunciationFile < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   default_scope order: 'attachment_updated_at DESC'
-  
+
   belongs_to :assignment
 
   validates :attachment, presence: true

@@ -78,7 +78,7 @@ class AssignmentsControllerTest < ActionController::TestCase
       post :create, params_course
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unauthorized
   end
 
   test "edicao - deletar um trabalho" do

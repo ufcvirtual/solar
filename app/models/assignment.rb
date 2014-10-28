@@ -1,29 +1,23 @@
 class Assignment < Event
+  include AcademicTool
+  include ActiveModel::ForbiddenAttributesProtection
 
   GROUP_PERMISSION = true
 
-  before_destroy :can_destroy?
-
   belongs_to :schedule
 
-  has_many :allocation_tags, through: :academic_allocations
-  has_many :enunciation_files, class_name: "AssignmentEnunciationFile", dependent: :destroy
   has_many :allocations, through: :allocation_tags
-  has_many :groups, through: :allocation_tags
-
-  #Associação polimórfica
-  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
+  has_many :enunciation_files, class_name: "AssignmentEnunciationFile", dependent: :destroy
   has_many :group_assignments, through: :academic_allocations, dependent: :destroy
   has_many :sent_assignments, through: :academic_allocations
-  #Associação polimórfica
+
+  before_destroy :can_destroy?
 
   accepts_nested_attributes_for :schedule
   accepts_nested_attributes_for :enunciation_files, allow_destroy: true, reject_if: proc {|attributes| not attributes.include?(:attachment)}
 
   validates :name, :enunciation, :type_assignment, presence: true
   validates :name, length: {maximum: 1024}
-
-  attr_accessible :schedule_attributes, :enunciation_files_attributes, :name, :enunciation, :type_assignment, :schedule_id
 
   def copy_dependencies_from(assignment_to_copy)
     AssignmentEnunciationFile.create! assignment_to_copy.enunciation_files.map {|file| file.attributes.merge({assignment_id: self.id})} unless assignment_to_copy.enunciation_files.empty?
@@ -118,6 +112,10 @@ class Assignment < Event
   def groups_assignments(allocation_tag_id)
     GroupAssignment.joins(:academic_allocation).where(academic_allocations: {academic_tool_id: self.id, allocation_tag_id: allocation_tag_id})
   end
+
+
+  ## class methods
+
 
   def self.owned_by_user?(user_id, options={})
     assignment_user_id = (options[:sent_assignment].try(:user_id) || options[:student_id])
