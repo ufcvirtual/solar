@@ -7,7 +7,6 @@ class LessonModule < ActiveRecord::Base
   # A ordem das instruções importa para execução
   before_destroy :verify_situation_module
 
-  has_many :offers, through: :allocation_tags
   has_many :lessons, dependent: :destroy
 
   validates :name, presence: true

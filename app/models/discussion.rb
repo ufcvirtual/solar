@@ -1,30 +1,24 @@
 class Discussion < Event
+  include AcademicTool
+  include ActiveModel::ForbiddenAttributesProtection
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 
   belongs_to :schedule
 
-  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
-  has_many :allocation_tags, through: :academic_allocations
-  has_many :groups, through: :allocation_tags
-  has_many :offers, through: :allocation_tags
-
   has_many :discussion_posts, class_name: "Post", through: :academic_allocations
   has_many :allocations, through: :allocation_tag
+
+  before_destroy :can_destroy?
+  after_destroy :delete_schedule
 
   validates :name, :description, presence: true
   validates :name, length: {maximum: 120}
 
-  validate :unique_name, unless: "allocation_tags_ids.nil?"
+  validate :unique_name
   validate :check_final_date_presence
 
   accepts_nested_attributes_for :schedule
-
-  attr_accessible :name, :description, :schedule_attributes, :schedule_id
-  attr_accessor :allocation_tags_ids
-
-  before_destroy :can_destroy?
-  after_destroy :delete_schedule
 
   def can_destroy?
     discussion_posts.empty?
@@ -36,7 +30,7 @@ class Discussion < Event
 
   def check_final_date_presence
     if schedule.end_date.nil?
-      errors.add(:final_date_presence, I18n.t(:mandatory_final_date, scope: [:discussions, :error]))
+      errors.add(:final_date_presence, I18n.t('discussions.error.mandatory_final_date'))
       return false
     end
   end
@@ -46,8 +40,8 @@ class Discussion < Event
   # => Existe o fórum Fórum 1 com academic allocation para a allocation_tag 3
   # => Se eu criar um novo fórum em que uma de suas allocation_tags seja a 3 e tenha o mesmo nome que o Fórum 1, é pra dar erro
   def unique_name
-    discussions_with_same_name = Discussion.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids}, name: name)
-    errors.add(:name, I18n.t(:existing_name, scope: [:discussions, :error])) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
+    discussions_with_same_name = self.class.joins(:allocation_tags).where(allocation_tags: {id: allocation_tag_ids_associations || academic_allocations.map(&:allocation_tag_id)}, name: name)
+    errors.add(:name, I18n.t('discussions.error.existing_name')) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
   end
 
   def opened?
@@ -96,19 +90,6 @@ class Discussion < Event
     posts_by_allocation_tags_ids(allocation_tags_ids).where("date_trunc('seconds', updated_at) > '#{period.last}'").count
   end
 
-  def self.posts_count_by_user(student_id, allocation_tag_id)
-    joins(:schedule, academic_allocations: :allocation_tag)
-      .joins("LEFT JOIN discussion_posts AS dp ON dp.academic_allocation_id = academic_allocations.id AND dp.user_id = #{student_id}")
-      .where(allocation_tags: {id: AllocationTag.find(allocation_tag_id).related}).select("discussions.id, discussions.name, COUNT(dp.id) AS posts_count, schedules.start_date AS start_date")
-      .group("discussions.id, discussions.name, start_date").order("start_date").uniq
-  end
-
-  def self.all_by_allocation_tags(allocation_tag_id)
-    joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: AllocationTag.find(allocation_tag_id).related})
-      .select("discussions.*, academic_allocations.id AS ac_id")
-      .order("schedules.start_date, schedules.end_date, name")
-  end
-
   # devolve a lista com todos os posts de uma discussion em ordem decrescente de updated_at, apenas o filho mais recente de cada post será adiconado à lista
   def latest_posts(allocation_tags_ids = nil)
     posts_by_allocation_tags_ids(allocation_tags_ids).select("DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level")
@@ -145,6 +126,23 @@ class Discussion < Event
 
   def last_post_date(allocation_tags_ids = nil)
     latest_posts(allocation_tags_ids).first.try(:updated_at)
+  end
+
+
+  ## class methods
+
+
+  def self.posts_count_by_user(student_id, allocation_tag_id)
+    joins(:schedule, academic_allocations: :allocation_tag)
+      .joins("LEFT JOIN discussion_posts AS dp ON dp.academic_allocation_id = academic_allocations.id AND dp.user_id = #{student_id}")
+      .where(allocation_tags: {id: AllocationTag.find(allocation_tag_id).related}).select("discussions.id, discussions.name, COUNT(dp.id) AS posts_count, schedules.start_date AS start_date")
+      .group("discussions.id, discussions.name, start_date").order("start_date").uniq
+  end
+
+  def self.all_by_allocation_tags(allocation_tag_id)
+    joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: AllocationTag.find(allocation_tag_id).related})
+      .select("discussions.*, academic_allocations.id AS ac_id")
+      .order("schedules.start_date, schedules.end_date, name")
   end
 
 end

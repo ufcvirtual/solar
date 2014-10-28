@@ -25,8 +25,7 @@ class  DiscussionTest < ActiveSupport::TestCase
 
   test "novo forum deve ter titulo unico para a mesma allocation_tag" do
     discussion = Discussion.new(name: discussions(:forum_1).name, description: "discussion description", schedule_id: schedules(:schedule24).id)
-    discussion.allocation_tags_ids = [3]
-    discussion.save
+    discussion.allocation_tag_ids_associations = [allocation_tags(:al3).id]
     assert (not discussion.valid?)
 
     assert_equal discussion.errors[:name].first, I18n.t(:existing_name, scope: [:discussions, :error])

@@ -5,8 +5,8 @@ class DiscussionsController < ApplicationController
   layout false, except: :index
 
   before_filter :prepare_for_group_selection, only: :index
-
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+
   before_filter only: [:edit, :update, :show] do |controller|
     get_groups_by_tool(@discussion = Discussion.find(params[:id]))
   end
@@ -27,31 +27,6 @@ class DiscussionsController < ApplicationController
     end
   end
 
-  def new
-    authorize! :new, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
-    @discussion = Discussion.new
-    @discussion.build_schedule(start_date: Date.current, end_date: Date.current)
-  end
-
-  def create
-    authorize! :create, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    @discussion = Discussion.new params[:discussion]
-
-    begin
-      Discussion.transaction do
-        @discussion.allocation_tags_ids = @allocation_tags_ids
-        @discussion.save!
-        @discussion.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
-      end
-      render json: {success: true, notice: t(:created, scope: [:discussions, :success])}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
-      @allocation_tags_ids = @allocation_tags_ids.join(" ")
-      render :new
-    end
-  end
-
   def list
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Discussion, on: @allocation_tags_ids
@@ -61,44 +36,74 @@ class DiscussionsController < ApplicationController
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
+  def new
+    authorize! :new, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
+
+    @discussion = Discussion.new
+    @discussion.build_schedule(start_date: Date.current, end_date: Date.current)
+  end
+
+  def create
+    authorize! :create, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
+
+    @discussion = Discussion.new discussion_params
+    @discussion.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten
+
+    if @discussion.save
+      render_discussion_success_json('created')
+    else
+      render :new
+    end
+  rescue => error
+    request.format = :json
+    raise error.class
+  end
+
   def edit
     authorize! :edit, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
   end
 
   def update
-    @allocation_tags_ids = params[:allocation_tags_ids]
     authorize! :update, Discussion, on: @discussion.academic_allocations.pluck(:allocation_tag_id)
 
-    @discussion.update_attributes!(params[:discussion])
-
-    render json: {success: true, notice: t(:updated, scope: [:discussions, :success])}
-  rescue ActiveRecord::AssociationTypeMismatch
-    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    render :edit
+    if @discussion.update_attributes(discussion_params)
+      render_discussion_success_json('updated')
+    else
+      @allocation_tags_ids = params[:allocation_tags_ids]
+      render :edit
+    end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def destroy
     @discussions = Discussion.where(id: params[:id].split(","))
     authorize! :destroy, Discussion, on: @discussions.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
-    raise has_posts = true if @discussions.map(&:can_destroy?).include?(false)
-
-    Discussion.transaction do
+    if @discussions.map(&:can_destroy?).include?(false)
+      render json: {success: false, alert: t('discussions.error.discussion_with_posts')}, status: :unprocessable_entity
+    else
       @discussions.destroy_all
+      render_discussion_success_json('deleted')
     end
-
-    render json: {success: true, notice: t(:deleted, scope: [:discussions, :success])}
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    render json: {success: false, alert: (has_posts ? t(:discussion_with_posts, scope: [:discussions, :error]) : t(:deleted, scope: [:discussions, :error]))}, status: :unprocessable_entity
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def show
     authorize! :show, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
   end
+
+  private
+
+    def discussion_params
+      params.require(:discussion).permit(:name, :description, schedule_attributes: [:id, :start_date, :end_date])
+    end
+
+    def render_discussion_success_json(method)
+      render json: {success: true, notice: t(method, scope: 'discussions.success')}
+    end
 
 end

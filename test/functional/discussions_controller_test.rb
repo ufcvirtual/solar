@@ -18,7 +18,7 @@ class DiscussionsControllerTest < ActionController::TestCase
     get :index, {format: 'json', group_id: 1}
     assert_response :success
     assert_not_nil assigns(:discussions)
-    
+
     expected_response = [{id: discussion3.id, description: discussion3.description, name: discussion3.name, last_post_date: nil, status: discussion3.status, start_date: discussion3.schedule.start_date.try(:to_s, :db), end_date: discussion3.schedule.end_date.try(:to_s, :db)}].to_json
     assert_equal  response.body, expected_response
   end
@@ -32,7 +32,7 @@ class DiscussionsControllerTest < ActionController::TestCase
     get :index, {format: 'json', group_id: 1, mobilis: true}
     assert_response :success
     assert_not_nil assigns(:discussions)
-    
+
     expected_response = {discussions: [{id: discussion3.id, description: discussion3.description, name: discussion3.name, last_post_date: nil, status: discussion3.status, start_date: discussion3.schedule.start_date.try(:to_s, :db), end_date: discussion3.schedule.end_date.try(:to_s, :db)}]}.to_json
     assert_equal  response.body, expected_response
   end
@@ -85,9 +85,8 @@ class DiscussionsControllerTest < ActionController::TestCase
       post :create, {allocation_tags_ids: "#{allocation_tags(:al6).id}", discussion: {name: "Testa modulo3", description: "Forum para testar modulo", schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
     end
 
-    assert_response :redirect
-    assert_redirected_to home_path
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    assert_response :unauthorized
+    assert_equal I18n.t(:no_permission), get_json_response("alert")
   end
 
   test "nao criar forum para curso ou uc - permite apenas turma ou oferta" do
@@ -99,8 +98,8 @@ class DiscussionsControllerTest < ActionController::TestCase
       post :create, params_course
     end
 
-    assert_equal I18n.t(:not_associated), get_json_response("alert")
-    assert_response :unprocessable_entity
+    assert_equal I18n.t(:not_associated), get_json_response("msg")
+    assert_response :unauthorized
   end
 
    test "editar forum" do
@@ -136,7 +135,7 @@ class DiscussionsControllerTest < ActionController::TestCase
 
   test "nao deletar um forum - sem permissao" do
     sign_in users(:aluno1)
-    
+
     assert_no_difference(["Discussion.count", "AcademicAllocation.count"]) do
       delete(:destroy, {id: discussions(:forum_8).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     end
@@ -162,7 +161,7 @@ class DiscussionsControllerTest < ActionController::TestCase
 
     assert_equal I18n.t(:discussion_with_posts, scope: [:discussions, :error]), get_json_response("alert")
     assert_response :unprocessable_entity
-  end  
+  end
 
   test "edicao - ver detalhes" do
     get(:show, {id: discussions(:forum_1).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})

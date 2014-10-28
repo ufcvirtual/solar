@@ -7,6 +7,7 @@ module AcademicTool
     has_many :academic_allocations, as: :academic_tool, dependent: :destroy
     has_many :allocation_tags, through: :academic_allocations
     has_many :groups, through: :allocation_tags
+    has_many :offers, through: :allocation_tags
 
     after_create :define_academic_associations, unless: "allocation_tag_ids_associations.nil?"
 

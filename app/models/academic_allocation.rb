@@ -1,36 +1,28 @@
 class AcademicAllocation < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :academic_tool, polymorphic: true
   belongs_to :allocation_tag
+
+  belongs_to :lesson_module, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'LessonModule'"]
+  belongs_to :chat_room, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'ChatRoom'"]
 
   # Assignment
   has_many :sent_assignments, dependent: :destroy
   has_many :group_assignments, dependent: :destroy
 
-  # Discussion
   has_many :discussion_posts, class_name: 'Post', dependent: :destroy
-
-  # Chat
-  belongs_to :chat_room, foreign_key: 'academic_tool_id'
-
   has_many :chat_messages, dependent: :destroy
-  # has_many :participants, class_name: 'ChatParticipant', inverse_of: :academic_allocation, dependent: :destroy
   has_many :chat_participants, inverse_of: :academic_allocation, dependent: :destroy
 
-  # Lesson Module
-  belongs_to :lesson_module, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'LessonModule'"]
+  before_save :verify_association_with_allocation_tag
+  before_destroy :move_lessons_to_default, if: :is_lesson_module? # LessonModule
+
+  before_validation :verify_uniqueness
 
   accepts_nested_attributes_for :chat_participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == '0' }
 
-  attr_accessible :chat_participants_attributes, :allocation_tag_id, :academic_tool_id, :academic_tool_type
-
   validate :verify_assignment_offer_date_range, if: :is_assignment?
-
-  before_save :verify_association_with_allocation_tag
-  before_validation :verify_uniqueness
-
-  # LessonModule
-  before_destroy :move_lessons_to_default, if: :is_lesson_module?
 
   def is_assignment?
     academic_tool_type.eql? 'Assignment'
