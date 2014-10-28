@@ -904,6 +904,8 @@ pt_BR:
       cancel: Cancelar
       groups: Turmas
     success:
+      created: Módulo criado com sucesso
+      updated: Módulo atualizado com sucesso
       deleted: Módulo excluído com sucesso
     errors:
       existing_name: já existe

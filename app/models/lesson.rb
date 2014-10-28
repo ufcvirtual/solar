@@ -1,6 +1,7 @@
 class Lesson < Event
+  include ActiveModel::ForbiddenAttributesProtection
 
-  GROUP_PERMISSION, OFFER_PERMISSION = true, true
+  GROUP_PERMISSION = OFFER_PERMISSION = true
 
   has_many :academic_allocations, through: :lesson_module
 
@@ -28,8 +29,6 @@ class Lesson < Event
   # Na expressão regular os protocolos http, https e ftp podem aparecer somente uma vez ou não aparecer.
   validates_format_of :address, :with => /\A((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z/ix,
   :allow_nil => true, :allow_blank => true, :if => :is_link?
-
-  attr_accessible :name, :description, :type_lesson, :address, :schedule_attributes, :lesson_module_id, :schedule_id
 
   accepts_nested_attributes_for :schedule
 

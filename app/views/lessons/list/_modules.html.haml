@@ -36,7 +36,7 @@
           %div{:id=>"dropdown_#{lesson_module.id}", :class=>"dropdown dropdown-tip"}
             %ul.dropdown-menu
               %li= link_to (t(:new_lesson, scope: [:lessons, :list])), new_lesson_path(lesson_module_id: lesson_module.id, allocation_tags_ids: @allocation_tags_ids), class: "link_new_lesson"
-              %li= link_to "Importar aula", "#", onclick: "javascript: alert('importar aula');", id: 'import_lesson'
+              / %li= link_to "Importar aula", "#", onclick: "javascript: alert('importar aula');", id: 'import_lesson'
         .block_toolbar_right
           .btn-group{class: "module-#{lesson_module.id}"}
             = link_to (content_tag(:i, nil, :class=>'icon-move')), "#", :class => 'btn', id: "move_lesson_from_#{lesson_module.id}", :'data-tooltip' => t("lessons.list.move_lesson"), "data-dropdown-alt" => "#move_lesson_dropdown_#{lesson_module.id}", disabled: true

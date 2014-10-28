@@ -73,7 +73,7 @@ class LessonsController < ApplicationController
   # POST /lessons
   # POST /lessons.json
   def create
-    @lesson = Lesson.new(params[:lesson])
+    @lesson = Lesson.new lesson_params
     @lesson.user = current_user
     @lesson.save!
 
@@ -103,7 +103,7 @@ class LessonsController < ApplicationController
   # PUT /lessons/1.json
   def update
     @lesson = Lesson.find(params[:id])
-    @lesson.update_attributes!(params[:lesson])
+    @lesson.update_attributes! lesson_params
 
     render json: {success: true, notice: t('lessons.success.updated')}
   rescue ActiveRecord::RecordInvalid
@@ -283,5 +283,11 @@ class LessonsController < ApplicationController
       return false if @lessons.empty? # se nenhuma aula for do tipo arquivo ou se nenhuma aula possuir arquivos
       return true
     end
+
+    private
+
+      def lesson_params
+        params.require(:lesson).permit(:name, :description, :type_lesson, :address, :lesson_module_id, schedule_attributes: [:id, :start_date, :end_date])
+      end
 
 end

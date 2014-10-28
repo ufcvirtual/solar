@@ -741,7 +741,9 @@ en_US:
       cancel: Cancel
       groups: Groups
     success:
-      deleted: Module deleted successfully
+      created: Module created
+      updated: Module updated
+      deleted: Module deleted
     errors:
       existing_name: already exists
       cant_delete: "Default module can't be deleted"
