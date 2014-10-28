@@ -1,3 +1,2 @@
-class Score < ActiveRecord::Base
-
+class Score # < ActiveRecord::Base
 end

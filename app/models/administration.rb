@@ -1,3 +1,2 @@
-class Administration < ActiveRecord::Base
-  # sem tabela
+class Administration # < ActiveRecord::Base
 end

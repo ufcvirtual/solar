@@ -1,6 +1,6 @@
 class Allocation < ActiveRecord::Base
 
-  GROUP_PERMISSION, OFFER_PERMISSION = true, true
+  GROUP_PERMISSION = OFFER_PERMISSION = true
 
   belongs_to :allocation_tag
   belongs_to :user

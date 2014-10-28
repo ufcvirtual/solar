@@ -1,3 +1,2 @@
-class Enrollment < ActiveRecord::Base
-
+class Enrollment # < ActiveRecord::Base
 end

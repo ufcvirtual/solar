@@ -2,7 +2,7 @@ class SupportMaterialFile < ActiveRecord::Base
   include AcademicTool
   include ActiveModel::ForbiddenAttributesProtection
 
-  GROUP_PERMISSION, OFFER_PERMISSION = true, true
+  GROUP_PERMISSION = OFFER_PERMISSION = true
 
   before_save :url_protocol, if: :is_link?
   before_save :define_fixed_values

@@ -1,6 +1,6 @@
 class Discussion < Event
 
-  GROUP_PERMISSION, OFFER_PERMISSION = true, true
+  GROUP_PERMISSION = OFFER_PERMISSION = true
 
   belongs_to :schedule
 

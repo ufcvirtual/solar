@@ -1,7 +1,7 @@
 require 'bigbluebutton_api'
 
 class Webconference < ActiveRecord::Base
-  GROUP_PERMISSION, OFFER_PERMISSION = true, true
+  GROUP_PERMISSION = OFFER_PERMISSION = true
 
   belongs_to :moderator, class_name: "User", foreign_key: :user_id
 
