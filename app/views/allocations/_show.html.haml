@@ -1,0 +1,11 @@
+%tr.lines
+  %td= allocation.user.name
+  %td= allocation.user.cpf
+  %td= allocation.user.email
+  %td= allocation.profile.name
+  - unless allocation.allocation_tag.nil?
+    %td= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester.name : (allocation.course ? allocation.course.name : (allocation.curriculum_unit ? allocation.curriculum_unit.name : allocation.curriculum_unit_type.description)))
+  %td= allocation.updated_by.try(:username)
+  %td
+    - status, link = (allocation.status == Allocation_Activated) ? ["deactivate", deactivate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)] : ["activate", activate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)]
+    = button_to_function t("allocations.designates.#{status}"), "change_status(this)", class: "btn btn_caution #{status}", alt: t("allocations.designates.#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => show_profile_allocation_path(allocation, allocation_tags_ids: @allocation_tags_ids, admin: @admin)

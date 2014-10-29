@@ -1470,7 +1470,7 @@ pt_BR:
       login: Login
       add_user: Adicionar usuário
       no_allocated_user: Nenhum usuário alocado
-      designated_by: Alocado por
+      designated_by: Atualizado por
     search_users:
       designate: Alocar
       designate_search_no_found: Nenhum usuário encontrado

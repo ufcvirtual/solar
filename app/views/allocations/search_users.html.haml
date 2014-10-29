@@ -25,9 +25,18 @@
 
     $.post($(button).data("link-create"), {profile_id: profile}, function(data){
       var url_list = $(button).data("link-list");
-      $.get(url_list, function(data){ $(".list_designates:last").replaceWith(data); });
-
+      console.log(data);
+      $(data.id).each(function(){
+        console.log("oi");
+        console.log(url_list);
+        $.get(url_list.replace(":id", $(this)[0]), function(data){
+          console.log("oi2");
+          $(".allocations_list table").prepend(data);
+         });
+      });
       flash_message(data.msg, 'notice');
+      $(".allocations_list").scrollTop(0);
+      $(button).parents("tr:first").find("td select option:selected:first").remove();
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.msg) != 'undefined')

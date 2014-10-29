@@ -77,7 +77,7 @@ class Allocation < ActiveRecord::Base
   end
 
   def refer_to
-    allocation_tag.refer_to
+    allocation_tag.try(:refer_to)
   end
 
   def curriculum_unit_related # uc, offer, group
@@ -185,10 +185,11 @@ class Allocation < ActiveRecord::Base
   end
 
   def self.list_for_designates(allocation_tags_ids, is_admin = false)
-    query = ["allocation_tag_id IN (?)"]
+    query = []
+    query << (allocation_tags_ids.empty? ? "allocation_tag_id IS NULL" : "allocation_tag_id IN (?)")
     query << (!!is_admin ? "not(profiles.types & #{Profile_Type_Basic})::boolean" : "(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
 
-    joins(:profile, :user).where(query.join(' AND '), allocation_tags_ids).order("users.name, profiles.name")
+    joins(:profile, :user).where(query.join(' AND '), allocation_tags_ids)
   end
 
   private

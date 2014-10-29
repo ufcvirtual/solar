@@ -85,3 +85,14 @@ function magange_allocations_save(obj) {
   });
 }
 
+function change_status(button){
+  var url = $(button).data("link-list");
+  $.put($(button).data("link"), function(data){
+    flash_message(data.msg, 'notice');
+    $.get(url, function(data){
+      $(button).parents('tr:first').replaceWith(data);
+    });
+  }).error(function(data){
+     flash_message(data.alert, 'alert');
+  });
+}

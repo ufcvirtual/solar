@@ -18,16 +18,7 @@
               %th.no_sort
           %tbody
             - @allocations.each do |allocation|
-              %tr.lines
-                %td= allocation.user.name
-                %td= allocation.user.cpf
-                %td= allocation.user.email
-                %td= allocation.profile.name
-                %td= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester.name : (allocation.course ? allocation.course.name : (allocation.curriculum_unit ? allocation.curriculum_unit.name : allocation.curriculum_unit_type.description)))
-                %td= allocation.updated_by.try(:username)
-                %td
-                  - status, link = (allocation.status == Allocation_Activated) ? ["deactivate", deactivate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)] : ["activate", activate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)]
-                  = button_tag t(".#{status}"), type: :button, class: "btn btn_caution #{status}", alt: t(".#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids, admin: @admin)
+              = render partial: "show", locals: {allocation: allocation}
       - else
         .block_content_text_list.text_none= t(".no_allocated_user")
 
@@ -44,7 +35,7 @@
     .block_content
       #list_users
 
-= javascript_include_tag "tablesorter"
+= javascript_include_tag "tablesorter", "allocations"
 
 :javascript
 
@@ -61,16 +52,6 @@
       var url_for = "#{search_users_allocations_path(allocation_tags_ids: @allocation_tags_ids, admin: @admin)}";
       var data = { user: encodeURIComponent($("#text_search").val()) };
       $.get(url_for, data, function(data) { $('#list_users').html(data); });
-    });
-
-    $(".activate, .deactivate").click(function(){
-      var url = $(this).data("link-list");
-      $.put($(this).data("link"), function(data){
-        flash_message(data.msg, 'notice');
-        $.get(url, function(data){
-          $(".list_designates:last").replaceWith(data);
-        });
-      });
     });
 
   });

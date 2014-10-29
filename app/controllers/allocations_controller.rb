@@ -9,11 +9,7 @@ class AllocationsController < ApplicationController
   end
 
   before_filter only: [:create_designation, :profile_request] do |controller|
-    @allocation_tags_ids = if (params[:profile_id].present? and Profile.find(params[:profile_id]).has_type?(Profile_Type_Admin))
-      []
-    else
-      AllocationTag.get_by_params(params)[:allocation_tags]
-    end
+    @allocation_tags_ids = AllocationTag.get_by_params(params)[:allocation_tags]
   end
 
   before_filter only: [:show, :edit, :update] do |controller|
@@ -102,7 +98,7 @@ class AllocationsController < ApplicationController
     authorize! :manage_profiles, Allocation, {on: @allocation_tags_ids, accepts_general_profile: true}
 
     @admin = params[:admin]
-    @allocations = Allocation.list_for_designates(@allocation_tags_ids.split(" ").flatten, @admin)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+    @allocations = Allocation.list_for_designates((@allocation_tags_ids.nil? ? [] : @allocation_tags_ids.split(" ")), @admin)
   rescue => error
     request.format = :json
     raise error.class
@@ -142,6 +138,12 @@ class AllocationsController < ApplicationController
     else
       render json: {success: false, msg: t(params[:type], scope: 'allocations.request.error')}, status: :unprocessable_entity
     end
+  end
+
+  def show_profile
+    @allocation_tags_ids = params[:allocation_tags_ids]
+    @admin = params[:admin]
+    render partial: "show", locals: {allocation: Allocation.find(params[:id])}
   end
 
   private

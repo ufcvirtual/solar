@@ -483,9 +483,11 @@ class User < ActiveRecord::Base
         al = allocations.build(allocation_tag_id: at, profile_id: profile)
         al.status = status
         al.updated_by_user_id = by_user
-        result[(al.save) ? :success : :error] << al
+        al.save!
+        result[:success] << al
       end
     end
+    result[:success] = [] if allocation_tag_ids.size != result[:success].size
     result
   end
 

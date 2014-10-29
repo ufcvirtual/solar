@@ -183,6 +183,8 @@ Solar::Application.routes.draw do
       put :reject, to: :update, type: :reject, acccept_or_reject_profile: true
       put :accept, to: :update, type: :accept, acccept_or_reject_profile: true
       put :undo_action, to: :update, type: :pending
+
+      get :show_profile
     end
   end
 
