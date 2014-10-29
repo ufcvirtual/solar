@@ -15,7 +15,7 @@ module V1::EventsH
     event_info = get_event_type_and_description(params[:type])
     start_hour, end_hour = params[:start].split(":"), params[:end].split(":")
     {
-      title: event_info[:title], type_event: event_info[:type], place: params[:place], start_hour: [start_hour[0], start_hour[1]].join(":"), 
+      title: event_info[:title], type_event: event_info[:type], place: params[:place], start_hour: [start_hour[0], start_hour[1]].join(":"),
       end_hour: [end_hour[0], end_hour[1]].join(":"), schedule_id: schedule.id, integrated: true
     }
   end
@@ -24,7 +24,7 @@ module V1::EventsH
     event_info = get_event_type_and_description(params[:Tipo])
     start_hour, end_hour = params[:HoraInicio].split(":"), params[:HoraFim].split(":")
     {
-      title: event_info[:title], type_event: event_info[:type], place: params[:Polo], start_hour: [start_hour[0], start_hour[1]].join(":"), 
+      title: event_info[:title], type_event: event_info[:type], place: params[:Polo], start_hour: [start_hour[0], start_hour[1]].join(":"),
       end_hour: [end_hour[0], end_hour[1]].join(":"), schedule_id: schedule.id, integrated: true
     }
   end

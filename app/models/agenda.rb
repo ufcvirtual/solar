@@ -1,12 +1,12 @@
-class Agenda < ActiveRecord::Base
+class Agenda # < ActiveRecord::Base
 
   def self.events(allocation_tags, date_search = nil, with_dates = false)
     events = if date_search.nil?
       Event.descendants.map{ |event| event.scoped.by_ats(allocation_tags) }.uniq
     else
-      Event.descendants.map{ |event| event.scoped.of_today(date_search.to_date, allocation_tags) }.uniq 
+      Event.descendants.map{ |event| event.scoped.of_today(date_search.to_date, allocation_tags) }.uniq
     end
-    
+
     events = [events].flatten.map{|event| event.portlet_json({date: date_search.try(:to_date)})}.uniq
 
     if with_dates

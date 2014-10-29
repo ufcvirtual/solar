@@ -1,35 +1,41 @@
 class ScheduleEventsController < ApplicationController
 
-  layout false
+  include SysLog::Actions
 
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create] do |controller|
-    @schedule_event = ScheduleEvent.new params[:schedule_event]
-    @schedule_event.build_schedule(start_date: Date.current, end_date: Date.current) if @schedule_event.schedule.nil?
-  end
+  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+
   before_filter only: [:edit, :update, :show] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@schedule_event = ScheduleEvent.find(params[:id]))
   end
-  
+
+  layout false
+
+  def show
+    authorize! :show, ScheduleEvent, on: @allocation_tags_ids
+  end
+
   def new
     authorize! :new, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
+
+    @schedule_event = ScheduleEvent.new
+    @schedule_event.build_schedule(start_date: Date.today, end_date: Date.today)
   end
 
   def create
-    authorize! :new, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :new, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
-    begin
-      ScheduleEvent.transaction do
-        @schedule_event.save!
-        @schedule_event.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
-      end
-      render json: {success: true, notice: t(:created, scope: [:schedule_events, :success])}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue 
-      @allocation_tags_ids = @allocation_tags_ids.join(" ")
+    @schedule_event = ScheduleEvent.new schedule_event_params
+    @schedule_event.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten
+
+    if @schedule_event.save
+      render_schedule_event_success_json('created')
+    else
       render :new
     end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def edit
@@ -38,29 +44,39 @@ class ScheduleEventsController < ApplicationController
 
   def update
     authorize! :edit, ScheduleEvent, on: @schedule_event.academic_allocations.pluck(:allocation_tag_id)
-    @schedule_event.update_attributes!(params[:schedule_event]) if @schedule_event.can_change?
-    render json: {success: true, notice: t(:updated, scope: [:schedule_events, :success])}
-  rescue ActiveRecord::AssociationTypeMismatch
-    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    render :edit
+
+    if @schedule_event.can_change? and @schedule_event.update_attributes(schedule_event_params)
+      render_schedule_event_success_json('updated')
+    else
+      render :edit
+    end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   def destroy
-    schedule_event = ScheduleEvent.find(params[:id])
-    authorize! :destroy, ScheduleEvent, on: schedule_event.academic_allocations.pluck(:allocation_tag_id)
-    schedule_event.try(:destroy) if schedule_event.can_change?
-    render json: {success: true, notice: t(:deleted, scope: [:schedule_events, :success])}
-  rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    render json: {success: false, alert: t(:deleted, scope: [:schedule_events, :error])}, status: :unprocessable_entity
+    @schedule_event = ScheduleEvent.find(params[:id])
+    authorize! :destroy, ScheduleEvent, on: @schedule_event.academic_allocations.pluck(:allocation_tag_id)
+
+    if @schedule_event.can_change? and @schedule_event.try(:destroy)
+      render_schedule_event_success_json('deleted')
+    else
+      render json: {success: false, alert: t('schedule_events.error.deleted')}, status: :unprocessable_entity
+    end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
-  def show
-    authorize! :show, ScheduleEvent, on: @allocation_tags_ids
-  end
+  private
+
+    def schedule_event_params
+      params.require(:schedule_event).permit(:title, :description, :type_event, :start_hour, :end_hour, :place, :integrated, schedule_attributes: [:id, :start_date, :end_date])
+    end
+
+    def render_schedule_event_success_json(method)
+      render json: {success: true, notice: t(method, scope: 'schedule_events.success')}
+    end
 
 end

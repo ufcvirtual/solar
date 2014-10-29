@@ -2,14 +2,14 @@ class NotificationsController < ApplicationController
 
   include SysLog::Actions
 
-  layout false
-
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
 
   before_filter only: [:edit, :update] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@notification = Notification.find(params[:id]))
   end
+
+  layout false
 
   def list
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
@@ -19,20 +19,17 @@ class NotificationsController < ApplicationController
   end
 
   # GET /notifications
-  # GET /notifications.json
   def index
     @notifications = Notification.of_user(current_user)
   end
 
   # GET /notifications/1
-  # GET /notifications/1.json
   def show
     @notification = Notification.find(params[:id])
     @notification.mark_as_read(current_user)
   end
 
   # GET /notifications/new
-  # GET /notifications/new.json
   def new
     authorize! :create, Notification, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
