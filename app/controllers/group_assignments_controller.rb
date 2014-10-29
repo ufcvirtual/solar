@@ -3,7 +3,7 @@ class GroupAssignmentsController < ApplicationController
   include SysLog::Actions
   include AssignmentsHelper
 
-  before_filter :set_current_user, only: [:destroy]
+  before_filter :set_current_user, only: [:destroy, :change_participant]
   before_filter :get_ac, only: [:create, :import, :list]
 
   layout false

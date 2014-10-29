@@ -235,10 +235,11 @@ $.fn.nice_delete = function(options) {
  *    -- Exibe msg de notice (caso exista)
  **/
 $.fn.serialize_and_submit = function(options) {
+  var form_id = ["form#", $(this).attr('id'), ":first"].join('');
+  var name = $(this).attr('id');
   if (typeof(options) == "undefined")
     options = {};
   if (typeof(options) != "undefined" && typeof(options.success) == "undefined") { // definir success
-    var form_id = ["form#", $(this).attr('id'), ":first"].join('');
     options.success = function(data) {
       if (typeof(data) == "string" && data.search(".field_with_errors") != -1)
         $('' + form_id).replaceWith(data);
@@ -269,10 +270,9 @@ $.fn.serialize_and_submit = function(options) {
 
   if (typeof(options) != "undefined" && typeof(options.error) == "undefined") { // definir error
     options.error = function(data) {
-      $.fancybox.close();
       var response = JSON.parse(data.responseText);
       if (typeof(response.alert) != "undefined")
-        flash_message(response.alert, 'alert');
+        flash_message(response.alert, 'alert', name);
     }
   }
 

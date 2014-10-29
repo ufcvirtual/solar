@@ -243,7 +243,8 @@ en_US:
         start_date: Period
         end_date: To
       assignment_enunciation_file:
-        attachment: "Files"
+        attachment_file_size: "File too large. The maximum size should be up to 5MB."
+        attachment_file_name: File
       semester:
         offer: Offer
         enrollment: Enrollment

@@ -23,12 +23,11 @@ class PublicFilesController < ApplicationController
     @public_file = PublicFile.new public_file_params
     @public_file.user_id = current_user.id
     @public_file.allocation_tag_id = allocation_tag_id
-    @public_file.save
+    @public_file.save!
 
     render partial: "file", locals: {file: @public_file, destroy: true}
   rescue => error
-    request.format = :json
-    raise error.class
+    render json: {success: false, alert: (@public_file.nil? ? t("public_files.error.new") : @public_file.errors.full_messages)}, status: :unprocessable_entity
   end
 
   def download

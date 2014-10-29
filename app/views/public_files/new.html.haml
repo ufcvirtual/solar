@@ -1,12 +1,13 @@
-%h1#lightBoxDialogTitle= t(".title")
-.block_content{style: "padding: 5px;"}
-  = form_for @public_file do |f|
-    = f.file_field :attachment
-    .block_content_gray{style: "padding: 5px;"}
-      %p=raw t(:send_file_obs)
-      %p=raw t(:send_file_text)
-    .right_buttons
-      = button_tag t(:save), class: "btn btn_main save_file", type: :button
+.public_file
+  %h1#lightBoxDialogTitle= t(".title")
+  .block_content{style: "padding: 5px;"}
+    = simple_form_for @public_file, html: {multipart: true, id: "new_public_file"} do |f|
+      = f.file_field :attachment
+      .block_content_gray{style: "padding: 5px;"}
+        %p=raw t(:send_file_obs)
+        %p=raw t(:send_file_text)
+      .right_buttons
+        = button_tag t(:save), class: "btn btn_main save_file", type: :button
 
 :javascript
   $(function(){

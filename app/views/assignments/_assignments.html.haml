@@ -24,7 +24,7 @@
           %td.center{style: "vertical-align: top;"}
             = link_to content_tag(:i, nil, class: "icon-users"), "#", class: "btn participants", id: "assignment-#{assignment.id}", :"data-tooltip" => (is_group_type ? t(".groups") : t(".participants"))
             - if is_group_type
-              - in_time = assignment.in_time?(@allocation_tag_id)
+              - in_time = (assignment.in_time?(@allocation_tag_id) or assignment.will_open?(@allocation_tag_id, current_user.id))
               - if @can_manage
                 = link_to content_tag(:i, nil, class: "icon-user-add"), "#", class: "btn manage_groups #{in_time ? '' : 'disabled'}", :"data-tooltip" => t(".manage_groups"), disabled: not(in_time), :"data-url" => group_assignments_path(assignment_id: assignment.id)
               - if @can_import

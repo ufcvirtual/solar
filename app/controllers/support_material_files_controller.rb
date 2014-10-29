@@ -41,7 +41,7 @@ class SupportMaterialFilesController < ApplicationController
     if @support_material.save
       render json: {success: true, notice: t('support_materials.success.created')}
     else
-      render :new
+      render json: {success: false, alert: @support_material.errors.full_messages}, status: :unprocessable_entity
     end
   rescue => error
     request.format = :json
@@ -58,7 +58,7 @@ class SupportMaterialFilesController < ApplicationController
     if @support_material.update_attributes(support_material_file_params)
       render json: {success: true, notice: t('support_materials.success.updated')}
     else
-      render :edit
+      render json: {success: false, alert: @support_material.errors.full_messages}, status: :unprocessable_entity
     end
   rescue => error
     request.format = :json

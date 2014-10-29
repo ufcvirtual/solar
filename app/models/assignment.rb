@@ -41,6 +41,10 @@ class Assignment < Event
     schedule.end_date.to_date < Date.today
   end
 
+  def will_open?(allocation_tag_id, user_id)
+    AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(user_id) and schedule.start_date.to_date > Date.today
+  end
+
   def extra_time?(allocation_tag, user_id)
     extra = (allocation_tag.is_observer_or_responsible?(user_id) and closed?)
 
@@ -62,7 +66,7 @@ class Assignment < Event
   end
 
   def in_time?(allocation_tag_id, user_id = nil)
-    (verify_date_range(schedule.start_date, schedule.end_date, Date.today) or (not(user_id.nil?) and extra_time?(AllocationTag.find(allocation_tag_id), user_id)))
+    (verify_date_range(schedule.start_date, schedule.end_date, Date.today) or (not(user_id.nil?) and ( extra_time?(AllocationTag.find(allocation_tag_id), user_id))))
   end
 
   def verify_date_range(start_date, end_date, date)

@@ -39,6 +39,8 @@
               %span#file{:"data-file-id" => ef.id}
                 = ef.attachment_file_name
                 %i.icon-cross-square.warning.remove_file
+        - if @files_errors
+          %span.field_with_errors.error= @files_errors
 
       = render "groups/codes"
 

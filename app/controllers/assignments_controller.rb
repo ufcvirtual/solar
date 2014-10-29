@@ -59,23 +59,25 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.new assignment_params
     @assignment.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten
 
-    if @assignment.save
-      render_assignment_success_json('created')
+    @assignment.save!
+    render_assignment_success_json('created')
+  rescue => error
+    if @assignment.errors.empty?
+      request.format = :json
+      raise error.class
     else
+      @files_errors = @assignment.enunciation_files.map(&:errors).map(&:full_messages).flatten.uniq.join(", ")
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
       render :new
     end
-  rescue => error
-    request.format = :json
-    raise error.class
   end
 
   def update
     authorize! :update, Assignment, on: @assignment.academic_allocations.pluck(:allocation_tag_id)
-
     if @assignment.update_attributes(assignment_params)
       render_assignment_success_json('updated')
     else
+      @files_errors = @assignment.enunciation_files.map(&:errors).map(&:full_messages).flatten.uniq.join(", ")
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
       render :edit
     end

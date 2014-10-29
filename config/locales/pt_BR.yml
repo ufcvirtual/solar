@@ -291,7 +291,9 @@ pt_BR:
         start_date: Período
         end_date: à
       assignment_enunciation_file:
-        attachment: "Arquivos"
+        attachment_content_type: ""
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+        attachment_file_name: Arquivo
       semester:
         offer: Oferta
         enrollment: Matrícula
