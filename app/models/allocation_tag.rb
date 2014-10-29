@@ -1,4 +1,5 @@
 class AllocationTag < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :course
   belongs_to :curriculum_unit_type
@@ -168,7 +169,7 @@ class AllocationTag < ActiveRecord::Base
     siblings = sibling_tool.joins(:offers).where(offers: {id: at_offers}).map(&:id).uniq
 
     if upper
-      uc_type = if (academic_tool == 'course') 
+      uc_type = if (academic_tool == 'course')
         self.send(academic_tool.to_sym).curriculum_unit_types
       else
         [self.send(academic_tool.to_sym).curriculum_unit_type]
@@ -203,6 +204,10 @@ class AllocationTag < ActiveRecord::Base
   end
 
   ## related functions - end ##
+
+
+  ## class methods
+
 
   def self.at_groups_by_offer_id(offer_id, only_id = true)
     joins(:group).where(groups: {offer_id: offer_id}).pluck(:id)

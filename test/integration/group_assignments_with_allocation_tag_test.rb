@@ -175,7 +175,7 @@ class GroupAssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao criar novo grupo - sem acesso" do
     login @tutor
     get @quimica2_tab
-    
+
     assert_no_difference("GroupAssignment.count") do
       post group_assignments_path assignment_id: @atividadeG2.id
     end

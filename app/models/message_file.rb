@@ -1,4 +1,6 @@
 class MessageFile < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   belongs_to :message
 
   MAX_FILE_SIZE = 1.megabytes

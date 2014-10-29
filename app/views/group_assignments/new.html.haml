@@ -1,3 +1,4 @@
-- evaluated = @group.evaluated?
-.label{class: (evaluated ? "disabled" : ""), :"data-url" => participants_group_assignment_path(@group.id), onclick: "select_group(this)", :"data-group-id" => @group.id, :"data-message" => (evaluated ? t(".already_evaluated") : "")}
-  = render partial: "group", locals: {group: @group}
+- evaluated = @group_assignment.evaluated?
+.label{class: (evaluated ? "disabled" : ""), :"data-url" => participants_group_assignment_path(@group_assignment.id), onclick: "select_group(this)", :"data-group-id" => @group_assignment.id, :"data-message" => (evaluated ? t(".already_evaluated") : "")}
+
+  = render partial: "group", locals: {group: @group_assignment}
