@@ -10,7 +10,7 @@
       %tbody
         - @posts.each do |post|
           %tr.lines
-            %td.profile= raw post.content
+            %td.profile= sanitize post.content
             %td.center= l(post.updated_at.to_datetime, format: :normal)
             %td.center= l(post.updated_at.to_datetime, format: :clock_time)
   - else

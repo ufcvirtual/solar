@@ -1016,6 +1016,7 @@ pt_BR:
       message: Post
       date: Data
       time: Horário
+      no_posts: Nenhuma postagem
 
   post_files:
     new:

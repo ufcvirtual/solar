@@ -846,6 +846,7 @@ en_US:
       message: Post
       date: Date
       time: Time
+      no_posts: No posts
   post_files:
     new:
       attach_save: "Save"
