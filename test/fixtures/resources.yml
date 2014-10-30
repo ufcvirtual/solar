@@ -692,6 +692,12 @@ res145:
 
 # agenda
 
+res26:
+  id: 26
+  controller: 'agendas'
+  action: 'list'
+  description: 'Agenda'
+
 res146:
   id: 146
   controller: 'agendas'

@@ -36,7 +36,7 @@
 
 = javascript_include_tag "tooltip"
 
-= hidden_field_tag :groups_codes, @groups.map(&:code).join(" ")
+= hidden_field_tag :groups_codes, @groups.map(&:code).join(",")
 
 :javascript
 
@@ -53,7 +53,7 @@
 
     $(".toggle_groups").unbind().click(function(){
 
-      groups = $($($(this).parents(".dropdown-panel")[0]).children("#groups_codes")[0]).val().split(" ");
+      groups = $($($(this).parents(".dropdown-panel")[0]).children("#groups_codes")[0]).val().split(",");
 
       if( $(this).hasClass("icon-arrow-down-triangle") ){
         var groups_div = $("<span class='groups'></span>");

@@ -1278,6 +1278,12 @@ function addYears(d, n, keepTime) {
 
 
 function addMonths(d, n, keepTime) { // prevents day overflow/underflow
+  try{
+      d.getDate();
+    }catch(error){
+      d = d._d;
+    }
+
   if (+d) { // prevent infinite looping on invalid dates
     var m = d.getMonth() + n,
       check = cloneDate(d);
@@ -1297,10 +1303,16 @@ function addMonths(d, n, keepTime) { // prevents day overflow/underflow
 
 function addDays(d, n, keepTime) { // deals with daylight savings
   if (+d) {
+    try{
+      d.getDate();
+    }catch(error){
+      d = d._d;
+    }
     var dd = d.getDate() + n,
-      check = cloneDate(d);
+        check = cloneDate(d);
     check.setHours(9); // set to middle of day
     check.setDate(dd);
+
     d.setDate(dd);
     if (!keepTime) {
       clearTime(d);
@@ -1355,9 +1367,9 @@ function zeroDate() { // returns a Date with time 00:00:00 and dateOfMonth=1
 function skipWeekend(date, inc, excl) {
   inc = inc || 1;
   while (!date._d.getDay() || (excl && date._d.getDay()==1 || !excl && date._d.getDay()==6)) {
-    addDays(date, inc);
+    addDays(date._d, inc);
   }
-  return date;
+  return date._d;
 }
 
 
@@ -1553,6 +1565,11 @@ function formatDates(date1, date2, format, options) {
       for (i2=len; i2>i; i2--) {
         if (formatter = dateFormatters[format.substring(i, i2)]) {
           if (date) {
+            try{
+              date.getDate();
+            }catch(error){
+              date = date._d;
+            }
             res += formatter(date, options);
           }
           i = i2 - 1;
@@ -1568,7 +1585,6 @@ function formatDates(date1, date2, format, options) {
   }
   return res;
 };
-
 
 var dateFormatters = {
   s : function(d) { return d.getSeconds() },
@@ -1996,9 +2012,15 @@ function MonthView(element, calendar) {
   
   
   function render(date, delta) {
+    try{
+      date.getDate();
+    }catch(error){
+      date = date._d;
+    }
+
     if (delta) {
       addMonths(date, delta);
-      date._d.setDate(1);
+      date.setDate(1);
     }
     var start = cloneDate(date, true);
     start.setDate(1);
@@ -2753,10 +2775,16 @@ function AgendaWeekView(element, calendar) {
   
   
   function render(date, delta) {
+    try{
+      date.getDate();
+    }catch(error){
+      date = date._d;
+    }
+
     if (delta) {
       addDays(date, delta * 7);
     }
-    var start = addDays(cloneDate(date), -((date._d.getDay() - opt('firstDay') + 7) % 7));
+    var start = addDays(cloneDate(date), -((date.getDay() - opt('firstDay') + 7) % 7));
     var end = addDays(cloneDate(start), 7);
     var visStart = cloneDate(start);
     var visEnd = cloneDate(end);
@@ -5394,8 +5422,8 @@ function listView(element, calendar) {
                     list_events.push(end_event);
                   }
                 }else{
-                  if (!event.recurring)
-                      event.title = begin_of + title;
+                  if (!event.recurring && (event.start != event.end))
+                    event.title = begin_of + title;
 
                   // caso contrário, lista o evento "normal"
                   list_events.push(event);

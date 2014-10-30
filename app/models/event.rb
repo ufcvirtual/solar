@@ -28,7 +28,7 @@ class Event < ActiveRecord::Base
       title: respond_to?(:name) ? name : title, # o fullcalendar espera receber title
       description: (respond_to?(:enunciation) ? enunciation : description) || "",
       start: schedule.start_date,
-      :end => schedule.end_date,
+      :end => schedule.end_date, # || academic_allocations.map(&:allocation_tag).first.offer.end_date,
       allDay: not(has_start_hour), # se não tiver hora de inicio e fim é do dia todo
       recurring: (has_start_hour and has_end_hour), # se tiver hora de inicio e fim, é recorrente de todo dia no intervalo
       start_hour: (has_start_hour ? start_hour : nil),
@@ -44,14 +44,13 @@ class Event < ActiveRecord::Base
       schedule_type: self.class.to_s.underscore,
       name: name_portlet(options),
       description: (respond_to?(:enunciation) ? enunciation : description) || "",
-      start_date: schedule.start_date,
-      end_date: schedule.end_date
+      start_date: schedule.start_date.to_date,
+      end_date: schedule.end_date.try(:to_date)
     }
   end
 
   def self.format_date(date_time)
     date_time.to_formatted_s(:db)
-    # Time.at(date_time.to_i).to_formatted_s(:db)
   end
 
   def verify_type
@@ -100,6 +99,7 @@ class Event < ActiveRecord::Base
     [
       case
         when (options.nil? or options[:date].nil?); nil
+        when schedule.start_date.to_date == schedule.end_date.to_date; nil
         when options[:date].to_date == schedule.start_date.to_date; I18n.t("agendas.begin_of")
         when options[:date].to_date == schedule.end_date.to_date; I18n.t("agendas.end_of")
         else nil

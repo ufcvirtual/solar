@@ -23,12 +23,12 @@ $(function(){
   $("#schedule_event_type_event").change(function(){
     if($(this).val() == "<%= Presential_Test %>" || $(this).val() == "<%= Presential_Meeting %>" || $(this).val() == "<%= WebConferenceLesson %>"){
       $(".schedule_event_place").parent().show();
-      $(".schedule_event_start_hour").parent().show();
-      $(".schedule_event_end_hour").parent().show();
+      $(".schedule_event_start_hour").show();
+      $(".schedule_event_end_hour").show();
     }else{
       $(".schedule_event_place").parent().hide();
-      $(".schedule_event_start_hour").parent().hide();
-      $(".schedule_event_end_hour").parent().hide();
+      $(".schedule_event_start_hour").hide();
+      $(".schedule_event_end_hour").hide();
     }
 
   });
