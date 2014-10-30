@@ -971,12 +971,12 @@ function EventManager(options, _sources) {
             $(events).each(function (i) { 
               var event = $(this)[0];
               if(event.recurring == true){
-                var start_date = new Date(event.start);
-                var end_date = new Date(event.end);
+                var start_date = new moment(event.start)._d;
+                var end_date = new moment(event.end)._d;
                 var start_hour = event.start_hour.split(":");
                 var end_hour = event.end_hour.split(":");
                 // compara as datas sem considerar o horário
-                while(getFormattedDate(start_date) <=  getFormattedDate(end_date)){
+                while(getFormattedDate(start_date) <= getFormattedDate(end_date)){
                   // cria novos eventos
                   var new_event = { 
                     "id": event.id,

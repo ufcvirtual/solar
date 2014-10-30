@@ -10,12 +10,12 @@ class Event < ActiveRecord::Base
   # recupera os eventos que vão iniciar "de hoje em diante" ou já começaram, mas ainda vão terminar
   scope :after, lambda {|today, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
     ((schedules.start_date >= ?) OR (schedules.end_date >= ?)) AND allocation_tags.id IN (?)", 
-    today.to_date.to_formatted_s(:db), today.to_date.to_formatted_s(:db), allocation_tags] }}
+    format_date(today.to_date), format_date(today.to_date), allocation_tags] }}
 
   # recupera os eventos que englobam o dia de hoje
   scope :of_today, lambda {|day, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
     (? BETWEEN schedules.start_date AND schedules.end_date) AND allocation_tags.id IN (?)", 
-    day.to_date.to_formatted_s(:db), allocation_tags] }}
+    format_date(day.to_date), allocation_tags] }}
 
   scope :by_ats, lambda {|allocation_tags| {joins: [academic_allocations: :allocation_tag], conditions: ["allocation_tags.id IN (?)", allocation_tags] }}
 
