@@ -106,16 +106,16 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_not_nil assigns(:allocations)
 
-    assert_select "table tbody tr:nth-child(1)" do
+    assert_select "table tbody tr:nth-child(2)" do
       assert_select 'td:nth-child(1)', {html: "Aluno 3"}
       assert_select 'td:nth-child(4)', {html: "Prof. Titular"}
-      assert_select 'button', {value: "Ativar"}
+      assert_select 'input.btn', {value: "Ativar"}
     end
 
-    assert_select "table tbody tr:nth-child(2)" do
+    assert_select "table tbody tr:nth-child(1)" do
       assert_select 'td:nth-child(1)', {html: "Professor"}
       assert_select 'td:nth-child(4)', {html: "Prof. Titular"}
-      assert_select 'button', {value: "Desativar"}
+      assert_select 'input.btn', {value: "Desativar"}
     end
   end
 
