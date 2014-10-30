@@ -14,6 +14,13 @@ CKEDITOR.editorConfig = function (config) {
     config.extraPlugins = 'eqneditor,oembed,smiley';
 };
 
+CKEDITOR.on('instanceReady', function (ev) {
+   // Prevent drag-and-drop.
+   ev.editor.document.on('drop', function (ev) {
+      ev.data.preventDefault(true);
+   });
+});
+
 function form_post_reset_parameters() {
   var action = $('form#new_post_form').attr('action-default');
   $('form#new_post_form').attr('action', action);
