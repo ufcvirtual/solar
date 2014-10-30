@@ -10,12 +10,12 @@ class Event < ActiveRecord::Base
   # recupera os eventos que vão iniciar "de hoje em diante" ou já começaram, mas ainda vão terminar
   scope :after, lambda {|today, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
     ((schedules.start_date >= ?) OR (schedules.end_date >= ?)) AND allocation_tags.id IN (?)", 
-    today, today, allocation_tags] }}
+    today.to_date.to_formatted_s(:db), today.to_date.to_formatted_s(:db), allocation_tags] }}
 
   # recupera os eventos que englobam o dia de hoje
   scope :of_today, lambda {|day, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
     (? BETWEEN schedules.start_date AND schedules.end_date) AND allocation_tags.id IN (?)", 
-    day, allocation_tags] }}
+    day.to_date.to_formatted_s(:db), allocation_tags] }}
 
   scope :by_ats, lambda {|allocation_tags| {joins: [academic_allocations: :allocation_tag], conditions: ["allocation_tags.id IN (?)", allocation_tags] }}
 
@@ -50,7 +50,8 @@ class Event < ActiveRecord::Base
   end
 
   def self.format_date(date_time)
-    Time.at(date_time.to_i).to_formatted_s(:db)
+    date_time.to_formatted_s(:db)
+    # Time.at(date_time.to_i).to_formatted_s(:db)
   end
 
   def verify_type
@@ -84,15 +85,15 @@ class Event < ActiveRecord::Base
   end
 
   def self.all_descendants(allocation_tags_ids, user, list = false, params = {})
-      Event.descendants.map{ |event| 
-        limited = event.limited(user, allocation_tags_ids) if event.respond_to?(:limited)
-        events = if list
-          event.scoped.after(Date.today, allocation_tags_ids) 
-        else
-          event.scoped.between(params['start'], params['end'], allocation_tags_ids)  
-        end
-        (limited.nil? ? events : (limited & events))
-      }.uniq
+    Event.descendants.map{ |event| 
+      limited = event.limited(user, allocation_tags_ids) if event.respond_to?(:limited)
+      events = if list
+        event.scoped.after(Date.today, allocation_tags_ids) 
+      else
+        event.scoped.between(Time.at(params['start'].to_i), Time.at(params['end'].to_i), allocation_tags_ids)  
+      end
+      (limited.nil? ? events : (limited & events))
+    }.uniq
   end
 
   def name_portlet(options={})

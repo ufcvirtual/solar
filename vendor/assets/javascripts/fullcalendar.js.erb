@@ -23,9 +23,7 @@
 (function($, undefined) {
 
   function getFormattedDate(date){
-    // return new Date(date).toLocaleFormat("%Y-%m-%d"); // toLocateFormat é específico do Firefox e não é suportado por outros navegadores
-    return new moment(date).format("YYYY MM DD");
-    // return new Date(date).toLocaleDateString();
+    return new moment(date).format("YYYY-MM-DD");
   }
 
 var defaults = {
@@ -1356,7 +1354,7 @@ function zeroDate() { // returns a Date with time 00:00:00 and dateOfMonth=1
 
 function skipWeekend(date, inc, excl) {
   inc = inc || 1;
-  while (!date.getDay() || (excl && date.getDay()==1 || !excl && date.getDay()==6)) {
+  while (!date._d.getDay() || (excl && date._d.getDay()==1 || !excl && date._d.getDay()==6)) {
     addDays(date, inc);
   }
   return date;
@@ -1369,17 +1367,17 @@ function dayDiff(d1, d2) { // d1 - d2
 
 
 function setYMD(date, y, m, d) {
-  if (y !== undefined && y != date.getFullYear()) {
-    date.setDate(1);
-    date.setMonth(0);
-    date.setFullYear(y);
+  if (y !== undefined && y != date._d.getFullYear()) {
+    date._d.setDate(1);
+    date._d.setMonth(0);
+    date._d.setFullYear(y);
   }
-  if (m !== undefined && m != date.getMonth()) {
-    date.setDate(1);
-    date.setMonth(m);
+  if (m !== undefined && m != date._d.getMonth()) {
+    date._d.setDate(1);
+    date._d.setMonth(m);
   }
   if (d !== undefined) {
-    date.setDate(d);
+    date._d.setDate(d);
   }
 }
 
@@ -1417,9 +1415,9 @@ function parseISO8601(s, ignoreTimezone) { // ignoreTimezone defaults to false
   if (!m) {
     return null;
   }
-  var date = new Date(m[1], 0, 1);
+  var date = new moment(new Date(m[1], 0, 1))._d;
   if (ignoreTimezone || !m[14]) {
-    var check = new Date(m[1], 0, 1, 9, 0);
+    var check = new moment(new Date(m[1], 0, 1, 9, 0))._d;
     if (m[3]) {
       date.setMonth(m[3] - 1);
       check.setMonth(m[3] - 1);
@@ -2000,7 +1998,7 @@ function MonthView(element, calendar) {
   function render(date, delta) {
     if (delta) {
       addMonths(date, delta);
-      date.setDate(1);
+      date._d.setDate(1);
     }
     var start = cloneDate(date, true);
     start.setDate(1);
@@ -2053,7 +2051,7 @@ function BasicWeekView(element, calendar) {
     if (delta) {
       addDays(date, delta * 7);
     }
-    var start = addDays(cloneDate(date), -((date.getDay() - opt('firstDay') + 7) % 7));
+    var start = addDays(cloneDate(date), -((date._d.getDay() - opt('firstDay') + 7) % 7));
     var end = addDays(cloneDate(start), 7);
     var visStart = cloneDate(start);
     var visEnd = cloneDate(end);
@@ -2552,7 +2550,7 @@ function BasicView(element, calendar, viewName) {
   function dateCell(date) {
     return {
       row: Math.floor(dayDiff(date, t.visStart) / 7),
-      col: dayOfWeekCol(date.getDay())
+      col: dayOfWeekCol(date._d.getDay())
     };
   }
   
@@ -2758,7 +2756,7 @@ function AgendaWeekView(element, calendar) {
     if (delta) {
       addDays(date, delta * 7);
     }
-    var start = addDays(cloneDate(date), -((date.getDay() - opt('firstDay') + 7) % 7));
+    var start = addDays(cloneDate(date), -((date._d.getDay() - opt('firstDay') + 7) % 7));
     var end = addDays(cloneDate(start), 7);
     var visStart = cloneDate(start);
     var visEnd = cloneDate(end);
@@ -3260,8 +3258,8 @@ function AgendaView(element, calendar, viewName) {
       if (rowMatch) {
         var mins = parseInt(rowMatch[1]) * opt('slotMinutes');
         var hours = Math.floor(mins/60);
-        date.setHours(hours);
-        date.setMinutes(mins%60 + minMinute);
+        date._d.setHours(hours);
+        date._d.setMinutes(mins%60 + minMinute);
         trigger('dayClick', dayBodyCells[col], date, false, ev);
       }else{
         trigger('dayClick', dayBodyCells[col], date, true, ev);
@@ -3387,7 +3385,7 @@ function AgendaView(element, calendar, viewName) {
   function dateCell(date) { // "cell" terminology is now confusing
     return {
       row: Math.floor(dayDiff(date, t.visStart) / 7),
-      col: dayOfWeekCol(date.getDay())
+      col: dayOfWeekCol(date._d.getDay())
     };
   }
   
@@ -3585,7 +3583,7 @@ function AgendaView(element, calendar, viewName) {
   
   
   function reportDayClick(date, allDay, ev) {
-    trigger('dayClick', dayBodyCells[dayOfWeekCol(date.getDay())], date, allDay, ev);
+    trigger('dayClick', dayBodyCells[dayOfWeekCol(date._d.getDay())], date, allDay, ev);
   }
   
   

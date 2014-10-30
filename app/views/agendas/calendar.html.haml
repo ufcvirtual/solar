@@ -21,7 +21,7 @@
 = stylesheet_link_tag "fullcalendar.css"
 
 :javascript
-  var date = new Date("#{(Date.today)}");
+  var date = new moment();//.format("YYYY-MM-DD");
   var monthNames      = '#{t("date.month_names").join(",")}'.split(",").filter(Boolean); // retirar strings vazias
   var monthNamesShort = '#{t("date.abbr_month_names").join(",")}'.split(",").filter(Boolean);
   var dayNames        = '#{t("date.day_names").join(",")}'.split(",");
