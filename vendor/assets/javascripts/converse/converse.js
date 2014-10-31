@@ -12620,8 +12620,9 @@ return parser;
                     var groups = con.groups;
                     var contacts = con.ListView.el.childNodes;
                     for(index = 2; index < contacts.length; index++){
-                       var id = contacts[index].childNodes[0].id;
-                       var rosterGroups = con.roster._byId[id].groups;
+                      var id = contacts[index].childNodes[0].id;
+                      var rosterGroups = con.roster._byId[id].groups;
+                      contacts[index].childNodes[0].title = "";
                       for(indexGroups in rosterGroups)
                         contacts[index].childNodes[0].title = contacts[index].childNodes[0].title + rosterGroups[indexGroups].split("_")[1] + " _ " + rosterGroups[indexGroups].split("_")[2] + "\n";
                     }
