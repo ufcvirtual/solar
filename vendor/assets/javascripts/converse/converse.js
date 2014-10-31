@@ -12591,7 +12591,9 @@ return parser;
                             for(user in groups[index]){
                                 var view = con.rosterview.addRosterItemView(groups[index][user]).render(groups[index][user]);
                                 con.views["'"+view.cid+"'"] = view;
+                                view.el.title = view.model.groupsString;
                                 dl.appendChild(view.el);
+                                
                             }
                             this.sortRoster(dl,groups[index][user].attributes.chat_status);
                             det.id = index;
@@ -13975,6 +13977,7 @@ return parser;
                                 title = title + group.split("_")[1] + " _ " + group.split("_")[2];
                         }
                         item.groups   = rosterItem.groups;
+                        item.groupsString = title;
                         view.el.title = title;
                         con.qtd_rosters_with_groups ++;
                         clearTimeout(id);
