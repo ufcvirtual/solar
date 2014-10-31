@@ -10,7 +10,7 @@ module V1
         def verify_user_permission_on_discussion_and_set_obj(permission) # permission = [:index, :create, ...]
           @discussion = Discussion.find(params[:id])
           @group      = Group.find(params[:group_id])
-          @profile_id = current_user.profiles_with_access_on(permission, :posts, @group.allocation_tag.id, true).first
+          @profile_id = current_user.profiles_with_access_on(permission, :posts, @group.allocation_tag.related, true).first
 
           raise ActiveRecord::RecordNotFound if @profile_id.nil? or not(current_user.groups(@profile_id, Allocation_Activated).include?(@group))
         end
