@@ -12617,15 +12617,6 @@ return parser;
                     cookie_im.Groups = false;
                     divGroups.style.display = "none";
                     rosters.style.display = "block";
-                    var groups = con.groups;
-                    var contacts = con.ListView.el.childNodes;
-                    for(index = 2; index < contacts.length; index++){
-                      var id = contacts[index].childNodes[0].id;
-                      var rosterGroups = con.roster._byId[id].groups;
-                      contacts[index].childNodes[0].title = "";
-                      for(indexGroups in rosterGroups)
-                        contacts[index].childNodes[0].title = contacts[index].childNodes[0].title + rosterGroups[indexGroups].split("_")[1] + " _ " + rosterGroups[indexGroups].split("_")[2] + "\n";
-                    }
                 }
 
                 var m = $(".menu")[0];
@@ -13984,15 +13975,13 @@ return parser;
                                 title = title + group.split("_")[1] + " _ " + group.split("_")[2];
                         }
                         item.groups   = rosterItem.groups;
-                        contactRoster = view.$el[0].childNodes[0];
-                        contactRoster.title = title;
+                        view.el.title = title;
                         con.qtd_rosters_with_groups ++;
                         clearTimeout(id);
                       }      
                     }
                       
                   },10);  
-
                     
                 //atualiza e reordena clones
                 var id2 = setInterval(function(){
