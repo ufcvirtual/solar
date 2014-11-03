@@ -15,9 +15,9 @@ class CurriculumUnitsController < ApplicationController
     authorize! :show, CurriculumUnit, on: allocation_tags, read: true
 
     @messages = Message.user_inbox(current_user.id, @allocation_tag_id, only_unread = true)
-    @lessons_modules  = LessonModule.to_select(allocation_tags, current_user)
+    @lessons_modules  = current_user.profiles_with_access_on("show", "lessons", allocation_tags).empty? ? [] : LessonModule.to_select(allocation_tags, current_user)
     @discussion_posts = list_portlet_discussion_posts(allocation_tags.join(', '))
-    @scheduled_events = Agenda.events(allocation_tags, nil, true)
+    @scheduled_events = current_user.profiles_with_access_on("calendar", "agendas", allocation_tags).empty? ? [] : Agenda.events(allocation_tags, nil, true)
 
     @researcher = current_user.is_researcher?(allocation_tags)
   end

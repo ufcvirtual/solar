@@ -16,7 +16,10 @@ class AgendasController < ApplicationController
   end
 
   def index
+    authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
     @schedules = Agenda.events(@allocation_tags_ids, params[:date])
+  rescue CanCan::AccessDenied
+    @schedules = []
   end
 
   def list
