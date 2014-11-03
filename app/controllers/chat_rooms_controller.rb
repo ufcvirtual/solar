@@ -103,7 +103,8 @@ class ChatRoomsController < ApplicationController
     authorize! :show, ChatRoom, on: [allocation_tag_id]
 
     all_participants = @chat_room.participants.where(academic_allocations: {allocation_tag_id: allocation_tag_id})
-    raise CanCan::AccessDenied if (all_participants.any? and all_participants.joins(:user).where(users: {id: current_user}).empty?) and not(ChatRoom.responsible?(allocation_tag_id, current_user.id))
+    @researcher = current_user.is_researcher?(AllocationTag.find(allocation_tag_id).related)
+    raise CanCan::AccessDenied if (all_participants.any? and all_participants.joins(:user).where(users: {id: current_user}).empty?) and not(ChatRoom.responsible?(allocation_tag_id, current_user.id)) and not(@researcher)
 
     @messages = @chat_room.messages.joins(allocation: [:user, :profile])
       .where('academic_allocations.allocation_tag_id = ? AND message_type = ?', allocation_tag_id, 1)

@@ -1211,6 +1211,7 @@ pt_BR:
   uri_too_long: "Quantidade de informações muito grande. Diminua a quantidade de dados passados"
   # Mensagem de erro ao não conseguir construir tela
   cant_build_page: "Não foi possível acessar a página desejada"
+  hidden_info: Informação ocultada
 
   # Menu
   menu_content: Conteúdo

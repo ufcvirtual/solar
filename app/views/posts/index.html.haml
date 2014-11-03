@@ -105,7 +105,7 @@
       // recover grandparent if has parent, but it doesn't exists at view (so it must render all tree of posts) and isn't list view and it is at first page
       var grandparent  = (data.parent_id != null && !parent_table.length && !display_list && (1 == parseInt("#{escape_once(@current_page)}")));
 
-      $.get("#{discussion_post_path(@discussion.id, ':id')}".replace(':id', data.post_id), {new_post: true, grandparent: grandparent}, function(data2){
+      $.get("#{discussion_post_path(@discussion.id, ':id', researcher: @researcher)}".replace(':id', data.post_id), {new_post: true, grandparent: grandparent}, function(data2){
         if (!!post_table.length) // if post exists
           post_table.html(data2);
         else

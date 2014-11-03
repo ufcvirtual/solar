@@ -159,6 +159,12 @@ class User < ActiveRecord::Base
     (not allocations.joins(:profile).where("cast(types & #{Profile_Type_Editor} as boolean) AND allocations.status = #{Allocation_Activated}").empty?)
   end
 
+  # if user is only researcher, must not see any information about users
+  def is_researcher?(allocation_tags_ids)
+    all = allocations.where(allocation_tag_id: allocation_tags_ids)
+    (all.map(&:profile).uniq.size == 1 and all.where(profile_id: ResearcherProfile).any?)
+  end
+
   ## Na criação, o usuário recebe o perfil de usuario basico
   def basic_profile_allocation
     Allocation.create profile_id: Profile.find_by_types(Profile_Type_Basic).id, status: Allocation_Activated, user_id: self.id

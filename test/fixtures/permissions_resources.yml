@@ -1782,3 +1782,35 @@ admin_resp:
   profile_id: 6
   resource_id: 175
   per_id: false
+
+## researcher
+
+researcher1:
+  profile_id: 26
+  resource_id: 11
+  per_id: false
+
+researcher2:
+  profile_id: 26
+  resource_id: 133
+  per_id: false
+
+researcher3:
+  profile_id: 26
+  resource_id: 144
+  per_id: false
+
+researcher4:
+  profile_id: 26
+  resource_id: 22
+  per_id: false
+
+researcher5:
+  profile_id: 26
+  resource_id: 143
+  per_id: false
+
+researcher6:
+  profile_id: 26
+  resource_id: 45
+  per_id: false

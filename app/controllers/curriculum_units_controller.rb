@@ -18,6 +18,8 @@ class CurriculumUnitsController < ApplicationController
     @lessons_modules  = LessonModule.to_select(allocation_tags, current_user)
     @discussion_posts = list_portlet_discussion_posts(allocation_tags.join(', '))
     @scheduled_events = Agenda.events(allocation_tags, nil, true)
+
+    @researcher = current_user.is_researcher?(allocation_tags)
   end
 
   def index

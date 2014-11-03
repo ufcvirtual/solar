@@ -8,11 +8,11 @@
 %table.forum_post{border:"0", cellpadding:"0", cellspacing:"0", id: "#{post.id}"}
   %tr
     %td.forum_post_icon{rowspan: 3, class: new_post_class}
-      = image_tag(user.photo.url(:forum), alt: t(:mysolar_alt_img_user) + ' ' + user.nick)
+      = (@researcher ? image_tag("no_image.png", size: "40x40") : image_tag(user.photo.url(:forum), alt: t(:mysolar_alt_img_user) + ' ' + user.nick))
     %td.forum_post_head{class: new_post_class}
       .forum_post_author
         .forum_participant_nick{alt:"#{user.nick}"}
-          = user.nick
+          = ( @researcher ? t(:hidden_info) : user.nick )
           - unless user_at_class
             %span{:"data-tooltip" => t(".moved_allocation")}= content_tag :i, nil, class: "icon-warning moved_allocation"
         .forum_participant_profile

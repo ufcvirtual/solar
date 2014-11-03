@@ -90,3 +90,8 @@ tutor_presencial_uab:
   id: 19
   name: "Tutor Presencial UAB"
   types: 2
+
+pesquisador:
+  id: 26
+  name: "Pesquisador"
+  types: 0

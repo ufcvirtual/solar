@@ -14,9 +14,9 @@
           - user = message.user
           %tr.lines
             %td.profile= "(" + message.profile_name + ")"
-            %td.user{:'data-tooltip' => message.user_name}= message.user_nick
-            %td{:'data-tooltip' => user.try(:name)}= user.try(:nick) || t(".all")
-            %td.message= message.text.html_safe
+            %td.user{:'data-tooltip' => (@researcher ? t(:hidden_info) : message.user_name)}= (@researcher ? t(:hidden_info) : message.user_nick)
+            %td{:'data-tooltip' => (@researcher ? t(:hidden_info) : user.try(:name))}= (@researcher ? t(:hidden_info) : user.try(:nick) ) || t(".all")
+            %td.message= message.text.try(:html_safe)
             %td= l(message.created_at.to_datetime, format: :normal)
             %td= l(message.created_at.to_datetime, format: :clock_time)
 

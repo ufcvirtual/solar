@@ -11,12 +11,14 @@
       .block_right
         - if @responsible
           - @responsible.each do |resp|
-            .participant{title: resp.name + " (" + resp.profile_name + ") "}
-              - if resp.profile_name.length > 20
-                = [resp.name, " (", resp.profile_name, ") "].join.slice(0..55) + '...'
+            - name, profile = (@researcher ? t(:hidden_info) : resp.name), resp.profile_name
+            .participant{title: name + " (" + profile + ") "}
+              - if profile.length > 20
+                = [name, " (", profile, ") "].join.slice(0..55) + '...'
               - else
-                = [resp.name, " (", resp.profile_name, ") "].join
-              %span= link_to (content_tag(:i, nil, class: 'icon-mail participants_messages')), new_message_path(user_id: resp.id, bread: 'menu_messages'), class: 'can-update-menu', 'data-menu-bread' => 'menu_messages'
+                = [name, " (", profile, ") "].join
+              - unless @researcher
+                %span= link_to (content_tag(:i, nil, class: 'icon-mail participants_messages')), new_message_path(user_id: resp.id, bread: 'menu_messages'), class: 'can-update-menu', 'data-menu-bread' => 'menu_messages'
 
   = render "lesson_portlet"
 
