@@ -66,9 +66,9 @@ editor_uab:
   name: "Editor UAB"
   types: 16
 
-transicao_didatica:
+lesson_visitor:
   id: 15
-  name: "Transicao didatica"
+  name: "Visitante de aulas"
   types: 0
 
 financeiro:
@@ -84,11 +84,6 @@ prof_titular_uab:
 tutor_distancia_uab:
   id: 18
   name: "Tutor a Distancia UAB"
-  types: 2
-
-tutor_presencial_uab:
-  id: 19
-  name: "Tutor Presencial UAB"
   types: 2
 
 pesquisador:

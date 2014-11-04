@@ -16,10 +16,10 @@ class MessagesController < ApplicationController
   end
 
   def new
+    authorize! :index, Message, on: [@allocation_tag_id  = active_tab[:url][:allocation_tag_id]]
     @message = Message.new
     @message.files.build
 
-    @allocation_tag_id  = active_tab[:url][:allocation_tag_id]
     unless @allocation_tag_id.nil?
       allocation_tag = AllocationTag.find(@allocation_tag_id)
       @group         = allocation_tag.group

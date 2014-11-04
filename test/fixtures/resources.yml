@@ -921,3 +921,9 @@ res182:
   controller: 'allocations'
   action: 'manage_profiles'
   description: 'Gerenciar alocações de perfis'
+
+res183:
+  id: 183
+  controller: "users"
+  action: "cant_see_info"
+  description: "Não pode visualizar informação dos usuários"

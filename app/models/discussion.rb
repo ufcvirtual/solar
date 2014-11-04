@@ -128,10 +128,6 @@ class Discussion < Event
     latest_posts(allocation_tags_ids).first.try(:updated_at)
   end
 
-
-  ## class methods
-
-
   def self.posts_count_by_user(student_id, allocation_tag_id)
     joins(:schedule, academic_allocations: :allocation_tag)
       .joins("LEFT JOIN discussion_posts AS dp ON dp.academic_allocation_id = academic_allocations.id AND dp.user_id = #{student_id}")

@@ -161,8 +161,9 @@ class User < ActiveRecord::Base
 
   # if user is only researcher, must not see any information about users
   def is_researcher?(allocation_tags_ids)
-    all = allocations.where(allocation_tag_id: allocation_tags_ids)
-    (all.map(&:profile).uniq.size == 1 and all.where(profile_id: ResearcherProfile).any?)
+    all = allocations.where(allocation_tag_id: allocation_tags_ids).map(&:profile).uniq.size
+    researcher_profiles = profiles_with_access_on("cant_see_info", "users", allocation_tags_ids).count
+    (all == researcher_profiles)
   end
 
   ## Na criação, o usuário recebe o perfil de usuario basico

@@ -1398,11 +1398,6 @@ pbsc10:
   resource_id: 55
   per_id: false
 
-# msgs
-pbsc11:
-  profile_id: 12
-  resource_id: 25
-
 ########################
 #### Aluno  Monitor ####
 ########################
@@ -1814,3 +1809,58 @@ researcher6:
   profile_id: 26
   resource_id: 45
   per_id: false
+
+researcher7:
+  profile_id: 26
+  resource_id: 183
+  per_id: false
+
+# mensagens
+
+message1:
+  profile_id: 1
+  resource_id: 25
+
+message2:
+  profile_id: 2
+  resource_id: 25
+
+message3:
+  profile_id: 3
+  resource_id: 25
+
+message4:
+  profile_id: 4
+  resource_id: 25
+
+message5:
+  profile_id: 7
+  resource_id: 25
+
+message6:
+  profile_id: 8
+  resource_id: 25
+
+message7:
+  profile_id: 9
+  resource_id: 25
+
+message8:
+  profile_id: 10
+  resource_id: 25
+
+message9:
+  profile_id: 11
+  resource_id: 25
+
+message10:
+  profile_id: 13
+  resource_id: 25
+
+message11:
+  profile_id: 17
+  resource_id: 25
+
+message12:
+  profile_id: 18
+  resource_id: 25

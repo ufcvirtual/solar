@@ -11,8 +11,7 @@ class PostsController < ApplicationController
   ## GET /discussions/1/posts
   ## GET /discussions/1/posts/20120217/[news, history]/order/asc/limit/10
   def index
-    @discussion = Discussion.find(params[:discussion_id])
-    @user = current_user
+    @discussion, @user = Discussion.find(params[:discussion_id]), current_user
 
     @allocation_tags    = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.map(&:id) # procurar problema no mobilis, ele nao envia a allocation tag da turma
     allocation_tags_ids = [active_tab[:url][:allocation_tag_id], AllocationTag.find_by_offer_id(active_tab[:url][:id]).id]
