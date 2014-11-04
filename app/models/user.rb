@@ -505,6 +505,14 @@ class User < ActiveRecord::Base
     allocations.where(query).update_all(status: Allocation_Cancelled)
   end
 
+  def info(method, researcher = false)
+    (researcher ? I18n.t(:hidden_info) : try(method.to_sym))
+  end
+
+  # def info_photo(researcher = false)
+    # (researcher ? ["no_image.png", size: "40x40"] : [photo.url(:forum), alt: [t(:mysolar_alt_img_user), nick].join(" "))])
+  # end
+
   private
 
     def login_differ_from_cpf

@@ -12,7 +12,7 @@
         - if @responsible
           - can_send_message = (can? :index, Message, on: [@allocation_tag_id])
           - @responsible.each do |resp|
-            - name, profile = (@researcher ? t(:hidden_info) : resp.name), resp.profile_name
+            - name, profile = resp.info(:name, @researcher), resp.profile_name
             .participant{title: name + " (" + profile + ") "}
               = truncate( [name, " (", profile, " )"].join, length: 55, omission: '...' )
               - if can_send_message
