@@ -52,10 +52,6 @@ class GroupAssignment < ActiveRecord::Base
     self.delete
   end
 
-
-  ## class methods
-
-
   def self.by_user_id(user_id, academic_allocation_id)
     joins(:group_participants).where(academic_allocation_id: academic_allocation_id, group_participants: {user_id: user_id}).first
   end

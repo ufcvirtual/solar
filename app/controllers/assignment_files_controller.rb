@@ -10,7 +10,8 @@ class AssignmentFilesController < ApplicationController
   layout false
 
   def new
-    sent_assignment  = SentAssignment.where(user_id: current_user.id, group_assignment_id: GroupAssignment.by_user_id(current_user.id, @ac.id), academic_allocation_id: @ac.id).first_or_create
+    group = GroupAssignment.by_user_id(current_user.id, @ac.id)
+    sent_assignment  = SentAssignment.where(user_id: (group.nil? ? current_user.id : nil), group_assignment_id: group.try(:id), academic_allocation_id: @ac.id).first_or_create
     @assignment_file = AssignmentFile.new sent_assignment_id: sent_assignment.id
   end
 
