@@ -12,6 +12,8 @@ class SentAssignment < ActiveRecord::Base
   has_many :assignment_comments, dependent: :destroy
   has_many :assignment_files, dependent: :delete_all
 
+  validates :user_id, uniqueness: { scope: :group_assignment_id }
+
   before_save :if_group_assignment_remove_user_id
 
   validates :grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true}
