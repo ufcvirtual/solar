@@ -1,39 +1,38 @@
-.list_designates
-  = link_to t(:back), indication_users_administrations_path, {class: "btn"}
-  .block_wrapper.users
-    .block_title
-      %h2= t(".designate_users")
+= link_to t(:back), indication_users_administrations_path, {class: "btn btn_admin"}
+.block_wrapper.users
+  .block_title
+    %h2= t(".designate_users")
 
-    .block_content.allocations_list
-      - unless @allocations.nil? or @allocations.empty?
-        %table.tb_list
-          %thead
-            %tr.lines
-              %th= t(".name")
-              %th{style: 'width:80px'}= t(".cpf")
-              %th{style: 'width:200px'}= t(".email")
-              %th{style: 'width:120px'}= t(".profile")
-              %th{style: 'width: 80px'}= t(".designated_on")
-              %th{style: 'width: 80px'}= t(".designated_by")
-              %th.no_sort
-          %tbody
-            - @allocations.each do |allocation|
-              = render partial: "show", locals: {allocation: allocation}
-      - else
-        .block_content_text_list.text_none= t(".no_allocated_user")
+  .block_content.allocations_list
+    - unless @allocations.nil? or @allocations.empty?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th= t(".name")
+            %th{style: 'width:80px'}= t(".cpf")
+            %th{style: 'width:200px'}= t(".email")
+            %th{style: 'width:120px'}= t(".profile")
+            %th{style: 'width: 80px'}= t(".designated_on")
+            %th{style: 'width: 80px'}= t(".designated_by")
+            %th.no_sort
+        %tbody
+          - @allocations.each do |allocation|
+            = render partial: "show", locals: {allocation: allocation}
+    - else
+      .block_content_text_list.text_none= t(".no_allocated_user")
 
 
-  .block_wrapper.search
-    .block_title
-      %h2= t(".new_designate")
+.block_wrapper.search
+  .block_title
+    %h2= t(".new_designate")
 
-    .block_content_toolbar
-      %label{for: "text_search"}= t(".user")
-      = text_field_tag "text_search", @text_search
-      = button_tag t(".search"), type: :button, class: "btn btn_default", id: "search_user", alt: t(".search_users")
+  .block_content_toolbar
+    %label{for: "text_search"}= t(".user")
+    = text_field_tag "text_search", @text_search
+    = button_tag t(".search"), type: :button, class: "btn btn_default", id: "search_user", alt: t(".search_users")
 
-    .block_content
-      #list_users
+  .block_content
+    #list_users
 
 = javascript_include_tag "tablesorter", "allocations"
 
@@ -47,6 +46,8 @@
         return false;
       }
     });
+
+    $('.edition_items .btn_admin').hide();
 
     $("#search_user").click(function() {
       var url_for = "#{search_users_allocations_path(allocation_tags_ids: @allocation_tags_ids, admin: @admin)}";
