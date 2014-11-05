@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :validatable,
     :recoverable, :encryptable, :token_authenticatable # autenticacao por token
 
-  before_save :ensure_authentication_token!, :downcase_username
+  before_save :ensure_authentication_token!, :downcase_username, :downcase_email
 
   @has_special_needs
 
@@ -173,6 +173,10 @@ class User < ActiveRecord::Base
 
   def downcase_username
     self.username = self.username.downcase
+  end
+
+  def downcase_email
+    self.email = self.email.downcase
   end
 
   def status
@@ -470,7 +474,7 @@ class User < ActiveRecord::Base
       nick: (user_data[7].nil? ? ([user_data[2].split(" ")[0], user_data[2].split(" ")[1]].join(" ")) : user_data[7]), telephone: user_data[18],
       special_needs: (user_data[19].downcase == "nenhuma" ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13],
       address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]),
-      encrypted_password: user_data[6], email: (user_data[8].blank? ? [user_data[0], MODULO_ACADEMICO["tmp_email_provider"]].join("@") : user_data[8]), integrated: true} #, enrollment_code: user_data[19] # user is set as integrated
+      encrypted_password: user_data[6], email: (user_data[8].blank? ? [user_data[0].downcase, MODULO_ACADEMICO["tmp_email_provider"]].join("@") : user_data[8]), integrated: true} #, enrollment_code: user_data[19] # user is set as integrated
   end
 
   def self.connect_and_import_user(cpf, client = nil)

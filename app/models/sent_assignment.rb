@@ -12,7 +12,7 @@ class SentAssignment < ActiveRecord::Base
   has_many :assignment_comments, dependent: :destroy
   has_many :assignment_files, dependent: :delete_all
 
-  validates :user_id, uniqueness: { scope: :group_assignment_id }
+  validates :user_id, uniqueness: { scope: [:group_assignment_id, :academic_allocation_id] }
 
   before_save :if_group_assignment_remove_user_id
 

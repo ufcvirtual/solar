@@ -50,6 +50,7 @@ module V1
             end
             {id: uc.id, course_id: uc.course.try(:id)}
           rescue => error
+            ApplicationAPI.logger puts "POST curriculum_unit: #{error}"
             error!(error, 422)
           end
         end
