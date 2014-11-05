@@ -11108,10 +11108,10 @@ return parser;
         return this;
     };
     var converse = {};
-    con=converse;
+    con = converse;
     converse.initialize = function (settings, callback) {
         var converse = this;
-        con=converse;
+        con = converse;
         // Default configuration values
         // ----------------------------
         this.allow_contact_requests = true;
@@ -12565,6 +12565,8 @@ return parser;
                 var divGroups = $("#groups")[0];
                 getCookie();
                 getCookieGroups();
+                var m = $(".menu")[0];
+                m.style.display="none";
                 if(orderGroups.checked){
                     cookie_im.Groups = true;
                     rosters.style.display = "none";
@@ -12573,14 +12575,24 @@ return parser;
                         divGroups.style.display = "block";
                     }
                     else{
+                        var divLoading = document.createElement("div");
+                        divLoading.id = "divLoading";
+                        var imgLoad = document.createElement("img");
+                        imgLoad.id = "imgLoad";
+                        imgLoad.src = imageLoading;
+                        divLoading.appendChild(imgLoad);
+                        $("#users-im")[0].appendChild(divLoading);
+
                         var div = document.createElement("div");
                         div.id = "groups";
                         box.appendChild(div);
                         divGroups = $("#groups")[0];
+                        divGroups.style.display = "none";
                         divGroups.innerHTML = "";
                         //Cria grupos
                         if(!con.views)
                           con.views = {};
+                        con.GroupsView = this;
                         for(index in groups){                        
                             var det = document.createElement("details");
                             var sum = document.createElement("summary");
@@ -12593,7 +12605,6 @@ return parser;
                                 con.views["'"+view.cid+"'"] = view;
                                 view.el.title = view.model.groupsString;
                                 dl.appendChild(view.el);
-                                
                             }
                             this.sortRoster(dl,groups[index][user].attributes.chat_status);
                             det.id = index;
@@ -12612,6 +12623,12 @@ return parser;
                           cookie_groups[detail.id] = !detail.open;                      
                           setCookieGroups();
                         });
+                        
+                        setTimeout(function(){
+                          divLoading.style.display = "none";
+                          divGroups.style.display  = "block";
+                        },500);
+
                     }
                     
                 }
@@ -12620,16 +12637,12 @@ return parser;
                     divGroups.style.display = "none";
                     rosters.style.display = "block";
                 }
-
-                var m = $(".menu")[0];
-                m.style.display="none";
                 setCookie();
                 if(!cookie_im.IM_toggle){
                   $("#chat").click();
                 }
             },
             sortRoster: function (dl,chat_status) {
-                con.GroupsView = this;
                 var $my_contacts = $(dl).find('dt');
                 $my_contacts.siblings('dd.current-xmpp-contact.'+chat_status).tsort('a', {order:'asc'});
                 $my_contacts.after($my_contacts.siblings('dd.current-xmpp-contact.offline'));
@@ -13847,9 +13860,6 @@ return parser;
             initialize: function () {
                 this.model.on("add", function (item) {
                     this.addRosterItemView(item).render(item);
-                    //importante
-                    //con.rosterview.addRosterItemView(ob).render(ob)
-
                     if (!item.get('vcard_updated')) {
                         // This will update the vcard, which triggers a change
                         // request which will rerender the roster item.
@@ -13948,8 +13958,10 @@ return parser;
                     this.$el.find('#xmpp-contacts').after(view.render().el);
                 }
                 //Muda Title para Turmas e cria estrutura de grupos
-                if(!con.groups)
+                if(!con.groups){
                     con.groups = {};
+                    Object.defineProperty(con.groups,"length",{value:0,writable:true});
+                }
                 if(!con.views)
                     con.views = {};
                 if(!con.qtd_rosters_with_groups)
@@ -13963,14 +13975,19 @@ return parser;
                         title = "";
                         for(groupInterator in rosterItem.groups){
                             var group = rosterItem.groups[groupInterator];
-                            if(!con.groups["'"+group+"'"])
-                                con.groups["'"+group+"'"] = {};
+                            if(!con.groups["'"+group+"'"]){
+                              con.groups["'"+group+"'"] = {};
+                              Object.defineProperty(con.groups["'"+group+"'"],"length",{value:0,writable:true});
+                              con.groups.length = con.groups.length + 1;
+                            }
                             
                             if(!con.groups["'"+group+"'"]["'"+rosterItem.name+"'"]){
                                 con.views["'"+view.cid+"'"] = view;
                                 con.groups["'"+group+"'"]["'"+rosterItem.name+"'"] = item;
                             }
-                            
+
+                            con.groups["'"+group+"'"].length = con.groups["'"+group+"'"].length + 1;
+
                             if(groupInterator < rosterItem.groups.length - 1)
                                 title = title + group.split("_")[1] + " _ " + group.split("_")[2] + "\n";
                             else
@@ -13987,20 +14004,23 @@ return parser;
                   },10);  
                     
                 //atualiza e reordena clones
-                var id2 = setInterval(function(){
-                  for(index in con.views){      
-                    if(con.views[index].model.attributes.fullname == item.attributes.fullname){
-                      var dd = con.views[index].render().el;
-                      if(dd.parentElement.parentElement.tagName =="DETAILS"){
-                          con.GroupsView.sortRoster(dd.parentElement,con.views[index].model.attributes.chat_status);
+                if(cookie_groups){
+                  var id2 = setInterval(function(){
+                    for(index in con.views){      
+                      if(con.views[index].model.attributes.fullname == item.attributes.fullname){
+                        var dd = con.views[index].render().el;
+                        if(dd.parentElement.parentElement.tagName == "DETAILS"){
+                            con.GroupsView.sortRoster(dd.parentElement,con.views[index].model.attributes.chat_status);
+                        }
+                        else{
+                            con.ListView.sortRoster(con.views[index].model.attributes.chat_status);
+                        }
+                        clearTimeout(id2);
                       }
-                      else{
-                          con.ListView.sortRoster(con.views[index].model.attributes.chat_status);
-                      }
-                      clearTimeout(id2);
-                    }
-                  }     
-                },10);
+                    }     
+                  },10);  
+                }
+                
             },
 
             render: function (item) {

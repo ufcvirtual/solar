@@ -1428,3 +1428,9 @@ details[open] summary:before {
 	background-color: #FFA500;
 }
 
+#divLoading{height: 100%;
+width: 100%;
+text-align: center;
+position: absolute;
+top: 50%;
+}

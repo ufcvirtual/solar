@@ -189,6 +189,7 @@
     xmpp_port = "#{@_porta}";
     xmpp_pass = "#{current_user.encrypted_password}";
     number_chatbox = 0;
+    imageLoading = "#{image_path('spinner.gif')}";
     ob = null;
     //cookie IM_geral
     if($.cookie("cookie_im"))
@@ -251,6 +252,7 @@
               $("#chatpanel")[0].style.display = "block";
               clearTimeout(id);
             }
+
           },10);
         delete time;
         }
