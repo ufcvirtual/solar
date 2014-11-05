@@ -64,6 +64,7 @@ module V1::AllocationsH
       User.where(cpf: params[:cpfs])
     end
 
+
     users << import_users(params) if (params[:cpf].present? or params[:cpfs].present?) and params[:ma]
     users.compact.flatten
   end

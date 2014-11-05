@@ -86,7 +86,7 @@ module V1
           query << "curriculum_unit_type_id = :course_type_id" if params[:course_type_id].present?
           query << "courses.id = :course_id" if params[:course_id].present?
 
-          @curriculum_units = CurriculumUnit.joins(offers: tb_joins).where(query.join(' AND '), params.slice(:semester, :course_type_id, :course_id))
+          @curriculum_units = CurriculumUnit.joins(offers: tb_joins).where(query.join(' AND '), params.slice(:semester, :course_type_id, :course_id)).order("code")
         end
 
     end # segment

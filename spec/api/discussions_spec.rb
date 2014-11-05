@@ -23,8 +23,8 @@ describe "Discussions" do
             name: "Forum 7",
             description: "Assim mesmo, o desenvolvimento de distintas formas representa uma abertura para a melhoria dos procedimentos normalmente adotados.",
             last_post_date: nil,
-            start_date: (Date.today >> 1).to_time,
-            end_date: (Date.today >> 5).to_time
+            start_date: (Date.today >> 1),
+            end_date: (Date.today >> 5)
           }
         ].to_json
       end

@@ -75,6 +75,29 @@ describe "CurriculumUnits" do
           }
         end
 
+        context 'update if exists' do
+          let!(:json_data){ { 
+            name: "UC01",
+            code: "RM404",
+            curriculum_unit_type_id: 1,
+            update_if_exists: true
+          } }
+
+          subject{ -> { post "/api/v1/curriculum_unit", json_data } } 
+
+          it { should change(CurriculumUnit,:count).by(0) }
+          it { should change(CurriculumUnit.where(resume: "UC01"),:count).by(0) }
+          it { should change(CurriculumUnit.where(resume: "Pensando mais a longo prazo, a percepo das dificuldades nao causa impacto indireto na reavaliacao da formula da ressonancia racionalista."),:count).by(0) }
+          it { should change(CurriculumUnit.where(name: "UC01"),:count).by(1) }
+          it { should change(CurriculumUnit.where(name: "Introducao a Linguistica"),:count).by(-1) }
+
+          it {
+            post "/api/v1/curriculum_unit", json_data
+            response.status.should eq(201)
+            response.body.should == {id: CurriculumUnit.find_by_code("RM404").id, course_id: nil}.to_json
+          }
+        end
+
         context 'create curriculum_unit tipo livre' do
           let!(:json_data){ { 
             name: "UC 01",
@@ -152,7 +175,7 @@ describe "CurriculumUnits" do
       get "/api/v1/disciplines", {semester: "2012.1"}
 
       response.status.should eq(200)
-      response.body.should == [{id: 1, code: "RM404", name: "Introducao a Linguistica" }, {id: 3, code: "RM301", name: "Quimica I"}].to_json
+      response.body.should == [{id: 3, code: "RM301", name: "Quimica I"}, {id: 1, code: "RM404", name: "Introducao a Linguistica" }].to_json
     end
 
     it "list all by semester and type" do

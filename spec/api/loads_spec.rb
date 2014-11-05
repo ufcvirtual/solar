@@ -929,7 +929,6 @@ describe "Loads" do
 
           it "must synchronize with MA" do
             cpf = ENV['VALID_CPF']
-            # MUST CHANGE USER CPF (fixtures) TO THE SAME VALID CPF AT "cpf"
             post "/api/v1/load/user/", {cpf: cpf}
 
             user = User.find_by_cpf(cpf)
@@ -944,10 +943,9 @@ describe "Loads" do
 
           it "must do nothing" do
             cpf = ENV['VALID_CPF']
-            # MUST CHANGE USER EMAIL (fixtures) TO THE SAME USED BY THE MA USER INFORMED
             post "/api/v1/load/user/", {cpf: cpf}
 
-            User.where(cpf: "43463518678").count.should eq(1) # user
+            User.where(cpf: cpf).count.should eq(1) # user
 
             response.status.should eq(201)
             response.body.should == {ok: :ok}.to_json

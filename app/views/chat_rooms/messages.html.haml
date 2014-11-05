@@ -12,10 +12,11 @@
       %tbody
         - @messages.each do |message|
           - user = message.user
+          - name, nick = user.nil? ? ["", t(".all")] : [user.info(:name, @researcher), user.info(:nick, @researcher)]
           %tr.lines
             %td.profile= "(" + message.profile_name + ")"
             %td.user{:'data-tooltip' => (@researcher ? t(:hidden_info) : message.user_name)}= (@researcher ? t(:hidden_info) : message.user_nick)
-            %td{:'data-tooltip' => resp.info(:name, @researcher)}= resp.info(:nick, @researcher) || t(".all")
+            %td{:'data-tooltip' => name}= nick
             %td.message= message.text.try(:html_safe)
             %td= l(message.created_at.to_datetime, format: :normal)
             %td= l(message.created_at.to_datetime, format: :clock_time)
