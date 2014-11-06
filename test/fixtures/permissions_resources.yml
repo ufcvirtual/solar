@@ -1865,6 +1865,7 @@ message12:
   profile_id: 18
   resource_id: 25
 
+<<<<<<< HEAD
 # acompanhamento de responsáveis
 
 responsible_score1:
@@ -1894,3 +1895,31 @@ responsible_score6:
 responsible_score7:
   profile_id: 8
   resource_id: 185
+
+  ###################
+  ### Interação######
+  ##################
+
+interact1:
+  profile_id: 1
+  resource_id: 184
+
+interact2:
+  profile_id: 2
+  resource_id: 184
+
+interact3:
+  profile_id: 3
+  resource_id: 184
+
+interact4:
+  profile_id: 13
+  resource_id: 184
+
+interact5:
+  profile_id: 17
+  resource_id: 184
+
+interact6:
+  profile_id: 18
+  resource_id: 184         

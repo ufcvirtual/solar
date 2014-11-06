@@ -928,6 +928,12 @@ res183:
   action: "cant_see_info"
   description: "Não pode visualizar informação dos usuários"
 
+res184:
+  id:184
+  controller: 'chat_rooms'
+  action: "interact"
+  description: "Pode interagir na sala de chat"
+
 res185:
   id: 185
   controller: "scores"

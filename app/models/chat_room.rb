@@ -73,7 +73,7 @@ class ChatRoom < Event
   end
 
   def self.responsible?(allocation_tag_id, user_id)
-    AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(user_id)
+    AllocationTag.find(allocation_tag_id).is_responsible?(user_id)
   end
 
 
@@ -84,6 +84,8 @@ class ChatRoom < Event
   end
 
   def self.chats_user(user_id, allocation_tag_id)
+    allocations_with_acess =  User.find(user_id).allocation_tags_ids_with_access_on('interact','chat_rooms')
+
     all_chats = ChatRoom.joins(:academic_allocations, :schedule)
       .where(academic_allocations: {allocation_tag_id: allocation_tag_id})
       .select('DISTINCT chat_rooms.*, schedules.start_date, schedules.end_date')
@@ -94,9 +96,15 @@ class ChatRoom < Event
     else
       without_participant = all_chats.joins('LEFT JOIN chat_participants AS cp ON cp.academic_allocation_id = academic_allocations.id').where('cp.academic_allocation_id IS NULL')
       my = all_chats.joins(:participants, :allocations).where(allocations: {user_id: user_id})
-      others = (all_chats - without_participant) - my
-
-      [(my + without_participant), others]
+      
+      if allocations_with_acess.include? allocation_tag_id
+        others = (all_chats - without_participant) - my
+        [(my + without_participant), others]
+      else
+        others = all_chats - my  
+        [my, others]
+      end
+        
     end
 
     {my: my, others: others}
