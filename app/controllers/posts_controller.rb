@@ -18,8 +18,8 @@ class PostsController < ApplicationController
     @academic_allocation_id = AcademicAllocation.where(academic_tool_id: @discussion.id, academic_tool_type: "Discussion", allocation_tag_id: allocation_tags_ids).first.try(:id)
     authorize! :index, Discussion, {on: [@allocation_tags], read: true}
 
-    @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id]).map(&:id)
     @researcher = current_user.is_researcher?(AllocationTag.find(@allocation_tags).related)
+    @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id], {all: true}).map(&:id)
 
     @posts = []
     @can_interact = @discussion.user_can_interact?(current_user.id)
@@ -99,8 +99,8 @@ class PostsController < ApplicationController
     can_interact = post.discussion.user_can_interact?(current_user.id)
     can_post = can?(:create, Post, on: [allocation_tag_id])
 
-    @class_participants = AllocationTag.get_participants(allocation_tag_id).pluck(:id)
     @researcher = params[:researcher]
+    @class_participants = AllocationTag.get_participants(allocation_tag_id, {all: true}).pluck(:id)
 
     render partial: "post", locals: {post: post, latest_posts: [], display_mode: nil, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: (params[:new_post] ? params[:id] : nil) }
   end

@@ -2547,7 +2547,7 @@ pt_BR:
     index:
       assignments: "Trabalhos"
       student: "Aluno"
-      public_files: "Arquivos Publicos"
+      public_files: "Arquivos Públicos"
       participation: "Participações em Fóruns"
       access_to_the_course: "Acessos ao Curso"
       no_students: Não há alunos
@@ -2563,6 +2563,12 @@ pt_BR:
       assignment_to_be_sent_complete: Trabalho não enviado
       assignment_not_started_complete: Trabalho com período não iniciado
       subtitle: Legenda
+      responsibles: Responsáveis
+      profiles: Perfis
+      responsible: Responsável
+      students: Alunos
+      no_responsible: Nenhum responsável
+      sent_messages: Mensagens enviadas
     info:
       assignments: Trabalhos
       date_range: Período
@@ -2570,6 +2576,7 @@ pt_BR:
       grade: Nota
       discussions: Fóruns
       amount: Postagens
+      assignments_sent: Envio de trabalhos
       discussions_participation: Participações em fóruns
       history_access: "Histórico de acessos (total: %{amount})"
       search: Buscar

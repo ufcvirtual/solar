@@ -3,36 +3,38 @@
   .block_title
     %h2
       %i.icon-suitcase
-      = @student.name
+      = @user.name
 
-  .block_content
-    - unless @assignments.empty?
-      %table.tb_list#assignments_list
-        %thead
-          %tr.lines
-            %th{align: "left"}= t(".assignments")
-            %th.center.date{style: "width: 24%;"}= t(".date_range")
-            %th.center{style: "width: 12%;"}= t(".situation")
-            %th.center{style: "width: 8%;"}= t(".grade")
-        %tbody
-          - @assignments.each do |assignment|
-            - info = assignment.info(@student.id, @allocation_tag_id)
-            - link = ((assignment.type_assignment == Assignment_Type_Group and info[:group_id].nil?) ? list_assignments_path : student_assignment_path(assignment.id, student_id: @student.id))
-            %tr.lines
-              %td{align: "left"}
-                = link_to assignment.name, link, {class: 'link_content'}
-              %td.center
-                = [l(assignment.schedule.start_date, format: :normal), l(assignment.schedule.end_date, format: :normal)].join(" - ")
-              %td.center{class: "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
-              %td.center= (info[:grade].nil?) ? '-' : info[:grade].to_f
-    - else
-      .block_content.block_content_text= t(:itens_not_found)
+  - unless @assignments.nil?
+    .block_wrapper
+      .block_title
+        %h2= t(".assignments_sent")
+      .block_content
+        - unless @assignments.empty?
+          %table.tb_list#assignments_list
+            %thead
+              %tr.lines
+                %th{align: "left"}= t(".assignments")
+                %th.center.date{style: "width: 24%;"}= t(".date_range")
+                %th.center{style: "width: 12%;"}= t(".situation")
+                %th.center{style: "width: 8%;"}= t(".grade")
+            %tbody
+              - @assignments.each do |assignment|
+                - info = assignment.info(@user.id, @allocation_tag_id)
+                - link = ((assignment.type_assignment == Assignment_Type_Group and info[:group_id].nil?) ? list_assignments_path : student_assignment_path(assignment.id, student_id: @user.id))
+                %tr.lines
+                  %td{align: "left"}
+                    = link_to assignment.name, link, {class: 'link_content'}
+                  %td.center
+                    = [l(assignment.schedule.start_date, format: :normal), l(assignment.schedule.end_date, format: :normal)].join(" - ")
+                  %td.center{class: "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
+                  %td.center= (info[:grade].nil?) ? '-' : info[:grade].to_f
+        - else
+          .block_content.block_content_text= t(:itens_not_found)
 
 .block_wrapper
   .block_title
-    %h2
-      %i.icon-suitcase
-      = t(".discussions_participation")
+    %h2= t(".discussions_participation")
   .block_content
     - unless @discussions.empty?
       %table.tb_list
@@ -43,7 +45,7 @@
         %tbody
           - @discussions.each do |discussion|
             %tr.lines
-              - link = user_discussion_posts_path(discussion.id, @student.id)
+              - link = user_discussion_posts_path(discussion.id, @user.id)
               %td.show_posts
                 - if discussion.posts_count.to_i > 0 
                   = link_to discussion.name, link, {class: 'link_content'}
@@ -59,9 +61,7 @@
 
 .block_wrapper
   .block_title
-    %h2
-      %i.icon-suitcase
-      = t(".history_access", amount: @access.count)
+    %h2= t(".history_access", amount: @access.count)
   .block_content.block_content_text
     #history_search_content
       %input{type: "text", id: "from-date", size: "9"}
@@ -87,7 +87,7 @@
         'from-date': $('#from-date').val(),
         'until-date': $('#until-date').val()
       };
-      $.get("#{amount_access_scores_path(user_id: @student.id)}", params, function(data){
+      $.get("#{amount_access_scores_path(user_id: @user.id)}", params, function(data){
         $("#history-body table").html(data);
         erase_flash_messages();
       }).error(function(data){

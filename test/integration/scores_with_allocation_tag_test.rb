@@ -17,6 +17,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_template :index
     assert_not_nil assigns(:assignments)
     assert_not_nil assigns(:students)
+    assert_not_nil assigns(:responsibles)
   end
 
   test "nao visualizar acompanhamento da turma - sem acesso" do
@@ -45,10 +46,10 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @prof
     get @quimica_tab
 
-    get student_info_scores_path(student_id: @aluno.id)
+    get user_info_scores_path(user_id: @aluno.id)
     assert_response :success
     assert_template :info
-    assert_not_nil assigns(:student)
+    assert_not_nil assigns(:user)
     assert_not_nil assigns(:assignments)
     assert_not_nil assigns(:discussions)
     assert_not_nil assigns(:access)
@@ -58,10 +59,10 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @aluno
     get @quimica_tab
 
-    get student_info_scores_path(student_id: @aluno.id)
+    get user_info_scores_path(user_id: @aluno.id)
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
-    assert_nil assigns(:student)
+    assert_nil assigns(:user)
     assert_nil assigns(:assignments)
     assert_nil assigns(:discussions)
     assert_nil assigns(:access)
@@ -71,10 +72,10 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @tutor
     get @quimica2_tab
 
-    get student_info_scores_path(student_id: @aluno.id)
+    get user_info_scores_path(user_id: @aluno.id)
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
-    assert_nil assigns(:student)
+    assert_nil assigns(:user)
     assert_nil assigns(:assignments)
     assert_nil assigns(:discussions)
     assert_nil assigns(:access)
@@ -84,13 +85,13 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @aluno
     get @quimica_tab
 
-    get info_scores_path(student_id: 8)
+    get info_scores_path(user_id: 8)
     assert_response :success
     assert_template :info
-    assert_not_nil assigns(:student)
+    assert_not_nil assigns(:user)
     assert_not_nil assigns(:assignments)
     assert_not_nil assigns(:discussions)
     assert_not_nil assigns(:access)
-    assert_equal assigns(:student), @aluno
+    assert_equal assigns(:user), @aluno
   end
 end

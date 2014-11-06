@@ -201,7 +201,7 @@ Solar::Application.routes.draw do
   resources :scores, only: [:index] do
     collection do
       get :info
-      get "student/:student_id/info", to: :student_info, as: :student_info
+      get "user/:user_id/info", to: :user_info, as: :user_info
       get :amount_access
     end
   end

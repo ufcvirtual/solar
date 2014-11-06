@@ -34,7 +34,7 @@
               .participants_box.invisible{class: "assignment-#{assignment.id}"}
                 = render partial: (is_group_type ? "groups" : "participants"), locals: {assignment: assignment}
 - else
-  .block_content.block_content_text= t(:itens_not_found)
+  .text_none.empty_message= t(:itens_not_found)
 
 = javascript_include_tag 'group_assignments'
  

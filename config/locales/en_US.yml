@@ -2332,6 +2332,12 @@ en_US:
       assignment_to_be_sent_complete: No file sent
       assignment_not_started_complete: Assignment not started
       subtitle: Subtitle
+      responsibles: Responsibles
+      profiles: Profiles
+      responsible: Responsible
+      students: Students
+      no_responsible: No responsible
+      sent_messages: Sent messages
     info:
       assignments: Assignments
       date_range: Date range
@@ -2339,6 +2345,7 @@ en_US:
       grade: Grade
       discussions: Discussions
       amount: Posts
+      assignments_sent: Assignment's sent
       discussions_participation: Discussion's participation
       history_access: "Access history (total: %{amount})"
       search: Search

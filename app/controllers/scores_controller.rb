@@ -9,19 +9,20 @@ class ScoresController < ApplicationController
 
     @assignments = Assignment.joins(:schedule, {academic_allocations: :allocation_tag}).where(allocation_tags: {id: @allocation_tag_id})
       .order("schedules.start_date, assignments.name")
-    @students    = AllocationTag.get_students(@allocation_tag_id)
+    @students     = AllocationTag.get_participants(@allocation_tag_id, {students: true})
+    @responsibles = AllocationTag.get_participants(@allocation_tag_id, {responsibles: true, profiles: Profile.with_access_on("create", "posts").join(",")}) if current_user.profiles_with_access_on("responsibles", "scores", AllocationTag.find(@allocation_tag_id).related).any?
   end
 
   def info
     authorize! :info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-    @student = current_user
-    informations(@allocation_tag_id)
+    @user = current_user
+    informations
   end
 
-  def student_info
+  def user_info
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-    @student = User.find(params[:student_id])
-    informations(@allocation_tag_id)
+    @user = User.find(params[:user_id])
+    informations
     render :info
   end
 
@@ -49,11 +50,12 @@ class ScoresController < ApplicationController
   end
 
   private
-    def informations(allocation_tag_id)
-      @assignments = Assignment.joins(:academic_allocations, :schedule).where(academic_allocations: {allocation_tag_id:  allocation_tag_id})
-                               .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date").order("start_date")
-      @discussions = Discussion.posts_count_by_user(@student.id, allocation_tag_id)
-      @access      = LogAccess.where(log_type: LogAccess::TYPE[:offer_access], user_id: @student.id, allocation_tag_id: AllocationTag.find(allocation_tag_id).related)
+    def informations
+      allocation_tag = AllocationTag.find(@allocation_tag_id)
+      @assignments   = Assignment.joins(:academic_allocations, :schedule).where(academic_allocations: {allocation_tag_id:  @allocation_tag_id})
+                               .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date").order("start_date") if allocation_tag.is_student?(@user.id)
+      @discussions   = Discussion.posts_count_by_user(@user.id, @allocation_tag_id)
+      @access        = LogAccess.where(log_type: LogAccess::TYPE[:offer_access], user_id: @user.id, allocation_tag_id: allocation_tag.related)
     end
 
 end

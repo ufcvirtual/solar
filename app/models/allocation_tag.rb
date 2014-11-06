@@ -57,7 +57,7 @@ class AllocationTag < ActiveRecord::Base
   end
 
   def is_student?(user_id)
-    allocations.joins(:profile).where(user_id: user_id).where("cast(profiles.types & ? as boolean)", Profile_Type_Student).count > 0
+    allocations.joins(:profile).where(user_id: user_id, status: Allocation_Activated).where("cast(profiles.types & ? as boolean)", Profile_Type_Student).count > 0
   end
 
   def info
@@ -252,14 +252,14 @@ class AllocationTag < ActiveRecord::Base
     {allocation_tags: [allocation_tags_ids].flatten, selected: selected, offer_id: offer_id}
   end
 
-  def self.get_students(allocation_tag_id)
-    User.joins(allocations: :profile).where(allocations: {status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).related})
-      .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean )")
-  end
+  def self.get_participants(allocation_tag_id, params={})
+    types, query = [], []
+    types << "cast( profiles.types & '#{Profile_Type_Student}' as boolean )"           if params[:students]     or params[:all]
+    types << "cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )" if params[:responsibles] or params[:all]
+    query << "profile_id IN (#{params[:profiles]})"                                    if params[:profiles]
 
-  def self.get_participants(allocation_tag_id)
     User.joins(allocations: :profile).where(allocations: {status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).related})
-      .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean ) OR cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )")
+      .where(types.join(" OR ")).where(query.join(" AND "))
   end
 
   private
@@ -273,14 +273,14 @@ class AllocationTag < ActiveRecord::Base
       }
 
       query_type = []
-      query_type << "cast(profiles.types & :responsible as boolean)" if responsible
+      query_type << "cast(profiles.types & :responsible as boolean) OR cast(profiles.types & :coord as boolean)" if responsible
       query_type << "cast(profiles.types & :observer as boolean)" if observer
 
       return false if query_type.empty?
 
       Allocation.joins(:profile)
         .where(query)
-        .where(query_type.join(" OR "), responsible: Profile_Type_Class_Responsible, observer: Profile_Type_Observer).count > 0
+        .where(query_type.join(" OR "), responsible: Profile_Type_Class_Responsible, observer: Profile_Type_Observer, coord: Profile_Type_Coord).count > 0
     end
 
 end

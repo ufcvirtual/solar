@@ -25,9 +25,9 @@ class Profile < ActiveRecord::Base
       .order("resources.controller, resources.description")
   end
 
-
-  ## class methods
-
+  def self.with_access_on(action, controller)
+    joins(:resources).where(resources: {action: action, controller: controller}).pluck(:id)
+  end
 
   def self.all_except_basic
     Profile.where("types <> ?", Profile_Type_Basic).order("name")

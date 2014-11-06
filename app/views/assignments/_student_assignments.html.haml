@@ -39,4 +39,4 @@
           %td.center= content_tag :i, nil, class: "icon-comment big #{info[:has_comments] ? '' : 'empty'}"
 
 - else
-  .block_content.block_content_text= t(:itens_not_found)
+  .text_none.empty_message= t(:itens_not_found)

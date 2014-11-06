@@ -1,9 +1,43 @@
+- unless @responsibles.nil?
+  .block_wrapper
+    .block_title
+      %h2
+        %i.icon-suitcase
+        = t(:group)
+        = @group.code
+
+  .block_wrapper
+    .block_title
+      %h2= t(".responsibles")
+
+    - unless @responsibles.empty?
+      .tb_list_students
+        %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.responsibles')}
+          %thead
+            %tr.lines
+              %th#student= t(".responsible")
+              %th#profile= t(".profiles")
+              %th#public_files= t(".public_files")
+              %th.participation= t(".participation")
+              %th.participation= t(".sent_messages")
+              %th.access_history= t(".access_to_the_course")
+          %tbody
+          
+            - @responsibles.each do |responsible|
+              - info = responsible.info_at_allocation_tag(@allocation_tag_id)
+              %tr.lines
+                %td.td_student{'data-tooltip' => responsible.name}= link_to responsible.name, user_info_scores_path(responsible.id)
+                %td= info[:profiles]
+                %td= info[:public_files]
+                %td= info[:posts]
+                %td= info[:messages]
+                %td= info[:access]
+    - else
+      .block_content_text_list.text_none= t(".no_responsible")
+
 .block_wrapper
   .block_title
-    %h2
-      %i.icon-suitcase
-      = t(:group)
-      = @group.code
+    %h2= t(".students")
 
   .tb_list_students
     %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.list_of_students')}
@@ -26,7 +60,7 @@
           - @students.each do |student|
             - info = student.info_at_allocation_tag(@allocation_tag_id)
             %tr.lines
-              %td.td_student{'data-tooltip' => student.name}= link_to student.name, student_info_scores_path(student.id)
+              %td.td_student{'data-tooltip' => student.name}= link_to student.name, user_info_scores_path(student.id)
               %td= info[:public_files]
               %td= info[:posts]
               %td= info[:access]

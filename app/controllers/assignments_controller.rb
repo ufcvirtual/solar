@@ -29,7 +29,7 @@ class AssignmentsController < ApplicationController
     @public_files = PublicFile.where(user_id: current_user.id, allocation_tag_id: @allocation_tag_id)
     @assignments  = Assignment.joins(:academic_allocations, :schedule).where(academic_allocations: {allocation_tag_id:  @allocation_tag_id})
                               .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date").order("start_date")
-    @participants = AllocationTag.get_students(@allocation_tag_id)
+    @participants = AllocationTag.get_participants(@allocation_tag_id, {students: true})
     @can_manage, @can_import = (can? :index, GroupAssignment, on: [@allocation_tag_id]), (can? :import, GroupAssignment, on: [@allocation_tag_id])
 
     render layout: false if params[:layout].present?
@@ -99,7 +99,7 @@ class AssignmentsController < ApplicationController
 
   def student
     @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
-    @class_participants = AllocationTag.get_students(@allocation_tag_id).map(&:id)
+    @class_participants = AllocationTag.get_participants(@allocation_tag_id, {students: true}).map(&:id)
     @student_id, @group_id = (params[:group_id].nil? ? [params[:student_id], nil] : [nil, params[:group_id]])
     @group = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
     @own_assignment = Assignment.owned_by_user?(current_user.id, {student_id: @student_id, group: @group})

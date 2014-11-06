@@ -16,7 +16,7 @@ class MessagesController < ApplicationController
   end
 
   def new
-    authorize! :index, Message, on: [@allocation_tag_id  = active_tab[:url][:allocation_tag_id]]
+    authorize! :index, Message, {on: [@allocation_tag_id  = active_tab[:url][:allocation_tag_id]], accepts_general_profile: true}
     @message = Message.new
     @message.files.build
 

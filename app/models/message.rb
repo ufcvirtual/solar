@@ -63,13 +63,13 @@ class Message < ActiveRecord::Base
     by_user(user_id).where(where).where(query.join(" AND ")).order("created_at DESC").uniq
   end
 
-  def self.user_outbox(user_id, allocation_tag_id = nil)
+  def self.user_outbox(user_id, allocation_tags_ids = [], ignore_trash = true)
     where = []
-    where = "messages.allocation_tag_id = (#{allocation_tag_id})" unless allocation_tag_id.nil?
+    where << "messages.allocation_tag_id IN (#{[allocation_tags_ids].flatten.join(",")})" unless allocation_tags_ids.blank?
+    where << "NOT cast(user_messages.status & #{Message_Filter_Trash} as boolean)" if ignore_trash
 
     by_user(user_id).where(where)
-      .where("cast(user_messages.status & #{Message_Filter_Sender} as boolean)
-        AND NOT cast(user_messages.status & #{Message_Filter_Trash} as boolean)")
+      .where("cast(user_messages.status & #{Message_Filter_Sender} as boolean)")
       .order("created_at DESC").uniq # sender AND NOT trash
   end
 
