@@ -133,6 +133,8 @@ class ApplicationController < ActionController::Base
     end
 
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
+
+    log_access(allocation_tag_id_group)
   end
 
   def after_sign_in_path_for(resource_or_scope)
@@ -193,6 +195,10 @@ class ApplicationController < ActionController::Base
       when 'edit', 'update'
         :update
       end
+    end
+
+    def log_access(allocation_tag_id)
+      LogAccess.group(user_id: current_user.id, allocation_tag_id: allocation_tag_id, ip: request.remote_ip) rescue nil if (user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:context].to_i == Context_Curriculum_Unit)
     end
 
 end

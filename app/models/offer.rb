@@ -162,6 +162,7 @@ class Offer < ActiveRecord::Base
           id: offer.id,
           info: offer.allocation_tag.info,
           at: offer.allocation_tag.id,
+          related: offer.allocation_tag.related,
           name: (uc.nil? ? course.name.titleize : uc.name.titleize),
           has_groups: not(offer.groups.empty?),
           uc: uc,
@@ -174,8 +175,8 @@ class Offer < ActiveRecord::Base
     allocations_info.sort_by! do |allocation|
       allocation[:name]
       allocation[:has_groups]
-      -(LogAccess.count(:id, conditions: {log_type: LogAccess::TYPE[:offer_access], user_id: user.id,
-        allocation_tag_id: allocation[:at], created_at: 3.week.ago..Time.now}))
+      -(LogAccess.count(:id, conditions: {log_type: LogAccess::TYPE[:group_access], user_id: user.id,
+        allocation_tag_id: allocation[:related], created_at: 3.week.ago..Time.now}))
     end
 
     return allocations_info

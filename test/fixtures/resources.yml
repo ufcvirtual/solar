@@ -928,8 +928,8 @@ res183:
   action: "cant_see_info"
   description: "Não pode visualizar informação dos usuários"
 
-res184:
-  id: 184
+res185:
+  id: 185
   controller: "scores"
   action: "responsibles"
   description: "Visualizar o acompanhamento dos responsáveis na turma"

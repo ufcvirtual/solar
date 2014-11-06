@@ -1,7 +1,6 @@
 class TabsController < ApplicationController
 
   before_filter :clear_breadcrumb_home, only: [:show, :create]
-  after_filter :log_access, only: :create
 
   def show # activate
     # verifica se a aba que esta sendo acessada esta aberta
@@ -37,11 +36,5 @@ class TabsController < ApplicationController
 
     redirect_to((active_tab[:url][:context] == Context_Curriculum_Unit) ? home_curriculum_unit_path(active_tab[:url][:id]) : home_path, flash: flash)
   end
-
-  private
-
-    def log_access
-      LogAccess.offer(user_id: current_user.id, allocation_tag_id: AllocationTag.find_by_offer_id(params[:id]).id, ip: request.remote_ip) rescue nil if (params[:context].to_i == Context_Curriculum_Unit)
-    end
 
 end

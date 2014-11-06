@@ -39,7 +39,7 @@ class ScoresController < ApplicationController
     query << "date(created_at) >= '#{params['from-date'].to_date}'" unless params['from-date'].blank?
     query << "date(created_at) <= '#{params['until-date'].to_date}'" unless params['until-date'].blank?
 
-    @access = LogAccess.where(log_type: LogAccess::TYPE[:offer_access], user_id: params[:user_id], allocation_tag_id: AllocationTag.find(allocation_tag_id).related).where(query.join(" AND "))
+    @access = LogAccess.where(log_type: LogAccess::TYPE[:group_access], user_id: params[:user_id], allocation_tag_id: AllocationTag.find(allocation_tag_id).related).where(query.join(" AND "))
 
     render partial: "access"
 
@@ -55,7 +55,7 @@ class ScoresController < ApplicationController
       @assignments   = Assignment.joins(:academic_allocations, :schedule).where(academic_allocations: {allocation_tag_id:  @allocation_tag_id})
                                .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date").order("start_date") if allocation_tag.is_student?(@user.id)
       @discussions   = Discussion.posts_count_by_user(@user.id, @allocation_tag_id)
-      @access        = LogAccess.where(log_type: LogAccess::TYPE[:offer_access], user_id: @user.id, allocation_tag_id: allocation_tag.related)
+      @access        = LogAccess.where(log_type: LogAccess::TYPE[:group_access], user_id: @user.id, allocation_tag_id: allocation_tag.related)
     end
 
 end

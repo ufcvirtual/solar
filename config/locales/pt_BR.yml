@@ -1867,7 +1867,7 @@ pt_BR:
       course: Curso
       types:
         login: "Login"
-        offer_access: "Acesso ao curso"
+        group_access: "Acesso ao curso"
         create: "Criação"
         update: "Atualização"
         destroy: "Remoção"
@@ -2549,7 +2549,7 @@ pt_BR:
       student: "Aluno"
       public_files: "Arquivos Públicos"
       participation: "Participações em Fóruns"
-      access_to_the_course: "Acessos ao Curso"
+      access_to_the_course: "Acessos à Turma"
       no_students: Não há alunos
       list_of_students: Lista de estudantes
       assignment_not_sent: TN

@@ -8,7 +8,7 @@ class LogAccess < ActiveRecord::Base
 
   TYPE = {
     login: 1,
-    offer_access: 2
+    group_access: 2
   }
 
   def type_name
@@ -16,17 +16,13 @@ class LogAccess < ActiveRecord::Base
       when 1
         :login
       when 2
-        :offer_access
+        :group_access
     end
     I18n.t(type, scope: 'administrations.logs.types')
   end
 
-
-  ## class methods
-
-
-  def self.offer(params)
-    params.merge!(log_type: TYPE[:offer_access])
+  def self.group(params)
+    params.merge!(log_type: TYPE[:group_access])
     create(params)
   end
 

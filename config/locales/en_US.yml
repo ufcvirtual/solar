@@ -2318,7 +2318,7 @@ en_US:
       student: "Student"
       public_files: "Public Files"
       participation: "Participations in Discussions"
-      access_to_the_course: "Access to the Course"
+      access_to_the_course: "Access to the Group"
       no_students: There are no students
       list_of_students: List of students
       assignment_not_sent: NF

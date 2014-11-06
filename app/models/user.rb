@@ -300,7 +300,7 @@ class User < ActiveRecord::Base
     allocation_tags_ids = AllocationTag.find(allocation_tag_id).related
     public_files = PublicFile.where(user_id: self.id, allocation_tag_id: allocation_tags_ids).count
     posts        = Post.joins(:academic_allocation).where(academic_allocations: {academic_tool_type: "Discussion", allocation_tag_id: allocation_tags_ids}, discussion_posts: {user_id: self.id}).count
-    access       = LogAccess.where(allocation_tag_id: allocation_tags_ids, user_id: self.id, log_type: LogAccess::TYPE[:offer_access]).count
+    access       = LogAccess.where(allocation_tag_id: allocation_tags_ids, user_id: self.id, log_type: LogAccess::TYPE[:group_access]).count
     profiles     = Allocation.where(allocation_tag_id: allocation_tags_ids, user_id: self.id, status: Allocation_Activated).map(&:profile).uniq.map(&:name).join(", ")
     messages     =  Message.user_outbox(id, allocation_tags_ids, false).count
 
