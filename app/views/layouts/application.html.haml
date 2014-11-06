@@ -60,7 +60,7 @@
           %ul
             %li= link_to t(:context), "#", id: 'help_context'
             %li= link_to t(:tutorials), tutorials_path, id: 'my_tutorials'
-            %li= link_to t(:videos), "video_tutorials.html", target: "_blank"
+            %li= link_to t(:videos), "../../video_tutorials.html", target: "_blank"
             %li= link_to t(:contact), support_new_messages_path
         / tabs
         #mysolar_tabs
@@ -189,7 +189,6 @@
     xmpp_port = "#{@_porta}";
     xmpp_pass = "#{current_user.encrypted_password}";
     number_chatbox = 0;
-    imageLoading = "#{image_path('spinner.gif')}";
     ob = null;
     //cookie IM_geral
     if($.cookie("cookie_im"))
@@ -252,7 +251,6 @@
               $("#chatpanel")[0].style.display = "block";
               clearTimeout(id);
             }
-
           },10);
         delete time;
         }

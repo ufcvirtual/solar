@@ -2,7 +2,7 @@
   .inline
     .breadcrumb
       = render "lessons/open/breadcrumb"
-    - if can?(:update, @lesson)
+    - if can?(:change_status, @lesson)
       .lesson_status
         %span.draft{class: @lesson.is_draft? ? '' : 'invisible'}
           = image_tag "rejected.png"
