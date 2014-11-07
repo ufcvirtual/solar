@@ -14495,7 +14495,7 @@ return parser;
                     if(cookie_im.Groups){
                       setTimeout(function(e){
                         $("#order").click();
-                      },1700);
+                      },3000);
                     }
                 }
             }, this)
