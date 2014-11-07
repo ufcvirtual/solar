@@ -31,6 +31,10 @@ class Webconference < ActiveRecord::Base
     joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).order("initial_time, title")
   end
 
+  def responsible?(user_id)
+    not(allocation_tags.map{ |at| at.is_responsible?(user_id) }.include?(false))
+  end
+
   def bbb_prepare
     @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
     server = @config['servers'][@config['servers'].keys.first]
@@ -48,7 +52,7 @@ class Webconference < ActiveRecord::Base
 
     meeting_id = "#{meeting_name}-#{id}"
     meeting_name = "#{title} (#{meeting_name})"
-    moderator_name = moderator.name
+    moderator_name = "#{user.name}*"
     attendee_name = user.name
 
     options = {
@@ -57,13 +61,13 @@ class Webconference < ActiveRecord::Base
       welcome: description,
       duration: duration,
       logoutURL: Rails.application.routes.url_helpers.home_url.to_s,
-      maxParticipants: 25
+      maxParticipants: 30
     }
 
     @api = bbb_prepare
     @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
 
-    if (user.id == moderator.id)
+    if (responsible?(user.id))
       @api.join_meeting_url(meeting_id, moderator_name, options[:moderatorPW])
     else
       @api.join_meeting_url(meeting_id, attendee_name, options[:attendeePW])
