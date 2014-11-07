@@ -33,12 +33,12 @@
         = t(".from")
       - user = @message.sent_by
       = "#{user.name}"
-      %span
+      %span.email
         = sanitize "<#{link_to(user.email, new_message_path(to: user.email))}>"
     .message_text_to
       .label-show.align-left
         = t(".to")
-      = sanitize @message.recipients.map { |r| "#{r.nick} <span>&lt;#{link_to(r.email, new_message_path(to: r.email))}&gt;</span>" }.join(', ')
+      = sanitize @message.recipients.map { |r| "#{r.nick} <span class='email'>&lt;#{link_to(r.email, new_message_path(to: r.email))}&gt;</span>" }.join(', ')
 
     - unless (attachments = @message.files).empty?
       .message_attachments

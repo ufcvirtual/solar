@@ -63,14 +63,14 @@
       config.toolbar =
         [
           { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
-          { name: 'styles', items : [ 'Styles', 'Format' ] },
-          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] },
+          { name: 'styles', items : [ 'Styles', 'Format', 'Font', 'TextColor'] },
+          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
           { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] },
-          { name: 'links', items : [ 'Link', 'Unlink' ] },
+          { name: 'links', items : [ 'Link', 'Unlink', 'Smiley' ] },
           { name: 'insert', items : ['EqnEditor'] }
         ];
 
-        config.extraPlugins = 'eqneditor';
+        config.extraPlugins = 'eqneditor,smiley';
     };
 
     // tentando enviar sem destinatário ou sem corpo da mensagem
