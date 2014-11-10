@@ -17,6 +17,9 @@
    
   = render partial: "public_files/list", locals: {public_files: @public_files}
 
+.block_wrapper
+  = link_to t(:back), "javascript:history.back(1)", {class: "btn"}
+
 :javascript
   $(function(){
     $(".enunciation_more").click(function(){

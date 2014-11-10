@@ -72,6 +72,9 @@
       %table.tb_list
         = render partial: "access", locals: {access: @access}
 
+.block_wrapper{style: "float:left"}
+  = link_to t(:back), "javascript:history.back(1)", {class: "btn"}
+
 :css
   .ui-datepicker { width: 15em; padding: .2em .2em 0; display: none; }
 
