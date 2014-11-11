@@ -7,7 +7,7 @@ module V1
       desc "Todos os cursos por tipo e semestre"
       params do
         requires :semester, type: String
-        requires :course_type_id, type: Integer
+        requires :course_type_id, type: Integer#, values: -> { CurriculumUnitType.all.map(&:id) }
       end
       get "/", rabl: "courses/list" do
         @courses = Course.joins(offers: [:curriculum_unit, :semester]).where("semesters.name = :semester AND curriculum_units.curriculum_unit_type_id = :course_type_id", params.slice(:semester, :course_type_id))
@@ -28,6 +28,7 @@ module V1
 
       desc "Edição de curso"
       params do
+        requires :id, type: Integer#, values: -> { Course.all.map(&:id) }
         optional :name, :code, type: String
         at_least_one_of :code, :name
       end

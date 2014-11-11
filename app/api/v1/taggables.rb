@@ -1,12 +1,12 @@
 module V1
-  class Taggable < Base
+  class Taggables < Base
     # methods used for any taggable
 
     before { verify_ip_access! }
 
     desc "Remove curso ou disciplina ou oferta ou turma"
     params { requires :type, type: String, values: ["curriculum_unit", "course", "offer", "group"] }
-    delete ":type/:id" do
+    delete "/taggables/:type/:id" do
       begin
         (object = params[:type].capitalize.constantize.find(params[:id])).destroy
         raise object.errors.full_messages unless (object.nil? or object.errors.empty?)

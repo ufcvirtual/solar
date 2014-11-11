@@ -37,7 +37,7 @@ module V1
         desc "Criação de disciplina"
         params do
           requires :name, :code, type: String
-          optional :curriculum_unit_type_id, type: Integer, default: 2
+          optional :curriculum_unit_type_id, type: Integer, default: 2#, values: -> { CurriculumUnitType.all.map(&:id) }
           optional :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
           optional :update_if_exists, type: Boolean, default: false
         end
@@ -57,8 +57,9 @@ module V1
 
         desc "Edição de disciplina"
         params do
+          requires :id, type: Integer#, values: -> { CurriculumUnit.all.map(&:id) }
           optional :name, :code, type: String
-          optional :curriculum_unit_type_id, type: Integer
+          optional :curriculum_unit_type_id, type: Integer#, values: -> { CurriculumUnitType.all.map(&:id) }
           optional :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
           at_least_one_of :code, :name, :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
         end
@@ -76,7 +77,8 @@ module V1
       desc "Todas as disciplinas por tipo, semestre ou curso"
         params do
           requires :semester, type: String
-          optional :course_type_id, :course_id, type: Integer
+          optional :course_type_id, type: Integer#, values: -> { CurriculumUnitType.all.map(&:id) }
+          optional :course_id, type: Integer#, values: -> { Course.all.map(&:id) }
         end
         get :disciplines, rabl: "curriculum_units/list" do
           tb_joins = [:semester]

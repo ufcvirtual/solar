@@ -1,3 +1,5 @@
 collection @groups
 
-attributes :id, :code, :offer_id
+@groups.each do |group|
+  extends 'groups/group', locals: {group: group}
+end

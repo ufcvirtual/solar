@@ -14,7 +14,8 @@ module V1
     mount Events
     mount Posts
     mount Lessons
-    mount Taggable
+    mount Taggables
+    mount Savs
 
     mount RemoveAfterChanges
   end

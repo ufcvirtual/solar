@@ -151,6 +151,24 @@
     };
 
     jQuery(function($) {
+
+      /** SAV **/
+
+      var sav_url = "#{@_sav_url}";
+
+      console.log(sav_url);
+
+      if (!!sav_url.length){
+        $.get(sav_url, function(data){
+          $("#page_title").call_fancybox({
+            content: data,
+            open: true
+          });
+        }).error(function(data){
+          // não faz nada com erro
+        });
+      }
+
       /**
        * System clock
        */

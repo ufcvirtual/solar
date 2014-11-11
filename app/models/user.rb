@@ -34,7 +34,6 @@ class User < ActiveRecord::Base
   has_many :assignment_files
   has_many :chat_messages
   has_many :public_files
-
   has_many :user_contacts, foreign_key: "user_related_id"
 
   has_and_belongs_to_many :notifications, join_table: 'read_notifications'

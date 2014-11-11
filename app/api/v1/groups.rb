@@ -8,7 +8,7 @@ module V1
       namespace :curriculum_units do
 
         desc "Turmas de uma UC do usuario"
-        params { requires :id, type: Integer }
+        params { requires :id, type: Integer }#, values: -> { CurriculumUnit.all.map(&:id) } }
         get ":id/groups", rabl: "groups/list" do
           user_groups    = current_user.groups(nil, Allocation_Activated).map(&:id)
           current_offers = Offer.currents(Date.today, true).pluck(:id)
@@ -68,18 +68,25 @@ module V1
         #   -- periodo, tipo
         #   -- periodo, curso
         #   -- periodo, curso, disciplina
-        desc "Todas as turmas por tipo de curso, semestre, curso ou disciplina"
+        desc "Todas as turmas por tipo de curso, semestre, curso, disciplina ou a propria turma"
         params do
-          requires :semester, type: String
+          optional :semester, type: String
           optional :course_type_id, :course_id, :discipline_id, type: Integer
+          optional :group_id, type: Integer
+          exactly_one_of :group_id, :semester
+          mutually_exclusive :group_id, :course_id
+          mutually_exclusive :group_id, :discipline_id
+          mutually_exclusive :group_id, :course_type_id
         end
         get "/", rabl: "groups/index" do
-          query = ["semesters.name = :semester", "groups.status IS TRUE"]
+          query = ["groups.status IS TRUE"]
+          query << "semesters.name = :semester"                                 if params[:semester].present?
           query << "curriculum_units.curriculum_unit_type_id = :course_type_id" if params[:course_type_id].present?
-          query << "offers.course_id = :course_id" if params[:course_id].present?
-          query << "offers.curriculum_unit_id = :discipline_id" if params[:discipline_id].present?
+          query << "offers.course_id = :course_id"                              if params[:course_id].present?
+          query << "offers.curriculum_unit_id = :discipline_id"                 if params[:discipline_id].present?
+          query << "groups.id = :group_id"                                      if params[:group_id].present?
 
-          @groups = Group.joins(offer: [:semester, :curriculum_unit]).where(query.join(' AND '), params.slice(:course_type_id, :semester, :course_id, :discipline_id))
+          @groups = Group.joins(offer: [:semester, :curriculum_unit]).where(query.join(' AND '), params.slice(:course_type_id, :semester, :course_id, :discipline_id, :group_id))
         end
 
       end # groups
@@ -88,7 +95,7 @@ module V1
         desc "Criação de turma"
         params do
           requires :code, type: String
-          optional :offer_id, type: Integer
+          optional :offer_id, type: Integer#, values: -> { Offer.all.map(&:id) }
           optional :course_code, :curriculum_unit_code, :semester, type: String
           optional :activate, type: Boolean, default: false
           exactly_one_of :offer_id, :course_code
@@ -117,6 +124,7 @@ module V1
 
         desc "Edição de turma"
         params do
+          requires :id, type: Integer#, values: -> { Group.all.map(&:id) }
           optional :code, type: String
           optional :status, type: Boolean
           at_least_one_of :code, :status

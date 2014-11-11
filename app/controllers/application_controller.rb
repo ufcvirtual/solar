@@ -19,11 +19,12 @@
 class ApplicationController < ActionController::Base
 
   include ApplicationHelper
+  include SavHelper # if system is not integrated with Sav, remove this line
 
   protect_from_forgery
 
   before_filter :authenticate_user!, except: [:verify_cpf, :api_download] # devise
-  before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb,:init_xmpp_im
+  before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
@@ -122,7 +123,6 @@ class ApplicationController < ActionController::Base
 
   def prepare_for_group_selection
     @can_select_group = true
-
     return unless active_tab[:url][:context] == Context_Curriculum_Unit.to_i
 
     # verifica se o grupo foi passado e se é um grupo válido
@@ -132,6 +132,7 @@ class ApplicationController < ActionController::Base
       allocation_tag_id_group = (allocation_tag.group_id.nil?) ? Group.find_all_by_offer_id_and_user_id(active_tab[:url][:id], current_user.id).first.allocation_tag.id : allocation_tag.id
     end
 
+    get_current_savs(params[:selected_group] || AllocationTag.find(allocation_tag_id_group).group_id) unless SavConfig::CONFIG.nil? # if system is not integrated with Sav, remove this line or sav.yml file
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
 
     log_access(allocation_tag_id_group)

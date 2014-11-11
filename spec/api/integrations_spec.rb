@@ -109,7 +109,7 @@ describe "Integrations" do
             expect{
               delete "/api/v1/integration/events/"
 
-              response.status.should eq(400)
+              response.status.should eq(405)
             }.to change{ScheduleEvent.count}.by(0)
           }
         end

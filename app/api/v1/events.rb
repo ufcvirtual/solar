@@ -6,7 +6,7 @@ module V1
     namespace :event do
       desc "Edição de evento"
       params do
-        requires :id, type: Integer
+        requires :id, type: Integer, values: -> { ScheduleEvent.all.map(&:id) }
         requires :date, :start, :end
       end
       put "/:id" do

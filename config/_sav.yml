@@ -1,0 +1,9 @@
+common: &common
+
+development:
+  <<: *common
+  url: "url"
+
+production:
+  <<: *common
+  url: "url"

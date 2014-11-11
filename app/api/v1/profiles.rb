@@ -5,16 +5,13 @@ module V1
 
       before { verify_ip_access! }
 
-      desc "Todos os perfis"
-      get :profiles, rabl: "profiles/list" do
-        @profiles = Profile.all_except_basic
-      end
+      namespace :profiles do
 
-      namespace :sav do
         desc "Todos os perfis"
-        get :profiles, rabl: "profiles/list" do
+        get "/", rabl: "profiles/list" do
           @profiles = Profile.all_except_basic
         end
+
       end
 
     end # segment

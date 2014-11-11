@@ -7,7 +7,8 @@ gem "rack", "~> 1.4.5"
 gem "rake", "~> 10.1.1"
 gem "pg", "~> 0.15.0"
 gem "foreigner", "~> 1.4.0"
-gem "koala", "1.2.0"
+
+gem "koala", "1.2.0" # facebook
 
 gem "devise", "~> 2.2.8"
 gem "devise-encryptable", "~> 0.1.2"
@@ -43,6 +44,7 @@ gem "rack-oauth2", "~> 1.0.7"
 gem "grape", "~> 0.9.0"
 gem "rabl", "~> 0.11.0"
 gem "grape-rabl", "~> 0.3.0"
+
 gem "savon", "~> 2.0" # comunicação com ws
 
 gem "roo", "~> 1.13.2" # csv, excel
@@ -50,6 +52,7 @@ gem "roo", "~> 1.13.2" # csv, excel
 gem "em-websocket" # websocket pros fóruns
 
 gem "strong_parameters", "~> 0.2.3"
+
 
 group :development do
   gem "rb-readline", "~> 0.5.1"

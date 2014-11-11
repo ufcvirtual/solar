@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe "Discussions" do
-
   fixtures :all
 
   describe ".list" do

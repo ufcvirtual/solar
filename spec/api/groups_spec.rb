@@ -202,38 +202,74 @@ describe "Groups" do
         get "/api/v1/groups", {semester: "2012.1"}
 
         response.status.should eq(200)
-        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6},{id: 6, code: "IL-FOR", offer_id: 6}].to_json
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, students: 0, start_date: '2011-03-10', end_date: '2011-12-01'},
+          {id: 6, code: "IL-FOR", offer_id: 6, students: 1, start_date: '2011-03-10', end_date: '2011-12-01'}].to_json
       end
 
       it "list all by semester and type" do
         get "/api/v1/groups", {semester: "2012.1", course_type_id: 3}
 
         response.status.should eq(200)
-        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6},{id: 6, code: "IL-FOR", offer_id: 6}].to_json
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, students: 0, start_date: '2011-03-10', end_date: '2011-12-01'},
+          {id: 6, code: "IL-FOR", offer_id: 6, students: 1, start_date: '2011-03-10', end_date: '2011-12-01'}].to_json
       end
 
       it "list all by semester, type and course" do
         get "/api/v1/groups", {semester: "2012.1", course_type_id: 3, course_id: 10}
 
         response.status.should eq(200)
-        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6},{id: 6, code: "IL-FOR", offer_id: 6}].to_json
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, students: 0, start_date: '2011-03-10', end_date: '2011-12-01'},
+          {id: 6, code: "IL-FOR", offer_id: 6, students: 1, start_date: '2011-03-10', end_date: '2011-12-01'}].to_json
       end
 
       it "list all by semester, type and discipline" do
         get "/api/v1/groups", {semester: "2012.1", course_type_id: 3, discipline_id: 1}
 
         response.status.should eq(200)
-        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6},{id: 6, code: "IL-FOR", offer_id: 6}].to_json
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, students: 0, start_date: '2011-03-10', end_date: '2011-12-01'},
+          {id: 6, code: "IL-FOR", offer_id: 6, students: 1, start_date: '2011-03-10', end_date: '2011-12-01'}].to_json
       end
 
       it "list all by semester, type, course and discipline" do
         get "/api/v1/groups", {semester: "2012.1", course_type_id: 3, course_id: 10, discipline_id: 1}
 
         response.status.should eq(200)
-        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6},{id: 6, code: "IL-FOR", offer_id: 6}].to_json
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, students: 0, start_date: '2011-03-10', end_date: '2011-12-01'},
+          {id: 6, code: "IL-FOR", offer_id: 6, students: 1, start_date: '2011-03-10', end_date: '2011-12-01'}].to_json
+      end
+
+      it "list by group it self" do
+        get "/api/v1/groups", {group_id: 1}
+
+        response.status.should eq(200)
+        response.body.should == [{id: 1, code: "IL-FOR", offer_id: 1, students: 4, start_date: '2011-03-10', end_date: '2021-12-01'}].to_json
       end
 
     end # list
+
+    context "dont list" do
+
+      it "too many params 1" do
+        get "/api/v1/groups", {group_id: 1, semester: "2014.2"}
+        response.status.should eq(400)
+      end
+
+      it "too many params 2" do
+        get "/api/v1/groups", {group_id: 1, course_type_id: 3}
+        response.status.should eq(400)
+      end
+
+      it "too many params 3" do
+        get "/api/v1/groups", {group_id: 1, course_id: 3}
+        response.status.should eq(400)
+      end
+
+      it "too many params 4" do
+        get "/api/v1/groups", {group_id: 1, discipline_id: 3}
+        response.status.should eq(400)
+      end
+
+    end
 
   end # groups
 

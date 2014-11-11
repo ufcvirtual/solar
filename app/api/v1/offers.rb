@@ -11,8 +11,10 @@ module V1
           requires :name, type: String
           requires :offer_start, :offer_end, type: Date
           optional :enrollment_start, :enrollment_end, type: Date
-          optional :course_id, :curriculum_unit_id, type: Integer
-          optional :course_code, :curriculum_unit_code, type: String
+          optional :course_id, type: Integer#, values: -> { Course.all.map(&:id) }
+          optional :curriculum_unit_id, type: Integer#, values: -> { CurriculumUnit.all.map(&:id) }
+          optional :course_code, type: String#, values: -> { Course.all.map(&:code).compact }
+          optional :curriculum_unit_code, type: String#, values: -> { CurriculumUnit.all.map(&:code).compact }
           exactly_one_of :course_code, :course_id
           exactly_one_of :curriculum_unit_code, :curriculum_unit_id
         end

@@ -1,13 +1,16 @@
 require "spec_helper"
 
 describe "Profiles" do
-
   fixtures :all
 
   describe "try access with invalid ip" do
-    it "gets a not found error" do
-      get "/api/v1/profiles", {}, {"REMOTE_ADDR" => "127.0.0.2"}
-      response.status.should eq(404)
+    context "gets a not found error" do
+
+      it "at profiles list" do
+        get "/api/v1/profiles", {}, {"REMOTE_ADDR" => "127.0.0.2"}
+        response.status.should eq(404)
+      end
+
     end
   end
 
