@@ -1,6 +1,7 @@
 class MessagesController < ApplicationController
   include FilesHelper
   include MessagesHelper
+  include SysLog::Actions
 
   before_filter :prepare_for_group_selection, only: [:index]
 

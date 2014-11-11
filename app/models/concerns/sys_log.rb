@@ -27,12 +27,14 @@ module SysLog
 
       if not(objs.nil?) and not(objs.empty?)
         objs.each do |obj|
-          description = "#{sobj.singularize}: #{obj.id}, #{ActiveSupport::JSON.encode(obj.attributes.except('attachment_updated_at', 'updated_at', 'created_at'))}" rescue nil
-          if obj.respond_to?(:academic_allocations) and not obj.academic_allocations.empty?
+          description = "#{sobj.singularize}: #{obj.id}, #{ActiveSupport::JSON.encode(obj.attributes.except('attachment_updated_at', 'updated_at', 'created_at', 'id'))}" rescue nil
+          if ((obj.respond_to?(:academic_allocations) and not obj.try(:academic_allocations).empty?) or obj.respond_to?(:academic_allocation))
             allocation_tag_id = params[:allocation_tag_id] || active_tab[:url][:allocation_tag_id] || obj.allocation_tag.id rescue nil
-            obj.academic_allocations.each do |al|
+            [(obj.respond_to?(:academic_allocations) ? obj.academic_allocations : obj.academic_allocation)].flatten.each do |al|
               LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, academic_allocation_id: al.id, allocation_tag_id: allocation_tag_id, ip: request.remote_ip, description: description)
             end
+          elsif (obj.respond_to?(:allocation_tag) and not(obj.allocation_tag.nil?))
+            LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, allocation_tag_id: obj.allocation_tag.id, ip: request.remote_ip, description: description)
           else # generic log
             generic_log(sobj, obj)
           end
@@ -61,6 +63,7 @@ module SysLog
       def generic_log(sobj, obj = nil)
         return if not(obj.nil?) and obj.new_record? # not saved
 
+        # academic_allocation_id = obj.try(:academic_allocation).try(:id)
         academic_allocation_id = nil
         tbname = obj.try(:class).try(:table_name).to_s.singularize.to_sym if obj.try(:class).respond_to?(:table_name)
         description = if not(tbname.nil?) and params.has_key?(tbname) and not(obj.nil?)

@@ -10,6 +10,8 @@ class AssignmentComment < ActiveRecord::Base
   belongs_to :sent_assignment
   belongs_to :user
 
+  has_one :academic_allocation, through: :sent_assignment
+  
   has_many :files, class_name: "CommentFile", dependent: :delete_all
 
   accepts_nested_attributes_for :files, allow_destroy: true, reject_if: proc {|attributes| not attributes.include?(:attachment)}

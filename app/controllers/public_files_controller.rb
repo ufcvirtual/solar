@@ -1,6 +1,7 @@
 class PublicFilesController < ApplicationController
 
   include FilesHelper
+  include SysLog::Actions
 
   before_filter :set_current_user, only: :destroy
 
