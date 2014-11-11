@@ -12,7 +12,7 @@
 :javascript
   $(function(){
     $(".save_file").click(function(){
-      $('form').serialize_and_submit({
+      $('form#new_assignment_file').serialize_and_submit({
         files: true,
         prepend_to_list: $(".student_files tbody"),
         complement_success: function(){
