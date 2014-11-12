@@ -17,7 +17,7 @@ class MessagesController < ApplicationController
   end
 
   def new
-    authorize! :index, Message, {on: [@allocation_tag_id  = active_tab[:url][:allocation_tag_id]], accepts_general_profile: true}
+    authorize! :index, Message, {on: [@allocation_tag_id  = active_tab[:url][:allocation_tag_id]], accepts_general_profile: true} unless active_tab[:url][:allocation_tag_id].nil?
     @message = Message.new
     @message.files.build
 
@@ -175,7 +175,8 @@ class MessagesController < ApplicationController
   def find_users
     @allocation_tags_ids = AllocationTag.get_by_params(params, related = true)[:allocation_tags]
 
-    authorize! :show, CurriculumUnit, on: @allocation_tags_ids, read: true
+    raise CanCan::AccessDenied if current_user.is_researcher?(@allocation_tags_ids)
+    authorize! :show, CurriculumUnit, {on: @allocation_tags_ids, read: true}
 
     @users = User.all_at_allocation_tags(@allocation_tags_ids, Allocation_Activated, true)
     @allocation_tags_ids = @allocation_tags_ids.join("_")
