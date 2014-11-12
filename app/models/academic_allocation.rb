@@ -32,10 +32,11 @@ class AcademicAllocation < ActiveRecord::Base
     academic_tool_type.eql? 'LessonModule'
   end
 
-  def copy_group_assignments(to_ac_id)
+  def copy_group_assignments(to_ac_id, user, ip) #User e IP serão usados no LOG
     ActiveRecord::Base.transaction do
       group_assignments.each do |group|
         group.copy(to_ac_id)
+        LogAction.create(log_type: LogAction::TYPE[:create], user_id: user.id, ip: ip, description: "import_group: #{group.attributes}", academic_allocation_id: to_ac_id)
       end
     end
   end

@@ -10,7 +10,7 @@ module SysLog
     extend ActiveSupport::Concern
 
     included do
-      after_filter :log_create, unless: Proc.new {|c| request.get? }, except: :evaluate
+      after_filter :log_create, unless: Proc.new {|c| request.get? }, except: [:evaluate, :change_participant, :import]
     end
 
     def log_create
@@ -22,7 +22,9 @@ module SysLog
       objs  = [eval("@#{sobj}")].compact unless obj.nil? # only if obj doesn't exist, use objs list
 
       # if some error happened, don't save log
+
       response_status = JSON.parse(response.body) rescue nil
+
       return if ((not(response_status.nil?) and response_status.has_key?("success") and response_status["success"] == false) or (params.include?(:success) and params[:success] == false))
 
       if not(objs.nil?) and not(objs.empty?)

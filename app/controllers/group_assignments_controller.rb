@@ -57,6 +57,12 @@ class GroupAssignmentsController < ApplicationController
     @participant = GroupParticipant.where(group_assignment_id: params[:id], user_id: params[:user_id]).first_or_create!
     @participant.destroy unless params[:add].present?
 
+    group_assignment = GroupAssignment.find(params[:id])
+    if params[:add]
+      LogAction.create(log_type: LogAction::TYPE[:create], user_id: current_user.id, ip: request.remote_ip, description: "add_participant: #{@participant.attributes} in #{group_assignment.attributes} ", academic_allocation_id: group_assignment.academic_allocation_id)
+    else
+      LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: request.remote_ip, description: "delete_participant: #{@participant.attributes} in #{group_assignment.attributes} ", academic_allocation_id: group_assignment.academic_allocation_id)
+    end  
     render json: {success: true}
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
