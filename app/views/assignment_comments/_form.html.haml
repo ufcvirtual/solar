@@ -34,15 +34,15 @@
     CKEDITOR.editorConfig = function(config) {
       config.toolbar =
         [
-          { name: 'styles', items : [ 'Styles', 'Format', 'Font', 'FontSize' ] },
-          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] },
-          { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+          { name: 'clipboard', items : [ 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+          { name: 'styles', items : [ 'Styles', 'Format', 'Font', 'FontSize', 'TextColor' ] },
+          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
           { name: 'links', items : [ 'Link', 'Unlink', 'Image', 'Smiley' ] },
           { name: 'insert', items : ['EqnEditor'] }
         ];
 
       config.extraPlugins = 'eqneditor,smiley';
-      config.height = '155px';
+      config.height = '130px';
     };
 
     if (!!$(".list_files_to_send").children().length)
