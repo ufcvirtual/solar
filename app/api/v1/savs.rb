@@ -7,42 +7,50 @@ module V1
       
       desc "Cadastro de questionário"
       params do
-        requires :sav_id, type: Integer
-        optional :group_id, type: Integer#, values: -> Group.all.map(&:id) # futuramente podemos mudar para "optinals"
-        optional :groups_ids, type: Array
+        requires :questionnaire_id, type: Integer
+        optional :groups_id, :profiles_ids, type: Array
+        optional :course_id, :curriculum_unit_id, :curriculum_unit_type_id, :offer_id, type: Integer
         requires :start_date, :end_date, type: Date
-        mutually_exclusive :group_id, :groups_ids
+        mutually_exclusive :groups_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id, :offer_id
       end
-      post "/:sav_id" do
+      post "/:questionnaire_id" do
         begin
-          groups = [params[:group_id] || params[:groups_ids]].flatten
+          allocation_tags_ids = AllocationTag.get_by_params(params)[:allocation_tags]
           Sav.transaction do
-            groups.each do |group_id|
-              Sav.create! ActionController::Parameters.new(params).except("route_info").permit("sav_id", "group_id", "start_date", "end_date", "created_at").merge!({group_id: (group_id.nil? ? group_id : group_id.to_i)})
+            (allocation_tags_ids.blank? ? [nil] : allocation_tags_ids).each do |allocation_tag_id|
+              (params[:profiles_ids].present? ? params[:profiles_ids].map(&:to_i) : [nil]).each do |profile_id|
+                Sav.create! ActionController::Parameters.new(params).except("route_info").permit("questionnaire_id", "allocation_tag_id", "profile_id", "start_date", "end_date", "created_at").merge!({allocation_tag_id: allocation_tag_id, profile_id: profile_id})
+              end
             end
           end
           {ok: :ok}
         rescue => error
           ApplicationAPI.logger puts "API error: #{error}"
-          error!(error, 422)
+          error!(error, (allocation_tags_ids.nil? ? 404 : 422))
         end
       end
 
       desc "Remoção de questionário"
       params do
-        requires :sav_id, type: Integer
-        optional :group_id, type: Integer#, values: -> Group.all.map(&:id) # futuramente podemos mudar para "optinals"
-        optional :groups_ids, type: Array
-        mutually_exclusive :group_id, :groups_ids
+        requires :questionnaire_id, type: Integer
+        optional :groups_id, :profiles_ids, type: Array
+        optional :course_id, :curriculum_unit_id, :curriculum_unit_type_id, :offer_id, type: Integer
+        optional :general, type: Boolean, default: false
+        mutually_exclusive :groups_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id, :offer_id
       end
-      delete "/:sav_id" do
+      delete "/:questionnaire_id" do
         begin
-          query = ((params[:group_id].present? or params[:groups_ids].present?) ? {group_id: [params[:group_id] || params[:groups_ids]].flatten} : {})
-          Sav.where({sav_id: params[:sav_id]}.merge!(query)).delete_all
+          params[:allocation_tags_ids] = AllocationTag.get_by_params(params)[:allocation_tags].compact
+
+          query = []
+          query << (params[:allocation_tags_ids].blank? ? (params[:general].present? ? "allocation_tag_id IS NULL" : nil) : "allocation_tag_id IN (:allocation_tags_ids)")
+          query << (params[:profiles_ids].blank?        ? (params[:general].present? ? "profile_id IS NULL" : nil) : "profile_id IN (:profiles_ids)")
+
+          Sav.where({questionnaire_id: params[:questionnaire_id]}).where(query.compact.join(" AND "), params).delete_all
           {ok: :ok}
         rescue => error
           ApplicationAPI.logger puts "API error: #{error}"
-          error!(error, 422)
+          error!(error, (query.nil? ? 404 : 422))
         end
       end
 

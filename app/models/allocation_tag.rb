@@ -13,6 +13,8 @@ class AllocationTag < ActiveRecord::Base
 
   has_many :users, through: :allocations, uniq: true
 
+  has_many :savs, dependent: :destroy
+
   def groups
     case refer_to
       when 'group'
@@ -205,10 +207,6 @@ class AllocationTag < ActiveRecord::Base
 
   ## related functions - end ##
 
-
-  ## class methods
-
-
   def self.at_groups_by_offer_id(offer_id, only_id = true)
     joins(:group).where(groups: {offer_id: offer_id}).pluck(:id)
   end
@@ -229,6 +227,11 @@ class AllocationTag < ActiveRecord::Base
         at_offer = joins(:offer).where(offers: query).first
 
         [at_offer.send(map_attr), 'OFFER', at_offer.offer_id]
+
+      elsif not params[:offer_id].blank? # informa uc
+
+        [find_by_offer_id(params[:offer_id]).send(map_attr), 'OFFER', params[:offer_id]]
+
       elsif not params[:curriculum_unit_id].blank? # informa uc
 
         [find_by_curriculum_unit_id(params[:curriculum_unit_id]).send(map_attr), 'CURRICULUM_UNIT', nil]
@@ -259,7 +262,7 @@ class AllocationTag < ActiveRecord::Base
     query << "profile_id IN (#{params[:profiles]})"                                    if params[:profiles]
 
     User.joins(allocations: :profile).where(allocations: {status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).related})
-      .where(types.join(" OR ")).where(query.join(" AND "))
+      .where(types.join(" OR ")).where(query.join(" AND ")).uniq
   end
 
   private

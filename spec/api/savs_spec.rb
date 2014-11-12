@@ -4,10 +4,30 @@ describe "Savs" do
 
   fixtures :all
 
+  before(:each) do
+    Sav.create questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1, start_date: (Date.today - 3), end_date: (Date.today + 3.months)
+    Sav.create questionnaire_id: 3, allocation_tag_id: 8, profile_id: 1, start_date: (Date.today - 3), end_date: (Date.today + 3.months)
+    Sav.create questionnaire_id: 4, profile_id: 2, start_date: (Date.today - 3), end_date: (Date.today + 3.months)
+  end
+
   context "create" do
 
-    context "with sav_id and group_id" do
-      let!(:json_data){ { group_id: 3, start_date: Date.current, end_date: Date.current + 4.months } }
+    context "with only questionnaire_id" do
+      let!(:json_data){ { start_date: Date.current, end_date: Date.current + 4.months } }
+
+      subject{ -> { post "/api/v1/sav/1", json_data } } 
+
+      it { should change(Sav.where(questionnaire_id: 1, allocation_tag_id: nil, profile_id: nil),:count).by(1) }
+  
+      it {
+        post "/api/v1/sav/1", json_data
+        response.status.should eq(201)
+        response.body.should == {ok: :ok}.to_json
+      }
+    end
+
+    context "with questionnaire_id and group_id" do
+      let!(:json_data){ { group_id: [3], start_date: Date.current, end_date: Date.current + 4.months } }
 
       subject{ -> { post "/api/v1/sav/1", json_data } } 
 
@@ -20,8 +40,50 @@ describe "Savs" do
       }
     end
 
-    context "with sav_id and groups_ids" do
-      let!(:json_data){ { groups_ids: [1,2,3], start_date: Date.current, end_date: Date.current + 4.months } }
+    context "with questionnaire_id and groups_id" do
+      let!(:json_data){ { groups_id: [1,2,3], start_date: Date.current, end_date: Date.current + 4.months } }
+
+      subject{ -> { post "/api/v1/sav/1", json_data } } 
+
+      it { should change(Sav,:count).by(3) }
+  
+      it {
+        post "/api/v1/sav/1", json_data
+        response.status.should eq(201)
+        response.body.should == {ok: :ok}.to_json
+      }
+    end
+
+    context "with questionnaire_id and course_id" do
+      let!(:json_data){ { course_id: 1, start_date: Date.current, end_date: Date.current + 4.months } }
+
+      subject{ -> { post "/api/v1/sav/1", json_data } } 
+
+      it { should change(Sav,:count).by(1) }
+  
+      it {
+        post "/api/v1/sav/1", json_data
+        response.status.should eq(201)
+        response.body.should == {ok: :ok}.to_json
+      }
+    end
+
+    context "with questionnaire_id and course_id and profile_id" do
+      let!(:json_data){ { course_id: 1, profiles_ids: [1], start_date: Date.current, end_date: Date.current + 4.months } }
+
+      subject{ -> { post "/api/v1/sav/1", json_data } } 
+
+      it { should change(Sav,:count).by(1) }
+  
+      it {
+        post "/api/v1/sav/1", json_data
+        response.status.should eq(201)
+        response.body.should == {ok: :ok}.to_json
+      }
+    end
+
+    context "with questionnaire_id and course_id and profiles_ids" do
+      let!(:json_data){ { course_id: 1, profiles_ids: [1,2,3], start_date: Date.current, end_date: Date.current + 4.months } }
 
       subject{ -> { post "/api/v1/sav/1", json_data } } 
 
@@ -39,7 +101,7 @@ describe "Savs" do
   context "dont create" do
 
     context "with wrong params - wrong type - id" do
-      let!(:json_data){ { groups_ids: [1,2,3], start_date: Date.current, end_date: Date.current + 4.months } }
+      let!(:json_data){ { groups_id: [1,2,3], start_date: Date.current, end_date: Date.current + 4.months } }
 
       subject{ -> { post "/api/v1/sav/savX", json_data } } 
 
@@ -51,8 +113,8 @@ describe "Savs" do
       }
     end
 
-    context "with wrong params - wrong type - group_id" do
-      let!(:json_data){ { group_id: "T01", start_date: Date.current, end_date: Date.current + 4.months } }
+    context "group doesnt exist" do
+      let!(:json_data){ { groups_id: ["T01"], start_date: Date.current, end_date: Date.current + 4.months } }
 
       subject{ -> { post "/api/v1/sav/1", json_data } } 
 
@@ -60,12 +122,12 @@ describe "Savs" do
   
       it {
         post "/api/v1/sav/1", json_data
-        response.status.should eq(400)
+        response.status.should eq(404)
       }
     end
 
-    context "with wrong params - wrong type - groups_ids" do
-      let!(:json_data){ { groups_ids: "T01", start_date: Date.current, end_date: Date.current + 4.months } }
+    context "with wrong params - wrong type" do
+      let!(:json_data){ { groups_id: "T01", start_date: Date.current, end_date: Date.current + 4.months } }
 
       subject{ -> { post "/api/v1/sav/1", json_data } } 
 
@@ -78,7 +140,7 @@ describe "Savs" do
     end
 
     context "with wrong params - multiple params" do
-      let!(:json_data){ { groups_ids: [1,2], group_id: 3, start_date: Date.current, end_date: Date.current + 4.months } }
+      let!(:json_data){ { groups_id: [1,2], course_id: 3, start_date: Date.current, end_date: Date.current + 4.months } }
 
       subject{ -> { post "/api/v1/sav/1", json_data } } 
 
@@ -91,7 +153,7 @@ describe "Savs" do
     end
 
     context "missing params - dates" do
-      let!(:json_data){ { groups_ids: [1,2] } }
+      let!(:json_data){ { groups_id: [1,2] } }
 
       subject{ -> { post "/api/v1/sav/1", json_data } } 
 
@@ -104,9 +166,9 @@ describe "Savs" do
     end
 
     context "already exists" do
-      let!(:json_data){ { groups_ids: [1,2], start_date: Date.current, end_date: Date.current + 4.months } }
+      let!(:json_data){ { groups_id: [2,3], start_date: Date.current, end_date: Date.current + 4.months, profiles_ids: [1] } }
 
-      subject{ -> { post "/api/v1/sav/3", json_data } } 
+      subject{ -> { post "/api/v1/sav/3", json_data  } } 
 
       it { should change(Sav,:count).by(0) }
   
@@ -120,8 +182,8 @@ describe "Savs" do
 
   context "delete" do
 
-    context "with sav_id and group_id" do
-      let!(:json_data){ { group_id: 1 } }
+    context "with questionnaire_id and group_id" do
+      let!(:json_data){ { groups_id: [3] } }
 
       subject{ -> { delete "/api/v1/sav/3", json_data } } 
 
@@ -134,8 +196,8 @@ describe "Savs" do
       }
     end
 
-    context "with sav_id and groups_ids" do
-      let!(:json_data){ { groups_ids: [1,2] } }
+    context "with questionnaire_id and groups_id" do
+      let!(:json_data){ { groups_id: [3,5,6] } }
 
       subject{ -> { delete "/api/v1/sav/3", json_data } } 
 
@@ -148,7 +210,7 @@ describe "Savs" do
       }
     end
 
-    context "with sav_id" do
+    context "with questionnaire_id" do
       subject{ -> { delete "/api/v1/sav/3" } } 
 
       it { should change(Sav,:count).by(-2) }
@@ -175,8 +237,8 @@ describe "Savs" do
       }
     end
 
-    context "with wrong params - wrong type - group_id" do
-      let!(:json_data){ { group_id: "T01" } }
+    context "with not existing group" do
+      let!(:json_data){ { groups_id: ["T01"] } }
 
       subject{ -> { delete "/api/v1/sav/3", json_data} }
 
@@ -184,12 +246,12 @@ describe "Savs" do
   
       it {
         delete "/api/v1/sav/3", json_data
-        response.status.should eq(400)
+        response.status.should eq(404)
       }
     end
 
-    context "with wrong params - wrong type - groups_ids" do
-      let!(:json_data){ { groups_ids: "T01" } }
+    context "with wrong params - wrong type - groups_id" do
+      let!(:json_data){ { groups_id: "T01" } }
 
       subject{ -> { delete "/api/v1/sav/3", json_data } }
 
@@ -202,7 +264,7 @@ describe "Savs" do
     end
 
     context "with wrong params - to many params" do
-      let!(:json_data){ { groups_ids: [1,2], group_id: 1 } }
+      let!(:json_data){ { groups_id: [1,2], course_id: 1 } }
 
       subject{ -> { delete "/api/v1/sav/3", json_data } }
 
