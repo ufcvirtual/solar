@@ -119,7 +119,7 @@ class AssignmentsController < ApplicationController
 
     @student_id, @group_id = params[:student_id], params[:group_id]
 
-    LogAction.create(log_type: LogAction::TYPE[(@sent_assignment.previous_changes.has_key?(:id) ? :create : :update)], user_id: current_user.id, ip: request.remote_ip, description: "sent_assignment: #{@sent_assignment.attributes.merge({"assignment_id" => @assignment.id})}") rescue nil
+    LogAction.create(log_type: LogAction::TYPE[(@sent_assignment.previous_changes.has_key?(:id) ? :create : :update)], user_id: current_user.id, ip: request.remote_ip, description: "sent_assignment: #{@sent_assignment.attributes.merge({"assignment_id" => @assignment.id})}",allocation_tag_id:@allocation_tag_id, academic_allocation_id: AcademicAllocation.select(:id).find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(@allocation_tag_id,@sent_assignment.id,'Assignment') ) rescue nil
 
     render json: { success: true, notice: t("assignments.success.evaluated"), html: "#{render_to_string(partial: "info")}" }
   rescue CanCan::AccessDenied
