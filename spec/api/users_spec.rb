@@ -90,14 +90,14 @@ describe "Users" do
       end
 
       it "with profile at group" do
-        get "/api/v1/profiles/1/users", {group_id: 3}
+        get "/api/v1/profiles/1/users", {groups_id: [3]}
 
         response.status.should eq(200)
         response.body.should == [{id: 7, name: "Aluno 1", cpf: "32305605153", email: "aluno1@solar.ufc.br"}, {id: 8, name: "Aluno 2", cpf: "98447432904", email: "aluno2@solar.ufc.br"}, {id: 9, name: "Aluno 3", cpf: "47382348113", email: "aluno3@aluno3.br"}, {id: 1, name: "Usuario do Sistema", cpf: "43463518678", email: "user@user.com"}].to_json
       end
 
       it "with profile active or not" do
-        get "/api/v1/profiles/1/users", {group_id: 5, only_active: false}
+        get "/api/v1/profiles/1/users", {groups_id: [5], only_active: false}
 
         response.status.should eq(200)
         response.body.should == [{id: 9, name: "Aluno 3", cpf: "47382348113", email: "aluno3@aluno3.br"}, {id: 1, name: "Usuario do Sistema", cpf: "43463518678", email: "user@user.com"}].to_json
@@ -118,6 +118,16 @@ describe "Users" do
         ].to_json
       end
 
+      it "with profile and course" do
+        get "/api/v1/profiles/5/users", {course_id: 2}
+
+        response.status.should eq(200)
+        response.body.should == [{id: 12, name: "Coordenador", cpf: "04982281505", email: "coorddisc@coorddisc.br"},
+          {id: 14, name: "editor", cpf: "87789615211", email: "editor@com.br"},
+          {id: 3, name: "User 3", cpf: "11016853521", email: "user3@email.com"}
+        ].to_json
+      end
+
       it "when params has non existing profile" do
         get "/api/v1/profiles/100/users"
 
@@ -135,11 +145,11 @@ describe "Users" do
         end
       end
 
-      # it "when params has non existing group" do
-      #   get "/api/v1/profiles/1/users", group_id: 100
+      it "when params has non existing group" do
+        get "/api/v1/profiles/1/users", groups_id: [100]
 
-      #   response.status.should eq(400)
-      # end
+        response.status.should eq(404)
+      end
 
     end
 

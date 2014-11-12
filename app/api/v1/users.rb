@@ -88,21 +88,24 @@ module V1
 
       namespace :profiles do
 
-        desc "Retorna usuários com perfil informado"
+        desc "Retorna usuários com perfis informados"
         params do
-          requires :ids, type: String#Integer, values: -> { Profile.all.map(&:id) }
-          optional :group_id, type: Integer#, values: -> { Group.all.map(&:id) }
+          requires :ids, type: String # formato id,id,id
           optional :only_active, type: Boolean, default: true
+          optional :groups_id, type: Array
+          optional :course_id, :curriculum_unit_id, :curriculum_unit_type_id, :offer_id, type: Integer
+          mutually_exclusive :groups_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id, :offer_id
         end
         get "/:ids/users", rabl: "users/index" do
           begin
             query = {allocations: {profile_id: params[:ids].split(",")}}
-            query.merge!({allocation_tags: {id: AllocationTag.find_by_group_id(params[:group_id]).try(:related)}}) if params[:group_id].present?
+            allocation_tags_ids = allocation_tags_ids = AllocationTag.get_by_params(params, true)[:allocation_tags].compact
+            query.merge!({allocation_tags: {id: allocation_tags_ids}}) unless allocation_tags_ids.blank?
             query[:allocations].merge!({status: Allocation_Activated}) if params[:only_active]
 
             @users = User.joins(allocations: :allocation_tag).where(query).uniq
           rescue => error
-            error!(error, 422)            
+            error!(error, (allocation_tags_ids.nil? ? 404 : 422))
           end
         end
       end
