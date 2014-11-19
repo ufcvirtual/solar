@@ -46,6 +46,7 @@ class User < ActiveRecord::Base
     :recoverable, :encryptable, :token_authenticatable # autenticacao por token
 
   before_save :ensure_authentication_token!, :downcase_username, :downcase_email
+  after_save :log_update_user
 
   @has_special_needs
 
@@ -124,6 +125,9 @@ class User < ActiveRecord::Base
 
   ## metodos de validacoes
 
+  def log_update_user
+      LogAction.create(log_type: LogAction::TYPE[:update], user_id: id, description: "update_me: #{attributes.except('encrypted_password', 'reset_password_token', 'password_salt','authentication_token')} ") 
+  end  
   ## Verifica se o radio_button escolhido na view é verdadeiro ou falso.
   ## Este método também define as necessidades especiais como sendo vazia caso a pessoa tenha selecionado que não as possui
   def has_special_needs?
