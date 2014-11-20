@@ -43,15 +43,16 @@ class OffersController < ApplicationController
   end
 
   def create
-    @offer = Offer.new offer_params
+    @type_id =  params[:offer][:type_id].to_i
+    @offer   = Offer.new offer_params
     @offer.user_id = current_user.id
+    @offer.type_id = @type_id
 
     optional_authorize(:create)
 
     if @offer.save
       render json: {success: true, notice: t(:created, scope: [:offers, :success])}
     else
-      @type_id = @offer.type_id
       render :new
     end
   rescue => error
@@ -60,14 +61,14 @@ class OffersController < ApplicationController
   end
 
   def update
-    @offer = Offer.find(params[:id])
+    @type_id =  params[:offer][:type_id].to_i
+    @offer   = Offer.find(params[:id])
 
     optional_authorize(:update)
 
     if @offer.update_attributes!(offer_params)
       render json: {success: true, notice: t(:updated, scope: [:offers, :success])}
     else
-      @type_id = @offer.type_id
       @offer.build_period_schedule if @offer.period_schedule.nil?
       @offer.build_enrollment_schedule if @offer.enrollment_schedule.nil?
 
