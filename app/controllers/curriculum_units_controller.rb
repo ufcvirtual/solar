@@ -5,7 +5,6 @@ class CurriculumUnitsController < ApplicationController
   layout false, only: [:new, :edit, :create, :update]
 
   before_filter :prepare_for_group_selection, only: [:home, :participants, :informations]
-  before_filter :get_group_allocation_tag, only: :home
   before_filter :curriculum_data, only: [:home, :informations, :participants]
   before_filter :ucs_for_list, only: [:list, :mobilis_list]
 

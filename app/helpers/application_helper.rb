@@ -80,8 +80,7 @@ module ApplicationHelper
 
     result = ''
     if (groups.length > 1 and @can_select_group)
-      # result = "<form accept-charset='UTF-8' action='' method='#{request.method}' name='groupSelectionForm'>"
-      result = "<form accept-charset='UTF-8' action='#{select_group_path}' method='#{request.method}' name='groupSelectionForm'>"
+      result = "<form accept-charset='UTF-8' action='#{select_group_path}' method='GET' name='groupSelectionForm'>"
       result <<  t(:group) << ":&nbsp"
       result << select_tag(:selected_group, options_from_collection_for_select(groups, :id, :code, selected_group_id),
         {:onchange => "$(this).parent().submit();"} # versao SEM AJAX
