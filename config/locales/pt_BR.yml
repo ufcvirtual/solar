@@ -1905,6 +1905,7 @@ pt_BR:
       semesters: "Semestres"
       groups: "Turmas"
       modules: "Módulos"
+      module: "Módulo"
       type: "Tipo*"
       filter: Filtro
     items:

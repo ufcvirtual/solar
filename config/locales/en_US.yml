@@ -1699,6 +1699,7 @@ en_US:
       semesters: "Semesters"
       groups: "Groups"
       modules: "Modules"
+      module: "Module"
       type: "Type*"
       filter: Filter
     items:

@@ -1,4 +1,4 @@
-- t_tool_name = @type.tool_name
+- t_tool_name = @type.id == 4 ? t("editions.academic.module") : @type.tool_name 
 .block_wrapper
   .block_title
     %h2=t_tool_name

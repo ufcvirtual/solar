@@ -11,7 +11,8 @@
       = label_tag :type, t(".type")
       %span.type_description= @type.description
     .filter
-      = label_tag :curriculum_unit, tool_name
+      - t_tool_name = @type.id == 4 ? t("editions.academic.module") : @type.tool_name 
+      = label_tag :curriculum_unit, t_tool_name 
       = select_tag :curriculum_unit, options_from_collection_for_select(@search_curriculum_units, "id", "code_name"), include_blank: true, :"data-optional" => true
 
     = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => curriculum_units_path(type_id: @type.id), id: "search", :"data-load-to" => "ucs_list"}
