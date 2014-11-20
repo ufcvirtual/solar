@@ -123,7 +123,10 @@ class ApplicationController < ActionController::Base
 
   def prepare_for_group_selection
     @can_select_group = true
-    return unless active_tab[:url][:context] == Context_Curriculum_Unit.to_i
+  end
+
+  def get_group_allocation_tag
+     return unless active_tab[:url][:context] == Context_Curriculum_Unit.to_i
 
     # verifica se o grupo foi passado e se é um grupo válido
     unless params[:selected_group].present? and !!(allocation_tag_id_group = AllocationTag.find_by_group_id(params[:selected_group]).try(:id))
@@ -132,10 +135,17 @@ class ApplicationController < ActionController::Base
       allocation_tag_id_group = (allocation_tag.group_id.nil?) ? Group.find_all_by_offer_id_and_user_id(active_tab[:url][:id], current_user.id).first.allocation_tag.id : allocation_tag.id
     end
 
-    get_current_savs(allocation_tag_id_group) unless SavConfig::CONFIG.nil? # if system is not integrated with Sav, remove this line or sav.yml file
-    user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
+    user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group 
 
-    log_access(allocation_tag_id_group)
+    log_access(allocation_tag_id_group) # save access
+    get_current_savs(allocation_tag_id_group) unless SavConfig::CONFIG.nil? # if system is not integrated with Sav, remove this line or sav.yml file
+  end
+
+  def select_group
+    prepare_for_group_selection
+    get_group_allocation_tag
+
+    redirect_to URI(request.referer).path, selected_group: params[:selected_group]
   end
 
   def after_sign_in_path_for(resource_or_scope)
