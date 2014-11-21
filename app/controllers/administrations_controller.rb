@@ -152,7 +152,7 @@ class AdministrationsController < ApplicationController
 
     if params.include?(:search)
       @text_search, @type_search = URI.unescape(params[:value]), params[:type]
-      text = "%#{[@text_search.split(" ").compact.join("%"), "%"].join}"
+      text = "%#{[@text_search.split(" ").compact.join("%"), "%"].join}" unless @text_search.blank?
 
       @allocations = case @type_search
       when "name"
@@ -160,17 +160,19 @@ class AdministrationsController < ApplicationController
         @allocations.joins(:user).where(query, text)
       when "profile"; @allocations.joins(:profile).where("lower(unaccent(profiles.name)) LIKE lower(unaccent(?))", text)
       else
-        ats = case @type_search
-          when "curriculum_unit_type"; CurriculumUnitType.where("lower(unaccent(description)) LIKE lower(unaccent(?))", text).map(&:allocation_tag).map{|a| a.related({lower: true})}.uniq
-          when "course"; Course.where("lower(unaccent(name || code)) LIKE lower(unaccent(?))", text).map(&:allocation_tag).map{|a| a.related({lower: true, sibblings: false})}.uniq
-          when "curriculum_unit"; CurriculumUnit.where("lower(unaccent(name || code)) LIKE lower(unaccent(?))", text).map(&:allocation_tag).map{|a| a.related({lower: true, sibblings: false})}.uniq
-          when "semester"; Semester.where("lower(unaccent(name)) LIKE lower(unaccent(?))", text).map(&:offers).flatten.uniq.map(&:allocation_tag).map{|a| a.related({lower: true})}.uniq
-          when "group"; Group.where("lower(unaccent(code)) LIKE lower(unaccent(?))", text).map(&:allocation_tag).uniq
-        else
-          nil
+        unless text.nil?
+          ats = case @type_search
+            when "curriculum_unit_type"; CurriculumUnitType.where("lower(unaccent(description || ' ')) LIKE lower(unaccent(?))", text).map(&:allocation_tag).map{|a| a.related({lower: true, sibblings: false})}
+            when "course"; Course.where("lower(unaccent(name || code || ' ')) LIKE lower(unaccent(?))", text).map(&:allocation_tag).map{|a| a.related({lower: true, sibblings: false})}
+            when "curriculum_unit"; CurriculumUnit.where("lower(unaccent(name || code || ' ')) LIKE lower(unaccent(?))", text).map(&:allocation_tag).map{|a| a.related({lower: true, sibblings: false})}
+            when "semester"; Semester.where("lower(unaccent(name || ' ')) LIKE lower(unaccent(?))", text).map(&:offers).flatten.uniq.map(&:allocation_tag).map{|a| a.related({lower: true})}
+            when "group"; Group.where("lower(unaccent(code || ' ')) LIKE lower(unaccent(?))", text).map(&:allocation_tag).uniq
+          else
+            nil
+          end
         end
-        
-        ats.nil? ? @allocations : @allocations.where(allocation_tag_id: ats)
+
+        ats.nil? ? @allocations : @allocations.where(allocation_tag_id: ats.flatten.uniq)
       end
     end
 

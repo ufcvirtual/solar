@@ -119,7 +119,7 @@ class AllocationTag < ActiveRecord::Base
     when 'curriculum_unit', 'course'
       uc_or_course_related(academic_tool, args[:lower], args[:upper], args[:sibblings])
     when 'curriculum_unit_type'
-      uc_type_related if args[:lower]
+      uc_type_related(args[:sibblings]) if args[:lower]
     end
 
     result = [self, result].flatten.compact.uniq
@@ -188,10 +188,10 @@ class AllocationTag < ActiveRecord::Base
     self.class.where(query.join(" OR "), association_ids)
   end
 
-  def uc_type_related
+  def uc_type_related(sibblings = true)
     at_offers  = offers.map(&:id).uniq
     at_groups  = groups.map(&:id).uniq
-    at_courses = curriculum_unit_type.courses.map(&:id)
+    at_courses = curriculum_unit_type.courses.map(&:id) if sibblings
     at_ucs     = curriculum_unit_type.curriculum_units.map(&:id)
 
     query = []
