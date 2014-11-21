@@ -11,8 +11,8 @@ class UserBlacklist < ActiveRecord::Base
   validate :cpf_can_go_to_blacklist?
 
   def self.search(text)
-    text = [URI.unescape(text).split(' ').compact.join(":*&"), ":*"].join
-    where("to_tsvector('simple', unaccent(cpf || ' ' || name)) @@ to_tsquery('simple', unaccent(?))", self.cpf_without_mask(text))
+    text = [URI.unescape(text).split(' ').compact.join("%"), "%"].join
+    where("lower(unaccent(cpf || ' ' || name)) LIKE lower(unaccent(?))", "%#{self.cpf_without_mask(text)}")
   end
 
   private

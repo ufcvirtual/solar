@@ -203,8 +203,8 @@ class Allocation < ActiveRecord::Base
         query << "allocations.status = :status" if args[:status].present?
 
         if args[:user_search].present?
-          user_search = [args[:user_search].split(" ").compact.join(":*&"), ":*"].join
-          query << "to_tsvector('simple', unaccent(users.name)) @@ to_tsquery('simple', unaccent('#{user_search}'))"
+          user_search = [args[:user_search].split(" ").compact.join("%"), "%"].join
+          query << "lower(unaccent(users.name)) LIKE lower(unaccent('%#{user_search}'))"
         end
       end
       query.join(' AND ')

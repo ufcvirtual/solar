@@ -294,7 +294,7 @@ class User < ActiveRecord::Base
   # Searches all users which "type" column includes "text"
   # if allocation_tags_ids is informed and doesn't include nil => searches users allocated at the allocation_tags_ids
   def self.find_by_text_ignoring_characters(text, type='name', allocation_tags_ids=[])
-    users = where("to_tsvector('simple', unaccent(#{type})) @@ to_tsquery('simple', unaccent(?))", text)
+    users = where("lower(unaccent(#{type})) LIKE lower(unaccent(?))", "%#{text}")
     users = users.joins(:allocations).where("allocation_tag_id IN (?)", allocation_tags_ids) unless allocation_tags_ids.blank? or allocation_tags_ids.include?(nil)
     users.select("DISTINCT users.id").select("users.*").order("name")
   end

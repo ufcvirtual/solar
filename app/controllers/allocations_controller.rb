@@ -119,7 +119,7 @@ class AllocationsController < ApplicationController
 
     @text_search, @admin = URI.unescape(params[:user]), params[:admin]
 
-    text = [@text_search.split(" ").compact.join(":*&"), ":*"].join if params[:user].present?
+    text = [@text_search.split(" ").compact.join("%"), "%"].join if params[:user].present?
     @allocation_tags_ids = params[:allocation_tags_ids]
     @users = User.find_by_text_ignoring_characters(text).paginate(page: params[:page])
   end

@@ -17,7 +17,7 @@ class AdministrationsController < ApplicationController
   def search_users
     authorize! :users, Administration
 
-    @type_search, @text_search = params[:type_search], [URI.unescape(params[:user]).split(" ").compact.join(":*&"), ":*"].join unless params[:user].blank?
+    @type_search, @text_search = params[:type_search], [URI.unescape(params[:user]).split(" ").compact.join("%"), "%"].join unless params[:user].blank?
     allocation_tags_ids = current_user.allocation_tags_ids_with_access_on(["users"], "administrations", true, true)
     @users      = User.find_by_text_ignoring_characters(@text_search, @type_search, allocation_tags_ids).paginate(page: params[:page])
     @can_change = not(current_user.profiles_with_access_on("update_user", "administrations").empty?)
@@ -158,8 +158,8 @@ class AdministrationsController < ApplicationController
         if @text_search.blank?
           @allocations.joins(:user)
         else
-          text = [@text_search.split(" ").compact.join(":*&"), ":*"].join
-          @allocations.joins(:user).where("to_tsvector('simple', unaccent(users.name)) @@ to_tsquery('simple', unaccent(?))", text)
+          text = [@text_search.split(" ").compact.join("%"), "%"].join
+          @allocations.joins(:user).where("lower(unaccent(users.name)) LIKE lower(unaccent(?))", "%#{text}")
         end
       when "profile"; @allocations.joins(:profile).where("lower(profiles.name) ~ ?", @text_search.downcase)
       when "curriculum_unit_type"
@@ -227,8 +227,8 @@ class AdministrationsController < ApplicationController
     log  = params[:type] == 'actions' ? LogAction : LogAccess
 
     unless params[:user].blank?
-      text_search = [URI.unescape(params[:user]).split(" ").compact.join(":*&"), ":*"].join
-      user_ids    = User.where("to_tsvector('simple', unaccent(name || ' ' || cpf)) @@ to_tsquery('simple', unaccent(?))", text_search).map(&:id).join(',')
+      text_search = [URI.unescape(params[:user]).split(" ").compact.join("%"), "%"].join
+      user_ids    = User.where("lower(unaccent(name || ' ' || cpf)) LIKE lower(unaccent(?))", "%#{text_search}").map(&:id).join(',')
       query << "user_id IN (#{user_ids})" unless user_ids.blank?
     end
 
