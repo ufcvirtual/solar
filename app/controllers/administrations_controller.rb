@@ -152,38 +152,25 @@ class AdministrationsController < ApplicationController
 
     if params.include?(:search)
       @text_search, @type_search = URI.unescape(params[:value]), params[:type]
+      text = "%#{[@text_search.split(" ").compact.join("%"), "%"].join}"
 
       @allocations = case @type_search
       when "name"
-        if @text_search.blank?
-          @allocations.joins(:user)
+        query = "lower(unaccent(users.name)) LIKE lower(unaccent(?))" unless @text_search.blank?
+        @allocations.joins(:user).where(query, text)
+      when "profile"; @allocations.joins(:profile).where("lower(unaccent(profiles.name)) LIKE lower(unaccent(?))", text)
+      else
+        ats = case @type_search
+          when "curriculum_unit_type"; CurriculumUnitType.where("lower(unaccent(description)) LIKE lower(unaccent(?))", text).map(&:allocation_tag).map{|a| a.related({lower: true})}.uniq
+          when "course"; Course.where("lower(unaccent(name || code)) LIKE lower(unaccent(?))", text).map(&:allocation_tag).map{|a| a.related({lower: true, sibblings: false})}.uniq
+          when "curriculum_unit"; CurriculumUnit.where("lower(unaccent(name || code)) LIKE lower(unaccent(?))", text).map(&:allocation_tag).map{|a| a.related({lower: true, sibblings: false})}.uniq
+          when "semester"; Semester.where("lower(unaccent(name)) LIKE lower(unaccent(?))", text).map(&:offers).flatten.uniq.map(&:allocation_tag).map{|a| a.related({lower: true})}.uniq
+          when "group"; Group.where("lower(unaccent(code)) LIKE lower(unaccent(?))", text).map(&:allocation_tag).uniq
         else
-          text = [@text_search.split(" ").compact.join("%"), "%"].join
-          @allocations.joins(:user).where("lower(unaccent(users.name)) LIKE lower(unaccent(?))", "%#{text}")
+          nil
         end
-      when "profile"; @allocations.joins(:profile).where("lower(profiles.name) ~ ?", @text_search.downcase)
-      when "curriculum_unit_type"
-        @allocations.collect do |allocation|
-          uc = allocation.curriculum_unit_related
-          allocation if not(uc.nil?) and uc.curriculum_unit_type.description.downcase.include? @text_search.downcase
-        end
-      when "course"
-        @allocations.collect do |allocation|
-          course = allocation.course_related
-          allocation if not(course.nil?) and course.name.downcase.include? @text_search.downcase
-        end
-      when "curriculum_unit"
-        @allocations.collect do |allocation|
-          uc = allocation.curriculum_unit_related
-          allocation if not(uc.nil?) and uc.curriculum_unit.name.downcase.include? @text_search.downcase
-        end
-      when "semester"
-        @allocations.collect do |allocation|
-          semester = allocation.semester_related
-          allocation if not(semester.nil?) and semester.name.downcase.include? @text_search.downcase
-        end
-      when "group"; @allocations.joins(:group).where("lower(groups.code) ~ ?", @text_search.downcase)
-      else @allocations
+        
+        ats.nil? ? @allocations : @allocations.where(allocation_tag_id: ats)
       end
     end
 

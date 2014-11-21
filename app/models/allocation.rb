@@ -80,31 +80,6 @@ class Allocation < ActiveRecord::Base
     allocation_tag.try(:refer_to)
   end
 
-  def curriculum_unit_related # uc, offer, group
-    return curriculum_unit if refer_to == 'curriculum_unit'
-    send(refer_to).curriculum_unit rescue nil
-  end
-
-  def course_related # course, offer, group
-    return course if refer_to == 'course'
-    send(refer_to).course rescue nil
-  end
-
-  def semester_related # offer, group
-    send(refer_to).semester rescue nil
-  end
-
-  def offers_related # uc, course, offer, group
-    case refer_to
-      when 'curriculum_unit', 'course'
-        send(refer_to).offers
-      when 'offer'
-        [offer]
-      when 'group'
-        [group.offer]
-    end
-  end
-
   def status_color
     case status
       when Allocation_Pending_Reactivate, Allocation_Pending; "#FF6600"
@@ -148,10 +123,6 @@ class Allocation < ActiveRecord::Base
 
     new_allocation
   end
-
-
-  ## class methods
-
 
   def self.change_status_from(allocations, new_status, group: nil, by_user: nil)
     new_allocations = []

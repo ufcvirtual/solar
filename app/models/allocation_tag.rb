@@ -106,7 +106,7 @@ class AllocationTag < ActiveRecord::Base
   ## related functions - begin ##
 
   def related(args = {})
-    args = {lower: false, upper: false, objects: false}.merge(args)
+    args = {lower: false, upper: false, objects: false, sibblings: true}.merge(args)
     args = args.merge({lower: true, upper: true}) if not(args[:lower] or args[:upper])
 
     academic_tool = refer_to
@@ -117,7 +117,7 @@ class AllocationTag < ActiveRecord::Base
     when 'offer'
       offer_related(args[:lower], args[:upper])
     when 'curriculum_unit', 'course'
-      uc_or_course_related(academic_tool, args[:lower], args[:upper])
+      uc_or_course_related(academic_tool, args[:lower], args[:upper], args[:sibblings])
     when 'curriculum_unit_type'
       uc_type_related if args[:lower]
     end
@@ -161,14 +161,14 @@ class AllocationTag < ActiveRecord::Base
     [r_lower, r_upper]
   end
 
-  def uc_or_course_related(academic_tool, lower = true, upper = true)
+  def uc_or_course_related(academic_tool, lower = true, upper = true, sibblings = true)
     if lower
       at_offers = offers.map(&:id).uniq
       at_groups = groups.map(&:id).uniq
     end
 
     sibling_tool = (academic_tool == 'course') ? CurriculumUnit : Course
-    siblings = sibling_tool.joins(:offers).where(offers: {id: at_offers}).map(&:id).uniq
+    siblings = sibling_tool.joins(:offers).where(offers: {id: at_offers}).map(&:id).uniq if sibblings
 
     if upper
       uc_type = if (academic_tool == 'course')
