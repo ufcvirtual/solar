@@ -57,6 +57,6 @@
   = render partial: "files", locals: {files: @assignment.try(:enunciation_files)}
 
 .block_wrapper{style: "float:left"}
-  = link_to t(:back), "javascript:history.back(1)", {class: "btn"}  
+  = link_to t(:back), :back, {class: "btn"}  
 
 = javascript_include_tag "assignments"
