@@ -100,7 +100,7 @@ class GroupAssignmentsController < ApplicationController
   def import
     authorize! :import, GroupAssignment, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
-    @ac.copy_group_assignments(AcademicAllocation.where(academic_tool_type: "Assignment", academic_tool_id: params[:id], allocation_tag_id: allocation_tag_id).first.id)
+    @ac.copy_group_assignments(AcademicAllocation.where(academic_tool_type: "Assignment", academic_tool_id: params[:id], allocation_tag_id: allocation_tag_id).first.id, current_user.id, request.remote_ip)
     render json: {success: true, notice: t("group_assignments.success.imported")}
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
