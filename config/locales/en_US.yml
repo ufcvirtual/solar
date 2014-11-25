@@ -3,6 +3,7 @@ en_US:
   will_paginate:
     previous_label: "« Previous"
     next_label: "Next »"
+    page_gap: "..."
 
   date:
     formats:
