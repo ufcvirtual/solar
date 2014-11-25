@@ -3,7 +3,7 @@ module SavConfig
   unless CONFIG.nil?
     IV     = CONFIG['IV']
     KEY    = CONFIG['key']
-    PARAMS = CONFIG['params']
-    URL    = CONFIG['url']
+    WSDL   = CONFIG['wsdl']
+    METHOD = CONFIG['method']
   end
 end
