@@ -1,0 +1,6 @@
+= form.collection_check_boxes :group_id, groups, :id, :code do |ckb|
+  - ckb_status = ckb.object.status
+  .group_checkbox
+    = ckb.check_box
+    .collection_check_boxes{id: ckb_status ? "" : "disabled", :"data-tooltip" => (ckb_status ? "" : t(".disabled_group"))}
+      = ckb.label
