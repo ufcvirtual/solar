@@ -278,4 +278,115 @@ describe "Savs" do
     
   end # dont delete
 
+  context "edit" do
+
+    context "with questionnaire_id and group" do
+      let!(:json_data){ { start_date: Date.current - 5.months, groups_id: [3]} }
+
+      subject{ -> { put "/api/v1/sav/3", json_data } } 
+
+      it { should change(Sav.where(questionnaire_id: 3, allocation_tag_id: 3),:count).by(0) }
+  
+      it {
+        put "/api/v1/sav/3", json_data
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3).first.start_date == (Date.current - 5.months)
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.end_date == (Date.today + 3.months) # don't change
+        response.status.should eq(200)
+        response.body.should == {ok: :ok}.to_json
+      }
+    end
+
+    context "with questionnaire_id and profile" do
+      let!(:json_data){ { start_date: Date.current - 5.months, groups_id: [3], profiles_ids: [1]} }
+
+      subject{ -> { put "/api/v1/sav/3", json_data } } 
+
+      it { should change(Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1),:count).by(0) }
+  
+      it {
+        put "/api/v1/sav/3", json_data
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.start_date == (Date.current - 5.months)
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.end_date == (Date.today + 3.months) # don't change
+        response.status.should eq(200)
+        response.body.should == {ok: :ok}.to_json
+      }
+    end
+
+    context "with start and end dates" do
+      let!(:json_data){ { start_date: Date.current - 5.months, end_date: Date.current + 5.months, groups_id: [3], profiles_ids: [1]} }
+
+      subject{ -> { put "/api/v1/sav/3", json_data } } 
+
+      it { should change(Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1),:count).by(0) }
+  
+      it {
+        put "/api/v1/sav/3", json_data
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.start_date == (Date.current - 5.months)
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.end_date == (Date.today + 5.months)
+        response.status.should eq(200)
+        response.body.should == {ok: :ok}.to_json
+      }
+    end
+
+  end # edit
+
+  context "dont edit" do
+
+    context "with wrong params - wrong type - id" do
+      let!(:json_data){ { start_date: Date.current - 5.months, groups_id: [3], profiles_ids: [1]} }
+
+      it {
+        put "/api/v1/sav/savX", json_data
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.start_date == (Date.today - 3) # don't change
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.end_date == (Date.today + 3.months) # don't change
+        response.status.should eq(400)
+      }
+    end
+
+    context "group doesnt exist" do
+      let!(:json_data){ { start_date: Date.current - 5.months, groups_id: ["T01"]} }
+
+      it {
+        put "/api/v1/sav/savX", json_data
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.start_date == (Date.today - 3) # don't change
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.end_date == (Date.today + 3.months) # don't change
+        response.status.should eq(400)
+      }
+    end
+  
+    context "with wrong params - wrong type" do
+      let!(:json_data){ { start_date: Date.current - 5.months, groups_id: "T01"} }
+
+      it {
+        put "/api/v1/sav/savX", json_data
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.start_date == (Date.today - 3) # don't change
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.end_date == (Date.today + 3.months) # don't change
+        response.status.should eq(400)
+      }
+    end
+  
+    context "with wrong params - multiple params" do
+      let!(:json_data){ { start_date: Date.current - 5.months, groups_id: [3], course_id: 3} }
+
+      it {
+        put "/api/v1/sav/savX", json_data
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.start_date == (Date.today - 3) # don't change
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.end_date == (Date.today + 3.months) # don't change
+        response.status.should eq(400)
+      }
+    end
+
+    context "missing date" do
+      let!(:json_data){ {groups_id: [3]} }
+
+      it {
+        put "/api/v1/sav/savX", json_data
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.start_date == (Date.today - 3) # don't change
+        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.end_date == (Date.today + 3.months) # don't change
+        response.status.should eq(400)
+      }
+    end
+    
+  end # dont edit
+
 end

@@ -161,10 +161,16 @@
           minHeight: $(window).height() - 100,
           autoResize: true,
           open: true,
+          afterClose : function(){
+            $.get("#{select_group_path}", function(data){});
+          }
         });
-        // setTimeout(function() {
-        // se não abriu, cancelar fancybox 
-        // }, 1000);
+        
+        setTimeout(function() {
+          //se não abriu, cancelar fancybox 
+          if(!$(".fancybox-inner").length)
+            $.fancybox.close();
+        }, 2000);
       }
 
       /**

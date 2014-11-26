@@ -11,11 +11,13 @@ module SavHelper
         # cipher.iv, cipher.key  = SavConfig::IV, SavConfig::KEY
 
         user_profiles = current_user.profiles.where("(allocations.allocation_tag_id IN (?))", allocation_tags_ids).pluck(:id)
-        savs = Sav.current_savs(allocation_tags_ids).where("profile_id IN (?) OR profile_id IS NULL", user_profiles).pluck(:id).to_s.delete("[]")
+        savs = Sav.current_savs(allocation_tags_ids).where("profile_id IN (?) OR profile_id IS NULL", user_profiles).pluck(:id)
 
-        client   = Savon.client wsdl: SavConfig::WSDL
-        response = client.call SavConfig::METHOD.to_sym, message: {"name"=> current_user.name, "cpf"=> current_user.cpf, "group_id"=> at.send(at.refer_to).try(:id), "perfis_id"=> {"int" => user_profiles}}
-        sav_url  = (response.as_json[:url_questionario_response][:url_questionario_result] || "")
+        unless savs.empty?
+          client   = Savon.client wsdl: SavConfig::WSDL
+          response = client.call SavConfig::METHOD.to_sym, message: {"name"=> current_user.name, "cpf"=> current_user.cpf, "group_id"=> at.send(at.refer_to).try(:id), "perfis_id"=> {"int" => user_profiles}}
+          sav_url  = (response.as_json[:url_questionario_response][:url_questionario_result] || "")
+        end
 
         # @_sav_url = (savs.empty? ? "" : [SavConfig::URL, Base64.encode64(cipher.update(
         #   SavConfig::PARAMS.gsub("user_cpf", current_user.cpf).gsub("user_name", current_user.name).gsub("profiles_ids", user_profiles.to_s.delete("[]"))
