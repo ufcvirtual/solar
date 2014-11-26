@@ -25,7 +25,7 @@ module V1
           end
           {ok: :ok}
         rescue => error
-          ApplicationAPI.logger puts "API error: #{error}"
+          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}]: #{error}"
           error!(error, (allocation_tags_ids.nil? ? 404 : 422))
         end
       end
@@ -49,7 +49,7 @@ module V1
           Sav.where({questionnaire_id: params[:questionnaire_id]}).where(query.compact.join(" AND "), params).delete_all
           {ok: :ok}
         rescue => error
-          ApplicationAPI.logger puts "API error: #{error}"
+          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}]: #{error}"
           error!(error, (query.nil? ? 404 : 422))
         end
       end

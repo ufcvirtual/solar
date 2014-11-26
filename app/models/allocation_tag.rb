@@ -261,7 +261,7 @@ class AllocationTag < ActiveRecord::Base
     types << "cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )" if params[:responsibles] or params[:all]
     query << "profile_id IN (#{params[:profiles]})"                                    if params[:profiles]
 
-    User.joins(allocations: :profile).where(allocations: {status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).related})
+    User.select("users.*").joins(allocations: :profile).where(allocations: {status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).related})
       .where(types.join(" OR ")).where(query.join(" AND ")).uniq
   end
 

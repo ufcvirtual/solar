@@ -103,6 +103,8 @@
 
         #lesson_external_div.invisible
 
+        #sav_url.invisible= link_to "", "http://#{active_tab[:sav_url]}", {class: 'link_content fancybox.iframe', target: '_blank' }
+
         - if current_user
           #chatpanel
             #collective-xmpp-chat-data{style: "display: none"}
@@ -153,21 +155,16 @@
     jQuery(function($) {
 
       /** SAV **/
-
-      var sav_url = "#{@_sav_url}";
-      //var sav_url = "#{active_tab[:sav_url]}"
-
-      console.log(sav_url);
-
-      if (!!sav_url.length){
-        $.get(sav_url, function(data){
-          $("#page_title").call_fancybox({
-            content: data,
-            open: true
-          });
-        }).error(function(data){
-          // não faz nada com erro
+      if (!!"#{active_tab[:sav_url]}".length){
+        $("#sav_url a").call_fancybox({
+          minWidth: $(window).width() - 150,
+          minHeight: $(window).height() - 100,
+          autoResize: true,
+          open: true,
         });
+        // setTimeout(function() {
+        // se não abriu, cancelar fancybox 
+        // }, 1000);
       }
 
       /**
