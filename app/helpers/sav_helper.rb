@@ -1,30 +1,33 @@
 module SavHelper
 
-  private
-    def get_current_savs(allocation_tag_id)
-      unless SavConfig::CONFIG.nil?
-        at = AllocationTag.find(allocation_tag_id)
-        allocation_tags_ids = at.related
-        
-        # cipher = OpenSSL::Cipher::Cipher.new('DES-EDE3-CBC')
-        # cipher.encrypt
-        # cipher.iv, cipher.key  = SavConfig::IV, SavConfig::KEY
+  def get_current_savs(allocation_tag_id)
+    return if SavConfig::CONFIG.nil?
 
-        user_profiles = current_user.profiles.where("(allocations.allocation_tag_id IN (?))", allocation_tags_ids).pluck(:id)
-        savs = Sav.current_savs(allocation_tags_ids).where("profile_id IN (?) OR profile_id IS NULL", user_profiles).pluck(:id)
+    at   = AllocationTag.find(allocation_tag_id)
+    allocation_tags_ids = at.related
+    savs = Sav.current_savs(allocation_tags_ids)
 
-        unless savs.empty?
-          client   = Savon.client wsdl: SavConfig::WSDL
-          response = client.call SavConfig::METHOD.to_sym, message: {"name"=> current_user.name, "cpf"=> current_user.cpf, "group_id"=> at.send(at.refer_to).try(:id), "perfis_id"=> {"int" => user_profiles}}
-          sav_url  = (response.as_json[:url_questionario_response][:url_questionario_result] || "")
-        end
+    if savs.any?
+      user_profiles = current_user.profiles.where("(allocations.allocation_tag_id IN (?))", allocation_tags_ids).pluck(:id)
+      savs = savs.where("profile_id IN (?) OR profile_id IS NULL", user_profiles).pluck(:id)
 
-        # @_sav_url = (savs.empty? ? "" : [SavConfig::URL, Base64.encode64(cipher.update(
-        #   SavConfig::PARAMS.gsub("user_cpf", current_user.cpf).gsub("user_name", current_user.name).gsub("profiles_ids", user_profiles.to_s.delete("[]"))
-        #   .gsub("questionnaires_ids", savs).gsub("taggable_id", at.send(at.refer_to).try(:id).to_s)
-        # ) + cipher.final).gsub("\n",'')].join.html_safe)
-        user_session[:tabs][:opened][user_session[:tabs][:active]].merge!({sav_url: sav_url})
+      if savs.any?
+        client   = Savon.client wsdl: SavConfig::WSDL
+        response = client.call SavConfig::METHOD.to_sym, message: {"name"=> encrypt(current_user.name), "cpf"=> encrypt(current_user.cpf), "group_id"=> encrypt(at.send(at.refer_to).try(:id).to_s), "perfis_id" => {"string" => user_profiles.map{|id| encrypt(id.to_s)}.flatten}}
+        response_url = response.as_json[:url_questionario_response][:url_questionario_result]
+
+        sav_url = URI.parse(response_url).path rescue nil
+        (sav_url.nil? ? (Rails.logger.info "[SAV] [ERROR] message: #{response_url}" ) : (sav_url = response_url))
       end
     end
 
+    user_session[:tabs][:opened][user_session[:tabs][:active]].merge!({sav_url: (sav_url || "")})
+  end
+
+  def encrypt(value)
+    cipher = OpenSSL::Cipher::Cipher.new('DES-EDE3-CBC')
+    cipher.encrypt
+    cipher.iv, cipher.key  = SavConfig::IV, SavConfig::KEY
+    Base64.encode64(cipher.update(value) + cipher.final).gsub("\n",'').html_safe
+  end
 end

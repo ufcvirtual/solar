@@ -168,7 +168,7 @@
         
         setTimeout(function() {
           //se não abriu, cancelar fancybox 
-          if(!$(".fancybox-inner").length)
+          if($("[id^='fancybox-frame']:first").height() < ($(window).height() - 100))
             $.fancybox.close();
         }, 2000);
       }
