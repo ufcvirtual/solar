@@ -1,6 +1,6 @@
 - user, new_post_class = post.user, ((new_post and new_post.to_i == post.id) ? "new" : "")
 - children = post.children
-- children = Post.reorder_by_latest_posts(latest_posts, children) unless (display_mode == 'list') # obtendo e reordenando os posts a partir dos seus "filhos/netos"
+- children = Post.reorder_by_latest_posts(children) unless (display_mode == 'list') # obtendo e reordenando os posts a partir dos seus "filhos/netos"
 - editable = ((post.user_id == current_user.id) && (children.count == 0))
 - files    = post.files
 - user_at_class = @class_participants.include? user.id
@@ -54,7 +54,7 @@
         .forum_post_reply
       - unless display_mode == 'list'
         - children.each do |child|
-          = render partial: "post", locals: {post: child, latest_posts: latest_posts, display_mode: display_mode, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: new_post}
+          = render partial: "post", locals: {post: child, display_mode: display_mode, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: new_post}
   %tr
 
 :javascript

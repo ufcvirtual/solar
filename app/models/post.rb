@@ -53,32 +53,18 @@ class Post < ActiveRecord::Base
     }
   end
 
+  ## Return latest date considering children
+  def get_latest_date
+    date = [(children.any? ? children.map(&:get_latest_date) : updated_at)].flatten
+    date.sort.last
+  end
 
   ## Recupera os posts mais recentes dos niveis inferiores aos posts analisados e, então,
   ## reordena analisando ou as datas dos posts em questão ou a data do "filho/neto" mais recente
-  def self.reorder_by_latest_posts(latest_posts, posts)
-    unless posts.empty?
-      # dos posts mais recentes de uma discussion, recupera sua data e o valor do "avô" de todos os posts que têm level maior que o que estou ordenando
-      lp_info = latest_posts.collect{|lp| lp.grandparent(posts.first.level) if lp.level > posts.first.level}
-      # recupera o mais recente dos agrupados, ou seja, se, para um mesmo "post avô", há vários níveis, em cada nível vai ter seu respectivo post mais atual.
-      # ao definir quais posts são "netos" do mesmo post do level inicial, pode-se saber qual, realmente, é o mais recente de todos e guardar sua data
-      lp_info = lp_info.compact.flatten.group_by{|lp| lp["grandparent_id"]}.collect{|lp| lp[1][0]}
-
-      # reordenar os posts a partir de suas datas ou do "neto" mais recente
-      posts = posts.sort{|post1, post2|
-        # recupera o "neto" mais atualizado do post a ser ordenado
-        lp_info1, lp_info2 = lp_info.find{|lp| lp["grandparent_id"] == post1.id}, lp_info.find{|lp| lp["grandparent_id"] == post2.id}
-
-        # recupera a data mais recente entre o post a ser ordenado e seu "neto" mais recente
-        last_post1 = (((not lp_info1.nil?) and lp_info1["date"] > post1.updated_at) ? lp_info1["date"] : post1.updated_at)
-        last_post2 = (((not lp_info2.nil?) and lp_info2["date"] > post2.updated_at) ? lp_info2["date"] : post2.updated_at)
-
-        # ordena
-        (last_post2 <=> last_post1)
-      }
-    end
-
-    return posts
+  def self.reorder_by_latest_posts(posts)
+    return posts.sort_by{|post|
+      post.get_latest_date
+    }.reverse
   end
 
   private

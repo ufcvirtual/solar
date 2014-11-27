@@ -41,7 +41,7 @@
   .forum_posts_wrapper
     - @posts = get_page_posts(@posts, @current_page) unless (@display_mode == "list")
     - @posts.each do |post|
-      = render partial: "post", locals: {post: post, latest_posts: @latest_posts, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false}
+      = render partial: "post", locals: {post: post, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false}
 .block_wrapper
   = link_to t(:back), discussions_path, {class: "btn"}
 

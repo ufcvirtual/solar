@@ -37,8 +37,7 @@ class PostsController < ApplicationController
       @posts    = @discussion.posts(p, @allocation_tags)
     else
       # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
-      @latest_posts = @discussion.latest_posts(@allocation_tags)
-      @posts        = Post.reorder_by_latest_posts(@latest_posts, @discussion.posts_by_allocation_tags_ids(@allocation_tags).where(parent_id: nil))
+      @posts = Post.reorder_by_latest_posts(@discussion.posts_by_allocation_tags_ids(@allocation_tags).where(parent_id: nil))
     end
 
     respond_to do |format|
@@ -102,7 +101,7 @@ class PostsController < ApplicationController
     @researcher = params[:researcher]
     @class_participants = AllocationTag.get_participants(allocation_tag_id, {all: true}).pluck(:id)
 
-    render partial: "post", locals: {post: post, latest_posts: [], display_mode: nil, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: (params[:new_post] ? params[:id] : nil) }
+    render partial: "post", locals: {post: post, display_mode: nil, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: (params[:new_post] ? params[:id] : nil) }
   end
 
   ## DELETE /posts/1
