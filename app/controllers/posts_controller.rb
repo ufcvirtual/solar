@@ -13,17 +13,15 @@ class PostsController < ApplicationController
   def index
     @discussion, @user = Discussion.find(params[:discussion_id]), current_user
 
-    @allocation_tags    = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.map(&:id) # procurar problema no mobilis, ele nao envia a allocation tag da turma
-    allocation_tags_ids = [active_tab[:url][:allocation_tag_id], AllocationTag.find_by_offer_id(active_tab[:url][:id]).id]
-    @academic_allocation_id = AcademicAllocation.where(academic_tool_id: @discussion.id, academic_tool_type: "Discussion", allocation_tag_id: allocation_tags_ids).first.try(:id)
-    authorize! :index, Discussion, {on: [@allocation_tags], read: true}
+    @academic_allocation_id = AcademicAllocation.where(academic_tool_id: @discussion.id, academic_tool_type: "Discussion", 
+      allocation_tag_id: [active_tab[:url][:allocation_tag_id], AllocationTag.find_by_offer_id(active_tab[:url][:id]).id]).first.try(:id)
+    authorize! :index, Discussion, {on: [@allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.map(&:id)], read: true}
 
     @researcher = current_user.is_researcher?(AllocationTag.find(@allocation_tags).related)
     @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id], {all: true}).map(&:id)
 
     @posts = []
-    @can_interact = @discussion.user_can_interact?(current_user.id)
-    @can_post = (can? :create, Post, on: [@allocation_tags])
+    @can_interact, @can_post = @discussion.user_can_interact?(current_user.id), (can? :create, Post, on: [@allocation_tags])
 
     p = params.slice(:date, :type, :order, :limit, :display_mode, :page)
 
@@ -36,8 +34,7 @@ class PostsController < ApplicationController
       p['date'] = DateTime.parse(p['date']) if params[:format] == "json" and p.include?('date')
       @posts    = @discussion.posts(p, @allocation_tags)
     else
-      # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
-      @posts = Post.reorder_by_latest_posts(@discussion.posts_by_allocation_tags_ids(@allocation_tags).where(parent_id: nil))
+      @posts = Post.reorder_by_latest_posts(@discussion.posts_by_allocation_tags_ids(@allocation_tags).where(parent_id: nil)) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
     end
 
     respond_to do |format|
@@ -98,7 +95,7 @@ class PostsController < ApplicationController
     can_interact = post.discussion.user_can_interact?(current_user.id)
     can_post = can?(:create, Post, on: [allocation_tag_id])
 
-    @researcher = params[:researcher]
+    @researcher = (params[:researcher] == "true" or params[:researcher] == true)
     @class_participants = AllocationTag.get_participants(allocation_tag_id, {all: true}).pluck(:id)
 
     render partial: "post", locals: {post: post, display_mode: nil, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: (params[:new_post] ? params[:id] : nil) }

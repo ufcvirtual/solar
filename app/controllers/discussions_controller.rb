@@ -18,8 +18,8 @@ class DiscussionsController < ApplicationController
     rescue
       @discussions = []
     end
-    authorize! :show, Discussion, on: [@allocation_tag_id]
-
+    authorize! :index, Discussion, on: [@allocation_tag_id]
+    
     respond_to do |format|
       format.html
       format.xml  { render xml: @discussions }
