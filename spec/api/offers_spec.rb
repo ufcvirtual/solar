@@ -212,7 +212,7 @@ describe "Offers" do
       get "/api/v1/semesters"
 
       response.status.should eq(200)
-      response.body.should == Semester.order('name desc').uniq.to_json(only: [:name])
+      response.body.should == Semester.order('name desc').uniq.to_json(only: [:name, :id])
     end
   end # describe semesters
 

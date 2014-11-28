@@ -1,3 +1,3 @@
 collection @semesters
 
-attributes :name
+attributes :id, :name
