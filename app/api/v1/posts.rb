@@ -78,7 +78,7 @@ module V1
         if @post.save
           { id: @post.id }
         else
-          error!(@post.errors.full_messages, 422)
+          raise @post.errors.full_messages
         end
       end #:id/posts
 
@@ -94,7 +94,7 @@ module V1
         post = Post.find(params[:id])
 
         raise ActiveRecord::RecordNotFound if (post.user_id != current_user.id)
-        error!({}, 401) unless post.discussion.user_can_interact?(current_user.id)
+        raise CanCan::AccessDenied unless post.discussion.user_can_interact?(current_user.id)
 
         ids = []
         [params[:file]].flatten.each do |file|

@@ -21,8 +21,6 @@ module V1
         begin
           course = Course.create! course_params(params)
           {id: course.id}
-        rescue => error
-          error!(error, 422)
         end
       end
 
@@ -36,8 +34,6 @@ module V1
         begin
           Course.find(params[:id]).update_attributes! course_params(params)
           {ok: :ok}
-        rescue => error
-          error!(error, 422)
         end
       end
 

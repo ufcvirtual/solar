@@ -115,9 +115,9 @@ describe "Courses" do
       response.body.should == CurriculumUnitType.select('id, description as name').to_json
     end
 
-    it "gets a not found error" do
+    it "gets a not authorized" do
       get "/api/v1/course/types", {}, {"REMOTE_ADDR" => "127.0.0.2"}
-      response.status.should eq(404)
+      response.status.should eq(401)
     end
   end # describe types
 

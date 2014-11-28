@@ -64,12 +64,12 @@ describe "Users" do
       end
 
       context "with invalid ip" do
-        it "gets a not found error" do
+        it "gets a not authorized" do
           user = { name: "Usuario novo", nick: "usuario novo", cpf: "69278278203", birthdate: "1980-10-17", gender: true, email: "email@email.com" }
 
           expect{
             post "/api/v1/user/", user, "REMOTE_ADDR" => "127.0.0.2"
-            response.status.should eq(404)
+            response.status.should eq(401)
           }.to change{User.where(cpf: "69278278203").count}.by(0)
         end
       end
@@ -141,7 +141,7 @@ describe "Users" do
       context "try access with invalid ip" do
         it "at users by profile list" do
           get "/api/v1/profiles/1/users", {}, {"REMOTE_ADDR" => "127.0.0.2"}
-          response.status.should eq(404)
+          response.status.should eq(401)
         end
       end
 

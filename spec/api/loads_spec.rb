@@ -58,13 +58,13 @@ describe "Loads" do
       end
 
       context "with invalid ip" do
-         it "gets a not found error" do
+         it "gets a not authorized" do
           editors = {editores: {
             codDisciplina: "RM404",
             editores: User.where(username: %w(user3 user4)).map(&:cpf)
           }}
           post "/api/v1/load/curriculum_units/editors", editors, "REMOTE_ADDR" => "127.0.0.2"
-          response.status.should eq(404)
+          response.status.should eq(401)
         end
       end
 
@@ -177,9 +177,9 @@ describe "Loads" do
       end
 
        context "with invalid ip" do
-         it "gets a not found error" do
+         it "gets a not authorized" do
           post "/api/v1/load/curriculum_units/", {codigo: "RM404", nome: "UC01", cargaHoraria: 80, creditos: 4}, "REMOTE_ADDR" => "127.0.0.2"
-          response.status.should eq(404)
+          response.status.should eq(401)
         end
       end
     end # /
@@ -402,12 +402,12 @@ describe "Loads" do
       end
 
       context "with invalid ip" do # ip isn't included on list of ips with access
-        it "gets a not found error" do
+        it "gets a not authorized" do
           json_data = {turmas: {ano: "2013", periodo: "1", codDisciplina: "RM404", codigo: "RM0121", codGraduacao: "108",
             dtInicio: Date.current + 1.day, dtFim: Date.current + 6.months, professores: ["21569104646", "21872285848", "31877336203"]
             }}
           post "/api/v1/load/groups", json_data, "REMOTE_ADDR" => "127.0.0.2"
-          response.status.should eq(404)
+          response.status.should eq(401)
         end
       end
 
@@ -568,12 +568,12 @@ describe "Loads" do
       end
 
       context "with invalid ip" do
-        it "gets a not found error" do
+        it "gets a not authorized" do
           json_data = { matriculas: {cpf: "11016853521", turmas: [ # user3
                         {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
                      ]}}
           post "/api/v1/load/groups/enrollments", json_data, "REMOTE_ADDR" => "127.0.0.2"
-          response.status.should eq(404)
+          response.status.should eq(401)
         end
       end
 
@@ -624,9 +624,9 @@ describe "Loads" do
       end
 
       context "with invalid ip" do
-        it "gets a not found error" do
+        it "gets a not authorized" do
           get "/api/v1/load/groups/enrollments", {periodo: "1", ano: "2011", codTurma: "LB-CAR", codDisciplina: "RM414", codGraduacao: "109"}, {"REMOTE_ADDR" => "127.0.0.2"}
-          response.status.should eq(404)
+          response.status.should eq(401)
         end
       end
 
@@ -723,13 +723,13 @@ describe "Loads" do
       end
 
       context "with invalid ip" do
-        it "gets a not found error" do
+        it "gets a not authorized" do
           json_data = # user: prof, profile: tutor a distância
             { allocation: {cpf: "21872285848", perfil: 18, turma:
               {periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"}
             }}
           put "/api/v1/load/groups/block_profile", json_data, "REMOTE_ADDR" => "127.0.0.2"
-          response.status.should eq(404)
+          response.status.should eq(401)
         end
       end
     end #block_profile
@@ -893,10 +893,10 @@ describe "Loads" do
       end
 
       context "with invalid ip" do
-        it "gets a not found error" do
+        it "gets a not authorized" do
           json_data = { allocation: { cpf: "47382348113", perfil: 18, periodo: "1", ano: "2011", codigo: "QM-CAU", codDisciplina: "RM301", codGraduacao: "109"} }
           put "/api/v1/load/groups/allocate_user", json_data, "REMOTE_ADDR" => "127.0.0.2"
-          response.status.should eq(404)
+          response.status.should eq(401)
         end
       end
     end #allocate_user
@@ -957,15 +957,15 @@ describe "Loads" do
           it "must get an error" do
             post "/api/v1/load/user/", {cpf: "43463518678"}
 
-            response.status.should eq(422)
+            response.status.should eq(404)
           end
         end
       end
 
       context "with invalid ip" do
-        it "gets a not found error" do
+        it "gets a not authorized" do
           post "/api/v1/load/user/", {cpf: ENV['VALID_CPF']}, "REMOTE_ADDR" => "127.0.0.2"
-          response.status.should eq(404)
+          response.status.should eq(401)
         end
       end
 

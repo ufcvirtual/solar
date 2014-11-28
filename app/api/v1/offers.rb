@@ -24,8 +24,6 @@ module V1
             curriculum_unit_id = (params[:curriculum_unit_code].present? ? CurriculumUnit.find_by_code(params[:curriculum_unit_code]).try(:id) : params[:curriculum_unit_id])
             offer = creates_offer_and_semester(params[:name], {start_date: params[:offer_start].try(:to_date), end_date: params[:offer_end].try(:to_date)}, {start_date: params[:enrollment_start], end_date: params[:enrollment_end]}, {curriculum_unit_id: curriculum_unit_id, course_id: course_id})
             {id: offer.id}
-          rescue => error
-            error!(error, 422)
           end
         end
 
@@ -38,8 +36,6 @@ module V1
           begin
             update_dates(Offer.find(params[:id]), params)
             {ok: :ok}
-          rescue => error
-            error!({error: error}, 422)
           end
         end
       end # offer

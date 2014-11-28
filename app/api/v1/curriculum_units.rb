@@ -49,9 +49,6 @@ module V1
               verify_or_create_curriculum_unit params
             end
             {id: uc.id, course_id: uc.course.try(:id)}
-          rescue => error
-            ApplicationAPI.logger puts "POST curriculum_unit: #{error}"
-            error!(error, 422)
           end
         end
 
@@ -67,8 +64,6 @@ module V1
           begin
             CurriculumUnit.find(params[:id]).update_attributes! curriculum_unit_params(params)
             {ok: :ok}
-          rescue => error
-            error!(error, 422)
           end
         end
         

@@ -22,8 +22,6 @@ module V1
           begin
             allocate(params)
             {ok: :ok}
-          rescue => error
-            error!(error, 422)
           end
         end
         params do
@@ -34,8 +32,6 @@ module V1
           begin
             allocate(params)
             {ok: :ok}
-          rescue => error
-            error!(error, 422)
           end
         end
 
@@ -56,8 +52,6 @@ module V1
           begin
             allocate(params, cancel: true)
             {ok: :ok}
-          rescue => error
-            error!(error, 422)
           end
         end
 
@@ -69,8 +63,6 @@ module V1
           begin
             allocate(params, cancel: true)
             {ok: :ok}
-          rescue => error
-            error!(error, 422)
           end
         end
 
@@ -89,8 +81,6 @@ module V1
       get :allocations, rabl: "users/list" do
         begin
           @users = get_group(params).users_with_profile(params[:profile_id])
-        rescue => error
-          error!(error, 422)
         end
       end
 

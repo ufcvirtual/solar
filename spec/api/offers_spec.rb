@@ -201,9 +201,9 @@ describe "Offers" do
   end # .offer
 
   describe "try access with invalid ip" do
-    it "gets a not found error" do
+    it "gets a not authorized" do
       get "/api/v1/semesters", {}, {"REMOTE_ADDR" => "127.0.0.2"}
-      response.status.should eq(404)
+      response.status.should eq(401)
     end # describe access
   end
 

@@ -69,8 +69,6 @@ module V1
               end
             end
             {id: user.id}
-          rescue => error
-            error!({error: error}, 422)
           end
         end # /
 
@@ -79,8 +77,6 @@ module V1
           begin
             verify_or_create_user(params[:cpf].delete('.').delete('-'))
             {ok: :ok}
-          rescue => error
-            error!({error: error}, 422)
           end
         end
 
@@ -99,13 +95,14 @@ module V1
         get "/:ids/users", rabl: "users/index" do
           begin
             query = {allocations: {profile_id: params[:ids].split(",")}}
-            allocation_tags_ids = allocation_tags_ids = AllocationTag.get_by_params(params, true)[:allocation_tags].compact
+            allocation_tags_ids = AllocationTag.get_by_params(params, true)[:allocation_tags].compact
             query.merge!({allocation_tags: {id: allocation_tags_ids}}) unless allocation_tags_ids.blank?
             query[:allocations].merge!({status: Allocation_Activated}) if params[:only_active]
 
             @users = User.joins(allocations: :allocation_tag).where(query).uniq
           rescue => error
-            error!(error, (allocation_tags_ids.nil? ? 404 : 422))
+            log_error(error, code = (allocation_tags_ids.nil? ? 404 : 422))
+            error!(error, code)
           end
         end
       end

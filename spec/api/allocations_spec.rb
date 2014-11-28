@@ -301,7 +301,7 @@ describe "Allocations" do
 
             it {
               post "/api/v1/allocations/group/3", json_data
-              response.status.should eq(422)
+              response.status.should eq(404)
             }
           end
 
@@ -317,7 +317,7 @@ describe "Allocations" do
 
             it {
               post "/api/v1/allocations/group/3", json_data
-              response.status.should eq(422)
+              response.status.should eq(404)
             }
           end
 
@@ -432,7 +432,7 @@ describe "Allocations" do
 
             it {
               delete "/api/v1/allocations/group/3", json_data
-              response.status.should eq(422)
+              response.status.should eq(404)
             }
           end
 

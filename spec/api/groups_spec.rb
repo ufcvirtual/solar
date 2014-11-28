@@ -190,7 +190,7 @@ describe "Groups" do
 
         it "gets a not found error" do
           put "/api/v1/groups/merge/", json_data, "REMOTE_ADDR" => "127.0.0.2"
-          response.status.should eq(404)
+          response.status.should eq(401)
         end
       end
 
@@ -276,13 +276,13 @@ describe "Groups" do
   describe ".group" do
 
     context "with invalid ip" do
-      it "gets a not found error" do
+      it "gets a not authorized" do
         post "/api/v1/group", {code: "G01", offer_id: 3}, "REMOTE_ADDR" => "127.0.0.2"
-        response.status.should eq(404)
+        response.status.should eq(401)
       end
-      it "gets a not found error" do
+      it "gets a not authorized" do
         put "/api/v1/group/3", {code: "G01"}, "REMOTE_ADDR" => "127.0.0.2"
-        response.status.should eq(404)
+        response.status.should eq(401)
       end
     end
 

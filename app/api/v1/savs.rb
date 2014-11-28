@@ -25,8 +25,8 @@ module V1
           end
           {ok: :ok}
         rescue => error
-          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}]: #{error}"
-          error!(error, (allocation_tags_ids.nil? ? 404 : 422))
+          log_error(error, code = (allocation_tags_ids.nil? ? 404 : 422))
+          error!(error, code)
         end
       end
 
@@ -51,8 +51,8 @@ module V1
           Sav.where({questionnaire_id: params[:questionnaire_id]}).where(query.compact.join(" AND "), params).update_all({start_date: params[:start_date], end_date: params[:end_date]}.delete_if{|key,value| value.blank?})
           {ok: :ok}
         rescue => error
-          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}]: #{error}"
-          error!(error, (allocation_tags_ids.nil? ? 404 : 422))
+          log_error(error, code = (params[:allocation_tags_ids].nil? ? 404 : 422))
+          error!(error, code)
         end
       end
 
@@ -75,8 +75,8 @@ module V1
           Sav.where({questionnaire_id: params[:questionnaire_id]}).where(query.compact.join(" AND "), params).delete_all
           {ok: :ok}
         rescue => error
-          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}]: #{error}"
-          error!(error, (query.nil? ? 404 : 422))
+          log_error(error, code = (params[:allocation_tags_ids].nil? ? 404 : 422))
+          error!(error, code)
         end
       end
 

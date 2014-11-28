@@ -55,10 +55,6 @@ module V1
               offer.notify_editors_of_disabled_groups(Group.where(code: params[:secundary_groups])) if params[:type]
 
               {ok: :ok}
-            rescue ActiveRecord::RecordNotFound
-              error!({error: I18n.t(:object_not_found)}, 404)
-            rescue => error
-              error!({error: error}, 422)
             end
           end # /
 
@@ -117,8 +113,6 @@ module V1
               group = Group.create! group_params(params)
             end
             {id: group.id}
-          rescue => error
-            error!(error, 422)
           end
         end
 
@@ -136,8 +130,6 @@ module V1
             group.offer.notify_editors_of_disabled_groups(group) if params[:status].present? and not(params[:status])
 
             {ok: :ok}
-          rescue => error
-            error!(error, 422)
           end
         end
       end # group

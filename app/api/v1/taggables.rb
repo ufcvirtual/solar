@@ -12,7 +12,7 @@ module V1
         raise object.errors.full_messages unless (object.nil? or object.errors.empty?)
         {ok: :ok}
       rescue
-        error!(object.errors.full_messages, 422)
+        raise object.errors.full_messages
       end
     end
 

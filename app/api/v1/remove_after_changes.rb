@@ -19,8 +19,6 @@ module V1
               destination.allocate_user(user.id, profile_id)
 
               {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
             end
           end # allocate_profile
 
@@ -36,8 +34,6 @@ module V1
               destination.cancel_allocations(user.id, profile_id) if destination
 
               {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
             end
           end # block_profile
 
@@ -56,8 +52,6 @@ module V1
               end
 
               {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
             end
           end
 
@@ -76,8 +70,6 @@ module V1
                 } )
               end
               {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
             end
           end
 
@@ -103,8 +95,6 @@ module V1
               end
 
               {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
             end
           end
 
@@ -125,8 +115,6 @@ module V1
               end
 
               {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
             end
           end
 
@@ -137,8 +125,6 @@ module V1
             raise ActiveRecord::RecordNotFound if group.nil?
             begin
               @users = group.students_participants.map(&:user)
-            rescue  => error
-              error!({error: error}, 422)
             end
           end
 
@@ -153,8 +139,6 @@ module V1
               ma_response = user.connect_and_validates_user
               raise ActiveRecord::RecordNotFound if ma_response.nil? # nao existe no MA
               {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
             end
           end
         end # user
@@ -181,8 +165,6 @@ module V1
               end
 
               {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
             end
           end # put :id
 
@@ -211,8 +193,6 @@ module V1
               end
 
               group_events
-            rescue => error
-              error!({error: error}, 422)
             end
 
           end # /
@@ -226,8 +206,6 @@ module V1
               end
 
               {ok: :ok}
-            rescue => error
-              error!({error: error}, 422)
             end
           end # delete :id
 

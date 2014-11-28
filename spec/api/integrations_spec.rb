@@ -63,7 +63,7 @@ describe "Integrations" do
       end # with valid ip
 
       context "with invalid ip" do
-        it "gets a not found error" do
+        it "gets a not authorized" do
           events = {
             CodigoDisciplina: "RM301", CodigoCurso: "109", Periodo: "2011.1", DataInserida: {
               Tipo: 1, Data: "2014-11-01", Polo: "Pindamanhangaba", HoraInicio: "10:00", HoraFim: "11:00" },
@@ -72,7 +72,7 @@ describe "Integrations" do
 
           expect{
             post "/api/v1/integration/events/", events, "REMOTE_ADDR" => "127.0.0.2"
-            response.status.should eq(404)
+            response.status.should eq(401)
             }.to change{ScheduleEvent.count}.by(0)
         end
       end
@@ -116,10 +116,10 @@ describe "Integrations" do
       end # valid ip
 
       context "with invalid ip" do
-        it "gets a not found error" do
+        it "gets a not authorized" do
           expect{
             delete "/api/v1/integration/events/2,3", nil, "REMOTE_ADDR" => "127.0.0.2"
-            response.status.should eq(404)
+            response.status.should eq(401)
             }.to change{ScheduleEvent.count}.by(0)
         end
       end
@@ -162,7 +162,7 @@ describe "Integrations" do
 
             expect{
               put "/api/v1/integration/event/333", event
-              response.status.should eq(422)
+              response.status.should eq(404)
             }.to change{ScheduleEvent.count}.by(0)
           }
         end
@@ -180,12 +180,12 @@ describe "Integrations" do
       end # valid ip
 
       context "with invalid ip" do
-        it "gets a not found error" do
+        it "gets a not authorized" do
           event = { Data: (Date.today - 1.day).to_s, HoraInicio: "10:00", HoraFim: "11:00" }
 
           expect{
             put "/api/v1/integration/event/3", event, "REMOTE_ADDR" => "127.0.0.2"
-            response.status.should eq(404)
+            response.status.should eq(401)
             }.to change{ScheduleEvent.count}.by(0)
         end
       end

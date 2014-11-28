@@ -151,7 +151,7 @@ describe "Posts" do
       it "don't list posts history without date" do
         get "/api/v1/discussions/2/posts/history", group_id: 3, access_token: token.token
         response.status.should eq(400)
-        response.body.should == {error: "date is missing"}.to_json
+        response.body.should == "[{:params=>[\"date\"], :messages=>[\"is missing\"]}]"
       end
     end #context with access token
 

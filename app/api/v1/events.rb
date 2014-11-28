@@ -20,8 +20,6 @@ module V1
           end
 
           {ok: :ok}
-        rescue => error
-          error!({error: error}, 422)
         end
       end
 
@@ -51,8 +49,6 @@ module V1
           end
 
           group_events
-        rescue => error
-          error!({error: error}, 422)
         end
 
       end # /
@@ -66,8 +62,6 @@ module V1
           end
 
           {ok: :ok}
-        rescue => error
-          error!({error: error}, 422)
         end
       end # delete :id
 
