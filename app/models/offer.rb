@@ -152,7 +152,6 @@ class Offer < ActiveRecord::Base
   def self.offers_info_from_user(user)
     currents   = Offer.currents(Date.today, true)
     u_profiles = user.profiles_with_access_on("show", "curriculum_units", nil, true)
-    # u_offers   = AllocationTag.includes(:offer).where(id: user.allocations.where(status: Allocation_Activated, profile_id: u_profiles).uniq.pluck(:allocation_tag_id)).map(&:offers).flatten.compact
     u_offers   = user.allocations.where(status: Allocation_Activated, profile_id: u_profiles).map(&:offers).flatten.compact
     offers     = (currents & u_offers)
 
