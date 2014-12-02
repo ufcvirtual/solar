@@ -1,9 +1,7 @@
 - user, new_post_class = post.user, ((new_post and new_post.to_i == post.id) ? "new" : "")
-- children = post.children
-- children = Post.reorder_by_latest_posts(children) unless (display_mode == 'list') # obtendo e reordenando os posts a partir dos seus "filhos/netos"
+- children = ((display_mode == 'list') ? post.children : Post.reorder_by_latest_posts(post.children)) # obtendo e reordenando os posts a partir dos seus "filhos/netos"
 - editable = ((post.user_id == current_user.id) && (children.count == 0))
 - files    = post.files
-- user_at_class = @class_participants.include? user.id
 
 %table.forum_post{border:"0", cellpadding:"0", cellspacing:"0", id: "#{post.id}"}
   %tr
@@ -13,7 +11,7 @@
       .forum_post_author
         .forum_participant_nick{alt:"#{user.info(:nick, @researcher)}"}
           = user.info(:nick, @researcher)
-          - unless user_at_class
+          - unless @class_participants.include? user.id
             %span{:"data-tooltip" => t(".moved_allocation")}= content_tag :i, nil, class: "icon-warning moved_allocation"
         .forum_participant_profile= (profile = post.profile).nil? ? '' : profile.name
       .forum_post_date

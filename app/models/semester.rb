@@ -37,10 +37,6 @@ class Semester < ActiveRecord::Base
     offers.empty? and groups.empty?
   end
 
-
-  ## class methods
-
-
   def self.currents(year = nil, verify_end_date = nil)
     unless year.class == Date
       date = Date.parse("#{year}-01-01") rescue Date.today

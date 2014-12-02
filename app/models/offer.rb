@@ -102,7 +102,7 @@ class Offer < ActiveRecord::Base
       year = Date.parse("#{year}-01-01") rescue Date.today
     end
 
-    offers = joins(:period_schedule)
+    offers = joins(:period_schedule).includes(:allocation_tag)
     offers = unless year # se o ano passado for nil, pega as ofertas do ano corrente em diante
       first_day_of_year = Date.today.beginning_of_year
       offers.where("schedules.end_date >= ?", first_day_of_year)
@@ -152,7 +152,8 @@ class Offer < ActiveRecord::Base
   def self.offers_info_from_user(user)
     currents   = Offer.currents(Date.today, true)
     u_profiles = user.profiles_with_access_on("show", "curriculum_units", nil, true)
-    u_offers   = AllocationTag.where(id: user.allocations.where(status: Allocation_Activated, profile_id: u_profiles).uniq.pluck(:allocation_tag_id)).map(&:offers).flatten.compact
+    # u_offers   = AllocationTag.includes(:offer).where(id: user.allocations.where(status: Allocation_Activated, profile_id: u_profiles).uniq.pluck(:allocation_tag_id)).map(&:offers).flatten.compact
+    u_offers   = user.allocations.where(status: Allocation_Activated, profile_id: u_profiles).map(&:offers).flatten.compact
     offers     = (currents & u_offers)
 
     allocations_info = offers.collect{ |offer|
@@ -168,7 +169,7 @@ class Offer < ActiveRecord::Base
           uc: uc,
           course: course,
           semester_name: offer.semester.name,
-          profiles: user.allocations.where("allocation_tag_id IN (?)", ats).select("DISTINCT profile_id, allocations.*").map(&:profile).map(&:id).uniq.join(", ")
+          profiles: user.allocations.includes(:profile).where("allocation_tag_id IN (?)", ats).select("DISTINCT profile_id, allocations.*").map(&:profile).map(&:id).uniq.join(", ")
         }
     }.flatten
 

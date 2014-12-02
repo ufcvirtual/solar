@@ -24,6 +24,10 @@ class Allocation < ActiveRecord::Base
 
   attr_accessible :user_id, :profile_id, :allocation_tag_id, :status
 
+  def offers
+    allocation_tag.offers#.includes(:allocation_tag)
+  end
+
   def can_change_group?
     not [Allocation_Cancelled, Allocation_Rejected].include?(status)
   end

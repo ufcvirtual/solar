@@ -40,10 +40,6 @@ class Notification < ActiveRecord::Base
     read_notifications.create(user: user) unless read?(user)
   end
 
-
-  ## class methods
-
-
   def self.of_user(user)
     active.select("notifications.*, rn.user_id AS read")
       .joins(:academic_allocations)
