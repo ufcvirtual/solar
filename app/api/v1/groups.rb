@@ -29,30 +29,35 @@ module V1
         namespace :merge do
           desc "Aglutinação/Desaglutinação de turmas"
           params do
-            requires :main_group, :course, :curriculum_unit, :semester, type: String
+            requires :main_group, :main_course, :main_curriculum_unit, :main_semester, type: String
             requires :secundary_groups, type: Array
             optional :type, type: Boolean, default: true # if true: merge; if false: undo merge
+            optional :secundary_course, :secundary_curriculum_unit, :secundary_semester, type: String
           end
 
           put "/" do
             begin
+              main_offer      = get_offer(params[:main_curriculum_unit], params[:main_course], params[:main_semester])
+              secundary_offer = get_offer(params[:secundary_curriculum_unit] || params[:main_curriculum_unit], params[:secundary_course] || params[:main_course], params[:secundary_semester] || params[:main_semester])
+              
               if params[:type]
                 replicate_content_groups, receive_content_groups = params[:secundary_groups], [params[:main_group]]
+                replicate_content_offer, receive_content_offer   = secundary_offer, main_offer
               else
                 replicate_content_groups, receive_content_groups = [params[:main_group]], params[:secundary_groups]
+                replicate_content_offer, receive_content_offer   = main_offer, secundary_offer
               end
 
-              offer = get_offer(params[:curriculum_unit], params[:course], params[:semester])
               ActiveRecord::Base.transaction do
                 replicate_content_groups.each do |replicate_content_group_code|
-                  replicate_content_group = get_offer_group(offer, replicate_content_group_code)
+                  replicate_content_group = get_offer_group(replicate_content_offer, replicate_content_group_code)
                   receive_content_groups.each do |receive_content_group_code|
-                    receive_content_group = get_offer_group(offer, receive_content_group_code)
+                    receive_content_group = get_offer_group(receive_content_offer, receive_content_group_code)
                     replicate_content(replicate_content_group, receive_content_group, params[:type])
                   end
                 end
               end
-              offer.notify_editors_of_disabled_groups(Group.where(code: params[:secundary_groups])) if params[:type]
+              secundary_offer.notify_editors_of_disabled_groups(Group.where(code: params[:secundary_groups])) if params[:type]
 
               {ok: :ok}
             end

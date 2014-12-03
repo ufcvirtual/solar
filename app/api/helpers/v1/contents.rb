@@ -37,8 +37,8 @@ module V1::Contents
 
   def replicate_content(from_group, to_group, merge = true)
     raise ActiveRecord::RecordNotFound if from_group.nil? or to_group.nil?
-    from_at, to_at = from_group.allocation_tag.id, to_group.allocation_tag.id
-    from_academic_allocations = AcademicAllocation.where(allocation_tag_id: from_at) # recover all from group which will be copied
+    from_ats, to_at = ((from_group.offer_id == to_group.offer_id) ? [from_group.allocation_tag.id] : from_group.allocation_tag.related), to_group.allocation_tag.id
+    from_academic_allocations = AcademicAllocation.where(allocation_tag_id: from_ats) # recover all from group which will be copied
 
     ActiveRecord::Base.transaction do
       remove_all_content(to_at) unless merge
@@ -46,8 +46,11 @@ module V1::Contents
       replicate_discussions(from_academic_allocations, to_at)
       replicate_chats(from_academic_allocations, to_at)
       replicate_assignments(from_academic_allocations, to_at)
-      replicate_messages(from_at, to_at)
-      replicate_public_files(from_at, to_at)
+
+      from_ats.each do |from_at|
+        replicate_messages(from_at, to_at)
+        replicate_public_files(from_at, to_at)
+      end
 
       main_group, secundary_group = merge ? [to_group, from_group] : [from_group, to_group]
       Merge.create! main_group_id: main_group.id, secundary_group_id: secundary_group.id, type_merge: merge

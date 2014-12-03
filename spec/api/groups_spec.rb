@@ -42,9 +42,9 @@ describe "Groups" do
           let!(:json_data){ { 
             main_group: "QM-MAR",
             secundary_groups: ["QM-CAU"],
-            course: "109",
-            curriculum_unit: "RM301",
-            semester: "2011.1"
+            main_course: "109",
+            main_curriculum_unit: "RM301",
+            main_semester: "2011.1"
           } }
 
           subject{ -> { put "/api/v1/groups/merge/", json_data } } 
@@ -78,9 +78,9 @@ describe "Groups" do
           let!(:json_data){ { 
             main_group: "QM-MAR",
             secundary_groups: ["QM-CAU"],
-            course: "109",
-            curriculum_unit: "RM301",
-            semester: "2011.1",
+            main_course: "109",
+            main_curriculum_unit: "RM301",
+            main_semester: "2011.1",
             type: false
           } }
 
@@ -115,9 +115,9 @@ describe "Groups" do
       context 'missing params' do
         let!(:json_data){ { 
           main_group: "QM-MAR",
-          course: "109",
-          curriculum_unit: "RM301",
-          semester: "2011.1"
+          main_course: "109",
+          main_curriculum_unit: "RM301",
+          main_semester: "2011.1"
         } }
 
         subject{ -> { put "/api/v1/groups/merge/", json_data } } 
@@ -145,13 +145,13 @@ describe "Groups" do
         }
       end
 
-      context 'group doesnt exist' do
+      context 'group doesnt exist - secundary' do
         let!(:json_data){ { 
           main_group: "QM-MAR",
           secundary_groups: ["QM-0"],
-          course: "109",
-          curriculum_unit: "RM301",
-          semester: "2011.1"
+          main_course: "109",
+          main_curriculum_unit: "RM301",
+          main_semester: "2011.1"
         } }
 
         subject{ -> { put "/api/v1/groups/merge/", json_data } } 
@@ -179,13 +179,130 @@ describe "Groups" do
         }
       end
 
+      context 'group doesnt exist - main' do
+        let!(:json_data){ { 
+          main_group: "QM-0",
+          secundary_groups: ["QM-MAR"],
+          main_course: "109",
+          main_curriculum_unit: "RM301",
+          main_semester: "2011.1"
+        } }
+
+        subject{ -> { put "/api/v1/groups/merge/", json_data } } 
+
+        it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Discussion"),:count).by(0) }
+        it { should change(Post,:count).by(0) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Assignment"),:count).by(0) }
+        it { should change(SentAssignment,:count).by(0) }
+        it { should change(AssignmentFile,:count).by(0) }
+        it { should change(AssignmentComment,:count).by(0) }
+        it { should change(CommentFile,:count).by(0) }
+        it { should change(GroupAssignment,:count).by(0) }
+        it { should change(GroupParticipant,:count).by(0) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "ChatRoom"),:count).by(0) }
+        it { should change(ChatMessage,:count).by(0) }
+        it { should change(PublicFile,:count).by(0) }
+        it { should change(Message,:count).by(0) }
+        it { should change(LogAction,:count).by(0) }
+        it { should change(Merge,:count).by(0) }
+        it { should change(Group.where(status: false),:count).by(0) }
+
+        it {
+          put "/api/v1/groups/merge/", json_data
+          response.status.should eq(404) # not found
+        }
+      end
+
+      # transfer content from TL-CAU to QM-CAU
+      context 'do merge from different courses' do
+        let!(:json_data){ { 
+          main_group: "QM-CAU",
+          secundary_groups: ["TL-CAU"],
+          main_course: "109",
+          main_curriculum_unit: "RM301",
+          secundary_course: "110",
+          secundary_curriculum_unit: "RM405",
+          main_semester: "2011.1"
+        } }
+
+        subject{ -> { put "/api/v1/groups/merge/", json_data } } 
+
+        it { should change(AcademicAllocation.where(allocation_tag_id: 3, academic_tool_type: "Discussion"),:count).by(1) }
+        it { should change(Post,:count).by(0) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 3, academic_tool_type: "Assignment"),:count).by(2) }
+        it { should change(SentAssignment,:count).by(1) }
+        it { should change(AssignmentFile,:count).by(0) }
+        it { should change(AssignmentComment,:count).by(0) }
+        it { should change(CommentFile,:count).by(0) }
+        it { should change(GroupAssignment,:count).by(0) }
+        it { should change(GroupParticipant,:count).by(0) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 3, academic_tool_type: "ChatRoom"),:count).by(0) }
+        it { should change(ChatMessage,:count).by(0) }
+        it { should change(PublicFile,:count).by(0) }
+        it { should change(Message,:count).by(0) }
+        it { should change(Webconference,:count).by(0) }
+        it { should change(Notification,:count).by(0) }
+        it { should change(Lesson,:count).by(0) }
+        it { should change(LogAction,:count).by(1) }
+        it { should change(Merge,:count).by(1) }
+        it { should change(Group.where(status: false),:count).by(1) }
+
+        it {
+          put "/api/v1/groups/merge/", json_data
+          response.status.should eq(200)
+          response.body.should == {ok: :ok}.to_json
+        }
+      end
+      
+      # transfer content back from QM-CAU to TL-CAU
+      context 'do merge from different courses' do
+        let!(:json_data){ { 
+          main_group: "QM-CAU",
+          secundary_groups: ["TL-CAU"],
+          main_course: "109",
+          main_curriculum_unit: "RM301",
+          secundary_course: "110",
+          secundary_curriculum_unit: "RM405",
+          main_semester: "2011.1",
+          type: false
+        } }
+
+        subject{ -> { put "/api/v1/groups/merge/", json_data } } 
+
+        it { should change(AcademicAllocation.where(allocation_tag_id: 2, academic_tool_type: "Discussion"),:count).by(6) }
+        it { should change(Post,:count).by(7) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 2, academic_tool_type: "Assignment"),:count).by(11) }
+        it { should change(SentAssignment,:count).by(4) } # porque ele primeiro remove todo o conteúdo e depois adiciona (porque, teoricamente, deve ter acontecido um merge type true antes)
+        it { should change(AssignmentFile,:count).by(4) }
+        it { should change(AssignmentComment,:count).by(3) }
+        it { should change(CommentFile,:count).by(1) }
+        it { should change(GroupAssignment,:count).by(6) }
+        it { should change(GroupParticipant,:count).by(9) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 2, academic_tool_type: "ChatRoom"),:count).by(3) }
+        it { should change(ChatMessage,:count).by(5) }
+        it { should change(PublicFile,:count).by(1) }
+        it { should change(Message,:count).by(1) }
+        it { should change(Webconference,:count).by(0) }
+        it { should change(Notification,:count).by(0) }
+        it { should change(Lesson,:count).by(0) }
+        it { should change(LogAction,:count).by(1) }
+        it { should change(Merge,:count).by(1) }
+        it { should change(Group.where(status: false),:count).by(0) }
+
+        it {
+          put "/api/v1/groups/merge/", json_data
+          response.status.should eq(200)
+          response.body.should == {ok: :ok}.to_json
+        }
+      end
+
       context "with invalid ip" do
         let!(:json_data){ { 
             main_group: "QM-MAR",
             secundary_groups: ["QM-CAU"],
-            course: "109",
-            curriculum_unit: "RM301",
-            semester: "2011.1"
+            main_course: "109",
+            main_curriculum_unit: "RM301",
+            main_semester: "2011.1"
           } }
 
         it "gets a not found error" do

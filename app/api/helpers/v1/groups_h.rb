@@ -13,7 +13,7 @@ module V1::GroupsH
   end
 
   def get_offer_group(offer, group_code)
-    offer.groups.where(code: group_code).first
+    offer.groups.where(code: group_code).first rescue ActiveRecord::RecordNotFound
   end
 
   def verify_or_create_group(params)
