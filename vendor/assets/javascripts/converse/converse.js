@@ -12559,15 +12559,18 @@ return parser;
             },
             orderByGroups: function(ev){
                 //importante
+                var m = $(".menu")[0];
+                m.style.display = "none";
                 var orderGroups = ev.currentTarget;
                 var rosters = $("#converse-roster")[0];
                 var box = $("#users-im")[0];
                 var divGroups = $("#groups")[0];
                 getCookie();
                 getCookieGroups();
-                var m = $(".menu")[0];
-                m.style.display="none";
-                if(orderGroups.checked){
+                var accept = true;
+                if( (con.qtd_rosters_with_groups > 450 || con.groups.length > 50 ) && orderGroups.checked && !cookie_im.Groups)
+                  accept = confirm("Atenção\nA exibição por grupos pode tornar a navegação lenta.");
+                if(orderGroups.checked && accept){
                     cookie_im.Groups = true;
                     rosters.style.display = "none";
                     var groups = con.groups;
@@ -12633,14 +12636,18 @@ return parser;
                     
                 }
                 else{
+                  if(accept){
                     cookie_im.Groups = false;
                     divGroups.style.display = "none";
                     rosters.style.display = "block";
+                  }
                 }
                 setCookie();
                 if(!cookie_im.IM_toggle){
                   $("#chat").click();
                 }
+                if(!accept)
+                  orderGroups.checked = false;
             },
             sortRoster: function (dl,chat_status) {
                 var $my_contacts = $(dl).find('dt');
