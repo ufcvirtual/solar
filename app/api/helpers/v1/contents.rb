@@ -54,7 +54,7 @@ module V1::Contents
 
       main_group, secundary_group = merge ? [to_group, from_group] : [from_group, to_group]
       Merge.create! main_group_id: main_group.id, secundary_group_id: secundary_group.id, type_merge: merge
-      LogAction.create(log_type: LogAction::TYPE[:create], user_id: 0, ip: env['REMOTE_ADDR'], description: "merge: transfering content from #{from_group.code} to #{to_group.code}, merge type: #{merge}") rescue nil
+      LogAction.create(log_type: LogAction::TYPE[:create], user_id: 0, ip: env['REMOTE_ADDR'], description: "merge: transfering content from #{from_group.allocation_tag.info} to #{to_group.allocation_tag.info}, merge type: #{merge}") rescue nil
     end
   end
 
