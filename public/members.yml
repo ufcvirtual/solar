@@ -25,6 +25,11 @@ ccpii:
   members:
     - Prof. Wellington Wagner Ferreira Sarmento
 
+vccpii:
+  title: Vice-Coordenador do Centro de Produção II
+  members:
+    - Lisboa Coutinho Júnior
+
 cs:
   title: Coordenador de Suporte
   members:
@@ -38,9 +43,13 @@ ccud:
 cud:
   title: Célula de Usabilidade e Design
   members:
+    - Aléxia Lídice
+    - Alexiei Alexander Lenine
     - Andrei Bosco
     - Camila Paiva
     - Katryne Rabelo
+    - Samuel Elias
+    - Yohana Almeida
 
 ead: 
   title: Equipe de Análise e Desenvolvimento

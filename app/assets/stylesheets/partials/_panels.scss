@@ -1,0 +1,114 @@
+/*Páginas dos paineis do rodapé*/
+.panel{
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(236,238,240);
+  -webkit-box-shadow:0px -5px 19px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow:0px -5px 19px rgba(50, 50, 50, 0.75);
+  box-shadow:0px -5px 19px rgba(50, 50, 50, 0.75);
+  z-index: 50;
+}
+
+#team, #license-terms, #faq {
+  background: #ffffff url('ufc-virtual.png') 10% 16% no-repeat;
+}
+
+.panel .content {
+  width: 535px;
+  height: 85%;
+  overflow: auto;
+  margin: 30px auto;
+  text-align: left;
+  background-color: rgba(255,255,255,0.8);
+  padding: 5px 10px;
+}
+
+.panel .arrow {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  width: 85px;
+  height: 85px;
+  cursor: pointer;
+}
+
+#faq h4{
+  margin-bottom: 2px;
+}
+
+#faq p{
+  margin-top: 2px;
+  margin-bottom: 0;
+  text-align: initial;
+}
+
+#faq .content {
+  width: 650px;
+}
+
+#faq .title{
+  border: 1px solid #d3d3d3;
+  background: rgba(245,245,245,1);
+  background: -moz-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(245,245,245,1)), color-stop(100%, rgba(255,255,255,1)));
+  background: -webkit-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
+  background: -o-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
+  background: -ms-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
+  background: linear-gradient(to bottom, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
+  font-weight: normal;
+  color: #363636;
+  margin: 10px 0 0 0;
+  padding: .5em .5em .5em .7em;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.title_child_first{
+  margin-left: 15px;
+}
+
+.title_child_second{
+  margin: 5px 0 0 30px;
+}
+
+.title_child_third{
+  margin: 5px 0 0 45px;
+}
+
+.title_child_fourth{
+  margin: 5px 0 0 60px;
+}
+
+.title_child_fifth{
+  margin: 5px 0 0 75px;
+}
+
+.panel h1{
+  font-family: Ubuntu Condensed;
+  font-size: 25px;
+  color:#135696;
+  padding-bottom: 10px;
+}
+
+.panel h4{
+  font-weight: bold;
+  padding-top: 15px;
+  padding-bottom: 25px;
+}
+
+.panel h4, p{
+  font-family:PT Sans;
+  font-size: 16px;
+  color:#616162;
+}
+
+.panel .menu_footer ul li a{
+  text-decoration: none;
+  font-family: Ubuntu;
+  font-size: 14px;
+  color:#2b5088;
+}
