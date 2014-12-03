@@ -23,6 +23,12 @@
   %body
     - active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
 
+    #team.panel
+      .content
+        - @sectors = YAML::load(File.open('public/members.yml'))
+        = render template: "/pages/team"
+      = image_tag("arrow.png", :class => "arrow")
+
     #mysolar_topbar_wide_background
     #body_wrapper
       / topbar
@@ -126,12 +132,6 @@
             %ul.choice-language-menu
               %li{class: "language pt_BR #{(selected == locales.first) ? 'selected' : ''}"}= link_to 'Português (BR)', url_for(locale: locales.first)
               %li{class: "language en_US #{(selected == locales.last) ? 'selected' : ''}"}= link_to 'English (USA)', url_for(locale: locales.last)
-
-    #team.panel
-      .content
-        - @sectors = YAML::load(File.open('public/members.yml'))
-        = render template: "/pages/team"
-      = image_tag("arrow.png", :class => "arrow")
 
   :javascript
 
