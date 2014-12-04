@@ -53,6 +53,7 @@ gem "em-websocket" # websocket pros fóruns
 
 gem "strong_parameters", "~> 0.2.3"
 
+gem 'hairtrigger', '~> 0.2.12' # triggers
 
 group :development do
   gem "rb-readline", "~> 0.5.1"
