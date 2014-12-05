@@ -1,3 +1,5 @@
+CREATE OR REPLACE VIEW vw_at_related_offers AS
+
     SELECT o.id       AS offer_id,
            o_at.id    AS offer_at_id,
 

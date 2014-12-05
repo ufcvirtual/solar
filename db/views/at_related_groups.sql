@@ -1,3 +1,5 @@
+CREATE OR REPLACE VIEW vw_at_related_groups AS
+
     SELECT g.id       AS group_id,
            g_at.id    AS group_at_id,
 

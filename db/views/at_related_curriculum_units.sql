@@ -1,3 +1,5 @@
+CREATE OR REPLACE VIEW vw_at_related_curriculum_units AS
+
   SELECT uc.id      AS curriculum_unit_id,
          uc_at.id   AS curriculum_unit_at_id,
 

@@ -345,9 +345,6 @@ GEM
       nori (~> 2.4)
       uuid (~> 2.3.7)
       wasabi (= 3.3.0)
-    schema_plus (1.7.0)
-      activerecord (>= 3.2)
-      valuable
     selenium-webdriver (2.42.0)
       childprocess (>= 0.5.0)
       multi_json (~> 1.0)
@@ -392,7 +389,6 @@ GEM
       raindrops (~> 0.7)
     uuid (2.3.7)
       macaddr (~> 1.0)
-    valuable (0.9.9)
     virtus (1.0.3)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -468,7 +464,6 @@ DEPENDENCIES
   rvm-capistrano (~> 1.2.7)
   sass-rails (~> 3.2.6)
   savon (~> 2.0)
-  schema_plus
   selenium-webdriver (~> 2.42.0)
   simple_form (~> 2.1.1)
   spork (~> 0.9.2)

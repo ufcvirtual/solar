@@ -273,19 +273,19 @@ class AllocationTag < ActiveRecord::Base
       IF (NEW.group_id IS NOT NULL) THEN
         INSERT INTO related_taggables (group_id, group_at_id, group_status, offer_id, offer_at_id, semester_id,
                     curriculum_unit_id, curriculum_unit_at_id, course_id, course_at_id, curriculum_unit_type_id, curriculum_unit_type_at_id, offer_schedule_id)
-          SELECT * FROM related_groups WHERE group_id = NEW.group_id
+          SELECT * FROM vw_at_related_groups WHERE group_id = NEW.group_id;
       -- offers
       ELSIF (NEW.offer_id IS NOT NULL) THEN
         INSERT INTO related_taggables (offer_id, offer_at_id, semester_id, curriculum_unit_id, curriculum_unit_at_id,
                     course_id, course_at_id, curriculum_unit_type_id, curriculum_unit_type_at_id, offer_schedule_id)
-          SELECT * FROM related_offers WHERE offer_id = NEW.offer_id;
+          SELECT * FROM vw_at_related_offers WHERE offer_id = NEW.offer_id;
       -- courses
       ELSIF (NEW.course_id IS NOT NULL) THEN
         INSERT INTO related_taggables (course_id, course_at_id) VALUES (NEW.course_id, NEW.id);
       -- UC
       ELSIF (NEW.curriculum_unit_id IS NOT NULL) THEN
         INSERT INTO related_taggables (curriculum_unit_id, curriculum_unit_at_id, curriculum_unit_type_id, curriculum_unit_type_at_id)
-          SELECT * FROM related_curriculum_units WHERE curriculum_unit_id = NEW.curriculum_unit_id;
+          SELECT * FROM vw_at_related_curriculum_units WHERE curriculum_unit_id = NEW.curriculum_unit_id;
       -- UC type
       ELSIF (NEW.curriculum_unit_type_id IS NOT NULL) THEN
         INSERT INTO related_taggables (curriculum_unit_type_id, curriculum_unit_type_at_id) VALUES (NEW.curriculum_unit_type_id, NEW.id);
