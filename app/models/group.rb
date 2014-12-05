@@ -101,6 +101,18 @@ class Group < ActiveRecord::Base
       } ).select("DISTINCT groups.id, semesters.*, groups.*").order('semesters.name DESC, groups.code ASC')
   end
 
+  ## triggers
+
+  trigger.after(:update).of(:offer_id, :status) do
+    <<-SQL
+      UPDATE related_taggables
+         SET group_status = NEW.status,
+             offer_id = NEW.offer_id,
+             offer_at_id = (SELECT id FROM allocation_tags WHERE offer_id = NEW.offer_id)
+       WHERE group_id = OLD.id;
+    SQL
+  end
+
   private
 
     def unique_code_on_offer

@@ -184,7 +184,7 @@ class Offer < ActiveRecord::Base
 
   # offers.*, enroll_start_date, enroll_end_date
   def self.to_enroll
-    find_by_sql %{
+    find_by_sql <<-SQL
       SELECT o.*, COALESCE(os_e.start_date, ss_e.start_date)::date AS enroll_start_date,
         CASE
           WHEN o.enrollment_schedule_id IS NULL THEN COALESCE(ss_e.end_date, ss_p.end_date)::date
@@ -263,7 +263,7 @@ class Offer < ActiveRecord::Base
 
           ) -- and
         ORDER BY enroll_start_date DESC;
-    }
+    SQL
   end
 
   def notify_editors_of_disabled_groups(groups)
@@ -276,6 +276,46 @@ class Offer < ActiveRecord::Base
     Thread.new do
       Notifier.groups_disabled(emails.flatten.uniq.join(", "), group_codes, offer_info).deliver
     end
+  end
+
+  ## triggers
+
+  # trigger.after(:update) do
+  trigger.after(:update).of(:curriculum_unit_id, :course_id, :offer_schedule_id) do
+    <<-SQL
+
+      -- curriculum unit id
+      IF NEW.curriculum_unit_id <> OLD.curriculum_unit_id THEN
+        UPDATE related_taggables
+           SET curriculum_unit_id = NEW.curriculum_unit_id,
+               curriculum_unit_at_id = (SELECT id FROM allocation_tags WHERE curriculum_unit_id = NEW.curriculum_unit_id)
+         WHERE offer_id = OLD.id;
+      END IF;
+
+      -- course
+      IF NEW.course_id <> OLD.course_id THEN
+        UPDATE related_taggables
+           SET course_id = NEW.course_id,
+               course_at_id = (SELECT id FROM allocation_tags WHERE course_id = NEW.course_id)
+         WHERE offer_id = OLD.id;
+      END IF;
+
+      -- offer shedule
+      IF NEW.offer_schedule_id <> OLD.offer_schedule_id OR (NEW.offer_schedule_id IS NULL) <> (OLD.offer_schedule_id IS NULL) THEN
+        IF NEW.offer_schedule_id IS NULL THEN
+          -- se setar null tem q mudar para o schedule para o do semestre
+          UPDATE related_taggables
+             SET offer_schedule_id = (SELECT offer_schedule_id FROM semesters WHERE id = NEW.semester_id)
+           WHERE offer_id = OLD.id;
+        ELSE
+          UPDATE related_taggables
+             SET offer_schedule_id = NEW.offer_schedule_id
+           WHERE offer_id = OLD.id;
+        END IF;
+
+      END IF;
+
+    SQL
   end
 
 end

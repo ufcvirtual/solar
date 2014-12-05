@@ -7,7 +7,7 @@ class CreateTriggersAllocationTagsInsertAndAllocationTagsDelete < ActiveRecord::
     create_trigger("allocation_tags_after_insert_row_tr", :generated => true, :compatibility => 1).
         on("allocation_tags").
         after(:insert) do
-      <<-SQL_ACTIONS
+      <<-SQL
       IF (NEW.group_id IS NOT NULL) THEN
         INSERT INTO related_taggables (group_id, group_at_id, group_status,
                       offer_id, offer_at_id, semester_id, curriculum_unit_id, curriculum_unit_at_id,
@@ -108,20 +108,20 @@ class CreateTriggersAllocationTagsInsertAndAllocationTagsDelete < ActiveRecord::
         INSERT INTO related_taggables (curriculum_unit_type_id, curriculum_unit_type_at_id) VALUES (NEW.curriculum_unit_type_id, NEW.id);
 
       END IF;
-      SQL_ACTIONS
+      SQL
     end
 
     create_trigger("allocation_tags_after_delete_row_tr", :generated => true, :compatibility => 1).
         on("allocation_tags").
         after(:delete) do
-      <<-SQL_ACTIONS
+      <<-SQL
       DELETE FROM related_taggables
             WHERE group_at_id = OLD.id
                OR offer_at_id = OLD.id
                OR course_at_id = OLD.id
                OR curriculum_unit_at_id = OLD.id
                OR curriculum_unit_type_at_id = OLD.id;
-      SQL_ACTIONS
+      SQL
     end
   end
 

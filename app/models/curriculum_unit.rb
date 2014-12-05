@@ -60,7 +60,7 @@ class CurriculumUnit < ActiveRecord::Base
   def self.class_participants_by_allocations(allocation_tags, profile_flag, have_profile = true)
     negative = have_profile ? '' : 'NOT'
 
-    query = <<SQL
+    query = <<-SQL
       SELECT t3.id,
              initcap(t3.name) AS name,
              t3.photo_file_name,
@@ -79,9 +79,21 @@ class CurriculumUnit < ActiveRecord::Base
          AND t1.status = #{Allocation_Activated}
        GROUP BY t3.id, t3.name, t3.photo_file_name, t3.email, t3.photo_updated_at
        ORDER BY t3.name, profile_name
-SQL
+    SQL
 
     User.find_by_sql query
+  end
+
+  ## triggers
+
+  trigger.after(:update).of(:curriculum_unit_type_id) do
+    <<-SQL
+      -- update as linhas onde o curriculum unit esta para mudar o tipo
+      UPDATE related_taggables
+         SET curriculum_unit_type_id = NEW.curriculum_unit_type_id,
+             curriculum_unit_type_at_id = (SELECT id FROM allocation_tags WHERE curriculum_unit_type_id = NEW.curriculum_unit_type_id)
+       WHERE curriculum_unit_id = OLD.id;
+    SQL
   end
 
   private
