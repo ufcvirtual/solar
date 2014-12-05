@@ -54,6 +54,7 @@ gem "em-websocket" # websocket pros fóruns
 gem "strong_parameters", "~> 0.2.3"
 
 gem 'hairtrigger', '~> 0.2.12' # triggers
+gem "schema_plus" # foreign keys and views
 
 group :development do
   gem "rb-readline", "~> 0.5.1"
