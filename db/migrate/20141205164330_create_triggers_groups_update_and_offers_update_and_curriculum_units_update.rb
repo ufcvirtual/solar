@@ -17,10 +17,10 @@ class CreateTriggersGroupsUpdateAndOffersUpdateAndCurriculumUnitsUpdate < Active
       SQL
     end
 
-    create_trigger("offers_after_update_of_curriculum_unit_id_course_id_offer_sc_tr", :generated => true, :compatibility => 1).
+    create_trigger("offers_after_update_of_curriculum_unit_id_course_id_semester_tr", :generated => true, :compatibility => 1).
         on("offers").
         after(:update).
-        of(:curriculum_unit_id, :course_id, :offer_schedule_id) do
+        of(:curriculum_unit_id, :course_id, :semester_id, :offer_schedule_id) do
       <<-SQL
 
       -- curriculum unit id
@@ -36,6 +36,12 @@ class CreateTriggersGroupsUpdateAndOffersUpdateAndCurriculumUnitsUpdate < Active
         UPDATE related_taggables
            SET course_id = NEW.course_id,
                course_at_id = (SELECT id FROM allocation_tags WHERE course_id = NEW.course_id)
+         WHERE offer_id = OLD.id;
+      END IF;
+
+      IF NEW.semester_id <> OLD.semester_id THEN
+        UPDATE related_taggables
+           SET semester_id = NEW.semester_id
          WHERE offer_id = OLD.id;
       END IF;
 
@@ -73,7 +79,7 @@ class CreateTriggersGroupsUpdateAndOffersUpdateAndCurriculumUnitsUpdate < Active
   def down
     drop_trigger("groups_after_update_of_offer_id_status_row_tr", "groups", :generated => true)
 
-    drop_trigger("offers_after_update_of_curriculum_unit_id_course_id_offer_sc_tr", "offers", :generated => true)
+    drop_trigger("offers_after_update_of_curriculum_unit_id_course_id_semester_tr", "offers", :generated => true)
 
     drop_trigger("curriculum_units_after_update_of_curriculum_unit_type_id_row_tr", "curriculum_units", :generated => true)
   end

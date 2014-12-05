@@ -281,7 +281,7 @@ class Offer < ActiveRecord::Base
   ## triggers
 
   # trigger.after(:update) do
-  trigger.after(:update).of(:curriculum_unit_id, :course_id, :offer_schedule_id) do
+  trigger.after(:update).of(:curriculum_unit_id, :course_id, :semester_id, :offer_schedule_id) do
     <<-SQL
 
       -- curriculum unit id
@@ -297,6 +297,12 @@ class Offer < ActiveRecord::Base
         UPDATE related_taggables
            SET course_id = NEW.course_id,
                course_at_id = (SELECT id FROM allocation_tags WHERE course_id = NEW.course_id)
+         WHERE offer_id = OLD.id;
+      END IF;
+
+      IF NEW.semester_id <> OLD.semester_id THEN
+        UPDATE related_taggables
+           SET semester_id = NEW.semester_id
          WHERE offer_id = OLD.id;
       END IF;
 
