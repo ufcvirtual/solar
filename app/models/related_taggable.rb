@@ -15,8 +15,12 @@ class RelatedTaggable < ActiveRecord::Base
 
   ## ferramenta academica: group, offer, course, uc, type
   def self.related(obj)
-    column = obj.class == AllocationTag ? "#{obj.refer_to}_at_id" : "#{obj.class.to_s.underscore}_id"
-    rel = where("#{column} = ?", obj.id)
+    rel = if obj.is_a?(Hash)
+      where(obj)
+    else
+      column = obj.is_a?(AllocationTag) ? "#{obj.refer_to}_at_id" : "#{obj.class.to_s.underscore}_id"
+      where("#{column} = ?", obj.id)
+    end
 
     result = rel.map { |r| r.at_ids }
     result.flatten.compact.uniq
