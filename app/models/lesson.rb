@@ -34,6 +34,10 @@ class Lesson < Event
 
   FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
 
+  def type_info
+    is_link? ? :LINK : :FILE
+  end
+
   def draft!
     update_attribute('status', Lesson_Test)
   end
