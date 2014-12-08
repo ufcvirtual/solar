@@ -11445,7 +11445,7 @@ return parser;
                 if (con.connection.roster.items.length === 0){
                     $('.toggle-online-users').click();
                 };
-            },1200);
+            },3000);
                 
         };
 
@@ -12568,7 +12568,7 @@ return parser;
                 getCookie();
                 getCookieGroups();
                 var accept = true;
-                if( (con.qtd_rosters_with_groups > 450 || con.groups.length > 50 ) && orderGroups.checked && !cookie_im.Groups)
+                if( (con.qtd_rosters_with_groups > 500 || con.groups.length > 50 ) && orderGroups.checked && !cookie_im.Groups)
                   accept = confirm("Atenção\nA exibição por grupos pode tornar a navegação lenta.");
                 if(orderGroups.checked && accept){
                     cookie_im.Groups = true;
@@ -14502,7 +14502,7 @@ return parser;
                     if(cookie_im.Groups){
                       setTimeout(function(e){
                         $("#order").click();
-                      },3000);
+                      },100);
                     }
                 }
             }, this)
