@@ -1756,6 +1756,7 @@ pt_BR:
       no_groups: "Não há turmas"
       see_all: Ver as %{all} turmas
       see_less: Ver %{less} turmas
+    ckb_collection:
       disabled_group: Turma desativada
     codes:
       see_all: Ver as %{all} turmas
