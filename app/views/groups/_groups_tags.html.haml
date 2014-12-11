@@ -12,24 +12,38 @@
         = render "groups/tags", groups: groups[Max_Groups_Shown_Tags+1..groups_size], tool: tool, paths: paths
         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".see_less", less: Max_Groups_Shown_Tags+1))
 
+  - unless groups_size == 1
+    %span.new_groups
+      = content_tag(:i, nil, class: "icon icon-cross unbind_groups", :"data-dropdown" => ".unbind_group_dropdown_#{tool.id}", :"data-tooltip" => t(".unbind_groups"))
+      %div{id: "dropdown", class: "dropdown dropdown-tip unbind_group_dropdown_#{tool.id}"}
+        %h1=t(".unbind_groups")
+        = form_for :group do |f|
+          %span.select_all_box
+            = check_box_tag "all_groups#{tool.id}", :all_groups, false, {:"data-children-names" => "group[unbind_group_id][]"}
+            = label_tag "all_groups#{tool.id}", t(".select_all")
+          .no_tags= f.collection_check_boxes :unbind_group_id, groups, :id, :code, {item_wrapper_tag: "div", item_wrapper_class: "group_checkbox"}
+          = button_tag t(".unbind"), class: "btn btn_unbind_groups", :"data-link" => paths[:unbind], type: :button, :"data-checkbox"=>"unbind_group_id"
+          = button_tag t(".cancel"), class: "btn btn_cancel_unbind_group", type: :button
+
   - new_groups = (all_groups - groups).in_groups(2, false)
   - can_add_groups = (not tool.respond_to?(:can_add_group?) or tool.can_add_group?)
   - unless paths.nil? or new_groups.flatten.empty? or not(can_add_groups)
     %span.new_groups
       = content_tag(:i, nil, class: "icon icon-plus add_group", :"data-dropdown" => ".add_group_dropdown_#{tool.id}", :"data-tooltip" => t(".add_group"))
       %div{id: "dropdown", class: "dropdown dropdown-tip add_group_dropdown_#{tool.id}"}
+        %h1=t(".add_group")
         = form_for :group do |f|
           %span.select_all_box
             = check_box_tag "all_new_groups#{tool.id}", :all_new_groups, false, {:"data-children-names" => "group[new_group_id][]"}
             = label_tag "all_new_groups#{tool.id}", t(".select_all")
           - new_groups.each do |new_group|
             .no_tags= f.collection_check_boxes :new_group_id, new_group, :id, :code, {item_wrapper_tag: "div", item_wrapper_class: "group_checkbox"}
-          = button_tag t(".add"), class: "btn btn_add_group", :"data-link" => paths[:add], type: :button
+          = button_tag t(".add"), class: "btn btn_add_group", :"data-link" => paths[:add], type: :button, :"data-checkbox"=>"new_group_id"
           = button_tag t(".cancel"), class: "btn btn_cancel_add_group", type: :button
 
 :javascript
   $(function(){
-    $('.new_groups [name^="all_new_groups"]').each(function(){
+    $('.new_groups [name^="all_new_groups"], .new_groups [name^="all_groups"]').each(function(){
       $(this).nice_checkbox({
         parent_div: $(this).parents(".dropdown")[0],
         can_enable_or_disable: false

@@ -5,6 +5,12 @@
     color: $color_main;
   }
 
+  h1{
+    text-align: center;
+    padding: 5px;
+    font-size: 9pt;
+  }
+
   .collection_check_boxes {
     .icon{
       color: white;
@@ -33,7 +39,7 @@
     cursor: pointer;
   }
   
-  .add_group{
+  .add_group, .unbind_groups{
     border: 1px solid #C0C0C0;
     color: grey;
   }

@@ -57,7 +57,7 @@ class ChatRoom < Event
     return true
   end
 
-  def can_remove_or_unbind_group?(group)
+  def can_remove_groups?(groups)
     user_messages.empty? # não pode dar unbind nem remover se chat possuir mensagens
   end
 

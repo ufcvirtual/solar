@@ -38,8 +38,8 @@ $(function(){
     });
   });
 
-  $(".btn_add_group").click(function(){
-    var groups_ids = $('[name="group[new_group_id][]"]:checked', $(this).parent()).map(function() { return this.value; }).get();
+  $(".btn_add_group, .btn_unbind_groups").click(function(){
+    var groups_ids = $('[name="group['+$(this).data("checkbox")+'][]"]:checked', $(this).parent()).map(function() { return this.value; }).get();
     var url = $(this).data("link").replace("param_id", groups_ids);
     var button = $(this);
 

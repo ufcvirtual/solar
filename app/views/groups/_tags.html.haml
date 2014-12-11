@@ -1,9 +1,10 @@
 - groups.each do |group|
   %span.collection_check_boxes{id: (group.status ? "" : "disabled"), :"data-tooltip" => (group.status ? "" : t(".disabled_group"))}
     = group.code
-    - unless paths.nil? or groups.size == 1 or (not (not tool.respond_to?(:can_remove_or_unbind_group?) or tool.can_remove_or_unbind_group?(group)))
+    - unless paths.nil? or groups.size == 1
       = content_tag(:i, nil, class: "icon icon-cross change_tool_group", :"data-dropdown" => ".change_tool_dropdown_#{group.id}_#{tool.id}")
       %div{id: "dropdown", class: "dropdown dropdown-tip change_tool_dropdown_#{group.id}_#{tool.id}"}
         %ul.dropdown-menu
           %li= link_to t(".unbind"), '#', class: 'unbind', :"data-link" => paths[:unbind].gsub("param_id", group.id.to_s)
-          %li= link_to t(".remove"), '#', class: 'remove', :"data-link" => paths[:remove].gsub("param_id", group.id.to_s)
+          - unless (not (not tool.respond_to?(:can_remove_groups?) or tool.can_remove_groups?([group])))
+            %li= link_to t(".remove"), '#', class: 'remove', :"data-link" => paths[:remove].gsub("param_id", group.id.to_s)

@@ -118,23 +118,23 @@ class GroupsController < ApplicationController
           AcademicAllocation.create! groups.map {|group| {allocation_tag_id: group.allocation_tag.id, academic_tool_id: params[:tool_id], academic_tool_type: params[:tool_type]}}
         end
       else
-        group = groups.first
-        academic_allocation = AcademicAllocation.where(allocation_tag_id: group.allocation_tag.id, academic_tool_type: params[:tool_type], academic_tool_id: params[:tool_id]).first
+        academic_allocations = AcademicAllocation.where(allocation_tag_id: groups.map(&:allocation_tag).map(&:id), academic_tool_type: params[:tool_type], academic_tool_id: params[:tool_id])
 
-        raise "cant_transfer_dependencies" unless (not tool.respond_to?(:can_remove_or_unbind_group?) or tool.can_remove_or_unbind_group?(group))
-
-        unless tool.groups.size == 1 # se não for a única turma
+        unless tool.groups.size == groups.size # se não for deixar a ferramenta sem turmas
           case params[:type]
             when "unbind" # desvincular uma turma
+              raise "must_have_group" if tool.academic_allocations.size == academic_allocations.size
+
               new_tool = tool_model.create(tool.attributes)
-              academic_allocation.update_attributes(academic_tool_id: new_tool.id)
+              academic_allocations.update_all(academic_tool_id: new_tool.id)
 
               # se a ferramenta possuir um schedule, cria um igual para a nova
               new_tool.update_attributes(schedule_id: Schedule.create(tool.schedule.attributes).id) if tool.respond_to?(:schedule)
               # copia as dependências pro novo objeto caso existam
               new_tool.copy_dependencies_from(tool) if new_tool.respond_to?(:copy_dependencies_from)
             when "remove" # remover uma turma
-              academic_allocation.destroy
+              raise "cant_transfer_dependencies" unless (not tool.respond_to?(:can_remove_groups?) or tool.can_remove_groups?(groups))
+              academic_allocations.destroy_all
             else
               raise "option_not_found"
           end

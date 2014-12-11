@@ -222,15 +222,17 @@ class GroupsControllerTest < ActionController::TestCase
     assert_response :unprocessable_entity
   end
 
-  test "nao desvincular turma a uma ferramenta - dependencias - chat" do
+  test "desvincular turma a uma ferramenta - dependencias - chat" do
     # chat3 possui mensagens
     chat_room3 = chat_rooms(:chat3)
-    assert_no_difference(["ChatRoom.count", "AcademicAllocation.count", "ChatParticipant.count"]) do
-      put :change_tool, {id: "3", tool_type: "ChatRoom", tool_id: chat_room3.id, type: "unbind"}
+    assert_no_difference(["AcademicAllocation.count", "ChatParticipant.count", "ChatMessage.count"]) do
+      assert_difference("ChatRoom.count") do
+        put :change_tool, {id: "3", tool_type: "ChatRoom", tool_id: chat_room3.id, type: "unbind"}
+      end
     end
 
-    assert_equal I18n.t(:cant_transfer_dependencies, scope: [:groups, :error]), get_json_response("alert")
-    assert_response :unprocessable_entity
+    assert_equal I18n.t(:unbind, scope: [:groups, :success]), get_json_response("notice")
+    assert_response :success
   end
 
   test "nao remover turma de uma ferramenta - dependencias - chat" do
@@ -267,15 +269,17 @@ class GroupsControllerTest < ActionController::TestCase
     assert_response :unprocessable_entity
   end
 
-  test "nao desvincular turma a uma ferramenta - dependencias - assignment" do
+  test "desvincular turma a uma ferramenta - dependencias - assignment" do
     # para a turma 5 (LB-CAR), o trabalho tem sent_assignment
     atividade_grupo_I = assignments(:a11)
-    assert_no_difference(["AcademicAllocation.count", "AssignmentEnunciationFile.count", "Assignment.count"]) do
-      put :change_tool, {id: "5", tool_type: "Assignment", tool_id: atividade_grupo_I.id, type: "unbind"}
+    assert_no_difference(["AcademicAllocation.count", "AssignmentEnunciationFile.count", "SentAssignment.count"]) do
+      assert_difference("Assignment.count") do
+        put :change_tool, {id: "5", tool_type: "Assignment", tool_id: atividade_grupo_I.id, type: "unbind"}
+      end
     end
 
-    assert_equal I18n.t(:cant_transfer_dependencies, scope: [:groups, :error]), get_json_response("alert")
-    assert_response :unprocessable_entity
+    assert_equal I18n.t(:unbind, scope: [:groups, :success]), get_json_response("notice")
+    assert_response :success
   end
 
   test "nao remover turma de uma ferramenta - dependencias - assignment" do

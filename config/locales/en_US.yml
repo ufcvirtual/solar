@@ -1521,7 +1521,9 @@ en_US:
       groups: Groups
       add: Add
       cancel: Cancel
-      add_group: Add Group
+      add_group: Add Groups
+      unbind_groups: Unbind Groups
+      unbind: Unbind
       see_all: See all %{all} groups
       see_less: See %{less} groups
       select_all: Select all

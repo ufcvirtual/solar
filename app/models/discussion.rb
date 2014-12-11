@@ -95,7 +95,7 @@ class Discussion < Event
     posts_by_allocation_tags_ids(allocation_tags_ids).select("DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level")
   end
 
-  def can_remove_or_unbind_group?(group)
+  def can_remove_groups?(groups)
     discussion_posts.empty? # não pode dar unbind nem remover se fórum possuir posts
   end
 

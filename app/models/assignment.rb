@@ -24,9 +24,9 @@ class Assignment < Event
     GroupAssignment.create! assignment_to_copy.group_assignments.map {|group| group.attributes.merge({academic_allocation_id: self.academic_allocations.first.id})} unless assignment_to_copy.group_assignments.empty?
   end
 
-  def can_remove_or_unbind_group?(group)
+  def can_remove_groups?(groups)
     # não pode dar unbind nem remover se assignment possuir sent_assignment
-    SentAssignment.joins(:academic_allocation).where(academic_allocations: {academic_tool_id: self.id, allocation_tag_id: group.allocation_tag.id}).empty?
+    SentAssignment.joins(:academic_allocation).where(academic_allocations: {academic_tool_id: self.id, allocation_tag_id: groups.map(&:allocation_tag).map(&:id)}).empty?
   end
 
   def can_destroy?
