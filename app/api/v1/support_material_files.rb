@@ -35,19 +35,7 @@ module V1
       params { requires :id, type: Integer, desc: "ID do material de apoio" }
       get ":id/download" do
         file = SupportMaterialFile.find(params[:id])
-        begin
-          raise if file.is_link?
-
-          filename = Digest::MD5.hexdigest(file.attachment_file_name)
-
-          content_type MIME::Types.type_for(file.attachment_file_name)[0].to_s
-          env['api.format'] = :binary
-          header "Content-Disposition", "attachment; filename*=UTF-8''#{URI.escape(filename)}"
-
-          File.open(file.attachment.path).read
-        rescue
-          raise ActiveRecord::RecordNotFound
-        end
+        send_file(file.attachment.path.to_s, file.attachment_file_name.to_s)
       end
     end # namespace
 
