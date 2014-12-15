@@ -18,6 +18,15 @@ class SupportMaterialFile < ActiveRecord::Base
     path: ":rails_root/media/support_material_files/:id_:basename.:extension",
     url: "/media/support_material_files/:id_:basename.:extension"
 
+  def path
+    return url if is_link?
+    attachment.url
+  end
+
+  def type_info
+    is_link? ? :LINK : :FILE
+  end
+
   def url_protocol
     self.url = ['http://', self.url].join if (self.url =~ URI::regexp(["ftp", "http", "https"])).nil?
   end
@@ -43,5 +52,33 @@ class SupportMaterialFile < ActiveRecord::Base
     joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tag_ids})
       .where(in_folder, folder_name).order("folder, attachment_content_type, attachment_file_name")
   end
+
+  def self.list(at_ids)
+    self.find_files(at_ids).group_by {|f| f.folder}
+  end
+
+  # def self.list(at_ids)
+  #   query = <<-SQL
+  #     WITH cte_at_files AS (
+  #       SELECT sf.*
+  #         FROM support_material_files AS sf
+  #         JOIN academic_allocations   AS aa ON sf.id = aa.academic_tool_id AND aa.academic_tool_type = 'SupportMaterialFile'
+  #        WHERE aa.allocation_tag_id IN (?)
+  #        ORDER BY folder, attachment_content_type, attachment_file_name
+  #     ),
+  #     --
+  #     cte_folder_agg AS (
+  #       SELECT folder AS folder_name,
+  #              array_agg(row_to_json(cte_at_files)) AS files
+  #         FROM cte_at_files
+  #        GROUP BY folder
+  #     )
+  #     --
+  #     SELECT array_to_json(array_agg(row_to_json(cte_folder_agg))) AS smf
+  #       FROM cte_folder_agg;
+  #   SQL
+  #
+  #   JSON.parse find_by_sql([query, at_ids]).first.smf
+  # end
 
 end

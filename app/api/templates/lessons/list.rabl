@@ -12,7 +12,7 @@ attributes :id, :name, :description, :order, :is_default
         status: lesson.status,
         type: lesson.type_info,
         name: lesson.name,
-        url: lesson.path,
+        url: (lesson.is_link? ? lesson.link_path : "/api/v1/lessons/#{lesson.id}/download"),
         start_date: schedule.start_date,
         end_date: schedule.end_date
       }

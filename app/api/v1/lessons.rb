@@ -41,8 +41,31 @@ module V1
 
       end # namespace
 
-    end # segment
+      namespace :lessons do
 
+        desc "Download de aulas"
+        params { requires :id, type: Integer, desc: "ID da aula" }
+        get ":id/download" do
+          file = Lesson.find(params[:id])
+          begin
+            raise if file.is_link?
+
+            file_address = file.address
+            filename = Digest::MD5.hexdigest(file_address)
+
+            content_type MIME::Types.type_for(file_address)[0].to_s
+            env['api.format'] = :binary
+            header "Content-Disposition", "attachment; filename*=UTF-8''#{URI.escape(filename)}"
+
+            File.open(file.path(fullpath=true)).read
+          rescue
+            raise ActiveRecord::RecordNotFound
+          end
+        end
+
+      end # namespace
+
+    end # segment
 
   end
 end
