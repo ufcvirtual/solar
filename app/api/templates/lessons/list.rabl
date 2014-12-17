@@ -3,7 +3,7 @@ collection @lessons_modules
 attributes :id, :name, :description, :order, :is_default
 
 @lessons_modules.each do |lm|
-  node :lesons do |lm|
+  node :lessons do |lm|
     lm.lessons_to_open(current_user, list = true).map do |lesson|
       schedule = lesson.schedule
       {

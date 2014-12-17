@@ -20,8 +20,8 @@ arquivo2:
 
 arquivo3:
   id: 3
-  attachment_file_name: "1.jpg"
-  attachment_content_type: "image/jpeg "
+  attachment_file_name: "index.html"
+  attachment_content_type: "text/html"
   attachment_file_size: 53357
   attachment_updated_at: 2011-10-06 09:52:01.524322
   folder: AULAS

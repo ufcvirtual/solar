@@ -57,28 +57,4 @@ class SupportMaterialFile < ActiveRecord::Base
     self.find_files(at_ids).group_by {|f| f.folder}
   end
 
-  # def self.list(at_ids)
-  #   query = <<-SQL
-  #     WITH cte_at_files AS (
-  #       SELECT sf.*
-  #         FROM support_material_files AS sf
-  #         JOIN academic_allocations   AS aa ON sf.id = aa.academic_tool_id AND aa.academic_tool_type = 'SupportMaterialFile'
-  #        WHERE aa.allocation_tag_id IN (?)
-  #        ORDER BY folder, attachment_content_type, attachment_file_name
-  #     ),
-  #     --
-  #     cte_folder_agg AS (
-  #       SELECT folder AS folder_name,
-  #              array_agg(row_to_json(cte_at_files)) AS files
-  #         FROM cte_at_files
-  #        GROUP BY folder
-  #     )
-  #     --
-  #     SELECT array_to_json(array_agg(row_to_json(cte_folder_agg))) AS smf
-  #       FROM cte_folder_agg;
-  #   SQL
-  #
-  #   JSON.parse find_by_sql([query, at_ids]).first.smf
-  # end
-
 end

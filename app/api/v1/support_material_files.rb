@@ -11,7 +11,7 @@ module V1
       desc "Lista de material de apoio da turma"
       params { requires :id, type: Integer, desc: "ID da turma" }
       get ":id/support_material_files" do
-        guard!
+        authorize! :index, SupportMaterialFile, on: @ats, read: true
 
         # get ":id/support_material_files", rabl: "support_material_files/list" do
         @material_files = SupportMaterialFile.list(@ats)
@@ -33,10 +33,9 @@ module V1
       desc "Download material de apoio"
       params { requires :id, type: Integer, desc: "ID do material de apoio" }
       get ":id/support_material_files/:file_id/download" do
-        file = SupportMaterialFile.find(params[:file_id])
-
         authorize! :download, SupportMaterialFile, on: @ats, read: true
 
+        file = SupportMaterialFile.find(params[:file_id])
         send_file(file.attachment.path.to_s, file.attachment_file_name.to_s)
       end # get download
 

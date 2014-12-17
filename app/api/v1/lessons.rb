@@ -12,7 +12,6 @@ module V1
       params { requires :id, type: Integer }
       get ":id/lessons", rabl: "lessons/list" do
         guard!
-
         @lessons_modules = LessonModule.to_select(@ats, current_user, list = true)
       end
 

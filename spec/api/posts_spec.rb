@@ -73,7 +73,7 @@ describe "Posts" do
 
   describe ".list" do
 
-    context "with access token" do
+    context "with valid access token" do
 
       it "lists new posts" do
         get "/api/v1/discussions/2/posts/new", group_id: 3, access_token: token.token
