@@ -36,7 +36,7 @@ module V1
         authorize! :download, SupportMaterialFile, on: @ats, read: true
 
         file = SupportMaterialFile.find(params[:file_id])
-        send_file(file.attachment.path.to_s, file.attachment_file_name.to_s)
+        send_file(file.attachment.path.to_s)
       end # get download
 
     end # namespace

@@ -9,16 +9,14 @@ describe "Scores" do
   let!(:application) { d = Doorkeeper::Application.new(name: "MyApp", redirect_uri: "http://app.com"); d.owner = user; d.save; d }
   let!(:token) { Doorkeeper::AccessToken.create! application_id: application.id, resource_owner_id: user.id }
 
-  ## trabalhos
-  ## forums
-  ## acessos ao sistema
   # {
   #   assignments: [
   #     {
   #       name: name,
   #       enunciation: akak,
-  #       type_assignment: GROUP/INDIVIDUAL,
-  #       situation: "enviado, nao enviado"
+  #       type_assignment: 0/1, #[individual/group]
+  #       situation: [not_started corrected sent without_group to_be_sent not_sent]
+  #       comments: ['a', 'a']
   #       grade: nota,
   #       start_date: '',
   #       end_date: ''
@@ -52,10 +50,7 @@ describe "Scores" do
       get "/api/v1/groups/1/scores/info", access_token: token.token
 
       response.status.should eq(200)
-      response.body.should == {assignments: [{name: 'Atividade I',enunciation: '',type_assignment: :INDIVIDUAL,situation: :NOT_SEND, \
-        grade: nil,start_date: Date.today,end_date: Date.today},{name: 'Atividade individual X',enunciation: '',type_assignment: :INDIVIDUAL, \
-        situation: :NOT_SEND,grade: nil,start_date: Date.today,end_date: Date.today}],discussions: [{name: 'Forum 7',count_posts: 0}], \
-        history_access: [{date: Date.today,time: Time.now}]}.to_json
+      response.body.should == {}.to_json
     end
   end # context with valid user
 

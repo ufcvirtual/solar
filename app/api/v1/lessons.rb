@@ -25,10 +25,9 @@ module V1
           authorize! :show, Lesson, {on: @ats, read: true, accepts_general_profile: true}
         end
 
-        # guard!
         file_path = Lesson::FILES_PATH.join(l_id, relative_path)
 
-        send_file(file_path.to_s, file_path.to_s)
+        send_file(file_path.to_s)
       end # get folder
 
     end # namespace groups

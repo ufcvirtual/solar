@@ -18,20 +18,12 @@ module V1
         end
 
         # GET /users/1/photo
+        params do
+          optional :style, type: String, values: %w(small forum medium), default: 'medium'
+        end
         get "/:id/photo" do
-          begin
-            user = User.find(params[:id])
-            photo = user.photo.path(params[:style] || :small)
-            filename = Digest::MD5.hexdigest(user.cpf)
-
-            content_type MIME::Types.type_for(filename)[0].to_s
-            env['api.format'] = :binary
-            header "Content-Disposition", "attachment; filename*=UTF-8''#{URI.escape(filename)}"
-
-            File.open(photo).read
-          rescue
-            raise ActiveRecord::RecordNotFound
-          end
+          user = current_user.id == params[:id].to_i ? current_user : User.find(params[:id])
+          send_file(user.photo.path(params[:style]))
         end
 
       end # users

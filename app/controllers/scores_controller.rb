@@ -16,13 +16,13 @@ class ScoresController < ApplicationController
   def info
     authorize! :info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @user = current_user
-    informations
+    @assignments, @discussions, @access = Score.informations(@user.id, @allocation_tag_id, type_hash: false)
   end
 
   def user_info
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @user = User.find(params[:user_id])
-    informations
+    @assignments, @discussions, @access = Score.informations(@user.id, @allocation_tag_id, type_hash: false)
     render :info
   end
 
@@ -48,14 +48,5 @@ class ScoresController < ApplicationController
   rescue
     render json: {alert: t("scores.error.invalid_date")}, status: :unauthorized
   end
-
-  private
-    def informations
-      allocation_tag = AllocationTag.find(@allocation_tag_id)
-      @assignments   = Assignment.joins(:academic_allocations, :schedule).where(academic_allocations: {allocation_tag_id:  @allocation_tag_id})
-                               .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date").order("start_date") if allocation_tag.is_student?(@user.id)
-      @discussions   = Discussion.posts_count_by_user(@user.id, @allocation_tag_id)
-      @access        = LogAccess.where(log_type: LogAccess::TYPE[:group_access], user_id: @user.id, allocation_tag_id: allocation_tag.related)
-    end
 
 end
