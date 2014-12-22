@@ -28,4 +28,12 @@ class ApplicationAPI < Grape::API
 
   helpers Helpers::V1::All
   mount V1::Base
+
+  ## helper geral
+  helpers do
+   def authorize!(*args)
+     guard!
+     ::Ability.new(current_user).authorize!(*args)
+   end
+  end
 end

@@ -1335,6 +1335,10 @@ ul.chat-toolbar li:hover {
 #groups summary{
 	color:black;
 	margin: 10px 10px 0 0; 
+	cursor: pointer;
+}
+#groups summary:active{
+	color:rgba(6, 86, 153, 1);
 }
 #groups summary::-webkit-details-marker{
 	display: none;
@@ -1352,6 +1356,7 @@ summary:before {
 }
 details[open] summary:before {
   content: "-";
+
 }
 #groups details dl{
 	margin: 5px 0px 0px 20px; 
@@ -1394,7 +1399,7 @@ details[open] summary:before {
 
 #groups details dl dd{
 	font-weight: bold;
-	font-size: 16px;
+	font-size: 14px;
 }
 
 #groups details dl dd a span{

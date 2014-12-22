@@ -7,4 +7,5 @@ module V1::All
   include Contents # replicates content of a group
 
   include General
+  include FileDownload
 end

@@ -18,6 +18,15 @@ class SupportMaterialFile < ActiveRecord::Base
     path: ":rails_root/media/support_material_files/:id_:basename.:extension",
     url: "/media/support_material_files/:id_:basename.:extension"
 
+  def path
+    return url if is_link?
+    attachment.url
+  end
+
+  def type_info
+    is_link? ? :LINK : :FILE
+  end
+
   def url_protocol
     self.url = ['http://', self.url].join if (self.url =~ URI::regexp(["ftp", "http", "https"])).nil?
   end
@@ -42,6 +51,10 @@ class SupportMaterialFile < ActiveRecord::Base
 
     joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tag_ids})
       .where(in_folder, folder_name).order("folder, attachment_content_type, attachment_file_name")
+  end
+
+  def self.list(at_ids)
+    self.find_files(at_ids).group_by {|f| f.folder}
   end
 
 end

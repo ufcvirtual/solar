@@ -129,4 +129,3 @@ class Assignment < Event
   end
 
 end
-

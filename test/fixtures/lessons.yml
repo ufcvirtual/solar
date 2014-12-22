@@ -92,3 +92,13 @@ lesson_without_file:
   status: 0
   schedule_id: 15
   lesson_module_id: 3
+
+lesson_with_files:
+  id: 10
+  name: aula com arquivos
+  address: 'index.html'
+  type_lesson: 0
+  order: 10
+  status: 1
+  schedule_id: 15
+  lesson_module_id: 3

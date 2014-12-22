@@ -14,6 +14,8 @@ module V1
     mount Events
     mount Posts
     mount Lessons
+    mount Scores
+    mount SupportMaterialFiles
     mount Taggables
     mount Savs
 
