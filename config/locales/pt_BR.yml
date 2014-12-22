@@ -2585,6 +2585,7 @@ pt_BR:
       discussions_participation: Participações em fóruns
       history_access: "Histórico de acessos (total: %{amount})"
       search: Buscar
+      access_found: " acessos encontrados"
     access:
       date: Data
       time: Horário

@@ -2354,6 +2354,7 @@ en_US:
       discussions_participation: Discussion's participation
       history_access: "Access history (total: %{amount})"
       search: Search
+      access_found: " access found"
     access:
       date: Date
       time: Time

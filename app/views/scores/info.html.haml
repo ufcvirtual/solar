@@ -67,6 +67,8 @@
       = t(:to)
       %input{type: "text", id: "until-date", size: "9"}
       %span= button_tag t(".search"), id: "bt-amount-history-access", class: "btn"
+      #amount_found{style: "float: right; margin-top: 7px;"}
+        %h2
     #history-body
       %table.tb_list
         = render partial: "access", locals: {access: @access}
@@ -91,6 +93,8 @@
       $.get("#{amount_access_scores_path(user_id: @user.id)}", params, function(data){
         $("#history-body table").html(data);
         erase_flash_messages();
+        $("#amount_found h2").html($("#history-body tbody:first tr").length + "#{t(".access_found")}");
+        $("#history-body tbody").tablesorter();
       }).error(function(data){
         show_error(data);
       });
