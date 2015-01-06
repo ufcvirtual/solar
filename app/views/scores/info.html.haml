@@ -46,12 +46,12 @@
             %tr.lines
               - link = user_discussion_posts_path(discussion.id, @user.id)
               %td.show_posts
-                - if discussion.posts_count.to_i > 0 
+                - if discussion.posts_count.to_i > 0
                   = link_to discussion.name, link, {class: 'link_content'}
-                - else 
-                  = discussion.name 
+                - else
+                  = discussion.name
               %td.center.show_posts
-                - if discussion.posts_count.to_i > 0 
+                - if discussion.posts_count.to_i > 0
                   = link_to discussion.posts_count, link, {class: 'link_content'}
                 - else
                   = discussion.posts_count

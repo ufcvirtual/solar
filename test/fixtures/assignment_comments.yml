@@ -39,5 +39,11 @@ ac6:
 ac7:
   id: 7
   sent_assignment_id: 11
-  user_id: 1 #user 
+  user_id: 1 #user
   comment: "comentario 7"
+
+ac8:
+  id: 8
+  sent_assignment_id: 7
+  user_id: 6 # professor
+  comment: "comentario 1"

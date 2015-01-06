@@ -73,8 +73,10 @@ class Assignment < Event
     (date >= start_date.to_date and date <= end_date.to_date)
   end
 
-   def info(user_id, allocation_tag_id, group_id = nil)
-    academic_allocation = AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_id: self.id, academic_tool_type: "Assignment").first
+  def info(user_id, allocation_tag_id, group_id = nil)
+    academic_allocation = academic_allocations.where(allocation_tag_id: allocation_tag_id).first
+    return unless academic_allocation
+
     params = if self.type_assignment == Assignment_Type_Group
       group_id = GroupAssignment.joins(:group_participants).where(group_participants: {user_id: user_id}, group_assignments: {academic_allocation_id: academic_allocation.id}).first.try(:id) if group_id.nil?
       {group_assignment_id: group_id}
@@ -83,7 +85,7 @@ class Assignment < Event
     end
 
     info = academic_allocation.sent_assignments.where(params).first.try(:info) || {has_files: false, file_sent_date: " - "}
-    {situation: situation(info[:has_files], not(group_id.nil?), info[:grade]), grade: info[:grade], has_comments: (not(info[:comments].nil?) and info[:comments].any?), has_files: info[:has_files], group_id: group_id, file_sent_date: info[:file_sent_date]}
+    {situation: situation(info[:has_files], not(group_id.nil?), info[:grade]), has_comments: (not(info[:comments].nil?) and info[:comments].any?), group_id: group_id}.merge(info)
   end
 
   def situation(has_files, has_group, grade = nil)

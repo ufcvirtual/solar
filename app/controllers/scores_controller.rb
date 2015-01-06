@@ -16,13 +16,13 @@ class ScoresController < ApplicationController
   def info
     authorize! :info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @user = current_user
-    @assignments, @discussions, @access = Score.informations(@user.id, @allocation_tag_id, type_hash: false)
+    @assignments, @discussions, @access = Score.informations(@user.id, @allocation_tag_id)
   end
 
   def user_info
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @user = User.find(params[:user_id])
-    @assignments, @discussions, @access = Score.informations(@user.id, @allocation_tag_id, type_hash: false)
+    @assignments, @discussions, @access = Score.informations(@user.id, @allocation_tag_id)
     render :info
   end
 

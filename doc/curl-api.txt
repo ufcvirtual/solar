@@ -1,58 +1,71 @@
 
 -- mobilis
 
+  ---
   -- login
+  ---
 
     curl -i -H 'Accept: application/json' -H 'Content-Type: application/json' \
       -X POST http://localhost:3000/oauth/token -d '{ "grant_type": "password", "login": "aluno1", "password": "123456"}'
 
-  -- uc list
 
-    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
-      -X GET http://localhost:3000/api/v1/curriculum_units
+  ---
+  -- inicial list / uc and groups
+  ---
 
-  -- uc and group list
+    -- uc list
 
-    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
-      -X GET http://localhost:3000/api/v1/curriculum_units/groups
+      curl -i -H 'Accept: application/json' -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
+        -X GET http://localhost:3000/api/v1/curriculum_units
 
-  -- group list by uc
+    -- uc and group list
 
-    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
-      -X GET http://localhost:3000/api/v1/curriculum_units/3/groups
+      curl -i -H 'Accept: application/json' -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
+        -X GET http://localhost:3000/api/v1/curriculum_units/groups
 
-  -- list discussions by group
+    -- group list by uc
 
-    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
-      -X GET http://localhost:3000/api/v1/groups/3/discussions
-
-  -- list new posts by discussion
-
-    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
-      -X GET http://localhost:3000/api/v1/discussions/2/posts/new -d 'group_id=3&date=20141203'
-
-  -- list history posts by discussion
-
-    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
-      -X GET http://localhost:3000/api/v1/discussions/2/posts/history -d 'group_id=3&date=20141203'
-
-  -- create post
-
-    curl -i -H 'Accept: application/json' -H 'Content-Type: application/json' \
-      -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
-      -X POST http://localhost:3000/api/v1/discussions/2/posts -d '{"group_id": 3, "discussion_post": {"parent_id": null, "content": "teste"}}'
+      curl -i -H 'Accept: application/json' -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
+        -X GET http://localhost:3000/api/v1/curriculum_units/3/groups
 
 
+  ---
+  -- discussions / posts
+  ---
+
+    -- list discussions by group
+
+      curl -i -H 'Accept: application/json' -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
+        -X GET http://localhost:3000/api/v1/groups/3/discussions
+
+    -- list new posts by discussion
+
+      curl -i -H 'Accept: application/json' -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
+        -X GET http://localhost:3000/api/v1/discussions/2/posts/new -d 'group_id=3&date=20141203'
+
+    -- list history posts by discussion
+
+      curl -i -H 'Accept: application/json' -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
+        -X GET http://localhost:3000/api/v1/discussions/2/posts/history -d 'group_id=3&date=20141203'
+
+    -- create post
+
+      curl -i -H 'Accept: application/json' -H 'Content-Type: application/json' \
+        -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
+        -X POST http://localhost:3000/api/v1/discussions/2/posts -d '{"group_id": 3, "discussion_post": {"parent_id": null, "content": "teste"}}'
 
 
-
-
+  ---
   -- lessons
-
-    token=5feba06d716a6a03ee4b0797977535fa0f8268626b93511672a1adf07d239467
-
-
-    -- GET api/v1/group/1/lessons
+  ---
 
     curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 5feba06d716a6a03ee4b0797977535fa0f8268626b93511672a1adf07d239467' \
       -X GET http://localhost:3000/api/v1/groups/3/lessons
+
+
+  ---
+  -- scores
+  ---
+
+    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 5feba06d716a6a03ee4b0797977535fa0f8268626b93511672a1adf07d239467' \
+      -X GET http://localhost:3000/api/v1/groups/3/scores/info
