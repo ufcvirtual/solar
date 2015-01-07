@@ -4,24 +4,37 @@ class Event < ActiveRecord::Base
   # recupera os eventos que pertençam ao período visualizado e que tenham relação com as allocations_tags passadas
   scope :between, lambda {|start_time, end_time, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
     ((schedules.end_date < ?) OR (schedules.start_date < ?)) AND ((schedules.start_date > ?) OR (schedules.end_date > ?))
-    AND allocation_tags.id IN (?)", 
+    AND allocation_tags.id IN (?)",
     format_date(end_time), format_date(end_time), format_date(start_time), format_date(start_time), allocation_tags] }}
 
   # recupera os eventos que vão iniciar "de hoje em diante" ou já começaram, mas ainda vão terminar
   scope :after, lambda {|today, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
-    ((schedules.start_date >= ?) OR (schedules.end_date >= ?)) AND allocation_tags.id IN (?)", 
+    ((schedules.start_date >= ?) OR (schedules.end_date >= ?)) AND allocation_tags.id IN (?)",
     format_date(today.to_date), format_date(today.to_date), allocation_tags] }}
 
   # recupera os eventos que englobam o dia de hoje
   scope :of_today, lambda {|day, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
-    (? BETWEEN schedules.start_date AND schedules.end_date) AND allocation_tags.id IN (?)", 
+    (? BETWEEN schedules.start_date AND schedules.end_date) AND allocation_tags.id IN (?)",
     format_date(day.to_date), allocation_tags] }}
 
   scope :by_ats, lambda {|allocation_tags| {joins: [academic_allocations: :allocation_tag], conditions: ["allocation_tags.id IN (?)", allocation_tags] }}
 
   CANT_EDIT = ["lesson"]
 
-  def schedule_json(options = {})
+  def api_json
+    has_start_hour, has_end_hour = (respond_to?(:start_hour) and not(start_hour.blank?)), (respond_to?(:end_hour) and not(end_hour.blank?))
+    {
+      type: self.class.name.underscore,
+      title: respond_to?(:name) ? name : title,
+      start_date: schedule.start_date,
+      end_date: schedule.end_date,
+      all_day: not(has_start_hour), # se não tiver hora de inicio e fim é do dia todo
+      start_hour: (has_start_hour ? start_hour : nil),
+      end_hour: (has_end_hour ? end_hour : nil)
+    }
+  end
+
+  def schedule_json
     has_start_hour, has_end_hour = (respond_to?(:start_hour) and not(start_hour.blank?)), (respond_to?(:end_hour) and not(end_hour.blank?))
     {
       id: id,
@@ -84,12 +97,17 @@ class Event < ActiveRecord::Base
   end
 
   def self.all_descendants(allocation_tags_ids, user, list = false, params = {})
-    Event.descendants.map{ |event| 
+    Event.descendants.map{ |event|
       limited = event.limited(user, allocation_tags_ids) if event.respond_to?(:limited)
       events = if list
-        event.scoped.after(Date.today, allocation_tags_ids) 
+        event.scoped.after(Date.today, allocation_tags_ids)
       else
-        event.scoped.between(Time.at(params['start'].to_i), Time.at(params['end'].to_i), allocation_tags_ids)  
+        start_date, end_date = if params[:semester]
+          [params[:start], params[:end]]
+        else
+          [Time.at(params['start'].to_i), Time.at(params['end'].to_i)]
+        end
+        event.scoped.between(start_date, end_date, allocation_tags_ids)
       end
       (limited.nil? ? events : (limited & events))
     }.uniq

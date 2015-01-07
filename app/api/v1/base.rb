@@ -16,6 +16,7 @@ module V1
     mount Lessons
     mount Scores
     mount SupportMaterialFiles
+    mount Agendas
     mount Taggables
     mount Savs
 
