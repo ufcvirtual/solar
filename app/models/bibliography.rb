@@ -1,4 +1,5 @@
 class Bibliography < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
 
   GROUP_PERMISSION = OFFER_PERMISSION = CURRICULUM_UNIT_PERMISSION = true
 
@@ -23,11 +24,6 @@ class Bibliography < ActiveRecord::Base
   validates :url, :accessed_in                                                , presence: true, if: "type_bibliography == TYPE_ELECTRONIC_DOC"
 
   before_validation proc { |record| record.errors.add(:base, I18n.t(:author_required, scope: [:bibliographies])) }, if: "[TYPE_BOOK, TYPE_ARTICLE, TYPE_ELECTRONIC_DOC].include?(type_bibliography) and authors.empty?"
-
-  attr_accessible :type_bibliography, :title, :subtitle, :address, :publisher, :pages, :count_pages, :volume, :edition, :publication_year,
-    :periodicity, :issn, :isbn, :periodicity_year_start, :periodicity_year_end, :article_periodicity_title,
-    :fascicle, :publication_month, :additional_information, :url, :accessed_in,
-    :authors_attributes
 
   def type
     btype = case type_bibliography

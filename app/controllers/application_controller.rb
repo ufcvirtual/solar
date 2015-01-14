@@ -135,7 +135,7 @@ class ApplicationController < ActionController::Base
       allocation_tag_id_group = (allocation_tag.group_id.nil?) ? Group.find_all_by_offer_id_and_user_id(active_tab[:url][:id], current_user.id).first.allocation_tag.id : allocation_tag.id
     end
 
-    user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group 
+    user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
 
     log_access(allocation_tag_id_group) # save access
     get_current_savs(allocation_tag_id_group) unless SavConfig::CONFIG.nil? # if system is not integrated with Sav, remove this line or sav.yml file

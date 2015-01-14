@@ -47,7 +47,7 @@ class WebconferencesController < ApplicationController
   def create
     authorize! :create, Webconference, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
 
-    @webconference = Webconference.new(params[:webconference])
+    @webconference = Webconference.new(webconference_params)
     @webconference.moderator = current_user
 
     begin
@@ -70,7 +70,7 @@ class WebconferencesController < ApplicationController
   def update
     authorize! :update, Webconference, on: @webconference.academic_allocations.pluck(:allocation_tag_id)
 
-    @webconference.update_attributes!(params[:webconference])
+    @webconference.update_attributes!(webconference_params)
 
     render json: {success: true, notice: t(:updated, scope: [:webconferences, :success])}
   rescue ActiveRecord::AssociationTypeMismatch
@@ -95,4 +95,11 @@ class WebconferencesController < ApplicationController
   rescue
     render json: {success: false, alert: t(:deleted, scope: [:webconferences, :error])}, status: :unprocessable_entity
   end
+
+  private
+
+    def webconference_params
+      params.require(:webconference).permit(:description, :duration, :initial_time, :title)
+    end
+
 end

@@ -1,6 +1,8 @@
 require 'bigbluebutton_api'
 
 class Webconference < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   GROUP_PERMISSION = OFFER_PERMISSION = true
 
   belongs_to :moderator, class_name: "User", foreign_key: :user_id
@@ -9,8 +11,6 @@ class Webconference < ActiveRecord::Base
   has_many :allocation_tags, through: :academic_allocations
   has_many :groups, through: :allocation_tags
   has_many :offers, through: :allocation_tags
-
-  attr_accessible :description, :duration, :initial_time, :title
 
   validates :title, :initial_time, :duration, presence: true
   validates :title, :description, length: {maximum: 255}

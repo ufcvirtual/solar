@@ -1,4 +1,5 @@
 class Allocation < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 
@@ -21,8 +22,6 @@ class Allocation < ActiveRecord::Base
   validate :valid_profile_in_allocation_tag?, if: "not allocation_tag_id.nil?"
 
   validates_uniqueness_of :profile_id, scope: [:user_id, :allocation_tag_id]
-
-  attr_accessible :user_id, :profile_id, :allocation_tag_id, :status
 
   def can_change_group?
     not [Allocation_Cancelled, Allocation_Rejected].include?(status)

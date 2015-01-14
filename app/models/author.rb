@@ -1,7 +1,8 @@
 class Author < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   belongs_to :bibliography
 
   validates :name, presence: true
 
-  attr_accessible :name
 end

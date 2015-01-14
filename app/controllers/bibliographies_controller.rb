@@ -41,7 +41,7 @@ class BibliographiesController < ApplicationController
   # POST /bibliographies
   def create
     authorize! :create, Bibliography, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    @bibliography = Bibliography.new(params[:bibliography])
+    @bibliography = Bibliography.new(webconference_params)
 
     begin
       Bibliography.transaction do
@@ -61,7 +61,7 @@ class BibliographiesController < ApplicationController
   # PUT /bibliographies/1
   def update
     authorize! :update, Bibliography, on: @bibliography.academic_allocations.pluck(:allocation_tag_id)
-    @bibliography.update_attributes!(params[:bibliography])
+    @bibliography.update_attributes!(webconference_params)
     render json: {success: true, notice: t(:updated, scope: [:bibliographies, :success])}
   rescue ActiveRecord::AssociationTypeMismatch
     render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
@@ -85,4 +85,14 @@ class BibliographiesController < ApplicationController
   rescue
     render json: {success: false, alert: t(:deleted, scope: [:bibliographies, :error])}, status: :unprocessable_entity
   end
+
+  private
+
+    def webconference_params
+      params.require(:bibliography).permit(:type_bibliography, :title, :subtitle, :address, :publisher, :pages,
+        :count_pages, :volume, :edition, :publication_year, :periodicity, :issn, :isbn, :periodicity_year_start,
+        :periodicity_year_end, :article_periodicity_title, :fascicle, :publication_month, :additional_information,
+        :url, :accessed_in, authors_attributes: [:id, :name, :_destroy])
+    end
+
 end

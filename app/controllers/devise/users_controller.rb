@@ -2,7 +2,7 @@ class Devise::UsersController < Devise::RegistrationsController
 
   def create
     build_resource(params[:user])
-    
+
     user_cpf       = params[:user][:cpf].delete(".").delete("-")
     resource.cpf   = user_cpf
     resource_saved = resource.save
