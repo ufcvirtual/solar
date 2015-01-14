@@ -49,15 +49,7 @@ class MessagesController < ApplicationController
     @message = Message.new subject: @original.subject
     @message.files.build
 
-    # colocar essa parte em um template/helper?
-    @message.content = %{
-      <br/><br/>----------------------------------------<br/>
-      #{t(:from, scope: [:messages, :show])} #{@original.sent_by.to_msg[:resume]}<br/>
-      #{t(:date, scope: [:messages, :show])} #{l(@original.created_at, format: :clock)}<br/>
-      #{t(:subject, scope: [:messages, :show])} #{@original.subject}<br/>
-      #{t(:to, scope: [:messages, :show])} #{@original.users.map(&:to_msg).map{ |c| c[:resume] }.join(',')}<br/>
-      #{@original.content}
-    }
+    @message.content = reply_msg_template
 
     unless @allocation_tag_id.nil?
       allocation_tag      = AllocationTag.find(@allocation_tag_id)
@@ -85,8 +77,6 @@ class MessagesController < ApplicationController
 
   def create
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
-    params[:message][:allocation_tag_id] = @allocation_tag_id if @allocation_tag_id
-    contacts = params[:message].delete(:contacts).split(",") if params[:support].blank?
 
     # é uma resposta
     if params[:message][:original].present?
@@ -98,14 +88,9 @@ class MessagesController < ApplicationController
       Message.transaction do
         ## msg ##
 
-        @message = Message.new(params[:message], without_validation: true)
-
-        ## users ##
-
-        @message.user_messages.build(user: current_user, status: Message_Filter_Sender)
-        (users = User.where(id: contacts)).each do |user|
-          @message.user_messages.build(user: user, status: Message_Filter_Receiver)
-        end
+        @message = Message.new(message_params, without_validation: true)
+        @message.sender = current_user
+        @message.allocation_tag_id = @allocation_tag_id
 
         raise "error" if params[:message_to].empty?
 
@@ -116,17 +101,8 @@ class MessagesController < ApplicationController
 
         ## email ##
 
-        system_label = not(@allocation_tag_id.nil?)
-
-        msg = %{
-          <b>#{t(:mail_header, scope: :messages)} #{current_user.to_msg[:resume]}</b><br/>
-          #{@message.labels(current_user.id, system_label) if system_label}<br/>
-          ________________________________________________________________________<br/><br/>
-          #{@message.content}
-        }
-
         Thread.new do
-          Notifier.send_mail(params[:message_to], @message.subject, msg, @message.files, current_user.email).deliver
+          Notifier.send_mail(params[:message_to], @message.subject, new_msg_template, @message.files, current_user.email).deliver
         end
       end
 
@@ -136,7 +112,7 @@ class MessagesController < ApplicationController
       unless @allocation_tag_id.nil?
         allocation_tag      = AllocationTag.find(@allocation_tag_id)
         @group              = allocation_tag.group
-        @contacts           = User.all_at_allocation_tags(allocation_tag.related, Allocation_Activated, true)
+        @contacts           = User.all_at_allocation_tags(RelatedTaggable.related(group_id: @group.id), Allocation_Activated, true)
       else
         @contacts = current_user.user_contacts.map(&:user)
       end
@@ -160,9 +136,7 @@ class MessagesController < ApplicationController
   end
 
   def count_unread
-    render json: {
-      unread: Message.user_inbox(current_user.id, active_tab[:url][:allocation_tag_id], true).count
-    }
+    render json: { unread: Message.user_inbox(current_user.id, active_tab[:url][:allocation_tag_id], true).count }
   end
 
   def download_files
@@ -187,9 +161,38 @@ class MessagesController < ApplicationController
 
   private
 
+    def new_msg_template
+      system_label = not(@allocation_tag_id.nil?)
+
+      %{
+        <b>#{t(:mail_header, scope: :messages)} #{current_user.to_msg[:resume]}</b><br/>
+        #{@message.labels(current_user.id, system_label) if system_label}<br/>
+        ________________________________________________________________________<br/><br/>
+        #{@message.content}
+      }
+    end
+
+    def reply_msg_template
+      %{
+        <br/><br/>----------------------------------------<br/>
+        #{t(:from, scope: [:messages, :show])} #{@original.sent_by.to_msg[:resume]}<br/>
+        #{t(:date, scope: [:messages, :show])} #{l(@original.created_at, format: :clock)}<br/>
+        #{t(:subject, scope: [:messages, :show])} #{@original.subject}<br/>
+        #{t(:to, scope: [:messages, :show])} #{@original.users.map(&:to_msg).map{ |c| c[:resume] }.join(',')}<br/>
+        #{@original.content}
+      }
+    end
+
     def option_user_box(type)
       return type if ['outbox', 'trashbox'].include?(type)
       'inbox'
+    end
+
+    def message_params
+      params.require(:message).permit(:subject, :content, :contacts)
+
+      # "message"=> {"original"=>"9", "contacts"=>"7", "subject"=>"Res:  teste", "content"=>""},
+      # "contacts_type"=>"1", "curriculum_unit_type"=>"", "support"=>"", "message_to"=>"Aluno 1 <wedson.lima@virtual.ufc.br>"
     end
 
 end

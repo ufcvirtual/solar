@@ -1,6 +1,8 @@
 class Event < ActiveRecord::Base
   self.abstract_class = true
 
+  include ActiveModel::ForbiddenAttributesProtection
+
   # recupera os eventos que pertençam ao período visualizado e que tenham relação com as allocations_tags passadas
   scope :between, lambda {|start_time, end_time, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
     ((schedules.end_date < ?) OR (schedules.start_date < ?)) AND ((schedules.start_date > ?) OR (schedules.end_date > ?))

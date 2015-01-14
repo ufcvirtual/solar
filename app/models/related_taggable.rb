@@ -1,4 +1,6 @@
 class RelatedTaggable < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   belongs_to :group
   belongs_to :offer
   belongs_to :semester

@@ -1,4 +1,6 @@
 class Message < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   belongs_to :allocation_tag
   has_one :group, through: :allocation_tag
 
@@ -9,6 +11,7 @@ class Message < ActiveRecord::Base
   has_many :message_labels, through: :user_message_labels, uniq: true
 
   before_save proc { |record| record.subject = I18n.t(:no_subject, scope: :messages) if record.subject == "" }
+  before_save :set_sender_and_recipients
 
   scope :by_user, ->(user_id) { joins(:user_messages).where(user_messages: {user_id: user_id}) }
 
@@ -17,7 +20,7 @@ class Message < ActiveRecord::Base
 
   self.per_page = Rails.application.config.items_per_page
 
-  attr_accessor :contacts
+  attr_accessor :contacts, :sender
 
   # box = [inbox, outbox, trashbox]
   def was_read?(user_id, box)
@@ -85,5 +88,14 @@ class Message < ActiveRecord::Base
   def user_has_permission?(user_id)
     user_messages.where(user_id: user_id).count > 0
   end
+
+  private
+
+    def set_sender_and_recipients
+      users = [{user: sender, status: Message_Filter_Sender}]
+      users << contacts.split(",").map {|u| {user_id: u, status: Message_Filter_Receiver}}
+
+      self.user_messages.build users
+    end
 
 end
