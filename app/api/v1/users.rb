@@ -49,7 +49,8 @@ module V1
             if (user = User.find_by_cpf(cpf)).nil?
               ActiveRecord::Base.transaction do
                 new_password = ('0'..'z').to_a.shuffle.first(8).join
-                user = User.new params.merge!(params.include?(:username) ? {password: new_password} : {password: new_password, username: cpf})
+                params.merge!(params.include?(:username) ? {password: new_password} : {password: new_password, username: cpf})
+                user = User.new user_params(params)
                 user.synchronizing = true # ignore MA
                 user.save!
 

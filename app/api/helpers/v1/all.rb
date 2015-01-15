@@ -3,6 +3,7 @@ module V1::All
   include OffersAndSemesters
   include CurriculumUnitsAndCourses
   include GroupsH
+  include UsersH
   include EventsH
   include Contents # replicates content of a group
 

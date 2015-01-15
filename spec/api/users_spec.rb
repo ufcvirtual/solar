@@ -107,12 +107,12 @@ describe "Users" do
         get "/api/v1/profiles/1,2/users"
 
         response.status.should eq(200)
-        response.body.should == [{id: 7, name: "Aluno 1", cpf: "32305605153", email: "aluno1@solar.ufc.br"}, 
-          {id: 8, name: "Aluno 2", cpf: "98447432904", email: "aluno2@solar.ufc.br"}, 
-          {id: 9, name: "Aluno 3", cpf: "47382348113", email: "aluno3@aluno3.br"}, 
+        response.body.should == [{id: 7, name: "Aluno 1", cpf: "32305605153", email: "aluno1@solar.ufc.br"},
+          {id: 8, name: "Aluno 2", cpf: "98447432904", email: "aluno2@solar.ufc.br"},
+          {id: 9, name: "Aluno 3", cpf: "47382348113", email: "aluno3@aluno3.br"},
           {id: 6, name: "Professor", cpf: "21872285848", email: "prof@solar.ufc.br"},
           {id: 5, name: "Professor 2", cpf: "21569104646", email: "prof2@email.com"},
-          {id: 2, name: "User 2", cpf: "23885393905", email: "user2@email.com"}, 
+          {id: 2, name: "User 2", cpf: "23885393905", email: "user2@email.com"},
           {id: 3, name: "User 3", cpf: "11016853521", email: "user3@email.com"},
           {id: 1, name: "Usuario do Sistema", cpf: "43463518678", email: "user@user.com"}
         ].to_json

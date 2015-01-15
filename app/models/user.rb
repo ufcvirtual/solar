@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  # include ActiveModel::ForbiddenAttributesProtection
+  include ActiveModel::ForbiddenAttributesProtection
 
   include PersonCpf
 
@@ -41,20 +41,12 @@ class User < ActiveRecord::Base
 
   after_create :basic_profile_allocation
 
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable, :lockable, :timeoutable and :omniauthable, :trackable
-  devise :database_authenticatable, :registerable, :validatable,
-    :recoverable, :encryptable, :token_authenticatable # autenticacao por token
+  devise :database_authenticatable, :registerable, :validatable, :recoverable, :encryptable
 
   before_save :ensure_authentication_token!, :downcase_username, :downcase_email
   after_save :log_update_user
 
   @has_special_needs
-
-  attr_accessible :username, :email, :email_confirmation, :alternate_email, :password, :password_confirmation, :remember_me, :name, :nick, :birthdate,
-    :address, :address_number, :address_complement, :address_neighborhood, :zipcode, :country, :state, :city,
-    :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music, :movies, :books, :phrase, :site, :photo,
-    :special_needs, :active, :allocations_attributes, :integrated, :encrypted_password
 
   attr_accessor :login, :has_special_needs, :synchronizing
 

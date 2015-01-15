@@ -1,7 +1,7 @@
 class Devise::UsersController < Devise::RegistrationsController
 
   def create
-    build_resource(params[:user])
+    build_resource(sign_up_params)
 
     user_cpf       = params[:user][:cpf].delete(".").delete("-")
     resource.cpf   = user_cpf
@@ -31,6 +31,22 @@ class Devise::UsersController < Devise::RegistrationsController
     def after_sign_up_path_for(resource)
       LogAction.new_user(user_id: resource.id, ip: request.remote_ip)
       super
+    end
+
+  private
+
+    def sign_up_params
+      params.require(:user).permit(:username, :email, :email_confirmation, :alternate_email, :password, :password_confirmation,
+        :remember_me, :name, :nick, :birthdate, :address, :address_number, :address_complement, :address_neighborhood,
+        :zipcode, :country, :state, :city, :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music,
+        :movies, :books, :phrase, :site, :photo, :special_needs, :active)
+    end
+
+    def account_update_params
+      params.require(:user).permit(:username, :email, :email_confirmation, :alternate_email, :current_password, :password,
+        :password_confirmation, :remember_me, :name, :nick, :birthdate, :address, :address_number, :address_complement,
+        :address_neighborhood, :zipcode, :country, :state, :city, :telephone, :cell_phone, :institution, :gender, :cpf,
+        :bio, :interests, :music, :movies, :books, :phrase, :site, :photo, :special_needs, :active)
     end
 
 end

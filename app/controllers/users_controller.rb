@@ -84,8 +84,8 @@ class UsersController < ApplicationController
     # redirect = breadcrumb.nil? ? home_path : breadcrumb[:url]
     respond_to do |format|
       begin
-        raise t(:user_error_no_file_sent) unless params.include?(:user) && params[:user].include?(:photo)
-        @user.update_attributes!(params[:user])
+        raise t(:user_error_no_file_sent) unless params.include?(:user) && user_params.include?(:photo)
+        @user.update_attributes!(user_params)
         format.html { redirect_to :back, notice: t(:successful_update_photo) }
       rescue Exception => error
         error_msg = ''
@@ -134,5 +134,11 @@ class UsersController < ApplicationController
     @profiles   = Profile.where("types <> ? and id <> ?", Profile_Type_Basic, Profile.student_profile).order("name")
     render layout: false
   end
+
+  private
+
+    def user_params
+      params.require(:user).permit(:photo)
+    end
 
 end

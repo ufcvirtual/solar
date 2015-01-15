@@ -53,12 +53,11 @@ class AdministrationsController < ApplicationController
     authorize! :update_user, Administration
 
     @user = User.find(params[:id])
-    if @user.update_attributes(params[:data])
+    if @user.update_attributes(user_params)
       render json: {success: true}, status: :ok
     else
       render json: {success: false, alert: @user.errors.full_messages.uniq.compact}, status: :unprocessable_entity
     end
-
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
@@ -134,13 +133,13 @@ class AdministrationsController < ApplicationController
   def indication_users
     authorize! :indication_users, Administration
   end
-  
+
   def indication_users_specific
     @types = CurriculumUnitType.all
   end
 
   def indication_users_global
-    @allocations = Allocation.joins(:profile).where(allocation_tag_id: nil).where("NOT cast(profiles.types & ? as boolean)", Profile_Type_Basic) 
+    @allocations = Allocation.joins(:profile).where(allocation_tag_id: nil).where("NOT cast(profiles.types & ? as boolean)", Profile_Type_Basic)
     @admin = true
   end
 
@@ -301,6 +300,10 @@ class AdministrationsController < ApplicationController
   end
 
   private
+
+    def user_params
+      params.require(:data).permit(:name, :email, :username, :active)
+    end
 
     def save_log_into_file(logs)
       filename = "#{current_user.id}-log-#{I18n.l(Time.now, format: :log)}"

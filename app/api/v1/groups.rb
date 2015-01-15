@@ -39,7 +39,7 @@ module V1
             begin
               main_offer      = get_offer(params[:main_curriculum_unit], params[:main_course], params[:main_semester])
               secundary_offer = get_offer(params[:secundary_curriculum_unit] || params[:main_curriculum_unit], params[:secundary_course] || params[:main_course], params[:secundary_semester] || params[:main_semester])
-              
+
               if params[:type]
                 replicate_content_groups, receive_content_groups = params[:secundary_groups], [params[:main_group]]
                 replicate_content_offer, receive_content_offer   = secundary_offer, main_offer
@@ -106,7 +106,7 @@ module V1
         post "/" do
           begin
             if params[:course_code].present?
-              offer_id = Offer.where(course_id: Course.find_by_code(params[:course_code]).try(:id), curriculum_unit_id: CurriculumUnit.find_by_code(params[:curriculum_unit_code]).try(:id), 
+              offer_id = Offer.where(course_id: Course.find_by_code(params[:course_code]).try(:id), curriculum_unit_id: CurriculumUnit.find_by_code(params[:curriculum_unit_code]).try(:id),
                 semester_id: Semester.find_by_name(params[:semester]).try(:id)).first.try(:id)
               params.merge!({offer_id: offer_id})
             end

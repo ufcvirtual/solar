@@ -39,7 +39,7 @@ describe "Groups" do
 
         # transfer content from QM-CAU to QM-MAR
         context 'do merge' do
-          let!(:json_data){ { 
+          let!(:json_data){ {
             main_group: "QM-MAR",
             secundary_groups: ["QM-CAU"],
             main_course: "109",
@@ -47,7 +47,7 @@ describe "Groups" do
             main_semester: "2011.1"
           } }
 
-          subject{ -> { put "/api/v1/groups/merge/", json_data } } 
+          subject{ -> { put "/api/v1/groups/merge/", json_data } }
 
           it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Discussion"),:count).by(4) }
           it { should change(Post,:count).by(4) }
@@ -72,10 +72,10 @@ describe "Groups" do
             response.body.should == {ok: :ok}.to_json
           }
         end
-      
+
         # transfer content from QM-MAR to QM-CAU (QM-MAR only has one post and one sent_assignment different from QM-CAU)
         context 'undo merge' do
-          let!(:json_data){ { 
+          let!(:json_data){ {
             main_group: "QM-MAR",
             secundary_groups: ["QM-CAU"],
             main_course: "109",
@@ -84,7 +84,7 @@ describe "Groups" do
             type: false
           } }
 
-          subject{ -> { put "/api/v1/groups/merge/", json_data } } 
+          subject{ -> { put "/api/v1/groups/merge/", json_data } }
 
           # QM-CAU loses all content it have to receive QM-MAR's content
           it { should change(AcademicAllocation.where(allocation_tag_id: 3, academic_tool_type: "Discussion"),:count).by(0) }
@@ -109,18 +109,18 @@ describe "Groups" do
             response.status.should eq(200)
             response.body.should == {ok: :ok}.to_json
           }
-        end 
+        end
       end
 
       context 'missing params' do
-        let!(:json_data){ { 
+        let!(:json_data){ {
           main_group: "QM-MAR",
           main_course: "109",
           main_curriculum_unit: "RM301",
           main_semester: "2011.1"
         } }
 
-        subject{ -> { put "/api/v1/groups/merge/", json_data } } 
+        subject{ -> { put "/api/v1/groups/merge/", json_data } }
 
         it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Discussion"),:count).by(0) }
         it { should change(Post,:count).by(0) }
@@ -146,7 +146,7 @@ describe "Groups" do
       end
 
       context 'group doesnt exist - secundary' do
-        let!(:json_data){ { 
+        let!(:json_data){ {
           main_group: "QM-MAR",
           secundary_groups: ["QM-0"],
           main_course: "109",
@@ -154,7 +154,7 @@ describe "Groups" do
           main_semester: "2011.1"
         } }
 
-        subject{ -> { put "/api/v1/groups/merge/", json_data } } 
+        subject{ -> { put "/api/v1/groups/merge/", json_data } }
 
         it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Discussion"),:count).by(0) }
         it { should change(Post,:count).by(0) }
@@ -180,7 +180,7 @@ describe "Groups" do
       end
 
       context 'group doesnt exist - main' do
-        let!(:json_data){ { 
+        let!(:json_data){ {
           main_group: "QM-0",
           secundary_groups: ["QM-MAR"],
           main_course: "109",
@@ -188,7 +188,7 @@ describe "Groups" do
           main_semester: "2011.1"
         } }
 
-        subject{ -> { put "/api/v1/groups/merge/", json_data } } 
+        subject{ -> { put "/api/v1/groups/merge/", json_data } }
 
         it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Discussion"),:count).by(0) }
         it { should change(Post,:count).by(0) }
@@ -215,7 +215,7 @@ describe "Groups" do
 
       # transfer content from TL-CAU to QM-CAU
       context 'do merge from different courses' do
-        let!(:json_data){ { 
+        let!(:json_data){ {
           main_group: "QM-CAU",
           secundary_groups: ["TL-CAU"],
           main_course: "109",
@@ -225,7 +225,7 @@ describe "Groups" do
           main_semester: "2011.1"
         } }
 
-        subject{ -> { put "/api/v1/groups/merge/", json_data } } 
+        subject{ -> { put "/api/v1/groups/merge/", json_data } }
 
         it { should change(AcademicAllocation.where(allocation_tag_id: 3, academic_tool_type: "Discussion"),:count).by(1) }
         it { should change(Post,:count).by(0) }
@@ -253,10 +253,10 @@ describe "Groups" do
           response.body.should == {ok: :ok}.to_json
         }
       end
-      
+
       # transfer content back from QM-CAU to TL-CAU
       context 'do merge from different courses' do
-        let!(:json_data){ { 
+        let!(:json_data){ {
           main_group: "QM-CAU",
           secundary_groups: ["TL-CAU"],
           main_course: "109",
@@ -267,7 +267,7 @@ describe "Groups" do
           type: false
         } }
 
-        subject{ -> { put "/api/v1/groups/merge/", json_data } } 
+        subject{ -> { put "/api/v1/groups/merge/", json_data } }
 
         it { should change(AcademicAllocation.where(allocation_tag_id: 2, academic_tool_type: "Discussion"),:count).by(6) }
         it { should change(Post,:count).by(7) }
@@ -297,7 +297,7 @@ describe "Groups" do
       end
 
       context "with invalid ip" do
-        let!(:json_data){ { 
+        let!(:json_data){ {
             main_group: "QM-MAR",
             secundary_groups: ["QM-CAU"],
             main_course: "109",
@@ -412,7 +412,7 @@ describe "Groups" do
           context 'with id' do
             let!(:json_data){ { code: "G01", offer_id: 3 } }
 
-            subject{ -> { post "/api/v1/group", json_data } } 
+            subject{ -> { post "/api/v1/group", json_data } }
 
             it { should change(Group,:count).by(1) }
 
@@ -424,15 +424,15 @@ describe "Groups" do
           end
 
           context 'with codes' do
-            let!(:json_data){ { 
+            let!(:json_data){ {
               semester: "2011.1",
               curriculum_unit_code: "RM301",
               course_code: "109",
               code: "G01"
             } }
-            
-            subject{ -> { post "/api/v1/group", json_data } } 
-            
+
+            subject{ -> { post "/api/v1/group", json_data } }
+
             it { should change(Group,:count).by(1) }
 
             it {
@@ -448,7 +448,7 @@ describe "Groups" do
           context 'existing code' do
             let!(:json_data){ { code: "QM-CAU", offer_id: 3 } }
 
-            subject{ -> { post "/api/v1/group", json_data } } 
+            subject{ -> { post "/api/v1/group", json_data } }
 
             it { should change(Group,:count).by(0) }
 
@@ -461,7 +461,7 @@ describe "Groups" do
           context 'missing params' do
             let!(:json_data){ { offer_id: 3 } }
 
-            subject{ -> { post "/api/v1/group", json_data } } 
+            subject{ -> { post "/api/v1/group", json_data } }
 
             it { should change(Group,:count).by(0) }
 
@@ -474,7 +474,7 @@ describe "Groups" do
           context 'missing params - code or id' do
             let!(:json_data){ { code: "G01" } }
 
-            subject{ -> { post "/api/v1/group", json_data } } 
+            subject{ -> { post "/api/v1/group", json_data } }
 
             it { should change(Group,:count).by(0) }
 
@@ -487,7 +487,7 @@ describe "Groups" do
           context 'too many params' do
             let!(:json_data){ { code: "G01", offer_id: 3, course_code: "109" } }
 
-            subject{ -> { post "/api/v1/group", json_data } } 
+            subject{ -> { post "/api/v1/group", json_data } }
 
             it { should change(Group,:count).by(0) }
 
@@ -509,7 +509,7 @@ describe "Groups" do
         context 'update group' do
           let!(:json_data){ { code: "G01" } }
 
-          subject{ -> { put "/api/v1/group/3", json_data } } 
+          subject{ -> { put "/api/v1/group/3", json_data } }
 
           it { should change(Group.where(code: "QM-CAU"),:count).by(-1) }
 
@@ -523,7 +523,7 @@ describe "Groups" do
         context 'dont update group - existing code' do
           let!(:json_data){ { code: "QM-MAR" } }
 
-          subject{ -> { put "/api/v1/group/3", json_data } } 
+          subject{ -> { put "/api/v1/group/3", json_data } }
 
           it { should change(Group.where(code: "QM-CAU"),:count).by(0) }
 
@@ -534,7 +534,7 @@ describe "Groups" do
         end
 
         context 'dont update group - missing params' do
-          subject{ -> { put "/api/v1/group/3" } } 
+          subject{ -> { put "/api/v1/group/3" } }
 
           it { should change(Group.where(code: "QM-CAU"),:count).by(0) }
 
