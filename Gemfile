@@ -58,8 +58,8 @@ gem 'hairtrigger', '~> 0.2.12' # triggers
 group :development do
   gem "rb-readline", "~> 0.5.1"
   gem "net-ssh", "~> 2.6.8" # dependencia capistrano
-  gem "rvm-capistrano", "~> 1.2.7"
-  gem "capistrano", "~> 2.14.2"
+  gem "rvm-capistrano", "~> 1.5.5"
+  gem "capistrano", "~> 2.15.4"
   gem "spork", "~> 0.9.2"
   gem "thin" # server local melhor
   gem "better_errors"
