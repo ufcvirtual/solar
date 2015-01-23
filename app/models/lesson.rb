@@ -104,10 +104,10 @@ class Lesson < Event
     File.join('', 'media', 'lessons', id.to_s, p_address)
   end
 
-  def link_path
+  def link_path(api: false)
     raise 'not link' unless is_link?
 
-    return 'http://www.youtube.com/embed/' + address.split("v=")[1] if address.include?("youtube") and not address.include?("embed")
+    return 'http://www.youtube.com/embed/' + address.split("v=")[1] if not(api) and address.include?("youtube") and not address.include?("embed")
     address
   end
 
