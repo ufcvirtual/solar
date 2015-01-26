@@ -11,7 +11,7 @@ class Message < ActiveRecord::Base
   has_many :message_labels, through: :user_message_labels, uniq: true
 
   before_save proc { |record| record.subject = I18n.t(:no_subject, scope: :messages) if record.subject == "" }
-  before_save :set_sender_and_recipients
+  before_save :set_sender_and_recipients if "sender"
 
   scope :by_user, ->(user_id) { joins(:user_messages).where(user_messages: {user_id: user_id}) }
 
@@ -93,7 +93,7 @@ class Message < ActiveRecord::Base
 
     def set_sender_and_recipients
       users = [{user: sender, status: Message_Filter_Sender}]
-      users << contacts.split(",").map {|u| {user_id: u, status: Message_Filter_Receiver}}
+      users << contacts.split(",").map {|u| {user_id: u, status: Message_Filter_Receiver}} unless contacts.blank?
 
       self.user_messages.build users
     end

@@ -319,47 +319,47 @@ describe "Groups" do
         get "/api/v1/groups", {semester: "2012.1"}
 
         response.status.should eq(200)
-        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, students: 0, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3},
-          {id: 6, code: "IL-FOR", offer_id: 6, students: 1, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3}].to_json
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3, students: 0},
+          {id: 6, code: "IL-FOR", offer_id: 6, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3, students: 1}].to_json
       end
 
       it "list all by semester and type" do
         get "/api/v1/groups", {semester: "2012.1", course_type_id: 3}
 
         response.status.should eq(200)
-        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, students: 0, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3},
-          {id: 6, code: "IL-FOR", offer_id: 6, students: 1, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3}].to_json
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3, students: 0},
+          {id: 6, code: "IL-FOR", offer_id: 6, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3, students: 1}].to_json
       end
 
       it "list all by semester, type and course" do
         get "/api/v1/groups", {semester: "2012.1", course_type_id: 3, course_id: 10}
 
         response.status.should eq(200)
-        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, students: 0, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3},
-          {id: 6, code: "IL-FOR", offer_id: 6, students: 1, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3}].to_json
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3, students: 0},
+          {id: 6, code: "IL-FOR", offer_id: 6, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3, students: 1}].to_json
       end
 
       it "list all by semester, type and discipline" do
         get "/api/v1/groups", {semester: "2012.1", course_type_id: 3, discipline_id: 1}
 
         response.status.should eq(200)
-        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, students: 0, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3},
-          {id: 6, code: "IL-FOR", offer_id: 6, students: 1, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3}].to_json
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3, students: 0},
+          {id: 6, code: "IL-FOR", offer_id: 6, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3, students: 1}].to_json
       end
 
       it "list all by semester, type, course and discipline" do
         get "/api/v1/groups", {semester: "2012.1", course_type_id: 3, course_id: 10, discipline_id: 1}
 
         response.status.should eq(200)
-        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, students: 0, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3},
-          {id: 6, code: "IL-FOR", offer_id: 6, students: 1, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3}].to_json
+        response.body.should == [{id: 8, code: "IL-CAU", offer_id: 6, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3, students: 0},
+          {id: 6, code: "IL-FOR", offer_id: 6, start_date: '2011-03-10', end_date: '2011-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 3, students: 1}].to_json
       end
 
       it "list by group it self" do
         get "/api/v1/groups", {group_id: 1}
 
         response.status.should eq(200)
-        response.body.should == [{id: 1, code: "IL-FOR", offer_id: 1, students: 4, start_date: '2011-03-10', end_date: '2021-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 2}].to_json
+        response.body.should == [{id: 1, code: "IL-FOR", offer_id: 1, start_date: '2011-03-10', end_date: '2021-12-01', course_id: 10, curriculum_unit_id: 1, semester_id: 2, students: 4}].to_json
       end
 
     end # list

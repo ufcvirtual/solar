@@ -40,6 +40,7 @@ module V1::Contents
     from_ats, to_at = ((from_group.offer_id == to_group.offer_id) ? [from_group.allocation_tag.id] : from_group.allocation_tag.related), to_group.allocation_tag.id
     from_academic_allocations = AcademicAllocation.where(allocation_tag_id: from_ats) # recover all from group which will be copied
 
+
     ActiveRecord::Base.transaction do
       remove_all_content(to_at) unless merge
 
