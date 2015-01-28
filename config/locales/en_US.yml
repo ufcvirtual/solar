@@ -317,6 +317,7 @@ en_US:
         description: Description
         initial_time: Initial Time
         duration: Duration
+        is_recorded: Enable recording
       user_blacklist:
         cpf: CPF
         name: Name
@@ -969,6 +970,10 @@ en_US:
       description: "Description"
       duration: "Duration (min)"
       min: "Min"
+      in_progress: "In Progress"
+      finish: "Finish"
+      processing: "Processing"
+      play: "Watch recording"
       new: "New Webconference"
       edit: "Edit Webconference"
       delete: "Delete Webconference"

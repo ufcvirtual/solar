@@ -99,7 +99,7 @@ class WebconferencesController < ApplicationController
   private
 
     def webconference_params
-      params.require(:webconference).permit(:description, :duration, :initial_time, :title)
+      params.require(:webconference).permit(:description, :duration, :initial_time, :title, :is_recorded)
     end
 
 end

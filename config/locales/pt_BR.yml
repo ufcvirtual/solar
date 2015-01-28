@@ -366,6 +366,7 @@ pt_BR:
         description: Descrição
         initial_time: Data
         duration: Duração
+        is_recorded: Habilitar gravação
       user_blacklist:
         cpf: CPF
         name: Nome
@@ -1145,6 +1146,11 @@ pt_BR:
       description: "Descrição"
       duration: "Duração (min)"
       min: "Min"
+      status: "Status"
+      in_progress: "Em andamento"
+      finish: "Finalizada"
+      processing: "Processando"
+      play: "Assistir Gravação"
       new: "Nova Webconferência"
       edit: "Editar Webconferência"
       delete: "Deletar Webconferência"

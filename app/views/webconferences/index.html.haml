@@ -13,6 +13,7 @@
           %th{align:"center", style:"width: 20%;"}= t(:moderator, scope: [:webconferences, :list])
           %th{align:"center", style:"width: 20%;"}= t(:availability, scope: [:webconferences, :list])
           %th{align:"center", style:"width: 10%;"}= t(:min, scope: [:webconferences, :list])
+          %th{align:"center", style:"width: 10%;"}= t(:status, scope: [:webconferences, :list])
       %tbody
         - @webconferences.each do |webconference|
           %tr.lines
@@ -21,5 +22,6 @@
             %td= raw truncate(webconference.moderator.name, length: 20)
             %td= l(webconference.initial_time, format: :at_date)
             %td= webconference.duration
+            %td= webconference.status
   - else
     .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])

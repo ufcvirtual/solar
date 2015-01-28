@@ -9,6 +9,7 @@
     = f.input :description
     = f.input :initial_time, start_year: Date.today.year
     = f.input :duration, hint: t(".minutes")
+    = f.input :is_recorded, as: :boolean, checked_value: true, unchecked_value: false
 
     = render "groups/codes"
 
