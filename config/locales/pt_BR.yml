@@ -366,7 +366,7 @@ pt_BR:
         description: Descrição
         initial_time: Data
         duration: Duração
-        is_recorded: Habilitar gravação
+        is_recorded: Gravar
       user_blacklist:
         cpf: CPF
         name: Nome

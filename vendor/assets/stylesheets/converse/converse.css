@@ -1406,12 +1406,21 @@ details[open] summary:before {
 	padding: 0 5px 0 0;
 	color: rgb(79, 79, 79);
 }
-#orderDl{
+#orderDl, #disconnectDl{
 	cursor: pointer;
 	color:rgba(6, 86, 153, 1);
 	font-family: 'PT Sans', sans-serif;
-    font-size: 0.9em;
+  font-size: 0.9em;
 }
+
+#orderDl, #disconnectDl{
+  margin: 10px 0px 0px 0px;
+  }
+
+#disconnectDl{
+  margin: 10px 0px 0px 15px;
+}
+
 .status{
 	position: absolute;
 	top: 11px;

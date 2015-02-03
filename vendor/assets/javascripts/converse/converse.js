@@ -10930,11 +10930,11 @@ return parser;
                 ],
                 "Connected": [
                     null,
-                    "Conectado"
+                    "Conectado (IM)"
                 ],
                 "Disconnected": [
                     null,
-                    "Desconectado (Recarregue a página)"
+                    "Desconectado do IM (Recarregue a página)"
                 ],
                 "Hide": [
                     null,
@@ -10950,23 +10950,23 @@ return parser;
                 ],
                 "Connecting": [
                     null,
-                    "Conectando"
+                    "Conectando (IM)"
                 ],
                 "Connection Failed": [
                     null,
-                    "Falha de conexão"
+                    "Falha de conexão (IM)"
                 ],
                 "Authenticating": [
                     null,
-                    "Autenticando"
+                    "Autenticando (IM)"
                 ],
                 "Authentication Failed": [
                     null,
-                    "Falha de autenticação"
+                    "Falha de autenticação (IM)"
                 ],
                 "Disconnecting": [
                     null,
-                    "Desconectando"
+                    "Desconectando (IM)"
                 ],
                 "Attached": [
                     null,
@@ -11488,7 +11488,6 @@ return parser;
 
             //Se conectado, mostra o IM
             document.getElementById("collective-xmpp-chat-data").style.display = "block";
-
         };
 
 
@@ -12482,6 +12481,7 @@ return parser;
                 'click ul#controlbox-tabs li a': 'switchTab',
                 'click #chat':'minimizarChat',
                 'click #order': 'orderByGroups',
+                'click #disconnectDl': 'disconnectIm',
                 'click .open-chat': 'openChat',
                 'click #mostrar' : 'mostrar',
                 'click #orderDl' : 'redirect'
@@ -12542,6 +12542,7 @@ return parser;
                 '<div class="controlbox-panes"><div id="mostrar" class="icon-settings"></div> '+
                     '<ul class= "menu" style="display:none;">'+
                         '<dl id="orderDl"><input id="order" type="checkbox" value="groups">Ordenar por Grupos</dl>'+
+                        '<t/><dl id="disconnectDl">Desconectar</dl>'+
                     '</ul>'+
                 '</div>'
             ),
@@ -12556,6 +12557,22 @@ return parser;
                   m.style.display="none";
                 else
                   m.style.display="inline";
+
+                 if(con.roster.length > 100 || con.qtd_rosters_with_groups > 100 || con.groups.length > 10 ){
+                  $("#orderDl").remove();
+                }
+                
+            },
+            disconnectIm: function(ev){
+
+                //Desconecta
+                $(".xmpp-status-menu .unavailable").click();
+
+                //Remove div
+                $("#chatpanel")[0].style.display = "none";
+
+                $.cookie("cookie_im", null, {path : "/"});
+
             },
             orderByGroups: function(ev){
                 //importante
@@ -12570,10 +12587,10 @@ return parser;
                 if(!cookie_im.acceptGroups)
                   cookie_im.acceptGroups = false;
                 var accept = true;
-                if( (con.qtd_rosters_with_groups > 500 || con.groups.length > 50 ) && orderGroups.checked && !cookie_im.Groups && !cookie_im.acceptGroups){
-                  accept = confirm("Atenção\nA exibição por grupos pode tornar a navegação lenta.");
-                  cookie_im.acceptGroups = accept;
-                }
+                //if( (con.qtd_rosters_with_groups > 100 || con.groups.length > 10 ) && orderGroups.checked && !cookie_im.Groups && !cookie_im.acceptGroups){
+                  // accept = confirm("Atenção\nA exibição por grupos pode tornar a navegação lenta.");
+                  // cookie_im.acceptGroups = accept;
+                //}
                 if(orderGroups.checked && accept){
                     cookie_im.Groups = true;
                     rosters.style.display = "none";

@@ -220,10 +220,10 @@
     number_chatbox = 0;
     
     //cookie IM_geral
-    if($.cookie("cookie_im"))
+    if(($.cookie("cookie_im")) && ($.cookie("cookie_im") != "null"))
       cookie_im = JSON.parse($.cookie("cookie_im"));
     else
-      cookie_im = JSON.parse('{"IM" : true, "IM_toggle":true}');
+      cookie_im = JSON.parse('{"IM" : false, "IM_toggle":true}');
 
     $.cookie("cookie_im",JSON.stringify(cookie_im),{path : "/"});  
     function getCookie(){
@@ -265,6 +265,7 @@
       show_controlbox_by_default: false,
       xhr_user_search: false
     });
+    
     //show
     $(document).ready(function(e){
       if(cookie_im.IM){
