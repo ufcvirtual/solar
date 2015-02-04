@@ -1,6 +1,5 @@
 class ChatRoom < Event
   include AcademicTool
-  include ActiveModel::ForbiddenAttributesProtection
 
   GROUP_PERMISSION = true
 
@@ -96,15 +95,15 @@ class ChatRoom < Event
     else
       without_participant = all_chats.joins('LEFT JOIN chat_participants AS cp ON cp.academic_allocation_id = academic_allocations.id').where('cp.academic_allocation_id IS NULL')
       my = all_chats.joins(:participants, :allocations).where(allocations: {user_id: user_id})
-      
+
       if allocations_with_acess.include? allocation_tag_id
         others = (all_chats - without_participant) - my
         [(my + without_participant), others]
       else
-        others = all_chats - my  
+        others = all_chats - my
         [my, others]
       end
-        
+
     end
 
     {my: my, others: others}

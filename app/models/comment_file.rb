@@ -1,5 +1,4 @@
 class CommentFile < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   default_scope order: 'attachment_updated_at DESC'
 

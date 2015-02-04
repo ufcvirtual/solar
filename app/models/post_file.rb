@@ -1,5 +1,4 @@
 class PostFile < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   self.table_name = "discussion_post_files"
 

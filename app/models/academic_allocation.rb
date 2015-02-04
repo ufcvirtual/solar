@@ -1,5 +1,4 @@
 class AcademicAllocation < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :academic_tool, polymorphic: true
   belongs_to :allocation_tag

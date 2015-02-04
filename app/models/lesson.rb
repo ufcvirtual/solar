@@ -1,5 +1,4 @@
 class Lesson < Event
-  include ActiveModel::ForbiddenAttributesProtection
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 

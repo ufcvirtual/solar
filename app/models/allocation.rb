@@ -1,5 +1,4 @@
 class Allocation < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 

@@ -1,5 +1,4 @@
 class AllocationTag < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :course
   belongs_to :curriculum_unit_type

@@ -1,5 +1,4 @@
 class Schedule < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   has_many :discussions
   has_many :lessons

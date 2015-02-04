@@ -1,6 +1,5 @@
 class CurriculumUnitType < ActiveRecord::Base
   include Taggable
-  include ActiveModel::ForbiddenAttributesProtection
 
   has_many :curriculum_units
   has_many :offers,  through: :curriculum_units, uniq: true
@@ -23,5 +22,3 @@ class CurriculumUnitType < ActiveRecord::Base
   end
 
 end
-
-

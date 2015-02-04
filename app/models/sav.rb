@@ -1,5 +1,4 @@
 class Sav < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :allocation_tag
   belongs_to :profile
@@ -8,7 +7,7 @@ class Sav < ActiveRecord::Base
   validates :questionnaire_id, uniqueness: { scope: [:allocation_tag_id, :profile_id] }
 
   validate :end_after_start
- 
+
   def end_after_start
     errors.add(:end_date, "deve ser depois do início") unless end_date >= start_date
   end

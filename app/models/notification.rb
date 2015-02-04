@@ -1,6 +1,5 @@
 class Notification < ActiveRecord::Base
   include AcademicTool
-  include ActiveModel::ForbiddenAttributesProtection
 
   GROUP_PERMISSION = OFFER_PERMISSION = CURRICULUM_UNIT_PERMISSION = COURSE_PERMISSION = CURRICULUM_UNIT_TYPE_PERMISSION = true
 

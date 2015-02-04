@@ -1,6 +1,5 @@
 class Group < ActiveRecord::Base
   include Taggable
-  include ActiveModel::ForbiddenAttributesProtection
 
   default_scope order: "groups.status, groups.code"
 

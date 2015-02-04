@@ -1,6 +1,5 @@
 class ScheduleEvent < Event
   include AcademicTool
-  include ActiveModel::ForbiddenAttributesProtection
 
   COURSE_PERMISSION = CURRICULUM_UNIT_PERMISSION = GROUP_PERMISSION = OFFER_PERMISSION = true
 

@@ -1,5 +1,4 @@
 class ChatMessage < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :academic_allocation, conditions: {academic_tool_type: 'ChatRoom'}
   belongs_to :allocation

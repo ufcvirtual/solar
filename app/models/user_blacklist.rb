@@ -1,5 +1,4 @@
 class UserBlacklist < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
   include PersonCpf
 
   default_scope order: 'name ASC'

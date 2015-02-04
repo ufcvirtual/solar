@@ -1,7 +1,6 @@
 require 'bigbluebutton_api'
 
 class Webconference < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 
@@ -30,7 +29,7 @@ class Webconference < ActiveRecord::Base
   def is_meeting_running(meeting_id)
     @api.is_meeting_running?(meeting_id)
   end
-    
+
 
   def status
     if can_access?

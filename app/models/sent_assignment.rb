@@ -1,5 +1,4 @@
 class SentAssignment < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :user
   belongs_to :group_assignment

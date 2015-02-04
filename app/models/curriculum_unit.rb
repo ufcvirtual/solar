@@ -1,6 +1,5 @@
 class CurriculumUnit < ActiveRecord::Base
   include Taggable
-  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :curriculum_unit_type
 

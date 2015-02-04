@@ -1,5 +1,4 @@
 class Bibliography < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   GROUP_PERMISSION = OFFER_PERMISSION = CURRICULUM_UNIT_PERMISSION = true
 

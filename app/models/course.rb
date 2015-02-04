@@ -1,6 +1,5 @@
 class Course < ActiveRecord::Base
   include Taggable
-  include ActiveModel::ForbiddenAttributesProtection
 
   has_many :offers
   has_many :groups,                through: :offers, uniq: true

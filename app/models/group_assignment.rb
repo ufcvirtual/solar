@@ -1,5 +1,4 @@
 class GroupAssignment < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   before_destroy :can_destroy? # deve ficar antes das associacoes
 

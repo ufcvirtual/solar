@@ -1,5 +1,4 @@
 class AssignmentComment < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   default_scope order: 'updated_at DESC'
 

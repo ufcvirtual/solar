@@ -1,5 +1,4 @@
 class PublicFile < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   before_destroy :can_remove?
 

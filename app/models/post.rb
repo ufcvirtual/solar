@@ -1,5 +1,4 @@
 class Post < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   self.table_name = "discussion_posts"
 

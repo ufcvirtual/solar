@@ -1,5 +1,4 @@
 class Semester < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   has_many :offers
   has_many :groups, through: :offers

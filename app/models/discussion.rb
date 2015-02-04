@@ -1,6 +1,5 @@
 class Discussion < Event
   include AcademicTool
-  include ActiveModel::ForbiddenAttributesProtection
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 

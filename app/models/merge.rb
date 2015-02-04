@@ -1,5 +1,4 @@
 class Merge < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :main_group, class_name: "Group"
   belongs_to :secundary_group, class_name: "Group"

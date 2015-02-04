@@ -1,5 +1,4 @@
 class LogAction < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :user
 

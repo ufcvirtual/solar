@@ -1,6 +1,5 @@
 class Offer < ActiveRecord::Base
   include Taggable
-  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :course
   belongs_to :curriculum_unit

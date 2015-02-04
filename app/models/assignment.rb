@@ -1,6 +1,5 @@
 class Assignment < Event
   include AcademicTool
-  include ActiveModel::ForbiddenAttributesProtection
 
   GROUP_PERMISSION = true
 

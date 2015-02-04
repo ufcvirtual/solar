@@ -1,5 +1,4 @@
 class Profile < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
 
   has_many :users, through: :allocations
   has_many :allocations, dependent: :restrict
