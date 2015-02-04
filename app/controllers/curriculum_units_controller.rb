@@ -134,7 +134,7 @@ class CurriculumUnitsController < ApplicationController
   def participants
     authorize! :show, CurriculumUnit, on: [@allocation_tag_id]
 
-    allocation_tags = @allocation_tags.map(&:id).join(",")
+    allocation_tags = @allocation_tags.map(&:id)
     @participants = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(allocation_tags, Profile_Type_Student)
   end
 
@@ -149,7 +149,7 @@ class CurriculumUnitsController < ApplicationController
       @allocation_tag_id = active_tab[:url][:allocation_tag_id]
       @allocation_tags = AllocationTag.find(@allocation_tag_id).related(objects: true)
 
-      at_ids = @allocation_tags.map(&:id).join(",")
+      at_ids = @allocation_tags.map(&:id)
 
       @responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(at_ids, Profile_Type_Class_Responsible)
     end

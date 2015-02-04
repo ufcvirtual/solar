@@ -83,7 +83,7 @@ class AdministrationsController < ApplicationController
     authorize! :allocations_user, Administration
 
     allocation_tags_ids = current_user.allocation_tags_ids_with_access_on(["allocations_user"], "administrations", false, true) # if has nil, exists an allocation with allocation_tag_id nil
-    query = allocation_tags_ids.include?(nil) ? "" : "allocation_tag_id IN (#{allocation_tags_ids.join(",")})"
+    query = allocation_tags_ids.include?(nil) ? "" : ["allocation_tag_id IN (?)", allocation_tags_ids]
 
     @allocations_user = User.find(params[:id]).allocations.joins(:profile).where("NOT cast(profiles.types & ? as boolean)", Profile_Type_Basic).where(query)
     @profiles = @allocations_user.map(&:profile).flatten.uniq

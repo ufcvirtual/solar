@@ -73,15 +73,15 @@ class CurriculumUnit < ActiveRecord::Base
         JOIN allocation_tags AS t2 ON t1.allocation_tag_id = t2.id
         JOIN users           AS t3 ON t1.user_id = t3.id
         JOIN profiles        AS t4 ON t4.id = t1.profile_id
-   LEFT JOIN public_files    AS t5 ON t5.user_id = t3.id AND t5.allocation_tag_id IN (#{allocation_tags})
-       WHERE t2.id IN (#{allocation_tags})
-         AND #{negative} cast(t4.types & '#{profile_flag}' as boolean)
+   LEFT JOIN public_files    AS t5 ON t5.user_id = t3.id AND t5.allocation_tag_id IN (:allocation_tags)
+       WHERE t2.id IN (:allocation_tags)
+         AND #{negative} cast(t4.types & ':profile_flag' as boolean)
          AND t1.status = #{Allocation_Activated}
        GROUP BY t3.id, t3.name, t3.photo_file_name, t3.email, t3.photo_updated_at
        ORDER BY t3.name, profile_name
     SQL
 
-    User.find_by_sql query
+    User.find_by_sql [query, {allocation_tags: allocation_tags, profile_flag: profile_flag}]
   end
 
   ## triggers
