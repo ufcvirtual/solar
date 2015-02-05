@@ -1148,6 +1148,7 @@ pt_BR:
       min: "Min"
       status: "Status"
       in_progress: "Em andamento"
+      scheduled: "Agendada"
       finish: "Finalizada"
       processing: "Processando"
       play: "Assistir Gravação"

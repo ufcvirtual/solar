@@ -33,7 +33,9 @@ class Webconference < ActiveRecord::Base
 
   def status
     if can_access?
-       I18n.t(:in_progress, scope: [:webconferences, :list])
+      I18n.t(:in_progress, scope: [:webconferences, :list])
+    elsif Time.now < (initial_time)
+      I18n.t(:scheduled, scope: [:webconferences, :list])
     elsif is_recorded?
       if Time.now > (initial_time+duration.minutes+5)
         ActionController::Base.helpers.link_to(I18n.t(:play, scope: [:webconferences, :list]), recordings(), target: "_blank")

@@ -971,6 +971,7 @@ en_US:
       duration: "Duration (min)"
       min: "Min"
       in_progress: "In Progress"
+      scheduled: "Scheduled"
       finish: "Finish"
       processing: "Processing"
       play: "Watch recording"
