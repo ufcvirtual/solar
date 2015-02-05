@@ -92,6 +92,10 @@ function change_password(obj) {
   $.put(url, function(data, textStatus, jqXHR){
     $(obj).closest('tr').removeClass('active');
     $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
+    $(obj).call_fancybox({
+      href: $(obj).data("reset_password_url").replace("replace_token", data.token),
+      open: true
+    });
     flash_message(data.notice, "notice");
   }).error(function(data){
     var data = $.parseJSON(data.responseText);

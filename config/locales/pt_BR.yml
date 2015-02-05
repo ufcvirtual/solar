@@ -2510,8 +2510,6 @@ pt_BR:
       blacklist: "Manualmente desvinculado do Módulo Acadêmico: "
       y: Sim
       n: Não
-      reset_password_url: "Url de recuperação de senha: "
-      reset_password_not_required: Não foi solicitada recuperação de senha.
     request_profile:
       save: Salvar
       cancel: Cancelar
@@ -2537,6 +2535,10 @@ pt_BR:
       request_profile: Solicitar perfil
       cancel_profile: Cancelar perfil
       confirm: Tem certeza de que deseja cancelar este perfil?
+    reset_password_url:
+      title: "Recuperação de senha para %{name}"
+      url: "Url de recuperação de senha"
+      reset_password_not_required: Não foi solicitada recuperação de senha.
 
   mysolar:
     synchronize: Sincronizar com Módulo Acadêmico

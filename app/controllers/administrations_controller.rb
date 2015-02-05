@@ -65,15 +65,12 @@ class AdministrationsController < ApplicationController
   def reset_password_user
     authorize! :reset_password_user, Administration
     @user = User.find(params[:id])
+    token = @user.send_reset_password_instructions
 
-    Thread.new do
-      @user.send_reset_password_instructions
-    end
-
-    render json: {success: true, notice: t("administrations.success.email_sent")}
+    render json: {success: true, notice: t("administrations.success.email_sent"), token: token}
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
+  rescue 
     render json: {success: false, alert: t("administrations.success.email_not_sent")}
   end
 

@@ -21,6 +21,7 @@ Solar::Application.routes.draw do
     member do
       get :photo
       put :update_photo
+      get :reset_password_url
     end
     collection do
       get :edit_photo

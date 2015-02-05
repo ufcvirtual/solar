@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   include EdxHelper
 
-  layout false, only: :show
+  layout false, only: [:show, :reset_password_url]
   load_and_authorize_resource only: [:mysolar, :update_photo]
 
   before_filter :set_active_tab_to_home, only: :profiles
@@ -133,6 +133,12 @@ class UsersController < ApplicationController
     @types      = CurriculumUnitType.all
     @profiles   = Profile.where("types <> ? and id <> ?", Profile_Type_Basic, Profile.student_profile).order("name")
     render layout: false
+  end
+
+  def reset_password_url
+    authorize! :reset_password_user, Administration
+    @user  = User.find(params[:id])
+    @token = params[:token] 
   end
 
   private

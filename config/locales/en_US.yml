@@ -2281,8 +2281,6 @@ en_US:
       blacklist: "Exists at Blacklist: "
       y: 'Yes'
       n: 'No'
-      reset_password_url: "Recovery password url: "
-      reset_password_not_required: It wasn't requested any password recovery.
     request_profile:
       save: Save
       cancel: Cancel
@@ -2308,6 +2306,10 @@ en_US:
       request_profile: Request profile
       cancel_profile: Cancel profile
       confirm: Are you sure you want to cancel this profile?
+    reset_password_url:
+      title: "Password recovery to %{name}"
+      url: "Recovery password url"
+      reset_password_not_required: It wasn't requested any password recovery.
   mysolar:
     synchronize: Synchronize with Módulo Acadêmico
     profiles: Profiles
