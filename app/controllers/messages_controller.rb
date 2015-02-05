@@ -189,10 +189,7 @@ class MessagesController < ApplicationController
     end
 
     def message_params
-      params.require(:message).permit(:subject, :content, :contacts)
-
-      # "message"=> {"original"=>"9", "contacts"=>"7", "subject"=>"Res:  teste", "content"=>""},
-      # "contacts_type"=>"1", "curriculum_unit_type"=>"", "support"=>"", "message_to"=>"Aluno 1 <wedson.lima@virtual.ufc.br>"
+      params.require(:message).permit(:subject, :content, :contacts, files_attributes: :attachment)
     end
 
 end
