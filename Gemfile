@@ -72,6 +72,7 @@ group :development, :test do
   gem "pry-rescue"
   gem "factory_girl_rails", "~> 4.2.1"
   gem "rspec-rails", "~> 2.14.1"
+  gem "rubocop", require: false # A Ruby static code analyzer, based on the community Ruby style guide.
 end
 
 group :test do
@@ -81,9 +82,9 @@ group :test do
   gem "cucumber-rails", "~> 1.3.1", require: false
   gem "selenium-webdriver", "~> 2.42.0"
   gem "launchy", "2.1.0"
-  gem "nokogiri", "1.5.5"
+  gem "nokogiri", "1.5.5" # html, css parser (search)
   # gem "spreewald", "0.8.4" # collection of cucumber steps
-  # gem "simplecov", ">= 0.5.3", :require => false
+  gem "simplecov", require: false # cobertura de testes
 end
 
 group :assets do
@@ -91,3 +92,6 @@ group :assets do
   gem "sass-rails", "~> 3.2.6"
   gem "compass-rails", "~> 1.1.3"
 end
+
+# new relic
+# gem 'newrelic_rpm'

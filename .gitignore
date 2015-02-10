@@ -47,3 +47,4 @@ config/modulo_academico.yml
 config/modulo_academico.deploy.yml
 config/sav.yml
 config/sav.deploy.yml
+config/newrelic.yml

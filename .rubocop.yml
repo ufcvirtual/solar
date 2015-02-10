@@ -1,0 +1,19 @@
+# This is the configuration used to check the rubocop source code.
+
+# https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+
+# inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
+    - 'spec/fixtures/**/*'
+
+Style/Encoding:
+  Enabled: true
+
+Metrics/LineLength:
+  Max: 160
+
+Metrics/ClassLength:
+  Max: 200
