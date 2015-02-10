@@ -44,7 +44,7 @@ class LessonsController < ApplicationController
   def open
     authorize! :show, Lesson, {on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true}
 
-    at_ids = params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+    at_ids = (params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
 
     @modules = LessonModule.to_select(at_ids, current_user)
     @lesson = Lesson.find(params[:id])
