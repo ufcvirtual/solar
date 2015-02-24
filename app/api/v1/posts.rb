@@ -29,7 +29,7 @@ module V1
 
         after do
           filtered_params = params.select { |k, v| ["date", "order", "limit", "display_mode", "type"].include?(k) }
-          @posts = @discussion.posts(filtered_params, @group.allocation_tag.related)
+          @posts = @discussion.posts(filtered_params, @group.allocation_tag.id)
 
           @period = if @posts.empty?
             ["#{filtered_params['date'] || DateTime.now.to_s(:db)}", "#{filtered_params['date'] || DateTime.now.to_s(:db)}"]
