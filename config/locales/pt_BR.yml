@@ -1144,14 +1144,17 @@ pt_BR:
       name: Nome
       availability: Disponibilidade
       description: "Descrição"
-      duration: "Duração (min)"
-      min: "Min"
+      duration: "Duração"
+      min: "min"
       status: "Status"
       in_progress: "Em andamento"
       scheduled: "Agendada"
       finish: "Finalizada"
       processing: "Processando"
       play: "Assistir Gravação"
+      action: "Ação"
+      remove_record: "Deletar"
+      are_you_sure_of_deletion: Você tem certeza de que deseja excluir?
       new: "Nova Webconferência"
       edit: "Editar Webconferência"
       delete: "Deletar Webconferência"
@@ -1160,6 +1163,7 @@ pt_BR:
       compress_description: Comprimir descrição
       choose_at_least_one: "Selecione, ao menos, uma webconferência"
       choose_one: "Selecione uma webconferência"
+      unavailable: "Indisponível"
     success:
       created: Webconferência criada com sucesso.
       updated: Webconferência atualizada com sucesso.
@@ -1266,6 +1270,7 @@ pt_BR:
   menu_admin_logs: Logs
   menu_admin_import_users: Importação de usuários
   menu_admin_blacklist: Desvincular do MA
+  menu_admin_webconference: Gerenciar webconferências
   menu_responsibles: Consultar Responsáveis
   menu_home: Início
 

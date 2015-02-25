@@ -214,6 +214,13 @@ admin_blacklist:
   order: 11
   resource_id: 178
 
+admin_webconference:
+  id: 612
+  parent_id: 60
+  name: menu_admin_webconference
+  order: 12
+  resource_id: 186
+
 # MENU PAI - 70
 disco_virtual:
   id: 70

@@ -968,13 +968,16 @@ en_US:
       name: Name
       availability: Availability
       description: "Description"
-      duration: "Duration (min)"
-      min: "Min"
+      duration: "Duration"
+      min: "min"
       in_progress: "In Progress"
       scheduled: "Scheduled"
       finish: "Finish"
       processing: "Processing"
       play: "Watch recording"
+      action: "Action"
+      remove_record: "remove"
+      are_you_sure_of_deletion: Are you sure you want to delete?
       new: "New Webconference"
       edit: "Edit Webconference"
       delete: "Delete Webconference"
@@ -983,6 +986,7 @@ en_US:
       compress_description: Compress description
       choose_at_least_one: "Choose at least one webconference"
       choose_one: "Choose a webconference"
+      unavailable: "Unavailable"
     success:
       created: Webconference was successfully created.
       updated: Webconference was successfully updated.
@@ -1077,6 +1081,7 @@ en_US:
   menu_admin_logs: Logs
   menu_admin_import_users: Importing users
   menu_admin_blacklist: Blacklist
+  menu_admin_webconference: Manage webconferences
   menu_responsibles: Consult Responsibles
   menu_home: Home
 

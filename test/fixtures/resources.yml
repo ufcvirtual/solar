@@ -939,3 +939,10 @@ res185:
   controller: "scores"
   action: "responsibles"
   description: "Visualizar o acompanhamento dos responsáveis na turma"
+
+res186:
+  id: 186
+  controller: "webconferences"
+  action: "manage"
+  description: "Gerenciar Webconferencias"
+

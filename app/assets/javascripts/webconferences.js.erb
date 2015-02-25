@@ -38,6 +38,37 @@ $(function(){
     }
   });
 
+  $('.delete_record').click(function(){
+     if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%=I18n.t(:choose_at_least_one, scope: 'webconferences.list')%>", "alert");
+      return false;
+    }
+
+    var webconferences = $('.ckb_webconference:checked', $(this).parents("div.manage_webconferences"));
+    var webconference_ids = $('.ckb_webconference:checked', $(this).parents("div.manage_webconferences")).map(function() { return this.value; }).get();
+
+    if (!webconference_ids.length){
+      flash_message("<%=I18n.t(:choose_at_least_one, scope: 'webconferences.list')%>", "alert");
+      return false;
+    }
+
+    if (!confirm("<%=I18n.t(:message_confirm)%>"))
+      return false;
+
+    if (webconference_ids.length) {
+      $.put($(this).data('link-remove').replace(':id', webconference_ids), function(data){
+        webconferences.parents('tr').find(".status_webconference").html("<%=I18n.t(:finish, scope: 'webconferences.list')%>");
+        webconferences.parents('tr').find(".ckb_webconference").prop( "checked", false).remove();
+        $(".all_webconferences").prop("checked", false);
+        flash_message(data.notice, 'notice');
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+      });
+    }
+  });   
+
   $(".btn_edit").click(function(){
     if ($(this).attr('disabled') == 'disabled'){
       flash_message("<%=I18n.t(:choose_one, scope: 'webconferences.list')%>", "alert");

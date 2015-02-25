@@ -1,8 +1,10 @@
+require 'bigbluebutton_api'
+
 class WebconferencesController < ApplicationController
 
   include SysLog::Actions
 
-  layout false, except: :index
+  layout false, except: [:index, :manage]
 
   before_filter :prepare_for_group_selection, only: :index
 
@@ -96,10 +98,49 @@ class WebconferencesController < ApplicationController
     render json: {success: false, alert: t(:deleted, scope: [:webconferences, :error])}, status: :unprocessable_entity
   end
 
+  #GET /webconferences/manage
+  def manage
+    authorize! :manage, Webconference
+    @webconferences = Webconference.paginate(:page => params[:page], :per_page => 20).order("initial_time DESC, title ASC")
+  end
+
+  #GET /webconferences/remove_record/1
+  def remove_record
+    authorize! :manage, Webconference
+
+    @webconferences = Webconference.where(id: params[:id].split(",").flatten)
+    @api = Webconference.bbb_prepare
+
+    @webconferences.each do |webconference|
+      meeting_name = unless webconference.groups.empty?
+        webconference.groups.map(&:code).join(", ")
+      else
+        o = webconference.offers.first
+        "#{o.curriculum_unit.name}-#{o.semester.name}"
+      end
+
+      meeting_id = "#{meeting_name}-#{webconference.id}"
+
+      response = @api.get_recordings()
+      response[:recordings].each do |m|
+        if m[:meetingID] == meeting_id
+          @api.delete_recordings(m[:recordID])
+        end
+      end
+      webconference.update_attributes(:is_recorded => false)
+    end
+
+    render json: {success: true, notice: t(:deleted, scope: [:webconferences, :success])}
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    render json: {success: false, alert: t(:deleted, scope: [:webconferences, :error])}, status: :unprocessable_entity
+  end
+
   private
 
-    def webconference_params
-      params.require(:webconference).permit(:description, :duration, :initial_time, :title, :is_recorded)
-    end
+  def webconference_params
+    params.require(:webconference).permit(:description, :duration, :initial_time, :title, :is_recorded)
+  end
 
 end

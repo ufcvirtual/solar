@@ -1759,6 +1759,13 @@ admin_blacklist2:
   resource_id: 179
   per_id: false
 
+# webconference Admin
+
+admin_webconference1:
+  profile_id: 23
+  resource_id: 186
+  per_id: false
+
 ## import users
 
 admin_iu1:

@@ -18,8 +18,22 @@ class Webconference < ActiveRecord::Base
     Time.now.between?(initial_time, initial_time+duration.minutes)
   end
 
+  def is_online?
+    begin
+      @api = Webconference.bbb_prepare
+      url = URI(@api.url)
+      response = Net::HTTP.get_response(url)
+      case response
+      when Net::HTTPSuccess then
+        true
+      end
+    rescue Errno::ECONNREFUSED
+      false
+    end
+  end
+
   def link_to_join(user)
-    if can_access?
+    if can_access? && is_online?
       ActionController::Base.helpers.link_to(title, bbb_join(user), target: "_blank")
     else
       title
@@ -30,14 +44,15 @@ class Webconference < ActiveRecord::Base
     @api.is_meeting_running?(meeting_id)
   end
 
-
   def status
-    if can_access?
+    if !is_online?
+      I18n.t(:unavailable, scope: [:webconferences, :list])
+    elsif can_access?
       I18n.t(:in_progress, scope: [:webconferences, :list])
     elsif Time.now < (initial_time)
       I18n.t(:scheduled, scope: [:webconferences, :list])
-    elsif is_recorded?
-      if Time.now > (initial_time+duration.minutes+5)
+    elsif is_recorded? && is_online?
+      if Time.now > (initial_time+duration.minutes+10.minutes)
         ActionController::Base.helpers.link_to(I18n.t(:play, scope: [:webconferences, :list]), recordings(), target: "_blank")
       else
         I18n.t(:processing, scope: [:webconferences, :list])
@@ -55,11 +70,11 @@ class Webconference < ActiveRecord::Base
     not(allocation_tags.map{ |at| at.is_responsible?(user_id) }.include?(false))
   end
 
-  def bbb_prepare
+  def self.bbb_prepare
     @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
     server = @config['servers'][@config['servers'].keys.first]
-
-    BigBlueButton::BigBlueButtonApi.new(server['url'], server['salt'], server['version'].to_s, true)
+    debug = @config['debug']
+    BigBlueButton::BigBlueButtonApi.new(server['url'], server['salt'], server['version'].to_s, debug)
   end
 
   def bbb_join(user)
@@ -75,7 +90,6 @@ class Webconference < ActiveRecord::Base
     moderator_name = "#{user.name}*"
     attendee_name = user.name
 
-
     options = {
       moderatorPW: Digest::MD5.hexdigest("#{meeting_id}"),
       attendeePW: Digest::MD5.hexdigest(id.to_s),
@@ -86,27 +100,19 @@ class Webconference < ActiveRecord::Base
       maxParticipants: 35
     }
 
-    @api = bbb_prepare
+    @api = Webconference.bbb_prepare
     @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
 
-    if (responsible?(user.id))
+    if (responsible?(user.id) || user.can?(:manage, Webconference)) 
       @api.join_meeting_url(meeting_id, moderator_name, options[:moderatorPW])
     else
       @api.join_meeting_url(meeting_id, attendee_name, options[:attendeePW])
     end
   end
 
-  def recordings()
-    meeting_name = unless groups.empty?
-      groups.map(&:code).join(", ")
-    else
-      o = offers.first
-      "#{o.curriculum_unit.name}-#{o.semester.name}"
-    end
-
-    meeting_id = "#{meeting_name}-#{id}"
-
-    @api = bbb_prepare
+  def recordings
+    meeting_id = get_mettingID
+    @api = Webconference.bbb_prepare
 
     response = @api.get_recordings
     response[:recordings].each do |m|
@@ -117,7 +123,17 @@ class Webconference < ActiveRecord::Base
         return url
       end
     end
-    return "http://"
+    return "#"
+  end
+
+  def get_mettingID
+      meeting_name = unless groups.empty?
+      groups.map(&:code).join(", ")
+    else
+      o = offers.first
+      "#{o.curriculum_unit.name}-#{o.semester.name}"
+    end
+    meeting_id = "#{meeting_name}-#{id}"
   end
 
 end
