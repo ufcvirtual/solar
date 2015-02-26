@@ -19,7 +19,6 @@
 class ApplicationController < ActionController::Base
 
   include ApplicationHelper
-  include SavHelper unless SavConfig::CONFIG.nil? # if system is not integrated with Sav, remove this line or sav.yml file
 
   protect_from_forgery
 
@@ -138,7 +137,6 @@ class ApplicationController < ActionController::Base
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
 
     log_access(allocation_tag_id_group) # save access
-    get_current_savs(allocation_tag_id_group) unless SavConfig::CONFIG.nil? # if system is not integrated with Sav, remove this line or sav.yml file
   end
 
   def select_group

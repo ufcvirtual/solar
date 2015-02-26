@@ -461,6 +461,8 @@ Solar::Application.routes.draw do
     end
   end
 
+  resources :savs, only: :index
+
   match '/select_group', to: 'application#select_group', as: :select_group
 
   get "/media/lessons/:id/:file.:extension", to: "access_control#lesson", index: true

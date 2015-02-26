@@ -82,6 +82,20 @@ describe "Savs" do
       }
     end
 
+    context "with questionnaire_id and course_id and semester_id, and profile_id" do
+      let!(:json_data){ { course_id: 1, semester_id: 2, profiles_ids: [1] } }
+
+      subject{ -> { post "/api/v1/sav/1", json_data } } 
+
+      it { should change(Sav,:count).by(1) }
+  
+      it {
+        post "/api/v1/sav/1", json_data
+        response.status.should eq(201)
+        response.body.should == {ok: :ok}.to_json
+      }
+    end
+
     context "with questionnaire_id and course_id and profiles_ids" do
       let!(:json_data){ { course_id: 1, profiles_ids: [1,2,3], start_date: Date.current, end_date: Date.current + 4.months } }
 
@@ -152,19 +166,6 @@ describe "Savs" do
       }
     end
 
-    context "missing params - dates" do
-      let!(:json_data){ { groups_id: [1,2] } }
-
-      subject{ -> { post "/api/v1/sav/1", json_data } } 
-
-      it { should change(Sav,:count).by(0) }
-  
-      it {
-        post "/api/v1/sav/1", json_data
-        response.status.should eq(400)
-      }
-    end
-
     context "already exists" do
       let!(:json_data){ { groups_id: [2,3], start_date: Date.current, end_date: Date.current + 4.months, profiles_ids: [1] } }
 
@@ -174,6 +175,31 @@ describe "Savs" do
   
       it {
         post "/api/v1/sav/3", json_data
+        response.status.should eq(422)
+      }
+    end
+
+    context "percent with wrong type" do
+      let!(:json_data){ { groups_id: [2,3], profiles_ids: [1], percent: "teste" } }
+
+      subject{ -> { post "/api/v1/sav/4", json_data  } } 
+
+      it { should change(Sav,:count).by(0) }
+  
+      it {
+        post "/api/v1/sav/4", json_data
+        response.status.should eq(422)
+      }
+
+    context "percent too big" do
+      let!(:json_data){ { groups_id: [2,3], profiles_ids: [1], percent: 320 } }
+
+      subject{ -> { post "/api/v1/sav/4", json_data  } } 
+
+      it { should change(Sav,:count).by(0) }
+  
+      it {
+        post "/api/v1/sav/4", json_data
         response.status.should eq(422)
       }
     end

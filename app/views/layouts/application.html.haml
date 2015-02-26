@@ -109,7 +109,7 @@
 
         #lesson_external_div.invisible
 
-        #sav_url.invisible= link_to "", "http://#{active_tab[:sav_url]}", {class: 'link_content fancybox.iframe', target: '_blank' }
+        #sav_url.invisible= link_to "", "#", {class: 'link_content fancybox.iframe', target: '_blank' }
 
         - if current_user
           #chatpanel
@@ -158,25 +158,37 @@
       }
     };
 
+    function find_and_open_sav(){
+      $.get("#{savs_path}", {async: true}, function(data){
+        if(!!data.url.length){
+          $("#sav_url a").call_fancybox({
+            minWidth: $(window).width() - 150,
+            minHeight: $(window).height() - 100,
+            autoResize: true,
+            open: true,
+            href: data.url,
+            afterClose : function(){
+              find_and_open_sav();
+            }
+          });
+          
+          setTimeout(function() {
+            //se não abriu, cancelar fancybox 
+            if($("[id^='fancybox-frame']:first").height() < ($(window).height() - 300))
+              $.fancybox.close();
+          }, 4000);
+        }
+      })
+      .error(function(data){
+        console.log(data);
+      });
+    }
+
     jQuery(function($) {
 
       /** SAV **/
-      if (!!"#{active_tab[:sav_url]}".length){
-        $("#sav_url a").call_fancybox({
-          minWidth: $(window).width() - 150,
-          minHeight: $(window).height() - 100,
-          autoResize: true,
-          open: true,
-          afterClose : function(){
-            $.get("#{select_group_path}", function(data){});
-          }
-        });
-        
-        setTimeout(function() {
-          //se não abriu, cancelar fancybox 
-          if($("[id^='fancybox-frame']:first").height() < ($(window).height() - 100))
-            $.fancybox.close();
-        }, 4000);
+      if( "#{SavConfig::CONFIG.nil?}" == "false" ){
+        find_and_open_sav();
       }
 
       /**
