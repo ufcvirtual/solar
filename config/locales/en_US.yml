@@ -220,6 +220,7 @@ en_US:
       assignment_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment_file_name: File
+        sent_assignment_id: ""
       comment_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
       group_assignment:
@@ -369,6 +370,8 @@ en_US:
               invalid_type: "Invalid file type."
             attachment_file_name:
               blank: must be selected
+            sent_assignment_id:
+              blank: "Can't send file to this assignment."
         public_file:
           attributes:
             attachment_content_type:
@@ -1119,6 +1122,8 @@ en_US:
     sessions:
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
+      user:
+        not_found_in_database: 'Signed out successfully.'
     users_passwords:
       new_password: New password
       confirm_new_password: Confirm new password
@@ -1538,10 +1543,12 @@ en_US:
       see_all: See all %{all} groups
       see_less: See %{less} groups
       select_all: Select all
+      groups_management: Groups management
     tags:
       unbind: Unbind
       remove: Remove
       disabled_group: Deactivated group
+      title: "Groups of %{tool}: %{name}"
     success:
       created: Group was successfully created.
       updated: Group was successfully updated.
@@ -2368,6 +2375,10 @@ en_US:
       history_access: "Access history (total: %{amount})"
       search: Search
       access_found: " access found"
+      public_files: Public files
+      size: Size
+      sent_on: Sent on
+      file: File
     access:
       date: Date
       time: Time

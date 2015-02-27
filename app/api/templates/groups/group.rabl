@@ -7,5 +7,5 @@ glue @group.offer do
 end
 
 node :students do |group|
-  group.students_participants.count
+  group.students_participants.pluck(:id).count
 end

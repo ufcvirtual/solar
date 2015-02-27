@@ -42,10 +42,6 @@ class LessonModule < ActiveRecord::Base
     self.delete
   end
 
-
-  ## class methods
-
-
   def self.academic_allocations_by_ats(allocation_tags_ids, page: 1, per_page: 30)
     AcademicAllocation.select('DISTINCT ON (academic_tool_id) *').joins(:lesson_module)
       .where(allocation_tag_id: allocation_tags_ids)
@@ -54,9 +50,9 @@ class LessonModule < ActiveRecord::Base
   end
 
   def self.to_select(allocation_tags_ids, user = nil, list = false)
+    
     user_is_admin_or_editor    = user.nil? ? false : (user.is_admin? or user.is_editor?)
     user_responsible = user.nil? ? false : user.profiles_with_access_on("see_drafts", "lessons", allocation_tags_ids, true).any?
-
     joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tags_ids}).order("id").delete_if { |lmodule|
       lessons               = lmodule.lessons
       has_open_lesson       = lessons.map(&:closed?).include?(false)
@@ -72,5 +68,4 @@ class LessonModule < ActiveRecord::Base
 
     }.compact.uniq
   end
-
 end

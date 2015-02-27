@@ -102,153 +102,60 @@ class AllocationTag < ActiveRecord::Base
     s_info.compact.join(' ')
   end
 
-  ## related functions - begin ##
-
-  def related(args = {})
-    args = {lower: false, upper: false, objects: false, sibblings: true}.merge(args)
-    args = args.merge({lower: true, upper: true}) if not(args[:lower] or args[:upper])
-
-    academic_tool = refer_to
-
-    result = case academic_tool
-    when 'group'
-      group_related if args[:upper]
-    when 'offer'
-      offer_related(args[:lower], args[:upper])
-    when 'curriculum_unit', 'course'
-      uc_or_course_related(academic_tool, args[:lower], args[:upper], args[:sibblings])
-    when 'curriculum_unit_type'
-      uc_type_related(args[:sibblings]) if args[:lower]
-    end
-
-    result = [self, result].flatten.compact.uniq
-
-    return result if args[:objects]
-    return result.map(&:id)
+  def related(options={upper: true, lower: true})
+    RelatedTaggable.related(self, options)
   end
 
   def lower_related
     related(lower: true)
   end
 
-  def group_related
-    association_ids = self.group.association_ids
-
-    query = ["offer_id = :offer_id"]
-    query << "course_id = :course_id" unless association_ids[:course_id].nil?
-    query << "curriculum_unit_id = :curriculum_unit_id" unless association_ids[:curriculum_unit_id].nil?
-    query << "curriculum_unit_type_id = :curriculum_unit_type_id" unless association_ids[:curriculum_unit_type_id].nil?
-
-    self.class.where(query.join(" OR "), association_ids)
-  end
-
-  def offer_related(lower = true, upper = true)
-    r_offer = self.offer
-
-    r_lower = self.class.where(group_id: r_offer.groups.map(&:id)) if lower
-    r_upper = if upper
-      association_ids = { course_id: r_offer.course_id, curriculum_unit_id: r_offer.curriculum_unit_id, curriculum_unit_type_id: r_offer.curriculum_unit.try(:curriculum_unit_type_id)}
-
-      query = []
-      query << "course_id = :course_id" unless association_ids[:course_id].nil?
-      query << "curriculum_unit_id = :curriculum_unit_id" unless association_ids[:curriculum_unit_id].nil?
-      query << "curriculum_unit_type_id = :curriculum_unit_type_id" unless association_ids[:curriculum_unit_type_id].nil?
-
-      self.class.where(query.join(" OR "), association_ids)
-    end
-
-    [r_lower, r_upper]
-  end
-
-  def uc_or_course_related(academic_tool, lower = true, upper = true, sibblings = true)
-    if lower
-      at_offers = offers.map(&:id).uniq
-      at_groups = groups.map(&:id).uniq
-    end
-
-    sibling_tool = (academic_tool == 'course') ? CurriculumUnit : Course
-    siblings = sibling_tool.joins(:offers).where(offers: {id: at_offers}).map(&:id).uniq if sibblings
-
-    if upper
-      uc_type = if (academic_tool == 'course')
-        self.send(academic_tool.to_sym).curriculum_unit_types
-      else
-        [self.send(academic_tool.to_sym).curriculum_unit_type]
-      end
-    end
-
-    query = []
-    query << "offer_id IN (:offer_id) OR group_id IN (:group_id)"    unless at_offers.nil?
-    query << "#{sibling_tool.to_s.underscore}_id IN (:siblings)"     unless siblings.nil?
-    query << "curriculum_unit_type_id IN (:curriculum_unit_type_id)" unless uc_type.nil?
-
-    association_ids = { offer_id: at_offers, group_id: at_groups, siblings: siblings, curriculum_unit_type_id: uc_type }
-
-    self.class.where(query.join(" OR "), association_ids)
-  end
-
-  def uc_type_related(sibblings = true)
-    at_offers  = offers.map(&:id).uniq
-    at_groups  = groups.map(&:id).uniq
-    at_courses = curriculum_unit_type.courses.map(&:id) if sibblings
-    at_ucs     = curriculum_unit_type.curriculum_units.map(&:id)
-
-    query = []
-    query << "group_id           IN (:group_id)"           unless at_groups.nil?
-    query << "offer_id           IN (:offer_id)"           unless at_offers.nil?
-    query << "course_id          IN (:course_id)"          unless at_courses.nil?
-    query << "curriculum_unit_id IN (:curriculum_unit_id)" unless at_ucs.blank?
-
-    association_ids = { offer_id: at_offers, group_id: at_groups, course_id: at_courses, curriculum_unit_id: at_ucs }
-
-    self.class.where(query.join(" OR "), association_ids)
-  end
-
-  ## related functions - end ##
-
   def self.at_groups_by_offer_id(offer_id, only_id = true)
-    joins(:group).where(groups: {offer_id: offer_id}).pluck(:id)
+    RelatedTaggable.where(offer_id: offer_id).pluck(:group_at_id).uniq
   end
 
   def self.get_by_params(params, related=false, lower_related=false)
-    map_attr = (lower_related ? :lower_related : (related ? :related : :id))
-
     allocation_tags_ids, selected, offer_id = if not params[:allocation_tags_ids].blank? # o proprio params ja contem as ats
-
       [params.fetch(:allocation_tags_ids, '').split(' ').flatten.map(&:to_i), params.fetch(:selected, nil), params.fetch(:offer_id, nil)]
-
-    elsif params[:groups_id].blank? # nao informa turma
-      if not params[:semester_id].blank? # informa offer
-        query = { semester_id: params[:semester_id] }
-        query[:curriculum_unit_id] = params[:curriculum_unit_id] unless params[:curriculum_unit_id].blank?
-        query[:course_id] = params[:course_id] unless params[:course_id].blank?
-
-        at_offer = joins(:offer).where(offers: query).first
-
-        [at_offer.send(map_attr), 'OFFER', at_offer.offer_id]
-
-      elsif not params[:offer_id].blank? # informa uc
-
-        [find_by_offer_id(params[:offer_id]).send(map_attr), 'OFFER', params[:offer_id]]
-
-      elsif not params[:curriculum_unit_id].blank? # informa uc
-
-        [find_by_curriculum_unit_id(params[:curriculum_unit_id]).send(map_attr), 'CURRICULUM_UNIT', nil]
-
-      elsif not params[:course_id].blank? # informa course
-
-        [find_by_course_id(params[:course_id]).send(map_attr), 'COURSE', nil]
-
-      elsif not params[:curriculum_unit_type_id].blank? # informa curriculum_unit_type
-
-        [find_by_curriculum_unit_type_id(params[:curriculum_unit_type_id]).send(map_attr), 'CURRICULUM_UNIT_TYPE', nil]
-
+    else
+      case 
+        when not(params[:groups_id].blank?)
+          params[:groups_ids] = params[:groups_id].split(" ").flatten.map(&:to_i)
+          query = "group_id IN (:groups_ids)"
+          selected = "GROUP"
+          offer = true
+        when params[:semester_id]
+          query = []
+          query << "semester_id = :semester_id"
+          query << "curriculum_unit_id = :curriculum_unit_id" if params[:curriculum_unit_id]
+          query << "course_id = :course_id" if params[:course_id]
+          query = query.join(" AND ")
+          selected = "OFFER"
+          offer = true
+        when params[:offer_id]
+          query = []
+          query << "offer_id = :offer_id"
+          selected = "OFFER"
+          offer = true
+        when params[:course_id]
+          query = "course_id = :course_id"
+          selected = "COURSE"
+        when params[:curriculum_unit_id]
+          query = "curriculum_unit_id = :curriculum_unit_id"
+          selected = "CURRICULUM_UNIT"
+        when params[:curriculum_unit_type_id]
+          query = "curriculum_unit_type_id = :curriculum_unit_type_id"
+          selected = "CURRICULUM_UNIT_TYPE"
       end
-    else # informa as turmas
-      groups_id = params[:groups_id].split(' ').flatten.map(&:to_i)
-      at_groups = find_all_by_group_id(groups_id)
 
-      [at_groups.map(&map_attr).flatten.uniq, 'GROUP', at_groups.first.group.offer_id]
+      unless query.nil?
+        rts = RelatedTaggable.where(query, params.slice(:groups_ids, :offer_id, :semester_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id))
+        raise ActiveRecord::RecordNotFound if rts.empty?
+
+        offer_id = rts.map(&:offer_id).first if offer
+        opt = (lower_related ? {lower: true} : ((related or selected.nil?) ? {} : {name: selected.downcase}))
+        [rts.map{|rt| rt.at_ids(opt)}.uniq, selected, offer_id]
+      end
     end
 
     {allocation_tags: [allocation_tags_ids].flatten, selected: selected, offer_id: offer_id}
@@ -260,8 +167,14 @@ class AllocationTag < ActiveRecord::Base
     types << "cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )" if params[:responsibles] or params[:all]
     query << "profile_id IN (#{params[:profiles]})"                                    if params[:profiles]
 
-    User.select("users.*").joins(allocations: :profile).where(allocations: {status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).related})
+    ats = (allocation_tag_id.kind_of?(Array) ? allocation_tag_id : AllocationTag.find(allocation_tag_id).related)
+
+    User.select("users.*, COUNT(public_files.id) AS u_public_files, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name")
+      .joins(allocations: :profile)
+      .joins("LEFT JOIN public_files ON public_files.user_id = users.id AND public_files.allocation_tag_id IN (#{ats.flatten.join(",")})")
+      .where(allocations: {status: Allocation_Activated, allocation_tag_id: ats})
       .where(types.join(" OR ")).where(query.join(" AND ")).uniq
+      .group("users.id, users.name").order("users.name")
   end
 
   ### triggers

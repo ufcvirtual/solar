@@ -43,21 +43,23 @@ class Discussion < Event
     errors.add(:name, I18n.t('discussions.error.existing_name')) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
   end
 
-  def opened?
-    schedule.end_date.nil? ? (schedule.start_date.to_date <= Date.today) : Date.today.between?(schedule.start_date.to_date, schedule.end_date.to_date)
-  end
+  def statuses(user_id = nil)
+    status = []
 
-  def closed?
-    schedule.end_date.nil? ? false : (schedule.end_date.to_date < Date.today)
-  end
+    if schedule.end_date.nil?
+      status << (schedule.start_date.to_date <= Date.today ? ["opened", "can_interact"] : "will_open")
+    elsif schedule.end_date.to_date < Date.today
+      status << "closed"
+      status << ["extra_time", "can_interact"] if (not(user_id.nil?) and (User.find(user_id).get_allocation_tags_ids_from_profiles(true, true) & allocation_tags.pluck(:id)).any? and (schedule.end_date.to_date + Discussion_Responsible_Extra_Time) >= Date.today)
+    elsif schedule.start_date.to_date <= Date.today
+      status << ["opened", "can_interact"]
+    end
 
-  def extra_time?(user_id)
-    ((self.allocation_tags.map {|at| at.is_observer_or_responsible?(user_id)}).include?(true) and self.closed?) ?
-      ((self.schedule.end_date.to_date + Discussion_Responsible_Extra_Time) >= Date.today) : false
+    status.flatten
   end
 
   def user_can_interact?(user_id)
-    ((opened? and not(closed?)) or extra_time?(user_id)) # considerando os nao iniciados
+    statuses(user_id).include?("can_interact")
   end
 
   def posts(opts = {}, allocation_tags_ids = nil)
@@ -69,11 +71,11 @@ class Discussion < Event
     query << "updated_at::timestamp(0) #{type} '#{opts["date"]}'::timestamp(0)" if opts.include?('date') and (not opts['date'].blank?)
     query << "parent_id IS NULL" unless opts["display_mode"] == 'list'
 
-    posts_by_allocation_tags_ids(allocation_tags_ids).where(query).order("updated_at #{opts["order"]}").limit("#{opts['limit']}").offset("#{(opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i}")
+    posts_by_allocation_tags_ids(allocation_tags_ids, {grandparent: false, query: query.join(" AND "), order: "updated_at #{opts["order"]}", limit: "#{opts['limit']}", offset: "#{(opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i}"})
   end
 
   def discussion_posts_count(plain_list = true, allocation_tags_ids = nil)
-    (plain_list ? posts_by_allocation_tags_ids(allocation_tags_ids).count : posts_by_allocation_tags_ids(allocation_tags_ids).where(parent_id: nil).count)
+    (plain_list ? posts_by_allocation_tags_ids(allocation_tags_ids).count : posts_by_allocation_tags_ids(allocation_tags_ids).collect{|a| a if a.parent.nil?}.compact.count)
   end
 
   def count_posts_after_and_before_period(period, allocation_tags_ids = nil)
@@ -82,27 +84,27 @@ class Discussion < Event
   end
 
   def count_posts_before_period(period, allocation_tags_ids = nil)
-    posts_by_allocation_tags_ids(allocation_tags_ids).where("date_trunc('seconds', updated_at) < '#{period.first}'").count # trunc seconds - discard miliseconds
+    posts_by_allocation_tags_ids(allocation_tags_ids, {query: "date_trunc('seconds', updated_at) < '#{period.first}'"}).count # trunc seconds - discard miliseconds
   end
 
   def count_posts_after_period(period, allocation_tags_ids = nil)
-    posts_by_allocation_tags_ids(allocation_tags_ids).where("date_trunc('seconds', updated_at) > '#{period.last}'").count
+    posts_by_allocation_tags_ids(allocation_tags_ids, {query: "date_trunc('seconds', updated_at) > '#{period.last}'"}).count
   end
 
   # devolve a lista com todos os posts de uma discussion em ordem decrescente de updated_at, apenas o filho mais recente de cada post será adiconado à lista
   def latest_posts(allocation_tags_ids = nil)
-    posts_by_allocation_tags_ids(allocation_tags_ids).select("DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level")
+    posts_by_allocation_tags_ids(allocation_tags_ids, {select: "DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level"})
   end
 
   def can_remove_groups?(groups)
     discussion_posts.empty? # não pode dar unbind nem remover se fórum possuir posts
   end
 
-  def posts_by_allocation_tags_ids(allocation_tags_ids = nil)
-    allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids).map(&:related).flatten.compact.uniq unless allocation_tags_ids.nil?
-    posts = discussion_posts
-    posts = posts.joins(academic_allocation: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids}) unless allocation_tags_ids.nil?
-    posts
+  def posts_by_allocation_tags_ids(allocation_tags_ids = nil, opt = {grandparent: true, query: "", order: "updated_at", limit: nil, offset: nil, select: "discussion_posts.*"})
+    allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids).map(&:related).flatten.compact.uniq
+    posts = discussion_posts.where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
+    posts = posts.joins(academic_allocation: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids}) unless allocation_tags_ids.blank?
+    (opt[:grandparent] ? posts.map(&:grandparent).uniq.compact : posts.compact.uniq)
   end
 
   def resume(allocation_tags_ids = nil)
@@ -117,9 +119,10 @@ class Discussion < Event
     }
   end
 
-  def status
-    return "2" if closed?
-    return "1" if opened?
+  def status(user = nil)
+    discussion_status = statuses(user)
+    return "1" if discussion_status.include?("opened") or discussion_status.include?("extra_time")
+    return "2" if discussion_status.include?("closed")
     return "0" # nao iniciado
   end
 

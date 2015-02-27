@@ -10,6 +10,7 @@ class PostsController < ApplicationController
 
   ## GET /discussions/1/posts
   ## GET /discussions/1/posts/20120217/[news, history]/order/asc/limit/10
+  require 'will_paginate/array'
   def index
     @discussion, @user = Discussion.find(params[:discussion_id]), current_user
 
@@ -34,7 +35,7 @@ class PostsController < ApplicationController
       p['date'] = DateTime.parse(p['date']) if params[:format] == "json" and p.include?('date')
       @posts    = @discussion.posts(p, @allocation_tags)
     else
-      @posts = Post.reorder_by_latest_posts(@discussion.posts_by_allocation_tags_ids(@allocation_tags).where(parent_id: nil)) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
+      @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
     end
 
     respond_to do |format|
@@ -58,7 +59,7 @@ class PostsController < ApplicationController
     @discussion = Discussion.find(params[:discussion_id])
 
     allocation_tags = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
-    @posts = @discussion.posts.where(academic_allocations: {allocation_tag_id: allocation_tags}, user_id: @user.id)
+    @posts = Post.joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: "Discussion"}, user_id: @user.id)
 
     respond_to do |format|
       format.html { render layout: false }

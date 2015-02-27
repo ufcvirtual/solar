@@ -164,12 +164,11 @@ class AllocationsController < ApplicationController
 
   def groups_that_user_have_permission
     profiles = current_user.profiles_with_access_on('manage_enrolls', 'allocations').pluck(:id)
-    # groups
     current_user.allocations.where(profile_id: profiles).where('allocation_tag_id IS NOT NULL').map(&:groups).flatten.uniq.compact
   end
 
   def allocate_and_render_result(user, profile, status, success_message = t('allocations.request.success.allocated'))
-    result = user.allocate_in(allocation_tag_ids: @allocation_tags_ids.split(' ').flatten, profile: profile, status: status, by_user: current_user.id)
+    result = user.allocate_in(allocation_tag_ids: @allocation_tags_ids.split(' ').uniq.flatten, profile: profile, status: status, by_user: current_user.id)
     render_result_designate(result, success_message)
   end
 

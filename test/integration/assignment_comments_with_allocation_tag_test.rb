@@ -38,7 +38,7 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
     get @quimica_tab
 
     assert_difference("SentAssignment.count") do
-      get new_assignment_comment_path assignment_id: @atividadeG.id
+      get new_assignment_comment_path assignment_id: @atividadeG.id, group_id: group_assignments(:a2).id
     end
 
     assert_difference("AssignmentComment.count") do

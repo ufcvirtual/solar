@@ -147,6 +147,10 @@ module Taggable
 
     User.joins(:allocations).where("allocations.allocation_tag_id IN (?)", (related ? self.allocation_tag.related({upper:true}) : self.allocation_tag.id) )
       .where(query).uniq
-  end  
+  end
+
+  def related(options={upper: true, lower: true, name: nil})
+    RelatedTaggable.related(self, options)
+  end
 
 end

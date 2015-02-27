@@ -32,11 +32,9 @@ class  DiscussionTest < ActiveSupport::TestCase
   end
 
   test "se o forum esta fechado" do
-    closed = discussions(:forum_7).closed?
-    assert not(closed)
+    assert not(discussions(:forum_7).statuses.include?("closed"))
 
-    closed = discussions(:forum_6).closed?
-    assert closed
+    assert discussions(:forum_6).statuses.include?("closed")
   end
 
 end

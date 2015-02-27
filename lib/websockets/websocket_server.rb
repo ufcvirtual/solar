@@ -6,12 +6,12 @@ require "rails"
 # Always when this file is changed, the production proccess must be killed and then the upgrade of project must be done
 
 class WebsocketServer
-  config = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]
+  config = YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['websocket']
   EM.run {
     @subs = {} # list with subscribed users
-    EventMachine::WebSocket.start(host: config["host"], port: config["port"]) do |ws|
+    EventMachine::WebSocket.start(host: config['host'], port: config['port']) do |ws|
       ws.onopen { |data|
-        academic_allocation_id = data.path.split("/")[1]
+        academic_allocation_id = data.path.split('/')[1]
         ac_subs = @subs[academic_allocation_id.to_sym]
         # add new client
         if ac_subs.nil?
@@ -22,7 +22,7 @@ class WebsocketServer
       }
       ws.onmessage { |msg|
         # get academic_allocation
-        subs = @subs[msg.split(":").last.delete('"}').to_sym].dup
+        subs = @subs[msg.split(':').last.delete('"}').to_sym].dup
         subs.delete(ws) # remove the client who have sent the message
         subs.each {|s| s.send msg }
       }

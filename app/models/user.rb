@@ -135,7 +135,7 @@ class User < ActiveRecord::Base
 
   def unique_cpf
     cpf_to_check = self.class.cpf_without_mask(cpf)
-    cpf_of_user = self.class.cpf_without_mask(User.find(id).cpf) rescue ''
+    cpf_of_user  = self.class.cpf_without_mask(User.find(id).cpf) rescue ''
 
     users = User.where(cpf: cpf_to_check) if new_record? or cpf_to_check != cpf_of_user
 
@@ -180,7 +180,7 @@ class User < ActiveRecord::Base
 
   # faltando pegar apenas alocacoes validas
   def all_allocation_tags(objects = false)
-    allocation_tags.map {|at| at.related(objects: objects)}.flatten.uniq
+    allocation_tags.collect! {|at| RelatedTaggable.related(at)}.flatten.uniq
   end
 
   def to_msg
@@ -192,16 +192,20 @@ class User < ActiveRecord::Base
     }
   end
 
-  ## outros metodos
-
-  def groups(profile_id = nil, status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil)
+  def groups(profile_id = nil, status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil, offer_id = nil, group_status = true)
     query = ["allocations.allocation_tag_id IS NOT NULL"]
     query << "allocations.status = #{status}"                        unless status.blank?
     query << "allocations.profile_id = #{profile_id}"                unless profile_id.blank?
-    query << "curriculum_units.id = #{curriculum_unit_id}"           unless curriculum_unit_id.blank?
-    query << "curriculum_unit_types.id = #{curriculum_unit_type_id}" unless curriculum_unit_type_id.blank?
+    ats = allocations.where(query.join(" AND ")).pluck(:allocation_tag_id)
 
-    allocations.includes(allocation_tag: [group: [offer: {curriculum_unit: :curriculum_unit_type}]]).where(query.join(" AND ")).map(&:groups).compact.flatten
+    query = []
+    query << "curriculum_unit_id = #{curriculum_unit_id}"            unless curriculum_unit_id.blank?
+    query << "curriculum_unit_type_id = #{curriculum_unit_type_id}"  unless curriculum_unit_type_id.blank?
+    query << "offer_id = #{offer_id}"                                unless offer_id.blank?
+    Group.joins(offer: :semester).where(id: RelatedTaggable.where("group_at_id IN (?) OR offer_at_id IN (?) OR course_at_id IN (?) OR curriculum_unit_at_id IN (?) 
+                                                                   OR curriculum_unit_type_at_id IN (?)", ats, ats, ats, ats, ats)
+         .where(query.join(" AND "), status: group_status).pluck(:group_id).uniq)
+         .select("DISTINCT groups.id, semesters.*, groups.*").order('semesters.name DESC, groups.code ASC')
   end
 
   ## profiles: [], contexts: [], general_context: true, allocation_tag_id
@@ -227,49 +231,63 @@ class User < ActiveRecord::Base
 
   def profiles_with_access_on(action, controller, allocation_tag_id = nil, only_id = false)
     if allocation_tag_id.nil?
-      profiles = self.profiles.joins(:resources).
-        where(resources: {action: action, controller: controller}).
-        order("profiles.id DESC")
+      profiles = Profile.joins(:allocations, :resources)
+        .where(allocations: { user_id: id }, resources: {action: action, controller: controller})
+        .order("profiles.id DESC").uniq
     else
-      profiles = self.profiles.joins(:resources).
-        where(allocations: { allocation_tag_id: allocation_tag_id }, resources: {action: action, controller: controller}).
-        order("profiles.id DESC")
+      profiles = Profile.joins(:allocations, :resources)
+        .where(allocations: { allocation_tag_id: allocation_tag_id, user_id: id }, resources: {action: action, controller: controller})
+        .order("profiles.id DESC").uniq
     end
-
-    return (only_id) ? profiles.map { |p| p.id.to_i } : profiles
+    
+    (only_id) ? profiles.pluck(:id) : profiles
   end
+
+  def get_allocation_tags_ids_from_profiles(responsible = true, observer = false)
+      query = {
+        status: Allocation_Activated,
+        profiles: { status: true }
+      }
+
+      query_type = []
+      query_type << "cast(profiles.types & :responsible as boolean) OR cast(profiles.types & :coord as boolean)" if responsible
+      query_type << "cast(profiles.types & :observer as boolean)" if observer
+
+      return false if query_type.empty?
+
+      AllocationTag.where(id: allocations.joins(:profile).where(query)
+          .where(query_type.join(" OR "), responsible: Profile_Type_Class_Responsible, observer: Profile_Type_Observer, coord: Profile_Type_Coord))
+          .map{|at| at.related({upper: true})}
+    end
 
   # Retorna os ids das allocations_tags ativadas de um usuário
   def activated_allocation_tag_ids(related = true, interacts = false)
-    map   = related   ? "related" : "id"
     query = interacts ? "cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)" : ""
-
-    allocations.joins(:profile).where(allocations: {status: Allocation_Activated.to_i}).where(query).map(&:allocation_tag).compact.map(&map.to_sym).flatten.uniq
+    allocation_tags = AllocationTag.joins(allocations: :profile).where(allocations: {user_id: id, status: Allocation_Activated.to_i}).where(query)
+    (related ? allocation_tags.collect!{|at| at.related}.flatten.uniq : allocation_tags.pluck(:id))
   end
 
   # Returns all allocation_tags_ids with activated access on informed actions of controller
   # if all is true         => recover all related
   # if include_nil is true => include nil if some allocation is not rellated to any allocation_tag
   def allocation_tags_ids_with_access_on(actions, controller, all=false, include_nil=false)
-    allocations_tags = allocations.joins(profile: :resources)
-      .where(resources: {action: actions, controller: controller}, status: Allocation_Activated)
-      .select("DISTINCT allocation_tag_id").map(&:allocation_tag)
-    has_nil = (include_nil and allocations_tags.include?(nil))
-    allocations_tags = allocations_tags.compact.map{|at| (all ? at.related : at.related({lower: true}))}.flatten.uniq
-    allocations_tags = [allocation_tags, nil].flatten if has_nil
-    allocations_tags
+    allocations = Allocation.joins(profile: :resources).where(resources: {action: actions, controller: controller}, allocations: {status: Allocation_Activated, user_id: id}).select("DISTINCT allocation_tag_id, allocations.id")
+    allocation_tags = AllocationTag.joins(:allocations).where(allocations: {id: allocations.pluck(:id)}).pluck(:id)
+
+    has_nil = (include_nil and allocations.where(allocation_tag_id: nil).any?)
+    allocation_tags = RelatedTaggable.related_from_array_ats(allocation_tags.compact, (all ? {} : {lower: true})) 
+    allocation_tags << nil if has_nil
+    allocation_tags
   end
 
   # Returns user resources list as [{controller: :action}, ...] at informed allocation_tags_ids
   def resources_by_allocation_tags_ids(allocation_tags_ids)
-    allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids.split(" ")).map{|at| at.related(upper: true)}.flatten.uniq
+    allocation_tags_ids = RelatedTaggable.related_from_array_ats(allocation_tags_ids.split(" "), {upper: true})
     profiles.joins(:resources).where("allocations.allocation_tag_id IN (?) AND allocations.status = ?", allocation_tags_ids, Allocation_Activated)
-      .map(&:resources).compact.flatten.map{|resource|
+      .map(&:resources).compact.flatten.map{ |resource|
         {resource.controller.to_sym => resource.action.to_sym}
       }
   end
-
-  ## metodos de classe
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
@@ -294,15 +312,13 @@ class User < ActiveRecord::Base
     users.select("DISTINCT users.id").select("users.*").order("name")
   end
 
-  def info_at_allocation_tag(allocation_tag_id)
+  def info_at_allocation_tag(allocation_tag_id, opt = {messages: false})
     allocation_tags_ids = AllocationTag.find(allocation_tag_id).related
-    public_files = PublicFile.where(user_id: self.id, allocation_tag_id: allocation_tags_ids).count
     posts        = Post.joins(:academic_allocation).where(academic_allocations: {academic_tool_type: "Discussion", allocation_tag_id: allocation_tags_ids}, discussion_posts: {user_id: self.id}).count
-    access       = LogAccess.where(allocation_tag_id: allocation_tags_ids, user_id: self.id, log_type: LogAccess::TYPE[:group_access]).count
-    profiles     = Allocation.where(allocation_tag_id: allocation_tags_ids, user_id: self.id, status: Allocation_Activated).map(&:profile).uniq.map(&:name).join(", ")
-    messages     = Message.user_outbox(id, allocation_tags_ids, false).count
+    access       = LogAccess.where(allocation_tag_id: allocation_tags_ids, user_id: id, log_type: LogAccess::TYPE[:group_access]).count
+    messages     = Message.user_outbox(id, allocation_tags_ids, false).count if opt[:messages]
 
-    {public_files: public_files, posts: posts, access: access, profiles: profiles, messages: messages}
+    {posts: posts, access: access, messages: messages}
   end
 
   ################################
@@ -513,9 +529,9 @@ class User < ActiveRecord::Base
     (researcher ? I18n.t(:hidden_info) : try(method.to_sym))
   end
 
-  # def info_photo(researcher = false)
-    # (researcher ? ["no_image.png", size: "40x40"] : [photo.url(:forum), alt: [t(:mysolar_alt_img_user), nick].join(" "))])
-  # end
+  def user_photo(size=:medium)
+    (photo_file_name and File.exist?(File.join(Rails.root.to_s, photo.url(size, timestamp: false)))) ? photo.url(size) : "no_image.png"
+  end
 
   private
 

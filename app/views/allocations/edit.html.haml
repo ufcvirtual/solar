@@ -1,7 +1,7 @@
 %td
   %input{type: "checkbox", name: @allocation.id, value: @allocation.id, class: "cbx_value"}
 %td= @allocation.user.name
-%td
+%td.edit_group
   - if @allocation.can_change_group?
     = select_tag(:group_id, options_from_collection_for_select(@allocation.group.offer.groups, :id, :code, @allocation.group.id))
   - else

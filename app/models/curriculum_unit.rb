@@ -40,11 +40,6 @@ class CurriculumUnit < ActiveRecord::Base
     Course.find_by_name_and_code(name, code) if curriculum_unit_type_id == 3
   end
 
-  ## Participantes que sao determinado tipo de perfil
-  def self.class_participants_by_allocations_tags_and_is_profile_type(allocation_tags, profile_flag)
-    class_participants_by_allocations(allocation_tags, profile_flag)
-  end
-
   ## Todas as UCs do usuario, atraves das allocations
   def self.all_by_user(user)
     al              = user.allocations.where(status: Allocation_Activated)
@@ -54,33 +49,6 @@ class CurriculumUnit < ActiveRecord::Base
     ucs_by_groups   = al.map(&:group).compact.map(&:curriculum_unit).uniq
 
     return [my_direct_uc + ucs_by_offers + ucs_by_courses + ucs_by_groups].flatten.compact.uniq.sort
-  end
-
-  def self.class_participants_by_allocations(allocation_tags, profile_flag, have_profile = true)
-    negative = have_profile ? '' : 'NOT'
-
-    query = <<-SQL
-      SELECT t3.id,
-             initcap(t3.name) AS name,
-             t3.photo_file_name,
-             t3.photo_updated_at,
-             t3.email,
-             COUNT(t5.id) AS u_public_files,
-             replace(translate(array_agg(distinct t4.name)::text,'{""}',''),',',', ') AS profile_name,
-             translate(array_agg(t4.id)::text,'{}','') AS profile_id
-        FROM allocations     AS t1
-        JOIN allocation_tags AS t2 ON t1.allocation_tag_id = t2.id
-        JOIN users           AS t3 ON t1.user_id = t3.id
-        JOIN profiles        AS t4 ON t4.id = t1.profile_id
-   LEFT JOIN public_files    AS t5 ON t5.user_id = t3.id AND t5.allocation_tag_id IN (:allocation_tags)
-       WHERE t2.id IN (:allocation_tags)
-         AND #{negative} cast(t4.types & ':profile_flag' as boolean)
-         AND t1.status = #{Allocation_Activated}
-       GROUP BY t3.id, t3.name, t3.photo_file_name, t3.email, t3.photo_updated_at
-       ORDER BY t3.name, profile_name
-    SQL
-
-    User.find_by_sql [query, {allocation_tags: allocation_tags, profile_flag: profile_flag}]
   end
 
   ## triggers

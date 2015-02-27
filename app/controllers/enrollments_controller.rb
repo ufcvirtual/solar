@@ -35,7 +35,7 @@ class EnrollmentsController < ApplicationController
     else
       @group           = Group.find(params[:group_id])
       @curriculum_unit = @group.offer.curriculum_unit
-      @responsibles    = @group.responsibles
+      @responsibles = AllocationTag.get_participants(@group.allocation_tag.id, {responsibles: true})
     end
   end
 

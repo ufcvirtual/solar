@@ -103,3 +103,14 @@
     margin-right: auto;
   }
 }
+
+.tb_list.enrollments{
+  %tr.lines{
+    %th.student, %th.group{
+      width: 130px;
+    }
+  }
+  select#group_id{
+    width: 130px;
+  }
+}

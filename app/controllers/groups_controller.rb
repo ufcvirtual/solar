@@ -102,12 +102,22 @@ class GroupsController < ApplicationController
     raise error.class
   end
 
+  def tags
+    tool_model = model_by_tool_type(params[:tool_type])
+    @tool = tool_model.find(params[:tool_id])
+    @groups = @tool.groups
+
+    @paths = {remove: remove_group_from_assignments_path(id: "param_id", tool_id: @tool.id), 
+              unbind: unbind_group_from_assignments_path(id: "param_id", tool_id: @tool.id) }
+  end
+
   # desvincular/remover/adicionar turmas para determinada ferramenta
   def change_tool
     groups = Group.where(id: params[:id].split(","))
-    authorize! :change_tool, Group, on: [groups.map(&:allocation_tag).map(&:id)]
+    authorize! :change_tool, Group, on: [RelatedTaggable.where(group_id: params[:id].split(",")).pluck(:group_at_id)]
 
     begin
+
       tool_model = model_by_tool_type(params[:tool_type])
       tool = tool_model.find(params[:tool_id])
 
@@ -123,6 +133,7 @@ class GroupsController < ApplicationController
         unless tool.groups.size == groups.size # se não for deixar a ferramenta sem turmas
           case params[:type]
             when "unbind" # desvincular uma turma
+
               raise "must_have_group" if tool.academic_allocations.size == academic_allocations.size
 
               new_tool = tool_model.create(tool.attributes)
@@ -132,6 +143,7 @@ class GroupsController < ApplicationController
               new_tool.update_attributes(schedule_id: Schedule.create(tool.schedule.attributes).id) if tool.respond_to?(:schedule)
               # copia as dependências pro novo objeto caso existam
               new_tool.copy_dependencies_from(tool) if new_tool.respond_to?(:copy_dependencies_from)
+              
             when "remove" # remover uma turma
               raise "cant_transfer_dependencies" unless (not tool.respond_to?(:can_remove_groups?) or tool.can_remove_groups?(groups))
               academic_allocations.destroy_all
@@ -194,7 +206,7 @@ class GroupsController < ApplicationController
     end
 
     def render_group_success_json(method)
-      render json: {success: true, notice: t(method, 'groups.success')}
+      render json: {success: true, notice: t("groups.success.#{method}")}
     end
 
 end

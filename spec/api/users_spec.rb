@@ -147,7 +147,6 @@ describe "Users" do
 
       it "when params has non existing group" do
         get "/api/v1/profiles/1/users", groups_id: [100]
-
         response.status.should eq(404)
       end
 

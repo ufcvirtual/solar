@@ -13,8 +13,8 @@
       %thead
         %tr.lines
           %th.no_sort.center{style: 'width: 25px;'}= check_box_tag :all_allocations, false, false, :"data-children-names" => "c_"
-          %th= t(".manage_student")
-          %th{style: 'width:120px'}= t(".manage_group")
+          %th.student= t(".manage_student")
+          %th.group{style: 'width:120px'}= t(".manage_group")
           %th{style: 'width:120px'}= t(".manage_curriculum_unit")
           %th{style: 'width:100px'}= t(".manage_status")
           %th.no_sort{style: 'width:120px'}= t(".manage_options")

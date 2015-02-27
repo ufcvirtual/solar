@@ -78,6 +78,7 @@ class MessagesController < ApplicationController
   def create
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
 
+
     # é uma resposta
     if params[:message][:original].present?
       @original = Message.find(params[:message].delete(:original)) # precisa para a view de new, caso algum problema aconteca

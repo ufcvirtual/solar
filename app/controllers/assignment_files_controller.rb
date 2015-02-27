@@ -17,16 +17,21 @@ class AssignmentFilesController < ApplicationController
 
   def create
     authorize! :create, AssignmentFile, on: [active_tab[:url][:allocation_tag_id]]
-    raise CanCan::AccessDenied unless @own_assignment = Assignment.owned_by_user?(current_user.id, {sent_assignment: SentAssignment.find(assignment_file_params[:sent_assignment_id])})
+
+    sa = SentAssignment.find(assignment_file_params[:sent_assignment_id]).id rescue CanCan::AccessDenied
+    raise CanCan::AccessDenied unless @own_assignment = Assignment.owned_by_user?(current_user.id, {sent_assignment_id: sa})
 
     @assignment_file = AssignmentFile.new assignment_file_params
     @assignment_file.user = current_user
 
-    if @assignment_file.save
+    if @assignment_file
       render partial: "file", locals: {file: @assignment_file}
     else
       render json: {success: false, alert: @assignment_file.errors.full_messages.join(", ")}, status: :unprocessable_entity
     end
+
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def destroy

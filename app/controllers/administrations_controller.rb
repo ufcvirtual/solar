@@ -6,8 +6,6 @@ class AdministrationsController < ApplicationController
 
   layout false, except: [:users, :indication_users, :indication_users_specific, :indication_users_global, :allocation_approval, :lessons, :logs, :import_users, :responsibles]
 
-  ## USERS
-
   def users
     authorize! :users, Administration
 

@@ -96,31 +96,30 @@ class Offer < ActiveRecord::Base
     [enrollment_start_date, enrollment_end_date]
   end
 
-  def self.currents(year = nil, verify_end_date = nil)
-    unless year.class == Date
-      year = Date.parse("#{year}-01-01") rescue Date.today
-    end
+  def self.currents(opt = {year: nil, object: false, user_id: nil, profiles: nil})
+    opt[:year] = (opt[:year] ? Date.parse("#{opt[:year]}-01-01") : Date.today) unless opt[:year].class == Date
 
-    offers = joins(:period_schedule).includes(:allocation_tag)
-    offers = unless year # se o ano passado for nil, pega as ofertas do ano corrente em diante
-      first_day_of_year = Date.today.beginning_of_year
-      offers.where("schedules.end_date >= ?", first_day_of_year)
-    else # se foi definido, pega apenas daquele ano
-      if verify_end_date
-        offers.where("( schedules.end_date >= ? )", year)
-      else
-        last_day_of_year, first_day_of_year = year.end_of_year, year.beginning_of_year
-        offers.where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?) OR (schedules.start_date <= ? AND schedules.end_date >= ?)",
-          first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year)
-      end
-    end
+    options    = {date: (opt[:year].nil? ? Date.today : opt[:year]), start_of_year: (opt[:year].nil? ? Date.today.beginning_of_year : opt[:year].beginning_of_year), end_of_year: (opt[:year].nil? ? nil : opt[:year].end_of_year), user_id: opt[:user_id]}
+    query      = ((opt[:year].nil?) ? "((schedules.end_date BETWEEN :start_of_year AND :end_of_year) OR (schedules.start_date BETWEEN :start_of_year AND :end_of_year) OR
+     (schedules.start_date <= :start_of_year AND schedules.end_date >= :end_of_year))" : "((:date BETWEEN schedules.start_date AND schedules.end_date) OR
+     (schedules.start_date <= :date AND schedules.end_date >= :date))")
+    rts        = RelatedTaggable.joins(:schedule).where(query, options.slice(:date, :start_of_year, :end_of_year))
 
-    # recupera as ofertas que mantem a data do semestre ativo
-    c_s = Semester.currents(year, verify_end_date).pluck(:id)
-    current_semester_offers = joins(:semester).where(semesters: {id: c_s}).where("offers.offer_schedule_id IS NULL").pluck(:id) # period schedule is null
+    query = (opt[:profiles] ? "allocations.profile_id IN (?)" : "")
+    rts   = rts.joins("JOIN allocations ON (related_taggables.group_at_id = allocations.allocation_tag_id OR related_taggables.offer_at_id = allocations.allocation_tag_id 
+      OR related_taggables.course_at_id = allocations.allocation_tag_id OR related_taggables.curriculum_unit_at_id = allocations.allocation_tag_id 
+      OR related_taggables.curriculum_unit_type_at_id = allocations.allocation_tag_id)").where(allocations: {user_id: opt[:user_id], status: Allocation_Activated}).where(query, opt[:profiles]) if opt[:user_id]
 
-    where(id: [current_semester_offers, offers.pluck(:id)].flatten)
-  end
+    query = []
+    query << "related_taggables.curriculum_unit_id = :curriculum_unit_id"  if opt[:curriculum_unit_id].present?
+    query << "related_taggables.course_id = :course_id"                    if opt[:course_id].present?
+    query << "related_taggables.curriculum_unit_type_id = :curriculum_unit_type_id" if opt[:curriculum_unit_type_id].present?
+    rts = rts.where(query.join(" AND "), opt.slice(:curriculum_unit_id, :course_id, :curriculum_unit_type_id)) if query.any?
+      
+
+    ids = rts.pluck(:offer_id).uniq
+    opt[:object] ? where(id: ids) : ids
+  end 
 
   def has_any_lower_association?
     self.groups.count > 0
@@ -149,25 +148,20 @@ class Offer < ActiveRecord::Base
   # More accesses on the last 3 weeks > Have groups > Offer name ASC
   ##
   def self.offers_info_from_user(user)
-    currents   = Offer.currents(Date.today, true)
-    u_profiles = user.profiles_with_access_on("show", "curriculum_units", nil, true)
-    u_offers   = AllocationTag.includes(:offer).where(id: user.allocations.where(status: Allocation_Activated, profile_id: u_profiles).uniq.pluck(:allocation_tag_id)).map(&:offers).flatten.compact
-    offers     = (currents & u_offers)
-
-    allocations_info = offers.collect{ |offer|
-      ats = offer.allocation_tag.related
-      uc, course = offer.curriculum_unit, offer.course
+    allocations_info = Offer.currents({object: true, user_id: user.id, profiles: user.profiles_with_access_on("show", "curriculum_units", nil, true)}).collect{ |offer|
+      at  = offer.allocation_tag
+      ats = at.related
+      uc  = offer.curriculum_unit
+      course = offer.course
         {
           id: offer.id,
-          info: offer.allocation_tag.info,
-          at: offer.allocation_tag.id,
-          related: offer.allocation_tag.related,
-          name: (uc.nil? ? course.name.titleize : uc.name.titleize),
-          has_groups: not(offer.groups.empty?),
+          at: at.id,
+          related: ats,
+          has_groups: offer.groups.any?,
           uc: uc,
           course: course,
           semester_name: offer.semester.name,
-          profiles: user.allocations.includes(:profile).where("allocation_tag_id IN (?)", ats).select("DISTINCT profile_id, allocations.*").map(&:profile).map(&:id).uniq.join(", ")
+          profiles: Allocation.where(allocation_tag_id: ats, user_id: user.id).pluck(:profile_id).uniq.join(",")
         }
     }.flatten
 

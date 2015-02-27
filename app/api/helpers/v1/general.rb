@@ -10,6 +10,7 @@ module V1::General
 
   def verify_or_create_user(cpf)
     user = User.find_by_cpf(cpf.delete('.').delete('-'))
+
     return user if user
 
     user = User.new cpf: cpf

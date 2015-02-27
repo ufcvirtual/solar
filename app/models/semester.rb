@@ -37,9 +37,7 @@ class Semester < ActiveRecord::Base
   end
 
   def self.currents(year = nil, verify_end_date = nil)
-    unless year.class == Date
-      date = Date.parse("#{year}-01-01") rescue Date.today
-    end
+    date = Date.parse("#{year}-01-01") rescue Date.today unless year.class == Date
 
     semesters = joins(:offer_schedule)
     semesters = unless year # se o ano passado for nil, pega os semestres do ano corrente em endiante
@@ -52,6 +50,7 @@ class Semester < ActiveRecord::Base
         semesters.where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?) OR (schedules.start_date <= ? AND schedules.end_date >= ?)", first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year)
       end
     end
+
   end
 
   def self.all_by_uc_or_course(params = {}, combobox=false)
@@ -71,9 +70,9 @@ class Semester < ActiveRecord::Base
 
     year = Date.parse("#{params[:period]}-01-01") rescue Date.today
 
-    current_semesters = Semester.joins("LEFT JOIN offers ON offers.semester_id = semesters.id").currents(year).where(query.join(" AND "))
+    current_semesters = Semester.joins("LEFT JOIN offers ON offers.semester_id = semesters.id").currents(year).where(query.join(" AND ")).uniq
     query << "semester_id NOT IN (#{current_semesters.map(&:id).join(',')})" unless current_semesters.empty? # retirando semestres ja listados
-    semesters_of_current_offers = Offer.currents(year).where(query.join(" AND ")).map(&:semester)
+    semesters_of_current_offers = Offer.currents({year: year, object: true, curriculum_unit_type_id: params[:type_id], course_id: params[:course_id], curriculum_unit_id: params[:uc_id]}).where(query.join(" AND ")).map(&:semester)
 
     return (current_semesters + semesters_of_current_offers).uniq
   end

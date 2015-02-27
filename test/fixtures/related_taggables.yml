@@ -1,0 +1,528 @@
+## Introducao a linguistica
+rt1:
+  id: 1
+  group_id: 1
+  offer_id: 1
+  semester_id: 2
+  course_id: 10
+  curriculum_unit_id: 1
+  curriculum_unit_type_id: 3
+  group_at_id: 1
+  offer_at_id: 4
+  course_at_id: 38
+  curriculum_unit_at_id: 7
+  curriculum_unit_type_at_id: 44
+  offer_schedule_id: 35
+  group_status: true
+
+## teoria da literatura I
+al2:
+  id: 2
+  group_id: 2
+  offer_id: 2
+  semester_id: 2
+  course_id: 1
+  curriculum_unit_id: 2
+  curriculum_unit_type_id: 1
+  group_at_id: 2
+  offer_at_id: 5
+  course_at_id:
+  curriculum_unit_at_id: 12
+  curriculum_unit_type_at_id: 42
+  offer_schedule_id:  35
+  group_status: true
+
+## quimica I
+al3:
+  id: 3
+  group_id: 3
+  offer_id: 3
+  semester_id: 2
+  course_id: 2
+  curriculum_unit_id: 3
+  curriculum_unit_type_id: 2
+  group_at_id: 3
+  offer_at_id: 6
+  course_at_id: 19
+  curriculum_unit_at_id: 13
+  curriculum_unit_type_at_id: 43
+  offer_schedule_id: 35
+  group_status: true
+
+## introducao a linguistica
+al4:
+  id: 4
+  offer_id: 1
+  semester_id: 2
+  course_id: 10
+  curriculum_unit_id: 1
+  curriculum_unit_type_id: 3
+  offer_at_id: 4
+  course_at_id: 38
+  curriculum_unit_at_id: 7
+  curriculum_unit_type_at_id: 44
+  offer_schedule_id: 35
+
+## teoria da literatura I
+al5:
+  id: 5
+  offer_id: 2
+  semester_id: 2
+  course_id: 1
+  curriculum_unit_id: 2
+  curriculum_unit_type_id: 1
+  offer_at_id: 5
+  course_at_id: 18
+  curriculum_unit_at_id: 12
+  curriculum_unit_type_at_id: 42
+  offer_schedule_id: 35
+
+
+## quimica I
+al6:
+  id: 6
+  offer_id: 3
+  semester_id: 2
+  course_id: 2
+  curriculum_unit_id: 3
+  curriculum_unit_type_id: 2
+  offer_at_id: 6
+  course_at_id: 19
+  curriculum_unit_at_id: 13
+  curriculum_unit_type_at_id: 43
+  offer_schedule_id: 35
+
+
+## introducao a linguistica
+al7:
+  id: 7
+  curriculum_unit_id: 1
+  curriculum_unit_type_id: 3
+  curriculum_unit_at_id: 7
+  curriculum_unit_type_at_id: 44
+
+## literatura brasileria I
+al8:
+  id: 8
+  group_id: 5
+  offer_id: 5
+  semester_id: 2
+  course_id: 2
+  curriculum_unit_id: 5
+  curriculum_unit_type_id: 5
+  group_at_id: 8
+  offer_at_id: 16
+  course_at_id: 19
+  curriculum_unit_at_id: 10
+  curriculum_unit_type_at_id: 46
+  offer_schedule_id: 35
+  group_status: true
+
+al9:
+  id: 9
+  group_id: 6
+  offer_id: 3
+  semester_id: 2
+  course_id: 2
+  curriculum_unit_id: 3
+  curriculum_unit_type_id: 2
+  group_at_id: 9
+  offer_at_id: 6
+  course_at_id: 19
+  curriculum_unit_at_id: 13
+  curriculum_unit_type_at_id: 43
+  offer_schedule_id: 35
+  group_status: true
+
+al10:
+  id: 10
+  curriculum_unit_id: 5
+  curriculum_unit_type_id: 5
+  curriculum_unit_at_id: 10
+  curriculum_unit_type_at_id: 46
+
+## quimica I
+al11:
+  id: 11
+  group_id: 7
+  offer_id: 3
+  semester_id: 2
+  course_id: 2
+  curriculum_unit_id: 3
+  curriculum_unit_type_id: 2
+  group_at_id: 11
+  offer_at_id: 6
+  course_at_id: 19
+  curriculum_unit_at_id: 13
+  curriculum_unit_type_at_id: 43
+  offer_schedule_id: 35
+  group_status: true
+
+## Unidade Curriculares
+## Teoria da Literatura I
+al12:
+  id: 12
+  curriculum_unit_id: 2
+  curriculum_unit_type_id: 2
+  curriculum_unit_at_id: 12
+  curriculum_unit_type_at_id: 42
+
+## Quimica I
+al13:
+  id: 13
+  curriculum_unit_id: 3
+  curriculum_unit_type_id: 2
+  curriculum_unit_at_id: 13
+  curriculum_unit_type_at_id: 43
+
+## Turma FOR de literatura brasileira
+al14:
+  id: 14
+  group_id: 8
+  offer_id: 6
+  semester_id: 3
+  course_id: 10
+  curriculum_unit_id: 1
+  curriculum_unit_type_id: 3
+  group_at_id: 14
+  offer_at_id: 17
+  course_at_id: 38
+  curriculum_unit_at_id: 7
+  curriculum_unit_type_at_id: 44
+  offer_schedule_id: 36
+  group_status: true
+
+## ofertas
+al15:
+  id: 15
+  offer_id: 4
+  semester_id: 2
+  course_id: 1
+  curriculum_unit_id: 4
+  curriculum_unit_type_id:
+  offer_at_id: 15
+  course_at_id:
+  curriculum_unit_at_id:
+  curriculum_unit_type_at_id:
+  offer_schedule_id: 35
+
+al16:
+  id: 16
+  offer_id: 5
+  semester_id: 2
+  course_id: 2
+  curriculum_unit_id: 5
+  curriculum_unit_type_id: 5
+  offer_at_id: 16
+  course_at_id: 19
+  curriculum_unit_at_id: 10
+  curriculum_unit_type_at_id: 46
+  offer_schedule_id: 35
+
+al17:
+  id: 17
+  offer_id: 6
+  semester_id: 3
+  course_id: 10
+  curriculum_unit_id: 1
+  curriculum_unit_type_id: 3
+  offer_at_id: 17
+  course_at_id: 38
+  curriculum_unit_at_id: 7
+  curriculum_unit_type_at_id: 44
+  offer_schedule_id: 36
+
+al18:
+  id: 18
+  course_id: 1
+  course_at_id: 18
+
+al19:
+  id: 19
+  course_id: 2
+  course_at_id: 19
+
+## Unidade Curricular
+## Semipresencial sm nvista
+
+al20: 
+  id: 20
+  curriculum_unit_id: 4
+  curriculum_unit_type_id: 2
+  curriculum_unit_at_id: 20
+  curriculum_unit_type_at_id: 43
+
+## oferta 7
+
+al21:
+  id: 21
+  offer_id: 7
+  semester_id: 3
+  course_id: 2
+  curriculum_unit_id: 3
+  curriculum_unit_type_id: 2
+  offer_at_id: 21
+  course_at_id: 19
+  curriculum_unit_at_id: 13
+  curriculum_unit_type_at_id: 43
+  offer_schedule_id: 37
+
+al22:
+  id: 22
+  group_id: 9
+  offer_id: 3
+  semester_id: 2
+  course_id: 2
+  curriculum_unit_id: 3
+  curriculum_unit_type_id: 2
+  group_at_id: 22
+  offer_at_id: 6
+  course_at_id: 19
+  curriculum_unit_at_id: 13
+  curriculum_unit_type_at_id: 43
+  offer_schedule_id: 35
+  group_status: true
+
+
+al23:
+  id: 23
+  offer_id: 8
+  semester_id: 1
+  course_id: 1
+  curriculum_unit_id: 2
+  curriculum_unit_type_id: 1
+  offer_at_id: 23
+  course_at_id: 18
+  curriculum_unit_at_id: 12
+  curriculum_unit_type_at_id: 42
+  offer_schedule_id: 38
+
+
+al24:
+  id: 24
+  group_id: 10
+  offer_id: 8
+  semester_id: 1
+  course_id: 1
+  curriculum_unit_id: 2
+  curriculum_unit_type_id: 1
+  group_at_id: 24
+  offer_at_id: 23
+  course_at_id: 18
+  curriculum_unit_at_id: 12
+  curriculum_unit_type_at_id: 42
+  offer_schedule_id: 38
+  group_status: true
+
+al25:
+  id: 25
+  offer_id: 9
+  semester_id: 1
+  course_id: 2
+  curriculum_unit_id: 3
+  curriculum_unit_type_id: 2
+  offer_at_id: 25
+  course_at_id: 19
+  curriculum_unit_at_id: 13
+  curriculum_unit_type_at_id: 43
+  offer_schedule_id: 38
+
+al26:
+  id: 26
+  curriculum_unit_id: 6
+  curriculum_unit_type_id: 2
+  curriculum_unit_at_id: 26
+  curriculum_unit_type_at_id: 43
+
+al27:
+  id: 27
+  course_id: 3
+  course_at_id: 27
+
+al28:
+  id: 28
+  offer_id: 10
+  semester_id: 4
+  course_id: 3
+  curriculum_unit_id: 5
+  curriculum_unit_type_id: 5
+  offer_at_id: 28
+  course_at_id: 27
+  curriculum_unit_at_id: 10
+  curriculum_unit_type_at_id: 46
+  offer_schedule_id: 39
+
+al29:
+  id: 29
+  group_id: 4
+  offer_id: 4
+  semester_id: 2
+  course_id: 1
+  curriculum_unit_id: 4
+  curriculum_unit_type_id: 2
+  group_at_id: 29
+  offer_at_id: 15
+  course_at_id: 18 
+  curriculum_unit_at_id: 20
+  curriculum_unit_type_at_id: 43
+  offer_schedule_id: 35
+  group_status: true
+
+al30:
+  id: 30
+  course_id: 4
+  course_at_id: 30
+
+al31:
+  id: 31
+  course_id: 5
+  course_at_id: 31
+
+al32:
+  id: 32
+  course_id: 6
+  course_at_id: 32
+
+al33:
+  id: 33
+  course_id: 7
+  course_at_id: 33
+
+al34:
+  id: 34
+  course_id: 8
+  course_at_id: 34
+
+al35:
+  id: 35
+  course_id: 9
+  course_at_id: 35
+
+## curso livre
+
+al36:
+  id: 36
+  offer_id: 11
+  semester_id: 5
+  course_id: 10
+  curriculum_unit_id: 1
+  curriculum_unit_type_id: 3
+  offer_at_id: 36
+  course_at_id: 38
+  curriculum_unit_at_id: 7
+  curriculum_unit_type_at_id: 44
+  offer_schedule_id: 48
+
+al37:
+  id: 37
+  group_id: 11
+  offer_id: 11
+  semester_id: 5
+  course_id: 10
+  curriculum_unit_id: 1
+  curriculum_unit_type_id: 3
+  group_at_id: 37
+  offer_at_id: 36
+  course_at_id: 38
+  curriculum_unit_at_id: 7
+  curriculum_unit_type_at_id: 44
+  offer_schedule_id: 48
+  group_status: true
+
+al38:
+  id: 38
+  course_id: 10
+  course_at_id: 38
+
+# turma de oferta concluida
+
+al39:
+  id: 39
+  group_id: 12 # quim 2010
+  offer_id: 9
+  semester_id: 1
+  course_id: 2
+  curriculum_unit_id: 3
+  curriculum_unit_type_id: 5
+  group_at_id: 39
+  offer_at_id: 25
+  course_at_id: 19
+  curriculum_unit_at_id: 10
+  curriculum_unit_type_at_id: 46
+  offer_schedule_id: 38
+  group_status: true
+
+al40:
+  id: 40
+  offer_id: 12
+  semester_id: 1
+  course_id: 2
+  curriculum_unit_id: 3
+  curriculum_unit_type_id: 5
+  offer_at_id: 40
+  course_at_id: 19
+  curriculum_unit_at_id: 10
+  curriculum_unit_type_at_id: 46
+  offer_schedule_id: 38
+
+al41:
+  id: 41
+  group_id: 13
+  offer_id: 2
+  semester_id: 2
+  course_id: 1
+  curriculum_unit_id: 2
+  curriculum_unit_type_id: 1
+  group_at_id: 48
+  offer_at_id: 5
+  course_at_id: 18
+  curriculum_unit_at_id: 12
+  curriculum_unit_type_at_id: 42
+  offer_schedule_id: 35
+  group_status: false
+
+al42:
+  id: 42
+  curriculum_unit_type_id: 1
+  curriculum_unit_type_at_id: 42
+
+al43:
+  id: 43
+  curriculum_unit_type_id: 2
+  curriculum_unit_type_at_id: 43
+
+al44:
+  id: 44
+  curriculum_unit_type_id: 3
+  curriculum_unit_type_at_id: 44
+
+al45:
+  id: 45
+  curriculum_unit_type_id: 4
+  curriculum_unit_type_at_id: 45
+
+al46:
+  id: 46
+  curriculum_unit_type_id: 5
+  curriculum_unit_type_at_id: 46
+
+al47:
+  id: 47
+  curriculum_unit_type_id: 6
+  curriculum_unit_type_at_id: 47
+
+al48:
+  id: 48
+  group_id: 14
+  offer_id: 3
+  semester_id: 2
+  course_id: 2
+  curriculum_unit_id: 3
+  curriculum_unit_type_id: 5
+  group_at_id: 48
+  offer_at_id: 6
+  course_at_id: 19
+  curriculum_unit_at_id: 10
+  curriculum_unit_type_at_id: 46
+  offer_schedule_id: 35
+  group_status: false

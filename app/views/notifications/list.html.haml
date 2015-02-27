@@ -31,7 +31,7 @@
                   .complete.invisible
                     = raw notification.description
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
-                .group_label.invisible= render "groups/groups_tags", groups: notification.groups, tool: notification, all_groups: all_groups, paths: {add: add_group_to_notifications_path(id: "param_id", tool_id: notification.id), remove: remove_group_from_notifications_path(id: "param_id", tool_id: notification.id), unbind: unbind_group_from_notifications_path(id: "param_id", tool_id: notification.id)}
+                .group_label.invisible= render "groups/groups_tags", groups: notification.groups, tool: notification, all_groups: all_groups, paths: {add: add_group_to_notifications_path(id: "param_id", tool_id: notification.id), remove: remove_group_from_notifications_path(id: "param_id", tool_id: notification.id), unbind: unbind_group_from_notifications_path(id: "param_id", tool_id: notification.id), tags: group_tags_from_notifications_path(tool_id: notification.id)}
             %td{style: 'text-align:center;'}= notification.period
 
   - else

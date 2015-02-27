@@ -64,10 +64,7 @@
     $(".media").each(function(){
       var mediaId = $(this).attr('id');
       var mediaSrc = $(this).data('source');
-
       var type = $(this).data('type');
-
-      console.info(type);
 
       if (type == 'm4a') {
         type = 'aac'

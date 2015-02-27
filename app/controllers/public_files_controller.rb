@@ -8,10 +8,10 @@ class PublicFilesController < ApplicationController
   layout false, except: :index
 
   def index
-    authorize! :index, PublicFile, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+    authorize! :index, PublicFile, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
     @user = User.find(params[:user_id])
-    @public_files = @user.public_files.where allocation_tag_id: allocation_tag_id
+    @public_files = @user.public_files.where allocation_tag_id: @allocation_tag_id
   end
 
   def new

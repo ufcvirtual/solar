@@ -20,10 +20,13 @@
             %tbody
               - @assignments.each do |assignment|
                 - info = assignment.info(@user.id, @allocation_tag_id)
-                - link = ((assignment.type_assignment == Assignment_Type_Group and info[:group_id].nil?) ? list_assignments_path : student_assignment_path(assignment.id, student_id: @user.id))
+                - link = ((assignment.type_assignment == Assignment_Type_Group and info[:group_id].nil?) ? "" : student_assignment_path(assignment.id, student_id: @user.id, group_id: info[:group_id]))
                 %tr.lines
                   %td{align: "left"}
-                    = link_to assignment.name, link, {class: 'link_content'}
+                    - if link.blank?
+                      .title= assignment.name
+                    - else
+                      = link_to assignment.name, link, {class: 'link_content'}
                   %td.center
                     = [l(assignment.schedule.start_date, format: :normal), l(assignment.schedule.end_date, format: :normal)].join(" - ")
                   %td.center{class: "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
@@ -72,6 +75,25 @@
     #history-body
       %table.tb_list
         = render partial: "access", locals: {access: @access}
+
+.block_wrapper
+  .block_title
+    %h2= t(".public_files")
+  .block_content
+    - no_files = (@public_files.blank?)
+    %table.tb_list
+      %thead{style: (no_files ? "display: none" : "")}
+        %tr.lines
+          %th.no_sort
+          %th= t(".file")
+          %th= t(".size")
+          %th= t(".sent_on")
+          %th.no_sort
+      %tbody.public_files
+        - unless no_files
+          - @public_files.each do |file|
+            = render partial: "public_files/file", locals: {file: file, destroy: false}
+    .text_none.empty_message{class: (no_files ? "" : "hide_message")}= t(:itens_not_found)
 
 .block_wrapper{style: "float:left"}
   = link_to t(:back), :back, {class: "btn"}

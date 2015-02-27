@@ -11,9 +11,8 @@ module V1
         params { requires :id, type: Integer }#, values: -> { CurriculumUnit.all.map(&:id) } }
         get ":id/groups", rabl: "groups/list" do
           user_groups    = current_user.groups(nil, Allocation_Activated).map(&:id)
-          current_offers = Offer.currents(Date.today, true).pluck(:id)
-
-          @groups = CurriculumUnit.find(params[:id]).groups.where(groups: {id: user_groups, offer_id: current_offers}) rescue []
+          current_offers = Offer.currents({verify_end_date: true})
+          @groups = Group.joins(:offer).where(id: user_groups, offer_id: current_offers).where("offers.curriculum_unit_id = ?", params[:id]) rescue []
         end
 
       end # curriculum_units

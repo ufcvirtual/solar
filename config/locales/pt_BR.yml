@@ -265,6 +265,7 @@ pt_BR:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
         attachment_file_name: Arquivo
+        sent_assignment_id: ""
       comment_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
@@ -418,6 +419,8 @@ pt_BR:
               invalid_type: "Tipo de arquivo inválido."
             attachment_file_name:
               blank: deve ser selecionado
+            sent_assignment_id:
+              blank: Não é possivel enviar um arquivo para este trabalho.
         public_file:
           attributes:
             attachment_content_type:
@@ -1316,6 +1319,8 @@ pt_BR:
     sessions:
       signed_in: 'Login efetuado com sucesso.'
       signed_out: 'Logout efetuado com sucesso.'
+      user:
+        already_signed_out: Logout efetuado com sucesso
     users_passwords:
       new_password: Nova senha
       confirm_new_password: Confirmar nova senha
@@ -1742,10 +1747,12 @@ pt_BR:
       see_all: Ver as %{all} turmas
       see_less: Ver %{less} turmas
       select_all: Selecionar todas
+      groups_management: Gerenciamento de turmas
     tags:
       unbind: Desvincular
       remove: Excluir
       disabled_group: Turma desativada
+      title: "Turmas de %{tool}: %{name}"
     success:
       created: Turma criada com sucesso.
       updated: Turma atualizada com sucesso.
@@ -2600,6 +2607,10 @@ pt_BR:
       history_access: "Histórico de acessos (total: %{amount})"
       search: Buscar
       access_found: " acessos encontrados"
+      public_files: Arquivos públicos
+      size: Tamanho
+      sent_on: Enviado em
+      file: Arquivo
     access:
       date: Data
       time: Horário

@@ -9,21 +9,23 @@ module ApplicationHelper
 
     return if tabs_opened.nil?
 
-    tabs_opened.map { |name, link|
-      active_tab = tabs_opened[name][:breadcrumb].first[:url][:id] rescue nil
-      tab_active_class = 'mysolar_unit_active_tab' if user_session[:tabs][:active] == name
+    tabs_opened.map { |id, name, link|
+      name = name[:breadcrumb].first[:name]
 
-      if tabs_opened[name][:url][:context] == Context_General
+      active_tab = tabs_opened[id][:breadcrumb].first[:url][:id] rescue nil
+      tab_active_class = 'mysolar_unit_active_tab' if user_session[:tabs][:active] == id
+
+      if tabs_opened[id][:url][:context] == Context_General
         %{
           <li data-tab-context="#{Context_General}" data-tab-id="home" class="#{tab_active_class} mysolar_unit_tab general_context">
-            #{link_to(name, activate_tab_path(name: name))}
+            #{link_to(name, activate_tab_path(id: id))}
           </li>
         }
       else
         %{
           <li data-tooltip='#{name}' data-tab-context="#{Context_Curriculum_Unit}" data-tab-id="#{active_tab}" class="#{tab_active_class} mysolar_unit_tab">
-            #{link_to((name.truncate(30) rescue ''), activate_tab_path(name: name))}
-            #{link_to('', close_tab_path(name: name), {class: 'tabs_close', id: "#{active_tab}"})}
+            #{link_to((name.truncate(30) rescue ''), activate_tab_path(id: id))}
+            #{link_to('', close_tab_path(id: id), {class: 'tabs_close', id: "#{active_tab}"})}
           </li>
         }
       end
@@ -70,8 +72,7 @@ module ApplicationHelper
   ## Renderiza a seleção de turmas
   def render_group_selection(hash_params = nil)
     active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-    offer_id   = active_tab[:url][:id]
-    groups     = Group.find_all_by_offer_id_and_user_id(offer_id, current_user.id)
+    groups = current_user.groups(nil, Allocation_Activated, nil, nil, active_tab[:url][:id])
     # O grupo (turma) a ter seus fóruns exibidos será o grupo selecionado na aba de seleção ('selected_group')
     selected_group_id = AllocationTag.find(active_tab[:url][:allocation_tag_id]).group_id
     # Se o group_select estiver vazio, ou seja, nenhum grupo foi selecionado pelo usuário,

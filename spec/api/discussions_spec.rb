@@ -18,11 +18,11 @@ describe "Discussions" do
         response.body.should == [
           {
             id: 9,
-            status: "0",
             name: "Forum 7",
             description: "Assim mesmo, o desenvolvimento de distintas formas representa uma abertura para a melhoria dos procedimentos normalmente adotados.",
             start_date: (Date.today >> 1),
             end_date: (Date.today >> 5),
+            status: "0",
             last_post_date: nil
           }
         ].to_json

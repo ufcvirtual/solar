@@ -14,6 +14,7 @@ class SentAssignment < ActiveRecord::Base
   validates :user_id, uniqueness: { scope: [:group_assignment_id, :academic_allocation_id] }
 
   before_save :if_group_assignment_remove_user_id
+  before_save :has_group, if: Proc.new {|a| a.assignment.type_assignment == Assignment_Type_Group }
 
   validates :grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true}
 
@@ -35,6 +36,10 @@ class SentAssignment < ActiveRecord::Base
     assignment_comments.map(&:delete_with_dependents)
     assignment_files.delete_all
     self.delete
+  end
+
+  def has_group
+    not(group_assignment_id.nil?)
   end
 
 end

@@ -11,15 +11,12 @@ class CurriculumUnitsController < ApplicationController
   load_and_authorize_resource only: [:edit, :update]
 
   def home
-    allocation_tags = @allocation_tags.map(&:id)
-    authorize! :show, CurriculumUnit, on: allocation_tags, read: true
-
+    authorize! :show, CurriculumUnit, { on: @allocation_tags_ids, read: true }
     @messages = Message.user_inbox(current_user.id, @allocation_tag_id, only_unread = true)
-    @lessons_modules  = current_user.profiles_with_access_on("show", "lessons", allocation_tags).empty? ? [] : LessonModule.to_select(allocation_tags, current_user)
-    @discussion_posts = list_portlet_discussion_posts(allocation_tags.join(', '))
-    @scheduled_events = current_user.profiles_with_access_on("calendar", "agendas", allocation_tags).empty? ? [] : Agenda.events(allocation_tags, nil, true)
-
-    @researcher = current_user.is_researcher?(allocation_tags)
+    @lessons_modules  = (current_user.profiles_with_access_on("show", "lessons", @allocation_tags_ids).empty? ? [] : LessonModule.to_select(@allocation_tags_ids, current_user)) # 0.040000 0.000000 0.040000 ( 0.071502)
+    @discussion_posts = list_portlet_discussion_posts(@allocation_tags_ids)
+    @scheduled_events = (current_user.profiles_with_access_on("calendar", "agendas", @allocation_tags_ids).empty? ? [] : Agenda.events(@allocation_tags_ids, nil, true)) # 0.060000 0.000000 0.060000 ( 0.110046)
+    @researcher = current_user.is_researcher?(@allocation_tags_ids)
   end
 
   def index
@@ -127,15 +124,12 @@ class CurriculumUnitsController < ApplicationController
   # information about UC from a offer from the group selected
   def informations
     authorize! :show, CurriculumUnit, on: [@allocation_tag_id]
-
-    @offer = @allocation_tags.select {|at| not(at.offer_id.nil?)}.first.try(:offer)
+    @offer = Offer.where(id: RelatedTaggable.where(group_at_id: @allocation_tags_ids).pluck(:offer_id).compact).first
   end
 
   def participants
     authorize! :show, CurriculumUnit, on: [@allocation_tag_id]
-
-    allocation_tags = @allocation_tags.map(&:id)
-    @participants = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(allocation_tags, Profile_Type_Student)
+    @participants = AllocationTag.get_participants(@allocation_tags_ids, {students: true})
   end
 
   private
@@ -147,11 +141,8 @@ class CurriculumUnitsController < ApplicationController
     def curriculum_data
       @curriculum_unit = Offer.find(active_tab[:url][:id]).curriculum_unit
       @allocation_tag_id = active_tab[:url][:allocation_tag_id]
-      @allocation_tags = AllocationTag.find(@allocation_tag_id).related(objects: true)
-
-      at_ids = @allocation_tags.map(&:id)
-
-      @responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(at_ids, Profile_Type_Class_Responsible)
+      @allocation_tags_ids = RelatedTaggable.related({group_at_id: @allocation_tag_id})
+      @responsible = AllocationTag.get_participants(@allocation_tags_ids, {responsibles: true})
     end
 
     def list_portlet_discussion_posts(allocation_tags)

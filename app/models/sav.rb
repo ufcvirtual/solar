@@ -10,7 +10,7 @@ class Sav < ActiveRecord::Base
 
   validate :end_after_start, unless: Proc.new { |a| a.start_date.blank? or a.end_date.blank? }
 
-  before_save :define_percent
+  before_save :define_percent, unless: Proc.new { |a| a.percent.blank?}
 
   def define_percent
     self.pecent = nil            if percent.blank? or percent == 1 or percent == 100

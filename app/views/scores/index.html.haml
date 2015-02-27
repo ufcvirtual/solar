@@ -24,11 +24,11 @@
           %tbody
           
             - @responsibles.each do |responsible|
-              - info = responsible.info_at_allocation_tag(@allocation_tag_id)
+              - info = responsible.info_at_allocation_tag(@allocation_tag_id, {messages: true})
               %tr.lines
                 %td.td_student{'data-tooltip' => responsible.name}= link_to responsible.name, user_info_scores_path(responsible.id)
-                %td= info[:profiles]
-                %td= info[:public_files]
+                %td= responsible.profile_name
+                %td= responsible.u_public_files
                 %td= info[:posts]
                 %td= info[:messages]
                 %td= info[:access]
@@ -61,7 +61,7 @@
             - info = student.info_at_allocation_tag(@allocation_tag_id)
             %tr.lines
               %td.td_student{'data-tooltip' => student.name}= link_to student.name, user_info_scores_path(student.id)
-              %td= info[:public_files]
+              %td= student.u_public_files
               %td= info[:posts]
               %td= info[:access]
               - @assignments.each do |assignment|

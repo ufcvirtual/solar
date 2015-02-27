@@ -31,7 +31,7 @@
                   .complete.invisible
                     = discussion.description
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
-                .group_label.invisible= render "groups/groups_tags", groups: discussion.groups, tool: discussion, all_groups: all_groups, paths: {add: add_group_to_discussions_path(id: "param_id", tool_id: discussion.id), remove: remove_group_from_discussions_path(id: "param_id", tool_id: discussion.id), unbind: unbind_group_from_discussions_path(id: "param_id", tool_id: discussion.id)}
+                .group_label.invisible= render "groups/groups_tags", groups: discussion.groups, tool: discussion, all_groups: all_groups, paths: {add: add_group_to_discussions_path(id: "param_id", tool_id: discussion.id), remove: remove_group_from_discussions_path(id: "param_id", tool_id: discussion.id), unbind: unbind_group_from_discussions_path(id: "param_id", tool_id: discussion.id), tags: group_tags_from_discussions_path(tool_id: discussion.id)}
             %td{style: 'text-align:center;'}= [l(discussion.schedule.start_date, format: :normal), l(discussion.schedule.end_date, format: :normal)].join(" - ")
 
 

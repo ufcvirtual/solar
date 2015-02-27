@@ -9,6 +9,7 @@ class AssignmentFile < ActiveRecord::Base
   before_destroy :can_change?, :can_destroy?
 
   validates :attachment_file_name, presence: true
+  validates :sent_assignment_id, presence: true
 
   has_attached_file :attachment,
     path: ":rails_root/media/assignment/sent_assignment_files/:id_:basename.:extension",

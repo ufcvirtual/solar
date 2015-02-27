@@ -1,6 +1,8 @@
 object @discussion
 
-attributes :id, :status, :name, :description
+attributes :id, :name, :description
+
+node(:status) { |discussion| discussion.status(current_user)}
 
 glue @discussion.schedule do
   attributes :start_date, :end_date

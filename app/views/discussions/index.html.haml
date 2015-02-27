@@ -12,12 +12,12 @@
           %th.date{align:"center", style:"width: 22%;"}=t :forum_table_date
       %tbody
         - @discussions.each do |discussion|
-          - closed, extra_time = discussion.closed?, discussion.extra_time?(current_user.id)
-          %tr{class: "lines #{'period_ended' if closed and (not extra_time)} "}
+          - statuses = discussion.statuses(current_user.id)
+          %tr{class: "lines #{'period_ended' if statuses.include?("closed") and (not statuses.include?("extra_time"))} "}
             %td
-              - if (discussion.opened? or closed)
+              - if (statuses.include?("opened") or statuses.include?("closed"))
                 = link_to discussion.name, discussion_posts_path(discussion), {class: 'link_content'}
-                = (extra_time ? "(#{t(:discussion_closed_to_students)})" : (closed ? "(#{t(:forum_closed_short)})" : ""))
+                = (statuses.include?("extra_time") ? "(#{t(:discussion_closed_to_students)})" : (statuses.include?("closed") ? "(#{t(:forum_closed_short)})" : ""))
               - else
                 = discussion.name
             %td{align:"center"}= discussion.posts_count

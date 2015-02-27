@@ -38,7 +38,7 @@
             %td
               %div
                 .description=raw bibliography.resume
-                .group_label.invisible= render "groups/groups_tags", groups: bibliography.groups, tool: bibliography, all_groups: all_groups, paths: {add: add_group_to_bibliographies_path(id: "param_id", tool_id: bibliography.id), remove: remove_group_from_bibliographies_path(id: "param_id", tool_id: bibliography.id), unbind: unbind_group_from_bibliographies_path(id: "param_id", tool_id: bibliography.id)}
+                .group_label.invisible= render "groups/groups_tags", groups: bibliography.groups, tool: bibliography, all_groups: all_groups, paths: {add: add_group_to_bibliographies_path(id: "param_id", tool_id: bibliography.id), remove: remove_group_from_bibliographies_path(id: "param_id", tool_id: bibliography.id), unbind: unbind_group_from_bibliographies_path(id: "param_id", tool_id: bibliography.id), tags: group_tags_from_bibliographies_path(tool_id: bibliography.id)}
             %td
               = bibliography.type
 

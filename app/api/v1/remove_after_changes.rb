@@ -124,7 +124,7 @@ module V1
             group  = get_group_by_codes(params[:codDisciplina], params[:codGraduacao], params[:codTurma], (params[:periodo].blank? ? params[:ano] : "#{params[:ano]}.#{params[:periodo]}"))
             raise ActiveRecord::RecordNotFound if group.nil?
             begin
-              @users = group.students_participants.map(&:user)
+              @users = group.students_participants
             end
           end
 

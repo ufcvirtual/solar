@@ -89,6 +89,7 @@ module V1
           begin
             query = {allocations: {profile_id: params[:ids].split(",")}}
             allocation_tags_ids = AllocationTag.get_by_params(params, true)[:allocation_tags].compact
+
             query.merge!({allocation_tags: {id: allocation_tags_ids}}) unless allocation_tags_ids.blank?
             query[:allocations].merge!({status: Allocation_Activated}) if params[:only_active]
 

@@ -22,9 +22,10 @@ describe "Support Material Files" do
       file = SupportMaterialFile.find(3)
       unless File.exist?(file.attachment.path)
         file = File.join(Rails.root, 'test', 'fixtures', 'files', 'support_material_files', 'index.html')
-        to = File.join(Rails.root, 'media', 'support_material_files', '3_index.html')
+        to = File.join(Rails.root, 'media', 'support_material_files')
         FileUtils.mkdir_p to
         FileUtils.cp_r file, to
+        FileUtils.mv File.join(to, 'index.html'), File.join(to, '3_index.html')
       end
 
       get "/api/v1/groups/1/support_material_files/3/download", access_token: token.token

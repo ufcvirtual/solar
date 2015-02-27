@@ -16,7 +16,7 @@ class Course < ActiveRecord::Base
   attr_accessor :edx_course, :courses_names
 
   def has_any_lower_association?
-    self.offers.count > 0
+    offers.count > 0
   end
 
   def lower_associated_objects
@@ -28,7 +28,7 @@ class Course < ActiveRecord::Base
   end
 
   def detailed_info
-    {course: name}
+    { course: name }
   end
 
   def unique_name

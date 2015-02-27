@@ -20,7 +20,6 @@ class Assignment < Event
 
   def copy_dependencies_from(assignment_to_copy)
     AssignmentEnunciationFile.create! assignment_to_copy.enunciation_files.map {|file| file.attributes.merge({assignment_id: self.id})} unless assignment_to_copy.enunciation_files.empty?
-    GroupAssignment.create! assignment_to_copy.group_assignments.map {|group| group.attributes.merge({academic_allocation_id: self.academic_allocations.first.id})} unless assignment_to_copy.group_assignments.empty?
   end
 
   def can_remove_groups?(groups)
@@ -90,9 +89,9 @@ class Assignment < Event
   def situation(has_files, has_group, grade = nil)
     case
       when schedule.start_date.to_date > Date.current; "not_started"
+      when (self.type_assignment == Assignment_Type_Group and not(has_group)); "without_group"
       when not(grade.nil?); "corrected"
       when has_files; "sent"
-      when (self.type_assignment == Assignment_Type_Group and not(has_group)); "without_group"
       when (schedule.end_date.to_date >= Date.today); "to_be_sent"
       when (schedule.end_date.to_date < Date.today); "not_sent"
       else
@@ -117,10 +116,6 @@ class Assignment < Event
   def groups_assignments(allocation_tag_id)
     GroupAssignment.joins(:academic_allocation).where(academic_allocations: {academic_tool_id: self.id, allocation_tag_id: allocation_tag_id})
   end
-
-
-  ## class methods
-
 
   def self.owned_by_user?(user_id, options={})
     assignment_user_id = (options[:sent_assignment].try(:user_id) || options[:student_id])

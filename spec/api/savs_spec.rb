@@ -190,6 +190,7 @@ describe "Savs" do
         post "/api/v1/sav/4", json_data
         response.status.should eq(422)
       }
+    end
 
     context "percent too big" do
       let!(:json_data){ { groups_id: [2,3], profiles_ids: [1], percent: 320 } }

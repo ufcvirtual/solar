@@ -1,0 +1,50 @@
+.tags_fancybox
+  .header
+    %h1#lightBoxDialogTitle= t(".title", tool: t("activerecord.models.#{@tool.class.to_s.downcase}"), name: @tool.name || @tool.title)
+
+.block_wrapper.list_groups
+  .block_title
+    %h2= t(:groups, scope: [:editions, :academic])
+  .block_content_toolbar
+    .block_toolbar_left.btn-group{style: "margin-top: 28px;"}
+    .block_toolbar_right
+      = link_to (content_tag(:i, nil, class: 'icon-cross')), "#", class: 'btn btn_unbind_groups_fancybox', :"data-link" => @paths[:unbind], :'data-tooltip' => t(".unbind")
+      = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_remove_groups_fancybox', :"data-link" => @paths[:remove], :"data-checkbox"=>"ckb_group", :'data-tooltip' => t(".remove")
+
+  - part1, part2 = @groups.in_groups(2, false)
+
+  - unless @groups.nil? or @groups.empty?
+    .block_content.groups
+      .block_left
+        = render "group_list", groups: part1, hide_edition: true
+      .block_right
+        = render "group_list", groups: part2, hide_edition: true
+  - else
+    .block_content_text_list.text_none= t(".none")
+
+= javascript_include_tag "tooltip"
+
+:javascript
+  $(".btn_remove_groups_fancybox, .btn_unbind_groups_fancybox").click(function(){
+    var groups_ids = $('[name="ckb_group"]:checked', $(this).parent().parent().parent()).map(function() { return this.value; }).get();
+    var url = $(this).data("link").replace("param_id", groups_ids);
+
+    // unbind/remove turma da ferramenta
+    $.put(url, function(data){
+      $.get(div_list.data("link-list"), function(data2){
+        div_list.replaceWith(data2);
+        if (typeof(data.notice) != "undefined")
+          flash_message(data.notice, 'notice');
+        $.fancybox.close();
+      });
+    }).error(function(data){
+      try{
+        var response = JSON.parse(data.responseText);
+        if (typeof(response.alert) != "undefined")
+          flash_message(response.alert, 'alert', 'tags_fancybox .header');
+      }catch(e){
+        flash_message("#{t('groups.list.choose_at_least_one')}", 'alert', 'tags_fancybox .header');
+      }
+    });
+
+  });

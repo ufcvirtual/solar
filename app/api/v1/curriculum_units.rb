@@ -5,11 +5,11 @@ module V1
       before do
         guard!
 
-        user_groups    = current_user.groups(nil, Allocation_Activated).map(&:id)
-        current_offers = Offer.currents(Date.today, true).pluck(:id)
+        user_groups    = current_user.groups(nil, Allocation_Activated).pluck(:id)
+        current_offers = Offer.currents({user_id: current_user.id})
 
         @u_groups         = Group.where(id: user_groups, offer_id: current_offers)
-        @curriculum_units = CurriculumUnit.joins(:groups).where(groups: {id: @u_groups.map(&:id)}).uniq.order(:name)
+        @curriculum_units = CurriculumUnit.joins(:offers).where("offers.id IN (?)", current_offers).uniq.order(:name)
       end
 
       namespace :curriculum_units do

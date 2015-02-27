@@ -6,10 +6,10 @@ class TabsController < ApplicationController
   def show # activate
     # verifica se a aba que esta sendo acessada esta aberta
     redirect = home_path
-    unless user_session[:tabs][:opened].has_key?(params[:name])
+    unless user_session[:tabs][:opened].has_key?(params[:id])
       set_active_tab_to_home # o usuário é redirecionado para o Home caso a aba não exista
     else
-      set_active_tab(params[:name])
+      set_active_tab(params[:id])
       # dentro da aba, podem existir links abertos
       redirect = active_tab[:breadcrumb].last[:url] if active_tab[:url][:context].to_i == Context_Curriculum_Unit.to_i
     end
@@ -18,12 +18,13 @@ class TabsController < ApplicationController
   end
 
   def create # add
-    id, tab_name, context_id = params[:id], params[:name], params[:context].to_i # Home, Curriculum_Unit ou outro nao mapeado
+    id, context_id = params[:id], params[:context].to_i # Home, Curriculum_Unit ou outro nao mapeado
     redirect = home_path # se estourou numero de abas, volta para mysolar # Context_General
 
     # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
-    if opened_or_new_tab?(tab_name)
-      set_session_opened_tabs(tab_name, {id: id, context: context_id, allocation_tag_id: params[:allocation_tag_id]}, params, params[:title_name])
+    if opened_or_new_tab?(id)
+      params[:name] = Offer.find(id).allocation_tag.info
+      set_session_opened_tabs({id: id, context: context_id, allocation_tag_id: params[:allocation_tag_id]}, params)
       redirect = home_curriculum_unit_path(id) if context_id == Context_Curriculum_Unit
     end
 
@@ -31,9 +32,9 @@ class TabsController < ApplicationController
   end
 
   def destroy # close
-    tab_name = params[:name]
-    set_active_tab_to_home if user_session[:tabs][:active] == tab_name
-    user_session[:tabs][:opened].delete(tab_name)
+    tab_id = params[:id]
+    set_active_tab_to_home if user_session[:tabs][:active] == tab_id
+    user_session[:tabs][:opened].delete(tab_id)
 
     redirect_to((active_tab[:url][:context] == Context_Curriculum_Unit) ? home_curriculum_unit_path(active_tab[:url][:id]) : home_path, flash: flash)
   end

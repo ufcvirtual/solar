@@ -29,7 +29,8 @@ module V1
 
         after do
           filtered_params = params.select { |k, v| ["date", "order", "limit", "display_mode", "type"].include?(k) }
-          @posts = @discussion.posts(filtered_params, @group.allocation_tag.id)
+          @ats   = RelatedTaggable.related({group_id: @group.id})
+          @posts = @discussion.posts(filtered_params, @ats)
 
           @period = if @posts.empty?
             ["#{filtered_params['date'] || DateTime.now.to_s(:db)}", "#{filtered_params['date'] || DateTime.now.to_s(:db)}"]
@@ -68,7 +69,7 @@ module V1
 
         raise MissingTokenError unless @discussion.user_can_interact?(current_user.id) # unauthorized
 
-        academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: @group.allocation_tag.related).first
+        academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: RelatedTaggable.related({group_id: @group.id})).first
 
         @post = Post.new(post_params)
         @post.user = current_user

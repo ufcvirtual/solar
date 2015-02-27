@@ -22,7 +22,7 @@ class BibliographiesController < ApplicationController
   def index
     authorize! :index, Bibliography, on: [at = active_tab[:url][:allocation_tag_id]]
 
-    @bibliographies = Bibliography.all_by_allocation_tags(AllocationTag.find(at).related(upper: true)) # tem que listar bibliografias relacionadas para cima
+    @bibliographies = Bibliography.all_by_allocation_tags(at) # tem que listar bibliografias relacionadas para cima
   end
 
   # GET /bibliographies/new

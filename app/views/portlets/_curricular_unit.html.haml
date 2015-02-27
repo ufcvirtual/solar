@@ -25,7 +25,7 @@
             - unless @offers.empty?
               - @offers.each do |offer|
 
-                - link = add_tab_path(id: offer[:id], context: Context_Curriculum_Unit, name: (offer[:name]), allocation_tag_id: offer[:at], title_name: offer[:info])
+                - link = add_tab_path(id: offer[:id], context: Context_Curriculum_Unit, allocation_tag_id: offer[:at])
                 - livre = offer[:uc].try(:curriculum_unit_type_id) == 3
 
                 %tr.lines.offer{'data-tab-id' => offer[:id], 'data-tab-link' => link, 'data-has-groups' => offer[:has_groups].to_s}

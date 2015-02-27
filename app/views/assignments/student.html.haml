@@ -18,7 +18,7 @@
         = t(".no_participants")
   - else
     - user = User.find(@student_id)
-    = image_tag (user.photo_file_name ? user.photo.url(:forum) : "no_image.png"), alt: t(:mysolar_alt_img_user) + ' ' + user.nick
+    = image_tag user.user_photo(:forum), alt: t(:mysolar_alt_img_user) + ' ' + user.nick
     .block_user
       .title_user= t(".student")
       = user.name

@@ -91,8 +91,8 @@ class ApplicationController < ActionController::Base
     set_active_tab_to_home if ((not(contexts.empty?) and not(contexts.include?(active_tab[:url][:context]))) or controller_path == 'devise/users')
   end
 
-  def set_active_tab(tab_name)
-    user_session[:tabs][:active] = tab_name
+  def set_active_tab(tab_id)
+    user_session[:tabs][:active] = tab_id
   end
 
   def set_active_tab_to_home
@@ -130,12 +130,10 @@ class ApplicationController < ActionController::Base
     # verifica se o grupo foi passado e se é um grupo válido
     unless params[:selected_group].present? and !!(allocation_tag_id_group = AllocationTag.find_by_group_id(params[:selected_group]).try(:id))
       allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-      params[:selected_group] = allocation_tag.group_id
-      allocation_tag_id_group = (allocation_tag.group_id.nil?) ? Group.find_all_by_offer_id_and_user_id(active_tab[:url][:id], current_user.id).first.allocation_tag.id : allocation_tag.id
+      allocation_tag_id_group = (params[:selected_group] = allocation_tag.group_id).nil? ? RelatedTaggable.where("group_id IN (?)", current_user.groups(nil, Allocation_Activated, nil, nil, active_tab[:url][:id]).pluck(:id)).first.group_at_id : allocation_tag.id
     end
 
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
-
     log_access(allocation_tag_id_group) # save access
   end
 
@@ -181,13 +179,13 @@ class ApplicationController < ActionController::Base
 
   private
 
-    def opened_or_new_tab?(tab_name)
-      (user_session[:tabs][:opened].has_key?(tab_name)) or (user_session[:tabs][:opened].length < Max_Tabs_Open.to_i)
+    def opened_or_new_tab?(tab_id)
+      (user_session[:tabs][:opened].has_key?(tab_id)) or (user_session[:tabs][:opened].length < Max_Tabs_Open.to_i)
     end
 
-    def set_session_opened_tabs(tab_name, hash_url, params_url, page_title = nil)
-      user_session[:tabs][:opened][tab_name] = { breadcrumb: [{name: (page_title.blank? ? params[:name] : page_title), url: params_url}], url: hash_url }
-      set_active_tab tab_name
+    def set_session_opened_tabs(hash_url, params_url)
+      user_session[:tabs][:opened][params[:id]] = { breadcrumb: [{name: params[:name], url: params_url}], url: hash_url }
+      set_active_tab params[:id]
     end
 
     def init_xmpp_im

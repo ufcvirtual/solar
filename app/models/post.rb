@@ -23,11 +23,12 @@ class Post < ActiveRecord::Base
   end
 
   ## Retorna o post "avô", ou seja, o post do nível mais alto informado em "post_level"
-  def grandparent(post_level, post = nil)
-    if level == post_level
-      return ["date" => post.updated_at, "grandparent_id" => id]
+  def grandparent(post_level=nil)
+    unless post_level.nil?
+      return nil if (post_level > level)
+      (parent.nil? ? self : ((parent.level == post_level) ? parent : parent.grandparent(post_level)))
     else
-      Post.find(parent_id).grandparent(post_level, (post || self)) unless parent_id.nil?
+      (parent.try(:grandparent) || parent || self)
     end
   end
 

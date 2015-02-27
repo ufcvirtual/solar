@@ -30,7 +30,7 @@ class ChatRoomsController < ApplicationController
 
   def index
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
-    authorize! :index, ChatRoom, on: @allocation_tags_ids
+    authorize! :index, ChatRoom, on: @allocation_tags_ids.split(" ").flatten
 
     @chat_rooms = ChatRoom.to_list_by_ats(@allocation_tags_ids.split(" ").flatten)
   end

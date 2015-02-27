@@ -25,18 +25,20 @@ class Schedule < ActiveRecord::Base
   attr_accessor :check_end_date, :verify_current_date
 
   def start_date_before_end_date
-    unless start_date.nil? or end_date.nil?
-      errors.add(:start_date, I18n.t(:range_date_error, :scope => [:discussions, :error])) if (start_date > end_date)
-    end
+    errors.add(:start_date, I18n.t(:range_date_error, scope: [:discussions, :error])) unless (start_date.nil? || end_date.nil? || (start_date <= end_date))
   end
 
   def verify_by_current_date
-    errors.add(:start_date, I18n.t(:current_year, :scope => [:schedules, :errors])) if not(start_date.nil?) and start_date_changed? and (start_date.year < Date.current.year)
-    errors.add(:end_date, I18n.t(:current_date, :scope => [:schedules, :errors])) if not(end_date.nil?) and end_date_changed? and (end_date < Date.current)
+    errors.add(:start_date, I18n.t(:current_year, scope: [:schedules, :errors])) if not(start_date.nil?) && start_date_changed? && (start_date.year < Date.current.year)
+    errors.add(:end_date, I18n.t(:current_date, scope: [:schedules, :errors])) if not(end_date.nil?) && end_date_changed? && (end_date < Date.current)
   end
 
   def can_destroy?
-    (discussions.empty? and lessons.empty? and assignments.empty? and schedule_events.empty? and offer_periods.empty? and offer_enrollments.empty? and semester_periods.empty? and semester_enrollments.empty?)
+    (
+      discussions.empty? && lessons.empty? && assignments.empty? &&
+      schedule_events.empty? && offer_periods.empty? && offer_enrollments.empty? &&
+      semester_periods.empty? && semester_enrollments.empty?
+    )
   end
 
 end

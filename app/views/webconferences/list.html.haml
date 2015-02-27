@@ -33,7 +33,7 @@
                   .complete.invisible
                     = raw webconference.description
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
-                .group_label.invisible= render "groups/groups_tags", groups: webconference.groups, tool: webconference, all_groups: all_groups, paths: {add: add_group_to_webconferences_path(id: "param_id", tool_id: webconference.id), remove: remove_group_from_webconferences_path(id: "param_id", tool_id: webconference.id), unbind: unbind_group_from_webconferences_path(id: "param_id", tool_id: webconference.id)}
+                .group_label.invisible= render "groups/groups_tags", groups: webconference.groups, tool: webconference, all_groups: all_groups, paths: {add: add_group_to_webconferences_path(id: "param_id", tool_id: webconference.id), remove: remove_group_from_webconferences_path(id: "param_id", tool_id: webconference.id), unbind: unbind_group_from_webconferences_path(id: "param_id", tool_id: webconference.id), tags: group_tags_from_wenconferences_path(tool_id: webconference.id)}
             %td{style: 'text-align:center;'}= l(webconference.initial_time, format: :at_date)
             %td{style: 'text-align:center;'}= webconference.duration
 
