@@ -58,7 +58,7 @@ class AllocationTag < ActiveRecord::Base
   end
 
   def is_student?(user_id)
-    allocations.joins(:profile).where(user_id: user_id, status: Allocation_Activated).where("cast(profiles.types & ? as boolean)", Profile_Type_Student).count > 0
+    allocations.joins(:profile).where(user_id: user_id, status: Allocation_Activated).where('cast(profiles.types & ? as boolean)', Profile_Type_Student).count > 0
   end
 
   def info
@@ -82,7 +82,7 @@ class AllocationTag < ActiveRecord::Base
         curriculum_unit_type.description
     end
   rescue
-    I18n.t("users.profiles.not_specified")
+    I18n.t('users.profiles.not_specified')
   end
 
   ## ex: '2014.2 2015.1 semester_active'
@@ -115,37 +115,37 @@ class AllocationTag < ActiveRecord::Base
   end
 
   def self.get_by_params(params, related=false, lower_related=false)
-    allocation_tags_ids, selected, offer_id = if not params[:allocation_tags_ids].blank? # o proprio params ja contem as ats
+    allocation_tags_ids, selected, offer_id = unless params[:allocation_tags_ids].blank? # o proprio params ja contem as ats
       [params.fetch(:allocation_tags_ids, '').split(' ').flatten.map(&:to_i), params.fetch(:selected, nil), params.fetch(:offer_id, nil)]
     else
       case 
-        when not(params[:groups_id].blank?)
+        when !params[:groups_id].blank?
           params[:groups_ids] = params[:groups_id].split(" ").flatten.map(&:to_i)
-          query = "group_id IN (:groups_ids)"
-          selected = "GROUP"
+          query = 'group_id IN (:groups_ids)'
+          selected = 'GROUP'
           offer = true
-        when params[:semester_id]
+        when !params[:semester_id].blank?
           query = []
-          query << "semester_id = :semester_id"
-          query << "curriculum_unit_id = :curriculum_unit_id" if params[:curriculum_unit_id]
-          query << "course_id = :course_id" if params[:course_id]
+          query << 'semester_id = :semester_id'
+          query << 'curriculum_unit_id = :curriculum_unit_id' if params[:curriculum_unit_id]
+          query << 'course_id = :course_id' if params[:course_id]
           query = query.join(" AND ")
-          selected = "OFFER"
+          selected = 'OFFER'
           offer = true
-        when params[:offer_id]
+        when !params[:offer_id].blank?
           query = []
-          query << "offer_id = :offer_id"
-          selected = "OFFER"
+          query << 'offer_id = :offer_id'
+          selected = 'OFFER'
           offer = true
-        when params[:course_id]
-          query = "course_id = :course_id"
-          selected = "COURSE"
-        when params[:curriculum_unit_id]
-          query = "curriculum_unit_id = :curriculum_unit_id"
-          selected = "CURRICULUM_UNIT"
-        when params[:curriculum_unit_type_id]
-          query = "curriculum_unit_type_id = :curriculum_unit_type_id"
-          selected = "CURRICULUM_UNIT_TYPE"
+        when !params[:course_id].blank?
+          query = 'course_id = :course_id'
+          selected = 'COURSE'
+        when !params[:curriculum_unit_id].blank?
+          query = 'curriculum_unit_id = :curriculum_unit_id'
+          selected = 'CURRICULUM_UNIT'
+        when !params[:curriculum_unit_type_id].blank?
+          query = 'curriculum_unit_type_id = :curriculum_unit_type_id'
+          selected = 'CURRICULUM_UNIT_TYPE'
       end
 
       unless query.nil?
@@ -173,8 +173,8 @@ class AllocationTag < ActiveRecord::Base
       .joins(allocations: :profile)
       .joins("LEFT JOIN public_files ON public_files.user_id = users.id AND public_files.allocation_tag_id IN (#{ats.flatten.join(",")})")
       .where(allocations: {status: Allocation_Activated, allocation_tag_id: ats})
-      .where(types.join(" OR ")).where(query.join(" AND ")).uniq
-      .group("users.id, users.name").order("users.name")
+      .where(types.join(' OR ')).where(query.join(' AND ')).uniq
+      .group('users.id, users.name').order('users.name')
   end
 
   ### triggers
@@ -227,14 +227,14 @@ class AllocationTag < ActiveRecord::Base
       }
 
       query_type = []
-      query_type << "cast(profiles.types & :responsible as boolean) OR cast(profiles.types & :coord as boolean)" if responsible
-      query_type << "cast(profiles.types & :observer as boolean)" if observer
+      query_type << 'cast(profiles.types & :responsible as boolean) OR cast(profiles.types & :coord as boolean)' if responsible
+      query_type << 'cast(profiles.types & :observer as boolean)' if observer
 
       return false if query_type.empty?
 
       Allocation.joins(:profile)
         .where(query)
-        .where(query_type.join(" OR "), responsible: Profile_Type_Class_Responsible, observer: Profile_Type_Observer, coord: Profile_Type_Coord).count > 0
+        .where(query_type.join(' OR '), responsible: Profile_Type_Class_Responsible, observer: Profile_Type_Observer, coord: Profile_Type_Coord).count > 0
     end
 
 end

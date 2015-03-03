@@ -17,8 +17,8 @@ class CurriculumUnit < ActiveRecord::Base
   validates :name, :curriculum_unit_type, :resume, :syllabus, :objectives, :code, presence: true
   validates :passing_grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true}
 
-  def has_any_lower_association?
-    self.offers.count > 0
+  def any_lower_association?
+    offers.count > 0
   end
 
   def lower_associated_objects

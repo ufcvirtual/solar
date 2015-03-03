@@ -15,7 +15,7 @@ class BibliographiesController < ApplicationController
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Bibliography, on: @allocation_tags_ids
 
-    @bibliographies = Bibliography.all_by_allocation_tags(@allocation_tags_ids.split(" ").flatten)
+    @bibliographies = Bibliography.all_by_allocation_tags(@allocation_tags_ids.split(' ').flatten)
   end
 
   # GET /bibliographies
@@ -40,7 +40,7 @@ class BibliographiesController < ApplicationController
 
   # POST /bibliographies
   def create
-    authorize! :create, Bibliography, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :create, Bibliography, on: @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten
     @bibliography = Bibliography.new(webconference_params)
 
     begin
@@ -52,7 +52,7 @@ class BibliographiesController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @allocation_tags_ids = @allocation_tags_ids.join(" ")
+      @allocation_tags_ids = @allocation_tags_ids.join(' ')
       params[:success] = false
       render :new
     end
@@ -74,7 +74,7 @@ class BibliographiesController < ApplicationController
 
   # DELETE /bibliographies/1
   def destroy
-    @bibliographies = Bibliography.where(id: params[:id].split(","))
+    @bibliographies = Bibliography.where(id: params[:id].split(','))
     authorize! :destroy, Bibliography, on: @bibliographies.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
     @bibliographies.destroy_all

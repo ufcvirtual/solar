@@ -14,7 +14,6 @@ class Sav < ActiveRecord::Base
 
   def define_percent
     self.pecent = nil            if percent.blank? or percent == 1 or percent == 100
-    puts "#{!percent.blank? and percent > 1}"
     self.percent = (percent/100) if !percent.blank? and percent > 1
   end
 

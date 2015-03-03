@@ -27,7 +27,7 @@ class LessonModule < ActiveRecord::Base
   end
 
   def lessons_to_open(user = nil, list = false)
-    user_is_admin_or_editor    = (user.is_admin? or user.is_editor?)
+    user_is_admin_or_editor    = (user.admin? or user.editor?)
     user_responsible = user.nil? ? false : not(user.profiles_with_access_on("see_drafts", "lessons", self.allocation_tags.map(&:related), true).empty?)
 
     lessons.order("lessons.order").collect{ |lesson|
@@ -51,7 +51,7 @@ class LessonModule < ActiveRecord::Base
 
   def self.to_select(allocation_tags_ids, user = nil, list = false)
     
-    user_is_admin_or_editor    = user.nil? ? false : (user.is_admin? or user.is_editor?)
+    user_is_admin_or_editor    = user.nil? ? false : (user.admin? or user.editor?)
     user_responsible = user.nil? ? false : user.profiles_with_access_on("see_drafts", "lessons", allocation_tags_ids, true).any?
     joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tags_ids}).order("id").delete_if { |lmodule|
       lessons               = lmodule.lessons

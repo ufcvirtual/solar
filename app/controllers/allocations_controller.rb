@@ -16,7 +16,7 @@ class AllocationsController < ApplicationController
   before_filter only: [:show, :edit, :update] do
     @allocation = Allocation.find(params[:id])
 
-    if current_user.is_admin?
+    if current_user.admin?
       authorize! :manage_profiles, Allocation
     else
       # editor/aluno
@@ -106,7 +106,7 @@ class AllocationsController < ApplicationController
   end
 
   def create_designation
-    if params[:admin] && current_user.is_admin?
+    if params[:admin] && current_user.admin?
       authorize! :manage_profiles, Allocation
     else
       authorize! :manage_profiles, Allocation, on: @allocation_tags_ids

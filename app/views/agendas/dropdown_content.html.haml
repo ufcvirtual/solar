@@ -7,36 +7,36 @@
     %h3
       = @event.parents_path
       - if @groups.count > 1
-        = content_tag(:i, nil, class: "toggle_groups icon-arrow-down-triangle", :"data-tooltip" => t(".see_groups"))
+        = content_tag(:i, nil, class: 'toggle_groups icon-arrow-down-triangle', :"data-tooltip" => t('.see_groups'))
   - recurring = (@event.respond_to?(:start_hour) and @event.respond_to?(:end_hour) and not(@event.start_hour.blank? or @event.end_hour.blank?))
-  %h3= (recurring ? "#{@event.start_hour} - #{@event.end_hour}" : t(".all_day"))
+  %h3= (recurring ? "#{@event.start_hour} - #{@event.end_hour}" : t('.all_day'))
   - same_day, start_date, end_date = (@event.schedule.end_date.nil? or @event.schedule.start_date == @event.schedule.end_date), @event.schedule.start_date, @event.schedule.end_date
-  %h3= (same_day ? (end_date.nil? ? [l(start_date, format: :normal), t(:no_end_date)].join(" - ") : l(start_date, format: :normal)) : [l(start_date, format: :normal), l(end_date, format: :normal)].join(" - "))
+  %h3= (same_day ? (end_date.nil? ? [l(start_date, format: :normal), t(:no_end_date)].join(' - ') : l(start_date, format: :normal)) : [l(start_date, format: :normal), l(end_date, format: :normal)].join(' - '))
 
-  %h3=sanitize simple_format(truncate((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || "", length: 200, omission: '...'))
+  %h3=sanitize simple_format(truncate((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || '', length: 200, omission: '...'))
 
   .edition_groups.invisible
-    - if can? :edit, @model_name
-      = render "groups/codes"
+    - if (can? :edit, @model_name)
+      = render 'groups/codes'
 
   .line
 
-  .btn-group{style: "width: 360px;"}
+  .btn-group{style: 'width: 360px;'}
     - can_change, can_edit = (not(@event.respond_to?(:can_change?)) or @event.can_change?), not(Event::CANT_EDIT.include?(@model_name.to_s.downcase))
     .left
-      - if (can_edit and (can? :destroy, @model_name, on: @allocation_tags_ids.split(" ")))
-        = link_to_if can_change, (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_event', :"data-link-delete" => polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t(".remove"), id: @event.id do
-          = button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution disabled', :'data-tooltip' => t(".cant_change")
-    .right{style: (can?(:edit, @model_name, on: @allocation_tags_ids) ? "" : "margin-left: 96px") }
+      - if (can_edit and (can? :destroy, @model_name, on: @allocation_tags_ids.split(' ')))
+        = link_to_if can_change, (content_tag(:i, nil, class: 'icon-trash')), '#', class: 'btn btn_caution delete_event', :"data-link-delete" => polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('.remove'), id: @event.id do
+          = button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution disabled', :'data-tooltip' => t('.cant_change')
+    .right{style: (can?(:edit, @model_name, on: @allocation_tags_ids) ? '' : 'margin-left: 96px') }
       - if (can_edit and (can? :edit, @model_name, on: @allocation_tags_ids))
-        = link_to_if can_change, (content_tag(:i, nil, class: 'icon-edit')), edit_polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids, calendar: true), class: 'btn edit_event', :'data-tooltip' => t(".edit"), id: @event.id do
+        = link_to_if can_change, (content_tag(:i, nil, class: 'icon-edit')), edit_polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids, calendar: true), class: 'btn edit_event', :'data-tooltip' => t('.edit'), id: @event.id do
           = button_tag (content_tag(:i, nil, class: 'icon-edit')), class: 'btn disabled', :'data-tooltip' => t(".cant_change")
       - if can? :show, @model_name, on: @allocation_tags_ids
-        = link_to (content_tag(:i, nil, class: 'icon-eye')), polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), class: 'btn btn_main show_event', :'data-tooltip' => t(".details"), id: @event.id
+        = link_to (content_tag(:i, nil, class: 'icon-eye')), polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), class: 'btn btn_main show_event', :'data-tooltip' => t('.details'), id: @event.id
 
-= javascript_include_tag "tooltip"
+= javascript_include_tag 'tooltip'
 
-= hidden_field_tag :groups_codes, @groups.map(&:code).join(",")
+= hidden_field_tag :groups_codes, @groups.map(&:code).join(',')
 
 :javascript
 

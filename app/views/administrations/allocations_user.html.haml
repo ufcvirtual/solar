@@ -5,7 +5,7 @@
       %h2= t(:title, scope: [:administrations, :allocations])
     .block_left
       = t(:period, scope: [:administrations, :allocations])
-      = select_tag "period", options_for_select(@periods, @periods.first)
+      = select_tag 'period', options_for_select(@periods, @periods.first)
 
   - unless @profiles.empty?
     - @profiles.each do |p|
@@ -13,32 +13,34 @@
         .block_title
           %h2= p.name
         %div
-          %table.tb_list.tablesorter{"data-sortlist" => "[[0,0]]"}
+          %table.tb_list.tablesorter{'data-sortlist' => '[[0,0]]'}
             %thead
               %tr.lines
-                %th{style: 'width:120px'}= t(".type")
+                %th{style: 'width:120px'}= t('.type')
                 %th= t(:allocation, scope: [:administrations, :allocations])
                 %th{style: 'width:80px'}= t(:status, scope: [:administrations, :allocations])
-                %th= t("allocations.designates.designated_by")
+                %th= t('allocations.designates.designated_by')
+                %th= t('allocations.designates.designated_on')
                 - if @can_change
                   %th.no_sort{style: 'width:80px'}= ''
             %tbody
-              - @allocations_user.where("profile_id="+p.id.to_s).each do |a|
+              - @allocations_user.where('profile_id='+p.id.to_s).each do |a|
                 %tr.lines.allocations{class: semester(a.allocation_tag)}
-                  %td= ( a.allocation_tag.nil? ? "" : type(a.allocation_tag) )
-                  %td{style: "width: 63%;"}= a.allocation_tag.try(:info)
+                  %td= ( a.allocation_tag.nil? ? '' : type(a.allocation_tag) )
+                  %td{style: 'width: 63%;'}= a.allocation_tag.try(:info)
                   %td= name_allocation_status(a.status)
                   %td= a.updated_by.try(:username)
+                  %td= l(a.updated_at)
                   - if @can_change
                     %td.right_buttons.manage
-                      = link_to_function content_tag(:i, nil, class: 'icon-edit'), "manage(this)", :"show-link" => admin_allocation_path(a), :"edit-link" => edit_admin_allocation_path(a), class:  "btn btn_manage_allocation"
+                      = link_to_function content_tag(:i, nil, class: 'icon-edit'), 'manage(this)', :"show-link" => admin_allocation_path(a), :"edit-link" => edit_admin_allocation_path(a), class:  'btn btn_manage_allocation'
   - else
-    .block_content_text.block_content_text_list.text_none= t(".no_data")
+    .block_content_text.block_content_text_list.text_none= t('.no_data')
 
   .right_buttons
-    = button_to_function t(:close, scope: [:administrations]), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+    = button_to_function t(:close, scope: [:administrations]), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
 
-= javascript_include_tag "tablesorter"
+= javascript_include_tag 'tablesorter'
 
 :javascript
 

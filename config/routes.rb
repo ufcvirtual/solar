@@ -135,10 +135,10 @@ Solar::Application.routes.draw do
   resources :discussions do
     collection do
       get :list
-      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "Discussion", as: :unbind_group_from
-      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Discussion", as: :remove_group_from
-      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Discussion", as: :add_group_to
-      get ":tool_id/group/tags" , to: "groups#tags", tool_type: "Discussion", as: :group_tags_from
+      put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: "unbind", tool_type: "Discussion", as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: "remove", tool_type: "Discussion", as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: "add"   , tool_type: "Discussion", as: :add_group_to
+      get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "Discussion", as: :group_tags_from
     end
     resources :posts, except: [:new, :edit] do
       collection do
@@ -256,10 +256,10 @@ Solar::Application.routes.draw do
     get :lessons, to: "lessons#to_filter"
     collection do
       get :list
-      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "LessonModule", as: :unbind_group_from
-      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "LessonModule", as: :remove_group_from
-      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "LessonModule", as: :add_group_to
-      get ":tool_id/group/tags" , to: "groups#tags", tool_type: "LessonModule", as: :group_tags_from
+      put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: "unbind", tool_type: "LessonModule", as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: "remove", tool_type: "LessonModule", as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: "add"   , tool_type: "LessonModule", as: :add_group_to
+      get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "LessonModule", as: :group_tags_from
     end
   end
 
@@ -304,10 +304,10 @@ Solar::Application.routes.draw do
       get :download
       get :zip_download, to: :download, defaults: {zip: true}
 
-      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "Assignment", as: :unbind_group_from
-      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Assignment", as: :remove_group_from
-      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Assignment", as: :add_group_to
-      get ":tool_id/group/tags" , to: "groups#tags", tool_type: "Assignment", as: :group_tags_from
+      put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: "unbind", tool_type: "Assignment", as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: "remove", tool_type: "Assignment", as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: "add"   , tool_type: "Assignment", as: :add_group_to
+      get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "Assignment", as: :group_tags_from
     end
   end
 
@@ -352,10 +352,10 @@ Solar::Application.routes.draw do
   resources :chat_rooms do
     collection do
       get :list
-      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "ChatRoom", as: :unbind_group_from
-      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "ChatRoom", as: :remove_group_from
-      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "ChatRoom", as: :add_group_to
-      get ":tool_id/group/tags" , to: "groups#tags", tool_type: "ChatRoom", as: :group_tags_from
+      put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: "unbind", tool_type: "ChatRoom", as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: "remove", tool_type: "ChatRoom", as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: "add"   , tool_type: "ChatRoom", as: :add_group_to
+      get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "ChatRoom", as: :group_tags_from
     end
     get :messages, on: :member
   end
@@ -423,10 +423,10 @@ Solar::Application.routes.draw do
       get "at/:allocation_tag_id/folder/:folder/download", to: :download, type: :folder, as: :download_folder
       get "at/download", to: :download, type: :all, as: :download_all
       get "at/folder/:folder/download", to: :download, type: :folder, as: :download_folder
-      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "SupportMaterialFile", as: :unbind_group_from
-      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "SupportMaterialFile", as: :remove_group_from
-      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "SupportMaterialFile", as: :add_group_to
-      get ":tool_id/group/tags" , to: "groups#tags", tool_type: "SupportMaterialFile", as: :group_tags_from
+      put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: 'unbind', tool_type: 'SupportMaterialFile', as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: 'remove', tool_type: 'SupportMaterialFile', as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: 'add'   , tool_type: 'SupportMaterialFile', as: :add_group_to
+      get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: 'SupportMaterialFile', as: :group_tags_from
     end
     get :download, on: :member
   end
@@ -441,10 +441,10 @@ Solar::Application.routes.draw do
       get :new_electronic_doc , to: :new, type_bibliography: Bibliography::TYPE_ELECTRONIC_DOC
       get :new_free           , to: :new, type_bibliography: Bibliography::TYPE_FREE
 
-      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "Bibliography", as: :unbind_group_from
-      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Bibliography", as: :remove_group_from
-      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Bibliography", as: :add_group_to
-      get ":tool_id/group/tags" , to: "groups#tags", tool_type: "Bibliography", as: :group_tags_from
+      put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: 'unbind', tool_type: 'Bibliography', as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: 'remove', tool_type: 'Bibliography', as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Bibliography', as: :add_group_to
+      get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: 'Bibliography', as: :group_tags_from
     end
   end
 
@@ -452,10 +452,10 @@ Solar::Application.routes.draw do
     collection do
       get :list # edicao
 
-      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "Notification", as: :unbind_group_from
-      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Notification", as: :remove_group_from
-      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Notification", as: :add_group_to
-      get ":tool_id/group/tags" , to: "groups#tags", tool_type: "Notification", as: :group_tags_from
+      put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: 'unbind', tool_type: 'Notification', as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: 'remove', tool_type: 'Notification', as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Notification', as: :add_group_to
+      get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: 'Notification', as: :group_tags_from
     end
   end
 
@@ -464,12 +464,13 @@ Solar::Application.routes.draw do
       get :list
       get :manage
 
-      put "remove_record/:id", to: "webconferences#remove_record", as: :remove_record
-      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "Webconference", as: :unbind_group_from
-      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Webconference", as: :remove_group_from
-      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Webconference", as: :add_group_to
-      get ":tool_id/group/tags" , to: "groups#tags", tool_type: "Webconference", as: :group_tags_from
+      put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: 'unbind', tool_type: 'Webconference', as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: 'remove', tool_type: 'Webconference', as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Webconference', as: :add_group_to
+      get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: 'Webconference', as: :group_tags_from
     end
+    
+    put :remove_record, on: :member
   end
 
   resources :savs, only: :index

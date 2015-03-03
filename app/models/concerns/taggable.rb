@@ -23,7 +23,7 @@ module Taggable
   end
 
   def can_destroy?
-    errors.add(:base, I18n.t(:dont_destroy_with_lower_associations)) if has_any_lower_association?
+    errors.add(:base, I18n.t(:dont_destroy_with_lower_associations)) if any_lower_association?
     errors.add(:base, I18n.t(:dont_destroy_with_many_allocations))   if allocations.select("DISTINCT user_id").count > 1 # se possuir mais de um usuario alocado, nao deleta
     # pode destruir somente se o conteudo for apenas um modulo de aula
     errors.add(:base, I18n.t(:dont_destroy_with_content))            unless (academic_allocations.count == 0 or (academic_allocations.count == 1 and academic_allocations.where(academic_tool_type: 'LessonModule').any?))

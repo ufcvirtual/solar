@@ -24,17 +24,17 @@ class User < ActiveRecord::Base
 
   has_many :allocations
   has_many :allocation_tags, through: :allocations, uniq: true
-  has_many :profiles, through: :allocations, uniq: true, conditions: { profiles: {status: true}, allocations: {status: 1} } # allocation.status = Allocation_Activated
+  has_many :profiles, through: :allocations, uniq: true, conditions: { profiles: { status: true }, allocations: { status: 1 } } # allocation.status = Allocation_Activated
   has_many :log_access
   has_many :log_actions
   has_many :lessons
-  has_many :discussion_posts, class_name: "Post", foreign_key: "user_id"
+  has_many :discussion_posts, class_name: 'Post', foreign_key: 'user_id'
   has_many :user_messages
   has_many :message_labels
   has_many :assignment_files
   has_many :chat_messages
   has_many :public_files
-  has_many :user_contacts, foreign_key: "user_related_id"
+  has_many :user_contacts, foreign_key: 'user_related_id'
 
   has_and_belongs_to_many :notifications, join_table: 'read_notifications'
 
@@ -55,9 +55,9 @@ class User < ActiveRecord::Base
   validates :nick, presence: true, length: { within: 3..34 }
   validates :birthdate, presence: true
   validates :username, presence: true, length: { within: 3..20 }, uniqueness: true
-  validates :password, presence: true, confirmation: true, unless: Proc.new { |a| a.password.blank? or a.integrated?}
+  validates :password, presence: true, confirmation: true, unless: Proc.new { |a| a.password.blank? || a.integrated? }
   validates :alternate_email, format: { with: email_format }
-  validates :email, presence: true, confirmation: true, uniqueness: true, format: { with: email_format }, unless: Proc.new {|a| a.already_email_error_or_email_not_changed? }
+  validates :email, presence: true, confirmation: true, uniqueness: true, format: { with: email_format }, unless: Proc.new { |a| a.already_email_error_or_email_not_changed? }
   validates :special_needs, presence: true, if: :has_special_needs?
 
   validates_length_of :address_neighborhood, maximum: 49
@@ -65,28 +65,28 @@ class User < ActiveRecord::Base
   validates_length_of :country, :city, :address ,maximum: 90
   validates_length_of :institution, maximum: 120
 
-  validate :integration, if: Proc.new{ |a| !a.new_record? and not(a.on_blacklist?) and a.integrated? and (a.synchronizing.nil? or not(a.synchronizing))}
-  validate :data_integration, if: Proc.new{ |a| not(a.on_blacklist?) and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"]) and (a.new_record? or username_changed? or email_changed? or cpf_changed?) and (a.synchronizing.nil? or not(a.synchronizing)) }
+  validate :integration, if: Proc.new{ |a| !a.new_record? && !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || !a.synchronizing) }
+  validate :data_integration, if: Proc.new{ |a| !a.on_blacklist? && (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO["integrated"]) && (a.new_record? || username_changed? || email_changed? || cpf_changed?) && (a.synchronizing.nil? || !a.synchronizing) }
 
   validate :unique_cpf, if: "cpf_changed?"
   validate :login_differ_from_cpf
 
   # paperclip uses: file_name, content_type, file_size e updated_at
   has_attached_file :photo,
-    styles: { medium: "120x120#", small: "30x30#", forum: "40x40#" },
-    path: ":rails_root/media/:class/:id/photos/:style.:extension",
-    url: "/media/:class/:id/photos/:style.:extension",
-    default_url: "/assets/no_image_:style.png"
+    styles: { medium: '120x120#', small: '30x30#', forum: '40x40#' },
+    path: ':rails_root/media/:class/:id/photos/:style.:extension',
+    url: '/media/:class/:id/photos/:style.:extension',
+    default_url: '/assets/no_image_:style.png'
 
-  validates_attachment_size :photo, less_than: 700.kilobyte, message: " " # Esse :message => " " deve permanecer dessa forma enquanto não descobrirmos como passar a mensagem de forma correta. Se o message for vazio a validação não é feita.
+  validates_attachment_size :photo, less_than: 700.kilobyte, message: '' # Esse message vazio deve permanecer dessa forma enquanto nao descobrirmos como passar a mensagem de forma correta. Se o message for vazio a validacao nao eh feita.
   validates_attachment_content_type :photo,
-    content_type: ['image/jpeg','image/png','image/gif','image/pjpeg'],
+    content_type: ['image/jpeg', 'image/png', 'image/gif', 'image/pjpeg'],
     message: :invalid_type
 
   default_scope order: 'users.name ASC'
 
-  ## Este método define os atributos na hora de criar um objeto. Logo, redefine os atributos já existentes e define
-  ## o valor de @has_special_needs a partir do que é passado da página na criação de um usuário (create)
+  ## Este metodo define os atributos na hora de criar um objeto. Logo, redefine os atributos ja existentes e define
+  ## o valor de has_special_needs a partir do que eh passado da pagina na criacao de um usuario (create)
   def initialize(attributes = {})
     super(attributes)
     @has_special_needs = (attributes[:has_special_needs] == 'true')
@@ -102,8 +102,8 @@ class User < ActiveRecord::Base
     super and self.active
   end
 
-  ## Permite modificação dos dados do usuário sem necessidade de informar a senha - para usuários já logados
-  ## Define o valor de @has_special_needs na edição de um usuário (update)
+  ## Permite modificacao dos dados do usuario sem necessidade de informar a senha - para usuarios ja logados
+  ## Define o valor de @has_special_needs na edicao de um usuario (update)
   def update_with_password(params={})
     @has_special_needs = (params[:has_special_needs] == 'true')
     params.delete(:has_special_needs)
@@ -118,17 +118,17 @@ class User < ActiveRecord::Base
   ## metodos de validacoes
 
   def log_update_user
-      LogAction.create(log_type: LogAction::TYPE[:update], user_id: id, description: "update_me: #{attributes.except('encrypted_password', 'reset_password_token', 'password_salt','authentication_token')} ")
+      LogAction.create(log_type: LogAction::TYPE[:update], user_id: id, description: "update_me: #{attributes.except('encrypted_password', 'reset_password_token', 'password_salt', 'authentication_token')} ")
   end
-  ## Verifica se o radio_button escolhido na view é verdadeiro ou falso.
-  ## Este método também define as necessidades especiais como sendo vazia caso a pessoa tenha selecionado que não as possui
+  ## Verifica se o radio_button escolhido na view eh verdadeiro ou falso.
+  ## Este metodo tambem define as necessidades especiais como sendo vazia caso a pessoa tenha selecionado que nao as possui
   def has_special_needs?
-    self.special_needs = '' unless @has_special_needs or integrated
+    self.special_needs = '' unless @has_special_needs || integrated
     @has_special_needs
   end
 
-  ## Verifica se já existe um erro no campo de email ou, caso esteja na edição de usuário, verifica se o email foi alterado.
-  ## Caso o email não tenha sido alterado, não há necessidade de verificar sua confirmação
+  ## Verifica se ja existe um erro no campo de email ou, caso esteja na edicao de usuario, verifica se o email foi alterado.
+  ## Caso o email nao tenha sido alterado, nao ha necessidade de verificar sua confirmacao
   def already_email_error_or_email_not_changed?
     (errors[:email].any? || !email_changed?)
   end
@@ -137,27 +137,27 @@ class User < ActiveRecord::Base
     cpf_to_check = self.class.cpf_without_mask(cpf)
     cpf_of_user  = self.class.cpf_without_mask(User.find(id).cpf) rescue ''
 
-    users = User.where(cpf: cpf_to_check) if new_record? or cpf_to_check != cpf_of_user
+    users = User.where(cpf: cpf_to_check) if new_record? || cpf_to_check != cpf_of_user
 
-    errors.add(:cpf, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) unless users.nil? or users.empty?
+    errors.add(:cpf, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) unless users.nil? || users.empty?
   end
 
   def inactive_message
     I18n.t(:user_cannot_login)
   end
 
-  def is_admin?
-    (not allocations.joins(:profile).where("cast(types & #{Profile_Type_Admin} as boolean) AND allocations.status = #{Allocation_Activated}").empty?)
+  def admin?
+    !allocations.joins(:profile).where("cast(types & #{Profile_Type_Admin} as boolean) AND allocations.status = #{Allocation_Activated}").empty?
   end
 
-  def is_editor?
-    (not allocations.joins(:profile).where("cast(types & #{Profile_Type_Editor} as boolean) AND allocations.status = #{Allocation_Activated}").empty?)
+  def editor?
+    !allocations.joins(:profile).where("cast(types & #{Profile_Type_Editor} as boolean) AND allocations.status = #{Allocation_Activated}").empty?
   end
 
   # if user is only researcher, must not see any information about users
   def is_researcher?(allocation_tags_ids)
     all = allocations.where(allocation_tag_id: allocation_tags_ids).map(&:profile).uniq.size
-    researcher_profiles = profiles_with_access_on("cant_see_info", "users", allocation_tags_ids).count
+    researcher_profiles = profiles_with_access_on('cant_see_info', 'users', allocation_tags_ids).count
     (all == researcher_profiles)
   end
 
@@ -171,7 +171,7 @@ class User < ActiveRecord::Base
   end
 
   def downcase_email
-    self.email = self.email.downcase
+    self.email = email.downcase
   end
 
   def status
@@ -180,7 +180,7 @@ class User < ActiveRecord::Base
 
   # faltando pegar apenas alocacoes validas
   def all_allocation_tags(objects = false)
-    allocation_tags.collect! {|at| RelatedTaggable.related(at)}.flatten.uniq
+    allocation_tags.collect! { |at| RelatedTaggable.related(at) }.flatten.uniq
   end
 
   def to_msg
@@ -193,19 +193,18 @@ class User < ActiveRecord::Base
   end
 
   def groups(profile_id = nil, status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil, offer_id = nil, group_status = true)
-    query = ["allocations.allocation_tag_id IS NOT NULL"]
+    query = ['allocations.allocation_tag_id IS NOT NULL']
     query << "allocations.status = #{status}"                        unless status.blank?
     query << "allocations.profile_id = #{profile_id}"                unless profile_id.blank?
-    ats = allocations.where(query.join(" AND ")).pluck(:allocation_tag_id)
+    ats = allocations.where(query.join(' AND ')).pluck(:allocation_tag_id)
 
     query = []
     query << "curriculum_unit_id = #{curriculum_unit_id}"            unless curriculum_unit_id.blank?
     query << "curriculum_unit_type_id = #{curriculum_unit_type_id}"  unless curriculum_unit_type_id.blank?
     query << "offer_id = #{offer_id}"                                unless offer_id.blank?
-    Group.joins(offer: :semester).where(id: RelatedTaggable.where("group_at_id IN (?) OR offer_at_id IN (?) OR course_at_id IN (?) OR curriculum_unit_at_id IN (?) 
-                                                                   OR curriculum_unit_type_at_id IN (?)", ats, ats, ats, ats, ats)
-         .where(query.join(" AND "), status: group_status).pluck(:group_id).uniq)
-         .select("DISTINCT groups.id, semesters.*, groups.*").order('semesters.name DESC, groups.code ASC')
+    Group.joins(offer: :semester).where(id: RelatedTaggable.where('group_at_id IN (?) OR offer_at_id IN (?) OR course_at_id IN (?) OR curriculum_unit_at_id IN (?) OR curriculum_unit_type_at_id IN (?)', ats, ats, ats, ats, ats)
+      .where(query.join(' AND '), status: group_status).pluck(:group_id).uniq)
+      .select('DISTINCT groups.id, semesters.*, groups.*').order('semesters.name DESC, groups.code ASC')
   end
 
   ## profiles: [], contexts: [], general_context: true, allocation_tag_id
@@ -223,7 +222,7 @@ class User < ActiveRecord::Base
     args[:contexts] << Context_General if args[:general_context]
 
     query_contexts = 'menus_contexts.context_id IN (:contexts)' unless args[:contexts].empty?
-    resources_id = Resource.joins(:profiles).where(profiles: {id: args[:profiles].flatten})
+    resources_id = Resource.joins(:profiles).where(profiles: { id: args[:profiles].flatten })
 
     Menu.joins(:menus_contexts).includes(:resource, :parent).where(resource_id: resources_id, status: true)
       .where(query_contexts, contexts: args[:contexts]).order('parents_menus.order, menus.order')
@@ -232,61 +231,59 @@ class User < ActiveRecord::Base
   def profiles_with_access_on(action, controller, allocation_tag_id = nil, only_id = false)
     if allocation_tag_id.nil?
       profiles = Profile.joins(:allocations, :resources)
-        .where(allocations: { user_id: id }, resources: {action: action, controller: controller})
-        .order("profiles.id DESC").uniq
+        .where(allocations: { user_id: id }, resources: { action: action, controller: controller })
+        .order('profiles.id DESC').uniq
     else
       profiles = Profile.joins(:allocations, :resources)
-        .where(allocations: { allocation_tag_id: allocation_tag_id, user_id: id }, resources: {action: action, controller: controller})
-        .order("profiles.id DESC").uniq
+        .where(allocations: { allocation_tag_id: allocation_tag_id, user_id: id }, resources: { action: action, controller: controller })
+        .order('profiles.id DESC').uniq
     end
     
     (only_id) ? profiles.pluck(:id) : profiles
   end
 
   def get_allocation_tags_ids_from_profiles(responsible = true, observer = false)
-      query = {
-        status: Allocation_Activated,
-        profiles: { status: true }
-      }
+    query = {
+      status: Allocation_Activated,
+      profiles: { status: true }
+    }
 
-      query_type = []
-      query_type << "cast(profiles.types & :responsible as boolean) OR cast(profiles.types & :coord as boolean)" if responsible
-      query_type << "cast(profiles.types & :observer as boolean)" if observer
+    query_type = []
+    query_type << 'cast(profiles.types & :responsible as boolean) OR cast(profiles.types & :coord as boolean)' if responsible
+    query_type << 'cast(profiles.types & :observer as boolean)' if observer
 
-      return false if query_type.empty?
+    return false if query_type.empty?
 
-      AllocationTag.where(id: allocations.joins(:profile).where(query)
-          .where(query_type.join(" OR "), responsible: Profile_Type_Class_Responsible, observer: Profile_Type_Observer, coord: Profile_Type_Coord))
-          .map{|at| at.related({upper: true})}
-    end
+    AllocationTag.where(id: allocations.joins(:profile).where(query)
+      .where(query_type.join(' OR '), responsible: Profile_Type_Class_Responsible, observer: Profile_Type_Observer, coord: Profile_Type_Coord))
+      .map { |at| at.related(upper: true) }
+  end
 
   # Retorna os ids das allocations_tags ativadas de um usuário
   def activated_allocation_tag_ids(related = true, interacts = false)
-    query = interacts ? "cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)" : ""
+    query = interacts ? "cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)" : ''
     allocation_tags = AllocationTag.joins(allocations: :profile).where(allocations: {user_id: id, status: Allocation_Activated.to_i}).where(query)
-    (related ? allocation_tags.collect!{|at| at.related}.flatten.uniq : allocation_tags.pluck(:id))
+    (related ? allocation_tags.collect!{ |at| at.related }.flatten.uniq : allocation_tags.pluck(:id))
   end
 
   # Returns all allocation_tags_ids with activated access on informed actions of controller
   # if all is true         => recover all related
   # if include_nil is true => include nil if some allocation is not rellated to any allocation_tag
   def allocation_tags_ids_with_access_on(actions, controller, all=false, include_nil=false)
-    allocations = Allocation.joins(profile: :resources).where(resources: {action: actions, controller: controller}, allocations: {status: Allocation_Activated, user_id: id}).select("DISTINCT allocation_tag_id, allocations.id")
-    allocation_tags = AllocationTag.joins(:allocations).where(allocations: {id: allocations.pluck(:id)}).pluck(:id)
+    allocations = Allocation.joins(profile: :resources).where(resources: { action: actions, controller: controller }, allocations: { status: Allocation_Activated, user_id: id }).select('DISTINCT allocation_tag_id, allocations.id')
+    allocation_tags = AllocationTag.joins(:allocations).where(allocations: { id: allocations.pluck(:id) }).pluck(:id)
 
-    has_nil = (include_nil and allocations.where(allocation_tag_id: nil).any?)
-    allocation_tags = RelatedTaggable.related_from_array_ats(allocation_tags.compact, (all ? {} : {lower: true})) 
+    has_nil = (include_nil && allocations.where(allocation_tag_id: nil).any?)
+    allocation_tags = RelatedTaggable.related_from_array_ats(allocation_tags.compact, (all ? {} : { lower: true })) 
     allocation_tags << nil if has_nil
     allocation_tags
   end
 
   # Returns user resources list as [{controller: :action}, ...] at informed allocation_tags_ids
   def resources_by_allocation_tags_ids(allocation_tags_ids)
-    allocation_tags_ids = RelatedTaggable.related_from_array_ats(allocation_tags_ids.split(" "), {upper: true})
-    profiles.joins(:resources).where("allocations.allocation_tag_id IN (?) AND allocations.status = ?", allocation_tags_ids, Allocation_Activated)
-      .map(&:resources).compact.flatten.map{ |resource|
-        {resource.controller.to_sym => resource.action.to_sym}
-      }
+    allocation_tags_ids = RelatedTaggable.related_from_array_ats(allocation_tags_ids.split(' '), { upper: true })
+    profiles.joins(:resources).where('allocations.allocation_tag_id IN (?) AND allocations.status = ?', allocation_tags_ids, Allocation_Activated)
+      .map(&:resources).compact.flatten.map { |resource| { resource.controller.to_sym => resource.action.to_sym } }
   end
 
   def self.find_for_database_authentication(warden_conditions)
@@ -296,42 +293,42 @@ class User < ActiveRecord::Base
   end
 
   def self.all_at_allocation_tags(allocation_tags_ids, status = Allocation_Activated, interacts = false)
-    query = interacts ? "cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)" : ""
-    joins(allocations: :profile).where(allocations: {status: status, allocation_tag_id: allocation_tags_ids}).where(query)
-    .select("DISTINCT users.id").select("users.name, users.email")
+    query = interacts ? "cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)" : ''
+    joins(allocations: :profile).where(allocations: { status: status, allocation_tag_id: allocation_tags_ids }).where(query)
+      .select('DISTINCT users.id').select('users.name, users.email')
   end
 
   # Searches all users which "type" column includes "text"
   # if allocation_tags_ids is informed and doesn't include nil => searches users allocated at the allocation_tags_ids
-  def self.find_by_text_ignoring_characters(text, type='name', allocation_tags_ids=[])
+  def self.find_by_text_ignoring_characters(text, type = 'name', allocation_tags_ids = [])
     raise CanCan::AccessDenied unless %w[name email username cpf].include?(type)
 
     text = text.delete(".").delete("-") if %w[name cpf].include?(type)
     users = where("lower(unaccent(#{type})) LIKE lower(unaccent(?))", "%#{text}")
-    users = users.joins(:allocations).where("allocation_tag_id IN (?)", allocation_tags_ids) unless allocation_tags_ids.blank? or allocation_tags_ids.include?(nil)
-    users.select("DISTINCT users.id").select("users.*").order("name")
+    users = users.joins(:allocations).where("allocation_tag_id IN (?)", allocation_tags_ids) unless allocation_tags_ids.blank? || allocation_tags_ids.include?(nil)
+    users.select('DISTINCT users.id').select('users.*').order('name')
   end
 
-  def info_at_allocation_tag(allocation_tag_id, opt = {messages: false})
+  def info_at_allocation_tag(allocation_tag_id, opt = { messages: false })
     allocation_tags_ids = AllocationTag.find(allocation_tag_id).related
-    posts        = Post.joins(:academic_allocation).where(academic_allocations: {academic_tool_type: "Discussion", allocation_tag_id: allocation_tags_ids}, discussion_posts: {user_id: self.id}).count
+    posts        = Post.joins(:academic_allocation).where(academic_allocations: { academic_tool_type: 'Discussion', allocation_tag_id: allocation_tags_ids }, discussion_posts: { user_id: self.id }).count
     access       = LogAccess.where(allocation_tag_id: allocation_tags_ids, user_id: id, log_type: LogAccess::TYPE[:group_access]).count
     messages     = Message.user_outbox(id, allocation_tags_ids, false).count if opt[:messages]
 
-    {posts: posts, access: access, messages: messages}
+    { posts: posts, access: access, messages: messages }
   end
 
   ################################
   ## import users from csv file ##
   ################################
 
-  def self.import(file, sep = ";")
+  def self.import(file, sep = ';')
     imported = []
-    log = {error: [], success: []}
-    csv = Roo::CSV.new(file.path, csv_options: {col_sep: sep})
+    log = { error: [], success: [] }
+    csv = Roo::CSV.new(file.path, csv_options: { col_sep: sep })
     header = csv.row(1)
 
-    raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) unless header.join(';') == YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["import_users"]["header"]
+    raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) unless header.join(';') == YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['import_users']['header']
 
     (2..csv.last_row).each do |i|
       row = Hash[[header, csv.row(i)].transpose]
@@ -341,22 +338,22 @@ class User < ActiveRecord::Base
 
       unless user.integrated
 
-        row = {"email"=>row['Email'],
-        "name"=>row['Nome'],
-        "address"=>row['Endereço'],
-        "country"=>row['País'],
-        "state"=>row['Estado'],
-        "city"=>row['Cidade'],
-        "institution"=>row['Instituição'],
-        "gender"=>row['Sexo'],
-        "cpf"=>row['CPF']}
+        row = { 'email' => row['Email'],
+                'name' => row['Nome'],
+                'address' => row['Endereço'],
+                'country' => row['País'],
+                'state' => row['Estado'],
+                'city' => row['Cidade'],
+                'institution' => row['Instituição'],
+                'gender' => row['Sexo'],
+                'cpf' => row['CPF'] }
 
         user.attributes = row
 
-        user.username = user.cpf if user.username.nil?
-        user.nick = user.username if user.nick.nil?
-        user.birthdate = "1970-01-01" if user.birthdate.nil? # verificar este campo
-        user.password = "123456" if user.password.nil?
+        user.username  = user.cpf      if user.username.nil?
+        user.nick      = user.username if user.nick.nil?
+        user.birthdate = '1970-01-01'  if user.birthdate.nil? # verificar este campo
+        user.password  = '123456'      if user.password.nil?
       end
       user.active = true
 
@@ -364,11 +361,11 @@ class User < ActiveRecord::Base
         log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
         imported << user
       else
-        log[:error] << I18n.t(:error, scope: [:administrations, :import_users, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(", "))
+        log[:error] << I18n.t(:error, scope: [:administrations, :import_users, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(', '))
       end
     end ## each
 
-    {imported: imported, log: log}
+    { imported: imported, log: log }
   end
 
   ######################
@@ -377,38 +374,38 @@ class User < ActiveRecord::Base
 
   def integration
     changed_fields = (changed - CHANGEABLE_FIELDS)
-    errors.add(changed_fields.first.to_sym, I18n.t("users.errors.ma.only_by")) if changed_fields.size > 0
+    errors.add(changed_fields.first.to_sym, I18n.t('users.errors.ma.only_by')) if changed_fields.size > 0
   end
 
-  # chamada para MA verificando se existe usuário com o login, cpf ou email informados
+  # chamada para MA verificando se existe usuario com o login, cpf ou email informados
   def data_integration
     user_cpf = cpf.delete('.').delete('-')
     self.connect_and_validates_user
-  rescue HTTPClient::ConnectTimeoutError => error # if MA don't respond (timeout)
-    errors.add(:username, I18n.t("users.errors.ma.cant_connect")) if username_changed?
-    errors.add(:cpf, I18n.t("users.errors.ma.cant_connect"))      if cpf_changed?
-    errors.add(:email, I18n.t("users.errors.ma.cant_connect"))    if email_changed?
-  rescue => error
-    errors.add(:base, I18n.t("users.errors.ma.problem_accessing"))
+  rescue HTTPClient::ConnectTimeoutError # if MA don't respond (timeout)
+    errors.add(:username, I18n.t('users.errors.ma.cant_connect')) if username_changed?
+    errors.add(:cpf, I18n.t('users.errors.ma.cant_connect'))      if cpf_changed?
+    errors.add(:email, I18n.t('users.errors.ma.cant_connect'))    if email_changed?
+  rescue
+    errors.add(:base, I18n.t('users.errors.ma.problem_accessing'))
   ensure
     errors_messages = errors.full_messages
     # if is new user and happened some problem connecting with MA
-    if new_record? and (errors_messages.include?(I18n.t("users.errors.ma.cant_connect")) or errors_messages.include?(I18n.t("users.errors.ma.problem_accessing")))
-      tmp_email       = [user_cpf, MODULO_ACADEMICO["tmp_email_provider"]].join("@")
-      self.attributes = {username: user_cpf, email: tmp_email, email_confirmation: tmp_email} # set username and invalid email
-      user_errors     = errors.messages.to_a.collect{|a| a[1]}.flatten.uniq # all errors
-      ma_errors       = I18n.t("users.errors.ma").to_a.collect{|a| a[1]}    # ma errors
+    if new_record? && (errors_messages.include?(I18n.t('users.errors.ma.cant_connect')) or errors_messages.include?(I18n.t('users.errors.ma.problem_accessing')))
+      tmp_email       = [user_cpf, MODULO_ACADEMICO['tmp_email_provider']].join('@')
+      self.attributes = { username: user_cpf, email: tmp_email, email_confirmation: tmp_email } # set username and invalid email
+      user_errors     = errors.messages.to_a.collect{ |a| a[1] }.flatten.uniq # all errors
+      ma_errors       = I18n.t('users.errors.ma').to_a.collect{ |a| a[1] }  # ma errors
       if (user_errors - ma_errors).empty? # form doesn't have other errors
         errors.clear # clear ma errors
       else # form has other errors
-        errors.add(:username, I18n.t("users.errors.ma.login"))
-        errors.add(:email, I18n.t("users.errors.ma.email"))
+        errors.add(:username, I18n.t('users.errors.ma.login'))
+        errors.add(:email, I18n.t('users.errors.ma.email'))
       end
     end
   end
 
   def can_synchronize?
-    not(on_blacklist?) and (not(MODULO_ACADEMICO.nil?) and MODULO_ACADEMICO["integrated"])
+    !on_blacklist? && (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO['integrated'])
   end
 
   # synchronizes user data with MA data
@@ -430,7 +427,7 @@ class User < ActiveRecord::Base
   end
 
   def integrated?
-    can_synchronize? and integrated
+    can_synchronize? && integrated
   end
 
   def on_blacklist?
@@ -444,8 +441,8 @@ class User < ActiveRecord::Base
   def connect_and_validates_user
     user_cpf = self.class.cpf_without_mask(cpf)
 
-    client   = Savon.client wsdl: MODULO_ACADEMICO["wsdl"]
-    response = client.call MODULO_ACADEMICO["methods"]["user"]["validate"].to_sym, message: {cpf: user_cpf, email: email, login: username } # gets user validation
+    client   = Savon.client wsdl: MODULO_ACADEMICO['wsdl']
+    response = client.call MODULO_ACADEMICO['methods']['user']['validate'].to_sym, message: {cpf: user_cpf, email: email, login: username } # gets user validation
 
     User.validate_user_result(response.to_hash[:validar_usuario_response][:validar_usuario_result], client, user_cpf, self)
   end
@@ -456,11 +453,11 @@ class User < ActiveRecord::Base
     return nil if User.new(cpf: cpf).on_blacklist?
     unless result.nil?
       result = result[:int]
-      if result.include?("6") # unavailable cpf, thus already in use by MA
+      if result.include?('6') # unavailable cpf, thus already in use by MA
         user_data = User.connect_and_import_user(cpf, client)
         unless user_data.nil? # if user exists
           # verify if cpf, username or email already exists
-          unless User.find_by_cpf(user_data[0]) or User.find_by_username(user_data[5]) or User.find_by_email(user_data[8])
+          unless User.find_by_cpf(user_data[0]) || User.find_by_username(user_data[5]) || User.find_by_email(user_data[8])
             ma_attributes = User.user_ma_attributes(user_data) # import all data from MA user
             (user.nil? ? (user = User.new(ma_attributes)) : (user.attributes = ma_attributes))
             user.errors.clear # clear all errors, so the system can import and save user's data
@@ -474,28 +471,28 @@ class User < ActiveRecord::Base
         end
       else
         return nil if user.nil? # if user don't exist yet
-        user.errors.add(:username, I18n.t("users.errors.ma.already_exists")) if result.include?("1")  # unavailable login/username, thus already in use by MA
-        user.errors.add(:username, I18n.t("users.errors.invalid"))           if result.include?("2")  # invalid login/username
-        user.errors.add(:password, I18n.t("users.errors.invalid"))           if result.include?("3")  # invalid password
-        user.errors.add(:email, I18n.t("users.errors.ma.already_exists"))    if result.include?("4")  # unavailable email, thus already in use by MA
-        user.errors.add(:email, I18n.t("users.errors.invalid"))              if result.include?("5")  # invalid email
-        user.errors.add(:cpf, I18n.t("users.errors.invalid"))                if result.include?("7")  # invalid cpf
-        user.errors.add(:base, I18n.t("users.errors.ma.problem_accessing"))  if result.include?("99") # unknown error
+        user.errors.add(:username, I18n.t('users.errors.ma.already_exists')) if result.include?('1')  # unavailable login/username, thus already in use by MA
+        user.errors.add(:username, I18n.t('users.errors.invalid'))           if result.include?('2')  # invalid login/username
+        user.errors.add(:password, I18n.t('users.errors.invalid'))           if result.include?('3')  # invalid password
+        user.errors.add(:email, I18n.t('users.errors.ma.already_exists'))    if result.include?('4')  # unavailable email, thus already in use by MA
+        user.errors.add(:email, I18n.t('users.errors.invalid'))              if result.include?('5')  # invalid email
+        user.errors.add(:cpf, I18n.t('users.errors.invalid'))                if result.include?('7')  # invalid cpf
+        user.errors.add(:base, I18n.t('users.errors.ma.problem_accessing'))  if result.include?('99') # unknown error
       end
     end
   end
 
   def self.user_ma_attributes(user_data)
-    {name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == "M"), cell_phone: user_data[17],
-      nick: (user_data[7].nil? ? ([user_data[2].split(" ")[0], user_data[2].split(" ")[1]].join(" ")) : user_data[7]), telephone: user_data[18],
-      special_needs: (user_data[19].downcase == "nenhuma" ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13],
+    { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17],
+      nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: user_data[18],
+      special_needs: (user_data[19].downcase == 'nenhuma' ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13],
       address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]),
-      encrypted_password: user_data[6], email: (user_data[8].blank? ? [user_data[0].downcase, MODULO_ACADEMICO["tmp_email_provider"]].join("@") : user_data[8]), integrated: true} #, enrollment_code: user_data[19] # user is set as integrated
+      encrypted_password: user_data[6], email: (user_data[8].blank? ? [user_data[0].downcase, MODULO_ACADEMICO['tmp_email_provider']].join('@') : user_data[8]), integrated: true }
   end
 
   def self.connect_and_import_user(cpf, client = nil)
-    client    = Savon.client wsdl: MODULO_ACADEMICO["wsdl"] if client.nil?
-    response  = client.call(MODULO_ACADEMICO["methods"]["user"]["import"].to_sym, message: { cpf: cpf.delete('.').delete('-') }) # import user
+    client    = Savon.client wsdl: MODULO_ACADEMICO['wsdl'] if client.nil?
+    response  = client.call(MODULO_ACADEMICO['methods']['user']['import'].to_sym, message: { cpf: cpf.delete('.').delete('-') }) # import user
     user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
     return (user_data.nil? ? nil : user_data[:string])
   end
@@ -504,12 +501,11 @@ class User < ActiveRecord::Base
 
   # profile, allocation_tags_ids, status
   def allocate_in(allocation_tag_ids: [], profile: Profile.student_profile, status: Allocation_Pending, by_user: nil)
-    result = {success: [], error: []}
+    result = { success: [], error: [] }
     Allocation.transaction do
       allocation_tag_ids.each do |at|
         al = allocations.build(allocation_tag_id: at, profile_id: profile)
-        al.status = status
-        al.updated_by_user_id = by_user
+        al.attributes = { status: status, updated_by_user_id: by_user }
         result[(al.save) ? :success : :error] << al
       end
     end
@@ -519,8 +515,8 @@ class User < ActiveRecord::Base
 
   def cancel_allocations(profile_id = nil, allocation_tag_id = nil)
     query = {}
-    query.merge!({profile_id: profile_id})               unless profile_id.nil?
-    query.merge!({allocation_tag_id: allocation_tag_id}) unless allocation_tag_id.nil?
+    query.merge!(profile_id: profile_id)               unless profile_id.nil?
+    query.merge!(allocation_tag_id: allocation_tag_id) unless allocation_tag_id.nil?
 
     allocations.where(query).update_all(status: Allocation_Cancelled)
   end
@@ -529,21 +525,14 @@ class User < ActiveRecord::Base
     (researcher ? I18n.t(:hidden_info) : try(method.to_sym))
   end
 
-  def user_photo(size=:medium)
-    (photo_file_name and File.exist?(File.join(Rails.root.to_s, photo.url(size, timestamp: false)))) ? photo.url(size) : "no_image.png"
+  def user_photo(size = :medium)
+    (photo_file_name && File.exist?(File.join(Rails.root.to_s, photo.url(size, timestamp: false)))) ? photo.url(size) : 'no_image.png'
   end
 
   private
 
     def login_differ_from_cpf
       any_user = User.where(cpf: self.class.cpf_without_mask(username))
-      error = if new_record?
-        true if any_user.any?
-      else
-        true if any_user.where('id <> ?', id).any? # update
-      end
-
-      errors.add(:username, I18n.t(:new_user_msg_cpf_error)) if error
+      errors.add(:username, I18n.t(:new_user_msg_cpf_error)) if (new_record? && any_user.any?) || (any_user.where('id <> ?', id).any?)
     end
-
 end

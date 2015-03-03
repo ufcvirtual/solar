@@ -201,6 +201,7 @@ pt_BR:
       user_blacklist: Desvincular do MA
       group_assignment: Trabalho em grupo
       public_file: "Área Pública"
+      assignment_file: Arquivos de trabalho
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -1171,12 +1172,17 @@ pt_BR:
       created: Webconferência criada com sucesso.
       updated: Webconferência atualizada com sucesso.
       deleted: Webconferência deletada com sucesso.
+      record_deleted: Gravação da webconferência removida com sucesso.
     error:
       created: "Não foi possível criar webconferência."
       updated: "Não foi possível atualizar webconferência."
       deleted: "Não foi possível deletar webconferência."
-    index:
-      rnp: "Para acessar a webconferência da RNP, vá ao endereço: <a href='http://webconf2.rnp.br/uab_ufc' target='_blank'>http://webconf2.rnp.br/uab_ufc</a>."
+      unavailable: 'Não foi possível remover gravação, serviço indisponível'
+      not_recorded: 'Não foi possível remover gravação, pois não há gravação para uma ou mais webconferências escolhidas'
+      not_ended: 'Não foi possível remover gravação, uma ou mais webconferências selecionadas em andamento'
+      record_not_deleted: 'Não foi possível remover gravação das webconferências'
+    manage:
+      delete_record: Remover gravação
 
   navigation_of: " de "
   navigation_next: "Próxima >"

@@ -37,7 +37,7 @@ class Group < ActiveRecord::Base
     AllocationTag.get_participants(allocation_tag.id, {students: true})
   end
 
-  def has_any_lower_association?
+  def any_lower_association?
     false
   end
 

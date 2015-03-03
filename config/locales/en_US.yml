@@ -163,6 +163,7 @@ en_US:
       user_blacklist: Blacklist
       group_assignment: Group Assignment
       public_file: Public Area
+      assignment_file: Assignment File
     attributes:
       user:
         password: "Password"
@@ -994,12 +995,17 @@ en_US:
       created: Webconference was successfully created.
       updated: Webconference was successfully updated.
       deleted: Webconference was successfully deleted.
+      record_deleted: Webconference's record successfully removed.
     error:
       created: "Webconference wasn't created."
       updated: "Webconference wasn't updated."
       deleted: "Webconference wasn't deleted."
-    index:
-      rnp: "To access RNP's webconference, go to the address: <a href='http://webconf2.rnp.br/uab_ufc' target='_blank'>http://webconf2.rnp.br/uab_ufc</a>."
+      unavailable: "Can't remove record, webconference unavailable"
+      not_recorded: "Can't remove record, there are no record to one or more webconfereces selected"
+      not_ended: "Can't remove record, one or more webconfereces still on going"
+      record_not_deleted: "Can't remove record from webconferences"
+    manage:
+      delete_record: Remove record
   navigation_of: " of "
   navigation_next: "Next >"
   navigation_previous: "< Previous"

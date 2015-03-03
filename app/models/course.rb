@@ -15,7 +15,7 @@ class Course < ActiveRecord::Base
 
   attr_accessor :edx_course, :courses_names
 
-  def has_any_lower_association?
+  def any_lower_association?
     offers.count > 0
   end
 
@@ -33,15 +33,14 @@ class Course < ActiveRecord::Base
 
   def unique_name
     if courses_names.include?(name)
-      errors.add(:name, I18n.t("edx.errors.existing_name"))
+      errors.add(:name, I18n.t('edx.errors.existing_name'))
     else
-      codes = courses_names.collect{|name| name.slice(0..2).upcase}
-      errors.add(:name, I18n.t("edx.errors.existing_code")) if codes.include?(name.slice(0..2).upcase)
+      codes = courses_names.collect { |name| name.slice(0..2).upcase }
+      errors.add(:name, I18n.t('edx.errors.existing_code')) if codes.include?(name.slice(0..2).upcase)
     end
   end
 
   def self.all_associated_with_curriculum_unit_by_name(type = 3)
     Course.where(name: CurriculumUnit.where(curriculum_unit_type_id: type).pluck(:name))
   end
-
 end

@@ -1,7 +1,8 @@
+%td= ( @allocation.allocation_tag.nil? ? '' : type(@allocation.allocation_tag) )
 %td= @allocation.allocation_tag.try(:info)
-%td= ( @allocation.allocation_tag.nil? ? "" : type(@allocation.allocation_tag) )
 %td= select(:status, :id, allocation_status.invert.to_a, {selected: @allocation.status})
 %td= @allocation.updated_by.try(:username)
+%td= l(@allocation.updated_at)
 %td.right_buttons
-  = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), "update_allocation(this)", :"save-link" => admin_allocation_path(@allocation), :"show-link" => admin_allocation_path(@allocation.id), class:  "btn btn_manage_cancel"
-  = link_to_function content_tag(:i, nil, class: 'icon-cross'), "cancel(this)", :"show-link" => admin_allocation_path(@allocation), class: "btn btn_manage_cancel"
+  = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), 'update_allocation(this)', :"save-link" => admin_allocation_path(@allocation), :"show-link" => admin_allocation_path(@allocation.id), class:  'btn btn_manage_cancel'
+  = link_to_function content_tag(:i, nil, class: 'icon-cross'), 'cancel(this)', :"show-link" => admin_allocation_path(@allocation), class: 'btn btn_manage_cancel'

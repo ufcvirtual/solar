@@ -188,7 +188,7 @@ describe "Savs" do
   
       it {
         post "/api/v1/sav/4", json_data
-        response.status.should eq(422)
+        response.status.should eq(400)
       }
     end
 
