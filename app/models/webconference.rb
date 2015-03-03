@@ -16,7 +16,7 @@ class Webconference < ActiveRecord::Base
 
   before_destroy :can_destroy?
 
-  after_destroy :remove_record, if: Proc.new { |a| a.is_recorded }
+  # after_destroy :remove_record, if: Proc.new { |a| a.is_recorded }
 
   def can_access?
     Time.now.between?(initial_time, initial_time+duration.minutes)
@@ -34,25 +34,26 @@ class Webconference < ActiveRecord::Base
   end
 
   def is_over?
-    Time.now > (initial_time+duration.minutes+10.minutes)
+    Time.now > (initial_time+duration.minutes+1.minutes)
   end
 
-  def link_to_join(user, at)
-    ((can_access? && is_online?) ? ActionController::Base.helpers.link_to(title, bbb_join(user, at), target: "_blank") : title)
+  def link_to_join(user, at_id)
+    ((can_access? && is_online?) ? ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: "_blank") : title)
   end
 
   def is_meeting_running(meeting_id)
     @api.is_meeting_running?(meeting_id)
   end
 
-  def status
+  def status(at_id)
     case
     when !is_online? then I18n.t(:unavailable, scope: [:webconferences, :list])
     when can_access? then I18n.t(:in_progress, scope: [:webconferences, :list])
     when (Time.now < initial_time) then I18n.t(:scheduled, scope: [:webconferences, :list])
     when (is_recorded? && is_online?)
       if is_over?
-        ActionController::Base.helpers.link_to(I18n.t(:play, scope: [:webconferences, :list]), recordings, target: "_blank")
+        record_url = recordings(at_id)
+        (record_url ? ActionController::Base.helpers.link_to(I18n.t(:play, scope: [:webconferences, :list]), record_url, target: "_blank") : I18n.t(:removed_record, scope: [:webconferences, :list]))
       else
         I18n.t(:processing, scope: [:webconferences, :list])
       end
@@ -62,10 +63,9 @@ class Webconference < ActiveRecord::Base
   end
 
   def self.all_by_allocation_tags(allocation_tags_ids, opt = { order: 'initial_time ASC, title ASC' })
-    # AcademicAllocation.where(allocation_tag_id: allocation_tags_ids)
-    Webconference.joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'").select('webconferences.*, academic_allocations.allocation_tag_id AS at_id').order(opt[:order])
-    # AcademicAllocation.joins("JOIN webconferences ON webconferences.id = academic_allocations.academic_tool_id").where(academic_tool_type: 'Webconference').select('academic_allocations.id AS ac_id, webconferences.*').order(opt[:order])
-    # (allocation_tags_ids.include?(nil) ? select("webconferences.*, DISTINCT academic_allocations.id AS academic_allocation_id").order(opt[:order]) : joins(academic_allocations: :allocation_tag).where(allocation_tags: { id: allocation_tags_ids }).select("webconferences.*, DISTINCT academic_allocations.id AS academic_allocation_id").order(opt[:order]))
+    webconferences = Webconference.joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'")
+    webconferences = webconferences.where(academic_allocations: { allocation_tag_id: allocation_tags_ids }) unless allocation_tags_ids.include?(nil)
+    webconferences.select('webconferences.*, academic_allocations.allocation_tag_id AS at_id, academic_allocations.id AS ac_id').order(opt[:order])
   end
 
   def responsible?(user_id)
@@ -79,9 +79,9 @@ class Webconference < ActiveRecord::Base
     BigBlueButton::BigBlueButtonApi.new(server['url'], server['salt'], server['version'].to_s, debug)
   end
 
-  def bbb_join(user, at)
-    meeting_name   = AllocationTag.find(at).info
-    meeting_id     = "#{meeting_name}-#{id}"
+  def bbb_join(user, at_id)
+    meeting_name   = AllocationTag.find(at_id).info
+    meeting_id     = get_mettingID(at_id)
     meeting_name   = "#{title} (#{meeting_name})"
     moderator_name = "#{user.name}*"
     attendee_name  = user.name
@@ -106,11 +106,11 @@ class Webconference < ActiveRecord::Base
     end
   end
 
-  def recordings
-    meeting_id = get_mettingID
+  def recordings(at_id)
+    meeting_id = get_mettingID(at_id)
     @api = Webconference.bbb_prepare
 
-    response = @api.get_recordings
+    response = @api.get_recordings()
     response[:recordings].each do |m|
       if m[:meetingID] == meeting_id
         playback = m[:playback]
@@ -119,17 +119,11 @@ class Webconference < ActiveRecord::Base
         return url
       end
     end
-    return '#'
+    return false
   end
 
-  def get_mettingID
-    meeting_name =  unless groups.empty?
-                      groups.map(&:code).join(', ')
-                    else
-                      o = offers.first
-                      "#{o.curriculum_unit.name}-#{o.semester.name}"
-                    end
-    meeting_id = "#{meeting_name}-#{id}"
+  def get_mettingID(at_id)
+    [at_id, id].join('_')
   end
 
   def can_remove_records?
@@ -143,28 +137,16 @@ class Webconference < ActiveRecord::Base
     raise 'not_ended'    unless is_over?
   end
 
-  def self.remove_record(webconferences, at)
+  def self.remove_record(academic_allocations)
     api = Webconference.bbb_prepare
 
-    webconferences.each do |webconference|
-      meeting_name =  unless webconference.groups.empty?
-                        webconference.groups.map(&:code).join(', ')
-                      else
-                        o = webconference.offers.first
-                        "#{(o.curriculum_unit.name || o.course.name)}-#{o.semester.name}"
-                      end
-
-      meeting_id = "#{meeting_name}-#{webconference.id}"
-
-      response = @api.get_recordings()
+    academic_allocations.each do |academic_allocation|
+      webconference = Webconference.find(academic_allocation.academic_tool_id)
+      meeting_id    = webconference.get_mettingID(academic_allocation.allocation_tag_id)
+      response      = api.get_recordings()
       response[:recordings].each do |m|
         api.delete_recordings(m[:recordID]) if m[:meetingID] == meeting_id
       end
-      webconference.update_attributes(is_recorded: false)
     end
-  end
-
-  def remove_record
-    Webconference.remove_record([self])
   end
 end

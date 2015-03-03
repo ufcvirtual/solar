@@ -1,5 +1,5 @@
 .block_wrapper
-  - unless @webconferences.nil? or @webconferences.empty?
+  - unless @webconferences.blank?
     .block_title
       %h2
         %i.icon-video-conference
@@ -7,20 +7,20 @@
     %table.webconferences.tb_list
       %thead
         %tr.lines
-          %th{align:"center", style:"width: 20%;"}= t(:name, scope: [:webconferences, :list])
-          %th{align:"center", style:"width: 30%;"}= t(:description, scope: [:webconferences, :list])
-          %th{align:"center", style:"width: 20%;"}= t(:moderator, scope: [:webconferences, :list])
-          %th{align:"center", style:"width: 20%;"}= t(:availability, scope: [:webconferences, :list])
-          %th{align:"center", style:"width: 10%;"}= t(:duration, scope: [:webconferences, :list])
-          %th{align:"center", style:"width: 10%;"}= t(:status, scope: [:webconferences, :list])
+          %th.default_width= t(:name, scope: [:webconferences, :list])
+          %th.grater_width= t(:description, scope: [:webconferences, :list])
+          %th.default_width= t(:moderator, scope: [:webconferences, :list])
+          %th.default_width= t(:availability, scope: [:webconferences, :list])
+          %th.smaller_width= t(:duration, scope: [:webconferences, :list])
+          %th.smaller_width= t(:status, scope: [:webconferences, :list])
       %tbody
         - @webconferences.each do |webconference|
           %tr.lines
-            %td= webconference.link_to_join(current_user, webconference.ac_id)
+            %td= webconference.link_to_join(current_user, webconference.at_id)
             %td= webconference.description
             %td= raw truncate(webconference.moderator.name, length: 20)
             %td= l(webconference.initial_time, format: :at_date)
-            %td= webconference.duration.to_s + ' ' + t(:min, scope: [:webconferences, :list])
-            %td= webconference.status
+            %td= [webconference.duration.to_s, t(:min, scope: [:webconferences, :list])].join(' ')
+            %td= webconference.status(webconference.at_id)
   - else
     .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])

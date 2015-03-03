@@ -1,0 +1,33 @@
+.preview_webconferences{
+  .block_toolbar_right{
+    .delete_record{
+      margin-top: 7px;
+    }
+  }
+}
+
+table.webconferences{
+    thead{
+      tr.lines{
+        th.no_sort{
+          text-align: center;
+          width: 5px;
+        }
+        th.default_width{
+          width: 20%;
+        }
+        th.bigger_width{
+          width: 25%;
+        }
+        th.smaller_width{
+          width: 10%;
+        }
+        th.medium_width{
+          width: 15%;
+        }
+        th.greater_width{
+          width: 30%;
+        }
+      }
+    }
+  }

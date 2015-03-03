@@ -15,6 +15,7 @@ class Group < ActiveRecord::Base
   has_many :assignments,          through: :academic_allocations, source: :academic_tool, source_type: "Assignment"
   has_many :merges_as_main, class_name: "Merge", foreign_key: "main_group_id", dependent: :destroy
   has_many :merges_as_secundary, class_name: "Merge", foreign_key: "secundary_group_id", dependent: :destroy
+  has_many :related_taggables
 
   after_create :set_default_lesson_module
 

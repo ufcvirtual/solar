@@ -991,6 +991,7 @@ en_US:
       choose_at_least_one: "Choose at least one webconference"
       choose_one: "Choose a webconference"
       unavailable: "Unavailable"
+      removed_record: Removed or empty record
     success:
       created: Webconference was successfully created.
       updated: Webconference was successfully updated.
@@ -1004,8 +1005,12 @@ en_US:
       not_recorded: "Can't remove record, there are no record to one or more webconfereces selected"
       not_ended: "Can't remove record, one or more webconfereces still on going"
       record_not_deleted: "Can't remove record from webconferences"
-    manage:
+    preview:
       delete_record: Remove record
+      placeholder: Type any value to be searched at the table
+      search: Search
+      location: Location
+      warning: "This page doesn't allow webconference's edition, only it's preview, as it's respective records (allowing the removal of these). To create/edit/remove webconferences, go to Content Edition."
   navigation_of: " of "
   navigation_next: "Next >"
   navigation_previous: "< Previous"
@@ -1090,7 +1095,7 @@ en_US:
   menu_admin_logs: Logs
   menu_admin_import_users: Importing users
   menu_admin_blacklist: Blacklist
-  menu_admin_webconference: Manage webconferences
+  menu_admin_webconference: Preview Webconferences
   menu_responsibles: Consult Responsibles
   menu_home: Home
 

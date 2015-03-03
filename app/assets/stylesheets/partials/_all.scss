@@ -1,52 +1,53 @@
-@import "compass";
-@import "compass/css3";
+@import 'compass';
+@import 'compass/css3';
 
-@import "modules/variables";
-@import "modules/placeholders";
-@import "modules/mixins";
+@import 'modules/variables';
+@import 'modules/placeholders';
+@import 'modules/mixins';
 
-@import "reset";
-@import "base";
+@import 'reset';
+@import 'base';
 
-@import "jquery-ui";
+@import 'jquery-ui';
 
-@import "mysolar";
-@import "portlet";
-@import "content";
-@import "alerts";
-@import "buttons";
-@import "tables";
-@import "forms";
-@import "lightbox";
-@import "custom_icons";
+@import 'mysolar';
+@import 'portlet';
+@import 'content';
+@import 'alerts';
+@import 'buttons';
+@import 'tables';
+@import 'forms';
+@import 'lightbox';
+@import 'custom_icons';
 
-@import "enrollment";
-@import "participants";
-@import "lesson";
-@import "lesson_files";
-@import "messages";
-@import "calendar";
-@import "forum";
-@import "portfolio";
-@import "group_assignments";
-@import "assignment_comments";
-@import "editions";
-@import "scores";
-@import "semesters";
-@import "allocations";
-@import "support_material";
-@import "chat_rooms";
-@import "assignments";
-@import "groups_tags";
-@import "discussions";
-@import "notifications";
-@import "agendas";
+@import 'enrollment';
+@import 'participants';
+@import 'lesson';
+@import 'lesson_files';
+@import 'messages';
+@import 'calendar';
+@import 'forum';
+@import 'portfolio';
+@import 'group_assignments';
+@import 'assignment_comments';
+@import 'editions';
+@import 'scores';
+@import 'semesters';
+@import 'allocations';
+@import 'support_material';
+@import 'chat_rooms';
+@import 'assignments';
+@import 'groups_tags';
+@import 'discussions';
+@import 'notifications';
+@import 'agendas';
+@import 'webconferences';
 
-@import "administrations";
+@import 'administrations';
 
-@import "tutorials";
-@import "panels";
+@import 'tutorials';
+@import 'panels';
 
-@import "load";
+@import 'load';
 
-@import "fancybox_with_columns";
+@import 'fancybox_with_columns';

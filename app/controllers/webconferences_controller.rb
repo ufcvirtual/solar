@@ -4,7 +4,7 @@ class WebconferencesController < ApplicationController
 
   include SysLog::Actions
 
-  layout false, except: [:index, :manage]
+  layout false, except: [:index, :preview]
 
   before_filter :prepare_for_group_selection, only: :index
 
@@ -26,7 +26,7 @@ class WebconferencesController < ApplicationController
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Webconference, on: @allocation_tags_ids
 
-    @webconferences = Webconference.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).uniq
+    @webconferences = Webconference.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(' ').flatten}).uniq
   end
 
   # GET /webconferences/new
@@ -99,21 +99,23 @@ class WebconferencesController < ApplicationController
     render_json_error(error, 'webconferences.error', 'deleted')
   end
 
-  # GET /webconferences/manage
-  def manage
-    authorize! :manage, Webconference
-    ats = current_user.allocation_tags_ids_with_access_on('manage', 'webconferences', false, true)
+  # GET /webconferences/preview
+  def preview
+    authorize! :preview, Webconference
+    ats = current_user.allocation_tags_ids_with_access_on('preview', 'webconferences', false, true)
+
     @webconferences = Webconference.all_by_allocation_tags(ats, {order: 'initial_time DESC, title ASC'}).paginate(page: params[:page])
   end
 
   # PUT /webconferences/remove_record/1
   def remove_record
-    @webconferences = Webconference.where(id: params[:id].split(',').flatten)
+    academic_allocations = AcademicAllocation.where(id: params[:id].split(',').flatten)
+    webconferences = Webconference.where(id: academic_allocations.map(&:academic_tool_id))
 
-    authorize! :manage, Webconference, { on: @webconferences.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true }
-    @webconferences.map(&:can_remove_records?)
+    authorize! :preview, Webconference, { on: academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }
+    webconferences.map(&:can_remove_records?)
 
-    Webconference.remove_record(@webconferences)
+    Webconference.remove_record(academic_allocations)
 
     render json: { success: true, notice: t(:record_deleted, scope: [:webconferences, :success]) }
   rescue CanCan::AccessDenied

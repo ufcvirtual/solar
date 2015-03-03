@@ -1168,6 +1168,7 @@ pt_BR:
       choose_at_least_one: "Selecione, ao menos, uma webconferência"
       choose_one: "Selecione uma webconferência"
       unavailable: "Indisponível"
+      removed_record: Gravação removida ou vazia
     success:
       created: Webconferência criada com sucesso.
       updated: Webconferência atualizada com sucesso.
@@ -1181,8 +1182,12 @@ pt_BR:
       not_recorded: 'Não foi possível remover gravação, pois não há gravação para uma ou mais webconferências escolhidas'
       not_ended: 'Não foi possível remover gravação, uma ou mais webconferências selecionadas em andamento'
       record_not_deleted: 'Não foi possível remover gravação das webconferências'
-    manage:
+    preview:
       delete_record: Remover gravação
+      placeholder: Digite qualquer valor a ser buscado na tabela
+      search: Busca
+      location: Localização
+      warning: 'Esta tela não permite a edição de webconferências, apenas sua visualização, bem como de suas respectivas gravações (permitindo a deleção dessas). Para criar/editar/remover webconferências, dirija-se a Edição de Conteúdo.'
 
   navigation_of: " de "
   navigation_next: "Próxima >"
@@ -1279,7 +1284,7 @@ pt_BR:
   menu_admin_logs: Logs
   menu_admin_import_users: Importação de usuários
   menu_admin_blacklist: Desvincular do MA
-  menu_admin_webconference: Gerenciar webconferências
+  menu_admin_webconference: Visualizar webconferências
   menu_responsibles: Consultar Responsáveis
   menu_home: Início
 

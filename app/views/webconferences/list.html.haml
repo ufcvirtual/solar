@@ -1,30 +1,30 @@
-.block_wrapper.list_webconferences{"data-link-list" => list_webconferences_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
+.block_wrapper.list_webconferences{:'data-link-list' => list_webconferences_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
 
   .block_title
-    %h2= t(".webconferences")
+    %h2= t('.webconferences')
   .block_content_toolbar
     .block_toolbar_left.btn-group
       - can_create = (can? :create, Webconference, on: @allocation_tags_ids)
-      = link_to content_tag(:i, nil, class: 'icon-plus'), new_webconference_path(allocation_tags_ids: @allocation_tags_ids), remote: true, class: "btn btn_main link_new_webconference #{can_create ? '' : 'disabled'}", :"data-tooltip" => t(".new"), disabled: not(can_create)
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_webconference_path(allocation_tags_ids: @allocation_tags_ids), remote: true, class: "btn btn_main link_new_webconference #{can_create ? '' : 'disabled'}", :"data-tooltip" => t('.new'), disabled: not(can_create)
 
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit', :"data-link-edit" => edit_webconference_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".edit")
-        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_webconference',  :"data-link-delete" => webconference_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), '#', class: 'btn btn_edit', :"data-link-edit" => edit_webconference_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".edit")
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), '#', class: 'btn btn_del delete_webconference',  :"data-link-delete" => webconference_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :'data-tooltip' => t('.delete')
 
   - unless @webconferences.nil? or @webconferences.empty?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
-    %table.tb_list.tablesorter{"data-sortlist" => "[[2,0]]"}
+    %table.tb_list.tablesorter{:'data-sortlist' => '[[2,0]]'}
       %thead
         %tr.lines
-          %th.no_sort{style: 'text-align:center; width: 25px;'}= check_box_tag :all_webconferences, false, false, :"data-children-names" => "ckb_webconference", class: "all_webconferences"
-          %th{align: "left"}=t(".name")
-          %th{align: "center", style: "width: 20%;"}= t(".availability")
-          %th{align: "center", style: "width: 15%;"}= t(".duration")
+          %th.no_sort{style: 'text-align:center; width: 25px;'}= check_box_tag :all_webconferences, false, false, :"data-children-names" => 'ckb_webconference', class: 'all_webconferences'
+          %th{align: 'left'}=t('.name')
+          %th{align: 'center', style: 'width: 20%;'}= t('.availability')
+          %th{align: 'center', style: 'width: 15%;'}= t('.duration')
       %tbody
         - @webconferences.each do |webconference|
           %tr.lines{id: "tr_#{webconference.id}"}
-            %td{style: 'text-align:center;'}= check_box_tag :ckb_webconference, webconference.id, false, {class: "ckb_webconference"}
+            %td{style: 'text-align:center;'}= check_box_tag :ckb_webconference, webconference.id, false, {class: 'ckb_webconference'}
             %td
               %div
                 .title= webconference.title
@@ -33,14 +33,14 @@
                   .complete.invisible
                     = raw webconference.description
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
-                .group_label.invisible= render "groups/groups_tags", groups: webconference.groups, tool: webconference, all_groups: all_groups, paths: {add: add_group_to_webconferences_path(id: "param_id", tool_id: webconference.id), remove: remove_group_from_webconferences_path(id: "param_id", tool_id: webconference.id), unbind: unbind_group_from_webconferences_path(id: "param_id", tool_id: webconference.id), tags: group_tags_from_webconferences_path(tool_id: webconference.id)}
+                .group_label.invisible= render "groups/groups_tags", groups: webconference.groups, tool: webconference, all_groups: all_groups, paths: {add: add_group_to_webconferences_path(id: 'param_id', tool_id: webconference.id), remove: remove_group_from_webconferences_path(id: 'param_id', tool_id: webconference.id), unbind: unbind_group_from_webconferences_path(id: 'param_id', tool_id: webconference.id), tags: group_tags_from_webconferences_path(tool_id: webconference.id)}
             %td{style: 'text-align:center;'}= l(webconference.initial_time, format: :at_date)
             %td{style: 'text-align:center;'}= webconference.duration
 
   - else
-    .block_content_text.block_content_text_list.text_none= t(".no_data")
+    .block_content_text.block_content_text_list.text_none= t('.no_data')
 
-= javascript_include_tag "tablesorter", "webconferences", "tooltip", "groups_tags"
+= javascript_include_tag 'tablesorter', 'webconferences', 'tooltip', 'groups_tags'
 
 :javascript
 

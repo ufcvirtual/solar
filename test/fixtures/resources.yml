@@ -943,6 +943,6 @@ res185:
 res186:
   id: 186
   controller: "webconferences"
-  action: "manage"
-  description: "Gerenciar Webconferencias"
+  action: "preview"
+  description: "Visualizar webconferencias e gerenciar gravações"
 

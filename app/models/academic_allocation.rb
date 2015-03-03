@@ -15,20 +15,25 @@ class AcademicAllocation < ActiveRecord::Base
   has_many :chat_participants, inverse_of: :academic_allocation, dependent: :destroy
 
   before_save :verify_association_with_allocation_tag
-  before_destroy :move_lessons_to_default, if: :is_lesson_module? # LessonModule
+  before_destroy :move_lessons_to_default, if: :lesson_module? # LessonModule
+  before_destroy :remove_record, if: :webconference?
 
   before_validation :verify_uniqueness
 
   accepts_nested_attributes_for :chat_participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == '0' }
 
-  validate :verify_assignment_offer_date_range, if: :is_assignment?
+  validate :verify_assignment_offer_date_range, if: :assignment?
 
-  def is_assignment?
+  def assignment?
     academic_tool_type.eql? 'Assignment'
   end
 
-  def is_lesson_module?
+  def lesson_module?
     academic_tool_type.eql? 'LessonModule'
+  end
+
+  def webconference?
+    academic_tool_type.eql? 'Webconference'
   end
 
   def copy_group_assignments(to_ac_id, user, ip) #User e IP serão usados no LOG
@@ -74,8 +79,7 @@ class AcademicAllocation < ActiveRecord::Base
       errors.add(:base, I18n.t(:uniqueness, scope: [:activerecord, :errors])) if error
     end
 
-    # Métodos destinados ao Assignment
-
+    # Metodos destinados ao Assignment
     ## datas da atividade devem estar no intervalo de datas da oferta
     def verify_assignment_offer_date_range
       if allocation_tag.group and academic_tool.schedule.end_date.to_date > (offer_end_date = allocation_tag.group.offer.end_date)
@@ -85,10 +89,15 @@ class AcademicAllocation < ActiveRecord::Base
       end
     end
 
-    # métodos destinados ao Lesson Module
+    # Metodos destinados ao Lesson Module
     def move_lessons_to_default
       lesson_module = LessonModule.joins(:academic_allocations).where({is_default: true, academic_allocations: {allocation_tag_id: allocation_tag_id}})
       academic_tool.lessons.update_all(lesson_module_id: lesson_module) unless lesson_module.empty?
+    end
+
+    # Metodos destidados ao Webconference
+    def remove_record
+      Webconference.remove_record([self])
     end
 
 end
