@@ -201,9 +201,10 @@ class User < ActiveRecord::Base
     query = []
     query << "curriculum_unit_id = #{curriculum_unit_id}"            unless curriculum_unit_id.blank?
     query << "curriculum_unit_type_id = #{curriculum_unit_type_id}"  unless curriculum_unit_type_id.blank?
-    query << "offer_id = #{offer_id}"                                unless offer_id.blank?
-    Group.joins(offer: :semester).where(id: RelatedTaggable.where('group_at_id IN (?) OR offer_at_id IN (?) OR course_at_id IN (?) OR curriculum_unit_at_id IN (?) OR curriculum_unit_type_at_id IN (?)', ats, ats, ats, ats, ats)
-      .where(query.join(' AND '), status: group_status).pluck(:group_id).uniq)
+    query << "groups.offer_id = #{offer_id}"                         unless offer_id.blank?
+    query << "groups.status = #{group_status}"
+    Group.joins({offer: :semester}, :related_taggables).where('related_taggables.group_at_id IN (?) OR related_taggables.offer_at_id IN (?) OR related_taggables.course_at_id IN (?) OR related_taggables.curriculum_unit_at_id IN (?) OR related_taggables.curriculum_unit_type_at_id IN (?)', ats, ats, ats, ats, ats)
+      .where(query.join(' AND '))
       .select('DISTINCT groups.id, semesters.*, groups.*').order('semesters.name DESC, groups.code ASC')
   end
 
