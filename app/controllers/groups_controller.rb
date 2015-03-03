@@ -122,7 +122,7 @@ class GroupsController < ApplicationController
       tool = tool_model.find(params[:tool_id])
 
       if params[:type] == "add"
-        raise "cant_add_group" unless (not tool.respond_to?(:can_add_group?) or tool.can_add_group?)
+        raise "cant_add_group" unless (!tool.respond_to?(:can_add_group?) || tool.can_add_group?)
 
         AcademicAllocation.transaction do
           AcademicAllocation.create! groups.map {|group| {allocation_tag_id: group.allocation_tag.id, academic_tool_id: params[:tool_id], academic_tool_type: params[:tool_type]}}
@@ -135,6 +135,7 @@ class GroupsController < ApplicationController
             when "unbind" # desvincular uma turma
 
               raise "must_have_group" if tool.academic_allocations.size == academic_allocations.size
+              raise "cant_unbind" unless (!tool.respond_to?(:can_unbind?) || tool.can_unbind?)
 
               new_tool = tool_model.create(tool.attributes)
               academic_allocations.update_all(academic_tool_id: new_tool.id)
@@ -145,7 +146,7 @@ class GroupsController < ApplicationController
               new_tool.copy_dependencies_from(tool) if new_tool.respond_to?(:copy_dependencies_from)
               
             when "remove" # remover uma turma
-              raise "cant_transfer_dependencies" unless (not tool.respond_to?(:can_remove_groups?) or tool.can_remove_groups?(groups))
+              raise "cant_transfer_dependencies" unless (!tool.respond_to?(:can_remove_groups?) || tool.can_remove_groups?(groups))
               academic_allocations.destroy_all
             else
               raise "option_not_found"

@@ -1577,6 +1577,7 @@ en_US:
       option_not_found: Option not found.
       cant_transfer_dependencies: Has dependencies which can't be lost or copied.
       cant_add_group: Can't add groups to this tool.
+      cant_unbind: Can't unbind groups from this tool.
     groups_checkboxes:
       select_all: Select all
       no_groups: "There are no groups"

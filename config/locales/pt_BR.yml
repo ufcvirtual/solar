@@ -1781,6 +1781,7 @@ pt_BR:
       option_not_found: Opção não encontrada.
       cant_transfer_dependencies: Possui dependencias que não podem ser perdidas ou copiadas.
       cant_add_group: Não é possível adicionar turmas a esta ferramenta.
+      cant_unbind: Não é possível desvincular turmas desta ferramenta.
     groups_checkboxes:
       select_all: Selecionar todas
       no_groups: "Não há turmas"

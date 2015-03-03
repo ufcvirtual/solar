@@ -16,8 +16,6 @@ class Webconference < ActiveRecord::Base
 
   before_destroy :can_destroy?
 
-  # after_destroy :remove_record, if: Proc.new { |a| a.is_recorded }
-
   def can_access?
     Time.now.between?(initial_time, initial_time+duration.minutes)
   end
@@ -123,7 +121,7 @@ class Webconference < ActiveRecord::Base
   end
 
   def get_mettingID(at_id)
-    [at_id, id].join('_')
+    [at_id.to_s, id.to_s].join('_')
   end
 
   def can_remove_records?
@@ -148,5 +146,9 @@ class Webconference < ActiveRecord::Base
         api.delete_recordings(m[:recordID]) if m[:meetingID] == meeting_id
       end
     end
+  end
+
+  def can_unbind?
+    !(is_over? && is_recorded)
   end
 end
