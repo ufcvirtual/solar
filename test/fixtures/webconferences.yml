@@ -13,3 +13,11 @@ webc2:
   description: Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
   initial_time: <%= (Time.now - 3.days).to_s(:db) %>
   duration: 30
+
+webc3:
+  id: 3
+  user_id: 14 # editor
+  title: Lorem ipsum dolor sit amet 2.
+  description: Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
+  initial_time: <%= (Time.now - 3.days).to_s(:db) %>
+  duration: 50

@@ -61,11 +61,11 @@ $(function(){
         webconferences.parents('tr').find(".ckb_webconference").prop( "checked", false).remove();
         $(".all_webconferences").prop("checked", false);
         flash_message(data.notice, 'notice');
-    }).error(function(data){
-      var data = $.parseJSON(data.responseText);
-      if (typeof(data.alert) != "undefined")
-        flash_message(data.alert, 'alert');
-      });
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+        });
     }
   });   
 

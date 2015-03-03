@@ -88,7 +88,7 @@ class WebconferencesControllerTest < ActionController::TestCase
   end
 
   test "edition - delete" do
-    webconference = webconferences(:webc1)
+    webconference = webconferences(:webc3)
 
     assert_difference(["AcademicAllocation.count", "Webconference.count"], -1) do
       delete :destroy, {id: webconference.id, allocation_tags_ids: "#{@quimica}"}
@@ -105,6 +105,17 @@ class WebconferencesControllerTest < ActionController::TestCase
 
     assert_response :unauthorized
     assert_equal get_json_response('alert'), I18n.t(:no_permission)
+  end
+
+  test "edition - do not delete when on going" do
+    webconference = webconferences(:webc1)
+
+    assert_no_difference(["AcademicAllocation.count", "Webconference.count"]) do
+      delete :destroy, {id: webconference.id, allocation_tags_ids: "#{@quimica}"}
+    end
+
+    assert_response :unprocessable_entity
+    assert_equal get_json_response('alert'), I18n.t('webconferences.error.not_ended')
   end
 
 end

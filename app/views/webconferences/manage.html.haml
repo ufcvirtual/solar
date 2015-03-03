@@ -2,7 +2,7 @@
   - unless @webconferences.nil? or @webconferences.empty?
     .block_title
       .block_toolbar_right
-        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_record', :"data-link-remove" => remove_record_webconferences_path(id: ':id'), disabled: true, :'data-tooltip' => t(:remove_record, scope: [:webconferences, :list])
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), '#', class: 'btn btn_del delete_record', :"data-link-remove" => remove_record_webconference_path(':id'), disabled: true, :'data-tooltip' => t('.delete_record')
       %h2
         %i.icon-video-conference
         = t(:webconferences, scope: [:webconferences, :list])
@@ -10,24 +10,24 @@
     %table.webconferences.tb_list
       %thead
         %tr.lines
-          %th{align:"center", style:"width: 20%;"}= t(:name, scope: [:webconferences, :list])
-          %th{align:"center", style:"width: 20%;"}= t(:description, scope: [:webconferences, :list])
-          %th{align:"center", style:"width: 20%;"}= t(:moderator, scope: [:webconferences, :list])
-          %th{align:"center", style:"width: 20%;"}= t(:availability, scope: [:webconferences, :list])
-          %th{align:"center", style:"width: 10%;"}= t(:duration, scope: [:webconferences, :list])
-          %th{align:"center", style:"width: 10%;"}= t(:status, scope: [:webconferences, :list])
-          %th.no_sort{style: 'text-align:center; width: 5px;'}= check_box_tag :all_webconferences, false, false, :"data-children-names" => "ckb_webconference", class: "all_webconferences"
+          %th.no_sort{style: 'text-align:center; width: 5px;'}= check_box_tag :all_webconferences, false, false, :"data-children-names" => 'ckb_webconference', class: 'all_webconferences'
+          %th{align: 'center', style: 'width: 20%;'}= t(:name, scope: [:webconferences, :list])
+          %th{align: 'center', style: 'width: 20%;'}= t(:description, scope: [:webconferences, :list])
+          %th{align: 'center', style: 'width: 20%;'}= t(:moderator, scope: [:webconferences, :list])
+          %th{align: 'center', style: 'width: 20%;'}= t(:availability, scope: [:webconferences, :list])
+          %th{align: 'center', style: 'width: 10%;'}= t(:duration, scope: [:webconferences, :list])
+          %th{align: 'center', style: 'width: 10%;'}= t(:status, scope: [:webconferences, :list])
       %tbody
         - @webconferences.each do |webconference|
           %tr.lines
 
-            %td= webconference.link_to_join(current_user)
+            %td{style: 'text-align:center;'}= check_box_tag :ckb_webconference, webconference.id, false, {class: 'ckb_webconference'}
+            %td= webconference.link_to_join(current_user, webconference.at_id)
             %td= webconference.description
             %td= raw truncate(webconference.moderator.name, length: 20)
             %td= l(webconference.initial_time, format: :at_date)
-            %td= webconference.duration.to_s + ' ' + t(:min, scope: [:webconferences, :list])
-            %td{class: "status_webconference"}= webconference.status
-            %td{style: 'text-align:center;'}= ((webconference.is_online?) && (webconference.is_recorded?) && (Time.now > (webconference.initial_time+webconference.duration.minutes+10.minutes))) ? (check_box_tag :ckb_webconference, webconference.id, false, {class: "ckb_webconference"}) : nil
+            %td= [webconference.duration.to_s, t(:min, scope: [:webconferences, :list])].join(' ')
+            %td{class: 'status_webconference'}= webconference.status
             
   - else
     .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
@@ -35,4 +35,4 @@
   .message_div_navigation
     = will_paginate @webconferences
 
-= javascript_include_tag "webconferences", "tooltip"
+= javascript_include_tag 'webconferences', 'tooltip'

@@ -448,3 +448,9 @@ acaal74:
  allocation_tag_id: 11 # qm-mar
  academic_tool_id: 4 # trabalho em grupo
  academic_tool_type: "Assignment"
+
+webc3:
+ id: 75
+ allocation_tag_id: 2 # TL-CAU - 2011.1
+ academic_tool_id: 3
+ academic_tool_type: "Webconference"

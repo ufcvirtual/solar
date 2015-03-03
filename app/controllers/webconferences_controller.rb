@@ -47,7 +47,7 @@ class WebconferencesController < ApplicationController
   # POST /webconferences
   # POST /webconferences.json
   def create
-    authorize! :create, Webconference, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :create, Webconference, on: @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten
 
     @webconference = Webconference.new(webconference_params)
     @webconference.moderator = current_user
@@ -55,13 +55,13 @@ class WebconferencesController < ApplicationController
     begin
       Webconference.transaction do
         @webconference.save!
-        @webconference.academic_allocations.create! @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
+        @webconference.academic_allocations.create! @allocation_tags_ids.map { |at| { allocation_tag_id: at } }
       end
-      render json: {success: true, notice: t(:created, scope: [:webconferences, :success])}
+      render json: { success: true, notice: t(:created, scope: [:webconferences, :success]) }
     rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+      render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
     rescue
-      @allocation_tags_ids = @allocation_tags_ids.join(" ")
+      @allocation_tags_ids = @allocation_tags_ids.join(' ')
       params[:success] = false
       render :new
     end
@@ -74,11 +74,11 @@ class WebconferencesController < ApplicationController
 
     @webconference.update_attributes!(webconference_params)
 
-    render json: {success: true, notice: t(:updated, scope: [:webconferences, :success])}
+    render json: { success: true, notice: t(:updated, scope: [:webconferences, :success]) }
   rescue ActiveRecord::AssociationTypeMismatch
-    render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+    render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue
     params[:success] = false
     render :edit
@@ -87,54 +87,39 @@ class WebconferencesController < ApplicationController
   # DELETE /webconferences/1
   # DELETE /webconferences/1.json
   def destroy
-    @webconferences = Webconference.where(id: params[:id].split(",").flatten)
+    @webconferences = Webconference.where(id: params[:id].split(',').flatten)
     authorize! :destroy, Webconference, on: @webconferences.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
     @webconferences.destroy_all
-    render json: {success: true, notice: t(:deleted, scope: [:webconferences, :success])}
+    
+    render json: { success: true, notice: t(:deleted, scope: [:webconferences, :success]) }
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    render json: {success: false, alert: t(:deleted, scope: [:webconferences, :error])}, status: :unprocessable_entity
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  rescue => error
+    render_json_error(error, 'webconferences.error', 'deleted')
   end
 
-  #GET /webconferences/manage
+  # GET /webconferences/manage
   def manage
     authorize! :manage, Webconference
-    @webconferences = Webconference.paginate(:page => params[:page], :per_page => 20).order("initial_time DESC, title ASC")
+    ats = current_user.allocation_tags_ids_with_access_on('manage', 'webconferences', false, true)
+    @webconferences = Webconference.all_by_allocation_tags(ats, {order: 'initial_time DESC, title ASC'}).paginate(page: params[:page])
   end
 
-  #GET /webconferences/remove_record/1
+  # PUT /webconferences/remove_record/1
   def remove_record
-    authorize! :manage, Webconference
+    @webconferences = Webconference.where(id: params[:id].split(',').flatten)
 
-    @webconferences = Webconference.where(id: params[:id].split(",").flatten)
-    @api = Webconference.bbb_prepare
+    authorize! :manage, Webconference, { on: @webconferences.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true }
+    @webconferences.map(&:can_remove_records?)
 
-    @webconferences.each do |webconference|
-      meeting_name = unless webconference.groups.empty?
-        webconference.groups.map(&:code).join(", ")
-      else
-        o = webconference.offers.first
-        "#{o.curriculum_unit.name}-#{o.semester.name}"
-      end
+    Webconference.remove_record(@webconferences)
 
-      meeting_id = "#{meeting_name}-#{webconference.id}"
-
-      response = @api.get_recordings()
-      response[:recordings].each do |m|
-        if m[:meetingID] == meeting_id
-          @api.delete_recordings(m[:recordID])
-        end
-      end
-      webconference.update_attributes(:is_recorded => false)
-    end
-
-    render json: {success: true, notice: t(:deleted, scope: [:webconferences, :success])}
+    render json: { success: true, notice: t(:record_deleted, scope: [:webconferences, :success]) }
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue
-    render json: {success: false, alert: t(:deleted, scope: [:webconferences, :error])}, status: :unprocessable_entity
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  rescue => error
+    render_json_error(error, 'webconferences.error', 'record_not_deleted')
   end
 
   private
