@@ -13,17 +13,17 @@ class RelatedTaggable < ActiveRecord::Base
       [group_at_id, offer_at_id, course_at_id, curriculum_unit_at_id, curriculum_unit_type_at_id].compact
     else
       ids = []
-      ids << group_at_id                if (options[:lower] or options[:name] == 'group')
-      ids << offer_at_id                if (options[:lower] and options[:name] != 'group') or (options[:upper] and options[:name] == 'group') or options[:name] == 'offer'
-      ids << curriculum_unit_at_id      if (options[:lower] and not(['group', 'offer'].include?(options[:name]))) or (options[:upper] and ['group', 'offer'].include?(options[:name])) or options[:name] == 'curriculum_unit'
-      ids << course_at_id               if (options[:lower] and not(['group', 'offer'].include?(options[:name]))) or (options[:upper] and ['group', 'offer'].include?(options[:name])) or options[:name] == 'course'
-      ids << curriculum_unit_type_at_id if (options[:upper] or options[:name] == 'curriculum_unit_type')
+      ids << group_at_id                if (options[:lower] || options[:name] == 'group')
+      ids << offer_at_id                if (options[:lower] && options[:name] != 'group') || (options[:upper] && options[:name] == 'group') || options[:name] == 'offer'
+      ids << curriculum_unit_at_id      if (options[:lower] && !['group', 'offer'].include?(options[:name])) || (options[:upper] && ['group', 'offer'].include?(options[:name])) || options[:name] == 'curriculum_unit'
+      ids << course_at_id               if (options[:lower] && !['group', 'offer'].include?(options[:name])) || (options[:upper] && ['group', 'offer'].include?(options[:name])) || options[:name] == 'course'
+      ids << curriculum_unit_type_at_id if (options[:upper] || options[:name] == 'curriculum_unit_type')
       ids.compact
     end
   end
 
   ## ferramenta academica: group, offer, course, uc, type  
-  def self.related(obj, options={lower: true, upper: true, name: nil})
+  def self.related(obj, options = { lower: true, upper: true, name: nil })
     rel = if obj.is_a?(Hash)
       where(obj)
     else
@@ -38,11 +38,11 @@ class RelatedTaggable < ActiveRecord::Base
 
   def at_refer_to
     case 
-      when not(group_at_id.nil?); 'group'
-      when not(offer_at_id.nil?); 'offer'
-      when not(curriculum_unit_at_id.nil?); 'curriculum_unit'
-      when not(course_at_id.nil?); 'course'
-      when not(curriculum_unit_type_at_id.nil?); 'curriculum_unit_type'
+    when !group_at_id.nil?                then 'group'
+    when !offer_at_id.nil?                then 'offer'
+    when !curriculum_unit_at_id.nil?      then 'curriculum_unit'
+    when !course_at_id.nil?               then 'course'
+    when !curriculum_unit_type_at_id.nil? then 'curriculum_unit_type'
     end
   end
 
@@ -69,7 +69,7 @@ class RelatedTaggable < ActiveRecord::Base
             ) as ats
             GROUP BY ats_ids;
         SQL
-        allocation_tags.first['ats_ids'].delete('{}NULL').split(',').map(&:to_i).delete_if { |at| at == 0 }
+        allocation_tags.first['ats_ids'].delete('{}NULL').split(',').map(&:to_i).delete_if{ |at| at == 0 }
       end
     else
         allocation_tags = find_by_sql <<-SQL
@@ -83,7 +83,7 @@ class RelatedTaggable < ActiveRecord::Base
           GROUP BY ats_ids;
         SQL
 
-        allocation_tags.first['ats_ids'].delete('{}NULL').split(',').map(&:to_i).delete_if { |at| at == 0 }
+        allocation_tags.first['ats_ids'].delete('{}NULL').split(',').map(&:to_i).delete_if{ |at| at == 0 }
     end
   end
 end
