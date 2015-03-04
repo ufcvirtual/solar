@@ -204,7 +204,7 @@ class AdministrationsController < ApplicationController
     authorize! :logs, Administration
 
     @logs, query = [], []
-    date = Date.parse(params[:date]) rescue Date.today
+    date = Date.parse(params[:date]) rescue nil
     log  = params[:type] == 'actions' ? LogAction : LogAccess
 
     unless params[:user].blank?
@@ -213,7 +213,7 @@ class AdministrationsController < ApplicationController
       query << "user_id IN (#{user_ids})" unless user_ids.blank?
     end
 
-    query << "date(created_at) = '#{date.to_s(:db)}'"
+    query << "date(created_at) = '#{date.to_s(:db)}'" unless date.nil?
     @logs = log.where(query.join(' AND ')).order('created_at DESC').limit(100)
   end
 

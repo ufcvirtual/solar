@@ -1,5 +1,5 @@
 .lesson
   .header
-    = render "lessons/open/header"
-  .content{:"data-url" => open_lesson_path(@lesson)}
-    %iframe#content_lesson{src: @lesson.path, width: "100%", height: "100%", name: "content_lesson", target:"_self", frameborder: 0, framespacing: 0}
+    = render 'lessons/open/header'
+  .content{ :"data-url" => open_lesson_path(@lesson) }
+    %iframe#content_lesson{ src: @lesson.path, width: "100%", height: "100%", name: 'content_lesson', target: '_self', frameborder: 0, framespacing: 0 }

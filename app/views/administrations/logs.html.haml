@@ -27,9 +27,6 @@
     });
 
     $("#search_log").click(function(){
-      if($("#search_date").val() == "")
-        $("#search_date").datepicker('setDate', "#{today_date}");
-
       var url_for = $(this).data("url-search").replace(":type", $("#log_type").val());
       var data = { user: encodeURIComponent($("#search_user").val()), date: $("#search_date").val() };
 

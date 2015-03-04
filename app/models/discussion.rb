@@ -71,7 +71,7 @@ class Discussion < Event
     query << "updated_at::timestamp(0) #{type} '#{opts["date"]}'::timestamp(0)" if opts.include?('date') && (!opts['date'].blank?)
     query << 'parent_id IS NULL' unless opts['display_mode'] == 'list'
 
-    posts_by_allocation_tags_ids(allocation_tags_ids, {grandparent: false, query: query.join(' AND '), order: "updated_at #{opts["order"]}", limit: "#{opts['limit']}", offset: "#{(opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i}"})
+    posts_by_allocation_tags_ids(allocation_tags_ids, { grandparent: false, query: query.join(' AND '), order: "updated_at #{opts["order"]}", limit: "#{opts['limit']}", offset: "#{(opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i}" })
   end
 
   def discussion_posts_count(plain_list = true, allocation_tags_ids = nil)
@@ -103,7 +103,7 @@ class Discussion < Event
   def posts_by_allocation_tags_ids(allocation_tags_ids = nil, opt = { grandparent: true, query: '', order: 'updated_at', limit: nil, offset: nil, select: 'discussion_posts.*' } )
     allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids).map(&:related).flatten.compact.uniq
     posts = discussion_posts.where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
-    posts = posts.joins(academic_allocation: :allocation_tag).where(allocation_tags: { id: allocation_tags_ids })unless allocation_tags_ids.blank?
+    posts = posts.joins(academic_allocation: :allocation_tag).where(allocation_tags: { id: allocation_tags_ids }) unless allocation_tags_ids.blank?
     (opt[:grandparent] ? posts.map(&:grandparent).uniq.compact : posts.compact.uniq)
   end
 

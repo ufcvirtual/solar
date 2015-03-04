@@ -29,7 +29,7 @@ module V1
 
         after do
           filtered_params = params.select { |k, v| ['date', 'order', 'limit', 'display_mode', 'type'].include?(k) }
-          @ats   = RelatedTaggable.related({group_id: @group.id})
+          @ats   = [@group.allocation_tag.id]
           @posts = @discussion.posts(filtered_params, @ats)
 
           @period = if @posts.empty?

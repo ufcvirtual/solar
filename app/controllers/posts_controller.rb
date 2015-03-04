@@ -59,7 +59,7 @@ class PostsController < ApplicationController
     @discussion = Discussion.find(params[:discussion_id])
 
     allocation_tags = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
-    @posts = Post.joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: "Discussion"}, user_id: @user.id)
+    @posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id)
 
     respond_to do |format|
       format.html { render layout: false }

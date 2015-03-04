@@ -22,7 +22,7 @@ class Post < ActiveRecord::Base
     (self.level < Discussion_Post_Max_Indent_Level)
   end
 
-  ## Retorna o post "avô", ou seja, o post do nível mais alto informado em "post_level"
+  ## Retorna o post 'avo', ou seja, o post do nivel mais alto informado em 'post_level'
   def grandparent(post_level=nil)
     unless post_level.nil?
       return nil if (post_level > level)

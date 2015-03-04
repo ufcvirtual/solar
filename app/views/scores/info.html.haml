@@ -20,7 +20,7 @@
             %tbody
               - @assignments.each do |assignment|
                 - info = assignment.info(@user.id, @allocation_tag_id)
-                - link = ((assignment.type_assignment == Assignment_Type_Group and info[:group_id].nil?) ? "" : student_assignment_path(assignment.id, student_id: @user.id, group_id: info[:group_id]))
+                - link = ((assignment.type_assignment == Assignment_Type_Group && info[:group_id].nil?) ? '' : student_assignment_path(assignment.id, student_id: @user.id, group_id: info[:group_id]))
                 %tr.lines
                   %td{align: "left"}
                     - if link.blank?

@@ -99,11 +99,11 @@ class AssignmentsController < ApplicationController
 
   def student
     @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
-    @class_participants = AllocationTag.get_participants(@allocation_tag_id, {students: true}).map(&:id)
+    @class_participants = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
     @student_id, @group_id = (params[:group_id].nil? ? [params[:student_id], nil] : [nil, params[:group_id]])
     @group = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
     @own_assignment = Assignment.owned_by_user?(current_user.id, {student_id: @student_id, group: @group})
-    raise CanCan::AccessDenied unless @own_assignment or AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id)
+    raise CanCan::AccessDenied unless @own_assignment || AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id)
     @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 
     @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id(@allocation_tag_id, @student_id, @group_id)
@@ -115,17 +115,17 @@ class AssignmentsController < ApplicationController
     raise "date_range" unless @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 
     @sent_assignment = SentAssignment.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocation_id: @ac).first_or_create
-    @sent_assignment.update_attributes! grade: params[:grade].tr(",", ".")
+    @sent_assignment.update_attributes! grade: params[:grade].tr(',', '.')
 
     @student_id, @group_id = params[:student_id], params[:group_id]
 
     LogAction.create(log_type: LogAction::TYPE[(@sent_assignment.previous_changes.has_key?(:id) ? :create : :update)], user_id: current_user.id, ip: request.remote_ip, description: "sent_assignment: #{@sent_assignment.attributes.merge({"assignment_id" => @assignment.id})}",allocation_tag_id:@allocation_tag_id, academic_allocation_id: AcademicAllocation.select(:id).find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(@allocation_tag_id,@sent_assignment.id,'Assignment') ) rescue nil
 
-    render json: { success: true, notice: t("assignments.success.evaluated"), html: "#{render_to_string(partial: "info")}" }
+    render json: { success: true, notice: t('assignments.success.evaluated'), html: "#{render_to_string(partial: "info")}" }
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue => error
-    render_json_error(error, "assignments.error", "evaluate", error.message)
+    render_json_error(error, 'assignments.error', 'evaluate', error.message)
   end
 
   def download
