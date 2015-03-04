@@ -4,6 +4,7 @@ class SavsController < ApplicationController
   
   def index
     return if SavConfig::CONFIG.nil?
+    return unless active_tab[:url][:allocation_tag_id]
 
     at   = AllocationTag.find(active_tab[:url][:allocation_tag_id])
     allocation_tags_ids = at.related
@@ -24,7 +25,7 @@ class SavsController < ApplicationController
       end
     end
 
-    render json: {url: sav_url || ''} # se já não vier com, adicionar o http. VAI QUEBRAR COM O HTTPS?
+    render json: {url: (sav_url.include?('http') ? sav_url : 'http://'+sav_url) || ''}
   end
 
 private 
