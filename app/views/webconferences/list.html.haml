@@ -21,6 +21,7 @@
           %th{align: 'left'}=t('.name')
           %th{align: 'center', style: 'width: 20%;'}= t('.availability')
           %th{align: 'center', style: 'width: 15%;'}= t('.duration')
+          %th=t('.recorded')
       %tbody
         - @webconferences.each do |webconference|
           %tr.lines{id: "tr_#{webconference.id}"}
@@ -36,6 +37,7 @@
                 .group_label.invisible= render "groups/groups_tags", groups: webconference.groups, tool: webconference, all_groups: all_groups, paths: {add: add_group_to_webconferences_path(id: 'param_id', tool_id: webconference.id), remove: remove_group_from_webconferences_path(id: 'param_id', tool_id: webconference.id), unbind: unbind_group_from_webconferences_path(id: 'param_id', tool_id: webconference.id), tags: group_tags_from_webconferences_path(tool_id: webconference.id)}
             %td{style: 'text-align:center;'}= l(webconference.initial_time, format: :at_date)
             %td{style: 'text-align:center;'}= webconference.duration
+            %td=(webconference.is_recorded ? t('.y') : t('.n'))
 
   - else
     .block_content_text.block_content_text_list.text_none= t('.no_data')

@@ -18,6 +18,8 @@ class WebconferencesController < ApplicationController
     authorize! :index, Webconference, on: [at = active_tab[:url][:allocation_tag_id]]
 
     @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true))
+    @online         = Webconference.online?
+    @recordings     = Webconference.all_recordings if @online
   end
 
   # GET /webconferences/list
@@ -101,10 +103,10 @@ class WebconferencesController < ApplicationController
 
   # GET /webconferences/preview
   def preview
-    authorize! :preview, Webconference
     ats = current_user.allocation_tags_ids_with_access_on('preview', 'webconferences', false, true)
-
     @webconferences = Webconference.all_by_allocation_tags(ats, {order: 'initial_time DESC, title ASC'}).paginate(page: params[:page])
+    @online         = Webconference.online?
+    @recordings     = Webconference.all_recordings if @online
   end
 
   # PUT /webconferences/remove_record/1

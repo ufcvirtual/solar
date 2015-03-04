@@ -28,7 +28,7 @@ module V1
         end # before
 
         after do
-          filtered_params = params.select { |k, v| ["date", "order", "limit", "display_mode", "type"].include?(k) }
+          filtered_params = params.select { |k, v| ['date', 'order', 'limit', 'display_mode', 'type'].include?(k) }
           @ats   = RelatedTaggable.related({group_id: @group.id})
           @posts = @discussion.posts(filtered_params, @ats)
 
@@ -41,21 +41,21 @@ module V1
         end # after
 
         params do # parâmetros comuns às duas chamadas: new e history
-          optional :order, type: String, values: %w(asc desc), default: "desc", desc: "Posts order."
-          optional :limit, type: Integer, desc: "Posts limit."
-          optional :display_mode, type: String, values: %w(list tree), default: "list", desc: "Posts display mode."
+          optional :order, type: String, values: %w(asc desc), default: 'desc', desc: 'Posts order.'
+          optional :limit, type: Integer, desc: 'Posts limit.'
+          optional :display_mode, type: String, values: %w(list tree), default: 'list', desc: 'Posts display mode.'
         end
 
-        desc "Lista dos posts mais novos. Se uma data for passada, aqueles serão a partir dela."
-        params { optional :date, type: DateTime, desc: "Posts date." }
-        get ":id/posts/new", rabl: "posts/list_with_counting" do
+        desc 'Lista dos posts mais novos. Se uma data for passada, aqueles serão a partir dela.'
+        params { optional :date, type: DateTime, desc: 'Posts date.' }
+        get ':id/posts/new', rabl: 'posts/list_with_counting' do
           params[:type] = "new"
           # @posts
         end
 
         desc "Lista dos posts mais antigos com relação a uma data."
         params { requires :date, type: DateTime, desc: "Posts date." }
-        get ":id/posts/history", rabl: "posts/list_with_counting" do
+        get ':id/posts/history', rabl: 'posts/list_with_counting' do
           params[:type] = "history"
           # @posts
         end
@@ -63,7 +63,7 @@ module V1
 
       ## CREATE
 
-      params { requires :id, type: Integer, desc: "Discussion ID." }
+      params { requires :id, type: Integer, desc: 'Discussion ID.' }
       post ":id/posts" do
         verify_user_permission_on_discussion_and_set_obj(:create)
 
@@ -89,8 +89,8 @@ module V1
 
       ## CREATE files
 
-      desc "Send files to a post."
-      params { requires :id, type: Integer, desc: "Post ID." }
+      desc 'Send files to a post.'
+      params { requires :id, type: Integer, desc: 'Post ID.' }
       post ':id/files' do
         post = Post.find(params[:id])
 
@@ -109,8 +109,8 @@ module V1
       ## LIST files
 
       # GET posts/:id/files
-      desc "Files of a post."
-      params { requires :id, type: Integer, desc: "Discussion ID." }
+      desc 'Files of a post.'
+      params { requires :id, type: Integer, desc: 'Discussion ID.' }
       get ":id/files", rabl: "posts/files" do
         raise ActiveRecord::RecordNotFound unless current_user.discussion_post_ids.include?(params[:id]) # user is owner
         @files = Post.find(params[:id]).files
@@ -118,14 +118,14 @@ module V1
 
       ## DELETE post and files
 
-      desc "Delete a post."
-      params { requires :id, type: Integer, desc: "Post ID." }
+      desc 'Delete a post.'
+      params { requires :id, type: Integer, desc: 'Post ID.' }
       delete ':id' do
         current_user.discussion_posts.find(params[:id]).destroy # user posts
       end
 
-      desc "Delete a file of a post."
-      params { requires :id, type: Integer, desc: "File Post ID." }
+      desc 'Delete a file of a post.'
+      params { requires :id, type: Integer, desc: 'File Post ID.' }
       delete 'files/:id' do
         pfile = PostFile.find(params[:id])
 

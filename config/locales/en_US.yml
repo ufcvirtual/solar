@@ -992,6 +992,10 @@ en_US:
       choose_one: "Choose a webconference"
       unavailable: "Unavailable"
       removed_record: Removed or empty record
+      moderator: Moderator
+      recorded: Activated record
+      y: Yes
+      n: No
     success:
       created: Webconference was successfully created.
       updated: Webconference was successfully updated.
@@ -1007,7 +1011,7 @@ en_US:
       record_not_deleted: "Can't remove record from webconferences"
     preview:
       delete_record: Remove record
-      placeholder: Type any value to be searched at the table
+      placeholder: Type any value to be searched at the table of this page
       search: Search
       location: Location
       warning: "This page doesn't allow webconference's edition, only it's preview, as it's respective records (allowing the removal of these). To create/edit/remove webconferences, go to Content Edition."

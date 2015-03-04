@@ -14,6 +14,7 @@
           %th.smaller_width= t(:duration, scope: [:webconferences, :list])
           %th.smaller_width= t(:status, scope: [:webconferences, :list])
       %tbody
+        - online = Webconference.online?
         - @webconferences.each do |webconference|
           %tr.lines
             %td= webconference.link_to_join(current_user, webconference.at_id)
@@ -21,6 +22,6 @@
             %td= raw truncate(webconference.moderator.name, length: 20)
             %td= l(webconference.initial_time, format: :at_date)
             %td= [webconference.duration.to_s, t(:min, scope: [:webconferences, :list])].join(' ')
-            %td= webconference.status(webconference.at_id)
+            %td= (@online ? webconference.status(webconference.at_id, @recordings) : t(:unavailable, scope: [:webconferences, :list]))
   - else
     .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])

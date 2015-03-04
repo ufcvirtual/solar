@@ -1169,6 +1169,10 @@ pt_BR:
       choose_one: "Selecione uma webconferência"
       unavailable: "Indisponível"
       removed_record: Gravação removida ou vazia
+      moderator: Moderador
+      recorded: Gravação ativada
+      y: Sim
+      n: Não
     success:
       created: Webconferência criada com sucesso.
       updated: Webconferência atualizada com sucesso.
@@ -1184,7 +1188,7 @@ pt_BR:
       record_not_deleted: 'Não foi possível remover gravação das webconferências'
     preview:
       delete_record: Remover gravação
-      placeholder: Digite qualquer valor a ser buscado na tabela
+      placeholder: Digite qualquer valor a ser buscado na tabela desta página
       search: Busca
       location: Localização
       warning: 'Esta tela não permite a edição de webconferências, apenas sua visualização, bem como de suas respectivas gravações (permitindo a deleção dessas). Para criar/editar/remover webconferências, dirija-se a Edição de Conteúdo.'

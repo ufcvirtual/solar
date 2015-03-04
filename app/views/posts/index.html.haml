@@ -11,14 +11,14 @@
     %span#forum_new_message
       - if @can_interact
         - if @can_post
-          = button_tag(:type => 'button', :onclick => "javascript:new_post(this);", class: "btn btn_main", id: "button_new_post", :"data-tooltip" => t(:forum_new_message)) do
+          = button_tag(type: 'button', onclick: "javascript:new_post(this);", class: 'btn btn_main', id: 'button_new_post', :'data-tooltip' => t(:forum_new_message)) do
             = content_tag(:i, nil, class: 'icon-edit')
       - else
         #forum_closed= t("forum_closed")
 
     %span#forum_view_mode
-      - class_l = (@display_mode == "list") ? 'btn_pressed' : 'btn_default'
-      - class_t = (@display_mode == "tree") ? 'btn_pressed' : 'btn_default'
+      - class_l = (@display_mode == 'list') ? 'btn_pressed' : 'btn_default'
+      - class_t = (@display_mode == 'tree') ? 'btn_pressed' : 'btn_default'
 
       .btn-group
         = link_to(content_tag(:i, nil, class: 'icon-list'), discussion_posts_path(@discussion, {display_mode: 'list'}), {class: "btn #{class_l}", id: 'forum_view_mode-list', :"data-tooltip" => t(".show_plainlist")})
@@ -28,24 +28,24 @@
       = raw render_pagination_bar(@discussion.discussion_posts_count(@display_mode == "list", @allocation_tags).to_s, "display_mode=#{@display_mode}")
       .new_posts
         #new_post
-          = form_for(:discussion_post, html: { id: "new_post_form", :"action-to-edit" => discussion_post_path(@discussion.id, ':id'), :"action-default" => discussion_posts_path(@discussion.id), method: :put }) do |form|
-            = hidden_field(:discussion_post, :parent_id, {value: ""})
+          = form_for(:discussion_post, html: { id: 'new_post_form', :'action-to-edit' => discussion_post_path(@discussion.id, ':id'), :"action-default" => discussion_posts_path(@discussion.id), method: :put }) do |form|
+            = hidden_field(:discussion_post, :parent_id, { value: '' })
             = hidden_field_tag(:display_mode, @display_mode)
             = hidden_field_tag(:current_page, @current_page)
             = form.text_area :content
             .new_post_dialog_buttons.btn-group
-              = button_tag content_tag(:span, t(:cancel)), type: 'button', onclick: "cancel_posting(this)", class: "btn btn_caution", id: "btn_cancel_post"
+              = button_tag content_tag(:span, t(:cancel)), type: 'button', onclick: "cancel_posting(this)", class: 'btn btn_caution', id: 'btn_cancel_post'
               = button_tag t(:send), class: "btn btn_main", id: "submit_post", type: :button
     .forum_post_new
 
   .forum_posts_wrapper
     - @posts = get_page_posts(@posts, @current_page) unless (@display_mode == "list")
     - @posts.each do |post|
-      = render partial: "post", locals: {post: post, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false}
+      = render partial: 'post', locals: { post: post, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false }
 .block_wrapper
-  = link_to t(:back), discussions_path, {class: "btn"}
+  = link_to t(:back), discussions_path, { class: 'btn' }
 
-= javascript_include_tag "ckeditor/init", "discussions", "jwplayer/jwplayer.js", "contextual_help/discussion_posts"
+= javascript_include_tag 'ckeditor/init', 'discussions', 'jwplayer/jwplayer.js', 'contextual_help/discussion_posts'
 
 :javascript
 

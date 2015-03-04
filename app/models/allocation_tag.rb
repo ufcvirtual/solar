@@ -102,7 +102,7 @@ class AllocationTag < ActiveRecord::Base
     s_info.compact.join(' ')
   end
 
-  def related(options={upper: true, lower: true})
+  def related(options = { upper: true, lower: true })
     RelatedTaggable.related(self, options)
   end
 
@@ -114,7 +114,7 @@ class AllocationTag < ActiveRecord::Base
     RelatedTaggable.where(offer_id: offer_id).pluck(:group_at_id).uniq
   end
 
-  def self.get_by_params(params, related=false, lower_related=false)
+  def self.get_by_params(params, related = false, lower_related = false)
     allocation_tags_ids, selected, offer_id = unless params[:allocation_tags_ids].blank? # o proprio params ja contem as ats
       [params.fetch(:allocation_tags_ids, '').split(' ').flatten.map(&:to_i), params.fetch(:selected, nil), params.fetch(:offer_id, nil)]
     else
@@ -153,7 +153,7 @@ class AllocationTag < ActiveRecord::Base
         raise ActiveRecord::RecordNotFound if rts.empty?
 
         offer_id = rts.map(&:offer_id).first if offer
-        opt = (lower_related ? {lower: true} : ((related or selected.nil?) ? {} : {name: selected.downcase}))
+        opt = (lower_related ? { lower: true } : ((related || selected.nil?) ? {} : { name: selected.downcase }))
         [rts.map{|rt| rt.at_ids(opt)}.uniq, selected, offer_id]
       end
     end
@@ -172,7 +172,7 @@ class AllocationTag < ActiveRecord::Base
     User.select("users.*, COUNT(public_files.id) AS u_public_files, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name")
       .joins(allocations: :profile)
       .joins("LEFT JOIN public_files ON public_files.user_id = users.id AND public_files.allocation_tag_id IN (#{ats.flatten.join(",")})")
-      .where(allocations: {status: Allocation_Activated, allocation_tag_id: ats})
+      .where(allocations: { status: Allocation_Activated, allocation_tag_id: ats })
       .where(types.join(' OR ')).where(query.join(' AND ')).uniq
       .group('users.id, users.name').order('users.name')
   end

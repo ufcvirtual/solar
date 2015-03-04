@@ -8,7 +8,7 @@
     .block_content_toolbar
       .block_toolbar_left
         = label_tag :search, t('.search'), class: 'title'
-        = text_field_tag :search, nil, :'data-column' => 'all', type: :search, class: 'search', placeholder: t('.placeholder'), size: 40
+        = text_field_tag :search, nil, :'data-column' => 'all', type: :search, class: 'search', placeholder: t('.placeholder'), size: 50
       .block_toolbar_right
         %a.btn#btn-new{href: nil, :'data-dropdown' => "#trash_dropdown", alt: t('.delete_record')}
           = content_tag(:i, nil, class:'icon-trash')
@@ -31,14 +31,13 @@
       %tbody
         - @webconferences.each do |webconference|
           %tr.lines
-
-            %td{style: 'text-align:center;'}= check_box_tag :ckb_webconference, webconference.ac_id, false, {class: 'ckb_webconference' }
+            %td{ style: 'text-align:center;' }= check_box_tag :ckb_webconference, webconference.ac_id, false, {class: 'ckb_webconference' }
             %td= webconference.link_to_join(current_user, webconference.at_id)
             %td= AllocationTag.find(webconference.at_id).info
-            %td= raw truncate(webconference.moderator.name, length: 20)
+            %td{:'data-tooltip' => webconference.user_name}= raw truncate(webconference.user_name, length: 20)
             %td= l(webconference.initial_time, format: :at_date)
             %td= [webconference.duration.to_s, t(:min, scope: [:webconferences, :list])].join(' ')
-            %td.status_webconference= webconference.status(webconference.at_id)
+            %td.status_webconference= (@online ? webconference.status(webconference.at_id, @recordings) : t(:unavailable, scope: [:webconferences, :list]))
             
   - else
     .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])

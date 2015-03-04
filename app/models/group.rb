@@ -1,7 +1,7 @@
 class Group < ActiveRecord::Base
   include Taggable
 
-  default_scope order: "groups.status, groups.code"
+  default_scope order: 'groups.status, groups.code'
 
   belongs_to :offer
 
@@ -11,17 +11,17 @@ class Group < ActiveRecord::Base
   has_one :curriculum_unit_type, through: :curriculum_unit
 
   has_many :academic_allocations, through: :allocation_tag
-  has_many :lesson_modules,       through: :academic_allocations, source: :academic_tool, source_type: "LessonModule"
-  has_many :assignments,          through: :academic_allocations, source: :academic_tool, source_type: "Assignment"
-  has_many :merges_as_main, class_name: "Merge", foreign_key: "main_group_id", dependent: :destroy
-  has_many :merges_as_secundary, class_name: "Merge", foreign_key: "secundary_group_id", dependent: :destroy
+  has_many :lesson_modules,       through: :academic_allocations, source: :academic_tool, source_type: 'LessonModule'
+  has_many :assignments,          through: :academic_allocations, source: :academic_tool, source_type: 'Assignment'
+  has_many :merges_as_main, class_name: 'Merge', foreign_key: 'main_group_id', dependent: :destroy
+  has_many :merges_as_secundary, class_name: 'Merge', foreign_key: 'secundary_group_id', dependent: :destroy
   has_many :related_taggables
 
   after_create :set_default_lesson_module
 
   validates :code, :offer_id, presence: true
 
-  validate :unique_code_on_offer, unless: "offer_id.nil? or code.nil? or not(code_changed?)"
+  validate :unique_code_on_offer, unless: "offer_id.nil? || code.nil? || !code_changed?"
 
   validates_length_of :code, maximum: 40
 

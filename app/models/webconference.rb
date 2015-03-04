@@ -20,10 +20,10 @@ class Webconference < ActiveRecord::Base
     Time.now.between?(initial_time, initial_time+duration.minutes)
   end
 
-  def is_online?
+  def self.online?
     begin
-      @api = Webconference.bbb_prepare
-      url  = URI(@api.url)
+      api = Webconference.bbb_prepare
+      url  = URI(api.url)
       response = Net::HTTP.get_response(url)
       return (Net::HTTPSuccess === response)
     rescue Errno::ECONNREFUSED
@@ -32,25 +32,24 @@ class Webconference < ActiveRecord::Base
   end
 
   def is_over?
-    Time.now > (initial_time+duration.minutes+1.minutes)
+    Time.now > (initial_time+duration.minutes+10.minutes)
   end
 
   def link_to_join(user, at_id)
-    ((can_access? && is_online?) ? ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: "_blank") : title)
+    ((can_access? && Webconference.online?) ? ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: "_blank") : title)
   end
 
   def is_meeting_running(meeting_id)
     @api.is_meeting_running?(meeting_id)
   end
 
-  def status(at_id)
+  def status(at_id, recordings = [])
     case
-    when !is_online? then I18n.t(:unavailable, scope: [:webconferences, :list])
     when can_access? then I18n.t(:in_progress, scope: [:webconferences, :list])
     when (Time.now < initial_time) then I18n.t(:scheduled, scope: [:webconferences, :list])
-    when (is_recorded? && is_online?)
+    when is_recorded?
       if is_over?
-        record_url = recordings(at_id)
+        record_url = recordings(at_id, recordings)
         (record_url ? ActionController::Base.helpers.link_to(I18n.t(:play, scope: [:webconferences, :list]), record_url, target: "_blank") : I18n.t(:removed_record, scope: [:webconferences, :list]))
       else
         I18n.t(:processing, scope: [:webconferences, :list])
@@ -61,9 +60,9 @@ class Webconference < ActiveRecord::Base
   end
 
   def self.all_by_allocation_tags(allocation_tags_ids, opt = { order: 'initial_time ASC, title ASC' })
-    webconferences = Webconference.joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'")
+    webconferences = Webconference.joins(:moderator).joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'")
     webconferences = webconferences.where(academic_allocations: { allocation_tag_id: allocation_tags_ids }) unless allocation_tags_ids.include?(nil)
-    webconferences.select('webconferences.*, academic_allocations.allocation_tag_id AS at_id, academic_allocations.id AS ac_id').order(opt[:order])
+    webconferences.select('webconferences.*, academic_allocations.allocation_tag_id AS at_id, academic_allocations.id AS ac_id, users.name AS user_name').order(opt[:order])
   end
 
   def responsible?(user_id)
@@ -104,12 +103,17 @@ class Webconference < ActiveRecord::Base
     end
   end
 
-  def recordings(at_id)
-    meeting_id = get_mettingID(at_id)
+  def self.all_recordings
     @api = Webconference.bbb_prepare
-
     response = @api.get_recordings()
-    response[:recordings].each do |m|
+    response[:recordings]
+  end
+
+  def recordings(at_id, recordings = [])
+    meeting_id = get_mettingID(at_id)
+    recordings = Webconference.all_recordings if recordings.empty?
+
+    recordings.each do |m|
       if m[:meetingID] == meeting_id
         playback = m[:playback]
         format = playback[:format]
@@ -126,12 +130,12 @@ class Webconference < ActiveRecord::Base
 
   def can_remove_records?
     raise 'not_recorded' unless is_recorded?
-    raise 'unavailable'  unless is_online?
+    raise 'unavailable'  unless Webconference.online?
     raise 'not_ended'    unless is_over?
   end
 
   def can_destroy?
-    raise 'unavailable'  if is_recorded? && !is_online?
+    raise 'unavailable'  if is_recorded? && !Webconference.online?
     raise 'not_ended'    unless is_over?
   end
 

@@ -57,7 +57,7 @@ $(function(){
 
     if (webconference_ids.length) {
       $.put($(this).data('link-remove').replace(':id', webconference_ids), function(data){
-        webconferences.parents('tr').find(".status_webconference").html("<%=I18n.t(:removed, scope: 'webconferences.list')%>");
+        webconferences.parents('tr').find(".status_webconference").html("<%=I18n.t(:removed_record, scope: 'webconferences.list')%>");
         $(".all_webconferences").prop("checked", false);
         flash_message(data.notice, 'notice');
       }).error(function(data){

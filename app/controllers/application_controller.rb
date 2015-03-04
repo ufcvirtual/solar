@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
       format.html {
         begin
           active_tab[:breadcrumb].delete_at(-1) if active_tab[:breadcrumb].count > 1 # not home
-          raise "error" if request.referer == request.original_url
+          raise 'error' if request.referer == request.original_url
           redirect_to :back, alert: t(:no_permission)
         rescue # ActionController::RedirectBackError
           redirect_to home_path, alert: t(:no_permission)
@@ -46,21 +46,21 @@ class ApplicationController < ActionController::Base
       # logar: exception.message
       respond_to do |format|
         format.html { redirect_to home_path, alert: t(:object_not_found) }
-        format.json { render json: {msg: t(:object_not_found)}, status: :not_found }
+        format.json { render json: { msg: t(:object_not_found)}, status: :not_found }
       end
     end
 
     rescue_from ActiveRecord::AssociationTypeMismatch do |exception|
       respond_to do |format|
         format.html { redirect_to home_path, alert: t(:not_associated) }
-        format.json { render json: {msg: t(:not_associated)}, status: :unauthorized }
+        format.json { render json: { msg: t(:not_associated)}, status: :unauthorized }
       end
     end
 
     rescue_from ActionView::Template::Error do |exception|
       respond_to do |format|
         format.html { redirect_to((user_signed_in? ? home_path : login_path), alert: t(:cant_build_page)) }
-        format.json { render json: {msg: t(:cant_build_page)}, status: :unauthorized }
+        format.json { render json: { msg: t(:cant_build_page)}, status: :unauthorized }
       end
     end
   end
@@ -72,7 +72,7 @@ class ApplicationController < ActionController::Base
       opened: {
         'Home' => {
           breadcrumb: [{ name: 'Home', url: activate_tab_path(name: 'Home', context: Context_General) }],
-          url: {context: Context_General}
+          url: { context: Context_General }
         }
       }, active: 'Home'
     } unless user_session.include?(:tabs)
@@ -88,7 +88,7 @@ class ApplicationController < ActionController::Base
 
     # contexto indicado eh diferente do contexto da aba ativa
     contexts = params['contexts'].split(',').map(&:to_i) rescue []
-    set_active_tab_to_home if ((not(contexts.empty?) and not(contexts.include?(active_tab[:url][:context]))) or controller_path == 'devise/users')
+    set_active_tab_to_home if ((!contexts.empty? && !contexts.include?(active_tab[:url][:context])) || controller_path == 'devise/users')
   end
 
   def set_active_tab(tab_id)
@@ -113,7 +113,7 @@ class ApplicationController < ActionController::Base
     user_session[:current_page] = nil
 
     @current_page = params[:current_page] if @current_page.nil?
-    @current_page = "1" if @current_page.nil?
+    @current_page = '1' if @current_page.nil?
   end
 
   def hold_pagination
@@ -130,7 +130,7 @@ class ApplicationController < ActionController::Base
     # verifica se o grupo foi passado e se é um grupo válido
     unless params[:selected_group].present? and !!(allocation_tag_id_group = AllocationTag.find_by_group_id(params[:selected_group]).try(:id))
       allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-      allocation_tag_id_group = (params[:selected_group] = allocation_tag.group_id).nil? ? RelatedTaggable.where("group_id IN (?)", current_user.groups(nil, Allocation_Activated, nil, nil, active_tab[:url][:id]).pluck(:id)).first.group_at_id : allocation_tag.id
+      allocation_tag_id_group = (params[:selected_group] = allocation_tag.group_id).nil? ? RelatedTaggable.where('group_id IN (?)', current_user.groups(nil, Allocation_Activated, nil, nil, active_tab[:url][:id]).pluck(:id)).first.group_at_id : allocation_tag.id
     end
 
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group

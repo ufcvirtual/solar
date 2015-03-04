@@ -8,9 +8,9 @@ class CurriculumUnit < ActiveRecord::Base
   has_many :courses,              through: :offers, uniq: true
   has_many :academic_allocations, through: :allocation_tag
 
-  before_create  :create_correspondent_course,  if: "curriculum_unit_type_id == 3"
-  before_update :update_correspondent_course,  if: "curriculum_unit_type_id == 3"
-  after_destroy :destroy_correspondent_course, if: "curriculum_unit_type_id == 3"
+  before_create  :create_correspondent_course,  if: 'curriculum_unit_type_id == 3'
+  before_update :update_correspondent_course,   if: 'curriculum_unit_type_id == 3'
+  after_destroy :destroy_correspondent_course,  if: 'curriculum_unit_type_id == 3'
 
   validates :code, uniqueness: true, length: { maximum: 40 }, allow_blank: false
   validates :name, length: { maximum: 120 }
