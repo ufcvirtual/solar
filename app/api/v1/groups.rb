@@ -78,7 +78,7 @@ module V1
           mutually_exclusive :group_id, :discipline_id
           mutually_exclusive :group_id, :course_type_id
         end
-        get "/", rabl: "groups/index" do
+        get "/" do # , rabl: "groups/index" do
           query = ["groups.status IS TRUE"]
           query << "semesters.name = :semester"                                 if params[:semester].present?
           query << "curriculum_units.curriculum_unit_type_id = :course_type_id" if params[:course_type_id].present?
@@ -87,6 +87,21 @@ module V1
           query << "groups.id = :group_id"                                      if params[:group_id].present?
 
           @groups = Group.joins(offer: [:semester, :curriculum_unit]).where(query.join(' AND '), params.slice(:course_type_id, :semester, :course_id, :discipline_id, :group_id))
+
+          @groups.map{ |group| 
+            offer = group.offer
+            { 
+              id: group.id,
+              code: group.code,
+              offer_id: group.offer_id,
+              start_date: offer.start_date,
+              end_date: offer.end_date,
+              course_id: offer.course_id,
+              curriculum_unit_id: offer.curriculum_unit_id,
+              semester_id: offer.semester_id,
+              students: Allocation.joins(:profile).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean )").where(allocation_tag_id: group.allocation_tag.id, status: Allocation_Activated).count
+            }
+          }
         end
 
       end # groups

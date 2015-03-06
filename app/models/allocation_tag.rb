@@ -124,11 +124,14 @@ class AllocationTag < ActiveRecord::Base
           query = 'group_id IN (:groups_ids)'
           selected = 'GROUP'
           offer = true
-        when !params[:semester_id].blank?
+        when !params[:semester_id].blank? || !params[:semester].blank?
           query = []
+          params.merge!(semester_id: Semester.where(name: params[:semester]).first.try(:id)) unless params[:semester_id]
+          raise ActiveRecord::RecordNotFound unless params[:semester_id]
           query << 'semester_id = :semester_id'
           query << 'curriculum_unit_id = :curriculum_unit_id' if params[:curriculum_unit_id]
           query << 'course_id = :course_id' if params[:course_id]
+          query << 'curriculum_unit_type_id = :curriculum_unit_type_id' if params[:curriculum_unit_type_id]
           query = query.join(" AND ")
           selected = 'OFFER'
           offer = true
@@ -148,7 +151,7 @@ class AllocationTag < ActiveRecord::Base
           selected = 'CURRICULUM_UNIT_TYPE'
       end
 
-      unless query.nil?
+      unless query.blank?
         rts = RelatedTaggable.where(query, params.slice(:groups_ids, :offer_id, :semester_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id))
         raise ActiveRecord::RecordNotFound if rts.empty?
 
@@ -161,7 +164,7 @@ class AllocationTag < ActiveRecord::Base
     {allocation_tags: [allocation_tags_ids].flatten, selected: selected, offer_id: offer_id}
   end
 
-  def self.get_participants(allocation_tag_id, params={})
+  def self.get_participants(allocation_tag_id, params = {})
     types, query = [], []
     types << "cast( profiles.types & '#{Profile_Type_Student}' as boolean )"           if params[:students]     or params[:all]
     types << "cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )" if params[:responsibles] or params[:all]
