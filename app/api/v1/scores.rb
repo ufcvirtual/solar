@@ -9,8 +9,8 @@ module V1
       end
 
       ## api/v1/groups/1/scores/info
-      params { requires :id, type: Integer, desc: "ID da turma" }
-      get ":id/scores/info" do
+      params { requires :id, type: Integer, desc: 'ID da turma' }
+      get ':id/scores/info' do
         authorize! :info, Score, on: [@at.id]
 
         assignments, discussions, history_access = Score.informations(current_user.id, @at, related: @ats)

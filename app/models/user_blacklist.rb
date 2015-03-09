@@ -19,11 +19,11 @@ class UserBlacklist < ActiveRecord::Base
     def cpf_can_go_to_blacklist?
       if user = User.find_by_cpf(self.cpf)
         ma_config = User::MODULO_ACADEMICO
-        return true if ma_config.nil? or not(ma_config['professor_profile'].present?)
+        return true if ma_config.nil? || !ma_config['professor_profile'].present?
 
         # verifica se user eh aluno ou professor em um curso a distancia
-        al = user.allocations.joins(group: {offer: {curriculum_unit: :curriculum_unit_type}})
-          .where(curriculum_unit_types: {allows_enrollment: false}, profile_id: [1, ma_config['professor_profile']]) # 1: aluno, 17: professor titular a distancia
+        al = user.allocations.joins(group: { offer: { curriculum_unit: :curriculum_unit_type } })
+          .where(curriculum_unit_types: { allows_enrollment: false }, profile_id: [1, ma_config['professor_profile']]) # 1: aluno, 17: professor titular a distancia
 
         return true if al.empty?
 

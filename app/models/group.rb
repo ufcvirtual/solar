@@ -35,7 +35,7 @@ class Group < ActiveRecord::Base
 
   # recupera os participantes com perfil de estudante
   def students_participants
-    AllocationTag.get_participants(allocation_tag.id, {students: true})
+    AllocationTag.get_participants(allocation_tag.id, { students: true })
   end
 
   def any_lower_association?
@@ -43,7 +43,7 @@ class Group < ActiveRecord::Base
   end
 
   def as_label
-    [offer.semester.name, code, offer.curriculum_unit.try(:name)].join("|")
+    [offer.semester.name, code, offer.curriculum_unit.try(:name)].join('|')
   end
 
   def detailed_info

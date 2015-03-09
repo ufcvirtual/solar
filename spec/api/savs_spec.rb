@@ -153,19 +153,6 @@ describe "Savs" do
       }
     end
 
-    context "with wrong params - multiple params" do
-      let!(:json_data){ { groups_id: [1,2], course_id: 3, start_date: Date.current, end_date: Date.current + 4.months } }
-
-      subject{ -> { post "/api/v1/sav/1", json_data } } 
-
-      it { should change(Sav,:count).by(0) }
-  
-      it {
-        post "/api/v1/sav/1", json_data
-        response.status.should eq(400)
-      }
-    end
-
     context "already exists" do
       let!(:json_data){ { groups_id: [2,3], start_date: Date.current, end_date: Date.current + 4.months, profiles_ids: [1] } }
 
@@ -290,19 +277,6 @@ describe "Savs" do
       }
     end
 
-    context "with wrong params - to many params" do
-      let!(:json_data){ { groups_id: [1,2], course_id: 1 } }
-
-      subject{ -> { delete "/api/v1/sav/3", json_data } }
-
-      it { should change(Sav,:count).by(0) }
-  
-      it {
-        delete "/api/v1/sav/3", json_data
-        response.status.should eq(400)
-      }
-    end
-    
   end # dont delete
 
   context "edit" do
@@ -392,17 +366,6 @@ describe "Savs" do
       }
     end
   
-    context "with wrong params - multiple params" do
-      let!(:json_data){ { start_date: Date.current - 5.months, groups_id: [3], course_id: 3} }
-
-      it {
-        put "/api/v1/sav/savX", json_data
-        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.start_date == (Date.today - 3) # don't change
-        Sav.where(questionnaire_id: 3, allocation_tag_id: 3, profile_id: 1).first.end_date == (Date.today + 3.months) # don't change
-        response.status.should eq(400)
-      }
-    end
-
     context "missing date" do
       let!(:json_data){ {groups_id: [3]} }
 

@@ -12,10 +12,6 @@ module V1
         optional :course_id, :curriculum_unit_id, :curriculum_unit_type_id, :offer_id, :semester_id, type: Integer
         optional :start_date, :end_date, type: Date
         optional :percent, type: Integer
-        mutually_exclusive :groups_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id, :offer_id
-        mutually_exclusive :groups_id, :offer_id, :semester_id
-        mutually_exclusive :start_date, :percent
-        mutually_exclusive :end_date, :percent
       end
       post "/:questionnaire_id" do
         begin
@@ -24,7 +20,7 @@ module V1
           Sav.transaction do
             (allocation_tags_ids.blank? ? [nil] : allocation_tags_ids).each do |allocation_tag_id|
               (params[:profiles_ids].present? ? params[:profiles_ids].map(&:to_i) : [nil]).each do |profile_id|
-                Sav.create! ActionController::Parameters.new(params).except("route_info").permit("questionnaire_id", "allocation_tag_id", "profile_id", "start_date", "end_date", "created_at").merge!({allocation_tag_id: allocation_tag_id, profile_id: profile_id, semester_id: semester_id, percent: params[:percent]})
+                Sav.create! ActionController::Parameters.new(params).except("route_info").permit("questionnaire_id", "allocation_tag_id", "profile_id", "start_date", "end_date", "created_at", "percent").merge!({allocation_tag_id: allocation_tag_id, profile_id: profile_id, semester_id: semester_id, percent: params[:percent]})
               end
             end
           end
@@ -43,8 +39,6 @@ module V1
         optional :start_date, :end_date, type: Date
         optional :general, type: Boolean, default: false
         optional :percent, type: Integer
-        mutually_exclusive :groups_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id, :offer_id
-        mutually_exclusive :groups_id, :offer_id, :semester_id
         at_least_one_of :start_date, :end_date, :percent
       end
       put "/:questionnaire_id" do
@@ -68,14 +62,12 @@ module V1
         end
       end
 
-      desc "Remoção de questionário"
+      desc 'Remoção de questionário'
       params do
         requires :questionnaire_id, type: Integer
         optional :groups_id, :profiles_ids, type: Array
         optional :course_id, :curriculum_unit_id, :curriculum_unit_type_id, :offer_id, :semester_id, type: Integer
         optional :general, type: Boolean, default: false
-        mutually_exclusive :groups_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id, :offer_id
-        mutually_exclusive :groups_id, :offer_id, :semester_id
       end
       delete "/:questionnaire_id" do
         begin
@@ -83,9 +75,9 @@ module V1
           params[:allocation_tags_ids] = AllocationTag.get_by_params(params)[:allocation_tags].compact
 
           query = []
-          query << (params[:allocation_tags_ids].blank? ? (params[:general].present? ? "allocation_tag_id IS NULL" : nil) : "allocation_tag_id IN (:allocation_tags_ids)")
-          query << (semester_id.nil?                    ? nil : "semester_id = (:semester_id)")
-          query << (params[:profiles_ids].blank?        ? (params[:general].present? ? "profile_id IS NULL" : nil) : "profile_id IN (:profiles_ids)")
+          query << (params[:allocation_tags_ids].blank? ? (params[:general].present? ? 'allocation_tag_id IS NULL' : nil) : 'allocation_tag_id IN (:allocation_tags_ids)')
+          query << (semester_id.nil?                    ? nil : 'semester_id = (:semester_id)')
+          query << (params[:profiles_ids].blank?        ? (params[:general].present? ? 'profile_id IS NULL' : nil) : 'profile_id IN (:profiles_ids)')
 
           Sav.where({questionnaire_id: params[:questionnaire_id]}).where(query.compact.join(" AND "), params.merge!({semester_id: semester_id})).delete_all
           {ok: :ok}

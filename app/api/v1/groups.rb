@@ -88,7 +88,7 @@ module V1
 
           @groups = Group.joins(offer: [:semester, :curriculum_unit]).where(query.join(' AND '), params.slice(:course_type_id, :semester, :course_id, :discipline_id, :group_id))
 
-          @groups.map{ |group| 
+          @groups.map{ |group|
             offer = group.offer
             { 
               id: group.id,

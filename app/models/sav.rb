@@ -6,15 +6,15 @@ class Sav < ActiveRecord::Base
   validates :questionnaire_id, presence: true
   validates :questionnaire_id, uniqueness: { scope: [:allocation_tag_id, :semester_id, :profile_id] }
 
-  validates :percent, numericality: { greater_than: 0, less_than_or_equal_to: 100 }, unless: Proc.new { |a| a.percent.blank?}
+  validates :percent, numericality: { greater_than: 0, less_than_or_equal_to: 100 }, unless: Proc.new { |a| a.percent.blank? || a.percent == 0 }
 
-  validate :end_after_start, unless: Proc.new { |a| a.start_date.blank? or a.end_date.blank? }
+  validate :end_after_start, unless: Proc.new { |a| a.start_date.blank? || a.end_date.blank? }
 
-  before_save :define_percent, unless: Proc.new { |a| a.percent.blank?}
+  before_save :define_percent, unless: Proc.new { |a| a.percent.blank? }
 
   def define_percent
-    self.pecent = nil            if percent.blank? or percent == 1 or percent == 100
-    self.percent = (percent/100) if !percent.blank? and percent > 1
+    self.pecent = nil            if percent.blank? || percent == 1 || percent == 100 || percent == 0
+    self.percent = (percent/100) if !percent.blank? && percent > 1
   end
 
   def end_after_start
