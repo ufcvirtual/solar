@@ -99,7 +99,7 @@ module V1
               course_id: offer.course_id,
               curriculum_unit_id: offer.curriculum_unit_id,
               semester_id: offer.semester_id,
-              students: Allocation.joins(:profile).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean )").where(allocation_tag_id: group.allocation_tag.id, status: Allocation_Activated).count
+              students: Allocation.joins(:profile).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean )").where(allocation_tag_id: group.allocation_tag.related, status: Allocation_Activated).count
             }
           }
         end
