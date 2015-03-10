@@ -10,7 +10,7 @@ module ApplicationHelper
     return if tabs_opened.nil?
 
     tabs_opened.map { |id, name, link|
-      name = name[:breadcrumb].first[:name]
+      name = name[:breadcrumb].first[:tab] || name[:breadcrumb].first[:name]
 
       active_tab = tabs_opened[id][:breadcrumb].first[:url][:id] rescue nil
       tab_active_class = 'mysolar_unit_active_tab' if user_session[:tabs][:active] == id

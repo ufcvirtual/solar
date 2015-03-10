@@ -184,7 +184,7 @@ class ApplicationController < ActionController::Base
     end
 
     def set_session_opened_tabs(hash_url, params_url)
-      user_session[:tabs][:opened][params[:id]] = { breadcrumb: [{name: params[:name], url: params_url}], url: hash_url }
+      user_session[:tabs][:opened][params[:id]] = { breadcrumb: [{name: params[:name], tab: params[:tab] || params[:name], url: params_url}], url: hash_url }
       set_active_tab params[:id]
     end
 
