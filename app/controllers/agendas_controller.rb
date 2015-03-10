@@ -36,7 +36,7 @@ class AgendasController < ApplicationController
     @access_forms = Event.descendants.collect do |model|
       model.to_s.tableize.singularize if model.constants.include?("#{params[:selected].try(:upcase)}_PERMISSION".to_sym)
     end
-    @access_forms.compact.join(',')
+    @access_forms = @access_forms.compact.join(',')
   end
 
   def events

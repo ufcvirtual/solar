@@ -1,9 +1,10 @@
-.calendar_schedules{:"data-link-list" => calendar_agendas_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id], selected: params[:selected])}
+.calendar_schedules{ :"data-link-list" => calendar_agendas_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id], selected: params[:selected]) }
   = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
   = hidden_field_tag :all_groups_ids, params[:all_groups_ids]
   = hidden_field_tag :selected, params[:selected]
   = hidden_field_tag :events_path, events_agendas_path
 
+  = @access_forms
   #calendar{:"data-edition" => "true", :"data-ids" => @access_forms}
 
   .legend
@@ -40,7 +41,7 @@
   var begin_of        = '#{t("agendas.begin_of")}';
   var end_of          = '#{t("agendas.end_of")}';
 
-= javascript_include_tag "fullcalendar", "calendar"
+= javascript_include_tag 'fullcalendar', 'calendar'
 
 :javascript
   $(function(){
