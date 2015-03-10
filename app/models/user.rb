@@ -329,38 +329,52 @@ class User < ActiveRecord::Base
     csv = Roo::CSV.new(file.path, csv_options: { col_sep: sep })
     header = csv.row(1)
 
-    raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) unless header.join(';') == YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['import_users']['header']
+    raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) unless (header & (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['import_users']['header'].split(';'))).size == header.size
 
     (2..csv.last_row).each do |i|
       row = Hash[[header, csv.row(i)].transpose]
 
-      user_exist = where(cpf: row['CPF']).first
+      user_exist = where(cpf: row['CPF'] || row['Cpf']).first
       user = user_exist.nil? ? new : user_exist
 
-      unless user.integrated
+      blacklist = UserBlacklist.new cpf: user.cpf, name: user.name || row['Nome']
+      can_add_to_blacklist = blacklist.valid?
 
-        row = { 'email' => row['Email'],
-                'name' => row['Nome'],
-                'address' => row['Endereço'],
-                'country' => row['País'],
-                'state' => row['Estado'],
-                'city' => row['Cidade'],
-                'institution' => row['Instituição'],
-                'gender' => row['Sexo'],
-                'cpf' => row['CPF'] }
+      if !user.integrated || can_add_to_blacklist
+        blacklist.save if user.integrated && blacklist.valid?
 
-        user.attributes = row
+        params = {}
+        params.merge!({ email: row['Email'] })                      if row.include?('Email')
+        params.merge!({ name: row['Nome'] })                        if row.include?('Nome')
+        params.merge!({ address: row['Endereço'] })                 if row.include?('Endereço')
+        params.merge!({ country: row['País'] })                     if row.include?('País')
+        params.merge!({ state: row['Estado'] })                     if row.include?('Estado')
+        params.merge!({ city: row['Cidade'] })                      if row.include?('Cidade')
+        params.merge!({ institution: row['Instituição'] })          if row.include?('Instituição')
+        params.merge!({ cpf: row['CPF'] || row['Cpf'] })            if row.include?('CPF') || row.include?('Cpf')
+        params.merge!({ gender: (row['Sexo'].downcase == 'masculino' || row['Sexo'].downcase == 'male' || row['Sexo'].downcase == 'm') }) if row.include?('Sexo')
+        params.merge!({ username: user.cpf || params[:cpf] })       if user.username.nil?
+        params.merge!({ birthdate: '1970-01-01' })                  if user.birthdate.nil?
+        params.merge!({ nick: user.username || params[:username] }) if user.nick.nil?
 
-        user.username  = user.cpf      if user.username.nil?
-        user.nick      = user.username if user.nick.nil?
-        user.birthdate = '1970-01-01'  if user.birthdate.nil? # verificar este campo
-        user.password  = '123456'      if user.password.nil?
+        if user.password.nil?
+          new_password  = ('0'..'z').to_a.shuffle.first(8).join
+          user.password = new_password
+        end
+
+        user.update_attributes params.merge!({ active: true })
       end
-      user.active = true
 
       if user.save
         log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
         imported << user
+
+        if new_password
+          Thread.new do
+            Notifier.new_user(user, new_password).deliver
+          end
+        end
+
       else
         log[:error] << I18n.t(:error, scope: [:administrations, :import_users, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(', '))
       end

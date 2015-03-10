@@ -4,7 +4,7 @@
   = hidden_field_tag :selected, params[:selected]
   = hidden_field_tag :events_path, events_agendas_path
 
-  #calendar{:"data-edition" => "true", :"data-ids" => @access_forms}
+  #calendar{ :"data-edition" => "true", :"data-ids" => @access_forms }
 
   .legend
     = label_tag t(".legend")

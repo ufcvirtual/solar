@@ -229,7 +229,7 @@ class AdministrationsController < ApplicationController
   # GET /import/users/form
   def import_users_form
     @allocation_tags_ids = AllocationTag.where(group_id: params[:groups_id].split(' ')).map(&:id)
-    authorize! :import_users, Administration, on: @allocation_tags_ids, accepts_general_profile: true
+    authorize! :import_users, Administration, { on: @allocation_tags_ids, accepts_general_profile: true }
 
   rescue CanCan::AccessDenied
     render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized
@@ -238,7 +238,7 @@ class AdministrationsController < ApplicationController
   # POST /import/users/batch
   def import_users_batch
     allocation_tags_ids = params[:allocation_tags_ids].split(' ').compact.uniq.map(&:to_i)
-    authorize! :import_users, Administration, on: allocation_tags_ids, accepts_general_profile: true
+    authorize! :import_users, Administration, { on: allocation_tags_ids, accepts_general_profile: true }
 
     raise t(:invalid_file, scope: [:administrations, :import_users]) if (file = params[:batch][:file]).nil?
 
@@ -261,9 +261,9 @@ class AdministrationsController < ApplicationController
 
     @log_file = save_log_into_file(@log[:success] + @log[:error])
   rescue CanCan::AccessDenied
-    render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized
+    render json: { msg: t(:no_permission), alert: t(:no_permission) }, status: :unauthorized
   rescue => error
-    render json: {success: false, alert: "#{error}"}, status: :unprocessable_entity
+    render json: { success: false, alert: "#{error}" }, status: :unprocessable_entity
   end
 
   # GET /import/users/log
