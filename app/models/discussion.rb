@@ -39,7 +39,7 @@ class Discussion < Event
   # => Existe o forum Fórum 1 com academic allocation para a allocation_tag 3
   # => Se eu criar um novo forum em que uma de suas allocation_tags seja a 3 e tenha o mesmo nome que o Forum 1, é pra dar erro
   def unique_name
-    discussions_with_same_name = self.class.joins(:allocation_tags).where(allocation_tags: {id: allocation_tag_ids_associations || academic_allocations.map(&:allocation_tag_id)}, name: name)
+    discussions_with_same_name = self.class.joins(:allocation_tags).where(allocation_tags: { id: allocation_tag_ids_associations || academic_allocations.map(&:allocation_tag_id) }, name: name)
     errors.add(:name, I18n.t('discussions.error.existing_name')) if (@new_record == true || name_changed?) && discussions_with_same_name.size > 0
   end
 
@@ -75,7 +75,7 @@ class Discussion < Event
   end
 
   def discussion_posts_count(plain_list = true, allocation_tags_ids = nil)
-    (plain_list ? posts_by_allocation_tags_ids(allocation_tags_ids).count : posts_by_allocation_tags_ids(allocation_tags_ids).collect{ |a| a if a.parent.nil? }.compact.count)
+    (plain_list ? posts_by_allocation_tags_ids(allocation_tags_ids, { grandparent: false }).count : posts_by_allocation_tags_ids(allocation_tags_ids).collect{ |a| a if a.parent.nil? }.compact.count)
   end
 
   def count_posts_after_and_before_period(period, allocation_tags_ids = nil)
@@ -102,9 +102,9 @@ class Discussion < Event
 
   def posts_by_allocation_tags_ids(allocation_tags_ids = nil, opt = { grandparent: true, query: '', order: 'updated_at', limit: nil, offset: nil, select: 'discussion_posts.*' } )
     allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids).map(&:related).flatten.compact.uniq
-    posts = discussion_posts.where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
-    posts = posts.joins(academic_allocation: :allocation_tag).where(allocation_tags: { id: allocation_tags_ids }) unless allocation_tags_ids.blank?
-    (opt[:grandparent] ? posts.map(&:grandparent).uniq.compact : posts.compact.uniq)
+    posts_list = discussion_posts.where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
+    posts_list = posts_list.joins(academic_allocation: :allocation_tag).where(allocation_tags: { id: allocation_tags_ids }) unless allocation_tags_ids.blank?
+    (opt[:grandparent] ? posts_list.map(&:grandparent).uniq.compact : posts_list.compact.uniq)
   end
 
   def resume(allocation_tags_ids = nil)
@@ -133,7 +133,7 @@ class Discussion < Event
   def self.posts_count_by_user(student_id, allocation_tag_id)
     joins(:schedule, academic_allocations: :allocation_tag)
       .joins("LEFT JOIN discussion_posts AS dp ON dp.academic_allocation_id = academic_allocations.id AND dp.user_id = #{student_id}")
-      .where(allocation_tags: {id: AllocationTag.find(allocation_tag_id).related}).select('discussions.id, discussions.name, COUNT(dp.id) AS posts_count, schedules.start_date AS start_date')
+      .where(allocation_tags: { id: AllocationTag.find(allocation_tag_id).related }).select('discussions.id, discussions.name, COUNT(dp.id) AS posts_count, schedules.start_date AS start_date')
       .group('discussions.id, discussions.name, start_date').order('start_date').uniq
   end
 

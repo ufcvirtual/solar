@@ -28,11 +28,11 @@ class PostsController < ApplicationController
 
     @display_mode = p['display_mode'] ||= 'tree'
 
-    if (p['display_mode'] == "list" or params[:format] == "json")
+    if (p['display_mode'] == "list" || params[:format] == "json")
       # se for em forma de lista ou para o mobilis, pesquisa pelo método posts
       p['page'] ||= @current_page
       p['type'] ||= "history"
-      p['date'] = DateTime.parse(p['date']) if params[:format] == "json" and p.include?('date')
+      p['date'] = DateTime.parse(p['date']) if params[:format] == "json" && p.include?('date')
       @posts    = @discussion.posts(p, @allocation_tags)
     else
       @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
