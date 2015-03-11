@@ -245,7 +245,7 @@ class AdministrationsController < ApplicationController
     delimiter = [';', ','].include?(params[:batch][:delimiter]) ? params[:batch][:delimiter] : ';'
     result = User.import(file, delimiter)
     users = result[:imported]
-    @log = result[:log]
+    @log  = result[:log]
     @count_imported = result[:log][:success].count
 
     users.each do |user|
@@ -263,6 +263,8 @@ class AdministrationsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: { msg: t(:no_permission), alert: t(:no_permission) }, status: :unauthorized
   rescue => error
+    error = t('administrations.import_users.other_extension') if error.to_s.include?('UTF-8')
+    error = t('administrations.import_users.other_delimiter') if error.to_s.include?('quoting')
     render json: { success: false, alert: "#{error}" }, status: :unprocessable_entity
   end
 

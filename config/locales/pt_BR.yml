@@ -1882,7 +1882,7 @@ pt_BR:
       not_specified: Não especificado
     import_users:
       wait: "Carregando..."
-      warning: "<b>Importante:</b> para importação de usuários, baixe o modelo e obedeça o padrão da planilha de exemplo (%{link})"
+      warning: "<b>Importante:</b> Para importação de usuários, podem ser enviados arquivos .csv, .xls e .xlsx. Para isso, é necessário obedecer ao padrão que consta na planilha exemplo (%{link}), sendo que apenas os seguintes campos são obrigatórios: Nome, Cpf, Email e Sexo. Toda coluna que não conste no exemplo será ignorada."
       model: "Download do modelo"
       registered_success: "%{count} usuários importados com sucesso"
       select_file: "Seleção do arquivo"
@@ -1891,6 +1891,9 @@ pt_BR:
       import_log: "Resultado da importação de usuários"
       download_log: "Download Log"
       invalid_file: "Arquivo inválido"
+      other_extension: "Há problemas com a formatação do arquivo fornecido, favor importar com .xls ou .xlsx"
+      unknown_file: "Extensão não permitida"
+      other_delimiter: "Delimitador CSV incorreto"
       log:
         success: "[SUCESSO]: CPF: %{cpf}, importado com sucesso"
         error: "[ERRO]: CPF: %{cpf}, %{error}"

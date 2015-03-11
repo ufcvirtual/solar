@@ -1676,7 +1676,7 @@ en_US:
       not_specified: Not specified
     import_users:
       wait: "Wait..."
-      warning: "<b>Important:</b> for importing users, download the template and obey the standard sample worksheet (%{link})"
+      warning: "<b>Important:</b> To import users, you can upload .csv, .xls and .xlsx files. To do so, it's necessary  to follow the template at the sample worksheet (%{link}). Now that only the following fields are mandatory: Nome, Cpf, Email and Sexo. Any column which doesn't exist at the template will be ignored."
       model: "Download sample"
       registered_success: "%{count} registered users successfully"
       select_file: "File selection"
@@ -1685,6 +1685,9 @@ en_US:
       import_log: "Result of Importing Users"
       download_log: "Download Log"
       invalid_file: "Invalid file"
+      other_extension: "There are problems with the formatting of the given file, please import .xls or .xlsx files"
+      unknown_file: "Not allowed extension"
+      other_delimiter: "Incorrect CSV delimiter"
       log:
         success: "[SUCCESSO]: CPF: %{cpf}, successfully imported"
         error: "[ERRO]: CPF: %{cpf}, %{error}"
