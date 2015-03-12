@@ -139,7 +139,7 @@ class Discussion < Event
 
   def self.all_by_allocation_tags(allocation_tag_id)
     joins(:schedule, academic_allocations: :allocation_tag).joins('LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id')
-      .where(allocation_tags: {id: AllocationTag.find(allocation_tag_id).related})
+      .where(allocation_tags: { id: AllocationTag.find(allocation_tag_id).related })
       .select('discussions.*, academic_allocations.id AS ac_id, COUNT(discussion_posts.id) AS posts_count, schedules.start_date AS start_date, schedules.end_date AS end_date')
       .group('discussions.id, schedules.start_date, schedules.end_date, name, academic_allocations.id')
       .order('start_date, end_date, name')

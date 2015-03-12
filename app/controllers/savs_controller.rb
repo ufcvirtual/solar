@@ -36,5 +36,4 @@ private
     cipher.iv, cipher.key  = SavConfig::IV, SavConfig::KEY
     Base64.encode64(cipher.update(value) + cipher.final).gsub("\n",'').html_safe
   end
-
 end

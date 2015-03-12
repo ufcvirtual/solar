@@ -1,4 +1,4 @@
-= simple_form_for(@webconference, html: {id: "webconference_form"}) do |f|
+= simple_form_for(@webconference, html: { id: 'webconference_form' }) do |f|
   %span.form_requirement= t(:required_fields)
   %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit : :new), scope: [:webconferences, :form])
 
@@ -8,17 +8,14 @@
     = f.input :title
     = f.input :description
     = f.input :initial_time, start_year: Date.today.year
-    = f.input :duration, hint: t(".minutes")
-    = f.input :is_recorded, as: :boolean, checked_value: true, unchecked_value: false
+    = f.input :duration, hint: t('.minutes')
+    = f.input :is_recorded, as: :boolean, boolean_style: :inline
 
-    = render "groups/codes"
+    - unless @groups.blank?
+      = f.input :shared_between_groups, as: :boolean, boolean_style: :inline
+
+    = render 'groups/codes'
 
     .form-actions.right_buttons
-      = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
-      = button_to_function t(:save), "save_webconference()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
-
-:css
-  .webconference > .input > select {
-    width: initial;
-    max-width: 100px;
-  }
+      = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button', alt: t(:cancel)
+      = button_to_function t(:save), 'save_webconference()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button'

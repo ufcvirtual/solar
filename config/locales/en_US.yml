@@ -320,6 +320,7 @@ en_US:
         initial_time: Initial Time
         duration: Duration
         is_recorded: Record
+        shared_between_groups: Shared between groups
       user_blacklist:
         cpf: CPF
         name: Name
@@ -996,6 +997,7 @@ en_US:
       recorded: Activated record
       y: Yes
       n: No
+      shared_between_groups: Shared between groups
     success:
       created: Webconference was successfully created.
       updated: Webconference was successfully updated.
@@ -1015,6 +1017,9 @@ en_US:
       search: Search
       location: Location
       warning: "This page doesn't allow webconference's edition, only it's preview, as it's respective records (allowing the removal of these). To create/edit/remove webconferences, go to Content Edition."
+      shared_with: ( Shared with %{link} group(s) )
+    index:
+      shared_with: Shared with %{link} group(s)
   navigation_of: " of "
   navigation_next: "Next >"
   navigation_previous: "< Previous"

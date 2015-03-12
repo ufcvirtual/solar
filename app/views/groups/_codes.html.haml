@@ -1,4 +1,4 @@
-- unless @groups.nil? or @groups.empty? 
+- unless @groups.blank?
   - groups_size = @groups.size
   .input.group_label.invisible.codes
     = label_tag t(".groups"), nil, class: "string control-label form_label"

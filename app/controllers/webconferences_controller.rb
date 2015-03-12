@@ -1,4 +1,5 @@
 require 'bigbluebutton_api'
+require 'will_paginate/array'
 
 class WebconferencesController < ApplicationController
 
@@ -28,7 +29,7 @@ class WebconferencesController < ApplicationController
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Webconference, on: @allocation_tags_ids
 
-    @webconferences = Webconference.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(' ').flatten}).uniq
+    @webconferences = Webconference.joins(academic_allocations: :allocation_tag).where(allocation_tags: { id: @allocation_tags_ids.split(' ').flatten }).uniq
   end
 
   # GET /webconferences/new
@@ -104,7 +105,7 @@ class WebconferencesController < ApplicationController
   # GET /webconferences/preview
   def preview
     ats = current_user.allocation_tags_ids_with_access_on('preview', 'webconferences', false, true)
-    @webconferences = Webconference.all_by_allocation_tags(ats, {order: 'initial_time DESC, title ASC'}).paginate(page: params[:page])
+    @webconferences = Webconference.all_by_allocation_tags(ats, { order: 'initial_time DESC, title ASC' }).paginate(page: params[:page])
     @online         = Webconference.online?
     @recordings     = Webconference.all_recordings if @online
   end
@@ -112,11 +113,11 @@ class WebconferencesController < ApplicationController
   # PUT /webconferences/remove_record/1
   def remove_record
     academic_allocations = AcademicAllocation.where(id: params[:id].split(',').flatten)
-    webconferences = Webconference.where(id: academic_allocations.map(&:academic_tool_id))
+    webconferences      = Webconference.where(id: academic_allocations.map(&:academic_tool_id))
 
     authorize! :preview, Webconference, { on: academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }
-    webconferences.map(&:can_remove_records?)
 
+    webconferences.map(&:can_remove_records?)
     Webconference.remove_record(academic_allocations)
 
     render json: { success: true, notice: t(:record_deleted, scope: [:webconferences, :success]) }
@@ -129,7 +130,7 @@ class WebconferencesController < ApplicationController
   private
 
   def webconference_params
-    params.require(:webconference).permit(:description, :duration, :initial_time, :title, :is_recorded)
+    params.require(:webconference).permit(:description, :duration, :initial_time, :title, :is_recorded, :shared_between_groups)
   end
 
 end

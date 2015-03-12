@@ -369,6 +369,7 @@ pt_BR:
         initial_time: Data
         duration: Duração
         is_recorded: Gravar
+        shared_between_groups: Compartilhado entre turmas
       user_blacklist:
         cpf: CPF
         name: Nome
@@ -1173,6 +1174,7 @@ pt_BR:
       recorded: Gravação ativada
       y: Sim
       n: Não
+      shared_between_groups: Compartilhado entre turmas
     success:
       created: Webconferência criada com sucesso.
       updated: Webconferência atualizada com sucesso.
@@ -1192,6 +1194,9 @@ pt_BR:
       search: Busca
       location: Localização
       warning: 'Esta tela não permite a edição de webconferências, apenas sua visualização, bem como de suas respectivas gravações (permitindo a deleção dessas). Para criar/editar/remover webconferências, dirija-se a Edição de Conteúdo.'
+      shared_with: ( Compartilhada entre %{link} turma(s) )
+    index:
+      shared_with: Compartilhada entre %{link} turma(s)
 
   navigation_of: " de "
   navigation_next: "Próxima >"

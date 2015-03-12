@@ -4,7 +4,7 @@ class AcademicAllocation < ActiveRecord::Base
   belongs_to :allocation_tag
 
   belongs_to :lesson_module, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'LessonModule'"]
-  belongs_to :chat_room, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'ChatRoom'"]
+  belongs_to :chat_room,     foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'ChatRoom'"]
 
   # Assignment
   has_many :sent_assignments, dependent: :destroy
@@ -15,7 +15,8 @@ class AcademicAllocation < ActiveRecord::Base
   has_many :chat_participants, inverse_of: :academic_allocation, dependent: :destroy
 
   before_save :verify_association_with_allocation_tag
-  before_destroy :move_lessons_to_default, if: :lesson_module? # LessonModule
+
+  before_destroy :move_lessons_to_default, if: :lesson_module?
   before_destroy :remove_record, if: :webconference?
 
   before_validation :verify_uniqueness
@@ -95,9 +96,9 @@ class AcademicAllocation < ActiveRecord::Base
       academic_tool.lessons.update_all(lesson_module_id: lesson_module) unless lesson_module.empty?
     end
 
-    # Metodos destidados ao Webconference
+    # Metodos destidados a Webconference
     def remove_record
-      Webconference.remove_record([self])
+      Webconference.remove_record([self]) unless Webconference.find(self.academic_tool_id).shared_between_groups
     end
 
 end

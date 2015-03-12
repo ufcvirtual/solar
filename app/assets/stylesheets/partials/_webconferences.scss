@@ -1,7 +1,20 @@
+form{
+  .webconference > .input > select {
+    width: initial;
+    max-width: 100px;
+  }
+}
+
 .preview_webconferences{
   .block_toolbar_right{
-    .delete_record{
+    .delete_record_btn{
       margin-top: 7px;
+    }
+  }
+  [id^="groups_codes"]{
+    .dropdown-menu{
+      max-height: 250px;
+      overflow-y: auto;
     }
   }
 }

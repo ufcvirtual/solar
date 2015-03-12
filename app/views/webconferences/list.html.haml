@@ -18,14 +18,15 @@
       %thead
         %tr.lines
           %th.no_sort{style: 'text-align:center; width: 25px;'}= check_box_tag :all_webconferences, false, false, :"data-children-names" => 'ckb_webconference', class: 'all_webconferences'
-          %th{align: 'left'}=t('.name')
-          %th{align: 'center', style: 'width: 20%;'}= t('.availability')
-          %th{align: 'center', style: 'width: 15%;'}= t('.duration')
+          %th{ align: 'left' }=t('.name')
+          %th{ align: 'center', style: 'width: 20%;' }= t('.availability')
+          %th{ align: 'center', style: 'width: 15%;' }= t('.duration')
           %th=t('.recorded')
+          %th.group_label.invisible=t('.shared_between_groups')
       %tbody
         - @webconferences.each do |webconference|
-          %tr.lines{id: "tr_#{webconference.id}"}
-            %td{style: 'text-align:center;'}= check_box_tag :ckb_webconference, webconference.id, false, {class: 'ckb_webconference'}
+          %tr.lines{ id: "tr_#{webconference.id}" }
+            %td{ style: 'text-align:center;' }= check_box_tag :ckb_webconference, webconference.id, false, {class: 'ckb_webconference'}
             %td
               %div
                 .title= webconference.title
@@ -34,10 +35,11 @@
                   .complete.invisible
                     = raw webconference.description
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
-                .group_label.invisible= render "groups/groups_tags", groups: webconference.groups, tool: webconference, all_groups: all_groups, paths: {add: add_group_to_webconferences_path(id: 'param_id', tool_id: webconference.id), remove: remove_group_from_webconferences_path(id: 'param_id', tool_id: webconference.id), unbind: unbind_group_from_webconferences_path(id: 'param_id', tool_id: webconference.id), tags: group_tags_from_webconferences_path(tool_id: webconference.id)}
-            %td{style: 'text-align:center;'}= l(webconference.initial_time, format: :at_date)
-            %td{style: 'text-align:center;'}= webconference.duration
-            %td=(webconference.is_recorded ? t('.y') : t('.n'))
+                .group_label.invisible= render "groups/groups_tags", groups: webconference.groups, tool: webconference, all_groups: all_groups, paths: { add: add_group_to_webconferences_path(id: 'param_id', tool_id: webconference.id), remove: remove_group_from_webconferences_path(id: 'param_id', tool_id: webconference.id), unbind: unbind_group_from_webconferences_path(id: 'param_id', tool_id: webconference.id), tags: group_tags_from_webconferences_path(tool_id: webconference.id) }
+            %td{ style: 'text-align:center;' }= l(webconference.initial_time, format: :at_date)
+            %td{ style: 'text-align:center;' }= webconference.duration
+            %td{ style: 'text-align:center;' }=(webconference.is_recorded ? t('.y') : t('.n'))
+            %td.group_label.invisible{ style: 'text-align:center;' }=(webconference.shared_between_groups ? t('.y') : t('.n'))
 
   - else
     .block_content_text.block_content_text_list.text_none= t('.no_data')
