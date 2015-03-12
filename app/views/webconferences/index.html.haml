@@ -18,14 +18,15 @@
           %tr.lines
             %td= webconference.link_to_join(current_user, webconference.at_id)
             %td
-              = webconference.description
+              %div= webconference.description
               - groups_codes = webconference.groups_codes
               - unless groups_codes.blank? || !webconference.shared_between_groups || groups_codes.size == 1
-                = raw t('.shared_with', link: link_to(groups_codes.count.to_s, '#', :'data-dropdown' => "#groups_codes_#{webconference.id}"))
-                .dropdown.dropdown-tip{ id: "groups_codes_#{webconference.id}" }
-                  %ul.dropdown-menu
-                    - groups_codes.each do |code|
-                      %li= code
+                %div
+                  = raw t('.shared_with', link: link_to(groups_codes.count.to_s, '#', :'data-dropdown' => "#groups_codes_#{webconference.id}"))
+                  .dropdown.dropdown-tip{ id: "groups_codes_#{webconference.id}" }
+                    %ul.dropdown-menu
+                      - groups_codes.each do |code|
+                        %li= code
             %td= raw truncate(webconference.moderator.name, length: 20)
             %td= l(webconference.initial_time, format: :at_date)
             %td= [webconference.duration.to_s, t(:min, scope: [:webconferences, :list])].join(' ')

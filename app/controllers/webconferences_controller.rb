@@ -105,7 +105,7 @@ class WebconferencesController < ApplicationController
   # GET /webconferences/preview
   def preview
     ats = current_user.allocation_tags_ids_with_access_on('preview', 'webconferences', false, true)
-    @webconferences = Webconference.all_by_allocation_tags(ats, { order: 'initial_time DESC, title ASC' }).paginate(page: params[:page])
+    @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false }).paginate(page: params[:page])
     @online         = Webconference.online?
     @recordings     = Webconference.all_recordings if @online
   end

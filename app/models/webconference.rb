@@ -36,7 +36,7 @@ class Webconference < ActiveRecord::Base
   end
 
   def link_to_join(user, at_id = nil)
-    ((can_access? && Webconference.online?) ? ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: "_blank") : title) 
+    ((can_access? && Webconference.online?) ? ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: '_blank') : title) 
   end
 
   def status(recordings = [], at_id = nil)
@@ -46,7 +46,7 @@ class Webconference < ActiveRecord::Base
     when is_recorded?
       if is_over?
         record_url = recordings(recordings, at_id)
-        (record_url ? ActionController::Base.helpers.link_to(I18n.t(:play, scope: [:webconferences, :list]), record_url, target: "_blank") : I18n.t(:removed_record, scope: [:webconferences, :list]))
+        (record_url ? ActionController::Base.helpers.link_to(I18n.t(:play, scope: [:webconferences, :list]), record_url, target: '_blank') : I18n.t(:removed_record, scope: [:webconferences, :list]))
       else
         I18n.t(:processing, scope: [:webconferences, :list])
       end
@@ -55,16 +55,17 @@ class Webconference < ActiveRecord::Base
     end
   end
 
-  def self.all_by_allocation_tags(allocation_tags_ids, opt = { order: 'initial_time ASC, title ASC' })
+  def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true })
     query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids } }
     opt.merge!(select2: 'webconferences.*, academic_allocations.allocation_tag_id AS at_id, academic_allocations.id AS ac_id, users.name AS user_name')
     opt.merge!(select1: 'DISTINCT webconferences.id, webconferences.*, NULL AS at_id, NULL AS ac_id, users.name AS user_name')
+    opt.merge!(order: (opt[:asc] ? [web.initial_time.to_i, web.title] : [-web.initial_time.to_i, web.title]))
 
     webconferences = Webconference.joins(:moderator).joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'").where(query)
     web1 = webconferences.where(shared_between_groups: true)
     web2 = webconferences.where(shared_between_groups: false)
 
-    (web1.select(opt[:select1]) + web2.select(opt[:select2])).sort_by{ |web| [-web.initial_time.to_i, web.title]} #initial_time DESC, title ASC
+    (web1.select(opt[:select1]) + web2.select(opt[:select2])).sort_by{ |web| opt[:order] }
   end
 
   def responsible?(user_id, at_id = nil)
