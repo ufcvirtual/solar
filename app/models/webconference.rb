@@ -59,13 +59,12 @@ class Webconference < ActiveRecord::Base
     query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids } }
     opt.merge!(select2: 'webconferences.*, academic_allocations.allocation_tag_id AS at_id, academic_allocations.id AS ac_id, users.name AS user_name')
     opt.merge!(select1: 'DISTINCT webconferences.id, webconferences.*, NULL AS at_id, NULL AS ac_id, users.name AS user_name')
-    opt.merge!(order: (opt[:asc] ? [web.initial_time.to_i, web.title] : [-web.initial_time.to_i, web.title]))
 
     webconferences = Webconference.joins(:moderator).joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'").where(query)
     web1 = webconferences.where(shared_between_groups: true)
     web2 = webconferences.where(shared_between_groups: false)
 
-    (web1.select(opt[:select1]) + web2.select(opt[:select2])).sort_by{ |web| opt[:order] }
+    (web1.select(opt[:select1]) + web2.select(opt[:select2])).sort_by{ |web| (opt[:asc] ? [web.initial_time.to_i, web.title] : [-web.initial_time.to_i, web.title]) }
   end
 
   def responsible?(user_id, at_id = nil)
