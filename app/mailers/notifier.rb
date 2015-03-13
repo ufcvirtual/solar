@@ -6,8 +6,8 @@ class Notifier < ActionMailer::Base
       attachments[file.attachment_file_name] = File.read(file.attachment.path)
     end
 
-    config_mail = {to: recipients, subject: "[SOLAR] #{subject}"}
-    config_mail[:from] = from unless from.nil?
+    config_mail = { to: recipients, subject: "[SOLAR] #{subject}" }
+    config_mail[:reply_to] = from unless from.nil?
 
     mail(config_mail) do |format|
       format.text { render text: message }
