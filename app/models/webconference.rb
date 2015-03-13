@@ -113,7 +113,7 @@ class Webconference < ActiveRecord::Base
     @api = Webconference.bbb_prepare
     @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
 
-    if (responsible?(user.id) || user.can?(:preview, Webconference, { on: [at_id || academic_allocations.flatten.map(&:allocation_tag_id).flatten], accepts_general_profile: true }))
+    if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
       @api.join_meeting_url(meeting_id, "#{user.name}*", options[:moderatorPW])
     else
       @api.join_meeting_url(meeting_id, user.name, options[:attendeePW])

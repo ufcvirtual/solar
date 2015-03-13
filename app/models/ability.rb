@@ -19,14 +19,18 @@ class Ability
       if (options.include?(:on) && admin_or_general_profile) || !(options.include?(:on)) # on allocation_tags
         have_permission_access?(user, action, object_class, object)
       else
-        have_permission_on_allocation_tags?(user, action, object_class, options[:on].split(' ').flatten.map(&:to_i), !!options[:read])
+        have_permission_on_allocation_tags?(user, action, object_class, options[:on].split(' ').flatten.map(&:to_i), !!options[:read], !!options[:any])
       end
 
     end # have permission?
 
     ## a verificacao de permissao para leitura considera todas as at relacionadas
-    def have_permission_on_allocation_tags?(user, action, object_class, allocation_tags, read = false)
-      ( allocation_tags - user.allocation_tags_ids_with_access_on(alias_action(action.first), object_class.to_s.underscore.pluralize, read) ).empty?
+    def have_permission_on_allocation_tags?(user, action, object_class, allocation_tags, read = false, any = false)
+      if any
+        ( allocation_tags & user.allocation_tags_ids_with_access_on(alias_action(action.first), object_class.to_s.underscore.pluralize, read) ).any?
+      else
+        ( allocation_tags - user.allocation_tags_ids_with_access_on(alias_action(action.first), object_class.to_s.underscore.pluralize, read) ).empty?
+      end
     end # have permission on allocation tags
 
     def have_permission_access?(user, action, object_class, object)
