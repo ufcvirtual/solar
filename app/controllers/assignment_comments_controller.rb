@@ -69,7 +69,7 @@ class AssignmentCommentsController < ApplicationController
 
   def download
     is_observer_or_responsible, file = AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id), CommentFile.find(params[:file_id])
-    raise CanCan::AccessDenied unless Assignment.owned_by_user?(current_user.id, {sent_assignment: file.assignment_comment.sent_assignment}) or is_observer_or_responsible
+    raise CanCan::AccessDenied unless Assignment.owned_by_user?(current_user.id, { sent_assignment: file.assignment_comment.sent_assignment }) or is_observer_or_responsible
 
     download_file(:back, file.attachment.path, file.attachment_file_name)
   end

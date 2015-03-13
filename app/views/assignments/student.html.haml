@@ -1,11 +1,11 @@
 .block_wrapper_groups
   - unless @group.nil?
-    = image_tag "group.png", alt: t(:mysolar_alt_img_user)
+    = image_tag 'group.png', alt: t(:mysolar_alt_img_user)
     .block_user
-      .title_user= t(".group")
+      .title_user= t('.group')
       = @group.group_name
       %div
-      .title_user= t(".participants")
+      .title_user= t('.participants')
       - participants = @group.users
       - unless participants.empty?
         %ul.participants_list
@@ -13,14 +13,14 @@
             %li
               = participant.name
               - unless @class_participants.include? participant.id
-                %span{:"data-tooltip" => t(".moved_allocation")}= content_tag :i, nil, class: "icon-warning moved_allocation" 
+                %span{:"data-tooltip" => t('.moved_allocation')}= content_tag :i, nil, class: 'icon-warning moved_allocation' 
       - else
         = t(".no_participants")
   - else
     - user = User.find(@student_id)
     = image_tag user.user_photo(:forum), alt: t(:mysolar_alt_img_user) + ' ' + user.nick
     .block_user
-      .title_user= t(".student")
+      .title_user= t('.student')
       = user.name
 
 .block_wrapper.assingment_info
@@ -38,25 +38,25 @@
           %td= @assignment.enunciation
     %table.tb_list
       %thead
-        %tr.lines{style: "border-top: 1px solid #c0c0c0;"}
-          %th.center.date_column.no_sort= t(".begin")
-          %th.center.date_column.no_sort= t(".end")
-          %th.center.no_sort{style: "width:20%"}= t(".situation")
-          %th.center.no_sort{style: "width:15%"}= t(".grade")
-          %th.center.no_sort{style: "width:15%"}
+        %tr.lines{ style: 'border-top: 1px solid #c0c0c0;' }
+          %th.center.date_column.no_sort= t('.begin')
+          %th.center.date_column.no_sort= t('.end')
+          %th.center.no_sort{ style: 'width:20%' }= t('.situation')
+          %th.center.no_sort{ style: 'width:15%' }= t('.grade')
+          %th.center.no_sort{ style: 'width:15%' }
       %tbody.info
-        = render partial: "info"
+        = render partial: 'info'
 
 .assignment_comments
-  = render partial: "assignment_comments/list", locals: {comments: @sent_assignment.try(:assignment_comments)}
+  = render partial: 'assignment_comments/list', locals: { comments: @sent_assignment.try(:assignment_comments) }
 
 .student_files.files
-  = render partial: "assignment_files/list", locals: {files: @sent_assignment.try(:assignment_files)}
+  = render partial: 'assignment_files/list', locals: { files: @sent_assignment.try(:assignment_files) }
 
 .assignment_files.files
-  = render partial: "files", locals: {files: @assignment.try(:enunciation_files)}
+  = render partial: 'files', locals: { files: @assignment.try(:enunciation_files) }
 
-.block_wrapper{style: "float:left"}
-  = link_to t(:back), :back, {class: "btn"}  
+.block_wrapper{ style: 'float:left' }
+  = link_to t(:back), :back, { class: "btn" }
 
-= javascript_include_tag "assignments"
+= javascript_include_tag 'assignments'

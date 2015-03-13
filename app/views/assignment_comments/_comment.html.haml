@@ -1,25 +1,23 @@
-%table.assignment_comment.tb_comments{:"data-link-list" => assignment_comment_path(comment)}
+%table.assignment_comment.tb_comments{ :"data-link-list" => assignment_comment_path(comment) }
   %tr
     %td.assignment_comment_head
       .assignment_user_comment= comment.user.nick
       .assignment_comment_date= (comment.updated_at.blank? ? l(comment.created_at, format: :long) : l(comment.updated_at, format: :long))
   %tr.comment
-    %td.assignment_comment_form.assignment_comment{class: "comment_#{comment.id}", colspan: "2"}
+    %td.assignment_comment_form.assignment_comment{class: "comment_#{comment.id}", colspan: '2'}
       .assignment_inner_content
         %span{class: "comment_#{comment.id}", :'data-value' => comment.comment}=simple_format comment.comment
         - if comment.user_id == current_user.id
           .portfolio_comment_button
-            = link_to_function content_tag(:i, nil, class: "icon-edit"), "edit_comment(this)", class: "btn", :"data-url" => edit_assignment_comment_path(comment), :"data-tooltip" => t(".edit")
-            = link_to_function content_tag(:i, nil, class: "icon-trash"), "remove_comment(this)", class: "btn", :"data-url" => assignment_comment_path(comment), :"data-remove-link" => assignment_comment_path(comment), :"data-tooltip" => t(".remove")
+            = link_to_function content_tag(:i, nil, class: "icon-edit"), "edit_comment(this)", class: 'btn', :"data-url" => edit_assignment_comment_path(comment), :"data-tooltip" => t(".edit")
+            = link_to_function content_tag(:i, nil, class: "icon-trash"), "remove_comment(this)", class: 'btn', :"data-url" => assignment_comment_path(comment), :"data-remove-link" => assignment_comment_path(comment), :"data-tooltip" => t('.remove')
       .forum_post_attachment
-        - unless comment.files.empty?
-          %h3= t(".attached_files")
+        - unless comment.files.blank?
+          %h3= t('.attached_files')
           %ul.comments_files_div
             - comment.files.each do |comment_file|
               %li
-                = link_to image_tag(icon_attachment(comment_file.attachment_file_name)), download_assignment_comments_path(file_id: comment_file.id), class: "file_icon"
-                = link_to comment_file.attachment_file_name, download_assignment_comments_path(file_id: comment_file.id), class: "file_icon"
+                = link_to image_tag(icon_attachment(comment_file.attachment_file_name)), download_assignment_comments_path(file_id: comment_file.id), class: 'file_icon'
+                = link_to comment_file.attachment_file_name, download_assignment_comments_path(file_id: comment_file.id), class: 'file_icon'
                 .assignment_files_info= l(comment_file.attachment_updated_at, format: :at_date)
                 .assignment_files_info= format('%.2f KB', comment_file.attachment_file_size/1024.0)
-
-/ = javascript_include_tag "tooltip"

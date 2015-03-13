@@ -14,7 +14,7 @@
         = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit', "data-link-to-edit" => edit_chat_room_path(':id', allocation_tags_ids: @allocation_tags_ids), :"data-edit-title" => t(".edit_chat"), disabled: true, :"data-tooltip" => t(".edit_chat")
         = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_chat', :"data-link-delete" => chat_room_path(':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".delete_chats")
 
-  - unless @chat_rooms.empty? or @chat_rooms.nil?
+  - unless @chat_rooms.blank?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
     %table.tb_list
       %thead

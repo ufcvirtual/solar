@@ -36,7 +36,7 @@ class Webconference < ActiveRecord::Base
   end
 
   def link_to_join(user, at_id = nil)
-    ((can_access? && Webconference.online?) ? ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: '_blank') : title) 
+    ((can_access? && Webconference.online? && have_permission?(user, at_id)) ? ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: '_blank') : title) 
   end
 
   def status(recordings = [], at_id = nil)
@@ -68,7 +68,11 @@ class Webconference < ActiveRecord::Base
   end
 
   def responsible?(user_id, at_id = nil)
-    ((shared_between_groups || at_id.nil?) ? !(allocation_tags.map{ |at| at.is_responsible?(user_id) }.include?(false)) : AllocationTag.find(at_id).is_responsible?(user_id))
+    ((shared_between_groups || at_id.nil?) ? (allocation_tags.map{ |at| at.is_responsible?(user_id) }.include?(true)) : AllocationTag.find(at_id).is_responsible?(user_id))
+  end
+
+   def student_or_responsible?(user_id, at_id = nil)
+    ((shared_between_groups || at_id.nil?) ? (allocation_tags.map{ |at| at.is_student_or_responsible?(user_id) }.include?(true)) : AllocationTag.find(at_id).is_student_or_responsible?(user_id))
   end
 
   def self.bbb_prepare
@@ -109,11 +113,21 @@ class Webconference < ActiveRecord::Base
     @api = Webconference.bbb_prepare
     @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
 
-    if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true }))
+    if (responsible?(user.id) || user.can?(:preview, Webconference, { on: [at_id || academic_allocations.flatten.map(&:allocation_tag_id).flatten], accepts_general_profile: true }))
       @api.join_meeting_url(meeting_id, "#{user.name}*", options[:moderatorPW])
     else
       @api.join_meeting_url(meeting_id, user.name, options[:attendeePW])
     end
+  end
+
+  def have_permission?(user, at_id = nil)
+    (student_or_responsible?(user.id, at_id) || 
+      (
+        ats = (shared_between_groups || at_id.nil?) ? academic_allocations.flatten.map(&:allocation_tag_id).flatten : at_id
+        allocations_with_acess =  user.allocation_tags_ids_with_access_on('interact','webconferences', false, true)
+        allocations_with_acess.include?(nil) || (allocations_with_acess & ats).any?
+      )
+    )
   end
 
   def self.all_recordings

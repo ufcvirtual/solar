@@ -61,6 +61,10 @@ class AllocationTag < ActiveRecord::Base
     allocations.joins(:profile).where(user_id: user_id, status: Allocation_Activated).where('cast(profiles.types & ? as boolean)', Profile_Type_Student).count > 0
   end
 
+  def is_student_or_responsible?(user_id)
+    check_if_user_has_profile_type(user_id, responsible = true, observer = false, student = true)
+  end
+
   def info
     self.send(refer_to).try(:info)
   end
@@ -221,7 +225,7 @@ class AllocationTag < ActiveRecord::Base
 
   private
 
-    def check_if_user_has_profile_type(user_id, responsible = true, observer = false)
+    def check_if_user_has_profile_type(user_id, responsible = true, observer = false, student = false)
       query = {
         user_id: user_id,
         status: Allocation_Activated,
@@ -232,12 +236,13 @@ class AllocationTag < ActiveRecord::Base
       query_type = []
       query_type << 'cast(profiles.types & :responsible as boolean) OR cast(profiles.types & :coord as boolean)' if responsible
       query_type << 'cast(profiles.types & :observer as boolean)' if observer
+      query_type << 'cast(profiles.types & :student as boolean)' if student
 
       return false if query_type.empty?
 
       Allocation.joins(:profile)
         .where(query)
-        .where(query_type.join(' OR '), responsible: Profile_Type_Class_Responsible, observer: Profile_Type_Observer, coord: Profile_Type_Coord).count > 0
+        .where(query_type.join(' OR '), responsible: Profile_Type_Class_Responsible, observer: Profile_Type_Observer, coord: Profile_Type_Coord, student: Profile_Type_Student).count > 0
     end
 
 end

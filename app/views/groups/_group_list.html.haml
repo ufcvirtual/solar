@@ -1,4 +1,4 @@
-- unless @groups.nil? or @groups.empty?
+- unless @groups.blank?
   %table.tb_list
     %thead
       %tr.lines
@@ -12,4 +12,4 @@
             = check_box_tag :ckb_group, group.id, false, {class: "ckb_group"}
             = group.code
           - unless hide_edition
-            %td{style: "text-align: center"}= link_to (image_tag "#{(group.status) ? 'released' : 'rejected'}.png"), "#", class: "change_status_group", :'data-tooltip' => (group.status ?  t(".enabled") :  t(".disabled")), :"data-link-status" => group_path(id: group.id, status: (not group.status), multiple: true, offer_id: @offer_id), disabled: not(can? :update, Group)
+            %td{style: "text-align: center"}= link_to (image_tag "#{(group.status) ? 'released' : 'rejected'}.png"), "#", class: "change_status_group", :'data-tooltip' => (group.status ?  t(".enabled") :  t(".disabled")), :"data-link-status" => group_path(id: group.id, status: !group.status, multiple: true, offer_id: @offer_id), disabled: !(can? :update, Group)
