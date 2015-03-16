@@ -6,10 +6,10 @@ class SavsController < ApplicationController
     return if SavConfig::CONFIG.nil?
     return unless active_tab[:url][:allocation_tag_id]
 
-    at   = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+    at    = AllocationTag.find(active_tab[:url][:allocation_tag_id])
     allocation_tags_ids = at.related
     group = at.group
-    savs = Sav.current_savs({ allocation_tags_ids: allocation_tags_ids, group_id: group.id })
+    savs  = Sav.current_savs({ allocation_tags_ids: allocation_tags_ids, group_id: group.id })
 
     if savs.any?
       user_profiles = current_user.profiles.where('(allocations.allocation_tag_id IN (?))', allocation_tags_ids).pluck(:id)
@@ -25,7 +25,7 @@ class SavsController < ApplicationController
       end
     end
 
-    render json: {url: (sav_url.include?('http') ? sav_url : 'http://'+sav_url) || ''}
+    render json: {url: ((sav_url.nil? || sav_url.include?('http')) ? sav_url : 'http://'+sav_url) || ''}
   end
 
 private 

@@ -1402,6 +1402,7 @@ en_US:
       end: End
       situation: Situation
       grade: Grade
+      description: Description
     list:
       individual_assignments: Individual assignments
       group_assignments: Group assignments

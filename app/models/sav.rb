@@ -13,7 +13,7 @@ class Sav < ActiveRecord::Base
   before_save :define_percent, unless: Proc.new { |a| a.percent.blank? }
 
   def define_percent
-    self.pecent = nil            if percent.blank? || percent == 1 || percent == 100 || percent == 0
+    self.percent = nil           if percent.blank? || percent == 1 || percent == 100 || percent == 0
     self.percent = (percent/100) if !percent.blank? && percent > 1
   end
 

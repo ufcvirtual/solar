@@ -1606,6 +1606,7 @@ pt_BR:
       end: Fim
       situation: Situação
       grade: Nota
+      description: Descrição
     list:
       individual_assignments: Trabalhos individuais
       group_assignments: Trabalhos em grupo

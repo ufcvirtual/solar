@@ -25,11 +25,11 @@ class AssignmentsController < ApplicationController
   def list
     authorize! :list, Assignment, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
-    @student = not(AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id))
+    @student      = !AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id)
     @public_files = PublicFile.where(user_id: current_user.id, allocation_tag_id: @allocation_tag_id)
-    @assignments  = Assignment.joins(:academic_allocations, :schedule).where(academic_allocations: {allocation_tag_id:  @allocation_tag_id})
+    @assignments  = Assignment.joins(:academic_allocations, :schedule).where(academic_allocations: { allocation_tag_id:  @allocation_tag_id })
                               .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date").order("start_date")
-    @participants = AllocationTag.get_participants(@allocation_tag_id, {students: true})
+    @participants = AllocationTag.get_participants(@allocation_tag_id, { students: true })
     @can_manage, @can_import = (can? :index, GroupAssignment, on: [@allocation_tag_id]), (can? :import, GroupAssignment, on: [@allocation_tag_id])
 
     render layout: false if params[:layout].present?
@@ -66,7 +66,7 @@ class AssignmentsController < ApplicationController
       request.format = :json
       raise error.class
     else
-      @files_errors = @assignment.enunciation_files.map(&:errors).map(&:full_messages).flatten.uniq.join(", ")
+      @files_errors = @assignment.enunciation_files.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
       render :new
     end
@@ -77,7 +77,7 @@ class AssignmentsController < ApplicationController
     if @assignment.update_attributes(assignment_params)
       render_assignment_success_json('updated')
     else
-      @files_errors = @assignment.enunciation_files.map(&:errors).map(&:full_messages).flatten.uniq.join(", ")
+      @files_errors = @assignment.enunciation_files.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
       render :edit
     end
@@ -87,7 +87,7 @@ class AssignmentsController < ApplicationController
   end
 
   def destroy
-    @assignments = Assignment.includes(:sent_assignments).where(id: params[:id].split(",").flatten, sent_assignments: {id: nil})
+    @assignments = Assignment.includes(:sent_assignments).where(id: params[:id].split(',').flatten, sent_assignments: {id: nil})
     authorize! :destroy, Assignment, on: @assignments.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
     @assignments.destroy_all
@@ -99,10 +99,10 @@ class AssignmentsController < ApplicationController
 
   def student
     @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
-    @class_participants = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
+    @class_participants    = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
     @student_id, @group_id = (params[:group_id].nil? ? [params[:student_id], nil] : [nil, params[:group_id]])
     @group = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
-    @own_assignment = Assignment.owned_by_user?(current_user.id, {student_id: @student_id, group: @group})
+    @own_assignment = Assignment.owned_by_user?(current_user.id, { student_id: @student_id, group: @group })
     raise CanCan::AccessDenied unless @own_assignment || AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id)
     @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 
@@ -112,7 +112,7 @@ class AssignmentsController < ApplicationController
   def evaluate
     @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
     authorize! :evaluate, Assignment, on: [@allocation_tag_id]
-    raise "date_range" unless @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
+    raise 'date_range' unless @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 
     @sent_assignment = SentAssignment.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocation_id: @ac).first_or_create
     @sent_assignment.update_attributes! grade: params[:grade].tr(',', '.')
@@ -123,7 +123,7 @@ class AssignmentsController < ApplicationController
 
     render json: { success: true, notice: t('assignments.success.evaluated'), html: "#{render_to_string(partial: "info")}" }
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
     render_json_error(error, 'assignments.error', 'evaluate', error.message)
   end
