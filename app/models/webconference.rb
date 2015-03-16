@@ -36,7 +36,7 @@ class Webconference < ActiveRecord::Base
   end
 
   def link_to_join(user, at_id = nil)
-    ((can_access? && Webconference.online? && have_permission?(user, at_id)) ? ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: '_blank') : title) 
+    ((can_access? && Webconference.online? && have_permission?(user, at_id.to_i)) ? ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: '_blank') : title) 
   end
 
   def status(recordings = [], at_id = nil)
@@ -123,7 +123,7 @@ class Webconference < ActiveRecord::Base
   def have_permission?(user, at_id = nil)
     (student_or_responsible?(user.id, at_id) || 
       (
-        ats = (shared_between_groups || at_id.nil?) ? academic_allocations.flatten.map(&:allocation_tag_id).flatten : at_id
+        ats = (shared_between_groups || at_id.nil?) ? academic_allocations.flatten.map(&:allocation_tag_id).flatten : [at_id].flatten
         allocations_with_acess =  user.allocation_tags_ids_with_access_on('interact','webconferences', false, true)
         allocations_with_acess.include?(nil) || (allocations_with_acess & ats).any?
       )

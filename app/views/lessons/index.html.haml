@@ -1,24 +1,24 @@
-- admin_with_groups = (not(@selected.nil?) and @selected == "GROUP")
-.block_wrapper.list_lessons{:"data-link-list" => lessons_path}
+- admin_with_groups = (!@selected.nil? && @selected == 'GROUP')
+.block_wrapper.list_lessons{ :"data-link-list" => lessons_path }
   - unless @lessons_modules.empty?
     - @lessons_modules.each do |lmodule|
-      %div{class: (admin_with_groups ? "block_title_module block_module" : "block_title")}
+      %div{ class: (admin_with_groups ? 'block_title_module block_module' : 'block_title') }
         %h2
           %i.icon-class
           = lmodule.name
         - if admin_with_groups
-          .input.groups_tags= render "groups/groups_tags", groups: lmodule.groups, tool: lmodule, all_groups: nil, paths: nil
-      %table.tb_list{cellpadding: "10", cellspacing: "0", width: "100%", border: "0"}
+          .input.groups_tags= render 'groups/groups_tags', groups: lmodule.groups, tool: lmodule, all_groups: nil, paths: nil
+      %table.tb_list{ cellpadding: '10', cellspacing: '0', width: '100%', border: '0' }
         %thead
           %tr.lines
-            %th{align: "left"}=t ".lesson_table_title"
-            %th.date{width: "30%"}=t(".lesson_table_date")
+            %th{ align: 'left' }= t('.lesson_table_title')
+            %th.date{ width: '30%' }= t('.lesson_table_date')
             - if @responsible
-              %th.no_sort{width: "12%"}=t(".acceptance")
+              %th.no_sort{ width: '12%' }= t('.acceptance')
         %tbody
           - lmodule.lessons_to_open(current_user, true).each do |lesson|
-            %tr.lines{class: lesson.closed? ? "period_ended" : "", id:"lesson_#{lesson.id}"}= render(lesson)
+            %tr.lines{ class: lesson.closed? ? 'period_ended' : '', id:"lesson_#{lesson.id}" }= render(lesson)
   - else
     .block_content.block_content_text= t(:lesson_message)
 
-= javascript_include_tag "contextual_help/lessons"
+= javascript_include_tag 'contextual_help/lessons'
