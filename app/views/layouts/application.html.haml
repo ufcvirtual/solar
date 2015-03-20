@@ -158,9 +158,9 @@
       }
     };
 
-    function find_and_open_sav(){
-      $.get("#{savs_path}", {async: true}, function(data){
-        if(!!data.url.length){
+    function find_and_open_sav(url){
+      $.get("#{savs_path}", { async: true }, function(data){
+        if(!!data.url.length && (url == "undefined" || url != data.url)){
           $("#sav_url a").call_fancybox({
             minWidth: $(window).width() - 150,
             minHeight: $(window).height() - 100,
@@ -168,7 +168,7 @@
             open: true,
             href: data.url,
             afterClose : function(){
-              find_and_open_sav();
+              find_and_open_sav(data.url);
             }
           });
           
@@ -176,7 +176,7 @@
             //se não abriu, cancelar fancybox 
             if($("[id^='fancybox-frame']:first").height() < ($(window).height() - 300))
               $.fancybox.close();
-          }, 4000);
+          }, 8000);
         }
       })
       .error(function(data){

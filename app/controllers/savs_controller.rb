@@ -25,7 +25,7 @@ class SavsController < ApplicationController
       end
     end
 
-    render json: {url: ((sav_url.nil? || sav_url.include?('http')) ? sav_url : 'http://'+sav_url) || ''}
+    render json: { url: ((sav_url.nil? || sav_url.include?('http')) ? sav_url : 'http://'+sav_url) || '' }
   end
 
 private 
