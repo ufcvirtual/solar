@@ -56,7 +56,7 @@ $(function(){
         if(!filter_group_checkbox.prop("checked"))
           filter_group_checkbox.click();
 
-        params = {'groups_by_offer_id': offer_id};
+        params = { 'groups_by_offer_id': offer_id };
       }
       
       $.get(div_list.data("link-list"), params, function(data2){

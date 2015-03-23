@@ -81,13 +81,14 @@ module V1
         params do
           requires :ids, type: String # formato id,id,id
           optional :only_active, type: Boolean, default: true
-          optional :groups_id, type: Array
+          # optional :groups_id, type: Array
           optional :semester, type: String
           optional :course_id, :curriculum_unit_id, :curriculum_unit_type_id, :offer_id, :semester_id, type: Integer
           mutually_exclusive :groups_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id, :offer_id
           mutually_exclusive :groups_id, :offer_id, :semester, :semester_id
         end
-        get "/:ids/users", rabl: "users/index" do
+        # get "/:ids/users", rabl: "users/index" do
+        get "/:ids/:groups_id/users", rabl: "users/index" do
           begin
             query = { allocations: { profile_id: params[:ids].split(',') } }
             allocation_tags_ids = AllocationTag.get_by_params(params, true)[:allocation_tags].compact

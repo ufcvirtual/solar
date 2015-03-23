@@ -115,7 +115,7 @@ class AllocationTag < ActiveRecord::Base
   end
 
   def self.at_groups_by_offer_id(offer_id, only_id = true)
-    RelatedTaggable.where(offer_id: offer_id).pluck(:group_at_id).uniq
+    RelatedTaggable.where(offer_id: offer_id).pluck(:group_at_id).uniq.compact
   end
 
   def self.get_by_params(params, related = false, lower_related = false)
