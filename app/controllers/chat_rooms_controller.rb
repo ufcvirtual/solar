@@ -7,13 +7,13 @@ class ChatRoomsController < ApplicationController
   before_filter :prepare_for_group_selection, only: :list
 
   before_filter :get_groups_by_allocation_tags, only: [:new, :create] do |controller|
-    @allocations = @groups.map(&:students_participants).flatten.uniq
+    @allocations = @groups.map(&:students_allocations).flatten.uniq
   end
 
   before_filter only: [:edit, :update, :show] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@chat_room = ChatRoom.find(params[:id]))
-    @allocations = @groups.map(&:students_participants).flatten.uniq
+    @allocations = @groups.map(&:students_allocations).flatten.uniq
   end
 
   def list
@@ -40,12 +40,12 @@ class ChatRoomsController < ApplicationController
   end
 
   def new
-    authorize! :create, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :create, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten
 
     @chat_room = ChatRoom.new
     @chat_room.build_schedule(start_date: Date.today, end_date: Date.today)
 
-    @academic_allocations = @chat_room.academic_allocations.build @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
+    @academic_allocations = @chat_room.academic_allocations.build @allocation_tags_ids.map { |at| { allocation_tag_id: at } }
     @academic_allocations.first.chat_participants.build # escolha de participantes apenas para uma turma
   end
 

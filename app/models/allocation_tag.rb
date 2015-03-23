@@ -165,7 +165,7 @@ class AllocationTag < ActiveRecord::Base
       end
     end
 
-    {allocation_tags: [allocation_tags_ids].flatten, selected: selected, offer_id: offer_id}
+    { allocation_tags: [allocation_tags_ids].flatten, selected: selected, offer_id: offer_id }
   end
 
   def self.get_participants(allocation_tag_id, params = {})
