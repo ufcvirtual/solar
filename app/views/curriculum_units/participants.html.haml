@@ -2,10 +2,10 @@
   .block_title
     %h2= t(:curriculum_unit_responsible)
   .block_content.block_content_overflow
-    = render partial: "users", locals: {users: @responsible}
+    = render partial: 'users', locals: { users: @responsible }
 
 .block_wrapper
   .block_title
     %h2= t(:curriculum_unit_participants)
   .block_content.block_content_overflow
-    = render partial: "users", locals: {users: @participants}
+    = render partial: 'users', locals: { users: @participants }

@@ -1,40 +1,40 @@
 .show_lesson
-  %h1#lightBoxDialogTitle= t(".lesson_details")
+  %h1#lightBoxDialogTitle= t('.lesson_details')
 
   .form-inputs.block_content.show
     .input
-      = label_tag t(".name"), nil, class: "form_label"
+      = label_tag t('.name'), nil, class: 'form_label'
       %span.label_info= @lesson.name
     
     .input
-      = label_tag t(".description"), nil, class: "form_label"
+      = label_tag t('.description'), nil, class: 'form_label'
       %span.label_info=sanitize simple_format(@lesson.description.blank? ? t(".not_defined") : @lesson.description)
 
     .input
-      = label_tag t(".start_date"), nil, class: "form_label"
+      = label_tag t('.start_date'), nil, class: 'form_label'
       %span.label_info= l(@lesson.schedule.start_date.to_date, format: :datepicker)
 
     .input
-      = label_tag t(".end_date"), nil, class: "form_label"
+      = label_tag t('.end_date'), nil, class: 'form_label'
       %span.label_info= @lesson.schedule.end_date.nil? ? t(".not_defined") : l(@lesson.schedule.end_date.to_date, format: :datepicker)
 
     .input
-      = label_tag t(".type"), nil, class: "form_label"
+      = label_tag t('.type'), nil, class: 'form_label'
       %span.label_info= t(".#{(@lesson.is_link? ? 'link' : 'file')}")
 
     - if @lesson.is_link?
       .input
-        = label_tag t(".address"), nil, class: "form_label"
-        %span.label_info= @lesson.address.blank? ? t(".not_defined") : @lesson.address
+        = label_tag t('.address'), nil, class: 'form_label'
+        %span.label_info= @lesson.address.blank? ? t('.not_defined') : @lesson.address
 
-    .input
-      = label_tag t(".status"), nil, class: "form_label"
+   .input
+      = label_tag t('.status'), nil, class: 'form_label'
       %span.label_info= t(".#{(@lesson.status.to_i.zero? ? 'draft' : 'released')}")
     
     = render "groups/codes"
 
     .schedule_dates
       .right_buttons
-        = button_to_function t("agendas.close"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+        = button_to_function t('agendas.close'), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
 
-= javascript_include_tag "schedule_events"
+= javascript_include_tag 'schedule_events'

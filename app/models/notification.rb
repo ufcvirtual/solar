@@ -12,15 +12,15 @@ class Notification < ActiveRecord::Base
 
   accepts_nested_attributes_for :schedule
 
-  before_validation proc { self.schedule.check_end_date = true }, if: "schedule" # data final obrigatoria
+  before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # data final obrigatoria
 
   validates :title, :description, :schedule, presence: true
   validates :title, length: {maximum: 255}
 
   def period
     p = [I18n.l(start_date, format: :normal)]
-    p << I18n.l(end_date, format: :normal) if end_date and end_date != start_date
-    p.join(" - ")
+    p << I18n.l(end_date, format: :normal) if end_date && end_date != start_date
+    p.join(' - ')
   end
 
   def start_date

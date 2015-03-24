@@ -35,6 +35,7 @@ class User < ActiveRecord::Base
   has_many :chat_messages
   has_many :public_files
   has_many :user_contacts, foreign_key: 'user_related_id'
+  has_many :lesson_notes
 
   has_and_belongs_to_many :notifications, join_table: 'read_notifications'
 
@@ -394,6 +395,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def notes(lesson_id)
+    lesson_notes.where(lesson_id: lesson_id).order('name')
+  end
+
   ######################
   ### integration MA ###
   ######################
@@ -416,7 +421,7 @@ class User < ActiveRecord::Base
   ensure
     errors_messages = errors.full_messages
     # if is new user and happened some problem connecting with MA
-    if new_record? && (errors_messages.include?(I18n.t('users.errors.ma.cant_connect')) or errors_messages.include?(I18n.t('users.errors.ma.problem_accessing')))
+    if new_record? && (errors_messages.include?(I18n.t('users.errors.ma.cant_connect')) || errors_messages.include?(I18n.t('users.errors.ma.problem_accessing')))
       tmp_email       = [user_cpf, MODULO_ACADEMICO['tmp_email_provider']].join('@')
       self.attributes = { username: user_cpf, email: tmp_email, email_confirmation: tmp_email } # set username and invalid email
       user_errors     = errors.messages.to_a.collect{ |a| a[1] }.flatten.uniq # all errors

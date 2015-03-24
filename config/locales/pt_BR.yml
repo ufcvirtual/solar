@@ -822,6 +822,7 @@ pt_BR:
       acceptance: Aprovação
       draft: Rascunho
       released: Liberada
+      lesson_notes: Notas de aula
     list:
       lesson: Aula
       order: Ordem
@@ -901,6 +902,9 @@ pt_BR:
       released: Liberada
       draft: Rascunho
       lesson_details: Detalhes da aula
+    lesson:
+      no_note: Nenhuma nota de aula
+      notes: Notas de aula
 
   lesson_modules:
     general_of_offer: "Geral"
@@ -2642,6 +2646,32 @@ pt_BR:
       no_access: Nenhum acesso no período informado
     error:
       invalid_date: Data inválida.
+
+  lesson_notes:
+    error:
+      general_message: Não foi possível realizar ação.
+      description: A nota de aula deve possuir um conteúdo
+      permission: Não é possível remover notas de outros usuários
+    success:
+      removed: Nota de aula removida com sucesso
+      created_updated: Nota de aula criada/atualizada com sucesso
+    warning:
+      new: Já há uma nova nota de aula aberta para edição
+      lose_changes: Confirma cancelamento? As alterações serão perdidas.
+      confirm_removal: Confirma remoção de nota?
+    note:
+      edit: Editar
+      remove: Remover
+      download: Download
+    form:
+      yellow_marker: Marcador amarelo
+      green_marker: Marcador verde
+      save: Salvar
+      cancel: Cancelar
+    index:
+      new: Nova nota
+      download: Download de todas as notas
+      title: Notas de aula
 
   group: "Turma"
   student: "Aluno"

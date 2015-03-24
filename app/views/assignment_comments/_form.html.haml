@@ -1,4 +1,4 @@
-= simple_form_for(@assignment_comment, html: {id: "comment_form", multipart: true}) do |f|
+= simple_form_for(@assignment_comment, html: { id: "comment_form", multipart: true }) do |f|
   = f.hidden_field :sent_assignment_id, value: f.object.sent_assignment_id
 
   .assignment_inner_content.comment_area= f.input :comment, as: :ckeditor, label: false
@@ -25,7 +25,7 @@
               = file.attachment_file_name
               %i.icon-cross-square.warning.remove_file
 
-= javascript_include_tag "ckeditor/init"
+= javascript_include_tag 'ckeditor/init'
 
 :javascript
 

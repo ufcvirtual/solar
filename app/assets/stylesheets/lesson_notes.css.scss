@@ -1,0 +1,89 @@
+.fancybox-inner > .lesson_notes{
+  max-width: 770px;
+  overflow: hidden;
+}
+
+.lesson_notes{
+
+  max-width: 770px;
+
+  .block_content{
+
+    /*overflow: auto;*/
+
+    -webkit-columns: 3;
+    column-count: 3;
+
+    .note{
+      background-color: #FFC0CB;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      min-height: 100px;
+      margin: 6px;
+      position: relative;
+      padding: 5px;
+      float: left;
+      box-shadow: 1px 1px 3px #888;
+      width: 215px;
+      
+      -webkit-column-break-inside: avoid; /* will prevent breaking blocks across columns */
+      column-break-inside: avoid;   
+     
+      .description{
+        margin-bottom: 20px;
+        word-break: break-all;
+        color: #000000;
+        p{
+          color: #000000;
+        }
+      }
+
+      .title{
+        text-align: center;
+        font-weight: bold;
+        padding: 2px;
+        padding-bottom: 7px;
+        color: #000000;
+
+        input{
+          width: 120px;
+        }
+
+      }
+
+      .bottom{
+        display: none
+      }
+
+    }
+
+    .note:hover{
+
+      .bottom{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background-color: black;
+        height: 20px;
+        opacity: 0.7;
+        width: 98.6%;
+        margin-top: 6px;
+        text-align: right;
+        float: left;
+        padding: 2px;
+        display: block;
+
+        i{
+          color: #ffffff;
+          margin-left: 2px;
+        }
+
+      }
+
+    }
+  
+  }
+
+
+}
