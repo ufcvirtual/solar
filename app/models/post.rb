@@ -2,7 +2,7 @@ class Post < ActiveRecord::Base
 
   self.table_name = 'discussion_posts'
 
-  default_scope order: 'updated_at DESC' # qualquer busca realizada nos posts de fórum serão ordenadas pela data decrescente
+  # default_scope order: 'updated_at DESC' # qualquer busca realizada nos posts de fórum serão ordenadas pela data decrescente
 
   belongs_to :profile
   belongs_to :parent, class_name: 'Post'
