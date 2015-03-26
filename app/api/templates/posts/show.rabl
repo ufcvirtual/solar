@@ -1,6 +1,6 @@
 object @post
 
-attributes :id, :parent_id, :profile_id, :discussion_id, :user_id, :level, :content, :created_at
+attributes :id, :parent_id, :profile_id, :discussion_id, :user_id, :level, :content, :created_at, :children_count
 
 node(:created_at) { |post| post.created_at.iso8601(5) }
 node(:user_nick) { |post| post.user.nick }

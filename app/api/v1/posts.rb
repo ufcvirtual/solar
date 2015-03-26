@@ -20,7 +20,7 @@ module V1
         end
       end
 
-      ## NEW and HISTORY
+      ## NEW and HISTORY (deprecated)
 
       segment do
         before do
@@ -54,7 +54,7 @@ module V1
           # @posts
         end
 
-        desc "Lista dos posts mais antigos com relação a uma data."
+        desc 'Lista dos posts mais antigos com relação a uma data.'
         params do # parâmetros comuns às duas chamadas: new e history
           requires :group_id, type: Integer, desc: 'Group ID.'
           requires :date, type: DateTime, desc: 'Posts date.'
@@ -68,6 +68,53 @@ module V1
           # @posts
         end
       end # segment
+
+      ## first level and children
+
+      segment do
+        before do
+          verify_user_permission_on_discussion_and_set_obj(:index)
+        end # before
+
+        ## discussions/1/posts
+        desc 'Lista de posts de primeiro nivel.'
+        params do
+          requires :id, type: Integer, desc: 'Discussion ID.'
+          requires :group_id, type: Integer, desc: 'Group ID.'
+          optional :limit, type: Integer, desc: 'Posts limit.', default: Rails.application.config.items_per_page.to_i
+          optional :page, type: Integer, desc: 'Page.', default: 1
+        end
+        get ':id/posts', rabl: 'posts/list' do
+          offset = (params['page'].to_i * params['limit'].to_i) - params['limit'].to_i
+          allocation_tags_ids = @group.allocation_tag.related
+          @posts = @discussion.discussion_posts.select('discussion_posts.*, count(children.id) AS children_count')
+                        .joins(academic_allocation: :allocation_tag)
+                        .joins('LEFT JOIN discussion_posts AS children ON children.parent_id = discussion_posts.id')
+                        .where('discussion_posts.parent_id IS NULL')
+                        .where(allocation_tags: { id: allocation_tags_ids })
+                        .group('discussion_posts.id')
+                        .order('discussion_posts.updated_at asc')
+                        .limit(params[:limit])
+                        .offset(offset)
+        end
+
+        ## discussions/1/posts
+        desc 'Lista de posts filhos.'
+        params do
+          requires :id, type: Integer, desc: 'Post ID.'
+          optional :limit, type: Integer, default: Rails.application.config.items_per_page.to_i, desc: 'Posts limit.'
+          optional :page, type: Integer, default: 1, desc: 'Page.'
+        end
+        get ':id/posts/:post_id/children', rabl: 'posts/list' do
+          offset = (params['page'].to_i * params['limit'].to_i) - params['limit'].to_i
+          @posts = Post.select('discussion_posts.*, count(children.id) AS children_count')
+              .joins('LEFT JOIN discussion_posts AS children ON children.parent_id = discussion_posts.id')
+              .group('discussion_posts.id')
+              .where(parent_id: params[:post_id])
+              .limit(params[:limit])
+              .offset(offset)
+        end
+      end
 
       ## CREATE
 

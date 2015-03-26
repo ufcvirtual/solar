@@ -5,5 +5,3 @@ node do
     posts: partial("posts/list", object: @posts)
   }
 end
-
-
