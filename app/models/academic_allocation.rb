@@ -9,7 +9,7 @@ class AcademicAllocation < ActiveRecord::Base
   belongs_to :assignment,     foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Assignment"]
   belongs_to :webconference,  foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Webconference"]
   belongs_to :discussion,     foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Discussion"]
-  belongs_to :schedule_event, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Schedule_event"]
+  belongs_to :schedule_event, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'ScheduleEvent"]
 
   # Assignment
   has_many :sent_assignments, dependent: :destroy
