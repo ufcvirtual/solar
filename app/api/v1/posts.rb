@@ -40,21 +40,29 @@ module V1
           end
         end # after
 
+        desc 'Lista dos posts mais novos. Se uma data for passada, aqueles serão a partir dela.'
         params do # parâmetros comuns às duas chamadas: new e history
+          requires :group_id, type: Integer, desc: 'Group ID.'
+          optional :date, type: DateTime, desc: 'Posts date.'
+
           optional :order, type: String, values: %w(asc desc), default: 'desc', desc: 'Posts order.'
           optional :limit, type: Integer, desc: 'Posts limit.'
           optional :display_mode, type: String, values: %w(list tree), default: 'list', desc: 'Posts display mode.'
         end
-
-        desc 'Lista dos posts mais novos. Se uma data for passada, aqueles serão a partir dela.'
-        params { optional :date, type: DateTime, desc: 'Posts date.' }
         get ':id/posts/new', rabl: 'posts/list_with_counting' do
           params[:type] = "new"
           # @posts
         end
 
         desc "Lista dos posts mais antigos com relação a uma data."
-        params { requires :date, type: DateTime, desc: "Posts date." }
+        params do # parâmetros comuns às duas chamadas: new e history
+          requires :group_id, type: Integer, desc: 'Group ID.'
+          requires :date, type: DateTime, desc: 'Posts date.'
+
+          optional :order, type: String, values: %w(asc desc), default: 'desc', desc: 'Posts order.'
+          optional :limit, type: Integer, desc: 'Posts limit.'
+          optional :display_mode, type: String, values: %w(list tree), default: 'list', desc: 'Posts display mode.'
+        end
         get ':id/posts/history', rabl: 'posts/list_with_counting' do
           params[:type] = "history"
           # @posts
@@ -69,7 +77,7 @@ module V1
 
         raise MissingTokenError unless @discussion.user_can_interact?(current_user.id) # unauthorized
 
-        academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: RelatedTaggable.related({group_id: @group.id})).first
+        academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: RelatedTaggable.related({ group_id: @group.id })).first
 
         @post = Post.new(post_params)
         @post.user = current_user

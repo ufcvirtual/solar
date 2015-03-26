@@ -2,13 +2,13 @@ class Post < ActiveRecord::Base
 
   self.table_name = 'discussion_posts'
 
-  default_scope order: 'updated_at DESC' # qualquer busca realizada nos posts de fórum serão ordenadas pela data decrescente
+  # default_scope order: 'updated_at DESC' # qualquer busca realizada nos posts de fórum serão ordenadas pela data decrescente
 
   belongs_to :profile
   belongs_to :parent, class_name: 'Post'
   belongs_to :user
 
-  belongs_to :academic_allocation, conditions: {academic_tool_type: 'Discussion'}
+  belongs_to :academic_allocation, conditions: { academic_tool_type: 'Discussion' }
 
   has_many :children, class_name: 'Post', foreign_key: 'parent_id', dependent: :destroy
   has_many :files, class_name: 'PostFile', foreign_key: 'discussion_post_id', dependent: :destroy

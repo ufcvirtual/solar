@@ -12,17 +12,21 @@ describe "Posts" do
   describe ".new" do
     context "with permission" do
       it "create a post" do
-        post "/api/v1/discussions/2/posts", group_id: 3, discussion_post: {content: "content"}, access_token: token.token
+        expect {
+          post "/api/v1/discussions/2/posts", group_id: 3, discussion_post: {content: "content"}, access_token: token.token
+        }.to change(Post, :count).by(1)
 
         response.status.should eq(201)
-        response.body.should == {id: Post.first.id}.to_json
+        response.body.should == {id: Post.last.id}.to_json
       end
     end
 
     context "without permission" do
       it "try to create a post" do
         token_withou_permission = Doorkeeper::AccessToken.create! application_id: application.id, resource_owner_id: User.find_by_username("admin").id
-        post "/api/v1/discussions/2/posts", group_id: 3, discussion_post: {content: "content"}, access_token: token_withou_permission.token
+        expect {
+          post "/api/v1/discussions/2/posts", group_id: 3, discussion_post: {content: "content"}, access_token: token_withou_permission.token
+        }.to_not change(Post, :count)
 
         response.status.should eq(404)
         response.body.should == {}.to_json
