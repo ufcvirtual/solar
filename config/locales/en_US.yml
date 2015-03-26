@@ -659,6 +659,7 @@ en_US:
       acceptance: Acceptance
       draft: Draft
       released: Released
+      lesson_notes: Lesson notes
     list:
       lesson: Lesson
       order: Order
@@ -738,6 +739,9 @@ en_US:
       released: Released
       draft: Draft
       lesson_details: Lesson's details
+    lesson:
+      no_note: No lesson notes
+      notes: Lesson notes
   lesson_modules:
     general_of_offer: "General"
     general_of_group: "General of group"
@@ -2410,3 +2414,28 @@ en_US:
       no_access: No access at date range informed
     error:
       invalid_date: Invalid date.
+  lesson_notes:
+    error:
+      general_message: Can't do action
+      description: Lesson note must have a content
+      permission: It's not possible to remove notes from others users
+    success:
+      created_updated: Lesson note created/updated sucessfully
+      removed: Lesson note removed successfully
+    warning:
+      new: There's a new note opened for edition already
+      lose_changes: Confirm cancel? Changes will be lost.
+      confirm_removal: Confirm note removal?
+    note:
+      edit: Edit
+      remove: Remove
+      download: Download
+    form:
+      yellow_marker: Yellow marker
+      green_marker: Green marker
+      save: Save
+      cancel: Cancel
+    index:
+      new: New note
+      download: Download all notes
+      title: Lesson notes

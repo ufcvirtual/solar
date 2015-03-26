@@ -13,11 +13,12 @@
           %tr.lines
             %th{ align: 'left' }= t('.lesson_table_title')
             %th.date{ width: '30%' }= t('.lesson_table_date')
+            /%th.date{ style: 'width: 10%; text-align: center' }= t('.lesson_notes')
             - if @responsible
               %th.no_sort{ width: '12%' }= t('.acceptance')
         %tbody
           - lmodule.lessons_to_open(current_user, true).each do |lesson|
-            %tr.lines{ class: lesson.closed? ? 'period_ended' : '', id:"lesson_#{lesson.id}" }= render(lesson)
+            %tr.lines{ class: lesson.closed? ? 'period_ended' : '', id: "lesson_#{lesson.id}" }= render(lesson)
   - else
     .block_content.block_content_text= t(:lesson_message)
 

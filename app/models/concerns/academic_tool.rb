@@ -9,7 +9,7 @@ module AcademicTool
     has_many :groups, through: :allocation_tags
     has_many :offers, through: :allocation_tags
 
-    after_create :define_academic_associations, unless: "allocation_tag_ids_associations.nil?"
+    after_create :define_academic_associations, unless: 'allocation_tag_ids_associations.nil?'
 
     attr_accessor :allocation_tag_ids_associations
   end
@@ -17,7 +17,7 @@ module AcademicTool
   private
 
     def define_academic_associations
-      academic_allocations.create allocation_tag_ids_associations.map {|at| {allocation_tag_id: at}}
+      academic_allocations.create allocation_tag_ids_associations.map {|at| { allocation_tag_id: at }}
     end
 
 end

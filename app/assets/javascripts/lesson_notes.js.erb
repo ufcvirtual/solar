@@ -1,0 +1,82 @@
+function edit_note(icon){
+  new_note_box();
+
+  $.get($(icon).data('link'), function(data){
+    $(icon).parents('.note:first').html(data);
+  });
+}
+
+function cancel_note(icon){
+  if(confirm("<%=I18n.t('lesson_notes.warning.lose_changes')%>")){
+    var note = $($(icon).parents('.note:first'));
+    if(note.data('link-item') != undefined)
+      $.get(note.data('link-item'), function(data){
+        note.html(data);
+      });
+    else
+      note.fadeOut('slow', function() { $(this).remove(); });
+  }
+}
+
+function save_note(icon){
+  var content = $('div.ckeditor .cke_contents iframe').contents().find('body').html();
+  if (content != "<p><br></p>" && content != "" && content != "<br>")
+    $('textarea.ckeditor').html(content); 
+
+  var form = $('#note_form');
+
+  form.serialize_and_submit({
+    dont_remove_lightbox: true,
+    replace_html_content: form.parents('.note:first'),
+    error_message: 'lesson_notes',
+    complement_success: function(data){
+      form.parents('.note:first').removeClass('new');
+    }
+  });
+}
+
+function add_note(icon){
+  if( !$('.note.new').length ){
+    new_note_box();
+    $.get($(icon).data('url'), function(data){
+      $(".lesson_notes .block_content").prepend($(data).fadeIn('slow').css('background-color', pastelColors()));
+    });
+  }
+  else
+    flash_message("<%=I18n.t('lesson_notes.warning.new')%>", 'warning', 'lesson_notes');
+}
+
+function remove_note(icon){
+  if(confirm("<%=I18n.t('lesson_notes.warning.confirm_removal')%>")){
+    $.delete($(icon).data("link-delete"), function(data){
+      $(icon).parents('.note:first').fadeOut();
+      if (typeof(data.notice) != "undefined")
+        flash_message(data.notice, 'notice', 'lesson_notes');
+    }).error(function(data){
+      var response = JSON.parse(data.responseText);
+      if (typeof(response.alert) != "undefined")
+        flash_message(response.alert, 'alert', 'lesson_notes');
+    });
+  }
+}
+
+function new_note_box(){
+  if (!!$("#note_form").length){
+    $("#note_form .cancel_note").click();
+    var editor = CKEDITOR.instances['lesson_note_description'];
+    if (editor) { editor.destroy(true); }
+    CKEDITOR.replace('lesson_note_description');
+  }
+}
+
+$(function(){
+  
+  $('.note').each(function(i){
+    var color = pastelColors();
+    $(this).css('background-color', color);
+  });
+  
+  // imprimir comentário
+  // imprimir todos os comentários
+
+});

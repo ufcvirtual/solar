@@ -1,0 +1,3 @@
+.note.new
+  = simple_form_for @lesson_note, url: lnotes_path, html: { id: 'note_form' } do |f|
+    = render partial: 'form', locals: { f: f }

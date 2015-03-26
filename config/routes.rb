@@ -231,7 +231,7 @@ Solar::Application.routes.draw do
   resources :enrollments, only: :index do
     collection do
       get ":group_id", to: :show, as: :group
-      get :public_course, action: :show, defaults: {public: true}
+      get :public_course, action: :show, defaults: { public: true }
     end
   end
 
@@ -280,16 +280,27 @@ Solar::Application.routes.draw do
     resources :files, controller: :lesson_files, except: [:index, :show, :update, :create] do
       collection do
         get "extract/:file", to: :extract_files, as: :extract, constraints: { file: /.*/ }
-        post :folder, to: :new, defaults: {type: 'folder'}, as: :new_folder
-        post :file, to: :new, defaults: {type: 'file'}, as: :new_file
-        put :rename_node, to: :edit, defaults: {type: 'rename'}
-        put :move_nodes, to: :edit, defaults: {type: 'move'}
-        put :upload_files, to: :new, defaults: {type: 'upload'}, as: :upload
-        put :define_initial_file, to: :edit, defaults: {type: 'initial_file'}, as: :initial_file
+        post :folder, to: :new, defaults: { type: 'folder' }, as: :new_folder
+        post :file, to: :new, defaults: { type: 'file' }, as: :new_file
+        put :rename_node, to: :edit, defaults: { type: 'rename' }
+        put :move_nodes, to: :edit, defaults: { type: 'move' }
+        put :upload_files, to: :new, defaults: { type: 'upload' }, as: :upload
+        put :define_initial_file, to: :edit, defaults: { type: 'initial_file' }, as: :initial_file
         delete :remove_node, to: :destroy
       end
     end
+    resources :notes, controller: :lesson_notes, only: [:index]
   end
+
+  resources :lnotes, controller: :lesson_notes, except: [:index, :create, :update] do
+    put :update, to: :create_or_update, on: :member
+    collection do
+      post :create, to: :create_or_update
+      put :create_or_update
+      get :download
+    end
+  end
+
   get :lesson_files, to: "lesson_files#index", as: :lesson_files
 
   resources :assignments do
@@ -344,9 +355,6 @@ Solar::Application.routes.draw do
     end
 
   end
-  resources :assignment_comments do
-  end
-
 
   # chat
   resources :chat_rooms do
@@ -441,10 +449,10 @@ Solar::Application.routes.draw do
       get :new_electronic_doc , to: :new, type_bibliography: Bibliography::TYPE_ELECTRONIC_DOC
       get :new_free           , to: :new, type_bibliography: Bibliography::TYPE_FREE
 
-      put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: 'unbind', tool_type: 'Bibliography', as: :unbind_group_from
-      put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: 'remove', tool_type: 'Bibliography', as: :remove_group_from
-      put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Bibliography', as: :add_group_to
-      get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: 'Bibliography', as: :group_tags_from
+      put ':tool_id/unbind/group/:id' , to: 'groups#change_tool', type: 'unbind', tool_type: 'Bibliography', as: :unbind_group_from
+      put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Bibliography', as: :remove_group_from
+      put ':tool_id/add/group/:id'    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Bibliography', as: :add_group_to
+      get ':tool_id/group/tags'       , to: 'groups#tags'                       , tool_type: 'Bibliography', as: :group_tags_from
     end
   end
 
@@ -452,10 +460,10 @@ Solar::Application.routes.draw do
     collection do
       get :list # edicao
 
-      put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: 'unbind', tool_type: 'Notification', as: :unbind_group_from
-      put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: 'remove', tool_type: 'Notification', as: :remove_group_from
-      put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Notification', as: :add_group_to
-      get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: 'Notification', as: :group_tags_from
+      put ':tool_id/unbind/group/:id' , to: 'groups#change_tool', type: 'unbind', tool_type: 'Notification', as: :unbind_group_from
+      put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Notification', as: :remove_group_from
+      put ':tool_id/add/group/:id'    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Notification', as: :add_group_to
+      get ':tool_id/group/tags'       , to: 'groups#tags'                       , tool_type: 'Notification', as: :group_tags_from
     end
   end
 
@@ -464,10 +472,10 @@ Solar::Application.routes.draw do
       get :list
       get :preview
 
-      put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: 'unbind', tool_type: 'Webconference', as: :unbind_group_from
-      put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: 'remove', tool_type: 'Webconference', as: :remove_group_from
-      put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Webconference', as: :add_group_to
-      get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: 'Webconference', as: :group_tags_from
+      put ':tool_id/unbind/group/:id' , to: 'groups#change_tool', type: 'unbind', tool_type: 'Webconference', as: :unbind_group_from
+      put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Webconference', as: :remove_group_from
+      put ':tool_id/add/group/:id'    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Webconference', as: :add_group_to
+      get ':tool_id/group/tags'       , to: 'groups#tags'                       , tool_type: 'Webconference', as: :group_tags_from
     end
     
     put :remove_record, on: :member
@@ -477,18 +485,18 @@ Solar::Application.routes.draw do
 
   match '/select_group', to: 'application#select_group', as: :select_group
 
-  get "/media/lessons/:id/:file.:extension", to: "access_control#lesson", index: true
-  get "/media/lessons/:id/:folder/*path", to: "access_control#lesson", index: false
+  get '/media/lessons/:id/:file.:extension', to: 'access_control#lesson', index: true
+  get '/media/lessons/:id/:folder/*path',    to: 'access_control#lesson', index: false
 
-  get "/media/users/:user_id/photos/:style.:extension", to: "access_control#users"
+  get '/media/users/:user_id/photos/:style.:extension', to: 'access_control#users'
 
   # get "/media/messages/:file.:extension", to: "access_control#message"
-  get "/media/assignment/sent_assignment_files/:file.:extension", to: "access_control#assignment"
-  get "/media/assignment/comments/:file.:extension", to: "access_control#assignment"
-  get "/media/assignment/public_area/:file.:extension", to: "access_control#assignment"
-  get "/media/assignment/enunciation/:file.:extension", to: "access_control#assignment"
+  get '/media/assignment/sent_assignment_files/:file.:extension', to: 'access_control#assignment'
+  get '/media/assignment/comments/:file.:extension',    to: 'access_control#assignment'
+  get '/media/assignment/public_area/:file.:extension', to: 'access_control#assignment'
+  get '/media/assignment/enunciation/:file.:extension', to: 'access_control#assignment'
 
-  mount Ckeditor::Engine => "/ckeditor"
+  mount Ckeditor::Engine => '/ckeditor'
   ## como a API vai ser menos usada, fica mais rapido para o solar rodar sem precisar montar essas rotas
   mount ApplicationAPI => '/api'
 

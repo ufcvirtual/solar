@@ -3,8 +3,13 @@ class AcademicAllocation < ActiveRecord::Base
   belongs_to :academic_tool, polymorphic: true
   belongs_to :allocation_tag
 
-  belongs_to :lesson_module, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'LessonModule'"]
-  belongs_to :chat_room,     foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'ChatRoom'"]
+  belongs_to :lesson_module,  foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'LessonModule'"]
+  belongs_to :chat_room,      foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'ChatRoom'"]
+  belongs_to :exam,           foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Exam"]
+  belongs_to :assignment,     foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Assignment"]
+  belongs_to :webconference,  foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Webconference"]
+  belongs_to :discussion,     foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Discussion"]
+  belongs_to :schedule_event, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Schedule_event"]
 
   # Assignment
   has_many :sent_assignments, dependent: :destroy
@@ -13,6 +18,10 @@ class AcademicAllocation < ActiveRecord::Base
   has_many :discussion_posts, class_name: 'Post', dependent: :destroy
   has_many :chat_messages, dependent: :destroy
   has_many :chat_participants, inverse_of: :academic_allocation, dependent: :destroy
+
+  # exam
+  has_many :exam_users, dependent: :destroy
+
 
   before_save :verify_association_with_allocation_tag
 

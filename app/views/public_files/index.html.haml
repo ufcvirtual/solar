@@ -2,21 +2,21 @@
   .block_title
     %h2
       %i.icon-suitcase
-      = t(".title", name: @user.name)
+      = t('.title', name: @user.name)
     .right_buttons
       - unless @public_files.empty?
-        = link_to content_tag(:i, nil, class: "icon-install"), zip_download_public_files_path(user_id: @user.id), class: "btn"
+        = link_to content_tag(:i, nil, class: 'icon-install'), zip_download_public_files_path(user_id: @user.id), class: 'btn'
   .block_content
     - unless @public_files.blank?
       %table.tb_list
         %thead
           %tr.lines
             %th.no_sort
-            %th=t(".file")
-            %th=t(".size")
-            %th=t(".sent_on")
+            %th= t('.file')
+            %th= t('.size')
+            %th= t('.sent_on')
         %tbody
           - @public_files.each do |file|
-            = render partial: "file", locals: {file: file, destroy: false}
+            = render partial: 'file', locals: { file: file, destroy: false }
     - else
       .block_content_text.text_none= t(:itens_not_found)

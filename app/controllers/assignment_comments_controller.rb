@@ -45,7 +45,7 @@ class AssignmentCommentsController < ApplicationController
 
   def update
     if @assignment_comment.update_attributes(assignment_comment_params)
-      render json: {success: true, notice: t('assignment_comments.success.edit')}
+      render json: { success: true, notice: t('assignment_comments.success.edit') }
     else
       render_error_json
     end

@@ -1,0 +1,25 @@
+= f.hidden_field :lesson_id, value: f.object.lesson_id
+
+.title= f.input :name, label: false
+.description= f.input :description, as: :ckeditor, label: false, id: "lesson_note_description_#{f.object.try(:id)}"
+.bottom
+  = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), 'save_note(this)', :'data-tooltip' => t('.save')
+  = link_to_function content_tag(:i, nil, class: 'icon-cross cancel_note'), 'cancel_note(this)', :'data-tooltip' => t('.cancel')
+
+= javascript_include_tag 'ckeditor/init', 'tooltip'
+
+:javascript
+
+  $(function(){
+    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+
+    CKEDITOR.editorConfig = function(config) {
+      config.toolbar =
+        [ { name: 'all', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'FontSize', 'Styles', '-', 'Undo', 'Redo', 'RemoveFormat' ] } ];
+      config.stylesSet = [
+        { name: "#{t('.yellow_marker')}", element: 'span', styles: { 'background-color': 'Yellow' } },
+        { name: "#{t('.green_marker')}",  element: 'span', styles: { 'background-color': 'Lime' } }
+      ];
+      config.resize_enabled = false;
+    };
+  });

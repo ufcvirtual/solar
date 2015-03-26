@@ -11,7 +11,7 @@ class LessonsController < ApplicationController
   before_filter :offer_data, only: :open
 
   before_filter only: [:new, :create, :edit, :update] do |controller|
-    authorize! crud_action, Lesson, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! crud_action, Lesson, { on: @allocation_tags_ids = params[:allocation_tags_ids] }
   end
 
   layout false, except: :index
@@ -32,7 +32,7 @@ class LessonsController < ApplicationController
 
   def list
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
-    authorize! :list, Lesson, on: @allocation_tags_ids
+    authorize! :list, Lesson, { on: @allocation_tags_ids }
 
     @all_groups = Group.where(offer_id: params[:offer_id])
     @academic_allocations = LessonModule.academic_allocations_by_ats(@allocation_tags_ids.split(' '), page: params[:page])
@@ -58,7 +58,7 @@ class LessonsController < ApplicationController
     authorize! :show, Lesson
 
     @module = LessonModule.find(params[:lesson_module_id])
-    render partial: "lessons/open/lessons", locals: {lesson_module: @module}
+    render partial: "lessons/open/lessons", locals: { lesson_module: @module }
   end
 
   # GET /lessons/new
@@ -81,7 +81,7 @@ class LessonsController < ApplicationController
       files_and_folders(@lesson)
       render template: "lesson_files/index"
     else
-      render json: {success: true, notice: t('lessons.success.created')}
+      render json: { success: true, notice: t('lessons.success.created') }
     end
   rescue ActiveRecord::RecordInvalid
     groups_by_lesson(@lesson)
@@ -105,7 +105,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
     @lesson.update_attributes! lesson_params
 
-    render json: {success: true, notice: t('lessons.success.updated')}
+    render json: { success: true, notice: t('lessons.success.updated') }
   rescue ActiveRecord::RecordInvalid
     lesson_modules_by_ats(@allocation_tags_ids)
     groups_by_lesson(@lesson)
@@ -126,7 +126,7 @@ class LessonsController < ApplicationController
     @responsible = params.include?(:responsible)
     @allocation_tags_ids = params[:allocation_tags_ids]
 
-    authorize! :change_status, Lesson, {on: @allocation_tags_ids, read: @responsible}
+    authorize! :change_status, Lesson, { on: @allocation_tags_ids, read: @responsible }
 
     lesson_ids = params[:id].split(',').flatten
     msg = change_lessons_status(lesson_ids, params[:status])
@@ -136,7 +136,7 @@ class LessonsController < ApplicationController
         format.json { render json: {success: true} }
         format.js
       else
-        format.json { render json: {success: false, msg: msg}, status: :unprocessable_entity }
+        format.json { render json: { success: false, msg: msg }, status: :unprocessable_entity }
         format.js { render js: "flash_message('#{msg.first}', 'alert');" }
       end
     end
@@ -155,9 +155,9 @@ class LessonsController < ApplicationController
         end
       end
 
-      render json: {success: true, notice: (test_lesson ? t('lessons.success.saved_as_draft') : t('lessons.success.deleted'))}
+      render json: { success: true, notice: (test_lesson ? t('lessons.success.saved_as_draft') : t('lessons.success.deleted')) }
     rescue
-      render json: {success: false, alert: t('lessons.errors.deleted')}, status: :unprocessable_entity
+      render json: { success: false, alert: t('lessons.errors.deleted') }, status: :unprocessable_entity
     end
   end
 
@@ -200,21 +200,19 @@ class LessonsController < ApplicationController
   end
 
   def change_module
-    begin
-      authorize! :change_module, Lesson, on: params[:allocation_tags_ids]
+    authorize! :change_module, Lesson, on: params[:allocation_tags_ids]
 
-      lesson_ids = params[:lessons_ids].split(',') rescue []
-      new_module_id = LessonModule.find(params[:move_to_module]).id rescue nil
+    lesson_ids = params[:lessons_ids].split(',') rescue []
+    new_module_id = LessonModule.find(params[:move_to_module]).id rescue nil
 
-      raise t('lessons.notifications.must_select_lessons') if lesson_ids.empty?
-      raise t('lessons.errors.must_select_module') if new_module_id.nil?
+    raise t('lessons.notifications.must_select_lessons') if lesson_ids.empty?
+    raise t('lessons.errors.must_select_module') if new_module_id.nil?
 
-      Lesson.where(id: lesson_ids).update_all(lesson_module_id: new_module_id)
+    Lesson.where(id: lesson_ids).update_all(lesson_module_id: new_module_id)
 
-      render json: {success: true, msg: t('lessons.success.moved')}
-    rescue => error
-      render json: {success: false, msg: error.message}, status: :unprocessable_entity
-    end
+    render json: {success: true, msg: t('lessons.success.moved')}
+  rescue => error
+    render json: {success: false, msg: error.message}, status: :unprocessable_entity
   end
 
   private

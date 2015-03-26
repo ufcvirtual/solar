@@ -11,9 +11,10 @@ class Lesson < Event
   has_many :allocation_tags, through: :lesson_module
   has_many :groups, through: :allocation_tags
   has_many :offers, through: :allocation_tags
+  has_many :notes, class_name: 'LessonNote', foreign_key: 'lesson_note_id', dependent: :destroy
 
   before_create :set_order
-  before_save :url_protocol, :if => :is_link?
+  before_save :url_protocol, if: :is_link?
   after_save :create_or_update_folder
 
   before_destroy :can_destroy?
@@ -26,8 +27,8 @@ class Lesson < Event
   validate :address_is_ok?
 
   # Na expressão regular os protocolos http, https e ftp podem aparecer somente uma vez ou não aparecer.
-  validates_format_of :address, :with => /\A((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z/ix,
-  :allow_nil => true, :allow_blank => true, :if => :is_link?
+  validates_format_of :address, with: /\A((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z/ix,
+  allow_nil: true, allow_blank: true, if: :is_link?
 
   accepts_nested_attributes_for :schedule
 
@@ -112,9 +113,13 @@ class Lesson < Event
 
   def self.limited(user, ats)
     query = []
-    query << "lessons.status = 1" if user.profiles_with_access_on("see_drafts", "lessons", ats, true).empty?
+    query << 'lessons.status = 1' if user.profiles_with_access_on('see_drafts', 'lessons', ats, true).empty?
     # recuperar as aulas que o usuário pode acessar usuário
-    Lesson.joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: ats}).where(query.join(" AND "))
+    Lesson.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: ats }).where(query.join(" AND "))
+  end
+
+  def self.all_by_ats(ats, query = {})
+    joins(lesson_module: :academic_allocations).where(academic_allocations: { allocation_tag_id: ats }).where(query)
   end
 
   private

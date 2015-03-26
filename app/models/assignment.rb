@@ -102,8 +102,8 @@ class Assignment < Event
   def students_without_groups(allocation_tag_id)
     User.joins(allocations: [:profile, allocation_tag: :academic_allocations])
         .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean )")
-        .where(allocations: {status: Allocation_Activated, allocation_tag_id: allocation_tag_id})
-        .where(academic_allocations: {allocation_tag_id: allocation_tag_id, academic_tool_id: id, academic_tool_type: "Assignment"})
+        .where(allocations: { status: Allocation_Activated, allocation_tag_id: allocation_tag_id })
+        .where(academic_allocations: { allocation_tag_id: allocation_tag_id, academic_tool_id: id, academic_tool_type: "Assignment" })
         .where('NOT EXISTS (
               SELECT * FROM group_participants
               JOIN  group_assignments ON group_participants.group_assignment_id = group_assignments.id
