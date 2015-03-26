@@ -2,7 +2,16 @@ module V1
   class Routes < Base
     namespace :routes
     get do
-      ApplicationAPI::routes
+      routes = ApplicationAPI::routes.map do |route|
+        next if params[:filter].present? and not route.route_path.include?(params[:filter])
+        {
+          description: route.route_description,
+          method: route.route_method,
+          path: route.route_path,
+          params: route.route_params
+        }.reject { |k,v| not v.present? }
+      end
+      routes.compact
     end
   end
 end
