@@ -238,6 +238,10 @@ en_US:
       schedule:
         start_date: Period
         end_date: To
+      exam:
+        description: Description
+      exam_user:
+        grade: Grade
       assignment:
         name: Title
         type_assignment: Type
@@ -557,6 +561,14 @@ en_US:
   external_link: "From an external link"
   url: "Enter here the URL of the image in the textbox above."
   send: "Send"
+
+  exam:
+    not_started: Not Started
+    not_ended: Not Concluded
+    ended: Finished
+    status: Status
+    none: "No registered test"
+
   enrollments:
     all: All
     enrolled: Enrolled

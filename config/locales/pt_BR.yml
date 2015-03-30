@@ -202,6 +202,7 @@ pt_BR:
       group_assignment: Trabalho em grupo
       public_file: "Área Pública"
       assignment_file: Arquivos de trabalho
+      exam: Prova
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -284,6 +285,10 @@ pt_BR:
       schedule:
         start_date: Período
         end_date: à
+      exam:
+        description: Descrição
+      exam_user:
+        grade: Nota
       assignment:
         allocation_tag_id: Turma
         name: Título
@@ -712,6 +717,14 @@ pt_BR:
   external_link: "De um link externo"
   url: "Digite aqui a URL da imagem no campo de texto acima."
   send: "Enviar"
+
+  # Prova"
+  exam:
+    not_started: Não iniciada
+    not_ended: Não Concluída
+    ended: Concluída
+    status: Situação
+    none: "Nenhuma prova cadastrada"
 
   # página de matrícula"
   enrollments:

@@ -481,6 +481,8 @@ Solar::Application.routes.draw do
     put :remove_record, on: :member
   end
 
+  resources :exams, only: [:index]
+
   resources :savs, only: :index
 
   match '/select_group', to: 'application#select_group', as: :select_group
