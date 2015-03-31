@@ -287,6 +287,7 @@ pt_BR:
         start_date: Período
         end_date: à
       exam:
+        name: Nome
         description: Descrição
       exam_user:
         grade: Nota
@@ -724,6 +725,7 @@ pt_BR:
 
   # Prova"
   exam:
+    title: Provas disponíveis
     not_started: Não iniciada
     not_ended: Não Concluída
     ended: Concluída

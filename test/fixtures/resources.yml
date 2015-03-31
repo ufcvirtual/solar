@@ -946,3 +946,8 @@ res186:
   action: "preview"
   description: "Visualizar webconferencias e gerenciar gravações"
 
+res187:
+  id: 187
+  controller: 'exams'
+  action: "index"
+  description: "Acessar página de provas"

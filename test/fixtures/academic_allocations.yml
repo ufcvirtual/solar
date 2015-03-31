@@ -454,3 +454,9 @@ webc3:
  allocation_tag_id: 2 # TL-CAU - 2011.1
  academic_tool_id: 3
  academic_tool_type: "Webconference"
+
+exam1:
+ id: 76
+ allocation_tag_id: 3 # QM-CAU - 2011.1
+ academic_tool_id: 1
+ academic_tool_type: "Exam"

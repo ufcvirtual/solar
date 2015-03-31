@@ -240,6 +240,7 @@ en_US:
         start_date: Period
         end_date: To
       exam:
+        name: Name
         description: Description
       exam_user:
         grade: Grade
@@ -567,6 +568,7 @@ en_US:
   send: "Send"
 
   exam:
+    title: Available tests
     not_started: Not Started
     not_ended: Not Concluded
     ended: Finished

@@ -1929,3 +1929,10 @@ interact5:
 interact6:
   profile_id: 18
   resource_id: 184         
+
+# Provas
+
+exam1:
+  profile_id: 1
+  resource_id: 187
+  per_id: false

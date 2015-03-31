@@ -1,0 +1,7 @@
+exam1:
+  id: 1
+  name: 'Prova 1'
+  description: 'Descrição da prova'
+  duration: 60
+  number_questions: 5
+  schedule_id: 7
