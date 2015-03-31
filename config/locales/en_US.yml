@@ -164,6 +164,7 @@ en_US:
       group_assignment: Group Assignment
       public_file: Public Area
       assignment_file: Assignment File
+      lesson_note: Lesson note
     attributes:
       user:
         password: "Password"
@@ -331,6 +332,9 @@ en_US:
       allocation:
         profile_id: Profile
         user_id: User
+      lesson_note:
+        description: Description
+        name: Name
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -2431,6 +2435,10 @@ en_US:
       general_message: Can't do action
       description: Lesson note must have a content
       permission: It's not possible to remove notes from others users
+      unique_name: Already exists a note with this name to this lesson
+      pdf: It was not possible to generate the pdf
+      cant_find_note: It was not possible to recover your note. Please open the lesson again.
+      cant_create_note: It was not possible to save your note. Please try again.
     success:
       created_updated: Lesson note created/updated sucessfully
       removed: Lesson note removed successfully
@@ -2451,3 +2459,5 @@ en_US:
       new: New note
       download: Download all notes
       title: Lesson notes
+    pdf:
+      lesson: 'Lesson: '

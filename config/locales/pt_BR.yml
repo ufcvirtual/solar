@@ -203,6 +203,7 @@ pt_BR:
       public_file: "Área Pública"
       assignment_file: Arquivos de trabalho
       exam: Prova
+      lesson_note: Nota de aula
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -381,6 +382,9 @@ pt_BR:
       allocation:
         profile_id: Perfil
         user_id: Usuário
+      lesson_note:
+        description: Descrição
+        name: Nome
 
     errors:
       uniqueness: "Registro já existe no sistema"
@@ -2665,6 +2669,10 @@ pt_BR:
       general_message: Não foi possível realizar ação.
       description: A nota de aula deve possuir um conteúdo
       permission: Não é possível remover notas de outros usuários
+      unique_name: Já existe uma nota para esta aula com este nome
+      pdf: Não foi possível gerar o pdf
+      cant_find_note: Não foi possível recuperar sua anotacao. Favor abrir a aula novamente.
+      cant_create_note: Não foi possível salvar sua anotacao. Favor tentar novamente.
     success:
       removed: Nota de aula removida com sucesso
       created_updated: Nota de aula criada/atualizada com sucesso
@@ -2685,6 +2693,8 @@ pt_BR:
       new: Nova nota
       download: Download de todas as notas
       title: Notas de aula
+    pdf:
+      lesson: 'Aula: '
 
   group: "Turma"
   student: "Aluno"

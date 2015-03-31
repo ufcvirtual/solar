@@ -47,7 +47,8 @@ gem "grape-rabl", "~> 0.3.0"
 
 gem "savon", "~> 2.0" # comunicação com ws
 
-gem "roo", "~> 1.13.2" # csv, excel
+gem "roo", "~> 1.13.2"  # csv, excel
+gem "prawn", "~> 2.0.1" # pdf
 
 gem "em-websocket" # websocket pros fóruns
 

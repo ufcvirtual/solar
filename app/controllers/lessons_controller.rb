@@ -42,7 +42,7 @@ class LessonsController < ApplicationController
 
   # GET /lessons/:id
   def open
-    authorize! :show, Lesson, {on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true}
+    authorize! :show, Lesson, { on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true }
 
     at_ids = (params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
 
@@ -50,7 +50,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
 
     render layout: 'lesson'
-  rescue
+  rescue => error
     render text: t('lessons.no_data'), status: :unprocessable_entity
   end
 

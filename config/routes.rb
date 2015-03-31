@@ -266,10 +266,10 @@ Solar::Application.routes.draw do
   resources :lessons do
     member do
       put "change_status/:status", to: :change_status, as: :change_status
-      put "responsible_change_status/:status", to: :change_status, as: :responsible_change_status, defaults: {responsible: true}
+      put "responsible_change_status/:status", to: :change_status, as: :responsible_change_status, defaults: { responsible: true }
       put "order/:change_id", action: :order, as: :change_order
       put :change_module
-      get :edition, action: :open, defaults: {edition: true}
+      get :edition, action: :open, defaults: { edition: true }
       get :open
     end
     collection do
@@ -296,8 +296,9 @@ Solar::Application.routes.draw do
     put :update, to: :create_or_update, on: :member
     collection do
       post :create, to: :create_or_update
-      put :create_or_update
+      post :create_or_update
       get :download
+      get :find
     end
   end
 

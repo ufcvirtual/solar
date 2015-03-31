@@ -397,8 +397,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def notes(lesson_id)
-    lesson_notes.where(lesson_id: lesson_id).order('name')
+  def notes(lesson_id, query = {})
+    lesson_notes.where(lesson_id: lesson_id).where(query).order('name')
   end
 
   ######################

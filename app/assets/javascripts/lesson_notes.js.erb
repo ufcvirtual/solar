@@ -31,6 +31,7 @@ function save_note(icon){
     error_message: 'lesson_notes',
     complement_success: function(data){
       form.parents('.note:first').removeClass('new');
+      flash_message(data.notice, 'success', 'lesson_notes');
     }
   });
 }
@@ -38,6 +39,7 @@ function save_note(icon){
 function add_note(icon){
   if( !$('.note.new').length ){
     new_note_box();
+    $('.text_none').remove();
     $.get($(icon).data('url'), function(data){
       $(".lesson_notes .block_content").prepend($(data).fadeIn('slow').css('background-color', pastelColors()));
     });
@@ -70,13 +72,8 @@ function new_note_box(){
 }
 
 $(function(){
-  
   $('.note').each(function(i){
     var color = pastelColors();
     $(this).css('background-color', color);
   });
-  
-  // imprimir comentário
-  // imprimir todos os comentários
-
 });

@@ -18,13 +18,13 @@
   = "#{t(:since)}" if (lesson.schedule.end_date.nil?)
   = [l(lesson.schedule.start_date, format: :normal), (lesson.schedule.end_date.nil? ? t(:no_end_date) : l(lesson.schedule.end_date, format: :normal))].join(' - ')
 
-/ - notes    = current_user.notes(lesson.id)
-/ - no_notes = notes.blank?
-/ %td{ style: 'width: 10%; text-align: center' }
-/   = content_tag(:a, class: "notes fancybox.ajax", href: '#', :'data-link' => lesson_notes_path(lesson.id), :'data-tooltip' => no_notes ? t('.no_note') : t('.notes')) do 
-/    %i.icon-book2
-/    - unless no_notes
-/      %span.count_icon= notes.count
+- notes    = current_user.notes(lesson.id)
+- no_notes = notes.blank?
+%td{ style: 'width: 10%; text-align: center' }
+  = content_tag(:a, class: "notes fancybox.ajax", href: '#', :'data-link' => lesson_notes_path(lesson.id), :'data-tooltip' => no_notes ? t('.no_note') : t('.notes')) do 
+    %i.icon-book2
+    - unless no_notes
+      %span.count_icon= notes.count
 
 - if @responsible
   %td{ width: '12%' }
@@ -45,7 +45,7 @@
 
     $('a.notes').click(function(){
       var url = $(this).data('link');
-      $(this).call_fancybox({href: url, open: true});
+      $(this).call_fancybox({ href: url, open: true });
 
     });
   });

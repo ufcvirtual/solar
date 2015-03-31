@@ -111,6 +111,10 @@ class Lesson < Event
     address
   end
 
+  def offer
+    offers.first || groups.first.offer
+  end
+
   def self.limited(user, ats)
     query = []
     query << 'lessons.status = 1' if user.profiles_with_access_on('see_drafts', 'lessons', ats, true).empty?

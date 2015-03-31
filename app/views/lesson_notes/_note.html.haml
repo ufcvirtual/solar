@@ -2,6 +2,6 @@
   .title= note.name
   .description= sanitize note.description
   .bottom
-    = link_to_function content_tag(:i, nil, class: 'icon-printer'), 'download_note(this)', class: 'download_note ', :"data-link" => download_lnotes_path(id: note.id), :"data-tooltip" => t('.download')
+    = link_to content_tag(:i, nil, class: 'icon-printer'), download_lnotes_path(id: note.id, lesson_id: note.lesson_id), :"data-tooltip" => t('.download')
     = link_to_function content_tag(:i, nil, class: 'icon-edit'), 'edit_note(this)', class: 'edit_note ', :"data-link" => edit_lnote_path(note), :"data-tooltip" => t('.edit')
     = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_note(this)', class: 'remove_note ', :"data-link-delete" => lnote_path(note), :"data-tooltip" => t('.remove')
