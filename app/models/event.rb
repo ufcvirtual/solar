@@ -4,19 +4,19 @@ class Event < ActiveRecord::Base
   # recupera os eventos que pertençam ao periodo visualizado e que tenham relação com as allocations_tags passadas
   scope :between, lambda { |start_time, end_time, allocation_tags| { joins: [:schedule, academic_allocations: :allocation_tag], conditions: ['
     ((schedules.end_date < ?) OR (schedules.start_date < ?)) AND ((schedules.start_date > ?) OR (schedules.end_date > ?))
-    AND allocation_tags.id IN (?)', format_date(end_time), format_date(end_time), format_date(start_time), format_date(start_time), allocation_tags] } 
+    AND allocation_tags.id IN (?)', format_date(end_time), format_date(end_time), format_date(start_time), format_date(start_time), allocation_tags] }
   }
 
-  # recupera os eventos que vão iniciar "de hoje em diante" ou ja começaram, mas ainda vao terminar
+  # recupera os eventos que vao iniciar "de hoje em diante" ou ja começaram, mas ainda vao terminar
   scope :after, lambda { |today, allocation_tags| { joins: [:schedule, academic_allocations: :allocation_tag], conditions: ['
     ((schedules.start_date >= ?) OR (schedules.end_date >= ?)) AND allocation_tags.id IN (?)',
-    format_date(today.to_date), format_date(today.to_date), allocation_tags] } 
+    format_date(today.to_date), format_date(today.to_date), allocation_tags] }
   }
 
   # recupera os eventos que englobam o dia de hoje
   scope :of_today, lambda { |day, allocation_tags| { joins: [:schedule, academic_allocations: :allocation_tag], conditions: ['
     (? BETWEEN schedules.start_date AND schedules.end_date) AND allocation_tags.id IN (?)',
-    format_date(day.to_date), allocation_tags] } 
+    format_date(day.to_date), allocation_tags] }
   }
 
   scope :by_ats, lambda { |allocation_tags| { joins: [academic_allocations: :allocation_tag], conditions: ['allocation_tags.id IN (?)', allocation_tags] } }

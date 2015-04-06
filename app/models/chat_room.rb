@@ -57,18 +57,18 @@ class ChatRoom < Event
   end
 
   def can_remove_groups?(groups)
-    user_messages.empty? # não pode dar unbind nem remover se chat possuir mensagens
+    user_messages.empty? # can't unbind neither remove if chat has messages
   end
 
   def opened?
     start_hour, end_hour = [Date.today.to_s, self.start_hour].join(' '), [Date.today.to_s, self.end_hour].join(' ')
 
-     # para remediar o -3h na comparacao com o horario do servidor
-     now = DateTime.now
-     now = DateTime.new(now.year, now.month, now.day, now.hour, now.minute)
+    # para remediar o -3h na comparacao com o horario do servidor
+    now = DateTime.now
+    now = DateTime.new(now.year, now.month, now.day, now.hour, now.minute)
 
-    # precisa verificar não so a data mas tambem a hora
-    ((schedule.start_date.to_date..schedule.end_date.to_date).include?(Date.current)) and (start_hour.to_datetime <= now and end_hour.to_datetime >= now)
+    # precisa verificar nao so a data mas tambem a hora
+    ((schedule.start_date.to_date..schedule.end_date.to_date).include?(Date.current)) && (start_hour.to_datetime <= now && end_hour.to_datetime >= now)
   end
 
   def self.responsible?(allocation_tag_id, user_id)
@@ -83,7 +83,7 @@ class ChatRoom < Event
     allocations_with_acess =  User.find(user_id).allocation_tags_ids_with_access_on('interact','chat_rooms')
 
     all_chats = ChatRoom.joins(:academic_allocations, :schedule)
-      .where(academic_allocations: {allocation_tag_id: allocation_tag_id})
+      .where(academic_allocations: { allocation_tag_id: allocation_tag_id })
       .select('DISTINCT chat_rooms.*, schedules.start_date, schedules.end_date')
       .order('schedules.start_date')
 

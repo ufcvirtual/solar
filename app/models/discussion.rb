@@ -34,10 +34,10 @@ class Discussion < Event
     end
   end
 
-  # verifica se existe alguma academic_allocation de um forum com o mesmo nome cuja allocation_tag coincida com alguma das allocation_tags que o forum esta sendo cadastrado
+  # Verifica se existe alguma ac para um forum de mesmo nome cuja allocation_tag esteja entre as allocation_tags informadas
   # Ex:
-  # => Existe o forum Fórum 1 com academic allocation para a allocation_tag 3
-  # => Se eu criar um novo forum em que uma de suas allocation_tags seja a 3 e tenha o mesmo nome que o Forum 1, é pra dar erro
+  # => Existe o forum Forum 1 com academic allocation para a allocation_tag 3
+  # => Se eu criar um novo forum em que uma de suas allocation_tags seja a 3 e tenha o mesmo nome que o Forum 1, eh pra dar erro
   def unique_name
     discussions_with_same_name = self.class.joins(:allocation_tags).where(allocation_tags: { id: allocation_tag_ids_associations || academic_allocations.map(&:allocation_tag_id) }, name: name)
     errors.add(:name, I18n.t('discussions.error.existing_name')) if (@new_record == true || name_changed?) && discussions_with_same_name.size > 0
@@ -50,7 +50,7 @@ class Discussion < Event
       status << (schedule.start_date.to_date <= Date.today ? ['opened', 'can_interact'] : 'will_open')
     elsif schedule.end_date.to_date < Date.today
       status << 'closed'
-      status << ['extra_time', 'can_interact'] if (!user_id.nil? && (User.find(user_id).get_allocation_tags_ids_from_profiles(true, true) & allocation_tags.pluck(:id)).any? && (schedule.end_date.to_date + Discussion_Responsible_Extra_Time) >= Date.today)
+      status << ['extra_time', 'can_interact'] if !user_id.nil? && (User.find(user_id).get_allocation_tags_ids_from_profiles(true, true) & allocation_tags.pluck(:id)).any? && (schedule.end_date.to_date + Discussion_Responsible_Extra_Time) >= Date.today
     elsif schedule.start_date.to_date <= Date.today
       status << ['opened', 'can_interact']
     end
@@ -65,7 +65,7 @@ class Discussion < Event
   def posts(opts = {}, allocation_tags_ids = nil)
     opts = { 'type' => 'new', 'order' => 'desc', 'limit' => Rails.application.config.items_per_page.to_i,
       'display_mode' => 'list', 'page' => 1 }.merge(opts)
-    type = (opts['type'] == 'history' ) ? '<' : '>'
+    type = (opts['type'] == 'history') ? '<' : '>'
 
     query = []
     query << "updated_at::timestamp(0) #{type} '#{opts["date"]}'::timestamp(0)" if opts.include?('date') && (!opts['date'].blank?)
@@ -88,23 +88,23 @@ class Discussion < Event
   end
 
   def count_posts_before_period(period, allocation_tags_ids = nil)
-    posts_by_allocation_tags_ids(allocation_tags_ids, { query: "date_trunc('seconds', updated_at) < '#{period.first}'" } ).count # trunc seconds - discard miliseconds
+    posts_by_allocation_tags_ids(allocation_tags_ids, { query: "date_trunc('seconds', updated_at) < '#{period.first}'" }).count # trunc seconds - discard miliseconds
   end
 
   def count_posts_after_period(period, allocation_tags_ids = nil)
-    posts_by_allocation_tags_ids(allocation_tags_ids, { query: "date_trunc('seconds', updated_at) > '#{period.last}'" } ).count
+    posts_by_allocation_tags_ids(allocation_tags_ids, { query: "date_trunc('seconds', updated_at) > '#{period.last}'" }).count
   end
 
   # devolve a lista com todos os posts de uma discussion em ordem decrescente de updated_at, apenas o filho mais recente de cada post sera adiconado a lista
   def latest_posts(allocation_tags_ids = nil)
-    posts_by_allocation_tags_ids(allocation_tags_ids, { select: 'DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level' } )
+    posts_by_allocation_tags_ids(allocation_tags_ids, { select: 'DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level' })
   end
 
   def can_remove_groups?(groups)
     discussion_posts.empty? # nao pode dar unbind nem remover se forum possuir posts
   end
 
-  def posts_by_allocation_tags_ids(allocation_tags_ids = nil, opt = { grandparent: true, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'discussion_posts.*' } )
+  def posts_by_allocation_tags_ids(allocation_tags_ids = nil, opt = { grandparent: true, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'discussion_posts.*' })
     allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids).map(&:related).flatten.compact.uniq
     posts_list = discussion_posts.where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
     posts_list = posts_list.joins(academic_allocation: :allocation_tag).where(allocation_tags: { id: allocation_tags_ids }) unless allocation_tags_ids.blank?

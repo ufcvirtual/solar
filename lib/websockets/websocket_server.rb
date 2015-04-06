@@ -26,8 +26,8 @@ class WebsocketServer
         subs.delete(ws) # remove the client who have sent the message
         subs.each { |s| s.send msg }
       end
-      ws.onclose do |data|
-        @subs.delete_if { |key, value| key == ws}
+      ws.onclose do
+        @subs.delete_if { |key| key == ws }
       end
     end
   end

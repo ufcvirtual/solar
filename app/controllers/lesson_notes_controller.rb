@@ -47,9 +47,9 @@ class LessonNotesController < ApplicationController
 
   def find
     note_params = params[:lesson_note]
-    note        = current_user.notes(note_params[:lesson_id], { name: note_params[:name] }).first
+    @note       = current_user.notes(note_params[:lesson_id], { name: note_params[:name] }).first
 
-    render json: { success: true, content: (note.nil? ? '' : note.description) }
+    render json: { success: true, content: (@note.nil? ? '' : @note.description) }
   rescue => error
     render json: { success: true, content: '' }
   end
@@ -71,7 +71,6 @@ class LessonNotesController < ApplicationController
 
     pdf = Prawn::Document.new do 
       font('Helvetica', size: 8)
-
 
       fill_color '003E7A'
       fill_rectangle [0, cursor], 540, 80
@@ -101,7 +100,7 @@ class LessonNotesController < ApplicationController
     end
 
     send_data pdf.render, filename: name = [name, 'pdf'].join('.'), type: 'application/pdf'
-  rescue
+  rescue => error
     redirect_to :back, alert: t('lesson_notes.error.pdf')
   end
 

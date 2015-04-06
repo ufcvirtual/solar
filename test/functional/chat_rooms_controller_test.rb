@@ -1,9 +1,6 @@
 require 'test_helper'
 
 class ChatRoomsControllerTest < ActionController::TestCase
-
-  fixtures :chat_participants
-
   include Devise::TestHelpers
 
   def setup
@@ -90,9 +87,9 @@ class ChatRoomsControllerTest < ActionController::TestCase
     end
 
     participants = chat_rooms(:chat2).participants
-    assert not(participants.include?(chat_participants(:participant_chat2_user).id)) # verifica remoção do "user"
-    assert (not participants.include?(chat_participants(:participant_chat2_aluno1).id)) # verifica remoção do "aluno1"
-    assert (participants.include?(ChatParticipant.find_by_allocation_id_and_academic_allocation_id(15, academic_allocations(:acaal19).id))) # verifica acréscimo do "aluno2"
+    assert !participants.include?(chat_participants(:participant_chat2_user).id) # verifica remocao do "user"
+    assert !participants.include?(chat_participants(:participant_chat2_aluno1).id) # verifica remocao do "aluno1"
+    assert participants.include?(ChatParticipant.find_by_allocation_id_and_academic_allocation_id(15, academic_allocations(:acaal19).id)) # verifica acrescimo do "aluno2"
   end
 
   test "sem permissao - nao editar" do
@@ -111,10 +108,10 @@ class ChatRoomsControllerTest < ActionController::TestCase
   end
 
   test "nao criar chat para oferta ou uc ou curso" do
-    chat_room = {title: "Chat 01", start_hour: "10:10", end_hour: "10:12", schedule_attributes: {start_date: Date.today, end_date: Date.today+1.day}}
-    params_of = {chat_room: chat_room.merge({academic_allocations_attributes: {'0' => {allocation_tag_id: allocation_tags(:al6).id}}}), allocation_tags_ids: "#{allocation_tags(:al6).id}"}
-    params_uc = {chat_room: chat_room.merge({academic_allocations_attributes: {'0' => {allocation_tag_id: allocation_tags(:al13).id}}}), allocation_tags_ids: "#{allocation_tags(:al13).id}"}
-    params_c  = {chat_room: chat_room.merge({academic_allocations_attributes: {'0' => {allocation_tag_id: allocation_tags(:al19).id}}}), allocation_tags_ids: "#{allocation_tags(:al19).id}"}
+    chat_room = { title: "Chat 01", start_hour: "10:10", end_hour: "10:12", schedule_attributes: { start_date: Date.today, end_date: Date.today+1.day } }
+    params_of = { chat_room: chat_room.merge({ academic_allocations_attributes: { '0' => { allocation_tag_id: allocation_tags(:al6).id } } }), allocation_tags_ids: "#{allocation_tags(:al6).id}" }
+    params_uc = { chat_room: chat_room.merge({ academic_allocations_attributes: { '0' => { allocation_tag_id: allocation_tags(:al13).id } } }), allocation_tags_ids: "#{allocation_tags(:al13).id}" }
+    params_c  = { chat_room: chat_room.merge({ academic_allocations_attributes: { '0' => { allocation_tag_id: allocation_tags(:al19).id } } }), allocation_tags_ids: "#{allocation_tags(:al19).id}" }
 
     # tentando alocar para a UC de quimica 3 e o curso de licenciatura em quimica e para a oferta existente para curso e uc de quimica
     assert_no_difference(["ChatRoom.count", "Schedule.count"]) do
@@ -153,7 +150,7 @@ class ChatRoomsControllerTest < ActionController::TestCase
     sign_in @aluno1
 
     assert_no_difference(["ChatRoom.count", "ChatParticipant.count"]) do
-      delete :destroy, {allocation_tags_ids: "3 11 22", id: chat_rooms(:chat2).id}
+      delete :destroy, { allocation_tags_ids: "3 11 22", id: chat_rooms(:chat2).id }
     end
 
     assert_response :unauthorized
@@ -161,13 +158,13 @@ class ChatRoomsControllerTest < ActionController::TestCase
   end
 
   test "edicao - ver detalhes" do
-    get(:show, {id: chat_rooms(:chat2).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
+    get(:show, { id: chat_rooms(:chat2).id, allocation_tags_ids: "#{allocation_tags(:al3).id}" })
     assert_template :show
   end
 
   test "edicao - ver detalhes - aluno" do
     sign_in users(:aluno1)
-    get(:show, {id: chat_rooms(:chat2).id, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
+    get(:show, { id: chat_rooms(:chat2).id, allocation_tags_ids: "#{allocation_tags(:al3).id}" })
     assert_template :show
   end
 

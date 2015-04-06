@@ -41,5 +41,4 @@ class Schedule < ActiveRecord::Base
       semester_periods.empty? && semester_enrollments.empty?
     )
   end
-
 end
