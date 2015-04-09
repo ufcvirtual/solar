@@ -951,3 +951,21 @@ res187:
   controller: 'exams'
   action: "index"
   description: "Acessar página de provas"
+
+res188:
+  id: 188
+  controller: 'exams'
+  action: "list"
+  description: "Listar provas para edição"
+
+res189:
+  id: 189
+  controller: 'exams'
+  action: "new"
+  description: "Cadastrar nova prova"
+
+res190:
+  id: 190
+  controller: 'exams'
+  action: "create"
+  description: "Cria nova prova"

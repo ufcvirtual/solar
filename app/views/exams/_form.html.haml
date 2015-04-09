@@ -1,0 +1,62 @@
+.new_exam
+  = simple_form_for(@exam, html: {id: 'exam_form'}) do |f|
+    %span.form_requirement= t(:required_fields)
+    %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit_exam : :new_exam), scope: [:exams, :list])
+
+    .form-inputs.block_content
+      = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+
+      = f.input :name, required: true
+      = f.input :description, required: true
+
+      = f.simple_fields_for :schedule do |s|
+        .schedule_dates
+          .left
+            = s.input :start_date, as: :string, input_html: {id: 'exam_start_date', value: l(f.object.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
+            = f.input :start_hour
+
+          .right_form
+            = s.input :end_date, as: :string, input_html: {id: 'exam_end_date', value: l(f.object.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
+            = f.input :end_hour
+
+      = f.input :duration
+
+      = render 'groups/codes'
+
+      .form-actions.right_buttons
+        = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
+        = button_to_function t(:save), 'save_exam()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button'
+
+  :javascript
+
+    $("#exam_start_date, #exam_end_date").mask("#{I18n.t('date.formats.mask')}");
+    $("#exam_start_hour").mask("99:99");
+    $("#exam_end_hour").mask("99:99");
+    $("#exam_duration").mask("999");
+
+    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
+    /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */
+    $('#exam_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#exam_end_date').datepicker("option", "minDate", selected); } }) );
+    $('#exam_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#exam_start_date').datepicker("option", "maxDate", selected); } }) );
+
+    /* se a data ficar vazia, recebe a data que veio ao carregar o formulário ou uma data permitida de acordo com a relação data final - data inicial */
+    $('#exam_end_date').blur(function(){
+      if ($(this).datepicker("getDate") == null)
+        $(this).datepicker("setDate", new Date(end_date));
+    });
+
+    $('#exam_start_date').blur(function(){
+      if($(this).datepicker("getDate") == null)
+        $(this).datepicker("setDate", new Date(start_date));
+    });
+
+    $(function() {
+      // evento de keypress do fancybox nao funciona pra esse form
+      $("form#exam_form .form-inputs").keypress(function(e) { if (e.which == 13) e.preventDefault(); });
+    });
+
+    function save_exam() {
+      $('form#exam_form').serialize_and_submit({
+        //replace_list: $('.list_exams:last')
+      });
+    }

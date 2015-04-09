@@ -287,8 +287,11 @@ pt_BR:
         start_date: Período
         end_date: à
       exam:
-        name: Nome
+        name: Título
         description: Descrição
+        duration: "Duração (min)"
+        start_hour: Horário
+        end_hour: à
       exam_user:
         grade: Nota
       assignment:
@@ -724,13 +727,20 @@ pt_BR:
   send: "Enviar"
 
   # Prova"
-  exam:
+  exams:
     title: Provas disponíveis
     not_started: Não iniciada
     not_ended: Não Concluída
     ended: Concluída
     status: Situação
     none: "Nenhuma prova cadastrada"
+    list:
+      new_exam: Nova Prova
+      edit_exam: Editar Prova
+    success:
+      created: Prova criada com sucesso.
+      updated: Prova atualizada com sucesso.
+      deleted: Prova deletada com sucesso.
 
   # página de matrícula"
   enrollments:
@@ -1995,6 +2005,7 @@ pt_BR:
       support_material: Material de apoio
       assignment: Trabalho
       test: Prova
+      question_bank: Banco de Questões
       edition_of: Edição de %{of}
       in_development: Em desenvolvimento
       no_permission_info: Você não possui permissão em nenhuma ação para os dados escolhidos

@@ -240,8 +240,11 @@ en_US:
         start_date: Period
         end_date: To
       exam:
-        name: Name
+        name: Title
         description: Description
+        duration: "Duration (min)"
+        start_hour: Schedule
+        end_hour: to
       exam_user:
         grade: Grade
       assignment:
@@ -567,13 +570,20 @@ en_US:
   url: "Enter here the URL of the image in the textbox above."
   send: "Send"
 
-  exam:
+  exams:
     title: Available tests
     not_started: Not Started
     not_ended: Not Concluded
     ended: Finished
     status: Status
     none: "No registered test"
+    list:
+      new_exam: New Exam
+      edit_exam: Edit Exam
+    success:
+      created: Exam was successfully created.
+      updated: Exam was successfully updated.
+      deleted: Exam was successfully deleted.
 
   enrollments:
     all: All
@@ -1787,6 +1797,7 @@ en_US:
       support_material: Support material
       assignment: Assignment
       test: Test
+      question_bank: Question Bank
       edition_of: Edition of %{of}
       in_development: In development
       no_permission_info: You don't have permission at any action with the choosen data

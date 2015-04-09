@@ -8,6 +8,9 @@ class Exam < Event
   has_many :exam_questions, dependent: :destroy
   has_many :questions, through: :exam_questions
 
+  accepts_nested_attributes_for :schedule
+
+
   def self.my_exams(allocation_tag_id)
   	exams = Exam.joins(:academic_allocations, :schedule)
       .where(academic_allocations: {allocation_tag_id: allocation_tag_id})

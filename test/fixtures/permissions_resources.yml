@@ -1936,3 +1936,19 @@ exam1:
   profile_id: 1
   resource_id: 187
   per_id: false
+
+exam2:
+  profile_id: 5
+  resource_id: 188
+  per_id: false
+
+exam3:
+  profile_id: 5
+  resource_id: 189
+  per_id: false
+
+exam4:
+  profile_id: 5
+  resource_id: 190
+  per_id: false
+

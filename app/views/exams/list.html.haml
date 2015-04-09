@@ -1,0 +1,41 @@
+-#- if @academic_allocations.any?
+
+.list_exams{:"data-link-list" => list_exams_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
+  = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
+
+  = link_to t('.new_exam'), new_exam_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('.new_exam'), class: 'link_new_exam', id: 'new-exam'
+
+  = render partial: 'exams/list/exams', locals: { }
+  -#= render partial: 'exams/list/exams', locals: { all_groups: @all_groups }
+-#= link_to content_tag(:i, nil, class: 'icon-ellipsis'), list_lessons_path(page: @academic_allocations.next_page, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @academic_allocations.next_page
+
+-#- else
+-#  .block_content_text_list.text_none
+-#    = t(:item_search_no_found)
+
+= javascript_include_tag 'tablesorter', 'tooltip', 'groups_tags'
+
+:javascript
+  var div_list = $(".list_exams");
+  var offer_id = "#{escape_once(params[:offer_id])}";
+
+  jQuery(function($) {
+
+    $(".expand, .compress").click(function(){
+      $(this).parent().hide();
+      $($(this).parent().siblings()[0]).show();
+    });
+
+    $("a.exam").click(function(e){
+      e.preventDefault();
+      //$(this).nice_open_lesson();
+    });
+
+    $(".btn_edit, .btn_del, .release_lessons, .download_lesson_zip, .manage_files_lesson").attr("disabled", true);
+
+    $(".link_new_question, .link_new_exam, .edit_exam").call_fancybox({
+      width: '70%'
+    });
+
+  });
+

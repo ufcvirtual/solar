@@ -54,6 +54,18 @@
     %legend=t(".education")
     .block_content.block_content_alt
 
+      - if (@user_profiles.include?(questions: :index) and (Question.constants.include?("#{@selected}_PERMISSION".to_sym)))
+        .uc_item
+          .question{:"data-link" => questions_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id)}
+            = link_to(content_tag(:i, nil, class: 'icon-archive big'), "#", class: 'btn')
+            = link_to t(".question_bank"), "#"
+
+      - if (@user_profiles.include?(exams: :list) and (Exam.constants.include?("#{@selected}_PERMISSION".to_sym)))
+        .uc_item
+          .exam{:"data-link" => list_exams_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id)}
+            = link_to(content_tag(:i, nil, class: 'icon-exam big'), "#", class: 'btn')
+            = link_to t(".test"), "#"
+
       - if (@user_profiles.include?(lessons: :list) and (Lesson.constants.include?("#{@selected}_PERMISSION".to_sym)))
         .uc_item
           .lesson{:"data-link" => list_lessons_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id)}

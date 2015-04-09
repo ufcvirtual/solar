@@ -1,0 +1,34 @@
+.description, .description p{
+  font-size: 11px;
+  color: $text_grey;
+  text-align: left;
+}
+
+.description .hide{
+  float:right;
+}
+
+.new_exam .schedule_dates .input input {
+  width: 85px;
+}
+
+.input textarea{
+  width: 310px;
+}
+
+.new_exam .schedule_dates .left, .right {
+  float: left;
+}
+
+.new_exam .required + .error, .optional + .error{
+  margin-left: 70px;
+}
+
+#new-exam{
+  text-decoration: underline;
+  width: 775px;
+  display: block;
+  padding: 5px;
+  border: 1px dashed #808080;
+  text-align: center;
+}

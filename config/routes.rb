@@ -482,7 +482,13 @@ Solar::Application.routes.draw do
     put :remove_record, on: :member
   end
 
-  resources :exams, only: [:index]
+  resources :exams, except: :show do
+    collection do
+      get :list
+    end
+  end
+
+  resources :questions, only: [:index]
 
   resources :savs, only: :index
 
