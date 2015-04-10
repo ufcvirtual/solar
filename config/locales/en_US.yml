@@ -580,6 +580,9 @@ en_US:
     list:
       new_exam: New Exam
       edit_exam: Edit Exam
+      delete_exam: Remove Exam
+      config_exam: Configure Exam
+      none: No question registered
     success:
       created: Exam was successfully created.
       updated: Exam was successfully updated.

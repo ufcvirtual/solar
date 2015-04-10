@@ -43,8 +43,9 @@ class ExamsController < ApplicationController
   def list
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Exam, { on: @allocation_tags_ids }
-    # @all_groups = Group.where(offer_id: params[:offer_id])
-    # @academic_allocations = Exam.academic_allocations_by_ats(@allocation_tags_ids.split(' '), page: params[:page])
+
+    @all_groups = Group.where(offer_id: params[:offer_id])
+    @academic_allocations = Exam.academic_allocations_by_ats(@allocation_tags_ids.split(' '), page: params[:page])
   rescue
     render nothing: true, status: 500
   end

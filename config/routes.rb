@@ -485,10 +485,18 @@ Solar::Application.routes.draw do
   resources :exams, except: :show do
     collection do
       get :list
+      put ':tool_id/unbind/group/:id' , to: 'groups#change_tool', type: "unbind", tool_type: 'Exam', as: :unbind_group_from
+      put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: "remove", tool_type: 'Exam', as: :remove_group_from
+      put ':tool_id/add/group/:id'    , to: 'groups#change_tool', type: "add"   , tool_type: 'Exam', as: :add_group_to
+      get ':tool_id/group/tags'       , to: 'groups#tags'                       , tool_type: 'Exam', as: :group_tags_from
     end
   end
 
-  resources :questions, only: [:index]
+  resources :questions, except: :show do
+    collection do
+      get :list
+    end
+  end
 
   resources :savs, only: :index
 

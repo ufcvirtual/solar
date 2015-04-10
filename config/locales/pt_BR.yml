@@ -737,6 +737,9 @@ pt_BR:
     list:
       new_exam: Nova Prova
       edit_exam: Editar Prova
+      delete_exam: Deletar Prova
+      config_exam: Configurar Prova
+      none: Nenhuma questão cadastrada
     success:
       created: Prova criada com sucesso.
       updated: Prova atualizada com sucesso.
