@@ -26,7 +26,7 @@ class Event < ActiveRecord::Base
   def api_json
     has_start_hour, has_end_hour = (respond_to?(:start_hour) && !start_hour.blank?), (respond_to?(:end_hour) && !end_hour.blank?)
     {
-      type: self.class.name.underscore,
+      type: api_type,
       title: respond_to?(:name) ? name : title,
       start_date: schedule.start_date,
       end_date: schedule.end_date,
@@ -68,22 +68,29 @@ class Event < ActiveRecord::Base
     date_time.to_formatted_s(:db)
   end
 
+  def api_type
+    api_t = self.class.name.underscore
+
+    if api_t == 'schedule_event'
+      api_t = case type_event
+              when Presential_Test; 'presential_test'
+              when Presential_Meeting; 'presential_meeting'
+              when WebConferenceLesson; 'web_conference_lesson'
+              else 'recess_or_holiday'; end
+    end
+    api_t
+  end
+
   def verify_type
-    case self.class.to_s
-    when 'Assignment' then '#FCEBCA'
-    when 'ChatRoom'   then '#A7C1F0'
-    when 'Discussion' then '#CAFCCC'
-    when 'ScheduleEvent'
-      if type_event == Presential_Test
-        '#F5D5EF'
-      elsif type_event == Presential_Meeting
-        '#FFD9E0'
-      elsif type_event == WebConferenceLesson
-        '#F5DA81'
-      else # Recess or Holiday
-        '#E3E3E3'
-      end
-    when 'Lesson' then '#A9F0F7'
+    case api_type
+    when 'assignment'; '#FCEBCA'
+    when 'chat_room'; '#A7C1F0'
+    when 'discussion'; '#CAFCCC'
+    when 'lesson'; '#A9F0F7'
+    when 'presential_test'; '#F5D5EF'
+    when 'presential_meeting'; '#FFD9E0'
+    when 'web_conference_lesson'; '#F5DA81'
+    when 'recess_or_holiday'; '#E3E3E3'
     else
       '#CCCCFF'
     end
