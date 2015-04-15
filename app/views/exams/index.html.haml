@@ -1,6 +1,6 @@
 .block_wrapper.list_exams{:"data-link-list" => exams_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
   .block_title
-    %h2= t(:title, scope: [:exam])
+    %h2= t(:title, scope: [:exams])
 
   - unless @exams.nil? or @exams.empty?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
@@ -8,9 +8,9 @@
       %thead
         %tr.lines
           %th.no_sort= t :description
-          %th{style: "width: 20%; text-align:center;"}="periodo" 
-          %th.no_sort{align: "center", style: "width: 25%;"}="situacao"
-          %th.no_sort{align: "center", style: "width: 25%;"}="nota"
+          %th{style: "width: 30%; text-align:center;"}=t(:date, scope: [:exams] ) 
+          %th.no_sort{align: "center", style: "width: 15%;"}=t(:status, scope: [:exams] )
+          %th.no_sort{align: "center", style: "width: 15%;"}=t(:grade, scope: [:exams] )
       %tbody
         - @exams.each do |exam|
           %tr.lines{id: "tr_#{exam.id}"}
@@ -23,15 +23,9 @@
                     = exam.description
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
             %td{style: 'text-align:center;'}= [l(exam.schedule.start_date, format: :normal), l(exam.schedule.end_date, format: :normal)].join(" - ")
-            %td=''
-            %td=''
+            %td=status(exam.id)
+            %td=grade(exam.id)
 
   - else
-    .block_content_text.block_content_text_list.text_none= t(:none, scope: [:exam] )
+    .block_content_text.block_content_text_list.text_none= t(:none, scope: [:exams] )
 
-
-= #javascript_include_tag "tablesorter", "edition_discussions", "tooltip", "groups_tags"
-
-:javascript
-  var div_list = $(".list_exams");
-  var offer_id = "#{escape_once(params[:offer_id])}";

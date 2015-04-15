@@ -744,6 +744,8 @@ pt_BR:
       created: Prova criada com sucesso.
       updated: Prova atualizada com sucesso.
       deleted: Prova deletada com sucesso.
+    date: Período
+    grade: Nota
 
   # página de matrícula"
   enrollments:

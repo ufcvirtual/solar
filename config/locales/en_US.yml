@@ -587,6 +587,8 @@ en_US:
       created: Exam was successfully created.
       updated: Exam was successfully updated.
       deleted: Exam was successfully deleted.
+    date: Date
+    grade: Grade
 
   enrollments:
     all: All
