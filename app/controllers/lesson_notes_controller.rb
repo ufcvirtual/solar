@@ -93,15 +93,14 @@ class LessonNotesController < ApplicationController
         stroke_color '003E7A'
         stroke_horizontal_rule
         move_down 20
-        text note.description, inline_format: true, color: '000000'
+        text ActionController::Base.helpers.sanitize(note.description, tags: %w(strong em b i u br)), inline_format: true, color: '000000'
         move_down 50
       end
-
-    end
+    end  
 
     send_data pdf.render, filename: name = [name, 'pdf'].join('.'), type: 'application/pdf'
   rescue => error
-    redirect_to :back, alert: t('lesson_notes.error.pdf')
+    redirect_to (request.referer.nil? ? home_url(only_path: false) : request.referer), alert: t('lesson_notes.error.pdf')
   end
 
   private

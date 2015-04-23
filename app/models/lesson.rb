@@ -11,7 +11,7 @@ class Lesson < Event
   has_many :allocation_tags, through: :lesson_module
   has_many :groups, through: :allocation_tags
   has_many :offers, through: :allocation_tags
-  has_many :notes, class_name: 'LessonNote', foreign_key: 'lesson_note_id', dependent: :destroy
+  has_many :notes, class_name: 'LessonNote', foreign_key: 'lesson_id', dependent: :destroy
 
   before_create :set_order
   before_save :url_protocol, if: :is_link?

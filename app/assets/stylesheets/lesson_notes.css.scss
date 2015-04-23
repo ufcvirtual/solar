@@ -10,6 +10,8 @@
 
   .block_content{
 
+    background-color: #ffffff;    
+
     -webkit-columns: 3;
     column-count: 3;
 
@@ -34,9 +36,11 @@
         word-break: break-all;
         color: #000000;
         font-size: 10pt;
+
         p{
           color: #000000;
         }
+
       }
 
       .title{
