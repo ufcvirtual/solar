@@ -11,7 +11,7 @@ class PublicFile < ActiveRecord::Base
     path: ":rails_root/media/assignment/public_area/:id_:basename.:extension",
     url: "/media/assignment/public_area/:id_:basename.:extension"
 
-  validates_attachment_size :attachment, less_than: 5.megabyte, message: ""
+  validates_attachment_size :attachment, less_than: 20.megabyte, message: ""
 
   validates_attachment_content_type_in_black_list :attachment
 
