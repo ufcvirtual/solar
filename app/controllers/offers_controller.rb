@@ -11,9 +11,9 @@ class OffersController < ApplicationController
     authorize! :index, Semester # as ofertas aparecem na listagem de semestre
     @type_id  = params[:type_id].to_i
     @semester = Semester.find(params[:semester_id])
-    @allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers").join(" ")
-    @offers   = @semester.offers_by_allocation_tags(@allocation_tags_ids.split(" "),
-      {curriculum_units: {curriculum_unit_type_id: @type_id}, course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id]})
+    @allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], 'offers').join(' ')
+    @offers   = @semester.offers_by_allocation_tags(@allocation_tags_ids.split(' '),
+      { curriculum_units: {curriculum_unit_type_id: @type_id}, course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id] })
       .paginate(page: params[:page])
 
     respond_to do |format|
@@ -66,10 +66,10 @@ class OffersController < ApplicationController
 
     optional_authorize(:update)
 
-    if @offer.update_attributes!(offer_params)
-      render json: {success: true, notice: t(:updated, scope: [:offers, :success])}
+    if @offer.update_attributes(offer_params)
+      render json: { success: true, notice: t(:updated, scope: [:offers, :success]) }
     else
-      @offer.build_period_schedule if @offer.period_schedule.nil?
+      @offer.build_period_schedule     if @offer.period_schedule.nil?
       @offer.build_enrollment_schedule if @offer.enrollment_schedule.nil?
 
       render :edit
