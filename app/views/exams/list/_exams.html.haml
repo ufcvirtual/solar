@@ -31,7 +31,8 @@
           %div{:id=>"dropdown_#{exam.id}", :class=>"dropdown dropdown-tip"}
             %ul.dropdown-menu
               -#%li= link_to (t(:new_quation, scope: [:questions, :list])), new_question_path(exam_id: exam.id, allocation_tags_ids: @allocation_tags_ids), class: "link_new_question"
-              %li= link_to "Nova questão", "#", onclick: "javascript: alert('Nova questão');", id: 'link_new_question'
+              %li= link_to (t(:new_question, scope: [:questions, :list])), new_exam_question_path(exam_id: exam.id, allocation_tags_ids: @allocation_tags_ids), class: "link_new_question"
+              -#%li= link_to "Nova questão", "#", onclick: "javascript: alert('Nova questão');", id: 'link_new_question'
               %li= link_to "Importar questão", "#", onclick: "javascript: alert('importar questão');", id: 'link_import_question'
         -#.block_toolbar_right
           .btn-group{class: "module-#{lesson_module.id}"}

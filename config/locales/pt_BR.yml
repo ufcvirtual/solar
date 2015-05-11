@@ -294,6 +294,13 @@ pt_BR:
         end_hour: à
       exam_user:
         grade: Nota
+      exam_question:
+        score: Pontuação
+      question:
+        name: 'Título'
+        enunciation: Enunciado
+      question_label:
+        name: 'Palavras-Chave'
       assignment:
         allocation_tag_id: Turma
         name: Título
@@ -744,8 +751,21 @@ pt_BR:
       created: Prova criada com sucesso.
       updated: Prova atualizada com sucesso.
       deleted: Prova deletada com sucesso.
-    date: Período
-    grade: Nota
+
+  # Questões"
+  questions:
+    label: Palavras-Chave
+    list:
+      new_question: Nova questão
+      edit_question: Editar questão
+    new:
+      type_question: Tipo
+      unique_choice: Escolha única
+      multiple_choice: Múltipla escolha
+      true_or_false: V ou F
+    form:
+      add_alternative: Adicionar alternativa
+      question_item: Alternativa
 
   # página de matrícula"
   enrollments:

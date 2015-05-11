@@ -1952,3 +1952,12 @@ exam4:
   resource_id: 190
   per_id: false
 
+question1:
+  profile_id: 5
+  resource_id: 191
+  per_id: false
+
+question2:
+  profile_id: 5
+  resource_id: 192
+  per_id: false
