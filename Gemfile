@@ -56,6 +56,8 @@ gem "strong_parameters", "~> 0.2.3"
 
 gem 'hairtrigger', '~> 0.2.12' # triggers
 
+gem 'unicorn-worker-killer' # gerenciar os workers do unicorn - producao
+
 group :development do
   gem "rb-readline", "~> 0.5.1"
   gem "net-ssh", "~> 2.6.8" # dependencia capistrano

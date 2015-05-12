@@ -6,8 +6,8 @@
       = t('.title')
     .right_buttons
       = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_note(this)', class: 'btn btn_main', :"data-tooltip" => t('.new'), :'data-url' => new_lnote_path(lesson_id: @lesson_id)
-      - unless @lesson_notes.blank?
-        = link_to content_tag(:i, nil, class: 'icon-printer'), download_lnotes_path(lesson_id: @lesson_id), class: 'btn', :"data-tooltip" => t('.download')
+      /- unless @lesson_notes.blank?
+      /  = link_to content_tag(:i, nil, class: 'icon-printer'), download_lnotes_path(lesson_id: @lesson_id), class: 'btn', :"data-tooltip" => t('.download')
   .block_content
     - unless @lesson_notes.blank?
       - @lesson_notes.each do |note|
