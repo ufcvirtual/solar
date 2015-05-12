@@ -36,6 +36,7 @@ gem "bigbluebutton-api-ruby", "~> 1.3.0"
 
 # platform adicionado para evitar que o unicorn tente ser executado no windows
 gem "unicorn", "~> 4.6.3", platform: :ruby
+gem 'unicorn-worker-killer', '~>0.4.3' # gerenciar os workers do unicorn
 
 gem "rubyzip", "~> 1.0.0"
 
@@ -56,7 +57,6 @@ gem "strong_parameters", "~> 0.2.3"
 
 gem 'hairtrigger', '~> 0.2.12' # triggers
 
-gem 'unicorn-worker-killer' # gerenciar os workers do unicorn - producao
 
 group :development do
   gem "rb-readline", "~> 0.5.1"
