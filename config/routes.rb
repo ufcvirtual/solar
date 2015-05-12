@@ -492,7 +492,7 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :questions, except: :show do
+  resources :exam_questions, except: :show do
     collection do
       get :list
     end

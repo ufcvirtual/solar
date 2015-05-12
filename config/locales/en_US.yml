@@ -247,6 +247,13 @@ en_US:
         end_hour: to
       exam_user:
         grade: Grade
+      exam_question:
+        score: Score
+      question:
+        name: Title
+        enunciation: Enunciation
+      question_label:
+        name: Labels
       assignment:
         name: Title
         type_assignment: Type
@@ -587,8 +594,20 @@ en_US:
       created: Exam was successfully created.
       updated: Exam was successfully updated.
       deleted: Exam was successfully deleted.
-    date: Date
-    grade: Grade
+
+  questions:
+    label: labels
+    list:
+      new_question: New question
+      edit_question: Edit question
+    new:
+      type_question: Type
+      unique_choice: Unique choice
+      multiple_choice: Multiple choice
+      true_or_false: True or False
+    form:
+      add_alternative: Add alternative
+      question_item: Alternative
 
   enrollments:
     all: All

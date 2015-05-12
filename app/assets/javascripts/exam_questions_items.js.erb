@@ -1,0 +1,80 @@
+// exibicao do link para deletar item
+function check_items() {
+    var del_links = $(".duplicatable_nested_form a.destroy_duplicate_nested_form");
+    if (del_links.length == 1)
+        del_links.fadeOut();
+    else
+        del_links.show();
+}
+
+$(function(){
+    check_items();
+
+    // edicao
+    if ($("div.form-inputs").data("form-type") == "edit")
+        $('.destroy_duplicate_nested_form').click(function(event) {
+            $("input[type='hidden']", $(this).parents("div.destroy_item")).val(true);
+            hide_item(this, event);
+        });
+    else
+        $('.destroy_duplicate_nested_form').click(function(event) { delete_item(this, event); });
+});
+
+//// funcoes - verificacao para delecoes de itens
+
+function hide_item(object, event) { // mesma coisa do delete item
+    if ($('.destroy_duplicate_nested_form:visible').length > 1) // nao permite deletar se tiver somente um item
+        $(object).closest('.duplicatable_nested_form').slideUp().fadeOut();
+
+    event.preventDefault();
+}
+
+function delete_item(object, event) {
+    if ($('.destroy_duplicate_nested_form:visible').length > 1) // nao permite deletar se tiver somente um item
+        $(object).closest('.duplicatable_nested_form').slideUp().remove();
+
+    check_items();
+    event.preventDefault();
+}
+
+// add items
+
+jQuery(function($) {
+    var nestedForm;
+    if ($('.duplicatable_nested_form').length)
+        nestedForm = $('.duplicatable_nested_form').last().clone();
+
+    // duplicar div para add item
+    $('.duplicate_nested_form').click(function(e) {
+        var formsOnPage, lastNestedForm, newNestedForm;
+        e.preventDefault();
+
+        lastNestedForm = $('.duplicatable_nested_form').last();
+        newNestedForm = $(nestedForm).clone();
+
+        formsOnPage = $('.duplicatable_nested_form').length;
+
+        $(newNestedForm).find('label').each(function() {
+            var newLabel, oldLabel;
+            oldLabel = $(this).attr('for');
+            newLabel = oldLabel.replace(new RegExp(/_[0-9]+_/), "_" + formsOnPage + "_");
+            return $(this).attr('for', newLabel);
+        });
+
+        $(newNestedForm).find('select, input').each(function() {
+            var newId, newName, oldId, oldName;
+            oldId = $(this).attr('id');
+            newId = oldId.replace(new RegExp(/_[0-9]+_/), "_" + formsOnPage + "_");
+            $(this).attr('id', newId);
+            oldName = $(this).attr('name');
+            newName = oldName.replace(new RegExp(/\[[0-9]+\]/), "[" + formsOnPage + "]");
+            return $(this).attr('name', newName);
+        });
+
+        $(newNestedForm).insertAfter(lastNestedForm);
+
+        $('.destroy_duplicate_nested_form', newNestedForm).on('click', function(event) { delete_item(this, event); });
+
+        check_items();
+    });
+});

@@ -969,3 +969,15 @@ res190:
   controller: 'exams'
   action: "create"
   description: "Cria nova prova"
+
+res191:
+  id: 191
+  controller: 'exam_questions'
+  action: "new"
+  description: "Cadastrar nova questão"
+
+res192:
+  id: 192
+  controller: 'exam_questions'
+  action: "create"
+  description: "Criar nova questão"
