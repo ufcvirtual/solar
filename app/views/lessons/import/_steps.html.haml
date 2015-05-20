@@ -1,0 +1,62 @@
+.import_lessons
+  .flash_message_wrapper
+  .block_title
+    %h2
+      %i.icon-book2
+      = t('.title')
+    %span.form_requirement= t(:required_fields)
+    %span.form_requirement.original_lesson= t('.original_lesson')
+  .block_content
+    
+    #steps
+      %ul
+        %li.active
+          = t('.choose')
+          .dot.active#dot-choose-lessons
+        %li
+          = t('.conclude')
+          .dot#dot-conclude
+
+    .step-list
+      = render partial: 'lessons/import/filter', locals: { types: @types }
+
+    .step-preview
+      .content-preview
+      .right_buttons
+        = link_to_function t('.back'), 'slideBack()', class: 'btn', alt: t('.back')
+
+    .step-conclude
+      = render partial: 'lessons/import/conclude', locals: { allocation_tags_ids: @ats, lesson_module_id: @lesson_module_id }
+
+:javascript
+  function back(){
+    $('.step-preview').hide('slide', { direction: 'left' }, 500);
+    $('.step-conclude').hide('slide', { direction: 'left' }, 500);
+    $('.step-list').show('slide', { direction: 'left' }, 500);
+    $('#steps li:first').addClass('active');
+    $('#steps li:first .dot').addClass('active');
+    $('#steps li:last').removeClass('active');
+    $('#steps li:last .dot').removeClass('active');
+  }
+
+  function slideBack(){
+    $('.step-preview').hide('slide', { direction: 'left' }, 500);
+
+    if($('#steps li:last').hasClass('active')){
+      $('.step-conclude').show('slide', { direction: 'left' }, 500);
+      $('.step-list').hide('slide', { direction: 'left' }, 500);
+    }else{
+      $('.step-conclude').hide('slide', { direction: 'left' }, 500);
+      $('.step-list').show('slide', { direction: 'left' }, 500);
+    }
+    
+  }
+
+  function open_lesson(icon){
+    $.get("#{import_preview_lessons_path}", { id: $(icon).parents('tr').data('id') }, function(data){
+      $('.step-list').hide('slide', { direction: 'left' }, 500);
+      $('.step-conclude').hide('slide', { direction: 'left' }, 500);
+      $('.step-preview .content-preview').html(data);
+      $('.step-preview').show('slide', { direction: 'left' }, 500);
+    });
+  }

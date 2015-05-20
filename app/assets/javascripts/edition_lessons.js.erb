@@ -1,31 +1,4 @@
-- if @academic_allocations.any?
-
-  .list_lessons{ :"data-link-list" => list_lessons_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id]) }
-    = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
-
-    = link_to t('.new_module'), new_lesson_module_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('.new_module'), class: 'link_new_module title_link', id: 'new-module'
-    .import_lessons{ style: 'margin-top: 2px;' }= link_to_function t('lessons.list.import_l'), 'import_lessons(this)', :'data-url' => import_steps_lessons_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('lessons.list.import_l'), class: 'title_link'
-
-    = render partial: 'lessons/list/modules', locals: { all_groups: @all_groups }
-
-  = link_to content_tag(:i, nil, class: 'icon-ellipsis'), list_lessons_path(page: @academic_allocations.next_page, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @academic_allocations.next_page
-
-- else
-  .block_content_text_list.text_none
-    = t(:item_search_no_found)
-
-= javascript_include_tag 'tablesorter', 'tooltip', 'groups_tags'
-
-:javascript
-  var div_list = $(".list_lessons");
-  var offer_id = "#{escape_once(params[:offer_id])}";
-
-  function import_lessons(link){
-    var url = $(link).data('url');
-    $(link).call_fancybox({href : url, open: true, minHeight: '550px', minWidth: '800px'});
-  }
-
-  jQuery(function($) {
+$(function() {
 
     $(".expand, .compress").click(function(){
       $(this).parent().hide();
@@ -43,6 +16,12 @@
       width: '70%'
     });
 
+    // $('.import_lessons').call_fancybox({
+    //   minHeight: '50px',
+    //   minWidth: '500px',
+    //   autoScale: true
+    // });
+
     $('.lesson_check_all').map(function(){
       $(this).nice_checkbox({
         objects_to_change_status: ['.manage_files_lesson', '.download_lesson_zip', '.release_lessons', '[id^="move_lesson_from"]']
@@ -57,7 +36,7 @@
         $(this).call_fancybox({href : url, open: true});
         return false;
       }else
-        flash_message("#{I18n.t(:one_lesson_must_be_selected, scope: [:lesson_files])}", "alert");
+        flash_message("<%=I18n.t(:one_lesson_must_be_selected, scope: [:lesson_files])%>", "alert");
 
       return false;
     });
@@ -84,7 +63,7 @@
 
       if(can_do_action(lesson_ids)){
         if(destination_module.length < 1) // se nenhum módulo destino foi selecionado
-          alert("#{I18n.t(:must_select_module, scope: [:lessons, :errors])}");
+          alert("<%=I18n.t(:must_select_module, scope: [:lessons, :errors])%>");
         else{
           var url = $(this).data('link-move').replace('lessons_param', lesson_ids).replace('module_param', destination_module.val()).replace("undefined", "");
 
@@ -138,36 +117,6 @@
       return false;
     });
 
-    $(".up, .down").click(function() {
-      $('#lesson_dropdown').hide();
-      var row = $(this).parents("tr:first");
-      var id1 = row.attr('lesson_id');
-
-      var f_error = function(data){
-        var data = $.parseJSON(data.responseText);
-        if (typeof(data.alert) != "undefined")
-          flash_message(data.alert, 'alert');
-      };
-
-      if ($(this).is(".up")) {
-        if (row.prev().attr('lesson_order') == undefined) return false;
-
-        var id2 = row.prev().attr('lesson_id');
-        var url = "#{change_order_lesson_path(':id1', ':id2')}".replace(':id1', id1).replace(':id2', id2);
-
-        $.put(url, function(){ row.insertBefore(row.prev()); }).error(f_error);
-
-      } else { // down
-        if (row.next().attr('lesson_order') == undefined) return false;
-
-        var id2 = row.next().attr('lesson_id');
-        var url = "#{change_order_lesson_path(':id1', ':id2')}".replace(':id1', id1).replace(':id2', id2);
-
-        $.put(url, function(data, t, x){ row.insertAfter(row.next()); }).error(f_error);
-      }
-      return false;
-    });
-
     $(".delete_module").click(function(){
       $('#lesson_dropdown').hide();
 
@@ -192,9 +141,9 @@
           url = $(this).data("link-manage").replace('lessons_ids', selected_lessons[0]);
           $(this).call_fancybox({href : url, open: true});
         }else
-          flash_message("#{I18n.t(:lesson_must_have_file_type, scope: [:lesson_files])}", "alert");
+          flash_message("<%=I18n.t(:lesson_must_have_file_type, scope: [:lesson_files])%>", "alert");
       }else
-        flash_message("#{I18n.t(:one_lesson_must_be_selected, scope: [:lesson_files])}", "alert");
+        flash_message("<%=I18n.t(:one_lesson_must_be_selected, scope: [:lesson_files])%>", "alert");
     });
 
     $(".delete_lesson").click(function(){
@@ -226,7 +175,7 @@
             window.location.href = link_download;
           },
           error: function() {
-            flash_message("#{I18n.t(:invalid_lesson_to_download, :scope => [:lessons, :errors])}", "alert");
+            flash_message("<%=I18n.t(:invalid_lesson_to_download, :scope => [:lessons, :errors])%>", "alert");
           }
         });
       }
@@ -248,7 +197,7 @@
   // verifica se pode realizar a ação (não permitirá e exibirá alerta se nenhuma aula tiver sido selecionada)
   function can_do_action(selected_lessons){
     if(selected_lessons.length == 0){
-      flash_message('#{I18n.t(:must_select_lessons, scope: [:lessons, :notifications])}', "alert");
+      flash_message("<%=I18n.t(:must_select_lessons, scope: [:lessons, :notifications])%>", "alert");
       return false;
     }else
       return true;

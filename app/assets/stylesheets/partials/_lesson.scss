@@ -181,7 +181,7 @@
   margin-top: 4px;
 }
 
-#new-module{
+.title_link{
   text-decoration: underline;
   width: 775px;
   display: block;
@@ -192,4 +192,10 @@
 
 .link_content.lesson{
   display: inline;
+}
+
+#lesson_form{
+  .lesson_privacy{
+    display: inline;
+  }
 }

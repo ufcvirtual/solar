@@ -1,0 +1,67 @@
+- groups = (!@selected.nil? && @selected == 'GROUP')
+.block_wrapper.list_lessons_import{ :"data-link-list" => import_list_lessons_path(allocation_tags_ids: @allocation_tags_ids) }
+  - unless @lmodules.empty?
+    - @lmodules.each do |lmodule|
+      %div{ class: (groups ? 'block_title_module block_module' : 'block_title') }
+        %h2
+          %i.icon-class
+          = lmodule.name
+        - if groups
+          .input.groups_tags= render 'groups/groups_tags', groups: lmodule.groups, tool: lmodule, all_groups: nil, paths: nil
+      - lessons = lmodule.approved_lessons(current_user.id)
+      - unless lessons.blank?
+        %table.tb_list
+          %thead
+            %tr.lines
+              %th.no_sort{ style: 'width: 25px;' }= check_box_tag "all_lessons_#{lmodule.id}", false, false, :"data-children-names" => "c_#{lmodule.id}_"
+              %th= t('.name')
+              %th= t('.type')
+              %th.icon= t('.preview')
+          %tbody
+            - lessons.each do |lesson|
+              %tr.lines{ :'data-id' => lesson.id }
+                %td= check_box_tag("c_#{lmodule.id}_#{lesson.id}", lesson.id, false, { class: 'cbx_value' })
+                %td= lesson.name
+                %td= lesson.type_lesson.zero? ? t('lessons.new.archive') : t('lessons.new.link')
+                %td= link_to_function content_tag(:i, nil, class: 'icon-eye'), 'open_lesson(this)', :'data-tooltip' => t('.preview_tooltip')
+      - else
+        .block_content_text_list.text_none= t('.no_lesson')
+  - else
+    .block_content.block_content_text= t(:lesson_message)
+
+.right_buttons
+  = link_to_function t('.cancel'), 'cancel()', class: "btn", alt: t('.cancel')
+  = link_to_function t('.add'), 'add_lessons()', class: "btn btn_main", alt: t('.add')
+  = link_to_function t('.conclude'), 'go_to_conclude()', class: "btn btn_main", alt: t('.conclude')
+
+= javascript_include_tag 'tooltip'
+
+:javascript
+  $(function(){
+    $('[name^="all_lessons_"]').map(function(){
+      $(this).nice_checkbox();
+    });
+  });
+
+  function add_lessons(){
+    var ids = $('.list_lessons_import tbody input:checked').map(function() { return this.value; }).get();
+
+    $.get("#{import_details_lessons_path}", {ids: ids}, function(data){
+      $('tbody.lessons_to_import').append(data);
+      flash_message('Aulas adicionadas', 'notice');
+      $('.list_lessons_import input:checked').each(function(i){ $(this).prop("checked", false); });
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    });
+  }
+
+  function go_to_conclude(){
+    $('.step-list').hide('slide', { direction: 'left' }, 500);
+    $('.step-conclude').show('slide', { direction: 'left' }, 500);
+    $('#steps li:first').removeClass('active');
+    $('#steps li:first .dot').removeClass('active');
+    $('#steps li:last').addClass('active');
+    $('#steps li:last .dot').addClass('active');
+  }

@@ -9,9 +9,18 @@ class LessonsController < ApplicationController
 
   before_filter :prepare_for_group_selection, only: :download_files
   before_filter :offer_data, only: :open
+  before_filter :set_current_user, only: :update
 
   before_filter only: [:new, :create, :edit, :update] do |controller|
     authorize! crud_action, Lesson, { on: @allocation_tags_ids = params[:allocation_tags_ids] }
+  end
+
+  before_filter only: [:edit, :update] do |controller|
+    verify_owner(params[:id])
+  end
+
+  after_filter only: :update do 
+    log(@lesson, "lesson: #{@lesson.id}, [copy original data] receive_updates_lessons: #{@lesson.receive_updates_lessons.pluck(:id)}") rescue nil
   end
 
   layout false, except: :index
@@ -50,7 +59,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
 
     render layout: 'lesson'
-  rescue => error
+  rescue
     render text: t('lessons.no_data'), status: :unprocessable_entity
   end
 
@@ -58,7 +67,7 @@ class LessonsController < ApplicationController
     authorize! :show, Lesson
 
     @module = LessonModule.find(params[:lesson_module_id])
-    render partial: "lessons/open/lessons", locals: { lesson_module: @module }
+    render partial: 'lessons/open/lessons', locals: { lesson_module: @module }
   end
 
   # GET /lessons/new
@@ -79,7 +88,7 @@ class LessonsController < ApplicationController
 
     if @lesson.is_file?
       files_and_folders(@lesson)
-      render template: "lesson_files/index"
+      render template: 'lesson_files/index'
     else
       render json: { success: true, notice: t('lessons.success.created') }
     end
@@ -94,22 +103,18 @@ class LessonsController < ApplicationController
   # GET /lessons/1/edit
   def edit
     lesson_modules_by_ats(@allocation_tags_ids)
-
-    @lesson = Lesson.find(params[:id])
     groups_by_lesson(@lesson)
   end
 
   # PUT /lessons/1
   # PUT /lessons/1.json
-  def update
-    @lesson = Lesson.find(params[:id])
+ def update
     @lesson.update_attributes! lesson_params
 
     render json: { success: true, notice: t('lessons.success.updated') }
   rescue ActiveRecord::RecordInvalid
     lesson_modules_by_ats(@allocation_tags_ids)
     groups_by_lesson(@lesson)
-
     render :edit
   rescue => error
     request.format = :json
@@ -143,22 +148,22 @@ class LessonsController < ApplicationController
   end
 
   def destroy
+    verify_owner(ids = params[:id].split(','))
     authorize! :destroy, Lesson, on: params[:allocation_tags_ids]
 
-    test_lesson = false
-    @lessons = Lesson.where(id: params[:id].split(','))
+    lessons       = Lesson.where(id: ids)
+    draft_lessons = lessons.where(status: Lesson_Test)
 
-    begin
-      Lesson.transaction do
-        @lessons.each do |lesson|
-          test_lesson = true unless lesson.destroy # a aula nao foi deletada, mas vai ser transformada em rascunho
-        end
-      end
-
-      render json: { success: true, notice: (test_lesson ? t('lessons.success.saved_as_draft') : t('lessons.success.deleted')) }
-    rescue
-      render json: { success: false, alert: t('lessons.errors.deleted') }, status: :unprocessable_entity
+    Lesson.transaction do
+      imported_to = draft_lessons.map(&:receive_updates_lessons).flatten.map(&:id)
+      log(draft_lessons.first.lesson_module, "lessons: #{imported_to}, [remove files and copy original before removal] original: #{ids}") rescue nil if imported_to.any?
+      log(draft_lessons.first.lesson_module, "lessons: #{draft_lessons.pluck(:id)}, [removal]", LogAction::TYPE[:destroy]) rescue nil if draft_lessons.any?
+      lessons.destroy_all
     end
+
+    render json: { success: true, notice: (draft_lessons.empty? ? t('lessons.success.saved_as_draft') : t('lessons.success.deleted')) }
+  rescue
+    render json: { success: false, alert: t('lessons.errors.deleted') }, status: :unprocessable_entity
   end
 
   def download_files
@@ -186,8 +191,9 @@ class LessonsController < ApplicationController
 
   ## PUT lessons/:id/order/:change_id
   def order
-    l1, l2 = Lesson.where("id IN (?)", [params[:id], params[:change_id]])
+    l1, l2 = Lesson.where(id: ids = [params[:id], params[:change_id]])
 
+    verify_owner(ids)
     authorize! :update, l1
 
     Lesson.transaction do
@@ -196,13 +202,15 @@ class LessonsController < ApplicationController
       l2.save!
     end
 
-    render json: {success: true}
+    render json: { success: true }
   end
 
   def change_module
     authorize! :change_module, Lesson, on: params[:allocation_tags_ids]
 
     lesson_ids = params[:lessons_ids].split(',') rescue []
+    verify_owner(lesson_ids)
+
     new_module_id = LessonModule.find(params[:move_to_module]).id rescue nil
 
     raise t('lessons.notifications.must_select_lessons') if lesson_ids.empty?
@@ -210,9 +218,94 @@ class LessonsController < ApplicationController
 
     Lesson.where(id: lesson_ids).update_all(lesson_module_id: new_module_id)
 
-    render json: {success: true, msg: t('lessons.success.moved')}
+    render json: { success: true, msg: t('lessons.success.moved') }
   rescue => error
-    render json: {success: false, msg: error.message}, status: :unprocessable_entity
+    render json: { success: false, msg: error.message }, status: :unprocessable_entity
+  end
+
+  ## Import ##
+  def import_steps
+    @ats   = params[:allocation_tags_ids]
+    @types = CurriculumUnitType.all
+    @lesson_module_id = params[:lesson_module_id]
+    render partial: 'lessons/import/steps'
+  end
+
+  def import_list
+    allocation_tags = AllocationTag.get_by_params(params)
+    @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
+    authorize! :import, Lesson, { on: @allocation_tags_ids }
+    @lmodules = LessonModule.by_ats(@allocation_tags_ids.split(' ').flatten)
+    render partial: 'lessons/import/list'
+  end
+
+  def import_details
+    @lessons = Lesson.find(params[:ids].split(' ').flatten)
+    authorize! :import, Lesson, { on: @lessons.map(&:allocation_tags).flatten.map(&:id).flatten, any: true }
+
+    render partial: 'lessons/import/lesson'
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+  rescue
+    render json: { success: false, alert: t('lessons.errors.import_empty') }, status: :unprocessable_entity
+  end
+
+  def import
+    ActiveRecord::Base.transaction do
+      raise 'import_empty' if params[:lessons].split(';').empty?
+      lessons_to_import = Lesson.where(id: ids = params[:lessons].split(';').map{ |hash| hash.split(',')[0] })
+
+      verify_owner(ids)
+      authorize! :import, Lesson, { on: lessons_to_import.map(&:allocation_tags).flatten.map(&:id).flatten, any: true }
+      authorize! :import, Lesson, { on: params[:allocation_tags_ids].split(' ').flatten }
+      
+      params[:lessons].split(';').each do |lesson_hash|
+        lesson_hash = lesson_hash.split(',')
+        lesson      = Lesson.find(lesson_hash[0])
+        raise 'private_lesson' unless lesson.can_import?(current_user.id)
+        attributes  = lesson.attributes.except('id', 'schedule_id', 'user_id', 'order', 'lesson_module_id', 'imported_from_id', 'receive_updates')
+        schedule    = Schedule.create start_date: lesson_hash[2], end_date: lesson_hash[3]
+        raise 'import_schedule' unless schedule.valid?
+
+        if params[:lesson_module_id].blank?
+          modules = LessonModule.by_name_and_allocation_tags_ids(lesson.lesson_module.name, params[:allocation_tags_ids].split(' ').flatten)
+          if modules.any?
+            lesson_module_id = modules.first.id
+          else
+            lesson_module = LessonModule.new lesson.lesson_module.attributes.except('id')
+            lesson_module.allocation_tag_ids_associations = params[:allocation_tags_ids].split(' ').flatten
+            lesson_module.save!
+            lesson_module_id = lesson_module.id
+            created_module = true
+          end
+        else
+          lesson_module_id = params[:lesson_module_id]
+        end
+
+        lesson_module = LessonModule.find(lesson_module_id)
+        lessons = lesson_module.approved_lessons(current_user.id)
+        order = lesson_hash[1].to_i
+        order += 1 while lessons.where(order: order).any?
+
+        imported_lesson = Lesson.new attributes.merge!({ 'order' => order, 'schedule_id' => schedule.id, 'lesson_module_id' => lesson_module_id, 'imported_from_id' => lesson.id, 'receive_updates' => lesson_hash[4], 'user_id' => current_user.id })
+        imported_lesson.save!
+
+        log(lesson_module, "lesson: #{imported_lesson.id} [import], #{attributes.merge!(created_module: created_module, start_date: lesson_hash[2], end_date: lesson_hash[3])}", LogAction::TYPE[:create]) rescue nil
+      end
+    end
+    
+    render json: { success: true, msg: t('lessons.success.imported') }
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+  rescue => error
+    raise "#{error}"
+    render_json_error(error, 'lessons.errors')
+  end
+
+  def import_preview
+    @lesson = Lesson.find(params[:id])
+    authorize! :import, Lesson, { on: @lesson.allocation_tags.map(&:id).flatten, any: true }
+    render partial: 'lessons/open/content'
   end
 
   private
@@ -239,13 +332,13 @@ class LessonsController < ApplicationController
       allocation_tags = AllocationTag.get_by_params(params)
       @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
 
-      authorize! :index, Lesson, {on: @allocation_tags_ids, accepts_general_profile: true, read: true}
+      authorize! :index, Lesson, { on: @allocation_tags_ids, accepts_general_profile: true, read: true }
       @offer = Offer.find(allocation_tags[:offer_id])
     end
 
     def lesson_modules_by_ats(atgs)
-      @lesson_modules = LessonModule.select("DISTINCT ON (lesson_modules.id) lesson_modules.*")
-        .joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: atgs.split(" ").flatten})
+      @lesson_modules = LessonModule.select('DISTINCT ON (lesson_modules.id) lesson_modules.*')
+        .joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: atgs.split(' ').flatten })
     end
 
     def groups_by_lesson(lesson)
@@ -261,17 +354,17 @@ class LessonsController < ApplicationController
       Lesson.to_open(allocation_tags_ids, current_user.id)
     end
 
-    # define as variáveis e retorna se as aulas são válidas ou não para download
+    # define as variaveis e retorna se as aulas sao validas ou nao para download
     def verify_lessons_to_download(lessons_ids, download_method = false)
-      return false if lessons_ids.empty? # não selecionou nenhuma aula
+      return false if lessons_ids.empty? # nao selecionou nenhuma aula
 
       @lessons, @lessons_names, @all_files_paths = [], [], []
 
-      lessons_files = Lesson.where(id: lessons_ids.split(",").flatten, type_lesson: Lesson_Type_File)
+      lessons_files = Lesson.where(id: lessons_ids.split(',').flatten, type_lesson: Lesson_Type_File)
       lessons_files.each do |lesson|
         if lesson.valid_file?
-          @lessons << lesson.id # usado para verificação de erro
-          if download_method # recupera apenas se for no método de download / usado na recuperação dos arquivos
+          @lessons << lesson.id # usado para verificacao de erro
+          if download_method # recupera apenas se for no método de download / usado na recuperacao dos arquivos
             @lessons_names << lesson.name
             @all_files_paths << lesson.path(full_path = true, with_address = false).to_s
           end
@@ -282,10 +375,29 @@ class LessonsController < ApplicationController
       return true
     end
 
-    private
+    def lesson_params
+      params.require(:lesson).permit(:name, :description, :type_lesson, :address, :lesson_module_id, :privacy, :receive_updates, schedule_attributes: [:id, :start_date, :end_date])
+    end
 
-      def lesson_params
-        params.require(:lesson).permit(:name, :description, :type_lesson, :address, :lesson_module_id, schedule_attributes: [:id, :start_date, :end_date])
+    def verify_owner(ids)
+      if ids.kind_of?(Array)
+        @lessons = Lesson.where(id: ids)
+        private_lessons = @lessons.where(privacy: true)
+        raise CanCan::AccessDenied unless private_lessons.size == private_lessons.where(user_id: current_user.id).size
+      else
+        @lesson = Lesson.find(ids)
+        raise CanCan::AccessDenied if @lesson.privacy && @lesson.user_id != current_user.id
       end
+    end
+
+    def params_to_log
+      { user_id: current_user.id, ip: request.remote_ip }
+    end
+
+    def log(object, message, type=LogAction::TYPE[:update])
+      object.academic_allocations.each do |ac|
+        LogAction.create(params_to_log.merge!(description: message, academic_allocation_id: ac.id, log_type: type))
+      end
+    end
 
 end

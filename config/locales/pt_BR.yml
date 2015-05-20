@@ -333,6 +333,8 @@ pt_BR:
         end_date: à
         status: Status
         address: URL
+        privacy: Privacidade
+        receive_updates: Receber atualizações
       lesson_module:
         name: Nome
       support_material_file:
@@ -908,6 +910,12 @@ pt_BR:
       compress_description: Comprimir descrição
       modules:
         groups: Turmas
+        import: Importar aulas ao módulo
+      import_l: Importar aulas e módulos
+      lessons:
+        privacy: Privacidade
+        public: Pública
+        private: Privada
     new:
       draft: rascunho
       approved: liberada
@@ -931,15 +939,31 @@ pt_BR:
       deleted: Não foi possível deletar as aulas
       must_select_module: Um módulo destino deve ser selecionado
       url_must_be_informed: Uma URL deve ser definida
+      general_message: Não foi possível realizar a ação desejada
+      import_empty: É necessário selecionar aulas a serem importadas
+      import_schedule: 'Data inicial é obrigatória e deve ser menor que a data final, que é opcional'
+      private_lesson: Não é possível importar uma aula privada a não ser que você seja o dono
+      owner: só pode ser alterada pelo dono
     success:
-      saved_as_draft: Aulas deletadas ou salvas como rascunho com sucesso
-      deleted: Aulas deletadas com sucesso
-      moved: Aulas movidas com sucesso
+      saved_as_draft: Aulas deletadas ou salvas como rascunho com sucesso.
+      deleted: Aulas deletadas com sucesso.
+      moved: Aulas movidas com sucesso.
       created: Aula criada com sucesso.
       updated: Aula atualizada com sucesso.
+      imported: Aulas/módulos importados com sucesso.
     form:
       cancel: Cancelar
       groups: Turmas
+      privacy: Privacidade
+      privacy_tooltip: Uma aula privada não pode ser importada nem editada por usuários que não o criador.
+      public: Pública
+      private: Privada
+      receive_updates: Receive updates
+      receive_updates_tooltip: "Ao marcar esta opção, a aula irá receber todas as atualizações da aula original."
+      check_receive_updates: 'Ao salvar, todas os dados da aula original e todas as futuras alterações serão copiados para esta.'
+      uncheck_receive_updates: 'Ao salvar, qualquer alteração feita na aula original não irá repercurtir nesta.'
+      public_to_private: 'Ao tornar a aula privada, as aulas já importadas não serão removidas. Entretanto, não receberão novas atualizações e nem será possível fazer novas importações a partir desta aula se não o dono.'
+      warning: 'A aula original foi tornada privada, portanto esta aula não receberá atualizações daquela.'
     select_lesson:
       no_lessons: Sem Aulas
     show:
@@ -959,6 +983,40 @@ pt_BR:
     lesson:
       no_note: Nenhuma nota de aula
       notes: Notas de aula
+    import:
+      conclude:
+        order: Ordem
+        module: Módulo
+        name: Nome da aula
+        type: Tipo
+        source: Origem
+        begin: Início
+        end: Fim
+        preview: Ver
+        receive_updates: Receber atualizações
+        back: Voltar
+        cancel: Cancelar
+        import: Importar
+        confirm: Cancelar importação?
+        receive_updates_tooltip: Receber atualizações da aula original.
+        delete: Não importar aula(s)
+      lesson:
+        preview: Ver aula
+      list:
+        name: Nome
+        preview: Ver
+        type: Tipo
+        preview_tooltip: Visualizar aula
+        cancel: Cancelar
+        add: Adicionar
+        conclude: Prosseguir
+        no_lesson: Nenhuma aula
+      steps:
+        title: Importação de aulas/módulos
+        choose: Escolher aulas
+        conclude: Finalizar
+        back: Voltar
+        original_lesson: '** com relação a aula original'
 
   lesson_modules:
     general_of_offer: "Geral"

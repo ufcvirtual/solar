@@ -1,0 +1,70 @@
+.import_lessons{
+  .block_content{
+    margin-top: 0px;
+    padding-top: 1px;
+    background-color: #ffffff;
+  }
+
+  .block_title{
+    span.form_requirement.original_lesson{
+      padding-top: 12px;
+    }
+  }
+  
+  #steps{
+    width: auto;
+    margin: 20px;
+  }
+  .edition block_content{
+    margin: 10px;
+  }
+
+  .block_content_toolbar{
+    min-height: 25px;
+  }
+
+  .step-conclude, .step-preview{
+    display: none;
+  }
+
+  .step-preview{
+    min-height: 400px;
+    iframe{
+      min-height: 390px;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.list_lessons_import.block_wrapper, .list_lessons_conclude{
+  width: auto;
+
+  table{
+    th, td{
+      text-align: center;
+      input.hasDatepicker{
+        width: 70px;
+      }
+    }
+
+    th.icon{
+      width: 5%;
+    }
+
+    a{
+      text-decoration: none;
+    }
+  }
+
+}
+
+.lesson_form{
+  .imported{
+    input{
+      margin-top: 12px;
+    }
+  }
+  .hint{
+    vertical-align: bottom;
+  }
+}

@@ -4,34 +4,34 @@
 #team.panel
   .content
     - @sectors = YAML::load(File.open('public/members.yml'))
-    = render template: "/pages/team"
-  = image_tag("arrow.png", :class => "arrow")
+    = render template: '/pages/team'
+  = image_tag('arrow.png', class: 'arrow')
 
 #faq.panel
   .content
-    = render template: "/pages/faq"
-  = image_tag("arrow.png", :class => "arrow")
+    = render template: '/pages/faq'
+  = image_tag('arrow.png', class: 'arrow')
 
 %footer
   .menu_footer
     %ul
-      %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', :target => '_blank'
-      %li= link_to t(:login_footer2), 'http://www.ufc.br', :target => '_blank'
-      %li= link_to t(:login_footer3), "#team", :class => 'panel-link'
-      / %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank'
-      %li= link_to "Privacidade", "facebook.html", target: "_blank"
+      %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', target: '_blank'
+      %li= link_to t(:login_footer2), 'http://www.ufc.br', target: '_blank'
+      %li= link_to t(:login_footer3), '#team', class: 'panel-link'
+      %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', target: '_blank'
+      %li= link_to 'Privacidade', 'facebook.html', target: '_blank'
       %li.choice-tutorial
-        = link_to t(:help), '#', :class => "link-arrow"
+        = link_to t(:help), '#', class: 'link-arrow'
         %ul.choice-tutorial-menu
-          %li= link_to t(:login_faq), "#faq", :class => 'panel-link'
-          %li= link_to t(:videos), "video_tutorials.html", target: "_blank"
+          %li= link_to t(:login_faq), '#faq', class: 'panel-link'
+          %li= link_to t(:videos), 'video_tutorials.html', target: '_blank'
       %li.choice-language
-        = link_to t(:login_language), '#', :class => "link-arrow"
+        = link_to t(:login_language), '#', class: "link-arrow"
         %ul.choice-language-menu
           %li.language.pt_BR
-            = link_to 'Português (BR)', url_for(locale: locales.first), class: ((selected == locales.first) ? "selected" : "")
+            = link_to 'Português (BR)', url_for(locale: locales.first), class: ((selected == locales.first) ? 'selected' : '')
           %li.language.en_US
-            = link_to 'English (USA)', url_for(locale: locales.last), class: ((selected == locales.last) ? "selected" : "")
+            = link_to 'English (USA)', url_for(locale: locales.last), class: ((selected == locales.last) ? 'selected' : '')
 
 :javascript
   var div = '<footer><div class="menu_footer">'+ $('.menu_footer').html() +'</div></footer>';

@@ -276,6 +276,13 @@ Solar::Application.routes.draw do
       get :list, action: :list
       get :download_files
       get :verify_download
+
+      ## import lessons
+      get "/import/lessons/steps",   to: "lessons#import_steps",   as: :import_steps
+      get "/import/lessons/list",    to: "lessons#import_list",    as: :import_list
+      get "/import/lessons/details", to: "lessons#import_details", as: :import_details
+      get "/import/lessons/preview", to: "lessons#import_preview", as: :import_preview
+      put "/import/lessons/",        to: "lessons#import",         as: :import
     end
     resources :files, controller: :lesson_files, except: [:index, :show, :update, :create] do
       collection do
@@ -498,7 +505,7 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :savs, only: :index
+  resources :savs, only: :index, defaults: { format: 'json' }
 
   match '/select_group', to: 'application#select_group', as: :select_group
 

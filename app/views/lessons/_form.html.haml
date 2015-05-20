@@ -1,14 +1,16 @@
-= simple_form_for(@lesson, html: {id: 'lesson_form'}) do |f|
+- can_receive_updates = @lesson.can_receive_updates?
+= simple_form_for(@lesson, html: { id: 'lesson_form' }) do |f|
 
-  / header
   %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit_lesson : :new_lesson), scope: [:lessons, :list])
   %span.form_requirement= t(:required_fields)
 
-  / content
   .lesson_form.block_content
     = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
 
     .form-inputs.block_content
+      - unless can_receive_updates
+        .title-warning
+          = t('.warning')
       .lesson_module
         = f.label t('editions.items.lesson_module')
         - if f.object.persisted?
@@ -24,14 +26,14 @@
         - has_end_date = f.object.has_end_date?
 
         .schedule_dates
-          .left= s.input :start_date, as: :string, input_html: {id: 'from-date', value: l(s.object.start_date.try(:to_date) || Date.today, format: :datepicker), required: true, size: 10}
+          .left= s.input :start_date, as: :string, input_html: { id: 'from-date', value: l(s.object.start_date.try(:to_date) || Date.today, format: :datepicker), required: true, size: 10 }
           .right_form
             %span.end_date{class: (has_end_date ? '' : 'invisible')}
-              = s.input :end_date, as: :string, input_html: {id: 'until-date', value: (has_end_date ? l(s.object.end_date.to_date, format: :datepicker) : nil), size: 10}
+              = s.input :end_date, as: :string, input_html: { id: 'until-date', value: (has_end_date ? l(s.object.end_date.to_date, format: :datepicker) : nil), size: 10 }
 
         .select_end_date
           = f.label ' '
-          = check_box "check", "end_date", {id: 'check_end_date', checked: has_end_date }
+          = check_box 'check', 'end_date', { id: 'check_end_date', checked: has_end_date }
           %span.checkbox_label= label_tag "check[end_date]", t('lessons.new.enable_end_date')
 
       .lesson_type
@@ -42,19 +44,28 @@
           -elsif f.object.is_link?
             = f.hint t('lessons.new.link')
         - else
-          = f.select :type_lesson, ([ [t('lessons.new.link'), Lesson_Type_Link], [t('lessons.new.archive'), Lesson_Type_File] ]), include_blank: false
+          = f.select :type_lesson, ([ [t('lessons.new.link'), Lesson_Type_Link], [t('lessons.new.archive'), Lesson_Type_File] ]), include_blank: false, input_html_options: {}
 
-      - if (@lesson_modules.nil? or @lesson.is_link?)
+      .privacy
+        = f.label t('.privacy'), :'data-tooltip' => t('.privacy_tooltip')
+        %span= f.input :privacy, as: :select, collection: [[t('.public'), false], [t('.private'), true]], label: false, include_blank: false, selected: f.object.privacy || false
+
+      - unless @lesson.imported_from.nil?
+        .imported
+          = f.label t('.receive_updates'), :'data-tooltip' => t('.receive_updates_tooltip')
+          = f.check_box :receive_updates, { checked: f.object.receive_updates }
+            
+      - if (@lesson_modules.nil? || @lesson.is_link?)
         .url_lesson
           = f.input :address
           .disabled
             = f.label ' '
             = t('lessons.new.example')
 
-      = render "groups/codes"
+      = render 'groups/codes'
 
       .right_buttons
-        = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: 'button'
+        = button_to_function t('.cancel'), 'jQuery.fancybox.close()', class: "btn btn_default btn_lightbox", type: 'button'
         = button_tag t('lessons.new.save'), class: 'btn btn_main btn_lightbox', alt: t('lessons.new.save'), type: 'button', id: 'save_button'
 
 :css
@@ -67,13 +78,13 @@
 
   $("#from-date, #until-date").mask("#{I18n.t(:mask, scope: "date.formats")}");
 
-  /* se é o cadastro de uma nova aula, o "new Date" irá considerar o offset do time_zone (-3h) e irá exibir o dia incorreto */
+  /* se eh o cadastro de uma nova aula, o "new Date" ira considerar o offset do time_zone (-3h) e ira exibir o dia incorreto */
   var new_action = (("#{escape_once(params[:action])}" == "new" || "#{escape_once(params[:action])}" == "create")  ? 1 : 0);
 
   $(function(){
     var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
 
-    /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */
+    /* impede que o usuario selecione uma data final menor que inicial e uma inicial maior que a final */
     $('#from-date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#until-date').datepicker("option", "minDate", selected); } }) );
     $('#until-date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#from-date').datepicker("option", "maxDate", selected); } }) );
 
@@ -91,7 +102,7 @@
         dont_remove_lightbox: file_lesson_page,
         replace_list: $('.list_lessons'),
         complement_success: function(data){
-          if(file_lesson_page) // atualiza conteúdo do lightbox para a gerência de arquivos
+          if(file_lesson_page) // atualiza conteudo do lightbox para a gerencia de arquivos
             $.fancybox(data);
         }
       });
@@ -104,13 +115,30 @@
 
     $("#lesson_type_lesson").change(function(){
       t = $('#lesson_type_lesson').val();
-      if (t == "#{Lesson_Type_Link}"){
+      if (t == "#{Lesson_Type_Link}"){papp
         $(".url_lesson").show();
         $("#save_button").html('#{I18n.t(:save, :scope => [:lessons, :new])}');
       }else{
         $(".url_lesson").hide();
         if(new_action == 1)
           $("#save_button").html("#{I18n.t(:continue, :scope => [:lessons, :new])}");
+      }
+    });
+
+    $('#lesson_privacy').change(function(){
+      if($(this).val()=='true')
+        flash_message("#{I18n.t('.public_to_private')}", 'warning', 'lesson_form');
+      else
+        $('.lesson_form #flash_message').remove();
+    });
+
+    $('#lesson_receive_updates').change(function(){
+      if("#{can_receive_updates}" == "true"){
+        $('.lesson_form #flash_message').remove();
+        if($(this).prop("checked"))
+          flash_message("#{I18n.t('.check_receive_updates')}", 'warning', 'lesson_form');
+        else
+          flash_message("#{I18n.t('.uncheck_receive_updates')}", 'warning', 'lesson_form');
       }
     });
 

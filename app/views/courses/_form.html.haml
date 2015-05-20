@@ -1,7 +1,7 @@
 %span.form_requirement= t(:required_fields)
 .course_form
-  = simple_form_for(@course, html: {id: "course_form"}) do |f| 
-    %h1#lightBoxDialogTitle= t((@course.persisted? ? "edit" : "new"), scope: "courses.index")
+  = simple_form_for(@course, html: { id: 'course_form' }) do |f| 
+    %h1#lightBoxDialogTitle= t((@course.persisted? ? 'edit' : 'new'), scope: 'courses.index')
     %span.form_requirement= t(:required_fields)
 
     = hidden_field_tag :type_id, @type_id
@@ -9,8 +9,8 @@
       = f.input :code, input_html: {size: 50}
       = f.input :name
       .right_buttons
-        = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
-        = button_tag t(".save"), class: "btn btn_main btn_lightbox", alt: t(".save"), type: "button", id: "save"
+        = button_to_function t('.cancel'), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
+        = button_tag t('.save'), class: 'btn btn_main btn_lightbox', alt: t('.save'), type: 'button', id: 'save'
 
 :javascript
 
