@@ -7,14 +7,14 @@ class LessonTest < ActiveSupport::TestCase
   test "aula deve ter nome" do
     lesson = Lesson.create(lesson_module_id: lesson_modules(:module1).id, order: 99, type_lesson: Lesson_Type_Link, address: "www.google.com")
 
-    assert not(lesson.valid?)
+    assert !lesson.valid?
     assert_equal lesson.errors[:name].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
   end
 
   test "aula deve ter url valida se for de link" do
     lesson = Lesson.create(lesson_module_id: lesson_modules(:module1).id, name: "Lorem ipsum", order: 99, type_lesson: Lesson_Type_Link, address: "google")
 
-    assert not(lesson.valid?)
+    assert !lesson.valid?
     assert_equal lesson.errors[:address].first, I18n.t(:invalid, :scope => [:activerecord, :errors, :models, :lesson, :attributes, :address])
   end
 
@@ -46,19 +46,19 @@ class LessonTest < ActiveSupport::TestCase
     lesson.type_lesson = Lesson_Type_Link
     lesson.save
 
-    assert not(File.exist?(lesson.path(true)))
+    assert !File.exist?(lesson.path(true))
   end
 
   test "deletando aula com arquivos" do
     lesson = lessons(:lesson_files_to_delete)
-    path = lesson.path(true).join('1','2','3')
+    path = lesson.path(true)
     FileUtils.mkdir_p(path)
 
     assert File.exist?(path)
 
     lesson.destroy
     assert Lesson.where(id: lesson.id).empty?
-    assert not(File.exist?(path))
+    assert !File.exist?(path)
   end
 
   test "nao liberar aula sem arquivo inicial" do
@@ -76,7 +76,7 @@ class LessonTest < ActiveSupport::TestCase
   test "aula deve ter um modulo" do
     lesson = Lesson.create(order: 99, name: "Lesson sem modulo", type_lesson: Lesson_Type_Link, address: "www.google.com")
 
-    assert not(lesson.valid?)
+    assert !lesson.valid?
     assert_equal lesson.errors[:lesson_module].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
   end
 

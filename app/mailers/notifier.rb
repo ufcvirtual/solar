@@ -33,4 +33,10 @@ class Notifier < ActionMailer::Base
          subject: t("notifier.groups_disabled.subject"))
   end
 
+  def imported_from_private(lesson)
+    @lesson = lessson
+    mail(to: @lesson.user.email,
+         subject: t('notifier.imported_from_private.subject'))
+  end
+
 end

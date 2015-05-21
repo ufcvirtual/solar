@@ -102,7 +102,6 @@ class LessonFilesControllerTest < ActionController::TestCase
 
   # Usuário sem acesso
   test 'nao cria nova pasta na arvore de arquivos - sem acesso' do
-
     sign_in users(:coorddisc)
     assert_no_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_bbc.id}")).size') do
       post :new, {lesson_id: @pag_bbc.id, type: 'folder', path: @pag_bbc.name} # nova pasta na pasta raiz
@@ -118,7 +117,7 @@ class LessonFilesControllerTest < ActionController::TestCase
 
   # Usuário com acesso e permissão com um arquivo válido
   test 'envia arquivo valido' do
-    define_files_to_upload    
+    define_files_to_upload
 
     assert_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size', +1) do
       post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '/', files: [@valid_file]}}
@@ -143,7 +142,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert_response :error
     assert_template nothing: true
 
-    assert (not File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_index.id}", 'invalid_file_test.exe')))
+    assert !File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_index.id}", 'invalid_file_test.exe'))
 
     # problema com o nome
     post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '', files: [@valid_file]}}
@@ -168,7 +167,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert_response :error
     assert_template nothing: true
 
-    assert (not File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_index.id}", 'valid_file_test.png')))
+    assert !File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_index.id}", 'valid_file_test.png'))
   end
 
   # Usuário sem acesso
@@ -184,7 +183,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert_response :error
     assert_template nothing: true
 
-    assert (not File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_bbc.id}", 'valid_file_test.png')))
+    assert !File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_bbc.id}", 'valid_file_test.png'))
   end
 
   ##
@@ -203,7 +202,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert_select '#tree'
 
     assert File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_index.id}", 'Pasta Renomeada'))
-    assert (not File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_index.id}", 'Nova Pasta')))
+    assert !File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_index.id}", 'Nova Pasta'))
   end
 
   # Usuário com acesso e permissão - nome inválido
@@ -231,7 +230,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert_template nothing: true
     assert_no_tag '#tree'
 
-    assert (not File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_index.id}", 'Pasta Renomeada')))
+    assert !File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_index.id}", 'Pasta Renomeada'))
     assert File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_index.id}", 'Nova Pasta'))
   end
 
@@ -246,7 +245,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert_template nothing: true
     assert_no_tag '#tree'
 
-    assert (not File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_bbc.id}", 'Pasta Renomeada')))
+    assert !File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_bbc.id}", 'Pasta Renomeada'))
     assert File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_bbc.id}", 'Nova Pasta'))
   end
 
@@ -287,7 +286,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert_select '#tree'
 
     assert Dir.entries(folder1).include?(folder2)
-    assert (not Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).include?(folder2))
+    assert !Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).include?(folder2)
   end  
 
   # Usuário sem permissão
@@ -302,7 +301,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert_template nothing: true
     assert_no_tag '#tree'
 
-    assert (not Dir.entries(folder1).include?(folder2))
+    assert !Dir.entries(folder1).include?(folder2)
     assert Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).include?(folder2)
   end  
 
@@ -318,7 +317,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert_template nothing: true
     assert_no_tag '#tree'
 
-    assert (not Dir.entries(folder1).include?(folder2))
+    assert !Dir.entries(folder1).include?(folder2)
     assert Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_bbc.id}")).include?(folder2)
   end  
 

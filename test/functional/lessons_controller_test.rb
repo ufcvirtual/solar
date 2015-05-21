@@ -15,13 +15,13 @@ class LessonsControllerTest < ActionController::TestCase
 
   # criacao / edicao
 
-  test "criar e editar uma aula do tipo link" do
+  test 'criar e editar uma aula do tipo link' do
     # aula sem data final
-    lesson = {name: 'lorem ipsum', address: 'http://aulatipolink1.com', type_lesson: Lesson_Type_Link, lesson_module_id: 1, schedule_attributes: {start_date: Time.now}}
-    params_group = {lesson: lesson.merge(lesson_module_id: 1), allocation_tags_ids: "#{allocation_tags(:al6).id}"}
-    params_offer = {lesson: lesson.merge(lesson_module_id: 5), allocation_tags_ids: "#{allocation_tags(:al6).id}"}
+    lesson = { name: 'lorem ipsum', address: 'http://aulatipolink1.com', type_lesson: Lesson_Type_Link, lesson_module_id: 1, schedule_attributes: { start_date: Time.now } }
+    params_group = { lesson: lesson.merge(lesson_module_id: 1), allocation_tags_ids: "#{allocation_tags(:al6).id}" }
+    params_offer = { lesson: lesson.merge(lesson_module_id: 5), allocation_tags_ids: "#{allocation_tags(:al6).id}" }
 
-    assert_difference(["Lesson.count", "Schedule.count"], 2) do
+    assert_difference(['Lesson.count', 'Schedule.count'], 2) do
       post(:create, params_group)
       post(:create, params_offer)
     end
@@ -29,39 +29,68 @@ class LessonsControllerTest < ActionController::TestCase
     assert_equal Lesson.last.address, 'http://aulatipolink1.com'
 
     last_lesson = Lesson.last
-    update = {id: last_lesson.id, allocation_tags_ids: "#{allocation_tags(:al6).id}", lesson: {address: 'http://aulatipolink2.com', schedule_attributes: {id: last_lesson.schedule.id, start_date: Time.now, end_date: (Time.now + 1.month)}}}
+    update = { id: last_lesson.id, allocation_tags_ids: "#{allocation_tags(:al6).id}", lesson: { address: 'http://aulatipolink2.com', schedule_attributes: { id: last_lesson.schedule.id, start_date: Time.now, end_date: (Time.now + 1.month) } } }
 
-    assert_no_difference(["Lesson.count", "Schedule.count"]) do
+    assert_no_difference(['Lesson.count', 'Schedule.count']) do
       put(:update, update)
     end
     assert_response :ok
     assert_equal Lesson.last.address, 'http://aulatipolink2.com'
   end
 
-  test "criar e editar uma aula do tipo arquivo" do
-    lesson = {name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1, schedule_attributes: {start_date: Time.now, end_date: (Time.now + 1.month)}}
-    params = {lesson: lesson, allocation_tags_ids: "#{allocation_tags(:al6).id}"}
+  test 'criar e editar uma aula do tipo arquivo' do
+    lesson = { name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1, schedule_attributes: { start_date: Time.now, end_date: (Time.now + 1.month) } }
+    params = { lesson: lesson, allocation_tags_ids: "#{allocation_tags(:al6).id}" }
 
-    assert_difference(["Lesson.count", "Schedule.count"], 1) do
+    assert_difference(['Lesson.count', 'Schedule.count'], 1) do
       post(:create, params)
     end
     assert_response :ok
     assert_equal Lesson.last.address, 'index.html'
 
-    update = {id: Lesson.last.id, allocation_tags_ids: "#{allocation_tags(:al6).id}", lesson: {address: 'index2.html'}, start_date: Time.now, end_date: (Time.now + 1.month)}
+    update = { id: Lesson.last.id, allocation_tags_ids: "#{allocation_tags(:al6).id}", lesson: { address: 'index2.html' }, start_date: Time.now, end_date: (Time.now + 1.month) }
 
-    assert_no_difference(["Lesson.count", "Schedule.count"]) do
+    assert_no_difference(['Lesson.count', 'Schedule.count']) do
       put(:update, update)
     end
     assert_response :ok
     assert_equal Lesson.last.address, 'index2.html'
   end
 
-  test "nao criar aula com datas invalidas" do
-    lesson = {name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1}
-    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: "#{allocation_tags(:al6).id}", start_date: (Time.now + 1.month), end_date: Time.now}
+  test 'nao deve editar aulas privadas de outro dono' do
+    assert_no_difference(['Lesson.count', 'Schedule.count']) do
+      put :update, { id: lessons(:lesson_with_files).id, allocation_tags_ids: "#{allocation_tags(:al2).id}", lesson: { name: 'alterando nome'}, start_date: Time.now, end_date: (Time.now + 1.month) }
+    end
 
-    assert_no_difference(["Lesson.count", "Schedule.count"]) do
+    assert_equal Lesson.find(lessons(:lesson_with_files).id).name, lessons(:lesson_with_files).name
+    assert_response :unauthorized
+  end
+
+  test 'criar e editar proprias aulas privadas' do
+    lesson = { name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, privacy: true, lesson_module_id: 1, schedule_attributes: { start_date: Time.now, end_date: (Time.now + 1.month) } }
+    params = { lesson: lesson, allocation_tags_ids: "#{allocation_tags(:al6).id}" }
+
+    assert_difference(['Lesson.count', 'Schedule.count'], 1) do
+      post(:create, params)
+    end
+    assert_response :ok
+    assert_equal Lesson.last.address, 'index.html'
+
+    update = { id: Lesson.last.id, allocation_tags_ids: "#{allocation_tags(:al6).id}", lesson: { address: 'index2.html' }, start_date: Time.now, end_date: (Time.now + 1.month) }
+
+    assert_no_difference(['Lesson.count', 'Schedule.count']) do
+      put(:update, update)
+    end
+
+    assert_response :ok
+    assert_equal Lesson.last.address, 'index2.html'
+  end
+
+  test "nao criar aula com datas invalidas" do
+    lesson = { name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1 }
+    params = { lesson: lesson, lesson_module_id: 1, allocation_tags_ids: "#{allocation_tags(:al6).id}", start_date: (Time.now + 1.month), end_date: Time.now }
+
+    assert_no_difference(['Lesson.count', 'Schedule.count']) do
       post(:create, params)
     end
 
@@ -88,7 +117,7 @@ class LessonsControllerTest < ActionController::TestCase
     assert_template nothing: true
 
     zip_name = create_zip_name(lessons_ids)
-    assert not(File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))
+    assert !File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name))
   end
 
   # Usuário sem permissão
@@ -103,7 +132,7 @@ class LessonsControllerTest < ActionController::TestCase
     assert_redirected_to home_path
     assert_equal I18n.t(:no_permission), flash[:alert]
 
-    assert not(File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))
+    assert !File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name))
   end
 
   test "nao permitir zipar e realizar download de arquivos de aulas se todas forem do tipo link" do
@@ -113,7 +142,7 @@ class LessonsControllerTest < ActionController::TestCase
     assert_template nothing:true
 
     zip_name = create_zip_name(lessons_ids)
-    assert not(File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))
+    assert !File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name))
   end
 
   test "nao permitir zipar e realizar download de arquivos de aulas se todas forem vazias" do
@@ -124,7 +153,7 @@ class LessonsControllerTest < ActionController::TestCase
     assert_template nothing: true
 
     zip_name = create_zip_name(lessons_ids)
-    assert not(File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))
+    assert !File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name))
   end
 
   ##
@@ -149,12 +178,30 @@ class LessonsControllerTest < ActionController::TestCase
   # Ordenacao
   ##
 
-  test "mudar ordem das aulas 1 e 2" do
-    assert_routing({method: :put, path: change_order_lesson_path(1, 2)}, { controller: "lessons", action: "order", id: "1", change_id: "2" })
+  test 'mudar ordem das aulas 1 e 2' do
+    assert_routing({ method: :put, path: change_order_lesson_path(1, 2) }, { controller: 'lessons', action: 'order', id: '1', change_id: '2' })
 
     assert_equal Lesson.find(1,2).map(&:order), [1,2] # verificacao da ordem antes da mudanca
-    put :order, {id: 1, change_id: 2}
+    put :order, { id: 1, change_id: 2 }
     assert_equal Lesson.find(1,2).map(&:order), [2,1] # verificacao da ordem depois da mudanca
+  end
+
+  test 'nao mudar ordem de aulas privadas de outro dono' do
+    assert_routing({ method: :put, path: change_order_lesson_path(7, 10) }, { controller: 'lessons', action: 'order', id: '7', change_id: '10' })
+
+    assert_equal Lesson.find(7,10).map(&:order), [7,10] # verificacao da ordem antes da mudanca
+    put :order, { id: 7, change_id: 10 }
+    assert_response :unauthorized
+    assert_equal Lesson.find(7,10).map(&:order), [7,10] # verificacao da ordem depois da mudanca
+  end
+
+  test 'mudar ordem de proprias aulas privadas' do
+    assert_routing({ method: :put, path: change_order_lesson_path(7, 8) }, { controller: 'lessons', action: 'order', id: '7', change_id: '8' })
+
+    assert_equal Lesson.find(7,8).map(&:order), [7,8] # verificacao da ordem antes da mudanca
+    put :order, { id: 7, change_id: 8 }
+    assert_response :success
+    assert_equal Lesson.find(7,8).map(&:order), [8,7] # verificacao da ordem depois da mudanca
   end
 
   ##
@@ -280,6 +327,87 @@ class LessonsControllerTest < ActionController::TestCase
       end
     end
 
+    assert_response :unprocessable_entity
+  end
+
+  # test 'nao mudar modulo de aula privada de outro dono' do
+  #   assert_no_difference("LessonModule.find(#{lesson_modules(:module2).id}).lessons.count") do
+  #     assert_no_difference("LessonModule.find(#{lesson_modules(:module3).id}).lessons.count", -1) do
+  #       put :change_module, {move_to_module: lesson_modules(:module2).id, allocation_tags_ids: "#{allocation_tags(:al6).id}", lessons_ids: [lessons(:lesson_with_files).id], format: "json"}
+  #     end
+  #   end
+
+  #   assert_response :unprocessable_entity
+  # end
+
+  # test 'mudar ordem de proprias aulas privadas' do
+  #   assert_routing({ method: :put, path: change_order_lesson_path(7, 8) }, { controller: 'lessons', action: 'order', id: '7', change_id: '8' })
+
+  #   assert_equal Lesson.find(7,8).map(&:order), [7,8] # verificacao da ordem antes da mudanca
+  #   put :order, { id: 7, change_id: 8 }
+  #   assert_response :success
+  #   assert_equal Lesson.find(7,8).map(&:order), [8,7] # verificacao da ordem depois da mudanca
+  # end
+
+  ## Importação
+
+  test 'importar minha aula privada - arquivo' do
+    assert_difference('Lesson.count') do
+      put :import, { lessons: "#{5}, #{1}, #{Date.today},,true", allocation_tags_ids: [allocation_tags(:al2).id] }
+    end
+
+    assert_response :success
+  end
+
+  test 'importar aula publica - link' do
+    assert_difference('Lesson.count') do
+      put :import, { lessons: "#{6}, #{1}, #{Date.today},,true", allocation_tags_ids: [allocation_tags(:al2).id] }
+    end
+
+    assert_response :success
+  end
+
+  test 'nao deve importar aula rascunho' do
+    assert_no_difference('Lesson.count') do
+      put :import, { lessons: "#{7}, #{1}, #{Date.today},,true", allocation_tags_ids: [allocation_tags(:al2).id] }
+    end
+
+    assert_response :unprocessable_entity
+  end
+
+  test 'nao deve importar aula de outro dono' do
+    assert_no_difference('Lesson.count') do
+      put :import, { lessons: "#{10}, #{1}, #{Date.today},,true", allocation_tags_ids: [allocation_tags(:al2).id] }
+    end
+
+    assert_response :unauthorized
+  end
+
+  test 'nao deve importar aula sem aula' do
+    assert_no_difference('Lesson.count') do
+      put :import, { allocation_tags_ids: [allocation_tags(:al2).id] }
+    end
+
+    assert_response :unprocessable_entity
+  end
+
+  test 'nao deve importar aula sem acesso' do
+    assert_no_difference('Lesson.count') do
+      put :import, { lessons: "#{7}, #{1}, #{Date.today},,true", allocation_tags_ids: [allocation_tags(:al10).id] }
+    end
+
+    assert_response :unauthorized
+  end
+
+  test 'nao deve importar aula sem data ou com data invalida' do
+    assert_no_difference('Lesson.count') do
+      put :import, { lessons: "#{7}, #{1},,,true", allocation_tags_ids: [allocation_tags(:al2).id] }
+    end
+    assert_response :unprocessable_entity
+
+    assert_no_difference('Lesson.count') do
+      put :import, { lessons: "#{7}, #{1},#{Date.today+1.day},#{Date.today},true", allocation_tags_ids: [allocation_tags(:al2).id] }
+    end
     assert_response :unprocessable_entity
   end
 

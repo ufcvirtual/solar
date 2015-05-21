@@ -15,10 +15,6 @@ class LessonsController < ApplicationController
     authorize! crud_action, Lesson, { on: @allocation_tags_ids = params[:allocation_tags_ids] }
   end
 
-  before_filter only: [:edit, :update] do |controller|
-    verify_owner(params[:id])
-  end
-
   after_filter only: :update do 
     log(@lesson, "lesson: #{@lesson.id}, [copy original data] receive_updates_lessons: #{@lesson.receive_updates_lessons.pluck(:id)}") rescue nil
   end
@@ -102,6 +98,7 @@ class LessonsController < ApplicationController
 
   # GET /lessons/1/edit
   def edit
+    verify_owner(params[:id])
     lesson_modules_by_ats(@allocation_tags_ids)
     groups_by_lesson(@lesson)
   end
@@ -109,6 +106,7 @@ class LessonsController < ApplicationController
   # PUT /lessons/1
   # PUT /lessons/1.json
  def update
+    verify_owner(params[:id])
     @lesson.update_attributes! lesson_params
 
     render json: { success: true, notice: t('lessons.success.updated') }
@@ -203,12 +201,14 @@ class LessonsController < ApplicationController
     end
 
     render json: { success: true }
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end
 
   def change_module
+    verify_owner(lesson_ids = params[:lessons_ids].split(',') rescue [])
     authorize! :change_module, Lesson, on: params[:allocation_tags_ids]
 
-    lesson_ids = params[:lessons_ids].split(',') rescue []
     verify_owner(lesson_ids)
 
     new_module_id = LessonModule.find(params[:move_to_module]).id rescue nil
@@ -240,12 +240,12 @@ class LessonsController < ApplicationController
   end
 
   def import_details
-    @lessons = Lesson.find(params[:ids].split(' ').flatten)
+    @lessons = Lesson.find(params[:ids].split(' ').flatten).uniq
     authorize! :import, Lesson, { on: @lessons.map(&:allocation_tags).flatten.map(&:id).flatten, any: true }
 
     render partial: 'lessons/import/lesson'
   rescue CanCan::AccessDenied
-    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue
     render json: { success: false, alert: t('lessons.errors.import_empty') }, status: :unprocessable_entity
   end
@@ -263,6 +263,7 @@ class LessonsController < ApplicationController
         lesson_hash = lesson_hash.split(',')
         lesson      = Lesson.find(lesson_hash[0])
         raise 'private_lesson' unless lesson.can_import?(current_user.id)
+        raise 'draft_lesson'   if lesson.is_draft?
         attributes  = lesson.attributes.except('id', 'schedule_id', 'user_id', 'order', 'lesson_module_id', 'imported_from_id', 'receive_updates')
         schedule    = Schedule.create start_date: lesson_hash[2], end_date: lesson_hash[3]
         raise 'import_schedule' unless schedule.valid?
@@ -296,9 +297,8 @@ class LessonsController < ApplicationController
     
     render json: { success: true, msg: t('lessons.success.imported') }
   rescue CanCan::AccessDenied
-    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
-    raise "#{error}"
     render_json_error(error, 'lessons.errors')
   end
 

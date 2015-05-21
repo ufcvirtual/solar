@@ -774,12 +774,12 @@ en_US:
       deleted: Lessons weren't deleted
       must_select_module: A destination module must be selected
       url_must_be_informed: An URL must be defined
-      private_lesson: Can't import a private lesson
       owner: can only be changed by owner
       import_empty: Select lessons to import
       import_schedule: "Initial date is mandatory and must be smaller then end date, which is optional"
       private_lesson: You can't import a private lesson unless you're the owner
       general_message: It was not possible to execute action
+      draft_lesson: You can't import a draft lesson
     success:
       saved_as_draft: Lessons were sucessfully created or saved as draft
       deleted: Lessons were successfully created
@@ -826,10 +826,10 @@ en_US:
         name: Lesson's name
         type: Type
         source: Source
-        begin: Begin
+        begin: Begin*
         end: End
         preview: Preview
-        receive_updates: Receive updates
+        receive_updates: Receive updates**
         back: Back
         cancel: Cancel
         import: Import
@@ -847,6 +847,7 @@ en_US:
         add: Add
         conclude: Conclude
         no_lesson: No lesson
+        added: Lesson(s) added
       steps:
         title: Lessons/modules import
         choose: Choose lessons
@@ -1461,6 +1462,10 @@ en_US:
       subject: "[SOLAR] Deactivated groups"
       content: "We notify that the following groups of %{info} were deactivated: "
     dont_reply_message: "This message is sent automatically, please don't reply. Any doubts or sugestions must be sent to: atendimento@virtual.ufc.br"
+    imported_from_private:
+      body: "We inform that your lesson %{name} imported from %{from} to %{to} will not receive any more updates from source lesson due to the fact that source is now private."
+      user: "Dear %{user},"
+      subject: '[SOLAR] Private lesson'
 
   assignments:
     index:

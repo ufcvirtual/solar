@@ -107,6 +107,7 @@ class Lesson < Event
     raise 'not file' unless is_file?
 
     p_address = with_address ? address : ''
+
     return imported_from.file_path(full_path, with_address) unless imported_from.nil? || has_files?
 
     return File.join(directory, p_address) if full_path
@@ -191,7 +192,7 @@ class Lesson < Event
   private
 
     def can_destroy?
-      unless is_draft? # aula em rascunho
+      unless is_draft?
         draft!
         errors.add(:base, I18n.t('lessons.errors.cant_delete'))
         return false
@@ -222,7 +223,11 @@ class Lesson < Event
     end
 
     def set_order
-      self.order = lesson_module.next_lesson_order if order.nil?
+      if order.nil?
+        self.order = lesson_module.next_lesson_order 
+      else
+        self.order = self.order.next while lesson_module.lessons.where(order: self.order).any?
+      end
     end
 
     def set_receive_updates

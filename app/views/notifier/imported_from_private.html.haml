@@ -1,0 +1,12 @@
+!!!
+%html
+  %head
+    %meta{:charset => "utf-8"}
+    %meta{"http-equiv" => "X-UA-Compatible", :content => "IE=edge,chrome=1"}
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
+    %title= "Solar"
+    = yield(:head)
+  %body
+    %p= t('notifier.imported_from_private.user', user: @lesson.user.name)
+    %p= t('notifier.imported_from_private.body', name: @lesson.name, from: @lesson.imported_from.lesson_module.allocation_tag_info, to: @lesson.lesson_module.allocation_tag_info)
+    %p{style: "color: #7C7C7C; font-size: 8pt; padding-top: 10px;"}= I18n.t("notifier.dont_reply_message")

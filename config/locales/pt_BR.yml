@@ -943,6 +943,7 @@ pt_BR:
       import_empty: É necessário selecionar aulas a serem importadas
       import_schedule: 'Data inicial é obrigatória e deve ser menor que a data final, que é opcional'
       private_lesson: Não é possível importar uma aula privada a não ser que você seja o dono
+      draft_lesson: Não é possível importar uma aula rascunho
       owner: só pode ser alterada pelo dono
     success:
       saved_as_draft: Aulas deletadas ou salvas como rascunho com sucesso.
@@ -990,10 +991,10 @@ pt_BR:
         name: Nome da aula
         type: Tipo
         source: Origem
-        begin: Início
+        begin: Início*
         end: Fim
         preview: Ver
-        receive_updates: Receber atualizações
+        receive_updates: Receber atualizações**
         back: Voltar
         cancel: Cancelar
         import: Importar
@@ -1011,6 +1012,7 @@ pt_BR:
         add: Adicionar
         conclude: Prosseguir
         no_lesson: Nenhuma aula
+        added: Aula(s) adicionada(s)
       steps:
         title: Importação de aulas/módulos
         choose: Escolher aulas
@@ -1664,6 +1666,10 @@ pt_BR:
       subject: "[SOLAR] Turmas desativadas"
       content: "Notificamos que as seguintes turmas de %{info} foram desativadas: "
     dont_reply_message: "Esta mensagem é enviada automaticamente, favor não responder. Quaisquer dúvidas ou considerações devem ser encaminhadas para: atendimento@virtual.ufc.br"
+    imported_from_private:
+      body: "Informamos que sua aula %{name} importada de %{from} para %{to} não receberá mais atualizações da aula original por esta ter se tornado privada."
+      user: "Caro(a) %{user},"
+      subject: '[SOLAR] Aula privada'
   assignments:
     index:
       expand_enunciation: Expandir enunciado

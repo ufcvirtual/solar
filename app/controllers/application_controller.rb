@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
           redirect_to home_path, alert: t(:no_permission)
         end
       }
-      format.json { render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized }
+      format.json { render json: { msg: t(:no_permission), alert: t(:no_permission) }, status: :unauthorized }
       format.js { render js: "flash_message('#{t(:no_permission)}', 'alert');" }
     end
   end

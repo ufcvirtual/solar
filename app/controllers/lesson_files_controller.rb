@@ -25,6 +25,7 @@ class LessonFilesController < ApplicationController
   def new
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
+      verify_owner
       allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule').pluck(:allocation_tag_id)
       authorize! :new, Lesson, on: [allocation_tags_ids]
     
@@ -77,6 +78,7 @@ class LessonFilesController < ApplicationController
   def edit
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
+      verify_owner
       allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule')
       .select(:allocation_tag_id).map(&:allocation_tag_id)
       authorize! :new, Lesson, on: [allocation_tags_ids]
@@ -137,6 +139,7 @@ class LessonFilesController < ApplicationController
   def destroy
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
+      verify_owner
       allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule').select(:allocation_tag_id).map(&:allocation_tag_id)
       authorize! :new, Lesson, on: [allocation_tags_ids]
 
@@ -154,7 +157,7 @@ class LessonFilesController < ApplicationController
       log(@lesson, "lesson_files [destroy file], lesson: #{@lesson.id}, #{params[:path]}", LogAction::TYPE[:destroy]) rescue nil
       receive_updates_lessons = @lesson.receive_updates_lessons
       log(@lesson, "lessons: #{receive_updates_lessons.pluck(:id)}, [remove files and copy original] original: #{@lesson.id}") rescue nil if receive_updates_lessons.any?
-    rescue => error
+    rescue
       error = true
     end
 
@@ -163,12 +166,13 @@ class LessonFilesController < ApplicationController
 
   def extract_files
     @lesson = Lesson.find(params[:lesson_id])
+    verify_owner
     allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule')
       .select(:allocation_tag_id).map(&:allocation_tag_id)
     authorize! :update, Lesson, on: [allocation_tags_ids] # com permissao para editar aula
 
     file = Lesson::FILES_PATH.join(params[:lesson_id], params[:file])
-    to = File.dirname(file)
+    to   = File.dirname(file)
 
     result = extract(file, to)
     if result === true
@@ -197,6 +201,10 @@ class LessonFilesController < ApplicationController
       lesson.academic_allocations.each do |ac|
         LogAction.create(params_to_log.merge!(description: message, academic_allocation_id: ac.id, log_type: type))
       end
+    end
+
+    def verify_owner
+      raise CanCan::AccessDenied if @lesson.privacy && @lesson.user_id != current_user.id
     end
 
 end

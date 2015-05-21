@@ -8,6 +8,8 @@ pag_ufc:
   status: 1
   schedule_id: 11
   lesson_module_id: 1
+  privacy: false
+  imported_from_id: nil
 
 pag_uol:
   id: 2
@@ -19,6 +21,8 @@ pag_uol:
   status: 1
   schedule_id: 12
   lesson_module_id: 1
+  privacy: false
+  imported_from_id: nil
 
 pag_globo:
   id: 3
@@ -30,6 +34,8 @@ pag_globo:
   status: 1
   schedule_id: 13
   lesson_module_id: 2
+  privacy: false
+  imported_from_id: nil
 
 pag_virtual:
   id: 4
@@ -41,6 +47,8 @@ pag_virtual:
   status: 1
   schedule_id: 14
   lesson_module_id: 2
+  privacy: false
+  imported_from_id: nil
 
 pag_bbc:
   id: 5
@@ -52,6 +60,9 @@ pag_bbc:
   status: 1
   schedule_id: 15
   lesson_module_id: 2
+  privacy: true
+  imported_from_id: nil
+  user_id: 14
 
 pag_goo:
   id: 6
@@ -62,6 +73,8 @@ pag_goo:
   status: 1
   schedule_id: 15
   lesson_module_id: 3
+  privacy: false
+  imported_from_id: nil
 
 pag_index:
   id: 7
@@ -72,6 +85,9 @@ pag_index:
   status: 0
   schedule_id: 15
   lesson_module_id: 3
+  privacy: true
+  imported_from_id: nil
+  user_id: 14
 
 lesson_files_to_delete:
   id: 8
@@ -82,6 +98,8 @@ lesson_files_to_delete:
   status: 0
   schedule_id: 15
   lesson_module_id: 3
+  privacy: false
+  imported_from_id: nil
 
 lesson_without_file:
   id: 9
@@ -92,6 +110,8 @@ lesson_without_file:
   status: 0
   schedule_id: 15
   lesson_module_id: 3
+  privacy: false
+  imported_from_id: nil
 
 lesson_with_files:
   id: 10
@@ -102,3 +122,17 @@ lesson_with_files:
   status: 1
   schedule_id: 15
   lesson_module_id: 3
+  privacy: true
+  imported_from_id: nil
+
+lesson_with_files2:
+  id: 11
+  name: aula com arquivos 2
+  address: 'index.html'
+  type_lesson: 0
+  order: 11
+  status: 1
+  schedule_id: 15
+  lesson_module_id: 3
+  privacy: false
+  imported_from_id: nil

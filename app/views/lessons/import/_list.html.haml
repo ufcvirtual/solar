@@ -44,17 +44,29 @@
   });
 
   function add_lessons(){
-    var ids = $('.list_lessons_import tbody input:checked').map(function() { return this.value; }).get();
+    var ids = $('.list_lessons_import tbody input:checked').map(function() { return parseInt(this.value); }).get();
+
+    // don't add if already exists
+    if(!!$('tbody.lessons_to_import tr').length){
+      var existing_ids = $('tbody.lessons_to_import tr').map(function(){ return $(this).data('id'); }).get();
+      $.each(existing_ids, function(j){
+        var i = ids.indexOf(existing_ids[j]);
+        if(i != -1)
+          ids.splice(i, 1);
+      });
+    }
 
     $.get("#{import_details_lessons_path}", {ids: ids}, function(data){
       $('tbody.lessons_to_import').append(data);
-      flash_message('Aulas adicionadas', 'notice');
+      flash_message("#{I18n.t('lessons.import.list.added')}", 'notice');
       $('.list_lessons_import input:checked').each(function(i){ $(this).prop("checked", false); });
+      $('tbody.lessons_to_import tr.text_none').hide();
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert');
     });
+
   }
 
   function go_to_conclude(){
@@ -64,4 +76,5 @@
     $('#steps li:first .dot').removeClass('active');
     $('#steps li:last').addClass('active');
     $('#steps li:last .dot').addClass('active');
+    erase_flash_messages();
   }
