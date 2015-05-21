@@ -30,9 +30,9 @@ class ChatRoomsController < ApplicationController
 
   def index
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
-    authorize! :index, ChatRoom, on: @allocation_tags_ids.split(" ").flatten
+    authorize! :index, ChatRoom, on: @allocation_tags_ids.split(' ').flatten
 
-    @chat_rooms = ChatRoom.to_list_by_ats(@allocation_tags_ids.split(" ").flatten)
+    @chat_rooms = ChatRoom.to_list_by_ats(@allocation_tags_ids.split(' ').flatten)
   end
 
   def show
@@ -83,7 +83,7 @@ class ChatRoomsController < ApplicationController
   end
 
   def destroy
-    @chat_rooms = ChatRoom.where(id: params[:id].split(","))
+    @chat_rooms = ChatRoom.where(id: params[:id].split(','))
     authorize! :destroy, ChatRoom, on: @chat_rooms.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
     if @chat_rooms.map(&:can_destroy?).include?(false)

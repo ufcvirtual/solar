@@ -1203,6 +1203,13 @@ lessonedit11:
   resource_id: 172
   per_id: false
 
+# importar aulas
+
+lessonedit12:
+  profile_id: 5
+  resource_id: 193
+  per_id: false
+
 # Lessons Modules - Módulos
 
 lmodedit1:

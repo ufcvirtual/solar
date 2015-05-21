@@ -83,10 +83,10 @@ module V1::Contents
   end
 
   def copy_object(object_to_copy, merge_attributes={}, is_file = false, nested = nil)
-    new_object = object_to_copy.class.where(object_to_copy.attributes.except("id").merge(merge_attributes)).first_or_initialize
+    new_object = object_to_copy.class.where(object_to_copy.attributes.except('id').merge(merge_attributes)).first_or_initialize
     new_object.merge = true if new_object.respond_to?(:merge) # used so call save without callbacks (before_save, before_create)
     new_object.save
-    copy_file(object_to_copy.attachment.path, new_object.attachment.path) if is_file and object_to_copy.respond_to? :attachment
+    copy_file(object_to_copy.attachment.path, new_object.attachment.path) if is_file && object_to_copy.respond_to?(:attachment)
     copy_objects(object_to_copy.send(nested.to_sym), {"#{new_object.class.to_s.tableize.singularize}_id" => new_object.id}, is_file) unless nested.nil?
 
     new_object

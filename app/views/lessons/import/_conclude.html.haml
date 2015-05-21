@@ -1,0 +1,87 @@
+.block_wrapper.list_lessons_conclude
+  .block_title
+    %h2
+      %i.icon-class
+      = t('.title')
+  .block_content_toolbar
+    .block_toolbar_left.btn-group
+    .block_toolbar_right.btn-group
+      = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_lessons()', class: 'btn btn_del', disabled: true, :"data-tooltip" => t('.delete')
+      
+  %table.tb_list
+    %thead
+      %tr.lines
+        %th.no_sort.icon= check_box_tag "all_lessons_to_import", false, false, :"data-children-names" => "c_to_import_"
+        %th.icon= t('.order')
+        %th= t('.module')
+        %th= t('.name')
+        %th= t('.type')
+        %th= t('.source')
+        %th.date= t('.begin')
+        %th.date= t('.end')
+        %th{ :'data-tooltip' => t('.receive_updates_tooltip') }= t('.receive_updates')
+        %th.icon= t('.preview')
+
+    %tbody.lessons_to_import
+      %tr.text_none
+        %td.text_none{ colspan: 10 }= t('lessons.import.list.no_lesson')
+
+.right_buttons
+  = link_to_function t('.back'), 'back()', class: 'btn', alt: t('.back')
+  = link_to_function t('.cancel'), 'cancel()', class: 'btn', alt: t('.cancel')
+  = link_to_function t('.import'), 'import_selected_lessons()', class: 'btn btn_main', alt: t('.import')
+
+
+:javascript
+
+  function down(icon){
+    var div_to_move = $(icon).parents('tr:first');
+    var previous_div = div_to_move.next();
+    previous_div.after(div_to_move);
+  }
+
+  function up(icon){
+    var div_to_move = $(icon).parents('tr:first');
+    var previous_div = div_to_move.prev();
+    previous_div.before(div_to_move);
+  }
+
+  function remove_lessons(){
+    $('.list_lessons_conclude tbody td input:checked').each(function(i){ $(this).parents("tr").remove(); });
+    if(!$('tbody.lessons_to_import tr:visible').length)
+      $('tbody.lessons_to_import tr.text_none').show();
+  }
+
+  function import_selected_lessons(){
+    var lessons = new Array();
+    if($('.lessons_to_import tr:visible').not('.text_none').length > 0){
+      $('.lessons_to_import tr:visible').not('.text_none').each(function(i){
+        data = [$(this).data('id'), i+1, $(this).find('.start input').val(), $(this).find('.end input').val(), $(this).find('[name^="receive_updates_"]:first').prop('checked')].join(',')
+        lessons.push(data);
+      });
+    }
+
+    $.put("#{import_lessons_path}", {lessons: lessons.join(';'), allocation_tags_ids: "#{@ats}", lesson_module_id: "#{@lesson_module_id}"}, function(data){
+      $.fancybox.close();
+      var msg = data.msg;
+      
+      var to_replace = $(".list_lessons");
+      $.get(to_replace.data('link-list'), function(data2){
+        to_replace.replaceWith(data2);
+      }).done(function(){
+        flash_message(msg, 'notice', 'block_wrapper:first');
+      });
+      
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    });
+
+  }
+
+  function cancel(){
+    if (!confirm("#{I18n.t('.confirm')}"))
+     return false;
+    $.fancybox.close();
+  }

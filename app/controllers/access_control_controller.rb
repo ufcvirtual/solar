@@ -37,16 +37,13 @@ class AccessControlController < ApplicationController
   end
 
   def lesson
-    @lesson        = Lesson.find(params[:id])
-    allocation_tag = active_tab[:url][:allocation_tag_id] || @lesson.allocation_tags.map(&:id).compact
+    lessons = [lesson  = Lesson.find(params[:id])]
+    lessons << lesson.imported_to
 
-    if current_user.admin?
-      authorize! :show, Lesson
-    else
-      authorize! :show, Lesson, {on: [allocation_tag], read: true} # apenas para quem faz parte da turma
-    end
+    allocation_tag = active_tab[:url][:allocation_tag_id] || lessons.flatten.map(&:allocation_tags).flatten.map(&:id).flatten.compact
+    authorize! :show, Lesson, { on: [allocation_tag].flatten, read: true, accepts_general_profile: true, any: true }
 
-    if @lesson.path(false).index('.html')
+    if lesson.path(false).index('.html')
       if params[:index]
         file_path = Lesson::FILES_PATH.join(params[:id], [params[:file], '.', params[:extension]].join)
       else
@@ -55,7 +52,7 @@ class AccessControlController < ApplicationController
 
       File.exist?(file_path) ? send_file(file_path, disposition: 'inline') : render(nothing: true)
     else
-      send_file(@lesson.path(true), {disposition: 'inline', type: return_type(params[:extension])})
+      send_file(lesson.path(true), { disposition: 'inline', type: return_type(params[:extension]) })
     end
 
   end

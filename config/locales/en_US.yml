@@ -283,6 +283,8 @@ en_US:
         end_date: To
         status: Status
         address: URL
+        privacy: Privacy
+        receive_updates: Receive updates
       lesson_module:
         name: Name
       support_material_file:
@@ -743,6 +745,12 @@ en_US:
       compress_description: Contract description
       modules:
         groups: Groups
+        import: Import lessons to module
+      import_l: Import lessons and modules
+      lessons:
+        privacy: Privacy
+        public: Public
+        private: Private
     new:
       draft: draft
       approved: approved
@@ -766,15 +774,32 @@ en_US:
       deleted: Lessons weren't deleted
       must_select_module: A destination module must be selected
       url_must_be_informed: An URL must be defined
+      owner: can only be changed by owner
+      import_empty: Select lessons to import
+      import_schedule: "Initial date is mandatory and must be smaller then end date, which is optional"
+      private_lesson: You can't import a private lesson unless you're the owner
+      general_message: It was not possible to execute action
+      draft_lesson: You can't import a draft lesson
     success:
       saved_as_draft: Lessons were sucessfully created or saved as draft
       deleted: Lessons were successfully created
       moved: Lessons were sucessfully moved
       created: Lesson was sucessfully created
       updated: Lesson was sucessfully updated
+      imported: Lessons/modules sucessfully imported
     form:
       cancel: Cancel
       groups: Groups
+      privacy: Privacy
+      privacy_tooltip: "An private lesson can't be imported neither edited by users who are not the owner."
+      public: Public
+      private: Private
+      receive_updates: Receive updates
+      receive_updates_tooltip: "Checking this option, this lesson will receive every update made at source lesson."
+      check_receive_updates: "After saving, all data and any future update from source lesson  will be copied to this lesson."
+      uncheck_receive_updates: "After saving, any update made at source lesson won't be copied to this lesson."
+      public_to_private: "Changing to private, already imported lessons won't be removed. However, won't will receive updates neither will be possible to make new imports from this lesson if not the owner."
+      warning: "Source lesson is private, therefore this lesson won't receive updates."
     select_lesson:
       no_lessons: Sem Aulas
     show:
@@ -794,12 +819,47 @@ en_US:
     lesson:
       no_note: No lesson notes
       notes: Lesson notes
+    import:
+      conclude:
+        order: Order
+        module: Module
+        name: Lesson's name
+        type: Type
+        source: Source
+        begin: Begin*
+        end: End
+        preview: Preview
+        receive_updates: Receive updates**
+        back: Back
+        cancel: Cancel
+        import: Import
+        confirm: Cancel import?
+        receive_updates_tooltip: Receive updates from source lesson.
+        delete: Don't import lesson(s)
+      lesson:
+        preview: Preview lesson
+      list:
+        name: Name
+        preview: Preview
+        type: Type
+        preview_tooltip: Preview lesson
+        cancel: Cancel
+        add: Add
+        conclude: Conclude
+        no_lesson: No lesson
+        added: Lesson(s) added
+      steps:
+        title: Lessons/modules import
+        choose: Choose lessons
+        conclude: Conclude
+        back: Back
+        original_lesson: '** about source lesson'
   lesson_modules:
-    general_of_offer: "General"
-    general_of_group: "General of group"
-    none: "No module registered"
+    general_of_offer: General
+    general_of_group: General of group
+    none: No module registered
     buttons:
-      new: "New"
+      new: New
     form:
       save: Save
       cancel: Cancel
@@ -812,6 +872,9 @@ en_US:
       existing_name: already exists
       cant_delete: "Default module can't be deleted"
       cant_delete_shared: "Shared module has lessons and therefore can not be deleted"
+      general_message: It was not possible to execute action.
+      import_empty: Select lessons to import.
+      import_schedule: 'Start date is mandatory and must be smaller than end date, which are optional'
   lesson_files:
     root: Root
     delete_confirm: Are you sure you want to delete the selected items?
@@ -1399,6 +1462,10 @@ en_US:
       subject: "[SOLAR] Deactivated groups"
       content: "We notify that the following groups of %{info} were deactivated: "
     dont_reply_message: "This message is sent automatically, please don't reply. Any doubts or sugestions must be sent to: atendimento@virtual.ufc.br"
+    imported_from_private:
+      body: "We inform that your lesson %{name} imported from %{from} to %{to} will not receive any more updates from source lesson due to the fact that source is now private."
+      user: "Dear %{user},"
+      subject: '[SOLAR] Private lesson'
 
   assignments:
     index:

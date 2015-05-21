@@ -54,7 +54,7 @@ class LessonNotesController < ApplicationController
     render json: { success: true, content: '' }
   end
 
-  require 'prawn'
+  # require 'prawn'
   def download
     lesson = Lesson.find(params[:lesson_id])
     lesson_notes = params.include?(:id) ? [LessonNote.find(params[:id])] : current_user.notes(params[:lesson_id]).order(:name)

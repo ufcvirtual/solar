@@ -2,13 +2,13 @@
 - groups_size = groups.size
 
 .groups_tags
-  - if groups_size <= 5
+  - if groups_size <= 5 || paths.nil?
     %span.title= label_tag t('.groups')
     = render 'groups/tags', groups: groups[0..Max_Groups_Shown_Tags], tool: tool, paths: paths
   - else
     %span.title= link_to [groups_size.to_s, t('.groups')].join(' '), paths[:tags], class: 'tags', :"data-tooltip" => t('.groups_management')
 
-  - unless groups_size == 1
+  - unless groups_size == 1 || paths.nil?
     %span.new_groups
       = content_tag(:i, nil, class: 'icon icon-cross unbind_groups', :"data-dropdown" => ".unbind_group_dropdown_#{tool.id}", :"data-tooltip" => t('.unbind_groups'))
       %div{id: 'dropdown', class: "dropdown dropdown-tip unbind_group_dropdown_#{tool.id}"}
@@ -22,8 +22,8 @@
           = button_tag t(".cancel"), class: 'btn btn_cancel_unbind_group', type: :button
 
   - new_groups = (all_groups - groups).in_groups(2, false)
-  - can_add_groups = (not tool.respond_to?(:can_add_group?) or tool.can_add_group?)
-  - unless paths.nil? or new_groups.flatten.empty? or not(can_add_groups)
+  - can_add_groups = !tool.respond_to?(:can_add_group?) || tool.can_add_group?
+  - unless paths.blank? || new_groups.flatten.empty? || !can_add_groups
     %span.new_groups
       = content_tag(:i, nil, class: 'icon icon-plus add_group', :"data-dropdown" => ".add_group_dropdown_#{tool.id}", :"data-tooltip" => t('.add_group'))
       #dropdown{class: "dropdown dropdown-tip add_group_dropdown_#{tool.id}"}

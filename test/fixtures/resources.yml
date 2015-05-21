@@ -981,3 +981,9 @@ res192:
   controller: 'exam_questions'
   action: "create"
   description: "Criar nova questão"
+
+res193:
+  id: 193
+  controller: 'lessons'
+  action: 'import'
+  description: 'Importação de aulas'

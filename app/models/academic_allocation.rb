@@ -46,7 +46,7 @@ class AcademicAllocation < ActiveRecord::Base
     academic_tool_type.eql? 'Webconference'
   end
 
-  def copy_group_assignments(to_ac_id, user, ip) #User e IP serão usados no LOG
+  def copy_group_assignments(to_ac_id, user, ip) # user e IP serão usados no LOG
     ActiveRecord::Base.transaction do
       group_assignments.each do |group|
         group.copy(to_ac_id)

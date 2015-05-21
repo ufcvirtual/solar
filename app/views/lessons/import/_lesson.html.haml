@@ -1,0 +1,27 @@
+- @lessons.each do |lesson|
+  %tr.lines{ :'data-id' => lesson.id }
+    %td= check_box_tag("c_to_import_#{lesson.id}", lesson.id, false, { class: "c_to_import_#{lesson.id}" })
+    %td.icon
+      .lesson_arrows
+        .lesson_arrow_up= link_to_function image_tag('lesson/up_arrow.png'), 'up(this)'
+        .lesson_arrow_down= link_to_function image_tag('lesson/down_arrow.png'), 'down(this)'
+    %td= lesson.lesson_module.name
+    %td= lesson.name
+    %td= (lesson.is_file? ? t('lessons.list.file_type') : t('lessons.list.link_type'))
+    %td= lesson.lesson_module.allocation_tag_info
+    %td.start= text_field_tag "start_date_#{lesson.id}"
+    %td.end= text_field_tag "end_date_#{lesson.id}"
+    %td= check_box_tag "receive_updates_#{lesson.id}", true, false
+    %td= link_to_function content_tag(:i, nil, class: 'icon-eye'), 'open_lesson(this)', :'data-tooltip' => t('lessons.import.list.preview_tooltip')
+
+= javascript_include_tag 'tooltip'
+
+:javascript
+  $(function(){
+    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
+    $('[id^="start_date_"]').each(function(){ $(this).datepicker();});
+    $('[id^="end_date_"]').each(function(){ $(this).datepicker();});
+    $('[id^="start_date_"], [id^="end_date_"]').datepicker($.extend({}, options));
+
+    $('[name^="all_lessons_to_import"]').nice_checkbox();
+  });

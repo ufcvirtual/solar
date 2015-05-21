@@ -387,3 +387,51 @@ form .right_buttons {
 a.disabled {
  cursor: default;
 }
+
+
+/*Steps*/
+
+#steps {
+  background-color: darken(#F5F5F5, 5%);
+  width: 525px;
+  margin: 0 auto;
+  padding: 0;
+  border-radius: 5px;
+  ul{
+    padding: 0;
+    list-style: none;
+    margin: 0 auto;
+    text-align: center;
+    li{
+      display: inline-block;
+      width: 117px;
+      margin: 0px;
+      padding: 5px;
+      text-align: center;
+      font-family: Ubuntu;
+      font-size: 12px;
+      color:#919191;
+    }
+    li.active{
+      color:#004B81;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: 0px 0px 4px rgba(240, 207, 101, 1);
+    }
+  }
+  .dot {
+    width: 22px;
+    height: 18px;
+    display: block;
+    margin: 0 auto;
+    background: image-url('inactive.png') no-repeat;
+  }
+
+  .dot.active {
+    background: image-url('active.png') no-repeat;
+  }
+
+  .dot.done {
+    background: image-url('done.png') no-repeat; 
+  }
+}

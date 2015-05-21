@@ -120,19 +120,19 @@ $.fn.nice_filter = function(options) {
     erase_flash_messages();
 
     var load_to = $(this).data("load-to");
-    var combos  = $('.filter select', filter);
+    var combos  = $('.filter:last select', filter);
 
     if (combos.length) {
       // pegar todas as obrigatorias e checar se tem alguma vazia
-      var required = $('.filter select:not([data-optional])', filter);
-      $('.filter select[data-optional="false"]', filter).each(function(){ required.push(this); });
+      var required = $('.filter:last select:not([data-optional])', filter);
+      $('.filter:last select[data-optional="false"]', filter).each(function(){ required.push(this); });
 
       var filled   = required.map(function(){ if (!$(this).is_empty()) return $(this).combobox("value"); });
 
       if (required.length == filled.length) {
         var combos = combos.map(function(){ if (!$(this).is_empty()) return $(this).prop('name')+'_id: ' + '"' + $(this).combobox("value") + '"'; }).toArray().join(', ');
-        if ($('#curriculum_unit_type').val() != undefined)
-          combos    += ', curriculum_unit_type_id: "' + $('#curriculum_unit_type').val() + '"';
+        if ($('[name="curriculum_unit_type"]:last').val() != undefined)
+          combos    += ', curriculum_unit_type_id: "' + $('[name="curriculum_unit_type"]:last').val() + '"';
         var data   = eval("({" + combos + "})"); // transformando os valores dos filtros em json
         var url    = $(this).data("url-search");
 

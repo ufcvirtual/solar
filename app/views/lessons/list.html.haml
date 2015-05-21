@@ -1,9 +1,10 @@
 - if @academic_allocations.any?
 
-  .list_lessons{:"data-link-list" => list_lessons_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
+  .list_lessons{ :"data-link-list" => list_lessons_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id]) }
     = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
 
-    = link_to t('.new_module'), new_lesson_module_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('.new_module'), class: 'link_new_module', id: 'new-module'
+    = link_to t('.new_module'), new_lesson_module_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('.new_module'), class: 'link_new_module title_link', id: 'new-module'
+    .import_lessons{ style: 'margin-top: 2px;' }= link_to_function t('lessons.list.import_l'), 'import_lessons(this)', :'data-url' => import_steps_lessons_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('lessons.list.import_l'), class: 'title_link'
 
     = render partial: 'lessons/list/modules', locals: { all_groups: @all_groups }
 
@@ -18,6 +19,11 @@
 :javascript
   var div_list = $(".list_lessons");
   var offer_id = "#{escape_once(params[:offer_id])}";
+
+  function import_lessons(link){
+    var url = $(link).data('url');
+    $(link).call_fancybox({href : url, open: true, minHeight: '550px', minWidth: '800px'});
+  }
 
   jQuery(function($) {
 
