@@ -411,6 +411,71 @@ class LessonsControllerTest < ActionController::TestCase
     assert_response :unprocessable_entity
   end
 
+  test 'deve poder realizar todo o processo da importacao - arquivo - parte 1' do
+    remove_lesson_files(11)
+    remove_lesson_files(18)
+    remove_lesson_files(19)
+
+    define_files_to_upload
+    # add files to source lesson
+    source = lessons(:lesson_with_files2)
+    FileUtils.mkdir_p source.directory
+    FileUtils.cp @valid_file.tempfile, source.path(true, false)
+    assert lessons(:lesson_with_files2).has_files?
+    
+    # import lesson with receive_updates
+    assert_difference('Lesson.count') do
+      put :import, { lessons: "#{11}, #{1}, #{Date.today},,true", allocation_tags_ids: [allocation_tags(:al2).id] }
+    end
+
+    assert_response :success
+    assert !Lesson.last.has_files?
+    assert_equal lessons(:lesson_with_files2).id, Lesson.last.imported_from_id
+    assert Lesson.last.receive_updates
+    lesson_receive_updates = Lesson.last
+
+    # import lesson without receive_updates
+    assert_difference('Lesson.count') do
+      put :import, { lessons: "#{11}, #{1}, #{Date.today},,false", allocation_tags_ids: [allocation_tags(:al2).id] }
+    end
+
+    assert_response :success
+    assert !Lesson.last.has_files?
+    assert_equal lessons(:lesson_with_files2).id, Lesson.last.imported_from_id
+    assert !Lesson.last.receive_updates
+    lesson_dont_receive_updates = Lesson.last
+
+    # update source
+    assert_no_difference(['Lesson.count', 'Schedule.count']) do
+      put :update, { id: lessons(:lesson_with_files2).id, allocation_tags_ids: "#{allocation_tags(:al2).id}", lesson: { name: 'alterando nome'} }
+    end
+
+    # only lesson with receive_updates receives the new name
+    assert_response :success
+    assert_equal 'alterando nome',      Lesson.find(lessons(:lesson_with_files2).id).name
+    assert_equal 'aula com arquivos 2', Lesson.find(lesson_dont_receive_updates.id).name
+    assert_equal 'alterando nome',      Lesson.find(lesson_receive_updates.id).name
+
+    # set source lesson as draft
+    put :change_status, { id: lessons(:lesson_with_files2).id, status: Lesson_Test, allocation_tags_ids: "#{allocation_tags(:al2).id}", format: :json }
+    assert_response :success
+    assert_equal Lesson_Test, Lesson.find(lessons(:lesson_with_files2).id).status
+
+    # remove source lesson
+    assert_difference('Dir.entries("#{File.join(Rails.root, "media", "lessons")}").size', -1) do
+      assert_difference(['Dir.entries("#{lesson_receive_updates.directory}").size', 'Dir.entries("#{lesson_dont_receive_updates.directory}").size']) do
+        delete :destroy, { id:  lessons(:lesson_with_files2).id, allocation_tags_ids: "#{allocation_tags(:al2).id}"}
+      end
+    end
+
+    # receive_updates lesson must receove files from deleted lesson
+    assert lesson_receive_updates.has_files?
+    # dont_receive_updates lesson must receove files from deleted lesson
+    assert lesson_dont_receive_updates.has_files?
+    # source
+    assert !lessons(:lesson_with_files2).has_files?
+  end
+
   private
 
     # Verifica se o diretório da aula escolhida está adequada aos testes
@@ -429,6 +494,20 @@ class LessonsControllerTest < ActionController::TestCase
 
     def create_zip_name(lessons_ids)
       return Digest::SHA1.hexdigest(lessons_ids.collect{ |lesson_id| File.join(Rails.root.to_s, 'media', 'lessons', lesson_id) }.join) << '.zip'
+    end
+
+    def define_files_to_upload
+      @valid_file   = ActionDispatch::Http::UploadedFile.new({
+                      filename: 'index.html',
+                      content_type: 'text/html',
+                      tempfile: File.new("#{Rails.root}/test/fixtures/files/lessons/index.html")
+                     })
+    end
+
+    def remove_lesson_files(lesson_id)
+      path = File.join(Lesson::FILES_PATH, "#{lesson_id}")
+      FileUtils.rm_rf path
+      Dir.mkdir(path)
     end
 
 end

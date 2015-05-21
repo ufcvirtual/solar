@@ -119,15 +119,15 @@ class LessonFilesControllerTest < ActionController::TestCase
   test 'envia arquivo valido' do
     define_files_to_upload
 
-    assert_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size', +1) do
-      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '/', files: [@valid_file]}}
+    assert_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size') do
+      post :new, { lesson_id: @pag_index.id, type: 'upload', lesson_files: { path: '/', files: [@valid_file] } }
     end
 
     assert_response :success
     assert_template :index
     assert_select '#tree'
 
-    assert File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_index.id}", 'valid_file_test.png'))
+    assert File.exists?(File.join(@pag_index.directory, 'valid_file_test.png'))
   end
 
   # Usuário com acesso e permissão com um arquivo inválido
@@ -521,6 +521,39 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert response.body, {success: false, msg: I18n.t(:zip_contains_invalid_files, scope: :lesson_files)}.to_json
   end
 
+  test 'deve poder realizar todo o processo da importacao - arquivo - parte 2' do
+    remove_lesson_files(11)
+    remove_lesson_files(12)
+    remove_lesson_files(13)
+    
+    define_files_to_upload
+    # add files to source lesson
+    source = lessons(:lesson_with_files2)
+    FileUtils.mkdir_p source.directory
+    FileUtils.cp @valid_file.tempfile, source.path(true, false)
+    assert lessons(:lesson_with_files2).has_files?
+    
+    # add files to receive_updates lesson
+    assert_difference('Dir.entries("#{lessons(:lesson_imported_1).directory}").size') do
+      post :new, { lesson_id: lessons(:lesson_imported_1).id, type: 'upload', lesson_files: { path: '', files: [@valid_file] } }
+    end
+    assert lessons(:lesson_imported_1).has_files?
+
+    # add files to source lesson
+    assert_difference('Dir.entries("#{lessons(:lesson_with_files2).directory}").size') do
+      assert_difference('Dir.entries("#{lessons(:lesson_imported_1).directory}").size', -1) do
+        assert_difference('Dir.entries("#{lessons(:lesson_imported_2).directory}").size') do
+          post :new, { lesson_id: lessons(:lesson_with_files2).id, type: 'upload', lesson_files: { path: '', files: [@valid_file2] } }
+        end
+      end
+    end
+
+    # receive_updates lesson must lose it's files to get source's files
+    assert (!lessons(:lesson_imported_1).has_files?)
+    # dont_receive_updates lesson must copy source's files
+    assert lessons(:lesson_imported_2).has_files?
+  end
+
 private
 
   # cria pasta na raiz
@@ -555,6 +588,11 @@ private
                     :filename => 'valid_file_test.png',
                     :content_type => 'image/png',
                     :tempfile => File.new("#{Rails.root}/test/fixtures/files/lessons/valid_file_test.png")
+                   })
+    @valid_file2  = ActionDispatch::Http::UploadedFile.new({
+                    :filename => 'index.html',
+                    :content_type => 'text/html',
+                    :tempfile => File.new("#{Rails.root}/test/fixtures/files/lessons/index.html")
                    })
     @invalid_file = ActionDispatch::Http::UploadedFile.new({
                     :filename => 'invalid_file_test.exe',

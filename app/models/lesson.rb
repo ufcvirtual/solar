@@ -138,7 +138,8 @@ class Lesson < Event
   def copy_files_if_imported
     return true if imported_from_id.nil? || is_link?
 
-    FileUtils.copy_entry imported_from.file_path(true, false), directory if Dir.exists?(directory)
+    create_or_update_folder unless Dir.exists?(directory)
+    FileUtils.copy_entry imported_from.file_path(true, false), directory 
   end
 
   def verify_files_before_change

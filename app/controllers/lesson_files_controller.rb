@@ -29,7 +29,8 @@ class LessonFilesController < ApplicationController
       allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule').pluck(:allocation_tag_id)
       authorize! :new, Lesson, on: [allocation_tags_ids]
     
-      @lesson.verify_files_before_change
+      raise 'error' unless @lesson.verify_files_before_change
+
       lesson_path = @lesson.path(true, false)
 
       if params[:type] == 'folder'
