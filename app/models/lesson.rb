@@ -90,6 +90,11 @@ class Lesson < Event
     not(started?) and not(closed?)
   end
 
+  def content_type
+    return 'link' if is_link?
+    MIME::Types.type_for(path).first.content_type
+  end
+
   def path(full_path = false, with_address = true)
     return link_path if is_link?
     file_path(full_path, with_address)

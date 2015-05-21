@@ -1,6 +1,0 @@
-
-  curl -i -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST http://localhost/oauth/token \
-    -d '{ "grant_type": "password", "login": "aluno1", "password": "123456"}'
-
-  curl -i -H 'Accept: application/json' -H 'Authorization: Bearer aaa35284bf879efaa51c19150fa4d10e769b9e98cd1d81db2acc5dfae0c43997' \
-    -X POST http://localhost:3000/api/v1/posts/24/files -d file=@/home/user/test.jpg

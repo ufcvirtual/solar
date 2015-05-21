@@ -1,8 +1,6 @@
 module V1
   class SupportMaterialFiles < Base
-
     namespace :groups do
-
       before do
         @ats = RelatedTaggable.related(group_id: params[:id])
       end
@@ -22,6 +20,7 @@ module V1
               {
                 id: file.id,
                 type: file.type_info,
+                content_type: file.attachment_content_type,
                 name: file.name,
                 url: file.url || "/api/v1/groups/#{params[:id]}/support_material_files/#{file.id}/download"
               }
@@ -40,6 +39,5 @@ module V1
       end # get download
 
     end # namespace
-
   end
 end

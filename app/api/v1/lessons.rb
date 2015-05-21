@@ -1,8 +1,6 @@
 module V1
   class Lessons < Base
-
     namespace :groups do
-
       before do
         @ats = RelatedTaggable.related(group_id: @group_id = params[:id])
       end
@@ -29,7 +27,6 @@ module V1
 
         send_file(file_path.to_s)
       end # get folder
-
     end # namespace groups
 
     namespace :lessons do
@@ -56,8 +53,6 @@ module V1
         end
         courses
       end # get /
-
     end # namespace lessons
-
   end
 end
