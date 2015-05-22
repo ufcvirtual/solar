@@ -1198,6 +1198,7 @@ pt_BR:
       article: Artigo
       electronic_doc: Doc. Eletrônico
       free: Livre
+      file: Arquivo
     form:
       author_placeholder: "SOBRENOME, Nome"
       periodicity_placeholder: "Trimestral"
@@ -1209,6 +1210,7 @@ pt_BR:
       description: Descrição
     index:
       items: Itens Bibliográficos
+      download: Download de zip com bibliografias de tipo arquivo
     list:
       new: Nova Bibliografia
       item: Item
@@ -1229,6 +1231,9 @@ pt_BR:
       created: Não foi possível criar item bibliográfico.
       updated: Não foi possível atualizar item bibliográfico.
       deleted: Não foi possível deletar item bibliográfico.
+      cant_edit_file: Arquivos não podem ser editados.
+      file: Um ou mais arquivos de até 5MB devem ser selecionados.
+    zip: Bibliografias de %{info}
 
   notifications:
     form:
@@ -2311,6 +2316,7 @@ pt_BR:
       deleted: Material de apoio deletado com sucesso.
     error:
       must_select_something: Um ou mais itens devem ser selecionados
+      file: Um ou mais arquivos de até 30MB devem ser selecionados.
     index:
       choose_at_least_one: "Selecione, ao menos, um material de apoio"
       choose_one: "Selecione um material de apoio do tipo: link"

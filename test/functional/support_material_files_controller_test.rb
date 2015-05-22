@@ -33,7 +33,7 @@ class SupportMaterialFilesControllerTest < ActionController::TestCase
 
   test "criar material do tipo arquivo" do
     assert_difference(["SupportMaterialFile.count", "AcademicAllocation.count"], 1) do
-      post(:create, {support_material_file: {attachment: fixture_file_upload('files/file_10k.dat'), material_type: Material_Type_File}, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
+      post(:create, {files: [fixture_file_upload('files/file_10k.dat')], support_material_file: {material_type: Material_Type_File}, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     end
     assert_response :success
   end
@@ -45,12 +45,12 @@ class SupportMaterialFilesControllerTest < ActionController::TestCase
       post(:create, {support_material_file: {url: "google.com", material_type: Material_Type_Link}, allocation_tags_ids: "#{allocation_tags(:al19).id}"})
     end
 
-    assert_response :unauthorized
+    assert_response :unprocessable_entity
   end
 
   test "download" do
     assert_difference(["SupportMaterialFile.count", "AcademicAllocation.count"], 1) do
-      post(:create, {support_material_file: {attachment: fixture_file_upload('files/file_10k.dat'), material_type: Material_Type_File}, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
+      post(:create, {files: [fixture_file_upload('files/file_10k.dat')], support_material_file: {material_type: Material_Type_File}, allocation_tags_ids: "#{allocation_tags(:al3).id}"})
     end
 
     get(:download, {id: SupportMaterialFile.last.id, allocation_tag_id: allocation_tags(:al3).id})

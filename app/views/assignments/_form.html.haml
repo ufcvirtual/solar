@@ -1,14 +1,10 @@
 .new_assignment
 
-  = simple_form_for @assignment, html: {id: 'assignment_form'} do |f|
+  = simple_form_for @assignment, html: { id: 'assignment_form' } do |f|
     %h1#lightBoxDialogTitle= t((@assignment.persisted? ? ".edit" : ".new"))
     %span.form_requirement= t(:required_fields)
 
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
-
-    - if @error
-      .field_with_errors
-        %span.error= @error
 
     .form-inputs.block_content.assignments_box
       = f.input :name, required: true

@@ -1,16 +1,26 @@
 .block_title
   %h2= t(".items")
+  .right_buttons
+    - unless @bibliographies.where(type_bibliography: Bibliography::TYPE_FILE).blank?
+      = link_to content_tag(:i, nil, class: "icon-install"), zip_download_bibliographies_path, class: 'btn', :"data-tooltip" => t('.download')
+    
 .blcok_content
-  - unless @bibliographies.nil? or @bibliographies.empty?
+  - unless @bibliographies.blank?
     %table.tb_list
       %thead
         %tr.lines
-          %th{align: "left"}=t(:item, scope: [:bibliographies, :list])
-          %th{align: "center", style: "width: 15%;"}=t(:type, scope: [:bibliographies, :list])
+          %th{ align: 'left' }=t(:item, scope: [:bibliographies, :list])
+          %th{ align: 'center', style: 'width: 15%;' }=t(:type, scope: [:bibliographies, :list])
       %tbody
         - @bibliographies.each do |bibliography|
-          %tr.lines{id: "tr_#{bibliography.id}"}
-            %td= raw bibliography.resume
+          %tr.lines{ id: "tr_#{bibliography.id}" }
+            %td
+              - resume = bibliography.resume
+              - if bibliography.is_file?
+                = link_to image_tag(icon_attachment(bibliography.attachment_file_name)), download_bibliography_path(bibliography), class: 'file_icon'
+                = link_to resume, download_bibliography_path(bibliography), class: 'file_icon'
+              - else
+                =raw resume
             %td= bibliography.type
 
   - else

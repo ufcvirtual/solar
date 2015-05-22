@@ -1025,6 +1025,7 @@ en_US:
       article: Article
       electronic_doc: Electronic Doc.
       free: Free
+      file: File
     form:
       author_placeholder: "SURNAME, Name"
       periodicity_placeholder: "Weekly"
@@ -1056,6 +1057,9 @@ en_US:
       created: Bibliography item wasn't created.
       updated: Bibliography item wasn't updated.
       deleted: Bibliography item wasn't deleoted.
+      cant_edit_file: Files can't be updated.
+      file: One or more files until 5MB must be selected.
+    zip: Bibliographies of %{info}
   notifications:
     form:
       new: New Notification
@@ -2098,6 +2102,7 @@ en_US:
       deleted: Support Material was successfully deleted.
     error:
       must_select_something: One or more items must be selected
+      file: One or more files until 30MB must be selected.
     index:
       choose_at_least_one: "Choose at least one support material"
       choose_one: "Choose a link support material"

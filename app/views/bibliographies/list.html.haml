@@ -5,7 +5,7 @@
   .block_content_toolbar
 
     .block_toolbar_left.btn-group
-      %a.btn.btn_main{href: "#", :"data-dropdown" => "#dropdown_bibliography"}
+      %a.btn.btn_main{ href: '#', :"data-dropdown" => '#dropdown_bibliography' }
         = content_tag(:i, nil, class: 'icon-plus')
         %i.icon-arrow-down-triangle
       .dropdown.dropdown-tip#dropdown_bibliography
@@ -17,35 +17,42 @@
           %li= link_to bt = t(:periodical, scope)   , new_periodical_bibliographies_path(allocation_tags_ids: @allocation_tags_ids)   , :"data-box-title" => bt, class: li_class
           %li= link_to bt = t(:electronic_doc, scope), new_electronic_doc_bibliographies_path(allocation_tags_ids: @allocation_tags_ids), :"data-box-title" => bt, class: li_class
           %li= link_to bt = t(:free, scope)         , new_free_bibliographies_path(allocation_tags_ids: @allocation_tags_ids)         , :"data-box-title" => bt, class: li_class
+          %li= link_to bt = t(:file, scope)         , new_file_bibliographies_path(allocation_tags_ids: @allocation_tags_ids)         , :"data-box-title" => bt, class: li_class
 
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit', :"data-link-edit" => edit_bibliography_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".edit")
-        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_bibliography',  :"data-link-delete" => bibliography_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), '#', class: 'btn btn_edit', :"data-link-edit" => edit_bibliography_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t('.edit')
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), '#', class: 'btn btn_del delete_bibliography',  :"data-link-delete" => bibliography_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :'data-tooltip' => t('.delete')
 
   - unless @bibliographies.nil? or @bibliographies.empty?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
     %table.tb_list
       %thead
         %tr.lines
-          %th.center.no_sort{style: 'width: 25px;'}= check_box_tag :all_bibliographies, false, false, :"data-children-names" => "ckb_bibliography", class: "all_bibliographies"
-          %th{align: "left"}=t(".item")
-          %th{align: "center", style: "width: 26%;"}=t(".type")
+          %th.center.no_sort{ style: 'width: 25px;' }= check_box_tag :all_bibliographies, false, false, :"data-children-names" => 'ckb_bibliography', class: 'all_bibliographies'
+          %th{ align: 'left' }= t('.item')
+          %th{ align: 'center', style: 'width: 26%;' }=t('.type')
       %tbody
         - @bibliographies.each do |bibliography|
-          %tr.lines{id: "tr_#{bibliography.id}"}
-            %td{style: 'text-align:center;'}= check_box_tag :ckb_bibliography, bibliography.id, false, {class: "ckb_bibliography"}
+          %tr.lines{ id: "tr_#{bibliography.id}" }
+            %td{ style: 'text-align:center;', :'data-file' => bibliography.is_file? }= check_box_tag :ckb_bibliography, bibliography.id, false, { class: 'ckb_bibliography' }
             %td
               %div
-                .description=raw bibliography.resume
-                .group_label.invisible= render "groups/groups_tags", groups: bibliography.groups, tool: bibliography, all_groups: all_groups, paths: {add: add_group_to_bibliographies_path(id: "param_id", tool_id: bibliography.id), remove: remove_group_from_bibliographies_path(id: "param_id", tool_id: bibliography.id), unbind: unbind_group_from_bibliographies_path(id: "param_id", tool_id: bibliography.id), tags: group_tags_from_bibliographies_path(tool_id: bibliography.id)}
+                .description
+                  - resume = bibliography.resume
+                  - if bibliography.is_file?
+                    = link_to image_tag(icon_attachment(bibliography.attachment_file_name)), download_bibliography_path(bibliography), class: 'file_icon'
+                    = link_to resume, download_bibliography_path(bibliography), class: 'file_icon'
+                  - else
+                    =raw resume
+                .group_label.invisible= render 'groups/groups_tags', groups: bibliography.groups, tool: bibliography, all_groups: all_groups, paths: {add: add_group_to_bibliographies_path(id: 'param_id', tool_id: bibliography.id), remove: remove_group_from_bibliographies_path(id: 'param_id', tool_id: bibliography.id), unbind: unbind_group_from_bibliographies_path(id: 'param_id', tool_id: bibliography.id), tags: group_tags_from_bibliographies_path(tool_id: bibliography.id)}
             %td
               = bibliography.type
 
   - else
-    .block_content_text.block_content_text_list.text_none= t(".no_data")
+    .block_content_text.block_content_text_list.text_none= t('.no_data')
 
-= javascript_include_tag "tablesorter", "bibliographies", "tooltip", "groups_tags"
+= javascript_include_tag 'tablesorter', 'bibliographies', 'tooltip', 'groups_tags'
 
 :javascript
 

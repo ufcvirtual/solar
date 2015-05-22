@@ -1,5 +1,6 @@
 class Assignment < Event
   include AcademicTool
+  include FilesHelper
 
   GROUP_PERMISSION = true
 
@@ -19,7 +20,12 @@ class Assignment < Event
   validates :name, length: { maximum: 1024 }
 
   def copy_dependencies_from(assignment_to_copy)
-    AssignmentEnunciationFile.create! assignment_to_copy.enunciation_files.map { |file| file.attributes.merge({ assignment_id: self.id }) } unless assignment_to_copy.enunciation_files.empty?
+    unless assignment_to_copy.enunciation_files.empty?
+      assignment_to_copy.enunciation_files.each do |file|
+        new_file = AssignmentEnunciationFile.create! file.attributes.merge({ assignment_id: self.id })
+        copy_file(file, new_file, File.join('assignment', 'enunciation'))
+      end
+    end
   end
 
   def can_remove_groups?(groups)

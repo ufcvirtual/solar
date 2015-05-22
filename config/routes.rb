@@ -428,9 +428,9 @@ Solar::Application.routes.draw do
   end
 
   # resources :tabs, only: [:show, :create, :destroy]
-  get :activate_tab, to: "tabs#show", as: :activate_tab
-  get :add_tab, to: "tabs#create", as: :add_tab
-  get :close_tab, to: "tabs#destroy", as: :close_tab
+  get :activate_tab, to: "tabs#show"   , as: :activate_tab
+  get :add_tab     , to: "tabs#create" , as: :add_tab
+  get :close_tab   , to: "tabs#destroy", as: :close_tab
 
   resources :support_material_files do
     collection do
@@ -456,12 +456,17 @@ Solar::Application.routes.draw do
       get :new_article        , to: :new, type_bibliography: Bibliography::TYPE_ARTICLE
       get :new_electronic_doc , to: :new, type_bibliography: Bibliography::TYPE_ELECTRONIC_DOC
       get :new_free           , to: :new, type_bibliography: Bibliography::TYPE_FREE
+      get :new_file           , to: :new, type_bibliography: Bibliography::TYPE_FILE
 
       put ':tool_id/unbind/group/:id' , to: 'groups#change_tool', type: 'unbind', tool_type: 'Bibliography', as: :unbind_group_from
       put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Bibliography', as: :remove_group_from
       put ':tool_id/add/group/:id'    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Bibliography', as: :add_group_to
       get ':tool_id/group/tags'       , to: 'groups#tags'                       , tool_type: 'Bibliography', as: :group_tags_from
+
+      get :zip_download, to: :download, zip: true
     end
+
+    get :download, on: :member, zip: false
   end
 
   resources :notifications do

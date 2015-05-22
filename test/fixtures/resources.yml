@@ -987,3 +987,9 @@ res193:
   controller: 'lessons'
   action: 'import'
   description: 'Importação de aulas'
+
+res194:
+  id: 194
+  controller: 'bibliographies'
+  action: 'download'
+  description: 'Download de arquivos da bibliografia'

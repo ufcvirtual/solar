@@ -44,6 +44,11 @@ uc9:
   resource_id: 23
   per_id: false
 
+uc10:
+  profile_id: 1
+  resource_id: 194
+  per_id: false
+
 # assignments
 assig1:
   profile_id: 1
@@ -247,6 +252,11 @@ ucpt10:
 ucpt11:
   profile_id: 2
   resource_id: 172
+  per_id: false
+
+ucpt12:
+  profile_id: 2
+  resource_id: 194
   per_id: false
 
 # assignments
@@ -493,6 +503,11 @@ ucta8:
 ucta9:
   profile_id: 3
   resource_id: 23
+  per_id: false
+
+ucta10:
+  profile_id: 3
+  resource_id: 194
   per_id: false
 
 # assignments
@@ -769,6 +784,11 @@ tutor_p_20:
   resource_id: 146
   per_id: false
 
+tutor_p_21:
+  profile_id: 4
+  resource_id: 194
+  per_id: false
+
 agendatutorp:
   profile_id: 4
   resource_id: 26
@@ -978,6 +998,11 @@ bibedit3:
 bibedit4:
   profile_id: 5
   resource_id: 137
+  per_id: false
+
+bibedit5:
+  profile_id: 5
+  resource_id: 194
   per_id: false
 
 ## aviso
@@ -1491,6 +1516,11 @@ ucmon8:
 ucmon9:
   profile_id: 13
   resource_id: 23
+  per_id: false
+
+ucmon10:
+  profile_id: 13
+  resource_id: 194
   per_id: false
 
 # assignments

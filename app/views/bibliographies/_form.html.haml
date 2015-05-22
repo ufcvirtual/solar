@@ -2,24 +2,26 @@
   %span.form_requirement= t(:required_fields)
   %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit : :new), scope: [:bibliographies, :form], bib_type: f.object.type)
 
-  .form-inputs.block_content{"data-form-type" => f.object.persisted? ? 'edit' : 'new'}
+  .form-inputs.block_content{ :"data-form-type" => f.object.persisted? ? 'edit' : 'new' }
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
-    = f.input :type_bibliography, as: :hidden, input_html: {value: f.object.type_bibliography}
+    = f.input :type_bibliography, as: :hidden, input_html: { value: f.object.type_bibliography }
 
     - case f.object.type_bibliography
     - when Bibliography::TYPE_BOOK
-      = render partial: 'book_form', locals: {f: f}
+      = render partial: 'book_form', locals: { f: f }
     - when Bibliography::TYPE_PERIODICAL
-      = render partial: 'periodical_form', locals: {f: f}
+      = render partial: 'periodical_form', locals: { f: f }
     - when Bibliography::TYPE_ARTICLE
-      = render partial: 'article_form', locals: {f: f}
+      = render partial: 'article_form', locals: { f: f }
     - when Bibliography::TYPE_ELECTRONIC_DOC
-      = render partial: 'electronic_doc_form', locals: {f: f}
+      = render partial: 'electronic_doc_form', locals: { f: f }
     - when Bibliography::TYPE_FREE
-      = render partial: 'free_form', locals: {f: f}
+      = render partial: 'free_form', locals: { f: f }
+    - when Bibliography::TYPE_FILE
+      = render partial: 'file_form', locals: { f: f }
 
     = render "groups/codes"
 
     .form-actions.right_buttons
-      = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: 'button', alt: t(:cancel)
-      = button_to_function t(:save), "save_bibliography()", class: "btn btn_main btn_lightbox", alt: t(:save), type: 'button'
+      = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button', alt: t(:cancel)
+      = button_to_function t(:save), 'save_bibliography()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button'

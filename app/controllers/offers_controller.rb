@@ -116,7 +116,7 @@ class OffersController < ApplicationController
       at_c  = AllocationTag.find_by_course_id(params[:offer][:course_id]).try(:id)                   unless params[:offer][:course_id].blank?
       at_uc = AllocationTag.find_by_curriculum_unit_id(params[:offer][:curriculum_unit_id]).try(:id) unless params[:offer][:curriculum_unit_id].blank?
 
-      if at_c.nil? and at_uc.nil?
+      if at_c.nil? && at_uc.nil?
         authorize! method, Offer
       else
         begin

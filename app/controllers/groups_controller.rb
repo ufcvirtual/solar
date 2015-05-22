@@ -121,8 +121,8 @@ class GroupsController < ApplicationController
       tool_model = model_by_tool_type(params[:tool_type])
       tool = tool_model.find(params[:tool_id])
 
-      if params[:type] == "add"
-        raise "cant_add_group" unless (!tool.respond_to?(:can_add_group?) || tool.can_add_group?)
+      if params[:type] == 'add'
+        raise 'cant_add_group' unless (!tool.respond_to?(:can_add_group?) || tool.can_add_group?)
 
         AcademicAllocation.transaction do
           AcademicAllocation.create! groups.map {|group| {allocation_tag_id: group.allocation_tag.id, academic_tool_id: params[:tool_id], academic_tool_type: params[:tool_type]}}
@@ -130,29 +130,28 @@ class GroupsController < ApplicationController
       else
         academic_allocations = AcademicAllocation.where(allocation_tag_id: groups.map(&:allocation_tag).map(&:id), academic_tool_type: params[:tool_type], academic_tool_id: params[:tool_id])
 
-        unless tool.groups.size == groups.size # se não for deixar a ferramenta sem turmas
+        unless tool.groups.size == groups.size # se nao for deixar a ferramenta sem turmas
           case params[:type]
-            when "unbind" # desvincular uma turma
+            when 'unbind' # desvincular uma turma
 
-              raise "must_have_group" if tool.academic_allocations.size == academic_allocations.size
-              raise "cant_unbind" unless (!tool.respond_to?(:can_unbind?) || tool.can_unbind?)
+              raise 'must_have_group' if tool.academic_allocations.size == academic_allocations.size
+              raise 'cant_unbind' unless (!tool.respond_to?(:can_unbind?) || tool.can_unbind?)
 
               new_tool = tool_model.create(tool.attributes)
               academic_allocations.update_all(academic_tool_id: new_tool.id)
 
               # se a ferramenta possuir um schedule, cria um igual para a nova
               new_tool.update_attributes(schedule_id: Schedule.create(tool.schedule.attributes).id) if tool.respond_to?(:schedule)
-              # copia as dependências pro novo objeto caso existam
+              # copia as dependencias pro novo objeto caso existam
               new_tool.copy_dependencies_from(tool) if new_tool.respond_to?(:copy_dependencies_from)
-              
-            when "remove" # remover uma turma
-              raise "cant_transfer_dependencies" unless (!tool.respond_to?(:can_remove_groups?) || tool.can_remove_groups?(groups))
+            when 'remove' # remover uma turma
+              raise 'cant_transfer_dependencies' unless (!tool.respond_to?(:can_remove_groups?) || tool.can_remove_groups?(groups))
               academic_allocations.destroy_all
             else
-              raise "option_not_found"
+              raise 'option_not_found'
           end
         else # se for a única turma
-          raise "last_group"
+          raise 'last_group'
         end
       end
 
@@ -160,7 +159,7 @@ class GroupsController < ApplicationController
     rescue ActiveRecord::RecordNotSaved
       render json: {success: false, alert: t(:academic_allocation_already_exists, scope: [:groups, :error])}, status: :unprocessable_entity
     rescue => error
-      error_message = I18n.translate!("#{error.message}", scope: [:groups, :error], :raise => true) rescue t("tool_change", scope: [:groups, :error])
+      error_message = I18n.translate!("#{error.message}", scope: [:groups, :error], :raise => true) rescue t('tool_change', scope: [:groups, :error])
       render json: {success: false, alert: error_message}, status: :unprocessable_entity
     end
   end

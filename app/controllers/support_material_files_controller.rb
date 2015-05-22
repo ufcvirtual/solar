@@ -34,25 +34,30 @@ class SupportMaterialFilesController < ApplicationController
 
   def create
     authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    (params[:support_material_file][:material_type].to_i == Material_Type_File) ? create_many : create_one
 
-    @support_material = SupportMaterialFile.new support_material_file_params
-    @support_material.allocation_tag_ids_associations = @allocation_tags_ids
-
-    if @support_material.save
-      render json: {success: true, notice: t('support_materials.success.created')}
-    else
-      render json: {success: false, alert: @support_material.errors.full_messages}, status: :unprocessable_entity
-    end
+    render json: { success: true, notice: t('support_materials.success.created') }
+  rescue ActiveRecord::AssociationTypeMismatch
+    render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
-    request.format = :json
-    raise error.class
+    @allocation_tags_ids = @allocation_tags_ids.join(' ')
+    params[:success] = false
+    if @support_material.nil? || @support_material.is_file?
+      render json: { success: false, alert: t('support_material.error.file') }
+    else
+      render :new
+    end
   end
 
   def edit
+    raise 'cant_edit_file' if @support_material.is_file?
     authorize! :update, SupportMaterialFile, on: @allocation_tags_ids
   end
 
   def update
+    raise 'cant_edit_file' if @support_material.is_file?
     authorize! :update, SupportMaterialFile, on: @support_material.academic_allocations.pluck(:allocation_tag_id)
 
     if @support_material.update_attributes(support_material_file_params)
@@ -122,6 +127,24 @@ class SupportMaterialFilesController < ApplicationController
 
     def support_material_file_params
       params.require(:support_material_file).permit(:material_type, :url, :attachment)
+    end
+
+     def create_one(params=support_material_file_params)
+      @support_material = SupportMaterialFile.new(params)
+
+      SupportMaterialFile.transaction do
+        @support_material.allocation_tag_ids_associations = @allocation_tags_ids
+        @support_material.save!
+        # @support_material.academic_allocations.create @allocation_tags_ids.map { |at| { allocation_tag_id: at } }
+      end
+    end
+
+    def create_many
+      SupportMaterialFile.transaction do
+        params[:files].each do |file|
+          create_one(support_material_file_params.merge!(attachment: file))
+        end
+      end
     end
 
 end

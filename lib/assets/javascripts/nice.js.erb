@@ -242,17 +242,18 @@ $.fn.serialize_and_submit = function(options) {
     options = {};
   if (typeof(options) != "undefined" && typeof(options.success) == "undefined") { // definir success
     options.success = function(data) {
-      if (typeof(data) == "string" && data.search(".field_with_errors") != -1)
+      if (typeof(data) == "string"){
         $('' + form_id).replaceWith(data);
-      else {
-        // se não houver opção indicando que o lightbox deve se manter aberto, o default é fechá-lo
-        if(typeof(options.dont_remove_lightbox) == "undefined" || !options.dont_remove_lightbox){
-          $.fancybox.close();
-        }
-
+      } else {
+        // se nao houver opção indicando que o lightbox deve se manter aberto, o default é fechá-lo
         if (typeof(options.complement_success) == "function"){
           options.complement_success(data);
         }
+
+        if((typeof(options.dont_remove_lightbox) == "undefined" || !options.dont_remove_lightbox) && (typeof($("span.error:first")) == "undefined" || $("span.error").html()=="" || $("span.error").html()==undefined)){
+          $.fancybox.close();
+        }
+
 
         if (typeof(options.replace_list) != "undefined"){
           $.get(options.replace_list.data("link-list"), function(data2){
@@ -278,6 +279,7 @@ $.fn.serialize_and_submit = function(options) {
           flash_message(data.notice, 'notice');
         }
       }
+
       update_tables_with_no_data();
     }
   }

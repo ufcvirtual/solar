@@ -1,20 +1,20 @@
-= simple_form_for(@assignment_comment, html: { id: "comment_form", multipart: true }) do |f|
+= simple_form_for(@assignment_comment, html: { id: 'comment_form', multipart: true }) do |f|
   = f.hidden_field :sent_assignment_id, value: f.object.sent_assignment_id
 
   .assignment_inner_content.comment_area= f.input :comment, as: :ckeditor, label: false
   .forum_post_attachment
-    = button_tag t(".attach_file"), class: "btn btn-orange new_file"
+    = button_tag t('.attach_file'), class: 'btn btn-orange new_file'
 
     .portfolio_comment_button
-      = button_tag t(:cancel), class: "btn btn_caution cancel_comment", type: :button
+      = button_tag t(:cancel), class: 'btn btn_caution cancel_comment', type: :button
       = button_tag t(:save), class: 'btn btn_main save_comment', type: :button
 
     %h3.attachment_title.invisible= t(".attached_files")
 
     = f.simple_fields_for :files do |files|
       .file_input
-        = files.input :_destroy, as: :hidden, input_html: {value: 0, class: "destroy_input_file", :"data-file-id" => files.object.id}
-        = files.input :attachment, label: false, input_html: {id: "fileupload"}
+        = files.input :_destroy, as: :hidden, input_html: { value: 0, class: "destroy_input_file", :"data-file-id" => files.object.id }
+        = files.input :attachment, label: false, input_html: { id: 'fileupload' }
 
     .input.list_files_to_send
       - f.object.files.each do |file|

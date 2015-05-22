@@ -1,5 +1,6 @@
 class SupportMaterialFile < ActiveRecord::Base
   include AcademicTool
+  include FilesHelper
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 
@@ -17,6 +18,10 @@ class SupportMaterialFile < ActiveRecord::Base
     path: ":rails_root/media/support_material_files/:id_:basename.:extension",
     url: "/media/support_material_files/:id_:basename.:extension"
 
+  def copy_dependencies_from(material_to_copy)
+    copy_file(material_to_copy, self, 'support_material_files') if material_to_copy.is_file?
+  end
+
   def path
     return url if is_link?
     attachment.url
@@ -27,23 +32,25 @@ class SupportMaterialFile < ActiveRecord::Base
   end
 
   def url_protocol
-    self.url = ['http://', self.url].join if (self.url =~ URI::regexp(["ftp", "http", "https"])).nil?
+    self.url = ['http://', self.url].join if (self.url =~ URI::regexp(['ftp', 'http', 'https'])).nil?
   end
 
   def name
-    url || attachment_file_name || ""
+    url || attachment_file_name || ''
   end
 
   def is_link?
-    (material_type == Material_Type_Link)
+    material_type == Material_Type_Link
+  end
+
+  def is_file?
+    material_type == Material_Type_File
   end
 
   def define_fixed_values
     self.folder = ((material_type.to_i == Material_Type_Link) ? 'LINKS' : 'GERAL')
     self.attachment_updated_at = Time.now
   end
-
-  ## class methods
 
   def self.find_files(allocation_tag_ids, folder_name = nil)
     in_folder = "folder = ?" unless folder_name.nil?

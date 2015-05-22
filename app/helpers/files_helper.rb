@@ -102,6 +102,10 @@ module FilesHelper
     return true
   end # extract
 
+  def copy_file(from, to, dir)
+    FileUtils.cp from.attachment.path, File.join("#{Rails.root}", 'media', dir, [to.id.to_s, from.attachment_file_name].join('_'))
+  end
+
   private
 
     ## files with folder
@@ -114,7 +118,7 @@ module FilesHelper
         # monta uma estrutura indicando os arquivos de cada pasta para quando há mais de um nível
         files.each do |file|
           tree[file.folder.to_sym] = [] unless tree[file.folder.to_sym].present?
-          tree[file.folder.to_sym] << file if file.respond_to?(:folder) and not(file.attachment_file_name.nil?)
+          tree[file.folder.to_sym] << file if file.respond_to?(:folder) && !file.attachment_file_name.nil?
         end # each
       end
       tree.delete_if { |k,v| v.empty? }

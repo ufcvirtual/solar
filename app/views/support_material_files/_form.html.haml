@@ -10,10 +10,12 @@
       = f.hidden_field :material_type, value: f.object.material_type
 
       .form-inputs.block_content
-        - if f.object.material_type == Material_Type_Link
+        - if f.object.is_link?
           = f.input :url, as: :string, required: true
         - else
-          = f.file_field :attachment, required: true
+          .input.string
+            = file_field_tag 'files[]', type: :file, multiple: true
+            %span.error
 
         = render "groups/codes"
 
@@ -29,7 +31,13 @@
     $('#save').click(function(){
       $('#support_material_form:first').serialize_and_submit({
         files: true,
-        replace_list: $('.list_support_material:last')
+        replace_list: $('.list_support_material:last'),
+        complement_success: function(data) {
+          if (typeof(data.alert) != "undefined")
+            $('form span.error').html(data.alert);
+          else
+            $('form span.error').html('');
+        }
       });
     });
   });

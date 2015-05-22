@@ -2,36 +2,36 @@ module V1::Contents
 
   def copy_posts(from_posts, to_at, parent_id=nil)
     from_posts.each do |from_post|
-      to_ac    = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: "Discussion", academic_tool_id: from_post.academic_allocation.academic_tool_id).first
-      new_post = copy_object(from_post, {"academic_allocation_id" => to_ac.id, "parent_id" => parent_id})
-      copy_objects(from_post.files, {"discussion_post_id" => new_post.id}, true)
+      to_ac    = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Discussion', academic_tool_id: from_post.academic_allocation.academic_tool_id).first
+      new_post = copy_object(from_post, {'academic_allocation_id' => to_ac.id, 'parent_id' => parent_id})
+      copy_objects(from_post.files, {'discussion_post_id' => new_post.id}, true)
       copy_posts(from_post.children, to_at, new_post.try(:id))
     end
   end
 
   def copy_sent_assignments(from_sent_assignments, to_at)
     from_sent_assignments.each do |from_sent_assignment|
-      to_ac      = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: "Assignment", academic_tool_id: from_sent_assignment.academic_allocation.academic_tool_id).first
-      attributes = from_sent_assignment.attributes.except("id", "grade").merge("academic_allocation_id" => to_ac.id)
+      to_ac      = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Assignment', academic_tool_id: from_sent_assignment.academic_allocation.academic_tool_id).first
+      attributes = from_sent_assignment.attributes.except('id', 'grade').merge('academic_allocation_id' => to_ac.id)
 
       unless from_sent_assignment.group_assignment_id.nil?
-        new_group  = copy_object(from_sent_assignment.group_assignment, {"academic_allocation_id" => to_ac}, false, :group_participants)
-        attributes.merge!("group_assignment_id" => new_group.id)
+        new_group  = copy_object(from_sent_assignment.group_assignment, {'academic_allocation_id' => to_ac}, false, :group_participants)
+        attributes.merge!('group_assignment_id' => new_group.id)
       end
 
       new_sa = SentAssignment.where(attributes).first_or_create do |sa|
         sa.grade = from_sent_assignment.grade # updates grade with most recent copied group
       end
 
-      copy_objects(from_sent_assignment.assignment_comments, {"sent_assignment_id" => new_sa.id}, true, :files)
-      copy_objects(from_sent_assignment.assignment_files, {"sent_assignment_id" => new_sa.id}, true)
+      copy_objects(from_sent_assignment.assignment_comments, {'sent_assignment_id' => new_sa.id}, true, :files)
+      copy_objects(from_sent_assignment.assignment_files, {'sent_assignment_id' => new_sa.id}, true)
     end
   end
 
   def copy_group_assignments(from_group_assignments, to_at)
     from_group_assignments.each do |from_group_assignment|
-      to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: "Assignment", academic_tool_id: from_group_assignment.academic_allocation.academic_tool_id).first
-      copy_object(from_group_assignment, {"academic_allocation_id" => to_ac}, false, :group_participants)
+      to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Assignment', academic_tool_id: from_group_assignment.academic_allocation.academic_tool_id).first
+      copy_object(from_group_assignment, {'academic_allocation_id' => to_ac}, false, :group_participants)
     end
   end
 
@@ -61,17 +61,17 @@ module V1::Contents
 
   # remove posts, sent_assignments, group_assignments, chat_messages and dependents
   def remove_all_content(allocation_tag)
-    AcademicAllocation.where(academic_tool_type: "Discussion", allocation_tag_id: allocation_tag).map{ |ac| ac.discussion_posts.delete_all }
-    AcademicAllocation.where(academic_tool_type: "Assignment", allocation_tag_id: allocation_tag).map{ |ac|
+    AcademicAllocation.where(academic_tool_type: 'Discussion', allocation_tag_id: allocation_tag).map{ |ac| ac.discussion_posts.delete_all }
+    AcademicAllocation.where(academic_tool_type: 'Assignment', allocation_tag_id: allocation_tag).map{ |ac|
       ac.sent_assignments.map(&:delete_with_dependents)
       ac.group_assignments.map(&:delete_with_dependents)
     }
-    AcademicAllocation.where(academic_tool_type: "ChatRoom", allocation_tag_id: allocation_tag).map{ |ac| ac.chat_messages.delete_all }
+    AcademicAllocation.where(academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag).map{ |ac| ac.chat_messages.delete_all }
   end
 
   def copy_file(file_to_copy_path, file_copied_path)
-    unless File.exists? file_copied_path or not(File.exists? file_to_copy_path)
-      file = File.new file_copied_path, "w"
+    unless File.exists? file_copied_path || !(File.exists? file_to_copy_path)
+      file = File.new file_copied_path, 'w'
       FileUtils.cp file_to_copy_path, file # copy file content to new file
     end
   end
@@ -102,19 +102,19 @@ module V1::Contents
   end
 
   def replicate_discussions(from_academic_allocations, to_at)
-    from_discussions_academic_allocations = from_academic_allocations.where(academic_tool_type: "Discussion")
-    create_missing_tools(from_discussions_academic_allocations.pluck(:academic_tool_id), to_at, "Discussion")
+    from_discussions_academic_allocations = from_academic_allocations.where(academic_tool_type: 'Discussion')
+    create_missing_tools(from_discussions_academic_allocations.pluck(:academic_tool_id), to_at, 'Discussion')
 
     from_posts = Post.where(parent_id: nil, academic_allocation_id: from_discussions_academic_allocations.pluck(:id))
     copy_posts(from_posts, to_at)
   end
 
   def replicate_chats(from_academic_allocations, to_at)
-    from_chats_academic_allocations = from_academic_allocations.where(academic_tool_type: "ChatRoom")
-    create_missing_tools(from_chats_academic_allocations.pluck(:academic_tool_id), to_at, "ChatRoom")
+    from_chats_academic_allocations = from_academic_allocations.where(academic_tool_type: 'ChatRoom')
+    create_missing_tools(from_chats_academic_allocations.pluck(:academic_tool_id), to_at, 'ChatRoom')
 
     ChatRoom.where(id: from_chats_academic_allocations.pluck(:academic_tool_id)).each do |chat|
-      to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: "ChatRoom", academic_tool_id: chat.id).first
+      to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'ChatRoom', academic_tool_id: chat.id).first
 
       copy_objects(chat.messages, {"academic_allocation_id" => to_ac.id})
       copy_objects(chat.participants, {"academic_allocation_id" => to_ac.id})
@@ -122,8 +122,8 @@ module V1::Contents
   end
 
   def replicate_assignments(from_academic_allocations, to_at)
-    from_assignments_academic_allocations = from_academic_allocations.where(academic_tool_type: "Assignment")
-    create_missing_tools(from_assignments_academic_allocations.pluck(:academic_tool_id), to_at, "Assignment")
+    from_assignments_academic_allocations = from_academic_allocations.where(academic_tool_type: 'Assignment')
+    create_missing_tools(from_assignments_academic_allocations.pluck(:academic_tool_id), to_at, 'Assignment')
 
     ac_ids = from_assignments_academic_allocations.pluck(:id)
 
@@ -135,14 +135,14 @@ module V1::Contents
     from_messages_academic_allocations = Message.where(allocation_tag_id: from_at) # recupera todas as mensagens da turma a repassar dados
 
     from_messages_academic_allocations.each do |from_message|
-      new_message = copy_object(from_message, {"allocation_tag_id" => to_at})
-      copy_objects(from_message.user_messages, {"message_id" => new_message.id}, false, :user_message_labels)
-      copy_objects(from_message.files, {"message_id" => new_message.id}, true)
+      new_message = copy_object(from_message, {'allocation_tag_id' => to_at})
+      copy_objects(from_message.user_messages, {'message_id' => new_message.id}, false, :user_message_labels)
+      copy_objects(from_message.files, {'message_id' => new_message.id}, true)
     end
   end
 
   def replicate_public_files(from_at, to_at)
-    copy_objects(PublicFile.where(allocation_tag_id: from_at), {"allocation_tag_id" => to_at}, true)
+    copy_objects(PublicFile.where(allocation_tag_id: from_at), {'allocation_tag_id' => to_at}, true)
   end
 
 end

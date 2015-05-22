@@ -16,17 +16,35 @@ class BibliographiesControllerTest < ActionController::TestCase
 
   test "rotas" do
     ## apenas algumas rotas
-    assert_routing({method: :get, path: "/bibliographies/new_book"}         , {controller: "bibliographies", action: "new", type_bibliography: Bibliography::TYPE_BOOK})
-    assert_routing({method: :get, path: "/bibliographies/new_periodical"}   , {controller: "bibliographies", action: "new", type_bibliography: Bibliography::TYPE_PERIODICAL})
-    assert_routing({method: :get, path: "/bibliographies/new_article"}      , {controller: "bibliographies", action: "new", type_bibliography: Bibliography::TYPE_ARTICLE})
-    assert_routing({method: :get, path: "/bibliographies/new_electronic_doc"}, {controller: "bibliographies", action: "new", type_bibliography: Bibliography::TYPE_ELECTRONIC_DOC})
-    assert_routing({method: :get, path: "/bibliographies/new_free"}         , {controller: "bibliographies", action: "new", type_bibliography: Bibliography::TYPE_FREE})
+    assert_routing({ method: :get, path: '/bibliographies/new_book' }          , { controller: 'bibliographies', action: 'new', type_bibliography: Bibliography::TYPE_BOOK })
+    assert_routing({ method: :get, path: '/bibliographies/new_periodical' }    , { controller: 'bibliographies', action: 'new', type_bibliography: Bibliography::TYPE_PERIODICAL })
+    assert_routing({ method: :get, path: '/bibliographies/new_article' }       , { controller: 'bibliographies', action: 'new', type_bibliography: Bibliography::TYPE_ARTICLE })
+    assert_routing({ method: :get, path: '/bibliographies/new_electronic_doc' }, { controller: 'bibliographies', action: 'new', type_bibliography: Bibliography::TYPE_ELECTRONIC_DOC })
+    assert_routing({ method: :get, path: '/bibliographies/new_free' }          , { controller: 'bibliographies', action: 'new', type_bibliography: Bibliography::TYPE_FREE })
+    assert_routing({ method: :get, path: '/bibliographies/new_file' }          , { controller: 'bibliographies', action: 'new', type_bibliography: Bibliography::TYPE_FILE })
   end
 
   test "cadastrar livro" do
     assert_difference(["AcademicAllocation.count", "Bibliography.count", "Author.count"], 1) do
       post :create, {allocation_tags_ids: "#{@quimica}",
         bibliography: @params_book_with_author
+      }
+    end
+  end
+
+  test 'cadastrar arquivo' do
+    assert_difference(['AcademicAllocation.count', 'Bibliography.count'], 2) do
+      post :create, { allocation_tags_ids: "#{@quimica}",
+        bibliography: { type_bibliography: Bibliography::TYPE_FILE }, files: [fixture_file_upload('files/file_10k.dat'), fixture_file_upload('files/lessons/index.html')]
+      }
+    end
+    assert_response :success
+  end
+
+  test 'nao cadastrar arquivo grande' do
+    assert_no_difference(['AcademicAllocation.count', 'Bibliography.count']) do
+      post :create, { allocation_tags_ids: "#{@quimica}",
+        bibliography: { type_bibliography: Bibliography::TYPE_FILE }, files: [fixture_file_upload('files/file_10m.dat'), fixture_file_upload('files/lessons/index.html')]
       }
     end
   end
