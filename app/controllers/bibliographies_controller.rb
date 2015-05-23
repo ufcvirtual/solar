@@ -95,15 +95,15 @@ class BibliographiesController < ApplicationController
       bibliographies_to_download = Bibliography.find(params[:id])
       allocation_tags_ids        = bibliographies_to_download.allocation_tags.pluck(:id)
     else
-      allocation_tags_ids        = (active_tab[:url][:allocation_tag_id].blank? ? params[:allocation_tags_ids] : active_tab[:url][:allocation_tag_id])
+      allocation_tags_ids        = (active_tab[:url][:allocation_tag_id].blank? ? params[:allocation_tags_ids] : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
       bibliographies_to_download = Bibliography.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }, type_bibliography: Bibliography::TYPE_FILE).uniq
     end
 
-    authorize! :download, Bibliography, on: allocation_tags_ids, read: true
+    authorize! :download, Bibliography, on: [allocation_tags_ids].flatten, read: true
     redirect_error = bibliographies_path
 
     if bibliographies_to_download.respond_to?(:length)
-      path_zip = compress({ files: bibliographies_to_download, table_column_name: 'attachment_file_name', name_zip_file: t('bibliographies.zip', info: AllocationTag.find(allocation_tags_ids).first.offers.first.info) })
+      path_zip = compress({ files: bibliographies_to_download, table_column_name: 'attachment_file_name', name_zip_file: t('bibliographies.zip', info: AllocationTag.where(id: allocation_tags_ids).first.offers.first.info) })
       if path_zip
         download_file(redirect_error, path_zip)
       else
