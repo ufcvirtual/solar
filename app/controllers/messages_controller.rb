@@ -154,10 +154,10 @@ class MessagesController < ApplicationController
     authorize! :show, CurriculumUnit, {on: @allocation_tags_ids, read: true}
 
     @users = User.all_at_allocation_tags(@allocation_tags_ids, Allocation_Activated, true)
-    @allocation_tags_ids = @allocation_tags_ids.join("_")
-    render partial: "users"
+    @allocation_tags_ids = @allocation_tags_ids.join('_')
+    render partial: 'users'
   rescue
-    render json: {success: false, alert: t("messages.errors.permission")}, status: :unprocessable_entity
+    render json: { success: false, alert: t('messages.errors.permission') }, status: :unprocessable_entity
   end
 
   private

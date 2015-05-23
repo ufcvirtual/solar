@@ -13,9 +13,11 @@
         - if f.object.is_link?
           = f.input :url, as: :string, required: true
         - else
-          .input.string
+          .input.string.files
             = file_field_tag 'files[]', type: :file, multiple: true
+            = button_to_function "Selecionar arquivos", 'add_files()', class: 'btn add_files'
             %span.error
+            .files_list
 
         = render "groups/codes"
 
@@ -23,9 +25,10 @@
           = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
           = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", id: "save"
 
-:javascript
+= javascript_include_tag 'multiple_file_upload'
 
-  jQuery(function($){
+:javascript
+  $(function(){
     $('#support_material_form:first').keypress(function(event) { if (event.keyCode == 13) { event.preventDefault(); } }); // prevenir enter
 
     $('#save').click(function(){

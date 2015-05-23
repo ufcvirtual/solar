@@ -519,11 +519,15 @@ Solar::Application.routes.draw do
 
   get '/media/users/:user_id/photos/:style.:extension', to: 'access_control#users'
 
-  # get "/media/messages/:file.:extension", to: "access_control#message"
   get '/media/assignment/sent_assignment_files/:file.:extension', to: 'access_control#assignment'
   get '/media/assignment/comments/:file.:extension',    to: 'access_control#assignment'
   get '/media/assignment/public_area/:file.:extension', to: 'access_control#assignment'
   get '/media/assignment/enunciation/:file.:extension', to: 'access_control#assignment'
+
+  get '/media/bibliography/:file.:extension', to: 'access_control#bibliography'
+  get '/media/support_material_files/:file.:extension', to: 'access_control#support_material_file'
+  get "/media/messages/:file.:extension", to: "access_control#message"
+  # get "/media/discussions/post/:file.:extension", to: "access_control#post"
 
   mount Ckeditor::Engine => '/ckeditor'
   ## como a API vai ser menos usada, fica mais rapido para o solar rodar sem precisar montar essas rotas

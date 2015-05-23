@@ -95,7 +95,7 @@ class BibliographiesController < ApplicationController
       bibliographies_to_download = Bibliography.find(params[:id])
       allocation_tags_ids        = bibliographies_to_download.allocation_tags.pluck(:id)
     else
-      allocation_tags_ids        = (active_tab[:url][:allocation_tag_id].blank? ? params[:allocation_tags_ids] : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
+      allocation_tags_ids        = (active_tab[:url][:allocation_tag_id].blank? ? params[:allocation_tags_ids] : active_tab[:url][:allocation_tag_id])
       bibliographies_to_download = Bibliography.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }, type_bibliography: Bibliography::TYPE_FILE).uniq
     end
 

@@ -5,8 +5,8 @@ describe "Support Material Files" do
   fixtures :all
   include ActionDispatch::TestProcess
 
-  let!(:user) { User.find_by_username("aluno1") }
-  let!(:application) { d = Doorkeeper::Application.new(name: "MyApp", redirect_uri: "http://app.com"); d.owner = user; d.save; d }
+  let!(:user) { User.find_by_username('aluno1') }
+  let!(:application) { d = Doorkeeper::Application.new(name: 'MyApp', redirect_uri: "http://app.com"); d.owner = user; d.save; d }
   let!(:token) { Doorkeeper::AccessToken.create! application_id: application.id, resource_owner_id: user.id }
 
   context "with valid access token" do
@@ -14,10 +14,13 @@ describe "Support Material Files" do
       get "/api/v1/groups/1/support_material_files", access_token: token.token
 
       response.status.should eq(200)
-      response.body.should == [{folder_name: "AULAS", files: [{ id: 3, type: "FILE", name: "index.html", url: "/api/v1/groups/1/support_material_files/3/download"}]}].to_json
+      response.body.should == [{ 
+        folder_name: 'AULAS', 
+        files: [{ id: 3, type: 'FILE', content_type: 'text/html', name: 'index.html', url: '/api/v1/groups/1/support_material_files/3/download' }] 
+      }].to_json
     end
 
-    it "gets file" do
+    it 'gets file' do
       ## copy file to local
       file = SupportMaterialFile.find(3)
       unless File.exist?(file.attachment.path)

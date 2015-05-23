@@ -257,22 +257,3 @@ select[disabled] {
     }
   }
 }
-
-/**
- * Para bibliografia
- */
-
-.new_bibliography,.edit_bibliography {
-
-  .form_label:first-child {
-    width: 95px;
-  }
-  .error {
-    margin-left: 100px;
-    margin-bottom: 0;
-    padding-left: 0;
-  }
-}
-.bibliography_publication_year .form_label:first-child{
-    width: 125px;
-}

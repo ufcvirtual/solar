@@ -1,3 +1,7 @@
-.input.string
-  = file_field_tag 'files[]', type: :file, multiple: true
+.input.string.files
+  = file_field_tag 'files[]'     , type: :file, multiple: true
+  = button_to_function "Selecionar arquivos", 'add_files()', class: 'btn add_files'
   %span.error
+  .files_list
+
+= javascript_include_tag 'multiple_file_upload'
