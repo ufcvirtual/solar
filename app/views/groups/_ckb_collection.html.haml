@@ -1,6 +1,7 @@
+- filter_number = filter_number rescue nil
 = form.collection_check_boxes :group_id, groups, :id, :code do |ckb|
   - ckb_status = ckb.object.status
   .group_checkbox
-    = ckb.check_box
-    .collection_check_boxes{id: ckb_status ? "" : "disabled", :"data-tooltip" => (ckb_status ? "" : t(".disabled_group"))}
-      = ckb.label
+    = ckb.check_box(id: ['group_id_', ckb.object.id,filter_number].join(), name: ['group[group_id][]',filter_number].join())
+    .collection_check_boxes{ id: ckb_status ? '' : 'disabled', :'data-tooltip' => (ckb_status ? '' : t('.disabled_group')) }
+      = ckb.label(for: ['group_id_', ckb.object.id,filter_number].join())

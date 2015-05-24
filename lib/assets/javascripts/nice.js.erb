@@ -47,7 +47,7 @@ $.fn.nice_checkbox = function(options) {
 
     children.click(function(){
       var kid = this;
-      var children_checked = $('input:checkbox[name^="' + children_names + '"]:checked', parent_block_div);
+      var children_checked = $('input:checkbox[name*="' + children_names + '"]:checked:not(".disabled")', parent_block_div);
 
       if (can_enable_or_disable) {
         enable_other_elements(children_checked.length);
@@ -70,6 +70,8 @@ $.fn.nice_checkbox = function(options) {
           }
         }
       } // end if
+      
+      children = $('input:checkbox[name*="' + children_names + '"]:not(".disabled")', parent_block_div);
 
       var icon = $('i', parent), check_parent = (kid.checked && children.length == children_checked.length);
       if (icon.length) { // checkbox como botão
@@ -84,7 +86,7 @@ $.fn.nice_checkbox = function(options) {
     }); // end kid click
   }; // end f_kids
 
-  var children = $('input:checkbox[name*="' + children_names + '"]', parent_block_div);
+  var children = $('input:checkbox[name*="' + children_names + '"]:not(".disabled")', parent_block_div);
   f_kids(children); // eventos nos filhos
 
   /***
@@ -102,7 +104,7 @@ $.fn.nice_checkbox = function(options) {
 
     if (can_enable_or_disable) {
       // o botao de edicao devera ser habilitado apenas para um unico objeto
-      var children_checked = $('input:checkbox[name*="' + children_names + '"]:checked');
+      var children_checked = $('input:checkbox[name*="' + children_names + '"]:checked:not(".disabled")');
       $(".btn_edit", parent_block_div).attr("disabled", !(children_checked.length == 1));
       $(".btn_del", parent_block_div).attr("disabled", !check);
 

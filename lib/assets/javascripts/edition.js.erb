@@ -167,42 +167,49 @@ $(function(){
 
   // ----------------------------------------------------------------------------------------------------
 
-  $("[name='radio[option]'][value='group']").click(function(){
-    var url = "<%=Rails.application.routes.url_helpers.list_groups_path(checkbox: true , type_id: 'type_param', semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')%>"
+  $("[name='radio[option]'][value='group']:last").click(function(){
+    var url = "<%=Rails.application.routes.url_helpers.list_groups_path(checkbox: true , type_id: 'type_param', semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param', filter_number: 'filter_number_param')%>"
       .replace("type_param", $("[name='curriculum_unit_type']:last").combobox("value"))
       .replace("semester_param", $("[name='semester']:last").combobox("value"))
       .replace("course_param", $("[name='course']:last").combobox("value"))
-      .replace("curriculum_unit_param", $("[name='curriculum_unit']:last").combobox("value"));
+      .replace("curriculum_unit_param", $("[name='curriculum_unit']:last").combobox("value"))
+      .replace("filter_number_param", $(this).data('number'));
 
     $.get(url, function(data){
       $(".groups:last").html(data);
     }).error(function(data){
-      $("[name='radio[option]'][value='offer']:last").click();
+      $(".edition:last [name='radio[option]'][value='offer']").click();
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert');
     });
   });
 
-  $("[name='radio[option]'][value='offer']").click(function() {
+  $(".edition:last [name='radio[option]'][value='offer']").click(function() {
     $(".groups:last").html('');
-    $("[name='radio[option]'][value='offer']:last").prop("checked", true);
+    $(".edition:last [name='radio[option]'][value='offer']").prop("checked", true);
   });
 
   $(".edition:last").nice_filter({
     data_function: function() {
+      var radio_group_number = $("[name='radio[option]'][value='group']:last").data('number');
+      if(radio_group_number==undefined)
+        var filter_number = 0;
+      else
+        var filter_number = radio_group_number;
+
       return {
         radio_option: $(".edition:last [name='radio[option]']:checked").val(),
-        groups_id: $('.edition:last [name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).get().join(" ") // formato: "id+id+id+id"
+        groups_id: $('.edition:last [name="group[group_id][]'+filter_number+'"]:checked').map(function(){ return $(this).val() }).get().join(" ") // formato: "id+id+id+id"
       };
     }
   });
 
-  $('label[for="option_group"]').click(function(){
+  $('label[for="option_group"]:last').click(function(){
     $(".offer_groups_options:last #radio_option_group:enabled").click();
   });
 
-  $('label[for="option_offer"]').click(function(){
+  $('label[for="option_offer"]:last').click(function(){
     $(".offer_groups_options:last #radio_option_offer:enabled").click();
   });
 
