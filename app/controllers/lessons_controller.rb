@@ -283,15 +283,10 @@ class LessonsController < ApplicationController
           lesson_module_id = params[:lesson_module_id]
         end
 
-        lesson_module = LessonModule.find(lesson_module_id)
-        lessons = lesson_module.approved_lessons(current_user.id)
-        order = lesson_hash[1].to_i
-        order += 1 while lessons.where(order: order).any?
-
-        imported_lesson = Lesson.new attributes.merge!({ 'order' => order, 'schedule_id' => schedule.id, 'lesson_module_id' => lesson_module_id, 'imported_from_id' => lesson.id, 'receive_updates' => lesson_hash[4], 'user_id' => current_user.id })
+        imported_lesson = Lesson.new attributes.merge!({ 'order' => lesson_hash[1].to_i, 'schedule_id' => schedule.id, 'lesson_module_id' => lesson_module_id, 'imported_from_id' => lesson.id, 'receive_updates' => lesson_hash[4], 'user_id' => current_user.id })
         imported_lesson.save!
 
-        log(lesson_module, "lesson: #{imported_lesson.id} [import], #{attributes.merge!(created_module: created_module, start_date: lesson_hash[2], end_date: lesson_hash[3])}", LogAction::TYPE[:create]) rescue nil
+        log(LessonModule.find(lesson_module_id), "lesson: #{imported_lesson.id} [import], #{attributes.merge!(created_module: created_module, start_date: lesson_hash[2], end_date: lesson_hash[3])}", LogAction::TYPE[:create]) rescue nil
       end
     end
     

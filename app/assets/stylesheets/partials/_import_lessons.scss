@@ -34,6 +34,16 @@
       margin-bottom: 10px;
     }
   }
+
+  .step-list{
+    span.add_lesson{
+      float: left;
+      margin-left: 70%;
+    }
+    tr.disabled i{
+      color: #B4B2B1;
+    }
+  }
 }
 
 .list_lessons_import.block_wrapper, .list_lessons_conclude{

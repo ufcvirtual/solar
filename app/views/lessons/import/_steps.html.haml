@@ -19,6 +19,8 @@
 
     .step-list
       = render partial: 'lessons/import/filter', locals: { types: @types }
+      .right_buttons
+        = link_to_function t('.conclude'), 'go_to_conclude()', class: 'btn btn_main conclude', alt: t('.conclude')
 
     .step-preview
       .content-preview

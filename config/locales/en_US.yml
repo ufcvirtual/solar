@@ -843,11 +843,10 @@ en_US:
         preview: Preview
         type: Type
         preview_tooltip: Preview lesson
-        cancel: Cancel
-        add: Add
         conclude: Conclude
         no_lesson: No lesson
-        added: Lesson(s) added
+        added: "Add to imported lessons list. To see all added lessons, click at 'Conclude'."
+        add: Add to import list
       steps:
         title: Lessons/modules import
         choose: Choose lessons

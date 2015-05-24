@@ -1008,11 +1008,10 @@ pt_BR:
         preview: Ver
         type: Tipo
         preview_tooltip: Visualizar aula
-        cancel: Cancelar
-        add: Adicionar
-        conclude: Prosseguir
+        conclude: Finalizar
         no_lesson: Nenhuma aula
-        added: Aula(s) adicionada(s)
+        added: "Aula(s) adicionada(s) à lista de importação. Para visualizar todas as aulas adicionadas, clique em 'Finalizar'."
+        add: Adicionar para lista de importação
       steps:
         title: Importação de aulas/módulos
         choose: Escolher aulas

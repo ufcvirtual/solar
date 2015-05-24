@@ -1,6 +1,5 @@
 - @lessons.each do |lesson|
   %tr.lines{ :'data-id' => lesson.id }
-    %td= check_box_tag("c_to_import_#{lesson.id}", lesson.id, false, { class: "c_to_import_#{lesson.id}" })
     %td.icon
       .lesson_arrows
         .lesson_arrow_up= link_to_function image_tag('lesson/up_arrow.png'), 'up(this)'
@@ -12,7 +11,8 @@
     %td.start= text_field_tag "start_date_#{lesson.id}"
     %td.end= text_field_tag "end_date_#{lesson.id}"
     %td= check_box_tag "receive_updates_#{lesson.id}", true, false
-    %td= link_to_function content_tag(:i, nil, class: 'icon-eye'), 'open_lesson(this)', :'data-tooltip' => t('lessons.import.list.preview_tooltip')
+    %td= link_to_function content_tag(:i, nil, class: 'icon-eye'), 'open_lesson(this);', :'data-tooltip' => t('lessons.import.list.preview_tooltip')
+    %td.icon= link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_lesson(this);', :'data-tooltip' => t('lessons.import.conclude.delete')
 
 = javascript_include_tag 'tooltip'
 
@@ -22,6 +22,19 @@
     $('[id^="start_date_"]').each(function(){ $(this).datepicker();});
     $('[id^="end_date_"]').each(function(){ $(this).datepicker();});
     $('[id^="start_date_"], [id^="end_date_"]').datepicker($.extend({}, options));
-
-    $('[name^="all_lessons_to_import"]').nice_checkbox();
   });
+
+  function remove_lesson(icon){
+    var tr = $(icon).parents('tr');
+    enable_previous_selected_lessons(tr.data('id'));
+    tr.remove();
+    if(!$('tbody.lessons_to_import tr:visible').length)
+      $('tbody.lessons_to_import tr.text_none').show();
+  }
+
+  function enable_previous_selected_lessons(id){
+    var tr = $('.list_lessons_import tr[data-id='+id+']');
+    if(!!tr.length)
+      $(tr).removeClass('disabled').find('input:input').prop('disabled', false).removeClass('disabled');
+  }
+

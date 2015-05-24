@@ -38,7 +38,7 @@
           = t("lessons.list.since") if lesson.schedule.end_date.nil?
           = [l(lesson.schedule.start_date, format: :normal), (lesson.has_end_date? ? l(lesson.schedule.end_date, format: :normal) : t(:no_end_date, scope: [:lessons, :list]))].join(' - ')
 
-        %td.center= lesson.privacy? ? content_tag(:i, nil, class: "compress icon-lock", :"data-tooltip" => t('.private')) : content_tag(:i, nil, class: "compress icon-lock-open", :"data-tooltip" => t('.public'))
+        %td.center= lesson.privacy? ? content_tag(:i, nil, class: "icon-lock", :"data-tooltip" => t('.private')) : content_tag(:i, nil, class: "icon-minus", :"data-tooltip" => t('.public'))
 
         %td.center{ style: 'width: 70px' }
           - new_status, l_img, l_t = lesson.is_draft? ? [Lesson_Approved, 'rejected.png', t('lessons.list.draft')] : [Lesson_Test, 'released.png', t('lessons.list.released')]

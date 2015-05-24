@@ -232,7 +232,7 @@ class Lesson < Event
       if order.nil?
         self.order = lesson_module.next_lesson_order 
       else
-        self.order = self.order.next while lesson_module.lessons.where(order: self.order).any?
+        self.order += 1 while lesson_module.lessons.where(order: self.order).any?
       end
     end
 

@@ -29,10 +29,8 @@
   - else
     .block_content.block_content_text= t(:lesson_message)
 
-.right_buttons
-  = link_to_function t('.cancel'), 'cancel()', class: "btn", alt: t('.cancel')
-  = link_to_function t('.add'), 'add_lessons()', class: "btn btn_main", alt: t('.add')
-  = link_to_function t('.conclude'), 'go_to_conclude()', class: "btn btn_main", alt: t('.conclude')
+%span.add_lesson
+  = link_to_function t('.add'), 'add_lessons()', class: 'btn btn_main', alt: t('.add')
 
 = javascript_include_tag 'tooltip'
 
@@ -41,12 +39,18 @@
     $('[name^="all_lessons_"]').map(function(){
       $(this).nice_checkbox();
     });
+    disable_already_selected_lessons();
   });
 
   function add_lessons(){
     var ids = $('.list_lessons_import tbody input:checked').map(function() { return parseInt(this.value); }).get();
 
-    // don't add if already exists
+    if(!ids.length){
+      flash_message("#{I18n.t('lessons.errors.import_empty')}", 'alert');
+      return true;
+    }
+
+    // don't add toif already exists
     if(!!$('tbody.lessons_to_import tr').length){
       var existing_ids = $('tbody.lessons_to_import tr').map(function(){ return $(this).data('id'); }).get();
       $.each(existing_ids, function(j){
@@ -61,6 +65,7 @@
       flash_message("#{I18n.t('lessons.import.list.added')}", 'notice');
       $('.list_lessons_import input:checked').each(function(i){ $(this).prop("checked", false); });
       $('tbody.lessons_to_import tr.text_none').hide();
+      disable_already_selected_lessons();
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
@@ -77,4 +82,15 @@
     $('#steps li:last').addClass('active');
     $('#steps li:last .dot').addClass('active');
     erase_flash_messages();
+  }
+
+  function disable_already_selected_lessons(){
+    if(!!$('tbody.lessons_to_import tr').length){
+      var existing_ids = $('tbody.lessons_to_import tr').map(function(){ return $(this).data('id'); }).get();
+      $.each(existing_ids, function(j){
+        var tr = $('.list_lessons_import tr[data-id='+existing_ids[j]+']');
+        if(!!tr.length)
+          $(tr).addClass('disabled').find('input:input').prop('disabled', true).addClass('disabled');
+      });
+    }
   }

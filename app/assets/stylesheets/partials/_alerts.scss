@@ -17,6 +17,8 @@
 }
 
 #flash_message {
+  position: fixed;
+  z-index: 1;
   border-color: #d0d0d0;
   font-weight: bold;
   border-width: 1px;
