@@ -237,6 +237,8 @@ class LessonsController < ApplicationController
     authorize! :import, Lesson, { on: @allocation_tags_ids }
     @lmodules = LessonModule.by_ats(@allocation_tags_ids.split(' ').flatten)
     render partial: 'lessons/import/list'
+  rescue CanCan::AccessDenied
+    render js: "flash_message('#{t(:no_permission)}', 'alert');"
   end
 
   def import_details

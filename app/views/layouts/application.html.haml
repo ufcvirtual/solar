@@ -95,7 +95,9 @@
         .block_wrapper
           .flash_message_wrapper
             - flash.each do |name, msg|
-              #flash_message{class: name}= content_tag :span, msg
+              #flash_message{ class: name }
+                = content_tag :span, msg
+                = link_to_function content_tag(:i, nil, class: 'icon-cross'), 'erase_flash_messages()'
           - name = active_tab[:breadcrumb].last[:name].gsub(".", "-") unless active_tab[:breadcrumb].last[:name].nil?
           #breadcrumb= raw show_breadcrumb
           - if is_curriculum_unit_selected?
