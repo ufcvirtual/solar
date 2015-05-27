@@ -238,7 +238,9 @@ class LessonsController < ApplicationController
     @lmodules = LessonModule.by_ats(@allocation_tags_ids.split(' ').flatten)
     render partial: 'lessons/import/list'
   rescue CanCan::AccessDenied
-    render js: "flash_message('#{t(:no_permission)}', 'alert');"
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  rescue => error
+    render_json_error(error, 'lessons.errors')
   end
 
   def import_details
