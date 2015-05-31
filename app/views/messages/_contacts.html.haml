@@ -1,4 +1,4 @@
-.contacts-selection.invisible
+.contacts-selection
   #content-div
     #lightBoxDialogTitle
       %h1= t(".title")
@@ -6,27 +6,27 @@
     .flash_message_wrapper
 
     .block_content
-      .help_link= link_to t(".help_message"), "#"
+      .help_link= link_to t('.help_message'), "#"
       .contacts-type
-        = label_tag :contacts_type, t(".contacts") + "*"
-        = select_tag :contacts_type, options_for_select([[t(".system_contacts"),1],[t(".personal_contacts"),2]]), selected: 1
+        = label_tag :contacts_type, t('.contacts') + "*"
+        = select_tag :contacts_type, options_for_select([[t('.system_contacts'),1],[t('.personal_contacts'),2]]), selected: 1
 
       .contacts-uc
-        = render partial: "editions/content_filter", locals: {list_class: "contacts-list", url: find_users_messages_path, optionals: ["curriculum_unit", "course", "semester"], types: CurriculumUnitType.all, back: false, type_id: nil}
-        .user_contacts{class: @group.nil? ? "invisible" : ""}
+        = render partial: "editions/content_filter", locals: { list_class: "contacts-list", url: find_users_messages_path, optionals: ['curriculum_unit', 'course', 'semester'], types: CurriculumUnitType.all, back: false, type_id: nil }
+        .user_contacts{ class: @group.nil? ? 'invisible' : '' }
           .contacts-list
             - unless @contacts.empty?
-              = render partial: "users", object: @users = @contacts, object: @allocation_tags_ids = ""
+              = render partial: 'users', object: @users = @contacts, object: @allocation_tags_ids = ''
 
-      = t(".to")
+      = t('.to')
       .contacts-selected
         - [@reply_to].flatten.compact.each do |contact|
-          .contact{class: contact[:id].nil? ? "help" : ""}= link_to_function contact[:resume], "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-selected" => true
+          .contact{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume], "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-selected" => true
 
     .block_buttons
       .right
-        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
-        = button_to_function t(:save), "msg_add_contacts()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
+        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: 'button', alt: t(:cancel)
+        = button_to_function t(:save), "msg_add_contacts()", class: "btn btn_main btn_lightbox", alt: t(:save), type: 'button'
 
 - unless @group.nil?
   = hidden_field_tag :group_code,    @group.code
@@ -34,6 +34,9 @@
   = hidden_field_tag :uc_name,       @group.offer.curriculum_unit.try(:name)
   = hidden_field_tag :course_name,   @group.offer.course.try(:name)
   = hidden_field_tag :uc_type,       @group.offer.curriculum_unit.try(:curriculum_unit_type).try(:description)
+
+= stylesheet_link_tag 'autocomplete'
+= javascript_include_tag 'autocomplete'
 
 :javascript
   

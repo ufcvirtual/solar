@@ -420,6 +420,7 @@ Solar::Application.routes.draw do
       get :trashbox, action: :index, box: "trashbox", as: :trashbox
       get :count_unread
       get :find_users
+      get :contacts
 
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
 

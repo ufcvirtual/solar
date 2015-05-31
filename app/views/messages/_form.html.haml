@@ -1,30 +1,29 @@
-.message_external_div
-  = render "header"
-  = simple_form_for @message, html: {id: "form_message_text", multipart: true} do |f|
+.message_external_div{ :'data-link-list' => messages_path }
+  = render 'header'
+  = simple_form_for @message, html: { id: 'form_message_text' } do |f|
 
     - if @original
-      = f.input :original, as: :hidden, input_html: {value: @original.id}
-    = render "contacts"
+      = f.input :original, as: :hidden, input_html: { value: @original.id }
     - if params[:support].blank?
-      = f.input :contacts, as: :hidden, input_html: {value: [@reply_to].flatten.compact.map { |c| c[:id] }.join(", ")}
+      = f.input :contacts, as: :hidden, input_html: { value: [@reply_to].flatten.compact.map { |c| c[:id] }.join(', ') }
     = hidden_field_tag :support, params[:support]
 
     .block_content
       .message_header_new
         .message_new_text_to
           .label.align-left
-            %a#link_to_contacts.link_content= t(".message_to")
-          .input.align-right= text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(", "), class: "message_new_textbox", readonly: true, placeholder: t(".add_contacts")
+            %a#link_to_contacts.link_content= t('.message_to')
+          .input.align-right= text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(', '), class: 'message_new_textbox', readonly: true, placeholder: t('.add_contacts')
         .message_new_text_to
-          .label.align-left= t(".subject")
-          .input.align-right= f.input :subject, label: false, input_html: {class: "message_new_textbox"}
+          .label.align-left= t('.subject')
+          .input.align-right= f.input :subject, label: false, input_html: { class: 'message_new_textbox' }
 
         .message_new_upload
 
           #new_message_file
-            .label.align-left= t(".attach")
+            .label.align-left= t('.attach')
 
-            %button#link_upload.btn.btn_default.duplicate_nested_form{"data-tooltip" => t(".attach_file")}
+            %button#link_upload.btn.btn_default.duplicate_nested_form{ :'data-tooltip' => t('.attach_file') }
               %i.icon-paperclip
 
             - if @files
@@ -49,9 +48,9 @@
 
     .message_new_action
       = f.submit t(".send"), id: "send_message", class: "btn btn_main", alt: t(".send")
-      = link_to t(".discard"), inbox_messages_path, {class: "btn btn_caution"}
+      = link_to t('.discard'), inbox_messages_path, { class: 'btn btn_caution' }
 
-= javascript_include_tag "ckeditor/init", "messages"
+= javascript_include_tag 'ckeditor/init', 'messages'
 
 :javascript
 
@@ -73,7 +72,6 @@
         config.extraPlugins = 'eqneditor,smiley';
     };
 
-    // tentando enviar sem destinatário ou sem corpo da mensagem
     $("#send_message").click(function(event){
       if ($('#message_to').val() == ""){
         event.preventDefault();
@@ -86,7 +84,11 @@
 
     // abrir lista de contatos
     $("#link_to_contacts, #message_to").click(function(){
-      $.fancybox.open({ live: true, modal: false, href: "#content-div", helpers: {overlay: {locked: true, closeClick: false}} });
+      var url = "#{contacts_messages_path(allocation_tag_id: @allocation_tag_id, reply_to: 'reply_params')}".replace('reply_params', $("#message_contacts").val());
+      $(this).call_fancybox({
+        href: url,
+        open: true
+      });
     });
 
     // retirar anexos da msg original
@@ -96,7 +98,6 @@
   });
 
   // add files
-
   jQuery(function($) {
     var nestedForm;
     if ($('.duplicatable_nested_form').length)
@@ -153,3 +154,4 @@
 
     });
   });
+

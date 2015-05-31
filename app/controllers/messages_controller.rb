@@ -17,18 +17,9 @@ class MessagesController < ApplicationController
   end
 
   def new
-    authorize! :index, Message, {on: [@allocation_tag_id  = active_tab[:url][:allocation_tag_id]], accepts_general_profile: true} unless active_tab[:url][:allocation_tag_id].nil?
+    authorize! :index, Message, { on: [@allocation_tag_id  = active_tab[:url][:allocation_tag_id]], accepts_general_profile: true } unless active_tab[:url][:allocation_tag_id].nil?
     @message = Message.new
     @message.files.build
-
-    unless @allocation_tag_id.nil?
-      allocation_tag = AllocationTag.find(@allocation_tag_id)
-      @group         = allocation_tag.group
-      @contacts      = User.all_at_allocation_tags(allocation_tag.related, Allocation_Activated, true)
-    else
-      @contacts = current_user.user_contacts.map(&:user)
-    end
-
     @unreads  = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
     @reply_to = [User.find(params[:user_id]).to_msg] unless params[:user_id].nil? # se um usuário for passado, colocá-lo na lista de destinatários
     @reply_to = [{resume: t("messages.support")}] unless params[:support].nil?
@@ -78,8 +69,7 @@ class MessagesController < ApplicationController
   def create
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
 
-
-    # é uma resposta
+    # is an answer
     if params[:message][:original].present?
       @original = Message.find(params[:message].delete(:original)) # precisa para a view de new, caso algum problema aconteca
       original_files = @original.files.where(message_files: {id: params[:message].delete(:original_files)})
@@ -87,20 +77,14 @@ class MessagesController < ApplicationController
 
     begin
       Message.transaction do
-        ## msg ##
-
         @message = Message.new(message_params, without_validation: true)
         @message.sender = current_user
         @message.allocation_tag_id = @allocation_tag_id
 
         raise "error" if params[:message_to].empty?
 
-        ## files ##
-
         @message.files << original_files if original_files and not original_files.empty?
         @message.save!
-
-        ## email ##
 
         Thread.new do
           Notifier.send_mail(params[:message_to], @message.subject, new_msg_template, @message.files, current_user.email).deliver
@@ -151,13 +135,26 @@ class MessagesController < ApplicationController
     @allocation_tags_ids = AllocationTag.get_by_params(params, related = true)[:allocation_tags]
 
     raise CanCan::AccessDenied if current_user.is_researcher?(@allocation_tags_ids)
-    authorize! :show, CurriculumUnit, {on: @allocation_tags_ids, read: true}
+    authorize! :show, CurriculumUnit, { on: @allocation_tags_ids, read: true }
 
     @users = User.all_at_allocation_tags(@allocation_tags_ids, Allocation_Activated, true)
     @allocation_tags_ids = @allocation_tags_ids.join('_')
     render partial: 'users'
   rescue
     render json: { success: false, alert: t('messages.errors.permission') }, status: :unprocessable_entity
+  end
+
+  def contacts
+    unless (@allocation_tag_id = params[:allocation_tag_id]).nil?
+      allocation_tag = AllocationTag.find(@allocation_tag_id)
+      @group         = allocation_tag.group
+      @contacts      = User.all_at_allocation_tags(allocation_tag.related, Allocation_Activated, true)
+    else
+      @contacts = current_user.user_contacts.map(&:user)
+    end
+
+    @reply_to = (params[:reply_to].blank? ? [] : User.where(id: params[:reply_to].split(',')).map(&:to_msg))
+    render partial: 'contacts'
   end
 
   private
