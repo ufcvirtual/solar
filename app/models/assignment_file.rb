@@ -3,7 +3,7 @@ class AssignmentFile < ActiveRecord::Base
   belongs_to :user
   belongs_to :sent_assignment
 
-  has_one :academic_allocation, through: :sent_assignment
+  has_one :academic_allocation, through: :sent_assignment, autosave: false
 
   before_save :can_change?, if: "merge.nil?"
   before_destroy :can_change?, :can_destroy?
