@@ -77,7 +77,7 @@ class LessonModule < ActiveRecord::Base
   end
 
   def approved_lessons(user_id)
-    lessons(user_id).where(status: Lesson_Approved)
+    lessons(user_id).where(status: Lesson_Approved).order('lessons.order ASC')
   end
 
   def allocation_tag_info
@@ -90,9 +90,9 @@ class LessonModule < ActiveRecord::Base
 
   def lessons(user_id = nil)
     if user_id.nil?
-      Lesson.where(lesson_module_id: id)
+      Lesson.where(lesson_module_id: id).order('lessons.order ASC')
     else
-      Lesson.where(lesson_module_id: id).where('privacy = false OR user_id = ?', user_id)
+      Lesson.where(lesson_module_id: id).where('privacy = false OR user_id = ?', user_id).order('lessons.order ASC')
     end
   end
 end

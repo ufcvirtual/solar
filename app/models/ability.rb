@@ -19,7 +19,7 @@ class Ability
       if (options.include?(:on) && admin_or_general_profile) || !(options.include?(:on)) # on allocation_tags
         have_permission_access?(user, action, object_class, object)
       else
-        have_permission_on_allocation_tags?(user, action, object_class, options[:on].split(' ').flatten.map(&:to_i), !!options[:read], !!options[:any])
+        have_permission_on_allocation_tags?(user, action, object_class, [options[:on]].flatten.split(' ').flatten.map(&:to_i), !!options[:read], !!options[:any])
       end
 
     end # have permission?
