@@ -5,8 +5,8 @@
   - files_and_folders(@lesson)
 
   :javascript
-    var treeData             = #{@files};
-    var folderTreeData       = #{@folders};
+    var treeData             = JSON.parse($("#files_hash").val());
+    var folderTreeData       = JSON.parse($("#folders_hash").val());
     var initial_file_address = "#{@address}";
     var extensions           = #{Solar::Application.config.black_list[:extensions]};
 
@@ -16,8 +16,10 @@
   = hidden_field_tag :lesson_path, list_lessons_path
   = hidden_field_tag :upload_files_path, upload_lesson_files_path(lesson_id: @lesson.id)
   = hidden_field_tag :initial_file_path, initial_file_lesson_files_path(lesson_id: @lesson.id)
+  = hidden_field_tag :files_hash, @files.encode('utf-8', invalid: :replace, undef: :replace)
+  = hidden_field_tag :folders_hash, @folders.encode('utf-8', invalid: :replace, undef: :replace)
 
-  = form_for(:lesson_files, url: upload_lesson_files_path(lesson_id: @lesson.id), html: {id: 'file_form', method: :put }) do |f|
+  = form_for(:lesson_files, url: upload_lesson_files_path(lesson_id: @lesson.id), html: { id: 'file_form', method: :put }) do |f|
     = f.file_field :files, id: 'fileupload', multiple: true
     = f.hidden_field :path, id: 'path'
 

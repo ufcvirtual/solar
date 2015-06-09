@@ -889,7 +889,7 @@ en_US:
     one_folder_must_be_selected: Only one folder must be selected
     items_must_be_selected: One or more items must be selected
     unzip_error: Error on extracting file
-    zip_contains_invalid_files: Zip file conatins invalid files
+    zip_contains_invalid_files: Zip file conatins invalid files (%{files})
     file_doesnt_exist: File doesn't exist
     index:
       cancel: Cancel

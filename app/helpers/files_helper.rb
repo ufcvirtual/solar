@@ -89,7 +89,8 @@ module FilesHelper
     require 'zip'
 
     return t(:file_doesnt_exist, scope: :lesson_files) unless File.exist?(path_zip_file)
-    return t(:zip_contains_invalid_files, scope: :lesson_files) unless (Zip::File.open(path_zip_file).map {|f|f.to_s.split('.').last}.uniq.compact & Solar::Application.config.black_list[:extensions]).empty?
+    has_files_on_black_list = (Zip::File.open(path_zip_file).map {|f| f.to_s.split('.').last }.uniq.compact & Solar::Application.config.black_list[:extensions])
+    return t(:zip_contains_invalid_files, scope: :lesson_files, files: has_files_on_black_list.join(', ')) if has_files_on_black_list.any?
 
     Zip::File.open(path_zip_file) do |zipfile|
       zipfile.each do |f|
