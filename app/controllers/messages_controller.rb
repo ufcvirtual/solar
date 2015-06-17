@@ -6,21 +6,21 @@ class MessagesController < ApplicationController
   before_filter :prepare_for_group_selection, only: [:index]
 
   ## [inbox, outbox, trashbox]
+  require 'will_paginate/array'
   def index
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
     @show_system_label = allocation_tag_id.nil?
 
     @box = option_user_box(params[:box])
-    @unreads = Message.user_inbox(current_user.id, allocation_tag_id, true).count
-
-    @messages = Message.send("user_#{@box}", current_user.id, allocation_tag_id).paginate(page: params[:page] || 1).order("created_at DESC").uniq
+    @messages = Message.by_box(current_user.id, @box, allocation_tag_id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
+    @unreads  = Message.unreads(current_user.id, allocation_tag_id)
   end
 
   def new
     authorize! :index, Message, { on: [@allocation_tag_id  = active_tab[:url][:allocation_tag_id]], accepts_general_profile: true } unless active_tab[:url][:allocation_tag_id].nil?
     @message = Message.new
     @message.files.build
-    @unreads  = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
+    @unreads = Message.unreads(current_user.id, @allocation_tag_id)
     @reply_to = [User.find(params[:user_id]).to_msg] unless params[:user_id].nil? # se um usuário for passado, colocá-lo na lista de destinatários
     @reply_to = [{resume: t("messages.support")}] unless params[:support].nil?
   end
@@ -35,7 +35,7 @@ class MessagesController < ApplicationController
     raise CanCan::AccessDenied unless @original.user_has_permission?(current_user.id)
 
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
-    @unreads = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
+    @unreads = Message.unreads(current_user.id, @allocation_tag_id)
 
     @message = Message.new subject: @original.subject
     @message.files.build
@@ -93,7 +93,7 @@ class MessagesController < ApplicationController
 
       redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages)
     rescue => error
-      @unreads  = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
+      @unreads = Message.unreads(current_user.id, @allocation_tag_id)
       unless @allocation_tag_id.nil?
         allocation_tag      = AllocationTag.find(@allocation_tag_id)
         @group              = allocation_tag.group
@@ -121,7 +121,7 @@ class MessagesController < ApplicationController
   end
 
   def count_unread
-    render json: { unread: Message.user_inbox(current_user.id, active_tab[:url][:allocation_tag_id], true).count }
+    render json: { unread: Message.unreads(current_user.id, active_tab[:url][:allocation_tag_id]) }
   end
 
   def download_files

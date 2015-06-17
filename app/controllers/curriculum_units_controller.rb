@@ -12,10 +12,11 @@ class CurriculumUnitsController < ApplicationController
 
   def home
     authorize! :show, CurriculumUnit, { on: @allocation_tags_ids, read: true }
-    @messages = Message.user_inbox(current_user.id, @allocation_tag_id, only_unread = true)
-    @lessons_modules  = (current_user.profiles_with_access_on("show", "lessons", @allocation_tags_ids).empty? ? [] : LessonModule.to_select(@allocation_tags_ids, current_user)) # 0.040000 0.000000 0.040000 ( 0.071502)
+    @messages = Message.by_box(current_user.id, 'inbox', @allocation_tag_id, { only_unread: true })
+    user_profiles     = current_user.resources_by_allocation_tags_ids(@allocation_tags_ids)
+    @lessons_modules  = (user_profiles.include?(lessons: :show) ? [] : LessonModule.to_select(@allocation_tags_ids, current_user))
     @discussion_posts = list_portlet_discussion_posts(@allocation_tags_ids)
-    @scheduled_events = (current_user.profiles_with_access_on("calendar", "agendas", @allocation_tags_ids).empty? ? [] : Agenda.events(@allocation_tags_ids, nil, true)) # 0.060000 0.000000 0.060000 ( 0.110046)
+    @scheduled_events = (user_profiles.include?(agendas: :calendar) ? [] : Agenda.events(@allocation_tags_ids, nil, true))
     @researcher = current_user.is_researcher?(@allocation_tags_ids)
   end
 

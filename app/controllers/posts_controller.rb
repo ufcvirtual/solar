@@ -16,12 +16,13 @@ class PostsController < ApplicationController
 
     @academic_allocation_id = AcademicAllocation.where(academic_tool_id: @discussion.id, academic_tool_type: 'Discussion',
       allocation_tag_id: [active_tab[:url][:allocation_tag_id], AllocationTag.find_by_offer_id(active_tab[:url][:id]).id]).first.try(:id)
-    authorize! :index, Discussion, {on: [@allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.pluck(:id)], read: true}
+    authorize! :index, Discussion, { on: [@allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.pluck(:id)], read: true }
 
     @researcher = current_user.is_researcher?(AllocationTag.find(@allocation_tags).related)
-    @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id], {all: true}).map(&:id)
+    @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id], { all: true }).map(&:id)
 
     @posts = []
+
     @can_interact, @can_post = @discussion.user_can_interact?(current_user.id), (can? :create, Post, on: [@allocation_tags])
 
     p = params.slice(:date, :type, :order, :limit, :display_mode, :page)

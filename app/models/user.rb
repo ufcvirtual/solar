@@ -317,7 +317,7 @@ class User < ActiveRecord::Base
     allocation_tags_ids = AllocationTag.find(allocation_tag_id).related
     posts        = Post.joins(:academic_allocation).where(academic_allocations: { academic_tool_type: 'Discussion', allocation_tag_id: allocation_tags_ids }, discussion_posts: { user_id: self.id }).count
     access       = LogAccess.where(allocation_tag_id: allocation_tags_ids, user_id: id, log_type: LogAccess::TYPE[:group_access]).count
-    messages     = Message.user_outbox(id, allocation_tags_ids, false).count if opt[:messages]
+    messages     = Message.sent_by_user(id, allocation_tags_ids) if opt[:messages]
 
     { posts: posts, access: access, messages: messages }
   end
