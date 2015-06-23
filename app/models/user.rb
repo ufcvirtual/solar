@@ -184,6 +184,7 @@ class User < ActiveRecord::Base
   # faltando pegar apenas alocacoes validas
   def all_allocation_tags(objects = false)
     allocation_tags.collect! { |at| RelatedTaggable.related(at) }.flatten.uniq
+    # RelatedTaggable.related_from_array_ats(allocation_tags.pluck(:id))
   end
 
   def to_msg
@@ -311,15 +312,6 @@ class User < ActiveRecord::Base
     users = where("lower(unaccent(#{type})) LIKE lower(unaccent(?))", "%#{text}")
     users = users.joins(:allocations).where("allocation_tag_id IN (?)", allocation_tags_ids) unless allocation_tags_ids.blank? || allocation_tags_ids.include?(nil)
     users.select('DISTINCT users.id').select('users.*').order('name')
-  end
-
-  def info_at_allocation_tag(allocation_tag_id, opt = { messages: false })
-    allocation_tags_ids = AllocationTag.find(allocation_tag_id).related
-    posts        = Post.joins(:academic_allocation).where(academic_allocations: { academic_tool_type: 'Discussion', allocation_tag_id: allocation_tags_ids }, discussion_posts: { user_id: self.id }).count
-    access       = LogAccess.where(allocation_tag_id: allocation_tags_ids, user_id: id, log_type: LogAccess::TYPE[:group_access]).count
-    messages     = Message.sent_by_user(id, allocation_tags_ids) if opt[:messages]
-
-    { posts: posts, access: access, messages: messages }
   end
 
   ################################

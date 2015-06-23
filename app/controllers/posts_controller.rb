@@ -19,7 +19,7 @@ class PostsController < ApplicationController
     authorize! :index, Discussion, { on: [@allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.pluck(:id)], read: true }
 
     @researcher = current_user.is_researcher?(AllocationTag.find(@allocation_tags).related)
-    @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id], { all: true }).map(&:id)
+    # @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id], { all: true }).map(&:id)
 
     @posts = []
 

@@ -7,10 +7,10 @@ class ScoresController < ApplicationController
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @group = AllocationTag.find(@allocation_tag_id).groups.first
 
-    @assignments = Assignment.joins(:schedule, {academic_allocations: :allocation_tag}).where(allocation_tags: {id: @allocation_tag_id})
+    @assignments = Assignment.joins(:schedule, { academic_allocations: :allocation_tag }).where(allocation_tags: { id: @allocation_tag_id })
       .order("schedules.start_date, assignments.name")
-    @students     = AllocationTag.get_participants(@allocation_tag_id, {students: true})
-    @responsibles = AllocationTag.get_participants(@allocation_tag_id, {responsibles: true, profiles: Profile.with_access_on("create", "posts").join(",")}) if current_user.profiles_with_access_on("responsibles", "scores", AllocationTag.find(@allocation_tag_id).related).any?
+    @students     = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true)
+    @responsibles = AllocationTag.get_participants(@allocation_tag_id, { responsibles: true, profiles: Profile.with_access_on("create", "posts").join(",") }, true) if current_user.profiles_with_access_on("responsibles", "scores", AllocationTag.find(@allocation_tag_id).related).any?
   end
 
   def info

@@ -168,20 +168,73 @@ class AllocationTag < ActiveRecord::Base
     { allocation_tags: [allocation_tags_ids].flatten, selected: selected, offer_id: offer_id }
   end
 
-  def self.get_participants(allocation_tag_id, params = {})
-    types, query = [], []
-    types << "cast( profiles.types & '#{Profile_Type_Student}' as boolean )"           if params[:students]     or params[:all]
-    types << "cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )" if params[:responsibles] or params[:all]
+  def self.get_participants(allocation_tag_id, params = {}, scores = false)
+    types, query, select, relations, group = [], [], [], [], []
+    types << "cast( profiles.types & '#{Profile_Type_Student}' as boolean )"           if params[:students]     || params[:all]
+    types << "cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )" if params[:responsibles] || params[:all]
     query << "profile_id IN (#{params[:profiles]})"                                    if params[:profiles]
 
-    ats = (allocation_tag_id.kind_of?(Array) ? allocation_tag_id : AllocationTag.find(allocation_tag_id).related)
+    ats = (allocation_tag_id.kind_of?(Array) ? allocation_tag_id : AllocationTag.find(allocation_tag_id).related).flatten.join(',')
 
-    User.select("users.*, COUNT(public_files.id) AS u_public_files, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name")
-      .joins(allocations: :profile)
-      .joins("LEFT JOIN public_files ON public_files.user_id = users.id AND public_files.allocation_tag_id IN (#{ats.flatten.join(",")})")
-      .where(allocations: { status: Allocation_Activated, allocation_tag_id: ats })
-      .where(types.join(' OR ')).where(query.join(' AND ')).uniq
-      .group('users.id, users.name').order('users.name')
+    query << "allocations.status = #{Allocation_Activated}"
+    query << "allocations.allocation_tag_id IN (#{ats})"
+
+    select << "DISTINCT users.id, users.*, COUNT(public_files.id) AS u_public_files, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name"
+    
+    relations << <<-SQL
+      JOIN allocations ON users.id    = allocations.user_id
+      JOIN profiles    ON profiles.id = allocations.profile_id
+      LEFT JOIN public_files ON public_files.user_id = users.id AND public_files.allocation_tag_id IN (#{ats})
+    SQL
+
+    group << 'users.id, users.name'
+
+    if scores
+      msg_query = Message.get_query('users.id', 'outbox', ats, { ignore_trash: false, ignore_user: true })
+
+      select << 'COALESCE(posts.count,0) AS u_posts, COALESCE(logs.count,0) AS u_logs, COALESCE(sent_msgs.count,0) AS u_sent_msgs'
+
+      relations << <<-SQL
+        LEFT JOIN (
+          SELECT COUNT(discussion_posts.id) AS count, discussion_posts.user_id AS user_id
+          FROM discussion_posts
+          JOIN academic_allocations ON academic_allocations.id = discussion_posts.academic_allocation_id
+          WHERE academic_allocations.allocation_tag_id IN (#{ats})
+          GROUP BY discussion_posts.user_id
+        ) posts ON posts.user_id = users.id
+        LEFT JOIN (
+          SELECT COUNT(log_accesses.id) AS count, log_accesses.user_id AS user_id
+          FROM log_accesses
+          WHERE log_accesses.allocation_tag_id IN (#{ats}) 
+          AND log_accesses.log_type = #{LogAccess::TYPE[:group_access]}
+          GROUP BY log_accesses.user_id
+        ) logs ON logs.user_id = users.id
+        LEFT JOIN (
+          SELECT COUNT(messages.id) AS count, user_messages.user_id AS user_id
+          FROM messages
+          JOIN user_messages ON user_messages.message_id = messages.id
+          WHERE #{msg_query}
+          GROUP BY user_messages.user_id
+        ) sent_msgs ON sent_msgs.user_id = users.id
+      SQL
+
+      group << 'posts.count, logs.count, sent_msgs.count'
+    end
+
+    User.find_by_sql <<-SQL
+
+      SELECT #{select.join(',')}
+      FROM users
+        #{relations.join(' ')}
+      WHERE (
+        #{types.join(' OR ')}
+      ) AND (
+        #{query.join(' AND ')}
+      )
+      GROUP BY #{group.join(',')}
+      ORDER BY users.name;
+    SQL
+
   end
 
   ### triggers

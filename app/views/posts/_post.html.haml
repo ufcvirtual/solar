@@ -11,7 +11,8 @@
       .forum_post_author
         .forum_participant_nick{ alt: "#{user.info(:nick, @researcher)}" }
           = user.info(:nick, @researcher)
-          - unless @class_participants.include? user.id
+          /- unless @class_participants.include? user.id
+          - unless post.profiles == '0'
             %span{ :"data-tooltip" => t('.moved_allocation') }= content_tag :i, nil, class: 'icon-warning moved_allocation'
         .forum_participant_profile= (profile = post.profile).nil? ? '' : profile.name
       .forum_post_date

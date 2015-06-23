@@ -1,7 +1,7 @@
-%table.notifications.tb_list{"data-notifications-count" => @notifications.count}
+%table.notifications.tb_list{ "data-notifications-count" => @notifications.count }
   - @notifications.each_with_index do |notification, idx|
-    - tr_class = notification.read?(current_user) ? "read" : "unread"
-    %tr.lines{id: notification.id, class: tr_class, "data-link-show" => notification_path(notification), "data-notification-idx" => idx}
+    - tr_class = notification.read ? "read" : "unread"
+    %tr.lines{ id: notification.id, class: tr_class, "data-link-show" => notification_path(notification), "data-notification-idx" => idx }
       %td
         .title= sanitize truncate(notification.title, length: 150)
         .description= sanitize truncate(notification.description, length: 200)

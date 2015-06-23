@@ -10,7 +10,7 @@ class Message < ActiveRecord::Base
   has_many :message_labels, through: :user_message_labels, uniq: true
 
   before_save proc { |record| record.subject = I18n.t(:no_subject, scope: :messages) if record.subject == "" }
-  before_save :set_sender_and_recipients, if: "sender"
+  before_save :set_sender_and_recipients, if: 'sender'
 
   scope :by_user, ->(user_id) { joins(:user_messages).where(user_messages: { user_id: user_id }) }
 
@@ -36,7 +36,7 @@ class Message < ActiveRecord::Base
     l.flatten.compact.uniq
   end
 
-  def self.get_query(user_id, box='inbox', allocation_tags_ids=[], options={ ignore_trash: true, only_unread: false })
+  def self.get_query(user_id, box='inbox', allocation_tags_ids=[], options={ ignore_trash: true, only_unread: false, ignore_user: false })
     query = []
     case box
     when 'inbox'
@@ -52,11 +52,11 @@ class Message < ActiveRecord::Base
     ats = [allocation_tags_ids].flatten.compact
 
     query << "messages.allocation_tag_id IN (#{ats.join(',')})" unless ats.blank?
-    query << "user_messages.user_id = #{user_id}"
+    query << "user_messages.user_id = #{user_id}" unless options[:ignore_user]
     query.join(' AND ')
   end
 
-  def self.by_box(user_id, box='inbox', allocation_tags_ids=[], options={ ignore_trash: true, only_unread: false })
+  def self.by_box(user_id, box='inbox', allocation_tags_ids=[], options={ ignore_trash: true, only_unread: false, ignore_user: false })
     query = Message.get_query(user_id, box, allocation_tags_ids, options)
 
     Message.find_by_sql <<-SQL
@@ -88,8 +88,15 @@ class Message < ActiveRecord::Base
   end
 
   def self.sent_by_user(user_id, allocation_tags_ids = [])
-    query = Message.get_query(user_id, 'outbox', allocation_tags_ids, { ignore_trash: false })
-    sent  = Message.find_by_sql <<-SQL
+    Message.count_messages(Message.get_query(user_id, 'outbox', allocation_tags_ids, { ignore_trash: false }))
+  end
+
+  def self.unreads(user_id, allocation_tags_ids=[])
+    Message.count_messages(Message.get_query(user_id, 'inbox', allocation_tags_ids, { only_unread: true }))
+  end
+
+  def self.count_messages(query)
+    msgs = Message.find_by_sql <<-SQL
       SELECT COUNT(*) FROM (
         SELECT DISTINCT messages.id
         FROM messages
@@ -97,24 +104,8 @@ class Message < ActiveRecord::Base
         WHERE #{query}
       ) AS msgs;
     SQL
-    sent.first[:count]
-  end
 
-  def self.unreads(user_id, allocation_tags_ids=[])
-    sql = (allocation_tags_ids.blank? ? '' : " AND messages.allocation_tag_id IN (#{[allocation_tags_ids].flatten.join(',')})")
-    unreads = Message.find_by_sql <<-SQL
-      SELECT COUNT(*) FROM (
-        SELECT DISTINCT messages.id
-        FROM messages
-        JOIN user_messages ON user_messages.message_id = messages.id
-        WHERE 
-          user_messages.user_id = #{user_id}
-          AND NOT cast(user_messages.status & #{Message_Filter_Read + Message_Filter_Sender + Message_Filter_Trash} as boolean)
-          #{sql}
-      ) AS msgs;
-    SQL
-
-    unreads.first[:count]
+    msgs.first[:count]
   end
 
   def user_has_permission?(user_id)

@@ -1,4 +1,4 @@
-- message_is_present = !@messages.blank?
+- message_is_present = @messages.any?
 #block_messages.block_small.portlet
   .block_title
     %h2
@@ -18,6 +18,6 @@
     - else
       .block_content_text= t(:no_new, scope: :messages)
   .block_messages_opt
-    = link_to t(:curriculum_access_message_inbox), messages_path(bread: :menu_messages), {class: 'link_content_gray can-update-menu', 'data-menu-bread' => 'menu_messages'}
+    = link_to t(:curriculum_access_message_inbox), messages_path(bread: :menu_messages), { class: 'link_content_gray can-update-menu', 'data-menu-bread' => 'menu_messages' }
     \ |
-    = link_to t(:curriculum_access_message_new), new_message_path(bread: :menu_messages), {class: 'link_content_gray can-update-menu', 'data-menu-bread' => 'menu_messages'}
+    = link_to t(:curriculum_access_message_new), new_message_path(bread: :menu_messages), { class: 'link_content_gray can-update-menu', 'data-menu-bread' => 'menu_messages' }
