@@ -48,7 +48,7 @@
 
       .privacy
         = f.label t('.privacy'), :'data-tooltip' => t('.privacy_tooltip')
-        %span= f.input :privacy, as: :select, collection: [[t('.public'), false], [t('.private'), true]], label: false, include_blank: false, selected: f.object.privacy || false
+        %span= f.input :privacy, as: :select, collection: [[t('.public'), false], [t('.private'), true]], label: false, include_blank: false, selected: f.object.privacy
 
       - unless @lesson.imported_from.nil?
         .imported
