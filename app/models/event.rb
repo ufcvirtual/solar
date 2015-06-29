@@ -54,16 +54,6 @@ class Event < ActiveRecord::Base
     }
   end
 
-  def portlet_json(options = {})
-    {
-      schedule_type: self.class.to_s.underscore,
-      name: name_portlet(options),
-      description: (respond_to?(:enunciation) ? enunciation : description) || '',
-      start_date: schedule.start_date.to_date,
-      end_date: schedule.end_date.try(:to_date)
-    }
-  end
-
   def self.format_date(date_time)
     date_time.to_formatted_s(:db)
   end

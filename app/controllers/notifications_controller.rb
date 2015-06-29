@@ -15,7 +15,7 @@ class NotificationsController < ApplicationController
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Notification, on: @allocation_tags_ids
 
-    @notifications = Notification.joins(:allocation_tags).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).uniq
+    @notifications = Notification.joins(:allocation_tags).where(allocation_tags: { id: @allocation_tags_ids.split(" ").flatten }).uniq
   end
 
   # GET /notifications

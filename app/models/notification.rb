@@ -15,7 +15,7 @@ class Notification < ActiveRecord::Base
   before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # data final obrigatoria
 
   validates :title, :description, :schedule, presence: true
-  validates :title, length: {maximum: 255}
+  validates :title, length: { maximum: 255 }
 
   def period
     p = [I18n.l(start_date, format: :normal)]
@@ -43,7 +43,7 @@ class Notification < ActiveRecord::Base
     active.select("notifications.*, rn.user_id AS read")
       .joins(:academic_allocations)
       .joins("LEFT JOIN read_notifications rn ON rn.notification_id = notifications.id AND rn.user_id = #{user.id}")
-      .where(academic_allocations: {allocation_tag_id: user.all_allocation_tags})
+      .where(academic_allocations: { allocation_tag_id: user.all_allocation_tags })
       .order("read DESC, schedules.start_date DESC, schedules.end_date DESC")
   end
 

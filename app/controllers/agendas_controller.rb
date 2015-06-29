@@ -22,7 +22,7 @@ class AgendasController < ApplicationController
 
   def index
     authorize! :calendar, Agenda, on: @allocation_tags_ids, read: true
-    @schedules = Agenda.events(@allocation_tags_ids, params[:date])
+    @schedules = Agenda.events(@allocation_tags_ids, @date = params[:date].to_date.to_formatted_s(:db))
   rescue CanCan::AccessDenied
     @schedules = []
   end
