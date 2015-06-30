@@ -69,7 +69,7 @@ class RelatedTaggable < ActiveRecord::Base
             ) as ats
             GROUP BY ats_ids;
         SQL
-        allocation_tags.first['ats_ids'].delete('{}NULL').split(',').reject(&:empty?).map(&:to_i)
+        allocation_tags.first['ats_ids'].delete('{}NULL').split(',').map(&:to_i).delete_if { |at| at == 0 }
       end
     else
 
@@ -84,7 +84,7 @@ class RelatedTaggable < ActiveRecord::Base
         GROUP BY ats_ids;
       SQL
  
-      allocation_tags.first['ats_ids'].split(',').reject(&:empty?).map(&:to_i)
+      allocation_tags.first['ats_ids'].delete('{}NULL').split(',').map(&:to_i).delete_if { |at| at == 0 }
     end
   end
 end
