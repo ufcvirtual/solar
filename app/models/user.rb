@@ -298,8 +298,11 @@ class User < ActiveRecord::Base
   # if all is true         => recover all related
   # if include_nil is true => include nil if some allocation is not rellated to any allocation_tag
   def allocation_tags_ids_with_access_on(actions, controller, all=false, include_nil=false)
-    allocation_tags = Allocation.joins(profile: :resources).where(resources: { action: actions, controller: controller }, allocations: { status: Allocation_Activated, user_id: id }).select('DISTINCT allocations.allocation_tag_id').pluck(:allocation_tag_id)
-    has_nil = (include_nil && allocation_tags.include?(nil))
+    allocations = Allocation.joins(profile: :resources).where(resources: { action: actions, controller: controller }, allocations: { status: Allocation_Activated, user_id: id }).select('DISTINCT allocation_tag_id, allocations.id')
+    allocation_tags = AllocationTag.joins(:allocations).where(allocations: { id: allocations.pluck(:id) }).pluck(:id)
+
+    has_nil = (include_nil && allocations.where(allocation_tag_id: nil).any?)
+
     allocation_tags = RelatedTaggable.related_from_array_ats(allocation_tags.compact, (all ? {} : { lower: true })) 
     allocation_tags << nil if has_nil
     allocation_tags
