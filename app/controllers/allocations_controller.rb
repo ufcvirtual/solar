@@ -163,7 +163,7 @@ class AllocationsController < ApplicationController
   end
 
   def groups_that_user_have_permission
-    profiles = current_user.profiles_with_access_on('manage_enrolls', 'allocations').pluck(:id)
+    profiles = current_user.profiles_with_access_on('manage_enrolls', 'allocations').map(&:id)
     current_user.allocations.where(profile_id: profiles).where('allocation_tag_id IS NOT NULL').map(&:groups).flatten.uniq.compact
   end
 
