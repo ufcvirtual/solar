@@ -69,9 +69,10 @@ class RelatedTaggable < ActiveRecord::Base
             ) as ats
             GROUP BY ats_ids;
         SQL
-        allocation_tags.first['ats_ids'].delete('{}NULL').split(',').map(&:to_i).delete_if{ |at| at == 0 }
+        allocation_tags.first['ats_ids'].delete('{}NULL').split(',').reject(&:empty?).map(&:to_i)
       end
     else
+
       allocation_tags = find_by_sql <<-SQL
         SELECT ARRAY[ats.at_g, ats.at_o, ats.at_c, ats.at_uc, ats.at_type] AS ats_ids
         FROM (
@@ -82,8 +83,8 @@ class RelatedTaggable < ActiveRecord::Base
         ) as ats
         GROUP BY ats_ids;
       SQL
-
-      allocation_tags.first['ats_ids'].delete('{}NULL').split(',').map(&:to_i).delete_if { |at| at == 0 }
+ 
+      allocation_tags.first['ats_ids'].split(',').reject(&:empty?).map(&:to_i)
     end
   end
 end

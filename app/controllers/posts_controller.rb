@@ -24,6 +24,8 @@ class PostsController < ApplicationController
     @posts = []
 
     @can_interact, @can_post = @discussion.user_can_interact?(current_user.id), (can? :create, Post, on: [@allocation_tags])
+    @can_interact = @discussion.user_can_interact?(current_user.id)
+    @can_post = (can? :create, Post, on: [@allocation_tags])
 
     p = params.slice(:date, :type, :order, :limit, :display_mode, :page)
 
@@ -98,9 +100,9 @@ class PostsController < ApplicationController
     can_post = can?(:create, Post, on: [allocation_tag_id])
 
     @researcher = (params[:researcher] == "true" or params[:researcher] == true)
-    @class_participants = AllocationTag.get_participants(allocation_tag_id, {all: true}).pluck(:id)
+    @class_participants = AllocationTag.get_participants(allocation_tag_id, { all: true }).map(&:id)
 
-    render partial: "post", locals: {post: post, display_mode: nil, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: (params[:new_post] ? params[:id] : nil) }
+    render partial: 'post', locals: { post: post, display_mode: nil, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: (params[:new_post] ? params[:id] : nil) }
   end
 
   ## DELETE /posts/1

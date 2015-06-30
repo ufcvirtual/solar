@@ -104,7 +104,7 @@ class Discussion < Event
     discussion_posts.empty? # nao pode dar unbind nem remover se forum possuir posts
   end
 
-  def posts_by_allocation_tags_ids(allocation_tags_ids = nil, opt = { grandparent: true, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'discussion_posts.*' })
+  def posts_by_allocation_tags_ids(allocation_tags_ids = nil, opt = { grandparent: true, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'DISTINCT discussion_posts.id, discussion_posts.*' })
     allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids).map(&:related).flatten.compact.uniq
     posts_list = discussion_posts.where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
     posts_list = posts_list.joins(academic_allocation: :allocation_tag).where(allocation_tags: { id: allocation_tags_ids }) unless allocation_tags_ids.blank?

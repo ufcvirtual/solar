@@ -159,9 +159,22 @@ class User < ActiveRecord::Base
 
   # if user is only researcher, must not see any information about users
   def is_researcher?(allocation_tags_ids)
-    all = allocations.where(allocation_tag_id: allocation_tags_ids).map(&:profile).uniq.size
-    researcher_profiles = profiles_with_access_on('cant_see_info', 'users', allocation_tags_ids).count
-    (all == researcher_profiles)
+    all = Profile.find_by_sql <<-SQL
+      SELECT COUNT(*) FROM
+        (
+          SELECT DISTINCT profiles.id
+          FROM profiles
+          JOIN allocations ON allocations.profile_id = profiles.id
+          WHERE 
+            allocations.allocation_tag_id IN (#{allocation_tags_ids.join(',')}) 
+            AND
+            user_id = #{id}
+        ) AS ids;
+
+    SQL
+
+    researcher_profiles = profiles_with_access_on('cant_see_info', 'users', allocation_tags_ids, false, true)
+    (all.count == researcher_profiles)
   end
 
   ## Na criação, o usuário recebe o perfil de usuario basico
@@ -233,18 +246,28 @@ class User < ActiveRecord::Base
       .where(query_contexts, contexts: args[:contexts]).order('parents_menus.order, menus.order')
   end
 
-  def profiles_with_access_on(action, controller, allocation_tag_id = nil, only_id = false)
-    if allocation_tag_id.nil?
-      profiles = Profile.joins(:allocations, :resources)
-        .where(allocations: { user_id: id }, resources: { action: action, controller: controller })
-        .order('profiles.id DESC').uniq
-    else
-      profiles = Profile.joins(:allocations, :resources)
-        .where(allocations: { allocation_tag_id: allocation_tag_id, user_id: id }, resources: { action: action, controller: controller })
-        .order('profiles.id DESC').uniq
-    end
-    
-    (only_id) ? profiles.pluck(:id) : profiles
+  def profiles_with_access_on(action, controller, allocation_tag_id = nil, only_id = false, count = false)
+    sql = []
+    sql << 'SELECT COUNT(*) FROM
+        (' if count
+    sql << (count || only_id ? 'SELECT DISTINCT profiles.id' : 'SELECT DISTINCT profiles.id, profiles.*')
+    sql << "FROM profiles
+          JOIN allocations ON allocations.profile_id = profiles.id
+          JOIN permissions_resources ON permissions_resources.profile_id = profiles.id
+          JOIN resources   ON resources.id = permissions_resources.resource_id
+          WHERE 
+            allocations.user_id = #{id}
+            AND
+            resources.action = ?
+            AND
+            resources.controller = ?"
+    sql << "AND
+            allocations.allocation_tag_id IN (#{allocation_tag_id.join(',')})" unless allocation_tag_id.nil?
+    sql << (count ? ') AS ids;' : ';')
+
+    profiles = Profile.find_by_sql [sql.join(' '), action, controller]
+
+    (only_id) ? profiles.map(&:id) : profiles
   end
 
   def get_allocation_tags_ids_from_profiles(responsible = true, observer = false)
@@ -275,10 +298,8 @@ class User < ActiveRecord::Base
   # if all is true         => recover all related
   # if include_nil is true => include nil if some allocation is not rellated to any allocation_tag
   def allocation_tags_ids_with_access_on(actions, controller, all=false, include_nil=false)
-    allocations = Allocation.joins(profile: :resources).where(resources: { action: actions, controller: controller }, allocations: { status: Allocation_Activated, user_id: id }).select('DISTINCT allocation_tag_id, allocations.id')
-    allocation_tags = AllocationTag.joins(:allocations).where(allocations: { id: allocations.pluck(:id) }).pluck(:id)
-
-    has_nil = (include_nil && allocations.where(allocation_tag_id: nil).any?)
+    allocation_tags = Allocation.joins(profile: :resources).where(resources: { action: actions, controller: controller }, allocations: { status: Allocation_Activated, user_id: id }).select('DISTINCT allocations.allocation_tag_id').pluck(:allocation_tag_id)
+    has_nil = (include_nil && allocation_tags.include?(nil))
     allocation_tags = RelatedTaggable.related_from_array_ats(allocation_tags.compact, (all ? {} : { lower: true })) 
     allocation_tags << nil if has_nil
     allocation_tags

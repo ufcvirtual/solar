@@ -1,6 +1,6 @@
-- user, new_post_class = post.user, ((new_post and new_post.to_i == post.id) ? "new" : "")
+- user, new_post_class = post.user, ((new_post && new_post.to_i == post.id) ? "new" : "")
 - children = ((display_mode == 'list') ? post.children : Post.reorder_by_latest_posts(post.children)) # obtendo e reordenando os posts a partir dos seus "filhos/netos"
-- editable = ((post.user_id == current_user.id) && (children.count == 0))
+- editable = ((post.user_id == current_user.id) && (post.children_count == 0))
 - files    = post.files
 
 %table.forum_post{ border: '0', cellpadding: '0', cellspacing: '0', id: "#{post.id}" }
@@ -22,17 +22,17 @@
       .forum_post_wrapper{ class: new_post_class }
         .forum_post_inner_content
           = sanitize post.content
-        - unless files.empty?
+        - if files.any?
           .forum_post_attachment
             %h3= t('.file_list')
             %ul.forum_post_attachment_list
               - files.each do |file|
                 - mimetype_icon  = image_tag( icon_attachment(file.attachment_file_name) )
                 - link_to_down   = (link_to file.attachment_file_name, download_post_post_file_path(post, file))
-                - link_to_remove = (editable and can_interact) ? (link_to (content_tag(:i, nil, class: 'icon-cross-circle warning')), post_post_file_path(post, file), confirm: t(".remove_file_confirm"), method: :delete, :'data-tooltip' => t('.remove_file'), class: 'nodecoration') : ''
+                - link_to_remove = (editable && can_interact) ? (link_to (content_tag(:i, nil, class: 'icon-cross-circle warning')), post_post_file_path(post, file), confirm: t(".remove_file_confirm"), method: :delete, :'data-tooltip' => t('.remove_file'), class: 'nodecoration') : ''
                 %li
                   = raw "#{mimetype_icon}&nbsp;&nbsp;#{link_to_down}&nbsp;&nbsp;#{link_to_remove}"
-                  - if file.attachment_content_type.index('audio') or file.attachment_file_name.last(4).eql?('.aac') or file.attachment_file_name.last(4).eql?('.m4a') or file.attachment_content_type.index('video') or file.attachment_file_name.last(4).eql?('.mp4') or file.attachment_file_name.last(4).eql?('.m4v')
+                  - if file.attachment_content_type.index('audio') || file.attachment_file_name.last(4).eql?('.aac') || file.attachment_file_name.last(4).eql?('.m4a') || file.attachment_content_type.index('video') || file.attachment_file_name.last(4).eql?('.mp4') || file.attachment_file_name.last(4).eql?('.m4v')
                     .media{id: "media-#{file.id}", :'data-type' => file.attachment_file_name.split(".").last, :'data-source'=> download_post_post_file_url(post, file)}
         .forum_post_buttons
           .btn-group
