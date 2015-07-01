@@ -5,10 +5,11 @@ class AddIndexesToImprovePerformance < ActiveRecord::Migration
       CREATE INDEX assignment_comments_sent_assignment_id_idx   ON assignment_comments (sent_assignment_id);
       CREATE INDEX comment_files_assignment_comment_id_idx      ON comment_files (assignment_comment_id);
 
+      CREATE INDEX academic_allocations_tool_id_type_allocation_tag_id_idx ON academic_allocations (allocation_tag_id, academic_tool_id, academic_tool_type);
       DROP INDEX academic_tool_type_idx;
       DROP INDEX academic_tool_id_idx;
       DROP INDEX allocation_tag_id_idx;
-      CREATE INDEX academic_allocations_tool_id_type_allocation_tag_id_idx ON academic_allocations (allocation_tag_id, academic_tool_id, academic_tool_type);
+      
 
       CREATE INDEX user_messages_user_id_message_id_idx ON user_messages (user_id, message_id);
 
