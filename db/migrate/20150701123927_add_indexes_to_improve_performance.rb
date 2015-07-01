@@ -10,8 +10,6 @@ class AddIndexesToImprovePerformance < ActiveRecord::Migration
       DROP INDEX allocation_tag_id_idx;
       CREATE INDEX academic_allocations_tool_id_type_allocation_tag_id_idx ON academic_allocations (allocation_tag_id, academic_tool_id, academic_tool_type);
 
-      DROP INDEX user_message_message_id_idx;
-      DROP INDEX user_message_user_id_idx;
       CREATE INDEX user_messages_user_id_message_id_idx ON user_messages (user_id, message_id);
 
       CREATE INDEX lessons_lmodule_id ON lessons (lesson_module_id);
