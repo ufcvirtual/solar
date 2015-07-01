@@ -19,19 +19,19 @@ class CreateIndexesCalendar < ActiveRecord::Migration
 
   def down 
     ActiveRecord::Base.connection.execute <<-SQL
-      DROP INDEX start_date_idx ON schedules;
-      DROP INDEX end_date_idx   ON schedules;
+      DROP INDEX start_date_idx;
+      DROP INDEX end_date_idx;
 
-      DROP INDEX allocation_tag_id_idx  ON academic_allocations;
-      DROP INDEX academic_tool_id_idx   ON academic_allocations;
-      DROP INDEX academic_tool_type_idx ON academic_allocations;
+      DROP INDEX allocation_tag_id_idx;
+      DROP INDEX academic_tool_id_idx;
+      DROP INDEX academic_tool_type_idx;
 
-      DROP INDEX a_schedule_id_idx  ON assignments;
-      DROP INDEX e_schedule_id_idx  ON exams;
-      DROP INDEX d_schedule_id_idx  ON discussions;
-      DROP INDEX se_schedule_id_idx ON schedule_events;
-      DROP INDEX cr_schedule_id_idx ON chat_rooms;
-      DROP INDEX l_schedule_id_idx  ON lessons;
+      DROP INDEX a_schedule_id_idx;
+      DROP INDEX e_schedule_id_idx;
+      DROP INDEX d_schedule_id_idx;
+      DROP INDEX se_schedule_id_idx;
+      DROP INDEX cr_schedule_id_idx;
+      DROP INDEX l_schedule_id_idx;
     SQL
   end
 end
