@@ -64,6 +64,7 @@ class AccessControlController < ApplicationController
       else
         file_path = File.join(Lesson::FILES_PATH, params[:id], params[:folder], [params[:path], '.', params[:format]].join)
       end
+      send_file(file_path, {disposition: 'inline'})
     else
       send_file(lesson.path(true), { disposition: 'inline', type: return_type(params[:extension]) })
     end
