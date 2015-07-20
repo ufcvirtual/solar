@@ -31,10 +31,14 @@ function close_lesson() {
 
 function open_new_lesson_on_fancybox(lesson_path, lesson_url) {
   $('.lesson .content').attr('data-url', lesson_url);
+
+  console.log($('.lesson .content iframe'));
+
   $('.lesson .content iframe').attr('src', lesson_path);
 
   // update status da lesson
   var lesson_draft = $('.breadcrumb .lessons #lesson option:selected').data('draft');
+
   if (lesson_draft) {
     $('.lesson_status .draft').removeClass('invisible');
     $('.lesson_status .released').addClass('invisible');
@@ -52,7 +56,7 @@ $(function(){
       $('.breadcrumb .lessons').html(data);
 
       var lesson_path = $('option:selected', data).data('path');
-      var lesson_url = get_lesson_url.replace('lesson_id', $('.breadcrumb .lessons #lesson').val());
+      var lesson_url  = get_lesson_url.replace('lesson_id', $('.breadcrumb .lessons #lesson').val());
 
       open_new_lesson_on_fancybox(lesson_path, lesson_url);
     });
@@ -61,7 +65,7 @@ $(function(){
   // select lessons
   $('.breadcrumb .lessons').on('change', '#lesson', function(){
     var lesson_path = $('#lesson option:selected').data('path');
-    var lesson_url = get_lesson_url.replace('lesson_id', $(this).val());
+    var lesson_url  = get_lesson_url.replace('lesson_id', $(this).val());
 
     open_new_lesson_on_fancybox(lesson_path, lesson_url);
   });

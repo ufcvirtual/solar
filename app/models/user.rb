@@ -365,7 +365,7 @@ class User < ActiveRecord::Base
         blacklist.save if user.integrated && blacklist.valid?
 
         params = {}
-        params.merge!({ email: row['Email'] })                      if row.include?('Email')
+        params.merge!({ email: row['Email'].downcase })             if row.include?('Email')
         params.merge!({ name: row['Nome'] })                        if row.include?('Nome')
         params.merge!({ address: row['Endereço'] })                 if row.include?('Endereço')
         params.merge!({ country: row['País'] })                     if row.include?('País')

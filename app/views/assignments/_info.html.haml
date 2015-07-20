@@ -1,20 +1,20 @@
-- info, can_evaluate = @assignment.info(@student_id, @allocation_tag_id, @group_id), (can? :evaluate, Assignment, on: [@allocation_tag_id])
+- info = @assignment.info(@student_id, @allocation_tag_id, @group_id)
 %tr.lines
   %td.center= l(@assignment.schedule.start_date, format: :normal)
   %td.center= l(@assignment.schedule.end_date, format: :normal)
   %td.center{:class => "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
   %td.center
     .student_assignment_evaluation
-      = info[:grade] || (can_evaluate ? button_tag(t(".evaluate"), class: "btn btn-orange evaluate #{@in_time ? '' : 'disabled'}") : " - ")
+      = info[:grade] || (@can_evaluate ? button_tag(t('.evaluate'), class: "btn btn-orange evaluate #{@in_time ? '' : 'disabled'}") : ' - ')
     .student_assignment_evaluate.invisible
-      = text_field_tag :evaluation_grade, info[:grade].nil? ? "" : info[:grade], size: 3
+      = text_field_tag :evaluation_grade, info[:grade].nil? ? '' : info[:grade], size: 3
   %td.center
-    - unless info[:grade].nil? or not(can_evaluate)
+    - unless info[:grade].nil? || !@can_evaluate
       .edit_button
-        = button_tag content_tag(:i, nil, class: "icon-edit"), class: "btn evaluate #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t(".edit")
+        = button_tag content_tag(:i, nil, class: 'icon-edit'), class: "btn evaluate #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.edit')
     .evaluation_buttons.invisible
-      = button_tag content_tag(:i, nil, class: "icon-checkmark"), class: "btn save_evaluation", :"data-tooltip" => t(".save")
-      = button_tag content_tag(:i, nil, class: "icon-cross"), class: "btn btn_caution cancel_evaluation", :"data-tooltip" => t(".cancel")
+      = button_tag content_tag(:i, nil, class: 'icon-checkmark'), class: "btn save_evaluation", :"data-tooltip" => t('.save')
+      = button_tag content_tag(:i, nil, class: 'icon-cross'), class: "btn btn_caution cancel_evaluation", :"data-tooltip" => t('.cancel')
 
 = javascript_include_tag "tooltip"
 

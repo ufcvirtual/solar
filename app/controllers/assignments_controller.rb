@@ -27,10 +27,18 @@ class AssignmentsController < ApplicationController
 
     @student      = !AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id)
     @public_files = PublicFile.where(user_id: current_user.id, allocation_tag_id: @allocation_tag_id)
+    
+
     @assignments  = Assignment.joins(:academic_allocations, :schedule).where(academic_allocations: { allocation_tag_id:  @allocation_tag_id })
                               .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date").order("start_date")
+
     @participants = AllocationTag.get_participants(@allocation_tag_id, { students: true })
-    @can_manage, @can_import = (can? :index, GroupAssignment, on: [@allocation_tag_id]), (can? :import, GroupAssignment, on: [@allocation_tag_id])
+
+    user_profiles = current_user.resources_by_allocation_tags_ids([@allocation_tag_id])
+
+    @can_manage   = user_profiles.include?(group_assignments: :index)
+    @can_import   = user_profiles.include?(group_assignments: :import)
+    @can_evaluate = user_profiles.include?(assignments: :evaluate)
 
     render layout: false if params[:layout].present?
   end

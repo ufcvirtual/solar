@@ -26,7 +26,7 @@ class Webconference < ActiveRecord::Base
       url  = URI(api.url)
       response = Net::HTTP.get_response(url)
       return (Net::HTTPSuccess === response)
-    rescue Errno::ECONNREFUSED
+    rescue
       false
     end
   end

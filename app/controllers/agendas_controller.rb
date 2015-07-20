@@ -2,7 +2,7 @@
 class AgendasController < ApplicationController
   before_filter :prepare_for_group_selection, only: :list
 
-  layout false, only: [:calendar, :dropdown_content, :index]
+  layout false, only: [:calendar, :dropdown_content, :index, :events]
 
   before_filter except: :dropdown_content do
     ats = if active_tab[:url].include?(:allocation_tag_id) # entrou na turma
@@ -10,9 +10,8 @@ class AgendasController < ApplicationController
           elsif params[:allocation_tags_ids].blank?
             current_user.activated_allocation_tag_ids(true, true)
           else # passou a turma como parametro
-            params[:allocation_tags_ids].split(' ').flatten
+            params[:allocation_tags_ids].split(' ').flatten.map(&:to_i)
           end
-
     @allocation_tags_ids = ats.uniq
   end
 

@@ -5,10 +5,10 @@
     %thead
       %tr.lines
         %th= t(".student")
-        %th.center{style: "width: 10%"}= t("assignments.list.sent_on")
-        %th.center{style: "width:20%"}= t("assignments.list.situation")
-        %th.center{style: "width:10%"}= t("assignments.list.grade")
-        %th.center{style: "width:20%"}= t("assignments.list.comments")
+        %th.center{ style: 'width: 10%' }= t('assignments.list.sent_on')
+        %th.center{ style: 'width:20%' }= t('assignments.list.situation')
+        %th.center{ style: 'width:10%' }= t('assignments.list.grade')
+        %th.center{ style: 'width:20%' }= t('assignments.list.comments')
     %tbody
       - @participants.each_with_index do |participant|
         - info = assignment.info(participant.id, @allocation_tag_id)

@@ -18,7 +18,7 @@ class UsersController < ApplicationController
 
   def verify_cpf
 
-    if (not(params[:cpf].present?) or not(Cpf.new(params[:cpf]).valido?))
+    if (!(params[:cpf].present?) || !(Cpf.new(params[:cpf]).valido?))
       redirect_to login_path(cpf: params[:cpf]), alert: t(:new_user_msg_cpf_error)
     else
 
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 
       begin
 
-        if user and integrated # if user exists and system is integrated
+        if user && integrated # if user exists and system is integrated
           begin
             user_data = User.connect_and_import_user(user_cpf) # try to import
             raise if user_data.nil? # user don't exist at MA
@@ -37,10 +37,10 @@ class UsersController < ApplicationController
           rescue
             redirect_to login_path, alert: t(:new_user_cpf_in_use)
           end
-        elsif user and not(integrated) # if user exists and system isn't integrated
+        elsif user && !(integrated) # if user exists and system isn't integrated
           redirect_to login_path, alert: t(:new_user_cpf_in_use)
         else # if user don't exist
-          raise if not(integrated)
+          raise if !(integrated)
           user = User.new cpf: user_cpf
           user.connect_and_validates_user unless user.on_blacklist? # try to create user with MA data
 
@@ -52,7 +52,7 @@ class UsersController < ApplicationController
         end
 
       rescue
-        flash[:warning] = t("users.warnings.ma.cpf_not_verified") if integrated and not(User.new(cpf: user_cpf).on_blacklist?)
+        flash[:warning] = t("users.warnings.ma.cpf_not_verified") if integrated && !(User.new(cpf: user_cpf).on_blacklist?)
         redirect_to new_user_registration_path(cpf: params[:cpf])
       end
 
@@ -71,7 +71,7 @@ class UsersController < ApplicationController
 
   def photo
     file_path = User.find(params[:id]).photo.path(params[:style] || :small)
-    head(:not_found) and return unless not file_path.nil? and File.exist?(file_path)
+    head(:not_found) and return unless !file_path.nil? && File.exist?(file_path)
     send_file(file_path, { :disposition => 'inline', :content_type => 'image' })
   end
 

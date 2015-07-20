@@ -3,7 +3,7 @@ class Devise::UsersController < Devise::RegistrationsController
   def create
     build_resource(sign_up_params)
 
-    user_cpf       = params[:user][:cpf].delete(".").delete("-")
+    user_cpf       = params[:user][:cpf].delete('.').delete('-')
     resource.cpf   = user_cpf
     resource_saved = resource.save
     tmp_email      = [user_cpf, YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]["tmp_email_provider"]].join("@")

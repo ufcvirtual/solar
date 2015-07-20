@@ -52,7 +52,7 @@ class LessonsController < ApplicationController
     at_ids = (params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
 
     @modules = LessonModule.to_select(at_ids, current_user)
-    @lesson = Lesson.find(params[:id])
+    @lesson  = Lesson.find(params[:id])
 
     render layout: 'lesson'
   rescue

@@ -1,7 +1,7 @@
 - groups.each do |group|
   %span.collection_check_boxes{id: (group.status ? '' : 'disabled'), :"data-tooltip" => (group.status ? '' : t('.disabled_group'))}
     = group.code
-    - unless paths.nil? or groups.size == 1
+    - unless paths.nil? || groups.size == 1
       = content_tag(:i, nil, class: 'icon icon-cross change_tool_group', :"data-dropdown" => ".change_tool_dropdown_#{group.id}_#{tool.id}")
       %div{id: "dropdown", class: "dropdown dropdown-tip change_tool_dropdown_#{group.id}_#{tool.id}"}
         %ul.dropdown-menu
