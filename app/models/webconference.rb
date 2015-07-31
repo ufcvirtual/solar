@@ -16,6 +16,8 @@ class Webconference < ActiveRecord::Base
   validates :title, :initial_time, :duration, presence: true
   validates :title, :description, length: { maximum: 255 }
 
+  validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed?)', on: :update
+
   def can_access?
     Time.now.between?(initial_time, initial_time+duration.minutes)
   end
@@ -181,4 +183,44 @@ class Webconference < ActiveRecord::Base
   def remove_records
     Webconference.remove_record(academic_allocations)
   end
+
+  def can_add_group?(ats = [])
+    verify_quantity(ats) if ats.any?
+    return true
+  rescue 
+    return false
+  end
+
+  def verify_quantity(allocation_tags_ids = [])
+      end_time       = initial_time + duration.minutes
+      webconferences = Webconference.where("(initial_time BETWEEN ? AND ?) OR ((initial_time + (interval '1 minutes')*duration) BETWEEN ? AND ?) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration))) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration)))", initial_time, end_time, initial_time, end_time, initial_time, end_time)
+      
+      unless webconferences.empty?
+        webconferences << self unless webconferences.include?(self)
+        ats      = webconferences.map(&:allocation_tags).flatten.map(&:related).flatten
+        ats      << allocation_tags_ids if allocation_tags_ids.any?
+        students = 0
+        ats.flatten.each do |at|
+          allocations = Allocation.find_by_sql <<-SQL
+            SELECT COUNT(allocations.id)
+            FROM allocations
+            JOIN profiles ON profiles.id = allocations.profile_id
+            WHERE
+              cast( profiles.types & #{Profile_Type_Student} as boolean )
+            AND
+              allocations.allocation_tag_id = #{at}
+            AND 
+              allocations.status = 1;
+          SQL
+        students += allocations.first['count'].to_i
+        end
+
+        if students > YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users']
+          errors.add(:initial_time, I18n.t('webconferences.error.limit'))
+          raise false
+        end
+      end
+  end
+
+
 end

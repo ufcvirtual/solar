@@ -168,7 +168,7 @@ class AllocationTag < ActiveRecord::Base
     { allocation_tags: [allocation_tags_ids].flatten, selected: selected, offer_id: offer_id }
   end
 
-  def self.get_participants(allocation_tag_id, params = {}, scores = false)
+  def self.get_participants(allocation_tag_id, params = { all: true }, scores = false)
     types, query, select, relations, group = [], [], [], [], []
     types << "cast( profiles.types & '#{Profile_Type_Student}' as boolean )"           if params[:students]     || params[:all]
     types << "cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )" if params[:responsibles] || params[:all]
@@ -222,7 +222,6 @@ class AllocationTag < ActiveRecord::Base
     end
 
     User.find_by_sql <<-SQL
-
       SELECT #{select.join(',')}
       FROM users
         #{relations.join(' ')}

@@ -1,5 +1,5 @@
 require 'fileutils'
-class Lesson < Event
+class Lesson < ActiveRecord::Base #< Event
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 

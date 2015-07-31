@@ -59,11 +59,12 @@ class WebconferencesController < ApplicationController
       Webconference.transaction do
         @webconference.save!
         @webconference.academic_allocations.create! @allocation_tags_ids.map { |at| { allocation_tag_id: at } }
+        @webconference.verify_quantity
       end
       render json: { success: true, notice: t(:created, scope: [:webconferences, :success]) }
     rescue ActiveRecord::AssociationTypeMismatch
       render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
-    rescue
+    rescue => error
       @allocation_tags_ids = @allocation_tags_ids.join(' ')
       params[:success] = false
       render :new

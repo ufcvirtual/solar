@@ -1133,6 +1133,7 @@ en_US:
       not_recorded: "Can't remove record, there are no record to one or more webconfereces selected"
       not_ended: "Can't remove record, one or more webconfereces still on going"
       record_not_deleted: "Can't remove record from webconferences"
+      limit: "Student's limit for this day and time has been reached. Please choose again or decrease amount of groups if necessary" 
     preview:
       delete_record: Remove record
       placeholder: Type any value to be searched at the table of this page

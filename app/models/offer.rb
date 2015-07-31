@@ -156,7 +156,7 @@ class Offer < ActiveRecord::Base
           id: offer.id,
           at: at.id,
           related: ats,
-          has_groups: offer.groups.any?,
+          has_groups: offer.groups.where(status: true).any?,
           uc: uc,
           course: course,
           semester_name: offer.semester.name,

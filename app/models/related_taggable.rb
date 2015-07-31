@@ -57,7 +57,7 @@ class RelatedTaggable < ActiveRecord::Base
           (allocation_tags.curriculum_unit_id IS NOT NULL AND allocation_tags.curriculum_unit_id = related_taggables.curriculum_unit_id) OR (allocation_tags.offer_id IS NOT NULL AND allocation_tags.offer_id = related_taggables.offer_id) OR
           (allocation_tags.curriculum_unit_type_id IS NOT NULL AND allocation_tags.curriculum_unit_type_id = related_taggables.curriculum_unit_type_id) OR (allocation_tags.course_id IS NOT NULL AND allocation_tags.course_id = related_taggables.course_id))')
           .where(allocation_tags: { id: array_of_ats })
-          .select('COALESCE(related_taggables.group_at_id, related_taggables.offer_at_id, related_taggables.curriculum_unit_at_id, related_taggables.course_at_id, related_taggables.curriculum_unit_type_at_id) AS at_id').map(&:at_id).map(&:to_i)
+          .select('COALESCE(related_taggables.group_at_id, related_taggables.offer_at_id, related_taggables.curriculum_unit_at_id, related_taggables.course_at_id, related_taggables.curriculum_unit_type_at_id) AS at_id').map(&:at_id).map(&:to_i).uniq
       elsif options[:upper]
         allocation_tags = find_by_sql <<-SQL
           SELECT ARRAY[ats.at_g, ats.at_o, ats.at_c, ats.at_uc, ats.at_type] AS ats_ids
@@ -69,7 +69,7 @@ class RelatedTaggable < ActiveRecord::Base
             ) as ats
             GROUP BY ats_ids;
         SQL
-        allocation_tags.first['ats_ids'].delete('{}NULL').split(',').map(&:to_i).delete_if { |at| at == 0 }
+        allocation_tags.first['ats_ids'].delete('{}NULL').split(',').map(&:to_i).delete_if { |at| at == 0 }.uniq
       end
     else
 
@@ -84,7 +84,7 @@ class RelatedTaggable < ActiveRecord::Base
         GROUP BY ats_ids;
       SQL
  
-      allocation_tags.first['ats_ids'].delete('{}NULL').split(',').map(&:to_i).delete_if { |at| at == 0 }
+      allocation_tags.first['ats_ids'].delete('{}NULL').split(',').map(&:to_i).delete_if { |at| at == 0 }.uniq
     end
   end
 end

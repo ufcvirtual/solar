@@ -209,7 +209,7 @@ class User < ActiveRecord::Base
     }
   end
 
-  def groups(profile_id = nil, status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil, offer_id = nil, group_status = true)
+  def groups(profile_id = nil, status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil, offer_id = nil, group_status = true, semester_id = nil)
     query = ['allocations.allocation_tag_id IS NOT NULL']
     query << "allocations.status = #{status}"                        unless status.blank?
     query << "allocations.profile_id = #{profile_id}"                unless profile_id.blank?
@@ -219,7 +219,8 @@ class User < ActiveRecord::Base
     query << "curriculum_unit_id = #{curriculum_unit_id}"            unless curriculum_unit_id.blank?
     query << "curriculum_unit_type_id = #{curriculum_unit_type_id}"  unless curriculum_unit_type_id.blank?
     query << "groups.offer_id = #{offer_id}"                         unless offer_id.blank?
-    query << "groups.status = #{group_status}"
+    query << "offers.semester_id = #{semester_id}"                   unless semester_id.blank?
+    query << "groups.status = #{group_status}"                       unless group_status.blank?
     Group.joins({offer: :semester}, :related_taggables).where('related_taggables.group_at_id IN (?) OR related_taggables.offer_at_id IN (?) OR related_taggables.course_at_id IN (?) OR related_taggables.curriculum_unit_at_id IN (?) OR related_taggables.curriculum_unit_type_at_id IN (?)', ats, ats, ats, ats, ats)
       .where(query.join(' AND '))
       .select('DISTINCT groups.id, semesters.*, groups.*').order('semesters.name DESC, groups.code ASC')

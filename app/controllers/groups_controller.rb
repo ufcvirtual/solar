@@ -122,10 +122,12 @@ class GroupsController < ApplicationController
       tool = tool_model.find(params[:tool_id])
 
       if params[:type] == 'add'
-        raise 'cant_add_group' unless (!tool.respond_to?(:can_add_group?) || tool.can_add_group?)
+        allocation_tags_ids = groups.map(&:allocation_tag).map(&:id).flatten
+
+        raise 'cant_add_group' unless (!tool.respond_to?(:can_add_group?) || tool.can_add_group?(allocation_tags_ids))
 
         AcademicAllocation.transaction do
-          AcademicAllocation.create! groups.map {|group| {allocation_tag_id: group.allocation_tag.id, academic_tool_id: params[:tool_id], academic_tool_type: params[:tool_type]}}
+          AcademicAllocation.create! allocation_tags_ids.map { |at| { allocation_tag_id: at, academic_tool_id: params[:tool_id], academic_tool_type: params[:tool_type] } }
         end
       else
         academic_allocations = AcademicAllocation.where(allocation_tag_id: groups.map(&:allocation_tag).map(&:id), academic_tool_type: params[:tool_type], academic_tool_id: params[:tool_id])

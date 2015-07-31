@@ -1310,6 +1310,7 @@ pt_BR:
       not_recorded: 'Não foi possível remover gravação, pois não há gravação para uma ou mais webconferências escolhidas'
       not_ended: 'Não foi possível remover gravação, uma ou mais webconferências selecionadas em andamento'
       record_not_deleted: 'Não foi possível remover gravação das webconferências'
+      limit: 'Foi atingido o limite de participantes para este dia e horário. Favor escolher outro horário ou diminuir a quantidade de turmas se o caso.'
     preview:
       delete_record: Remover gravação
       placeholder: Digite qualquer valor a ser buscado na tabela desta página

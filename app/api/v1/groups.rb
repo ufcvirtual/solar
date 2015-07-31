@@ -58,7 +58,7 @@ module V1
               end
               secundary_offer.notify_editors_of_disabled_groups(Group.where(code: params[:secundary_groups])) if params[:type]
 
-              {ok: :ok}
+              { ok: :ok }
             end
           end # /
 
