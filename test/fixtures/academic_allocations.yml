@@ -460,3 +460,45 @@ exam1:
  allocation_tag_id: 3 # QM-CAU - 2011.1
  academic_tool_id: 1
  academic_tool_type: "Exam"
+
+webc4:
+ id: 77
+ allocation_tag_id: 3
+ academic_tool_id: 1
+ academic_tool_type: "Webconference"
+
+webc5:
+ id: 78
+ allocation_tag_id: 3
+ academic_tool_id: 2
+ academic_tool_type: "Webconference"
+
+webc6:
+ id: 79
+ allocation_tag_id: 11
+ academic_tool_id: 3
+ academic_tool_type: "Webconference"
+
+webc7:
+ id: 80
+ allocation_tag_id: 11
+ academic_tool_id: 2
+ academic_tool_type: "Webconference"
+
+webc8:
+ id: 81
+ allocation_tag_id: 11
+ academic_tool_id: 4
+ academic_tool_type: "Webconference"
+
+webc9:
+ id: 82
+ allocation_tag_id: 3
+ academic_tool_id: 4
+ academic_tool_type: "Webconference"
+
+webc10:
+ id: 83
+ allocation_tag_id: 3
+ academic_tool_id: 5
+ academic_tool_type: "Webconference"

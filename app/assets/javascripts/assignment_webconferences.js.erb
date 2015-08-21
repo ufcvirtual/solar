@@ -1,0 +1,64 @@
+function edit_awebconference(td){
+  if (!!$(td).hasClass('disabled')){
+    flash_message("<%= I18n.t('assignment_webconferences.error.unavailable_or_date_range') %>", "alert");
+    return false;
+  }
+
+  var url_edit = $(td).data('link-edit');
+  $(td).call_fancybox({href : url_edit, open: true});
+}
+
+function remove_record_awebconference(td){
+  if (!!$(td).hasClass('disabled')){
+    flash_message("<%= I18n.t('assignment_webconferences.error.unavailable_or_date_range') %>", "alert");
+    return false;
+  }
+
+  if (!confirm("<%=I18n.t(:message_confirm)%>"))
+    return false;
+
+  $.put($(td).data('link-records'), function(data){
+
+    var notice = data.notice;
+    $.get($(td).data('link-show'), function(data){
+      $($(td).parents('tr:first')).remove();
+      $(".student_webconferences tbody").prepend(data);
+      flash_message(notice, "notice", 'block_wrapper:first');
+    }).error(function(data){
+      var response = JSON.parse(data.responseText);
+      if (typeof(response.alert) != "undefined")
+        flash_message(response.alert, 'alert', 'block_wrapper:first');
+    });;
+
+  }).error(function(data){
+    var response = JSON.parse(data.responseText);
+    if (typeof(response.alert) != "undefined")
+      flash_message(response.alert, 'alert', 'block_wrapper:first');
+  });
+
+}
+
+function delete_awebconference(td){
+  if (!!$(td).hasClass('disabled')){
+    flash_message("<%= I18n.t('assignment_webconferences.error.unavailable_or_date_range') %>", "alert");
+    return false;
+  }
+
+  if (!confirm("<%=I18n.t(:message_confirm)%>"))
+    return false;
+
+  $.delete($(td).data('link-delete'), function(data){
+    $(td).parents('tr:first').remove();
+    flash_message(data.notice, 'notice');
+    update_tables_with_no_data();
+  }).error(function(data){
+    var response = JSON.parse(data.responseText);
+    if (typeof(response.alert) != "undefined")
+      flash_message(response.alert, 'alert');
+  });
+
+}
+
+$(function(){
+  $(".link_new_awebconference").not(".disabled").call_fancybox();
+});

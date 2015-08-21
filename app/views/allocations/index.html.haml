@@ -1,30 +1,31 @@
 .block_wrapper
-  .block_title{style: "height:0"}
+  .block_title{ style: 'height:0' }
   .block_content_toolbar
     .block_toolbar_left
       = select_tag :status, options_for_select(status_hash.invert.to_a, @status)
       = text_field_tag :user_search, '', placeholder: t('.filter_user')
-      = button_tag t(:search), type: :button, class: "btn btn_default", id: "filter_enrollments", :"data-link" => enrollments_allocations_path
+      = button_tag t(:search), type: :button, class: 'btn btn_default', id: 'filter_enrollments', :'data-link' => enrollments_allocations_path
     .block_toolbar_right
-      %span.block_actions= button_tag(t(".enroll_selected"), class: "btn btn_default btn_enroll_selected")
+      %span.block_actions= button_tag(t('.enroll_selected'), class: 'btn btn_default btn_enroll_selected')
 
   .block_content
     %table.tb_list.enrollments
       %thead
         %tr.lines
-          %th.no_sort.center{style: 'width: 25px;'}= check_box_tag :all_allocations, false, false, :"data-children-names" => "c_"
-          %th.student= t(".manage_student")
-          %th.group{style: 'width:120px'}= t(".manage_group")
-          %th{style: 'width:120px'}= t(".manage_curriculum_unit")
-          %th{style: 'width:100px'}= t(".manage_status")
-          %th.no_sort{style: 'width:120px'}= t(".manage_options")
+          %th.no_sort.center{ style: 'width: 25px;' }= check_box_tag :all_allocations, false, false, :"data-children-names" => 'c_'
+          %th.student= t('.manage_student')
+          %th.student= t('.manage_email')
+          %th.group{ style: 'width:120px' }= t('.manage_group')
+          %th{ style: 'width:120px' }= t('.manage_curriculum_unit')
+          %th{ style: 'width:100px' }= t('.manage_status')
+          %th.no_sort{ style: 'width:120px' }= t('.manage_options')
       %tbody.allocations
         = render partial: 'enrollments'
 
     = link_to content_tag(:i, nil, class: "icon-ellipsis"), enrollments_allocations_path(page: @allocations.next_page, offer_id: params[:offer_id], group_id: params[:group_id], status: params[:status]), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @allocations.next_page
 
 
-= javascript_include_tag "allocations"
+= javascript_include_tag 'allocations'
 
 :javascript
 

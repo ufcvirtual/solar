@@ -9,7 +9,7 @@
     = f.input :description
     = f.input :initial_time, start_year: Date.today.year
     = f.input :duration, hint: t('.minutes')
-    = f.input :is_recorded, as: :boolean, boolean_style: :inline, input_html: { "data-tooltip" => true, :class => "has-tip", :title => "Bla bla bla" }
+    = f.input :is_recorded, as: :boolean, boolean_style: :inline
     
     - unless @groups.blank?
       = f.input :shared_between_groups, as: :boolean, boolean_style: :inline

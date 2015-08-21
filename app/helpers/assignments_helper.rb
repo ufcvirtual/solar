@@ -1,4 +1,6 @@
 module AssignmentsHelper
+  
+  include Bbb
 
   ## recupera o icone correspondente ao tipo de arquivo
   def icon_attachment(file)
@@ -41,7 +43,27 @@ module AssignmentsHelper
   end
 
   def get_ac
-    @ac = AcademicAllocation.where(academic_tool_type: "Assignment", academic_tool_id: (params[:assignment_id] || params[:id]), allocation_tag_id: active_tab[:url][:allocation_tag_id]).first
+    @ac = AcademicAllocation.where(academic_tool_type: 'Assignment', academic_tool_id: (params[:assignment_id] || params[:id]), allocation_tag_id: active_tab[:url][:allocation_tag_id]).first
+  end
+
+  def verify_owner!(aparams)
+    owner(aparams)
+    raise CanCan::AccessDenied unless @own_assignment
+  end
+
+  def verify_owner_or_responsible!
+    @student_id, @group_id = (params[:group_id].nil? ? [params[:student_id], nil] : [nil, params[:group_id]])
+    @group = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
+    @own_assignment = Assignment.owned_by_user?(current_user.id, { student_id: @student_id, group: @group })
+    raise CanCan::AccessDenied unless @own_assignment || AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id)
+  end
+
+  def owner(aparams)
+    sa = SentAssignment.find(aparams[:sent_assignment_id] || aparams.sent_assignment_id)
+    @own_assignment = Assignment.owned_by_user?(current_user.id, { sent_assignment: sa })
+
+    @bbb_online = bbb_online?
+    @in_time    = sa.assignment.in_time?
   end
 
 end

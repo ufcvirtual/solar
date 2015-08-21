@@ -1,0 +1,27 @@
+.block_title
+  %h2
+    %i.icon-video-conference
+    = (@assignment.type_assignment == Assignment_Type_Group ? t('.title_group') : t('.title_student'))
+  .right_buttons
+    - if @own_assignment
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_assignment_webconference_path(assignment_id: @assignment.id), remote: true, class: "btn btn_main link_new_awebconference #{@in_time && @bbb_online ? '' : 'disabled'}", :"data-tooltip" => t('.new')
+.block_content
+  - no_webconferences = (webconferences.blank?)
+  %table.tb_list
+    %thead{ style: (no_webconferences ? 'display: none' : '') }
+      %tr.lines
+        %th= t('.name')
+        %th.date_column.center= t('.period')
+        %th.aw_status= t('.status')
+        %th= t('.record')
+        - if @own_assignment
+          %th.no_sort
+          %th.no_sort
+          %th.no_sort
+    %tbody
+      - unless no_webconferences
+        - webconferences.each do |webconference|
+          = render partial: 'assignment_webconferences/webconference', locals: { webconference: webconference }
+  .text_none.empty_message{ class: (no_webconferences ? '' : 'hide_message') }= t(:itens_not_found)
+
+  = javascript_include_tag 'tablesorter', 'assignment_webconferences', 'tooltip'

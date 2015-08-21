@@ -93,7 +93,7 @@ class BibliographiesController < ApplicationController
   def download
     if params.include?(:id)
       bibliographies_to_download = Bibliography.find(params[:id])
-      allocation_tags_ids        = bibliographies_to_download.allocation_tags.pluck(:id)
+      allocation_tags_ids        = (active_tab[:url][:allocation_tag_id].blank? ? (params[:allocation_tags_ids] || bibliographies_to_download.allocation_tags.pluck(:id)) : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
     else
       allocation_tags_ids        = (active_tab[:url][:allocation_tag_id].blank? ? params[:allocation_tags_ids] : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
       bibliographies_to_download = Bibliography.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }, type_bibliography: Bibliography::TYPE_FILE).uniq
@@ -129,7 +129,6 @@ class BibliographiesController < ApplicationController
       Bibliography.transaction do
         @bibliography.allocation_tag_ids_associations = @allocation_tags_ids
         @bibliography.save!
-        # @bibliography.academic_allocations.create @allocation_tags_ids.map { |at| { allocation_tag_id: at } }
       end
     end
 

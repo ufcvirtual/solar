@@ -127,7 +127,7 @@
 
     $('#lesson_privacy').change(function(){
       if($(this).val()=='true')
-        flash_message("#{I18n.t('.public_to_private')}", 'warning', 'lesson_form');
+        flash_message("#{I18n.t('lessons.form.public_to_private')}", 'warning', 'lesson_form');
       else
         $('.lesson_form #flash_message').remove();
     });

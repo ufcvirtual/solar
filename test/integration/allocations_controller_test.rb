@@ -46,7 +46,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
     al_pending = assigns(:allocations).select {|al| al.user_id == users(:user).id and al.status == Allocation_Pending}.first
 
     assert_select "table tbody tr" do
-      assert_select 'td:nth-child(5)', {count: 1, html:  "Pendente"}
+      assert_select 'td:nth-child(6)', {count: 1, html:  "Pendente"}
     end
 
     get edit_allocation_path(al_pending)
@@ -67,7 +67,7 @@ class AllocationsControllerTest < ActionDispatch::IntegrationTest
     al_pending = assigns(:allocations).select {|al| al.user_id == users(:user).id and al.status == Allocation_Pending}.first
 
     assert_select "table tbody tr" do
-      assert_select 'td:nth-child(5)', {count: 1, html: "Pendente"}
+      assert_select 'td:nth-child(6)', {count: 1, html: "Pendente"}
     end
 
     get edit_allocation_path(al_pending)

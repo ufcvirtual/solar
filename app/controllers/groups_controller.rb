@@ -157,12 +157,12 @@ class GroupsController < ApplicationController
         end
       end
 
-      render json: {success: true, notice: t("#{params[:type]}", scope: [:groups, :success])}
+      render json: { success: true, notice: t("#{params[:type]}", scope: [:groups, :success]) }
     rescue ActiveRecord::RecordNotSaved
-      render json: {success: false, alert: t(:academic_allocation_already_exists, scope: [:groups, :error])}, status: :unprocessable_entity
+      render json: { success: false, alert: t(:academic_allocation_already_exists, scope: [:groups, :error]) }, status: :unprocessable_entity
     rescue => error
       error_message = I18n.translate!("#{error.message}", scope: [:groups, :error], :raise => true) rescue t('tool_change', scope: [:groups, :error])
-      render json: {success: false, alert: error_message}, status: :unprocessable_entity
+      render json: { success: false, alert: error_message }, status: :unprocessable_entity
     end
   end
 
@@ -182,7 +182,7 @@ class GroupsController < ApplicationController
 
     def update_multiple
       @group.update_all(status: params[:status])
-      @group.first.offer.notify_editors_of_disabled_groups(@group) if params[:status] == "false"
+      @group.first.offer.notify_editors_of_disabled_groups(@group) if params[:status] == 'false'
 
       render_group_success_json('updated')
     end

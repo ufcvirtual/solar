@@ -1,0 +1,12 @@
+= render 'form'
+
+:javascript
+  function save_assignment_awebconference(){
+    $('form#awebconference_form').serialize_and_submit({
+      prepend_to_list: $(".student_webconferences tbody"),
+      complement_success: function(data){
+        $(".student_webconferences tbody tr.web_#{@assignment_webconference.id}").remove();
+        flash_message("#{t('assignment_webconferences.success.updated')}", "notice", 'block_wrapper:first');
+      }
+    });
+  }

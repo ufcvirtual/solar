@@ -1,6 +1,5 @@
-require 'bigbluebutton_api'
-
 class Webconference < ActiveRecord::Base
+  include Bbb
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 
@@ -15,46 +14,14 @@ class Webconference < ActiveRecord::Base
 
   validates :title, :initial_time, :duration, presence: true
   validates :title, :description, length: { maximum: 255 }
+  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
+
+  validate :cant_change_date, only: :update, if: 'initial_time_changed? || duration_changed?'
 
   validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed?)', on: :update
 
-  def can_access?
-    Time.now.between?(initial_time, initial_time+duration.minutes)
-  end
-
-  def self.online?
-    begin
-      api = Webconference.bbb_prepare
-      url  = URI(api.url)
-      response = Net::HTTP.get_response(url)
-      return (Net::HTTPSuccess === response)
-    rescue
-      false
-    end
-  end
-
-  def is_over?
-    Time.now > (initial_time+duration.minutes+1.minutes)
-  end
-
   def link_to_join(user, at_id = nil)
-    ((can_access? && Webconference.online? && have_permission?(user, at_id.to_i)) ? ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: '_blank') : title) 
-  end
-
-  def status(recordings = [], at_id = nil)
-    case
-    when can_access? then I18n.t(:in_progress, scope: [:webconferences, :list])
-    when (Time.now < initial_time) then I18n.t(:scheduled, scope: [:webconferences, :list])
-    when is_recorded?
-      if is_over?
-        record_url = recordings(recordings, at_id)
-        (record_url ? ActionController::Base.helpers.link_to(I18n.t(:play, scope: [:webconferences, :list]), record_url, target: '_blank') : I18n.t(:removed_record, scope: [:webconferences, :list]))
-      else
-        I18n.t(:processing, scope: [:webconferences, :list])
-      end
-    else
-     I18n.t(:finish, scope: [:webconferences, :list])
-    end
+    ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: '_blank') : title) 
   end
 
   def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true })
@@ -75,13 +42,6 @@ class Webconference < ActiveRecord::Base
 
    def student_or_responsible?(user_id, at_id = nil)
     ((shared_between_groups || at_id.nil?) ? (allocation_tags.map{ |at| at.is_student_or_responsible?(user_id) }.include?(true)) : AllocationTag.find(at_id).is_student_or_responsible?(user_id))
-  end
-
-  def self.bbb_prepare
-    @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
-    server  = @config['servers'][@config['servers'].keys.first]
-    debug   = @config['debug']
-    BigBlueButton::BigBlueButtonApi.new(server['url'], server['salt'], server['version'].to_s, debug)
   end
 
   def location
@@ -109,10 +69,10 @@ class Webconference < ActiveRecord::Base
       duration: duration,
       record: is_recorded,
       logoutURL: Rails.application.routes.url_helpers.home_url.to_s,
-      maxParticipants: 35
+      maxParticipants: YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users']
     }
 
-    @api = Webconference.bbb_prepare
+    @api = bbb_prepare
     @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
 
     if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
@@ -132,39 +92,12 @@ class Webconference < ActiveRecord::Base
     )
   end
 
-  def self.all_recordings
-    @api = Webconference.bbb_prepare
-    response = @api.get_recordings()
-    response[:recordings]
-  end
-
-  def recordings(recordings = [], at_id = nil)
-    meeting_id = get_mettingID(at_id)
-    recordings = Webconference.all_recordings if recordings.empty?
-
-    recordings.each do |m|
-      return m[:playback][:format][:url] if m[:meetingID] == meeting_id
-    end
-    return false
-  end
-
   def get_mettingID(at_id = nil)
-    ((shared_between_groups || at_id.nil?) ? id.to_s : [at_id.to_s, id.to_s].join('_'))
-  end
-
-  def can_remove_records?
-    raise 'not_recorded' unless is_recorded?
-    raise 'unavailable'  unless Webconference.online?
-    raise 'not_ended'    unless is_over?
-  end
-
-  def can_destroy?
-    raise 'unavailable'  if is_recorded? && !Webconference.online?
-    raise 'not_ended'    unless is_over?
+    (origin_meeting_id || ((shared_between_groups || at_id.nil?) ? id.to_s : [at_id.to_s, id.to_s].join('_')))
   end
 
   def self.remove_record(academic_allocations)
-    api = Webconference.bbb_prepare
+    api = Bbb.bbb_prepare
 
     academic_allocations.each do |academic_allocation|
       webconference = Webconference.find(academic_allocation.academic_tool_id)
@@ -192,35 +125,20 @@ class Webconference < ActiveRecord::Base
   end
 
   def verify_quantity(allocation_tags_ids = [])
-      end_time       = initial_time + duration.minutes
-      webconferences = Webconference.where("(initial_time BETWEEN ? AND ?) OR ((initial_time + (interval '1 minutes')*duration) BETWEEN ? AND ?) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration))) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration)))", initial_time, end_time, initial_time, end_time, initial_time, end_time)
-      
-      unless webconferences.empty?
-        webconferences << self unless webconferences.include?(self)
-        ats      = webconferences.map(&:allocation_tags).flatten.map(&:related).flatten
-        ats      << allocation_tags_ids if allocation_tags_ids.any?
-        students = 0
-        ats.flatten.each do |at|
-          allocations = Allocation.find_by_sql <<-SQL
-            SELECT COUNT(allocations.id)
-            FROM allocations
-            JOIN profiles ON profiles.id = allocations.profile_id
-            WHERE
-              cast( profiles.types & #{Profile_Type_Student} as boolean )
-            AND
-              allocations.allocation_tag_id = #{at}
-            AND 
-              allocations.status = 1;
-          SQL
-        students += allocations.first['count'].to_i
-        end
-
-        if students > YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users']
-          errors.add(:initial_time, I18n.t('webconferences.error.limit'))
-          raise false
-        end
-      end
+    verify_quantity_users(allocation_tags_ids)
+    verify_time(allocation_tags_ids)
   end
 
+  def create_copy(to_at, from_at)
+    unless (shared_between_groups && allocation_tags.map(&:id).include?(to_at))
+      meeting_id = get_mettingID(from_at)
+      if is_recorded? && (on_going? || over?)
+        obj = Webconference.joins(:academic_allocations).where(attributes.except('id', 'origin_meeting_id')).where(academic_allocations: { allocation_tag_id: to_at }).first
+        obj = Webconference.create attributes.except('id').merge!(origin_meeting_id: meeting_id) unless !obj.nil? && obj.get_mettingID(to_at) == meeting_id
+      end
+      
+      AcademicAllocation.create(allocation_tag_id: to_at, academic_tool_type: 'Webconference', academic_tool_id: (obj.try(:id) || id))
+    end
+  end
 
 end

@@ -5,7 +5,7 @@ class AssignmentFile < ActiveRecord::Base
 
   has_one :academic_allocation, through: :sent_assignment, autosave: false
 
-  before_save :can_change?, if: "merge.nil?"
+  before_save :can_change?, if: 'merge.nil?'
   before_destroy :can_change?, :can_destroy?
 
   validates :attachment_file_name, presence: true
@@ -15,7 +15,7 @@ class AssignmentFile < ActiveRecord::Base
     path: ":rails_root/media/assignment/sent_assignment_files/:id_:basename.:extension",
     url: "/media/assignment/sent_assignment_files/:id_:basename.:extension"
 
-  validates_attachment_size :attachment, less_than: 5.megabyte, message: " "
+  validates_attachment_size :attachment, less_than: 5.megabyte, message: ' '
   validates_attachment_content_type_in_black_list :attachment
 
   default_scope order: 'attachment_updated_at DESC'
@@ -31,11 +31,12 @@ class AssignmentFile < ActiveRecord::Base
   end
 
   def can_change?
-    raise "date_range_expired" unless assignment.in_time?(allocation_tag.id)
+    raise 'date_range' unless assignment.in_time?
   end
 
   def can_destroy?
     raise CanCan::AccessDenied unless user_id == User.current.try(:id)
+    raise 'date_range' unless assignment.in_time?
   end
 
 end

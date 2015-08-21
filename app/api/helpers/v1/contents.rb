@@ -23,30 +23,31 @@ module V1::Contents
         sa.grade = from_sent_assignment.grade # updates grade with most recent copied group
       end
 
-      copy_objects(from_sent_assignment.assignment_comments, {'sent_assignment_id' => new_sa.id}, true, :files)
-      copy_objects(from_sent_assignment.assignment_files, {'sent_assignment_id' => new_sa.id}, true)
+      copy_objects(from_sent_assignment.assignment_comments, { 'sent_assignment_id' => new_sa.id }, true, :files)
+      copy_objects(from_sent_assignment.assignment_files, { 'sent_assignment_id' => new_sa.id }, true)
+      copy_objects(from_sent_assignment.assignment_webconferences, { 'sent_assignment_id' => new_sa.id }, true, nil, { to: :set_origin, from: :id })
     end
   end
 
   def copy_group_assignments(from_group_assignments, to_at)
     from_group_assignments.each do |from_group_assignment|
       to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Assignment', academic_tool_id: from_group_assignment.academic_allocation.academic_tool_id).first
-      copy_object(from_group_assignment, {'academic_allocation_id' => to_ac}, false, :group_participants)
+      copy_object(from_group_assignment, { 'academic_allocation_id' => to_ac }, false, :group_participants)
     end
   end
 
   def replicate_content(from_group, to_group, merge = true)
-    raise ActiveRecord::RecordNotFound if from_group.nil? or to_group.nil?
+    raise ActiveRecord::RecordNotFound if from_group.nil? || to_group.nil?
     from_ats, to_at = ((from_group.offer_id == to_group.offer_id) ? [from_group.allocation_tag.id] : from_group.allocation_tag.related), to_group.allocation_tag.id
     from_academic_allocations = AcademicAllocation.where(allocation_tag_id: from_ats) # recover all from group which will be copied
 
-
     ActiveRecord::Base.transaction do
-      remove_all_content(to_at) unless merge
+      remove_all_content(to_at) if !merge && Merge.where(main_group_id: to_group.id, secundary_group_id: from_group.id).last.try(:type_merge)
 
       replicate_discussions(from_academic_allocations, to_at)
       replicate_chats(from_academic_allocations, to_at)
       replicate_assignments(from_academic_allocations, to_at)
+      replicate_webconferences(from_academic_allocations, to_at, from_group.allocation_tag.id)
 
       from_ats.each do |from_at|
         replicate_messages(from_at, to_at)
@@ -76,15 +77,16 @@ module V1::Contents
     end
   end
 
-  def copy_objects(objects_to_copy, merge_attributes={}, is_file = false, nested = nil)
+  def copy_objects(objects_to_copy, merge_attributes={}, is_file = false, nested = nil, call_methods = {})
     objects_to_copy.each do |object_to_copy|
-      copy_object(object_to_copy, merge_attributes, is_file, nested)
+      copy_object(object_to_copy, merge_attributes, is_file, nested, call_methods)
     end
   end
 
-  def copy_object(object_to_copy, merge_attributes={}, is_file = false, nested = nil)
+  def copy_object(object_to_copy, merge_attributes={}, is_file = false, nested = nil, call_methods = {})
     new_object = object_to_copy.class.where(object_to_copy.attributes.except('id').merge(merge_attributes)).first_or_initialize
     new_object.merge = true if new_object.respond_to?(:merge) # used so call save without callbacks (before_save, before_create)
+    new_object.send(call_methods[:to], object_to_copy.send(call_methods[:from])) unless call_methods.empty?
     new_object.save
     copy_file(object_to_copy.attachment.path, new_object.attachment.path) if is_file && object_to_copy.respond_to?(:attachment)
     copy_objects(object_to_copy.send(nested.to_sym), {"#{new_object.class.to_s.tableize.singularize}_id" => new_object.id}, is_file) unless nested.nil?
@@ -93,11 +95,15 @@ module V1::Contents
   end
 
   # if there is any tool at group which data are being copied that don't exist at the receiving data group, copy it
-  def create_missing_tools(from_acs_tools, to_at, type)
-    to_acs_tools = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_id: from_acs_tools, academic_tool_type: type).pluck(:academic_tool_id)
+  def create_missing_tools(from_acs_tools, to_at, type, call_method = nil, from_at = nil)
+    to_acs_tools = call_method.nil? ? AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_id: from_acs_tools, academic_tool_type: type).pluck(:academic_tool_id).uniq : []
 
     (from_acs_tools - to_acs_tools).each do |missing_tool_id|
-      AcademicAllocation.create(allocation_tag_id: to_at, academic_tool_type: type, academic_tool_id: missing_tool_id)
+      if call_method.nil?
+        AcademicAllocation.create(allocation_tag_id: to_at, academic_tool_type: type, academic_tool_id: missing_tool_id)
+      else
+        type.constantize.find(missing_tool_id).send(call_method, to_at, from_at)
+      end
     end
   end
 
@@ -130,14 +136,19 @@ module V1::Contents
     copy_sent_assignments(SentAssignment.where(academic_allocation_id: ac_ids), to_at) # copy all sent assignments and dependents
     copy_group_assignments(GroupAssignment.where(academic_allocation_id: ac_ids), to_at) # copy all group_assignments (if already doesn't exist) and participants
   end
+  
+  def replicate_webconferences(from_academic_allocations, to_at, from_at)
+    from_wenconferences_academic_allocations = from_academic_allocations.where(academic_tool_type: 'Webconference')
+    create_missing_tools(from_wenconferences_academic_allocations.pluck(:academic_tool_id).uniq, to_at, 'Webconference', :create_copy, from_at)
+  end
 
   def replicate_messages(from_at, to_at)
     from_messages_academic_allocations = Message.where(allocation_tag_id: from_at) # recupera todas as mensagens da turma a repassar dados
 
     from_messages_academic_allocations.each do |from_message|
-      new_message = copy_object(from_message, {'allocation_tag_id' => to_at})
-      copy_objects(from_message.user_messages, {'message_id' => new_message.id}, false, :user_message_labels)
-      copy_objects(from_message.files, {'message_id' => new_message.id}, true)
+      new_message = copy_object(from_message, { 'allocation_tag_id' => to_at })
+      copy_objects(from_message.user_messages, { 'message_id' => new_message.id }, false, :user_message_labels)
+      copy_objects(from_message.files, { 'message_id' => new_message.id }, true)
     end
   end
 

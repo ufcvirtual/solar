@@ -90,7 +90,7 @@ class WebconferencesControllerTest < ActionController::TestCase
   test "edition - delete" do
     webconference = webconferences(:webc3)
 
-    assert_difference(["AcademicAllocation.count", "Webconference.count"], -1) do
+    assert_difference("Webconference.count", -1) do
       delete :destroy, { id: webconference.id, allocation_tags_ids: "#{@quimica}" }
     end
   end

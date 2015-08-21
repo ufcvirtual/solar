@@ -1,9 +1,9 @@
-require 'bigbluebutton_api'
 require 'will_paginate/array'
 
 class WebconferencesController < ApplicationController
 
   include SysLog::Actions
+  include Bbb
 
   layout false, except: [:index, :preview]
 
@@ -19,8 +19,8 @@ class WebconferencesController < ApplicationController
     authorize! :index, Webconference, on: [at = active_tab[:url][:allocation_tag_id]]
 
     @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true))
-    @online         = Webconference.online?
-    @recordings     = Webconference.all_recordings if @online
+    @online         = bbb_online?
+    @recordings     = bbb_all_recordings if @online
   end
 
   # GET /webconferences/list
@@ -59,7 +59,7 @@ class WebconferencesController < ApplicationController
       Webconference.transaction do
         @webconference.save!
         @webconference.academic_allocations.create! @allocation_tags_ids.map { |at| { allocation_tag_id: at } }
-        @webconference.verify_quantity
+        @webconference.verify_quantity(@allocation_tags_ids)
       end
       render json: { success: true, notice: t(:created, scope: [:webconferences, :success]) }
     rescue ActiveRecord::AssociationTypeMismatch
@@ -107,8 +107,8 @@ class WebconferencesController < ApplicationController
   def preview
     ats = current_user.allocation_tags_ids_with_access_on('preview', 'webconferences', false, true)
     @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false }).paginate(page: params[:page])
-    @online         = Webconference.online?
-    @recordings     = Webconference.all_recordings if @online
+    @online         = bbb_online?
+    @recordings     = bbb_all_recordings if @online
   end
 
   # PUT /webconferences/remove_record/1

@@ -7,6 +7,6 @@ class Merge < ActiveRecord::Base
 
   def change_group_status
     main_group.update_attribute :status, true # main group must be activated
-    secundary_group.update_attribute :status, not(type_merge) # secundary group must be deactivated if merge
+    secundary_group.update_attribute :status, !(type_merge) # secundary group must be deactivated if merge
   end
 end

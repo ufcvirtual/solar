@@ -6,8 +6,9 @@ class SentAssignment < ActiveRecord::Base
   belongs_to :academic_allocation, conditions: { academic_tool_type: 'Assignment' }
   has_one :assignment, through: :academic_allocation
 
-  has_many :assignment_comments, dependent: :destroy
-  has_many :assignment_files, dependent: :delete_all
+  has_many :assignment_comments,       dependent: :destroy
+  has_many :assignment_files,          dependent: :delete_all
+  has_many :assignment_webconferences, dependent: :delete_all
 
   validates :user_id, uniqueness: { scope: [:group_assignment_id, :academic_allocation_id] }
 
@@ -25,19 +26,41 @@ class SentAssignment < ActiveRecord::Base
   end
 
   def info
-    grade, comments, files = try(:grade), try(:assignment_comments), try(:assignment_files)
-    has_files = (!files.nil? && files.any?)
-    { grade: grade, comments: comments, has_files: has_files, file_sent_date: (has_files ? I18n.l(files.first.attachment_updated_at, format: :normal) : ' - ') }
+    grade, comments = try(:grade), try(:assignment_comments)
+    
+    files = SentAssignment.find_by_sql <<-SQL
+      SELECT MAX(max_date) FROM (
+        SELECT MAX(initial_time) AS max_date FROM assignment_webconferences 
+        WHERE sent_assignment_id = #{id}
+        AND is_recorded = 't'
+        AND (initial_time + (interval '1 minutes')*duration) < now()
+
+        UNION
+
+        SELECT MAX(attachment_updated_at) AS max_date FROM assignment_files 
+        WHERE attachment_updated_at IS NOT NULL 
+        AND sent_assignment_id = #{id}
+      ) AS max;
+
+    SQL
+
+    has_files = !files.first.max.nil?
+    { grade: grade, comments: comments, has_files: has_files, file_sent_date: (has_files ? I18n.l(files.first.max.to_datetime, format: :normal) : ' - ') }
   end
 
   def delete_with_dependents
     assignment_comments.map(&:delete_with_dependents)
     assignment_files.delete_all
+    assignment_webconferences.delete_all
     self.delete
   end
 
   def has_group
     !group_assignment_id.nil?
+  end
+
+  def users_count
+    has_group ? group_assignment.group_participants.count : 1
   end
 
 end

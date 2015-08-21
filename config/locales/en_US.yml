@@ -348,6 +348,11 @@ en_US:
       lesson_note:
         description: Description
         name: Name
+      assignment_webconference:
+        title: Title
+        initial_time: Initial time
+        duration: Duration
+        is_recorded: Record
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -1133,7 +1138,9 @@ en_US:
       not_recorded: "Can't remove record, there are no record to one or more webconfereces selected"
       not_ended: "Can't remove record, one or more webconfereces still on going"
       record_not_deleted: "Can't remove record from webconferences"
-      limit: "Student's limit for this day and time has been reached. Please choose again or decrease amount of groups if necessary" 
+      limit: "Student's limit for this day and time has been reached. Please choose other date/time or decrease amount of groups if necessary" 
+      time_and_place: Already exists a webconference for this datetime and groups
+      date: This webconference already happened and was recorded. It's not possible to change it's period.
     preview:
       delete_record: Remove record
       placeholder: Type any value to be searched at the table of this page
@@ -1390,6 +1397,7 @@ en_US:
       manage: Manage
       manage_title: Registrations requested
       manage_student: Student
+      manage_email: Email
       manage_group: Group
       manage_curriculum_unit: Subject
       manage_status: Status
@@ -2570,3 +2578,43 @@ en_US:
       title: Lesson notes
     pdf:
       lesson: 'Lesson: '
+
+  assignment_webconferences:
+    form:
+      new: New Webconference
+      edit: Edit Webconference
+      minutes: " minutes"
+      record_tooltip: "By checking it will be possible to access a record of this webconference after it happens"
+    error:
+      date_range: It was not possible to evaluate. Date range expired.
+      deleted: "Webconference wasn't deleted."
+      general_message: It was not possible to execute action
+      unavailable: "Can't remove record, webconference unavailable"
+      not_recorded: "Can't remove record, there are no record to one or more webconfereces selected"
+      not_ended: "Can't remove record, one or more webconfereces still on going"
+      record_not_deleted: "Can't remove record from webconferences"
+      limit: "Student's limit for this day and time has been reached. Please choose other date or time" 
+      time_and_place: There's already a webconference for this group at this assignment at the choosen time.
+      unavailable_or_date_range: It was not possible to execute action. Webconference's unavailable or date range expirded.
+      date: This webconference already happened and was recorded. It's not possible to change it's period.
+    success:
+      removed: Webconference was successfully deleted.
+      record: Webconference's record successfully removed.
+      created: Webconference was successfully scheduled.
+      updated: Webconference was successfully updated.
+    list:
+      name: Name
+      period: Period
+      record: Record
+      status: Status
+      title_group: Webconferences scheduled by group
+      title_student: Webconferences scheduled by student
+      new: New webconference
+    webconference:
+      edit: Edit
+      record: Remove record
+      delete: Remove
+      aw_yes: Yes
+      aw_no: No
+    warning:
+      ended_recorded_web: "This webconference was already recorded and is already over. After update, all new recordings will be added to the existing one. Rememeber of uploading a new presentation so the previous record wont be overwritten by the new on"

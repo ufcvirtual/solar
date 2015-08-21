@@ -26,7 +26,7 @@ class ChatRoom < Event
     messages.where(message_type: 1)
   end
 
-  def can_add_group?(ats)
+  def can_add_group?(ats = [])
     chat_type.zero? # only add group to a chat room if current group doesn't have chat type 1
   end
 

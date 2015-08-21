@@ -104,7 +104,7 @@ class ChatRoomsController < ApplicationController
 
     all_participants = @chat_room.participants.where(academic_allocations: {allocation_tag_id: allocation_tag_id})
     @researcher = current_user.is_researcher?(AllocationTag.find(allocation_tag_id).related)
-    raise CanCan::AccessDenied if (all_participants.any? and all_participants.joins(:user).where(users: {id: current_user}).empty?) and not(ChatRoom.responsible?(allocation_tag_id, current_user.id)) and not(@researcher)
+    raise CanCan::AccessDenied if (all_participants.any? && all_participants.joins(:user).where(users: {id: current_user}).empty?) && !(ChatRoom.responsible?(allocation_tag_id, current_user.id)) && !(@researcher)
 
     @messages = @chat_room.messages.joins(allocation: [:user, :profile])
       .where('academic_allocations.allocation_tag_id = ? AND message_type = ?', allocation_tag_id, 1)
@@ -115,7 +115,6 @@ class ChatRoomsController < ApplicationController
     request.format = :json
     raise error.class
   end
-
 
   private
 

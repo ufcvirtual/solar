@@ -178,17 +178,17 @@ td.assignment_without_group a
   }
 }
 
-.assignment_comment_wrapper{
+.assignment_comment_wrapper, .assignment_files > .block_content{
   max-height: 300px;
   overflow-y: auto;
   background-color: $color_main_light;
 }
 
-.assignment_files, .student_files{
+.student_files, .student_webconferences{
   width: 47%;
 }
 
-.assignment_files.files td, .student_files.files td{
+.assignment_files.files td, .student_files.files td, .student_webconferences.files td{
   color: $text_grey;
 }
 
@@ -196,7 +196,7 @@ td.assignment_without_group a
   float:left;
 }
 
-.assignment_files{
+.student_webconferences{
   float:right;
 }
 

@@ -3,10 +3,12 @@ class AssignmentsController < ApplicationController
   include SysLog::Actions
   include FilesHelper
   include AssignmentsHelper
+  include Bbb
 
   before_filter :prepare_for_group_selection, only: :list
   before_filter :get_ac, only: :evaluate
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+  before_filter :set_current_user, only: :student
 
   before_filter only: [:edit, :update, :show] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
@@ -57,7 +59,6 @@ class AssignmentsController < ApplicationController
 
   def edit
     authorize! :update, Assignment, on: @allocation_tags_ids
-
     @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
   end
 
@@ -108,13 +109,14 @@ class AssignmentsController < ApplicationController
   def student
     @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
     @class_participants    = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
-    @student_id, @group_id = (params[:group_id].nil? ? [params[:student_id], nil] : [nil, params[:group_id]])
-    @group = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
-    @own_assignment = Assignment.owned_by_user?(current_user.id, { student_id: @student_id, group: @group })
-    raise CanCan::AccessDenied unless @own_assignment || AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id)
+    verify_owner_or_responsible!
+
     @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 
     @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id(@allocation_tag_id, @student_id, @group_id)
+    @can_evaluate = can?(:evaluate, Assignment)
+    @bbb_online   = bbb_online?
+    @recordings   = bbb_all_recordings if @bbb_online
   end
 
   def evaluate
@@ -128,6 +130,8 @@ class AssignmentsController < ApplicationController
     @student_id, @group_id = params[:student_id], params[:group_id]
 
     LogAction.create(log_type: LogAction::TYPE[(@sent_assignment.previous_changes.has_key?(:id) ? :create : :update)], user_id: current_user.id, ip: request.remote_ip, description: "sent_assignment: #{@sent_assignment.attributes.merge({"assignment_id" => @assignment.id})}",allocation_tag_id:@allocation_tag_id, academic_allocation_id: AcademicAllocation.select(:id).find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(@allocation_tag_id,@sent_assignment.id,'Assignment') ) rescue nil
+
+    @can_evaluate = true
 
     render json: { success: true, notice: t('assignments.success.evaluated'), html: "#{render_to_string(partial: "info")}" }
   rescue CanCan::AccessDenied

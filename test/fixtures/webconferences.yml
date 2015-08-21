@@ -1,23 +1,45 @@
 webc1:
   id: 1
   user_id: 14 # editor
-  title: Lorem ipsum dolor sit amet.
+  title: Lorem ipsum dolor sit amet. 1
   description: Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
   initial_time: <%= (Time.now + 3.days).to_s(:db) %>
   duration: 50
+  is_recorded: true
 
 webc2:
   id: 2
   user_id: 6 # professor
-  title: Lorem ipsum dolor sit amet.
+  title: Lorem ipsum dolor sit amet. 2
   description: Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
   initial_time: <%= (Time.now - 3.days).to_s(:db) %>
   duration: 30
+  is_recorded: true
 
 webc3:
   id: 3
   user_id: 14 # editor
-  title: Lorem ipsum dolor sit amet 2.
+  title: Lorem ipsum dolor sit amet. 3
   description: Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
   initial_time: <%= (Time.now - 3.days).to_s(:db) %>
   duration: 50
+  is_recorded: true
+
+webc4:
+  id: 4
+  user_id: 14 # editor
+  title: Lorem ipsum dolor sit amet. 4
+  description: Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
+  initial_time: <%= (Time.now - 3.days).to_s(:db) %>
+  duration: 50
+  is_recorded: true
+  shared_between_groups: true
+
+webc6:
+  id: 5
+  user_id: 14 # editor
+  title: Lorem ipsum dolor sit amet. 5
+  description: Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
+  initial_time: <%= (Time.now - 3.days).to_s(:db) %>
+  duration: 50
+  is_recorded: true

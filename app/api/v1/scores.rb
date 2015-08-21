@@ -4,7 +4,7 @@ module V1
     namespace :groups do
 
       before do
-        @at = AllocationTag.find_by_group_id(params[:id])
+        @at  = AllocationTag.find_by_group_id(params[:id])
         @ats = RelatedTaggable.related(group_id: params[:id])
       end
 
@@ -43,8 +43,8 @@ module V1
 
         {
           assignments: hash_assignments,
-          discussions: discussions.map { |d| {id: d.id, name: d.name, posts_count: d.posts_count.to_i} },
-          history_access: history_access.map { |h| {created_at: h.created_at} }
+          discussions: discussions.map { |d| { id: d.id, name: d.name, posts_count: d.posts_count.to_i } },
+          history_access: history_access.map { |h| { created_at: h.created_at } }
         }
 
       end # get

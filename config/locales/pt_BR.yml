@@ -398,6 +398,11 @@ pt_BR:
       lesson_note:
         description: Descrição
         name: Nome
+      assignment_webconference:
+        title: Título
+        initial_time: Data
+        duration: Duração
+        is_recorded: Gravar
 
     errors:
       uniqueness: "Registro já existe no sistema"
@@ -1311,6 +1316,8 @@ pt_BR:
       not_ended: 'Não foi possível remover gravação, uma ou mais webconferências selecionadas em andamento'
       record_not_deleted: 'Não foi possível remover gravação das webconferências'
       limit: 'Foi atingido o limite de participantes para este dia e horário. Favor escolher outro horário ou diminuir a quantidade de turmas se o caso.'
+      time_and_place: Já existe uma webconferência para este dia/horário e turmas.
+      date: Esta webconferência já foi encerrada e possui gravação. Seu período não pode ser alterado.
     preview:
       delete_record: Remover gravação
       placeholder: Digite qualquer valor a ser buscado na tabela desta página
@@ -1594,6 +1601,7 @@ pt_BR:
       manage: Gerenciar
       manage_title: Matrículas Solicitadas
       manage_student: Aluno
+      manage_email: Email
       manage_group: Turma
       manage_curriculum_unit: Disciplina
       manage_status: Status
@@ -2809,3 +2817,41 @@ pt_BR:
   legend: "Legenda"
   to: "a"
   for: "Para:"
+
+  assignment_webconferences:
+    form:
+      new: Nova Webconferência
+      edit: Editar Webconferência
+      minutes: " minutos"
+      record_tooltip: "Ao marcar, será possível acessar uma gravação da webconferência após seu acontecimento"
+    error:
+      date_range: Não foi possível realizar ação. Período encerrado.
+      remove: Não foi possível deletar webconferência
+      general_message: Não foi possível realizar a ação desejada
+      unavailable: 'Não foi possível remover gravação, serviço indisponível'
+      not_recorded: 'Não foi possível remover gravação, pois não há gravação para uma ou mais webconferências escolhidas'
+      not_ended: 'Não foi possível remover gravação, uma ou mais webconferências selecionadas em andamento'
+      record_not_deleted: 'Não foi possível remover gravação'
+      limit: 'Foi atingido o limite de participantes para este dia e horário. Favor escolher outro horário.'
+      time_and_place: Já existe uma webconferência para este grupo neste trabalho para este dia e horário.
+      unavailable_or_date_range: Não é possível realizar ação. Webconferência indisponível ou prazo encerrado.
+      date: Esta webconferência já foi encerrada e possui gravação. Seu período não pode ser alterado.
+    success:
+      removed: Webconferência deletada com sucesso
+      record: Gravação removida com sucesso
+      created: Webconferência agendada com sucesso
+      updated: Webconferência atualizada com sucesso
+    list:
+      name: Nome
+      period: Período
+      record: Gravar
+      status: Situação
+      title_group: Webconferências agendadas pelo grupo
+      title_student: Webconferências agendadas pelo aluno
+      new: Nova webconferência
+    webconference:
+      edit: Editar
+      record: Remover gravação
+      delete: Remover
+      aw_yes: Sim
+      aw_no: Não

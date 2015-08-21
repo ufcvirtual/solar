@@ -47,14 +47,17 @@
       %tbody.info
         = render partial: 'info'
 
+.assignment_files.files
+  = render partial: 'files', locals: { files: @assignment.try(:enunciation_files) }
+
 .assignment_comments
   = render partial: 'assignment_comments/list', locals: { comments: @sent_assignment.try(:assignment_comments) }
 
 .student_files.files
   = render partial: 'assignment_files/list', locals: { files: @sent_assignment.try(:assignment_files) }
 
-.assignment_files.files
-  = render partial: 'files', locals: { files: @assignment.try(:enunciation_files) }
+.student_webconferences.files
+  = render partial: 'assignment_webconferences/list', locals: { webconferences: @sent_assignment.try(:assignment_webconferences) }
 
 .block_wrapper{ style: 'float:left' }
   = link_to t(:back), :back, { class: "btn" }

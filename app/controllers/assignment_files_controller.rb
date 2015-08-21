@@ -16,10 +16,7 @@ class AssignmentFilesController < ApplicationController
   end
 
   def create
-    authorize! :create, AssignmentFile, on: [active_tab[:url][:allocation_tag_id]]
-
-    sa = SentAssignment.find(assignment_file_params[:sent_assignment_id]) rescue CanCan::AccessDenied
-    raise CanCan::AccessDenied unless @own_assignment = Assignment.owned_by_user?(current_user.id, { sent_assignment: sa })
+    verify_owner!(assignment_file_params)
 
     @assignment_file = AssignmentFile.new assignment_file_params
     @assignment_file.user = current_user
@@ -42,8 +39,7 @@ class AssignmentFilesController < ApplicationController
 
     render json: { success: true, notice: t('assignment_files.success.removed') }
   rescue => error
-    request.format = :json
-    raise error.class
+    render_json_error(error, 'assignment_files.error', 'new')
   end
 
   def download

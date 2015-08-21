@@ -5,12 +5,12 @@ module V1
     before { verify_ip_access! }
 
     desc "Remove curso ou disciplina ou oferta ou turma"
-    params { requires :type, type: String, values: ["curriculum_unit", "course", "offer", "group"] }
+    params { requires :type, type: String, values: ['curriculum_unit', 'course', 'offer', 'group'] }
     delete "/taggables/:type/:id" do
       begin
         (object = params[:type].capitalize.constantize.find(params[:id])).destroy
-        raise object.errors.full_messages unless (object.nil? or object.errors.empty?)
-        {ok: :ok}
+        raise object.errors.full_messages unless (object.nil? || object.errors.empty?)
+        { ok: :ok }
       rescue
         raise object.errors.full_messages
       end

@@ -1,0 +1,17 @@
+= simple_form_for(@assignment_webconference, html: { id: 'awebconference_form', class: 'awebconference_form' }) do |f|
+  %span.form_requirement= t(:required_fields)
+  %h1#lightBoxDialogTitle= t((f.object.persisted? ? t('.edit') : t('.new')), scope: [:webconferences, :form])
+  .flash_message_wrapper
+
+  .form-inputs.block_content.webconference
+    = f.hidden_field :sent_assignment_id, value: @assignment_webconference.sent_assignment_id
+    = f.input :title
+    = f.input :initial_time, start_year: Date.today.year
+    = f.input :duration, hint: t('.minutes')
+    = f.input :is_recorded, as: :boolean, boolean_style: :inline, input_html: { :'data-tooltip' => t('.record_tooltip') }
+    
+    .form-actions.right_buttons
+      = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button', alt: t(:cancel)
+      = button_to_function t(:save), 'save_assignment_awebconference()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button'
+
+= javascript_include_tag 'tooltip'

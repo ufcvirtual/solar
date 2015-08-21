@@ -137,7 +137,7 @@ module Taggable
   end
 
   def users_with_profile_type(profile_type, related = true)
-    User.joins(allocations: :profile).where("allocations.allocation_tag_id IN (?)", (related ? self.allocation_tag.related({upper:true}) : self.allocation_tag.id) )
+    User.joins(allocations: :profile).where("allocations.allocation_tag_id IN (?)", (related ? self.allocation_tag.related({ upper:true }) : self.allocation_tag.id) )
       .where("cast(types & ? as boolean)", profile_type).uniq
   end
 
