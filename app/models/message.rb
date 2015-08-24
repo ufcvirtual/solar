@@ -51,9 +51,9 @@ class Message < ActiveRecord::Base
 
     ats = [allocation_tags_ids].flatten.compact
 
-    query << "messages.allocation_tag_id IN (#{ats.join(',')})"                               unless ats.blank?
-    query << "user_messages.user_id = #{user_id}"                                             unless options[:ignore_user]
-    query << "lower(unaccent(messages.subject)) LIKE lower(unaccent('#{search[:subject]}')) " unless search[:subject].blank?
+    query << "messages.allocation_tag_id IN (#{ats.join(',')})"                                           unless ats.blank?
+    query << "user_messages.user_id = #{user_id}"                                                         unless options[:ignore_user]
+    query << "position(lower(unaccent('#{search[:subject]}')) in lower(unaccent(messages.subject))) > 0 " unless search[:subject].blank?
     query << (box == 'outbox' ? "position(lower(unaccent('#{search[:user]}')) in lower(unaccent(sent_to2.name))) > 0" : "position(lower(unaccent('#{search[:user]}')) in lower(unaccent(sent_by.name))) > 0") unless search[:user].blank?
 
     query.join(' AND ')
