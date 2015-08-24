@@ -165,6 +165,7 @@ en_US:
       public_file: Public Area
       assignment_file: Assignment File
       lesson_note: Lesson note
+      assignment_webconference: Assignment Webconference
     attributes:
       user:
         password: "Password"
@@ -2280,6 +2281,8 @@ en_US:
       forward: "Forward"
     index:
       filter_selected: "View: "
+      placeholder_subject: 'Subject to be searched'
+      placeholder_user: 'Recipient or sender to be searched'
   profiles:
     form:
       select_template: Select a template

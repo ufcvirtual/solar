@@ -36,7 +36,7 @@ class Message < ActiveRecord::Base
     l.flatten.compact.uniq
   end
 
-  def self.get_query(user_id, box='inbox', allocation_tags_ids=[], options={ ignore_trash: true, only_unread: false, ignore_user: false })
+  def self.get_query(user_id, box='inbox', allocation_tags_ids=[], options={ ignore_trash: true, only_unread: false, ignore_user: false }, search={})
     query = []
     case box
     when 'inbox'
@@ -51,17 +51,21 @@ class Message < ActiveRecord::Base
 
     ats = [allocation_tags_ids].flatten.compact
 
-    query << "messages.allocation_tag_id IN (#{ats.join(',')})" unless ats.blank?
-    query << "user_messages.user_id = #{user_id}" unless options[:ignore_user]
+    query << "messages.allocation_tag_id IN (#{ats.join(',')})"                               unless ats.blank?
+    query << "user_messages.user_id = #{user_id}"                                             unless options[:ignore_user]
+    query << "lower(unaccent(messages.subject)) LIKE lower(unaccent('#{search[:subject]}')) " unless search[:subject].blank?
+    query << (box == 'outbox' ? "position(lower(unaccent('#{search[:user]}')) in lower(unaccent(sent_to2.name))) > 0" : "position(lower(unaccent('#{search[:user]}')) in lower(unaccent(sent_by.name))) > 0") unless search[:user].blank?
+
     query.join(' AND ')
   end
 
-  def self.by_box(user_id, box='inbox', allocation_tags_ids=[], options={ ignore_trash: true, only_unread: false, ignore_user: false })
-    query = Message.get_query(user_id, box, allocation_tags_ids, options)
+  def self.by_box(user_id, box='inbox', allocation_tags_ids=[], options={ ignore_trash: true, only_unread: false, ignore_user: false }, search={})
+    query = Message.get_query(user_id, box, allocation_tags_ids, options, search)
 
     Message.find_by_sql <<-SQL
       SELECT DISTINCT messages.id, messages.*, 
         sent_by.name AS sent_by_name,
+        replace(replace(translate(array_agg(distinct sent_to.name)::text,'{}', ''),'\"', ''),',',', ') AS sent_to_names,
         COUNT(message_files.id) AS count_files,
         COUNT(readed_messages.id) AS was_read
       FROM messages
@@ -81,6 +85,24 @@ class Message < ActiveRecord::Base
           JOIN user_messages um ON um.user_id = users.id
           WHERE cast(um.status & #{Message_Filter_Sender} as boolean)
       ) sent_by ON sent_by.id = messages.id
+      LEFT JOIN (
+        SELECT users.name AS name, um1.message_id AS id
+          FROM users
+          JOIN user_messages um1 ON um1.user_id    = users.id
+          JOIN user_messages um2 ON um2.message_id = um1.message_id
+          WHERE cast(um2.status & #{Message_Filter_Sender} as boolean)
+          AND um1.status = 0
+          AND um2.user_id = #{user_id}
+      ) sent_to ON sent_to.id = messages.id
+      LEFT JOIN (
+        SELECT users.name AS name, um1.message_id AS id
+          FROM users
+          JOIN user_messages um1 ON um1.user_id    = users.id
+          JOIN user_messages um2 ON um2.message_id = um1.message_id
+          WHERE cast(um2.status & #{Message_Filter_Sender} as boolean)
+          AND um1.status = 0
+          AND um2.user_id = #{user_id}
+      ) sent_to2 ON sent_to2.id = messages.id
       WHERE #{query}
       GROUP BY user_messages.status, user_messages.user_id, sent_by.name, messages.id
       ORDER BY created_at DESC;

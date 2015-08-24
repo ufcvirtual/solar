@@ -2,6 +2,7 @@
 .padding-checkbox{
   padding-top: 5px;
   font-size: 10pt;
+  height: 28px;
 
   select{
     margin-left: 5px;
@@ -22,6 +23,11 @@
   text-align: left;
 }
 
+.td_recipient{
+  text-align: left;
+  width: 300px;
+}
+
 .td_attachment{
    width: 30px;
 
@@ -34,7 +40,7 @@
   padding-left: 0.5*$gutter;
 }
 
-.td_subject, .td_sender, .td_time{
+.td_subject, .td_sender, .td_time, .td_recipient{
   color: $text_grey;
 
   a{
@@ -155,6 +161,26 @@
   }
   .block_white{
     background: white;
+  }
+  .block_white.index{
+    height: 38px;
+
+    .align-middle{
+      float: left;
+      margin-left: 8%;
+      input{
+        width: 120px;
+        margin-top: 5px;
+      }
+      #user{
+        width: 220px;
+      }
+    }
+
+    .btn-group{
+      padding-top: 4px;
+    }
+
   }
 }
 

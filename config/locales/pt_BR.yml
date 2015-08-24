@@ -204,6 +204,7 @@ pt_BR:
       assignment_file: Arquivos de trabalho
       exam: Prova
       lesson_note: Nota de aula
+      assignment_webconference: Trabalho com Webconferência
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -2497,6 +2498,8 @@ pt_BR:
       forward: "Encaminhar"
     index:
       filter_selected: "Visualizar: "
+      placeholder_subject: 'Assunto a pesquisar'
+      placeholder_user: 'Remetente ou destinatário a pesquisar'
 
   profiles:
     form:

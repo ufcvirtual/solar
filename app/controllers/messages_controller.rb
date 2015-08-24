@@ -16,6 +16,13 @@ class MessagesController < ApplicationController
     @unreads  = Message.unreads(current_user.id, allocation_tag_id)
   end
 
+  def search
+    @box = option_user_box(params[:box])
+    @messages = Message.by_box(current_user.id, @box, active_tab[:url][:allocation_tag_id], {}, { user: params[:user], subject: params[:subject] }).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
+
+    render partial: 'list'
+  end
+
   def new
     authorize! :index, Message, { on: [@allocation_tag_id  = active_tab[:url][:allocation_tag_id]], accepts_general_profile: true } unless active_tab[:url][:allocation_tag_id].nil?
     @message = Message.new

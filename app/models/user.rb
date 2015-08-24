@@ -197,7 +197,6 @@ class User < ActiveRecord::Base
   # faltando pegar apenas alocacoes validas
   def all_allocation_tags(objects = false)
     allocation_tags.collect! { |at| RelatedTaggable.related(at) }.flatten.uniq
-    # RelatedTaggable.related_from_array_ats(allocation_tags.pluck(:id))
   end
 
   def to_msg
