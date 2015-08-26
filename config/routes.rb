@@ -492,8 +492,12 @@ Solar::Application.routes.draw do
       put ':tool_id/add/group/:id'    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Webconference', as: :add_group_to
       get ':tool_id/group/tags'       , to: 'groups#tags'                       , tool_type: 'Webconference', as: :group_tags_from
     end
-    
-    put :remove_record, on: :member
+
+    member do    
+      put :remove_record
+      get :access
+      get :list_access
+    end
   end
 
   resources :exams, except: :show do

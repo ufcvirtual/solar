@@ -89,6 +89,11 @@ module Bbb
     response[:recordings]
   end
 
+  def get_meetings
+    @api = bbb_prepare
+    @api.get_meetings[:meetings].collect{|m| m[:meetingID]}
+  end
+
   def status(recordings = [], at_id = nil)
     case
     when on_going? then I18n.t(:in_progress, scope: [:webconferences, :list])
@@ -140,6 +145,18 @@ module Bbb
     raise 'not_recorded'             unless is_recorded?
     raise 'unavailable'              unless bbb_online?
     raise 'not_ended'                if on_going? || (is_recorded? && !is_over?)
+  end
+
+  def meeting_info(user_id, at_id = nil, meetings = nil)
+    raise nil unless on_going?
+    meeting_id = get_mettingID(at_id)
+    @api       = bbb_prepare
+    meetings   = meetings || @api.get_meetings[:meetings].collect{|m| m[:meetingID]}
+    raise nil unless !meetings.nil? && meetings.include?(meeting_id)
+    response   = @api.get_meeting_info(meeting_id, Digest::MD5.hexdigest(title+meeting_id))
+    response[:participantCount]
+  rescue
+    0
   end
 
 end

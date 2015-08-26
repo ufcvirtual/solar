@@ -30,6 +30,9 @@
           %th.smaller_width= t(:status, scope: [:webconferences, :list])
           %th.invisible
           %th.invisible
+          %th.smaller_width= t('webconferences.index.user_online')
+          - if @can_see_access
+            %th.smaller_width= t('webconferences.index.access')
       %tbody
         - @webconferences.each do |webconference|
           %tr.lines
@@ -50,11 +53,15 @@
             %td.status_webconference= (@online ? webconference.status(@recordings, webconference.at_id) : t(:unavailable, scope: [:webconferences, :list]))
             %td.invisible= webconference.location
             %td.invisible= webconference.user_name
+            %td.center= webconference.meeting_info(current_user, webconference.at_id, @meetings)
+            - if @can_see_access
+              %td{ :'data-url' => list_access_webconference_path(webconference.id, at_id: webconference.at_id) }= link_to_function content_tag(:i, nil, class: 'icon-users btn'), 'list_access(this)'
             
+    .message_div_navigation
+      = will_paginate @webconferences
+      
   - else
     .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
 
-  .message_div_navigation
-    = will_paginate @webconferences
 
 = javascript_include_tag 'webconferences', 'tooltip'

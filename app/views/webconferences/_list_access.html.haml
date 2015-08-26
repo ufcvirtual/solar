@@ -1,0 +1,28 @@
+%h1#lightBoxDialogTitle= t('.title', webconference_name: @webconference.title)
+- if @webconference.on_going?
+  .title-warning= raw t('.on_going')
+- elsif !@webconference.over?
+  .title-warning= raw t('.not_started')
+.chat_messages
+  - unless @logs.empty? || @too_old
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th{ colspan: 2 }= t('.user')
+          %th= t('.group')
+          %th= t('.date')
+          %th= t('.time')
+      %tbody
+        - @logs.each do |log|
+          %tr.lines
+            %td.profile= '(' + log.profile_name + ')'
+            %td.user= (@researcher ? t(:hidden_info) : log.user_name)
+            %td= AllocationTag.find(log.at_id).info
+            %td= l(log.created_at.to_datetime, format: :normal)
+            %td= l(log.created_at.to_datetime, format: :clock_time)
+
+  - else
+    - if @too_old
+      .block_content_text_list.text_none= t('.too_old')
+    - else
+      .block_content_text_list.text_none= t('.no_log')

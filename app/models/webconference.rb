@@ -20,8 +20,8 @@ class Webconference < ActiveRecord::Base
 
   validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed?)', on: :update
 
-  def link_to_join(user, at_id = nil)
-    ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: '_blank') : title) 
+  def link_to_join(user, at_id = nil, url = false)
+    ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: '_blank')) : title) 
   end
 
   def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true })
@@ -97,7 +97,7 @@ class Webconference < ActiveRecord::Base
   end
 
   def self.remove_record(academic_allocations)
-    api = Bbb.bbb_prepare
+    api = bbb_prepare
 
     academic_allocations.each do |academic_allocation|
       webconference = Webconference.find(academic_allocation.academic_tool_id)
@@ -137,8 +137,20 @@ class Webconference < ActiveRecord::Base
         obj = Webconference.create attributes.except('id').merge!(origin_meeting_id: meeting_id) unless !obj.nil? && obj.get_mettingID(to_at) == meeting_id
       end
       
-      AcademicAllocation.create(allocation_tag_id: to_at, academic_tool_type: 'Webconference', academic_tool_id: (obj.try(:id) || id))
+      new_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Webconference', academic_tool_id: (obj.try(:id) || id)).first_or_create
+
+      if over? && !new_ac.nil? && !new_ac.id.nil?
+        old_ac = academic_allocations.where(allocation_tag_id: from_at).first
+        LogAction.where(log_type: LogAction::TYPE[:access_webconference], academic_allocation_id: old_ac.id).each do |log|
+          LogAction.create log.attributes.except('id', 'academic_allocation_id').merge!(academic_allocation_id: new_ac.id)
+        end
+      end
     end
   end
+
+  def get_access(acs)
+    LogAction.joins(:allocation_tag, user: [allocations: :profile] ).where(academic_allocation_id: acs, log_type: LogAction::TYPE[:access_webconference]).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean ) OR cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )").select("log_actions.created_at, users.name AS user_name, allocation_tags.id AS at_id, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name").order('log_actions.created_at ASC').group('log_actions.created_at, users.name, allocation_tags.id')
+  end
+
 
 end

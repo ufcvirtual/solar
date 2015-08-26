@@ -44,7 +44,7 @@ prova_ativ:
   parent_id: 20
   name: menu_test
   order: 3
-  resource_id: 187
+  resource_id: 196
 
 acomp_ativ:
   id: 204

@@ -91,16 +91,16 @@ describe "Groups" do
 
           # QM-CAU loses all content it have to receive QM-MAR's content
           it { should change(AcademicAllocation.where(allocation_tag_id: 3, academic_tool_type: "Discussion"),:count).by(0) }
-          it { should change(Post,:count).by(-3) } # it has 4, received 1
+          it { should change(Post,:count).by(1) } # it has 4, received 1
           it { should change(AcademicAllocation.where(allocation_tag_id: 3, academic_tool_type: "Assignment"),:count).by(0) }
-          it { should change(SentAssignment,:count).by(-3) } # it has 4, received 1
-          it { should change(AssignmentFile,:count).by(-4) }
-          it { should change(AssignmentComment,:count).by(-2) }
-          it { should change(CommentFile,:count).by(-1) }
-          it { should change(GroupAssignment,:count).by(-5) }
-          it { should change(GroupParticipant,:count).by(-8) }
+          it { should change(SentAssignment,:count).by(2) } # it has 4, received 1
+          it { should change(AssignmentFile,:count).by(0) }
+          it { should change(AssignmentComment,:count).by(1) }
+          it { should change(CommentFile,:count).by(0) }
+          it { should change(GroupAssignment,:count).by(1) }
+          it { should change(GroupParticipant,:count).by(1) }
           it { should change(AcademicAllocation.where(allocation_tag_id: 3, academic_tool_type: "ChatRoom"),:count).by(0) }
-          it { should change(ChatMessage,:count).by(-5) }
+          it { should change(ChatMessage,:count).by(0) }
           it { should change(PublicFile,:count).by(0) }
           it { should change(Message,:count).by(0) }
           it { should change(LogAction,:count).by(1) }
@@ -281,9 +281,9 @@ describe "Groups" do
         it { should change(AcademicAllocation.where(allocation_tag_id: 2, academic_tool_type: "Discussion"),:count).by(6) }
         it { should change(Post,:count).by(7) }
         it { should change(AcademicAllocation.where(allocation_tag_id: 2, academic_tool_type: "Assignment"),:count).by(11) }
-        it { should change(SentAssignment,:count).by(4) } # porque ele primeiro remove todo o conteúdo e depois adiciona (porque, teoricamente, deve ter acontecido um merge type true antes)
+        it { should change(SentAssignment,:count).by(5) } # porque ele primeiro remove todo o conteúdo e depois adiciona (porque, teoricamente, deve ter acontecido um merge type true antes)
         it { should change(AssignmentFile,:count).by(4) }
-        it { should change(AssignmentComment,:count).by(2) } # deleta todos os prévios objetos e adiciona os novos
+        it { should change(AssignmentComment,:count).by(3) } # deleta todos os prévios objetos e adiciona os novos
         it { should change(CommentFile,:count).by(1) }
         it { should change(GroupAssignment,:count).by(6) }
         it { should change(GroupParticipant,:count).by(9) }

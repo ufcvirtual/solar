@@ -21,6 +21,8 @@ class WebconferencesController < ApplicationController
     @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true))
     @online         = bbb_online?
     @recordings     = bbb_all_recordings if @online
+    @can_see_access = can? :list_access, Webconference, { on: at }
+    @meetings       = get_meetings
   end
 
   # GET /webconferences/list
@@ -109,6 +111,8 @@ class WebconferencesController < ApplicationController
     @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false }).paginate(page: params[:page])
     @online         = bbb_online?
     @recordings     = bbb_all_recordings if @online
+    @can_see_access = can? :list_access, Webconference, { on: ats, accepts_general_profile: true }
+    @meetings       = get_meetings
   end
 
   # PUT /webconferences/remove_record/1
@@ -126,6 +130,39 @@ class WebconferencesController < ApplicationController
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
     render_json_error(error, 'webconferences.error', 'record_not_deleted')
+  end
+
+  def access
+    authorize! :interact, Webconference, { on: [at_id = active_tab[:url][:allocation_tag_id] || params[:at_id]] }
+    
+    webconference = Webconference.find(params[:id])
+    url   = webconference.link_to_join(current_user, at_id, true)
+    URI.parse(url).path
+
+    LogAction.access_webconference(academic_allocation_id: webconference.academic_allocations.where(allocation_tag_id: at_id).first.id, user_id: current_user.id, ip: request.remote_ip, allocation_tag_id: at_id) if AllocationTag.find(at_id).is_student_or_responsible?(current_user.id)
+
+    render json: { success: true, url: url }
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+  rescue => error
+    render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
+  end
+
+  def list_access
+    @webconference = Webconference.find(params[:id])
+    authorize! :list_access, Webconference, { on: at_id = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id), accepts_general_profile: true }
+
+    academic_allocations_ids = (@webconference.shared_between_groups ? @webconference.academic_allocations.map(&:id) : @webconference.academic_allocations.where(allocation_tag_id: at_id).first.try(:id))
+
+    @logs = @webconference.get_access(academic_allocations_ids)
+    @researcher = current_user.is_researcher?(AllocationTag.where(id: at_id).map(&:related))
+    @too_old    = @webconference.initial_time.to_date < Date.parse(YAML::load(File.open('config/webconference.yml'))['participant_log_date'])
+
+    render partial: 'list_access'
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+  rescue => error
+    render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
   end
 
   private

@@ -13,10 +13,13 @@
           %th.default_width= t(:availability, scope: [:webconferences, :list])
           %th.smaller_width= t(:duration, scope: [:webconferences, :list])
           %th.smaller_width= t(:status, scope: [:webconferences, :list])
+          %th.smaller_width= t('.user_online')
+          - if @can_see_access
+            %th.smaller_width= t('.access')
       %tbody
         - @webconferences.each do |webconference|
           %tr.lines
-            %td= webconference.link_to_join(current_user, webconference.at_id)
+            %td.webconference_access{ :'data-url' => access_webconference_path(webconference.id, at_id: webconference.at_id) }= webconference.on_going? ? link_to_function(webconference.title, 'access_webconference(this)') : webconference.title
             %td
               %div= webconference.description
               - groups_codes = webconference.groups_codes
@@ -31,5 +34,10 @@
             %td= l(webconference.initial_time, format: :at_date)
             %td= [webconference.duration.to_s, t(:min, scope: [:webconferences, :list])].join(' ')
             %td= (@online ? webconference.status(@recordings, webconference.at_id) : t(:unavailable, scope: [:webconferences, :list]))
+            %td.center= webconference.meeting_info(current_user, webconference.at_id, @meetings)
+            - if @can_see_access
+              %td{ :'data-url' => list_access_webconference_path(webconference.id, at_id: webconference.at_id) }= link_to_function content_tag(:i, nil, class: 'icon-users btn'), 'list_access(this)'
   - else
     .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
+
+= javascript_include_tag 'webconferences'

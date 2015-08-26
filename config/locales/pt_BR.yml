@@ -1319,6 +1319,7 @@ pt_BR:
       limit: 'Foi atingido o limite de participantes para este dia e horário. Favor escolher outro horário ou diminuir a quantidade de turmas se o caso.'
       time_and_place: Já existe uma webconferência para este dia/horário e turmas.
       date: Esta webconferência já foi encerrada e possui gravação. Seu período não pode ser alterado.
+      access: Não é possível acessar esta webconferência. Verifique sua duração.
     preview:
       delete_record: Remover gravação
       placeholder: Digite qualquer valor a ser buscado na tabela desta página
@@ -1328,6 +1329,18 @@ pt_BR:
       shared_with: ( Compartilhada entre %{link} turma(s) )
     index:
       shared_with: Compartilhada entre %{link} turma(s)
+      access: Lista de acessos
+      user_online: Usuários online
+    list_access:
+      no_log: Nenhum participante acessou esta webconferência
+      too_old: Esta webconferência ocorreu antes dos acessos começarem a ser gravados
+      time: Hora
+      date: Data
+      group: Turma
+      user: Usuário
+      title: Lista de acessos a webconferêcia %{webconference_name}
+      on_going: '<b> Aviso: </b> Esta webconferência ainda está em andamento, portanto esta lista de acessos pode aumentar.'
+      not_started: '<b> Aviso: </b> Esta webconferência ainda não iniciou.'
 
   navigation_of: " de "
   navigation_next: "Próxima >"

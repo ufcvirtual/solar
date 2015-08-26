@@ -70,6 +70,11 @@ assig5:
   resource_id: 36
   per_id: true
 
+assig6:
+  profile_id: 1
+  resource_id: 195
+  per_id: true
+
 assig7:
   profile_id: 1
   resource_id: 177
@@ -1540,6 +1545,11 @@ assigmon5:
   resource_id: 36
   per_id: true
 
+assigmon6:
+  profile_id: 13
+  resource_id: 195
+  per_id: true
+
 # visão prof
 assigmon7:
   profile_id: 13
@@ -1967,11 +1977,36 @@ interact6:
   profile_id: 18
   resource_id: 184         
 
+interactweb1:
+  profile_id: 1
+  resource_id: 187
+
+interactweb2:
+  profile_id: 2
+  resource_id: 187
+
+interactweb3:
+  profile_id: 3
+  resource_id: 187
+
+interactweb4:
+  profile_id: 13
+  resource_id: 187
+
+interactweb5:
+  profile_id: 17
+  resource_id: 187
+
+interactweb6:
+  profile_id: 18
+  resource_id: 187
+
+
 # Provas
 
 exam1:
   profile_id: 1
-  resource_id: 187
+  resource_id: 196
   per_id: false
 
 exam2:
@@ -1997,4 +2032,29 @@ question1:
 question2:
   profile_id: 5
   resource_id: 192
+  per_id: false
+
+laweb1:
+  profile_id: 2
+  resource_id: 197
+  per_id: false
+
+laweb2:
+  profile_id: 3
+  resource_id: 197
+  per_id: false
+
+laweb3:
+  profile_id: 4
+  resource_id: 197
+  per_id: false
+
+laweb4:
+  profile_id: 17
+  resource_id: 197
+  per_id: false
+
+laweb5:
+  profile_id: 18
+  resource_id: 197
   per_id: false

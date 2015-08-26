@@ -1,6 +1,7 @@
 class LogAction < ActiveRecord::Base
 
   belongs_to :user
+  belongs_to :allocation_tag
 
   TYPE = {
     create: 1,
@@ -8,7 +9,8 @@ class LogAction < ActiveRecord::Base
     destroy: 3,
     new_user: 4,
     block_user: 5,
-    request_password: 6
+    request_password: 6,
+    access_webconference: 7
   }
 
   def type_name
@@ -25,14 +27,12 @@ class LogAction < ActiveRecord::Base
         :block_user
       when 6
         :request_password
+      when 7
+        :access_webconference
     end
 
     I18n.t(type, scope: 'administrations.logs.types')
   end
-
-
-  ## class methods
-
 
   def self.new_user(params)
     params.merge!(log_type: TYPE[:new_user])
@@ -63,5 +63,11 @@ class LogAction < ActiveRecord::Base
     params.merge!(log_type: TYPE[:destroy])
     create(params)
   end
+
+  def self.access_webconference(params)
+    params.merge!(log_type: TYPE[:access_webconference])
+    create(params)
+  end
+
 
 end
