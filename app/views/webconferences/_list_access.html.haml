@@ -3,7 +3,7 @@
   .title-warning= raw t('.on_going')
 - elsif !@webconference.over?
   .title-warning= raw t('.not_started')
-.chat_messages
+.webconference_access
   - unless @logs.empty? || @too_old
     %table.tb_list
       %thead

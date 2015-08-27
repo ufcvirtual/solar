@@ -20,27 +20,50 @@ form{
 }
 
 table.webconferences{
-    thead{
-      tr.lines{
-        th.no_sort{
-          text-align: center;
-          width: 5px;
-        }
-        th.default_width{
-          width: 20%;
-        }
-        th.bigger_width{
-          width: 25%;
-        }
-        th.smaller_width{
-          width: 10%;
-        }
-        th.medium_width{
-          width: 15%;
-        }
-        th.greater_width{
-          width: 30%;
-        }
+  thead{
+    tr.lines{
+      th.no_sort{
+        text-align: center;
+        width: 5px;
+      }
+      th.default_width{
+        width: 20%;
+      }
+      th.bigger_width{
+        width: 25%;
+      }
+      th.smaller_width{
+        width: 10%;
+      }
+      th.medium_width{
+        width: 15%;
+      }
+      th.greater_width{
+        width: 30%;
       }
     }
   }
+}
+
+.webconference_access{
+  table{
+    th{
+      text-align: center;
+    }
+    text-align: center;
+    td.profile{
+      color: #989898;
+      font-size: 9pt;
+      font-style: italic;
+      padding-right: 0;
+    }
+  }
+
+}
+ 
+.title-warning + .webconference_access{
+  .text_none{
+    border-top: solid 1px;
+    border-top-color: #D0D0D0;
+  }
+}

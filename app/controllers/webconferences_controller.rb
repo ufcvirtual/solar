@@ -156,7 +156,7 @@ class WebconferencesController < ApplicationController
 
     @logs = @webconference.get_access(academic_allocations_ids)
     @researcher = current_user.is_researcher?(AllocationTag.where(id: at_id).map(&:related))
-    @too_old    = @webconference.initial_time.to_date < Date.parse(YAML::load(File.open('config/webconference.yml'))['participant_log_date'])
+    @too_old    = @webconference.initial_time.to_date < Date.parse(YAML::load(File.open('config/webconference.yml'))['participant_log_date']) rescue false
 
     render partial: 'list_access'
   rescue CanCan::AccessDenied
