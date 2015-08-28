@@ -94,7 +94,7 @@ module V1
                 allocate_professors(group, cpfs)
               end
 
-              {ok: :ok}
+              { ok: :ok }
             end
           end
 
@@ -107,6 +107,7 @@ module V1
 
             begin
               ActiveRecord::Base.transaction do
+
                 groups = groups.collect do |group_info|
                   get_group_by_codes(group_info["codDisciplina"], group_info["codGraduacao"], group_info["codigo"], (group_info["periodo"].blank? ? group_info["ano"] : "#{group_info["ano"]}.#{group_info["periodo"]}")) unless group_info["codDisciplina"] == 78
                 end # Se cód. graduação for 78, desconsidera (por hora, vem por engano).
@@ -114,7 +115,20 @@ module V1
                 cancel_previous_and_create_allocations(groups.compact, user, student_profile)
               end
 
-              {ok: :ok}
+              { ok: :ok }
+            end
+          end
+
+          # PUT load/groups/:semester/cancel_students_enrollments
+          params{ requires :semester, type: String }
+          put ':semester/cancel_students_enrollments' do
+            begin
+              ActiveRecord::Base.transaction do
+                semester = Semester.find_by_name(params[:semester])
+                cancel_all_allocations(1, semester.id) # Aluno => 1
+              end
+
+              { ok: :ok }
             end
           end
 
@@ -138,7 +152,7 @@ module V1
               user = User.new cpf: params[:cpf]
               ma_response = user.connect_and_validates_user
               raise ActiveRecord::RecordNotFound if ma_response.nil? # nao existe no MA
-              {ok: :ok}
+              { ok: :ok }
             end
           end
         end # user
@@ -164,7 +178,7 @@ module V1
                 event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
               end
 
-              {ok: :ok}
+              { ok: :ok }
             end
           end # put :id
 

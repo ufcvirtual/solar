@@ -21,7 +21,7 @@ module V1
         post ":type/:id" do
           begin
             allocate(params)
-            {ok: :ok}
+            { ok: :ok }
           end
         end
         params do
@@ -31,7 +31,7 @@ module V1
         post ":type" do
           begin
             allocate(params)
-            {ok: :ok}
+            { ok: :ok }
           end
         end
 
@@ -51,7 +51,7 @@ module V1
         delete ":type/:id" do
           begin
             allocate(params, cancel: true)
-            {ok: :ok}
+            { ok: :ok }
           end
         end
 
@@ -62,7 +62,7 @@ module V1
         delete ":type" do
           begin
             allocate(params, cancel: true)
-            {ok: :ok}
+            { ok: :ok }
           end
         end
 

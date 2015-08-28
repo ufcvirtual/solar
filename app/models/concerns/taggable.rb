@@ -52,20 +52,25 @@ module Taggable
     allocation
   end
 
-  def cancel_allocations(user_id = nil, profile_id = nil)
+  def cancel_allocations(user_id = nil, profile_id = nil, opts = {})
     query = {}
     query.merge!({user_id: user_id})       unless user_id.nil?
     query.merge!({profile_id: profile_id}) unless profile_id.nil?
 
+    all = if opts.include?(:related) && opts[:related]
+      Allocation.where(allocation_tag_id: allocation_tag.related({lower: true}))
+    else
+      allocations
+    end
 
-    allocations.where(query).update_all(status: Allocation_Cancelled)
+    all.where(query).update_all(status: Allocation_Cancelled)
   end
 
   def change_allocation_status(user_id, new_status, opts = {}) # opts = {profile_id, related}
     where = {user_id: user_id}
-    where.merge!({profile_id: opts[:profile_id]}) if opts.include?(:profile_id) and not opts[:profile_id].nil?
+    where.merge!({profile_id: opts[:profile_id]}) if opts.include?(:profile_id) && !opts[:profile_id].nil?
 
-    all = if opts.include?(:related) and opts[:related]
+    all = if opts.include?(:related) && opts[:related]
       Allocation.where(allocation_tag_id: allocation_tag.related({lower: true})).where(where)
     else
       allocations.where(where)

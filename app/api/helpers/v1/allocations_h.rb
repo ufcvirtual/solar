@@ -13,13 +13,20 @@ module V1::AllocationsH
   # cancel all previous allocations and create new ones to groups
   def cancel_previous_and_create_allocations(groups, user, profile_id)
     # only curriculum units which type is 2
-    user.groups(profile_id, nil, nil, 2).each do |group|
-      group.change_allocation_status(user.id, 2, profile_id: profile_id) # cancel all users previous allocations as profile_id
-    end
+    # user.groups(profile_id, nil, nil, 2).each do |group|
+    #   group.change_allocation_status(user.id, 2, profile_id: profile_id) # cancel all users previous allocations as profile_id
+    # end
 
     groups.each do |group|
       group.allocate_user(user.id, profile_id)
     end
+  end
+
+  def cancel_all_allocations(profile_id, semester_id)
+    ucs = CurriculumUnitType.find(2).curriculum_units.map(&:id)
+    params = { curriculum_unit_id: ucs }
+    params.merge!(semester_id: semester_id) #unless config not defined
+    Offer.where(params).map{ |offer| offer.cancel_allocations(nil, profile_id, { related: true }) }
   end
 
   def get_profile_id(profile)
