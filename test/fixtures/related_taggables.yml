@@ -121,16 +121,16 @@ al8:
 al9:
   id: 9
   group_id: 6
-  offer_id: 3
-  semester_id: 2
-  course_id: 2
-  curriculum_unit_id: 3
-  curriculum_unit_type_id: 2
+  offer_id: 6
+  semester_id: 3
+  course_id: 10
+  curriculum_unit_id: 1
+  curriculum_unit_type_id: 3
   group_at_id: 9
-  offer_at_id: 6
-  course_at_id: 19
-  curriculum_unit_at_id: 13
-  curriculum_unit_type_at_id: 43
+  offer_at_id: 17
+  course_at_id: 38
+  curriculum_unit_at_id: 7
+  curriculum_unit_type_at_id: 44
   offer_schedule_id: 35
   group_status: true
 

@@ -776,8 +776,7 @@ describe "Loads" do
             expect{
               put "/api/v1/load/groups/allocate_user", json_data
 
-              response.status.should eq(200)
-              response.body.should == {ok: :ok}.to_json
+              response.status.should eq(422)
             }
           }
         end
@@ -798,8 +797,7 @@ describe "Loads" do
             expect{
               put "/api/v1/load/groups/allocate_user", json_data
 
-              response.status.should eq(200)
-              response.body.should == {ok: :ok}.to_json
+              response.status.should eq(422)
             }
           }
         end
@@ -820,8 +818,7 @@ describe "Loads" do
             expect{
               put "/api/v1/load/groups/allocate_user", json_data
 
-              response.status.should eq(200)
-              response.body.should == {ok: :ok}.to_json
+              response.status.should eq(422)
             }
           }
         end
@@ -900,6 +897,100 @@ describe "Loads" do
         end
       end
     end #allocate_user
+
+    describe "cancel_students_enrollments" do
+
+      context "with valid ip" do
+
+        context 'and existing semester' do
+          let!(:json_data){
+            { semester: '2011.1' }
+          }
+
+          subject{ -> {
+            put "/api/v1/load/groups/cancel_students_enrollments", json_data}
+          }
+
+          it { should change(Allocation, :count).by(0) }
+          it { should change(Allocation.where(status: 1, profile_id: 1), :count).by(-4) }
+          it { should change(Allocation.where(status: 1, profile_id: 2), :count).by(0) }
+          it { should change(Allocation.where(status: 2, profile_id: 1), :count).by(4) }
+          
+
+          it {
+            expect{
+              put "/api/v1/load/groups/cancel_students_enrollments", json_data
+
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+            }
+          }
+        end
+
+        context 'and existing semester 2' do
+          let!(:json_data){
+            { semester: '2012.1' }
+          }
+
+          subject{ -> {
+            put "/api/v1/load/groups/cancel_students_enrollments", json_data}
+          }
+
+          it { should change(Allocation, :count).by(0) }
+          it { should change(Allocation.where(status: 1, profile_id: 1), :count).by(0) }
+          it { should change(Allocation.where(status: 1, profile_id: 2), :count).by(0) }
+          it { should change(Allocation.where(status: 2, profile_id: 1), :count).by(0) }
+          
+
+          it {
+            expect{
+              put "/api/v1/load/groups/cancel_students_enrollments", json_data
+
+              response.status.should eq(200)
+              response.body.should == {ok: :ok}.to_json
+            }
+          }
+        end
+
+        context 'and non existing semester' do
+          let!(:json_data){
+            { semester: '1500.0' }
+          }
+
+          it {
+            expect{
+              put "/api/v1/load/groups/cancel_students_enrollments", json_data
+
+              response.status.should eq(422)
+            }.to change{Allocation.where(status: 1).count}.by(0)
+          }
+        end
+
+        context 'and not sending param' do
+          it {
+            expect{
+              put "/api/v1/load/groups/cancel_students_enrollments"
+
+              response.status.should eq(400)
+            }.to change{Allocation.where(status: 2).count}.by(0)
+          }
+        end
+
+      end
+
+      context "with invalid ip" do
+        let!(:json_data){
+          { semester: '2011.1' }
+        }
+        it{
+          expect{
+            put "/api/v1/load/groups/cancel_students_enrollments", json_data, "REMOTE_ADDR" => "127.0.0.2"
+
+            response.status.should eq(401)
+          }.to change{Allocation.where(status: 1).count}.by(0)
+        }
+      end
+    end #cancel_students_enrollments
 
   end #groups
 

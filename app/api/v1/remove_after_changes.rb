@@ -119,9 +119,9 @@ module V1
             end
           end
 
-          # PUT load/groups/:semester/cancel_students_enrollments
+          # PUT load/groups/cancel_students_enrollments
           params{ requires :semester, type: String }
-          put ':semester/cancel_students_enrollments' do
+          put :cancel_students_enrollments do
             begin
               ActiveRecord::Base.transaction do
                 semester = Semester.find_by_name(params[:semester])

@@ -54,7 +54,7 @@ class AllocationTag < ActiveRecord::Base
 
   ## return group, offer, course or curriculum_unit
   def refer_to
-    self.attributes.keep_if {|k,v| k != "id" and not(v.nil?)}.keys.first.sub(/\_id/, '')
+    self.attributes.keep_if {|k,v| k != 'id' && !v.nil?}.keys.first.sub(/\_id/, '')
   end
 
   def is_student?(user_id)
