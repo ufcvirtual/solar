@@ -497,6 +497,7 @@ Solar::Application.routes.draw do
       put :remove_record
       get :access
       get :list_access
+      get :get_record
     end
   end
 
@@ -517,7 +518,10 @@ Solar::Application.routes.draw do
   end
 
   resources :assignment_webconferences do
-    put :remove_record, on: :member
+    member do
+      put :remove_record
+      get :get_record
+    end
   end
 
   resources :savs, only: :index, defaults: { format: 'json' }

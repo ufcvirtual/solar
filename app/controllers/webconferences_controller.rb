@@ -17,12 +17,11 @@ class WebconferencesController < ApplicationController
 
   def index
     authorize! :index, Webconference, on: [at = active_tab[:url][:allocation_tag_id]]
-
     @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true))
-    @online         = bbb_online?
-    @recordings     = bbb_all_recordings if @online
+    api             = bbb_prepare
+    @online         = bbb_online?(api)
     @can_see_access = can? :list_access, Webconference, { on: at }
-    @meetings       = get_meetings
+    @meetings       = get_meetings(api)
   end
 
   # GET /webconferences/list
@@ -110,7 +109,6 @@ class WebconferencesController < ApplicationController
     ats = current_user.allocation_tags_ids_with_access_on('preview', 'webconferences', false, true)
     @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false }).paginate(page: params[:page])
     @online         = bbb_online?
-    @recordings     = bbb_all_recordings if @online
     @can_see_access = can? :list_access, Webconference, { on: ats, accepts_general_profile: true }
     @meetings       = get_meetings
   end
@@ -163,6 +161,34 @@ class WebconferencesController < ApplicationController
     render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
   rescue => error
     render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
+  end
+
+  def get_record
+    webconference = Webconference.find(params[:id])
+    at_id         = active_tab[:url][:allocation_tag_id] || params[:at_id] || webconference.allocation_tags.map(&:id)
+
+    raise CanCan::AccessDenied if current_user.is_researcher?([at_id].flatten)
+
+    begin
+      authorize! :index, Webconference, { on: at_id, accepts_general_profile: true }
+    rescue
+      authorize! :preview, Webconference, { on: at_id, accepts_general_profile: true }
+    end
+
+    raise 'offline'          unless bbb_online?
+    raise 'no_record'        unless webconference.is_recorded? && webconference.over?
+    raise 'still_processing' unless webconference.is_over?
+
+    record_url = webconference.recordings([], (at_id.class == Array ? nil : at_id))
+    URI.parse(record_url).path
+
+    render json: { success: true, url: record_url }
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+  rescue URI::InvalidURIError
+    render json: { success: false, alert: t('webconferences.list.removed_record') }, status: :unprocessable_entity
+  rescue => error
+    render_json_error(error, 'webconferences.error')
   end
 
   private

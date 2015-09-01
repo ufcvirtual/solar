@@ -14,10 +14,12 @@
           %th.smaller_width= t(:duration, scope: [:webconferences, :list])
           %th.smaller_width= t(:status, scope: [:webconferences, :list])
           %th.smaller_width= t('.user_online')
+          %th.smaller_width.no_sort= t('.recording')
           - if @can_see_access
-            %th.smaller_width= t('.access')
+            %th.smaller_width.no_sort= t('.access')
       %tbody
         - @webconferences.each do |webconference|
+          - status = webconference.status(webconference.at_id)
           %tr.lines
             %td.webconference_access{ :'data-url' => access_webconference_path(webconference.id, at_id: webconference.at_id) }= webconference.on_going? ? link_to_function(webconference.title, 'access_webconference(this)') : webconference.title
             %td
@@ -33,11 +35,12 @@
             %td= raw truncate(webconference.moderator.name, length: 20)
             %td= l(webconference.initial_time, format: :at_date)
             %td= [webconference.duration.to_s, t(:min, scope: [:webconferences, :list])].join(' ')
-            %td= (@online ? webconference.status(@recordings, webconference.at_id) : t(:unavailable, scope: [:webconferences, :list]))
+            %td= (@online ? status : t(:unavailable, scope: [:webconferences, :list]))
             %td.center= webconference.meeting_info(current_user, webconference.at_id, @meetings)
+            %td.center{ :'data-url' => get_record_webconference_path(webconference.id, at_id: webconference.at_id), class: "#{status == t('webconferences.list.record_available') ? '' : 'disabled'}", :'data-tooltip' => t('webconferences.list.watch')}= link_to_function content_tag(:i, nil, class: 'icon-play btn'), 'get_record(this)'
             - if @can_see_access
-              %td{ :'data-url' => list_access_webconference_path(webconference.id, at_id: webconference.at_id) }= link_to_function content_tag(:i, nil, class: 'icon-users btn'), 'list_access(this)'
+              %td{ :'data-url' => list_access_webconference_path(webconference.id, at_id: webconference.at_id), :'data-tooltip' => t('webconferences.list.access') }= link_to_function content_tag(:i, nil, class: 'icon-users btn'), 'list_access(this)'
   - else
     .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
 
-= javascript_include_tag 'webconferences'
+= javascript_include_tag 'tooltip', 'webconferences' 

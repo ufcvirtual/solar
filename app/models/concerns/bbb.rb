@@ -60,8 +60,8 @@ module Bbb
     end
   end
 
-  def bbb_online?
-    api = bbb_prepare
+  def bbb_online?(api = nil)
+    api = bbb_prepare if api.nil?
     url  = URI(api.url)
     response = Net::HTTP.get_response(url)
     return (Net::HTTPSuccess === response)
@@ -83,30 +83,25 @@ module Bbb
     BigBlueButton::BigBlueButtonApi.new(server['url'], server['salt'], server['version'].to_s, debug)
   end
 
-  def bbb_all_recordings
-    @api = bbb_prepare
-    response = @api.get_recordings()
+  def bbb_all_recordings(api = nil)
+    api = bbb_prepare if api.nil?
+    response = api.get_recordings()
     response[:recordings]
   end
 
-  def get_meetings
-    @api = bbb_prepare
-    @api.get_meetings[:meetings].collect{|m| m[:meetingID]}
+  def get_meetings(api = nil)
+    api = bbb_prepare if api.nil?
+    api.get_meetings[:meetings].collect{|m| m[:meetingID]}
   end
 
-  def status(recordings = [], at_id = nil)
+  def status(at_id = nil)
     case
-    when on_going? then I18n.t(:in_progress, scope: [:webconferences, :list])
-    when (Time.now < initial_time) then I18n.t(:scheduled, scope: [:webconferences, :list])
+    when on_going? then I18n.t('webconferences.list.in_progress')
+    when (Time.now < initial_time) then I18n.t('webconferences.list.scheduled')
     when is_recorded?
-      if is_over?
-        record_url = recordings(recordings, at_id)
-        (record_url ? ActionController::Base.helpers.link_to(I18n.t(:play, scope: [:webconferences, :list]), record_url, target: '_blank') : I18n.t(:removed_record, scope: [:webconferences, :list]))
-      else
-        I18n.t(:processing, scope: [:webconferences, :list])
-      end
+      is_over? ? I18n.t('webconferences.list.record_available') : I18n.t('webconferences.list.processing')
     else
-     I18n.t(:finish, scope: [:webconferences, :list])
+      I18n.t('webconferences.list.finish')
     end
   end
 

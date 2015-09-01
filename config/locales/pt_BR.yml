@@ -1300,9 +1300,12 @@ pt_BR:
       removed_record: Gravação removida ou vazia
       moderator: Moderador
       recorded: Gravação ativada
+      record_available: Finalizada com gravação
       y: Sim
       n: Não
       shared_between_groups: Compartilhado entre turmas
+      watch: Assistir gravação
+      access: Lista de acessos
     success:
       created: Webconferência criada com sucesso.
       updated: Webconferência atualizada com sucesso.
@@ -1320,6 +1323,9 @@ pt_BR:
       time_and_place: Já existe uma webconferência para este dia/horário e turmas.
       date: Esta webconferência já foi encerrada e possui gravação. Seu período não pode ser alterado.
       access: Não é possível acessar esta webconferência. Verifique sua duração.
+      no_record: Esta webconferência não possui gravações
+      offline: Webconferência indisponível
+      still_processing: A gravação desta webconferência ainda está sendo processada. Favor aguardar.
     preview:
       delete_record: Remover gravação
       placeholder: Digite qualquer valor a ser buscado na tabela desta página
@@ -1331,6 +1337,7 @@ pt_BR:
       shared_with: Compartilhada entre %{link} turma(s)
       access: Lista de acessos
       user_online: Usuários online
+      recording: Gravação
     list_access:
       no_log: Nenhum participante acessou esta webconferência
       too_old: Esta webconferência ocorreu antes dos acessos começarem a ser gravados

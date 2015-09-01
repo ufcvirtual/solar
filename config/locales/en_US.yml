@@ -1123,9 +1123,12 @@ en_US:
       removed_record: Removed or empty record
       moderator: Moderator
       recorded: Activated record
+      record_available: Finished with record
       y: Yes
       n: No
       shared_between_groups: Shared between groups
+      watch: Watch record
+      access: Access list
     success:
       created: Webconference was successfully created.
       updated: Webconference was successfully updated.
@@ -1143,6 +1146,9 @@ en_US:
       time_and_place: Already exists a webconference for this datetime and groups
       date: This webconference already happened and was recorded. It's not possible to change it's period.
       access: Can't access this webconference. Verify it's period.
+      no_record: This webconference has no recordings
+      offline: Unavailable webconference
+      still_processing: This webconference's recording is still processing. Please wait.
     preview:
       delete_record: Remove record
       placeholder: Type any value to be searched at the table of this page
@@ -1154,6 +1160,7 @@ en_US:
       shared_with: Shared with %{link} group(s)
       access: Access's list
       user_online: Online users
+      recording: Recording
     list_access:
       no_log: No participant accessed this webconference
       too_old: This webconference happened before the access start to be saved

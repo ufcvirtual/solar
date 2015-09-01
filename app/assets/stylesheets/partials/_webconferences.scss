@@ -43,6 +43,18 @@ table.webconferences{
       }
     }
   }
+  tbody{
+    td{
+      [class^='icon-']{
+        font-size: 18px;
+        padding-top: 7px;
+        color: #828282;
+      }
+      [class^='icon-']:hover{
+        color: #333333;
+      }
+    }
+  }
 }
 
 .webconference_access{
