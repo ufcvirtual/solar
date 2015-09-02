@@ -39,7 +39,7 @@ class Assignment < Event
 
   def sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, user_id, group_assignment_id)
     ac = AcademicAllocation.where(academic_tool_id: id, allocation_tag_id: allocation_tag_id, academic_tool_type: 'Assignment').first
-    SentAssignment.joins(:academic_allocation).where(user_id: user_id, group_assignment_id: group_assignment_id, academic_allocation_id: ac.id).first#_or_create
+    SentAssignment.joins(:academic_allocation).where(user_id: user_id, group_assignment_id: group_assignment_id, academic_allocation_id: ac.id).first
   end
 
   def closed?

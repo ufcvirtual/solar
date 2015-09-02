@@ -116,7 +116,6 @@ class AssignmentsController < ApplicationController
     @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id(@allocation_tag_id, @student_id, @group_id)
     @can_evaluate = can?(:evaluate, Assignment)
     @bbb_online   = bbb_online?
-    @recordings   = bbb_all_recordings if @bbb_online
   end
 
   def evaluate

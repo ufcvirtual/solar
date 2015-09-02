@@ -16,6 +16,22 @@
         cursor: pointer;
         padding: 0;
       }
+
+      td{
+        [class^='icon-']{
+          font-size: 18px;
+          padding-top: 7px;
+          color: #828282;
+        }
+        [class^='icon-']:hover{
+          color: #333333;
+        }
+      }
+
+      td.record {
+        width: 22px;
+      }
+
     }
   }
 

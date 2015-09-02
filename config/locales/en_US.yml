@@ -2628,7 +2628,7 @@ en_US:
     list:
       name: Name
       period: Period
-      record: Record
+      record: With Record
       status: Status
       title_group: Webconferences scheduled by group
       title_student: Webconferences scheduled by student

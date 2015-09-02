@@ -59,6 +59,17 @@ function delete_awebconference(td){
 
 }
 
+function get_record(obj){
+  erase_flash_messages();
+  $.get($(obj).parent().data('url'), function(data){
+    window.open(data.url,'_blank');
+  }).error(function(data){
+    var response = JSON.parse(data.responseText);
+    if (typeof(response.alert) != "undefined")
+      flash_message(response.alert, 'alert');
+  });
+}
+
 $(function(){
   $(".link_new_awebconference").not(".disabled").call_fancybox();
 });

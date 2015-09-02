@@ -2867,7 +2867,7 @@ pt_BR:
     list:
       name: Nome
       period: Período
-      record: Gravar
+      record: Com Gravação
       status: Situação
       title_group: Webconferências agendadas pelo grupo
       title_student: Webconferências agendadas pelo aluno

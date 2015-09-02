@@ -80,6 +80,31 @@ class AssignmentWebconferencesController < ApplicationController
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end
 
+  def get_record
+    assignment_webconference = AssignmentWebconference.find(params[:id])
+    sent_assignment          = SentAssignment.find(params[:sent_assignment_id])
+    at_id                    = active_tab[:url][:allocation_tag_id]
+    verify_owner_or_responsible!(at_id, sent_assignment)
+
+    raise CanCan::AccessDenied if current_user.is_researcher?([at_id].flatten)
+
+    raise 'offline'          unless bbb_online?
+    raise 'no_record'        unless assignment_webconference.is_recorded? && assignment_webconference.over?
+    raise 'still_processing' unless assignment_webconference.is_over?
+
+    record_url = assignment_webconference.recordings([], at_id)
+    URI.parse(record_url).path
+
+    render json: { success: true, url: record_url }
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+  rescue URI::InvalidURIError
+    render json: { success: false, alert: t('webconferences.list.removed_record') }, status: :unprocessable_entity
+  rescue => error
+    raise "oi: #{error}"
+    render_json_error(error, 'webconferences.error')
+  end
+
   private
 
     def assignment_webconference_params

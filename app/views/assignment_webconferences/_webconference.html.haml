@@ -1,8 +1,16 @@
+- status = webconference.status
 %tr.lines{ class: "web_#{webconference.id}" }
   %td.right= webconference.get_bbb_url(current_user)
   %td.center= [l(webconference.initial_time, format: :at_date), l(webconference.initial_time+webconference.duration.minutes, format: :at_date)].join(' - ')
-  %td.center= (@bbb_online ? webconference.status(@recordings) : t(:unavailable, scope: [:webconferences, :list]))
-  %td.center= webconference.is_recorded ? t('.aw_yes') : t('.aw_no')
+  %td.center= (@bbb_online ? status : t(:unavailable, scope: [:webconferences, :list]))
+  %td.center.record{ :'data-url' => get_record_assignment_webconference_path(webconference.id, sent_assignment_id: webconference.sent_assignment_id)}
+    - if webconference.is_recorded
+      - if status == t('webconferences.list.record_available')
+        = link_to_function content_tag(:i, nil, class: 'icon-play btn', :'data-tooltip' => t('webconferences.list.watch')), 'get_record(this)'   
+      - else
+        = t('.aw_yes')
+    - else
+      = t('.aw_no')
   - if @own_assignment
     - disabled = !(@in_time && @bbb_online)
     %td.icon.center{ :"data-link-edit" => edit_assignment_webconference_path(webconference), :"data-tooltip" => t('.edit'), onclick: 'edit_awebconference(this)', class: "#{disabled ? 'disabled' : ''}" }= content_tag(:i, nil, class: 'icon-edit')
