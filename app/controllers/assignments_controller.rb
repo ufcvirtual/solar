@@ -108,8 +108,8 @@ class AssignmentsController < ApplicationController
 
   def student
     @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
-    @class_participants    = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
-    verify_owner_or_responsible!
+    @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
+    verify_owner_or_responsible!(@allocation_tag_id)
 
     @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 

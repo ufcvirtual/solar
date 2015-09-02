@@ -2,9 +2,10 @@ class SentAssignment < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :group_assignment
-
   belongs_to :academic_allocation, conditions: { academic_tool_type: 'Assignment' }
-  has_one :assignment, through: :academic_allocation
+
+  has_one :assignment,     through: :academic_allocation
+  has_one :allocation_tag, through: :academic_allocation  
 
   has_many :assignment_comments,       dependent: :destroy
   has_many :assignment_files,          dependent: :delete_all
@@ -16,6 +17,7 @@ class SentAssignment < ActiveRecord::Base
   before_save :has_group, if: Proc.new { |a| a.assignment.type_assignment == Assignment_Type_Group }
 
   validates :grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true }
+  validate :verify_student, only: :create
 
   def if_group_assignment_remove_user_id
     self.user_id = nil if group_assignment_id
@@ -61,6 +63,12 @@ class SentAssignment < ActiveRecord::Base
 
   def users_count
     has_group ? group_assignment.group_participants.count : 1
+  end
+
+  def verify_student
+    print "#{User.current.id} \n"
+    print "#{User.current.has_profile_type_at(allocation_tag.id)}\n"
+    errors.add(:base, 'bla') unless User.current.has_profile_type_at(allocation_tag.id)
   end
 
 end

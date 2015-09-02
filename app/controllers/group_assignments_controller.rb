@@ -63,9 +63,9 @@ class GroupAssignmentsController < ApplicationController
     else
       LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: request.remote_ip, description: "delete_participant: #{@participant.attributes} in #{group_assignment.attributes} ", academic_allocation_id: group_assignment.academic_allocation_id)
     end  
-    render json: {success: true}
+    render json: { success: true }
   rescue CanCan::AccessDenied
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
     render_json_error(error, "group_assignments.error")
   end

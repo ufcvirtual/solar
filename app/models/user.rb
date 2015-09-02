@@ -578,6 +578,11 @@ class User < ActiveRecord::Base
     (photo_file_name && File.exist?(File.join(Rails.root.to_s, photo.url(size, timestamp: false)))) ? photo.url(size) : 'no_image.png'
   end
 
+  def has_profile_type_at(allocation_tags_ids, profile_type = Profile_Type_Student)
+    allocation_tags_ids = [allocation_tags_ids] unless allocation_tags_ids.class == Array
+    Allocation.joins(:profile).where(status: Allocation_Activated, allocation_tag_id: allocation_tags_ids, user_id: id).where('cast(profiles.types & ? as boolean)', profile_type).any?
+  end
+
   private
 
     def login_differ_from_cpf

@@ -4,7 +4,7 @@ class AssignmentWebconferencesController < ApplicationController
   include AssignmentsHelper
   include Bbb
 
-  before_filter :set_current_user, only: [:destroy, :remove_record, :create, :update]
+  before_filter :set_current_user, except: [:edit, :show]
   before_filter :get_ac, only: :new
 
   before_filter only: [:edit, :update, :destroy, :remove_record, :show] do |controller|

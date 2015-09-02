@@ -4,7 +4,7 @@ class AssignmentFilesController < ApplicationController
   include FilesHelper
   include AssignmentsHelper
 
-  before_filter :set_current_user, only: :destroy
+  before_filter :set_current_user, only: [:destroy, :new]
   before_filter :get_ac, only: :new
 
   layout false
