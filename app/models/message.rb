@@ -91,7 +91,7 @@ class Message < ActiveRecord::Base
           JOIN user_messages um1 ON um1.user_id    = users.id
           JOIN user_messages um2 ON um2.message_id = um1.message_id
           WHERE cast(um2.status & #{Message_Filter_Sender} as boolean)
-          AND um1.status = 0
+          AND (um1.status = 0 OR um1.status = 2 OR cast(um2.status & #{Message_Filter_Read + Message_Filter_Trash} as boolean))
           AND um2.user_id = #{user_id}
       ) sent_to ON sent_to.id = messages.id
       LEFT JOIN (
@@ -100,7 +100,7 @@ class Message < ActiveRecord::Base
           JOIN user_messages um1 ON um1.user_id    = users.id
           JOIN user_messages um2 ON um2.message_id = um1.message_id
           WHERE cast(um2.status & #{Message_Filter_Sender} as boolean)
-          AND um1.status = 0
+          AND (um1.status = 0 OR um1.status = 2 OR cast(um2.status & #{Message_Filter_Read + Message_Filter_Trash} as boolean))
           AND um2.user_id = #{user_id}
       ) sent_to2 ON sent_to2.id = messages.id
       WHERE #{query}

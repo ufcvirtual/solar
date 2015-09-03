@@ -19,6 +19,8 @@ class SentAssignment < ActiveRecord::Base
   validates :grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true }
   validate :verify_student, only: :create
 
+  attr_accessor :can_create
+
   def if_group_assignment_remove_user_id
     self.user_id = nil if group_assignment_id
   end
@@ -66,7 +68,7 @@ class SentAssignment < ActiveRecord::Base
   end
 
   def verify_student
-    errors.add(:base, 'cant_create_sent_assignment') unless User.current.has_profile_type_at(allocation_tag.id)
+    errors.add(:base, 'cant_create_sent_assignment') unless can_create || User.current.has_profile_type_at(allocation_tag.id)
   end
 
 end

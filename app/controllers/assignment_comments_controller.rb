@@ -18,7 +18,9 @@ class AssignmentCommentsController < ApplicationController
   end
 
   def new
-    @sent_assignment    = SentAssignment.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocation_id: @ac.id).first_or_create
+    @sent_assignment    = SentAssignment.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocation_id: @ac.id).first_or_initialize
+    @sent_assignment.can_create = true
+    @sent_assignment.save
     @assignment_comment = AssignmentComment.new sent_assignment_id: @sent_assignment.id
     @assignment_comment.files.build
   end

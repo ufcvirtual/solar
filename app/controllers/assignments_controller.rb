@@ -123,8 +123,10 @@ class AssignmentsController < ApplicationController
     authorize! :evaluate, Assignment, on: [@allocation_tag_id]
     raise 'date_range' unless @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 
-    @sent_assignment = SentAssignment.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocation_id: @ac).first_or_create
-    @sent_assignment.update_attributes! grade: params[:grade].tr(',', '.')
+    @sent_assignment = SentAssignment.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocation_id: @ac).first_or_initialize
+    @sent_assignment.can_create = true
+    @sent_assignment.grade      = params[:grade].tr(',', '.')
+    @sent_assignment.save!
 
     @student_id, @group_id = params[:student_id], params[:group_id]
 
