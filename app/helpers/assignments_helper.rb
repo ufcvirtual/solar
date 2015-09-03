@@ -55,7 +55,7 @@ module AssignmentsHelper
     @student_id, @group_id = (params[:group_id].nil? ? [params[:student_id], nil] : [nil, params[:group_id]])
     @group = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
     @own_assignment = Assignment.owned_by_user?(current_user.id, { student_id: @student_id, group: @group, sent_assignment: sent_assignment })
-    raise CanCan::AccessDenied unless (@own_assignment || AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(current_user.id)) && (@student_id.nil? && sent_assignment.nil? ? false : User.find(@student_id || sent_assignment.user_id).has_profile_type_at(allocation_tag_id))
+    raise CanCan::AccessDenied unless (@own_assignment || AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(current_user.id)) && (@student_id.nil? && sent_assignment.try(:user_id).nil? ? true : User.find(@student_id || sent_assignment.user_id).has_profile_type_at(allocation_tag_id))
   end
 
   def owner(aparams)
