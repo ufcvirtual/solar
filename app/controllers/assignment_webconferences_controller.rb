@@ -101,7 +101,6 @@ class AssignmentWebconferencesController < ApplicationController
   rescue URI::InvalidURIError
     render json: { success: false, alert: t('webconferences.list.removed_record') }, status: :unprocessable_entity
   rescue => error
-    raise "oi: #{error}"
     render_json_error(error, 'webconferences.error')
   end
 

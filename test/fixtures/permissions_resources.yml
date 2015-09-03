@@ -65,11 +65,6 @@ assig4:
   resource_id: 35
   per_id: true
 
-assig5:
-  profile_id: 1
-  resource_id: 36
-  per_id: true
-
 assig6:
   profile_id: 1
   resource_id: 195
@@ -299,11 +294,6 @@ assigpt11:
   profile_id: 2
   resource_id: 39
   per_id: true
-
-assigpt14:
-  profile_id: 2
-  resource_id: 36
-  per_id: false
 
 assigpt15:
   profile_id: 2
@@ -550,11 +540,6 @@ assigta11:
   profile_id: 3
   resource_id: 39
   per_id: true
-
-assigta14:
-  profile_id: 3
-  resource_id: 36
-  per_id: false
 
 assigta15:
   profile_id: 3
@@ -1538,11 +1523,6 @@ assigmon3:
 assigmon4:
   profile_id: 13
   resource_id: 35
-  per_id: true
-
-assigmon5:
-  profile_id: 13
-  resource_id: 36
   per_id: true
 
 assigmon6:

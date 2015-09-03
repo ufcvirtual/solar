@@ -157,12 +157,6 @@ res35:
   action: 'create'
   description: 'Enviar arquivo público'
 
-res36:
-  id: 36
-  controller: 'assignment_files'
-  action: 'create'
-  description: 'Enviar arquivo como resposta de um trabalho'
-
 res39:
   id: 39
   controller: 'group_assignments'

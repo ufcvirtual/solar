@@ -66,9 +66,7 @@ class SentAssignment < ActiveRecord::Base
   end
 
   def verify_student
-    print "#{User.current.id} \n"
-    print "#{User.current.has_profile_type_at(allocation_tag.id)}\n"
-    errors.add(:base, 'bla') unless User.current.has_profile_type_at(allocation_tag.id)
+    errors.add(:base, 'cant_create_sent_assignment') unless User.current.has_profile_type_at(allocation_tag.id)
   end
 
 end
