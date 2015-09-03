@@ -348,12 +348,13 @@ class User < ActiveRecord::Base
     log = { error: [], success: [] }
 
     spreadsheet = open_spreadsheet(file, sep)
-    header = spreadsheet.row(1)
+    header      = spreadsheet.row(1)
 
-    raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) unless ((File.extname(file.original_filename) != '.csv') || (spreadsheet.row(1) & (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['import_users']['header'].split(';'))).size == spreadsheet.row(1).size)
+    raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) unless ((File.extname(file.original_filename) != '.csv') || (header & (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['import_users']['header'].split(';'))).size == header.size)
 
     (2..spreadsheet.last_row).each do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
+      row = row.collect{ |k,v| { k.strip => v.strip } }.reduce Hash.new, :merge 
 
       user_exist = where(cpf: row['CPF'] || row['Cpf']).first
       user = user_exist.nil? ? new : user_exist
@@ -406,9 +407,10 @@ class User < ActiveRecord::Base
 
   def self.open_spreadsheet(file, sep = ';')
     case File.extname(file.original_filename)
-    when ".csv"  then Roo::CSV.new(file.path, csv_options: { col_sep: sep })
+    when ".csv"  then Roo::CSV.new(file.path, csv_options: { col_sep: sep, encoding: Encoding::ISO_8859_1 })
     when ".xls"  then Roo::Excel.new(file.path, nil, :ignore)
     when ".xlsx" then Roo::Excelx.new(file.path, nil, :ignore)
+    when ".ods"  then Roo::OpenOffice.new(file.path, nil, :ignore)
     else raise I18n.t('administrations.import_users.unknown_file')
     end
   end

@@ -301,7 +301,7 @@ class AdministrationsController < ApplicationController
     end
 
     def save_log_into_file(logs)
-      filename = "#{current_user.id}-log-#{I18n.l(Time.now, format: :log)}"
+      filename   = "#{current_user.id}-log-#{I18n.l(Time.now, format: :log)}"
       media_path = YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['import_users']['media_path']
 
       FileUtils.mkdir_p(dir = File.join(Rails.root.to_s, media_path))
