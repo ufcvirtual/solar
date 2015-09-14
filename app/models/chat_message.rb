@@ -1,6 +1,6 @@
 class ChatMessage < ActiveRecord::Base
 
-  belongs_to :academic_allocation, conditions: {academic_tool_type: 'ChatRoom'}
+  belongs_to :academic_allocation, conditions: { academic_tool_type: 'ChatRoom' }
   belongs_to :allocation
 
   has_one :user, through: :allocation

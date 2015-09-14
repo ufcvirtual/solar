@@ -17,9 +17,9 @@ class SentAssignment < ActiveRecord::Base
   before_save :has_group, if: Proc.new { |a| a.assignment.type_assignment == Assignment_Type_Group }
 
   validates :grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true }
-  validate :verify_student, only: :create
+  validate :verify_student, only: :create, if: 'merge.nil?'
 
-  attr_accessor :can_create
+  attr_accessor :can_create, :merge
 
   def if_group_assignment_remove_user_id
     self.user_id = nil if group_assignment_id

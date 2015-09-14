@@ -21,6 +21,7 @@ module V1::Contents
 
       new_sa = SentAssignment.where(attributes).first_or_create do |sa|
         sa.grade = from_sent_assignment.grade # updates grade with most recent copied group
+        sa.merge = true
       end
 
       copy_objects(from_sent_assignment.assignment_comments, { 'sent_assignment_id' => new_sa.id }, true, :files)

@@ -79,7 +79,14 @@ class Group < ActiveRecord::Base
     result
   end
 
-  ## triggers
+  def get_accesses(user_id = nil)
+    query = []
+    query << "user_id = #{user_id}" unless user_id.nil?
+    query << "allocation_tags.group_id = #{id}"
+    query << "log_type = #{LogAccess::TYPE[:group_access]}"
+
+    LogAccess.joins(:allocation_tag).joins('LEFT JOIN merges ON merges.main_group_id = allocation_tags.group_id OR merges.secundary_group_id = allocation_tags.group_id').where(query.join(' AND ')).uniq
+  end
 
   trigger.after(:update).of(:offer_id, :status) do
     <<-SQL

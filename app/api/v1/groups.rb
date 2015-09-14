@@ -151,6 +151,40 @@ module V1
             {ok: :ok}
           end
         end
+
+        desc 'Recuperação de dados dos alunos com relacao a turma'
+        params do
+          requires :group_code, :semester, :course_code, :curriculum_unit_code, type: String
+          requires :curriculum_unit_type_id, type: Integer, default: 2
+        end
+        get :students_info, rabl: 'groups/students_info' do
+          begin
+            group = Group.joins(offer: [:semester, :course, :curriculum_unit])
+                         .where(code: params[:group_code], 
+                            semesters: { name: params[:semester] }, 
+                            curriculum_units: { code: params[:curriculum_unit_code], curriculum_unit_type_id: params[:curriculum_unit_type_id] },
+                            courses: { code: params[:course_code] }
+                         ).first
+
+            raise ActiveRecord::RecordNotFound if group.nil?
+
+            @allocation_tag_id = group.allocation_tag.id
+            get_group_students_info(params, @allocation_tag_id, group)
+          end
+        end # students_info
+
+         desc 'Recuperação de dados da turma'
+        params do
+          requires :group_code, :semester, :course_code, :curriculum_unit_code, type: String
+          requires :curriculum_unit_type_id, type: Integer, default: 2
+        end
+        get :info, rabl: 'groups/info' do
+          begin
+            get_group_info(params)
+            raise ActiveRecord::RecordNotFound if @group.blank?
+            @group = @group.first
+          end
+        end # info
       end # group
 
     end # segment

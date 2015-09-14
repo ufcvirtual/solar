@@ -85,7 +85,7 @@ module Bbb
 
   def bbb_all_recordings(api = nil)
     api = bbb_prepare if api.nil?
-    response = api.get_recordings()
+    response = api.get_recordings
     response[:recordings]
   end
 
