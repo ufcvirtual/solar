@@ -1,8 +1,8 @@
 object @student => :student
 
-attributes :cpf, :name, :gender, :birthdate
+attributes :cpf, :name, :gender, :birthdate, :zipcode
 
-node(:complete_address) { |student| [[student.address, student.address_number].compact.join(', '), student.address_complement, student.address_neighborhood, student.zipcode, [student.city, student.state].compact.join(' - ')].compact.join('. ') }
+node(:complete_address) { |student| [[student.address, student.address_number].compact.join(', '), student.address_complement, student.address_neighborhood, [student.city, student.state].compact.join(' - ')].compact.join('. ') }
 
 node :info do |user|
   {
