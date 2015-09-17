@@ -3,7 +3,7 @@
     %table.message_div_list
       - @messages.each do |message|
         - msg_path = message_path(id: message.id, box: @box)
-        %tr.message_line
+        %tr.message_line{ class: (message == @messages.last) ? 'no_border' : '' }
           %td.message_line_check
             = check_box_tag 'checkbox_message', message.id, checked = false, { class: 'selected_messages', :"data-message-id" => message.id }
             - css_class = message.was_read != '0' ? 'message_read' : 'message_unread'

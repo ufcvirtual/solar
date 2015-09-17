@@ -151,15 +151,12 @@ module V1::GroupsH
     @group             = Group.find_by_sql <<-SQL
       SELECT groups.id,
              COUNT(DISTINCT public_files.id)            AS count_public_files,
-             COUNT(DISTINCT assignments.id)             AS count_assignments,
-             COUNT(DISTINCT discussions.id)             AS count_discussions,
-             COUNT(DISTINCT webconferences.id)          AS count_webconferences,
-             COUNT(DISTINCT chat_rooms.id)              AS count_chat_rooms,
-             COUNT(DISTINCT log_actions.id)             AS count_web_access,
+             COALESCE(assignments.count,0)              AS count_assignments,
+             COALESCE(discussions.count,0)              AS count_discussions,
+             COALESCE(webconferences.count,0)           AS count_webconferences,
+             COALESCE(chat_rooms.count,0)               AS count_chat_rooms,
              COUNT(DISTINCT chat_messages.id)           AS count_chat_messages,
-             COUNT(DISTINCT discussion_posts.id)        AS count_posts,
-             COUNT(DISTINCT allocations.user_id)        AS count_students,
-             COUNT(DISTINCT messages.id)                AS all_sent_msgs--,
+             COUNT(DISTINCT messages.id)                AS all_sent_msgs
            FROM groups
            JOIN offers                ON groups.offer_id            = offers.id
            JOIN curriculum_units      ON offers.curriculum_unit_id  = curriculum_units.id
@@ -170,42 +167,61 @@ module V1::GroupsH
       LEFT JOIN public_files          ON allocation_tags.id         = public_files.allocation_tag_id
       LEFT JOIN messages              ON allocation_tags.id         = messages.allocation_tag_id
       LEFT JOIN (
-        SELECT DISTINCT assignments.id FROM assignments
-      ) assignments ON assignments.id = academic_allocations.academic_tool_id AND academic_tool_type = 'Assignment'
+        SELECT COUNT(DISTINCT assignments.id) AS count, academic_allocations.allocation_tag_id AS at FROM assignments
+        JOIN academic_allocations ON academic_allocations.academic_tool_id = assignments.id AND academic_tool_type = 'Assignment'
+        GROUP BY academic_allocations.allocation_tag_id
+      ) assignments ON assignments.at = allocation_tags.id 
       LEFT JOIN (
-        SELECT DISTINCT discussions.id FROM discussions
-      ) discussions ON discussions.id = academic_allocations.academic_tool_id AND academic_tool_type = 'Discussion'
+        SELECT COUNT(DISTINCT discussions.id) AS count, academic_allocations.allocation_tag_id AS at  FROM discussions
+        JOIN academic_allocations ON academic_allocations.academic_tool_id = discussions.id AND academic_tool_type = 'Discussion'
+        GROUP BY academic_allocations.allocation_tag_id
+      ) discussions ON discussions.at = allocation_tags.id 
       LEFT JOIN (
-        SELECT DISTINCT chat_rooms.id FROM chat_rooms
-      ) chat_rooms ON chat_rooms.id = academic_allocations.academic_tool_id AND academic_tool_type = 'ChatRoom'
+        SELECT COUNT(DISTINCT chat_rooms.id) AS count, academic_allocations.allocation_tag_id AS at FROM chat_rooms
+        JOIN academic_allocations ON chat_rooms.id = academic_allocations.academic_tool_id AND academic_tool_type = 'ChatRoom'
+        GROUP BY academic_allocations.allocation_tag_id
+      ) chat_rooms ON chat_rooms.at = allocation_tags.id 
       LEFT JOIN (
-        SELECT DISTINCT webconferences.id FROM webconferences
-      ) webconferences ON webconferences.id = academic_allocations.academic_tool_id AND academic_tool_type = 'Webconference'
-      LEFT JOIN (
-        SELECT DISTINCT discussion_posts.id, academic_allocations.allocation_tag_id AS at FROM discussion_posts
-        JOIN academic_allocations ON discussion_posts.academic_allocation_id = academic_allocations.id
-      ) discussion_posts ON discussion_posts.at = allocation_tags.id
+        SELECT COUNT(DISTINCT webconferences.id) AS count, academic_allocations.allocation_tag_id AS at  FROM webconferences
+        JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_tool_type = 'Webconference'
+        GROUP BY academic_allocations.allocation_tag_id
+      ) webconferences ON webconferences.at = allocation_tags.id 
       LEFT JOIN (
         SELECT DISTINCT chat_messages.id, academic_allocations.allocation_tag_id AS at FROM chat_messages
         JOIN academic_allocations ON chat_messages.academic_allocation_id  = academic_allocations.id
         WHERE message_type = 1
       ) chat_messages ON chat_messages.at = allocation_tags.id
-      LEFT JOIN (
-        SELECT DISTINCT log_actions.id, academic_allocations.allocation_tag_id AS at FROM log_actions
+      WHERE groups.id = #{group.id}
+      GROUP BY groups.id, assignments.count, webconferences.count, discussions.count, chat_rooms.count;
+    SQL
+
+    posts = Post.find_by_sql <<-SQL
+        SELECT COUNT(DISTINCT discussion_posts.id) AS count, academic_allocations.allocation_tag_id AS at FROM discussion_posts
+        JOIN academic_allocations ON discussion_posts.academic_allocation_id = academic_allocations.id
+        WHERE academic_allocations.allocation_tag_id IN (#{related_ats})
+        GROUP BY academic_allocations.allocation_tag_id
+    SQL
+    @posts = posts.first.try(:count)
+
+    web_access = LogAction.find_by_sql <<-SQL 
+        SELECT COUNT(DISTINCT log_actions.id) AS count, academic_allocations.allocation_tag_id AS at FROM log_actions
         JOIN academic_allocations ON academic_allocations.id = log_actions.academic_allocation_id
        WHERE log_actions.log_type = #{LogAction::TYPE[:access_webconference]}
-      ) log_actions ON log_actions.at = allocation_tags.id
-      LEFT JOIN (
-        SELECT DISTINCT allocations.user_id, allocations.allocation_tag_id AS at
+       AND academic_allocations.allocation_tag_id IN (#{related_ats})
+       GROUP BY academic_allocations.allocation_tag_id
+      SQL
+    @web_access = web_access.first.try(:count)
+
+    allocations = Allocation.find_by_sql <<-SQL 
+        SELECT COUNT(DISTINCT allocations.user_id) AS count, allocations.allocation_tag_id AS at
         FROM allocations
         JOIN profiles ON allocations.profile_id = profiles.id
         WHERE allocations.status = #{Allocation_Activated}
         AND cast(profiles.types & #{Profile_Type_Student} as boolean)
-        GROUP BY allocations.allocation_tag_id, allocations.user_id
-      ) allocations ON allocations.at = allocation_tags.id
-      WHERE groups.id = #{group.id}
-      GROUP BY groups.id;
+        AND allocations.allocation_tag_id IN (#{related_ats})
+        GROUP BY allocations.allocation_tag_id
     SQL
+    @allocations = allocations.first.try(:count)
 
     messages_to_responsible = Message.find_by_sql <<-SQL
      SELECT COUNT(DISTINCT messages.id) AS count FROM messages
@@ -219,7 +235,7 @@ module V1::GroupsH
       AND cast(um2.status & #{Message_Filter_Sender} as boolean)
       AND messages.allocation_tag_id IN (#{related_ats})
     SQL
-    @messages_to_responsible = messages_to_responsible.first.count
+    @messages_to_responsible = messages_to_responsible.first.try(:count)
 
     sent_assignments = SentAssignment.find_by_sql <<-SQL
      SELECT COUNT(DISTINCT sent_assignments.id) AS count
@@ -248,7 +264,7 @@ module V1::GroupsH
           )
         )
     SQL
-    @sent_assignments = sent_assignments.first.count
+    @sent_assignments = sent_assignments.first.try(:count)
   end
 
 end

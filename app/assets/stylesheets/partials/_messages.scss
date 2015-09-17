@@ -87,6 +87,9 @@
   /*background-color: #f9f9f9;*/
   height: 28px;
 }
+.message_line:not(.no_border){
+  border-bottom: 1px solid #D0D0D0;
+}
 
 .message_line_check {
   width: 12px; // FIXME: é 30 ou 12?
