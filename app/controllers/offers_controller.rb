@@ -55,9 +55,10 @@ class OffersController < ApplicationController
     else
       render :new
     end
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
-    request.format = :json
-    raise error.class
+    render_json_error(error, 'offers.error')
   end
 
   def update
@@ -80,14 +81,14 @@ class OffersController < ApplicationController
     @offers = Offer.where(id: params[:id].split(",").flatten)
     authorize! :destroy, Offer, on: @offers.map(&:allocation_tag).map(&:id)
 
+    @offers.map(&:can_destroy?)
     @offers.destroy_all
-
+   
     render json: {success: true, notice: t('offers.success.deleted')}
   rescue ActiveRecord::DeleteRestrictionError
     render json: {success: false, alert: t('offers.error.deleted')}, status: :unprocessable_entity
   rescue => error
-    request.format = :json
-    raise error.class
+    render_json_error(error, 'offers.error', 'deleted')
   end
 
   def deactivate_groups
@@ -114,7 +115,11 @@ class OffersController < ApplicationController
     def optional_authorize(method)
       at_c, at_uc = nil
       at_c  = AllocationTag.find_by_course_id(params[:offer][:course_id]).try(:id)                   unless params[:offer][:course_id].blank?
-      at_uc = AllocationTag.find_by_curriculum_unit_id(params[:offer][:curriculum_unit_id]).try(:id) unless params[:offer][:curriculum_unit_id].blank?
+      at_uc = if params[:offer][:curriculum_unit_id].blank? 
+        AllocationTag.joins(:curriculum_unit).joins("JOIN courses ON courses.name = curriculum_units.name AND courses.id = #{params[:offer][:course_id]}").first.try(:id) unless params[:offer][:course_id].blank? || params[:offer][:type_id].blank? || params[:offer][:type_id].to_i != 3
+      else
+        AllocationTag.find_by_curriculum_unit_id(params[:offer][:curriculum_unit_id]).try(:id) 
+      end
 
       if at_c.nil? && at_uc.nil?
         authorize! method, Offer

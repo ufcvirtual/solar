@@ -2253,6 +2253,7 @@ pt_BR:
       updated: Não foi possível atualizar oferta.
       deleted: Não foi possível deletar oferta.
       already_exist: já existe uma oferta com os dados informados
+      general_message: Não foi possível realizar a ação desejada
     list:
       type: Tipo
       course: Curso

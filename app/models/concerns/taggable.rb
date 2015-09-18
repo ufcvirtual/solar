@@ -5,15 +5,16 @@ module Taggable
 
   included do
     before_destroy :destroy_empty_modules, if: Proc.new { |ac| ac.respond_to?(:lesson_modules) }
-    before_destroy :can_destroy?
 
     after_create :allocation_tag_association
     after_create :allocate_profiles
-
+    
     has_one :allocation_tag, dependent: :destroy
 
     has_many :allocations, through: :allocation_tag
     has_many :users,       through: :allocation_tag
+
+    before_destroy :can_destroy?
 
     attr_accessor :user_id
   end
@@ -24,9 +25,10 @@ module Taggable
 
   def can_destroy?
     errors.add(:base, I18n.t(:dont_destroy_with_lower_associations)) if any_lower_association?
-    errors.add(:base, I18n.t(:dont_destroy_with_many_allocations))   if allocations.select("DISTINCT user_id").count > 1 # se possuir mais de um usuario alocado, nao deleta
+    errors.add(:base, I18n.t(:dont_destroy_with_many_allocations))   if allocations.where(status: Allocation_Activated).select("DISTINCT user_id").count > 1 # se possuir mais de um usuario ativo alocado, nao deleta
     # pode destruir somente se o conteudo for apenas um modulo de aula
-    errors.add(:base, I18n.t(:dont_destroy_with_content))            unless (academic_allocations.count == 0 or (academic_allocations.count == 1 and academic_allocations.where(academic_tool_type: 'LessonModule').any?))
+    errors.add(:base, I18n.t(:dont_destroy_with_content))            unless (academic_allocations.count == 0 || (academic_allocations.count == 1 && academic_allocations.where(academic_tool_type: 'LessonModule').any?))
+    raise false if errors.any?
     errors.empty?
   end
 

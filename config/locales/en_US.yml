@@ -2042,6 +2042,7 @@ en_US:
       updated: Offer wasn't updated.
       deleted: Offer wasn't deleted.
       already_exist: already exists an offer with informed data
+      general_message: It was not possible to execute action
     list:
       type: Type
       course: Course
