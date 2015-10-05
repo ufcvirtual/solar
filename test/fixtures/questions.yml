@@ -1,0 +1,41 @@
+question1:
+  id: 1
+  user_id: 14
+  enunciation: 'Quanto eh 1+1?'
+  type_question: 0
+  status: true
+
+question2:
+  id: 2
+  user_id: 14
+  enunciation: 'A capital do Cearah eh'
+  type_question: 0
+  status: true
+
+question3:
+  id: 3
+  user_id: 14
+  enunciation: 'Qual o resultado de 43x10?'
+  type_question: 0
+  status: true
+
+question4:
+  id: 4
+  user_id: 14
+  enunciation: 'Fulano tem 4 moedas de R$ 0,10. Quanto ele tem?'
+  type_question: 0
+  status: true
+
+question5:
+  id: 5
+  user_id: 14
+  enunciation: 'Qual a cor do cavalo branco de napoleao?'
+  type_question: 0
+  status: true
+
+question6:
+  id: 6
+  user_id: 14
+  enunciation: 'Pais q fazia parte do eixo na 2a guerra mundial'
+  type_question: 0
+  status: true

@@ -45,6 +45,10 @@ class ExamsController < ApplicationController
     render nothing: true, status: 500
   end
 
+  def open
+    render layout: false
+  end
+
 
   private
 

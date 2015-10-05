@@ -16,7 +16,8 @@
           %tr.lines{id: "tr_#{exam.id}"}
             %td
               %div
-                .title= exam.name
+                .title= link_to exam.name, open_exams_path(allocation_tags_ids: @allocation_tags_ids, exam_id: exam.id), :'data-tooltip' => exam.name, class: 'link_open_exam', id: 'open-exam'
+
                 .description
                   .minimun= raw(truncate exam.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                   .complete.invisible
@@ -29,3 +30,6 @@
   - else
     .block_content_text.block_content_text_list.text_none= t(:none, scope: [:exams] )
 
+:javascript
+
+  $(".link_open_exam").call_fancybox();

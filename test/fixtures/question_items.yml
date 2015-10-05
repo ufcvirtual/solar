@@ -1,0 +1,110 @@
+question_item1:
+  id: 1
+  question_id: 1
+  description: '101'
+  value: false
+
+question_item2:
+  id: 2
+  question_id: 1
+  description: '2'
+  value: true
+
+question_item3:
+  id: 3
+  question_id: 1
+  description: '7'
+  value: false
+
+
+question_item4:
+  id: 4
+  question_id: 2
+  description: 'manaus'
+  value: false
+
+question_item5:
+  id: 5
+  question_id: 2
+  description: 'recife'
+  value: false
+
+question_item6:
+  id: 6
+  question_id: 2
+  description: 'fortaleza'
+  value: true
+
+
+question_item7:
+  id: 7
+  question_id: 3
+  description: '430'
+  value: true
+
+question_item8:
+  id: 8
+  question_id: 3
+  description: '53'
+  value: false
+
+
+question_item9:
+  id: 9
+  question_id: 4
+  description: '53'
+  value: false
+
+question_item10:
+  id: 10
+  question_id: 4
+  description: '53'
+  value: false
+
+question_item11:
+  id: 11
+  question_id: 4
+  description: '50'
+  value: false
+
+question_item12:
+  id: 12
+  question_id: 4
+  description: '30'
+  value: false
+
+question_item13:
+  id: 13
+  question_id: 4
+  description: '40'
+  value: true
+
+question_item14:
+  id: 14
+  question_id: 5
+  description: 'cor rosa'
+  value: false
+
+question_item15:
+  id: 15
+  question_id: 5
+  description: 'cor bege'
+  value: false
+
+question_item16:
+  id: 16
+  question_id: 5
+  description: 'cor branca'
+  value: true
+
+question_item17:
+  id: 17
+  question_id: 6
+  description: 'japao'
+  value: true
+
+question_item17:
+  id: 17
+  question_id: 6
+  description: 'eua'
+  value: false
