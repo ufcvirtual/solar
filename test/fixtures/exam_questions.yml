@@ -1,0 +1,34 @@
+exam_question1:
+  id: 1
+  exam_id: 1
+  question_id: 1
+  score: 2
+  order: 1
+
+exam_question2:
+  id: 2
+  exam_id: 1
+  question_id: 3
+  score: 2
+  order: 2
+
+exam_question3:
+  id: 3
+  exam_id: 1
+  question_id: 4
+  score: 2
+  order: 3
+
+exam_question4:
+  id: 4
+  exam_id: 1
+  question_id: 2
+  score: 2
+  order: 4
+
+exam_question5:
+  id: 5
+  exam_id: 1
+  question_id: 5
+  score: 2
+  order: 5
