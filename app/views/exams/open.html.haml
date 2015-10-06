@@ -1,1 +1,19 @@
-= "#{params}"
+- unless @exam.nil?
+	%div= @exam.name
+	%div= @exam.duration
+	%div= @exam.number_questions
+
+	- exam_questions = questions(@exam.id).paginate(page: params[:page].nil? ? 1 :  params[:page])
+
+	- unless exam_questions.nil? or exam_questions.empty?
+		- exam_questions.each do |question|
+			%div= question.enunciation
+
+			- question_items = items(question.id)
+
+			- question_items.each do |item|	
+				%div= item.description
+
+		.message_div_navigation
+			= will_paginate exam_questions
+

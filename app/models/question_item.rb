@@ -11,4 +11,10 @@ class QuestionItem < ActiveRecord::Base
   has_attached_file :attachment,
                     path: ":rails_root/media/question/enunciation/item/:id_:basename.:extension",
                     url: "/media/question/enunciation/item/:id_:basename.:extension"
+
+	def self.list(question_id)
+  	QuestionItem.where(question_id: question_id)
+      .select('DISTINCT question_items.id, question_items.description, question_items.value')
+  end
+
 end

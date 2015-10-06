@@ -46,7 +46,7 @@ class ExamsController < ApplicationController
   end
 
   def open
-    render layout: false
+    @exam = Exam.find(params[:exam_id])
   end
 
 
