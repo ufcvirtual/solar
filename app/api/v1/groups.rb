@@ -169,7 +169,7 @@ module V1
             raise ActiveRecord::RecordNotFound if group.nil?
 
             @allocation_tag_id = group.allocation_tag.id
-            get_group_students_info(params, @allocation_tag_id, group)
+            get_group_students_info(@allocation_tag_id, group)
           end
         end # students_info
 
@@ -189,11 +189,35 @@ module V1
                          ).first
 
             raise ActiveRecord::RecordNotFound if group.nil?
-            get_group_info(params, group)
+            get_group_info(group)
             raise ActiveRecord::RecordNotFound if @group.blank?
             @group = @group.first
           end
         end # info
+
+        desc 'Recuperação de dados do responsavel com relacao a turma'
+        params do
+          requires :group_code, :semester, :course_code, :curriculum_unit_code, :cpf, type: String
+          requires :curriculum_unit_type_id, default: 2
+        end
+        get :responsible_info, rabl: 'groups/responsible_info' do
+          begin
+            user  = User.find_by_cpf(params[:cpf])
+            raise ActiveRecord::RecordNotFound if user.nil?
+
+            group = Group.joins(offer: [:semester, :course, :curriculum_unit])
+                         .where(code: params[:group_code], 
+                            semesters: { name: params[:semester] }, 
+                            curriculum_units: { code: params[:curriculum_unit_code], curriculum_unit_type_id: params[:curriculum_unit_type_id] },
+                            courses: { code: params[:course_code] }
+                         ).first
+            raise ActiveRecord::RecordNotFound if group.nil?
+
+            @allocation_tag_id = group.allocation_tag.id
+            get_group_responsible_info(user.id, @allocation_tag_id, group)
+          end
+        end # students_info
+
       end # group
 
     end # segment

@@ -14,6 +14,7 @@ node :info do |group|
     webconferences: group.count_webconferences,
     assignments: group.count_assignments,
     sent_assignments: @sent_assignments || 0,
-    students: @allocations || 0
+    students: @allocations || 0,
+    deactivated_students: @deactivated_allocations || 0 
   }
 end
