@@ -16,10 +16,6 @@ module ExamsHelper
     return I18n.t(:not_started)
   end
 
-  def questions(exam_id)
-    ExamQuestion.list(exam_id)
-  end
-
   def items(question_id)
     QuestionItem.list(question_id)
   end

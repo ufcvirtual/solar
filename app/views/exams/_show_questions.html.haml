@@ -1,0 +1,11 @@
+- @exam_questions.each do |question|
+	
+	%div= question.enunciation
+
+	- question_items = items(question.id)
+
+	- question_items.each do |item|	
+		%div= item.description
+
+.message_div_navigation
+	= will_paginate @exam_questions

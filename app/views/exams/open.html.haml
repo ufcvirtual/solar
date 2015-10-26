@@ -3,17 +3,19 @@
 	%div= @exam.duration
 	%div= @exam.number_questions
 
-	- exam_questions = questions(@exam.id).paginate(page: params[:page].nil? ? 1 :  params[:page])
+	- unless @exam_questions.nil?
+		.detail
 
-	- unless exam_questions.nil? or exam_questions.empty?
-		- exam_questions.each do |question|
-			%div= question.enunciation
+:javascript
 
-			- question_items = items(question.id)
+	$('.detail').html('#{escape_javascript( render :partial => 'exams/show_questions' )}');
 
-			- question_items.each do |item|	
-				%div= item.description
+	$(function() {		
+		$(".detail").on("click", ".pagination a", function(){
 
-		.message_div_navigation
-			= will_paginate exam_questions
-
+			var url = this.href;
+			$('.detail').load(url);
+		
+			return false;
+		});
+	});

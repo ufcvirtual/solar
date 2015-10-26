@@ -6,7 +6,7 @@ class ExamQuestion < ActiveRecord::Base
   accepts_nested_attributes_for :question
 
   def self.list(exam_id)
-  	ExamQuestion.joins(:question)
+  	question = ExamQuestion.joins(:question)
       .where(exam_questions: {exam_id: exam_id, annulled: false},
       	questions: {status: true})
       .select('DISTINCT exam_questions.question_id, exam_questions.score, exam_questions.order,
