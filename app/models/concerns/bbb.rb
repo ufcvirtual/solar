@@ -53,7 +53,7 @@ module Bbb
     else
       Webconference.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids, academic_tool_type: 'Webconference' }).where(query, initial_time, end_time, initial_time, end_time, initial_time, end_time)
     end
-    
+
     if (objs - [self]).any?
       errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.time_and_place"))
       raise false
