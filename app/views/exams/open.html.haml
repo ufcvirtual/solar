@@ -1,0 +1,21 @@
+- unless @exam.nil?
+	%div= @exam.name
+	%div= @exam.duration
+	%div= @exam.number_questions
+
+	- unless @exam_questions.nil?
+		.detail
+
+:javascript
+
+	$('.detail').html('#{escape_javascript( render :partial => 'exams/show_questions' )}');
+
+	$(function() {		
+		$(".detail").on("click", ".pagination a", function(){
+
+			var url = this.href;
+			$('.detail').load(url);
+		
+			return false;
+		});
+	});

@@ -45,6 +45,11 @@ class ExamsController < ApplicationController
     render nothing: true, status: 500
   end
 
+  def open
+    @exam = Exam.find(params[:exam_id])
+    @exam_questions = ExamQuestion.list(@exam.id).paginate(page: params[:page], per_page: 1) unless @exam.nil?
+  end
+
 
   private
 
