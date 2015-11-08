@@ -8,7 +8,7 @@ $(function(){
   $('#all_questions').nice_checkbox({
     objects_to_change_status: ['.export_question', '.change_status_ckb']
   });
-
+recuperar todo o conteúdo da primeira tela e repassar pra segunda
   $('#new_question').call_fancybox({
     width: '100px;'
   });
@@ -156,13 +156,6 @@ function go_to_items(){
   // CKEDITOR.editor.setReadOnly( false );
 
   // append_rich_text($('.question_question_items_description textarea:visible').prop('id'));
-
-// recuperar todo o conteúdo da primeira tela e repassar pra segunda
-// se ja existir, atualiza
-// se não existir, copia
-// se existir algum na segunda e não na primeira, apaga
-
-
 }
 
 function edit_item(object){
@@ -398,7 +391,6 @@ function append_rich_text(div) {
 function up_or_down(icon){
     var row = $(icon).parents("tr:first");
     var id1 = row.attr('exam_question_id');
-    console.log(row);
 
     var f_error = function(data){
       var data = $.parseJSON(data.responseText);
@@ -415,9 +407,7 @@ function up_or_down(icon){
       $.put(url, function(){ row.insertBefore(row.prev()); }).error(f_error);
 
     } else { // down
-      console.log(row.next().attr('order'));
       if (row.next().attr('order') == undefined) return false;
-
 
       var id2 = row.next().attr('exam_question_id');
       var url = $(icon).data('url').replace(':id1', id1).replace(':id2', id2);
