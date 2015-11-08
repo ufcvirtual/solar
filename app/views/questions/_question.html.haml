@@ -5,6 +5,7 @@
 - exams       = (question.respond_to?(:count_exams)  ? question.count_exams : question.exams.count)
 - labels      = (question.respond_to?(:labels)       ? question.labels.delete('NULL').split(',') : question.question_labels.map(&:name))
 - author_name = (question.respond_to?(:author_name)) ? question.author_name : question.user.name
+- updated_by_name = (question.respond_to?(:updated_by_name) ? question.updated_by_name : question.updated_by_user.try(:name))
 %tr.lines{ id: "tr_#{question.id}" }
   %td{ style: 'text-align:center;' }
     = check_box_tag('ckb_question', question.id, false, { class: 'ckb_question', :'data-can-delete' => can_delete, :'data-question-id' => question.id })
@@ -25,6 +26,7 @@
           = content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('.compress_enunciation'))
       .group_label= render 'labels', labels: labels
   %td{ style: 'text-align:center;', :'data-tooltip' => author_name }= author_name.truncate(50)
+  %td{ style: 'text-align:center;', :'data-tooltip' => updated_by_name }= updated_by_name.nil? ? '' : updated_by_name.truncate(50)
   %td{ style: 'text-align:center;' }= question.type
   %td{ style: 'text-align:center;' }= l(question.updated_at, format: :normal)
   %td{ style: 'text-align:center;' }= content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('.preview'))

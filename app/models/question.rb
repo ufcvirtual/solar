@@ -101,6 +101,7 @@ class Question < ActiveRecord::Base
               questions.updated_at,
               questions.privacy,
               authors.name                                        AS author_name,
+              updated_by.name                                     AS updated_by_name,
               COALESCE(COUNT(DISTINCT exam_questions.exam_id), 0) AS count_exams,
               (
                 SELECT COUNT(question_items.id)
@@ -114,14 +115,15 @@ class Question < ActiveRecord::Base
               )                                    AS has_images,
               replace(replace(translate(array_agg(distinct l2.name)::text,'{}', ''),'\"', ''),',',', ')                                  AS labels
               FROM questions
-              LEFT JOIN users AS authors ON questions.user_id = authors.id
-              LEFT JOIN exam_questions ON exam_questions.question_id = questions.id
+              LEFT JOIN users AS authors    ON questions.user_id = authors.id
+              LEFT JOIN users AS updated_by ON questions.updated_by_user_id   = updated_by.id
+              LEFT JOIN exam_questions      ON exam_questions.question_id     = questions.id
               LEFT JOIN question_labels_questions AS qlq1 ON qlq1.question_id = questions.id
               LEFT JOIN question_labels_questions AS qlq2 ON qlq2.question_id = questions.id
               LEFT JOIN question_labels           AS l1  ON l1.id = qlq1.question_label_id
               LEFT JOIN question_labels           AS l2  ON l2.id = qlq2.question_label_id
               #{query}
-              GROUP BY questions.id, questions.enunciation, questions.type_question, questions.status, questions.updated_at, questions.privacy, authors.name;
+              GROUP BY questions.id, questions.enunciation, questions.type_question, questions.status, questions.updated_at, questions.privacy, authors.name, updated_by.name;
     SQL
   end
 
