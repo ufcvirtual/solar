@@ -11,7 +11,7 @@
         - @posts.each do |post|
           %tr.lines
             %td.profile= sanitize post.content
-            %td.center= l(post.updated_at, format: :normal)
-            %td.center= l(post.updated_at, format: :clock_time)
+            %td.center= l(post.updated_at.to_datetime, format: :normal)
+            %td.center= l(post.updated_at.to_datetime, format: :clock_time)
   - else
     .block_content_text_list.text_none= t(".no_posts")
