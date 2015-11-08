@@ -140,6 +140,7 @@ class ExamQuestionsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
+    raise "#{error}"
     render_json_error(error, 'exam_questions.errors')
   end
 
