@@ -1,0 +1,94 @@
+= f.input :name
+= f.input :description, as: :ckeditor
+
+= f.simple_fields_for :schedule do |s|
+  .schedule_dates
+    .left
+      = s.input :start_date, as: :string, input_html: { id: 'exam_start_date', value: l(f.object.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
+    .right_form
+      = s.input :end_date, as: :string, input_html: { id: 'exam_end_date', value:  l(f.object.schedule.end_date.try(:to_date) || Date.today, format: :datepicker) }
+  
+  .schedule_dates.hour
+    .left
+      = f.input :start_hour
+    .right_form
+      = f.input :end_hour
+
+= f.input :duration
+
+= render 'groups/codes'
+
+.form-actions.right_buttons
+  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
+  = button_to_function t('.continue'), 'go_to_config()', class: 'btn btn_main btn_lightbox', alt: 'continuar', type: 'button'
+
+= javascript_include_tag 'ckeditor/init'
+
+:javascript
+  $(function(){
+    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+
+    CKEDITOR.editorConfig = function (config) {
+      config.toolbar =
+        [
+          { name: 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+          { name: 'insert', items : ['EqnEditor'] },
+          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
+          { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }
+        ];
+
+        config.extraPlugins = 'eqneditor,oembed';
+        config.resize_enabled = false;
+    };
+
+    $("#exam_start_date, #exam_end_date").mask("#{I18n.t('date.formats.mask')}");
+    $("#exam_start_hour").mask("99:99");
+    $("#exam_end_hour").mask("99:99");
+    $("#exam_duration").mask("999");
+
+    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
+    /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */
+    $('#exam_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#exam_end_date').datepicker("option", "minDate", selected); } }) );
+    $('#exam_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#exam_start_date').datepicker("option", "maxDate", selected); } }) );
+
+    /* se a data ficar vazia, recebe a data que veio ao carregar o formulário ou uma data permitida de acordo com a relação data final - data inicial */
+    $('#exam_end_date').blur(function(){
+      if ($(this).datepicker("getDate") == null)
+        $(this).datepicker("setDate", new Date(end_date));
+      //else
+      //  verify_dates();
+    });
+
+    $('#exam_start_date').blur(function(){
+      if($(this).datepicker("getDate") == null)
+        $(this).datepicker("setDate", new Date(start_date));
+      //else
+      //  verify_dates();
+    });
+
+    // evento de keypress do fancybox nao funciona pra esse form
+    $("form#exam_form .form-inputs").keypress(function(e) { if (e.which == 13) e.preventDefault(); });
+  });
+
+  // function verify_dates(){
+  //   if ($('#exam_end_date').datepicker("getDate") != $('#exam_start_date').datepicker("getDate"))
+  //         $('.schedule_dates.hour').addClass('invisible');
+  //       else
+  //         $('.schedule_dates.hour').removeClass('invisible');
+  // }
+
+  function save_exam() {
+    save_values_ckeditor();
+    $('form#exam_form').serialize_and_submit({
+      replace_list: $('.list_exams:last')
+    });
+  }
+
+  function go_to_config() {
+    $('.step-info').addClass('hidden');
+    $('.step-config').removeClass('hidden');
+    $('li.info').removeClass('active');
+    $('#dot-info').removeClass('active');
+    $('li.config').addClass('active');
+    $('#dot-config').addClass('active');
+  }

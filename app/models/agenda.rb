@@ -42,6 +42,11 @@ class Agenda
                 JOIN academic_allocations ON lower(academic_allocations.academic_tool_type) = 'lessonmodule' AND academic_allocations.academic_tool_id = lesson_modules.id AND academic_allocations.allocation_tag_id IN (#{allocation_tags.join(',')})
                 #{query} AND lessons.status = 1 AND lessons.address IS NOT NULL
             SQL
+          elsif table == 'exams'
+            sql_each << <<-SQL
+                JOIN academic_allocations ON lower(academic_allocations.academic_tool_type) = replace(regexp_replace('#{table}', 's$', ''), '_', '') AND academic_allocations.academic_tool_id = tb.id AND academic_allocations.allocation_tag_id IN (#{allocation_tags.join(',')})
+                #{query} AND exams.status = 1
+            SQL
           else
             sql_each << <<-SQL
                 JOIN academic_allocations ON lower(academic_allocations.academic_tool_type) = replace(regexp_replace('#{table}', 's$', ''), '_', '') AND academic_allocations.academic_tool_id = tb.id AND academic_allocations.allocation_tag_id IN (#{allocation_tags.join(',')})

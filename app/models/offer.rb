@@ -31,14 +31,14 @@ class Offer < ActiveRecord::Base
   validate :define_curriculum_unit, if: "!course.nil? && type_id == 3"
   validate :check_period, :must_be_unique
 
-  accepts_nested_attributes_for :period_schedule, :enrollment_schedule, reject_if: proc { |s| s[:start_date].blank? and s[:end_date].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :period_schedule, :enrollment_schedule, reject_if: proc { |s| s[:start_date].blank? && s[:end_date].blank? }, allow_destroy: true
 
   attr_accessor :type_id, :verify_current_date
 
   def must_be_unique
     equal_offers = Offer.find_all_by_course_id_and_curriculum_unit_id_and_semester_id(course_id, curriculum_unit_id, semester_id)
     errors_to = (type_id == 3 ? :course : :curriculum_unit_id)
-    errors.add(errors_to, I18n.t(:already_exist, scope: [:offers, :error])) if (@new_record and equal_offers.size > 0) or ((not equal_offers.empty?) and equal_offers.first.try(:id) != self.id)
+    errors.add(errors_to, I18n.t(:already_exist, scope: [:offers, :error])) if (@new_record && equal_offers.size > 0) || ((!equal_offers.empty?) && equal_offers.first.try(:id) != self.id)
   end
 
   def define_curriculum_unit
@@ -48,9 +48,9 @@ class Offer < ActiveRecord::Base
   end
 
   def check_period
-    self.period_schedule.check_end_date = true if period_schedule and period_schedule.start_date
+    self.period_schedule.check_end_date = true if period_schedule && period_schedule.start_date
     unless verify_current_date == false
-      self.period_schedule.verify_current_date = true if period_schedule
+      self.period_schedule.verify_current_date     = true if period_schedule
       self.enrollment_schedule.verify_current_date = true if enrollment_schedule
     end
   end
@@ -81,7 +81,7 @@ class Offer < ActiveRecord::Base
 
   def enrollment_end_date
     # a oferta pode ou nao ter uma data final para periodo de matricula
-    if enrollment_schedule_id.nil? or enrollment_schedule.end_date.nil? # se o periodo de matricula na oferta for nulo
+    if enrollment_schedule_id.nil? || enrollment_schedule.end_date.nil? # se o periodo de matricula na oferta for nulo
       semester.enrollment_schedule.end_date || semester.offer_schedule.end_date # o periodo no semestre será utilizado
     else
       enrollment_schedule.end_date
@@ -143,7 +143,7 @@ class Offer < ActiveRecord::Base
   # More accesses on the last 3 weeks > Have groups > Offer name ASC
   ##
   def self.offers_info_from_user(user)
-    allocations_info = Offer.currents({object: true, user_id: user.id, profiles: user.profiles_with_access_on("show", "curriculum_units", nil, true)}).collect{ |offer|
+    allocations_info = Offer.currents({ object: true, user_id: user.id, profiles: user.profiles_with_access_on('show', 'curriculum_units', nil, true) }).collect{ |offer|
       at  = offer.allocation_tag
       ats = at.related
       uc  = offer.curriculum_unit

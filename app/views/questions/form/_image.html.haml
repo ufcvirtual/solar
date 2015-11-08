@@ -1,0 +1,10 @@
+#images
+  = f.nested_fields_for :question_images, wrapper_tag: :div do |img|
+    .duplicatable_nested_form
+      = img.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
+      / .inline
+      = img.input :image, as: :file
+      / .label= img.label :legend
+      = img.input :legend, as: :text
+      / .label= img.label :img_alt
+      = img.input :img_alt, label: false

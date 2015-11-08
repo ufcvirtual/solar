@@ -2,15 +2,15 @@ module ExamsHelper
 
   def grade(exam_id)    
     exam = ExamUser.where(academic_allocation_id: exam_id, user_id: current_user.id)
-    unless exam.nil? or exam.empty?
+    unless exam.nil? || exam.empty?
     	return exam.grade
     end
-    return "-"
+    return '-'
   end
 
   def status(exam_id)
     exam = ExamUser.where(academic_allocation_id: exam_id, user_id: current_user.id)
-    unless exam.nil? or exam.empty?
+    unless exam.nil? || exam.empty?
     	exam.complete? ? I18n.t(:ended) : I18n.t(:not_ended)
     end
     return I18n.t(:not_started)

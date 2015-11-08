@@ -1,0 +1,38 @@
+- @questions.each do |question|
+  - exam = (question.respond_to?(:exam_id) ? Exam.find(question.exam_id) : @exam)
+  - schedule = @exam.nil? ? nil : @exam.schedule
+  %tr.lines{ :'data-id' => question.id, :'data-exam-id' => exam.id }
+    %td.icon
+      .lesson_arrows
+        .lesson_arrow_up= link_to_function image_tag('lesson/up_arrow.png'), 'up(this)'
+        .lesson_arrow_down= link_to_function image_tag('lesson/down_arrow.png'), 'down(this)'
+    %td= exam.name
+    %td= question.enunciation
+    %td= question.type
+    %td= exam.allocation_tag_info
+    %td= number_field_tag "score_#{question.id}", (question.respond_to?(:score) ? question.score : 0.0), { min: 0, max: 10 }
+    %td= link_to_function content_tag(:i, nil, class: 'icon-eye'), 'open_lesson(this);', :'data-tooltip' => t('.preview_tooltip')
+    %td.icon= link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_question(this);', :'data-tooltip' => t('.delete')
+    = hidden_field_tag "exam_#{question.id}", exam.id
+
+= javascript_include_tag 'tooltip'
+
+:javascript
+  $(function(){
+    $('[id^="score_"]').mask("#0.00",{reverse: true});
+  });
+
+  function remove_question(icon){
+    var tr = $(icon).parents('tr');
+    enable_previous_selected_questions(tr.data('id'), tr.data('exam-id'));
+    tr.remove();
+    if(!$('tbody.questions_to_import tr:visible').length)
+      $('tbody.questions_to_import tr.text_none').show();
+  }
+
+  function enable_previous_selected_questions(id, exam_id){
+    var tr = $('.questions_import #exam_'+exam_id+' #tr_'+id);
+    if(!!tr.length)
+      $(tr).removeClass('disabled').find('input:input').prop('disabled', false).removeClass('disabled');
+  }
+

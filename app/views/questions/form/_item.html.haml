@@ -1,0 +1,43 @@
+#items
+  = f.nested_fields_for :question_items, wrapper_tag: :div do |i|
+    .duplicatable_nested_form
+      .add= link_to_function content_tag(:i, nil, class: 'icon-checkmark'), 'add_item(this)'
+      = i.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
+      .edit= link_to_function content_tag(:i, nil, class: 'icon-edit '), 'edit_item(this)'
+      .inline
+        = i.check_box :value
+        = i.select :value, ([ ['V', true], ['F', false]]), include_blank: false
+        .label= i.label :description
+        = i.input :description, label: false#, as: :ckeditor
+        = i.input :item_image, as: :file
+        = i.input :img_alt
+        = i.input :comment
+
+= javascript_include_tag 'ckeditor/init'
+
+:javascript
+  $(function(){
+    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+
+    CKEDITOR.editorConfig = function (config) {
+      config.toolbar =
+        [
+          { name: 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+          { name: 'insert', items : ['EqnEditor'] },
+          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
+          { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }
+        ];
+
+        config.extraPlugins = 'eqneditor,oembed';
+        config.resize_enabled = false;
+        config.height = '80px';
+    };
+
+    $("#items").on("fields_added.nested_form_fields", function(event) {
+      verify_box();
+    });
+
+    //$('.question_question_items_description [id^="question_question_items_attributes_"]').ckeditor();
+
+    //append_rich_text('question_enunciation');
+  });

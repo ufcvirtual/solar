@@ -1,4 +1,27 @@
-.block_wrapper.list_exams{:"data-link-list" => questions_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
-  .block_title
-    %h2= t(:title, scope: [:exam])
+.questions
+  .block_wrapper.search
+    .block_title
+      %h2= t('.search')
+
+    = render partial: 'search', locals: { path: search_questions_path }
+
+  .block_wrapper.list_questions
+    .block_title
+      %h2= t('.title', count: @questions.count)
+
+    .block_content_toolbar
+      .block_toolbar_left.btn-group
+        = link_to content_tag(:i, nil, class: 'icon-plus'), new_question_path, class: 'btn btn_main fancybox.ajax', id: 'new_question', :"data-tooltip" => t('.new')
+      .block_toolbar_right
+        .btn-group
+          = link_to_function (content_tag(:i, nil, class: 'icon-checkmark')), "change_status(this, '')", class: 'btn change_status_ckb', :'data-url' => publish_question_path(':id'), disabled: true, :"data-tooltip" => t('.checkmark')
+          = link_to_function (content_tag(:i, nil, class: 'icon-export')), 'export_questions(this)', class: 'btn export_question', :'data-link-to-export' => export_steps_exam_question_path(':id'), disabled: true, :"data-tooltip" => t('.export')
+          = link_to_function (content_tag(:i, nil, class: 'icon-popup')), "copy_question(this, '')", class: 'btn btn_copy', :'data-link-to-copy' => copy_question_path(':id'), :'data-edit-title' => t('.copy'), disabled: true, :"data-tooltip" => t('.copy')
+          = link_to_function (content_tag(:i, nil, class: 'icon-edit')), "edit_question(this, '')", class: 'btn btn_edit', :'data-link-to-edit' => edit_question_path(':id'), :'data-edit-title' => t('.edit'), disabled: true, :"data-tooltip" => t('.edit')
+          = link_to_function (content_tag(:i, nil, class: 'icon-trash')), 'delete_question(this)', class: 'btn btn_del', :'data-link-delete' => question_path(':id'), disabled: true, :'data-tooltip' => t('.delete')
+
+    .questions_content
+      = render partial: 'questions'
+
+= javascript_include_tag 'questions'
 

@@ -10,7 +10,7 @@
       %th.center.no_sort= t('lessons.list.acceptance')
   %tbody
     - lessons.each_with_index do |lesson, idxl|
-      %tr.lines{lesson_name: lesson.name, lesson_id: lesson.id, lesson_order: lesson.order, lesson_status: lesson.status}
+      %tr.lines{ lesson_name: lesson.name, lesson_id: lesson.id, lesson_order: lesson.order, lesson_status: lesson.status }
         %td.center
           = check_box_tag( "m_#{lesson_module.id}", lesson.id, false, { class: "m_#{lesson_module.id}", :"data-file-type" => lesson.is_file? })
         %td.center{ style: 'width: 50px;' }

@@ -58,6 +58,8 @@ gem "strong_parameters", "~> 0.2.3"
 
 gem 'hairtrigger', '~> 0.2.12' # triggers
 
+gem 'nested_form_fields'
+
 
 group :development do
   gem "rb-readline", "~> 0.5.1"

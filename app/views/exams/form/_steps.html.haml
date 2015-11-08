@@ -1,0 +1,20 @@
+.new_exam
+  = simple_form_for(@exam, html: { id: 'exam_form' }) do |f|
+    %span.form_requirement= t(:required_fields)
+    %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit_exam : :new_exam), scope: [:exams, :list])
+
+    .form-inputs.block_content
+      = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+      .form-inputs.block_content
+        #steps
+          %ul
+            %li.info.active
+              = t('.info')
+              .dot.active#dot-info
+            %li.config
+              = t('.config')
+              .dot#dot-config
+        .step-info
+          = render partial: 'exams/form/info', locals: { f: f }
+        .step-config.hidden
+          = render partial: 'exams/form/config', locals: { f: f }

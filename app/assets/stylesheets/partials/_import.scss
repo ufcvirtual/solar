@@ -1,0 +1,65 @@
+.import_something{
+  .block_content{
+    margin-top: 0px;
+    padding-top: 1px;
+    background-color: #ffffff;
+  }
+
+  .block_title{
+    span.form_requirement.original_lesson{
+      padding-top: 12px;
+    }
+  }
+  
+  #steps{
+    width: auto;
+    margin: 20px;
+  }
+  .edition block_content{
+    margin: 10px;
+  }
+
+  .block_content_toolbar{
+    min-height: 25px;
+  }
+
+  .step-conclude, .step-preview{
+    display: none;
+  }
+
+  .step-preview{
+    min-height: 400px;
+    iframe{
+      min-height: 390px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .step-list{
+    span.add_something{
+      float: left;
+      margin-left: 70%;
+    }
+    tr.disabled, [id^='exam_'].disabled{
+      i, label{
+        color: #B4B2B1;
+      }
+      .collection_check_boxes{
+        background-color: #B4B2B1;
+      }
+    }
+    .text_none.disabled{
+      color: #B4B2B1;
+    }
+  }
+
+  table{
+    td.icon{
+      text-align: center;
+      a{
+        text-decoration: none;
+      }
+    }
+  }
+
+}

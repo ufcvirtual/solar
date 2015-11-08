@@ -1,0 +1,34 @@
+- @questions.each do |question|
+  - @exams.each do |exam|
+    %tr.lines{ :'data-id' => exam.id }
+      %td= exam.name
+      %td= question.enunciation
+      %td= question.type
+      %td= exam.allocation_tag_info
+      %td{ style: 'text-align:center;' }= question.privacy? ? content_tag(:i, nil, class: 'icon-lock', :'data-tooltip' => t('questions.question.private')) : content_tag(:i, nil, class: 'icon-minus', :"data-tooltip" => t('questions.question.public'))
+      %td= number_field_tag "score_#{exam.id}", 0.00, { min: 0, max: 10 }
+      = hidden_field_tag "question_#{exam.id}", question.id
+      %td.icon= link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_exam(this);', :'data-tooltip' => t('lessons.import.conclude.delete')
+      = hidden_field_tag "exam_#{question.id}", exam.id
+
+= javascript_include_tag 'tooltip'
+
+:javascript
+  $(function(){
+    $('[id^="score_"]').mask("#0.00",{reverse: true});
+  });
+
+  function remove_exam(icon){
+    var tr = $(icon).parents('tr');
+    enable_previous_selected_exams(tr.data('id'));
+    tr.remove();
+    if(!$('tbody.exams_to_export_to tr:visible').length)
+      $('tbody.exams_to_export_to tr.text_none').show();
+  }
+
+  function enable_previous_selected_exams(id){
+    var tr = $('.questions_export #exam_'+id);
+    if(!!tr.length)
+      $(tr).removeClass('disabled').find('input:input').prop('disabled', false).removeClass('disabled');
+  }
+

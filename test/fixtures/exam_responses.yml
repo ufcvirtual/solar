@@ -1,0 +1,17 @@
+examuser1_question1_response1:
+  id: 1
+  exam_user_id: 1
+  question_item_id: 2
+  value: true
+
+examuser1_question2_response1:
+  id: 2
+  exam_user_id: 1
+  question_item_id: 6
+  value: true
+
+examuser1_question2_response2:
+  id: 3
+  exam_user_id: 1
+  question_item_id: 7
+  value: true

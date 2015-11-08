@@ -205,6 +205,9 @@ pt_BR:
       exam: Prova
       lesson_note: Nota de aula
       assignment_webconference: Trabalho com Webconferência
+      question: Questão
+      question_item: Item
+      question_image: Imagem
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -293,6 +296,22 @@ pt_BR:
         duration: "Duração (min)"
         start_hour: Horário
         end_hour: à
+        random_questions: Questões aleatórias
+        raffle_order: Sortear a ordem das questões
+        auto_correction: Autocorreção
+        number_questions: Quantidade de questões na prova
+        attempts: Definir quantidade de vezes que o aluno pode refazer a prova
+        result_email: Enviar resultado por email
+        attempts_correction: Modo de cálculo de nota
+        block_content: Bloquear conteúdo do Solar durante a prova
+      question_item:
+        img_alt: Alt
+        item_image: Imagem
+        comment: Comentário
+      question_image:
+        image: Imagem
+        legend: Legenda
+        img_alt: Alt
       exam_user:
         grade: Nota
       exam_question:
@@ -404,6 +423,8 @@ pt_BR:
         initial_time: Data
         duration: Duração
         is_recorded: Gravar
+      question_item:
+        description: Descrição
 
     errors:
       uniqueness: "Registro já existe no sistema"
@@ -740,40 +761,6 @@ pt_BR:
   external_link: "De um link externo"
   url: "Digite aqui a URL da imagem no campo de texto acima."
   send: "Enviar"
-
-  # Prova"
-  exams:
-    title: Provas disponíveis
-    not_started: Não iniciada
-    not_ended: Não Concluída
-    ended: Concluída
-    status: Situação
-    none: "Nenhuma prova cadastrada"
-    list:
-      new_exam: Nova Prova
-      edit_exam: Editar Prova
-      delete_exam: Deletar Prova
-      config_exam: Configurar Prova
-      none: Nenhuma questão cadastrada
-    success:
-      created: Prova criada com sucesso.
-      updated: Prova atualizada com sucesso.
-      deleted: Prova deletada com sucesso.
-
-  # Questões"
-  questions:
-    label: Palavras-Chave
-    list:
-      new_question: Nova questão
-      edit_question: Editar questão
-    new:
-      type_question: Tipo
-      unique_choice: Escolha única
-      multiple_choice: Múltipla escolha
-      true_or_false: V ou F
-    form:
-      add_alternative: Adicionar alternativa
-      question_item: Alternativa
 
   # página de matrícula"
   enrollments:
@@ -1438,6 +1425,7 @@ pt_BR:
   menu_edition: Edição
   menu_academic_edition: Acadêmico
   menu_content_edition: Conteúdo
+  menu_repositories: Repositórios
   menu_admin_user: "Gerência de Usuários"
   menu_admin_approval: Aprovação de perfis
   menu_admin_lessons: Consultar Aulas
@@ -1810,7 +1798,7 @@ pt_BR:
       title: Enviar novo arquivo
     error:
       download: Não foi possível realizar o download
-      date_range: Não foi possível realizar ação. Período encerrado.
+      date_range_expired: Não foi possível realizar ação. Período encerrado.
       remove: Não foi possível deletar arquivo
       new: Não foi possível enviar arquivo.
     success:
@@ -2184,6 +2172,9 @@ pt_BR:
       semester: "Semestre"
       offer: "Oferta"
       group: "Turma"
+    repositories:
+      questions: Banco de questões
+      questions_desc: 'Repositório no qual questões sobre diversos tópicos podem ser criadas, armazenadas, editadas, removidas ou publicadas.'
 
   curriculum_units:
     success:
@@ -2879,3 +2870,259 @@ pt_BR:
       delete: Remover
       aw_yes: Sim
       aw_no: Não
+
+  exams:
+    title: Provas disponíveis
+    not_started: Não iniciada
+    not_ended: Não Concluída
+    ended: Concluída
+    status: Situação
+    none: "Nenhuma prova cadastrada"
+    list:
+      new_exam: Nova Prova
+      edit_exam: Editar Prova
+      delete_exam: Deletar Prova
+      config_exam: Configurar Prova
+      none: Nenhuma questão cadastrada
+      preview_exam: Visualizar prova
+      new: Nova questão
+      import: Importar questão(ões)
+      import_q_e: Importar questões e provas
+      published: Despublicar prova
+      unpublished: Publicar prova
+      to: ' à '
+      draft_exam: Prova em modo rascunho
+      period: "Aplicada em %{period}"
+      amount_questions: "%{added} adicionadas de %{amount} questões"
+    success:
+      created: Prova criada com sucesso
+      updated: Prova atualizada com sucesso
+      deleted: Prova deletada com sucesso
+      status: Status da prova alterado com sucesso
+    index:
+      description: Descrição
+      availability: Disponibilidade
+      duration: Duração
+      status: Situação
+      grade: Nota
+      min: min
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
+    situation:
+      not_started: Não iniciada
+      to_answer: A responder
+      not_finished: Não concluída (%{count}%)
+      finished: Concluída
+      corrected: Corrigida
+      not_answered: Não respondida
+    form:
+      config:
+        greater: Maior nota
+        avarage: Média das notas
+        last: Última nota
+        previous: Anterior
+      steps:
+        info: Informações
+        config: Configurações
+      info:
+        continue: Continuar
+    error:
+      general_message: Não foi possível realizar a ação desejada
+      started: Prova já publicada e iniciada
+      has_answers: Prova já possui respostas
+      minimum_questions: Número de questões da prova é menor do que o definido nas configurações
+      cant_be_smaller: não pode ser menor
+      hour_later: não pode ser mais tarde
+      hour_earlier: não pode ser mais cedo
+      cant_change: não pode ser alterado
+      before_today: não pode ser anterior ao dia de hoje
+      same_day: só pode ser definido para o mesmo dia
+      already_exists: Não é possível repetir questões em uma prova
+      imported: 'Esta prova foi importada, é necessário editá-la para realizar a publicação'
+      change_period: Altere o período para publicar a prova
+    show:
+      groups: Turmas
+      empty_group: Turma vazia
+      name: Nome
+      description: Descrição
+      time: Horário
+      to: " às "
+      start_date: Período
+      end_date: à
+      exam_details: Detalhes da prova
+      attempts: Quantidade de tentativas
+      attempts_correction: Cálculo de nota
+
+  questions:
+    index:
+      title: Banco de questões (%{count} encontradas)
+      new: Nova questão
+      edit: Editar questão
+      export: Exportar questões
+      delete: Remover questões
+      checkmark: Publicar questões
+      copy: Copiar e editar questão
+    search:
+      only_owner: Minhas questões
+      enun: Enunciado
+      label: Palavra-Chave
+      year: Ano da última alteração
+      year_hint: 'ex: 2012'
+      label_hint: 'ex: biologia'
+      author_hint: 'ex: Fulano da Silva'
+      enun_hint: 'ex: questão 1'
+      author: Autor
+      search: Busca
+    questions:
+      labels: Palavras-Chave
+      enun: Enunciado
+      author: Autor
+      updated_by: Atualizado por
+      type: Tipo
+      updated_at: Ultima alteração em
+      preview: Visualização
+      privacy: Privacidade
+      published: Publicado
+      used_at_exams: Usada em provas
+      none: Nenhuma questão encontrada
+    question:
+      preview: Visualização
+      public: Pública
+      private: Privada
+      expand_enunciation: Expandir enunciado
+      compress_enunciation: Comprimir enunciado
+      has_items: Possui %{count} itens
+      has_images: Possui imagens
+      images: Imagens
+    types:
+      unique_choice: Escolha única
+      multiple_choice: Múltipla escolha
+      true_or_false: V ou F
+    new:
+      type_question: Tipo
+      unique_choice: Escolha única
+      multiple_choice: Múltipla escolha
+      true_or_false: V ou F
+      private: Privada
+      public: Pública
+      privacy: Privacidade
+    form:
+      add_alternative: Adicionar alternativa
+      question_item: Alternativa
+      new: Nova questão
+      edit: Editar questão
+      steps:
+        info: Informações
+        items: Itens
+        new: Nova questão
+        edit: Editar questão
+      items:
+        answer: 'Resposta*'
+        add: Adicionar mais opções
+      info:
+        continue: Prosseguir
+        add_images: Adicionar mais imagens
+    labels:
+      labels: 'palavras-chave: '
+    error:
+      in_use: A prova já foi publicada e iniciada
+      min_items: É preciso ter, ao menos, 3 itens
+      correct_item: É preciso ter ao menos um item correto
+      only_one_true_item: Para este tipo de questão, apenas um item correto é permitido
+      private: Questão é privada, não é possível realizar a ação desejada.
+      min_public_questions: A cada questão pública criada, você pode criar 10 privadas. Ao ultrapassar este limite, você não tem acesso a questões públicas de demais autores. O limite foi ultrapassado.
+      draft: Questão ainda como rascunho.
+      max_images: pode ter, no máximo, 4 imagens
+      general_message: Não foi possível realizar a ação desejada
+      permission: Você não tem permissão para realizar esta ação
+    success:
+      deleted: Questões removidas com sucesso
+      change_status: Situação alterada com sucesso
+
+  exam_questions:
+    import:
+      conclude:
+        title: Importar questões/provas
+        order: Ordem
+        exam: Prova
+        enun: Enunciado da questão
+        type: Tipo
+        source: Origem
+        score: Pontuação*
+        preview: Ver
+        back: Voltar
+        import: Importar
+        delete: Não importar questões(s)
+        no_question: Nenhuma questão a ser importada
+      question:
+        preview_tooltip: Visualizar questão
+        delete: Remover
+      list:
+        name: Nome
+        preview: Ver
+        added: "Questão(ões) adicionada(s) à lista de importação. Para visualizar todas as aulas adicionadas, clique em 'Finalizar'."
+        add: Adicionar para lista de importação
+      steps:
+        title: Importação de questões/prova
+        choose: Escolher questões
+        conclude: Finalizar
+        back: Voltar
+        search_repository: Pesquisar questões no banco de questões
+        search_filter: Pesquisar por provas e questões
+        add: Adicionar para lista de importação
+        added: Questão(ões) adicionada(s) com sucesso
+    errors:
+      import_empty: É necessário escolher ao menos uma questão para adicionar
+      double: Todas as questões selecionadas já foram adicionadas anteriormente
+      double_export: Todas as provas selecionadas já foram adicionadas anteriormente
+      already_started: A prova já foi publicada e iniciada
+      cant_undo: Uma vez a questão anulada, não pode ser desfeito
+      has_to_start: A prova deve ter iniciado para que a questão seja anulada. Até lá, edite ou remova a questão da prova.
+      general_message: Não foi possível realizar a ação desejada
+      bank_without_exam: Não é possível importar questões com suas provas ao usar questões do banco de questões
+      import_empty: É necessário selecionar questões para importação
+      export_empty: É necessário selecionar provas como destino da exportação
+      private: Questão é privada, não é possível realizar a ação desejada.
+      already_exists: Não é possível repetir questões em uma prova
+    export:
+      conclude:
+        title: Exportar questões
+        order: Ordem
+        exam: Prova
+        enun: Enunciado da questão
+        type: Tipo
+        source: Destino
+        score: Pontuação
+        back: Voltar
+        export: Exportar
+        delete: Não exportar questão(ões)
+        no_question: Nenhuma prova para a qual exportar questões
+      question:
+        preview: Ver aula
+        delete: Remover
+      list:
+        add: Adicionar para lista de exportação
+      steps:
+        title: Exportar questões
+        choose: Escolher provas
+        conclude: Finalizar
+        back: Voltar
+        added: Prova(s) adicionada(s) com sucesso
+    success: 
+      exported: Questões exportadas com sucesso
+      imported: Questões importadas com sucesso
+      deleted: Questões removidas da prova com sucesso
+      annulled: Questão anulada com sucesso
+      imported_with_exam: Questões importadas com sucesso. Provas importadas só poderão ser publicadas após edição.
+    list:
+      annul: Anular
+      delete: Remover questões da prova
+      edit: Editar questão
+      publish: Publicar questões
+    confirm:
+      annul: Tem certeza de que deseja anular esta questão? Esta ação não pode ser desfeita. 
+      status_exam: Tem certeza de que deseja alterar o status da prova?
+      delete: Tem certeza de que deseja remover estas questões desta prova?
+      delete_question: Tem certeza de que deseja remover estas questões?
+      status: Tem certeza de que deseja alterar o status da(s) questão(ões)?
+      copy: 'Tem certeza? Ao copiar uma questão dentro da prova, a original será anulada.'

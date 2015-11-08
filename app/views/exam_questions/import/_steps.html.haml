@@ -1,0 +1,171 @@
+.import_something.questions
+  .flash_message_wrapper
+  .block_title
+    %h2
+      %i.icon-book2
+      = t('.title')
+    %span.form_requirement= t(:required_fields)
+  .block_content
+    
+    #steps
+      %ul
+        %li.active
+          = t('.choose')
+          .dot.active#dot-choose-lessons
+        %li
+          = t('.conclude')
+          .dot#dot-conclude
+
+    .step-list
+      .radio
+        = label_tag 'search_method_0', t('.search_repository')
+        = radio_button_tag :search_method, 0, !@exam_id.zero?, disabled: @exam_id.zero?
+        = label_tag 'search_method_1', t('.search_filter')
+        = radio_button_tag :search_method, 1, @exam_id.zero?
+      %span.search{ class: "#{@exam_id.zero? ? 'invisible' : ''}" }
+        = render partial: 'questions/search', locals: { path: search_questions_path(verify_privacy: true) }
+      %span.filter{ class: "#{@exam_id.zero? ? '' : 'invisible'}" }
+        = render partial: 'exam_questions/import/filter', locals: { types: @types }
+      .questions_content.questions_import
+      %span.add_lesson.0{ class: "#{@exam_id.zero? ? 'invisible' : ''}" }
+        = link_to_function t('.add'), 'add_questions(0)', class: 'btn btn_main', alt: t('.add')
+      .right_buttons
+        = link_to_function t('.conclude'), 'go_to_conclude()', class: 'btn btn_main conclude', alt: t('.conclude')
+
+    .step-preview
+      .content-preview
+      .right_buttons
+        = link_to_function t('.back'), 'slideBack()', class: 'btn', alt: t('.back')
+
+    .step-conclude
+      = render partial: 'exam_questions/import/conclude', locals: { allocation_tags_ids: @ats, exam_id: @exam_id }
+
+:javascript
+  function slideBack(){
+    $('.step-preview').hide('slide', { direction: 'left' }, 500);
+
+    if($('#steps li:last').hasClass('active')){
+      $('.step-conclude').show('slide', { direction: 'left' }, 500);
+      $('.step-list').hide('slide', { direction: 'left' }, 500);
+    }else{
+      $('.step-conclude').hide('slide', { direction: 'left' }, 500);
+      $('.step-list').show('slide', { direction: 'left' }, 500);
+    }
+    
+  }
+
+  function back_to_list(){
+    $('.step-preview').hide('slide', { direction: 'left' }, 500);
+    $('.step-conclude').hide('slide', { direction: 'left' }, 500);
+    $('.step-list').show('slide', { direction: 'left' }, 500);
+    $('#steps li:first').addClass('active');
+    $('#steps li:first .dot').addClass('active');
+    $('#steps li:last').removeClass('active');
+    $('#steps li:last .dot').removeClass('active');
+  }
+
+  function open_lesson(icon){
+    $.get("#{import_preview_lessons_path}", { id: $(icon).parents('tr').data('id') }, function(data){
+      $('.step-list').hide('slide', { direction: 'left' }, 500);
+      $('.step-conclude').hide('slide', { direction: 'left' }, 500);
+      $('.step-preview .content-preview').html(data);
+      $('.step-preview').show('slide', { direction: 'left' }, 500);
+    });
+  }
+
+  function add_questions(search_method){
+    var ids = $('.questions_import tbody input.ckb_question:checked').map(function() { return parseInt($(this).data('question-id')); }).get();
+
+    if(!ids.length){
+      flash_message("#{I18n.t('exam_questions.errors.import_empty')}", 'alert');
+      return true;
+    }
+
+    // don't add toif already exists
+    if(!!$('tbody.questions_to_import tr').length){
+      var existing_ids = $('tbody.questions_to_import tr');
+      $.each(existing_ids, function(j){
+        var i = ids.indexOf($(existing_ids[j]).data('id'));
+
+        var c_questions = $('.questions_import #exam_'+$(existing_ids[j]).data('exam-id')+' tbody input.ckb_question[data-question-id='+$(existing_ids[j]).data('id')+']:checked');
+
+        if(i != -1 && !!c_questions.length)
+          ids.splice(i, 1);
+      });
+    }
+
+    if(!ids.length){
+      flash_message("#{I18n.t('exam_questions.errors.double')}", 'alert')
+      return false;
+    }
+
+    var ids = $('.questions_import tbody input.ckb_question:checked').map(function() { return parseInt(this.value); }).get();
+
+    $.get("#{import_details_exam_questions_path}", {ids: ids, search_method: search_method, exam_id: #{@exam_id}}, function(data){
+      $('tbody.questions_to_import').append(data);
+      flash_message("#{I18n.t('exam_questions.import.steps.added')}", 'notice');
+      $('.questions_import input:checked').each(function(i){ $(this).prop("checked", false); });
+      $('tbody.questions_to_import tr.text_none').hide();
+      disable_already_selected_questions();
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    });
+
+  }
+
+  function go_to_conclude(){
+    $('.step-list').hide('slide', { direction: 'left' }, 500);
+    $('.step-conclude').show('slide', { direction: 'left' }, 500);
+    $('#steps li:first').removeClass('active');
+    $('#steps li:first .dot').removeClass('active');
+    $('#steps li:last').addClass('active');
+    $('#steps li:last .dot').addClass('active');
+    erase_flash_messages();
+  }
+
+  function disable_already_selected_questions(){
+    if(!!$('tbody.questions_to_import tr').length){
+      var existing_ids = $('tbody.questions_to_import tr:not(.text_none)');
+      $.each(existing_ids, function(j){
+        var tr = $('.questions_import  #exam_'+$(existing_ids[j]).data('exam-id')+' #tr_'+$(existing_ids[j]).data('id'));
+        if(!!tr.length)
+          $(tr).addClass('disabled').find('input:input').prop('disabled', true).addClass('disabled');
+      });
+    }
+  }
+
+  $(function(){
+
+    $('#search_method_0').click(function(){
+      $('.import_something.questions .search').removeClass('invisible');
+      $('.import_something.questions .filter').addClass('invisible');
+      $('.add_lesson.0').removeClass('invisible');
+    });
+
+    $('#search_method_1').click(function(){
+      $('.import_something.questions .search').addClass('invisible');
+      $('.import_something.questions .filter').removeClass('invisible');
+      $('.questions_content:last').empty();
+      $('.add_lesson.0').addClass('invisible');
+    });
+
+    $('#search_questions').click(function(){
+      $.get($(this).data('url'), {
+        search: {
+          only_owner: $('#only_owner').prop('checked'),
+          enun: $('#enun').val(),
+          author: $('#author').val(),
+          label: $('#label').val(),
+          year: $('#year').val()
+        }
+      }, function(data){
+        $('.questions_content:last').html(data);
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      });
+    });
+  });

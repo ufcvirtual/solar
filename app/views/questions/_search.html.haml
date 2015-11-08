@@ -1,0 +1,12 @@
+.block_content_toolbar
+  = check_box_tag 'only_owner'
+  %label{ for: 'only_owner' }= t('.only_owner')
+  %label{ for: 'enun' }= t('.enun')
+  = text_field_tag 'enun', nil, size: 11, placeholder: t('.enun_hint')
+  %label{ for: 'author' }= t('.author')
+  = text_field_tag 'author', nil, size: 15, placeholder: t('.author_hint')
+  %label{ for: 'label' }= t('.label')
+  = text_field_tag 'label', nil, size: 10, placeholder: t('.label_hint')
+  %label{ for: 'year' }= t('.year')
+  = text_field_tag 'year', nil, size: 7, placeholder: t('.year_hint')
+  = link_to (content_tag(:i, nil, class: 'icon-search')), '#', class: 'btn', :'data-tooltip' => t(:search), id: 'search_questions', :'data-url' => path

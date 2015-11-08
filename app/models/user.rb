@@ -38,6 +38,8 @@ class User < ActiveRecord::Base
   has_many :public_files
   has_many :user_contacts, foreign_key: 'user_related_id'
   has_many :lesson_notes
+  has_many :questions
+  has_many :up_questions, class_name: 'Question', foreign_key: 'updated_by_user_id'
 
   has_and_belongs_to_many :notifications, join_table: 'read_notifications'
 
@@ -354,7 +356,7 @@ class User < ActiveRecord::Base
 
     (2..spreadsheet.last_row).each do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
-      row = row.collect{ |k,v| { k.strip => v.strip } }.reduce Hash.new, :merge 
+      row = row.collect{ |k,v| { k.try(:strip) => v.try(:strip) } }.reduce Hash.new, :merge 
 
       user_exist = where(cpf: row['CPF'] || row['Cpf']).first
       user = user_exist.nil? ? new : user_exist

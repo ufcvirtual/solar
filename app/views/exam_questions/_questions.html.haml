@@ -1,0 +1,20 @@
+- unless questions.blank?
+  %table.tb_list.tb_questions
+    %thead
+      %tr.lines
+        %th.center.no_sort{ class: hide_columns ? 'invisible' : '' }
+          %input{ id: "all_questions_#{exam.id}" , type: 'checkbox', :"data-children-names" => "ckb_#{exam.id}", class: 'all_ckb_question' }
+        %th.name{ class: hide_columns ? 'invisible' : '' }= 'Ordem'
+        %th.name= t('questions.questions.enun')
+        %th.center.author= t('questions.questions.author')
+        %th.center.type= t('questions.questions.type')
+        %th.center.updated_at= t('questions.questions.updated_at')
+        %th.center.preview{ class: hide_columns ? 'invisible' : '' }= t('questions.questions.preview')
+        %th.center.privacy= t('questions.questions.privacy')
+        %th.center.used_at_exams= t('exam_questions.list.annul')
+        %th.center.published= t('questions.questions.published')
+    %tbody
+      - questions.each do |question|
+        = render partial: 'exam_questions/question', locals: { question: question, exam: exam, hide_columns: hide_columns }
+
+= javascript_include_tag 'questions', 'tooltip'

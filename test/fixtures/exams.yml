@@ -2,6 +2,18 @@ exam1:
   id: 1
   name: 'Prova 1'
   description: 'Descrição da prova'
-  duration: 60
+  duration: 5
   number_questions: 5
   schedule_id: 7
+  status: true
+
+exam2:
+  id: 2
+  name: 'Prova 2'
+  start_hour: '00:00'
+  end_hour: '23:59'
+  description: 'Descrição da prova'
+  duration: 5
+  number_questions: 5
+  schedule_id: 16
+  status: false

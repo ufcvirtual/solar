@@ -2,7 +2,7 @@
   - @academic_allocations.each do |academic_allocation|
 
     - lesson_module = academic_allocation.academic_tool
-    - lessons       = lesson_module.lessons(current_user.id)
+    - lessons       = lesson_module.lessons
     - has_group     = academic_allocation.allocation_tag.group
 
     .block_wrapper.module{ id: "module_#{lesson_module.id}" }

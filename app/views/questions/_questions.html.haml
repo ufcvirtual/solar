@@ -1,0 +1,27 @@
+- unless @questions.blank?
+  %table.tb_list.tb_questions
+    %thead
+      %tr.lines
+        %th.center.no_sort
+          %input#all_questions{ type: 'checkbox', :"data-children-names" => 'ckb_question' }
+        %th.name= t('.enun')
+        %th.center.author= t('.author')
+        %th.center.type= t('.type')
+        %th.center.updated_at= t('.updated_at')
+        %th.center.preview= t('.preview')
+        %th.center.privacy= t('.privacy')
+        %th.center.used_at_exams= t('.used_at_exams')
+        %th.center.published= t('.published')
+    %tbody
+      - @questions.each do |question|
+        = render partial: 'question', locals: { question: question }
+
+- else
+  .block_content_text_list.text_none= t('.none')
+
+= javascript_include_tag 'tablesorter', 'tooltip'
+
+:javascript
+  $(function(){
+    $('.list_questions .block_title h2').html("#{t('questions.index.title', count: @questions.count)}");
+  });

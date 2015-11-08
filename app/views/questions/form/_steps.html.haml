@@ -1,0 +1,18 @@
+.new_question
+  = simple_form_for(@question, html: { multipart: true, id: 'question_form' }) do |f|
+    %span.form_requirement= t(:required_fields)
+    %h1#lightBoxDialogTitle= (f.object.persisted? ? t('questions.form.steps.edit') : t('questions.form.steps.new'))
+    .question_form.block_content
+      .form-inputs.block_content
+        #steps
+          %ul
+            %li.info.active
+              = t('questions.form.steps.info')
+              .dot.active#dot-info
+            %li.items
+              = t('questions.form.steps.items')
+              .dot#dot-items
+        .step-info
+          = render partial: 'questions/form/info', locals: { f: f, eq: nil }
+        .step-items.hidden
+          = render partial: 'questions/form/items', locals: { f: f, eq: nil }

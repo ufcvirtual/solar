@@ -1,4 +1,4 @@
-.groups_tags {
+.groups_tags, .labels_tags {
 
   .title label{
     display: inline;
@@ -50,7 +50,7 @@
 
 }
 
-.groups .collection_check_boxes, .groups_tags .collection_check_boxes, .group_checkbox .collection_check_boxes, .group_checkbox .collection_check_boxes label{
+.groups .collection_check_boxes, .groups_tags .collection_check_boxes, .group_checkbox .collection_check_boxes, .group_checkbox .collection_check_boxes label, .labels_tags .collection_check_boxes{
   @include collection_check_boxes_layout;
   background-color: #0e7dd8;
   color: #fff;

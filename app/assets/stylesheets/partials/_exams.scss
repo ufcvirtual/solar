@@ -1,34 +1,121 @@
-.description, .description p{
-  font-size: 11px;
-  color: $text_grey;
-  text-align: left;
+#exam_form{
+  .description, .description p{
+    font-size: 11px;
+    color: $text_grey;
+    text-align: left;
+  }
+
+  .description .hide{
+    float:right;
+  }
+
+  .new_exam .schedule_dates .input input {
+    width: 85px;
+  }
+
+  .input textarea{
+    width: 324px;
+  }
+
+  .new_exam .schedule_dates .left, .right {
+    float: left;
+  }
+
+  .new_exam .required + .error, .optional + .error{
+    margin-left: 70px;
+  }
+
+  #new-exam{
+    text-decoration: underline;
+    width: 775px;
+    display: block;
+    padding: 5px;
+    border: 1px dashed #808080;
+    text-align: center;
+  }
+
+  #exam_duration{
+    width: 85px;
+  }
+
+  .ckb{
+    margin: 20px;
+    .input.boolean{
+      display: none;
+    }
+    label{
+      display: inline;
+    }
+    a, input, select{
+      display: inline-block;
+      float: right;
+    }
+    input[type='number']{
+      width: 80px;
+    }
+  }
+
+  #steps{
+    width: 259px;
+    margin-bottom: 20px;
+  }
 }
 
-.description .hide{
-  float:right;
-}
+.list_exams{
+  .tb_list{
+    td.center, th.medium, th.large, th.small{
+      text-align: center;
+    }
+    th.medium{
+      width: 15%;
+    }
+    th.large{
+      width: 30%;
+    }
+    th.small{
+      width: 10%;
+    }
+  }
 
-.new_exam .schedule_dates .input input {
-  width: 85px;
-}
+  .corrected {
+    color: #378941;
+  }
 
-.input textarea{
-  width: 310px;
-}
+  .finished {
+    color: $text_grey;
+  }
 
-.new_exam .schedule_dates .left, .right {
-  float: left;
-}
+  .not_answered {
+    color: #e12227;
+  }
 
-.new_exam .required + .error, .optional + .error{
-  margin-left: 70px;
-}
+  .not_started {
+    color: #787878;
+  }
 
-#new-exam{
-  text-decoration: underline;
-  width: 775px;
-  display: block;
-  padding: 5px;
-  border: 1px dashed #808080;
-  text-align: center;
+  .to_answer, .not_finished {
+    color: #003e7a;
+  }
+
+  .block_exam h2{
+    min-height: 36px;
+    .text{
+      max-width: 150px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .block_buttons{
+      display: inline;
+      label{
+        width: 130px;
+        vertical-align: bottom;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+      .draft i{
+        margin-right: -5px;
+      }
+    }
+  }
+
 }

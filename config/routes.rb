@@ -244,6 +244,7 @@ Solar::Application.routes.draw do
       get :items
       get :academic
       get :content
+      get :repositories
       get "academic/:curriculum_unit_type_id/courses", to: "editions#courses", as: :academic_courses
       get "academic/:curriculum_unit_type_id/curriculum_units", to: "editions#curriculum_units", as: :academic_uc
       get "academic/:curriculum_unit_type_id/semesters", to: "editions#semesters", as: :academic_semesters
@@ -397,6 +398,9 @@ Solar::Application.routes.draw do
       resources :lesson, only: [] do
         get "/:allocation_tags_ids", to: "agendas#dropdown_content", type: "Lesson", as: :dropdown_content_of, on: :member
       end
+      resources :exam, only: [] do
+        get "/:allocation_tags_ids", to: "agendas#dropdown_content", type: "Exam", as: :dropdown_content_of, on: :member
+      end
     end
   end
 
@@ -404,7 +408,7 @@ Solar::Application.routes.draw do
 
   resources :messages, only: [:new, :show, :create, :index] do
     member do
-      put ":box/:new_status", to: "messages#update", as: :change_status, constraints: {box: /(inbox)|(outbox)|(trashbox)/, new_status: /(read)|(unread)|(trash)|(restore)/}
+      put ":box/:new_status", to: "messages#update", as: :change_status, constraints: { box: /(inbox)|(outbox)|(trashbox)/, new_status: /(read)|(unread)|(trash)|(restore)/ }
 
       get :reply,     to: :reply, type: "reply"
       get :reply_all, to: :reply, type: "reply_all"
@@ -501,20 +505,55 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :exams, except: :show do
+  resources :exams do
     collection do
       get :list
       get :open
-      put ':tool_id/unbind/group/:id' , to: 'groups#change_tool', type: 'unbind', tool_type: 'Exam', as: :unbind_group_from
-      put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Exam', as: :remove_group_from
-      put ':tool_id/add/group/:id'    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Exam', as: :add_group_to
-      get ':tool_id/group/tags'       , to: 'groups#tags'                       , tool_type: 'Exam', as: :group_tags_from
+      put ':tool_id/unbind/group/:id', to: 'groups#change_tool', type: 'unbind', tool_type: 'Exam', as: :unbind_group_from
+      put ':tool_id/remove/group/:id', to: 'groups#change_tool', type: 'remove', tool_type: 'Exam', as: :remove_group_from
+      put ':tool_id/add/group/:id'   , to: 'groups#change_tool', type: 'add'   , tool_type: 'Exam', as: :add_group_to
+      get ':tool_id/group/tags'      , to: 'groups#tags'                       , tool_type: 'Exam', as: :group_tags_from
+    end
+
+    member do 
+      put :change_status
     end
   end
 
-  resources :exam_questions, except: :show do
+  resources :questions do
     collection do
       get :list
+      get :search, to: :index
+    end
+
+    member do 
+      put :change_status
+      put :publish, to: :change_status, status: true
+      get :verify_owners, update: true
+      get :copy_verify_owners, to: :verify_owners, copy: true
+      get :copy
+    end
+  end
+
+  resources :exam_questions do
+    member do 
+      put "order/:change_id", action: :order, as: :change_order
+      put :annul
+      get '/export/exam_questions/steps',   to: 'exam_questions#export_steps',   as: :export_steps
+      put :publish
+      get :copy
+    end
+
+    collection do
+      get '/import/exam_questions/steps',   to: 'exam_questions#import_steps',   as: :import_steps
+      get '/import/exam_questions/list',    to: 'exam_questions#import_list',    as: :import_list
+      get '/import/exam_questions/details', to: 'exam_questions#import_details', as: :import_details
+      get '/import/exam_questions/preview', to: 'exam_questions#import_preview', as: :import_preview
+      put '/import/exam_questions/',        to: 'exam_questions#import',         as: :import
+
+      get '/export/exam_questions/list',    to: 'exam_questions#export_list',    as: :export_list
+      get '/export/exam_questions/details', to: 'exam_questions#export_details', as: :export_details
+      put '/export/exam_questions/',        to: 'exam_questions#export',         as: :export
     end
   end
 

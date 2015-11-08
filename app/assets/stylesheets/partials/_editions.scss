@@ -125,3 +125,16 @@ label[for="all"]{
     height: 23px;
 }
 */
+
+
+.repository_item {
+  @include item_button;
+}
+
+.repository{
+  height: 111px;
+}
+
+.repository_text{
+  padding-top: 13px;
+}

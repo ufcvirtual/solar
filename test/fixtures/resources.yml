@@ -955,26 +955,26 @@ res188:
 res189:
   id: 189
   controller: 'exams'
-  action: "new"
-  description: "Cadastrar nova prova"
+  action: "create"
+  description: "Cadastrar prova"
 
 res190:
   id: 190
   controller: 'exams'
-  action: "create"
-  description: "Cria nova prova"
+  action: "update"
+  description: "Editar prova"
 
 res191:
   id: 191
-  controller: 'exam_questions'
-  action: "new"
-  description: "Cadastrar nova questão"
+  controller: 'questions'
+  action: "index"
+  description: "Acessar banco de questões"
 
 res192:
   id: 192
-  controller: 'exam_questions'
+  controller: 'questions'
   action: "create"
-  description: "Criar nova questão"
+  description: "Criar questão no banco de questões"
 
 res193:
   id: 193
@@ -1005,3 +1005,63 @@ res197:
   controller: 'webconferences'
   action: "list_access"
   description: "Visualizar lista de acessos a uma webconferência"
+
+res198:
+  id: 198
+  controller: 'questions'
+  action: "update"
+  description: "Atualizar questão no banco de questões"
+
+res199:
+  id: 199
+  controller: 'questions'
+  action: "import_export"
+  description: "Importar ou exportar questões do banco de questões para provas"
+
+res200:
+  id: 200
+  controller: 'questions'
+  action: "show"
+  description: "Visualizar questão"
+
+res201:
+  id: 201
+  controller: 'questions'
+  action: "destroy"
+  description: "Remover questão do banco de questões"
+
+res202:
+  id: 202
+  controller: 'exams'
+  action: "show"
+  description: "Detalhes da prova"
+
+res203:
+  id: 203
+  controller: 'exams'
+  action: "destroy"
+  description: "Remover prova"
+
+res204:
+  id: 204
+  controller: 'editions'
+  action: 'repositories'
+  description: 'Edição de repositórios'
+
+res205:
+  id: 205
+  controller: 'exams'
+  action: 'change_status'
+  description: 'Alterar status da prova (publicada ou rascunho)'
+
+res206:
+  id: 206
+  controller: 'questions'
+  action: 'change_status'
+  description: 'Alterar status da questão (liberada ou rascunho)'
+
+res207:
+  id: 207
+  controller: 'questions'
+  action: annul
+  description: 'Anular questões em provas'

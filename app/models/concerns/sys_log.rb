@@ -10,7 +10,7 @@ module SysLog
     extend ActiveSupport::Concern
 
     included do
-      after_filter :log_create, unless: Proc.new {|c| request.get? }, except: [:evaluate, :change_participant, :import]
+      after_filter :log_create, unless: Proc.new {|c| request.get? }, except: [:evaluate, :change_participant, :import, :export, :annul]
     end
 
     def log_create
@@ -25,12 +25,12 @@ module SysLog
 
       response_status = JSON.parse(response.body) rescue nil
 
-      return if ((not(response_status.nil?) and response_status.has_key?("success") and response_status["success"] == false) or (params.include?(:success) and params[:success] == false))
+      return if ((!(response_status.nil?) && response_status.has_key?("success") && response_status["success"] == false) || (params.include?(:success) && params[:success] == false))
 
-      if not(objs.nil?) and not(objs.empty?)
+      if !(objs.nil?) && !(objs.empty?)
         objs.each do |obj|
           description = "#{sobj.singularize}: #{obj.id}, #{ActiveSupport::JSON.encode(obj.attributes.except('attachment_updated_at', 'updated_at', 'created_at', 'id'))}" rescue nil
-          if ((obj.respond_to?(:academic_allocations) and not obj.try(:academic_allocations).empty?) or obj.respond_to?(:academic_allocation))
+          if ((obj.respond_to?(:academic_allocations) && !obj.try(:academic_allocations).empty?) || obj.respond_to?(:academic_allocation))
             allocation_tag_id = params[:allocation_tag_id] || active_tab[:url][:allocation_tag_id] || obj.allocation_tag.id rescue nil
             [(obj.respond_to?(:academic_allocations) ? obj.academic_allocations : obj.academic_allocation)].flatten.each do |al|
               LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, academic_allocation_id: al.id, allocation_tag_id: allocation_tag_id, ip: request.remote_ip, description: description)

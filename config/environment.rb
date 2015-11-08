@@ -37,11 +37,6 @@ Assignment_Type_Group      = 1
 
 # constantes de tipo de Prova
 
-# constantes de tipo de Questões
-Question_Type_Unique_Choice = 0 # Questão com resposta única
-Question_Type_Multiple_Choice = 1 # Questão com mútiplas respostas
-Question_Type_True_Or_False = 2 # Questão verdadeiro ou falso
-
 # constante que indica numero maximo de abas abertas
 Max_Tabs_Open = 4
 

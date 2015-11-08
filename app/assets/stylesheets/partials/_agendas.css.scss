@@ -182,6 +182,13 @@
   width: 300px;
 }
 
+.show_exam{
+  min-width: 300px;
+  .label_info{
+    width: auto;
+  }
+}
+
 .show label{
   vertical-align: top;
 }

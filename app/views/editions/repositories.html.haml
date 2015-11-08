@@ -1,0 +1,8 @@
+.repositories
+  .repository
+    .repository_item
+      = link_to(content_tag(:i, nil, class: 'icon-archive big'), questions_path, class: 'btn')
+      = link_to t('.questions'), questions_path
+    .repository_text
+      %h2= t('.questions')
+      %p=raw t('.questions_desc')

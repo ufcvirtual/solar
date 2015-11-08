@@ -9,7 +9,7 @@ class EditionsController < ApplicationController
     @user_profiles       = current_user.resources_by_allocation_tags_ids(@allocation_tags_ids)
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
 
-    render partial: "items"
+    render partial: 'items'
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
@@ -76,38 +76,44 @@ class EditionsController < ApplicationController
 
     verify_or_create_user_in_edx(current_user)
 
-    url = URI.parse(EDX_URLS["verify_user"].gsub(":username", current_user.username)+"instructor/")
+    url = URI.parse(EDX_URLS['verify_user'].gsub(':username', current_user.username)+'instructor/')
     res = Net::HTTP.start(url.host, url.port) { |http| http.request(Net::HTTP::Get.new(url.path)) }
-    uri_courses = JSON.parse(res.body) #pega endereço dos cursos
-    courses_created_by_current_user = "[]"
+    uri_courses = JSON.parse(res.body) #pega endereco dos cursos
+    courses_created_by_current_user = '[]'
       unless uri_courses.empty?
-        if uri_courses.class == Hash and uri_courses.has_key?("error_message")
-          raise uri_courses["error_message"]
+        if uri_courses.class == Hash && uri_courses.has_key?('error_message')
+          raise uri_courses['error_message']
         else
-          courses_created_by_current_user = ""
+          courses_created_by_current_user = ''
           for uri_course in uri_courses do
-            url = URI.parse(EDX_URLS["information_course"].gsub(":resource_uri", uri_course))
+            url = URI.parse(EDX_URLS['information_course'].gsub(':resource_uri', uri_course))
             res = Net::HTTP.start(url.host, url.port) { |http| http.request(Net::HTTP::Get.new(url.path)) }
             courses_created_by_current_user  << res.body.chop! << ", \"resource_uri\":  \"#{uri_course}\""<<"}, "
           end
 
           courses_created_by_current_user = courses_created_by_current_user.chop
-          courses_created_by_current_user = "[" + courses_created_by_current_user.chop! + "]"
+          courses_created_by_current_user = '[' + courses_created_by_current_user.chop! + ']'
         end
       end
       @edx_courses = JSON.parse(courses_created_by_current_user)
 
     render layout: false if params.include?(:layout)
   rescue => error
-    redirect_to :back, alert: t("edx.errors.cant_connect")
+    redirect_to :back, alert: t('edx.errors.cant_connect')
   end
 
   # GET /editions/content
   def content
     authorize! :content, Edition
-    @types = ((not(EDX.nil?) and EDX["integrated"]) ? CurriculumUnitType.all : CurriculumUnitType.where("id <> 7"))
+    @types = ((!EDX.nil? && EDX['integrated']) ? CurriculumUnitType.all : CurriculumUnitType.where('id <> 7'))
   rescue
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  end
+
+  def repositories
+    authorize! :repositories, Edition
+  rescue
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end
 
 end

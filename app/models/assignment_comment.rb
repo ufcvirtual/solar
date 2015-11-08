@@ -2,18 +2,18 @@ class AssignmentComment < ActiveRecord::Base
 
   default_scope order: 'updated_at DESC'
 
-  before_save :can_save?, if: "merge.nil?"
+  before_save :can_save?, if: 'merge.nil?'
   before_destroy :can_save?
-  before_create :define_user, if: "merge.nil?"
+  before_create :define_user, if: 'merge.nil?'
 
   belongs_to :sent_assignment
   belongs_to :user
 
   has_one :academic_allocation, through: :sent_assignment
 
-  has_many :files, class_name: "CommentFile", dependent: :delete_all
+  has_many :files, class_name: 'CommentFile', dependent: :delete_all
 
-  accepts_nested_attributes_for :files, allow_destroy: true, reject_if: proc {|attributes| not attributes.include?(:attachment)}
+  accepts_nested_attributes_for :files, allow_destroy: true, reject_if: proc {|attributes| !attributes.include?(:attachment)}
 
   validates :comment, presence: true
 
@@ -28,8 +28,8 @@ class AssignmentComment < ActiveRecord::Base
   end
 
   def can_save?
-    raise "date_range_expired" unless assignment.in_time?(allocation_tag.id, user_id)
-    raise CanCan::AccessDenied unless user_id == User.current.id or new_record?
+    raise 'date_range_expired' unless assignment.in_time?(allocation_tag.id, user_id)
+    raise CanCan::AccessDenied unless user_id == User.current.id || new_record?
     true
   end
 

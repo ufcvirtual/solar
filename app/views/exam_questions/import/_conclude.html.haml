@@ -1,0 +1,65 @@
+.block_wrapper.list_questions_conclude
+  .block_title
+    %h2
+      %i.icon-class
+      = t('.title')
+  %table.tb_list
+    %thead
+      %tr.lines
+        %th.no_sort.icon= t('.title')
+        %th= t('.exam')
+        %th= t('.enun')
+        %th= t('.type')
+        %th= t('.source')
+        %th= t('.score')
+        %th.icon= t('.preview')
+        %th.no_sort.icon= t('.delete')
+
+    %tbody.questions_to_import
+      %tr.text_none
+        %td.text_none{ colspan: 10 }= t('.no_question')
+
+.right_buttons
+  = link_to_function t('.back'), 'back_to_list()', class: 'btn', alt: t('.back')
+  = link_to_function t('.import'), 'import_selected_questions()', class: 'btn btn_main', alt: t('.import')
+
+:javascript
+  function down(icon){
+    var div_to_move = $(icon).parents('tr:first');
+    var previous_div = div_to_move.next();
+    previous_div.after(div_to_move);
+  }
+
+  function up(icon){
+    var div_to_move = $(icon).parents('tr:first');
+    var previous_div = div_to_move.prev();
+    previous_div.before(div_to_move);
+  }
+
+  function import_selected_questions(){
+    var questions = new Array();
+    if($('.questions_to_import tr:visible').not('.text_none').length > 0){
+      $('.questions_to_import tr:visible').not('.text_none').each(function(i){
+        data = [$(this).data('id'), i+1, $(this).find('[name^="exam_"]:first').val(), $(this).find('[name^="score_"]:first').val()].join(',')
+        questions.push(data);
+      });
+    }
+
+    $.put("#{import_exam_questions_path}", {questions: questions.join(';'), allocation_tags_ids: "#{@ats}", exam_id: "#{@exam_id}"}, function(data){
+      $.fancybox.close();
+      var msg = data.msg;
+      
+      var to_replace = $(".list_exams");
+      $.get(to_replace.data('link-list'), function(data2){
+        to_replace.replaceWith(data2);
+      }).done(function(){
+        flash_message(msg, 'notice', 'block_wrapper:first');
+      });
+      
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    });
+
+  }

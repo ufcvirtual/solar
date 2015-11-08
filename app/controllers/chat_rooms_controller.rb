@@ -102,7 +102,7 @@ class ChatRoomsController < ApplicationController
 
     authorize! :show, ChatRoom, on: [allocation_tag_id]
 
-    all_participants = @chat_room.participants.where(academic_allocations: {allocation_tag_id: allocation_tag_id})
+    all_participants = @chat_room.participants.where(academic_allocations: { allocation_tag_id: allocation_tag_id })
     @researcher = current_user.is_researcher?(AllocationTag.find(allocation_tag_id).related)
     raise CanCan::AccessDenied if (all_participants.any? && all_participants.joins(:user).where(users: { id: current_user }).empty?) && !(ChatRoom.responsible?(allocation_tag_id, current_user.id)) && !(@researcher)
 
@@ -121,7 +121,7 @@ class ChatRoomsController < ApplicationController
     def chat_room_params
       params.require(:chat_room).permit(:title, :description, :chat_type, :start_hour, :end_hour,
         schedule_attributes: [:id, :start_date, :end_date],
-        academic_allocations_attributes: [:id, :allocation_tag_id, chat_participants_attributes: [:id, :allocation_tag_id, :allocation_id, :_destroy]])
+        academic_allocations_attributes: [:id, :allocation_tag_id, chat_participants_attributes: [id: [:id, :allocation_tag_id, :allocation_id, :_destroy]]])
     end
 
     def render_notification_success_json(method)

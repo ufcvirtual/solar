@@ -1,0 +1,28 @@
+.list_exams.questions_export{ :'data-link-list' => export_list_exam_questions_path(allocation_tags_ids: @allocation_tags_ids) }
+  - if @exams.any?
+    = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
+    - @exams.each do |exam|
+      - questions = exam.get_questions
+
+      .block_wrapper.module{ id: "exam_#{exam.id}" }
+        = render partial: 'exams/list/info', locals: { exam: exam, has_group: exam.groups.any?, show_buttons: false, ckb: true, tags: { groups: exam.groups, tool: exam, all_groups: nil, paths: nil } }
+
+        %div{ class: "list_questions_exam_#{exam.id}" }
+          - if questions.any?
+            = render partial: 'exam_questions/questions', locals: { questions: questions, exam: exam, hide_columns: true }
+          - else
+            .block_content_text_list.text_none.empty_message= t(:none, scope: [:exams, :list])
+
+  - else
+    .block_content_text_list.text_none
+      = t(:item_search_no_found)
+
+  %span.add_lesson
+    = link_to_function t('.add'), 'add_exams()', class: 'btn btn_main', alt: t('.add')
+
+= javascript_include_tag 'tooltip'
+
+:javascript
+  $(function(){
+    disable_already_selected_exams();
+  });

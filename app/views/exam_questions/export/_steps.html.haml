@@ -1,0 +1,94 @@
+.import_something.questions
+  .flash_message_wrapper
+  .block_title
+    %h2
+      %i.icon-book2
+      = t('.title')
+    %span.form_requirement= t(:required_fields)
+    %span.form_requirement.original_lesson= t('.original_lesson')
+  .block_content
+    
+    #steps
+      %ul
+        %li.active
+          = t('.choose')
+          .dot.active#dot-choose-lessons
+        %li
+          = t('.conclude')
+          .dot#dot-conclude
+
+    .step-list
+      %span.filter
+        = render partial: 'exam_questions/export/filter', locals: { types: @types }
+      .right_buttons
+        = link_to_function t('.conclude'), 'go_to_conclude()', class: 'btn btn_main conclude', alt: t('.conclude')
+    .step-conclude
+      = render partial: 'exam_questions/export/conclude', locals: { questions: @questions }
+
+:javascript
+  function add_exams(){
+    var ids = $('.exams_list .list_exams.questions_export .block_exam input.ckb_exam:checked').map(function() { return parseInt($(this).val()); }).get();
+
+    if(!ids.length){
+      flash_message("#{I18n.t('exam_questions.errors.export_empty')}", 'alert');
+      return true;
+    }
+
+    // don't add toif already exists
+    if(!!$('tbody.exams_to_export_to tr').length){
+      var existing_ids = $('tbody.exams_to_export_to tr').map(function(){ return $(this).data('id'); }).get();
+      $.each(existing_ids, function(j){
+        var i = ids.indexOf(existing_ids[j]);
+        if(i != -1)
+          ids.splice(i, 1);
+      });
+    }
+
+    if(!ids.length){
+      flash_message("#{I18n.t('exam_questions.errors.double_export')}", 'alert');
+      return false;
+    }
+
+    $.get("#{export_details_exam_questions_path}", {ids: ids, questions_ids: "#{@questions}"}, function(data){
+      $('tbody.exams_to_export_to').append(data);
+      flash_message("#{I18n.t('exam_questions.export.steps.added')}", 'notice');
+      $('.questions_export input:checked').each(function(i){ $(this).prop("checked", false); });
+      $('tbody.exams_to_export_to tr.text_none').hide();
+      disable_already_selected_exams();
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    });
+
+  }
+
+  function go_to_conclude(){
+    $('.step-list').hide('slide', { direction: 'left' }, 500);
+    $('.step-conclude').show('slide', { direction: 'left' }, 500);
+    $('#steps li:first').removeClass('active');
+    $('#steps li:first .dot').removeClass('active');
+    $('#steps li:last').addClass('active');
+    $('#steps li:last .dot').addClass('active');
+    erase_flash_messages();
+  }
+
+  function disable_already_selected_exams(){
+    if(!!$('tbody.exams_to_export_to tr').length){
+      var existing_ids = $('tbody.exams_to_export_to tr').map(function(){ return $(this).data('id'); }).get();
+      $.each(existing_ids, function(j){
+        var tr = $('.questions_export #exam_'+existing_ids[j]);
+        if(!!tr.length)
+          $(tr).addClass('disabled').find('input:input').prop('disabled', true).addClass('disabled');
+      });
+    }
+  }
+
+  function back_to_list(){
+    $('.step-conclude').hide('slide', { direction: 'left' }, 500);
+    $('.step-list').show('slide', { direction: 'left' }, 500);
+    $('#steps li:first').addClass('active');
+    $('#steps li:first .dot').addClass('active');
+    $('#steps li:last').removeClass('active');
+    $('#steps li:last .dot').removeClass('active');
+  }

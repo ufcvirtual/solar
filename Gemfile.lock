@@ -240,6 +240,8 @@ GEM
     multi_test (0.1.1)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
+    nested_form_fields (0.7)
+      rails (>= 3.2.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.2)
@@ -479,6 +481,7 @@ DEPENDENCIES
   koala (= 1.2.0)
   launchy (= 2.1.0)
   momentjs-rails (~> 2.8.3)
+  nested_form_fields
   net-ssh (~> 2.6.8)
   nokogiri (= 1.5.5)
   paperclip (~> 3.4.2)

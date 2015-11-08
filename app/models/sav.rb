@@ -33,11 +33,14 @@ class Sav < ActiveRecord::Base
                 allocation_tag_id IN (#{params[:allocation_tags_ids].join(",")}) 
                 AND (savs.semester_id = semesters.id OR savs.semester_id IS NULL)
               ) OR allocation_tag_id IS NULL 
-            ) AND now()::date BETWEEN COALESCE(
+            ) AND 
+              now()::date BETWEEN COALESCE(
                   savs.start_date, 
                   (schedules.start_date + ((percent*DATE_PART('day', schedules.end_date::timestamp - schedules.start_date::timestamp)) || ' day')::interval)::date,
                   schedules.start_date
-            ) AND COALESCE(savs.end_date, schedules.end_date)")
+              ) AND COALESCE(savs.end_date, schedules.end_date)
+    "
+    )
   end
 
 end

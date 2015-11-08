@@ -1076,6 +1076,11 @@ edition6:
   resource_id: 127
   per_id: false
 
+edition7:
+  profile_id: 5
+  resource_id: 204
+  per_id: false
+
 # Offers
 
 offedit1:
@@ -1985,23 +1990,33 @@ interactweb6:
 # Provas
 
 exam1:
-  profile_id: 1
-  resource_id: 196
-  per_id: false
-
-exam2:
   profile_id: 5
   resource_id: 188
   per_id: false
 
-exam3:
+exam2:
   profile_id: 5
   resource_id: 189
   per_id: false
 
-exam4:
+exam3:
   profile_id: 5
   resource_id: 190
+  per_id: false
+
+exam4:
+  profile_id: 5
+  resource_id: 203
+  per_id: false
+
+exam5:
+  profile_id: 5
+  resource_id: 202
+  per_id: false
+
+exam6:
+  profile_id: 5
+  resource_id: 205
   per_id: false
 
 question1:
@@ -2013,6 +2028,43 @@ question2:
   profile_id: 5
   resource_id: 192
   per_id: false
+
+question3:
+  profile_id: 5
+  resource_id: 198
+  per_id: false
+
+question4:
+  profile_id: 5
+  resource_id: 199
+  per_id: false
+
+question5:
+  profile_id: 5
+  resource_id: 200
+  per_id: false
+
+question6:
+  profile_id: 5
+  resource_id: 201
+  per_id: false
+
+question7:
+  profile_id: 5
+  resource_id: 206
+  per_id: false
+
+question8:
+  profile_id: 5
+  resource_id: 207
+  per_id: false
+
+exam7:
+  profile_id: 1
+  resource_id: 196
+  per_id: false
+
+# Webconference
 
 laweb1:
   profile_id: 2

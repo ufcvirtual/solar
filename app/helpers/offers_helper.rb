@@ -9,7 +9,7 @@ module OffersHelper
     is_active = Time.now.between?(enrollment_period.first, enrollment_period.last || Time.now + 100.years) # pode nao ter periodo final
     offer_period = [I18n.l(offer.start_date), (offer.end_date.nil? ? I18n.t("offers.no_end_date") : I18n.l(offer.end_date))].join(' - ')
 
-    {period: enroll_period, is_active: is_active, offer: offer_period}
+    { period: enroll_period, is_active: is_active, offer: offer_period }
   end
 
 end

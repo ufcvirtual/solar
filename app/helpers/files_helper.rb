@@ -103,8 +103,8 @@ module FilesHelper
     return true
   end # extract
 
-  def copy_file(from, to, dir)
-    FileUtils.cp from.attachment.path, File.join("#{Rails.root}", 'media', dir, [to.id.to_s, from.attachment_file_name].join('_'))
+  def copy_file(from, to, dir, method='attachment')
+    FileUtils.cp from.send(method.to_sym).path, File.join("#{Rails.root}", 'media', dir, [to.id.to_s, from.send("#{method}_file_name".to_sym)].join('_'))
   end
 
   private

@@ -1,0 +1,6 @@
+.labels_tags
+  - unless labels.blank?
+    %span.title= label_tag t('.labels')
+    - labels.each do |label|
+      %span.collection_check_boxes
+        = label

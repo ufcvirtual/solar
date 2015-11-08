@@ -114,10 +114,9 @@ class GroupsController < ApplicationController
   # desvincular/remover/adicionar turmas para determinada ferramenta
   def change_tool
     groups = Group.where(id: params[:id].split(','))
-    authorize! :change_tool, Group, on: [RelatedTaggable.where(group_id: params[:id].split(",")).pluck(:group_at_id)]
+    authorize! :change_tool, Group, on: [RelatedTaggable.where(group_id: params[:id].split(',')).pluck(:group_at_id)]
 
     begin
-
       tool_model = model_by_tool_type(params[:tool_type])
       tool = tool_model.find(params[:tool_id])
 
@@ -152,7 +151,7 @@ class GroupsController < ApplicationController
             else
               raise 'option_not_found'
           end
-        else # se for a única turma
+        else # se for a unica turma
           raise 'last_group'
         end
       end
@@ -177,7 +176,7 @@ class GroupsController < ApplicationController
     end
 
     def model_by_tool_type(type)
-      type.constantize if ['Discussion', 'LessonModule', 'Assignment', 'ChatRoom', 'SupportMaterialFile', 'Bibliography', 'Notification', 'Webconference'].include?(type)
+      type.constantize if ['Discussion', 'LessonModule', 'Assignment', 'ChatRoom', 'SupportMaterialFile', 'Bibliography', 'Notification', 'Webconference', 'Exam'].include?(type)
     end
 
     def update_multiple
@@ -199,7 +198,7 @@ class GroupsController < ApplicationController
     def destroy_multiple
       Group.transaction do
         if @groups.map(&:can_destroy?).include?(false)
-          render json: {success: false, alert: t('groups.error.deleted')}, status: :unprocessable_entity
+          render json: { success: false, alert: t('groups.error.deleted') }, status: :unprocessable_entity
         else
           @groups.destroy_all
           render_group_success_json('deleted')
@@ -208,7 +207,7 @@ class GroupsController < ApplicationController
     end
 
     def render_group_success_json(method)
-      render json: {success: true, notice: t("groups.success.#{method}")}
+      render json: { success: true, notice: t("groups.success.#{method}") }
     end
 
 end

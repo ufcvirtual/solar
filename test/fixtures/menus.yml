@@ -292,3 +292,10 @@ edition_content:
   resource_id: 89
   parent_id: 130
   order: 2
+
+edition_repositories:
+  id: 133
+  name: menu_repositories
+  resource_id: 204
+  parent_id: 130
+  order: 3

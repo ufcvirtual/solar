@@ -65,7 +65,9 @@ module Taggable
       allocations
     end
 
-    all.where(query).update_all(status: Allocation_Cancelled, updated_at: Time.now)
+    all.where(query).each do |al|
+      al.update_attributes(status: Allocation_Cancelled)
+    end
   end
 
   def change_allocation_status(user_id, new_status, opts = {}) # opts = {profile_id, related}
@@ -78,7 +80,9 @@ module Taggable
       allocations.where(where)
     end
 
-    all.update_all(status: new_status, updated_at: Time.now)
+    all.each do |al|
+      al.update_attributes(status: new_status)
+    end
   end
 
   ## desabilitar todas as alocacoes do usuario nesta ferramenta academica

@@ -1,0 +1,173 @@
+.questions{
+  .search{
+    label{
+      word-wrap: break-word;
+      max-width: 60px;
+      vertical-align: middle;
+      margin-right: -3px;
+      margin-left: -3px;
+    }
+    .block_content_toolbar{
+      padding: 9px;
+      text-align: center;
+    }
+    table.tb_questions{
+      td .title, td .description{
+        display: inline-block;
+      }
+      th.name{
+        text-align:left;
+        width: 10%;
+      }
+      th.author{
+        width: 10%;
+      }
+      th.type{
+        width: 5%;
+      }
+      th.updated_at{
+        width: 10%;
+      }
+      th.preview{
+        width: 5%;
+      }
+      th.privacy{
+        width: 5%;
+      }
+      th.used_at_exams{
+        width: 5%;
+      }
+      th.items{
+        width: 5%;
+      }
+      th.published{
+        width: 10%;
+      }
+    }
+  }
+}
+
+.new_question{
+  #steps{
+    width: 258px;
+    margin-bottom: 20px;
+  }
+  .question_type{
+    margin-left: -3px;
+    margin-bottom: 10px;
+  }
+  .exam_question_score{
+    float: right;
+    input{
+      width: 25px;
+      margin-right: 14px;
+    }
+  }
+  .step-images.hidden, .step-info.hidden{
+    visibility: hidden;
+  }
+  .step-images.show, .step-info.show{
+    visibility: visible;
+  }
+  #cke_question_enunciation{
+    width: 344px;
+    display: inline-block;
+  }
+  .fields{
+    margin-top: 13px;
+  }
+  .question_items{
+    padding-top: 5px;
+  }
+  #items{
+    width: 343px;
+    display: inline-block;
+    padding-top: 10px;
+    input.string{
+      max-width: 277px;
+    }
+    .question_question_items_items_description{
+      display: inline-block;
+      width: 298px;
+    }
+    i{
+      float: right;
+      padding-bottom: 10px;
+      padding-left: 2px;
+    }
+    [id^='cke_question_items_attributes_']{
+      width: 316px;
+      margin-left: 8px;
+    }
+    .duplicatable_nested_form{
+      padding-bottom: 20px;
+    }
+    .label, .edit{
+      display: none;
+    }
+    .label.show{
+      display: inline-block;
+    }
+    .label label{
+      margin-top: -24px;
+      margin-left: -36px;
+      color: black;
+    }
+    select{
+      display: none;
+    }
+    select.show{
+      display: inline-block;
+    }
+    .question_question_items_comment textarea{
+      height: 30px;
+    }
+  }
+  #images{
+    textarea{
+      height: 60px;
+    }
+    input[type='text']{
+      width: 316px
+    }
+  }
+}
+
+.import_something.questions{
+  .block_wrapper{
+    width: auto;
+  }
+  .search{
+    .block_content_toolbar{
+      background-color: white;
+      border-bottom: none;
+    }
+    label{
+      width: 75px;
+      text-align: right;
+    }
+    label#only_owner{
+      text-align: left;
+    }
+  }
+
+  .radio{
+    text-align: center;
+    margin-right: 60px;
+    margin-bottom: 20px;
+    label{
+      text-align: right;
+      width: 125px;
+    }
+  }
+  .step-conclude{
+    input[id^='score_']{
+      width: 50px;
+    }
+    input.hasDatepicker{
+      width: 80px;
+    }
+  }  
+}
+
+

@@ -53,7 +53,7 @@ class Post < ActiveRecord::Base
 
   ## Return latest date considering children
   def get_latest_date
-    date = [(children_count.zero? ? updated_at : children.map(&:get_latest_date))].flatten
+    date = [(children_count.zero? ? self.updated_at : children.map(&:get_latest_date))].flatten.compact
     date.sort.last
   end
 

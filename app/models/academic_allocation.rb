@@ -82,7 +82,7 @@ class AcademicAllocation < ActiveRecord::Base
     def verify_uniqueness
       # na criacao ou algum campo modificado na atualizacao
       error = (
-        (new_record? or (allocation_tag_id_changed? or academic_tool_type_changed? or academic_tool_id_changed?)) and
+        (new_record? || (allocation_tag_id_changed? || academic_tool_type_changed? || academic_tool_id_changed?)) &&
         AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_type: academic_tool_type, academic_tool_id: academic_tool_id).any?
       )
 
@@ -92,7 +92,7 @@ class AcademicAllocation < ActiveRecord::Base
     # Metodos destinados ao Assignment
     ## datas da atividade devem estar no intervalo de datas da oferta
     def verify_assignment_offer_date_range
-      if allocation_tag.group and academic_tool.schedule.end_date.to_date > (offer_end_date = allocation_tag.group.offer.end_date)
+      if allocation_tag.group && academic_tool.schedule.end_date.to_date > (offer_end_date = allocation_tag.group.offer.end_date)
         message = I18n.t('assignment.notifications.final_date_smaller_than_offer', end_date_offer: I18n.l(offer_end_date)).to_s
         errors.add(:base, message)
         raise "academic_allocation #{message}"

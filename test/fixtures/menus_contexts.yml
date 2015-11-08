@@ -185,3 +185,7 @@ edition_academic:
 edition_content:
   menu_id: 132
   context_id: 1
+
+edition_repositories:
+  menu_id: 133
+  context_id: 1

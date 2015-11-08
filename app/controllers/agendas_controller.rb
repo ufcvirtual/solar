@@ -53,6 +53,6 @@ class AgendasController < ApplicationController
   private
 
   def model_by_param_type(type)
-    type.constantize if ['Assignment', 'Discussion', 'ChatRoom', 'ScheduleEvent', 'Lesson'].include?(type)
+    type.constantize if ['Assignment', 'Discussion', 'ChatRoom', 'ScheduleEvent', 'Lesson', 'Exam'].include?(type)
   end
 end

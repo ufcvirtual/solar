@@ -1,0 +1,47 @@
+- has_items   = (question.respond_to?(:count_items)  ? !question.count_items.to_i.zero? : question.question_items.any?)
+- has_images  = (question.respond_to?(:has_images)   ? (question.has_images == 't') : question.question_images.any?)
+- items       = (question.respond_to?(:count_items)  ? question.count_items : question.question_items.count)
+- labels      = (question.respond_to?(:labels)       ? question.labels.delete('NULL').split(',') : question.question_labels.map(&:name))
+- author_name = (question.respond_to?(:author_name)) ? question.author_name : question.user.name
+- exam_question = ExamQuestion.find(question.exam_question_id) if exam_question.nil?
+- annulled    = question.respond_to?(:annulled) ? question.annulled : exam_question.annulled
+- annulled    = (annulled == 't' || annulled == true)
+%tr.lines{ id: "tr_#{question.id}", order: (question.respond_to?(:order) ? question.order : exam_question.order), exam_question_id: exam_question.id }
+  %td{ style: 'text-align:center;', class: hide_columns ? 'invisible' : '' }
+    = check_box_tag("ckb_#{exam.id}", exam_question.id, false, { class: 'ckb_question', :'data-question-id' => exam_question.question_id })
+  %td.center{ style: 'width: 50px;', class: hide_columns ? 'invisible' : '' }
+    .lesson_arrows
+      .lesson_arrow_up= link_to_function image_tag('lesson/up_arrow.png'), 'up_or_down(this)', class: 'up', :'data-url' => change_order_exam_question_path(':id1', ':id2', exam_id: exam.id)
+      .lesson_arrow_down= link_to_function image_tag('lesson/down_arrow.png'), 'up_or_down(this)', class: 'down', :'data-url' => change_order_exam_question_path(':id1', ':id2', exam_id: exam.id)
+  %td
+    %div
+      .title
+        - if has_items
+          = content_tag(:i, nil, class: 'icon-list', :'data-tooltip' => t('questions.question.has_items', count: items))
+        - if has_images
+          = content_tag(:i, nil, class: 'icon-pictures', :'data-tooltip' => t('questions.question.has_images'))
+      .description
+        .minimun
+          = raw question.enunciation.truncate(100)
+          - if question.enunciation.size > 100
+            = link_to_function content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('questions.question.expand_enunciation')), 'expand_or_compress(this)'
+        .complete.invisible
+          = raw question.enunciation
+          = link_to_function content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('questions.question.compress_enunciation')), 'compress_or_compress(this)'
+      .group_label= render 'questions/labels', labels: labels
+  %td{ style: 'text-align:center;', :'data-tooltip' => author_name }= author_name.truncate(50)
+  %td{ style: 'text-align:center;' }= question.type
+  %td{ style: 'text-align:center;' }= l(question.updated_at, format: :normal)
+  %td{ style: 'text-align:center;', class: hide_columns ? 'invisible' : '' }= content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('questions.question.preview'))
+  %td{ style: 'text-align:center;' }= question.privacy? ? content_tag(:i, nil, class: 'icon-lock', :'data-tooltip' => t('questions.question.private')) : content_tag(:i, nil, class: 'icon-minus', :"data-tooltip" => t('questions.question.public'))
+  %td{ style: 'text-align:center;' }= check_box_tag exam_question.id, exam_question.id, annulled, onclick: 'annul(this)', disabled: (annulled ? true : false), :'data-url' => annul_exam_question_path(exam_question.id)
+  %td{ style: 'text-align:center;' }= link_to_function (image_tag "#{question.status ? 'released' : 'rejected'}.png"), 'change_status_single(this)', :'data-tooltip' => (question.status ? t('lessons.index.released') : t('lessons.index.draft')), :'data-url' => change_status_question_path(question), class: "#{question.status ? 'released' : 'rejected'}"
+
+:javascript
+  $(function(){
+    $.each($('[id^="all_questions_"]'), function(){
+      $(this).nice_checkbox({
+        can_enable_elements: true
+      });
+    });
+  });

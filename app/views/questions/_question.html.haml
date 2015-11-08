@@ -1,0 +1,44 @@
+- can_delete  = (question.respond_to?(:count_exams)  ? question.count_exams.to_i.zero?  : question.exams.empty?)
+- has_items   = (question.respond_to?(:count_items)  ? !question.count_items.to_i.zero? : question.question_items.any?)
+- has_images  = (question.respond_to?(:has_images)   ? (question.has_images == 't') : question.question_images.any?)
+- items       = (question.respond_to?(:count_items)  ? question.count_items : question.question_items.count)
+- exams       = (question.respond_to?(:count_exams)  ? question.count_exams : question.exams.count)
+- labels      = (question.respond_to?(:labels)       ? question.labels.delete('NULL').split(',') : question.question_labels.map(&:name))
+- author_name = (question.respond_to?(:author_name)) ? question.author_name : question.user.name
+%tr.lines{ id: "tr_#{question.id}" }
+  %td{ style: 'text-align:center;' }
+    = check_box_tag('ckb_question', question.id, false, { class: 'ckb_question', :'data-can-delete' => can_delete, :'data-question-id' => question.id })
+  %td
+    %div
+      .title
+        - if has_items
+          = content_tag(:i, nil, class: 'icon-list', :'data-tooltip' => t('.has_items', count: items))
+        - if has_images
+          = content_tag(:i, nil, class: 'icon-pictures', :'data-tooltip' => t('.has_images'))
+      .description
+        .minimun
+          = raw question.enunciation.truncate(100)
+          - if question.enunciation.size > 100
+            = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('.expand_enunciation'))
+        .complete.invisible
+          = raw question.enunciation
+          = content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('.compress_enunciation'))
+      .group_label= render 'labels', labels: labels
+  %td{ style: 'text-align:center;', :'data-tooltip' => author_name }= author_name.truncate(50)
+  %td{ style: 'text-align:center;' }= question.type
+  %td{ style: 'text-align:center;' }= l(question.updated_at, format: :normal)
+  %td{ style: 'text-align:center;' }= content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('.preview'))
+  %td{ style: 'text-align:center;' }= question.privacy? ? content_tag(:i, nil, class: 'icon-lock', :'data-tooltip' => t('.private')) : content_tag(:i, nil, class: 'icon-minus', :"data-tooltip" => t('.public'))
+  %td{ style: 'text-align:center;' }= exams
+  %td{ style: 'text-align:center;' }= link_to_function (image_tag "#{question.status ? 'released' : 'rejected'}.png"), 'change_status_single(this)', :'data-tooltip' => (question.status ? t('lessons.index.released') : t('lessons.index.draft')), :'data-url' => change_status_question_path(question), class: "#{question.status ? 'released' : 'rejected'}"
+
+= javascript_include_tag 'tooltip'
+
+:javascript 
+  $(function(){
+    $(".expand, .compress").click(function(){
+      $(this).parent().hide();
+      $($(this).parent().siblings()[0]).show();
+    });
+
+  })

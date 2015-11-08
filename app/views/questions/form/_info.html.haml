@@ -1,0 +1,63 @@
+.question_type
+  = f.label t('questions.new.privacy')
+  = f.select :privacy, ([ [t('questions.new.public'), 0], [t('questions.new.private'), 1] ]), include_blank: false
+
+.question_type
+  = f.label t('questions.new.type_question')
+  - if f.object.persisted?
+    = f.hint f.object.type
+  - else
+    = f.select :type_question, ([ [t('questions.new.multiple_choice'), Question::MULTIPLE], [t('questions.new.unique_choice'), Question::UNIQUE], [t('questions.new.true_or_false'), Question::TRUE_FALSE]]), include_blank: false
+
+  - unless eq.nil?
+    = eq.input :score
+
+= f.nested_fields_for :question_labels, wrapper_tag: :div do |ql|
+  = ql.input :name, label: t('questions.label')
+
+= f.input :enunciation#, as: :ckeditor
+
+= label_tag 'question_enunciation', ''
+
+.question_images
+  = render partial: 'questions/form/image', locals: { f: f, eq: nil }
+  .input.string
+    = f.add_nested_fields_link :question_images, t('.add_images'), class: 'btn'
+
+
+.form-actions.right_buttons
+  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
+  = button_to_function t('.continue'), 'go_to_items()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button'
+
+= javascript_include_tag 'ckeditor/init'
+
+:javascript
+  $(function(){
+    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+
+    CKEDITOR.editorConfig = function (config) {
+      config.toolbar =
+        [
+          { name: 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+          { name: 'insert', items : ['EqnEditor'] },
+          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
+          { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }
+        ];
+
+        config.extraPlugins = 'eqneditor,oembed';
+        config.resize_enabled = false;
+        config.height = '80px';
+    };
+
+    var previous_selected = $('#question_type_question').val();
+    change_inputs(previous_selected, previous_selected);
+
+    $('select#question_type_question').on('change', function (e) {
+      change_inputs(previous_selected, this.value);
+      previous_selected = this.value;
+    });
+
+    //$('#question_enunciation').ckeditor();
+
+    //append_rich_text('question_enunciation');
+  });

@@ -166,6 +166,9 @@ en_US:
       assignment_file: Assignment File
       lesson_note: Lesson note
       assignment_webconference: Assignment Webconference
+      question: Question
+      question_item: Item
+      question_image: Image
     attributes:
       user:
         password: "Password"
@@ -246,6 +249,14 @@ en_US:
         duration: "Duration (min)"
         start_hour: Schedule
         end_hour: to
+        random_questions: Random questions
+        raffle_order: Raffle question's order
+        auto_correction: Autocorrection
+        number_questions: Amount of questions at exam
+        attempts: Define how many times student can redo the exam
+        result_email: Send result by email
+        attempts_correction: Grade calculation method
+        block_content: Block Solar's content during exam
       exam_user:
         grade: Grade
       exam_question:
@@ -255,6 +266,14 @@ en_US:
         enunciation: Enunciation
       question_label:
         name: Labels
+      question_item:
+        img_alt: Alt
+        item_image: Image
+        comment: Comment
+      question_image:
+        image: Image
+        legend: Legend
+        img_alt: Alt
       assignment:
         name: Title
         type_assignment: Type
@@ -354,6 +373,8 @@ en_US:
         initial_time: Initial time
         duration: Duration
         is_recorded: Record
+      question_item:
+        description: Description
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -584,38 +605,6 @@ en_US:
   external_link: "From an external link"
   url: "Enter here the URL of the image in the textbox above."
   send: "Send"
-
-  exams:
-    title: Available tests
-    not_started: Not Started
-    not_ended: Not Concluded
-    ended: Finished
-    status: Status
-    none: "No registered test"
-    list:
-      new_exam: New Exam
-      edit_exam: Edit Exam
-      delete_exam: Remove Exam
-      config_exam: Configure Exam
-      none: No question registered
-    success:
-      created: Exam was successfully created.
-      updated: Exam was successfully updated.
-      deleted: Exam was successfully deleted.
-
-  questions:
-    label: labels
-    list:
-      new_question: New question
-      edit_question: Edit question
-    new:
-      type_question: Type
-      unique_choice: Unique choice
-      multiple_choice: Multiple choice
-      true_or_false: True or False
-    form:
-      add_alternative: Add alternative
-      question_item: Alternative
 
   enrollments:
     all: All
@@ -1249,6 +1238,7 @@ en_US:
   menu_edition: Edition
   menu_academic_edition: Academic
   menu_content_edition: Content
+  menu_repositories: Repositories
   menu_admin_user: "Manage Users"
   menu_admin_approval: Profiles approval
   menu_admin_lessons: Consult Lessons
@@ -1606,7 +1596,7 @@ en_US:
       title: Send new file
     error:
       download: It was not possible to download
-      date_range: It was not possible to execute action. Date range expired.
+      date_range_expired: It was not possible to execute action. Date range expired.
       remove: It was not possible to remove file
       new: It was not possible to send file.
     success:
@@ -1976,6 +1966,9 @@ en_US:
       semester: "Semester"
       offer: "Offer"
       group: "Group"
+    repositories:
+      questions: Questions bank
+      questions_desc: 'Repository which questions about diverse topics can be created, stored, edited, removed or published.'
   curriculum_units:
     success:
       created: Subject was successfully created.
@@ -2642,3 +2635,258 @@ en_US:
       aw_no: No
     warning:
       ended_recorded_web: "This webconference was already recorded and is already over. After update, all new recordings will be added to the existing one. Rememeber of uploading a new presentation so the previous record wont be overwritten by the new on"
+  exams:
+    title: Available tests
+    not_started: Not Started
+    not_ended: Not Concluded
+    ended: Finished
+    status: Status
+    none: No registered test
+    list:
+      new_exam: New Exam
+      edit_exam: Edit Exam
+      delete_exam: Remove Exam
+      config_exam: Configure Exam
+      none: No question registered
+      preview_exam: Preview exam
+      new: New question
+      import: Import question(s)
+      import_q_e: Importa questions and exams
+      published: Unpublishe exam
+      unpublished: Publish exam
+      to: ' to '
+      draft_exam: Exam as draft
+      period: "Applied in %{period}"
+      amount_questions: "%{added} added of %{amount} questions"
+    success:
+      created: Exam was successfully created
+      updated: Exam was successfully updated
+      deleted: Exam was successfully deleted
+      status: Exam's status successfully updated
+    index:
+      description: Description
+      availability: Availability
+      duration: Duration
+      status: Status
+      grade: Grade
+      min: min
+      expand_description: Expand description
+      compress_description: Contract description
+    situation:
+      not_started: Not started
+      to_answer: To answer
+      not_finished: Not finished (%{count}%)
+      finished: Finished
+      corrected: Corrected
+      not_answered: Not answered
+    form:
+      config:
+        greater: Greater grade
+        avarage: Avarage grade
+        last: Last grade
+        previous: Previous
+      steps:
+        info: Information
+        config: Configuration
+      info:
+        continue: Continue
+    error:
+      general_message: It was not possible to execute action
+      started: Exam already published and started
+      has_answers: Exam has answers
+      minimum_questions: Exam's number of questions is less than the minimum defined at config
+      cant_be_smaller: can't be smaller
+      hour_later: can't be later
+      hour_earlier: can't be earlier
+      cant_change: can't be changed
+      before_today: can't be previous to today
+      same_day: can only be defined if the exam happens during a single day
+      already_exists: You can't repeat questions to an exam
+      imported: 'This exam was imported, you must updated it to publish'
+      change_period: Change period to publish exam
+    show:
+      groups: Groups
+      empty_group: Empty group
+      name: Name
+      description: Description
+      time: Time
+      to: " to "
+      start_date: Period
+      end_date: to
+      exam_details: Exam's details
+      attempts: Attempt's amount
+      attempts_correction: Grade calculation
+
+  questions:
+    index:
+      title: Questions bank (%{count} found)
+      new: New question
+      edit: Edit question
+      export: Export questions
+      delete: Remove questions
+      checkmark: Publish questions
+      copy: Copy and edit question
+    search:
+      only_owner: My questions
+      enun: Enunciation
+      label: Labels
+      year: Year of last update
+      year_hint: 'ex: 2012'
+      label_hint: 'ex: biology'
+      author_hint: 'ex: Mr. James'
+      enun_hint: 'ex: question 1'
+      author: Author
+      search: Search
+    questions:
+      labels: Labels
+      enun: Enunciation
+      author: Author
+      updated_by: Updated by
+      type: Type
+      updated_at: Last update at
+      preview: Preview
+      privacy: Privacy
+      published: Published
+      used_at_exams: Used at exams
+      none: No question found
+    question:
+      preview: Preview
+      public: Public
+      private: Private
+      expand_enunciation: Expand enunciation
+      compress_enunciation: Contract enunciation
+      has_items: Has %{count} items
+      has_images: Has images
+      images: Images
+    types:
+      unique_choice: Unique choice
+      multiple_choice: Multiple choice
+      true_or_false: True or False
+    new:
+      type_question: Type
+      unique_choice: Unique choice
+      multiple_choice: Multiple choice
+      true_or_false: True or False
+      private: Private
+      public: Public
+      privacy: Privacy
+    form:
+      add_alternative: Add alternative
+      question_item: Alternative
+      new: New question
+      edit: Edit question
+      steps:
+        info: Informations
+        items: Items
+        new: New question
+        edit: Edit question
+      items:
+        answer: 'Answer*'
+        add: Add more options
+      info:
+        continue: Continue
+        add_images: Add more images
+    labels:
+      labels: 'labels: '
+    error:
+      in_use: Exam already published and started
+      min_items: It must have, at least, 3 items
+      correct_item: It must have, at least, one correct item
+      only_one_true_item: To this type of question, only one correct item is allowed
+      private: Private question, is not possible to execute this action
+      min_public_questions: "To each public question created, you can create 10 private ones. By exceeding this limit, you don't have access to different authors public questions. The limit was exceeded."
+      draft: Question as draft
+      max_images: cat have, at most, 4 images
+      general_message: It was not possible to execute this action
+      permission: You don't have permission to execute this action
+    success:
+      deleted: Questions removed successfully
+      change_status: Status updated successfully
+
+  exam_questions:
+    import:
+      conclude:
+        title: Import questions/exams
+        order: Order
+        exam: Exam
+        enun: Enunciation
+        type: Type
+        source: Source
+        score: Score*
+        preview: Preview
+        back: Back
+        import: Import
+        delete: Don't import questions
+        no_question: No question to import
+      question:
+        preview_tooltip: Preview question
+        delete: Remove
+      list:
+        name: Name
+        preview: Preview
+        added: "Question(s) added to import list. To see all added questions, click at 'Conclude'."
+        add: Add to import list
+      steps:
+        title: Question/Exam's import
+        choose: Choose questions
+        conclude: Conclude
+        back: Back
+        search_repository: Search questions at repository
+        search_filter: Search exams and questions
+        add: Add to import list
+        added: Question(s) added successfully
+    errors:
+      import_empty: You must choose at least one question to add
+      double: All selected questions are already on list
+      double: All selected exams are already on list
+      already_started: Exam already published and started
+      cant_undo: "Once a question is annulled to a exam, it can't be undone"
+      has_to_start: "The exam must start to a question can be annulled. Until then, edit or remove the question from the exam."
+      general_message: It was not possible to execute action
+      bank_without_exam: It's not possible to import questions with the exam when using questions from repository
+      import_empty: Select questions to import
+      export_empty: Select questions to export
+      private: Private question, is not possible to execute this action
+      already_exists: You can't repeat questions to an exam
+    export:
+      conclude:
+        title: Export questions
+        order: Order
+        exam: Exam
+        enun: Enunciation
+        type: Type
+        source: Destination
+        score: Score
+        back: Back
+        export: Export
+        delete: Don't export question(s)
+        no_question: No exam to export to
+      question:
+        preview: Preview
+        delete: Remove
+      list:
+        add: Add to export list
+      steps:
+        title: Export questions
+        choose: Choose
+        conclude: Conclude
+        back: Back
+        added: Exam(s) added successfully
+    success: 
+      exported: Question(s) exported successfully
+      imported: Question(s) imported successfully
+      deleted: Question(s) removed from exam successfully
+      annulled: Question annulled successfully
+      imported_with_exam: Question(s) imported successfully. Imported exams can be published only after updating data.
+    list:
+      annul: Annul
+      delete: Remove exam's questions
+      edit: Edit question
+      publish: Publish questions
+    confirm:
+      annul: "Are you sure that want to annull this question? Once the question is annulled, it can't be undone." 
+      status_exam: Are you sure that want to change exam's status?
+      delete: Are you sure that want to remove exam's questions?
+      delete_question: Are you sure that want to remove these questions?
+      status: Are you sure that want to change question's status?
+      copy: 'Are you sure? Once you copy a question inside an exam, the original will be annulled.'

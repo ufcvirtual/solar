@@ -502,3 +502,10 @@ webc10:
  allocation_tag_id: 3
  academic_tool_id: 5
  academic_tool_type: "Webconference"
+
+exam2:
+ id: 84
+ allocation_tag_id: 3 # QM-CAU - 2011.1
+ academic_tool_id: 2
+ academic_tool_type: "Exam"
+
