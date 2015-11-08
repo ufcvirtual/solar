@@ -123,6 +123,13 @@ class Exam < Event
         .group('exams.id')
         .uniq('exams.id')
   end
+  
+  def self.my_exams(allocation_tag_id)
+  	exams = Exam.joins(:academic_allocations, :schedule)
+      .where(academic_allocations: {allocation_tag_id: allocation_tag_id})
+      .select('DISTINCT exams.*, schedules.start_date as start_date, schedules.end_date as end_date')
+      .order('schedules.start_date')
+  end
 
   def get_questions(user_id = nil)
     query = []
