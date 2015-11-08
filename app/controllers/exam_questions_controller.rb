@@ -88,7 +88,7 @@ class ExamQuestionsController < ApplicationController
     [eq1, eq2].map(&:can_reorder?)
     authorize! :update, Question, { on: Exam.find(params[:exam_id]).allocation_tags.map(&:id)}
 
-    Lesson.transaction do
+    ExamQuestion.transaction do
       eq1.order, eq2.order = eq2.order, eq1.order
       eq1.save!
       eq2.save!
@@ -208,7 +208,6 @@ class ExamQuestionsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
-    raise "#{error}"
     render_json_error(error, 'exam_questions.errors', 'general_message', ("#{error}".split(' ').size == 1 ? nil : error))
   end
 
