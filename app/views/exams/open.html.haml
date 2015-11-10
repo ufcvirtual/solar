@@ -1,7 +1,10 @@
 - unless @exam.nil?
-	%div= @exam.name
-	%div= @exam.duration
-	%div= @exam.number_questions
+	.exam_head
+		.exam_head_left
+			%div= @exam.name
+		.exam_head_right
+			%div= @exam.duration
+			%div= @exam.number_questions
 
 	- unless @exam_questions.nil?
 		.detail
