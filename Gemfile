@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-ruby "2.1.0"
+ruby "2.2.1"
 
 gem "rails", "~> 3.2.16"
 gem "rack", "~> 1.4.5"
@@ -59,6 +59,7 @@ gem "strong_parameters", "~> 0.2.3"
 gem 'hairtrigger', '~> 0.2.12' # triggers
 
 gem 'nested_form_fields'
+gem 'coffee-rails'
 
 
 group :development do
