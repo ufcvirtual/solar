@@ -356,7 +356,7 @@ class User < ActiveRecord::Base
 
     (2..spreadsheet.last_row).each do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
-      row = row.collect{ |k,v| { k.try(:strip) => v.try(:strip) || '' } }.reduce Hash.new, :merge 
+      row = row.collect{ |k,v| { k.try(:strip) => (v.try(:strip) rescue '') } }.reduce Hash.new, :merge 
 
       user_exist = where(cpf: row['CPF'] || row['Cpf']).first
       user = user_exist.nil? ? new : user_exist
