@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
     Thread.current[:user]
   end
 
-  def self.current=(user)
+  def self.current=(userim)
     Thread.current[:user] = user
   end
 
@@ -356,7 +356,7 @@ class User < ActiveRecord::Base
 
     (2..spreadsheet.last_row).each do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
-      row = row.collect{ |k,v| { k.try(:strip) => v.try(:strip) } }.reduce Hash.new, :merge 
+      row = row.collect{ |k,v| { k.try(:strip) => v.try(:strip) || '' } }.reduce Hash.new, :merge 
 
       user_exist = where(cpf: row['CPF'] || row['Cpf']).first
       user = user_exist.nil? ? new : user_exist
@@ -368,20 +368,20 @@ class User < ActiveRecord::Base
         blacklist.save if user.integrated && blacklist.valid?
 
         params = {}
-        params.merge!({ email: row['Email'].downcase })             if row.include?('Email')
-        params.merge!({ name: row['Nome'] })                        if row.include?('Nome')
-        params.merge!({ address: row['Endereço'] })                 if row.include?('Endereço')
-        params.merge!({ country: row['País'] })                     if row.include?('País')
-        params.merge!({ state: row['Estado'] })                     if row.include?('Estado')
-        params.merge!({ city: row['Cidade'] })                      if row.include?('Cidade')
-        params.merge!({ institution: row['Instituição'] })          if row.include?('Instituição')
+        params.merge!({ email: row['Email'].downcase })             if row.include?('Email') && !row['Email'].blank?
+        params.merge!({ name: row['Nome'] })                        if row.include?('Nome') && !row['Nome'].blank?
+        params.merge!({ address: row['Endereço'] })                 if row.include?('Endereço') && !row['Endereço'].blank?
+        params.merge!({ country: row['País'] })                     if row.include?('País') && !row['País'].blank?
+        params.merge!({ state: row['Estado'] })                     if row.include?('Estado') && !row['Estado'].blank?
+        params.merge!({ city: row['Cidade'] })                      if row.include?('Cidade') && !row['Cidade'].blank?
+        params.merge!({ institution: row['Instituição'] })          if row.include?('Instituição') && !row['Instituição'].blank?
         params.merge!({ cpf: row['CPF'] || row['Cpf'] })            if row.include?('CPF') || row.include?('Cpf')
-        params.merge!({ gender: (row['Sexo'].downcase == 'masculino' || row['Sexo'].downcase == 'male' || row['Sexo'].downcase == 'm') }) if row.include?('Sexo')
+        params.merge!({ gender: (row['Sexo'].downcase == 'masculino' || row['Sexo'].downcase == 'male' || row['Sexo'].downcase == 'm') }) if row.include?('Sexo') && !row['Sexo'].blank?
         params.merge!({ username: user.cpf || params[:cpf] })       if user.username.nil?
         params.merge!({ birthdate: '1970-01-01' })                  if user.birthdate.nil?
         params.merge!({ nick: user.username || params[:username] }) if user.nick.nil?
 
-        if user.password.nil?
+        if user.encrypted_password.blank?
           new_password  = ('0'..'z').to_a.shuffle.first(8).join
           user.password = new_password
         end
