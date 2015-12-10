@@ -41,6 +41,8 @@
     });
 
     $('#search').click(function() {
+
+
       if (($('#period').combobox('value') == "all" && $('#curriculum_unit').is_empty() && $('#course').is_empty())) {
         flash_message("#{t('.warning')}", 'alert');
         return false;
@@ -50,11 +52,14 @@
       var data = {
         type_id: "#{@type.id}",
         curriculum_unit_id: $("#curriculum_unit").combobox('value'),
-        course_id: $("#course").combobox('value'),
         period: $("#period").combobox('value')
       };
 
+      if("#{@type.id}" != "3")
+        $.extend(data, {course_id: $("#course").combobox('value')});
+
       $.get($(this).data("url-search"), data, function(data) {
+        console.log('oi');
         $(".semesters_list").html(data);
       });
 
