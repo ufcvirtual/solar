@@ -59,7 +59,6 @@
         $.extend(data, {course_id: $("#course").combobox('value')});
 
       $.get($(this).data("url-search"), data, function(data) {
-        console.log('oi');
         $(".semesters_list").html(data);
       });
 
