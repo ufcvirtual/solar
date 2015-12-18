@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-ruby "2.2.1"
+ruby "2.1.0"
 
 gem "rails", "~> 3.2.16"
 gem "rack", "~> 1.4.5"
@@ -78,7 +78,8 @@ group :development, :test do
   gem "pry-rails" # console melhor
   gem "pry-rescue"
   gem "factory_girl_rails", "~> 4.2.1"
-  gem "rspec-rails", "~> 2.14.1"
+  gem "rspec-rails", "~> 3.4.0"
+  gem 'test-unit', '~> 3.1.5'
   gem "rubocop", require: false # A Ruby static code analyzer, based on the community Ruby style guide.
 end
 
