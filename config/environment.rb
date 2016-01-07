@@ -36,6 +36,8 @@ Assignment_Type_Individual = 0
 Assignment_Type_Group      = 1
 
 # constantes de tipo de Prova
+Exam_Type_Objective  = 0
+Exam_Type_Subjective = 1
 
 # constante que indica numero maximo de abas abertas
 Max_Tabs_Open = 4

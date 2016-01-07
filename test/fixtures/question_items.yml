@@ -1,3 +1,4 @@
+#"Quanto eh 1+1?"
 question_item1:
   id: 1
   question_id: 1
@@ -16,62 +17,63 @@ question_item3:
   description: '7'
   value: false
 
-
 question_item4:
   id: 4
-  question_id: 2
-  description: 'manaus'
+  question_id: 1
+  description: '1'
   value: false
 
+#"A capital do Cearah eh"
 question_item5:
   id: 5
   question_id: 2
-  description: 'recife'
+  description: 'Recife'
   value: false
 
 question_item6:
   id: 6
   question_id: 2
-  description: 'fortaleza'
+  description: 'Fortaleza'
   value: true
-
 
 question_item7:
   id: 7
+  question_id: 2
+  description: 'Manaus'
+  value: false
+
+question_item8:
+  id: 8
+  question_id: 2
+  description: 'New York'
+  value: false
+
+#"Qual o resultado de 43x10?"
+question_item9:
+  id: 9
   question_id: 3
   description: '430'
   value: true
 
-question_item8:
-  id: 8
-  question_id: 3
-  description: '53'
-  value: false
-
-
-question_item9:
-  id: 9
-  question_id: 4
-  description: '53'
-  value: false
-
 question_item10:
   id: 10
-  question_id: 4
+  question_id: 3
   description: '53'
   value: false
 
 question_item11:
   id: 11
-  question_id: 4
-  description: '50'
+  question_id: 3
+  description: '4'
   value: false
 
+#"Fulano tem 4 moedas de R$ 0,10. Quanto ele tem?"
 question_item12:
   id: 12
   question_id: 4
   description: '30'
   value: false
+
 
 question_item13:
   id: 13
@@ -81,30 +83,174 @@ question_item13:
 
 question_item14:
   id: 14
-  question_id: 5
-  description: 'cor rosa'
+  question_id: 4
+  description: 'Moedas?'
   value: false
 
 question_item15:
   id: 15
-  question_id: 5
-  description: 'cor bege'
+  question_id: 4
+  description: 'Nao sei...'
   value: false
 
+#"Qual a cor do cavalo branco de napoleao?"
 question_item16:
   id: 16
   question_id: 5
-  description: 'cor branca'
+  description: 'Branco'
   value: true
 
 question_item17:
   id: 17
-  question_id: 6
-  description: 'japao'
-  value: true
+  question_id: 5
+  description: 'Azul'
+  value: false
 
 question_item17:
   id: 17
+  question_id: 5
+  description: 'Roxo'
+  value: false
+
+question_item18:
+  id: 18
+  question_id: 5
+  description: 'Lilas'
+  value: false
+
+#"Quais as cores da bandeira do japao?"
+question_item19:
+  id: 19
   question_id: 6
-  description: 'eua'
+  description: 'Branco'
+  value: true
+
+question_item20:
+  id: 20
+  question_id: 6
+  description: 'Azul'
+  value: false
+
+question_item21:
+  id: 21
+  question_id: 6
+  description: 'Roxo'
+  value: false
+
+question_item22:
+  id: 22
+  question_id: 6
+  description: 'Vermelho'
+  value: true
+
+#"Quais as capitais que possuem litoral?"
+question_item23:
+  id: 23
+  question_id: 7
+  description: 'Fortaleza'
+  value: true
+
+question_item24:
+  id: 24
+  question_id: 7
+  description: 'Recife'
+  value: true
+
+question_item25:
+  id: 25
+  question_id: 7
+  description: 'Teresina'
+  value: false
+
+question_item26:
+  id: 26
+  question_id: 7
+  description: 'Natal'
+  value: true
+
+#"Numa célula animal, qual organela possui a função de conservar e transmitir a informação genética na reprodução das células e regular as funções celulares."
+question_item27:
+  id: 27
+  question_id: 8
+  description: 'Ribossomos'
+  value: false
+
+question_item28:
+  id: 28
+  question_id: 8
+  description: 'Lisossomos'
+  value: false
+
+question_item29:
+  id: 29
+  question_id: 8
+  description: 'Citoplasma'
+  value: false
+
+question_item30:
+  id: 30
+  question_id: 8
+  description: 'Núcleo Celular'
+  value: true
+
+#"Sobre a 3a guerra mundial, responda V ou F"
+question_item31:
+  id: 31
+  question_id: 9
+  description: 'Foi disputada com armas lasers aero-espaciais'
+  value: true
+
+question_item32:
+  id: 32
+  question_id: 9
+  description: 'A China, sem muito esforço, saiu vitoriosa do conflito'
+  value: true
+
+question_item33:
+  id: 33
+  question_id: 9
+  description: 'A disputa foi iniciada pelo controle das reservas de agua potavel'
+  value: false
+
+question_item34:
+  id: 34
+  question_id: 9
+  description: 'Quem estava em Marte se salvou...'
+  value: true
+
+#"Sobre a 2a guerra mundial, responda V ou F"
+question_item35:
+  id: 35
+  question_id: 10
+  description: 'O maior numero de baixas foi da Russia, 24 milhoes de mortos'
+  value: true
+
+question_item36:
+  id: 36
+  question_id: 10
+  description: 'A China teve o segundo maior numero de baixas, 20 milhoes'
+  value: true
+
+question_item37:
+  id: 37
+  question_id: 10
+  description: 'EUA chegou a ser atacado dentro do seu territorio pelos japoneses, atraves e baloes bombas'
+  value: true
+
+question_item38:
+  id: 38
+  question_id: 10
+  description: 'A Alemanha saiu vitoriosa do conflito'
+  value: false
+
+question_item39:
+  id: 39
+  question_id: 10
+  description: 'Japao nao se rendeu apos a primeira bomba nuclear'
+  value: true
+
+question_item40:
+  id: 40
+  question_id: 10
+  description: 'EUA nao utilizou nenhuma arma de destruicao em massa'
   value: false

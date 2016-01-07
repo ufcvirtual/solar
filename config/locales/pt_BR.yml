@@ -1394,7 +1394,7 @@ pt_BR:
   menu_activity: Atividades
   menu_discussion: Fórum
   menu_portfolio: Portfolio
-  menu_test: Prova
+  menu_exam: Prova
   menu_chat: Chat
   menu_webconference: Webconferência
   menu_score_student: Acompanhamento
@@ -2908,6 +2908,8 @@ pt_BR:
       min: min
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
+      more: Mais
+      less: Menos
     situation:
       not_started: Não iniciada
       to_answer: A responder

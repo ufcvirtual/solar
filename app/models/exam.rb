@@ -6,6 +6,8 @@ class Exam < Event
 
   belongs_to :schedule
 
+  has_many :allocations, through: :allocation_tags
+
   has_many :exam_questions, dependent: :destroy
   has_many :questions     , through: :exam_questions
   has_many :exam_users    , through: :academic_allocations
@@ -191,6 +193,28 @@ class Exam < Event
     when Exam::GREATER; I18n.t('exams.form.config.greater')
     when Exam::AVARAGE; I18n.t('exams.form.config.avarage')
     when Exam::LAST; I18n.t('exams.form.config.laast')
+    end
+  end
+
+  def info(user_id, allocation_tag_id)
+    academic_allocation = academic_allocations.where(allocation_tag_id: allocation_tag_id).first
+    return unless academic_allocation
+
+    info = academic_allocation.exam_users.where({user_id: user_id}).first.try(:info) || {complete: false}
+    info = {situation: situation(info[:complete], info[:grade], exam_responses.count)}.merge(info)
+    {count: percent(number_questions, exam_responses.count)}.merge(info)
+  end
+
+  def situation(complete, grade = nil, exam_responses = 0)
+    case
+    when schedule.start_date.to_date > Date.current                    then 'not_started'
+    when (schedule.end_date.to_date >= Date.today)                     then 'to_answer'
+    when exam_responses > 0 && !complete                               then 'not_finished'
+    when complete                                                      then 'finished'
+    when !grade.nil?                                                   then 'corrected'
+    when (schedule.end_date.to_date < Date.today)                      then 'not_answered'
+    else
+      '-'
     end
   end
   

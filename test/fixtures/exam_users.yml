@@ -1,5 +1,5 @@
-exam1_user7:
-  id: 1
-  user_id: 7
-  start: <%= Date.today.to_s(:db) %>
-  academic_allocation_id: 76
+# exam1_user7:
+#   id: 1
+#   user_id: 7
+#   start: <%= Date.today.to_s(:db) %>
+#   academic_allocation_id: 76

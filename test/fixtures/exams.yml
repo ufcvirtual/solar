@@ -1,10 +1,13 @@
+# quimica I
 exam1:
   id: 1
   name: 'Prova 1'
-  description: 'Descrição da prova'
-  duration: 5
+  start_hour: '10:00'
+  end_hour: '12:00'
+  description: 'Descrição da prova sobre a a pior recessão da história recente o governo brasileiro ainda está se articulando em busca de uma agenda mínima para tentar tirar a economia do buraco. A repórter Giovana Teles, que acompanhou o dia de reuniões e declarações. Uma declaração que chamou a atenção foi a que o governo não tem um coelho na cartola.Jaques Wagner é um ministro que tem reconhecido abertamente que o governo errou na condução da política econômica e reforçou na quartafeira (6) que o desafio agora é destravar o ambiente econômico, o ambiente de negócios no Brasil, mas o governo rejeita a expressão pacote de medidas.'
+  duration: 30
   number_questions: 5
-  schedule_id: 7
+  schedule_id: 18
   status: true
 
 exam2:
@@ -12,8 +15,64 @@ exam2:
   name: 'Prova 2'
   start_hour: '00:00'
   end_hour: '23:59'
-  description: 'Descrição da prova'
-  duration: 5
-  number_questions: 5
-  schedule_id: 16
+  description: 'Descrição da prova Com a economia como está, Wagner disse que o trabalho vai ser lento, de reconquistar a confiança interna e externa e ele já avisou: não esperem medidas bombásticas.'
+  duration: 60
+  number_questions: 10
+  schedule_id: 19
+  status: true
+
+exam3:
+  id: 3
+  name: 'Prova 3'
+  start_hour: '09:00'
+  end_hour: '12:00'
+  description: 'As bolsas chinesas de Xangai e Shenzhen suspenderam, pela segunda vez, seus pregões porque seu principal índice de negociações de ações registrou forte queda nesta quinta-feira (7), superior a 7% avisou: não esperem medidas bombásticas.'
+  duration: 10
+  number_questions: 2
+  schedule_id: 20
+  status: true
+
+exam4:
+  id: 4
+  name: 'Prova 4'
+  start_hour: '12:00'
+  end_hour: '16:00'
+  description: 'A baixa do índice CSI300, que agrupa as 300 principais empresas cotadas nas duas bolsas, forçou a suspensão das cotações – chamada de "circuit braker". O mecanismo foi acionado pela primeira vez na última segunda-feira (4).ele já avisou: não esperem medidas bombásticas.'
+  duration: 10
+  number_questions: 10
+  schedule_id: 22
   status: false
+
+exam5:
+  id: 5
+  name: 'Prova 5'
+  start_hour: '15:00'
+  end_hour: '16:00'
+  description: 'Tendo como pano de fundo as preocupações com a economia chinesa, a queda dos preços do petróleo e a situação geopolítica, o índice Hang Seng de Hong Kong perdeu  durante a manhã 3,05%. Ações recentes de Pequim para depreciarem o iuan inflamaram os temores de que a segunda maior economia do mundo está desacelerando mais do que o esperado e poderia desencadear uma nova onda de desvalorização cambial competitiva na região. Foi o oitavo dia consecutivo de depreciação da moeda chinesa.Descrição da prova Com a economia como está, Wagner disse que o trabalho vai ser lento, de reconquistar a confiança interna e externa e ele já avisou: não esperem medidas bombásticas.'
+  duration: 60
+  number_questions: 20
+  schedule_id: 27
+  status: true
+
+exam6:
+  id: 6
+  name: 'Prova 6'
+  start_hour: '20:00'
+  end_hour: '22:00'
+  description: 'Se após o reatamento das negociações o índice CSI-300 cair mais de 7%, os dois mercados ficarão fechados até sexta-feira (8).'
+  duration: 5
+  number_questions: 1
+  schedule_id: 50
+  status: true
+
+# introducao a linguistica
+exam7:
+  id: 7
+  name: 'Prova 7'
+  start_hour: '20:00'
+  end_hour: '22:00'
+  description: 'Se após o reatamento das negociações o índice CSI-300 cair mais de 7%, os dois mercados ficarão fechados até sexta-feira (8).'
+  duration: 5
+  number_questions: 1
+  schedule_id: 50
+  status: true

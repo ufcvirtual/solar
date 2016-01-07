@@ -1,34 +1,69 @@
 exam_question1:
   id: 1
-  exam_id: 1
+  exam_id: 2
   question_id: 1
-  score: 2
+  score: 1
   order: 1
 
 exam_question2:
   id: 2
-  exam_id: 1
-  question_id: 3
-  score: 2
+  exam_id: 2
+  question_id: 2
+  score: 1
   order: 2
 
 exam_question3:
   id: 3
-  exam_id: 1
-  question_id: 4
-  score: 2
+  exam_id: 2
+  question_id: 3
+  score: 1
   order: 3
 
 exam_question4:
   id: 4
-  exam_id: 1
-  question_id: 2
-  score: 2
+  exam_id: 2
+  question_id: 4
+  score: 1
   order: 4
 
 exam_question5:
   id: 5
-  exam_id: 1
+  exam_id: 2
   question_id: 5
-  score: 2
+  score: 1
   order: 5
+
+exam_question6:
+  id: 6
+  exam_id: 2
+  question_id: 6
+  score: 0.5
+  order: 6
+
+exam_question7:
+  id: 7
+  exam_id: 2
+  question_id: 7
+  score: 0.5
+  order: 7
+
+exam_question8:
+  id: 8
+  exam_id: 2
+  question_id: 8
+  score: 1
+  order: 8
+
+exam_question9:
+  id: 9
+  exam_id: 2
+  question_id: 9
+  score: 1
+  order: 10
+
+exam_question10:
+  id: 10
+  exam_id: 2
+  question_id: 10
+  score: 2
+  order: 9

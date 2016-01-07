@@ -1,3 +1,7 @@
+.description_complete, .description_less {
+    display: none;
+  }
+
 #exam_form{
   .description, .description p{
     font-size: 11px;
@@ -67,10 +71,10 @@
       text-align: center;
     }
     th.medium{
-      width: 15%;
+      width: 20%;
     }
     th.large{
-      width: 30%;
+      width: 40%;
     }
     th.small{
       width: 10%;

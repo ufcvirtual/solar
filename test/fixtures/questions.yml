@@ -1,3 +1,4 @@
+#UNIQUE
 question1:
   id: 1
   user_id: 14
@@ -33,9 +34,39 @@ question5:
   type_question: 0
   status: true
 
+#MULTIPLE
 question6:
   id: 6
   user_id: 14
-  enunciation: 'Pais q fazia parte do eixo na 2a guerra mundial'
-  type_question: 0
+  enunciation: 'Quais as cores da bandeira do japao?'
+  type_question: 1
+  status: true
+
+question7:
+  id: 7
+  user_id: 14
+  enunciation: 'Quais as capitais que possuem litoral?'
+  type_question: 1
+  status: true
+
+question8:
+  id: 8
+  user_id: 14
+  enunciation: 'Numa célula animal, qual organela possui a função de conservar e transmitir a informação genética na reprodução das células e regular as funções celulares.'
+  type_question: 1
+  status: true
+
+#TRUE_FALSE
+question9:
+  id: 9
+  user_id: 14
+  enunciation: 'Sobre a 3a guerra mundial, responda V ou F'
+  type_question: 2
+  status: true
+
+question10:
+  id: 10
+  user_id: 14
+  enunciation: 'Sobre a 2a guerra mundial, responda V ou F'
+  type_question: 2
   status: true

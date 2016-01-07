@@ -1207,7 +1207,7 @@ en_US:
   menu_activity: Activities
   menu_discussion: Discussions
   menu_portfolio: Portfolio
-  menu_test: Tests
+  menu_exam: Tests
   menu_chat: Chat
   menu_webconference: Webconference
   menu_score_student: Scores
@@ -2672,6 +2672,8 @@ en_US:
       min: min
       expand_description: Expand description
       compress_description: Contract description
+      more: More
+      less: Less
     situation:
       not_started: Not started
       to_answer: To answer

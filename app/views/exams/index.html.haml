@@ -1,45 +1,68 @@
 .block_wrapper.list_exams
   .block_title
-    %h2= t(:title, scope: [:exams])
+    %h2
+      %i.icon-suitcase
+      = t(:title, scope: [:exams])
 
   - unless @exams.blank?
-    - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
     %table.tb_list
       %thead
         %tr.lines
-          %th= t('.description')
-          %th.large= t('.availability')
-          %th.medium= t('.duration')
-          %th.medium= t('.status')
-          %th.small= t('.grade')
+          %th.large= t('exams.index.description')
+          %th.medium= t('exams.index.availability')
+          %th.small= t('exams.index.duration')
+          %th.small= t('exams.index.status')
+          %th.small= t('exams.index.grade')
       %tbody
         - @exams.each do |exam|
+        - info = exam.info(current_user.id, @allocation_tag_id)
+        - link = open_exams_path(allocation_tags_ids: @allocation_tags_ids, exam_id: exam.id, student_id: current_user.id)
           %tr.lines{ id: "tr_#{exam.id}" }
             %td
               %div
-                .title= link_to exam.name, open_exams_path(allocation_tags_ids: @allocation_tags_ids, exam_id: exam.id), :'data-tooltip' => exam.name, class: 'link_open_exam', id: 'open-exam'
+                .title= link_to exam.name, link, :'data-tooltip' => exam.name, class: 'link_content', id: 'open-exam'
 
-                .description
-                  .minimun
-                    = raw(truncate exam.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"), onclick: 'expand_or_compress(this)')}")
-                  .complete.invisible
-                    = exam.description
-                    = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"), onclick: 'expand_or_compress(this)')
+                - if exam.description.size > 180
+                  .description_exam
+                    .description_slice= exam.description.slice(0..180) << "..."
+                    .description_complete= exam.description
+                    .more_or_less
+                      %a.description_more{href: "#"}= t("exams.index.more")
+                      %a.description_less{href: "#"}= t("exams.index.less")
+                - else
+                  = exam.description
+
             %td.center
               %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
               %div= [(exam.start_hour), (exam.end_hour)].join(' - ')
+
             %td.center= [exam.duration, t('.min')].join(' ')
-            - situation = exam.situation(current_user.id)
-            %td.center{ class: situation[0] }= situation[1]
-            %td.center= ExamUser.get_grade(exam.ac_id, current_user.id)
+
+            - count = info[:count].nil? || info[:count]==0 ? "" : info[:count].to_s
+            %td.center= link_to I18n.t(info[:situation], :count => count, :scope => [:exams, :situation]), link, class: "#{info[:situation]} link_content"
+
+            %td.center
+              %span.activity_grade= info[:grade] || "-"
 
   - else
     .block_content_text.block_content_text_list.text_none= t(:none, scope: [:exams] )
 
 :javascript
   $(function(){
-    $(".link_open_exam").call_fancybox({
+    $(".link_content").call_fancybox({
       minWidth: '90%',
       minHeight: '80%'
+    });
+
+    $(".description_more").click(function(){
+      $(".description_slice, .description_more", $(this).parent().parent()).css("display", "none");
+      $(".description_complete, .description_less", $(this).parent().parent()).css("display", "block");
+      return false;
+    });
+
+    $(".description_less").click(function(){
+      $(".description_slice, .description_more", $(this).parent().parent()).css("display", "block");
+      $(".description_complete, .description_less", $(this).parent().parent()).css("display", "none");
+      return false;
     });
   });

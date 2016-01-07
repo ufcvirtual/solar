@@ -4,7 +4,7 @@ class ExamsController < ApplicationController
 
   before_filter :prepare_for_group_selection, only: :index
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
-  before_filter :set_current_user, only: :index
+  # before_filter :set_current_user, only: :index
   layout false, except: :index
 
   def index

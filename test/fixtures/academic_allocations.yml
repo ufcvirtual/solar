@@ -455,12 +455,6 @@ webc3:
  academic_tool_id: 3
  academic_tool_type: "Webconference"
 
-exam1:
- id: 76
- allocation_tag_id: 3 # QM-CAU - 2011.1
- academic_tool_id: 1
- academic_tool_type: "Exam"
-
 webc4:
  id: 77
  allocation_tag_id: 3
@@ -503,9 +497,45 @@ webc10:
  academic_tool_id: 5
  academic_tool_type: "Webconference"
 
-exam2:
+exam1:
  id: 84
  allocation_tag_id: 3 # QM-CAU - 2011.1
+ academic_tool_id: 1
+ academic_tool_type: "Exam"
+
+exam2:
+ id: 85
+ allocation_tag_id: 3 # QM-CAU - 2011.1
  academic_tool_id: 2
+ academic_tool_type: "Exam"
+
+exam3:
+ id: 86
+ allocation_tag_id: 3 # QM-CAU - 2011.1
+ academic_tool_id: 3
+ academic_tool_type: "Exam"
+
+exam4:
+ id: 87
+ allocation_tag_id: 3 # QM-CAU - 2011.1
+ academic_tool_id: 4
+ academic_tool_type: "Exam"
+
+exam5:
+ id: 88
+ allocation_tag_id: 3 # QM-CAU - 2011.1
+ academic_tool_id: 5
+ academic_tool_type: "Exam"
+
+exam6:
+ id: 89
+ allocation_tag_id: 3 # QM-CAU - 2011.1
+ academic_tool_id: 6
+ academic_tool_type: "Exam"
+
+exam7:
+ id: 90
+ allocation_tag_id: 2 # introducao a linguistica
+ academic_tool_id: 7
  academic_tool_type: "Exam"
 

@@ -42,7 +42,7 @@ portfolio_ativ:
 prova_ativ:
   id: 203
   parent_id: 20
-  name: menu_test
+  name: menu_exam
   order: 3
   resource_id: 196
 
