@@ -2928,6 +2928,9 @@ pt_BR:
         config: Configurações
       info:
         continue: Continuar
+    open:
+      to: " de "
+      questions: " questões"
     error:
       general_message: Não foi possível realizar a ação desejada
       started: Prova já publicada e iniciada

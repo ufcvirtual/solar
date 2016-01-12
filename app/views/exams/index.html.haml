@@ -3,7 +3,6 @@
     %h2
       %i.icon-suitcase
       = t(:title, scope: [:exams])
-
   - unless @exams.blank?
     %table.tb_list
       %thead
@@ -20,38 +19,39 @@
           %tr.lines{ id: "tr_#{exam.id}" }
             %td
               %div
-                .title= link_to exam.name, link, :'data-tooltip' => exam.name, class: 'link_content', id: 'open-exam'
-
+                - if info[:situation] == "not_answered" || info[:situation] == "not_started"
+                  .title= exam.name
+                - else
+                  = link_to exam.name, link, :'data-tooltip' => exam.name, class: 'link_content link_open_exam', id: 'open-exam'
                 - if exam.description.size > 180
                   .description_exam
                     .description_slice= exam.description.slice(0..180) << "..."
                     .description_complete= exam.description
                     .more_or_less
-                      %a.description_more{href: "#"}= t("exams.index.more")
-                      %a.description_less{href: "#"}= t("exams.index.less")
+                      %a.description_more.link_content{href: "#"}= t("exams.index.more")
+                      %a.description_less.link_content{href: "#"}= t("exams.index.less")
                 - else
                   = exam.description
-
             %td.center
               %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
               %div= [(exam.start_hour), (exam.end_hour)].join(' - ')
-
             %td.center= [exam.duration, t('.min')].join(' ')
-
             - count = info[:count].nil? || info[:count]==0 ? "" : info[:count].to_s
-            %td.center= link_to I18n.t(info[:situation], :count => count, :scope => [:exams, :situation]), link, class: "#{info[:situation]} link_content"
-
+            %td.center
+              - if info[:situation] == "not_answered" || info[:situation] == "not_started"
+                %div{class: "#{info[:situation]}"}= I18n.t(info[:situation], :scope => [:exams, :situation])
+              - else
+                = link_to I18n.t(info[:situation], :count => count, :scope => [:exams, :situation]), link, class: "#{info[:situation]} link_open_exam"
             %td.center
               %span.activity_grade= info[:grade] || "-"
-
   - else
     .block_content_text.block_content_text_list.text_none= t(:none, scope: [:exams] )
 
 :javascript
   $(function(){
-    $(".link_content").call_fancybox({
-      minWidth: '90%',
-      minHeight: '80%'
+    $(".link_open_exam").call_fancybox({
+      minWidth: '50%',
+      height: 'auto'
     });
 
     $(".description_more").click(function(){
