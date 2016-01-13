@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
     Thread.current[:user]
   end
 
-  def self.current=(userim)
+  def self.current=(user)
     Thread.current[:user] = user
   end
 
@@ -171,12 +171,14 @@ class User < ActiveRecord::Base
             allocations.allocation_tag_id IN (#{allocation_tags_ids.join(',')}) 
             AND
             user_id = #{id}
+            AND 
+            allocations.status = #{Allocation_Activated}
         ) AS ids;
 
     SQL
 
     researcher_profiles = profiles_with_access_on('cant_see_info', 'users', allocation_tags_ids, false, true)
-    (all.count == researcher_profiles)
+    (all.first['count'] == researcher_profiles.first['count'])
   end
 
   ## Na criação, o usuário recebe o perfil de usuario basico

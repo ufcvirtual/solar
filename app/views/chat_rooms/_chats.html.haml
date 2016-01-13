@@ -29,7 +29,7 @@
             .dropdown.dropdown-tip{ class: "chat_list", id: "students-dropdown#{chat.id}" }
               %ul{ class: "dropdown-menu" }
                 - participants.each do |p|
-                  %li= p.name
+                  %li= p.info(:name)
 
         %td{ align: 'center' }
           %div= [l(chat.schedule.start_date.to_date), l(chat.schedule.end_date.to_date)].join(' - ')
