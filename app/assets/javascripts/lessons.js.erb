@@ -32,8 +32,6 @@ function close_lesson() {
 function open_new_lesson_on_fancybox(lesson_path, lesson_url) {
   $('.lesson .content').attr('data-url', lesson_url);
 
-  console.log($('.lesson .content iframe'));
-
   $('.lesson .content iframe').attr('src', lesson_path);
 
   // update status da lesson
