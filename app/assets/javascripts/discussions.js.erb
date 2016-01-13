@@ -44,6 +44,7 @@ function append_rich_text(container) {
 }
 
 function cancel_posting() {
+  if (!confirm("<%= I18n.t(:confirm_cancel) %>")) return; 
   append_rich_text($(".new_posts"));
   $('#new_post').hide(300);
   $('#new_post').parent().hide(300, function() {
@@ -52,6 +53,8 @@ function cancel_posting() {
 }
 
 function new_post(obj, parent) {
+  if($("#new_post:visible").length > 0)
+    if (!confirm("<%= I18n.t('posts.index.confirm_ckeditor') %>")) return; 
   form_post_reset_parameters();
 
   $('form#new_post_form input[name=_method]').val('post');
@@ -73,6 +76,8 @@ function new_post(obj, parent) {
 };
 
 function update_post(obj, post, parent) {
+  if($("#new_post:visible").length > 0)
+    if (!confirm("<%= I18n.t('posts.index.confirm_ckeditor') %>")) return; 
   form_post_reset_parameters();
 
   if (parent > 0) { $('form#new_post_form #discussion_post_parent_id').val(parent); } // post com parent
