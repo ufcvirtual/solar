@@ -2694,6 +2694,9 @@ en_US:
         config: Configuration
       info:
         continue: Continue
+    open:
+      to: " to "
+      questions: " questions"
     error:
       general_message: It was not possible to execute action
       started: Exam already published and started

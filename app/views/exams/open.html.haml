@@ -1,24 +1,21 @@
 - unless @exam.nil?
-	.exam_head
-		.exam_head_left
-			%div= @exam.name
-		.exam_head_right
-			%div= @exam.duration
-			%div= @exam.number_questions
-
-	- unless @exam_questions.nil?
-		.detail
+	.exam_open
+		.header
+			= render 'exams/open/header'
+		.content_exam
 
 :javascript
 
-	$('.detail').html('#{escape_javascript( render :partial => 'exams/show_questions' )}');
+	$('.content_exam').html('#{escape_javascript( render :partial => 'exams/open/content' )}');
 
 	$(function() {		
-		$(".detail").on("click", ".pagination a", function(){
+		$(".content_exam").on("click", ".pagination a", 
+			function(){
+				var url = this.href;
+				$('.content_exam').load(url);
+				return false;
+			});
 
-			var url = this.href;
-			$('.detail').load(url);
-		
-			return false;
-		});
+		$('#order').html(#{@question_order});
+
 	});

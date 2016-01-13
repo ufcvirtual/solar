@@ -1,0 +1,14 @@
+#exam_topbar
+  #title
+    = @exam.name
+  %ul#exam_status
+    %li#question_count
+      %i.icon-list
+      %span#order{name: "order"} 
+    %li#total
+      = t('exams.open.to') + @exam.number_questions.to_s + t('exams.open.questions')
+    %li#time
+      %i.icon-clock
+      %span#clock{name: "clock"}
+    %li#time_final
+      = t('exams.open.to') + Time.at(@exam.duration*60).utc.strftime("%H:%M:%S")

@@ -2,6 +2,110 @@
     display: none;
   }
 
+.exam_open {
+
+  font-variant: initial;
+  font-family: 'PT Sans', sans-serif;
+
+  #exam_topbar {
+    width: 100%;
+    z-index: 2;
+    display: inline-block;
+    }
+
+  #title {
+    font-size: 13pt;
+    font-family: 'PT Sans';
+    margin: 0px;
+    padding: 0px 0px 0px 5px;
+    color: $text_grey;
+    float: left;
+  }
+
+  #exam_status {
+    float: right;
+    font-size: 10pt;
+    list-style-type: none;
+    padding: 0 0 0 0;
+    margin: 0;
+
+
+    li {
+      display: inline-block;
+      padding: 3px 6px 0 4px;
+      vertical-align: middle;
+      float: left;
+      /* necessario para funcionar ok no IE7 */
+      /*    zoom: 1;
+      *display: inline;*/
+    }
+
+    #time, #question_count{
+      padding-right: 0px;
+    }
+  }
+
+  .block_content {
+    padding: 5px;
+    border-bottom: solid 1px;
+    border-bottom-color: #D0D0D0;
+    border-top: solid 1px;
+    border-top-color: #D0D0D0;
+    min-height: 28px;
+  }
+
+  .question {
+    padding-top: 10px;
+    float: left;
+
+    .number {
+      padding-right: 5px;
+      color: #003E7A;
+      width: auto;
+      vertical-align:top;
+    }
+
+    .enunciation {
+
+    }
+
+  }
+
+  .question_items{
+
+    .checkbox, .item {
+      padding-top: 20px;
+      float: left;
+    }
+
+    .checkbox{
+      float: left;
+      padding-right: 5px;
+      padding-left: 30px;
+    }
+
+    .item{
+      color: #003E7A;
+    }
+  }
+
+  .message_div_navigation {
+    text-align: center;
+    padding: 0.25*$gutter;
+    color: #B4B3B7;
+    font-size: 13pt;
+
+
+    .message_page{
+      margin-top: 5px;
+    }
+    .active{
+      color: $text_blue;
+    }
+  }
+
+}
+
 #exam_form{
   .description, .description p{
     font-size: 11px;
