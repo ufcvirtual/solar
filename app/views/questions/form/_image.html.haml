@@ -1,10 +1,25 @@
 #images
   = f.nested_fields_for :question_images, wrapper_tag: :div do |img|
     .duplicatable_nested_form
-      = img.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
-      / .inline
-      = img.input :image, as: :file
-      / .label= img.label :legend
-      = img.input :legend, as: :text
-      / .label= img.label :img_alt
-      = img.input :img_alt, label: false
+      .upload-preview
+        - if img.object.image.nil?
+          %img
+        - else
+          %img{ src: img.object.image.as_json }
+
+        = img.input :image, as: :file, label: false
+        = link_to_function t('.add_image'), 'add_file(this)', class: 'btn btn_main add_file'
+      .info
+        = img.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
+        = img.input :legend, as: :text
+        = img.input :img_alt
+        = img.label t('.alt_desc'), class: 'alt'
+
+:javascript
+  $(function(){
+    set_image_input();
+  });
+
+  function add_file(btn){
+    $(btn).parent().find('input.file').click();
+  }

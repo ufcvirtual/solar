@@ -1,9 +1,9 @@
-- can_delete  = (question.respond_to?(:count_exams)  ? question.count_exams.to_i.zero?  : question.exams.empty?)
+- exams       = (question.respond_to?(:count_exams)  ? question.count_exams : question.exams.count)
+- can_delete  = exams.to_i.zero?
 - has_items   = (question.respond_to?(:count_items)  ? !question.count_items.to_i.zero? : question.question_items.any?)
 - has_images  = (question.respond_to?(:has_images)   ? (question.has_images == 't') : question.question_images.any?)
 - items       = (question.respond_to?(:count_items)  ? question.count_items : question.question_items.count)
-- exams       = (question.respond_to?(:count_exams)  ? question.count_exams : question.exams.count)
-- labels      = (question.respond_to?(:labels)       ? question.labels.delete('NULL').split(',') : question.question_labels.map(&:name))
+- labels      = (question.respond_to?(:labels)       ? question.labels.delete('NULL').split(',') : (question.question_labels.map(&:name) rescue ''))
 - author_name = (question.respond_to?(:author_name)) ? question.author_name : question.user.name
 %tr.lines{ id: "tr_#{question.id}" }
   %td{ style: 'text-align:center;' }
@@ -23,7 +23,8 @@
         .complete.invisible
           = raw question.enunciation
           = content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('.compress_enunciation'))
-      .group_label= render 'labels', labels: labels
+      - unless labels.blank?
+        .group_label= render 'labels', labels: labels
   %td{ style: 'text-align:center;', :'data-tooltip' => author_name }= author_name.truncate(50)
   %td{ style: 'text-align:center;' }= question.type
   %td{ style: 'text-align:center;' }= l(question.updated_at, format: :normal)
@@ -41,4 +42,9 @@
       $($(this).parent().siblings()[0]).show();
     });
 
-  })
+    $('#all_questions').nice_checkbox({
+      can_enable_elements: true
+    });
+
+  });
+  

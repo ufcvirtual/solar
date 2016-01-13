@@ -29,7 +29,7 @@ module SysLog
 
       if !(objs.nil?) && !(objs.empty?)
         objs.each do |obj|
-          description = "#{sobj.singularize}: #{obj.id}, #{ActiveSupport::JSON.encode(obj.attributes.except('attachment_updated_at', 'updated_at', 'created_at', 'id'))}" rescue nil
+          description = obj.respond_to?(:log_description) ? obj.log_description : "#{sobj.singularize}: #{obj.id}, #{ActiveSupport::JSON.encode(obj.attributes.except('attachment_updated_at', 'updated_at', 'created_at', 'id'))}" rescue nil
           if ((obj.respond_to?(:academic_allocations) && !obj.try(:academic_allocations).empty?) || obj.respond_to?(:academic_allocation))
             allocation_tag_id = params[:allocation_tag_id] || active_tab[:url][:allocation_tag_id] || obj.allocation_tag.id rescue nil
             [(obj.respond_to?(:academic_allocations) ? obj.academic_allocations : obj.academic_allocation)].flatten.each do |al|
@@ -45,7 +45,7 @@ module SysLog
         generic_log(sobj)
       end
 
-    rescue
+    rescue => error
       # do nothing
     end
 
@@ -53,41 +53,41 @@ module SysLog
 
       def request_method(rm)
         case rm
-          when "POST"
+          when 'POST'
             :create
-          when "PUT", "PATCH"
+          when 'PUT', 'PATCH'
             :update
-          when "DELETE"
+          when 'DELETE'
             :destroy
         end
       end
 
       def generic_log(sobj, obj = nil)
-        return if not(obj.nil?) and obj.new_record? # not saved
+        return if not(obj.nil?) && obj.new_record? # not saved
 
         # academic_allocation_id = obj.try(:academic_allocation).try(:id)
         academic_allocation_id = nil
         tbname = obj.try(:class).try(:table_name).to_s.singularize.to_sym if obj.try(:class).respond_to?(:table_name)
-        description = if not(tbname.nil?) and params.has_key?(tbname) and not(obj.nil?)
+        description = if !tbname.nil? && (params.has_key?(tbname) || params.size <= 3) && !obj.nil?
 
-          obj_attrs = obj.attributes.except('attachment_updated_at', 'created_at', 'updated_at')
-          obj_attrs.merge!({'files' => obj.files.map {|f| f.attributes.except('attachment_updated_at') } }) if obj.respond_to?(:files) and obj.files.any?
+          obj_attrs = (obj.respond_to?(:log_description) ? obj.log_description : obj.attributes.except('attachment_updated_at', 'created_at', 'updated_at'))
+          obj_attrs.merge!({'files' => obj.files.map {|f| f.attributes.except('attachment_updated_at') } }) if obj.respond_to?(:files) && obj.files.any?
           obj_attrs = ActiveSupport::JSON.encode(obj_attrs)
 
-          "#{sobj}: #{obj.id}, #{obj_attrs}"
+          "#{sobj}: #{obj.id}, changed: #{obj.changed}, #{obj_attrs}"
         elsif params[:id].present?
           # gets any extra information if exists
           info = ActiveSupport::JSON.encode(params.except(:controller, :action, :id))
           "#{sobj}: #{[params[:id], info].compact.join(", ")}"
         else # controllers saving other objects. ex: assingments -> student files
           d = []
-          variables = self.instance_variable_names.to_ary.delete_if { |v| v.to_s.start_with?("@_") or ["@current_user", "@current_ability"].include?(v) }
+          variables = self.instance_variable_names.to_ary.delete_if { |v| v.to_s.start_with?("@_") || ["@current_user", "@current_ability"].include?(v) }
           variables.each do |v|
             o = eval(v)
             academic_allocation_id = o.academic_allocation.id if o.respond_to?(:academic_allocation) # assignment_file
             d << %{#{v.sub("@", "")}: #{o.as_json}} unless ["Array", "String"].include?(o.class)
           end
-          d.join(", ")
+          d.join(', ')
         end
 
         LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: request.remote_ip, academic_allocation_id: academic_allocation_id, description: description) unless description.nil?
@@ -105,7 +105,7 @@ module SysLog
     end
 
     def log_update
-      unless not(params[:user].include?(:password)) or params[:user][:password].blank? or params[:user][:password] != params[:user][:password_confirmation]
+      unless !(params[:user].include?(:password)) || params[:user][:password].blank? || params[:user][:password] != params[:user][:password_confirmation]
         user = (current_user.nil? ? (params[:user].include?(:id) ? User.find(params[:id]) : User.find_by_reset_password_token(params[:user][:reset_password_token])) : current_user)
         LogAction.updating(user_id: user.id, ip: request.remote_ip, description: "user: #{user.id}, password", created_at: Time.now) unless user.nil?
       end

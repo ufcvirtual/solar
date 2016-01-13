@@ -221,10 +221,10 @@ en_US:
       discussion_post:
         content: Content
       public_file:
-        attachment_file_size: "File too large. The maximum size should be up to 5MB."
+        attachment_file_size: "File too large. The maximum size should be up to 20MB."
         attachment_file_name: File
       assignment_file:
-        attachment_file_size: "File too large. The maximum size should be up to 5MB."
+        attachment_file_size: "File too large. The maximum size should be up to 26MB."
         attachment_file_name: File
         sent_assignment_id: ""
       comment_file:
@@ -947,6 +947,7 @@ en_US:
       show_plainlist: "Show as List"
       show_thread: "Show as Thread"
       attach_file_title: "Send files"
+      confirm_ckeditor: "Are you sure? Any other post with not finished edition or creation will have it's content lost."
     post:
       remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       answer: "Answer"
@@ -2234,6 +2235,7 @@ en_US:
     newsfeed: News Feed
   message_confirm: "Are you sure you want to delete this?"
   confirm_acceptance: "Confirm request acceptance?"
+  confirm_cancel: 'Are you sure you want to cancel?'
   messages:
     file_too_big: "File too big"
     mail_header: "Sent by: "
@@ -2785,13 +2787,21 @@ en_US:
       items:
         answer: 'Answer*'
         add: Add more options
+        alt_desc: Mandatory description to accessibility (disabled people)
+        add_image: Add/update image
+        comment: Comment
+        alt: Alt
       info:
         continue: Continue
         add_images: Add more images
+        add_labels: Add more labels
+      image:
+        alt_desc: Mandatory description to accessibility (disabled people)
+        add_image: Add/update image
     labels:
       labels: 'labels: '
     error:
-      in_use: Exam already published and started
+      in_use: Is being used at exams
       min_items: It must have, at least, 3 items
       correct_item: It must have, at least, one correct item
       only_one_true_item: To this type of question, only one correct item is allowed
@@ -2801,6 +2811,8 @@ en_US:
       max_images: cat have, at most, 4 images
       general_message: It was not possible to execute this action
       permission: You don't have permission to execute this action
+      alt: Mandatory Alt
+      max_labels: Max 8 labels
     success:
       deleted: Questions removed successfully
       change_status: Status updated successfully

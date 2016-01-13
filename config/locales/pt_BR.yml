@@ -262,7 +262,7 @@ pt_BR:
         content: Conteúdo
       public_file:
         attachment_content_type: ""
-        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 20MB."
         attachment_file_name: Arquivo
       discussion_post_file:
         attachment_content_type: ""
@@ -270,7 +270,7 @@ pt_BR:
         message_content_type: ""
       assignment_file:
         attachment_content_type: ""
-        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 26MB."
         attachment_file_name: Arquivo
         sent_assignment_id: ""
       comment_file:
@@ -1115,6 +1115,7 @@ pt_BR:
       show_plainlist: "Ver em lista"
       show_thread: "Ver em Árvore"
       attach_file_title: "Envio de arquivos"
+      confirm_ckeditor: "Tem certeza? Qualquer outra postagem em aberto para edição ou criação terá seu conteúdo perdido."
     post:
       remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
       answer: "Responder"
@@ -2448,6 +2449,7 @@ pt_BR:
 
   message_confirm: "Tem certeza de que deseja excluir?"
   confirm_acceptance: "Confirma aceitação de solicitação?"
+  confirm_cancel: 'Tem certeza de que deseja cancelar?'
 
   messages:
     file_too_big: "Arquivo muito grande!"
@@ -3021,13 +3023,21 @@ pt_BR:
       items:
         answer: 'Resposta*'
         add: Adicionar mais opções
+        alt_desc: Descrição obrigatória para acessibilidade (pessoas com deficiência)
+        add_image: Adicionar/alterar imagem
+        comment: Comentário
+        alt: Alt
       info:
         continue: Prosseguir
         add_images: Adicionar mais imagens
+        add_labels: Adicionar mais palavras-chave
+      image:
+        alt_desc: Descrição obrigatória para acessibilidade (pessoas com deficiência)
+        add_image: Adicionar/alterar imagem
     labels:
       labels: 'palavras-chave: '
     error:
-      in_use: A prova já foi publicada e iniciada
+      in_use: Está sendo usada em provas
       min_items: É preciso ter, ao menos, 3 itens
       correct_item: É preciso ter ao menos um item correto
       only_one_true_item: Para este tipo de questão, apenas um item correto é permitido
@@ -3037,6 +3047,8 @@ pt_BR:
       max_images: pode ter, no máximo, 4 imagens
       general_message: Não foi possível realizar a ação desejada
       permission: Você não tem permissão para realizar esta ação
+      alt: Alt obrigatório
+      max_labels: Máximo de 8 palavras-chave
     success:
       deleted: Questões removidas com sucesso
       change_status: Situação alterada com sucesso

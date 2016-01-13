@@ -28,7 +28,8 @@
         .complete.invisible
           = raw question.enunciation
           = link_to_function content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('questions.question.compress_enunciation')), 'compress_or_compress(this)'
-      .group_label= render 'questions/labels', labels: labels
+      - unless labels.blank?
+        .group_label= render 'questions/labels', labels: labels
   %td{ style: 'text-align:center;', :'data-tooltip' => author_name }= author_name.truncate(50)
   %td{ style: 'text-align:center;' }= question.type
   %td{ style: 'text-align:center;' }= l(question.updated_at, format: :normal)
@@ -39,8 +40,8 @@
 
 :javascript
   $(function(){
-    $.each($('[id^="all_questions_"]'), function(){
-      $(this).nice_checkbox({
+    $.each($('[id^="all_questions_"]'), function(idx){
+      $($('[id^="all_questions_"]')[idx]).nice_checkbox({
         can_enable_elements: true
       });
     });

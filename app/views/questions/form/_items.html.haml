@@ -4,13 +4,6 @@
   .input.string
     = f.add_nested_fields_link :question_items, t('.add'), class: 'btn add_options'
 
-= button_to_function t(:cancel), 'back()', class: 'btn btn_default', type: 'button'
-= button_to_function t(:cancel), "save_question(#{eq.nil? ? 0 : eq.object.exam_id})", class: 'btn btn_main', type: 'button'
-
-:javascript
-  $(function(){
-    // $('.add_options').click(function(){
-    //   console.log($('#question_type_question').val());
-    //   change_inputs(1, $('#question_type_question').val());
-    // });
-  });
+.form-actions.right_buttons
+  = button_to_function t(:back), 'back()', class: 'btn btn_default', type: 'button'
+  = button_to_function t(:save), "save_question(#{eq.nil? ? 0 : eq.object.exam_id})", class: 'btn btn_main', type: 'button'

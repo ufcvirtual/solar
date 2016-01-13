@@ -1,6 +1,8 @@
 class AccessControlController < ApplicationController
   include AccessControlHelper
 
+  before_filter :set_current_user
+
   ## Verificação de acesso ao realizar download de um arquivo relacionado à atividades ou um arquivo público
   def assignment
     file_id            = params[:file].split('_')[0]
@@ -41,6 +43,18 @@ class AccessControlController < ApplicationController
 
   def support_material
     get_file(SupportMaterialFile, 'support_material_files')
+  end
+
+  def question_image 
+    question = QuestionImage.find(params[:file].split('_')[0]).question
+    question.can_see?
+    download_file(File.join('questions', 'images'))
+  end
+
+  def question_item
+    question = QuestionItem.find(params[:file].split('_')[0]).question
+    question.can_see?
+    download_file(File.join('questions', 'items'))
   end
 
   # def post

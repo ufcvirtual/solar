@@ -1,11 +1,12 @@
 .block_title_exam.block_exam
   %h2
     .text
-      = check_box_tag("ckb_exam_#{exam.id}", exam.id, false, { class: 'ckb_exam' })
+      - if ckb.nil? || ckb
+        = check_box_tag("ckb_exam_#{exam.id}", exam.id, false, { class: 'ckb_exam' })
       = exam.name
     .block_buttons
       - if show_buttons
-        = link_to (content_tag(:i, nil, class: 'icon-eye')), edit_exam_path(exam, allocation_tags_ids: @allocation_tags_ids), class: 'block_title_button preview_exam', :'data-tooltip' => t('exams.list.preview_exam')
+        = link_to (content_tag(:i, nil, class: 'icon-eye')), open_exams_path(allocation_tags_ids: @allocation_tags_ids, exam_id: exam.id), class: 'block_title_button preview_exam', :'data-tooltip' => t('exams.list.preview_exam')
         = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_exam_path(exam, allocation_tags_ids: @allocation_tags_ids), class: 'block_title_button edit_exam', :'data-tooltip' => t('exams.list.edit_exam')
         = link_to_function (content_tag(:i, nil, class: 'icon-trash')), 'delete_exam(this)', class: 'block_title_button delete_exam', :'data-link-delete' => exam_path(exam, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('exams.list.delete_exam'), :"data-parent" => "exam_#{exam.id}"
       .right

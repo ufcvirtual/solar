@@ -9,7 +9,6 @@ class QuestionsController < ApplicationController
   def index
     authorize! :index, Question
     @questions = Question.get_all(current_user.id, params[:search] || {}, params[:verify_privacy])
-
     render partial: 'questions/questions' unless params[:search].nil?
   end
 
@@ -40,8 +39,9 @@ class QuestionsController < ApplicationController
   def change_status
     authorize! :change_status, Question
     ids = params[:id].split(',') rescue [params[:id]]
+    @questions = Question.where(id: ids)
     ActiveRecord::Base.transaction do
-      Question.where(id: ids).each do |question|
+      @questions.each do |question|
         question.can_change_status?
         question.update_attributes status: (params[:status].nil? ? !question.status : params[:status])
       end
@@ -56,10 +56,12 @@ class QuestionsController < ApplicationController
 
   def edit
     @question = Question.find(params[:id])
+    @question.question_images.build
+    @question.question_labels.build
+    @question.question_items.build
   end
 
   def update
-    # incompleto e nao testado
     authorize! :update, Question
     @question         = Question.find params[:id]
 
@@ -112,7 +114,11 @@ class QuestionsController < ApplicationController
     question  = Question.find params[:id]
     @question = Question.copy(question, current_user.id)
 
-    log(question, "question: #{question.id} [copy], #{question.attributes}", LogAction::TYPE[:create]) rescue nil
+    log(question, "question: #{question.id} [copy], #{question.log_description}", LogAction::TYPE[:create]) rescue nil
+
+    @question.question_images.build
+    @question.question_labels.build
+    @question.question_items.build
 
     render :edit
   end
@@ -120,9 +126,10 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:name, :enunciation, :type_question, 
+    params.require(:question).permit(:enunciation, :type_question, 
       question_items_attributes: [:id, :item_image, :value, :description, :_destroy, :comment, :img_alt],
-      question_images_attributes: [:id, :image, :legend, :img_alt, :_destroy])
+      question_images_attributes: [:id, :image, :legend, :img_alt, :_destroy],
+      question_labels_attributes: [:id, :name, :_destroy])
   end
 
   def params_to_log

@@ -12,7 +12,7 @@ class ExamQuestion < ActiveRecord::Base
 
   before_destroy :can_reorder?, :unpublish
 
-  after_save :recauclate_grades, if: 'annulled_changed?'
+  after_save :recalculate_grades, if: 'annulled_changed?'
   
   def self.copy(exam_question_to_copy, user_id = nil)
     question = Question.copy(exam_question_to_copy.question, user_id)
@@ -42,13 +42,28 @@ class ExamQuestion < ActiveRecord::Base
     raise 'already_started' if exam.status && exam.on_going?
   end
 
-  def recauclate_grades
+  def recalculate_grades
     # chamar metodo de calculo de notas para todos os que existem
   end
 
   def can_change_annulled?
     raise 'cant_undo'    if annulled
     raise 'has_to_start' unless (exam.status && exam.started?)
+  end
+
+  def log_description
+    desc = {}
+
+    desc.merge!(question.attributes.except('attachment_updated_at', 'updated_at', 'created_at'))
+    desc.merge!(exam_id: exam.id)
+    desc.merge!(attributes.except('attachment_updated_at', 'updated_at', 'created_at'))
+    desc.merge!(images: question.question_images.collect{|img| img.attributes.except('image_updated_at' 'question_id')})
+    desc.merge!(items: question.question_items.collect{|item| item.attributes.except('question_id', 'item_image_updated_at')})
+    desc.merge!(labels: question.question_labels.collect{|label| label.attributes.except('created_at', 'updated_at')})
+  end
+
+  def unpublish
+    exam.update_attributes status: false
   end
 
 end

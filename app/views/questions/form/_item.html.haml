@@ -1,17 +1,26 @@
 #items
   = f.nested_fields_for :question_items, wrapper_tag: :div do |i|
     .duplicatable_nested_form
-      .add= link_to_function content_tag(:i, nil, class: 'icon-checkmark'), 'add_item(this)'
       = i.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
-      .edit= link_to_function content_tag(:i, nil, class: 'icon-edit '), 'edit_item(this)'
       .inline
-        = i.check_box :value
-        = i.select :value, ([ ['V', true], ['F', false]]), include_blank: false
+        .inputs
+          = i.check_box :value
+          = i.select :value, ([ ['V', true], ['F', false]]), include_blank: false
         .label= i.label :description
-        = i.input :description, label: false#, as: :ckeditor
-        = i.input :item_image, as: :file
-        = i.input :img_alt
-        = i.input :comment
+        .desc
+          = i.input :description, label: false, class: 'ckeditor'
+        .image
+          .upload-preview
+            - if i.object.item_image_file_name.blank?
+              %img
+            - else
+              %img{ src: i.object.item_image.as_json }
+            = i.input :item_image, as: :file, label: false
+            = link_to_function t('questions.form.items.add_image'), 'add_file(this)', class: 'btn btn_main add_file'
+          .info
+            = i.input :comment, as: :text, label: t('questions.form.items.comment')
+            = i.input :img_alt, label: t('questions.form.items.alt')
+            = i.label t('questions.form.items.alt_desc'), class: 'alt'
 
 = javascript_include_tag 'ckeditor/init'
 
@@ -34,10 +43,13 @@
     };
 
     $("#items").on("fields_added.nested_form_fields", function(event) {
-      verify_box();
+      change_inputs();
     });
 
-    //$('.question_question_items_description [id^="question_question_items_attributes_"]').ckeditor();
+    $('#items .duplicatable_nested_form').each(function(idx) {
+      var id = $('[id*="_question_items_attributes_'+idx+'_description"]:first').attr('id');
+      append_rich_text(id);
+    });
 
-    //append_rich_text('question_enunciation');
+    set_image_input();
   });

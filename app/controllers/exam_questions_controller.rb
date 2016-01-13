@@ -9,17 +9,13 @@ class ExamQuestionsController < ApplicationController
   def index
     exam      = Exam.find(params[:exam_id])
     questions = exam.get_questions
-    render partial: 'questions', locals: { questions: questions, exam: exam }
+    render partial: 'questions', locals: { questions: questions, exam: exam, hide_columns: false }
   end
 
   def new
     authorize! :create, Question, { on: @allocation_tags_ids = params[:allocation_tags_ids] }
     @exam_question = ExamQuestion.new exam_id: params[:exam_id]
-    @exam_question.build_question do |q|
-      q.question_images.build
-      q.question_labels.build
-      q.question_items.build
-    end
+    build_exam_question
   end
 
   def create
@@ -29,7 +25,7 @@ class ExamQuestionsController < ApplicationController
 
     if @exam_question.save
       if @exam_question.exam.questions.size > 1
-        render partial: 'question', locals: { question: @exam_question.question, exam_question: @exam_question, exam: @exam_question.exam }
+        render partial: 'question', locals: { question: @exam_question.question, exam_question: @exam_question, exam: @exam_question.exam, hide_columns: false }
       else
         redirect_to exam_questions_path(exam_id: @exam_question.exam_id)
       end
@@ -45,18 +41,17 @@ class ExamQuestionsController < ApplicationController
 
   def edit
     @exam_question = ExamQuestion.find(params[:id])
+    build_exam_question
   end
 
   def update
-    # incompleto e não testado
-
     authorize! :update, Question
     @exam_question = ExamQuestion.find params[:id]
 
-    if @exam_question.update_attributes question_params
-      render partial: 'question', locals: { question: @exam_question.question, exam_question: @exam_question, exam: @exam_question.exam }
+    if @exam_question.update_attributes exam_question_params
+      render partial: 'question', locals: { question: @exam_question.question, exam_question: @exam_question, exam: @exam_question.exam, hide_columns: false }
     else
-      render json: { success: false, alert: @question.errors.full_messages.join(', ') }, status: :unprocessable_entity
+      render json: { success: false, alert: @exam_question.errors.full_messages.join(', ') }, status: :unprocessable_entity
     end
 
   rescue CanCan::AccessDenied
@@ -107,7 +102,7 @@ class ExamQuestionsController < ApplicationController
     exam_question.can_change_annulled?
     exam_question.update_attributes annulled: true
 
-    log(exam_question.exam, "question: #{exam_question.question_id} [annul] exam: #{exam_question.exam_id}, #{exam_question.question.attributes.merge!(exam_question: exam_question.attributes).merge!(exam: exam_question.exam.attributes)}", LogAction::TYPE[:update]) rescue nil
+    log(exam_question.exam, "question: #{exam_question.question_id} [annul] exam: #{exam_question.exam_id}, #{exam_question.log_description.merge!(exam: exam_question.exam.attributes)}", LogAction::TYPE[:update]) rescue nil
 
     render json: { success: true, notice: t('exam_questions.success.annulled') }
   rescue => error
@@ -196,7 +191,7 @@ class ExamQuestionsController < ApplicationController
         exam_question = ExamQuestion.new({ 'question_id' => question.id, 'order' => question_hash[1].to_i, 'score' => question_hash[3].to_i, 'exam_id' => exam_id })
         exam_question.save!
 
-        log(Exam.find(exam_id), "question: #{question.id} [import] exam: #{exam_id}, #{question.attributes.merge!(created_exam: created_exam).merge!(exam_question: exam_question.attributes)}", LogAction::TYPE[:create]) rescue nil
+        log(Exam.find(exam_id), "question: #{question.id} [import] exam: #{exam_id}, #{exam_question.log_description}", LogAction::TYPE[:create]) rescue nil
       end
     end
 
@@ -268,7 +263,7 @@ class ExamQuestionsController < ApplicationController
        
         exam_question = ExamQuestion.create!({ 'question_id' => question.id, 'score' => question_hash[2].to_i, 'exam_id' => exam.id })
 
-        log(exam, "question: #{question.id} [export] exam: #{exam.id}, #{question.attributes.merge!(exam_question: exam_question.attributes).merge!(exam: exam.attributes) }", LogAction::TYPE[:create]) rescue nil
+        log(exam, "question: #{question.id} [export] exam: #{exam.id}, #{exam_question.log_description }", LogAction::TYPE[:create]) rescue nil
       end
     end
     
@@ -283,7 +278,9 @@ class ExamQuestionsController < ApplicationController
     exam_question  = ExamQuestion.find params[:id]
     @exam_question = ExamQuestion.copy(exam_question, current_user.id)
 
-    log(ExamQuestion.exam, "question: #{exam_question.question_id} [copy], #{exam_question.question.attributes.merge!(exam_question.attributes)}", LogAction::TYPE[:create]) rescue nil
+    log(ExamQuestion.exam, "question: #{exam_question.question_id} [copy], #{exam_question.log_description}", LogAction::TYPE[:create]) rescue nil
+
+    build_exam_question
 
     render :edit
   end
@@ -294,9 +291,10 @@ class ExamQuestionsController < ApplicationController
     params.require(:exam_question).permit(
       :exam_id, :score, :order,
       question_attributes: [
-        :name, :enunciation, :type_question, 
+        :id, :name, :enunciation, :type_question, 
         question_items_attributes: [:id, :item_image, :value, :description, :_destroy, :comment, :img_alt],
-        question_images_attributes: [:id, :image, :legend, :img_alt, :_destroy]
+        question_images_attributes: [:id, :image, :legend, :img_alt, :_destroy],
+        question_labels_attributes: [:id, :name, :_destroy]
       ]
     )
   end
@@ -308,6 +306,20 @@ class ExamQuestionsController < ApplicationController
   def log(object, message, type=LogAction::TYPE[:update])
     object.academic_allocations.each do |ac|
       LogAction.create(params_to_log.merge!(description: message, academic_allocation_id: ac.id, log_type: type))
+    end
+  end
+
+  def build_exam_question
+    if @exam_question.question.nil? 
+      @exam_question.build_question do |q|
+        q.question_images.build
+        q.question_labels.build
+        q.question_items.build
+      end
+    else
+      @exam_question.question.question_images.build
+      @exam_question.question.question_labels.build
+      @exam_question.question.question_items.build
     end
   end
 

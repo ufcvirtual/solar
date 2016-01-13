@@ -11,7 +11,7 @@
     .block_content_text_list.text_none
       = t(:item_search_no_found)
 
-= javascript_include_tag 'tablesorter', 'tooltip', 'groups_tags'
+= javascript_include_tag 'tablesorter', 'tooltip', 'groups_tags', 'questions'
 
 :javascript
   var div_list = $(".list_exams");
@@ -30,7 +30,7 @@
 
     $(".btn_edit, .btn_del, .release_lessons, .download_lesson_zip, .manage_files_lesson").attr("disabled", true);
 
-    $(".link_new_question, .link_new_exam, .edit_exam").call_fancybox({
+    $(".link_new_question, .link_new_exam, .edit_exam, .preview_exam").call_fancybox({
       width: '70%'
     });
 

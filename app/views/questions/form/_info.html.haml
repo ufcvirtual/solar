@@ -1,34 +1,3 @@
-.question_type
-  = f.label t('questions.new.privacy')
-  = f.select :privacy, ([ [t('questions.new.public'), 0], [t('questions.new.private'), 1] ]), include_blank: false
-
-.question_type
-  = f.label t('questions.new.type_question')
-  - if f.object.persisted?
-    = f.hint f.object.type
-  - else
-    = f.select :type_question, ([ [t('questions.new.multiple_choice'), Question::MULTIPLE], [t('questions.new.unique_choice'), Question::UNIQUE], [t('questions.new.true_or_false'), Question::TRUE_FALSE]]), include_blank: false
-
-  - unless eq.nil?
-    = eq.input :score
-
-= f.nested_fields_for :question_labels, wrapper_tag: :div do |ql|
-  = ql.input :name, label: t('questions.label')
-
-= f.input :enunciation#, as: :ckeditor
-
-= label_tag 'question_enunciation', ''
-
-.question_images
-  = render partial: 'questions/form/image', locals: { f: f, eq: nil }
-  .input.string
-    = f.add_nested_fields_link :question_images, t('.add_images'), class: 'btn'
-
-
-.form-actions.right_buttons
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
-  = button_to_function t('.continue'), 'go_to_items()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button'
-
 = javascript_include_tag 'ckeditor/init'
 
 :javascript
@@ -49,15 +18,82 @@
         config.height = '80px';
     };
 
-    var previous_selected = $('#question_type_question').val();
-    change_inputs(previous_selected, previous_selected);
+    change_inputs();
 
-    $('select#question_type_question').on('change', function (e) {
-      change_inputs(previous_selected, this.value);
-      previous_selected = this.value;
+    $('select#question_type_question').on('change', function () {
+      change_inputs();
     });
 
-    //$('#question_enunciation').ckeditor();
+    $(document).on("fields_added.nested_form_fields", function(event) {
+      set_image_input();
+      if($(event.currentTarget.activeElement).hasClass('add_options')){
+        append_rich_text($(".desc textarea[id*='_question_items_']:visible:last").attr('id'));
+      }
+    });
 
-    //append_rich_text('question_enunciation');
+    $(document).on("fields_removed.nested_form_fields", function(event, param) {
+      if($('.nested_fields.nested_question_question_images:visible').length < 4){
+        $('.question_images .add_nested_fields_link').show();
+      }
+      if($(event.currentTarget.activeElement).hasClass('add_options')){
+        append_rich_text($(".desc textarea[id*='_question_items_']:visible:last").attr('id'));
+      }
+    });
+    
   });
+
+  function set_image_input(){
+    $("#images input[type='file'], .image input[type='file']").each(function(idx){
+
+    });
+
+    $("#images input[type='file'], .image input[type='file']").change(function(event){
+      var input = $(event.currentTarget);
+      var file = input[0].files[0];
+      var reader = new FileReader();
+      input.parent().find('.add_file').hide();
+      reader.onload = function(e){
+         image_base64 = e.target.result;
+         input.parent().parent().find('img').attr("src", image_base64);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    if($('.nested_fields.nested_question_question_images:visible').length == 4){
+      $('.question_images .add_nested_fields_link').hide();
+    }
+  }
+
+.question_type
+  = f.label t('questions.new.privacy')
+  = f.select :privacy, ([ [t('questions.new.public'), 0], [t('questions.new.private'), 1] ]), include_blank: false
+
+.question_type
+  = f.label t('questions.new.type_question')
+  - if f.object.persisted?
+    = f.hint f.object.type
+  - else
+    = f.select :type_question, ([ [t('questions.new.multiple_choice'), Question::MULTIPLE], [t('questions.new.unique_choice'), Question::UNIQUE], [t('questions.new.true_or_false'), Question::TRUE_FALSE]]), include_blank: false
+
+  - unless eq.nil?
+    = eq.input :score
+
+.labels
+  = f.label t('questions.questions.labels'), class: 'label_labels'
+  = render partial: 'questions/form/label', locals: { f: f }
+  .input.string
+    = f.add_nested_fields_link :question_labels, t('.add_labels'), class: 'btn'
+
+= f.input :enunciation, as: :ckeditor
+
+= label_tag 'question_enunciation', ''
+
+.question_images
+  = render partial: 'questions/form/image', locals: { f: f, eq: nil }
+  .input.string
+    = f.add_nested_fields_link :question_images, t('.add_images'), class: 'btn'
+
+
+.form-actions.right_buttons
+  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
+  = button_to_function t('.continue'), 'go_to_items()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button'

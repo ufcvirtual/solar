@@ -14,14 +14,36 @@ class Question < ActiveRecord::Base
 
   has_and_belongs_to_many :question_labels
 
-  accepts_nested_attributes_for :question_images, allow_destroy: true, reject_if: lambda { |c| c[:image].blank? }
-  accepts_nested_attributes_for :question_labels
-  accepts_nested_attributes_for :question_items, allow_destroy: true, reject_if: lambda { |c| c[:description].blank? }
+  accepts_nested_attributes_for :question_images, allow_destroy: true, reject_if: :reject_images
+  accepts_nested_attributes_for :question_labels, allow_destroy: true, reject_if: :reject_labels
+  accepts_nested_attributes_for :question_items, allow_destroy: true, reject_if: :reject_items
 
   validates :enunciation, :type_question, presence: true
 
+  validate :verify_labels, :verify_images
+
   before_destroy :can_destroy?
   before_destroy { question_labels.clear }
+
+  before_save :get_labels
+
+  def reject_images(img)
+    (img[:image].blank? && (new_record? || img[:id].blank?))
+  end
+
+  def reject_labels(label)
+    (label[:name].blank? && (new_record? || label[:id].blank?))
+  end
+
+  def reject_items(item)
+    (item[:description].blank? && (new_record? || item[:id].blank?))
+  end
+
+  def get_labels
+    self.question_labels = self.question_labels.collect do |label|
+      QuestionLabel.find_or_create_by_name(label.name)
+    end
+  end
 
   def copy_dependencies_from(question_to_copy, user_id = nil)
     if question_to_copy.question_images.any?
@@ -38,7 +60,7 @@ class Question < ActiveRecord::Base
     end
     if question_to_copy.question_labels.any?
       question_to_copy.question_labels.each do |label|
-        QuestionLabelsQuestion.create question_label_id: label.id, question_id: id
+        QuestionLabelsQuestion.create question_label_id: label.id, question_id: self.id
       end
     end
   end
@@ -113,7 +135,7 @@ class Question < ActiveRecord::Base
                 FROM question_images 
                 JOIN questions ON questions.id = question_images.question_id
               )                                    AS has_images,
-              replace(replace(translate(array_agg(distinct l2.name)::text,'{}', ''),'\"', ''),',',', ')                                  AS labels
+              replace(replace(translate(array_agg(distinct l2.name)::text,'{}', ''),'\"', ''),',',', ') AS labels
               FROM questions
               LEFT JOIN users AS authors    ON questions.user_id = authors.id
               LEFT JOIN users AS updated_by ON questions.updated_by_user_id   = updated_by.id
@@ -125,6 +147,14 @@ class Question < ActiveRecord::Base
               #{query}
               GROUP BY questions.id, questions.enunciation, questions.type_question, questions.status, questions.updated_at, questions.privacy, authors.name, updated_by.name;
     SQL
+  end
+
+  def verify_labels
+    errors.add(:base, I18n.t('questions.error.max_labels')) if question_labels.size > 8
+  end
+
+  def verify_images
+    errors.add(:base, I18n.t('questions.error.max_images')) if question_images.size > 4
   end
 
   def can_destroy?
@@ -139,9 +169,11 @@ class Question < ActiveRecord::Base
   end
 
   def validate_items
-    raise 'min_items'     if question_items.size < 3
-    raise 'correct_item'  if question_items.where(value: true).empty?
-    raise 'only_one_true' if type_question == 0 && question_items.where(value: true).size > 1
+    if !status
+      raise 'min_items'     if question_items.size < 3
+      raise 'correct_item'  if question_items.where(value: true).empty?
+      raise 'only_one_true' if type_question == 0 && question_items.where(value: true).size > 1
+    end
   end
 
   def can_see?
@@ -174,7 +206,6 @@ class Question < ActiveRecord::Base
   end
 
   def validate_images
-    # validar no js tb
     errors.add(:base, I18n.t('questions.error.max_images')) if question_images.any? && question_images.size > 4
   end
 
@@ -194,6 +225,15 @@ class Question < ActiveRecord::Base
 
   def can_copy?
     raise 'private' unless !privacy || owners?
+  end
+
+  def log_description
+    desc = {}
+
+    desc.merge!(attributes.except('attachment_updated_at', 'updated_at', 'created_at', 'id'))
+    desc.merge!(images: question_images.collect{|img| img.attributes.except('image_updated_at' 'question_id')})
+    desc.merge!(items: question_items.collect{|item| item.attributes.except('question_id', 'item_image_updated_at')})
+    desc.merge!(labels: question_labels.collect{|item| item.attributes.except('created_at', 'updated_at')})
   end
 
 end

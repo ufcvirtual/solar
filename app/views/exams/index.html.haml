@@ -27,8 +27,8 @@
                     .description_slice= exam.description.slice(0..180) << "..."
                     .description_complete= exam.description
                     .more_or_less
-                      %a.description_more{href: "#"}= t("exams.index.more")
-                      %a.description_less{href: "#"}= t("exams.index.less")
+                      %a.description_more{ href: "#" }= t("exams.index.more")
+                      %a.description_less{ href: "#" }= t("exams.index.less")
                 - else
                   = exam.description
 

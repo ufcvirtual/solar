@@ -155,7 +155,7 @@ class Exam < Event
 
   def can_destroy?
     raise 'started'     if status && on_going?
-    raise 'has_answers' if status && exam_responses.any?
+    raise 'has_answers' if exam_responses.any?
   end
 
   def can_change_status?
@@ -216,6 +216,17 @@ class Exam < Event
     else
       '-'
     end
+  end
+
+  def log_description
+    desc = {}
+
+    desc.merge!(question.attributes.except('attachment_updated_at', 'updated_at', 'created_at'))
+    desc.merge!(exam_id: exam.id)
+    desc.merge!(attributes.except('attachment_updated_at', 'updated_at', 'created_at'))
+    desc.merge!(images: question.question_images.collect{|img| img.attributes.except('image_updated_at' 'question_id')})
+    desc.merge!(items: question.question_items.collect{|item| item.attributes.except('question_id', 'item_image_updated_at')})
+    desc.merge!(labels: question.question_labels.collect{|label| label.attributes.except('created_at', 'updated_at')})
   end
   
   private
