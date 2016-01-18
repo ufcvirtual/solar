@@ -10,10 +10,16 @@ class QuestionImage < ActiveRecord::Base
   validates_attachment_content_type_in_black_list :image
 
   has_attached_file :image,
+          styles: { small: '150x150', medium: '220x220', large: '300x300' },
           path: ':rails_root/media/questions/images/:id_:basename.:extension',
           url: '/media/questions/images/:id_:basename.:extension'
 
   def alt
     errors.add(:base, I18n.t('questions.error.alt'))
+  end
+
+  def self.list(question_id)
+    QuestionImage.where(question_id: question_id)
+      .select('DISTINCT question_images.id, question_images.legend, question_images.image_file_name, question_images.image_content_type, question_images.image_file_size, question_images.image_updated_at, question_images.img_alt')
   end
 end

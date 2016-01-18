@@ -16,8 +16,23 @@ module ExamsHelper
     return I18n.t(:not_started)
   end
 
-  def items(question_id)
+  def get_items(question_id)
     QuestionItem.list(question_id)
+  end
+
+  def get_question_images(question_id)
+    QuestionImage.list(question_id)
+  end
+
+  def get_image_size (count)
+    case count
+      when 1
+        :large
+      when 2
+        :medium
+      else
+        :small
+    end
   end
 
 end

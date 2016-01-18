@@ -12,6 +12,7 @@ class QuestionItem < ActiveRecord::Base
   validate :alt, if: '(!item_image_file_name.blank? && img_alt.blank?)'
 
   has_attached_file :item_image,
+                    styles: { small: '120x120'},
                     path: ':rails_root/media/questions/items/:id_:basename.:extension',
                     url: '/media/questions/items/:id_:basename.:extension'
 
@@ -19,7 +20,7 @@ class QuestionItem < ActiveRecord::Base
 
 	def self.list(question_id)
   	QuestionItem.where(question_id: question_id)
-      .select('DISTINCT question_items.id, question_items.description, question_items.value')
+      .select('DISTINCT question_items.id, question_items.description, question_items.value, question_items.item_image_file_name, question_items.item_image_content_type, question_items.item_image_file_size, question_items.item_image_updated_at, question_items.img_alt')
   end
 
   def can_destroy?

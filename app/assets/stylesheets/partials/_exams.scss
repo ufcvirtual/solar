@@ -52,40 +52,57 @@
     border-top: solid 1px;
     border-top-color: #D0D0D0;
     min-height: 28px;
+    display: block;
+
   }
 
   .question {
     padding-top: 10px;
     float: left;
+    font-family: 'PT Sans', sans-serif;
 
     .number {
       padding-right: 5px;
-      color: #003E7A;
+      color: #1c5ec9;
       width: auto;
       vertical-align:top;
     }
+  }
 
-    .enunciation {
+  .question_images {
+    text-align: center;
+  }
 
+  .image {
+    padding: 15px 15px 0 15px;
+    display: inline-block;
+
+    #question_image {
+      border: solid 2px #CDD6E3;
     }
-
   }
 
   .question_items{
 
-    .checkbox, .item {
+    .checkbox, .item, .item_images {
       padding-top: 20px;
       float: left;
     }
 
     .checkbox{
-      float: left;
       padding-right: 5px;
-      padding-left: 30px;
+      padding-left: 25px;
+    }
+
+    #item_image{
+      border: solid 2px #CDD6E3;
     }
 
     .item{
-      color: #003E7A;
+      padding-left: 15px;
+      color: #1c5ec9;
+      font-family: 'PT Sans', sans-serif;
+
     }
   }
 

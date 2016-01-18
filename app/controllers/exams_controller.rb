@@ -77,7 +77,7 @@ class ExamsController < ApplicationController
 
   def open
     @exam = Exam.find(params[:exam_id])
-    @exam_questions = ExamQuestion.list(@exam.id).paginate(page: params[:page], per_page: 1) unless @exam.nil?
+    @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1) unless @exam.nil?
   end
 
   def change_status
