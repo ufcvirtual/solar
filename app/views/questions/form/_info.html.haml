@@ -27,7 +27,14 @@
     $(document).on("fields_added.nested_form_fields", function(event) {
       set_image_input();
       if($(event.currentTarget.activeElement).hasClass('add_options')){
-        append_rich_text($(".desc textarea[id*='_question_items_']:visible:last").attr('id'));
+        var name = $(".desc textarea[id*='_question_items_']:visible:last").attr('id');
+        var ckeditor = CKEDITOR.instances[name];
+        if (!ckeditor)
+          append_rich_text(name);
+        else{
+          CKEDITOR.remove(ckeditor);
+          ckeditor.updateElement();
+        }
       }
     });
 

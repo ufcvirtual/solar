@@ -271,6 +271,10 @@ $.fn.serialize_and_submit = function(options) {
           });
         }
 
+        if (typeof(options.replace_with) != "undefined"){
+          options.replace_with.replaceWith(data);
+        }
+
         if (typeof(options.prepend_to_list) != "undefined"){
           options.prepend_to_list.prepend(data);
         }

@@ -38,24 +38,38 @@ $(function(){
     }
   });
 
+  $.each($('[id^="all_questions_"]'), function(idx){
+    $($('[id^="all_questions_"]')[idx]).nice_checkbox({
+      can_enable_elements: true
+    });
+  });
+
 });
 
 function save_question(exam_id){
   save_values_ckeditor();
   check_inputs();
-  if (exam_id != 0)
-    var prepend_to = $('#exam_'+exam_id+' .tb_questions tbody');
-  else
-    var prepend_to = $('.tb_questions tbody');
+  if (exam_id != 0){
+    var questions = $('.ckb_question:checked', $('#exam_'+exam_id+' .tb_questions tbody'));
+    if(!!$('form.edit_exam_question').length && !!questions.length)
+      var replace = questions.first().parents("tr");
+    else
+      var prepend_to = $('#exam_'+exam_id+' .tb_questions tbody');
+  }else{
+    var questions = $('.ckb_question:checked', $('.tb_questions tbody'));
+    if(!!$('form.edit_question').length && !!questions.length)
+      var replace = questions.first().parents("tr");
+    else
+      var prepend_to = $('.tb_questions tbody');
+  }
 
-  if (!!!prepend_to.length)
+  if (prepend_to != undefined && !!!prepend_to.length)
     prepend_to = $('.list_questions_exam_'+exam_id);
 
   $('form#question_form').serialize_and_submit({
     files: true,
-    //replace_list: $('.questions_content'),
+    replace_with: replace,
     prepend_to_list: prepend_to,
-    // dont_remove_lightbox: true,
     complement_success: function(data) {
       if (typeof(data.alert) != "undefined")
         $('form span.error').html(data.alert);
@@ -148,28 +162,23 @@ function edit_question(icon, replace_list){
   //  return false;
   //}
 
-  if(replace_list == '')
+  if(replace_list == ''){
     var questions_ids = $('.ckb_question:checked', $(icon).parents("div.list_questions")).map(function() { return this.value; }).get();
-  else
-    var questions_ids = $('.ckb_question:checked', $(icon).parents("[id^='exam_']")).map(function() { return this.value; }).get();
+    var ids = questions_ids;
+  }else{
+    var ids = $('.ckb_question:checked', $(icon).parents("[id^='exam_']")).map(function() { return this.value; }).get();
+    var questions_ids = $('.ckb_question:checked', $(icon).parents("[id^='exam_']")).map(function() { return $(this).data('question-id'); }).get();
+  }
 
-
-  if (!(!questions_ids.length || questions_ids.length > 1)) {
-
-    // if($($('#tr_'+questions_ids[0]).find('td')[7]).html() != undefined && $($('#tr_'+questions_ids[0]).find('td')[7]).html() != '0'){
-    //   if (!confirm("<%=I18n.t('exam_questions.confirm.delete_question')%>"))
-    //     return false;
-    // }
-
+  if (!(!ids.length || ids.length > 1)) {
     $.get("<%=Rails.application.routes.url_helpers.verify_owners_question_path(':id')%>".replace(':id', questions_ids), function(data){
-      var url_edit = $(icon).data('link-to-edit').replace(':id', questions_ids);
+      var url_edit = $(icon).data('link-to-edit').replace(':id', ids);
       $(icon).call_fancybox({ href : url_edit, open: true, width: '100px;' });
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert');
     });
-
   }
 }
 
@@ -182,8 +191,7 @@ function copy_question(icon, replace_list){
   if(replace_list == ''){
     var questions_ids = $('.ckb_question:checked', $(icon).parents("div.list_questions")).map(function() { return this.value; }).get();
     var ids = questions_ids;
-  }
-  else{
+  }else{
     if (!confirm("<%=I18n.t('exam_questions.confirm.copy')%>"))
       return false;
     var ids = $('.ckb_question:checked', $(icon).parents("[id^='exam_']")).map(function() { return this.value; }).get();
@@ -191,16 +199,20 @@ function copy_question(icon, replace_list){
   }
 
   if (!(!ids.length || ids.length > 1)) {
-
     $.get("<%=Rails.application.routes.url_helpers.copy_verify_owners_question_path(':id')%>".replace(':id', questions_ids), function(data){
       var url_copy = $(icon).data('link-to-copy').replace(':id', ids);
       $(icon).call_fancybox({ href : url_copy, open: true, width: '100px;' });
+      if(replace_list != ''){
+        $.get($(replace_list).data("link-list"), function(data2){
+          $(replace_list).replaceWith(data2);
+          flash_message(data.notice, 'notice');
+        });
+      }
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
        flash_message(data.alert, 'alert');
     });
-
   }
 }
 

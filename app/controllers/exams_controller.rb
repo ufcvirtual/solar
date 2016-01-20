@@ -53,7 +53,7 @@ class ExamsController < ApplicationController
 
   def update
     @exam = Exam.find(params[:id])
-    authorize! :update, Exam, on: @exam.academic_allocations.pluck(:allocation_tag_id)
+    authorize! :update, Exam, { on: @exam.academic_allocations.pluck(:allocation_tag_id) }
     if @exam.update_attributes(exam_params)
       render_exam_success_json('updated')
     else

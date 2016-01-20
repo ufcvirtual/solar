@@ -5,7 +5,7 @@ class Question < ActiveRecord::Base
   UNIQUE, MULTIPLE, TRUE_FALSE = 0, 1, 2
 
   belongs_to  :user
-  has_one :updated_by_user, class_name: 'User', foreign_key: 'updated_by_user_id' 
+  belongs_to :updated_by_user, class_name: 'User'
 
   has_many :exam_questions
   has_many :exams, through: :exam_questions
@@ -48,19 +48,19 @@ class Question < ActiveRecord::Base
   def copy_dependencies_from(question_to_copy, user_id = nil)
     if question_to_copy.question_images.any?
       question_to_copy.question_images.each do |file|
-        new_file = QuestionImage.create! file.attributes.merge({ question_id: self.id })
+        new_file = QuestionImage.create! file.attributes.merge({ question_id: id })
         copy_file(file, new_file, File.join('questions', 'images'), 'image')
       end
     end
     if question_to_copy.question_items.any?
       question_to_copy.question_items.each do |item|
-        new_item = QuestionItem.create! item.attributes.merge({ question_id: self.id })
+        new_item = QuestionItem.create! item.attributes.merge({ question_id: id })
         copy_file(item, new_item, File.join('questions', 'items'), 'item_image') unless new_item.item_image_file_name.nil?
       end
     end
     if question_to_copy.question_labels.any?
       question_to_copy.question_labels.each do |label|
-        QuestionLabelsQuestion.create question_label_id: label.id, question_id: self.id
+        question_labels << label
       end
     end
   end
@@ -97,12 +97,10 @@ class Question < ActiveRecord::Base
               )" : '') : "authors.id = #{user_id}")
 
     query << "lower(unaccent(questions.enunciation)) ~ lower(unaccent('#{search[:enun].to_s}'))" unless search[:enun].blank?
-
-    query << "lower(unaccent(l1.name)) ~ lower(unaccent('#{search[:label].to_s}'))" unless search[:label].blank?
-
-    query << "date_part('year', questions.updated_at) = '#{search[:year].to_s}'" unless search[:year].blank?
-
-    query << "lower(unaccent(authors.name)) ~ lower(unaccent('#{search[:author].to_s}'))" unless search[:author].blank?
+    query << "lower(unaccent(l1.name)) ~ lower(unaccent('#{search[:label].to_s}'))"              unless search[:label].blank?
+    query << "date_part('year', questions.updated_at) = '#{search[:year].to_s}'"                 unless search[:year].blank?
+    query << "lower(unaccent(authors.name)) ~ lower(unaccent('#{search[:author].to_s}'))"        unless search[:author].blank?
+    query << "lower(unaccent(updated_by.name)) ~ lower(unaccent('#{search[:author].to_s}'))" unless search[:author].blank?
 
     query = query.reject(&:empty?)
 

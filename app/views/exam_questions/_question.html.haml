@@ -3,7 +3,8 @@
 - items       = (question.respond_to?(:count_items)  ? question.count_items : question.question_items.count)
 - labels      = (question.respond_to?(:labels)       ? question.labels.delete('NULL').split(',') : question.question_labels.map(&:name))
 - author_name = (question.respond_to?(:author_name)) ? question.author_name : question.user.name
-- exam_question = ExamQuestion.find(question.exam_question_id) if exam_question.nil?
+- updated_by_name = (question.respond_to?(:updated_by_name)) ? question.updated_by_name : question.updated_by_user.try(:name)
+- exam_question   = ExamQuestion.find(question.exam_question_id) if exam_question.nil?
 - annulled    = question.respond_to?(:annulled) ? question.annulled : exam_question.annulled
 - annulled    = (annulled == 't' || annulled == true)
 %tr.lines{ id: "tr_#{question.id}", order: (question.respond_to?(:order) ? question.order : exam_question.order), exam_question_id: exam_question.id }
@@ -33,6 +34,7 @@
   %td{ style: 'text-align:center;', :'data-tooltip' => author_name }= author_name.truncate(50)
   %td{ style: 'text-align:center;' }= question.type
   %td{ style: 'text-align:center;' }= l(question.updated_at, format: :normal)
+  %td{ style: 'text-align:center;', :'data-tooltip' => updated_by_name }= (updated_by_name.truncate(50) rescue '-')
   %td{ style: 'text-align:center;', class: hide_columns ? 'invisible' : '' }= content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('questions.question.preview'))
   %td{ style: 'text-align:center;' }= question.privacy? ? content_tag(:i, nil, class: 'icon-lock', :'data-tooltip' => t('questions.question.private')) : content_tag(:i, nil, class: 'icon-minus', :"data-tooltip" => t('questions.question.public'))
   %td{ style: 'text-align:center;' }= check_box_tag exam_question.id, exam_question.id, annulled, onclick: 'annul(this)', disabled: (annulled ? true : false), :'data-url' => annul_exam_question_path(exam_question.id)

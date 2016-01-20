@@ -71,13 +71,17 @@ class Exam < Event
     return true if !status # if draft
     return true if schedule.start_date_was > Date.today # if has not started yet
     if on_going_changed?
-      sh  = start_hour.split(':')
-      shw = start_hour_was.split(':')
-      eh  = end_hour.split(':')
-      ehw = end_hour_was.split(':')
+      unless start_hour.blank?
+        sh  = start_hour.split(':')
+        shw = start_hour_was.split(':')
+        errors.add(:start_hour, I18n.t('exams.error.hour_later')) if (sh[0].to_i > shw[0].to_i || (!start_hour_changed? && sh[1].to_i > shw[1].to_i) )
+      end
+      unless end_hour.blank?
+        eh  = end_hour.split(':')
+        ehw = end_hour_was.split(':')
+        errors.add(:end_hour, I18n.t('exams.error.hour_earlier')) if (eh[0].to_i > ehw[0].to_i || (!start_hour_changed? && eh[1].to_i > ehw[1].to_i) )
+      end
       errors.add(:duration, I18n.t('exams.error.cant_be_smaller')) if duration < duration_was
-      errors.add(:start_hour, I18n.t('exams.error.hour_later')) if (sh[0].to_i > shw[0].to_i || (!start_hour_changed? && sh[1].to_i > shw[1].to_i) )
-      errors.add(:end_hour, I18n.t('exams.error.hour_earlier')) if (eh[0].to_i > ehw[0].to_i || (!start_hour_changed? && eh[1].to_i > ehw[1].to_i) )
       errors.add(:random_questions, I18n.t('exams.error.cant_change')) if random_questions_changed?
       errors.add(:raffle_order, I18n.t('exams.error.cant_change')) if raffle_order_changed?
       # errors.add(:auto_correction)
@@ -86,7 +90,7 @@ class Exam < Event
       # errors.add(:result_email)
       schedule.errors.add(:start_date, I18n.t('exams.error.cant_be_smaller')) if schedule.start_date < schedule.start_date_was
       schedule.errors.add(:end_date, I18n.t('exams.error.before_today')) if schedule.end_date_changed? && schedule.end_date < Date.today
-      errors.add(:attempts_correction) # se mudar, tem q recalcular as notas
+      # errors.add(:attempts_correction) # se mudar, tem q recalcular as notas
       errors.add(:block_content, I18n.t('exams.error.cant_change')) if block_content_changed?
     elsif ended?
       schedule.errors.add(:end_date, I18n.t('exams.error.cant_be_smaller')) if schedule.end_date_changed? && schedule.end_date < schedule.end_date_was
