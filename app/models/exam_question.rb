@@ -10,8 +10,9 @@ class ExamQuestion < ActiveRecord::Base
 
   before_create :set_order
 
-  before_destroy :can_reorder?, :unpublish
+  before_destroy :can_reorder?, :can_save?, :unpublish
 
+  before_save :can_save?, unless: 'annulled_changed?'
   after_save :recalculate_grades, if: 'annulled_changed?'
   
   def self.copy(exam_question_to_copy, user_id = nil)
@@ -63,6 +64,10 @@ class ExamQuestion < ActiveRecord::Base
     desc.merge!(images: question.question_images.collect{|img| img.attributes.except('image_updated_at' 'question_id')})
     desc.merge!(items: question.question_items.collect{|item| item.attributes.except('question_id', 'item_image_updated_at')})
     desc.merge!(labels: question.question_labels.collect{|label| label.attributes.except('created_at', 'updated_at')})
+  end
+
+  def can_save?
+    raise 'cant_change_after_published' if exam.status && (new_record? || question.status)
   end
 
   def unpublish

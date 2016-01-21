@@ -2947,6 +2947,7 @@ pt_BR:
       already_exists: Não é possível repetir questões em uma prova
       imported: 'Esta prova foi importada, é necessário editá-la para realizar a publicação'
       change_period: Altere o período para publicar a prova
+      cant_change_after_published: Prova já publicada. É necessário despublicá-la, para realizar ação.
     show:
       groups: Turmas
       empty_group: Turma vazia
@@ -3101,6 +3102,7 @@ pt_BR:
       export_empty: É necessário selecionar provas como destino da exportação
       private: Questão é privada, não é possível realizar a ação desejada.
       already_exists: Não é possível repetir questões em uma prova
+      cant_change_after_published: Não é possível realizar ação após publicação da prova. É necessário despublicá-la antes.
     export:
       conclude:
         title: Exportar questões

@@ -20,6 +20,6 @@
         = label_tag  t('exams.list.period', period: period)
         = label_tag  t('exams.list.amount_questions', added: exam.questions_count, amount: exam.number_questions)
         - if show_buttons
-          = link_to_function (exam.status ? t('exams.list.published') : t('exams.list.unpublished')), 'change_status_exam(this)', class: "btn btn_main #{(exam.status ? 'published' : 'unpublished')}", :'data-url' => change_status_exam_path(exam)
+          = link_to_function (exam.status ? t('exams.list.published') : t('exams.list.unpublished')), 'change_status_exam(this)', class: "btn btn_main #{(exam.status ? 'published' : 'unpublished')}", :'data-url' => change_status_exam_path(exam, allocation_tags_ids: @allocation_tags_ids)
   - if has_group
     = render 'groups/groups_tags', tags

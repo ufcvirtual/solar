@@ -2711,6 +2711,7 @@ en_US:
       already_exists: You can't repeat questions to an exam
       imported: 'This exam was imported, you must updated it to publish'
       change_period: Change period to publish exam
+      cant_change_after_published: Exam already published. You need to unpublish it to perform action.
     show:
       groups: Groups
       empty_group: Empty group
@@ -2865,6 +2866,7 @@ en_US:
       export_empty: Select questions to export
       private: Private question, is not possible to execute this action
       already_exists: You can't repeat questions to an exam
+      cant_change_after_published: You can't do this action after publishing the exam. You need to unpublishe it first.
     export:
       conclude:
         title: Export questions

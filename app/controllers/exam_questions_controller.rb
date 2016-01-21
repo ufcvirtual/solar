@@ -185,7 +185,7 @@ class ExamQuestionsController < ApplicationController
           end
         else
           exam_id = params[:exam_id]
-          Exam.find(exam_id).can_import_or_export?(question)
+          Exam.find(exam_id).can_import?(question)
         end
 
         exam_question = ExamQuestion.new({ 'question_id' => question.id, 'order' => question_hash[1].to_i, 'score' => question_hash[3].to_i, 'exam_id' => exam_id })
@@ -257,7 +257,7 @@ class ExamQuestionsController < ApplicationController
         question      = Question.find(question_hash[0])
         exam          = Exam.find(question_hash[1])
         question.can_import_or_export?(current_user, exam)
-        exam.can_import_or_export?
+        exam.can_import?
 
         raise CanCan::AccessDenied unless can? :import_export, Question, { on: exam.allocation_tags.map(&:id) }
        
@@ -276,6 +276,7 @@ class ExamQuestionsController < ApplicationController
 
   def copy
     exam_question  = ExamQuestion.find params[:id]
+    exam_question.can_save?
     @exam_question = ExamQuestion.copy(exam_question, current_user.id)
 
     log(ExamQuestion.exam, "question: #{exam_question.question_id} [copy], #{exam_question.log_description}", LogAction::TYPE[:create]) rescue nil
@@ -283,6 +284,8 @@ class ExamQuestionsController < ApplicationController
     build_exam_question
 
     render :edit
+  rescue => error
+    render_json_error(error, 'exam_questions.errors')
   end
 
   private

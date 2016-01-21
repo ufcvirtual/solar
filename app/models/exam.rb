@@ -29,6 +29,7 @@ class Exam < Event
   before_destroy :can_destroy?
 
   before_save :set_status, :set_can_publish, on: :update
+  after_save :set_random_questions, if: 'status_changed? && status'
 
   def ended?
     has_hours = (!start_hour.blank? && !end_hour.blank?)
@@ -172,8 +173,8 @@ class Exam < Event
     # raise 'autocorrect' if !status && questions.where(type)
   end
 
-  def can_import_or_export?(question = nil)
-    raise 'started' if status && started?
+  def can_import?(question = nil)
+    raise 'cant_change_after_published' if status
     raise 'already_exists' if !question.nil? && questions.where(id: question.id).any?
   end
 
@@ -232,6 +233,11 @@ class Exam < Event
     desc.merge!(images: question.question_images.collect{|img| img.attributes.except('image_updated_at' 'question_id')})
     desc.merge!(items: question.question_items.collect{|item| item.attributes.except('question_id', 'item_image_updated_at')})
     desc.merge!(labels: question.question_labels.collect{|label| label.attributes.except('created_at', 'updated_at')})
+  end
+
+  def set_random_questions
+    exam_questions.update_all use_question: false
+    ExamQuestion.joins(:question).where(exam_questions: {exam_id: id}, questions: { status: true }).limit(number_questions).order('RANDOM()').update_all use_question: true if random_questions
   end
   
   private
