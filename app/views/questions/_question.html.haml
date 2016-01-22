@@ -30,7 +30,7 @@
   %td{ style: 'text-align:center;' }= question.type
   %td{ style: 'text-align:center;' }= l(question.updated_at, format: :normal)
   %td{ style: 'text-align:center;', :'data-tooltip' => updated_by_name }= (updated_by_name.truncate(50) rescue '-')
-  %td{ style: 'text-align:center;' }= content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('.preview'))
+  %td{ style: 'text-align:center;' }= link_to content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('.preview')), question_path(question), class: 'preview_question'
   %td{ style: 'text-align:center;' }= question.privacy? ? content_tag(:i, nil, class: 'icon-lock', :'data-tooltip' => t('.private')) : content_tag(:i, nil, class: 'icon-minus', :"data-tooltip" => t('.public'))
   %td{ style: 'text-align:center;' }= exams
   %td{ style: 'text-align:center;' }= link_to_function (image_tag "#{question.status ? 'released' : 'rejected'}.png"), 'change_status_single(this)', :'data-tooltip' => (question.status ? t('lessons.index.released') : t('lessons.index.draft')), :'data-url' => change_status_question_path(question), class: "#{question.status ? 'released' : 'rejected'}"
@@ -47,6 +47,8 @@
     $('#all_questions').nice_checkbox({
       can_enable_elements: true
     });
+
+    $('.preview_question').call_fancybox();
 
   });
   

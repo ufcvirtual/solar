@@ -13,11 +13,8 @@
         %span.draft{ class: (exam.status ? 'invisible' : '') }
           = content_tag(:i, nil, class: 'icon-warning')
           = label_tag t('exams.list.draft_exam')
-        - period = if exam.start_hour.nil?
-          - [l(exam.schedule.start_date, format: :normal), l(exam.schedule.end_date, format: :normal)].join(t('exams.list.to'))
-        - else
-          - [l(exam.schedule.start_date, format: :normal), [exam.start_hour, exam.end_hour].join(t('exams.list.to'))].join(' ')
-        = label_tag  t('exams.list.period', period: period)
+        - hours = exam.start_hour.nil? ? '' : [exam.start_hour, exam.end_hour].join(t('exams.list.to'))
+        = label_tag  t('exams.list.period', dstart: l(exam.schedule.start_date, format: :normal), dend: l(exam.schedule.end_date, format: :normal) , hours: hours)
         = label_tag  t('exams.list.amount_questions', added: exam.questions_count, amount: exam.number_questions)
         - if show_buttons
           = link_to_function (exam.status ? t('exams.list.published') : t('exams.list.unpublished')), 'change_status_exam(this)', class: "btn btn_main #{(exam.status ? 'published' : 'unpublished')}", :'data-url' => change_status_exam_path(exam, allocation_tags_ids: @allocation_tags_ids)

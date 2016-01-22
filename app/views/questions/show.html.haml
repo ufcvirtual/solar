@@ -1,0 +1,11 @@
+%h1#lightBoxDialogTitle= t('.title')
+
+.exam_open
+  .content_exam
+    .block_content
+      %table.questions
+        %thead
+          %tr.question
+            %td.enunciation
+              =raw @question.enunciation
+        = render 'exams/open/question', { question: @question, preview: true }

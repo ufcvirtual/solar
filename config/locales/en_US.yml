@@ -2658,7 +2658,7 @@ en_US:
       unpublished: Publish exam
       to: ' to '
       draft_exam: Exam as draft
-      period: "Applied in %{period}"
+      period: "Applied in %{dstart} to %{dend} %{hours}"
       amount_questions: "%{added} added of %{amount} questions"
     success:
       created: Exam was successfully created
@@ -2820,6 +2820,8 @@ en_US:
     success:
       deleted: Questions removed successfully
       change_status: Status updated successfully
+    show:
+      title: Preview of question
 
   exam_questions:
     import:

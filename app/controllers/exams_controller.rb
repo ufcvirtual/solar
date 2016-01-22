@@ -25,7 +25,7 @@ class ExamsController < ApplicationController
     authorize! :create, Exam, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @exam = Exam.new exam_params
     @exam.allocation_tag_ids_associations = @allocation_tags_ids.split(' ').flatten
-
+    @exam.schedule.verify_today = true
     if @exam.save
       render_exam_success_json('created')
     else
@@ -54,6 +54,7 @@ class ExamsController < ApplicationController
   def update
     @exam = Exam.find(params[:id])
     authorize! :update, Exam, { on: @exam.academic_allocations.pluck(:allocation_tag_id) }
+    @exam.schedule.verify_today = true
     if @exam.update_attributes(exam_params)
       render_exam_success_json('updated')
     else

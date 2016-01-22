@@ -92,7 +92,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    authorize :show, Question
+    authorize! :show, Question
     @question = Question.find params[:id]
     @question.can_see?
   rescue CanCan::AccessDenied

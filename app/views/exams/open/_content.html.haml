@@ -8,28 +8,7 @@
             = @question_order + ") "
           %td.enunciation
             = question.enunciation
-        - question_images = get_question_images(question.id)
-        - unless question_images.nil?
-          %tr.question_images
-            - question_images.each do |q_image|
-              %td.image
-                = image_tag q_image.image(get_image_size(question_images.count)), id: 'question_image'
-      %tbody
-        - question_items = get_items(question.id)
-        - question_items.each do |item|
-          %tr.question_items
-            %td.checkbox
-              - if question.type_question.to_i == Question::UNIQUE
-                = radio_button_tag 'question_items', item.id, checked = false, { class: 'selected_items'}
-              - elsif (question.type_question.to_i == Question::MULTIPLE)
-                = check_box_tag 'question_items', item.id, checked = false, { class: 'selected_items'}
-              - else
-                = check_box_tag 'question_items', item.id, checked = false, { class: 'selected_items'}
-            - if item.item_image?
-              %td.item_images
-                = image_tag item.item_image(:medium), id: 'item_image'
-            %td.item
-              = item.description
+      = render 'exams/open/question', { question: question, preview: false }
 
 .message_div_navigation
   = will_paginate @exam_questions

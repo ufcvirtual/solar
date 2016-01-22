@@ -29,7 +29,18 @@ class Exam < Event
   before_destroy :can_destroy?
 
   before_save :set_status, :set_can_publish, on: :update
-  after_save :set_random_questions, if: 'status_changed? && status'
+
+  after_save :set_random_questions, if: '(status_changed? && status) || (!status && random_questions_changed? && !random_questions)'
+  after_save :recalculate_grades,   if: 'attempts_correction_changed?'
+  after_save :send_result_emails,   if: 'result_email_changed? && result_email'
+
+  def recalculate_grades
+    # chamar metodo de correção dos itens respondidos para todos os que existem
+  end
+
+  def send_result_emails
+    # enviar email com notas se já tiver encerrado período
+  end
 
   def ended?
     has_hours = (!start_hour.blank? && !end_hour.blank?)
@@ -59,6 +70,7 @@ class Exam < Event
 
   def check_hour
     errors.add(:start_hour, I18n.t('exams.error.same_day')) if schedule.start_date != schedule.end_date
+    errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:chat_rooms, :error])) if !end_hour.blank? && !start_hour.blank? && (end_hour.rjust(5, '0') < start_hour.rjust(5, '0'))
   end
 
   def def_hour
@@ -72,43 +84,33 @@ class Exam < Event
     return true if !status # if draft
     return true if schedule.start_date_was > Date.today # if has not started yet
     if on_going_changed?
-      unless start_hour.blank?
+      unless start_hour.blank? || start_hour_was.blank?
         sh  = start_hour.split(':')
         shw = start_hour_was.split(':')
         errors.add(:start_hour, I18n.t('exams.error.hour_later')) if (sh[0].to_i > shw[0].to_i || (!start_hour_changed? && sh[1].to_i > shw[1].to_i) )
       end
-      unless end_hour.blank?
+      unless end_hour.blank? || end_hour_was.blank?
         eh  = end_hour.split(':')
         ehw = end_hour_was.split(':')
-        errors.add(:end_hour, I18n.t('exams.error.hour_earlier')) if (eh[0].to_i > ehw[0].to_i || (!start_hour_changed? && eh[1].to_i > ehw[1].to_i) )
+        errors.add(:end_hour, I18n.t('exams.error.hour_earlier')) if (eh[0].to_i < ehw[0].to_i || (!start_hour_changed? && eh[1].to_i < ehw[1].to_i) )
       end
-      errors.add(:duration, I18n.t('exams.error.cant_be_smaller')) if duration < duration_was
-      errors.add(:random_questions, I18n.t('exams.error.cant_change')) if random_questions_changed?
-      errors.add(:raffle_order, I18n.t('exams.error.cant_change')) if raffle_order_changed?
-      # errors.add(:auto_correction)
-      errors.add(:number_questions, I18n.t('exams.error.cant_change')) if number_questions_changed?
-      errors.add(:attempts, I18n.t('exams.error.cant_be_smaller')) if attempts < attempts_was
-      # errors.add(:result_email)
+      errors.add(:duration, I18n.t('exams.error.cant_be_smaller'))            if duration < duration_was
+      errors.add(:random_questions, I18n.t('exams.error.cant_change'))        if random_questions_changed?
+      errors.add(:raffle_order, I18n.t('exams.error.cant_change'))            if raffle_order_changed?
+      errors.add(:number_questions, I18n.t('exams.error.cant_change'))        if number_questions_changed?
+      errors.add(:attempts, I18n.t('exams.error.cant_be_smaller'))            if attempts < attempts_was
       schedule.errors.add(:start_date, I18n.t('exams.error.cant_be_smaller')) if schedule.start_date < schedule.start_date_was
-      schedule.errors.add(:end_date, I18n.t('exams.error.before_today')) if schedule.end_date_changed? && schedule.end_date < Date.today
-      # errors.add(:attempts_correction) # se mudar, tem q recalcular as notas
-      errors.add(:block_content, I18n.t('exams.error.cant_change')) if block_content_changed?
+      errors.add(:block_content, I18n.t('exams.error.cant_change'))           if block_content_changed?
     elsif ended?
       schedule.errors.add(:end_date, I18n.t('exams.error.cant_be_smaller')) if schedule.end_date_changed? && schedule.end_date < schedule.end_date_was
-      schedule.errors.add(:start_date, I18n.t('exams.error.cant_change')) if schedule.start_date_changed?
-      # errors.add(:start_hour, 'so pode alterar se o termino for maior que hoje') if schedule.end_date > Date.today
-      # errors.add(:end_hour, 'so pode alterar se o termino for maior que hoje') if schedule.end_date > Date.today
-      errors.add(:duration, I18n.t('exams.error.cant_change')) if duration_changed?
+      schedule.errors.add(:start_date, I18n.t('exams.error.cant_change'))   if schedule.start_date_changed? && (exam_users.any? || (schedule.start_date > schedule.start_date_was))
+      errors.add(:duration, I18n.t('exams.error.cant_change'))         if duration_changed?
       errors.add(:random_questions, I18n.t('exams.error.cant_change')) if random_questions_changed?
-      errors.add(:raffle_order, I18n.t('exams.error.cant_change')) if raffle_order_changed?
-      # errors.add(:auto_correction)
+      errors.add(:raffle_order, I18n.t('exams.error.cant_change'))     if raffle_order_changed?
       errors.add(:number_questions, I18n.t('exams.error.cant_change')) if number_questions_changed?
-      errors.add(:attempts, I18n.t('exams.error.cant_be_smaller')) if attempts < attempts_was
-      # errors.add(:result_email)
-      # errors.add(:attempts_correction) # se mudar, tem q recalcular as notas
-      errors.add(:block_content, I18n.t('exams.error.cant_change')) if block_content_changed?
+      errors.add(:attempts, I18n.t('exams.error.cant_be_smaller'))     if attempts < attempts_was
+      errors.add(:block_content, I18n.t('exams.error.cant_change'))    if block_content_changed?
     end
-
   end
 
   def set_status
@@ -170,7 +172,7 @@ class Exam < Event
     raise 'has_answers'       if status && exam_responses.any?
     raise 'imported'          if !status && !can_publish
     raise 'change_period'     if !status && started?
-    # raise 'autocorrect' if !status && questions.where(type)
+    # raise 'autocorrect' if !status && questions.where(type: [0,1,2])
   end
 
   def can_import?(question = nil)

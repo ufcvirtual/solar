@@ -11,38 +11,42 @@
       padding: 9px;
       text-align: center;
     }
-    table.tb_questions{
-      td .title, td .description{
-        display: inline-block;
-      }
-      th.name{
-        text-align:left;
-        width: 10%;
-      }
-      th.author{
-        width: 10%;
-      }
-      th.type{
-        width: 5%;
-      }
-      th.updated_at{
-        width: 10%;
-      }
-      th.preview{
-        width: 5%;
-      }
-      th.privacy{
-        width: 5%;
-      }
-      th.used_at_exams{
-        width: 5%;
-      }
-      th.items{
-        width: 5%;
-      }
-      th.published{
-        width: 10%;
-      }
+  }
+  table.tb_questions{
+    td .title, td .description{
+      display: inline-block;
+    }
+    td a.preview_question{
+      text-decoration: none;
+      cursor: pointer;
+    }
+    th.name{
+      text-align:left;
+      width: 10%;
+    }
+    th.author{
+      width: 10%;
+    }
+    th.type{
+      width: 5%;
+    }
+    th.updated_at{
+      width: 10%;
+    }
+    th.preview{
+      width: 5%;
+    }
+    th.privacy{
+      width: 5%;
+    }
+    th.used_at_exams{
+      width: 5%;
+    }
+    th.items{
+      width: 5%;
+    }
+    th.published{
+      width: 10%;
     }
   }
 }

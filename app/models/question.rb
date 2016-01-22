@@ -26,6 +26,7 @@ class Question < ActiveRecord::Base
   before_destroy { question_labels.clear }
 
   before_save :get_labels
+  # after_save :exam_random_questions, if: 'status_changed? && status'
 
   def reject_images(img)
     (img[:image].blank? && (new_record? || img[:id].blank?))
@@ -131,7 +132,7 @@ class Question < ActiveRecord::Base
               EXISTS(
                 SELECT question_images.id 
                 FROM question_images 
-                JOIN questions ON questions.id = question_images.question_id
+                WHERE questions.id = question_images.question_id
               )                                    AS has_images,
               replace(replace(translate(array_agg(distinct l2.name)::text,'{}', ''),'\"', ''),',',', ') AS labels
               FROM questions

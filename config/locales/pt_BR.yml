@@ -2894,7 +2894,7 @@ pt_BR:
       unpublished: Publicar prova
       to: ' à '
       draft_exam: Prova em modo rascunho
-      period: "Aplicada em %{period}"
+      period: "Aplicada em %{dstart} à %{dend} %{hours}"
       amount_questions: "%{added} adicionadas de %{amount} questões"
     success:
       created: Prova criada com sucesso
@@ -3056,6 +3056,8 @@ pt_BR:
     success:
       deleted: Questões removidas com sucesso
       change_status: Situação alterada com sucesso
+    show:
+      title: Visualização prévia da questão
 
   exam_questions:
     import:

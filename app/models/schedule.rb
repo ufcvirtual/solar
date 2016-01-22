@@ -18,12 +18,13 @@ class Schedule < ActiveRecord::Base
   validates :end_date, presence: true, if: 'check_end_date'
 
   validate :start_date_before_end_date
-  validate :verify_by_current_date, if: 'verify_current_date' # mudar nome
+  validate :verify_by_current_date, if: 'verify_current_date && (start_date_changed? || end_date_changed?)'
+  validate :verify_by_today, if: 'verify_today && (start_date_changed? || end_date_changed?)'
 
   before_destroy :can_destroy?
 
   # check_end_date: caso esteja setado, a data final sera obrigatoria / verify_current_date: verifica se o periodo eh valido dada a data/ano atual
-  attr_accessor :check_end_date, :verify_current_date
+  attr_accessor :check_end_date, :verify_current_date, :verify_today
 
   def start_date_before_end_date
     errors.add(:start_date, I18n.t(:range_date_error, scope: [:discussions, :error])) unless start_date.nil? || end_date.nil? || (start_date <= end_date)
@@ -32,6 +33,11 @@ class Schedule < ActiveRecord::Base
   def verify_by_current_date
     errors.add(:start_date, I18n.t(:current_year, scope: [:schedules, :errors])) if !(start_date.nil?) && start_date_changed? && (start_date.year < Date.current.year)
     errors.add(:end_date, I18n.t(:current_date, scope: [:schedules, :errors])) if !(end_date.nil?) && end_date_changed? && (end_date < Date.current)
+  end
+
+  def verify_by_today
+    errors.add(:start_date, I18n.t(:current_date, scope: [:schedules, :errors])) if !(start_date.nil?) && start_date_changed? && (start_date < Date.today)
+    errors.add(:end_date, I18n.t(:current_date, scope: [:schedules, :errors])) if !(end_date.nil?) && end_date_changed? && (end_date < Date.today)
   end
 
   def can_destroy?
