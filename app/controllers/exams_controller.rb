@@ -78,9 +78,15 @@ class ExamsController < ApplicationController
   end
 
   def open
+    authorize! :open, Exam, { on: params[:allocation_tag_id] }
     @exam = Exam.find(params[:id])
     @preview = false
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1) unless @exam.nil?
+    Exam.set_start_time(params[:exam_user_id])
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def change_status

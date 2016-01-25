@@ -1071,3 +1071,9 @@ res208:
   controller: 'questions'
   action: copy
   description: 'Copiar questões'
+
+res209:
+  id: 209
+  controller: 'exams'
+  action: "open"
+  description: "Abrir prova (Visão do aluno)"

@@ -2069,6 +2069,11 @@ exam7:
   resource_id: 196
   per_id: false
 
+exam8:
+  profile_id: 1
+  resource_id: 209
+  per_id: false
+
 # Webconference
 
 laweb1:

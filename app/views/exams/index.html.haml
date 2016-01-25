@@ -15,7 +15,7 @@
       %tbody
         - @exams.each do |exam|
         - info = exam.info(current_user.id, @allocation_tag_id)
-        - link = open_exam_path(exam, allocation_tags_ids: @allocation_tags_ids, student_id: current_user.id)
+        - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, exam_user_id: Exam.create_exam_user(exam, current_user.id, @allocation_tag_id))
           %tr.lines{ id: "tr_#{exam.id}" }
             %td
               %div

@@ -16,6 +16,6 @@
         return false;
       });
 
-    $('#order').html(#{@question_order});
-
+    $('#order').html(#{@exam_questions.current_page});
+    $('.number').html(#{@exam_questions.current_page} + ") ");
   });

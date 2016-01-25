@@ -234,6 +234,25 @@ class Exam < Event
     end
   end
 
+  def self.create_exam_user(exam, current_user_id, allocation_tag_id)
+    @exam_users = exam.exam_users.where(:user_id => current_user_id).first
+    if @exam_users.nil?
+      @academic_allocation = AcademicAllocation.where(academic_tool_id: exam.id, academic_tool_type: 'Exam',
+        allocation_tag_id: allocation_tag_id).first
+      exam.exam_users.build(:user_id => current_user_id, :academic_allocation_id => @academic_allocation.id).save 
+      @exam_users = exam.exam_users.where(:user_id => current_user_id).first
+    end
+    return @exam_users
+  end
+
+  def self.set_start_time(exam_users_id)
+    @exam_user = ExamUser.find(exam_users_id)
+    if @exam_user.start.nil?
+      @exam_user.start = Time.now 
+      @exam_user.save
+    end
+  end
+
   def log_description
     desc = {}
 
