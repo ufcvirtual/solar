@@ -2724,6 +2724,8 @@ en_US:
       exam_details: Exam's details
       attempts: Attempt's amount
       attempts_correction: Grade calculation
+    warning:
+      title: "<b>Important: </b>You can't create, import or remove questions while exam's published"
 
   questions:
     index:

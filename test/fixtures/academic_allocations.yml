@@ -539,3 +539,14 @@ exam7:
  academic_tool_id: 7
  academic_tool_type: "Exam"
 
+exam8:
+ id: 91
+ allocation_tag_id: 11 # QM-MAR - 2011.1
+ academic_tool_id: 1
+ academic_tool_type: "Exam"
+
+exam9:
+ id: 92
+ allocation_tag_id: 11 # QM-MAR - 2011.1
+ academic_tool_id: 7
+ academic_tool_type: "Exam"

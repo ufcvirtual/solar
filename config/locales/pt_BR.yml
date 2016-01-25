@@ -2960,6 +2960,8 @@ pt_BR:
       exam_details: Detalhes da prova
       attempts: Quantidade de tentativas
       attempts_correction: Cálculo de nota
+    warning:
+      title: '<b>Importante: </b>Não é possível criar, importar ou remover questões em provas publicadas'
 
   questions:
     index:

@@ -59,6 +59,6 @@ exam7:
   name: 'Prova 7'
   description: 'Se após o reatamento das negociações o índice CSI-300 cair mais de 7%, os dois mercados ficarão fechados até sexta-feira (8).'
   duration: 5
-  number_questions: 1
+  number_questions: 2
   schedule_id: 50
   status: true

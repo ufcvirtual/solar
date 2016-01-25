@@ -103,12 +103,6 @@ question_item16:
 question_item17:
   id: 17
   question_id: 5
-  description: 'Azul'
-  value: false
-
-question_item17:
-  id: 17
-  question_id: 5
   description: 'Roxo'
   value: false
 

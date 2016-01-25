@@ -109,7 +109,7 @@ class Webconference < ActiveRecord::Base
     end
   end
 
-  def can_unbind?
+  def can_unbind?(groups = [])
     !(is_over? && is_recorded)
   end
 

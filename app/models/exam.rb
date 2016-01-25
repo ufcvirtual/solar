@@ -259,8 +259,8 @@ class Exam < Event
   end
 
   def can_remove_groups?(groups)
-    raise 'started'     if status && on_going?
-    raise 'has_answers' if exam_users.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: id, academic_tool_type: 'Exam', allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).any?
+    return false if status && on_going?
+    return false if exam_users.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: id, academic_tool_type: 'Exam', allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).any?
   end
 
   private

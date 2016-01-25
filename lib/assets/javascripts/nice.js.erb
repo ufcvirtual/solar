@@ -285,6 +285,7 @@ $.fn.serialize_and_submit = function(options) {
       }
 
       update_tables_with_no_data();
+      $(".block_toolbar_right a").attr('disabled', true); // desabilita os botoes da barra superior
     }
   }
 

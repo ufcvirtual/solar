@@ -127,6 +127,7 @@ function change_status(icon, replace_list){
           flash_message(data.notice, 'notice');
         });
       }
+      $(".block_toolbar_right a").attr('disabled', true);
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
@@ -217,7 +218,7 @@ function copy_question(icon, replace_list){
        flash_message(data.alert, 'alert');
     });
   }else{
-    flash_message("<%=I18n.t(:choose_one, scope: [:assignment, :list])%>", "alert");
+    flash_message("<%=I18n.t('questions.error.choose_one')%>", "alert");
     return false;
   }
 }
@@ -239,7 +240,7 @@ function delete_question(icon){
       questions.parents('tr').fadeOut().remove();
       update_tables_with_no_data();
 
-      $(".btn_edit, .btn_del").attr("disabled", true);
+      $(".block_toolbar_right a").attr('disabled', true);
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
@@ -267,7 +268,7 @@ function delete_exam_questions(icon, exam_id){
       questions.parents('tr').fadeOut().remove();
       update_tables_with_no_data();
 
-      $(".btn_edit, .btn_del").attr('disabled', true);
+      $(".block_toolbar_right a").attr('disabled', true);
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != 'undefined')
@@ -434,4 +435,5 @@ function preview_question(icon){
       $('.step-preview .content-preview').html(data);
       $('.step-preview').show('slide', { direction: 'left' }, 500);
     });
+
 }
