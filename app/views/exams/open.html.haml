@@ -1,21 +1,21 @@
 - unless @exam.nil?
-	.exam_open
-		.header
-			= render 'exams/open/header'
-		.content_exam
+  .exam_open
+    .header
+      = render 'exams/open/header', { preview: @preview }
+    .content_exam
 
 :javascript
 
-	$('.content_exam').html('#{escape_javascript( render :partial => 'exams/open/content' )}');
+  $('.content_exam').html("#{escape_javascript( render 'exams/open/content', { preview: @preview } )}");
 
-	$(function() {		
-		$(".content_exam").on("click", ".pagination a", 
-			function(){
-				var url = this.href;
-				$('.content_exam').load(url);
-				return false;
-			});
+  $(function() {    
+    $(".content_exam").unbind('click').on("click", ".pagination a", 
+      function(){
+        var url = this.href;
+        $('.content_exam').load(url);
+        return false;
+      });
 
-		$('#order').html(#{@question_order});
+    $('#order').html(#{@question_order});
 
-	});
+  });

@@ -5,7 +5,7 @@
     = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
     = render partial: 'exams/list/exams', locals: { all_groups: @all_groups }
 
-    /= link_to content_tag(:i, nil, class: 'icon-ellipsis'), list_lessons_path(page: @academic_allocations.next_page, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @academic_allocations.next_page
+    / = link_to content_tag(:i, nil, class: 'icon-ellipsis'), list_exams_path(page: @exams.next_page, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @exams.next_page
 
   - else
     .block_content_text_list.text_none
@@ -30,7 +30,7 @@
 
     $(".btn_edit, .btn_del, .release_lessons, .download_lesson_zip, .manage_files_lesson").attr("disabled", true);
 
-    $(".link_new_question, .link_new_exam, .edit_exam, .preview_exam").call_fancybox({
+    $(".link_new_question, .link_new_exam, .edit_exam").call_fancybox({
       width: '70%'
     });
 

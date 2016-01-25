@@ -304,11 +304,11 @@ pt_BR:
         result_email: Enviar resultado por email
         attempts_correction: Modo de cálculo de nota
         block_content: Bloquear conteúdo do Solar durante a prova
-      question_item:
+      question_items:
         img_alt: Alt
         item_image: Imagem
         comment: Comentário
-      question_image:
+      question_images:
         image: Imagem
         legend: Legenda
         img_alt: Alt
@@ -319,7 +319,7 @@ pt_BR:
       question:
         name: 'Título'
         enunciation: Enunciado
-      question_label:
+      question_labels:
         name: 'Palavras-Chave'
       assignment:
         allocation_tag_id: Turma
@@ -3051,13 +3051,18 @@ pt_BR:
       max_images: pode ter, no máximo, 4 imagens
       general_message: Não foi possível realizar a ação desejada
       permission: Você não tem permissão para realizar esta ação
-      alt: Alt obrigatório
+      alt: obrigatório
       max_labels: Máximo de 8 palavras-chave
+      choose_at_least_one: "Selecione, ao menos, uma questão"
+      choose_one: Selecione uma questão
     success:
       deleted: Questões removidas com sucesso
       change_status: Situação alterada com sucesso
     show:
       title: Visualização prévia da questão
+    warning:
+      save_automatically: Todas as alterações são salvas automaticamente.
+      questions: A ordem e questões selecionadas para a prova podem mudar no momento de sua publicação ou resolução.
 
   exam_questions:
     import:

@@ -508,7 +508,6 @@ Solar::Application.routes.draw do
   resources :exams do
     collection do
       get :list
-      get :open
       put ':tool_id/unbind/group/:id', to: 'groups#change_tool', type: 'unbind', tool_type: 'Exam', as: :unbind_group_from
       put ':tool_id/remove/group/:id', to: 'groups#change_tool', type: 'remove', tool_type: 'Exam', as: :remove_group_from
       put ':tool_id/add/group/:id'   , to: 'groups#change_tool', type: 'add'   , tool_type: 'Exam', as: :add_group_to
@@ -517,6 +516,8 @@ Solar::Application.routes.draw do
 
     member do 
       put :change_status
+      get :open
+      get :preview
     end
   end
 
@@ -531,6 +532,7 @@ Solar::Application.routes.draw do
       put :publish, to: :change_status, status: true
       get :verify_owners, update: true
       get :copy_verify_owners, to: :verify_owners, copy: true
+      get :show_verify_owners, to: :verify_owners, show: true
       get :copy
     end
   end

@@ -12,3 +12,7 @@
       %span#clock{name: "clock"}
     %li#time_final
       = t('exams.open.to') + Time.at(@exam.duration*60).utc.strftime("%H:%M:%S")
+- if @preview
+  .form_requirement.warning= t('questions.warning.questions')
+- else
+  .form_requirement.warning= t('questions.warning.save_automatically')

@@ -6,7 +6,7 @@
 - labels      = (question.respond_to?(:labels)       ? question.labels.delete('NULL').split(',') : (question.question_labels.map(&:name) rescue ''))
 - author_name = (question.respond_to?(:author_name)) ? question.author_name : question.user.name
 - updated_by_name = (question.respond_to?(:updated_by_name)) ? question.updated_by_name : question.updated_by_user.try(:name)
-%tr.lines{ id: "tr_#{question.id}" }
+%tr.lines{ id: "tr_#{question.id}", :'data-id' => question.id }
   %td{ style: 'text-align:center;' }
     = check_box_tag('ckb_question', question.id, false, { class: 'ckb_question', :'data-can-delete' => can_delete, :'data-question-id' => question.id })
   %td
@@ -30,7 +30,7 @@
   %td{ style: 'text-align:center;' }= question.type
   %td{ style: 'text-align:center;' }= l(question.updated_at, format: :normal)
   %td{ style: 'text-align:center;', :'data-tooltip' => updated_by_name }= (updated_by_name.truncate(50) rescue '-')
-  %td{ style: 'text-align:center;' }= link_to content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('.preview')), question_path(question), class: 'preview_question'
+  %td{ style: 'text-align:center;' }= link_to_function content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('.preview')), 'preview_question(this)', :'data-url' => question_path(question), class: 'preview_question', disabled: !@can_see_preview
   %td{ style: 'text-align:center;' }= question.privacy? ? content_tag(:i, nil, class: 'icon-lock', :'data-tooltip' => t('.private')) : content_tag(:i, nil, class: 'icon-minus', :"data-tooltip" => t('.public'))
   %td{ style: 'text-align:center;' }= exams
   %td{ style: 'text-align:center;' }= link_to_function (image_tag "#{question.status ? 'released' : 'rejected'}.png"), 'change_status_single(this)', :'data-tooltip' => (question.status ? t('lessons.index.released') : t('lessons.index.draft')), :'data-url' => change_status_question_path(question), class: "#{question.status ? 'released' : 'rejected'}"
@@ -45,10 +45,10 @@
     });
 
     $('#all_questions').nice_checkbox({
-      can_enable_elements: true
+      can_enable_elements: true,
+      objects_to_change_status: ['.btn_copy', '.export_question', '.change_status_ckb'],
+      parent_div: $('.list_questions')
     });
-
-    $('.preview_question').call_fancybox();
-
   });
+
   

@@ -264,13 +264,13 @@ en_US:
       question:
         name: Title
         enunciation: Enunciation
-      question_label:
+      question_labels:
         name: Labels
-      question_item:
+      question_items:
         img_alt: Alt
         item_image: Image
         comment: Comment
-      question_image:
+      question_images:
         image: Image
         legend: Legend
         img_alt: Alt
@@ -2817,11 +2817,16 @@ en_US:
       permission: You don't have permission to execute this action
       alt: Mandatory Alt
       max_labels: Max 8 labels
+      choose_at_least_one: Choose at least one question
+      choose_one: Choose one question
     success:
       deleted: Questions removed successfully
       change_status: Status updated successfully
     show:
       title: Preview of question
+    warning:
+      save_automatically: All changes are saved automatically.
+      questions: Selected questions and order to exam can change at publish or at starting.
 
   exam_questions:
     import:

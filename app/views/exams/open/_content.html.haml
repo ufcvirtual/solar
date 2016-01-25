@@ -8,7 +8,7 @@
             = @question_order + ") "
           %td.enunciation
             = question.enunciation
-      = render 'exams/open/question', { question: question, preview: false }
+      = render 'exams/open/question', { question: question, preview: preview }
 
 .message_div_navigation
   = will_paginate @exam_questions

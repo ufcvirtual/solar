@@ -3,7 +3,7 @@
     %thead
       %tr.lines
         %th.center.no_sort{ class: hide_columns ? 'invisible' : '' }
-          %input{ id: "all_questions_#{exam.id}" , type: 'checkbox', :"data-children-names" => "ckb_#{exam.id}", class: 'all_ckb_question' }
+          %input{ id: "all_questions_#{exam.id}" , type: 'checkbox', :"data-children-names" => "ckb_#{exam.id}", class: 'all_ckb_question', :'data-exam-id' => exam.id }
         %th.name{ class: hide_columns ? 'invisible' : '' }= 'Ordem'
         %th.name= t('questions.questions.enun')
         %th.center.author= t('questions.questions.author')
