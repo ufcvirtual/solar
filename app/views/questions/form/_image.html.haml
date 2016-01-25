@@ -3,7 +3,7 @@
     .duplicatable_nested_form
       .upload-preview
         - if img.object.image.nil?
-          %img
+          %img{ src: '' }
         - else
           %img{ src: img.object.image.as_json }
 

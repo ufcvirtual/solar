@@ -40,7 +40,8 @@ class ExamsController < ApplicationController
     authorize! :list, Exam, { on: @allocation_tags_ids }
 
     @all_groups = Group.where(offer_id: params[:offer_id])
-    @exams = Exam.exams_by_ats(@allocation_tags_ids.split(' '))
+    @exams = Exam.exams_by_ats(@allocation_tags_ids.split(' '))#.paginate(page: params[:page], per_page: 2)
+    @can_see_preview = can? :show, Question, { on: @allocation_tags_ids }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
@@ -77,7 +78,8 @@ class ExamsController < ApplicationController
   end
 
   def open
-    @exam = Exam.find(params[:exam_id])
+    @exam = Exam.find(params[:id])
+    @preview = false
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1) unless @exam.nil?
   end
 
@@ -97,6 +99,14 @@ class ExamsController < ApplicationController
   def show
     authorize! :show, Exam, { on: params[:allocation_tags_ids] }
     @exam = Exam.find(params[:id])
+  end
+
+  def preview
+    authorize! :preview, Exam, { on: params[:allocation_tags_ids] }
+    @exam = Exam.find(params[:id])
+    @preview = true
+    @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1) unless @exam.nil?
+    render :open
   end
 
   private

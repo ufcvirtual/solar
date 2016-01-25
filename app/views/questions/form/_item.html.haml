@@ -12,7 +12,7 @@
         .image
           .upload-preview
             - if i.object.item_image_file_name.blank?
-              %img
+              %img{ src: '' }
             - else
               %img{ src: i.object.item_image.as_json }
             = i.input :item_image, as: :file, label: false

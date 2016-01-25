@@ -1,4 +1,4 @@
-.questions{
+.questions, [class^='list_questions_exam_']{
   .search{
     label{
       word-wrap: break-word;
@@ -19,6 +19,11 @@
     td a.preview_question{
       text-decoration: none;
       cursor: pointer;
+    }
+    td a.preview_question:disabled{
+      i{
+        color:  #C0C0C0;
+      }
     }
     th.name{
       text-align:left;

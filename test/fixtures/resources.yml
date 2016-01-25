@@ -1022,7 +1022,7 @@ res200:
   id: 200
   controller: 'questions'
   action: "show"
-  description: "Visualizar questão"
+  description: "Visualização prévia de questões e provas"
 
 res201:
   id: 201
@@ -1058,10 +1058,16 @@ res206:
   id: 206
   controller: 'questions'
   action: 'change_status'
-  description: 'Alterar status da questão (liberada ou rascunho)'
+  description: 'Alterar status da questão (publicada ou rascunho)'
 
 res207:
   id: 207
   controller: 'questions'
   action: annul
   description: 'Anular questões em provas'
+
+res208:
+  id: 208
+  controller: 'questions'
+  action: copy
+  description: 'Copiar questões'

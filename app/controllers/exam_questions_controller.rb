@@ -275,8 +275,10 @@ class ExamQuestionsController < ApplicationController
   end
 
   def copy
+    authorize! :copy, Question
     exam_question  = ExamQuestion.find params[:id]
     exam_question.can_save?
+    exam_question.question.can_copy?
     @exam_question = ExamQuestion.copy(exam_question, current_user.id)
 
     log(ExamQuestion.exam, "question: #{exam_question.question_id} [copy], #{exam_question.log_description}", LogAction::TYPE[:create]) rescue nil

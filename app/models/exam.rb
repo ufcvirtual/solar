@@ -42,6 +42,14 @@ class Exam < Event
     # enviar email com notas se já tiver encerrado período
   end
 
+  def copy_dependencies_from(exam_to_copy)
+    unless exam_to_copy.exam_questions.empty?
+      exam_to_copy.exam_questions.each do |eq|
+        ExamQuestion.create! eq.attributes.except('id').merge({ exam_id: id })
+      end
+    end
+  end
+
   def ended?
     has_hours = (!start_hour.blank? && !end_hour.blank?)
     endt      = (has_hours ? (schedule.end_date.beginning_of_day + end_hour.split(':')[0].to_i.hours + end_hour.split(':')[1].to_i.minutes) : schedule.end_date.end_of_day)
@@ -163,13 +171,13 @@ class Exam < Event
 
   def can_destroy?
     raise 'started'     if status && on_going?
-    raise 'has_answers' if exam_responses.any?
+    raise 'has_answers' if exam_users.any?
   end
 
   def can_change_status?
     raise 'minimum_questions' if !status && questions.where(status: true).count < number_questions
     raise 'started'           if status && on_going?
-    raise 'has_answers'       if status && exam_responses.any?
+    raise 'has_answers'       if status && exam_users.any?
     raise 'imported'          if !status && !can_publish
     raise 'change_period'     if !status && started?
     # raise 'autocorrect' if !status && questions.where(type: [0,1,2])
@@ -241,7 +249,20 @@ class Exam < Event
     exam_questions.update_all use_question: false
     ExamQuestion.joins(:question).where(exam_questions: {exam_id: id}, questions: { status: true }).limit(number_questions).order('RANDOM()').update_all use_question: true if random_questions
   end
-  
+
+  def can_add_group?(ats = [])
+    !(started? && status)
+  end
+
+  def can_unbind?(groups)
+    can_remove_groups?(groups)    
+  end
+
+  def can_remove_groups?(groups)
+    raise 'started'     if status && on_going?
+    raise 'has_answers' if exam_users.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: id, academic_tool_type: 'Exam', allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).any?
+  end
+
   private
 
     def percent(total, answered)

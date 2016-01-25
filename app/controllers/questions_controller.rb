@@ -9,6 +9,7 @@ class QuestionsController < ApplicationController
   def index
     authorize! :index, Question
     @questions = Question.get_all(current_user.id, params[:search] || {}, params[:verify_privacy])
+    @can_see_preview = can? :show, Question
     render partial: 'questions/questions' unless params[:search].nil?
   end
 
@@ -92,7 +93,8 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    authorize! :show, Question
+    @can_see_preview = can? :show, Question
+    raise CanCan::AccessDenied unless @can_see_preview
     @question = Question.find params[:id]
     @question.can_see?
   rescue CanCan::AccessDenied
@@ -103,15 +105,30 @@ class QuestionsController < ApplicationController
 
   def verify_owners
     question = Question.find params[:id]
-    question.can_change? if params[:update]
-    question.can_copy?   if params[:copy]
+    if params[:update]
+      question.can_change?
+      authorize! :update, Question
+    end
+    if params[:copy]
+      question.can_copy?
+      authorize! :copy, Question
+    end
+    if params[:copy]
+      question.can_see?    if params[:show]
+      authorize! :show, Question
+    end
+
     render json: { success: true }
   rescue => error
     render_json_error(error, 'questions.error')
   end
 
   def copy
+    authorize! :copy, Question
+
     question  = Question.find params[:id]
+    question.can_copy?
+
     @question = Question.copy(question, current_user.id)
 
     log(question, "question: #{question.id} [copy], #{question.log_description}", LogAction::TYPE[:create]) rescue nil

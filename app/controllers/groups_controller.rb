@@ -136,7 +136,7 @@ class GroupsController < ApplicationController
             when 'unbind' # desvincular uma turma
 
               raise 'must_have_group' if tool.academic_allocations.size == academic_allocations.size
-              raise 'cant_unbind' unless (!tool.respond_to?(:can_unbind?) || tool.can_unbind?)
+              raise 'cant_unbind' unless (!tool.respond_to?(:can_unbind?) || tool.can_unbind?(groups))
 
               new_tool = tool_model.create(tool.attributes)
               academic_allocations.update_all(academic_tool_id: new_tool.id)

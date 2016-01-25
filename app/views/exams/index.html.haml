@@ -1,4 +1,5 @@
 .block_wrapper.list_exams
+  .title-warning= 'Não é possível criar, importar ou remover questões em provas publicadas'
   .block_title
     %h2
       %i.icon-suitcase
@@ -15,7 +16,7 @@
       %tbody
         - @exams.each do |exam|
         - info = exam.info(current_user.id, @allocation_tag_id)
-        - link = open_exams_path(allocation_tags_ids: @allocation_tags_ids, exam_id: exam.id, student_id: current_user.id)
+        - link = open_exam_path(exam, allocation_tags_ids: @allocation_tags_ids, student_id: current_user.id)
           %tr.lines{ id: "tr_#{exam.id}" }
             %td
               %div

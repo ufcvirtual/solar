@@ -64,15 +64,6 @@
     $('#steps li:last .dot').removeClass('active');
   }
 
-  function open_lesson(icon){
-    $.get("#{import_preview_lessons_path}", { id: $(icon).parents('tr').data('id') }, function(data){
-      $('.step-list').hide('slide', { direction: 'left' }, 500);
-      $('.step-conclude').hide('slide', { direction: 'left' }, 500);
-      $('.step-preview .content-preview').html(data);
-      $('.step-preview').show('slide', { direction: 'left' }, 500);
-    });
-  }
-
   function add_questions(search_method){
     var ids = $('.questions_import tbody input.ckb_question:checked').map(function() { return parseInt($(this).data('question-id')); }).get();
 

@@ -9,7 +9,7 @@ class QuestionItem < ActiveRecord::Base
 
   validates :description, presence: true
 
-  validate :alt, if: '(!item_image_file_name.blank? && img_alt.blank?)'
+  validates :img_alt, presence: true, if: '(!item_image_file_name.blank? && img_alt.blank?)'
 
   has_attached_file :item_image,
                     styles: { small: '120x120'},
@@ -26,9 +26,5 @@ class QuestionItem < ActiveRecord::Base
   def can_destroy?
     raise 'in_use' if exam_responses.any?
   end
-
-  def alt
-    errors.add(:base, I18n.t('questions.error.alt'))
-  end
-
+  
 end

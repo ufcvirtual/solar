@@ -3,7 +3,7 @@ class QuestionImage < ActiveRecord::Base
 
   validates :image, presence: true
 
-  validate :alt, if: 'img_alt.blank?'
+  validates :img_alt, presence: true, if: 'img_alt.blank?'
 
   validates_attachment_size :image, less_than: 2.megabyte, message: 'too big'
   validates_attachment_content_type :image, content_type: /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/, message: 'file type is not allowed (only jpeg/png/gif images)'
@@ -13,10 +13,6 @@ class QuestionImage < ActiveRecord::Base
           styles: { small: '150x150', medium: '220x220', large: '300x300' },
           path: ':rails_root/media/questions/images/:id_:basename.:extension',
           url: '/media/questions/images/:id_:basename.:extension'
-
-  def alt
-    errors.add(:base, I18n.t('questions.error.alt'))
-  end
 
   def self.list(question_id)
     QuestionImage.where(question_id: question_id)
