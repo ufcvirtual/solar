@@ -68,6 +68,10 @@ describe "Groups" do
           it { should change(Webconference.where('origin_meeting_id IS NOT NULL'),:count).by(2) }
           it { should change(AssignmentWebconference,:count).by(3) }
           it { should change(AssignmentWebconference.where('origin_meeting_id IS NOT NULL'),:count).by(1) }
+          it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Exam"),:count).by(5) }
+          it { should change(ExamUser,:count).by(1) }
+          it { should change(ExamQuestion,:count).by(14) }
+          it { should change(ExamResponse,:count).by(3) }
 
           it {
             put "/api/v1/groups/merge/", json_data
@@ -110,6 +114,10 @@ describe "Groups" do
           it { should change(Webconference,:count).by(2) }
           # it { should change(AssignmentWebconference,:count).by(3) }
           # it { should change(AssignmentWebconference.where('origin_meeting_id IS NOT NULL'),:count).by(1) }
+          it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Exam"),:count).by(1) }
+          it { should change(ExamUser,:count).by(1) }
+          it { should change(ExamQuestion,:count).by(2) }
+          it { should change(ExamResponse,:count).by(1) }
 
           it {
             put "/api/v1/groups/merge/", json_data
@@ -145,6 +153,10 @@ describe "Groups" do
         it { should change(LogAction,:count).by(0) }
         it { should change(Merge,:count).by(0) }
         it { should change(Group.where(status: false),:count).by(0) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Exam"),:count).by(0) }
+        it { should change(ExamUser,:count).by(0) }
+        it { should change(ExamQuestion,:count).by(0) }
+        it { should change(ExamResponse,:count).by(0) }
 
         it {
           put "/api/v1/groups/merge/", json_data
@@ -179,6 +191,10 @@ describe "Groups" do
         it { should change(LogAction,:count).by(0) }
         it { should change(Merge,:count).by(0) }
         it { should change(Group.where(status: false),:count).by(0) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Exam"),:count).by(0) }
+        it { should change(ExamUser,:count).by(0) }
+        it { should change(ExamQuestion,:count).by(0) }
+        it { should change(ExamResponse,:count).by(0) }
 
         it {
           put "/api/v1/groups/merge/", json_data
@@ -213,6 +229,10 @@ describe "Groups" do
         it { should change(LogAction,:count).by(0) }
         it { should change(Merge,:count).by(0) }
         it { should change(Group.where(status: false),:count).by(0) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Exam"),:count).by(0) }
+        it { should change(ExamUser,:count).by(0) }
+        it { should change(ExamQuestion,:count).by(0) }
+        it { should change(ExamResponse,:count).by(0) }
 
         it {
           put "/api/v1/groups/merge/", json_data
@@ -255,6 +275,10 @@ describe "Groups" do
         it { should change(Group.where(status: false),:count).by(1) }
         it { should change(AcademicAllocation.where(allocation_tag_id: 3, academic_tool_type: "Webconference"),:count).by(2) }
         it { should change(Webconference.where('origin_meeting_id IS NOT NULL'),:count).by(2) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Exam"),:count).by(1) }
+        it { should change(ExamUser,:count).by(0) }
+        it { should change(ExamQuestion,:count).by(2) }
+        it { should change(ExamResponse,:count).by(0) }
 
         it {
           put "/api/v1/groups/merge/", json_data
@@ -299,6 +323,10 @@ describe "Groups" do
         it { should change(Group.where(status: false),:count).by(0) }
         it { should change(AcademicAllocation.where(allocation_tag_id: 2, academic_tool_type: "Webconference"),:count).by(3) }
         # it { should change(Webconference.where('origin_meeting_id IS NOT NULL'),:count).by(3) }
+        it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Exam"),:count).by(6) }
+        it { should change(ExamUser,:count).by(1) }
+        it { should change(ExamQuestion,:count).by(14) }
+        it { should change(ExamResponse,:count).by(3) }
 
         it {
           put "/api/v1/groups/merge/", json_data

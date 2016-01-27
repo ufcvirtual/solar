@@ -535,7 +535,7 @@ exam6:
 
 exam7:
  id: 90
- allocation_tag_id: 2 # introducao a linguistica
+ allocation_tag_id: 2 # introducao a linguistica - TL-CAU
  academic_tool_id: 7
  academic_tool_type: "Exam"
 

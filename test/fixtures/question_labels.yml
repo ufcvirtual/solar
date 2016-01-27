@@ -1,0 +1,23 @@
+label1:
+  id: 1
+  name: historia
+
+label2:
+  id: 2
+  name: matematica
+
+label3:
+  id: 3
+  name: geografia
+
+label4:
+  id: 4
+  name: biologia
+
+label5:
+  id: 5
+  name: guerras mundiais
+
+label6:
+  id: 6
+  name: curiosidades
