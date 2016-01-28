@@ -284,6 +284,11 @@ $.fn.serialize_and_submit = function(options) {
         }
       }
 
+      if (typeof(options.call_function) != "undefined"){
+        console.log('ha');
+        window[options.call_function]();
+      }
+
       update_tables_with_no_data();
       $(".block_toolbar_right a").attr('disabled', true); // desabilita os botoes da barra superior
     }

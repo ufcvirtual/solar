@@ -108,7 +108,7 @@ class ExamsController < ApplicationController
   end
 
   def preview
-    authorize! :preview, Exam, { on: params[:allocation_tags_ids] }
+    authorize! :show, Question, { on: params[:allocation_tags_ids] }
     @exam = Exam.find(params[:id])
     @preview = true
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1) unless @exam.nil?

@@ -312,6 +312,14 @@ pt_BR:
         image: Imagem
         legend: Legenda
         img_alt: Alt
+      question_item:
+        img_alt: Alt
+        item_image: Imagem
+        comment: Comentário
+      question_image:
+        image: Imagem
+        legend: Legenda
+        img_alt: Alt
       exam_user:
         grade: Nota
       exam_question:
@@ -2894,7 +2902,7 @@ pt_BR:
       unpublished: Publicar prova
       to: ' à '
       draft_exam: Prova em modo rascunho
-      period: "Aplicada em %{dstart} à %{dend} %{hours}"
+      period: "Aplicação: %{dstart} à %{dend} %{hours}"
       amount_questions: "%{added} adicionadas de %{amount} questões"
     success:
       created: Prova criada com sucesso
@@ -3029,16 +3037,17 @@ pt_BR:
       items:
         answer: 'Resposta*'
         add: Adicionar mais opções
-        alt_desc: Descrição obrigatória para acessibilidade (pessoas com deficiência)
+        alt_desc: 'Alt: Descrição obrigatória para acessibilidade (pessoas com deficiência)'
         add_image: Adicionar/alterar imagem
         comment: Comentário
         alt: Alt
+        choose_correct: '(Marque para indicar o item como correto)'
       info:
         continue: Prosseguir
         add_images: Adicionar mais imagens
         add_labels: Adicionar mais palavras-chave
       image:
-        alt_desc: Descrição obrigatória para acessibilidade (pessoas com deficiência)
+        alt_desc: 'Alt: Descrição obrigatória para acessibilidade (pessoas com deficiência)'
         add_image: Adicionar/alterar imagem
     labels:
       labels: 'palavras-chave: '

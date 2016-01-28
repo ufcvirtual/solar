@@ -175,8 +175,10 @@ class Question < ActiveRecord::Base
     end
   end
 
-  def can_see?
-    raise 'permission' unless !privacy || owners?
+  def can_see?(boolean=false)
+    result = !privacy || owners?
+    raise 'permission' unless boolean || result
+    result
   end
 
   def can_change?
