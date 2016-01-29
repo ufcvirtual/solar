@@ -14,8 +14,8 @@
           %th.small= t('exams.index.grade')
       %tbody
         - @exams.each do |exam|
-        - info = exam.info(current_user.id, @allocation_tag_id)
-        - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, exam_user_id: Exam.create_exam_user(exam, current_user.id, @allocation_tag_id))
+        - info = exam.info(current_user.id, @allocation_tags_ids)
+        - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, exam_user_id: Exam.create_exam_user(exam, current_user.id, @allocation_tags_ids))
           %tr.lines{ id: "tr_#{exam.id}" }
             %td
               %div

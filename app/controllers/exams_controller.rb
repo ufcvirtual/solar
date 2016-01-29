@@ -10,7 +10,9 @@ class ExamsController < ApplicationController
   def index
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     authorize! :index, Exam, on: [@allocation_tag_id]
-    @exams = Exam.my_exams(@allocation_tag_id)
+    @allocation_tags_ids = AllocationTag.find(@allocation_tag_id).related
+    @exams = Exam.my_exams(@allocation_tags_ids)
+
   rescue
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end
@@ -82,7 +84,8 @@ class ExamsController < ApplicationController
     @exam = Exam.find(params[:id])
     @preview = false
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1) unless @exam.nil?
-    Exam.set_start_time(params[:exam_user_id])
+    @exam_user_id = params[:exam_user_id]
+    Exam.set_start_time(@exam_user_id)
     respond_to do |format|
       format.html
       format.js
@@ -108,7 +111,7 @@ class ExamsController < ApplicationController
   end
 
   def preview
-    authorize! :preview, Exam, { on: params[:allocation_tags_ids] }
+    authorize! :show, Question, { on: params[:allocation_tags_ids] }
     @exam = Exam.find(params[:id])
     @preview = true
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1) unless @exam.nil?

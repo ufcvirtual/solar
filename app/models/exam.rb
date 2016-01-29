@@ -141,9 +141,9 @@ class Exam < Event
         .uniq('exams.id')
   end
   
-  def self.my_exams(allocation_tag_id)
+  def self.my_exams(allocation_tag_ids)
   	exams = Exam.joins(:academic_allocations, :schedule)
-      .where(academic_allocations: {allocation_tag_id: allocation_tag_id},
+      .where(academic_allocations: {allocation_tag_id: allocation_tag_ids},
           status: true)
       .select('DISTINCT exams.*, schedules.start_date as start_date, schedules.end_date as end_date')
       .order('schedules.start_date')
@@ -212,8 +212,8 @@ class Exam < Event
     end
   end
 
-  def info(user_id, allocation_tag_id)
-    academic_allocation = academic_allocations.where(allocation_tag_id: allocation_tag_id).first
+  def info(user_id, allocation_tags_ids)
+    academic_allocation = academic_allocations.where(allocation_tag_id: allocation_tags_ids).first
     return unless academic_allocation
 
     info = academic_allocation.exam_users.where({user_id: user_id}).first.try(:info) || {complete: false}
@@ -234,11 +234,11 @@ class Exam < Event
     end
   end
 
-  def self.create_exam_user(exam, current_user_id, allocation_tag_id)
+  def self.create_exam_user(exam, current_user_id, allocation_tags_ids)
     @exam_users = exam.exam_users.where(:user_id => current_user_id).first
     if @exam_users.nil?
       @academic_allocation = AcademicAllocation.where(academic_tool_id: exam.id, academic_tool_type: 'Exam',
-        allocation_tag_id: allocation_tag_id).first
+        allocation_tag_id: allocation_tags_ids).first
       exam.exam_users.build(:user_id => current_user_id, :academic_allocation_id => @academic_allocation.id).save 
       @exam_users = exam.exam_users.where(:user_id => current_user_id).first
     end
