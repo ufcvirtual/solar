@@ -113,7 +113,7 @@ class QuestionsController < ApplicationController
       question.can_copy?
       authorize! :copy, Question
     end
-    if params[:copy]
+    if params[:show]
       question.can_see?    if params[:show]
       authorize! :show, Question
     end

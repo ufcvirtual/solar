@@ -2,7 +2,7 @@
   - @exams.each do |exam|
     - questions = exam.get_questions
 
-    .block_wrapper.module{ id: "exam_#{exam.id}" }
+    .block_wrapper.module.exam{ id: "exam_#{exam.id}",  }
       = render partial: 'exams/list/info', locals: { exam: exam, has_group: exam.groups.any?, show_buttons: true, ckb: false, tags: { all_groups: all_groups, groups: exam.groups, tool: exam, paths: { add: add_group_to_exams_path(id: 'param_id', tool_id: exam.id), remove: remove_group_from_exams_path(id: 'param_id', tool_id: exam.id), unbind: unbind_group_from_exams_path(id: 'param_id', tool_id: exam.id), tags: group_tags_from_exams_path(tool_id: exam.id) } } }
 
       .block_content_toolbar

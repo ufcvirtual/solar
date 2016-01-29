@@ -37,6 +37,14 @@ module V1::Contents
     end
   end
 
+  def copy_exam_users(from_exam_users, to_at)
+    from_exam_users.each do |from_exam_user|
+      to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Exam', academic_tool_id: from_exam_user.academic_allocation.academic_tool_id).first
+      new_exam_user = copy_object(from_exam_user, 'academic_allocation_id' => to_ac.id)
+      copy_objects(from_exam_user.exam_responses, 'exam_user_id' => new_exam_user.id)
+    end
+  end
+
   def replicate_content(from_group, to_group, merge = true)
     raise ActiveRecord::RecordNotFound if from_group.nil? || to_group.nil?
     from_ats, to_at = ((from_group.offer_id == to_group.offer_id) ? [from_group.allocation_tag.id] : from_group.allocation_tag.related), to_group.allocation_tag.id
@@ -45,10 +53,12 @@ module V1::Contents
     ActiveRecord::Base.transaction do
       remove_all_content(to_at) if !merge && Merge.where(main_group_id: to_group.id, secundary_group_id: from_group.id).last.try(:type_merge)
 
+
       replicate_discussions(from_academic_allocations, to_at)
       replicate_chats(from_academic_allocations, to_at)
       replicate_assignments(from_academic_allocations, to_at)
       replicate_webconferences(from_academic_allocations, to_at, from_group.allocation_tag.id)
+      replicate_exams(from_academic_allocations, to_at)
 
       from_ats.each do |from_at|
         replicate_messages(from_at, to_at)
@@ -69,6 +79,10 @@ module V1::Contents
       ac.group_assignments.map(&:delete_with_dependents)
     }
     AcademicAllocation.where(academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag).map{ |ac| ac.chat_messages.delete_all }
+    AcademicAllocation.where(academic_tool_type: 'Webconference', allocation_tag_id: allocation_tag).delete_all
+    AcademicAllocation.where(academic_tool_type: 'Exam', allocation_tag_id: allocation_tag).map{ |exam|
+      exam.exam_users.map(&:delete_with_dependents)
+    }
   end
 
   def copy_file(file_to_copy_path, file_copied_path)
@@ -155,6 +169,12 @@ module V1::Contents
 
   def replicate_public_files(from_at, to_at)
     copy_objects(PublicFile.where(allocation_tag_id: from_at), {'allocation_tag_id' => to_at}, true)
+  end
+
+  def replicate_exams(from_academic_allocations, to_at)
+    from_exams_academic_allocations = from_academic_allocations.where(academic_tool_type: 'Exam')
+    create_missing_tools(from_exams_academic_allocations.pluck(:academic_tool_id), to_at, 'Exam')
+    copy_exam_users(ExamUser.where(academic_allocation_id: from_exams_academic_allocations.pluck(:id)), to_at)
   end
 
 end

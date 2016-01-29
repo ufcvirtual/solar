@@ -6,6 +6,7 @@
         .inputs
           = i.check_box :value
           = i.select :value, ([ ['V', true], ['F', false]]), include_blank: false
+          .obs= t('questions.form.items.choose_correct')
         .label= i.label :description
         .desc
           = i.input :description, label: false, class: 'ckeditor'
@@ -31,7 +32,7 @@
     CKEDITOR.editorConfig = function (config) {
       config.toolbar =
         [
-          { name: 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+          { name: 'clipboard', items : [ 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ] },
           { name: 'insert', items : ['EqnEditor'] },
           { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
           { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }
@@ -40,6 +41,7 @@
         config.extraPlugins = 'eqneditor,oembed';
         config.resize_enabled = false;
         config.height = '80px';
+        config.width = '500px';
     };
 
     $("#items").on("fields_added.nested_form_fields", function(event) {

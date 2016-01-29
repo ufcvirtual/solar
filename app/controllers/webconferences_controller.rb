@@ -168,7 +168,7 @@ class WebconferencesController < ApplicationController
     webconference = Webconference.find(params[:id])
     at_id         = active_tab[:url][:allocation_tag_id] || params[:at_id] || webconference.allocation_tags.map(&:id)
 
-    raise CanCan::AccessDenied if current_user.is_researcher?([at_id].flatten)
+    raise CanCan::AccessDenied if current_user.is_researcher?(AllocationTag.find(at_id).related)
 
     begin
       authorize! :index, Webconference, { on: at_id, accepts_general_profile: true }

@@ -37,15 +37,8 @@ $(function(){
       return false;
     }
   });
-
-  $.each($('[id^="all_questions_"]'), function(idx){
-    var exam_id = $(this).data('exam-id');
-    $($('[id^="all_questions_"]')[idx]).nice_checkbox({
-      can_enable_elements: true,
-      objects_to_change_status: ['.btn_copy', '.export_question', '.change_status_ckb'],
-      parent_div: $('#exam_'+exam_id)
-    });
-  });
+  
+  update_nice_checkbox();
 
 });
 
@@ -79,7 +72,8 @@ function save_question(exam_id){
       else
         $('form span.error').html('');
       update_tables_with_no_data();
-    }
+    },
+    call_function: 'update_nice_checkbox'
   });
 }
 
@@ -97,7 +91,7 @@ function back(){
   $('.step-items').addClass('hidden');
   $('li.info').addClass('active');
   $('#dot-info').addClass('active');
-  $('li.images').removeClass('active');
+  $('li.items').removeClass('active');
   $('#dot-items').removeClass('active');
 }
     
@@ -125,6 +119,7 @@ function change_status(icon, replace_list){
         $.get($(replace_list).data("link-list"), function(data2){
           $(replace_list).replaceWith(data2);
           flash_message(data.notice, 'notice');
+          update_nice_checkbox();
         });
       }
       $(".block_toolbar_right a").attr('disabled', true);
@@ -210,6 +205,7 @@ function copy_question(icon, replace_list){
         $.get($(replace_list).data("link-list"), function(data2){
           $(replace_list).replaceWith(data2);
           flash_message(data.notice, 'notice');
+          update_nice_checkbox();
         });
       }
     }).error(function(data){
@@ -239,8 +235,7 @@ function delete_question(icon){
       flash_message(data.notice, 'notice');
       questions.parents('tr').fadeOut().remove();
       update_tables_with_no_data();
-
-      $(".block_toolbar_right a").attr('disabled', true);
+      update_nice_checkbox();
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
@@ -267,8 +262,7 @@ function delete_exam_questions(icon, exam_id){
       flash_message(data.notice, 'notice');
       questions.parents('tr').fadeOut().remove();
       update_tables_with_no_data();
-
-      $(".block_toolbar_right a").attr('disabled', true);
+      update_nice_checkbox();
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != 'undefined')
@@ -391,7 +385,6 @@ function check_inputs(){
   }
 }
 
-
 function change_inputs(){
   var val = $('#question_type_question').val();
   if(val == 2){
@@ -435,5 +428,21 @@ function preview_question(icon){
       $('.step-preview .content-preview').html(data);
       $('.step-preview').show('slide', { direction: 'left' }, 500);
     });
+}
 
+function update_nice_checkbox(){
+  $.each($('[id^="all_questions_"]'), function(idx){
+    var exam_id = $(this).data('exam-id');
+    $($('[id^="all_questions_"]')[idx]).nice_checkbox({
+      can_enable_elements: true,
+      objects_to_change_status: ['.btn_copy', '.export_question', '.change_status_ckb'],
+      parent_div: $('#exam_'+exam_id)
+    });
+  });
+  $('#all_questions').nice_checkbox({
+    can_enable_elements: true,
+    objects_to_change_status: ['.btn_copy', '.export_question', '.change_status_ckb'],
+    parent_div: $('.list_questions')
+  });
+  $(".block_toolbar_right a").attr('disabled', true);
 }

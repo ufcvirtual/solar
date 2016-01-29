@@ -86,7 +86,7 @@ class AssignmentWebconferencesController < ApplicationController
     at_id                    = active_tab[:url][:allocation_tag_id]
     verify_owner_or_responsible!(at_id, sent_assignment)
 
-    raise CanCan::AccessDenied if current_user.is_researcher?([at_id].flatten)
+    raise CanCan::AccessDenied if current_user.is_researcher?(AllocationTag.find(at_id).related)
 
     raise 'offline'          unless bbb_online?
     raise 'no_record'        unless assignment_webconference.is_recorded? && assignment_webconference.over?

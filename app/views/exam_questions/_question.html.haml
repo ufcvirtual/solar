@@ -35,7 +35,7 @@
   %td{ style: 'text-align:center;' }= question.type
   %td{ style: 'text-align:center;' }= l(question.updated_at, format: :normal)
   %td{ style: 'text-align:center;', :'data-tooltip' => updated_by_name }= (updated_by_name.truncate(50) rescue '-')
-  %td{ style: 'text-align:center;', class: hide_columns ? 'invisible' : '' }= link_to_function content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('questions.question.preview')), 'preview_question(this)', :'data-url' => question_path(question), class: 'preview_question', disabled: !(@can_see_preview && question.can_see?)
+  %td{ style: 'text-align:center;', class: hide_columns ? 'invisible' : '' }= link_to_function content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('questions.question.preview')), 'preview_question(this)', :'data-url' => question_path(question), class: 'preview_question', disabled: !(@can_see_preview && question.can_see?(true))
   %td{ style: 'text-align:center;' }= question.privacy? ? content_tag(:i, nil, class: 'icon-lock', :'data-tooltip' => t('questions.question.private')) : content_tag(:i, nil, class: 'icon-minus', :"data-tooltip" => t('questions.question.public'))
   %td{ style: 'text-align:center;' }= check_box_tag exam_question.id, exam_question.id, annulled, onclick: 'annul(this)', disabled: (annulled ? true : false), :'data-url' => annul_exam_question_path(exam_question.id)
   %td{ style: 'text-align:center;' }= link_to_function (image_tag "#{question.status ? 'released' : 'rejected'}.png"), 'change_status_single(this)', :'data-tooltip' => (question.status ? t('lessons.index.released') : t('lessons.index.draft')), :'data-url' => change_status_question_path(question), class: "#{question.status ? 'released' : 'rejected'}"

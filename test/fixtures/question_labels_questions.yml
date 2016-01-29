@@ -1,0 +1,55 @@
+question5label1:
+  question_id: 5
+  question_label_id: 1
+
+question9label1:
+  question_id: 9
+  question_label_id: 1
+
+question10label1:
+  question_id: 10
+  question_label_id: 1
+
+question1label2:
+  question_id: 1
+  question_label_id: 2
+
+question4label2:
+  question_id: 4
+  question_label_id: 2
+
+question3label2:
+  question_id: 3
+  question_label_id: 2
+
+question2label3:
+  question_id: 2
+  question_label_id: 3
+
+question6label3:
+  question_id: 6
+  question_label_id: 3
+
+question7label3:
+  question_id: 7
+  question_label_id: 3
+
+question8label4:
+  question_id: 8
+  question_label_id: 4
+
+question9label5:
+  question_id: 9
+  question_label_id: 5
+
+question10label5:
+  question_id: 10
+  question_label_id: 5
+
+question5label5:
+  question_id: 5
+  question_label_id: 5
+
+question5label6:
+  question_id: 5
+  question_label_id: 6

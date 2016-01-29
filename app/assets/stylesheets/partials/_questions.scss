@@ -60,6 +60,9 @@
   textarea{
     resize: none;
   }
+  #cke_exam_question_question_attributes_enunciation, #cke_question_attributes_enunciation{
+    display: inline-block;
+  }
   #steps{
     width: 258px;
     margin-bottom: 20px;
@@ -68,7 +71,7 @@
     margin-left: -3px;
     margin-bottom: 10px;
   }
-  #question_enunciation{
+  #question_enunciation, #exam_question_question_enunciation{
     width: 510px;
   }
   .exam_question_score{
@@ -95,6 +98,10 @@
     padding-top: 5px;
   }
   #items{
+    .obs{
+      color: $text_blue;
+      display: inline-block;
+    }
     width: 343px;
     display: inline-block;
     padding-top: 10px;
@@ -183,7 +190,7 @@
       height: 60px;
     }
     input[type='text']{
-      width: 316px;
+      width: 294px;
       margin-top: 5px;
     }
     .info{
@@ -194,7 +201,7 @@
         margin-top: 5px;
       }
       label.alt{
-        width: 315px;
+        width: 300px;
         text-align: left;
         margin-top: -5px;
       }
@@ -269,7 +276,7 @@
     input.hasDatepicker{
       width: 80px;
     }
-  }  
+  }
 }
 
 

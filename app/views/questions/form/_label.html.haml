@@ -1,0 +1,5 @@
+%span#labels
+  = f.nested_fields_for :question_labels, wrapper_tag: :div do |label|
+    .duplicatable_nested_form
+      = label.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
+      = label.input :name, label: false

@@ -274,6 +274,14 @@ en_US:
         image: Image
         legend: Legend
         img_alt: Alt
+      question_image:
+        image: Image
+        legend: Legend
+        img_alt: Alt
+      question_item:
+        img_alt: Alt
+        item_image: Image
+        comment: Comment
       assignment:
         name: Title
         type_assignment: Type
@@ -2658,7 +2666,7 @@ en_US:
       unpublished: Publish exam
       to: ' to '
       draft_exam: Exam as draft
-      period: "Applied in %{dstart} to %{dend} %{hours}"
+      period: "Application date in %{dstart} to %{dend} %{hours}"
       amount_questions: "%{added} added of %{amount} questions"
     success:
       created: Exam was successfully created
@@ -2793,16 +2801,17 @@ en_US:
       items:
         answer: 'Answer*'
         add: Add more options
-        alt_desc: Mandatory description to accessibility (disabled people)
+        alt_desc: 'Alt: Mandatory description to accessibility (disabled people)'
         add_image: Add/update image
         comment: Comment
         alt: Alt
+        choose_correct: '(Check to indicate item as correct)'
       info:
         continue: Continue
         add_images: Add more images
         add_labels: Add more labels
       image:
-        alt_desc: Mandatory description to accessibility (disabled people)
+        alt_desc: 'Alt: Mandatory description to accessibility (disabled people)'
         add_image: Add/update image
     labels:
       labels: 'labels: '

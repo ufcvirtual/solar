@@ -133,14 +133,15 @@ class Webconference < ActiveRecord::Base
     unless (shared_between_groups && allocation_tags.map(&:id).include?(to_at))
       meeting_id = get_mettingID(from_at)
       if is_recorded? && (on_going? || over?)
-        obj = Webconference.joins(:academic_allocations).where(attributes.except('id', 'origin_meeting_id')).where(academic_allocations: { allocation_tag_id: to_at }).first
-        obj = Webconference.create attributes.except('id').merge!(origin_meeting_id: meeting_id) unless !obj.nil? && obj.get_mettingID(to_at) == meeting_id
+        objs = Webconference.joins(:academic_allocations).where(attributes.except('id', 'origin_meeting_id', 'created_at', 'updated_at')).where(academic_allocations: { allocation_tag_id: to_at })
+        obj = (objs.collect{|obj| obj if obj.get_mettingID(to_at) == meeting_id}).compact.first
+        obj = Webconference.create attributes.except('id').merge!(origin_meeting_id: meeting_id) if obj.nil?
       end
       
       new_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Webconference', academic_tool_id: (obj.try(:id) || id)).first_or_create
 
       if over? && !new_ac.nil? && !new_ac.id.nil?
-        old_ac = academic_allocations.where(allocation_tag_id: from_at).first
+        old_ac = academic_allocations.where(allocation_tag_id: from_at).try(:first) || academic_allocations.where(allocation_tag_id: AllocationTag.find(from_at).related).first
         LogAction.where(log_type: LogAction::TYPE[:access_webconference], academic_allocation_id: old_ac.id).each do |log|
           LogAction.create log.attributes.except('id', 'academic_allocation_id').merge!(academic_allocation_id: new_ac.id)
         end
