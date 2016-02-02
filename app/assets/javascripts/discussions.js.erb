@@ -44,7 +44,11 @@ function append_rich_text(container) {
 }
 
 function cancel_posting() {
-  if (!confirm("<%= I18n.t(:confirm_cancel) %>")) return; 
+  if (!confirm("<%= I18n.t('posts.index.confirm_cancel') %>")) return; 
+  remove_ckeditor();
+}
+
+function remove_ckeditor(){
   append_rich_text($(".new_posts"));
   $('#new_post').hide(300);
   $('#new_post').parent().hide(300, function() {

@@ -956,6 +956,7 @@ en_US:
       show_thread: "Show as Thread"
       attach_file_title: "Send files"
       confirm_ckeditor: "Are you sure? Any other post with not finished edition or creation will have it's content lost."
+      confirm_cancel: 'Are you sure you want to cancel?'
     post:
       remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       answer: "Answer"
@@ -2694,9 +2695,18 @@ en_US:
     form:
       config:
         greater: Greater grade
-        avarage: Avarage grade
+        average: Average grade
         last: Last grade
         previous: Previous
+        not_raffle: Sequential
+        raffle: Raffle Order
+        random: Random
+        not_random: Sequential
+        send_mail: Send mail
+        dont_send_mail: Don't send mail
+        block: Block content
+        dont_block: Don't block content
+      steps:
       steps:
         info: Information
         config: Configuration
@@ -2806,6 +2816,9 @@ en_US:
         comment: Comment
         alt: Alt
         choose_correct: '(Check to indicate item as correct)'
+        remove: Remove item
+        comments: Show/Hide comment
+        images: Show/Hide image
       info:
         continue: Continue
         add_images: Add more images
@@ -2854,6 +2867,7 @@ en_US:
         import: Import
         delete: Don't import questions
         no_question: No question to import
+        order: Order
       question:
         preview_tooltip: Preview question
         delete: Remove

@@ -12,8 +12,8 @@
             %i.icon-arrow-down-triangle
           %div{ id: "dropdown_#{exam.id}", class: "dropdown dropdown-tip" }
             %ul.dropdown-menu
-              %li= link_to t('exams.list.new'), new_exam_question_path(exam_id: exam.id, allocation_tags_ids: @allocation_tags_ids), class: "link_new_question"
-              %li= link_to_function t('exams.list.import'), 'import_questions(this)', :'data-url' => import_steps_exam_questions_path(allocation_tags_ids: @allocation_tags_ids, exam_id: exam.id), :'data-tooltip' => t('exams.list.import')
+              %li= link_to_function t('exams.list.new'), 'new_question(this)', :'data-url' => new_exam_question_path(exam_id: exam.id, allocation_tags_ids: @allocation_tags_ids), class: "link_new_question", :'data-can' => !exam.status
+              %li= link_to_function t('exams.list.import'), 'import_questions(this)', :'data-url' => import_steps_exam_questions_path(allocation_tags_ids: @allocation_tags_ids, exam_id: exam.id), :'data-tooltip' => t('exams.list.import'), :'data-can' => !exam.status
         .block_toolbar_right
           .btn-group{ class: "exam-#{exam.id}" }
             = link_to_function (content_tag(:i, nil, class: 'icon-checkmark')), 'change_status(this, ".list_exams")', class: 'btn change_status_ckb', :'data-url' => publish_exam_question_path(':id'), disabled: true, :"data-tooltip" => t('exam_questions.list.publish')
@@ -24,6 +24,9 @@
         - if questions.any?
           = render partial: 'exam_questions/questions', locals: { questions: questions, exam: exam, hide_columns: false }
         .text_none.empty_message{ class: (questions.blank? ? '' : 'hide_message') }= t(:none, scope: [:exams, :list])
+  
+  / = link_to content_tag(:i, nil, class: 'icon-ellipsis'), list_exams_path(page: @exams.next_page, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-exams', remote: true, :"data-tooltip" => t(:load_items) if @exams.next_page
 
 - else
   .block_content.block_content_text= t(:none, scope: [:lesson_modules])
+

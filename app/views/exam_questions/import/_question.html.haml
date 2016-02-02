@@ -11,7 +11,7 @@
     %td= question.type
     %td= exam.allocation_tag_info
     %td= number_field_tag "score_#{question.id}", (question.respond_to?(:score) ? question.score : 0.0), { min: 0, max: 10 }
-    %td= link_to_function content_tag(:i, nil, class: 'icon-eye'), 'open_lesson(this);', :'data-tooltip' => t('.preview_tooltip')
+    %td.icon= link_to_function content_tag(:i, nil, class: 'icon-eye'), 'preview_question(this);', :'data-tooltip' => t('.preview_tooltip'),:'data-url' => question_path(question), class: 'preview_question', disabled: !(@can_see_preview && question.can_see?(true))
     %td.icon= link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_question(this);', :'data-tooltip' => t('.delete')
     = hidden_field_tag "exam_#{question.id}", exam.id
 

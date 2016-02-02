@@ -136,7 +136,7 @@
         url: form.attr("action"),
         data: {discussion_post: {parent_id: parent_id, content: content}},
         success: function(data){
-          cancel_posting(); // remove ckeditor options
+          remove_ckeditor(); // remove ckeditor options
 
           $.get("#{discussion_post_path(@discussion.id, ':id')}".replace(':id', data.post_id), {can_post: "#{@can_post}"}, function(data2){
             var post_table = $("table#"+data.post_id);

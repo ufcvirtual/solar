@@ -1,7 +1,7 @@
 class Exam < Event
   include AcademicTool
 
-  GREATER, AVARAGE, LAST = 0, 1, 2
+  GREATER, AVERAGE, LAST = 0, 1, 2
   OFFER_PERMISSION, GROUP_PERMISSION = true, true
 
   belongs_to :schedule
@@ -11,11 +11,12 @@ class Exam < Event
   has_many :exam_questions, dependent: :destroy
   has_many :questions     , through: :exam_questions
   has_many :exam_users    , through: :academic_allocations
-  has_many :exam_responses, through: :exam_users
+  has_many :exam_user_attempts, through: :exam_users
+  has_many :exam_responses, through: :exam_user_attempts
 
   validates :name, :duration, :number_questions, :attempts, presence: true
   validates :name, length: { maximum: 99 }
-  validates :number_questions, :attempts, numericality: { greater_than_or_equal_to: 1, allow_blank: false }
+  validates :number_questions, :attempts, :duration, numericality: { greater_than_or_equal_to: 1, allow_blank: false }
   validates :start_hour, presence: true, if: lambda { |c| c[:start_hour].blank?  && !c[:end_hour].blank? }
   validates :end_hour  , presence: true, if: lambda { |c| !c[:start_hour].blank? && c[:end_hour].blank?  }
 
@@ -30,7 +31,7 @@ class Exam < Event
 
   before_save :set_status, :set_can_publish, on: :update
 
-  after_save :set_random_questions, if: '(status_changed? && status) || (!status && random_questions_changed? && !random_questions)'
+  after_save :set_random_questions, if: 'status_changed? || random_questions_changed? || number_questions_changed?'
   after_save :recalculate_grades,   if: 'attempts_correction_changed?'
   after_save :send_result_emails,   if: 'result_email_changed? && result_email'
 
@@ -207,7 +208,7 @@ class Exam < Event
   def correction_type
     case attempts_correction
     when Exam::GREATER; I18n.t('exams.form.config.greater')
-    when Exam::AVARAGE; I18n.t('exams.form.config.avarage')
+    when Exam::AVERAGE; I18n.t('exams.form.config.average')
     when Exam::LAST; I18n.t('exams.form.config.laast')
     end
   end
@@ -223,24 +224,24 @@ class Exam < Event
 
   def situation(complete, grade = nil, exam_responses = 0)
     case
-    when schedule.start_date.to_date > Date.current                    then 'not_started'
-    when (schedule.end_date.to_date >= Date.today)                     then 'to_answer'
-    when exam_responses > 0 && !complete                               then 'not_finished'
-    when complete                                                      then 'finished'
-    when !grade.nil?                                                   then 'corrected'
-    when (schedule.end_date.to_date < Date.today)                      then 'not_answered'
+    when !started?                       then 'not_started'
+    when on_going?                       then 'to_answer'
+    when exam_responses > 0 && !complete then 'not_finished'
+    when complete                        then 'finished'
+    when !grade.nil?                     then 'corrected'
+    when ended?                          then 'not_answered'
     else
       '-'
     end
   end
 
   def self.create_exam_user(exam, current_user_id, allocation_tags_ids)
-    @exam_users = exam.exam_users.where(:user_id => current_user_id).first
+    @exam_users = exam.exam_users.where(user_id: current_user_id).first
     if @exam_users.nil?
       @academic_allocation = AcademicAllocation.where(academic_tool_id: exam.id, academic_tool_type: 'Exam',
         allocation_tag_id: allocation_tags_ids).first
-      exam.exam_users.build(:user_id => current_user_id, :academic_allocation_id => @academic_allocation.id).save 
-      @exam_users = exam.exam_users.where(:user_id => current_user_id).first
+      exam.exam_users.build(user_id: current_user_id, academic_allocation_id: @academic_allocation.id).save 
+      @exam_users = exam.exam_users.where(user_id: current_user_id).first
     end
     return @exam_users
   end
@@ -266,7 +267,10 @@ class Exam < Event
 
   def set_random_questions
     exam_questions.update_all use_question: false
-    ExamQuestion.joins(:question).where(exam_questions: {exam_id: id}, questions: { status: true }).limit(number_questions).order('RANDOM()').update_all use_question: true if random_questions
+    if status
+      query_order = (random_questions ? 'RANDOM()' : 'exam_questions.order')
+      ExamQuestion.joins(:question).where(exam_questions: { exam_id: id }, questions: { status: true }).limit(number_questions).order(query_order).update_all use_question: true
+    end
   end
 
   def can_add_group?(ats = [])

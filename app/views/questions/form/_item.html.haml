@@ -1,7 +1,9 @@
 #items
   = f.nested_fields_for :question_items, wrapper_tag: :div do |i|
     .duplicatable_nested_form
-      = i.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
+      = i.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash', :'data-tooltip' => t('questions.form.items.remove'))
+      = link_to_function content_tag(:i, nil, class: 'icon-comment'), 'add_comment(this)', class: 'comment', :'data-tooltip' => t('questions.form.items.comments')
+      = link_to_function content_tag(:i, nil, class: 'icon-pictures'), 'add_image(this)', class: 'image_icon', :'data-tooltip' => t('questions.form.items.images')
       .inline
         .inputs
           = i.check_box :value
@@ -10,7 +12,9 @@
         .label= i.label :description
         .desc
           = i.input :description, label: false, class: 'ckeditor'
-        .image
+        .comment_area{ class: i.object.comment.blank? ? 'hide' : '' }
+          = i.input :comment, as: :text, label: t('questions.form.items.comment')
+        .image.hide
           .upload-preview
             - if i.object.item_image_file_name.blank?
               %img{ src: '' }
@@ -19,11 +23,10 @@
             = i.input :item_image, as: :file, label: false
             = link_to_function t('questions.form.items.add_image'), 'add_file(this)', class: 'btn btn_main add_file'
           .info
-            = i.input :comment, as: :text, label: t('questions.form.items.comment')
             = i.input :img_alt, label: t('questions.form.items.alt')
             = i.label t('questions.form.items.alt_desc'), class: 'alt'
 
-= javascript_include_tag 'ckeditor/init'
+= javascript_include_tag 'ckeditor/init', 'tooltip'
 
 :javascript
   $(function(){
@@ -55,3 +58,19 @@
 
     set_image_input();
   });
+
+  function add_comment(btn){
+    $(btn).parents('.duplicatable_nested_form:first').find('.comment_area').fadeToggle(function(){
+      if ($(this).is(':visible'))
+        $(this).css('display','inline-block');
+      $(this).toggleClass('hide');
+    });
+  }
+
+  function add_image(btn){
+    $(btn).parents('.duplicatable_nested_form:first').find('.image').fadeToggle(function(){
+      if ($(this).is(':visible'))
+        $(this).css('display','inline-block');
+      $(this).toggleClass('hide');
+    });
+  }

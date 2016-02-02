@@ -16,6 +16,6 @@
         %th.center.published= t('questions.questions.published')
     %tbody
       - questions.each do |question|
-        = render partial: 'exam_questions/question', locals: { question: question, exam: exam, hide_columns: hide_columns }
+        = render partial: 'exam_questions/question', locals: { question: question, exam: exam, hide_columns: hide_columns, can_see_preview: @can_see_preview }
 
 = javascript_include_tag 'questions', 'tooltip'

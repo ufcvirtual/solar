@@ -2,7 +2,7 @@ class ExamQuestionsController < ApplicationController
 
   include SysLog::Actions
 
-  before_filter :set_current_user, only: [:order, :annul]
+  before_filter :set_current_user, only: [:order, :annul, :import, :export]
 
   layout false, except: :index
 
@@ -25,7 +25,7 @@ class ExamQuestionsController < ApplicationController
 
     if @exam_question.save
       if @exam_question.exam.questions.size > 1
-        render partial: 'question', locals: { question: @exam_question.question, exam_question: @exam_question, exam: @exam_question.exam, hide_columns: false }
+        render partial: 'question', locals: { question: @exam_question.question, exam_question: @exam_question, exam: @exam_question.exam, hide_columns: false, can_see_preview: true }
       else
         redirect_to exam_questions_path(exam_id: @exam_question.exam_id)
       end
@@ -131,6 +131,7 @@ class ExamQuestionsController < ApplicationController
     @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
     authorize! :import_export, Question, { on: @allocation_tags_ids }
     @exams = Exam.exams_by_ats(@allocation_tags_ids.split(' ').flatten)
+    @can_see_preview = can? :show, Question
     render partial: 'exam_questions/import/list'
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
@@ -148,6 +149,8 @@ class ExamQuestionsController < ApplicationController
       raise 'bank_without_exam' if params[:exam_id].to_i == 0
     end  
     @exam = Exam.find(params[:exam_id].to_i) rescue nil
+
+    @can_see_preview = can? :show, Question
 
     render partial: 'exam_questions/import/question'
   rescue CanCan::AccessDenied
@@ -188,7 +191,7 @@ class ExamQuestionsController < ApplicationController
           Exam.find(exam_id).can_import?(question)
         end
 
-        exam_question = ExamQuestion.new({ 'question_id' => question.id, 'order' => question_hash[1].to_i, 'score' => question_hash[3].to_i, 'exam_id' => exam_id })
+        exam_question = ExamQuestion.new({ 'question_id' => question.id, 'order' => question_hash[1].to_i, 'score' => question_hash[3].to_f, 'exam_id' => exam_id })
         exam_question.save!
 
         log(Exam.find(exam_id), "question: #{question.id} [import] exam: #{exam_id}, #{exam_question.log_description}", LogAction::TYPE[:create]) rescue nil

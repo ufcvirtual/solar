@@ -360,7 +360,7 @@ class User < ActiveRecord::Base
       row = Hash[[header, spreadsheet.row(i)].transpose]
       row = row.collect{ |k,v| { k.try(:strip) => (v.try(:strip) rescue '') } }.reduce Hash.new, :merge 
 
-      user_exist = where(cpf: row['CPF'] || row['Cpf']).first
+      user_exist = where(cpf: (row['CPF'] || row['Cpf']).delete('.').delete('-')).first
       user = user_exist.nil? ? new : user_exist
 
       blacklist = UserBlacklist.new cpf: user.cpf, name: user.name || row['Nome']
@@ -377,7 +377,7 @@ class User < ActiveRecord::Base
         params.merge!({ state: row['Estado'] })                     if row.include?('Estado') && !row['Estado'].blank?
         params.merge!({ city: row['Cidade'] })                      if row.include?('Cidade') && !row['Cidade'].blank?
         params.merge!({ institution: row['Instituição'] })          if row.include?('Instituição') && !row['Instituição'].blank?
-        params.merge!({ cpf: row['CPF'] || row['Cpf'] })            if row.include?('CPF') || row.include?('Cpf')
+        params.merge!({ cpf: (row['CPF'] || row['Cpf']).delete('.').delete('-') }) if row.include?('CPF') || row.include?('Cpf')
         params.merge!({ gender: (row['Sexo'].downcase == 'masculino' || row['Sexo'].downcase == 'male' || row['Sexo'].downcase == 'm') }) if row.include?('Sexo') && !row['Sexo'].blank?
         params.merge!({ username: user.cpf || params[:cpf] })       if user.username.nil?
         params.merge!({ birthdate: '1970-01-01' })                  if user.birthdate.nil?

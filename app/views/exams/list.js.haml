@@ -1,0 +1,6 @@
+$('.list_exams .exam').append('#{escape_javascript(render partial: "exams/list/exams", locals: { exams: @exams, all_groups: @all_groups })}');
+$('a.load-more-exams').attr('href', '#{list_exams_path(page: @exams.next_page, allocation_tags_ids: @allocation_tags_ids)}');
+$(".list_exams .exam").trigger("update");
+
+- unless @exams.next_page
+  $('a.load-more-exams').remove();

@@ -1,0 +1,13 @@
+exam1_user7:
+  id: 1
+  exam_user_id: 1
+  start: <%= Date.today.to_s(:db) %>
+  created_at: <%= Date.today.to_s(:db) %>
+  updated_at: <%= Date.today.to_s(:db) %>
+
+exam7_user9:
+  id: 2
+  exam_user_id: 2
+  start: <%= Date.today.to_s(:db) %>
+  created_at: <%= Date.today.to_s(:db) %>
+  updated_at: <%= Date.today.to_s(:db) %>

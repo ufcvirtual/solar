@@ -35,15 +35,7 @@
 
     $.put("#{export_exam_questions_path}", {questions: questions.join(';'), exam_id: "#{@exam_id}"}, function(data){
       $.fancybox.close();
-      var msg = data.msg;
-      
-      var to_replace = $(".list_exams");
-      $.get(to_replace.data('link-list'), function(data2){
-        to_replace.replaceWith(data2);
-      }).done(function(){
-        flash_message(msg, 'notice', 'block_wrapper:first');
-      });
-      
+      flash_message(data.msg, 'notice', 'block_wrapper:first');      
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")

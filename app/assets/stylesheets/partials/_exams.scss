@@ -237,9 +237,15 @@
         margin-left: 10px;
         margin-right: 10px;
       }
-      .draft i{
-        margin-right: -5px;
+      .draft{
+        i{
+          margin-right: -5px;
+        }
+        label[for='draft_exam']{
+          vertical_align: middle;
+        }
       }
+
     }
   }
 

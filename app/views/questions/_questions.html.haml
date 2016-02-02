@@ -14,11 +14,12 @@
         %th.center.used_at_exams= t('.used_at_exams')
         %th.center.published= t('.published')
     %tbody
-      - @questions.each do |question|
-        = render partial: 'question', locals: { question: question }
+      = render partial: 'questions_table'
 
 - else
   .block_content_text_list.text_none= t('.none')
+
+= link_to content_tag(:i, nil, class: 'icon-ellipsis'), search_questions_path(page: @questions.next_page, search: @search, verify_privacy: @verify_privacy), class: 'load-more-questions', remote: true, :"data-tooltip" => t(:load_items) if @questions.next_page
 
 = javascript_include_tag 'tablesorter', 'tooltip'
 

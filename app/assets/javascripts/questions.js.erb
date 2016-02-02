@@ -1,17 +1,5 @@
 $(function(){
-
   $("form#question_form .form-inputs").keypress(function(e) { if (e.which == 13) e.preventDefault(); });
-
-  $('#new_question').call_fancybox({
-    width: 700,
-    'autoDimensions': false,
-    'autoSize': false,
-    onClosed: function() {
-      for(name in CKEDITOR.instances){
-        CKEDITOR.instances[name].destroy(true);
-      }
-    }
-  });
 
   $('#search_questions').click(function(){
     $.get($(this).data('url'), {
@@ -37,9 +25,9 @@ $(function(){
       return false;
     }
   });
-  
-  update_nice_checkbox();
 
+  $(document).unbind("fields_added.nested_form_fields");
+  update_nice_checkbox();
 });
 
 function save_question(exam_id){
@@ -332,6 +320,11 @@ function annul(icon){
 }
 
 function import_questions(link){
+  if (!$(link).data('can')){
+   flash_message("<%=I18n.t('exams.error.cant_change_after_published')%>", "alert");
+   return false;
+  }
+
   var url = $(link).data('url');
   $(link).call_fancybox({href : url, open: true, minHeight: '550px', minWidth: '800px'});
 }
@@ -343,6 +336,12 @@ function export_questions(link){
   }
 
   var ids = $('.ckb_question:checked', '.list_questions').map(function() { return this.value; }).get();
+
+  $.each(ids, function(idx){
+    $('#tr_'+ids[idx]+' .ckb_question').prop('checked', false);
+  })
+  $(".block_toolbar_right a").attr('disabled', true);
+
   var url = $(link).data('link-to-export').replace(':id', ids);
   $(link).call_fancybox({href : url, open: true, minHeight: '550px', minWidth: '800px'});
 }
@@ -445,4 +444,25 @@ function update_nice_checkbox(){
     parent_div: $('.list_questions')
   });
   $(".block_toolbar_right a").attr('disabled', true);
+}
+
+function new_question(link){
+  if (!$(link).data('can')){
+   flash_message("<%=I18n.t('exams.error.cant_change_after_published')%>", "alert");
+   return false;
+  }
+
+  $(link).call_fancybox({
+    width: 700,
+    'autoDimensions': false,
+    'autoSize': false,
+    open: true,
+    href: $(link).data('url'),
+    onClosed: function() {
+      for(name in CKEDITOR.instances){
+        CKEDITOR.instances[name].destroy(true);
+      }
+    }
+  });
+
 }

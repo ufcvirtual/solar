@@ -1,11 +1,9 @@
 exam1_user7:
   id: 1
   user_id: 7
-  start: <%= Date.today.to_s(:db) %>
   academic_allocation_id: 85
 
 exam7_user9:
   id: 2
   user_id: 9
-  start: <%= Date.today.to_s(:db) %>
   academic_allocation_id: 92

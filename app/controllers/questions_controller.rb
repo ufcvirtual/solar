@@ -6,11 +6,19 @@ class QuestionsController < ApplicationController
 
   layout false, except: :index
 
+  require 'will_paginate/array'
   def index
     authorize! :index, Question
-    @questions = Question.get_all(current_user.id, params[:search] || {}, params[:verify_privacy])
+    @questions = Question.get_all(current_user.id, @search=(params[:search] || {}), @verify_privacy=params[:verify_privacy]).paginate(page: params[:page])
     @can_see_preview = can? :show, Question
-    render partial: 'questions/questions' unless params[:search].nil?
+    respond_to do |format|
+      if params[:search].nil?
+        format.html
+      else
+        format.html { render partial: 'questions/questions' }
+      end
+      format.js
+    end
   end
 
   def new

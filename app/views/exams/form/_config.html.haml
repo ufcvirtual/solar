@@ -1,11 +1,11 @@
 .ckb
   = f.label :random_questions
   = f.input :random_questions, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.random_questions ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.random_questions ? t('lessons.index.released') : t('lessons.index.draft')), :'data-id' => 'exam_random_questions'
+  = link_to_function (image_tag "#{f.object.random_questions ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.random_questions ? t('.random') : t('.not_random')), :'data-id' => 'exam_random_questions', :'data-active' => t('.random'), :'data-not-active' => t('.not_random')
 .ckb
   = f.label :raffle_order
   = f.input :raffle_order, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.raffle_order ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.raffle_order ? t('lessons.index.released') : t('lessons.index.draft')), :'data-id' => 'exam_raffle_order'
+  = link_to_function (image_tag "#{f.object.raffle_order ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.raffle_order ? t('.raffle') : t('.not_raffle')), :'data-id' => 'exam_raffle_order', :'data-active' => t('.raffle'), :'data-not-active' => t('.not_raffle')
 / .ckb
 /   = f.label :auto_correction
 /   = f.input :auto_correction, as: :boolean, label: false
@@ -13,18 +13,18 @@
 .ckb
   = f.label :block_content
   = f.input :block_content, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.block_content ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.block_content ? t('lessons.index.released') : t('lessons.index.draft')), :'data-id' => 'exam_block_content'
+  = link_to_function (image_tag "#{f.object.block_content ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.block_content ? t('.block') : t('.dont_block')), :'data-id' => 'exam_block_content', :'data-active' => t('.block'), :'data-not-active' => t('.dont_block')
 .ckb
   = f.input :number_questions
 .ckb
   = f.input :attempts
 .ckb
   = f.label :attempts_correction
-  = f.select :attempts_correction, ([ [t('.greater'), Exam::GREATER], [t('.avarage'), Exam::AVARAGE], [t('.last'), Exam::LAST]]), include_blank: false
+  = f.select :attempts_correction, ([ [t('.greater'), Exam::GREATER], [t('.average'), Exam::AVERAGE], [t('.last'), Exam::LAST]]), include_blank: false
 .ckb
   = f.label :result_email
   = f.input :result_email, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.result_email ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.result_email ? t('lessons.index.released') : t('lessons.index.draft')), :'data-id' => 'exam_result_email'
+  = link_to_function (image_tag "#{f.object.result_email ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.result_email ? t('.send_mail') : t('.dont_send_mail')), :'data-id' => 'exam_result_email', :'data-active' => t('.send_mail'), :'data-not-active' => t('.dont_send_mail')
 
 .form-actions.right_buttons
   = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default', type: 'button'
@@ -45,8 +45,12 @@
     var checkbox = $(img).siblings('.input').find('input');
     checkbox.prop('checked', !checkbox.prop('checked'));
 
-    if(!!checkbox.prop('checked'))
-      $(img).html('<img alt="Released" src="/assets/released.png"/>')
-    else
-      $(img).html('<img alt="Rejected" src="/assets/rejected.png"/>')
+    if(!!checkbox.prop('checked')){
+      $(img).html('<img alt="Released" src="/assets/released.png"/>');
+      $(img).attr('data-tooltip', $(img).data('active'));
+    }else{
+      $(img).html('<img alt="Rejected" src="/assets/rejected.png"/>');
+      $(img).attr('data-tooltip', $(img).data('not-active'));
+    }
+    $.getScript("/assets/tooltip.js");
   }

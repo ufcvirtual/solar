@@ -6,21 +6,27 @@ class ExamUser < ActiveRecord::Base
   has_one :exam,     through: :academic_allocation
   has_one :allocation_tag, through: :academic_allocation
 
-  has_many :exam_responses, dependent: :destroy
+  has_many :exam_user_attempts, dependent: :destroy
+  has_many :exam_responses, through: :exam_user_attempts
   has_many :question_items, through: :exam_responses
   has_many :questions     , through: :question_items
-
-  validates :grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true }
 
   attr_accessor :merge
 
   def info
-    grade, complete = try(:grade), try(:complete)
-    { grade: grade, complete: complete }
+    attempts = exam_user_attempts.where(complete: true)
+    grade = case exam.attempts_correction
+            when Exam::GREATER; attempts.map(&:grade).max
+            when Exam::AVERAGE then 
+              grades = attempts.map(&:grade)
+              grades.inject{ |sum, el| sum + el }.to_f / grades.size
+            when Exam::LAST; attempts.last.grade
+            end
+    { grade: grade, complete: attempts.any? }
   end
 
   def delete_with_dependents
-    exam_responses.delete_all
+    exam_user_attempts.delete_with_dependents
     self.delete
   end
 

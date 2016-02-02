@@ -1124,6 +1124,7 @@ pt_BR:
       show_thread: "Ver em Árvore"
       attach_file_title: "Envio de arquivos"
       confirm_ckeditor: "Tem certeza? Qualquer outra postagem em aberto para edição ou criação terá seu conteúdo perdido."
+      confirm_cancel: 'Tem certeza de que deseja cancelar?'
     post:
       remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
       answer: "Responder"
@@ -2930,9 +2931,17 @@ pt_BR:
     form:
       config:
         greater: Maior nota
-        avarage: Média das notas
+        average: Média das notas
         last: Última nota
         previous: Anterior
+        not_raffle: Ordem sequencial
+        raffle: Ordem aleatória
+        random: Aleatórias
+        not_random: Sequenciais
+        send_mail: Enviar email
+        dont_send_mail: Não enviar email
+        block: Bloquear conteúdo
+        dont_block: Não bloquear conteúdo
       steps:
         info: Informações
         config: Configurações
@@ -3042,6 +3051,9 @@ pt_BR:
         comment: Comentário
         alt: Alt
         choose_correct: '(Marque para indicar o item como correto)'
+        remove: Remover item
+        comments: Exibir/Ocultar comentário
+        images: Exibir/Ocultar imagem
       info:
         continue: Prosseguir
         add_images: Adicionar mais imagens
@@ -3090,6 +3102,7 @@ pt_BR:
         import: Importar
         delete: Não importar questões(s)
         no_question: Nenhuma questão a ser importada
+        order: Ordem
       question:
         preview_tooltip: Visualizar questão
         delete: Remover

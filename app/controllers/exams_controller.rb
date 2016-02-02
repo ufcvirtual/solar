@@ -37,13 +37,18 @@ class ExamsController < ApplicationController
     render_json_error(error, 'exams.error')
   end
 
+  # require 'will_paginate/array'
   def list
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Exam, { on: @allocation_tags_ids }
 
     @all_groups = Group.where(offer_id: params[:offer_id])
-    @exams = Exam.exams_by_ats(@allocation_tags_ids.split(' '))#.paginate(page: params[:page], per_page: 2)
+    @exams = Exam.exams_by_ats(@allocation_tags_ids.split(' '))#.paginate(page: params[:page], per_page: 1)
     @can_see_preview = can? :show, Question, { on: @allocation_tags_ids }
+    respond_to do |format|
+      format.html
+      format.js
+    end
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error

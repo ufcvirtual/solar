@@ -1,13 +1,10 @@
 .list_exams{ :'data-link-list' => list_exams_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id]) }
   .title-warning=raw t('exams.warning.title')
   = link_to t('.new_exam'), new_exam_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('.new_exam'), class: 'link_new_exam title_link', id: 'new-exam'
-  .import_lessons{ style: 'margin-top: 2px;' }= link_to_function t('.import_q_e'), 'import_questions(this)', :'data-url' => import_steps_exam_questions_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('.import_q_e'), class: 'title_link'
+  .import_lessons{ style: 'margin-top: 2px;' }= link_to_function t('.import_q_e'), 'import_questions(this)', :'data-url' => import_steps_exam_questions_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('.import_q_e'), class: 'title_link', :'data-can' => true
   - if @exams.any?
     = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
     = render partial: 'exams/list/exams', locals: { all_groups: @all_groups }
-
-    / = link_to content_tag(:i, nil, class: 'icon-ellipsis'), list_exams_path(page: @exams.next_page, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @exams.next_page
-
   - else
     .block_content_text_list.text_none
       = t(:item_search_no_found)
@@ -19,7 +16,6 @@
   var offer_id = "#{escape_once(params[:offer_id])}";
 
   jQuery(function($) {
-
     $(".expand, .compress").click(function(){
       $(this).parent().hide();
       $($(this).parent().siblings()[0]).show();
@@ -31,16 +27,10 @@
 
     $(".btn_edit, .btn_del, .release_lessons, .download_lesson_zip, .manage_files_lesson").attr("disabled", true);
 
-    $(".link_new_question, .link_new_exam, .edit_exam").call_fancybox({
+    $(".link_new_exam, .edit_exam").call_fancybox({
       width: '70%'
     });
-
   });
-
-  function import_questions(link){
-    var url = $(link).data('url');
-    $(link).call_fancybox({href : url, open: true, minHeight: '550px', minWidth: '800px'});
-  }
 
   function delete_exam(icon){
     if (!confirm("#{I18n.t(:message_confirm)}"))
