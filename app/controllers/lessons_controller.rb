@@ -277,7 +277,7 @@ class LessonsController < ApplicationController
           if modules.any?
             lesson_module_id = modules.first.id
           else
-            lesson_module = LessonModule.new lesson.lesson_module.attributes.except('id')
+            lesson_module = LessonModule.new lesson.lesson_module.attributes.except('id', 'is_default')
             lesson_module.allocation_tag_ids_associations = params[:allocation_tags_ids].split(' ').flatten
             lesson_module.save!
             lesson_module_id = lesson_module.id

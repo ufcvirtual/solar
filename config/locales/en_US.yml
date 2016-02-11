@@ -2830,8 +2830,8 @@ en_US:
       labels: 'labels: '
     error:
       in_use: Is being used at exams
-      min_items: It must have, at least, 3 items
-      correct_item: It must have, at least, one correct item
+      min_items: The question must have, at least, 3 items
+      correct_item: The question must have, at least, one correct item
       only_one_true_item: To this type of question, only one correct item is allowed
       private: Private question, is not possible to execute this action
       min_public_questions: "To each public question created, you can create 10 private ones. By exceeding this limit, you don't have access to different authors public questions. The limit was exceeded."

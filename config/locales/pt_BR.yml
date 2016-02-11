@@ -3065,8 +3065,8 @@ pt_BR:
       labels: 'palavras-chave: '
     error:
       in_use: Está sendo usada em provas
-      min_items: É preciso ter, ao menos, 3 itens
-      correct_item: É preciso ter ao menos um item correto
+      min_items: A questão precisa ter, ao menos, 3 itens
+      correct_item: A questão precisa ter ao menos um item correto
       only_one_true_item: Para este tipo de questão, apenas um item correto é permitido
       private: Questão é privada, não é possível realizar a ação desejada.
       min_public_questions: A cada questão pública criada, você pode criar 10 privadas. Ao ultrapassar este limite, você não tem acesso a questões públicas de demais autores. O limite foi ultrapassado.
