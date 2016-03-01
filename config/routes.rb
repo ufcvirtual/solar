@@ -559,6 +559,8 @@ Solar::Application.routes.draw do
     end
   end
 
+  resources :exam_responses, except: [:show]
+
   resources :assignment_webconferences do
     member do
       put :remove_record

@@ -1,11 +1,18 @@
 .block_content
   - @exam_questions.each do |question|
+    - @exam_responses = @last_attempt.exam_responses.where(question_id: question.id).first_or_create!
     %table.questions
       %thead
         %tr.question
           %td.number
           %td.enunciation
             = question.enunciation
+        - question_images = get_question_images(question.id)
+        - unless question_images.nil?
+          %tr.question_images
+            - question_images.each do |q_image|
+              %td.image
+                = image_tag q_image.image(get_image_size(question_images.count)), id: 'question_image'
       = render 'exams/open/question', { question: question, preview: preview }
 
 .message_div_navigation
@@ -14,11 +21,8 @@
 
 :javascript
 
-  jQuery(function($) {
+  var time = parseInt(#{@total_time});
+  var time_h = Math.floor(time / 60);
+  time_min = time % 60;
 
-    /**
-     * clock
-     */
-    new updateTime("clock", ["00", "00", "00"]);
-
-  });
+  jQuery(function($) { new updateTime("clock", [time_h, time_min, "00"]); });
