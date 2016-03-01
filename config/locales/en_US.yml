@@ -2692,6 +2692,7 @@ en_US:
       finished: Finished
       corrected: Corrected
       not_answered: Not answered
+      retake: Retake
     form:
       config:
         greater: Greater grade
@@ -2949,3 +2950,7 @@ en_US:
       delete_question: Are you sure that want to remove these questions?
       status: Are you sure that want to change question's status?
       copy: 'Are you sure? Once you copy a question inside an exam, the original will be annulled.'
+
+  exam_responses:
+    success:
+      updated:  Answer was sucessfully updated.

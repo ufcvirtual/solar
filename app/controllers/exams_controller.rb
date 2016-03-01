@@ -88,9 +88,11 @@ class ExamsController < ApplicationController
     authorize! :open, Exam, { on: params[:allocation_tag_id] }
     @exam = Exam.find(params[:id])
     @preview = false
-    @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1) unless @exam.nil?
+    @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @exam_user_id = params[:exam_user_id]
-    Exam.set_start_time(@exam_user_id)
+    @last_attempt = Exam.create_exam_user_attempt(@exam_user_id)
+    @total_time = @last_attempt.exam_responses.sum(:duration)
+
     respond_to do |format|
       format.html
       format.js
@@ -128,7 +130,7 @@ class ExamsController < ApplicationController
     authorize! :show, Question, { on: params[:allocation_tags_ids] }
     @exam = Exam.find(params[:id])
     @preview = true
-    @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1) unless @exam.nil?
+    @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     render :open
   end
 

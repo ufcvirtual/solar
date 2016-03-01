@@ -4,18 +4,22 @@
       = render 'exams/open/header', { preview: @preview }
     .content_exam
 
-:javascript
+= javascript_include_tag 'exams'
 
+:javascript
   $('.content_exam').html("#{escape_javascript( render 'exams/open/content', { preview: @preview } )}");
 
-  $(function() {    
-    $(".content_exam").unbind('click').on("click", ".pagination a", 
-      function(){
-        var url = this.href;
-        $('.content_exam').load(url);
-        return false;
-      });
+  init_chronometer(#{@exam_questions.current_page}, #{@exam.number_questions});
 
+  $(".content_exam").unbind('click').on("click", ".pagination a",
+    function(){
+      stop_save_chronometer(#{@exam_responses.duration});
+      var url = this.href;
+      $('.content_exam').load(url);
+      return false;
+    });
+
+  $(function() {
     $('#order').html(#{@exam_questions.current_page});
     $('.number').html(#{@exam_questions.current_page} + ") ");
   });

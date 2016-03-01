@@ -2928,6 +2928,7 @@ pt_BR:
       finished: Concluída
       corrected: Corrigida
       not_answered: Não respondida
+      retake: Refazer
     form:
       config:
         greater: Maior nota
@@ -3184,3 +3185,7 @@ pt_BR:
       delete_question: Tem certeza de que deseja remover estas questões?
       status: Tem certeza de que deseja alterar o status da(s) questão(ões)?
       copy: 'Tem certeza? Ao copiar uma questão dentro da prova, a original será anulada.'
+
+  exam_responses:
+    success:
+      updated: Resposta atualizada com sucesso.

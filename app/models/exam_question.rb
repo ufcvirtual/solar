@@ -26,8 +26,8 @@ class ExamQuestion < ActiveRecord::Base
     query_order = []
     query_order << (raffle_order ? "RANDOM()" : "exam_questions.order")
 
-  	ExamQuestion.joins(:question)
-      .where(exam_questions: {exam_id: exam_id, annulled: false},
+    ExamQuestion.joins(:question)
+      .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
       	questions: {status: true})
       .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
       	questions.id, questions.enunciation, questions.type_question')

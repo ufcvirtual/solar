@@ -14,15 +14,18 @@ class ExamUser < ActiveRecord::Base
   attr_accessor :merge
 
   def info
-    attempts = exam_user_attempts.where(complete: true)
+    complete_attempts = exam_user_attempts.where(complete: true)
+    total_attempts = exam_user_attempts.count
+    last_attempt = exam_user_attempts.last
+    responses = last_attempt ? last_attempt.exam_responses.count : 0
     grade = case exam.attempts_correction
-            when Exam::GREATER; attempts.map(&:grade).max
+            when Exam::GREATER; complete_attempts.map(&:grade).max
             when Exam::AVERAGE then 
-              grades = attempts.map(&:grade)
+              grades = complete_attempts.map(&:grade)
               grades.inject{ |sum, el| sum + el }.to_f / grades.size
-            when Exam::LAST; attempts.last.grade
+            when Exam::LAST; complete_attempts.last.grade
             end
-    { grade: grade, complete: attempts.any? }
+    { grade: grade, complete: last_attempt, attempts: total_attempts, responses: responses }
   end
 
   def delete_with_dependents

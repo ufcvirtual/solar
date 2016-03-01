@@ -1,0 +1,42 @@
+function init_chronometer(page_question, total) {
+  if (typeof array_time == 'undefined') {array_time = new Array(total);}
+  array_time = refresh_array_time(array_time, total);
+  page = page_question;
+  start(page, array_time);
+}
+
+function save_question(duration) {
+  get_duration(duration);
+  $(".edit_exam_response").submit();
+}
+
+function get_duration(duration) {
+  var time = array_time[page-1]
+  var new_duration = Math.floor(time / 60);
+  new_duration += parseInt(duration)
+  $('#duration').val(new_duration);
+}
+
+function stop_save_chronometer(duration) {
+  clearTimeout(t);
+  save_question(duration);
+}
+
+function start(question, array_time) {
+  var local_time = array_time[question-1];
+  local_time ++;
+
+  t = setTimeout(
+    function(){
+      array_time[question-1] = local_time;
+      start(question, array_time);
+    }, 1000);
+}
+
+function refresh_array_time(array_time, total) {
+  for (i=0; i<total; i++){
+    if (typeof array_time[i] == 'undefined') {array_time[i] = 0;}
+  }
+  return array_time;
+}
+

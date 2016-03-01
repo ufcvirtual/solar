@@ -218,18 +218,19 @@ class Exam < Event
     return unless academic_allocation
 
     info = academic_allocation.exam_users.where({user_id: user_id}).first.try(:info) || {complete: false}
-    info = {situation: situation(info[:complete], info[:grade], exam_responses.count)}.merge(info)
-    {count: percent(number_questions, exam_responses.count)}.merge(info)
+    info = {situation: situation(info[:complete], info[:grade], info[:responses], info[:attempts])}.merge(info)
+    {count: percent(number_questions, info[:responses])}.merge(info)
   end
 
-  def situation(complete, grade = nil, exam_responses = 0)
+  def situation(complete, grade = nil, exam_responses = 0, user_attempts = 0)
     case
-    when !started?                       then 'not_started'
-    when on_going?                       then 'to_answer'
-    when exam_responses > 0 && !complete then 'not_finished'
-    when complete                        then 'finished'
-    when !grade.nil?                     then 'corrected'
-    when ended?                          then 'not_answered'
+    when !started?                                                      then 'not_started'
+    when on_going? && !complete                                         then 'to_answer'
+    when on_going? && (exam_responses < number_questions) && !complete  then 'not_finished'
+    when on_going? && (attempts > user_attempts)                        then 'retake'
+    when complete && (attempts == user_attempts)                        then 'finished'
+    when !grade.nil? && ended?                                          then 'corrected'
+    when ended?                                                         then 'not_answered'
     else
       '-'
     end
@@ -237,21 +238,28 @@ class Exam < Event
 
   def self.create_exam_user(exam, current_user_id, allocation_tags_ids)
     @exam_users = exam.exam_users.where(user_id: current_user_id).first
+
     if @exam_users.nil?
       @academic_allocation = AcademicAllocation.where(academic_tool_id: exam.id, academic_tool_type: 'Exam',
         allocation_tag_id: allocation_tags_ids).first
       exam.exam_users.build(user_id: current_user_id, academic_allocation_id: @academic_allocation.id).save 
       @exam_users = exam.exam_users.where(user_id: current_user_id).first
     end
+
     return @exam_users
   end
 
-  def self.set_start_time(exam_users_id)
-    @exam_user = ExamUser.find(exam_users_id)
-    if @exam_user.start.nil?
-      @exam_user.start = Time.now 
-      @exam_user.save
+  def self.create_exam_user_attempt(exam_user_id)
+    @exam_users = ExamUser.where(id: exam_user_id).first
+    @exam_user_attempts = @exam_users.exam_user_attempts
+    @exam_user_attempt_last = @exam_user_attempts.last
+
+    if (@exam_user_attempt_last.nil? || (@exam_user_attempt_last.complete? && @exam_user_attempt_last.exam.attempts > @exam_user_attempts.count))
+      @exam_users.exam_user_attempts.build(exam_user_id: exam_user_id, start: Time.now).save
+      @exam_user_attempt_last = ExamUserAttempt.where(exam_user_id: exam_user_id)
     end
+
+    return @exam_user_attempt_last
   end
 
   def log_description
