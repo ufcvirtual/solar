@@ -2715,6 +2715,14 @@ en_US:
     open:
       to: " to "
       questions: " questions"
+    summary:
+      title: Exam summary
+      questions_number: Questions number
+      start: Start
+      end: End
+      average_time: Average exam time
+      total_time: Total exam time
+      grade: Grade
     error:
       general_message: It was not possible to execute action
       started: Exam already published and started

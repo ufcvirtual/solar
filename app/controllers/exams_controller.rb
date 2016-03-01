@@ -115,6 +115,15 @@ class ExamsController < ApplicationController
     @exam = Exam.find(params[:id])
   end
 
+  def summary
+    #authorize! :summary, ExamUser, { on: params[:allocation_tags_ids] }
+    exam_id = Exam.find(params[:exam_id])
+    exam_user_id = params[:exam_user_id]
+
+    @examUserAttempt = ExamUserAttempt.where(["exam_user_id = ?", exam_user_id]).last    
+    @exam = Exam.find(exam_id)
+  end
+
   def preview
     authorize! :show, Question, { on: params[:allocation_tags_ids] }
     @exam = Exam.find(params[:id])

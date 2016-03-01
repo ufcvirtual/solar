@@ -2950,6 +2950,14 @@ pt_BR:
     open:
       to: " de "
       questions: " questões"
+    summary:
+      title: "Resumo da prova"
+      questions_number: "Número de questões"
+      start: Início
+      end: Fim
+      average_time: "Tempo médio em cada questão"
+      total_time: "Tempo gasto na prova"
+      grade: Nota
     error:
       general_message: Não foi possível realizar a ação desejada
       started: Prova já publicada e iniciada

@@ -518,6 +518,7 @@ Solar::Application.routes.draw do
       put :change_status
       get :open
       get :preview
+      get :summary
     end
   end
 
