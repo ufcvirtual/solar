@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
   validates_length_of :institution, maximum: 120
 
   validate :integration, if: Proc.new{ |a| !a.new_record? && !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || !a.synchronizing) }
-  validate :data_integration, if: Proc.new{ |a| !a.on_blacklist? && (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO["integrated"]) && (a.new_record? || username_changed? || email_changed? || cpf_changed?) && (a.synchronizing.nil? || !a.synchronizing) }
+  validate :data_integration, if: Proc.new{ |a| (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO["integrated"]) && (a.new_record? || username_changed? || email_changed? || cpf_changed?) && (a.synchronizing.nil? || !a.synchronizing) }
 
   validate :unique_cpf, if: "cpf_changed?"
   validate :login_differ_from_cpf
@@ -505,10 +505,9 @@ class User < ActiveRecord::Base
   # user result from validation MA method
   # receives the response and the WS client
   def self.validate_user_result(result, client, cpf, user = nil)
-    return nil if User.new(cpf: cpf).on_blacklist?
     unless result.nil?
       result = result[:int]
-      if result.include?('6') # unavailable cpf, thus already in use by MA
+      if result.include?('6') && !User.new(cpf: cpf).on_blacklist? # unavailable cpf, thus already in use by MA
         user_data = User.connect_and_import_user(cpf, client)
         unless user_data.nil? # if user exists
           # verify if cpf, username or email already exists
