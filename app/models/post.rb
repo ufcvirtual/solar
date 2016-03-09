@@ -11,10 +11,14 @@ class Post < ActiveRecord::Base
   has_many :children     , class_name: 'Post', foreign_key: 'parent_id', dependent: :destroy
   has_many :files        , class_name: 'PostFile', foreign_key: 'discussion_post_id', dependent: :destroy
 
-  before_create :set_level, :increment_counter
+  before_create :set_level, :increment_counter, :verify_level
   before_destroy :remove_all_files, :decrement_counter
 
   validates :content, :profile_id, presence: true
+
+  def verify_level
+    raise 'level' if self.level > Discussion_Post_Max_Indent_Level
+  end
 
   def can_be_answered?
     (self.level < Discussion_Post_Max_Indent_Level)
@@ -68,7 +72,7 @@ class Post < ActiveRecord::Base
   private
 
     def set_level
-      self.level = parent.level.to_i + 1 unless parent_id.nil?
+      self.level = parent.level.to_i + 1 unless parent_id.nil?     
     end
 
     def remove_all_files
