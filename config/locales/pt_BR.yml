@@ -2081,6 +2081,7 @@ pt_BR:
       created_at: Data
       actions: Ações
       accesses: Acessos
+      navigations: Navegações
       search: Busca
       user: Usuário
       log_not_found: Sem logs para exibir
@@ -3189,3 +3190,4 @@ pt_BR:
   exam_responses:
     success:
       updated: Resposta atualizada com sucesso.
+

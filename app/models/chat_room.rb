@@ -33,12 +33,12 @@ class ChatRoom < Event
   def url(allocation_id, academic_allocation_id)
     chat = YAML::load(File.open('config/chat.yml'))[Rails.env.to_s] rescue nil
     cipher = OpenSSL::Cipher::Cipher.new('DES-EDE3-CBC')
-    cipher.encrypt
-    cipher.iv  = chat['IV']
-    cipher.key = chat['key']
-
-    [chat['url'], Base64.encode64(cipher.update(chat['params'].gsub('allocation_id', allocation_id.to_s).gsub('academic_id', academic_allocation_id.to_s)) + cipher.final).gsub("\n", '')].join.html_safe
+      cipher.encrypt
+      cipher.iv  = chat['IV']
+      cipher.key = chat['key']
+      [chat['url'].to_s, Base64.encode64(cipher.update(chat['params'].gsub('allocation_id', allocation_id.to_s).gsub('academic_id', academic_allocation_id.to_s)) + cipher.final).gsub("\n", '')].join.html_safe
   end
+ 
 
   def verify_hours
     errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:chat_rooms, :error])) if end_hour.rjust(5, '0') < start_hour.rjust(5, '0')

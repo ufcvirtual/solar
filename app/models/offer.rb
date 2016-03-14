@@ -14,7 +14,7 @@ class Offer < ActiveRecord::Base
   has_many :academic_allocations, through: :allocation_tag
   has_many :lesson_modules,       through: :academic_allocations, source: :academic_tool, source_type: "LessonModule"
   has_many :assignments,          through: :academic_allocations, source: :academic_tool, source_type: "Assignment"
-
+  has_many :log_navigations
   after_create :set_default_lesson_module # modulo default da oferta
 
   before_destroy :can_destroy?

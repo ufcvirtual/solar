@@ -40,6 +40,7 @@ class User < ActiveRecord::Base
   has_many :lesson_notes
   has_many :questions
   has_many :up_questions, class_name: 'Question', foreign_key: 'updated_by_user_id'
+  has_many :log_navigations
 
   has_and_belongs_to_many :notifications, join_table: 'read_notifications'
 

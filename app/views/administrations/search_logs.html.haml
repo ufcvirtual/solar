@@ -2,29 +2,34 @@
   .block_title{style: "height:0"}
   .block_content
     - unless @logs.empty?
-      %table.tb_list
-        %thead
-          %tr.lines
-            %th= t(:log_type, scope: [:administrations, :logs])
-            %th{style: "width: 20%"}= t(:name, scope: [:administrations, :logs])
-            - if params[:type] == 'actions'
-              %th= t(:description, scope: [:administrations, :logs])
-            - else
-              %th= t(:course, scope: [:administrations, :logs])
-            %th= t(:created_at, scope: [:administrations, :logs])
-        %tbody.logs
-          - @logs.each do |log|
+      - if params[:type] != 'navigation'
+        %table.tb_list
+          %thead
             %tr.lines
-              %td= log.type_name
-              %td= log.user.try(:name)
+              %th= t(:log_type, scope: [:administrations, :logs])
+              %th{style: "width: 20%"}= t(:name, scope: [:administrations, :logs])
               - if params[:type] == 'actions'
-                %td.breaking= strip_tags log.description
+                %th= t(:description, scope: [:administrations, :logs])
               - else
-                %td= log.allocation_tag.try(:info)
-              %td= l log.created_at, format: :at_date
+                %th= t(:course, scope: [:administrations, :logs])
+              %th= t(:created_at, scope: [:administrations, :logs])
+          %tbody.logs
+            - @logs.each do |log|
+              %tr.lines
+                %td
+                %td= log.user.try(:name)
+                - if params[:type] == 'actions'
+                  %td.breaking= strip_tags log.description
+                - else
+                  %td= log.allocation_tag.try(:info)
+                %td
+      - else  
+        %p  Download  
+        = link_to "CSV", log_navigation_path(format: "csv")   
+        = link_to "XLS", log_navigation_path(format: "xls")                        
     - else
       .block_content.block_content_text= t(:log_not_found, scope: [:administrations, :logs])
-
+      
 :css
   td.breaking {
     word-break: break-word;

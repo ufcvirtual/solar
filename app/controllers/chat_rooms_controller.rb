@@ -116,6 +116,19 @@ class ChatRoomsController < ApplicationController
     raise error.class
   end
 
+  def access
+    @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
+    authorize! :show, ChatRoom, on: [allocation_tag_id]
+    
+    academic_allocation_id = params[:academic_allocation_id]
+    allocation_id = params[:allocation_id]
+
+    chat_rooms = ChatRoom.find(params[:id])
+    url = chat_rooms.url(allocation_id, academic_allocation_id)
+    URI.parse(url).path
+    redirect_to url
+  end  
+
   private
 
     def chat_room_params

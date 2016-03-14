@@ -8,7 +8,7 @@ class Score # < ActiveRecord::Base
                     .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date")
                     .order("start_date") if at.is_student?(user_id)
     discussions    = Discussion.posts_count_by_user(user_id, at_id)
-    history_access = LogAccess.where(log_type: LogAccess::TYPE[:group_access], user_id: user_id, allocation_tag_id: related || at.related)
+    history_access = LogAccess.where(log_type: LogAccess::TYPE[:group_access], user_id: user_id, allocation_tag_id: related || at.related).limit(5)
     public_files   = PublicFile.where(user_id: user_id, allocation_tag_id: at_id)
 
     [assignments, discussions, history_access, public_files]

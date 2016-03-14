@@ -74,6 +74,7 @@ Solar::Application.routes.draw do
     ## logs
     get :logs, to: "administrations#logs", as: :logs
     get "logs/type/:type", to: "administrations#search_logs", as: :search_logs
+    get "logs/type/navigation", to: "administrations#search_logs", as: :log_navigation
 
     ## import users
     get "/import/users/filter", to: "administrations#import_users", as: :import_users_filter
@@ -375,6 +376,7 @@ Solar::Application.routes.draw do
       get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "ChatRoom", as: :group_tags_from
     end
     get :messages, on: :member
+    get :access, on: :member
   end
 
   resources :agendas, only: [:index] do

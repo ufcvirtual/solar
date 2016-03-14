@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   include EdxHelper
 
   layout false, only: [:show, :reset_password_url]
-  load_and_authorize_resource only: [:mysolar, :update_photo]
+  load_and_authorize_resource only: [:mysolar, :update_photo, :salve_log_navigation]
 
   before_filter :set_active_tab_to_home, only: :profiles
   # before_filter :application_context, only: :mysolar
@@ -58,7 +58,7 @@ class UsersController < ApplicationController
 
     end
   end
-
+  
   def mysolar
     set_active_tab_to_home
 

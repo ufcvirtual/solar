@@ -197,7 +197,7 @@ class AdministrationsController < ApplicationController
   def logs
     authorize! :logs, Administration
 
-    @types = [ [t(:actions, scope: [:administrations, :logs]), 'actions'], [t(:accesses, scope: [:administrations, :logs]), 'access'] ]
+    @types = [ [t(:actions, scope: [:administrations, :logs]), 'actions'], [t(:accesses, scope: [:administrations, :logs]), 'access'],[t(:navigations, scope: [:administrations, :logs]), 'navigation'] ]
   end
 
   def search_logs
@@ -205,17 +205,62 @@ class AdministrationsController < ApplicationController
 
     @logs, query = [], []
     date = Date.parse(params[:date]) rescue nil
-    log  = params[:type] == 'actions' ? LogAction : LogAccess
+    if (params[:type] == 'actions' or params[:type] == 'access')
+      log = params[:type] == 'actions' ? LogAction : LogAccess
+      unless params[:user].blank?
+        text_search = [URI.unescape(params[:user]).split(' ').compact.join('%'), '%'].join
+        user_ids    = User.where("lower(unaccent(name || ' ' || cpf)) LIKE lower(unaccent(?))", "%#{text_search}").map(&:id).join(',')
+        query << "user_id IN (#{user_ids})" unless user_ids.blank?
+      end
 
-    unless params[:user].blank?
-      text_search = [URI.unescape(params[:user]).split(' ').compact.join('%'), '%'].join
-      user_ids    = User.where("lower(unaccent(name || ' ' || cpf)) LIKE lower(unaccent(?))", "%#{text_search}").map(&:id).join(',')
-      query << "user_id IN (#{user_ids})" unless user_ids.blank?
-    end
+      query << "date(created_at) = '#{date.to_s(:db)}'" unless date.nil?
+      @logs = log.where(query.join(' AND ')).order('created_at DESC').limit(100)
+     
+    else 
+      if(date)
+        session[:date] = date
+      else
+        date = session[:date]
+      end 
+      queryDate ="date(log_navigations.created_at) = '#{date.to_s(:db)}'" unless date.nil?
+        @logs = LogNavigation.joins('LEFT JOIN log_navigation_subs ON log_navigations.id = log_navigation_id')
+        .joins('LEFT JOIN  assignments ON log_navigation_subs.assignments_id = assignments.id')
+        .joins('LEFT JOIN chat_rooms ON log_navigation_subs.chat_rooms_id = chat_rooms.id')
+        .joins('LEFT JOIN chat_rooms as chat_historico ON log_navigation_subs.hist_chat_rooms_id = chat_historico.id')
+        .joins('LEFT JOIN groups ON log_navigation_subs.group_id = groups.id')
+        .joins('LEFT JOIN lessons ON log_navigation_subs.lesson_id = lessons.id')
+        .joins('LEFT JOIN support_material_files ON log_navigation_subs.support_material_files_id = support_material_files.id')
+        .joins('LEFT JOIN discussions ON log_navigation_subs.discussion_id = discussions.id')
+        .joins('LEFT JOIN lesson_notes ON log_navigation_subs.lesson_notes_id = lesson_notes.id')
+        .joins('LEFT JOIN exams ON exams.id = log_navigation_subs.exams_id')
+        .joins('LEFT JOIN users as student ON log_navigation_subs.user_id = student.id')
+        .joins('LEFT JOIN users ON log_navigation_subs.student_id = users.id')
+        .joins('LEFT JOIN webconferences ON log_navigation_subs.webconferences_id = webconferences.id')
+        .joins('LEFT JOIN menus ON log_navigations.menu_id = menus.id')
+        .joins('LEFT JOIN allocation_tags ON log_navigations.allocation_tag_id = allocation_tags.id')
+        .joins('LEFT JOIN offers ON allocation_tags.offer_id = offers.id')
+        .joins('LEFT JOIN semesters ON semesters.id = offers.semester_id')
+        .joins('LEFT JOIN courses ON offers.course_id = courses.id')
+        .joins('LEFT JOIN curriculum_units ON offers.curriculum_unit_id = curriculum_units.id')
+        .joins('LEFT JOIN public_files ON public_files.id = public_files_id')
+        .joins('LEFT JOIN users AS usuario ON log_navigations.user_id = usuario.id')
+        .select("DISTINCT log_navigations.id, log_navigation_subs.id as id_sub, usuario.name as usuario, courses.name as cuorses, curriculum_units.name as curriculum, 
+        curriculum_units.code, semesters.name as semestre,  menus.name AS menu, to_char(log_navigations.created_at,'dd/mm/YYYY HH24:MI:SS') as created,
+        support_material_files.attachment_file_name as support_material_files, discussions.name as discussions,lessons.name as lessons, assignments.name as assignments, 
+        exams.name as exams, users.name as users, chat_rooms.title as chat_rooms, chat_historico.title as chat_historico, student.name as student, groups.code as groups, webconferences.title as webconferences, 
+        lesson_notes.name as lesson_notes, public_files.attachment_file_name as public_files, to_char(log_navigation_subs.created_at,'dd/mm/YYYY HH24:MI:SS') as created_submenu")
+        .where(queryDate)
+        .order("log_navigations.id DESC, log_navigation_subs.id DESC")
 
-    query << "date(created_at) = '#{date.to_s(:db)}'" unless date.nil?
-    @logs = log.where(query.join(' AND ')).order('created_at DESC').limit(100)
+        attributes_to_include = %w(id id_sub usuario cuorses curriculum code semestre menu created created_submenu support_material_files discussions lessons assignments exams users chat_rooms chat_historico student groups webconferences lesson_notes public_files)
+        respond_to do |format|
+          format.html
+          format.csv { send_data @logs.to_csv(attributes_to_include) }
+          format.xls { send_data @logs.to_csv(attributes_to_include, col_sep: "\t") }
+        end
+     end    
   end
+
 
   ## IMPORT USERS
 
@@ -293,7 +338,7 @@ class AdministrationsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized
   end
-
+  
   private
 
     def user_params

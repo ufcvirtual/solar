@@ -48,3 +48,10 @@ config/modulo_academico.deploy.yml
 config/sav.yml
 config/sav.deploy.yml
 config/newrelic.yml
+config/_cucumber.yml
+sink.sh
+commit.sh
+sink_sem_commit.sh
+ship.sh
+
+

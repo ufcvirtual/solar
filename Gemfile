@@ -100,6 +100,5 @@ group :assets do
   gem "sass-rails", "~> 3.2.6"
   gem "compass-rails", "~> 1.1.3"
 end
-
 # new relic
-# gem 'newrelic_rpm'
+ #gem 'newrelic_rpm'

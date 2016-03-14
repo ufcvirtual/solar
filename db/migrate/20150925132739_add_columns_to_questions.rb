@@ -3,6 +3,7 @@ class AddColumnsToQuestions < ActiveRecord::Migration
     add_column :questions, :updated_by_user_id, :integer
     add_index :questions, :updated_by_user_id
     add_column :questions, :privacy, :boolean, default: false
+
     # remove_column :questions, :score
 
     add_column :question_items, :comment, :text

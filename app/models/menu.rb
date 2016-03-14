@@ -1,6 +1,7 @@
 class Menu < ActiveRecord::Base
 
   belongs_to :resource
+  has_many :log_navigations
 
   # auto-relacionamento
   has_many :children, class_name: 'Menu', foreign_key: 'parent_id'
