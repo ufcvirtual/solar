@@ -11,8 +11,11 @@ class Post < ActiveRecord::Base
   has_many :children     , class_name: 'Post', foreign_key: 'parent_id', dependent: :destroy
   has_many :files        , class_name: 'PostFile', foreign_key: 'discussion_post_id', dependent: :destroy
 
-  before_create :set_level, :increment_counter, :verify_level
-  before_destroy :remove_all_files, :decrement_counter
+  before_create :set_level, :verify_level
+  before_destroy :remove_all_files
+
+  after_create :increment_counter
+  after_destroy :decrement_counter
 
   validates :content, :profile_id, presence: true
 
@@ -57,7 +60,7 @@ class Post < ActiveRecord::Base
 
   ## Return latest date considering children
   def get_latest_date
-    date = [(children_count.zero? ? self.updated_at : children.map(&:get_latest_date))].flatten.compact
+    date = [(children_count <= 0 ? self.updated_at : children.map(&:get_latest_date))].flatten.compact
     date.sort.last
   end
 
