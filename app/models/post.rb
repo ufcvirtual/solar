@@ -8,6 +8,9 @@ class Post < ActiveRecord::Base
 
   belongs_to :academic_allocation, conditions: { academic_tool_type: 'Discussion' }
 
+  before_destroy :verify_children
+  before_save :verify_children, on: :update
+
   has_many :children     , class_name: 'Post', foreign_key: 'parent_id', dependent: :destroy
   has_many :files        , class_name: 'PostFile', foreign_key: 'discussion_post_id', dependent: :destroy
 
@@ -23,6 +26,10 @@ class Post < ActiveRecord::Base
     raise 'level' if self.level > Discussion_Post_Max_Indent_Level
   end
 
+  def verify_children
+    raise 'children' if self.children.any?
+  end
+  
   def can_be_answered?
     (self.level < Discussion_Post_Max_Indent_Level)
   end
