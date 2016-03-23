@@ -48,10 +48,9 @@ config/modulo_academico.deploy.yml
 config/sav.yml
 config/sav.deploy.yml
 config/newrelic.yml
-config/_cucumber.yml
+config/digital_class.yml
 sink.sh
 commit.sh
 sink_sem_commit.sh
 ship.sh
-
-
+config/digital_class_access_token.txt

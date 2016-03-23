@@ -61,6 +61,7 @@ gem 'hairtrigger', '~> 0.2.12' # triggers
 gem 'nested_form_fields'
 gem 'coffee-rails'
 
+gem 'rest-client'
 
 group :development do
   gem "rb-readline", "~> 0.5.1"

@@ -1,0 +1,30 @@
+common: &common
+  integrated: false
+  token_path: 'token_path_file'
+  secret: 'secret'
+  application_id: 'app_id'
+  paths:
+    users: 'path'
+    users_with_id: 'path'
+    directories: 'path'
+    members: 'path'
+    directories_with_id: 'path'
+    members_new: 'path'
+    members_delete: 'path'
+    members_permission: 'path'
+    lessons: 'path'
+    lessons_with_id: 'path'
+
+development:
+  <<: *common
+  url: 'url'
+  path: 'url'
+
+production:
+  <<: *common
+  url: 'url'
+  path: 'url'
+
+test:
+  <<: *common
+  url: "url"
