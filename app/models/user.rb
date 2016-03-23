@@ -359,9 +359,15 @@ class User < ActiveRecord::Base
 
     (2..spreadsheet.last_row).each do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
-      row = row.collect{ |k,v| { k.try(:strip) => (v.to_s.try(:strip) rescue '') } }.reduce Hash.new, :merge 
+      row = row.collect{ |k,v| 
+        if k == 'CPF' || k == 'Cpf'
+          { k.try(:strip) => v }
+        else
+          { k.try(:strip) => (v.to_s.try(:strip) rescue '') }
+        end
+       }.reduce Hash.new, :merge 
 
-      cpf = (row['CPF'] || row['Cpf']).to_i.to_s.delete('.').delete('-').rjust(11, '0')
+      cpf = (row['CPF'] || row['Cpf']).is_a?(String) ? (row['CPF'] || row['Cpf']).strip.delete('.').delete('-').rjust(11, '0') : (row['CPF'] || row['Cpf']).to_i.to_s.strip.rjust(11, '0')
 
       user_exist = where(cpf: cpf).first
       user = user_exist.nil? ? new : user_exist
