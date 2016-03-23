@@ -3,7 +3,7 @@ class DigitalClass < ActiveRecord::Base
     
   DC = YAML::load(File.open("config/digital_class.yml"))[Rails.env.to_s] rescue nil if File.exist?("config/digital_class.yml")
 
-  def self.available
+  def self.available?
     (!DC.nil? && DC["integrated"] && !RestClient.get(DC["path"]).nil?)
   rescue
     false # servidor indisponivel
