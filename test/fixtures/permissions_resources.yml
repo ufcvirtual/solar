@@ -49,6 +49,11 @@ uc10:
   resource_id: 194
   per_id: false
 
+uc11:
+  profile_id: 1
+  resource_id: 217
+  per_id: false
+
 # assignments
 assig1:
   profile_id: 1
@@ -257,6 +262,11 @@ ucpt11:
 ucpt12:
   profile_id: 2
   resource_id: 194
+  per_id: false
+
+ucpt13:
+  profile_id: 2
+  resource_id: 217
   per_id: false
 
 # assignments
@@ -503,6 +513,11 @@ ucta9:
 ucta10:
   profile_id: 3
   resource_id: 194
+  per_id: false
+
+ucta11:
+  profile_id: 3
+  resource_id: 217 
   per_id: false
 
 # assignments
@@ -812,6 +827,11 @@ tutor_p_25:
 tutor_p_26:
   profile_id: 4
   resource_id: 172
+  per_id: false
+
+tutor_p_27:
+  profile_id: 4
+  resource_id: 217
   per_id: false
 
 ##############################
@@ -1518,6 +1538,11 @@ ucmon10:
   resource_id: 194
   per_id: false
 
+ucmon11:
+  profile_id: 13
+  resource_id: 217
+  per_id: false
+
 # assignments
 # visão aluno
 assigmon3:
@@ -2105,7 +2130,7 @@ laweb5:
 
 dc1-admin:
   profile_id: 6
-  resource_id: 210
+  resource_id: 217
   per_id: false
 
 dc1:

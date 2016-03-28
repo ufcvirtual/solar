@@ -1210,6 +1210,8 @@ en_US:
   uri_too_long: "Information quantity too large. Reduce the quantity of data passed"
   cant_build_page: Wasn't possible to access informed page
   hidden_info: Hidden information
+
+  menu_dc_lesson: Digital Class
   menu_content: Content
   menu_lesson: Lessons
   menu_support_material: Support Material
