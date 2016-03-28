@@ -1081,7 +1081,6 @@ res209:
 res210:
   id: 210
   controller: 'digital_classes'
-<<<<<<< Updated upstream
   action: "update_members_and_roles"
   description: "Atualizar participantes do Digital Class"
 
