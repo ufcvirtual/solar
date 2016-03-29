@@ -168,6 +168,22 @@ class AllocationTag < ActiveRecord::Base
     { allocation_tags: [allocation_tags_ids].flatten, selected: selected, offer_id: offer_id }
   end
 
+  def detailed_refer_to
+    case refer_to
+    when 'group'
+      offer = group.offer
+      { group: group.code, semester: offer.semester.name, curriculum_unit: offer.curriculum_unit.code_name, course: offer.course.code_name, curriculum_unit_type: offer.curriculum_unit.curriculum_unit_type.description }
+    when 'offer'
+      { group: nil, semester: offer.semester.name, curriculum_unit: offer.curriculum_unit.code_name, course: offer.course.code_name, curriculum_unit_type: offer.curriculum_unit.curriculum_unit_type.description }
+    when 'course'
+      { group: nil, semester: nil, curriculum_unit: nil, course: course.code_name, curriculum_unit_type: nil }
+    when 'curriculum_unit'
+      { group: nil, semester: nil, curriculum_unit: curriculum_unit.code_name, course: nil, curriculum_unit_type: curriculum_unit.curriculum_unit_type.description }
+    when 'curriculum_unit_type'
+      { group: nil, semester: nil, curriculum_unit: nil, course: nil, curriculum_unit_type: curriculum_unit_type.description }
+    end
+  end
+
   def self.get_participants(allocation_tag_id, params = { all: true }, scores = false)
     types, query, select, relations, group = [], [], [], [], []
     types << "cast( profiles.types & '#{Profile_Type_Student}' as boolean )"           if params[:students]     || params[:all]

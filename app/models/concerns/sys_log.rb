@@ -63,7 +63,7 @@ module SysLog
       end
 
       def generic_log(sobj, obj = nil)
-        return if not(obj.nil?) && obj.new_record? # not saved
+        return if !obj.nil? && obj.new_record? # not saved
 
         # academic_allocation_id = obj.try(:academic_allocation).try(:id)
         academic_allocation_id = nil
@@ -88,6 +88,7 @@ module SysLog
             d << %{#{v.sub("@", "")}: #{o.as_json}} unless ["Array", "String"].include?(o.class)
           end
           d.join(', ')
+          d = "#{params[:controller]}: #{params.except('controller').to_s}" if d.blank?
         end
 
         LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: request.remote_ip, academic_allocation_id: academic_allocation_id, description: description) unless description.nil?
