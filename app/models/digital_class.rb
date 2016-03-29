@@ -14,9 +14,9 @@ class DigitalClass < ActiveRecord::Base
     replace.each do |string|
       url.gsub! ":#{string}", params[string.to_sym].to_s
     end
-    res = RestClient.send(method, url, { params: { access_token: self.access_token }.merge!(params), accept: :json, content_type: 'x-www-form-urlencoded' })
+    res = RestClient.send(method, url, { access_token: self.access_token }.merge!(params) , { accept: :json, content_type: 'x-www-form-urlencoded' })
     JSON.parse(res.body)
-  rescue
+  rescue => error
     false # indisponivel ou erro na chamada
   end
 
