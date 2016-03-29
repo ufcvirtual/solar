@@ -571,6 +571,13 @@ Solar::Application.routes.draw do
     end
   end
 
+  resources :digital_classes do
+    collection do
+      get :update_members_and_roles_page
+      put :update_members_and_roles
+    end
+  end
+
   resources :savs, only: :index, defaults: { format: 'json' }
 
   match '/select_group', to: 'application#select_group', as: :select_group

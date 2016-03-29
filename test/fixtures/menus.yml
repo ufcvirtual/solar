@@ -222,6 +222,13 @@ admin_webconference:
   order: 12
   resource_id: 186
 
+admin_digital_class:
+  id: 613
+  parent_id: 60
+  name: menu_admin_digital_class
+  order: 13
+  resource_id: 210
+
 # MENU PAI - 70
 disco_virtual:
   id: 70

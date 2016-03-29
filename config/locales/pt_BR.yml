@@ -1443,6 +1443,7 @@ pt_BR:
   menu_admin_import_users: Importação de usuários
   menu_admin_blacklist: Desvincular do MA
   menu_admin_webconference: Visualizar webconferências
+  menu_admin_digital_class: Atualizar participantes do Digital Class
   menu_responsibles: Consultar Responsáveis
   menu_home: Início
 
@@ -3191,3 +3192,15 @@ pt_BR:
     success:
       updated: Resposta atualizada com sucesso.
 
+  digital_classes:
+    update_members_and_roles_page:
+      type: Tipo
+      course: Curso
+      curriculum_unit: Disciplina
+      module: Módulo
+      semester: Semestre
+      offer: Oferta
+      group: Turma
+      initial_date: Data inicial*
+      update: Atualizar
+      warning: '<b> Importante: </b> Ao clicar em atualizar, todos os usuários cujas alocações foram alteradas entre a data inicial informada e a data do dia corrente terão seus acessos ao Digital Class revisados e corrigidos. Dependendo da quantidade de usuários, esta ação pode demorar.'
