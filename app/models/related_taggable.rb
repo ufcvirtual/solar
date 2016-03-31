@@ -7,6 +7,7 @@ class RelatedTaggable < ActiveRecord::Base
   belongs_to :curriculum_unit
   belongs_to :curriculum_unit_type
   belongs_to :schedule, class_name: 'Schedule', foreign_key: 'offer_schedule_id'
+  has_many :digital_class_directories
 
   def at_ids(options = { lower: true, upper: true, name: nil })
     if options[:name]
@@ -44,6 +45,10 @@ class RelatedTaggable < ActiveRecord::Base
     when !course_at_id.nil?               then 'course'
     when !curriculum_unit_type_at_id.nil? then 'curriculum_unit_type'
     end
+  end
+
+  def info
+    { group: group.code, semester: offer.semester.name, discipline: curriculum_unit.code_name, course: course.code_name, curriculum_unit_type: curriculum_unit_type.description, curriculum_unit: curriculum_unit.code_name }
   end
 
   def self.related_from_array_ats(array_of_ats, options = {})

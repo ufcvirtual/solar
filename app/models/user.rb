@@ -50,6 +50,7 @@ class User < ActiveRecord::Base
 
   before_save :ensure_authentication_token!, :downcase_username, :downcase_email
   after_save :log_update_user
+  after_save :update_digital_class_user, if: '(!new_record? && (name_changed? || email_changed? || cpf_changed?) && !digital_class_user_id.nil?)', on: :update
 
   @has_special_needs
 
@@ -124,7 +125,7 @@ class User < ActiveRecord::Base
   ## metodos de validacoes
 
   def log_update_user
-      LogAction.create(log_type: LogAction::TYPE[:update], user_id: id, description: "update_me: #{attributes.except('encrypted_password', 'reset_password_token', 'password_salt', 'authentication_token')} ")
+    LogAction.create(log_type: LogAction::TYPE[:update], user_id: id, description: "update_me: #{attributes.except('encrypted_password', 'reset_password_token', 'password_salt', 'authentication_token')} ")
   end
   ## Verifica se o radio_button escolhido na view eh verdadeiro ou falso.
   ## Este metodo tambem define as necessidades especiais como sendo vazia caso a pessoa tenha selecionado que nao as possui
@@ -613,6 +614,10 @@ class User < ActiveRecord::Base
     return 'professor' if profiles_with_access_on('create', 'digital_classes').any?
     return 'student'   if profiles_with_access_on('access', 'digital_classes').any?
     return nil
+  end
+
+  def update_digital_class_user(ignore_changes=false)
+    DigitalClass.update_user(self, ignore_changes)
   end
 
   private
