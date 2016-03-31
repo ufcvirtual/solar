@@ -3205,3 +3205,9 @@ pt_BR:
       initial_date: Data inicial*
       update: Atualizar
       warning: '<b> Importante: </b> Ao clicar em atualizar, todos os usuários cujas alocações foram alteradas entre a data inicial informada e a data do dia corrente terão seus acessos ao Digital Class revisados e corrigidos. Dependendo da quantidade de usuários, esta ação pode demorar.'
+    error:
+      unavailable: Serviço indisponível. Favor tentar mais tarde.
+      500: Houve um erro ao realizar a ação. Favor entrar em contato com atendimento@virtual.ufc.br
+      empty: É necessário selecionar turmas para criação de diretório no Digital Class.
+    success_message: Alocações atualizadas com sucesso no Digital Class.
+    general_message: Não foi possível realizar a ação. Favor entrar em contato com atendimento@virtual.ufc.br

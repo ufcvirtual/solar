@@ -562,9 +562,7 @@ class User < ActiveRecord::Base
     return (user_data.nil? ? nil : user_data[:string])
   end
 
-  # alocar usuario em uma allocation_tag
-
-  # profile, allocation_tags_ids, status
+  # alocar usuario em uma allocation_tag: profile, allocation_tags_ids, status
   def allocate_in(allocation_tag_ids: [], profile: Profile.student_profile, status: Allocation_Pending, by_user: nil)
     result = { success: [], error: [] }
     Allocation.transaction do
@@ -603,7 +601,7 @@ class User < ActiveRecord::Base
     return digital_class_user_id unless digital_class_user_id.nil?
     return false unless (available.nil? ? DigitalClass.available? : available)
     # if not student neither professor, won't create user
-    user = DigitalClass.call('users', { name: name, cpf: cpf.to_s.gsub(/\A(\d{3})(\d{3})(\d{3})(\d{2})\Z/, "\\1.\\2.\\3-\\4"), email: email, role: get_digital_class_role }, [], :post)
+    user = DigitalClass.call('users', { name: name, cpf: cpf, email: email, role: get_digital_class_role }, [], :post)
     self.digital_class_user_id = user['id']
     self.save(validate: false)
     return digital_class_user_id

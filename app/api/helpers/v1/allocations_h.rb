@@ -31,7 +31,7 @@ module V1::AllocationsH
 
   def get_profile_id(profile)
     ma_config = User::MODULO_ACADEMICO
-    distant_professor_profile = (ma_config.nil? or not(ma_config['professor_profile'].present?) ? 17 : ma_config['professor_profile'])
+    distant_professor_profile = (ma_config.nil? || !(ma_config['professor_profile'].present?) ? 17 : ma_config['professor_profile'])
 
     case profile.to_i
       when 1; 18 # tutor a distância UAB

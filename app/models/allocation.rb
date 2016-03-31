@@ -7,20 +7,23 @@ class Allocation < ActiveRecord::Base
   belongs_to :profile
   belongs_to :updated_by, class_name: "User", foreign_key: :updated_by_user_id
 
-  has_one :course,               through: :allocation_tag, conditions: ["course_id is not null"]
-  has_one :curriculum_unit,      through: :allocation_tag, conditions: ["curriculum_unit_id is not null"]
-  has_one :offer,                through: :allocation_tag, conditions: ["offer_id is not null"]
-  has_one :group,                through: :allocation_tag, conditions: ["group_id is not null"]
-  has_one :curriculum_unit_type, through: :allocation_tag, conditions: ["curriculum_unit_type_id is not null"]
+  has_one :course,               through: :allocation_tag, conditions: ['course_id is not null']
+  has_one :curriculum_unit,      through: :allocation_tag, conditions: ['curriculum_unit_id is not null']
+  has_one :offer,                through: :allocation_tag, conditions: ['offer_id is not null']
+  has_one :group,                through: :allocation_tag, conditions: ['group_id is not null']
+  has_one :curriculum_unit_type, through: :allocation_tag, conditions: ['curriculum_unit_type_id is not null']
 
   has_many :chat_rooms
   has_many :chat_messages
   has_many :chat_participants
 
   validates :profile_id, :user_id, presence: true
-  validate :valid_profile_in_allocation_tag?, if: "not allocation_tag_id.nil?"
+  validate :valid_profile_in_allocation_tag?, if: '!allocation_tag_id.nil?'
 
   validates_uniqueness_of :profile_id, scope: [:user_id, :allocation_tag_id]
+
+  after_save :update_digital_class_members, if: '(!new_record? && (status_changed? || profile_id_changed?))', on: :update
+  after_save :update_digital_class_user_role, if: '(!new_record? && profile_id_changed?)', on: :update
 
   def can_change_group?
     not [Allocation_Cancelled, Allocation_Rejected].include?(status)
@@ -159,6 +162,14 @@ class Allocation < ActiveRecord::Base
     query << (!!is_admin ? "not(profiles.types & #{Profile_Type_Basic})::boolean" : "(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
 
     joins(:profile, :user).where(query.join(' AND '), allocation_tags_ids)
+  end
+
+  def update_digital_class_members(ignore_changes=false)
+    DigitalClass.update_members(self, ignore_changes)
+  end
+
+  def update_digital_class_user_role(professor_profiles=[], student_profiles=[], ignore_changes=false)
+    DigitalClass.update_roles(self, professor_profiles, student_profiles, ignore_changes)
   end
 
   private
