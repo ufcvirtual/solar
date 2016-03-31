@@ -57,6 +57,12 @@ class DigitalClassesController < ApplicationController
   end
 
   def index
+  	allocation_tags = AllocationTag.get_by_params(params)
+		authorize! :update_members_and_roles_page, DigitalClass, { on: allocation_tags[:allocation_tags].compact, accepts_general_profile: true }
+
+		puts allocation_tags
+		
+  	@digital_class = nil
   end
 
   private

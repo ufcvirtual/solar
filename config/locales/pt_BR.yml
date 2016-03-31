@@ -3196,6 +3196,8 @@ pt_BR:
       updated: Resposta atualizada com sucesso.
 
   digital_classes:
+    index:
+      title: Digital Class Lessons
     update_members_and_roles_page:
       type: Tipo
       course: Curso
@@ -3213,3 +3215,4 @@ pt_BR:
       empty: É necessário selecionar turmas para criação de diretório no Digital Class.
     success_message: Alocações atualizadas com sucesso no Digital Class.
     general_message: Não foi possível realizar a ação. Favor entrar em contato com atendimento@virtual.ufc.br
+    no_data: Nenhuma Digital Class Lesson disponível.

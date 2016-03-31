@@ -2961,6 +2961,8 @@ en_US:
       updated:  Answer was sucessfully updated.
 
   digital_classes:
+    index:
+      title: Digital Class Lessons
     update_members_and_roles_page:
       type: Type
       course: Course
@@ -2978,3 +2980,4 @@ en_US:
       empty: It's mandatory choose groups to create a Digital Class directory.
     success_message: Successfully updated allocations at Digital Class.
     general_message: It was not possible to execute this action. Please contact atendimento@virtual.ufc.br
+    no_data: No Digital Class Lesson available.

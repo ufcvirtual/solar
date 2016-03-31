@@ -114,6 +114,11 @@ class DigitalClass < ActiveRecord::Base
     raise error
   end
 
+  def self.list_lessons_from_directory
+    #DigitalClass.call('users_with_id', { user_id: dc_user_id, role: user.get_digital_class_role }, ['user_id'], :put)
+
+  end
+
   private
 
     def self.access_token
