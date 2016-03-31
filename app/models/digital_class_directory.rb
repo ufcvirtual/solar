@@ -5,8 +5,6 @@ class DigitalClassDirectory < ActiveRecord::Base
 
   validate :verify_taggable
 
-  attr_accessor :groups_ids
-
   def verify_taggable
     errors.add(:related_taggable_id, 'so pode para turma') if related_taggable.group_id.nil?
     other_taggables = DigitalClassDirectory.where(directory_id: directory_id).map(&:related_taggable)
