@@ -1,0 +1,30 @@
+.new_digital_class_form
+
+  = simple_form_for :digital_class, html: { id: 'digital_class_form' } do |f|
+    %h1#lightBoxDialogTitle= t(".new")#)(@digital_class.persisted? ? ".edit" : 
+    %span.form_requirement= t(:required_fields)
+
+    .digital_class_form
+    = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+
+    .form-inputs.block_content
+      = f.input :name, required: true
+      = f.input :description, required: true, as: :text
+
+      = render "groups/codes"
+
+      .right_buttons
+        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+        = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "save"
+       
+
+:javascript
+  jQuery(function($){
+   $('#save').click(function(){
+        $('#digital_class_form:last').serialize_and_submit({
+          files: true,
+          replace_list: $(".list_digital_classes")
+        });
+      });
+  });  
+  

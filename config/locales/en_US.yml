@@ -707,6 +707,7 @@ en_US:
   lesson_without_url: no url defined
   since: Since
   no_end_date: 'On'
+
   lessons:
     curriculum_unit_not_selected: Subject not selected
     no_data: Could not open lesson
@@ -1927,6 +1928,7 @@ en_US:
       no_permission_info: You don't have permission at any action with the choosen data
       application: Application
       edit_content: Edit content
+      digital_class: Digital Class
     success:
       saved: Saved successfully
       deleted: Deleted successfully

@@ -28,7 +28,6 @@ class SupportMaterialFilesController < ApplicationController
 
   def new
     authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
     @support_material = SupportMaterialFile.new material_type: params[:material_type]
   end
 

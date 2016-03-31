@@ -1,0 +1,59 @@
+$(function(){
+
+  $('#all_digital_classes').nice_checkbox();
+
+  $('#new_digital_class').call_fancybox();
+
+  $('.edit_digital_class').click(function() {
+      if ($(this).attr('disabled') == 'disabled'){
+        flash_message("<%=I18n.t(:choose_one, scope: [:digital_class, :list])%>", "alert");
+        return false;
+      }
+
+      var digital_classes_ids = $('.ckb_digital_class:checked', $(this).parents("div.list_digital_classes")).map(function() { return this.value; }).get();
+      if (!(!digital_classes_ids.length || digital_classes_ids.length > 1)) {
+        var url_edit = $(this).data('link-to-edit').replace(':id', digital_classes_ids);
+        $(this).call_fancybox({href : url_edit, open: true});
+      }
+      return false;
+    });
+
+    $('.delete_digital_class').click(function() {
+      if ($(this).attr('disabled') == 'disabled'){
+        flash_message("<%=I18n.t(:choose_at_least_one, scope: [:digital_class, :list])%>", "alert");
+        return false;
+      }
+
+      if (!confirm("<%=I18n.t(:message_confirm)%>"))
+        return false;
+
+      var digital_classes = $('.ckb_digital_class:checked', $(this).parents("div.list_digital_classes"));
+      var digital_classes_ids = digital_classes.map(function() { return this.value; }).get();
+      if (digital_classes_ids.length) {
+        $.delete($(this).data('link-delete').replace(':id', digital_classes_ids), function(data){
+          flash_message(data.notice, 'notice');
+          digital_classes.parents('tr').fadeOut().remove();
+
+          $(".btn_edit, .btn_del").attr("disabled", true);
+        }).error(function(data){
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+        });
+      }
+
+      return false;
+    });
+
+    $(".expand, .compress").click(function(){
+      $(this).parent().hide();
+      $($(this).parent().siblings()[0]).show();
+    });
+
+  });
+
+  function delete_file(button){
+    $(button).nice_delete({
+      parent: 'tr.lines'
+    });
+}    

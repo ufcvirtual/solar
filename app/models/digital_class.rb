@@ -1,5 +1,6 @@
 require 'rest_client'
 class DigitalClass < ActiveRecord::Base
+  GROUP_PERMISSION = true
     
   DC = YAML::load(File.open("config/digital_class.yml"))[Rails.env.to_s] rescue nil if File.exist?("config/digital_class.yml")
 

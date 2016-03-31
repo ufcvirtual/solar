@@ -78,6 +78,13 @@
             = link_to content_tag(:i, nil, class: 'icon-homework big'), '#', class: 'btn'
             = link_to t('.assignment'), '#'
 
+      - if @user_profiles.include?(digital_classes: :list) && DigitalClass.constants.include?("#{@selected}_PERMISSION".to_sym)
+        .uc_item
+          .digital_class{ :"data-link" => list_digital_classes_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id) }
+            = link_to content_tag(:i, nil, class: 'icon-class big'), '#', class: 'btn'
+            = link_to t('.digital_class'), '#'
+
+
 = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 = hidden_field_tag :selected, @selected
 = hidden_field_tag :offer_id, @offer_id

@@ -208,6 +208,7 @@ pt_BR:
       question: Questão
       question_item: Item
       question_image: Imagem
+      digital_class: Digital Class
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -2131,6 +2132,7 @@ pt_BR:
       edition_of: Edição de %{of}
       in_development: Em desenvolvimento
       no_permission_info: Você não possui permissão em nenhuma ação para os dados escolhidos
+      digital_class: Digital Class
       # EDX_items
       application: Aplicação
       edit_content: Editar conteúdo
