@@ -11,6 +11,10 @@ material_conteudo:
   menu_id: 102
   context_id: 2
 
+aulas_digital_class:
+  menu_id: 103
+  context_id: 2
+
 # MENU PAI - 20
 atividades:
   menu_id: 20
@@ -139,6 +143,10 @@ admin_blacklist:
 
 admin_webconference:
   menu_id: 612
+  context_id: 1
+
+admin_digital_class:
+  menu_id: 613
   context_id: 1
 
 # MENU PAI - 70

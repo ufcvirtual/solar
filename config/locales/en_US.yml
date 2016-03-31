@@ -1211,6 +1211,8 @@ en_US:
   uri_too_long: "Information quantity too large. Reduce the quantity of data passed"
   cant_build_page: Wasn't possible to access informed page
   hidden_info: Hidden information
+
+  menu_dc_lesson: Digital Class
   menu_content: Content
   menu_lesson: Lessons
   menu_support_material: Support Material
@@ -1257,6 +1259,7 @@ en_US:
   menu_admin_import_users: Importing users
   menu_admin_blacklist: Blacklist
   menu_admin_webconference: Preview Webconferences
+  menu_admin_digital_class: Update Digital Class participants
   menu_responsibles: Consult Responsibles
   menu_home: Home
 
@@ -2956,3 +2959,22 @@ en_US:
   exam_responses:
     success:
       updated:  Answer was sucessfully updated.
+
+  digital_classes:
+    update_members_and_roles_page:
+      type: Type
+      course: Course
+      curriculum_unit: Curriculum Unit
+      module: Module
+      semester: Semester
+      offer: Offer
+      group: Group
+      initial_date: Initial date*
+      update: Update
+      warning: '<b> Important: </b> After clicking on the update button, every user which allocation was changed between the initial day and today, will have his access verified and corrected. This action may take a while.'
+    error:
+      unavailable: Unavailable service. Please try again later.
+      500: There's been an error. Please contact atendimento@virtual.ufc.br
+      empty: It's mandatory choose groups to create a Digital Class directory.
+    success_message: Successfully updated allocations at Digital Class.
+    general_message: It was not possible to execute this action. Please contact atendimento@virtual.ufc.br

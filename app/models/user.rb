@@ -265,7 +265,9 @@ class User < ActiveRecord::Base
             AND
             resources.action = ?
             AND
-            resources.controller = ?"
+            resources.controller = ?
+            AND
+            allocations.status = #{Allocation_Activated}"
     sql << "AND
             allocations.allocation_tag_id IN (#{allocation_tag_id.join(',')})" unless allocation_tag_id.nil?
     sql << (count ? ') AS ids;' : ';')
@@ -560,9 +562,7 @@ class User < ActiveRecord::Base
     return (user_data.nil? ? nil : user_data[:string])
   end
 
-  # alocar usuario em uma allocation_tag
-
-  # profile, allocation_tags_ids, status
+  # alocar usuario em uma allocation_tag: profile, allocation_tags_ids, status
   def allocate_in(allocation_tag_ids: [], profile: Profile.student_profile, status: Allocation_Pending, by_user: nil)
     result = { success: [], error: [] }
     Allocation.transaction do
@@ -595,6 +595,24 @@ class User < ActiveRecord::Base
   def has_profile_type_at(allocation_tags_ids, profile_type = Profile_Type_Student)
     allocation_tags_ids = [allocation_tags_ids] unless allocation_tags_ids.class == Array
     Allocation.joins(:profile).where(status: Allocation_Activated, allocation_tag_id: allocation_tags_ids, user_id: id).where('cast(profiles.types & ? as boolean)', profile_type).any?
+  end
+
+  def verify_or_create_at_digital_class(available=nil)
+    return digital_class_user_id unless digital_class_user_id.nil?
+    return false unless (available.nil? ? DigitalClass.available? : available)
+    # if not student neither professor, won't create user
+    user = DigitalClass.call('users', { name: name, cpf: cpf, email: email, role: get_digital_class_role }, [], :post)
+    self.digital_class_user_id = user['id']
+    self.save(validate: false)
+    return digital_class_user_id
+  rescue => error
+    # if error 400, ja existe la
+  end
+
+  def get_digital_class_role
+    return 'professor' if profiles_with_access_on('create', 'digital_classes').any?
+    return 'student'   if profiles_with_access_on('access', 'digital_classes').any?
+    return nil
   end
 
   private

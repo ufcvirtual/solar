@@ -17,7 +17,7 @@ class EditionsController < ApplicationController
   # GET /editions/academic
   def academic
     authorize! :academic, Edition
-    @types = ((not(EDX.nil?) and EDX["integrated"]) ? CurriculumUnitType.all : CurriculumUnitType.where("id <> 7"))
+    @types = ((!EDX.nil? && EDX["integrated"]) ? CurriculumUnitType.all : CurriculumUnitType.where("id <> 7"))
     @type  = params[:type_id]
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized

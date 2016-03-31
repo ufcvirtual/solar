@@ -1077,3 +1077,51 @@ res209:
   controller: 'exams'
   action: "open"
   description: "Abrir prova (Visão do aluno)"
+
+res210:
+  id: 210
+  controller: 'digital_classes'
+  action: "update_members_and_roles"
+  description: "Atualizar participantes do Digital Class"
+
+res211:
+  id: 211
+  controller: 'digital_classes'
+  action: "create"
+  description: "Criar lição no Digital Class"
+
+res212:
+  id: 212
+  controller: 'digital_classes'
+  action: "index"
+  description: "Edição - Lista de lições do Digital Class"
+
+res213:
+  id: 213
+  controller: 'digital_classes'
+  action: "update"
+  description: "Editar lição no Digital Class"
+
+res214:
+  id: 214
+  controller: 'digital_classes'
+  action: "destroy"
+  description: "Remover lição no Digital Class"
+
+res215:
+  id: 215
+  controller: 'digital_classes'
+  action: "list"
+  description: "Listar lições do Digital Class para unidade curricular"
+
+res216:
+  id: 216
+  controller: 'digital_classes'
+  action: "access"
+  description: "Acessar Digital Class em um diretório"
+
+res217:
+  id: 217
+  controller: 'digital_classes'
+  action: 'index'
+  description: 'Ver Digital Class Lessons'

@@ -18,6 +18,13 @@ material_conteudo:
   order: 2
   resource_id: 54
 
+aulas_digital_class:
+  id: 103
+  parent_id: 10
+  name: menu_dc_lesson
+  order: 1
+  resource_id: 210
+
 # MENU PAI - 20
 atividades:
   id: 20
@@ -221,6 +228,13 @@ admin_webconference:
   name: menu_admin_webconference
   order: 12
   resource_id: 186
+
+admin_digital_class:
+  id: 613
+  parent_id: 60
+  name: menu_admin_digital_class
+  order: 13
+  resource_id: 210
 
 # MENU PAI - 70
 disco_virtual:
