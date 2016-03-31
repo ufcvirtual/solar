@@ -40,10 +40,13 @@ class DigitalClass < ActiveRecord::Base
       params.merge!(discipline: at[:curriculum_unit]) unless at[:curriculum_unit].nil?
       params.merge!(course: at[:course])              unless at[:course].nil?
       directories = DigitalClass.call('directories', params)
-      dc_user_id = user.verify_or_create_at_digital_class if directories.any?
-      directories.each do |directory|
-        member = DigitalClass.call('members_new', { directory_id: directory['id'], permission: permission, user_id: dc_user_id }, ['directory_id'], :post)
-        DigitalClass.call('members_update', { directory_id: directory['id'], permission: permission, user_id: dc_user_id }, ['directory_id'], :put)  if member['permission'] != permission
+      if directories.any?
+        dc_user_id = user.verify_or_create_at_digital_class 
+        DigitalClass.call('users_with_id', { user_id: dc_user_id, role: user.get_digital_class_role }, ['user_id'], :put)
+        directories.each do |directory|
+          member = DigitalClass.call('members_new', { directory_id: directory['id'], permission: permission, user_id: dc_user_id }, ['directory_id'], :post)
+          DigitalClass.call('members_update', { directory_id: directory['id'], permission: permission, user_id: dc_user_id }, ['directory_id'], :put)  if member['permission'] != permission
+        end
       end
     end
   end
