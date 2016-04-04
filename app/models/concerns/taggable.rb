@@ -164,4 +164,12 @@ module Taggable
     RelatedTaggable.related(self, options)
   end
 
+  def update_digital_class(ignore_changes=false)
+    DigitalClass.update_taggable(self, ignore_changes)
+  end
+
+  def self.descendants
+    ObjectSpace.each_object(Class).select { |klass| klass < self }
+  end
+
 end

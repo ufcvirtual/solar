@@ -2,6 +2,7 @@ class Semester < ActiveRecord::Base
 
   has_many :offers
   has_many :groups, through: :offers
+  has_many :related_taggables
 
   belongs_to :offer_schedule, class_name: "Schedule", foreign_key: "offer_schedule_id"
   belongs_to :enrollment_schedule, class_name: "Schedule", foreign_key: "enrollment_schedule_id"
@@ -14,6 +15,8 @@ class Semester < ActiveRecord::Base
   validate :check_period
 
   accepts_nested_attributes_for :offer_schedule, :enrollment_schedule, allow_destroy: true
+
+  after_save :update_digital_class, if: "!new_record? && name_changed?", on: :update
 
   attr_accessor :type_id, :verify_current_date
 
@@ -75,6 +78,10 @@ class Semester < ActiveRecord::Base
     semesters_of_current_offers = Offer.currents({year: year, object: true, curriculum_unit_type_id: params[:type_id], course_id: params[:course_id], curriculum_unit_id: params[:uc_id]}).where(query.join(" AND ")).map(&:semester)
 
     return (current_semesters + semesters_of_current_offers).uniq
+  end
+
+  def update_digital_class(ignore_changes=false)
+    DigitalClass.update_taggable(self, ignore_changes)
   end
 
 end

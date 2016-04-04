@@ -13,12 +13,12 @@ class DigitalClassDirectory < ActiveRecord::Base
 
   def self.get_directories_by_allocation_tag(allocation_tag)
     column = "#{allocation_tag.refer_to}_id"
-    DigitalClassDirectory.joins(:related_taggable).where(related_taggables: { column => allocation_tag.send(column) })
+    DigitalClassDirectory.joins(:related_taggable).where(related_taggables: { column => allocation_tag.send(column) }).uniq
   end
 
   def self.get_directories_by_object(object)
-    column = "#{object.class.tableize.singularize}_id"
-    DigitalClassDirectory.joins(:related_taggable).where(related_taggables: { column => allocation_tag.send(column) })
+    column = "#{object.class.to_s.tableize.singularize}_id"
+    DigitalClassDirectory.joins(:related_taggable).where(related_taggables: { column => object.id }).uniq
   end
 
   def self.get_params_to_directory(directory_id)

@@ -13,6 +13,8 @@ class Course < ActiveRecord::Base
 
   validates_length_of :code, maximum: 40
 
+  after_save :update_digital_class, if: "!new_record? && (code_changed? || name_changed?)", on: :update
+
   attr_accessor :edx_course, :courses_names
 
   def any_lower_association?

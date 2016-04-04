@@ -1119,9 +1119,3 @@ res216:
   controller: 'digital_classes'
   action: "access"
   description: "Acessar Digital Class em um diretório"
-
-res217:
-  id: 217
-  controller: 'digital_classes'
-  action: 'index'
-  description: 'Ver Digital Class Lessons'

@@ -33,6 +33,8 @@ class Offer < ActiveRecord::Base
 
   accepts_nested_attributes_for :period_schedule, :enrollment_schedule, reject_if: proc { |s| s[:start_date].blank? && s[:end_date].blank? }, allow_destroy: true
 
+  after_save :update_digital_class, if: "!new_record? && curriculum_unit_id_changed? || course_id_changed?", on: :update
+
   attr_accessor :type_id, :verify_current_date
 
   def must_be_unique

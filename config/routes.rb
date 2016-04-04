@@ -313,8 +313,8 @@ Solar::Application.routes.draw do
 
   get :lesson_files, to: "lesson_files#index", as: :lesson_files
 
-  #Digital Class
-  resources :digital_classes do
+  # Digital Class
+  resources :digital_classes, except: :show do
     collection do
       get :list
       get :list_without_layout, to: :list, defaults: { layout: true }
@@ -323,6 +323,9 @@ Solar::Application.routes.draw do
       put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: "remove", tool_type: "DigitalClass", as: :remove_group_from
       put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: "add"   , tool_type: "DigitalClass", as: :add_group_to
       get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "DigitalClass", as: :group_tags_from
+
+      get :update_members_and_roles, to: :update_members_and_roles_page
+      put :update_members_and_roles
     end
   end
 
@@ -581,13 +584,6 @@ Solar::Application.routes.draw do
     member do
       put :remove_record
       get :get_record
-    end
-  end
-
-  resources :digital_classes do
-    collection do
-      get :update_members_and_roles_page
-      put :update_members_and_roles
     end
   end
 

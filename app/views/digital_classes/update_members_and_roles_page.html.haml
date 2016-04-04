@@ -1,0 +1,87 @@
+= stylesheet_link_tag 'autocomplete'
+= javascript_include_tag 'autocomplete', 'edition'
+
+.title-warning
+  = raw t('.warning')
+  
+%form
+  .edition.block_content
+    %fieldset#allocation_tag_selection
+      %p= t(:required_fields)
+      .filter
+        .initial_date
+          = label_tag :initial_date, t('.initial_date')
+          = text_field_tag :initial_date, Date.today
+        .curriculum_unit_type
+          = label_tag :curriculum_unit_type, t('.type')
+          = select_tag :curriculum_unit_type, options_from_collection_for_select(@types, 'id', 'description'), include_blank: true, :'data-optional' => true
+
+        .course
+          = label_tag :course, t('.course')
+          = select_tag :course, nil, :'data-optional' => true
+
+        .curriculum_unit
+          = label_tag :curriculum_unit, t('.curriculum_unit')
+          = select_tag :curriculum_unit, nil, :'data-optional' => true
+
+        .semester
+          = label_tag :semester, t('.semester')
+          = select_tag :semester, nil, :'data-optional' => true, :'data-permit-offer' => true
+
+        .offer_groups_options
+          .radio_options
+            = radio_button :radio, :option, 'offer', disabled: true
+            = label_tag :option_offer, t('.offer')
+
+            = radio_button :radio, :option, 'group', disabled: true
+            = label_tag :option_group, t('.group')
+          .groups
+
+        = link_to_function t('.update'), 'update(this)', { class: 'btn btn_main', id: 'digital_class_update', :"data-url" => update_members_and_roles_digital_classes_path }
+
+
+:javascript
+  $(function(){
+    var options = $.extend($.datepicker.regional['<%=I18n.locale%>']);
+
+    $('#initial_date').datepicker( $.extend({}, options) );
+
+    $('#initial_date').blur(function(){
+      if ($(this).datepicker("getDate") == null)
+        $(this).datepicker("setDate", new Date());
+    });
+
+    $("#initial_date").mask("#{I18n.t(:mask, scope: "date.formats")}");
+  });
+
+  function update(link){
+    erase_flash_messages();
+    var combos  = $('.filter:last select');
+
+    if (combos.length) {
+      var combos = combos.map(function(){ if (!$(this).is_empty()) return $(this).prop('name')+'_id: ' + '"' + $(this).combobox("value") + '"'; }).toArray().join(', ');
+      if ($('[name="curriculum_unit_type"]:last').val() != undefined)
+        combos    += ', curriculum_unit_type_id: "' + $('[name="curriculum_unit_type"]:last').val() + '"';
+      var data   = eval("({" + combos + "})"); // transformando os valores dos filtros em json
+
+      if (typeof(options) != "undefined" && typeof(options.data_function) == "function") {
+        if(options.data_function().radio_option == "group" && !options.data_function().groups_id.length){
+          flash_message("<%= I18n.t(:alert, scope: [:editions]) %>", "alert");
+          $('.' + load_to + ':first').html('');
+          return false;
+        }
+
+        data = $.extend(data, {radio_option: $(".edition:last [name='radio[option]']:checked").val()});
+        data = $.extend(data, {groups_id: $('.edition:last [name="group[group_id][]0"]:checked').map(function(){ return $(this).val() }).get().join(" ")});
+      }
+
+      data = $.extend(data, {initial_date: $('#initial_date').val()});
+      $.put($(link).data('url'), data, function(data){
+        flash_message(data.notice, 'notice');
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      });
+    }
+  }
