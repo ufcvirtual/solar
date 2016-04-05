@@ -33,23 +33,38 @@ class DigitalClassDirectory < ActiveRecord::Base
     rt.info.merge!(tags: [rts.map(&:group).map(&:code), rt.semester.name, rt.curriculum_unit_type.description].flatten.uniq.join(','))
   end
 
+  def self.get_directories_by_related_taggables(rts)
+    rts = rts.map(&:id)
+    DigitalClassDirectory.find_by_sql <<-SQL
+      SELECT DISTINCT dcd1.directory_id, dcd2.count
+      FROM digital_class_directories dcd1
+      JOIN (
+        SELECT DISTINCT dcd.directory_id, COUNT(dcd.directory_id) AS count
+        FROM digital_class_directories dcd
+        WHERE related_taggable_id IN (#{rts.join(',')})
+        GROUP BY dcd.directory_id
+      ) dcd2 ON dcd2.directory_id = dcd1.directory_id
+      WHERE dcd2.count = #{rts.count};
+    SQL
+  end
+
   def self.create_directory(groups_ids=[])
     name = "Diretório Solar" # definir nome padrao
     raise 'empty' if groups_ids.empty?
 
     ActiveRecord::Base.transaction do
       rts = RelatedTaggable.where(group_id: groups_ids)
-      rt  = rts.first
-      params = rt.info.merge!(tags: [rts.map(&:group).map(&:code), rt.semester.name, rt.curriculum_unit_type.description].flatten.uniq.join(',')) 
-      directory = DigitalClass.call('directories', params.merge!({ name: name }))
-      if directory.empty?
+      directories = DigitalClassDirectory.get_directories_by_related_taggables(rts)
+      if directories.empty?
+        rt  = rts.first
+        params = rt.info.merge!(tags: [rts.map(&:group).map(&:code), rt.semester.name, rt.curriculum_unit_type.description].flatten.uniq.join(',')) 
         directory = DigitalClass.call('directories', params.merge!({ name: name }), [], :post) 
         dir_id = directory['id'].to_i
         rts.each do |rt|
           DigitalClassDirectory.create related_taggable_id: rt.id, directory_id: dir_id
         end
       else
-        dir_id = directory.first['id'].to_i
+        dir_id = directories.first.id.to_i
       end
       dir_id
     end
