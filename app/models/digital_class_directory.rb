@@ -54,6 +54,7 @@ class DigitalClassDirectory < ActiveRecord::Base
 
     ActiveRecord::Base.transaction do
       rts = RelatedTaggable.where(group_id: groups_ids)
+      raise 'diff' if rts.map(&:offer_id).uniq.size > 1
       directories = DigitalClassDirectory.get_directories_by_related_taggables(rts)
       if directories.empty?
         rt  = rts.first
@@ -64,7 +65,7 @@ class DigitalClassDirectory < ActiveRecord::Base
           DigitalClassDirectory.create related_taggable_id: rt.id, directory_id: dir_id
         end
       else
-        dir_id = directories.first.id.to_i
+        dir_id = directories.first['directory_id'].to_i
       end
       dir_id
     end
