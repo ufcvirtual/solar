@@ -34,6 +34,8 @@ function update_combobox(url, combobox){
 }
 
 function data_optional(combo_name, optional){
+  if(!!$("[name='curriculum_unit_type']:last").data("optional"))
+    optional = true;
   $("[name='"+combo_name+"']:last").attr("data-optional", optional); // defines data-optional as informed
   var label = $($("label[for='"+combo_name+"']:last")[0]);
   var new_label = label.html().split("*");
