@@ -1,13 +1,18 @@
 require 'rest_client'
 class DigitalClass < ActiveRecord::Base
   GROUP_PERMISSION = true
-    
+
   DC = YAML::load(File.open("config/digital_class.yml"))[Rails.env.to_s] rescue nil if File.exist?("config/digital_class.yml")
 
   def self.available?
     (!DC.nil? && DC["integrated"] && !RestClient.get(DC["path"]).nil?)
-  rescue
+  rescue => error
+    DigitalClass.log_info('ERROR', [], "[Server Unavailable] Message: #{error}")
     false # servidor indisponivel
+  end
+
+  def self.dc_logger
+    Logger.new(DC['log'])
   end
 
   def self.call(path, params={}, replace=[], method=:get)
@@ -22,8 +27,13 @@ class DigitalClass < ActiveRecord::Base
       RestClient.send(method, url, { access_token: self.access_token }.merge!(params), { accept: :json, content_type: 'x-www-form-urlencoded' })
     end
 
-    JSON.parse(res.body)
+    response = JSON.parse(res.body)
+
+    DigitalClass.log_info('SUCCESS', [method, path], "Params: #{params} Replace Params: #{replace.join(', ')} Return: #{response}")
+
+    response
   rescue => error
+    DigitalClass.log_info('ERROR', [method, path], "Params: #{params} Replace Params: #{replace.join(', ')} Error Code: #{error.try(:response).try(:code)} Error Message: #{error.try(:response).try(:body)}")
     return error.response.code # indisponivel ou erro na chamada
   end
 
@@ -157,7 +167,6 @@ class DigitalClass < ActiveRecord::Base
     dirs.each do |dir_id|
       DigitalClass.call('directories_with_id', { directory_id: dir_id }.merge!(DigitalClassDirectory.get_params_to_directory(dir_id)), ['directory_id'], :put)
     end
-
   rescue => error
     DigitalClass.rescue_ignore_changes(ignore_changes, error)
   end
@@ -169,11 +178,21 @@ class DigitalClass < ActiveRecord::Base
     end
 
     def self.rescue_ignore_changes(ignore_changes, error)
-      if ignore_changes 
+      if ignore_changes
+        DigitalClass.log_info('ERROR', [], "Message: #{error}")
         raise error
       else 
         return false # nothing happens
       end
     end
 
+    def self.log_info(type, info=[], text='')
+      log = []
+      log << "\n#{Time.now} [#{type}]"
+      info.each do |i|
+        log << "[#{i}]"
+      end
+      log << text
+      DigitalClass.dc_logger.info log.join(' ')
+    end
 end
