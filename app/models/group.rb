@@ -96,7 +96,7 @@ class Group < ActiveRecord::Base
     directory = DigitalClass.call('directories', { name: code, discipline: curriculum_unit.code_name, course: course.code_name, tags: [semester.name, curriculum_unit_type.description].join(',') }, [], :post)
     self.digital_class_directory_id = directory['id']
     self.save(validate: false)
-    return digital_class_user_id
+    return digital_class_directory_id
   rescue => error
     raise "#{error}"
     # if error 400, ja existe la
