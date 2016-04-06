@@ -90,6 +90,22 @@ class Group < ActiveRecord::Base
     LogAccess.joins(:allocation_tag).joins('LEFT JOIN merges ON merges.main_group_id = allocation_tags.group_id OR merges.secundary_group_id = allocation_tags.group_id').where(query.join(' AND ')).uniq
   end
 
+  def verify_or_create_at_digital_class(available=nil)
+    return digital_class_directory_id unless digital_class_directory_id.nil?
+    return false unless (available.nil? ? DigitalClass.available? : available)
+    directory = DigitalClass.call('directories', { name: code, discipline: curriculum_unit.code_name, course: course.code_name, tags: [semester.name, curriculum_unit_type.description].join(',') }, [], :post)
+    self.digital_class_directory_id = directory['id']
+    self.save(validate: false)
+    return digital_class_user_id
+  rescue => error
+    raise "#{error}"
+    # if error 400, ja existe la
+  end
+
+  def self.verify_or_create_at_digital_class(groups)
+    groups.collect{ |group| group.verify_or_create_at_digital_class }
+  end
+
   trigger.after(:update).of(:offer_id, :status) do
     <<-SQL
       UPDATE related_taggables
