@@ -43,7 +43,7 @@ class DigitalClass < ActiveRecord::Base
     read_access  = user.profiles_with_access_on('access', 'digital_classes', related_at).any?
     if write_access || read_access
       permission = (write_access ? 'write' : 'read')
-      directories = DigitalClassDirectory.get_directories_by_allocation_tag(allocation_tag).map(&:directory_id)
+      directories = DigitalClass.get_directories_by_allocation_tag(allocation_tag)
       if directories.any?
         dc_user_id = user.verify_or_create_at_digital_class 
         DigitalClass.call('users_with_id', { user_id: dc_user_id, role: user.get_digital_class_role }, ['user_id'], :put)
@@ -58,20 +58,21 @@ class DigitalClass < ActiveRecord::Base
   def self.update_members(allocation, ignore_changes=false)
     return false unless ignore_changes || DigitalClass.available?
     return false unless (!allocation.new_record? && ((allocation.status_changed? && allocation.status_was == Allocation_Activated) || allocation.profile_id_changed?)) || ignore_changes
+    return false if (user_dc_id = allocation.user.verify_or_create_at_digital_class).nil?
 
     related_at   = allocation.allocation_tag.related
     write_access = allocation.user.profiles_with_access_on('create', 'digital_classes', related_at).any?
     read_access  = allocation.user.profiles_with_access_on('access', 'digital_classes', related_at).any?
 
-    directories = DigitalClassDirectory.get_directories_by_allocation_tag(allocation.allocation_tag).map(&:directory_id)
+    directories = DigitalClass.get_directories_by_allocation_tag(allocation.allocation_tag).map(&:directory_id)
     
     if !write_access && !read_access # if have no write or read access
       directories.each do |dir_id|
-        DigitalClass.call('members_delete', { directory_id: dir_id, user_id: allocation.user.verify_or_create_at_digital_class }, ['directory_id'], :delete)
+        DigitalClass.call('members_delete', { directory_id: dir_id, user_id: user_dc_id }, ['directory_id'], :delete)
       end
     elsif (allocation.profile_id_changed? || ignore_changes) # if changes profile and still have write or read access
       directories.each do |dir_id|
-        DigitalClass.call('members_update', { directory_id: dir_id, permission: (write_access ? 'write' : 'read'), user_id: allocation.user.verify_or_create_at_digital_class }, ['directory_id'], :put)
+        DigitalClass.call('members_update', { directory_id: dir_id, permission: (write_access ? 'write' : 'read'), user_id: user_dc_id }, ['directory_id'], :put)
       end
     end
   rescue => error
@@ -81,6 +82,7 @@ class DigitalClass < ActiveRecord::Base
   def self.update_roles(allocation, professor_profiles=[], student_profiles=[], ignore_changes=false)
     return false unless ignore_changes || DigitalClass.available?
     return false unless (!allocation.new_record? && allocation.profile_id_changed?) || ignore_changes
+    return false if (user_dc_id = allocation.user.verify_or_create_at_digital_class).nil?
 
     professor_profiles = Profile.with_access_on('create', 'digital_classes') if professor_profiles.empty?
     student_profiles   = Profile.with_access_on('access', 'digital_classes') if student_profiles.empty?
@@ -88,7 +90,7 @@ class DigitalClass < ActiveRecord::Base
     new_profile_professor = professor_profiles.include?(allocation.profile_id)
     return false if professor_profiles.include?(allocation.profile_id_was) && new_profile_professor
 
-    DigitalClass.call('users_with_id', { user_id: allocation.user.verify_or_create_at_digital_class, role: (new_profile_professor ? 'professor' : allocation.user.get_digital_class_role) }, ['user_id'], :put)
+    DigitalClass.call('users_with_id', { user_id: user_dc_id, role: (new_profile_professor ? 'professor' : allocation.user.get_digital_class_role) }, ['user_id'], :put)
   rescue => error
     DigitalClass.rescue_ignore_changes(ignore_changes, error)
   end
@@ -163,12 +165,22 @@ class DigitalClass < ActiveRecord::Base
   def self.update_taggable(object, ignore_changes=false)
     return false unless ignore_changes || DigitalClass.available?
 
-    dirs = DigitalClassDirectory.get_directories_by_object(object).map(&:directory_id)
-    dirs.each do |dir_id|
-      DigitalClass.call('directories_with_id', { directory_id: dir_id }.merge!(DigitalClassDirectory.get_params_to_directory(dir_id)), ['directory_id'], :put)
+    groups = (object.class == Group ? [object] : object.groups)
+    groups.reject{ |g| g.digital_class_directory_id.blank? }.compact.each do |group|
+      DigitalClass.call('directories_with_id', { directory_id: group.digital_class_directory_id }.merge!(group.params_to_directory), ['directory_id'], :put)
     end
   rescue => error
     DigitalClass.rescue_ignore_changes(ignore_changes, error)
+  end
+
+  def self.get_directories_by_allocation_tag(allocation_tag)
+    column = "#{allocation_tag.refer_to}_id"
+    Group.joins(:related_taggables).where(related_taggables: { column => allocation_tag.send(column) }).uniq.map(&:digital_class_directory_id).compact
+  end
+
+  def self.get_directories_by_object(object)
+    column = "#{object.class.to_s.tableize.singularize}_id"
+    Group.joins(:related_taggables).where(related_taggables: { column => object.id }).uniq.map(&:digital_class_directory_id).compact
   end
 
   private

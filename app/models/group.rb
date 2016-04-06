@@ -93,13 +93,17 @@ class Group < ActiveRecord::Base
   def verify_or_create_at_digital_class(available=nil)
     return digital_class_directory_id unless digital_class_directory_id.nil?
     return false unless (available.nil? ? DigitalClass.available? : available)
-    directory = DigitalClass.call('directories', { name: code, discipline: curriculum_unit.code_name, course: course.code_name, tags: [semester.name, curriculum_unit_type.description].join(',') }, [], :post)
+    directory = DigitalClass.call('directories', params_to_directory, [], :post)
     self.digital_class_directory_id = directory['id']
     self.save(validate: false)
     return digital_class_directory_id
   rescue => error
     raise "#{error}"
     # if error 400, ja existe la
+  end
+
+  def params_to_directory
+    { name: code, discipline: curriculum_unit.code_name, course: course.code_name, tags: [semester.name, curriculum_unit_type.description].join(',') }
   end
 
   def self.verify_or_create_at_digital_class(groups)
