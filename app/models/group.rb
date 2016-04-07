@@ -25,6 +25,8 @@ class Group < ActiveRecord::Base
 
   validates_length_of :code, maximum: 40
 
+  validates :digital_class_directory_id, uniqueness: true
+
   after_save :update_digital_class, if: "code_changed?"
 
   def code_semester
