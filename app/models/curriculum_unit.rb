@@ -17,7 +17,7 @@ class CurriculumUnit < ActiveRecord::Base
   validates :name, :curriculum_unit_type, :resume, :syllabus, :objectives, :code, presence: true
   validates :passing_grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true}
 
-  after_save :update_digital_class, if: "!new_record? && (code_changed? || name_changed?)", on: :update
+  after_save :update_digital_class, if: "code_changed? || name_changed?"
 
   def any_lower_association?
     offers.count > 0

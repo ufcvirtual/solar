@@ -25,7 +25,7 @@ class Group < ActiveRecord::Base
 
   validates_length_of :code, maximum: 40
 
-  after_save :update_digital_class, if: "!new_record? && code_changed?", on: :update
+  after_save :update_digital_class, if: "code_changed?"
 
   def code_semester
     "#{code} - #{offer.semester.name}"
