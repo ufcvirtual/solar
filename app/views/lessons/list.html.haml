@@ -32,11 +32,6 @@
       $($(this).parent().siblings()[0]).show();
     });
 
-    $("a.lesson").click(function(e){
-      e.preventDefault();
-      $(this).nice_open_lesson();
-    });
-
     $(".btn_edit, .btn_del, .release_lessons, .download_lesson_zip, .manage_files_lesson").attr("disabled", true);
 
     $(".link_new_lesson, .link_new_module, .edit_module").call_fancybox({

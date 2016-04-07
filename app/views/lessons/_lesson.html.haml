@@ -1,11 +1,12 @@
 - path = (@not_offer_area ? open_lesson_path(lesson.id, allocation_tags_ids: @allocation_tags_ids, offer_id: @offer.id) : open_lesson_path(lesson.id))
 %td
   - if lesson.closed?
-    = (@not_offer_area ? (link_to lesson.name, path, class: "link_content lesson", "data-fancybox-type" => "iframe") : lesson.name)
+    = (@not_offer_area ? (link_to_function lesson.name, 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path) : lesson.name)
     = "(#{t(:lesson_closed_short)})"
   - else
     - unless lesson.address.blank?
-      = link_to lesson.name, path, class: 'link_content lesson', :'data-fancybox-type' => 'iframe'
+      = link_to_function lesson.name, 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path
+
       - if lesson.is_draft?
         .test_lesson= "(#{t(:lesson_test)})"
       - if lesson.will_open?
@@ -38,14 +39,13 @@
 
 :javascript
   $(function(){
-    $("a.lesson").click(function(e){
-      e.preventDefault();
-      $(this).nice_open_lesson();
-    });
-
     $('a.notes').click(function(){
       var url = $(this).data('link');
       $(this).call_fancybox({ href: url, open: true });
-
     });
   });
+
+  function open_lesson(obj){
+    var url = $(obj).data('url');
+    $(obj).nice_open_lesson({ href: url });
+  }

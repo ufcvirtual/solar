@@ -63,3 +63,9 @@
 
 - else
   .block_content.block_content_text= t(:none, scope: [:lesson_modules])
+
+:javascript
+  function open_lesson(obj){
+    var url = $(obj).data('url');
+    $(obj).nice_open_lesson({ href: url });
+  }
