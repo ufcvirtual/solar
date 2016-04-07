@@ -1,5 +1,6 @@
 class DigitalClassesController < ApplicationController
 
+  include EdxHelper
   include SysLog::Actions
 
   before_filter :prepare_for_group_selection, only: :list

@@ -64,11 +64,12 @@ class DigitalClass < ActiveRecord::Base
     write_access = allocation.user.profiles_with_access_on('create', 'digital_classes', related_at).any?
     read_access  = allocation.user.profiles_with_access_on('access', 'digital_classes', related_at).any?
 
-    directories = DigitalClass.get_directories_by_allocation_tag(allocation.allocation_tag).map(&:directory_id)
-    
+    directories = DigitalClass.get_directories_by_allocation_tag(allocation.allocation_tag)
+
     if !write_access && !read_access # if have no write or read access
       directories.each do |dir_id|
         DigitalClass.call('members_delete', { directory_id: dir_id, user_id: user_dc_id }, ['directory_id'], :delete)
+        DigitalClass.call('users_with_id', { user_id: user_dc_id, role: (allocation.user.get_digital_class_role rescue 'student') }, ['user_id'], :put)
       end
     elsif (allocation.profile_id_changed? || ignore_changes) # if changes profile and still have write or read access
       directories.each do |dir_id|
@@ -126,7 +127,8 @@ class DigitalClass < ActiveRecord::Base
     DigitalClass.update_multiple_taggables(Taggable.descendants.map{|model| model.joins(:allocation_tag).where(query2)})
     DigitalClass.update_multiple_taggables(Semester.joins(:related_taggables).where(query1).where(query3))
 
-    DigitalClass.update_multiple_allocations(Allocation.joins(:allocation_tag).where(query2))
+    query2[0] = query2[0].gsub('updated_at', 'allocations.updated_at')
+    DigitalClass.update_multiple_allocations(Allocation.joins(:allocation_tag, :user).where(query2).where('users.digital_class_user_id IS NOT NULL'))
   rescue => error
     raise error
   end
@@ -137,12 +139,6 @@ class DigitalClass < ActiveRecord::Base
     allocations.each do |allocation|
       allocation.update_digital_class_members(true)
       allocation.update_digital_class_user_role(professor_profiles, student_profiles, true)
-    end
-  end
-
-  def self.update_multiple_users(users)
-    users.each do |user|
-      user.update_digital_class_user(true)
     end
   end
 
