@@ -3198,6 +3198,10 @@ pt_BR:
   digital_classes:
     index:
       title: Digital Class Lessons
+      name: Nome
+      description: Descrição
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
     update_members_and_roles_page:
       type: Tipo
       course: Curso

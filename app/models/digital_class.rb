@@ -154,10 +154,6 @@ class DigitalClass < ActiveRecord::Base
     end
   end
 
-  def self.list_lessons_from_directory
-    #DigitalClass.call('users_with_id', { user_id: dc_user_id, role: user.get_digital_class_role }, ['user_id'], :put)
-  end
-
   def self.update_taggable(object, ignore_changes=false)
     return false unless ignore_changes || DigitalClass.available?
 
@@ -177,10 +173,13 @@ class DigitalClass < ActiveRecord::Base
   def self.get_directories_by_object(object)
     column = "#{object.class.to_s.tableize.singularize}_id"
     Group.joins(:related_taggables).where(related_taggables: { column => object.id }).uniq.map(&:digital_class_directory_id).compact
+
+  def self.get_lessons_by_directory(directory_id)
+    raise
+    DigitalClass.call('lessons_by_directory', { directory_id: directory_id }, ['directory_id'], :get)
   end
 
   private
-
     def self.access_token
       File.open(DC["token_path"], &:readline).strip
     end
@@ -203,4 +202,6 @@ class DigitalClass < ActiveRecord::Base
       log << text
       DigitalClass.dc_logger.info log.join(' ')
     end
+  end
+
 end

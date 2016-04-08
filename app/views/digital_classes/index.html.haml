@@ -1,26 +1,27 @@
 .block_title
   %h2= t(".title")
 
-
 .block_content
   - unless @digital_class.blank? || @digital_class.nil?
     %table.tb_list
       %thead
         %tr.lines
-          %th{ align: 'left' }=t(:item, scope: [:bibliographies, :list])
-          %th{ align: 'center', style: 'width: 15%;' }=t(:type, scope: [:bibliographies, :list])
+          %th{ align: 'left' }=t(:name, scope: [:digital_classes])
+          %th{ align: 'center', style: 'width: 15%;' }=t(:description, scope: [:digital_classes])
       %tbody
-        - @bibliographies.each do |bibliography|
-          %tr.lines{ id: "tr_#{bibliography.id}" }
+        - @digital_class.each do |dc|
+          %tr.lines
+          -#'{ id: "tr_#{lesson.id}" }
+            %td= dc["name"]
             %td
-              - resume = bibliography.resume
-              - if bibliography.is_file?
-                = link_to image_tag(icon_attachment(bibliography.attachment_file_name)), download_bibliography_path(bibliography), class: 'file_icon'
-                = link_to resume, download_bibliography_path(bibliography), class: 'file_icon'
-              - else
-                =raw resume
-            %td= bibliography.type
-
+              .description
+                .minimun
+                  = simple_format(dc.description.truncate(200))
+                  - if dc.description.size>200
+                    = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('dc.index.expand_description'))
+                .complete.invisible
+                  = simple_format(dc.description)
+                  = content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('dc.index.compress_description'))
 
   - else
     .block_content_text.block_content_text_list.text_none= t(:no_data, scope: [:digital_classes])

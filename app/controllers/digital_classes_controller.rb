@@ -54,12 +54,12 @@ class DigitalClassesController < ApplicationController
   end
 
   def index
-    allocation_tags = AllocationTag.get_by_params(params)
-    authorize! :update_members_and_roles_page, DigitalClass, { on: allocation_tags[:allocation_tags].compact, accepts_general_profile: true }
+		allocation_tag_ids = (active_tab[:url].include?(:allocation_tag_id)) ? active_tab[:url][:allocation_tag_id] : AllocationTag.find_by_group_id(params[:group_id] || []).id
+		authorize! :index, DigitalClass, { on: allocation_tag_ids }
 
-    puts allocation_tags
-    
-    @digital_class = nil
+		dc_directory_id = DigitalClass.get_directories_by_allocation_tag(AllocationTag.find_by_id(allocation_tag_ids))
+
+		@digital_class = DigitalClass.get_lessons_by_directory(dc_directory_id) #unless (dc_directory_id.nil? or dc_directory_id.empty?)
   end
 
   private
