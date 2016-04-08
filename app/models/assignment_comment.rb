@@ -13,7 +13,7 @@ class AssignmentComment < ActiveRecord::Base
 
   has_many :files, class_name: 'CommentFile', dependent: :delete_all
 
-  accepts_nested_attributes_for :files, allow_destroy: true, reject_if: proc {|attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0'}
+  accepts_nested_attributes_for :files, allow_destroy: true, reject_if: proc {|attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank?}
 
   validates :comment, presence: true
 

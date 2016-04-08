@@ -1898,6 +1898,31 @@ en_US:
       responsibles: Responsibles
       none_responsible: No allocated responsible
       search: Search
+    navigations:
+      user: User
+      course: Course
+      curriculum_unit: Curriculum Unit
+      semester: Semester
+      group: Group
+      menu: Menu
+      menu_time: Menu access
+      submenu_time: Submenu access
+      support_material: Support material
+      discussion: Discussion
+      lesson: Lesson
+      lesson_notes: Acess to lesson's notes
+      assignment: Assignment
+      student: Student
+      group_assignment: Assignment group
+      chat_room: Chat room
+      chat_history: Access to chat's history
+      exam: Prova
+      webconference: Webconferência
+      webconference_record: Access to webconference's recordding
+      public_area: Access to public area
+      public_file: Public file
+      participant: Participant
+      digital_class: Digital Class Lesson
   editions:
     alert: "Fill the required fields"
     academic:

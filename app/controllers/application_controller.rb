@@ -24,6 +24,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :authenticate_user!, except: [:verify_cpf, :api_download] # devise
   before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im
+  after_filter :log_navigation
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
@@ -65,7 +66,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def start_user_session	
+  def start_user_session  
     return unless user_signed_in?
     user_session[:tabs] = {
       opened: {
@@ -88,7 +89,6 @@ class ApplicationController < ActionController::Base
     # contexto indicado eh diferente do contexto da aba ativa
     contexts = params['contexts'].split(',').map(&:to_i) rescue []
     set_active_tab_to_home if ((!contexts.empty? && !contexts.include?(active_tab[:url][:context])) || controller_path == 'devise/users')
-    log_navigation
   end
 
   def set_active_tab(tab_id)
@@ -118,7 +118,7 @@ class ApplicationController < ActionController::Base
 
   def hold_pagination
     user_session[:current_page] = @current_page
-   	
+    
   end
 
   def prepare_for_group_selection
@@ -129,7 +129,7 @@ class ApplicationController < ActionController::Base
      return unless active_tab[:url][:context] == Context_Curriculum_Unit.to_i
 
     # verifica se o grupo foi passado e se é um grupo válido
-    unless params[:selected_group].present? and !!(allocation_tag_id_group = AllocationTag.find_by_group_id(params[:selected_group]).try(:id))
+    unless params[:selected_group].present? && !!(allocation_tag_id_group = AllocationTag.find_by_group_id(params[:selected_group]).try(:id))
       allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
       allocation_tag_id_group = (params[:selected_group] = allocation_tag.group_id).nil? ? RelatedTaggable.where('group_id IN (?)', current_user.groups(nil, Allocation_Activated, nil, nil, active_tab[:url][:id]).pluck(:id)).first.group_at_id : allocation_tag.id
     end
@@ -216,89 +216,97 @@ class ApplicationController < ActionController::Base
 
   #salva o log de navegação do usuário
   def log_navigation
-    	context_id = params[:contexts]
-    	if !context_id
-    	  context_id = params[:context]
-    	end
-    	#entrando em um curso
-    	if params[:allocation_tag_id]
-    	  allocation = AllocationTag.find(params[:allocation_tag_id])
-    	  allocation_tag_id = allocation.id
-    	  offers_id = params[:id]	
-    	#Menu
-    	else 
-    	    if params[:bread] && !params[:user_id]
-    		    menu = Menu.find_by_name(params[:bread])
-    		    session[:menu_log] = menu
-    	    else #submenu do curso
-          		if session[:menu_log]
-          		  menu_log = session[:menu_log]
-          		  sub_log_id = params[:id]
-          		  discussion_log_id = params[:discussion_id]
-          		  lesson_notes_id = params[:lesson_id]
-          		  user_log_id = params[:user_id]
-          		  student_log_id = params[:student_id]
-          		  grupo_log_id = params[:group_id]
-          		end
-    	    end
-    	end
-    	if allocation_tag_id
-    	  @log_navigation2 = LogNavigation.new(user_id: current_user.id, context_id: context_id, allocation_tag_id: allocation_tag_id, offers_id: offers_id)
-    	  @log_navigation2.save
-    	end	
-    	if menu
-      	if active_tab[:breadcrumb][0][:name]!='Home'
-    	     allocation_tag_id_m = active_tab[:breadcrumb][0][:url][:allocation_tag_id]
-    	     offers_id_m = active_tab[:breadcrumb][0][:url][:offers_id]   
-    	  end
-    	  menu_id = menu.id	
-    	  @log_navigation = LogNavigation.new(user_id: current_user.id, menu_id: menu_id, context_id: context_id, allocation_tag_id: allocation_tag_id_m, offers_id: offers_id_m)
-	      @log_navigation.save
+    context_id = params[:contexts].blank? ? params[:context] : params[:contexts]
+    allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] rescue params[:allocation_tag_id]
+
+    unless allocation_tag_id.nil?
+      if params[:bread] && !params[:user_id]
+        menu = Menu.find_by_name(params[:bread])
+        session[:menu_log] = menu
+      elsif params[:selected_group] && session[:menu_log]
+        context_id = Context_Curriculum_Unit
+        menu = session[:menu_log]
+        LogNavigation.create(user_id: current_user.id, context_id: context_id, allocation_tag_id: allocation_tag_id)
+      elsif session[:menu_log] # submenu do curso
+        menu_log = session[:menu_log]
+        sub_log_id = params[:id]
+        discussion_log_id = params[:discussion_id]
+        lesson_notes_id = params[:lesson_id]
+        user_log_id = params[:user_id]
+        student_log_id = params[:student_id]
+        group_assignment_log_id = params[:group_id]
+        zip_download = true if (params[:action] == 'download' && params[:type]) || params[:zip]
       end
-      #chama o metodo para salva o log do submenu acessado
-    	if discussion_log_id or user_log_id or sub_log_id or student_log_id or grupo_log_id
-    	   log_navigation_sub(menu_log, discussion_log_id, user_log_id, sub_log_id, student_log_id, grupo_log_id)
-    	end
+
+      if menu
+        LogNavigation.create(user_id: current_user.id, menu_id: menu.id, context_id: context_id, allocation_tag_id: allocation_tag_id) 
+      elsif !context_id.nil?
+        LogNavigation.create(user_id: current_user.id, context_id: context_id, allocation_tag_id: allocation_tag_id) # entrando em um curso
+      end
+
+      # chama o metodo para salva o log do submenu acessado
+      log_navigation_sub(menu_log, discussion_log_id, user_log_id, sub_log_id, student_log_id, group_assignment_log_id, lesson_notes_id, zip_download) if discussion_log_id || user_log_id || sub_log_id || student_log_id || group_assignment_log_id || zip_download || lesson_notes_id
+    else
+      LogNavigation.create(user_id: current_user.id, context_id: Context_General) if params[:id] == 'Home'
+    end
   end
 
-  #salva o log de acesso ao submenu
-  def log_navigation_sub(menu_log, discussion_log_id, user_log_id, sub_log_id, student_log_id, grupo_log_id)
-
+  # salva o log de acesso ao submenu
+  def log_navigation_sub(menu_log, discussion_log_id, user_log_id, sub_log_id, student_log_id, group_assignment_log_id, lesson_notes_id, zip_download)
     case menu_log.id
-	    when 101	
-	     lesson_log_id = sub_log_id
-	    when 102
-		    support_material_files_id = sub_log_id 
-      when 202
-		    assignments_id = sub_log_id
-	    when 203
-		    exams_id = sub_log_id
-	    when 204
-		    assignments_id = sub_log_id 
+      when 101
+        unless params[:controller] == 'access_control'
+          lesson_log_id = sub_log_id || lesson_notes_id
+          lesson = Lesson.find(lesson_log_id)
+          lesson_notes = true if lesson_notes_id
+          lesson_name = lesson.is_link? ? lesson.address : lesson.name
+        end
+      when 102
+        support_material_file = if zip_download
+          'zip'
+        else
+          spf = SupportMaterialFile.find(sub_log_id)
+          spf.url.blank? ? spf.attachment_file_name : spf.url
+        end
+      when 202 || 204
+        assignments_id = sub_log_id
+      when 203
+        exams_id = sub_log_id
       when 205
-        if params[:academic_allocation_id] #para acesso ao chat
+        if params[:academic_allocation_id] # para acesso ao chat
           chat_rooms_id = sub_log_id
         else          
-          hist_chat_rooms_id = sub_log_id #para acesso ao historico do chat
+          hist_chat_rooms_id = sub_log_id # para acesso ao historico do chat
         end   
-	    when 206
-		    webconferences_id = sub_log_id
-	    when 303
-		    bibliographie_id = sub_log_id
+      when 206
+        webconferences_id = sub_log_id
+        webconference = params[:action] == 'access'
+      when 303
+        bibliography = if zip_download
+          'zip'
+        else
+          bib = Bibliography.find(sub_log_id)
+          bib.attachment_file_name.blank? ? (bib.url.blank? ? bib.address : bib.url) : bib.attachment_file_name
+        end
       when 304
-        public_files_id = sub_log_id  
-	  end      
-	
-  	if (support_material_files_id or assignments_id or exams_id or chat_rooms_id or webconferences_id or discussion_log_id or lesson_log_id or bibliographie_id or student_log_id or user_log_id or public_files_id or hist_chat_rooms_id)
-      #para o acompanhamento do professor
-      if student_log_id
-        assignments_id = sub_log_id
-      end  
-  		ultimo_log_nav = LogNavigation.where('user_id = ? AND menu_id = ?', current_user.id, menu_log.id).last #pega o log de navegação para o sub log.	
-  	  data_atual = Time.now.strftime("%Y-%m-%d")
-  	  LogNavigationSub.delete_all(["log_navigation_id = ? AND created_at = ?", ultimo_log_nav.id, data_atual]) #apaga o ultimo log inserido se for igual ao novo registro.
-  	  @log_navigation_sub = LogNavigationSub.new(log_navigation_id: ultimo_log_nav.id, support_material_files_id: support_material_files_id, discussion_id: discussion_log_id, lesson_id: lesson_log_id, assignments_id: assignments_id, exams_id: exams_id, user_id: user_log_id, chat_rooms_id: chat_rooms_id, student_id: student_log_id, group_id: grupo_log_id, webconferences_id: webconferences_id, bibliographie_id: bibliographie_id, public_files_id: public_files_id, hist_chat_rooms_id: hist_chat_rooms_id)
-  	  @log_navigation_sub.save
+        if zip_download
+          public_file_name = 'zip'
+        else
+          user_log_id = user_log_id
+          if sub_log_id
+            public_file = PublicFile.find(sub_log_id) 
+            public_file_name = public_file.attachment_file_name rescue nil
+            user_log_id = public_file.user_id unless user_log_id
+          end
+        end
+        public_area = true if user_log_id
+    end
+  
+    if (!support_material_file.blank? || assignments_id || exams_id || chat_rooms_id || webconferences_id || discussion_log_id || lesson_log_id || !bibliography.blank? || student_log_id || user_log_id || public_area || hist_chat_rooms_id)
+      # para o acompanhamento do professor
+      assignments_id = sub_log_id if student_log_id
+      ultimo_log_nav = LogNavigation.where('user_id = ? AND menu_id = ?', current_user.id, menu_log.id).last # pega o log de navegação para o sub log. 
+      LogNavigationSub.create(log_navigation_id: ultimo_log_nav.id, support_material_file: support_material_file, discussion_id: discussion_log_id, lesson_id: lesson_log_id, assignment_id: assignments_id, exam_id: exams_id, user_id: user_log_id, chat_room_id: chat_rooms_id, student_id: student_log_id, group_assignment_id: group_assignment_log_id, webconference_id: webconferences_id, bibliography: bibliography, public_area: public_area, lesson: lesson_name, public_file_name: public_file_name, hist_chat_room_id: hist_chat_rooms_id, webconference_record: webconference, lesson_notes: lesson_notes)
     end
   end
    #deleta logs antigos com mais de 1 ano

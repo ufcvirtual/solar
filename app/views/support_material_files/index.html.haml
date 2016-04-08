@@ -26,7 +26,7 @@
                 = link_to file['attachment_file_name'], download_support_material_file_path(id: file['id'])
               - else
                 = image_tag 'icon_file_link.png', alt: ''
-                = link_to file['url'], file['url'], target: '_blank'
+                = link_to file['url'], download_support_material_file_path(id: file['id']), target: '_blank'
             %td
               - if file['url'] == nil
                 = format('%.2f KB', file["attachment_file_size"].to_i/1024.0)

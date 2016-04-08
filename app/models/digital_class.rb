@@ -173,6 +173,7 @@ class DigitalClass < ActiveRecord::Base
   def self.get_directories_by_object(object)
     column = "#{object.class.to_s.tableize.singularize}_id"
     Group.joins(:related_taggables).where(related_taggables: { column => object.id }).uniq.map(&:digital_class_directory_id).compact
+  end
 
   def self.get_lessons_by_directory(directory_id)
     raise

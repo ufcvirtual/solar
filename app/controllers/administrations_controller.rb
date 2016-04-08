@@ -223,44 +223,69 @@ class AdministrationsController < ApplicationController
         date = session[:date]
       end 
       queryDate ="date(log_navigations.created_at) = '#{date.to_s(:db)}'" unless date.nil?
-        @logs = LogNavigation.joins('LEFT JOIN log_navigation_subs ON log_navigations.id = log_navigation_id')
-        .joins('LEFT JOIN  assignments ON log_navigation_subs.assignments_id = assignments.id')
-        .joins('LEFT JOIN chat_rooms ON log_navigation_subs.chat_rooms_id = chat_rooms.id')
-        .joins('LEFT JOIN chat_rooms as chat_historico ON log_navigation_subs.hist_chat_rooms_id = chat_historico.id')
-        .joins('LEFT JOIN groups ON log_navigation_subs.group_id = groups.id')
-        .joins('LEFT JOIN lessons ON log_navigation_subs.lesson_id = lessons.id')
-        .joins('LEFT JOIN support_material_files ON log_navigation_subs.support_material_files_id = support_material_files.id')
-        .joins('LEFT JOIN discussions ON log_navigation_subs.discussion_id = discussions.id')
-        .joins('LEFT JOIN lesson_notes ON log_navigation_subs.lesson_notes_id = lesson_notes.id')
-        .joins('LEFT JOIN exams ON exams.id = log_navigation_subs.exams_id')
-        .joins('LEFT JOIN users as student ON log_navigation_subs.user_id = student.id')
-        .joins('LEFT JOIN users ON log_navigation_subs.student_id = users.id')
-        .joins('LEFT JOIN webconferences ON log_navigation_subs.webconferences_id = webconferences.id')
+        @logs = LogNavigation.joins('LEFT JOIN log_navigation_subs lognsub ON log_navigations.id = log_navigation_id')
+        .joins('LEFT JOIN  assignments ON lognsub.assignment_id = assignments.id')
+        .joins('LEFT JOIN chat_rooms ON lognsub.chat_room_id = chat_rooms.id')
+        .joins('LEFT JOIN chat_rooms as chat_historico ON lognsub.hist_chat_room_id = chat_historico.id')
+        .joins('LEFT JOIN group_assignments ON lognsub.group_assignment_id = group_assignments.id')
+        .joins('LEFT JOIN lessons ON lognsub.lesson_id = lessons.id')
+        .joins('LEFT JOIN discussions ON lognsub.discussion_id = discussions.id')
+        .joins('LEFT JOIN exams ON exams.id = lognsub.exam_id')
+        .joins('LEFT JOIN users as student ON lognsub.user_id = student.id')
+        .joins('LEFT JOIN webconferences ON lognsub.webconference_id = webconferences.id')
         .joins('LEFT JOIN menus ON log_navigations.menu_id = menus.id')
         .joins('LEFT JOIN allocation_tags ON log_navigations.allocation_tag_id = allocation_tags.id')
-        .joins('LEFT JOIN offers ON allocation_tags.offer_id = offers.id')
+        .joins('LEFT JOIN groups ON groups.id = allocation_tags.group_id')
+        .joins('LEFT JOIN offers ON offers.id = groups.offer_id OR offers.id = allocation_tags.offer_id')
         .joins('LEFT JOIN semesters ON semesters.id = offers.semester_id')
         .joins('LEFT JOIN courses ON offers.course_id = courses.id')
         .joins('LEFT JOIN curriculum_units ON offers.curriculum_unit_id = curriculum_units.id')
-        .joins('LEFT JOIN public_files ON public_files.id = public_files_id')
-        .joins('LEFT JOIN users AS usuario ON log_navigations.user_id = usuario.id')
-        .select("DISTINCT log_navigations.id, log_navigation_subs.id as id_sub, usuario.name as usuario, courses.name as cuorses, curriculum_units.name as curriculum, 
-        curriculum_units.code, semesters.name as semestre,  menus.name AS menu, to_char(log_navigations.created_at,'dd/mm/YYYY HH24:MI:SS') as created,
-        support_material_files.attachment_file_name as support_material_files, discussions.name as discussions,lessons.name as lessons, assignments.name as assignments, 
-        exams.name as exams, users.name as users, chat_rooms.title as chat_rooms, chat_historico.title as chat_historico, student.name as student, groups.code as groups, webconferences.title as webconferences, 
-        lesson_notes.name as lesson_notes, public_files.attachment_file_name as public_files, to_char(log_navigation_subs.created_at,'dd/mm/YYYY HH24:MI:SS') as created_submenu")
+        .joins('LEFT JOIN users ON log_navigations.user_id = users.id')
+        .select("
+          DISTINCT log_navigations.id, 
+          lognsub.id as id_sub, 
+          users.name as user, 
+          courses.name as course, 
+          courses.code as course_code, 
+          curriculum_units.name as uc, 
+          curriculum_units.code as uc_code, 
+          semesters.name as semester, 
+          groups.code as group, 
+          menus.name AS menu, 
+          to_char(log_navigations.created_at,'dd/mm/YYYY HH24:MI:SS') as created, 
+          support_material_file, 
+          discussions.name as discussion,
+          CASE lessons.type_lesson
+          WHEN 0 THEN COALESCE(lessons.name, lesson)
+          WHEN 1 THEN COALESCE(lessons.address, lesson)    
+          ELSE
+            lesson
+          END AS lesson,
+          assignments.name as assignment, 
+          exams.name as exam, 
+          chat_rooms.title as chat_room, 
+          chat_historico.title as chat_history, 
+          student.name as student, 
+          group_assignments.group_name as group_assignments, 
+          webconferences.title as webconferences,
+          webconference_record,
+          digital_class_lesson,
+          lesson_notes,
+          public_area,
+          public_file_name, 
+          to_char(lognsub.created_at,'dd/mm/YYYY HH24:MI:SS') as created_submenu
+        ")
         .where(queryDate)
-        .order("log_navigations.id DESC, log_navigation_subs.id DESC")
+        .order("log_navigations.id DESC, lognsub.id DESC")
 
-        attributes_to_include = %w(id id_sub usuario cuorses curriculum code semestre menu created created_submenu support_material_files discussions lessons assignments exams users chat_rooms chat_historico student groups webconferences lesson_notes public_files)
+        attributes_to_include = %w(user course course_code uc uc_code semester group menu created created_submenu support_material_file discussion lesson lesson_notes assignment exam users chat_room chat_history student group_assignments webconferences webconference_record public_area public_file_name digital_class_lesson)
         respond_to do |format|
           format.html
           format.csv { send_data @logs.to_csv(attributes_to_include) }
-          format.xls { send_data @logs.to_csv(attributes_to_include, col_sep: "\t") }
+          format.xls { render :navigation }
         end
      end    
   end
-
 
   ## IMPORT USERS
 

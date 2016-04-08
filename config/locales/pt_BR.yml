@@ -2102,6 +2102,32 @@ pt_BR:
       responsibles: Responsáveis
       none_responsible: Nenhum responsável alocado
       search: Busca
+    navigations:
+      user: Usuário
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      semester: Semestre
+      group: Turma
+      menu: Menu
+      menu_time: Acesso ao menu
+      submenu_time: Acesso ao submenu
+      support_material: Material de apoio
+      discussion: Fórum
+      lesson: Aula
+      lesson_notes: Acesso às notas de aula
+      assignment: Trabalho
+      student: Aluno
+      group_assignment: Grupo
+      chat_room: Chat
+      chat_history: Acesso ao histórico do chat
+      exam: Prova
+      webconference: Webconferência
+      webconference_record: Acesso à gravação da webconferência
+      public_area: Acesso à área pública
+      public_file: Arquivo público
+      participant: Participante
+      digital_class: Lição do Digital Class
+
 
   editions:
     alert: "Preencha os campos obrigatórios"

@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.user') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.course') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.curriculum_unit') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.semester') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.group') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.menu') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.menu_time') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.submenu_time') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.support_material') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.discussion') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.lesson') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.lesson_notes') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.assignment') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.student') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.group_assignment') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.chat_room') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.chat_history') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.exam') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.webconference') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.webconference_record') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.public_area') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.public_file') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.participant') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.navigations.digital_class') %></Data></Cell>
+      </Row>
+    <% @logs.each do |log| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= log['user'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= [log['course_code'], log['course']].join(' - ') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= [log['uc_code'], log['uc']].join(' - ') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['semester'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['group'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t(log['menu'].to_sym) rescue '' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['created'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['created_submenu'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['support_material_file'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['discussion'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['lesson'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['lesson_notes'] == 't' ? 'Sim' : '' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['assignment'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['student'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['group_assignments'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['chat_room'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['chat_history'] == 't' ? 'Sim' : '' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['exam'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['webconference'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['webconference_record'] == 't' ? 'Sim' : '' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['public_area'] == 't' ? 'Sim' : '' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['publicfile_name'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['student'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['digital_class_lesson'] %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>
