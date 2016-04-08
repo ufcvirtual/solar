@@ -22,7 +22,7 @@
 - notes    = current_user.notes(lesson.id)
 - no_notes = notes.blank?
 %td{ style: 'width: 10%; text-align: center' }
-  = content_tag(:a, class: "notes fancybox.ajax", href: '#', :'data-link' => lesson_notes_path(lesson.id), :'data-tooltip' => no_notes ? t('.no_note') : t('.notes')) do 
+  = content_tag(:a, class: "notes fancybox.ajax", href: '#', :'data-link' => lesson_notes_path(lesson.id), :'data-tooltip' => no_notes ? t('.no_note') : t('.notes'), onclick: 'javascript:open_lesson_notes(this)') do 
     %i.icon-book2
     - unless no_notes
       %span.count_icon= notes.count
@@ -38,14 +38,13 @@
   }
 
 :javascript
-  $(function(){
-    $('a.notes').click(function(){
-      var url = $(this).data('link');
-      $(this).call_fancybox({ href: url, open: true });
-    });
-  });
-
   function open_lesson(obj){
     var url = $(obj).data('url');
     $(obj).nice_open_lesson({ href: url });
   }
+
+  function open_lesson_notes(obj){
+    var url = $(obj).data('link');
+    $(obj).call_fancybox({ href: url, open: true });
+  }
+
