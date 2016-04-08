@@ -176,7 +176,7 @@ class DigitalClass < ActiveRecord::Base
   end
 
   def self.get_lessons_by_directory(directory_id)
-    raise
+    puts "directory_id"
     DigitalClass.call('lessons_by_directory', { directory_id: directory_id }, ['directory_id'], :get)
   end
 
@@ -203,6 +203,5 @@ class DigitalClass < ActiveRecord::Base
       log << text
       DigitalClass.dc_logger.info log.join(' ')
     end
-  end
-
+  
 end
