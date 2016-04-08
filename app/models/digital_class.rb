@@ -176,7 +176,6 @@ class DigitalClass < ActiveRecord::Base
   end
 
   def self.get_lessons_by_directory(directory_id)
-    puts "directory_id"
     DigitalClass.call('lessons_by_directory', { directory_id: directory_id }, ['directory_id'], :get)
   end
 

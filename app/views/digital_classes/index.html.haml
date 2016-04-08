@@ -6,21 +6,24 @@
     %table.tb_list
       %thead
         %tr.lines
-          %th{ align: 'left' }=t(:name, scope: [:digital_classes])
-          %th{ align: 'center', style: 'width: 15%;' }=t(:description, scope: [:digital_classes])
+          %th{ align: 'left' }=t(:name, scope: [:digital_classes, :index])
+          %th{ style: 'width: 50%;' }=t(:description, scope: [:digital_classes, :index])
       %tbody
         - @digital_class.each do |dc|
           %tr.lines
-          -#'{ id: "tr_#{lesson.id}" }
-            %td= dc["name"]
+            %td
+              - if dc["redirect_url"].blank?
+                = dc["name"]
+              - else
+                = dc["name"] #link_to_function dc["name"], 'open_lesson(this)', :'data-url' => edition_lesson_url(lesson, allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id]), class: 'link_content lesson', :'data-fancybox-type' => 'iframe'
             %td
               .description
                 .minimun
-                  = simple_format(dc.description.truncate(200))
-                  - if dc.description.size>200
+                  = simple_format(dc["description"].truncate(200))
+                  - if dc["description"].size>200
                     = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('dc.index.expand_description'))
                 .complete.invisible
-                  = simple_format(dc.description)
+                  = simple_format(dc["description"])
                   = content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('dc.index.compress_description'))
 
   - else

@@ -58,8 +58,8 @@ class DigitalClassesController < ApplicationController
 		authorize! :index, DigitalClass, { on: allocation_tag_ids }
 
 		dc_directory_id = DigitalClass.get_directories_by_allocation_tag(AllocationTag.find_by_id(allocation_tag_ids))
-
-		@digital_class = DigitalClass.get_lessons_by_directory(dc_directory_id) #unless (dc_directory_id.nil? or dc_directory_id.empty?)
+		
+    @digital_class = DigitalClass.get_lessons_by_directory(dc_directory_id[0]) unless (dc_directory_id.empty? or dc_directory_id.nil?)
   end
 
   private
