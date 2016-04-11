@@ -1119,3 +1119,9 @@ res216:
   controller: 'digital_classes'
   action: "access"
   description: "Acessar Digital Class em um diretório"
+  
+res217:
+  id: 217
+  controller: 'digital_classes'
+  action: 'change_tool'
+  description: 'adicionar ou remover uma turma de uma aula no Digital Class'

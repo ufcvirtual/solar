@@ -1,15 +1,15 @@
 .new_digital_class_form
 
-  = simple_form_for :digital_class, html: { id: 'digital_class_form' } do |f|
-    %h1#lightBoxDialogTitle= t(".new")#)(@digital_class.persisted? ? ".edit" : 
+  = simple_form_for :digital_classes, :url => url = @digital_class_lesson ? "/digital_classes/"+@digital_class_lesson['id'].to_s : "/digital_classes", html: { id: 'digital_class_form' } do |f|
+    %h1#lightBoxDialogTitle= t(@digital_class_lesson ? ".edit" : ".new")
     %span.form_requirement= t(:required_fields)
 
     .digital_class_form
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
-
+    = hidden_field_tag :_method, @digital_class_lesson ? "put" : "post"
     .form-inputs.block_content
-      = f.input :name, required: true
-      = f.input :description, required: true, as: :text
+      = f.input :name, required: true, label: 'Titulo', input_html: { value: name = @digital_class_lesson ? @digital_class_lesson['name'] : "" }
+      = f.input :description, required: true, as: :text, label: 'Descrição', input_html: { value: description = @digital_class_lesson ? @digital_class_lesson['description'] : "" }
 
       = render "groups/codes"
 

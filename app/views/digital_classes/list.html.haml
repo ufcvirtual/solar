@@ -9,7 +9,7 @@
       .btn-group
         = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_digital_class', "data-link-to-edit" => edit_digital_class_path(':id', allocation_tags_ids: @allocation_tags_ids), "data-edit-title" => t(".edit"), disabled: true, :"data-tooltip" => t(".edit")
         = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_digital_class', :"data-link-delete" => digital_class_path(':id', allocation_tags_ids: @allocation_tags_ids), :"data-link-to-list" => digital_classes_path(allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".delete")
-  - unless  @digital_classes.nil? #or @digital_classes.empty? 
+  - unless  @digital_class_lessons.nil? #or @digital_classes.empty? 
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
     %table.tb_list
       %thead
@@ -17,35 +17,32 @@
           %th.center.no_sort
             %input#all_digital_classes{type: "checkbox", :"data-children-names" => "ckb_digital_class"}
           %th{style: 'text-align:left;'}= t(".name")
-          %th.center.no_sort= t(".description")
+          %th.center.no_sort= t(".redirect_url")
 
       %tbody
-        - @digital_classes.each do |d_class_lesson|
-          - can_delete = d_class_lesson.sent_digital_classes.count.zero?
-          %tr.lines{id: "tr_#{d_class_lesson.id}"}
+        - @digital_class_lessons.each do |dcl|
+          %tr.lines{id: "tr_#{dcl[:lesson]['id']}"}
             %td{style: 'text-align:center;'}
-              = check_box_tag("ckb_digital_class", d_class_lesson.id, false, {class: "ckb_digital_class", :"data-can-delete" => can_delete})
+              = check_box_tag("ckb_digital_class", dcl[:lesson]['id'], false, {class: "ckb_digital_class"})
             %td
               %div
                 .title
-                  = d_class_lesson.name
-                  - if has_file
-                    %i.icon-paperclip
+                  = dcl[:lesson]['name']
                 .description
                   .minimun
-                    = d_class_lesson.description.truncate(200)
-                    - if d_class_lesson.description.size>200
+                    = dcl[:lesson]['description'].to_s.truncate(200)
+                    - if dcl[:lesson]['description'].to_s.size>200
                       = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_enunciation"))
                   .complete.invisible
-                    = d_class_lesson.description
-                    = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_enunciation"))
-                .group_label.invisible= render "groups/groups_tags", groups: d_class_lesson.groups, tool: d_class_lesson, all_groups: all_groups, paths: {add: add_group_to_digital_classes_path(id: "param_id", tool_id: d_class_lesson.id), remove: remove_group_from_digital_classes_path(id: "param_id", tool_id: d_class_lesson.id), unbind: unbind_group_from_digital_classes_path(id: "param_id", tool_id: d_class_lesson.id), tags: group_tags_from_digital_classes_path(tool_id: d_class_lesson.id)}
-
+                    = dcl[:lesson]['description']
+                    = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_enunciation"))        
+                  .group_label.invisible= render "groups/groups_tags", groups: dcl[:groups], tool: dcl[:lesson]['id'].to_i, all_groups: all_groups, paths: {add: add_group_to_digital_classes_path(id: "param_id", tool_id: dcl[:lesson]['id']), remove: remove_group_from_digital_classes_path(id: "param_id", tool_id:  dcl[:lesson]['id']), tags: group_tags_from_digital_classes_path(tool_id:  dcl[:lesson]['id'])}    
+                  
             %td{style: 'text-align:center;'}
-             
-
-            %td{style: 'text-align:center;'}
-              %div= can_delete ? t(".no_answers") : t(".has_answrs")
+              %div
+                .redirect_url
+                  = link_to "ACESSAR DIGITAL CLASS", "http://digitalclass.lme.ufc.br:900"+dcl[:lesson]['redirect_url'].to_s, :target => "_blank"
+                   
 
   - else
     .block_content_text_list.text_none= t(".none")

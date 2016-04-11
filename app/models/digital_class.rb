@@ -154,6 +154,44 @@ class DigitalClass < ActiveRecord::Base
     end
   end
 
+  def self.list_lessons_from_directory
+    #DigitalClass.call('users_with_id', { user_id: dc_user_id, role: user.get_digital_class_role }, ['user_id'], :put)
+  end
+  def self.get_lesson(lesson_id)
+    DigitalClass.call('lessons_with_id', { lesson_id: lesson_id }, ['lesson_id'])
+  end
+  def self.update_lesson(digital_class_params, id)
+    lesson = get_lesson(id)
+    lesson_id = lesson['id']
+    if digital_class_params && lesson_id
+      DigitalClass.call('lessons_with_id', { lesson_id: lesson_id, name: digital_class_params['name'], description: digital_class_params['description'] }, ['lesson_id'], :put)
+    end
+  end
+  def self.delete_lesson(lesson_id)
+    DigitalClass.call('lessons_with_id', { lesson_id: lesson_id }, ['lesson_id'], :delete)
+  end
+  def self.create_lesson(dc_directory_id, dc_user_id, digital_class_params)
+    if dc_directory_id && dc_user_id && digital_class_params
+      lesson = DigitalClass.call('lessons', { name: digital_class_params['name'], directories: dc_directory_id, user_id: dc_user_id, description: digital_class_params['description'] }, [], :post)
+      digital_class_lesson_url = lesson['redirect_url']
+      return digital_class_lesson_url
+    end  
+  end
+  def self.add_directory_lesson(dc_directory_id, dc_lesson_id)
+    lesson = get_lesson(dc_lesson_id)
+    lesson_id = lesson['id']
+    if dc_directory_id && lesson_id
+      DigitalClass.call('directories_lessons_new', { directory_id: dc_directory_id, lesson_id: lesson_id }, ['directory_id'], :post)
+    end
+  end
+  def self.delete_directory_lesson(dc_directory_id, dc_lesson_id)
+    lesson = get_lesson(dc_lesson_id)
+    lesson_id = lesson['id']
+    if dc_directory_id && lesson_id
+      DigitalClass.call('directories_lessons_delete', { directory_id: dc_directory_id, lesson_id: lesson_id }, ['directory_id'], :delete)
+    end
+  end
+
   def self.update_taggable(object, ignore_changes=false)
     return false unless ignore_changes || DigitalClass.available?
 

@@ -3010,3 +3010,35 @@ en_US:
     success_message: Successfully updated allocations at Digital Class.
     general_message: It was not possible to execute this action. Please contact atendimento@virtual.ufc.br
     no_data: No Digital Class Lesson available.
+    list:
+      lesson: Lesson Digital Class
+      order: Order
+      name: Title
+      none: No lesson registered
+      new: New
+      new_lesson: New lesson Digital Class
+      edit: Edit lesson Digital Class
+      delete: Delete Lesson Digital Class
+      no_end_date: Onward
+      cancel: Cancel
+      description: Description
+      redirect_url: Redirect Digital Class
+    new:
+      approved: approved
+      save: Save
+    notifications:
+      must_select_lessons: One or more lessons must be selected
+      must_select_a_lesson: One lesson must be selected
+      select_only_a_lesson: Select only a lesson
+    success:
+      deleted: Lessons were successfully created
+      created: Lesson was sucessfully created
+      updated: Lesson was sucessfully updated
+    form:
+      cancel: Cancel
+      groups: Groups
+      privacy: Privacy
+      public: Public
+      private: Private
+      new: New Lesson Digital Class
+      edit: Edit Lesson Digital Class
