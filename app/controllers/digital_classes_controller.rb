@@ -22,11 +22,8 @@ class DigitalClassesController < ApplicationController
 		
 		groups.each do |group|
 			directory_id = Group.get_directory_from_group(group['id'])
-<<<<<<< Updated upstream
 			lessons = DigitalClass.get_lessons_by_directory(directory_id)
-=======
-			lessons = DigitalClass.list_lessons_for_directory(directory_id)
->>>>>>> Stashed changes
+
 		  @digital_class_lessons.each do |dcl|		
 			 	lessons.each do |l|
 			 		if dcl[:lesson]['id']==l['id']
