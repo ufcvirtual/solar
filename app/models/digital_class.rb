@@ -157,6 +157,7 @@ class DigitalClass < ActiveRecord::Base
   def self.list_lessons_from_directory
     #DigitalClass.call('users_with_id', { user_id: dc_user_id, role: user.get_digital_class_role }, ['user_id'], :put)
   end
+
   def self.get_lesson(lesson_id)
     DigitalClass.call('lessons_with_id', { lesson_id: lesson_id }, ['lesson_id'])
   end
@@ -181,14 +182,14 @@ class DigitalClass < ActiveRecord::Base
     lesson = get_lesson(dc_lesson_id)
     lesson_id = lesson['id']
     if dc_directory_id && lesson_id
-      DigitalClass.call('directories_lessons_new', { directory_id: dc_directory_id, lesson_id: lesson_id }, ['directory_id'], :post)
+      DigitalClass.call('dir_lessons_new', { directory_id: dc_directory_id, lesson_id: lesson_id }, ['directory_id'], :post)
     end
   end
   def self.delete_directory_lesson(dc_directory_id, dc_lesson_id)
     lesson = get_lesson(dc_lesson_id)
     lesson_id = lesson['id']
     if dc_directory_id && lesson_id
-      DigitalClass.call('directories_lessons_delete', { directory_id: dc_directory_id, lesson_id: lesson_id }, ['directory_id'], :delete)
+      DigitalClass.call('dir_lessons_delete', { directory_id: dc_directory_id, lesson_id: lesson_id }, ['directory_id'], :delete)
     end
   end
 
