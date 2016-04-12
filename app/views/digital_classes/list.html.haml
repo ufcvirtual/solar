@@ -7,9 +7,9 @@
   
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_digital_class', "data-link-to-edit" => edit_digital_class_path(':id', allocation_tags_ids: @allocation_tags_ids), "data-edit-title" => t(".edit"), disabled: true, :"data-tooltip" => t(".edit")
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_digital_class', :"data-link-to-edit" => edit_digital_class_path(':id', allocation_tags_ids: @allocation_tags_ids), "data-edit-title" => t(".edit"), disabled: true, :"data-tooltip" => t(".edit")
         = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_digital_class', :"data-link-delete" => digital_class_path(':id', allocation_tags_ids: @allocation_tags_ids), :"data-link-to-list" => digital_classes_path(allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".delete")
-  - unless  @digital_class_lessons.nil? #or @digital_classes.empty? 
+  - unless  @digital_class_lessons.blank?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
     %table.tb_list
       %thead
@@ -37,11 +37,10 @@
                     = dcl[:lesson]['description']
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_enunciation"))        
                   .group_label.invisible= render "groups/groups_tags", groups: dcl[:groups], tool: dcl[:lesson]['id'].to_i, all_groups: all_groups, paths: {add: add_group_to_digital_classes_path(id: "param_id", tool_id: dcl[:lesson]['id']), remove: remove_group_from_digital_classes_path(id: "param_id", tool_id:  dcl[:lesson]['id']), tags: group_tags_from_digital_classes_path(tool_id:  dcl[:lesson]['id'])}    
-                  
             %td{style: 'text-align:center;'}
               %div
                 .redirect_url
-                  = link_to content_tag(:i, nil, class: 'icon-publish', :'data-tooltip' => t('.access')), "http://digitalclass.lme.ufc.br:900"+dcl[:lesson]['redirect_url'].to_s, :target => "_blank"
+                  = link_to content_tag(:i, nil, class: 'btn icon-eye access_digital_class', :'data-tooltip' => t('.access')), DigitalClass.get_url(dcl[:lesson], :target => "_blank"
                    
 
   - else

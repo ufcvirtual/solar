@@ -222,6 +222,22 @@ class DigitalClass < ActiveRecord::Base
     DigitalClass.call('lessons_by_directory', { directory_id: directory_id }, ['directory_id'], :get)
   end
 
+  def self.access_authenticated(user, redirect_to=nil)
+      url = File.join(DC["path"], DC['paths']['authenticate_token'].to_s)
+      params = { application_id: DC["application_id"], email: user.email }
+      params.merge!(redirectTo: File.join(DC["path"], DC['paths'][redirect_to].to_s)) if redirect_to
+      user.verify_or_create_at_digital_class
+
+      res = RestClient.post url, params, { accept: :json, content_type: 'x-www-form-urlencoded' }
+      redirect_url = JSON.parse(res.body)['redirect_url']
+
+      DigitalClass.log_info('SUCCESS', [:post, 'authenticate_token'], "Params: #{params} Response: #{redirect_url}")
+      redirect_url
+    rescue => error
+      DigitalClass.log_info('ERROR', [:post, 'authenticate_token'], "Params: #{params} Error Code: #{error.try(:response).try(:code)} Error Message: #{error.try(:response).try(:body)}")
+      return error.response.code # indisponivel ou erro na chamada
+    end
+
   private
     def self.access_token
       File.open(DC["token_path"], &:readline).strip
