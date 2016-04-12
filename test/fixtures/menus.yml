@@ -22,8 +22,8 @@ aulas_digital_class:
   id: 103
   parent_id: 10
   name: menu_dc_lesson
-  order: 1
-  resource_id: 210
+  order: 3
+  resource_id: 212
 
 # MENU PAI - 20
 atividades:

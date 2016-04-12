@@ -1094,7 +1094,7 @@ res212:
   id: 212
   controller: 'digital_classes'
   action: "index"
-  description: "Edição - Lista de lições do Digital Class"
+  description: "Listar lições do Digital Class para unidade curricular"
 
 res213:
   id: 213
@@ -1112,7 +1112,7 @@ res215:
   id: 215
   controller: 'digital_classes'
   action: "list"
-  description: "Listar lições do Digital Class para unidade curricular"
+  description: "Edição - Lista de lições do Digital Class"
 
 res216:
   id: 216
@@ -1124,4 +1124,4 @@ res217:
   id: 217
   controller: 'digital_classes'
   action: 'change_tool'
-  description: 'adicionar ou remover uma turma de uma aula no Digital Class'
+  description: 'Adicionar ou remover turmas de uma lição no Digital Class'

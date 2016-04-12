@@ -3023,6 +3023,7 @@ en_US:
       cancel: Cancel
       description: Description
       redirect_url: Redirect Digital Class
+      access: Access Digital Class
     new:
       approved: approved
       save: Save

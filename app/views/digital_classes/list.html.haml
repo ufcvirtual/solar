@@ -41,7 +41,7 @@
             %td{style: 'text-align:center;'}
               %div
                 .redirect_url
-                  = link_to "ACESSAR DIGITAL CLASS", "http://digitalclass.lme.ufc.br:900"+dcl[:lesson]['redirect_url'].to_s, :target => "_blank"
+                  = link_to content_tag(:i, nil, class: 'icon-publish', :'data-tooltip' => t('.access')), "http://digitalclass.lme.ufc.br:900"+dcl[:lesson]['redirect_url'].to_s, :target => "_blank"
                    
 
   - else

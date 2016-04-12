@@ -11,7 +11,7 @@ common: &common
     directories_with_id: 'path'
     members_new: 'path'
     members_delete: 'path'
-    members_permission: 'path'
+    members_update: 'path'
     lessons: 'path'
     lessons_with_id: 'path'
 

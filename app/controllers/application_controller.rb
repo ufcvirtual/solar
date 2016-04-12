@@ -160,7 +160,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_groups_by_allocation_tags(ats = nil)
-    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: (ats || params[:allocation_tags_ids].split(" ").flatten)})
+    @groups = Group.includes(:allocation_tag).where(allocation_tags: {id: (ats || params[:allocation_tags_ids].split(" ").flatten)})
   end
 
   def set_locale

@@ -108,13 +108,14 @@ class Group < ActiveRecord::Base
     { name: code, discipline: curriculum_unit.code_name, course: course.code_name, tags: [semester.name, curriculum_unit_type.description].join(',') }
   end
 
-  def self.get_directory_from_group(group_id)
-    group = Group.where('id = ?', group_id).first
-    directory_id = group['digital_class_directory_id'].to_s
+  def self.get_directory_by_groups(group_id)
+    Group.find(group_id).digital_class_directory_id
   end  
+
   def self.get_group_from_directory(diretory_id)
-    group = Group.where('digital_class_directory_id = ?', diretory_id)
+    Group.where('digital_class_directory_id = ?', diretory_id)
   end  
+
   def self.get_group_from_lesson(lesson)
     directories_ids = []
     lesson['directories'].each do |d|

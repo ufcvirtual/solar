@@ -161,6 +161,7 @@ class DigitalClass < ActiveRecord::Base
   def self.get_lesson(lesson_id)
     DigitalClass.call('lessons_with_id', { lesson_id: lesson_id }, ['lesson_id'])
   end
+
   def self.update_lesson(digital_class_params, id)
     lesson = get_lesson(id)
     lesson_id = lesson['id']
@@ -168,28 +169,31 @@ class DigitalClass < ActiveRecord::Base
       DigitalClass.call('lessons_with_id', { lesson_id: lesson_id, name: digital_class_params['name'], description: digital_class_params['description'] }, ['lesson_id'], :put)
     end
   end
+
   def self.delete_lesson(lesson_id)
     DigitalClass.call('lessons_with_id', { lesson_id: lesson_id }, ['lesson_id'], :delete)
   end
+
   def self.create_lesson(dc_directory_id, dc_user_id, digital_class_params)
     if dc_directory_id && dc_user_id && digital_class_params
-      lesson = DigitalClass.call('lessons', { name: digital_class_params['name'], directories: dc_directory_id, user_id: dc_user_id, description: digital_class_params['description'] }, [], :post)
-      digital_class_lesson_url = lesson['redirect_url']
-      return digital_class_lesson_url
+      lesson = DigitalClass.call('lessons', { name: digital_class_params[:name], directories: dc_directory_id, user_id: dc_user_id, description: digital_class_params['description'] }, [], :post)
+      lesson['redirect_url']
     end  
   end
-  def self.add_directory_lesson(dc_directory_id, dc_lesson_id)
-    lesson = get_lesson(dc_lesson_id)
-    lesson_id = lesson['id']
-    if dc_directory_id && lesson_id
-      DigitalClass.call('dir_lessons_new', { directory_id: dc_directory_id, lesson_id: lesson_id }, ['directory_id'], :post)
+
+  def self.add_lesson_to_directories(directories_ids, lesson_id)
+    if directories_ids && lesson_id
+      directories_ids.each do |directory_id|
+        DigitalClass.call('dir_lessons_new', { directory_id: directory_id, lesson_id: lesson_id }, ['directory_id'], :post)
+      end
     end
   end
-  def self.delete_directory_lesson(dc_directory_id, dc_lesson_id)
-    lesson = get_lesson(dc_lesson_id)
-    lesson_id = lesson['id']
-    if dc_directory_id && lesson_id
-      DigitalClass.call('dir_lessons_delete', { directory_id: dc_directory_id, lesson_id: lesson_id }, ['directory_id'], :delete)
+
+  def self.remove_lesson_from_directories(directories_ids, lesson_id)
+    if directories_ids && lesson_id
+      directories_ids.each do |directory_id|
+        DigitalClass.call('dir_lessons_delete', { directory_id: directory_id, lesson_id: lesson_id }, ['directory_id'], :delete)
+      end
     end
   end
 

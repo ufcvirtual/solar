@@ -3259,6 +3259,7 @@ pt_BR:
       cancel: Cancelar
       description: Descrição
       redirect_url: Acessar Digital Class
+      access: Acessar Digital Class
     new:
       continue: Prosseguir
       save: Salvar
