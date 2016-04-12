@@ -1,5 +1,7 @@
 .block_title
-  %h2= t(".title")
+  %h2
+    %i.icon-class
+    = t(".title")
 
 .block_content
   - unless @digital_class.blank? || @digital_class.nil?
@@ -7,16 +9,19 @@
       %thead
         %tr.lines
           %th{ align: 'left' }=t(:name, scope: [:digital_classes, :index])
-          %th{ style: 'width: 50%;' }=t(:description, scope: [:digital_classes, :index])
+          =#%th{ style: 'width: 50%;' }=t(:description, scope: [:digital_classes, :index])
       %tbody
         - @digital_class.each do |dc|
           %tr.lines
             %td
-              - if dc["redirect_url"].blank?
-                = dc["name"]
-              - else
-                = dc["name"] #link_to_function dc["name"], 'open_lesson(this)', :'data-url' => edition_lesson_url(lesson, allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id]), class: 'link_content lesson', :'data-fancybox-type' => 'iframe'
-            %td
+              .name
+                - if dc["redirect_url"].blank?
+                  = dc["name"]
+                - else
+                  = link_to_function dc["name"], 'authenticate(this)', :"data-link" => dc['redirect_url'], class: 'link_content lesson', :'data-fancybox-type' => 'iframe'                  
+                  = #button_tag (content_tag(:i, nil, class: 'icon-search')), type: "button", class: "btn btn_default btn_authenticate", :"data-link" => dc['redirect_url']
+                  
+              =#%td
               .description
                 .minimun
                   = simple_format(dc["description"].truncate(200))
@@ -28,3 +33,48 @@
 
   - else
     .block_content_text.block_content_text_list.text_none= t(:no_data, scope: [:digital_classes])
+
+:javascript
+
+  function authenticate(obj){
+    var redir_to = $(obj).data("link");
+    $.ajax({
+      type: 'POST',
+      url: "#{authenticate_digital_classes_path}",
+      data: {
+              'redirect_to_url': redir_to
+            },
+      success: function(data) {
+        flash_message(data.content);
+      },
+      error: function(data) {
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      }
+    });
+  }
+
+
+  $(function(){
+
+    $(".btn_authenticate").click(function(){      
+      var redir_to = $(this).data("link");
+      $.ajax({
+        type: 'POST',
+        url: "#{authenticate_digital_classes_path}",
+        data: {
+                'redirect_to_url': redir_to
+              },
+        success: function(data) {
+          flash_message(data.content);
+        },
+        error: function(data) {
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+        }
+      });
+    });
+
+  });

@@ -77,6 +77,17 @@ class DigitalClassesController < ApplicationController
     @digital_class = DigitalClass.get_lessons_by_directory(dc_directory_id[0]) unless (dc_directory_id.empty? or dc_directory_id.nil?)
   end
 
+  def authenticate
+    allocation_tag_ids = (active_tab[:url].include?(:allocation_tag_id)) ? active_tab[:url][:allocation_tag_id] : AllocationTag.find_by_group_id(params[:group_id] || []).id
+
+    #envia usuario ao DC - falta testar
+    DigitalClass.verify_and_create_member(@current_user, AllocationTag.find_by_id(allocation_tag_ids))
+
+    #chama autenticacao
+    redir_url = params["redirect_to_url"] unless params["redirect_to_url"].nil?
+    DigitalClass.access_authenticated(@current_user) #(@current_user,redir_url)
+  end
+
   def edit
     authorize! :edit, DigitalClass, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @digital_class_lesson = DigitalClass.get_lesson(params[:id])
