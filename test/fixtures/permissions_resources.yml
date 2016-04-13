@@ -2163,6 +2163,16 @@ dc6:
   resource_id: 215
   per_id: false
 
+dc7:
+  profile_id: 3
+  resource_id: 213
+  per_id: false
+
+dc8:
+  profile_id: 3
+  resource_id: 214
+  per_id: false
+
 dc13:
   profile_id: 1
   resource_id: 212

@@ -18,7 +18,7 @@
                 - if dc["redirect_url"].blank?
                   = dc["name"]
                 - else
-                  = link_to dc["name"], authenticate_digital_class_path(dc['id']), class: 'link_content lesson', :'data-fancybox-type' => 'iframe', target: '_blank'
+                  = link_to dc["name"], authenticate_digital_class_path(dc['id'], url: dc['redirect_url']), class: 'link_content lesson', :'data-fancybox-type' => 'iframe', target: '_blank'
                   
               =#%td
               .description

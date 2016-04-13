@@ -16,10 +16,7 @@ class DigitalClass < ActiveRecord::Base
   end
 
   def self.call(path, params={}, replace=[], method=:get)
-    url = File.join(DC["url"], DC["paths"][path])
-    replace.each do |string|
-      url.gsub! ":#{string}", params[string.to_sym].to_s
-    end
+    url = DigitalClass.get_url(path, params.slice(*replace.map(&:to_sym)))
 
     res = if method == :get || method == :delete
       RestClient.send(method, url, { params: { access_token: self.access_token, accept: :json, content_type: 'x-www-form-urlencoded', 'Authorization' => "Bearer #{self.access_token}" }.merge!(params) })
@@ -28,9 +25,7 @@ class DigitalClass < ActiveRecord::Base
     end
 
     response = JSON.parse(res.body)
-
     DigitalClass.log_info('SUCCESS', [method, path], "Params: #{params} Replace Params: #{replace.join(', ')} Return: #{response}")
-
     response
   rescue => error
     DigitalClass.log_info('ERROR', [method, path], "Params: #{params} Replace Params: #{replace.join(', ')} Error Code: #{error.try(:response).try(:code)} Error Message: #{error.try(:response).try(:body)}")
@@ -222,10 +217,10 @@ class DigitalClass < ActiveRecord::Base
     DigitalClass.call('lessons_by_directory', { directory_id: directory_id }, ['directory_id'], :get)
   end
 
-  def self.access_authenticated(user, redirect_to=nil, redirect_params={})
+  def self.access_authenticated(user, redirect_to=nil)
     url = File.join(DC["path"], DC['paths']['authenticate_token'].to_s)
     params = { application_id: DC["application_id"], email: user.email }
-    params.merge!(redirectTo: DigitalClass.get_url(redirect_to, redirect_params, false)) if redirect_to
+    params.merge!(redirectTo: redirect_to) if redirect_to
 
     user.verify_or_create_at_digital_class
 
@@ -240,7 +235,7 @@ class DigitalClass < ActiveRecord::Base
   end
 
   def self.get_url(path, params={}, api=true)
-    path_docs = api ? DC["url"] : DC["path"]
+    path_docs = (api ? DC["url"] : DC["path"])
     url = File.join(path_docs, DC["paths"][path])
     params.each do |key, value|
       url.gsub! ":#{key}", value.to_s
