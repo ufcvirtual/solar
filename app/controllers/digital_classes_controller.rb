@@ -78,14 +78,14 @@ class DigitalClassesController < ApplicationController
   end
 
   def authenticate
-    allocation_tag_ids = (active_tab[:url].include?(:allocation_tag_id)) ? active_tab[:url][:allocation_tag_id] : AllocationTag.find_by_group_id(params[:group_id] || []).id
+    allocation_tag_id = (active_tab[:url].include?(:allocation_tag_id)) ? active_tab[:url][:allocation_tag_id] : AllocationTag.find_by_group_id(params[:group_id] || []).id
+    at = AllocationTag.find_by_id(allocation_tag_id)
 
     #envia usuario ao DC - falta testar
-    DigitalClass.verify_and_create_member(@current_user, AllocationTag.find_by_id(allocation_tag_ids))
+    DigitalClass.verify_and_create_member(@current_user, at)
 
     #chama autenticacao
-    redir_url = params["redirect_to_url"] unless params["redirect_to_url"].nil?
-    DigitalClass.access_authenticated(@current_user) #(@current_user,redir_url)
+    redirect_to DigitalClass.access_authenticated(@current_user, 'dir_lesson', { directory_id: at.group.digital_class_directory_id, lesson_id: params[:id] })
   end
 
   def edit

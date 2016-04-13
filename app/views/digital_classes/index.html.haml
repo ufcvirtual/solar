@@ -18,8 +18,7 @@
                 - if dc["redirect_url"].blank?
                   = dc["name"]
                 - else
-                  = link_to_function dc["name"], 'authenticate(this)', :"data-link" => dc['redirect_url'], class: 'link_content lesson', :'data-fancybox-type' => 'iframe'                  
-                  = #button_tag (content_tag(:i, nil, class: 'icon-search')), type: "button", class: "btn btn_default btn_authenticate", :"data-link" => dc['redirect_url']
+                  = link_to dc["name"], authenticate_digital_class_path(dc['id']), class: 'link_content lesson', :'data-fancybox-type' => 'iframe', target: '_blank'
                   
               =#%td
               .description
@@ -33,48 +32,3 @@
 
   - else
     .block_content_text.block_content_text_list.text_none= t(:no_data, scope: [:digital_classes])
-
-:javascript
-
-  function authenticate(obj){
-    var redir_to = $(obj).data("link");
-    $.ajax({
-      type: 'POST',
-      url: "#{authenticate_digital_classes_path}",
-      data: {
-              'redirect_to_url': redir_to
-            },
-      success: function(data) {
-        flash_message(data.content);
-      },
-      error: function(data) {
-        var data = $.parseJSON(data.responseText);
-        if (typeof(data.alert) != "undefined")
-          flash_message(data.alert, 'alert');
-      }
-    });
-  }
-
-
-  $(function(){
-
-    $(".btn_authenticate").click(function(){      
-      var redir_to = $(this).data("link");
-      $.ajax({
-        type: 'POST',
-        url: "#{authenticate_digital_classes_path}",
-        data: {
-                'redirect_to_url': redir_to
-              },
-        success: function(data) {
-          flash_message(data.content);
-        },
-        error: function(data) {
-          var data = $.parseJSON(data.responseText);
-          if (typeof(data.alert) != "undefined")
-            flash_message(data.alert, 'alert');
-        }
-      });
-    });
-
-  });
