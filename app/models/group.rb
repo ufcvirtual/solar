@@ -100,7 +100,6 @@ class Group < ActiveRecord::Base
     self.save(validate: false)
     return digital_class_directory_id
   rescue => error
-    raise "#{error}"
     # if error 400, ja existe la
   end
 

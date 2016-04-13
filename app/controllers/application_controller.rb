@@ -235,6 +235,7 @@ class ApplicationController < ActionController::Base
         user_log_id = params[:user_id]
         student_log_id = params[:student_id]
         group_assignment_log_id = params[:group_id]
+        digital_class_log = params[:url]
         zip_download = true if (params[:action] == 'download' && params[:type]) || params[:zip]
       end
 
@@ -245,14 +246,14 @@ class ApplicationController < ActionController::Base
       end
 
       # chama o metodo para salva o log do submenu acessado
-      log_navigation_sub(menu_log, discussion_log_id, user_log_id, sub_log_id, student_log_id, group_assignment_log_id, lesson_notes_id, zip_download) if discussion_log_id || user_log_id || sub_log_id || student_log_id || group_assignment_log_id || zip_download || lesson_notes_id
+      log_navigation_sub(menu_log, discussion_log_id, user_log_id, sub_log_id, student_log_id, group_assignment_log_id, lesson_notes_id, digital_class_log, zip_download) if discussion_log_id || user_log_id || sub_log_id || student_log_id || group_assignment_log_id || zip_download || lesson_notes_id || digital_class_log
     else
       LogNavigation.create(user_id: current_user.id, context_id: Context_General) if params[:id] == 'Home'
     end
   end
 
   # salva o log de acesso ao submenu
-  def log_navigation_sub(menu_log, discussion_log_id, user_log_id, sub_log_id, student_log_id, group_assignment_log_id, lesson_notes_id, zip_download)
+  def log_navigation_sub(menu_log, discussion_log_id, user_log_id, sub_log_id, student_log_id, group_assignment_log_id, lesson_notes_id, digital_class_log, zip_download)
     case menu_log.id
       when 101
         unless params[:controller] == 'access_control'
@@ -268,6 +269,8 @@ class ApplicationController < ActionController::Base
           spf = SupportMaterialFile.find(sub_log_id)
           spf.url.blank? ? spf.attachment_file_name : spf.url
         end
+      when 103
+        digital_class_url = digital_class_log
       when 202 || 204
         assignments_id = sub_log_id
       when 203
@@ -302,11 +305,11 @@ class ApplicationController < ActionController::Base
         public_area = true if user_log_id
     end
   
-    if (!support_material_file.blank? || assignments_id || exams_id || chat_rooms_id || webconferences_id || discussion_log_id || lesson_log_id || !bibliography.blank? || student_log_id || user_log_id || public_area || hist_chat_rooms_id)
+    if (!support_material_file.blank? || assignments_id || exams_id || chat_rooms_id || webconferences_id || discussion_log_id || lesson_log_id || !bibliography.blank? || student_log_id || user_log_id || public_area || hist_chat_rooms_id || digital_class_url)
       # para o acompanhamento do professor
       assignments_id = sub_log_id if student_log_id
       ultimo_log_nav = LogNavigation.where('user_id = ? AND menu_id = ?', current_user.id, menu_log.id).last # pega o log de navegação para o sub log. 
-      LogNavigationSub.create(log_navigation_id: ultimo_log_nav.id, support_material_file: support_material_file, discussion_id: discussion_log_id, lesson_id: lesson_log_id, assignment_id: assignments_id, exam_id: exams_id, user_id: user_log_id, chat_room_id: chat_rooms_id, student_id: student_log_id, group_assignment_id: group_assignment_log_id, webconference_id: webconferences_id, bibliography: bibliography, public_area: public_area, lesson: lesson_name, public_file_name: public_file_name, hist_chat_room_id: hist_chat_rooms_id, webconference_record: webconference, lesson_notes: lesson_notes)
+      LogNavigationSub.create(log_navigation_id: ultimo_log_nav.id, support_material_file: support_material_file, discussion_id: discussion_log_id, lesson_id: lesson_log_id, assignment_id: assignments_id, exam_id: exams_id, user_id: user_log_id, chat_room_id: chat_rooms_id, student_id: student_log_id, group_assignment_id: group_assignment_log_id, webconference_id: webconferences_id, bibliography: bibliography, public_area: public_area, lesson: lesson_name, public_file_name: public_file_name, hist_chat_room_id: hist_chat_rooms_id, webconference_record: webconference, lesson_notes: lesson_notes, digital_class_lesson: digital_class_url)
     end
   end
    #deleta logs antigos com mais de 1 ano
