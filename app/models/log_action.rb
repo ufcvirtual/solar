@@ -10,7 +10,8 @@ class LogAction < ActiveRecord::Base
     new_user: 4,
     block_user: 5,
     request_password: 6,
-    access_webconference: 7
+    access_webconference: 7,
+    access_digital_class_lesson: 8
   }
 
   def type_name
@@ -29,6 +30,8 @@ class LogAction < ActiveRecord::Base
         :request_password
       when 7
         :access_webconference
+      when 8
+        :access_digital_class_lesson
     end
 
     I18n.t(type, scope: 'administrations.logs.types')
@@ -69,5 +72,9 @@ class LogAction < ActiveRecord::Base
     create(params)
   end
 
+  def self.access_digital_class_lesson(params)
+    params.merge!(log_type: TYPE[:access_digital_class_lesson])
+    create(params)
+  end
 
 end

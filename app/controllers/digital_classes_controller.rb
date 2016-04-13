@@ -83,8 +83,13 @@ class DigitalClassesController < ApplicationController
     authorize! :access, DigitalClass, { on: allocation_tag_id }
     at = AllocationTag.find_by_id(allocation_tag_id)
 
-    #envia usuario ao DC - falta testar
+    #envia usuario ao DC
     DigitalClass.verify_and_create_member(@current_user, at)
+
+    #loga acesso - o id da lesson no dc fica na descricao, por nao existir no solar
+    LogAction.access_digital_class_lesson(description: params[:id], 
+      user_id: @current_user.id, ip: request.remote_ip, 
+      allocation_tag_id: allocation_tag_id) if at.is_student_or_responsible?(@current_user.id)
 
     #chama autenticacao
     redirect_to DigitalClass.access_authenticated(@current_user, params[:url])
