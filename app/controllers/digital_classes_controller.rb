@@ -3,6 +3,7 @@ class DigitalClassesController < ApplicationController
   include EdxHelper
   include SysLog::Actions
 
+  before_filter :verify_digital_class
   before_filter :prepare_for_group_selection, only: :list
   before_filter :get_groups_by_allocation_tags, only: [:new, :create, :list]
 
@@ -135,10 +136,21 @@ class DigitalClassesController < ApplicationController
     error_message = I18n.translate!("#{error.message}", scope: [:groups, :error], :raise => true) rescue t('tool_change', scope: [:groups, :error])
     render json: { success: false, alert: error_message }, status: :unprocessable_entity
   end
+
   private
   
   def digital_class_params
     params.require(:digital_classes).permit(:name, :description)
+  end
+
+  def verify_digital_class
+    unless DigitalClass.available?
+      if params.include?(:allocation_tags_ids)
+        render json: { alert: t('digital_classes.error.unavailable') }, status: :unprocessable_entity
+      else
+        redirect_to :back, alert: t('digital_classes.error.unavailable')
+      end
+    end
   end
 
 end
