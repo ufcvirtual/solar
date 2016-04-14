@@ -76,8 +76,8 @@ class DigitalClassesController < ApplicationController
     dc_directory_id = DigitalClass.get_directories_by_allocation_tag(AllocationTag.find_by_id(allocation_tag_ids))
     @digital_class = DigitalClass.get_lessons_by_directory(dc_directory_id[0]) unless (dc_directory_id.empty? or dc_directory_id.nil?)
 
-    #at = active_tab[:url][:allocation_tag_id]
-    #@can_see_access = can? :list_access, DigitalClass, { on: at }
+    at = active_tab[:url][:allocation_tag_id]
+    @can_see_access = can? :list_access, DigitalClass, { on: at }
   end
 
   def authenticate
@@ -100,7 +100,7 @@ class DigitalClassesController < ApplicationController
   def list_access
     dc_lesson_id = params["id"]
     allocation_tag_id = (active_tab[:url].include?(:allocation_tag_id)) ? active_tab[:url][:allocation_tag_id] : AllocationTag.find_by_group_id(params[:group_id] || []).id
-    #authorize! :list_access, DigitalClass, { on: allocation_tag_id }
+    authorize! :list_access, DigitalClass, { on: allocation_tag_id }
 
     @digital_class_lesson = DigitalClass.get_lesson(dc_lesson_id) unless dc_lesson_id.nil?
     @logs = DigitalClass.get_access(dc_lesson_id)
