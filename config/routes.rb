@@ -330,6 +330,7 @@ Solar::Application.routes.draw do
 
     member do
       get :authenticate
+      get :list_access 
     end
   end
 

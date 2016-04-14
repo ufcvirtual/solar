@@ -3228,6 +3228,13 @@ pt_BR:
       description: Descrição
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
+      access: Acessos
+    list_access:
+      title: Lista de acessos ao Digital Class Lesson %{dc_lesson_name}
+      user: Usuário
+      group: Turma
+      date: Data
+      time: Hora
     update_members_and_roles_page:
       type: Tipo
       course: Curso

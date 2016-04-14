@@ -2992,6 +2992,13 @@ en_US:
       description: Description
       expand_description: Expand description
       compress_description: Compress description
+      access: Access
+    list_access:
+      title: List of access to Digital Class Lesson %{dc_lesson_name}
+      user: User
+      group: Group
+      date: Date
+      time: Time
     update_members_and_roles_page:
       type: Type
       course: Course

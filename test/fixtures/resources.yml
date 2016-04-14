@@ -1125,3 +1125,9 @@ res217:
   controller: 'digital_classes'
   action: 'change_tool'
   description: 'Adicionar ou remover turmas de uma lição no Digital Class'
+
+res218:
+  id: 218
+  controller: 'digital_classes'
+  action: 'list_access'
+  description: 'Acessar log de ação do Digital Class'

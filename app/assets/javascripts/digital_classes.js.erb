@@ -1,3 +1,24 @@
+function list_access(obj){
+  if($(obj).parent().hasClass('disabled'))
+    return false;
+
+  $(obj).parent().addClass('disabled');
+
+  $.get($(obj).parent().data('url'), function(data){
+    $(obj).call_fancybox({
+      open: true,
+      content: data
+    });
+    $(obj).parent().removeClass('disabled');
+  }).error(function(data){
+    $(obj).parent().removeClass('disabled');
+    var response = JSON.parse(data.responseText);
+    if (typeof(response.alert) != "undefined")
+      flash_message(response.alert, 'alert');
+  });
+}
+
+
 $(function(){
 
   $('#all_digital_classes').nice_checkbox();
