@@ -169,7 +169,7 @@ class DigitalClass < ActiveRecord::Base
     if dc_directory_id && dc_user_id && digital_class_params
       lesson = DigitalClass.call('lessons', { name: digital_class_params[:name], directories: dc_directory_id, user_id: dc_user_id, description: digital_class_params['description'] }, [], :post)
       lesson['redirect_url']
-    end  
+    end
   end
 
   def self.add_lesson_to_directories(directories_ids, lesson_id)
@@ -216,7 +216,7 @@ class DigitalClass < ActiveRecord::Base
   def self.access_authenticated(user, redirect_to=nil)
     url = File.join(DC["path"], DC['paths']['authenticate_token'].to_s)
     params = { application_id: DC["application_id"], email: user.email }
-    params.merge!(redirectTo: redirect_to) if redirect_to
+    params.merge!(redirect_url: redirect_to) if redirect_to
 
     user.verify_or_create_at_digital_class
 
