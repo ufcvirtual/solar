@@ -327,10 +327,11 @@ Solar::Application.routes.draw do
       get :update_members_and_roles, to: :update_members_and_roles_page
       put :update_members_and_roles
     end
-
+    
     member do
       get :authenticate
       get :list_access 
+      get :access
     end
   end
 

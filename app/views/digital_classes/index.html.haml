@@ -24,8 +24,8 @@
                   
               .description
                 .minimun
-                  = simple_format(dc["description"].truncate(200))
-                  - if dc["description"].size>200
+                  = simple_format(dc["description"].to_s.truncate(200))
+                  - if dc["description"].to_s.size>200
                     = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('dc.index.expand_description'))
                 .complete.invisible
                   = simple_format(dc["description"])

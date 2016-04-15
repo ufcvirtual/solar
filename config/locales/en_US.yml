@@ -1876,6 +1876,7 @@ en_US:
         new_user: "New users"
         block_user: "User block"
         request_password: "Request password"
+        access_digital_class_lesson: Access Digital Class Lesson
       name: Name
       description: Description
       created_at: Date

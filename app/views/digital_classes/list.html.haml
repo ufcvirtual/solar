@@ -40,8 +40,8 @@
             %td{style: 'text-align:center;'}
               %div
                 .redirect_url
-                  = link_to content_tag(:i, nil, class: 'btn icon-eye access_digital_class', :'data-tooltip' => t('.access')), DigitalClass.access_authenticated(current_user, dcl[:lesson]['redirect_url']), :target => "_blank"
-                   
+                = link_to content_tag(:i, nil, class: 'btn icon-eye access_digital_class', :'data-tooltip' => t('.access')), access_digital_class_path(dcl[:lesson]['id'], url: dcl[:lesson]['redirect_url'], allocation_tags_ids: @allocation_tags_ids), :target => "_blank"
+
 
   - else
     .block_content_text_list.text_none= t(".none")

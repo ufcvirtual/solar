@@ -229,7 +229,8 @@ class AdministrationsController < ApplicationController
         .joins('LEFT JOIN lessons ON lognsub.lesson_id = lessons.id')
         .joins('LEFT JOIN discussions ON lognsub.discussion_id = discussions.id')
         .joins('LEFT JOIN exams ON exams.id = lognsub.exam_id')
-        .joins('LEFT JOIN users as student ON lognsub.user_id = student.id')
+        .joins('LEFT JOIN users as student ON lognsub.student_id = student.id')
+        .joins('LEFT JOIN users as participant ON lognsub.user_id = participant.id')
         .joins('LEFT JOIN webconferences ON lognsub.webconference_id = webconferences.id')
         .joins('LEFT JOIN menus ON log_navigations.menu_id = menus.id')
         .joins('LEFT JOIN allocation_tags ON log_navigations.allocation_tag_id = allocation_tags.id')
@@ -271,12 +272,13 @@ class AdministrationsController < ApplicationController
           lesson_notes,
           public_area,
           public_file_name, 
+          participant.name as participant, 
           to_char(lognsub.created_at,'dd/mm/YYYY HH24:MI:SS') as created_submenu
         ")
         .order("log_navigations.id DESC, lognsub.id DESC")
         .limit(1000)
 
-        attributes_to_include = %w(user course course_code uc uc_code semester group menu created created_submenu support_material_file discussion lesson lesson_notes assignment exam users chat_room chat_history student group_assignments webconferences webconference_record public_area public_file_name digital_class_lesson)
+        attributes_to_include = %w(user course course_code uc uc_code semester group menu created created_submenu support_material_file discussion lesson lesson_notes assignment student group_assignments chat_room chat_history exam webconferences webconference_record public_area public_file_name participant digital_class_lesson)
         respond_to do |format|
           format.html
           format.csv { send_data @logs.to_csv(attributes_to_include) }

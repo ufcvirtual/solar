@@ -220,6 +220,7 @@ class ApplicationController < ActionController::Base
     allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] rescue params[:allocation_tag_id]
 
     unless allocation_tag_id.nil?
+
       if params[:bread] && !params[:user_id]
         menu = Menu.find_by_name(params[:bread])
         session[:menu_log] = menu
@@ -247,6 +248,7 @@ class ApplicationController < ActionController::Base
 
       # chama o metodo para salva o log do submenu acessado
       log_navigation_sub(menu_log, discussion_log_id, user_log_id, sub_log_id, student_log_id, group_assignment_log_id, lesson_notes_id, digital_class_log, zip_download) if discussion_log_id || user_log_id || sub_log_id || student_log_id || group_assignment_log_id || zip_download || lesson_notes_id || digital_class_log
+
     else
       LogNavigation.create(user_id: current_user.id, context_id: Context_General) if params[:id] == 'Home'
     end
