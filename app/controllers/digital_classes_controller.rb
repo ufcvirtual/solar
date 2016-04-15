@@ -18,14 +18,12 @@ class DigitalClassesController < ApplicationController
     authorize! :list, DigitalClass, on: @allocation_tags_ids
     Group.verify_or_create_at_digital_class(@groups)
     @digital_class_lessons = []
-
-    @groups.each do |group|
-      lessons = DigitalClass.get_lessons_by_directory(group.try(:digital_class_directory_id)) rescue []
+    @groups.map(&:digital_class_directory_id).compact.each do |group|
+      lessons = DigitalClass.get_lessons_by_directory(group) rescue []
       lessons.each do |ls|
         @digital_class_lessons << { groups: Group.get_group_from_lesson(ls), lesson: ls } unless @digital_class_lessons.any? {|h| h[:lesson]['id'] == ls['id']}
       end 
     end 
-    #redirect_to url_redirect, flash: flash
   rescue => error
     request.format = :json
   end
@@ -108,6 +106,7 @@ class DigitalClassesController < ApplicationController
     
     render partial: 'list_access'
   end
+
   def access
     authorize! :access, DigitalClass, on: @allocation_tags_ids = params[:allocation_tags_ids]
     redirect_to DigitalClass.access_authenticated(current_user, params[:url]) 

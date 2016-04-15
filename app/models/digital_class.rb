@@ -216,14 +216,15 @@ class DigitalClass < ActiveRecord::Base
   def self.access_authenticated(user, redirect_to=nil)
     url = File.join(DC["path"], DC['paths']['authenticate_token'].to_s)
     params = { application_id: DC["application_id"], email: user.email }
-    params.merge!(redirect_url: redirect_to) if redirect_to
 
     user.verify_or_create_at_digital_class
 
     res = RestClient.post url, params, { accept: :json, content_type: 'x-www-form-urlencoded' }
     redirect_url = JSON.parse(res.body)['redirect_url']
 
-    DigitalClass.log_info('SUCCESS', [:post, 'authenticate_token'], "Params: #{params} Response: #{redirect_url}")
+    DigitalClass.log_info('SUCCESS', [:post, 'authenticate_token'], "Params: #{params.merge!(redirect_url: redirect_to)} Response: #{redirect_url}")
+
+    redirect_url = DigitalClass.add_params_to_uri(redirect_url, redirect_url: redirect_to) if redirect_to
     redirect_url
   rescue => error
     DigitalClass.log_info('ERROR', [:post, 'authenticate_token'], "Params: #{params} Error Code: #{error.try(:response).try(:code)} Error Message: #{error.try(:response).try(:body)}")
@@ -250,6 +251,18 @@ class DigitalClass < ActiveRecord::Base
   end
 
   private
+    def self.add_params_to_uri(string, params)
+      uri = URI(string)
+      u_params = URI.decode_www_form(uri.query) rescue []
+      params.each do |param|
+        u_params << param
+      end
+      uri.query = URI.encode_www_form(u_params)
+      uri.to_s
+    rescue => error
+      DigitalClass.log_info('ERROR', [nil, 'add_params_to_uri'], "Unable to add #{params.as_json} to #{string}")
+    end
+
     def self.access_token
       File.open(DC["token_path"], &:readline).strip
     end

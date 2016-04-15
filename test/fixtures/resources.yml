@@ -1130,4 +1130,4 @@ res218:
   id: 218
   controller: 'digital_classes'
   action: 'list_access'
-  description: 'Acessar log de ação do Digital Class'
+  description: 'Visualizar lista de acessos a uma lição no Digital Class'
