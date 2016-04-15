@@ -2079,7 +2079,8 @@ pt_BR:
         new_user: "Novo usuário"
         block_user: "Bloqueio de usuário"
         request_password: "Recuperação de senha"
-        access_digital_class_lesson: Aula no Digital Class
+        access_digital_class_lesson: Acesso a aula no Digital Class
+        access_webconference: Acesso a webconferência
       name: Nome
       description: Descrição
       created_at: Data

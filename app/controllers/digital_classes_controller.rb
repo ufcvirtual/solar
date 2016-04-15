@@ -41,7 +41,9 @@ class DigitalClassesController < ApplicationController
       DigitalClass.verify_and_create_member(current_user, at)
     end
 
-    redirect_url = DigitalClass.create_lesson(directories_ids.join(','), dc_user_id, digital_class_params)
+    response = DigitalClass.create_lesson(directories_ids.join(','), dc_user_id, digital_class_params)
+    create_log(response, @allocation_tags_ids)
+
     render :new
   end
 
@@ -113,14 +115,15 @@ class DigitalClassesController < ApplicationController
   end
 
   def edit
-    authorize! :update, DigitalClass, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :update, DigitalClass, on: @allocation_tags_ids
     @digital_class_lesson = DigitalClass.get_lesson(params[:id])
   end
 
   def update
-    authorize! :update, DigitalClass, on:  @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :update, DigitalClass, on:  @allocation_tags_ids
     
-    if DigitalClass.update_lesson(digital_class_params, params[:id])
+    if response = DigitalClass.update_lesson(digital_class_params, params[:id])
+      create_log(response, @allocation_tags_ids)
       render json: { success: true, notice: t('digital_classes.success.updated') }
     else
       render :edit
@@ -133,9 +136,7 @@ class DigitalClassesController < ApplicationController
   def destroy
     authorize! :destroy, DigitalClass, on: @allocation_tags_ids = params[:allocation_tags_ids]
     ret = DigitalClass.delete_lesson(params[:id])
-    if ret['success']
-      LogAction.where('description= ? AND log_type= ?', params[:id], 8).delete_all
-    end  
+    LogAction.where(description: params[:id], log_type: LogAction::TYPE[:access_digital_class_lesson]).delete_all if ret['success']
     render json: {success: true, notice: t('digital_classes.success.deleted')}
   rescue => error
     request.format = :json
@@ -163,6 +164,13 @@ class DigitalClassesController < ApplicationController
   end
 
   private
+
+  def create_log(response, allocation_tags_ids)
+    description = "digital_class: #{response.except('directories').as_json}"
+    allocation_tags_ids.split(' ').flatten.each do |at|
+      LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: request.remote_ip, description: description, allocation_tag_id: at)
+    end
+  end
   
   def digital_class_params
     params.require(:digital_classes).permit(:name, :description)

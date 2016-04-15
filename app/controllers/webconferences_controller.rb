@@ -138,7 +138,7 @@ class WebconferencesController < ApplicationController
     URI.parse(url).path
 
     ac_id = (webconference.academic_allocations.size == 1 ? webconference.academic_allocations.first.id : webconference.academic_allocations.where(allocation_tag_id: at_id).first.id)
-    LogAction.access_webconference(academic_allocation_id: ac_id, user_id: current_user.id, ip: request.remote_ip, allocation_tag_id: at_id) if AllocationTag.find(at_id).is_student_or_responsible?(current_user.id)
+    LogAction.access_webconference(academic_allocation_id: ac_id, user_id: current_user.id, ip: request.remote_ip, allocation_tag_id: at_id, description: webconference.attributes) if AllocationTag.find(at_id).is_student_or_responsible?(current_user.id)
 
     render json: { success: true, url: url }
   rescue CanCan::AccessDenied

@@ -167,8 +167,7 @@ class DigitalClass < ActiveRecord::Base
 
   def self.create_lesson(dc_directory_id, dc_user_id, digital_class_params)
     if dc_directory_id && dc_user_id && digital_class_params
-      lesson = DigitalClass.call('lessons', { name: digital_class_params[:name], directories: dc_directory_id, user_id: dc_user_id, description: digital_class_params['description'] }, [], :post)
-      lesson['redirect_url']
+      DigitalClass.call('lessons', { name: digital_class_params[:name], directories: dc_directory_id, user_id: dc_user_id, description: digital_class_params['description'] }, [], :post)
     end
   end
 
