@@ -3232,11 +3232,12 @@ pt_BR:
       compress_description: Comprimir descrição
       access: Acessos
     list_access:
-      title: Lista de acessos ao Digital Class Lesson %{dc_lesson_name}
+      title: 'Lista de acessos ao Digital Class - Lição: %{dc_lesson_name}'
       user: Usuário
       group: Turma
       date: Data
       time: Hora
+      no_log: Nenhum participante acessou esta lição
     update_members_and_roles_page:
       type: Tipo
       course: Curso

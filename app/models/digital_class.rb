@@ -230,14 +230,15 @@ class DigitalClass < ActiveRecord::Base
     return error.response.code # indisponivel ou erro na chamada
   end
 
-  def self.get_access(dc_lesson_id)
+  def self.get_access(dc_lesson_id, allocation_tags_ids)
     LogAction.joins(:allocation_tag, user: [allocations: :profile] )
       .where(log_type: LogAction::TYPE[:access_digital_class_lesson])
-      .where(description: "#{dc_lesson_id}" )
+      .where(allocation_tags: { id: allocation_tags_ids })
+      .where("log_actions.description LIKE '#{dc_lesson_id},%'")
       .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean ) OR cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )")
-      .select("log_actions.created_at, users.name AS user_name, allocation_tags.id AS at_id, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name")
+      .select("log_actions.created_at, users.name AS user_name, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name")
       .order('log_actions.created_at ASC')
-      .group('log_actions.created_at, users.name, allocation_tags.id')
+      .group('log_actions.created_at, users.name')
   end
 
   def self.get_url(path, params={}, api=true)

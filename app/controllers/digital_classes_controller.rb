@@ -4,7 +4,7 @@ class DigitalClassesController < ApplicationController
   include SysLog::Actions
 
   before_filter :verify_digital_class
-  before_filter :prepare_for_group_selection, only: :list
+  before_filter :prepare_for_group_selection, only: :index
   before_filter :get_groups_by_allocation_tags, only: [:new, :create, :list]
 
   layout false, except: [:index, :update_members_and_roles_page]
@@ -75,10 +75,9 @@ class DigitalClassesController < ApplicationController
     authorize! :index, DigitalClass, { on: allocation_tag_ids }
 
     dc_directory_id = DigitalClass.get_directories_by_allocation_tag(AllocationTag.find_by_id(allocation_tag_ids))
-    @digital_class = DigitalClass.get_lessons_by_directory(dc_directory_id[0]) unless (dc_directory_id.empty? or dc_directory_id.nil?)
+    @digital_class = DigitalClass.get_lessons_by_directory(dc_directory_id[0]) unless dc_directory_id.blank?
 
-    at = active_tab[:url][:allocation_tag_id]
-    @can_see_access = can? :list_access, DigitalClass, { on: at }
+    @can_see_access = can? :list_access, DigitalClass, { on: allocation_tag_ids }
   end
 
   def authenticate
@@ -86,13 +85,10 @@ class DigitalClassesController < ApplicationController
     authorize! :access, DigitalClass, { on: allocation_tag_id }
     at = AllocationTag.find_by_id(allocation_tag_id)
 
-    #envia usuario ao DC
     DigitalClass.verify_and_create_member(@current_user, at)
 
-    #loga acesso - o id da lesson no dc fica na descricao, por nao existir no solar
-    LogAction.access_digital_class_lesson(description: params[:id], 
-      user_id: @current_user.id, ip: request.remote_ip, 
-      allocation_tag_id: allocation_tag_id) if at.is_student_or_responsible?(@current_user.id)
+    # loga acesso - o id da lesson no dc fica na descricao, por nao existir no solar
+    LogAction.access_digital_class_lesson(description: "#{params[:id].to_i}, #{params[:url]}", user_id: @current_user.id, ip: request.remote_ip, allocation_tag_id: allocation_tag_id) if at.is_student_or_responsible?(@current_user.id)
 
     #chama autenticacao
     redirect_to DigitalClass.access_authenticated(@current_user, params[:url])
@@ -104,7 +100,7 @@ class DigitalClassesController < ApplicationController
     authorize! :list_access, DigitalClass, { on: allocation_tag_id }
 
     @digital_class_lesson = DigitalClass.get_lesson(dc_lesson_id) unless dc_lesson_id.nil?
-    @logs = DigitalClass.get_access(dc_lesson_id)
+    @logs = DigitalClass.get_access(dc_lesson_id, allocation_tag_id)
     
     render partial: 'list_access'
   end
@@ -135,8 +131,7 @@ class DigitalClassesController < ApplicationController
 
   def destroy
     authorize! :destroy, DigitalClass, on: @allocation_tags_ids = params[:allocation_tags_ids]
-    ret = DigitalClass.delete_lesson(params[:id])
-    LogAction.where(description: params[:id], log_type: LogAction::TYPE[:access_digital_class_lesson]).delete_all if ret['success']
+    DigitalClass.delete_lesson(params[:id])
     render json: {success: true, notice: t('digital_classes.success.deleted')}
   rescue => error
     request.format = :json

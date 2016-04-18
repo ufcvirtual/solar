@@ -2996,11 +2996,12 @@ en_US:
       compress_description: Compress description
       access: Access
     list_access:
-      title: List of access to Digital Class Lesson %{dc_lesson_name}
+      title: 'List of access to Digital Class - Lesson: %{dc_lesson_name}'
       user: User
       group: Group
       date: Date
       time: Time
+      no_log: No participant accessed this lesson
     update_members_and_roles_page:
       type: Type
       course: Course
