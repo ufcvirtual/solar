@@ -1105,6 +1105,8 @@ pt_BR:
       delete: Remover material
     form:
       groups: Turmas
+    error:
+      file: Um ou mais arquivos de até 30MB devem ser selecionados.
 
   #Listagem de Fóruns
   title: "Título"

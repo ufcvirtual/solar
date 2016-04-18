@@ -941,6 +941,8 @@ en_US:
       delete: Remove material
     form:
       groups: Groups
+    error:
+      file: One or more files until 30MB must be selected.
   title: "Title"
   forum_table_title: "Available Discussions"
   forum_table_date: "Access date"
