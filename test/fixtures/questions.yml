@@ -5,7 +5,6 @@ question1:
   enunciation: 'Quanto eh 1+1?'
   type_question: 0
   status: true
-  score: 1
 
 question2:
   id: 2
@@ -13,7 +12,6 @@ question2:
   enunciation: 'A capital do Cearah eh'
   type_question: 0
   status: true
-  score: 1
 
 question3:
   id: 3
@@ -21,7 +19,6 @@ question3:
   enunciation: 'Qual o resultado de 43x10?'
   type_question: 0
   status: true
-  score: 1
 
 question4:
   id: 4
@@ -29,7 +26,6 @@ question4:
   enunciation: 'Fulano tem 4 moedas de R$ 0,10. Quanto ele tem?'
   type_question: 0
   status: true
-  score: 1
 
 question5:
   id: 5
@@ -37,7 +33,6 @@ question5:
   enunciation: 'Qual a cor do cavalo branco de napoleao?'
   type_question: 0
   status: true
-  score: 1
 
 #MULTIPLE
 question6:
@@ -46,7 +41,6 @@ question6:
   enunciation: 'Quais as cores da bandeira do japao?'
   type_question: 1
   status: true
-  score: 1
 
 question7:
   id: 7
@@ -54,7 +48,6 @@ question7:
   enunciation: 'Quais as capitais que possuem litoral?'
   type_question: 1
   status: true
-  score: 1
 
 question8:
   id: 8
@@ -62,7 +55,6 @@ question8:
   enunciation: 'Numa célula animal, qual organela possui a função de conservar e transmitir a informação genética na reprodução das células e regular as funções celulares.'
   type_question: 1
   status: true
-  score: 1
 
 #TRUE_FALSE
 question9:
@@ -71,7 +63,6 @@ question9:
   enunciation: 'Sobre a 3a guerra mundial, responda V ou F'
   type_question: 2
   status: true
-  score: 1
 
 question10:
   id: 10
@@ -79,4 +70,3 @@ question10:
   enunciation: 'Sobre a 2a guerra mundial, responda V ou F'
   type_question: 2
   status: true
-  score: 1

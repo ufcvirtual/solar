@@ -5,11 +5,11 @@ examuser1_question1_response1:
   question_id: 1
   value: true
 
-examuser1_question3_response1:
+examuser1_question2_response1:
   id: 2
   exam_user_attempt_id: 1
-  question_item_id: 9
-  question_id: 3
+  question_item_id: 5
+  question_id: 2
   value: true
 
 examuser1_question3_response2:
