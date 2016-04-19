@@ -1105,6 +1105,8 @@ pt_BR:
       delete: Remover material
     form:
       groups: Turmas
+    error:
+      file: Um ou mais arquivos de até 30MB devem ser selecionados.
 
   #Listagem de Fóruns
   title: "Título"
@@ -2079,6 +2081,8 @@ pt_BR:
         new_user: "Novo usuário"
         block_user: "Bloqueio de usuário"
         request_password: "Recuperação de senha"
+        access_digital_class_lesson: Acesso a aula no Digital Class
+        access_webconference: Acesso a webconferência
       name: Nome
       description: Descrição
       created_at: Data
@@ -3228,6 +3232,14 @@ pt_BR:
       description: Descrição
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
+      access: Acessos
+    list_access:
+      title: 'Lista de acessos ao Digital Class - Lição: %{dc_lesson_name}'
+      user: Usuário
+      group: Turma
+      date: Data
+      time: Hora
+      no_log: Nenhum participante acessou esta lição
     update_members_and_roles_page:
       type: Tipo
       course: Curso

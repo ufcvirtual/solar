@@ -9,7 +9,9 @@
       %thead
         %tr.lines
           %th{ align: 'left' }=t(:name, scope: [:digital_classes, :index])
-          =#%th{ style: 'width: 50%;' }=t(:description, scope: [:digital_classes, :index])
+          - if @can_see_access
+            %th.no_sort{ width: '80px' }
+              = t(:access, scope: [:digital_classes, :index])
       %tbody
         - @digital_class.each do |dc|
           %tr.lines
@@ -20,15 +22,19 @@
                 - else
                   = link_to dc["name"], authenticate_digital_class_path(dc['id'], url: dc['redirect_url']), class: 'link_content lesson', :'data-fancybox-type' => 'iframe', target: '_blank'
                   
-              =#%td
               .description
                 .minimun
-                  = simple_format(dc["description"].truncate(200))
-                  - if dc["description"].size>200
+                  = simple_format(dc["description"].to_s.truncate(200))
+                  - if dc["description"].to_s.size>200
                     = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('dc.index.expand_description'))
                 .complete.invisible
                   = simple_format(dc["description"])
                   = content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('dc.index.compress_description'))
+            - if @can_see_access
+              %td{:'data-url' => list_access_digital_class_path(dc["id"]), :'data-tooltip' => t('digital_classes.list_access') }
+                = link_to_function content_tag(:i, nil, class: 'btn icon-users'), 'list_access(this)'
 
   - else
     .block_content_text.block_content_text_list.text_none= t(:no_data, scope: [:digital_classes])
+
+= javascript_include_tag 'tooltip', 'digital_classes' 

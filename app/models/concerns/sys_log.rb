@@ -63,7 +63,8 @@ module SysLog
       end
 
       def generic_log(sobj, obj = nil)
-        return if !obj.nil? && obj.new_record? # not saved
+        return if params.include?(:digital_classes)
+        return if !obj.nil? && obj.new_record?# && !params.include?(:digital_classes) # not saved
 
         # academic_allocation_id = obj.try(:academic_allocation).try(:id)
         academic_allocation_id = nil

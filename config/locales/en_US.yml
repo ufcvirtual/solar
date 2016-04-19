@@ -941,6 +941,8 @@ en_US:
       delete: Remove material
     form:
       groups: Groups
+    error:
+      file: One or more files until 30MB must be selected.
   title: "Title"
   forum_table_title: "Available Discussions"
   forum_table_date: "Access date"
@@ -1876,6 +1878,8 @@ en_US:
         new_user: "New users"
         block_user: "User block"
         request_password: "Request password"
+        access_digital_class_lesson: Access to Digital Class Lesson
+        access_webconference: Access to Webconference
       name: Name
       description: Description
       created_at: Date
@@ -2992,6 +2996,14 @@ en_US:
       description: Description
       expand_description: Expand description
       compress_description: Compress description
+      access: Access
+    list_access:
+      title: 'List of access to Digital Class - Lesson: %{dc_lesson_name}'
+      user: User
+      group: Group
+      date: Date
+      time: Time
+      no_log: No participant accessed this lesson
     update_members_and_roles_page:
       type: Type
       course: Course

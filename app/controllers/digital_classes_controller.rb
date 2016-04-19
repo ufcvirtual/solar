@@ -4,7 +4,7 @@ class DigitalClassesController < ApplicationController
   include SysLog::Actions
 
   before_filter :verify_digital_class
-  before_filter :prepare_for_group_selection, only: :list
+  before_filter :prepare_for_group_selection, only: :index
   before_filter :get_groups_by_allocation_tags, only: [:new, :create, :list]
 
   layout false, except: [:index, :update_members_and_roles_page]
@@ -18,9 +18,8 @@ class DigitalClassesController < ApplicationController
     authorize! :list, DigitalClass, on: @allocation_tags_ids
     Group.verify_or_create_at_digital_class(@groups)
     @digital_class_lessons = []
-    
-    @groups.each do |group|
-      lessons = DigitalClass.get_lessons_by_directory(group.try(:digital_class_directory_id)) rescue []
+    @groups.map(&:digital_class_directory_id).compact.each do |group|
+      lessons = DigitalClass.get_lessons_by_directory(group) rescue []
       lessons.each do |ls|
         @digital_class_lessons << { groups: Group.get_group_from_lesson(ls), lesson: ls } unless @digital_class_lessons.any? {|h| h[:lesson]['id'] == ls['id']}
       end 
@@ -42,7 +41,9 @@ class DigitalClassesController < ApplicationController
       DigitalClass.verify_and_create_member(current_user, at)
     end
 
-    redirect_url = DigitalClass.create_lesson(directories_ids.join(','), dc_user_id, digital_class_params)
+    response = DigitalClass.create_lesson(directories_ids.join(','), dc_user_id, digital_class_params)
+    create_log(response, @allocation_tags_ids)
+
     render :new
   end
 
@@ -74,8 +75,9 @@ class DigitalClassesController < ApplicationController
     authorize! :index, DigitalClass, { on: allocation_tag_ids }
 
     dc_directory_id = DigitalClass.get_directories_by_allocation_tag(AllocationTag.find_by_id(allocation_tag_ids))
-    
-    @digital_class = DigitalClass.get_lessons_by_directory(dc_directory_id[0]) unless (dc_directory_id.empty? or dc_directory_id.nil?)
+    @digital_class = DigitalClass.get_lessons_by_directory(dc_directory_id[0]) unless dc_directory_id.blank?
+
+    @can_see_access = can? :list_access, DigitalClass, { on: allocation_tag_ids }
   end
 
   def authenticate
@@ -83,27 +85,41 @@ class DigitalClassesController < ApplicationController
     authorize! :access, DigitalClass, { on: allocation_tag_id }
     at = AllocationTag.find_by_id(allocation_tag_id)
 
-    #envia usuario ao DC
     DigitalClass.verify_and_create_member(@current_user, at)
 
-    #loga acesso - o id da lesson no dc fica na descricao, por nao existir no solar
-    LogAction.access_digital_class_lesson(description: params[:id], 
-      user_id: @current_user.id, ip: request.remote_ip, 
-      allocation_tag_id: allocation_tag_id) if at.is_student_or_responsible?(@current_user.id)
+    # loga acesso - o id da lesson no dc fica na descricao, por nao existir no solar
+    LogAction.access_digital_class_lesson(description: "#{params[:id].to_i}, #{params[:url]}", user_id: @current_user.id, ip: request.remote_ip, allocation_tag_id: allocation_tag_id) if at.is_student_or_responsible?(@current_user.id)
 
     #chama autenticacao
     redirect_to DigitalClass.access_authenticated(@current_user, params[:url])
   end
 
+  def list_access
+    dc_lesson_id = params["id"]
+    allocation_tag_id = (active_tab[:url].include?(:allocation_tag_id)) ? active_tab[:url][:allocation_tag_id] : AllocationTag.find_by_group_id(params[:group_id] || []).id
+    authorize! :list_access, DigitalClass, { on: allocation_tag_id }
+
+    @digital_class_lesson = DigitalClass.get_lesson(dc_lesson_id) unless dc_lesson_id.nil?
+    @logs = DigitalClass.get_access(dc_lesson_id, allocation_tag_id)
+    
+    render partial: 'list_access'
+  end
+
+  def access
+    authorize! :access, DigitalClass, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    redirect_to DigitalClass.access_authenticated(current_user, params[:url]) 
+  end
+
   def edit
-    authorize! :update, DigitalClass, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :update, DigitalClass, on: @allocation_tags_ids
     @digital_class_lesson = DigitalClass.get_lesson(params[:id])
   end
 
   def update
-    authorize! :update, DigitalClass, on:  @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :update, DigitalClass, on:  @allocation_tags_ids
     
-    if DigitalClass.update_lesson(digital_class_params, params[:id])
+    if response = DigitalClass.update_lesson(digital_class_params, params[:id])
+      create_log(response, @allocation_tags_ids)
       render json: { success: true, notice: t('digital_classes.success.updated') }
     else
       render :edit
@@ -143,6 +159,13 @@ class DigitalClassesController < ApplicationController
   end
 
   private
+
+  def create_log(response, allocation_tags_ids)
+    description = "digital_class: #{response.except('directories').as_json}"
+    allocation_tags_ids.split(' ').flatten.each do |at|
+      LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: request.remote_ip, description: description, allocation_tag_id: at)
+    end
+  end
   
   def digital_class_params
     params.require(:digital_classes).permit(:name, :description)
