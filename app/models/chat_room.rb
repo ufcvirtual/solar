@@ -19,6 +19,8 @@ class ChatRoom < Event
 
   validate :verify_hours, unless: Proc.new { |a| a.start_hour.blank? || a.end_hour.blank? }
 
+  before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # mandatory final date
+
   before_destroy :can_destroy?
   after_destroy :delete_schedule
 
