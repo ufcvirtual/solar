@@ -3021,6 +3021,19 @@ pt_BR:
       exam_details: Detalhes da prova
       attempts: Quantidade de tentativas
       attempts_correction: Cálculo de nota
+    result_exam_user:
+      exam_result: "  Prova " 
+      number_question: Número de Questões
+      description: Descrição
+      time: Horário
+      average_time: Tempo médio por questão
+      exam_time: Tempo gasto na Prova
+      punctuation: Pontuação
+      start_date: Inicio
+      end_date: Fim
+      attempts: Quantidade de tentativas
+      attempts_correction: Cálculo de nota
+      to: " de"
     warning:
       title: '<b>Importante: </b>Não é possível criar, importar ou remover questões em provas publicadas'
 

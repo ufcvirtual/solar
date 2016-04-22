@@ -1,0 +1,29 @@
+.show_exam
+  %h1#lightBoxDialogTitle= t(".exam_result") + @exam.name
+
+  .form-inputs.block_content.show
+    .input
+      = label_tag t(".number_question"), nil, class: "form_label"
+      %span.label_info= @total_questions
+    .input
+      = label_tag t(".start_date"), nil, class: "form_label"
+      %span.label_info= l(@last_attempt.start, format: :at_date)
+
+    .input
+      = label_tag t(".end_date"), nil, class: "form_label"
+      %span.label_info= l(@last_attempt.end, format: :at_date)
+
+    .input
+      = label_tag t(".average_time"), nil, class: "form_label"
+      %span.label_info= Time.at(@temp_questions).utc.strftime("%H:%M:%S")
+
+    .input
+      = label_tag t(".exam_time"), nil, class: "form_label"
+      %span.label_info= Time.at(@total_time).utc.strftime("%H:%M:%S")
+
+    .input
+      = label_tag t(".punctuation"), nil, class: "form_label"
+      %span.label_info= @last_attempt.grade.to_s
+      = label_tag t(".to") + ' '+ @scores_exam.to_s  
+
+        

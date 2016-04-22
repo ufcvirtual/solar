@@ -2785,6 +2785,20 @@ en_US:
       exam_details: Exam's details
       attempts: Attempt's amount
       attempts_correction: Grade calculation
+    result_exam_user: 
+      exam_result: " Exam " 
+      number_question: Number of Issues
+      name: Name
+      description: Description
+      time: Time
+      average_time: Time on each question
+      exam_time: Time spent in Competition
+      punctuation: Punctuation
+      start_date: Start date
+      end_date: End date
+      attempts: Attempt's amount
+      attempts_correction: Grade calculation 
+      to: " to "
     warning:
       title: "<b>Important: </b>You can't create, import or remove questions while exam's published"
 

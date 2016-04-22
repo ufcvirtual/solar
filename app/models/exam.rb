@@ -294,6 +294,18 @@ class Exam < Event
     return false if exam_users.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: id, academic_tool_type: 'Exam', allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).any?
   end
 
+  def self.get_grade(mod_correct_exam, exam_user_id)
+    grade = 'NaN'
+    if mod_correct_exam == 0
+      grade = ExamUserAttempt.where(exam_user_id: exam_user_id).maximum(:grade)
+    elsif mod_correct_exam == 1
+      grade = ExamUserAttempt.where(exam_user_id: exam_user_id).average(:grade)
+    else
+      grade = ExamUserAttempt.where(exam_user_id: exam_user_id).last
+    end 
+    grade
+  end  
+
   private
 
     def percent(total, answered)
