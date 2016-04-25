@@ -121,7 +121,7 @@ class Group < ActiveRecord::Base
       directories_ids << d['id']
     end 
     groups = Group.where({digital_class_directory_id: directories_ids}) 
-  end 
+  end
 
   def self.verify_or_create_at_digital_class(groups)
     groups.collect{ |group| group.verify_or_create_at_digital_class }

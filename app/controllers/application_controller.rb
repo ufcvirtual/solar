@@ -149,7 +149,7 @@ class ApplicationController < ActionController::Base
     LogAccess.login(user_id: current_user.id, ip: request.remote_ip) rescue nil
     super
   end
-  #logout
+
   def after_sign_out_path_for(resource_or_scope)
     delete_log_navigation
     super
@@ -160,13 +160,14 @@ class ApplicationController < ActionController::Base
   end
 
   def get_groups_by_allocation_tags(ats = nil)
-    @groups = Group.includes(:allocation_tag).where(allocation_tags: {id: (ats || params[:allocation_tags_ids].split(" ").flatten)})
+    ats = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids].split(' ').flatten : [active_tab[:url][:allocation_tag_id]].compact if ats.blank?
+    @groups = Group.includes(:allocation_tag).where(allocation_tags: { id: ats })
   end
 
   def set_locale
     if user_signed_in?
       personal_options = PersonalConfiguration.find_or_create_by_user_id(current_user.id, default_locale: (params[:locale] || I18n.default_locale))
-      personal_options.update_attributes(default_locale: params[:locale]) if (params[:locale].present? and params[:locale].to_s != personal_options.default_locale.to_s)
+      personal_options.update_attributes(default_locale: params[:locale]) if (params[:locale].present? && params[:locale].to_s != personal_options.default_locale.to_s)
       params[:locale] = personal_options.default_locale
     end
 

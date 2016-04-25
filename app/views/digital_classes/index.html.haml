@@ -1,40 +1,72 @@
-.block_title
-  %h2
-    %i.icon-class
-    = t(".title")
+.block_wrapper.list_digital_classes{ :"data-link-list" => digital_classes_path(layout: false) }
+  .title-warning
+    =raw t('.warning')
+    - if @can_edit
+      =raw t('.obs1')
+      =raw t('.obs2')
+  .block_title
+    %h2
+      %i.icon-class
+      = t(".title")
+  - if @can_edit
+    .block_content_toolbar
+      .block_toolbar_left.btn-group
+        %a.btn.btn_main{href: "#", :"data-dropdown" => "#dropdown_dc"}
+          = content_tag(:i, nil, class: 'icon-plus')
+          %i.icon-arrow-down-triangle
+        .dropdown.dropdown-tip#dropdown_dc
+          %ul.dropdown-menu
+            %li= link_to t('.new_data'), new_digital_class_path, class: "link_new_lesson_dc", id: "new_digital_class"
+            %li= link_to t('.lesson_data'), lesson_digital_classes_path, id: 'new_lesson_dc_lesson'
+    
+      .block_toolbar_right
+        .btn-group
+          = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_digital_class', :"data-link-to-edit" => edit_digital_class_path(':id'), "data-edit-title" => t(".edit"), disabled: true, :"data-tooltip" => t(".edit")
+          = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_digital_class', :"data-link-delete" => remove_group_or_lesson_digital_classes_path(id: @group.try(:id), tool_id: ':id'), :"data-link-to-list" => digital_classes_path, disabled: true, :"data-tooltip" => t(".delete")
 
-.block_content
-  - unless @digital_class.blank? || @digital_class.nil?
-    %table.tb_list
-      %thead
-        %tr.lines
-          %th{ align: 'left' }=t(:name, scope: [:digital_classes, :index])
-          - if @can_see_access
-            %th.no_sort{ width: '80px' }
-              = t(:access, scope: [:digital_classes, :index])
-      %tbody
-        - @digital_class.each do |dc|
+  .block_content
+    - unless @digital_class.blank?
+      %table.tb_list
+        %thead
           %tr.lines
-            %td
-              .name
-                - if dc["redirect_url"].blank?
-                  = dc["name"]
-                - else
-                  = link_to dc["name"], authenticate_digital_class_path(dc['id'], url: dc['redirect_url']), class: 'link_content lesson', :'data-fancybox-type' => 'iframe', target: '_blank'
-                  
-              .description
-                .minimun
-                  = simple_format(dc["description"].to_s.truncate(200))
-                  - if dc["description"].to_s.size>200
-                    = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('dc.index.expand_description'))
-                .complete.invisible
-                  = simple_format(dc["description"])
-                  = content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('dc.index.compress_description'))
+            - if @can_edit
+              %th.center.no_sort
+                %input#all_digital_classes{type: "checkbox", :"data-children-names" => 'ckb_digital_class'}
+            %th{ align: 'left' }=t(:name, scope: [:digital_classes, :index])
             - if @can_see_access
-              %td{:'data-url' => list_access_digital_class_path(dc["id"]), :'data-tooltip' => t('digital_classes.list_access') }
-                = link_to_function content_tag(:i, nil, class: 'btn icon-users'), 'list_access(this)'
+              %th.no_sort{ width: '80px' }
+                = t(:access, scope: [:digital_classes, :index])
+        %tbody
+          - @digital_class.each do |dc|
+            %tr.lines
+              - if @can_edit
+                %td{style: 'text-align:center;'}
+                  = check_box_tag('ckb_digital_class', dc['id'], false, { class: 'ckb_digital_class' })
+              %td
+                .name
+                  - if dc['redirect_url'].blank?
+                    = dc['name']
+                  - else
+                    = link_to dc['name'], authenticate_digital_class_path(dc['id'], url: dc['redirect_url']), class: 'link_content lesson', target: '_blank'
+                .description
+                  .minimun
+                    = simple_format(dc["description"].to_s.truncate(200))
+                    - if dc["description"].to_s.size>200
+                      = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('dc.index.expand_description'))
+                  .complete.invisible
+                    = simple_format(dc["description"])
+                    = content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('dc.index.compress_description'))
+                  - if @can_edit && dc['directories'].count > 1
+                    = t('.shared')
+              - if @can_see_access
+                %td{:'data-url' => list_access_digital_class_path(dc["id"]), :'data-tooltip' => t('digital_classes.list_access') }
+                  = link_to_function content_tag(:i, nil, class: 'btn icon-users'), 'list_access(this)'
 
-  - else
-    .block_content_text.block_content_text_list.text_none= t(:no_data, scope: [:digital_classes])
+    - else
+      .block_content_text.block_content_text_list.text_none= t(:no_data, scope: [:digital_classes])
 
 = javascript_include_tag 'tooltip', 'digital_classes' 
+
+:javascript
+
+  var div_list = $(".list_digital_classes");

@@ -319,13 +319,15 @@ Solar::Application.routes.draw do
       get :list
       get :list_without_layout, to: :list, defaults: { layout: true }
 
-      put ":tool_id/unbind/group/:id" , to: 'digital_classes#change_tool', type: "unbind", tool_type: "DigitalClass", as: :unbind_group_from
       put ":tool_id/remove/group/:id" , to: 'digital_classes#change_tool', type: "remove", tool_type: "DigitalClass", as: :remove_group_from
+      delete ":tool_id/remove/group/:id" , to: 'digital_classes#change_tool', type: "remove", tool_type: "DigitalClass", as: :remove_group_or_lesson
       put ":tool_id/add/group/:id"    , to: 'digital_classes#change_tool', type: "add"   , tool_type: "DigitalClass", as: :add_group_to
       get ":tool_id/group/tags"       , to: 'digital_classes#tags'                       , tool_type: "DigitalClass", as: :group_tags_from
 
       get :update_members_and_roles, to: :update_members_and_roles_page
       put :update_members_and_roles
+
+      get :lesson, to: :new, lesson: true 
     end
     
     member do

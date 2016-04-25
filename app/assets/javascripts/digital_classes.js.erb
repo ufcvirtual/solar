@@ -21,17 +21,19 @@ function list_access(obj){
 
 $(function(){
 
-  $('#all_digital_classes').nice_checkbox();
+  $('#all_digital_classes').nice_checkbox({parent_div: $('.list_digital_classes')});
 
-  $('#new_digital_class').call_fancybox();
+  $('#new_digital_class, #new_lesson_dc_lesson').call_fancybox();
 
   $('.edit_digital_class').click(function() {
       if ($(this).attr('disabled') == 'disabled'){
-        flash_message("<%=I18n.t(:choose_one, scope: [:digital_class, :list])%>", "alert");
+        flash_message("<%=I18n.t(:choose_one, scope: [:digital_classes, :list])%>", "alert");
         return false;
       }
 
       var digital_classes_ids = $('.ckb_digital_class:checked', $(this).parents("div.list_digital_classes")).map(function() { return this.value; }).get();
+
+      console.log(digital_classes_ids);
       if (!(!digital_classes_ids.length || digital_classes_ids.length > 1)) {
         var url_edit = $(this).data('link-to-edit').replace(':id', digital_classes_ids);
         $(this).call_fancybox({href : url_edit, open: true});
@@ -41,7 +43,7 @@ $(function(){
 
     $('.delete_digital_class').click(function() {
       if ($(this).attr('disabled') == 'disabled'){
-        flash_message("<%=I18n.t(:choose_at_least_one, scope: [:digital_class, :list])%>", "alert");
+        flash_message("<%=I18n.t(:choose_at_least_one, scope: [:digital_classes, :list])%>", "alert");
         return false;
       }
 

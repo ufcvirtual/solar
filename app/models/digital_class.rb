@@ -157,7 +157,7 @@ class DigitalClass < ActiveRecord::Base
     lesson = get_lesson(id)
     lesson_id = lesson['id']
     if digital_class_params && lesson_id
-      DigitalClass.call('lessons_with_id', { lesson_id: lesson_id, name: digital_class_params['name'], description: digital_class_params['description'] }, ['lesson_id'], :put)
+      DigitalClass.call('lessons_with_id', digital_class_params.slice(:name, :description).merge!({ lesson_id: lesson_id }), ['lesson_id'], :put)
     end
   end
 
@@ -167,7 +167,7 @@ class DigitalClass < ActiveRecord::Base
 
   def self.create_lesson(dc_directory_id, dc_user_id, digital_class_params)
     if dc_directory_id && dc_user_id && digital_class_params
-      DigitalClass.call('lessons', { name: digital_class_params[:name], directories: dc_directory_id, user_id: dc_user_id, description: digital_class_params['description'] }, [], :post)
+      DigitalClass.call('lessons', digital_class_params.slice(:name, :description).merge({ directories: dc_directory_id, user_id: dc_user_id}), [], :post)
     end
   end
 
@@ -212,11 +212,13 @@ class DigitalClass < ActiveRecord::Base
     DigitalClass.call('lessons_by_directory', { directory_id: directory_id }, ['directory_id'], :get)
   end
 
-  def self.access_authenticated(user, redirect_to=nil)
+  def self.access_authenticated(user, redirect_to=nil, allocation_tags=[])
     url = File.join(DC["path"], DC['paths']['authenticate_token'].to_s)
     params = { application_id: DC["application_id"], email: user.email }
 
-    user.verify_or_create_at_digital_class
+    allocation_tags.each do |at|
+      DigitalClass.verify_and_create_member(user, at)
+    end
 
     res = RestClient.post url, params, { accept: :json, content_type: 'x-www-form-urlencoded' }
     redirect_url = JSON.parse(res.body)['redirect_url']
@@ -248,6 +250,10 @@ class DigitalClass < ActiveRecord::Base
       url.gsub! ":#{key}", value.to_s
     end
     url
+  end
+
+  def self.count_directories_by_lesson_id(lesson_id)
+    DigitalClass.call('lessons_with_id', { lesson_id: lesson_id }, ['lesson_id'])['directories'].count rescue 0
   end
 
   private

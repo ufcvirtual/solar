@@ -1,14 +1,22 @@
-.block_wrapper.list_digital_classes{:"data-link-list" => list_digital_classes_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
+.block_wrapper.list_digital_classes{ :"data-link-list" => list_digital_classes_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id]) }
+  .title-warning
+    = raw t('.warning')
   .block_title
     %h2= t(:digital_class, scope: [:editions, :items])
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus'), new_digital_class_path(allocation_tags_ids: @allocation_tags_ids), class: " btn btn_main fancybox.ajax", id: "new_digital_class", :"data-tooltip" => t(".new")
+      %a.btn.btn_main{href: "#", :"data-dropdown" => "#dropdown_dc"}
+        = content_tag(:i, nil, class: 'icon-plus')
+        %i.icon-arrow-down-triangle
+      .dropdown.dropdown-tip#dropdown_dc
+        %ul.dropdown-menu
+          %li= link_to t('.new_data'), new_digital_class_path(allocation_tags_ids: @allocation_tags_ids), class: "link_new_lesson_dc", id: "new_digital_class"
+          %li= link_to t('.lesson_data'), lesson_digital_classes_path(allocation_tags_ids:  @allocation_tags_ids), id: 'new_lesson_dc_lesson'
   
     .block_toolbar_right
       .btn-group
         = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_digital_class', :"data-link-to-edit" => edit_digital_class_path(':id', allocation_tags_ids: @allocation_tags_ids), "data-edit-title" => t(".edit"), disabled: true, :"data-tooltip" => t(".edit")
-        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_digital_class', :"data-link-delete" => digital_class_path(':id', allocation_tags_ids: @allocation_tags_ids), :"data-link-to-list" => digital_classes_path(allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".delete")
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_digital_class', :"data-link-delete" => digital_class_path(':id', allocation_tags_ids: @allocation_tags_ids), :"data-link-to-list" => list_digital_classes_path(allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".delete")
   - unless  @digital_class_lessons.blank?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
     %table.tb_list
@@ -17,7 +25,6 @@
           %th.center.no_sort
             %input#all_digital_classes{type: "checkbox", :"data-children-names" => "ckb_digital_class"}
           %th{style: 'text-align:left;'}= t(".name")
-          %th.center.no_sort= t(".redirect_url")
 
       %tbody
         - @digital_class_lessons.each do |dcl|
@@ -27,7 +34,11 @@
             %td
               %div
                 .title
-                  = dcl[:lesson]['name']
+                  - if dcl[:lesson]['redirect_url'].blank?
+                    = dcl[:lesson]['name']
+                  - else
+                    = link_to dcl[:lesson]['name'], access_digital_class_path(dcl[:lesson]['id'], url: dcl[:lesson]['redirect_url'], allocation_tags_ids: @allocation_tags_ids), :target => "_blank"
+                  
                 .description
                   .minimun
                     = dcl[:lesson]['description'].to_s.truncate(200)
@@ -37,10 +48,6 @@
                     = dcl[:lesson]['description']
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_enunciation"))        
                   .group_label.invisible= render "groups/groups_tags", groups: dcl[:groups], tool: dcl[:lesson]['id'].to_i, all_groups: all_groups, paths: {add: add_group_to_digital_classes_path(id: "param_id", tool_id: dcl[:lesson]['id']), remove: remove_group_from_digital_classes_path(id: "param_id", tool_id:  dcl[:lesson]['id']), tags: group_tags_from_digital_classes_path(tool_id:  dcl[:lesson]['id'])}    
-            %td{style: 'text-align:center;'}
-              %div
-                .redirect_url
-                = link_to content_tag(:i, nil, class: 'btn icon-eye access_digital_class', :'data-tooltip' => t('.access')), access_digital_class_path(dcl[:lesson]['id'], url: dcl[:lesson]['redirect_url'], allocation_tags_ids: @allocation_tags_ids), :target => "_blank"
 
 
   - else

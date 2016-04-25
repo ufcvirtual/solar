@@ -1392,6 +1392,7 @@ pt_BR:
 
   # Mensagem de erro para permissão
   no_permission: "Você não tem permissão para acessar esta página"
+  no_permission_groups: "Você não tem permissão para acessar esta página, pois não tem acesso a todas as turmas do objeto. Favor acessar a tela de edição."
   # Mensagem de erro associação entre ferramentas e turma/oferta/uc/curso
   not_associated: Esta ferramenta não está associada aos dados informados
   uri_too_long: "Quantidade de informações muito grande. Diminua a quantidade de dados passados"
@@ -3246,6 +3247,16 @@ pt_BR:
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
       access: Acessos
+      new_data: Lição com novos dados
+      lesson_data: Lição com dados de aulas
+      edit: Editar aula no Digital Class
+      delete: Apagar Aula no Digital Class
+      choose_at_least_one: "Selecione, ao menos, uma lição"
+      choose_one: Selecione uma lição
+      warning: '<b> Digital Class: </b> É uma ferramenta externa ao Solar cujo propósito é a criação de aulas de forma fácil e intuitiva. Nele é possível escrever, desenhar, filmar e capturar telas, tornando-se o autor das suas próprias aulas.'
+      obs1: '<br/><b> Obs1: </b> Só é possível editar uma lição nesta tela se a lição não for compartilhada entre várias turmas que o usuário não tenha permissão. Caso contrário, deverá ser editada na edição de conteúdo.'
+      obs2: '<br/><b> Obs2: </b> Ao remover uma lição, se ela for compartilhada entre outras turmas, a lição será removida apenas desta turma e não de todas. Independente das turmas que se tem acesso'
+      shared: " (compartilhada entre turmas) "
     list_access:
       title: 'Lista de acessos ao Digital Class - Lição: %{dc_lesson_name}'
       user: Usuário
@@ -3268,6 +3279,7 @@ pt_BR:
       unavailable: Digital Class indisponível. Favor tentar mais tarde.
       500: Houve um erro ao realizar a ação. Favor entrar em contato com atendimento@virtual.ufc.br
       empty: É necessário selecionar turmas para criação de diretório no Digital Class.
+      general_message: Não foi possível realizar a ação. Favor entrar em contato com atendimento@virtual.ufc.br
     success_message: Alocações atualizadas com sucesso no Digital Class.
     general_message: Não foi possível realizar a ação. Favor entrar em contato com atendimento@virtual.ufc.br
     no_data: Nenhuma Digital Class Lesson disponível.
@@ -3285,6 +3297,11 @@ pt_BR:
       description: Descrição
       redirect_url: Acessar Digital Class
       access: Acessar Digital Class
+      new_data: Lição com novos dados
+      lesson_data: Lição com dados de aulas
+      choose_at_least_one: "Selecione, ao menos, uma lição"
+      choose_one: Selecione uma lição
+      warning: '<b> Digital Class: </b> É uma ferramenta externa ao Solar cujo propósito é a criação de aulas de forma fácil e intuitiva. Nele é possível escrever, desenhar, filmar e capturar telas, tornando-se o autor das suas próprias aulas.'
     new:
       continue: Prosseguir
       save: Salvar

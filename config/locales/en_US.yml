@@ -1209,6 +1209,7 @@ en_US:
   to: "to"
   for: "To:"
   no_permission: "You haven't permission to access this page"
+  no_permission_groups: "Since you don't have access to all groups of this object, you don't have permission to access this page. Please access edition."
   not_associated: This tool isn't associated to the informed data
   uri_too_long: "Information quantity too large. Reduce the quantity of data passed"
   cant_build_page: Wasn't possible to access informed page
@@ -3011,6 +3012,16 @@ en_US:
       expand_description: Expand description
       compress_description: Compress description
       access: Access
+      new_data: DC Lesson with new data
+      lesson_data: DC Lesson with Solar's lessons data
+      edit: Edit lesson Digital Class
+      delete: Delete Lesson Digital Class
+      warning: '<b> Digital Class: </b> Is an external tool which purpose is to easily and intuitively create lessons. Using this tool is possible to write, draw, shoot and capture screens, becoming the author of your own lessons.'
+      choose_at_least_one: "Choose at least one lesson"
+      choose_one: Choose a lesson
+      obs1: '<br/><b> Obs1: </b> Is only possible to edit a lesson which is not shared between groups which the user do not have access. Otherwise, it must be done at edition area.'
+      obs2: '<br/><b> Obs2: </b> While removing a lesson, if it was shared between groups, the lesson will only be removed from this group, not all. Independent of the groups that have access.'
+      shared: " (shared between groups) "
     list_access:
       title: 'List of access to Digital Class - Lesson: %{dc_lesson_name}'
       user: User
@@ -3033,6 +3044,7 @@ en_US:
       unavailable: Digital Class is unavailable. Please try again later.
       500: There's been an error. Please contact atendimento@virtual.ufc.br
       empty: It's mandatory choose groups to create a Digital Class directory.
+      general_message: It was not possible to execute this action. Please contact atendimento@virtual.ufc.br
     success_message: Successfully updated allocations at Digital Class.
     general_message: It was not possible to execute this action. Please contact atendimento@virtual.ufc.br
     no_data: No Digital Class Lesson available.
@@ -3050,6 +3062,11 @@ en_US:
       description: Description
       redirect_url: Redirect Digital Class
       access: Access Digital Class
+      new_data: DC Lesson with new data
+      lesson_data: DC Lesson with Solar's lessons data
+      choose_at_least_one: "Choose at least one lesson"
+      choose_one: Choose a lesson
+      warning: '<b> Digital Class: </b> Is an external tool which purpose is to easily and intuitively create lessons. Using this tool is possible to write, draw, shoot and capture screens, becoming the author of your own lessons.'
     new:
       approved: approved
       save: Save
