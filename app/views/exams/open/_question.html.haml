@@ -1,27 +1,25 @@
 %tbody
   %td.question_items
     = form_for(@exam_responses, html: { :method => :put, id: 'responses_form'}, :url => exam_response_path(@exam_responses), :remote => true) do |er|
-      - puts @exam_responses.duration
       = er.hidden_field :exam_user_attempt_id, value: @last_attempt.id
       = er.hidden_field :question_id, value: question.id
       - question_items = get_items(question.id)
       - if question.type_question.to_i == Question::UNIQUE
-        = er.collection_radio_buttons :question_item_id, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, :onclick => "save_question('#{@exam_responses.duration}');" do |b|
+        = er.collection_radio_buttons :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, {name: 'exam_response[question_item_ids][]', :onclick => "save_question('#{@exam_responses.duration}');"} do |b|
           - if b.object.item_image?
             - b.label { b.radio_button + image_tag(b.object.item_image(:medium), id: 'item_image') + b.text }
           - else
             - b.label {b.radio_button + b.text}
       - elsif question.type_question.to_i == Question::MULTIPLE
-        = er.collection_check_boxes :question_item_id, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, :onclick => "save_question('#{@exam_responses.duration}');" do |b|
+        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, :onclick => "save_question('#{@exam_responses.duration}');" do |b|
           - if b.object.item_image?
             - b.label { b.check_box + image_tag(b.object.item_image(:medium), id: 'item_image') + b.text }
           - else
             - b.label {b.check_box + b.text}
       - else
-        = er.collection_check_boxes :question_item_id, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, :onclick => "save_question('#{@exam_responses.duration}');" do |b|
+        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, :onclick => "save_question('#{@exam_responses.duration}');" do |b|
           - if b.object.item_image?
             - b.label { b.check_box + image_tag(b.object.item_image(:medium), id: 'item_image') + b.text }
           - else
             - b.label {b.check_box + b.text}
       = er.hidden_field :duration, {:id => "duration"}
-      - puts @exam_responses.inspect

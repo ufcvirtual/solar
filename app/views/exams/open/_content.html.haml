@@ -1,6 +1,6 @@
 .block_content
   - @exam_questions.each do |question|
-    - @exam_responses = @last_attempt.exam_responses.where(question_id: question.id).first_or_create!
+    - @exam_responses = last_attempt(@last_attempt, question.id)
     %table.questions
       %thead
         %tr.question
@@ -17,7 +17,6 @@
 
 .message_div_navigation
   = will_paginate @exam_questions
-
 
 :javascript
 

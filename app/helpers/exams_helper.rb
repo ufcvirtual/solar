@@ -35,4 +35,8 @@ module ExamsHelper
     end
   end
 
+  def last_attempt (last_attempt, question_id)
+    exam_responses = last_attempt.exam_responses.where(question_id: question_id)
+    exam_responses.first_or_create!
+  end
 end
