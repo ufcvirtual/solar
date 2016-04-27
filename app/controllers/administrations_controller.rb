@@ -205,23 +205,30 @@ class AdministrationsController < ApplicationController
 
     @logs, query = [], []
     date = Date.parse(params[:date]) rescue nil
+    date_end = Date.parse(params[:date_end]) rescue nil
     unless params[:user].blank?
       text_search = [URI.unescape(params[:user]).split(' ').compact.join('%'), '%'].join
       user_ids    = User.where("lower(unaccent(name || ' ' || cpf)) LIKE lower(unaccent(?))", "%#{text_search}").map(&:id).join(',')
-      query << "user_id IN (#{user_ids})" unless user_ids.blank?
+      if (params[:type] == 'actions' || params[:type] == 'access')
+        query << "user_id IN (#{user_ids})" unless user_ids.blank?   
+      else
+         query << "log_navigations.user_id IN (#{user_ids})" unless user_ids.blank?
+      end  
     end
 
     if (params[:type] == 'actions' || params[:type] == 'access')
       log = params[:type] == 'actions' ? LogAction : LogAccess
       query << "date(created_at) = '#{date.to_s(:db)}'" unless date.nil?
-
       @logs = log.where(query.join(' AND ')).order('created_at DESC').limit(100)
     else 
-      query << "log_navigations.created_at::date = '#{date.to_s(:db)}'" unless date.nil?
+     query << "log_navigations.created_at::date >= '#{date.to_s(:db)}' AND log_navigations.created_at::date <= '#{date_end.to_s(:db)}'" unless date.nil?
+     puts date_end
+     if (params[:user] || params[:date])
+        session[:query] = query
+     end 
 
-      @logs = LogNavigation.where(query.join(' AND '))
-
-      @logs = @logs.joins('LEFT JOIN log_navigation_subs lognsub ON log_navigations.id = log_navigation_id')
+      @logs = LogNavigation.where(session[:query].join(' AND '))
+      @logs =  @logs.joins('LEFT JOIN log_navigation_subs lognsub ON log_navigations.id = log_navigation_id')
         .joins('LEFT JOIN  assignments ON lognsub.assignment_id = assignments.id')
         .joins('LEFT JOIN chat_rooms ON lognsub.chat_room_id = chat_rooms.id')
         .joins('LEFT JOIN chat_rooms as chat_historico ON lognsub.hist_chat_room_id = chat_historico.id')
@@ -276,15 +283,16 @@ class AdministrationsController < ApplicationController
           to_char(lognsub.created_at,'dd/mm/YYYY HH24:MI:SS') as created_submenu
         ")
         .order("log_navigations.id DESC, lognsub.id DESC")
-        .limit(1000)
-
+        .limit(10000)
         attributes_to_include = %w(user course course_code uc uc_code semester group menu created created_submenu support_material_file discussion lesson lesson_notes assignment student group_assignments chat_room chat_history exam webconferences webconference_record public_area public_file_name participant digital_class_lesson)
+        
         respond_to do |format|
-          format.html
+          
+          format.html 
           format.csv { send_data @logs.to_csv(attributes_to_include) }
           format.xls { render :navigation }
         end
-     end    
+     end  
   end
 
   ## IMPORT USERS

@@ -24,9 +24,9 @@
                   %td= log.allocation_tag.try(:info)
                 %td= l(log.created_at, format: :at_date)
       - else  
-        %p  Download  
-        = link_to "CSV", log_navigation_path(format: "csv")   
-        = link_to "XLS", log_navigation_path(format: "xls")                        
+        Download de arquivo com log de navegação  
+        = link_to "CSV", log_navigation_path(format: "csv") , class: "btn btn_default", id: "download_csv", value: "1"
+        = link_to "Excel", log_navigation_path(format: "xls") , class: "btn btn_default", id: "download_xls", value: "2"               
     - else
       .block_content.block_content_text= t(:log_not_found, scope: [:administrations, :logs])
       
@@ -34,3 +34,26 @@
   td.breaking {
     word-break: break-word;
   }
+
+:javascript
+
+  $(function(){  
+    $('#search_log').click(function() {
+
+      if ($("#log_type").val() == 'navigation'){
+         if ($("#search_date").val() > $("#search_date_end").val()){
+            flash_message("#{I18n.t(:date_error, scope: [:administrations, :logs])}", "alert"); 
+         }else{
+            flash_message("#{I18n.t(:download, scope: [:administrations, :informations])}", "notice");   
+         } 
+         return false;
+      }
+    });
+    $('#download_csv').click(function() {  
+        erase_flash_messages();
+    });
+    $('#download_xls').click(function() {  
+        erase_flash_messages();
+    });
+
+  });    

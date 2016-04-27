@@ -1813,6 +1813,7 @@ en_US:
       books: Books
       phrase: Phrase
       site: Site
+      download: File successfully generated
     allocations:
       title: "Allocations"
       period: "Period"
@@ -1889,6 +1890,10 @@ en_US:
       search: Search
       user: User
       log_not_found: Log not found
+      date_end: Date End
+      up_until: Up until
+      up_until_: ""
+      date_error: Date Eroor
     allocations_user:
       type: Type
       no_data: No allocation to informed semester

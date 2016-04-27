@@ -2016,6 +2016,7 @@ pt_BR:
       books: Livros
       phrase: Frase
       site: Site
+      download: Arquivo gerado com sucesso
     allocations:
       title: "Alocações"
       period: "Período"
@@ -2093,6 +2094,10 @@ pt_BR:
       search: Busca
       user: Usuário
       log_not_found: Sem logs para exibir
+      date_end: Data Final
+      up_until: até
+      up_until_: ""
+      date_error: Data inicial maior que a data final
     allocations_user:
       type: Tipo
       no_data: Nenhuma alocação para o semestre informado
