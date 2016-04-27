@@ -1,0 +1,48 @@
+.new_digital_class_form
+
+  = simple_form_for :digital_classes, url: digital_classes_path, html: { id: 'digital_class_form' }, method: :post do |f|
+    %h1#lightBoxDialogTitle= t(".new")
+    %span.form_requirement= t(:required_fields)
+
+    .digital_class_form
+    = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+    .form-inputs.block_content_text_list
+      - unless @lmodules.empty?
+        - @lmodules.each do |lmodule|
+          .block_title_module.block_module
+            %h2
+              %i.icon-class
+              = lmodule.name
+          - lessons = lmodule.lessons(current_user.id)
+          - unless lessons.blank?
+            %table.tb_list
+              %thead
+                %tr.lines
+                  %th.no_sort{ style: 'width: 25px;' }
+                  %th= t('.name')
+                  %th= t('.description')
+              %tbody
+                - lessons.each do |lesson|
+                  %tr.lines{ :'data-id' => lesson.id }
+                    %td= check_box_tag('lessons[]', lesson.id, false, { class: 'cbx_value' })
+                    %td= lesson.name
+                    %td= lesson.description
+          - else
+            .block_content_text_list.text_none= t('.no_lesson')
+
+      = render "groups/codes"
+
+      .right_buttons
+        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+        = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "save"
+       
+
+:javascript
+  jQuery(function($){
+   $('#save').click(function(){
+        $('#digital_class_form:last').serialize_and_submit({
+          replace_list: $(".list_digital_classes")
+        });
+      });
+  });  
+  
