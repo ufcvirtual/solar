@@ -25,6 +25,7 @@
           %th.center.no_sort
             %input#all_digital_classes{type: "checkbox", :"data-children-names" => "ckb_digital_class"}
           %th{style: 'text-align:left;'}= t(".name")
+          %th= t('.files')
 
       %tbody
         - @digital_class_lessons.each do |dcl|
@@ -48,6 +49,7 @@
                     = dcl[:lesson]['description']
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_enunciation"))        
                   .group_label.invisible= render "groups/groups_tags", groups: dcl[:groups], tool: dcl[:lesson]['id'].to_i, all_groups: all_groups, paths: {add: add_group_to_digital_classes_path(id: "param_id", tool_id: dcl[:lesson]['id']), remove: remove_group_from_digital_classes_path(id: "param_id", tool_id:  dcl[:lesson]['id']), tags: group_tags_from_digital_classes_path(tool_id:  dcl[:lesson]['id'])}    
+            %td= dcl[:lesson]['repositories']['repositories_count']
 
 
   - else

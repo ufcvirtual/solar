@@ -3262,6 +3262,7 @@ pt_BR:
       obs1: '<br/><b> Obs1: </b> Só é possível editar uma lição nesta tela se a lição não for compartilhada entre várias turmas que o usuário não tenha permissão. Caso contrário, deverá ser editada na edição de conteúdo.'
       obs2: '<br/><b> Obs2: </b> Ao remover uma lição, se ela for compartilhada entre outras turmas, a lição será removida apenas desta turma e não de todas. Independente das turmas que se tem acesso'
       shared: " (compartilhada entre turmas) "
+      files: Arquivos
     list_access:
       title: 'Lista de acessos ao Digital Class - Lição: %{dc_lesson_name}'
       user: Usuário
@@ -3307,6 +3308,7 @@ pt_BR:
       choose_at_least_one: "Selecione, ao menos, uma lição"
       choose_one: Selecione uma lição
       warning: '<b> Digital Class: </b> É uma ferramenta externa ao Solar cujo propósito é a criação de aulas de forma fácil e intuitiva. Nele é possível escrever, desenhar, filmar e capturar telas, tornando-se o autor das suas próprias aulas.'
+      files: Arquivos
     new:
       continue: Prosseguir
       save: Salvar

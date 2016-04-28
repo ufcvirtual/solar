@@ -33,6 +33,7 @@
               %th.center.no_sort
                 %input#all_digital_classes{type: "checkbox", :"data-children-names" => 'ckb_digital_class'}
             %th{ align: 'left' }=t(:name, scope: [:digital_classes, :index])
+            %th=t('.files')
             - if @can_see_access
               %th.no_sort{ width: '80px' }
                 = t(:access, scope: [:digital_classes, :index])
@@ -58,6 +59,7 @@
                     = content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('dc.index.compress_description'))
                   - if @can_edit && dc['directories'].count > 1
                     = t('.shared')
+              %td= dc['repositories']['repositories_count']
               - if @can_see_access
                 %td{:'data-url' => list_access_digital_class_path(dc["id"]), :'data-tooltip' => t('digital_classes.list_access') }
                   = link_to_function content_tag(:i, nil, class: 'btn icon-users'), 'list_access(this)'

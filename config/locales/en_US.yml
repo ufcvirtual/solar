@@ -3027,6 +3027,7 @@ en_US:
       obs1: '<br/><b> Obs1: </b> Is only possible to edit a lesson which is not shared between groups which the user do not have access. Otherwise, it must be done at edition area.'
       obs2: '<br/><b> Obs2: </b> While removing a lesson, if it was shared between groups, the lesson will only be removed from this group, not all. Independent of the groups that have access.'
       shared: " (shared between groups) "
+      files: Files
     list_access:
       title: 'List of access to Digital Class - Lesson: %{dc_lesson_name}'
       user: User
@@ -3072,6 +3073,7 @@ en_US:
       choose_at_least_one: "Choose at least one lesson"
       choose_one: Choose a lesson
       warning: '<b> Digital Class: </b> Is an external tool which purpose is to easily and intuitively create lessons. Using this tool is possible to write, draw, shoot and capture screens, becoming the author of your own lessons.'
+      files: Files
     new:
       approved: approved
       save: Save
