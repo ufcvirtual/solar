@@ -3294,10 +3294,10 @@ pt_BR:
       order: Ordem
       name: Titulo
       none: Nenhuma aula cadastrada no Digital Class
-      new: Nova aula no Digital Class
-      new_lesson: Nova aula no Digital Class
-      edit: Editar aula no Digital Class
-      delete: Apagar Aula no Digital Class
+      new: Nova lição no Digital Class
+      new_lesson: Nova lição no Digital Class
+      edit: Editar lição no Digital Class
+      delete: Apagar lição no Digital Class
       no_end_date: Em diante
       cancel: Cancelar
       description: Descrição
@@ -3313,18 +3313,18 @@ pt_BR:
       continue: Prosseguir
       save: Salvar
     notifications:
-      must_select_lessons: Uma ou mais aulas devem ser selecionadas
+      must_select_lessons: Uma ou mais lições devem ser selecionadas
       must_select_a_lesson: Uma aula deve ser selecionada
       select_only_a_lesson: Selecione apenas uma aula
     success:
-      deleted: Aulas deletadas no Digital Class com sucesso.
-      created: Aula criada no Digital Classcom sucesso.
-      updated: Aula atualizada no Digital Class com sucesso.
+      deleted: Lições deletadas no Digital Class com sucesso.
+      created: Lição criada no Digital Classcom sucesso.
+      updated: Lição atualizada no Digital Class com sucesso.
     form:
       cancel: Cancelar
       groups: Turmas
       privacy: Privacidade
       public: Pública
       private: Privada
-      new: Nova Aula no Digital Class
-      edit: Alterar Aula no Digital Class
+      new: Nova lição no Digital Class
+      edit: Alterar lição no Digital Class

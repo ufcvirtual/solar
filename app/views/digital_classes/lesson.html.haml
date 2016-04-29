@@ -1,7 +1,7 @@
 .new_digital_class_form
 
   = simple_form_for :digital_classes, url: digital_classes_path, html: { id: 'digital_class_form' }, method: :post do |f|
-    %h1#lightBoxDialogTitle= t(".new")
+    %h1#lightBoxDialogTitle= t("digital_classes.index.lesson_data")
     %span.form_requirement= t(:required_fields)
 
     .digital_class_form
