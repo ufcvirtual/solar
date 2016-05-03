@@ -2,6 +2,8 @@
 .block_wrapper.search
   .block_title
     %h2= t(:search, scope: [:administrations, :logs])
+  .title-warning
+    = raw t('administrations.logs.warning') 
 
   .block_content_toolbar
     = select_tag "log_type", options_for_select(@types)
@@ -9,6 +11,7 @@
     = text_field_tag "search_date", today_date, placeholder: t(:created_at, scope: [:administrations, :logs])
     = label_tag :up_until, t(:up_until_, scope: [:administrations, :logs]), id: "up_until"
     = hidden_field_tag "search_date_end", today_date, placeholder: t(:date_end, scope: [:administrations, :logs])
+    = select_tag "download_type", options_for_select(@download_types)
 
     = button_tag t(:search, scope: [:administrations, :logs]), type: :button, class: "btn btn_default", id: "search_log", :"data-url-search" => search_logs_path(type: ":type")
 
@@ -17,6 +20,7 @@
 
 :javascript
   $(function(){
+    $("#download_type").hide();
     var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
     $("#search_date").datepicker();
     $("#search_date").mask("#{I18n.t(:mask, scope: "date.formats")}");
@@ -33,16 +37,54 @@
     });
 
     $("#search_log").click(function(){
+
       var url_for = $(this).data("url-search").replace(":type", $("#log_type").val());
       var data = { user: encodeURIComponent($("#search_user").val()), date: $("#search_date").val(), date_end: $("#search_date_end").val()};
+            
+      if ($("#log_type").val() == 'navigation'){ 
+        url_for = url_for.concat(".", $("#download_type").val()); 
+        var confirm = 0;
+        var data_i = $("#search_date").val();
+        var data_end = $("#search_date_end").val();
 
-      $.get(url_for, data, function(data) {
-        $('#list_logs').html(data);
-      }).error(function(data){
-        var data = $.parseJSON(data.responseText);
-        if (typeof(data.alert) != "undefined")
-          flash_message(data.alert, 'alert');
+        if(data_i && data_end){
+          var new_date = parseInt(data_i.split("/")[2].toString() + data_i.split("/")[1].toString() + data_i.split("/")[0].toString());
+          var new_date_end = parseInt(data_end.split("/")[2].toString() + data_end.split("/")[1].toString() + data_end.split("/")[0].toString()); 
+          if(new_date > new_date_end)
+            flash_message("#{I18n.t(:date_error, scope: [:administrations, :logs])}", "alert"); 
+          else
+            confirm = 1;
+        }else{
+          confirm = 1;
+        }
+      
+        if(confirm == 1){
+          window.location=url_for.concat("?user=", $("#search_user").val(),"&date=",$("#search_date").val(),"&date_end=",$("#search_date_end").val() );
+          $('#list_logs').html(data);
+          flash_message("#{I18n.t(:navigation_info, scope: [:administrations, :logs])}", "notice"); 
+        }
+       
+      }else{
+        $.get(url_for, data, function(data) {
+          $('#list_logs').html(data);
+           
+        }).error(function(data){
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+        });
+      }  
+
+   
+      $('#search_date').blur(function(){
+         if($(this).datepicker("getDate") == null && $('#search_date_end').datepicker("getDate") == null)
+            $(this).datepicker("setDate", new Date());
       });
+      $('#search_date_end').blur(function(){
+          if($(this).datepicker("getDate") == null && $('#search_date').datepicker("getDate") == null)
+            $(this).datepicker("setDate", new Date());
+      });
+
     });
 
     
@@ -50,11 +92,16 @@
     $('#log_type').click(function() {
       if ($("#log_type").val() == 'navigation'){
          $("#search_date_end").attr('type', 'text');
+         $("#download_type").show( 20 );
          $("#up_until").text("#{I18n.t(:up_until, scope: "administrations.logs")}");
+         $("#search_log").text("Download");
       }else{
         $("#search_date_end").attr('type', 'hidden');
+        $("#download_type").hide();
         $('#up_until').text("");
+        $("#search_log").text("#{I18n.t(:search, scope: "administrations.logs")}");
       }
     });
 
   });
+

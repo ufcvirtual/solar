@@ -198,6 +198,7 @@ class AdministrationsController < ApplicationController
     authorize! :logs, Administration
 
     @types = [ [t(:actions, scope: [:administrations, :logs]), 'actions'], [t(:accesses, scope: [:administrations, :logs]), 'access'],[t(:navigations, scope: [:administrations, :logs]), 'navigation'] ]
+    @download_types = [ [ 'csv', 'csv'], ['xls', 'xls'] ]
   end
 
   def search_logs
@@ -205,7 +206,7 @@ class AdministrationsController < ApplicationController
 
     @logs, query = [], []
     date = Date.parse(params[:date]) rescue nil
-    date_end = Date.parse(params[:date_end]) rescue nil
+    date_end = Date.parse(params[:date_end]) rescue Date.parse(Time.now.to_s)
     unless params[:user].blank?
       text_search = [URI.unescape(params[:user]).split(' ').compact.join('%'), '%'].join
       user_ids    = User.where("lower(unaccent(name || ' ' || cpf)) LIKE lower(unaccent(?))", "%#{text_search}").map(&:id).join(',')
@@ -220,77 +221,76 @@ class AdministrationsController < ApplicationController
       log = params[:type] == 'actions' ? LogAction : LogAccess
       query << "date(created_at) = '#{date.to_s(:db)}'" unless date.nil?
       @logs = log.where(query.join(' AND ')).order('created_at DESC').limit(100)
-    else 
-     query << "log_navigations.created_at::date >= '#{date.to_s(:db)}' AND log_navigations.created_at::date <= '#{date_end.to_s(:db)}'" unless date.nil?
-     puts date_end
-     if (params[:user] || params[:date])
-        session[:query] = query
-     end 
+    else
+    if(date_end and date) 
+     query << "log_navigations.created_at::date >= '#{date.to_s(:db)}' AND log_navigations.created_at::date <= '#{date_end.to_s(:db)}'" 
+    else
+     query << "log_navigations.created_at::date <= '#{date_end.to_s(:db)}'"
+    end 
+  
+        @logs = LogNavigation.where(query.join(' AND '))
+        @logs =  @logs.joins('LEFT JOIN log_navigation_subs lognsub ON log_navigations.id = log_navigation_id')
+          .joins('LEFT JOIN  assignments ON lognsub.assignment_id = assignments.id')
+          .joins('LEFT JOIN chat_rooms ON lognsub.chat_room_id = chat_rooms.id')
+          .joins('LEFT JOIN chat_rooms as chat_historico ON lognsub.hist_chat_room_id = chat_historico.id')
+          .joins('LEFT JOIN group_assignments ON lognsub.group_assignment_id = group_assignments.id')
+          .joins('LEFT JOIN lessons ON lognsub.lesson_id = lessons.id')
+          .joins('LEFT JOIN discussions ON lognsub.discussion_id = discussions.id')
+          .joins('LEFT JOIN exams ON exams.id = lognsub.exam_id')
+          .joins('LEFT JOIN users as student ON lognsub.student_id = student.id')
+          .joins('LEFT JOIN users as participant ON lognsub.user_id = participant.id')
+          .joins('LEFT JOIN webconferences ON lognsub.webconference_id = webconferences.id')
+          .joins('LEFT JOIN menus ON log_navigations.menu_id = menus.id')
+          .joins('LEFT JOIN allocation_tags ON log_navigations.allocation_tag_id = allocation_tags.id')
+          .joins('LEFT JOIN groups ON groups.id = allocation_tags.group_id')
+          .joins('LEFT JOIN offers ON offers.id = groups.offer_id OR offers.id = allocation_tags.offer_id')
+          .joins('LEFT JOIN semesters ON semesters.id = offers.semester_id')
+          .joins('LEFT JOIN courses ON offers.course_id = courses.id')
+          .joins('LEFT JOIN curriculum_units ON offers.curriculum_unit_id = curriculum_units.id')
+          .joins('LEFT JOIN users ON log_navigations.user_id = users.id')
+          .select("
+            DISTINCT log_navigations.id, 
+            lognsub.id as id_sub, 
+            users.name as user, 
+            courses.name as course, 
+            courses.code as course_code, 
+            curriculum_units.name as uc, 
+            curriculum_units.code as uc_code, 
+            semesters.name as semester, 
+            groups.code as group, 
+            menus.name AS menu, 
+            to_char(log_navigations.created_at,'dd/mm/YYYY HH24:MI:SS') as created, 
+            support_material_file, 
+            discussions.name as discussion,
+            CASE lessons.type_lesson
+            WHEN 0 THEN COALESCE(lessons.name, lesson)
+            WHEN 1 THEN COALESCE(lessons.address, lesson)    
+            ELSE
+              lesson
+            END AS lesson,
+            assignments.name as assignment, 
+            exams.name as exam, 
+            chat_rooms.title as chat_room, 
+            chat_historico.title as chat_history, 
+            student.name as student, 
+            group_assignments.group_name as group_assignments, 
+            webconferences.title as webconferences,
+            webconference_record,
+            digital_class_lesson,
+            lesson_notes,
+            public_area,
+            public_file_name, 
+            participant.name as participant, 
+            to_char(lognsub.created_at,'dd/mm/YYYY HH24:MI:SS') as created_submenu
+          ")
+          .order("log_navigations.id DESC, lognsub.id DESC")
+          .limit(10000)
+          attributes_to_include = %w(user course course_code uc uc_code semester group menu created created_submenu support_material_file discussion lesson lesson_notes assignment student group_assignments chat_room chat_history exam webconferences webconference_record public_area public_file_name participant digital_class_lesson)
 
-      @logs = LogNavigation.where(session[:query].join(' AND '))
-      @logs =  @logs.joins('LEFT JOIN log_navigation_subs lognsub ON log_navigations.id = log_navigation_id')
-        .joins('LEFT JOIN  assignments ON lognsub.assignment_id = assignments.id')
-        .joins('LEFT JOIN chat_rooms ON lognsub.chat_room_id = chat_rooms.id')
-        .joins('LEFT JOIN chat_rooms as chat_historico ON lognsub.hist_chat_room_id = chat_historico.id')
-        .joins('LEFT JOIN group_assignments ON lognsub.group_assignment_id = group_assignments.id')
-        .joins('LEFT JOIN lessons ON lognsub.lesson_id = lessons.id')
-        .joins('LEFT JOIN discussions ON lognsub.discussion_id = discussions.id')
-        .joins('LEFT JOIN exams ON exams.id = lognsub.exam_id')
-        .joins('LEFT JOIN users as student ON lognsub.student_id = student.id')
-        .joins('LEFT JOIN users as participant ON lognsub.user_id = participant.id')
-        .joins('LEFT JOIN webconferences ON lognsub.webconference_id = webconferences.id')
-        .joins('LEFT JOIN menus ON log_navigations.menu_id = menus.id')
-        .joins('LEFT JOIN allocation_tags ON log_navigations.allocation_tag_id = allocation_tags.id')
-        .joins('LEFT JOIN groups ON groups.id = allocation_tags.group_id')
-        .joins('LEFT JOIN offers ON offers.id = groups.offer_id OR offers.id = allocation_tags.offer_id')
-        .joins('LEFT JOIN semesters ON semesters.id = offers.semester_id')
-        .joins('LEFT JOIN courses ON offers.course_id = courses.id')
-        .joins('LEFT JOIN curriculum_units ON offers.curriculum_unit_id = curriculum_units.id')
-        .joins('LEFT JOIN users ON log_navigations.user_id = users.id')
-        .select("
-          DISTINCT log_navigations.id, 
-          lognsub.id as id_sub, 
-          users.name as user, 
-          courses.name as course, 
-          courses.code as course_code, 
-          curriculum_units.name as uc, 
-          curriculum_units.code as uc_code, 
-          semesters.name as semester, 
-          groups.code as group, 
-          menus.name AS menu, 
-          to_char(log_navigations.created_at,'dd/mm/YYYY HH24:MI:SS') as created, 
-          support_material_file, 
-          discussions.name as discussion,
-          CASE lessons.type_lesson
-          WHEN 0 THEN COALESCE(lessons.name, lesson)
-          WHEN 1 THEN COALESCE(lessons.address, lesson)    
-          ELSE
-            lesson
-          END AS lesson,
-          assignments.name as assignment, 
-          exams.name as exam, 
-          chat_rooms.title as chat_room, 
-          chat_historico.title as chat_history, 
-          student.name as student, 
-          group_assignments.group_name as group_assignments, 
-          webconferences.title as webconferences,
-          webconference_record,
-          digital_class_lesson,
-          lesson_notes,
-          public_area,
-          public_file_name, 
-          participant.name as participant, 
-          to_char(lognsub.created_at,'dd/mm/YYYY HH24:MI:SS') as created_submenu
-        ")
-        .order("log_navigations.id DESC, lognsub.id DESC")
-        .limit(10000)
-        attributes_to_include = %w(user course course_code uc uc_code semester group menu created created_submenu support_material_file discussion lesson lesson_notes assignment student group_assignments chat_room chat_history exam webconferences webconference_record public_area public_file_name participant digital_class_lesson)
-        
         respond_to do |format|
-          
-          format.html 
+          format.html        
           format.csv { send_data @logs.to_csv(attributes_to_include) }
-          format.xls { render :navigation }
+          format.xls { render :navigation }  
         end
      end  
   end
