@@ -1,6 +1,7 @@
 .block_content
   - @exam_questions.each do |question|
     - @exam_responses = last_attempt(@last_attempt, question.id)
+    - @unique_id = ExamResponse.is_unique?(@exam_responses) ? ExamResponse.get_question_item_id(@exam_responses) : false
     %table.questions
       %thead
         %tr.question

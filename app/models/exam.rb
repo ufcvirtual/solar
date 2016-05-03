@@ -304,7 +304,7 @@ class Exam < Event
       grade = ExamUserAttempt.where(exam_user_id: exam_user_id).last
     end 
     grade
-  end  
+  end
 
   private
 
