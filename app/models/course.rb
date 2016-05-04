@@ -18,7 +18,7 @@ class Course < ActiveRecord::Base
   before_update :update_correspondent_uc, if: '!ignore_uc'
   after_destroy :destroy_correspondent_uc, if: '!ignore_uc'
 
-  attr_accessor :edx_course, :courses_name, :ignore_uc
+  attr_accessor :edx_course, :courses_names, :ignore_uc
 
   def any_lower_association?
     offers.count > 0
