@@ -88,7 +88,7 @@ class AssignmentWebconference < ActiveRecord::Base
     [(sent_assignment.has_group ? sent_assignment.group_assignment.group_name : sent_assignment.user.name.truncate(15)), sent_assignment.academic_allocation.allocation_tag.info].join(' - ')
   end
 
-  def remove_record
+  def remove_records
     api        = bbb_prepare
     meeting_id = get_mettingID
     response   = api.get_recordings()

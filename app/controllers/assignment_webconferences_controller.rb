@@ -66,8 +66,16 @@ class AssignmentWebconferencesController < ApplicationController
   end
 
   def remove_record
+    verify_owner!(@assignment_webconference)
+
     @assignment_webconference.can_remove_records?
-    @assignment_webconference.remove_record
+
+    if params.include?(:recordID)
+      @assignment_webconference.remove_record(params[:recordID])
+    else
+      @assignment_webconference.remove_records
+    end
+
     render json: { success: true, notice: t('assignment_webconferences.success.record') }
   rescue => error
     render_json_error(error, 'assignment_webconferences.error')
@@ -81,7 +89,7 @@ class AssignmentWebconferencesController < ApplicationController
   end
 
   def get_record
-    assignment_webconference = AssignmentWebconference.find(params[:id])
+    @assignment_webconference = AssignmentWebconference.find(params[:id])
     sent_assignment          = SentAssignment.find(params[:sent_assignment_id])
     at_id                    = active_tab[:url][:allocation_tag_id]
     verify_owner_or_responsible!(at_id, sent_assignment)
@@ -89,13 +97,17 @@ class AssignmentWebconferencesController < ApplicationController
     raise CanCan::AccessDenied if current_user.is_researcher?(AllocationTag.find(at_id).related)
 
     raise 'offline'          unless bbb_online?
-    raise 'no_record'        unless assignment_webconference.is_recorded? && assignment_webconference.over?
-    raise 'still_processing' unless assignment_webconference.is_over?
+    raise 'no_record'        unless @assignment_webconference.is_recorded? && @assignment_webconference.over?
+    raise 'still_processing' unless @assignment_webconference.is_over?
 
-    record_url = assignment_webconference.recordings([], at_id)
-    URI.parse(record_url).path
+    begin
+      verify_owner!(@assignment_webconference)
+      @can_remove_record = true
+    rescue
+      @can_remove_record = false
+    end
 
-    render json: { success: true, url: record_url }
+    @recordings = @assignment_webconference.recordings([], (at_id.class == Array ? nil : at_id))
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
   rescue URI::InvalidURIError

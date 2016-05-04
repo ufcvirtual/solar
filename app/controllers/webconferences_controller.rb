@@ -113,15 +113,28 @@ class WebconferencesController < ApplicationController
     @meetings       = get_meetings
   end
 
-  # PUT /webconferences/remove_record/1
+  # DELETE /webconferences/remove_record/1
   def remove_record
-    academic_allocations = AcademicAllocation.where(id: params[:id].split(',').flatten)
-    webconferences      = Webconference.where(id: academic_allocations.map(&:academic_tool_id))
-
-    authorize! :preview, Webconference, { on: academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }
+    if params.include?(:webconference)
+      webconferences = [Webconference.find(params[:webconference])]
+      begin
+        authorize! :preview, Webconference, { on: webconferences.flatten.first.academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }
+      rescue
+        raise CanCan::AccessDenied unless current_user.id == webconferences.first.user_id
+      end
+    else
+      academic_allocations = AcademicAllocation.where(id: params[:id].split(',').flatten)
+      webconferences      = Webconference.where(id: academic_allocations.map(&:academic_tool_id))
+      authorize! :preview, Webconference, { on: academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }
+    end
 
     webconferences.map(&:can_remove_records?)
-    Webconference.remove_record(academic_allocations)
+
+    if params.include?(:recordID)
+      webconferences.first.remove_record(params[:recordID], params[:at])
+    else
+      Webconference.remove_record(academic_allocations)
+    end
 
     render json: { success: true, notice: t(:record_deleted, scope: [:webconferences, :success]) }
   rescue CanCan::AccessDenied
@@ -165,25 +178,24 @@ class WebconferencesController < ApplicationController
   end
 
   def get_record
-    webconference = Webconference.find(params[:id])
-    at_id         = active_tab[:url][:allocation_tag_id] || params[:at_id] || webconference.allocation_tags.map(&:id)
+    @webconference = Webconference.find(params[:id])
+    @at_id         = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id)
 
-    raise CanCan::AccessDenied if current_user.is_researcher?(AllocationTag.find(at_id).related)
+    raise CanCan::AccessDenied if current_user.is_researcher?(AllocationTag.where(id: @at_id).map(&:related).flatten.uniq)
 
     begin
-      authorize! :index, Webconference, { on: at_id, accepts_general_profile: true }
+      authorize! :index, Webconference, { on: @at_id, accepts_general_profile: true }
     rescue
-      authorize! :preview, Webconference, { on: at_id, accepts_general_profile: true }
+      authorize! :preview, Webconference, { on: @at_id, accepts_general_profile: true }
     end
 
+    @can_remove_record = (can? :preview, Webconference, { on: @webconference.academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }) || current_user.id == @webconference.user_id
+
     raise 'offline'          unless bbb_online?
-    raise 'no_record'        unless webconference.is_recorded? && webconference.over?
-    raise 'still_processing' unless webconference.is_over?
+    raise 'no_record'        unless @webconference.is_recorded? && @webconference.over?
+    raise 'still_processing' unless @webconference.is_over?
 
-    record_url = webconference.recordings([], (at_id.class == Array ? nil : at_id))
-    URI.parse(record_url).path
-
-    render json: { success: true, url: record_url }
+    @recordings = @webconference.recordings([], (@at_id.class == Array ? nil : @at_id))
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
   rescue URI::InvalidURIError

@@ -1,0 +1,44 @@
+%h1#lightBoxDialogTitle= t(".recordings", name: @webconference.title)
+.chat_messages
+  .title-warning
+    = raw t('.warning')
+  - unless @recordings.empty?
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th= t('.access')
+          %th= t(".start")
+          %th= t(".end")
+          - if @can_remove_record
+            %th
+      %tbody
+        - @recordings.each_with_index do |record, idx|
+          %tr.lines
+            %td= link_to t('.record', number: idx+1), Bbb.get_recording_url(record), target: '_blank'
+            %td= l(record[:startTime].to_datetime)
+            %td= l(record[:endTime].to_datetime)
+            - if @can_remove_record
+              %td= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('.remove'), :'data-url' => remove_record_webconference_path(webconference: @webconference.id, at: @at_id, recordID: record[:recordID])
+
+  - else
+    .block_content_text_list.text_none= t(".no_message")
+
+= javascript_include_tag "tooltip"
+
+:javascript
+  $(function(){
+    $('.remove_record').click(function(){
+      if (!confirm("#{I18n.t(:message_confirm)}"))
+        return false;
+
+      tr = $(this).parents('tr');
+      $.delete($(this).data('url'), function(data){
+        tr.remove();
+        flash_message(data.notice, "notice", 'fancybox-outer');
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      });
+    });
+  });

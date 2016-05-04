@@ -1326,6 +1326,7 @@ pt_BR:
       no_record: Esta webconferência não possui gravações
       offline: Webconferência indisponível
       still_processing: A gravação desta webconferência ainda está sendo processada. Favor aguardar.
+      general_message: Não foi possível realizar a ação desejada
     preview:
       delete_record: Remover gravação
       placeholder: Digite qualquer valor a ser buscado na tabela desta página
@@ -1348,6 +1349,15 @@ pt_BR:
       title: Lista de acessos a webconferêcia %{webconference_name}
       on_going: '<b> Aviso: </b> Esta webconferência ainda está em andamento, portanto esta lista de acessos pode aumentar.'
       not_started: '<b> Aviso: </b> Esta webconferência ainda não iniciou.'
+    get_record:
+      recordings: Gravações de %{name}
+      access: Acesso à gravação
+      record: Gravação %{number}
+      start: Início da gravação
+      end: Fim da gravação
+      warning: '<b>Importante: </b> Para cada ausência prolongada de participantes na webconferência, uma nova gravação é realizada.'
+      no_message: Gravações removidas ou vazias ou a webconferência não possui gravações
+      remove: Remover gravação
 
   navigation_of: " de "
   navigation_next: "Próxima >"

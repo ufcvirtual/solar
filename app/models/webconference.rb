@@ -97,7 +97,7 @@ class Webconference < ActiveRecord::Base
   end
 
   def self.remove_record(academic_allocations)
-    api = bbb_prepare
+    api = Bbb.bbb_prepare
 
     academic_allocations.each do |academic_allocation|
       webconference = Webconference.find(academic_allocation.academic_tool_id)

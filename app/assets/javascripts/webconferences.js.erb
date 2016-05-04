@@ -34,17 +34,6 @@ function list_access(obj){
   });
 }
 
-function get_record(obj){
-  erase_flash_messages();
-  $.get($(obj).parent().data('url'), function(data){
-    window.open(data.url,'_blank');
-  }).error(function(data){
-    var response = JSON.parse(data.responseText);
-    if (typeof(response.alert) != "undefined")
-      flash_message(response.alert, 'alert');
-  });
-}
-
 $(function(){
   $(".expand, .compress").click(function(){
     $(this).parents('div:first').hide();
@@ -97,7 +86,7 @@ $(function(){
       return false;
 
     if (webconference_ids.length) {
-      $.put($(this).data('link-remove').replace(':id', webconference_ids), function(data){
+      $.delete($(this).data('link-remove').replace(':id', webconference_ids), function(data){
         webconferences.parents('tr').find(".status_webconference").html("<%=I18n.t(:removed_record, scope: 'webconferences.list')%>");
         $(".all_webconferences").prop("checked", false);
         flash_message(data.notice, 'notice');

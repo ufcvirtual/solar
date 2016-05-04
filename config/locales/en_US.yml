@@ -1151,6 +1151,7 @@ en_US:
       no_record: This webconference has no recordings
       offline: Unavailable webconference
       still_processing: This webconference's recording is still processing. Please wait.
+      general_message: It was not possible to execute this action. 
     preview:
       delete_record: Remove record
       placeholder: Type any value to be searched at the table of this page
@@ -1173,6 +1174,15 @@ en_US:
       title: List of access to webconference %{webconference_name}
       on_going: '<b> Warning: </b> This webconference is still on going, therefore this access list can be extended.'
       not_started: '<b> Warning: </b> This webconference have not started yet.'
+    get_record:
+      recordings: "%{name}'s recordings"
+      access: Access to recording
+      record: Recording %{number}
+      start: Recording's start
+      end: Recording's end
+      warning: '<b>Importat: </b> To each prolonged absence from webconference participants, a new recording is made.'
+      no_message: Removed or empty recordings or webconference does not have any recordings
+      remove: Remove recording
   navigation_of: " of "
   navigation_next: "Next >"
   navigation_previous: "< Previous"

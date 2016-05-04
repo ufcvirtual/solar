@@ -108,11 +108,26 @@ module Bbb
   def recordings(recordings = [], at_id = nil)
     meeting_id = get_mettingID(at_id)
     recordings = bbb_all_recordings if recordings.blank?
+    common_recordings = []
 
     recordings.each do |m|
-      return m[:playback][:format][:url] if m[:meetingID] == meeting_id
+      common_recordings << m if m[:meetingID] == meeting_id
     end
+
+    return common_recordings
     return false
+  end
+
+  def remove_record(recordId, at=nil)
+    raise 'error' if !at.nil? && at.class == Array
+    ids = recordings([], at).collect{|a| a[:recordID]}
+    raise CanCan::AccessDenied unless ids.include?(recordId)
+    api = Bbb.bbb_prepare
+    api.delete_recordings(recordId)
+  end
+
+  def self.get_recording_url(recording)
+    recording[:playback][:format][:url]
   end
 
   def on_going?
