@@ -9,8 +9,8 @@ class CurriculumUnit < ActiveRecord::Base
   has_many :academic_allocations, through: :allocation_tag
 
   before_create  :create_correspondent_course,  if: 'curriculum_unit_type_id == 3'
-  before_update :update_correspondent_course,   if: 'curriculum_unit_type_id == 3'
-  after_destroy :destroy_correspondent_course,  if: 'curriculum_unit_type_id == 3'
+  before_update :update_correspondent_course,   if: 'curriculum_unit_type_id == 3 && !ignore_course'
+  after_destroy :destroy_correspondent_course,  if: 'curriculum_unit_type_id == 3 && !ignore_course'
 
   validates :code, uniqueness: true, length: { maximum: 40 }, allow_blank: false
   validates :name, length: { maximum: 120 }
@@ -18,6 +18,8 @@ class CurriculumUnit < ActiveRecord::Base
   validates :passing_grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true}
 
   after_save :update_digital_class, if: "code_changed? || name_changed?"
+
+  attr_accessor :ignore_course
 
   def any_lower_association?
     offers.count > 0
@@ -78,13 +80,14 @@ class CurriculumUnit < ActiveRecord::Base
 
     def update_correspondent_course
       # changes => {key: [before, after]}
-      return unless self.valid? and changes.any? and (changes.has_key?(:name) or changes.has_key?(:code))
+      return unless self.valid? && changes.any? && (changes.has_key?(:name) || changes.has_key?(:code))
 
       before_name = changes[:name].nil? ? name : changes[:name].first
       before_code = changes[:code].nil? ? code : changes[:code].first
 
       course = Course.find_by_name_and_code(before_name, before_code)
-      if course and not course.update_attributes(code: code, name: name)
+      course.ignore_uc = true
+      if course && !course.update_attributes(code: code, name: name)
         errors.messages.merge!(course.errors.messages)
         return false
       end
@@ -93,6 +96,7 @@ class CurriculumUnit < ActiveRecord::Base
     end
 
     def destroy_correspondent_course
+      course.ignore_uc = true
       course.destroy
     end
 
