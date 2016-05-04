@@ -2099,7 +2099,7 @@ pt_BR:
       up_until_: ""
       date_error: Data inicial maior que a data final
       navigation_info: Download realizado com sucesso
-      warning: "<b> Importante: </b> <br/> 1. Os logs de acessos e ações possuem limite 100 registros. <br/> <b> 2. Log de Navegação</b> <br/>2.1 É obrigatório o preenchimento de um dos campos do tipo data.<br/> 2.2 Caso não seja preenchido o campo data final será considerada a data corrente para o campo. <br/> 2.3 Possui limite de 10.000 registros nos seguintes formatos: CSV e XLS sendo o download do mesmo automático."
+      warning: "<b> Importante: </b> <br/> 1. Os logs de acessos e ações possuem um limite de 100 registros. <br/> <b> 2. Log de Navegação</b> <br/>2.1 É obrigatório o preenchimento de, ao menos, um dos campos do tipo data.<br/> 2.2 Caso não seja preenchido o campo data final, será considerada a data corrente para o campo. <br/> 2.3 Possui um limite de 10.000 registros nos seguintes formatos: CSV e XLS sendo o download automático."
     allocations_user:
       type: Tipo
       no_data: Nenhuma alocação para o semestre informado
