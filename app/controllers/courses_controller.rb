@@ -6,17 +6,18 @@ class CoursesController < ApplicationController
 
   def index
     @type_id = params[:type_id].to_i
+    except_courses = (@type_id == 3 ? '' : Course.all_associated_with_curriculum_unit_by_name.pluck(:id).join(','))
 
     if params[:combobox]
-      @courses = (@type_id == 3 ? Course.all_associated_with_curriculum_unit_by_name : Course.all)
+      @courses = (@type_id == 3 ? Course.all_associated_with_curriculum_unit_by_name : Course.where("id NOT IN (#{except_courses})"))
       render json: { html: render_to_string(partial: 'select_course', locals: { curriculum_units: @courses.uniq! }) }
     else # list
       authorize! :index, Course
       @courses = if params[:course_id].present?
-        Course.where(id: params[:course_id]).paginate(page: params[:page])
+        Course.where(id: params[:course_id]).where("courses.id NOT IN (#{except_courses})").paginate(page: params[:page])
       else
-        allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "courses")
-        Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).paginate(page: params[:page])
+        allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], 'courses')
+        Course.joins(:allocation_tag).where(allocation_tags: { id: allocation_tags_ids }).where("courses.id NOT IN (#{except_courses})").paginate(page: params[:page])
       end
 
       respond_to do |format|

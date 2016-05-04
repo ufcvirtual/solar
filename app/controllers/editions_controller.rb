@@ -27,7 +27,8 @@ class EditionsController < ApplicationController
     authorize! :courses, Edition
 
     allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "courses")
-    @search_courses = Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
+    except_courses = (@type_id == 3 ? '' : Course.all_associated_with_curriculum_unit_by_name.pluck(:id).join(','))
+    @search_courses = Course.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).where("courses.id NOT IN (#{except_courses})")
     @courses = @search_courses.paginate(page: params[:page])
     @type    = CurriculumUnitType.find(params[:curriculum_unit_type_id])
   rescue
