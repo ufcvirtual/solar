@@ -236,6 +236,7 @@ class DigitalClass < ActiveRecord::Base
     LogAction.joins(:allocation_tag, user: [allocations: :profile] )
       .where(log_type: LogAction::TYPE[:access_digital_class_lesson])
       .where(allocation_tags: { id: allocation_tags_ids })
+      .where(allocations: { allocation_tag_id: allocation_tags_ids })
       .where("log_actions.description LIKE '#{dc_lesson_id},%'")
       .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean ) OR cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )")
       .select("log_actions.created_at, users.name AS user_name, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name")
