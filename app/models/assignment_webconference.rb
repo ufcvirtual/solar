@@ -7,7 +7,7 @@ class AssignmentWebconference < ActiveRecord::Base
 
   before_save :can_change?, if: 'merge.nil?'
 
-  before_destroy :can_destroy?, :remove_record
+  before_destroy :can_destroy?, :remove_records
 
   validates :title, :initial_time, :duration, :sent_assignment_id, presence: true
   validates :duration, numericality: { only_integer: true, less_than_or_equal_to: 60,  greater_than_or_equal_to: 1 }

@@ -132,8 +132,10 @@ class WebconferencesController < ApplicationController
 
     if params.include?(:recordID)
       webconferences.first.remove_record(params[:recordID], params[:at])
+      save_log
     else
       Webconference.remove_record(academic_allocations)
+      save_log(academic_allocations)
     end
 
     render json: { success: true, notice: t(:record_deleted, scope: [:webconferences, :success]) }
@@ -205,6 +207,24 @@ class WebconferencesController < ApplicationController
   end
 
   private
+
+  def save_log(acs=nil)
+    logs = []
+
+    if acs.nil?
+      logs << { allocation_tag_id: params[:at], description: "webconference: #{webconferences.first.id} removing recording #{params[:recordID]} by user #{current_user.id}" }
+    else
+      acs.each do |ac|
+        logs << { academic_allocation_id: ac.id, description: "webconferences: #{ac.academic_tool_id} removing all recordings by user #{current_user.id}" }
+      end
+    end
+
+    params_log = { log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: request.remote_ip }
+
+    logs.each do |log|
+      LogAction.create(params_log.merge!(log))
+    end
+  end
 
   def webconference_params
     params.require(:webconference).permit(:description, :duration, :initial_time, :title, :is_recorded, :shared_between_groups)

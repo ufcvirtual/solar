@@ -10,7 +10,7 @@ module SysLog
     extend ActiveSupport::Concern
 
     included do
-      after_filter :log_create, unless: Proc.new {|c| request.get? }, except: [:evaluate, :change_participant, :import, :export, :annul]
+      after_filter :log_create, unless: Proc.new {|c| request.get? }, except: [:evaluate, :change_participant, :import, :export, :annul, :remove_record]
     end
 
     def log_create
@@ -35,7 +35,7 @@ module SysLog
             [(obj.respond_to?(:academic_allocations) ? obj.academic_allocations : obj.academic_allocation)].flatten.each do |al|
               LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, academic_allocation_id: al.id, allocation_tag_id: allocation_tag_id, ip: request.remote_ip, description: description)
             end
-          elsif (obj.respond_to?(:allocation_tag) and not(obj.allocation_tag.nil?))
+          elsif (obj.respond_to?(:allocation_tag) && !(obj.allocation_tag.nil?))
             LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, allocation_tag_id: obj.allocation_tag.id, ip: request.remote_ip, description: description)
           else # generic log
             generic_log(sobj, obj)

@@ -72,8 +72,10 @@ class AssignmentWebconferencesController < ApplicationController
 
     if params.include?(:recordID)
       @assignment_webconference.remove_record(params[:recordID])
+      save_log(@assignment_webconference)
     else
       @assignment_webconference.remove_records
+      save_log(@assignment_webconference)
     end
 
     render json: { success: true, notice: t('assignment_webconferences.success.record') }
@@ -117,6 +119,16 @@ class AssignmentWebconferencesController < ApplicationController
   end
 
   private
+
+    def save_log(assignment_webconference)
+      log = if params.include?(:recordID)
+        { description: "assignment_webconference: #{@assignment_webconference.id}  removing recording #{params[:recordID]} by user #{current_user.id}" }
+      else
+        { description: "assignment_webconference: #{@assignment_webconference.id}  removing all recordings by user #{current_user.id}" }
+      end
+
+      LogAction.create({ log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: request.remote_ip, allocation_tag_id: assignment_webconference.allocation_tag.id, academic_allocation_id: assignment_webconference.academic_allocation.id }.merge!(log))
+    end
 
     def assignment_webconference_params
       params.require(:assignment_webconference).permit(:sent_assignment_id, :title, :initial_time, :duration, :is_recorded)
