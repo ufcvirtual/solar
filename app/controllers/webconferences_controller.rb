@@ -166,7 +166,7 @@ class WebconferencesController < ApplicationController
 
     academic_allocations_ids = (@webconference.shared_between_groups ? @webconference.academic_allocations.map(&:id) : @webconference.academic_allocations.where(allocation_tag_id: at_id).first.try(:id))
 
-    @logs = @webconference.get_access(academic_allocations_ids)
+    @logs = @webconference.get_access(academic_allocations_ids, at_id)
     @researcher = current_user.is_researcher?(AllocationTag.where(id: at_id).map(&:related))
     @too_old    = @webconference.initial_time.to_date < Date.parse(YAML::load(File.open('config/webconference.yml'))['participant_log_date']) rescue false
 
