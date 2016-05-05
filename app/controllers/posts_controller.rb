@@ -23,7 +23,6 @@ class PostsController < ApplicationController
 
     @posts = []
 
-    @can_interact, @can_post = @discussion.user_can_interact?(current_user.id), (can? :create, Post, on: [@allocation_tags])
     @can_interact = @discussion.user_can_interact?(current_user.id)
     @can_post = (can? :create, Post, on: [@allocation_tags])
 

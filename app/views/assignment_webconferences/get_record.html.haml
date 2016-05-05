@@ -38,7 +38,7 @@
       }).error(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
-          flash_message(data.alert, 'alert');
+          flash_message(data.alert, 'alert', 'fancybox-outer');
       });
     });
   });
