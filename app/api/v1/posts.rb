@@ -12,7 +12,7 @@ module V1
           @group      = Group.find(params[:group_id])
           @profile_id = current_user.profiles_with_access_on(permission, :posts, @group.allocation_tag.related, true).first
 
-          raise ActiveRecord::RecordNotFound if @profile_id.nil? or not(current_user.groups(@profile_id, Allocation_Activated).include?(@group))
+          raise ActiveRecord::RecordNotFound if @profile_id.nil? || !(current_user.groups([@profile_id], Allocation_Activated).include?(@group))
         end
 
         def post_params

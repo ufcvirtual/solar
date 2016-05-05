@@ -214,10 +214,10 @@ class User < ActiveRecord::Base
     }
   end
 
-  def groups(profile_id = nil, status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil, offer_id = nil, group_status = true, semester_id = nil)
+  def groups(profiles_ids = [], status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil, offer_id = nil, group_status = true, semester_id = nil)
     query = ['allocations.allocation_tag_id IS NOT NULL']
     query << "allocations.status = #{status}"                        unless status.blank?
-    query << "allocations.profile_id = #{profile_id}"                unless profile_id.blank?
+    query << "allocations.profile_id IN (#{profiles_ids.join(',')})"                unless profiles_ids.blank?
     ats = allocations.where(query.join(' AND ')).pluck(:allocation_tag_id)
 
     query = []

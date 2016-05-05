@@ -8,10 +8,16 @@ module V1
       namespace :curriculum_units do
 
         desc "Turmas de uma UC do usuario"
-        params { requires :id, type: Integer }#, values: -> { CurriculumUnit.all.map(&:id) } }
+        params do
+         requires :id, type: Integer #, values: -> { CurriculumUnit.all.map(&:id) } }
+         optional :profiles_ids, type: Array
+        end
         get ":id/groups", rabl: "groups/list" do
-          user_groups    = current_user.groups(nil, Allocation_Activated).map(&:id)
-          current_offers = Offer.currents({verify_end_date: true})
+          profiles_ids   = user.profiles_with_access_on('show', 'curriculum_units', nil, true)
+          profiles_ids   = (profiles_ids & params[:profiles_ids]) if params[:profiles_ids]
+          
+          user_groups    = current_user.groups(profiles_ids, Allocation_Activated).map(&:id)
+          current_offers = Offer.currents({verify_end_date: true, profiles: profiles_ids, user_id: current_user.id})
           @groups = Group.joins(:offer).where(id: user_groups, offer_id: current_offers).where("offers.curriculum_unit_id = ?", params[:id]) rescue []
         end
 
