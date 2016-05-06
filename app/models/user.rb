@@ -217,7 +217,7 @@ class User < ActiveRecord::Base
   def groups(profiles_ids = [], status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil, offer_id = nil, group_status = true, semester_id = nil)
     query = ['allocations.allocation_tag_id IS NOT NULL']
     query << "allocations.status = #{status}"                        unless status.blank?
-    query << "allocations.profile_id IN (#{profiles_ids.join(',')})"                unless profiles_ids.blank?
+    query << "allocations.profile_id IN (#{profiles_ids.join(',')})" unless profiles_ids.blank?
     ats = allocations.where(query.join(' AND ')).pluck(:allocation_tag_id)
 
     query = []
@@ -241,7 +241,7 @@ class User < ActiveRecord::Base
     user_profiles = profiles.where(query_at, at).pluck(:id)
 
     # sempre carrega contexto geral independente do perfil do usuario
-    args = {profiles: [], contexts: [], general_context: true}.merge(args)
+    args = { profiles: [], contexts: [], general_context: true }.merge(args)
     args[:profiles] << user_profiles
     args[:contexts] << Context_General if args[:general_context]
 

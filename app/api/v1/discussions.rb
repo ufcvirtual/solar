@@ -12,7 +12,7 @@ module V1
         @discussions = Discussion.all_by_allocation_tags(@group.allocation_tag.id)
         ats = @group.allocation_tag.related
         @researcher = current_user.is_researcher?(ats)
-        @can_post   = profiles_with_access_on('create', 'posts', ats).any?
+        @can_post   = current_user.profiles_with_access_on('create', 'posts', ats).any?
       end
     end
 

@@ -13,7 +13,7 @@ module V1
          optional :profiles_ids, type: Array
         end
         get ":id/groups", rabl: "groups/list" do
-          profiles_ids   = user.profiles_with_access_on('show', 'curriculum_units', nil, true)
+          profiles_ids   = current_user.profiles_with_access_on('show', 'curriculum_units', nil, true)
           profiles_ids   = (profiles_ids & params[:profiles_ids]) if params[:profiles_ids]
           
           user_groups    = current_user.groups(profiles_ids, Allocation_Activated).map(&:id)
@@ -22,6 +22,38 @@ module V1
         end
 
       end # curriculum_units
+
+      before { guard! }
+
+      namespace :user do
+
+        desc "Turmas de um usuario"
+        params do
+          optional :semester, type: String
+          optional :curriculum_unit_type_id, :course_id, :curriculum_unit_id, type: Integer
+          optional :profiles_ids, type: Array
+        end
+        get :groups, rabl: "groups/list_by_user" do
+          profiles_ids   = current_user.profiles_with_access_on('show', 'curriculum_units', nil, true)
+          profiles_ids   = (profiles_ids & params[:profiles_ids]) if params[:profiles_ids]
+          # only returns groups with access to curriculum_unit
+          user_groups    = current_user.groups(profiles_ids, Allocation_Activated).pluck(:id)
+          
+          offers = if params[:semester].present?
+            Offer.joins(:semester).where(params.slice(:curriculum_unit_type_id, :course_id, :curriculum_unit_id)).where(semesters: { name: params[:semester] }).pluck(:id)
+          else
+            Offer.currents({ verify_end_date: true, profiles: profiles_ids, user_id: current_user.id }.merge!(params.slice(:curriculum_unit_type_id, :course_id, :curriculum_unit_id)))
+          end
+
+          @groups = user_groups.joins(offer: [:semester, :course, curriculum_unit: :curriculum_unit_type])
+                               .joins('JOIN allocation_tags ON allocation_tags.group_id = groups.id OR allocation_tags.offer_id = offers.id OR allocation_tags.course_id = courses.id OR allocation_tags.curriculum_unit_id = curriculum_units.id OR allocation_tags.curriculum_unit_type_id = curriculum_unit_types.id')
+                               .joins("JOIN allocations ON allocations.allocation_tag_id = allocation_tags.id AND allocations.user_id = #{current_user.id}")
+                               .where(offer_id: offers)
+                               .select("groups.id, groups.code, semesters.name AS semester_name, curriculum_units.code AS uc_code, curriculum_units.name AS uc_name, courses.code AS course_code, courses.name AS course_name, curriculum_unit_types.description AS type, replace(translate(array_agg(distinct allocations.profile_id)::text,'{}', ''),'\"', '') AS profiles")
+                               .group('groups.id, semesters.id, courses.id, offers.id, curriculum_units.id, curriculum_unit_types.id') rescue []
+        end
+
+      end # user
 
     end # segment
 
