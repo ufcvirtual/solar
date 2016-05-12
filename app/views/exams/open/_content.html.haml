@@ -23,6 +23,12 @@
 
   var time = parseInt(#{@total_time});
   var time_h = Math.floor(time / 60);
-  time_min = time % 60;
+  var time_min = time % 60;
+  var clock_switch;
 
-  jQuery(function($) { new updateTime("clock", [time_h, time_min, "00"]); });
+  jQuery(function($) {
+    if (typeof clock_switch == 'undefined') {
+      new updateTime("clock", [time_h, time_min, "00"]);
+      clock_switch = true;
+      }
+  });

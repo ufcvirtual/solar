@@ -105,14 +105,26 @@ class ExamsController < ApplicationController
        @temp_questions = @total_time/@total_questions
 
        render :result_exam_user
-    else  
+    else
       respond_to do |format|
         format.html
         format.js
       end
-    end  
+    end
   end
- 
+
+  def complete
+    #authorize! :finish, { on: params[:allocation_tag_id] }
+    @attempt = ExamUserAttempt.find(params[:id])
+    @attempt.end = DateTime.now
+    @attempt.complete = true
+
+    if @attempt.save
+      render_exam_success_json('finish')
+    end
+  rescue => error
+      ender_json_error(error, 'exams.error')
+  end
 
   def change_status
     authorize! :change_status, Exam, { on: params[:allocation_tags_ids] }

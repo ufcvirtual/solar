@@ -2716,6 +2716,7 @@ en_US:
       updated: Exam was successfully updated
       deleted: Exam was successfully deleted
       status: Exam's status successfully updated
+      finish: Exam was successfully completed
     index:
       description: Description
       availability: Availability
@@ -2758,6 +2759,10 @@ en_US:
     open:
       to: " to "
       questions: " questions"
+      finish_exam: Finish Exam
+      refresh: The changes may be lost!
+    finish:
+      confirm: Are you sure you want to finish the exam?
     summary:
       title: Exam summary
       questions_number: Questions number

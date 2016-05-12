@@ -95,10 +95,13 @@
       margin-top: 10px;
     }
 
-    .item_checkbox img{
+    #item_image, .item_checkbox img{
       margin-right: 10px;
-      border: solid 2px #CDD6E3;
       vertical-align: top;
+    }
+
+    #item_image{
+      border: solid 2px #CDD6E3;
     }
 
     .item_checkbox label input{
@@ -127,6 +130,15 @@
     }
   }
 
+  .finish_exam{
+    text-align: center;
+
+      #finish_button{
+        font-size: 10pt;
+        padding: 10px;
+        margin-top: 10px;
+      }
+  }
 }
 
 #exam_form{

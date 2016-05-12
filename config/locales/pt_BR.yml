@@ -2953,6 +2953,7 @@ pt_BR:
       updated: Prova atualizada com sucesso
       deleted: Prova deletada com sucesso
       status: Status da prova alterado com sucesso
+      finish: Prova finalizada com sucesso
     index:
       description: Descrição
       availability: Disponibilidade
@@ -2994,6 +2995,10 @@ pt_BR:
     open:
       to: " de "
       questions: " questões"
+      finish_exam: Finalizar Prova
+      refresh: As alterações podem ser perdidas!
+    finish:
+      confirm: Tem certeza que deseja finalizar a prova?
     summary:
       title: "Resumo da prova"
       questions_number: "Número de questões"

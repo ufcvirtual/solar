@@ -545,6 +545,7 @@ Solar::Application.routes.draw do
       get :open
       get :preview
       get :summary
+      post :complete
     end
   end
 

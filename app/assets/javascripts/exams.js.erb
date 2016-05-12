@@ -10,6 +10,11 @@ function save_question(duration) {
   $(".edit_exam_response").submit();
 }
 
+function finish_exam(duration) {
+  save_question(duration);
+  delete array_time;
+}
+
 function get_duration(duration) {
   var time = array_time[page-1]
   var new_duration = Math.floor(time / 60);
@@ -40,7 +45,7 @@ function refresh_array_time(array_time, total) {
   return array_time;
 }
 
-function insert_unique_answer(unique_id) {
+function unique_answer(unique_id) {
   $('.item_checkbox').each(
      function(){
        var er = $(this).find('[type="radio"]');
@@ -49,4 +54,13 @@ function insert_unique_answer(unique_id) {
         }
      }
   );
+}
+
+function load_components(page){
+  $('#order').html(page);
+  $('.number').html(page + ") ");
+
+  if ($(".next_page.disabled").length > 0) {
+    $("#finish_button").show();
+  }
 }

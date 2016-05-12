@@ -17,9 +17,29 @@
           - else
             - b.label {b.check_box + b.text}
       - else
-        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, :onclick => "save_question('#{@exam_responses.duration}');" do |b|
+        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview} do |b|
           - if b.object.item_image?
-            - b.label { b.check_box + image_tag(b.object.item_image(:medium), id: 'item_image') + b.text }
+            - b.label { b.check_box(:hidden => true) + (link_to_function (image_tag "#{b.check_box.start_with?("<input checked") ? 'released' : 'rejected'}.png"), 'change(this)') + image_tag(b.object.item_image(:medium), id: 'item_image') + b.text }
           - else
-            - b.label {b.check_box + b.text}
+            - b.label {b.check_box(:hidden => true) + (link_to_function (image_tag "#{b.check_box.start_with?("<input checked") ? 'released' : 'rejected'}.png"), 'change(this)') + b.text}
       = er.hidden_field :duration, {:id => "duration"}
+
+:javascript
+
+  function change(img){
+
+    var checkbox = $(img).siblings();
+    checkbox.prop('checked', !checkbox.prop('checked'));
+
+    if(!!checkbox.prop('checked')){
+      $(img).html('<img alt="Released" src="/assets/released.png"/>');
+      $(img).attr('data-tooltip', $(img).data('active'));
+    }else{
+      $(img).html('<img alt="Rejected" src="/assets/rejected.png"/>');
+      $(img).attr('data-tooltip', $(img).data('not-active'));
+    }
+
+    save_question('#{@exam_responses.duration}');
+
+    $.getScript("/assets/tooltip.js");
+  }

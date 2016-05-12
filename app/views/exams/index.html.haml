@@ -48,9 +48,12 @@
     .block_content_text.block_content_text_list.text_none= t(:none, scope: [:exams] )
 
 :javascript
+
   $(function(){
+
     $(".link_open_exam").call_fancybox({
       minWidth: '50%',
+      closeBtn : false,
       height: 'auto'
     });
 
