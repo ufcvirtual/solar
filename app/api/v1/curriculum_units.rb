@@ -5,7 +5,7 @@ module V1
       before do
         guard!
 
-        user_groups    = current_user.groups(nil, Allocation_Activated).pluck(:id)
+        user_groups    = current_user.groups([], Allocation_Activated).pluck(:id)
         current_offers = Offer.currents({user_id: current_user.id})
 
         @u_groups         = Group.where(id: user_groups, offer_id: current_offers)

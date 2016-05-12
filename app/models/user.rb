@@ -180,7 +180,7 @@ class User < ActiveRecord::Base
     SQL
 
     researcher_profiles = profiles_with_access_on('cant_see_info', 'users', allocation_tags_ids, false, true)
-    (all.first['count'] == researcher_profiles.first['count'])
+    (all.first['count'] != '0' && all.first['count'] == researcher_profiles.first['count'])
   end
 
   ## Na criação, o usuário recebe o perfil de usuario basico
@@ -214,10 +214,10 @@ class User < ActiveRecord::Base
     }
   end
 
-  def groups(profile_id = nil, status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil, offer_id = nil, group_status = true, semester_id = nil)
+  def groups(profiles_ids = [], status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil, offer_id = nil, group_status = true, semester_id = nil)
     query = ['allocations.allocation_tag_id IS NOT NULL']
     query << "allocations.status = #{status}"                        unless status.blank?
-    query << "allocations.profile_id = #{profile_id}"                unless profile_id.blank?
+    query << "allocations.profile_id IN (#{profiles_ids.join(',')})" unless profiles_ids.blank?
     ats = allocations.where(query.join(' AND ')).pluck(:allocation_tag_id)
 
     query = []
@@ -241,7 +241,7 @@ class User < ActiveRecord::Base
     user_profiles = profiles.where(query_at, at).pluck(:id)
 
     # sempre carrega contexto geral independente do perfil do usuario
-    args = {profiles: [], contexts: [], general_context: true}.merge(args)
+    args = { profiles: [], contexts: [], general_context: true }.merge(args)
     args[:profiles] << user_profiles
     args[:contexts] << Context_General if args[:general_context]
 
@@ -375,11 +375,11 @@ class User < ActiveRecord::Base
       user_exist = where(cpf: cpf).first
       user = user_exist.nil? ? new : user_exist
 
-      blacklist = UserBlacklist.new cpf: user.cpf, name: user.name || row['Nome']
+      blacklist = UserBlacklist.where(cpf: user.cpf, name: user.name || row['Nome']).first_or_initialize
       can_add_to_blacklist = blacklist.valid?
 
       if !user.integrated || can_add_to_blacklist
-        blacklist.save if user.integrated && blacklist.valid?
+        blacklist.save if user.integrated && can_add_to_blacklist
 
         params = {}
         params.merge!({ email: row['Email'].downcase })             if row.include?('Email') && !row['Email'].blank?
@@ -391,7 +391,7 @@ class User < ActiveRecord::Base
         params.merge!({ institution: row['Instituição'] })          if row.include?('Instituição') && !row['Instituição'].blank?
         params.merge!({ cpf: cpf })                                 if row.include?('CPF') || row.include?('Cpf')
         params.merge!({ gender: (row['Sexo'].downcase == 'masculino' || row['Sexo'].downcase == 'male' || row['Sexo'].downcase == 'm') }) if row.include?('Sexo') && !row['Sexo'].blank?
-        params.merge!({ username: user.cpf || params[:cpf] })       if user.username.nil?
+        params.merge!({ username:  row['Email'].downcase.split('@')[0] || cpf || params['Cpf'] }) if user.username.nil?
         params.merge!({ birthdate: '1970-01-01' })                  if user.birthdate.nil?
         params.merge!({ nick: user.username || params[:username] }) if user.nick.nil?
 
@@ -411,14 +411,48 @@ class User < ActiveRecord::Base
           Thread.new do
             Notifier.new_user(user, new_password).deliver
           end
+        else
+          user.notify_by_email(new_password)
         end
 
       else
-        log[:error] << I18n.t(:error, scope: [:administrations, :import_users, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(', '))
+
+        if user.errors[:username].blank? || (user.integrated && !can_add_to_blacklist)
+          log[:error] << I18n.t(:error, scope: [:administrations, :import_users, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(', '))
+        else
+          username = user.name.slice(' ')
+          user.username = [username[0].downcase, username[1].downcase].join('_') rescue user.email.split('@')[0]
+          user.username = user.cpf unless user.valid?
+          user.username = user.email.split('@')[0] unless user.valid?
+          user.username = [user.email.split('@')[0], 'tmp'].join('_') unless user.valid?
+          if user.save
+            log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
+            imported << user
+
+            if new_password
+              Thread.new do
+                Notifier.new_user(user, new_password).deliver
+              end
+            else
+              user.notify_by_email(new_password)
+            end
+
+          else
+            log[:error] << I18n.t(:error, scope: [:administrations, :import_users, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(', '))
+          end
+        end
+
+
       end
     end ## each
 
     { imported: imported, log: log }
+  end
+
+  def notify_by_email(password = nil)
+    Thread.new do
+      Notifier.change_user(user, password).deliver
+    end
   end
 
   def self.open_spreadsheet(file, sep = ';')

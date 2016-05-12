@@ -27,6 +27,12 @@ class Notifier < ActionMailer::Base
          subject: "[SOLAR] Novo Cadastro")
   end
 
+  def change_user(user, password=nil)
+    @user, @password = user, password
+    mail(to: @user.email,
+         subject: "[SOLAR] Mudança de dados de acesso")
+  end
+
   def groups_disabled(emails, groups_codes, offer_info)
     @groups_codes, @offer_info = groups_codes, offer_info
     mail(to: emails,

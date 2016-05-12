@@ -21,7 +21,7 @@ class ApplicationAPI < Grape::API
 
   rescue_from :all do |error|
     Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [422] message: #{error}"
-    rack_response(error, 422)
+    rack_response(error.as_json, 422)
   end
 
   before { Rails.logger.info "[API] [INFO] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] params: #{ActionController::Parameters.new(params).except("route_info", "access_token").as_json}" }

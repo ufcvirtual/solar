@@ -524,7 +524,7 @@ Solar::Application.routes.draw do
     end
 
     member do    
-      put :remove_record
+      delete :remove_record, only_recordings: true
       get :access
       get :list_access
       get :get_record
@@ -591,7 +591,7 @@ Solar::Application.routes.draw do
 
   resources :assignment_webconferences do
     member do
-      put :remove_record
+      delete :remove_record, only_recordings: true
       get :get_record
     end
   end

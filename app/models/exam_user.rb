@@ -29,7 +29,7 @@ class ExamUser < ActiveRecord::Base
   end
 
   def delete_with_dependents
-    exam_user_attempts.delete_with_dependents
+    exam_user_attempts.map(&:delete_with_dependents)
     self.delete
   end
 

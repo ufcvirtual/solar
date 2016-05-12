@@ -22,12 +22,14 @@ class Post < ActiveRecord::Base
 
   validates :content, :profile_id, presence: true
 
+  attr_accessor :merge
+
   def verify_level
     raise 'level' if self.level > Discussion_Post_Max_Indent_Level
   end
 
   def verify_children
-    raise 'children' if self.children.any?
+    raise 'children' if self.children.any? && merge.nil?
   end
   
   def can_be_answered?
@@ -77,6 +79,12 @@ class Post < ActiveRecord::Base
     return posts.sort_by{|post|
       post.get_latest_date
     }.reverse
+  end
+
+  def delete_with_dependents
+    children.map(&:delete_with_dependents)
+    remove_all_files
+    self.delete
   end
 
   private

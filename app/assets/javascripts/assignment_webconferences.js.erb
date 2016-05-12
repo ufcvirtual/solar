@@ -17,7 +17,7 @@ function remove_record_awebconference(td){
   if (!confirm("<%=I18n.t(:message_confirm)%>"))
     return false;
 
-  $.put($(td).data('link-records'), function(data){
+  $.delete($(td).data('link-records'), function(data){
 
     var notice = data.notice;
     $.get($(td).data('link-show'), function(data){

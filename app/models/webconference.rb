@@ -97,7 +97,7 @@ class Webconference < ActiveRecord::Base
   end
 
   def self.remove_record(academic_allocations)
-    api = bbb_prepare
+    api = Bbb.bbb_prepare
 
     academic_allocations.each do |academic_allocation|
       webconference = Webconference.find(academic_allocation.academic_tool_id)
@@ -149,8 +149,8 @@ class Webconference < ActiveRecord::Base
     end
   end
 
-  def get_access(acs)
-    LogAction.joins(:allocation_tag, user: [allocations: :profile] ).where(academic_allocation_id: acs, log_type: LogAction::TYPE[:access_webconference]).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean ) OR cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )").select("log_actions.created_at, users.name AS user_name, allocation_tags.id AS at_id, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name").order('log_actions.created_at ASC').group('log_actions.created_at, users.name, allocation_tags.id')
+  def get_access(acs, at_id)
+    LogAction.joins(:allocation_tag, user: [allocations: :profile] ).where(academic_allocation_id: acs, log_type: LogAction::TYPE[:access_webconference], allocations: { allocation_tag_id: at_id }).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean ) OR cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )").select("log_actions.created_at, users.name AS user_name, allocation_tags.id AS at_id, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name").order('log_actions.created_at ASC').group('log_actions.created_at, users.name, allocation_tags.id')
   end
 
 

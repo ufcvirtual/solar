@@ -49,9 +49,12 @@ module V1::Contents
     raise ActiveRecord::RecordNotFound if from_group.nil? || to_group.nil?
     from_ats, to_at = ((from_group.offer_id == to_group.offer_id) ? [from_group.allocation_tag.id] : from_group.allocation_tag.related), to_group.allocation_tag.id
     from_academic_allocations = AcademicAllocation.where(allocation_tag_id: from_ats) # recover all from group which will be copied
+    main_group, secundary_group = merge ? [to_group, from_group] : [from_group, to_group]
 
     ActiveRecord::Base.transaction do
-      remove_all_content(to_at) if !merge && Merge.where(main_group_id: to_group.id, secundary_group_id: from_group.id).last.try(:type_merge)
+      # cant unmerge if never merged
+      raise 'not merged' if !merge && !Merge.where(main_group_id: main_group.id, secundary_group_id: secundary_group.id).last.try(:type_merge)
+      remove_all_content(to_at) unless merge
 
       replicate_discussions(from_academic_allocations, to_at)
       replicate_chats(from_academic_allocations, to_at)
@@ -64,7 +67,7 @@ module V1::Contents
         replicate_public_files(from_at, to_at)
       end
 
-      main_group, secundary_group = merge ? [to_group, from_group] : [from_group, to_group]
+      
       Merge.create! main_group_id: main_group.id, secundary_group_id: secundary_group.id, type_merge: merge
       LogAction.create(log_type: LogAction::TYPE[:create], user_id: 0, ip: env['REMOTE_ADDR'], description: "merge: transfering content from #{from_group.allocation_tag.info} to #{to_group.allocation_tag.info}, merge type: #{merge}") rescue nil
     end
@@ -72,7 +75,7 @@ module V1::Contents
 
   # remove posts, sent_assignments, group_assignments, chat_messages and dependents
   def remove_all_content(allocation_tag)
-    AcademicAllocation.where(academic_tool_type: 'Discussion', allocation_tag_id: allocation_tag).map{ |ac| ac.discussion_posts.delete_all }
+    AcademicAllocation.where(academic_tool_type: 'Discussion', allocation_tag_id: allocation_tag).map{ |ac| ac.discussion_posts.map(&:delete_with_dependents) }
     AcademicAllocation.where(academic_tool_type: 'Assignment', allocation_tag_id: allocation_tag).map{ |ac|
       ac.sent_assignments.map(&:delete_with_dependents)
       ac.group_assignments.map(&:delete_with_dependents)
@@ -98,7 +101,8 @@ module V1::Contents
   end
 
   def copy_object(object_to_copy, merge_attributes={}, is_file = false, nested = nil, call_methods = {})
-    new_object = object_to_copy.class.where(object_to_copy.attributes.except('id').merge(merge_attributes)).first_or_initialize
+    new_object = object_to_copy.class.where(object_to_copy.attributes.except('id', 'children_count').merge!(merge_attributes)).first_or_initialize
+
     new_object.merge = true if new_object.respond_to?(:merge) # used so call save without callbacks (before_save, before_create)
     new_object.send(call_methods[:to], object_to_copy.send(call_methods[:from])) unless call_methods.empty?
     new_object.save

@@ -1,0 +1,15 @@
+!!!
+%html
+  %head
+    %meta{:charset => "utf-8"}
+    %meta{"http-equiv" => "X-UA-Compatible", :content => "IE=edge,chrome=1"}
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
+    %title= "Solar"
+    = yield(:head)
+  %body
+    %p= raw "Caro(a) #{@user.name}, <br/><br/> Informamos que seu login e/ou senha foram alterados no AVA - Ambiente Virtual de Aprendizagem, SOLAR 2.0. <br/> Os novos dados são:"
+    %p= "Login: #{@user.username}"
+    - unless @password.blank?
+      %p= "Senha: #{@password}"
+    %p= link_to('Acesso ao Solar', home_url(only_path: false))
+    %p{style: "color: #7C7C7C; font-size: 8pt; padding-top: 10px;"}= I18n.t("notifier.dont_reply_message")
