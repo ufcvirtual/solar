@@ -20,7 +20,7 @@ class QuestionItem < ActiveRecord::Base
 
 	def self.list(question_id)
   	QuestionItem.where(question_id: question_id)
-      .select('DISTINCT question_items.id, question_items.description, question_items.value, question_items.item_image_file_name, question_items.item_image_content_type, question_items.item_image_file_size, question_items.item_image_updated_at, question_items.img_alt')
+      .select('DISTINCT question_items.id, question_items.description, question_items.value, question_items.item_image_file_name, question_items.item_image_content_type, question_items.item_image_file_size, question_items.item_image_updated_at, question_items.img_alt, question_items.comment')
   end
 
   def can_destroy?

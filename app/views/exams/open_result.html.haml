@@ -1,0 +1,30 @@
+.event_details_dropdown
+  %h1#lightBoxDialogTitle=  @exam.name
+
+  - unless  @list_eua.blank?
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th{style: 'text-align:left;'}= t(".name")
+
+      %tbody
+        - i = 0
+        - @list_eua.each do |leua|
+          - link = open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, exam_user_id: @exam_user_id, situation: @situation, exam_user_attempt_id: leua.id)
+          - i = i +1
+          %tr.lines
+            %td
+              %div
+                .title
+                  = i
+                  = t(".grade")
+                  = leua.grade
+                  = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'link_content link_open_exam', id: 'open-exam'
+
+:javascript
+  $(function(){
+    $(".link_open_exam").call_fancybox({
+      minWidth: '50%',
+      height: 'auto'
+    });
+  });

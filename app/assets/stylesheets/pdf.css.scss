@@ -1,0 +1,132 @@
+@font-face {
+    font-family: 'Solar';
+    src:url('/assets/fonts/Solar.eot');
+    src:url('/assets/fonts/Solar.eot?#iefix') format('embedded-opentype'),
+        url('/assets/fonts/Solar.woff') format('woff'),
+        url('/assets/fonts/Solar.ttf') format('truetype'),
+        url('/assets/fonts/Solar.svg#Solar') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+/* Fontes e ícones */
+@import "fonts/icons";
+
+.exam_open {
+
+	font-variant: initial;
+  	font-family: 'PT Sans', sans-serif;
+
+	  #exam_topbar {
+	    width: 100%;
+	    z-index: 2;
+	    display: inline-block;
+	    }
+
+	  #title {
+	    font-size: 14pt;
+	    font-family: 'PT Sans';
+	    margin: 0px;
+	    padding: 10px 0px 0px 220px;
+
+	    float: left;
+	  }
+
+	  #exam_status {
+	    float: right;
+	    font-size: 10pt;
+	    list-style-type: none;
+	    padding: 0 0 0 0;
+	    margin: 0;
+
+
+	    li {
+	      display: inline-block;
+	      padding: 3px 6px 0 4px;
+	      vertical-align: middle;
+	      float: left;
+	      /* necessario para funcionar ok no IE7 */
+	      /*    zoom: 1;
+	      *display: inline;*/
+	    }
+
+	    #time, #question_count{
+	      padding-right: 0px;
+	    }
+	  }
+
+	  .block_content {
+	    padding: 5px;
+	    border-bottom: solid 1px;
+	    border-bottom-color: #D0D0D0;
+	    border-top: solid 1px;
+	    border-top-color: #D0D0D0;
+	    min-height: 28px;
+	    display: block;
+
+	  }
+
+	  .questions{
+	    width: 100%;
+
+	    .question {
+	      padding-top: 10px;
+	      float: left;
+	      font-family: 'PT Sans', sans-serif;
+
+	      .number {
+	        padding-right: 5px;
+	        color: #1c5ec9;
+	        width: auto;
+	        vertical-align:top;
+	      }
+	    }
+
+	    .question_images {
+	      text-align: center;
+
+	      .image {
+	        padding: 15px 15px 0 15px;
+	        display: inline-block;
+
+	        #question_image {
+	          border: solid 2px #CDD6E3;
+	        }
+	      }
+
+	    }
+
+	  }
+
+	  .question_items{
+	    padding: 10px 0px 10px 15px;
+
+	    .item_checkbox{
+	      margin-top: 10px;
+	    }
+
+	    .item_checkbox img{
+	      margin-right: 10px;
+	      border: solid 2px #CDD6E3;
+	      vertical-align: top;
+	    }
+
+	    .item_checkbox label input{
+	      margin-right: 5px;
+	    }
+
+	    .item_checkbox label{
+	      display: inline;
+	      color: #1c5ec9;
+	      font-family: 'PT Sans', sans-serif;
+	    }
+
+	    .item_checkbox .incorrect{
+	      color:#E03838;
+	    }
+	    
+	    .item_checkbox .hit{
+	      color:#0B610B;
+	    }
+	  }
+
+}

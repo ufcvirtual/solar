@@ -2975,6 +2975,9 @@ pt_BR:
       compress_description: Comprimir descrição
       more: Mais
       less: Menos
+      result: 'Resultado '
+      mirror_results: ' Correção '
+      result_pdf: Correção em PDF
     situation:
       not_started: Não iniciada
       to_answer: A responder
@@ -3057,6 +3060,13 @@ pt_BR:
       attempts: Quantidade de tentativas
       attempts_correction: Cálculo de nota
       to: " de"
+      student: 'Aluno: '
+    result_exam:  
+      student: 'Aluno: '
+      grade: 'Nota: '
+    open_result:
+      name: Correções  
+      grade: 'Nota: '
     warning:
       title: '<b>Importante: </b>Não é possível criar, importar ou remover questões em provas publicadas'
 

@@ -15,6 +15,7 @@ class ExamUser < ActiveRecord::Base
 
   def info
     complete_attempts = exam_user_attempts.where(complete: true)
+
     total_attempts = exam_user_attempts.count
     last_attempt = exam_user_attempts.last
     responses = last_attempt ? last_attempt.exam_responses.count : 0

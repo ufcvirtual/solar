@@ -16,11 +16,16 @@
         - @exams.each do |exam|
         - info = exam.info(current_user.id, @allocation_tags_ids)
         - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, exam_user_id: Exam.create_exam_user(exam, current_user.id, @allocation_tags_ids), situation: info[:situation])
+        - link_result = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, exam_user_id: Exam.create_exam_user(exam, current_user.id, @allocation_tags_ids), situation: info[:situation], result: 1)
           %tr.lines{ id: "tr_#{exam.id}" }
             %td
               %div
-                - if info[:situation] == "not_answered" || info[:situation] == "not_started"
+                - if info[:situation] == "not_answered" || info[:situation] == "not_started" || info[:situation] == "finished"
                   .title= exam.name
+                  - if info[:situation] == "finished"
+                    = link_to I18n.t(:result, :scope => [:exams, :index]), link_result, class: 'link_content link_open_exam', id: 'open-exam-result'
+                    |
+                    = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'link_content link_open_exam', id: 'open-exam'
                 - else
                   = link_to exam.name, link, :'data-tooltip' => exam.name, class: 'link_content link_open_exam', id: 'open-exam'
                 - if exam.description.size > 180
@@ -68,4 +73,5 @@
       $(".description_complete, .description_less", $(this).parent().parent()).css("display", "none");
       return false;
     });
+
   });

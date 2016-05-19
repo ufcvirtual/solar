@@ -35,8 +35,9 @@ class Exam < Event
   after_save :recalculate_grades,   if: 'attempts_correction_changed?'
   after_save :send_result_emails,   if: 'result_email_changed? && result_email'
 
-  def recalculate_grades
+  def recalculate_grades(exam, user_id)
     # chamar metodo de correção dos itens respondidos para todos os que existem
+
   end
 
   def send_result_emails
@@ -262,6 +263,36 @@ class Exam < Event
     return @exam_user_attempt_last
   end
 
+  def self.responses_question_user(exam, user_id, question_id, question_item_id, exam_user_id, id)
+    @response_question_user = nil
+    mod_correct_exam = exam.attempts_correction
+    if mod_correct_exam == 0
+      euat = ExamUserAttempt.where(exam_user_id: exam_user_id).max_by(&:grade)
+    elsif mod_correct_exam == 1
+      #puts ("#{user_id} #{question_id} #{question_item_id} #{id}")
+      @response_question_user =  ExamUserAttempt.joins('LEFT JOIN exam_users ON exam_user_attempts.exam_user_id = exam_users.id')
+          .joins('LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id')
+          .joins('LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id')        
+          .where('user_id = ? AND question_id = ? AND question_item_id = ? AND exam_user_attempts.id = ? AND question_item_id IS NOT NULL', user_id, question_id, question_item_id, id)
+          .select("question_item_id").last
+               
+    else
+      euat = ExamUserAttempt.where(exam_user_id: exam_user_id).last
+    end 
+    if mod_correct_exam != 1
+        @response_question_user =  ExamUserAttempt.joins('LEFT JOIN exam_users ON exam_user_attempts.exam_user_id = exam_users.id')
+          .joins('LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id')
+          .joins('LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id')        
+          .where('exam_user_attempts.id = ? AND user_id = ? AND question_id = ? AND question_item_id = ?', euat.id, user_id, question_id, question_item_id)
+          .select("question_item_id").last   
+    end 
+    @response_question_user
+  end 
+
+  def self.list_exam_user_attempt(exam_user_id)
+    exam_uat = ExamUserAttempt.where(exam_user_id: exam_user_id)
+  end 
+
   def log_description
     desc = {}
 
@@ -301,9 +332,17 @@ class Exam < Event
     elsif mod_correct_exam == 1
       grade = ExamUserAttempt.where(exam_user_id: exam_user_id).average(:grade)
     else
-      grade = ExamUserAttempt.where(exam_user_id: exam_user_id).last
+      grade = ExamUserAttempt.where(exam_user_id: exam_user_id).last.grade
     end 
     grade
+  end
+  def self.get_id_exam_user_attempt(mod_correct_exam, exam_user_id)
+    if mod_correct_exam == 0
+      id = ExamUserAttempt.where(exam_user_id: exam_user_id).max_by(&:grade).id
+    elsif mod_correct_exam == 2
+      id = ExamUserAttempt.where(exam_user_id: exam_user_id).last.id
+    end 
+    id
   end
 
   private

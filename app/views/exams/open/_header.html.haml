@@ -1,6 +1,9 @@
 #exam_topbar
   #title
     = @exam.name
+    - if @disabled
+      - link = open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, exam_user_id: @exam_user_id, situation: @situation, pdf: 1, :format => "pdf", exam_user_attempt_id: @exam_user_attempt_id)
+      = link_to  content_tag(:i, nil, class: 'icon-printer'), link, class: 'link_content link_open_exam', id: 'open-exam', :target => "_blank"
   %ul#exam_status
     %li#question_count
       %i.icon-list

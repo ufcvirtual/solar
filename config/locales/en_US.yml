@@ -2738,6 +2738,9 @@ en_US:
       compress_description: Contract description
       more: More
       less: Less
+      result: 'Result '
+      mirror_results: 'Correction '
+      result_pdf: Correction PDF
     situation:
       not_started: Not started
       to_answer: To answer
@@ -2822,6 +2825,13 @@ en_US:
       attempts: Attempt's amount
       attempts_correction: Grade calculation 
       to: " to "
+      student: 'Student:'
+    result_exam:  
+      student: 'Student: '
+      grade: 'Grade: '  
+    open_result:
+      name: Corrections
+      grade: 'Grade: '  
     warning:
       title: "<b>Important: </b>You can't create, import or remove questions while exam's published"
 

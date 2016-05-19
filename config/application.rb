@@ -3,6 +3,7 @@ require File.expand_path('../boot', __FILE__)
 require 'csv'
 require 'rails/all'
 require 'grape/rabl'
+require 'wicked_pdf'
 
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
@@ -30,7 +31,8 @@ module Solar
 
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
-
+    #config.middleware.use "PDFKit::Middleware", :print_media_type => true
+    config.middleware.use WickedPdf::Middleware
     #Tags e atributos permitidos pelo método auxiliador "sanitize"
     config.action_view.sanitized_allowed_tags = %w(h1 h2 h3 h4 hr b i p u a pre div span br ul ol li em strong strike img sup sub abbr big small code iframe)
     config.action_view.sanitized_allowed_attributes = %w(name style class href cite title src height datetime alt abbr width)
@@ -39,7 +41,7 @@ module Solar
     config.active_record.default_timezone = :local
 
     #Itens por página para a paginação.
-    config.items_per_page = 20
+    config.items_per_page = 20 
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.

@@ -23,7 +23,7 @@
 
     .input
       = label_tag t(".punctuation"), nil, class: "form_label"
-      %span.label_info= @last_attempt.grade.to_s
+      %span.label_info= @grade.to_s
       = label_tag t(".to") + ' '+ @scores_exam.to_s  
 
         

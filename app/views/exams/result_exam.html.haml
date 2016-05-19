@@ -1,0 +1,21 @@
+%html
+  %head
+    %title Prova
+    %meta{:charset => 'utf-8'}
+    = wicked_pdf_stylesheet_link_tag  "pdf", :media => "all"
+    
+  %body
+    .exam_open
+      .header
+        #title
+          = @exam.name
+        %br
+        %br 
+        = t(".student") + current_user.name
+        %br
+        = t(".grade") + @grade_pdf.to_s 
+        %p   
+        .content_exam    
+          = render 'exams/open/content', { preview: @preview }
+
+   

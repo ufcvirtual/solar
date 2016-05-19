@@ -51,6 +51,9 @@ gem "savon", "~> 2.0" # comunicação com ws
 
 gem "roo", "~> 1.13.2"  # csv, excel
 gem "prawn", "~> 2.0.1" # pdf
+#gem "pdfkit" #pdf
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'#pdf
 
 gem "em-websocket" # websocket pros fóruns
 

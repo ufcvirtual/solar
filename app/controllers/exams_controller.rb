@@ -86,26 +86,51 @@ class ExamsController < ApplicationController
 
   def open
     authorize! :open, Exam, { on: params[:allocation_tag_id] }
-    situation =  params[:situation]
+    @situation =  params[:situation]
     @exam = Exam.find(params[:id])
     @preview = false
+    @exam_user_attempt_id = params[:exam_user_attempt_id] 
+    @allocation_tag_id = params[:allocation_tag_id]
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @exam_user_id = params[:exam_user_id]
     @last_attempt = Exam.create_exam_user_attempt(@exam_user_id)
-    @total_time = @last_attempt.exam_responses.sum(:duration) 
-    
+   
     mod_correct_exam = @exam.attempts_correction
-    grade = Exam.get_grade(mod_correct_exam, @exam_user_id) 
+    @grade = Exam.get_grade(mod_correct_exam, @exam_user_id) 
 
-    if situation=='finished' and grade
+    if @situation=='finished' and @grade
+      if(mod_correct_exam != 1)
+        @exam_user_attempt_id = Exam.get_id_exam_user_attempt(mod_correct_exam, @exam_user_id)
+      end  
        #caso não tenha nota chama o metodo que calcula a nota
 
+       @total_time = @last_attempt.exam_responses.sum(:duration) 
        @total_questions = @exam_questions.count(:id)
        @scores_exam = @exam_questions.sum(:score)
        @temp_questions = @total_time/@total_questions
+       
+       if params[:result].to_i == 1
+          render :result_exam_user
+       else   
+          @disabled = true
+          @preview = true
+          @list_eua = Exam.list_exam_user_attempt(@exam_user_id)
+          if mod_correct_exam == 1 && !params[:exam_user_attempt_id]  && params[:pdf].to_i != 1  
+            render :open_result 
+          else  
+            if params[:pdf].to_i == 1
+              @grade_pdf = ExamUserAttempt.find(@exam_user_attempt_id).grade
+              @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order) unless @exam.nil?
+              @pdf = 1
+              render :result_exam
 
-       render :result_exam_user
-    else
+            else  
+             render :open 
+            end
+          end 
+       end    
+    else  
+
       respond_to do |format|
         format.html
         format.js

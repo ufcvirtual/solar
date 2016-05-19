@@ -468,7 +468,9 @@ GEM
       rack (>= 1.0)
       rack-test (>= 0.5.3)
     websocket (1.0.7)
+    wicked_pdf (1.0.6)
     will_paginate (3.0.7)
+    wkhtmltopdf-binary (0.9.9.3)
     xml-simple (1.1.5)
     xmpp4r (0.5.6)
     xpath (2.0.0)
@@ -544,5 +546,10 @@ DEPENDENCIES
   unicorn (~> 4.6.3)
   unicorn-worker-killer (~> 0.4.3)
   webrat (= 0.7.3)
+  wicked_pdf
   will_paginate (~> 3.0.7)
+  wkhtmltopdf-binary
   xmpp4r (~> 0.5.5)
+
+BUNDLED WITH
+   1.11.2

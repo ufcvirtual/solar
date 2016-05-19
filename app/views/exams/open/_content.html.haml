@@ -1,11 +1,14 @@
 .block_content
-  - @exam_questions.each do |question|
+  - number_question = 0
+  - @exam_questions.each do |question|   
     - @exam_responses = last_attempt(@last_attempt, question.id)
     - @unique_id = ExamResponse.is_unique?(@exam_responses) ? ExamResponse.get_question_item_id(@exam_responses) : false
+    - number_question = number_question+1
     %table.questions
       %thead
         %tr.question
           %td.number
+            = number_question.to_s + ')'
           %td.enunciation
             = question.enunciation
         - question_images = get_question_images(question.id)
@@ -17,6 +20,7 @@
       = render 'exams/open/question', { question: question, preview: preview }
 
 .message_div_navigation
+- if @pdf != 1
   = will_paginate @exam_questions
 
 :javascript
