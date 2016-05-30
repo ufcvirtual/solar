@@ -3,7 +3,7 @@
     %i.icon-suitcase
     = t(".title")
   .right_buttons
-    - unless files.nil? or files.empty?
+    - unless files.blank?
       = link_to content_tag(:i, nil, class: "icon-install"), zip_download_assignments_path(assignment_id: @assignment.id, student_id: @student_id, group_id: @group_id), class: "btn", :"data-tooltip" => t(".download")
 .block_content
   - unless files.empty?
