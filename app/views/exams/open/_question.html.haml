@@ -45,7 +45,7 @@
           - if @disabled
             - coment = b.object.comment
             - if (res_question_use)
-              - res_question_user = "checked"  
+              - res_question_user = "checked" 
               - class_label = "incorrect" 
             - if (b.object.value == true)
               - response = @pdf !=1 ? image_tag('correct.png', :style => "border: 0px solid red") : wicked_pdf_image_tag('correct.png', :style => "border: 0px solid red")

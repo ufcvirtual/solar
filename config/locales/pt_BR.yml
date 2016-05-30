@@ -3018,6 +3018,7 @@ pt_BR:
       questions: " questões"
       finish_exam: Finalizar Prova
       refresh: As alterações podem ser perdidas!
+      exit: Sair
     finish:
       confirm: Tem certeza que deseja finalizar a prova?
     summary:

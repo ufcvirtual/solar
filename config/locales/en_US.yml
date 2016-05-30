@@ -2781,6 +2781,7 @@ en_US:
       questions: " questions"
       finish_exam: Finish Exam
       refresh: The changes may be lost!
+      exit: Exit
     finish:
       confirm: Are you sure you want to finish the exam?
     summary:

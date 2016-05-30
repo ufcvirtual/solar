@@ -44,6 +44,7 @@ class ExamsController < ApplicationController
      @list_exam = Score.list_exams_stud(@user.id, @allocation_tag_id)
      respond_to do |format|
       format.html
+      format.js
     end
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
@@ -111,9 +112,8 @@ class ExamsController < ApplicationController
    
     mod_correct_exam = @exam.attempts_correction
     @grade = Exam.get_grade(mod_correct_exam, @exam_user_id) 
-
     @total_time = @last_attempt.exam_responses.sum(:duration) 
-
+    @disabled = false
 
     if @situation=='finished' and @grade
       if(mod_correct_exam != 1)
@@ -144,7 +144,6 @@ class ExamsController < ApplicationController
           end 
        end    
     else  
-
       respond_to do |format|
         format.html
         format.js
