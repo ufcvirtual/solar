@@ -219,7 +219,7 @@ pt_BR:
         name: "Nome"
         nick: "Apelido"
         birthdate: "Data de Nascimento"
-        gender: "Sexo"
+        gender: "Gênero"
         address: "Endereço"
         address_number: "Número"
         address_neighborhood: "Bairro"
@@ -305,6 +305,7 @@ pt_BR:
         result_email: Enviar resultado por email
         attempts_correction: Modo de cálculo de nota
         block_content: Bloquear conteúdo do Solar durante a prova
+        uninterrupted: Ininterrupta
       question_items:
         img_alt: Alt
         item_image: Imagem
@@ -708,6 +709,7 @@ pt_BR:
   mysolar_search: "Busca"
   mysolar_open_lesson: "Exibir aula aberta"
   mysolar_languages: "Idiomas"
+  mysolar_suggestions: 'Sugestões para o Solar 2.0'
   date_name: Data
   help: "Ajuda"
 
@@ -1334,6 +1336,7 @@ pt_BR:
       location: Localização
       warning: 'Esta tela não permite a edição de webconferências, apenas sua visualização, bem como de suas respectivas gravações (permitindo a deleção dessas). Para criar/editar/remover webconferências, dirija-se a Edição de Conteúdo.'
       shared_with: ( Compartilhada entre %{link} turma(s) )
+      access: Lista de acessos
     index:
       shared_with: Compartilhada entre %{link} turma(s)
       access: Lista de acessos
@@ -1477,7 +1480,6 @@ pt_BR:
   update_course_title: Atualização de Curso
 
   #Edx Course
-
   course_edx_edition: "Cursos"
 
   #Offer
@@ -1488,6 +1490,8 @@ pt_BR:
   end_date: "à"
   course: "Curso"
   curriculum_unit: "Disciplina"
+
+  select_files: Selecionar arquivos
 
   devise:
     failure:
@@ -1728,8 +1732,8 @@ pt_BR:
       name: Nome
       type: Tipo
       answers: Possui repostas
-      has_answrs: Sim
-      no_answers: Não
+      has_answers: 'Sim'
+      no_answers: 'Não'
       availability: Disponibilidade
       attached_files: Arquivos em anexo
       none: Nenhum trabalho cadastrado
@@ -2059,7 +2063,7 @@ pt_BR:
       not_specified: Não especificado
     import_users:
       wait: "Carregando..."
-      warning: "<b>Importante:</b> Para importação de usuários, podem ser enviados arquivos .csv, .xls, .xlsx e .ods. Para isso, é necessário obedecer ao padrão que consta na planilha exemplo (%{link}), sendo que apenas os seguintes campos são obrigatórios: Nome, Cpf, Email e Sexo. Campos opcionais: Endereço, País, Estado, Cidade e Instituição. Toda coluna que não conste no exemplo será ignorada."
+      warning: "<b>Importante:</b> Para importação de usuários, podem ser enviados arquivos .csv, .xls, .xlsx e .ods. Para isso, é necessário obedecer ao padrão que consta na planilha exemplo (%{link}), sendo que apenas os seguintes campos são obrigatórios: Nome, Cpf, Email e Gênero. Campos opcionais: Endereço, País, Estado, Cidade e Instituição. Toda coluna que não conste no exemplo será ignorada."
       model: "Download do modelo"
       registered_success: "%{count} usuários importados com sucesso"
       select_file: "Seleção do arquivo"
@@ -2998,6 +3002,8 @@ pt_BR:
         not_random: Sequenciais
         send_mail: Enviar email
         dont_send_mail: Não enviar email
+        can_interrupt: A prova pode ser interrompida e continuada em outro momento (dentro dos limites de tempo e prazo)
+        cant_interrupt: 'A prova não pode ser interrompida: ao ser iniciada, deve ser finalizada. Salvo se a interrupção for forçada (por ex: problemas de conexão)'
         block: Bloquear conteúdo
         dont_block: Não bloquear conteúdo
       steps:

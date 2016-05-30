@@ -35,9 +35,8 @@ class Exam < Event
   after_save :recalculate_grades,   if: 'attempts_correction_changed?'
   after_save :send_result_emails,   if: 'result_email_changed? && result_email'
 
-  def recalculate_grades(exam, user_id)
+  def recalculate_grades#(exam, user_id)
     # chamar metodo de correção dos itens respondidos para todos os que existem
-
   end
 
   def send_result_emails
@@ -120,6 +119,7 @@ class Exam < Event
       errors.add(:number_questions, I18n.t('exams.error.cant_change')) if number_questions_changed?
       errors.add(:attempts, I18n.t('exams.error.cant_be_smaller'))     if attempts < attempts_was
       errors.add(:block_content, I18n.t('exams.error.cant_change'))    if block_content_changed?
+      errors.add(:attempts_correction, I18n.t('exams.error.cant_change')) if attempts_correction_changed?
     end
   end
 

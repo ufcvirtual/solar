@@ -578,6 +578,7 @@ en_US:
   mysolar_search: "Search"
   mysolar_open_lesson: "Show opened lesson"
   mysolar_languages: "Languages"
+  mysolar_suggestions: 'Suggestions for Solar 2.0'
   date_name: Date
   help: "Help"
   tutorials: "Tutorials"
@@ -613,6 +614,7 @@ en_US:
   external_link: "From an external link"
   url: "Enter here the URL of the image in the textbox above."
   send: "Send"
+  select_files: Select files
 
   enrollments:
     all: All
@@ -962,7 +964,7 @@ en_US:
       confirm_cancel: 'Are you sure you want to cancel?'
     post:
       remove_file_confirm: "Your file will be deleted permanently. Proceed?"
-      answer: "Answer"
+      answer: "Reply"
       edit: "Edit"
       remove: "Remove"
       remove_file: "Remove file"
@@ -1159,6 +1161,7 @@ en_US:
       location: Location
       warning: "This page doesn't allow webconference's edition, only it's preview, as it's respective records (allowing the removal of these). To create/edit/remove webconferences, go to Content Edition."
       shared_with: ( Shared with %{link} group(s) )
+      access: Access's list
     index:
       shared_with: Shared with %{link} group(s)
       access: Access's list
@@ -1527,8 +1530,8 @@ en_US:
       name: Name
       type: Type
       answers: Has answers
-      has_answers: Yes
-      no_answers: No
+      has_answers: 'Yes'
+      no_answers: 'No'
       availability: Availability
       attached_files: Attached files
       none: No assignment registered
@@ -1856,7 +1859,7 @@ en_US:
       not_specified: Not specified
     import_users:
       wait: "Wait..."
-      warning: "<b>Important:</b> To import users, you can upload .csv, .xls, .xlsx and .ods files. To do so, it's necessary  to follow the template at the sample worksheet (%{link}). Now that only the following fields are mandatory: Nome, Cpf, Email and Sexo. Optional fields: Endereço, País, Estado, Cidade e Instituição.Any column which doesn't exist at the template will be ignored."
+      warning: "<b>Important:</b> To import users, you can upload .csv, .xls, .xlsx and .ods files. To do so, it's necessary  to follow the template at the sample worksheet (%{link}). Now that only the following fields are mandatory: Nome, Cpf, Email and Gênero. Optional fields: Endereço, País, Estado, Cidade e Instituição.Any column which doesn't exist at the template will be ignored."
       model: "Download sample"
       registered_success: "%{count} registered users successfully"
       select_file: "File selection"
@@ -2233,7 +2236,7 @@ en_US:
       updated: Chat was successfully updated.
       deleted: Chat was successfully deleted.
     error:
-      range_hour_error: must be posterior to final hour
+      range_hour_error: must be posterior to initial hour
       created: Chat wasn't created.
       updated: Chat wasn't updated.
       deleted: Chat wasn't deleted.
@@ -2761,6 +2764,8 @@ en_US:
         not_random: Sequential
         send_mail: Send mail
         dont_send_mail: Don't send mail
+        can_interrupt: Exam can be interrupted and continued at another time (within the limits of time and period)
+        cant_interrupt: "Exam can't be interrupted, after start must be finished. Unless the interruption is forced (such as connection problems)"
         block: Block content
         dont_block: Don't block content
       steps:
