@@ -7,7 +7,7 @@ production:
     port: 3002
   import_users:
     media_path: "/media/admin/logs/users/import"
-    header: "Nome;CPF;Sexo;Email;Endereço;País;Estado;Cidade;Instituição"
+    header: "Nome;CPF;Gênero;Email;Endereço;País;Estado;Cidade;Instituição"
   url_options:
     :host: "localhost"
     :port: 3000
@@ -20,7 +20,7 @@ development:
     port: 3002
   import_users:
     media_path: "/media/admin/logs/users/import"
-    header: "Nome;CPF;Sexo;Email;Endereço;País;Estado;Cidade;Instituição"
+    header: "Nome;CPF;Gênero;Email;Endereço;País;Estado;Cidade;Instituição"
   url_options:
     :host: "localhost"
     :port: 3000
@@ -33,7 +33,7 @@ test:
     port: 3002
   import_users:
     media_path: "/media/admin/logs/users/import"
-    header: "Nome;CPF;Sexo;Email;Endereço;País;Estado;Cidade;Instituição"
+    header: "Nome;CPF;Gênero;Email;Endereço;País;Estado;Cidade;Instituição"
   url_options:
     :host: "localhost"
     :port: 3000

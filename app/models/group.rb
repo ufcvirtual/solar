@@ -67,7 +67,7 @@ class Group < ActiveRecord::Base
   end
 
   def request_enrollment(user_id)
-    result = {success: [], error: []}
+    result = { success: [], error: [] }
     allocation = Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag.id, profile_id: Profile.student_profile).first_or_initialize
 
     enroll_period = offer.enrollment_period

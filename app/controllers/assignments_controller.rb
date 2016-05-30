@@ -114,7 +114,7 @@ class AssignmentsController < ApplicationController
     @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 
     @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id(@allocation_tag_id, @student_id, @group_id)
-    @can_evaluate = can?(:evaluate, Assignment)
+    @can_evaluate = can?(:evaluate, Assignment, on:  [@allocation_tag_id] )
     @bbb_online   = bbb_online?
   end
 

@@ -390,7 +390,7 @@ class User < ActiveRecord::Base
         params.merge!({ city: row['Cidade'] })                      if row.include?('Cidade') && !row['Cidade'].blank?
         params.merge!({ institution: row['Instituição'] })          if row.include?('Instituição') && !row['Instituição'].blank?
         params.merge!({ cpf: cpf })                                 if row.include?('CPF') || row.include?('Cpf')
-        params.merge!({ gender: (row['Sexo'].downcase == 'masculino' || row['Sexo'].downcase == 'male' || row['Sexo'].downcase == 'm') }) if row.include?('Sexo') && !row['Sexo'].blank?
+        params.merge!({ gender: (row['Gênero'].downcase == 'masculino' || row['Gênero'].downcase == 'male' || row['Gênero'].downcase == 'm') }) if row.include?('Gênero') && !row['Gênero'].blank?
         params.merge!({ username:  row['Email'].downcase.split('@')[0] || cpf || params['Cpf'] }) if user.username.nil?
         params.merge!({ birthdate: '1970-01-01' })                  if user.birthdate.nil?
         params.merge!({ nick: user.username || params[:username] }) if user.nick.nil?

@@ -15,7 +15,7 @@
         - else
           .input.string.files
             = file_field_tag 'files[]', type: :file, multiple: true
-            = button_to_function "Selecionar arquivos", 'add_files()', class: 'btn add_files'
+            = button_to_function t(:select_files), 'add_files()', class: 'btn add_files'
             %span.error
             .files_list
 

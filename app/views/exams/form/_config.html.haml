@@ -19,12 +19,15 @@
 .ckb
   = f.input :attempts
 .ckb
-  = f.label :attempts_correction
-  = f.select :attempts_correction, ([ [t('.greater'), Exam::GREATER], [t('.average'), Exam::AVERAGE], [t('.last'), Exam::LAST]]), include_blank: false
+  = f.input :attempts_correction, as: :select, collection: ([ [t('.greater'), Exam::GREATER], [t('.average'), Exam::AVERAGE], [t('.last'), Exam::LAST]]), include_blank: false
 .ckb
   = f.label :result_email
   = f.input :result_email, as: :boolean, label: false
   = link_to_function (image_tag "#{f.object.result_email ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.result_email ? t('.send_mail') : t('.dont_send_mail')), :'data-id' => 'exam_result_email', :'data-active' => t('.send_mail'), :'data-not-active' => t('.dont_send_mail')
+.ckb
+  = f.label :uninterrupted
+  = f.input :uninterrupted, as: :boolean, label: false
+  = link_to_function (image_tag "#{f.object.uninterrupted ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.uninterrupted ? t('.cant_interrupt') : t('.can_interrupt')), :'data-id' => 'uninterrupted', :'data-active' => t('.cant_interrupt'), :'data-not-active' => t('.can_interrupt')
 
 .form-actions.right_buttons
   = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default', type: 'button'
