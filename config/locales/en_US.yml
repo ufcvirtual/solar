@@ -2838,7 +2838,6 @@ en_US:
       grade: 'Grade: '  
     open_result:
       name: Corrections
-
       grade: 'Grade: '
     list_exams_student:
       list_exam: List Exam

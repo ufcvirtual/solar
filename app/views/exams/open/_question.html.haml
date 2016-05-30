@@ -34,8 +34,7 @@
 
           
       - elsif question.type_question.to_i == Question::MULTIPLE
-        - onclick = @disabled ? nil : "save_question('#{@exam_responses.duration}');"
-        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, :onclick => onclick  do |b|
+        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled  do |b|
           - res_question_user = nil
           - response = nil
           - class_label = nil
@@ -57,17 +56,15 @@
             - else
               - image = wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image') 
 
-          - b.label(class: class_label) { b.check_box(:checked => res_question_user) + image + b.text  + response }+ ' ' + coment
+          - b.label(class: class_label) { b.check_box + image + b.text  + response }+ ' ' + coment
     
       - else
-        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview} do |b|
+        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled do |b|
           - res_question_user = nil
           - response = nil
           - class_label = nil
-          - image = nil
-            
           - res_question_use = Exam.responses_question_user(@exam, current_user.id, question.id, b.object.id, @exam_user_id, @exam_user_attempt_id)
- 
+
           - if @disabled
             - coment = b.object.comment
             - if (res_question_use)
@@ -115,4 +112,3 @@
 
     $.getScript("/assets/tooltip.js");
   }
-

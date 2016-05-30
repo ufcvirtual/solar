@@ -37,6 +37,7 @@ class Exam < Event
 
   def recalculate_grades#(exam, user_id)
     # chamar metodo de correção dos itens respondidos para todos os que existem
+
   end
 
   def send_result_emails
