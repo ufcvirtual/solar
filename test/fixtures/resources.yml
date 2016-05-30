@@ -200,7 +200,7 @@ res48:
   id: 48
   controller: 'scores'
   action: 'index'
-  description: 'Acompanhamento de uma turma e cada aluno individualmente' # professor
+  description: 'Acompanhamento de uma turma e cada aluno individualmente' # professor 
 
 # Arquivos
 
@@ -1131,3 +1131,9 @@ res218:
   controller: 'digital_classes'
   action: 'list_access'
   description: 'Visualizar lista de acessos a uma lição no Digital Class'
+
+res219:
+  id: 219
+  controller: 'exams'
+  action: 'list_exams_student'
+  description: 'Acompanhamento de provas de cada aluno individualmente' # professor   

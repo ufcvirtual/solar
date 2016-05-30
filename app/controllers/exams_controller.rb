@@ -28,6 +28,7 @@ class ExamsController < ApplicationController
     @exam = Exam.new exam_params
     @exam.allocation_tag_ids_associations = @allocation_tags_ids.split(' ').flatten
     @exam.schedule.verify_today = true
+
     if @exam.save
       render_exam_success_json('created')
     else
@@ -36,6 +37,19 @@ class ExamsController < ApplicationController
   rescue => error
     render_json_error(error, 'exams.error')
   end
+
+  def list_exams_student
+    authorize! :list_exams_student, Exam, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+     @user = User.find(params[:student_id])
+     @list_exam = Score.list_exams_stud(@user.id, @allocation_tag_id)
+     respond_to do |format|
+      format.html
+    end
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  rescue => error
+    render_json_error(error, 'exams.error')
+  end 
 
   # require 'will_paginate/array'
   def list
@@ -98,13 +112,14 @@ class ExamsController < ApplicationController
     mod_correct_exam = @exam.attempts_correction
     @grade = Exam.get_grade(mod_correct_exam, @exam_user_id) 
 
+    @total_time = @last_attempt.exam_responses.sum(:duration) 
+
+
     if @situation=='finished' and @grade
       if(mod_correct_exam != 1)
         @exam_user_attempt_id = Exam.get_id_exam_user_attempt(mod_correct_exam, @exam_user_id)
       end  
        #caso não tenha nota chama o metodo que calcula a nota
-
-       @total_time = @last_attempt.exam_responses.sum(:duration) 
        @total_questions = @exam_questions.count(:id)
        @scores_exam = @exam_questions.sum(:score)
        @temp_questions = @total_time/@total_questions
@@ -123,7 +138,6 @@ class ExamsController < ApplicationController
               @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order) unless @exam.nil?
               @pdf = 1
               render :result_exam
-
             else  
              render :open 
             end

@@ -11,20 +11,21 @@ class ScoresController < ApplicationController
       .order("schedules.start_date, assignments.name")
     @students     = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true)
     @responsibles = AllocationTag.get_participants(@allocation_tag_id, { responsibles: true, profiles: Profile.with_access_on("create", "posts").join(",") }, true) if current_user.profiles_with_access_on("responsibles", "scores", AllocationTag.find(@allocation_tag_id).related).any?
+    
   end
 
   def info
     authorize! :info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @user = current_user
-    @assignments, @discussions, @access, @public_files = Score.informations(@user.id, @allocation_tag_id)
+    @assignments, @discussions, @exams, @access, @public_files = Score.informations(@user.id, @allocation_tag_id)
   end
 
   def user_info
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @user = User.find(params[:user_id])
-    @assignments, @discussions, @access, @public_files = Score.informations(@user.id, @allocation_tag_id)
+    @assignments, @discussions, @exams, @access, @public_files = Score.informations(@user.id, @allocation_tag_id)
     render :info
-  end
+  end 
 
   def amount_access
     allocation_tag_id = active_tab[:url][:allocation_tag_id]

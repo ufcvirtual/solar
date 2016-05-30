@@ -42,6 +42,7 @@
       %thead
         %tr.lines
           %th#student= t(".student")
+          %th#exams= t(".average_evidence")
           %th#public_files= t(".public_files")
           %th.participation= t(".participation")
           %th.access_history= t(".access_to_the_course")
@@ -56,8 +57,14 @@
       %tbody
         - unless @students.empty?
           - @students.each do |student|
+            - @exams = Score.grade_exam(student.id, @allocation_tag_id)
+            - link = list_exams_student_exams_path(student_id: student.id, allocation_tag_id: @allocation_tag_id)
             %tr.lines
               %td.td_student{'data-tooltip' => student.name}= link_to student.name, user_info_scores_path(student.id)
+              - if @exams.blank? 
+                %td= @exams
+              -else
+                %td=  link_to @exams, link, class: 'link_content link_list_exam'
               %td= student.u_public_files
               %td= student.u_posts
               %td= student.u_logs
@@ -89,3 +96,14 @@
   %div.assignment_not_started
     = t(".assignment_not_started")
     = t(".assignment_not_started_complete")
+
+:javascript
+  $(function(){
+
+    $(".link_list_exam").call_fancybox({
+      minWidth: '50%',
+      closeBtn : true,
+      height: 'auto'
+    });
+
+  });

@@ -147,7 +147,7 @@ class Exam < Event
   	exams = Exam.joins(:academic_allocations, :schedule)
       .where(academic_allocations: {allocation_tag_id: allocation_tag_ids},
           status: true)
-      .select('DISTINCT exams.*, schedules.start_date as start_date, schedules.end_date as end_date')
+      .select('DISTINCT exams.*, schedules.start_date as start_date, schedules.end_date as end_date') 
       .order('schedules.start_date')
   end
 
@@ -266,26 +266,28 @@ class Exam < Event
   def self.responses_question_user(exam, user_id, question_id, question_item_id, exam_user_id, id)
     @response_question_user = nil
     mod_correct_exam = exam.attempts_correction
-    if mod_correct_exam == 0
-      euat = ExamUserAttempt.where(exam_user_id: exam_user_id).max_by(&:grade)
-    elsif mod_correct_exam == 1
-      #puts ("#{user_id} #{question_id} #{question_item_id} #{id}")
-      @response_question_user =  ExamUserAttempt.joins('LEFT JOIN exam_users ON exam_user_attempts.exam_user_id = exam_users.id')
-          .joins('LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id')
-          .joins('LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id')        
-          .where('user_id = ? AND question_id = ? AND question_item_id = ? AND exam_user_attempts.id = ? AND question_item_id IS NOT NULL', user_id, question_id, question_item_id, id)
-          .select("question_item_id").last
-               
-    else
-      euat = ExamUserAttempt.where(exam_user_id: exam_user_id).last
-    end 
-    if mod_correct_exam != 1
+    grade = ExamUserAttempt.where(exam_user_id: exam_user_id).max_by(&:grade)
+    if grade
+      if mod_correct_exam == 0
+        euat = grade#ExamUserAttempt.where(exam_user_id: exam_user_id).max_by(&:grade)
+      elsif mod_correct_exam == 1
         @response_question_user =  ExamUserAttempt.joins('LEFT JOIN exam_users ON exam_user_attempts.exam_user_id = exam_users.id')
-          .joins('LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id')
-          .joins('LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id')        
-          .where('exam_user_attempts.id = ? AND user_id = ? AND question_id = ? AND question_item_id = ?', euat.id, user_id, question_id, question_item_id)
-          .select("question_item_id").last   
-    end 
+            .joins('LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id')
+            .joins('LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id')        
+            .where('user_id = ? AND question_id = ? AND question_item_id = ? AND exam_user_attempts.id = ? AND question_item_id IS NOT NULL', user_id, question_id, question_item_id, id)
+            .select("question_item_id").last
+                 
+      else
+        euat = ExamUserAttempt.where(exam_user_id: exam_user_id).last
+      end 
+      if mod_correct_exam != 1
+          @response_question_user =  ExamUserAttempt.joins('LEFT JOIN exam_users ON exam_user_attempts.exam_user_id = exam_users.id')
+            .joins('LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id')
+            .joins('LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id')        
+            .where('exam_user_attempts.id = ? AND user_id = ? AND question_id = ? AND question_item_id = ?', euat.id, user_id, question_id, question_item_id)
+            .select("question_item_id").last   
+      end 
+    end  
     @response_question_user
   end 
 

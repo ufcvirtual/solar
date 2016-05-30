@@ -2605,6 +2605,7 @@ en_US:
       students: Students
       no_responsible: No responsible
       sent_messages: Sent messages
+      average_evidence: Average evidence
     info:
       assignments: Assignments
       date_range: Date range
@@ -2621,6 +2622,7 @@ en_US:
       size: Size
       sent_on: Sent on
       file: File
+      exam: Exam
     access:
       date: Date
       time: Time
@@ -2831,7 +2833,13 @@ en_US:
       grade: 'Grade: '  
     open_result:
       name: Corrections
-      grade: 'Grade: '  
+
+      grade: 'Grade: '
+    list_exams_student:
+      list_exam: List Exam
+      name: Name Exam    
+      media_partial: Media partial
+      final_media: Final Media
     warning:
       title: "<b>Important: </b>You can't create, import or remove questions while exam's published"
 

@@ -2836,6 +2836,7 @@ pt_BR:
       students: Alunos
       no_responsible: Nenhum responsável
       sent_messages: Mensagens enviadas
+      average_evidence: Média das provas
     info:
       assignments: Trabalhos
       date_range: Período
@@ -2852,6 +2853,7 @@ pt_BR:
       size: Tamanho
       sent_on: Enviado em
       file: Arquivo
+      exam: Prova
     access:
       date: Data
       time: Horário
@@ -3067,6 +3069,11 @@ pt_BR:
     open_result:
       name: Correções  
       grade: 'Nota: '
+    list_exams_student:
+      list_exam: Lista de Provas
+      name: Nome da Prova     
+      media_partial: Média parcial
+      final_media: Média Final
     warning:
       title: '<b>Importante: </b>Não é possível criar, importar ou remover questões em provas publicadas'
 

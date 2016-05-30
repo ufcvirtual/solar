@@ -22,25 +22,27 @@
             - if (b.object.value == true)
               - response = @pdf !=1 ? image_tag('correct.png', :style => "border: 0px solid red") : wicked_pdf_image_tag('correct.png', :style => "border: 0px solid red")
               - class_label = "hit"  
-            - if b.object.item_image?  
-              - if @pdf !=1 
-                - image = image_tag(b.object.item_image(:medium), id: 'item_image')
-              - else
-                - image = wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image') 
+
+          - if b.object.item_image?  
+            - if @pdf !=1 
+              - image = image_tag(b.object.item_image(:medium), id: 'item_image')
+            - else
+              - image = wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image') 
 
           - b.label(class: class_label) { b.radio_button(:checked => res_question_user) + image + b.text + response } + ' ' + coment
 
 
           
       - elsif question.type_question.to_i == Question::MULTIPLE
-        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled do |b|
+        - onclick = @disabled ? nil : "save_question('#{@exam_responses.duration}');"
+        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, :onclick => onclick  do |b|
           - res_question_user = nil
           - response = nil
           - class_label = nil
           - image = nil
 
-          - res_question_use = Exam.responses_question_user(@exam, current_user.id, question.id, b.object.id, @exam_user_id, @exam_user_attempt_id)
-          
+          - res_question_use = Exam.responses_question_user(@exam, current_user.id, question.id, b.object.id, @exam_user_id, @exam_user_attempt_id)          
+      
           - if @disabled
             - coment = b.object.comment
             - if (res_question_use)
@@ -58,13 +60,14 @@
           - b.label(class: class_label) { b.check_box(:checked => res_question_user) + image + b.text  + response }+ ' ' + coment
     
       - else
-        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, disabled: @disabled do |b|
+        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview} do |b|
           - res_question_user = nil
           - response = nil
           - class_label = nil
           - image = nil
+            
           - res_question_use = Exam.responses_question_user(@exam, current_user.id, question.id, b.object.id, @exam_user_id, @exam_user_attempt_id)
-
+ 
           - if @disabled
             - coment = b.object.comment
             - if (res_question_use)
@@ -73,20 +76,21 @@
             - if (b.object.value == true)
               - response = @pdf !=1 ? image_tag('correct.png', :style => "border: 0px solid red") : wicked_pdf_image_tag('correct.png', :style => "border: 0px solid red") 
               - class_label = "hit" 
-          - if @pdf !=1   
+       
+          - if @pdf !=1   # PARA HTML  
             - if b.object.item_image?
-              - image = image_tag(b.object.item_image(:medium), id: 'item_image')              
-            - if res_question_user != nil
-              - it = link_to_function (image_tag "released.png"), 'change(this) disabled=@disabled'
-            - else
-              - it = link_to_function (image_tag "#{b.check_box.start_with?("<input checked") ? 'released' : 'rejected'}.png"), 'change(this) disabled=@disabled'
-          - else
+              - image = image_tag(b.object.item_image(:medium), id: 'item_image')   
+            - if @disabled  
+              - it = image_tag "#{b.check_box.start_with?("<input checked") ? 'released' : 'rejected'}.png" 
+            - else  
+              - it = link_to_function (image_tag "#{b.check_box.start_with?("<input checked") ? 'released' : 'rejected'}.png"), "change(this)"       
+          - else # PARA PDF
             - if b.object.item_image?
               - image = wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image') 
             - if res_question_user != nil
-              - it = link_to_function (wicked_pdf_image_tag "released.png", :style => "border: 0px solid red"), 'change(this) disabled=@disabled'
+              - it = wicked_pdf_image_tag "released.png", :style => "border: 0px solid red"
             -else
-              - it = link_to_function (wicked_pdf_image_tag "#{b.check_box.start_with?("<input checked") ? 'released' : 'rejected'}.png", :style => "border: 0px solid red"), 'change(this) disabled=@disabled'
+              - it = wicked_pdf_image_tag "#{b.check_box.start_with?("<input checked") ? 'released' : 'rejected'}.png", :style => "border: 0px solid red"
        
           - b.label(class: class_label) { b.check_box(:hidden => true) + (it) + image + b.text  + response}+ ' ' + coment
    
@@ -111,3 +115,4 @@
 
     $.getScript("/assets/tooltip.js");
   }
+

@@ -1,0 +1,22 @@
+.block_wrapper
+  .block_title
+    %h2= t(".list_exam")
+
+  - unless @list_exam.empty?
+    .tb_list_students
+      %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.responsibles')}
+        %thead
+          %tr.lines
+            %th#student= t(".name")
+            %th#profile= t(".media_partial")
+            %th#public_files= t(".final_media")
+
+        %tbody
+          - @list_exam.each do |exam|
+            %tr.lines
+              %td= exam.name
+              %td= exam.grade
+              %td= exam.grade_fin
+
+  - else
+    .block_content_text_list.text_none= t(".no_responsible")

@@ -63,6 +63,40 @@
 
 .block_wrapper
   .block_title
+    %h2= t(".exam")
+  .block_content
+    - unless @exams.empty?
+      %table.tb_list#assignments_list
+        %thead
+          %tr.lines
+            %th{align: "left"}= t(".exam")
+            %th.center.date{style: "width: 40%;"}= t(".date_range")
+            %th.center{style: "width: 20%;"}= t(".grade")
+          %tbody
+            - @exams.each do |exam|
+              - if (exam.user_id == current_user.id)
+                - link_result = open_exam_path(exam.exam_id, allocation_tag_id: @allocation_tag_id, exam_user_id: exam.id, situation: 'finished', result: 1)
+                - link = open_exam_path(exam.exam_id, allocation_tag_id: @allocation_tag_id, exam_user_id: exam.id, situation: 'finished')
+
+              %tr.lines
+                %td{align: "left"}
+                  - if link.blank?
+                    .title= exam.name
+                  - else
+                    .title= exam.name
+                    = link_to I18n.t(:result, :scope => [:exams, :index]), link_result, class: 'link_content link_open_exam', id: 'open-exam-result'
+                    |
+                    = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'link_content link_open_exam', id: 'open-exam'
+
+                %td.center
+                  = [exam.start_date, exam.end_date].join(" - ")
+                %td.center= exam.grade.to_f
+    - else
+      .block_content.block_content_text= t(:itens_not_found)
+
+
+.block_wrapper
+  .block_title
     %h2= t(".history_access", amount: @access.count)
   .block_content.block_content_text
     #history_search_content
@@ -103,6 +137,14 @@
 
 :javascript
   $(function(){
+
+    $(".link_open_exam").call_fancybox({
+      minWidth: '50%',
+      closeBtn : true,
+      height: 'auto'
+    });
+
+
     var options = $.extend($.datepicker.regional["#{I18n.locale}"]);
     $('#from-date, #until-date').datepicker(options);
     $('#from-date, #until-date').mask("#{I18n.t(:mask, scope: "date.formats")}");

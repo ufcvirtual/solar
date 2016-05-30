@@ -22,7 +22,8 @@
               %div
                 - if info[:situation] == "not_answered" || info[:situation] == "not_started" || info[:situation] == "finished"
                   .title= exam.name
-                  - if info[:situation] == "finished"
+                  - if info[:situation] == "finished" && info[:grade]
+
                     = link_to I18n.t(:result, :scope => [:exams, :index]), link_result, class: 'link_content link_open_exam', id: 'open-exam-result'
                     |
                     = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'link_content link_open_exam', id: 'open-exam'
