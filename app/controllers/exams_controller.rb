@@ -4,7 +4,6 @@ class ExamsController < ApplicationController
 
   before_filter :prepare_for_group_selection, only: :index
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
-  # before_filter :set_current_user, only: :index
   layout false, except: :index
 
   def index
@@ -12,7 +11,6 @@ class ExamsController < ApplicationController
     authorize! :index, Exam, on: [@allocation_tag_id]
     @allocation_tags_ids = AllocationTag.find(@allocation_tag_id).related
     @exams = Exam.my_exams(@allocation_tags_ids)
-
   rescue
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end
@@ -108,41 +106,31 @@ class ExamsController < ApplicationController
     @allocation_tag_id = params[:allocation_tag_id]
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @exam_user_id = params[:exam_user_id]
-    @last_attempt = Exam.create_exam_user_attempt(@exam_user_id)
+    @last_attempt = Exam.find_or_create_exam_user_attempt(@exam_user_id)
    
     mod_correct_exam = @exam.attempts_correction
-    @grade = Exam.get_grade(mod_correct_exam, @exam_user_id) 
-    @total_time = @last_attempt.exam_responses.sum(:duration) 
-    @disabled = false
-
-    if @situation=='finished' and @grade
+    
+    if (@situation=='finished' || @situation=='corrected')
       if(mod_correct_exam != 1)
         @exam_user_attempt_id = Exam.get_id_exam_user_attempt(mod_correct_exam, @exam_user_id)
       end  
-       #caso não tenha nota chama o metodo que calcula a nota
-       @total_questions = @exam_questions.count(:id)
-       @scores_exam = @exam_questions.sum(:score)
-       @temp_questions = @total_time/@total_questions
-       
-       if params[:result].to_i == 1
-          render :result_exam_user
-       else   
-          @disabled = true
-          @preview = true
-          @list_eua = Exam.list_exam_user_attempt(@exam_user_id)
-          if mod_correct_exam == 1 && !params[:exam_user_attempt_id]  && params[:pdf].to_i != 1  
-            render :open_result 
-          else  
-            if params[:pdf].to_i == 1
-              @grade_pdf = ExamUserAttempt.find(@exam_user_attempt_id).grade
-              @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order) unless @exam.nil?
-              @pdf = 1
-              render :result_exam
-            else  
-             render :open 
-            end
-          end 
-       end    
+
+      @disabled = true
+      @preview = true
+      @list_eua = ExamUserAttempt.where(exam_user_id: @exam_user_id)
+      if mod_correct_exam == 1 && !params[:exam_user_attempt_id]  && params[:pdf].to_i != 1  
+        render :open_result 
+      else  
+        if params[:pdf].to_i == 1
+          @grade_pdf = ExamUserAttempt.find(@exam_user_attempt_id).grade
+          @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order) unless @exam.nil?
+          @pdf = 1
+          render :result_exam
+
+        else  
+         render :open 
+        end
+      end 
     else  
       respond_to do |format|
         format.html
@@ -151,17 +139,19 @@ class ExamsController < ApplicationController
     end
   end
 
-  def complete
-    #authorize! :finish, { on: params[:allocation_tag_id] }
-    @attempt = ExamUserAttempt.find(params[:id])
-    @attempt.end = DateTime.now
-    @attempt.complete = true
+  def result_exam_user
+    authorize! :open, Exam, { on: @allocation_tag_id = active_tab[:url][:allocation_tag_id] }
+    @exam = Exam.find(params[:id])
+    raise 'dates' unless @exam.ended?
+    exam_user = ExamUser.joins(:academic_allocation).where(user_id: current_user.id, academic_allocations: { academic_tool_id: @exam.id, academic_tool_type: 'Exam', allocation_tag_id: @allocation_tag_id }).first
+    raise 'empty' if exam_user.nil?
 
-    if @attempt.save
-      render_exam_success_json('finish')
-    end
-  rescue => error
-      ender_json_error(error, 'exams.error')
+    # get_grade tem que calcular a nota caso todas as tentativas n tenham e definir o resultado final em exam_user
+    @grade = exam.get_grade(exam_user.id)
+    raise 'grade' if exam_user.grade.blank?
+
+    @attempts = exam_user.exam_user_attempts
+    @scores_exam = @exam.exam_questions.sum(:score)
   end
 
   def change_status
@@ -180,15 +170,6 @@ class ExamsController < ApplicationController
   def show
     authorize! :show, Exam, { on: params[:allocation_tags_ids] }
     @exam = Exam.find(params[:id])
-  end
-
-  def summary
-    #authorize! :summary, ExamUser, { on: params[:allocation_tags_ids] }
-    exam_id = Exam.find(params[:exam_id])
-    exam_user_id = params[:exam_user_id]
-
-    @examUserAttempt = ExamUserAttempt.where(["exam_user_id = ?", exam_user_id]).last    
-    @exam = Exam.find(exam_id)
   end
 
   def preview

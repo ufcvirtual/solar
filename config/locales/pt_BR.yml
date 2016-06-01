@@ -1399,6 +1399,7 @@ pt_BR:
   not_sent: Não Enviado
   to_be_sent: A enviar
   without_group: Sem Grupo
+  not_corrected: Não Corrigido
 
   # Assignment Comments
   comment_error_delete_file: Erro ao tentar excluir arquivo
@@ -2990,6 +2991,7 @@ pt_BR:
       not_finished: Não concluída (%{count}%)
       finished: Concluída
       corrected: Corrigida
+      not_corrected: Não corrigida
       not_answered: Não respondida
       retake: Refazer
     form:
@@ -3044,6 +3046,10 @@ pt_BR:
       imported: 'Esta prova foi importada, é necessário editá-la para realizar a publicação'
       change_period: Altere o período para publicar a prova
       cant_change_after_published: Prova já publicada. É necessário despublicá-la, para realizar ação.
+      grade: Não há resultados disponíveis para esta prova
+      empty: Não há resultados disponíveis para esta prova
+      dates: Esta prova ainda está em andamento
+      general_message: Não foi possível realizar a ação desejada
     show:
       groups: Turmas
       empty_group: Turma vazia
@@ -3070,6 +3076,11 @@ pt_BR:
       attempts_correction: Cálculo de nota
       to: " de"
       student: 'Aluno: '
+      grade: 'Nota: %{grade}'
+      grade_without_number: 'Nota'
+      attempt: 'Tentativa %{attempt}'
+      average: 'Média: %{grade}'
+      result: Resultado
     result_exam:  
       student: 'Aluno: '
       grade: 'Nota: '

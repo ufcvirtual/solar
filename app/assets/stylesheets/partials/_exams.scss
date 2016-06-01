@@ -276,3 +276,35 @@
   }
 
 }
+
+.show_exam{
+  .attempts, .info{
+    display: inline-block;
+    vertical-align: top;
+  }
+  .attempts{
+    width: 30%;
+  }
+  .info{
+    width: 68%; 
+    .attempt{
+      .input{
+        label{
+          width: 155px;
+        }  
+      }
+    }
+  }
+  .attempts{
+    a{
+      display: block;
+      padding: 5px;
+    }
+    a.active{
+      color: #dca727;
+    }
+    a.no_pointer{
+      cursor: default;
+    }
+  }
+}

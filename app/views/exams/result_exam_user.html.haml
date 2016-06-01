@@ -1,29 +1,55 @@
 .show_exam
-  %h1#lightBoxDialogTitle= t(".exam_result") + @exam.name
+  %h1#lightBoxDialogTitle= @exam.name
 
-  .form-inputs.block_content.show
-    .input
-      = label_tag t(".number_question"), nil, class: "form_label"
-      %span.label_info= @total_questions
-    .input
-      = label_tag t(".start_date"), nil, class: "form_label"
-      %span.label_info= l(@last_attempt.start, format: :at_date)
+  .attempts.block_wrapper
+    - if @exam.attempts_correction == Exam::AVERAGE
+      .block_title
+        %h2= t('.average', grade: @grade)
+      .block_content
+        - @attempts.each_with_index do |attempt, idx|
+          = link_to_function t('.attempt', attempt: idx+1), "show_attempt(#{attempt.id})", class: "#{idx == 0 ? 'active' : ''}", id: "a_#{attempt.id}"
+    - else
+      .block_title
+        %h2= t('.grade_without_number')
+      .block_content
+        = link_to t('.grade', grade: @grade), '#', class: 'no_pointer'
 
-    .input
-      = label_tag t(".end_date"), nil, class: "form_label"
-      %span.label_info= l(@last_attempt.end, format: :at_date)
+  .info.block_wrapper
+    .block_title
+      %h2= t('.result')
+    .block_content
+      - @attempts.each_with_index do |attempt, idx|
+        - total_time = attempt.exam_responses.sum(:duration)
+        .attempt{id: "#{attempt.id}", class: "#{idx == 0 ? '' : 'invisible'}"}
+          .form-inputs.block_content
+            .input
+              = label_tag t(".number_question"), nil, class: "form_label"
+              %span.label_info= @exam.number_questions
+            .input
+              = label_tag t(".start_date"), nil, class: "form_label"
+              %span.label_info= l(attempt.start, format: :at_date)
 
-    .input
-      = label_tag t(".average_time"), nil, class: "form_label"
-      %span.label_info= Time.at(@temp_questions).utc.strftime("%H:%M:%S")
+            .input
+              = label_tag t(".end_date"), nil, class: "form_label"
+              %span.label_info= l(attempt.end, format: :at_date)
 
-    .input
-      = label_tag t(".exam_time"), nil, class: "form_label"
-      %span.label_info= Time.at(@total_time).utc.strftime("%H:%M:%S")
+            .input
+              = label_tag t(".average_time"), nil, class: "form_label"
+              %span.label_info= Time.at(total_time/@exam.number_questions).utc.strftime("%H:%M:%S")
 
-    .input
-      = label_tag t(".punctuation"), nil, class: "form_label"
-      %span.label_info= @grade.to_s
-      = label_tag t(".to") + ' '+ @scores_exam.to_s  
+            .input
+              = label_tag t(".exam_time"), nil, class: "form_label"
+              %span.label_info= Time.at(total_time).utc.strftime("%H:%M:%S")
 
-        
+            .input
+              = label_tag t(".punctuation"), nil, class: "form_label"
+              %span.label_info= attempt.grade.to_s
+              = label_tag t(".to") + ' '+ @scores_exam.to_s  
+
+:javascript
+  function show_attempt(id){
+    $('.attempts a').removeClass('active');
+    $('.attempts a#a_'+id).addClass('active');
+    $('.info .attempt').addClass('invisible');
+    $('.info .attempt#'+id).removeClass('invisible');
+  }

@@ -1211,6 +1211,7 @@ en_US:
   no_events: "No events to selected day"
   not_started: Not Started
   corrected: Corrected
+  not_corrected: Not Corrected
   sent: Sent
   not_sent: Not Sent
   to_be_sent: To be sent
@@ -2752,6 +2753,7 @@ en_US:
       not_finished: Not finished (%{count}%)
       finished: Finished
       corrected: Corrected
+      not_corrected: Not corrected
       not_answered: Not answered
       retake: Retake
     form:
@@ -2807,6 +2809,10 @@ en_US:
       imported: 'This exam was imported, you must updated it to publish'
       change_period: Change period to publish exam
       cant_change_after_published: Exam already published. You need to unpublish it to perform action.
+      grade: No available result to this exam
+      empty: No available result to this exam
+      dates: Exam still on going
+      general_message: It was not possible to execute this action
     show:
       groups: Groups
       empty_group: Empty group
@@ -2834,6 +2840,11 @@ en_US:
       attempts_correction: Grade calculation 
       to: " to "
       student: 'Student:'
+      grade: 'Grade: %{grade}'
+      average: 'Average: %{grade}'
+      grade_without_number: 'grade'
+      attempt: 'Attempt %{attempt}'
+      result: Result
     result_exam:  
       student: 'Student: '
       grade: 'Grade: '  

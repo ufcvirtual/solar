@@ -545,7 +545,7 @@ Solar::Application.routes.draw do
       put :change_status
       get :open
       get :preview
-      get :summary
+      get :result_user, to: :result_exam_user
       post :complete
     end
   end

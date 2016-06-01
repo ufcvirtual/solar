@@ -227,31 +227,25 @@ class Exam < Event
   def situation(complete, grade = nil, exam_responses = 0, user_attempts = 0)
     case
     when !started?                                                      then 'not_started'
-    when on_going? && !complete                                         then 'to_answer'
-    when on_going? && (exam_responses < number_questions) && !complete  then 'not_finished'
+    when on_going? && exam_responses == 0                               then 'to_answer'
+    when on_going? && !complete                                         then 'not_finished'
     when on_going? && (attempts > user_attempts)                        then 'retake'
+    when !grade.blank? && ended?                                        then 'corrected'
     when complete && (attempts == user_attempts)                        then 'finished'
-    when !grade.nil? && ended?                                          then 'corrected'
-    when ended?                                                         then 'not_answered'
+    when ended? && user_attempts > 0 && grade.blank?                  then 'not_corrected'
     else
-      '-'
+      'not_answered'
     end
   end
 
-  def self.create_exam_user(exam, current_user_id, allocation_tags_ids)
-    @exam_users = exam.exam_users.where(user_id: current_user_id).first
-
-    if @exam_users.nil?
-      @academic_allocation = AcademicAllocation.where(academic_tool_id: exam.id, academic_tool_type: 'Exam',
+  def self.find_or_create_exam_user(exam, current_user_id, allocation_tags_ids)
+    academic_allocation = AcademicAllocation.where(academic_tool_id: exam.id, academic_tool_type: 'Exam',
         allocation_tag_id: allocation_tags_ids).first
-      exam.exam_users.build(user_id: current_user_id, academic_allocation_id: @academic_allocation.id).save 
-      @exam_users = exam.exam_users.where(user_id: current_user_id).first
-    end
-
-    return @exam_users
+    exam_user = exam.exam_users.where(user_id: current_user_id, academic_allocation_id: academic_allocation.id).first_or_create
+    exam_user
   end
 
-  def self.create_exam_user_attempt(exam_user_id)
+  def self.find_or_create_exam_user_attempt(exam_user_id)
     @exam_users = ExamUser.where(id: exam_user_id).first
     @exam_user_attempts = @exam_users.exam_user_attempts
     @exam_user_attempt_last = @exam_user_attempts.last
@@ -261,7 +255,7 @@ class Exam < Event
       @exam_user_attempt_last = ExamUserAttempt.where(exam_user_id: exam_user_id)
     end
 
-    return @exam_user_attempt_last
+    @exam_user_attempt_last
   end
 
   def self.responses_question_user(exam, user_id, question_id, question_item_id, exam_user_id, id)
@@ -269,9 +263,9 @@ class Exam < Event
     mod_correct_exam = exam.attempts_correction
     grade = ExamUserAttempt.where(exam_user_id: exam_user_id).max_by(&:grade)
     if grade
-      if mod_correct_exam == 0
+      if mod_correct_exam == Exam::GREATER
         euat = grade#ExamUserAttempt.where(exam_user_id: exam_user_id).max_by(&:grade)
-      elsif mod_correct_exam == 1
+      elsif mod_correct_exam == Exam::AVERAGE
         @response_question_user =  ExamUserAttempt.joins('LEFT JOIN exam_users ON exam_user_attempts.exam_user_id = exam_users.id')
             .joins('LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id')
             .joins('LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id')        
@@ -281,7 +275,7 @@ class Exam < Event
       else
         euat = ExamUserAttempt.where(exam_user_id: exam_user_id).last
       end 
-      if mod_correct_exam != 1
+      if mod_correct_exam != Exam::AVERAGE
           @response_question_user =  ExamUserAttempt.joins('LEFT JOIN exam_users ON exam_user_attempts.exam_user_id = exam_users.id')
             .joins('LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id')
             .joins('LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id')        
@@ -290,10 +284,6 @@ class Exam < Event
       end 
     end  
     @response_question_user
-  end 
-
-  def self.list_exam_user_attempt(exam_user_id)
-    exam_uat = ExamUserAttempt.where(exam_user_id: exam_user_id)
   end 
 
   def log_description
@@ -328,21 +318,21 @@ class Exam < Event
     return false if exam_users.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: id, academic_tool_type: 'Exam', allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).any?
   end
 
-  def self.get_grade(mod_correct_exam, exam_user_id)
-    grade = 'NaN'
-    if mod_correct_exam == 0
-      grade = ExamUserAttempt.where(exam_user_id: exam_user_id).maximum(:grade)
-    elsif mod_correct_exam == 1
-      grade = ExamUserAttempt.where(exam_user_id: exam_user_id).average(:grade)
-    else
-      grade = ExamUserAttempt.where(exam_user_id: exam_user_id).last.grade
+  def get_grade(exam_user_id)
+    attempts = ExamUserAttempt.where(exam_user_id: exam_user_id)
+    
+    case attempts_correction
+    when Exam::GREATER; attempts.maximum(:grade)
+    when Exam::AVERAGE; attempts.average(:grade)
+    else 
+      attempts.last.grade
     end 
-    grade
   end
+  
   def self.get_id_exam_user_attempt(mod_correct_exam, exam_user_id)
-    if mod_correct_exam == 0
+    if mod_correct_exam == Exam::GREATER
       id = ExamUserAttempt.where(exam_user_id: exam_user_id).max_by(&:grade).id
-    elsif mod_correct_exam == 2
+    elsif mod_correct_exam == Exam::LAST
       id = ExamUserAttempt.where(exam_user_id: exam_user_id).last.id
     end 
     id

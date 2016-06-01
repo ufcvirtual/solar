@@ -14,19 +14,17 @@
           %th.small= t('exams.index.grade')
       %tbody
         - @exams.each do |exam|
-        - info = exam.info(current_user.id, @allocation_tags_ids)
-        - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, exam_user_id: Exam.create_exam_user(exam, current_user.id, @allocation_tags_ids), situation: info[:situation])
-        - link_result = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, exam_user_id: Exam.create_exam_user(exam, current_user.id, @allocation_tags_ids), situation: info[:situation], result: 1)
+          - info = exam.info(current_user.id, @allocation_tags_ids)
+          - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, exam_user_id: Exam.find_or_create_exam_user(exam, current_user.id, @allocation_tags_ids), situation: info[:situation])
           %tr.lines{ id: "tr_#{exam.id}" }
             %td
               %div
-                - if info[:situation] == "not_answered" || info[:situation] == "not_started" || info[:situation] == "finished"
+                - unless ['to_answer', 'not_finished', 'retake'].include?(info[:situation])
                   .title= exam.name
-                  - if info[:situation] == "finished" && info[:grade]
-
-                    = link_to I18n.t(:result, :scope => [:exams, :index]), link_result, class: 'link_content link_open_exam', id: 'open-exam-result'
+                  - if info[:situation] == 'corrected'
+                    = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam), class: 'link_content', id: 'open-exam-result'
                     |
-                    = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'link_content link_open_exam', id: 'open-exam'
+                    = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'link_content', id: 'open-result'
                 - else
                   = link_to exam.name, link, :'data-tooltip' => exam.name, class: 'link_content link_open_exam', id: 'open-exam'
                 - if exam.description.size > 180
@@ -34,8 +32,8 @@
                     .description_slice= exam.description.slice(0..180) << "..."
                     .description_complete= exam.description
                     .more_or_less
-                      %a.description_more.link_content{href: "#"}= t("exams.index.more")
-                      %a.description_less.link_content{href: "#"}= t("exams.index.less")
+                      %a.description_more.link_content{ href: '#' }= t('exams.index.more')
+                      %a.description_less.link_content{ href: '#' }= t('exams.index.less')
                 - else
                   = exam.description
             %td.center
@@ -44,7 +42,7 @@
             %td.center= [exam.duration, t('.min')].join(' ')
             - count = info[:count].nil? || info[:count]==0 ? "" : info[:count].to_s
             %td.center
-              - if info[:situation] == "not_answered" || info[:situation] == "not_started"
+              - unless info[:situation] == "corrected"
                 %div{class: "#{info[:situation]}"}= I18n.t(info[:situation], :scope => [:exams, :situation])
               - else
                 = link_to I18n.t(info[:situation], :count => count, :scope => [:exams, :situation]), link, class: "#{info[:situation]} link_open_exam"
@@ -61,6 +59,12 @@
       minWidth: '50%',
       closeBtn : false,
       height: 'auto'
+    });
+
+    $("#open-exam-result, #open-result").call_fancybox({
+      minWidth: '25%',
+      height: 'auto',
+      minHeight: '25%',
     });
 
     $(".description_more").click(function(){
