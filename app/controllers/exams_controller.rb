@@ -147,11 +147,15 @@ class ExamsController < ApplicationController
     raise 'empty' if exam_user.nil?
 
     # get_grade tem que calcular a nota caso todas as tentativas n tenham e definir o resultado final em exam_user
-    @grade = exam.get_grade(exam_user.id)
+    @grade = @exam.get_grade(exam_user.id)
     raise 'grade' if exam_user.grade.blank?
 
     @attempts = exam_user.exam_user_attempts
     @scores_exam = @exam.exam_questions.sum(:score)
+  rescue CanCan::AccessDenied
+    render text: t(:no_permission)
+  rescue => error
+    render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
 
   def change_status
@@ -179,6 +183,17 @@ class ExamsController < ApplicationController
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
 
     render :open
+  end
+
+   def complete
+    #authorize! :finish, { on: params[:allocation_tag_id] }
+    @attempt = ExamUserAttempt.find(params[:id])
+    @attempt.end = DateTime.now
+    @attempt.complete = true
+
+    render_exam_success_json('finish') if @attempt.save
+  rescue => error
+    render_json_error(error, 'exams.error')
   end
 
   private
