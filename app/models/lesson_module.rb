@@ -24,6 +24,7 @@ class LessonModule < ActiveRecord::Base
      errors.add(:base, I18n.t(:cant_delete, :scope => [:lesson_modules, :errors]))
      return false
    end
+   return true
   end
 
   def next_lesson_order

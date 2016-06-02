@@ -75,7 +75,7 @@ class AssignmentsController < ApplicationController
       request.format = :json
       raise error.class
     else
-      @files_errors = @assignment.enunciation_files.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
+      @files_errors = @assignment.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
       render :new
     end
@@ -86,7 +86,7 @@ class AssignmentsController < ApplicationController
     if @assignment.update_attributes(assignment_params)
       render_assignment_success_json('updated')
     else
-      @files_errors = @assignment.enunciation_files.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
+      @files_errors = @assignment.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
       render :edit
     end

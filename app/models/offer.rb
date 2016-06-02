@@ -98,7 +98,8 @@ class Offer < ActiveRecord::Base
     opt[:year] = (opt[:year] ? Date.parse("#{opt[:year]}-01-01") : Date.today) unless opt[:year].class == Date
 
     options    = { date: (opt[:year].nil? ? Date.today : opt[:year]), start_of_year: (opt[:year].nil? ? Date.today.beginning_of_year : opt[:year].beginning_of_year), end_of_year: (opt[:year].nil? ? nil : opt[:year].end_of_year), user_id: opt[:user_id] }
-    query      = ((opt[:year].nil?) ? "((schedules.end_date BETWEEN :start_of_year AND :end_of_year) OR (schedules.end_date >= :end_of_year))" : ":date <= schedules.end_date")
+    # query      = ((opt[:year].nil?) ? "((schedules.end_date BETWEEN :start_of_year AND :end_of_year) OR (schedules.end_date >= :end_of_year))" : ":date <= schedules.end_date")
+    query      = ((opt[:year].nil?) ? "((schedules.end_date BETWEEN :start_of_year AND :end_of_year) OR (schedules.start_date BETWEEN :start_of_year AND :end_of_year) OR (schedules.start_date <= :start_of_year AND schedules.end_date >= :end_of_year))" : ":date <= schedules.end_date")
     rts        = RelatedTaggable.joins(:schedule).where(query, options.slice(:date, :start_of_year, :end_of_year))
 
     query = (opt[:profiles] ? "allocations.profile_id IN (?)" : "")

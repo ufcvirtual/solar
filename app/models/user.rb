@@ -451,7 +451,7 @@ class User < ActiveRecord::Base
 
   def notify_by_email(password = nil)
     Thread.new do
-      Notifier.change_user(user, password).deliver
+      Notifier.change_user(self, password).deliver
     end
   end
 

@@ -37,7 +37,7 @@ module V1
         end
         put ":id" do
           begin
-            params[:offer_end] = (params[:ma] ? (params[:offer_end].try(:to_date) + 5.month) : params[:offer_end].try(:to_date))
+            params[:offer_end] = (params[:ma] ? (params[:offer_end].try(:to_date) + 6.month) : params[:offer_end].try(:to_date))
             update_dates(Offer.find(params[:id]), params)
             {ok: :ok}
           end
