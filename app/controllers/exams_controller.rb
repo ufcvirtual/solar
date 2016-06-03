@@ -77,6 +77,7 @@ class ExamsController < ApplicationController
     authorize! :update, Exam, { on: @exam.academic_allocations.pluck(:allocation_tag_id) }
     @exam.schedule.verify_today = true
     if @exam.update_attributes(exam_params)
+      Exam.recalculate_grades(@exam.id)
       render_exam_success_json('updated')
     else
       render :edit
@@ -102,19 +103,20 @@ class ExamsController < ApplicationController
     @situation =  params[:situation]
     @exam = Exam.find(params[:id])
     @preview = false
+    @disabled = false
     @exam_user_attempt_id = params[:exam_user_attempt_id] 
     @allocation_tag_id = params[:allocation_tag_id]
+
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @exam_user_id = params[:exam_user_id]
     @last_attempt = Exam.find_or_create_exam_user_attempt(@exam_user_id)
-   
     mod_correct_exam = @exam.attempts_correction
-    
+   
     if (@situation=='finished' || @situation=='corrected')
+       @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
       if(mod_correct_exam != 1)
         @exam_user_attempt_id = Exam.get_id_exam_user_attempt(mod_correct_exam, @exam_user_id)
       end  
-
       @disabled = true
       @preview = true
       @list_eua = ExamUserAttempt.where(exam_user_id: @exam_user_id)
@@ -123,10 +125,9 @@ class ExamsController < ApplicationController
       else  
         if params[:pdf].to_i == 1
           @grade_pdf = ExamUserAttempt.find(@exam_user_attempt_id).grade
-          @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order) unless @exam.nil?
+          @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order) unless @exam.nil?
           @pdf = 1
           render :result_exam
-
         else  
          render :open 
         end
@@ -138,6 +139,7 @@ class ExamsController < ApplicationController
       end
     end
   end
+
 
   def result_exam_user
     authorize! :open, Exam, { on: @allocation_tag_id = active_tab[:url][:allocation_tag_id] }
@@ -156,6 +158,19 @@ class ExamsController < ApplicationController
     render text: t(:no_permission)
   rescue => error
     render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
+  end
+
+  def complete
+    #authorize! :finish, { on: params[:allocation_tag_id] }
+   # @attempt = ExamUserAttempt.find(params[:id])
+   # @attempt.end = DateTime.now
+   # @attempt.complete = true
+    Exam.recalculate_grades(params[:id], current_user.id)
+   # if @attempt.save
+      render_exam_success_json('finish')
+  #  end
+  #rescue => error
+    #  ender_json_error(error, 'exams.error')
   end
 
   def change_status
@@ -183,17 +198,6 @@ class ExamsController < ApplicationController
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
 
     render :open
-  end
-
-   def complete
-    #authorize! :finish, { on: params[:allocation_tag_id] }
-    @attempt = ExamUserAttempt.find(params[:id])
-    @attempt.end = DateTime.now
-    @attempt.complete = true
-
-    render_exam_success_json('finish') if @attempt.save
-  rescue => error
-    render_json_error(error, 'exams.error')
   end
 
   private

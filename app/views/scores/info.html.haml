@@ -75,7 +75,7 @@
           %tbody
             - @exams.each do |exam|
               - if (exam.user_id == current_user.id)
-                - link_result = open_exam_path(exam.exam_id, allocation_tag_id: @allocation_tag_id, exam_user_id: exam.id, situation: 'finished', result: 1)
+                - link_result = result_user_exam_path(exam.exam_id, allocation_tag_id: @allocation_tag_id, exam_user_id: exam.id, situation: 'finished', result: 1)
                 - link = open_exam_path(exam.exam_id, allocation_tag_id: @allocation_tag_id, exam_user_id: exam.id, situation: 'finished')
 
               %tr.lines

@@ -29,10 +29,21 @@ class ExamQuestion < ActiveRecord::Base
       .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
       	questions: {status: true})
       .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
-      	questions.id, questions.enunciation, questions.type_question')
+      	questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
       .order(query_order);
-
   end
+
+  def self.list_correction(exam_id, raffle_order = false)
+    query_order = []
+    query_order << (raffle_order ? "RANDOM()" : "exam_questions.order")
+    ExamQuestion.joins(:question)
+      .where(exam_questions: {exam_id: exam_id, use_question: true},
+        questions: {status: true})
+      .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
+        questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
+      .order(query_order);
+  end
+
 
   def set_order
     if order.nil?

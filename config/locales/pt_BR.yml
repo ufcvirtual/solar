@@ -3021,6 +3021,7 @@ pt_BR:
       finish_exam: Finalizar Prova
       refresh: As alterações podem ser perdidas!
       exit: Sair
+      anull: " (Questão Anulada)"
     finish:
       confirm: Tem certeza que deseja finalizar a prova?
     summary:

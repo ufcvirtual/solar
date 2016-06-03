@@ -2784,6 +2784,7 @@ en_US:
       finish_exam: Finish Exam
       refresh: The changes may be lost!
       exit: Exit
+      anull: " (Annulled question)"
     finish:
       confirm: Are you sure you want to finish the exam?
     summary:
