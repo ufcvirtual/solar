@@ -10,11 +10,10 @@ function save_question(duration) {
   $(".edit_exam_response").submit();
 }
 
-function finish_exam(duration, disabled=false) {
-  if(!disabled){
-    save_question(duration);
-    delete array_time;
-  }  
+function finish_exam(duration) {
+  save_question(duration);
+  delete array_time;
+ 
 }
 
 function get_duration(duration) {
@@ -24,11 +23,9 @@ function get_duration(duration) {
   $('#duration').val(new_duration);
 }
 
-function stop_save_chronometer(duration, disabled=false) {
-  if(!disabled){
-    clearTimeout(t);
-    save_question(duration);
-  }  
+function stop_save_chronometer(duration) {
+  clearTimeout(t);
+  save_question(duration); 
 }
 
 function start(question, array_time) {

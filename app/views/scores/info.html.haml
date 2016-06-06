@@ -74,7 +74,9 @@
             %th.center{style: "width: 20%;"}= t(".grade")
           %tbody
             - @exams.each do |exam|
-              - if (exam.user_id == current_user.id)
+              - ex  = Exam.find(exam.exam_id)
+              - info = ex.info(current_user.id, @allocation_tag_id)
+              - if (exam.user_id == current_user.id) && info[:situation] == 'corrected'
                 - link_result = result_user_exam_path(exam.exam_id, allocation_tag_id: @allocation_tag_id, exam_user_id: exam.id, situation: 'finished', result: 1)
                 - link = open_exam_path(exam.exam_id, allocation_tag_id: @allocation_tag_id, exam_user_id: exam.id, situation: 'finished')
 

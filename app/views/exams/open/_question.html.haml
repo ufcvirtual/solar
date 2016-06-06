@@ -12,7 +12,7 @@
           - class_label = nil
           - image = nil
 
-          - res_question_use = Exam.responses_question_user(@exam, current_user.id, question.id, b.object.id, @exam_user_id, @exam_user_attempt_id)
+          - res_question_use = @exam.responses_question_user(current_user.id, question.id, b.object.id, @exam_user_id, @exam_user_attempt_id)
 
           - if @disabled
             - coment = b.object.comment
@@ -40,7 +40,7 @@
           - class_label = nil
           - image = nil
 
-          - res_question_use = Exam.responses_question_user(@exam, current_user.id, question.id, b.object.id, @exam_user_id, @exam_user_attempt_id)          
+          - res_question_use = @exam.responses_question_user(current_user.id, question.id, b.object.id, @exam_user_id, @exam_user_attempt_id)   
       
           - if @disabled
             - coment = b.object.comment
@@ -63,7 +63,7 @@
           - res_question_user = nil
           - response = nil
           - class_label = nil
-          - res_question_use = Exam.responses_question_user(@exam, current_user.id, question.id, b.object.id, @exam_user_id, @exam_user_attempt_id)
+          - res_question_use = @exam.responses_question_user(current_user.id, question.id, b.object.id, @exam_user_id, @exam_user_attempt_id)
 
           - if @disabled
             - coment = b.object.comment
