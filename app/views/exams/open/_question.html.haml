@@ -108,7 +108,7 @@
       $(img).attr('data-tooltip', $(img).data('not-active'));
     }
 
-    save_question('#{@exam_responses.duration}');
+    save_question('#{@exam_responses.try(:duration)}');
 
     $.getScript("/assets/tooltip.js");
   }

@@ -10,7 +10,7 @@ function save_question(duration) {
   $(".edit_exam_response").submit();
 }
 
-function finish_exam(duration, disabled=false) {
+function finish_exam(duration, disabled) {
   if(!disabled){
     save_question(duration);
     delete array_time;
@@ -24,7 +24,7 @@ function get_duration(duration) {
   $('#duration').val(new_duration);
 }
 
-function stop_save_chronometer(duration, disabled=false) {
+function stop_save_chronometer(duration, disabled) {
   if(!disabled){
     clearTimeout(t);
     save_question(duration);

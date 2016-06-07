@@ -110,6 +110,7 @@ class ExamsController < ApplicationController
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @exam_user_id = params[:exam_user_id]
     @last_attempt = Exam.find_or_create_exam_user_attempt(@exam_user_id)
+    @total_time = @last_attempt.exam_responses.sum(:duration)
     mod_correct_exam = @exam.attempts_correction
    
     if (@situation=='finished' || @situation=='corrected')

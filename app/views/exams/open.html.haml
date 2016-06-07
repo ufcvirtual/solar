@@ -10,7 +10,7 @@
 
 :javascript
 
-  window.onbeforeunload = function () {return "#{I18n.t('exams.open.refresh')}";}
+  //window.onbeforeunload = function () {return "#{I18n.t('exams.open.refresh')}";}
 
   $('.content_exam').html("#{escape_javascript( render 'exams/open/content', { preview: @preview } )}");
 
@@ -18,8 +18,7 @@
 
   $(".content_exam").unbind('click').on("click", ".pagination a",
     function(){
-
-    stop_save_chronometer(#{@exam_responses.duration}, #{@disabled});
+    stop_save_chronometer(#{@exam_responses.try(:duration)});
     var url = this.href;
     $('.content_exam').load(url);
     return false;
@@ -28,7 +27,7 @@
   $('#finish_button').unbind('click').click( function(){
     response = confirm("#{I18n.t('exams.finish.confirm')}");
     if (response) {
-        finish_exam(#{@exam_responses.duration}, #{@disabled});
+        finish_exam(#{@exam_responses.try(:duration)});
         $.post("#{complete_exam_path}", {id: "#{@last_attempt.id}"}, function(data){
           flash_message(data.notice, 'notice');
         });
