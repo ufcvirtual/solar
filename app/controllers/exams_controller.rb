@@ -77,7 +77,7 @@ class ExamsController < ApplicationController
     authorize! :update, Exam, { on: @exam.academic_allocations.pluck(:allocation_tag_id) }
     @exam.schedule.verify_today = true
     if @exam.update_attributes(exam_params)
-      Exam.recalculate_grades(@exam.id)
+      @exam.recalculate_grades
       render_exam_success_json('updated')
     else
       render :edit
@@ -154,7 +154,8 @@ class ExamsController < ApplicationController
     raise 'grade' if exam_user.grade.blank?
 
     @attempts = exam_user.exam_user_attempts
-    @scores_exam = @exam.exam_questions.sum(:score)
+    @scores_exam = @exam.exam_questions.where(use_question: true).sum(:score)
+    @scores_exam = @scores_exam > 10 ? 10.00 : @scores_exam
   rescue CanCan::AccessDenied
     render text: t(:no_permission)
   rescue => error
@@ -166,7 +167,8 @@ class ExamsController < ApplicationController
    # @attempt = ExamUserAttempt.find(params[:id])
    # @attempt.end = DateTime.now
    # @attempt.complete = true
-    Exam.recalculate_grades(params[:id], current_user.id)
+    exam = Exam.find(params[:id])
+    exam.recalculate_grades(current_user.id)
    # if @attempt.save
       render_exam_success_json('finish')
   #  end

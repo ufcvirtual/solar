@@ -26,11 +26,17 @@ class ExamResponsesController < ApplicationController
     #authorize! :update, ExamResponse, { on: @allocation_tags_ids = params[:allocation_tags_ids] }
     @exam_response = ExamResponse.find(params[:id])
 
-    if @exam_response.update_attributes(exam_response_params)
-      render_exam_response_success_json('updated')
-    else
+    complete = ExamUserAttempt.find(@exam_response.exam_user_attempt_id).complete
+
+    if complete == false
+      if @exam_response.update_attributes(exam_response_params) 
+        render_exam_response_success_json('updated')
+      else
       # render :...
-    end
+      end
+    else
+      render_exam_response_success_json('updated')
+    end  
     # end
 
     # respond_to do |format|

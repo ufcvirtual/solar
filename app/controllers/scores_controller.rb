@@ -17,6 +17,7 @@ class ScoresController < ApplicationController
   def info
     authorize! :info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @user = current_user
+  
     @assignments, @discussions, @exams, @access, @public_files = Score.informations(@user.id, @allocation_tag_id)
   end
 
