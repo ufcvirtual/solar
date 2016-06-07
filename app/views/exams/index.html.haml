@@ -14,9 +14,10 @@
           %th.small= t('exams.index.grade')
       %tbody
         - @exams.each do |exam|
-          - exam_user_id = Exam.find_or_create_exam_user(exam, current_user.id, @allocation_tags_ids)
+          //- exam_user_id = Exam.find_or_create_exam_user(exam, current_user.id, @allocation_tags_ids)
           - info = exam.info(current_user.id, @allocation_tags_ids)
-          - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, exam_user_id:exam_user_id, situation: info[:situation])
+          //- link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, exam_user_id:exam_user_id, situation: info[:situation])
+          - pre = pre_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation])
           %tr.lines{ id: "tr_#{exam.id}" }
             %td
               %div
@@ -27,7 +28,7 @@
                     |
                     = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'link_content', id: 'open-result'
                 - else
-                  = link_to exam.name, link, :'data-tooltip' => exam.name, class: 'link_content link_open_exam', id: 'open-exam'
+                  = link_to exam.name, pre, :'data-tooltip' => exam.name, class: 'link_content link_open_exam', id: 'open-exam'
                 - if exam.description.size > 180
                   .description_exam
                     .description_slice= exam.description.slice(0..180) << "..."
@@ -46,7 +47,7 @@
               - unless info[:situation] == "corrected"
                 %div{class: "#{info[:situation]}"}= I18n.t(info[:situation], :scope => [:exams, :situation])
               - else
-                = link_to I18n.t(info[:situation], :count => count, :scope => [:exams, :situation]), link, class: "#{info[:situation]} link_open_exam"
+                = link_to I18n.t(info[:situation], :count => count, :scope => [:exams, :situation]), pre, class: "#{info[:situation]} link_open_exam"
             %td.center
               %span.activity_grade= info[:grade] || "-"
   - else
@@ -58,7 +59,7 @@
 
     $(".link_open_exam").call_fancybox({
       minWidth: '50%',
-      closeBtn : false,
+      closeBtn : true,
       height: 'auto'
     });
 

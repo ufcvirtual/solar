@@ -3015,11 +3015,26 @@ pt_BR:
         config: Configurações
       info:
         continue: Continuar
+    pre:
+      alert_save: Todas as questões são salvas automaticamente.
+      alert_start: Clique no link abaixo se você tem certeza que deseja iniciar a prova.
+      aw_yes: Sim
+      aw_no: Não
+      to: ' à '
+      min: ' minutos'
+      of: ' de '
+      availability: 'Disponibilidade: '
+      duration: 'Duração da prova: '
+      questions: 'Número de questões: '
+      attempts: 'Número de tentativas: '
+      block: 'Contéudo bloqueado?'
+      uninterrupted: 'Permitido interromper a prova?'
+      button: Iniciar Prova
     open:
       to: " de "
       questions: " questões"
       finish_exam: Finalizar Prova
-      refresh: As alterações podem ser perdidas!
+      refresh: Atenção! Ao sair da página você perderá a tentativa atual e suas alterações podem ser perdidas!
       exit: Sair
       anull: " (Questão Anulada)"
     finish:

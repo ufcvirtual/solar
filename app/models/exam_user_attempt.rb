@@ -20,4 +20,12 @@ class ExamUserAttempt < ActiveRecord::Base
     self.delete
   end
 
+  def self.last_attempt(exam_user_id)
+    @exam_users = ExamUser.where(id: exam_user_id).first
+    @exam_user_attempts = @exam_users.exam_user_attempts
+    @exam_user_attempt_last = @exam_user_attempts.last
+
+    @exam_user_attempt_last
+  end
+
 end

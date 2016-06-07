@@ -2,6 +2,38 @@
     display: none;
   }
 
+.exam_pre{
+  font-variant: initial;
+  font-family: 'PT Sans', sans-serif;
+
+  #description{
+    font-size: 8pt;
+    padding-bottom: 10px;
+  }
+
+  #name{
+    font-size: 13pt;
+    color: $text_grey;
+    padding: 5px;
+  }
+
+  .notice{
+      padding-top: 10px;
+      color: rgba(179, 6, 2, 0.81);
+  }
+
+  .start_button{
+      font-size: 16pt;
+      text-align: center;
+      padding: 10px;
+  }
+
+  #description, #name, .notice, .start_button{
+    text-align: center;
+  }
+
+}
+
 .exam_open {
 
   font-variant: initial;
@@ -146,6 +178,10 @@
         padding: 10px;
         margin-top: 10px;
       }
+  }
+
+  .pagination{
+    text-align: center;
   }
 }
 

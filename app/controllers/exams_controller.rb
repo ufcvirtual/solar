@@ -98,13 +98,27 @@ class ExamsController < ApplicationController
     render_json_error(error, 'exams.error')
   end
 
+  def pre
+    #authorize! :open, Exam, { on: params[:allocation_tag_id] }
+    @exam = Exam.find(params[:id])
+    @allocation_tag_id = params[:allocation_tag_id]
+    @situation =  params[:situation]
+
+    @exam_user_id = Exam.find_or_create_exam_user(@exam, current_user.id, @allocation_tag_id)
+    @last_attempt = ExamUserAttempt.last_attempt(@exam_user_id) || 0
+    @total_attempts  = ExamUser.find(@exam_user_id).exam_user_attempts.count
+    @total_time = @last_attempt.exam_responses.sum(:duration)
+
+    render :pre
+  end
+
   def open
     authorize! :open, Exam, { on: params[:allocation_tag_id] }
     @situation =  params[:situation]
     @exam = Exam.find(params[:id])
     @preview = false
     @disabled = false
-    @exam_user_attempt_id = params[:exam_user_attempt_id] 
+    @exam_user_attempt_id = params[:exam_user_attempt_id]
     @allocation_tag_id = params[:allocation_tag_id]
 
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?

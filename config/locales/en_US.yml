@@ -2778,11 +2778,26 @@ en_US:
         config: Configuration
       info:
         continue: Continue
+    pre:
+      alert_save: All questions are automatically saved.
+      alert_start: Click the link below if you are sure you want to start the exam.
+      aw_yes: Yes
+      aw_no: No
+      to: ' to '
+      min: ' minutes'
+      of: ' of '
+      availability: 'Availability: '
+      duration: 'Duration of exame: '
+      questions: 'Number of questions: '
+      attempts: 'Number of attempts: '
+      block: 'Content blocked?'
+      uninterrupted: 'Allowed to interrupt the exam?'
+      button: Start Exam
     open:
       to: " to "
       questions: " questions"
       finish_exam: Finish Exam
-      refresh: The changes may be lost!
+      refresh: Attention! When leaving the page you will lose the current attempt and their changes may be lost!
       exit: Exit
       anull: " (Annulled question)"
     finish:

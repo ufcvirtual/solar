@@ -10,7 +10,9 @@
 
 :javascript
 
-  //window.onbeforeunload = function () {return "#{I18n.t('exams.open.refresh')}";}
+  window.onbeforeunload = function () {
+    return #{@exam.uninterrupted} ? "#{I18n.t('exams.open.refresh')}" : "";
+  }
 
   $('.content_exam').html("#{escape_javascript( render 'exams/open/content', { preview: @preview } )}");
 

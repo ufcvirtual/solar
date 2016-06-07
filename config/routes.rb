@@ -544,6 +544,7 @@ Solar::Application.routes.draw do
     member do 
       put :change_status
       get :open
+      get :pre, to: 'exams#pre'
       get :preview
       get :result_user, to: :result_exam_user
       post :complete
