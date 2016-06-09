@@ -42,12 +42,19 @@
       minheigth: '50%',
       closeBtn : !#{@exam.uninterrupted},
       height: 'auto',
-      beforeClose: function() {
-        var resp = window.confirm("#{I18n.t('exams.open.refresh')}");
-        if (resp) {
+      afterShow: function() {
+        if (!#{@exam.uninterrupted}) {
           window.onbeforeunload = function () {}
-          location.reload(true);
         }
-        return resp;
+      },
+      beforeClose: function() {
+        if (#{@exam.uninterrupted}) {
+          var resp = window.confirm("#{I18n.t('exams.open.refresh')}");
+          if (resp) {
+            window.onbeforeunload = function () {}
+          }
+          else {return resp }
+        }
+        else{ window.onbeforeunload = function () {} }
       }
     });

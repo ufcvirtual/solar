@@ -28,7 +28,7 @@
                     |
                     = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'link_content', id: 'open-result'
                 - else
-                  = link_to exam.name, pre, :'data-tooltip' => exam.name, class: 'link_content link_open_exam', id: 'open-exam'
+                  = link_to exam.name, pre, :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', id: 'open-exam'
                 - if exam.description.size > 180
                   .description_exam
                     .description_slice= exam.description.slice(0..180) << "..."
@@ -45,9 +45,9 @@
             - count = info[:count].nil? || info[:count]==0 ? "" : info[:count].to_s
             %td.center
               - unless info[:situation] == "corrected"
-                %div{class: "#{info[:situation]}"}= I18n.t(info[:situation], :scope => [:exams, :situation])
+                %div{class: "#{info[:situation]}"}= I18n.t(info[:situation], :count => count, :scope => [:exams, :situation])
               - else
-                = link_to I18n.t(info[:situation], :count => count, :scope => [:exams, :situation]), pre, class: "#{info[:situation]} link_open_exam"
+                = link_to I18n.t(info[:situation], :count => count, :scope => [:exams, :situation]), pre, class: "#{info[:situation]} link_pre_exam"
             %td.center
               %span.activity_grade= info[:grade] || "-"
   - else
@@ -57,7 +57,7 @@
 
   $(function(){
 
-    $(".link_open_exam").call_fancybox({
+    $(".link_pre_exam").call_fancybox({
       minWidth: '50%',
       closeBtn : true,
       height: 'auto'
