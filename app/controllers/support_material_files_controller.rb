@@ -15,15 +15,15 @@ class SupportMaterialFilesController < ApplicationController
 
   def index
     authorize! :index, SupportMaterialFile, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-
     allocation_tag_ids = AllocationTag.find(@allocation_tag_id).related
-    @list_files = SupportMaterialFile.find_files(allocation_tag_ids)
 
-    @folders_list = {}
-    @list_files.collect { |file|
-      @folders_list[file["folder"]] = [] unless @folders_list[file["folder"]].is_a?(Array) # utiliza nome do folder como chave da lista
-      @folders_list[file["folder"]] << file
-    }
+      @list_files = SupportMaterialFile.find_files(allocation_tag_ids)
+
+      @folders_list = {}
+      @list_files.collect { |file|
+        @folders_list[file["folder"]] = [] unless @folders_list[file["folder"]].is_a?(Array) # utiliza nome do folder como chave da lista
+        @folders_list[file["folder"]] << file
+      } 
   end
 
   def new
@@ -84,36 +84,40 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def download
-    file = SupportMaterialFile.find(params[:id]) unless params[:id].blank?
+    if session[:blocking_content]
+        redirect_to :back, alert: t('exams.restrict')
+    else  
+      file = SupportMaterialFile.find(params[:id]) unless params[:id].blank?
 
-    unless file.nil? || file.url.blank?
-      redirect_to file.url, blank: true
-    else
-      allocation_tag_ids = if !((current_at = active_tab[:url][:allocation_tag_id]).blank?) # dentro de uma UC
-        ats = AllocationTag.find(current_at).related
-        # se tenho acesso ao arquivo de dentro da UC que estou acessando
-        file.nil? ? ats : file.academic_allocations.map(&:allocation_tag_id) & ats
-      else # fora da UC
-        file.academic_allocations.map(&:allocation_tag_id)
-      end
-
-      authorize! :download, SupportMaterialFile, on: allocation_tag_ids, read: true
-
-      unless params[:type].blank? # folder ou all
-        redirect_error = support_material_files_path
-
-        folder = (params[:type] == :folder && !params[:folder].blank?) ? params[:folder] : nil
-        path_zip = compress({ files: SupportMaterialFile.find_files(allocation_tag_ids, folder), table_column_name: 'attachment_file_name' })
-
-        if path_zip
-          download_file(redirect_error, path_zip)
-        else
-          redirect_to redirect_error, alert: t(:file_error_nonexistent_file)
+      unless file.nil? || file.url.blank?
+        redirect_to file.url, blank: true
+      else
+        allocation_tag_ids = if !((current_at = active_tab[:url][:allocation_tag_id]).blank?) # dentro de uma UC
+          ats = AllocationTag.find(current_at).related
+          # se tenho acesso ao arquivo de dentro da UC que estou acessando
+          file.nil? ? ats : file.academic_allocations.map(&:allocation_tag_id) & ats
+        else # fora da UC
+          file.academic_allocations.map(&:allocation_tag_id)
         end
-      else # baixando um arquivo individualmente
-        download_file(support_material_files_path, file.attachment.path, file.attachment_file_name)
+
+        authorize! :download, SupportMaterialFile, on: allocation_tag_ids, read: true
+
+        unless params[:type].blank? # folder ou all
+          redirect_error = support_material_files_path
+
+          folder = (params[:type] == :folder && !params[:folder].blank?) ? params[:folder] : nil
+          path_zip = compress({ files: SupportMaterialFile.find_files(allocation_tag_ids, folder), table_column_name: 'attachment_file_name' })
+
+          if path_zip
+            download_file(redirect_error, path_zip)
+          else
+            redirect_to redirect_error, alert: t(:file_error_nonexistent_file)
+          end
+        else # baixando um arquivo individualmente
+          download_file(support_material_files_path, file.attachment.path, file.attachment_file_name)
+        end
       end
-    end
+    end  
   end
 
   def list

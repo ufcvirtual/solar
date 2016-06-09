@@ -65,7 +65,7 @@
           - response = nil
           - class_label = nil
           - res_question_use = @exam.responses_question_user(current_user.id, question.id, b.object.id, @exam_user_id, @exam_user_attempt_id)
-          - puts ("EAtt: #{@exam_user_attempt_id} - Questao: #{question.id} Item: #{b.object.id} R: #{res_question_use}")
+         
           - if @disabled
             - coment = b.object.comment
             - if (res_question_use)

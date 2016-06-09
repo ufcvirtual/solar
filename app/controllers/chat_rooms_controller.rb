@@ -98,35 +98,42 @@ class ChatRoomsController < ApplicationController
   end
 
   def messages
-    @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
+    if session[:blocking_content]
+      render text: t('exams.restrict')
+    else
+      @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
 
-    authorize! :show, ChatRoom, on: [allocation_tag_id]
+      authorize! :show, ChatRoom, on: [allocation_tag_id]
 
-    all_participants = @chat_room.participants.where(academic_allocations: { allocation_tag_id: allocation_tag_id })
-    @researcher = current_user.is_researcher?(AllocationTag.find(allocation_tag_id).related)
-    raise CanCan::AccessDenied if (all_participants.any? && all_participants.joins(:user).where(users: { id: current_user }).empty?) && !(ChatRoom.responsible?(allocation_tag_id, current_user.id)) && !(@researcher)
+      all_participants = @chat_room.participants.where(academic_allocations: { allocation_tag_id: allocation_tag_id })
+      @researcher = current_user.is_researcher?(AllocationTag.find(allocation_tag_id).related)
+      raise CanCan::AccessDenied if (all_participants.any? && all_participants.joins(:user).where(users: { id: current_user }).empty?) && !(ChatRoom.responsible?(allocation_tag_id, current_user.id)) && !(@researcher)
 
-    @messages = @chat_room.messages.joins(allocation: [:user, :profile])
-      .where('academic_allocations.allocation_tag_id = ? AND message_type = ?', allocation_tag_id, 1)
-      .select('users.name AS user_name, users.nick AS user_nick, profiles.name AS profile_name, text, chat_messages.user_id, chat_messages.created_at')
-      .order('created_at DESC')
-
+      @messages = @chat_room.messages.joins(allocation: [:user, :profile])
+        .where('academic_allocations.allocation_tag_id = ? AND message_type = ?', allocation_tag_id, 1)
+        .select('users.name AS user_name, users.nick AS user_nick, profiles.name AS profile_name, text, chat_messages.user_id, chat_messages.created_at')
+        .order('created_at DESC')
+    end
   rescue => error
     request.format = :json
     raise error.class
   end
 
   def access
-    @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
-    authorize! :show, ChatRoom, on: [allocation_tag_id]
-    
-    academic_allocation_id = params[:academic_allocation_id]
-    allocation_id = params[:allocation_id]
+    if session[:blocking_content]
+      render text: t('exams.restrict')
+    else
+      @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
+      authorize! :show, ChatRoom, on: [allocation_tag_id]
+      
+      academic_allocation_id = params[:academic_allocation_id]
+      allocation_id = params[:allocation_id]
 
-    chat_rooms = ChatRoom.find(params[:id])
-    url = chat_rooms.url(allocation_id, academic_allocation_id)
-    URI.parse(url).path
-    redirect_to url
+      chat_rooms = ChatRoom.find(params[:id])
+      url = chat_rooms.url(allocation_id, academic_allocation_id)
+      URI.parse(url).path
+      redirect_to url
+    end  
   end  
 
   private

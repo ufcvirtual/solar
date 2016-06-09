@@ -5,8 +5,12 @@ class LessonNotesController < ApplicationController
   layout false
 
   def index
-    @lesson_id    = params[:lesson_id]
-    @lesson_notes = current_user.notes(@lesson_id).order(:name)
+    if session[:blocking_content]
+      render text: t('exams.restrict')
+    else 
+      @lesson_id    = params[:lesson_id]
+      @lesson_notes = current_user.notes(@lesson_id).order(:name)
+    end  
   end
 
   def show

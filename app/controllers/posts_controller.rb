@@ -12,61 +12,69 @@ class PostsController < ApplicationController
   ## GET /discussions/1/posts/20120217/[news, history]/order/asc/limit/10
   require 'will_paginate/array'
   def index
-    @discussion, @user = Discussion.find(params[:discussion_id]), current_user
-
-    @academic_allocation_id = AcademicAllocation.where(academic_tool_id: @discussion.id, academic_tool_type: 'Discussion',
-      allocation_tag_id: [active_tab[:url][:allocation_tag_id], AllocationTag.find_by_offer_id(active_tab[:url][:id]).id]).first.try(:id)
-    authorize! :index, Discussion, { on: [@allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.pluck(:id)], read: true }
-
-    @researcher = current_user.is_researcher?(AllocationTag.find(@allocation_tags).related)
-    @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id], { all: true }).map(&:id)
-
-    @posts = []
-
-    @can_interact = @discussion.user_can_interact?(current_user.id)
-    @can_post = (can? :create, Post, on: [@allocation_tags])
-
-    p = params.slice(:date, :type, :order, :limit, :display_mode, :page)
-
-    @display_mode = p['display_mode'] ||= 'tree'
-
-    if (p['display_mode'] == "list" || params[:format] == "json")
-      # se for em forma de lista ou para o mobilis, pesquisa pelo método posts
-      p['page'] ||= @current_page
-      p['type'] ||= "history"
-      p['date'] = DateTime.parse(p['date']) if params[:format] == "json" && p.include?('date')
-      @posts    = @discussion.posts(p, @allocation_tags)
+    if Exam.verify_blocking_content(current_user.id)
+      redirect_to :back, alert: t('exams.restrict')
     else
-      @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
-    end
+      @discussion, @user = Discussion.find(params[:discussion_id]), current_user
 
-    respond_to do |format|
-      format.html
-      format.json  {
-        period = (@posts.empty?) ? ["#{p['date']}", "#{p['date']}"] : ["#{@posts.first.updated_at}", "#{@posts.last.updated_at}"].sort
+      @academic_allocation_id = AcademicAllocation.where(academic_tool_id: @discussion.id, academic_tool_type: 'Discussion',
+        allocation_tag_id: [active_tab[:url][:allocation_tag_id], AllocationTag.find_by_offer_id(active_tab[:url][:id]).id]).first.try(:id)
+      authorize! :index, Discussion, { on: [@allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.pluck(:id)], read: true }
 
-        if params[:mobilis].present?
-          render json: { before: @discussion.count_posts_before_period(period, @allocation_tags), after: @discussion.count_posts_after_period(period, @allocation_tags), posts: @posts.map(&:to_mobilis)}
-        else
-          render json: @discussion.count_posts_after_and_before_period(period, @allocation_tags) + @posts.map(&:to_mobilis)
-        end
-      }
-    end
+      @researcher = current_user.is_researcher?(AllocationTag.find(@allocation_tags).related)
+      @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id], { all: true }).map(&:id)
+
+      @posts = []
+
+      @can_interact = @discussion.user_can_interact?(current_user.id)
+      @can_post = (can? :create, Post, on: [@allocation_tags])
+
+      p = params.slice(:date, :type, :order, :limit, :display_mode, :page)
+
+      @display_mode = p['display_mode'] ||= 'tree'
+
+      if (p['display_mode'] == "list" || params[:format] == "json")
+        # se for em forma de lista ou para o mobilis, pesquisa pelo método posts
+        p['page'] ||= @current_page
+        p['type'] ||= "history"
+        p['date'] = DateTime.parse(p['date']) if params[:format] == "json" && p.include?('date')
+        @posts    = @discussion.posts(p, @allocation_tags)
+      else
+        @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
+      end
+
+      respond_to do |format|
+        format.html
+        format.json  {
+          period = (@posts.empty?) ? ["#{p['date']}", "#{p['date']}"] : ["#{@posts.first.updated_at}", "#{@posts.last.updated_at}"].sort
+
+          if params[:mobilis].present?
+            render json: { before: @discussion.count_posts_before_period(period, @allocation_tags), after: @discussion.count_posts_after_period(period, @allocation_tags), posts: @posts.map(&:to_mobilis)}
+          else
+            render json: @discussion.count_posts_after_and_before_period(period, @allocation_tags) + @posts.map(&:to_mobilis)
+          end
+        }
+      end
+    end  
   end
 
   ## GET /discussions/1/posts/user/1
   ## all posts of the user
   def user_posts
-    @user = User.find(params[:user_id])
-    @discussion = Discussion.find(params[:discussion_id])
+    if session[:blocking_content]
+      render text: t('exams.restrict')
+    else
+      @user = User.find(params[:user_id])
+      @discussion = Discussion.find(params[:discussion_id])
 
-    allocation_tags = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
-    @posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id).order('updated_at DESC')
+      allocation_tags = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+      @posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id).order('updated_at DESC')
 
-    respond_to do |format|
-      format.html { render layout: false }
-      format.json { render json: @posts }
-    end
+      respond_to do |format|
+        format.html { render layout: false }
+        format.json { render json: @posts }
+      end
+    end  
   end
 
   ## POST /discussions/:id/posts

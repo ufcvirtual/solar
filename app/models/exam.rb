@@ -406,6 +406,15 @@ class Exam < Event
     id
   end
 
+  def self.verify_blocking_content(user_id)
+    block = ExamUser.joins("LEFT JOIN academic_allocations ON exam_users.academic_allocation_id = academic_allocations.id")
+                    .joins("LEFT JOIN exams ON exams.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Exam' AND exams.status=TRUE")
+                    .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.exam_user_id = exam_users.id")
+                    .where("block_content=true AND complete=false AND user_id = ? ", user_id)
+                    .select("DISTINCT block_content")
+                    .first          
+  end  
+
   private
 
     def percent(total, answered)

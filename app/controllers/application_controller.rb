@@ -41,6 +41,7 @@ class ApplicationController < ActionController::Base
       format.js { render js: "flash_message('#{t(:no_permission)}', 'alert');" }
     end
   end
+  
 
   if Rails.env != 'development'
     rescue_from ActiveRecord::RecordNotFound do |exception|
@@ -147,6 +148,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource_or_scope)
     LogAccess.login(user_id: current_user.id, ip: request.remote_ip) rescue nil
+    session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
     super
   end
 
@@ -182,7 +184,7 @@ class ApplicationController < ActionController::Base
 
   def set_current_user
     User.current = current_user
-  end
+  end  
 
   private
 
@@ -253,7 +255,7 @@ class ApplicationController < ActionController::Base
     else
       LogNavigation.create(user_id: current_user.id, context_id: Context_General) if params[:id] == 'Home'
     end
-  end
+  end 
 
   # salva o log de acesso ao submenu
   def log_navigation_sub(menu_log, discussion_log_id, user_log_id, sub_log_id, student_log_id, group_assignment_log_id, lesson_notes_id, digital_class_log, zip_download)

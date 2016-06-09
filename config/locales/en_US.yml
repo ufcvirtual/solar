@@ -2711,6 +2711,7 @@ en_US:
     ended: Finished
     status: Status
     none: No registered test
+    restrict: student in test content not allowed
     list:
       new_exam: New Exam
       edit_exam: Edit Exam

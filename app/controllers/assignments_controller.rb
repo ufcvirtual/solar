@@ -107,15 +107,20 @@ class AssignmentsController < ApplicationController
   end
 
   def student
-    @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
-    @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
-    verify_owner_or_responsible!(@allocation_tag_id)
 
-    @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
+    if session[:blocking_content]
+      redirect_to :back, alert: t('exams.restrict')
+    else
+      @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
+      @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
+      verify_owner_or_responsible!(@allocation_tag_id)
 
-    @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id(@allocation_tag_id, @student_id, @group_id)
-    @can_evaluate = can?(:evaluate, Assignment, on:  [@allocation_tag_id] )
-    @bbb_online   = bbb_online?
+      @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
+
+      @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id(@allocation_tag_id, @student_id, @group_id)
+      @can_evaluate = can?(:evaluate, Assignment, on:  [@allocation_tag_id] )
+      @bbb_online   = bbb_online?
+    end  
   end
 
   def evaluate
@@ -142,15 +147,19 @@ class AssignmentsController < ApplicationController
   end
 
   def download
-    authorize! :download, Assignment, on: [active_tab[:url][:allocation_tag_id]]
-    if params[:zip].present?
-      assignment = Assignment.find(params[:assignment_id])
-      path_zip = compress({ files: assignment.enunciation_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
-      download_file(:back, path_zip || nil)
+    if Exam.verify_blocking_content(current_user.id)
+      redirect_to :back, alert: t('exams.restrict')
     else
-      file = AssignmentEnunciationFile.find(params[:id])
-      download_file(:back, file.attachment.path, file.attachment_file_name)
-    end
+      authorize! :download, Assignment, on: [active_tab[:url][:allocation_tag_id]]
+      if params[:zip].present?
+        assignment = Assignment.find(params[:assignment_id])
+        path_zip = compress({ files: assignment.enunciation_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
+        download_file(:back, path_zip || nil)
+      else
+        file = AssignmentEnunciationFile.find(params[:id])
+        download_file(:back, file.attachment.path, file.attachment_file_name)
+      end
+    end  
   end
 
   private

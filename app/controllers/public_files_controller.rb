@@ -32,16 +32,20 @@ class PublicFilesController < ApplicationController
   end
 
   def download
-    authorize! :index, PublicFile, { on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]] }
-
-    if params[:zip].present?
-      user = (params[:user_id].present? ? User.find(params[:user_id]) : current_user)
-      path_zip = compress({ files: user.public_files.where(allocation_tag_id: allocation_tag_id), table_column_name: 'attachment_file_name', name_zip_file: t('public_files.index.title', name: user.name) })
-      download_file(:back, path_zip)
+    if session[:blocking_content]
+      redirect_to :back, alert: t('exams.restrict')
     else
-      file = PublicFile.find(params[:id])
-      download_file(:back, file.attachment.path, file.attachment_file_name)
-    end
+      authorize! :index, PublicFile, { on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]] }
+
+      if params[:zip].present?
+        user = (params[:user_id].present? ? User.find(params[:user_id]) : current_user)
+        path_zip = compress({ files: user.public_files.where(allocation_tag_id: allocation_tag_id), table_column_name: 'attachment_file_name', name_zip_file: t('public_files.index.title', name: user.name) })
+        download_file(:back, path_zip)
+      else
+        file = PublicFile.find(params[:id])
+        download_file(:back, file.attachment.path, file.attachment_file_name)
+      end
+    end  
   end
 
   def destroy

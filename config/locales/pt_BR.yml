@@ -2949,6 +2949,7 @@ pt_BR:
     ended: Concluída
     status: Situação
     none: "Nenhuma prova cadastrada"
+    restrict: "Aluno em prova: Conteúdo não permitido"
     list:
       new_exam: Nova Prova
       edit_exam: Editar Prova

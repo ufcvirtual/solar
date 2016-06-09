@@ -146,16 +146,20 @@ class WebconferencesController < ApplicationController
   end
 
   def access
-    authorize! :interact, Webconference, { on: [at_id = active_tab[:url][:allocation_tag_id] || params[:at_id]] }
-    
-    webconference = Webconference.find(params[:id])
-    url   = webconference.link_to_join(current_user, at_id, true)
-    URI.parse(url).path
+    if session[:blocking_content]
+      render text: t('exams.restrict')
+    else
+      authorize! :interact, Webconference, { on: [at_id = active_tab[:url][:allocation_tag_id] || params[:at_id]] }
+      
+      webconference = Webconference.find(params[:id])
+      url   = webconference.link_to_join(current_user, at_id, true)
+      URI.parse(url).path
 
-    ac_id = (webconference.academic_allocations.size == 1 ? webconference.academic_allocations.first.id : webconference.academic_allocations.where(allocation_tag_id: at_id).first.id)
-    LogAction.access_webconference(academic_allocation_id: ac_id, user_id: current_user.id, ip: request.remote_ip, allocation_tag_id: at_id, description: webconference.attributes) if AllocationTag.find(at_id).is_student_or_responsible?(current_user.id)
+      ac_id = (webconference.academic_allocations.size == 1 ? webconference.academic_allocations.first.id : webconference.academic_allocations.where(allocation_tag_id: at_id).first.id)
+      LogAction.access_webconference(academic_allocation_id: ac_id, user_id: current_user.id, ip: request.remote_ip, allocation_tag_id: at_id, description: webconference.attributes) if AllocationTag.find(at_id).is_student_or_responsible?(current_user.id)
 
-    render json: { success: true, url: url }
+      render json: { success: true, url: url }
+    end  
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
   rescue => error
@@ -180,24 +184,28 @@ class WebconferencesController < ApplicationController
   end
 
   def get_record
-    @webconference = Webconference.find(params[:id])
-    @at_id         = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id)
+    if session[:blocking_content]
+      render text: t('exams.restrict')
+    else
+      @webconference = Webconference.find(params[:id])
+      @at_id         = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id)
 
-    raise CanCan::AccessDenied if current_user.is_researcher?(AllocationTag.where(id: @at_id).map(&:related).flatten.uniq)
+      raise CanCan::AccessDenied if current_user.is_researcher?(AllocationTag.where(id: @at_id).map(&:related).flatten.uniq)
 
-    begin
-      authorize! :index, Webconference, { on: @at_id, accepts_general_profile: true }
-    rescue
-      authorize! :preview, Webconference, { on: @at_id, accepts_general_profile: true }
-    end
+      begin
+        authorize! :index, Webconference, { on: @at_id, accepts_general_profile: true }
+      rescue
+        authorize! :preview, Webconference, { on: @at_id, accepts_general_profile: true }
+      end
 
-    @can_remove_record = (can? :preview, Webconference, { on: @webconference.academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }) || current_user.id == @webconference.user_id
+      @can_remove_record = (can? :preview, Webconference, { on: @webconference.academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }) || current_user.id == @webconference.user_id
 
-    raise 'offline'          unless bbb_online?
-    raise 'no_record'        unless @webconference.is_recorded? && @webconference.over?
-    raise 'still_processing' unless @webconference.is_over?
+      raise 'offline'          unless bbb_online?
+      raise 'no_record'        unless @webconference.is_recorded? && @webconference.over?
+      raise 'still_processing' unless @webconference.is_over?
 
-    @recordings = @webconference.recordings([], (@at_id.class == Array ? nil : @at_id))
+      @recordings = @webconference.recordings([], (@at_id.class == Array ? nil : @at_id))
+    end  
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
   rescue URI::InvalidURIError

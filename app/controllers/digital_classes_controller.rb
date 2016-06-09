@@ -125,8 +125,12 @@ class DigitalClassesController < ApplicationController
   end
 
   def access
-    authorize! :access, DigitalClass, on: @allocation_tags_ids = params[:allocation_tags_ids]
-    redirect_to DigitalClass.access_authenticated(current_user, params[:url], AllocationTag.where(id: @allocation_tags_ids.split(' ')))
+    if session[:blocking_content]
+      render text: t('exams.restrict')
+    else
+      authorize! :access, DigitalClass, on: @allocation_tags_ids = params[:allocation_tags_ids]
+      redirect_to DigitalClass.access_authenticated(current_user, params[:url], AllocationTag.where(id: @allocation_tags_ids.split(' ')))
+    end  
   end
 
   def edit

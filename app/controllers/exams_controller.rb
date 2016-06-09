@@ -116,6 +116,7 @@ class ExamsController < ApplicationController
     authorize! :open, Exam, { on: params[:allocation_tag_id] }
     @situation =  params[:situation]
     @exam = Exam.find(params[:id])
+    session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
     @preview = false
     @disabled = false
     @exam_user_attempt_id = params[:exam_user_attempt_id]
@@ -183,6 +184,7 @@ class ExamsController < ApplicationController
    # @attempt.complete = true
     exam = Exam.find(params[:id])
     exam.recalculate_grades(current_user.id)
+    session[:blocking_content]= false
    # if @attempt.save
       render_exam_success_json('finish')
   #  end
