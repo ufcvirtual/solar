@@ -105,9 +105,9 @@ class ExamsController < ApplicationController
     @situation =  params[:situation]
 
     @exam_user_id = Exam.find_or_create_exam_user(@exam, current_user.id, @allocation_tag_id)
-    @last_attempt = ExamUserAttempt.last_attempt(@exam_user_id) || 0
-    @total_attempts  = ExamUser.find(@exam_user_id).exam_user_attempts.count
-    @total_time = @last_attempt.exam_responses.sum(:duration)
+    @total_attempts  = ExamUserAttempt.get_total_attempts(@exam_user_id)
+    last_attempt = ExamUserAttempt.last_attempt(@exam_user_id)
+    @total_time = last_attempt.get_total_time
 
     render :pre
   end
@@ -123,9 +123,9 @@ class ExamsController < ApplicationController
     @allocation_tag_id = params[:allocation_tag_id]
 
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
-    @exam_user_id = params[:exam_user_id]
+    @exam_user_id = Exam.find_or_create_exam_user(@exam, current_user.id, @allocation_tag_id)
     @last_attempt = Exam.find_or_create_exam_user_attempt(@exam_user_id)
-    @total_time = @last_attempt.exam_responses.sum(:duration)
+    @total_time = @last_attempt.try(:exam_responses).sum(:duration) || 0
     mod_correct_exam = @exam.attempts_correction
    
     if (@situation=='finished' || @situation=='corrected')
@@ -155,6 +155,8 @@ class ExamsController < ApplicationController
         format.js
       end
     end
+  rescue CanCan::AccessDenied
+    render text: t(:no_permission)
   end
 
 
@@ -179,18 +181,17 @@ class ExamsController < ApplicationController
   end
 
   def complete
-    #authorize! :finish, { on: params[:allocation_tag_id] }
-   # @attempt = ExamUserAttempt.find(params[:id])
-   # @attempt.end = DateTime.now
-   # @attempt.complete = true
     exam = Exam.find(params[:id])
-    exam.recalculate_grades(current_user.id)
-    session[:blocking_content]= false
-   # if @attempt.save
+    @allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    exam_user_id = Exam.find_or_create_exam_user(exam, current_user.id, @allocation_tag_id)
+
+    if (ExamUserAttempt.finish_attempt(exam, exam_user_id))
+      exam.recalculate_grades(current_user.id)
+      session[:blocking_content]= false
       render_exam_success_json('finish')
-  #  end
-  #rescue => error
-    #  ender_json_error(error, 'exams.error')
+    end
+  rescue => error
+    render_json_error(error, 'exams.error')
   end
 
   def change_status

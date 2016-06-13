@@ -3076,6 +3076,9 @@ en_US:
   exam_responses:
     success:
       updated:  Answer was sucessfully updated.
+    error:
+      validate: 'Validation errors have occurred. \n\n Could not complete the operation'
+      duration: 'Exam already closed! \n\n Could not complete the operation'
 
   digital_classes:
     index:

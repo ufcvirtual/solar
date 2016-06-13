@@ -57,10 +57,17 @@ function unique_answer(unique_id) {
 }
 
 function load_components(page){
+  var finish_button = false;
   $('#order').html(page);
   $('.number').html(page + ") ");
 
   if ($(".next_page.disabled").length > 0) {
     $("#finish_button").show();
   }
+}
+
+function validation_error(resp){
+  window.onbeforeunload = function () {}
+  alert(resp);
+  location.reload(true);
 }

@@ -29,12 +29,9 @@
     #start= t("exams.pre.alert_start")
 
   .start_button
-    - @link = open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, exam_user_id:@exam_user_id, situation: @situation)
+    - @link = open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: @situation)
     = link_to t("exams.pre.button"), @link, :'data-tooltip' => "exam.name", class: 'link_content link_open_exam', id: 'open-exam'
-    //= button_tag t('exams.pre.button'), class: 'btn btn_main' , id: 'open_button', type: :button
-
     
-
 :javascript
 
     $(".link_open_exam").call_fancybox({
@@ -48,7 +45,7 @@
         }
       },
       beforeClose: function() {
-        if (#{@exam.uninterrupted}) {
+        if (#{@exam.uninterrupted} && !finish_button) {
           var resp = window.confirm("#{I18n.t('exams.open.refresh')}");
           if (resp) {
             window.onbeforeunload = function () {}

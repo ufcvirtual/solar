@@ -28,4 +28,21 @@ class ExamUserAttempt < ActiveRecord::Base
     @exam_user_attempt_last
   end
 
+  def get_total_time
+    exam_responses.sum(:duration)
+
+  end
+
+  def self.get_total_attempts(exam_user_id)
+    exam_user = ExamUser.find(exam_user_id)
+    exam_user.exam_user_attempts.count
+  end
+
+  def self.finish_attempt(exam, exam_user_id)
+    @attempt = last_attempt(exam_user_id)
+    @attempt.end = DateTime.now
+    @attempt.complete = true
+    @attempt.save
+  end
+
 end

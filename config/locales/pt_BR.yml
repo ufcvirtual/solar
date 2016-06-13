@@ -3312,6 +3312,9 @@ pt_BR:
   exam_responses:
     success:
       updated: Resposta atualizada com sucesso.
+    error:
+      validate: 'Ocorreram erros de validação. \n\n Não foi possivel finalizar a operação'
+      duration: 'Prova já encerrada! \n\n Não foi possivel finalizar a operação'
 
   digital_classes:
     index:

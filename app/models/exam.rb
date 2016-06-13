@@ -93,7 +93,8 @@ class Exam < Event
          # puts ("ExamAtt: #{exam_user_attempt.id} questao: #{question.question_id} scores: #{question.score}  nota:#{grade_question} qtd Item : #{qtd_itens_question} Qtd Correto: #{qtd_itens_true} Usuario: #{qtd_iten_true_user} Falso: #{qtd_itens_false} Usuario: #{qtd_item_false_user_t}")
         end
         grade_exam = grade_exam > 10 ? 10.00 : grade_exam 
-        ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), end: Date.today, complete: true)  
+        # ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), end: Date.today, complete: true)
+        ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), complete: true)
     end  
   end 
 
@@ -319,7 +320,7 @@ class Exam < Event
 
     if (@exam_user_attempt_last.nil? || (@exam_user_attempt_last.complete? && @exam_user_attempt_last.exam.attempts > @exam_user_attempts.count))
       @exam_users.exam_user_attempts.build(exam_user_id: exam_user_id, start: Time.now).save
-      @exam_user_attempt_last = ExamUserAttempt.where(exam_user_id: exam_user_id)
+      @exam_user_attempt_last = ExamUserAttempt.where(exam_user_id: exam_user_id).first
     end
 
     @exam_user_attempt_last
