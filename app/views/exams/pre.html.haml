@@ -45,7 +45,7 @@
         }
       },
       beforeClose: function() {
-        if (#{@exam.uninterrupted} && !finish_button) {
+        if (#{@exam.uninterrupted}) {
           var resp = window.confirm("#{I18n.t('exams.open.refresh')}");
           if (resp) {
             window.onbeforeunload = function () {}
@@ -55,3 +55,8 @@
         else{ window.onbeforeunload = function () {} }
       }
     });
+
+    if (!#{@open_button}){
+      $('.notice').remove();
+      $('.link_open_exam').remove();
+    }

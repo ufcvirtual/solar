@@ -4,7 +4,6 @@
       = er.hidden_field :exam_user_attempt_id, value: @last_attempt.id
       = er.hidden_field :question_id, value: question.id
       - question_items = get_items(question.id)
-      //- puts @exam_responses.question_item_id
       - if question.type_question.to_i == Question::UNIQUE
         = er.collection_radio_buttons :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox'}, {name: 'exam_response[question_item_ids][]', :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled} do |b|
           - res_question_user = false

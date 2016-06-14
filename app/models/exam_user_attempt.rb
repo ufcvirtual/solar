@@ -21,8 +21,7 @@ class ExamUserAttempt < ActiveRecord::Base
   end
 
   def self.last_attempt(exam_user_id)
-    @exam_users = ExamUser.where(id: exam_user_id).first
-    @exam_user_attempts = @exam_users.exam_user_attempts
+    @exam_user_attempts = exam_user_id.exam_user_attempts
     @exam_user_attempt_last = @exam_user_attempts.last
 
     @exam_user_attempt_last
@@ -43,6 +42,10 @@ class ExamUserAttempt < ActiveRecord::Base
     @attempt.end = DateTime.now
     @attempt.complete = true
     @attempt.save
+  end
+
+  def uninterrupted_or_ended(exam)
+    ((exam_responses.present? && exam.uninterrupted?) || exam.ended?)
   end
 
 end

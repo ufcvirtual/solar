@@ -29,8 +29,8 @@ class ExamUser < ActiveRecord::Base
     { grade: grade, complete: last_attempt.try(:complete), attempts: exam_user_attempts.count, responses: responses }
   end
 
-  def get_user_attempt
-    
+  def has_attempt(exam)
+    ((exam.attempts > exam_user_attempts.count) || (!exam_user_attempts.last.complete?))
   end
 
   def delete_with_dependents

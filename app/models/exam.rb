@@ -320,7 +320,7 @@ class Exam < Event
 
     if (@exam_user_attempt_last.nil? || (@exam_user_attempt_last.complete? && @exam_user_attempt_last.exam.attempts > @exam_user_attempts.count))
       @exam_users.exam_user_attempts.build(exam_user_id: exam_user_id, start: Time.now).save
-      @exam_user_attempt_last = ExamUserAttempt.where(exam_user_id: exam_user_id).first
+      @exam_user_attempt_last = ExamUserAttempt.where(exam_user_id: exam_user_id).last
     end
 
     @exam_user_attempt_last

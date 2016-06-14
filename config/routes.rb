@@ -547,7 +547,7 @@ Solar::Application.routes.draw do
       get :pre, to: 'exams#pre'
       get :preview
       get :result_user, to: :result_exam_user
-      post :complete
+      get :complete
     end
   end
 

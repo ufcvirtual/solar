@@ -30,7 +30,7 @@
     response = confirm("#{I18n.t('exams.finish.confirm')}");
     if (response) {
         finish_exam(#{@exam_responses.try(:duration)});
-        $.post("#{complete_exam_path}", {id: "#{@exam.id}"}, function(data){
+        $.get("#{complete_exam_path}", {id: "#{@exam.id}"}, function(data){
           flash_message(data.notice, 'notice');
         });
         $.fancybox.close();

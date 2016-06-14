@@ -3025,7 +3025,7 @@ pt_BR:
       min: ' minutos'
       of: ' de '
       availability: 'Disponibilidade: '
-      duration: 'Duração da prova: '
+      duration: 'Tempo restante de prova: '
       questions: 'Número de questões: '
       attempts: 'Número de tentativas: '
       block: 'Contéudo bloqueado?'

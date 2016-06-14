@@ -4,6 +4,7 @@ class ExamsController < ApplicationController
 
   before_filter :prepare_for_group_selection, only: :index
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+  before_filter :verify_exam, only: [:open]
   layout false, except: :index
 
   def index
@@ -107,7 +108,13 @@ class ExamsController < ApplicationController
     @exam_user_id = Exam.find_or_create_exam_user(@exam, current_user.id, @allocation_tag_id)
     @total_attempts  = ExamUserAttempt.get_total_attempts(@exam_user_id)
     last_attempt = ExamUserAttempt.last_attempt(@exam_user_id)
-    @total_time = last_attempt.get_total_time
+    @total_time = (last_attempt.try(:complete?) ? 0 : last_attempt.try(:get_total_time)) || 0
+    @open_button = @exam.on_going? && @exam_user_id.has_attempt(@exam)
+
+    if (last_attempt.try(:uninterrupted_or_ended, @exam))
+      @total_time = 0
+      @exam.recalculate_grades(current_user.id) if ExamUserAttempt.finish_attempt(@exam, @exam_user_id)
+    end
 
     render :pre
   end
@@ -125,7 +132,7 @@ class ExamsController < ApplicationController
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @exam_user_id = Exam.find_or_create_exam_user(@exam, current_user.id, @allocation_tag_id)
     @last_attempt = Exam.find_or_create_exam_user_attempt(@exam_user_id)
-    @total_time = @last_attempt.try(:exam_responses).sum(:duration) || 0
+    @total_time = (@last_attempt.try(:complete?) ? 0 : @last_attempt.try(:get_total_time)) || 0
     mod_correct_exam = @exam.attempts_correction
    
     if (@situation=='finished' || @situation=='corrected')
@@ -188,7 +195,13 @@ class ExamsController < ApplicationController
     if (ExamUserAttempt.finish_attempt(exam, exam_user_id))
       exam.recalculate_grades(current_user.id)
       session[:blocking_content]= false
-      render_exam_success_json('finish')
+      if (params[:error])
+        respond_to do |format|
+          format.js { render :js => "validation_error('#{I18n.t('exam_responses.error.' + params[:error] + '')}');" }
+        end
+      else
+        render_exam_success_json('finish')
+      end
     end
   rescue => error
     render_json_error(error, 'exams.error')
@@ -235,4 +248,13 @@ class ExamsController < ApplicationController
     render json: { success: true, notice: t(method, scope: 'exams.success') }
   end
 
+  def verify_exam
+    @exam = Exam.find(params[:id])
+    @allocation_tag_id = params[:allocation_tag_id]
+    @exam_user = Exam.find_or_create_exam_user(@exam, current_user.id, @allocation_tag_id)
+
+    unless (@exam.on_going? && @exam_user.has_attempt(@exam))
+      redirect_to :back, alert: t('exams.error.general_message')
+    end
+  end
 end

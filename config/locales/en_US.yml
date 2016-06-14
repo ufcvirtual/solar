@@ -2788,7 +2788,7 @@ en_US:
       min: ' minutes'
       of: ' of '
       availability: 'Availability: '
-      duration: 'Duration of exame: '
+      duration: 'Remaining time of exam: '
       questions: 'Number of questions: '
       attempts: 'Number of attempts: '
       block: 'Content blocked?'
