@@ -22,7 +22,8 @@
         %thead
           %tr.lines
             %th.center.no_sort{style: 'width: 25px;'}= check_box_tag :all_support_material, false, false, :"data-children-names" => "c_", class: "all_support_material"
-            %th{style: 'text-align:left;'}= t(".name")
+            %th.center= t(".title")
+            %th{style: 'text-align:left;'}= t(".material")
             %th.center.date= t(".date")
             %th.center= t(".type")
 
@@ -32,6 +33,7 @@
             %tr.lines{id: "tr_#{material.id}"}
               %td{style: 'text-align:center;'}
                 = check_box_tag("c_#{material.id}", material.id, false, {class: "ckb_material", :"data-is-link" => (material.material_type == Material_Type_Link)})
+              %td{style: 'text-align:center;'}= material.title
               %td
                 %div
                   - if material.is_link?

@@ -316,6 +316,7 @@ en_US:
       lesson_module:
         name: Name
       support_material_file:
+        title: Title
         attachment: Attachment
         attachment_content_type: File type
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
@@ -930,7 +931,7 @@ en_US:
     define_initial_file_error: A initial file must be defined.
   support_material_files:
     list:
-      name: "Name"
+      name: "Material"
       date: "Date"
       type: "Type"
       link: "Link"
@@ -941,6 +942,7 @@ en_US:
       none: "No material registered"
       edit: Edit material
       delete: Remove material
+      title: Title
     form:
       groups: Groups
     error:

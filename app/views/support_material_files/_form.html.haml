@@ -11,9 +11,11 @@
 
       .form-inputs.block_content
         - if f.object.is_link?
+          = f.input :title, as: :string
           = f.input :url, as: :string, required: true
         - else
           .input.string.files
+            = f.input :title, as: :string
             = file_field_tag 'files[]', type: :file, multiple: true
             = button_to_function t(:select_files), 'add_files()', class: 'btn add_files'
             %span.error
