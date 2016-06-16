@@ -38,6 +38,7 @@ class AccessControlController < ApplicationController
       end
     else  
       raise CanCan::AccessDenied
+    end
   end
 
   def bibliography
