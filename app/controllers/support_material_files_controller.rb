@@ -41,6 +41,7 @@ class SupportMaterialFilesController < ApplicationController
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
+    raise "#{error}"
     @allocation_tags_ids = @allocation_tags_ids.join(' ')
     params[:success] = false
     if @support_material.nil? || @support_material.is_file?
@@ -133,7 +134,7 @@ class SupportMaterialFilesController < ApplicationController
   private
 
     def support_material_file_params
-      params.require(:support_material_file).permit(:material_type, :url, :attachment)
+      params.require(:support_material_file).permit(:material_type, :url, :attachment, :title)
     end
 
      def create_one(params=support_material_file_params)
@@ -142,14 +143,13 @@ class SupportMaterialFilesController < ApplicationController
       SupportMaterialFile.transaction do
         @support_material.allocation_tag_ids_associations = @allocation_tags_ids
         @support_material.save!
-        # @support_material.academic_allocations.create @allocation_tags_ids.map { |at| { allocation_tag_id: at } }
       end
     end
 
     def create_many
       SupportMaterialFile.transaction do
         params[:files].each do |file|
-          create_one(support_material_file_params.merge!(attachment: file))
+          create_one(support_material_file_params.merge!(attachment: file, title: params[:support_material_file][:title]))
         end
       end
     end

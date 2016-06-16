@@ -38,6 +38,10 @@ class DigitalClassesController < ApplicationController
       @lmodules = LessonModule.joins(:academic_allocations, :lessons).where(academic_allocations: {allocation_tag_id: ats }).uniq
       render :lesson
     end
+  rescue CanCan::AccessDenied
+    render text: t(:no_permission)
+  rescue => error
+    render text: t('digital_classes.error.general_message')
   end
 
   def create

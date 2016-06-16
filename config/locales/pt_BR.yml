@@ -368,6 +368,7 @@ pt_BR:
       lesson_module:
         name: Nome
       support_material_file:
+        title: Título
         attachment: Arquivo
         attachment_content_type: Tipo do arquivo
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
@@ -1094,7 +1095,7 @@ pt_BR:
 
   support_material_files:
     list:
-      name: "Nome"
+      name: "Material"
       date: "Data"
       type: "Tipo"
       link: "Link"
@@ -1105,6 +1106,7 @@ pt_BR:
       none: "Nenhum material cadastrado"
       edit: Editar material
       delete: Remover material
+      title: Título
     form:
       groups: Turmas
     error:
