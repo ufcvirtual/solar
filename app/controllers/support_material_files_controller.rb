@@ -41,7 +41,6 @@ class SupportMaterialFilesController < ApplicationController
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
-    raise "#{error}"
     @allocation_tags_ids = @allocation_tags_ids.join(' ')
     params[:success] = false
     if @support_material.nil? || @support_material.is_file?
