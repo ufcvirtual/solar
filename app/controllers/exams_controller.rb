@@ -134,7 +134,7 @@ class ExamsController < ApplicationController
     @last_attempt = Exam.find_or_create_exam_user_attempt(@exam_user_id)
     @total_time = (@last_attempt.try(:complete?) ? 0 : @last_attempt.try(:get_total_time)) || 0
     mod_correct_exam = @exam.attempts_correction
-    puts @situation
+
     if (@situation=='finished' || @situation=='corrected')
       @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
       if(mod_correct_exam != 1)

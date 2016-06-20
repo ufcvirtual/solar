@@ -36,12 +36,13 @@ class Exam < Event
   after_save :send_result_emails,   if: 'result_email_changed? && result_email'
 
   def recalculate_grades(user_id=nil, allocation_tags_ids=nil, all=nil)
-    grade = 0
+    grade = 0.00
     # chamar metodo de correção dos itens respondidos para todos os que existem
     list_exam_user = self.list_exam_correction(user_id, allocation_tags_ids, all)
     list_exam_user.each do |exam_user|
       self.correction_exams(exam_user.id)
       grade = self.get_grade(exam_user.id)
+      grade = grade ? grade : 0.00
       ExamUser.update(exam_user.id, grade: grade.round(2)) 
       if self.result_email
         self.send_result_emails(exam_user.id, grade)

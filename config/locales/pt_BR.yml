@@ -3072,6 +3072,7 @@ pt_BR:
       empty: Não há resultados disponíveis para esta prova
       dates: Esta prova ainda está em andamento
       general_message: Não foi possível realizar a ação desejada
+      calcule_grade: A nota já foi calculada
     show:
       groups: Turmas
       empty_group: Turma vazia

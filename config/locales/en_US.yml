@@ -2835,6 +2835,7 @@ en_US:
       empty: No available result to this exam
       dates: Exam still on going
       general_message: It was not possible to execute this action
+      calcule_grade: The note has been calculated
     show:
       groups: Groups
       empty_group: Empty group

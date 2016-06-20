@@ -96,11 +96,16 @@
 
   });
   function calcule_grade_user_exam(link){
+    if ($(link).attr('disabled') == 'disabled'){
+      flash_message("#{t('exams.error.calcule_grade')}", 'alert');
+      return false;
+    }
     $.put($(link).data('url'), function(data){
       var success = data.success;
       var grade = data.grade;
+      
       flash_message(data.notice, 'notice');
-
+      $(link).attr('disabled', true);
       $(link).html(grade);
     }).error(function(data){
       var response = $.parseJSON(data.responseText);
