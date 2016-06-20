@@ -2,6 +2,7 @@ class Notifier < ActionMailer::Base
   default YAML::load(File.open('config/mailer.yml'))['default_sender']
 
   def send_mail(recipients, subject, message, files, from = nil)
+  
     files.each do |file|
       attachments[file.attachment_file_name] = File.read(file.attachment.path)
     end

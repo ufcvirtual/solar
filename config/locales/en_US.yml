@@ -2730,6 +2730,8 @@ en_US:
       draft_exam: Exam as draft
       period: "Application date in %{dstart} to %{dend} %{hours}"
       amount_questions: "%{added} added of %{amount} questions"
+      calculate: Calculation notes
+      calcule_grade: Successfully calculated notes
     success:
       created: Exam was successfully created
       updated: Exam was successfully updated
@@ -2750,6 +2752,7 @@ en_US:
       result: 'Result '
       mirror_results: 'Correction '
       result_pdf: Correction PDF
+      calculate: Calculation note
     situation:
       not_started: Not started
       to_answer: To answer
@@ -2864,6 +2867,14 @@ en_US:
       grade_without_number: 'grade'
       attempt: 'Attempt %{attempt}'
       result: Result
+      subject: NOTE DISPATCH
+      salutation: 'Dear (a)'
+      exam_name: Approves
+      exam_grade: 'His result was:'
+      email_infor: "To see more information about your result or the correction , these are available in the Testing menu at Solar ."
+      email_infor_compl: "It had ended its period and its score was calculated"
+      email_of: of
+      email: "Please do not respond to this message . This is an automatic e- mail Solar 2.0"
     result_exam:  
       student: 'Student: '
       grade: 'Grade: '  

@@ -2968,6 +2968,8 @@ pt_BR:
       draft_exam: Prova em modo rascunho
       period: "Aplicação: %{dstart} à %{dend} %{hours}"
       amount_questions: "%{added} adicionadas de %{amount} questões"
+      calculate: Calcular Notas
+      calcule_grade: Notas calculadas com sucesso
     success:
       created: Prova criada com sucesso
       updated: Prova atualizada com sucesso
@@ -2988,6 +2990,7 @@ pt_BR:
       result: 'Resultado '
       mirror_results: ' Correção '
       result_pdf: Correção em PDF
+      calculate: Calcular Nota
     situation:
       not_started: Não iniciada
       to_answer: A responder
@@ -3100,6 +3103,14 @@ pt_BR:
       attempt: 'Tentativa %{attempt}'
       average: 'Média: %{grade}'
       result: Resultado
+      subject: ENVIO DE NOTA
+      salutation: 'Prezado(a)'
+      exam_name: A prova
+      exam_grade: 'Seu resultado foi:'
+      email_infor: "Para verificar mais informações sobre seu resultado ou sobre a correção, estes já estão disponíveis no menu de Provas no Solar."
+      email_infor_compl: "teve seu período encerrado e sua nota foi calculada"
+      email_of: do
+      email: "Por favor não responda essa mensagem. Esse é um e-mail automático do Solar 2.0."
     result_exam:  
       student: 'Aluno: '
       grade: 'Nota: '

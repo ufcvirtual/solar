@@ -548,6 +548,8 @@ Solar::Application.routes.draw do
       get :preview
       get :result_user, to: :result_exam_user
       get :complete
+      put :calcule_grade
+      put :calcule_grade_user
     end
   end
 

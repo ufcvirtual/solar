@@ -66,6 +66,8 @@ gem 'coffee-rails'
 
 gem 'rest-client'
 
+gem 'rufus-scheduler', "2.0.24"
+
 group :development do
   gem "rb-readline", "~> 0.5.1"
   gem "net-ssh", "~> 2.6.8" # dependencia capistrano

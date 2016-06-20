@@ -15,6 +15,11 @@ function finish_exam(duration) {
   delete array_time;
 }
 
+function expand_or_compress(icon){
+  $(icon).parent().hide();
+  $($(icon).parent().siblings()[0]).show();
+}
+
 function get_duration(duration) {
   var time = array_time[page-1]
   var new_duration = Math.floor(time / 60);

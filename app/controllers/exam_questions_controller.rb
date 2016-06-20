@@ -101,8 +101,7 @@ class ExamQuestionsController < ApplicationController
     authorize! :annul, Question, { on: exam_question.exam.allocation_tags.map(&:id) }
     exam_question.can_change_annulled?
     exam_question.update_attributes annulled: true 
-    exam = Exam.find(exam_question.exam_id)
-    exam.recalculate_grades
+   
     log(exam_question.exam, "question: #{exam_question.question_id} [annul] exam: #{exam_question.exam_id}, #{exam_question.log_description.merge!(exam: exam_question.exam.attributes)}", LogAction::TYPE[:update]) rescue nil
     
     render json: { success: true, notice: t('exam_questions.success.annulled') }

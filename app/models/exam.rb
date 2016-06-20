@@ -35,31 +35,72 @@ class Exam < Event
   after_save :recalculate_grades,   if: 'attempts_correction_changed?'
   after_save :send_result_emails,   if: 'result_email_changed? && result_email'
 
-  def recalculate_grades(user_id=nil, allocation_tag_id=nil)
+  def recalculate_grades(user_id=nil, allocation_tags_ids=nil, all=nil)
+    grade = 0
     # chamar metodo de correção dos itens respondidos para todos os que existem
-    list_exam_user = self.list_exam_correction(user_id, allocation_tag_id)
+    list_exam_user = self.list_exam_correction(user_id, allocation_tags_ids, all)
     list_exam_user.each do |exam_user|
       self.correction_exams(exam_user.id)
       grade = self.get_grade(exam_user.id)
       ExamUser.update(exam_user.id, grade: grade.round(2)) 
+      if self.result_email
+        self.send_result_emails(exam_user.id, grade)
+      end  
+    end
+    grade.round(2)
+  end
+
+  def send_result_emails(exam_user_id, grade)
+    # enviar email com notas se já tiver encerrado período
+    eur = ExamUser.find(exam_user_id)
+    user = User.find(eur.user_id)
+    subject = I18n.t('exams.result_exam_user.subject')
+    recipients = "#{user.name} <#{user.email}>"
+    files = Array.new
+    msg = self.grade_msg_template(user, grade)
+    Thread.new do
+      Notifier.send_mail(recipients, subject, msg, files, nil).deliver
     end
   end
 
-  def send_result_emails
-    # enviar email com notas se já tiver encerrado período
+  def grade_msg_template(user, grade)
+   alloc = self.get_ats_exam_user(user)
+   ats = AllocationTag.find(alloc.id)
+   label_cur = ats.curriculum_unit_types
+   label_info = ats.info
+    %{
+      <b> #{I18n.t('exams.result_exam_user.salutation')} #{user.name},</b><br/>
+      #{I18n.t('exams.result_exam_user.exam_name')} #{self.name} #{I18n.t('exams.result_exam_user.email_of')} #{label_cur} - #{label_info} #{I18n.t('exams.result_exam_user.email_infor_compl')}<br/>
+      __________________________________________________________________________________________________________________________<br/><br/>
+      #{I18n.t('exams.result_exam_user.exam_grade')} #{grade.round(2)} <br/>
+
+      #{I18n.t('exams.result_exam_user.email_infor')}<br/><br/>
+
+      #{I18n.t('exams.result_exam_user.email')}
+    }
   end
 
+  def get_ats_exam_user(user)
+    ats = ExamUser.joins("LEFT JOIN academic_allocations ON exam_users.academic_allocation_id = academic_allocations.id")
+                  .joins("LEFT JOIN exams ON exams.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Exam' AND exams.status=TRUE")
+                  .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.exam_user_id = exam_users.id")
+                  .joins("LEFT JOIN schedules ON exams.schedule_id = schedules.id")
+                  .where("exams.id = ? AND user_id = ?", self.id, user.id)
+                  .select("DISTINCT allocation_tag_id AS id").first
+  end  
 
-  def list_exam_correction(user_id=nil, allocation_tag_id=nil)
+  def list_exam_correction(user_id=nil, allocation_tags_ids=nil, all=nil)
     query_user = ""
     query_alloc = ""
     query_user = "exam_users.user_id =#{user_id} AND " unless user_id.blank? 
-    query_alloc = "allocation_tag_id =#{allocation_tag_id} AND " unless allocation_tag_id.blank?   
+    query_alloc = "allocation_tag_id  IN (#{allocation_tags_ids}) AND " unless allocation_tags_ids.blank?  
+    query_not_all = all.blank? ? "" : "exam_user_attempts.grade IS NULL AND "
+
     list_exam_user = ExamUser.joins("LEFT JOIN academic_allocations ON exam_users.academic_allocation_id = academic_allocations.id")
                     .joins("LEFT JOIN exams ON exams.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Exam' AND exams.status=TRUE")
                     .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.exam_user_id = exam_users.id")
                     .joins("LEFT JOIN schedules ON exams.schedule_id = schedules.id")
-                    .where(query_user + query_alloc + "exams.id = ? ", self.id)
+                    .where(query_not_all + query_user + query_alloc + "schedules.end_date<CURRENT_DATE AND exams.id = ? ", self.id)
                     .select("DISTINCT exam_users.id AS id") 
   end  
   
@@ -93,8 +134,12 @@ class Exam < Event
          # puts ("ExamAtt: #{exam_user_attempt.id} questao: #{question.question_id} scores: #{question.score}  nota:#{grade_question} qtd Item : #{qtd_itens_question} Qtd Correto: #{qtd_itens_true} Usuario: #{qtd_iten_true_user} Falso: #{qtd_itens_false} Usuario: #{qtd_item_false_user_t}")
         end
         grade_exam = grade_exam > 10 ? 10.00 : grade_exam 
-        # ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), end: Date.today, complete: true)
-        ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), complete: true)
+
+        if exam_user_attempt.end
+          ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), complete: true) 
+        else  
+          ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), end: DateTime.now, complete: true)  
+        end
     end  
   end 
 
@@ -110,6 +155,22 @@ class Exam < Event
                          .joins("LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id")
                          .joins("LEFT JOIN question_items ON  question_items.id = exam_responses_question_items.question_item_id")
                          .where('question_items.value = ? AND question_items.question_id = ? AND exam_user_attempts.id = ?', t, question.id, exam_user_attempt.id).count
+  end  
+
+  def release_correction_exam_user(user)
+    exam_user = ExamUser.joins("LEFT JOIN academic_allocations ON exam_users.academic_allocation_id = academic_allocations.id")
+                    .joins("LEFT JOIN exams ON exams.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Exam' AND exams.status=TRUE")
+                    .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.exam_user_id = exam_users.id")
+                    .joins("LEFT JOIN schedules ON exams.schedule_id = schedules.id")
+                    .where("exam_user_attempts.grade IS NULL AND schedules.end_date<CURRENT_DATE AND exam_users.user_id = ? AND exams.id = ? ", user.id, self.id)
+                    .select("DISTINCT exam_users.id AS id").first
+  end                  
+
+  def self.correction_cron
+    list_exam = Exam.includes(:schedule).where("schedules.end_date<current_date AND auto_correction=TRUE")
+    list_exam.each do |exam|
+      exam.recalculate_grades(nil, nil, true)
+    end
   end  
 
   def copy_dependencies_from(exam_to_copy)

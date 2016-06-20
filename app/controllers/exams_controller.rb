@@ -78,7 +78,6 @@ class ExamsController < ApplicationController
     authorize! :update, Exam, { on: @exam.academic_allocations.pluck(:allocation_tag_id) }
     @exam.schedule.verify_today = true
     if @exam.update_attributes(exam_params)
-      @exam.recalculate_grades
       render_exam_success_json('updated')
     else
       render :edit
@@ -113,8 +112,9 @@ class ExamsController < ApplicationController
 
     if (last_attempt.try(:uninterrupted_or_ended, @exam))
       @total_time = 0
-      @exam.recalculate_grades(current_user.id) if ExamUserAttempt.finish_attempt(@exam, @exam_user_id)
+      @exam.recalculate_grades(current_user.id, nil, true) if ExamUserAttempt.finish_attempt(@exam, @exam_user_id)
     end
+
 
     render :pre
   end
@@ -134,9 +134,8 @@ class ExamsController < ApplicationController
     @last_attempt = Exam.find_or_create_exam_user_attempt(@exam_user_id)
     @total_time = (@last_attempt.try(:complete?) ? 0 : @last_attempt.try(:get_total_time)) || 0
     mod_correct_exam = @exam.attempts_correction
-   
+    puts @situation
     if (@situation=='finished' || @situation=='corrected')
-
       @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
       if(mod_correct_exam != 1)
         @exam_user_attempt_id = Exam.get_id_exam_user_attempt(mod_correct_exam, @exam_user_id)
@@ -189,11 +188,11 @@ class ExamsController < ApplicationController
 
   def complete
     exam = Exam.find(params[:id])
+
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     exam_user_id = Exam.find_or_create_exam_user(exam, current_user.id, @allocation_tag_id)
 
     if (ExamUserAttempt.finish_attempt(exam, exam_user_id))
-      exam.recalculate_grades(current_user.id)
       session[:blocking_content]= false
       if (params[:error])
         respond_to do |format|
@@ -205,7 +204,24 @@ class ExamsController < ApplicationController
     end
   rescue => error
     render_json_error(error, 'exams.error')
+
   end
+
+  def calcule_grade_user
+    exam = Exam.find(params[:id])
+    grade =exam.recalculate_grades(current_user.id, nil, true)
+    render json: { success: true, grade: grade, notice: t('finish', scope: 'exams.success') }
+  end 
+
+  def calcule_grade
+    #authorize! :finish, { on: params[:allocation_tag_id] }
+    allocation_tags_ids = params[:allocation_tags_ids]
+    ats = allocation_tags_ids.gsub(' ', ",")
+
+    exam = Exam.find(params[:id])
+    exam.recalculate_grades(nil, ats, true)
+    render json: { success: true, notice: t('calcule_grade', scope: 'exams.list') }
+  end  
 
   def change_status
     authorize! :change_status, Exam, { on: params[:allocation_tags_ids] }
@@ -252,9 +268,10 @@ class ExamsController < ApplicationController
     @exam = Exam.find(params[:id])
     @allocation_tag_id = params[:allocation_tag_id]
     @exam_user = Exam.find_or_create_exam_user(@exam, current_user.id, @allocation_tag_id)
-
-    unless (@exam.on_going? && @exam_user.has_attempt(@exam))
-      redirect_to :back, alert: t('exams.error.general_message')
-    end
+    if params[:situation]!='corrected'
+      unless (@exam.on_going? && @exam_user.has_attempt(@exam))
+        redirect_to :back, alert: t('exams.error.general_message')
+      end
+    end  
   end
 end

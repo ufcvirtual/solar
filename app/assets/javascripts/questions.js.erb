@@ -370,6 +370,19 @@ function change_status_exam(link){
   });
 }
 
+function calcule_grade_exam(link){
+  $.put($(link).data('url'), function(data){
+    var success = data.success;
+    flash_message(data.notice, 'notice');
+
+    $(link).html("<%=I18n.t('exams.list.calculate')%>");
+  }).error(function(data){
+    var response = $.parseJSON(data.responseText);
+    if (typeof(response.alert) != "undefined")
+     flash_message(response.alert, 'alert');
+  });
+}
+
 function check_inputs(){
   var val = $('#question_type_question').val();
   if(val != 2){

@@ -14,9 +14,12 @@
           %th.small= t('exams.index.grade')
       %tbody
         - @exams.each do |exam|
+          - release = exam.release_correction_exam_user(current_user)
+          - if release
+            - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam)
           - exam_user_id = Exam.find_or_create_exam_user(exam, current_user.id, @allocation_tags_ids)
           - info = exam.info(current_user.id, @allocation_tags_ids)
-          - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, exam_user_id:exam_user_id, situation: info[:situation])
+          - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation])#, exam_user_id:exam_user_id
           - pre = pre_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation])
           %tr.lines{ id: "tr_#{exam.id}" }
             %td
@@ -26,9 +29,10 @@
                   - if info[:situation] == 'corrected'
                     = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam), class: 'link_content', id: 'open-exam-result'
                     |
-                    = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'link_content', id: 'open-result'
+                    = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'link_open_exam', id: 'open-result'
                 - else
                   = link_to exam.name, pre, :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', id: 'open-exam'
+                 
                 - if exam.description.size > 180
                   .description_exam
                     .description_slice= exam.description.slice(0..180) << "..."
@@ -49,12 +53,20 @@
               - else
                 = link_to I18n.t(info[:situation], :count => count, :scope => [:exams, :situation]), pre, class: "#{info[:situation]} link_pre_exam"
             %td.center
-              %span.activity_grade= info[:grade] || "-"
+              %span.activity_grade= info[:grade] || bt_correction || "-"
+              
   - else
     .block_content_text.block_content_text_list.text_none= t(:none, scope: [:exams] )
 
 :javascript
 
+  $(".link_open_exam").call_fancybox({
+      minWidth: '50%',
+      minheigth: '50%',
+      closeBtn : true,
+      height: 'auto'
+     
+    });
   $(function(){
 
     $(".link_pre_exam").call_fancybox({
@@ -63,10 +75,11 @@
       height: 'auto'
     });
 
-    $("#open-exam-result, #open-result").call_fancybox({
-      minWidth: '25%',
+    $("#open-exam-result").call_fancybox({
+      minWidth: '50%',
+      minHeight: '50%',
       height: 'auto',
-      minHeight: '25%',
+      closeBtn : true
     });
 
     $(".description_more").click(function(){
@@ -82,3 +95,16 @@
     });
 
   });
+  function calcule_grade_user_exam(link){
+    $.put($(link).data('url'), function(data){
+      var success = data.success;
+      var grade = data.grade;
+      flash_message(data.notice, 'notice');
+
+      $(link).html(grade);
+    }).error(function(data){
+      var response = $.parseJSON(data.responseText);
+      if (typeof(response.alert) != "undefined")
+       flash_message(response.alert, 'alert');
+    });
+  }
