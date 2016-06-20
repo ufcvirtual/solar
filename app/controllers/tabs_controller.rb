@@ -25,7 +25,7 @@ class TabsController < ApplicationController
     if opened_or_new_tab?(id)
       offer = Offer.find(id)
       params[:name] = offer.allocation_tag.info
-      params[:tab] = [offer.curriculum_unit.name || offer.course.name, offer.semester.name].join(' - ')
+      params[:tab] = [offer.curriculum_unit.try(:name) || offer.course.try(:name), offer.semester.name].join(' - ')
       set_session_opened_tabs({ id: id, context: context_id, allocation_tag_id: params[:allocation_tag_id] }, params)
       redirect = home_curriculum_unit_path(id) if context_id == Context_Curriculum_Unit
     end
