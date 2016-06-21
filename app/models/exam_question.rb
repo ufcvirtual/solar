@@ -22,15 +22,37 @@ class ExamQuestion < ActiveRecord::Base
     exam_question
   end
 
-  def self.list(exam_id, raffle_order = false)
+  def self.list(exam_id, raffle_order = false, last_attempt)
     query_order = []
-    query_order << (raffle_order ? "RANDOM()" : "exam_questions.order")
-    ExamQuestion.joins(:question)
+    no_response = false
+    responses = last_attempt.try(:complete?) ? nil : last_attempt.try(:exam_responses)
+
+    if (!responses.empty?)
+      question_ids = responses.map{|x| x.question_id}
+      query_order << "position(','||question_id::text||',' in ',"+ question_ids.join(",") +",')"
+    else
+      no_response = true
+      if raffle_order
+        query_order << "RANDOM()"
+      else
+        query_order << "exam_questions.order"
+      end
+    end
+
+    exam_questions = ExamQuestion.joins(:question)
       .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
-      	questions: {status: true})
+        questions: {status: true})
       .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
-      	questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
+        questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
       .order(query_order);
+
+    if (no_response)
+      exam_questions.each do |exam_question|
+        last_attempt.exam_responses.where(question_id: exam_question.question_id).first_or_create!(duration: 0)
+      end
+    end
+
+    exam_questions
   end
 
   def self.list_correction(exam_id, raffle_order = false)
@@ -43,7 +65,6 @@ class ExamQuestion < ActiveRecord::Base
         questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
       .order(query_order);
   end
-
 
   def set_order
     if order.nil?
