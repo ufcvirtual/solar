@@ -129,9 +129,9 @@ class ExamsController < ApplicationController
     @exam_user_attempt_id = params[:exam_user_attempt_id]
     @allocation_tag_id = params[:allocation_tag_id]
 
-    @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @exam_user_id = Exam.find_or_create_exam_user(@exam, current_user.id, @allocation_tag_id)
     @last_attempt = Exam.find_or_create_exam_user_attempt(@exam_user_id)
+    @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @total_time = (@last_attempt.try(:complete?) ? 0 : @last_attempt.try(:get_total_time)) || 0
     mod_correct_exam = @exam.attempts_correction
 

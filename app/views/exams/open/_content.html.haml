@@ -1,7 +1,7 @@
 .block_content
   - number_question = 0
   - @exam_questions.each do |question|   
-    - @exam_responses = find_or_create_exam_responses(@last_attempt, question.id)
+    - @exam_responses = find_exam_responses(@last_attempt, question.id)
     - @unique_id = ExamResponse.is_unique?(@exam_responses) ? ExamResponse.get_question_item_id(@exam_responses) : false
     - number_question = number_question+1
     - anull = ""
