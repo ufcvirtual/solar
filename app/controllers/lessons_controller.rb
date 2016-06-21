@@ -48,7 +48,7 @@ class LessonsController < ApplicationController
   # GET /lessons/:id
   def open
 
-    if session[:blocking_content]
+    if user_session[:blocking_content]
       render text: t('exams.restrict')
     else
      authorize! :show, Lesson, { on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true }

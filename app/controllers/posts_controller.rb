@@ -61,7 +61,7 @@ class PostsController < ApplicationController
   ## GET /discussions/1/posts/user/1
   ## all posts of the user
   def user_posts
-    if session[:blocking_content]
+    if user_session[:blocking_content]
       render text: t('exams.restrict')
     else
       @user = User.find(params[:user_id])

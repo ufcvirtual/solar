@@ -148,7 +148,8 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource_or_scope)
     LogAccess.login(user_id: current_user.id, ip: request.remote_ip) rescue nil
-    session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
+    user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id) || false
+    user_session[:lessons] = []
     super
   end
 

@@ -5,7 +5,7 @@ class AccessControlController < ApplicationController
 
   ## Verificação de acesso ao realizar download de um arquivo relacionado à atividades ou um arquivo público
   def assignment
-    if session[:blocking_content]==false
+    unless user_session[:blocking_content]
       file_id            = params[:file].split('_')[0]
       current_path_split = request.env['PATH_INFO'].split('/') #ex: /media/assignment/public_area/20_crimescene.png => ["", "media", "assignment", "public_area", "20_crimescene.png"]
 
@@ -46,7 +46,7 @@ class AccessControlController < ApplicationController
   end
 
   def support_material
-    if session[:blocking_content]==false
+    unless user_session[:blocking_content]
       get_file(SupportMaterialFile, 'support_material_files')
     end  
   end
@@ -67,7 +67,7 @@ class AccessControlController < ApplicationController
   #end
 
   def message
-    if session[:blocking_content]==false
+    unless user_session[:blocking_content]
       file = MessageFile.find(params[:file].split('_')[0])
       raise CanCan::AccessDenied unless file.message.user_has_permission?(current_user.id)
       download_file('messages')
@@ -75,11 +75,14 @@ class AccessControlController < ApplicationController
   end
 
   def lesson
-    if session[:blocking_content]==false
+    unless user_session[:blocking_content]
       lessons = [lesson  = Lesson.find(params[:id])]
-      lessons << lesson.imported_to
 
-      verify(lessons.flatten.map(&:allocation_tags).flatten.map(&:id).flatten.compact, Lesson, :show, true, true)
+      if user_session[:lessons].include?(params[:id])
+        lessons << lesson.imported_to
+        verify(lessons.flatten.map(&:allocation_tags).flatten.map(&:id).flatten.compact, Lesson, :show, true, true)
+        user_session[:lessons] += lessons.flatten.map(&:id).flatten
+      end
 
       if lesson.path(false).index('.html')
         if params[:index]

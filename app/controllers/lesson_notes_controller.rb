@@ -5,7 +5,7 @@ class LessonNotesController < ApplicationController
   layout false
 
   def index
-    if session[:blocking_content]
+    if user_session[:blocking_content]
       render text: t('exams.restrict')
     else 
       @lesson_id    = params[:lesson_id]

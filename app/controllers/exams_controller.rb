@@ -123,7 +123,7 @@ class ExamsController < ApplicationController
     authorize! :open, Exam, { on: params[:allocation_tag_id] }
     @situation =  params[:situation]
     @exam = Exam.find(params[:id])
-    session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
+    user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
     @preview = false
     @disabled = false
     @exam_user_attempt_id = params[:exam_user_attempt_id]
@@ -193,7 +193,7 @@ class ExamsController < ApplicationController
     exam_user_id = Exam.find_or_create_exam_user(exam, current_user.id, @allocation_tag_id)
 
     if (ExamUserAttempt.finish_attempt(exam, exam_user_id))
-      session[:blocking_content]= false
+      user_session[:blocking_content] = false
       if (params[:error])
         respond_to do |format|
           format.js { render :js => "validation_error('#{I18n.t('exam_responses.error.' + params[:error] + '')}');" }
