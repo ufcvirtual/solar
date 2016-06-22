@@ -551,6 +551,3 @@ DEPENDENCIES
   will_paginate (~> 3.0.7)
   wkhtmltopdf-binary
   xmpp4r (~> 0.5.5)
-
-BUNDLED WITH
-   1.11.2

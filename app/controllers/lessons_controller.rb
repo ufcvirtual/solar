@@ -52,6 +52,7 @@ class LessonsController < ApplicationController
       render text: t('exams.restrict')
     else
      authorize! :show, Lesson, { on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true }
+      user_session[:lessons] << params[:id].to_i
     
       at_ids = (params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
       @modules = LessonModule.to_select(at_ids, current_user)
