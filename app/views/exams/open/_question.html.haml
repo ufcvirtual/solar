@@ -63,7 +63,7 @@
           - else   
             - b.label(class: class_label) { b.check_box + image + b.text  + response }+ ' ' + coment
       - else
-        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled do |b|
+        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, disabled: @disabled do |b|
           - res_question_user = nil
           - response = nil
           - class_label = nil
@@ -87,7 +87,7 @@
               - else 
                 - it = image_tag "rejected.png"
             - else
-              - it = link_to_function (image_tag "#{b.check_box.start_with?("<input checked") ? 'released' : 'rejected'}.png"), "change(this)"  
+              - it = link_to_function (image_tag "#{b.check_box.start_with?("<input checked") ? 'released' : 'rejected'}.png"), "change(this, '#{@exam_responses.duration}')"
 
             - b.label(class: class_label) { b.check_box(:hidden => true) + (it) + image + b.text  + response}+ ' ' + coment
 
@@ -105,7 +105,7 @@
 
 :javascript
 
-  function change(img){
+  function change(img, duration){
 
     var checkbox = $(img).siblings();
     checkbox.prop('checked', !checkbox.prop('checked'));
@@ -118,7 +118,7 @@
       $(img).attr('data-tooltip', $(img).data('not-active'));
     }
 
-    save_question('#{@exam_responses.try(:duration)}');
+    save_question(duration);
 
     $.getScript("/assets/tooltip.js");
   }
