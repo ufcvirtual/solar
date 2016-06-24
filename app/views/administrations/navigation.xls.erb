@@ -50,7 +50,7 @@
         <Cell><Data ss:Type="String"><%= log['student'] %></Data></Cell>
         <Cell><Data ss:Type="String"><%= log['group_assignments'] %></Data></Cell>
         <Cell><Data ss:Type="String"><%= log['chat_room'] %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= log['chat_history'] == 't' ? 'Sim' : '' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['chat_history'].blank? ? '' : 'Sim' %></Data></Cell>
         <Cell><Data ss:Type="String"><%= log['exam'] %></Data></Cell>
         <Cell><Data ss:Type="String"><%= log['webconference'] %></Data></Cell>
         <Cell><Data ss:Type="String"><%= log['webconference_record'] == 't' ? 'Sim' : '' %></Data></Cell>

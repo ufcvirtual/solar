@@ -282,10 +282,9 @@ class ApplicationController < ActionController::Base
       when 203
         exams_id = sub_log_id
       when 205
-        if params[:academic_allocation_id] # para acesso ao chat
-          chat_rooms_id = sub_log_id
-        else          
-          hist_chat_rooms_id = sub_log_id # para acesso ao historico do chat
+        chat_rooms_id = sub_log_id
+        unless params[:academic_allocation_id] # para acesso ao chat
+          hist_chat_rooms_id = sub_log_id      # para acesso ao historico do chat
         end   
       when 206
         webconferences_id = sub_log_id
@@ -297,7 +296,7 @@ class ApplicationController < ActionController::Base
           bib = Bibliography.find(sub_log_id)
           bib.attachment_file_name.blank? ? (bib.url.blank? ? bib.address : bib.url) : bib.attachment_file_name
         end
-      when 304
+      when 304 && params[:controller] == 'public_files'
         if zip_download
           public_file_name = 'zip'
         else

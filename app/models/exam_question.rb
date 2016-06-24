@@ -27,7 +27,7 @@ class ExamQuestion < ActiveRecord::Base
     no_response = false
     responses = last_attempt.try(:complete?) ? nil : last_attempt.try(:exam_responses)
 
-    if (!responses.empty?)
+    unless responses.blank?
       question_ids = responses.map{|x| x.question_id}
       query_order << "position(','||question_id::text||',' in ',"+ question_ids.join(",") +",')"
     else
