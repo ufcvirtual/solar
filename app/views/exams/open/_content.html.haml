@@ -1,6 +1,7 @@
 .block_content
   - number_question = 0
-  - @exam_questions.each do |question|   
+  - link = open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: 'corrected')
+  - @exam_questions.each do |question|  
     - @exam_responses = find_exam_responses(@last_attempt, question.id)
     - @unique_id = ExamResponse.is_unique?(@exam_responses) ? ExamResponse.get_question_item_id(@exam_responses) : false
     - number_question = number_question+1
@@ -26,6 +27,8 @@
 .message_div_navigation
 - if @pdf != 1
   = will_paginate @exam_questions
+- if @disabled && @exam.attempts_correction == Exam::AVERAGE && @pdf!=1
+  = link_to t(:back), link, { class: 'btn link_open_exam', id: 'open-exam-result'}
 
 :javascript
 

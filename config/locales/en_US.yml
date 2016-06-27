@@ -2876,9 +2876,11 @@ en_US:
       email_infor_compl: "It had ended its period and its score was calculated"
       email_of: of
       email: "Please do not respond to this message . This is an automatic e- mail Solar 2.0"
+      itens_corrected: "Iten(s) corrected: "
     result_exam:  
       student: 'Student: '
       grade: 'Grade: '  
+      exam: 'Exam: '
     open_result:
       name: Corrections
       grade: 'Grade: '
@@ -2996,6 +2998,7 @@ en_US:
     warning:
       save_automatically: All changes are saved automatically.
       questions: Selected questions and order to exam can change at publish or at starting.
+      corrected: "Items in GREEN color are correct , and items in RED color are wrong"
 
   exam_questions:
     import:

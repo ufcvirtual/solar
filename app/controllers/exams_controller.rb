@@ -114,8 +114,6 @@ class ExamsController < ApplicationController
       @total_time = 0
       @exam.recalculate_grades(current_user.id, nil, true) if ExamUserAttempt.finish_attempt(@exam, @exam_user_id)
     end
-
-
     render :pre
   end
 
@@ -136,18 +134,22 @@ class ExamsController < ApplicationController
     mod_correct_exam = @exam.attempts_correction
 
     if (@situation=='finished' || @situation=='corrected')
+      @disabled = true
+      @preview = true
+
       @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
       if(mod_correct_exam != 1)
         @exam_user_attempt_id = Exam.get_id_exam_user_attempt(mod_correct_exam, @exam_user_id)
       end  
-      @disabled = true
-      @preview = true
+
       @list_eua = ExamUserAttempt.where(exam_user_id: @exam_user_id)
       if mod_correct_exam == 1 && !params[:exam_user_attempt_id]  && params[:pdf].to_i != 1  
         render :open_result 
       else  
+        @last_attempt = @exam.responses_question_user(@exam_user_id.id, params[:exam_user_attempt_id]) 
         if params[:pdf].to_i == 1
           @grade_pdf = ExamUserAttempt.find(@exam_user_attempt_id).grade
+          @ats = AllocationTag.find(@allocation_tag_id)
           @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order) unless @exam.nil?
           @pdf = 1
           render :result_exam

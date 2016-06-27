@@ -16,7 +16,7 @@
         - @exams.each do |exam|
           - release = exam.release_correction_exam_user(current_user)
           - if release
-            - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam)
+            - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam), class: 'ico-e'
           - exam_user_id = Exam.find_or_create_exam_user(exam, current_user.id, @allocation_tags_ids)
           - info = exam.info(current_user.id, @allocation_tags_ids)
           - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation])#, exam_user_id:exam_user_id
@@ -48,10 +48,8 @@
             %td.center= [exam.duration, t('.min')].join(' ')
             - count = info[:count].nil? || info[:count]==0 ? "" : info[:count].to_s
             %td.center
-              - unless info[:situation] == "corrected"
-                %div{class: "#{info[:situation]}"}= I18n.t(info[:situation], :count => count, :scope => [:exams, :situation])
-              - else
-                = link_to I18n.t(info[:situation], :count => count, :scope => [:exams, :situation]), pre, class: "#{info[:situation]} link_pre_exam"
+              %div{class: "#{info[:situation]}"}= I18n.t(info[:situation], :count => count, :scope => [:exams, :situation])
+
             %td.center
               %span.activity_grade= info[:grade] || bt_correction || "-"
               
