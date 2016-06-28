@@ -11,9 +11,9 @@ gem "foreigner", "~> 1.4.0"
 gem "koala", "1.2.0" # facebook
 
 gem "devise", "~> 3.4.1"
-gem "devise-encryptable", "~> 0.2.0"
 gem "devise-i18n", "~> 0.11.3"
 gem "cancan", "~> 1.6.10"
+gem "devise-encryptable", "~> 0.2.0"
 
 gem "chronic", "0.6.1"
 gem "brazilian-rails", "~> 3.3.0"
