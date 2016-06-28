@@ -349,7 +349,7 @@ class Exam < Event
             .where('exam_user_attempts.id = ? AND user_id = ? AND question_id = ? AND question_item_id = ?', euat.id, user_id, question_id, question_item_id)
             .select("question_item_id").last   
       end 
-    end  
+    end 
     @response_question_user
   end 
 

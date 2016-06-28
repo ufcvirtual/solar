@@ -4,10 +4,11 @@
       = er.hidden_field :exam_user_attempt_id, value: @last_attempt.id
       = er.hidden_field :question_id, value: question.id
       - question_items = get_items(question.id)
-
+      //- puts @exam_responses.question_item_id
       - if question.type_question.to_i == Question::UNIQUE
-        = er.collection_radio_buttons :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, {name: 'exam_response[question_item_ids][]', :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled} do |b|
-          - res_question_user = nil
+        = er.collection_radio_buttons :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox'}, {name: 'exam_response[question_item_ids][]', :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled} do |b|
+          - res_question_user = false
+          - res_question_use = nil
           - response = nil
           - class_label = nil
           - image = nil
@@ -17,19 +18,22 @@
           - if @disabled
             - coment = b.object.comment
             - if (res_question_use)
-              - res_question_user = "checked" 
+              - res_question_user = true 
+              - @unique_id = b.object.id
               - class_label = "incorrect" 
             - if (b.object.value == true)
               - response = @pdf !=1 ? image_tag('correct.png', :style => "border: 0px solid red") : wicked_pdf_image_tag('correct.png', :style => "border: 0px solid red")
               - class_label = "hit"  
-
+    
           - if b.object.item_image?  
             - if @pdf !=1 
               - image = image_tag(b.object.item_image(:medium), id: 'item_image')
             - else
               - image = wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image') 
+         
           - if @disabled
-            - b.label(class: class_label) { b.radio_button(:checked => res_question_user) + image + b.text + response } + ' ' + coment
+            - b.label(class: class_label) { b.radio_button(checked: res_question_user) + image + b.text + response } + ' ' + coment
+
           - else
             - b.label(class: class_label) { b.radio_button + image + b.text + response } + ' ' + coment  
           
