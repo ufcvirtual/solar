@@ -534,7 +534,7 @@ DEPENDENCIES
   rspec-rails (~> 3.4.0)
   rubocop
   rubyzip (~> 1.0.0)
-  rufus-scheduler (= 2.0.24)
+  rufus-scheduler (~> 2.0.24)
   rvm-capistrano (~> 1.5.5)
   sass-rails (~> 3.2.6)
   savon (~> 2.0)

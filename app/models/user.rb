@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
 
   after_create :basic_profile_allocation
 
-  devise :database_authenticatable, :registerable, :validatable, :recoverable, :encryptable
+  devise :database_authenticatable, :registerable, :validatable, :recoverable, :encryptable, :timeoutable
 
   before_save :ensure_authentication_token!, :downcase_username, :downcase_email
   after_save :log_update_user

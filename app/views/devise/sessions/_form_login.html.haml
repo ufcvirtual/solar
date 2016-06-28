@@ -19,7 +19,8 @@
 
   .flash_message_wrapper
     - flash.each do |name, msg|
-      #flash_message{class: name}= content_tag :span, msg
+      - unless name == :timedout
+        #flash_message{class: name}= content_tag :span, msg
 
   = link_to image_tag("help-solar-grande.png"), "#faq", :class => 'panel-link'
 
