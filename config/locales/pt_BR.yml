@@ -3112,9 +3112,11 @@ pt_BR:
       email_infor_compl: "teve seu período encerrado e sua nota foi calculada"
       email_of: do
       email: "Por favor não responda essa mensagem. Esse é um e-mail automático do Solar 2.0."
+      itens_corrected: "Iten(s) correto(s): "
     result_exam:  
       student: 'Aluno: '
       grade: 'Nota: '
+      exam: 'Prova: '
     open_result:
       name: Correções  
       grade: 'Nota: '
@@ -3231,8 +3233,8 @@ pt_BR:
       title: Visualização prévia da questão
     warning:
       save_automatically: Todas as alterações são salvas automaticamente.
-      questions: A ordem e questões selecionadas para a prova podem mudar no momento de sua publicação ou resolução.
-
+      questions: 1) A ordem e questões selecionadas para a prova podem mudar no momento de sua publicação ou resolução.
+      corrected: '2) Itens na cor VERDE estão corretos e itens na cor VEMELHA estão errados'
   exam_questions:
     import:
       conclude:

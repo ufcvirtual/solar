@@ -3,7 +3,7 @@ module ExamsHelper
   def grade(exam_id)    
     exam = ExamUser.where(academic_allocation_id: exam_id, user_id: current_user.id)
     unless exam.nil? || exam.empty?
-    	return exam.grade
+    	return exam.grade.round(2)
     end
     return '-'
   end

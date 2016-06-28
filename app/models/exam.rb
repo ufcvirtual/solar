@@ -388,32 +388,18 @@ class Exam < Event
     @exam_user_attempt_last
   end
 
-  def responses_question_user(user_id, question_id, question_item_id, exam_user_id, id)
-    @response_question_user = nil
+  def responses_question_user(exam_user_id, id)
     mod_correct_exam = self.attempts_correction
-    grade = ExamUserAttempt.where(exam_user_id: exam_user_id).maximum(:grade)
 
-    if grade 
-      if mod_correct_exam == Exam::GREATER
-        euat = id =  ExamUserAttempt.where(exam_user_id: exam_user_id, grade: grade).last
-      elsif mod_correct_exam == Exam::AVERAGE
-        @response_question_user =  ExamUserAttempt.joins('LEFT JOIN exam_users ON exam_user_attempts.exam_user_id = exam_users.id')
-            .joins('LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id')
-            .joins('LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id')        
-            .where('user_id = ? AND question_id = ? AND question_item_id = ? AND exam_user_attempts.id = ? AND question_item_id IS NOT NULL', user_id, question_id, question_item_id, id)
-            .select("question_item_id").last             
-      else
-        euat = ExamUserAttempt.where(exam_user_id: exam_user_id).last
-      end 
-      if mod_correct_exam != Exam::AVERAGE
-          @response_question_user =  ExamUserAttempt.joins('LEFT JOIN exam_users ON exam_user_attempts.exam_user_id = exam_users.id')
-            .joins('LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id')
-            .joins('LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id')        
-            .where('exam_user_attempts.id = ? AND user_id = ? AND question_id = ? AND question_item_id = ?', euat.id, user_id, question_id, question_item_id)
-            .select("question_item_id").last   
-      end 
+    if mod_correct_exam == Exam::GREATER
+      grade = ExamUserAttempt.where(exam_user_id: exam_user_id).maximum(:grade)
+      @exam_user_attempt =  ExamUserAttempt.where(exam_user_id: exam_user_id, grade: grade).last        
+    elsif mod_correct_exam == Exam::LAST
+      @exam_user_attempt = ExamUserAttempt.where(exam_user_id: exam_user_id).last
+    else
+      @exam_user_attempt = ExamUserAttempt.find(id)
     end 
-    @response_question_user
+    @exam_user_attempt
   end 
 
   def log_description

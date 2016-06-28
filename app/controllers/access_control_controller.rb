@@ -74,6 +74,23 @@ class AccessControlController < ApplicationController
     end
   end
 
+  def exam
+    if session[:blocking_content]==false
+      exams = [exam  = Exam.find(params[:id])]
+      verify(exams.flatten.map(&:allocation_tags).flatten.map(&:id).flatten.compact, Exam, :show, true, true)
+      if exam.path(false).index('.html')
+        if params[:index]
+          file_path = File.join(Exam::FILES_PATH, params[:id], [params[:file], '.', params[:extension]].join)
+        else
+          file_path = File.join(Exam::FILES_PATH, params[:id], params[:folder], [params[:path], '.', params[:format]].join)
+        end
+        send_file(file_path, { disposition: 'inline' })
+      else
+        send_file(exam.path(true), { disposition: 'inline', type: return_type(params[:extension]) })
+      end
+    end
+  end
+
   def lesson
     unless user_session[:blocking_content]
       lessons = [lesson  = Lesson.find(params[:id])]

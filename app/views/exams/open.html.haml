@@ -10,9 +10,11 @@
 
 :javascript
 
-  window.onbeforeunload = function () {
-    return "#{I18n.t('exams.open.refresh')}";
-  }
+  if(#{@disabled}==false){
+    window.onbeforeunload = function () {
+      return "#{I18n.t('exams.open.refresh')}";
+    }
+  }  
 
   $('.content_exam').html("#{escape_javascript( render 'exams/open/content', { preview: @preview } )}");
 
@@ -24,6 +26,13 @@
     var url = this.href;
     $('.content_exam').load(url);
     return false;
+  });
+
+  $(".link_open_exam").call_fancybox({
+    minWidth: '50%',
+    minheigth: '50%',
+    closeBtn : true,
+    height: 'auto' 
   });
 
   $('#finish_button').unbind('click').click( function(){
