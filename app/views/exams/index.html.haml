@@ -17,9 +17,8 @@
           - release = exam.release_correction_exam_user(current_user)
           - if release
             - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam), class: 'ico-e'
-          - exam_user_id = Exam.find_or_create_exam_user(exam, current_user.id, @allocation_tags_ids)
           - info = exam.info(current_user.id, @allocation_tags_ids)
-          - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation])#, exam_user_id:exam_user_id
+          - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation])
           - pre = pre_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation])
           %tr.lines{ id: "tr_#{exam.id}" }
             %td

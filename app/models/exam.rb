@@ -1,5 +1,6 @@
 class Exam < Event
   include AcademicTool
+  include EvaluativeTool
 
   GREATER, AVERAGE, LAST = 0, 1, 2
   OFFER_PERMISSION, GROUP_PERMISSION = true, true
@@ -368,11 +369,9 @@ class Exam < Event
     end
   end
 
-  def self.find_or_create_exam_user(exam, current_user_id, allocation_tags_ids)
-    academic_allocation = AcademicAllocation.where(academic_tool_id: exam.id, academic_tool_type: 'Exam',
-        allocation_tag_id: allocation_tags_ids).first
-    exam_user = exam.exam_users.where(user_id: current_user_id, academic_allocation_id: academic_allocation.id).first_or_create
-    exam_user
+  def self.find_or_create_exam_user(exam, current_user_id, allocation_tag_id)
+    academic_allocation = AcademicAllocation.where(academic_tool_id: exam.id, academic_tool_type: 'Exam').where("allocation_tag_id = :allocation_tag_id OR allocation_tag_id IN (#{AllocationTag.find(allocation_tag_id).related.join(',')})", {allocation_tag_id: allocation_tag_id}).first
+    exam.exam_users.where(user_id: current_user_id, academic_allocation_id: academic_allocation.id).first_or_create
   end
 
   def self.find_or_create_exam_user_attempt(exam_user_id)

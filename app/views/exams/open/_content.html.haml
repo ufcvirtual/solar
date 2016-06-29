@@ -15,14 +15,14 @@
           %td.number
             = number_question.to_s + ')'
           %td.enunciation
-            = question.enunciation + ' ' + anull
+            = raw question.enunciation + ' ' + anull
         - question_images = get_question_images(question.id)
         - unless question_images.nil?
           %tr.question_images
             - question_images.each do |q_image|
               %td.image
                 = image_tag q_image.image(get_image_size(question_images.count)), id: 'question_image'
-      = render 'exams/open/question', { question: question, preview: preview }
+        = render 'exams/open/question', { question: question, preview: preview }
 
 .message_div_navigation
 - if @pdf != 1

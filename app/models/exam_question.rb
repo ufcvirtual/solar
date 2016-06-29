@@ -44,7 +44,7 @@ class ExamQuestion < ActiveRecord::Base
         questions: {status: true})
       .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
         questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
-      .order(query_order);
+      .order(query_order)
 
     if (no_response)
       exam_questions.each do |exam_question|
