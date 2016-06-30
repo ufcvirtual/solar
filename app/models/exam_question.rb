@@ -29,7 +29,11 @@ class ExamQuestion < ActiveRecord::Base
     responses = last_attempt.try(:complete?) ? nil : last_attempt.try(:exam_responses)
 
     if responses.blank?
-      raffle_order? ? query_order << "RANDOM()" : query_order << "exam_questions.order"
+      if raffle_order
+        query_order << "RANDOM()"
+      else
+        query_order << "exam_questions.order"
+      end
       exam_questions = ExamQuestion.joins(:question)
         .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
           questions: {status: true})
