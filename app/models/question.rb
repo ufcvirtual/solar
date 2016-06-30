@@ -8,6 +8,7 @@ class Question < ActiveRecord::Base
   belongs_to :updated_by_user, class_name: 'User'
 
   has_many :exam_questions
+  has_many :exam_responses
   has_many :exams, through: :exam_questions
   has_many :question_images, class_name: 'QuestionImage', dependent: :destroy
   has_many :question_items , class_name: 'QuestionItem' , dependent: :destroy

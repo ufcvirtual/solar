@@ -3,6 +3,8 @@ class ExamQuestion < ActiveRecord::Base
   belongs_to :exam
   belongs_to :question
 
+  has_many :exam_responses, through: :question
+
   accepts_nested_attributes_for :question
 
   validates :score, presence: true
@@ -14,7 +16,7 @@ class ExamQuestion < ActiveRecord::Base
 
   before_save :can_save?, unless: 'annulled_changed?'
   after_save :recalculate_grades, if: 'annulled_changed?'
-  
+
   def self.copy(exam_question_to_copy, user_id = nil)
     question = Question.copy(exam_question_to_copy.question, user_id)
     exam_question = ExamQuestion.create exam_question_to_copy.attributes.except('id', 'question_id').merge({ question_id: question.id })
@@ -24,32 +26,28 @@ class ExamQuestion < ActiveRecord::Base
 
   def self.list(exam_id, raffle_order = false, last_attempt)
     query_order = []
-    no_response = false
     responses = last_attempt.try(:complete?) ? nil : last_attempt.try(:exam_responses)
 
-    unless responses.blank?
-      question_ids = responses.map{|x| x.question_id}
-      query_order << "position(','||question_id::text||',' in ',"+ question_ids.join(",") +",')"
-    else
-      no_response = true
-      if raffle_order
-        query_order << "RANDOM()"
-      else
-        query_order << "exam_questions.order"
-      end
-    end
+    if responses.blank?
+      raffle_order? ? query_order << "RANDOM()" : query_order << "exam_questions.order"
+      exam_questions = ExamQuestion.joins(:question)
+        .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
+          questions: {status: true})
+        .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
+          questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
+        .order(query_order)
 
-    exam_questions = ExamQuestion.joins(:question)
-      .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
-        questions: {status: true})
-      .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
-        questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
-      .order(query_order)
-
-    if (no_response)
       exam_questions.each do |exam_question|
         last_attempt.exam_responses.where(question_id: exam_question.question_id).first_or_create!(duration: 0)
       end
+    else
+      exam_questions = ExamQuestion.joins(:question).joins(:exam_responses)
+        .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
+          exam_responses: {exam_user_attempt_id: last_attempt.id},
+          questions: {status: true})
+        .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
+          questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
+        .order('exam_responses.id')
     end
 
     exam_questions
