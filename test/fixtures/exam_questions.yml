@@ -84,6 +84,7 @@ exam5_question7:
   question_id: 7
   score: 0.5
   order: 1
+  use_question: TRUE
 
 exam5_question8:
   id: 12
@@ -91,6 +92,7 @@ exam5_question8:
   question_id: 8
   score: 1
   order: 2
+  use_question: TRUE
 
 exam5_question9:
   id: 13
@@ -98,6 +100,7 @@ exam5_question9:
   question_id: 9
   score: 1
   order: 3
+  use_question: TRUE
 
 exam5_question10:
   id: 14
@@ -105,6 +108,7 @@ exam5_question10:
   question_id: 10
   score: 2
   order: 4
+  use_question: TRUE
 
 exam7_question3:
   id: 15
@@ -112,6 +116,7 @@ exam7_question3:
   question_id: 3
   score: 1
   order: 1
+  use_question: TRUE
 
 exam7_question8:
   id: 16
@@ -119,3 +124,84 @@ exam7_question8:
   question_id: 8
   score: 2
   order: 2
+  use_question: TRUE
+
+exam1_question1:
+  id: 17
+  exam_id: 1
+  question_id: 1
+  score: 2
+  order: 1
+  use_question: TRUE
+
+exam1_question2:
+  id: 18
+  exam_id: 1
+  question_id: 2
+  score: 2
+  order: 2
+  use_question: TRUE
+
+exam1_question5:
+  id: 19
+  exam_id: 1
+  question_id: 5
+  score: 2
+  order: 3
+  use_question: TRUE
+
+exam1_question8:
+  id: 20
+  exam_id: 1
+  question_id: 8
+  score: 2
+  order: 4
+  use_question: TRUE
+
+exam1_question9:
+  id: 21
+  exam_id: 1
+  question_id: 9
+  score: 2
+  order: 5
+  use_question: TRUE
+
+exam3_question9:
+  id: 22
+  exam_id: 3
+  question_id: 9
+  score: 2
+  order: 1
+  use_question: TRUE
+
+exam3_question10:
+  id: 23
+  exam_id: 3
+  question_id: 10
+  score: 2
+  order: 2
+  use_question: FALSE
+
+exam3_question4:
+  id: 24
+  exam_id: 3
+  question_id: 4
+  score: 2
+  order: 3
+  use_question: TRUE
+
+exam6_question4:
+  id: 25
+  exam_id: 6
+  question_id: 4
+  score: 2
+  order: 1
+  use_question: TRUE
+
+exam5_question7:
+  id: 26
+  exam_id: 5
+  question_id: 7
+  score: 2
+  order: 4
+  use_question: TRUE

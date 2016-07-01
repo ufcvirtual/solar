@@ -167,12 +167,11 @@ class ExamsController < ApplicationController
     render text: t(:no_permission)
   end
 
-
   def result_exam_user
     authorize! :open, Exam, { on: @allocation_tag_id = active_tab[:url][:allocation_tag_id] }
     @exam = Exam.find(params[:id])
     raise 'dates' unless @exam.ended?
-    exam_user = ExamUser.joins(:academic_allocation).where(user_id: current_user.id, academic_allocations: { academic_tool_id: @exam.id, academic_tool_type: 'Exam', allocation_tag_id: @allocation_tag_id }).first
+    exam_user = ExamUser.joins(:academic_allocation).where(user_id: current_user.id, academic_allocations: { academic_tool_id: @exam.id, academic_tool_type: 'Exam', allocation_tag_id: AllocationTag.find(@allocation_tag_id).related }).first
     raise 'empty' if exam_user.nil?
 
     # get_grade tem que calcular a nota caso todas as tentativas n tenham e definir o resultado final em exam_user
@@ -206,13 +205,12 @@ class ExamsController < ApplicationController
     end
   rescue => error
     render_json_error(error, 'exams.error')
-
   end
 
   def calcule_grade_user
     exam = Exam.find(params[:id])
-    grade =exam.recalculate_grades(current_user.id, nil, true)
-    render json: { success: true, grade: grade, notice: t('finish', scope: 'exams.success') }
+    grade = exam.recalculate_grades(current_user.id, nil, true)
+    render json: { success: true, grade: grade, status: t('exams.situation.corrected'), notice: t('finish', scope: 'exams.success') }
   end 
 
   def calcule_grade

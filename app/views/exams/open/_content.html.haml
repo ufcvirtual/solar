@@ -3,12 +3,11 @@
   - link = open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: 'corrected')
   - @exam_questions.each do |question|  
     - @exam_responses = find_exam_responses(@last_attempt, question.id)
-    - @unique_id = ExamResponse.is_unique?(@exam_responses) ? ExamResponse.get_question_item_id(@exam_responses) : false
+    - @unique_id = ExamResponse.is_unique?(@exam_responses) ? ExamResponse.get_question_item_id(@exam_responses) : false rescue false
     - number_question = number_question+1
     - anull = ""
-    - if @disabled
-      - if question.annulled
-        - anull = t('exams.open.anull')
+    - if @disabled && question.annulled
+      - anull = t('exams.open.anull')
     %table.questions
       %thead
         %tr.question
@@ -21,7 +20,7 @@
           %tr.question_images
             - question_images.each do |q_image|
               %td.image
-                = image_tag q_image.image(get_image_size(question_images.count)), id: 'question_image'
+                = image_tag q_image.image(get_image_size(question_images.count)), id: 'question_image', alt: q_image.img_alt
         = render 'exams/open/question', { question: question, preview: preview }
 
 .message_div_navigation

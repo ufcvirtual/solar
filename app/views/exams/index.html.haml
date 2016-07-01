@@ -14,10 +14,9 @@
           %th.small= t('exams.index.grade')
       %tbody
         - @exams.each do |exam|
-          - release = exam.release_correction_exam_user(current_user)
-          - if release
-            - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam), class: 'ico-e'
           - info = exam.info(current_user.id, @allocation_tags_ids)
+          - if info[:grade].blank? && exam.ended? && exam.can_correct?(current_user, @allocation_tags_ids)
+            - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam), class: 'ico-e'
           - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation])
           - pre = pre_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation])
           %tr.lines{ id: "tr_#{exam.id}" }
@@ -26,7 +25,7 @@
                 - unless ['to_answer', 'not_finished', 'retake'].include?(info[:situation])
                   .title= exam.name
                   - if info[:situation] == 'corrected'
-                    = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam), class: 'link_content', id: 'open-exam-result'
+                    = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam), class: 'link_content', class: 'open-exam-result'
                     |
                     = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'link_open_exam', id: 'open-result'
                 - else
@@ -46,7 +45,7 @@
               %div= [(exam.start_hour), (exam.end_hour)].join(' - ')
             %td.center= [exam.duration, t('.min')].join(' ')
             - count = info[:count].nil? || info[:count]==0 ? "" : info[:count].to_s
-            %td.center
+            %td.center.situation
               %div{class: "#{info[:situation]}"}= I18n.t(info[:situation], :count => count, :scope => [:exams, :situation])
 
             %td.center
@@ -72,7 +71,7 @@
       height: 'auto'
     });
 
-    $("#open-exam-result").call_fancybox({
+    $(".open-exam-result").call_fancybox({
       minWidth: '50%',
       minHeight: '50%',
       height: 'auto',
@@ -97,6 +96,7 @@
       flash_message("#{t('exams.error.calcule_grade')}", 'alert');
       return false;
     }
+    
     $.put($(link).data('url'), function(data){
       var success = data.success;
       var grade = data.grade;

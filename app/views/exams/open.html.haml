@@ -3,8 +3,9 @@
     .header
       = render 'exams/open/header', { preview: @preview }
     .content_exam
-    .finish_exam
-      = button_tag t('exams.open.finish_exam'), class: 'btn btn_main' , id: 'finish_button', type: :button, :style => "display: none;"
+    - unless @disabled
+      .finish_exam
+        = button_tag t('exams.open.finish_exam'), class: 'btn btn_main' , id: 'finish_button', type: :button, :style => "display: none;"
 
 = javascript_include_tag 'exams'
 

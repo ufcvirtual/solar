@@ -31,7 +31,7 @@ exam4:
   name: 'Prova 4'
   description: 'A baixa do índice CSI300, que agrupa as 300 principais empresas cotadas nas duas bolsas, forçou a suspensão das cotações – chamada de "circuit braker". O mecanismo foi acionado pela primeira vez na última segunda-feira (4).ele já avisou: não esperem medidas bombásticas.'
   duration: 10
-  number_questions: 10
+  number_questions: 4
   schedule_id: 22
   status: false
 
@@ -40,7 +40,7 @@ exam5:
   name: 'Prova 5'
   description: 'Tendo como pano de fundo as preocupações com a economia chinesa, a queda dos preços do petróleo e a situação geopolítica, o índice Hang Seng de Hong Kong perdeu  durante a manhã 3,05%. Ações recentes de Pequim para depreciarem o iuan inflamaram os temores de que a segunda maior economia do mundo está desacelerando mais do que o esperado e poderia desencadear uma nova onda de desvalorização cambial competitiva na região. Foi o oitavo dia consecutivo de depreciação da moeda chinesa.Descrição da prova Com a economia como está, Wagner disse que o trabalho vai ser lento, de reconquistar a confiança interna e externa e ele já avisou: não esperem medidas bombásticas.'
   duration: 60
-  number_questions: 20
+  number_questions: 4
   schedule_id: 27
   status: true
 

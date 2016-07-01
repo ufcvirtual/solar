@@ -1985,6 +1985,7 @@ en_US:
       application: Application
       edit_content: Edit content
       digital_class: Digital Class
+      tool_management: Evaluative/Frequency tools management
     success:
       saved: Saved successfully
       deleted: Deleted successfully
@@ -2037,6 +2038,10 @@ en_US:
     repositories:
       questions: Questions bank
       questions_desc: 'Repository which questions about diverse topics can be created, stored, edited, removed or published.'
+    evaluative_tools:
+      full_period: "%{dstart} à %{dend} %{hours}"
+      expand_description: Expand description
+      compress_description: Compress description
   curriculum_units:
     success:
       created: Subject was successfully created.
@@ -2979,7 +2984,7 @@ en_US:
       in_use: Is being used at exams
       min_items: The question must have, at least, 3 items
       correct_item: The question must have, at least, one correct item
-      only_one_true_item: To this type of question, only one correct item is allowed
+      only_one_true: To this type of question, only one correct item is allowed
       private: Private question, is not possible to execute this action
       min_public_questions: "To each public question created, you can create 10 private ones. By exceeding this limit, you don't have access to different authors public questions. The limit was exceeded."
       draft: Question as draft

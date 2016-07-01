@@ -19,9 +19,10 @@
     - if @disabled.blank?     
       = t('exams.open.to') + Time.at(@exam.duration*60).utc.strftime("%H:%M:%S")
 - if @preview
-  .form_requirement.warning= t('questions.warning.questions')
-  .form_requirement.warning= t('questions.warning.corrected')
+  .form_requirement.blue_warning= t('questions.warning.questions')
+- elsif @disabled
+  .form_requirement.blue_warning= t('questions.warning.corrected')
 - else
-  .form_requirement.warning= t('questions.warning.save_automatically')
+  .form_requirement.blue_warning= t('questions.warning.save_automatically')
 
   

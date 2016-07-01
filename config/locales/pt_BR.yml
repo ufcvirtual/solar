@@ -2193,6 +2193,7 @@ pt_BR:
       # EDX_items
       application: Aplicação
       edit_content: Editar conteúdo
+      tool_management: Gerência de ferramentas avaliativas/de frequência
     success:
       saved: Salvo com sucesso
       deleted: Excluido com sucesso
@@ -2245,6 +2246,10 @@ pt_BR:
     repositories:
       questions: Banco de questões
       questions_desc: 'Repositório no qual questões sobre diversos tópicos podem ser criadas, armazenadas, editadas, removidas ou publicadas.'
+    evaluative_tools:
+      full_period: "%{dstart} à %{dend} %{hours}"
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
 
   curriculum_units:
     success:
@@ -3215,7 +3220,7 @@ pt_BR:
       in_use: Está sendo usada em provas
       min_items: A questão precisa ter, ao menos, 3 itens
       correct_item: A questão precisa ter ao menos um item correto
-      only_one_true_item: Para este tipo de questão, apenas um item correto é permitido
+      only_one_true: Para este tipo de questão, apenas um item correto é permitido
       private: Questão é privada, não é possível realizar a ação desejada.
       min_public_questions: A cada questão pública criada, você pode criar 10 privadas. Ao ultrapassar este limite, você não tem acesso a questões públicas de demais autores. O limite foi ultrapassado.
       draft: Questão ainda como rascunho.

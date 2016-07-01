@@ -13,11 +13,16 @@ class ExamUser < ActiveRecord::Base
 
   attr_accessor :merge
 
+  def answered_questions(last_attempt=nil)
+    last_attempt = exam_user_attempts.last if last_attempt.blank?
+    return 0 if last_attempt.blank?
+    Question.joins(question_items: [exam_responses: :exam_user_attempt]).where(exam_user_attempts: {id: last_attempt.id}).pluck(:id).uniq.count rescue 0
+  end
+
   def info
     complete_attempts = exam.ended? ? exam_user_attempts : exam_user_attempts.where(complete: true)
      
     last_attempt = exam_user_attempts.last
-    responses = last_attempt ? last_attempt.exam_responses.count : 0
     grade = case exam.attempts_correction
             when Exam::GREATER; complete_attempts.map(&:grade).max
             when Exam::AVERAGE then 
@@ -26,7 +31,7 @@ class ExamUser < ActiveRecord::Base
             when Exam::LAST; complete_attempts.last.grade
             end
 
-    { grade: grade, complete: last_attempt.try(:complete), attempts: exam_user_attempts.count, responses: responses }
+    { grade: grade, complete: last_attempt.try(:complete), attempts: exam_user_attempts.count, responses: answered_questions(last_attempt) }
   end
 
   def has_attempt(exam)

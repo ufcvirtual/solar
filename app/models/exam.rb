@@ -36,18 +36,15 @@ class Exam < Event
   after_save :recalculate_grades,   if: 'attempts_correction_changed?'
   after_save :send_result_emails,   if: 'result_email_changed? && result_email'
 
-  def recalculate_grades(user_id=nil, allocation_tags_ids=nil, all=nil)
+  def recalculate_grades(user_id=nil, ats=nil, all=nil)
     grade = 0.00
     # chamar metodo de correção dos itens respondidos para todos os que existem
-    list_exam_user = self.list_exam_correction(user_id, allocation_tags_ids, all)
-    list_exam_user.each do |exam_user|
-      self.correction_exams(exam_user.id)
-      grade = self.get_grade(exam_user.id)
+    list_exam_correction(user_id, ats, all).each do |exam_user|
+      correction_exams(exam_user.id)
+      grade = get_grade(exam_user.id)
       grade = grade ? grade : 0.00
-      ExamUser.update(exam_user.id, grade: grade.round(2)) 
-      if self.result_email
-        self.send_result_emails(exam_user.id, grade)
-      end  
+      exam_user.update_attributes grade: grade.round(2)
+      send_result_emails(exam_user.id, grade) if result_email
     end
     grade.round(2)
   end
@@ -66,7 +63,7 @@ class Exam < Event
   end
 
   def grade_msg_template(user, grade)
-   alloc = self.get_ats_exam_user(user)
+   alloc = get_ats_exam_user(user)
    ats = AllocationTag.find(alloc.id)
    label_cur = ats.curriculum_unit_types
    label_info = ats.info
@@ -83,31 +80,25 @@ class Exam < Event
   end
 
   def get_ats_exam_user(user)
-    ats = ExamUser.joins("LEFT JOIN academic_allocations ON exam_users.academic_allocation_id = academic_allocations.id")
-                  .joins("LEFT JOIN exams ON exams.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Exam' AND exams.status=TRUE")
-                  .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.exam_user_id = exam_users.id")
-                  .joins("LEFT JOIN schedules ON exams.schedule_id = schedules.id")
-                  .where("exams.id = ? AND user_id = ?", self.id, user.id)
-                  .select("DISTINCT allocation_tag_id AS id").first
+    ExamUser.joins(academic_allocation: :exam)
+            .where(exams: { id: id, status: true }, user_id: user_id)
+            .select('DISTINCT academic_allocations.allocation_tag_id AS id') .first
   end  
 
-  def list_exam_correction(user_id=nil, allocation_tags_ids=nil, all=nil)
-    query_user = ""
-    query_alloc = ""
-    query_user = "exam_users.user_id =#{user_id} AND " unless user_id.blank? 
-    query_alloc = "allocation_tag_id  IN (#{allocation_tags_ids}) AND " unless allocation_tags_ids.blank?  
-    query_not_all = all.blank? ? "" : "exam_user_attempts.grade IS NULL AND "
+  def list_exam_correction(user_id=nil, ats=nil, all=nil)
+    query = []
+    query << "exam_users.user_id = :user_id "   unless user_id.blank? 
+    query << "academic_allocations.allocation_tag_id  IN (#{ats}) "  unless ats.blank?  
+    query << "exam_user_attempts.grade IS NULL" unless all.blank?
+    query << "schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour::time < current_time)"
 
-    list_exam_user = ExamUser.joins("LEFT JOIN academic_allocations ON exam_users.academic_allocation_id = academic_allocations.id")
-                    .joins("LEFT JOIN exams ON exams.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Exam' AND exams.status=TRUE")
-                    .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.exam_user_id = exam_users.id")
-                    .joins("LEFT JOIN schedules ON exams.schedule_id = schedules.id")
-                    .where(query_not_all + query_user + query_alloc + "schedules.end_date<CURRENT_DATE AND exams.id = ? ", self.id)
-                    .select("DISTINCT exam_users.id AS id") 
+    ExamUser.joins(academic_allocation: [exam: :schedule])
+            .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.exam_user_id = exam_users.id")
+            .where(exams: { id: id, status: true }).where(query.join(' AND '), { user_id: user_id })
+            .select("DISTINCT exam_users.id AS id") 
   end  
   
   def correction_exams(exam_user_id)
-    
     list_attempt = ExamUserAttempt.where(exam_user_id: exam_user_id)
     list_attempt.each do |exam_user_attempt|                
         grade_exam = 0
@@ -133,7 +124,6 @@ class Exam < Event
             end  
           end  
           grade_exam = grade_exam + grade_question
-         # puts ("ExamAtt: #{exam_user_attempt.id} questao: #{question.question_id} scores: #{question.score}  nota:#{grade_question} qtd Item : #{qtd_itens_question} Qtd Correto: #{qtd_itens_true} Usuario: #{qtd_iten_true_user} Falso: #{qtd_itens_false} Usuario: #{qtd_item_false_user_t}")
         end
         grade_exam = grade_exam > 10 ? 10.00 : grade_exam 
 
@@ -146,26 +136,22 @@ class Exam < Event
   end 
 
   def count_itens_correction_question(question)
-    qtd = QuestionItem.where('question_id = ? AND value = ?', question.id, true).count
+    QuestionItem.where('question_id = ? AND value = ?', question.id, true).count
   end
+
   def count_itens_question(question)
-    qtd = QuestionItem.where('question_id = ? ', question.id).count
+    QuestionItem.where('question_id = ? ', question.id).count
   end 
 
   def count_itens_correction_question_att(exam_user_attempt, question, t=true)
-    qtd_att_correction = ExamUserAttempt.joins("LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id")
+    ExamUserAttempt.joins("LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id")
                          .joins("LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id")
                          .joins("LEFT JOIN question_items ON  question_items.id = exam_responses_question_items.question_item_id")
                          .where('question_items.value = ? AND question_items.question_id = ? AND exam_user_attempts.id = ?', t, question.id, exam_user_attempt.id).count
   end  
 
-  def release_correction_exam_user(user)
-    exam_user = ExamUser.joins("LEFT JOIN academic_allocations ON exam_users.academic_allocation_id = academic_allocations.id")
-                    .joins("LEFT JOIN exams ON exams.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Exam' AND exams.status=TRUE")
-                    .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.exam_user_id = exam_users.id")
-                    .joins("LEFT JOIN schedules ON exams.schedule_id = schedules.id")
-                    .where("exam_user_attempts.grade IS NULL AND schedules.end_date<CURRENT_DATE AND exam_users.user_id = ? AND exams.id = ? ", user.id, self.id)
-                    .select("DISTINCT exam_users.id AS id").first
+  def can_correct?(user_id, ats)
+    ExamUser.joins(academic_allocation: [exam: :schedule]).joins('LEFT JOIN exam_user_attempts ON exam_user_attempts.exam_user_id = exam_users.id').where("schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour::time < current_time)").where(user_id: user_id, exams: { status: true, id: id }, academic_allocations: { allocation_tag_id: ats }).where('exam_user_attempts.grade IS NULL').any?
   end                  
 
   def self.correction_cron
@@ -358,12 +344,12 @@ class Exam < Event
   def situation(complete, grade = nil, exam_responses = 0, user_attempts = 0)
     case
     when !started?                                                      then 'not_started'
-    when on_going? && exam_responses == 0                               then 'to_answer'
+    when on_going? && (exam_responses.blank? || exam_responses == 0)    then 'to_answer'
     when on_going? && !complete                                         then 'not_finished'
     when on_going? && (attempts > user_attempts)                        then 'retake'
     when !grade.blank? && ended?                                        then 'corrected'
     when complete && (attempts == user_attempts)                        then 'finished'
-    when ended? && user_attempts != 0 && grade.blank?                   then 'not_corrected'
+    when ended? && (user_attempts != 0 && !user_attempts.blank?) && grade.blank? then 'not_corrected'
     else
       'not_answered'
     end

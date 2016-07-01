@@ -16,15 +16,11 @@ module ExamsHelper
     return I18n.t(:not_started)
   end
 
-  def get_items(question_id)
-    QuestionItem.list(question_id)
-  end
-
   def get_question_images(question_id)
     QuestionImage.list(question_id)
   end
 
-  def get_image_size (count)
+  def get_image_size(count)
     case count
       when 1
         :large
@@ -35,7 +31,7 @@ module ExamsHelper
     end
   end
 
-  def find_exam_responses (last_attempt, question_id)
-    exam_responses = last_attempt.exam_responses.where(question_id: question_id).first
+  def find_exam_responses(last_attempt, question_id)
+    last_attempt.exam_responses.where(question_id: question_id).first
   end
 end
