@@ -4,6 +4,7 @@ class ExamQuestion < ActiveRecord::Base
   belongs_to :question
 
   has_many :exam_responses, through: :question
+  has_many :question_items, through: :question
 
   accepts_nested_attributes_for :question
 
@@ -25,41 +26,45 @@ class ExamQuestion < ActiveRecord::Base
   end
 
   def self.list(exam_id, raffle_order = false, last_attempt)
-    query_order = []
-    responses = last_attempt.try(:complete?) ? nil : last_attempt.try(:exam_responses)
+    if last_attempt.blank? # preview
+      ExamQuestion.joins(:question).where(exam_id: exam_id, annulled: false, use_question: true,
+          questions: { status: true })
+        .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
+          questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
+        .order((raffle_order ? "RANDOM()" : "exam_questions.order"))
+    else
+      responses = last_attempt.try(:complete) ? nil : last_attempt.try(:exam_responses)
 
-    if responses.blank?
-      query_order << (raffle_order ? "RANDOM()" : "exam_questions.order")
-      exam_questions = ExamQuestion.joins(:question)
+      if responses.blank?
+        exam_questions = ExamQuestion.joins(:question)
+          .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
+            questions: {status: true})
+          .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
+            questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
+          .order((raffle_order ? "RANDOM()" : "exam_questions.order"))
+
+        exam_questions.each do |exam_question|
+          last_attempt.exam_responses.where(question_id: exam_question.question_id).first_or_create!(duration: 0)
+        end
+      end
+
+      ExamQuestion.joins(:question).joins(:exam_responses)
         .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
+          exam_responses: {exam_user_attempt_id: last_attempt.id},
           questions: {status: true})
         .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
           questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
-        .order(query_order)
-
-      exam_questions.each do |exam_question|
-        last_attempt.exam_responses.where(question_id: exam_question.question_id).first_or_create!(duration: 0)
-      end
+        .order('exam_responses.id')
     end
-
-    ExamQuestion.joins(:question).joins(:exam_responses)
-      .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
-        exam_responses: {exam_user_attempt_id: last_attempt.id},
-        questions: {status: true})
-      .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
-        questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
-      .order('exam_responses.id')
   end
 
   def self.list_correction(exam_id, raffle_order = false)
-    query_order = []
-    query_order << (raffle_order ? "RANDOM()" : "exam_questions.order")
     ExamQuestion.joins(:question)
       .where(exam_questions: {exam_id: exam_id, use_question: true},
         questions: {status: true})
       .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
         questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
-      .order(query_order);
+      .order((raffle_order ? "RANDOM()" : "exam_questions.order"))
   end
 
   def set_order
@@ -72,10 +77,6 @@ class ExamQuestion < ActiveRecord::Base
 
   def can_reorder?
     raise 'already_started' if exam.status && exam.on_going?
-  end
-
-  def recalculate_grades
-    # chamar metodo de calculo de notas para todos os que existem
   end
 
   def can_change_annulled?

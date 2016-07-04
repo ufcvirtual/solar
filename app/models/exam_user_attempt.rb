@@ -20,28 +20,15 @@ class ExamUserAttempt < ActiveRecord::Base
     self.delete
   end
 
-  def self.last_attempt(exam_user_id)
-    @exam_user_attempts = exam_user_id.exam_user_attempts
-    @exam_user_attempt_last = @exam_user_attempts.last
-
-    @exam_user_attempt_last
-  end
-
   def get_total_time
     exam_responses.sum(:duration)
-
   end
 
-  def self.get_total_attempts(exam_user_id)
-    exam_user = ExamUser.find(exam_user_id)
-    exam_user.exam_user_attempts.count
-  end
-
-  def self.finish_attempt(exam, exam_user_id)
-    @attempt = last_attempt(exam_user_id)
-    @attempt.end = DateTime.now
-    @attempt.complete = true
-    @attempt.save
+  def self.finish_attempt(exam_user)
+    last_attempt = exam_user.exam_user_attempts.last
+    last_attempt.end = DateTime.now
+    last_attempt.complete = true
+    last_attempt.save
   end
 
   def uninterrupted_or_ended(exam)

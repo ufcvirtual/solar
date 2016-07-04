@@ -1,0 +1,37 @@
+%tbody
+  %td.question_items
+    - arr_alf = ('A'..'Z').to_a
+    - question_items = question.question_items
+    - num_question = -1
+
+    - if question.type_question.to_i == Question::UNIQUE
+      - question_items.each do |qi|
+        - num_question =  num_question + 1
+        
+        - if qi.item_image?  
+          - image = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+        %p
+          = radio_button_tag :item, ''
+          = label_tag [arr_alf[num_question]+')', image, raw(qi.description)].compact.join(' ')
+       
+    - elsif question.type_question.to_i == Question::MULTIPLE
+      - question_items.each do |qi|
+        - num_question =  num_question + 1
+
+        - if qi.item_image?     
+          - image =  image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+
+        %p
+          = check_box_tag :item
+          = label_tag [arr_alf[num_question]+')', image, raw(qi.description)].compact.join(' ')
+    - else
+      - question_items.each do |qi|
+        - num_question =  num_question + 1
+
+        - if qi.item_image?
+          - image = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+ 
+        %p
+          = select_tag :item, options_for_select(['F', 'V'])
+          = label_tag [arr_alf[num_question]+')', image, raw(qi.description)].compact.join(' ')
+

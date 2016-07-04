@@ -15,19 +15,19 @@
           - image = nil
           
           - if @disabled
-            - if b.object.value == true 
+            - if b.object.value
               - arra_correted.push(arr_alf[num_question])
-            - if (b.object.value == true && @unique_id==b.object.id)
+            - if (b.object.value && @unique_id==b.object.id)
               - class_label = "hit" 
               - class_comment = 'comment-green'
-            - elsif(b.object.value == false && @unique_id==b.object.id) || (b.object.value == true && @unique_id!=b.object.id)
+            - elsif (!b.object.value && @unique_id==b.object.id) || (b.object.value && @unique_id!=b.object.id)
               - class_label = "incorrect" 
               - class_comment = 'comment-red'
             - if b.object.comment
               - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"  
               
           - if b.object.item_image?  
-            - image = @pdf !=1 ? image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) : image = wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) 
+            - image = @pdf !=1 ? image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) : wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) 
            
           - b.label(class: class_label) {b.radio_button + arr_alf[num_question]+') ' +image + raw(b.text) } + raw(coment)
          
@@ -37,15 +37,15 @@
           
       - elsif question.type_question.to_i == Question::MULTIPLE
         - num_question = -1
-        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled  do |b|
+        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: @disabled}, :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled  do |b|
           - class_label = nil
           - image = nil
           - num_question =  num_question + 1
           - if @disabled
             - coment = b.object.comment  
-            - if (b.object.value == true)
+            - if b.object.value
               - arra_correted.push(arr_alf[num_question])
-            - if ((b.object.value == true && @exam_responses.question_item_ids.include?(b.object.id)==true) || (b.object.value == false && @exam_responses.question_item_ids.include?(b.object.id)==false))
+            - if ((b.object.value && @exam_responses.question_item_ids.include?(b.object.id)) || (!b.object.value && !@exam_responses.question_item_ids.include?(b.object.id)))
               - class_label = "hit" 
               - class_comment = 'comment-green'
             - else
@@ -63,7 +63,7 @@
           = t('exams.result_exam_user.itens_corrected') + arra_correted.join(", ")
       - else
         - num_question = -1
-        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: preview}, :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled do |b|
+        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: @disabled}, :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled do |b|
           - class_label = nil
           - num_question =  num_question + 1
           - selected = @exam_responses.question_item_ids.include?(b.object.id)==true ? 'V' : 'F'

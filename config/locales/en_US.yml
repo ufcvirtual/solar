@@ -2811,6 +2811,7 @@ en_US:
       refresh: Attention! When leaving the page you will lose the current attempt and their changes may be lost!
       exit: Exit
       anull: " (Annulled question)"
+      scores: '( %{score} scores )'
     finish:
       confirm: Are you sure you want to finish the exam?
     summary:
@@ -2840,7 +2841,10 @@ en_US:
       empty: No available result to this exam
       dates: Exam still on going
       general_message: It was not possible to execute this action
-      calcule_grade: The note has been calculated
+      calcule_grade: The grade has been calculated
+      time: The exam must be on going
+      attempt: The maximum number of attempts has been reached
+      not_finished: This exam is not finished yet
     show:
       groups: Groups
       empty_group: Empty group

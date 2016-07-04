@@ -29,8 +29,7 @@
     #start= t("exams.pre.alert_start")
 
   .start_button
-    - @link = open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: @situation)
-    = link_to t("exams.pre.button"), @link, :'data-tooltip' => "exam.name", class: 'link_content link_open_exam', id: 'open-exam'
+    = link_to t("exams.pre.button"), open_exam_path(@exam, situation: @situation), :'data-tooltip' => "exam.name", class: 'link_content link_open_exam', id: 'open-exam'
     
 :javascript
 
@@ -55,8 +54,3 @@
         else{ window.onbeforeunload = function () {} }
       }
     });
-
-    if (!#{@open_button}){
-      $('.notice').remove();
-      $('.link_open_exam').remove();
-    }

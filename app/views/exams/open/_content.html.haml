@@ -1,27 +1,32 @@
 .block_content
   - number_question = 0
-  - link = open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: 'corrected')
-  - @exam_questions.each do |question|  
-    - @exam_responses = find_exam_responses(@last_attempt, question.id)
-    - @unique_id = ExamResponse.is_unique?(@exam_responses) ? ExamResponse.get_question_item_id(@exam_responses) : false rescue false
-    - number_question = number_question+1
-    - anull = ""
-    - if @disabled && question.annulled
-      - anull = t('exams.open.anull')
+  - link = @preview ? preview_exam_path(@exam) : open_exam_path(@exam, situation: 'corrected')
+  - @exam_questions.each_with_index do |question, idx|
+    - unless @preview
+      - @exam_responses = find_exam_responses(@last_attempt, question.id)
+      - @unique_id = ExamResponse.is_unique?(@exam_responses) ? ExamResponse.get_question_item_id(@exam_responses) : false rescue false
+      - number_question = number_question+1
+    - if @disabled
+      - score = t('exams.open.scores', score: question.score)
+      - if question.annulled
+        - anull = t('exams.open.anull')
     %table.questions
       %thead
         %tr.question
           %td.number
             = number_question.to_s + ')'
           %td.enunciation
-            = raw question.enunciation + ' ' + anull
+            = raw [question.enunciation, anull, score].compact.join(' ')
         - question_images = get_question_images(question.id)
         - unless question_images.nil?
           %tr.question_images
             - question_images.each do |q_image|
               %td.image
                 = image_tag q_image.image(get_image_size(question_images.count)), id: 'question_image', alt: q_image.img_alt
-        = render 'exams/open/question', { question: question, preview: preview }
+        - if @preview
+          = render 'exams/open/question_preview', { question: question }
+        - else
+          = render 'exams/open/question', { question: question }
 
 .message_div_navigation
 - if @pdf != 1

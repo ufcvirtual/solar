@@ -3,15 +3,15 @@
     .header
       = render 'exams/open/header', { preview: @preview }
     .content_exam
-    - unless @disabled
+    - unless @disabled || @preview
       .finish_exam
-        = button_tag t('exams.open.finish_exam'), class: 'btn btn_main' , id: 'finish_button', type: :button, :style => "display: none;"
+        = button_tag t('exams.open.finish_exam'), class: 'btn btn_main' , id: 'finish_button', type: :button, style: (@exam_questions.next_page.nil? ? '' : 'display: none;')
 
 = javascript_include_tag 'exams'
 
 :javascript
 
-  if(#{@disabled}==false){
+  if("#{@disabled}"=="false"){
     window.onbeforeunload = function () {
       return "#{I18n.t('exams.open.refresh')}";
     }
@@ -36,17 +36,21 @@
     height: 'auto' 
   });
 
-  $('#finish_button').unbind('click').click( function(){
-    response = confirm("#{I18n.t('exams.finish.confirm')}");
-    if (response) {
-        finish_exam(#{@exam_responses.try(:duration)});
-        $.get("#{complete_exam_path}", {id: "#{@exam.id}"}, function(data){
-          flash_message(data.notice, 'notice');
-        });
-        $.fancybox.close();
-    }
-  });
+  if("#{@preview}"!="true"){
+    $('#finish_button').unbind('click').click( function(){
+      response = confirm("#{I18n.t('exams.finish.confirm')}");
+      if (response) {
+          finish_exam(#{@exam_responses.try(:duration)});
+          $.get("#{complete_exam_path}", {id: "#{@exam.id}"}, function(data){
+            flash_message(data.notice, 'notice');
+          });
+          $.fancybox.close();
+      }
+    });
+  }
 
   unique_answer(#{@unique_id});
 
   load_components(#{@exam_questions.current_page});
+
+  

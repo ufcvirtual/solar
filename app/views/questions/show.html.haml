@@ -8,4 +8,4 @@
           %tr.question
             %td.enunciation
               =raw @question.enunciation
-        = render 'exams/open/question', { question: @question, preview: true }
+        = render 'exams/open/question_preview', { question: @question}

@@ -10,9 +10,9 @@ class ExamResponsesController < ApplicationController
     @exam_user_attempt =  ExamUserAttempt.find(@exam_response.exam_user_attempt_id)
     total_time = @exam_user_attempt.get_total_time
 
-    user_validate = @exam_user_attempt.user.id == current_user.id ? true : false
-    attempt_validate = @exam_user_attempt.id == params[:exam_response][:exam_user_attempt_id].to_i ? true : false
-    duration_validate = @exam_user_attempt.exam.duration > total_time ? true : false
+    user_validate = (@exam_user_attempt.user.id == current_user.id)
+    attempt_validate = (@exam_user_attempt.id == params[:exam_response][:exam_user_attempt_id].to_i)
+    duration_validate = (@exam_user_attempt.exam.duration > total_time)
     date_validate = @exam_user_attempt.exam.on_going?
 
     if (user_validate && attempt_validate && duration_validate && date_validate)

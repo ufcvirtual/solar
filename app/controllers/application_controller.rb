@@ -150,6 +150,7 @@ class ApplicationController < ActionController::Base
     LogAccess.login(user_id: current_user.id, ip: request.remote_ip) rescue nil
     user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id) || false
     user_session[:lessons] = []
+    user_session[:exams] = []
     super
   end
 
@@ -188,6 +189,10 @@ class ApplicationController < ActionController::Base
   end  
 
   private
+
+    # def after_sign_in_path_for(resource)
+    #   redirect_to home_path
+    # end
 
     def opened_or_new_tab?(tab_id)
       (user_session[:tabs][:opened].has_key?(tab_id)) or (user_session[:tabs][:opened].length < Max_Tabs_Open.to_i)

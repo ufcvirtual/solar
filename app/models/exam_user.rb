@@ -35,12 +35,24 @@ class ExamUser < ActiveRecord::Base
   end
 
   def has_attempt(exam)
-    ((exam.attempts > exam_user_attempts.count) || (!exam_user_attempts.last.complete?))
+    (exam_user_attempts.empty? || !exam_user_attempts.last.complete || (exam.attempts > exam_user_attempts.count))
   end
 
   def delete_with_dependents
     exam_user_attempts.map(&:delete_with_dependents)
     self.delete
+  end
+
+  def count_attempts
+    count = exam_user_attempts.where(complete: true).count
+    count = 1 if count.zero?
+    count
+  end
+
+  def find_or_create_exam_user_attempt
+    exam_user_attempt_last = exam_user_attempts.last
+
+    (exam_user_attempt_last.nil? || (exam_user_attempt_last.complete && exam_user_attempt_last.exam.attempts > exam_user_attempts.count)) ?  exam_user_attempts.create(exam_user_id: id, start: Time.now) : exam_user_attempt_last
   end
 
 end

@@ -3048,6 +3048,7 @@ pt_BR:
       refresh: Atenção! Ao sair da página você perderá a tentativa atual e suas alterações podem ser perdidas!
       exit: Sair
       anull: " (Questão Anulada)"
+      scores: '( %{score} pontos )'
     finish:
       confirm: Tem certeza que deseja finalizar a prova?
     summary:
@@ -3078,6 +3079,9 @@ pt_BR:
       dates: Esta prova ainda está em andamento
       general_message: Não foi possível realizar a ação desejada
       calcule_grade: A nota já foi calculada
+      time: A prova deve estar em andamento para realização.
+      attempt: A quantidade máxima de tentativas para realização da prova já foi atingida.
+      not_finished: Esta prova ainda não foi encerrada
     show:
       groups: Turmas
       empty_group: Turma vazia
@@ -3238,8 +3242,8 @@ pt_BR:
       title: Visualização prévia da questão
     warning:
       save_automatically: Todas as alterações são salvas automaticamente.
-      questions: 1) A ordem e questões selecionadas para a prova podem mudar no momento de sua publicação ou resolução.
-      corrected: '2) Itens na cor VERDE estão corretos e itens na cor VEMELHA estão errados'
+      questions: A ordem e questões selecionadas para a prova podem mudar no momento de sua publicação ou resolução.
+      corrected: 'Itens na cor VERDE estão corretos e itens na cor VEMELHA estão errados'
   exam_questions:
     import:
       conclude:

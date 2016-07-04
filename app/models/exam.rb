@@ -97,57 +97,49 @@ class Exam < Event
             .where(exams: { id: id, status: true }).where(query.join(' AND '), { user_id: user_id })
             .select("DISTINCT exam_users.id AS id") 
   end  
-  
+
   def correction_exams(exam_user_id)
-    list_attempt = ExamUserAttempt.where(exam_user_id: exam_user_id)
-    list_attempt.each do |exam_user_attempt|                
-        grade_exam = 0
-        questions_exam = ExamQuestion.list_correction(self.id, self.raffle_order)
-        questions_exam.each do |question|
-          qtd_iten_true_user = 0
-          if question.annulled
-            grade_question =  question.score
-          else  
-            qtd_iten_true_user = self.count_itens_correction_question_att(exam_user_attempt, question)
-            if question.type_question.to_i == Question::UNIQUE  
-                grade_question = qtd_iten_true_user * question.score
-            else
-              qtd_itens_question = self.count_itens_question(question)
-              qtd_itens_true = self.count_itens_correction_question(question)
-              qtd_itens_false = qtd_itens_question - qtd_itens_true
-
-              qtd_iten_false_user = self.count_itens_correction_question_att(exam_user_attempt, question, false)
-              qtd_item_false_user_t = qtd_itens_false - qtd_iten_false_user
-
-              score_item = question.score / qtd_itens_question
-              grade_question = score_item * (qtd_item_false_user_t+qtd_iten_true_user)
-            end  
-          end  
-          grade_exam = grade_exam + grade_question
-        end
-        grade_exam = grade_exam > 10 ? 10.00 : grade_exam 
-
-        if exam_user_attempt.end
-          ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), complete: true) 
+    questions_exam = ExamQuestion.list_correction(id, raffle_order)
+    attempts = ExamUserAttempt.where(exam_user_id: exam_user_id)
+    list_attempt = attempts.where(complete: true)
+    (list_attempt.any? ? list_attempt : attempts.first).each do |exam_user_attempt|
+      grade_exam = 0
+      questions_exam.each do |question|
+        if question.annulled
+          grade_question =  question.score
         else  
-          ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), end: DateTime.now, complete: true)  
-        end
-    end  
-  end 
+          correct_selected_items = count_itens_correction_question_att(exam_user_attempt, question)
+          if question.type_question.to_i == Question::UNIQUE  
+              grade_question = correct_selected_items * question.score
+          else
+            qtd_itens_question = question.question_items.count
+            qtd_itens_true = question.question_items.where(value: true).count
+            qtd_itens_false = qtd_itens_question - qtd_itens_true
 
-  def count_itens_correction_question(question)
-    QuestionItem.where('question_id = ? AND value = ?', question.id, true).count
-  end
+            not_selected_items = count_itens_correction_question_att(exam_user_attempt, question, false)
+            correct_not_selected_items = qtd_itens_false - not_selected_items
 
-  def count_itens_question(question)
-    QuestionItem.where('question_id = ? ', question.id).count
+            score_item = question.score / qtd_itens_question
+            grade_question = score_item * (correct_not_selected_items+correct_selected_items)
+          end  
+        end  
+        grade_exam = grade_exam + grade_question
+      end
+      grade_exam = grade_exam > 10 ? 10.00 : grade_exam 
+
+      if exam_user_attempt.end
+        ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), complete: true) 
+      else  
+        ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), end: DateTime.now, complete: true)  
+      end
+    end
   end 
 
   def count_itens_correction_question_att(exam_user_attempt, question, t=true)
     ExamUserAttempt.joins("LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id")
-                         .joins("LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id")
-                         .joins("LEFT JOIN question_items ON  question_items.id = exam_responses_question_items.question_item_id")
-                         .where('question_items.value = ? AND question_items.question_id = ? AND exam_user_attempts.id = ?', t, question.id, exam_user_attempt.id).count
+                   .joins("LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id")
+                   .joins("LEFT JOIN question_items ON  question_items.id = exam_responses_question_items.question_item_id")
+                   .where('question_items.value = ? AND question_items.question_id = ? AND exam_user_attempts.id = ?', t, question.id, exam_user_attempt.id).count
   end  
 
   def can_correct?(user_id, ats)
@@ -355,22 +347,14 @@ class Exam < Event
     end
   end
 
-  def self.find_or_create_exam_user(exam, current_user_id, allocation_tag_id)
-    academic_allocation = AcademicAllocation.where(academic_tool_id: exam.id, academic_tool_type: 'Exam').where("allocation_tag_id = :allocation_tag_id OR allocation_tag_id IN (#{AllocationTag.find(allocation_tag_id).related.join(',')})", {allocation_tag_id: allocation_tag_id}).first
-    exam.exam_users.where(user_id: current_user_id, academic_allocation_id: academic_allocation.id).first_or_create
+  def find_or_create_exam_user(current_user_id, allocation_tag_id)
+    academic_allocation = AcademicAllocation.where(academic_tool_id: id, academic_tool_type: 'Exam').where("allocation_tag_id = :allocation_tag_id OR allocation_tag_id IN (#{AllocationTag.find(allocation_tag_id).related.join(',')})", {allocation_tag_id: allocation_tag_id}).first
+    ExamUser.where(user_id: current_user_id, academic_allocation_id: academic_allocation.id).first_or_create
   end
 
-  def self.find_or_create_exam_user_attempt(exam_user_id)
-    @exam_users = ExamUser.where(id: exam_user_id).first
-    @exam_user_attempts = @exam_users.exam_user_attempts
-    @exam_user_attempt_last = @exam_user_attempts.last
-
-    if (@exam_user_attempt_last.nil? || (@exam_user_attempt_last.complete? && @exam_user_attempt_last.exam.attempts > @exam_user_attempts.count))
-      @exam_users.exam_user_attempts.build(exam_user_id: exam_user_id, start: Time.now).save
-      @exam_user_attempt_last = ExamUserAttempt.where(exam_user_id: exam_user_id).last
-    end
-
-    @exam_user_attempt_last
+  def find_exam_user(current_user_id, allocation_tag_id)
+    academic_allocation = AcademicAllocation.where(academic_tool_id: id, academic_tool_type: 'Exam').where("allocation_tag_id = :allocation_tag_id OR allocation_tag_id IN (#{AllocationTag.find(allocation_tag_id).related.join(',')})", {allocation_tag_id: allocation_tag_id}).first
+    ExamUser.where(user_id: current_user_id, academic_allocation_id: academic_allocation.id).first
   end
 
   def responses_question_user(exam_user_id, id)
@@ -421,7 +405,6 @@ class Exam < Event
 
   def get_grade(exam_user_id)
     attempts = ExamUserAttempt.where(exam_user_id: exam_user_id)
-
     case attempts_correction
     when Exam::GREATER; attempts.maximum(:grade)
     when Exam::AVERAGE; attempts.average(:grade)

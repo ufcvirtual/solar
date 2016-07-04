@@ -1,19 +1,19 @@
-examuser1_question1_response1:
-  id: 1
-  exam_user_attempt_id: 1
-  question_id: 1
+# examuser1_question1_response1:
+#   id: 1
+#   exam_user_attempt_id: 1
+#   question_id: 1
 
-examuser1_question2_response1:
-  id: 2
-  exam_user_attempt_id: 1
-  question_id: 2
+# examuser1_question2_response1:
+#   id: 2
+#   exam_user_attempt_id: 1
+#   question_id: 2
 
-examuser1_question3_response2:
-  id: 3
-  exam_user_attempt_id: 1
-  question_id: 3
+# examuser1_question3_response2:
+#   id: 3
+#   exam_user_attempt_id: 1
+#   question_id: 3
 
-examuser2_question8_response1:
-  id: 4
-  exam_user_attempt_id: 2
-  question_id: 8
+# examuser2_question8_response1:
+#   id: 4
+#   exam_user_attempt_id: 2
+#   question_id: 8

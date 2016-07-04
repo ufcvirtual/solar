@@ -99,54 +99,50 @@ class ExamsController < ApplicationController
   end
 
   def pre
-    #authorize! :open, Exam, { on: params[:allocation_tag_id] }
     @exam = Exam.find(params[:id])
-    @allocation_tag_id = params[:allocation_tag_id]
-    @situation =  params[:situation]
+    @situation = params[:situation]
 
-    @exam_user_id = Exam.find_or_create_exam_user(@exam, current_user.id, @allocation_tag_id)
-    @total_attempts  = ExamUserAttempt.get_total_attempts(@exam_user_id)
-    last_attempt = ExamUserAttempt.last_attempt(@exam_user_id)
-    @total_time = (last_attempt.try(:complete?) ? 0 : last_attempt.try(:get_total_time)) || 0
-    @open_button = @exam.on_going? && @exam_user_id.has_attempt(@exam)
+    @exam_user = @exam.find_or_create_exam_user(current_user.id, active_tab[:url][:allocation_tag_id])
+    last_attempt = @exam_user.exam_user_attempts.last
 
+    raise 'time' unless @exam.on_going?
+    raise 'attempt' unless @exam_user.has_attempt(@exam)
+    
     if (last_attempt.try(:uninterrupted_or_ended, @exam))
-      @total_time = 0
-      @exam.recalculate_grades(current_user.id, nil, true) if ExamUserAttempt.finish_attempt(@exam, @exam_user_id)
+      redirect_to result_user_exam_path(@exam)
+    elsif !last_attempt.nil? && !last_attempt.try(:complete)
+      redirect_to open_exam_path(@exam, situation: @situation)
+    else
+      @total_attempts  = @exam_user.count_attempts rescue 0
+      @total_time = (last_attempt.try(:complete) ? 0 : last_attempt.try(:get_total_time)) || 0
+      render :pre
     end
-    render :pre
+  rescue => error
+    render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
 
   def open
-    authorize! :open, Exam, { on: params[:allocation_tag_id] }
-    @situation =  params[:situation]
-    @exam = Exam.find(params[:id])
-    user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
-    @preview = false
     @disabled = false
-    @exam_user_attempt_id = params[:exam_user_attempt_id]
-    @allocation_tag_id = params[:allocation_tag_id]
 
-    @exam_user_id = Exam.find_or_create_exam_user(@exam, current_user.id, @allocation_tag_id)
-    @last_attempt = Exam.find_or_create_exam_user_attempt(@exam_user_id)
+    @last_attempt = @exam_user.find_or_create_exam_user_attempt
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
-    @total_time = (@last_attempt.try(:complete?) ? 0 : @last_attempt.try(:get_total_time)) || 0
-    mod_correct_exam = @exam.attempts_correction
+    @total_time = (@last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)) || 0
 
-    if (@situation=='finished' || @situation=='corrected')
+    if (params[:situation] == 'finished' || params[:situation] == 'corrected')
+      mod_correct_exam = @exam.attempts_correction
+      @exam_user_attempt_id = params[:exam_user_attempt_id]
       @disabled = true
-      @preview = true
 
       @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
       if(mod_correct_exam != 1)
-        @exam_user_attempt_id = Exam.get_id_exam_user_attempt(mod_correct_exam, @exam_user_id)
+        @exam_user_attempt_id = Exam.get_id_exam_user_attempt(mod_correct_exam, @exam_user.id)
       end  
 
-      @list_eua = ExamUserAttempt.where(exam_user_id: @exam_user_id)
+      @list_eua = ExamUserAttempt.where(exam_user_id: @exam_user.id)
       if mod_correct_exam == 1 && !params[:exam_user_attempt_id]  && params[:pdf].to_i != 1  
         render :open_result 
       else  
-        @last_attempt = @exam.responses_question_user(@exam_user_id.id, params[:exam_user_attempt_id]) 
+        @last_attempt = @exam.responses_question_user(@exam_user.id, params[:exam_user_attempt_id]) 
         if params[:pdf].to_i == 1
           @grade_pdf = ExamUserAttempt.find(@exam_user_attempt_id).grade
           @ats = AllocationTag.find(@allocation_tag_id)
@@ -165,6 +161,8 @@ class ExamsController < ApplicationController
     end
   rescue CanCan::AccessDenied
     render text: t(:no_permission)
+  rescue => error
+    render text: error.to_s
   end
 
   def result_exam_user
@@ -174,7 +172,6 @@ class ExamsController < ApplicationController
     exam_user = ExamUser.joins(:academic_allocation).where(user_id: current_user.id, academic_allocations: { academic_tool_id: @exam.id, academic_tool_type: 'Exam', allocation_tag_id: AllocationTag.find(@allocation_tag_id).related }).first
     raise 'empty' if exam_user.nil?
 
-    # get_grade tem que calcular a nota caso todas as tentativas n tenham e definir o resultado final em exam_user
     @grade = @exam.get_grade(exam_user.id)
     raise 'grade' if exam_user.grade.blank?
 
@@ -190,10 +187,9 @@ class ExamsController < ApplicationController
   def complete
     exam = Exam.find(params[:id])
 
-    @allocation_tag_id = active_tab[:url][:allocation_tag_id]
-    exam_user_id = Exam.find_or_create_exam_user(exam, current_user.id, @allocation_tag_id)
+    exam_user_id = exam.find_or_create_exam_user(current_user.id, active_tab[:url][:allocation_tag_id])
 
-    if (ExamUserAttempt.finish_attempt(exam, exam_user_id))
+    if (ExamUserAttempt.finish_attempt(exam_user_id))
       user_session[:blocking_content] = false
       if (params[:error])
         respond_to do |format|
@@ -214,7 +210,6 @@ class ExamsController < ApplicationController
   end 
 
   def calcule_grade
-    #authorize! :finish, { on: params[:allocation_tag_id] }
     allocation_tags_ids = params[:allocation_tags_ids]
     ats = allocation_tags_ids.gsub(' ', ",")
 
@@ -245,7 +240,7 @@ class ExamsController < ApplicationController
     authorize! :show, Question, { on: params[:allocation_tags_ids] }
     @exam = Exam.find(params[:id])
     @preview = true
-    @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
+    @exam_questions = Question.where(id: ExamQuestion.list(@exam.id, @exam.raffle_order).map(&:question_id)).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
 
     render :open
   end
@@ -264,14 +259,26 @@ class ExamsController < ApplicationController
     render json: { success: true, notice: t(method, scope: 'exams.success') }
   end
 
+  def verify_time
+    if params[:situation] == 'finished' || params[:situation] == 'corrected'
+      raise 'not_finished' unless @exam.ended?
+    else
+      raise 'time' unless @exam.on_going?
+    end
+  end
+
   def verify_exam
     @exam = Exam.find(params[:id])
-    @allocation_tag_id = params[:allocation_tag_id]
-    @exam_user = Exam.find_or_create_exam_user(@exam, current_user.id, @allocation_tag_id)
-    if params[:situation]!='corrected'
-      unless (@exam.on_going? && @exam_user.has_attempt(@exam))
-        redirect_to :back, alert: t('exams.error.general_message')
-      end
-    end  
+    @allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    unless user_session[:exams].include?(params[:id])
+      authorize! :open, Exam, { on: @allocation_tag_id }
+      user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
+      verify_time 
+      user_session[:exams] << params[:id]
+      @exam_user = @exam.find_or_create_exam_user(current_user.id, @allocation_tag_id)
+      raise 'attempts' unless @exam_user.has_attempt(@exam)
+    else
+      @exam_user = @exam.find_exam_user(current_user.id, @allocation_tag_id)
+    end
   end
 end
