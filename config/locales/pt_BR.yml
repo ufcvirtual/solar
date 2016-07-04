@@ -3211,6 +3211,8 @@ pt_BR:
         remove: Remover item
         comments: Exibir/Ocultar comentário
         images: Exibir/Ocultar imagem
+        remove_image: Remover Image
+        info_remove_image: Image removida com sucesso
       info:
         continue: Prosseguir
         add_images: Adicionar mais imagens

@@ -2975,6 +2975,8 @@ en_US:
         remove: Remove item
         comments: Show/Hide comment
         images: Show/Hide image
+        remove_image: Delete Image
+        info_remove_image: Image successfully removed
       info:
         continue: Continue
         add_images: Add more images

@@ -22,7 +22,7 @@ function expand_or_compress(icon){
 
 function get_duration(duration) {
   var time = array_time[page-1]
-  var new_duration = Math.floor(time / 60);
+  var new_duration = Math.floor(time);
   if (new_duration > 0) {array_time[page-1] = 0;}
   new_duration += parseInt(duration)
   $('#duration').val(new_duration);

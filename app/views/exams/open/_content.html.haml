@@ -23,10 +23,13 @@
             - question_images.each do |q_image|
               %td.image
                 = image_tag q_image.image(get_image_size(question_images.count)), id: 'question_image', alt: q_image.img_alt
+                %br
+                = q_image.legend
         - if @preview
           = render 'exams/open/question_preview', { question: question }
         - else
           = render 'exams/open/question', { question: question }
+
 
 .message_div_navigation
 - if @pdf != 1
@@ -37,13 +40,16 @@
 :javascript
 
   var time = parseInt(#{@total_time});
-  var time_h = Math.floor(time / 60);
-  var time_min = time % 60;
+
+  var time_h = Math.floor(time/3600);
+  var time_min = Math.floor((time%3600)/60);
+  var time_s = (time%3600)%60;
+
   var clock_switch;
 
   jQuery(function($) {
     if (typeof clock_switch == 'undefined') {
-      new updateTime("clock", [time_h, time_min, "00"]);
+      new updateTime("clock", [time_h, time_min, time_s]);
       clock_switch = true;
       }
   });

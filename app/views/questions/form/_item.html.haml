@@ -19,9 +19,12 @@
             - if i.object.item_image_file_name.blank?
               %img{ src: '' }
             - else
-              %img{ src: i.object.item_image.as_json }
+              %img{ src: i.object.item_image.as_json, id: 'image_item' }
             = i.input :item_image, as: :file, label: false
+            - if i.object.item_image_file_name
+              = link_to_function (t('questions.form.items.remove_image')), 'remove_image_item(this)', class: "btn btn_main remove", :'data-url' => remove_image_item_exam_question_path(i.object, exam_question_id: @exam_question.id)
             = link_to_function t('questions.form.items.add_image'), 'add_file(this)', class: 'btn btn_main add_file'
+            
           .info
             = i.input :img_alt, label: t('questions.form.items.alt')
             = i.label t('questions.form.items.alt_desc'), class: 'alt'
@@ -67,6 +70,21 @@
     });
   }
 
+  function remove_image_item(link){
+    $.put($(link).data('url'), function(data){
+      var success = data.success;
+      flash_message(data.notice, 'notice');
+
+      $(link).hide();
+      $('#image_item').attr('src','');
+      
+    }).error(function(data){
+      var response = $.parseJSON(data.responseText);
+      if (typeof(response.alert) != "undefined")
+       flash_message(response.alert, 'alert');
+    });
+  }
+
   function add_image(btn){
     $(btn).parents('.duplicatable_nested_form:first').find('.image').fadeToggle(function(){
       if ($(this).is(':visible'))
@@ -74,3 +92,5 @@
       $(this).toggleClass('hide');
     });
   }
+
+  

@@ -9,6 +9,7 @@
 
         = img.input :image, as: :file, label: false
         = link_to_function t('.add_image'), 'add_file(this)', class: 'btn btn_main add_file'
+
       .info
         = img.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
         = img.input :legend, as: :text

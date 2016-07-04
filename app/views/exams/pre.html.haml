@@ -7,7 +7,7 @@
     %tbody
       %tr.lines
         %td= t("exams.pre.duration")
-        %td=  (@exam.duration-@total_time).to_s + t("exams.pre.min")
+        %td=  (@exam.duration-@total_time/60).to_s + t("exams.pre.min")
       %tr.lines
         %td= t("exams.pre.questions")
         %td= @exam.number_questions.to_s

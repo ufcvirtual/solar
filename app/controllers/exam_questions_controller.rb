@@ -60,6 +60,29 @@ class ExamQuestionsController < ApplicationController
     render_json_error(error, 'questions.error')
   end
 
+  def remove_image_item
+    authorize! :update, Question
+    @exam_question = ExamQuestion.find params[:exam_question_id]
+
+    @question_item = QuestionItem.find params[:id]
+    @question_item.item_image_file_name = nil
+    @question_item.item_image_content_type = nil
+    @question_item.item_image_file_size = nil
+    @question_item.item_image_updated_at = DateTime.now
+    @question_item.img_alt = nil
+
+    if @question_item.save
+      render json: { success: true, notice: t('questions.form.items.info_remove_image') }
+    else
+      render json: { success: false, alert: @exam_question.errors.full_messages.join(', ') }, status: :unprocessable_entity
+    end
+
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  rescue => error
+    render_json_error(error, 'questions.error')
+  end 
+
   def publish
     authorize! :change_status, Question
     ids = params[:id].split(',') rescue [params[:id]]

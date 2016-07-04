@@ -58,6 +58,16 @@ class ExamQuestion < ActiveRecord::Base
     end
   end
 
+  def self.question_current(exam_id, id)
+    exam_questions = ExamQuestion.joins(:question)
+      .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
+        questions: {status: true, id: id})
+      .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
+        questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
+
+    exam_questions
+  end  
+
   def self.list_correction(exam_id, raffle_order = false)
     ExamQuestion.joins(:question)
       .where(exam_questions: {exam_id: exam_id, use_question: true},

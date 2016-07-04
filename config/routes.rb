@@ -576,6 +576,7 @@ Solar::Application.routes.draw do
       get '/export/exam_questions/steps',   to: 'exam_questions#export_steps',   as: :export_steps
       put :publish
       get :copy
+      put :remove_image_item
     end
 
     collection do

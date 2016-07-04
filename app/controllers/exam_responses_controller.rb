@@ -12,7 +12,8 @@ class ExamResponsesController < ApplicationController
 
     user_validate = (@exam_user_attempt.user.id == current_user.id)
     attempt_validate = (@exam_user_attempt.id == params[:exam_response][:exam_user_attempt_id].to_i)
-    duration_validate = (@exam_user_attempt.exam.duration > total_time)
+    duration_validate = (@exam_user_attempt.exam.duration*60 > total_time)
+
     date_validate = @exam_user_attempt.exam.on_going?
 
     if (user_validate && attempt_validate && duration_validate && date_validate)

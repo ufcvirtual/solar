@@ -23,15 +23,16 @@ class ExamUser < ActiveRecord::Base
     complete_attempts = exam.ended? ? exam_user_attempts : exam_user_attempts.where(complete: true)
      
     last_attempt = exam_user_attempts.last
-    grade = case exam.attempts_correction
-            when Exam::GREATER; complete_attempts.map(&:grade).max
-            when Exam::AVERAGE then 
-              grades = complete_attempts.map(&:grade).compact
-              grades.blank? ? nil : grades.inject{ |sum, el| sum + el }.to_f / grades.size
-            when Exam::LAST; complete_attempts.last.grade
-            end
+    #responses = last_attempt ? last_attempt.exam_responses.count : 0
+    # grade = case exam.attempts_correction
+    #         when Exam::GREATER; complete_attempts.map(&:grade).max
+    #         when Exam::AVERAGE then 
+    #           grades = complete_attempts.map(&:grade).compact
+    #           grades.blank? ? nil : grades.inject{ |sum, el| sum + el }.to_f / grades.size
+    #         when Exam::LAST; complete_attempts.last.grade
+    #         end
 
-    { grade: grade, complete: last_attempt.try(:complete), attempts: exam_user_attempts.count, responses: answered_questions(last_attempt) }
+    { grade: self.grade, complete: last_attempt.try(:complete), attempts: exam_user_attempts.count, responses: answered_questions(last_attempt) }
   end
 
   def has_attempt(exam)
