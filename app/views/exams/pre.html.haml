@@ -1,7 +1,7 @@
 .exam_pre
   .title
     #name= @exam.name
-    #description= @exam.description
+    #description= raw @exam.description
 
   %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
     %tbody
@@ -38,12 +38,14 @@
       minheigth: '50%',
       closeBtn : !#{@exam.uninterrupted},
       height: 'auto',
+      maxHeight: '70%',
       afterShow: function() {
         if (!#{@exam.uninterrupted})
           window.onbeforeunload = function () {}
       },
       beforeClose: function() {
-        stop_save_chronometer(duration);
+        if(typeof(array_time) != 'undefined')
+          stop_save_chronometer(duration);
         if (#{@exam.uninterrupted}) {
           var resp = window.confirm("#{I18n.t('exams.open.refresh')}");
           if (resp)

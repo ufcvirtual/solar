@@ -3,35 +3,35 @@
     - arr_alf = ('A'..'Z').to_a
     - question_items = question.question_items
     - num_question = -1
+    - image = ''
 
     - if question.type_question.to_i == Question::UNIQUE
       - question_items.each do |qi|
         - num_question =  num_question + 1
         
-        - if qi.item_image?  
-          - image = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
         %p
-          = radio_button_tag :item, ''
-          = label_tag [arr_alf[num_question]+')', image, raw(qi.description)].compact.join(' ')
-       
+          = check_box_tag :item
+          = label_tag :item, raw([arr_alf[num_question]+')', qi.description].compact.join(' '))
+          - if qi.item_image?     
+            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+
     - elsif question.type_question.to_i == Question::MULTIPLE
       - question_items.each do |qi|
         - num_question =  num_question + 1
 
-        - if qi.item_image?     
-          - image =  image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
-
         %p
           = check_box_tag :item
-          = label_tag [arr_alf[num_question]+')', image, raw(qi.description)].compact.join(' ')
+          = label_tag :item, raw([arr_alf[num_question]+')', qi.description].compact.join(' '))
+          - if qi.item_image?     
+            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+
     - else
       - question_items.each do |qi|
         - num_question =  num_question + 1
 
-        - if qi.item_image?
-          - image = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
- 
         %p
-          = select_tag :item, options_for_select(['F', 'V'])
-          = label_tag [arr_alf[num_question]+')', image, raw(qi.description)].compact.join(' ')
+          = check_box_tag :item
+          = label_tag :item, raw([arr_alf[num_question]+')', raw(qi.description)].compact.join(' '))
+          - if qi.item_image?     
+            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
 

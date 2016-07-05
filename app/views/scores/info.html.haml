@@ -84,10 +84,10 @@
                   - if !['to_answer', 'not_finished', 'retake'].include?(info[:situation])
                     .title= exam.name
                     - if info[:situation] == 'corrected'
-                      = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam, user_id: @user.id), class: 'link_content', class: 'open-exam-result'
+                      = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam, user_id: @user.id), class: 'link_content', class: 'exam-result'
                       - if is_user
                         |
-                        = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'link_open_exam', id: 'open-result'
+                        = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'open_exam', id: 'open-result'
                   - elsif is_user
                     = link_to exam.name, pre, :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', id: 'open-exam'
                   - else
@@ -169,14 +169,15 @@
 
     $("td.show_posts a").call_fancybox();
 
-    $(".link_open_exam").call_fancybox({
+    $(".link_pre_exam, .open_exam").call_fancybox({
       minWidth: '50%',
       minheigth: '50%',
       closeBtn : true,
-      height: 'auto'
+      height: 'auto',
+      maxHeight: '70%'
     });
 
-    $(".open-exam-result").call_fancybox({
+    $(".exam-result").call_fancybox({
       minWidth: '50%',
       minHeight: '50%',
       height: 'auto',

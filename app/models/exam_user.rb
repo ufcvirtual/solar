@@ -13,6 +13,15 @@ class ExamUser < ActiveRecord::Base
 
   attr_accessor :merge
 
+  def copy_dependencies_from(exam_user)
+    unless exam_user.exam_user_attempts.empty?
+      exam_user.exam_user_attempts.each do |attempt|
+        new_attempt = ExamUserAttempt.where(attempt.attributes.except('id').merge!({ exam_user_id: self.id })).first_or_create
+        new_attempt.copy_dependencies_from(attempt)
+      end
+    end
+  end
+
   def answered_questions(last_attempt=nil)
     last_attempt = exam_user_attempts.last if last_attempt.blank?
     return 0 if last_attempt.blank?

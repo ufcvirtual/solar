@@ -15,6 +15,18 @@ class ExamUserAttempt < ActiveRecord::Base
 
   attr_accessor :merge
 
+  def copy_dependencies_from(attempt)
+    unless attempt.exam_responses.empty?
+      attempt.exam_responses.each do |response|
+        new_response = ExamResponse.where(response.attributes.except('id').merge!({ exam_user_attempt_id: self.id })).first_or_create
+        response.question_items.each do |item|
+          new_response.question_items << item
+        end
+        new_response.save
+      end
+    end
+  end
+
   def delete_with_dependents
     exam_responses.delete_all
     self.delete

@@ -41,7 +41,7 @@ module V1::Contents
     from_exam_users.each do |from_exam_user|
       to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Exam', academic_tool_id: from_exam_user.academic_allocation.academic_tool_id).first
       new_exam_user = copy_object(from_exam_user, 'academic_allocation_id' => to_ac.id)
-      copy_objects(from_exam_user.exam_user_attempts, { 'exam_user_id' => new_exam_user.id }, false, :exam_responses)
+      new_exam_user.copy_dependencies_from(from_exam_user)
     end
   end
 
@@ -67,7 +67,6 @@ module V1::Contents
         replicate_public_files(from_at, to_at)
       end
 
-      
       Merge.create! main_group_id: main_group.id, secundary_group_id: secundary_group.id, type_merge: merge
       LogAction.create(log_type: LogAction::TYPE[:create], user_id: 0, ip: env['REMOTE_ADDR'], description: "merge: transfering content from #{from_group.allocation_tag.info} to #{to_group.allocation_tag.info}, merge type: #{merge}") rescue nil
     end

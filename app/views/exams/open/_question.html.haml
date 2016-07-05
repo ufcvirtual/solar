@@ -29,7 +29,7 @@
           - if b.object.item_image?  
             - image = @pdf !=1 ? image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) : wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) 
            
-          - b.label(class: class_label) {b.radio_button + arr_alf[num_question]+') ' +image + raw(b.text) } + raw(coment)
+          - b.label(class: class_label) {b.radio_button + arr_alf[num_question]+') ' + raw(b.text)+image } + raw(coment)
          
         - if @disabled
           %br
@@ -57,7 +57,7 @@
           - if b.object.item_image?     
             - image =  @pdf !=1 ? image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) : image = wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt)
 
-          - b.label(class: class_label) { b.check_box + arr_alf[num_question]+') ' + image + raw(b.text) }+ raw(coment)
+          - b.label(class: class_label) { b.check_box + arr_alf[num_question]+') '  + raw(b.text) + image }+ raw(coment)
         - if @disabled
           %br
           = t('exams.result_exam_user.itens_corrected') + arra_correted.join(", ")
@@ -84,7 +84,7 @@
               - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"
 
             - it = select_tag :question_item_ids, options_for_select(['F', 'V'], selected), disabled: @disabled
-            - b.label(class: class_label) { (it) + ' ' +arr_alf[num_question]+') '+ image + raw(b.text) }+ raw(coment)    
+            - b.label(class: class_label) { (it) + ' ' +arr_alf[num_question]+') ' + raw(b.text) + image }+ raw(coment)    
          
           -else
             - it = link_to_function (select_tag :question_item_ids, options_for_select(['F', 'V'], selected), disabled: @disabled), "change(this)"

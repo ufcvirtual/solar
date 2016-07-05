@@ -8,4 +8,12 @@
           %tr.question
             %td.enunciation
               =raw @question.enunciation
+              - question_images = get_question_images(@question.id)
+              - unless question_images.nil?
+                %tr.question_images
+                  - question_images.each do |q_image|
+                    %td.image
+                      = image_tag q_image.image(get_image_size(question_images.count)), id: 'question_image', alt: q_image.img_alt
+                      %br
+                      = q_image.legend
         = render 'exams/open/question_preview', { question: @question}

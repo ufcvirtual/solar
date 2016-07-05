@@ -200,10 +200,12 @@ class ExamsController < ApplicationController
 
   def calcule_grade_user
     exam = Exam.find(params[:id])
-    unless !params.include?(:user_id) || params[:user_id] == current_user.id
+    user_id = current_user.id
+    if params.include?(:user_id)
       authorize! :calcule_grades, Exam, { on: active_tab[:url][:allocation_tag_id] }
+      user_id = params[:user_id]
     end
-    grade = exam.recalculate_grades(params[:user_id] || current_user.id, nil, true)
+    grade = exam.recalculate_grades(user_id, nil, true)
     render json: { success: true, grade: grade, status: t('exams.situation.corrected'), notice: t('calcule_grade', scope: 'exams.list') }
   rescue => error
     render_json_error(error, 'exams.error')
