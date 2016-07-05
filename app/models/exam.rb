@@ -33,8 +33,7 @@ class Exam < Event
   before_save :set_status, :set_can_publish, on: :update
 
   after_save :set_random_questions, if: 'status_changed? || random_questions_changed? || number_questions_changed?'
-  after_save :recalculate_grades,   if: 'attempts_correction_changed?'
-  after_save :send_result_emails,   if: 'result_email_changed? && result_email'
+  after_save :recalculate_grades,   if: 'attempts_correction_changed? || (result_email_changed? && result_email)'
 
   def recalculate_grades(user_id=nil, ats=nil, all=nil)
     grade = 0.00
