@@ -26,14 +26,11 @@ function get_duration(duration) {
   else
     duration = $('form.edit_exam_response').data('duration');
 
-  // console.log(duration != 0);
-  // if(duration != 0){
-    var time = array_time[page-1];
-    var new_duration = Math.floor(time);
-    if (new_duration > 0) {array_time[page-1] = 0;}
-    new_duration += parseInt(duration);
-    $('#duration').val(new_duration);
-  // }
+  var time = array_time[page-1];
+  var new_duration = Math.floor(time);
+  if (new_duration > 0) {array_time[page-1] = 0;}
+  new_duration += parseInt(duration);
+  $('#duration').val(new_duration);
 }
 
 function stop_save_chronometer(duration) {
