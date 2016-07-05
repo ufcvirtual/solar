@@ -24,13 +24,6 @@ class ExamUserAttempt < ActiveRecord::Base
     exam_responses.sum(:duration)
   end
 
-  def self.finish_attempt(exam_user)
-    last_attempt = exam_user.exam_user_attempts.last
-    last_attempt.end = DateTime.now
-    last_attempt.complete = true
-    last_attempt.save
-  end
-
   def uninterrupted_or_ended(exam)
     ((exam_responses.present? && exam.uninterrupted?) || exam.ended?)
   end

@@ -11,7 +11,6 @@ class ScoresController < ApplicationController
       .order("schedules.start_date, assignments.name")
     @students     = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true)
     @responsibles = AllocationTag.get_participants(@allocation_tag_id, { responsibles: true, profiles: Profile.with_access_on("create", "posts").join(",") }, true) if current_user.profiles_with_access_on("responsibles", "scores", AllocationTag.find(@allocation_tag_id).related).any?
-    
   end
 
   def info

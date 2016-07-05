@@ -1,6 +1,6 @@
 %tbody
   %td.question_items
-    = form_for(@exam_responses, html: { :method => :put, id: 'responses_form'}, :url => exam_response_path(@exam_responses), :remote => true) do |er|
+    = form_for(@exam_responses, html: { :method => :put, id: 'responses_form', :'data-duration' => @exam_responses.duration}, :url => exam_response_path(@exam_responses), :remote => true) do |er|
       = er.hidden_field :exam_user_attempt_id, value: @last_attempt.id
       = er.hidden_field :question_id, value: question.id
       - arr_alf = ('A'..'Z').to_a
@@ -37,7 +37,7 @@
           
       - elsif question.type_question.to_i == Question::MULTIPLE
         - num_question = -1
-        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: @disabled}, :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled  do |b|
+        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: @disabled}, :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled do |b|
           - class_label = nil
           - image = nil
           - num_question =  num_question + 1

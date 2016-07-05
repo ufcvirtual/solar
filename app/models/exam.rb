@@ -102,7 +102,7 @@ class Exam < Event
     questions_exam = ExamQuestion.list_correction(id, raffle_order)
     attempts = ExamUserAttempt.where(exam_user_id: exam_user_id)
     list_attempt = attempts.where(complete: true)
-    (list_attempt.any? ? list_attempt : attempts.first).each do |exam_user_attempt|
+    (list_attempt.any? ? list_attempt : [attempts.first]).each do |exam_user_attempt|
       grade_exam = 0
       questions_exam.each do |question|
         if question.annulled

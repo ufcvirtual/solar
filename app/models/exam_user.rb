@@ -21,16 +21,7 @@ class ExamUser < ActiveRecord::Base
 
   def info
     complete_attempts = exam.ended? ? exam_user_attempts : exam_user_attempts.where(complete: true)
-     
     last_attempt = exam_user_attempts.last
-    #responses = last_attempt ? last_attempt.exam_responses.count : 0
-    # grade = case exam.attempts_correction
-    #         when Exam::GREATER; complete_attempts.map(&:grade).max
-    #         when Exam::AVERAGE then 
-    #           grades = complete_attempts.map(&:grade).compact
-    #           grades.blank? ? nil : grades.inject{ |sum, el| sum + el }.to_f / grades.size
-    #         when Exam::LAST; complete_attempts.last.grade
-    #         end
 
     { grade: self.grade, complete: last_attempt.try(:complete), attempts: exam_user_attempts.count, responses: answered_questions(last_attempt) }
   end
@@ -54,6 +45,29 @@ class ExamUser < ActiveRecord::Base
     exam_user_attempt_last = exam_user_attempts.last
 
     (exam_user_attempt_last.nil? || (exam_user_attempt_last.complete && exam_user_attempt_last.exam.attempts > exam_user_attempts.count)) ?  exam_user_attempts.create(exam_user_id: id, start: Time.now) : exam_user_attempt_last
+  end
+
+  def finish_attempt
+    last_attempt = exam_user_attempts.last
+    last_attempt.end = DateTime.now
+    last_attempt.complete = true
+    last_attempt.save
+  end
+
+  def status
+    last_attempt  = exam_user_attempts.last
+    user_attempts = exam_user_attempts.count
+    case
+    when !exam.started?                                                      then 'not_started'
+    when exam.on_going? && (exam_responses.blank? || exam_responses == 0)    then 'to_answer'
+    when exam.on_going? && !last_attempt.complete                            then 'not_finished'
+    when exam.on_going? && (exam.attempts > user_attempts)                   then 'retake'
+    when !grade.blank? && exam.ended?                                        then 'corrected'
+    when last_attempt.complete && (exam.attempts == user_attempts)           then 'finished'
+    when exam.ended? && (user_attempts != 0 && !user_attempts.blank?) && grade.blank? then 'not_corrected'
+    else
+      'not_answered'
+    end
   end
 
 end

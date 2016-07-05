@@ -21,16 +21,21 @@ function expand_or_compress(icon){
 }
 
 function get_duration(duration) {
-  var time = array_time[page-1]
+  if($.isNumeric(duration))
+    console.log();
+  else
+    duration = $('form.edit_exam_response').data('duration');
+
+  var time = array_time[page-1];
   var new_duration = Math.floor(time);
   if (new_duration > 0) {array_time[page-1] = 0;}
-  new_duration += parseInt(duration)
+  new_duration += parseInt(duration);
   $('#duration').val(new_duration);
 }
 
 function stop_save_chronometer(duration) {
   clearTimeout(t);
-  save_question(duration); 
+  save_question(duration);
 }
 
 function start(question, array_time) {

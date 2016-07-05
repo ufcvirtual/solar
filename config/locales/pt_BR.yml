@@ -2848,7 +2848,8 @@ pt_BR:
       students: Alunos
       no_responsible: Nenhum responsável
       sent_messages: Mensagens enviadas
-      average_evidence: Média das provas
+      average_exam_grade: "Média das provas %{link}"
+      calcule: '(calcular)'
     info:
       assignments: Trabalhos
       date_range: Período
@@ -3041,6 +3042,7 @@ pt_BR:
       block: 'Contéudo bloqueado?'
       uninterrupted: 'Permitido interromper a prova?'
       button: Iniciar Prova
+      continue: Continuar Prova
     open:
       to: " de "
       questions: " questões"
@@ -3129,11 +3131,6 @@ pt_BR:
     open_result:
       name: Correções  
       grade: 'Nota: '
-    list_exams_student:
-      list_exam: Lista de Provas
-      name: Nome da Prova     
-      media_partial: Média parcial
-      final_media: Média Final
     warning:
       title: '<b>Importante: </b>Não é possível criar, importar ou remover questões em provas publicadas'
 
@@ -3212,7 +3209,8 @@ pt_BR:
         comments: Exibir/Ocultar comentário
         images: Exibir/Ocultar imagem
         remove_image: Remover Image
-        info_remove_image: Image removida com sucesso
+        info_remove_image: Imagem removida com sucesso
+        confirm_image_removal: 'Você tem certeza? Mesmo que este formulário seja cancelado, a imagem será removida e não poderá ser recuperada.'
       info:
         continue: Prosseguir
         add_images: Adicionar mais imagens

@@ -2616,7 +2616,8 @@ en_US:
       students: Students
       no_responsible: No responsible
       sent_messages: Sent messages
-      average_evidence: Average evidence
+      average_exam_grade: "Average exam grade %{link}"
+      calcule: '(calcule)'
     info:
       assignments: Assignments
       date_range: Date range
@@ -2804,6 +2805,7 @@ en_US:
       block: 'Content blocked?'
       uninterrupted: 'Allowed to interrupt the exam?'
       button: Start Exam
+      continue: Continue Exam
     open:
       to: " to "
       questions: " questions"
@@ -2893,11 +2895,6 @@ en_US:
     open_result:
       name: Corrections
       grade: 'Grade: '
-    list_exams_student:
-      list_exam: List Exam
-      name: Name Exam    
-      media_partial: Media partial
-      final_media: Final Media
     warning:
       title: "<b>Important: </b>You can't create, import or remove questions while exam's published"
 
@@ -2977,6 +2974,7 @@ en_US:
         images: Show/Hide image
         remove_image: Delete Image
         info_remove_image: Image successfully removed
+        confirm_image_removal: 'Are you sure? Even if you cancel this form, this image will be deleted and will not be recovered.'
       info:
         continue: Continue
         add_images: Add more images

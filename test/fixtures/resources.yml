@@ -1135,6 +1135,6 @@ res218:
 res219:
   id: 219
   controller: 'exams'
-  action: 'list_exams_student'
-  description: 'Acompanhamento de provas de cada aluno individualmente' # professor   
+  action: 'calcule_grades'
+  description: 'Calcular nota de prova de alunos' 
   

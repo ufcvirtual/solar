@@ -22,7 +22,10 @@
               %img{ src: i.object.item_image.as_json, id: 'image_item' }
             = i.input :item_image, as: :file, label: false
             - if i.object.item_image_file_name
-              = link_to_function (t('questions.form.items.remove_image')), 'remove_image_item(this)', class: "btn btn_main remove", :'data-url' => remove_image_item_exam_question_path(i.object, exam_question_id: @exam_question.id)
+              = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_image_item(this)', :'data-url' => remove_image_item_exam_question_path(i.object, exam_question_id: @exam_question.id)
+              = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_image_item_tmp(this)', class: 'trash-tmp', style: 'display: none'
+            - else
+              = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_image_item_tmp(this)'
             = link_to_function t('questions.form.items.add_image'), 'add_file(this)', class: 'btn btn_main add_file'
             
           .info
@@ -71,18 +74,27 @@
   }
 
   function remove_image_item(link){
+    if (!confirm("#{I18n.t('question.form.items.confirm_image_removal')}"))
+      return false;
+
     $.put($(link).data('url'), function(data){
       var success = data.success;
-      flash_message(data.notice, 'notice');
+      flash_message(data.notice, 'notice', 'new_question');
 
       $(link).hide();
+      $(link).next().show();
       $('#image_item').attr('src','');
       
     }).error(function(data){
       var response = $.parseJSON(data.responseText);
       if (typeof(response.alert) != "undefined")
-       flash_message(response.alert, 'alert');
+       flash_message(response.alert, 'alert', 'new_question');
     });
+  }
+
+  function remove_image_item_tmp(link){
+    $(link).parents('.upload-preview:first').find('img').attr('src', '');
+    $(link).parents('.upload-preview:first').find('input.file').val('');
   }
 
   function add_image(btn){
