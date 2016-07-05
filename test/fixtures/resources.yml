@@ -1076,7 +1076,7 @@ res209:
   id: 209
   controller: 'exams'
   action: "open"
-  description: "Abrir prova (Visão do aluno)"
+  description: "Realizar prova"
 
 res210:
   id: 210

@@ -1936,7 +1936,7 @@ responsible_score1:
   resource_id: 185
 
 responsible_score2:
-  profile_id: 11
+  profile_id: 3
   resource_id: 185
 
 responsible_score3:
@@ -1944,7 +1944,7 @@ responsible_score3:
   resource_id: 185
 
 responsible_score4:
-  profile_id: 22
+  profile_id: 18
   resource_id: 185
 
 responsible_score5:
@@ -1964,7 +1964,7 @@ responsible_score8:
   resource_id: 219
 
 responsible_score9:
-  profile_id: 11
+  profile_id: 3
   resource_id: 219
 
 responsible_score10:
@@ -1972,7 +1972,7 @@ responsible_score10:
   resource_id: 219
 
 responsible_score11:
-  profile_id: 22
+  profile_id: 18
   resource_id: 219
 
 responsible_score12:
