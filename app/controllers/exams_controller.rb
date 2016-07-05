@@ -115,6 +115,7 @@ class ExamsController < ApplicationController
     else
       @total_attempts  = @exam_user.count_attempts rescue 0
       @total_time = (last_attempt.try(:complete) ? 0 : last_attempt.try(:get_total_time)) || 0
+      
       render :pre
     end
   rescue => error
@@ -127,7 +128,7 @@ class ExamsController < ApplicationController
     @last_attempt = @exam_user.find_or_create_exam_user_attempt
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @total_time = (@last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)) || 0
-
+    puts ("tempo: #{@total_time} #{@last_attempt.id}")
     if (params[:situation] == 'finished' || params[:situation] == 'corrected')
       mod_correct_exam = @exam.attempts_correction
       @exam_user_attempt_id = params[:exam_user_attempt_id]
@@ -271,11 +272,14 @@ class ExamsController < ApplicationController
     @exam = Exam.find(params[:id])
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     unless user_session[:exams].include?(params[:id])
+
       authorize! :open, Exam, { on: @allocation_tag_id }
       user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
       verify_time 
       user_session[:exams] << params[:id]
+      verify_time
       @exam_user = @exam.find_or_create_exam_user(current_user.id, @allocation_tag_id)
+
       raise 'attempts' unless @exam_user.has_attempt(@exam)
     else
       @exam_user = @exam.find_exam_user(current_user.id, @allocation_tag_id)

@@ -3245,7 +3245,7 @@ pt_BR:
     warning:
       save_automatically: Todas as alterações são salvas automaticamente.
       questions: A ordem e questões selecionadas para a prova podem mudar no momento de sua publicação ou resolução.
-      corrected: 'Itens na cor VERDE estão corretos e itens na cor VEMELHA estão errados'
+      corrected: 'Itens na cor VERDE estão corretos e itens na cor VERMELHA estão errados'
   exam_questions:
     import:
       conclude:
