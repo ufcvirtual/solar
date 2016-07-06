@@ -1,5 +1,6 @@
 class ChatRoom < Event
   include AcademicTool
+  include EvaluativeTool
 
   GROUP_PERMISSION = true
 

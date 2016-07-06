@@ -25,10 +25,13 @@ class ExamQuestion < ActiveRecord::Base
     exam_question
   end
 
-  def self.list(exam_id, raffle_order = false, last_attempt)
+  def self.list(exam_id, raffle_order = false, last_attempt=nil)
     if last_attempt.blank? # preview
-      ExamQuestion.joins(:question).where(exam_id: exam_id, annulled: false, use_question: true,
-          questions: { status: true })
+      exam = Exam.find(exam_id)
+      query = {exam_id: exam_id, annulled: false}
+      query.merge!(use_question: true, questions: {status: true}) if exam.status
+
+      ExamQuestion.joins(:question).where(query)
         .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
           questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
         .order((raffle_order ? "RANDOM()" : "exam_questions.order"))

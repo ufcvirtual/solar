@@ -1,5 +1,6 @@
 class ScheduleEvent < Event
   include AcademicTool
+  include EvaluativeTool
 
   COURSE_PERMISSION = CURRICULUM_UNIT_PERMISSION = GROUP_PERMISSION = OFFER_PERMISSION = true
 
@@ -30,7 +31,7 @@ class ScheduleEvent < Event
   end
 
   def can_change?
-    new_record? or not(integrated)
+    new_record? || !integrated
   end
 
 end
