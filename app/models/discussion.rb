@@ -1,5 +1,6 @@
 class Discussion < Event
   include AcademicTool
+  include EvaluativeTool
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 

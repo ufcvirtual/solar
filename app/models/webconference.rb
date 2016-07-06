@@ -1,5 +1,7 @@
 class Webconference < ActiveRecord::Base
   include Bbb
+  include AcademicTool
+  include EvaluativeTool
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 

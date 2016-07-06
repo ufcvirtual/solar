@@ -2,7 +2,7 @@ class GroupAssignment < ActiveRecord::Base
 
   before_destroy :can_destroy? # deve ficar antes das associacoes
 
-  belongs_to :academic_allocation, conditions: {academic_tool_type: 'Assignment'}
+  belongs_to :academic_allocation, conditions: { academic_tool_type: 'Assignment' }
 
   has_one :sent_assignment, dependent: :destroy
 
@@ -15,7 +15,7 @@ class GroupAssignment < ActiveRecord::Base
   validate :unique_group_name
 
   def can_remove?
-    (sent_assignment.nil? or (sent_assignment.assignment_files.empty? and sent_assignment.grade.blank?))
+    (sent_assignment.nil? || (sent_assignment.assignment_files.empty? && sent_assignment.grade.blank?))
   end
 
   def assignment
@@ -23,7 +23,7 @@ class GroupAssignment < ActiveRecord::Base
   end
 
   def evaluated?
-    not(sent_assignment.nil? or sent_assignment.grade.blank?)
+    !(sent_assignment.nil? || sent_assignment.grade.blank?)
   end
 
   def user_in_group?(user_id)

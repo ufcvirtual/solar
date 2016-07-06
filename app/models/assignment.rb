@@ -1,6 +1,7 @@
 class Assignment < Event
   include AcademicTool
   include FilesHelper
+  include EvaluativeTool
 
   GROUP_PERMISSION = true
 
