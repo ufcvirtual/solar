@@ -27,7 +27,6 @@ class Question < ActiveRecord::Base
   before_destroy { question_labels.clear }
 
   before_save :get_labels
-  # after_save :exam_random_questions, if: 'status_changed? && status'
 
   def reject_images(img)
     (img[:image].blank? && (new_record? || img[:id].blank?))
@@ -92,11 +91,11 @@ class Question < ActiveRecord::Base
     query = []
 
     query << ((search[:only_owner] == 'false' || search[:only_owner].blank?) ? (!verify_privacy.nil? && verify_privacy ? "
-              authors.id = #{user_id}
+              (authors.id = #{user_id}
               OR (
                ((SELECT count FROM user_public_questions) = 0 AND (SELECT count FROM user_private_questions) = 0) 
                OR ((SELECT count FROM user_public_questions) >= (SELECT count FROM user_private_questions)/10)
-              )" : '') : "authors.id = #{user_id}")
+              ))" : '') : "authors.id = #{user_id}")
 
     query << "lower(unaccent(questions.enunciation)) ~ lower(unaccent('#{search[:enun].to_s}'))" unless search[:enun].blank?
     query << "lower(unaccent(l1.name)) ~ lower(unaccent('#{search[:label].to_s}'))"              unless search[:label].blank?

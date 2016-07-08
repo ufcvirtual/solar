@@ -188,7 +188,8 @@ class Exam < Event
 
   def check_hour
     errors.add(:start_hour, I18n.t('exams.error.same_day')) if schedule.start_date != schedule.end_date
-    errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:chat_rooms, :error])) if !end_hour.blank? && !start_hour.blank? && (end_hour.rjust(5, '0') < start_hour.rjust(5, '0'))
+    errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:chat_rooms, :error])) if (end_hour.rjust(5, '0') < start_hour.rjust(5, '0'))
+    errors.add(:duration, I18n.t('exams.error.duration_and_hour')) if !duration.nil? && (Time.parse(end_hour) - Time.parse(start_hour))/60 < duration
   end
 
   def def_hour
@@ -253,7 +254,7 @@ class Exam < Event
   end
   
   def self.my_exams(allocation_tag_ids)
-  	exams = Exam.joins(:academic_allocations, :schedule)
+  	Exam.joins(:academic_allocations, :schedule)
       .where(academic_allocations: {allocation_tag_id: allocation_tag_ids},
           status: true)
       .select('DISTINCT exams.*, schedules.start_date as start_date, schedules.end_date as end_date') 
@@ -427,8 +428,7 @@ class Exam < Event
                     .joins("LEFT JOIN exams ON exams.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Exam' AND exams.status=TRUE")
                     .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.exam_user_id = exam_users.id")
                     .where("block_content=true AND complete=false AND user_id = ? ", user_id)
-                    .select("DISTINCT block_content")
-                    .first          
+                    .select("DISTINCT block_content").any?
   end  
 
   private

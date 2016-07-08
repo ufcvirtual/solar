@@ -9,7 +9,7 @@ class QuestionsController < ApplicationController
   require 'will_paginate/array'
   def index
     authorize! :index, Question
-    @questions = Question.get_all(current_user.id, @search=(params[:search] || {}), @verify_privacy=params[:verify_privacy]).paginate(page: params[:page])
+    @questions = Question.get_all(current_user.id, @search=(params[:search] || {}), @verify_privacy=params[:verify_privacy]).paginate(page: params[:page], per_page: 15)
     @can_see_preview = can? :show, Question
     respond_to do |format|
       if params[:search].nil?

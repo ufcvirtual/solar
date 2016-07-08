@@ -12,6 +12,7 @@ class ExamsController < ApplicationController
     authorize! :index, Exam, on: [@allocation_tag_id]
     @allocation_tags_ids = AllocationTag.find(@allocation_tag_id).related
     @exams = Exam.my_exams(@allocation_tags_ids)
+    @can_open = can? :open, Exam, {on: @allocation_tag_id}
   rescue
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end
@@ -270,7 +271,7 @@ class ExamsController < ApplicationController
     params.require(:exam).permit(:name, :description, :duration, :start_hour, :end_hour, 
                                  :random_questions, :raffle_order, :auto_correction, 
                                  :block_content, :number_questions, :attempts, 
-                                 :attempts_correction, :result_email,
+                                 :attempts_correction, :result_email, :uninterrupted,
                                  schedule_attributes: [:id, :start_date, :end_date])
   end
 
@@ -290,7 +291,6 @@ class ExamsController < ApplicationController
     @exam = Exam.find(params[:id])
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     unless user_session[:exams].include?(params[:id])
-
       authorize! :open, Exam, { on: @allocation_tag_id }
       user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
       verify_time 

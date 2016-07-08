@@ -9,8 +9,8 @@
         - num_question =  num_question + 1
         
         %p
-          = check_box_tag :item
-          = label_tag :item, raw([arr_alf[num_question]+')', qi.description].compact.join(' '))
+          = radio_button_tag "item#{qi.id}", false
+          = label_tag "item#{qi.id}", raw([arr_alf[num_question]+')', qi.description].compact.join(' '))
           - if qi.item_image?     
             = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
 
@@ -19,8 +19,8 @@
         - num_question =  num_question + 1
 
         %p
-          = check_box_tag :item
-          = label_tag :item, raw([arr_alf[num_question]+')', qi.description].compact.join(' '))
+          = check_box_tag "item#{qi.id}"
+          = label_tag "item#{qi.id}", raw([arr_alf[num_question]+')', qi.description].compact.join(' '))
           - if qi.item_image?     
             = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
 
@@ -29,8 +29,8 @@
         - num_question =  num_question + 1
 
         %p
-          = check_box_tag :item
-          = label_tag :item, raw([arr_alf[num_question]+')', raw(qi.description)].compact.join(' '))
+          = select_tag "item#{qi.id}", options_for_select(['F', 'V']) 
+          = label_tag "item#{qi.id}", raw([arr_alf[num_question]+')', raw(qi.description)].compact.join(' '))
           - if qi.item_image?     
             = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
 

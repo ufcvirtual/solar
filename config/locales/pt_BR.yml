@@ -3047,7 +3047,7 @@ pt_BR:
       to: " de "
       questions: " questões"
       finish_exam: Finalizar Prova
-      refresh: Atenção! Ao sair da página você perderá a tentativa atual e suas alterações podem ser perdidas!
+      refresh: "Atenção! Ao sair da página você perderá a tentativa atual e suas alterações podem ser perdidas! Se estiver finalizando a prova, clique em 'Ok' para concluir."
       exit: Sair
       anull: " (Questão Anulada)"
       scores: '( %{score} pontos )'
@@ -3084,6 +3084,7 @@ pt_BR:
       time: A prova deve estar em andamento para realização.
       attempt: A quantidade máxima de tentativas para realização da prova já foi atingida.
       not_finished: Esta prova ainda não foi encerrada
+      duration_and_hour: deve ser menor que a diferença de horários 
     show:
       groups: Turmas
       empty_group: Turma vazia

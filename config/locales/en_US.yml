@@ -2810,7 +2810,7 @@ en_US:
       to: " to "
       questions: " questions"
       finish_exam: Finish Exam
-      refresh: Attention! When leaving the page you will lose the current attempt and their changes may be lost!
+      refresh: "Attention! When leaving the page you will lose the current attempt and their changes may be lost! If you're finnishing your exam, click at 'Ok' to finish it."
       exit: Exit
       anull: " (Annulled question)"
       scores: '( %{score} scores )'
@@ -2847,6 +2847,7 @@ en_US:
       time: The exam must be on going
       attempt: The maximum number of attempts has been reached
       not_finished: This exam is not finished yet
+      duration_and_hour: must be smaller than time difference
     show:
       groups: Groups
       empty_group: Empty group

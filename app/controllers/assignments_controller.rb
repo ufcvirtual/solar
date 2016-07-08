@@ -109,7 +109,7 @@ class AssignmentsController < ApplicationController
   def student
 
     if user_session[:blocking_content]
-      redirect_to :back, alert: t('exams.restrict')
+      redirect_to list_assignments_path, alert: t('exams.restrict')
     else
       @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
       @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)

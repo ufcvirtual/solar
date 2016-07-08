@@ -1,4 +1,4 @@
-$('.questions .list_questions .questions_content tbody').append('#{escape_javascript(render partial: "questions_table", locals: { questions: @questions })}');
+$('.questions_content tbody').append('#{escape_javascript(render partial: "questions_table", locals: { questions: @questions })}');
 $('a.load-more-questions').attr('href', '#{questions_path(page: @questions.next_page, search: @search, verify_privacy: @verify_privacy)}');
 $(".tb_list").trigger("update");
 

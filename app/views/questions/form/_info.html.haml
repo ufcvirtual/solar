@@ -86,7 +86,7 @@
     = f.select :type_question, ([ [t('questions.new.multiple_choice'), Question::MULTIPLE], [t('questions.new.unique_choice'), Question::UNIQUE], [t('questions.new.true_or_false'), Question::TRUE_FALSE]]), include_blank: false
 
   - unless eq.nil?
-    = eq.input :score
+    = eq.input :score, input_html: { step: '0.5' }
 
 .labels
   = f.label t('questions.questions.labels'), class: 'label_labels'
@@ -102,7 +102,6 @@
   = render partial: 'questions/form/image', locals: { f: f, eq: nil }
   .input.string
     = f.add_nested_fields_link :question_images, t('.add_images'), class: 'btn'
-
 
 .form-actions.right_buttons
   = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'

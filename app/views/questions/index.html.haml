@@ -11,7 +11,7 @@
 
     .block_content_toolbar
       .block_toolbar_left.btn-group
-        = link_to content_tag(:i, nil, class: 'icon-plus'), new_question_path, class: 'btn btn_main fancybox.ajax', id: 'new_question', :"data-tooltip" => t('.new')
+        = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'new_question(this)', :'data-url' => new_question_path, :'data-can' => true, class: 'btn btn_main fancybox.ajax', id: 'new_question', :"data-tooltip" => t('.new')
       .block_toolbar_right
         .btn-group
           = link_to_function (content_tag(:i, nil, class: 'icon-checkmark')), "change_status(this, '')", class: 'btn change_status_ckb', :'data-url' => publish_question_path(':id'), disabled: true, :"data-tooltip" => t('.checkmark')

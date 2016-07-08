@@ -10,26 +10,28 @@
           %th.large= t('exams.index.description')
           %th.medium= t('exams.index.availability')
           %th.small= t('exams.index.duration')
-          %th.small= t('exams.index.status')
-          %th.small= t('exams.index.grade')
+          - if @can_open
+            %th.small= t('exams.index.status')
+            %th.small= t('exams.index.grade')
       %tbody
         - @exams.each do |exam|
           - info = exam.info(current_user.id, @allocation_tags_ids)
           - if info[:grade].blank? && exam.ended? && exam.can_correct?(current_user, @allocation_tags_ids)
             - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam), class: 'ico-e'
-          - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation])
-          - pre = pre_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation])
           %tr.lines{ id: "tr_#{exam.id}" }
             %td
               %div
-                - unless ['to_answer', 'not_finished', 'retake'].include?(info[:situation])
-                  .title= exam.name
-                  - if info[:situation] == 'corrected'
-                    = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam), class: 'link_content', class: 'open-exam-result'
-                    |
-                    = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'link_open_exam', id: 'open-result'
+                - if @can_open
+                  - unless ['to_answer', 'not_finished', 'retake'].include?(info[:situation])
+                    .title= exam.name
+                    - if info[:situation] == 'corrected'
+                      = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam), class: 'link_content', class: 'open-exam-result'
+                      |
+                      = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation]), class: 'link_open_exam', id: 'open-result'
+                  - else
+                    = link_to exam.name, pre_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation]), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', id: 'open-exam'
                 - else
-                  = link_to exam.name, pre, :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', id: 'open-exam'
+                  = link_to exam.name, preview_exam_path(exam, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam' 
                  
                 - if exam.description.size > 180
                   .description_exam
@@ -45,11 +47,12 @@
               %div= [(exam.start_hour), (exam.end_hour)].join(' - ')
             %td.center= [exam.duration, t('.min')].join(' ')
             - count = info[:count].nil? || info[:count]==0 ? "" : info[:count].to_s
-            %td.center.situation
-              %div{class: "#{info[:situation]}"}= I18n.t(info[:situation], :count => count, :scope => [:exams, :situation])
+            - if @can_open
+              %td.center.situation
+                %div{class: "#{info[:situation]}"}= I18n.t(info[:situation], :count => count, :scope => [:exams, :situation])
 
-            %td.center
-              %span.activity_grade= info[:grade] || bt_correction || "-"
+              %td.center
+                %span.activity_grade= info[:grade] || bt_correction || "-"
               
   - else
     .block_content_text.block_content_text_list.text_none= t(:none, scope: [:exams] )
@@ -58,7 +61,7 @@
 
   $(function(){
 
-    $(".link_open_exam").call_fancybox({
+    $(".link_open_exam, .link_preview_exam").call_fancybox({
       minWidth: '50%',
       minheigth: '50%',
       closeBtn : true,

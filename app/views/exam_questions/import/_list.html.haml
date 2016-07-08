@@ -1,4 +1,4 @@
-.list_exams.questions_import{ :'data-link-list' => import_list_exam_questions_path(allocation_tags_ids: @allocation_tags_ids) }
+.list_exams.questions_import.questions_content{ :'data-link-list' => import_list_exam_questions_path(allocation_tags_ids: @allocation_tags_ids) }
   - if @exams.any?
     = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
     - @exams.each do |exam|
