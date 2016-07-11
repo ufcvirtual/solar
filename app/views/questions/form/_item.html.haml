@@ -26,6 +26,7 @@
               = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_image_item_tmp(this)', class: 'trash-tmp', style: 'display: none'
             - else
               = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_image_item_tmp(this)'
+
             = link_to_function t('questions.form.items.add_image'), 'add_file(this)', class: 'btn btn_main add_file'
             
           .info

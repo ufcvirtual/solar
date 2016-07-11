@@ -1137,4 +1137,10 @@ res219:
   controller: 'exams'
   action: 'calcule_grades'
   description: 'Calcular nota de prova de alunos' 
+
+res220:
+  id: 220
+  controller: 'posts'
+  action: 'academic_allocation_user_grade'
+  description: 'Salva a nota do fórum (posts) do aluno'   
   

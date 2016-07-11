@@ -7,6 +7,7 @@ class Post < ActiveRecord::Base
   belongs_to :user
 
   belongs_to :academic_allocation, conditions: { academic_tool_type: 'Discussion' }
+  belongs_to :academic_allocation_user
 
   before_destroy :verify_children
   before_save :verify_children, on: :update

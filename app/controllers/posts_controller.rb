@@ -6,7 +6,7 @@ class PostsController < ApplicationController
   # before_filter :authenticate_user!
   before_filter :prepare_for_pagination
 
-  load_and_authorize_resource except: [:index, :user_posts, :create, :show]
+  load_and_authorize_resource except: [:index, :user_posts, :create, :show, :academic_allocation_user_grade]
 
   ## GET /discussions/1/posts
   ## GET /discussions/1/posts/20120217/[news, history]/order/asc/limit/10
@@ -25,9 +25,14 @@ class PostsController < ApplicationController
       @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id], { all: true }).map(&:id)
 
       @posts = []
-
+      @can_validate = false
       @can_interact = @discussion.user_can_interact?(current_user.id)
       @can_post = (can? :create, Post, on: [@allocation_tags])
+      @can_interact_grade = (can? :academic_allocation_user_grade, Post, on: [@allocation_tags])
+      @academic_allocation = AcademicAllocation.find(@academic_allocation_id)
+      if @academic_allocation.evaluative || @academic_allocation.frequency
+        @can_validate = true
+      end  
 
       p = params.slice(:date, :type, :order, :limit, :display_mode, :page)
 
@@ -67,8 +72,12 @@ class PostsController < ApplicationController
       @user = User.find(params[:user_id])
       @discussion = Discussion.find(params[:discussion_id])
 
-      allocation_tags = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
-      @posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id).order('updated_at DESC')
+      @allocation_tags = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+      @posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id).order('updated_at DESC')
+
+      @aau_id = Post.find(@posts.last.id).academic_allocation_user_id unless @posts.blank?
+      @aalluser = AcademicAllocationUser.find(@aau_id) unless @aau_id.blank?
+      @academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: @allocation_tags).first
 
       respond_to do |format|
         format.html { render layout: false }
@@ -76,6 +85,41 @@ class PostsController < ApplicationController
       end
     end  
   end
+
+  def academic_allocation_user_grade
+    authorize! :academic_allocation_user_grade, Post, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @user = User.find(params[:user_id])
+    @discussion = Discussion.find(params[:discussion_id])
+    post = Post.find(params[:post_id].to_i)
+
+    @alluser = get_academic_allocation_user(post)
+    if @aalluser.update_grade_and_frequency(params[:posts][:grade].to_f, params[:posts][:frequency].to_i)
+      render json: { success: true, notice: t('update_grade', scope: 'posts.user_posts') }
+    else
+      render json: {result: 0}, status: :unprocessable_entity
+    end
+  rescue
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  end 
+
+  def get_academic_allocation_user(post)
+    if post.academic_allocation_user_id.blank?
+      allocation_tag_ids  = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+      academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: allocation_tag_ids).first
+      tool = 'Discussion'
+      aau_id = AcademicAllocationUser.get_or_create_academic_allocation_user(tool, academic_allocation, post.user_id, @discussion.id)
+      update_posts_academic_allocation_user(aau_id, allocation_tag_ids)
+      @aalluser = AcademicAllocationUser.find(aau_id)
+    else
+      @aalluser = AcademicAllocationUser.find(post.academic_allocation_user_id)
+    end  
+    @aalluser
+  end 
+
+  def update_posts_academic_allocation_user(aau_id, allocation_tags)
+    posts_list = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id)
+    .update_all(academic_allocation_user_id: aau_id) 
+  end  
 
   ## POST /discussions/:id/posts
   def create
@@ -105,12 +149,15 @@ class PostsController < ApplicationController
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
     can_interact = post.discussion.user_can_interact?(current_user.id)
     can_post = can?(:create, Post, on: [allocation_tag_id])
+    can_interact_grade = (can? :academic_allocation_user_grade, Post, on: [@allocation_tags])
 
     @researcher = (params[:researcher] == "true" or params[:researcher] == true)
     @class_participants = AllocationTag.get_participants(allocation_tag_id, { all: true }).map(&:id)
 
     render partial: 'post', locals: { post: post, display_mode: nil, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: (params[:new_post] ? params[:id] : nil) }
   end
+
+
 
   ## DELETE /posts/1
   def destroy
@@ -128,10 +175,13 @@ class PostsController < ApplicationController
     def new_post_under_discussion(discussion)
       allocation_tag_ids  = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
       academic_allocation = discussion.academic_allocations.where(allocation_tag_id: allocation_tag_ids).first
+      tool = 'Discussion'
+      aau_id = AcademicAllocationUser.get_or_create_academic_allocation_user(tool, academic_allocation, current_user.id, discussion.id)
 
       @post = Post.new(post_params)
       @post.user_id = current_user.id
       @post.academic_allocation_id = academic_allocation.id
+      @post.academic_allocation_user_id = aau_id
       @post.profile_id = current_user.profiles_with_access_on(:create, :posts, allocation_tag_ids, true).first
 
       @post.save

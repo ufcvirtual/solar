@@ -13,5 +13,35 @@
             %td.profile= sanitize post.content
             %td.center= l(post.updated_at.to_datetime, format: :normal)
             %td.center= l(post.updated_at.to_datetime, format: :clock_time)
+
+    .block_content_toolbar
+      - if @academic_allocation.evaluative || @academic_allocation.frequency
+        = simple_form_for :posts, :url => url = "/discussions/"+@discussion.id.to_s+"/posts/academic_allocation_user_grade", html: { id: 'academic_allocation_user_grade_form' } do |f|
+          %h1#lightBoxDialogTitle= t(@aalluser ? ".edit" : ".new")
+          %span.form_requirement= t(:required_fields)
+          .post_form
+          = hidden_field_tag :allocation_tags_ids, @allocation_tags
+          = hidden_field_tag :post_id, @posts.last.id.to_s
+          = hidden_field_tag :user_id, @user.id
+        
+          .form-inputs.block_content
+            .inline
+              = f.input :grade, required: true, as: :float, :step => 0.01, label: 'Nota', input_html: { value: grade = @aalluser ? @aalluser.grade : "", min:0, max:10 } unless !@academic_allocation.evaluative
+              = f.input :frequency, required: true, as: :float, label: 'Frequência', input_html: { value: frequency = @aalluser ? @aalluser.working_hours : "", min:0, max: @academic_allocation.max_working_hours } unless !@academic_allocation.frequency  
+              = t(:info_frequency, scope: [:posts, :user_posts]) + @academic_allocation.max_working_hours.to_s + ' Hs' unless !@academic_allocation.frequency  
+          .right_buttons
+            = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+            = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "save_grade"   
+
   - else
     .block_content_text_list.text_none= t(".no_posts")
+
+:javascript
+  jQuery(function($){
+   $('#save_grade').click(function(){
+      $('#academic_allocation_user_grade_form:last').serialize_and_submit({
+        files: true
+        //replace_list: $(".user_posts");
+      });
+    });
+  });      

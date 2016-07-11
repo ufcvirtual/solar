@@ -975,6 +975,8 @@ en_US:
       new_posts: " new(s) post(s) at discussion"
       new_posts_page: "1 new post at discussion (page "
       moved_allocation: "Allocation moved to other class"
+      to_evaluate: To_evaluate
+      grade: ' Grade: '
     create:
       created: "Post was successfully created"
       not_created: "Post was not created"
@@ -987,6 +989,10 @@ en_US:
       date: Date
       time: Time
       no_posts: No posts
+      update_grade: Note and successfully added Frequency
+      edit: Edit
+      new: New
+      info_frequency: " * Hours Maximum: "
   post_files:
     new:
       attach_save: "Save"
@@ -2976,6 +2982,7 @@ en_US:
         remove_image: Delete Image
         info_remove_image: Image successfully removed
         confirm_image_removal: 'Are you sure? Even if you cancel this form, this image will be deleted and will not be recovered.'
+        
       info:
         continue: Continue
         add_images: Add more images

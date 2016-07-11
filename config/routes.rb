@@ -145,6 +145,7 @@ Solar::Application.routes.draw do
       collection do
         get "user/:user_id", to: :user_posts, as: :user
         get ":type/:date(/order/:order(/limit/:limit))", to: :index, defaults: {display_mode: 'list'} # :types => [:news, :history]; :order => [:asc, :desc]
+        post :academic_allocation_user_grade
       end
     end
   end

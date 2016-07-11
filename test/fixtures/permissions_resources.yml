@@ -988,6 +988,31 @@ discedit6:
   resource_id: 88
   per_id: false
 
+discedit7:
+  profile_id: 2
+  resource_id: 220
+  per_id: false
+
+discedit8:
+  profile_id: 3
+  resource_id: 220
+  per_id: false
+
+discedit9:
+  profile_id: 4
+  resource_id: 220
+  per_id: false
+
+discedit10:
+  profile_id: 17
+  resource_id: 220
+  per_id: false
+
+discedit11:
+  profile_id: 18
+  resource_id: 220
+  per_id: false     
+
 ## bibliografia
 
 bibedit1:

@@ -2,6 +2,7 @@ class AcademicAllocation < ActiveRecord::Base
 
   belongs_to :academic_tool, polymorphic: true
   belongs_to :allocation_tag
+  belongs_to :academic_allocation_user
 
   belongs_to :lesson_module,  foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'LessonModule'"]
   belongs_to :chat_room,      foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'ChatRoom'"]

@@ -1143,6 +1143,8 @@ pt_BR:
       new_posts: " nova(s) postagem(ns) no fórum"
       new_posts_page: "1 nova postagem no fórum (página "
       moved_allocation: "Alocação transferida para outra turma"
+      to_evaluate: Avaliar
+      grade: ' Nota: '
     create:
       created: "Postagem criada com sucesso"
       not_created: "A postagem não foi criada"
@@ -1155,7 +1157,10 @@ pt_BR:
       date: Data
       time: Horário
       no_posts: Nenhuma postagem
-
+      update_grade: Nota e Frequência adicionadas com sucesso
+      edit: Editar
+      new: Novo
+      info_frequency: " * Carga Horária Maxima: "
   post_files:
     new:
       attach_save: "Salvar"
@@ -3212,6 +3217,7 @@ pt_BR:
         remove_image: Remover Image
         info_remove_image: Imagem removida com sucesso
         confirm_image_removal: 'Você tem certeza? Mesmo que este formulário seja cancelado, a imagem será removida e não poderá ser recuperada.'
+
       info:
         continue: Prosseguir
         add_images: Adicionar mais imagens
