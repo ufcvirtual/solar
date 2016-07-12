@@ -172,6 +172,44 @@ class Allocation < ActiveRecord::Base
     DigitalClass.update_roles(self, professor_profiles, student_profiles, ignore_changes)
   end
 
+  def calculate_final_grade
+    ats = allocation_tag.lower_related
+    grades = AcademicAllocation.find_by_sql <<-SQL
+      SELECT SUM(ac.grade) as grade
+      FROM (
+        SELECT  (academic_allocations.final_weight::float/100)*SUM(COALESCE(acu.grade, acu_eq.grade, 0)*academic_allocations.weight)/SUM(academic_allocations.weight) AS grade
+        FROM academic_allocations
+        LEFT JOIN academic_allocations equivalent  ON academic_allocations.id = equivalent.equivalent_academic_allocation_id
+        LEFT JOIN academic_allocation_users acu    ON acu.academic_allocation_id = academic_allocations.id
+        LEFT JOIN academic_allocation_users acu_eq ON acu_eq.academic_allocation_id = equivalent.id
+        WHERE
+          academic_allocations.evaluative = true
+          AND
+          academic_allocations.allocation_tag_id IN (#{ats.join(',')})
+          AND
+          academic_allocations.equivalent_academic_allocation_id IS NULL
+          AND
+          academic_allocations.final_exam = false
+        GROUP BY academic_allocations.final_weight
+      ) ac
+    SQL
+
+    afs = AcademicAllocation.find_by_sql <<-SQL
+      SELECT SUM(acu.grade)/COUNT(acu.id) AS grade
+      FROM academic_allocations
+      JOIN academic_allocation_users acu ON acu.academic_allocation_id = academic_allocations.id
+      WHERE
+        academic_allocations.evaluative = true
+        AND
+        academic_allocations.allocation_tag_id IN (#{ats.join(',')})
+        AND
+        academic_allocations.final_exam = true
+        AND
+        acu.grade IS NOT NULL;
+    SQL
+    update_attributes final_grade: (afs.empty? ? grades.first[:grade] : (grades.first[:grade].to_f+afs.first[:grade].to_f)/2)
+  end
+
   private
 
     def self.query_for_enrollments(args = {})
