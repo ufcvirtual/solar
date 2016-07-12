@@ -15,6 +15,7 @@ class AcademicAllocation < ActiveRecord::Base
   # Assignment
   has_many :sent_assignments, dependent: :destroy
   has_many :group_assignments, dependent: :destroy
+  has_many :academic_allocation_users, dependent: :destroy
 
   has_many :discussion_posts, class_name: 'Post', dependent: :destroy
   has_many :chat_messages, dependent: :destroy
@@ -22,7 +23,6 @@ class AcademicAllocation < ActiveRecord::Base
 
   # exam
   has_many :exam_users, dependent: :destroy
-
 
   before_save :verify_association_with_allocation_tag
 
@@ -34,6 +34,46 @@ class AcademicAllocation < ActiveRecord::Base
   accepts_nested_attributes_for :chat_participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == '0' }
 
   validate :verify_assignment_offer_date_range, if: :assignment?
+
+  validates :weight, presence: true, numericality: { greater_than: 0,  only_integer: true }, if: 'evaluative? && !final_exam?'
+  validates :final_weight, presence: true, numericality: { greater_than: 0,  only_integer: true, smaller_than: 101 }, if: 'evaluative? && !final_exam?'
+  validates :max_working_hours, presence: true, numericality: { greater_than: 0,  only_integer: true }, if: 'frequency?'
+
+  validate :verify_equivalents, if: 'equivalent_academic_allocation_id_changed? && !equivalent_academic_allocation_id.nil?'
+
+  before_save :set_evaluative_params, on: :update
+  before_save :change_dependencies, on: :update
+
+  def set_evaluative_params
+    self.frequency = get_curriculum_unit.working_hours.blank? ? false : frequency
+    self.max_working_hours = nil unless self.frequency
+    if !evaluative
+      self.weight = 1
+      self.final_weight = 100
+      self.final_exam = false
+    elsif final_exam
+      self.weight = 0
+      self.final_weight = 0
+      self.equivalent_academic_allocation_id = nil
+      self.max_working_hours = 0
+      self.frequency = false
+    end
+    unless equivalent_academic_allocation_id.nil?
+      ac = AcademicAllocation.find(equivalent_academic_allocation_id)
+      self.weight = ac.weight
+      self.final_weight = ac.final_weight
+      self.max_working_hours = ac.max_working_hours
+    end
+  end
+
+  def change_dependencies
+    AcademicAllocation.where(equivalent_academic_allocation_id: id).update_all weight: weight, final_weight: final_weight, max_working_hours: max_working_hours
+  end
+
+  def verify_equivalents
+    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.single_equivalent')) if AcademicAllocation.where(equivalent_academic_allocation_id: equivalent_academic_allocation_id).where('id != :id', { id: id }).any?
+    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.nested')) if AcademicAllocation.where(equivalent_academic_allocation_id: id).any? && !equivalent_academic_allocation_id.nil?
+  end
 
   def assignment?
     academic_tool_type.eql? 'Assignment'
@@ -54,6 +94,11 @@ class AcademicAllocation < ActiveRecord::Base
         LogAction.create(log_type: LogAction::TYPE[:create], user_id: user, ip: ip, description: "import_group: #{group.attributes}", academic_allocation_id: to_ac_id)
       end
     end
+  end
+
+  def tool_name
+    tool = academic_tool_type.constantize.find(academic_tool_id)
+    tool.respond_to?(:name) ? tool.name : tool.title
   end
 
   private
@@ -109,6 +154,19 @@ class AcademicAllocation < ActiveRecord::Base
     # Metodos destidados a Webconference
     def remove_record
       Webconference.remove_record([self]) unless Webconference.find(self.academic_tool_id).shared_between_groups
+    end
+
+    def get_curriculum_unit
+      case allocation_tag.refer_to
+      when 'group'
+        allocation_tag.group.curriculum_unit
+      when 'offer'
+        allocation_tag.offer.curriculum_unit
+      when 'curriculum_unit'
+        allocation_tag.curriculum_unit
+      else
+        nil
+      end
     end
 
 end

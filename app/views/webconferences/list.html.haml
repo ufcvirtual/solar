@@ -1,7 +1,9 @@
-.block_wrapper.list_webconferences{ :'data-link-list' => list_webconferences_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id]) }
+.block_wrapper.list_webconferences{ :'data-link-list' => list_webconferences_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id], selected: @selected) }
 
   .block_title
     %h2= t('.webconferences')
+    - if can? :tool_management, Edition && @selected == 'GROUP'
+      .tool_managmenet_link= link_to_function t('editions.evaluative_tools.webconferences_call'), 'call_tool_management(this)', :'data-link' => webconference_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids)
   .block_content_toolbar
     .block_toolbar_left.btn-group
       - can_create = (can? :create, Webconference, on: @allocation_tags_ids)

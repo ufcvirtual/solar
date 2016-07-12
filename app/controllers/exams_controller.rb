@@ -41,6 +41,7 @@ class ExamsController < ApplicationController
   # require 'will_paginate/array'
   def list
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
+    @selected = params[:selected]
     authorize! :list, Exam, { on: @allocation_tags_ids }
 
     @all_groups = Group.where(offer_id: params[:offer_id])

@@ -301,6 +301,10 @@ $.fn.serialize_and_submit = function(options) {
       var response = JSON.parse(data.responseText);
       if (typeof(response.alert) != "undefined")
         flash_message(response.alert, 'alert', name);
+
+      if (typeof(options.complement_error) == "function"){
+          options.complement_error(data);
+        }
     }
   }
 
@@ -352,6 +356,7 @@ $.fn.nice_open_lesson = function(options) {
     minHeight: '95%',
     minWidth: '95%',
     autoScale: true,
+    autoSize: true,
     afterShow: function() {
       $("<a class='fancybox-minimize' title='minimize'></a>").appendTo(this.skin).click(minimize_lesson);
       $(".fancybox-close").click(close_lesson);

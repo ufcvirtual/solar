@@ -4,6 +4,8 @@
 
   .block_title
     %h2= t(".chats")
+    - if @user_profiles.include?(editions: :tool_management)
+      .tool_managmenet_link= link_to_function t('editions.evaluative_tools.chats_call'), 'call_tool_management(this)', :'data-link' => chat_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids)
 
   .block_content_toolbar
     .block_toolbar_left.btn-group

@@ -98,7 +98,8 @@ class CurriculumUnitsController < ApplicationController
   # PUT /curriculum_units/1
   def update
     if @curriculum_unit.update_attributes(curriculum_unit_params)
-      render json: {success: true, notice: t('curriculum_units.success.updated'), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
+      message = @curriculum_unit.verify_evaluative_tools ? ['warning', t('curriculum_units.warning.working_hours')] : ['notice', t('curriculum_units.success.updated')]
+      render json: {success: true, message: message[1], type_message: message[0], code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
       render :edit
     end

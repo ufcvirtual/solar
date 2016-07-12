@@ -30,7 +30,7 @@ class CreateEvaluativeTools < ActiveRecord::Migration
     remove_column :academic_allocations, :max_working_hours
     remove_column :academic_allocations, :equivalent_academic_allocation_id
     remove_column :academic_allocations, :weigth
-    remove_column :academic_allocations, :final_weigth
+    remove_column :academic_allocations, :final_weight
 
     drop_table :academic_allocation_users
   end

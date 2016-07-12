@@ -21,7 +21,7 @@ class Group < ActiveRecord::Base
 
   validates :code, :offer_id, presence: true
 
-  validate :unique_code_on_offer, unless: "offer_id.nil? || code.nil? || !code_changed?"
+  validate :unique_code_on_offer, unless: 'offer_id.nil? || code.nil? || !code_changed?'
 
   validates_length_of :code, maximum: 40
 

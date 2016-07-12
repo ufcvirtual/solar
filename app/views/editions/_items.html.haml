@@ -1,5 +1,9 @@
 .edition_items
 
+  - if @user_profiles.include?(editions: :tool_management) && (@selected == 'GROUP' || @selected == 'OFFER')
+    .tool_management{ :"data-link" => tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids) }
+      = link_to t('.tool_management'), '#' , :'data-tooltip' => t('.tool_management'), class: 'title_link'
+
   %fieldset#uc_informations
     %legend= t('.information')
     .block_content.block_content_alt
@@ -34,7 +38,7 @@
 
       - if @user_profiles.include?(discussions: :list) && Discussion.constants.include?("#{@selected}_PERMISSION".to_sym)
         .uc_item
-          .discussion{ :"data-link" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id) }
+          .discussion{ :"data-link" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id, selected: @selected) }
             = link_to content_tag(:i, nil, class: 'icon-users big'), '#', class: 'btn'
             = link_to t('.discussion'), '#'
 
@@ -46,7 +50,7 @@
 
       - if @user_profiles.include?(webconferences: :list) && Webconference.constants.include?("#{@selected}_PERMISSION".to_sym)
         .uc_item
-          .webconference{ :"data-link" => list_webconferences_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id) }
+          .webconference{ :"data-link" => list_webconferences_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id, selected: @selected) }
             = link_to content_tag(:i, nil, class: 'icon-video-conference big'), '#', class: 'btn'
             = link_to t('.webconference'), '#'
 
@@ -56,7 +60,7 @@
 
       - if @user_profiles.include?(exams: :list) && Exam.constants.include?("#{@selected}_PERMISSION".to_sym)
         .uc_item
-          .exam{ :"data-link" => list_exams_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id) }
+          .exam{ :"data-link" => list_exams_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id, selected: @selected) }
             = link_to content_tag(:i, nil, class: 'icon-exam big'), '#', class: 'btn'
             = link_to t('.test'), '#'
 

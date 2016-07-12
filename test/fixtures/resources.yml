@@ -1119,7 +1119,7 @@ res216:
   controller: 'digital_classes'
   action: "access"
   description: "Acessar Digital Class em um diretório"
-  
+
 res217:
   id: 217
   controller: 'digital_classes'
@@ -1143,4 +1143,9 @@ res220:
   controller: 'posts'
   action: 'academic_allocation_user_grade'
   description: 'Salva a nota do fórum (posts) do aluno'   
-  
+
+res221:
+  id: 221
+  controller: 'editions'
+  action: 'tool_management'
+  description: 'Gerenciar ferramentas como avaliativas / de frequência'

@@ -138,3 +138,83 @@ label[for="all"]{
 .repository_text{
   padding-top: 13px;
 }
+
+.edition_items{
+  .tool_management{
+    margin-bottom: 20px;
+  }
+}
+
+.tool_management{
+  .management{
+    text-align: center;
+    .block_wrapper.groups h2{
+      text-align: left;
+    }
+    .block_wrapper.tools{
+      text-align: left;
+      table{
+        td.desc, select{
+          max-width: 150px;
+        }
+        td.working_hours{
+          width: 70px;
+        }
+        th:not(.name), td:not(.desc){
+          text-align: center;
+        }
+        .minimun a{
+          text-decoration: none;
+        }
+        input[type='text']{
+          width: 20px;
+        }
+      }
+      .tools_by_tool_type.invisible{
+        display: none;
+      }
+      .tools_by_tool_type{
+        tr.red{
+          background-color: #fff6f6;
+        }
+      }
+      .icons{
+        display: inline-block;
+        vertical-align: bottom;
+        a i.invisible{
+          display: none;
+        }
+      }
+    }
+    .expand_hide, .frequency_equally, .set_weight, .set_final_weight{
+      padding-bottom: 15px;
+      display: inline-block;
+      text-align: center;
+      .expand_link, .compress_link, .frequency_link, a, .weight_link{
+        vertical-align: bottom;
+        display: inline-block;
+      }
+    }
+    .groups{
+      margin-bottom: 20px;
+      table{
+        th.ch, td.ch{
+          text-align: center;
+          width: 95px;
+        }
+        tbody{
+          max-height: 100px;
+          overflow-y: auto;
+        }
+      }
+    }
+  }
+}
+
+.block_wrapper .block_title{
+  .tool_managmenet_link{
+    float: right;
+    margin-top: 10px;
+  }
+  
+}

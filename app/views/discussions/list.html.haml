@@ -1,7 +1,9 @@
-.block_wrapper.list_discussions{:"data-link-list" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
+.block_wrapper.list_discussions{:"data-link-list" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id], selected: @selected)}
 
   .block_title
     %h2= t(".discussions")
+    - if @user_profiles.include?(editions: :tool_management) && @selected == 'GROUP'
+      .tool_managmenet_link= link_to_function t('editions.evaluative_tools.discussions_call'), 'call_tool_management(this)', :'data-link' => discussion_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids)
   .block_content_toolbar
     .block_toolbar_left.btn-group
       = link_to content_tag(:i, nil, class: 'icon-plus'), new_discussion_path(allocation_tags_ids: @allocation_tags_ids), class: " btn btn_main", id: "new-discussion", :"data-tooltip" => t(".new")

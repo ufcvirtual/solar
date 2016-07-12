@@ -1,5 +1,3 @@
-// --- begin content --------------------------------------------------------------------------------------------------------- //
-
 function clear_combo(combo_name, disable) {
   $('[name="' + combo_name + '"]:last').combobox('value', null);
   $('[name="' + combo_name + '"]:last').combobox("option", { disabled: disable });
@@ -43,6 +41,17 @@ function data_optional(combo_name, optional){
     label.html(new_label[0]);
   else
     label.html(new_label[0] + "*");
+}
+
+function call_tool_management(element){
+  $.get($(element).data("link"), function(data){
+    $(".edition_items").html(data);
+    $(".back").removeClass("invisible");
+  }).error(function(data){
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert');
+  });
 }
 
 $(function(){
@@ -216,4 +225,4 @@ $(function(){
   });
 
 });
-// --- end content --------------------------------------------------------------------------------------------------------- //
+

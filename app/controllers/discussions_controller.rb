@@ -29,6 +29,8 @@ class DiscussionsController < ApplicationController
 
   def list
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
+    @selected = params[:selected]
+
     authorize! :list, Discussion, on: @allocation_tags_ids
 
     @discussions = Discussion.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).uniq.select("discussions.*, schedules.start_date AS start_date").order("start_date")

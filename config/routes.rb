@@ -247,6 +247,13 @@ Solar::Application.routes.draw do
       get :academic
       get :content
       get :repositories
+      get :tool_management
+      get :discussion_tool_management, tool_name: 'Discussion', to: :tool_management
+      get :exam_tool_management, tool_name: 'Exam', to: :tool_management
+      get :assignment_tool_management, tool_name: 'Assignment', to: :tool_management
+      get :chat_tool_management, tool_name: 'ChatRoom', to: :tool_management
+      get :webconference_tool_management, tool_name: 'Webconference', to: :tool_management
+      put :manage_tools
       get "academic/:curriculum_unit_type_id/courses", to: "editions#courses", as: :academic_courses
       get "academic/:curriculum_unit_type_id/curriculum_units", to: "editions#curriculum_units", as: :academic_uc
       get "academic/:curriculum_unit_type_id/semesters", to: "editions#semesters", as: :academic_semesters

@@ -2,35 +2,23 @@ require 'active_support/concern'
 module EvaluativeTool
   extend ActiveSupport::Concern
 
-  def self.get_all(allocation_tags_ids = [])
-    query = { academic_tool_type: self.descendants }
-    query.merge!(allocation_tag_id: allocation_tags_ids) unless allocation_tags_ids.blank?
-
-    AcademicAllocation.where(query)
-  end
-
-  def self.find_tools_in_common(ats)
-    upper_ats = AllocationTag.find(ats.first).upper_related
+  def self.find_tools(ats)
+    ats << AllocationTag.find(ats.first).lower_related if ats.size == 1
     AcademicAllocation.find_by_sql <<-SQL
-      SELECT *, ac.ats, ac.ids FROM academic_allocations
-      JOIN (
-        SELECT array_agg(id) AS ids, 
-               academic_tool_id, 
-               academic_tool_type, 
-               array_agg(allocation_tag_id) AS ats
-        FROM academic_allocations 
-        WHERE academic_tool_type IN (#{"'"+self.descendants.join("','")+"'"})
-        GROUP BY academic_tool_type, academic_tool_id 
-        HAVING 
-          array_agg(allocation_tag_id) @> ARRAY[#{ats.join(',')}]
-          OR array_agg(allocation_tag_id) <@ ARRAY[#{upper_ats.join(',')}]
-        ) ac ON ac.ids @> ARRAY[academic_allocations.id];
+      SELECT DISTINCT(ac.ids), *, ac.ats FROM academic_allocations
+       JOIN (
+         SELECT array_agg(id) AS ids, 
+                academic_tool_id, 
+                academic_tool_type, 
+                array_agg(allocation_tag_id) AS ats
+         FROM academic_allocations 
+         WHERE academic_tool_type IN (#{"'"+self.descendants.join("','")+"'"}) 
+         AND allocation_tag_id IN (#{ats.uniq.join(',')})
+         GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight
+         ) ac ON ac.ids @> ARRAY[academic_allocations.id];
     SQL
-
-  rescue => error
-    raise "#{error}"
   end
-
+ 
   def full_period
     date = if respond_to?(:initial_time) 
             I18n.l(initial_time, format: :at_date)

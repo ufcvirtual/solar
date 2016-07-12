@@ -215,6 +215,7 @@ en_US:
         prerequisites: Prerequisites
         resume: Resume
         passing_grade: Passing grade
+        working_hours: Working Hours
       course:
         name: Name
         code: Code
@@ -384,6 +385,14 @@ en_US:
         is_recorded: Record
       question_item:
         description: Description
+      academic_allocation:
+        evaluative: Evaluative
+        frequency: Frequency
+        final_exam: Final Exam
+        max_working_hours: Maximum working hours
+        weight: Weight
+        final_weight: Final weight
+        equivalent_academic_allocation_id: Equivalent tool
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -525,6 +534,7 @@ en_US:
   edit: "Edit"
   show: "View"
   destroy: "Delete"
+  are_you_sure: Are you sure?
   new_user_msg_cpf_error: "invalid"
   itens_not_found: "No itens to display"
   registration_next: "Next"
@@ -1958,7 +1968,7 @@ en_US:
       participant: Participant
       digital_class: Digital Class Lesson
   editions:
-    alert: "Fill the required fields"
+    alert: Fill the required fields
     academic:
       courses: "Courses"
       curriculum_units: "Subjects"
@@ -2048,6 +2058,37 @@ en_US:
       full_period: "%{dstart} à %{dend} %{hours}"
       expand_description: Expand description
       compress_description: Compress description
+      discussions_call: 'Manage evaluative / frequency discussions'
+      exams_call: 'Manage evaluative / frequency exams'
+      chats_call: 'Manage evaluative / frequency chats'
+      assignments_call: 'Manage evaluative / frequency assignments'
+    tools:
+      expand: Expand
+      compress: Compress
+      name: Name
+      period: Period
+      evaluative: Evaluative
+      weight: Weight
+      final_weight: FInal Weight
+      final_exam: Final Exam
+      equivalent: Equivalent to
+      frequency: Frequency
+      max_wh: Maximum Working Hour
+      offer: Tool saved to offer
+      wh: 'w/h'
+    tool_management:
+      how_it_works_title: "<b>How it works</b>"
+      how_it_works: "<div> This management tool allows to define which tools are evaluative or not and which ones will have some working hours to attend to by the student.</div><br/><div>To indicates that a <b>tool is evaluative</b>, just check 'Evaluative' field and inform it's weight and final weight.</div><br/><div>The <b>weight</b> corresponds to the tool's weight in comparison to the other ones at the time of the student final grade calcule. If it is a default weight, just sets 1.</div><div><i>Weight example: Chat weight 2, Discussion weight 3. Calcule: (2*chatGrade + 3*discussionGrade)/(2+3)</i></div><br/><div>The <b>final weight</b> corresponds to how many % some group of tools (grouped by a common final weight) will count at the student final grade calcule.</div><div><i>Final weight example: Chat 40%, Discussion 40%, Exam 60%. Calcule: 0,4*(chatGrade + discussionGrade) + 0,6*(examGrade)</i></div><div><i>Weight and final weight example: Chat weight 2 40%, Discussion weight 3 40%, Exam weight 1 60%. Calcule: [0,4*(2*chatGrade + 3*discussionGrade) + 0,6*(examGrade)]/(2+3+1)</i></div><br/><div>The <b>Final Evaluation</b> indicates if this tool will be a part of the final grade calcule as a final exam. That is, <i>(studentFinalGrade + gradeFE)/2</i></div><div>If a tool is defined as Final Exam, it won't have working hours, weight and final weight. If those values are informed, they will be ignored.</div><br/><div>A tool <b>equivalent</b> to another means that if a student don't have the first, his grade will be from the second one.</div><div>If this values are incorrect or incomplete, will be used main tool values.</div><div><i>Example: Discussion 2 is equivalent to Discussion 1. The grade will be the one from discussion 1. If the student don't have a grade to this tool, it will be from discussion 2.</i></div>"
+      rules_title: "<b>Rules and informations</b>"
+      rules: "<div>1) If it is a frequency tool, the maximum working hours sum must be equal to the curriculum unit working hours.<br/><br/><div>2) If it is evaluative, distinct final weigh sum must be 100.</div> <br/> <i>Example: Discussion 1 with final weight 40, Chat 2 with final weight 40, Exam with final weight 60. 40 + 60 = 100.</i> (CORRECT) <br/> <i>Exemple: Discussion 1 with final weight 40, Chat 2 with final weight 45, Exam with final weight 60. 40 + 45 + 60 = 145.</i> (INCORRECT)</div><br/><div>If a tool is defined as equivalent to another, it should have the same working hours, weight and final weight than main tool. If those values are missing or incorrect, it will be defined as the same value as main tool.</div><br/><div>3) After change something here and finish it, all students final grade will be recalculated."
+      rule_wh1: "<div>4) You can't define a tool as frquency while curriculum unit doesn't have working hours.</div>"
+      rule_wh2: "<div>4) Curriculum Unit working hours: %{working_hours}. Therefore, maximum working hours sum cant be above this value.</div>"
+      expand: Expand all
+      compress: Compress all
+      share_wh: Share working/hours
+      default_weight: Sets all weights as 1
+      default_final_weight: Sets all final weights as 100
+      finish: Finish
   curriculum_units:
     success:
       created: Subject was successfully created.
@@ -2057,6 +2098,8 @@ en_US:
       created: Subject wasn't created.
       updated: Subject wasn't updated.
       deleted: Subject wasn't deleted.
+    warning:
+      working_hours: There are groups with frequency tools which working hours sum is different from the value defined to the Subject. Please verify the tools.
     index:
       new_course: New Course
       new_module: New Module
@@ -3198,3 +3241,21 @@ en_US:
       private: Private
       new: New Lesson Digital Class
       edit: Edit Lesson Digital Class
+
+  evaluative_tools:
+    errors:
+      working_hour_error: 'The total working hours must be %{max}, but the sum is %{wh}.'
+      final_weight_error: 'The final weight must be 100%, but the sum of the final weights is %{sum}%.'
+      equivalent_group: 'There is no equivalent tool to group %{group}'
+      equivalent_offer: 'There is no equivalent tool at offer'
+      single_equivalent: 'already is equivalent to another one'
+      general_message: It was not possible to execute action
+      permission: "You're not allowed to access all selected tools. Make sure you have access to all groups envolved or, if you have access to groups but not to the offer, make sure you didn't try to manage an offer tool."
+      only_groups_and_offer: This page is only acessible to groups and offer.
+      nested: "This tool is already equivalent to another. Therefore, can't have equivalent."
+      equivalent_value: Must be equal to equivalent
+    success:
+      manage: Tools managed successfully.
+    warnings:
+      no_evaluative_tools: There are no evaluative tool to this action.
+      no_frequency_tools: There are no frequency tool to this action.

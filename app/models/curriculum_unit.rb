@@ -16,6 +16,7 @@ class CurriculumUnit < ActiveRecord::Base
   validates :name, length: { maximum: 120 }
   validates :name, :curriculum_unit_type, :resume, :syllabus, :objectives, :code, presence: true
   validates :passing_grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true}
+  validates :working_hours, numericality: { greater_than: 0, allow_blank: true}
 
   after_save :update_digital_class, if: "code_changed? || name_changed?"
 
@@ -53,6 +54,11 @@ class CurriculumUnit < ActiveRecord::Base
     ucs_by_groups   = al.map(&:group).compact.map(&:curriculum_unit).uniq
 
     return [my_direct_uc + ucs_by_offers + ucs_by_courses + ucs_by_groups].flatten.compact.uniq.sort
+  end
+
+  def verify_evaluative_tools
+    acs = AcademicAllocation.where(allocation_tag_id: allocation_tag.related, frequency: true).where('final_exam IS NULL AND equivalent_academic_allocation_id IS NULL').pluck(:max_working_hours)
+    (acs.empty? ? false : acs.sum(:max_working_hours) == working_hours)
   end
 
   ## triggers
