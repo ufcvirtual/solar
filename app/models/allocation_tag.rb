@@ -114,6 +114,10 @@ class AllocationTag < ActiveRecord::Base
     related(lower: true)
   end
 
+  def upper_related
+    related(upper: true)
+  end
+
   def self.at_groups_by_offer_id(offer_id, only_id = true)
     RelatedTaggable.where(offer_id: offer_id).pluck(:group_at_id).uniq.compact
   end
@@ -242,6 +246,11 @@ class AllocationTag < ActiveRecord::Base
       ORDER BY users.name;
     SQL
 
+  end
+
+  def recalculate_students_grades
+    ats = lower_related if group.nil?
+    allocations.includes(:profile).where(status: Allocation_Activated, allocation_tag_id: ats || id).where('cast(profiles.types & ? as boolean) AND final_grade IS NOT NULL', Profile_Type_Student).map(&:calculate_final_grade)
   end
 
   ### triggers
