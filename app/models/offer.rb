@@ -84,7 +84,7 @@ class Offer < ActiveRecord::Base
   def enrollment_end_date
     # a oferta pode ou nao ter uma data final para periodo de matricula
     if enrollment_schedule_id.nil? || enrollment_schedule.end_date.nil? # se o periodo de matricula na oferta for nulo
-      semester.enrollment_schedule.end_date || semester.offer_schedule.end_date # o periodo no semestre será utilizado
+      end_date
     else
       enrollment_schedule.end_date
     end
@@ -178,7 +178,7 @@ class Offer < ActiveRecord::Base
       SELECT o.*, COALESCE(os_e.start_date, ss_e.start_date)::date AS enroll_start_date,
         CASE
           WHEN o.enrollment_schedule_id IS NULL THEN COALESCE(ss_e.end_date, ss_p.end_date)::date
-          WHEN o.enrollment_schedule_id IS NOT NULL AND o.offer_schedule_id IS NULL THEN COALESCE(os_e.end_date, ss_e.end_date, ss_p.end_date)::date
+          WHEN o.enrollment_schedule_id IS NOT NULL AND o.offer_schedule_id IS NULL THEN COALESCE(os_e.end_date, ss_p.end_date)::date
           ELSE COALESCE(os_e.end_date, os_p.end_date, ss_e.end_date, ss_p.end_date)::date
         END AS enroll_end_date
         FROM offers                 AS o
@@ -211,18 +211,10 @@ class Offer < ActiveRecord::Base
                   now() BETWEEN os_e.start_date AND os_p.end_date -- final de matricula no periodo da oferta
                 )
 
-                -- matricula definida na oferta sem data final e semestre possui matricula com data final
+                -- matricula definida na oferta sem data final
                 OR
                 (
-                  os_e.end_date IS NULL AND o.offer_schedule_id IS NULL AND ss_e.end_date IS NOT NULL
-                  AND
-                  now() BETWEEN os_e.start_date AND ss_e.end_date -- final de matricula na matricula do semestre
-                )
-
-                -- matricula definida na oferta sem data final e semestre possui matricula sem data final
-                OR
-                (
-                  os_e.end_date IS NULL AND o.offer_schedule_id IS NULL AND ss_e.end_date IS NULL
+                  os_e.end_date IS NULL AND o.offer_schedule_id IS NULL
                   AND
                   now() BETWEEN os_e.start_date AND ss_p.end_date -- final de matricula no periodo do semestre
                 )
