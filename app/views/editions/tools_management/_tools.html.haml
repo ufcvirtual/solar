@@ -1,0 +1,131 @@
+.block_wrapper.module.tools
+  .block_title_exam.block_exam
+    %h2
+      .icons
+        = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show(this)'
+        = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show(this)'
+      = link_to_function t(tool_name.tableize.singularize, scope: [:activerecord, :models]), 'hide_or_show(this)'
+  .tools_by_tool_type{class: (@tool_name == tool_name ? '' : 'invisible')}
+    - if tools.any?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th.name= t('editions.tools.name')
+            %th= t('editions.tools.period')
+            %th= t('editions.tools.evaluative')
+            %th= t('editions.tools.weight')
+            %th= t('editions.tools.final_weight')
+            %th= t('editions.tools.final_exam')
+            %th= t('editions.tools.frequency')
+            %th= t('editions.tools.max_wh')
+            %th= t('editions.tools.equivalent')
+
+        %tbody
+          - tools_ids = tools.map(&:id)
+          - tools.each do |ac|
+            - acs = ac.ids.delete('{}').split(',')
+            - ats_ids = ac.ats.delete('{}').split(',')
+            - ats = AllocationTag.where(id: ats_ids)
+            - groups = Group.joins(:allocation_tag).where(allocation_tags: {id: ats_ids.map(&:to_i)}).compact
+            - tool   = tool_name.constantize.find(ac.academic_tool_id)
+            = fields_for 'academic_allocations[]', ac do |acf|
+              %tr.lines{ class: [ats_ids.map{|at| 'at_'+at}, acs.map{|ac| 'ac_'+ac}].join(' ') }
+                %td.desc
+                  %div
+                    .title
+                      = tool.respond_to?(:name) ? tool.name : tool.title
+                    .description
+                      - description = tool.respond_to?(:description) ? tool.description : tool.enunciation
+                      .minimun
+                        = description.truncate(200)
+                        - if description.size > 200
+                          = link_to_function content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('editions.evaluative_tools.expand_description')), 'expand_or_compress(this)'
+                      .complete.invisible
+                        = description
+                        = link_to_function content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('editions.evaluative_tools.compress_description')), 'expand_or_compress(this)'
+                    - if groups.blank?
+                      = t('editions.tools.offer')
+                    - else
+                      .group_label= render "groups/groups_tags", groups: groups, tool: tool, all_groups: nil, paths: nil
+                %td= tool.full_period
+                %td= acf.check_box :evaluative, label: false
+                %td.weight= acf.text_field :weight, label: false, disabled: !ac.evaluative || ac.final_exam
+                %td.final_weight= acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam
+                %td= acf.check_box :final_exam, label: false, disabled: !ac.evaluative
+                %td= acf.check_box :frequency, label: false, disabled: wh, :'data-change' => !wh  || ac.final_exam
+                %td.working_hours
+                  = acf.text_field :max_working_hours, label: false, disabled: !ac.frequency || ac.final_exam
+                  = t('editions.tools.wh')
+                - select_tools = AcademicAllocation.where(id: (tools_ids - acs))
+                %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_name, {include_blank: true}, {disabled: !ac.evaluative || ac.final_exam})
+                = acf.hidden_field "allocation_tags_ids", value: ats_ids.map(&:to_i)
+
+= javascript_include_tag "tablesorter", "tooltip", "groups_tags"
+
+:javascript
+  $(function(){
+
+    $("input[id$='evaluative']").change(function(){
+      var parent = $(this).parents('tr');
+      var value  = $(this).prop('checked');
+      var field = parent.find("input[id$='weight']");
+      field.prop('disabled', !value);
+      console.log(field);
+      parent.find("input[id$='final_weight']").prop('disabled', !value);
+      parent.find("input[id$='final_exam']").prop('disabled', !value);
+      if(!$("input[id$='frequency']").prop('checked'))
+      parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
+      if(!value)
+        field.val(0);
+    });
+
+    $("input[id$='final_exam']").change(function(){
+      var parent = $(this).parents('tr');
+      var value  = $(this).prop('checked');
+      parent.find("input[id$='weight']").prop('disabled', !!value);
+      parent.find("input[id$='final_weight']").prop('disabled', !!value);
+      parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !!value);
+      var frequency = parent.find("input[id$='frequency']");
+      if(frequency.data('change') == 'true'){
+        frequency.prop('disabled', !!value);
+        parent.find("input[id$='max_working_hours']").prop('disabled', !!value);
+      }
+    });
+
+    $("select[id$='equivalent_academic_allocation_id']").change(function(){
+      var parent = $(this).parents('tr');
+      var value  = $(this).val() == '';
+      parent.find("input[id$='weight']").prop('disabled', !value);
+      parent.find("input[id$='final_exam']").prop('disabled', !value);
+      parent.find("input[id$='final_weight']").prop('disabled', !value);
+      if(parent.find("input[id$='frequency']").data('change') == 'true'){
+       parent.find("input[id$='max_working_hours']").prop('disabled', !value);
+      }
+    });
+
+    $("input[id$='frequency']").change(function(){
+      var parent = $(this).parents('tr');
+      var value  = $(this).prop('checked');
+      var field = parent.find("input[id$='max_working_hours']");
+      field.prop('disabled', !value);
+
+      if(!!$("input[id$='evaluative']").prop('checked'))
+        parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
+      if(!value)
+        field.val(0);
+    });
+  });
+
+  function hide_or_show(icon){
+    var div = $(icon).parents('.tools:first').find('.tools_by_tool_type');
+    div.slideToggle();
+    div.parent().find('.icon-arrow-down-triangle').toggleClass('invisible');
+    div.parent().find('.icon-arrow-up-triangle').toggleClass('invisible');
+  }
+
+  function show(div){
+    var parent = $(div).parents('.tools_by_tool_type');
+    parent.slideDown();
+    parent.parent().find('.icon-arrow-down-triangle').addClass('invisible');
+    parent.parent().find('.icon-arrow-up-triangle').removeClass('invisible');
+  }

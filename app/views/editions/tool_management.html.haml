@@ -1,0 +1,146 @@
+.tool_management{ :'data-link-list' => tool_management_editions_path(allocation_tag_ids: @allocation_tag_ids) }
+  .title-warning
+    %div.how_it_works_title
+      = link_to_function raw(t('.how_it_works_title')), 'hide_or_show_info(this)'
+      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show_info(this)'
+      = link_to_function content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show_info(this)'
+    %div.how_it_works= raw t('.how_it_works')
+  .title-warning
+    %div.rules_and_info_title
+      = link_to_function raw(t('.rules_title')), 'hide_or_show_info(this)'
+      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show_info(this)'
+      = link_to_function content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show_info(this)'
+    %div.rules_and_info=raw t('.rules')
+    %br
+    - if @working_hours.blank?
+      %div.rules_and_info=raw t('.rule_wh1')
+    - else
+      %div.rules_and_info=raw t('.rule_wh2', working_hours: @working_hours)
+  
+  .management
+    = form_tag manage_tools_editions_path, method: :put do        
+      - if @tools.any?
+        %div
+          .expand_hide
+            = link_to_function content_tag(:i, nil, class: 'icon-resize-enlarge', :"data-tooltip" => t('.expand')), 'show_all()'
+            .expand_link= link_to_function t('.expand'), 'show_all()'
+            = link_to_function content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), 'hide_all()'
+            .compress_link= link_to_function t('.compress'), 'hide_all()'
+        %div
+          .frequency_equally
+            - if !@working_hours.blank? && @groups.size == 1
+              = link_to_function content_tag(:i, nil, class: 'icon-clock', :"data-tooltip" => t('.share_wh')), "equal_frequencies(#{@working_hours})"
+              .frequency_link= link_to_function t('.share_wh'), "equal_frequencies(#{@working_hours})"
+          .set_weight
+            = link_to_function content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_weight')), 'set_weight()'
+            .weight_link= link_to_function t('.default_weight'), 'set_weight()'
+          .set_final_weight
+            = link_to_function content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_final_weight')), 'set_final_weight()'
+            .weight_link= link_to_function t('.default_final_weight'), 'set_final_weight()'
+        - @tools.each do |key, value|
+          = render partial: 'editions/tools_management/tools', locals: { tool_name: key, tools: value, wh: @working_hours.blank? }
+        = button_to_function t('.finish'), 'manage_tools(this)', class: 'btn'
+      - else
+        .text_none
+          = t(:item_search_no_found)
+
+
+:javascript
+  function hide_or_show_info(name){
+    var parent = $(name).parent();
+    parent.siblings().slideToggle('slow', function() {
+      parent.siblings().toggleClass('invisible');
+    });
+
+    if(parent.siblings().first().hasClass('invisible')){
+      parent.find('i.icon-arrow-up-triangle').removeClass('invisible');
+      parent.find('i.icon-arrow-down-triangle').addClass('invisible');
+    }else{
+      parent.find('i.icon-arrow-up-triangle').addClass('invisible');
+      parent.find('i.icon-arrow-down-triangle').removeClass('invisible');
+    }
+  }
+
+  function manage_tools(button){
+    $(button).parents('form:first').serialize_and_submit({
+      error_message: '',
+      complement_success: function(data){
+        $('tr.red').removeClass('red');
+      },
+      complement_error: function(data) {
+        $('tr.red').removeClass('red');
+        var data = $.parseJSON(data.responseText)
+
+        if(!!data.acs.length)
+          $.each(data.acs, function(idx){
+            var divs = $('tr.ac_'+data.acs[idx]);
+            divs.addClass('red');
+            show(divs);
+          });
+
+        if(!!data.ats.length)
+          $.each(data.ats, function(idx){
+            var divs = $('tr.at_'+data.ats[idx]);
+            divs.addClass('red');
+            show(divs);
+          });
+      }
+    });
+  }
+
+  function show_all(){
+    $('.tools_by_tool_type').slideDown();
+    $('.tools .icon-arrow-up').removeClass('invisible');
+    $('.tools .icon-arrow-down').addClass('invisible');
+  }
+
+  function hide_all(){
+    $('.tools_by_tool_type').slideUp();
+    $('.tools .icon-arrow-down').removeClass('invisible');
+    $('.tools .icon-arrow-up').addClass('invisible');
+  }
+
+  function equal_frequencies(total){
+    if (!confirm("#{I18n.t(:are_you_sure)}"))
+      return false;
+
+    if(total == undefined)
+      return false;
+
+    var inputs = $('input[id$="max_working_hours"]').not(':disabled');
+    if(!inputs.length){
+      flash_message("#{I18n.t('evaluative_tools.warnings.no_frequency_tools')}", 'warning');
+      return false;
+    }
+
+    var each_value = total/inputs.length;
+    inputs.val(each_value);
+  }
+
+  function set_weight(){
+    if (!confirm("#{I18n.t(:are_you_sure)}"))
+      return false;
+
+    var inputs = $('td.weight input').not(':disabled');
+    if(!inputs.length){
+      flash_message("#{I18n.t('evaluative_tools.warnings.no_evaluative_tools')}", 'warning');
+      return false;
+    }
+    
+    inputs.val(1);
+  }
+
+  function set_final_weight(){
+    if (!confirm("#{I18n.t(:are_you_sure)}"))
+      return false;
+
+    var inputs = $('td.final_weight input').not(':disabled');
+    if(!inputs.length){
+      flash_message("#{I18n.t('evaluative_tools.warnings.no_evaluative_tools')}", 'warning');
+      return false;
+    }
+    inputs.val(100);
+  }
+
+  // function set_group_working_hours(at_id){
+  // }
