@@ -5,6 +5,7 @@ class GroupAssignment < ActiveRecord::Base
   belongs_to :academic_allocation, conditions: { academic_tool_type: 'Assignment' }
 
   has_one :sent_assignment, dependent: :destroy
+  has_one :academic_allocation_user, dependent: :destroy
 
   has_many :group_participants, dependent: :delete_all
   has_many :users, through: :group_participants

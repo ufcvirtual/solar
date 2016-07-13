@@ -172,16 +172,21 @@ class Allocation < ActiveRecord::Base
     DigitalClass.update_roles(self, professor_profiles, student_profiles, ignore_changes)
   end
 
-  def calculate_final_grade
-    ats = allocation_tag.lower_related
+  def calculate_final_grade(grade=nil)
+    ats = allocation_tag.related
     grades = AcademicAllocation.find_by_sql <<-SQL
+      WITH groups AS ( 
+        SELECT group_participants.group_assignment_id AS group_id 
+        FROM group_participants 
+        WHERE user_id = #{user_id}
+      )
       SELECT SUM(ac.grade) as grade
       FROM (
         SELECT  (academic_allocations.final_weight::float/100)*SUM(COALESCE(acu.grade, acu_eq.grade, 0)*academic_allocations.weight)/SUM(academic_allocations.weight) AS grade
         FROM academic_allocations
         LEFT JOIN academic_allocations equivalent  ON academic_allocations.id = equivalent.equivalent_academic_allocation_id
-        LEFT JOIN academic_allocation_users acu    ON acu.academic_allocation_id = academic_allocations.id
-        LEFT JOIN academic_allocation_users acu_eq ON acu_eq.academic_allocation_id = equivalent.id
+        LEFT JOIN academic_allocation_users acu    ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id IN (select group_id from groups))
+        LEFT JOIN academic_allocation_users acu_eq ON acu_eq.academic_allocation_id = equivalent.id  AND (acu_eq.user_id = #{user_id} OR acu_eq.group_assignment_id IN (select group_id from groups))
         WHERE
           academic_allocations.evaluative = true
           AND
@@ -191,13 +196,18 @@ class Allocation < ActiveRecord::Base
           AND
           academic_allocations.final_exam = false
         GROUP BY academic_allocations.final_weight
-      ) ac
+      ) ac;
     SQL
 
     afs = AcademicAllocation.find_by_sql <<-SQL
+      WITH groups AS ( 
+        SELECT group_participants.group_assignment_id AS group_id 
+        FROM group_participants 
+        WHERE user_id = #{user_id}
+      )
       SELECT SUM(acu.grade)/COUNT(acu.id) AS grade
       FROM academic_allocations
-      JOIN academic_allocation_users acu ON acu.academic_allocation_id = academic_allocations.id
+      LEFT JOIN academic_allocation_users acu  ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id IN (select group_id from groups))
       WHERE
         academic_allocations.evaluative = true
         AND
@@ -207,7 +217,39 @@ class Allocation < ActiveRecord::Base
         AND
         acu.grade IS NOT NULL;
     SQL
-    update_attributes final_grade: (afs.empty? ? grades.first[:grade] : (grades.first[:grade].to_f+afs.first[:grade].to_f)/2)
+
+    update_attributes final_grade: ((afs.empty? || afs.first[:grade].blank?) ? grades.first[:grade] : (grades.first[:grade].to_f+afs.first[:grade].to_f)/2)
+  end
+
+  def get_working_hours
+    Allocation.get_working_hours(user_id, allocation_tag)
+  end
+
+  def self.get_working_hours(user_id, allocation_tag, tool=nil)
+    query = tool.blank? ? '' : " AND academic_allocations.academic_tool_type=#{tool}"
+    ats = allocation_tag.related.join(',')
+    hours = AcademicAllocation.find_by_sql <<-SQL
+      WITH groups AS ( 
+        SELECT group_participants.group_assignment_id AS group_id 
+        FROM group_participants 
+        WHERE user_id = #{user_id}
+      )
+      SELECT SUM(COALESCE(acu.working_hours, acu_eq.working_hours, 0)) as working_hours
+      FROM academic_allocations
+      LEFT JOIN academic_allocations equivalent  ON academic_allocations.id = equivalent.equivalent_academic_allocation_id
+      LEFT JOIN academic_allocation_users acu    ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id IN (select group_id from groups))
+      LEFT JOIN academic_allocation_users acu_eq ON acu_eq.academic_allocation_id = equivalent.id AND (acu_eq.user_id = #{user_id} OR acu_eq.group_assignment_id IN (select group_id from groups))
+      WHERE
+        academic_allocations.frequency = true
+        AND
+        academic_allocations.allocation_tag_id IN (#{ats})
+        AND
+        academic_allocations.equivalent_academic_allocation_id IS NULL
+        AND
+        academic_allocations.final_exam = false;
+    SQL
+
+    hours.first['working_hours'].to_i rescue 0
   end
 
   private

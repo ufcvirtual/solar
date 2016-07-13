@@ -7,11 +7,11 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   has_one :allocation_tag, through: :academic_allocation
 
-  validates :user_id, uniqueness: { scope: [:group_assignment_id, :academic_allocation_id] }  
+  validates :user_id, uniqueness: { scope: [:group_assignment_id, :academic_allocation_id] }
+
+  validates :user_id, presence: true, if: 'group_assignment_id.nil?'
 
   before_save :if_group_assignment_remove_user_id
-
-  after_save :recalculate_final_grade, if: '(new_record? && !grade.blank?) || grade_changed?'
 
   def if_group_assignment_remove_user_id
     self.user_id = nil if group_assignment_id
@@ -22,15 +22,16 @@ class AcademicAllocationUser < ActiveRecord::Base
   end
 
   def get_user
-    [user_id] || group_assignment.group_participants.pluck(&:user_id)
+    (user_id.nil? ? group_assignment.group_participants.map(&:user_id) : [user_id])
   end
 
-  def recalculate_final_grade
-    get_user.each do |user|
-        allocations = Allocation.joins(:profile).where(user_id: user, status: Allocation_Activated).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
-        allocation = allocations.where('final_grade IS NOT NULL').first || allocations.first
+  # call after every acu grade change
+  def recalculate_final_grade(allocation_tag_id)
+    get_user.compact.each do |user|
+      allocations = Allocation.includes(:profile).where(user_id: user, status: Allocation_Activated, allocation_tag_id: allocation_tag_id).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
+      allocation = allocations.where('final_grade IS NOT NULL').first || allocations.first
 
-        allocation.calculate_final_grade
+      allocation.calculate_final_grade
     end
   end
 

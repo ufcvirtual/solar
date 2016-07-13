@@ -52,12 +52,12 @@
                 %td.weight= acf.text_field :weight, label: false, disabled: !ac.evaluative || ac.final_exam
                 %td.final_weight= acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam
                 %td= acf.check_box :final_exam, label: false, disabled: !ac.evaluative
-                %td= acf.check_box :frequency, label: false, disabled: wh, :'data-change' => !wh  || ac.final_exam
+                %td= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
                 %td.working_hours
                   = acf.text_field :max_working_hours, label: false, disabled: !ac.frequency || ac.final_exam
                   = t('editions.tools.wh')
                 - select_tools = AcademicAllocation.where(id: (tools_ids - acs))
-                %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_name, {include_blank: true}, {disabled: !ac.evaluative || ac.final_exam})
+                %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_name, {include_blank: true}, {disabled: (!ac.evaluative && !ac.frequency) || ac.final_exam})
                 = acf.hidden_field "allocation_tags_ids", value: ats_ids.map(&:to_i)
 
 = javascript_include_tag "tablesorter", "tooltip", "groups_tags"
@@ -75,8 +75,6 @@
       parent.find("input[id$='final_exam']").prop('disabled', !value);
       if(!$("input[id$='frequency']").prop('checked'))
       parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
-      if(!value)
-        field.val(0);
     });
 
     $("input[id$='final_exam']").change(function(){
@@ -109,10 +107,8 @@
       var field = parent.find("input[id$='max_working_hours']");
       field.prop('disabled', !value);
 
-      if(!!$("input[id$='evaluative']").prop('checked'))
+      if(!$("input[id$='evaluative']").prop('checked'))
         parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
-      if(!value)
-        field.val(0);
     });
   });
 

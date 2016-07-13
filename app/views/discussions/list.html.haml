@@ -2,7 +2,7 @@
 
   .block_title
     %h2= t(".discussions")
-    - if @user_profiles.include?(editions: :tool_management) && @selected == 'GROUP'
+    - if can? :tool_management, Edition, {on: @allocation_tags_ids} && @selected == 'GROUP'
       .tool_managmenet_link= link_to_function t('editions.evaluative_tools.discussions_call'), 'call_tool_management(this)', :'data-link' => discussion_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids)
   .block_content_toolbar
     .block_toolbar_left.btn-group

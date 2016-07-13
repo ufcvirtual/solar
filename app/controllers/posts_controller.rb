@@ -108,17 +108,19 @@ class PostsController < ApplicationController
       academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: allocation_tag_ids).first
       tool = 'Discussion'
       aau_id = AcademicAllocationUser.get_or_create_academic_allocation_user(tool, academic_allocation, post.user_id, @discussion.id)
-      update_posts_academic_allocation_user(aau_id, allocation_tag_ids)
+      update_posts_academic_allocation_user(aau_id, allocation_tag_ids, active_tab[:url][:allocation_tag_id])
       @aalluser = AcademicAllocationUser.find(aau_id)
     else
-      @aalluser = AcademicAllocationUser.find(post.academic_allocation_user_id)
+      @aalluser = AcademicAllocationUser.find(post.academic_allocation_user_id, active_tab[:url][:allocation_tag_id])
     end  
     @aalluser
   end 
 
-  def update_posts_academic_allocation_user(aau_id, allocation_tags)
-    posts_list = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id)
-    .update_all(academic_allocation_user_id: aau_id) 
+  def update_posts_academic_allocation_user(aau_id, allocation_tags, allocation_tag_id)
+    Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id)
+    .update_all(academic_allocation_user_id: aau_id)
+
+    aau_id.recalculate_final_grade(allocation_tag_id)
   end  
 
   ## POST /discussions/:id/posts

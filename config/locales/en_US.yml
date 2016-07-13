@@ -3254,6 +3254,9 @@ en_US:
       only_groups_and_offer: This page is only acessible to groups and offer.
       nested: "This tool is already equivalent to another. Therefore, can't have equivalent."
       equivalent_value: Must be equal to equivalent
+      eq_evaluative: is not evaluative, while this is.
+      eq_frequency: is not frequency, while this is.
+      itself: can't be itself.
     success:
       manage: Tools managed successfully.
     warnings:

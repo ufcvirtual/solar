@@ -73,6 +73,11 @@ class AcademicAllocation < ActiveRecord::Base
   def verify_equivalents
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.single_equivalent')) if AcademicAllocation.where(equivalent_academic_allocation_id: equivalent_academic_allocation_id).where('id != :id', { id: id }).any?
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.nested')) if AcademicAllocation.where(equivalent_academic_allocation_id: id).any? && !equivalent_academic_allocation_id.nil?
+
+    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.eq_evaluative')) if evaluative != AcademicAllocation.find(equivalent_academic_allocation_id).try(:evaluative)
+    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.eq_frequency')) if frequency != AcademicAllocation.find(equivalent_academic_allocation_id).try(:frequency)
+
+    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.itself')) if id == equivalent_academic_allocation_id
   end
 
   def assignment?

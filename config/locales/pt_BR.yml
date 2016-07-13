@@ -3487,6 +3487,9 @@ pt_BR:
       only_groups_and_offer: Esta tela só é acessível para turmas e ofertas.
       nested: 'Esta ferramenta já é equivalente a outra. Portanto, não pode ter equivalência.'
       equivalent_value: Deve ser igual à equivalente
+      eq_evaluative: não é de avaliativa, enquanto esta é.
+      eq_frequency: não é de frequência, enquanto esta é.
+      itself: não pode ser ela mesma.
     success:
       manage: Ferramentas gerenciadas com sucesso.
     warnings:
