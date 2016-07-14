@@ -407,6 +407,10 @@ Solar::Application.routes.draw do
       put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: "add"   , tool_type: "ChatRoom", as: :add_group_to
       get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "ChatRoom", as: :group_tags_from
     end
+    
+    get :user_messages, on: :member
+    post :academic_allocation_user_grade
+
     get :messages, on: :member
     get :access, on: :member
   end

@@ -97,14 +97,60 @@ class ChatRoomsController < ApplicationController
     raise error.class
   end
 
+  ## GET /chat_roms/1/messages/user/1
+  def user_messages
+    if user_session[:blocking_content]
+      render text: t('exams.restrict')
+    else
+      @user = User.find(params[:user_id])
+      @chat_room = ChatRoom.find(params[:id])
+
+      @allocation_tags = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
+      @messages = ChatMessage.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @allocation_tags, academic_tool_id: @chat_room.id, academic_tool_type: 'ChatRoom' }, user_id: @user.id).order('created_at DESC')
+
+      @aau_id = ChatMessage.find(@messages.last.id).academic_allocation_user_id unless @messages.blank?
+      @aalluser = AcademicAllocationUser.find(@aau_id) unless @aau_id.blank?
+      @academic_allocation = @chat_room.academic_allocations.where(allocation_tag_id: @allocation_tags).first
+
+      respond_to do |format|
+        format.html { render layout: false }
+        format.json { render json: @messages }
+      end
+    end  
+  end  
+
+  def academic_allocation_user_grade
+    authorize! :academic_allocation_user_grade, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @user = User.find(params[:user_id])
+    @chat_room = ChatRoom.find(params[:chat_room_id])
+    chat_message = ChatMessage.find(params[:chat_message_id].to_i)
+    allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    tool = 'ChatRoom'
+    model = ChatMessage
+
+    @aalluser = AcademicAllocationUser.get_academic_allocation_user(chat_message, tool, @user.id, @chat_room, allocation_tag_id, model)
+    if @aalluser.update_grade_and_frequency(params[:chat_rooms][:grade].to_f, params[:chat_rooms][:frequency].to_i)
+      render json: { success: true, notice: t('update_grade', scope: 'posts.user_posts') }
+    else
+      render json: {result: 0}, status: :unprocessable_entity
+    end
+  rescue
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  end 
+
   def messages
     if user_session[:blocking_content]
       render text: t('exams.restrict')
     else
       @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
-
+      @can_validate = false
       authorize! :show, ChatRoom, on: [allocation_tag_id]
+      @can_interact_grade = (can? :academic_allocation_user_grade, ChatRoom, on: [allocation_tag_id])
+      @academic_allocation = AcademicAllocation.where(academic_tool_id: @chat_room.id, academic_tool_type: 'ChatRoom').first
 
+      if (@academic_allocation.evaluative || @academic_allocation.frequency) && @can_interact_grade
+        @can_validate = true
+      end  
       all_participants = @chat_room.participants.where(academic_allocations: { allocation_tag_id: allocation_tag_id })
       @researcher = current_user.is_researcher?(AllocationTag.find(allocation_tag_id).related)
       raise CanCan::AccessDenied if (all_participants.any? && all_participants.joins(:user).where(users: { id: current_user }).empty?) && !(ChatRoom.responsible?(allocation_tag_id, current_user.id)) && !(@researcher)

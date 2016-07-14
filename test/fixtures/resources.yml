@@ -1150,8 +1150,15 @@ res221:
   action: 'tool_management'
   description: 'Gerenciar ferramentas como avaliativas / de frequência'
 
+res222:
+  id: 222
+  controller: 'chat_rooms'
+  action: 'academic_allocation_user_grade'
+  description: 'Salva a nota do Chat (messages) do aluno'  
+
 res224:
   id: 224
   controller: 'administrations'
   action: 'oauth_applications'
   description: 'Gerenciar aplicações para acesso da API via Oauth'
+

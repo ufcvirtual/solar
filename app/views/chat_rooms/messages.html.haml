@@ -1,9 +1,13 @@
 %h1#lightBoxDialogTitle= t(".history", chat_name: @chat_room.title)
 .chat_messages
+  - tool = 'ChatRoom'
+  - puts ("currente: #{current_user.id}")
   - unless @messages.empty?
     %table.tb_list
       %thead
         %tr.lines
+          %th= t('.to_evaluate') unless !@can_validate
+          %th= t('.grade') unless !@can_validate
           %th{colspan: 2}= t(".from")
           %th= t(".to")
           %th= t(".message")
@@ -13,7 +17,9 @@
         - @messages.each do |message|
           - user = message.user
           - name, nick = user.nil? ? ["", t(".all")] : [user.info(:name, @researcher), user.info(:nick, @researcher)]
-          %tr.lines
+          %tr.lines 
+            %td= link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(@chat_room.id, user_id: message.user_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t('.to_evaluate') if(@can_validate && message.user_id)
+            %td= AcademicAllocationUser.get_grade_alls_user(message.user_id, tool, @chat_room.id) if(@can_validate || message.user_id==current_user.id) 
             %td.profile= "(" + message.profile_name + ")"
             %td.user{:'data-tooltip' => (@researcher ? t(:hidden_info) : message.user_name)}= (@researcher ? t(:hidden_info) : message.user_nick)
             %td{:'data-tooltip' => name}= nick
@@ -25,3 +31,12 @@
     .block_content_text_list.text_none= t(".no_message")
 
 = javascript_include_tag "tooltip"
+
+:javascript
+
+  $(".to_evaluate_chat").call_fancybox({
+    minWidth: '50%',
+    minHeight: '50%',
+    height: 'auto',
+    closeBtn : true
+  });

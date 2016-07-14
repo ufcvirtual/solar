@@ -1003,6 +1003,9 @@ en_US:
       edit: Edit
       new: New
       info_frequency: " * Hours Maximum: "
+      frequency: Frequency
+      grade: Grade
+
   post_files:
     new:
       attach_save: "Save"
@@ -2320,6 +2323,19 @@ en_US:
       time: Time
       no_message: No messages
       all: All
+      to_evaluate: To_evaluate
+      grade: Grade
+    user_messages:
+      title: Messages of %{user} in %{chat_rooms}  
+      message: Message
+      date: Date
+      no_posts: No messages
+      update_grade: Note and successfully added Frequency
+      edit: Edit
+      new: New
+      info_frequency: " * Hours Maximum: "
+      frequency: Frequency
+      grade: Grade
 
   user_blacklist:
     add: 'Add to Blacklist'

@@ -1351,6 +1351,31 @@ chatedit4:
   resource_id: 131
   per_id: false
 
+chatedit5:
+  profile_id: 2
+  resource_id: 221
+  per_id: false
+
+chatedit6:
+  profile_id: 3
+  resource_id: 221
+  per_id: false
+
+chatedit7:
+  profile_id: 4
+  resource_id: 221
+  per_id: false
+
+chatedit8:
+  profile_id: 17
+  resource_id: 221
+  per_id: false
+
+chatedit9:
+  profile_id: 18
+  resource_id: 221
+  per_id: false
+
 # agenda
 
 agendaedit1:

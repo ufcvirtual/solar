@@ -16,7 +16,7 @@
             %span{ :"data-tooltip" => t('.moved_allocation') }= content_tag :i, nil, class: 'icon-warning moved_allocation'
           - if editable || @can_interact_grade && @can_validate
             = t(:grade, scope: [:posts, :post])
-            = AcademicAllocationUser.get_grade_posts_user(post.user_id, tool, @academic_allocation_id)
+            = AcademicAllocationUser.get_grade_alls_user(post.user_id, tool, post.discussion.id)
    
         .forum_participant_profile= (profile = post.profile).nil? ? '' : profile.name
       .forum_post_date

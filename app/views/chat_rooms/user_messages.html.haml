@@ -1,35 +1,35 @@
-.user_posts
-  %h1#lightBoxDialogTitle= t(".title", user: @user.name, discussion: @discussion.name)
-  - unless @posts.empty?
+.user_messages
+  %h1#lightBoxDialogTitle= t(".title", user: @user.name, chat_rooms: @chat_room.title)
+  - unless @messages.empty?
     %table.tb_list
       %thead
         %tr.lines
           %th= t(".message")
           %th.center= t(".date")
-          %th.center= t(".time")
       %tbody
-        - @posts.each do |post|
+        - @messages.each do |message|
           %tr.lines
-            %td.profile= sanitize post.content
-            %td.center= l(post.updated_at.to_datetime, format: :normal)
-            %td.center= l(post.updated_at.to_datetime, format: :clock_time)
+            %td.profile= sanitize message.text
+            %td.center= l(message.created_at.to_datetime, format: :normal)
 
     .block_content_toolbar
       - if @academic_allocation.evaluative || @academic_allocation.frequency
-        = simple_form_for :posts, :url => url = "/discussions/"+@discussion.id.to_s+"/posts/academic_allocation_user_grade", html: { id: 'academic_allocation_user_grade_form' } do |f|
+        = simple_form_for :chat_rooms, :url => url = "/chat_rooms/"+@chat_room.id.to_s+"/academic_allocation_user_grade", html: { id: 'academic_allocation_user_grade_form' } do |f|
           %h1#lightBoxDialogTitle= t(@aalluser ? ".edit" : ".new")
           %span.form_requirement= t(:required_fields)
           .post_form
           = hidden_field_tag :allocation_tags_ids, @allocation_tags
-          = hidden_field_tag :post_id, @posts.last.id.to_s
+          = hidden_field_tag :chat_message_id, @messages.last.id.to_s
           = hidden_field_tag :user_id, @user.id
         
           .form-inputs.block_content
             .inline
               = f.input :grade, required: true, as: :float, :step => 0.01, label: t(".grade"), input_html: { value: grade = @aalluser ? @aalluser.grade : "", min:0, max:10 } unless !@academic_allocation.evaluative
               = f.input :frequency, required: true, as: :float, label: t(".frequency"), input_html: { value: frequency = @aalluser ? @aalluser.working_hours : "", min:0, max: @academic_allocation.max_working_hours } unless !@academic_allocation.frequency  
-              = t(:info_frequency, scope: [:posts, :user_posts]) + @academic_allocation.max_working_hours.to_s + ' Hs' unless !@academic_allocation.frequency  
+              = t(:info_frequency, scope: [:chat_rooms, :user_messages]) + @academic_allocation.max_working_hours.to_s + ' Hs' unless !@academic_allocation.frequency  
+              
           .right_buttons
+            /= link_to t(:back), messages_chat_room_path(@chat_room), { class: 'btn link_open'}
             = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
             = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "save_grade"   
 
@@ -44,4 +44,12 @@
         //replace_list: $(".user_posts");
       });
     });
-  });      
+  }); 
+ 
+  $(".link_open").call_fancybox({
+    minWidth: '50%',
+    minHeight: '50%',
+    height: 'auto',
+    closeBtn : true
+  });
+

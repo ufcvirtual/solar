@@ -1171,6 +1171,9 @@ pt_BR:
       edit: Editar
       new: Novo
       info_frequency: " * Carga Horária Maxima: "
+      frequency: Frequência
+      grade: Nota
+
   post_files:
     new:
       attach_save: "Salvar"
@@ -2533,6 +2536,20 @@ pt_BR:
       time: Horário
       no_message: Nenhuma mensagem
       all: Todos
+      to_evaluate: Avaliar
+      grade: Nota
+    user_messages:
+      title: Messagens do %{user} em %{chat_rooms}
+      message: Message
+      date: Data
+      time: Horário
+      no_posts: Nenhuma postagem
+      update_grade: Nota e Frequência adicionadas com sucesso
+      edit: Editar
+      new: Novo
+      info_frequency: " * Carga Horária Maxima: "
+      frequency: Frequência
+      grade: Nota
 
   user_blacklist:
     add: Desvincular do MA
