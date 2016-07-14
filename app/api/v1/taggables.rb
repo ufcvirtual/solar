@@ -2,7 +2,7 @@ module V1
   class Taggables < Base
     # methods used for any taggable
 
-    before { verify_ip_access! }
+    before { verify_ip_access_and_guard! }
 
     desc "Remove curso ou disciplina ou oferta ou turma"
     params { requires :type, type: String, values: ['curriculum_unit', 'course', 'offer', 'group'] }

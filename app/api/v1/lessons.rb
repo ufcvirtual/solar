@@ -34,7 +34,7 @@ module V1
 
       ## api/v1/lessons
       get "/" do
-        verify_ip_access!
+        verify_ip_access_and_guard!
 
         if params[:disconsider].present?
           disconsider = params[:disconsider]

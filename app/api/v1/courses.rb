@@ -1,7 +1,7 @@
 module V1
   class Courses < Base
 
-    before { verify_ip_access! }
+    before { verify_ip_access_and_guard! }
 
     namespace :courses do 
       desc "Todos os cursos por tipo e semestre"

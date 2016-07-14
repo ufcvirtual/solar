@@ -1,7 +1,7 @@
 module V1
   class Allocations < Base
     
-    before { verify_ip_access! }
+    before { verify_ip_access_and_guard! }
 
     namespace :allocations do
 

@@ -1,7 +1,7 @@
 module V1
   class Events < Base
 
-    before { verify_ip_access! }
+    before { verify_ip_access_and_guard! }
 
     namespace :event do
       desc "Edição de evento"

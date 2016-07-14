@@ -62,7 +62,7 @@ module APIGuard
           raise RevokedError
 
         when Oauth2::AccessTokenValidationService::VALID
-          @current_user = User.find(access_token.resource_owner_id)
+          @current_user = User.find(access_token.resource_owner_id) rescue nil
 
         end
       end

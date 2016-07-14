@@ -2374,3 +2374,8 @@ tm1:
   profile_id: 5
   resource_id: 221
   per_id: false
+
+adminoauth:
+  profile_id: 6
+  resource_id: 224
+  per_id: false

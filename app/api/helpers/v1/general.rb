@@ -4,6 +4,14 @@ module V1::General
     raise CanCan::AccessDenied unless YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]['verified_addresses'].include?(request.env['REMOTE_ADDR'])
   end
 
+  def verify_ip_access_and_guard!
+    begin
+      verify_ip_access!
+    rescue
+      guard!
+    end
+  end
+
   def log_error(error, code)
     Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: #{error}"
   end

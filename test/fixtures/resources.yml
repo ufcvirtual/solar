@@ -1149,3 +1149,9 @@ res221:
   controller: 'editions'
   action: 'tool_management'
   description: 'Gerenciar ferramentas como avaliativas / de frequência'
+
+res224:
+  id: 224
+  controller: 'administrations'
+  action: 'oauth_applications'
+  description: 'Gerenciar aplicações para acesso da API via Oauth'

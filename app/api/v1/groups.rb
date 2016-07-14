@@ -59,7 +59,7 @@ module V1
 
     segment do
 
-      before { verify_ip_access! }
+      before { verify_ip_access_and_guard! }
 
       namespace :groups do
 
