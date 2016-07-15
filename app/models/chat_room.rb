@@ -13,6 +13,7 @@ class ChatRoom < Event
 
   accepts_nested_attributes_for :schedule
   accepts_nested_attributes_for :academic_allocations
+  accepts_nested_attributes_for :participants, allow_destroy: true, reject_if: :reject_participant
 
   validates :title, :start_hour, :end_hour, :schedule, presence: true
 
@@ -24,6 +25,10 @@ class ChatRoom < Event
 
   before_destroy :can_destroy?
   after_destroy :delete_schedule
+
+  def reject_participant(participant)
+    (participant[:allocation_id].blank? && (new_record? || participant[:id].blank?))
+  end
 
   def user_messages
     messages.where(message_type: 1)

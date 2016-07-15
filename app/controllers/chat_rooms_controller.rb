@@ -187,7 +187,7 @@ class ChatRoomsController < ApplicationController
     def chat_room_params
       params.require(:chat_room).permit(:title, :description, :chat_type, :start_hour, :end_hour,
         schedule_attributes: [:id, :start_date, :end_date],
-        academic_allocations_attributes: [:id, :allocation_tag_id, chat_participants_attributes: [id: [:id, :allocation_tag_id, :allocation_id, :_destroy]]])
+        academic_allocations_attributes: [:id, :allocation_tag_id, chat_participants_attributes: [:id, :allocation_id, :_destroy]])
     end
 
     def render_notification_success_json(method)
