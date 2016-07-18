@@ -53,17 +53,19 @@ module APIGuard
       else
         case validate_access_token(access_token, scopes)
         when Oauth2::AccessTokenValidationService::INSUFFICIENT_SCOPE
+          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - INSUFFICIENT_SCOPE"
           raise InsufficientScopeError.new(scopes)
 
         when Oauth2::AccessTokenValidationService::EXPIRED
+          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - EXPIRED"
           raise ExpiredError
 
         when Oauth2::AccessTokenValidationService::REVOKED
+          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - REVOKED"
           raise RevokedError
 
         when Oauth2::AccessTokenValidationService::VALID
           @current_user = User.find(access_token.resource_owner_id) rescue nil
-
         end
       end
     end

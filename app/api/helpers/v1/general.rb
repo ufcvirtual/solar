@@ -8,6 +8,8 @@ module V1::General
     begin
       verify_ip_access!
     rescue
+      Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for IP permission"
+      Rails.logger.info "[API] [WARNING] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Checking for access_token permission"
       guard!
     end
   end
