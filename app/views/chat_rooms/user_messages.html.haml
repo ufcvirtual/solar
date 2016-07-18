@@ -34,8 +34,6 @@
   function finish_evaluation(btn){
     var form = $(btn).parents('form:first');
     $.put(form.attr('action'), form.serialize(), function(data){
-      $('.back_chat_history').parents('a').click();
-      console.log($('.back_chat_history').parents('a'));
       flash_message(data.notice, 'notice', 'fancybox-outer');
     }).error(function(data){
       var data = $.parseJSON(data.responseText);

@@ -71,7 +71,7 @@ class PostsController < ApplicationController
       @posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id).order('updated_at DESC')
 
       @academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: @allocation_tags).first
-      @alluser = AcademicAllocationUser.find_or_create_one(@academic_allocation.id, at, @user, nil, false) unless @posts.blank?
+      @alluser = AcademicAllocationUser.find(@academic_allocation.id, @user.id, nil, false) unless @posts.blank?
 
       respond_to do |format|
         format.html { render layout: false }

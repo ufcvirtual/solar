@@ -3534,5 +3534,6 @@ pt_BR:
       lower_than_max: deve ser menor que o máximo de %{max} horas.
       lower_than_10: deve ser menor ou igual a 10.
       student_group: "Só é possível avaliar alunos nas turmas que estão matriculados"
+      offer: não pode ser definida, pois a oferta já foi encerrada.
     success:
       evaluated: Estudante avaliado com sucesso.

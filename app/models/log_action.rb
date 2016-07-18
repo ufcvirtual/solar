@@ -2,6 +2,7 @@ class LogAction < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :allocation_tag
+  belongs_to :academic_allocation
 
   TYPE = {
     create: 1,

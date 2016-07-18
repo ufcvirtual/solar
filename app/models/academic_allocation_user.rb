@@ -13,9 +13,17 @@ class AcademicAllocationUser < ActiveRecord::Base
   validates :working_hours, numericality: { greater_than_or_equal_to: 0,  only_integer: true }, if: '!working_hours.blank?'
   validate :verify_wh, if: '!working_hours.blank?'
   validate :verify_grade, if: '!grade.blank?'
+  validate :verify_offer, if: 'working_hours_changed? || grade_changed?'
 
   before_save :if_group_assignment_remove_user_id
   before_save :verify_profile
+
+  STATUS = {
+    empty: 0,
+    sent: 1,
+    evaluated: 2,
+    without_group: 3
+  }
 
   def verify_wh
     if !academic_allocation.frequency
@@ -31,6 +39,13 @@ class AcademicAllocationUser < ActiveRecord::Base
     else
       errors.add(:grade, I18n.t('academic_allocation_users.errors.lower_than_10')) if grade > 10
     end
+  end
+
+  def verify_offer
+    offer_active = allocation_tag.offers.first.is_active?
+    
+    errors.add(:grade, I18n.t('academic_allocation_users.errors.offer')) if academic_allocations.evaluative && grade_changed? && !offer_active
+    errors.add(:working_hours, I18n.t('academic_allocation_users.errors.offer')) if academic_allocations.evaluative && grade_changed? && !offer_active
   end
 
   # if not student, set evaluation as nil
@@ -76,6 +91,8 @@ class AcademicAllocationUser < ActiveRecord::Base
       acu.grade = evaluation[:grade].blank? ? nil : evaluation[:grade].to_f
       acu.working_hours = evaluation[:working_hours].blank? ? nil : evaluation[:working_hours].to_i
 
+      acu.status = STATUS[:evaluated] if !acu.grade.blank? || !acu.working_hours.blank?
+
       if acu.save
         acu.recalculate_final_grade(ac.allocation_tag_id)
         return []
@@ -87,17 +104,31 @@ class AcademicAllocationUser < ActiveRecord::Base
     end
   end
 
+  # must be called only when sending a activity
   def self.find_or_create_one(academic_allocation_id, allocation_tag_id, user, group_id=nil, new_object=false)
     if user.has_profile_type_at(allocation_tag_id)
       acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: (group_id.nil? ? user.id : nil), group_assignment_id: group_id).first_or_create 
-      acu.update_attributes new_after_evaluation: new_object unless acu.grade.blank? && acu.working_hours.blank?
+
+      if acu.grade.blank? && acu.working_hours.blank?
+        acu.update_attributes status: STATUS[:sent]
+      else
+        acu.update_attributes new_after_evaluation: new_object 
+      end
+
       acu
     end
   end
 
+  # must be called whenever wants to get acu without being studen accessing own activity
   def self.find(academic_allocation_id, user_id, group_id=nil, new_object=false)
     acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: (group_id.nil? ? user_id : nil), group_assignment_id: group_id).first
-    acu.update_attributes new_after_evaluation: new_object unless acu.blank? || (acu.grade.blank? && acu.working_hours.blank?)
+    unless acu.blank?
+      if (acu.grade.blank? && acu.working_hours.blank?)
+        acu.update_attributes status: STATUS[:empty]
+      else
+        acu.update_attributes new_after_evaluation: new_object
+      end
+    end
     acu
   end 
 

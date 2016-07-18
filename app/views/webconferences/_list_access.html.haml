@@ -44,10 +44,11 @@
                 = f.input :user_id, as: :hidden, input_html: { value: log.user_id }
                 - if @evaluative
                   .left
-                    = f.input :grade, as: :numeric, step: 0.01, label: t('.grade'), input_html: { value: log.try(:grade)}
+                    = f.input :grade, as: :numeric, step: 0.01, label: t('.grade'), input_html: { value: log.try(:grade), min: 0, max: 10}
                 - if @frequency
                   .middle
-                    = f.input :working_hours, as: :numeric, label: t('.working_hours'), input_html: { value: log.try(:wh)}
+                    = f.input :working_hours, as: :numeric, label: t('.working_hours'), input_html: { value: log.try(:wh), min: 0, max: log.try(:max_working_hours)}
+                    = t(:info_frequency, scope: [:chat_rooms, :user_messages]) + log.try(:max_working_hours).to_s + ' Hs' 
                 .right
                   = link_to_function t('.finish_evaluation'), 'finish_evaluation(this)', class: 'btn btn_main'
   - else

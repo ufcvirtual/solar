@@ -3300,5 +3300,6 @@ en_US:
       lower_than_max: must be smaller than maximum hours of %{max}
       lower_than_10: must be smaller or equal to 10.
       student_group: "It's only possible to evaluate students at enrolled groups"
+      offer: can't be defined. Offer is no longer active.
     success:
       evaluated: Student successfully evaluated.

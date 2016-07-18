@@ -163,7 +163,7 @@ class Webconference < ActiveRecord::Base
   end
 
   def get_access(acs, at_id, user_query={})
-    LogAction.joins(:allocation_tag, user: [allocations: :profile] )
+    LogAction.joins(:academic_allocation, :allocation_tag, user: [allocations: :profile] )
               .joins('LEFT JOIN academic_allocation_users acu ON acu.academic_allocation_id = log_actions.academic_allocation_id AND acu.user_id = log_actions.user_id')
               .joins("LEFT JOIN allocations students ON allocations.id = students.id AND cast( profiles.types & '#{Profile_Type_Student}' as boolean )")
               .where(academic_allocation_id: acs, log_type: LogAction::TYPE[:access_webconference], allocations: { allocation_tag_id: at_id })
@@ -173,9 +173,10 @@ class Webconference < ActiveRecord::Base
                 CASE 
                 WHEN students.id IS NULL THEN false
                 ELSE true
-                END AS is_student")
+                END AS is_student,
+                academic_allocations.max_working_hours")
               .order('log_actions.created_at ASC')
-              .group('log_actions.created_at, users.name, allocation_tags.id, users.id, acu.grade, acu.working_hours, students.id')
+              .group('log_actions.created_at, users.name, allocation_tags.id, users.id, acu.grade, acu.working_hours, students.id, academic_allocations.max_working_hours')
   end
 
   def self.update_previous(academic_allocation_id, users_ids, academic_allocation_user_id)
