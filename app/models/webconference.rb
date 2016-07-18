@@ -26,12 +26,23 @@ class Webconference < ActiveRecord::Base
     ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: '_blank')) : title) 
   end
 
-  def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true })
+  def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true }, user_id = nil)
     query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids } }
-    opt.merge!(select2: 'webconferences.*, academic_allocations.allocation_tag_id AS at_id, academic_allocations.id AS ac_id, users.name AS user_name')
-    opt.merge!(select1: 'DISTINCT webconferences.id, webconferences.*, NULL AS at_id, NULL AS ac_id, users.name AS user_name')
+    opt.merge!(select2: 'webconferences.*, academic_allocations.allocation_tag_id AS at_id, academic_allocations.id AS ac_id, users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency')
+    opt.merge!(select1: 'DISTINCT webconferences.id, webconferences.*, NULL AS at_id, NULL AS ac_id, users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency')
 
-    webconferences = Webconference.joins(:moderator).joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'").where(query)
+    webconferences = if user_id.nil?
+      Webconference.joins(:moderator).joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'").where(query)
+    else
+      opt[:select1] += ', acu.grade, acu.working_hours'
+      opt[:select2] += ', acu.grade, acu.working_hours'
+      Webconference.joins(:moderator)
+                  .joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'")
+                  .joins('LEFT JOIN group_assignments ga ON ga.academic_allocation_id = academic_allocations.id')
+                  .joins("LEFT JOIN group_participants gp ON gp.user_id = #{user_id} AND gp.group_assignment_id = ga.id")
+                  .joins("LEFT JOIN academic_allocation_users acu ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id = gp.group_assignment_id)")
+                  .where(query)
+    end
     web1 = webconferences.where(shared_between_groups: true)
     web2 = webconferences.where(shared_between_groups: false)
 
@@ -151,9 +162,23 @@ class Webconference < ActiveRecord::Base
     end
   end
 
-  def get_access(acs, at_id)
-    LogAction.joins(:allocation_tag, user: [allocations: :profile] ).where(academic_allocation_id: acs, log_type: LogAction::TYPE[:access_webconference], allocations: { allocation_tag_id: at_id }).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean ) OR cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )").select("log_actions.created_at, users.name AS user_name, allocation_tags.id AS at_id, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name").order('log_actions.created_at ASC').group('log_actions.created_at, users.name, allocation_tags.id')
+  def get_access(acs, at_id, user_query={})
+    LogAction.joins(:allocation_tag, user: [allocations: :profile] )
+              .joins('LEFT JOIN academic_allocation_users acu ON acu.academic_allocation_id = log_actions.academic_allocation_id AND acu.user_id = log_actions.user_id')
+              .joins("LEFT JOIN allocations students ON allocations.id = students.id AND cast( profiles.types & '#{Profile_Type_Student}' as boolean )")
+              .where(academic_allocation_id: acs, log_type: LogAction::TYPE[:access_webconference], allocations: { allocation_tag_id: at_id })
+              .where(user_query)
+              .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean ) OR cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )")
+              .select("log_actions.created_at, users.name AS user_name, allocation_tags.id AS at_id, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name, users.id AS user_id, acu.grade AS grade, acu.working_hours AS wh, 
+                CASE 
+                WHEN students.id IS NULL THEN false
+                ELSE true
+                END AS is_student")
+              .order('log_actions.created_at ASC')
+              .group('log_actions.created_at, users.name, allocation_tags.id, users.id, acu.grade, acu.working_hours, students.id')
   end
 
-
+  def self.update_previous(academic_allocation_id, users_ids, academic_allocation_user_id)
+    LogAction.where(academic_allocation_id: academic_allocation_id, user_id: users_ids, log_type: 7).update_all academic_allocation_user_id: academic_allocation_user_id
+  end
 end

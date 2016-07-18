@@ -16,6 +16,11 @@ acaal3:
  allocation_tag_id: 3
  academic_tool_id: 13
  academic_tool_type: "Assignment"
+ evaluative: true
+ weight: 2
+ final_weight: 70
+ frequency: true
+ max_working_hours: 6
 
 acaal4:
  id: 4
@@ -40,6 +45,9 @@ acaal7:
  allocation_tag_id: 3
  academic_tool_id: 4
  academic_tool_type: "Assignment"
+ evaluative: true
+ weight: 1
+ final_weight: 70
 
 acaal8:
  id: 8
@@ -64,6 +72,11 @@ acaal11:
  allocation_tag_id: 3
  academic_tool_id: 8
  academic_tool_type: "Assignment"
+ evaluative: true
+ weight: 2
+ final_weight: 30
+ frequency: true
+ max_working_hours: 4
 
 acaal12:
  id: 12
@@ -402,6 +415,11 @@ webc1:
  allocation_tag_id: 2 # TL-CAU - 2011.1
  academic_tool_id: 1
  academic_tool_type: "Webconference"
+ evaluative: true
+ weight: 2
+ final_weight: 70
+ frequency: true
+ max_working_hours: 6
 
 webc2:
  id: 68
@@ -460,12 +478,20 @@ webc4:
  allocation_tag_id: 3
  academic_tool_id: 1
  academic_tool_type: "Webconference"
+ evaluative: true
+ weight: 5
+ final_weight: 70
+ frequency: true
+ max_working_hours: 4
 
 webc5:
  id: 78
  allocation_tag_id: 3
  academic_tool_id: 2
  academic_tool_type: "Webconference"
+ evaluative: true
+ weight: 1
+ final_weight: 30
 
 webc6:
  id: 79
@@ -491,11 +517,17 @@ webc9:
  academic_tool_id: 4
  academic_tool_type: "Webconference"
 
+
 webc10:
  id: 83
  allocation_tag_id: 3
  academic_tool_id: 5
  academic_tool_type: "Webconference"
+ evaluative: true
+ weight: 9
+ final_weight: 70
+ frequency: true
+ max_working_hours: 10
 
 exam1:
  id: 84

@@ -1141,8 +1141,8 @@ res219:
 res220:
   id: 220
   controller: 'posts'
-  action: 'academic_allocation_user_grade'
-  description: 'Salva a nota do fórum (posts) do aluno'   
+  action: 'evaluate'
+  description: 'Avaliar postagens de um aluno'
 
 res221:
   id: 221
@@ -1153,12 +1153,17 @@ res221:
 res222:
   id: 222
   controller: 'chat_rooms'
-  action: 'academic_allocation_user_grade'
-  description: 'Salva a nota do Chat (messages) do aluno'  
+  action: 'evaluate'
+  description: 'Avaliar participação em chat de um aluno'
+
+res223:
+  id: 223
+  controller: 'webconferences'
+  action: 'evaluate'
+  description: 'Avaliar participação em webconferência de um aluno'
 
 res224:
   id: 224
   controller: 'administrations'
   action: 'oauth_applications'
   description: 'Gerenciar aplicações para acesso da API via Oauth'
-

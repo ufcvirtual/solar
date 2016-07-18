@@ -7,11 +7,11 @@
         %th.center.no_sort{style: "width: 7%"}= t(".message_history")
   %tbody
     - chats.each do |chat|
+      - participants = chat.users.where('academic_allocations.allocation_tag_id = ?', @allocation_tag_id)
       %tr{class: "lines #{'period_ended' unless chat.opened?}"}
         %td
-          - if chat.opened? and can_open_link
-            - academic_allocation = chat.academic_allocations.where(allocation_tag_id: @allocation_tag_id).first.id
-            = link_to chat.title, access_chat_room_path(chat.id,allocation_id: @alloc, academic_allocation_id: academic_allocation), {class: 'link_content fancybox.iframe', target: '_blank' }
+          - if chat.opened? && can_open_link
+            = link_to chat.title, access_chat_room_path(chat.id,allocation_id: @alloc, academic_allocation_id: chat.ac_id), {class: 'link_content fancybox.iframe', target: '_blank' }
           - else
             = chat.title
             = " [" + t(".message_did_not_start") + "]" if chat.start_date.to_date > Date.today
@@ -23,7 +23,7 @@
               = chat.description
               = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
 
-          - if (participants = chat.users.where('academic_allocations.allocation_tag_id = ?', @allocation_tag_id)).count > 0
+          - if participants.count > 0
             %i.icon-users
             %a{class: "chat_list", :"data-dropdown"=>"#students-dropdown#{chat.id}" }= participants.count.to_s + ' ' + t(:students, scope: [:chat_rooms, :list])
             .dropdown.dropdown-tip{ class: "chat_list", id: "students-dropdown#{chat.id}" }

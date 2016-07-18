@@ -1,5 +1,7 @@
 .user_messages
   %h1#lightBoxDialogTitle= t(".title", user: @user.name, chat_rooms: @chat_room.title)
+  - if @evaluate || @frequency
+    .title-warning= raw t('.evaluation_info')
   - unless @messages.empty?
     %table.tb_list
       %thead
@@ -12,44 +14,42 @@
             %td.profile= sanitize message.text
             %td.center= l(message.created_at.to_datetime, format: :normal)
 
-    .block_content_toolbar
-      - if @academic_allocation.evaluative || @academic_allocation.frequency
-        = simple_form_for :chat_rooms, :url => url = "/chat_rooms/"+@chat_room.id.to_s+"/academic_allocation_user_grade", html: { id: 'academic_allocation_user_grade_form' } do |f|
-          %h1#lightBoxDialogTitle= t(@aalluser ? ".edit" : ".new")
-          %span.form_requirement= t(:required_fields)
-          .post_form
-          = hidden_field_tag :allocation_tags_ids, @allocation_tags
-          = hidden_field_tag :chat_message_id, @messages.last.id.to_s
-          = hidden_field_tag :user_id, @user.id
-        
-          .form-inputs.block_content
-            .inline
-              = f.input :grade, required: true, as: :float, :step => 0.01, label: t(".grade"), input_html: { value: grade = @aalluser ? @aalluser.grade : "", min:0, max:10 } unless !@academic_allocation.evaluative
-              = f.input :frequency, required: true, as: :float, label: t(".frequency"), input_html: { value: frequency = @aalluser ? @aalluser.working_hours : "", min:0, max: @academic_allocation.max_working_hours } unless !@academic_allocation.frequency  
-              = t(:info_frequency, scope: [:chat_rooms, :user_messages]) + @academic_allocation.max_working_hours.to_s + ' Hs' unless !@academic_allocation.frequency  
-              
-          .right_buttons
-            /= link_to t(:back), messages_chat_room_path(@chat_room), { class: 'btn link_open'}
-            = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
-            = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "save_grade"   
+    - if @academic_allocation.evaluative || @academic_allocation.frequency
+      = simple_form_for :academic_allocation_user, url: evaluate_chat_room_path(@chat_room), html: { method: :put, id: 'academic_allocation_user_grade_form' } do |f|
+        = f.input :user_id, as: :hidden, input_html: { value: @user.id }
+      
+        .form-inputs.block_content
+          .inline
+            = f.input :grade, required: true, as: :float, :step => 0.01, label: t(".grade"), input_html: { value: @acu.try(:grade), min:0, max:10 } if @evaluative
+            = f.input :working_hours, required: true, as: :float, label: t(".frequency"), input_html: { value: @acu.try(:working_hours), min:0, max: @academic_allocation.max_working_hours } if @academic_allocation.frequency  
+            = t(:info_frequency, scope: [:chat_rooms, :user_messages]) + @academic_allocation.max_working_hours.to_s + ' Hs' unless !@academic_allocation.frequency  
+         
+            = link_to t(:back), messages_chat_room_path(@chat_room), class: 'btn back_chat_history'
+            = link_to_function t(:save), 'finish_evaluation(this)', class: 'btn btn_main'
 
   - else
     .block_content_text_list.text_none= t(".no_posts")
 
 :javascript
-  jQuery(function($){
-   $('#save_grade').click(function(){
-      $('#academic_allocation_user_grade_form:last').serialize_and_submit({
-        files: true
-        //replace_list: $(".user_posts");
-      });
+  function finish_evaluation(btn){
+    var form = $(btn).parents('form:first');
+    $.put(form.attr('action'), form.serialize(), function(data){
+      $('.back_chat_history').parents('a').click();
+      console.log($('.back_chat_history').parents('a'));
+      flash_message(data.notice, 'notice', 'fancybox-outer');
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert', 'fancybox-outer');
+    });
+  }
+
+  $(function(){
+    $(".back_chat_history").call_fancybox({
+      minWidth: '50%',
+      minHeight: '50%',
+      height: 'auto',
+      closeBtn : true
     });
   }); 
  
-  $(".link_open").call_fancybox({
-    minWidth: '50%',
-    minHeight: '50%',
-    height: 'auto',
-    closeBtn : true
-  });
-

@@ -145,7 +145,7 @@ Solar::Application.routes.draw do
       collection do
         get "user/:user_id", to: :user_posts, as: :user
         get ":type/:date(/order/:order(/limit/:limit))", to: :index, defaults: {display_mode: 'list'} # :types => [:news, :history]; :order => [:asc, :desc]
-        post :academic_allocation_user_grade
+        put :evaluate
       end
     end
   end
@@ -408,11 +408,12 @@ Solar::Application.routes.draw do
       get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "ChatRoom", as: :group_tags_from
     end
     
-    get :user_messages, on: :member
-    post :academic_allocation_user_grade
-
-    get :messages, on: :member
-    get :access, on: :member
+    member do 
+      get :user_messages
+      put :evaluate
+      get :messages
+      get :access
+    end
   end
 
   resources :agendas, only: [:index] do
@@ -540,6 +541,7 @@ Solar::Application.routes.draw do
       get :access
       get :list_access
       get :get_record
+      put :evaluate
     end
   end
 

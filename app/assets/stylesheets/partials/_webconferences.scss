@@ -69,6 +69,27 @@ table.webconferences{
       font-style: italic;
       padding-right: 0;
     }
+    tr.evaluative_form{
+      background-color: $color_main_light_highlight;
+      height: 70px;
+      .left{
+        float: left;
+      }
+      .right{
+        float: right;
+      }
+      .middle{
+        float: left;
+        padding-left: 13%;
+      }
+      form{
+        padding-left: 20px;
+        padding-right: 20px;
+        label{
+          width: auto;
+        }
+      }
+    }
   }
 
 }

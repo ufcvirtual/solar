@@ -10,6 +10,7 @@ r1:
   prerequisites: Todavia, a consolidacao das estruturas psico-lgicas assume...
   syllabus: Como Deleuze eloquentemente mostrou, o inicio da atividade geral de formacao de conceitos obstaculiza a apreciacao da importancia dos paradigmas filosoficos.
   passing_grade: 7.0
+  working_hours: 64
 
 r2:
   id: 2
@@ -21,6 +22,7 @@ r2:
   prerequisites: Todavia, a consolidacao das estruturas psico-lgicas assume...
   syllabus: Como Deleuze eloquentemente mostrou, o inicio da atividade geral de formacao de conceitos obstaculiza a apreciacao da importancia dos paradigmas filosoficos.
   passing_grade: 7.0
+  working_hours: 64
 
 r3:
   id: 3
@@ -32,6 +34,7 @@ r3:
   prerequisites: Todavia, a consolidacao das estruturas psico-lgicas assume...
   syllabus: Como Deleuze eloquentemente mostrou, o inicio da atividade geral de formacao de conceitos obstaculiza a apreciacao da importancia dos paradigmas filosoficos.
   passing_grade: 7.0
+  working_hours: 64
 
 r4:
   id: 4
@@ -43,6 +46,7 @@ r4:
   prerequisites: Todavia, a consolidacao das estruturas psico-lgicas assume...
   syllabus: Como Deleuze eloquentemente mostrou, o inicio da atividade geral de formacao de conceitos obstaculiza a apreciacao da importancia dos paradigmas filosoficos.
   passing_grade: 7.0
+  working_hours: 64
 
 r5:
   id: 5
@@ -54,6 +58,7 @@ r5:
   prerequisites: Todavia, a consolidacao das estruturas psico-lgicas assume...
   syllabus: Como Deleuze eloquentemente mostrou, o inicio da atividade geral de formacao de conceitos obstaculiza a apreciacao da importancia dos paradigmas filosoficos.
   passing_grade: 7.0
+  working_hours: 64
 
 r6: # unidade curricular vazia
   id: 6
@@ -65,3 +70,4 @@ r6: # unidade curricular vazia
   prerequisites: Todavia, a consolidacao das estruturas psico-lgicas assume...
   syllabus: Como Deleuze eloquentemente mostrou, o inicio da atividade geral de formacao de conceitos obstaculiza a apreciacao da importancia dos paradigmas filosoficos.
   passing_grade: 7.0
+  working_hours: 64

@@ -445,7 +445,10 @@ pt_BR:
         weight: Peso
         final_weight: Peso final
         equivalent_academic_allocation_id: Ferramenta equivalente
-
+      academic_allocation_user:
+        grade: Nota
+        working_hours: Carga horária
+      
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -1154,7 +1157,8 @@ pt_BR:
       new_posts_page: "1 nova postagem no fórum (página "
       moved_allocation: "Alocação transferida para outra turma"
       to_evaluate: Avaliar
-      grade: ' Nota: '
+      grade: '(Nota: %{grade})'
+      frequency: '(Frequência: %{wh}hs)'
     create:
       created: "Postagem criada com sucesso"
       not_created: "A postagem não foi criada"
@@ -1170,7 +1174,7 @@ pt_BR:
       update_grade: Nota e Frequência adicionadas com sucesso
       edit: Editar
       new: Novo
-      info_frequency: " * Carga Horária Maxima: "
+      info_frequency: "(Carga Horária Maxima: %{wh}Hs)"
       frequency: Frequência
       grade: Nota
 
@@ -1362,6 +1366,8 @@ pt_BR:
       access: Lista de acessos
       user_online: Usuários online
       recording: Gravação
+      frequency: Carga Horária
+      grade: Nota
     list_access:
       no_log: Nenhum participante acessou esta webconferência
       too_old: Esta webconferência ocorreu antes dos acessos começarem a ser gravados
@@ -1372,6 +1378,12 @@ pt_BR:
       title: Lista de acessos a webconferêcia %{webconference_name}
       on_going: '<b> Aviso: </b> Esta webconferência ainda está em andamento, portanto esta lista de acessos pode aumentar.'
       not_started: '<b> Aviso: </b> Esta webconferência ainda não iniciou.'
+      evaluate: Avaliar aluno
+      grade: Nota
+      frequency: Frequência
+      finish_evaluation: Avaliar
+      evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por acesso. Deste modo, ao avaliar/informar a frequência de um acesso, todos os outros acessos do aluno terão a mesma nota/carga horária.'
+      working_hours: Carga horária
     get_record:
       recordings: Gravações de %{name}
       access: Acesso à gravação
@@ -2290,9 +2302,9 @@ pt_BR:
       how_it_works_title: "<b>Como funciona</b>"
       how_it_works: "<div> Esta gerência permite definir quais ferramentas serão avaliativas ou não e quais terão carga horária a ser atendida ou não pelo aluno.</div><br/><div>Para indicar que uma <b>ferramenta é avaliativa</b>, basta marcar o campo 'Avaliativa' e indicar seu peso e peso final.</div><br/><div>O <b>peso</b> é correspondente ao peso que aquela ferramenta terá em relação as demais no cálculo da média do aluno. Se for um peso padrão, basta informar 1.</div><div><i>Exemplo com peso: Chat peso 2, Fórum peso 3. Cálculo da nota: (2*notaChat + 3*notaForum)/(2+3)</i></div><br/><div>O <b>peso final</b> é correspondente a quantos % determinado grupo de ferramentas (agrupadas por um peso final em comum) valerá no cálculo da média do aluno. Se for um peso padrão, basta informar 100.</div><div><i>Exemplo com peso final: Chat 40%, Fórum 40%, Prova 60%. Cálculo da nota: 0,4*(notaChat + notaForum) + 0,6*(notaProva)</i></div><div><i>Exemplo com peso e peso final: Chat peso 2 40%, Fórum peso 3 40%, Prova peso 1 60%. Cálculo da nota: [0,4*(2*notaChat + 3*notaForum) + 0,6*(notaProva)]/(2+3+1)</i></div><br/><div>A <b>Avaliação Final</b> serve para indicar se esta ferramenta entrará para o cálculo da média como Avaliação Final. Ou seja, <i>(médiaAluno + notaAF)/2</i></div><div>Se uma ferramenta é definida como Avaliação Final, ela não terá carga horária, peso e peso final. Se estes valores forem informados, serão ignorados.</div><br/><div>Uma ferramenta <b>equivalente</b> a outra significa que se o aluno não realizar a primeira, a nota usada será a da segunda.</div><div>Se uma ferramenta é definida como equivalente de outra, ela deverá ter a mesma carga horária e os mesmos peso e peso final da principal. Se estes valores forem informados de modo incorreto ou não forem informados, serão utilizados os valores da ferramenta principal.</div><div><i>Exemplo: Fórum 2 é equivalente a Fórum 1. A nota que será utilizada para a média do aluno é a do fórum 1, se este não possuir nota, será utilizada a do fórum 2.</i></div>"
       rules_title: "<b>Regras e informações</b>"
-      rules: "<div>1) Se a ferramenta for de frequência, o somatório das cargas horárias máximas de cada turma deve ser igual à carga horária da disciplina</div><br/><div>2) Se a ferramenta for avaliativa, o somatório das pesos finais distintos deve ser de 100. <br/> <i>Exemplo: Fórum 1 com peso final 40, Chat 2 com peso final 40, Prova com peso final 60. 40 + 60 = 100.</i> (CORRETO) <br/> <i>Exemplo: Fórum 1 com peso final 40, Chat 2 com peso final 45, Prova com peso final 60. 40 + 45 + 60 = 145.</i> (INCORRETO)</div><br/><div>3) Ao realizar uma alteração nesta tela e clicar em finalizar, a média final de cada aluno será recalculada de acordo com as novas definições.</div>"
-      rule_wh1: "<div>4) Não é possível definir uma ferramenta como de frequência enquanto a disciplina não possuir carga horária.</div>"
-      rule_wh2: "<div>4) A carga horária da disciplina é: %{working_hours}. Portanto, a soma das cargas horárias máxima não pode ultrapassar este valor.</div>"
+      rules: "<div>1) Se a ferramenta for de frequência, o somatório das cargas horárias máximas de cada turma deve ser igual à carga horária da disciplina</div><br/><div>2) Se a ferramenta for avaliativa, o somatório das pesos finais distintos deve ser de 100. <br/> <i>Exemplo: Fórum 1 com peso final 40, Chat 2 com peso final 40, Prova com peso final 60. 40 + 60 = 100.</i> (CORRETO) <br/> <i>Exemplo: Fórum 1 com peso final 40, Chat 2 com peso final 45, Prova com peso final 60. 40 + 45 + 60 = 145.</i> (INCORRETO)</div><br/><div>3) Ao realizar uma alteração nesta tela e clicar em finalizar, a média final de cada aluno será recalculada de acordo com as novas definições.</div><br/><div>4) Ao definir uma ferramenta como avaliativa, a média final dos alunos será calculada considerando que todas as notas valem de 0 a 10.</div>"
+      rule_wh1: "<div>5) Não é possível definir uma ferramenta como de frequência enquanto a disciplina não possuir carga horária.</div>"
+      rule_wh2: "<div>5) A carga horária da disciplina é: %{working_hours}. Portanto, a soma das cargas horárias máxima não pode ultrapassar este valor.</div>"
       expand: Expandir todos
       compress: Comprimir todos
       share_wh: Dividir carga horária
@@ -2538,6 +2550,7 @@ pt_BR:
       all: Todos
       to_evaluate: Avaliar
       grade: Nota
+      wh: Carga horária
     user_messages:
       title: Messagens do %{user} em %{chat_rooms}
       message: Message
@@ -2550,6 +2563,7 @@ pt_BR:
       info_frequency: " * Carga Horária Maxima: "
       frequency: Frequência
       grade: Nota
+      evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por mensagem. Deste modo, ao avaliar/informar a frequência de um acesso, todos as outras mensagens do aluno terão a mesma nota/carga horária.'
 
   user_blacklist:
     add: Desvincular do MA
@@ -3512,3 +3526,13 @@ pt_BR:
     warnings:
       no_evaluative_tools: Não há ferramentas avaliativas para realizar esta ação.
       no_frequency_tools: Não há ferramentas de frequência para realizar esta ação.
+
+  academic_allocation_users:
+    errors:
+      not_frequency: não pode ser definida, pois a ferramenta não é de frequência.
+      not_evaluative: não pode ser definida, pois a ferramenta não é avaliativa.
+      lower_than_max: deve ser menor que o máximo de %{max} horas.
+      lower_than_10: deve ser menor ou igual a 10.
+      student_group: "Só é possível avaliar alunos nas turmas que estão matriculados"
+    success:
+      evaluated: Estudante avaliado com sucesso.

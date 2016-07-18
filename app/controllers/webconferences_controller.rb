@@ -17,11 +17,11 @@ class WebconferencesController < ApplicationController
 
   def index
     authorize! :index, Webconference, on: [at = active_tab[:url][:allocation_tag_id]]
-    @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true))
     api             = bbb_prepare
     @online         = bbb_online?(api)
     @can_see_access = can? :list_access, Webconference, { on: at }
     @meetings       = get_meetings(api)
+    @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true), {asc: true}, (@can_see_access ? nil : current_user.id))
   end
 
   # GET /webconferences/list
@@ -157,7 +157,9 @@ class WebconferencesController < ApplicationController
       URI.parse(url).path
 
       ac_id = (webconference.academic_allocations.size == 1 ? webconference.academic_allocations.first.id : webconference.academic_allocations.where(allocation_tag_id: at_id).first.id)
-      LogAction.access_webconference(academic_allocation_id: ac_id, user_id: current_user.id, ip: request.remote_ip, allocation_tag_id: at_id, description: webconference.attributes) if AllocationTag.find(at_id).is_student_or_responsible?(current_user.id)
+      
+      acu = AcademicAllocationUser.find_or_create_one(at_it, current_user.id, nil, true)
+      LogAction.access_webconference(academic_allocation_id: ac_id, acu_id: acu.try(:id), user_id: current_user.id, ip: request.remote_ip, allocation_tag_id: at_id, description: webconference.attributes) if AllocationTag.find(at_id).is_student_or_responsible?(current_user.id)
 
       render json: { success: true, url: url }
     end  
@@ -173,9 +175,17 @@ class WebconferencesController < ApplicationController
 
     academic_allocations_ids = (@webconference.shared_between_groups ? @webconference.academic_allocations.map(&:id) : @webconference.academic_allocations.where(allocation_tag_id: at_id).first.try(:id))
 
-    @logs = @webconference.get_access(academic_allocations_ids, at_id)
+    @logs = @webconference.get_access(academic_allocations_ids, at_id, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
+
     @researcher = current_user.is_researcher?(AllocationTag.where(id: at_id).map(&:related))
     @too_old    = @webconference.initial_time.to_date < Date.parse(YAML::load(File.open('config/webconference.yml'))['participant_log_date']) rescue false
+
+    can_evaluate = can? :evaluate, Webconference, {on: at_id}
+    acs = AcademicAllocation.where(id: academic_allocations_ids)
+    @evaluative = can_evaluate && acs.where(evaluative: true).size == acs.size
+    @frequency = can_evaluate && acs.where(frequency: true).size == acs.size
+
+    AcademicAllocationUser.set_new_after_evaluation(at_id, @webconference.id, 'Webconference', params.include?(:user_id) ? params[:user_id] : @logs.map(&:user_id).uniq, nil, false)
 
     render partial: 'list_access'
   rescue CanCan::AccessDenied
@@ -215,6 +225,17 @@ class WebconferencesController < ApplicationController
     render_json_error(error, 'webconferences.error')
   end
 
+  def evaluate
+    authorize! :evaluate, Webconference, {on: allocation_tag = active_tab[:url][:allocation_tag_id]}
+
+    result = AcademicAllocationUser.create_or_update('Webconference', params[:id], allocation_tag, {user_id: webconference_acu_params[:user_id]}, {grade: webconference_acu_params[:grade], working_hours: webconference_acu_params[:working_hours]})
+    if result.any?
+      render json: { success: false, alert: result.join("<br/>") }, status: :unprocessable_entity
+    else
+      render json: { success: true, notice: t('academic_allocation_users.success.evaluated') }
+    end
+  end
+
   private
 
   def save_log(acs=nil)
@@ -237,6 +258,10 @@ class WebconferencesController < ApplicationController
 
   def webconference_params
     params.require(:webconference).permit(:description, :duration, :initial_time, :title, :is_recorded, :shared_between_groups)
+  end
+
+  def webconference_acu_params
+    params.require(:academic_allocation_user).permit(:user_id, :grade, :working_hours)
   end
 
 end

@@ -1,31 +1,44 @@
 %h1#lightBoxDialogTitle= t(".history", chat_name: @chat_room.title)
 .chat_messages
-  - tool = 'ChatRoom'
-  - puts ("currente: #{current_user.id}")
   - unless @messages.empty?
     %table.tb_list
       %thead
         %tr.lines
-          %th= t('.to_evaluate') unless !@can_validate
-          %th= t('.grade') unless !@can_validate
+          - if (@evaluative || @frequency)
+            %th= t('.to_evaluate')
           %th{colspan: 2}= t(".from")
           %th= t(".to")
           %th= t(".message")
           %th= t(".date")
           %th= t(".time")
+          - if @academic_allocation.evaluative
+            %th= t('.grade')
+          - if @academic_allocation.frequency
+            %th= t('.wh')
       %tbody
         - @messages.each do |message|
           - user = message.user
+          = user.as_json
           - name, nick = user.nil? ? ["", t(".all")] : [user.info(:name, @researcher), user.info(:nick, @researcher)]
           %tr.lines 
-            %td= link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(@chat_room.id, user_id: message.user_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t('.to_evaluate') if(@can_validate && message.user_id)
-            %td= AcademicAllocationUser.get_grade_alls_user(message.user_id, tool, @chat_room.id) if(@can_validate || message.user_id==current_user.id) 
+            - if @evaluative || @frequency
+              %td
+                - if message.is_student == 't'
+                  = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(@chat_room, user_id: message.user_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t('.to_evaluate')
             %td.profile= "(" + message.profile_name + ")"
             %td.user{:'data-tooltip' => (@researcher ? t(:hidden_info) : message.user_name)}= (@researcher ? t(:hidden_info) : message.user_nick)
             %td{:'data-tooltip' => name}= nick
             %td.message= message.text.try(:html_safe)
             %td= l(message.created_at.to_datetime, format: :normal)
             %td= l(message.created_at.to_datetime, format: :clock_time)
+            - if @academic_allocation.evaluative
+              %td
+                - if @evaluative || (message.user_id == current_user.id)
+                  = message.grade
+            - if @academic_allocation.frequency
+              %td
+                - if @frequency || (message.user_id == current_user.id)
+                  = message.wh
 
   - else
     .block_content_text_list.text_none= t(".no_message")

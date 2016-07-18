@@ -8,7 +8,7 @@ class ChatRoom < Event
 
   has_many :messages, class_name: 'ChatMessage', through: :academic_allocations, source: :chat_messages
   has_many :participants, class_name: 'ChatParticipant', through: :academic_allocations, source: :chat_participants
-  has_many :users, through: :participants, select: ['users.name', 'users.nick'], uniq: true
+  has_many :users, through: :participants, select: ['users.name', 'users.nick', 'users.id'], uniq: true
   has_many :allocations, through: :participants
 
   accepts_nested_attributes_for :schedule
@@ -92,7 +92,7 @@ class ChatRoom < Event
 
     all_chats = ChatRoom.joins(:academic_allocations, :schedule)
       .where(academic_allocations: { allocation_tag_id: allocation_tag_id })
-      .select('DISTINCT chat_rooms.*, schedules.start_date, schedules.end_date')
+      .select('DISTINCT chat_rooms.*, schedules.start_date, schedules.end_date, academic_allocations.id as ac_id')
       .order('schedules.start_date')
 
     my, others =  if responsible?(allocation_tag_id, user_id)
@@ -112,5 +112,23 @@ class ChatRoom < Event
 
     { my: my, others: others }
   end
+
+  def get_messages(at_id, user_query={})
+    ChatMessage.joins(:academic_allocation, allocation: [:user, :profile])
+               .joins('LEFT JOIN academic_allocation_users acu ON acu.academic_allocation_id = chat_messages.academic_allocation_id AND acu.user_id = chat_messages.user_id')
+               .joins("LEFT JOIN allocations students ON allocations.id = students.id AND cast( profiles.types & '#{Profile_Type_Student}' as boolean )")
+               .where(academic_allocations: {allocation_tag_id: at_id, academic_tool_id: id, academic_tool_type: 'ChatRoom'}, message_type: 1)
+               .where(user_query)
+               .select("users.name AS user_name, users.nick AS user_nick, profiles.name AS profile_name, text, chat_messages.user_id, chat_messages.created_at, acu.grade AS grade, acu.working_hours AS wh, 
+                 CASE 
+                 WHEN students.id IS NULL THEN false
+                 ELSE true
+                 END AS is_student")
+               .order('created_at DESC')
+  end
+
+  def self.update_previous(academic_allocation_id, users_ids, academic_allocation_user_id)
+    ChatMessage.where(academic_allocation_id: academic_allocation_id, user_id: users_ids).update_all academic_allocation_user_id: academic_allocation_user_id
+  end  
 
 end

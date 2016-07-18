@@ -105,12 +105,19 @@ class ChatRoomsController < ApplicationController
       @user = User.find(params[:user_id])
       @chat_room = ChatRoom.find(params[:id])
 
-      @allocation_tags = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
-      @messages = ChatMessage.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @allocation_tags, academic_tool_id: @chat_room.id, academic_tool_type: 'ChatRoom' }, user_id: @user.id).order('created_at DESC')
+      allocation_tag_id = active_tab[:url][:allocation_tag_id]
 
-      @aau_id = ChatMessage.find(@messages.last.id).academic_allocation_user_id unless @messages.blank?
-      @aalluser = AcademicAllocationUser.find(@aau_id) unless @aau_id.blank?
-      @academic_allocation = @chat_room.academic_allocations.where(allocation_tag_id: @allocation_tags).first
+      authorize! :show, ChatRoom, on: [allocation_tag_id]
+      raise CanCan::AccessDenied if !(ChatRoom.responsible?(allocation_tag_id, current_user.id)) && !(@researcher) && current_user.id != @user.id
+
+      @academic_allocation = @chat_room.academic_allocations.where(allocation_tag_id: allocation_tag_id).first
+      can_evaluate = can? :evaluate, ChatRoom, {on: allocation_tag_id}
+      @evaluative = can_evaluate && @academic_allocation.evaluative
+      @frequency = can_evaluate && @academic_allocation.frequency
+
+      @messages = @chat_room.get_messages(allocation_tag_id, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
+            
+      @acu = AcademicAllocationUser.find(@academic_allocation.id, params[:user_id],nil, false)
 
       respond_to do |format|
         format.html { render layout: false }
@@ -119,23 +126,14 @@ class ChatRoomsController < ApplicationController
     end  
   end  
 
-  def academic_allocation_user_grade
-    authorize! :academic_allocation_user_grade, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
-    @user = User.find(params[:user_id])
-    @chat_room = ChatRoom.find(params[:chat_room_id])
-    chat_message = ChatMessage.find(params[:chat_message_id].to_i)
-    allocation_tag_id = active_tab[:url][:allocation_tag_id]
-    tool = 'ChatRoom'
-    model = ChatMessage
-
-    @aalluser = AcademicAllocationUser.get_academic_allocation_user(chat_message, tool, @user.id, @chat_room, allocation_tag_id, model)
-    if @aalluser.update_grade_and_frequency(params[:chat_rooms][:grade].to_f, params[:chat_rooms][:frequency].to_i)
-      render json: { success: true, notice: t('update_grade', scope: 'posts.user_posts') }
+  def evaluate
+    authorize! :evaluate, ChatRoom, { on: at = active_tab[:url][:allocation_tag_id] }
+    result = AcademicAllocationUser.create_or_update('ChatRoom', params[:id], at, {user_id: chat_acu_params[:user_id]}, {grade: chat_acu_params[:grade], working_hours: chat_acu_params[:working_hours]})
+    if result.any?
+      render json: { success: false, alert: result.join("<br/>") }, status: :unprocessable_entity
     else
-      render json: {result: 0}, status: :unprocessable_entity
+      render json: { success: true, notice: t('academic_allocation_users.success.evaluated') }
     end
-  rescue
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end 
 
   def messages
@@ -143,22 +141,19 @@ class ChatRoomsController < ApplicationController
       render text: t('exams.restrict')
     else
       @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
-      @can_validate = false
       authorize! :show, ChatRoom, on: [allocation_tag_id]
-      @can_interact_grade = (can? :academic_allocation_user_grade, ChatRoom, on: [allocation_tag_id])
-      @academic_allocation = AcademicAllocation.where(academic_tool_id: @chat_room.id, academic_tool_type: 'ChatRoom').first
-
-      if (@academic_allocation.evaluative || @academic_allocation.frequency) && @can_interact_grade
-        @can_validate = true
-      end  
+      @academic_allocation = AcademicAllocation.where(academic_tool_id: @chat_room.id, academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag_id).first
       all_participants = @chat_room.participants.where(academic_allocations: { allocation_tag_id: allocation_tag_id })
       @researcher = current_user.is_researcher?(AllocationTag.find(allocation_tag_id).related)
-      raise CanCan::AccessDenied if (all_participants.any? && all_participants.joins(:user).where(users: { id: current_user }).empty?) && !(ChatRoom.responsible?(allocation_tag_id, current_user.id)) && !(@researcher)
+      responsible = ChatRoom.responsible?(allocation_tag_id, current_user.id)
 
-      @messages = @chat_room.messages.joins(allocation: [:user, :profile])
-        .where('academic_allocations.allocation_tag_id = ? AND message_type = ?', allocation_tag_id, 1)
-        .select('users.name AS user_name, users.nick AS user_nick, profiles.name AS profile_name, text, chat_messages.user_id, chat_messages.created_at')
-        .order('created_at DESC')
+      raise CanCan::AccessDenied if (all_participants.any? && all_participants.joins(:user).where(users: { id: current_user }).empty?) && !responsible && !(@researcher)
+
+      can_evaluate = can? :evaluate, ChatRoom, {on: allocation_tag_id}
+      @evaluative = can_evaluate && @academic_allocation.evaluative
+      @frequency = can_evaluate && @academic_allocation.frequency
+
+      @messages = @chat_room.get_messages(allocation_tag_id, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
     end
   rescue => error
     request.format = :json
@@ -188,6 +183,10 @@ class ChatRoomsController < ApplicationController
       params.require(:chat_room).permit(:title, :description, :chat_type, :start_hour, :end_hour,
         schedule_attributes: [:id, :start_date, :end_date],
         academic_allocations_attributes: [:id, :allocation_tag_id, chat_participants_attributes: [:id, :allocation_id, :_destroy]])
+    end
+
+    def chat_acu_params
+      params.require(:academic_allocation_user).permit(:user_id, :grade, :working_hours)
     end
 
     def render_notification_success_json(method)

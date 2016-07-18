@@ -3,26 +3,86 @@
   .title-warning= raw t('.on_going')
 - elsif !@webconference.over?
   .title-warning= raw t('.not_started')
+- if @evaluate || @frequency
+  .title-warning= raw t('.evaluation_info')
 .webconference_access
   - unless @logs.empty? || @too_old
     %table.tb_list
       %thead
         %tr.lines
+          - if @evaluative || @frequency
+            %th
           %th{ colspan: 2 }= t('.user')
           %th= t('.group')
           %th= t('.date')
           %th= t('.time')
+          - if @evaluative
+            %th= t('.grade')
+          - if @frequency
+            %th= t('.frequency')
       %tbody
-        - @logs.each do |log|
-          %tr.lines
+        - @logs.each_with_index do |log, idx|
+          %tr.lines{id: "log_#{idx}"}
+            - if (@evaluative || @frequency)
+              %td
+                - if log.is_student == 't' 
+                  = link_to_function content_tag(:i, nil, class: 'icon-write'), 'evaluate_web(this)', :'data-url' => evaluate_webconference_path(@webconference, log_id: log), class: 'btn evaluate', :'data-tooltip'=> t('.evaluate'), :'data-user-id' => log.user_id
             %td.profile= '(' + log.profile_name + ')'
             %td.user= (@researcher ? t(:hidden_info) : log.user_name)
             %td= AllocationTag.find(log.at_id).info
             %td= l(log.created_at.to_datetime, format: :normal)
             %td= l(log.created_at.to_datetime, format: :clock_time)
-
+            %td.grade{class: "user_#{log.user_id} at_#{log.at_id}"}
+              - if @evaluative
+                = log.try(:grade)
+            %td.frequency{class: "user_#{log.user_id} at_#{log.at_id}"}
+              -if @frequency
+                = log.try(:wh)
+          %tr.lines.evaluative_form.invisible{class: "log_#{idx}"}
+            %td{colspan: (@evaluative && @frequency) ? 8 : 7 }
+              = simple_form_for :academic_allocation_user, url: evaluate_webconference_path(@webconference), html: { method: :put } do |f|
+                = f.input :user_id, as: :hidden, input_html: { value: log.user_id }
+                - if @evaluative
+                  .left
+                    = f.input :grade, as: :numeric, step: 0.01, label: t('.grade'), input_html: { value: log.try(:grade)}
+                - if @frequency
+                  .middle
+                    = f.input :working_hours, as: :numeric, label: t('.working_hours'), input_html: { value: log.try(:wh)}
+                .right
+                  = link_to_function t('.finish_evaluation'), 'finish_evaluation(this)', class: 'btn btn_main'
   - else
     - if @too_old
       .block_content_text_list.text_none= t('.too_old')
     - else
       .block_content_text_list.text_none= t('.no_log')
+
+=javascript_include_tag 'tooltip'
+
+:javascript
+  function evaluate_web(icon){
+    var tr = $(icon).parents('tr');
+    var form = $(tr).siblings('.evaluative_form.'+tr.attr('id'));
+    form.slideToggle('slow', function() {
+      form.toggleClass('invisible');
+    });
+  }
+
+  function finish_evaluation(btn){
+    var tr = $(btn).parents('tr');
+    tr = $('tr#'+tr.attr('class').split(' ').pop());
+    var form = $(btn).parents('form:first');
+
+    $.put(form.attr('action'), form.serialize(), function(data){
+      evaluate_web(tr.find('.btn.evaluate'));
+      var user_at_grade = tr.find('td.grade').attr('class').replace(/\ /g, '.');
+      var user_at_wh = tr.find('td.frequency').attr('class').replace(/\ /g, '.');
+
+      $('.'+user_at_grade).html(form.find('#academic_allocation_user_grade').val());
+      $('.'+user_at_wh).html(form.find('#academic_allocation_user_working_hours').val());
+      flash_message(data.notice, 'notice', 'fancybox-outer');
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert', 'fancybox-outer');
+    });
+  }

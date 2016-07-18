@@ -14,6 +14,12 @@ class LogAction < ActiveRecord::Base
     access_digital_class_lesson: 8
   }
 
+  before_save :set_acu, if: '!academic_allocation_user_id.nil? && log_type != 7'
+
+  def set_acu
+    self.academic_allocation_user_id = nil
+  end
+
   def type_name
     type = case log_type
       when 1

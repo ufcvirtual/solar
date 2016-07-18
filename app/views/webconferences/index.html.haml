@@ -17,6 +17,11 @@
           %th.smaller_width.no_sort= t('.recording')
           - if @can_see_access
             %th.smaller_width.no_sort= t('.access')
+          - else
+            - if @webconferences.map(&:evaluative).include? 't'
+              %th.no_sort= t('.grade')
+            - if @webconferences.map(&:frequency).include? 't'
+              %th.no_sort= t('.frequency')
       %tbody
         - @webconferences.each do |webconference|
           - status = webconference.status(webconference.at_id)
@@ -40,6 +45,13 @@
             %td.center{ class: "#{status == t('webconferences.list.record_available') ? '' : 'disabled'}", :'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.id, at_id: webconference.at_id), class: 'record'
             - if @can_see_access
               %td{ :'data-url' => list_access_webconference_path(webconference.id, at_id: webconference.at_id), :'data-tooltip' => t('webconferences.list.access') }= link_to_function content_tag(:i, nil, class: 'icon-users btn'), 'list_access(this)'
+            - else
+              %td
+                - if webconference.evaluative == 't'
+                  = webconference.grade
+              %td
+                - if webconference.frequency == 't'
+                  = webconference.working_hours
   - else
     .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
 
