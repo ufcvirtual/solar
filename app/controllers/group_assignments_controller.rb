@@ -59,9 +59,9 @@ class GroupAssignmentsController < ApplicationController
 
     group_assignment = GroupAssignment.find(params[:id])
     if params[:add]
-      LogAction.create(log_type: LogAction::TYPE[:create], user_id: current_user.id, ip: request.remote_ip, description: "add_participant: #{@participant.attributes} in #{group_assignment.attributes} ", academic_allocation_id: group_assignment.academic_allocation_id)
+      LogAction.create(log_type: LogAction::TYPE[:create], user_id: current_user.id, ip: get_remote_ip, description: "add_participant: #{@participant.attributes} in #{group_assignment.attributes} ", academic_allocation_id: group_assignment.academic_allocation_id)
     else
-      LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: request.remote_ip, description: "delete_participant: #{@participant.attributes} in #{group_assignment.attributes} ", academic_allocation_id: group_assignment.academic_allocation_id)
+      LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: get_remote_ip, description: "delete_participant: #{@participant.attributes} in #{group_assignment.attributes} ", academic_allocation_id: group_assignment.academic_allocation_id)
     end  
     render json: { success: true }
   rescue CanCan::AccessDenied
@@ -100,7 +100,7 @@ class GroupAssignmentsController < ApplicationController
   def import
     authorize! :import, GroupAssignment, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
-    @ac.copy_group_assignments(AcademicAllocation.where(academic_tool_type: "Assignment", academic_tool_id: params[:id], allocation_tag_id: allocation_tag_id).first.id, current_user.id, request.remote_ip)
+    @ac.copy_group_assignments(AcademicAllocation.where(academic_tool_type: "Assignment", academic_tool_id: params[:id], allocation_tag_id: allocation_tag_id).first.id, current_user.id, get_remote_ip)
     render json: {success: true, notice: t("group_assignments.success.imported")}
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized

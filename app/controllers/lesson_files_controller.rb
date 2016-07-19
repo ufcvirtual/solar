@@ -195,7 +195,7 @@ class LessonFilesController < ApplicationController
     end
 
     def params_to_log
-      { user_id: current_user.id, ip: request.remote_ip }
+      { user_id: current_user.id, ip: get_remote_ip }
     end
 
     def log(lesson, message, type=LogAction::TYPE[:update])

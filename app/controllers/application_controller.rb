@@ -147,7 +147,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource_or_scope)
-    LogAccess.login(user_id: current_user.id, ip: request.remote_ip) rescue nil
+    LogAccess.login(user_id: current_user.id, ip: get_remote_ip) rescue nil
     user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id) || false
     user_session[:lessons] = []
     user_session[:exams] = []
@@ -186,13 +186,14 @@ class ApplicationController < ActionController::Base
 
   def set_current_user
     User.current = current_user
-  end  
+  end
+
+  def get_remote_ip
+    # request.remote_ip
+    request.headers['Solar']
+  end
 
   private
-
-    # def after_sign_in_path_for(resource)
-    #   redirect_to home_path
-    # end
 
     def opened_or_new_tab?(tab_id)
       (user_session[:tabs][:opened].has_key?(tab_id)) or (user_session[:tabs][:opened].length < Max_Tabs_Open.to_i)
@@ -220,7 +221,7 @@ class ApplicationController < ActionController::Base
     end
 
     def log_access(allocation_tag_id)
-      LogAccess.group(user_id: current_user.id, allocation_tag_id: allocation_tag_id, ip: request.remote_ip) rescue nil if (user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:context].to_i == Context_Curriculum_Unit)
+      LogAccess.group(user_id: current_user.id, allocation_tag_id: allocation_tag_id, ip: get_remote_ip) rescue nil if (user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:context].to_i == Context_Curriculum_Unit)
     end
 
   #salva o log de navegação do usuário

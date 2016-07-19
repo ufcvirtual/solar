@@ -24,7 +24,7 @@ class ApplicationAPI < Grape::API
     rack_response(error.as_json, 422)
   end
 
-  before { Rails.logger.info "[API] [INFO] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] params: #{ActionController::Parameters.new(params).except("route_info", "access_token").as_json}" }
+  before { Rails.logger.info "[API] [INFO] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{request.headers['Solar']}] params: #{ActionController::Parameters.new(params).except("route_info", "access_token").as_json}" }
 
   helpers Helpers::V1::All
   mount V1::Base

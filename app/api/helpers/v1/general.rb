@@ -1,7 +1,7 @@
 module V1::General
 
   def verify_ip_access!
-    raise CanCan::AccessDenied unless YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]['verified_addresses'].include?(request.env['REMOTE_ADDR'])
+    raise CanCan::AccessDenied unless YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]['verified_addresses'].include?(request.headers['Solar'])
   end
 
   def verify_ip_access_and_guard!

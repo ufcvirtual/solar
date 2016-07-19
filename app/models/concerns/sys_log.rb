@@ -33,10 +33,10 @@ module SysLog
           if ((obj.respond_to?(:academic_allocations) && !obj.try(:academic_allocations).empty?) || obj.respond_to?(:academic_allocation))
             allocation_tag_id = params[:allocation_tag_id] || active_tab[:url][:allocation_tag_id] || obj.allocation_tag.id rescue nil
             [(obj.respond_to?(:academic_allocations) ? obj.academic_allocations : obj.academic_allocation)].flatten.each do |al|
-              LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, academic_allocation_id: al.id, allocation_tag_id: allocation_tag_id, ip: request.remote_ip, description: description)
+              LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, academic_allocation_id: al.id, allocation_tag_id: allocation_tag_id, ip: get_remote_ip, description: description)
             end
           elsif (obj.respond_to?(:allocation_tag) && !(obj.allocation_tag.nil?))
-            LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, allocation_tag_id: obj.allocation_tag.id, ip: request.remote_ip, description: description)
+            LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, allocation_tag_id: obj.allocation_tag.id, ip: get_remote_ip, description: description)
           else # generic log
             generic_log(sobj, obj)
           end
@@ -92,7 +92,7 @@ module SysLog
           d = "#{params[:controller]}: #{params.except('controller').to_s}" if d.blank?
         end
 
-        LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: request.remote_ip, academic_allocation_id: academic_allocation_id, description: description) unless description.nil?
+        LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: get_remote_ip, academic_allocation_id: academic_allocation_id, description: description) unless description.nil?
       end
 
   end # Actions
@@ -109,7 +109,7 @@ module SysLog
     def log_update
       unless !(params[:user].include?(:password)) || params[:user][:password].blank? || params[:user][:password] != params[:user][:password_confirmation]
         user = (current_user.nil? ? (params[:user].include?(:id) ? User.find(params[:id]) : User.find_by_reset_password_token(params[:user][:reset_password_token])) : current_user)
-        LogAction.updating(user_id: user.id, ip: request.remote_ip, description: "user: #{user.id}, password", created_at: Time.now) unless user.nil?
+        LogAction.updating(user_id: user.id, ip: get_remote_ip, description: "user: #{user.id}, password", created_at: Time.now) unless user.nil?
       end
     rescue
       # do nothing
@@ -118,7 +118,7 @@ module SysLog
     def log_request
       user_email = params.include?(:user) ? User.find_by_email(params[:user][:email]) : User.find(params[:id])
       user       = (current_user.nil? ?  user_email : current_user)
-      LogAction.request_password(user_id: user.id, ip: request.remote_ip, description: "user: #{user_email.id}, {email: #{user_email.email}}", created_at: Time.now) unless user.nil?
+      LogAction.request_password(user_id: user.id, ip: get_remote_ip, description: "user: #{user_email.id}, {email: #{user_email.email}}", created_at: Time.now) unless user.nil?
     rescue
       # do nothing
     end

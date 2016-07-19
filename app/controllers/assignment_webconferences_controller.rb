@@ -127,7 +127,7 @@ class AssignmentWebconferencesController < ApplicationController
         { description: "assignment_webconference: #{@assignment_webconference.id}  removing all recordings by user #{current_user.id}" }
       end
 
-      LogAction.create({ log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: request.remote_ip, allocation_tag_id: assignment_webconference.allocation_tag.id, academic_allocation_id: assignment_webconference.academic_allocation.id }.merge!(log))
+      LogAction.create({ log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: get_remote_ip, allocation_tag_id: assignment_webconference.allocation_tag.id, academic_allocation_id: assignment_webconference.academic_allocation.id }.merge!(log))
     end
 
     def assignment_webconference_params

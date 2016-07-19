@@ -29,7 +29,7 @@ class Devise::UsersController < Devise::RegistrationsController
   protected
 
     def after_sign_up_path_for(resource)
-      LogAction.new_user(user_id: resource.id, ip: request.remote_ip)
+      LogAction.new_user(user_id: resource.id, ip: get_remote_ip)
       super
     end
 

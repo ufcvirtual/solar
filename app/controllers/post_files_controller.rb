@@ -29,7 +29,7 @@ class PostFilesController < ApplicationController
         raise "not_permited"
       end
 
-      LogAction.create(log_type: LogAction::TYPE[:create], user_id: current_user.id, ip: request.remote_ip, description: "post_file: #{file_names.join(', ')}, post: #{post.id}") rescue nil
+      LogAction.create(log_type: LogAction::TYPE[:create], user_id: current_user.id, ip: get_remote_ip, description: "post_file: #{file_names.join(', ')}, post: #{post.id}") rescue nil
     rescue => error
       error = true
     end
@@ -61,7 +61,7 @@ class PostFilesController < ApplicationController
       @post_file.delete
       File.delete(@post_file.attachment.path) if File.exist?(@post_file.attachment.path)
 
-      LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: request.remote_ip, description: "post_file: #{@post_file.id} - #{@post_file.attachment_file_name}, post: #{@post_file.post.id}") rescue nil
+      LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: get_remote_ip, description: "post_file: #{@post_file.id} - #{@post_file.attachment_file_name}, post: #{@post_file.post.id}") rescue nil
     rescue
       error = true
     end

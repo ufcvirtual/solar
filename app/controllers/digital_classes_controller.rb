@@ -111,7 +111,7 @@ class DigitalClassesController < ApplicationController
     at = AllocationTag.find_by_id(allocation_tag_id)
 
     # loga acesso - o id da lesson no dc fica na descricao, por nao existir no solar
-    LogAction.access_digital_class_lesson(description: "#{params[:id].to_i}, #{params[:url]}", user_id: current_user.id, ip: request.remote_ip, allocation_tag_id: allocation_tag_id) if at.is_student_or_responsible?(current_user.id)
+    LogAction.access_digital_class_lesson(description: "#{params[:id].to_i}, #{params[:url]}", user_id: current_user.id, ip: get_remote_ip, allocation_tag_id: allocation_tag_id) if at.is_student_or_responsible?(current_user.id)
 
     # chama autenticacao
     redirect_to DigitalClass.access_authenticated(current_user, params[:url], [at])
@@ -209,7 +209,7 @@ class DigitalClassesController < ApplicationController
   def create_log(response, allocation_tags_ids)
     description = "digital_class: #{response.except('directories').as_json}"
     allocation_tags_ids.split(' ').flatten.each do |at|
-      LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: request.remote_ip, description: description, allocation_tag_id: at)
+      LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: get_remote_ip, description: description, allocation_tag_id: at)
     end
   end
   
