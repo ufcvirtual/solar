@@ -79,6 +79,10 @@ class ChatRoom < Event
     ((schedule.start_date.to_date..schedule.end_date.to_date).include?(Date.current)) && (start_hour.to_datetime <= now && end_hour.to_datetime >= now)
   end
 
+  def started?
+    DateTime.new(schedule.start_date.year, schedule.start_date.month, schedule.start_date.day, (start_hour.blank? ? 0 : start_hour.split(':').first.to_i), (start_hour.blank? ? 0 : start_hour.split(':').last.to_i)) <= DateTime.now
+  end
+
   def self.responsible?(allocation_tag_id, user_id)
     AllocationTag.find(allocation_tag_id).is_responsible?(user_id)
   end
@@ -130,5 +134,9 @@ class ChatRoom < Event
   def self.update_previous(academic_allocation_id, users_ids, academic_allocation_user_id)
     ChatMessage.where(academic_allocation_id: academic_allocation_id, user_id: users_ids).update_all academic_allocation_user_id: academic_allocation_user_id
   end  
+
+  def self.verify_previous(acu_id)
+    ChatMessage.where(academic_allocation_user_id: acu_id).any?
+  end
 
 end

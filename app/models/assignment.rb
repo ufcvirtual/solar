@@ -47,6 +47,10 @@ class Assignment < Event
     schedule.end_date.to_date < Date.today
   end
 
+  def started?
+    schedule.start_date.to_date <= Date.today
+  end
+
   def will_open?(allocation_tag_id, user_id)
     AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(user_id) && schedule.start_date.to_date > Date.today
   end

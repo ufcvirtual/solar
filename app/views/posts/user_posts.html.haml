@@ -24,8 +24,7 @@
             - if @academic_allocation.evaluative
               = f.input :grade, required: true, as: :float, step: 0.01, label: t(".grade"), input_html: { value: @alluser.try(:grade), min:0, max:10 } 
             -  if @academic_allocation.frequency  
-              = f.input :working_hours, required: true, as: :float, label: t(".frequency"), input_html: { value: @alluser.try(:working_hours), min:0, max: @academic_allocation.max_working_hours }
-              = t(:info_frequency, scope: [:posts, :user_posts], wh: @academic_allocation.max_working_hours.to_s) 
+              = f.input :working_hours, required: true, as: :float, label: t(".frequency"), input_html: { value: @alluser.try(:working_hours), min:0, max: @academic_allocation.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@academic_allocation.max_working_hours.to_s ) }
             = link_to_function t(:save), 'finish_evaluation(this)', class: 'btn btn_main'
 
   - else

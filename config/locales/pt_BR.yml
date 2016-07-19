@@ -1174,7 +1174,7 @@ pt_BR:
       update_grade: Nota e Frequência adicionadas com sucesso
       edit: Editar
       new: Novo
-      info_frequency: "(Carga Horária Maxima: %{wh}Hs)"
+      info_frequency: "(Máximo: %{wh}Hs)"
       frequency: Frequência
       grade: Nota
 
@@ -2560,7 +2560,7 @@ pt_BR:
       update_grade: Nota e Frequência adicionadas com sucesso
       edit: Editar
       new: Novo
-      info_frequency: " * Carga Horária Maxima: "
+      info_frequency: "Máximo: %{wh}Hs"
       frequency: Frequência
       grade: Nota
       evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por mensagem. Deste modo, ao avaliar/informar a frequência de um acesso, todos as outras mensagens do aluno terão a mesma nota/carga horária.'
@@ -2743,6 +2743,8 @@ pt_BR:
       created: Não foi possível criar evento.
       updated: Não foi possível atualizar evento.
       deleted: Não foi possível deletar evento.
+      not_student: Deve ser estudante.
+      general_message: Não foi possível realizar ação.
     show:
       title: Título
       type_event: Tipo
@@ -2754,6 +2756,15 @@ pt_BR:
       start_date: Período
       end_date: à
       event_details: Detalhes do evento
+    evaluate_user:
+      title: Participação do %{user} em %{event} (%{type})
+      description: Descrição
+      place: Local
+      date: Data
+      time: Horário
+      frequency: Carga horária
+      grade: Nota
+      to: ' à '
 
   agendas:
     dropdown_content:
@@ -3526,6 +3537,7 @@ pt_BR:
     warnings:
       no_evaluative_tools: Não há ferramentas avaliativas para realizar esta ação.
       no_frequency_tools: Não há ferramentas de frequência para realizar esta ação.
+      changes: 'Ferramentas gerenciadas com sucesso. Já houve definição de nota e/ou carga horária para alunos em uma ou mais ferramentas. Se uma ferramenta já havia sido avaliada e não é mais avaliativa, sua nota não será considerada no cálculo da média. O mesmo para a carga horária. Também é importante verificar se as cargas horárias definidas não ultrapassam o novo máximo definido se for o caso.'
 
   academic_allocation_users:
     errors:
@@ -3535,5 +3547,6 @@ pt_BR:
       lower_than_10: deve ser menor ou igual a 10.
       student_group: "Só é possível avaliar alunos nas turmas que estão matriculados"
       offer: não pode ser definida, pois a oferta já foi encerrada.
+      opened: não pode ser definida, pois a ferramenta ainda não iniciou.
     success:
       evaluated: Estudante avaliado com sucesso.

@@ -2444,3 +2444,23 @@ av_chat4:
   profile_id: 18
   resource_id: 222
   per_id: false
+
+av_se1:
+  profile_id: 2
+  resource_id: 225
+  per_id: false
+
+av_se2:
+  profile_id: 3
+  resource_id: 225
+  per_id: false
+
+av_se3:
+  profile_id: 17
+  resource_id: 225
+  per_id: false
+
+av_se4:
+  profile_id: 18
+  resource_id: 225
+  per_id: false

@@ -225,7 +225,8 @@ class EditionsController < ApplicationController
       raise 'error' unless errors.blank? && working_hours_errors.blank? && final_weight_errors.blank?
     end
 
-    render json: { success: true, notice: t('evaluative_tools.success.manage') }
+    message = AcademicAllocationUser.any_evaluated?(allocation_tags_ids) ? t('evaluative_tools.warnings.changes') : t('evaluative_tools.success.manage')
+    render json: { success: true, notice: message }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t('evaluative_tools.errors.permission')}, status: :unprocessable_entity
   rescue => error

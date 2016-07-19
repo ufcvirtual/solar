@@ -322,6 +322,8 @@ class ApplicationController < ActionController::Base
       ultimo_log_nav = LogNavigation.where('user_id = ? AND menu_id = ?', current_user.id, menu_log.id).last # pega o log de navegação para o sub log. 
       LogNavigationSub.create(log_navigation_id: ultimo_log_nav.id, support_material_file: support_material_file, discussion_id: discussion_log_id, lesson_id: lesson_log_id, assignment_id: assignments_id, exam_id: exams_id, user_id: user_log_id, chat_room_id: chat_rooms_id, student_id: student_log_id, group_assignment_id: group_assignment_log_id, webconference_id: webconferences_id, bibliography: bibliography, public_area: public_area, lesson: lesson_name, public_file_name: public_file_name, hist_chat_room_id: hist_chat_rooms_id, webconference_record: webconference, lesson_notes: lesson_notes, digital_class_lesson: digital_class_url)
     end
+  rescue => error
+    Rails.logger.info "Log Navigation Errror: #{error}"
   end
    #deleta logs antigos com mais de 1 ano
   def delete_log_navigation

@@ -443,7 +443,12 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :schedule_events, except: [:index]
+  resources :schedule_events, except: [:index] do
+    member do
+      get :evaluate_user
+      put :evaluate
+    end
+  end
 
   resources :messages, only: [:new, :show, :create, :index] do
     member do

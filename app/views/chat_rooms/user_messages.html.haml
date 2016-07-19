@@ -21,9 +21,8 @@
         .form-inputs.block_content
           .inline
             = f.input :grade, required: true, as: :float, :step => 0.01, label: t(".grade"), input_html: { value: @acu.try(:grade), min:0, max:10 } if @evaluative
-            = f.input :working_hours, required: true, as: :float, label: t(".frequency"), input_html: { value: @acu.try(:working_hours), min:0, max: @academic_allocation.max_working_hours } if @academic_allocation.frequency  
-            = t(:info_frequency, scope: [:chat_rooms, :user_messages]) + @academic_allocation.max_working_hours.to_s + ' Hs' unless !@academic_allocation.frequency  
-         
+            = f.input :working_hours, required: true, as: :float, label: t(".frequency"), input_html: { value: @acu.try(:working_hours), min:0, max: @academic_allocation.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@academic_allocation.max_working_hours.to_s ) } if @academic_allocation.frequency  
+            
             = link_to t(:back), messages_chat_room_path(@chat_room), class: 'btn back_chat_history'
             = link_to_function t(:save), 'finish_evaluation(this)', class: 'btn btn_main'
 

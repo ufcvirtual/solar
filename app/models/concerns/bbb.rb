@@ -130,6 +130,10 @@ module Bbb
     recording[:playback][:format][:url]
   end
 
+  def started?
+    Time.now >= initial_time
+  end
+
   def on_going?
     Time.now.between?(initial_time, initial_time+duration.minutes)
   end

@@ -182,4 +182,8 @@ class Webconference < ActiveRecord::Base
   def self.update_previous(academic_allocation_id, users_ids, academic_allocation_user_id)
     LogAction.where(academic_allocation_id: academic_allocation_id, user_id: users_ids, log_type: 7).update_all academic_allocation_user_id: academic_allocation_user_id
   end
+
+  def self.verify_previous(acu_id)
+    LogAction.where(academic_allocation_user_id: acu_id).any?
+  end
 end

@@ -1006,7 +1006,7 @@ en_US:
       update_grade: Note and successfully added Frequency
       edit: Edit
       new: New
-      info_frequency: " * Hours Maximum: "
+      info_frequency: "(Maximum: %{wh}Hs)"
       frequency: Frequency
       grade: Grade
 
@@ -2346,7 +2346,7 @@ en_US:
       update_grade: Note and successfully added Frequency
       edit: Edit
       new: New
-      info_frequency: " * Hours Maximum: "
+      info_frequency: "(Maximum: %{wh})"
       frequency: Frequency
       grade: Grade
       evaluation_info: '<b> About evaluation: </b>All grades and frequency here defined are to each student, not for each message. Therefore, by evaluating/seting frequency of a message, all other messages of this student will have the same grade and working hours.'
@@ -2518,6 +2518,8 @@ en_US:
       created: Event wasn't created.
       updated: Event wasn't updated.
       deleted: Event wasn't deleted.
+      not_student: Must be student.
+      general_message: Can't do action
     show:
       title: Title
       type_event: Type
@@ -2529,6 +2531,15 @@ en_US:
       start_date: Period
       end_date: To
       event_details: Event's details
+    evaluate_user:
+      title: Participation of %{user} at %{event} (%{type})
+      description: Description
+      place: Place
+      date: Date
+      time: Time
+      frequency: Working hours
+      grade: Grade
+      to: ' to '
   agendas:
     dropdown_content:
       chat_rooms: "Chat: "
@@ -3292,6 +3303,7 @@ en_US:
     warnings:
       no_evaluative_tools: There are no evaluative tool to this action.
       no_frequency_tools: There are no frequency tool to this action.
+      changes: "Tools managed successfully. Some tools already have grades and working hours for some students. If an already evaluated tool is no longer evaluative, it's grade no longer will count at student's final grade. The same to working hours. It's also important to check if new maximum working hours are not smaller than already evaluated working hours."
 
   academic_allocation_users:
     errors:
@@ -3301,5 +3313,6 @@ en_US:
       lower_than_10: must be smaller or equal to 10.
       student_group: "It's only possible to evaluate students at enrolled groups"
       offer: can't be defined. Offer is no longer active.
+      opened: can't be defined. Tool hasn't started yet.
     success:
       evaluated: Student successfully evaluated.

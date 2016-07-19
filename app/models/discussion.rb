@@ -35,6 +35,10 @@ class Discussion < Event
     end
   end
 
+  def started?
+    schedule.start_date.to_date <= Date.today
+  end
+
   # Verifica se existe alguma ac para um forum de mesmo nome cuja allocation_tag esteja entre as allocation_tags informadas
   # Ex:
   # => Existe o forum Forum 1 com academic allocation para a allocation_tag 3
@@ -152,6 +156,10 @@ class Discussion < Event
 
   def self.update_previous(academic_allocation_id, users_ids, academic_allocation_user_id)
     Post.where(academic_allocation_id: academic_allocation_id, user_id: users_ids).update_all academic_allocation_user_id: academic_allocation_user_id
+  end
+
+  def self.verify_previous(acu_id)
+    Post.where(academic_allocation_user_id: acu_id).any?
   end
 
 end

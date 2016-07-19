@@ -13,7 +13,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   validates :working_hours, numericality: { greater_than_or_equal_to: 0,  only_integer: true }, if: '!working_hours.blank?'
   validate :verify_wh, if: '!working_hours.blank?'
   validate :verify_grade, if: '!grade.blank?'
-  validate :verify_offer, if: 'working_hours_changed? || grade_changed?'
+  validate :verify_offer, :verify_date, if: 'working_hours_changed? || grade_changed?'
 
   before_save :if_group_assignment_remove_user_id
   before_save :verify_profile
@@ -44,8 +44,15 @@ class AcademicAllocationUser < ActiveRecord::Base
   def verify_offer
     offer_active = allocation_tag.offers.first.is_active?
     
-    errors.add(:grade, I18n.t('academic_allocation_users.errors.offer')) if academic_allocations.evaluative && grade_changed? && !offer_active
-    errors.add(:working_hours, I18n.t('academic_allocation_users.errors.offer')) if academic_allocations.evaluative && grade_changed? && !offer_active
+    errors.add(:grade, I18n.t('academic_allocation_users.errors.offer')) if academic_allocation.evaluative && grade_changed? && !offer_active
+    errors.add(:working_hours, I18n.t('academic_allocation_users.errors.offer')) if academic_allocation.frequency && working_hours_changed? && !offer_active
+  end
+
+  def verify_date
+    unless academic_allocation.academic_tool_type.constantize.find(academic_allocation.academic_tool_id).started?
+      errors.add(:grade, I18n.t('academic_allocation_users.errors.opened')) if academic_allocation.evaluative && grade_changed?
+      errors.add(:working_hours, I18n.t('academic_allocation_users.errors.opened')) if academic_allocation.frequency && working_hours_changed?
+    end
   end
 
   # if not student, set evaluation as nil
@@ -91,7 +98,11 @@ class AcademicAllocationUser < ActiveRecord::Base
       acu.grade = evaluation[:grade].blank? ? nil : evaluation[:grade].to_f
       acu.working_hours = evaluation[:working_hours].blank? ? nil : evaluation[:working_hours].to_i
 
-      acu.status = STATUS[:evaluated] if !acu.grade.blank? || !acu.working_hours.blank?
+      if !acu.grade.blank? || !acu.working_hours.blank?
+        acu.status = STATUS[:evaluated]
+      else
+        acu.status = tool_type.constantize.verify_previous(acu.id) ? STATUS[:sent] : STATUS[:empty]
+      end
 
       if acu.save
         acu.recalculate_final_grade(ac.allocation_tag_id)
@@ -140,4 +151,8 @@ class AcademicAllocationUser < ActiveRecord::Base
     acu = joins(:academic_allocation).where(academic_allocations: {academic_tool_id: tool_id, academic_tool_type: tool}, user_id: user_id).last
     {grade: acu.try(:grade), wh: acu.try(:working_hours)}
   end 
+
+  def self.any_evaluated?(ats)
+    joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: ats}).where('grade IS NOT NULL OR working_hours IS NOT NULL').any?
+  end
 end

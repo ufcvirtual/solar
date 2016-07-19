@@ -1167,3 +1167,9 @@ res224:
   controller: 'administrations'
   action: 'oauth_applications'
   description: 'Gerenciar aplicações para acesso da API via Oauth'
+
+res225:
+  id: 225
+  controller: 'schedule_events'
+  action: 'evaluate'
+  description: 'Avaliar participação de um aluno em eventos'

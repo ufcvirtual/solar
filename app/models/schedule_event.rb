@@ -34,4 +34,16 @@ class ScheduleEvent < Event
     new_record? || !integrated
   end
 
+  def self.verify_previous(acu_id)
+    return false
+  end
+
+  def self.update_previous(ac_id, user_id, acu_id)
+    return true
+  end
+
+  def started?
+    DateTime.new(schedule.start_date.year, schedule.start_date.month, schedule.start_date.day, (start_hour.blank? ? 0 : start_hour.split(':').first.to_i), (start_hour.blank? ? 0 : start_hour.split(':').last.to_i)) <= DateTime.now
+  end
+
 end
