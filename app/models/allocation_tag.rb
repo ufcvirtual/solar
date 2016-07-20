@@ -196,17 +196,17 @@ class AllocationTag < ActiveRecord::Base
     if scores
       msg_query = Message.get_query('users.id', 'outbox', ats, { ignore_trash: false, ignore_user: true })
 
-      select << 'COALESCE(posts.count,0) AS u_posts, COALESCE(logs.count,0) AS u_logs, COALESCE(sent_msgs.count,0) AS u_sent_msgs, exam_users.grade AS u_grade'
+      select << 'COALESCE(posts.count,0) AS u_posts, COALESCE(logs.count,0) AS u_logs, COALESCE(sent_msgs.count,0) AS u_sent_msgs, academic_allocation_users.grade AS u_grade'
 
       relations << <<-SQL
         LEFT JOIN (
-          SELECT to_char(AVG(exam_users.grade), '99.99') AS grade, exam_users.user_id AS user_id
-          FROM exam_users
-          JOIN academic_allocations ON academic_allocations.id = exam_users.academic_allocation_id
+          SELECT to_char(AVG(academic_allocation_users.grade), '99.99') AS grade, academic_allocation_users.user_id AS user_id
+          FROM academic_allocation_users
+          JOIN academic_allocations ON academic_allocations.id = academic_allocation_users.academic_allocation_id
           JOIN exams ON exams.id = academic_allocations.academic_tool_id AND exams.status = TRUE
           WHERE academic_allocations.allocation_tag_id IN (#{ats})
-          GROUP BY exam_users.user_id
-        ) exam_users ON exam_users.user_id = users.id
+          GROUP BY academic_allocation_users.user_id
+        ) academic_allocation_users ON academic_allocation_users.user_id = users.id
         LEFT JOIN (
           SELECT COUNT(discussion_posts.id) AS count, discussion_posts.user_id AS user_id
           FROM discussion_posts
@@ -230,7 +230,7 @@ class AllocationTag < ActiveRecord::Base
         ) sent_msgs ON sent_msgs.user_id = users.id
       SQL
 
-      group << 'posts.count, logs.count, sent_msgs.count, exam_users.grade'
+      group << 'posts.count, logs.count, sent_msgs.count, academic_allocation_users.grade'
     end
 
     User.find_by_sql <<-SQL

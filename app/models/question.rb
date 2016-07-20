@@ -83,10 +83,6 @@ class Question < ActiveRecord::Base
     end
   end
 
-  def self.answered_by_user(exam_user_id)
-    joins(question_items: :exam_responses).where(exam_responses: { exam_user_id: exam_user_id }).count
-  end
-
   def self.get_all(user_id, search={}, verify_privacy=false)
     query = []
 

@@ -11,8 +11,8 @@ class Exam < Event
 
   has_many :exam_questions, dependent: :destroy
   has_many :questions     , through: :exam_questions
-  has_many :exam_users    , through: :academic_allocations
-  has_many :exam_user_attempts, through: :exam_users
+  has_many :academic_allocation_users, through: :academic_allocations
+  has_many :exam_user_attempts, through: :academic_allocation_users
   has_many :exam_responses, through: :exam_user_attempts
 
   validates :name, :duration, :number_questions, :attempts, presence: true
@@ -38,34 +38,32 @@ class Exam < Event
   def recalculate_grades(user_id=nil, ats=nil, all=nil)
     grade = 0.00
     # chamar metodo de correção dos itens respondidos para todos os que existem
-    list_exam_correction(user_id, ats, all).each do |exam_user|
-      correction_exams(exam_user.id)
-      grade = get_grade(exam_user.id)
+    list_exam_correction(user_id, ats, all).each do |acu|
+      correction_exams(acu.id)
+      grade = get_grade(acu.id)
       grade = grade ? grade : 0.00
-      exam_user.update_attributes grade: grade.round(2)
-      send_result_emails(exam_user.id, grade) if result_email
+      acu.update_attributes grade: (grade > 10 ? 10 : grade.round(2)), status: AcademicAllocationUser::STATUS[:evaluated]
+      acu.recalculate_final_grade(acu.allocation_tag_id)
+      send_result_emails(acu, grade) if result_email
     end
     grade.round(2)
   end
 
-  def send_result_emails(exam_user_id, grade)
+  def send_result_emails(acu, grade)
     # enviar email com notas se já tiver encerrado período
-    eur = ExamUser.find(exam_user_id)
-    user = User.find(eur.user_id)
+    user = User.find(acu.user_id)
     subject = I18n.t('exams.result_exam_user.subject')
     recipients = "#{user.name} <#{user.email}>"
     files = Array.new
-    msg = self.grade_msg_template(user, grade)
+    msg = self.grade_msg_template(user, grade, acu.allocation_tag)
     Thread.new do
       Notifier.send_mail(recipients, subject, msg, files, nil).deliver
     end
   end
 
-  def grade_msg_template(user, grade)
-   alloc = get_ats_exam_user(user)
-   ats = AllocationTag.find(alloc.id)
-   label_cur = ats.curriculum_unit_types
-   label_info = ats.info
+  def grade_msg_template(user, grade, at)
+   label_cur  = at.curriculum_unit_types
+   label_info = at.info
     %{
       <b> #{I18n.t('exams.result_exam_user.salutation')} #{user.name},</b><br/>
       #{I18n.t('exams.result_exam_user.exam_name')} #{self.name} #{I18n.t('exams.result_exam_user.email_of')} #{label_cur} - #{label_info} #{I18n.t('exams.result_exam_user.email_infor_compl')}<br/>
@@ -78,28 +76,22 @@ class Exam < Event
     }
   end
 
-  def get_ats_exam_user(user)
-    ExamUser.joins(academic_allocation: :exam)
-            .where(exams: { id: id, status: true }, user_id: user_id)
-            .select('DISTINCT academic_allocations.allocation_tag_id AS id') .first
-  end  
-
   def list_exam_correction(user_id=nil, ats=nil, all=nil)
     query = []
-    query << "exam_users.user_id = :user_id "   unless user_id.blank? 
+    query << "academic_allocation_users.user_id = :user_id "   unless user_id.blank? 
     query << "academic_allocations.allocation_tag_id  IN (#{ats}) "  unless ats.blank?  
     query << "exam_user_attempts.grade IS NULL" unless all.blank?
     query << "schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour::time < current_time)"
 
-    ExamUser.joins(academic_allocation: [exam: :schedule])
-            .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.exam_user_id = exam_users.id")
+    AcademicAllocationUser.joins(academic_allocation: [exam: :schedule])
+            .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id")
             .where(exams: { id: id, status: true }).where(query.join(' AND '), { user_id: user_id })
-            .select("DISTINCT exam_users.id AS id") 
+            .select("DISTINCT academic_allocation_users.*, academic_allocations.allocation_tag_id") 
   end  
 
-  def correction_exams(exam_user_id)
+  def correction_exams(acu_id)
     questions_exam = ExamQuestion.list_correction(id, raffle_order)
-    attempts = ExamUserAttempt.where(exam_user_id: exam_user_id)
+    attempts = ExamUserAttempt.where(academic_allocation_user_id: acu_id)
     list_attempt = attempts.where(complete: true)
     (list_attempt.any? ? list_attempt : [attempts.first]).compact.each do |exam_user_attempt|
       grade_exam = 0
@@ -142,7 +134,7 @@ class Exam < Event
   end  
 
   def can_correct?(user_id, ats)
-    ExamUser.joins(academic_allocation: [exam: :schedule]).joins('LEFT JOIN exam_user_attempts ON exam_user_attempts.exam_user_id = exam_users.id').where("schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour::time < current_time)").where(user_id: user_id, exams: { status: true, id: id }, academic_allocations: { allocation_tag_id: ats }).where('exam_user_attempts.grade IS NULL').any?
+    AcademicAllocationUser.joins(academic_allocation: [exam: :schedule]).joins('LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id').where("schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour::time < current_time)").where(user_id: user_id, exams: { status: true, id: id }, academic_allocations: { allocation_tag_id: ats }).where('exam_user_attempts.grade IS NULL').any?
   end                  
 
   def self.correction_cron
@@ -222,7 +214,7 @@ class Exam < Event
       errors.add(:block_content, I18n.t('exams.error.cant_change'))           if block_content_changed?
     elsif ended?
       schedule.errors.add(:end_date, I18n.t('exams.error.cant_be_smaller')) if schedule.end_date_changed? && schedule.end_date < schedule.end_date_was
-      schedule.errors.add(:start_date, I18n.t('exams.error.cant_change'))   if schedule.start_date_changed? && (exam_users.any? || (schedule.start_date > schedule.start_date_was))
+      schedule.errors.add(:start_date, I18n.t('exams.error.cant_change'))   if schedule.start_date_changed? && (academic_allocation_users.any? || (schedule.start_date > schedule.start_date_was))
       errors.add(:duration, I18n.t('exams.error.cant_change'))         if duration_changed?
       errors.add(:random_questions, I18n.t('exams.error.cant_change')) if random_questions_changed?
       errors.add(:raffle_order, I18n.t('exams.error.cant_change'))     if raffle_order_changed?
@@ -283,13 +275,13 @@ class Exam < Event
 
   def can_destroy?
     raise 'started'     if status && on_going?
-    raise 'has_answers' if exam_users.any?
+    raise 'has_answers' if academic_allocation_users.any?
   end
 
   def can_change_status?
     raise 'minimum_questions' if !status && questions.where(status: true).count < number_questions
     raise 'started'           if status && on_going?
-    raise 'has_answers'       if status && exam_users.any?
+    raise 'has_answers'       if status && academic_allocation_users.any?
     raise 'imported'          if !status && !can_publish
     raise 'change_period'     if !status && started?
     # raise 'autocorrect' if !status && questions.where(type: [0,1,2])
@@ -328,7 +320,7 @@ class Exam < Event
     academic_allocation = academic_allocations.where(allocation_tag_id: allocation_tags_ids).first
     return unless academic_allocation
 
-    info = academic_allocation.exam_users.where({user_id: user_id}).first.try(:info) || {complete: false}
+    info = academic_allocation.academic_allocation_users.where({user_id: user_id}).first.try(:info) || {complete: false}
     info = {situation: situation(info[:complete], info[:grade], info[:responses], info[:attempts])}.merge(info)
     {count: percent(number_questions, info[:responses])}.merge(info)
   end
@@ -347,24 +339,14 @@ class Exam < Event
     end
   end
 
-  def find_or_create_exam_user(current_user_id, allocation_tag_id)
-    academic_allocation = AcademicAllocation.where(academic_tool_id: id, academic_tool_type: 'Exam').where("allocation_tag_id = :allocation_tag_id OR allocation_tag_id IN (#{AllocationTag.find(allocation_tag_id).related.join(',')})", {allocation_tag_id: allocation_tag_id}).first
-    ExamUser.where(user_id: current_user_id, academic_allocation_id: academic_allocation.id).first_or_create
-  end
-
-  def find_exam_user(current_user_id, allocation_tag_id)
-    academic_allocation = AcademicAllocation.where(academic_tool_id: id, academic_tool_type: 'Exam').where("allocation_tag_id = :allocation_tag_id OR allocation_tag_id IN (#{AllocationTag.find(allocation_tag_id).related.join(',')})", {allocation_tag_id: allocation_tag_id}).first
-    ExamUser.where(user_id: current_user_id, academic_allocation_id: academic_allocation.id).first
-  end
-
-  def responses_question_user(exam_user_id, id)
+  def responses_question_user(acu_id, id)
     mod_correct_exam = self.attempts_correction
 
     if mod_correct_exam == Exam::GREATER
-      grade = ExamUserAttempt.where(exam_user_id: exam_user_id).maximum(:grade)
-      @exam_user_attempt =  ExamUserAttempt.where(exam_user_id: exam_user_id, grade: grade).last        
+      grade = ExamUserAttempt.where(academic_allocation_user_id: acu_id).maximum(:grade)
+      @exam_user_attempt =  ExamUserAttempt.where(academic_allocation_user_id: acu_id, grade: grade).last        
     elsif mod_correct_exam == Exam::LAST
-      @exam_user_attempt = ExamUserAttempt.where(exam_user_id: exam_user_id).last
+      @exam_user_attempt = ExamUserAttempt.where(academic_allocation_user_id: acu_id).last
     else
       @exam_user_attempt = ExamUserAttempt.find(id)
     end 
@@ -400,11 +382,11 @@ class Exam < Event
 
   def can_remove_groups?(groups)
     return false if status && on_going?
-    return false if exam_users.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: id, academic_tool_type: 'Exam', allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).any?
+    return false if academic_allocation_users.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: id, academic_tool_type: 'Exam', allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).any?
   end
 
-  def get_grade(exam_user_id)
-    attempts = ExamUserAttempt.where(exam_user_id: exam_user_id)
+  def get_grade(acu_id)
+    attempts = ExamUserAttempt.where(academic_allocation_user_id: acu_id)
     case attempts_correction
     when Exam::GREATER; attempts.maximum(:grade)
     when Exam::AVERAGE; attempts.average(:grade)
@@ -413,23 +395,32 @@ class Exam < Event
     end
   end
   
-  def self.get_id_exam_user_attempt(mod_correct_exam, exam_user_id)
+  def self.get_id_exam_user_attempt(mod_correct_exam, acu_id)
     if mod_correct_exam == Exam::GREATER
-      max_grade = ExamUserAttempt.where(exam_user_id: exam_user_id).maximum(:grade)
-      id =  ExamUserAttempt.where(exam_user_id: exam_user_id, grade: max_grade).last.id
+      max_grade = ExamUserAttempt.where(academic_allocation_user_id: acu_id).maximum(:grade)
+      id =  ExamUserAttempt.where(academic_allocation_user_id: acu_id, grade: max_grade).last.id
     elsif mod_correct_exam == Exam::LAST
-      id = ExamUserAttempt.where(exam_user_id: exam_user_id).last.id
+      id = ExamUserAttempt.where(academic_allocation_user_id: acu_id).last.id
     end 
     id
   end
 
   def self.verify_blocking_content(user_id)
-    ExamUser.joins("LEFT JOIN academic_allocations ON exam_users.academic_allocation_id = academic_allocations.id")
+    AcademicAllocationUser.joins("LEFT JOIN academic_allocations ON academic_allocation_users.academic_allocation_id = academic_allocations.id")
                     .joins("LEFT JOIN exams ON exams.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Exam' AND exams.status=TRUE")
-                    .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.exam_user_id = exam_users.id")
+                    .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id")
                     .where("block_content=true AND complete=false AND user_id = ? ", user_id)
                     .select("DISTINCT block_content").any?
-  end  
+  end
+
+  def self.verify_previous(acu_id)
+    ExamUserAttempt.where(academic_allocation_user_id: acu_id).any?
+  end
+
+  def self.update_previous(academic_allocation_id, users_ids, academic_allocation_user_id)
+    # ExamUserAttempt only exists if ACU exists, no need to update previous
+    return false
+  end
 
   private
 

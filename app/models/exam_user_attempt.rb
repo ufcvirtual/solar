@@ -1,11 +1,11 @@
 class ExamUserAttempt < ActiveRecord::Base
 
-  belongs_to :exam_user
+  belongs_to :academic_allocation_user
   belongs_to :academic_allocation, conditions: { academic_tool_type: 'Exam' }
 
-  has_one :exam, through: :exam_user
-  has_one :allocation_tag, through: :exam_user
-  has_one :user, through: :exam_user
+  has_one :exam, through: :academic_allocation_user
+  has_one :allocation_tag, through: :academic_allocation_user
+  has_one :user, through: :academic_allocation_user
 
   has_many :exam_responses, dependent: :destroy
   has_many :question_items, through: :exam_responses

@@ -2,6 +2,12 @@
   %h1#lightBoxDialogTitle= @exam.name
 
   .attempts.block_wrapper
+    - if @ac.frequency
+      .block_title
+        %h2= t('.frequency')
+      .block_content
+        = link_to t('.working_hours', wh: @acu.try(:working_hours)), '#', class: 'no_pointer'
+
     - if @exam.attempts_correction == Exam::AVERAGE
       .block_title
         %h2= t('.average', grade: @grade)
@@ -18,33 +24,45 @@
     .block_title
       %h2= t('.result')
     .block_content
-      - @attempts.each_with_index do |attempt, idx|
-        - total_time = attempt.exam_responses.sum(:duration)
-        .attempt{id: "#{attempt.id}", class: "#{idx == 0 ? '' : 'invisible'}"}
-          .form-inputs.block_content
-            .input
-              = label_tag t(".number_question"), nil, class: "form_label"
-              %span.label_info= @exam.number_questions
-            .input
-              = label_tag t(".start_date"), nil, class: "form_label"
-              %span.label_info= l(attempt.start, format: :at_date)
+      - if @attempts.blank?
+        .text_none= t('exams.error.no_attempt')
+      - else
+        - @attempts.each_with_index do |attempt, idx|
+          - total_time = attempt.exam_responses.sum(:duration)
+          .attempt{id: "#{attempt.id}", class: "#{idx == 0 ? '' : 'invisible'}"}
+            .form-inputs.block_content
+              .input
+                = label_tag t(".number_question"), nil, class: "form_label"
+                %span.label_info= @exam.number_questions
+              .input
+                = label_tag t(".start_date"), nil, class: "form_label"
+                %span.label_info= l(attempt.start, format: :at_date)
 
-            .input
-              = label_tag t(".end_date"), nil, class: "form_label"
-              %span.label_info= l(attempt.end, format: :at_date)
+              .input
+                = label_tag t(".end_date"), nil, class: "form_label"
+                %span.label_info= l(attempt.end, format: :at_date)
 
-            .input
-              = label_tag t(".average_time"), nil, class: "form_label"
-              %span.label_info= Time.at(total_time/@exam.number_questions).utc.strftime("%H:%M:%S")
+              .input
+                = label_tag t(".average_time"), nil, class: "form_label"
+                %span.label_info= Time.at(total_time/@exam.number_questions).utc.strftime("%H:%M:%S")
 
-            .input
-              = label_tag t(".exam_time"), nil, class: "form_label"
-              %span.label_info= Time.at(total_time).utc.strftime("%H:%M:%S")
+              .input
+                = label_tag t(".exam_time"), nil, class: "form_label"
+                %span.label_info= Time.at(total_time).utc.strftime("%H:%M:%S")
 
-            .input
-              = label_tag t(".punctuation"), nil, class: "form_label"
-              %span.label_info= attempt.grade.to_s
-              = label_tag t(".to") + ' '+ @scores_exam.to_s  
+              .input
+                = label_tag t(".punctuation"), nil, class: "form_label"
+                %span.label_info= label_tag t(".to", from: attempt.grade.to_s, to:@scores_exam.to_s)
+              
+  - if @frequency
+    .frequency_form
+      = simple_form_for :academic_allocation_user, url: evaluate_exam_path(@exam), html: { method: :put } do |f|
+        = f.input :user_id, as: :hidden, input_html: { value: @user_id }
+      
+        .form-inputs.block_content
+          .inline
+            = f.input :working_hours, required: true, as: :float, label: t(".wh"), input_html: { value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) } 
+            %span= link_to_function t(:save), 'finish_evaluation(this)', class: 'btn btn_main'
 
 :javascript
   function show_attempt(id){
@@ -52,4 +70,16 @@
     $('.attempts a#a_'+id).addClass('active');
     $('.info .attempt').addClass('invisible');
     $('.info .attempt#'+id).removeClass('invisible');
+  }
+
+  function finish_evaluation(btn){
+    var form = $(btn).parents('form:first');
+    $.put(form.attr('action'), form.serialize(), function(data){
+      $.fancybox.close();
+      flash_message(data.notice, 'notice');
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert', 'fancybox-outer');
+    });
   }

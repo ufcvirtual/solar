@@ -11,7 +11,7 @@ class Score # < ActiveRecord::Base
     history_access = LogAccess.where(log_type: LogAccess::TYPE[:group_access], user_id: user_id, allocation_tag_id: related || at.related).limit(5)
     public_files   = PublicFile.where(user_id: user_id, allocation_tag_id: at_id)
 
-    exams           = Exam.joins(:academic_allocations, :schedule).includes(:exam_users)
+    exams           = Exam.joins(:academic_allocations, :schedule).includes(:academic_allocation_users)
                       .where(academic_allocations: { allocation_tag_id:  at.id })
                       .select("exams.*, schedules.start_date AS start_date, schedules.end_date AS end_date")
                       .order("start_date")

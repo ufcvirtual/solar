@@ -2938,6 +2938,7 @@ en_US:
       attempt: The maximum number of attempts has been reached
       not_finished: This exam is not finished yet
       duration_and_hour: must be smaller than time difference
+      no_attempt: No attempt made
     show:
       groups: Groups
       empty_group: Empty group
@@ -2963,7 +2964,7 @@ en_US:
       end_date: End date
       attempts: Attempt's amount
       attempts_correction: Grade calculation 
-      to: " to "
+      to: "%{from} to %{to}"
       student: 'Student:'
       grade: 'Grade: %{grade}'
       average: 'Average: %{grade}'
@@ -2977,8 +2978,11 @@ en_US:
       email_infor: "To see more information about your result or the correction , these are available in the Testing menu at Solar ."
       email_infor_compl: "It had ended its period and its score was calculated"
       email_of: of
-      email: "Please do not respond to this message . This is an automatic e- mail Solar 2.0"
-      itens_corrected: "Iten(s) corrected: "
+      email: "Please do not respond to this message. This is an automatic email from Solar 2.0"
+      itens_corrected: "Corrected item(s): "
+      frequency: Frequency
+      working_hours: 'Working Hours: %{wh}Hs'
+      wh: Working hours
     result_exam:  
       student: 'Student: '
       grade: 'Grade: '  

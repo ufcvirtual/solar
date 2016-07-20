@@ -3173,7 +3173,8 @@ pt_BR:
       time: A prova deve estar em andamento para realização.
       attempt: A quantidade máxima de tentativas para realização da prova já foi atingida.
       not_finished: Esta prova ainda não foi encerrada
-      duration_and_hour: deve ser menor que a diferença de horários 
+      duration_and_hour: deve ser menor que a diferença de horários
+      no_attempt: Nenhuma tentativa realizada 
     show:
       groups: Turmas
       empty_group: Turma vazia
@@ -3198,7 +3199,7 @@ pt_BR:
       end_date: Fim
       attempts: Quantidade de tentativas
       attempts_correction: Cálculo de nota
-      to: " de"
+      to: "%{from} de %{to}"
       student: 'Aluno: '
       grade: 'Nota: %{grade}'
       grade_without_number: 'Nota'
@@ -3212,8 +3213,11 @@ pt_BR:
       email_infor: "Para verificar mais informações sobre seu resultado ou sobre a correção, estes já estão disponíveis no menu de Provas no Solar."
       email_infor_compl: "teve seu período encerrado e sua nota foi calculada"
       email_of: do
-      email: "Por favor não responda essa mensagem. Esse é um e-mail automático do Solar 2.0."
+      email: "Por favor não responda essa mensagem. Esse é um email automático do Solar 2.0."
       itens_corrected: "Iten(s) correto(s): "
+      frequency: Frequência
+      working_hours: 'Carga horária: %{wh}'
+      wh: Carga Horária
     result_exam:  
       student: 'Aluno: '
       grade: 'Nota: '

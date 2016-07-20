@@ -322,6 +322,7 @@
   .attempts, .info{
     display: inline-block;
     vertical-align: top;
+    padding-left: 0;
   }
   .attempts{
     width: 30%;
@@ -347,5 +348,8 @@
     a.no_pointer{
       cursor: default;
     }
+  }
+  .frequency_form{
+    text-align: center;
   }
 }

@@ -21,9 +21,6 @@ class AcademicAllocation < ActiveRecord::Base
   has_many :chat_messages, dependent: :destroy
   has_many :chat_participants, inverse_of: :academic_allocation, dependent: :destroy
 
-  # exam
-  has_many :exam_users, dependent: :destroy
-
   before_save :verify_association_with_allocation_tag
 
   before_destroy :move_lessons_to_default, if: :lesson_module?

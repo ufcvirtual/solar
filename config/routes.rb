@@ -569,6 +569,7 @@ Solar::Application.routes.draw do
       get :complete
       put :calcule_grade
       put :calcule_grade_user
+      put :evaluate
     end
   end
 

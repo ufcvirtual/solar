@@ -37,11 +37,11 @@ module V1::Contents
     end
   end
 
-  def copy_exam_users(from_exam_users, to_at)
-    from_exam_users.each do |from_exam_user|
-      to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Exam', academic_tool_id: from_exam_user.academic_allocation.academic_tool_id).first
-      new_exam_user = copy_object(from_exam_user, 'academic_allocation_id' => to_ac.id)
-      new_exam_user.copy_dependencies_from(from_exam_user)
+  def copy_acu_to_exam(from_acus, to_at)
+    from_acus.each do |from_acu|
+      to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Exam', academic_tool_id: from_acu.academic_allocation.academic_tool_id).first
+      new_acu = copy_object(from_acu, 'academic_allocation_id' => to_ac.id)
+      new_acu.copy_dependencies_from(from_acu)
     end
   end
 
@@ -82,8 +82,9 @@ module V1::Contents
     AcademicAllocation.where(academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag).map{ |ac| ac.chat_messages.delete_all }
     AcademicAllocation.where(academic_tool_type: 'Webconference', allocation_tag_id: allocation_tag).delete_all
     AcademicAllocation.where(academic_tool_type: 'Exam', allocation_tag_id: allocation_tag).map{ |exam|
-      exam.exam_users.map(&:delete_with_dependents)
+      exam.academic_allocation_users.map(&:delete_with_dependents)
     }
+  AcademicAllocationUser.delete_all
   end
 
   def copy_file(file_to_copy_path, file_copied_path)
@@ -176,7 +177,7 @@ module V1::Contents
   def replicate_exams(from_academic_allocations, to_at)
     from_exams_academic_allocations = from_academic_allocations.where(academic_tool_type: 'Exam')
     create_missing_tools(from_exams_academic_allocations.pluck(:academic_tool_id), to_at, 'Exam')
-    copy_exam_users(ExamUser.where(academic_allocation_id: from_exams_academic_allocations.pluck(:id)), to_at)
+    copy_acu_to_exam(AcademicAllocationUser.where(academic_allocation_id: from_exams_academic_allocations.pluck(:id)), to_at)
   end
 
 end

@@ -540,12 +540,17 @@ exam2:
  allocation_tag_id: 3 # QM-CAU - 2011.1
  academic_tool_id: 2
  academic_tool_type: "Exam"
+ frequency: true
+ max_working_hours: 5
 
 exam3:
  id: 86
  allocation_tag_id: 3 # QM-CAU - 2011.1
  academic_tool_id: 3
  academic_tool_type: "Exam"
+ evaluative: true
+ weight: 2
+ final_weight: 30
 
 exam4:
  id: 87

@@ -10,7 +10,7 @@
       %tbody
         - i = 0
         - @list_eua.each do |leua|
-          - link = open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, exam_user_id: @exam_user_id, situation: @situation, exam_user_attempt_id: leua.id)
+          - link = open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: @situation, exam_user_attempt_id: leua.id)
           - i = i +1
           %tr.lines
             %td

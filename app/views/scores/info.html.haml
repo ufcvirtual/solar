@@ -83,9 +83,9 @@
                 %td{align: "left"}
                   - if !['to_answer', 'not_finished', 'retake'].include?(info[:situation])
                     .title= exam.name
-                    - if info[:situation] == 'corrected'
+                    - if exam.ended? || info[:situation] == 'corrected'
                       = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam, user_id: @user.id), class: 'link_content', class: 'exam-result'
-                      - if is_user
+                      - if is_user && info[:situation] == 'corrected'
                         |
                         = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'open_exam', id: 'open-result'
                   - elsif is_user
@@ -98,7 +98,7 @@
                 %td.center.situation
                   %div{class: "#{info[:situation]}"}= I18n.t(info[:situation], :scope => [:exams, :situation])
                 %td.center.grade
-                  - if info[:grade].blank? && exam.ended? && exam.can_correct?(@user.id, @allocation_tag_id)
+                  - if info[:grade].blank? && exam.ended? && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(info[:situation])
                     - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam, user_id: @user.id), class: 'ico-e'
                   %span.activity_grade= info[:grade] || bt_correction || "-"
     - else
