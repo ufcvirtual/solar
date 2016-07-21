@@ -9,24 +9,27 @@ module V1::Contents
     end
   end
 
-  def copy_sent_assignments(from_sent_assignments, to_at)
-    from_sent_assignments.each do |from_sent_assignment|
-      to_ac      = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Assignment', academic_tool_id: from_sent_assignment.academic_allocation.academic_tool_id).first
-      attributes = from_sent_assignment.attributes.except('id', 'grade').merge('academic_allocation_id' => to_ac.id)
+  def copy_academic_allocation_users(from_academic_allocation_users, to_at)
+    from_academic_allocation_users.each do |from_academic_allocation_user|
+      to_ac      = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Assignment', academic_tool_id: from_academic_allocation_user.academic_allocation.academic_tool_id).first
+      attributes = from_academic_allocation_user.attributes.except('id', 'grade', 'working_hours', 'status', 'new_after_evaluation').merge('academic_allocation_id' => to_ac.id)
 
-      unless from_sent_assignment.group_assignment_id.nil?
-        new_group  = copy_object(from_sent_assignment.group_assignment, {'academic_allocation_id' => to_ac}, false, :group_participants)
+      unless from_academic_allocation_user.group_assignment_id.nil?
+        new_group  = copy_object(from_academic_allocation_user.group_assignment, {'academic_allocation_id' => to_ac}, false, :group_participants)
         attributes.merge!('group_assignment_id' => new_group.id)
       end
 
-      new_sa = SentAssignment.where(attributes).first_or_create do |sa|
-        sa.grade = from_sent_assignment.grade # updates grade with most recent copied group
-        sa.merge = true
+      new_acu = AcademicAllocationUser.where(attributes).first_or_create do |acu|
+        acu.grade = from_academic_allocation_user.grade # updates grade with most recent copied group
+        acu.working_hours = from_academic_allocation_user.working_hours
+        acu.status = from_academic_allocation_user.status
+        acu.new_after_evaluation = from_academic_allocation_user.new_after_evaluation
+        acu.merge = true
       end
 
-      copy_objects(from_sent_assignment.assignment_comments, { 'sent_assignment_id' => new_sa.id }, true, :files)
-      copy_objects(from_sent_assignment.assignment_files, { 'sent_assignment_id' => new_sa.id }, true)
-      copy_objects(from_sent_assignment.assignment_webconferences, { 'sent_assignment_id' => new_sa.id }, true, nil, { to: :set_origin, from: :id })
+      copy_objects(from_academic_allocation_user.assignment_comments, { 'academic_allocation_user_id' => new_acu.id }, true, :files)
+      copy_objects(from_academic_allocation_user.assignment_files, { 'academic_allocation_user_id' => new_acu.id }, true)
+      copy_objects(from_academic_allocation_user.assignment_webconferences, { 'academic_allocation_user_id' => new_acu.id }, true, nil, { to: :set_origin, from: :id })
     end
   end
 
@@ -72,11 +75,11 @@ module V1::Contents
     end
   end
 
-  # remove posts, sent_assignments, group_assignments, chat_messages and dependents
+  # remove posts, academic_allocation_users, group_assignments, chat_messages and dependents
   def remove_all_content(allocation_tag)
     AcademicAllocation.where(academic_tool_type: 'Discussion', allocation_tag_id: allocation_tag).map{ |ac| ac.discussion_posts.map(&:delete_with_dependents) }
     AcademicAllocation.where(academic_tool_type: 'Assignment', allocation_tag_id: allocation_tag).map{ |ac|
-      ac.sent_assignments.map(&:delete_with_dependents)
+      ac.academic_allocation_users.map(&:delete_with_dependents)
       ac.group_assignments.map(&:delete_with_dependents)
     }
     AcademicAllocation.where(academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag).map{ |ac| ac.chat_messages.delete_all }
@@ -151,8 +154,8 @@ module V1::Contents
 
     ac_ids = from_assignments_academic_allocations.pluck(:id)
 
-    copy_sent_assignments(SentAssignment.where(academic_allocation_id: ac_ids), to_at) # copy all sent assignments and dependents
     copy_group_assignments(GroupAssignment.where(academic_allocation_id: ac_ids), to_at) # copy all group_assignments (if already doesn't exist) and participants
+    copy_academic_allocation_users(AcademicAllocationUser.where(academic_allocation_id: ac_ids), to_at) # copy all sent assignments and dependents
   end
   
   def replicate_webconferences(from_academic_allocations, to_at, from_at)

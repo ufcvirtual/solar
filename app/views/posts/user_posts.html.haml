@@ -1,5 +1,8 @@
+- evaluate = ((@academic_allocation.evaluative || @academic_allocation.frequency) && @can_evaluate)
 .user_posts
   %h1#lightBoxDialogTitle= t(".title", user: @user.name, discussion: @discussion.name)
+  - if evaluate
+    .title-warning= raw t('.evaluation_info')
   - unless @posts.empty?
     %table.tb_list
       %thead
@@ -15,8 +18,8 @@
             %td.center= l(post.updated_at.to_datetime, format: :clock_time)
 
   
-    - if @academic_allocation.evaluative || @academic_allocation.frequency
-      = simple_form_for :academic_allocation_user, url: evaluate_discussion_posts_path(@discussion), html: { method: :put, id: 'academic_allocation_user_grade_form' } do |f|
+    - if evaluate
+      = simple_form_for :academic_allocation_user, url: evaluate_discussion_path(@discussion), html: { method: :put } do |f|
       
         = f.input :user_id, as: :hidden, input_html: { value: @user.id }
         .form-inputs.block_content
@@ -42,10 +45,3 @@
         flash_message(data.alert, 'alert', 'fancybox-outer');
     });
   }
-
-
-  $(function(){
-   $('#save_grade').click(function(){
-      $('#academic_allocation_user_grade_form:last').serialize_and_submit();
-    });
-  });      

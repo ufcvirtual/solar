@@ -59,7 +59,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert assigns(:own_assignment)
     assert_not_nil assigns(:in_time)
-    assert_not_nil assigns(:sent_assignment)
+    assert_not_nil assigns(:acu)
 
     login @prof
     get @quimica_tab
@@ -68,7 +68,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert not(assigns(:own_assignment))
     assert_not_nil assigns(:in_time)
-    assert_not_nil assigns(:sent_assignment)
+    assert_not_nil assigns(:acu)
   end
 
   test "visualizar pagina com informacoes de grupo" do
@@ -79,7 +79,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert assigns(:own_assignment)
     assert_not_nil assigns(:in_time)
-    assert_not_nil assigns(:sent_assignment)
+    assert_not_nil assigns(:acu)
 
     login @prof
     get @quimica_tab
@@ -88,7 +88,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert not(assigns(:own_assignment))
     assert_not_nil assigns(:in_time)
-    assert_not_nil assigns(:sent_assignment)
+    assert_not_nil assigns(:acu)
   end
 
   test "nao visualizar pagina com informacoes de aluno - sem acesso" do
@@ -97,7 +97,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
 
     get student_assignment_path id: @atividadeI.id, student_id: @aluno1.id
     assert not(assigns(:own_assignment))
-    assert_nil assigns(:sent_assignment)
+    assert_nil assigns(:acu)
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
@@ -108,7 +108,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
 
     get student_assignment_path id: @atividadeG.id, group_id: @group.id
     assert not(assigns(:own_assignment))
-    assert_nil assigns(:sent_assignment)
+    assert_nil assigns(:acu)
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end

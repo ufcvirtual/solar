@@ -6,10 +6,11 @@ class AssignmentComment < ActiveRecord::Base
   before_destroy :can_save?
   before_create :define_user, if: 'merge.nil?'
 
-  belongs_to :sent_assignment
+  belongs_to :academic_allocation_user
   belongs_to :user
 
-  has_one :academic_allocation, through: :sent_assignment
+  has_one :academic_allocation, through: :academic_allocation_user
+  has_one :assignment, through: :academic_allocation_user
 
   has_many :files, class_name: 'CommentFile', dependent: :delete_all
 
@@ -20,11 +21,11 @@ class AssignmentComment < ActiveRecord::Base
   attr_accessor :merge
 
   def assignment
-    sent_assignment.assignment
+    academic_allocation_user.assignment
   end
 
   def allocation_tag
-    sent_assignment.academic_allocation.allocation_tag
+    academic_allocation_user.academic_allocation.allocation_tag
   end
 
   def can_save?

@@ -2,7 +2,7 @@ class AcademicAllocation < ActiveRecord::Base
 
   belongs_to :academic_tool, polymorphic: true
   belongs_to :allocation_tag
-  belongs_to :academic_allocation_user
+  has_many :academic_allocation_users
 
   belongs_to :lesson_module,  foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'LessonModule'"]
   belongs_to :chat_room,      foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'ChatRoom'"]
@@ -12,10 +12,7 @@ class AcademicAllocation < ActiveRecord::Base
   belongs_to :discussion,     foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Discussion'"]
   belongs_to :schedule_event, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'ScheduleEvent'"]
 
-  # Assignment
-  has_many :sent_assignments, dependent: :destroy
   has_many :group_assignments, dependent: :destroy
-  has_many :academic_allocation_users, dependent: :destroy
 
   has_many :discussion_posts, class_name: 'Post', dependent: :destroy
   has_many :chat_messages, dependent: :destroy

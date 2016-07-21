@@ -227,15 +227,12 @@ en_US:
       assignment_file:
         attachment_file_size: "File too large. The maximum size should be up to 26MB."
         attachment_file_name: File
-        sent_assignment_id: ""
+        academic_allocation_user_id: "Can't send file to this assignment"
       comment_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
       group_assignment:
         group_name: "Group name"
       assignment_comment:
-        comment: Comment
-      sent_assignment:
-        grade: Grade
         comment: Comment
       discussion:
         name: Title
@@ -441,7 +438,7 @@ en_US:
               invalid_type: "Invalid file type."
             attachment_file_name:
               blank: must be selected
-            sent_assignment_id:
+            academic_allocation_user_id:
               blank: "Can't send file to this assignment."
         public_file:
           attributes:
@@ -1009,6 +1006,7 @@ en_US:
       info_frequency: "(Maximum: %{wh}Hs)"
       frequency: Frequency
       grade: Grade
+      evaluation_info: '<b> About evaluation: </b>All grades and frequency here defined are to each student, not for each post. Therefore, by evaluating/seting frequency of a post, all other posts of this student will have the same grade and working hours.'
 
   post_files:
     new:
@@ -1620,8 +1618,6 @@ en_US:
       date_range: Date range
       more: More
       less: Less
-      situation: Situation
-      grade: Grade
       comments: Comments
       sent_on: Sent on
     assignments:
@@ -1641,6 +1637,9 @@ en_US:
       save: Save
       cancel: Cancel
       confirm: Confirm grade?
+      situation: Situation
+      grade: Grade
+      working_hours: Working Hours
     files:
       title: Assignment's files
       download: Download zip

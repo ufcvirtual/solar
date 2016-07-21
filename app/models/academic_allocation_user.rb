@@ -7,19 +7,26 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   has_one :allocation_tag, through: :academic_allocation
   has_one :exam,           through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'Exam' }}
+  has_one :assignment,     through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'Assignment' }}
 
   has_many :exam_user_attempts, dependent: :destroy
   has_many :exam_responses, through: :exam_user_attempts
   has_many :question_items, through: :exam_responses
   has_many :questions     , through: :question_items
 
+  has_many :assignment_comments,       dependent: :destroy
+  has_many :assignment_files,          dependent: :delete_all
+  has_many :assignment_webconferences, dependent: :delete_all
+
   validates :user_id, uniqueness: { scope: [:group_assignment_id, :academic_allocation_id] }
   validates :user_id, presence: true, if: 'group_assignment_id.nil?'
-  validates :grade, numericality: { greater_than_or_equal_to: 0, smaller_than_or_equal_to: 10 }, if: '!grade.blank?'
-  validates :working_hours, numericality: { greater_than_or_equal_to: 0,  only_integer: true }, if: '!working_hours.blank?'
+  validates :grade, numericality: { greater_than_or_equal_to: 0, smaller_than_or_equal_to: 10, allow_blank: true }, unless: 'grade.blank?'
+  validates :working_hours, numericality: { greater_than_or_equal_to: 0,  only_integer: true, allow_blank: true }, unless: 'working_hours.blank?'
   validate :verify_wh, if: '!working_hours.blank?'
   validate :verify_grade, if: '!grade.blank?'
-  validate :verify_offer, :verify_date, if: 'working_hours_changed? || grade_changed?'
+  validate :verify_offer, :verify_date, if: '(working_hours_changed? || grade_changed?)'
+  validates :group_assignment_id, presence: true, if: Proc.new { |a| a.try(:assignment).try(:type_assignment) == Assignment_Type_Group }
+  # validate :verify_student, only: :create, if: 'merge.nil?'
 
   before_save :if_group_assignment_remove_user_id
   before_save :verify_profile
@@ -45,11 +52,8 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   def verify_grade
     unless academic_allocation.academic_tool_type == 'Exam'
-      if !academic_allocation.evaluative
-        errors.add(:grade, I18n.t('academic_allocation_users.errors.not_evaluative'))
-      else
+        errors.add(:grade, I18n.t('academic_allocation_users.errors.not_evaluative')) if !academic_allocation.evaluative && academic_allocation.academic_tool_type != 'Assignment'
         errors.add(:grade, I18n.t('academic_allocation_users.errors.lower_than_10')) if grade > 10
-      end
     end
   end
 
@@ -69,7 +73,7 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   # if not student, set evaluation as nil
   def verify_profile
-    unless user.has_profile_type_at(allocation_tag)
+    unless User.find(get_user.first).has_profile_type_at(allocation_tag.related)
       self.grade = nil
       self.working_hours = nil
     end
@@ -81,12 +85,8 @@ class AcademicAllocationUser < ActiveRecord::Base
     self.user_id = nil if group_assignment_id
   end
 
-  def users_count
-    has_group ? group_assignment.group_participants.count : 1
-  end
-
   def get_user
-    (user_id.nil? ? group_assignment.group_participants.map(&:user_id) : [user_id])
+    (user_id.blank? ? group_assignment.group_participants.map(&:user_id) : [user_id])
   end
 
   # call after every acu grade change
@@ -102,15 +102,21 @@ class AcademicAllocationUser < ActiveRecord::Base
   def self.create_or_update(tool_type, tool_id, allocation_tag_id, user={user_id: nil, group_assignment_id: nil}, evaluation={grade: nil, working_hours: nil})
     ac = AcademicAllocation.where(academic_tool_id: tool_id, academic_tool_type: tool_type, allocation_tag_id: AllocationTag.find(allocation_tag_id).upper_related).first
 
-    user_id = (user[:group_assignment_id].nil? ? user[:user_id] : nil)
-    users_ids = (user[:group_assignment_id].nil? ? [user[:user_id]] : GroupParticipant.where(group_assignment_id: user[:group_assignment_id]).pluck(:user_id))
+    if user[:group_assignment_id].blank?
+      user_id = user[:user_id]
+      users_ids = [user_id]
+    else
+      group_id = user[:group_assignment_id].to_i
+      users_ids = GroupParticipant.where(group_assignment_id: user[:group_assignment_id]).pluck(:user_id)
+    end
 
     if User.find(users_ids.first).has_profile_type_at(allocation_tag_id)
-      acu = AcademicAllocationUser.where(academic_allocation_id: ac.id, user_id: user_id, group_assignment_id: user[:group_assignment_id]).first_or_initialize
+      acu = AcademicAllocationUser.where(academic_allocation_id: ac.id, user_id: user_id, group_assignment_id: group_id).first_or_initialize
+
       tool_type.constantize.update_previous(ac.id, users_ids, acu.id) if acu.new_record?
 
       acu.grade = evaluation[:grade].blank? ? nil : evaluation[:grade].to_f
-      acu.working_hours = evaluation[:working_hours].blank? ? nil : evaluation[:working_hours].to_i
+      acu.working_hours = evaluation[:working_hours].blank? ? nil : evaluation[:working_hours]
 
       if !acu.grade.blank? || !acu.working_hours.blank?
         acu.status = STATUS[:evaluated]
@@ -120,20 +126,20 @@ class AcademicAllocationUser < ActiveRecord::Base
 
       if acu.save
         acu.recalculate_final_grade(ac.allocation_tag_id)
-        return []
+        return {id: acu.id, errors: []}
       else
-        return acu.errors.full_messages
+        return {id: acu.try(:id), errors: acu.errors.full_messages}
       end
     else
-      return [I18n.t('academic_allocation_users.errors.student_group')]
+      return {id: acu.try(:id), errors: [I18n.t('academic_allocation_users.errors.student_group')]}
     end
   end
 
   # must be called only when sending a activity
-  def self.find_or_create_one(academic_allocation_id, allocation_tag_id, user, group_id=nil, new_object=false)
-    if user.has_profile_type_at(allocation_tag_id)
-      acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: (group_id.nil? ? user.id : nil), group_assignment_id: group_id).first_or_create 
-
+  def self.find_or_create_one(academic_allocation_id, allocation_tag_id, user_id, group_id=nil, new_object=false)
+    users_ids = (group_id.nil? ? [user_id] : GroupParticipant.where(group_assignment_id: group_id).pluck(:user_id))
+    if User.find(users_ids.first).has_profile_type_at(allocation_tag_id)
+      acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: (group_id.nil? ? user_id : nil), group_assignment_id: group_id).first_or_create 
       if acu.grade.blank? && acu.working_hours.blank?
         acu.update_attributes status: STATUS[:sent]
       else
@@ -145,7 +151,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   end
 
   # must be called whenever wants to get acu without being studen accessing own activity
-  def self.find(academic_allocation_id, user_id, group_id=nil, new_object=false)
+  def self.find_one(academic_allocation_id, user_id, group_id=nil, new_object=false)
     acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: (group_id.nil? ? user_id : nil), group_assignment_id: group_id).first
     unless acu.blank?
       if (acu.grade.blank? && acu.working_hours.blank?)
@@ -166,8 +172,10 @@ class AcademicAllocationUser < ActiveRecord::Base
     {grade: acu.try(:grade), wh: acu.try(:working_hours)}
   end 
 
-  def self.any_evaluated?(ats)
-    joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: ats}).where('grade IS NOT NULL OR working_hours IS NOT NULL').any?
+  def self.any_evaluated?(ats, tool_id=nil, tool_type=nil)
+    query = { academic_allocations: {allocation_tag_id: ats} }
+    query[:academic_allocations].merge!({ academic_tool_type: tool_type, academic_tool_id: tool_id }) unless tool_id.blank? && tool_type.blank?
+    joins(:academic_allocation).where(query).where('grade IS NOT NULL OR working_hours IS NOT NULL').any?
   end
 
   # begin exam stuff #
@@ -187,20 +195,22 @@ class AcademicAllocationUser < ActiveRecord::Base
     Question.joins(question_items: [exam_responses: :exam_user_attempt]).where(exam_user_attempts: {id: last_attempt.id}).pluck(:id).uniq.count rescue 0
   end
 
-  def info
-    complete_attempts = exam.ended? ? exam_user_attempts : exam_user_attempts.where(complete: true)
-    last_attempt = exam_user_attempts.last
-
-    { grade: self.grade, complete: last_attempt.try(:complete), attempts: exam_user_attempts.count, responses: answered_questions(last_attempt) }
-  end
-
   def has_attempt(exam)
     (exam_user_attempts.empty? || !exam_user_attempts.last.complete || (exam.attempts > exam_user_attempts.count))
   end
 
   def delete_with_dependents
-    exam_user_attempts.map(&:delete_with_dependents)
-    self.delete
+    case academic_allocation.academic_tool_type
+    when 'Exam'
+      exam_user_attempts.map(&:delete_with_dependents)
+      self.delete
+    when 'Assignment'
+      assignment_comments.map(&:delete_with_dependents)
+      assignment_files.delete_all
+      assignment_webconferences.map(&:remove_records) rescue nil
+      assignment_webconferences.delete_all
+      self.delete
+    end
   end
 
   def count_attempts
@@ -241,5 +251,44 @@ class AcademicAllocationUser < ActiveRecord::Base
   end
 
   # end exam stuff #
+
+  def info
+    case academic_allocation.academic_tool_type
+    when 'Exam'
+      complete_attempts = exam.ended? ? exam_user_attempts : exam_user_attempts.where(complete: true)
+      last_attempt = exam_user_attempts.last
+
+      { grade: self.grade, complete: last_attempt.try(:complete), attempts: exam_user_attempts.count, responses: answered_questions(last_attempt) }
+    when 'Assignment' 
+      grade, comments = try(:grade), try(:assignment_comments)
+    
+      files = AcademicAllocationUser.find_by_sql <<-SQL
+        SELECT MAX(max_date) FROM (
+          SELECT MAX(initial_time) AS max_date FROM assignment_webconferences 
+          WHERE academic_allocation_user_id = #{id}
+          AND is_recorded = 't'
+          AND (initial_time + (interval '1 minutes')*duration) < now()
+
+          UNION
+
+          SELECT MAX(attachment_updated_at) AS max_date FROM assignment_files 
+          WHERE attachment_updated_at IS NOT NULL 
+          AND academic_allocation_user_id = #{id}
+        ) AS max;
+
+      SQL
+
+      has_files = !files.first.max.nil?
+      { grade: grade, comments: comments, has_files: has_files, file_sent_date: (has_files ? I18n.l(files.first.max.to_datetime, format: :normal) : ' - ') }
+    end
+  end
+
+  # begin assignment stuff
+
+  def users_count
+    has_group ? group_assignment.group_participants.count : 1
+  end
+
+  # end assignment stuff
 
 end

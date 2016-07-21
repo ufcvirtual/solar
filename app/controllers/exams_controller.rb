@@ -94,7 +94,7 @@ class ExamsController < ApplicationController
     acs = @exam.academic_allocations
     ac_id = (acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: @allocation_tag_id).first.id)
 
-    @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user, nil, true)
+    @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user.id, nil, true)
 
     last_attempt = @acu.exam_user_attempts.last
 
@@ -174,7 +174,7 @@ class ExamsController < ApplicationController
 
     acs = @exam.academic_allocations
     @ac = (acs.size == 1 ? acs.first : acs.where(allocation_tag_id: active_tab[:url][:allocation_tag_id]).first)
-    @acu = AcademicAllocationUser.find(@ac.id, @user_id)
+    @acu = AcademicAllocationUser.find_one(@ac.id, @user_id)
     @frequency = @ac.frequency && (can? :calcule_grades, Exam, { on: @allocation_tag_id })
     raise 'empty' if @acu.nil? && !@frequency
 
@@ -189,22 +189,10 @@ class ExamsController < ApplicationController
     render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
 
-  def evaluate
-    authorize! :calcule_grades, Exam, {on: allocation_tag = active_tab[:url][:allocation_tag_id]}
-
-    result = AcademicAllocationUser.create_or_update('Exam', params[:id], allocation_tag, {user_id: exam_acu_params[:user_id]}, {working_hours: exam_acu_params[:working_hours]})
-    grade  = Exam.find(params[:id]).recalculate_grades(exam_acu_params[:user_id], nil, true) rescue nil
-    if result.any?
-      render json: { success: false, alert: result.join("<br/>") }, status: :unprocessable_entity
-    else
-      render json: { success: true, notice: t('academic_allocation_users.success.evaluated') }
-    end
-  end
-
   def complete
     exam = Exam.find(params[:id])
     acs = exam.academic_allocations
-    acu = AcademicAllocationUser.find((acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: active_tab[:url][:allocation_tag_id]).first.id), current_user.id, nil, true)
+    acu = AcademicAllocationUser.find_one((acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: active_tab[:url][:allocation_tag_id]).first.id), current_user.id, nil, true)
     if acu.finish_attempt
       user_session[:blocking_content] = false
       if (params[:error])
@@ -318,14 +306,11 @@ class ExamsController < ApplicationController
       verify_time 
       user_session[:exams] << params[:id]
 
-      @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user, nil, true)
+      @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user.id, nil, true)
       raise 'attempts' unless @acu.has_attempt(@exam) || ['corrected', 'finished', 'not_corrected'].include?(@acu.status_exam)
     else
-      @acu = AcademicAllocationUser.find(ac_id, current_user.id, nil, true)
+      @acu = AcademicAllocationUser.find_one(ac_id, current_user.id, nil, true)
     end
   end
 
-  def exam_acu_params
-    params.require(:academic_allocation_user).permit(:user_id, :working_hours)
-  end
 end

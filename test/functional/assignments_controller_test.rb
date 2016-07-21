@@ -4,7 +4,7 @@ class AssignmentsControllerTest < ActionController::TestCase
 
   include Devise::TestHelpers
 
-  fixtures :allocation_tags, :assignments, :group_assignments, :users, :sent_assignments
+  fixtures :allocation_tags, :assignments, :group_assignments, :users, :academic_allocation_users
 
   def setup
     sign_in users(:editor)

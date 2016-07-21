@@ -274,16 +274,13 @@ pt_BR:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 26MB."
         attachment_file_name: Arquivo
-        sent_assignment_id: ""
+        academic_allocation_user: ""
       comment_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
       group_assignment:
         group_name: "Nome do grupo"
       assignment_comment:
-        comment: Comentário
-      sent_assignment:
-        grade: Nota
         comment: Comentário
       discussion:
         name: Título
@@ -493,7 +490,7 @@ pt_BR:
               invalid_type: "Tipo de arquivo inválido."
             attachment_file_name:
               blank: deve ser selecionado
-            sent_assignment_id:
+            academic_allocation_user_id:
               blank: Não é possivel enviar um arquivo para este trabalho.
         public_file:
           attributes:
@@ -1177,6 +1174,7 @@ pt_BR:
       info_frequency: "(Máximo: %{wh}Hs)"
       frequency: Frequência
       grade: Nota
+      evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por post. Deste modo, ao avaliar/informar a frequência de um post, todos os outros posts do aluno terão a mesma nota/carga horária.'
 
   post_files:
     new:
@@ -1821,8 +1819,6 @@ pt_BR:
       date_range: Período
       more: Mais
       less: Menos
-      situation: Situação
-      grade: Nota
       comments: Comentários
       sent_on: Enviado em
     assignments:
@@ -1842,6 +1838,9 @@ pt_BR:
       save: Salvar
       cancel: Cancelar
       confirm: Confirma avaliação?
+      situation: Situação
+      grade: Nota
+      working_hours: Carga Horária
     files:
       title: Arquivos da atividade
       download: Baixar zip

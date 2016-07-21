@@ -12,12 +12,12 @@ class AccessControlController < ApplicationController
       case current_path_split[current_path_split.size-2] #ex: ["", "media", "assignment", "public_area", "20_crimescene.png"] => public_area
         when 'comments' # arquivo de um comentário
           file = CommentFile.find(file_id)
-          sent_assignment = file.assignment_comment.sent_assignment
-          allocation_tags = sent_assignment.academic_allocation.allocation_tag_id
+          acu = file.assignment_comment.academic_allocation_user
+          allocation_tags = acu.academic_allocation.allocation_tag_id
         when 'sent_assignment_files' # arquivo enviado pelo aluno/grupo
           file = AssignmentFile.find(file_id)
-          sent_assignment = file.sent_assignment
-          allocation_tags = sent_assignment.academic_allocation.allocation_tag_id
+          acu  = file.academic_allocation_user
+          allocation_tags = acu.academic_allocation.allocation_tag_id
         when 'enunciation' # arquivo que faz parte da descrição da atividade
           file = AssignmentEnunciationFile.find(file_id)
           allocation_tags = active_tab[:url][:allocation_tag_id] || file.assignment.allocation_tags.pluck(:id)
@@ -29,7 +29,7 @@ class AccessControlController < ApplicationController
       end
 
       is_observer_or_responsible = AllocationTag.find(active_tab[:url][:allocation_tag_id] || allocation_tags).is_observer_or_responsible?(current_user.id)
-      can_access = (( sent_assignment.user_id.to_i == current_user.id or (not(sent_assignment.group.nil?) and sent_assignment.group.user_in_group?(current_user.id)) ) or is_observer_or_responsible) if (can_access.nil?)
+      can_access = (( acu.user_id.to_i == current_user.id || (!(acu.group.nil?) && acu.group.user_in_group?(current_user.id)) ) or is_observer_or_responsible) if (can_access.nil?)
 
       if can_access
         send_file(file.attachment.path, { disposition: 'inline', type: return_type(params[:extension])})

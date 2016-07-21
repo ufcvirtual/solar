@@ -1,44 +1,77 @@
 - info = @assignment.info(@student_id, @allocation_tag_id, @group_id)
-%tr.lines
-  %td.center= l(@assignment.schedule.start_date, format: :normal)
-  %td.center= l(@assignment.schedule.end_date, format: :normal)
-  %td.center{:class => "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
-  %td.center
-    .student_assignment_evaluation
-      = info[:grade] || (@can_evaluate ? button_tag(t('.evaluate'), class: "btn btn-orange evaluate #{@in_time ? '' : 'disabled'}") : ' - ')
-    .student_assignment_evaluate.invisible
-      = text_field_tag :evaluation_grade, info[:grade].nil? ? '' : info[:grade], size: 3
-  %td.center
-    - unless info[:grade].nil? || !@can_evaluate
-      .edit_button
-        = button_tag content_tag(:i, nil, class: 'icon-edit'), class: "btn evaluate #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.edit')
-    .evaluation_buttons.invisible
-      = button_tag content_tag(:i, nil, class: 'icon-checkmark'), class: "btn save_evaluation", :"data-tooltip" => t('.save')
-      = button_tag content_tag(:i, nil, class: 'icon-cross'), class: "btn btn_caution cancel_evaluation", :"data-tooltip" => t('.cancel')
+= simple_form_for :academic_allocation_user, url: evaluate_assignment_path(@assignment), html: { method: :put } do |f|
+  %table.tb_list
+    %thead
+      %tr.lines{ style: 'border-top: 1px solid #c0c0c0;' }
+        %th.center.date_column.no_sort= t('.begin')
+        %th.center.date_column.no_sort= t('.end')
+        %th.center.no_sort{ style: 'width:20%' }= t('.situation')
+        %th.center.no_sort{ style: 'width:15%' }= t('.grade')
+        - if @ac.frequency
+          %th.center.no_sort{ style: 'width:15%' }= t('.working_hours')
+        - if @can_evaluate
+          %th.center.no_sort{ style: 'width:15%' }
+    %tbody.info
+      %tr.lines
+        %td.center= l(@assignment.schedule.start_date, format: :normal)
+        %td.center= l(@assignment.schedule.end_date, format: :normal)
+        %td.center{:class => "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
+        = f.input :user_id, as: :hidden, input_html: { value: @student_id }
+        = f.input :group_id, as: :hidden, input_html: { value: @group_id }
+        %td.center.evaluation
+          .student_assignment_evaluation
+            .text
+              = @acu.try(:grade)
+            - if @can_evaluate && @in_time
+              .input.invisible
+                = f.input :grade, required: true, as: :float, step: 0.01, label: false, input_html: {  value: @acu.try(:grade), min:0, max:10, style: 'width: 50px' } 
+        - if @ac.frequency
+          %td.center.frequency
+            .student_assignment_evaluation
+              .text
+                = @acu.try(:working_hours)
+              - if @can_evaluate && @in_time
+                .input.invisible
+                  = f.input :working_hours, required: true, as: :float, label: false, input_html: { style: 'width: 90px', value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) }
+        - if @can_evaluate && @in_time
+          %td.center
+            .edit_button= link_to_function content_tag(:i, nil, class: 'icon-write'), 'edit_button(this)', class: "btn edit", :"data-tooltip" => t('.edit')
+            .evaluation_buttons.invisible
+              = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), 'finish_evaluation(this)', class: 'btn btn_main', :"data-tooltip" => t('.save')
+              = link_to_function content_tag(:i, nil, class: 'icon-cross'), 'cancel_button(this)', class: "btn btn_caution cancel_evaluation", :"data-tooltip" => t('.cancel')
 
 = javascript_include_tag "tooltip"
 
 :javascript
-  $(function(){
-    $(".btn.evaluate").not(".disabled").click(function(){
-      $(".student_assignment_evaluate, .evaluation_buttons").removeClass("invisible");
-      $(".student_assignment_evaluation, .edit_button").addClass("invisible");
-    });
+  function cancel_button(btn){
+    $(btn).parent().addClass("invisible");
+    $(btn).parents('td').find('.edit_button').removeClass("invisible");
+    $(btn).parents('tbody').find('td .input').addClass('invisible');
+    $(btn).parents('tbody').find('td .text').removeClass('invisible');
+  }
 
-    $(".cancel_evaluation").click(function(){
-      $(".student_assignment_evaluate, .evaluation_buttons").addClass("invisible");
-      $(".student_assignment_evaluation, .edit_button").removeClass("invisible");
-      $("#evaluation_grade").val("#{@sent_assignment.try(:grade)}");
-    });
+  function edit_button(btn){
+    $(btn).parent().addClass("invisible");
+    $(btn).parents('td').find('.evaluation_buttons').removeClass("invisible");
+    $(btn).parents('tbody').find('td .input').removeClass('invisible');
+    $(btn).parents('tbody').find('td .text').addClass('invisible');
+  }
 
-    $(".save_evaluation").click(function(){
-      if (confirm("#{t('.confirm')}")){
-        $.put("#{evaluate_assignment_path(@assignment, student_id: @student_id, group_id: @group_id)}", {"grade": $("#evaluation_grade").val()}, function(data){
-          flash_message(data.notice, "notice");
-          $("tbody.info").html(data.html);
-        }).error(function(data){
-          show_error(data);
-        });
-      }
+  function finish_evaluation(btn){
+    var form = $(btn).parents('form:first');
+    console.log(form);
+    console.log(form.attr('action'));
+    $.put(form.attr('action'), form.serialize(), function(data){
+      flash_message(data.notice, 'notice');
+      var td = form.find('td.evaluation');
+      td.find('.text').html(td.find('.input input').val());
+      td = form.find('td.frequency');
+      td.find('.text').html(td.find('.input input').val());
+
+      cancel_button(btn);
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
     });
-  });
+  }

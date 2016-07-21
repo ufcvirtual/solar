@@ -31,7 +31,7 @@ module Bbb
       students += allocations.first['count'].to_i
       end
 
-      students += assignment_webconferences.map(&:sent_assignment).flatten.map(&:users_count).flatten.sum unless assignment_webconferences.empty?
+      students += assignment_webconferences.map(&:academic_allocation_user).flatten.map(&:users_count).flatten.sum unless assignment_webconferences.empty?
       
       if students > YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users']
         errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.limit"))
@@ -48,8 +48,8 @@ module Bbb
     query    = "(initial_time BETWEEN ? AND ?) OR ((initial_time + (interval '1 minutes')*duration) BETWEEN ? AND ?) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration))) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration)))"
     end_time = initial_time + duration.minutes
     
-    objs = if respond_to?(:sent_assignment_id)
-      AssignmentWebconference.where(sent_assignment_id: sent_assignment_id).where(query, initial_time, end_time, initial_time, end_time, initial_time, end_time)
+    objs = if respond_to?(:academic_allocation_user_id)
+      AssignmentWebconference.where(academic_allocation_user_id: academic_allocation_user_id).where(query, initial_time, end_time, initial_time, end_time, initial_time, end_time)
     else
       Webconference.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids, academic_tool_type: 'Webconference' }).where(query, initial_time, end_time, initial_time, end_time, initial_time, end_time)
     end

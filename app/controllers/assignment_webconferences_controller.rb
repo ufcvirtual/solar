@@ -14,9 +14,9 @@ class AssignmentWebconferencesController < ApplicationController
   layout false
 
   def new
-    group           = GroupAssignment.by_user_id(current_user.id, @ac.id)
-    sent_assignment = SentAssignment.where(user_id: (group.nil? ? current_user.id : nil), group_assignment_id: group.try(:id), academic_allocation_id: @ac.id).first_or_create
-    @assignment_webconference = AssignmentWebconference.new sent_assignment_id: sent_assignment.id
+    group = GroupAssignment.by_user_id(current_user.id, @ac.id)
+    academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], current_user.id, group.try(:id), true)
+    @assignment_webconference = AssignmentWebconference.new academic_allocation_user_id: academic_allocation_user.id
   end
 
   def create
@@ -92,9 +92,9 @@ class AssignmentWebconferencesController < ApplicationController
 
   def get_record
     @assignment_webconference = AssignmentWebconference.find(params[:id])
-    sent_assignment          = SentAssignment.find(params[:sent_assignment_id])
+    academic_allocation_user = AcademicAllocationUser.find(params[:academic_allocation_user_id])
     at_id                    = active_tab[:url][:allocation_tag_id]
-    verify_owner_or_responsible!(at_id, sent_assignment)
+    verify_owner_or_responsible!(at_id, academic_allocation_user)
 
     raise CanCan::AccessDenied if current_user.is_researcher?(AllocationTag.find(at_id).related)
 
@@ -131,7 +131,7 @@ class AssignmentWebconferencesController < ApplicationController
     end
 
     def assignment_webconference_params
-      params.require(:assignment_webconference).permit(:sent_assignment_id, :title, :initial_time, :duration, :is_recorded)
+      params.require(:assignment_webconference).permit(:academic_allocation_user_id, :title, :initial_time, :duration, :is_recorded)
     end
 
 end

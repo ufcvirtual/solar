@@ -141,11 +141,11 @@ Solar::Application.routes.draw do
       put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: "add"   , tool_type: "Discussion", as: :add_group_to
       get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "Discussion", as: :group_tags_from
     end
+    put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Discussion', as: :evaluate, on: :member
     resources :posts, except: [:new, :edit] do
       collection do
         get "user/:user_id", to: :user_posts, as: :user
         get ":type/:date(/order/:order(/limit/:limit))", to: :index, defaults: {display_mode: 'list'} # :types => [:news, :history]; :order => [:asc, :desc]
-        put :evaluate
       end
     end
   end
@@ -348,7 +348,7 @@ Solar::Application.routes.draw do
   resources :assignments do
     member do
       get :student
-      put :evaluate
+      put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Assignment', as: :evaluate
     end
 
     collection do
@@ -410,7 +410,7 @@ Solar::Application.routes.draw do
     
     member do 
       get :user_messages
-      put :evaluate
+      put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ChatRoom', as: :evaluate
       get :messages
       get :access
     end
@@ -446,7 +446,7 @@ Solar::Application.routes.draw do
   resources :schedule_events, except: [:index] do
     member do
       get :evaluate_user
-      put :evaluate
+      put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ScheduleEvent', as: :evaluate
     end
   end
 
@@ -546,7 +546,7 @@ Solar::Application.routes.draw do
       get :access
       get :list_access
       get :get_record
-      put :evaluate
+      put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Webconference', as: :evaluate
     end
   end
 
@@ -569,7 +569,7 @@ Solar::Application.routes.draw do
       get :complete
       put :calcule_grade
       put :calcule_grade_user
-      put :evaluate
+      put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Exam', as: :evaluate
     end
   end
 

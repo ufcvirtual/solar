@@ -4,7 +4,7 @@ class CommentFile < ActiveRecord::Base
 
   belongs_to :assignment_comment
 
-  has_one :sent_assignment, through: :assignment_comment
+  has_one :academic_allocation_user, through: :assignment_comment
 
   validates :attachment_file_name, presence: true
 

@@ -51,21 +51,20 @@ module AssignmentsHelper
     raise CanCan::AccessDenied unless @own_assignment
   end
 
-  def verify_owner_or_responsible!(allocation_tag_id = nil, sent_assignment = nil)
+  def verify_owner_or_responsible!(allocation_tag_id = nil, academic_allocation_user = nil)
     @student_id, @group_id = (params[:group_id].nil? ? [params[:student_id], nil] : [nil, params[:group_id]])
     @group = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
-    @own_assignment = Assignment.owned_by_user?(current_user.id, { student_id: @student_id, group: @group, sent_assignment: sent_assignment })
-    raise CanCan::AccessDenied unless (@own_assignment || AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(current_user.id)) && (@student_id.nil? && sent_assignment.try(:user_id).nil? ? true : User.find(@student_id || sent_assignment.user_id).has_profile_type_at(allocation_tag_id))
+    @own_assignment = Assignment.owned_by_user?(current_user.id, { student_id: @student_id, group: @group, academic_allocation_user: academic_allocation_user })
+    raise CanCan::AccessDenied unless (@own_assignment || AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(current_user.id)) && (@student_id.nil? && academic_allocation_user.try(:user_id).nil? ? true : User.find(@student_id || academic_allocation_user.user_id).has_profile_type_at(allocation_tag_id))
   end
 
   def owner(aparams)
-    sa_id = (aparams[:sent_assignment_id] || aparams.sent_assignment_id)
-    raise CanCan::AccessDenied if sa_id.blank?
-    sa = SentAssignment.find(sa_id)
-    @own_assignment = Assignment.owned_by_user?(current_user.id, { sent_assignment: sa })
-
+    acu_id = (aparams[:academic_allocation_user_id] || aparams.academic_allocation_user_id)
+    raise CanCan::AccessDenied if acu_id.blank?
+    acu = AcademicAllocationUser.find(acu_id)
+    @own_assignment = Assignment.owned_by_user?(current_user.id, { academic_allocation_user: acu })
     @bbb_online = bbb_online?
-    @in_time    = sa.assignment.in_time?
+    @in_time    = acu.assignment.in_time?
   end
 
 end

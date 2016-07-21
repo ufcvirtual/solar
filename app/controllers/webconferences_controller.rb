@@ -158,8 +158,8 @@ class WebconferencesController < ApplicationController
 
       ac_id = (webconference.academic_allocations.size == 1 ? webconference.academic_allocations.first.id : webconference.academic_allocations.where(allocation_tag_id: at_id).first.id)
       
-      acu = AcademicAllocationUser.find_or_create_one(at_it, current_user.id, nil, true)
-      LogAction.access_webconference(academic_allocation_id: ac_id, acu_id: acu.try(:id), user_id: current_user.id, ip: request.headers['Solar'], allocation_tag_id: at_id, description: webconference.attributes) if AllocationTag.find(at_id).is_student_or_responsible?(current_user.id)
+      acu = AcademicAllocationUser.find_or_create_one(at_id, current_user.id, nil, true)
+      LogAction.access_webconference(academic_allocation_id: ac_id, academic_allocation_user_id: acu.try(:id), user_id: current_user.id, ip: request.headers['Solar'], allocation_tag_id: at_id, description: webconference.attributes) if AllocationTag.find(at_id).is_student_or_responsible?(current_user.id)
 
       render json: { success: true, url: url }
     end  
@@ -225,17 +225,6 @@ class WebconferencesController < ApplicationController
     render_json_error(error, 'webconferences.error')
   end
 
-  def evaluate
-    authorize! :evaluate, Webconference, {on: allocation_tag = active_tab[:url][:allocation_tag_id]}
-
-    result = AcademicAllocationUser.create_or_update('Webconference', params[:id], allocation_tag, {user_id: webconference_acu_params[:user_id]}, {grade: webconference_acu_params[:grade], working_hours: webconference_acu_params[:working_hours]})
-    if result.any?
-      render json: { success: false, alert: result.join("<br/>") }, status: :unprocessable_entity
-    else
-      render json: { success: true, notice: t('academic_allocation_users.success.evaluated') }
-    end
-  end
-
   private
 
   def save_log(acs=nil)
@@ -258,10 +247,6 @@ class WebconferencesController < ApplicationController
 
   def webconference_params
     params.require(:webconference).permit(:description, :duration, :initial_time, :title, :is_recorded, :shared_between_groups)
-  end
-
-  def webconference_acu_params
-    params.require(:academic_allocation_user).permit(:user_id, :grade, :working_hours)
   end
 
 end

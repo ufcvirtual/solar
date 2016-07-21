@@ -108,19 +108,19 @@ module V1::GroupsH
         GROUP BY log_actions.user_id
       ) webs ON webs.user_id = users.id
       LEFT JOIN (
-        SELECT COALESCE(sent_assignments.user_id, gp.user_id, 0) AS user_id, COUNT(assignments.id) AS count
-        FROM sent_assignments
-        JOIN academic_allocations              ON academic_allocations.id = sent_assignments.academic_allocation_id
+        SELECT COALESCE(academic_allocation_users.user_id, gp.user_id, 0) AS user_id, COUNT(assignments.id) AS count
+        FROM academic_allocation_users
+        JOIN academic_allocations              ON academic_allocations.id = academic_allocation_users.academic_allocation_id
         JOIN assignments                       ON assignments.id = academic_allocations.academic_tool_id
         JOIN schedules                         ON assignments.schedule_id = schedules.id
-        LEFT JOIN group_assignments ga         ON sent_assignments.group_assignment_id = ga.id
+        LEFT JOIN group_assignments ga         ON academic_allocation_users.group_assignment_id = ga.id
         LEFT JOIN group_participants gp        ON gp.group_assignment_id  = ga.id
         WHERE academic_allocations.allocation_tag_id IN (#{related_ats_ids})
         AND (
           EXISTS (
             SELECT id
             FROM assignment_webconferences
-            WHERE sent_assignment_id = sent_assignments.id
+            WHERE academic_allocation_user_id = academic_allocation_users.id
             AND (initial_time + (interval '1 minutes')*duration)::date <= schedules.end_date 
             AND (
               (position(COALESCE(origin_meeting_id, ('aw_' || assignment_webconferences.id || ',')) in '#{recorded_meetings.join(',')}') > 0)
@@ -131,10 +131,10 @@ module V1::GroupsH
           OR EXISTS (
             SELECT id 
             FROM assignment_files 
-            WHERE sent_assignment_id = sent_assignments.id AND attachment_file_name IS NOT NULL
+            WHERE academic_allocation_user_id = academic_allocation_users.id AND attachment_file_name IS NOT NULL
           )
         )
-        GROUP BY COALESCE(sent_assignments.user_id, gp.user_id, 0)
+        GROUP BY COALESCE(academic_allocation_users.user_id, gp.user_id, 0)
       ) assignments ON assignments.user_id = users.id
       WHERE 
         allocations.allocation_tag_id = #{allocation_tag_id}
@@ -250,19 +250,19 @@ module V1::GroupsH
     SQL
     @messages_to_responsible = messages_to_responsible.first.try(:count)
 
-    sent_assignments = SentAssignment.find_by_sql <<-SQL
-     SELECT COUNT(DISTINCT sent_assignments.id) AS count
-        FROM sent_assignments
-        JOIN academic_allocations              ON academic_allocations.id = sent_assignments.academic_allocation_id AND academic_allocations.allocation_tag_id IN (#{related_ats})
+    academic_allocation_users = AcademicAllocationUser.find_by_sql <<-SQL
+     SELECT COUNT(DISTINCT academic_allocation_users.id) AS count
+        FROM academic_allocation_users
+        JOIN academic_allocations              ON academic_allocations.id = academic_allocation_users.academic_allocation_id AND academic_allocations.allocation_tag_id IN (#{related_ats})
         JOIN assignments                       ON assignments.id          = academic_allocations.academic_tool_id
         JOIN schedules                         ON assignments.schedule_id = schedules.id
-        LEFT JOIN group_assignments  ga        ON sent_assignments.group_assignment_id = ga.id
+        LEFT JOIN group_assignments  ga        ON academic_allocation_users.group_assignment_id = ga.id
         LEFT JOIN group_participants gp        ON gp.group_assignment_id  = ga.id
         WHERE (
           EXISTS (
             SELECT id
             FROM assignment_webconferences
-            WHERE sent_assignment_id = sent_assignments.id
+            WHERE academic_allocation_user_id = academic_allocation_users.id
             AND (initial_time + (interval '1 minutes')*duration)::date <= schedules.end_date 
             AND (
               (position(COALESCE(origin_meeting_id, ('aw_' || assignment_webconferences.id || ',')) in '#{recorded_meetings.join(',')}') > 0)
@@ -273,11 +273,11 @@ module V1::GroupsH
           OR EXISTS (
             SELECT id 
             FROM assignment_files 
-            WHERE sent_assignment_id = sent_assignments.id AND attachment_file_name IS NOT NULL
+            WHERE academic_allocation_user_id = academic_allocation_users.id AND attachment_file_name IS NOT NULL
           )
         )
     SQL
-    @sent_assignments = sent_assignments.first.try(:count)
+    @academic_allocation_users = academic_allocation_users.first.try(:count)
   end
 
   def get_group_responsible_info(user_id, allocation_tag_id, group)
@@ -295,9 +295,9 @@ module V1::GroupsH
              COALESCE(webs.count,0)                     AS count_web_access,
              COALESCE(webs.count_webconferences,0)      AS count_webs,
              COALESCE(comments.total,0)                 AS count_comments,
-             COALESCE(comments.sa,0)                    AS count_sent_assignments_with_comments,
+             COALESCE(comments.sa,0)                    AS count_academic_allocation_users_with_comments,
              COALESCE(comments.assig,0)                 AS count_assignments_with_comments,
-             COALESCE(grades.count,0)                   AS count_sent_assignments_assignments_with_grades,
+             COALESCE(grades.count,0)                   AS count_academic_allocation_users_assignments_with_grades,
              COALESCE(grades.assig,0)                   AS count_assignments_with_grades
            FROM users
            JOIN allocations  ON allocations.user_id     = users.id
@@ -351,21 +351,21 @@ module V1::GroupsH
         GROUP BY log_actions.user_id
       ) webs ON webs.user_id = users.id
       LEFT JOIN (
-        SELECT assignment_comments.user_id, COUNT(assignment_comments.id) AS total, COUNT(DISTINCT sent_assignments.id) AS sa, COUNT(DISTINCT assignments.id) AS assig
-        FROM sent_assignments
-        JOIN academic_allocations AS ac ON ac.id = sent_assignments.academic_allocation_id
+        SELECT assignment_comments.user_id, COUNT(assignment_comments.id) AS total, COUNT(DISTINCT academic_allocation_users.id) AS sa, COUNT(DISTINCT assignments.id) AS assig
+        FROM academic_allocation_users
+        JOIN academic_allocations AS ac ON ac.id = academic_allocation_users.academic_allocation_id
         JOIN assignments                ON assignments.id = ac.academic_tool_id AND ac.academic_tool_type = 'Assignment'
-        LEFT JOIN assignment_comments   ON assignment_comments.sent_assignment_id = sent_assignments.id
+        LEFT JOIN assignment_comments   ON assignment_comments.academic_allocation_user_id = academic_allocation_users.id
 	WHERE ac.allocation_tag_id IN (#{related_ats_ids}) 
         GROUP BY assignment_comments.user_id
       ) comments ON comments.user_id = users.id
       LEFT JOIN (
-        SELECT COUNT(sent_assignments.id) AS count, ac.allocation_tag_id AS at, COUNT(DISTINCT assignments.id) AS assig
-        FROM sent_assignments
-        JOIN academic_allocations AS ac ON ac.id = sent_assignments.academic_allocation_id
+        SELECT COUNT(academic_allocation_users.id) AS count, ac.allocation_tag_id AS at, COUNT(DISTINCT assignments.id) AS assig
+        FROM academic_allocation_users
+        JOIN academic_allocations AS ac ON ac.id = academic_allocation_users.academic_allocation_id
         JOIN assignments                ON assignments.id = ac.academic_tool_id AND ac.academic_tool_type = 'Assignment'
         WHERE ac.allocation_tag_id IN (#{related_ats_ids}) 
-        AND sent_assignments.grade IS NOT NULL
+        AND academic_allocation_users.grade IS NOT NULL
         GROUP BY ac.allocation_tag_id
       ) grades ON grades.at IN (#{related_ats_ids})
       WHERE 

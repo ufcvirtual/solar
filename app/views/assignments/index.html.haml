@@ -26,7 +26,7 @@
 
       %tbody
         - @assignments.each do |assignment|
-          - can_delete = assignment.sent_assignments.count.zero?
+          - can_delete = assignment.academic_allocation_users.count.zero?
           - has_file = (not assignment.enunciation_files.empty?)
           %tr.lines{id: "tr_#{assignment.id}"}
             %td{style: 'text-align:center;'}

@@ -1140,7 +1140,7 @@ res219:
 
 res220:
   id: 220
-  controller: 'posts'
+  controller: 'discussions'
   action: 'evaluate'
   description: 'Avaliar postagens de um aluno'
 

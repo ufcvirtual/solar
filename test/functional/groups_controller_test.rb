@@ -89,7 +89,7 @@ class GroupsControllerTest < ActionController::TestCase
 
   # Assignment
   test "desvincular turma a uma ferramenta - assignment" do
-    # para a turma 3 (QM-CAU), o trabalho não tem nenhum sent_assignment
+    # para a turma 3 (QM-CAU), o trabalho não tem nenhum academic_allocation_user
     atividade_grupo_I = assignments(:a11)
     assert_difference("Assignment.count") do
       assert_difference("AssignmentEnunciationFile.count", atividade_grupo_I.enunciation_files.size) do
@@ -116,7 +116,7 @@ class GroupsControllerTest < ActionController::TestCase
   end
 
   test "remover turma de uma ferramenta - assignment" do
-    # para a turma 3 (QM-CAU), o trabalho não tem nenhum sent_assignment
+    # para a turma 3 (QM-CAU), o trabalho não tem nenhum academic_allocation_user
     atividade_grupo_I = assignments(:a11)
     assert_no_difference("Assignment.count") do
       assert_difference("AcademicAllocation.count", -1) do
@@ -270,7 +270,7 @@ class GroupsControllerTest < ActionController::TestCase
   end
 
   test "desvincular turma a uma ferramenta - dependencias - assignment" do
-    # para a turma 5 (LB-CAR), o trabalho tem sent_assignment
+    # para a turma 5 (LB-CAR), o trabalho tem academic_allocation_user
     atividade_grupo_I = assignments(:a11)
     assert_no_difference(["AcademicAllocation.count", "AssignmentEnunciationFile.count", "SentAssignment.count"]) do
       assert_difference("Assignment.count") do
@@ -283,7 +283,7 @@ class GroupsControllerTest < ActionController::TestCase
   end
 
   test "nao remover turma de uma ferramenta - dependencias - assignment" do
-    # para a turma 5 (LB-CAR), o trabalho tem sent_assignment
+    # para a turma 5 (LB-CAR), o trabalho tem academic_allocation_user
     atividade_grupo_I = assignments(:a11)
     assert_no_difference(["Assignment.count", "AcademicAllocation.count"]) do
       put :change_tool, {id: "5", tool_type: "Assignment", tool_id: atividade_grupo_I.id, type: "remove"}

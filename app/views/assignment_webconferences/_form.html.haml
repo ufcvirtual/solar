@@ -4,7 +4,7 @@
   .flash_message_wrapper
 
   .form-inputs.block_content.webconference
-    = f.hidden_field :sent_assignment_id, value: @assignment_webconference.sent_assignment_id
+    = f.hidden_field :academic_allocation_user_id, value: @assignment_webconference.academic_allocation_user_id
     = f.input :title
     = f.input :initial_time, start_year: Date.today.year
     = f.input :duration, hint: t('.minutes')

@@ -11,13 +11,12 @@ class AssignmentFilesController < ApplicationController
 
   def new
     group = GroupAssignment.by_user_id(current_user.id, @ac.id)
-    sent_assignment  = SentAssignment.where(user_id: (group.nil? ? current_user.id : nil), group_assignment_id: group.try(:id), academic_allocation_id: @ac.id).first_or_create
-    @assignment_file = AssignmentFile.new sent_assignment_id: sent_assignment.id
+    academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], current_user.id, group.try(:id), true)
+    @assignment_file = AssignmentFile.new academic_allocation_user_id: academic_allocation_user.id
   end
 
   def create
     verify_owner!(assignment_file_params)
-
     @assignment_file = AssignmentFile.new assignment_file_params
     @assignment_file.user = current_user
 
@@ -26,7 +25,6 @@ class AssignmentFilesController < ApplicationController
     else
       render json: { success: false, alert: @assignment_file.errors.full_messages.join(', ') }, status: :unprocessable_entity
     end
-
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
@@ -47,23 +45,22 @@ class AssignmentFilesController < ApplicationController
 
     if params[:zip].present?
       assignment = Assignment.find(params[:assignment_id])
-      sent_assignment = assignment.sent_assignments.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocations: {allocation_tag_id: allocation_tag_id}).first
-      path_zip   = compress({ files: sent_assignment.assignment_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
+      academic_allocation_user = assignment.academic_allocation_users.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocations: {allocation_tag_id: allocation_tag_id}).first
+      path_zip   = compress({ files: academic_allocation_user.assignment_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
     else
       file = AssignmentFile.find(params[:id])
-      sent_assignment = file.sent_assignment
+      academic_allocation_user = file.academic_allocation_user
       path_zip  = file.attachment.path
       file_name = file.attachment_file_name
     end
-
-    raise CanCan::AccessDenied unless Assignment.owned_by_user?(current_user.id, { sent_assignment: sent_assignment }) || AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(current_user.id)
+    raise CanCan::AccessDenied unless Assignment.owned_by_user?(current_user.id, { academic_allocation_user: academic_allocation_user }) || AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(current_user.id)
     download_file(:back, path_zip, file_name)
   end
 
   private
 
     def assignment_file_params
-      params.require(:assignment_file).permit(:sent_assignment_id, :attachment)
+      params.require(:assignment_file).permit(:academic_allocation_user_id, :attachment)
     end
 
 end

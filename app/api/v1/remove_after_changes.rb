@@ -91,7 +91,7 @@ module V1
                 offer    = verify_or_create_offer(semester, {curriculum_unit_id: uc.id, course_id: course.id}, offer_period)
                 group    = verify_or_create_group({offer_id: offer.id, code: load_group[:codigo]})
 
-                allocate_professors(group, cpfs)
+                allocate_professors(group, cpfs || [])
               end
 
               { ok: :ok }

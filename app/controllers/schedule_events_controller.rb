@@ -75,24 +75,13 @@ class ScheduleEventsController < ApplicationController
     @ac = @schedule_event.academic_allocations.where(allocation_tag_id: allocation_tag).first
     @user = User.find(params[:user_id])
     raise 'not_student' unless @user.has_profile_type_at(allocation_tag)
-    @acu = AcademicAllocationUser.find(@ac.id, params[:user_id])
+    @acu = AcademicAllocationUser.find_one(@ac.id, params[:user_id])
 
   rescue CanCan::AccessDenied
     render text: t(:no_permission)
   rescue => error
     error_message = (I18n.translate!("schedule_events.error.#{error}", raise: true) rescue t("schedule_events.error.general_message"))
     render text: error_message
-  end
-
-  def evaluate
-    authorize! :evaluate, ScheduleEvent, {on: allocation_tag = active_tab[:url][:allocation_tag_id]}
-
-    result = AcademicAllocationUser.create_or_update('ScheduleEvent', params[:id], allocation_tag, {user_id: event_acu_params[:user_id]}, {grade: event_acu_params[:grade], working_hours: event_acu_params[:working_hours]})
-    if result.any?
-      render json: { success: false, alert: result.join("<br/>") }, status: :unprocessable_entity
-    else
-      render json: { success: true, notice: t('academic_allocation_users.success.evaluated') }
-    end
   end
 
   private
@@ -103,10 +92,6 @@ class ScheduleEventsController < ApplicationController
 
     def render_schedule_event_success_json(method)
       render json: {success: true, notice: t(method, scope: 'schedule_events.success')}
-    end
-
-    def event_acu_params
-      params.require(:academic_allocation_user).permit(:user_id, :grade, :working_hours)
     end
 
 end

@@ -80,7 +80,7 @@ describe "Groups" do
           }
         end
 
-        # transfer content from QM-MAR to QM-CAU (QM-MAR only has one post and one sent_assignment different from QM-CAU)
+        # transfer content from QM-MAR to QM-CAU (QM-MAR only has one post and one academic_allocation_user different from QM-CAU)
         context 'undo merge' do
           let!(:json_data){ {
             main_group: "QM-MAR",

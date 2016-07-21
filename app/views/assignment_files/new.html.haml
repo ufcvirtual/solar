@@ -1,7 +1,7 @@
 %h1#lightBoxDialogTitle= t(".title")
 .block_content{style: "padding: 5px;"}
   = form_for @assignment_file do |f|
-    = f.hidden_field :sent_assignment_id, value: @assignment_file.sent_assignment_id
+    = f.hidden_field :academic_allocation_user_id, value: @assignment_file.academic_allocation_user_id
     = f.file_field :attachment
     .block_content_gray{style: "padding: 5px;"}
       %p=raw t(:send_file_obs)

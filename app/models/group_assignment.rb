@@ -4,7 +4,6 @@ class GroupAssignment < ActiveRecord::Base
 
   belongs_to :academic_allocation, conditions: { academic_tool_type: 'Assignment' }
 
-  has_one :sent_assignment, dependent: :destroy
   has_one :academic_allocation_user, dependent: :destroy
 
   has_many :group_participants, dependent: :delete_all
@@ -16,7 +15,7 @@ class GroupAssignment < ActiveRecord::Base
   validate :unique_group_name
 
   def can_remove?
-    (sent_assignment.nil? || (sent_assignment.assignment_files.empty? && sent_assignment.grade.blank?))
+    (academic_allocation_user.nil? || (academic_allocation_user.assignment_files.empty? && academic_allocation_user.grade.blank?))
   end
 
   def assignment
@@ -24,7 +23,7 @@ class GroupAssignment < ActiveRecord::Base
   end
 
   def evaluated?
-    !(sent_assignment.nil? || sent_assignment.grade.blank?)
+    !(academic_allocation_user.nil? || academic_allocation_user.grade.blank?)
   end
 
   def user_in_group?(user_id)

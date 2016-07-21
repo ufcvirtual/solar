@@ -6,7 +6,6 @@ class AssignmentsController < ApplicationController
   include Bbb
 
   before_filter :prepare_for_group_selection, only: :list
-  before_filter :get_ac, only: :evaluate
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
   before_filter :set_current_user, only: :student
 
@@ -96,7 +95,7 @@ class AssignmentsController < ApplicationController
   end
 
   def destroy
-    @assignments = Assignment.includes(:sent_assignments).where(id: params[:id].split(',').flatten, sent_assignments: {id: nil})
+    @assignments = Assignment.includes(:academic_allocations_users).where(id: params[:id].split(',').flatten, academic_allocations_users: {id: nil})
     authorize! :destroy, Assignment, on: @assignments.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
     @assignments.destroy_all
@@ -107,7 +106,6 @@ class AssignmentsController < ApplicationController
   end
 
   def student
-
     if user_session[:blocking_content]
       redirect_to list_assignments_path, alert: t('exams.restrict')
     else
@@ -117,33 +115,12 @@ class AssignmentsController < ApplicationController
 
       @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 
-      @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id(@allocation_tag_id, @student_id, @group_id)
-      @can_evaluate = can?(:evaluate, Assignment, on:  [@allocation_tag_id] )
+      @ac = AcademicAllocation.where(academic_tool_id: @assignment.id, allocation_tag_id: @allocation_tag_id, academic_tool_type: 'Assignment').first
+      @acu = AcademicAllocationUser.find_one(@ac.id, @student_id, @group_id)
+
+      @can_evaluate = can?(:evaluate, Assignment, on: [@allocation_tag_id] )
       @bbb_online   = bbb_online?
-    end  
-  end
-
-  def evaluate
-    @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
-    authorize! :evaluate, Assignment, on: [@allocation_tag_id]
-    raise 'date_range' unless @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
-
-    @sent_assignment = SentAssignment.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocation_id: @ac).first_or_initialize
-    @sent_assignment.can_create = true
-    @sent_assignment.grade      = params[:grade].tr(',', '.')
-    @sent_assignment.save!
-
-    @student_id, @group_id = params[:student_id], params[:group_id]
-
-    LogAction.create(log_type: LogAction::TYPE[(@sent_assignment.previous_changes.has_key?(:id) ? :create : :update)], user_id: current_user.id, ip: get_remote_ip, description: "sent_assignment: #{@sent_assignment.attributes.merge({"assignment_id" => @assignment.id})}",allocation_tag_id:@allocation_tag_id, academic_allocation_id: AcademicAllocation.select(:id).find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(@allocation_tag_id,@sent_assignment.id,'Assignment') ) rescue nil
-
-    @can_evaluate = true
-
-    render json: { success: true, notice: t('assignments.success.evaluated'), html: "#{render_to_string(partial: "info")}" }
-  rescue CanCan::AccessDenied
-    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
-  rescue => error
-    render_json_error(error, 'assignments.error', 'evaluate', error.message)
+    end
   end
 
   def download

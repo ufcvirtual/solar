@@ -10,8 +10,7 @@ class Assignment < Event
   has_many :allocations, through: :allocation_tags
   has_many :enunciation_files, class_name: 'AssignmentEnunciationFile', dependent: :destroy
   has_many :group_assignments, through: :academic_allocations, dependent: :destroy
-  has_many :sent_assignments, through: :academic_allocations
-
+  
   before_destroy :can_destroy?
 
   accepts_nested_attributes_for :schedule
@@ -30,17 +29,12 @@ class Assignment < Event
   end
 
   def can_remove_groups?(groups)
-    # nao pode dar unbind nem remover se assignment possuir sent_assignment
-    SentAssignment.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: self.id, allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).empty?
+    # nao pode dar unbind nem remover se assignment possuir acu
+    AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: self.id, allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).empty?
   end
 
   def can_destroy?
-    academic_allocations.map(&:sent_assignments).flatten.empty?
-  end
-
-  def sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, user_id, group_assignment_id)
-    ac = AcademicAllocation.where(academic_tool_id: id, allocation_tag_id: allocation_tag_id, academic_tool_type: 'Assignment').first
-    SentAssignment.joins(:academic_allocation).where(user_id: user_id, group_assignment_id: group_assignment_id, academic_allocation_id: ac.id).first
+    academic_allocations.map(&:academic_allocation_users).flatten.empty?
   end
 
   def closed?
@@ -56,23 +50,9 @@ class Assignment < Event
   end
 
   def extra_time?(allocation_tag, user_id)
-    extra = (allocation_tag.is_observer_or_responsible?(user_id) && closed?)
+    return false unless (allocation_tag.is_observer_or_responsible?(user_id) && closed?)
 
-    return false unless extra
-
-    offer = case allocation_tag.refer_to
-            when 'offer' then allocation_tag.offer
-            when 'group' then allocation_tag.group.offer
-            end
-
-    # periodo pode estar definido na oferta ou no semestre
-    period_end_date = if offer.period_schedule.nil?
-                        offer.semester.offer_schedule.end_date
-                      else
-                        offer.period_schedule.end_date
-                      end
-
-    extra && period_end_date.to_date >= Date.today
+    allocation_tag.offers.first.end_date.to_date >= Date.today
   end
 
   def in_time?(allocation_tag_id = nil, user_id = nil)
@@ -94,7 +74,7 @@ class Assignment < Event
                 { user_id: user_id }
               end
 
-    info = academic_allocation.sent_assignments.where(params).first.try(:info) || { has_files: false, file_sent_date: ' - ' }
+    info = academic_allocation.academic_allocation_users.where(params).first.try(:info) || { has_files: false, file_sent_date: ' - ' }
     { situation: situation(info[:has_files], !group_id.nil?, info[:grade]), has_comments: (!info[:comments].nil? && info[:comments].any?), group_id: group_id }.merge(info)
 
   end
@@ -131,10 +111,18 @@ class Assignment < Event
   end
 
   def self.owned_by_user?(user_id, options={})
-    assignment_user_id = (options[:sent_assignment].try(:user_id)          || options[:student_id])
-    group              = (options[:sent_assignment].try(:group_assignment) || options[:group])
+    assignment_user_id = (options[:academic_allocation_user].try(:user_id)          || options[:student_id])
+    group              = (options[:academic_allocation_user].try(:group_assignment) || options[:group])
 
     ((assignment_user_id.to_i == user_id.to_i) || (!group.nil? && group.user_in_group?(user_id.to_i)) )
+  end
+
+  def self.verify_previous(acu_id)
+    return false
+  end
+
+  def self.update_previous(ac_id, users_ids, acu_id)
+    return false
   end
 
 end

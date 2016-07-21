@@ -1,6 +1,6 @@
 aw1:
   id: 1
-  sent_assignment_id: 3 #sa3
+  academic_allocation_user_id: 5 #sa3
   title: "Webconferencia a iniciar"
   initial_time: <%= (Time.now + 3.days).to_s(:db) %>
   duration: 50
@@ -8,7 +8,7 @@ aw1:
 
 aw2:
   id: 2
-  sent_assignment_id: 3 #sa3
+  academic_allocation_user_id: 5 #sa3
   title: "Webconferencia concluida"
   initial_time: <%= (Time.now - 3.days).to_s(:db) %>
   duration: 50
@@ -16,7 +16,7 @@ aw2:
 
 aw3:
   id: 3
-  sent_assignment_id: 3 #sa3
+  academic_allocation_user_id: 5 #sa3
   title: "Webconferencia nao gravada"
   initial_time: <%= (Time.now - 3.days).to_s(:db) %>
   duration: 50

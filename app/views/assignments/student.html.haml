@@ -36,30 +36,26 @@
       %tbody
         %tr.lines
           %td= @assignment.enunciation
-    %table.tb_list
-      %thead
-        %tr.lines{ style: 'border-top: 1px solid #c0c0c0;' }
-          %th.center.date_column.no_sort= t('.begin')
-          %th.center.date_column.no_sort= t('.end')
-          %th.center.no_sort{ style: 'width:20%' }= t('.situation')
-          %th.center.no_sort{ style: 'width:15%' }= t('.grade')
-          %th.center.no_sort{ style: 'width:15%' }
-      %tbody.info
-        = render partial: 'info'
+    = render partial: 'info'
 
 .assignment_files.files
   = render partial: 'files', locals: { files: @assignment.try(:enunciation_files) }
 
 .assignment_comments
-  = render partial: 'assignment_comments/list', locals: { comments: @sent_assignment.try(:assignment_comments) }
+  = render partial: 'assignment_comments/list', locals: { comments: @acu.try(:assignment_comments) }
 
 .student_files.files
-  = render partial: 'assignment_files/list', locals: { files: @sent_assignment.try(:assignment_files) }
+  = render partial: 'assignment_files/list', locals: { files: @acu.try(:assignment_files) }
 
 .student_webconferences.files
-  = render partial: 'assignment_webconferences/list', locals: { webconferences: @sent_assignment.try(:assignment_webconferences) }
+  = render partial: 'assignment_webconferences/list', locals: { webconferences: @acu.try(:assignment_webconferences) }
 
 .block_wrapper{ style: 'float:left' }
   = link_to t(:back), :back, { class: "btn" }
 
-= javascript_include_tag 'assignments'
+:javascript
+  function delete_file(button){
+    $(button).nice_delete({
+      parent: 'tr.lines'
+    });
+  }

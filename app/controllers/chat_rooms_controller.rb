@@ -117,7 +117,7 @@ class ChatRoomsController < ApplicationController
 
       @messages = @chat_room.get_messages(allocation_tag_id, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
             
-      @acu = AcademicAllocationUser.find(@academic_allocation.id, params[:user_id],nil, false)
+      @acu = AcademicAllocationUser.find_one(@academic_allocation.id, params[:user_id],nil, false)
 
       respond_to do |format|
         format.html { render layout: false }
@@ -125,16 +125,6 @@ class ChatRoomsController < ApplicationController
       end
     end  
   end  
-
-  def evaluate
-    authorize! :evaluate, ChatRoom, { on: at = active_tab[:url][:allocation_tag_id] }
-    result = AcademicAllocationUser.create_or_update('ChatRoom', params[:id], at, {user_id: chat_acu_params[:user_id]}, {grade: chat_acu_params[:grade], working_hours: chat_acu_params[:working_hours]})
-    if result.any?
-      render json: { success: false, alert: result.join("<br/>") }, status: :unprocessable_entity
-    else
-      render json: { success: true, notice: t('academic_allocation_users.success.evaluated') }
-    end
-  end 
 
   def messages
     if user_session[:blocking_content]
@@ -183,10 +173,6 @@ class ChatRoomsController < ApplicationController
       params.require(:chat_room).permit(:title, :description, :chat_type, :start_hour, :end_hour,
         schedule_attributes: [:id, :start_date, :end_date],
         academic_allocations_attributes: [:id, :allocation_tag_id, chat_participants_attributes: [:id, :allocation_id, :_destroy]])
-    end
-
-    def chat_acu_params
-      params.require(:academic_allocation_user).permit(:user_id, :grade, :working_hours)
     end
 
     def render_notification_success_json(method)

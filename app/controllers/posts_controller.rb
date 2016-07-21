@@ -26,7 +26,7 @@ class PostsController < ApplicationController
       @posts = []
       @can_interact = @discussion.user_can_interact?(current_user.id)
       @can_post = (can? :create, Post, on: [@allocation_tags])
-      @can_evaluate = (@academic_allocation.evaluative || @academic_allocation.frequency) && (can? :evaluate, Post, {on: [@allocation_tags]})
+      @can_evaluate = (@academic_allocation.evaluative || @academic_allocation.frequency) && (can? :evaluate, Discussion, {on: [@allocation_tags]})
 
       p = params.slice(:date, :type, :order, :limit, :display_mode, :page)
 
@@ -60,7 +60,6 @@ class PostsController < ApplicationController
   ## GET /discussions/1/posts/user/1
   ## all posts of the user
   def user_posts
-    # ver se tá verificando se é o dono ou se é resp.
     if user_session[:blocking_content]
       render text: t('exams.restrict')
     else
@@ -68,26 +67,19 @@ class PostsController < ApplicationController
       @discussion = Discussion.find(params[:discussion_id])
 
       @allocation_tags = AllocationTag.find(at = active_tab[:url][:allocation_tag_id]).related
+      raise CanCan::AccessDenied if params[:user_id] != current_user.id && !AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
+
       @posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id).order('updated_at DESC')
 
       @academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: @allocation_tags).first
-      @alluser = AcademicAllocationUser.find(@academic_allocation.id, @user.id, nil, false) unless @posts.blank?
+      @alluser = AcademicAllocationUser.find_one(@academic_allocation.id, @user.id, nil, false) unless @posts.blank?
+      @can_evaluate = can? :evaluate, Discussion, { on: at = active_tab[:url][:allocation_tag_id] }
 
       respond_to do |format|
         format.html { render layout: false }
         format.json { render json: @posts }
       end
     end  
-  end
-
-  def evaluate
-    authorize! :evaluate, Post, { on: at = active_tab[:url][:allocation_tag_id] }
-    result = AcademicAllocationUser.create_or_update('Discussion', params[:discussion_id], at, {user_id: post_acu_params[:user_id]}, {grade: post_acu_params[:grade], working_hours: post_acu_params[:working_hours]})
-    if result.any?
-      render json: { success: false, alert: result.join("<br/>") }, status: :unprocessable_entity
-    else
-      render json: { success: true, notice: t('academic_allocation_users.success.evaluated') }
-    end
   end
 
   ## POST /discussions/:id/posts
@@ -118,7 +110,7 @@ class PostsController < ApplicationController
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
     can_interact = post.discussion.user_can_interact?(current_user.id)
     can_post = can?(:create, Post, on: [allocation_tag_id])
-    @can_evaluate = (can? :evaluate, Post, {on: [@allocation_tags]}) #&& (@academic_allocation.evaluative || @academic_allocation.frequency)
+    @can_evaluate = (can? :evaluate, Discussion, {on: [@allocation_tags]}) #&& (@academic_allocation.evaluative || @academic_allocation.frequency)
 
     @researcher = (params[:researcher] == "true" or params[:researcher] == true)
     @class_participants = AllocationTag.get_participants(allocation_tag_id, { all: true }).map(&:id)
@@ -139,20 +131,16 @@ class PostsController < ApplicationController
       params.require(:discussion_post).permit(:content, :parent_id, :discussion_id)
     end
 
-    def post_acu_params
-      params.require(:academic_allocation_user).permit(:user_id, :grade, :working_hours)
-    end
-
     def new_post_under_discussion(discussion)
       allocation_tag_ids  = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
       academic_allocation = discussion.academic_allocations.where(allocation_tag_id: allocation_tag_ids).first
 
-      aau = AcademicAllocationUser.find_or_create_one(academic_allocation.id, active_tab[:url][:allocation_tag_id], user, nil, true)
+      aau = AcademicAllocationUser.find_or_create_one(academic_allocation.id, active_tab[:url][:allocation_tag_id], current_user.id, nil, true)
 
       @post = Post.new(post_params)
       @post.user_id = current_user.id
       @post.academic_allocation_id = academic_allocation.id
-      @post.academic_allocation_user_id = aau_id
+      @post.academic_allocation_user_id = aau.try(:id)
       @post.profile_id = current_user.profiles_with_access_on(:create, :posts, allocation_tag_ids, true).first
 
       @post.save

@@ -21,7 +21,7 @@ class Post < ActiveRecord::Base
   after_create :increment_counter
   after_destroy :decrement_counter
 
-  validates :content, :profile_id, presence: true
+  validates :content, :profile_id, :academic_allocation_user_id, presence: true
 
   attr_accessor :merge
 

@@ -1,15 +1,16 @@
 class AssignmentWebconference < ActiveRecord::Base
   include Bbb
+  belongs_to :academic_allocation_user
 
-  belongs_to :sent_assignment
-
-  has_one :academic_allocation, through: :sent_assignment, autosave: false
+  has_one :academic_allocation, through: :academic_allocation_user, autosave: false
+  has_one :assignment, through: :academic_allocation_user
+  has_one :allocation_tag, through: :academic_allocation
 
   before_save :can_change?, if: 'merge.nil?'
 
   before_destroy :can_destroy?, :remove_records
 
-  validates :title, :initial_time, :duration, :sent_assignment_id, presence: true
+  validates :title, :initial_time, :duration, :academic_allocation_user_id, presence: true
   validates :duration, numericality: { only_integer: true, less_than_or_equal_to: 60,  greater_than_or_equal_to: 1 }
   validates :title, length: { maximum: 255 }
 
@@ -20,14 +21,6 @@ class AssignmentWebconference < ActiveRecord::Base
   default_scope order: 'updated_at DESC'
 
   attr_accessor :merge
-
-  def assignment
-    Assignment.find(academic_allocation.academic_tool_id)
-  end
-
-  def allocation_tag
-    academic_allocation.allocation_tag
-  end
 
   def can_change?
     raise CanCan::AccessDenied unless is_owner?
@@ -49,21 +42,21 @@ class AssignmentWebconference < ActiveRecord::Base
     options = {
       moderatorPW: Digest::MD5.hexdigest(title+meeting_id),
       attendeePW: Digest::MD5.hexdigest(meeting_id),
-      welcome: sent_assignment.assignment.enunciation,
+      welcome: academic_allocation_user.assignment.enunciation,
       record: is_recorded,
       logoutURL: Rails.application.routes.url_helpers.home_url.to_s,
-      maxParticipants: sent_assignment.users_count + 1 # students + 1 responsible
+      maxParticipants: academic_allocation_user.users_count + 1 # students + 1 responsible
     }
 
     @api = bbb_prepare
 
     @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
 
-    group_id = sent_assignment.group_assignment_id
+    group_id = academic_allocation_user.group_assignment_id
 
     if group_id.nil? || GroupParticipant.where(group_assignment_id: group_id, user_id: user.id).any?
       @api.join_meeting_url(meeting_id, "#{user.name}*", options[:moderatorPW])
-    elsif responsible?(user.id)
+    elsif AllocationTag.find(academic_allocation.allocation_tag_id).is_responsible?(user.id)
       @api.join_meeting_url(meeting_id, user.name, options[:attendeePW])
     end
   end
@@ -77,7 +70,7 @@ class AssignmentWebconference < ActiveRecord::Base
   end
 
   def owner(user_id)
-    Assignment.owned_by_user?(user_id, { sent_assignment: sent_assignment })
+    Assignment.owned_by_user?(user_id, { academic_allocation_user: academic_allocation_user })
   end
 
   def owner_or_responsible(user_id)
@@ -85,7 +78,7 @@ class AssignmentWebconference < ActiveRecord::Base
   end
 
   def aw_info
-    [(sent_assignment.has_group ? sent_assignment.group_assignment.group_name : sent_assignment.user.name.truncate(15)), sent_assignment.academic_allocation.allocation_tag.info].join(' - ')
+    [(academic_allocation_user.group_assignment_id.nil? ? academic_allocation_user.user.name.truncate(15) : academic_allocation_user.group_assignment.group_name), academic_allocation_user.academic_allocation.allocation_tag.info].join(' - ')
   end
 
   def remove_records

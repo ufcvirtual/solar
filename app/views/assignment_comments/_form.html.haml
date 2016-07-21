@@ -1,5 +1,5 @@
 = simple_form_for(@assignment_comment, html: { id: 'comment_form', multipart: true }) do |f|
-  = f.hidden_field :sent_assignment_id, value: f.object.sent_assignment_id
+  = f.hidden_field :academic_allocation_user_id, value: f.object.academic_allocation_user_id
 
   .assignment_inner_content.comment_area= f.input :comment, as: :ckeditor, label: false
   .forum_post_attachment

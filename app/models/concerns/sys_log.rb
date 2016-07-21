@@ -10,7 +10,7 @@ module SysLog
     extend ActiveSupport::Concern
 
     included do
-      after_filter :log_create, unless: Proc.new {|c| request.get? }, except: [:evaluate, :change_participant, :import, :export, :annul, :remove_record]
+      after_filter :log_create, unless: Proc.new {|c| request.get? }, except: [:change_participant, :import, :export, :annul, :remove_record]
     end
 
     def log_create

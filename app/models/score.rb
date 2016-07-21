@@ -3,7 +3,7 @@ class Score # < ActiveRecord::Base
   def self.informations(user_id, at_id, related: nil)
     at = at_id.is_a?(AllocationTag) ? at_id : AllocationTag.find(at_id)
 
-    assignments    = Assignment.joins(:academic_allocations, :schedule).includes(sent_assignments: :assignment_comments)
+    assignments    = Assignment.joins(:academic_allocations, :schedule).includes(academic_allocation_users: :assignment_comments)
                     .where(academic_allocations: { allocation_tag_id:  at.id })
                     .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date")
                     .order("start_date") if at.is_student?(user_id)

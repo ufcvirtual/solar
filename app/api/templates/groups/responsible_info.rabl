@@ -12,8 +12,8 @@ node :info do |user|
     webconferences_accesses: user.count_web_access,
     webconferences: user.count_webs,
     comments: user.count_comments,
-    sent_assignment_with_comments: user.count_sent_assignments_with_comments,
-    sent_assignment_with_grades: user.count_sent_assignments_assignments_with_grades,
+    sent_assignment_with_comments: user.count_academic_allocation_users_with_comments,
+    sent_assignment_with_grades: user.count_academic_allocation_users_with_grades,
     assignments_with_comments: user.count_assignments_with_comments,
     assignments_with_grades: user.count_assignments_with_grades
   }

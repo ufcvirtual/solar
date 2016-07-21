@@ -11,7 +11,6 @@ class Exam < Event
 
   has_many :exam_questions, dependent: :destroy
   has_many :questions     , through: :exam_questions
-  has_many :academic_allocation_users, through: :academic_allocations
   has_many :exam_user_attempts, through: :academic_allocation_users
   has_many :exam_responses, through: :exam_user_attempts
 

@@ -10,7 +10,7 @@
     .comment_form
     .comments_list
       - unless comments.nil? or comments.empty?
-        - comments, sent_assignment_id = comments, comments.first.sent_assignment_id
+        - comments, academic_allocation_user_id = comments, comments.first.academic_allocation_user_id
         - comments.each do |comment|
           = render partial: 'assignment_comments/comment', locals: { comment: comment }
       - else

@@ -13,8 +13,6 @@ class ExamUserAttempt < ActiveRecord::Base
 
   validates :grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true }
 
-  attr_accessor :merge
-
   def copy_dependencies_from(attempt)
     unless attempt.exam_responses.empty?
       attempt.exam_responses.each do |response|

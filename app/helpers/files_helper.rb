@@ -1,11 +1,13 @@
 module FilesHelper
 
   def download_file(redirect_error, pathfile, filename = nil)
-    if (not pathfile.nil?) and (File.exist?(pathfile))
+    if !pathfile.nil? && (File.exist?(pathfile))
       send_file pathfile, filename: filename
     else
       redirect_to redirect_error, alert: t(:file_error_nonexistent_file)
     end
+  rescue 
+    redirect_to redirect_error, alert: t(:file_error_nonexistent_file)
   end
 
   ##
@@ -27,11 +29,11 @@ module FilesHelper
     some_file_doesnt_exist = false
 
     ## arquivos e o caminho principal nao foram indicados
-    return if not(opts[:files].present?) and not(opts[:under_path].present?)
+    return if !opts[:files].present? && !opts[:under_path].present?
 
     archive = File.join(Rails.root.to_s, 'tmp', '%s') << '.zip'
     ## arquivos armazenados sem uso de banco de dados
-    if not(opts[:files].present?) # under_path present
+    if !opts[:files].present? # under_path present
       name_zip_file = opts[:name_zip_file].present? ? opts[:name_zip_file] : Digest::SHA1.hexdigest(opts[:under_path].join)
       archive       = archive % name_zip_file
       paths         = [opts[:under_path]].flatten.compact.uniq # caminhos de todos os arquivos
