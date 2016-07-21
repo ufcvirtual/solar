@@ -132,7 +132,7 @@ class EditionsController < ApplicationController
     @tools = @tools.group_by { |t| t['academic_tool_type'] }
 
     @groups = Group.joins(:allocation_tag).where(allocation_tags: { id: @allocation_tags_ids })
-    @working_hours = @groups.first.curriculum_unit.working_hours
+    @working_hours = @groups.first.curriculum_unit.try(:working_hours)
   end
 
   def manage_tools
@@ -157,7 +157,7 @@ class EditionsController < ApplicationController
     acs_errors = []
     ats_errors = []
 
-    max_working_hours = at.first.offers.first.curriculum_unit.working_hours
+    max_working_hours = at.first.offers.first.try(:curriculum_unit).try(:working_hours)
 
     ActiveRecord::Base.transaction do
       params[:academic_allocations].each do |id, data|

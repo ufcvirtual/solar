@@ -114,7 +114,7 @@ class OffersController < ApplicationController
 
     def optional_authorize(method)
       at_c, at_uc = nil
-      at_c  = AllocationTag.find_by_course_id(params[:offer][:course_id]).try(:id)                   unless params[:offer][:course_id].blank?
+      at_c  = AllocationTag.find_by_course_id(params[:offer][:course_id]).try(:id) unless params[:offer][:course_id].blank?
       at_uc = if params[:offer][:curriculum_unit_id].blank? 
         AllocationTag.joins(:curriculum_unit).joins("JOIN courses ON courses.name = curriculum_units.name AND courses.id = #{params[:offer][:course_id]}").first.try(:id) unless params[:offer][:course_id].blank? || params[:offer][:type_id].blank? || params[:offer][:type_id].to_i != 3
       else

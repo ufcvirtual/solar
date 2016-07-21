@@ -57,10 +57,10 @@ class Group < ActiveRecord::Base
 
   def detailed_info
     {
-      curriculum_unit_type: offer.curriculum_unit_type.try(:description),
-      curriculum_unit_type_id: offer.curriculum_unit_type.try(:id),
-      course: offer.course.try(:name),
-      curriculum_unit: offer.curriculum_unit.try(:name),
+      curriculum_unit_type: offer.curriculum_unit_type.try(:description) || '',
+      curriculum_unit_type_id: offer.curriculum_unit_type.try(:id) || '',
+      course: offer.course.try(:name) || '',
+      curriculum_unit: offer.curriculum_unit.try(:name) || '',
       semester: offer.semester.name,
       group: code
     }

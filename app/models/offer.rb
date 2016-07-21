@@ -124,10 +124,10 @@ class Offer < ActiveRecord::Base
 
   def detailed_info
     {
-      curriculum_unit_type: curriculum_unit_type.try(:description),
-      curriculum_unit_type_id: curriculum_unit_type.try(:id),
-      course: course.try(:name),
-      curriculum_unit: curriculum_unit.try(:name),
+      curriculum_unit_type: curriculum_unit_type.try(:description) || '',
+      curriculum_unit_type_id: curriculum_unit_type.try(:id) || '',
+      course: course.try(:name) || '',
+      curriculum_unit: curriculum_unit.try(:name) || '',
       semester: semester.name
     }
   end
@@ -185,12 +185,13 @@ class Offer < ActiveRecord::Base
         JOIN semesters              AS s    ON s.id    = o.semester_id
         JOIN schedules              AS ss_e ON ss_e.id = s.enrollment_schedule_id -- periodo de matricula do semestre
         JOIN schedules              AS ss_p ON ss_p.id = s.offer_schedule_id -- periodo do semestre
-        JOIN curriculum_units       AS uc   ON uc.id = o.curriculum_unit_id
-        JOIN curriculum_unit_types  AS ct   ON ct.id = uc.curriculum_unit_type_id
+        LEFT JOIN curriculum_units       AS uc   ON uc.id = o.curriculum_unit_id
+        LEFT JOIN curriculum_unit_types  AS ct   ON ct.id = uc.curriculum_unit_type_id
+        LEFT JOIN courses           AS c         ON c.id = o.course_id
    LEFT JOIN schedules              AS os_e ON os_e.id = o.enrollment_schedule_id -- periodo de matricula definido na oferta
    LEFT JOIN schedules              AS os_p ON os_p.id = o.offer_schedule_id -- periodo da oferta
        WHERE
-          ct.allows_enrollment IS TRUE
+          ((ct.id IS NULL AND c.id IS NOT NULL) OR (ct.allows_enrollment IS TRUE))
           AND (
             -- periodo de matricula informado na oferta
             (

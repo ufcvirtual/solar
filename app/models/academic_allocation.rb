@@ -39,7 +39,7 @@ class AcademicAllocation < ActiveRecord::Base
   before_save :change_dependencies, on: :update
 
   def set_evaluative_params
-    self.frequency = get_curriculum_unit.working_hours.blank? ? false : frequency
+    self.frequency = get_curriculum_unit.try(:working_hours).blank? ? false : frequency
     self.max_working_hours = nil unless self.frequency
     if !evaluative
       self.weight = 1
