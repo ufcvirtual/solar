@@ -122,10 +122,6 @@ class Webconference < ActiveRecord::Base
     end
   end
 
-  def can_unbind?(groups = [])
-    !(is_over? && is_recorded)
-  end
-
   def remove_records
     Webconference.remove_record(academic_allocations)
   end

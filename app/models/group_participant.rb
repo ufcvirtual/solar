@@ -15,6 +15,7 @@ class GroupParticipant < ActiveRecord::Base
     raise 'date_range_expired' unless (assignment.in_time?(at) || assignment.will_open?(at, User.current.id))
     raise 'evaluated' if group.evaluated?
     raise 'has_files' if (!files.nil? && files.any?) && files.map(&:user_id).include?(user_id)
+    raise 'not_student' if user.has_profile_type_at(at)
   end
 
 end

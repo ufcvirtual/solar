@@ -3,20 +3,26 @@ class AcademicAllocationUser < ActiveRecord::Base
   belongs_to :academic_allocation
   belongs_to :user
   belongs_to :group_assignment
-	belongs_to :discussion_post
 
   has_one :allocation_tag, through: :academic_allocation
   has_one :exam,           through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'Exam' }}
   has_one :assignment,     through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'Assignment' }}
+  has_one :chat_room,      through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'ChatRoom' }}
+  has_one :schedule_event, through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'ScheduleEvent' }}
+  has_one :discussion,     through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'Discussion' }}
 
   has_many :exam_user_attempts, dependent: :destroy
   has_many :exam_responses, through: :exam_user_attempts
   has_many :question_items, through: :exam_responses
   has_many :questions     , through: :question_items
 
-  has_many :assignment_comments,       dependent: :destroy
-  has_many :assignment_files,          dependent: :delete_all
-  has_many :assignment_webconferences, dependent: :delete_all
+  has_many :assignment_comments
+  has_many :assignment_files
+  has_many :assignment_webconferences
+
+  has_many :discussion_posts
+
+  has_many :chat_messages
 
   validates :user_id, uniqueness: { scope: [:group_assignment_id, :academic_allocation_id] }
   validates :user_id, presence: true, if: 'group_assignment_id.nil?'
@@ -26,10 +32,11 @@ class AcademicAllocationUser < ActiveRecord::Base
   validate :verify_grade, if: '!grade.blank?'
   validate :verify_offer, :verify_date, if: '(working_hours_changed? || grade_changed?)'
   validates :group_assignment_id, presence: true, if: Proc.new { |a| a.try(:assignment).try(:type_assignment) == Assignment_Type_Group }
-  # validate :verify_student, only: :create, if: 'merge.nil?'
 
   before_save :if_group_assignment_remove_user_id
   before_save :verify_profile
+
+  before_destroy :delete_with_dependents
 
   attr_accessor :merge
 
@@ -209,6 +216,12 @@ class AcademicAllocationUser < ActiveRecord::Base
       assignment_files.delete_all
       assignment_webconferences.map(&:remove_records) rescue nil
       assignment_webconferences.delete_all
+      self.delete
+    when 'ChatRoom'
+      chat_messages.delete_all
+      self.delete
+    when 'Discussion'
+      discussion_posts.map(&:delete_with_dependents)
       self.delete
     end
   end

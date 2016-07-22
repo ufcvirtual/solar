@@ -375,15 +375,6 @@ class Exam < Event
     !(started? && status)
   end
 
-  def can_unbind?(groups)
-    can_remove_groups?(groups)    
-  end
-
-  def can_remove_groups?(groups)
-    return false if status && on_going?
-    return false if academic_allocation_users.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: id, academic_tool_type: 'Exam', allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).any?
-  end
-
   def get_grade(acu_id)
     attempts = ExamUserAttempt.where(academic_allocation_user_id: acu_id)
     case attempts_correction

@@ -10,14 +10,14 @@ class Assignment < Event
   has_many :allocations, through: :allocation_tags
   has_many :enunciation_files, class_name: 'AssignmentEnunciationFile', dependent: :destroy
   has_many :group_assignments, through: :academic_allocations, dependent: :destroy
-  
-  before_destroy :can_destroy?
 
   accepts_nested_attributes_for :schedule
   accepts_nested_attributes_for :enunciation_files, allow_destroy: true, reject_if: proc { |attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank? }
 
   validates :name, :enunciation, :type_assignment, presence: true
   validates :name, length: { maximum: 1024 }
+
+  before_destroy :can_remove_groups_with_raise
 
   def copy_dependencies_from(assignment_to_copy)
     unless assignment_to_copy.enunciation_files.empty?
@@ -26,15 +26,6 @@ class Assignment < Event
         copy_file(file, new_file, File.join('assignment', 'enunciation'))
       end
     end
-  end
-
-  def can_remove_groups?(groups)
-    # nao pode dar unbind nem remover se assignment possuir acu
-    AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: self.id, allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).empty?
-  end
-
-  def can_destroy?
-    academic_allocations.map(&:academic_allocation_users).flatten.empty?
   end
 
   def closed?

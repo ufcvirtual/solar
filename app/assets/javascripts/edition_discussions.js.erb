@@ -31,7 +31,7 @@ $(function(){
 
     if (discussion_ids.length) {
       $.delete($(this).data('link-delete').replace(':id', discussion_ids), function(data){
-        flash_message(data.notice, 'notice');
+        flash_message(data.message, data.type_message);
         discussions.parents('tr').fadeOut().remove();
 
         $(".btn_edit, .btn_del").attr("disabled", true);

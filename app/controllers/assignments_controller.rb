@@ -95,14 +95,22 @@ class AssignmentsController < ApplicationController
   end
 
   def destroy
-    @assignments = Assignment.includes(:academic_allocations_users).where(id: params[:id].split(',').flatten, academic_allocations_users: {id: nil})
+    @assignments = Assignment.where(id: params[:id].split(',').flatten)
     authorize! :destroy, Assignment, on: @assignments.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
-    @assignments.destroy_all
-    render_assignment_success_json('deleted')
+    evaluative = @assignments.map(&:verify_evaluatives).include?(true)
+    if @assignments.map(&:can_remove_groups?).include?(true)
+      Assignment.transaction do
+        @assignments.destroy_all
+      end
+
+      message = evaluative ? ['warning', t('evaluative_tools.warnings.evaluative')] : ['notice', t(:deleted, scope: [:assignments, :success])]
+      render json: { success: true, type_message: message.first,  message: message.last }
+    else
+      render_json_error('dependencies', 'assignments.error')  
+    end
   rescue => error
-    request.format = :json
-    raise error.class
+    render_json_error(error, 'assignments.error')
   end
 
   def student

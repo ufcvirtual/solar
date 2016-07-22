@@ -31,7 +31,7 @@ class AcademicAllocation < ActiveRecord::Base
 
   validates :weight, presence: true, numericality: { greater_than: 0,  only_integer: true }, if: 'evaluative? && !final_exam?'
   validates :final_weight, presence: true, numericality: { greater_than: 0,  only_integer: true, smaller_than: 101 }, if: 'evaluative? && !final_exam?'
-  validates :max_working_hours, presence: true, numericality: { greater_than: 0,  only_integer: true }, if: 'frequency?'
+  validates :max_working_hours, presence: true, numericality: { greater_than: 0,  only_integer: true, allow_blank: true }, if: 'frequency?'
 
   validate :verify_equivalents, if: 'equivalent_academic_allocation_id_changed? && !equivalent_academic_allocation_id.nil?'
 
@@ -98,6 +98,10 @@ class AcademicAllocation < ActiveRecord::Base
   def tool_name
     tool = academic_tool_type.constantize.find(academic_tool_id)
     tool.respond_to?(:name) ? tool.name : tool.title
+  end
+
+  def verify_evaluative
+    academic_tool_type.constantize.find(academic_tool_id).verify_evaluatives
   end
 
   private
@@ -167,5 +171,6 @@ class AcademicAllocation < ActiveRecord::Base
         nil
       end
     end
+
 
 end

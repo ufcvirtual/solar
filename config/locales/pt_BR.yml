@@ -1211,6 +1211,8 @@ pt_BR:
       offer_period: deve estar dentro do período da oferta (%{start} - %{end})
       discussion_with_posts: Fórum com postagens
       mandatory_final_date: Data final obrigatória
+      dependencies: Não é possível realizar esta ação, pois um ou mais posts já foram enviados ou já foram avaliados.
+      general_message: Não foi possível realizar a ação desejada
     show:
       name: Nome
       description: Descrição
@@ -1789,6 +1791,8 @@ pt_BR:
       evaluate: Não foi possível avaliar trabalho.
       date_range: Não foi possível avaliar trabalho. Período encerrado.
       download: Não foi possível fazer o download do arquivo.
+      general_message: Não foi possível realizar a ação desejada
+      dependencies: Não é possível realizar esta ação, pois um ou mais trabalhos já foram enviados ou possuem comentários ou foram avaliados.
     show:
       name: Nome
       enunciation: Enunciado
@@ -1998,6 +2002,7 @@ pt_BR:
       cant_transfer_dependencies: Possui dependencias que não podem ser perdidas ou copiadas.
       cant_add_group: Não é possível adicionar turmas a esta ferramenta.
       cant_unbind: Não é possível desvincular turmas desta ferramenta.
+      not_student: Deve ser estudante.
     groups_checkboxes:
       select_all: Selecionar todas
       no_groups: "Não há turmas"
@@ -2283,6 +2288,7 @@ pt_BR:
       exams_call: 'Gerenciar provas avaliativos / de frequência'
       chats_call: 'Gerenciar chats avaliativos / de frequência'
       assignments_call: 'Gerenciar trabalhos avaliativos / de frequência'
+      webconferences_call: 'Gerenciar webconferências avaliativas / de frequência'
     tools:
       expand: Expandir
       compress: Comprimir
@@ -2525,6 +2531,8 @@ pt_BR:
       updated: Não foi possível atualizar chat.
       deleted: Não foi possível deletar chat.
       chat_has_messages: Não foi possível deletar chat. Já possui mensagens.
+      general_message: Não foi possível realizar a ação desejada
+      dependencies: Não é possível realizar esta ação, pois um ou mais trabalhos já foram enviados ou possuem comentários ou foram avaliados.
     show:
       participants: Participantes
       groups: Turmas
@@ -2744,6 +2752,7 @@ pt_BR:
       deleted: Não foi possível deletar evento.
       not_student: Deve ser estudante.
       general_message: Não foi possível realizar ação.
+      evaluated: Já foi avaliado
     show:
       title: Título
       type_event: Tipo
@@ -3541,6 +3550,7 @@ pt_BR:
       no_evaluative_tools: Não há ferramentas avaliativas para realizar esta ação.
       no_frequency_tools: Não há ferramentas de frequência para realizar esta ação.
       changes: 'Ferramentas gerenciadas com sucesso. Já houve definição de nota e/ou carga horária para alunos em uma ou mais ferramentas. Se uma ferramenta já havia sido avaliada e não é mais avaliativa, sua nota não será considerada no cálculo da média. O mesmo para a carga horária. Também é importante verificar se as cargas horárias definidas não ultrapassam o novo máximo definido se for o caso.'
+      evaluative: Uma ou mais ferramentas removidas eram avaliativas e/ou de frequência. É importante que as configurações de ferramentas avaliativas / frequência sejam re-avaliadas para verificar pesos e cargas horárias.
 
   academic_allocation_users:
     errors:

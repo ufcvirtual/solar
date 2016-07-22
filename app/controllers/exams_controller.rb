@@ -78,8 +78,17 @@ class ExamsController < ApplicationController
 
   def destroy
     authorize! :destroy, Exam, { on: params[:allocation_tags_ids] }
-    Exam.find(params[:id]).destroy
-    render_exam_success_json('deleted')
+    exam = Exam.find(params[:id])
+
+    evaluative = exam.verify_evaluatives
+    if exam.can_remove_groups?
+      exam.destroy
+
+      message = evaluative ? ['warning', t('evaluative_tools.warnings.evaluative')] : ['notice', t(:deleted, scope: [:exams, :success])]
+      render json: { success: true, type_message: message.first,  message: message.last }
+    else
+      render_json_error('has_answers', 'exams.error')
+    end
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error

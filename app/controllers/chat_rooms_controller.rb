@@ -86,15 +86,19 @@ class ChatRoomsController < ApplicationController
     @chat_rooms = ChatRoom.where(id: params[:id].split(','))
     authorize! :destroy, ChatRoom, on: @chat_rooms.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
-    if @chat_rooms.map(&:can_destroy?).include?(false)
+    if @chat_rooms.map(&:can_remove_groups?).include?(false)
       render json: {success: false, alert: t('chat_rooms.error.chat_has_messages')}, status: :unprocessable_entity
     else
-      @chat_rooms.destroy_all
-      render_notification_success_json('deleted')
+      evaluative = @chat_rooms.map(&:verify_evaluatives).include?(true)
+      ChatRoom.transaction do
+        @chat_rooms.destroy_all
+      end
+
+      message = evaluative ? ['warning', t('evaluative_tools.warnings.evaluative')] : ['notice', t(:deleted, scope: [:chat_rooms, :success])]
+      render json: { success: true, type_message: message.first,  message: message.last }
     end
   rescue => error
-    request.format = :json
-    raise error.class
+    render_json_error(error, 'chat_rooms.error')
   end
 
   ## GET /chat_roms/1/messages/user/1
@@ -140,8 +144,8 @@ class ChatRoomsController < ApplicationController
       raise CanCan::AccessDenied if (all_participants.any? && all_participants.joins(:user).where(users: { id: current_user }).empty?) && !responsible && !(@researcher)
 
       can_evaluate = can? :evaluate, ChatRoom, {on: allocation_tag_id}
-      @evaluative = can_evaluate && @academic_allocation.evaluative
-      @frequency = can_evaluate && @academic_allocation.frequency
+      @evaluative = (can_evaluate && @academic_allocation.evaluative)
+      @frequency = (can_evaluate && @academic_allocation.frequency)
 
       @messages = @chat_room.get_messages(allocation_tag_id, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
     end

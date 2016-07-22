@@ -83,7 +83,7 @@ jQuery(function($){
     var chats_ids = chats.map(function() { return this.value; }).get();
     if (chats_ids.length) {
       $.delete($(this).data('link-delete').replace(':id', chats_ids), function(data){
-        flash_message(data.notice, 'notice');
+        flash_message(data.message, data.type_message);
         chats.parents('tr').fadeOut().remove();
       }).error(function(data){
         var data = $.parseJSON(data.responseText);

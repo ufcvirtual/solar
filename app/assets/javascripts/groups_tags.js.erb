@@ -28,8 +28,8 @@ $(function(){
       $.get(div_list.data("link-list"), function(data2){
         div_list.replaceWith(data2);
         
-        if (typeof(data.notice) != "undefined")
-          flash_message(data.notice, 'notice');
+        if (typeof(data.message) != "undefined")
+          flash_message(data.message, data.type_message);
       });
     }).error(function(data){
       var response = JSON.parse(data.responseText);
@@ -62,8 +62,8 @@ $(function(){
       
       $.get(div_list.data("link-list"), params, function(data2){
         div_list.replaceWith(data2);
-        if (typeof(data.notice) != "undefined")
-          flash_message(data.notice, 'notice');
+        if (typeof(data.message) != "undefined")
+          flash_message(data.message, data.type_message);
       });
 
     }).error(function(data){

@@ -73,7 +73,7 @@
         return false;
 
       $.delete($(this).data('link-delete'), function(data){
-        flash_message(data.notice, 'notice');
+        flash_message(data.message, data.type_message);
         $.get($(".calendar_schedules").data("link-list"), function(data){
             $(".calendar_schedules").replaceWith(data);
         });

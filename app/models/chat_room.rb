@@ -23,7 +23,7 @@ class ChatRoom < Event
 
   before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # mandatory final date
 
-  before_destroy :can_destroy?
+  before_destroy :can_remove_groups_with_raise
   after_destroy :delete_schedule
 
   def reject_participant(participant)
@@ -54,18 +54,6 @@ class ChatRoom < Event
 
   def delete_schedule
     self.schedule.try(:destroy)
-  end
-
-  def can_destroy?
-    if user_messages.any?
-      errors.add(:base, I18n.t(:chat_has_messages, scope: [:chat_rooms, :error]))
-      return false
-    end
-    return true
-  end
-
-  def can_remove_groups?(groups)
-    user_messages.empty? # can't unbind neither remove if chat has messages
   end
 
   def opened?

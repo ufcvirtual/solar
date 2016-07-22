@@ -1042,6 +1042,8 @@ en_US:
       offer_period: must be on the date range of offer (%{start} - %{end})
       discussion_with_posts: Discussion with posts
       mandatory_final_date: Mandatory final date
+      dependencies: It was not possible to execute action. One or more posts already have been sent or discussion already been evaluated.
+      general_message: It was not possible to execute action
     show:
       name: Name
       description: Description
@@ -1588,6 +1590,8 @@ en_US:
       evaluate: Assignment wasn't evaluated.
       date_range: It was not possible to evaluate. Date range expired.
       download: It was not possible to download file.
+      general_message: It was not possible to execute action.
+      dependencies: It was not possible to execute action. One or more assignments already have been sent or already have comments or already have been evaluated.
     show:
       name: Name
       enunciation: Enunciation
@@ -1797,6 +1801,7 @@ en_US:
       cant_transfer_dependencies: Has dependencies which can't be lost or copied.
       cant_add_group: Can't add groups to this tool.
       cant_unbind: Can't unbind groups from this tool.
+      not_student: Must be student.
     groups_checkboxes:
       select_all: Select all
       no_groups: "There are no groups"
@@ -2076,6 +2081,7 @@ en_US:
       exams_call: 'Manage evaluative / frequency exams'
       chats_call: 'Manage evaluative / frequency chats'
       assignments_call: 'Manage evaluative / frequency assignments'
+      webconferences_call: 'Manage evaluative / frequency webconferences'
     tools:
       expand: Expand
       compress: Compress
@@ -2312,6 +2318,8 @@ en_US:
       updated: Chat wasn't updated.
       deleted: Chat wasn't deleted.
       chat_has_messages: Chat wasn't deleted. Already has messages.
+      general_message: It was not possible to execute action
+      dependencies: It was not possible to execute action. One or more assignments already have been sent or already have comments or already have been evaluated.
     show:
       participants: Participants
       groups: Groups
@@ -2519,6 +2527,7 @@ en_US:
       deleted: Event wasn't deleted.
       not_student: Must be student.
       general_message: Can't do action
+      evaluated: Already have been evaluated
     show:
       title: Title
       type_event: Type
@@ -3307,6 +3316,7 @@ en_US:
       no_evaluative_tools: There are no evaluative tool to this action.
       no_frequency_tools: There are no frequency tool to this action.
       changes: "Tools managed successfully. Some tools already have grades and working hours for some students. If an already evaluated tool is no longer evaluative, it's grade no longer will count at student's final grade. The same to working hours. It's also important to check if new maximum working hours are not smaller than already evaluated working hours."
+      evaluative: One or more of the removed tools were evaluatives / frequency tools. Is important to check evaluative/frequency tool management to verify weights and working_hours.
 
   academic_allocation_users:
     errors:

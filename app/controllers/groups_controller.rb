@@ -130,6 +130,7 @@ class GroupsController < ApplicationController
         end
       else
         academic_allocations = AcademicAllocation.where(allocation_tag_id: groups.map(&:allocation_tag).map(&:id), academic_tool_type: params[:tool_type], academic_tool_id: params[:tool_id])
+        evaluative = academic_allocations.map(&:verify_evaluative).include?(true)
 
         unless tool.groups.size == groups.size # se nao for deixar a ferramenta sem turmas
           case params[:type]
@@ -156,7 +157,8 @@ class GroupsController < ApplicationController
         end
       end
 
-      render json: { success: true, notice: t("#{params[:type]}", scope: [:groups, :success]) }
+      message = evaluative ? ['warning', t('evaluative_tools.warnings.evaluative')] : ['notice', t("#{params[:type]}", scope: [:groups, :success])]
+      render json: { success: true, type_message: message.first,  message: message.last }
     rescue ActiveRecord::RecordNotSaved
       render json: { success: false, alert: t(:academic_allocation_already_exists, scope: [:groups, :error]) }, status: :unprocessable_entity
     rescue => error

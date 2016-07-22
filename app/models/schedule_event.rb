@@ -14,6 +14,8 @@ class ScheduleEvent < Event
 
   accepts_nested_attributes_for :schedule
 
+  before_destroy :can_remove_groups_with_raise
+
   def verify_hours
     errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:schedule_events, :error])) if end_hour.rjust(5, '0') < start_hour.rjust(5, '0')
   end

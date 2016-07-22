@@ -9,7 +9,7 @@ class Discussion < Event
   has_many :discussion_posts, class_name: 'Post', through: :academic_allocations
   has_many :allocations, through: :allocation_tag
 
-  before_destroy :can_destroy?
+  before_destroy :can_remove_groups_with_raise
   after_destroy :delete_schedule
 
   validates :name, :description, presence: true
@@ -19,10 +19,6 @@ class Discussion < Event
   validate :check_final_date_presence
 
   accepts_nested_attributes_for :schedule
-
-  def can_destroy?
-    discussion_posts.empty?
-  end
 
   def delete_schedule
     self.schedule.destroy
@@ -105,10 +101,6 @@ class Discussion < Event
     posts_by_allocation_tags_ids(allocation_tags_ids, { select: 'DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level' })
   end
 
-  def can_remove_groups?(groups)
-    discussion_posts.empty? # nao pode dar unbind nem remover se forum possuir posts
-  end
-
   def posts_by_allocation_tags_ids(allocation_tags_ids = nil, opt = { grandparent: true, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'DISTINCT discussion_posts.id, discussion_posts.*' })
     allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids).map(&:related).flatten.compact.uniq
     posts_list = discussion_posts.where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
@@ -147,11 +139,12 @@ class Discussion < Event
   end
 
   def self.all_by_allocation_tags(allocation_tag_id)
-    joins(:schedule, academic_allocations: :allocation_tag).joins('LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id')
-      .where(allocation_tags: { id: AllocationTag.find(allocation_tag_id).related })
-      .select('discussions.*, academic_allocations.id AS ac_id, COUNT(discussion_posts.id) AS posts_count, schedules.start_date AS start_date, schedules.end_date AS end_date')
-      .group('discussions.id, schedules.start_date, schedules.end_date, name, academic_allocations.id')
-      .order('start_date, end_date, name')
+    joins(:schedule, academic_allocations: :allocation_tag)
+    .joins('LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id')
+    .where(allocation_tags: { id: AllocationTag.find(allocation_tag_id).related })
+    .select('discussions.*, academic_allocations.id AS ac_id, COUNT(discussion_posts.id) AS posts_count, schedules.start_date AS start_date, schedules.end_date AS end_date')
+    .group('discussions.id, schedules.start_date, schedules.end_date, name, academic_allocations.id')
+    .order('start_date, end_date, name')
   end
 
   def self.update_previous(academic_allocation_id, users_ids, academic_allocation_user_id)

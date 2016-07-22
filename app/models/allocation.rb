@@ -226,6 +226,8 @@ class Allocation < ActiveRecord::Base
   end
 
   def self.get_working_hours(user_id, allocation_tag, tool=nil)
+    # return 0 if allocation_tag.curriculum_unit.try(:working_hours).nil?
+
     query = tool.blank? ? '' : " AND academic_allocations.academic_tool_type=#{tool}"
     ats = allocation_tag.related.join(',')
     hours = AcademicAllocation.find_by_sql <<-SQL

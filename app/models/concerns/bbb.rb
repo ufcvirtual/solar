@@ -139,7 +139,7 @@ module Bbb
   end
 
   def is_over?
-    Time.now > (initial_time+duration.minutes+5.minutes)
+    Time.now > (initial_time+duration.minutes+10.minutes)
   end
 
   def over?
@@ -150,7 +150,7 @@ module Bbb
     raise raise CanCan::AccessDenied if respond_to?(:is_onwer?) && !is_onwer?
     raise 'date_range'               if respond_to?(:in_time?)  && !in_time?
     raise 'unavailable'              if is_recorded? && !bbb_online?
-    raise 'not_ended'                if on_going? || (is_recorded? && !is_over?)
+    raise 'not_ended'                if on_going? || (is_recorded? && started? && !is_over?)
   end
 
   def can_remove_records?
@@ -158,7 +158,7 @@ module Bbb
     raise 'date_range'               if respond_to?(:in_time?)  && !in_time?
     raise 'not_recorded'             unless is_recorded?
     raise 'unavailable'              unless bbb_online?
-    raise 'not_ended'                if on_going? || (is_recorded? && !is_over?)
+    raise 'not_ended'                if on_going? || (is_recorded? && started? && !is_over?)
   end
 
   def meeting_info(user_id, at_id = nil, meetings = nil)

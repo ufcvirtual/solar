@@ -83,15 +83,19 @@ class DiscussionsController < ApplicationController
     @discussions = Discussion.where(id: params[:id].split(","))
     authorize! :destroy, Discussion, on: @discussions.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
-    if @discussions.map(&:can_destroy?).include?(false)
+    if @discussions.map(&:can_remove_groups?).include?(false)
       render json: {success: false, alert: t('discussions.error.discussion_with_posts')}, status: :unprocessable_entity
     else
-      @discussions.destroy_all
-      render_discussion_success_json('deleted')
+      evaluative = @discussions.map(&:verify_evaluatives).include?(true)
+      Discussion.transaction do
+        @discussions.destroy_all
+      end
+
+      message = evaluative ? ['warning', t('evaluative_tools.warnings.evaluative')] : ['notice', t(:deleted, scope: [:discussions, :success])]
+      render json: { success: true, type_message: message.first,  message: message.last }
     end
   rescue => error
-    request.format = :json
-    raise error.class
+    render_json_error(error, 'discussions.error')
   end
 
   def show

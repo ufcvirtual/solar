@@ -59,14 +59,16 @@ class ScheduleEventsController < ApplicationController
     @schedule_event = ScheduleEvent.find(params[:id])
     authorize! :destroy, ScheduleEvent, on: @schedule_event.academic_allocations.pluck(:allocation_tag_id)
 
-    if @schedule_event.can_change? and @schedule_event.try(:destroy)
-      render_schedule_event_success_json('deleted')
+    evaluative = @schedule_event.verify_evaluatives
+    if @schedule_event.can_remove_groups? 
+      @schedule_event.destroy
+      message = evaluative ? ['warning', t('evaluative_tools.warnings.evaluative')] : ['notice', t(:deleted, scope: [:schedule_events, :success])]
+      render json: { success: true, type_message: message.first,  message: message.last }
     else
-      render json: {success: false, alert: t('schedule_events.error.deleted')}, status: :unprocessable_entity
+      render json: {success: false, alert: t('schedule_events.error.evaluated')}, status: :unprocessable_entity
     end
   rescue => error
-    request.format = :json
-    raise error.class
+    render_json_error(error, 'schedule_events.error')
   end
 
   def evaluate_user

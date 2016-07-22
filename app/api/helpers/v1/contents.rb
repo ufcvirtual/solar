@@ -19,12 +19,14 @@ module V1::Contents
         attributes.merge!('group_assignment_id' => new_group.id)
       end
 
-      new_acu = AcademicAllocationUser.where(attributes).first_or_create do |acu|
-        acu.grade = from_academic_allocation_user.grade # updates grade with most recent copied group
-        acu.working_hours = from_academic_allocation_user.working_hours
-        acu.status = from_academic_allocation_user.status
-        acu.new_after_evaluation = from_academic_allocation_user.new_after_evaluation
-        acu.merge = true
+      new_acu = AcademicAllocationUser.where(attributes).first_or_create
+      unless from_academic_allocation_user.updated_at > new_acu.updated_at
+        new_acu.grade = from_academic_allocation_user.grade # updates grade with most recent copied group
+        new_acu.working_hours = from_academic_allocation_user.working_hours
+        new_acu.status = from_academic_allocation_user.status
+        new_acu.new_after_evaluation = from_academic_allocation_user.new_after_evaluation
+        new_acu.merge = true
+        new_acu.save
       end
 
       copy_objects(from_academic_allocation_user.assignment_comments, { 'academic_allocation_user_id' => new_acu.id }, true, :files)

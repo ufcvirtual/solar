@@ -96,9 +96,13 @@ class WebconferencesController < ApplicationController
     @webconferences = Webconference.where(id: params[:id].split(',').flatten)
     authorize! :destroy, Webconference, on: @webconferences.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
-    @webconferences.destroy_all
+    evaluative = @webconferences.map(&:verify_evaluatives).include?(true)
+    Webconference.transaction do
+      @webconferences.destroy_all
+    end
     
-    render json: { success: true, notice: t(:deleted, scope: [:webconferences, :success]) }
+    message = evaluative ? ['warning', t('evaluative_tools.warnings.evaluative')] : ['notice', t(:deleted, scope: [:webconferences, :success])]
+    render json: { success: true, type_message: message.first,  message: message.last }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
