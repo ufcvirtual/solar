@@ -625,7 +625,7 @@ Solar::Application.routes.draw do
 
   match '/select_group', to: 'application#select_group', as: :select_group
 
-  get '/media/lessons/:id/:file.:extension', to: 'access_control#lesson', index: true
+  get '/media/lessons/:id/:file(.:extension)', to: 'access_control#lesson', index: true
   get '/media/lessons/:id/:folder/*path',    to: 'access_control#lesson', index: false
 
   get '/media/users/:user_id/photos/:style.:extension', to: 'access_control#users'

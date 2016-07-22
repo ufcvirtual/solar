@@ -109,7 +109,9 @@ class AccessControlController < ApplicationController
         end
         send_file(file_path, { disposition: 'inline' })
       else
-        send_file(lesson.path(true), { disposition: 'inline', type: return_type(params[:extension]) })
+        path = lesson.path(true)
+        params[:extension] = path.split('.').last if params[:extension].nil?
+        send_file(path, { disposition: 'inline', type: return_type(params[:extension]) })
       end
     end
   end
