@@ -133,9 +133,13 @@ class ExamQuestionsController < ApplicationController
   end
 
   def destroy
-    @exam_question = ExamQuestion.find(params[:id])
-    authorize! :destroy, Question, { on: @exam_question.exam.allocation_tags.map(&:id) }
-    @exam_question.destroy
+    exam_questions = ExamQuestion.where(id: params[:id].split(','))
+    authorize! :destroy, Question, { on: exam_questions.first.exam.allocation_tags.map(&:id) }
+    ActiveRecord::Base.transaction do
+      exam_questions.each do |exam_question|
+        exam_question.destroy
+      end
+    end
     render json: { success: true, notice: t('exam_questions.success.deleted') }
   rescue => error
     render_json_error(error, 'exam_questions.errors')

@@ -242,6 +242,7 @@ class Exam < Event
         .select('exams.*, COUNT(questions.id) AS questions_count')
         .group('exams.id')
         .uniq('exams.id')
+        .order('exams.id')
   end
   
   def self.my_exams(allocation_tag_ids)

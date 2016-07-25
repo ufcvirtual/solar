@@ -45,7 +45,7 @@ class ExamsController < ApplicationController
     authorize! :list, Exam, { on: @allocation_tags_ids }
 
     @all_groups = Group.where(offer_id: params[:offer_id])
-    @exams = Exam.exams_by_ats(@allocation_tags_ids.split(' '))#.paginate(page: params[:page], per_page: 1)
+    @exams = Exam.exams_by_ats(@allocation_tags_ids.split(' ')).order('exams.id')#.paginate(page: params[:page], per_page: 1)
     @can_see_preview = can? :show, Question, { on: @allocation_tags_ids }
     respond_to do |format|
       format.html

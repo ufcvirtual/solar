@@ -23,7 +23,7 @@
             - elsif (!b.object.value && @unique_id==b.object.id) || (b.object.value && @unique_id!=b.object.id)
               - class_label = "incorrect" 
               - class_comment = 'comment-red'
-            - if b.object.comment
+            - unless b.object.comment.blank?
               - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"  
               
           - if b.object.item_image?  
@@ -51,7 +51,7 @@
             - else
               - class_label = "incorrect" 
               - class_comment = 'comment-red'
-            - if b.object.comment
+            - unless b.object.comment.blank?
               - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"
 
           - if b.object.item_image?     
@@ -80,7 +80,7 @@
             - else
               - class_label = "incorrect" 
               - class_comment = 'comment-red'
-            - if b.object.comment
+            - unless b.object.comment.blank?
               - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"
 
             - it = select_tag :question_item_ids, options_for_select(['F', 'V'], selected), disabled: @disabled
