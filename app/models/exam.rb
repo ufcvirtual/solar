@@ -407,7 +407,7 @@ class Exam < Event
     ExamUserAttempt.where(academic_allocation_user_id: acu_id).any?
   end
 
-  def self.update_previous(academic_allocation_id, users_ids, academic_allocation_user_id)
+  def self.update_previous(academic_allocation_id, user_id, academic_allocation_user_id)
     # ExamUserAttempt only exists if ACU exists, no need to update previous
     return false
   end

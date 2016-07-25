@@ -112,7 +112,7 @@ class Assignment < Event
     return false
   end
 
-  def self.update_previous(ac_id, users_ids, acu_id)
+  def self.update_previous(ac_id, user_id, acu_id)
     return false
   end
 

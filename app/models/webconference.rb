@@ -175,8 +175,8 @@ class Webconference < ActiveRecord::Base
               .group('log_actions.created_at, users.name, allocation_tags.id, users.id, acu.grade, acu.working_hours, students.id, academic_allocations.max_working_hours')
   end
 
-  def self.update_previous(academic_allocation_id, users_ids, academic_allocation_user_id)
-    LogAction.where(academic_allocation_id: academic_allocation_id, user_id: users_ids, log_type: 7).update_all academic_allocation_user_id: academic_allocation_user_id
+  def self.update_previous(academic_allocation_id, user_id, academic_allocation_user_id)
+    LogAction.where(academic_allocation_id: academic_allocation_id, user_id: user_id, log_type: 7).update_all academic_allocation_user_id: academic_allocation_user_id
   end
 
   def self.verify_previous(acu_id)

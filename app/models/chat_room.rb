@@ -119,8 +119,8 @@ class ChatRoom < Event
                .order('created_at DESC')
   end
 
-  def self.update_previous(academic_allocation_id, users_ids, academic_allocation_user_id)
-    ChatMessage.where(academic_allocation_id: academic_allocation_id, user_id: users_ids).update_all academic_allocation_user_id: academic_allocation_user_id
+  def self.update_previous(academic_allocation_id, user_id, academic_allocation_user_id)
+    ChatMessage.where(academic_allocation_id: academic_allocation_id, user_id: user_id).update_all academic_allocation_user_id: academic_allocation_user_id
   end  
 
   def self.verify_previous(acu_id)

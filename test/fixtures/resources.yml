@@ -1172,4 +1172,4 @@ res225:
   id: 225
   controller: 'schedule_events'
   action: 'evaluate'
-  description: 'Avaliar participação de um aluno em eventos'
+  description: 'Avaliar participação de aluno em eventos'

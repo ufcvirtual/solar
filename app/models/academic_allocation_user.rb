@@ -80,7 +80,7 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   # if not student, set evaluation as nil
   def verify_profile
-    unless User.find(get_user.first).has_profile_type_at(allocation_tag.related)
+    unless !group_assignment_id.nil? || user.has_profile_type_at(allocation_tag.related)
       self.grade = nil
       self.working_hours = nil
     end
@@ -111,16 +111,14 @@ class AcademicAllocationUser < ActiveRecord::Base
 
     if user[:group_assignment_id].blank?
       user_id = user[:user_id]
-      users_ids = [user_id]
     else
       group_id = user[:group_assignment_id].to_i
-      users_ids = GroupParticipant.where(group_assignment_id: user[:group_assignment_id]).pluck(:user_id)
     end
 
-    if User.find(users_ids.first).has_profile_type_at(allocation_tag_id)
+    if !group_id.nil? || User.find(user_id).has_profile_type_at(allocation_tag_id)
       acu = AcademicAllocationUser.where(academic_allocation_id: ac.id, user_id: user_id, group_assignment_id: group_id).first_or_initialize
 
-      tool_type.constantize.update_previous(ac.id, users_ids, acu.id) if acu.new_record?
+      tool_type.constantize.update_previous(ac.id, user_id, acu.id) if acu.new_record? && !user_id.nil?
 
       acu.grade = evaluation[:grade].blank? ? nil : evaluation[:grade].to_f
       acu.working_hours = evaluation[:working_hours].blank? ? nil : evaluation[:working_hours]
@@ -144,8 +142,7 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   # must be called only when sending a activity
   def self.find_or_create_one(academic_allocation_id, allocation_tag_id, user_id, group_id=nil, new_object=false)
-    users_ids = (group_id.nil? ? [user_id] : GroupParticipant.where(group_assignment_id: group_id).pluck(:user_id))
-    if User.find(users_ids.first).has_profile_type_at(allocation_tag_id)
+    if !group_id.nil? || User.find(user_id).has_profile_type_at(allocation_tag_id)
       acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: (group_id.nil? ? user_id : nil), group_assignment_id: group_id).first_or_create 
       if acu.grade.blank? && acu.working_hours.blank?
         acu.update_attributes status: STATUS[:sent]
