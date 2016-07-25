@@ -125,6 +125,11 @@
 
     .item_checkbox{
       margin-top: 10px;
+      label{
+        p:first-of-type {
+          display: inline-block;
+        }
+      }
     }
 
     #item_image, .item_checkbox img{
