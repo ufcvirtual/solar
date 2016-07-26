@@ -215,26 +215,30 @@ module V1::Contents
 
       if ac.nil?
         event = from_ac.academic_tool_type.constantize.find(from_ac.academic_tool_id)
-        ac_name_and_date = 
+        acs = AcademicAllocation.where(academic_tool_type: from_ac.academic_tool_type, allocation_tag_id: to_at)
 
+        ac_name_and_date = acs.joins("JOIN schedule_events ON schedule_events.id = academic_allocations.academic_tool_id AND academic_tool_type = 'ScheduleEvent'").joins('JOIN schedules ON schedules.id = schedule_events.schedule_id').where(schedule_events: {title: event.title, type_event: event.type_event}, schedules: {start_date: event.schedule.start_date} ).first
 
-        ac_name = AcademicAllocation.joins("JOIN schedule_events ON schedule_events.id = academic_allocations.academic_tool_id AND academic_tool_type = 'ScheduleEvent'").where(academic_tool_type: from_ac.academic_tool_type, allocation_tag_id: to_at, schedule_events: {title: event.title, type_event: event.type_event}).first
-
-        if ac_name.nil?
-          new_ac = AcademicAllocation.create(allocation_tag_id: to_at, academic_tool_type: from_ac.academic_tool_type, academic_tool_id: from_ac.academic_tool_id)
-          all << {from_ac.id.to_s => new_ac.id}  
+        if ac_name_and_date.nil?
+          ac_name = acs.joins("JOIN schedule_events ON schedule_events.id = academic_allocations.academic_tool_id AND academic_tool_type = 'ScheduleEvent'").where(schedule_events: {title: event.title, type_event: event.type_event}).first
+          if ac_name.nil?
+            new_ac = AcademicAllocation.create(allocation_tag_id: to_at, academic_tool_type: from_ac.academic_tool_type, academic_tool_id: from_ac.academic_tool_id)
+            all << {from_ac.id.to_s => new_ac.id}  
+          else
+            all << {from_ac.id.to_s => ac_name.id}  
+          end
         else
-          all << {from_ac.id.to_s => ac_name.id}  
+          all << {from_ac.id.to_s => ac_name_and_date.id}
         end
       else
-        all << {from_ac.id.to_s => ac.id}
+         all << {from_ac.id.to_s => ac.id}
       end
     end
     all
   end
 
   def replicate_schedule_events(from_academic_allocations, from_at, to_at)
-    all_acs_related = get_related_acs(from_academic_allocations.where(academic_tool_type: 'ScheduleEvent'), from_at, to_at)
+    all_acs_related = get_related_acs(from_academic_allocations.where(academic_tool_type: 'ScheduleEvent').joins(:academic_allocation_users), from_at, to_at)
 
     all_acs_related.each do |acs|
       acs.each do |ac_from, ac_to|
