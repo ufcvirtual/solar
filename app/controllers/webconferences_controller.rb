@@ -161,8 +161,8 @@ class WebconferencesController < ApplicationController
       URI.parse(url).path
 
       ac_id = (webconference.academic_allocations.size == 1 ? webconference.academic_allocations.first.id : webconference.academic_allocations.where(allocation_tag_id: at_id).first.id)
-      
-      acu = AcademicAllocationUser.find_or_create_one(at_id, current_user.id, nil, true)
+     
+      acu = AcademicAllocationUser.find_or_create_one(ac_id, at_id, current_user.id, nil, true)
       LogAction.access_webconference(academic_allocation_id: ac_id, academic_allocation_user_id: acu.try(:id), user_id: current_user.id, ip: request.headers['Solar'], allocation_tag_id: at_id, description: webconference.attributes) if AllocationTag.find(at_id).is_student_or_responsible?(current_user.id)
 
       render json: { success: true, url: url }

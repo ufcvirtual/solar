@@ -31,12 +31,12 @@ class AcademicAllocation < ActiveRecord::Base
 
   validates :weight, presence: true, numericality: { greater_than: 0,  only_integer: true }, if: 'evaluative? && !final_exam?'
   validates :final_weight, presence: true, numericality: { greater_than: 0,  only_integer: true, smaller_than: 101 }, if: 'evaluative? && !final_exam?'
-  validates :max_working_hours, presence: true, numericality: { greater_than: 0,  only_integer: true, allow_blank: true }, if: 'frequency?'
+  validates :max_working_hours, presence: true, numericality: { greater_than: 0,  only_integer: true, allow_blank: true }, if: 'frequency? && !final_exam?'
 
   validate :verify_equivalents, if: 'equivalent_academic_allocation_id_changed? && !equivalent_academic_allocation_id.nil?'
 
-  before_save :set_evaluative_params, on: :update
-  before_save :change_dependencies, on: :update
+  before_save :set_evaluative_params, on: :update, unless: 'new_record?'
+  before_save :change_dependencies, on: :update, unless: 'new_record?'
 
   def set_evaluative_params
     self.frequency = get_curriculum_unit.try(:working_hours).blank? ? false : frequency

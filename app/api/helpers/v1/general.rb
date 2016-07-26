@@ -8,9 +8,13 @@ module V1::General
     begin
       verify_ip_access!
     rescue
-      Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for IP permission"
-      Rails.logger.info "[API] [WARNING] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Checking for access_token permission"
-      guard!
+      begin
+        raise CanCan::AccessDenied unless YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]['verified_addresses'].include?(env['REMOTE_ADDR'])
+      rescue
+        Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [401] message: Error while checking for IP permission"
+        Rails.logger.info "[API] [WARNING] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] message: Checking for access_token permission"
+        guard!
+      end
     end
   end
 

@@ -152,7 +152,18 @@ class Webconference < ActiveRecord::Base
       if over? && !new_ac.nil? && !new_ac.id.nil?
         old_ac = academic_allocations.where(allocation_tag_id: from_at).try(:first) || academic_allocations.where(allocation_tag_id: AllocationTag.find(from_at).related).first
         LogAction.where(log_type: LogAction::TYPE[:access_webconference], academic_allocation_id: old_ac.id).each do |log|
-          LogAction.create log.attributes.except('id', 'academic_allocation_id').merge!(academic_allocation_id: new_ac.id)
+          from_acu = log.academic_allocation_user
+          unless from_acu.nil?
+            new_acu = AcademicAllocationUser.where(academic_allocation_id: new_ac.id, user_id: log.user_id).first_or_initialize
+            new_acu.grade = from_acu.grade # updates grade with most recent copied group
+            new_acu.working_hours = from_acu.working_hours
+            new_acu.status = from_acu.status
+            new_acu.new_after_evaluation = from_acu.new_after_evaluation
+            new_acu.merge = true
+            new_acu.save
+          end
+
+          LogAction.create log.attributes.except('id', 'academic_allocation_id', 'academic_allocation_user_id').merge!(academic_allocation_id: new_ac.id, academic_allocation_user_id: new_acu.try(:id))
         end
       end
     end

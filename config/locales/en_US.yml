@@ -393,6 +393,7 @@ en_US:
       academic_allocation_user:
         grade: Grade
         working_hours: Working hours
+        group_assignment_id: Assignment group
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -3327,5 +3328,6 @@ en_US:
       student_group: "It's only possible to evaluate students at enrolled groups"
       offer: can't be defined. Offer is no longer active.
       opened: can't be defined. Tool hasn't started yet.
+      group: must be from the same group and tool than this evaluation.
     success:
       evaluated: Student successfully evaluated.

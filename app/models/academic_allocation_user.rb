@@ -20,7 +20,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   has_many :assignment_files
   has_many :assignment_webconferences
 
-  has_many :discussion_posts
+  has_many :discussion_posts, class_name: 'Post'
 
   has_many :chat_messages
 
@@ -28,13 +28,13 @@ class AcademicAllocationUser < ActiveRecord::Base
   validates :user_id, presence: true, if: 'group_assignment_id.nil?'
   validates :grade, numericality: { greater_than_or_equal_to: 0, smaller_than_or_equal_to: 10, allow_blank: true }, unless: 'grade.blank?'
   validates :working_hours, numericality: { greater_than_or_equal_to: 0,  only_integer: true, allow_blank: true }, unless: 'working_hours.blank?'
-  validate :verify_wh, if: '!working_hours.blank?'
-  validate :verify_grade, if: '!grade.blank?'
-  validate :verify_offer, :verify_date, if: '(working_hours_changed? || grade_changed?)'
+  validate :verify_wh, if: '!working_hours.blank? && merge.nil?'
+  validate :verify_grade, if: '!grade.blank? && merge.nil?'
+  validate :verify_offer, :verify_date, if: '(working_hours_changed? || grade_changed?) && merge.nil?'
   validates :group_assignment_id, presence: true, if: Proc.new { |a| a.try(:assignment).try(:type_assignment) == Assignment_Type_Group }
 
   before_save :if_group_assignment_remove_user_id
-  before_save :verify_profile
+  before_save :verify_profile, :verify_group, if: 'merge.nil?'
 
   before_destroy :delete_with_dependents
 
@@ -61,6 +61,12 @@ class AcademicAllocationUser < ActiveRecord::Base
     unless academic_allocation.academic_tool_type == 'Exam'
         errors.add(:grade, I18n.t('academic_allocation_users.errors.not_evaluative')) if !academic_allocation.evaluative && academic_allocation.academic_tool_type != 'Assignment'
         errors.add(:grade, I18n.t('academic_allocation_users.errors.lower_than_10')) if grade > 10
+    end
+  end
+
+  def verify_group
+    unless group_assignment_id.blank?
+      errors.add(:group_assignment_id, I18n.t('academic_allocation_users.errors.group')) if group_assignment.academic_allocation_id != academic_allocation_id
     end
   end
 
@@ -118,8 +124,6 @@ class AcademicAllocationUser < ActiveRecord::Base
     if !group_id.nil? || User.find(user_id).has_profile_type_at(allocation_tag_id)
       acu = AcademicAllocationUser.where(academic_allocation_id: ac.id, user_id: user_id, group_assignment_id: group_id).first_or_initialize
 
-      tool_type.constantize.update_previous(ac.id, user_id, acu.id) if acu.new_record? && !user_id.nil?
-
       acu.grade = evaluation[:grade].blank? ? nil : evaluation[:grade].to_f
       acu.working_hours = evaluation[:working_hours].blank? ? nil : evaluation[:working_hours]
 
@@ -130,6 +134,7 @@ class AcademicAllocationUser < ActiveRecord::Base
       end
 
       if acu.save
+        tool_type.constantize.update_previous(ac.id, user_id, acu.id) if acu.try(:created_at) == acu.try(:updated_at) && !user_id.nil?
         acu.recalculate_final_grade(ac.allocation_tag_id)
         return {id: acu.id, errors: []}
       else
@@ -187,7 +192,10 @@ class AcademicAllocationUser < ActiveRecord::Base
   def copy_dependencies_from(acu)
     unless acu.exam_user_attempts.empty?
       acu.exam_user_attempts.each do |attempt|
-        new_attempt = ExamUserAttempt.where(attempt.attributes.except('id').merge!({ academic_allocation_user_id: self.id })).first_or_create
+        new_attempt = ExamUserAttempt.where(academic_allocation_user_id: self.id, start: attempt.start).last
+        if new_attempt.blank?
+          new_attempt = ExamUserAttempt.create(attempt.attributes.except('id', 'created_at', 'updated_at').merge!({ academic_allocation_user_id: self.id }))
+        end
         new_attempt.copy_dependencies_from(attempt)
       end
     end

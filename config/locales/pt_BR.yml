@@ -445,6 +445,7 @@ pt_BR:
       academic_allocation_user:
         grade: Nota
         working_hours: Carga horária
+        group_assignment_id: Grupo
       
     errors:
       uniqueness: "Registro já existe no sistema"
@@ -2285,7 +2286,7 @@ pt_BR:
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
       discussions_call: 'Gerenciar fóruns avaliativos / de frequência'
-      exams_call: 'Gerenciar provas avaliativos / de frequência'
+      exams_call: 'Gerenciar provas avaliativas / de frequência'
       chats_call: 'Gerenciar chats avaliativos / de frequência'
       assignments_call: 'Gerenciar trabalhos avaliativos / de frequência'
       webconferences_call: 'Gerenciar webconferências avaliativas / de frequência'
@@ -3561,5 +3562,6 @@ pt_BR:
       student_group: "Só é possível avaliar alunos nas turmas que estão matriculados"
       offer: não pode ser definida, pois a oferta já foi encerrada.
       opened: não pode ser definida, pois a ferramenta ainda não iniciou.
+      group: deve ser da mesma ferramenta e turma desta avaliação
     success:
       evaluated: Estudante avaliado com sucesso.

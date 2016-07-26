@@ -37,11 +37,11 @@
                     .description
                       - description = tool.respond_to?(:description) ? tool.description : tool.enunciation
                       .minimun
-                        = description.truncate(200)
-                        - if description.size > 200
+                        = raw description.to_s.truncate(200)
+                        - if description.try(:size).to_i > 200
                           = link_to_function content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('editions.evaluative_tools.expand_description')), 'expand_or_compress(this)'
                       .complete.invisible
-                        = description
+                        = raw description
                         = link_to_function content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('editions.evaluative_tools.compress_description')), 'expand_or_compress(this)'
                     - if groups.blank?
                       = t('editions.tools.offer')
