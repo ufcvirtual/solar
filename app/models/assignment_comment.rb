@@ -17,6 +17,7 @@ class AssignmentComment < ActiveRecord::Base
   accepts_nested_attributes_for :files, allow_destroy: true, reject_if: proc {|attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank?}
 
   validates :comment, presence: true
+  validates :academic_allocation_user_id, presence: true
 
   attr_accessor :merge
 

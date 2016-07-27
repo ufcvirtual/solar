@@ -33,4 +33,8 @@ class AssignmentFile < ActiveRecord::Base
     raise 'date_range' unless assignment.in_time?
   end
 
+  def delete_with_dependents
+    self.delete
+  end
+
 end

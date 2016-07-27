@@ -20,13 +20,12 @@
       %tbody
         - @messages.each do |message|
           - user = message.user
-          = user.as_json
           - name, nick = user.nil? ? ["", t(".all")] : [user.info(:name, @researcher), user.info(:nick, @researcher)]
           %tr.lines 
             - if @evaluative || @frequency
               %td
-                - if message.is_student == 't'
-                  = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(@chat_room, user_id: message.user_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t('.to_evaluate')
+                - if message.is_student == 't' && message.message_type == 1
+                  = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(@chat_room, user_id: message.u_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t('.to_evaluate')
             %td.profile= "(" + message.profile_name + ")"
             %td.user{:'data-tooltip' => (@researcher ? t(:hidden_info) : message.user_name)}= (@researcher ? t(:hidden_info) : message.user_nick)
             %td{:'data-tooltip' => name}= nick
@@ -35,11 +34,11 @@
             %td= l(message.created_at.to_datetime, format: :clock_time)
             - if @academic_allocation.evaluative
               %td
-                - if @evaluative || (message.user_id == current_user.id)
+                - if @evaluative || (message.u_id.to_i == current_user.id)
                   = message.grade
             - if @academic_allocation.frequency
               %td
-                - if @frequency || (message.user_id == current_user.id)
+                - if @frequency || (message.u_id.to_i == current_user.id)
                   = message.wh
 
   - else

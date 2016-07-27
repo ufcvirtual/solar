@@ -24,6 +24,8 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   has_many :chat_messages
 
+  has_many :log_actions
+
   validates :user_id, uniqueness: { scope: [:group_assignment_id, :academic_allocation_id] }
   validates :user_id, presence: true, if: 'group_assignment_id.nil?'
   validates :grade, numericality: { greater_than_or_equal_to: 0, smaller_than_or_equal_to: 10, allow_blank: true }, unless: 'grade.blank?'
@@ -218,7 +220,7 @@ class AcademicAllocationUser < ActiveRecord::Base
       self.delete
     when 'Assignment'
       assignment_comments.map(&:delete_with_dependents)
-      assignment_files.delete_all
+      assignment_files.map(&:delete_with_dependents)
       assignment_webconferences.map(&:remove_records) rescue nil
       assignment_webconferences.delete_all
       self.delete
@@ -227,6 +229,11 @@ class AcademicAllocationUser < ActiveRecord::Base
       self.delete
     when 'Discussion'
       discussion_posts.map(&:delete_with_dependents)
+      self.delete
+    when 'Webconference'
+      LogAction.where(academic_allocation_user_id: id, log_type: 7).delete_all
+      self.delete
+    else
       self.delete
     end
   end

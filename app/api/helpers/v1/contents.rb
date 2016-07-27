@@ -18,8 +18,8 @@ module V1::Contents
         new_acu.status = from_acu.status
         new_acu.new_after_evaluation = from_acu.new_after_evaluation
         new_acu.merge = true
+        new_acu.save
       # end
-      new_acu.save(validate: false)
       new_acu.id
      end
   end
@@ -30,22 +30,15 @@ module V1::Contents
       attributes = from_academic_allocation_user.attributes.except('id', 'grade', 'working_hours', 'status', 'new_after_evaluation', 'created_at', 'updated_at').merge('academic_allocation_id' => to_ac.id)
 
       unless from_academic_allocation_user.group_assignment_id.nil?
-        new_group  = copy_object(from_academic_allocation_user.group_assignment, {'academic_allocation_id' => to_ac}, false, :group_participants)
+        new_group  = copy_object(from_academic_allocation_user.group_assignment, {'academic_allocation_id' => to_ac.id}, false, :group_participants)
         attributes.merge!('group_assignment_id' => new_group.id)
       end
 
-      new_acu = AcademicAllocationUser.where(attributes).first_or_initialize
-      # if new_acu.new_record? || from_academic_allocation_user.updated_at.nil? || from_academic_allocation_user.updated_at.to_time > new_acu.updated_at.to_time
-        new_acu.grade = from_academic_allocation_user.grade # updates grade with most recent copied group
-        new_acu.working_hours = from_academic_allocation_user.working_hours
-        new_acu.status = from_academic_allocation_user.status
-        new_acu.new_after_evaluation = from_academic_allocation_user.new_after_evaluation
-        new_acu.merge = true
-      # end
+      new_acu = get_acu(to_ac.id, from_academic_allocation_user, from_academic_allocation_user.user_id, from_academic_allocation_user.group_assignment_id)
 
-      copy_objects(from_academic_allocation_user.assignment_comments, { 'academic_allocation_user_id' => new_acu.id }, true, :files)
-      copy_objects(from_academic_allocation_user.assignment_files, { 'academic_allocation_user_id' => new_acu.id }, true)
-      copy_objects(from_academic_allocation_user.assignment_webconferences, { 'academic_allocation_user_id' => new_acu.id }, true, nil, { to: :set_origin, from: :id })
+      copy_objects(from_academic_allocation_user.assignment_comments, { 'academic_allocation_user_id' => new_acu }, true, :files)
+      copy_objects(from_academic_allocation_user.assignment_files, { 'academic_allocation_user_id' => new_acu }, true)
+      copy_objects(from_academic_allocation_user.assignment_webconferences, { 'academic_allocation_user_id' => new_acu }, true, nil, { to: :set_origin, from: :id })
     end
   end
 
@@ -90,6 +83,7 @@ module V1::Contents
       Merge.create! main_group_id: main_group.id, secundary_group_id: secundary_group.id, type_merge: merge
       LogAction.create(log_type: LogAction::TYPE[:create], user_id: 0, ip: request.headers['Solar'], description: "merge: transfering content from #{from_group.allocation_tag.info} to #{to_group.allocation_tag.info}, merge type: #{merge}") rescue nil
     end
+
   end
 
   # remove posts, academic_allocation_users, group_assignments, chat_messages and dependents
@@ -99,12 +93,18 @@ module V1::Contents
       ac.academic_allocation_users.map(&:delete_with_dependents)
       ac.group_assignments.map(&:delete_with_dependents)
     }
-    AcademicAllocation.where(academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag).map{ |ac| ac.chat_messages.delete_all }
-    AcademicAllocation.where(academic_tool_type: 'Webconference', allocation_tag_id: allocation_tag).delete_all
+    AcademicAllocation.where(academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag).map{ |ac| 
+      ac.academic_allocation_users.map(&:delete_with_dependents)
+      ac.chat_messages.delete_all 
+    }
+    AcademicAllocation.where(academic_tool_type: 'Webconference', allocation_tag_id: allocation_tag).map{ |ac| 
+      ac.academic_allocation_users.map(&:delete_with_dependents)
+      LogAction.where(academic_allocation_id: ac.id, log_type: 7).delete_all
+    }
     AcademicAllocation.where(academic_tool_type: 'Exam', allocation_tag_id: allocation_tag).map{ |exam|
       exam.academic_allocation_users.map(&:delete_with_dependents)
     }
-  AcademicAllocationUser.delete_all
+  AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: allocation_tag}).map(&:delete_with_dependents)
   end
 
   def copy_file(file_to_copy_path, file_copied_path)
@@ -121,14 +121,14 @@ module V1::Contents
   end
 
   def copy_object(object_to_copy, merge_attributes={}, is_file = false, nested = nil, call_methods = {}, acu=false)
-    new_object = object_to_copy.class.where(object_to_copy.attributes.except('id', 'children_count', 'created_at', 'updated_at', 'new_after_evaluation').merge!(merge_attributes)).first_or_initialize
+    new_object = object_to_copy.class.where(object_to_copy.attributes.except('id', 'children_count', 'updated_at', 'new_after_evaluation', 'academic_allocation_user_id').merge!(merge_attributes)).first_or_initialize
 
     new_object.created_at = object_to_copy.created_at if object_to_copy.respond_to?(:created_at)
     new_object.updated_at = object_to_copy.updated_at if object_to_copy.respond_to?(:updated_at)
     new_object.merge = true if new_object.respond_to?(:merge) # used so call save without callbacks (before_save, before_create)
 
     if acu
-      new_object.academic_allocation_user_id = get_acu(new_object.academic_allocation.id, object_to_copy.academic_allocation_user, object_to_copy.user_id) #rescue nil
+      new_object.academic_allocation_user_id = get_acu(new_object.academic_allocation.id, object_to_copy.academic_allocation_user, (object_to_copy.user_id || object_to_copy.allocation.user_id)) #rescue nil
     end
 
     new_object.send(call_methods[:to], object_to_copy.send(call_methods[:from])) unless call_methods.empty?
@@ -165,11 +165,11 @@ module V1::Contents
     from_chats_academic_allocations = from_academic_allocations.where(academic_tool_type: 'ChatRoom')
     create_missing_tools(from_chats_academic_allocations.pluck(:academic_tool_id), to_at, 'ChatRoom')
 
-    ChatRoom.where(id: from_chats_academic_allocations.pluck(:academic_tool_id)).each do |chat|
-      to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'ChatRoom', academic_tool_id: chat.id).first
+    from_chats_academic_allocations.each do |chat|
+      to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'ChatRoom', academic_tool_id: chat.academic_tool_id).first
 
-      copy_objects(chat.messages, {"academic_allocation_id" => to_ac.id}, false, nil, {}, true)
-      copy_objects(chat.participants, {"academic_allocation_id" => to_ac.id})
+      copy_objects(chat.chat_messages, {"academic_allocation_id" => to_ac.id}, false, nil, {}, true)
+      copy_objects(chat.chat_participants, {"academic_allocation_id" => to_ac.id})
     end
   end
 
@@ -184,8 +184,15 @@ module V1::Contents
   end
   
   def replicate_webconferences(from_academic_allocations, to_at, from_at)
-    from_wenconferences_academic_allocations = from_academic_allocations.where(academic_tool_type: 'Webconference')
-    create_missing_tools(from_wenconferences_academic_allocations.pluck(:academic_tool_id).uniq, to_at, 'Webconference', :create_copy, from_at)
+    from_webconferences_academic_allocations = from_academic_allocations.where(academic_tool_type: 'Webconference')
+    create_missing_tools(from_webconferences_academic_allocations.pluck(:academic_tool_id).uniq, to_at, 'Webconference', :create_copy, from_at)
+    from_webconferences_academic_allocations.each do |web|
+      to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Webconference', academic_tool_id: web.academic_tool_id).first
+
+      unless to_ac.nil?
+        copy_objects(LogAction.where(academic_allocation_id: web.id, log_type: 7), {"academic_allocation_id" => to_ac.id}, false, nil, {}, true)
+      end
+    end
   end
 
   def replicate_messages(from_at, to_at)

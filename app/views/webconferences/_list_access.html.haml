@@ -32,11 +32,11 @@
             %td= AllocationTag.find(log.at_id).info
             %td= l(log.created_at.to_datetime, format: :normal)
             %td= l(log.created_at.to_datetime, format: :clock_time)
-            %td.grade{class: "user_#{log.user_id} at_#{log.at_id}"}
-              - if @evaluative
+            - if @evaluative
+              %td.grade{class: "user_#{log.user_id} at_#{log.at_id}"}
                 = log.try(:grade)
-            %td.frequency{class: "user_#{log.user_id} at_#{log.at_id}"}
-              -if @frequency
+            -if @frequency
+              %td.frequency{class: "user_#{log.user_id} at_#{log.at_id}"}
                 = log.try(:wh)
           %tr.lines.evaluative_form.invisible{class: "log_#{idx}"}
             %td{colspan: (@evaluative && @frequency) ? 8 : 7 }
@@ -74,8 +74,10 @@
 
     $.put(form.attr('action'), form.serialize(), function(data){
       evaluate_web(tr.find('.btn.evaluate'));
-      var user_at_grade = tr.find('td.grade').attr('class').replace(/\ /g, '.');
-      var user_at_wh = tr.find('td.frequency').attr('class').replace(/\ /g, '.');
+      if(!!tr.find('td.grade').length)
+        var user_at_grade = tr.find('td.grade').attr('class').replace(/\ /g, '.');
+      if(!!tr.find('td.frequency').length)
+        var user_at_wh = tr.find('td.frequency').attr('class').replace(/\ /g, '.');
 
       $('.'+user_at_grade).html(form.find('#academic_allocation_user_grade').val());
       $('.'+user_at_wh).html(form.find('#academic_allocation_user_working_hours').val());

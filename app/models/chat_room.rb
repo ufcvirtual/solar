@@ -106,16 +106,18 @@ class ChatRoom < Event
   end
 
   def get_messages(at_id, user_query={})
+    user_query = ['users.id = :user_id OR allocations.user_id = :user_id AND message_type = 1', user_query] unless user_query[:user_id].nil?
     ChatMessage.joins(:academic_allocation, allocation: [:user, :profile])
-               .joins('LEFT JOIN academic_allocation_users acu ON acu.academic_allocation_id = chat_messages.academic_allocation_id AND acu.user_id = chat_messages.user_id')
+               .joins('LEFT JOIN academic_allocation_users acu ON acu.academic_allocation_id = chat_messages.academic_allocation_id AND (acu.user_id = chat_messages.user_id OR acu.user_id = allocations.user_id)')
                .joins("LEFT JOIN allocations students ON allocations.id = students.id AND cast( profiles.types & '#{Profile_Type_Student}' as boolean )")
-               .where(academic_allocations: {allocation_tag_id: at_id, academic_tool_id: id, academic_tool_type: 'ChatRoom'}, message_type: 1)
+               .where(academic_allocations: {allocation_tag_id: at_id, academic_tool_id: id, academic_tool_type: 'ChatRoom'})
                .where(user_query)
-               .select("users.name AS user_name, users.nick AS user_nick, profiles.name AS profile_name, text, chat_messages.user_id, chat_messages.created_at, acu.grade AS grade, acu.working_hours AS wh, 
+               .select("COALESCE(users.id, allocations.user_id) AS u_id, users.name AS user_name, users.nick AS user_nick, profiles.name AS profile_name, text, chat_messages.user_id, chat_messages.created_at, acu.grade AS grade, acu.working_hours AS wh, 
                  CASE 
                  WHEN students.id IS NULL THEN false
                  ELSE true
-                 END AS is_student")
+                 END AS is_student,
+                 message_type")
                .order('created_at DESC')
   end
 

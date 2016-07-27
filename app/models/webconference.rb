@@ -163,7 +163,10 @@ class Webconference < ActiveRecord::Base
             new_acu.save
           end
 
-          LogAction.create log.attributes.except('id', 'academic_allocation_id', 'academic_allocation_user_id').merge!(academic_allocation_id: new_ac.id, academic_allocation_user_id: new_acu.try(:id))
+          log = LogAction.where(log.attributes.except('id', 'academic_allocation_id', 'academic_allocation_user_id').merge!(academic_allocation_id: new_ac.id)).first_or_initialize
+
+          log.academic_allocation_user_id = new_acu.try(:id)
+          log.save
         end
       end
     end

@@ -18,6 +18,8 @@ class AssignmentWebconference < ActiveRecord::Base
 
   validate :verify_quantity_users, :verify_time, if: '((!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed?)) || new_record?) && merge.nil?'
 
+  validates :academic_allocation_user_id, presence: true
+  
   default_scope order: 'updated_at DESC'
 
   attr_accessor :merge
