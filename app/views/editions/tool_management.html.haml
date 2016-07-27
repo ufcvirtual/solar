@@ -113,8 +113,13 @@
       return false;
     }
 
-    var each_value = total/inputs.length;
-    inputs.val(each_value);
+    var each_value = parseInt(total/inputs.length);
+    for (i = 0; i < inputs.length; i++) {
+      if (i < total%inputs.length){
+        inputs[i].value = each_value + 1;
+      }
+      else { inputs[i].value = each_value; }
+    }
   }
 
   function set_weight(){
