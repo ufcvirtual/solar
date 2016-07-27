@@ -389,7 +389,7 @@ en_US:
         max_working_hours: Maximum working hours
         weight: Weight
         final_weight: Final weight
-        equivalent_academic_allocation_id: Equivalent tool
+        equivalent_academic_allocation_id: Equivalent activity
       academic_allocation_user:
         grade: Grade
         working_hours: Working hours
@@ -2021,7 +2021,7 @@ en_US:
       application: Application
       edit_content: Edit content
       digital_class: Digital Class
-      tool_management: Evaluative/Frequency tools management
+      tool_management: Evaluative/Frequency activities management
     success:
       saved: Saved successfully
       deleted: Deleted successfully
@@ -2095,15 +2095,15 @@ en_US:
       equivalent: Equivalent to
       frequency: Frequency
       max_wh: Maximum Working Hour
-      offer: Tool saved to offer
+      offer: Activity saved to offer
       wh: 'w/h'
     tool_management:
       how_it_works_title: "<b>How it works</b>"
-      how_it_works: "<div> This management tool allows to define which tools are evaluative or not and which ones will have some working hours to attend to by the student.</div><br/><div>To indicates that a <b>tool is evaluative</b>, just check 'Evaluative' field and inform it's weight and final weight.</div><br/><div>The <b>weight</b> corresponds to the tool's weight in comparison to the other ones at the time of the student final grade calcule. If it is a default weight, just sets 1.</div><div><i>Weight example: Chat weight 2, Discussion weight 3. Calcule: (2*chatGrade + 3*discussionGrade)/(2+3)</i></div><br/><div>The <b>final weight</b> corresponds to how many % some group of tools (grouped by a common final weight) will count at the student final grade calcule.</div><div><i>Final weight example: Chat 40%, Discussion 40%, Exam 60%. Calcule: 0,4*(chatGrade + discussionGrade) + 0,6*(examGrade)</i></div><div><i>Weight and final weight example: Chat weight 2 40%, Discussion weight 3 40%, Exam weight 1 60%. Calcule: [0,4*(2*chatGrade + 3*discussionGrade) + 0,6*(examGrade)]/(2+3+1)</i></div><br/><div>The <b>Final Evaluation</b> indicates if this tool will be a part of the final grade calcule as a final exam. That is, <i>(studentFinalGrade + gradeFE)/2</i></div><div>If a tool is defined as Final Exam, it won't have working hours, weight and final weight. If those values are informed, they will be ignored.</div><br/><div>A tool <b>equivalent</b> to another means that if a student don't have the first, his grade will be from the second one.</div><div>If this values are incorrect or incomplete, will be used main tool values.</div><div><i>Example: Discussion 2 is equivalent to Discussion 1. The grade will be the one from discussion 1. If the student don't have a grade to this tool, it will be from discussion 2.</i></div>"
+      how_it_works: "<div> This activity management allows to define which activities are evaluative or not and which ones will have some working hours to attend to by the student.</div><br/><div>To indicates that an <b>activity is evaluative</b>, just check 'Evaluative' field and inform it's weight and final weight.</div><br/><div>The <b>weight</b> corresponds to the activity's weight in comparison to the other ones at the time of the student final grade automatic calculation. If it is a default weight (activities with same weight), just sets 1.</div><div><i>Weight example: Chat weight 2, Discussion weight 3. Automatic calculation: (2*chatGrade + 3*discussionGrade)/(2+3)</i></div><br/><div>The <b>final weight</b> corresponds to how many % some group of activities (grouped by a common final weight) will count at the student final grade automatic calculation.</div><div><i>Final weight example: Chat 40%, Discussion 40%, Exam 60%. Automatic calculation: 0,4*(chatGrade + discussionGrade) + 0,6*(examGrade)</i></div><div><i>Weight and final weight example: Chat weight 2 40%, Discussion weight 3 40%, Exam weight 1 60%. Calcule: [0,4*(2*chatGrade + 3*discussionGrade) + 0,6*(examGrade)]/(2+3+1)</i></div><br/><div>The <b>Final Evaluation</b> indicates if this activity will be a part of the final grade automatic calculation as a final exam. That is, <i>(studentFinalGrade + gradeFE)/2</i></div><div>If an activity is defined as Final Exam, it won't have working hours, weight and final weight. If those values are informed, they will be ignored.</div><br/><div>An activity <b>equivalent</b> to another means that if a student don't have the first, his grade will be from the second one.</div><div>If this values are incorrect or incomplete, will be used main activity values.</div><div><i>Example: Discussion 2 is equivalent to Discussion 1. The grade will be the one from discussion 1. If the student don't have a grade to this activity, it will be from discussion 2.</i></div>"
       rules_title: "<b>Rules and informations</b>"
-      rules: "<div>1) If it is a frequency tool, the maximum working hours sum must be equal to the curriculum unit working hours.<br/><br/><div>2) If it is evaluative, distinct final weigh sum must be 100.</div> <br/> <i>Example: Discussion 1 with final weight 40, Chat 2 with final weight 40, Exam with final weight 60. 40 + 60 = 100.</i> (CORRECT) <br/> <i>Exemple: Discussion 1 with final weight 40, Chat 2 with final weight 45, Exam with final weight 60. 40 + 45 + 60 = 145.</i> (INCORRECT)</div><br/><div>If a tool is defined as equivalent to another, it should have the same working hours, weight and final weight than main tool. If those values are missing or incorrect, it will be defined as the same value as main tool.</div><br/><div>3) After change something here and finish it, all students final grade will be recalculated.</div><br/><div>4) By defining a tool as evaluative, student's final grade will be calculated considering that all grades have a range from 0 to 10.</div>"
-      rule_wh1: "<div>5) You can't define a tool as frquency while curriculum unit doesn't have working hours.</div>"
-      rule_wh2: "<div>5) Curriculum Unit working hours: %{working_hours}. Therefore, maximum working hours sum cant be above this value.</div>"
+      rules: "<div>1) If it is a frequency activity, the maximum working hours sum must be equal to the curriculum unit working hours.<br/><br/><div>2) If it is evaluative, distinct final weigh sum must be 100.</div> <br/> <i>Example: Discussion 1 with final weight 40, Chat 2 with final weight 40, Exam with final weight 60. 40 + 60 = 100.</i> (CORRECT) <br/> <i>Exemple: Discussion 1 with final weight 40, Chat 2 with final weight 45, Exam with final weight 60. 40 + 45 + 60 = 145.</i> (INCORRECT)</div><br/><div>If an activity is defined as equivalent to another, it should have the same working hours, weight and final weight than main activity. If those values are missing or incorrect, it will be defined as the same value as main activity.</div><br/><div>3) After change something here and finish it, all students final grade will be automatically recalculated.</div><br/><div>4) By defining an activity as evaluative, student's final grade will be automatically calculated considering that all grades have a range from 0 to 10.</div>"
+      rule_wh1: "<div>5) You can't define an activity as frquency while curriculum unit doesn't have working hours.</div>"
+      rule_wh2: "<div>5) Curriculum Unit working hours: %{working_hours}. Therefore, maximum working hours sum can't be above this value.</div>"
       expand: Expand all
       compress: Compress all
       share_wh: Share working/hours
@@ -3300,34 +3300,34 @@ en_US:
     errors:
       working_hour_error: 'The total working hours must be %{max}, but the sum is %{wh}.'
       final_weight_error: 'The final weight must be 100%, but the sum of the final weights is %{sum}%.'
-      equivalent_group: 'There is no equivalent tool to group %{group}'
-      equivalent_offer: 'There is no equivalent tool at offer'
+      equivalent_group: 'There is no equivalent activity to group %{group}'
+      equivalent_offer: 'There is no equivalent activity at offer'
       single_equivalent: 'already is equivalent to another one'
       general_message: It was not possible to execute action
       permission: "You're not allowed to access all selected tools. Make sure you have access to all groups envolved or, if you have access to groups but not to the offer, make sure you didn't try to manage an offer tool."
       only_groups_and_offer: This page is only acessible to groups and offer.
-      nested: "This tool is already equivalent to another. Therefore, can't have equivalent."
+      nested: "This activity is already equivalent to another. Therefore, can't have equivalent."
       equivalent_value: Must be equal to equivalent
       eq_evaluative: is not evaluative, while this is.
       eq_frequency: is not frequency, while this is.
       itself: can't be itself.
     success:
-      manage: Tools managed successfully.
+      manage: Activities managed successfully.
     warnings:
-      no_evaluative_tools: There are no evaluative tool to this action.
-      no_frequency_tools: There are no frequency tool to this action.
-      changes: "Tools managed successfully. Some tools already have grades and working hours for some students. If an already evaluated tool is no longer evaluative, it's grade no longer will count at student's final grade. The same to working hours. It's also important to check if new maximum working hours are not smaller than already evaluated working hours."
-      evaluative: One or more of the removed tools were evaluatives / frequency tools. Is important to check evaluative/frequency tool management to verify weights and working_hours.
+      no_evaluative_tools: There are no evaluative activity to this action.
+      no_frequency_tools: There are no frequency activity to this action.
+      changes: "Activities managed successfully. Some tools already have grades and working hours for some students. If an already evaluated activity is no longer evaluative, it's grade no longer will count at student's final grade. The same to working hours. It's also important to check if new maximum working hours are not smaller than already evaluated working hours."
+      evaluative: One or more of the removed tools were evaluatives / frequency tools. Is important to check evaluative/frequency activity management to verify weights and working_hours.
 
   academic_allocation_users:
     errors:
-      not_frequency: can't be defined. Is not a frequency tool.
-      not_evaluative: can't be defined. Is not an evaluative tool.
+      not_frequency: can't be defined. Is not a frequency activity.
+      not_evaluative: can't be defined. Is not an evaluative activity.
       lower_than_max: must be smaller than maximum hours of %{max}
       lower_than_10: must be smaller or equal to 10.
       student_group: "It's only possible to evaluate students at enrolled groups"
       offer: can't be defined. Offer is no longer active.
       opened: can't be defined. Tool hasn't started yet.
-      group: must be from the same group and tool than this evaluation.
+      group: must be from the same group and activity than this evaluation.
     success:
       evaluated: Student successfully evaluated.

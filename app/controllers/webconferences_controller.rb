@@ -184,10 +184,10 @@ class WebconferencesController < ApplicationController
     @researcher = current_user.is_researcher?(AllocationTag.where(id: at_id).map(&:related))
     @too_old    = @webconference.initial_time.to_date < Date.parse(YAML::load(File.open('config/webconference.yml'))['participant_log_date']) rescue false
 
-    can_evaluate = can? :evaluate, Webconference, {on: at_id}
+    @can_evaluate = can? :evaluate, Webconference, {on: at_id}
     acs = AcademicAllocation.where(id: academic_allocations_ids)
-    @evaluative = can_evaluate && acs.where(evaluative: true).size == acs.size
-    @frequency = can_evaluate && acs.where(frequency: true).size == acs.size
+    @evaluative = acs.where(evaluative: true).size == acs.size
+    @frequency = acs.where(frequency: true).size == acs.size
 
     AcademicAllocationUser.set_new_after_evaluation(at_id, @webconference.id, 'Webconference', params.include?(:user_id) ? params[:user_id] : @logs.map(&:user_id).uniq, nil, false)
 

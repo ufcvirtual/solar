@@ -10,8 +10,8 @@
     %table.tb_list
       %thead
         %tr.lines
-          - if @evaluative || @frequency
-            %th
+          - if (@evaluative || @frequency) && @can_evaluate
+            %th=t('chat_rooms.messages.to_evaluate')
           %th{ colspan: 2 }= t('.user')
           %th= t('.group')
           %th= t('.date')
@@ -34,10 +34,12 @@
             %td= l(log.created_at.to_datetime, format: :clock_time)
             - if @evaluative
               %td.grade{class: "user_#{log.user_id} at_#{log.at_id}"}
-                = log.try(:grade)
+                - if @can_evaluate || (log.user_id.to_i == current_user.id)
+                  = log.try(:grade)
             -if @frequency
               %td.frequency{class: "user_#{log.user_id} at_#{log.at_id}"}
-                = log.try(:wh)
+                - if @can_evaluate || (log.user_id.to_i == current_user.id)
+                  = log.try(:wh)
           %tr.lines.evaluative_form.invisible{class: "log_#{idx}"}
             %td{colspan: (@evaluative && @frequency) ? 8 : 7 }
               = simple_form_for :academic_allocation_user, url: evaluate_webconference_path(@webconference), html: { method: :put } do |f|
