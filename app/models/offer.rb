@@ -201,7 +201,7 @@ class Offer < ActiveRecord::Base
                 (
                   os_e.end_date IS NOT NULL
                   AND
-                  now() BETWEEN os_e.start_date AND os_e.end_date -- final de matricula na oferta
+                  current_date BETWEEN os_e.start_date AND os_e.end_date -- final de matricula na oferta
                 )
 
                 -- matricula definida na oferta, mas sem data final
@@ -209,7 +209,7 @@ class Offer < ActiveRecord::Base
                 (
                   os_e.end_date IS NULL AND o.offer_schedule_id IS NOT NULL
                   AND
-                  now() BETWEEN os_e.start_date AND os_p.end_date -- final de matricula no periodo da oferta
+                  current_date BETWEEN os_e.start_date AND os_p.end_date -- final de matricula no periodo da oferta
                 )
 
                 -- matricula definida na oferta sem data final
@@ -217,7 +217,7 @@ class Offer < ActiveRecord::Base
                 (
                   os_e.end_date IS NULL AND o.offer_schedule_id IS NULL
                   AND
-                  now() BETWEEN os_e.start_date AND ss_p.end_date -- final de matricula no periodo do semestre
+                  current_date BETWEEN os_e.start_date AND ss_p.end_date -- final de matricula no periodo do semestre
                 )
               )
 
@@ -230,7 +230,7 @@ class Offer < ActiveRecord::Base
                   (
                     ss_e.end_date IS NOT NULL
                     AND
-                    now() BETWEEN ss_e.start_date AND ss_e.end_date -- usa periodo de matricula
+                    current_date BETWEEN ss_e.start_date AND ss_e.end_date -- usa periodo de matricula
                   )
 
                   OR
@@ -238,7 +238,7 @@ class Offer < ActiveRecord::Base
                   (
                     ss_e.end_date IS NULL
                     AND
-                    now() BETWEEN ss_e.start_date AND ss_p.end_date -- usa data final do periodo
+                    current_date BETWEEN ss_e.start_date AND ss_p.end_date -- usa data final do periodo
                   )
                 )
               )
