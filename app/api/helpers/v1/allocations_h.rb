@@ -26,7 +26,8 @@ module V1::AllocationsH
     ucs = CurriculumUnitType.find(2).curriculum_units.map(&:id)
     params = { curriculum_unit_id: ucs }
     params.merge!(semester_id: semester_id) #unless config not defined
-    Offer.where(params).map{ |offer| offer.cancel_allocations(nil, profile_id, { related: true }) }
+    taggables = RelatedTaggable.joins(:offer).where(offers: params).select('COALESCE(group_at_id, offer_at_id) AS at').map(&:at).map(&:to_i)
+    Allocation.where(allocation_tag_id: taggables, profile_id: profile_id).update_all updated_at: Time.now, status: Allocation_Cancelled
   end
 
   def get_profile_id(profile)
