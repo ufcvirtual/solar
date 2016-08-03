@@ -210,8 +210,8 @@ class Question < ActiveRecord::Base
     raise 'private' unless !privacy || owners?(true)
     user_questions    = current_user.questions
     user_up_questions = current_user.up_questions
-    raise 'min_public_questions' if !owners?(true) && ((user_questions.where(privacy: true).count/user_questions.where(privacy: false).count > 10 rescue 0) || (user_up_questions.where(privacy: true).count/user_up_questions.where(privacy: false).count > 10 rescue 0))
-    raise 'draft' if !privacy && !owner?(true) && !status
+    raise 'min_public_questions' if !owners?(true) && !user_questions.empty? && ((user_questions.where(privacy: true).count/user_questions.where(privacy: false).count > 10 rescue false) || (user_up_questions.where(privacy: true).count/user_up_questions.where(privacy: false).count > 10 rescue false))
+    raise 'draft' if !privacy && !owner?(true) && !status 
     raise 'already_exists' if !exam.nil? && exam.questions.where(id: id).any?
   end
 
