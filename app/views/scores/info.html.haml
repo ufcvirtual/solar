@@ -1,110 +1,20 @@
-.block_wrapper#assignments
-  .block_title
-    %h2
-      %i.icon-suitcase
-      = @user.name
 
-  - unless @assignments.nil?
-    .block_wrapper
-      .block_title
-        %h2= t(".assignments_sent")
-      .block_content
-        - unless @assignments.empty?
-          %table.tb_list#assignments_list
-            %thead
-              %tr.lines
-                %th{align: "left"}= t(".assignments")
-                %th.center.date{style: "width: 24%;"}= t(".date_range")
-                %th.center{style: "width: 12%;"}= t(".situation")
-                %th.center{style: "width: 8%;"}= t(".grade")
-            %tbody
-              - @assignments.each do |assignment|
-                - info = assignment.info(@user.id, @allocation_tag_id)
-                - link = ((assignment.type_assignment == Assignment_Type_Group && info[:group_id].nil?) ? '' : student_assignment_path(assignment.id, student_id: @user.id, group_id: info[:group_id]))
-                %tr.lines
-                  %td{align: "left"}
-                    - if link.blank?
-                      .title= assignment.name
-                    - else
-                      = link_to assignment.name, link, {class: 'link_content'}
-                  %td.center
-                    = [l(assignment.schedule.start_date, format: :normal), l(assignment.schedule.end_date, format: :normal)].join(" - ")
-                  %td.center{class: "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
-                  %td.center= (info[:grade].nil?) ? '-' : info[:grade].to_f
-        - else
-          .block_content.block_content_text= t(:itens_not_found)
+%fieldset#allocation_tag_selection
+  .filter_type.info_left
+    = t(:selected, scope: [:scores, :info]) 
+    = select_tag "type", options_for_select(@types), :"data-url-search" => search_tool_scores_path(type: ":type"), multiple: true
+  %fieldset.info_right
+    - g = AcademicAllocationUser.get_grade_finish(@user.id, @allocation_tag_id).final_grade
+    - grade = g.blank? ? ' - ' : g.round(2).to_s
+    - wh = AcademicAllocationUser.get_wh_finish(@user.id, @allocation_tag_id)
+    = t(:student, scope: [:scores, :info]) + @user.username
+    %br
+    = t(:grade_i, scope: [:scores, :info]) + grade
+    %br
+    = t(:frequency_i, scope: [:scores, :info]) + wh.to_s
+#list_tools
 
-.block_wrapper
-  .block_title
-    %h2= t(".discussions_participation")
-  .block_content
-    - unless @discussions.empty?
-      %table.tb_list
-        %thead
-          %tr.lines
-            %th{style: "width: 80%;"}= t(".discussions")
-            %th.center{style: "width: 7%;"}= t(".posts")
-        %tbody
-          - @discussions.each do |discussion|
-            %tr.lines
-              - link = user_discussion_posts_path(discussion.id, @user.id)
-              %td.show_posts
-                - if discussion.posts_count.to_i > 0
-                  = link_to discussion.name, link, {class: 'link_content'}
-                - else
-                  = discussion.name
-              %td.center.show_posts
-                - if discussion.posts_count.to_i > 0
-                  = link_to discussion.posts_count, link, {class: 'link_content'}
-                - else
-                  = discussion.posts_count
-    - else
-      .block_content.block_content_text= t(:itens_not_found)
-
-.block_wrapper
-  .block_title
-    %h2= t(".exam")
-  .block_content
-    - unless @exams.empty?
-      - is_user = (@user.id == current_user.id)
-      %table.tb_list.list_exams
-        %thead
-          %tr.lines
-            %th{align: "left"}= t(".exam")
-            %th.center.date{style: "width: 40%;"}= t(".date_range")
-            %th.center{style: "width: 20%;"}= t(".situation")
-            %th.center{style: "width: 20%;"}= t(".grade")
-          %tbody
-            - @exams.each do |exam|
-              - info = exam.info(@user.id, @allocation_tag_id)
-              - link = open_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation])
-              - pre  = pre_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation])
-              %tr.lines
-                %td{align: "left"}
-                  - if !['to_answer', 'not_finished', 'retake'].include?(info[:situation])
-                    .title= exam.name
-                    - if exam.ended? || info[:situation] == 'corrected'
-                      = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam, user_id: @user.id), class: 'link_content', class: 'exam-result'
-                      - if is_user && info[:situation] == 'corrected'
-                        |
-                        = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), link, class: 'open_exam', id: 'open-result'
-                  - elsif is_user
-                    = link_to exam.name, pre, :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', id: 'open-exam'
-                  - else
-                    .title= exam.name
-                %td.center
-                  %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
-                  %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
-                %td.center.situation
-                  - count = (info[:count].blank? || info[:count].zero? ? '' : info[:count] )
-                  %div{class: "#{info[:situation]}"}= I18n.t(info[:situation], count: count, :scope => [:exams, :situation])
-                %td.center.grade
-                  - if info[:grade].blank? && exam.ended? && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(info[:situation])
-                    - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam, user_id: @user.id), class: 'ico-e'
-                  %span.activity_grade= info[:grade] || bt_correction || "-"
-    - else
-      .block_content.block_content_text= t(:itens_not_found)
-
+%br    
 .block_wrapper
   .block_title
     %h2= t(".history_access", amount: @access.count)
@@ -141,6 +51,7 @@
 
 .block_wrapper{style: "float:left"}
   = link_to t(:back), :back, {class: "btn"}
+  
 
 :css
   .ui-datepicker { width: 15em; padding: .2em .2em 0; display: none; }
@@ -183,6 +94,36 @@
       minHeight: '50%',
       height: 'auto',
       closeBtn : true
+    });
+
+    $('#type').click(function(){
+      var params = {
+        'tool': $("#type").val(),
+        'user_id' : "#{@user.id}"
+      };
+      array_too = $("#type").val();
+      ulp = array_too.length
+      up= ulp - 1;
+
+      $('.block_wrapper_'.concat(array_too[up])).hide();
+      if(ulp==1){
+        $('.block_wrapper_all').hide();
+        $('.block_wrapper_exam').hide();
+        $('.block_wrapper_webconference').hide();
+        $('.block_wrapper_assignment').hide();
+        $('.block_wrapper_chat').hide();
+        $('.block_wrapper_discussion').hide();
+        $('.block_wrapper_shedule_event').hide();
+      }
+
+      $.get("#{search_tool_scores_path()}", params, function(data) {
+        $('#list_tools').prepend(data);       
+
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+       });
     });
 
   });

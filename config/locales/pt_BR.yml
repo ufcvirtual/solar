@@ -209,6 +209,8 @@ pt_BR:
       question_item: Item
       question_image: Imagem
       digital_class: Digital Class
+      scheduleevent: Evento
+      chatroom: Chat
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -2774,6 +2776,10 @@ pt_BR:
       frequency: Carga horária
       grade: Nota
       to: ' à '
+    status:
+      not_started: Não Iniciou
+      closed: Encerrado
+      started: Iniciado  
 
   agendas:
     dropdown_content:
@@ -2965,6 +2971,46 @@ pt_BR:
       sent_on: Enviado em
       file: Arquivo
       exam: Prova
+      chat: Chat
+      webconference: Webconferência
+      schedule_events: Eventos
+      schedule_event: Evento
+      evaluative: Avaliativa
+      frequency: Frequência
+      not_evaluative: Não Avaliativa
+      workload: Carga Horária
+      student: "Aluno: "
+      grade_i: "Nota Final: "
+      frequency_i: "Frequência Geral: "
+      selected: "Selecione: "
+      all: Todos
+      tools: 'Ferramentas'
+      tool: 'Ferramenta'
+      title: Titulo
+    situation:
+      not_started: Não iniciada
+      to_answer: A responder
+      not_finished: Não concluída (%{count}%)
+      finished: Concluída
+      corrected: Corrigida
+      not_corrected: Não corrigida
+      not_answered: Não respondida
+      retake: Refazer 
+      message_ended: Encerrado
+      message_did_not_start: Não iniciou
+      closed: Encerrado
+      started: Iniciado 
+      sent: Enviado
+      not_sent: Não Enviado
+      to_be_sent: A enviar
+      without_group: Sem Grupo
+      opened: Iniciado
+      in_progress: "Em andamento"
+      scheduled: "Agendada"
+      finish: "Finalizada"
+      processing: "Processando"
+      record_available: Finalizada com gravação
+      
     access:
       date: Data
       time: Horário

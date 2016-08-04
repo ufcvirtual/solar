@@ -169,6 +169,8 @@ en_US:
       question: Question
       question_item: Item
       question_image: Image
+      scheduleevent: Evento
+      chatroom: Chat
     attributes:
       user:
         password: "Password"
@@ -2549,6 +2551,11 @@ en_US:
       frequency: Working hours
       grade: Grade
       to: ' to '
+    status:
+      not_started: Not started
+      closed: Closed
+      started: Started 
+
   agendas:
     dropdown_content:
       chat_rooms: "Chat: "
@@ -2734,6 +2741,48 @@ en_US:
       sent_on: Sent on
       file: File
       exam: Exam
+      chat: Chat Room
+      webconference: Webconference
+      schedule_events: Events
+      schedule_event: Event
+      evaluative: Evaluative
+      frequency: Frequency
+      not_evaluative: Not Evaluative
+      workload: Workload
+      student: "Student: "
+      selected: "Selected: "
+      all: All
+      tools: 'Tools'
+      tool: 'Tool'
+      title: Title
+    situation:
+      not_started: Not started
+      to_answer: To answer
+      not_finished: Not finished (%{count}%)
+      finished: Finished
+      corrected: Corrected
+      not_corrected: Not corrected
+      not_answered: Not answered
+      retake: Retake  
+      message_ended: Ended
+      closed: Closed
+      started: Started
+      message_ended: Message ended
+      message_did_not_start: Message did not start
+      closed: Closed
+      started: Started 
+      not_started: Not started
+      sent: Sent
+      not_sent: Not sent
+      to_be_sent: To be sent
+      without_group: Without group
+      opened: Started
+      in_progress: "In Progress"
+      scheduled: "Scheduled"
+      finish: "Finish"
+      processing: "Processing"
+      record_available: Finished with record
+      
     access:
       date: Date
       time: Time

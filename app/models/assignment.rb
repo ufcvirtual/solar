@@ -10,14 +10,14 @@ class Assignment < Event
   has_many :allocations, through: :allocation_tags
   has_many :enunciation_files, class_name: 'AssignmentEnunciationFile', dependent: :destroy
   has_many :group_assignments, through: :academic_allocations, dependent: :destroy
+  
+  before_destroy :can_destroy?
 
   accepts_nested_attributes_for :schedule
   accepts_nested_attributes_for :enunciation_files, allow_destroy: true, reject_if: proc { |attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank? }
 
   validates :name, :enunciation, :type_assignment, presence: true
   validates :name, length: { maximum: 1024 }
-
-  before_destroy :can_remove_groups_with_raise
 
   def copy_dependencies_from(assignment_to_copy)
     unless assignment_to_copy.enunciation_files.empty?
@@ -26,6 +26,15 @@ class Assignment < Event
         copy_file(file, new_file, File.join('assignment', 'enunciation'))
       end
     end
+  end
+
+  def can_remove_groups?(groups)
+    # nao pode dar unbind nem remover se assignment possuir acu
+    AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: self.id, allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).empty?
+  end
+
+  def can_destroy?
+    academic_allocations.map(&:academic_allocation_users).flatten.empty?
   end
 
   def closed?
@@ -64,11 +73,13 @@ class Assignment < Event
               else
                 { user_id: user_id }
               end
-
+       
     info = academic_allocation.academic_allocation_users.where(params).first.try(:info) || { has_files: false, file_sent_date: ' - ' }
-    { situation: situation(info[:has_files], !group_id.nil?, info[:grade]), has_comments: (!info[:comments].nil? && info[:comments].any?), group_id: group_id }.merge(info)
+   
+   { situation: situation(info[:has_files], !group_id.nil?, info[:grade]), has_comments: (!info[:comments].nil? && info[:comments].any?), group_id: group_id }.merge(info)
 
   end
+
 
   def situation(has_files, has_group, grade = nil)
     case
@@ -97,6 +108,18 @@ class Assignment < Event
         .uniq
   end
 
+  def self.list_assigment(user_id, at_id, evaluative=false, frequency=false)
+    at = at_id.is_a?(AllocationTag) ? at_id : AllocationTag.find(at_id)
+    wq = "academic_allocations.evaluative=true AND " if evaluative
+    wq = "academic_allocations.frequency=true AND " if frequency
+    wq = "academic_allocations.evaluative=false AND academic_allocations.frequency=false AND " if !evaluative && !frequency
+
+    assignments  = Assignment.joins(:academic_allocations, :schedule)
+                 .where(wq + "academic_allocations.allocation_tag_id= ?",  at.id )
+                 .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date")
+                 .order("start_date") if at.is_student?(user_id)
+  end  
+
   def groups_assignments(allocation_tag_id)
     GroupAssignment.joins(:academic_allocation).where(academic_allocations: {academic_tool_id: self.id, allocation_tag_id: allocation_tag_id})
   end
@@ -112,7 +135,7 @@ class Assignment < Event
     return false
   end
 
-  def self.update_previous(ac_id, user_id, acu_id)
+  def self.update_previous(ac_id, users_ids, acu_id)
     return false
   end
 

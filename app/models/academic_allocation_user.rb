@@ -285,7 +285,7 @@ class AcademicAllocationUser < ActiveRecord::Base
 
       { grade: self.grade, complete: last_attempt.try(:complete), attempts: exam_user_attempts.count, responses: answered_questions(last_attempt) }
     when 'Assignment' 
-      grade, comments = try(:grade), try(:assignment_comments)
+      grade, working_hours, comments = try(:grade), try(:working_hours), try(:assignment_comments)
     
       files = AcademicAllocationUser.find_by_sql <<-SQL
         SELECT MAX(max_date) FROM (
@@ -302,9 +302,10 @@ class AcademicAllocationUser < ActiveRecord::Base
         ) AS max;
 
       SQL
-
+ 
       has_files = !files.first.max.nil?
-      { grade: grade, comments: comments, has_files: has_files, file_sent_date: (has_files ? I18n.l(files.first.max.to_datetime, format: :normal) : ' - ') }
+
+      { grade: grade, working_hours: working_hours, comments: comments, has_files: has_files, file_sent_date: (has_files ? I18n.l(files.first.max.to_datetime, format: :normal) : ' - ') }
     end
   end
 
@@ -315,5 +316,15 @@ class AcademicAllocationUser < ActiveRecord::Base
   end
 
   # end assignment stuff
+
+
+  def self.get_grade_finish(user_id, at_id)
+    grade = Allocation.where(user_id: user_id, allocation_tag_id: at_id).last
+  end 
+
+  def self.get_wh_finish(user_id, at_id)
+    allocation_tag = AllocationTag.find(at_id)
+    wh = Allocation.get_working_hours(user_id, allocation_tag)
+  end 
 
 end

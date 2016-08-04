@@ -2037,6 +2037,10 @@ responsible_score14:
   profile_id: 8
   resource_id: 219  
 
+responsible_score15:
+  profile_id: 2
+  resource_id: 46    
+
 editor_score1:
   profile_id: 5
   resource_id: 219  

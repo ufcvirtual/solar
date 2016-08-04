@@ -1,0 +1,114 @@
+.block_wrapper_discussion
+  .block_title
+    %h2= t(:discussions_participation, :scope => [:scores, :info])
+  .block_content
+    #tabs
+      %ul
+        %li.active 
+          = link_to t(:evaluative, scope: [:scores, :info]), "#evaluative"
+        %li 
+          = link_to t(:frequency, scope: [:scores, :info]), "#frequency"
+        %li 
+          = link_to t(:not_evaluative, scope: [:scores, :info]), "#notevaluative"
+
+      #evaluative    
+        - unless @discussions_evaluative.empty?
+          %table.tb_list
+            %thead
+              %tr.lines
+                %th{style: "width: 30%;"}= t(:discussions, scope: [:scores, :info])
+                %th.center.date{style: "width: 30%;"}= t(:date_range, scope: [:scores, :info])
+                %th{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
+                %th{style: "width: 20%;"}= t(:grade, scope: [:scores, :info])
+                %th
+            %tbody
+              - @discussions_evaluative.each do |discussion|
+                - info = AcademicAllocationUser.get_grade_and_wh(@user.id, 'Discussion', discussion.id)
+                - statuses = discussion.statuses(@user.id)
+                - link = user_discussion_posts_path(discussion.id, @user.id)
+                %tr.lines
+                  %td.show_posts
+                    - if discussion.posts_count.to_i > 0
+                      = link_to discussion.name, link, {class: 'link_content'}
+                    - else
+                      = discussion.name
+                  %td.center
+                    = [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(' - ')
+                  %td.show_post
+                    = (statuses.include?("extra_time") ? "(#{t(:discussion_closed_to_students)})" : (statuses.include?("closed") ? "(#{t(:forum_closed_short)})" : ""))
+                  %td.show_posts
+                    - if !info[:grade].blank?
+                      = info[:grade]
+                  %td.show_posts
+                    - if @can_evaluate
+                      = link_to content_tag(:i, nil, class: 'icon-write'), user_discussion_posts_path(discussion.id, @user.id), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post])   
+        - else
+          .block_content.block_content_text= t(:itens_not_found)
+
+      #frequency
+        - unless @discussions_frequency.empty?
+          %table.tb_list
+            %thead
+              %tr.lines
+                %th{style: "width: 30%;"}= t(:discussions, scope: [:scores, :info])
+                %th.center.date{style: "width: 30%;"}= t(:date_range, scope: [:scores, :info])
+                %th{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
+                %th{style: "width: 20%;"}= t(:frequency, scope: [:scores, :info])
+                %th{style: "width: 20%;"}
+            %tbody
+              - @discussions_frequency.each do |discussion|
+                - info = AcademicAllocationUser.get_grade_and_wh(@user.id, 'Discussion', discussion.id)
+                - statuses = discussion.statuses(@user.id)
+                %tr.lines
+                  - link = user_discussion_posts_path(discussion.id, @user.id)
+                  %td.show_posts
+                    - if discussion.posts_count.to_i > 0
+                      = link_to discussion.name, link, {class: 'link_content'}
+                    - else
+                      = discussion.name
+                  %td.center
+                    = [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(' - ')   
+                  %td.show_post
+                    = (statuses.include?("extra_time") ? "(#{t(:discussion_closed_to_students)})" : (statuses.include?("closed") ? "(#{t(:forum_closed_short)})" : ""))   
+                  %td.show_posts
+                    - if !info[:wh].blank?
+                      = info[:wh]    
+                  %td.show_posts
+                    - if @can_evaluate
+                      = link_to content_tag(:i, nil, class: 'icon-write'), user_discussion_posts_path(discussion.id, @user.id), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post])     
+        - else
+          .block_content.block_content_text= t(:itens_not_found)
+
+      #notevaluative
+        - unless @discussions_not_evaluative.empty?
+          %table.tb_list
+            %thead
+              %tr.lines
+                %th{style: "width: 60%;"}= t(:discussions, scope: [:scores, :info])
+                %th.center.date{style: "width: 40%;"}= t(:date_range, scope: [:scores, :info])
+                %th{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
+            %tbody
+              - @discussions_not_evaluative.each do |discussion|
+                %tr.lines
+                  - link = user_discussion_posts_path(discussion.id, @user.id)
+                  - statuses = discussion.statuses(@user.id)
+                  %td.show_posts
+                    - if discussion.posts_count.to_i > 0
+                      = link_to discussion.name, link, {class: 'link_content'}
+                    - else
+                      = discussion.name
+                  %td.center
+                    = [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(' - ')   
+                  %td.show_post
+                    = (statuses.include?("extra_time") ? "(#{t(:discussion_closed_to_students)})" : (statuses.include?("closed") ? "(#{t(:forum_closed_short)})" : ""))    
+                  
+        - else
+          .block_content.block_content_text= t(:itens_not_found)
+
+:javascript
+
+  $(function(){
+    $("#tabs").tabs();
+
+    $("td.show_posts a").call_fancybox();
+  });      

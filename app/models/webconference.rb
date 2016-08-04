@@ -26,8 +26,11 @@ class Webconference < ActiveRecord::Base
     ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: '_blank')) : title) 
   end
 
-  def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true }, user_id = nil)
-    query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids } }
+  def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true }, user_id = nil, evaluative = false, frequency = false)
+    query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids, evaluative: true } } if evaluative
+    query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids, frequency: true } } if frequency
+    query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids, evaluative: false,  frequency: false} }  if evaluative && frequency
+    query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids} }  if !evaluative && !frequency
     opt.merge!(select2: 'webconferences.*, academic_allocations.allocation_tag_id AS at_id, academic_allocations.id AS ac_id, users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency')
     opt.merge!(select1: 'DISTINCT webconferences.id, webconferences.*, NULL AS at_id, NULL AS ac_id, users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency')
 

@@ -105,6 +105,36 @@ class ChatRoom < Event
     { my: my, others: others }
   end
 
+  def self.list_chats(user_id, allocation_tag_id, evaluative=false, frequency=false)
+    wq = "academic_allocations.evaluative=true" if evaluative
+    wq = "academic_allocations.frequency=true" if frequency
+    wq = "academic_allocations.evaluative=false AND academic_allocations.frequency=false" if !evaluative && !frequency
+
+    allocations_with_acess =  User.find(user_id).allocation_tags_ids_with_access_on('interact','chat_rooms')
+    all_chats = ChatRoom.joins(:academic_allocations, :schedule)
+      .where(academic_allocations: {allocation_tag_id: allocation_tag_id}) 
+      .where(wq)
+      .select("DISTINCT chat_rooms.*, schedules.start_date, schedules.end_date, academic_allocations.id as ac_id, CASE 
+        WHEN schedules.start_date > current_date THEN 'message_did_not_start' WHEN schedules.end_date < current_date THEN 'message_ended' END AS situation")
+      .order('schedules.start_date')
+
+    my, others =  if responsible?(allocation_tag_id, user_id)
+                    [all_chats, []]
+                  else
+                    without_participant = all_chats.joins('LEFT JOIN chat_participants AS cp ON cp.academic_allocation_id = academic_allocations.id').where('cp.academic_allocation_id IS NULL')
+                    my = all_chats.joins(:participants, :allocations).where(allocations: { user_id: user_id })
+
+                    if allocations_with_acess.include? allocation_tag_id
+                      others = (all_chats - without_participant) - my
+                      [(my + without_participant), others]
+                    else
+                      others = all_chats - my
+                      [my, others]
+                    end
+                  end
+    { my: my, others: others }
+  end
+
   def get_messages(at_id, user_query={})
     user_query = ['users.id = :user_id OR allocations.user_id = :user_id AND message_type = 1', user_query] unless user_query[:user_id].nil?
     ChatMessage.joins(:academic_allocation, allocation: [:user, :profile])

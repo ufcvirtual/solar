@@ -106,6 +106,17 @@
   color: #378941;
 }
 
+.assignment_not_answered {
+  color: #CC0033;
+}
+
+.assignment_opened {
+  color: #006666;
+}
+.assignment_to_answer {
+  color: #0099FF;
+}
+
 .assignment_sent, .assignment_sent a, .assignment_corrected a
 td.assignment_as a {
   color: #2900c2;

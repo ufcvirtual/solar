@@ -48,4 +48,22 @@ class ScheduleEvent < Event
     DateTime.new(schedule.start_date.year, schedule.start_date.month, schedule.start_date.day, (start_hour.blank? ? 0 : start_hour.split(':').first.to_i), (start_hour.blank? ? 0 : start_hour.split(':').last.to_i)) <= DateTime.now
   end
 
+  def self.list_schedule_event(allocation_tag_id, evaluative=false, frequency=false)
+    wq = "academic_allocations.evaluative=true " if evaluative
+    wq = "academic_allocations.frequency=true " if frequency
+    wq = "academic_allocations.evaluative=false AND academic_allocations.frequency=false " if !evaluative && !frequency
+
+    joins(:schedule, academic_allocations: :allocation_tag)
+    .joins('LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id')
+    .where(allocation_tags: { id: AllocationTag.find(allocation_tag_id).related })
+    .where(wq)
+    .select("schedule_events.*, academic_allocations.id AS ac_id, schedules.start_date AS start_date, schedules.end_date AS end_date, CASE WHEN current_date>schedules.end_date OR current_date=schedules.end_date AND current_time>cast(end_hour as time) THEN 'closed'
+       WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND start_hour IS NULL THEN 'started'
+       WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND current_time>=cast(start_hour as time) AND current_time<=cast(end_hour as time) THEN 'started'
+       ELSE 'not_started'  END AS status")
+    .group('schedule_events.id, schedules.start_date, schedules.end_date, title , academic_allocations.id')
+    .order('start_date, end_date, title ')
+
+  end  
+
 end

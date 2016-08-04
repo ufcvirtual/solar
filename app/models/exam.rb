@@ -412,6 +412,18 @@ class Exam < Event
     return false
   end
 
+  def self.list_exams(at_id, evaluative=false, frequency=false)
+    at = at_id.is_a?(AllocationTag) ? at_id : AllocationTag.find(at_id)
+    wq = "academic_allocations.evaluative=true AND " if evaluative
+    wq = "academic_allocations.frequency=true AND " if frequency
+    wq = "academic_allocations.evaluative=false AND academic_allocations.frequency=false AND " if !evaluative && !frequency
+
+    exams  = Exam.joins(:academic_allocations, :schedule)
+                 .where(wq + "academic_allocations.allocation_tag_id= ?",  at.id )
+                 .select("exams.*, schedules.start_date AS start_date, schedules.end_date AS end_date")
+                 .order("start_date")
+  end  
+
   private
 
     def percent(total, answered)

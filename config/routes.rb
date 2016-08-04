@@ -208,6 +208,7 @@ Solar::Application.routes.draw do
   resources :scores, only: [:index] do
     collection do
       get :info
+      get :search_tool
       get "user/:user_id/info", to: :user_info, as: :user_info
       get :amount_access
     end
