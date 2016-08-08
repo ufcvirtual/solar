@@ -15,7 +15,7 @@ class Score # < ActiveRecord::Base
   	wq = "AND academic_allocations.evaluative=true " if evaluative
     wq = "AND academic_allocations.frequency=true " if frequency
     wq = "AND academic_allocations.evaluative=false AND academic_allocations.frequency=false " if !evaluative && !frequency
-  	User.find_by_sql "SELECT 
+  	User.find_by_sql "SELECT DISTINCT
 		  academic_allocations.id, 
 		  academic_allocations.allocation_tag_id, 
 		  academic_allocations.academic_tool_id, 
@@ -30,21 +30,19 @@ class Score # < ActiveRecord::Base
 		  '' AS end_hour,
 		  case
 		    when schedules.start_date > current_date		               then 'not_started'
-		    when (assignments.type_assignment = 1 AND NOT EXISTS (SELECT MIN(group_assignments.id) FROM group_assignments, group_participants WHERE group_participants.group_assignment_id = group_assignments.id AND group_participants.user_id=7 AND group_assignments.academic_allocation_id=9)) 	       then 'without_group'
-		    when grade IS NOT NULL                                             then 'corrected'
-		    when EXISTS (SELECT MAX(max_date) FROM (SELECT MAX(initial_time) AS max_date FROM assignment_webconferences WHERE academic_allocation_user_id = academic_allocation_users.id
-				AND is_recorded = 't' AND (initial_time + (interval '1 minutes')*duration) < now() UNION SELECT MAX(attachment_updated_at) AS max_date FROM assignment_files 
-				WHERE attachment_updated_at IS NOT NULL AND academic_allocation_user_id = academic_allocation_users.id) AS max)    then 'sent'
-		    when (schedules.end_date >= current_date)                          then 'to_be_sent'
-		    when (schedules.end_date < current_date)                           then 'not_sent'
-		    else
-		      '-'
-		    end AS situation
+		    when assignments.type_assignment = 1 AND ga.id IS NULL 	       then 'without_group'
+		    when grade IS NOT NULL                                         then 'corrected'
+		    when attachment_updated_at IS NOT NULL OR (is_recorded AND (initial_time + (interval '1 mins')*duration) < now())  then 'sent'
+		    when schedules.end_date >= current_date                          then 'to_be_sent'
+		    when schedules.end_date < current_date                           then 'not_sent'
+		    else  '-'
+		   end AS situation
 		FROM assignments, schedules, academic_allocations 
 		LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id 
-LEFT JOIN users ON users.id = academic_allocation_users.user_id 
-LEFT JOIN group_participants gp ON gp.user_id = users.id AND (users.id=#{user_id} OR gp.user_id=#{user_id})
-LEFT JOIN group_assignments ga ON ga.id = gp.group_assignment_id AND ga.academic_allocation_id = academic_allocations.id AND academic_allocations.academic_tool_type = 'Assignment' 
+LEFT JOIN group_assignments ga ON ga.academic_allocation_id = academic_allocations.id AND academic_allocations.academic_tool_type = 'Assignment'
+LEFT JOIN group_participants gp ON ga.id = gp.group_assignment_id AND (academic_allocation_users.id=#{user_id} OR gp.user_id=#{user_id})
+LEFT JOIN assignment_files ON assignment_files.academic_allocation_user_id = academic_allocation_users.id
+LEFT JOIN assignment_webconferences ON assignment_webconferences.academic_allocation_user_id = academic_allocation_users.id
 		WHERE 
 		  academic_allocations.academic_tool_id = assignments.id AND academic_tool_type='Assignment' AND assignments.schedule_id=schedules.id #{wq} AND allocation_tag_id IN (#{at_id}) UNION (SELECT 
 		  academic_allocations.id, 

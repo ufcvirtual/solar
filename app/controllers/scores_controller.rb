@@ -33,7 +33,7 @@ class ScoresController < ApplicationController
     ar_tool = params[:tool]
     t= ar_tool.length
     tool = ar_tool[t.to_i-1]
-    puts @allocation_tag_id
+
       if tool == 'discussion'
         @can_evaluate = can? :evaluate, Discussion, { on: @allocation_tag_id }
         @discussions_evaluative     = Discussion.all_by_allocation_tags_evaluative(@allocation_tag_id, true)
