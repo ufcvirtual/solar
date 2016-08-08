@@ -75,7 +75,7 @@ class Assignment < Event
               end
        
     info = academic_allocation.academic_allocation_users.where(params).first.try(:info) || { has_files: false, file_sent_date: ' - ' }
-   
+
    { situation: situation(info[:has_files], !group_id.nil?, info[:grade]), has_comments: (!info[:comments].nil? && info[:comments].any?), group_id: group_id }.merge(info)
 
   end
@@ -115,8 +115,22 @@ class Assignment < Event
     wq = "academic_allocations.evaluative=false AND academic_allocations.frequency=false AND " if !evaluative && !frequency
 
     assignments  = Assignment.joins(:academic_allocations, :schedule)
+                 .joins("LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id ")
+                 .joins("LEFT JOIN group_assignments ga ON ga.academic_allocation_id = academic_allocations.id AND academic_allocations.academic_tool_type = 'Assignment'")
+                 .joins("LEFT JOIN group_participants gp ON ga.id = gp.group_assignment_id AND (academic_allocation_users.id=#{user_id} OR gp.user_id=#{user_id})")
+                 .joins("LEFT JOIN assignment_files ON assignment_files.academic_allocation_user_id = academic_allocation_users.id ")
+                 .joins("LEFT JOIN assignment_webconferences ON assignment_webconferences.academic_allocation_user_id = academic_allocation_users.id")
                  .where(wq + "academic_allocations.allocation_tag_id= ?",  at.id )
-                 .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date")
+                 .select("DISTINCT assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date, academic_allocation_users.grade, academic_allocation_users.working_hours, 
+                          case
+                            when schedules.start_date > current_date                   then 'not_started'
+                            when assignments.type_assignment = 1 AND ga.id IS NULL         then 'without_group'
+                            when grade IS NOT NULL                                         then 'corrected'
+                            when attachment_updated_at IS NOT NULL OR (is_recorded AND (initial_time + (interval '1 mins')*duration) < now())  then 'sent'
+                            when schedules.end_date >= current_date                          then 'to_be_sent'
+                            when schedules.end_date < current_date                           then 'not_sent'
+                            else  '-'
+                          end AS status")
                  .order("start_date") if at.is_student?(user_id)
   end  
 

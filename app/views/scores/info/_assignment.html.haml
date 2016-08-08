@@ -36,8 +36,8 @@
                           = link_to assignment.name, link, {class: 'link_content'}
                       %td.center
                         = [l(assignment.schedule.start_date, format: :normal), l(assignment.schedule.end_date, format: :normal)].join(" - ")
-                      %td.center{class: "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
-                      %td.center= (info[:grade].nil?) ? '-' : info[:grade].to_f
+                      %td.center{class: "assignment_#{assignment.status}"}= t(assignment.status.to_sym)
+                      %td.center= (assignment.grade.nil?) ? '-' : assignment.grade.to_f
                       %td.center
                         - if @can_evaluate_ass
                           = link_to content_tag(:i, nil, class: 'icon-write'), link, class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post])   
@@ -70,8 +70,8 @@
                           = link_to assignment.name, link, {class: 'link_content'}
                       %td.center
                         = [l(assignment.schedule.start_date, format: :normal), l(assignment.schedule.end_date, format: :normal)].join(" - ")
-                      %td.center{class: "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
-                      %td.center= (info[:working_hours].nil?) ? '-' : info[:working_hours].to_i
+                      %td.center{class: "assignment_#{assignment.status}"}= t(assignment.status.to_sym)
+                      %td.center= (assignment.working_hours.nil?) ? '-' : assignment.working_hours.to_i
                       %td.center
                         - if @can_evaluate_ass
                           = link_to content_tag(:i, nil, class: 'icon-write'), link, class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post])   
@@ -103,7 +103,7 @@
                           = link_to assignment.name, link, {class: 'link_content'}
                       %td.center
                         = [l(assignment.schedule.start_date, format: :normal), l(assignment.schedule.end_date, format: :normal)].join(" - ")
-                      %td.center{class: "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
+                      %td.center{class: "assignment_#{assignment.status}"}= t(assignment.status.to_sym)
                   
             - else
               .block_content.block_content_text= t(:itens_not_found)          
