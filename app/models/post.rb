@@ -19,7 +19,8 @@ class Post < ActiveRecord::Base
   before_destroy :remove_all_files
 
   after_create :increment_counter
-  after_destroy :decrement_counter
+  after_destroy :decrement_counter, :update_acu
+  after_save :update_acu, on: :update
 
   validates :content, :profile_id, presence: true
   validates :academic_allocation_user_id, presence: true, if: 'merge.nil?'
@@ -108,5 +109,16 @@ class Post < ActiveRecord::Base
 
     def decrement_counter
       Post.decrement_counter('children_count', parent_id)
+    end
+
+    def update_acu
+      unless academic_allocation_user_id.blank?
+        if (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?)
+          academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty] if academic_allocation_user.discussion_posts.empty?
+        else
+          academic_allocation_user.new_after_evaluation = true
+        end
+        academic_allocation_user.save(validate: false)
+      end
     end
 end

@@ -22,6 +22,9 @@ class AssignmentWebconference < ActiveRecord::Base
   
   default_scope order: 'updated_at DESC'
 
+  after_save :update_acu, on: :update
+  after_destroy :update_acu
+
   attr_accessor :merge
 
   def can_change?
@@ -97,4 +100,16 @@ class AssignmentWebconference < ActiveRecord::Base
     self.origin_meeting_id = (obj.origin_meeting_id || obj.get_mettingID) if is_recorded? && (on_going? || over?)
   end
 
+  private
+
+    def update_acu
+      unless academic_allocation_user_id.blank?
+        if (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?)
+          academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty] if academic_allocation_user.assignment_files.empty? && academic_allocation_user.assignment_webconferences.empty?
+        else
+          academic_allocation_user.new_after_evaluation = true
+        end
+        academic_allocation_user.save(validate: false)
+      end
+    end
 end

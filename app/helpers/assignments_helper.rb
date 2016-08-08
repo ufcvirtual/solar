@@ -62,7 +62,7 @@ module AssignmentsHelper
     acu_id = (aparams[:academic_allocation_user_id] || aparams.academic_allocation_user_id)
     raise CanCan::AccessDenied if acu_id.blank?
     acu = AcademicAllocationUser.find(acu_id)
-    @own_assignment = Assignment.owned_by_user?(current_user.id, { academic_allocation_user: acu })
+    @own_assignment = Assignment.owned_by_user?(current_user.id,  { student_id: @student_id, group: @group, academic_allocation_user: acu })
     @bbb_online = bbb_online?
     @in_time    = acu.assignment.in_time?
   end

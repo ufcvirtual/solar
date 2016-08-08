@@ -105,8 +105,25 @@ module EvaluativeTool
     end
   end
 
-  private
+  def self.count_tools(ats)
+    ac = AcademicAllocation.find_by_sql <<-SQL
+        SELECT COUNT(exams.id) AS exams_count, COUNT(assignments.id) AS assignments_count, COUNT(discussions.id) AS discussions_count, COUNT(schedule_events.id) AS events_count, COUNT(webconferences.id) AS webconferences_count, COUNT(chat_rooms.id) AS chat_rooms_count
+        FROM academic_allocations 
+        LEFT JOIN exams ON academic_allocations.academic_tool_type = 'Exam' AND exams.id = academic_allocations.academic_tool_id
+        LEFT JOIN assignments ON academic_allocations.academic_tool_type = 'Assignment' AND assignments.id = academic_allocations.academic_tool_id
+        LEFT JOIN discussions ON academic_allocations.academic_tool_type = 'Discussion' AND discussions.id = academic_allocations.academic_tool_id
+        LEFT JOIN schedule_events ON academic_allocations.academic_tool_type = 'ScheduleEvent' AND schedule_events.id = academic_allocations.academic_tool_id
+        LEFT JOIN webconferences ON academic_allocations.academic_tool_type = 'Webconference' AND webconferences.id = academic_allocations.academic_tool_id
+        LEFT JOIN chat_rooms ON academic_allocations.academic_tool_type = 'ChatRoom' AND chat_rooms.id = academic_allocations.academic_tool_id
+        WHERE academic_tool_type IN (#{"'"+self.descendants.join("','")+"'"}) 
+        AND (academic_allocations.academic_tool_type != 'Exam' OR exams.status = true)
+        AND academic_allocations.allocation_tag_id IN (#{ats})
+        LIMIT 1;
+      SQL
+      ac.first
+  end
 
+  private
     def self.descendants
       ActiveRecord::Base.descendants.select{ |c|
         c.included_modules.include?(EvaluativeTool)

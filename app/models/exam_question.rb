@@ -16,7 +16,11 @@ class ExamQuestion < ActiveRecord::Base
   before_destroy :can_reorder?, :can_save?, :unpublish
 
   before_save :can_save?, unless: 'annulled_changed?'
-  after_save :recalculate_grades, if: 'annulled_changed?'
+  after_save :recalculate_grades, if: 'annulled_changed? && question.status'
+
+  def recalculate_grades
+    exam.recalculate_grades
+  end
 
   def self.copy(exam_question_to_copy, user_id = nil)
     question = Question.copy(exam_question_to_copy.question, user_id)

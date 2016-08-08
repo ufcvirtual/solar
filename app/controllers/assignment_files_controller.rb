@@ -11,7 +11,7 @@ class AssignmentFilesController < ApplicationController
 
   def new
     group = GroupAssignment.by_user_id(current_user.id, @ac.id)
-    academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], current_user.id, group.try(:id), true)
+    academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], current_user.id, group.try(:id), true, nil)
     @assignment_file = AssignmentFile.new academic_allocation_user_id: academic_allocation_user.id
   end
 
@@ -32,8 +32,7 @@ class AssignmentFilesController < ApplicationController
   end
 
   def destroy
-    @assignment_file = AssignmentFile.find(params[:id])
-    @assignment_file.destroy
+    AssignmentFile.find(params[:id]).destroy
 
     render json: { success: true, notice: t('assignment_files.success.removed') }
   rescue => error

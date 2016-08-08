@@ -2,7 +2,7 @@
   - @exams.each do |exam|
     %tr.lines{ :'data-id' => exam.id }
       %td= exam.name
-      %td= question.enunciation
+      %td= raw question.enunciation
       %td= question.type
       %td= exam.allocation_tag_info
       %td{ style: 'text-align:center;' }= question.privacy? ? content_tag(:i, nil, class: 'icon-lock', :'data-tooltip' => t('questions.question.private')) : content_tag(:i, nil, class: 'icon-minus', :"data-tooltip" => t('questions.question.public'))

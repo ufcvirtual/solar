@@ -148,13 +148,15 @@ class AcademicAllocationUser < ActiveRecord::Base
   end
 
   # must be called only when sending a activity
-  def self.find_or_create_one(academic_allocation_id, allocation_tag_id, user_id, group_id=nil, new_object=false)
+  def self.find_or_create_one(academic_allocation_id, allocation_tag_id, user_id, group_id=nil, new_object=false, status=STATUS[:sent])
     if !group_id.nil? || User.find(user_id).has_profile_type_at(allocation_tag_id)
       acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: (group_id.nil? ? user_id : nil), group_assignment_id: group_id).first_or_create 
-      if acu.grade.blank? && acu.working_hours.blank?
-        acu.update_attributes status: STATUS[:sent]
-      else
-        acu.update_attributes new_after_evaluation: new_object 
+      unless status.nil?
+        if acu.grade.blank? && acu.working_hours.blank?
+          acu.update_attributes status: status
+        elsif
+          acu.update_attributes new_after_evaluation: new_object 
+        end
       end
 
       acu
@@ -162,11 +164,11 @@ class AcademicAllocationUser < ActiveRecord::Base
   end
 
   # must be called whenever wants to get acu without being studen accessing own activity
-  def self.find_one(academic_allocation_id, user_id, group_id=nil, new_object=false)
+  def self.find_one(academic_allocation_id, user_id, group_id=nil, new_object=false, status=STATUS[:empty])
     acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: (group_id.nil? ? user_id : nil), group_assignment_id: group_id).first
-    unless acu.blank?
+    unless acu.blank? || status.nil?
       if (acu.grade.blank? && acu.working_hours.blank?)
-        acu.update_attributes status: STATUS[:empty]
+        acu.update_attributes status: status
       else
         acu.update_attributes new_after_evaluation: new_object
       end
@@ -317,14 +319,8 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   # end assignment stuff
 
-
   def self.get_grade_finish(user_id, at_id)
-    grade = Allocation.where(user_id: user_id, allocation_tag_id: at_id).last
-  end 
-
-  def self.get_wh_finish(user_id, at_id)
-    allocation_tag = AllocationTag.find(at_id)
-    wh = Allocation.get_working_hours(user_id, allocation_tag)
+    Allocation.where(user_id: user_id, allocation_tag_id: at_id).last
   end 
 
 end

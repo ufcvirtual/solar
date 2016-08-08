@@ -1,0 +1,48 @@
+%table.tb_list.general#list_of_students{cellspacing: "0", border: "0", summary: t('.list_of_students')}
+  %thead
+    %tr.lines
+      %th#student= t("scores.index.student")
+      %th.no_sort{colspan: 10}
+        #tabs
+          %ul
+            %li
+              %a.active{:'data-url' => general_scores_path}=t('scores.index.general')
+              %a{:'data-url' => evaluative_scores_path}=t('scores.index.evaluative')
+              %a{:'data-url' => not_evaluative_scores_path}=t('scores.index.not_evaluative')
+              - unless @wh.nil?
+                %a{:'data-url' => frequency_scores_path}=t('scores.index.frequency')
+    %tr.lines
+      %th#student.no_sort
+      %th= t('scores.index.access_to_the_course')
+      - unless @wh.nil?
+        %th= t('scores.index.frequency')
+      %th= t('scores.index.final_grade')
+      %th= t('scores.index.public_files')
+      %th= t("activerecord.models.assignment")
+      %th= t("activerecord.models.exam")
+      %th= t("activerecord.models.discussion")
+      %th= t("activerecord.models.chat_room")
+      %th= t("activerecord.models.webconference")
+      %th= t("activerecord.models.schedule_event")
+      
+  %tbody.scores
+    - if @users.blank?
+      %tr.lines
+        %td{colspan: 2}= t('scores.index.no_data')
+    - else
+      - @users.each_with_index do |student, idx|
+        %tr.lines
+          %td.td_student{'data-tooltip' => student.name}= link_to student.name, user_info_scores_path(student.id)
+          %td=student.u_logs
+          - unless @wh.nil?
+            %td=student.working_hours
+          %td=student.u_grade
+          %td=student.u_public_files
+          %td="#{student.assignments} de #{@tools.assignments_count}"
+          %td="#{student.exams} de #{@tools.exams_count}"
+          %td="#{student.discussions} de #{@tools.discussions_count}"
+          %td="#{student.chat_rooms} de #{@tools.chat_rooms_count}"
+          %td="#{student.webconferences} de #{@tools.webconferences_count}"
+          %td="#{student.schedule_events} de #{@tools.events_count}"
+
+= javascript_include_tag 'tooltip', 'tablesorter', 'scores'

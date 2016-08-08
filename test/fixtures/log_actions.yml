@@ -1,0 +1,55 @@
+log1_webc1:
+  id: 1
+  user_id: 7
+  log_type: 7
+  academic_allocation_id: 77
+  created_at: <%= (Time.now - 3.days).to_s(:db) %>
+
+log2_webc1:
+  id: 2
+  user_id: 6
+  log_type: 7
+  academic_allocation_id: 77
+  created_at: <%= (Time.now - 3.days).to_s(:db) %>
+
+log1_webc2:
+  id: 3
+  user_id: 7
+  log_type: 7
+  academic_allocation_id: 78
+  created_at: <%= (Time.now - 3.days).to_s(:db) %>
+
+log2_webc2:
+  id: 4
+  user_id: 6
+  log_type: 7
+  academic_allocation_id: 78
+  created_at: <%= (Time.now - 3.days).to_s(:db) %>
+
+log1_webc5:
+  id: 5
+  user_id: 7
+  log_type: 7
+  academic_allocation_id: 83
+  created_at: <%= (Time.now - 3.days).to_s(:db) %>
+
+log2_webc5:
+  id: 6
+  user_id: 6
+  log_type: 7
+  academic_allocation_id: 83
+  created_at: <%= (Time.now - 3.days).to_s(:db) %>
+
+log3_webc1:
+  id: 7
+  user_id: 8
+  log_type: 7
+  academic_allocation_id: 77
+  created_at: <%= (Time.now - 3.days).to_s(:db) %>
+
+log4_webc1:
+  id: 8
+  user_id: 7
+  log_type: 7
+  academic_allocation_id: 77
+  created_at: <%= (Time.now - 2.days).to_s(:db) %>

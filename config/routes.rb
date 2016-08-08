@@ -152,6 +152,9 @@ Solar::Application.routes.draw do
 
   ## posts/:id/post_files
   resources :posts, only: [:index] do
+    member do
+      get :to_evaluate , to: 'posts#index', as: :evaluate
+    end
     resources :post_files, only: [:new, :create, :destroy, :download] do
       get :download, on: :member
       get :api_download, on: :member
@@ -211,6 +214,11 @@ Solar::Application.routes.draw do
       get :search_tool
       get "user/:user_id/info", to: :user_info, as: :user_info
       get :amount_access
+      get :evaluative, to: :evaluatives_frequency, type: 'evaluative'
+      get :frequency, to: :evaluatives_frequency, type: 'frequency'
+      get :not_evaluative, to: :evaluatives_frequency
+      get :general
+      get :redirect_to_evaluate
     end
   end
 

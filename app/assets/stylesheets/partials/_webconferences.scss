@@ -45,7 +45,7 @@ table.webconferences{
   }
   tbody{
     td{
-      [class^='icon-']{
+      [class^='icon-']:not(.evaluate){
         font-size: 18px;
         padding-top: 7px;
         color: #828282;

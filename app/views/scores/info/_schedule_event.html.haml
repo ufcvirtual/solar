@@ -1,7 +1,4 @@
 .block_wrapper_shedule_event
-  .block_title
-    %h2
-      %h2= t(:schedule_events, :scope => [:scores, :info])
   .block_content    
     #tabs
       %ul
@@ -14,8 +11,6 @@
           
       #evaluative       
         - unless @schedules_event_evaluative.nil?
-          .block_title
-            %h2= t(:schedule_events, :scope => [:scores, :info])
           .block_content
             - unless @schedules_event_evaluative.empty?
               %table.tb_list

@@ -9,6 +9,8 @@ class AssignmentFile < ActiveRecord::Base
 
   before_save :can_change?, if: 'merge.nil?'
   before_destroy :can_change?, :can_destroy?
+  after_save :update_acu, on: :update
+  after_destroy :update_acu
 
   validates :attachment_file_name, presence: true
   validates :academic_allocation_user_id, presence: true
@@ -36,5 +38,18 @@ class AssignmentFile < ActiveRecord::Base
   def delete_with_dependents
     self.delete
   end
+
+  private
+
+    def update_acu
+      unless academic_allocation_user_id.blank?
+        if (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?)
+          academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty] if academic_allocation_user.assignment_files.empty? && academic_allocation_user.assignment_webconferences.empty?
+        else
+          academic_allocation_user.new_after_evaluation = true
+        end
+        academic_allocation_user.save(validate: false)
+      end
+    end
 
 end

@@ -1,0 +1,50 @@
+%table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.list_of_students')  }
+  %thead
+    %tr.lines
+      %th#student= t("scores.index.student")
+      %th.no_sort{colspan: @acs.size}
+        #tabs
+          %ul
+            %li
+              %a{:'data-url' => general_scores_path}=t('scores.index.general')
+              %a{class: score_type == 'evaluative' ? 'active' : '', :'data-url' => evaluative_scores_path}=t('scores.index.evaluative')
+              %a{class: score_type.blank? ? 'active' : '', :'data-url' => not_evaluative_scores_path}=t('scores.index.not_evaluative')
+              - unless @wh.nil?
+                %a{class: score_type == 'frequency' ? 'active' : '', :'data-url' => frequency_scores_path}=t('scores.index.frequency')
+        %a.btn.tool_dropdown{href: '#', :'data-dropdown' => "#dropdown_menu"}
+          = content_tag(:i, nil, class: 'icon-list')
+          = t('scores.index.show_hide_tools')
+          %i.icon-arrow-down-triangle
+        %div{ id: "dropdown_menu", class: 'dropdown dropdown-tip' }
+          %ul.dropdown-menu
+            - @tools.each_with_index do |tool, idx|
+              %li
+                = check_box_tag "#{tool}idx", tool, true
+                = label_tag "#{tool}idx", t("activerecord.models.#{tool.tableize.singularize}")
+    - if @acs.any?
+      %tr.lines
+        %th.no_sort#student
+        - @acs.group_by{|t| t['tool_type']}.each do |ac|
+          - ac[1].each_with_index do |tool, idx|
+            %th{class: tool.tool_type, :'data-tooltip' =>tool.name }= [t("activerecord.models.#{tool.tool_type.tableize.singularize}")[0], idx+1].join(' ')
+  %tbody.scores
+    - if @users.empty? || @acs.empty?
+      %tr.lines.no_sort
+        %td{colspan: 2}= t('scores.index.no_data')
+    - else
+      - @users.each do |student|
+        - user_scores = @scores.select { |attachment| attachment.user_id.to_i == student.id }
+        %tr.lines
+          %td.td_student{'data-tooltip' => student.name}= link_to student.name, user_info_scores_path(student.id)
+          - @acs.each do |ac|
+            - score = user_scores.select { |attachment| attachment.id.to_i == ac.id.to_i }
+            - if score.blank?
+              %td.not_sent= t("scores.index.not_sent")
+            - else
+              %td{class: "#{score.first.situation} #{ac.tool_type} #{score.first.new_after_evaluation ? 'new_after_evaluation' : ''}" }
+                - if ['not_started', 'to_send'].include?(score.first.situation)
+                  = (score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}")
+                - else
+                  = link_to_function (score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}"), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: ac.tool_type, ac_id: ac.id, user_id: student.id, group_id: score.first.group, situation: score.first.situation, score_type: score_type)
+
+= javascript_include_tag 'tooltip', 'tablesorter', 'scores'

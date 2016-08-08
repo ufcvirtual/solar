@@ -118,7 +118,12 @@ class AccessControlController < ApplicationController
 
   def users
     user = User.find(params[:user_id])
-    send_file user.photo.path(params[:style]), type: user.photo_content_type, disposition: 'inline'
+    file_path = user.photo.path(params[:style])
+    if File.exist?(file_path)
+      send_file file_path, type: user.photo_content_type, disposition: 'inline'
+    else
+      render :nothing => true, :status => 200, :content_type => 'text/html'
+    end
   end
 
   private

@@ -44,6 +44,17 @@ class AllocationTag < ActiveRecord::Base
     end
   end
 
+  def get_curriculum_unit
+    case refer_to
+      when 'group'
+        group.curriculum_unit
+      when 'offer'
+        offer.curriculum_unit
+      when 'curriculum_unit'
+        self
+    end
+  end  
+
   def is_responsible?(user_id)
     check_if_user_has_profile_type(user_id)
   end
@@ -183,7 +194,7 @@ class AllocationTag < ActiveRecord::Base
     query << "allocations.status = #{Allocation_Activated}"
     query << "allocations.allocation_tag_id IN (#{ats})"
 
-    select << "DISTINCT users.id, users.*, COUNT(public_files.id) AS u_public_files, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name"
+    select << "DISTINCT users.id, COUNT(public_files.id) AS u_public_files, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name"
     
     relations << <<-SQL
       JOIN allocations ON users.id    = allocations.user_id
@@ -196,19 +207,49 @@ class AllocationTag < ActiveRecord::Base
     if scores
       msg_query = Message.get_query('users.id', 'outbox', ats, { ignore_trash: false, ignore_user: true })
 
-      select << 'COALESCE(posts.count,0) AS u_posts, COALESCE(logs.count,0) AS u_logs, COALESCE(sent_msgs.count,0) AS u_sent_msgs, academic_allocation_users.grade AS u_grade'
+      select << 'users.name, COALESCE(posts.count,0) AS u_posts, COALESCE(posts.count_discussions,0) AS discussions, COALESCE(logs.count,0) AS u_logs, COALESCE(sent_msgs.count,0) AS u_sent_msgs, allocations.final_grade AS u_grade, COALESCE(exams.count,0) AS exams, COALESCE(logs_a.count,0) AS webconferences, COALESCE(assignments.count,0) AS assignments, COALESCE(events.count,0) AS schedule_events, COALESCE(chats.count,0) AS chat_rooms, COALESCE(acu.working_hours, 0) AS working_hours'
 
       relations << <<-SQL
+        LEFT JOIN(
+          SELECT SUM(COALESCE(acu.working_hours, acu_eq.working_hours, 0)) AS working_hours, COALESCE(acu.user_id, acu_eq.user_id, gp.user_id) AS user_id
+          FROM academic_allocations
+          LEFT JOIN academic_allocations equivalent  ON academic_allocations.id = equivalent.equivalent_academic_allocation_id
+          LEFT JOIN academic_allocation_users acu    ON acu.academic_allocation_id = academic_allocations.id
+          LEFT JOIN academic_allocation_users acu_eq ON acu_eq.academic_allocation_id = equivalent.id AND (acu_eq.user_id = acu.user_id OR acu_eq.group_assignment_id = acu.group_assignment_id)
+          LEFT JOIN group_participants gp ON gp.group_assignment_id = acu.group_assignment_id OR gp.group_assignment_id = acu_eq.group_assignment_id
+          WHERE
+          academic_allocations.frequency = true
+          AND
+          academic_allocations.allocation_tag_id IN (#{ats})
+          AND
+          academic_allocations.equivalent_academic_allocation_id IS NULL
+          AND
+          academic_allocations.final_exam = false
+          GROUP BY COALESCE(acu.user_id, acu_eq.user_id, gp.user_id)
+        ) acu ON acu.user_id = users.id
         LEFT JOIN (
-          SELECT to_char(AVG(academic_allocation_users.grade), '99.99') AS grade, academic_allocation_users.user_id AS user_id
+          SELECT  COUNT(DISTINCT exams.id) AS count, academic_allocation_users.user_id AS user_id
           FROM academic_allocation_users
-          JOIN academic_allocations ON academic_allocations.id = academic_allocation_users.academic_allocation_id
+          JOIN academic_allocations ON academic_allocations.id = academic_allocation_users.academic_allocation_id AND academic_allocations.academic_tool_type = 'Exam'
           JOIN exams ON exams.id = academic_allocations.academic_tool_id AND exams.status = TRUE
           WHERE academic_allocations.allocation_tag_id IN (#{ats})
           GROUP BY academic_allocation_users.user_id
-        ) academic_allocation_users ON academic_allocation_users.user_id = users.id
+        ) exams ON exams.user_id = users.id
         LEFT JOIN (
-          SELECT COUNT(discussion_posts.id) AS count, discussion_posts.user_id AS user_id
+          SELECT  COUNT(DISTINCT academic_allocations.academic_tool_id) AS count, COALESCE(academic_allocation_users.user_id, gp.user_id) AS user_id
+          FROM academic_allocation_users
+          JOIN (
+           SELECT assignment_files.academic_allocation_user_id FROM assignment_files
+           UNION
+           SELECT assignment_webconferences.academic_allocation_user_id FROM assignment_webconferences
+          ) files ON files.academic_allocation_user_id = academic_allocation_users.id
+          JOIN academic_allocations ON academic_allocations.id = academic_allocation_users.academic_allocation_id AND academic_allocations.academic_tool_type = 'Assignment'
+          LEFT JOIN group_participants gp ON gp.group_assignment_id = academic_allocation_users.group_assignment_id
+          WHERE academic_allocations.allocation_tag_id IN (#{ats})
+          GROUP BY COALESCE(academic_allocation_users.user_id, gp.user_id)
+        ) assignments ON assignments.user_id = users.id
+        LEFT JOIN (
+          SELECT COUNT(discussion_posts.id) AS count, COUNT(DISTINCT academic_allocations.academic_tool_id) AS count_discussions, discussion_posts.user_id AS user_id
           FROM discussion_posts
           JOIN academic_allocations ON academic_allocations.id = discussion_posts.academic_allocation_id
           WHERE academic_allocations.allocation_tag_id IN (#{ats})
@@ -228,9 +269,35 @@ class AllocationTag < ActiveRecord::Base
           WHERE #{msg_query}
           GROUP BY user_messages.user_id
         ) sent_msgs ON sent_msgs.user_id = users.id
+        LEFT JOIN (
+          SELECT COUNT(DISTINCT academic_allocations.academic_tool_id) AS count, log_actions.user_id AS user_id
+          FROM log_actions
+          JOIN academic_allocations ON academic_allocations.id = log_actions.academic_allocation_id
+          WHERE academic_allocations.allocation_tag_id IN (#{ats})
+          AND academic_allocations.academic_tool_type = 'Webconference'
+          AND log_actions.log_type = #{LogAction::TYPE[:access_webconference]}
+          GROUP BY log_actions.user_id
+        ) logs_a ON logs_a.user_id = users.id
+        LEFT JOIN (
+          SELECT  COUNT(DISTINCT academic_allocations.academic_tool_id) AS count, academic_allocation_users.user_id AS user_id
+          FROM academic_allocation_users
+          JOIN academic_allocations ON academic_allocations.id = academic_allocation_users.academic_allocation_id AND academic_allocations.academic_tool_type = 'ScheduleEvent'
+          WHERE academic_allocations.allocation_tag_id IN (#{ats})
+          GROUP BY academic_allocation_users.user_id
+        ) events ON events.user_id = users.id
+        LEFT JOIN (
+          SELECT COUNT(DISTINCT academic_allocations.academic_tool_id) AS count, COALESCE(chat_messages.user_id, allocations.user_id) AS user_id
+          FROM chat_messages
+          JOIN allocations ON allocations.id = chat_messages.allocation_id
+          JOIN academic_allocations ON academic_allocations.id = chat_messages.academic_allocation_id AND academic_allocations.academic_tool_type = 'ChatRoom'
+          WHERE academic_allocations.allocation_tag_id IN (#{ats})
+          GROUP BY COALESCE(chat_messages.user_id, allocations.user_id)
+        ) chats ON chats.user_id = users.id
       SQL
 
-      group << 'posts.count, logs.count, sent_msgs.count, academic_allocation_users.grade'
+      group << 'posts.count, logs.count, sent_msgs.count, allocations.final_grade, posts.count_discussions, exams.count, logs_a.count, assignments.count, events.count, chats.count, acu.working_hours'
+    else
+      select << "users.*, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name"
     end
 
     User.find_by_sql <<-SQL

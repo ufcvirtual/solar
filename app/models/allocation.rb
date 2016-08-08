@@ -218,7 +218,7 @@ class Allocation < ActiveRecord::Base
         acu.grade IS NOT NULL;
     SQL
 
-    update_attributes final_grade: ((afs.empty? || afs.first[:grade].blank?) ? grades.first[:grade] : (grades.first[:grade].to_f+afs.first[:grade].to_f)/2)
+    update_attributes final_grade: ((afs.empty? || afs.first[:grade].blank?) ? grades.first[:grade] : (grades.first[:grade].to_f+afs.first[:grade].to_f)/2).to_f.round(2)
   end
 
   def get_working_hours

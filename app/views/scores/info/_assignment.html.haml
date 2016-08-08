@@ -14,8 +14,6 @@
           
       #evaluative       
         - unless @assigments_evaluative.nil?
-          .block_title
-            %h2= t(:assignments_sent, :scope => [:scores, :info])
           .block_content
             - unless @assigments_evaluative.empty?
               %table.tb_list

@@ -5,14 +5,16 @@
         %i.icon-suitcase
         = t(:group)
         = @group.code
+        - unless @wh.nil?
+          = t('.curriculum_unit_working_hours', wh: @wh)
 
   .block_wrapper
     .block_title
       %h2= t(".responsibles")
 
     - unless @responsibles.empty?
-      .tb_list_students
-        %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.responsibles')}
+      .tb_list_responsibles
+        %table.tb_list#list_of_responsibles{cellspacing: "0", border: "0", summary: t('.responsibles')}
           %thead
             %tr.lines
               %th#student= t(".responsible")
@@ -38,67 +40,32 @@
     %h2= t(".students")
 
   .tb_list_students
-    %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.list_of_students')}
-      %thead
-        %tr.lines
-          %th#student= t(".student")
-          %th#exams= raw t(".average_exam_grade", link: (can? :calcule_grades, Exam) ? link_to(t('.calcule'), calcule_all_exams_path) : '')
-          %th#public_files= t(".public_files")
-          %th.participation= t(".participation")
-          %th.access_history= t(".access_to_the_course")
-          - padding_title = @assignments.size > 1 ? @assignments.size * 15 : 20
-          #assignment_title{style: "padding-right: #{padding_title}px"}= t(".assignments")
-          - unless @assignments.empty?
-            - style_th_width = @assignments.size < 4 ? "width: #{40/@assignments.size}px;" : ''
-            - @assignments.each_with_index do |assignment, idx|
-              %th#assignment{style: style_th_width, 'data-tooltip' => assignment.name}= "#{idx + 1}"
-          - else
-            %th.no_sort{style: 'width: 5%'}= '-'
-      %tbody
-        - unless @students.empty?
-          - @students.each do |student|
-            %tr.lines
-              %td.td_student{'data-tooltip' => student.name}= link_to student.name, user_info_scores_path(student.id)
-              %td= student.u_grade
-              %td= student.u_public_files
-              %td= student.u_posts
-              %td= student.u_logs
-              - @assignments.each do |assignment|
-                - info = assignment.info(student.id, @allocation_tag_id)
-                - grade_link = t(".assignment_#{info[:situation]}", default: info[:grade])
-                %td{class: "assignment_#{info[:situation]}"}= link_to grade_link, (info[:situation] == "without_group" ? list_assignments_path : student_assignment_path(assignment.id, student_id: student.id, group_id: info[:group_id]))
-              - if @assignments.empty?
-                %td= " - "
-        - else
-          %tr.lines.text_none
-            %td{colspan: 4+(@assignments.any? ? @assignments.size : 1)}= t(".no_students")
+    = render partial: 'general'
+
 
 %div.legend
   = t(".subtitle")
 #scores_notes.legend_score_footer
-  %div.assignment_not_sent
-    = t(".assignment_not_sent")
-    = t(".assignment_not_sent_complete")
-  %div.assignment_without_group
-    = t(".assignment_without_group")
-    = t(".assignment_without_group_complete")
-  %div.assignment_sent
-    = t(".assignment_sent")
-    = t(".assignment_sent_complete")
-  %div.assignment_to_be_sent
-    = t(".assignment_to_be_sent")
-    = t(".assignment_to_be_sent_complete")
-  %div.assignment_not_started
-    = t(".assignment_not_started")
-    = t(".assignment_not_started_complete")
+  .evaluated
+    = t(".evaluated")
+    = t(".evaluated_complete")
+  .not_sent
+    = t(".not_sent")
+    = t(".not_sent_complete")
+  .without_group
+    = t(".without_group")
+    = t(".without_group_complete")
+  .sent
+    = t(".sent")
+    = t(".sent_complete")
+  .to_send
+    = t(".to_send")
+    = t(".to_send_complete")
+  .not_started
+    = t(".not_started")
+    = t(".not_started_complete")
+  %table
+    %td.new_after_evaluation
+      = t(".new_after_evaluation")
 
-:javascript
-  $(function(){
-
-    $(".link_list_exam").call_fancybox({
-      minWidth: '50%',
-      closeBtn : true,
-      height: 'auto'
-    });
-
-  });
+= javascript_include_tag 'scores'

@@ -17,10 +17,6 @@ tr#activities{
   }
 }
 
-table#list_of_students thead{
-  height: 48px;
-}
-
 .info_right{
   float: right; 
   width: 55%;
@@ -28,11 +24,32 @@ table#list_of_students thead{
   color: #787878;
   height: 100%;
 }
+
 .info_left{
   float: left; 
   width: 30%;
   font-size: 10pt;
   color: #787878;
+
+  a.tool_dropdown{
+    float: left;
+
+    margin-top: 6px;
+  }
+  ul.dropdown-menu{
+    li{
+      padding: 10px;
+      padding-bottom: 0px;
+      padding-top: 8px;
+    }
+    label:hover, label{
+      background-color: transparent;
+      color: #555;
+      cursor: pointer;
+      display: inline;
+    }
+  }
+
 }
 
 .tb_list_students{
@@ -40,18 +57,16 @@ table#list_of_students thead{
   margin-top: 10px;
 
   table{
-    table-layout: fixed;
     th, td{
       text-align: center;
+      min-width: 25px;
     }
     td.td_student{
       text-align: left;
+      width: 140px;
     }
-    td[class^='assignment_']{
-      background-color: #e6f0fc;
-    }
-    td[class^='assignment_']:nth-child(2n+1){
-      background:#cbe0fa;
+    th.tool{
+      min-width: 20px;
     }
     th#student {
       width: 120px;
@@ -75,5 +90,111 @@ table#list_of_students thead{
     float: right;
     font-size: 10pt;
     color: #787878;
+  }
+  
+}
+
+#scores_notes.legend_score_footer, .tb_list_students{
+  .evaluated {
+    color: #378941;
+  }
+
+  .sent, .sent a, .evaluated a
+  td.assignment_as a {
+    color: #2900c2;
+  }
+
+  .assignment_as, .assignment_as a{
+    color: #2900c2;
+  }
+
+  .not_sent, .not_sent a{
+    color: #e12227;
+  }
+
+  .not_started, .not_started a {
+    color: #787878;
+  }
+
+  .to_send, .to_send a{
+    color: #003e7a;
+  }
+
+  .without_group, .without_group a{
+    color: #e37073;
+  }
+
+  .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
+    white-space: nowrap;
+  }
+}
+
+table.scores#list_of_students{
+  overflow-x: auto;
+  display: inline-block;
+}
+
+table.users#list_of_students{
+  width: 20%;
+  display: inline-block;
+  th{
+    height: 64px;
+  }
+}
+
+table#list_of_students{
+  td.new_after_evaluation{
+    background-color: #e6f0fc;
+  }
+}
+
+#scores_notes table{
+  td.new_after_evaluation{
+    padding: 5px;
+    background-color: #e6f0fc;
+  } 
+}
+
+table#list_of_students thead{
+  height: 48px;
+  #tabs{
+    float: left;
+    border: none;
+    li a{
+      color: #aaaaaa;
+      cursor: pointer;
+      border-top: solid 1px #aaaaaa;
+    }
+    li a:not(.ui-tabs-anchor){
+      border-left: solid 1px #aaaaaa;
+    }
+    li a.active{
+      background-color: #fefae6;
+    }
+    a{
+      text-decoration: none;
+    }
+    li a:last-of-type{
+      border-right: solid 1px #aaaaaa;
+    }
+  }
+  a.tool_dropdown{
+    float: left;
+    padding: 4px;
+    margin-top: 6px;
+  }
+  ul.dropdown-menu{
+    label:hover, label{
+      background-color: transparent;
+      color: #555;
+      cursor: pointer;
+      display: inline;
+    }
+  }
+}
+
+table.general{
+  th{
+    min-width: 40px;
   }
 }

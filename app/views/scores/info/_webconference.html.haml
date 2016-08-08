@@ -13,10 +13,6 @@
 
       #evaluative
         - unless @webconferences_evaluative.blank?
-          .block_title
-            %h2
-              %i.icon-video-conference
-              = t(:webconferences, scope: [:webconferences, :list])
           %table.webconferences.tb_list
             %thead
               %tr.lines
@@ -38,7 +34,7 @@
                   
                   %td.center{ class: "#{status == t('webconferences.list.record_available') ? '' : 'disabled'}", :'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.id, at_id: webconference.at_id), class: 'record'
                   - if @can_see_access
-                    %td.center{ :'data-url' => list_access_webconference_path(webconference.id, at_id: webconference.at_id, user_id: @user.id), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]) }= link_to_function content_tag(:i, nil, class: 'icon-write'), 'list_access(this)'
+                    %td.center{ :'data-url' => list_access_webconference_path(webconference.id, at_id: webconference.at_id, user_id: @user.id), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]) }= link_to_function content_tag(:i, nil, class: 'icon-write evaluate'), 'list_access(this)', class: 'btn'
                   - else
                     %td= webconference.grade
                     
