@@ -2,31 +2,47 @@
   - @exams.each do |exam|
     - questions = exam.get_questions
 
-    .block_wrapper.module.exam{ id: "exam_#{exam.id}",  }
+    .block_wrapper.module.exam{ id: "exam_#{exam.id}", class: "exam_box"}
       = render partial: 'exams/list/info', locals: { exam: exam, has_group: exam.groups.any?, show_buttons: true, ckb: false, tags: { all_groups: all_groups, groups: exam.groups, tool: exam, paths: { add: add_group_to_exams_path(id: 'param_id', tool_id: exam.id), remove: remove_group_from_exams_path(id: 'param_id', tool_id: exam.id), unbind: unbind_group_from_exams_path(id: 'param_id', tool_id: exam.id), tags: group_tags_from_exams_path(tool_id: exam.id) } } }
+      %h2
+        .icons
+          = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show(this)'
+          = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show(this)'
+        = link_to_function t('editions.show_questions'), 'hide_or_show(this)', class: 'show_questions'
+        = link_to_function t('editions.hide_questions'), 'hide_or_show(this)', class: 'invisible hide_questions'
+      .block_content{class: 'invisible'}
+        .block_content_toolbar
+          .block_toolbar_left.btn-group
+            %a.btn.btn_main{ href: '#', 'data-dropdown' => "#dropdown_#{exam.id}"}
+              = content_tag(:i, nil, class: 'icon-plus')
+              %i.icon-arrow-down-triangle
+            %div{ id: "dropdown_#{exam.id}", class: "dropdown dropdown-tip" }
+              %ul.dropdown-menu
+                %li= link_to_function t('exams.list.new'), 'new_question(this)', :'data-url' => new_exam_question_path(exam_id: exam.id, allocation_tags_ids: @allocation_tags_ids), class: "link_new_question", :'data-can' => !exam.status
+                %li= link_to_function t('exams.list.import'), 'import_questions(this)', :'data-url' => import_steps_exam_questions_path(allocation_tags_ids: @allocation_tags_ids, exam_id: exam.id), :'data-tooltip' => t('exams.list.import'), :'data-can' => !exam.status
+          .block_toolbar_right
+            .btn-group{ class: "exam-#{exam.id}" }
+              = link_to_function (content_tag(:i, nil, class: 'icon-checkmark')), 'change_status(this, ".list_exams")', class: 'btn change_status_ckb', :'data-url' => publish_exam_question_path(':id'), disabled: true, :"data-tooltip" => t('exam_questions.list.publish')
+              = link_to_function (content_tag(:i, nil, class: 'icon-popup')), 'copy_question(this, ".list_exams")', class: 'btn btn_copy', :'data-link-to-copy' => copy_exam_question_path(':id'), disabled: true, :"data-tooltip" => t('questions.index.copy')
+              = link_to_function (content_tag(:i, nil, class: 'icon-edit')), 'edit_question(this)', class: 'btn btn_edit', :'data-link-to-edit' => edit_exam_question_path(':id'), :'data-edit-title' => t('exam_questions.list.edit'), disabled: true, :"data-tooltip" => t('exam_questions.list.edit')
+              = link_to_function (content_tag(:i, nil, class: 'icon-trash')), "delete_exam_questions(this, #{exam.id})", class: 'btn btn_del', :'data-link-delete' => exam_question_path(':id'), disabled: true, :'data-tooltip' => t('exam_questions.list.delete')
+        %div{ class: "list_questions_exam_#{exam.id}" }
+          - if questions.any?
+            = render partial: 'exam_questions/questions', locals: { questions: questions, exam: exam, hide_columns: false }
+          .text_none.empty_message{ class: (questions.blank? ? '' : 'hide_message') }= t(:none, scope: [:exams, :list])
 
-      .block_content_toolbar
-        .block_toolbar_left.btn-group
-          %a.btn.btn_main{ href: '#', 'data-dropdown' => "#dropdown_#{exam.id}"}
-            = content_tag(:i, nil, class: 'icon-plus')
-            %i.icon-arrow-down-triangle
-          %div{ id: "dropdown_#{exam.id}", class: "dropdown dropdown-tip" }
-            %ul.dropdown-menu
-              %li= link_to_function t('exams.list.new'), 'new_question(this)', :'data-url' => new_exam_question_path(exam_id: exam.id, allocation_tags_ids: @allocation_tags_ids), class: "link_new_question", :'data-can' => !exam.status
-              %li= link_to_function t('exams.list.import'), 'import_questions(this)', :'data-url' => import_steps_exam_questions_path(allocation_tags_ids: @allocation_tags_ids, exam_id: exam.id), :'data-tooltip' => t('exams.list.import'), :'data-can' => !exam.status
-        .block_toolbar_right
-          .btn-group{ class: "exam-#{exam.id}" }
-            = link_to_function (content_tag(:i, nil, class: 'icon-checkmark')), 'change_status(this, ".list_exams")', class: 'btn change_status_ckb', :'data-url' => publish_exam_question_path(':id'), disabled: true, :"data-tooltip" => t('exam_questions.list.publish')
-            = link_to_function (content_tag(:i, nil, class: 'icon-popup')), 'copy_question(this, ".list_exams")', class: 'btn btn_copy', :'data-link-to-copy' => copy_exam_question_path(':id'), disabled: true, :"data-tooltip" => t('questions.index.copy')
-            = link_to_function (content_tag(:i, nil, class: 'icon-edit')), 'edit_question(this)', class: 'btn btn_edit', :'data-link-to-edit' => edit_exam_question_path(':id'), :'data-edit-title' => t('exam_questions.list.edit'), disabled: true, :"data-tooltip" => t('exam_questions.list.edit')
-            = link_to_function (content_tag(:i, nil, class: 'icon-trash')), "delete_exam_questions(this, #{exam.id})", class: 'btn btn_del', :'data-link-delete' => exam_question_path(':id'), disabled: true, :'data-tooltip' => t('exam_questions.list.delete')
-      %div{ class: "list_questions_exam_#{exam.id}" }
-        - if questions.any?
-          = render partial: 'exam_questions/questions', locals: { questions: questions, exam: exam, hide_columns: false }
-        .text_none.empty_message{ class: (questions.blank? ? '' : 'hide_message') }= t(:none, scope: [:exams, :list])
-  
   / = link_to content_tag(:i, nil, class: 'icon-ellipsis'), list_exams_path(page: @exams.next_page, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-exams', remote: true, :"data-tooltip" => t(:load_items) if @exams.next_page
 
 - else
   .block_content.block_content_text= t(:none, scope: [:lesson_modules])
 
+:javascript
+
+    function hide_or_show(icon){
+    var div = $(icon).parents('.exam:first').find('.block_content');
+    div.slideToggle();
+    div.parent().find('.icon-arrow-down-triangle:first').toggleClass('invisible');
+    div.parent().find('.icon-arrow-up-triangle:first').toggleClass('invisible');
+    div.parent().find('.show_questions:first').toggleClass('invisible');
+    div.parent().find('.hide_questions:first').toggleClass('invisible');
+  }

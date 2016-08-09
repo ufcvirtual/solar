@@ -10,7 +10,7 @@
           = link_to_function content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('questions.question.preview')), 'preview_exam(this)', :'data-url' => preview_exam_path(exam, allocation_tags_ids: @allocation_tags_ids), class: 'preview_exam'
         = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_exam_path(exam, allocation_tags_ids: @allocation_tags_ids), class: 'block_title_button edit_exam', :'data-tooltip' => t('exams.list.edit_exam')
         = link_to_function (content_tag(:i, nil, class: 'icon-trash')), 'delete_exam(this)', class: 'block_title_button delete_exam', :'data-link-delete' => exam_path(exam, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('exams.list.delete_exam'), :"data-parent" => "exam_#{exam.id}"
-        
+
       .right
         %span.draft{ class: (exam.status ? 'invisible' : '') }
           = content_tag(:i, nil, class: 'icon-warning')

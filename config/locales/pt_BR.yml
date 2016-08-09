@@ -2199,6 +2199,8 @@ pt_BR:
 
   editions:
     alert: "Preencha os campos obrigatórios"
+    show_questions: "Visualizar Questões"
+    hide_questions: "Ocultar Questões"
     academic:
       courses: "Cursos"
       curriculum_units: "Disciplinas"

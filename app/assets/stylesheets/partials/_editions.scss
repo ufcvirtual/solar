@@ -211,10 +211,50 @@ label[for="all"]{
   }
 }
 
+.list_exams{
+  .btn_group{
+    width: 775px;
+    text-align: center;
+    margin: 20px 0px 20px 0px;
+
+    .btn_item{
+      @include item_button;
+      text-decoration: underline;
+      float: none;
+      margin: 1px;
+      display: inline-block;
+      padding: 20px 0px 20px 0px;
+      width: 250px;
+      border: 1px dashed #808080;
+    }
+  }
+  .exam_box{
+    width: 775px;
+    padding: 5px 0px 5px 4px;
+    border-left: 6px solid #005cc0;
+    background-color: #f3f3f3;
+  }
+  .block_wrapper .block_content_toolbar{
+    margin-top: 10px;
+      .btn{
+        font-size: 25pt;
+      }
+  }
+  .block_wrapper .tablesorter-headerRow{
+    font-size: 9pt;
+  }
+  .icons{
+    display: inline-block;
+    vertical-align: bottom;
+    a i.invisible{
+      display: none;
+    }
+  }
+}
+
 .block_wrapper .block_title{
   .tool_managmenet_link{
     float: right;
     margin-top: 10px;
   }
-  
 }

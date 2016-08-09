@@ -1993,6 +1993,8 @@ en_US:
       digital_class: Digital Class Lesson
   editions:
     alert: Fill the required fields
+    show_questions: "Show Questions"
+    hide_questions: "Hide Questions"
     academic:
       courses: "Courses"
       curriculum_units: "Subjects"
