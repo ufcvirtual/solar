@@ -1,12 +1,13 @@
 .indication
   .profile
-    .global
-      .global_item
-        = link_to(content_tag(:i, nil, class: 'icon-earth big'), indication_users_global_administrations_path, class: 'btn')
-        = link_to t(:global, scope: 'administrations'), indication_users_global_administrations_path
-      .global_text
-        %h2= t(:global_profile, scope: 'administrations')
-        %p=raw t(:global_profile_text, scope: 'administrations')
+    - if (can? :indication_users, Administration, { global: true })
+      .global
+        .global_item
+          = link_to(content_tag(:i, nil, class: 'icon-earth big'), indication_users_global_administrations_path, class: 'btn')
+          = link_to t(:global, scope: 'administrations'), indication_users_global_administrations_path
+        .global_text
+          %h2= t(:global_profile, scope: 'administrations')
+          %p=raw t(:global_profile_text, scope: 'administrations')
     .specific
       .specific_item
         = link_to(content_tag(:i, nil, class: 'icon-flag big'), indication_users_specific_administrations_path, class: 'btn')

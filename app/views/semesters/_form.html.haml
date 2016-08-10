@@ -54,6 +54,9 @@
 
   $('#save').click(function(){
     $('form#semester_form').serialize_and_submit({
+      complement_error: function(data){
+        $.fancybox.close();
+      },
       complement_success: function(data) {
 
         var semester_end = data.semester.end, semester_start = data.semester.start;

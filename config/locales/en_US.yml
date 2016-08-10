@@ -1470,6 +1470,7 @@ en_US:
         cancel: Allocation not canceled.
         cancel_request: No canceled.
         cancel_profile_request: Profile request not canceled.
+        invalid_profile: "Não é possível realizar alocação com o perfil e dados fornecidos"
     index:
       filter_user: "Filter Users"
       manage: Manage
@@ -2770,6 +2771,8 @@ en_US:
       tools: 'Tools'
       tool: 'Tool'
       title: Title
+      grade_i: "<b>Final Grade:</b> %{grade}"
+      frequency_i: "<b>Frequency:</b> %{wh} w/h"
     situation:
       not_started: Not started
       to_answer: To answer

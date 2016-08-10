@@ -72,7 +72,12 @@ class SemestersController < ApplicationController
 
   # PUT /semesters/1
   def update
-    authorize! :update, Semester
+    ats = RelatedTaggable.where(semester_id: params[:id]).pluck(:offer_at_id)
+    if ats.empty?
+      authorize! :update, Semester
+    else
+      authorize! :update, Semester, { on: ats }
+    end
 
     @semester = Semester.find(params[:id])
     if @semester.update_attributes(semester_params)
@@ -81,11 +86,19 @@ class SemestersController < ApplicationController
       @type_id = @semester.type_id
       render :edit
     end
+  rescue
+    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
   end
 
   # DELETE /semesters/1
   def destroy
-    authorize! :destroy, Semester
+    ats = RelatedTaggable.where(semester_id: params[:id]).pluck(:offer_at_id)
+    if ats.empty?
+      authorize! :destroy, Semester
+    else
+      authorize! :destroy, Semester, { on: ats }
+    end
+
     @semester = Semester.find(params[:id])
 
     if @semester.destroy
@@ -93,6 +106,8 @@ class SemestersController < ApplicationController
     else
       render json: {success: false, alert: t('semesters.error.deleted')}, status: :unprocessable_entity
     end
+  rescue
+    render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
   end
 
   private

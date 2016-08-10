@@ -4,7 +4,7 @@
       %h2= t(:designate_users, scope: 'allocations.designates')
 
     .block_content.allocations_list
-      - unless @allocations.nil? or @allocations.empty?
+      - unless @allocations.blank?
         %table.tb_list
           %thead
             %tr.lines

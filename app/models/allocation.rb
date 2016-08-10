@@ -25,6 +25,8 @@ class Allocation < ActiveRecord::Base
   after_save :update_digital_class_members, if: '(!new_record? && (status_changed? || profile_id_changed?))', on: :update
   after_save :update_digital_class_user_role, if: '(!new_record? && profile_id_changed?)', on: :update
 
+  validate :verify_profile, if: 'new_record? || profile_id_changed?'
+
   def can_change_group?
     not [Allocation_Cancelled, Allocation_Rejected].include?(status)
   end
@@ -255,6 +257,11 @@ class Allocation < ActiveRecord::Base
   end
 
   private
+
+    def verify_profile
+      errors.add(:base, I18n.t('allocations.request.error.invalid_profile')) if profile.has_type?(Profile_Type_Basic)
+      errors.add(:base, I18n.t('allocations.request.error.invalid_profile')) if profile.has_type?(Profile_Type_Admin) && !allocation_tag_id.nil?
+    end
 
     def self.query_for_enrollments(args = {})
       query = ["profile_id = #{Profile.student_profile}", "allocation_tags.group_id IS NOT NULL"]

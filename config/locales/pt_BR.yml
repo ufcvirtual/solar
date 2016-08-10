@@ -1671,6 +1671,7 @@ pt_BR:
         cancel: "Alocação não cancelada."
         cancel_request: "Cancelamento não realizado."
         cancel_profile_request: "Solicitação de perfil não cancelada"
+        invalid_profile: "Não é possível realizar alocação com o perfil e dados fornecidos"
     index:
       filter_user: "Filtrar usuários"
       manage: Gerenciar
@@ -2995,8 +2996,8 @@ pt_BR:
       not_evaluative: Não Avaliativa
       workload: Carga Horária
       student: "Aluno: "
-      grade_i: "Nota Final: "
-      frequency_i: "Frequência Geral: "
+      grade_i: "<b>Nota Final:</b> %{grade}"
+      frequency_i: "<b>Frequência:</b> %{wh} h/a"
       selected: "Selecione: "
       all: Todos
       tools: 'Ferramentas'

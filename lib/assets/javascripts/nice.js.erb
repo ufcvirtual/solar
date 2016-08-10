@@ -299,8 +299,9 @@ $.fn.serialize_and_submit = function(options) {
 
     options.error = function(data) {
       var response = JSON.parse(data.responseText);
-      if (typeof(response.alert) != "undefined")
+      if (typeof(response.alert) != "undefined"){
         flash_message(response.alert, 'alert', name);
+      }
 
       if (typeof(options.complement_error) == "function"){
           options.complement_error(data);

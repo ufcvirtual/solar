@@ -60,7 +60,7 @@ function manage_enrollment(obj) {
 }
 
 
-function magange_allocations_save(obj) {
+function manage_allocations_save(obj) {
   var url = $(obj).attr('save-link');
 
   $.ajax({
@@ -93,6 +93,8 @@ function change_status(button){
       $(button).parents('tr:first').replaceWith(data);
     });
   }).error(function(data){
-     flash_message(data.alert, 'alert');
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert');
   });
 }

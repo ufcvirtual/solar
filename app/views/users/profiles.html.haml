@@ -27,22 +27,4 @@
 :javascript
   $(function(){
     $('#request_profile').call_fancybox();
-
-    $(".btn_cancel").click(function(){
-      if ($(this).attr("disabled"))
-        return this;
-      if (!confirm("#{t(".confirm")}"))
-        return this;
-      $.delete($(this).data("link-cancel"), function(response){
-        $.get($(".profiles_list").data("link-list"), function(data){
-          $(".profiles_list").replaceWith(data);
-          flash_message(response.msg, "notice");
-        });
-      }).error(function(data){
-        var response = JSON.parse(data.responseText);
-        if (typeof(response.msg) != "undefined")
-          flash_message(response.msg, 'alert');
-      });
-    });
-
   });

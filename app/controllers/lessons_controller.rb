@@ -335,7 +335,7 @@ class LessonsController < ApplicationController
       allocation_tags = AllocationTag.get_by_params(params)
       @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
 
-      authorize! :index, Lesson, { on: @allocation_tags_ids, accepts_general_profile: true, read: true }
+      authorize! :list, Lesson, { on: @allocation_tags_ids, accepts_general_profile: true, read: true }
       @offer = Offer.find(allocation_tags[:offer_id])
     end
 

@@ -154,11 +154,11 @@ class User < ActiveRecord::Base
   end
 
   def admin?
-    !allocations.joins(:profile).where("cast(types & #{Profile_Type_Admin} as boolean) AND allocations.status = #{Allocation_Activated}").empty?
+    allocations.joins(:profile).where("cast(types & #{Profile_Type_Admin} as boolean) AND allocations.status = #{Allocation_Activated}").any?
   end
 
   def editor?
-    !allocations.joins(:profile).where("cast(types & #{Profile_Type_Editor} as boolean) AND allocations.status = #{Allocation_Activated}").empty?
+    allocations.joins(:profile).where("cast(types & #{Profile_Type_Editor} as boolean) AND allocations.status = #{Allocation_Activated}").any?
   end
 
   # if user is only researcher, must not see any information about users
@@ -600,6 +600,10 @@ class User < ActiveRecord::Base
   # alocar usuario em uma allocation_tag: profile, allocation_tags_ids, status
   def allocate_in(allocation_tag_ids: [], profile: Profile.student_profile, status: Allocation_Pending, by_user: nil)
     result = { success: [], error: [] }
+    if Profile.find(profile).has_type?(Profile_Type_Admin) && status == Allocation_Activated && !by_user.try(:admin?)
+      result[:error] << I18n.t(:no_permission)
+      return result
+    end
     Allocation.transaction do
       allocation_tag_ids.each do |at|
         al = allocations.build(allocation_tag_id: at, profile_id: profile)

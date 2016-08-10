@@ -16,13 +16,9 @@ class AllocationsController < ApplicationController
   before_filter only: [:show, :edit, :update] do
     @allocation = Allocation.find(params[:id])
 
-    if current_user.admin?
-      authorize! :manage_profiles, Allocation
-    else
-      # editor/aluno
-      # pedir matricula e perfil nao precisa de permissao
-      authorize! :manage_profiles, @allocation, on: [@allocation.allocation_tag_id] unless params[:profile_request] || params[:enroll_request]
-    end
+    # editor/aluno
+    # pedir matricula e perfil nao precisa de permissao
+    authorize! :manage_profiles, @allocation, { on: [@allocation.allocation_tag_id], accepts_general_profile: true } unless params[:profile_request] || params[:enroll_request]
   end
 
 
@@ -87,10 +83,8 @@ class AllocationsController < ApplicationController
     allocate_and_render_result(current_user, params[:profile_id], Allocation_Pending, t('allocations.request.success.profile'))
   end
 
-
   ## EDITOR - CONTEUDO - ALOCACOES
   ## ADMIN - INDICAR USUARIOS
-
 
   # GET /allocations/designates
   # GET /allocations/admin_designates
@@ -106,13 +100,11 @@ class AllocationsController < ApplicationController
   end
 
   def create_designation
-    if params[:admin] && current_user.admin?
-      authorize! :manage_profiles, Allocation
-    else
-      authorize! :manage_profiles, Allocation, on: @allocation_tags_ids
-    end
+    authorize! :manage_profiles, Allocation, { on: [@allocation_tags_ids], accepts_general_profile: true }
 
     allocate_and_render_result(User.find(params[:user_id]), params[:profile_id], params[:status])
+  rescue
+    render json: { success: false, msg: t(:no_permission) }, status: :unprocessable_entity
   end
 
   def search_users
@@ -125,11 +117,9 @@ class AllocationsController < ApplicationController
     @users = User.find_by_text_ignoring_characters(text).paginate(page: params[:page])
   end
 
-
   ## EDITOR - CONTEUDO - ALOCACOES
   ## ADMIN - INDICAR USUARIOS
   ## ADMIN APROVAR PERFIS
-
 
   # aluno pode cancel
   # admin/editor change allocation

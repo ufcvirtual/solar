@@ -32,6 +32,10 @@ class Profile < ActiveRecord::Base
     Profile.where("types <> ?", Profile_Type_Basic).order("name")
   end
 
+  def self.all_except_basic_and_admin
+    Profile.where("types <> ? AND types <> ?", Profile_Type_Basic, Profile_Type_Admin).order("name")
+  end
+
   def self.student_profile
     find_by_types(Profile_Type_Student).id
   end

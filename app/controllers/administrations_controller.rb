@@ -84,7 +84,7 @@ class AdministrationsController < ApplicationController
     @profiles = @allocations_user.map(&:profile).flatten.uniq
     @periods  = [ [t(:active), ''] ]
     @periods += Semester.all.map{|s| s.name}.flatten.uniq.sort! {|x,y| y <=> x}
-    @can_change = not(current_user.profiles_with_access_on('update_allocation', 'administrations').empty?)
+    @can_change = !(current_user.profiles_with_access_on('update_allocation', 'administrations').empty?)
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
@@ -130,10 +130,12 @@ class AdministrationsController < ApplicationController
   end
 
   def indication_users_specific
+    authorize! :indication_users, Administration
     @types = CurriculumUnitType.all
   end
 
   def indication_users_global
+    authorize! :indication_users, Administration, { global: true }
     @allocations = Allocation.joins(:profile).where(allocation_tag_id: nil).where('NOT cast(profiles.types & ? as boolean)', Profile_Type_Basic)
     @admin = true
   end
@@ -217,17 +219,21 @@ class AdministrationsController < ApplicationController
       end  
     end
 
+    allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:logs], 'administrations', false, true)
+    query << "allocation_tags.id IN (#{allocation_tags_ids.join(',')})" unless allocation_tags_ids.include?(nil)
+
     if (params[:type] == 'actions' || params[:type] == 'access')
       log = params[:type] == 'actions' ? LogAction : LogAccess
       query << "date(created_at) = '#{date.to_s(:db)}'" unless date.nil?
-      @logs = log.where(query.join(' AND ')).order('created_at DESC').limit(100)
+      join_query = (allocation_tags_ids.include?(nil) ? '' : "LEFT JOIN allocation_tags ON allocation_tags.id = #{log.to_s.tableize}.allocation_tag_id")
+      @logs = log.joins(join_query).where(query.join(' AND ')).order('created_at DESC').limit(100)
     else
-    if(date_end and date) 
+    if(date_end && date) 
      query << "log_navigations.created_at::date >= '#{date.to_s(:db)}' AND log_navigations.created_at::date <= '#{date_end.to_s(:db)}'" 
     else
      query << "log_navigations.created_at::date <= '#{date_end.to_s(:db)}'"
     end 
-  
+
     @logs = LogNavigation.where(query.join(' AND '))
     @logs =  @logs.joins('LEFT JOIN log_navigation_subs lognsub ON log_navigations.id = log_navigation_id')
       .joins('LEFT JOIN  assignments ON lognsub.assignment_id = assignments.id')
