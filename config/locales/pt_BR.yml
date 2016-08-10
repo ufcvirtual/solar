@@ -3458,6 +3458,8 @@ pt_BR:
       export_empty: É necessário selecionar provas como destino da exportação
       private: Questão é privada, não é possível realizar a ação desejada.
       already_exists: Não é possível repetir questões em uma prova
+      min_public_questions: A cada questão pública criada, você pode criar 10 privadas. Ao ultrapassar este limite, você não tem acesso a questões públicas de demais autores. O limite foi ultrapassado.
+      draft: Questão ainda como rascunho.
       cant_change_after_published: Não é possível realizar ação após publicação da prova. É necessário despublicá-la antes.
     export:
       conclude:

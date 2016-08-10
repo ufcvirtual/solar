@@ -3228,6 +3228,8 @@ en_US:
       import_empty: Select questions to import
       export_empty: Select questions to export
       private: Private question, is not possible to execute this action
+      min_public_questions: "To each public question created, you can create 10 private ones. By exceeding this limit, you don't have access to different authors public questions. The limit was exceeded."
+      draft: Question as draft
       already_exists: You can't repeat questions to an exam
       cant_change_after_published: You can't do this action after publishing the exam. You need to unpublishe it first.
     export:
