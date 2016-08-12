@@ -353,15 +353,20 @@ function change_status_exam(link){
   $.put($(link).data('url'), function(data){
     var success = data.success;
     flash_message(data.notice, 'notice');
+    var block_wrapper = $(link).parents(".block_wrapper");
 
     if($(link).hasClass('published')){
       $(link).html("<%=I18n.t('exams.list.unpublished')%>");
       $(link).removeClass('published').addClass('unpublished');
       $(link).siblings('.draft').removeClass('invisible');
+      block_wrapper.find('.dropdown-menu .link_new_question').first().data().can = true;
+      block_wrapper.find('.dropdown-menu .link_import_question').first().data().can = true;
     }else{
       $(link).html("<%=I18n.t('exams.list.published')%>");
       $(link).addClass('published').removeClass('unpublished');
       $(link).siblings('.draft').addClass('invisible');
+      block_wrapper.find('.dropdown-menu .link_new_question').first().data().can = false;
+      block_wrapper.find('.dropdown-menu .link_import_question').first().data().can = false;
     }
   }).error(function(data){
     var response = $.parseJSON(data.responseText);

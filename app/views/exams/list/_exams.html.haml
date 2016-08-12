@@ -19,7 +19,7 @@
             %div{ id: "dropdown_#{exam.id}", class: "dropdown dropdown-tip" }
               %ul.dropdown-menu
                 %li= link_to_function t('exams.list.new'), 'new_question(this)', :'data-url' => new_exam_question_path(exam_id: exam.id, allocation_tags_ids: @allocation_tags_ids), class: "link_new_question", :'data-can' => !exam.status
-                %li= link_to_function t('exams.list.import'), 'import_questions(this)', :'data-url' => import_steps_exam_questions_path(allocation_tags_ids: @allocation_tags_ids, exam_id: exam.id), :'data-tooltip' => t('exams.list.import'), :'data-can' => !exam.status
+                %li= link_to_function t('exams.list.import'), 'import_questions(this)', :'data-url' => import_steps_exam_questions_path(allocation_tags_ids: @allocation_tags_ids, exam_id: exam.id), :'data-tooltip' => t('exams.list.import'), class: "link_import_question", :'data-can' => !exam.status
           .block_toolbar_right
             .btn-group{ class: "exam-#{exam.id}" }
               = link_to_function (content_tag(:i, nil, class: 'icon-checkmark')), 'change_status(this, ".list_exams")', class: 'btn change_status_ckb', :'data-url' => publish_exam_question_path(':id'), disabled: true, :"data-tooltip" => t('exam_questions.list.publish')
