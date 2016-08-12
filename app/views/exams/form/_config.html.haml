@@ -35,6 +35,20 @@
   = button_to_function t(:save), 'save_exam()', class: 'btn btn_main btn_main', alt: t(:save), type: 'button'
 
 :javascript
+
+  $(function(){
+
+    if ($("#exam_attempts").val() <= 1){ $('#exam_attempts_correction').prop( "disabled", true ); }
+
+    $("#exam_attempts").bind("keyup change", function() {
+      if ($("#exam_attempts").val() > 1){
+        $('#exam_attempts_correction').prop( "disabled", false );
+      }
+      else { $('#exam_attempts_correction').prop( "disabled", true ); }
+    });
+
+  });
+
   function back(){
     $('.step-info').removeClass('hidden');
     $('.step-config').addClass('hidden');
