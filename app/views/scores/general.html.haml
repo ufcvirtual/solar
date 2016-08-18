@@ -1,0 +1,66 @@
+%html
+  %head
+    %title 
+      = 'Solar - '+t(:report, scope: [:scores, :info]) + t(:general, scope: [:scores, :index])
+    %meta{:charset => 'utf-8'}
+    = wicked_pdf_stylesheet_link_tag  "pdf", :media => "all"
+    
+  %body
+    .tool_all
+      .header
+        = wicked_pdf_image_tag "ufc.png", :style => "float: left; width:150px; height: 50px"
+        = wicked_pdf_image_tag "ufcVirtual.png", :style => "float: right; width:70px; height: 50px"
+      #title  
+        %br 
+        %br 
+        %br 
+        %br
+        = @ats.info 
+        %br 
+        %br 
+      .table_all
+        %table.tb_list.general#list_of_students{cellspacing: "0", border: "0", summary: t('.list_of_students')}
+          %thead
+            %tr.lines
+              %th.no_sort{colspan: 11}
+                #tabs
+                  =t('scores.index.general')
+
+            %tr.lines
+              %th#student= t("scores.index.student")
+              %th{style: "width: 8%;"}= t('scores.index.access_to_the_course')
+              - unless @wh.nil?
+                %th{style: "width: 8%;"}= t('scores.index.frequency')
+              %th{style: "width: 8%;"}= t('scores.index.final_grade')
+              %th{style: "width: 8%;"}= t('scores.index.public_files')
+              %th{style: "width: 8%;"}= t("activerecord.models.assignment")
+              %th{style: "width: 8%;"}= t("activerecord.models.exam")
+              %th{style: "width: 8%;"}= t("activerecord.models.discussion")
+              %th{style: "width: 8%;"}= t("activerecord.models.chat_room")
+              %th{style: "width: 8%;"}= t("activerecord.models.webconference")
+              %th{style: "width: 8%;"}= t("activerecord.models.schedule_event")
+              
+          %tbody.scores
+            - if @users.blank?
+              %tr.lines
+                %td{colspan: 2}= t('scores.index.no_data')
+            - else
+              - @users.each_with_index do |student, idx|
+                %tr.lines
+                  %td.td_student=student.name
+                  %td=student.u_logs
+                  - unless @wh.nil?
+                    %td=student.working_hours
+                  %td=student.u_grade
+                  %td=student.u_public_files
+                  %td="#{student.assignments} de #{@tools.assignments_count}"
+                  %td="#{student.exams} de #{@tools.exams_count}"
+                  %td="#{student.discussions} de #{@tools.discussions_count}"
+                  %td="#{student.chat_rooms} de #{@tools.chat_rooms_count}"
+                  %td="#{student.webconferences} de #{@tools.webconferences_count}"
+                  %td="#{student.schedule_events} de #{@tools.events_count}"
+
+
+
+= wicked_pdf_javascript_include_tag 'tooltip', 'tablesorter', 'scores'
+       

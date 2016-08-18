@@ -11,6 +11,9 @@
               %a{:'data-url' => not_evaluative_scores_path}=t('scores.index.not_evaluative')
               - unless @wh.nil?
                 %a{:'data-url' => frequency_scores_path}=t('scores.index.frequency')
+            %div{ class: 'link_pdf' }    
+              = link_to t('scores.index.print_pdf'), general_scores_path(report: true, format: :pdf), :target => "_blank", class: "btn"
+  
     %tr.lines
       %th#student.no_sort
       %th= t('scores.index.access_to_the_course')
@@ -45,4 +48,5 @@
           %td="#{student.webconferences} de #{@tools.webconferences_count}"
           %td="#{student.schedule_events} de #{@tools.events_count}"
 
+ 
 = javascript_include_tag 'tooltip', 'tablesorter', 'scores'

@@ -52,6 +52,17 @@ tr#activities{
 
 }
 
+.print_pdf{
+  float:left;
+  padding-left: 6px;
+  margin-top: 6px;
+}
+
+.link_pdf{
+  float:left;
+  padding-left: 6px;
+  font-weight: normal;
+}
 .tb_list_students{
   overflow-y: auto;
   margin-top: 10px;

@@ -219,6 +219,7 @@ Solar::Application.routes.draw do
       get :not_evaluative, to: :evaluatives_frequency
       get :general
       get :redirect_to_evaluate
+      get :reports_pdf
     end
   end
 

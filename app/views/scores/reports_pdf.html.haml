@@ -1,0 +1,104 @@
+%html
+  %head
+    %title 
+      = 'Solar - '+t(:report, scope: [:scores, :info]) + t(@type, scope: [:scores, :info])
+    %meta{:charset => 'utf-8'}
+    = wicked_pdf_stylesheet_link_tag  "pdf", :media => "all"
+    
+  %body
+    .tool_all
+      .header
+        = wicked_pdf_image_tag "ufc.png", :style => "float: left; width:150px; height: 50px"
+        = wicked_pdf_image_tag "ufcVirtual.png", :style => "float: right; width:70px; height: 50px"
+      #title  
+        %br 
+        %br 
+        %br 
+        %br
+        = @ats.info
+        %br  
+        - grade = @g.blank? ? ' - ' : @g.round(2).to_s
+        = t(:student, scope: [:scores, :info]) + @user.username
+        %br
+        = t(:grade_i, scope: [:scores, :info]) + grade
+        %br
+        = t(:frequency_i, scope: [:scores, :info]) + @wh.to_s
+        %br
+        = t(:report, scope: [:scores, :info]) + t(@type, scope: [:scores, :info])
+        %br
+        %br
+        %br
+        - unless @tool.empty?
+          %table.tb_list
+            %thead
+              %tr.lines
+                %th{style: "width: 20%;"}= t(:tool, scope: [:scores, :info])
+                %th{style: "width: 30%;"}= t(:title, scope: [:scores, :info])
+                %th.center.date{style: "width: 25%;"}= t(:date_range, scope: [:scores, :info])
+                %th{style: "width: 22%;"}= t(:situation, :scope => [:scores, :info])
+                - if @type == 'evaluative' || @type == 'all'
+                  %th{style: "width: 15%;"}= t(:grade, scope: [:scores, :info]) 
+                - if @type == 'frequency' || @type == 'all'
+                  %th{style: "width: 15%;"}= t(:frequency, scope: [:scores, :info]) 
+            %tbody
+              - @tool.each do |tool|
+                %tr.lines
+                  %td.show_posts
+                    = t(tool.academic_tool_type.downcase, scope: [:activerecord, :models])
+                  %td.show_posts
+                    = tool.name
+                  %td.center
+                    - if tool.academic_tool_type.downcase == 'webconference'
+                      %div= l(tool.start_hour.to_datetime, format: :at_date)
+                    - else
+                      %div= [l(tool.start_date.to_date), l(tool.end_date.to_date)].join(' - ')
+                      %div= [(tool.start_hour), (tool.end_hour)].join(' - ') unless tool.start_hour.blank?
+                  %td.center
+                    %div{class: "assignment_#{tool.situation}"}= t(tool.situation, :scope => [:scores, :situation]) unless tool.situation.blank?
+      
+                  - if @type == 'evaluative' || @type == 'all'
+                    %td.left
+                      = tool.grade.blank? ? ' - ' : tool.grade.to_f  
+                  - if @type == 'frequency' || @type == 'all'      
+                    %td.left
+                      = tool.working_hours.blank? ? ' - ' : tool.working_hours.to_i          
+        - else
+          .block_content.block_content_text= t(:itens_not_found)
+        %br
+        %br    
+        .block_wrapper
+          .block_title
+            %h3= t("scores.info.history_access", amount: @access.count)
+          .block_content.block_content_text
+            #history-body
+              %table.tb_list
+                = render partial: "access", locals: {access: @access}
+        %br
+        .block_wrapper
+          .block_title
+            %h3= t(:public_files, scope: [:scores, :info])
+          .block_content
+            - no_files = (@public_files.blank?)
+            %table.tb_list
+              %thead{style: (no_files ? "display: none" : "")}
+                %tr.lines
+                  %th
+                  %th{style: "width: 100px;"}= t(:file, scope: [:scores, :info])
+                  %th{style: "width: 100px;"}= t(:size, scope: [:scores, :info])
+                  %th{style: "width: 200px;"}= t(:sent_on, scope: [:scores, :info])
+
+              %tbody.public_files
+                - unless no_files
+                  - @public_files.each do |file|
+                    %tr.lines
+                      %td{style: "width: 10px;"}= wicked_pdf_image_tag icon_attachment(file.attachment_file_name)
+                      %td{style: "width: 150px;"}= file.attachment_file_name
+                      %td{style: "width: 100px;"}= format('%.2f KB', file.attachment_file_size.to_i/1024.0)
+                      %td{style: "width: 200px;"}= (file.attachment_updated_at.nil? ? " " : l(file.attachment_updated_at, format: :files))
+
+            .text_none.empty_message{class: (no_files ? "" : "hide_message")}= t(:itens_not_found)        
+
+         
+
+
+   

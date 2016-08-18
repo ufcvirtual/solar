@@ -2970,6 +2970,7 @@ pt_BR:
       no_data: Nenhum aluno ou atividade
       curriculum_unit_working_hours: '(Carga horária da disciplina: %{wh}h/a)'
       new_after_evaluation: Houve alteração no conteúdo enviado após avaliação
+      print_pdf: Gerar PDF
     info:
       assignments: Trabalhos
       date_range: Período
@@ -3003,6 +3004,8 @@ pt_BR:
       tools: 'Ferramentas'
       tool: 'Ferramenta'
       title: Titulo
+      reports: Relatórios (PDF)
+      report: "Relatório: "
     situation:
       not_started: Não iniciada
       to_answer: A responder

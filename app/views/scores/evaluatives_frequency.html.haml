@@ -1,0 +1,87 @@
+%html
+  %head
+    %title 
+      = 'Solar - '+t(:report, scope: [:scores, :info]) + t(:general, scope: [:scores, :index])
+    %meta{:charset => 'utf-8'}
+    = wicked_pdf_stylesheet_link_tag  "pdf", :media => "all"
+    
+  %body
+    .tool_all
+      .header
+        = wicked_pdf_image_tag "ufc.png", :style => "float: left; width:150px; height: 50px"
+        = wicked_pdf_image_tag "ufcVirtual.png", :style => "float: right; width:70px; height: 50px"
+      #title  
+        %br 
+        %br 
+        %br 
+        %br
+        = @ats.info 
+        %br 
+        %br 
+      .table_all
+        %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.list_of_students')  }
+          %thead
+            %tr.lines
+              %th#student
+              %th.no_sort{colspan: @acs.size}
+                - if(@score_type == 'evaluative')  
+                  =t('scores.index.evaluative') 
+                - elsif (@score_type == 'frequency') 
+                  =t('scores.index.frequency')
+                - else 
+                  =t('scores.index.not_evaluative')               
+               
+            - if @acs.any?
+              %tr.lines
+                %th.no_sort#student= t("scores.index.student")
+                - @acs.group_by{|t| t['tool_type']}.each do |ac|
+                  - ac[1].each_with_index do |tool, idx|
+                    - if ac[0] == @examidx || ac[0] == @assignmentidx || ac[0] == @scheduleEventidx || ac[0] == @discussionidx || ac[0] == @chatRoomidx || ac[0] == @webconferenceidx
+                      %th=tool.name        
+          %tbody.scores
+
+            - if @users.empty? || @acs.empty?
+              %tr.lines.no_sort
+                %td{colspan: 2}
+            - else
+              - @users.each do |student|
+                - user_scores = @scores.select { |attachment| attachment.user_id.to_i == student.id }
+                %tr.lines
+                  %td.td_student{'data-tooltip' => student.name}= student.name
+                  - @acs.each do |ac|
+                    - if  ac.tool_type == @examidx ||  ac.tool_type == @assignmentidx ||  ac.tool_type == @scheduleEventidx ||  ac.tool_type == @discussionidx ||  ac.tool_type == @chatRoomidx ||  ac.tool_type == @webconferenceidx
+
+                      - score = user_scores.select { |attachment| attachment.id.to_i == ac.id.to_i }
+                      - if score.blank?
+                        %td.not_sent= t("scores.index.not_sent")
+                      - else
+                        %td{class: "#{score.first.situation} #{ac.tool_type} #{score.first.new_after_evaluation ? 'new_after_evaluation' : ''}" }
+                          = (score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}")
+                          
+%div.legend
+  = t("scores.index.subtitle")
+#scores_notes.legend_score_footer
+  .evaluated
+    = t("scores.index.evaluated")
+    = t("scores.index.evaluated_complete")
+  .not_sent
+    = t("scores.index.not_sent")
+    = t("scores.index.not_sent_complete")
+  .without_group
+    = t("scores.index.without_group")
+    = t("scores.index.without_group_complete")
+  .sent
+    = t("scores.index.sent")
+    = t("scores.index.sent_complete")
+  .to_send
+    = t("scores.index.to_send")
+    = t("scores.index.to_send_complete")
+  .not_started
+    = t("scores.index.not_started")
+    = t("scores.index.not_started_complete")
+  %table
+    %td.new_after_evaluation
+      = t("scores.index.new_after_evaluation")
+                  
+= wicked_pdf_javascript_include_tag 'tooltip', 'tablesorter', 'scores'
+

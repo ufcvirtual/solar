@@ -12,6 +12,15 @@
     = t(:grade_i, scope: [:scores, :info]) + grade
     %br
     = t(:frequency_i, scope: [:scores, :info]) + @wh.to_s
+
+  %fieldset.info_right
+    = t(:reports, scope: [:scores, :info]) 
+    %br
+    = link_to t(:all, scope: [:scores, :info]), reports_pdf_scores_path(tool: true, user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
+    = link_to t(:evaluative, scope: [:scores, :info]), reports_pdf_scores_path(evaluative: true, user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
+    = link_to t(:frequency, scope: [:scores, :info]), reports_pdf_scores_path(frequency: true, user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
+    = link_to t(:not_evaluative, scope: [:scores, :info]), reports_pdf_scores_path(user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
+    
 #list_tools
 
 %br    

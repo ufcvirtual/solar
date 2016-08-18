@@ -16,6 +16,8 @@ class ScoresController < ApplicationController
 
     @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true)
     @tools = ( ats.empty? ? [] : EvaluativeTool.count_tools(ats) )
+    @tools_list = EvaluativeTool.descendants
+
     @wh = AllocationTag.find(@allocation_tag_id).get_curriculum_unit.try(:working_hours)
   end
 
@@ -56,8 +58,29 @@ class ScoresController < ApplicationController
     @users = Score.get_users(ats)
     @scores = Score.evaluative_frequency(ats, params[:type])
 
-    render partial: 'evaluative_frequency', locals: {score_type: params[:type]}
-  end
+
+    if params[:report]
+      @ats = AllocationTag.find(@allocation_tag_id)
+      @score_type = params[:type]
+      @examidx = params[:Examidx] unless params[:Examidx].blank?
+      @assignmentidx = params[:Assignmentidx] unless params[:Assignmentidx].blank?
+      @scheduleEventidx = params[:ScheduleEventidx] unless params[:ScheduleEventidx].blank?
+      @discussionidx = params[:Discussionidx] unless params[:Discussionidx].blank?
+      @chatRoomidx = params[:ChatRoomidx] unless params[:ChatRoomidx].blank?
+      @webconferenceidx = params[:Webconferenceidx] unless params[:Webconferenceidx].blank?
+      respond_to do |format|
+        format.html do
+          render pdf:         'evaluatives_frequency',
+                 orientation: 'Landscape',
+                 locals: {score_type: params[:type]},
+                 layout: false
+        end   
+      end 
+    else
+      render partial: 'evaluative_frequency', locals: {score_type: params[:type]}
+    end   
+
+  end 
 
   def general
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
@@ -66,7 +89,18 @@ class ScoresController < ApplicationController
     @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true)
     @tools = ( ats.empty? ? [] : EvaluativeTool.count_tools(ats) )
 
-    render partial: 'general'
+    if params[:report]
+      @ats = AllocationTag.find(@allocation_tag_id)
+      respond_to do |format|
+        format.html do
+          render pdf:         'general',
+                 orientation: 'Landscape',
+                 layout: false
+        end       
+      end 
+    else
+      render partial: 'general'
+    end    
   end
 
   def info
@@ -149,6 +183,32 @@ class ScoresController < ApplicationController
       @tool_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id) 
       render partial: "scores/info/"+tool
     end   
+  end  
+
+  def reports_pdf
+    authorize! :info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+    evaluative = params[:evaluative]
+    frequency = params[:frequency]
+    tool = params[:tool]
+    if frequency
+      @type = 'frequency'
+    elsif evaluative
+      @type = 'evaluative'  
+    elsif tool
+      @type = 'all' 
+    else
+      @type = 'not_evaluative' 
+    end  
+              
+    @user = params[:user_id] ? User.find(params[:user_id]) : current_user
+    @ats = AllocationTag.find(@allocation_tag_id)
+    @g = AcademicAllocationUser.get_grade_finish(@user.id, @allocation_tag_id).final_grade
+    @wh = Allocation.get_working_hours(@user.id, AllocationTag.find(@allocation_tag_id))
+
+    @tool = Score.list_tool(@user.id, @allocation_tag_id, evaluative, frequency, tool)
+    @access, @public_files = Score.informations(@user.id, @allocation_tag_id)
+   
+    render layout: false
   end  
 
   def user_info

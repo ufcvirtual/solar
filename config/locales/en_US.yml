@@ -2740,6 +2740,7 @@ en_US:
       no_data: No student or activity
       curriculum_unit_working_hours: '(Curriculum Unit working hours: %{wh}w/h)'
       new_after_evaluation: Chages was made at the sent content after evaluation
+      print_pdf: Print PDF
     info:
       assignments: Assignments
       date_range: Date range
@@ -2773,6 +2774,8 @@ en_US:
       title: Title
       grade_i: "<b>Final Grade:</b> %{grade}"
       frequency_i: "<b>Frequency:</b> %{wh} w/h"
+      reports: Reports (PDF)
+      report: "Report: "
     situation:
       not_started: Not started
       to_answer: To answer

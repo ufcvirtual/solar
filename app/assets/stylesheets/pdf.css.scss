@@ -154,3 +154,172 @@
 	  }
 
 }
+.tool_all{
+	font-size: 12px;
+	.tb_list{
+		font-size: 12px;
+	}
+	table{
+		width: 100%;
+	}
+	table tbody tr:nth-child(odd) {
+		background:lightgray;
+	}
+	table thead tr th {
+    background: #FFEFDB;
+    border: 1px;
+	}
+	.evaluated {
+	    color: #378941;
+	  }
+
+	  .sent, .sent a, .evaluated a
+	  td.assignment_as a {
+	    color: #2900c2;
+	  }
+
+	  .assignment_as, .assignment_as a{
+	    color: #2900c2;
+	  }
+
+	  .not_sent, .not_sent a{
+	    color: #e12227;
+	  }
+
+	  .not_started, .not_started a {
+	    color: #787878;
+	  }
+
+	  .to_send, .to_send a{
+	    color: #003e7a;
+	  }
+
+	  .without_group, .without_group a{
+	    color: #e37073;
+	  }
+
+	  .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
+	    white-space: nowrap;
+	  }
+
+	table td {
+		text-align:center; 
+    vertical-align:middle;
+	}
+}
+
+/**
+* Situacao das tarefas
+*/
+
+.assignment_corrected {
+  color: #378941;
+}
+
+.assignment_not_answered {
+  color: #CC0033;
+}
+
+.assignment_opened {
+  color: #006666;
+}
+.assignment_to_answer {
+  color: #0099FF;
+}
+
+.assignment_sent, .assignment_sent a, .assignment_corrected a
+td.assignment_as a {
+  color: #2900c2;
+}
+
+.assignment_as, .assignment_as a{
+  color: #2900c2;
+}
+
+.assignment_not_sent, .assignment_not_sent a,
+.expired {
+  color: #e12227;
+}
+
+.assignment_not_started, .assignment_not_started a {
+  color: #787878;
+}
+
+.assignment_to_be_sent, .assignment_to_be_sent a,
+.assignment_pending,
+td.assignment_an a {
+  color: #003e7a;
+}
+
+.assignment_an{
+  color: #003e7a;
+}
+.assignment_without_group, .assignment_without_group a,
+td.assignment_without_group a {
+  color: #e37073;
+}
+
+.assignment_corrected,
+.assignment_sent,
+.assignment_not_sent,
+.assignment_not_started,
+.assignment_to_be_sent,
+.assignment_pending,
+.assignment_without_group,
+.expired,
+td.assignment_as a,
+td.assignment_an a,
+td.assignment_without_group a
+{
+  white-space: nowrap;
+}
+.legend{
+	position: absolute;
+	bottom:0;
+  top: 233%;
+	font-size: 13px;
+}
+
+#scores_notes.legend_score_footer, .tb_list_students{
+  position: absolute;
+	bottom:0;
+  top: 240%;
+	font-size: 10px;
+  
+  .evaluated {
+    color: #378941;
+  }
+
+  .sent, .sent a, .evaluated a
+  td.assignment_as a {
+    color: #2900c2;
+  }
+
+  .assignment_as, .assignment_as a{
+    color: #2900c2;
+  }
+
+  .not_sent, .not_sent a{
+    color: #e12227;
+  }
+
+  .not_started, .not_started a {
+    color: #787878;
+  }
+
+  .to_send, .to_send a{
+    color: #003e7a;
+  }
+
+  .without_group, .without_group a{
+    color: #e37073;
+  }
+
+  .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
+    white-space: nowrap;
+  }
+  table td.new_after_evaluation{
+  	font-size: 10px;
+  }
+  
+}

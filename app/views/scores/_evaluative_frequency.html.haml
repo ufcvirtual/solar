@@ -15,12 +15,18 @@
           = content_tag(:i, nil, class: 'icon-list')
           = t('scores.index.show_hide_tools')
           %i.icon-arrow-down-triangle
-        %div{ id: "dropdown_menu", class: 'dropdown dropdown-tip' }
-          %ul.dropdown-menu
-            - @tools.each_with_index do |tool, idx|
-              %li
-                = check_box_tag "#{tool}idx", tool, true
-                = label_tag "#{tool}idx", t("activerecord.models.#{tool.tableize.singularize}")
+        = simple_form_for :evaluative_frequency, :url => url = not_evaluative_scores_path, html: { id: 'evaluative_frequency_form', method: 'get', target: '_blank' } do |f|  
+          %div{ id: "dropdown_menu", class: 'dropdown dropdown-tip' }
+            %ul.dropdown-menu
+              - @tools.each_with_index do |tool, idx|
+                %li
+                  = check_box_tag "#{tool}idx", tool, true
+                  = label_tag "#{tool}idx", t("activerecord.models.#{tool.tableize.singularize}")
+          = hidden_field_tag :report, true
+          = hidden_field_tag :type, score_type
+          %div{ class: 'print_pdf' }
+            = f.button :submit, :class => "btn",  value: t('scores.index.print_pdf')
+
     - if @acs.any?
       %tr.lines
         %th.no_sort#student
@@ -46,5 +52,7 @@
                   = (score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}")
                 - else
                   = link_to_function (score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}"), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: ac.tool_type, ac_id: ac.id, user_id: student.id, group_id: score.first.group, situation: score.first.situation, score_type: score_type)
-
+                  
 = javascript_include_tag 'tooltip', 'tablesorter', 'scores'
+
+

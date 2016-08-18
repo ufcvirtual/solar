@@ -10,11 +10,11 @@ class Score # < ActiveRecord::Base
     [history_access, public_files]
   end
 
-  def self.list_tool(user_id, at_id, evaluative=false, frequency=false)
+  def self.list_tool(user_id, at_id, evaluative=false, frequency=false, tool=false)
   	all_tags = AllocationTag.find(at_id).related
   	wq = "AND academic_allocations.evaluative=true " if evaluative
     wq = "AND academic_allocations.frequency=true " if frequency
-    wq = "AND academic_allocations.evaluative=false AND academic_allocations.frequency=false " if !evaluative && !frequency
+    wq = "AND academic_allocations.evaluative=false AND academic_allocations.frequency=false " if !evaluative && !frequency && !tool
   	User.find_by_sql "SELECT DISTINCT
 		  academic_allocations.id, 
 		  academic_allocations.allocation_tag_id, 
