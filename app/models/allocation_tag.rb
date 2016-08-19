@@ -240,9 +240,11 @@ class AllocationTag < ActiveRecord::Base
           SELECT  COUNT(DISTINCT academic_allocations.academic_tool_id) AS count, COALESCE(academic_allocation_users.user_id, gp.user_id) AS user_id
           FROM academic_allocation_users
           JOIN (
-           SELECT assignment_files.academic_allocation_user_id FROM assignment_files
+           (SELECT assignment_files.academic_allocation_user_id FROM assignment_files)
            UNION
-           SELECT assignment_webconferences.academic_allocation_user_id FROM assignment_webconferences
+           (SELECT assignment_webconferences.academic_allocation_user_id 
+           FROM assignment_webconferences
+           WHERE is_recorded AND (initial_time + (interval '1 mins')*duration) < now())
           ) files ON files.academic_allocation_user_id = academic_allocation_users.id
           JOIN academic_allocations ON academic_allocations.id = academic_allocation_users.academic_allocation_id AND academic_allocations.academic_tool_type = 'Assignment'
           LEFT JOIN group_participants gp ON gp.group_assignment_id = academic_allocation_users.group_assignment_id
