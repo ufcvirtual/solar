@@ -61,10 +61,12 @@ module Bbb
   end
 
   def bbb_online?(api = nil)
-    api = bbb_prepare if api.nil?
-    url  = URI(api.url)
-    response = Net::HTTP.get_response(url)
-    return (Net::HTTPSuccess === response)
+    Timeout::timeout(5) do
+      api = bbb_prepare if api.nil?
+      url  = URI(api.url)
+      response = Net::HTTP.get_response(url)
+      return (Net::HTTPSuccess === response)
+    end
   rescue
     false
   end

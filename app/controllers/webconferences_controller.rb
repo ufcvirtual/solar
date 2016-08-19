@@ -20,7 +20,7 @@ class WebconferencesController < ApplicationController
     api             = bbb_prepare
     @online         = bbb_online?(api)
     @can_see_access = can? :list_access, Webconference, { on: at }
-    @meetings       = get_meetings(api)
+    @meetings       = @online ? get_meetings(api) : []
     @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true), {asc: true}, (@can_see_access ? nil : current_user.id))
   end
 
