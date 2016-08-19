@@ -286,7 +286,7 @@ class ScoresController < ApplicationController
   def redirect_to_open
     tool_id = AcademicAllocation.find(params[:ac_id]).academic_tool_id
 
-    unless ['started', 'retake', 'to_answer', 'to_send', 'not_finished', 'sent', 'evaluated', 'to_be_sent'].include?(params[:situation])
+    unless ['started', 'retake', 'to_answer', 'to_send', 'not_finished', 'sent', 'evaluated', 'to_be_sent', 'without_group'].include?(params[:situation])
       if params[:situation] == 'not_started' && params[:tool_type] == 'Exam'
         authorize! :show, Question, { on: active_tab[:url][:allocation_tag_id] }
         render json: { url: preview_exam_path(tool_id, allocation_tags_ids: active_tab[:url][:allocation_tag_id]) }
@@ -296,7 +296,11 @@ class ScoresController < ApplicationController
     else
       case params[:tool_type]
       when 'Assignment'
-        render json: { url: student_assignment_path(tool_id, student_id: params[:user_id], group_id: params[:group_id]), method: :get }
+        if params[:situation] == 'without_group'
+          render json: { url: group_assignments_path(assignment_id: tool_id) }
+        else
+          render json: { url: student_assignment_path(tool_id, student_id: params[:user_id], group_id: params[:group_id]), method: :get }
+        end
       when 'ChatRoom'
         profiles = current_user.profiles_with_access_on(:show, 'chat_rooms', active_tab[:url][:allocation_tag_id], true)
         allocation = Allocation.where(profile_id: profiles, status: Allocation_Activated, user_id: current_user.id).first.try(:id)
