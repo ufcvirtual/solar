@@ -12,35 +12,37 @@
         = wicked_pdf_image_tag "ufcVirtual.png", :style => "float: right; width:70px; height: 50px"
       #title  
         %br 
-        %br 
-        %br 
-        %br
-        = @ats.info
-        %br  
-        - grade = @g.blank? ? ' - ' : @g.round(2).to_s
-        = t(:student, scope: [:scores, :info]) + @user.username
-        %br
-        = t(:grade_i, scope: [:scores, :info]) + grade
-        %br
-        = t(:frequency_i, scope: [:scores, :info]) + @wh.to_s
-        %br
-        = t(:report, scope: [:scores, :info]) + t(@type, scope: [:scores, :info])
         %br
         %br
         %br
-        - unless @tool.empty?
-          %table.tb_list
-            %thead
-              %tr.lines
-                %th{style: "width: 20%;"}= t(:tool, scope: [:scores, :info])
-                %th{style: "width: 30%;"}= t(:title, scope: [:scores, :info])
-                %th.center.date{style: "width: 25%;"}= t(:date_range, scope: [:scores, :info])
-                %th{style: "width: 22%;"}= t(:situation, :scope => [:scores, :info])
-                - if @type == 'evaluative' || @type == 'all'
-                  %th{style: "width: 15%;"}= t(:grade, scope: [:scores, :info]) 
-                - if @type == 'frequency' || @type == 'all'
-                  %th{style: "width: 15%;"}= t(:frequency, scope: [:scores, :info]) 
-            %tbody
+        %div{style: 'font-weight: bold; font-size: 12pt; font-family: "Ubuntu"; text-align: center;'}= @ats.info
+        %br
+        %div{style: 'font-family: "Ubuntu"; text-align: center;'}= t(:report, scope: [:scores, :info]) + t(@type, scope: [:scores, :info])
+        .info.block_content{style: 'padding: 24px;'}
+          .left{style: 'float: left;'}
+            = wicked_pdf_image_tag @user.user_photo(:medium), alt: t(:mysolar_alt_img_user)
+          .evaluation_info{style: 'margin: 15px; padding-right: 0; display: inline-block;'}
+            %div{style: 'font-weight: bold; font-size: 12pt; text-align: center;font-family: "Ubuntu"; '}= @user.name
+            %div{style: 'font-weight: bold; font-size: 12pt; font-family: "Ubuntu"; text-align: center;'}= '(' + @user.nick + ')'
+            %br
+            %div= raw @curriculum_unit.try(:working_hours).nil? ? t('scores.info.uc_without_wh') : t('scores.info.frequency_uc', wh: @curriculum_unit.try(:working_hours))
+            - if @is_student
+              .grade= raw t('scores.info.grade_i', grade: (@g.blank? ? ' - ' : @g.round(2).to_s))
+              .frequency= raw t('scores.info.frequency_i', wh: @wh)
+        %br
+        %table.tb_list
+          %thead
+            %tr.lines
+              %th{style: "width: 20%;"}= t(:tool, scope: [:scores, :info])
+              %th{style: "width: 30%;"}= t(:title, scope: [:scores, :info])
+              %th.center.date{style: "width: 25%;"}= t(:date_range, scope: [:scores, :info])
+              %th{style: "width: 22%;"}= t(:situation, :scope => [:scores, :info])
+              - if @type == 'evaluative' || @type == 'all'
+                %th{style: "width: 15%;"}= t(:grade, scope: [:scores, :info]) 
+              - if @type == 'frequency' || @type == 'all'
+                %th{style: "width: 15%;"}= t(:frequency, scope: [:scores, :info]) 
+          %tbody
+            - unless @tool.empty?
               - @tool.each do |tool|
                 %tr.lines
                   %td.show_posts
@@ -62,13 +64,15 @@
                   - if @type == 'frequency' || @type == 'all'      
                     %td.left
                       = tool.working_hours.blank? ? ' - ' : tool.working_hours.to_i          
-        - else
-          .block_content.block_content_text= t(:itens_not_found)
-        %br
+            - else
+              %tr.lines{colspan: 6}
+                %td{colspan: 6}= t(:itens_not_found)
         %br    
         .block_wrapper
           .block_title
-            %h3= t("scores.info.history_access", amount: @access.count)
+            %h3= t("scores.info.history_access", amount: @access_count)
+            #amount_found{style: "float: right; margin-top: 7px;"}
+              =t('scores.info.last_five')
           .block_content.block_content_text
             #history-body
               %table.tb_list
@@ -95,8 +99,9 @@
                       %td{style: "width: 150px;"}= file.attachment_file_name
                       %td{style: "width: 100px;"}= format('%.2f KB', file.attachment_file_size.to_i/1024.0)
                       %td{style: "width: 200px;"}= (file.attachment_updated_at.nil? ? " " : l(file.attachment_updated_at, format: :files))
-
-            .text_none.empty_message{class: (no_files ? "" : "hide_message")}= t(:itens_not_found)        
+                - else
+                  %tr.lines{colspan: 4}
+                    %td{colspan: 4}= t(:itens_not_found)
 
          
 

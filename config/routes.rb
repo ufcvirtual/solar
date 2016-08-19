@@ -220,6 +220,7 @@ Solar::Application.routes.draw do
       get :general
       get :redirect_to_evaluate
       get :reports_pdf
+      get :redirect_to_open
     end
   end
 

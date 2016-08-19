@@ -102,7 +102,7 @@
 * Situacao das tarefas
 */
 
-.assignment_corrected {
+.assignment_corrected, .assignment_evaluated {
   color: #378941;
 }
 
@@ -110,14 +110,7 @@
   color: #CC0033;
 }
 
-.assignment_opened {
-  color: #006666;
-}
-.assignment_to_answer {
-  color: #0099FF;
-}
-
-.assignment_sent, .assignment_sent a, .assignment_corrected a
+.assignment_sent, .assignment_sent a, .assignment_corrected a, .assignment_finished,
 td.assignment_as a {
   color: #2900c2;
 }
@@ -126,8 +119,8 @@ td.assignment_as a {
   color: #2900c2;
 }
 
-.assignment_not_sent, .assignment_not_sent a,
-.expired {
+.assignment_not_sent, .assignment_not_sent a, .assignment_record_available,
+.expired, .assignment_closed {
   color: #e12227;
 }
 
@@ -136,7 +129,7 @@ td.assignment_as a {
 }
 
 .assignment_to_be_sent, .assignment_to_be_sent a,
-.assignment_pending,
+.assignment_pending, .assignment_to_answer, .assignment_not_finished, .assignment_opened,
 td.assignment_an a {
   color: #003e7a;
 }
@@ -150,10 +143,12 @@ td.assignment_without_group a {
 }
 
 .assignment_corrected,
+.assignment_evaluated,
 .assignment_sent,
 .assignment_not_sent,
 .assignment_not_started,
 .assignment_to_be_sent,
+.assignment_to_send,
 .assignment_pending,
 .assignment_without_group,
 .expired,

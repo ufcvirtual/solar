@@ -23,7 +23,6 @@ class Post < ActiveRecord::Base
   after_save :update_acu, on: :update
 
   validates :content, :profile_id, presence: true
-  validates :academic_allocation_user_id, presence: true, if: 'merge.nil?'
 
   attr_accessor :merge
 

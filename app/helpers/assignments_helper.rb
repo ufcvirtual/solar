@@ -55,6 +55,7 @@ module AssignmentsHelper
     @student_id, @group_id = (params[:group_id].nil? ? [params[:student_id], nil] : [nil, params[:group_id]])
     @group = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
     @own_assignment = Assignment.owned_by_user?(current_user.id, { student_id: @student_id, group: @group, academic_allocation_user: academic_allocation_user })
+    redirect_to list_assignments_path, alert: t('exams.restrict') if @group.blank? && (academic_allocation_user.try(:assignment) || Assignment.find(params[:id])).type_assignment == Assignment_Type_Group
     raise CanCan::AccessDenied unless (@own_assignment || AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(current_user.id)) && (@student_id.nil? && academic_allocation_user.try(:user_id).nil? ? true : User.find(@student_id || academic_allocation_user.user_id).has_profile_type_at(allocation_tag_id))
   end
 
@@ -62,6 +63,7 @@ module AssignmentsHelper
     acu_id = (aparams[:academic_allocation_user_id] || aparams.academic_allocation_user_id)
     raise CanCan::AccessDenied if acu_id.blank?
     acu = AcademicAllocationUser.find(acu_id)
+    redirect_to list_assignments_path, alert: t('exams.restrict') if @group.blank? && acu.assignment.type_assignment == Assignment_Type_Group
     @own_assignment = Assignment.owned_by_user?(current_user.id,  { student_id: @student_id, group: @group, academic_allocation_user: acu })
     @bbb_online = bbb_online?
     @in_time    = acu.assignment.in_time?

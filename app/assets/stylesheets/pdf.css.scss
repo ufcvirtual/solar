@@ -280,12 +280,64 @@ td.assignment_without_group a
 	font-size: 13px;
 }
 
+.assignment_corrected, .assignment_evaluated {
+  color: #378941;
+}
+
+.assignment_not_answered {
+  color: #CC0033;
+}
+
+.assignment_sent, .assignment_sent a, .assignment_corrected a, .assignment_finished,
+td.assignment_as a {
+  color: #2900c2;
+}
+
+.assignment_as, .assignment_as a{
+  color: #2900c2;
+}
+
+.assignment_not_sent, .assignment_not_sent a, .assignment_record_available,
+.expired, .assignment_closed {
+  color: #e12227;
+}
+
+.assignment_not_started, .assignment_not_started a {
+  color: #787878;
+}
+
+.assignment_to_be_sent, .assignment_to_be_sent a,
+.assignment_pending, .assignment_to_answer, .assignment_not_finished, .assignment_opened,
+td.assignment_an a {
+  color: #003e7a;
+}
+
+.assignment_an{
+  color: #003e7a;
+}
+.assignment_without_group, .assignment_without_group a,
+td.assignment_without_group a {
+  color: #e37073;
+}
+
+.assignment_corrected,
+.assignment_evaluated,
+.assignment_sent,
+.assignment_not_sent,
+.assignment_not_started,
+.assignment_to_be_sent,
+.assignment_to_send,
+.assignment_pending,
+.assignment_without_group,
+.expired,
+td.assignment_as a,
+td.assignment_an a,
+td.assignment_without_group a
+{
+  white-space: nowrap;
+}
+
 #scores_notes.legend_score_footer, .tb_list_students{
-  position: absolute;
-	bottom:0;
-  top: 240%;
-	font-size: 10px;
-  
   .evaluated {
     color: #378941;
   }
@@ -318,8 +370,10 @@ td.assignment_without_group a
   .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
     white-space: nowrap;
   }
-  table td.new_after_evaluation{
-  	font-size: 10px;
-  }
-  
 }
+
+td.new_after_evaluation{
+    font-size: 10pt;
+    padding: 5px;
+    background-color: #e6f0fc;
+} 

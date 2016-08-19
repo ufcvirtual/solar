@@ -187,7 +187,7 @@ class AllocationTag < ActiveRecord::Base
     types, query, select, relations, group = [], [], [], [], []
     types << "cast( profiles.types & '#{Profile_Type_Student}' as boolean )"           if params[:students]     || params[:all]
     types << "cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )" if params[:responsibles] || params[:all]
-    query << "profile_id IN (#{params[:profiles]})"                                    if params[:profiles]
+    query << "allocations.profile_id IN (#{params[:profiles]})"                                    if params[:profiles]
 
     ats = (allocation_tag_id.kind_of?(Array) ? allocation_tag_id : AllocationTag.find(allocation_tag_id).related).flatten.join(',')
 
@@ -197,8 +197,9 @@ class AllocationTag < ActiveRecord::Base
     select << "DISTINCT users.id, COUNT(public_files.id) AS u_public_files, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name"
     
     relations << <<-SQL
-      JOIN allocations ON users.id    = allocations.user_id
-      JOIN profiles    ON profiles.id = allocations.profile_id
+      LEFT JOIN allocations ON users.id    = allocations.user_id
+      LEFT JOIN allocations grades ON users.id    = grades.user_id AND grades.final_grade IS NOT NULL
+      LEFT JOIN profiles    ON profiles.id = allocations.profile_id
       LEFT JOIN public_files ON public_files.user_id = users.id AND public_files.allocation_tag_id IN (#{ats})
     SQL
 
@@ -207,7 +208,7 @@ class AllocationTag < ActiveRecord::Base
     if scores
       msg_query = Message.get_query('users.id', 'outbox', ats, { ignore_trash: false, ignore_user: true })
 
-      select << 'users.name, COALESCE(posts.count,0) AS u_posts, COALESCE(posts.count_discussions,0) AS discussions, COALESCE(logs.count,0) AS u_logs, COALESCE(sent_msgs.count,0) AS u_sent_msgs, allocations.final_grade AS u_grade, COALESCE(exams.count,0) AS exams, COALESCE(logs_a.count,0) AS webconferences, COALESCE(assignments.count,0) AS assignments, COALESCE(events.count,0) AS schedule_events, COALESCE(chats.count,0) AS chat_rooms, COALESCE(acu.working_hours, 0) AS working_hours'
+      select << 'users.name, COALESCE(posts.count,0) AS u_posts, COALESCE(posts.count_discussions,0) AS discussions, COALESCE(logs.count,0) AS u_logs, COALESCE(sent_msgs.count,0) AS u_sent_msgs, COALESCE(grades.final_grade, 0) AS u_grade, COALESCE(exams.count,0) AS exams, COALESCE(logs_a.count,0) AS webconferences, COALESCE(assignments.count,0) AS assignments, COALESCE(events.count,0) AS schedule_events, COALESCE(chats.count,0) AS chat_rooms, COALESCE(acu.working_hours, 0) AS working_hours'
 
       relations << <<-SQL
         LEFT JOIN(
@@ -295,7 +296,7 @@ class AllocationTag < ActiveRecord::Base
         ) chats ON chats.user_id = users.id
       SQL
 
-      group << 'posts.count, logs.count, sent_msgs.count, allocations.final_grade, posts.count_discussions, exams.count, logs_a.count, assignments.count, events.count, chats.count, acu.working_hours'
+      group << 'posts.count, logs.count, sent_msgs.count, COALESCE(grades.final_grade, 0), posts.count_discussions, exams.count, logs_a.count, assignments.count, events.count, chats.count, acu.working_hours'
     else
       select << "users.*, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name"
     end
@@ -312,7 +313,6 @@ class AllocationTag < ActiveRecord::Base
       GROUP BY #{group.join(',')}
       ORDER BY users.name;
     SQL
-
   end
 
   def recalculate_students_grades

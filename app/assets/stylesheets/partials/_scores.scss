@@ -18,11 +18,18 @@ tr#activities{
 }
 
 .info_right{
-  float: right; 
-  width: 55%;
   font-size: 10pt;
-  color: #787878;
   height: 100%;
+  text-align: center;
+  margin-top: 14px;
+  .links{
+    margin-left: -28%;
+  }
+  label{
+    font-weight: bold;
+    display: block;
+    margin-left: 20%;
+  }
 }
 
 .info_left{
@@ -207,5 +214,72 @@ table#list_of_students thead{
 table.general{
   th{
     min-width: 40px;
+  }
+}
+
+#scores{
+  .evaluation_info{
+    margin: 15px;
+    width: 50%;
+    padding-right: 0;
+    display: inline-block;
+  }
+  .scores_menu{
+    text-align: center;
+  }
+  .info{
+    padding: 24px;
+    padding-left: 22%;
+    padding-right: 17%;
+    .left{
+      float: left;
+      .grade,.frequency{
+        text-align: center;
+      }
+    }
+    img{
+      border-radius: 58px;
+      box-shadow: 4px 4px 7px #929792;
+      margin-bottom: 10px;
+    }
+  }
+
+  ul.dropdown-menu{
+    li{
+      padding: 10px;
+      padding-bottom: 0px;
+      padding-top: 8px;
+    }
+    label:hover, label{
+      background-color: transparent;
+      color: #555;
+      cursor: pointer;
+      display: inline;
+      font-size: 12pt;
+    }
+  }
+
+  #tabs{
+    border: none;
+    .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, .ui-state-hover, .ui-state-focus{
+      border: none;
+      background-color: #fefae6;
+    }
+    ul{
+      li{
+        border-top: solid 1px #aaaaaa;
+        border-left: solid 1px #aaaaaa;
+        border-right: solid 1px #aaaaaa;
+      }
+      li a{
+        color: #aaaaaa;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      li.active, li a:active, li a:hover, li a::selection{
+        background-color: #fefae6;
+        border: none;
+      }
+    }
   }
 }

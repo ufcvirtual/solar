@@ -15,7 +15,9 @@
         %br 
         %br 
         %br
-        = @ats.info 
+        %div{style: 'font-weight: bold; font-size: 12pt; font-family: "Ubuntu"; text-align: center;'}= @ats.info
+        %br 
+        %div{style: 'font-weight: bold; font-size: 12pt; font-family: "Ubuntu"; text-align: center;'}= t(:menu_score_student)
         %br 
         %br 
       .table_all
@@ -41,8 +43,8 @@
           %tbody.scores
 
             - if @users.empty? || @acs.empty?
-              %tr.lines.no_sort
-                %td{colspan: 2}
+              %tr.lines{colspan: 6}
+                %td{colspan: 2}= t('scores.index.no_data')
             - else
               - @users.each do |student|
                 - user_scores = @scores.select { |attachment| attachment.user_id.to_i == student.id }
@@ -55,33 +57,33 @@
                       - if score.blank?
                         %td.not_sent= t("scores.index.not_sent")
                       - else
-                        %td{class: "#{score.first.situation} #{ac.tool_type} #{score.first.new_after_evaluation ? 'new_after_evaluation' : ''}" }
+                        %td{class: "#{score.first.situation} #{ac.tool_type} #{score.first.new_after_evaluation == 't' ? 'new_after_evaluation' : ''}" }
                           = (score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}")
                           
 %div.legend
   = t("scores.index.subtitle")
-#scores_notes.legend_score_footer
-  .evaluated
-    = t("scores.index.evaluated")
-    = t("scores.index.evaluated_complete")
-  .not_sent
-    = t("scores.index.not_sent")
-    = t("scores.index.not_sent_complete")
-  .without_group
-    = t("scores.index.without_group")
-    = t("scores.index.without_group_complete")
-  .sent
-    = t("scores.index.sent")
-    = t("scores.index.sent_complete")
-  .to_send
-    = t("scores.index.to_send")
-    = t("scores.index.to_send_complete")
-  .not_started
-    = t("scores.index.not_started")
-    = t("scores.index.not_started_complete")
-  %table
-    %td.new_after_evaluation
-      = t("scores.index.new_after_evaluation")
+  #scores_notes.legend_score_footer
+    .evaluated
+      = t("scores.index.evaluated")
+      = t("scores.index.evaluated_complete")
+    .not_sent
+      = t("scores.index.not_sent")
+      = t("scores.index.not_sent_complete")
+    .without_group
+      = t("scores.index.without_group")
+      = t("scores.index.without_group_complete")
+    .sent
+      = t("scores.index.sent")
+      = t("scores.index.sent_complete")
+    .to_send
+      = t("scores.index.to_send")
+      = t("scores.index.to_send_complete")
+    .not_started
+      = t("scores.index.not_started")
+      = t("scores.index.not_started_complete")
+    %table
+      %td.new_after_evaluation
+        = t("scores.index.new_after_evaluation")
                   
 = wicked_pdf_javascript_include_tag 'tooltip', 'tablesorter', 'scores'
 

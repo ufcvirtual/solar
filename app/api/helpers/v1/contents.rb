@@ -66,6 +66,7 @@ module V1::Contents
     ActiveRecord::Base.transaction do
       # cant unmerge if never merged
       raise 'not merged' if !merge && !Merge.where(main_group_id: main_group.id, secundary_group_id: secundary_group.id).last.try(:type_merge)
+      
       remove_all_content(to_at) unless merge
 
       replicate_discussions(from_academic_allocations, to_at)

@@ -118,11 +118,10 @@ class AssignmentsController < ApplicationController
       redirect_to list_assignments_path, alert: t('exams.restrict')
     else
       @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
-      @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
       verify_owner_or_responsible!(@allocation_tag_id)
+      @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
 
       @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
-
       @ac = AcademicAllocation.where(academic_tool_id: @assignment.id, allocation_tag_id: @allocation_tag_id, academic_tool_type: 'Assignment').first
       @acu = AcademicAllocationUser.find_one(@ac.id, @student_id, @group_id)
 

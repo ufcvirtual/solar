@@ -183,6 +183,28 @@ class User < ActiveRecord::Base
     (all.first['count'] != '0' && all.first['count'] == researcher_profiles.first['count'])
   end
 
+  def is_student?(allocation_tags_ids)
+    all = Profile.find_by_sql <<-SQL
+      SELECT COUNT(*) FROM
+        (
+          SELECT DISTINCT profiles.id
+          FROM profiles
+          JOIN allocations ON allocations.profile_id = profiles.id
+          WHERE 
+            allocations.allocation_tag_id IN (#{allocation_tags_ids.join(',')}) 
+            AND
+            user_id = #{id}
+            AND 
+            allocations.status = #{Allocation_Activated}
+            AND
+            cast( profiles.types & '#{Profile_Type_Student}' as boolean )
+        ) AS ids;
+
+    SQL
+
+    (all.first['count'] != '0')
+  end
+
   ## Na criação, o usuário recebe o perfil de usuario basico
   def basic_profile_allocation
     Allocation.create profile_id: Profile.find_by_types(Profile_Type_Basic).id, status: Allocation_Activated, user_id: self.id
@@ -291,8 +313,9 @@ class User < ActiveRecord::Base
     return false if query_type.empty?
 
     AllocationTag.where(id: allocations.joins(:profile).where(query)
-      .where(query_type.join(' OR '), responsible: Profile_Type_Class_Responsible, observer: Profile_Type_Observer, coord: Profile_Type_Coord))
-      .map { |at| at.related(upper: true) }
+      .where(query_type.join(' OR '), responsible: Profile_Type_Class_Responsible, observer: Profile_Type_Observer, coord: Profile_Type_Coord).map(&:allocation_tag_id))
+      .map(&:related)
+      .flatten
   end
 
   # Retorna os ids das allocations_tags ativadas de um usuário

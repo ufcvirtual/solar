@@ -1247,10 +1247,12 @@ en_US:
   no_events: "No events to selected day"
   not_started: Not Started
   corrected: Corrected
+  evlauated: Evaluated
   not_corrected: Not Corrected
   sent: Sent
   not_sent: Not Sent
   to_be_sent: To be sent
+  to_send: To be sent
   without_group: Without Group
   comment_error_delete_file: Error when trying to delete file
   group: "Group"
@@ -2110,7 +2112,7 @@ en_US:
       rules_title: "<b>Rules and informations</b>"
       rules: "<div>1) If it is a frequency activity, the maximum working hours sum must be equal to the curriculum unit working hours.<br/><br/><div>2) If it is evaluative, distinct final weigh sum must be 100.</div> <br/> <i>Example: Discussion 1 with final weight 40, Chat 2 with final weight 40, Exam with final weight 60. 40 (all activities with final weight 40) + 60 (all activities with final weight 60) = 100.</i> (CORRECT) <br/> <i>Exemple: Discussion 1 with final weight 40, Chat 2 with final weight 45, Exam with final weight 60. 40 (all activities with final weight 40) + 45 (all activities with final weight 45) + 60 (all activities with final weight 60) = 145.</i> (INCORRECT)</div><br/><div>If an activity is defined as equivalent to another, it should have the same working hours, weight and final weight than main activity. If those values are missing or incorrect, it will be defined as the same value as main activity.</div><br/><div>3) After change something here and finish it, all students final grade will be automatically recalculated.</div><br/><div>4) By defining an activity as evaluative, student's final grade will be automatically calculated considering that all grades have a range from 0 to 10.</div>"
       rule_wh1: "<div>5) You can't define an activity as frquency while curriculum unit doesn't have working hours.</div>"
-      rule_wh2: "<div>5) Curriculum Unit working hours: %{working_hours}. Therefore, maximum working hours sum can't be above this value.</div>"
+      rule_wh2: "<div>5) <b>Curriculum Unit working hours: %{working_hours}</b>. Therefore, maximum working hours sum can't be above this value.</div>"
       expand: Expand all
       compress: Compress all
       share_wh: Share working/hours
@@ -2751,6 +2753,7 @@ en_US:
       assignments_sent: Assignment's sent
       discussions_participation: Discussion's participation
       history_access: "Access history (total: %{amount})"
+      access_info: "Only five last access are listed, to see all or by period, click on the search button"
       search: Search
       access_found: " access found"
       public_files: Public files
@@ -2776,12 +2779,20 @@ en_US:
       frequency_i: "<b>Frequency:</b> %{wh} w/h"
       reports: Reports (PDF)
       report: "Report: "
+      uc_without_wh: "Curriculum unit without working hours"
+      frequency_uc: "<b>Curriculum unit working hours:</b> %{wh} h/a"
+      responsibles: "<b>Responsibles: </b>"
+      new_yes: Yes
+      new_no: No
+      new_after_evaluation: Changed after evaluation
+      last_five: "Here are listed only the last five accesses"
     situation:
       not_started: Not started
       to_answer: To answer
       not_finished: Not finished (%{count}%)
       finished: Finished
       corrected: Corrected
+      evaluated: Evaluated
       not_corrected: Not corrected
       not_answered: Not answered
       retake: Retake  
@@ -2803,7 +2814,6 @@ en_US:
       finish: "Finish"
       processing: "Processing"
       record_available: Finished with record
-      
     access:
       date: Date
       time: Time
@@ -2811,6 +2821,8 @@ en_US:
     error:
       invalid_date: Invalid date.
       situation: It's not possible to evaluate yet. Activity haven't started or student haven't sent anything yet.
+      situation2: It's not possible to evaluate yet. Activity haven't started or student haven't sent anything yet or student is without a group.
+      not_possible: It's not possible to access this page.
   lesson_notes:
     error:
       general_message: Can't do action
@@ -3019,6 +3031,7 @@ en_US:
       not_finished: This exam is not finished yet
       duration_and_hour: must be smaller than time difference
       no_attempt: No attempt made
+      cant_calcule_grade: Grade already calculated or still not possible to calcule.
     show:
       groups: Groups
       empty_group: Empty group
@@ -3385,6 +3398,9 @@ en_US:
       eq_evaluative: is not evaluative, while this is.
       eq_frequency: is not frequency, while this is.
       itself: can't be itself.
+      event_evaluative: "can't be defined, Reccess or Holiday events can't be evaluative."
+      event_frequency: "can't be defined, Reccess or Holiday events can't be frequency."
+      same_type: 'Must have same type of equivalency'
     success:
       manage: Activities managed successfully.
     warnings:

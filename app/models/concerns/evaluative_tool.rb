@@ -16,8 +16,10 @@ module EvaluativeTool
                 academic_tool_type, 
                 array_agg(allocation_tag_id) AS ats
          FROM academic_allocations 
+         LEFT JOIN schedule_events ON academic_allocations.academic_tool_type = 'ScheduleEvent' = schedule_events.id = academic_allocations.academic_tool_id
          WHERE academic_tool_type IN (#{"'"+self.descendants.join("','")+"'"}) 
          AND allocation_tag_id IN (#{ats.uniq.join(',')})
+         AND schedule_events.id IS NULL OR (schedule_events.type_event != #{Recess} AND schedule_events.type_event != #{Holiday})
          GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight
          ) ac ON ac.ids @> ARRAY[academic_allocations.id];
     SQL

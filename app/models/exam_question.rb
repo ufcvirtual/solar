@@ -16,7 +16,7 @@ class ExamQuestion < ActiveRecord::Base
   before_destroy :can_reorder?, :can_save?, :unpublish
 
   before_save :can_save?, unless: 'annulled_changed?'
-  after_save :recalculate_grades, if: 'annulled_changed? && question.status'
+  after_save :recalculate_grades, if: 'annulled_changed? && exam.status'
 
   def recalculate_grades
     exam.recalculate_grades

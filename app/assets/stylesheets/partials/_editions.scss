@@ -167,7 +167,7 @@ label[for="all"]{
           text-decoration: none;
         }
         input[type='text']{
-          width: 20px;
+          width: 25px;
         }
       }
       .tools_by_tool_type.invisible{
@@ -256,5 +256,12 @@ label[for="all"]{
   .tool_managmenet_link{
     float: right;
     margin-top: 10px;
+  }
+}
+
+
+.filter{
+  li.ui-menu-item a{
+    color: #222222;
   }
 }

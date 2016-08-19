@@ -58,7 +58,6 @@ class ScoresController < ApplicationController
     @users = Score.get_users(ats)
     @scores = Score.evaluative_frequency(ats, params[:type])
 
-
     if params[:report]
       @ats = AllocationTag.find(@allocation_tag_id)
       @score_type = params[:type]
@@ -107,86 +106,87 @@ class ScoresController < ApplicationController
     authorize! :info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @user = current_user
 
-    @types = [ [t(:exam, scope: [:scores, :info]), 'exam'], [t(:assignments, scope: [:scores, :info]), 'assignment'],[t(:discussions, scope: [:scores, :info]), 'discussion'], [t(:chat, scope: [:scores, :info]), 'chat'],[t(:webconference, scope: [:scores, :info]), 'webconference'],[t(:schedule_events, scope: [:scores, :info]), 'schedule_event'], [t(:all, scope: [:scores, :info]), 'all']]
+    @types = [ [t(:exam, scope: [:scores, :info]), 'exam'], [t(:assignments, scope: [:scores, :info]), 'assignment'],[t(:discussions, scope: [:scores, :info]), 'discussion'], [t(:chat, scope: [:scores, :info]), 'chat_room'],[t(:webconference, scope: [:scores, :info]), 'webconference'],[t(:schedule_events, scope: [:scores, :info]), 'schedule_event'], [t(:all, scope: [:scores, :info]), 'all']]
+
+    @allocation_tag = AllocationTag.find(@allocation_tag_id)
+    @curriculum_unit = @allocation_tag.get_curriculum_unit
+    @responsible = AllocationTag.get_participants(@allocation_tag_id, {responsibles: true})
+
+    @is_student = @user.is_student?([@allocation_tag_id])
 
     @wh = Allocation.get_working_hours(@user.id, AllocationTag.find(@allocation_tag_id))
-
-    @access, @public_files = Score.informations(@user.id, @allocation_tag_id)
+    @access, @public_files, @access_count = Score.informations(@user.id, @allocation_tag_id)
   end
 
   def search_tool
-    if params.include?(:user_id)
-      begin
-        authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-        @user = User.find(params[:user_id])
-      rescue
-        authorize! :info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-        @user = current_user
-      end
-    else
+    begin
+      raise 'user' unless params.include?(:user_id)
+      authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+      @user = User.find(params[:user_id])
+    rescue
       authorize! :info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
       @user = current_user
     end
     
-    tool = params[:tool][params[:tool].length.to_i-1]
-    case tool
+    case params[:tool]
     when 'discussion'
       @can_evaluate = can? :evaluate, Discussion, { on: @allocation_tag_id }
-      @discussions_evaluative     = Discussion.all_by_allocation_tags_evaluative(@allocation_tag_id, true)
-      @discussions_frequency      = Discussion.all_by_allocation_tags_evaluative(@allocation_tag_id, false, true)
-      @discussions_not_evaluative = Discussion.all_by_allocation_tags_evaluative(@allocation_tag_id)
-      render partial: "scores/info/"+tool
-    when 'chat'
+      @discussions_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'discussions', true)
+      @discussions_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'discussions', false, true)
+      @discussions_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'discussions')
+    when 'chat_room'
       @can_evaluate = can? :evaluate, ChatRoom, { on: @allocation_tag_id }
-      chats_evaluative = ChatRoom.list_chats(@user.id, @allocation_tag_id, true)
-      chats_frequency = ChatRoom.list_chats(@user.id, @allocation_tag_id,false, true)
-      chats_not_evaluative = ChatRoom.list_chats(@user.id, @allocation_tag_id)
 
-      @chats_evaluative = chats_evaluative[:my]
-      @chats_frequency = chats_frequency[:my]
-      @chats_not_evaluative = chats_not_evaluative[:my]
-      render partial: "scores/info/"+tool, locals: { chats: @my_chats, history: true, can_open_link: true }
-    when 'webconference'  
-      api = bbb_prepare
-      @online = bbb_online?(api)
-      @can_see_access = can? :evaluate, Webconference, { on: @allocation_tag_id }
-
-      upper_ats = AllocationTag.find(@allocation_tag_id).related(upper: true)
+      @chat_rooms_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'chat_rooms', true)
+      @chat_rooms_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'chat_rooms', false, true)
+      @chat_rooms_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'chat_rooms')
+    when 'webconference'
+      @online = bbb_online?(bbb_prepare)
+      @can_evaluate = can? :evaluate, Webconference, { on: @allocation_tag_id }
+      @can_see_access = can? :list_access, Webconference, { on: @allocation_tag_id }
      
-      @webconferences_evaluative =  Webconference.all_by_allocation_tags(upper_ats, {asc: true}, (@can_see_access ? nil : @user.id), true, false)
-      @webconferences_frequency = Webconference.all_by_allocation_tags(upper_ats, {asc: true}, (@can_see_access ? nil : @user.id), false, true)
-      @webconferences_not_evaluative = Webconference.all_by_allocation_tags(upper_ats, {asc: true}, (@can_see_access ? nil : @user.id), true, true)
-      render partial: "scores/info/"+tool
+      @webconferences_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'webconferences', true)
+      @webconferences_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'webconferences', false, true)
+      @webconferences_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'webconferences')
     when 'exam'
       @can_see_access = can? :evaluate, Exam, { on: @allocation_tag_id }
 
-      @exams_evaluative = Exam.list_exams(@allocation_tag_id, true)
-      @exams_frequency = Exam.list_exams(@allocation_tag_id, false, true)
-      @exams_not_evaluative = Exam.list_exams(@allocation_tag_id)
-      render partial: "scores/info/"+tool
+      @exams_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'exams', true)
+      @exams_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'exams', false, true)
+      @exams_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'exams')
     when 'assignment'
       @can_evaluate_ass = can? :evaluate, Assignment, { on: @allocation_tag_id }
-      @assigments_evaluative = Assignment.list_assigment(@user.id, @allocation_tag_id, true) 
-      @assigments_frequency = Assignment.list_assigment(@user.id, @allocation_tag_id, false, true) 
-      @assigments_not_evaluative = Assignment.list_assigment(@user.id, @allocation_tag_id) 
-      render partial: "scores/info/"+tool 
+      @assigments_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'assignments', true)
+      @assigments_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'assignments', false, true)
+      @assigments_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'assignments')
     when 'schedule_event'
       @can_evaluate_ev = can? :evaluate, ScheduleEvent, { on: @allocation_tag_id }
 
-      @schedules_event_evaluative = ScheduleEvent.list_schedule_event(@allocation_tag_id, true) 
-      @schedules_event_frequency = ScheduleEvent.list_schedule_event(@allocation_tag_id, false, true) 
-      @schedules_event_not_evaluative = ScheduleEvent.list_schedule_event(@allocation_tag_id) 
-      render partial: "scores/info/"+tool 
+      @schedules_event_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'schedule_events', true)
+      @schedules_event_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'schedule_events', false, true)
+      @schedules_event_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'schedule_events')
     else  #todos
-      @tool_evaluative = Score.list_tool(@user.id, @allocation_tag_id, true)
-      @tool_frequency = Score.list_tool(@user.id, @allocation_tag_id, false, true) 
-      @tool_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id) 
-      render partial: "scores/info/"+tool
-    end   
+      @can_evaluate = current_user.resources_by_allocation_tags_ids([@allocation_tag_id])
+      @tool_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'all', true)
+      @tool_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'all', false, true) 
+      @tool_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'all') 
+    end
+
+    render partial: "scores/info/"+params[:tool]
   end  
 
   def reports_pdf
-    authorize! :info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+    allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    begin
+      raise 'user' unless params.include?(:user_id)
+      authorize! :index, Score, on: [allocation_tag_id]
+      @user = User.find(params[:user_id])
+    rescue
+      authorize! :info, Score, on: [allocation_tag_id]
+      @user = current_user
+    end
+    raise CanCan::AccessDenied unless @user.is_student?([allocation_tag_id])
+
     evaluative = params[:evaluative]
     frequency = params[:frequency]
     tool = params[:tool]
@@ -199,14 +199,16 @@ class ScoresController < ApplicationController
     else
       @type = 'not_evaluative' 
     end  
-              
-    @user = params[:user_id] ? User.find(params[:user_id]) : current_user
-    @ats = AllocationTag.find(@allocation_tag_id)
-    @g = AcademicAllocationUser.get_grade_finish(@user.id, @allocation_tag_id).final_grade
-    @wh = Allocation.get_working_hours(@user.id, AllocationTag.find(@allocation_tag_id))
 
-    @tool = Score.list_tool(@user.id, @allocation_tag_id, evaluative, frequency, tool)
-    @access, @public_files = Score.informations(@user.id, @allocation_tag_id)
+    at = AllocationTag.find(allocation_tag_id)
+    @curriculum_unit = at.get_curriculum_unit
+             
+    @ats = AllocationTag.find(allocation_tag_id)
+    @g = AcademicAllocationUser.get_grade_finish(@user.id, allocation_tag_id).final_grade
+    @wh = Allocation.get_working_hours(@user.id, at)
+
+    @tool = Score.list_tool(@user.id, allocation_tag_id, 'all', evaluative, frequency, (@type == 'all'))
+    @access, @public_files, @access_count = Score.informations(@user.id, allocation_tag_id)
    
     render layout: false
   end  
@@ -214,8 +216,15 @@ class ScoresController < ApplicationController
   def user_info
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @user = User.find(params[:user_id])
-    @access, @public_files = Score.informations(@user.id, @allocation_tag_id)
-    @types = [ [t(:exam, scope: [:scores, :info]), 'exam'], [t(:assignments, scope: [:scores, :info]), 'assignment'],[t(:discussions, scope: [:scores, :info]), 'discussion'], [t(:chat, scope: [:scores, :info]), 'chat'],[t(:webconference, scope: [:scores, :info]), 'webconference'],[t(:schedule_events, scope: [:scores, :info]), 'schedule_event'], [t(:all, scope: [:scores, :info]), 'all'] ]
+    @access, @public_files, @access_count = Score.informations(@user.id, @allocation_tag_id)
+    @types = [ [t(:exam, scope: [:scores, :info]), 'exam'], [t(:assignments, scope: [:scores, :info]), 'assignment'],[t(:discussions, scope: [:scores, :info]), 'discussion'], [t(:chat, scope: [:scores, :info]), 'chat_room'],[t(:webconference, scope: [:scores, :info]), 'webconference'],[t(:schedule_events, scope: [:scores, :info]), 'schedule_event'], [t(:all, scope: [:scores, :info]), 'all']]
+
+    @allocation_tag = AllocationTag.find(@allocation_tag_id)
+    @curriculum_unit = @allocation_tag.get_curriculum_unit
+    @responsible = AllocationTag.get_participants(@allocation_tag_id, {responsibles: true})
+
+    @is_student = @user.is_student?([@allocation_tag_id])
+
     @wh = Allocation.get_working_hours(@user.id, AllocationTag.find(@allocation_tag_id))
     render :info
   end 
@@ -272,7 +281,45 @@ class ScoresController < ApplicationController
         end
       end
     end
+  end
 
+  def redirect_to_open
+    tool_id = AcademicAllocation.find(params[:ac_id]).academic_tool_id
+
+    unless ['started', 'retake', 'to_answer', 'to_send', 'not_finished', 'sent', 'evaluated', 'to_be_sent'].include?(params[:situation])
+      if params[:situation] == 'not_started' && params[:tool_type] == 'Exam'
+        authorize! :show, Question, { on: active_tab[:url][:allocation_tag_id] }
+        render json: { url: preview_exam_path(tool_id, allocation_tags_ids: active_tab[:url][:allocation_tag_id]) }
+      else
+        render json: { alert: t('scores.error.situation2') }, status: :unprocessable_entity
+      end
+    else
+      case params[:tool_type]
+      when 'Assignment'
+        render json: { url: student_assignment_path(tool_id, student_id: params[:user_id], group_id: params[:group_id]), method: :get }
+      when 'ChatRoom'
+        profiles = current_user.profiles_with_access_on(:show, 'chat_rooms', active_tab[:url][:allocation_tag_id], true)
+        allocation = Allocation.where(profile_id: profiles, status: Allocation_Activated, user_id: current_user.id).first.try(:id)
+        raise CanCan::AccessDenied if allocation.blank?
+        render json: { url: access_chat_room_path(tool_id, academic_allocation_id: params[:ac_id], allocation_id: allocation) } 
+      when 'Webconference'
+        authorize! :interact, Webconference, { on: active_tab[:url][:allocation_tag_id] }
+        render json: { url: access_webconference_path(tool_id), method: :get }
+      when 'Discussion'
+        render json: { url: discussion_posts_path(discussion_id: tool_id), method: :get }
+      when 'Exam'
+        if can? :open, Exam, { on: active_tab[:url][:allocation_tag_id] }
+          render json: { url:  pre_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: params[:situation]) }  
+        else
+          authorize! :show, Question, { on: active_tab[:url][:allocation_tag_id] }
+          render json: { url: preview_exam_path(tool_id, allocation_tags_ids: active_tab[:url][:allocation_tag_id]) }
+        end
+      end
+    end
+  rescue CanCan::AccessDenied
+    render json: { alert: t(:no_permission) }, status: :unprocessable_entity
+  rescue => error
+    render json: { alert: t('scores.error.not_possible') }, status: :unprocessable_entity
   end
 
 end

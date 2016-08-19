@@ -1,74 +1,99 @@
-%fieldset#allocation_tag_selection
-  .filter_type.info_left
-    = t(:selected, scope: [:scores, :info]) 
-
-    = select_tag "type", options_for_select(@types), :"data-url-search" => search_tool_scores_path(type: ":type"), multiple: true
-
-  %fieldset.info_right
-    - g = AcademicAllocationUser.get_grade_finish(@user.id, @allocation_tag_id).final_grade
-    - grade = g.blank? ? ' - ' : g.round(2).to_s
-    = t(:student, scope: [:scores, :info]) + @user.username
-    %br
-    = t(:grade_i, scope: [:scores, :info]) + grade
-    %br
-    = t(:frequency_i, scope: [:scores, :info]) + @wh.to_s
-
-  %fieldset.info_right
-    = t(:reports, scope: [:scores, :info]) 
-    %br
-    = link_to t(:all, scope: [:scores, :info]), reports_pdf_scores_path(tool: true, user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
-    = link_to t(:evaluative, scope: [:scores, :info]), reports_pdf_scores_path(evaluative: true, user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
-    = link_to t(:frequency, scope: [:scores, :info]), reports_pdf_scores_path(frequency: true, user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
-    = link_to t(:not_evaluative, scope: [:scores, :info]), reports_pdf_scores_path(user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
-    
-#list_tools
-
-%br    
-.block_wrapper
+.block_wrapper#scores
   .block_title
-    %h2= t(".history_access", amount: @access.count)
-  .block_content.block_content_text
-    #history_search_content
-      %input{type: "text", id: "from-date", size: "9"}
-      = t(:to)
-      %input{type: "text", id: "until-date", size: "9"}
-      %span= button_tag t(".search"), id: "bt-amount-history-access", class: "btn"
-      #amount_found{style: "float: right; margin-top: 7px;"}
-        %h2
-    #history-body
+    %h2
+      %i.icon-suitcase
+      = @user.nick
+
+  .info.block_content
+    .left
+      = image_tag @user.user_photo(:medium), alt: t(:mysolar_alt_img_user)
+      - if @is_student
+        - g = AcademicAllocationUser.get_grade_finish(@user.id, @allocation_tag_id).final_grade
+        .grade= raw t('.grade_i', grade: (g.blank? ? ' - ' : g.round(2).to_s))
+        .frequency= raw t('.frequency_i', wh: @wh)
+    .evaluation_info
+      %div{style: 'font-weight: bold; font-size: 12pt'}= @user.name
+      %div= raw @curriculum_unit.try(:working_hours).nil? ? t('.uc_without_wh') : t('.frequency_uc', wh: @curriculum_unit.try(:working_hours))
+      %div
+        = raw t('.responsibles')
+        - @responsible.each do |resp|
+          .participant{:'data-tooltip'=> resp.name + " (" + resp.profile_name + ") "}
+            = truncate( [resp.name, " (", resp.profile_name, " )"].join, length: 55, omission: '...' )
+
+    - if @is_student
+      .scores_menu
+        %a.btn.btn_main.tool_dropdown{href: '#', :'data-dropdown' => "#dropdown_menu"}
+          = content_tag(:i, nil, class: 'icon-list')
+          = t('scores.index.show_hide_tools')
+          %i.icon-arrow-down-triangle
+        %div{ id: "dropdown_menu", class: 'dropdown dropdown-tip' }
+          %ul.dropdown-menu
+            - @types.each_with_index do |tool, idx|
+              %li
+                = check_box_tag "#{tool.last}", tool.last, false, :"data-url-search" => search_tool_scores_path(type: tool.last)
+                = label_tag "#{tool.last}", tool.first
+
+    - if @is_student
+      .info_right
+        = label_tag t(:reports, scope: [:scores, :info]) 
+        .links
+          = link_to t(:all, scope: [:scores, :info]), reports_pdf_scores_path(tool: true, user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
+          = link_to t(:evaluative, scope: [:scores, :info]), reports_pdf_scores_path(evaluative: true, user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
+          = link_to t(:frequency, scope: [:scores, :info]), reports_pdf_scores_path(frequency: true, user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
+          = link_to t(:not_evaluative, scope: [:scores, :info]), reports_pdf_scores_path(user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
+
+  - if @is_student
+    #list_tools
+  - else
+    #resp_list
+
+  %br    
+  .block_wrapper
+    .block_title
+      %h2= t(".history_access", amount: @access_count)
+    .block_content.block_content_text
+      #history_search_content
+        %input{type: "text", id: "from-date", size: "9"}
+        = t(:to)
+        %input{type: "text", id: "until-date", size: "9"}
+        %span= button_tag t(".search"), id: "bt-amount-history-access", class: "btn"
+        #amount_found{style: "float: right; margin-top: 7px;"}
+          %h2=t('.access_info')
+      #history-body
+        %table.tb_list
+          = render partial: "access", locals: {access: @access}
+
+  .block_wrapper
+    .block_title
+      %h2= t(".public_files")
+    .block_content
+      - no_files = (@public_files.blank?)
       %table.tb_list
-        = render partial: "access", locals: {access: @access}
+        %thead{style: (no_files ? "display: none" : "")}
+          %tr.lines
+            %th.no_sort
+            %th= t(".file")
+            %th= t(".size")
+            %th= t(".sent_on")
+            %th.no_sort
+        %tbody.public_files
+          - unless no_files
+            - @public_files.each do |file|
+              = render partial: "public_files/file", locals: {file: file, destroy: false}
+      .text_none.empty_message{class: (no_files ? "" : "hide_message")}= t(:itens_not_found)
 
-.block_wrapper
-  .block_title
-    %h2= t(".public_files")
-  .block_content
-    - no_files = (@public_files.blank?)
-    %table.tb_list
-      %thead{style: (no_files ? "display: none" : "")}
-        %tr.lines
-          %th.no_sort
-          %th= t(".file")
-          %th= t(".size")
-          %th= t(".sent_on")
-          %th.no_sort
-      %tbody.public_files
-        - unless no_files
-          - @public_files.each do |file|
-            = render partial: "public_files/file", locals: {file: file, destroy: false}
-    .text_none.empty_message{class: (no_files ? "" : "hide_message")}= t(:itens_not_found)
+  .block_wrapper{style: "float:left"}
+    = link_to t(:back), :back, {class: "btn"}
+    
 
-.block_wrapper{style: "float:left"}
-  = link_to t(:back), :back, {class: "btn"}
-  
+= javascript_include_tag 'tooltip', 'tablesorter', 'scores'
 
 :css
   .ui-datepicker { width: 15em; padding: .2em .2em 0; display: none; }
 
 :javascript
 
-  $(function(){
-    
+  $(function(){   
     var options = $.extend($.datepicker.regional["#{I18n.locale}"]);
     $('#from-date, #until-date').datepicker(options);
     $('#from-date, #until-date').mask("#{I18n.t(:mask, scope: "date.formats")}");
@@ -88,8 +113,6 @@
       });
     });
 
-    $("td.show_posts a").call_fancybox();
-
     $(".link_pre_exam, .open_exam").call_fancybox({
       minWidth: '50%',
       minheigth: '50%',
@@ -105,41 +128,64 @@
       closeBtn : true
     });
 
-    $('#type').click(function(){
-      var params = {
-        'tool': $("#type").val(),
-        'user_id' : "#{@user.id}"
-      };
-      array_too = $("#type").val();
-      ulp = array_too.length
-      up= ulp - 1;
 
-      $('.block_wrapper_'.concat(array_too[up])).hide();
-      if(ulp==1){
-        $('.block_wrapper_all').hide();
-        $('.block_wrapper_exam').hide();
-        $('.block_wrapper_webconference').hide();
-        $('.block_wrapper_assignment').hide();
-        $('.block_wrapper_chat').hide();
-        $('.block_wrapper_discussion').hide();
-        $('.block_wrapper_shedule_event').hide();
+    $('#scores ul.dropdown-menu li input[type="checkbox"]').change(function(){
+      if($(this).prop('checked')){
+        var params = {
+          'tool': $(this).val(),
+          'user_id' : "#{@user.id}"
+        };
+
+        $.get("#{search_tool_scores_path}", params, function(data) {
+          $('#list_tools').prepend(data);       
+
+        }).error(function(data){
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+         });
+      }else{
+        $('#list_tools .'+$(this).val()).remove();
       }
 
-      $.get("#{search_tool_scores_path()}", params, function(data) {
-        $('#list_tools').prepend(data);       
+    });
+
+    $('ul.dropdown-menu li input[type="checkbox"]#all').click();
+
+    if(!!$('#resp_list').length){
+      $.get("#{search_tool_scores_path(tool: 'discussion', user_id: current_user.id)}", function(data) {
+        $('#resp_list').prepend(data);       
 
       }).error(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, 'alert');
        });
-    });
+
+      $.get("#{search_tool_scores_path(tool: 'chat_room', user_id: current_user.id)}", function(data) {
+        $('#resp_list').prepend(data);       
+
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      });
+
+      $.get("#{search_tool_scores_path(tool: 'webconference', user_id: current_user.id)}", function(data) {
+        $('#resp_list').prepend(data);       
+
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+       });
+    }
 
   });
 
   function calcule_grade_user_exam(link){
     if ($(link).attr('disabled') == 'disabled'){
-      flash_message("#{t('exams.error.calcule_grade')}", 'alert');
+      flash_message("#{t('exams.error.cant_calcule_grade')}", 'alert');
       return false;
     }
     
