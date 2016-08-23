@@ -22,6 +22,7 @@
                 %th.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
                 %th.center{style: "width: 20%;"}= t(:grade, scope: [:scores, :info])
                 %th.no_sort
+                %th.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
             %tbody
               - @tool_evaluative.each do |tool|
                 %tr.lines
@@ -45,6 +46,7 @@
                   %td
                     - if (tool.academic_tool_type != 'Exam' && @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate)) || @can_evaluate.include?(tool.academic_tool_type.to_s.tableize => :calcule_grades)
                       = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), class: 'btn'
+                  %td.center=(tool.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
         - else
           .block_content.block_content_text= t(:itens_not_found)
 
@@ -59,6 +61,7 @@
                 %th.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
                 %th.center{style: "width: 20%;"}= t(:frequency, scope: [:scores, :info])
                 %th.no_sort
+                %th.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
             %tbody
               -  @tool_frequency.each do |tool|
                 %tr.lines
@@ -82,6 +85,7 @@
                   %td
                     - if (tool.academic_tool_type != 'Exam' && @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate)) || @can_evaluate.include?(tool.academic_tool_type.to_s.tableize => :calcule_grades)
                       = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), class: 'btn'
+                  %td.center=(tool.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
         - else
           .block_content.block_content_text= t(:itens_not_found)
 

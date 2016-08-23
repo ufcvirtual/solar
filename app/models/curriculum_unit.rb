@@ -102,8 +102,10 @@ class CurriculumUnit < ActiveRecord::Base
     end
 
     def destroy_correspondent_course
-      course.ignore_uc = true
-      course.destroy
+      unless course.blank?
+        course.ignore_uc = true
+        course.destroy
+      end
     end
 
 end

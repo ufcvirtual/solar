@@ -106,7 +106,7 @@
       $.get("#{amount_access_scores_path(user_id: @user.id)}", params, function(data){
         $("#history-body table").html(data);
         erase_flash_messages();
-        $("#amount_found h2").html($("#history-body tbody:first tr").length + "#{t(".access_found")}");
+        $("#amount_found h2").html($("#history-body tbody:first tr").not('.text_none').length + "#{t(".access_found")}");
         $("#history-body tbody").tablesorter();
       }).error(function(data){
         show_error(data);

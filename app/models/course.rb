@@ -69,9 +69,11 @@ class Course < ActiveRecord::Base
       true
     end
 
-    def destroy_correspondent_course
+    def destroy_correspondent_uc
       curriculum_unit = CurriculumUnit.find_by_name_and_code(name, code)
-      curriculum_unit.ignore_course = true
-      curriculum_unit.destroy
+      unless curriculum_unit.blank?
+        curriculum_unit.ignore_course = true
+        curriculum_unit.destroy
+      end
     end
 end

@@ -8,4 +8,6 @@
         %td.center= l(access.created_at.to_datetime, format: :normal)
         %td.center= l(access.created_at.to_datetime, format: :clock_time)
 - else
-  .block_content.block_content_text.text_none= t(".no_access")
+  %tbody
+    %tr.block_content.block_content_text.text_none
+      %th= t(".no_access")

@@ -34,7 +34,7 @@ class AcademicAllocation < ActiveRecord::Base
   validates :max_working_hours, presence: true, numericality: { greater_than: 0,  only_integer: true, allow_blank: true }, if: 'frequency? && !final_exam?'
 
   validate :verify_equivalents, if: 'equivalent_academic_allocation_id_changed? && !equivalent_academic_allocation_id.nil?'
-  validate :verify_type, if: "(evaluative || frequency) AND academic_tool_type = 'ScheduleEvent'"
+  validate :verify_type, if: "(evaluative || frequency) && academic_tool_type = 'ScheduleEvent'"
 
   before_save :set_evaluative_params, on: :update, unless: 'new_record?'
   before_save :change_dependencies, on: :update, unless: 'new_record?'

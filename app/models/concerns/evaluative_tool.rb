@@ -11,12 +11,12 @@ module EvaluativeTool
     AcademicAllocation.find_by_sql <<-SQL
       SELECT DISTINCT(ac.ids), *, ac.ats FROM academic_allocations
        JOIN (
-         SELECT array_agg(id) AS ids, 
+         SELECT array_agg(academic_allocations.id) AS ids, 
                 academic_tool_id, 
                 academic_tool_type, 
                 array_agg(allocation_tag_id) AS ats
          FROM academic_allocations 
-         LEFT JOIN schedule_events ON academic_allocations.academic_tool_type = 'ScheduleEvent' = schedule_events.id = academic_allocations.academic_tool_id
+         LEFT JOIN schedule_events ON academic_allocations.academic_tool_type = 'ScheduleEvent' AND schedule_events.id = academic_allocations.academic_tool_id
          WHERE academic_tool_type IN (#{"'"+self.descendants.join("','")+"'"}) 
          AND allocation_tag_id IN (#{ats.uniq.join(',')})
          AND schedule_events.id IS NULL OR (schedule_events.type_event != #{Recess} AND schedule_events.type_event != #{Holiday})

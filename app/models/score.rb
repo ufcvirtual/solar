@@ -68,8 +68,8 @@ class Score # < ActiveRecord::Base
         #{evaluated_status}
         WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Assignment' AND (af.id IS NOT NULL OR (aw.id IS NOT NULL AND (is_recorded AND (initial_time + (interval '1 minutes')*duration) < now())))))) THEN 'sent'
         WHEN assignments.id IS NOT NULL AND assignments.type_assignment = #{Assignment_Type_Group} AND gp.id IS NULL THEN 'without_group'
-        WHEN schedules.start_date + (interval '1 hours')*0 + (interval '1 minutes')*0 > now() THEN 'not_started'
-        WHEN schedules.end_date + (interval '1 hours')*23 + (interval '1 minutes')*59 + (interval '1 seconds')*59 > now() THEN 'to_send'
+        WHEN schedules.start_date  > current_date THEN 'not_started'
+        WHEN schedules.end_date >= current_date THEN 'to_send'
         ELSE 
           'not_sent'
         END AS situation     
@@ -101,8 +101,8 @@ class Score # < ActiveRecord::Base
       CASE
         #{evaluated_status}
         WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'ChatRoom' AND chat_messages.id IS NOT NULL))) THEN 'sent'
-        WHEN schedules.start_date + ((interval '1 hours')*(left(chat_rooms.start_hour, 2)::integer)) + ((interval '1 minutes')*(right(chat_rooms.start_hour, 2)::integer)) > now() THEN 'not_started'
-        WHEN schedules.end_date + ((interval '1 hours')*(left(chat_rooms.end_hour, 2)::integer)) + ((interval '1 minutes')*(right(chat_rooms.end_hour, 2)::integer)) > now() THEN 'to_send'
+        WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < cast(start_hour as time)) THEN 'not_started'
+        WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time>cast(start_hour as time) ) AND (end_hour IS NULL OR current_time<=cast(end_hour as time)) THEN 'to_send'
         ELSE 
           'not_sent'
         END AS situation
@@ -131,8 +131,8 @@ class Score # < ActiveRecord::Base
       CASE
         #{evaluated_status}
         WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Discussion' AND discussion_posts.id IS NOT NULL))) THEN 'sent'
-        WHEN schedules.start_date + (interval '1 hours')*0 + (interval '1 minutes')*0 > now() THEN 'not_started'
-        WHEN schedules.end_date + (interval '1 hours')*23 + (interval '1 minutes')*59 + (interval '1 seconds')*59 > now() THEN 'to_send'
+        WHEN schedules.start_date > current_date THEN 'not_started'
+        WHEN schedules.start_date <= current_date AND schedules.end_date >= current_date THEN 'to_send'
         ELSE 
           'not_sent'
         END AS situation
@@ -161,8 +161,8 @@ class Score # < ActiveRecord::Base
       CASE
         #{evaluated_status}
         WHEN #{sent_status} THEN 'sent'
-        WHEN (schedules.start_date + (interval '1 hours')*(left(COALESCE(NULLIF(exams.start_hour, ''), '0'), 2)::integer) + (interval '1 minutes')*(right(COALESCE(NULLIF(exams.start_hour, ''), '0'), 2)::integer)) > now() THEN 'not_started'
-        WHEN (schedules.end_date + (interval '1 hours')*(left(COALESCE(NULLIF(exams.end_hour, ''), '29'), 2)::integer) + (interval '1 minutes')*(right(COALESCE(NULLIF(exams.end_hour, ''), '59'), 2)::integer)) > now() THEN 'to_send'
+        WHEN current_date <= schedules.start_date OR current_time<=cast(start_hour as time) THEN 'not_started'
+        WHEN ((current_date >= schedules.start_date AND current_time>= CASE WHEN start_hour IS NULL THEN time '00:00'  ELSE cast(start_hour as time) END) AND (current_date <= schedules.end_date AND current_time<CASE WHEN end_hour IS NULL THEN time '23:59'  ELSE cast(end_hour as time) END)) THEN 'to_send'
         ELSE 
           'not_sent'
         END AS situation
@@ -190,8 +190,8 @@ class Score # < ActiveRecord::Base
       CASE
         #{evaluated_status}
         WHEN #{sent_status} THEN 'sent'
-        WHEN (schedules.start_date + (interval '1 hours')*(left(COALESCE(NULLIF(schedule_events.start_hour, ''), '0'), 2)::integer) + (interval '1 minutes')*(right(COALESCE(NULLIF(schedule_events.start_hour, ''), '0'), 2)::integer)) > now() THEN 'not_started'
-        WHEN (schedules.end_date + (interval '1 hours')*(left(COALESCE(NULLIF(schedule_events.end_hour, ''), '29'), 2)::integer) + (interval '1 minutes')*(right(COALESCE(NULLIF(schedule_events.end_hour, ''), '59'), 2)::integer)) > now() THEN 'to_send'
+        WHEN current_date<schedules.start_date AND (start_hour IS NULL OR current_time<=cast(start_hour as time))  THEN 'not_started'
+        WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND current_time>=cast(start_hour as time) AND current_time<=cast(end_hour as time) THEN 'to_send'
         ELSE 
           'not_sent'
         END AS situation
