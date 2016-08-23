@@ -87,7 +87,7 @@
             - b.label(class: class_label) { (it) + ' ' +arr_alf[num_question]+') ' + raw(b.text) + image }+ raw(coment)    
          
           -else
-            - it = link_to_function (select_tag :question_item_ids, options_for_select(['F', 'V'], selected), disabled: @disabled), "change(this)"
+            - it = select_tag arr_alf[num_question], options_for_select(['F', 'V'], selected), :onchange => "change(this);"
             - b.label(class: class_label) { b.check_box(:hidden => true) + (it) + ' '+arr_alf[num_question]+') '+ image + raw(b.text) }+ raw(coment)
         - if @disabled
           %br
@@ -97,14 +97,18 @@
 
 :javascript
 
-  function change(img, duration){
+  function change(obj, value){
+    var checkbox = $(obj).siblings();
+    var selected = $(obj).val();
 
-    var checkbox = $(img).siblings();
-    checkbox.prop('checked', !checkbox.prop('checked'));
+    if(selected=='V'){
+      checkbox.prop('checked', true);
+    }else{
+      checkbox.prop('checked', false);
+    }  
 
     save_question('#{@exam_responses.try(:duration)}');
 
-    $.getScript("/assets/tooltip.js");
   }
 
   
