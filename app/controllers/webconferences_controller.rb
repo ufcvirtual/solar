@@ -226,7 +226,9 @@ class WebconferencesController < ApplicationController
   rescue URI::InvalidURIError
     render json: { success: false, alert: t('webconferences.list.removed_record') }, status: :unprocessable_entity
   rescue => error
-    render_json_error(error, 'webconferences.error')
+    error_message = error == CanCan::AccessDenied ? t(:no_permission) : (I18n.translate!("webconferences.error.#{error}", raise: true) rescue t("webconferences.error.removed_record"))
+    render text: error_message
+    # render_json_error(error, 'webconferences.error')
   end
 
   private

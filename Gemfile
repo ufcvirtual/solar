@@ -43,9 +43,9 @@ gem "rubyzip", "~> 1.0.0"
 
 gem "doorkeeper", "~> 1.4.1"
 gem "rack-oauth2", "~> 1.0.7"
-gem "grape", "~> 0.9.0"
-gem "rabl", "~> 0.11.0"
-gem "grape-rabl", "~> 0.3.0"
+gem "grape", "~> 0.17.0"
+gem "rabl", "~> 0.13.0"
+gem "grape-rabl", "~> 0.4.2"
 
 gem "savon", "~> 2.0" # comunicação com ws
 
