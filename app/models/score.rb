@@ -34,7 +34,7 @@ class Score # < ActiveRecord::Base
     wq = "AND academic_allocations.evaluative=false" if !evaluative && !frequency
     wq = '' if evaluative.blank? && frequency.blank? && all
 
-    prepare_query = Score.get_query((tool == 'all' ? ['discussions','assignments','chat_rooms','webconferences','exams','schedule_events'] : [tool]), ats_ids.join(','), user_id, wq, sent_status, evaluated_status)
+    prepare_query = Score.get_query((tool == 'all' ? ['discussions','assignments','chat_rooms','webconferences','exams','schedule_events'] : [tool].flatten), ats_ids.join(','), user_id, wq, sent_status, evaluated_status)
 
     User.find_by_sql prepare_query
   end
@@ -51,6 +51,14 @@ class Score # < ActiveRecord::Base
     else
       'academic_allocation_users.status = 1'
     end
+
+    wq = case type_score
+         when 'evaluative'; "AND academic_allocations.evaluative=true "
+         when 'frequency'; "AND academic_allocations.frequency=true "
+         when 'not_evaluative'; "AND academic_allocations.evaluative=false "
+         else
+          ''
+         end
 
   User.find_by_sql <<-SQL
     SELECT 
@@ -84,7 +92,7 @@ class Score # < ActiveRecord::Base
     LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND (academic_allocation_users.user_id = users.id OR academic_allocation_users.group_assignment_id = gp.group_assignment_id)
     LEFT JOIN assignment_files af ON af.academic_allocation_user_id = academic_allocation_users.id
     LEFT JOIN assignment_webconferences aw ON aw.academic_allocation_user_id = academic_allocation_users.id
-    WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean )
+    WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) #{wq}
 
     UNION (
       SELECT 
@@ -114,7 +122,7 @@ class Score # < ActiveRecord::Base
     JOIN schedules ON chat_rooms.schedule_id = schedules.id
     LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = users.id
     LEFT JOIN chat_messages ON chat_messages.academic_allocation_id = academic_allocations.id AND (chat_messages.allocation_id = allocations.id OR chat_messages.user_id = users.id)
-    WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ))
+    WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) #{wq})
 
     UNION (
       SELECT 
@@ -144,7 +152,7 @@ class Score # < ActiveRecord::Base
     JOIN schedules ON discussions.schedule_id = schedules.id
     LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = users.id
     LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id AND discussion_posts.user_id = users.id
-    WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ))
+    WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) #{wq})
     
     UNION
     (SELECT 
@@ -173,7 +181,7 @@ class Score # < ActiveRecord::Base
     JOIN exams ON academic_allocations.academic_tool_id = exams.id
     JOIN schedules ON exams.schedule_id = schedules.id
      LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = users.id
-    WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) AND exams.status = 't')
+    WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) AND exams.status = 't' #{wq})
   
     UNION
     (SELECT 
@@ -202,7 +210,7 @@ class Score # < ActiveRecord::Base
     JOIN schedule_events ON academic_allocations.academic_tool_id = schedule_events.id 
     JOIN schedules ON schedule_events.schedule_id = schedules.id
     LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = users.id
-    WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ))
+    WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) #{wq})
 
   UNION
     (SELECT 
@@ -231,7 +239,7 @@ class Score # < ActiveRecord::Base
     JOIN webconferences ON academic_allocations.academic_tool_id = webconferences.id 
     LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = users.id
     LEFT JOIN log_actions ON academic_allocations.id = log_actions.academic_allocation_id AND log_actions.log_type = 7 AND log_actions.user_id = users.id
-    WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ))
+    WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) #{wq})
     
     ORDER BY acu_status, situation, academic_tool_type;
     SQL
@@ -272,10 +280,10 @@ class Score # < ActiveRecord::Base
             academic_allocation_users.user_id,
             academic_allocation_users.new_after_evaluation,
             NULL AS group_id,
-            --(SELECT COUNT(dp.id) 
-            --  FROM discussion_posts dp) AS count,
+            NULL AS type_tool,
             '' AS start_hour,
             '' AS end_hour,
+            (SELECT COUNT(id) FROM discussion_posts WHERE discussion_posts.academic_allocation_id = academic_allocations.id AND user_id = #{user_id}) AS count,
             CASE 
               WHEN s.start_date <= current_date AND s.end_date >= current_date THEN true
               ELSE 
@@ -323,9 +331,10 @@ class Score # < ActiveRecord::Base
                 academic_allocation_users.user_id,
                 academic_allocation_users.new_after_evaluation,
                 groups.group_id::text AS group_id,
+                assignments.type_assignment::text as type_tool,
                 '' AS start_hour,
                 '' AS end_hour,
-                -- -- 0 as count,
+                0 as count,
                 CASE 
                   WHEN schedules.start_date <= current_date AND schedules.end_date >= current_date THEN true
                   ELSE 
@@ -338,8 +347,8 @@ class Score # < ActiveRecord::Base
                   END AS closed,
                 case
                   #{evaluated_status}
-                  when schedules.start_date > current_date                       then 'not_started'
                   when assignments.type_assignment = #{Assignment_Type_Group} AND groups.group_id IS NULL  then 'without_group'
+                  when schedules.start_date > current_date                       then 'not_started'
                    when #{sent_status} OR academic_allocation_users.status = 1 OR academic_allocation_users.status = 1 OR attachment_updated_at IS NOT NULL OR (is_recorded AND (initial_time + (interval '1 mins')*duration) < now()) then 'sent'
                   when schedules.end_date >= current_date                        then 'to_be_sent'
                   when schedules.end_date < current_date                         then 'not_sent'
@@ -369,9 +378,10 @@ class Score # < ActiveRecord::Base
               academic_allocation_users.user_id,
               academic_allocation_users.new_after_evaluation,
               NULL AS group_id,
+              NULL AS type_tool,
               start_hour,
               end_hour,
-              -- 0 as count,
+              0 as count,
               CASE 
               WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time>cast(start_hour as time) ) AND (end_hour IS NULL OR current_time<=cast(end_hour as time)) THEN true
               ELSE 
@@ -392,11 +402,13 @@ class Score # < ActiveRecord::Base
               END AS situation
             FROM chat_rooms, schedules, academic_allocations 
             LEFT JOIN allocations ON allocations.user_id = #{user_id} AND allocations.allocation_tag_id IN (#{ats})
+            LEFT JOIN profiles ON profiles.id = allocations.profile_id
             LEFT JOIN chat_messages ON chat_messages.academic_allocation_id = academic_allocations.id AND (chat_messages.allocation_id = allocations.id OR chat_messages.user_id = #{user_id})
             LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}
             LEFT JOIN chat_participants ON chat_participants.academic_allocation_id = academic_allocations.id AND chat_participants.allocation_id = allocations.id
             WHERE 
               academic_allocations.academic_tool_id = chat_rooms.id AND academic_tool_type='ChatRoom' AND chat_rooms.schedule_id=schedules.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats}) AND (chat_rooms.chat_type = 0 OR chat_participants.id IS NOT NULL)
+              -- OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean))
             )"
 
         when 'exams'
@@ -414,9 +426,10 @@ class Score # < ActiveRecord::Base
             academic_allocation_users.user_id,
             academic_allocation_users.new_after_evaluation,
             NULL AS group_id,
+            NULL AS type_tool,
             start_hour,
             end_hour,
-            -- 0 as count,
+            0 as count,
             CASE 
               WHEN (current_date >= s.start_date AND current_date <= s.end_date) AND (start_hour IS NULL OR current_time > cast(start_hour as time)) AND (end_hour IS NULL OR current_time < cast(end_hour as time)) THEN true
               ELSE 
@@ -462,9 +475,10 @@ class Score # < ActiveRecord::Base
             academic_allocation_users.user_id,
             academic_allocation_users.new_after_evaluation,
             NULL AS group_id,
+            NULL AS type_tool,
             start_hour,
             end_hour,
-            -- 0 as count,
+            0 as count,
             CASE 
               WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time > cast(start_hour as time)) AND (end_hour IS NULL OR current_time<=cast(end_hour as time)) THEN true
               ELSE 
@@ -503,9 +517,10 @@ class Score # < ActiveRecord::Base
             academic_allocation_users.user_id,
             academic_allocation_users.new_after_evaluation,
             NULL AS group_id,
+            NULL AS type_tool,
             initial_time || '' AS start_hour,
             initial_time + duration* interval '1 min' || '' AS end_hour,
-            -- 0 as count,
+            0 as count,
             CASE 
               when NOW()>initial_time AND NOW()<=(initial_time + duration* interval '1 min') then true
               ELSE 
@@ -536,7 +551,7 @@ class Score # < ActiveRecord::Base
       end
 
       query = query.join(' UNION ')
-      query + 'ORDER BY academic_tool_type, situation;'
+      query + 'ORDER BY academic_tool_type, start_date, situation;'
   end
 
 
