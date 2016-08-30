@@ -2786,6 +2786,8 @@ en_US:
       new_no: No
       new_after_evaluation: Changed after evaluation
       last_five: "Here are listed only the last five accesses"
+      f: 'No'
+      t: 'Yes'
     situation:
       not_started: Not started
       to_answer: To answer

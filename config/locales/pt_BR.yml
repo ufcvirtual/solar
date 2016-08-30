@@ -2964,8 +2964,8 @@ pt_BR:
       without_group: SG
       to_send: AE
       general: Visão Geral
-      evaluative: Avaliativo
-      not_evaluative: Não Avaliativo
+      evaluative: Avaliativa
+      not_evaluative: Não Avaliativa
       frequency: Frequência
       final_grade: Média Final
       show_hide_tools: 'Exibir/Ocultar Atividades'
@@ -3016,6 +3016,8 @@ pt_BR:
       new_no: Não
       new_after_evaluation: Alterado após avaliação
       last_five: "Aqui estão listados apenas os 5 últimos acessos"
+      f: Não
+      t: Sim
     situation:
       not_started: Não iniciado
       to_answer: A responder

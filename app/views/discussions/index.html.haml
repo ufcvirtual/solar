@@ -4,24 +4,45 @@
       %h2
         %i.icon-forum
         = t(:forum_table_title)
-    %table.tb_list{cellpadding:"10", cellspacing:"0", width:"100%", style:"table-layout: fixed"}
+    %table.tb_list
       %thead
         %tr.lines
-          %th{align:"left"}=t :title
-          %th{style:"width: 10%;"}= t(".posts")
-          %th.date{align:"center", style:"width: 22%;"}=t :forum_table_date
+          %th{style: "width: 20%;"}= t(:discussions, scope: [:attributes, :info])
+          %th.center.date{style: "width: 22%;"}= t(:date_range, scope: [:scores, :info])
+          /%th.center{style: "width: 2%;"}= t(:amount, scope: [:scores, :info])
+          %th.center{style: "width: 15%;"}= t(:situation, :scope => [:scores, :info])
+          %th.center{style: "width: 10%;"}= t(:evaluative, scope: [:scores, :index])
+          %th.center{style: "width: 2%;"}= t(:frequency, scope: [:scores, :info])
+          - if @is_student
+            %th.center{style: "width: 2%;"}= t(:grade, scope: [:scores, :info])
+            %th.center{style: "width: 2%;"}= t(:workload, scope: [:scores, :info])
+          
       %tbody
         - @discussions.each do |discussion|
-          - statuses = discussion.statuses(current_user.id)
-          %tr{class: "lines #{'period_ended' if statuses.include?("closed") and (not statuses.include?("extra_time"))} "}
+          %tr{class: "lines #{'period_ended' if discussion.situation.include?("closed") and (not discussion.situation.include?("extra_time"))} "}
             %td
-              - if (statuses.include?("opened") or statuses.include?("closed"))
-                = link_to discussion.name, discussion_posts_path(discussion), {class: 'link_content'}
-                = (statuses.include?("extra_time") ? "(#{t(:discussion_closed_to_students)})" : (statuses.include?("closed") ? "(#{t(:forum_closed_short)})" : ""))
+              - if (discussion.situation.include?("opened") or discussion.situation.include?("closed"))
+                = link_to discussion.name, discussion_posts_path(discussion_id: discussion.academic_tool_id), {class: 'link_content'}
+                
               - else
                 = discussion.name
-            %td{align:"center"}= discussion.posts_count
-            %td{style: "width: 200px;"}= [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(" - ")
+            %td.center= [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(" - ") 
+            - if @is_student
+              %td.center{class: "assignment_#{discussion.situation}"}= t("scores.situation.#{discussion.situation}")
+            - else
+              - if discussion.closed=='t'
+                %td.center{class: "assignment_closed"}= t("scores.situation.closed") 
+              - elsif discussion.opened=='t'    
+                %td.center{class: "assignment_opened"}= t("scores.situation.opened")  
+              -else
+                %td.center{class: "assignment_opened"}= t("scores.situation.not_started")    
+            %td.center= t(discussion.evaluative, scope: [:scores, :info])
+            %td.center= t(discussion.frequency, scope: [:scores, :info])
+            - if @is_student
+              %td.center= discussion.grade
+              %td.center= discussion.working_hours
+
+            
   - else
     .block_content.block_content_text= t(:forum_message)
 

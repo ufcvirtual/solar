@@ -83,8 +83,17 @@ class ChatRoom < Event
     allocations_with_acess =  User.find(user_id).allocation_tags_ids_with_access_on('interact','chat_rooms')
 
     all_chats = ChatRoom.joins(:academic_allocations, :schedule)
+      .joins("LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}")
       .where(academic_allocations: { allocation_tag_id: allocation_tag_id })
-      .select('DISTINCT chat_rooms.*, schedules.start_date, schedules.end_date, academic_allocations.id as ac_id')
+      .select("DISTINCT chat_rooms.*, schedules.start_date, schedules.end_date, academic_allocations.id as ac_id, academic_allocations.evaluative,  academic_allocations.frequency, academic_allocation_users.grade,
+              academic_allocation_users.working_hours, CASE 
+ WHEN academic_allocation_users.grade IS NOT NULL THEN 'evaluated'
+ WHEN academic_allocation_users.working_hours IS NOT NULL THEN 'evaluated'  
+ WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < cast(start_hour as time)) THEN 'not_started'
+ WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time>cast(start_hour as time) ) AND (end_hour IS NULL OR current_time<=cast(end_hour as time)) THEN 'opened'
+ ELSE
+   'closed'
+ END AS situation")
       .order('schedules.start_date')
 
     my, others =  if responsible?(allocation_tag_id, user_id)

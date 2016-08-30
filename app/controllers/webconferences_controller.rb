@@ -21,6 +21,9 @@ class WebconferencesController < ApplicationController
     @online         = bbb_online?(api)
     @can_see_access = can? :list_access, Webconference, { on: at }
     @meetings       = @online ? get_meetings(api) : []
+    @user = current_user
+    @is_student = @user.is_student?([at])
+    #@webconferences = Score.list_tool(@user.id, at, 'webconferences', false, false, true)
     @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true), {asc: true}, (@can_see_access ? nil : current_user.id))
   end
 

@@ -248,7 +248,7 @@ class Exam < Event
   	Exam.joins(:academic_allocations, :schedule)
       .where(academic_allocations: {allocation_tag_id: allocation_tag_ids},
           status: true)
-      .select('DISTINCT exams.*, schedules.start_date as start_date, schedules.end_date as end_date') 
+      .select('DISTINCT exams.*, schedules.start_date as start_date, schedules.end_date as end_date, evaluative, frequency') 
       .order('schedules.start_date')
   end
 

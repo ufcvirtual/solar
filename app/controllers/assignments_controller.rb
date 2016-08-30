@@ -31,7 +31,9 @@ class AssignmentsController < ApplicationController
     
 
     @assignments  = Assignment.joins(:academic_allocations, :schedule).where(academic_allocations: { allocation_tag_id:  @allocation_tag_id })
-                              .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date").order("start_date")
+                             .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date, evaluative, frequency").order("start_date")
+    
+
 
     @participants = AllocationTag.get_participants(@allocation_tag_id, { students: true })
 

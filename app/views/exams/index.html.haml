@@ -7,12 +7,16 @@
     %table.tb_list
       %thead
         %tr.lines
-          %th.large= t('exams.index.description')
+          %th.medium= t('exams.index.description')
           %th.medium= t('exams.index.availability')
           %th.small= t('exams.index.duration')
           - if @can_open
             %th.small= t('exams.index.status')
+          %th.small= t(:evaluative, scope: [:scores, :index])
+          %th.small= t(:frequency, scope: [:scores, :info])  
+          - if @can_open
             %th.small= t('exams.index.grade')
+            %th.small= t(:workload, scope: [:scores, :info])
       %tbody
         - @exams.each do |exam|
           - info = exam.info(current_user.id, @allocation_tags_ids)
@@ -34,9 +38,9 @@
                 - else
                   = link_to exam.name, preview_exam_path(exam, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam' 
                  
-                - if exam.description.size > 180
+                - if exam.description.size > 80
                   .description_exam
-                    .description_slice= raw exam.description.slice(0..180) << "..."
+                    .description_slice= raw exam.description.slice(0..80) << "..."
                     .description_complete= raw exam.description
                     .more_or_less
                       %a.description_more.link_content{ href: '#' }= t('exams.index.more')
@@ -48,13 +52,17 @@
               %div= [(exam.start_hour), (exam.end_hour)].join(' - ')
             %td.center= [exam.duration, t('.min')].join(' ')
             - count = info[:count].nil? || info[:count]==0 ? "" : info[:count].to_s
+            
             - if @can_open
               %td.center.situation
                 %div{class: "#{info[:situation]}"}= I18n.t(info[:situation], :count => count, :scope => [:exams, :situation])
-
+            %td= t(exam.evaluative, scope: [:scores, :info])
+            %td= t(exam.frequency, scope: [:scores, :info])
+            - if @can_open
               %td.center
                 %span.activity_grade= info[:grade] || bt_correction || "-"
-              
+              %td.center 
+                %span.activity_grade= info[:working_hours] || bt_correction || "-"
   - else
     .block_content_text.block_content_text_list.text_none= t(:none, scope: [:exams] )
 

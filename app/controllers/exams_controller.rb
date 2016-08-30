@@ -12,6 +12,7 @@ class ExamsController < ApplicationController
     authorize! :index, Exam, on: [@allocation_tag_id]
     @allocation_tags_ids = AllocationTag.find(@allocation_tag_id).related
     @exams = Exam.my_exams(@allocation_tags_ids)
+
     @can_open = can? :open, Exam, {on: @allocation_tag_id}
   rescue
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized

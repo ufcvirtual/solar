@@ -19,13 +19,19 @@ class ChatRoomsController < ApplicationController
   def list
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     authorize! :list, ChatRoom, on: [@allocation_tag_id]
+    @user = current_user
+    @can_evaluate = can? :evaluate, ChatRoom, { on: @allocation_tag_id }
 
     permited_profiles = current_user.profiles_with_access_on('list', 'chat_rooms', AllocationTag.find(@allocation_tag_id).related, true)
     @alloc = current_user.allocations.where(profile_id: permited_profiles).first.id
     @responsible = ChatRoom.responsible?(@allocation_tag_id, current_user.id)
 
+    @is_student = @user.is_student?([@allocation_tag_id])
     chats = ChatRoom.chats_user(current_user.id, @allocation_tag_id)
+
     @my_chats, @other_chats = chats[:my], chats[:others]
+
+   
   end
 
   def index

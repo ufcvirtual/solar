@@ -4,8 +4,11 @@
       %tr.lines
         %th= t("assignments.list.description")
         %th.center.date{style: "width: 22%;"}= t("assignments.list.date_range")
-        %th{align: "right", style: "width:80px"}= t("assignments.list.situation")
-        %th.center{style: "width:40px"}= t("assignments.list.grade")
+        %th{align: "right", style: "width:11%"}= t("assignments.list.situation")
+        %th.center{style: "width: 8%;"}= t(:evaluative, scope: [:scores, :index])
+        %th.center{style: "width: 8%;"}= t(:frequency, scope: [:scores, :info])  
+        %th.center{style: "width: 8%;"}= t("assignments.list.grade")
+        %th.center{style: "width: 8%;"}= t(:workload, scope: [:scores, :info])
         %th.center.no_sort{style: "width:80px"}= t("assignments.list.comments")
     %tbody
       - assignments.each do |assignment|
@@ -19,9 +22,9 @@
                 .title= assignment.name
               - else
                 = link_to assignment.name, link, {class: 'link_content'}
-            - if assignment.enunciation.size > 180 
+            - if assignment.enunciation.size > 150 
               .enunciation
-                .enunciation_slice= assignment.enunciation.slice(0..180) << "..."
+                .enunciation_slice= assignment.enunciation.slice(0..150) << "..."
                 .enunciation_complete= assignment.enunciation
                 .more_or_less
                   %a.enunciation_more.link_content{href: "#"}= t("assignments.list.more")
@@ -34,8 +37,12 @@
               %div{class: "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
             - else
               = link_to t(info[:situation].to_sym), link, class: "assignment_#{info[:situation]}"
+          %td.center= t(assignment.evaluative, scope: [:scores, :info])
+          %td.center= t(assignment.frequency, scope: [:scores, :info])      
           %td.center
             %span.activity_grade= info[:grade] || "-"
+          %td.center   
+            %span.activity_grade= info[:working_hours] || "-"  
           %td.center= content_tag :i, nil, class: "icon-comment big #{info[:has_comments] ? '' : 'empty'}"
 
 - else

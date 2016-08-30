@@ -2,21 +2,26 @@
   %thead
     %tr.lines
       %th{align: "left"}= t(".detail")
-      %th.center{style: "width: 25%"}= t(".availability")
+      %th.center{style: "width: 22%"}= t(".availability")
+      %th.center{style: "width: 15%;"}= t(:situation, :scope => [:scores, :info])
+      %th.center{style: "width: 10%;"}= t(:evaluative, scope: [:scores, :index])
+      %th.center{style: "width: 2%;"}= t(:frequency, scope: [:scores, :info])
+      - if @is_student && other==false
+        %th.center{style: "width: 2%;"}= t(:grade, scope: [:scores, :info])
+        %th.center{style: "width: 2%;"}= t(:workload, scope: [:scores, :info])
       - if history
         %th.center.no_sort{style: "width: 7%"}= t(".message_history")
   %tbody
     - chats.each do |chat|
+  
       - participants = chat.users.where('academic_allocations.allocation_tag_id = ?', @allocation_tag_id)
       %tr{class: "lines #{'period_ended' unless chat.opened?}"}
         %td
           - if chat.opened? && can_open_link
-            = link_to chat.title, access_chat_room_path(chat.id,allocation_id: @alloc, academic_allocation_id: chat.ac_id), {class: 'link_content fancybox.iframe', target: '_blank' }
+            = link_to chat.title, access_chat_room_path(chat.academic_tool_id,allocation_id: @alloc, academic_allocation_id: chat.id), {class: 'link_content fancybox.iframe', target: '_blank' }
           - else
             = chat.title
-            = " [" + t(".message_did_not_start") + "]" if chat.start_date.to_date > Date.today
-            = " [" + t(".message_ended") + "]"         if chat.end_date.to_date < Date.today
-
+           
           .description
             .minimun= sanitize(truncate chat.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
             .complete.invisible
@@ -32,8 +37,14 @@
                   %li= p.info(:name)
 
         %td{ align: 'center' }
-          %div= [l(chat.schedule.start_date.to_date), l(chat.schedule.end_date.to_date)].join(' - ')
+          %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
           %div= [(chat.start_hour), (chat.end_hour)].join(' - ')
+        %td.center{class: "assignment_#{chat.situation}"}= t("scores.situation.#{chat.situation}") 
+        %td.center= t(chat.evaluative, scope: [:scores, :info])
+        %td.center= t(chat.frequency, scope: [:scores, :info])
+        - if @is_student && other==false
+          %td.center= chat.grade
+          %td.center= chat.working_hours
         - if history && (!AllocationTag.find(@allocation_tag_id).is_student?(current_user.id) || participants.empty? || participants.map(&:id).include?(current_user.id))
           %td{align: "center"}= link_to content_tag(:i, nil, class: 'icon-history'), messages_chat_room_path(chat), class: "btn history", :"data-tooltip" => t(".message_history")
         - else
