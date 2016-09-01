@@ -7,122 +7,67 @@
  
  Copyright CodeCogs 2006-2013
  Written by Will Bateman.
- */
+ 
+ Special Thanks to:
+  - Kyle Jones for a fix to allow multiple editor to load on one page
+*/
+window.CCounter=0;
 CKEDITOR.dialog.add( 'eqneditorDialog', function(editor)
-{	
+{
 	var http = ('https:' == document.location.protocol ? 'https://' : 'http://');
+	window.CCounter++;
+
 	return {
 		title : editor.lang.eqneditor.title,
 		minWidth : 567,
 		minHeight : 430,
 		resizable: CKEDITOR.DIALOG_RESIZE_NONE,
 		contents : [
-		{
-			id : 'CCEquationEditor',
-			label : 'EqnEditor',
-			elements : [
 			{
-				type: 'html',
-				html: '<div id="CCtoolbar"></div>',	
-				style: 'margin-top:-9px'
-			},
-			{
-				type: 'html',
-				html: '<label>Cor da fonte</label>'
-			},
-			{
-				type: 'html',
-				html: '<label>Fonte</label>'
-			},
-			{
-				type: 'html',
-				html: '<label>Tamanho da fonte</label>'
-			},
-			{
-				type: 'html',
-				html: '<label>Cor de fundo</label>'
-			},
-			{
-				type: 'html',
-				html: '<label for="CClatex">Editar Equação (LaTeX):</label>'
-			},
-			{
-				type: 'html',
-				html: '<textarea id="CClatex" rows="5"></textarea>',
-				style:'border:1px solid #8fb6bd; width:540px; font-size:16px; padding:5px; background-color:#ffc'
-			},
-			{
-				type: 'html',
-				html: '<label for="CCequation">Visualizar:</label>'		
-			},
-			{
-				type: 'button',
-				id: 'barra',
-				label: '|',
-				title: '\\'+'\Bigg|_ ^ {}',
-				onClick: function()
+				id : 'CCEquationEditor',
+				label : 'EqnEditor',
+				elements : [
 				{
-					function insertAtCaret(areaId,text) {
-						var txtarea = document.getElementById(areaId);
-						var scrollPos = txtarea.scrollTop;
-						var strPos = 0;
-						var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
-							"ff" : (document.selection ? "ie" : false ) );
-						if (br == "ie") { 
-							txtarea.focus();
-							var range = document.selection.createRange();
-							range.moveStart ('character', -txtarea.value.length);
-							strPos = range.text.length;
-						}
-						else if (br == "ff") {
-							strPos = txtarea.selectionStart;
-						}
-						var front = (txtarea.value).substring(0,strPos);  
-						var back = (txtarea.value).substring(strPos,txtarea.value.length); 
-						txtarea.value=front+text+back;
-						strPos = strPos + text.length;
-						if (br == "ie") { 
-							txtarea.focus();
-							var range = document.selection.createRange();
-							range.moveStart ('character', -txtarea.value.length);
-							range.moveStart ('character', strPos);
-							range.moveEnd ('character', 0);
-							range.select();
-						}
-						else if (br == "ff") {
-							txtarea.selectionStart = strPos;
-							txtarea.selectionEnd = strPos;
-							txtarea.focus();
-						}
-						txtarea.scrollTop = scrollPos;
+							type: 'html',
+							html: '<div id="CCtoolbar'+window.CCounter+'"></div>',	
+							style: 'margin-top:-9px'
+					},
+					{
+							type: 'html',
+							html: '<label for="CClatex'+window.CCounter+'">Equação (LaTeX):</label>',
+					},
+					{
+							type: 'html',
+							html: '<textarea id="CClatex'+window.CCounter+'" rows="5"></textarea>',
+							style:'border:1px solid #8fb6bd; width:540px; font-size:16px; padding:5px; background-color:#ffc',
+					},
+					{
+							type: 'html',
+							html: '<label for="CCequation'+window.CCounter+'" class="lbl_font">Visualizar:</label>'
+					},
+					{
+							type :'html',
+							html: '<div style="position:absolute; left:5px; bottom:0; z-index:999"><a href="http://www.codecogs.com" target="_blank"><img src="'+http+'latex.codecogs.com/images/poweredbycc.gif" width="105" height="35" border="0" alt="Powered by CodeCogs" style="vertical-align:-4px"/></a> &nbsp; <a href="http://www.codecogs.com/latex/about.php" target="_blank">About</a> | <a href="http://www.codecogs.com/latex/popup.php" target="_blank">Install</a> | <a href="http://www.codecogs.com/pages/forums/forum_view.php?f=28" target="_blank">Forum</a> | <a href="http://www.codecogs.com" target="_blank">CodeCogs</a> &copy; 2007-2013</div><img id="CCequation'+window.CCounter+'" src="'+http+'www.codecogs.com/images/spacer.gif" />'
 					}
-
-					insertAtCaret('CClatex','\\'+'Bigg|_ ^ {}');	
-				}
-			}, 
-			{
-				type :'html',
-				html: '<div style="position:absolute; left:5px; bottom:0; z-index:999"><a href="http://www.codecogs.com" target="_blank"><img src="http://www.codecogs.com/images/poweredbycodecogs.png" id="codecogs" border="0" title="CodeCogs - An Open Source Scientific Library" alt="CodeCogs - An Open Source Scientific Library"></a><a href="http://www.codecogs.com" target="_blank" id="codecogs_name">CodeCogs &copy; 2007-2013</a></div><img id="CCequation" src="'+http+'www.codecogs.com/images/spacer.gif" />'					
+				]
 			}
-			]
-		}
 		],
+
 		onLoad : function() {
-			EqEditor.embed('CCtoolbar','','efull');
-			EqEditor.add(new EqTextArea('CCequation', 'CClatex'),false);
+			EqEditor.embed('CCtoolbar'+window.CCounter,'','efull');
+ 			EqEditor.add(new EqTextArea('CCequation'+window.CCounter, 'CClatex'+window.CCounter),false);
 		},
+				
 		onShow : function() {
 			var dialog = this,
-			sel = editor.getSelection(),
-			image = sel.getStartElement().getAscendant('img',true);
-
+				  sel = editor.getSelection(),
+				  image = sel.getStartElement().getAscendant('img',true);
+			 
 			// has the users selected an equation. Make sure we have the image element, include itself		
 			if(image) 
 			{
 				var sName = image.getAttribute('src').match( /(gif|svg)\.latex\?(.*)/ );
-				if(sName!=null) {
-					EqEditor.getTextArea().setText(sName[2]);
-				}
+				if(sName!=null) EqEditor.getTextArea().setText(sName[2]);
 				dialog.insertMode = true;
 			}
 			
@@ -135,7 +80,7 @@ CKEDITOR.dialog.add( 'eqneditorDialog', function(editor)
 			eqn.setAttribute( 'alt', EqEditor.getTextArea().getLaTeX());
 			eqn.setAttribute( 'src', EqEditor.getTextArea().exportEquation('urlencoded'));
 			editor.insertElement(eqn);
+			Example.add_history(EqEditor.getTextArea().getLaTeX());
 		}
 	};
 });
-

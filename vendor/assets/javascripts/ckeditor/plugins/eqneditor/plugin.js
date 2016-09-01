@@ -9,28 +9,29 @@
  Written by Will Bateman.
 */
 CKEDITOR.plugins.add( 'eqneditor', {
-	requires: 'dialog',
+	availableLangs:{en:1},
 	lang : 'pt-br',
-	icons: 'eqneditor',
-	
+	requires: [ 'dialog' ],
+	icons: "eqneditor",
+
 	init : function(editor)
-	{		
-	  var http = ('https:' == document.location.protocol ? 'https://' : 'http://');
-			
+	{
+	  var host='latex.codecogs.com';
+	  var http=('https:' == document.location.protocol ? 'https://' : 'http://');
+
 		// First make sure we have loaded the necessary scripts
   	CKEDITOR.scriptLoader.load( [
-		http+'latex.codecogs.com/js/eq_config.js',
-		'/assets/ckeditor/plugins/eqneditor/eq_editor-lite-17.js',
-		//http+'latex.codecogs.com/js/eq_editor-lite-16.js',
+		http+host+'/js/eq_config.js', 
+		http+host+'/js/eq_editor-lite-17.js'
 		]);
-		
+
 		// Load Additional CSS 
 		var fileref=document.createElement("link");
 		fileref.setAttribute("rel", "stylesheet");
 		fileref.setAttribute("type", "text/css");
 		fileref.setAttribute("href", '/assets/ckeditor/plugins/eqneditor/equation-embed.css');
-		document.getElementsByTagName("head")[0].appendChild(fileref)	
-	
+		document.getElementsByTagName("head")[0].appendChild(fileref);
+
 		var pluginCmd='eqneditorDialog';
 
 		// Add the link and unlink buttons.
@@ -40,12 +41,13 @@ CKEDITOR.plugins.add( 'eqneditor', {
 				requiredContent: 'img[src,alt]'
 			})
 		);
-		
+
 		CKEDITOR.dialog.add(pluginCmd, this.path+"dialogs/eqneditor.js");
-				
+
 		editor.ui.addButton( 'EqnEditor', {
 			label : editor.lang.eqneditor.toolbar,
 			command : pluginCmd,
+			icon: this.path + 'icons/eqneditor.png',
 			toolbar: 'insert'
 		});
 
@@ -59,7 +61,7 @@ CKEDITOR.plugins.add( 'eqneditor', {
 				command : pluginCmd,
 				group : editor.lang.eqneditor.menu
 			});
-			
+
 			// if the selected item is image of class 'mathImg',
 			// we shold be interested in it
 			editor.contextMenu.addListener( function(element) {
@@ -74,9 +76,9 @@ CKEDITOR.plugins.add( 'eqneditor', {
 					}
 				}
 			});
-			
-		}	
-		
+
+		}
+
 		editor.on( 'doubleclick', function(evt) 
 		{
 			var element = evt.data.element;
@@ -88,14 +90,10 @@ CKEDITOR.plugins.add( 'eqneditor', {
 					evt.data.dialog = pluginCmd;
 					evt.cancelBubble = true; 
 					evt.returnValue = false;
-					evt.stop();	
+					evt.stop();
 				}
 			}
 		}, null, null, 1);
-		
-	}	
+
+	}
 });
-
-
-	
-
