@@ -32,8 +32,6 @@ class Webconference < ActiveRecord::Base
     query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids, evaluative: false,  frequency: false} }  if evaluative && frequency
     query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids} }  if !evaluative && !frequency
     opt.merge!(select2: "webconferences.*, academic_allocations.allocation_tag_id AS at_id, academic_allocations.id AS ac_id, users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, initial_time + duration* interval '1 min' || '' AS end_hour, CASE
-    WHEN acu.grade IS NOT NULL THEN 'evaluated'
-    WHEN acu.working_hours IS NOT NULL THEN 'evaluated'
     when NOW()>initial_time AND NOW()<(initial_time + duration* interval '1 min') then 'in_progress'
     when NOW() < initial_time then 'scheduled'
     when is_recorded AND (NOW()>initial_time + duration* interval '1 min' + interval '10 mins') then'record_available' 
@@ -41,8 +39,6 @@ class Webconference < ActiveRecord::Base
     ELSE 'finish' 
 END AS situation")
     opt.merge!(select1: "DISTINCT webconferences.id, webconferences.*, NULL AS at_id, NULL AS ac_id, users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, initial_time + duration* interval '1 min' || '' AS end_hour, CASE
-    WHEN acu.grade IS NOT NULL THEN 'evaluated'
-    WHEN acu.working_hours IS NOT NULL THEN 'evaluated'
     when NOW()>initial_time AND NOW()<(initial_time + duration* interval '1 min') then 'in_progress'
     when NOW() < initial_time then 'scheduled'
     when is_recorded AND (NOW()>initial_time + duration* interval '1 min' + interval '10 mins') then'record_available' 

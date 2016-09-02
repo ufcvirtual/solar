@@ -13,7 +13,7 @@
                 %a{:'data-url' => frequency_scores_path}=t('scores.index.frequency')
             %div{ class: 'link_pdf' }    
               = link_to t('scores.index.print_pdf'), general_scores_path(report: true, format: :pdf), :target => "_blank", class: "btn"
-  
+    
     %tr.lines
       %th#student.no_sort
       %th= t('scores.index.access_to_the_course')
@@ -28,25 +28,14 @@
       %th= t("activerecord.models.webconference")
       %th= t("activerecord.models.schedule_event")
       
-  %tbody.scores
+  %tbody.users
     - if @users.blank?
       %tr.lines
         %td{colspan: 2}= t('scores.index.no_data')
     - else
-      - @users.each_with_index do |student, idx|
-        %tr.lines
-          %td.td_student{'data-tooltip' => student.name}= link_to student.name, user_info_scores_path(student.id)
-          %td=student.u_logs
-          - unless @wh.nil?
-            %td=student.working_hours
-          %td=student.u_grade
-          %td=student.u_public_files
-          %td="#{student.assignments} de #{@tools.assignments_count}"
-          %td="#{student.exams} de #{@tools.exams_count}"
-          %td="#{student.discussions} de #{@tools.discussions_count}"
-          %td="#{student.chat_rooms} de #{@tools.chat_rooms_count}"
-          %td="#{student.webconferences} de #{@tools.webconferences_count}"
-          %td="#{student.schedule_events} de #{@tools.events_count}"
+      = render partial: 'pending_general', locals: { users: @users }
+- if @users
+  = link_to content_tag(:i, nil, class: "icon-ellipsis"), general_scores_path(page: @users.next_page), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items) if @users.next_page    
 
- 
 = javascript_include_tag 'tooltip', 'tablesorter', 'scores'
+     

@@ -1,5 +1,5 @@
 - unless @responsibles.nil?
-  .block_wrapper
+  .block_wrapper.user_requested_list
     .block_title
       %h2
         %i.icon-suitcase
@@ -35,7 +35,7 @@
     - else
       .block_content_text_list.text_none= t(".no_responsible")
 
-.block_wrapper
+.block_wrapper#teste
   .block_title
     %h2= t(".students")
 

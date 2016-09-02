@@ -1,0 +1,6 @@
+$('.users').append('#{escape_javascript(render partial: "pending_general", locals: { users: @users })}');
+$('a.load-more-users').attr('href', '#{general_scores_path page: @users.next_page}');
+$(".tb_list").trigger("update");
+
+- unless @users.next_page
+  $('a.load-more-users').remove();

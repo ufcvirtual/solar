@@ -1,0 +1,14 @@
+- @users.each_with_index do |student, idx|
+  %tr.lines
+    %td.td_student{'data-tooltip' => student.name}= link_to student.name, user_info_scores_path(student.id)
+    %td=student.u_logs
+    - unless @wh.nil?
+      %td=student.working_hours
+    %td=student.u_grade
+    %td=student.u_public_files
+    %td="#{student.assignments} de #{@tools.assignments_count}"
+    %td="#{student.exams} de #{@tools.exams_count}"
+    %td="#{student.discussions} de #{@tools.discussions_count}"
+    %td="#{student.chat_rooms} de #{@tools.chat_rooms_count}"
+    %td="#{student.webconferences} de #{@tools.webconferences_count}"
+    %td="#{student.schedule_events} de #{@tools.events_count}"

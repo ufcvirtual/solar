@@ -1,0 +1,16 @@
+- @users.each do |student|
+  - user_scores = @scores.select { |attachment| attachment.user_id.to_i == student.id }
+  %tr.lines
+    %td.td_student{'data-tooltip' => student.name}= link_to student.name, user_info_scores_path(student.id)
+    - @acs.each do |ac|
+      - score = user_scores.select { |attachment| attachment.id.to_i == ac.id.to_i }
+      - if score.blank?
+        %td.not_sent= t("scores.index.not_sent")
+      - else
+        %td{class: "#{score.first.situation} #{ac.tool_type} #{score.first.new_after_evaluation == 't' ? 'new_after_evaluation' : ''}" }
+          - if ['not_started', 'to_send'].include?(score.first.situation)
+            = (@score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}")
+          - else
+            = link_to_function (@score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}"), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: ac.tool_type, ac_id: ac.id, user_id: student.id, group_id: score.first.group, situation: score.first.situation, score_type: @score_type)
+
+= javascript_include_tag 'tooltip', 'tablesorter', 'scores'          

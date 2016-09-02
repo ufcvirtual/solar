@@ -1,0 +1,6 @@
+$('.scores').append('#{escape_javascript(render partial: "pending_evaluatives_frequency", locals: { users: @users })}');
+$('a.load-more-users').attr('href', '#{not_evaluative_scores_path page: @users.next_page, score_type: @score_type}');
+$(".tb_list").trigger("update");
+
+- unless @users.next_page
+  $('a.load-more-users').remove();

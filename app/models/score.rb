@@ -109,8 +109,8 @@ class Score # < ActiveRecord::Base
       CASE
         #{evaluated_status}
         WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'ChatRoom' AND chat_messages.id IS NOT NULL))) THEN 'sent'
-        WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < cast(start_hour as time)) THEN 'not_started'
-        WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time>cast(start_hour as time) ) AND (end_hour IS NULL OR current_time<=cast(end_hour as time)) THEN 'to_send'
+        WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < to_timestamp(start_hour, 'HH24:MI:SS')::time) THEN 'not_started'
+        WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time>to_timestamp(start_hour, 'HH24:MI:SS')::time ) AND (end_hour IS NULL OR current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
         ELSE 
           'not_sent'
         END AS situation
@@ -169,8 +169,8 @@ class Score # < ActiveRecord::Base
       CASE
         #{evaluated_status}
         WHEN #{sent_status} THEN 'sent'
-        WHEN current_date <= schedules.start_date OR current_time<=cast(start_hour as time) THEN 'not_started'
-        WHEN ((current_date >= schedules.start_date AND current_time>= CASE WHEN start_hour IS NULL THEN time '00:00'  ELSE cast(start_hour as time) END) AND (current_date <= schedules.end_date AND current_time<CASE WHEN end_hour IS NULL THEN time '23:59'  ELSE cast(end_hour as time) END)) THEN 'to_send'
+        WHEN current_date <= schedules.start_date OR current_time<=to_timestamp(start_hour, 'HH24:MI:SS')::time THEN 'not_started'
+        WHEN ((current_date >= schedules.start_date AND current_time>= CASE WHEN start_hour IS NULL THEN time '00:00'  ELSE to_timestamp(start_hour, 'HH24:MI:SS')::time END) AND (current_date <= schedules.end_date AND current_time<CASE WHEN end_hour IS NULL THEN time '23:59'  ELSE to_timestamp(end_hour, 'HH24:MI:SS')::time END)) THEN 'to_send'
         ELSE 
           'not_sent'
         END AS situation
@@ -198,8 +198,8 @@ class Score # < ActiveRecord::Base
       CASE
         #{evaluated_status}
         WHEN #{sent_status} THEN 'sent'
-        WHEN current_date<schedules.start_date AND (start_hour IS NULL OR current_time<=cast(start_hour as time))  THEN 'not_started'
-        WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND current_time>=cast(start_hour as time) AND current_time<=cast(end_hour as time) THEN 'to_send'
+        WHEN current_date<schedules.start_date AND (start_hour IS NULL OR current_time<=to_timestamp(start_hour, 'HH24:MI:SS')::time)  THEN 'not_started'
+        WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND current_time>=to_timestamp(start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time THEN 'to_send'
         ELSE 
           'not_sent'
         END AS situation
@@ -356,7 +356,8 @@ class Score # < ActiveRecord::Base
                   when schedules.end_date < current_date                         then 'not_sent'
                   else  '-'
                  end AS situation,
-                 assignments.type_assignment
+                 academic_allocations.evaluative,
+                 academic_allocations.frequency
               FROM assignments, schedules, academic_allocations 
               LEFT JOIN (select group_id, ac_id from groups) AS groups ON groups.ac_id = academic_allocations.id
               LEFT JOIN academic_allocation_users ON academic_allocations.id = academic_allocation_users.academic_allocation_id AND (academic_allocation_users.user_id = #{user_id} OR (academic_allocation_users.group_assignment_id = groups.group_id))
@@ -386,20 +387,20 @@ class Score # < ActiveRecord::Base
               end_hour,
               0 as count,
               CASE 
-              WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time>cast(start_hour as time) ) AND (end_hour IS NULL OR current_time<=cast(end_hour as time)) THEN true
+              WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time>to_timestamp(start_hour, 'HH24:MI:SS')::time ) AND (end_hour IS NULL OR current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN true
               ELSE 
                 false
               END AS opened,
             CASE 
-              WHEN (current_date > schedules.end_date) OR (current_date = schedules.end_date AND (end_hour IS NULL OR current_time>cast(end_hour as time))) THEN true
+              WHEN (current_date > schedules.end_date) OR (current_date = schedules.end_date AND (end_hour IS NULL OR current_time>to_timestamp(end_hour, 'HH24:MI:SS')::time)) THEN true
               ELSE 
                 false
               END AS closed,
               CASE 
                 #{evaluated_status}   
                 WHEN (#{sent_status} OR  academic_allocation_users.status = 1 OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'ChatRoom' AND chat_messages.id IS NOT NULL))) THEN 'sent'
-                WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < cast(start_hour as time)) THEN 'not_started'
-                WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time>cast(start_hour as time) ) AND (end_hour IS NULL OR current_time<=cast(end_hour as time)) THEN 'opened'
+                WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < to_timestamp(start_hour, 'HH24:MI:SS')::time) THEN 'not_started'
+                WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time>to_timestamp(start_hour, 'HH24:MI:SS')::time ) AND (end_hour IS NULL OR current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN 'opened'
                 ELSE
                 'closed'
               END AS situation,
@@ -455,14 +456,17 @@ class Score # < ActiveRecord::Base
               when (current_date >= s.end_date AND current_time>to_timestamp(end_hour, 'HH24:MI:SS')::time) AND (count(exam_user_attempts.id) > 0 ) AND academic_allocation_users.grade IS NULL then 'not_corrected'
               else
                 'not_answered'
-              end AS situation
+              end AS situation,
+            academic_allocations.evaluative,
+            academic_allocations.frequency
           FROM exams, schedules s, academic_allocations LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}
             LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id
             LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id 
           WHERE 
             academic_allocations.academic_tool_id = exams.id AND academic_tool_type='Exam' AND exams.schedule_id=s.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats}) 
             GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, exams.name,  s.start_date,  s.end_date, description, new_after_evaluation,
-            academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, start_hour, end_hour,  exam_responses.id, exam_user_attempts.complete, attempts
+            academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, start_hour, end_hour,  exam_responses.id, exam_user_attempts.complete, attempts, academic_allocations.evaluative,
+            academic_allocations.frequency
           ) "
 
         when 'schedule_events'
@@ -500,7 +504,9 @@ class Score # < ActiveRecord::Base
             WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND start_hour IS NULL THEN 'started'
             WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND current_time>=to_timestamp(start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time THEN 'started'
             ELSE 'not_started'  
-            END AS situation
+            END AS situation,
+            academic_allocations.evaluative,
+            academic_allocations.frequency
           FROM schedule_events, schedules, academic_allocations 
           LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}
           WHERE 

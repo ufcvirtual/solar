@@ -6,7 +6,7 @@ class ScoresController < ApplicationController
   before_filter :prepare_for_pagination, only: :index
 
   layout false, only: :search_tool
-
+  require 'will_paginate/array'
   def index
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @group = AllocationTag.find(@allocation_tag_id).groups.first
@@ -14,13 +14,13 @@ class ScoresController < ApplicationController
     ats = AllocationTag.find(@allocation_tag_id).related.join(',')
     @responsibles = AllocationTag.get_participants(@allocation_tag_id, { responsibles: true, profiles: Profile.with_access_on("create", "posts").join(",") }, true) if current_user.profiles_with_access_on("responsibles", "scores", AllocationTag.find(@allocation_tag_id).related).any?
 
-    @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true)
+    @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(:page => params[:page], :per_page => 20)
     @tools = ( ats.empty? ? [] : EvaluativeTool.count_tools(ats) )
     @tools_list = EvaluativeTool.descendants
 
     @wh = AllocationTag.find(@allocation_tag_id).get_curriculum_unit.try(:working_hours)
   end
-
+  require 'will_paginate/array'
   def evaluatives_frequency
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
@@ -55,12 +55,11 @@ class ScoresController < ApplicationController
 
     @tools = EvaluativeTool.descendants
 
-    @users = Score.get_users(ats)
     @scores = Score.evaluative_frequency(ats, params[:type])
-
+    @score_type = params[:type]
     if params[:report]
+      @users = Score.get_users(ats)
       @ats = AllocationTag.find(@allocation_tag_id)
-      @score_type = params[:type]
       @examidx = params[:Examidx] unless params[:Examidx].blank?
       @assignmentidx = params[:Assignmentidx] unless params[:Assignmentidx].blank?
       @scheduleEventidx = params[:ScheduleEventidx] unless params[:ScheduleEventidx].blank?
@@ -76,29 +75,40 @@ class ScoresController < ApplicationController
         end   
       end 
     else
-      render partial: 'evaluative_frequency', locals: {score_type: params[:type]}
+      @users = Score.get_users(ats).paginate(:page => params[:page], :per_page => 20)
+      #render partial: 'evaluative_frequency', locals: {score_type: params[:type]}
+      respond_to do |format|
+        format.html { render partial: 'evaluative_frequency', locals: {score_type: params[:type] }}
+        format.json { render json: @users }
+        format.js
+      end 
     end   
 
   end 
-
+  require 'will_paginate/array'
   def general
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @wh = AllocationTag.find(@allocation_tag_id).get_curriculum_unit.try(:working_hours)
     ats = AllocationTag.find(@allocation_tag_id).related.join(',')
-    @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true)
     @tools = ( ats.empty? ? [] : EvaluativeTool.count_tools(ats) )
 
     if params[:report]
+      @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true) 
       @ats = AllocationTag.find(@allocation_tag_id)
       respond_to do |format|
         format.html do
           render pdf:         'general',
                  orientation: 'Landscape',
                  layout: false
-        end       
+        end
       end 
     else
-      render partial: 'general'
+      @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(:page => params[:page], :per_page => 20)
+      respond_to do |format|
+        format.html { render partial: 'general'  }
+        format.json { render json: @users }
+        format.js
+      end 
     end    
   end
 

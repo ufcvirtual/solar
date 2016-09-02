@@ -274,9 +274,9 @@ td.assignment_without_group a
   white-space: nowrap;
 }
 .legend{
-	position: absolute;
-	bottom:0;
-  top: 233%;
+	position:relative;
+	height:10px;
+	padding-bottom: 10px;
 	font-size: 13px;
 }
 
