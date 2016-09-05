@@ -3219,6 +3219,11 @@ pt_BR:
       attempts: 'Número de tentativas: '
       block: 'Contéudo bloqueado?'
       uninterrupted: 'Permitido interromper a prova?'
+      duration__tooltip: 'Tempo restante para finalizar a prova/tentativa.'
+      questions__tooltip: 'Independentemente do numero de questões da prova ou da pontuação máxima mostrada, a nota máxima final sempre será 10 (dez).'
+      attempts__tooltip: 'Quantidade de vezes que o aluno pode fazer/refazer a prova.'
+      block__tooltip: 'O conteúdo do solar (aulas, fóruns e atividades) ficará bloqueado durante a realização da prova.'
+      uninterrupted__tooltip: 'A prova pode ser interrompida e continuada, quantas vezes forem necessárias, desde que esteja no período de disponibilidade. Provas onde essa opção não está disponível, ao ser interrompida, a tentativa atual será finalizada.'
       button: Iniciar Prova
       continue: Continuar Prova
     open:

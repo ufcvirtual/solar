@@ -2988,6 +2988,11 @@ en_US:
       attempts: 'Number of attempts: '
       block: 'Content blocked?'
       uninterrupted: 'Allowed to interrupt the exam?'
+      duration__tooltip: 'Remaining time to complete the test/attempt.'
+      questions__tooltip: 'Regardless of the test questions number or the maximum score shown, the maximum final score will always be 10 (ten).'
+      attempts__tooltip: 'Number of times that the student can do/redo the test.'
+      block__tooltip: 'Solar content (lessons, discussions and support material) will be blocked during the accomplishment of test.'
+      uninterrupted__tooltip: 'The test can be stopped and continued as often as necessary, provided it is in the availability period. Tests where this option is not available, when interrupted, the current attempt will end.'
       button: Start Exam
       continue: Continue Exam
     open:
