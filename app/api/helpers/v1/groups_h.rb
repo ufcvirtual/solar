@@ -30,7 +30,7 @@ module V1::GroupsH
   def get_group_students_info(allocation_tag_id, group)
     related_ats_ids    = group.allocation_tag.related.join(',')
     msg_outbox_query   = Message.get_query('users.id', 'outbox', [allocation_tag_id], { ignore_trash: false, ignore_user: true })
-    recorded_meetings  = Webconference.first.bbb_all_recordings.map{|a| a[:meetingID]}.uniq
+    recorded_meetings  =  [] #Webconference.first.bbb_all_recordings.map{|a| a[:meetingID]}.uniq rescue []
     @students          = User.find_by_sql <<-SQL
       SELECT users.cpf, users.name, users.gender, users.birthdate, users.address, users.address_number, users.address_complement, users.address_neighborhood, users.zipcode, users.city, users.state,
              COUNT(DISTINCT public_files.id)            AS count_public_files,
@@ -146,7 +146,7 @@ module V1::GroupsH
   end
 
   def get_group_info(group)
-    recorded_meetings  = Webconference.first.bbb_all_recordings.map{|a| a[:meetingID]}.uniq
+    recorded_meetings  = [] #Webconference.first.bbb_all_recordings.map{|a| a[:meetingID]}.uniq rescue []
     related_ats        = group.allocation_tag.related.join(',')
     @group             = Group.find_by_sql <<-SQL
       SELECT groups.id,
@@ -283,7 +283,7 @@ module V1::GroupsH
   def get_group_responsible_info(user_id, allocation_tag_id, group)
     related_ats_ids    = group.allocation_tag.related.join(',')
     msg_outbox_query   = Message.get_query('users.id', 'outbox', [allocation_tag_id], { ignore_trash: false, ignore_user: true })
-    recorded_meetings  = Webconference.first.bbb_all_recordings.map{|a| a[:meetingID]}.uniq
+    recorded_meetings  = [] #Webconference.first.bbb_all_recordings.map{|a| a[:meetingID]}.uniq rescue []
     @user              = User.find_by_sql <<-SQL
       SELECT COUNT(DISTINCT public_files.id)            AS count_public_files,
              COALESCE(all_sent_messages.count,0)        AS all_sent_msgs,
@@ -297,7 +297,7 @@ module V1::GroupsH
              COALESCE(comments.total,0)                 AS count_comments,
              COALESCE(comments.sa,0)                    AS count_academic_allocation_users_with_comments,
              COALESCE(comments.assig,0)                 AS count_assignments_with_comments,
-             COALESCE(grades.count,0)                   AS count_academic_allocation_users_assignments_with_grades,
+             COALESCE(grades.count,0)                   AS count_academic_allocation_users_with_grades,
              COALESCE(grades.assig,0)                   AS count_assignments_with_grades
            FROM users
            JOIN allocations  ON allocations.user_id     = users.id
@@ -373,7 +373,7 @@ module V1::GroupsH
         AND cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)
         AND allocations.status = #{Allocation_Activated}
         AND users.id           = #{user_id}
-      GROUP BY users.id, all_sent_messages.count, logs.count, posts.count, posts.count_discussions, chat_messages.count, chat_messages.count_chat_rooms, webs.count, webs.count_webconferences, assignments.count, assignments.sa, comments.total, comments.sa, comments.assig, grades.count, grades.assig
+      GROUP BY users.id, all_sent_messages.count, logs.count, posts.count, posts.count_discussions, chat_messages.count, chat_messages.count_chat_rooms, webs.count, webs.count_webconferences, comments.total, comments.sa, comments.assig, grades.count, grades.assig
     SQL
     @user.first
   end
