@@ -273,7 +273,7 @@
     color: #378941;
   }
 
-  .finished {
+  .finished, .not_corrected {
     color: #2900c2;
   }
 
@@ -285,13 +285,12 @@
     color: #787878;
   }
 
-  .to_answer, .not_finished {
+  .to_answer, .not_finished, .retake {
     color: #003e7a;
   }
   .ico-e{
     font-decoration: none;
     text-decoration:none; 
-
   }
 
   .block_exam h2{
@@ -337,7 +336,7 @@
     .attempt{
       .input{
         label{
-          width: 155px;
+          width: 113px;
         }  
       }
     }
@@ -356,5 +355,18 @@
   }
   .frequency_form{
     text-align: center;
+  }
+}
+
+.exam.exam_box{
+  h2.show_hide{
+    text-align: center;
+    padding: 3px;
+  }
+  a.hide_questions.invisible{
+    display: block;
+  }
+  a.hide_questions.invisible{
+    display: none;
   }
 }

@@ -23,45 +23,50 @@ class Webconference < ActiveRecord::Base
   validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed?)', on: :update
 
   def link_to_join(user, at_id = nil, url = false)
-    ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to(title, bbb_join(user, at_id), target: '_blank')) : title) 
+    ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to((title rescue name), bbb_join(user, at_id), target: '_blank')) : (title rescue name)) 
   end
 
-  def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true }, user_id = nil, evaluative = false, frequency = false)
-    query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids, evaluative: true } } if evaluative
-    query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids, frequency: true } } if frequency
-    query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids, evaluative: false,  frequency: false} }  if evaluative && frequency
-    query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids} }  if !evaluative && !frequency
-    opt.merge!(select2: "webconferences.*, academic_allocations.allocation_tag_id AS at_id, academic_allocations.id AS ac_id, users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, initial_time + duration* interval '1 min' || '' AS end_hour, CASE
-    when NOW()>initial_time AND NOW()<(initial_time + duration* interval '1 min') then 'in_progress'
-    when NOW() < initial_time then 'scheduled'
-    when is_recorded AND (NOW()>initial_time + duration* interval '1 min' + interval '10 mins') then'record_available' 
-    when is_recorded AND (NOW()<initial_time + duration* interval '1 min' + interval '10 mins') then 'processing'
-    ELSE 'finish' 
-END AS situation")
-    opt.merge!(select1: "DISTINCT webconferences.id, webconferences.*, NULL AS at_id, NULL AS ac_id, users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, initial_time + duration* interval '1 min' || '' AS end_hour, CASE
-    when NOW()>initial_time AND NOW()<(initial_time + duration* interval '1 min') then 'in_progress'
-    when NOW() < initial_time then 'scheduled'
-    when is_recorded AND (NOW()>initial_time + duration* interval '1 min' + interval '10 mins') then'record_available' 
-    when is_recorded AND (NOW()<initial_time + duration* interval '1 min' + interval '10 mins') then 'processing'
-    ELSE 'finish' 
-END AS situation")
+  def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true }, user_id = nil)
+    query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids } }
 
-    webconferences = if user_id.nil?
-      Webconference.joins(:moderator).joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'").where(query)
-    else
+    select = "users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, eq_web.title AS eq_name, webconferences.initial_time || '' AS start_hour, webconferences.initial_time + webconferences.duration* interval '1 min' || '' AS end_hour, webconferences.initial_time AS start_date, CASE
+      WHEN acu.grade IS NOT NULL OR acu.working_hours IS NOT NULL THEN 'evaluated'
+      WHEN (acu.status = 1 OR (acu.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
+      when NOW()>webconferences.initial_time AND NOW()<(webconferences.initial_time + webconferences.duration* interval '1 min') then 'in_progress'
+      when NOW() < webconferences.initial_time then 'scheduled'
+      when webconferences.is_recorded AND (NOW()>webconferences.initial_time + webconferences.duration* interval '1 min' + interval '10 mins') then'record_available' 
+      when webconferences.is_recorded AND (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '10 mins') then 'processing' 
+      else 'finish'
+    END AS situation"
+
+    opt.merge!(select2: "webconferences.*, academic_allocations.allocation_tag_id AS at_id, academic_allocations.id AS ac_id, #{select}")
+    opt.merge!(select1: "DISTINCT webconferences.id, webconferences.*, NULL AS at_id, NULL AS ac_id, users.name AS user_name, #{select}")
+
+  webconferences = Webconference.joins(:moderator)
+                  .joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'")
+                  .joins("LEFT JOIN log_actions ON academic_allocations.id = log_actions.academic_allocation_id AND log_actions.log_type = 7 AND log_actions.user_id = #{user_id.blank? ? 0 : user_id}")
+                  .joins("LEFT JOIN academic_allocation_users acu ON acu.academic_allocation_id = academic_allocations.id AND acu.user_id = #{user_id.blank? ? 0 : user_id}")
+                  .joins("LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id")
+                  .joins("LEFT JOIN webconferences eq_web ON eq_web.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'Webconference'")
+                  .where(query)
+    unless user_id.blank?
       opt[:select1] += ', acu.grade, acu.working_hours'
       opt[:select2] += ', acu.grade, acu.working_hours'
-      Webconference.joins(:moderator)
-                  .joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'")
-                  .joins('LEFT JOIN group_assignments ga ON ga.academic_allocation_id = academic_allocations.id')
-                  .joins("LEFT JOIN group_participants gp ON gp.user_id = #{user_id} AND gp.group_assignment_id = ga.id")
-                  .joins("LEFT JOIN academic_allocation_users acu ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id = gp.group_assignment_id)")
-                  .where(query)
     end
+
     web1 = webconferences.where(shared_between_groups: true)
     web2 = webconferences.where(shared_between_groups: false)
 
     (web1.select(opt[:select1]) + web2.select(opt[:select2])).sort_by{ |web| (opt[:asc] ? [web.initial_time.to_i, web.title] : [-web.initial_time.to_i, web.title]) }
+  end
+
+  def self.groups_codes(id)
+    web = Webconference.find(id)
+    if web.shared_between_groups
+      Group.joins(:allocation_tag).where(allocation_tags: { id: web.academic_allocations.pluck(:allocation_tag_id) }).pluck(:code)
+    else
+      []
+    end
   end
 
   def responsible?(user_id, at_id = nil)
@@ -72,10 +77,13 @@ END AS situation")
     ((shared_between_groups || at_id.nil?) ? (allocation_tags.map{ |at| at.is_student_or_responsible?(user_id) }.include?(true)) : AllocationTag.find(at_id).is_student_or_responsible?(user_id))
   end
 
-  def location
-    groups_codes = groups.map(&:code).join(', ') unless groups.empty?
+  def location(id = nil)
+    groups_codes = groups.map(&:code).join(', ') unless shared_between_groups || groups.empty?
     offer        = groups.first.try(:offer) || offers.first
-    [offer.allocation_tag.info, groups_codes].join(' - ')
+    [offer.allocation_tag.info, groups_codes].compact.join(' - ')
+  rescue
+    web = Webconference.find(id)
+    web.location
   end
 
   def groups_codes
@@ -83,15 +91,19 @@ END AS situation")
   end
 
   def offer_info
-    (groups.first.try(:offer) || offers.first).allocation_tag.info
+    at = AllocationTag.find(allocation_tag_id)
+
+    (groups.first.try(:offer) || offers.first).allocation_tag.info 
+  rescue 
+    at.info
   end
 
   def bbb_join(user, at_id = nil)
     meeting_id   = get_mettingID(at_id)
-    meeting_name = [title, offer_info].join(' - ').truncate(100)
+    meeting_name = [(title rescue name), offer_info].join(' - ').truncate(100)
 
     options = {
-      moderatorPW: Digest::MD5.hexdigest(title+meeting_id),
+      moderatorPW: Digest::MD5.hexdigest((title rescue name)+meeting_id),
       attendeePW: Digest::MD5.hexdigest(meeting_id),
       welcome: description,
       duration: duration,

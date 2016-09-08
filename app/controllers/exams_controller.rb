@@ -10,11 +10,10 @@ class ExamsController < ApplicationController
   def index
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     authorize! :index, Exam, on: [@allocation_tag_id]
-    @allocation_tags_ids = AllocationTag.find(@allocation_tag_id).related
-    @exams = Exam.my_exams(@allocation_tags_ids)
-
+    @exams = Score.list_tool(current_user.id, @allocation_tag_id, 'exams', false, false, true)
     @can_open = can? :open, Exam, {on: @allocation_tag_id}
-  rescue
+    @can_evaluate = can? :calcule_grades, Exam, { on: @allocation_tag_id }
+  rescue => error
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end
 
@@ -192,7 +191,6 @@ class ExamsController < ApplicationController
 
     @attempts = @acu.try(:exam_user_attempts) || []
     @scores_exam = @exam.exam_questions.where(use_question: true).sum(:score)
-
   rescue CanCan::AccessDenied
     render text: t(:no_permission)
   rescue => error
@@ -224,6 +222,7 @@ class ExamsController < ApplicationController
       authorize! :calcule_grades, Exam, { on: active_tab[:url][:allocation_tag_id] }
       user_id = params[:user_id]
     end
+    raise 'not_finished' unless exam.ended?
     grade = exam.recalculate_grades(user_id, nil, true)
     render json: { success: true, grade: grade, status: t('exams.situation.corrected'), notice: t('calcule_grade', scope: 'exams.list') }
   rescue => error
@@ -236,6 +235,7 @@ class ExamsController < ApplicationController
     ats = allocation_tags_ids.gsub(' ', ",") rescue allocation_tags_ids
 
     exam = Exam.find(params[:id])
+    raise 'not_finished' unless exam.ended?
     exam.recalculate_grades(nil, ats, true)
     render json: { success: true, notice: t('calcule_grade', scope: 'exams.list') }
   rescue => error
@@ -281,6 +281,17 @@ class ExamsController < ApplicationController
     @exam_questions = Question.where(id: ExamQuestion.list(@exam.id, @exam.raffle_order).map(&:question_id)).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
 
     render :open
+  end
+
+  def percentage
+    authorize! :open, Exam, { on: allocation_tag_id = active_tab[:url][:allocation_tag_id] }
+    exam = Exam.find(params[:id])
+    acs = exam.academic_allocations
+    ac_id = (acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: allocation_tag_id).first.id)
+    acu = AcademicAllocationUser.find_one(ac_id, current_user.id, nil, true)
+    @percentage = Exam.percent(exam.number_questions, acu.exam_user_attempts.last.questions.count)
+  rescue => error
+    render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
 
   private

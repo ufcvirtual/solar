@@ -283,3 +283,16 @@ table.general{
     }
   }
 }
+
+tbody{
+  .equivalent{
+    a{
+      text-decoration: none;
+      color: #21578B;
+      font-size: 9pt;
+    }
+    .dropdown-menu{
+      padding: 10px;
+    }
+  } 
+}

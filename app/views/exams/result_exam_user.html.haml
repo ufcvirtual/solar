@@ -40,7 +40,7 @@
 
               .input
                 = label_tag t(".end_date"), nil, class: "form_label"
-                %span.label_info= l(attempt.end, format: :at_date)
+                %span.label_info= l(attempt.end, format: :at_date) rescue ''
 
               .input
                 = label_tag t(".average_time"), nil, class: "form_label"

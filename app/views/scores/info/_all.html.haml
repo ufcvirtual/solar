@@ -4,12 +4,9 @@
   .block_content
     #tabs.tabs_all
       %ul
-        %li.active 
-          = link_to t(:evaluative, scope: [:scores, :info]), "#evaluative"
-        %li 
-          = link_to t(:frequency, scope: [:scores, :info]), "#frequency"
-        %li 
-          = link_to t(:not_evaluative, scope: [:scores, :info]), "#notevaluative"  
+        %li.active= link_to t(:evaluative, scope: [:scores, :info]), "#evaluative"
+        %li= link_to t(:frequency, scope: [:scores, :info]), "#frequency"
+        %li= link_to t(:not_evaluative, scope: [:scores, :info]), "#notevaluative"  
 
       #evaluative    
         - unless @tool_evaluative.empty?
@@ -17,10 +14,10 @@
             %thead
               %tr.lines
                 %th{style: "width: 20%;"}= t(:tool, scope: [:scores, :info])
-                %th{style: "width: 30%;"}= t(:title, scope: [:scores, :info])
+                %th{style: "width: 40%;"}= t(:title, scope: [:scores, :info])
                 %th.center.date{style: "width: 25%;"}= t(:date_range, scope: [:scores, :info])
                 %th.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
-                %th.center{style: "width: 2%;"}= t(:amount, scope: [:scores, :info])
+                %th.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
                 %th.center{style: "width: 20%;"}= t(:grade, scope: [:scores, :info])
                 %th.no_sort
                 %th.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
@@ -34,6 +31,30 @@
                       = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
                     - else
                       .title= tool.name
+                    .equivalent
+                      - unless tool.eq_name.blank?
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{tool.id}" }
+                          %i.icon-flow-parallel
+                          = t('scores.info.equivalency')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{tool.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                            = raw t('scores.info.equivalent', name: tool.eq_name)
+                      - else
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{tool.id}", :'data-url' => equalities_tools_path(tool_type: tool.academic_tool_type, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-flow-parallel
+                          =t('scores.info.equalities')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{tool.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                    - if tool.academic_tool_type == 'ChatRoom' && tool.type_tool == '1'
+                      .participants.equivalent
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_1_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-users
+                          =t('scores.info.participants')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_p_1_#{tool.id}"}
+                          %ul{ class: 'dropdown-menu' }  
                   %td.center
                     - if tool.academic_tool_type.downcase == 'webconference'
                       %div= l(tool.start_hour.to_datetime, format: :at_date)
@@ -60,10 +81,10 @@
             %thead
               %tr.lines
                 %th{style: "width: 20%;"}= t(:tool, scope: [:scores, :info])
-                %th{style: "width: 30%;"}= t(:title, scope: [:scores, :info])
+                %th{style: "width: 37%;"}= t(:title, scope: [:scores, :info])
                 %th.center.date{style: "width: 25%;"}= t(:date_range, scope: [:scores, :info])
                 %th.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
-                %th.center{style: "width: 2%;"}= t(:amount, scope: [:scores, :info])
+                %th.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
                 %th.center{style: "width: 20%;"}= t(:frequency, scope: [:scores, :info])
                 %th.no_sort
                 %th.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
@@ -77,6 +98,30 @@
                       = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
                     - else
                       .title= tool.name
+                    .equivalent
+                      - unless tool.eq_name.blank?
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{tool.id}" }
+                          %i.icon-flow-parallel
+                          = t('scores.info.equivalency')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{tool.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                            = raw t('scores.info.equivalent', name: tool.eq_name)
+                      - else
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{tool.id}", :'data-url' => equalities_tools_path(tool_type: tool.academic_tool_type, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-flow-parallel
+                          =t('scores.info.equalities')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{tool.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                    - if tool.academic_tool_type == 'ChatRoom' && tool.type_tool == '1'
+                      .participants.equivalent
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_2_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-users
+                          =t('scores.info.participants')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_p_2_#{tool.id}"}
+                          %ul{ class: 'dropdown-menu' }
                   %td.center
                     - if tool.academic_tool_type.downcase == 'webconference'
                       %div= l(tool.start_hour.to_datetime, format: :at_date)
@@ -103,10 +148,10 @@
             %thead
               %tr.lines
                 %th{style: "width: 20%;"}= t(:tool, scope: [:scores, :info])
-                %th{style: "width: 30%;"}= t(:title, scope: [:scores, :info])
+                %th{style: "width: 35%;"}= t(:title, scope: [:scores, :info])
                 %th.center.date{style: "width: 25%;"}= t(:date_range, scope: [:scores, :info])
                 %th.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
-                %th.center{style: "width: 2%;"}= t(:amount, scope: [:scores, :info])
+                %th.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
                 %th.no_sort
             %tbody
               -  @tool_not_evaluative.each do |tool|
@@ -118,6 +163,30 @@
                       = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
                     - else
                       .title= tool.name
+                    .equivalent
+                      - unless tool.eq_name.blank?
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{tool.id}" }
+                          %i.icon-flow-parallel
+                          = t('scores.info.equivalency')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{tool.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                            = raw t('scores.info.equivalent', name: tool.eq_name)
+                      - else
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{tool.id}", :'data-url' => equalities_tools_path(tool_type: tool.academic_tool_type, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-flow-parallel
+                          =t('scores.info.equalities')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{tool.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                    - if tool.academic_tool_type == 'ChatRoom' && tool.type_tool == '1'
+                      .participants.equivalent
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_3_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-users
+                          =t('scores.info.participants')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_p_3_#{tool.id}"}
+                          %ul{ class: 'dropdown-menu' }  
                   %td.center
                     - if tool.academic_tool_type.downcase == 'webconference'
                       %div= l(tool.start_hour.to_datetime, format: :at_date)

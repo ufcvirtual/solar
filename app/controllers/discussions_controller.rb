@@ -14,7 +14,6 @@ class DiscussionsController < ApplicationController
   def index
     begin
       @allocation_tag_id = (active_tab[:url].include?(:allocation_tag_id)) ? active_tab[:url][:allocation_tag_id] : AllocationTag.find_by_group_id(params[:group_id] || []).id
-     # @discussions = Discussion.all_by_allocation_tags(@allocation_tag_id)
       @user = current_user
       @discussions = Score.list_tool(@user.id, @allocation_tag_id, 'discussions', false, false, true)
     rescue

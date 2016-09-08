@@ -33,7 +33,6 @@ function open_tool(link){
         open: true
       }); 
     }else{
-      console.log(data);
       window.location.href = data.url;
     }
   }).error(function(data){
@@ -56,6 +55,10 @@ $(function(){
   $('.tabs_index li a').click(function(){
     $.get($(this).data('url'), function(data){
       $('#list_of_students').replaceWith(data);
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
     });
   });
 

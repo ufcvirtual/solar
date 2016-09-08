@@ -7,36 +7,38 @@
     %table.tb_list
       %thead
         %tr.lines
-          %th.medium= t('exams.index.description')
-          %th.medium= t('exams.index.availability')
-          %th.small= t('exams.index.duration')
+          %th{style: 'width: 25%;'}= t('exams.index.description')
+          %th.center.medium= t('exams.index.availability')
+          %th.center.small= t('exams.index.duration')
+          %th.medium= t('exams.index.status')
+          %th.center.small= t(:evaluative, scope: [:scores, :index])
+          %th.center.small= t(:frequency, scope: [:scores, :info])  
           - if @can_open
-            %th.small= t('exams.index.status')
-          %th.small= t(:evaluative, scope: [:scores, :index])
-          %th.small= t(:frequency, scope: [:scores, :info])  
-          - if @can_open
-            %th.small= t('exams.index.grade')
-            %th.small= t(:workload, scope: [:scores, :info])
+            %th.center.small= t('exams.index.grade')
+            %th.center.small= t(:workload, scope: [:scores, :info])
+          - elsif @can_evaluate
+            %th.small.no_sort
       %tbody
         - @exams.each do |exam|
-          - info = exam.info(current_user.id, @allocation_tags_ids)
-          - if info[:grade].blank? && exam.ended? && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(info[:situation])
-            - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam), class: 'ico-e'
+          - if exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation)
+            - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id), class: 'ico-e'
           %tr.lines{ id: "tr_#{exam.id}" }
             %td
               %div
                 - if @can_open
-                  - unless ['to_answer', 'not_finished', 'retake'].include?(info[:situation])
+                  - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     .title= exam.name
-                    - if exam.ended? || info[:situation] == 'corrected'
-                      = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam), class: 'link_content', class: 'open-exam-result'
-                      - if info[:situation] == 'corrected'
+                    - if exam.closed == 't' || exam.situation == 'corrected'
+                      = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam.academic_tool_id), class: 'link_content', class: 'open-exam-result'
+                      - if exam.situation == 'corrected'
                         |
-                        = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation]), class: 'link_open_exam', id: 'open-result'
+                        = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), class: 'link_open_exam', id: 'open-result'
+                  - elsif exam.opened == 't' && exam.closed == 'f'
+                    = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', id: 'open-exam'
                   - else
-                    = link_to exam.name, pre_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: info[:situation]), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', id: 'open-exam'
+                    .title=exam.name
                 - else
-                  = link_to exam.name, preview_exam_path(exam, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam' 
+                  = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam' 
                  
                 - if exam.description.size > 80
                   .description_exam
@@ -47,22 +49,58 @@
                       %a.description_less.link_content{ href: '#' }= t('exams.index.less')
                 - else
                   = raw exam.description
+                .equivalent
+                  - unless exam.eq_name.blank?
+                    %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{exam.id}" }
+                      %i.icon-flow-parallel
+                      = t('scores.info.equivalency')
+                      %i.icon-arrow-down-triangle
+                    .dropdown.dropdown-tip{id: "dropdown_eq_#{exam.id}"}
+                      %ul{ class: 'dropdown-menu' }
+                        = raw t('scores.info.equivalent', name: exam.eq_name)
+                  - else
+                    %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);' }
+                      %i.icon-flow-parallel
+                      =t('scores.info.equalities')
+                      %i.icon-arrow-down-triangle
+                    .dropdown.dropdown-tip{id: "dropdown_eq_#{exam.id}"}
+                      %ul{ class: 'dropdown-menu' }
             %td.center
               %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
-              %div= [(exam.start_hour), (exam.end_hour)].join(' - ')
+              - unless exam.start_hour.blank?
+                %div= [(exam.start_hour), (exam.end_hour)].join(' - ')
             %td.center= [exam.duration, t('.min')].join(' ')
-            - count = info[:count].nil? || info[:count]==0 ? "" : info[:count].to_s
-            
-            - if @can_open
-              %td.center.situation
-                %div{class: "#{info[:situation]}"}= I18n.t(info[:situation], :count => count, :scope => [:exams, :situation])
-            %td= t(exam.evaluative, scope: [:scores, :info])
-            %td= t(exam.frequency, scope: [:scores, :info])
+            %td.center.situation
+              - if @can_open
+                - if exam.situation == 'not_finished'
+                  .equivalent
+                    %a{ href: '#', :"data-dropdown" => "#dropdown_#{exam.id}", :'data-url' => percentage_exam_path(exam.academic_tool_id), onclick: 'open_dropdown(this);' }
+                      %span{class: "#{exam.situation}"}= I18n.t("scores.situation.#{exam.situation}")
+                      %i.icon-arrow-down-triangle
+                    .dropdown.dropdown-tip{id: "dropdown_#{exam.id}"}
+                      %ul{ class: 'dropdown-menu' }
+                - else
+                  %div{class: "#{exam.situation}"}= I18n.t("scores.situation.#{exam.situation}")
+              - else
+                - if ['corrected', 'not_answered'].include? exam.situation
+                  - status = 'finished'
+                - elsif ['not_finished', 'finished', 'retake', 'to_answer'].include? exam.situation
+                  - status = 'opened'
+                - else
+                  - status = 'not_started'
+                %div{class: "assignment_#{status}"}= I18n.t("scores.situation.#{status}")
+                /%div{class: "#{status}"}= I18n.t(situation, count: Exam.percent(exam.count_all, exam.count), :scope => [:exams, :situation])
+            %td.center= t(exam.evaluative, scope: [:scores, :info])
+            %td.center= t(exam.frequency, scope: [:scores, :info])
             - if @can_open
               %td.center
-                %span.activity_grade= info[:grade] || bt_correction || "-"
+                %span.activity_grade= exam.grade || bt_correction || "-"
               %td.center 
-                %span.activity_grade= info[:working_hours] || bt_correction || "-"
+                %span.activity_grade= exam.working_hours || bt_correction || "-"
+            - elsif @can_evaluate
+              %td.center
+                - if exam.closed == 't'
+                  = link_to_function content_tag(:i, nil, class: 'icon-exam'), 'calcule_grade_exam(this)', class: "ico-e", :'data-url' => calcule_grade_exam_path(exam.academic_tool_id), :"data-tooltip" => t('exams.index.calculate')
   - else
     .block_content_text.block_content_text_list.text_none= t(:none, scope: [:exams] )
 
@@ -104,6 +142,7 @@
     });
 
   });
+
   function calcule_grade_user_exam(link){
     if ($(link).attr('disabled') == 'disabled'){
       flash_message("#{t('exams.error.calcule_grade')}", 'alert');
@@ -117,6 +156,17 @@
       flash_message(data.notice, 'notice');
       $(link).attr('disabled', true);
       $(link).html(grade);
+    }).error(function(data){
+      var response = $.parseJSON(data.responseText);
+      if (typeof(response.alert) != "undefined")
+       flash_message(response.alert, 'alert');
+    });
+  }
+
+  function calcule_grade_exam(link){
+    $.put($(link).data('url'), function(data){
+      var success = data.success;
+      flash_message(data.notice, 'notice');
     }).error(function(data){
       var response = $.parseJSON(data.responseText);
       if (typeof(response.alert) != "undefined")

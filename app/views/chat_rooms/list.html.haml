@@ -1,7 +1,7 @@
 .block_wrapper
   .block_title
     %h2= t(".title_my_chats")
-  - unless @my_chats.empty?
+  - unless @my_chats.blank?
     = render partial: "chats", locals: { chats: @my_chats, history: true, can_open_link: true, other: false }
   - else
     .block_content_text_list.text_none= t(".message_no_chat")
@@ -9,7 +9,7 @@
   - unless @responsible
     .block_title
       %h2= t(:title_other_chats, scope: [:chat_rooms, :list])
-    - unless @other_chats.empty?
+    - unless @other_chats.blank?
       = render partial: "chats", locals: { chats: @other_chats, history: (can? :show, ChatRoom, on: [@allocation_tag_id]), can_open_link: false, other: true}
     - else
       .block_content_text_list.text_none= t(".message_no_chat")

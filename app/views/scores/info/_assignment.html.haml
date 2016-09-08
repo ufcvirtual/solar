@@ -35,6 +35,22 @@
                         .complete.invisible
                           = assignment.description
                           = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                      .equivalent
+                        - unless assignment.eq_name.blank?
+                          %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{assignment.id}" }
+                            %i.icon-flow-parallel
+                            = t('scores.info.equivalency')
+                            %i.icon-arrow-down-triangle
+                          .dropdown.dropdown-tip{id: "dropdown_eq_1_#{assignment.id}"}
+                            %ul{ class: 'dropdown-menu' }
+                              = raw t('scores.info.equivalent', name: assignment.eq_name)
+                        - else
+                          %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{assignment.id}", :'data-url' => equalities_tools_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id), onclick: 'open_dropdown(this);' }
+                            %i.icon-flow-parallel
+                            =t('scores.info.equalities')
+                            %i.icon-arrow-down-triangle
+                          .dropdown.dropdown-tip{id: "dropdown_eq_1_#{assignment.id}"}
+                            %ul{ class: 'dropdown-menu' }
                     %td.center
                       = [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
                     %td.center{class: "assignment_#{assignment.situation}"}= t(assignment.situation.to_sym)
@@ -72,6 +88,22 @@
                         .complete.invisible
                           = assignment.description
                           = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                      .equivalent
+                        - unless assignment.eq_name.blank?
+                          %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{assignment.id}" }
+                            %i.icon-flow-parallel
+                            = t('scores.info.equivalency')
+                            %i.icon-arrow-down-triangle
+                          .dropdown.dropdown-tip{id: "dropdown_eq_2_#{assignment.id}"}
+                            %ul{ class: 'dropdown-menu' }
+                              = raw t('scores.info.equivalent', name: assignment.eq_name)
+                        - else
+                          %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{assignment.id}", :'data-url' => equalities_tools_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id), onclick: 'open_dropdown(this);' }
+                            %i.icon-flow-parallel
+                            =t('scores.info.equalities')
+                            %i.icon-arrow-down-triangle
+                          .dropdown.dropdown-tip{id: "dropdown_eq_2_#{assignment.id}"}
+                            %ul{ class: 'dropdown-menu' }
                     %td.center
                       = [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
                     %td.center{class: "assignment_#{assignment.situation}"}= t(assignment.situation.to_sym)
@@ -110,6 +142,22 @@
                         .complete.invisible
                           = assignment.description
                           = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                      .equivalent
+                        - unless assignment.eq_name.blank?
+                          %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{assignment.id}" }
+                            %i.icon-flow-parallel
+                            = t('scores.info.equivalency')
+                            %i.icon-arrow-down-triangle
+                          .dropdown.dropdown-tip{id: "dropdown_eq_3_#{assignment.id}"}
+                            %ul{ class: 'dropdown-menu' }
+                              = raw t('scores.info.equivalent', name: assignment.eq_name)
+                        - else
+                          %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{assignment.id}", :'data-url' => equalities_tools_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id), onclick: 'open_dropdown(this);' }
+                            %i.icon-flow-parallel
+                            =t('scores.info.equalities')
+                            %i.icon-arrow-down-triangle
+                          .dropdown.dropdown-tip{id: "dropdown_eq_3_#{assignment.id}"}
+                            %ul{ class: 'dropdown-menu' }
                     %td.center
                       = [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
                     %td.center{class: "assignment_#{assignment.situation}"}= t(assignment.situation.to_sym)

@@ -28,7 +28,7 @@
               - @chat_rooms_evaluative.each do |chat|
                 %tr.lines
                   %td
-                    - if chat.opened == 't' && can_open_link
+                    - if chat.opened == 't'
                       = link_to chat.name, access_chat_room_path(chat.academic_tool_id, allocation_id: @alloc, academic_allocation_id: chat.id), {class: 'link_content fancybox.iframe', target: '_blank' }
                     - else
                       .title= chat.name
@@ -37,6 +37,30 @@
                       .complete.invisible
                         = chat.description
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    .equivalent
+                      - unless chat.eq_name.blank?
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{chat.id}" }
+                          %i.icon-flow-parallel
+                          = t('scores.info.equivalency')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{chat.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                            = raw t('scores.info.equivalent', name: chat.eq_name)
+                      - else
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{chat.id}", :'data-url' => equalities_tools_path(tool_type: chat.academic_tool_type, ac_id: chat.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-flow-parallel
+                          =t('scores.info.equalities')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{chat.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                    - if chat.academic_tool_type == 'ChatRoom' && chat.type_tool == '1'
+                      .participants.equivalent
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_1_#{chat.id}", :'data-url' => participants_chat_room_path(chat.academic_tool_id, ac_id: chat.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-users
+                          =t('scores.info.participants')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_p_1_#{chat.id}"}
+                          %ul{ class: 'dropdown-menu' }
                   %td{ align: 'center' }
                     %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
                     %div= [(chat.start_hour), (chat.end_hour)].join(' - ')
@@ -68,7 +92,7 @@
               - @chat_rooms_frequency.each do |chat|
                 %tr.lines
                   %td
-                    - if chat.opened == 't' && can_open_link
+                    - if chat.opened == 't'
                       = link_to chat.name, access_chat_room_path(chat.academic_tool_id, allocation_id: @alloc, academic_allocation_id: chat.id), {class: 'link_content fancybox.iframe', target: '_blank' }
                     - else
                       .title= chat.name
@@ -77,6 +101,30 @@
                       .complete.invisible
                         = chat.description
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    .equivalent
+                      - unless chat.eq_name.blank?
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{chat.id}" }
+                          %i.icon-flow-parallel
+                          = t('scores.info.equivalency')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{chat.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                            = raw t('scores.info.equivalent', name: chat.eq_name)
+                      - else
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{chat.id}", :'data-url' => equalities_tools_path(tool_type: chat.academic_tool_type, ac_id: chat.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-flow-parallel
+                          =t('scores.info.equalities')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{chat.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                    - if chat.academic_tool_type == 'ChatRoom' && chat.type_tool == '1'
+                      .participants.equivalent
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_2_#{chat.id}", :'data-url' => participants_chat_room_path(chat.academic_tool_id, ac_id: chat.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-users
+                          =t('scores.info.participants')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_p_2_#{chat.id}"}
+                          %ul{ class: 'dropdown-menu' }  
                   %td{ align: 'center' }
                     %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
                     %div= [(chat.start_hour), (chat.end_hour)].join(' - ')
@@ -105,7 +153,7 @@
               - @chat_rooms_not_evaluative.each do |chat|
                 %tr.lines
                   %td
-                    - if chat.opened == 't' && can_open_link
+                    - if chat.opened == 't'
                       = link_to chat.name, access_chat_room_path(chat.academic_tool_id, allocation_id: @alloc, academic_allocation_id: chat.id), {class: 'link_content fancybox.iframe', target: '_blank' }
                     - else
                       .title= chat.name
@@ -114,6 +162,30 @@
                       .complete.invisible
                         = chat.description
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    .equivalent
+                      - unless chat.eq_name.blank?
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{chat.id}" }
+                          %i.icon-flow-parallel
+                          = t('scores.info.equivalency')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{chat.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                            = raw t('scores.info.equivalent', name: chat.eq_name)
+                      - else
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{chat.id}", :'data-url' => equalities_tools_path(tool_type: chat.academic_tool_type, ac_id: chat.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-flow-parallel
+                          =t('scores.info.equalities')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{chat.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                    - if chat.academic_tool_type == 'ChatRoom' && chat.type_tool == '1'
+                      .participants.equivalent
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_3_#{chat.id}", :'data-url' => participants_chat_room_path(chat.academic_tool_id, ac_id: chat.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-users
+                          =t('scores.info.participants')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_p_3_#{chat.id}"}
+                          %ul{ class: 'dropdown-menu' }  
                   %td{ align: 'center' }
                     %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
                     %div= [(chat.start_hour), (chat.end_hour)].join(' - ')

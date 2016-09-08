@@ -43,7 +43,7 @@
     - @posts.each do |post|
       = render partial: 'post', locals: { post: post, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false }
 .block_wrapper
-  = link_to t(:back), discussions_path, { class: 'btn' }
+  = link_to t(:back), :back, { class: 'btn' }
 
 = javascript_include_tag 'ckeditor/init', 'discussions', 'jwplayer/jwplayer.js', 'contextual_help/discussion_posts'
 
@@ -163,7 +163,11 @@
 
         },
         error: function(data){
-          flash_message("#{t('posts.create.not_created')}", "alert");
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+          else
+            flash_message("#{t('posts.create.not_created')}", "alert");
         }
       });
     });

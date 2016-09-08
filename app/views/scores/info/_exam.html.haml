@@ -42,6 +42,22 @@
                       .complete.invisible
                         = exam.description
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    .equivalent
+                      - unless exam.eq_name.blank?
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{exam.id}" }
+                          %i.icon-flow-parallel
+                          = t('scores.info.equivalency')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{exam.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                            = raw t('scores.info.equivalent', name: exam.eq_name)
+                      - else
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-flow-parallel
+                          =t('scores.info.equalities')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{exam.id}"}
+                          %ul{ class: 'dropdown-menu' }
                   %td.center
                     %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
                     %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
@@ -87,6 +103,22 @@
                       .complete.invisible
                         = exam.description
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    .equivalent
+                      - unless exam.eq_name.blank?
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{exam.id}" }
+                          %i.icon-flow-parallel
+                          = t('scores.info.equivalency')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{exam.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                            = raw t('scores.info.equivalent', name: exam.eq_name)
+                      - else
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-flow-parallel
+                          =t('scores.info.equalities')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{exam.id}"}
+                          %ul{ class: 'dropdown-menu' }
                   %td.center
                     %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
                     %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
@@ -132,6 +164,22 @@
                       .complete.invisible
                         = exam.description
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    .equivalent
+                      - unless exam.eq_name.blank?
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{exam.id}" }
+                          %i.icon-flow-parallel
+                          = t('scores.info.equivalency')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{exam.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                            = raw t('scores.info.equivalent', name: exam.eq_name)
+                      - else
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-flow-parallel
+                          =t('scores.info.equalities')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{exam.id}"}
+                          %ul{ class: 'dropdown-menu' }
                   %td.center
                     %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
                     %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')

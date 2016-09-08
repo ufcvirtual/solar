@@ -4,7 +4,7 @@
 
     .block_wrapper.module.exam{ id: "exam_#{exam.id}", class: "exam_box"}
       = render partial: 'exams/list/info', locals: { exam: exam, has_group: exam.groups.any?, show_buttons: true, ckb: false, tags: { all_groups: all_groups, groups: exam.groups, tool: exam, paths: { add: add_group_to_exams_path(id: 'param_id', tool_id: exam.id), remove: remove_group_from_exams_path(id: 'param_id', tool_id: exam.id), unbind: unbind_group_from_exams_path(id: 'param_id', tool_id: exam.id), tags: group_tags_from_exams_path(tool_id: exam.id) } } }
-      %h2
+      %h2.show_hide
         .icons
           = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show(this)'
           = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show(this)'
@@ -30,6 +30,10 @@
           - if questions.any?
             = render partial: 'exam_questions/questions', locals: { questions: questions, exam: exam, hide_columns: false }
           .text_none.empty_message{ class: (questions.blank? ? '' : 'hide_message') }= t(:none, scope: [:exams, :list])
+      %h2.show_hide
+        .icons
+          = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show(this)'
+          = link_to_function t('editions.hide_questions'), 'hide_or_show(this)', class: 'invisible hide_questions'
 
   / = link_to content_tag(:i, nil, class: 'icon-ellipsis'), list_exams_path(page: @exams.next_page, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-exams', remote: true, :"data-tooltip" => t(:load_items) if @exams.next_page
 
@@ -42,7 +46,7 @@
     var div = $(icon).parents('.exam:first').find('.block_content');
     div.slideToggle();
     div.parent().find('.icon-arrow-down-triangle:first').toggleClass('invisible');
-    div.parent().find('.icon-arrow-up-triangle:first').toggleClass('invisible');
+    div.parent().find('.icon-arrow-up-triangle').toggleClass('invisible');
     div.parent().find('.show_questions:first').toggleClass('invisible');
-    div.parent().find('.hide_questions:first').toggleClass('invisible');
+    div.parent().find('.hide_questions').toggleClass('invisible');
   }

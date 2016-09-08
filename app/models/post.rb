@@ -9,8 +9,8 @@ class Post < ActiveRecord::Base
   belongs_to :academic_allocation, conditions: { academic_tool_type: 'Discussion' }
   belongs_to :academic_allocation_user
 
-  before_destroy :verify_children
-  before_save :verify_children, on: :update
+  before_destroy :verify_children_with_raise
+  validate :verify_children, on: :update
 
   has_many :children     , class_name: 'Post', foreign_key: 'parent_id', dependent: :destroy
   has_many :files        , class_name: 'PostFile', foreign_key: 'discussion_post_id', dependent: :destroy
@@ -31,7 +31,14 @@ class Post < ActiveRecord::Base
   end
 
   def verify_children
-    raise 'children' if self.children.any? && merge.nil?
+    errors.add(:base, I18n.t('posts.error.children')) if self.children.any? && merge.nil?
+  end
+
+  def verify_children_with_raise
+    if self.children.any? && merge.nil?
+      errors.add(:base, I18n.t('posts.error.children'))
+      raise 'children'
+    end
   end
   
   def can_be_answered?

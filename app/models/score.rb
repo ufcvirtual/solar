@@ -13,7 +13,7 @@ class Score # < ActiveRecord::Base
     [history_access, public_files, count_access]
   end
 
-  def self.list_tool(user_id, at_id, tool='all', evaluative=false, frequency=false, all=false)
+  def self.list_tool(user_id, at_id, tool='all', evaluative=false, frequency=false, all=false, others=false, type=nil)
     evaluated_status = if frequency
       "WHEN academic_allocation_users.working_hours IS NOT NULL THEN 'evaluated'"
     elsif !all
@@ -34,12 +34,12 @@ class Score # < ActiveRecord::Base
     wq = "AND academic_allocations.evaluative=false" if !evaluative && !frequency
     wq = '' if evaluative.blank? && frequency.blank? && all
 
-    prepare_query = Score.get_query((tool == 'all' ? ['discussions','assignments','chat_rooms','webconferences','exams','schedule_events'] : [tool].flatten), ats_ids.join(','), user_id, wq, sent_status, evaluated_status)
+    prepare_query = Score.get_query((tool == 'all' ? ['discussions','assignments','chat_rooms','webconferences','exams','schedule_events'] : [tool].flatten), ats_ids.join(','), user_id, wq, sent_status, evaluated_status, others, type)
 
     User.find_by_sql prepare_query
   end
 
-  def self.evaluative_frequency(ats, type_score='evaluative')
+  def self.evaluative_frequency(ats, type_score='evaluative', users_ids=[])
     evaluated_status = if type_score == 'frequency'
       "WHEN academic_allocation_users.working_hours IS NOT NULL THEN 'evaluated'"
     else
@@ -74,9 +74,9 @@ class Score # < ActiveRecord::Base
       users.id AS user_id, users.name AS user_name, users.active, gp.group_assignment_id AS group,
       CASE
         #{evaluated_status}
-        WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Assignment' AND (af.id IS NOT NULL OR (aw.id IS NOT NULL AND (is_recorded AND (initial_time + (interval '1 minutes')*duration) < now())))))) THEN 'sent'
         WHEN assignments.id IS NOT NULL AND assignments.type_assignment = #{Assignment_Type_Group} AND gp.id IS NULL THEN 'without_group'
         WHEN schedules.start_date  > current_date THEN 'not_started'
+        WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Assignment' AND (af.id IS NOT NULL OR (aw.id IS NOT NULL AND (is_recorded AND (initial_time + (interval '1 minutes')*duration) < now())))))) THEN 'sent'
         WHEN schedules.end_date >= current_date THEN 'to_send'
         ELSE 
           'not_sent'
@@ -108,9 +108,9 @@ class Score # < ActiveRecord::Base
       users.id AS user_id, users.name AS user_name, users.active, NULL AS group,
       CASE
         #{evaluated_status}
-        WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'ChatRoom' AND chat_messages.id IS NOT NULL))) THEN 'sent'
-        WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < to_timestamp(start_hour, 'HH24:MI:SS')::time) THEN 'not_started'
-        WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time>to_timestamp(start_hour, 'HH24:MI:SS')::time ) AND (end_hour IS NULL OR current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
+        WHEN (#{sent_status} OR  academic_allocation_users.status = 1 OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'ChatRoom' AND chat_messages.id IS NOT NULL))) THEN 'sent'
+        WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time) THEN 'not_started'
+        WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (chat_rooms.start_hour IS NULL OR current_time>to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time ) AND (chat_rooms.end_hour IS NULL OR current_time<=to_timestamp(chat_rooms.end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
         ELSE 
           'not_sent'
         END AS situation
@@ -138,7 +138,7 @@ class Score # < ActiveRecord::Base
       users.id AS user_id, users.name AS user_name, users.active, NULL AS group,
       CASE
         #{evaluated_status}
-        WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Discussion' AND discussion_posts.id IS NOT NULL))) THEN 'sent'
+        WHEN (#{sent_status} OR academic_allocation_users.status = 1 OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Discussion' AND discussion_posts.id IS NOT NULL))) THEN 'sent'
         WHEN schedules.start_date > current_date THEN 'not_started'
         WHEN schedules.start_date <= current_date AND schedules.end_date >= current_date THEN 'to_send'
         ELSE 
@@ -169,8 +169,8 @@ class Score # < ActiveRecord::Base
       CASE
         #{evaluated_status}
         WHEN #{sent_status} THEN 'sent'
-        WHEN current_date <= schedules.start_date OR current_time<=to_timestamp(start_hour, 'HH24:MI:SS')::time THEN 'not_started'
-        WHEN ((current_date >= schedules.start_date AND current_time>= CASE WHEN start_hour IS NULL THEN time '00:00'  ELSE to_timestamp(start_hour, 'HH24:MI:SS')::time END) AND (current_date <= schedules.end_date AND current_time<CASE WHEN end_hour IS NULL THEN time '23:59'  ELSE to_timestamp(end_hour, 'HH24:MI:SS')::time END)) THEN 'to_send'
+        WHEN (current_date < s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '')) OR  (current_date <= s.start_date AND (exams.start_hour IS NOT NULL AND current_time<to_timestamp(exams.start_hour, 'HH24:MI:SS')::time)) THEN 'not_started'
+        WHEN ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) THEN 'to_send'
         ELSE 
           'not_sent'
         END AS situation
@@ -179,7 +179,7 @@ class Score # < ActiveRecord::Base
     JOIN profiles ON allocations.profile_id = profiles.id
     JOIN academic_allocations ON academic_allocations.allocation_tag_id IN (#{ats}) AND academic_tool_type='Exam'
     JOIN exams ON academic_allocations.academic_tool_id = exams.id
-    JOIN schedules ON exams.schedule_id = schedules.id
+    JOIN schedules s ON exams.schedule_id = s.id
      LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = users.id
     WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) AND exams.status = 't' #{wq})
   
@@ -198,8 +198,8 @@ class Score # < ActiveRecord::Base
       CASE
         #{evaluated_status}
         WHEN #{sent_status} THEN 'sent'
-        WHEN current_date<schedules.start_date AND (start_hour IS NULL OR current_time<=to_timestamp(start_hour, 'HH24:MI:SS')::time)  THEN 'not_started'
-        WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND current_time>=to_timestamp(start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time THEN 'to_send'
+        WHEN current_date<schedules.start_date OR (current_date = schedules.start_date AND current_time<to_timestamp(start_hour, 'HH24:MI:SS')::time)  THEN 'not_started'
+        WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND (start_hour IS NULL OR current_time>=to_timestamp(start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
         ELSE 
           'not_sent'
         END AS situation
@@ -260,7 +260,9 @@ class Score # < ActiveRecord::Base
 
   private
 
-    def self.get_query(tools, ats, user_id, wq, sent_status='', evaluated_status='')
+    def self.get_query(tools, ats, user_id, wq, sent_status='', evaluated_status='', others=false, type=nil)
+      ats_query = ats.blank? ? '' : "AND academic_allocations.allocation_tag_id IN (#{ats})"
+      
       query = []
 
       tools.each do |tool|
@@ -279,11 +281,15 @@ class Score # < ActiveRecord::Base
             academic_allocation_users.working_hours,
             academic_allocation_users.user_id,
             academic_allocation_users.new_after_evaluation,
+            eq_disc.name AS eq_name,
             NULL AS group_id,
             NULL AS type_tool,
             '' AS start_hour,
             '' AS end_hour,
             (SELECT COUNT(id) FROM discussion_posts WHERE discussion_posts.academic_allocation_id = academic_allocations.id AND user_id = #{user_id}) AS count,
+            (SELECT COUNT(id) FROM discussion_posts WHERE discussion_posts.academic_allocation_id = academic_allocations.id ) AS count_all,
+            NULL as moderator,
+            NULL as duration,
             CASE 
               WHEN s.start_date <= current_date AND s.end_date >= current_date THEN true
               ELSE 
@@ -306,11 +312,19 @@ class Score # < ActiveRecord::Base
           FROM discussions, schedules s, academic_allocations 
           LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}
           LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id AND discussion_posts.user_id = #{user_id}
+          LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id
+          LEFT JOIN discussions eq_disc ON eq_disc.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'Discussion'
           WHERE 
-            academic_allocations.academic_tool_id = discussions.id AND academic_tool_type='Discussion' AND discussions.schedule_id=s.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats})
+            academic_allocations.academic_tool_id = discussions.id AND academic_allocations.academic_tool_type='Discussion' AND discussions.schedule_id=s.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats})
           )"
 
         when 'assignments'
+          type =  if type.blank?
+                    ''
+                  else
+                    "AND assignments.type_assignment = #{type}"
+                  end
+
           "(
              WITH groups AS ( 
                 SELECT group_participants.group_assignment_id AS group_id , ac.id AS ac_id
@@ -332,11 +346,15 @@ class Score # < ActiveRecord::Base
                 academic_allocation_users.working_hours,
                 academic_allocation_users.user_id,
                 academic_allocation_users.new_after_evaluation,
+                eq_assig.name AS eq_name,
                 groups.group_id::text AS group_id,
                 assignments.type_assignment::text as type_tool,
                 '' AS start_hour,
                 '' AS end_hour,
-                0 as count,
+                (select count(assignment_comments.id) FROM assignment_comments WHERE assignment_comments.academic_allocation_user_id = academic_allocation_users.id) as count,
+                0 as count_all,
+                NULL as moderator,
+                NULL as duration,
                 CASE 
                   WHEN schedules.start_date <= current_date AND schedules.end_date >= current_date THEN true
                   ELSE 
@@ -351,10 +369,9 @@ class Score # < ActiveRecord::Base
                   #{evaluated_status}
                   when assignments.type_assignment = #{Assignment_Type_Group} AND groups.group_id IS NULL  then 'without_group'
                   when schedules.start_date > current_date                       then 'not_started'
-                   when #{sent_status} OR academic_allocation_users.status = 1 OR academic_allocation_users.status = 1 OR attachment_updated_at IS NOT NULL OR (is_recorded AND (initial_time + (interval '1 mins')*duration) < now()) then 'sent'
+                   when #{sent_status} OR academic_allocation_users.status = 1 OR academic_allocation_users.status = 1 OR attachment_updated_at IS NOT NULL OR (assignment_webconferences.id IS NOT NULL AND is_recorded AND (initial_time + (interval '1 mins')*duration) < now()) then 'sent'
                   when schedules.end_date >= current_date                        then 'to_be_sent'
-                  when schedules.end_date < current_date                         then 'not_sent'
-                  else  '-'
+                  else  'not_sent'
                  end AS situation,
                  academic_allocations.evaluative,
                  academic_allocations.frequency
@@ -363,11 +380,18 @@ class Score # < ActiveRecord::Base
               LEFT JOIN academic_allocation_users ON academic_allocations.id = academic_allocation_users.academic_allocation_id AND (academic_allocation_users.user_id = #{user_id} OR (academic_allocation_users.group_assignment_id = groups.group_id))
               LEFT JOIN assignment_files ON assignment_files.academic_allocation_user_id = academic_allocation_users.id
               LEFT JOIN assignment_webconferences ON assignment_webconferences.academic_allocation_user_id = academic_allocation_users.id
+              LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id
+              LEFT JOIN assignments eq_assig ON eq_assig.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'Assignment'
               WHERE 
-                academic_allocations.academic_tool_id = assignments.id AND academic_tool_type='Assignment' AND assignments.schedule_id=schedules.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats}) AND 
+                academic_allocations.academic_tool_id = assignments.id AND academic_allocations.academic_tool_type='Assignment' AND assignments.schedule_id=schedules.id #{wq} #{type} AND academic_allocations.allocation_tag_id IN (#{ats}) AND 
                 (academic_allocation_users.id IS NULL OR (academic_allocation_users.user_id = #{user_id} OR (academic_allocation_users.group_assignment_id = groups.group_id AND assignments.type_assignment = #{Assignment_Type_Group}) OR (groups.group_id IS NULL AND assignments.type_assignment = #{Assignment_Type_Group})) OR (academic_allocation_users.user_id IS NULL AND academic_allocation_users.group_assignment_id IS NULL))
           )"
         when 'chat_rooms'
+          others =  if others
+                      "((chat_rooms.chat_type = 1 AND chat_participants.id IS NULL) OR cast(profiles.types & #{Profile_Type_Observer} as boolean)"
+                    else
+                      "((cast(profiles.types & #{Profile_Type_Student} as boolean) AND (chat_rooms.chat_type = 0 OR chat_participants.id IS NOT NULL)) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)"
+                    end
           "( SELECT DISTINCT
               academic_allocations.id, 
               academic_allocations.allocation_tag_id, 
@@ -381,26 +405,30 @@ class Score # < ActiveRecord::Base
               academic_allocation_users.working_hours,
               academic_allocation_users.user_id,
               academic_allocation_users.new_after_evaluation,
+              eq_chat.title AS eq_name,
               NULL AS group_id,
-              NULL AS type_tool,
-              start_hour,
-              end_hour,
+              chat_rooms.chat_type::text AS type_tool,
+              chat_rooms.start_hour,
+              chat_rooms.end_hour,
               0 as count,
+              0 as count_all,
+              NULL as moderator,
+              NULL as duration,
               CASE 
-              WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time>to_timestamp(start_hour, 'HH24:MI:SS')::time ) AND (end_hour IS NULL OR current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN true
+              WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (chat_rooms.start_hour IS NULL OR current_time>to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time ) AND (chat_rooms.end_hour IS NULL OR current_time<=to_timestamp(chat_rooms.end_hour, 'HH24:MI:SS')::time) THEN true
               ELSE 
                 false
               END AS opened,
             CASE 
-              WHEN (current_date > schedules.end_date) OR (current_date = schedules.end_date AND (end_hour IS NULL OR current_time>to_timestamp(end_hour, 'HH24:MI:SS')::time)) THEN true
+              WHEN (current_date > schedules.end_date) OR (current_date = schedules.end_date AND (chat_rooms.end_hour IS NULL OR current_time>to_timestamp(chat_rooms.end_hour, 'HH24:MI:SS')::time)) THEN true
               ELSE 
                 false
               END AS closed,
               CASE 
                 #{evaluated_status}   
                 WHEN (#{sent_status} OR  academic_allocation_users.status = 1 OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'ChatRoom' AND chat_messages.id IS NOT NULL))) THEN 'sent'
-                WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < to_timestamp(start_hour, 'HH24:MI:SS')::time) THEN 'not_started'
-                WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time>to_timestamp(start_hour, 'HH24:MI:SS')::time ) AND (end_hour IS NULL OR current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN 'opened'
+                WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time) THEN 'not_started'
+                WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (chat_rooms.start_hour IS NULL OR current_time>to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time ) AND (chat_rooms.end_hour IS NULL OR current_time<=to_timestamp(chat_rooms.end_hour, 'HH24:MI:SS')::time) THEN 'opened'
                 ELSE
                 'closed'
               END AS situation,
@@ -412,9 +440,10 @@ class Score # < ActiveRecord::Base
             LEFT JOIN chat_messages ON chat_messages.academic_allocation_id = academic_allocations.id AND (chat_messages.allocation_id = allocations.id OR chat_messages.user_id = #{user_id})
             LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}
             LEFT JOIN chat_participants ON chat_participants.academic_allocation_id = academic_allocations.id AND chat_participants.allocation_id = allocations.id
+            LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id
+            LEFT JOIN chat_rooms eq_chat ON eq_chat.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'ChatRoom'
             WHERE 
-              academic_allocations.academic_tool_id = chat_rooms.id AND academic_tool_type='ChatRoom' AND chat_rooms.schedule_id=schedules.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats}) AND (chat_rooms.chat_type = 0 OR chat_participants.id IS NOT NULL)
-              -- OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean))
+              academic_allocations.academic_tool_id = chat_rooms.id AND academic_allocations.academic_tool_type='ChatRoom' AND chat_rooms.schedule_id=schedules.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats}) AND (#{others} ))
             )"
 
         when 'exams'
@@ -431,42 +460,47 @@ class Score # < ActiveRecord::Base
             academic_allocation_users.working_hours,
             academic_allocation_users.user_id,
             academic_allocation_users.new_after_evaluation,
+            eq_exam.name AS eq_name,
             NULL AS group_id,
             NULL AS type_tool,
-            start_hour,
-            end_hour,
+            exams.start_hour,
+            exams.end_hour,
             0 as count,
+            0 as count_all,
+            NULL as moderator,
+            exams.duration::text,
             CASE 
-              WHEN (current_date >= s.start_date AND current_date <= s.end_date) AND (start_hour IS NULL OR current_time > to_timestamp(start_hour, 'HH24:MI:SS')::time) AND (end_hour IS NULL OR current_time < to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN true
+              WHEN (current_date >= s.start_date AND current_date <= s.end_date) AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time > to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time < to_timestamp(exams.end_hour, 'HH24:MI:SS')::time) THEN true
               ELSE 
                 false
               END AS opened,
             CASE 
-              WHEN (current_date > s.end_date) AND (end_hour IS NULL OR current_time < to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN true
+              WHEN (current_date >= s.end_date) AND (exams.end_hour IS NULL OR current_time > to_timestamp(exams.end_hour, 'HH24:MI:SS')::time) THEN true
               ELSE 
                 false
               END AS closed,
             case
-              when current_date <= s.start_date OR current_time<=to_timestamp(start_hour, 'HH24:MI:SS')::time    then 'not_started'
-              when ((current_date >= s.start_date AND current_time>= CASE WHEN start_hour IS NULL THEN time '00:00'  ELSE to_timestamp(start_hour, 'HH24:MI:SS')::time END) AND (current_date <= s.end_date AND current_time<CASE WHEN end_hour IS NULL THEN time '23:59'  ELSE to_timestamp(end_hour, 'HH24:MI:SS')::time END)) AND exam_responses.id IS NULL    then 'to_answer'
-              when ((current_date >= s.start_date AND current_time>CASE WHEN start_hour IS NULL THEN time '00:00'  ELSE to_timestamp(start_hour, 'HH24:MI:SS')::time END) AND (current_date <= s.end_date AND current_time<CASE WHEN end_hour IS NULL THEN time '23:59'  ELSE to_timestamp(end_hour, 'HH24:MI:SS')::time END)) AND exam_user_attempts.complete!=TRUE                                         then 'not_finished'
-              when ((current_date >= s.start_date AND current_time>CASE WHEN start_hour IS NULL THEN time '00:00'  ELSE to_timestamp(start_hour, 'HH24:MI:SS')::time END) AND (current_date <= s.end_date AND current_time<CASE WHEN end_hour IS NULL THEN time '23:59'  ELSE to_timestamp(end_hour, 'HH24:MI:SS')::time END)) AND (attempts > count(exam_user_attempts.id))                        then 'retake'
-              when academic_allocation_users.grade IS NOT NULL AND (current_date >= s.end_date AND current_time>CASE WHEN end_hour IS NULL THEN time '23:59'  ELSE to_timestamp(end_hour, 'HH24:MI:SS')::time END)                                        then 'corrected'
-              when exam_user_attempts.complete=TRUE AND (attempts = count(exam_user_attempts.id))                        then 'finished'
-              when (current_date >= s.end_date AND current_time>to_timestamp(end_hour, 'HH24:MI:SS')::time) AND (count(exam_user_attempts.id) > 0 ) AND academic_allocation_users.grade IS NULL then 'not_corrected'
-              else
-                'not_answered'
-              end AS situation,
+            when (current_date < s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '')) OR  (current_date <= s.start_date AND (exams.start_hour IS NOT NULL AND current_time<to_timestamp(exams.start_hour, 'HH24:MI:SS')::time)) then 'not_started'
+            when ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) AND exam_responses.id IS NULL then 'to_answer'
+            when ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) AND exam_user_attempts.complete!=TRUE then 'not_finished'
+            when ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) AND user_attempts.count < exams.attempts then 'retake'
+            when academic_allocation_users.grade IS NOT NULL AND (current_date > s.end_date OR  (current_date = s.end_date AND (exams.end_hour IS NOT NULL AND current_time>to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) then 'corrected'
+            when exam_user_attempts.complete=TRUE AND (exams.attempts = user_attempts.count) then 'finished'
+            when (current_date >= s.end_date AND current_time>to_timestamp(exams.end_hour, 'HH24:MI:SS')::time) AND (count(exam_user_attempts.id) > 0 ) AND academic_allocation_users.grade IS NULL then 'not_corrected'
+            else
+              'not_answered'
+            end AS situation,
             academic_allocations.evaluative,
             academic_allocations.frequency
           FROM exams, schedules s, academic_allocations LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}
             LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id
             LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id 
+            LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id
+            LEFT JOIN exams eq_exam ON eq_exam.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'Exam'
+            LEFT JOIN ( (SELECT COUNT(exam_user_attempts.id), acu.academic_allocation_id AS ac_id FROM exam_user_attempts LEFT JOIN academic_allocation_users acu ON exam_user_attempts.academic_allocation_user_id = acu.id WHERE acu.user_id = #{user_id} GROUP BY acu.academic_allocation_id)) user_attempts ON user_attempts.ac_id = academic_allocations.id
           WHERE 
-            academic_allocations.academic_tool_id = exams.id AND academic_tool_type='Exam' AND exams.schedule_id=s.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats}) 
-            GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, exams.name,  s.start_date,  s.end_date, description, new_after_evaluation,
-            academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, start_hour, end_hour,  exam_responses.id, exam_user_attempts.complete, attempts, academic_allocations.evaluative,
-            academic_allocations.frequency
+            academic_allocations.academic_tool_id = exams.id AND academic_allocations.academic_tool_type='Exam' AND exams.schedule_id=s.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats}) AND exams.status = 't'
+            GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, exams.name,  s.start_date,  s.end_date, exams.description, new_after_evaluation, academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, exams.start_hour, exams.end_hour, exam_responses.id, exam_user_attempts.complete, exams.attempts, eq_exam.name, exams.duration, academic_allocations.evaluative, academic_allocations.frequency, user_attempts.count
           ) "
 
         when 'schedule_events'
@@ -483,34 +517,40 @@ class Score # < ActiveRecord::Base
             academic_allocation_users.working_hours,
             academic_allocation_users.user_id,
             academic_allocation_users.new_after_evaluation,
+            eq_event.title AS eq_name,
             NULL AS group_id,
             NULL AS type_tool,
-            start_hour,
-            end_hour,
+            schedule_events.start_hour,
+            schedule_events.end_hour,
             0 as count,
+            0 as count_all,
+            NULL as moderator,
+            NULL as duration,
             CASE 
-              WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time > to_timestamp(start_hour, 'HH24:MI:SS')::time) AND (end_hour IS NULL OR current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN true
+              WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (schedule_events.start_hour IS NULL OR current_time > to_timestamp(schedule_events.start_hour, 'HH24:MI:SS')::time) AND (schedule_events.end_hour IS NULL OR current_time<=to_timestamp(schedule_events.end_hour, 'HH24:MI:SS')::time) THEN true
               ELSE 
                 false
               END AS opened,
             CASE 
-              WHEN (current_date > schedules.end_date) AND (end_hour IS NULL OR current_time>to_timestamp(start_hour, 'HH24:MI:SS')::time) THEN true
+              WHEN (current_date > schedules.end_date) AND (schedule_events.end_hour IS NULL OR current_time>to_timestamp(schedule_events.start_hour, 'HH24:MI:SS')::time) THEN true
               ELSE 
                 false
               END AS closed,
             CASE
             #{evaluated_status}
-            WHEN current_date>schedules.end_date OR current_date=schedules.end_date AND current_time>to_timestamp(end_hour, 'HH24:MI:SS')::time THEN 'closed'
-            WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND start_hour IS NULL THEN 'started'
-            WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND current_time>=to_timestamp(start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time THEN 'started'
+            WHEN current_date>schedules.end_date OR current_date=schedules.end_date AND current_time>to_timestamp(schedule_events.end_hour, 'HH24:MI:SS')::time THEN 'closed'
+            WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND schedule_events.start_hour IS NULL THEN 'started'
+            WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND current_time>=to_timestamp(schedule_events.start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(schedule_events.end_hour, 'HH24:MI:SS')::time THEN 'started'
             ELSE 'not_started'  
             END AS situation,
             academic_allocations.evaluative,
             academic_allocations.frequency
           FROM schedule_events, schedules, academic_allocations 
           LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}
+          LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id
+          LEFT JOIN schedule_events eq_event ON eq_event.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'ScheduleEvent'
           WHERE 
-            academic_allocations.academic_tool_id = schedule_events.id AND academic_tool_type='ScheduleEvent' AND schedule_events.schedule_id=schedules.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats})
+            academic_allocations.academic_tool_id = schedule_events.id AND academic_allocations.academic_tool_type='ScheduleEvent' AND schedule_events.schedule_id=schedules.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats})
           )"
 
         when 'webconferences'
@@ -527,28 +567,32 @@ class Score # < ActiveRecord::Base
             academic_allocation_users.working_hours,
             academic_allocation_users.user_id,
             academic_allocation_users.new_after_evaluation,
+            eq_web.title AS eq_name,
             NULL AS group_id,
-            NULL AS type_tool,
-            initial_time || '' AS start_hour,
-            initial_time + duration* interval '1 min' || '' AS end_hour,
+            webconferences.shared_between_groups::text AS type_tool,
+            webconferences.initial_time || '' AS start_hour,
+            webconferences.initial_time + webconferences.duration* interval '1 min' || '' AS end_hour,
             0 as count,
+            0 as count_all,
+            webconferences.user_id::text as moderator,
+            webconferences.duration::text,
             CASE 
-              when NOW()>initial_time AND NOW()<=(initial_time + duration* interval '1 min') then true
+              when NOW()>webconferences.initial_time AND NOW()<=(webconferences.initial_time + webconferences.duration* interval '1 min') then true
               ELSE 
                 false
               END AS opened,
             CASE 
-              when NOW()>(initial_time + duration* interval '1 min') then true
+              when NOW()>(webconferences.initial_time + webconferences.duration* interval '1 min') then true
               ELSE 
                 false
               END AS closed,
             CASE
               #{evaluated_status}
               WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
-              when NOW()>initial_time AND NOW()<(initial_time + duration* interval '1 min') then 'in_progress'
-              when NOW() < initial_time then 'scheduled'
-              when is_recorded AND (NOW()>initial_time + duration* interval '1 min' + interval '10 mins') then'record_available' 
-              when is_recorded AND (NOW()<initial_time + duration* interval '1 min' + interval '10 mins') then 'processing'
+              when NOW()>webconferences.initial_time AND NOW()<(webconferences.initial_time + webconferences.duration* interval '1 min') then 'in_progress'
+              when NOW() < webconferences.initial_time then 'scheduled'
+              when webconferences.is_recorded AND (NOW()>webconferences.initial_time + webconferences.duration* interval '1 min' + interval '10 mins') then'record_available' 
+              when webconferences.is_recorded AND (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '10 mins') then 'processing'
             ELSE 'finish' 
             END AS situation,
             academic_allocations.evaluative,
@@ -556,15 +600,17 @@ class Score # < ActiveRecord::Base
           FROM webconferences, academic_allocations 
           LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}
           LEFT JOIN log_actions ON academic_allocations.id = log_actions.academic_allocation_id AND log_actions.log_type = 7 AND log_actions.user_id = #{user_id}
+          LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id
+          LEFT JOIN webconferences eq_web ON eq_web.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'Webconference'
           WHERE 
-            academic_allocations.academic_tool_id = webconferences.id AND academic_tool_type='Webconference' #{wq} AND academic_allocations.allocation_tag_id IN (#{ats})
+            academic_allocations.academic_tool_id = webconferences.id AND academic_allocations.academic_tool_type='Webconference' #{wq} #{ats_query}
           )"
 
         end
       end
 
       query = query.join(' UNION ')
-      query + 'ORDER BY academic_tool_type, start_date, situation;'
+      query + 'ORDER BY academic_tool_type, start_date, situation, name;'
   end
 
 

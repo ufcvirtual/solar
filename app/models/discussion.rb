@@ -138,20 +138,6 @@ class Discussion < Event
       .group('discussions.id, discussions.name, start_date, end_date').order('start_date').uniq
   end
 
-  def self.all_by_allocation_tags_evaluative(allocation_tag_id, evaluative=false, frequency=false)
-    wq = "academic_allocations.evaluative=true " if evaluative
-    wq = "academic_allocations.frequency=true " if frequency
-    wq = "academic_allocations.evaluative=false AND academic_allocations.frequency=false " if !evaluative && !frequency
-
-    joins(:schedule, academic_allocations: :allocation_tag)
-    .joins('LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id')
-    .where(allocation_tags: { id: AllocationTag.find(allocation_tag_id).related })
-    .where(wq)
-    .select('discussions.*, academic_allocations.id AS ac_id, COUNT(discussion_posts.id) AS posts_count, schedules.start_date AS start_date, schedules.end_date AS end_date')
-    .group('discussions.id, schedules.start_date, schedules.end_date, name, academic_allocations.id')
-    .order('start_date, end_date, name')
-  end
-
   def self.all_by_allocation_tags(allocation_tag_id)
     joins(:schedule, academic_allocations: :allocation_tag)
     .joins('LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id')

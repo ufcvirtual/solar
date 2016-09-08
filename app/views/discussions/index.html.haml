@@ -9,7 +9,7 @@
         %tr.lines
           %th{style: "width: 20%;"}= t(:discussions, scope: [:attributes, :info])
           %th.center.date{style: "width: 22%;"}= t(:date_range, scope: [:scores, :info])
-          /%th.center{style: "width: 2%;"}= t(:amount, scope: [:scores, :info])
+          %th.center{style: "width: 2%;"}= t(:amount, scope: [:scores, :info])
           %th.center{style: "width: 15%;"}= t(:situation, :scope => [:scores, :info])
           %th.center{style: "width: 10%;"}= t(:evaluative, scope: [:scores, :index])
           %th.center{style: "width: 2%;"}= t(:frequency, scope: [:scores, :info])
@@ -19,14 +19,38 @@
           
       %tbody
         - @discussions.each do |discussion|
-          %tr{class: "lines #{'period_ended' if discussion.situation.include?("closed") and (not discussion.situation.include?("extra_time"))} "}
+          %tr{class: "lines #{'period_ended' if discussion.situation.include?("closed") && (!discussion.situation.include?("extra_time"))} "}
             %td
-              - if (discussion.situation.include?("opened") or discussion.situation.include?("closed"))
+              - if discussion.opened == 't'
                 = link_to discussion.name, discussion_posts_path(discussion_id: discussion.academic_tool_id), {class: 'link_content'}
-                
-              - else
-                = discussion.name
+              - elsif discussion.closed == 't'
+                = link_to discussion.name, discussion_posts_path(discussion_id: discussion.academic_tool_id)
+              - else 
+                .title= discussion.name
+              .enunciation
+                .enunciation_slice= discussion.description.slice(0..180) << '...'
+                .enunciation_complete= discussion.description
+                .more_or_less
+                  %a.enunciation_more.link_content{ href: '#' }= t('assignments.list.more')
+                  %a.enunciation_less.link_content{ href: '#' }= t('assignments.list.less')
+              .equivalent
+                - unless discussion.eq_name.blank?
+                  %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{discussion.id}" }
+                    %i.icon-flow-parallel
+                    = t('scores.info.equivalency')
+                    %i.icon-arrow-down-triangle
+                  .dropdown.dropdown-tip{id: "dropdown_eq_#{discussion.id}"}
+                    %ul{ class: 'dropdown-menu' }
+                      = raw t('scores.info.equivalent', name: discussion.eq_name)
+                - else
+                  %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{discussion.id}", :'data-url' => equalities_tools_path(tool_type: discussion.academic_tool_type, ac_id: discussion.id), onclick: 'open_dropdown(this);' }
+                    %i.icon-flow-parallel
+                    =t('scores.info.equalities')
+                    %i.icon-arrow-down-triangle
+                  .dropdown.dropdown-tip{id: "dropdown_eq_#{discussion.id}"}
+                    %ul{ class: 'dropdown-menu' }
             %td.center= [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(" - ") 
+            %td.center= discussion.count_all
             - if @is_student
               %td.center{class: "assignment_#{discussion.situation}"}= t("scores.situation.#{discussion.situation}")
             - else
@@ -35,15 +59,28 @@
               - elsif discussion.opened=='t'    
                 %td.center{class: "assignment_opened"}= t("scores.situation.opened")  
               -else
-                %td.center{class: "assignment_opened"}= t("scores.situation.not_started")    
+                %td.center{class: "assignment_not_started"}= t("scores.situation.not_started")    
             %td.center= t(discussion.evaluative, scope: [:scores, :info])
             %td.center= t(discussion.frequency, scope: [:scores, :info])
             - if @is_student
               %td.center= discussion.grade
               %td.center= discussion.working_hours
-
             
   - else
     .block_content.block_content_text= t(:forum_message)
 
 = javascript_include_tag "contextual_help/discussion"
+
+:javascript
+  $(function(){
+    $(".enunciation_more").click(function(){
+      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "none");
+      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "block");
+      return false;
+    });
+    $(".enunciation_less").click(function(){
+      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "block");
+      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "none");
+      return false;
+    });
+  });

@@ -1,16 +1,9 @@
 .list_exams{ :'data-link-list' => list_exams_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id], selected: @selected) }
   .title-warning=raw t('exams.warning.title')
-  .btn_group
-    .btn_item
-      = link_to (content_tag(:i, nil, class: 'icon-exam big')), new_exam_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('.new_exam'), class: 'link_new_exam btn', id: 'new-exam'
-      = link_to t('.new_exam'), new_exam_path(allocation_tags_ids: @allocation_tags_ids), class: 'link_new_exam', id: 'new-exam'
-    .btn_item
-      = link_to_function (content_tag(:i, nil, class: 'icon-archive big')), 'import_questions(this)', :'data-url' => import_steps_exam_questions_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('.import_q_e'), class: 'btn', :'data-can' => true
-      = link_to_function t('.import_q_e'), 'import_questions(this)', :'data-url' => import_steps_exam_questions_path(allocation_tags_ids: @allocation_tags_ids), :'data-can' => true
-    - if (can? :tool_management, Edition, {on: @allocation_tags_ids}) && @selected == 'GROUP'
-      .btn_item
-        = link_to_function (content_tag(:i, nil, class: 'icon-class big')), 'call_tool_management(this)', :'data-link' => discussion_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('editions.evaluative_tools.exams_call'), class: 'btn'
-        = link_to_function t('editions.evaluative_tools.exams_call'), 'call_tool_management(this)', :'data-link' => discussion_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids)
+  = link_to t('.new_exam'), new_exam_path(allocation_tags_ids: @allocation_tags_ids), class: 'link_new_exam title_link', id: 'new-exam'
+  = link_to_function t('.import_q_e'), 'import_questions(this)', :'data-url' => import_steps_exam_questions_path(allocation_tags_ids: @allocation_tags_ids), :'data-can' => true, class: 'title_link'
+  - if (can? :tool_management, Edition, {on: @allocation_tags_ids}) && @selected == 'GROUP'
+    = link_to_function t('editions.evaluative_tools.exams_call'), 'call_tool_management(this)', :'data-link' => discussion_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids), class: 'title_link'
   - if @exams.any?
     = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
     = render partial: 'exams/list/exams', locals: { all_groups: @all_groups }

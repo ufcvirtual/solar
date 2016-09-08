@@ -39,6 +39,22 @@
                       .complete.invisible
                         = webconference.description
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    .equivalent
+                      - unless webconference.eq_name.blank?
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{webconference.id}" }
+                          %i.icon-flow-parallel
+                          = t('scores.info.equivalency')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{webconference.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                            = raw t('scores.info.equivalent', name: webconference.eq_name)
+                      - else
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{webconference.id}", :'data-url' => equalities_tools_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-flow-parallel
+                          =t('scores.info.equalities')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{webconference.id}"}
+                          %ul{ class: 'dropdown-menu' }
                   %td.center
                     %div= l(webconference.start_date.to_date, format: :normal)
                     %div= [l(webconference.start_hour.to_time, format: :today), l(webconference.end_hour.to_time, format: :today)].join(' - ')
@@ -82,6 +98,22 @@
                       .complete.invisible
                         = webconference.description
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    .equivalent
+                      - unless webconference.eq_name.blank?
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{webconference.id}" }
+                          %i.icon-flow-parallel
+                          = t('scores.info.equivalency')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{webconference.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                            = raw t('scores.info.equivalent', name: webconference.eq_name)
+                      - else
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{webconference.id}", :'data-url' => equalities_tools_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-flow-parallel
+                          =t('scores.info.equalities')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{webconference.id}"}
+                          %ul{ class: 'dropdown-menu' }
                   %td.center
                     %div= l(webconference.start_date.to_date, format: :normal)
                     %div= [l(webconference.start_hour.to_time, format: :today), l(webconference.end_hour.to_time, format: :today)].join(' - ')
@@ -121,6 +153,22 @@
                       .complete.invisible
                         = webconference.description
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    .equivalent
+                      - unless webconference.eq_name.blank?
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{webconference.id}" }
+                          %i.icon-flow-parallel
+                          = t('scores.info.equivalency')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{webconference.id}"}
+                          %ul{ class: 'dropdown-menu' }
+                            = raw t('scores.info.equivalent', name: webconference.eq_name)
+                      - else
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{webconference.id}", :'data-url' => equalities_tools_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id), onclick: 'open_dropdown(this);' }
+                          %i.icon-flow-parallel
+                          =t('scores.info.equalities')
+                          %i.icon-arrow-down-triangle
+                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{webconference.id}"}
+                          %ul{ class: 'dropdown-menu' }
                   %td.center
                     %div= l(webconference.start_date.to_date, format: :normal)
                     %div= [l(webconference.start_hour.to_time, format: :today), l(webconference.end_hour.to_time, format: :today)].join(' - ')

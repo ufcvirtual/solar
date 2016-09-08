@@ -6,6 +6,7 @@ class ScoresController < ApplicationController
   before_filter :prepare_for_pagination, only: :index
 
   layout false, only: :search_tool
+
   require 'will_paginate/array'
   def index
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
@@ -20,6 +21,8 @@ class ScoresController < ApplicationController
 
     @wh = AllocationTag.find(@allocation_tag_id).get_curriculum_unit.try(:working_hours)
   end
+
+
   require 'will_paginate/array'
   def evaluatives_frequency
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
@@ -55,17 +58,19 @@ class ScoresController < ApplicationController
 
     @tools = EvaluativeTool.descendants
 
-    @scores = Score.evaluative_frequency(ats, params[:type])
     @score_type = params[:type]
     if params[:report]
       @users = Score.get_users(ats)
       @ats = AllocationTag.find(@allocation_tag_id)
-      @examidx = params[:Examidx] unless params[:Examidx].blank?
-      @assignmentidx = params[:Assignmentidx] unless params[:Assignmentidx].blank?
+      @scores = Score.evaluative_frequency(ats, params[:type], @users.pluck(:id))
+
+      @examidx          = params[:Examidx]          unless params[:Examidx].blank?
+      @assignmentidx    = params[:Assignmentidx]    unless params[:Assignmentidx].blank?
       @scheduleEventidx = params[:ScheduleEventidx] unless params[:ScheduleEventidx].blank?
-      @discussionidx = params[:Discussionidx] unless params[:Discussionidx].blank?
-      @chatRoomidx = params[:ChatRoomidx] unless params[:ChatRoomidx].blank?
+      @discussionidx    = params[:Discussionidx]    unless params[:Discussionidx].blank?
+      @chatRoomidx      = params[:ChatRoomidx]      unless params[:ChatRoomidx].blank?
       @webconferenceidx = params[:Webconferenceidx] unless params[:Webconferenceidx].blank?
+
       respond_to do |format|
         format.html do
           render pdf:         'evaluatives_frequency',
@@ -75,7 +80,8 @@ class ScoresController < ApplicationController
         end   
       end 
     else
-      @users = Score.get_users(ats).paginate(:page => params[:page], :per_page => 20)
+      @users = Score.get_users(ats).paginate(page: params[:page], per_page: 20)
+      @scores = Score.evaluative_frequency(ats, params[:type])
       #render partial: 'evaluative_frequency', locals: {score_type: params[:type]}
       respond_to do |format|
         format.html { render partial: 'evaluative_frequency', locals: {score_type: params[:type] }}
@@ -83,8 +89,11 @@ class ScoresController < ApplicationController
         format.js
       end 
     end   
-
+  rescue => error
+    request.format = :json
+    raise error
   end 
+  
   require 'will_paginate/array'
   def general
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
@@ -110,6 +119,9 @@ class ScoresController < ApplicationController
         format.js
       end 
     end    
+  rescue => error
+    request.format = :json
+    raise error
   end
 
   def info
@@ -296,7 +308,7 @@ class ScoresController < ApplicationController
   def redirect_to_open
     tool_id = AcademicAllocation.find(params[:ac_id]).academic_tool_id
 
-    unless ['started', 'retake', 'to_answer', 'to_send', 'not_finished', 'sent', 'evaluated', 'to_be_sent', 'without_group'].include?(params[:situation])
+    unless ['started', 'opened', 'retake', 'to_answer', 'to_send', 'not_finished', 'sent', 'evaluated', 'to_be_sent', 'without_group'].include?(params[:situation])
       if params[:situation] == 'not_started' && params[:tool_type] == 'Exam'
         authorize! :show, Question, { on: active_tab[:url][:allocation_tag_id] }
         render json: { url: preview_exam_path(tool_id, allocation_tags_ids: active_tab[:url][:allocation_tag_id]) }
@@ -323,7 +335,7 @@ class ScoresController < ApplicationController
         render json: { url: discussion_posts_path(discussion_id: tool_id), method: :get }
       when 'Exam'
         if can? :open, Exam, { on: active_tab[:url][:allocation_tag_id] }
-          render json: { url:  pre_exam_path(exam, allocation_tag_id: @allocation_tag_id, situation: params[:situation]) }  
+          render json: { url:  pre_exam_path(tool_id, allocation_tag_id: @allocation_tag_id, situation: params[:situation]) }  
         else
           authorize! :show, Question, { on: active_tab[:url][:allocation_tag_id] }
           render json: { url: preview_exam_path(tool_id, allocation_tags_ids: active_tab[:url][:allocation_tag_id]) }

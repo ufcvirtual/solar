@@ -35,17 +35,21 @@ class Exam < Event
   after_save :recalculate_grades,   if: 'attempts_correction_changed? || (result_email_changed? && result_email)'
 
   def recalculate_grades(user_id=nil, ats=nil, all=nil)
-    grade = 0.00
-    # chamar metodo de correção dos itens respondidos para todos os que existem
-    list_exam_correction(user_id, ats, all).each do |acu|
-      correction_exams(acu.id)
-      grade = get_grade(acu.id)
-      grade = grade ? grade : 0.00
-      acu.update_attributes grade: (grade > 10 ? 10 : grade.round(2)), status: AcademicAllocationUser::STATUS[:evaluated]
-      acu.recalculate_final_grade(acu.allocation_tag_id)
-      send_result_emails(acu, grade) if result_email
+    if ended?
+      grade = 0.00
+      # chamar metodo de correção dos itens respondidos para todos os que existem
+      list_exam_correction(user_id, ats, all).each do |acu|
+        correction_exams(acu.id)
+        grade = get_grade(acu.id)
+        grade = grade ? grade : 0.00
+        acu.update_attributes grade: (grade > 10 ? 10 : grade.round(2)), status: AcademicAllocationUser::STATUS[:evaluated]
+        acu.recalculate_final_grade(acu.allocation_tag_id)
+        send_result_emails(acu, grade) if result_email
+      end
+      grade.round(2)
+    else
+      errors.add(:base, I198t('exams.errors.not_finished'))
     end
-    grade.round(2)
   end
 
   def send_result_emails(acu, grade)
@@ -315,29 +319,6 @@ class Exam < Event
     end
   end
 
-  def info(user_id, allocation_tags_ids)
-    academic_allocation = academic_allocations.where(allocation_tag_id: allocation_tags_ids).first
-    return unless academic_allocation
-
-    info = academic_allocation.academic_allocation_users.where({user_id: user_id}).first.try(:info) || {complete: false}
-    info = {situation: situation(info[:complete], info[:grade], info[:responses], info[:attempts])}.merge(info)
-    {count: percent(number_questions, info[:responses])}.merge(info)
-  end
-
-  def situation(complete, grade = nil, exam_responses = 0, user_attempts = 0)
-    case
-    when !started?                                                      then 'not_started'
-    when on_going? && (exam_responses.blank? || exam_responses == 0)    then 'to_answer'
-    when on_going? && !complete                                         then 'not_finished'
-    when on_going? && (attempts > user_attempts)                        then 'retake'
-    when !grade.blank? && ended?                                        then 'corrected'
-    when complete && (attempts == user_attempts)                        then 'finished'
-    when ended? && (user_attempts != 0 && !user_attempts.blank?) && grade.blank? then 'not_corrected'
-    else
-      'not_answered'
-    end
-  end
-
   def responses_question_user(acu_id, id)
     mod_correct_exam = self.attempts_correction
 
@@ -424,10 +405,8 @@ class Exam < Event
                  .order("start_date")
   end  
 
-  private
-
-    def percent(total, answered)
-      ((answered.to_f/total.to_f)*100).round(2)
-    end
+  def self.percent(total, answered)
+    ((answered.to_f/total.to_f)*100).round(2)
+  end
 
 end

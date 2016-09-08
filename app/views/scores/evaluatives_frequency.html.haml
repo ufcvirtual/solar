@@ -7,6 +7,7 @@
     
   %body
     .tool_all
+      %div{style: 'text-align: right; font-size: 7pt; margin-bottom: 4px;'}= t('scores.pdf.time', time: l(Time.now, format: :long))
       .header
         = wicked_pdf_image_tag "ufc.png", :style => "float: left; width:150px; height: 50px"
         = wicked_pdf_image_tag "ufcVirtual.png", :style => "float: right; width:70px; height: 50px"
