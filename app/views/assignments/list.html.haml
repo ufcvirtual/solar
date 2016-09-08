@@ -5,7 +5,7 @@
         %i.icon-suitcase
         = t('.individual_assignments')
     .block_content
-      = render partial: (@student ? 'student_assignments' : 'assignments'), locals: { assignments: @assignments.where(type_assignment: Assignment_Type_Individual) }
+      = render partial: (@student ? 'student_assignments' : 'assignments'), locals: { assignments: @assignments_indiv }
 
   .block_wrapper
     .block_title
@@ -13,7 +13,7 @@
         %i.icon-suitcase
         = t('.group_assignments')
     .block_content
-      = render partial: (@student ? 'student_assignments' : 'assignments'), locals: { assignments: @assignments.where(type_assignment: Assignment_Type_Group) }
+      = render partial: (@student ? 'student_assignments' : 'assignments'), locals: { assignments: @assignments_group }
    
   = render partial: 'public_files/list', locals: { public_files: @public_files }
 
@@ -31,19 +31,6 @@
     $(".enunciation_less").click(function(){
       $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "block");
       $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "none");
-      return false;
-    });
-
-    $(".btn.participants").click(function(){
-      $(".participants_box").not("."+$(this).attr("id")).addClass("invisible");
-      $("tr.assignment").attr("style", "border-bottom: 1px solid #B4B2B1;");
-      
-      var box = $(".participants_box."+$(this).attr("id"));
-      box.toggleClass("invisible");
-      if (box.hasClass("invisible"))
-        $(this).parents("tr").first().attr("style", "border-bottom: 1px solid #B4B2B1;");
-      else
-        $(this).parents("tr").first().attr("style", "border-bottom: none");
       return false;
     });
   });

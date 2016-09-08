@@ -29,13 +29,8 @@ class AssignmentsController < ApplicationController
     @student      = !AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id)
     @public_files = PublicFile.where(user_id: current_user.id, allocation_tag_id: @allocation_tag_id)
     
-
-    @assignments  = Assignment.joins(:academic_allocations, :schedule).where(academic_allocations: { allocation_tag_id:  @allocation_tag_id })
-                             .select("assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date, evaluative, frequency").order("start_date")
-    
-
-
-    @participants = AllocationTag.get_participants(@allocation_tag_id, { students: true })
+    @assignments_indiv = Score.list_tool(current_user.id, @allocation_tag_id, 'assignments', false, false, true, false, Assignment_Type_Individual)
+    @assignments_group = Score.list_tool(current_user.id, @allocation_tag_id, 'assignments', false, false, true, false, Assignment_Type_Group)
 
     user_profiles = current_user.resources_by_allocation_tags_ids([@allocation_tag_id])
 
@@ -146,6 +141,13 @@ class AssignmentsController < ApplicationController
         download_file(:back, file.attachment.path, file.attachment_file_name)
       end
     end  
+  end
+
+  def participants
+    raise CanCan::AccessDenied unless AllocationTag.find(@allocation_tag_id = active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
+    assignment = Assignment.find(params[:id])
+    @participants = AllocationTag.get_participants(@allocation_tag_id, { students: true })
+    render partial: (assignment.type_assignment == Assignment_Type_Group ? 'groups' : 'participants'), locals: { assignment: assignment }
   end
 
   private
