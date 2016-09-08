@@ -435,3 +435,10 @@ a.disabled {
     background: image-url('done.png') no-repeat; 
   }
 }
+
+.equivalent{
+  ul.dropdown-menu{
+    max-height: 190px;
+    overflow-y: auto;
+  }
+}

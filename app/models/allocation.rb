@@ -271,7 +271,7 @@ class Allocation < ActiveRecord::Base
   private
 
     def verify_profile
-      errors.add(:base, I18n.t('allocations.request.error.invalid_profile')) if profile.has_type?(Profile_Type_Basic)
+      errors.add(:base, I18n.t('allocations.request.error.invalid_profile')) if profile.has_type?(Profile_Type_Basic) && !allocation_tag_id.nil?
       errors.add(:base, I18n.t('allocations.request.error.invalid_profile')) if profile.has_type?(Profile_Type_Admin) && !allocation_tag_id.nil?
     end
 
