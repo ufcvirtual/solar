@@ -8,32 +8,172 @@ module EvaluativeTool
 
   def self.find_tools(ats)
     ats << AllocationTag.find(ats.first).lower_related if ats.size == 1
+    ats = ats.uniq.join(',')
     AcademicAllocation.find_by_sql <<-SQL
-      SELECT DISTINCT(ac.ids), *, ac.ats FROM academic_allocations
-       JOIN (
-         SELECT array_agg(academic_allocations.id) AS ids, 
-                academic_tool_id, 
-                academic_tool_type, 
-                array_agg(allocation_tag_id) AS ats
-         FROM academic_allocations 
-         LEFT JOIN schedule_events ON academic_allocations.academic_tool_type = 'ScheduleEvent' AND schedule_events.id = academic_allocations.academic_tool_id
-         WHERE academic_tool_type IN (#{"'"+self.descendants.join("','")+"'"}) 
-         AND allocation_tag_id IN (#{ats.uniq.join(',')})
-         AND schedule_events.id IS NULL OR (schedule_events.type_event != #{Recess} AND schedule_events.type_event != #{Holiday})
-         GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight
-         ) ac ON ac.ids @> ARRAY[academic_allocations.id];
+      SELECT DISTINCT
+        array_agg(academic_allocations.id) AS ids, 
+        academic_tool_id, 
+        academic_tool_type,
+        evaluative, 
+        frequency,
+        final_weight,
+        weight, 
+        final_exam,
+        max_working_hours,
+        equivalent_academic_allocation_id,
+        array_agg(allocation_tag_id) AS ats, 
+        name AS name, 
+        enunciation AS description,
+        schedules.start_date AS start_date,
+        schedules.end_date AS end_date,
+        '' AS start_hour,
+        '' AS end_hour
+      FROM academic_allocations 
+      LEFT JOIN assignments ON assignments.id = academic_tool_id AND academic_tool_type = 'Assignment' 
+      LEFT JOIN schedules ON schedules.id = schedule_id
+      WHERE academic_tool_type = 'Assignment'
+        AND allocation_tag_id IN (#{ats})
+      GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight, name, enunciation, start_date, end_date
+
+      UNION(
+        SELECT DISTINCT
+          array_agg(academic_allocations.id) AS ids, 
+          academic_tool_id, 
+          academic_tool_type, 
+          evaluative, 
+          frequency,
+          final_weight,
+          weight, 
+          final_exam,
+          max_working_hours,
+          equivalent_academic_allocation_id,
+          array_agg(allocation_tag_id) AS ats, 
+          name AS name, 
+          description AS description,
+          schedules.start_date AS start_date,
+          schedules.end_date AS end_date,
+          '' AS start_hour,
+          '' AS end_hour
+        FROM academic_allocations 
+        LEFT JOIN discussions ON discussions.id = academic_tool_id AND academic_tool_type = 'Discussion' 
+        LEFT JOIN schedules ON schedules.id = schedule_id
+        WHERE academic_tool_type = 'Discussion'
+          AND allocation_tag_id IN (#{ats})
+        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight, name, description, start_date, end_date
+      )
+
+      UNION(
+        SELECT DISTINCT
+          array_agg(academic_allocations.id) AS ids, 
+          academic_tool_id, 
+          academic_tool_type, 
+          evaluative, 
+          frequency,
+          final_weight,
+          weight, 
+          final_exam,
+          max_working_hours,
+          equivalent_academic_allocation_id,
+          array_agg(allocation_tag_id) AS ats, 
+          title AS name, 
+          description AS description,
+          schedules.start_date AS start_date,
+          schedules.end_date AS end_date,
+          start_hour AS start_hour,
+          end_hour AS end_hour
+        FROM academic_allocations 
+        LEFT JOIN chat_rooms ON chat_rooms.id = academic_tool_id AND academic_tool_type = 'ChatRoom' 
+        LEFT JOIN schedules ON schedules.id = schedule_id
+        WHERE academic_tool_type = 'ChatRoom'
+          AND allocation_tag_id IN (#{ats})
+        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight, title, description, start_date, end_date, start_hour, end_hour
+      )
+
+      UNION(
+        SELECT DISTINCT
+          array_agg(academic_allocations.id) AS ids, 
+          academic_tool_id, 
+          academic_tool_type,
+          evaluative, 
+          frequency,
+          final_weight,
+          weight, 
+          final_exam,
+          max_working_hours,
+          equivalent_academic_allocation_id, 
+          array_agg(allocation_tag_id) AS ats, 
+          name AS name, 
+          description AS description,
+          schedules.start_date AS start_date,
+          schedules.end_date AS end_date,
+          start_hour AS start_hour,
+          end_hour AS end_hour
+        FROM academic_allocations 
+        LEFT JOIN exams ON exams.id = academic_tool_id AND academic_tool_type = 'Exam' 
+        LEFT JOIN schedules ON schedules.id = schedule_id
+        WHERE academic_tool_type = 'Exam'
+          AND allocation_tag_id IN (#{ats})
+          AND exams.status = 't'
+        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight, name, description, start_date, end_date, start_hour, end_hour
+      )
+
+      UNION(
+        SELECT DISTINCT
+          array_agg(academic_allocations.id) AS ids, 
+          academic_tool_id, 
+          academic_tool_type, 
+          evaluative, 
+          frequency,
+          final_weight,
+          weight, 
+          final_exam,
+          max_working_hours,
+          equivalent_academic_allocation_id,
+          array_agg(allocation_tag_id) AS ats, 
+          title AS name, 
+          description AS description,
+          schedules.start_date AS start_date,
+          schedules.end_date AS end_date,
+          start_hour AS start_hour,
+          end_hour AS end_hour
+        FROM academic_allocations 
+        LEFT JOIN schedule_events ON schedule_events.id = academic_tool_id AND academic_tool_type = 'ScheduleEvent' 
+        LEFT JOIN schedules ON schedules.id = schedule_id
+        WHERE academic_tool_type = 'ScheduleEvent'
+          AND allocation_tag_id IN (#{ats})
+          AND (schedule_events.type_event != #{Recess} AND schedule_events.type_event != #{Holiday})
+        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight, title, description, start_date, end_date, start_hour, end_hour
+      )
+      
+      UNION(
+        SELECT DISTINCT
+          array_agg(academic_allocations.id) AS ids, 
+          academic_tool_id, 
+          academic_tool_type, 
+          evaluative, 
+          frequency,
+          final_weight,
+          weight, 
+          final_exam,
+          max_working_hours,
+          equivalent_academic_allocation_id,
+          array_agg(allocation_tag_id) AS ats, 
+          title AS name, 
+          description AS description,
+          webconferences.initial_time AS start_date,
+          (webconferences.initial_time + duration* interval '1 min') AS end_date,
+          initial_time::text AS start_hour,
+          (initial_time + duration* interval '1 min')::text AS end_hour
+        FROM academic_allocations 
+        LEFT JOIN webconferences ON webconferences.id = academic_tool_id AND academic_tool_type = 'Webconference' 
+        WHERE academic_tool_type = 'Webconference'
+          AND allocation_tag_id IN (#{ats})
+        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight, title, description, initial_time, duration
+      )
+    
+      ORDER BY academic_tool_type, name;
+
     SQL
-  end
- 
-  def full_period
-    date = if respond_to?(:initial_time) 
-            I18n.l(initial_time, format: :at_date)
-           else
-            hours  = (!respond_to?(:start_hour) || start_hour.nil?) ? '' : (!respond_to?(:end_hour) || end_hour.nil?) ? start_hour : [start_hour, end_hour].join(I18n.t('schedules.to'))
-            dstart = respond_to?(:schedule) ?  I18n.l(schedule.start_date, format: :normal) : ''
-            dend   = respond_to?(:schedule) ?  I18n.l(schedule.end_date, format: :normal) : ''
-            I18n.t('editions.evaluative_tools.full_period', dstart: dstart, dend: dend , hours: hours)
-           end
   end
 
   def verify_evaluatives

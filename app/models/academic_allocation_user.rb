@@ -36,7 +36,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   validates :group_assignment_id, presence: true, if: Proc.new { |a| a.try(:assignment).try(:type_assignment) == Assignment_Type_Group }
 
   before_save :if_group_assignment_remove_user_id
-  before_save :verify_profile, :verify_group, if: 'merge.nil?'
+  before_save :verify_profile, :verify_group, :verify_participants, if: 'merge.nil?'
 
   before_destroy :delete_with_dependents
 
@@ -91,6 +91,16 @@ class AcademicAllocationUser < ActiveRecord::Base
     unless !group_assignment_id.nil? || user.has_profile_type_at(allocation_tag.related)
       self.grade = nil
       self.working_hours = nil
+    end
+  end
+
+  def verify_participants
+    if !chat_room.nil?
+      users = User.joins(allocations: :chat_participants).where(chat_participants: {id: chat_room.participants.pluck(:id)}).pluck(:id)
+      if chat_room.chat_type == 1 && !users.include?(user_id)
+        errors.add(:grade, I18n.t('academic_allocation_users.errors.not_participant')) if academic_allocation.evaluative && grade_changed?
+        errors.add(:working_hours, I18n.t('academic_allocation_users.errors.not_participant')) if academic_allocation.frequency && working_hours_changed?
+      end
     end
   end
 

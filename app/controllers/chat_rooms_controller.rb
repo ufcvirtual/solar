@@ -27,11 +27,9 @@ class ChatRoomsController < ApplicationController
     @responsible = ChatRoom.responsible?(@allocation_tag_id, current_user.id)
 
     @is_student = @user.is_student?([@allocation_tag_id])
-    chats = ChatRoom.chats_user(current_user.id, @allocation_tag_id)
 
-    @my_chats, @other_chats = chats[:my], chats[:others]
-
-   
+    @my_chats = Score.list_tool(current_user.id, @allocation_tag_id, 'chat_rooms', false, false, true)
+    @other_chats = Score.list_tool(current_user.id, @allocation_tag_id, 'chat_rooms', false, false, true, true) unless @responsible
   end
 
   def index
@@ -118,7 +116,7 @@ class ChatRoomsController < ApplicationController
       allocation_tag_id = active_tab[:url][:allocation_tag_id]
 
       authorize! :show, ChatRoom, on: [allocation_tag_id]
-      raise CanCan::AccessDenied if !(ChatRoom.responsible?(allocation_tag_id, current_user.id)) && !(@researcher) && current_user.id != @user.id
+      raise CanCan::AccessDenied if !(ChatRoom.responsible_or_observer?(allocation_tag_id, current_user.id)) && !(@researcher) && current_user.id != @user.id
 
       @academic_allocation = @chat_room.academic_allocations.where(allocation_tag_id: allocation_tag_id).first
       can_evaluate = can? :evaluate, ChatRoom, {on: allocation_tag_id}
@@ -145,7 +143,7 @@ class ChatRoomsController < ApplicationController
       @academic_allocation = AcademicAllocation.where(academic_tool_id: @chat_room.id, academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag_id).first
       all_participants = @chat_room.participants.where(academic_allocations: { allocation_tag_id: allocation_tag_id })
       @researcher = current_user.is_researcher?(AllocationTag.find(allocation_tag_id).related)
-      responsible = ChatRoom.responsible?(allocation_tag_id, current_user.id)
+      responsible = ChatRoom.responsible_or_observer?(allocation_tag_id, current_user.id)
 
       raise CanCan::AccessDenied if (all_participants.any? && all_participants.joins(:user).where(users: { id: current_user }).empty?) && !responsible && !(@researcher)
 
@@ -175,7 +173,16 @@ class ChatRoomsController < ApplicationController
       URI.parse(url).path
       redirect_to url
     end  
-  end  
+  end
+
+  def participants
+    authorize! :show, ChatRoom, on: [at_id = active_tab[:url][:allocation_tag_id]]
+
+    @chat = ChatRoom.find(params[:id])
+    @participants = @chat.users.where('academic_allocations.allocation_tag_id = ?', at_id)
+
+    render layout: false
+  end
 
   private
 

@@ -46,7 +46,6 @@ class ChatRoom < Event
       cipher.key = chat['key']
       [chat['url'].to_s, Base64.encode64(cipher.update(chat['params'].gsub('allocation_id', allocation_id.to_s).gsub('academic_id', academic_allocation_id.to_s)) + cipher.final).gsub("\n", '')].join.html_safe
   end
- 
 
   def verify_hours
     errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:chat_rooms, :error])) if end_hour.rjust(5, '0') < start_hour.rjust(5, '0')
@@ -75,73 +74,12 @@ class ChatRoom < Event
     AllocationTag.find(allocation_tag_id).is_responsible?(user_id)
   end
 
+  def self.responsible_or_observer?(allocation_tag_id, user_id)
+    AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(user_id)
+  end
+
   def self.to_list_by_ats(allocation_tags_ids)
     joins(:schedule, :allocation_tags).where(allocation_tags: { id: allocation_tags_ids }).select('chat_rooms.*, schedules.start_date AS chat_start_date').order('chat_start_date, title').uniq
-  end
-
-  def self.chats_user(user_id, allocation_tag_id)
-    allocations_with_acess =  User.find(user_id).allocation_tags_ids_with_access_on('interact','chat_rooms')
-
-    all_chats = ChatRoom.joins(:academic_allocations, :schedule)
-      .joins("LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}")
-      .where(academic_allocations: { allocation_tag_id: allocation_tag_id })
-      .select("DISTINCT chat_rooms.*, schedules.start_date, schedules.end_date, academic_allocations.id as ac_id, academic_allocations.evaluative,  academic_allocations.frequency, academic_allocation_users.grade,
-              academic_allocation_users.working_hours, CASE 
- WHEN academic_allocation_users.grade IS NOT NULL THEN 'evaluated'
- WHEN academic_allocation_users.working_hours IS NOT NULL THEN 'evaluated'  
- WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < cast(start_hour as time)) THEN 'not_started'
- WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (start_hour IS NULL OR current_time>cast(start_hour as time) ) AND (end_hour IS NULL OR current_time<=cast(end_hour as time)) THEN 'opened'
- ELSE
-   'closed'
- END AS situation")
-      .order('schedules.start_date')
-
-    my, others =  if responsible?(allocation_tag_id, user_id)
-                    [all_chats, []]
-                  else
-                    without_participant = all_chats.joins('LEFT JOIN chat_participants AS cp ON cp.academic_allocation_id = academic_allocations.id').where('cp.academic_allocation_id IS NULL')
-                    my = all_chats.joins(:participants, :allocations).where(allocations: { user_id: user_id })
-
-                    if allocations_with_acess.include? allocation_tag_id
-                      others = (all_chats - without_participant) - my
-                      [(my + without_participant), others]
-                    else
-                      others = all_chats - my
-                      [my, others]
-                    end
-                  end
-
-    { my: my, others: others }
-  end
-
-  def self.list_chats(user_id, allocation_tag_id, evaluative=false, frequency=false)
-    wq = "academic_allocations.evaluative=true" if evaluative
-    wq = "academic_allocations.frequency=true" if frequency
-    wq = "academic_allocations.evaluative=false AND academic_allocations.frequency=false" if !evaluative && !frequency
-
-    allocations_with_acess =  User.find(user_id).allocation_tags_ids_with_access_on('interact','chat_rooms')
-    all_chats = ChatRoom.joins(:academic_allocations, :schedule)
-      .where(academic_allocations: {allocation_tag_id: allocation_tag_id}) 
-      .where(wq)
-      .select("DISTINCT chat_rooms.*, schedules.start_date, schedules.end_date, academic_allocations.id as ac_id, CASE 
-        WHEN schedules.start_date > current_date THEN 'message_did_not_start' WHEN schedules.end_date < current_date THEN 'message_ended' END AS situation")
-      .order('schedules.start_date')
-
-    my, others =  if responsible?(allocation_tag_id, user_id)
-                    [all_chats, []]
-                  else
-                    without_participant = all_chats.joins('LEFT JOIN chat_participants AS cp ON cp.academic_allocation_id = academic_allocations.id').where('cp.academic_allocation_id IS NULL')
-                    my = all_chats.joins(:participants, :allocations).where(allocations: { user_id: user_id })
-
-                    if allocations_with_acess.include? allocation_tag_id
-                      others = (all_chats - without_participant) - my
-                      [(my + without_participant), others]
-                    else
-                      others = all_chats - my
-                      [my, others]
-                    end
-                  end
-    { my: my, others: others }
   end
 
   def get_messages(at_id, user_query={})

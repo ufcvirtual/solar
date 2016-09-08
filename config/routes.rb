@@ -359,6 +359,7 @@ Solar::Application.routes.draw do
   resources :assignments do
     member do
       get :student
+      get :participants
       put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Assignment', as: :evaluate
     end
 
@@ -424,6 +425,7 @@ Solar::Application.routes.draw do
       put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ChatRoom', as: :evaluate
       get :messages
       get :access
+      get :participants
     end
   end
 
@@ -578,6 +580,7 @@ Solar::Application.routes.draw do
       get :preview
       get :result_user, to: :result_exam_user
       get :complete
+      get :percentage
       put :calcule_grade
       put :calcule_grade_user
       put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Exam', as: :evaluate
@@ -621,6 +624,10 @@ Solar::Application.routes.draw do
       get '/export/exam_questions/details', to: 'exam_questions#export_details', as: :export_details
       put '/export/exam_questions/',        to: 'exam_questions#export',         as: :export
     end
+  end
+
+  resources :tools, only: [] do
+    get :equalities, on: :collection 
   end
 
   resources :exam_responses, except: [:show]

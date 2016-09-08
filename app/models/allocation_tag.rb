@@ -76,6 +76,10 @@ class AllocationTag < ActiveRecord::Base
     check_if_user_has_profile_type(user_id, responsible = true, observer = false, student = true)
   end
 
+  def is_student_or_responsible_or_observer?(user_id)
+    check_if_user_has_profile_type(user_id, responsible = true, observer = true, student = true)
+  end
+
   def info
     self.send(refer_to).try(:info)
   end

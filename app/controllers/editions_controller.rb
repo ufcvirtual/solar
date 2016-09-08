@@ -128,7 +128,6 @@ class EditionsController < ApplicationController
     authorize! :tool_management, Edition, { on: @allocation_tags_ids }
 
     @tools = EvaluativeTool.find_tools(@allocation_tags_ids)
-    @tools = @tools.uniq { |t| t.ids }
     @tools = @tools.group_by { |t| t['academic_tool_type'] }
 
     @groups = Group.joins(:allocation_tag).where(allocation_tags: { id: @allocation_tags_ids })
@@ -136,7 +135,8 @@ class EditionsController < ApplicationController
   end
 
   def manage_tools
-    allocation_tags_ids = params[:academic_allocations].collect{|id, data| data['allocation_tags_ids'].delete('[]').split(',')}.flatten.map(&:to_i).uniq
+    params[:academic_allocations] = params[:academic_allocations].delete_if{|a| a.nil? || a['acs'].blank?}
+    allocation_tags_ids = params[:academic_allocations].collect{|data| data['allocation_tags_ids'].delete('[]').split(',')}.flatten.map(&:to_i).uniq
 
     allocation_tags = AllocationTag.where(id: allocation_tags_ids)
 
@@ -160,38 +160,37 @@ class EditionsController < ApplicationController
     max_working_hours = at.first.offers.first.try(:curriculum_unit).try(:working_hours)
 
     ActiveRecord::Base.transaction do
-      params[:academic_allocations].each do |id, data|
-        ac = AcademicAllocation.find(id)
-        AcademicAllocation.where(academic_tool_id: ac.academic_tool_id, academic_tool_type: ac.academic_tool_type, allocation_tag_id: allocation_tags_ids).each do |ac|
+      params[:academic_allocations].each do |data|
+        acs = AcademicAllocation.where(id: data['acs'].delete('[]').split(',')).each do |ac|
 
-            attributes = {'evaluative' => false, 'weight' => 1, 'final_weight' => 100, 'equivalent_academic_allocation_id' => nil, 'final_exam' => false, 'frequency' => false, 'max_working_hours' => 0 }
+          attributes = {'evaluative' => false, 'weight' => 1, 'final_weight' => 100, 'equivalent_academic_allocation_id' => nil, 'final_exam' => false, 'frequency' => false, 'max_working_hours' => 0 }
 
-            unless data['equivalent_academic_allocation_id'].blank?
-              begin
-                equivalent = AcademicAllocation.find(data['equivalent_academic_allocation_id'])
-                if equivalent.allocation_tag_id != ac.allocation_tag_id
-                  find_equivalent = AcademicAllocation.where(academic_tool_type: equivalent.academic_tool_type, academic_tool_id: equivalent.academic_tool_id, allocation_tag_id: ac.allocation_tag_id).id
-                  data['equivalent_academic_allocation_id'] = find_equivalent
-                end
-              rescue => error
-                group = ac.allocation_tag.group
-                if group
-                  errors << {ac: ac, messages: [t('evaluative_tools.errors.equivalent_group', group: group.code)]}
-                else
-                  errors << {ac: ac, messages: [t('evaluative_tools.errors.equivalent_offer')]}
-                end
-                acs_errors << id
+          unless data['equivalent_academic_allocation_id'].blank?
+            begin
+              equivalent = AcademicAllocation.find(data['equivalent_academic_allocation_id'])
+              if equivalent.allocation_tag_id != ac.allocation_tag_id
+                find_equivalent = AcademicAllocation.where(academic_tool_type: equivalent.academic_tool_type, academic_tool_id: equivalent.academic_tool_id, allocation_tag_id: ac.allocation_tag_id).first.id
+                data['equivalent_academic_allocation_id'] = find_equivalent
               end
-            end
-
-            attributes.merge!(data.slice('evaluative', 'weight', 'equivalent_academic_allocation_id', 'final_exam', 'frequency', 'max_working_hours', 'final_weight'))
-
-            unless ac.update_attributes(attributes)
-              errors << {ac: ac, messages: ac.errors.full_messages}
+            rescue => error
+              group = ac.allocation_tag.group
+              if group
+                errors << {ac: ac, messages: [t('evaluative_tools.errors.equivalent_group', group: group.code)]}
+              else
+                errors << {ac: ac, messages: [t('evaluative_tools.errors.equivalent_offer')]}
+              end
               acs_errors << ac.id
             end
-
           end
+
+          attributes.merge!(data.slice('evaluative', 'weight', 'equivalent_academic_allocation_id', 'final_exam', 'frequency', 'max_working_hours', 'final_weight'))
+
+          unless ac.update_attributes(attributes)
+            errors << {ac: ac, messages: ac.errors.full_messages}
+            acs_errors << ac.id
+          end
+
+        end
       end
 
       allocation_tags.each do |at|

@@ -21,33 +21,36 @@
             %th= t('editions.tools.equivalent')
 
         %tbody
-          - tools_ids = tools.map(&:id)
+          - tools_ids = []
+          - tools.each do |tool|
+            - acs = tool.ids.delete('{}').split(',')
+            - tool['acs'] = acs.uniq
+            - tools_ids << acs.first
+          - tools_ids = tools_ids.flatten.uniq
+
           - tools.each do |ac|
-            - acs = ac.ids.delete('{}').split(',')
             - ats_ids = ac.ats.delete('{}').split(',')
-            - ats = AllocationTag.where(id: ats_ids)
             - groups = Group.joins(:allocation_tag).where(allocation_tags: {id: ats_ids.map(&:to_i)}).compact
-            - tool   = tool_name.constantize.find(ac.academic_tool_id)
             = fields_for 'academic_allocations[]', ac do |acf|
-              %tr.lines{ class: [ats_ids.map{|at| 'at_'+at}, acs.map{|ac| 'ac_'+ac}].join(' ') }
+              %tr.lines{ class: [ats_ids.map{|at| 'at_'+at}, ac.acs.map{|ac| 'ac_'+ac}].join(' ') }
                 %td.desc
                   %div
-                    .title
-                      = tool.respond_to?(:name) ? tool.name : tool.title
+                    .title= ac.name
                     .description
-                      - description = tool.respond_to?(:description) ? tool.description : tool.enunciation
                       .minimun
-                        = raw description.to_s.truncate(200)
-                        - if description.try(:size).to_i > 200
+                        = raw ac.description.to_s.truncate(200)
+                        - if ac.description.try(:size).to_i > 200
                           = link_to_function content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('editions.evaluative_tools.expand_description')), 'expand_or_compress(this)'
                       .complete.invisible
-                        = raw description
+                        = raw ac.description
                         = link_to_function content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('editions.evaluative_tools.compress_description')), 'expand_or_compress(this)'
                     - if groups.blank?
                       = t('editions.tools.offer')
                     - else
-                      .group_label= render "groups/groups_tags", groups: groups, tool: tool, all_groups: nil, paths: nil
-                %td= tool.full_period
+                      .group_label= render "groups/groups_tags", groups: groups, tool: ac.academic_tool_id, all_groups: nil, paths: nil
+                %td
+                  - hours = (ac.start_hour.blank?) ? '' : (ac.end_hour.blank?) ? ac.start_hour : [ac.start_hour, ac.end_hour].join(I18n.t('schedules.to')) 
+                  = t('editions.evaluative_tools.full_period', dstart: ac.start_date.to_date, dend: ac.end_date.to_date , hours: hours)
                 %td= acf.check_box :evaluative, label: false
                 %td.weight= acf.text_field :weight, label: false, disabled: !ac.evaluative || ac.final_exam
                 %td.final_weight= acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam
@@ -56,9 +59,10 @@
                 %td.working_hours
                   = acf.text_field :max_working_hours, label: false, disabled: !ac.frequency || ac.final_exam
                   = t('editions.tools.wh')
-                - select_tools = AcademicAllocation.where(id: (tools_ids - acs))
+                - select_tools = AcademicAllocation.where(id: (tools_ids - ac.acs)).select('DISTINCT academic_tool_id, academic_tool_type').select('id')
                 %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_name, {include_blank: true}, {disabled: (!ac.evaluative && !ac.frequency) || ac.final_exam})
                 = acf.hidden_field "allocation_tags_ids", value: ats_ids.map(&:to_i)
+                = acf.hidden_field "acs", value: ac.acs.map(&:to_i)
 
 = javascript_include_tag "tablesorter", "tooltip", "groups_tags"
 

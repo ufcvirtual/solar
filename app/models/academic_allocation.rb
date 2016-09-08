@@ -34,7 +34,7 @@ class AcademicAllocation < ActiveRecord::Base
   validates :max_working_hours, presence: true, numericality: { greater_than: 0,  only_integer: true, allow_blank: true }, if: 'frequency? && !final_exam?'
 
   validate :verify_equivalents, if: 'equivalent_academic_allocation_id_changed? && !equivalent_academic_allocation_id.nil?'
-  validate :verify_type, if: "(evaluative || frequency) && academic_tool_type = 'ScheduleEvent'"
+  validate :verify_type, if: "(evaluative || frequency) && academic_tool_type == 'ScheduleEvent'"
 
   before_save :set_evaluative_params, on: :update, unless: 'new_record?'
   before_save :change_dependencies, on: :update, unless: 'new_record?'
@@ -66,21 +66,33 @@ class AcademicAllocation < ActiveRecord::Base
   end
 
   def verify_type
-    if [Reccess, Holiday].include? ScheduleEvent.find(academic_tool_id).type_event
+    if [Recess, Holiday].include? ScheduleEvent.find(academic_tool_id).type_event
       errors.add(:evaluative, I18n.t('evaluative_tools.errors.event_evaluative')) if evaluative
       errors.add(:frequency, I18n.t('evaluative_tools.errors.event_frequency')) if frequency
     end
   end
 
   def verify_equivalents
-    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.single_equivalent')) if AcademicAllocation.where(equivalent_academic_allocation_id: equivalent_academic_allocation_id).where('id != :id', { id: id }).any?
-    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.nested')) if AcademicAllocation.where(equivalent_academic_allocation_id: id).any? && !equivalent_academic_allocation_id.nil?
-    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.same_type')) if academic_tool_type != AcademicAllocation.find(equivalent_academic_allocation_id).academic_tool_type
+    eq_ac = AcademicAllocation.find(equivalent_academic_allocation_id)
 
-    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.eq_evaluative')) if evaluative != AcademicAllocation.find(equivalent_academic_allocation_id).try(:evaluative)
-    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.eq_frequency')) if frequency != AcademicAllocation.find(equivalent_academic_allocation_id).try(:frequency)
+    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.single_equivalent')) if AcademicAllocation.where(equivalent_academic_allocation_id: equivalent_academic_allocation_id).where('id != :id', { id: id }).any? && (academic_tool_type != 'ChatRoom' || ChatRoom.where(id: [academic_tool_id, eq_ac.academic_tool_id]).map(&:chat_type).include?(0))
+
+    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.nested')) if AcademicAllocation.where(equivalent_academic_allocation_id: id).any? && !equivalent_academic_allocation_id.nil?
+    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.same_type')) if academic_tool_type != eq_ac.academic_tool_type
+
+    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.eq_evaluative')) if evaluative != eq_ac.try(:evaluative)
+    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.eq_frequency')) if frequency != eq_ac.try(:frequency)
 
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.itself')) if id == equivalent_academic_allocation_id
+
+    group = allocation_tag.group
+    if eq_ac.allocation_tag_id != allocation_tag_id
+      if group.nil?
+        errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.equivalent_offer'))
+      else
+        errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.equivalent_group', group: group.code))
+      end
+    end
   end
 
   def assignment?

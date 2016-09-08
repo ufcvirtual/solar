@@ -184,11 +184,17 @@ class Allocation < ActiveRecord::Base
       )
       SELECT SUM(ac.grade) as grade
       FROM (
-        SELECT  (academic_allocations.final_weight::float/100)*SUM(COALESCE(acu.grade, acu_eq.grade, 0)*academic_allocations.weight)/SUM(academic_allocations.weight) AS grade
+        SELECT  (academic_allocations.final_weight::float/100)*SUM(COALESCE(acu.grade, acu_eq.max_grade, 0)*academic_allocations.weight)/SUM(academic_allocations.weight) AS grade
         FROM academic_allocations
-        LEFT JOIN academic_allocations equivalent  ON academic_allocations.id = equivalent.equivalent_academic_allocation_id
         LEFT JOIN academic_allocation_users acu    ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id IN (select group_id from groups))
-        LEFT JOIN academic_allocation_users acu_eq ON acu_eq.academic_allocation_id = equivalent.id  AND (acu_eq.user_id = #{user_id} OR acu_eq.group_assignment_id IN (select group_id from groups))
+        LEFT JOIN (
+          SELECT max(grade) AS max_grade, equivalent.equivalent_academic_allocation_id
+          FROM academic_allocation_users acu2 
+          LEFT JOIN academic_allocations equivalent ON acu2.academic_allocation_id = equivalent.id
+          WHERE (acu2.user_id = #{user_id} OR acu2.group_assignment_id IN (select group_id from groups)) 
+          AND equivalent.equivalent_academic_allocation_id IS NOT NULL
+          GROUP BY equivalent_academic_allocation_id
+        ) acu_eq ON academic_allocations.id = acu_eq.equivalent_academic_allocation_id
         WHERE
           academic_allocations.evaluative = true
           AND
@@ -238,11 +244,17 @@ class Allocation < ActiveRecord::Base
         FROM group_participants 
         WHERE user_id = #{user_id}
       )
-      SELECT SUM(COALESCE(acu.working_hours, acu_eq.working_hours, 0)) as working_hours
+      SELECT SUM(COALESCE(acu.working_hours, acu_eq.max_working_hours, 0)) as working_hours
       FROM academic_allocations
-      LEFT JOIN academic_allocations equivalent  ON academic_allocations.id = equivalent.equivalent_academic_allocation_id
       LEFT JOIN academic_allocation_users acu    ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id IN (select group_id from groups))
-      LEFT JOIN academic_allocation_users acu_eq ON acu_eq.academic_allocation_id = equivalent.id AND (acu_eq.user_id = #{user_id} OR acu_eq.group_assignment_id IN (select group_id from groups))
+      LEFT JOIN (
+        SELECT max(working_hours) AS max_working_hours, equivalent.equivalent_academic_allocation_id
+        FROM academic_allocation_users acu2 
+        LEFT JOIN academic_allocations equivalent ON acu2.academic_allocation_id = equivalent.id
+        WHERE (acu2.user_id = #{user_id} OR acu2.group_assignment_id IN (select group_id from groups)) 
+        AND equivalent.equivalent_academic_allocation_id IS NOT NULL
+        GROUP BY equivalent_academic_allocation_id
+      ) acu_eq ON academic_allocations.id = acu_eq.equivalent_academic_allocation_id
       WHERE
         academic_allocations.frequency = true
         AND

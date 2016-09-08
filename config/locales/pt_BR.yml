@@ -1178,6 +1178,8 @@ pt_BR:
       frequency: Frequência
       grade: Nota
       evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por post. Deste modo, ao avaliar/informar a frequência de um post, todos os outros posts do aluno terão a mesma nota/carga horária.'
+    error:
+      children: 'Post possui respostas'
 
   post_files:
     new:
@@ -2525,6 +2527,8 @@ pt_BR:
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
       warning: "<b>Importante:</b> Apenas chats sem participantes poderão ser compartilhados com outras turmas."
+      participants: Participantes do chat
+      no_participants: Não há participantes
     form:
       participants: Participantes
       groups: Turmas
@@ -2980,6 +2984,7 @@ pt_BR:
       grade: Nota
       discussions: Fóruns
       amount: Postagens
+      interactions: Interações
       assignments_sent: Envio de trabalhos
       discussions_participation: Participações em fóruns
       history_access: "Histórico de acessos (total: %{amount})"
@@ -3018,6 +3023,12 @@ pt_BR:
       last_five: "Aqui estão listados apenas os 5 últimos acessos"
       f: Não
       t: Sim
+      equivalency: (É equivalência)
+      equivalent: "<b>Esta atividade é equivalente à seguinte atividade principal:</b><br/> %{name}"
+      equalities: '(Ver equivalências)'
+      equalities_list: 'Esta atividade tem as seguintes equivalências:'
+      no_equalities: 'Esta atividade não possui equivalências.'
+      participants: '(Ver participantes)'
     situation:
       not_started: Não iniciado
       to_answer: A responder
@@ -3049,8 +3060,10 @@ pt_BR:
     error:
       invalid_date: Data inválida.
       situation: Não é possível avaliar ainda, pois a atividade não foi iniciada ou o aluno ainda não a realizou.
-      situation2: Não é possível avaliar ainda, pois a atividade não foi iniciada ou o aluno ainda não a realizou ou o aluno está sem grupo.
+      situation2: Não é possível visualizar ainda, pois a atividade não foi iniciada ou o aluno ainda não a realizou ou o aluno está sem grupo.
       not_possible: Não é possível acessar a página desejada.
+    pdf:
+      time: "Este relatório foi gerado em %{time}"
 
   lesson_notes:
     error:
@@ -3136,6 +3149,7 @@ pt_BR:
     status: Situação
     none: "Nenhuma prova cadastrada"
     restrict: "Aluno em prova: Conteúdo não permitido"
+    percentage: "<b>%{percent}% da prova feito</b>"
     list:
       new_exam: Nova Prova
       edit_exam: Editar Prova
@@ -3654,5 +3668,6 @@ pt_BR:
       offer: não pode ser definida, pois a oferta já foi encerrada.
       opened: não pode ser definida, pois a atividade ainda não iniciou.
       group: deve ser da mesma atividade e turma desta avaliação
+      not_participant: não pode ser definida, pois o aluno não é participante deste Chat.
     success:
       evaluated: Estudante avaliado com sucesso.

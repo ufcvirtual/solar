@@ -1010,6 +1010,8 @@ en_US:
       frequency: Frequency
       grade: Grade
       evaluation_info: '<b> About evaluation: </b>All grades and frequency here defined are to each student, not for each post. Therefore, by evaluating/seting frequency of a post, all other posts of this student will have the same grade and working hours.'
+    error:
+      children: 'Post has answers'
 
   post_files:
     new:
@@ -2312,6 +2314,8 @@ en_US:
       expand_description: Expand description
       compress_description: Compress description
       warning: "<b>Important:</b> Only chat rooms without participants can be shared with other groups."
+      participants: Chat's participants
+      no_participants: There are no participant
     form:
       participants: Participants
       groups: Groups
@@ -2750,6 +2754,7 @@ en_US:
       grade: Grade
       discussions: Discussions
       amount: Posts
+      interactions: Interactions
       assignments_sent: Assignment's sent
       discussions_participation: Discussion's participation
       history_access: "Access history (total: %{amount})"
@@ -2788,6 +2793,12 @@ en_US:
       last_five: "Here are listed only the last five accesses"
       f: 'No'
       t: 'Yes'
+      equivalency: (Is a equivalency)
+      equivalent: "<b>This activty is equivalent to the following main activity:</b><br/> %{name}"
+      equalities: '(See equalities)'
+      equalities_list: 'This activity has the following equalities:'
+      no_equalities: 'This activty has no equality'
+      participants: '(See participants)'
     situation:
       not_started: Not started
       to_answer: To answer
@@ -2823,8 +2834,10 @@ en_US:
     error:
       invalid_date: Invalid date.
       situation: It's not possible to evaluate yet. Activity haven't started or student haven't sent anything yet.
-      situation2: It's not possible to evaluate yet. Activity haven't started or student haven't sent anything yet or student is without a group.
+      situation2: It's not possible to see yet. Activity haven't started or student haven't sent anything yet or student is without a group.
       not_possible: It's not possible to access this page.
+    pdf:
+      time: "This report was generated at %{time}"
   lesson_notes:
     error:
       general_message: Can't do action
@@ -2904,6 +2917,7 @@ en_US:
     status: Status
     none: No registered test
     restrict: student in test content not allowed
+    percentage: "<b>%{percent}% of exam was made</b>"
     list:
       new_exam: New Exam
       edit_exam: Edit Exam
@@ -3426,5 +3440,6 @@ en_US:
       offer: can't be defined. Offer is no longer active.
       opened: can't be defined. Tool hasn't started yet.
       group: must be from the same group and activity than this evaluation.
+      not_participant: can't be defined. Student is not a participant of this Chat Room.
     success:
       evaluated: Student successfully evaluated.

@@ -1,0 +1,6 @@
+- if @participants.blank?
+  %b= t('chat_rooms.index.no_participants')
+- else
+  %b= t('chat_rooms.index.participants')
+  - @participants.each do |p|
+    %div= p.info(:name)
