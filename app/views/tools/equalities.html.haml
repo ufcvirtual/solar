@@ -1,0 +1,6 @@
+- if @equalities.blank?
+  %b= t('scores.info.no_equalities')
+- else
+  %b= t('scores.info.equalities_list')
+  - @equalities.each do |tool|
+    %div= (tool.respond_to?(:name) ? tool.name : tool.title)
