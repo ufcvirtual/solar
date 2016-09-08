@@ -110,8 +110,10 @@ function delete_post(button) {
         $(this).remove();
       });
     },
-    error: function(obj, status) {
-      // tratamento de erro ainda nao feito
+    error: function(data) {
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
     }
   });
 }

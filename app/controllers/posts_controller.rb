@@ -20,7 +20,7 @@ class PostsController < ApplicationController
       @academic_allocation = AcademicAllocation.where(academic_tool_id: @discussion.id, academic_tool_type: 'Discussion', allocation_tag_id: [active_tab[:url][:allocation_tag_id], AllocationTag.find_by_offer_id(active_tab[:url][:id]).id]).first
       authorize! :index, Discussion, { on: [@allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.pluck(:id)], read: true }
 
-      @researcher = current_user.is_researcher?(AllocationTag.find(@allocation_tags).related)
+      @researcher = current_user.is_researcher?(AllocationTag.where(id: @allocation_tags).map(&:related).flatten.uniq)
       @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id], { all: true }).map(&:id)
 
       @posts = []
@@ -67,7 +67,7 @@ class PostsController < ApplicationController
       @discussion = Discussion.find(params[:discussion_id])
 
       @allocation_tags = AllocationTag.find(at = active_tab[:url][:allocation_tag_id]).related
-      raise CanCan::AccessDenied if params[:user_id] != current_user.id && !AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
+      raise CanCan::AccessDenied if params[:user_id].to_i != current_user.id && !AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
 
       @posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id).order('updated_at DESC')
 
@@ -98,14 +98,14 @@ class PostsController < ApplicationController
     if @post.update_attributes(content: params[:discussion_post][:content])
       render json: {success: true, post_id: @post.id, parent_id: @post.parent_id}
     else
-      render json: @post.errors.full_messages, status: :unprocessable_entity
+      render json: { alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
     end
   end
 
   ## GET /discussions/:id/posts/1
   def show
     post = Post.find(params[:id])
-    post = Post.find(post.grandparent(level = 1).first["grandparent_id"].to_i) if params[:grandparent] == "true"
+    post = post.grandparent(level = 1) if params[:grandparent] == "true"
 
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
     can_interact = post.discussion.user_can_interact?(current_user.id)
@@ -123,6 +123,8 @@ class PostsController < ApplicationController
     @post.destroy
 
     render json: {result: :ok}
+  rescue => error
+    render json: { alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
   end
 
   private
