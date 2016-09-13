@@ -73,7 +73,7 @@
             %td.center
               %div= l(webconference.start_date.to_date)
               %div= [l(webconference.start_hour.to_datetime, format: :today), l(webconference.end_hour.to_datetime, format: :today)].join(' - ')
-            %td.center{ class: @online ? "assignment_#{webconference.situation}" : "assignment_not_started"}= (@online ? webconference.situation : t(:unavailable, scope: [:webconferences, :list]))
+            %td.center{ class: @online ? "assignment_#{webconference.situation}" : "assignment_not_started"}= (@online ? t(webconference.situation, scope: [:scores, :situation]) : t(:unavailable, scope: [:webconferences, :list]))
             %td.center= webconference.meeting_info(current_user, webconference.at_id, @meetings)
             %td.center{ class: "#{webconference.situation == t('webconferences.list.record_available') ? '' : 'disabled'}", :'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference, at_id: webconference.at_id), class: 'record'
             %td.center= t(webconference.evaluative, scope: [:scores, :info])

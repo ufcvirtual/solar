@@ -35,9 +35,15 @@ function list_access(obj){
 }
 
 $(function(){
-  $(".expand, .compress").click(function(){
-    $(this).parents('div:first').hide();
-    $($(this).parents('div:first').siblings()[0]).show();
+  $(".enunciation_more").click(function(){
+    $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "none");
+    $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "block");
+    return false;
+  });
+  $(".enunciation_less").click(function(){
+    $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "block");
+    $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "none");
+    return false;
   });
 
   $(".link_new_webconference").not(".disabled").call_fancybox();

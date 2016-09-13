@@ -72,28 +72,42 @@ module Bbb
   end
 
   def bbb_prepare
-    @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
-    server  = @config['servers'][@config['servers'].keys.first]
-    debug   = @config['debug']
-    BigBlueButton::BigBlueButtonApi.new(server['url'], server['salt'], server['version'].to_s, debug)
+    Timeout::timeout(5) do
+      @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
+      server  = @config['servers'][@config['servers'].keys.first]
+      debug   = @config['debug']
+      BigBlueButton::BigBlueButtonApi.new(server['url'], server['salt'], server['version'].to_s, debug)
+    end
+  rescue
+    false
   end
 
   def self.bbb_prepare
-    @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
-    server  = @config['servers'][@config['servers'].keys.first]
-    debug   = @config['debug']
-    BigBlueButton::BigBlueButtonApi.new(server['url'], server['salt'], server['version'].to_s, debug)
+    Timeout::timeout(5) do
+      @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
+      server  = @config['servers'][@config['servers'].keys.first]
+      debug   = @config['debug']
+      BigBlueButton::BigBlueButtonApi.new(server['url'], server['salt'], server['version'].to_s, debug)
+    end
+  rescue
+    false
   end
 
   def bbb_all_recordings(api = nil)
     api = bbb_prepare if api.nil?
+    raise "offline"   if api.nil?
     response = api.get_recordings
     response[:recordings]
+  rescue => error
+    return []
   end
 
   def get_meetings(api = nil)
     api = bbb_prepare if api.nil?
+    raise "offline"   if api.nil?
     api.get_meetings[:meetings].collect{|m| m[:meetingID]}
+  rescue => error
+    return []
   end
 
   def status(at_id = nil)
@@ -138,6 +152,8 @@ module Bbb
 
   def on_going?
     Time.now.between?(initial_time, initial_time+duration.minutes)
+  rescue
+    (opened == 't' && closed == 'f')
   end
 
   def is_over?
@@ -169,7 +185,7 @@ module Bbb
     @api       = bbb_prepare
     meetings   = meetings || @api.get_meetings[:meetings].collect{|m| m[:meetingID]}
     raise nil unless !meetings.nil? && meetings.include?(meeting_id)
-    response   = @api.get_meeting_info(meeting_id, Digest::MD5.hexdigest(title+meeting_id))
+    response   = @api.get_meeting_info(meeting_id, Digest::MD5.hexdigest((title rescue name)+meeting_id))
     response[:participantCount]
   rescue
     0

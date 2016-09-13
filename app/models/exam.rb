@@ -243,7 +243,7 @@ class Exam < Event
         .joins('LEFT JOIN exam_questions ON exam_questions.exam_id = exams.id')
         .joins("LEFT JOIN questions ON exam_questions.question_id = questions.id AND questions.status = 't'")
         .where(academic_allocations: { allocation_tag_id: ats })
-        .select('exams.*, COUNT(questions.id) AS questions_count')
+        .select('exams.*, COUNT(DISTINCT questions.id) AS questions_count')
         .group('exams.id')
         .uniq('exams.id')
   end

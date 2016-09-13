@@ -77,30 +77,29 @@ class Webconference < ActiveRecord::Base
     ((shared_between_groups || at_id.nil?) ? (allocation_tags.map{ |at| at.is_student_or_responsible?(user_id) }.include?(true)) : AllocationTag.find(at_id).is_student_or_responsible?(user_id))
   end
 
-  def location(id = nil)
-    groups_codes = groups.map(&:code).join(', ') unless shared_between_groups || groups.empty?
-    offer        = groups.first.try(:offer) || offers.first
-    [offer.allocation_tag.info, groups_codes].compact.join(' - ')
-  rescue
+  def location
+    if shared_between_groups
+      offer = offers.first
+      offer = groups.first.offer if offer.blank?
+      offers.first.allocation_tag.info
+    else
+      at = AllocationTag.find(at_id)
+      at.info  
+    end
+  rescue 
     web = Webconference.find(id)
-    web.location
+    offer = web.offers.first
+    offer = web.groups.first.offer if offer.blank?
+    offer.allocation_tag.info
   end
 
   def groups_codes
-    groups.map(&:code) unless groups.empty?
-  end
-
-  def offer_info
-    at = AllocationTag.find(allocation_tag_id)
-
-    (groups.first.try(:offer) || offers.first).allocation_tag.info 
-  rescue 
-    at.info
+    groups.map(&:code).join(', ') unless groups.empty?
   end
 
   def bbb_join(user, at_id = nil)
     meeting_id   = get_mettingID(at_id)
-    meeting_name = [(title rescue name), offer_info].join(' - ').truncate(100)
+    meeting_name = [(title rescue name), location].join(' - ').truncate(100)
 
     options = {
       moderatorPW: Digest::MD5.hexdigest((title rescue name)+meeting_id),

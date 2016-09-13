@@ -110,7 +110,7 @@
   color: #CC0033;
 }
 
-.assignment_sent, .assignment_sent a, .assignment_corrected a, .assignment_finished, .assignment_finish,
+.assignment_sent, .assignment_sent a, .assignment_corrected a, .assignment_finished, .assignment_finish, .assignment_record_available, .assignment_processing,
 td.assignment_as a {
   color: #2900c2;
 }
@@ -119,12 +119,11 @@ td.assignment_as a {
   color: #2900c2;
 }
 
-.assignment_not_sent, .assignment_not_sent a, .assignment_record_available,
-.expired, .assignment_closed {
+.assignment_not_sent, .assignment_not_sent a, .expired, .assignment_closed {
   color: #e12227;
 }
 
-.assignment_not_started, .assignment_not_started a {
+.assignment_not_started, .assignment_not_started a, .assignment_scheduled {
   color: #787878;
 }
 

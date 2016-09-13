@@ -21,7 +21,6 @@ class AcademicAllocation < ActiveRecord::Base
   before_save :verify_association_with_allocation_tag
 
   before_destroy :move_lessons_to_default, if: :lesson_module?
-  before_destroy :remove_record, if: :webconference?
 
   before_validation :verify_uniqueness
 
@@ -173,11 +172,6 @@ class AcademicAllocation < ActiveRecord::Base
     def move_lessons_to_default
       lesson_module = LessonModule.joins(:academic_allocations).where({is_default: true, academic_allocations: {allocation_tag_id: allocation_tag_id}})
       academic_tool.lessons.update_all(lesson_module_id: lesson_module) unless lesson_module.empty?
-    end
-
-    # Metodos destidados a Webconference
-    def remove_record
-      Webconference.remove_record([self]) unless Webconference.find(self.academic_tool_id).shared_between_groups
     end
 
     def get_curriculum_unit

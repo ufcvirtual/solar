@@ -23,7 +23,6 @@ class WebconferencesController < ApplicationController
     @meetings       = @online ? get_meetings(api) : []
     @user = current_user
     @is_student = @user.is_student?([at])
-    #@webconferences = Score.list_tool(@user.id, at, 'webconferences', false, false, true)
     @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true), {asc: true}, (@can_see_access ? nil : current_user.id))
   end
 
@@ -118,7 +117,7 @@ class WebconferencesController < ApplicationController
     @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false }).paginate(page: params[:page])
     @online         = bbb_online?
     @can_see_access = can? :list_access, Webconference, { on: ats, accepts_general_profile: true }
-    @meetings       = get_meetings
+    @meetings       = @online ? get_meetings : []
   end
 
   # DELETE /webconferences/remove_record/1
