@@ -26,9 +26,13 @@
         = render partial: 'questions/search', locals: { path: search_questions_path(verify_privacy: true) }
       %span.filter{ class: "#{@exam_id.zero? ? '' : 'invisible'}" }
         = render partial: 'exam_questions/import/filter', locals: { types: @types }
-      .questions_content.questions_import
-      %span.add_lesson.0{ class: "#{@exam_id.zero? ? 'invisible' : ''}" }
-        = link_to_function t('.add'), 'add_questions(0)', class: 'btn btn_main', alt: t('.add')
+      .questions_content.questions_import{ :class => "invisible" }
+    .footer
+      .left_buttons
+        %span.add_lesson.1{ class: "#{@exam_id.zero? ? '' : 'invisible'}" }
+          = link_to_function t('.add'), 'add_questions(1)', class: 'btn btn_main', alt: t('.add')
+        %span.add_lesson.0{ class: "#{@exam_id.zero? ? 'invisible' : ''}" }
+          = link_to_function t('.add'), 'add_questions(0)', class: 'btn btn_main', alt: t('.add')
       .right_buttons
         = link_to_function t('.conclude'), 'go_to_conclude()', class: 'btn btn_main conclude', alt: t('.conclude')
 
@@ -58,6 +62,7 @@
     $('.step-preview').hide('slide', { direction: 'left' }, 500);
     $('.step-conclude').hide('slide', { direction: 'left' }, 500);
     $('.step-list').show('slide', { direction: 'left' }, 500);
+    $('.footer').show('slide', { direction: 'left' }, 500);
     $('#steps li:first').addClass('active');
     $('#steps li:first .dot').addClass('active');
     $('#steps li:last').removeClass('active');
@@ -108,6 +113,7 @@
 
   function go_to_conclude(){
     $('.step-list').hide('slide', { direction: 'left' }, 500);
+    $('.footer').hide('slide', { direction: 'left' }, 500);
     $('.step-conclude').show('slide', { direction: 'left' }, 500);
     $('#steps li:first').removeClass('active');
     $('#steps li:first .dot').removeClass('active');
@@ -132,7 +138,9 @@
     $('#search_method_0').click(function(){
       $('.import_something.questions .search').removeClass('invisible');
       $('.import_something.questions .filter').addClass('invisible');
+      $('.questions_content:last').removeClass('invisible');
       $('.add_lesson.0').removeClass('invisible');
+      $('.add_lesson.1').addClass('invisible');
     });
 
     $('#search_method_1').click(function(){
@@ -140,6 +148,8 @@
       $('.import_something.questions .filter').removeClass('invisible');
       $('.questions_content:last').empty();
       $('.add_lesson.0').addClass('invisible');
+      $('.add_lesson.1').removeClass('invisible');
+      $('.questions_content:last').addClass('invisible');
     });
 
     $('#search_questions').click(function(){
@@ -153,6 +163,7 @@
         }
       }, function(data){
         $('.questions_content:last').html(data);
+        $('.questions_content:last').removeClass('invisible');
       }).error(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")

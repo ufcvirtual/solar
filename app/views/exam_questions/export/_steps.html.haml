@@ -20,6 +20,10 @@
     .step-list
       %span.filter
         = render partial: 'exam_questions/export/filter', locals: { types: @types }
+    .footer
+      .left_buttons
+        %span.add_lesson
+          = link_to_function t('.add'), 'add_exams()', class: 'btn btn_main', alt: t('.add')
       .right_buttons
         = link_to_function t('.conclude'), 'go_to_conclude()', class: 'btn btn_main conclude', alt: t('.conclude')
     .step-conclude
@@ -65,6 +69,7 @@
 
   function go_to_conclude(){
     $('.step-list').hide('slide', { direction: 'left' }, 500);
+    $('.footer').hide('slide', { direction: 'left' }, 500);
     $('.step-conclude').show('slide', { direction: 'left' }, 500);
     $('#steps li:first').removeClass('active');
     $('#steps li:first .dot').removeClass('active');
@@ -87,6 +92,7 @@
   function back_to_list(){
     $('.step-conclude').hide('slide', { direction: 'left' }, 500);
     $('.step-list').show('slide', { direction: 'left' }, 500);
+    $('.footer').show('slide', { direction: 'left' }, 500);
     $('#steps li:first').addClass('active');
     $('#steps li:first .dot').addClass('active');
     $('#steps li:last').removeClass('active');
