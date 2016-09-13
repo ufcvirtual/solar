@@ -31,7 +31,7 @@ class Webconference < ActiveRecord::Base
 
     select = "users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, eq_web.title AS eq_name, webconferences.initial_time || '' AS start_hour, webconferences.initial_time + webconferences.duration* interval '1 min' || '' AS end_hour, webconferences.initial_time AS start_date, CASE
       WHEN acu.grade IS NOT NULL OR acu.working_hours IS NOT NULL THEN 'evaluated'
-      WHEN (acu.status = 1 OR (acu.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
+      WHEN (acu.status = 1 OR (acu.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.count > 0))) THEN 'sent'
       when NOW()>webconferences.initial_time AND NOW()<(webconferences.initial_time + webconferences.duration* interval '1 min') then 'in_progress'
       when NOW() < webconferences.initial_time then 'scheduled'
       when webconferences.is_recorded AND (NOW()>webconferences.initial_time + webconferences.duration* interval '1 min' + interval '10 mins') then'record_available' 
@@ -44,7 +44,11 @@ class Webconference < ActiveRecord::Base
 
   webconferences = Webconference.joins(:moderator)
                   .joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'")
-                  .joins("LEFT JOIN log_actions ON academic_allocations.id = log_actions.academic_allocation_id AND log_actions.log_type = 7 AND log_actions.user_id = #{user_id.blank? ? 0 : user_id}")
+                  .joins(" LEFT JOIN
+                    (SELECT count(log_actions.id), log_actions.academic_allocation_id FROM log_actions
+                      WHERE log_actions.log_type = 7 AND log_actions.user_id = #{user_id.blank? ? 0 : user_id}
+                      GROUP BY log_actions.academic_allocation_id ) log_actions ON academic_allocations.id = log_actions.academic_allocation_id
+                  ")
                   .joins("LEFT JOIN academic_allocation_users acu ON acu.academic_allocation_id = academic_allocations.id AND acu.user_id = #{user_id.blank? ? 0 : user_id}")
                   .joins("LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id")
                   .joins("LEFT JOIN webconferences eq_web ON eq_web.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'Webconference'")
