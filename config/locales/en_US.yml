@@ -3288,6 +3288,7 @@ en_US:
       list:
         add: Add to export list
       steps:
+        add: Add to export list
         title: Export questions
         choose: Choose
         conclude: Conclude

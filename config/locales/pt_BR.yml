@@ -3517,6 +3517,7 @@ pt_BR:
       list:
         add: Adicionar para lista de exportação
       steps:
+        add: Adicionar para lista de exportação
         title: Exportar questões
         choose: Escolher provas
         conclude: Finalizar
