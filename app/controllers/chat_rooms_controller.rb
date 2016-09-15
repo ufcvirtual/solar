@@ -22,8 +22,10 @@ class ChatRoomsController < ApplicationController
     @user = current_user
     @can_evaluate = can? :evaluate, ChatRoom, { on: @allocation_tag_id }
 
-    permited_profiles = current_user.profiles_with_access_on('list', 'chat_rooms', AllocationTag.find(@allocation_tag_id).related, true)
-    @alloc = current_user.allocations.where(profile_id: permited_profiles).first.id
+    ats = AllocationTag.find(@allocation_tag_id).related
+
+    permited_profiles = current_user.profiles_with_access_on('list', 'chat_rooms', ats, true)
+    @alloc = current_user.allocations.where(profile_id: permited_profiles, allocation_tag_id: ats, status: Allocation_Activated).first.id
     @responsible = ChatRoom.responsible?(@allocation_tag_id, current_user.id)
 
     @is_student = @user.is_student?([@allocation_tag_id])

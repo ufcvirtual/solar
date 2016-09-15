@@ -12,7 +12,7 @@
         %th.center.no_sort{style: "width:80px"}= t("assignments.list.comments")
     %tbody
       - assignments.each do |assignment|
-        - link    = student_assignment_path(assignment.academic_tool_id, student_id: assignment.user_id, group_id: assignment.group_id)
+        - link    = student_assignment_path(assignment.academic_tool_id, student_id: assignment.user_id || current_user.id, group_id: assignment.group_id)
         %tr.lines
           %td
             %div
