@@ -121,7 +121,7 @@ class Score # < ActiveRecord::Base
     JOIN chat_rooms ON academic_allocations.academic_tool_id = chat_rooms.id 
     JOIN schedules ON chat_rooms.schedule_id = schedules.id
     LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = users.id
-    LEFT JOIN chat_messages ON chat_messages.academic_allocation_id = academic_allocations.id AND (chat_messages.allocation_id = allocations.id OR chat_messages.user_id = users.id)
+    LEFT JOIN chat_messages ON chat_messages.academic_allocation_id = academic_allocations.id AND (chat_messages.allocation_id = allocations.id OR chat_messages.user_id = users.id) AND message_type = 1
     WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) #{wq})
 
     UNION (
@@ -286,7 +286,7 @@ class Score # < ActiveRecord::Base
             NULL AS type_tool,
             '' AS start_hour,
             '' AS end_hour,
-            (SELECT COUNT(id) FROM discussion_posts WHERE discussion_posts.academic_allocation_id = academic_allocations.id AND user_id = #{user_id}) AS count,
+            (SELECT COUNT(id) FROM discussion_posts WHERE discussion_posts.academic_allocation_id = academic_allocations.id AND user_id = #{user_id})::text AS count,
             (SELECT COUNT(id) FROM discussion_posts WHERE discussion_posts.academic_allocation_id = academic_allocations.id ) AS count_all,
             NULL as moderator,
             NULL as duration,
@@ -351,8 +351,8 @@ class Score # < ActiveRecord::Base
                 assignments.type_assignment::text as type_tool,
                 '' AS start_hour,
                 '' AS end_hour,
-                (select count(assignment_comments.id) FROM assignment_comments WHERE assignment_comments.academic_allocation_user_id = academic_allocation_users.id) as count,
-                0 as count_all,
+                NULL as count,
+                (select count(assignment_comments.id) FROM assignment_comments WHERE assignment_comments.academic_allocation_user_id = academic_allocation_users.id) AS count_all,
                 NULL as moderator,
                 NULL as duration,
                 CASE 
@@ -410,7 +410,7 @@ class Score # < ActiveRecord::Base
               chat_rooms.chat_type::text AS type_tool,
               chat_rooms.start_hour,
               chat_rooms.end_hour,
-              0 as count,
+              COALESCE(chat_messages.count, 0)::text as count,
               0 as count_all,
               NULL as moderator,
               NULL as duration,
@@ -426,7 +426,7 @@ class Score # < ActiveRecord::Base
               END AS closed,
               CASE 
                 #{evaluated_status}   
-                WHEN (#{sent_status} OR  academic_allocation_users.status = 1 OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'ChatRoom' AND chat_messages.id IS NOT NULL))) THEN 'sent'
+                WHEN (#{sent_status} OR  academic_allocation_users.status = 1 OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'ChatRoom' AND chat_messages.count > 0))) THEN 'sent'
                 WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time) THEN 'not_started'
                 WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (chat_rooms.start_hour IS NULL OR current_time>to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time ) AND (chat_rooms.end_hour IS NULL OR current_time<=to_timestamp(chat_rooms.end_hour, 'HH24:MI:SS')::time) THEN 'opened'
                 ELSE
@@ -437,7 +437,13 @@ class Score # < ActiveRecord::Base
             FROM chat_rooms, schedules, academic_allocations 
             LEFT JOIN allocations ON allocations.user_id = #{user_id} AND allocations.allocation_tag_id IN (#{ats})
             LEFT JOIN profiles ON profiles.id = allocations.profile_id
-            LEFT JOIN chat_messages ON chat_messages.academic_allocation_id = academic_allocations.id AND (chat_messages.allocation_id = allocations.id OR chat_messages.user_id = #{user_id})
+            LEFT JOIN(
+              SELECT COUNT(chat_messages.id), chat_messages.academic_allocation_id
+              FROM chat_messages
+              LEFT JOIN allocations ON allocations.user_id = #{user_id} AND allocations.allocation_tag_id IN (#{ats})
+              WHERE message_type = 1 AND (chat_messages.allocation_id = allocations.id OR chat_messages.user_id = #{user_id})
+              GROUP BY chat_messages.academic_allocation_id
+            ) chat_messages ON chat_messages.academic_allocation_id = academic_allocations.id
             LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}
             LEFT JOIN chat_participants ON chat_participants.academic_allocation_id = academic_allocations.id AND chat_participants.allocation_id = allocations.id
             LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id
@@ -465,7 +471,7 @@ class Score # < ActiveRecord::Base
             NULL AS type_tool,
             exams.start_hour,
             exams.end_hour,
-            0 as count,
+            NULL as count,
             0 as count_all,
             NULL as moderator,
             exams.duration::text,
@@ -522,7 +528,7 @@ class Score # < ActiveRecord::Base
             NULL AS type_tool,
             schedule_events.start_hour,
             schedule_events.end_hour,
-            0 as count,
+            NULL as count,
             0 as count_all,
             NULL as moderator,
             NULL as duration,
@@ -572,7 +578,7 @@ class Score # < ActiveRecord::Base
             webconferences.shared_between_groups::text AS type_tool,
             webconferences.initial_time || '' AS start_hour,
             webconferences.initial_time + webconferences.duration* interval '1 min' || '' AS end_hour,
-            0 as count,
+            (SELECT COUNT(log_actions.id) FROM log_actions WHERE log_actions.academic_allocation_id = academic_allocations.id AND log_actions.user_id = #{user_id})::text as count,
             0 as count_all,
             webconferences.user_id::text as moderator,
             webconferences.duration::text,

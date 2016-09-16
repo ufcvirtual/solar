@@ -1,17 +1,19 @@
 .user_messages
   %h1#lightBoxDialogTitle= t(".title", user: @user.name, chat_rooms: @chat_room.title)
-  .title-warning{style: 'max-width: 790px;'}= raw t('.evaluation_info')
+  .title-warning= raw t('.evaluation_info')
   - unless @messages.empty?
     %table.tb_list
       %thead
         %tr.lines
           %th= t(".message")
           %th.center= t(".date")
+          %th.center= t(".time")
       %tbody
         - @messages.each do |message|
           %tr.lines
             %td.profile= sanitize message.text
             %td.center= l(message.created_at.to_datetime, format: :normal)
+            %td.center= l(message.created_at.to_datetime, format: :clock_time)
 
     - if @academic_allocation.evaluative || @academic_allocation.frequency
       = simple_form_for :academic_allocation_user, url: evaluate_chat_room_path(@chat_room), html: { method: :put, id: 'academic_allocation_user_grade_form' } do |f|

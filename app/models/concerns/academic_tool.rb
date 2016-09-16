@@ -21,3 +21,4 @@ module AcademicTool
     end
 
 end
+

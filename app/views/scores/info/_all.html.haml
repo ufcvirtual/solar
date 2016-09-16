@@ -64,7 +64,7 @@
                   %td.center
                     %div{class: "assignment_#{tool.situation}"}= t(tool.situation, :scope => [:scores, :situation]) unless tool.situation.blank?
                   %td.center
-                    - if tool.academic_tool_type == 'Discussion'
+                    - unless tool.count.blank?
                       = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative')
                   %td.center
                     = tool.grade.blank? ? ' - ' : tool.grade.to_f
@@ -131,7 +131,7 @@
                   %td.center
                     %div{class: "assignment_#{tool.situation}"}= t(tool.situation, :scope => [:scores, :situation]) unless tool.situation.blank?
                   %td.center
-                    - if tool.academic_tool_type == 'Discussion'
+                    - unless tool.count.blank?
                       = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'frequency')
                   %td.center
                     = tool.working_hours.blank? ? ' - ' : tool.working_hours.to_i
@@ -196,7 +196,7 @@
                   %td.center
                     %div{class: "assignment_#{tool.situation}"}= t(tool.situation, :scope => [:scores, :situation]) unless tool.situation.blank?
                   %td.center
-                    - if tool.academic_tool_type == 'Discussion'
+                    - unless tool.count.blank?
                       = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative')
                   %td
                     - if ['Assignment', 'Exam'].include?(tool.academic_tool_type) && ((tool.academic_tool_type != 'Exam' && @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate)) || @can_evaluate.include?(tool.academic_tool_type.to_s.tableize => :calcule_grades))

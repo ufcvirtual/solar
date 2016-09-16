@@ -324,7 +324,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   # begin assignment stuff
 
   def users_count
-    has_group ? group_assignment.group_participants.count : 1
+    group_assignment.nil? ? 1 : group_assignment.group_participants.count
   end
 
   # end assignment stuff

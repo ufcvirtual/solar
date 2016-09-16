@@ -1,6 +1,6 @@
 %h1#lightBoxDialogTitle= t(".history", chat_name: @chat_room.title)
 - if (@evaluative || @frequency)
-  .title-warning{style: 'max-width: 790px;'}= raw t('chat_rooms.user_messages.evaluation_info')
+  .title-warning= raw t('chat_rooms.user_messages.evaluation_info')
 .chat_messages
   - unless @messages.empty?
     %table.tb_list

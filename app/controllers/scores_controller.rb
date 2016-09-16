@@ -193,7 +193,6 @@ class ScoresController < ApplicationController
       @tool_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'all', false, true) 
       @tool_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'all') 
     end
-
     render partial: "scores/info/"+params[:tool]
   end  
 

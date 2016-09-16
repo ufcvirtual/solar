@@ -57,7 +57,7 @@
             %span.activity_grade= assignment.grade || "-"
           %td.center   
             %span.activity_grade= assignment.working_hours || "-"  
-          %td.center= content_tag :i, nil, class: "icon-comment big #{assignment.count.to_i > 0 ? '' : 'empty'}"
+          %td.center= content_tag :i, nil, class: "icon-comment big #{assignment.count_all.to_i > 0 ? '' : 'empty'}"
 
 - else
   .text_none.empty_message= t(:itens_not_found)
