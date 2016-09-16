@@ -121,7 +121,7 @@ class Score # < ActiveRecord::Base
     JOIN chat_rooms ON academic_allocations.academic_tool_id = chat_rooms.id 
     JOIN schedules ON chat_rooms.schedule_id = schedules.id
     LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = users.id
-    LEFT JOIN chat_messages ON chat_messages.academic_allocation_id = academic_allocations.id AND (chat_messages.allocation_id = allocations.id OR chat_messages.user_id = users.id) AND message_type = 1
+    LEFT JOIN chat_messages ON chat_messages.academic_allocation_id = academic_allocations.id AND chat_messages.allocation_id = allocations.id AND message_type = 1
     WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) #{wq})
 
     UNION (
@@ -441,7 +441,7 @@ class Score # < ActiveRecord::Base
               SELECT COUNT(chat_messages.id), chat_messages.academic_allocation_id
               FROM chat_messages
               LEFT JOIN allocations ON allocations.user_id = #{user_id} AND allocations.allocation_tag_id IN (#{ats})
-              WHERE message_type = 1 AND (chat_messages.allocation_id = allocations.id OR chat_messages.user_id = #{user_id})
+              WHERE message_type = 1 AND chat_messages.allocation_id = allocations.id
               GROUP BY chat_messages.academic_allocation_id
             ) chat_messages ON chat_messages.academic_allocation_id = academic_allocations.id
             LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}

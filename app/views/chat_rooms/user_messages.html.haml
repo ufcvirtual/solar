@@ -1,6 +1,7 @@
 .user_messages
   %h1#lightBoxDialogTitle= t(".title", user: @user.name, chat_rooms: @chat_room.title)
-  .title-warning= raw t('.evaluation_info')
+  - if @academic_allocation.evaluative || @academic_allocation.frequency
+    .title-warning= raw t('.evaluation_info')
   - unless @messages.empty?
     %table.tb_list
       %thead
