@@ -89,14 +89,13 @@
                 - else
                   - status = 'not_started'
                 %div{class: "assignment_#{status}"}= I18n.t("scores.situation.#{status}")
-                /%div{class: "#{status}"}= I18n.t(situation, count: Exam.percent(exam.count_all, exam.count), :scope => [:exams, :situation])
             %td.center= t(exam.evaluative, scope: [:scores, :info])
             %td.center= t(exam.frequency, scope: [:scores, :info])
             - if @can_open
               %td.center
                 %span.activity_grade= exam.grade || bt_correction || "-"
               %td.center 
-                %span.activity_grade= exam.working_hours || bt_correction || "-"
+                %span.activity_grade= exam.working_hours
             - elsif @can_evaluate
               %td.center
                 - if exam.closed == 't'

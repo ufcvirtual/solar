@@ -17,7 +17,7 @@
           = label_tag :draft_exam, t('exams.list.draft_exam')
         - hours = exam.start_hour.nil? ? '' : [exam.start_hour, exam.end_hour].join(t('exams.list.to'))
         = label_tag  t('exams.list.period', dstart: l(exam.schedule.start_date, format: :normal), dend: l(exam.schedule.end_date, format: :normal) , hours: hours)
-        = label_tag t('exams.list.amount_questions', added: exam.questions_count, amount: exam.number_questions)
+        = label_tag t('exams.list.amount_questions', added: count, amount: exam.number_questions)
         - if show_buttons
           - if exam.status && exam.ended?
             = link_to_function (t('exams.list.calculate')), 'calcule_grade_exam(this)', class: "btn btn_main calculate", :'data-url' => calcule_grade_exam_path(exam, allocation_tags_ids: @allocation_tags_ids)

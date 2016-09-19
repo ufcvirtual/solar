@@ -32,6 +32,7 @@ class QuestionsController < ApplicationController
     authorize! :create, Question
     @question         = Question.new question_params
     @question.user_id = current_user.id
+    @can_see_preview = true
 
     if @question.save
       render partial: 'question', locals: { question: @question }
