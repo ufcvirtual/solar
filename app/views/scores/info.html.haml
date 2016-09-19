@@ -37,10 +37,10 @@
       .info_right
         = label_tag t(:reports, scope: [:scores, :info]) 
         .links
-          = link_to t(:all, scope: [:scores, :info]), reports_pdf_scores_path(tool: true, user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
-          = link_to t(:evaluative, scope: [:scores, :info]), reports_pdf_scores_path(evaluative: true, user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
-          = link_to t(:frequency, scope: [:scores, :info]), reports_pdf_scores_path(frequency: true, user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
-          = link_to t(:not_evaluative, scope: [:scores, :info]), reports_pdf_scores_path(user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
+          = link_to t(:all, scope: [:scores, :info]), reports_pdf_scores_path(tool: true, user_id: @user.id, format: "pdf", type: '',), :target => "_blank", class: "btn"
+          = link_to t(:evaluative, scope: [:scores, :info]), reports_pdf_scores_path(evaluative: true, type: '_evaluative', user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
+          = link_to t(:frequency, scope: [:scores, :info]), reports_pdf_scores_path(frequency: true, user_id: @user.id, type: '_frequency', format: "pdf"), :target => "_blank", class: "btn"
+          = link_to t(:not_evaluative, scope: [:scores, :info]), reports_pdf_scores_path(user_id: @user.id, type: '_not_evaluative', format: "pdf"), :target => "_blank", class: "btn"
 
   - if @is_student
     #list_tools

@@ -3029,6 +3029,15 @@ pt_BR:
       equalities_list: 'Esta atividade tem as seguintes equivalências:'
       no_equalities: 'Esta atividade não possui equivalências.'
       participants: '(Ver participantes)'
+    reports:
+      general_evaluative: Relatório Acompanhamento - Atividades Avaliativas
+      general_frequency: Relatório Acompanhamento - Atividades de Frequência
+      general_: Relatório Acompanhamento - Atividades Não Avaliativas
+      general: Relatório Acompanhamento - Visão Geral
+      student_evaluative: Relatório %{name} - Atividades Avaliativas
+      student_frequency: Relatório %{name} - Atividades de Frequência
+      student_not_evaluative: Relatório %{name} - Atividades Não Avaliativas
+      student_all: Relatório %{name} - Todas
     situation:
       not_started: Não iniciado
       to_answer: A responder

@@ -2827,6 +2827,15 @@ en_US:
       finish: "Finish"
       processing: "Processing"
       record_available: Finished with record
+    reports:
+      general_evaluative: Scores Report - Evaluative Activities
+      general_frequency: Scores Report - Frequency Activities
+      general_: Scores Report - Not Evaluative Activities
+      general: Scores Report - General View
+      student_evaluative: "%{name} Report - Evaluative Activities"
+      student_frequency: "%{name} Report - Frequency Activities"
+      student_not_evaluative: "%{name} Report - Not Evaluative Activities"
+      student_all: "%{name} Report - All"
     access:
       date: Date
       time: Time

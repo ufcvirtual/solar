@@ -59,7 +59,7 @@
                         %td.not_sent= t("scores.index.not_sent")
                       - else
                         %td{class: "#{score.first.situation} #{ac.tool_type} #{score.first.new_after_evaluation == 't' ? 'new_after_evaluation' : ''}" }
-                          = (score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}")
+                          = (@score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}")
                           
 %div.legend
   = t("scores.index.subtitle")

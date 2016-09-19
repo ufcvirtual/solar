@@ -62,7 +62,7 @@ class ScoresController < ApplicationController
     if params[:report]
       @users = Score.get_users(ats)
       @ats = AllocationTag.find(@allocation_tag_id)
-      @scores = Score.evaluative_frequency(ats, params[:type], @users.pluck(:id))
+      @scores = Score.evaluative_frequency(ats, params[:type])
 
       @examidx          = params[:Examidx]          unless params[:Examidx].blank?
       @assignmentidx    = params[:Assignmentidx]    unless params[:Assignmentidx].blank?
@@ -71,14 +71,12 @@ class ScoresController < ApplicationController
       @chatRoomidx      = params[:ChatRoomidx]      unless params[:ChatRoomidx].blank?
       @webconferenceidx = params[:Webconferenceidx] unless params[:Webconferenceidx].blank?
 
-      respond_to do |format|
-        format.html do
-          render pdf:         'evaluatives_frequency',
-                 orientation: 'Landscape',
-                 locals: {score_type: params[:type]},
-                 layout: false
-        end   
-      end 
+      render pdf:         t("scores.reports.general_#{@score_type}"),
+             orientation: 'Landscape',
+             template: 'scores/evaluatives_frequency.html.haml',
+             layout: false,
+             disposition: 'attachment'
+
     else
       @users = Score.get_users(ats).paginate(page: params[:page], per_page: 20)
       @scores = Score.evaluative_frequency(ats, params[:type])
@@ -104,13 +102,13 @@ class ScoresController < ApplicationController
     if params[:report]
       @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true) 
       @ats = AllocationTag.find(@allocation_tag_id)
-      respond_to do |format|
-        format.html do
-          render pdf:         'general',
-                 orientation: 'Landscape',
-                 layout: false
-        end
-      end 
+
+      render pdf:         t("scores.reports.general"),
+             orientation: 'Landscape',
+             template: 'scores/general.html.haml',
+             layout: false,
+             disposition: 'attachment'
+  
     else
       @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(:page => params[:page], :per_page => 20)
       respond_to do |format|
@@ -231,7 +229,11 @@ class ScoresController < ApplicationController
     @tool = Score.list_tool(@user.id, allocation_tag_id, 'all', evaluative, frequency, (@type == 'all'))
     @access, @public_files, @access_count = Score.informations(@user.id, allocation_tag_id)
    
-    render layout: false
+    render pdf:         t("scores.reports.student_#{@type}", name: @user.name),
+           orientation: 'Landscape',
+           template: 'scores/reports_pdf.html.haml',
+           layout: false,
+           disposition: 'attachment'
   end  
 
   def user_info

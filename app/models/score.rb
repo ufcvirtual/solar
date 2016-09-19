@@ -39,7 +39,7 @@ class Score # < ActiveRecord::Base
     User.find_by_sql prepare_query
   end
 
-  def self.evaluative_frequency(ats, type_score='evaluative', users_ids=[])
+  def self.evaluative_frequency(ats, type_score='evaluative')
     evaluated_status = if type_score == 'frequency'
       "WHEN academic_allocation_users.working_hours IS NOT NULL THEN 'evaluated'"
     else
