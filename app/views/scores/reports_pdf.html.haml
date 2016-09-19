@@ -38,6 +38,7 @@
               %th{style: "width: 30%;"}= t(:title, scope: [:scores, :info])
               %th.center.date{style: "width: 25%;"}= t(:date_range, scope: [:scores, :info])
               %th{style: "width: 22%;"}= t(:situation, :scope => [:scores, :info])
+              %th.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
               - if @type == 'evaluative' || @type == 'all'
                 %th{style: "width: 15%;"}= t(:grade, scope: [:scores, :info]) 
               - if @type == 'frequency' || @type == 'all'
@@ -58,6 +59,9 @@
                       %div= [(tool.start_hour), (tool.end_hour)].join(' - ') unless tool.start_hour.blank?
                   %td.center
                     %div{class: "assignment_#{tool.situation}"}= t(tool.situation, :scope => [:scores, :situation]) unless tool.situation.blank?
+                  %td.center
+                    - unless tool.count.blank?
+                      = tool.count
       
                   - if @type == 'evaluative' || @type == 'all'
                     %td.left
