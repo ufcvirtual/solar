@@ -2,10 +2,10 @@
   - if @exams.any?
     = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
     - @exams.each do |exam|
-      - questions = exam.get_questions(current_user.id)
+      - questions = exam.get_questions(current_user.id).uniq
 
       .block_wrapper.module{ id: "exam_#{exam.id}" }
-        = render partial: 'exams/list/info', locals: { exam: exam, has_group: exam.groups.any?, show_buttons: false, ckb: false, tags: { groups: exam.groups, tool: exam, all_groups: nil, paths: nil } }
+        = render partial: 'exams/list/info', locals: { exam: exam, count: questions.size, has_group: exam.groups.any?, show_buttons: false, ckb: false, tags: { groups: exam.groups, tool: exam, all_groups: nil, paths: nil } }
         %div{ class: "list_questions_exam_#{exam.id}" }
           - if questions.any?
             = render partial: 'exam_questions/questions', locals: { questions: questions, exam: exam, hide_columns: false }
