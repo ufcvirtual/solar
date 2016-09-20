@@ -3194,7 +3194,8 @@ en_US:
         remove_image: Delete Image
         info_remove_image: Image successfully removed
         confirm_image_removal: 'Are you sure? Even if you cancel this form, this image will be deleted and will not be recovered.'
-        
+        empty: "The item %{count} is blank, you want to delete?"
+
       info:
         continue: Continue
         add_images: Add more images

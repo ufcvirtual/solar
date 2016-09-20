@@ -3424,6 +3424,7 @@ pt_BR:
         remove_image: Remover Image
         info_remove_image: Imagem removida com sucesso
         confirm_image_removal: 'Você tem certeza? Mesmo que este formulário seja cancelado, a imagem será removida e não poderá ser recuperada.'
+        empty: "O item %{count} está em branco, deseja excluí-lo?"
 
       info:
         continue: Prosseguir
