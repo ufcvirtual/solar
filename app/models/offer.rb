@@ -145,31 +145,46 @@ class Offer < ActiveRecord::Base
   # More accesses on the last 3 weeks > Have groups > Offer name ASC
   ##
   def self.offers_info_from_user(user)
-    allocations_info = Offer.currents({ object: true, user_id: user.id, profiles: user.profiles_with_access_on('show', 'curriculum_units', nil, true) }).collect{ |offer|
-      at  = offer.allocation_tag
-      ats = at.related
-      uc  = offer.curriculum_unit
-      course = offer.course
-        {
-          id: offer.id,
-          at: at.id,
-          related: ats,
-          has_groups: offer.groups.where(status: true).any?,
-          uc: uc,
-          course: course,
-          semester_name: offer.semester.name,
-          profiles: Allocation.where(allocation_tag_id: ats, user_id: user.id).pluck(:profile_id).uniq.join(",")
-        }
-    }.flatten
-
-    allocations_info.sort_by! do |allocation|
-      allocation[:name]
-      allocation[:has_groups]
-      -(LogAccess.count(:id, conditions: {log_type: LogAccess::TYPE[:group_access], user_id: user.id,
-        allocation_tag_id: allocation[:related], created_at: 3.week.ago..Time.now}))
-    end
-
-    return allocations_info
+    Offer.find_by_sql <<-SQL
+      WITH profiles AS (
+        SELECT profile_id
+        FROM resources
+        JOIN permissions_resources ON resources.id = permissions_resources.resource_id 
+        WHERE resources.action = 'show' AND resources.controller = 'curriculum_units'
+      ), logs AS (
+        SELECT DISTINCT id
+        FROM log_accesses
+        WHERE log_accesses.user_id = #{user.id} 
+        AND log_type = #{LogAccess::TYPE[:group_access]}
+        AND log_accesses.created_at >= (current_date - interval '3 weeks')
+      )
+      SELECT DISTINCT rt.offer_at_id  AS at_id,
+             rt.offer_id              AS offer_id,
+             semesters.name           AS s_name, 
+             courses.code             AS c_code, 
+             courses.name             AS c_name, 
+             curriculum_units.code    AS uc_code, 
+             curriculum_units.name    AS uc_name,
+             curriculum_unit_types.id AS uc_type_id,
+             COUNT(DISTINCT log_accesses.id) AS accesses,
+             curriculum_unit_types.description AS uc_type,
+             curriculum_unit_types.icon_name   AS uc_type_icon,
+             array_agg('X' || allocations.profile_id || 'X') AS profiles
+      FROM related_taggables rt
+           JOIN groups                ON groups.id = rt.group_id
+      LEFT JOIN offers                ON offers.id = rt.offer_id
+      LEFT JOIN curriculum_units      ON curriculum_units.id = rt.curriculum_unit_id
+      LEFT JOIN curriculum_unit_types ON curriculum_unit_types.id = rt.curriculum_unit_type_id
+      LEFT JOIN courses               ON courses.id = rt.course_id
+      LEFT JOIN semesters             ON semesters.id = rt.semester_id
+      LEFT JOIN schedules             ON schedules.id = rt.offer_schedule_id
+      LEFT JOIN log_accesses          ON log_accesses.allocation_tag_id = rt.group_at_id AND log_accesses.id IN (select id from logs)
+      JOIN allocations                ON (allocations.allocation_tag_id = rt.group_at_id OR allocations.allocation_tag_id = rt.offer_at_id OR allocations.allocation_tag_id = rt.course_at_id OR allocations.allocation_tag_id = rt.curriculum_unit_at_id OR allocations.allocation_tag_id = rt.curriculum_unit_type_at_id) AND allocations.user_id = #{user.id} AND allocations.status = #{Allocation_Activated} AND allocations.profile_id IN (select profile_id from profiles)
+      WHERE
+        group_status = true AND groups.id IS NOT NULL AND current_date <= schedules.end_date AND allocations.status = 1
+        GROUP BY offer_at_id, rt.offer_id, semesters.name, courses.code, courses.name, curriculum_units.code,curriculum_units.name, curriculum_unit_types.description, curriculum_unit_types.id, curriculum_unit_types.icon_name
+        ORDER BY accesses DESC, s_name DESC, uc_name ASC;
+    SQL
   end
 
   # offers.*, enroll_start_date, enroll_end_date

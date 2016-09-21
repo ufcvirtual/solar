@@ -25,25 +25,24 @@
             - unless @offers.empty?
               - @offers.each do |offer|
 
-                - link = add_tab_path(id: offer[:id], context: Context_Curriculum_Unit, allocation_tag_id: offer[:at])
-                - livre = offer[:uc].try(:curriculum_unit_type_id) == 3
+                - link = add_tab_path(id: offer.offer_id, context: Context_Curriculum_Unit, allocation_tag_id: offer.at_id)
+                - livre = offer.uc_type_id == 3
 
-                %tr.lines.offer{'data-tab-id' => offer[:id], 'data-tab-link' => link, 'data-has-groups' => offer[:has_groups].to_s}
+                %tr.lines.offer{'data-tab-id' => offer[:id], 'data-tab-link' => link}
 
-                  - uc_description = offer[:uc].try(:curriculum_unit_type).try(:description)
-                  %td.type{'data-tooltip' => uc_description}= image_tag(offer[:uc].try(:curriculum_unit_type).try(:icon_name))
-                  %td{style: "display: none"}= uc_description
+                  %td.type{'data-tooltip' => offer.uc_type}= image_tag(offer.uc_type_icon)
+                  %td{style: "display: none"}= offer.uc_type
 
                   - if livre
                     %td.uc-code{style: "text-align: center"}= ' - '
                     %td.uc-name{style: "text-align: center"}= ' - '
                   - else
-                    %td.uc-code= offer[:uc].code rescue ' - '
-                    %td.uc-name= offer[:uc].name rescue ' - '
+                    %td.uc-code= offer.uc_code rescue ' - '
+                    %td.uc-name= offer.uc_name rescue ' - '
 
-                  %td.course= offer[:course].code_name rescue ' - '
-                  %td.semester= offer[:semester_name]
-                  %td.profiles{style: "display: none"}= offer[:profiles]
+                  %td.course= [offer.c_code, offer.c_name].join(' - ') rescue ' - '
+                  %td.semester= offer.s_name
+                  %td.profiles{style: "display: none"}= offer.profiles
 
               .block_content_text_list.text_none.empty_message.hide_message
                 = t(:my_solar_curriculum_without)
@@ -61,7 +60,7 @@
             = select_tag :type, options_for_select(@types.map{ |c| [c.description, c.description] }), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"1"
             = label_tag :profile, t(".profile"), class: "subtitle"
             - profiles = @user.profiles.where('allocations.allocation_tag_id IS NOT NULL')
-            = select_tag :profile, options_from_collection_for_select(profiles, "id", "name"), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"6"
+            = select_tag :profile, options_from_collection_for_select(profiles, "id_to_unique_search", "name"), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"6"
 
 = javascript_include_tag "tooltip"
 
@@ -76,10 +75,8 @@
       // limite de abas abertas atingido
       if ((count_tabs_open >= max_tabs_open) && ($('#mysolar_tabs_wrapper li[data-tab-id=' + $(this).data('tab-id') + ']').length < 1))
         flash_message("#{t(:curriculum_access_alert)}", 'warning');
-      else if ($(this).data('has-groups'))
-        window.location = $(this).data('tab-link');
       else
-        flash_message("#{t(:curriculum_access_without_groups)}", 'warning');
+        window.location = $(this).data('tab-link');
     });
 
     // refazer codigo do edx

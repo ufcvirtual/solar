@@ -40,6 +40,10 @@ class Profile < ActiveRecord::Base
     find_by_types(Profile_Type_Student).id
   end
 
+  def id_to_unique_search
+    'X'+id.to_s+'X'
+  end
+
   private
 
     def copy_from_template
