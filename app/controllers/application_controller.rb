@@ -135,8 +135,6 @@ class ApplicationController < ActionController::Base
       allocation_tag_id_group = (params[:selected_group] = allocation_tag.group_id).nil? ? RelatedTaggable.where('group_id IN (?)', current_user.groups(nil, Allocation_Activated, nil, nil, active_tab[:url][:id]).pluck(:id)).first.group_at_id : allocation_tag.id
     end
 
-    # raise "#{allocation_tag_id_group}"
-
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
     log_access(allocation_tag_id_group) # save access
   end

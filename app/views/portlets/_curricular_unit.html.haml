@@ -28,7 +28,7 @@
                 - link = add_tab_path(id: offer.offer_id, context: Context_Curriculum_Unit, allocation_tag_id: offer.at_id)
                 - livre = offer.uc_type_id == 3
 
-                %tr.lines.offer{'data-tab-id' => offer[:id], 'data-tab-link' => link}
+                %tr.lines.offer{'data-tab-id' => offer.id, 'data-tab-link' => link}
 
                   %td.type{'data-tooltip' => offer.uc_type}= image_tag(offer.uc_type_icon)
                   %td{style: "display: none"}= offer.uc_type
