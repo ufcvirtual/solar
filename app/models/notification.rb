@@ -40,11 +40,23 @@ class Notification < ActiveRecord::Base
   end
 
   def self.of_user(user)
-    active.select("notifications.*, rn.user_id AS read")
-      .joins(:academic_allocations)
-      .joins("LEFT JOIN read_notifications rn ON rn.notification_id = notifications.id AND rn.user_id = #{user.id}")
-      .where(academic_allocations: { allocation_tag_id: user.all_allocation_tags })
-      .order("read DESC, schedules.start_date DESC, schedules.end_date DESC")
+    Notification.find_by_sql <<-SQL
+      WITH ats AS (
+        SELECT DISTINCT at.id
+        FROM related_taggables rt
+        JOIN allocation_tags at ON at.id = rt.group_at_id OR at.id = rt.offer_at_id OR at.id = rt.course_at_id OR at.id = rt.curriculum_unit_at_id OR at.id = rt.curriculum_unit_type_at_id
+        JOIN allocations al ON al.allocation_tag_id = group_at_id OR al.allocation_tag_id = offer_at_id OR al.allocation_tag_id = course_at_id OR al.allocation_tag_id = curriculum_unit_at_id OR al.allocation_tag_id = curriculum_unit_type_at_id
+        WHERE al.user_id = #{user.id}
+        AND al.status = #{Allocation_Activated}
+      )
+      SELECT notifications.id, notifications.*, rn.user_id AS read
+      FROM notifications
+      JOIN schedules ON schedules.id = notifications.schedule_id
+      JOIN academic_allocations ac ON ac.academic_tool_id = notifications.id AND ac.academic_tool_type = 'Notification'
+      LEFT JOIN read_notifications rn ON rn.notification_id = notifications.id AND rn.user_id = #{user.id}
+      WHERE ac.allocation_tag_id IN (select id FROM ats)
+      AND schedules.start_date::date <= current_date AND schedules.end_date::date >= current_date ;
+    SQL
   end
 
 end

@@ -166,7 +166,7 @@ class Question < ActiveRecord::Base
   def validate_items
     if !status
       raise 'min_items'     if question_items.size < 3
-      raise 'correct_item'  if question_items.where(value: true).empty?
+      raise 'correct_item'  if type_question != Question::TRUE_FALSE && question_items.where(value: true).empty?
       raise 'only_one_true' if type_question == 0 && question_items.where(value: true).size > 1
     end
   end
