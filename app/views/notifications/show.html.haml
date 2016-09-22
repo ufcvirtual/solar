@@ -4,6 +4,21 @@
     = link_to_function content_tag(:i, nil, class: 'icon-arrow-right-thin'), 'next_notification()', class: 'next'
     = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin'), 'prev_notification()', class: 'prev'
 
+  .title-warning
+    = @allocation_tag.no_group_info
+    - unless @groups.blank? 
+      - if @groups.size == 1
+        = @groups.first.code
+      - else
+        .equivalent
+          %a{ href: '#', :"data-dropdown" => "#dropdown" }
+            = t('.count_groups', count: @groups.size)
+            %i.icon-arrow-down-triangle
+          .dropdown.dropdown-tip{id: "dropdown"}
+            %ul{ class: 'dropdown-menu' }  
+              - @groups.each do |code|
+                %li= code
+
   .block_content
     .notification
       = sanitize @notification.description

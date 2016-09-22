@@ -27,6 +27,11 @@ class NotificationsController < ApplicationController
   def show
     @notification = Notification.find(params[:id])
     @notification.mark_as_read(current_user)
+    @allocation_tag = @notification.allocation_tags
+    if @allocation_tag.size > 1
+      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tag.pluck(:id)}).pluck(:code)
+    end
+    @allocation_tag = @allocation_tag.first
   end
 
   # GET /notifications/new

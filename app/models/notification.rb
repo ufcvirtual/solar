@@ -49,7 +49,7 @@ class Notification < ActiveRecord::Base
         WHERE al.user_id = #{user.id}
         AND al.status = #{Allocation_Activated}
       )
-      SELECT notifications.id, notifications.*, rn.user_id AS read
+      SELECT DISTINCT notifications.id, notifications.*, rn.user_id AS read
       FROM notifications
       JOIN schedules ON schedules.id = notifications.schedule_id
       JOIN academic_allocations ac ON ac.academic_tool_id = notifications.id AND ac.academic_tool_type = 'Notification'

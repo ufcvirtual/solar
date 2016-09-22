@@ -1125,6 +1125,8 @@ en_US:
       created: Notification wasn't created.
       updated: Notification wasn't updated.
       deleted: Notification wasn't deleted.
+    show:
+      count_groups: "%{count} groups"
   webconferences:
     form:
       new: "New Webconference"

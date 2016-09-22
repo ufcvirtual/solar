@@ -1297,6 +1297,8 @@ pt_BR:
       created: Não foi possível criar aviso.
       updated: Não foi possível atualizar aviso.
       deleted: Não foi possível deletar aviso.
+    show:
+      count_groups: "%{count} turmas"
 
   webconferences:
     form:

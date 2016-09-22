@@ -88,6 +88,14 @@ class AllocationTag < ActiveRecord::Base
     self.send(refer_to).try(:detailed_info)
   end
 
+  def no_group_info
+    if refer_to == 'group'
+      self.group.offer.allocation_tag.info
+    else
+      self.send(refer_to).try(:info)
+    end
+  end
+
   def curriculum_unit_types
     case refer_to
       when 'group'
