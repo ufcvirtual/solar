@@ -26,7 +26,7 @@
               - @offers.each do |offer|
 
                 - link = add_tab_path(id: offer.offer_id, context: Context_Curriculum_Unit, allocation_tag_id: offer.at_id)
-                - livre = offer.uc_type_id == 3
+                - livre = offer.uc_type_id.to_i == 3
 
                 %tr.lines.offer{'data-tab-id' => offer.id, 'data-tab-link' => link}
 

@@ -181,7 +181,7 @@ class Offer < ActiveRecord::Base
       LEFT JOIN log_accesses          ON log_accesses.allocation_tag_id = rt.group_at_id AND log_accesses.id IN (select id from logs)
       JOIN allocations                ON (allocations.allocation_tag_id = rt.group_at_id OR allocations.allocation_tag_id = rt.offer_at_id OR allocations.allocation_tag_id = rt.course_at_id OR allocations.allocation_tag_id = rt.curriculum_unit_at_id OR allocations.allocation_tag_id = rt.curriculum_unit_type_at_id) AND allocations.user_id = #{user.id} AND allocations.status = #{Allocation_Activated} AND allocations.profile_id IN (select profile_id from profiles)
       WHERE
-        group_status = true AND groups.id IS NOT NULL AND current_date <= schedules.end_date AND allocations.status = 1
+        group_status = true AND groups.id IS NOT NULL AND current_date <= schedules.end_date AND allocations.status = #{Allocation_Activated}
         GROUP BY offer_at_id, rt.offer_id, semesters.name, courses.code, courses.name, curriculum_units.code,curriculum_units.name, curriculum_unit_types.description, curriculum_unit_types.id, curriculum_unit_types.icon_name
         ORDER BY accesses DESC, s_name DESC, uc_name ASC;
     SQL

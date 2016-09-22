@@ -54,7 +54,7 @@ $(function(){
   $('.tabs_index li a').unbind('click');
   $('.tabs_index li a').click(function(){
     $.get($(this).data('url'), function(data){
-      $('#list_of_students').replaceWith(data);
+      $('.tb_list_students').html(data);
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")

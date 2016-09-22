@@ -254,6 +254,7 @@ class Score # < ActiveRecord::Base
       JOIN profiles ON profiles.id = allocations.profile_id
       WHERE allocations.allocation_tag_id IN (#{ats})
       AND cast( profiles.types & '#{Profile_Type_Student}' as boolean )
+      AND allocations.status = #{Allocation_Activated}
       ORDER BY name;
     SQL
   end
