@@ -35,7 +35,7 @@ module Solar
     config.middleware.use WickedPdf::Middleware
     #Tags e atributos permitidos pelo método auxiliador "sanitize"
     config.action_view.sanitized_allowed_tags = %w(h1 h2 h3 h4 hr b i p u a pre div span br ul ol li em strong strike img sup sub abbr big small code iframe)
-    config.action_view.sanitized_allowed_attributes = %w(name style class href cite title src height datetime alt abbr width)
+    config.action_view.sanitized_allowed_attributes = %w(name style class href cite title src height datetime alt abbr width target)
 
     # config.active_record.observers = :user_observer
     config.active_record.default_timezone = :local
