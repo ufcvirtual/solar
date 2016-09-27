@@ -30,7 +30,9 @@
 
                 %tr.lines.offer{'data-tab-id' => offer.id, 'data-tab-link' => link}
 
-                  %td.type{'data-tooltip' => offer.uc_type}= image_tag(offer.uc_type_icon)
+                  %td.type{'data-tooltip' => offer.uc_type}
+                    - unless offer.uc_type.blank? 
+                      = image_tag(offer.uc_type_icon)
                   %td{style: "display: none"}= offer.uc_type
 
                   - if livre

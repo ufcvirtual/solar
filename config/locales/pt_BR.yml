@@ -1647,6 +1647,8 @@ pt_BR:
   support_allocation_group: Turma
   support_folder_temporary_message: 'Esta pasta é temporária. Para concluir sua criação, envie um arquivo'
 
+  general_message: Não foi possível realizar a ação desejada
+
   # Files
   file_error_nonexistent_file: Arquivo não encontrado
   send_file_obs: Aguarde o envio completo do arquivo. O tamanho não deve exceder 5MB.
@@ -1736,6 +1738,7 @@ pt_BR:
       name: Nome
       select_profile: Selecione um perfil
       no_user_found: Nenhum usuário encontrado
+      empty: Não é possível pesquisar por vazio
     warning:
       already_active: Perfil já está ativo
     error:

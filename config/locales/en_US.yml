@@ -1452,6 +1452,8 @@ en_US:
   send_file_obs: Wait for the complete submission of the file. The size should not exceed 5MB.
   send_file_text: "Allowed file example:<br /> &nbsp;&nbsp;- Microsoft Office Documents<br /> &nbsp;&nbsp;- OpenOffice.org Documents (ODF)<br /> &nbsp;&nbsp;- Archives (.zip, .rar...)<br /> &nbsp;&nbsp;- PDF Documents<br /> &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br /> &nbsp;&nbsp;- Audio Files (mp3, wma...)"
 
+  general_message: It was not possible to execute action.
+
   allocations:
     request:
       success:
@@ -1535,6 +1537,7 @@ en_US:
       name: Name
       select_profile: Select a profile
       no_user_found: No user found
+      empty: Não é possível pesquisar por vazio
     error:
       student_in_group: Student must be allocated in a group
     warning:

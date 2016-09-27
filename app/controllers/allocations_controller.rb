@@ -115,6 +115,12 @@ class AllocationsController < ApplicationController
     text = [@text_search.split(' ').compact.join('%'), '%'].join if params[:user].present?
     @allocation_tags_ids = params[:allocation_tags_ids]
     @users = User.find_by_text_ignoring_characters(text).paginate(page: params[:page])
+  rescue
+    if @text_search.blank?
+      render json: { success: false, alert: t('allocations.search_users.empty') }, status: :unprocessable_entity
+    else
+      render json: { success: false, alert: t(:general_message) }, status: :unprocessable_entity
+    end
   end
 
   ## EDITOR - CONTEUDO - ALOCACOES
