@@ -551,7 +551,7 @@ pt_BR:
   login_footer2: "Universidade Federal do Ceará"
   login_footer3: "Equipe de Desenvolvimento"
   login_faq: FAQ
-  faq: "Dúvidas frequentes"
+  faq_title: "Dúvidas frequentes"
   login_language: "Idioma"
   license_terms: "Termos de licença"
   UFC_virtual: "Universidade Virtual"
@@ -603,7 +603,7 @@ pt_BR:
   chrome_user: "‣ Uso chrome:"
   answer_chrome_user: "Abra o menu.<br/>Clique em 'Ferramentas'.<br/>Clique em 'Limpar dados de navegação'.<br/>Selecione a opção 'Elimiar os seguintes itens desde: desde o começo'.<br/>Selecione 'Cookies e outros dados do site' e 'Imagens e arquivos armazenados em cache'.<br/>Clique em 'Limpar dados de navegação'.<br/>Atualize (ctrl + f5) a página do Solar 2.0."
   faq_no_answer: "Não encontrei minha dúvida neste FAQ?"
-  answer_faq_no_answer: "Entre em contato com o <a href='atendimento@virtual.ufc.br' target='_blank'> atendimento@virtual.ufc.br</a> relatando sua situação, informando nome, cpf e email."
+  answer_faq_no_answer: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação, informando nome, cpf e email."
   signin: "Acessar"
   signup: "Cadastrar"
   sign_in: "Login"
@@ -3687,3 +3687,89 @@ pt_BR:
       not_participant: não pode ser definida, pois o aluno não é participante deste Chat.
     success:
       evaluated: Estudante avaliado com sucesso.
+
+  faq:
+    questions:
+      whats_solar: 'O que é o Solar?'
+      whats_ava: 'O que é um AVA?'
+      uab_forgot_login_password: 'Sou aluno ou professor da UAB e não lembro meu login ou senha. O que fazer?'
+      forgot_login_password_ma: 'Não lembro meu login ou senha do Solar, mas tenho acesso ao Módulo Acadêmico. O que fazer?'
+      forgot_login_password_sync1: 'Não lembro meu login ou senha do Solar e também não tenho acesso ao Módulo Acadêmico. O que fazer?'
+      forgot_login_password_sync2: 'Tentei fazer cadastro ou recuperar senha e meus dados foram importados do Módulo Acadêmico, mas não tenho acesso ao Módulo Acadêmico.'
+      forgot_login_password_sync3: 'Tentei recuperar minha senha, mas recebi uma mensagem me direcionando ao Módulo Acadêmico, mas não tenho acesso a ele.  O que devo fazer?'
+      forgot_login_password: 'Esqueci meu login e/ou senha.'
+      recovery_password_email: "Já tenho cadastro no Solar e tentei recuperar minha senha, mas recebi a seguinte mensagem 'E-mail não encontrado'."
+      verify_registration: "Não lembro meu login e senha e meu email não foi encontrado. Como descubro se já tenho cadastro no Solar?"
+      update_data: "Como alterar meu email ou qualquer dado cadastral?"
+      update_data_ma_cant: "Tentei editar meus dados, mas quase todos os campos estão cinzas (desabilitados)."
+      invalid_token: "Recebi um link para recuperação de senha, mas, ao clicar, aparece token inválido."
+      how_to_enroll: "Como fazer minha matrícula em uma disciplina?"
+      pendent_enroll: "Fiz matrícula, mas ainda aparece com status pendente."
+      cant_access_uc: "Não consigo acessar uma disciplina"
+      cant_access_uc_date: "‣ O período encerrou?"
+      cant_access_uc_too_many: "‣ Muitas disciplinas?"
+      cant_access_uc_canceled: "‣ Perfil cancelado?"
+      cant_access_uc_deactivated: "‣ Por que meu perfil foi desativado?"
+      cant_access_uc_javascript: "‣ Javascript desativado?"
+      cant_access_uc_what_else: "‣ Meu javascript está ativo e continuo matriculado normalmente, mas a disciplina não abre."
+      activity: "Não consigo postar uma atividade."
+      activity_date: "‣ A atividade está dentro do prazo?"
+      activity_error: "‣ O ambiente retorna algum erro?"
+      activity_no_error: "‣ Não acontece nada ou não entendeu a mensagem de erro?"
+      activity_lost_date: "Perdi o prazo para postar uma atividade."
+      maintenance: "O Solar está em manutenção. Vou perder o prazo de alguma atividade?"
+      uc_profile: "Por que a disciplina não aparece mais em meu perfil?"
+      lesson_notes: Como acessar minhas notas de aula?
+      lesson_notes_inside: "‣ Dentro da aula desejada."
+      lesson_notes_outside: "‣ Dentro da disciplina."
+      uc_document: "Como conseguir declaração de que estou cursando uma disciplina?"
+      course_document: "Como conseguir declaração de que conclui um curso?"
+      photo: "Como posso inserir ou alterar a foto do meu perfil?"
+      nick_login: "Qual a diferença de apelido para login no meu perfil?"
+      finished_ucs: "Como obter o conteúdo e visualização das participações em disciplinas/cursos que já encerraram?"
+      idea: "Tenho uma ideia para o Solar, como posso sugerí-la para implementação?"
+      error: "Sou responsável por uma disciplina e um portfólio enviado pelo aluno aparece em branco. Pode ser erro do sistema?"
+      cant_find_faq: "Não encontrei minha dúvida neste FAQ?"
+    answers:
+      whats_solar: "O Solar 2.0 é um AVA, ambiente virtual de aprendizagem, desenvolvido pelo Instituto UFC Virtual, da Universidade Federal do Ceará. <br/> Ele é orientado ao professor e ao aluno, possibilitando a publicação de cursos e a interação com eles. Ele foi desenvolvido visando potencializar o aprendizado a partir da relação com a própria interface gráfica do ambiente, de modo que o usuário tenha acesso a várias ferramentas de aprendizagem e compartilhamento de conteúdo.  <br/> O ambiente é apoiado numa filosofia de interação e não de controle."
+      whats_ava: "AVAs - Ambientes Virtuais de Aprendizagem são softwares disponíveis online que permitem a realização de cursos via web ou, até mesmo, o auxílio e complemento a cursos presenciais via web."
+      uab_forgot_login_password: "Dirija-se ao Módulo Acadêmico a fim de recuperar sua senha: https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do. <br/> Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Módulo Acadêmico. Se você não consegue recuperar sua senha no Módulo Acadêmico, favor dirigir-se à secretaria de seu curso."
+      forgot_login_password_ma: "Dirija-se ao Módulo Acadêmico a fim de recuperar sua senha: https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Módulo Acadêmico."
+      forgot_login_password_sync: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação. Lembre-se de informar seu cpf e email. O atendimento do Solar irá corrigir seus dados e enviará, posteriormente, um email para recuperação de senha."
+      forgot_login_password: "Na tela de login do Solar 2.0 (www.solar.virtual.ufc.br):<br/> ‣ Clique em 'Esqueceu a sua senha?' </br> ‣ Informe o email cadastrado. </br> ‣ Clique em 'Enviar'. </br> Você receberá um email com as instruções para gerar uma nova senha."
+      recovery_password_email: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação. Lembre-se de informar seu cpf e email. O atendimento do Solar irá corrigir seus dados e enviará, posteriormente, um email para recuperação de senha."
+      verify_registration: "Para saber se você já tem cadastro ou não no Solar 2.0, basta acessar a tela inicial e clicar na aba 'Cadastrar'. Nesta aba, você deverá digitar seu cpf e clicar em 'Verificar'. O Solar irá verificar se você já possui ou não cadastro."
+      ma: ‣ Integrado ao Módulo Acadêmico
+      not_ma: ‣ Não integrado ao Módulo Acadêmico
+      update_data: "Para alterar seus dados cadastrais, você deve primeiro estar logado no Solar. Após o login, efetuar os seguintes passos: </br> ‣ Clicar no seu nome no topo da tela ao lado do relógio<br/>‣ Clicar em 'Editar Perfil'<br/>‣ Alterar os dados desejados<br/>‣ Clicar em 'Confirmar', botão azul localizado ao fim da tela<br/> Não entendeu? Você pode ver também nosso <a href='https://www.youtube.com/watch?v=cRN-wNAjutk&list=PL79md4kx41yXcTYI6XgnzXyEAAIxL5asx&index=6' target='_blank'>vídeo-tutorial</a>."
+      update_data_ma: "Para alterar seus dados cadastrais, você deve acessar o Módulo Acadêmico e realizar as alterações desejadas.<br/> Alterações de login, senha ou email são enviadas ao Solar automaticamente. Qualquer outra alteração deve ser sincronizada com o Solar. Para isso, após o login, você deve: <br/> ‣ Clicar no seu nome no topo da tela ao lado do relógio<br/> ‣ Clicar em 'Sincronizar com Módulo Acadêmico'"
+      update_data_ma_cant: "Neste caso, seu cadastro no Solar está vinculado ao Módulo Acadêmico."
+      have_access: ‣ Se possuir acesso ao Módulo Acadêmico
+      dont_have_access: ‣ Se não possuir acesso ao Módulo Acadêmico
+      update_data_ma_cant2: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação para que nossa equipe verifique se é possível desvincular seu perfil ou não. Lembre-se de informar seu cpf e email. <br/> Se for possível, o atendimento retornará o contato com uma mensagem positiva; caso contrário, deverá encaminhá-lo ao setor do STI para recuperar seus dados do Módulo Acadêmico."
+      invalid_token: "Todo email de recuperação de senha do Solar 2.0 fornece um link que permitirá gerar uma nova senha. Entretanto, este link conterá um token que só terá validade por 24h. Se seu token está inválido, você precisa gerar um novo link. Ver 'Esqueci meu login e/ou senha.'"
+      how_to_enroll: "Para solicitar matrícula em uma disciplina, é necessário ter cadastro no Solar 2.0, efetuar o login e realizar os seguintes passos: </br> ‣ Acessar o menu lateral esquerdo em 'Matrícula' <br/> ‣ Procurar pela disciplina e curso desejados, lembrando que estarão disponíveis apenas os cursos cujo período de matrícula não foi encerrado. <br/> ‣ Ao localizar a disciplina desejada, clicar em 'Matricular' <br/> Não entendeu? Você pode ver também nosso <a href='https://www.youtube.com/watch?v=35uwbsETkyY&index=1&list=PL79md4kx41yXcTYI6XgnzXyEAAIxL5asx' target='_blank'>vídeo-tutorial</a>. <br/> Sua solicitação está sujeita a aceitação. Portanto, ela primeiro será analisada pelos responsáveis e, em seguida, será aceita ou não. Ao ser aceita, você receberá um email do Solar 2.0."
+      pendent_enroll: "As solicitações de matrícula realizadas pelo aluno no Solar 2.0 não são aceitas automaticamente, estando, portanto, sujeitas a aceitação dos responsáveis pela disciplina em questão. No momento em que uma matrícula é aceita, o aluno receberá um email do Solar 2.0 comunicando."
+      cant_access_uc_date: "Toda disciplina e/ou curso tem uma data de início e fim, você pode verificar essa data no Programa da disciplina. Quando a disciplina é encerrada, ela não está mais disponível na sua lista de Disciplinas na Home do seu perfil."
+      cant_access_uc_too_many: "Quando um usuário tem muitas disciplinas em aberto, a área de 'Disciplina' da home usa uma barra de rolagem para mantê-las dentro de um espaço limitado. Localize a barra de rolagem para verificar se sua disciplina não está ao fim da lista. O Solar 2.0 também permite, na Home, pesquisar por disciplinas, basta clicar no ícone de engrenagem e informar os dados desejados."
+      cant_access_uc_canceled: "Verifique se você ainda está matriculado no menu 'Matrícula' ou verifique se seu perfil para a disciplina continua ativo clicando no seu nome ao lado do relógio e em 'Perfis'."
+      cant_access_uc_deactivated: "Informe-se com os responsáveis pelo curso, eles poderão ajudá-lo."
+      cant_access_uc_javascript: "No Solar 2.0, muitas ferramentas e ações fazem uso de javascript, portanto é necessário que seu navegador esteja com ele ativo. Para verificar se está ativo ou não, sugerimos que acesse <a href='http://enable-javascript.com/pt/' target='_blank'>esta url</a>. Uma mensagem verde irá aparecer caso esteja ativo e vermelha caso esteja desativado. Se desativado, o próprio site fornece todas as instruções para ativá-lo. <br/>Caso seu javascript esteja desativado e você não tenha conseguido ativá-lo, entre em contato com o atendimento@virtual.ufc.br, informando seu navegador, a versão e as medidas tomadas para que nossa equipe tentará ajudá-lo. "
+      cant_access_uc_what_else: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação. Lembre-se de informar seu cpf, a disciplina que gostaria de acessar, um relato detalhado do problema e as medidas que já foram tomadas."
+      activity_date: "Atividades encerradas ou não iniciadas não podem receber participações."
+      activity_error: "Verifique se sua participação atende aos requisitos especificados na mensagem de erro."
+      activity_no_error: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação para que nossa equipe verifique se, de fato, há algum problema ou não. Lembre-se de informar seu cpf, o curso para o qual não conseguiu enviar a atividade e o maior número de informações, como, por exemplo, a mensagem de erro recebida, imagens (prints de tela) etc."
+      activity_lost_date: "O Solar só permite a participação do aluno nas atividades dentro do prazo definido para a atividade, portanto, não será possível participar após este prazo. <br/>Se necessário, pergunte ao responsável pelo seu curso se é possível re-abrir o período da atividade ou se é possível enviar a atividade por outra ferramenta. O Solar 2.0 dispõe de várias maneiras de comunicação e compartilhamento de conteúdo. Sugerimos apenas que todas as interações avaliativas permaneçam dentro do ambiente."
+      maintenance: "A equipe do Solar 2.0 sempre procura avisar com antecedência sobre manutenções ou paradas e fazê-las em momentos que não interfiram na realização de atividades. Se isso não foi possível, você pode entrar em contato com seu tutor ou professor responsável para solicitar uma prorrogação do prazo do trabalho devido à manutenção do Ambiente. Você pode também enviar seu trabalho em sua Área Pública e informar ao seu tutor/professor que o fez devido à manutenção no período de entrega, eles iram analisar a situação e decidir acerca da aceitação ou não da atividade. <br/> Os alunos não serão prejudicados por manutenções do ambiente."
+      uc_profile: "Ver 'Não consigo acessar uma disciplina'."
+      lesson_notes: "Para acessar suas notas de aula, você pode:"
+      lesson_notes_inside: "Esta opção só está disponível para as aulas da UAB. <br/> Clicar no ícone de papel com lápis e, em seguida, em 'Minhas anotações' para expandir a caixa com suas anotações. Na caixa serão exibidas suas anotações para o tópico que você está visualizando, nesta caixa também é possível criar uma anotação ou editar."
+      lesson_notes_outside: "Clicar em 'Aulas' e clicar no ícone da coluna 'Notas de aula' da aula desejada. Lá você poderá visualizar todas suas notas para a aula, editar, remover e criar novas."
+      uc_document: "Para conseguir informações, declarações, certificados e demais documentos a respeito de disciplinas cursadas, é preciso entrar em contato com os responsáveis pelo seu curso. Se for um curso semi-presencial da UAB, você deve dirigir-se à secretaria de seu curso. De modo geral, você pode entrar em contato com coordenadores, professores ou tutores. É possível visualizar quem são e entrar em contato com eles através do Solar ao acessar a tela inicial do curso e, à direita, visualizar a área 'Responsáveis'."
+      course_document: "Entre em contato com os responsáveis ou a secretaria responsável pelo seu curso."
+      photo: "Para alterar ou inserir sua foto, basta efetuar o login no Solar, clicar no seu nome disponível na barra azul superior (ao lado do relógio) e clicar na opção 'Alterar foto'. Um popup será aberto para que você faça o upload da foto que desejar atendendo os requisitos lá especificados."
+      nick_login: "Seu login será a informação utilizada para que você acesse o ambiente juntamente com sua senha. Já o apelido será como você será visto em determinadas áreas do ambiente como, por exemplo, nos Fóruns em que as postagens indicam os usuários pelos seus apelidos e não pelos nomes.<br/> Sugerimos escolher apelidos que te identifiquem, não indicamos apelidos como 'Aluno' ou 'Tutor', por exemplo."
+      finished_ucs: "Atualmente, o Solar 2.0 ainda não possui a funcionalidade para acessar cursos já encerrados."
+      idea: "O Solar 2.0 dispõe de um botão de 'Sugestões para o Solar 2.0'. Para acessá-lo, basta realizar o login, que o botão ficará disponível no canto superior direito da tela logo abaixo do relógio. <br/>Lá você poderá enviar sugestões, reclamações e similares."
+      error: "O Solar 2.0 não altera dados nem arquivos previamente enviados pelos usuários sem comunicá-los ou sem prévia autorização. Portanto, se o portfolio do aluno está em branco, sugerimos que entre em contato com ele para solicitar um re-envio do arquivo correto."
+      cant_find_faq: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação. Lembre-se de informar: <br/> ‣ Nome <br/> ‣ Cpf <br/> ‣ Email<br/> ‣ O maior número de informações sobre o ocorrido. Se possível, imagens (prints de tela) também."

@@ -41,9 +41,17 @@
 }
 
 #faq p{
-  margin-top: 2px;
+  margin-top: 10px;
   margin-bottom: 0;
   text-align: initial;
+}
+
+#faq h4.title_child_first{
+  padding-bottom: 0px;
+}
+
+#faq p.title_child_second{
+  margin-top: 2px;
 }
 
 #faq .content {

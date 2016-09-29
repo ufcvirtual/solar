@@ -29,6 +29,11 @@
         = render template: "/pages/team"
       = image_tag("arrow.png", :class => "arrow")
 
+    #faq.panel
+      .content
+        = render template: '/pages/faq'
+      = image_tag('arrow.png', class: 'arrow')
+
     #mysolar_topbar_wide_background
     #body_wrapper
       / topbar
@@ -66,6 +71,7 @@
           %ul
             %li= link_to t(:context), "#", id: 'help_context'
             %li= link_to t(:tutorials), tutorials_path, id: 'my_tutorials'
+            %li= link_to t(:login_faq), '#faq', class: 'panel-link'
             %li= link_to t(:videos), "../../video_tutorials.html", target: "_blank"
             %li= link_to t(:contact), support_new_messages_path
         / tabs
@@ -128,7 +134,8 @@
           %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', target: '_blank'
           %li= link_to t(:login_footer2), 'http://www.ufc.br', target: '_blank'
           %li= link_to t(:login_footer3), "#team", class: 'panel-link'
-          / %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank' # como o projeto está privado. link temporariamente ocultado
+          %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank'
+          %li= link_to t(:login_faq), '#faq', class: 'panel-link'
           %li.choice-language
             = link_to t(:login_language), '#', class: "link-arrow"
             %ul.choice-language-menu
