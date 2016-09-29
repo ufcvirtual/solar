@@ -79,15 +79,17 @@ tr#activities{
       text-align: center;
       min-width: 25px;
     }
-    td.td_student{
+    th.td_student{
       text-align: left;
       width: 140px;
+      min-width: 60px;
     }
     th.tool{
       min-width: 20px;
     }
     th#student {
       width: 120px;
+
     }
     th#profile {
       width: 100px;
@@ -296,3 +298,11 @@ tbody{
     }
   } 
 }
+
+#parent {
+  height: 599px;
+}
+.parent {
+  height: 599px;
+}
+

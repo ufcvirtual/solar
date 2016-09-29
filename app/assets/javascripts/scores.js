@@ -54,6 +54,7 @@ $(function(){
   $('.tabs_index li a').unbind('click');
   $('.tabs_index li a').click(function(){
     $.get($(this).data('url'), function(data){
+      $('.parent').removeClass('parent');
       $('.tb_list_students').html(data);
     }).error(function(data){
       var data = $.parseJSON(data.responseText);

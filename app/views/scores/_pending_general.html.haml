@@ -1,6 +1,6 @@
 - @users.each_with_index do |student, idx|
   %tr.lines
-    %td.td_student{'data-tooltip' => student.name}= link_to student.name, user_info_scores_path(student.id)
+    %th.td_student{'data-tooltip' => student.name}= link_to student.name, user_info_scores_path(student.id)
     %td=student.u_logs
     - unless @wh.nil?
       %td=student.working_hours
@@ -12,3 +12,12 @@
     %td="#{student.chat_rooms} de #{@tools.chat_rooms_count}"
     %td="#{student.webconferences} de #{@tools.webconferences_count}"
     %td="#{student.schedule_events} de #{@tools.events_count}"
+
+
+= javascript_include_tag 'tableHeadFixer','tooltip', 'tablesorter', 'scores'
+
+:javascript
+  $(function () {
+    $("#list_of_students").tableHeadFixer({'left' : 1}); 
+   
+  });

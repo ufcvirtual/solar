@@ -1,48 +1,48 @@
-%table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.list_of_students')  }
-  %thead
-    %tr.lines
-      %th#student= t("scores.index.student")
-      %th.no_sort{colspan: @acs.size}
-        #tabs.tabs_index
-          %ul
-            %li
-              %a{:'data-url' => general_scores_path}=t('scores.index.general')
-              %a{class: score_type == 'evaluative' ? 'active' : '', :'data-url' => evaluative_scores_path}=t('scores.index.evaluative')
-              %a{class: score_type.blank? ? 'active' : '', :'data-url' => not_evaluative_scores_path}=t('scores.index.not_evaluative')
-              - unless @wh.nil?
-                %a{class: score_type == 'frequency' ? 'active' : '', :'data-url' => frequency_scores_path}=t('scores.index.frequency')
-        %a.btn.tool_dropdown{href: '#', :'data-dropdown' => "#dropdown_menu"}
-          = content_tag(:i, nil, class: 'icon-list')
-          = t('scores.index.show_hide_tools')
-          %i.icon-arrow-down-triangle
-        = simple_form_for :evaluative_frequency, :url => url = not_evaluative_scores_path, html: { id: 'evaluative_frequency_form', method: 'get', target: '_blank' } do |f|  
-          %div{ id: "dropdown_menu", class: 'dropdown dropdown-tip' }
-            %ul.dropdown-menu
-              - @tools.each_with_index do |tool, idx|
-                %li
-                  = check_box_tag "#{tool}idx", tool, true
-                  = label_tag "#{tool}idx", t("activerecord.models.#{tool.tableize.singularize}")
-          = hidden_field_tag :report, true
-          = hidden_field_tag :type, score_type
-          %div{ class: 'print_pdf' }
-            = f.button :submit, :class => "btn",  value: t('scores.index.print_pdf')
-
-    - if @acs.any?
+.parent
+  %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.list_of_students')  }
+    %thead
       %tr.lines
-        %th.no_sort#student
-        - @acs.group_by{|t| t['tool_type']}.each do |ac|
-          - ac[1].each_with_index do |tool, idx|
-            %th{class: tool.tool_type, :'data-tooltip' =>tool.name }= [t("activerecord.models.#{tool.tool_type.tableize.singularize}")[0], idx+1].join(' ')
-  %tbody.scores
-    - if @users.empty? || @acs.empty?
-      %tr.lines.no_sort
-        %td{colspan: 2}= t('scores.index.no_data')
-    - else
-      = render partial: 'pending_evaluatives_frequency', locals: { users: @users, score_type: score_type}
+        %th#student= t("scores.index.student")
+        %th.no_sort{colspan: @acs.size}
+          #tabs.tabs_index
+            %ul
+              %li
+                %a{:'data-url' => general_scores_path}=t('scores.index.general')
+                %a{class: score_type == 'evaluative' ? 'active' : '', :'data-url' => evaluative_scores_path}=t('scores.index.evaluative')
+                %a{class: score_type.blank? ? 'active' : '', :'data-url' => not_evaluative_scores_path}=t('scores.index.not_evaluative')
+                - unless @wh.nil?
+                  %a{class: score_type == 'frequency' ? 'active' : '', :'data-url' => frequency_scores_path}=t('scores.index.frequency')
+          %a.btn.tool_dropdown{href: '#', :'data-dropdown' => "#dropdown_menu"}
+            = content_tag(:i, nil, class: 'icon-list')
+            = t('scores.index.show_hide_tools')
+            %i.icon-arrow-down-triangle
+          = simple_form_for :evaluative_frequency, :url => url = not_evaluative_scores_path, html: { id: 'evaluative_frequency_form', method: 'get', target: '_blank' } do |f|  
+            %div{ id: "dropdown_menu", class: 'dropdown dropdown-tip' }
+              %ul.dropdown-menu
+                - @tools.each_with_index do |tool, idx|
+                  %li
+                    = check_box_tag "#{tool}idx", tool, true
+                    = label_tag "#{tool}idx", t("activerecord.models.#{tool.tableize.singularize}")
+            = hidden_field_tag :report, true
+            = hidden_field_tag :type, score_type
+            %div{ class: 'print_pdf' }
+              = f.button :submit, :class => "btn",  value: t('scores.index.print_pdf')
+
+      - if @acs.any?
+        %tr.lines.moviment
+          %th.no_sort#student
+          - @acs.group_by{|t| t['tool_type']}.each do |ac|
+            - ac[1].each_with_index do |tool, idx|
+              %th{class: tool.tool_type, :'data-tooltip' =>tool.name }= [t("activerecord.models.#{tool.tool_type.tableize.singularize}")[0], idx+1].join(' ')
+    %tbody.scores
+      - if @users.empty? || @acs.empty?
+        %tr.lines.no_sort#student
+          %td{colspan: 2}= t('scores.index.no_data')
+      - else
+        = render partial: 'pending_evaluatives_frequency', locals: { users: @users, score_type: score_type}
+
 
 - if !@users.blank? && !@acs.empty?
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), not_evaluative_scores_path(page: @users.next_page, type: score_type), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items) if @users.next_page             
+
                   
-= javascript_include_tag 'tooltip', 'tablesorter', 'scores'
-
-
