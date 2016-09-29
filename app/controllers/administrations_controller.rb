@@ -322,7 +322,9 @@ class AdministrationsController < ApplicationController
   # POST /import/users/batch
   def import_users_batch
     allocation_tags_ids = params[:allocation_tags_ids].split(' ').compact.uniq.map(&:to_i)
-    authorize! :import_users, Administration, { on: allocation_tags_ids, accepts_general_profile: true }
+    unless current_user.admin?
+      authorize! :import_users, Administration, { on: allocation_tags_ids }
+    end
 
     raise t(:invalid_file, scope: [:administrations, :import_users]) if (file = params[:batch][:file]).nil?
 
