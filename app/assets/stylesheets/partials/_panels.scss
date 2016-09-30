@@ -58,6 +58,22 @@
   width: 650px;
 }
 
+#faq h1{
+  font-weight: bold;
+  margin-top: 5%;
+
+}
+
+#faq .search{
+  text-align: center;
+  color: #363636;
+  font-weight: bold;
+  input{
+    vertical-align: middle;
+    width: 293px;
+  }
+}
+
 #faq .title{
   border: 1px solid #d3d3d3;
   background: rgba(245,245,245,1);

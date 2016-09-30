@@ -1,153 +1,185 @@
 %h1= t(:faq_title)
-%h4.title= t('faq.questions.whats_solar')
-.invisible
-  %p.title_child_first=raw t('faq.answers.whats_solar')
 
-%h4.title= t('faq.questions.whats_ava')
-.invisible
-  %p.title_child_first= raw t('faq.answers.whats_ava')
+.search
+  = "Pesquisar por palavras-chave"
+  = text_field_tag :search, nil
+
+.question
+  %h4.title= t('faq.questions.whats_solar')
+  .invisible
+    %p.title_child_first=raw t('faq.answers.whats_solar')
+
+.question
+  %h4.title= t('faq.questions.whats_ava')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.whats_ava')
   
-%h4.title= t('faq.questions.uab_forgot_login_password')
-.invisible
-  %p.title_child_first= raw t('faq.answers.uab_forgot_login_password')
+.question
+  %h4.title= t('faq.questions.uab_forgot_login_password')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.uab_forgot_login_password')
   
-%h4.title= t('faq.questions.forgot_login_password_ma')
-.invisible
-  %p.title_child_first= raw t('faq.answers.forgot_login_password_ma')
+.question
+  %h4.title= t('faq.questions.forgot_login_password_ma')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.forgot_login_password_ma')
 
-%h4.title= t('faq.questions.forgot_login_password_sync1')
-.invisible
-  %p.title_child_first= raw t('faq.answers.forgot_login_password_sync')
+.question
+  %h4.title= t('faq.questions.forgot_login_password_sync1')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.forgot_login_password_sync')
   
-%h4.title= t('faq.questions.forgot_login_password_sync2')
-.invisible
-  %p.title_child_first= raw t('faq.answers.forgot_login_password_sync')
+.question
+  %h4.title= t('faq.questions.forgot_login_password_sync2')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.forgot_login_password_sync')
   
-%h4.title= t('faq.questions.forgot_login_password_sync3')
-.invisible
-  %p.title_child_first= raw t('faq.answers.forgot_login_password_sync')
+.question
+  %h4.title= t('faq.questions.forgot_login_password_sync3')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.forgot_login_password_sync')
   
-%h4.title= t('faq.questions.forgot_login_password')
-.invisible
-  %p.title_child_first= raw t('faq.answers.forgot_login_password')
+.question
+  %h4.title= t('faq.questions.forgot_login_password')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.forgot_login_password')
   
-%h4.title= t('faq.questions.recovery_password_email')
-.invisible
-  %p.title_child_first= raw t('faq.answers.recovery_password_email')
+.question
+  %h4.title= t('faq.questions.recovery_password_email')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.recovery_password_email')
   
-%h4.title= t('faq.questions.verify_registration')
-.invisible
-  %p.title_child_first= raw t('faq.answers.verify_registration')
+.question
+  %h4.title= t('faq.questions.verify_registration')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.verify_registration')
   
-%h4.title= t('faq.questions.update_data')
-.invisible
-  %h4.title_child_first= raw t('faq.answers.ma')
-  %p.title_child_second= raw t('faq.answers.update_data')
-  %h4.title_child_first= raw t('faq.answers.not_ma')
-  %p.title_child_second=raw t('faq.answers.update_data_ma')
+.question
+  %h4.title= t('faq.questions.update_data')
+  .invisible
+    %h4.title_child_first= raw t('faq.answers.ma')
+    %p.title_child_second= raw t('faq.answers.update_data')
+    %h4.title_child_first= raw t('faq.answers.not_ma')
+    %p.title_child_second=raw t('faq.answers.update_data_ma')
 
-%h4.title= t('faq.questions.update_data_ma_cant')
-.invisible
-  %p.title_child_first= raw t('faq.answers.update_data_ma_cant')
-  %h4.title_child_first= raw t('faq.answers.have_access')
-  %p.title_child_second= raw t('faq.answers.update_data_ma')
-  %h4.title_child_first= raw t('faq.answers.dont_have_access')
-  %p.title_child_second=raw t('faq.answers.update_data_ma_cant2')
+.question
+  %h4.title= t('faq.questions.update_data_ma_cant')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.update_data_ma_cant')
+    %h4.title_child_first= raw t('faq.answers.have_access')
+    %p.title_child_second= raw t('faq.answers.update_data_ma')
+    %h4.title_child_first= raw t('faq.answers.dont_have_access')
+    %p.title_child_second=raw t('faq.answers.update_data_ma_cant2')
 
+.question
+  %h4.title= t('faq.questions.invalid_token')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.invalid_token')
 
-%h4.title= t('faq.questions.invalid_token')
-.invisible
-  %p.title_child_first= raw t('faq.answers.invalid_token')
+.question
+  %h4.title= t('faq.questions.how_to_enroll')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.how_to_enroll')
 
-%h4.title= t('faq.questions.how_to_enroll')
-.invisible
-  %p.title_child_first= raw t('faq.answers.how_to_enroll')
+.question
+  %h4.title= t('faq.questions.cant_access_uc')
+  .invisible
+    %h4.title_child_first= raw t('faq.questions.cant_access_uc_date')
+    %p.title_child_second= raw t('faq.answers.cant_access_uc_date')
+    %h4.title_child_first= raw t('faq.questions.cant_access_uc_too_many')
+    %p.title_child_second=raw t('faq.answers.cant_access_uc_too_many')
+    %h4.title_child_first= raw t('faq.questions.cant_access_uc_canceled')
+    %p.title_child_second=raw t('faq.answers.cant_access_uc_canceled')
+    %h4.title_child_first= raw t('faq.questions.cant_access_uc_deactivated')
+    %p.title_child_second=raw t('faq.answers.cant_access_uc_deactivated')
+    %h4.title_child_first= raw t('faq.questions.cant_access_uc_javascript')
+    %p.title_child_second=raw t('faq.answers.cant_access_uc_javascript')
+    %h4.title_child_first= raw t('faq.questions.cant_access_uc_what_else')
+    %p.title_child_second=raw t('faq.answers.cant_access_uc_what_else')
 
-%h4.title= t('faq.questions.cant_access_uc')
-.invisible
-  %h4.title_child_first= raw t('faq.questions.cant_access_uc_date')
-  %p.title_child_second= raw t('faq.answers.cant_access_uc_date')
-  %h4.title_child_first= raw t('faq.questions.cant_access_uc_too_many')
-  %p.title_child_second=raw t('faq.answers.cant_access_uc_too_many')
-  %h4.title_child_first= raw t('faq.questions.cant_access_uc_canceled')
-  %p.title_child_second=raw t('faq.answers.cant_access_uc_canceled')
-  %h4.title_child_first= raw t('faq.questions.cant_access_uc_deactivated')
-  %p.title_child_second=raw t('faq.answers.cant_access_uc_deactivated')
-  %h4.title_child_first= raw t('faq.questions.cant_access_uc_javascript')
-  %p.title_child_second=raw t('faq.answers.cant_access_uc_javascript')
-  %h4.title_child_first= raw t('faq.questions.cant_access_uc_what_else')
-  %p.title_child_second=raw t('faq.answers.cant_access_uc_what_else')
+.question
+  %h4.title= t('faq.questions.activity')
+  .invisible
+    %h4.title_child_first= raw t('faq.questions.activity_date')
+    %p.title_child_second= raw t('faq.answers.activity_date')
+    %h4.title_child_first= raw t('faq.questions.activity_error')
+    %p.title_child_second=raw t('faq.answers.activity_error')
+    %h4.title_child_first= raw t('faq.questions.activity_no_error')
+    %p.title_child_second=raw t('faq.answers.activity_no_error')
 
-%h4.title= t('faq.questions.activity')
-.invisible
-  %h4.title_child_first= raw t('faq.questions.activity_date')
-  %p.title_child_second= raw t('faq.answers.activity_date')
-  %h4.title_child_first= raw t('faq.questions.activity_error')
-  %p.title_child_second=raw t('faq.answers.activity_error')
-  %h4.title_child_first= raw t('faq.questions.activity_no_error')
-  %p.title_child_second=raw t('faq.answers.activity_no_error')
+.question
+  %h4.title= t('faq.questions.activity_lost_date')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.activity_lost_date')  
 
-%h4.title= t('faq.questions.activity_lost_date')
-.invisible
-  %p.title_child_first= raw t('faq.answers.activity_lost_date')  
+.question
+  %h4.title= t('faq.questions.maintenance')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.maintenance')
 
-%h4.title= t('faq.questions.maintenance')
-.invisible
-  %p.title_child_first= raw t('faq.answers.maintenance')
+.question
+  %h4.title= t('faq.questions.uc_profile')
+  .invisible
+    %h4.title_child_first= raw t('faq.questions.cant_access_uc_date')
+    %p.title_child_second= raw t('faq.answers.cant_access_uc_date')
+    %h4.title_child_first= raw t('faq.questions.cant_access_uc_too_many')
+    %p.title_child_second=raw t('faq.answers.cant_access_uc_too_many')
+    %h4.title_child_first= raw t('faq.questions.cant_access_uc_canceled')
+    %p.title_child_second=raw t('faq.answers.cant_access_uc_canceled')
+    %h4.title_child_first= raw t('faq.questions.cant_access_uc_deactivated')
+    %p.title_child_second=raw t('faq.answers.cant_access_uc_deactivated')
+    %h4.title_child_first= raw t('faq.questions.cant_access_uc_javascript')
+    %p.title_child_second=raw t('faq.answers.cant_access_uc_javascript')
+    %h4.title_child_first= raw t('faq.questions.cant_access_uc_what_else')
+    %p.title_child_second=raw t('faq.answers.cant_access_uc_what_else')
 
-%h4.title= t('faq.questions.uc_profile')
-.invisible
-  %h4.title_child_first= raw t('faq.questions.cant_access_uc_date')
-  %p.title_child_second= raw t('faq.answers.cant_access_uc_date')
-  %h4.title_child_first= raw t('faq.questions.cant_access_uc_too_many')
-  %p.title_child_second=raw t('faq.answers.cant_access_uc_too_many')
-  %h4.title_child_first= raw t('faq.questions.cant_access_uc_canceled')
-  %p.title_child_second=raw t('faq.answers.cant_access_uc_canceled')
-  %h4.title_child_first= raw t('faq.questions.cant_access_uc_deactivated')
-  %p.title_child_second=raw t('faq.answers.cant_access_uc_deactivated')
-  %h4.title_child_first= raw t('faq.questions.cant_access_uc_javascript')
-  %p.title_child_second=raw t('faq.answers.cant_access_uc_javascript')
-  %h4.title_child_first= raw t('faq.questions.cant_access_uc_what_else')
-  %p.title_child_second=raw t('faq.answers.cant_access_uc_what_else')
+.question
+  %h4.title= t('faq.questions.lesson_notes')
+  .invisible
+    %h4.title_child_first= raw t('faq.questions.lesson_notes_inside')
+    %p.title_child_second= raw t('faq.answers.lesson_notes_inside')
+    %h4.title_child_first= raw t('faq.questions.lesson_notes_outside')
+    %p.title_child_second=raw t('faq.answers.lesson_notes_outside')
 
-%h4.title= t('faq.questions.lesson_notes')
-.invisible
-  %h4.title_child_first= raw t('faq.questions.lesson_notes_inside')
-  %p.title_child_second= raw t('faq.answers.lesson_notes_inside')
-  %h4.title_child_first= raw t('faq.questions.lesson_notes_outside')
-  %p.title_child_second=raw t('faq.answers.lesson_notes_outside')
+.question
+  %h4.title= t('faq.questions.uc_document')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.uc_document')  
 
-%h4.title= t('faq.questions.uc_document')
-.invisible
-  %p.title_child_first= raw t('faq.answers.uc_document')  
+.question
+  %h4.title= t('faq.questions.course_document')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.course_document')  
 
-%h4.title= t('faq.questions.course_document')
-.invisible
-  %p.title_child_first= raw t('faq.answers.course_document')  
+.question
+  %h4.title= t('faq.questions.photo')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.photo')  
 
-%h4.title= t('faq.questions.photo')
-.invisible
-  %p.title_child_first= raw t('faq.answers.photo')  
+.question
+  %h4.title= t('faq.questions.nick_login')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.nick_login')  
 
-%h4.title= t('faq.questions.nick_login')
-.invisible
-  %p.title_child_first= raw t('faq.answers.nick_login')  
+.question
+  %h4.title= t('faq.questions.finished_ucs')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.finished_ucs')  
 
-%h4.title= t('faq.questions.finished_ucs')
-.invisible
-  %p.title_child_first= raw t('faq.answers.finished_ucs')  
+.question
+  %h4.title= t('faq.questions.idea')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.idea')  
 
-%h4.title= t('faq.questions.idea')
-.invisible
-  %p.title_child_first= raw t('faq.answers.idea')  
+.question
+  %h4.title= t('faq.questions.error')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.error')  
 
-%h4.title= t('faq.questions.error')
-.invisible
-  %p.title_child_first= raw t('faq.answers.error')  
-
-%h4.title= t('faq.questions.cant_find_faq')
-.invisible
-  %p.title_child_first= raw t('faq.answers.cant_find_faq')  
+.question
+  %h4.title= t('faq.questions.cant_find_faq')
+  .invisible
+    %p.title_child_first= raw t('faq.answers.cant_find_faq')  
 
 %h1= t(:video_tutorials)
 %p.title_child_first=raw t(:video_tutorials_link)
@@ -161,6 +193,28 @@
     }
     else {
       $(this).next(".invisible").toggle();
+    }
+  });
+
+  $('#search').keyup(function(e){
+    var words = $(this).val().split(' ');
+
+    if(words.length == 0 || (words.length == 1 && words[0] == '')){
+      $('.question').show();
+    }else{
+      $('.question').each(function(a){
+        console.log($('.question'));
+        var text = $(this).prop('textContent');
+
+        var result = words.every(function(a) {
+          return text.indexOf(a) != -1;
+        });
+
+        if(result)
+          $(this).show();
+        else
+          $(this).hide();
+      });
     }
   });
 
