@@ -389,7 +389,7 @@ function calcule_grade_exam(link){
 }
 
 function check_inputs(){
-  var val = $('#question_type_question').val();
+  var val = $('#exam_question_question_attributes_type_question').val();
   if(val != 2){
     $("#items .inputs input[type='checkbox']").each(function(){
       $('#items .inputs select#'+$(this).attr('id')+' option:first').prop('selected', !!$(this).prop('checked'));
@@ -402,21 +402,25 @@ function check_inputs(){
   }
 }
 
-function change_inputs(){
-  var val = $('#question_type_question').val();
+function change_inputs(add_item = true){
+  var val = $('#exam_question_question_attributes_type_question').val();
   if(val == 2){
     $('#items .inputs input').hide();
     $('#items .inputs select').show();
-    $("#items .inputs input[type='checkbox']").each(function(){
-      $('#items .inputs select#'+$(this).attr('id')+' option:first').prop('selected', !!$(this).prop('checked'));
-      $('#items .inputs select#'+$(this).attr('id')+' option:last').prop('selected', !$(this).prop('checked'));
-    });
+    if (!add_item) {
+      $("#items .inputs input[type='checkbox']").each(function(){
+        $('#items .inputs select#'+$(this).attr('id')+' option:first').prop('selected', !!$(this).prop('checked'));
+        $('#items .inputs select#'+$(this).attr('id')+' option:last').prop('selected', !$(this).prop('checked'));
+      });
+    }
   }else{
     $('#items .inputs select').hide();
     $('#items .inputs input').show();
-    $('#items .inputs select').each(function(){
-      $('#items .inputs input#'+$(this).attr('id')).prop('checked', !!$(this).find('option:first').prop('selected'));
-    });
+    if (!add_item) {
+      $('#items .inputs select').each(function(){
+        $('#items .inputs input#'+$(this).attr('id')).prop('checked', !!$(this).find('option:first').prop('selected'));
+      });
+    }
   }
 }
 

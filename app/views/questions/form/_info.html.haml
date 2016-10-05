@@ -21,8 +21,8 @@
 
     change_inputs();
 
-    $('select#question_type_question').on('change', function () {
-      change_inputs();
+    $('select#exam_question_question_attributes_type_question').on('change', function () {
+      change_inputs(false);
     });
 
     $(document).on("fields_added.nested_form_fields", function(event) {
