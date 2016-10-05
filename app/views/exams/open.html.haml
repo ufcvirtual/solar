@@ -10,7 +10,7 @@
 = javascript_include_tag 'exams'
 
 :javascript
-
+  
   $.fancybox.update();
 
   if("#{@disabled}"=="false"){
@@ -53,3 +53,4 @@
   }
 
   load_components(#{@exam_questions.current_page});
+  

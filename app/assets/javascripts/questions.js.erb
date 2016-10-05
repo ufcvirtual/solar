@@ -311,7 +311,7 @@ function annul(icon){
 
   $.put($(icon).data('url'), function(data){
     flash_message(data.notice, 'notice');
-    $(icon).prop('disabled', true)
+    $(icon).prop('disabled', true);
   }).error(function(data){
     $(icon).prop('checked', false);
     var data = $.parseJSON(data.responseText);
@@ -403,7 +403,8 @@ function check_inputs(){
   }
 }
 
-function change_inputs(add_item = true){
+function change_inputs(add_item){
+  add_item = (typeof add_item === "undefined" ? true : add_item);
   var val = $('#exam_question_question_attributes_type_question').val();
   if(val == 2){
     $('#items .inputs input').hide();

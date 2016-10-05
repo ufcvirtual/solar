@@ -111,7 +111,7 @@
               - unless b.object.comment.blank?
                 - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"
 
-            = b.select :value, options_for_select([['', nil], ['F', false], ['V', true]], b.object.value), {disabled: @disabled, onchange: 'change();'}
+            = b.select :value, options_for_select([['', nil], ['F', false], ['V', true]], b.object.value), disabled: @disabled, onchange: 'change();'
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
               %span= b.object.description.html_safe
@@ -145,7 +145,7 @@
   }
 
   function update_radio(checkbox){
-    $('.radio_'+$(checkbox).prop('id')+':first').prop('checked', $(checkbox).prop('checked'))
+    $('.radio_'+$(checkbox).prop('id')+':first').prop('checked', $(checkbox).prop('checked'));
 
     if(!!$(checkbox).prop('checked'))
       $('input[type="checkbox"]').each(function(){
