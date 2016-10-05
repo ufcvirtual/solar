@@ -1,114 +1,159 @@
 %tbody
   %td.question_items
-    = form_for(@exam_responses, html: { :method => :put, id: 'responses_form', :'data-duration' => @exam_responses.duration}, :url => exam_response_path(@exam_responses), :remote => true) do |er|
+    = form_for(@exam_responses, html: { :method => :put, id: 'responses_form', :'data-duration' => @exam_responses.duration}, :url => exam_response_path(@exam_responses), :remote => true, :'data-disabled' => @disabled) do |er|
       = er.hidden_field :exam_user_attempt_id, value: @last_attempt.id
       = er.hidden_field :question_id, value: question.id
       - arr_alf = ('A'..'Z').to_a
-      - arra_correted = []
-      - class_comment = 'comment-blue' #default
-      - question_items = question.question.question_items
+      - arra_correted, arra_correted2 = [], []
       - if question.type_question.to_i == Question::UNIQUE
         - num_question = -1
-        = er.collection_radio_buttons :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', checked: @unique_id}, {name: 'exam_response[question_item_ids][]', :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled} do |b|
-          - num_question =  num_question + 1
-          - class_label = nil
-          - image = nil
-          
-          - if @disabled
-            - if b.object.value
-              - arra_correted.push(arr_alf[num_question])
-            - if (b.object.value && @unique_id==b.object.id)
-              - class_label = "hit" 
-              - class_comment = 'comment-green'
-            - elsif (!b.object.value && @unique_id==b.object.id) || (b.object.value && @unique_id!=b.object.id)
-              - class_label = "incorrect" 
-              - class_comment = 'comment-red'
-            - unless b.object.comment.blank?
-              - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"  
-              
-          - if b.object.item_image?  
-            - image = @pdf !=1 ? image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) : wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) 
-           
-          - b.label(class: class_label) {b.radio_button + arr_alf[num_question]+') ' + raw(b.text)+image } + raw(coment)
-         
+        - right_answer = question.question_items.where(value: true).pluck(:id).first
+        = er.nested_fields_for :exam_responses_question_items, wrapper_tag: :div do |i|
+          - class_comment = 'comment-blue' #default
+          - unless i.object.id.nil?
+            - num_question =  num_question + 1
+            - class_label = ''
+            - image = ''
+            - coment = ''
+
+            - if @disabled
+              - if right_answer==i.object.question_item_id
+                - arra_correted.push(arr_alf[num_question])
+              - if (i.object.value && right_answer==i.object.question_item_id)
+                - class_label = "hit" 
+                - class_comment = 'comment-green'
+              - elsif (!i.object.value && right_answer==i.object.question_item_id) || (i.object.value && right_answer!=i.object.question_item_id)
+                - class_label = "incorrect" 
+                - class_comment = 'comment-red'
+              - unless i.object.comment.blank?
+                - coment = "<div class='#{class_comment}'> #{i.object.comment} </div>"  
+                
+            - if i.object.item_image?  
+              - image = @pdf !=1 ? image_tag(i.object.item_image(:medium), id: 'item_image', alt: i.object.img_alt) : wicked_pdf_image_tag(i.object.item_image(:medium), id: 'item_image', alt: i.object.img_alt) 
+               
+            = i.check_box :value, {disabled: @disabled, onchange: 'update_radio(this); change();', class: 'invisible'}, true, ''
+            = radio_button_tag "radio_exam_response_exam_responses_question_items_attributes", :value, nil, {checked: i.object.value, class: "radio_exam_response_exam_responses_question_items_attributes_#{num_question}_value", disabled: @disabled}
+
+            = i.label :value, class: class_label do
+              %span= arr_alf[num_question]+') '
+              %span= i.object.description.html_safe
+              %span= raw image
+              = raw(coment)
+
         - if @disabled
           %br
-          = t('exams.result_exam_user.itens_corrected') + arra_correted.join(", ")
+          = t('exams.result_exam_user.itens_corrected') + arra_correted.join(", ")        
           
       - elsif question.type_question.to_i == Question::MULTIPLE
         - num_question = -1
-        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: @disabled}, :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled do |b|
-          - class_label = nil
-          - image = nil
-          - num_question =  num_question + 1
-          - if @disabled
-            - coment = b.object.comment  
-            - if b.object.value
-              - arra_correted.push(arr_alf[num_question])
-            - if ((b.object.value && @exam_responses.question_item_ids.include?(b.object.id)) || (!b.object.value && !@exam_responses.question_item_ids.include?(b.object.id)))
-              - class_label = "hit" 
-              - class_comment = 'comment-green'
-            - else
-              - class_label = "incorrect" 
-              - class_comment = 'comment-red'
-            - unless b.object.comment.blank?
-              - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"
+        - right_items = question.question_items.where(value: true).pluck(:id)
+        = er.nested_fields_for :exam_responses_question_items, wrapper_tag: :div do |b|
+          - class_comment = 'comment-blue' #default
+          - unless b.object.id.nil?
+            - class_label = nil
+            - image = nil
+            - num_question =  num_question + 1
+            - if @disabled
+              - coment = b.object.comment  
+              - if right_items.include?(b.object.question_item_id)
+                - arra_correted.push(arr_alf[num_question])
+              - if (b.object.value && right_items.include?(b.object.question_item_id))
+                - class_label = "hit" 
+                - class_comment = 'comment-green'
+              - elsif (b.object.value && !right_items.include?(b.object.question_item_id)) || (!b.object.value && right_items.include?(b.object.question_item_id))
+                - class_label = "incorrect" 
+                - class_comment = 'comment-red'
+              - unless b.object.comment.blank?
+                - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"
 
-          - if b.object.item_image?     
-            - image =  @pdf !=1 ? image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) : image = wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt)
+            - if b.object.item_image?     
+              - image =  @pdf !=1 ? image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) : image = wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt)
 
-          - b.label(class: class_label) { b.check_box + arr_alf[num_question]+') '  + raw(b.text) + image }+ raw(coment)
+            = b.check_box :value, {disabled: @disabled, onchange: 'change();'}, true, ''
+            = b.label :value, class: class_label do
+              %span= arr_alf[num_question]+') '
+              %span= b.object.description.html_safe
+              %span= raw image
+              = raw(coment)
+
         - if @disabled
           %br
           = t('exams.result_exam_user.itens_corrected') + arra_correted.join(", ")
       - else
         - num_question = -1
-        = er.collection_check_boxes :question_item_ids, question_items, :id, :description, {item_wrapper_tag: 'div', item_wrapper_class: 'item_checkbox', disabled: @disabled}, :onclick => "save_question('#{@exam_responses.duration}');", disabled: @disabled do |b|
-          - class_label = nil
-          - num_question =  num_question + 1
-          - selected = @exam_responses.question_item_ids.include?(b.object.id)==true ? 'V' : 'F'
-          - if b.object.item_image?
-            - image = @pdf !=1 ? image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) : wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) 
-   
-          - if @disabled
-            - coment = b.object.comment  
-            - if (b.object.value == true)
-              - arra_correted.push(arr_alf[num_question])
-            - if ((b.object.value == true && @exam_responses.question_item_ids.include?(b.object.id)==true) || (b.object.value == false && @exam_responses.question_item_ids.include?(b.object.id)==false))
-              - class_label = "hit" 
-              - class_comment = 'comment-green'
-            - else
-              - class_label = "incorrect" 
-              - class_comment = 'comment-red'
-            - unless b.object.comment.blank?
-              - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"
+        - items = question.question_items
+        - true_items = items.where(value: true).pluck(:id)
+        - false_items = items.where(value: false).pluck(:id)
+        = er.nested_fields_for :exam_responses_question_items, wrapper_tag: :div do |b|
+          - class_comment = 'comment-blue' #default
+          - unless b.object.id.nil?
+            - class_label = nil
+            - num_question =  num_question + 1
+            - selected = b.object.value
+            - if b.object.item_image?
+              - image = @pdf !=1 ? image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) : wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) 
+     
+            - if @disabled
+              - coment = b.object.comment  
+              - if true_items.include?(b.object.question_item_id)
+                - arra_correted.push(arr_alf[num_question])
+              - elsif false_items.include?(b.object.question_item_id)
+                - arra_correted2.push(arr_alf[num_question])
+              - if b.object.value.nil?
+                - class_label = "incorrect" 
+                - class_comment = 'comment-red'
+              - elsif ((b.object.value && true_items.include?(b.object.question_item_id)) || (!b.object.value && false_items.include?(b.object.question_item_id)))
+                - class_label = "hit" 
+                - class_comment = 'comment-green'
+              - else
+                - class_label = "incorrect" 
+                - class_comment = 'comment-red'
+              - unless b.object.comment.blank?
+                - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"
 
-            - it = select_tag :question_item_ids, options_for_select(['F', 'V'], selected), disabled: @disabled
-            - b.label(class: class_label) { (it) + ' ' +arr_alf[num_question]+') ' + raw(b.text) + image }+ raw(coment)    
+            = b.select :value, options_for_select([['', nil], ['F', false], ['V', true]], b.object.value), {disabled: @disabled, onchange: 'change();'}
+            = b.label :value, class: class_label do
+              %span= arr_alf[num_question]+') '
+              %span= b.object.description.html_safe
+              %span= raw image
+              = raw(coment)
          
-          -else
-            - it = select_tag arr_alf[num_question], options_for_select(['F', 'V'], selected), :onchange => "change(this);"
-            - b.label(class: class_label) { b.check_box(:hidden => true) + (it) + ' '+arr_alf[num_question]+') '+ image + raw(b.text) }+ raw(coment)
         - if @disabled
           %br
-          = t('exams.result_exam_user.itens_corrected') + arra_correted.join(", ")
+          = t('exams.result_exam_user.true_items') + arra_correted.join(", ")
+          %br
+          = t('exams.result_exam_user.false_items') + arra_correted2.join(", ")
 
       = er.hidden_field :duration, {:id => "duration"}
 
 :javascript
+  $(document.body).on('change','select',function(){
+    change();
+  });
 
-  function change(obj, value){
-    var checkbox = $(obj).siblings();
-    var selected = $(obj).val();
+  $('input[type="radio"]').click(function(){
+    $("input[type='checkbox']:checked").each(function(){
+      $(this).prop('checked', false);
+    });
 
-    if(selected=='V'){
-      checkbox.prop('checked', true);
-    }else{
-      checkbox.prop('checked', false);
-    }  
+    $("input[type='checkbox']#"+$(this).prop('class').replace('radio_', '')).prop('checked', true);
+    change();
+  });
 
+  function change(){
     save_question('#{@exam_responses.try(:duration)}');
+  }
 
+  function update_radio(checkbox){
+    $('.radio_'+$(checkbox).prop('id')+':first').prop('checked', $(checkbox).prop('checked'))
+
+    if(!!$(checkbox).prop('checked'))
+      $('input[type="checkbox"]').each(function(){
+        if($(this).prop('id') != $(checkbox).prop('id')){
+          $(this).prop('checked', false);
+          update_radio($(this));
+        }
+      });
   }
 
   

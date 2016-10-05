@@ -54,6 +54,12 @@
       width: 10%;
     }
   }
+
+  td.enunciation{
+    .inline{
+      display: inline-block;
+    }
+  }
 }
 
 .tb_questions{
@@ -305,7 +311,25 @@
 }
 
 tbody .question_items{
+  overflow: hidden !important;
   img{
+    display: inline-block;
+  }
+  label{
+    span{
+      display: inline-block;
+    }
+  }
+  select{
+    width: 43px;
+    option{
+      height: 10px;
+    }
+  }
+}
+
+tbody .question_items.preview{
+  p, span{
     display: inline-block;
   }
 }

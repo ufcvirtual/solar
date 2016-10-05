@@ -141,21 +141,21 @@
       border: solid 2px #CDD6E3;
     }
 
-    .item_checkbox label input{
+    label input{
       margin-right: 5px;
     }
 
-    .item_checkbox label{
+    label{
       display: inline;
       color: $text_blue;
       font-family: 'PT Sans', sans-serif;
     }
 
-    .item_checkbox .incorrect{
+    .incorrect{
       color:#E03838;
     }
     
-    .item_checkbox .hit{
+    .hit{
       color:#0B610B;
     }
   }

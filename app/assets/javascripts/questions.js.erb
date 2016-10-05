@@ -50,19 +50,20 @@ function save_question(exam_id){
   if (prepend_to != undefined && !!!prepend_to.length)
     prepend_to = $('.list_questions_exam_'+exam_id);
 
-  $('form#question_form').serialize_and_submit({
-    files: true,
-    replace_with: replace,
-    prepend_to_list: prepend_to,
-    complement_success: function(data) {
-      if (typeof(data.alert) != "undefined")
-        $('form span.error').html(data.alert);
-      else
-        $('form span.error').html('');
-      update_tables_with_no_data();
-    },
-    call_function: 'update_nice_checkbox'
-  });
+  if(!$('form#question_form').data('disabled'))
+    $('form#question_form').serialize_and_submit({
+      files: true,
+      replace_with: replace,
+      prepend_to_list: prepend_to,
+      complement_success: function(data) {
+        if (typeof(data.alert) != "undefined")
+          $('form span.error').html(data.alert);
+        else
+          $('form span.error').html('');
+        update_tables_with_no_data();
+      },
+      call_function: 'update_nice_checkbox'
+    });
 }
 
 function go_to_items(){

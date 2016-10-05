@@ -11,6 +11,7 @@ class ExamsController < ApplicationController
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     authorize! :index, Exam, on: [@allocation_tag_id]
     @exams = Score.list_tool(current_user.id, @allocation_tag_id, 'exams', false, false, true)
+
     @can_open = can? :open, Exam, {on: @allocation_tag_id}
     @can_evaluate = can? :calcule_grades, Exam, { on: @allocation_tag_id }
   rescue => error
@@ -115,6 +116,7 @@ class ExamsController < ApplicationController
     else
       @total_attempts  = @acu.count_attempts rescue 0
       @total_time = (last_attempt.try(:complete) ? 0 : last_attempt.try(:get_total_time)) || 0
+
       @text = if !last_attempt.nil? && !last_attempt.try(:complete)
         t("exams.pre.continue")
       else
@@ -128,12 +130,12 @@ class ExamsController < ApplicationController
 
   def open
     @disabled = false
-
+    @situation = params[:situation]
     @last_attempt = @acu.find_or_create_exam_user_attempt
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @total_time = (@last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)) || 0
     
-    if (params[:situation] == 'finished' || params[:situation] == 'corrected')
+    if (@situation == 'finished' || @situation == 'corrected')
       mod_correct_exam = @exam.attempts_correction
       @exam_user_attempt_id = params[:exam_user_attempt_id]
       @disabled = true
@@ -153,7 +155,12 @@ class ExamsController < ApplicationController
           @ats = AllocationTag.find(@allocation_tag_id)
           @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order) unless @exam.nil?
           @pdf = 1
-          render :result_exam
+
+          render pdf: t('exams.result_exam.title_pdf', name: @exam.name),
+             template: 'exams/result_exam.html.haml',
+             layout: false,
+             disposition: 'attachment'
+
         else  
          render :open 
         end
@@ -190,6 +197,10 @@ class ExamsController < ApplicationController
     @grade = ((@acu.try(:grade).blank? || @exam.can_correct?(@user_id, AllocationTag.find(@allocation_tag_id).related)) ? @exam.recalculate_grades(@user_id, nil, true) : @acu.grade)
 
     @attempts = @acu.try(:exam_user_attempts) || []
+    @attempt = case @exam.attempts_correction
+               when Exam::GREATER; @attempts.order('grade DESC').first
+               when Exam::LAST; @attempts.last
+               end
     @scores_exam = @exam.exam_questions.where(use_question: true).sum(:score)
   rescue CanCan::AccessDenied
     render text: t(:no_permission)
@@ -289,7 +300,7 @@ class ExamsController < ApplicationController
     acs = exam.academic_allocations
     ac_id = (acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: allocation_tag_id).first.id)
     acu = AcademicAllocationUser.find_one(ac_id, current_user.id, nil, true)
-    @percentage = Exam.percent(exam.number_questions, acu.exam_user_attempts.last.questions.count)
+    @percentage = Exam.percent(exam.number_questions, acu.answered_questions)
   rescue => error
     render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end

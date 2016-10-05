@@ -13,6 +13,7 @@
 
 .comment-blue {
   background-color: #E8EFF6;
+  border-radius: 8px;
   color: #4B4B4B;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
@@ -20,7 +21,8 @@
   width: 450px;
 }
 .comment-red {
-  background-color: #FFDAB9;
+  background-color: #fff6f6;
+  border-radius: 8px;
   color: #4B4B4B;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
@@ -28,7 +30,8 @@
   width: 450px;
 }
 .comment-green {
-  background-color: #C1FFC1;
+  background-color: #F5FFE3;
+  border-radius: 8px;
   color: #4B4B4B;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
@@ -80,10 +83,6 @@
 
 	  .block_content {
 	    padding: 5px;
-	    border-bottom: solid 1px;
-	    border-bottom-color: #D0D0D0;
-	    border-top: solid 1px;
-	    border-top-color: #D0D0D0;
 	    min-height: 28px;
 	    display: block;
 
@@ -124,31 +123,27 @@
 	  .question_items{
 	    padding: 10px 0px 10px 15px;
 
-	    .item_checkbox{
-	      margin-top: 10px;
-	    }
-
-	    .item_checkbox img{
+	    img{
 	      margin-right: 10px;
 	      border: solid 2px #CDD6E3;
 	      vertical-align: top;
 	    }
 
-	    .item_checkbox label input{
+	    label input{
 	      margin-right: 5px;
 	    }
 
-	    .item_checkbox label{
+	    label{
 	      display: inline;
 	      color: #1c5ec9;
 	      font-family: 'PT Sans', sans-serif;
 	    }
 
-	    .item_checkbox .incorrect{
+	    .incorrect{
 	      color:#E03838;
 	    }
 	    
-	    .item_checkbox .hit{
+	    .hit{
 	      color:#0B610B;
 	    }
 	  }
@@ -377,3 +372,11 @@ td.new_after_evaluation{
     padding: 5px;
     background-color: #e6f0fc;
 } 
+
+.invisible {
+    display: none;
+}
+
+.question_items label, .question_items label span p {
+    display: inline;
+}

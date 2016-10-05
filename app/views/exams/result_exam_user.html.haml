@@ -27,20 +27,52 @@
       - if @attempts.blank?
         .text_none= t('exams.error.no_attempt')
       - else
-        - @attempts.each_with_index do |attempt, idx|
-          - total_time = attempt.exam_responses.sum(:duration)
-          .attempt{id: "#{attempt.id}", class: "#{idx == 0 ? '' : 'invisible'}"}
+        - if @exam.attempts_correction == Exam::AVERAGE
+          - @attempts.each_with_index do |attempt, idx|
+            - total_time = attempt.exam_responses.sum(:duration)
+            .attempt{id: "#{attempt.id}", class: "#{idx == 0 ? '' : 'invisible'}"}
+              .form-inputs.block_content
+                .input
+                  = label_tag t(".number_question"), nil, class: "form_label"
+                  %span.label_info= @exam.number_questions
+                .input
+                  = label_tag t(".start_date"), nil, class: "form_label"
+                  %span.label_info= l(attempt.start, format: :at_date)
+
+                .input
+                  = label_tag t(".end_date"), nil, class: "form_label"
+                  %span.label_info= l(attempt.end, format: :at_date) rescue ''
+
+                .input
+                  = label_tag t(".average_time"), nil, class: "form_label"
+                  %span.label_info= Time.at(total_time/@exam.number_questions).utc.strftime("%H:%M:%S")
+
+                .input
+                  = label_tag t(".exam_time"), nil, class: "form_label"
+                  %span.label_info= Time.at(total_time).utc.strftime("%H:%M:%S")
+
+                .input
+                  = label_tag t(".punctuation"), nil, class: "form_label"
+                  %span.label_info= label_tag t(".to", from: attempt.grade.to_s, to:@scores_exam.to_s)
+        - else
+          - total_time = @attempt.exam_responses.sum(:duration)
+          .attempt{id: "#{@attempt.id}"}
             .form-inputs.block_content
               .input
                 = label_tag t(".number_question"), nil, class: "form_label"
                 %span.label_info= @exam.number_questions
+
+              .input
+                = label_tag t(".attempts"), nil, class: "form_label"
+                %span.label_info= @attempts.count
+
               .input
                 = label_tag t(".start_date"), nil, class: "form_label"
-                %span.label_info= l(attempt.start, format: :at_date)
+                %span.label_info= l(@attempt.start, format: :at_date)
 
               .input
                 = label_tag t(".end_date"), nil, class: "form_label"
-                %span.label_info= l(attempt.end, format: :at_date) rescue ''
+                %span.label_info= l(@attempt.end, format: :at_date) rescue ''
 
               .input
                 = label_tag t(".average_time"), nil, class: "form_label"
@@ -52,7 +84,7 @@
 
               .input
                 = label_tag t(".punctuation"), nil, class: "form_label"
-                %span.label_info= label_tag t(".to", from: attempt.grade.to_s, to:@scores_exam.to_s)
+                %span.label_info= label_tag t(".to", from: @attempt.grade.to_s, to:@scores_exam.to_s)
               
   - if @frequency
     .frequency_form

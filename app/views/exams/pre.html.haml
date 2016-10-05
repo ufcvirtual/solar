@@ -22,7 +22,12 @@
         %td= t("exams.pre.uninterrupted")
         - uninterrupted = @exam.uninterrupted ? t("exams.pre.aw_no") : t("exams.pre.aw_yes")
         %td= uninterrupted
-
+      %tr.lines
+        %td.expand_correction{colspan: 2, style: 'text-align: center; cursor: pointer;'}
+          =t('exams.pre.correction_title')
+          %i.icon-arrow-down-triangle
+          .correction_text.invisible
+            = raw t('exams.pre.correction')
   .notice
     #save= t("exams.pre.alert_save")
     #start= t("exams.pre.alert_start")
@@ -57,4 +62,9 @@
         else{ location.reload(); }
       }
     });
+
+    $('.expand_correction').click(function(){
+      $('.correction_text').toggleClass('invisible');
+    });
+
   });

@@ -217,8 +217,9 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   def answered_questions(last_attempt=nil)
     last_attempt = exam_user_attempts.last if last_attempt.blank?
+
     return 0 if last_attempt.blank?
-    Question.joins(question_items: [exam_responses: :exam_user_attempt]).where(exam_user_attempts: {id: last_attempt.id}).pluck(:id).uniq.count rescue 0
+    last_attempt.exam_responses_question_items.where("exam_responses_question_items.value IS NOT NULL").select('DISTINCT exam_response_id').count rescue 0
   end
 
   def has_attempt(exam)
@@ -291,11 +292,6 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   def info
     case academic_allocation.academic_tool_type
-    when 'Exam'
-      complete_attempts = exam.ended? ? exam_user_attempts : exam_user_attempts.where(complete: true)
-      last_attempt = exam_user_attempts.last
-
-      { grade: self.grade, complete: last_attempt.try(:complete), attempts: exam_user_attempts.count, responses: answered_questions(last_attempt) }
     when 'Assignment' 
       grade, working_hours, comments = try(:grade), try(:working_hours), try(:assignment_comments)
     

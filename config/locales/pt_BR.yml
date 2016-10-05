@@ -19,8 +19,8 @@ pt_BR:
       normal: "%d/%m/%Y"
     day_names: [Domingo, Segunda, "Terça", Quarta, Quinta, Sexta, "Sábado"]
     abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, "Sáb"]
-    month_names: [Janeiro, Fevereiro, "Março", Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
-    abbr_month_names: [Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez]
+    month_names: ['', Janeiro, Fevereiro, "Março", Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
+    abbr_month_names: ['', Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez]
     order:
         - :day
         - :month
@@ -3254,6 +3254,8 @@ pt_BR:
       uninterrupted__tooltip: 'A prova pode ser interrompida e continuada, quantas vezes forem necessárias, desde que esteja no período de disponibilidade. Provas onde essa opção não está disponível, ao ser interrompida, a tentativa atual será finalizada.'
       button: Iniciar Prova
       continue: Continuar Prova
+      correction: 'A prova será corrigida automaticamente pelo Solar 2.0, portanto a nota será obtida através da soma do resultado do aluno em cada questão, as quais possuem suas respectivas pontuações. <br/> A seguinte estratégia será utilizada: <br/> <b> Questões de única escolha: </b> O aluno receberá a pontuação total apenas se selecionar a única opção correta. <br/> <b> Questões de V ou F: </b> Para cada item correto, o aluno receberá a pontuação equivalente ao item. Cada item tem um valor igual ao obtido pela divisão do valor total da questão pela quantidade de itens. </br> <b> Questões de múltipla escolha: </b> O aluno receberá a pontuação total apenas se selecionar todos os itens corretos. Para cada item incorreto selecionado, o aluno perderá a pontuação de um item correto. Cada item tem um valor igual ao obtido pela divisão do valor total da questão pela quantidade de itens corretos. <br/>'
+      correction_title: 'Como será feita a correção da prova?'
     open:
       to: " de "
       questions: " questões"
@@ -3272,6 +3274,7 @@ pt_BR:
       average_time: "Tempo médio em cada questão"
       total_time: "Tempo gasto na prova"
       grade: Nota
+      attempts: Quantidade de tentativas
     error:
       general_message: Não foi possível realizar a ação desejada
       started: Prova já publicada e iniciada
@@ -3293,11 +3296,13 @@ pt_BR:
       general_message: Não foi possível realizar a ação desejada
       calcule_grade: A nota já foi calculada
       time: A prova deve estar em andamento para realização.
+      time_is_up: Duração máxima já atingida.
       attempt: A quantidade máxima de tentativas para realização da prova já foi atingida.
       not_finished: Esta prova ainda não foi encerrada
       duration_and_hour: deve ser menor que a diferença de horários
       no_attempt: Nenhuma tentativa realizada 
       cant_calcule_grade: A nota já foi calculada ou ainda não é possível realizar o cálculo.
+      unique_choice: Deve ter apenas uma resposta
     show:
       groups: Turmas
       empty_group: Turma vazia
@@ -3338,6 +3343,8 @@ pt_BR:
       email_of: do
       email: "Por favor não responda essa mensagem. Esse é um email automático do Solar 2.0."
       itens_corrected: "Iten(s) correto(s): "
+      true_items: "Iten(s) verdadeiro(s): "
+      false_items: "Iten(s) falso(s): "
       frequency: Frequência
       working_hours: 'Carga horária: %{wh}'
       wh: Carga Horária
@@ -3345,6 +3352,7 @@ pt_BR:
       student: 'Aluno: '
       grade: 'Nota: '
       exam: 'Prova: '
+      title_pdf: 'Correção da prova %{name}'
     open_result:
       name: Correções  
       grade: 'Nota: '

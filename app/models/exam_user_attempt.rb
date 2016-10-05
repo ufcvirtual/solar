@@ -10,6 +10,7 @@ class ExamUserAttempt < ActiveRecord::Base
   has_many :exam_responses, dependent: :destroy
   has_many :question_items, through: :exam_responses
   has_many :questions     , through: :question_items
+  has_many :exam_responses_question_items, through: :exam_responses
 
   validates :grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true }
 
@@ -30,8 +31,12 @@ class ExamUserAttempt < ActiveRecord::Base
     self.delete
   end
 
-  def get_total_time
-    exam_responses.sum(:duration)
+  def get_total_time(er_id=nil, time=nil)
+    if time.blank? || er_id.blank?
+      exam_responses.sum(:duration)
+    else
+      exam_responses.where("id != #{er_id}").sum(:duration) + time
+    end
   end
 
   def uninterrupted_or_ended(exam)

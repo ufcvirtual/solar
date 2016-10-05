@@ -1,5 +1,5 @@
 %tbody
-  %td.question_items
+  %td.question_items.preview
     - arr_alf = ('A'..'Z').to_a
     - question_items = question.question_items
     - num_question = -1
@@ -8,29 +8,29 @@
       - question_items.each do |qi|
         - num_question =  num_question + 1
         
-        %p
-          = radio_button_tag "item#{qi.id}", false
-          = label_tag "item#{qi.id}", raw([arr_alf[num_question]+')', qi.description].compact.join(' '))
+        .item
+          %span= radio_button_tag 'item', :value, nil, disabled: true
+          %span= label_tag "item#{qi.id}", raw([arr_alf[num_question]+')', qi.description].compact.join(' '))
           - if qi.item_image?     
-            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+            %span= image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
 
     - elsif question.type_question.to_i == Question::MULTIPLE
       - question_items.each do |qi|
         - num_question =  num_question + 1
 
-        %p
-          = check_box_tag "item#{qi.id}"
-          = label_tag "item#{qi.id}", raw([arr_alf[num_question]+')', qi.description].compact.join(' '))
+        .item
+          %span= check_box_tag "item", disabled: true
+          %span= label_tag "item#{qi.id}", raw([arr_alf[num_question]+')', qi.description].compact.join(' '))
           - if qi.item_image?     
-            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+            %span= image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
 
     - else
       - question_items.each do |qi|
         - num_question =  num_question + 1
 
-        %p
-          = select_tag "item#{qi.id}", options_for_select(['F', 'V']) 
-          = label_tag "item#{qi.id}", raw([arr_alf[num_question]+')', raw(qi.description)].compact.join(' '))
+        .item
+          %span= select_tag "item#{qi.id}", options_for_select(['', 'F', 'V']) , {disabled: true}
+          %span= label_tag "item#{qi.id}", raw([arr_alf[num_question]+')', raw(qi.description)].compact.join(' '))
           - if qi.item_image?     
-            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+            %span= image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
 

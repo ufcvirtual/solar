@@ -25,6 +25,7 @@
                 = image_tag q_image.image(get_image_size(question_images.count)), id: 'question_image', alt: q_image.img_alt
                 %br
                 = q_image.legend
+
         - if @preview
           = render 'exams/open/question_preview', { question: question }
         - else

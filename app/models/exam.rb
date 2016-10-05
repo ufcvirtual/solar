@@ -48,7 +48,7 @@ class Exam < Event
       end
       grade.round(2)
     else
-      errors.add(:base, I198t('exams.errors.not_finished'))
+      errors.add(:base, I18n.t('exams.errors.not_finished'))
     end
   end
 
@@ -84,7 +84,7 @@ class Exam < Event
     query << "academic_allocation_users.user_id = :user_id "   unless user_id.blank? 
     query << "academic_allocations.allocation_tag_id  IN (#{ats}) "  unless ats.blank?  
     query << "exam_user_attempts.grade IS NULL" unless all.blank?
-    query << "schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour::time < current_time)"
+    query << "schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour IS NOT NULL AND end_hour != '' AND end_hour::time < current_time)"
 
     AcademicAllocationUser.joins(academic_allocation: [exam: :schedule])
             .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id")
@@ -102,19 +102,18 @@ class Exam < Event
         if question.annulled
           grade_question =  question.score
         else  
-          correct_selected_items = count_itens_correction_question_att(exam_user_attempt, question)
-          if question.type_question.to_i == Question::UNIQUE  
-              grade_question = correct_selected_items * question.score
-          else
-            qtd_itens_question = question.question_items.count
-            qtd_itens_true = question.question_items.where(value: true).count
-            qtd_itens_false = qtd_itens_question - qtd_itens_true
-
-            not_selected_items = count_itens_correction_question_att(exam_user_attempt, question, false)
-            correct_not_selected_items = qtd_itens_false - not_selected_items
-
-            score_item = question.score / qtd_itens_question
-            grade_question = score_item * (correct_not_selected_items+correct_selected_items)
+          if question.type_question.to_i == Question::UNIQUE
+            grade_question = count_correct_items(exam_user_attempt, question, true) * question.score
+          elsif question.type_question.to_i == Question::MULTIPLE
+            score_item = question.score / question.question_items.where(value: true).count
+            count_correct_items = count_correct_items(exam_user_attempt, question, true)
+            count_wrong_items   = count_wrong_items(exam_user_attempt, question)
+            final_items = count_correct_items - count_wrong_items
+            grade_question = (final_items < 0 ? 0 : final_items) * score_item
+          else # V/F
+            score_item = question.score / question.question_items.count
+            count_correct_items = count_correct_items(exam_user_attempt, question)
+            grade_question = count_correct_items * score_item
           end  
         end  
         grade_exam = grade_exam + grade_question
@@ -129,12 +128,20 @@ class Exam < Event
     end
   end 
 
-  def count_itens_correction_question_att(exam_user_attempt, question, t=true)
+  def count_correct_items(exam_user_attempt, question, t=nil)
+    query = t.blank? ? '' : " AND question_items.value = #{t}"
     ExamUserAttempt.joins("LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id")
                    .joins("LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id")
                    .joins("LEFT JOIN question_items ON  question_items.id = exam_responses_question_items.question_item_id")
-                   .where('question_items.value = ? AND question_items.question_id = ? AND exam_user_attempts.id = ?', t, question.id, exam_user_attempt.id).count
-  end  
+                   .where('question_items.question_id = ? AND exam_user_attempts.id = ? AND exam_responses_question_items.value = question_items.value' + query, question.id, exam_user_attempt.id).count
+  end
+
+  def count_wrong_items(exam_user_attempt, question)
+    ExamUserAttempt.joins("LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id")
+                   .joins("LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id")
+                   .joins("LEFT JOIN question_items ON  question_items.id = exam_responses_question_items.question_item_id")
+                   .where('question_items.question_id = ? AND exam_user_attempts.id = ? AND (exam_responses_question_items.value != question_items.value OR exam_responses_question_items.question_item_id IS NULL)', question.id, exam_user_attempt.id).count
+  end
 
   def can_correct?(user_id, ats)
     AcademicAllocationUser.joins(academic_allocation: [exam: :schedule]).joins('LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id').where("schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour::time < current_time)").where(user_id: user_id, exams: { status: true, id: id }, academic_allocations: { allocation_tag_id: ats }).where('exam_user_attempts.grade IS NULL').any?

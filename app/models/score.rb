@@ -169,7 +169,7 @@ class Score # < ActiveRecord::Base
       CASE
         #{evaluated_status}
         WHEN #{sent_status} THEN 'sent'
-        WHEN (current_date < s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '')) OR  (current_date <= s.start_date AND (exams.start_hour IS NOT NULL AND current_time<to_timestamp(exams.start_hour, 'HH24:MI:SS')::time)) THEN 'not_started'
+        WHEN (current_date < s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '')) OR  (current_date <= s.start_date AND (exams.start_hour IS NOT NULL AND exams.end_hour != '' AND current_time<to_timestamp(exams.start_hour, 'HH24:MI:SS')::time)) THEN 'not_started'
         WHEN ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) THEN 'to_send'
         ELSE 
           'not_sent'
@@ -482,32 +482,37 @@ class Score # < ActiveRecord::Base
                 false
               END AS opened,
             CASE 
-              WHEN (current_date >= s.end_date) AND (exams.end_hour IS NULL OR current_time > to_timestamp(exams.end_hour, 'HH24:MI:SS')::time) THEN true
+              WHEN (current_date > s.end_date) OR (current_date = s.end_date AND exams.end_hour IS NOT NULL AND exams.end_hour != '' AND current_time > to_timestamp(exams.end_hour, 'HH24:MI:SS')::time) THEN true
               ELSE 
                 false
               END AS closed,
             case
-            when (current_date < s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '')) OR  (current_date <= s.start_date AND (exams.start_hour IS NOT NULL AND current_time<to_timestamp(exams.start_hour, 'HH24:MI:SS')::time)) then 'not_started'
+            when (current_date < s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '')) OR  (current_date <= s.start_date AND (exams.start_hour IS NOT NULL AND exams.end_hour != '' AND current_time<to_timestamp(exams.start_hour, 'HH24:MI:SS')::time)) then 'not_started'
             when ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) AND exam_responses.id IS NULL then 'to_answer'
-            when ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) AND exam_user_attempts.complete!=TRUE then 'not_finished'
+            when ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) AND last_attempt.complete!=TRUE then 'not_finished'
             when ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) AND user_attempts.count < exams.attempts then 'retake'
-            when academic_allocation_users.grade IS NOT NULL AND (current_date > s.end_date OR  (current_date = s.end_date AND (exams.end_hour IS NOT NULL AND current_time>to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) then 'corrected'
-            when exam_user_attempts.complete=TRUE AND (exams.attempts = user_attempts.count) then 'finished'
+            when academic_allocation_users.grade IS NOT NULL AND (current_date > s.end_date OR  (current_date = s.end_date AND (exams.end_hour IS NOT NULL AND exams.end_hour != '' AND current_time>to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) then 'corrected'
+            when last_attempt.complete=TRUE AND (exams.attempts = user_attempts.count) then 'finished'
             when (current_date >= s.end_date AND current_time>to_timestamp(exams.end_hour, 'HH24:MI:SS')::time) AND (count(exam_user_attempts.id) > 0 ) AND academic_allocation_users.grade IS NULL then 'not_corrected'
             else
               'not_answered'
             end AS situation,
             academic_allocations.evaluative,
             academic_allocations.frequency
-          FROM exams, schedules s, academic_allocations LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}
+          FROM exams, schedules s, academic_allocations 
+            LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}
             LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id
+            LEFT JOIN exam_user_attempts last_attempt ON last_attempt.updated_at = (SELECT MAX(updated_at)
+                                                                                    FROM exam_user_attempts
+                                                                                    GROUP BY academic_allocation_user_id
+                                                                                    HAVING academic_allocation_user_id = academic_allocation_users.id)
             LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id 
             LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id
             LEFT JOIN exams eq_exam ON eq_exam.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'Exam'
             LEFT JOIN ( (SELECT COUNT(exam_user_attempts.id), acu.academic_allocation_id AS ac_id FROM exam_user_attempts LEFT JOIN academic_allocation_users acu ON exam_user_attempts.academic_allocation_user_id = acu.id WHERE acu.user_id = #{user_id} GROUP BY acu.academic_allocation_id)) user_attempts ON user_attempts.ac_id = academic_allocations.id
           WHERE 
             academic_allocations.academic_tool_id = exams.id AND academic_allocations.academic_tool_type='Exam' AND exams.schedule_id=s.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats}) AND exams.status = 't'
-            GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, exams.name,  s.start_date,  s.end_date, exams.description, new_after_evaluation, academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, exams.start_hour, exams.end_hour, exam_responses.id, exam_user_attempts.complete, exams.attempts, eq_exam.name, exams.duration, academic_allocations.evaluative, academic_allocations.frequency, user_attempts.count
+            GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, exams.name,  s.start_date,  s.end_date, exams.description, new_after_evaluation, academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, exams.start_hour, exams.end_hour, exam_responses.id, exams.attempts, eq_exam.name, exams.duration, academic_allocations.evaluative, academic_allocations.frequency, user_attempts.count, last_attempt.complete
           ) "
 
         when 'schedule_events'

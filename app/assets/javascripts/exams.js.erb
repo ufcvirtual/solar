@@ -56,17 +56,6 @@ function refresh_array_time(array_time, total) {
   return array_time;
 }
 
-function unique_answer(unique_id) {
-  $('.item_checkbox').each(
-     function(){
-       var er = $(this).find('[type="radio"]');
-       if (unique_id == er.val()) {
-        er.prop("checked", true);
-        }
-     }
-  );
-}
-
 function load_components(page){
   $('#order').html(page);
   $('.number').html(page + ") ");

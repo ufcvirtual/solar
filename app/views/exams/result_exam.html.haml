@@ -1,6 +1,7 @@
 %html
   %head
-    %title Prova
+    %title
+      = 'Solar - '+t(:report, scope: [:scores, :info]) + t('exams.result_exam.title_pdf', name: @exam.name)
     %meta{:charset => 'utf-8'}
     = wicked_pdf_stylesheet_link_tag  "pdf", :media => "all"
     
@@ -10,18 +11,24 @@
       .header
         = wicked_pdf_image_tag "ufc.png", :style => "float: left; width:150px; height: 50px"
         = wicked_pdf_image_tag "ufcVirtual.png", :style => "float: right; width:70px; height: 50px"
-        #title    
+        #title  
+        %br 
         %br
         %br
-        %br 
-        = @ats.info
-        %br 
-        = t(".exam") + @exam.name
-        %br 
-        = t(".student") + current_user.name
         %br
-        = t(".grade") + @grade_pdf.to_s 
-        %p   
+        %div{style: 'font-weight: bold; font-size: 12pt; font-family: "Ubuntu"; text-align: center;'}= @ats.info
+        %br
+        %div{style: 'font-family: "Ubuntu"; text-align: center;'}= t(:report, scope: [:scores, :info]) + t('exams.result_exam.title_pdf', name: @exam.name)
+        .info.block_content{style: 'padding: 24px; text-align: center;'}
+          .left
+            = wicked_pdf_image_tag current_user.user_photo(:medium), alt: t(:mysolar_alt_img_user)
+          .evaluation_info{style: 'margin: 15px; padding-right: 0; display: inline-block;'}
+            %div{style: 'font-weight: bold; font-size: 12pt; text-align: center;font-family: "Ubuntu"; '}= current_user.name
+            %div{style: 'font-weight: bold; font-size: 12pt; font-family: "Ubuntu"; text-align: center;'}= '(' + current_user.nick + ')'
+            %br
+            %div
+              .grade= raw t('scores.info.grade_i', grade: (@grade_pdf.blank? ? ' - ' : @grade_pdf.to_s))
+          %br
         .content_exam    
           = render 'exams/open/content', { preview: @preview }
 

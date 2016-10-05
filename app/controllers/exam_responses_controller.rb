@@ -7,7 +7,7 @@ class ExamResponsesController < ApplicationController
   def update
     exam_response = ExamResponse.find(params[:id])
     exam_user_attempt = exam_response.exam_user_attempt
-    total_time = exam_user_attempt.get_total_time
+    total_time = exam_user_attempt.get_total_time(params[:id], exam_response_params[:duration].to_i)
 
     user_validate     = (exam_user_attempt.user.id == current_user.id)
     attempt_validate  = (exam_user_attempt.id == params[:exam_response][:exam_user_attempt_id].to_i)
@@ -32,7 +32,7 @@ class ExamResponsesController < ApplicationController
   private
 
     def exam_response_params
-      params.require(:exam_response).permit(:id, :exam_user_attempt_id, :value, :duration, :exam_user_attempt_id, :question_id, question_item_ids:[])
+      params.require(:exam_response).permit(:id, :exam_user_attempt_id, :duration, exam_responses_question_items_attributes:[:id, :value])
     end
 
     def render_exam_response_success_json(method)

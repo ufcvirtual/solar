@@ -51,7 +51,11 @@ class ExamQuestion < ActiveRecord::Base
           .order((raffle_order ? "RANDOM()" : "exam_questions.order"))
 
         exam_questions.each do |exam_question|
-          last_attempt.exam_responses.where(question_id: exam_question.question_id).first_or_create!(duration: 0)
+          response = last_attempt.exam_responses.where(question_id: exam_question.question_id).first_or_create!(duration: 0)
+
+          response.question.question_items.pluck(:id).each do |item|
+            response.exam_responses_question_items.where(question_item_id: item).first_or_create!
+          end
         end
       end
 
@@ -64,16 +68,6 @@ class ExamQuestion < ActiveRecord::Base
         .order('exam_responses.id')
     end
   end
-
-  def self.question_current(exam_id, id)
-    exam_questions = ExamQuestion.joins(:question)
-      .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
-        questions: {status: true, id: id})
-      .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
-        questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
-
-    exam_questions
-  end  
 
   def self.question_current(exam_id, id)
     exam_questions = ExamQuestion.joins(:question)
