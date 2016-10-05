@@ -16,8 +16,8 @@ en_US:
       normal: "%d/%m/%Y"
     day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
     abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
-    month_names: [[January, 1], February, March, April, May, June, July, August, September, October, November, December]
-    abbr_month_names: [Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Spt, Oct, Nov, Dec]
+    month_names: ['', January, February, March, April, May, June, July, August, September, October, November, December]
+    abbr_month_names: ['', Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Spt, Oct, Nov, Dec]
     order:
     - :month
     - :day
