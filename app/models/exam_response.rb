@@ -10,7 +10,7 @@ class ExamResponse < ActiveRecord::Base
 
   accepts_nested_attributes_for :exam_responses_question_items
 
-  validates :unique, if: 'question.type_question == 0'
+  validate :unique, if: 'question.type_question == 0'
 
   def unique
     errors.add(:base, I18n.t('exams.error.unique_choice')) if question.type_question == Question::UNIQUE && exam_responses_question_items.where(value: true).count > 1
