@@ -14,7 +14,7 @@
     .right_form
       = f.input :end_hour
 
-= f.input :duration
+= f.input :duration, input_html: { :"data-tooltip" => t('exams.form.info.duration') }
 
 = render 'groups/codes'
 

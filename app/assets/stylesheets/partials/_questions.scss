@@ -311,6 +311,9 @@
 }
 
 tbody .question_items{
+  .nested_fields{
+    margin-top: 10px;
+  }
   overflow: hidden !important;
   img{
     display: inline-block;
@@ -318,6 +321,7 @@ tbody .question_items{
   label{
     span{
       display: inline-block;
+      vertical-align: top;
     }
   }
   select{
@@ -326,11 +330,26 @@ tbody .question_items{
       height: 10px;
     }
   }
+
+  select, input{
+    vertical-align: top !important;
+  }
 }
 
 tbody .question_items.preview{
-  p, span{
+  .item{
+    margin-top: 10px;
+  }
+  p:nth-of-type(2), p:first-of-type, span{
     display: inline-block;
+  }
+
+  p:first-of-type{
+    vertical-align: top;
+  }
+
+  select, input{
+    vertical-align: top !important;
   }
 }
 

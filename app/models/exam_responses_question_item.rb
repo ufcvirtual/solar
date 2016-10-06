@@ -2,6 +2,8 @@ class ExamResponsesQuestionItem < ActiveRecord::Base
   belongs_to :exam_response
   belongs_to :question_item
 
+   default_scope { order(:id) }
+
   validates_uniqueness_of :exam_response_id, scope: [:question_item_id]
 
   def comment
@@ -17,7 +19,7 @@ class ExamResponsesQuestionItem < ActiveRecord::Base
   end
 
   def item_image
-    question_item.item_image
+    question_item.item_image(:medium)
   end
 
   def img_alt

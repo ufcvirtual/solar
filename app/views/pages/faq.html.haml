@@ -2,7 +2,7 @@
 
 .search
   = "Pesquisar por palavras-chave"
-  = text_field_tag :search, nil
+  = text_field_tag :search_faq, nil
 
 .question
   %h4.title= t('faq.questions.whats_solar')
@@ -196,7 +196,7 @@
     }
   });
 
-  $('#search').keyup(function(e){
+  $('#search_faq').keyup(function(e){
     var words = $(this).val().split(' ');
 
     if(words.length == 0 || (words.length == 1 && words[0] == '')){

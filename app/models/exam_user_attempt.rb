@@ -18,8 +18,9 @@ class ExamUserAttempt < ActiveRecord::Base
     unless attempt.exam_responses.empty?
       attempt.exam_responses.each do |response|
         new_response = ExamResponse.where(response.attributes.except('id').merge!({ exam_user_attempt_id: self.id })).first_or_create
-        response.question_items.each do |item|
-          new_response.question_items << item
+        response.exam_responses_question_items.each do |item|
+          new_item = ExamResponsesQuestionItem.where(exam_response_id: item.exam_response_id, question_item_id: item.question_item_id).first_or_initialize
+          new_item.value = item.value
         end
         new_response.save
       end

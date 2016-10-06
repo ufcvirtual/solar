@@ -9,28 +9,33 @@
         - num_question =  num_question + 1
         
         .item
-          %span= radio_button_tag 'item', :value, nil, disabled: true
-          %span= label_tag "item#{qi.id}", raw([arr_alf[num_question]+')', qi.description].compact.join(' '))
-          - if qi.item_image?     
-            %span= image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+          = radio_button_tag 'item', :value, nil, disabled: true
+          = label_tag 'item', class: '' do
+            %span= arr_alf[num_question]+') '
+            - if qi.item_image?     
+              = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+            %span= qi.description.html_safe
 
     - elsif question.type_question.to_i == Question::MULTIPLE
       - question_items.each do |qi|
         - num_question =  num_question + 1
 
         .item
-          %span= check_box_tag "item", disabled: true
-          %span= label_tag "item#{qi.id}", raw([arr_alf[num_question]+')', qi.description].compact.join(' '))
-          - if qi.item_image?     
-            %span= image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+          = check_box_tag "item#{qi.id}", true, false, {disabled: true}
+          = label_tag "item#{qi.id}", class: '' do
+            %span= arr_alf[num_question]+') '
+            - if qi.item_image?     
+              = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+            %span= qi.description.html_safe
 
     - else
       - question_items.each do |qi|
         - num_question =  num_question + 1
 
         .item
-          %span= select_tag "item#{qi.id}", options_for_select(['', 'F', 'V']) , {disabled: true}
-          %span= label_tag "item#{qi.id}", raw([arr_alf[num_question]+')', raw(qi.description)].compact.join(' '))
-          - if qi.item_image?     
-            %span= image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
-
+          = select_tag "item#{qi.id}", options_for_select(['', 'F', 'V']) , {disabled: true}
+          = label_tag "item#{qi.id}", class: '' do
+            %span= arr_alf[num_question]+') '
+            - if qi.item_image?     
+              = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+            %span= qi.description.html_safe

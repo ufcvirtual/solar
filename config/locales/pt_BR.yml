@@ -3233,6 +3233,7 @@ pt_BR:
         config: Configurações
       info:
         continue: Continuar
+        duration: Tempo que o aluno terá para responder a prova após iniciá-la.
     pre:
       alert_save: Todas as questões são salvas automaticamente.
       alert_start: Clique no link abaixo se você tem certeza que deseja iniciar a prova.

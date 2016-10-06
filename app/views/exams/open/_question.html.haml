@@ -29,15 +29,15 @@
                 - coment = "<div class='#{class_comment}'> #{i.object.comment} </div>"  
                 
             - if i.object.item_image?  
-              - image = @pdf !=1 ? image_tag(i.object.item_image(:medium), id: 'item_image', alt: i.object.img_alt) : wicked_pdf_image_tag(i.object.item_image(:medium), id: 'item_image', alt: i.object.img_alt) 
+              - image = @pdf !=1 ? image_tag(i.object.item_image, id: 'item_image', alt: i.object.img_alt) : wicked_pdf_image_tag(i.object.item_image, id: 'item_image', alt: i.object.img_alt) 
                
             = i.check_box :value, {disabled: @disabled, onchange: 'update_radio(this); change();', class: 'invisible'}, true, ''
             = radio_button_tag "radio_exam_response_exam_responses_question_items_attributes", :value, nil, {checked: i.object.value, class: "radio_exam_response_exam_responses_question_items_attributes_#{num_question}_value", disabled: @disabled}
 
             = i.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
+              = raw image
               %span= i.object.description.html_safe
-              %span= raw image
               = raw(coment)
 
         - if @disabled
@@ -67,13 +67,13 @@
                 - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"
 
             - if b.object.item_image?     
-              - image =  @pdf !=1 ? image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) : image = wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt)
+              - image =  @pdf !=1 ? image_tag(b.object.item_image, id: 'item_image', alt: b.object.img_alt) : image = wicked_pdf_image_tag(b.object.item_image, id: 'item_image', alt: b.object.img_alt)
 
             = b.check_box :value, {disabled: @disabled, onchange: 'change();'}, true, ''
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
+              = raw image
               %span= b.object.description.html_safe
-              %span= raw image
               = raw(coment)
 
         - if @disabled
@@ -91,7 +91,7 @@
             - num_question =  num_question + 1
             - selected = b.object.value
             - if b.object.item_image?
-              - image = @pdf !=1 ? image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) : wicked_pdf_image_tag(b.object.item_image(:medium), id: 'item_image', alt: b.object.img_alt) 
+              - image = @pdf !=1 ? image_tag(b.object.item_image, id: 'item_image', alt: b.object.img_alt) : wicked_pdf_image_tag(b.object.item_image, id: 'item_image', alt: b.object.img_alt) 
      
             - if @disabled
               - coment = b.object.comment  
@@ -114,8 +114,8 @@
             = b.select :value, options_for_select([['', nil], ['F', false], ['V', true]], b.object.value), disabled: @disabled, onchange: 'change();'
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
+              = raw image
               %span= b.object.description.html_safe
-              %span= raw image
               = raw(coment)
          
         - if @disabled

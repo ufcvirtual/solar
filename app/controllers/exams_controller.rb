@@ -110,11 +110,11 @@ class ExamsController < ApplicationController
 
     raise 'time' unless @exam.on_going?
     raise 'attempt' unless @acu.has_attempt(@exam)
+    @total_attempts  = @acu.count_attempts rescue 0
     
-    if (last_attempt.try(:uninterrupted_or_ended, @exam))
+    if (last_attempt.try(:uninterrupted_or_ended, @exam)) && @total_attempts == @exam.attempts
       redirect_to result_user_exam_path(@exam)
     else
-      @total_attempts  = @acu.count_attempts rescue 0
       @total_time = (last_attempt.try(:complete) ? 0 : last_attempt.try(:get_total_time)) || 0
 
       @text = if !last_attempt.nil? && !last_attempt.try(:complete)

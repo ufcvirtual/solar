@@ -3002,6 +3002,7 @@ en_US:
         config: Configuration
       info:
         continue: Continue
+        duration: Student's time to respond the exam after start it.
     pre:
       alert_save: All questions are automatically saved.
       alert_start: Click the link below if you are sure you want to start the exam.
