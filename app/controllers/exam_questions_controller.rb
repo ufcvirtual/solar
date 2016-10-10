@@ -13,6 +13,8 @@ class ExamQuestionsController < ApplicationController
     exam      = Exam.find(params[:exam_id])
     questions = exam.get_questions
     render partial: 'questions', locals: { questions: questions, exam: exam, hide_columns: false }
+  rescue => error
+    raise "#{error}"
   end
 
   def new
@@ -30,7 +32,7 @@ class ExamQuestionsController < ApplicationController
       if @exam_question.exam.questions.size > 1
         render partial: 'question', locals: { question: @exam_question.question, exam_question: @exam_question, exam: @exam_question.exam, hide_columns: false, can_see_preview: true }
       else
-        redirect_to exam_questions_path(exam_id: @exam_question.exam_id, allocation_tag_ids: at_ids)
+        redirect_to exam_questions_path(exam_id: @exam_question.exam_id, allocation_tags_ids: at_ids)
       end
     else
       render json: { success: false, alert: @exam_question.errors.full_messages.join(', ') }, status: :unprocessable_entity
