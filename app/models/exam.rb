@@ -271,14 +271,16 @@ class Exam < Event
     Question.find_by_sql <<-SQL
       SELECT questions.id, exam_questions.order, exam_questions.annulled, exam_questions.updated_at, questions.enunciation, questions.type_question, questions.status, questions.privacy, exam_questions.id AS exam_question_id,
         authors.name AS author_name,
+        updated_by.name AS updated_by_name,
         replace(replace(translate(array_agg(distinct labels.name)::text,'{}', ''),'\"', ''),',',', ') AS labels
       FROM questions
       JOIN exam_questions ON questions.id = exam_questions.question_id
       LEFT JOIN users AS authors ON questions.user_id = authors.id
+      LEFT JOIN users AS updated_by ON questions.updated_by_user_id = updated_by.id
       LEFT JOIN question_labels_questions AS qlq    ON qlq.question_id = questions.id
       LEFT JOIN question_labels           AS labels ON labels.id = qlq.question_label_id
       WHERE #{query.join(' AND ')}
-      GROUP BY questions.id, exam_questions.order, exam_questions.annulled, exam_questions.updated_at, questions.enunciation, questions.type_question, questions.status, questions.privacy, authors.name, exam_questions.id
+      GROUP BY questions.id, exam_questions.order, exam_questions.annulled, exam_questions.updated_at, questions.enunciation, questions.type_question, questions.status, questions.privacy, authors.name, exam_questions.id, updated_by.name
       ORDER BY exam_questions.order ASC
     SQL
   end

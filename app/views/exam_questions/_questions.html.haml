@@ -2,14 +2,12 @@
   %table.tb_list.tb_questions
     %thead
       %tr.lines
-        %th.center.no_sort{ class: hide_columns ? 'invisible' : '' }
+        %th.center.preview.no_sort{ class: hide_columns ? 'invisible' : '' }
           %input{ id: "all_questions_#{exam.id}" , type: 'checkbox', :"data-children-names" => "ckb_#{exam.id}", class: 'all_ckb_question', :'data-exam-id' => exam.id }
-        %th.name{ class: hide_columns ? 'invisible' : '' }= 'Ordem'
+        %th.preview{ class: hide_columns ? 'invisible' : '' }= t('questions.questions.order')
         %th.name= t('questions.questions.enun')
-        %th.center.author= t('questions.questions.author')
         %th.center.type= t('questions.questions.type')
         %th.center.updated_at= t('questions.questions.updated_at')
-        %th.center.updated_by= t('questions.questions.updated_by')
         %th.center.preview{ class: hide_columns ? 'invisible' : '' }= t('questions.questions.preview')
         %th.center.privacy= t('questions.questions.privacy')
         %th.center.used_at_exams= t('exam_questions.list.annul')
@@ -17,5 +15,7 @@
     %tbody
       - questions.each do |question|
         = render partial: 'exam_questions/question', locals: { question: question, exam: exam, hide_columns: hide_columns, can_see_preview: @can_see_preview }
+
+.text_none.empty_message{ class: (questions.blank? ? '' : 'hide_message') }= t(:none, scope: [:exams, :list])
 
 = javascript_include_tag 'questions', 'tooltip'

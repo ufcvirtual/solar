@@ -5,7 +5,7 @@
       - questions = exam.get_questions
 
       .block_wrapper.module{ id: "exam_#{exam.id}" }
-        = render partial: 'exams/list/info', locals: { exam: exam, has_group: exam.groups.any?, show_buttons: false, ckb: true, tags: { groups: exam.groups, tool: exam, all_groups: nil, paths: nil } }
+        = render partial: 'exams/list/info', locals: { exam: exam, has_group: exam.groups.any?, show_buttons: false, ckb: true, count: questions.count, tags: { groups: exam.groups, tool: exam, all_groups: nil, paths: nil } }
 
         %div{ class: "list_questions_exam_#{exam.id}" }
           - if questions.any?
@@ -16,9 +16,6 @@
   - else
     .block_content_text_list.text_none
       = t(:item_search_no_found)
-
-  -#%span.add_lesson
-  -#  = link_to_function t('.add'), 'add_exams()', class: 'btn btn_main', alt: t('.add')
 
 = javascript_include_tag 'tooltip'
 

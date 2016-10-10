@@ -33,7 +33,7 @@
         - num_question =  num_question + 1
 
         .item
-          = select_tag "item#{qi.id}", options_for_select(['', 'F', 'V']) , {disabled: true}
+          = select_tag "item#{qi.id}", options_for_select(['', t('questions.form.f_option'), t('questions.form.t_option')]) , {disabled: true}
           = label_tag "item#{qi.id}", class: '' do
             %span= arr_alf[num_question]+') '
             - if qi.item_image?     

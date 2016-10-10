@@ -23,6 +23,8 @@ class Question < ActiveRecord::Base
 
   validate :verify_labels, :verify_images
 
+  validate :verify_privacy, if: 'privacy_changed? && privacy && !new_record?'
+
   before_destroy :can_destroy?
   before_destroy { question_labels.clear }
 
@@ -37,13 +39,19 @@ class Question < ActiveRecord::Base
   end
 
   def reject_items(item)
-    (item[:description].blank? && (new_record? || item[:id].blank?))
+    ((item[:description].blank? || item[:description] == '<br>' || item[:description] == '<p><br></p>') && (new_record? || item[:id].blank?))
   end
 
   def get_labels
     self.question_labels = self.question_labels.collect do |label|
       QuestionLabel.find_or_create_by_name(label.name)
     end
+  end
+
+  def verify_privacy
+    can_destroy?
+  rescue => error
+    errors.add(:privacy, I18n.t("questions.error.privacy_#{error}"))
   end
 
   def copy_dependencies_from(question_to_copy, user_id = nil)
@@ -86,12 +94,19 @@ class Question < ActiveRecord::Base
   def self.get_all(user_id, search={}, verify_privacy=false)
     query = []
 
-    query << ((search[:only_owner] == 'false' || search[:only_owner].blank?) ? (!verify_privacy.nil? && verify_privacy ? "
-              (authors.id = #{user_id}
-              OR (
+    # query << ((search[:only_owner] == 'false' || search[:only_owner].blank?) ? ((!verify_privacy.nil? && verify_privacy) ? "
+    #           (authors.id = #{user_id} OR updated_by.id = #{user_id}
+    #           OR ((
+    #            ((SELECT count FROM user_public_questions) = 0 AND (SELECT count FROM user_private_questions) = 0) 
+    #            OR ((SELECT count FROM user_public_questions) >= (SELECT count FROM user_private_questions)/10)
+    #           )) AND questions.status = 't')" : '') : "authors.id = #{user_id} OR updated_by.id = #{user_id}")
+
+    query << ((search[:only_owner] == 'false' || search[:only_owner].blank?) ? "
+              (authors.id = #{user_id} OR updated_by.id = #{user_id}
+              OR ((
                ((SELECT count FROM user_public_questions) = 0 AND (SELECT count FROM user_private_questions) = 0) 
                OR ((SELECT count FROM user_public_questions) >= (SELECT count FROM user_private_questions)/10)
-              ))" : '') : "authors.id = #{user_id}")
+              ) AND questions.status = 't') )" : "authors.id = #{user_id} OR updated_by.id = #{user_id}")
 
     query << "lower(unaccent(questions.enunciation)) ~ lower(unaccent('#{search[:enun].to_s}'))" unless search[:enun].blank?
     query << "lower(unaccent(l1.name)) ~ lower(unaccent('#{search[:label].to_s}'))"              unless search[:label].blank?
@@ -221,7 +236,9 @@ class Question < ActiveRecord::Base
   end
 
   def can_copy?
-    raise 'private' unless !privacy || owners?
+    owners = owners?
+    raise 'private' unless (!privacy) || owners
+    raise 'draft' if (!privacy && !status) && !owners
   end
 
   def log_description

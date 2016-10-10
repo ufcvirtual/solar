@@ -16,8 +16,13 @@ function finish_exam(duration) {
 }
 
 function expand_or_compress(icon){
-  $(icon).parent().hide();
-  $($(icon).parent().siblings()[0]).show();
+  if($(icon).hasClass(".compress")){
+    $(this).parents('.complete:first').hide();
+    $(this).parents('.description:first').find('.minimun').show();
+  }else{
+    $(this).parents('.minimun:first').hide();
+    $(this).parents('.description:first').find('.complete').show();
+  }
 }
 
 function get_duration(duration) {

@@ -370,3 +370,9 @@
     display: none;
   }
 }
+
+[class^="list_questions_exam_"]{
+  a, a i{
+    display: inline;
+  }
+}

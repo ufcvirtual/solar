@@ -8,7 +8,7 @@
         .icons
           = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show(this)'
           = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show(this)'
-        = link_to_function t('editions.show_questions'), 'hide_or_show(this)', class: 'show_questions'
+        = link_to t('editions.show_questions'), '#', class: 'participants show_questions', :'data-url' => exam_questions_path(exam_id: exam.id, allocation_tags_ids: @allocation_tags_ids), onclick: 'open_div(this, event); hide_or_show(this);', :'data-div' => '.questions_box', id: "list_questions_exam_#{exam.id}"
         = link_to_function t('editions.hide_questions'), 'hide_or_show(this)', class: 'invisible hide_questions'
       .block_content{class: 'invisible'}
         .block_content_toolbar
@@ -26,10 +26,7 @@
               = link_to_function (content_tag(:i, nil, class: 'icon-popup')), 'copy_question(this, ".list_exams")', class: 'btn btn_copy', :'data-link-to-copy' => copy_exam_question_path(':id'), disabled: true, :"data-tooltip" => t('questions.index.copy')
               = link_to_function (content_tag(:i, nil, class: 'icon-edit')), 'edit_question(this)', class: 'btn btn_edit', :'data-link-to-edit' => edit_exam_question_path(':id'), :'data-edit-title' => t('exam_questions.list.edit'), disabled: true, :"data-tooltip" => t('exam_questions.list.edit')
               = link_to_function (content_tag(:i, nil, class: 'icon-trash')), "delete_exam_questions(this, #{exam.id})", class: 'btn btn_del', :'data-link-delete' => exam_question_path(':id'), disabled: true, :'data-tooltip' => t('exam_questions.list.delete')
-        %div{ class: "list_questions_exam_#{exam.id}" }
-          - if questions.any?
-            = render partial: 'exam_questions/questions', locals: { questions: questions, exam: exam, hide_columns: false }
-          .text_none.empty_message{ class: (questions.blank? ? '' : 'hide_message') }= t(:none, scope: [:exams, :list])
+        %div{ class: "questions_box list_questions_exam_#{exam.id} invisible" }
       %h2.show_hide
         .icons
           = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show(this)'
@@ -42,7 +39,7 @@
 
 :javascript
 
-    function hide_or_show(icon){
+  function hide_or_show(icon){
     var div = $(icon).parents('.exam:first').find('.block_content');
     div.slideToggle();
     div.parent().find('.icon-arrow-down-triangle:first').toggleClass('invisible');

@@ -1,6 +1,6 @@
 - has_items   = (question.respond_to?(:count_items)  ? !question.count_items.to_i.zero? : question.question_items.any?)
 - has_images  = (question.respond_to?(:has_images)   ? (question.has_images == 't') : question.question_images.any?)
-- items       = (question.respond_to?(:count_items)  ? question.count_items : question.question_items.count)
+- items       = (question.respond_to?(:count_items)  ? question.count_items : question.question_items.size)
 - labels      = (question.respond_to?(:labels)       ? question.labels.delete('NULL').split(',') : question.question_labels.map(&:name))
 - author_name = (question.respond_to?(:author_name)) ? question.author_name : question.user.name
 - updated_by_name = (question.respond_to?(:updated_by_name)) ? question.updated_by_name : question.updated_by_user.try(:name)
@@ -25,16 +25,31 @@
         .minimun
           = raw question.enunciation.truncate(100)
           - if question.enunciation.size > 100
-            = link_to_function content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('questions.question.expand_enunciation')), 'expand_or_compress(this)'
+            = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('questions.question.expand_enunciation'), onclick: 'expand_or_compress(this)')
         .complete.invisible
           = raw question.enunciation
-          = link_to_function content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('questions.question.compress_enunciation')), 'expand_or_compress(this)'
+          = content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('questions.question.compress_enunciation'), onclick: 'expand_or_compress(this)')
+      .participants.equivalent
+        %a{ href: '#', :"data-dropdown" => "#dropdown_1a_#{question.id}" }
+          %i.icon-user
+          = [t('questions.questions.author'), author_name.truncate(50)].join(': ')
+          %i.icon-arrow-down-triangle
+        .dropdown.dropdown-tip{id: "dropdown_1a_#{question.id}"}
+          %ul{ class: 'dropdown-menu' }  
+            = author_name
+      - unless updated_by_name.blank?
+        .participants.equivalent
+          %a{ href: '#', :"data-dropdown" => "#dropdown_2a_#{question.id}" }
+            %i.icon-user
+            = [t('questions.questions.updated_by'), updated_by_name.truncate(50)].join(': ')
+            %i.icon-arrow-down-triangle
+          .dropdown.dropdown-tip{id: "dropdown_2a_#{question.id}"}
+            %ul{ class: 'dropdown-menu' }  
+              = updated_by_name
       - unless labels.blank?
         .group_label= render 'questions/labels', labels: labels
-  %td{ style: 'text-align:center;', :'data-tooltip' => author_name }= author_name.truncate(50)
   %td{ style: 'text-align:center;' }= question.type
   %td{ style: 'text-align:center;' }= l(question.updated_at, format: :normal)
-  %td{ style: 'text-align:center;', :'data-tooltip' => updated_by_name }= (updated_by_name.truncate(50) rescue '-')
   %td{ style: 'text-align:center;', class: hide_columns ? 'invisible' : '' }= link_to_function content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('questions.question.preview')), 'preview_question(this)', :'data-url' => question_path(question), class: 'preview_question', disabled: !(can_see_preview && question.can_see?(true))
   %td{ style: 'text-align:center;' }= question.privacy? ? content_tag(:i, nil, class: 'icon-lock', :'data-tooltip' => t('questions.question.private')) : content_tag(:i, nil, class: 'icon-minus', :"data-tooltip" => t('questions.question.public'))
   %td{ style: 'text-align:center;' }= check_box_tag exam_question.id, exam_question.id, annulled, onclick: 'annul(this)', disabled: (annulled ? true : false), :'data-url' => annul_exam_question_path(exam_question.id)

@@ -27,10 +27,7 @@
     }
     th.name{
       text-align:left;
-      width: 10%;
-    }
-    th.author{
-      width: 10%;
+      width: 20%;
     }
     th.type{
       width: 5%;
@@ -289,6 +286,11 @@
     label#only_owner{
       text-align: left;
     }
+
+    .fancybox-inner .compress{
+      float: right !important;
+      display: block !important;
+    }
   }
 
   .radio{
@@ -353,3 +355,9 @@ tbody .question_items.preview{
   }
 }
 
+
+.questions_box{
+  a.preview_question{
+    text-decoration: none;
+  }
+}

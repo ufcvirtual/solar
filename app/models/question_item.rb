@@ -6,7 +6,7 @@ class QuestionItem < ActiveRecord::Base
   has_many :exam_responses, through: :exam_responses_question_items
 
   validates_attachment_size :item_image, less_than: 2.megabyte, message: ''
-  validates_attachment_content_type :item_image, content_type: /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/, message: 'file type is not allowed (only jpeg/png/gif images)'
+  validates_attachment_content_type :item_image, content_type: /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/, message: I18n.t('questions.error.wrong_type')
 
   validates :description, presence: true
 

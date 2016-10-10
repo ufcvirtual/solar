@@ -276,7 +276,9 @@ $.fn.serialize_and_submit = function(options) {
         }
 
         if (typeof(options.prepend_to_list) != "undefined"){
+          $('#'+$(data).prop('id')).remove();
           options.prepend_to_list.prepend(data);
+          $('.empty_message.text_none').addClass('invisible');
         }
 
         else if (typeof(data) != "undefined" && typeof(data.notice) != "undefined"){

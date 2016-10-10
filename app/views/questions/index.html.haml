@@ -16,7 +16,7 @@
         .btn-group
           = link_to_function (content_tag(:i, nil, class: 'icon-checkmark')), "change_status(this, '')", class: 'btn change_status_ckb', :'data-url' => publish_question_path(':id'), disabled: true, :"data-tooltip" => t('.checkmark')
           = link_to_function (content_tag(:i, nil, class: 'icon-export')), 'export_questions(this)', class: 'btn export_question', :'data-link-to-export' => export_steps_exam_question_path(':id'), disabled: true, :"data-tooltip" => t('.export')
-          = link_to_function (content_tag(:i, nil, class: 'icon-popup')), "copy_question(this, '')", class: 'btn btn_copy', :'data-link-to-copy' => copy_question_path(':id'), :'data-edit-title' => t('.copy'), disabled: true, :"data-tooltip" => t('.copy')
+          = link_to_function (content_tag(:i, nil, class: 'icon-popup')), "copy_question(this, '.tb_questions')", class: 'btn btn_copy', :'data-link-to-copy' => copy_question_path(':id'), :'data-edit-title' => t('.copy'), disabled: true, :"data-tooltip" => t('.copy')
           = link_to_function (content_tag(:i, nil, class: 'icon-edit')), "edit_question(this, '')", class: 'btn btn_edit', :'data-link-to-edit' => edit_question_path(':id'), :'data-edit-title' => t('.edit'), disabled: true, :"data-tooltip" => t('.edit')
           = link_to_function (content_tag(:i, nil, class: 'icon-trash')), 'delete_question(this)', class: 'btn btn_del', :'data-link-delete' => question_path(':id'), disabled: true, :'data-tooltip' => t('.delete')
 

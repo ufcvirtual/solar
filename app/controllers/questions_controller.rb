@@ -12,7 +12,7 @@ class QuestionsController < ApplicationController
     @questions = Question.get_all(current_user.id, @search=(params[:search] || {}), @verify_privacy=params[:verify_privacy]).paginate(page: params[:page], per_page: 15)
     @can_see_preview = can? :show, Question
     respond_to do |format|
-      if params[:search].nil?
+      if params[:search].nil? && params[:replace].blank?
         format.html
       else
         format.html { render partial: 'questions/questions' }
@@ -152,7 +152,7 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:enunciation, :type_question, 
+    params.require(:question).permit(:enunciation, :type_question, :privacy,
       question_items_attributes: [:id, :item_image, :value, :description, :_destroy, :comment, :img_alt],
       question_images_attributes: [:id, :image, :legend, :img_alt, :_destroy],
       question_labels_attributes: [:id, :name, :_destroy])

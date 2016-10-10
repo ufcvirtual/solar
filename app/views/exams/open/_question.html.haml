@@ -111,7 +111,7 @@
               - unless b.object.comment.blank?
                 - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"
 
-            = b.select :value, options_for_select([['', nil], ['F', false], ['V', true]], b.object.value), disabled: @disabled, onchange: 'change();'
+            = b.select :value, options_for_select([['', nil], [t('questions.form.f_option'), false], [t('questions.form.t_option'), true]], b.object.value), disabled: @disabled, onchange: 'change();'
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
               = raw image

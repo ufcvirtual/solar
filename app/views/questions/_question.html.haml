@@ -24,12 +24,27 @@
         .complete.invisible
           = raw question.enunciation
           = content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('.compress_enunciation'))
+      .participants.equivalent
+        %a{ href: '#', :"data-dropdown" => "#dropdown_1a_#{question.id}" }
+          %i.icon-user
+          = [t('questions.questions.author'), author_name.truncate(50)].join(': ')
+          %i.icon-arrow-down-triangle
+        .dropdown.dropdown-tip{id: "dropdown_1a_#{question.id}"}
+          %ul{ class: 'dropdown-menu' }  
+            = author_name
+      - unless updated_by_name.blank?
+        .participants.equivalent
+          %a{ href: '#', :"data-dropdown" => "#dropdown_2a_#{question.id}" }
+            %i.icon-user
+            = [t('questions.questions.updated_by'), updated_by_name.truncate(50)].join(': ')
+            %i.icon-arrow-down-triangle
+          .dropdown.dropdown-tip{id: "dropdown_2a_#{question.id}"}
+            %ul{ class: 'dropdown-menu' }  
+              = updated_by_name
       - unless labels.blank?
         .group_label= render 'labels', labels: labels
-  %td{ style: 'text-align:center;', :'data-tooltip' => author_name }= author_name.truncate(50)
   %td{ style: 'text-align:center;' }= question.type
   %td{ style: 'text-align:center;' }= l(question.updated_at, format: :normal)
-  %td{ style: 'text-align:center;', :'data-tooltip' => updated_by_name }= (updated_by_name.truncate(50) rescue '-')
   %td{ style: 'text-align:center;' }= link_to_function content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('.preview')), 'preview_question(this)', :'data-url' => question_path(question), class: 'preview_question', disabled: !@can_see_preview
   %td{ style: 'text-align:center;' }= question.privacy? ? content_tag(:i, nil, class: 'icon-lock', :'data-tooltip' => t('.private')) : content_tag(:i, nil, class: 'icon-minus', :"data-tooltip" => t('.public'))
   %td{ style: 'text-align:center;' }= exams
@@ -39,9 +54,14 @@
 
 :javascript 
   $(function(){
-    $(".expand, .compress").click(function(){
-      $(this).parent().hide();
-      $($(this).parent().siblings()[0]).show();
+    $(".compress").click(function(){
+      $(this).parents('.complete:first').hide();
+      $(this).parents('.description:first').find('.minimun').show();
+    });
+
+    $(".expand").click(function(){
+      $(this).parents('.minimun:first').hide();
+      $(this).parents('.description:first').find('.complete').show();
     });
 
     $('#all_questions').nice_checkbox({

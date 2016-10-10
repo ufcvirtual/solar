@@ -3393,6 +3393,7 @@ pt_BR:
       published: Publicado
       used_at_exams: Usada em provas
       none: Nenhuma questão encontrada
+      order: Ordem
     question:
       preview: Visualização
       public: Pública
@@ -3439,7 +3440,8 @@ pt_BR:
         info_remove_image: Imagem removida com sucesso
         confirm_image_removal: 'Você tem certeza? Mesmo que este formulário seja cancelado, a imagem será removida e não poderá ser recuperada.'
         empty: "O item %{count} está em branco, deseja excluí-lo?"
-
+      t_option: V
+      f_option: F
       info:
         continue: Prosseguir
         add_images: Adicionar mais imagens
@@ -3450,7 +3452,9 @@ pt_BR:
     labels:
       labels: 'palavras-chave: '
     error:
-      in_use: Está sendo usada em provas
+      in_use: Está sendo usada em provas.
+      privacy_in_use: não pode ser definida como privada. Está sendo usada em provas.
+      privacy_permission: não pode ser definida como privada. Você não tem permissão para realizar esta ação.
       min_items: A questão precisa ter, ao menos, 3 itens
       correct_item: A questão precisa ter ao menos um item correto
       only_one_true: Para este tipo de questão, apenas um item correto é permitido
@@ -3464,6 +3468,7 @@ pt_BR:
       max_labels: Máximo de 8 palavras-chave
       choose_at_least_one: "Selecione, ao menos, uma questão"
       choose_one: Selecione uma questão
+      wrong_type: tipo de arquivo não permitido (apenas imagens jpeg/png/gif)
     success:
       deleted: Questões removidas com sucesso
       change_status: Situação alterada com sucesso
@@ -3782,3 +3787,7 @@ pt_BR:
       idea: "O Solar 2.0 dispõe de um botão de 'Sugestões para o Solar 2.0'. Para acessá-lo, basta realizar o login, que o botão ficará disponível no canto superior direito da tela logo abaixo do relógio. <br/>Lá você poderá enviar sugestões, reclamações e similares."
       error: "O Solar 2.0 não altera dados nem arquivos previamente enviados pelos usuários sem comunicá-los ou sem prévia autorização. Portanto, se o portfolio do aluno está em branco, sugerimos que entre em contato com ele para solicitar um re-envio do arquivo correto."
       cant_find_faq: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação. Lembre-se de informar: <br/> ‣ Nome <br/> ‣ Cpf <br/> ‣ Email<br/> ‣ O maior número de informações sobre o ocorrido. Se possível, imagens (prints de tela) também."
+
+  ckeditor:
+    confirms:
+      question: "O item count está em branco. Deseja excluí-lo?"

@@ -2941,8 +2941,8 @@ en_US:
       preview_exam: Preview exam
       new: New question
       import: Import question(s)
-      import_q_e: Importa questions and exams
-      published: Unpublishe exam
+      import_q_e: Import questions and exams
+      published: Unpublish exam
       unpublished: Publish exam
       to: ' to '
       draft_exam: Exam as draft
@@ -3024,8 +3024,8 @@ en_US:
       uninterrupted__tooltip: 'The test can be stopped and continued as often as necessary, provided it is in the availability period. Tests where this option is not available, when interrupted, the current attempt will end.'
       button: Start Exam
       continue: Continue Exam
-      correction: "Solar 2.0 will correct automatically the exam, therefore the grade will be obtained by summing student's result at each question, which have their own scores. <br/> The following strategy will be used: <br/><b> Unique choice question: </b> Student will receive full scores from a unique choice question only if select the only correct option. <br/> <b> True (V) or False (F) questions: </b> To each correct item, student will receive an equivalent score.  Cada item tem um valor igual ao obtido pela divisão do valor total da questão pela quantidade de itens. </br> <b> Questões de múltipla escolha: </b> O aluno receberá a pontuação total apenas se selecionar todos os itens corretos. Para cada item incorreto selecionado, o aluno perderá a pontuação de um item correto. Cada item tem um valor igual ao obtido pela divisão do valor total da questão pela quantidade de itens corretos. <br/>"
-      correction_title: 'Como será feita a correção da prova?'
+      correction: "Solar 2.0 will correct automatically the exam, therefore the grade will be obtained by summing student's result at each question, which have their own scores. <br/> The following strategy will be used: <br/><b> Unique choice question: </b> Student will receive full scores from a unique choice question only if select the only correct option. <br/> <b> True (T) or False (F) questions: </b> To each correct item, student will receive an equivalent score.  Each item has a value equal to total value divided by total amount of items. </br> <b> Multiple choice questions: </b> Student will receive the total score only if select all correct items. To each wrongly selected item, student will lose a correctly selected item score.  Each item has a value equal to the question's total score divided by the amount of correct items. <br/>"
+      correction_title: 'How the exam correction will be made?'
     open:
       to: " to "
       questions: " questions"
@@ -3162,6 +3162,7 @@ en_US:
       published: Published
       used_at_exams: Used at exams
       none: No question found
+      order: Order
     question:
       preview: Preview
       public: Public
@@ -3174,12 +3175,12 @@ en_US:
     types:
       unique_choice: Unique choice
       multiple_choice: Multiple choice
-      true_or_false: True or False
+      true_or_false: T or F
     new:
       type_question: Type
       unique_choice: Unique choice
       multiple_choice: Multiple choice
-      true_or_false: True or False
+      true_or_false: T or F
       private: Private
       public: Public
       privacy: Privacy
@@ -3208,7 +3209,8 @@ en_US:
         info_remove_image: Image successfully removed
         confirm_image_removal: 'Are you sure? Even if you cancel this form, this image will be deleted and will not be recovered.'
         empty: "The item %{count} is blank, you want to delete?"
-
+      t_option: T
+      f_option: F
       info:
         continue: Continue
         add_images: Add more images
@@ -3220,6 +3222,8 @@ en_US:
       labels: 'labels: '
     error:
       in_use: Is being used at exams
+      privacy_in_use: can't be defined as private. Is being used at exams.
+      privacy_permission: can't be defined as private. You don't have permission to execute this action.
       min_items: The question must have, at least, 3 items
       correct_item: The question must have, at least, one correct item
       only_one_true: To this type of question, only one correct item is allowed
@@ -3233,6 +3237,7 @@ en_US:
       max_labels: Max 8 labels
       choose_at_least_one: Choose at least one question
       choose_one: Choose one question
+      wrong_type: file type is not allowed (only jpeg/png/gif images)
     success:
       deleted: Questions removed successfully
       change_status: Status updated successfully
@@ -3291,7 +3296,7 @@ en_US:
       min_public_questions: "To each public question created, you can create 10 private ones. By exceeding this limit, you don't have access to different authors public questions. The limit was exceeded."
       draft: Question as draft
       already_exists: You can't repeat questions to an exam
-      cant_change_after_published: You can't do this action after publishing the exam. You need to unpublishe it first.
+      cant_change_after_published: You can't do this action after publishing the exam. You need to unpublish it first.
     export:
       conclude:
         title: Export questions
@@ -3553,3 +3558,7 @@ en_US:
       idea: "Solar 2.0 have a button for 'Suggestions to Solar 2.0'. So you can access it, you just have to be logged in. The button will be available at the top right corner of the screen.<br/> By clicking it, you can send suggestions, complaints and similar."
       error: "Solar 2.0 doesn't make changes at previously files sent by it's users without informing them or without authorization. Therefore, if student's assignment is blank, we suggest that you get in touch with him and ask him to send again the right file."
       cant_find_faq: "Get in touch with atendimento@virtual.ufc.br explaining your situation. Remember of inform: <br/> ‣ Name <br/> ‣ Cpf <br/> ‣ Email<br/> ‣ The most information you can get about what have happened. If possible, images (print screens) too."
+
+  ckeditor:
+    confirms:
+      question: "Item count is blank. Do you want to remove it?"

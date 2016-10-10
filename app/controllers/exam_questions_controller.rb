@@ -7,6 +7,9 @@ class ExamQuestionsController < ApplicationController
   layout false, except: :index
 
   def index
+    authorize! :list, Exam, { on: @allocation_tags_ids = params[:allocation_tags_ids] }
+
+    @can_see_preview = can? :show, Question, { on: @allocation_tags_ids }
     exam      = Exam.find(params[:exam_id])
     questions = exam.get_questions
     render partial: 'questions', locals: { questions: questions, exam: exam, hide_columns: false }
@@ -20,14 +23,14 @@ class ExamQuestionsController < ApplicationController
 
   def create
     @exam_question = ExamQuestion.new exam_question_params
-    authorize! :create, Question, { on: @exam_question.exam.allocation_tags.map(&:id) }
+    authorize! :create, Question, { on: at_ids = @exam_question.exam.allocation_tags.map(&:id) }
     @exam_question.question.user_id = current_user.id
 
     if @exam_question.save
       if @exam_question.exam.questions.size > 1
         render partial: 'question', locals: { question: @exam_question.question, exam_question: @exam_question, exam: @exam_question.exam, hide_columns: false, can_see_preview: true }
       else
-        redirect_to exam_questions_path(exam_id: @exam_question.exam_id)
+        redirect_to exam_questions_path(exam_id: @exam_question.exam_id, allocation_tag_ids: at_ids)
       end
     else
       render json: { success: false, alert: @exam_question.errors.full_messages.join(', ') }, status: :unprocessable_entity
@@ -316,8 +319,11 @@ class ExamQuestionsController < ApplicationController
     build_exam_question
 
     render :edit
+  rescue CanCan::AccessDenied
+    render text: t(:no_permission)
   rescue => error
-    render_json_error(error, 'exam_questions.errors')
+    render text: t("exam_questions.errors.#{error}")
+    # render_json_error(error, 'exam_questions.errors')
   end
 
   private

@@ -31,7 +31,9 @@ $(function(){
 });
 
 function save_question(exam_id){
-  save_values_ckeditor();
+  if(save_values_ckeditor("<%=I18n.t('ckeditor.confirms.question')%>")){
+    return false;
+  }
   check_inputs();
   if (exam_id != 0){
     var questions = $('.ckb_question:checked', $('#exam_'+exam_id+' .tb_questions tbody'));
@@ -176,7 +178,7 @@ function copy_question(icon, replace_list){
    return false;
   }
 
-  if(replace_list == ''){
+  if(replace_list != '.list_exams'){
     var questions_ids = $('.ckb_question:checked', $(icon).parents("div.list_questions")).map(function() { return this.value; }).get();
     var ids = questions_ids;
   }else{
@@ -295,9 +297,15 @@ function up_or_down(icon){
 
   }
 
-function expand_or_compress(icon){
-  $(icon).parent().hide();
-  $($(icon).parent().siblings()[0]).show();
+function expand_or_compress(link){
+  var icon = $($(link).find('i:first'));
+  if(icon.hasClass("compress")){
+    icon.parents('.complete:first').hide();
+    icon.parents('.description:first').find('.minimun').show();
+  }else{
+    icon.parents('.minimun:first').hide();
+    icon.parents('.description:first').find('.complete').show();
+  }
 }
 
 function annul(icon){
