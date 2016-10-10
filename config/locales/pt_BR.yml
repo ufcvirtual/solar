@@ -3377,7 +3377,7 @@ pt_BR:
       year: Ano da última alteração
       year_hint: 'ex: 2012'
       label_hint: 'ex: biologia'
-      author_hint: 'ex: Fulano da Silva'
+      author_hint: 'ex: Regina'
       enun_hint: 'ex: questão 1'
       author: Autor
       search: Busca
@@ -3452,8 +3452,8 @@ pt_BR:
     labels:
       labels: 'palavras-chave: '
     error:
-      in_use: Está sendo usada em provas.
-      privacy_in_use: não pode ser definida como privada. Está sendo usada em provas.
+      in_use: "Está sendo usada em provas. Se você é o autor e a questão está em uso apenas em sua prova, sugerimos que remova-a de sua prova e se dirija ao repositório para alterá-la. Caso a questão esteja em uso em outras provas não criadas por você, sugerimos que faça uma cópia para edição do conteúdo, pois não é possível alterá-la"
+      privacy_in_use: "não pode ser definida como privada, pois está sendo usada em provas. Se você é o autor e a questão está em uso apenas em sua prova, sugerimos que remova-a de sua prova e se dirija ao repositório para alterá-la. Caso a questão esteja em uso em outras provas não criadas por você, não é possível alterá-la"
       privacy_permission: não pode ser definida como privada. Você não tem permissão para realizar esta ação.
       min_items: A questão precisa ter, ao menos, 3 itens
       correct_item: A questão precisa ter ao menos um item correto

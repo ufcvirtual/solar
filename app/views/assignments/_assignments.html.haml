@@ -42,7 +42,7 @@
           %td.center= t(assignment.evaluative, scope: [:scores, :info])
           %td.center= t(assignment.frequency, scope: [:scores, :info])
           %td.center
-            = link_to content_tag(:i, nil, class: 'icon-users'), '#', class: 'btn participants', :'data-url' => participants_assignment_path(assignment.academic_tool_id), :"data-tooltip" => (is_group_type ? t('.groups') : t('.participants')), onclick: 'open_div(this, event);', :'data-div' => '.participants_box', id: "assignment-#{assignment.academic_tool_id}"
+            = link_to content_tag(:i, nil, class: 'icon-users'), '#', class: 'btn participants', :'data-url' => participants_assignment_path(assignment.academic_tool_id), :"data-tooltip" => (is_group_type ? t('.groups') : t('.participants')), onclick: 'open_div(this, event);', :'data-div' => '.participants_box', id: "assignment-#{assignment.academic_tool_id}", :'data-hide' => true
             - if is_group_type
               - closed = (assignment.closed == 't')
               - if @can_manage

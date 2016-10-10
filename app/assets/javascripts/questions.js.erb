@@ -191,7 +191,7 @@ function copy_question(icon, replace_list){
   if (!(!ids.length || ids.length > 1)) {
     $.get("<%=Rails.application.routes.url_helpers.copy_verify_owners_question_path(':id')%>".replace(':id', questions_ids), function(data){
       var url_copy = $(icon).data('link-to-copy').replace(':id', ids);
-      $(icon).call_fancybox({ href : url_copy, open: true, width: '100px;' });
+      $(icon).call_fancybox({ href : url_copy, open: true, width: '20%', maxHeight: '70%' });
       if(replace_list != ''){
         $.get($(replace_list).data("link-list"), function(data2){
           $(replace_list).replaceWith(data2);

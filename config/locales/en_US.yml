@@ -3221,8 +3221,8 @@ en_US:
     labels:
       labels: 'labels: '
     error:
-      in_use: Is being used at exams
-      privacy_in_use: can't be defined as private. Is being used at exams.
+      in_use: "Is being used at exams. If you're the author and the question is in use only at your exams, we suggest that you remove it from the exam and change it at Repositories area. If the question is in use at others exams that are not yours, we suggest that you make a copy and change it, because it's not possible to change the first one."
+      privacy_in_use: "can't be defined as private, because is being used at exams. If you're the author and the question is in use only at your exams, we suggest that you remove it from the exam and change it at Repositories area. If the question is in use at others exams that are not yours, it's not possible to change it."
       privacy_permission: can't be defined as private. You don't have permission to execute this action.
       min_items: The question must have, at least, 3 items
       correct_item: The question must have, at least, one correct item

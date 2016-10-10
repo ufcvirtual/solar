@@ -106,13 +106,18 @@ class Question < ActiveRecord::Base
               OR ((
                ((SELECT count FROM user_public_questions) = 0 AND (SELECT count FROM user_private_questions) = 0) 
                OR ((SELECT count FROM user_public_questions) >= (SELECT count FROM user_private_questions)/10)
-              ) AND questions.status = 't') )" : "authors.id = #{user_id} OR updated_by.id = #{user_id}")
+              ) AND questions.status = 't'))" : "authors.id = #{user_id} OR updated_by.id = #{user_id}")
 
     query << "lower(unaccent(questions.enunciation)) ~ lower(unaccent('#{search[:enun].to_s}'))" unless search[:enun].blank?
     query << "lower(unaccent(l1.name)) ~ lower(unaccent('#{search[:label].to_s}'))"              unless search[:label].blank?
     query << "date_part('year', questions.updated_at) = '#{search[:year].to_s}'"                 unless search[:year].blank?
-    query << "lower(unaccent(authors.name)) ~ lower(unaccent('#{search[:author].to_s}'))"        unless search[:author].blank?
-    query << "lower(unaccent(updated_by.name)) ~ lower(unaccent('#{search[:author].to_s}'))" unless search[:author].blank?
+
+    author_query = []
+    author_query << "lower(unaccent(authors.name)) ~ lower(unaccent('#{search[:author].to_s}'))"        unless search[:author].blank?
+    author_query << "lower(unaccent(updated_by.name)) ~ lower(unaccent('#{search[:author].to_s}'))" unless search[:author].blank?
+    author_query = '(' + author_query.join(' OR ') + ')' unless author_query.empty?
+
+    query << author_query
 
     query = query.reject(&:empty?)
 
