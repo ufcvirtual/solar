@@ -236,6 +236,14 @@ admin_digital_class:
   order: 13
   resource_id: 210
 
+# reports_add
+admin_reports:
+  id: 614
+  parent_id: 60
+  name: menu_admin_reports
+  order: 14
+  resource_id: 226
+
 # MENU PAI - 70
 disco_virtual:
   id: 70

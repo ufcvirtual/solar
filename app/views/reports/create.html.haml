@@ -1,0 +1,8 @@
+.block_wrapper
+	= form_for(:reports, :url => {:action => 'create'}) do |f|
+		%ul
+			%li= link_to t('reports.index.report_one.id'), render_reports_reports_path(:query_type => 1), :target => "_blank"
+			%li= link_to t('reports.index.report_two.id')+t(session[:type_report], scope: [:editions, :academic]), render_reports_reports_path(:query_type => 2), :target => "_blank"
+			%li= link_to t('reports.index.report_four.id')+t(session[:type_report], scope: [:editions, :academic]), render_reports_reports_path(:query_type => 4), :target => "_blank"
+			%li= link_to t('reports.index.report_three.id'), render_reports_reports_path(:query_type => 3), :target => "_blank"
+			%li= link_to t('reports.index.report_seven.id')+t(session[:type_report], scope: [:editions, :academic]), render_reports_reports_path(:query_type => 5), :target => "_blank"    

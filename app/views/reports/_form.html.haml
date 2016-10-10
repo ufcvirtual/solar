@@ -1,0 +1,31 @@
+.block_wrapper
+  .block_title
+    %h2= t(:select_period, :scope => [:reports, :commun_texts])
+  .block_content_toolbar
+    .form-buttons
+    = select_tag "semesters", options_from_collection_for_select(@semesters, "id", "name"), :selected => session[:semester_id]
+    = select_tag "type", options_for_select(@types)
+
+    = button_tag t(:search, scope: [:administrations, :logs]), type: :button, class: "btn btn_default", id: "create_report", :"data-url-search" => create_reports_path
+
+  .block_content
+    #create_reports
+
+
+:javascript
+
+  $(function(){
+  	
+  	$("#create_report").click(function(){
+  		var url = $(this).data("url-search");
+  		var data = { semesters: encodeURIComponent($("#semesters").val()), type: $("#type").val()};
+  		$.post(url, data, function(data){
+  			$('#create_reports').html(data);
+  		}).error(function(data){ 
+  			var data = $.parseJSON(data.responseText);
+  			if (typeof(data.alert) != "undefined")
+  				flash_message(data.alert, 'alert'); 		
+  		});
+  	});  
+  
+  });

@@ -1826,6 +1826,12 @@ admin_profile6:
   resource_id: 160
   per_id: false
 
+# reports_add
+admin_profile7: 
+  profile_id: 6
+  resource_id: 226
+  per_id: false
+  
 adminallocation1:
   profile_id: 6
   resource_id: 182

@@ -1173,3 +1173,9 @@ res225:
   controller: 'schedule_events'
   action: 'evaluate'
   description: 'Avaliar participação de aluno em eventos'
+# reports_add
+res226:
+  id: 226
+  controller: 'reports'
+  action: 'index' 
+  description: 'Gerar Relatórios'  

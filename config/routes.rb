@@ -639,6 +639,16 @@ Solar::Application.routes.draw do
     end
   end
 
+  # reports_add
+  resources :reports do
+    collection do
+      get :index
+      post :create, as: :create
+      get :render_reports
+    end
+  end
+
+
   resources :savs, only: :index, defaults: { format: 'json' }
 
   match '/select_group', to: 'application#select_group', as: :select_group

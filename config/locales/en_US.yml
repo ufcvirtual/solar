@@ -1319,6 +1319,7 @@ en_US:
   menu_admin_blacklist: Blacklist
   menu_admin_webconference: Preview Webconferences
   menu_admin_digital_class: Update Digital Class participants
+  menu_admin_reports: Reports # reports_add
   menu_responsibles: Consult Responsibles
   menu_home: Home
 
@@ -2014,6 +2015,7 @@ en_US:
       module: "Module"
       type: "Type*"
       filter: Filter
+      offers: Offers
     items:
       information: Information
       education: Education
@@ -3562,3 +3564,50 @@ en_US:
   ckeditor:
     confirms:
       question: "Item count is blank. Do you want to remove it?"
+# reports_add
+  reports:
+    index:
+      title: Reports
+      main_document_title: FEDERAL UNIVERSITY OF CEARÁ - VIRTUAL INSTITUTE UFC
+      report_one:
+        id: System Summary
+        document_title: Reports with System Information
+      report_two:
+        id: 'Amount of Students by '
+        document_title: 'Reports with Amount Studants by '
+      report_three:
+        id: Disciplines Amount by Course
+        document_title: Reports with Disciplines Amount by Course
+      report_four:
+        id: 'Total of Responsables '
+        document_title: 'Reports with Total of Responsables '
+      report_six:
+        id: Total of Courses Responsables
+        document_title: Reports with Total of Courses Responsables
+      report_seven:
+        id: Total of Posted Files by Forum
+        document_title: Reports with Total of Posted Files by Forum
+    commun_texts:
+      period_reference: Document for the period of data
+      select_period: Select the Related Research Period
+      name_course: Course Name
+      name_disciplines: Avaliable Disciplines Name
+      name_groups: Groups
+      name_users: User Name
+      number_students: Students Nº
+      number_disciplines: Disciplines Nº
+      name_forum: Forum Name
+      pages: page <page> of <total>
+      count: Amount
+      info: Information
+      timestamp_info: Document Generated in
+    summary:
+      courses_number: Amount of Courses
+      users_number: Amount of Registered Users
+      users_number_active: Amount of Active Users
+      users_number_module_bound: Users Linked to the MA - Academic Module
+      users_number_module_unbound: Users Unlinked to the MA - Academic Module
+      disciplines_amount: Disciplines Amount
+      files_portifolio: Portfolio posts Amount
+      number_of_students: Number of active registered students
+

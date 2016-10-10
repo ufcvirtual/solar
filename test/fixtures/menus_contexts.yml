@@ -149,6 +149,11 @@ admin_digital_class:
   menu_id: 613
   context_id: 1
 
+# reports_add
+admin_reports:
+  menu_id: 614
+  context_id: 1
+
 # MENU PAI - 70
 disco_virtual:
   menu_id: 70

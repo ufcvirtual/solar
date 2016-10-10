@@ -1504,6 +1504,7 @@ pt_BR:
   menu_admin_blacklist: Desvincular do MA
   menu_admin_webconference: Visualizar webconferências
   menu_admin_digital_class: Atualizar participantes do Digital Class
+  menu_admin_reports: Relatórios # reports_add
   menu_responsibles: Consultar Responsáveis
   menu_home: Início
 
@@ -2220,6 +2221,7 @@ pt_BR:
       module: "Módulo"
       type: "Tipo*"
       filter: Filtro
+      offers: Oferta
     items:
       information: Informação
       education: Educação
@@ -3791,3 +3793,51 @@ pt_BR:
   ckeditor:
     confirms:
       question: "O item count está em branco. Deseja excluí-lo?"
+
+# reports_add
+  reports:
+    index:
+      title: Relatórios
+      main_document_title: UNIVERSIDADE FEDERAL DO CEARÁ - INSTITUTO UFC VIRTUAL
+      report_one:
+        id: Sumário do Sistema
+        document_title: Sumário com Informações do Sistema
+      report_two:
+        id: "Quantidade de Alunos por "
+        document_title: "Relatório com Quantidade de Alunos por "
+      report_three:
+        id: Quantidade de Disciplinas por Curso
+        document_title: Relatório com Quantidade de Disciplinas por Curso
+      report_four:
+        id: 'Quantidade de Responsáveis por '
+        document_title: 'Relatório com Quantidade de Responsáveis por '
+      report_six:
+        id: Quantidade de Responsáveis por Curso
+        document_title: Relatório com Quantidade de Responsáveis por cada Curso
+      report_seven:
+        id: 'Quantidade de Postagens por Fórum em '
+        document_title: 'Relatório com Quantidade de Postagens por Fórum em '
+    commun_texts:
+      period_reference: Documento referente ao período
+      select_period: Selecione o Período para Referenciar a Pesquisa
+      name_course: Nome do Curso
+      name_disciplines: Nome da Disciplina
+      name_groups: Turma
+      name_users: Nome do Usuário
+      number_students: Nº de Alunos
+      number_disciplines: Nº de Disciplinas
+      name_forum: Nome do Fórum
+      pages: página <page> de <total>
+      count: Quantidade
+      info: Informações
+      timestamp_info: Documento Emitido em
+    summary:
+      courses_number: Quantidade de Cursos
+      users_number: Quantidade de Usuários Cadastrados
+      users_number_active: Quantidade de Usuários Ativos
+      users_number_module_bound: Usuários Vinculados ao MA - Modulo Acadêmico
+      users_number_module_unbound: Usuários Desvinculados ao MA - Modulo Acadêmico
+      disciplines_amount: Quantidade de Disciplinas
+      files_portifolio: Quantidade de Arquivos Postados no Portfólio 
+      number_of_students: Quantidade de alunos ativos matriculados
+
