@@ -10,6 +10,7 @@ class ReportsController < ApplicationController
     :blue_solar_theme => "003E7A"
   }
   def index
+    authorize! :logs, Administration
     @semesters = Semester.order('id ASC')
     @types = [ [t(:courses, scope: [:editions, :academic]), 'courses'],[t(:curriculum_units, scope: [:editions, :academic]), 'curriculum_units'], [t(:offers, scope: [:editions, :academic]), 'offers'], [t(:groups, scope: [:editions, :academic]), 'groups'] ]
     session.delete(:period_name)
@@ -18,6 +19,7 @@ class ReportsController < ApplicationController
   end
 
   def create
+    authorize! :logs, Administration
     if params['semesters'] 
       semesters = Semester.find(params['semesters'])
       session[:period_name] = semesters.name
@@ -28,6 +30,7 @@ class ReportsController < ApplicationController
   end
 
   def render_reports
+    authorize! :logs, Administration
       info = {  :Title => "Solar",
                 :Author       => "UFC Virtual",
                 :Subject      => "Solar system reports examples",
