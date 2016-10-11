@@ -1,94 +1,188 @@
-#tutorials.block_wrapper#login
-  .block_title
-    %h2
-      %i.icon-folder
-      = t(:login)
-    %span.block_actions
-  / Tabelas de atividades
-  .block_content
-    %table#assignments_list.tb_list
-      %thead
-        %tr.lines
-          %th{align: "left"}= t(:description)
-      %tbody
-        %tr.lines
-          %td.description_tutorials{align: "left"}
-            %p Manual geral que contem todo o processo de cadastro e acesso ao sistema Solar 2.0, além dos passos necessários para recuperação de senha.
-            %img{alt: "Pdf", src: "/assets/mimetypes/pdf.png"}/
-            %a{href: "/tutorials/login.pdf", target: "_blank"} Login.pdf
+- locale = I18n.locale
 
-#tutorials.block_wrapper#description
-  .block_title
-    %h2
-      %i.icon-folder
-      = t(:student)
-    %span.block_actions
-  / Tabelas de atividades
-  .block_content
-    %table#assignments_list.tb_list
-      %thead
-        %tr.lines
-          %th{align: "left"}= t(:description)
-      %tbody
-        %tr.lines
-          %td.description_tutorials{align: "left"}
-            %p - Manual que contem o processo inicial de acesso ao sistema e, em seguida, a descrição dos seguintes módulos do Solar 2.0: Menu Mensagens, Menu Matrícula, Menu Conteúdo, Menu Atividades e Menu Portfólio.
-            %img{alt: "Pdf", src: "/assets/mimetypes/pdf.png"}/
-            %a{href: "/tutorials/aluno.pdf", target: "_blank"} Aluno.pdf
-        %tr.lines
-          %td.description_tutorials{align: "left"}
-            %p - Manual que contem o processo inicial de acesso ao sistema e, em seguida, a descrição do editor de símbolos e fórmulas em formato Latex. Ferramenta disponível no Fórum do sistema.
-            %img{alt: "Pdf", src: "/assets/mimetypes/pdf.png"}/
-            %a{href: "/tutorials/editor_matematico.pdf", target: "_blank"} Editor_Matemático.pdf
-#tutorials.block_wrapper#edition
-  .block_title
-    %h2
-      %i.icon-folder
-      = t(:edition)
-    %span.block_actions
-  / Tabelas de atividades
-  .block_content
-    %table#assignments_list.tb_list
-      %thead
-        %tr.lines
-          %th{align: "left"}= t(:description)
-      %tbody
-        %tr.lines
-          %td.description_tutorials{align: "left"}
-            %p - Manual que contem o processo inicial de acesso ao sistema e, em seguida, a descrição da área de edição acadêmica do Solar 2.0. Esta área se encontra disponível apenas para os usuários que possuem a permissão de edição no sistema.
-            %img{alt: "Pdf", src: "/assets/mimetypes/pdf.png"}/
-            %a{href: "/tutorials/edicao_academica.pdf", target: "_blank"} Edição_Acadêmica.pdf
-        %tr.lines
-          %td.description_tutorials{align: "left"}
-            %p - Manual que contem o processo inicial de acesso ao sistema e, em seguida, a descrição da área do edição de conteúdos do Solar 2.0. Esta versão do manual contempla os seguintes módulos: Alocação, Fórum, Material de Apoio e Aula.
-            %img{alt: "Pdf", src: "/assets/mimetypes/pdf.png"}/
-            %a{href: "/tutorials/edicao_conteudo.pdf", target: "_blank"} Edição_Conteúdo.pdf
-        %tr.lines
-          %td.description_tutorials{align: "left"}
-            %p Diagrama do fluxo do processo de criação de uma turma no Solar 2.0.
-            %img{alt: "Pdf", src: "/assets/mimetypes/pdf.png"}/
-            %a{href: "/tutorials/fluxograma.pdf", target: "_blank"} Fluxograma_Semestre_Turma.pdf
+.tutorials
 
-#tutorials.block_wrapper#edition
-  .block_title
-    %h2
-      %i.icon-folder
-      = t(:enrollment)
-    %span.block_actions
-  / Tabelas de atividades
-  .block_content
-    %table#assignments_list.tb_list
-      %thead
-        %tr.lines
-          %th{align: "left"}= t(:description)
-      %tbody
-        %tr.lines
-          %td.description_tutorials{align: "left"}
-            %p - Manual que contem o processo inicial de acesso ao sistema e, em seguida, a descrição da área do gerenciamento de matriculas disponível do Solar 2.0. Esta área se encontra disponível apenas para os usuários que possuem a permissão de edição e administração de matriculas.
-            %img{alt: "Pdf", src: "/assets/mimetypes/pdf.png"}/
-            %a{href: "/tutorials/gerenciamento_de_matricula.pdf", target: "_blank"} Gerenciamento_de_Matrículas.pdf
-        %tr.lines
-          %td.description_tutorials{align: "left"}
-            %p - Manual que contem o processo inicial de acesso ao sistema e, em seguida, a descrição dos passos para solicitação e cancelamento de matrículas no Solar 2.0.
-            %img{alt: "Pdf", src: "/assets/mimetypes/pdf.png"}/
-            %a{href: "/tutorials/matricula.pdf", target: "_blank"} Matrícula.pdf
+  .search
+    = t('faq.search')
+    = text_field_tag :search_tutorial, nil
+
+
+  .tutorial.block_wrapper#login
+    .block_title
+      %h2
+        %i.icon-folder
+        = t(:login)
+      %span.block_actions
+    .block_content
+      %table#assignments_list.tb_list
+        %thead
+          %tr.lines
+            %th{align: "left"}= t(:description)
+        %tbody
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p= t('tutorials.texts.login')
+              %img{alt: t('tutorials.files.login'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'login', t('tutorials.files.login'))
+
+  .tutorial.block_wrapper#description
+    .block_title
+      %h2
+        %i.icon-folder
+        = t(:student)
+      %span.block_actions
+    .block_content
+      %table#assignments_list.tb_list
+        %thead
+          %tr.lines
+            %th{align: "left"}= t(:description)
+        %tbody
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p= t('tutorials.texts.student')
+              %img{alt: t('tutorials.files.student'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'aluno', t('tutorials.files.student'))
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p= t('tutorials.texts.math_editor')
+              %img{alt: t('tutorials.files.math_editor'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'editor_matematico', t('tutorials.files.math_editor'))
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p= t('tutorials.texts.scores_student')
+              %img{alt: t('tutorials.files.scores'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'scores_student_view', t('tutorials.files.scores'))
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p= t('tutorials.texts.assignment_webconference')
+              %img{alt: t('tutorials.files.assignment_webconference'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'assignment_webconference', t('tutorials.files.assignment_webconference'))
+
+  .tutorial.block_wrapper#edition
+    .block_title
+      %h2
+        %i.icon-folder
+        = t(:edition)
+      %span.block_actions
+    .block_content
+      %table#assignments_list.tb_list
+        %thead
+          %tr.lines
+            %th{align: "left"}= t(:description)
+        %tbody
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p=t('tutorials.texts.academic')
+              %img{alt: t('tutorials.files.academic'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'edicao_academica', t('tutorials.files.academic'))
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p=t('tutorials.texts.content')
+              %img{alt: t('tutorials.files.content'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'edicao_conteudo', t('tutorials.files.content'))
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p=t('tutorials.texts.activity_management')
+              %img{alt: t('tutorials.files.activity_management'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'activity_management', t('tutorials.files.activity_management'))
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p=t('tutorials.texts.question_repository')
+              %img{alt: t('tutorials.files.question_repository'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'question_repository', t('tutorials.files.question_repository'))
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p=t('tutorials.texts.exam_edition')
+              %img{alt: t('tutorials.files.exam_edition'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'exam_edition', t('tutorials.files.exam_edition'))
+
+  .tutorial.block_wrapper#edition
+    .block_title
+      %h2
+        %i.icon-folder
+        = t(:enrollment)
+      %span.block_actions
+    .block_content
+      %table#assignments_list.tb_list
+        %thead
+          %tr.lines
+            %th{align: "left"}= t(:description)
+        %tbody
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p=t('tutorials.texts.enrollment_management')
+              %img{alt: t('tutorials.files.enrollment_management'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'gerenciamento_de_matricula', t('tutorials.files.enrollment_management'))
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p=t('tutorials.texts.enrollment')
+              %img{alt: t('tutorials.files.enrollment'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'matricula', t('tutorials.files.enrollment'))
+  .tutorial.block_wrapper#edition
+    .block_title
+      %h2
+        %i.icon-folder
+        = t('tutorials.titles.responsibles')
+      %span.block_actions
+    .block_content
+      %table#assignments_list.tb_list
+        %thead
+          %tr.lines
+            %th{align: "left"}= t(:description)
+        %tbody
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p= t('tutorials.texts.scores_responsible')
+              %img{alt: t('tutorials.files.scores'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'evaluating_activities', t('tutorials.files.scores'))
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p= t('tutorials.texts.evaluation')
+              %img{alt: t('tutorials.files.evaluation'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'evaluating_activities', t('tutorials.files.evaluation'))
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p= t('tutorials.texts.math_editor')
+              %img{alt: t('tutorials.files.math_editor'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'editor_matematico', t('tutorials.files.math_editor'))
+
+
+:javascript
+  $(function(){
+    $('#search_tutorial').keyup(function(e){
+      console.log('oi');
+      var words = $(this).val().split(' ');
+
+      console.log(words);
+
+      if(words.length == 0 || (words.length == 1 && words[0] == '')){
+        $('.tutorial').show();
+        $('.tutorials .lines').show();
+      }else{
+        $('.tutorial').each(function(a){
+          var text = $(this).prop('textContent');
+
+          var result = words.every(function(a) {
+            return text.indexOf(a) != -1;
+          });
+
+          if(result)
+            $(this).show();
+          else
+            $(this).hide();
+        });
+        $('.description_tutorials').each(function(a){
+          var text = $(this).prop('textContent');
+
+          var result = words.every(function(a) {
+            return text.indexOf(a) != -1;
+          });
+
+          if(result)
+            $(this).parent().show();
+          else
+            $(this).parent().hide();
+        });
+      }
+    });
+  });

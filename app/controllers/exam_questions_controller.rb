@@ -13,8 +13,6 @@ class ExamQuestionsController < ApplicationController
     exam      = Exam.find(params[:exam_id])
     questions = exam.get_questions
     render partial: 'questions', locals: { questions: questions, exam: exam, hide_columns: false }
-  rescue => error
-    raise "#{error}"
   end
 
   def new
