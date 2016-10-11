@@ -40,7 +40,7 @@ pt_BR:
       discussion_post_date: "%d/%m/%Y"
       discussion_post_hour: "%H:%M h"
       simple_day_and_month: "%d/%b"
-      at_date: "%/d%m/%Y às %H:%M"
+      at_date: "%d/%m/%Y às %H:%M"
       log: "%d%m%Y%H%M%S"
     am: ''
     pm: ''

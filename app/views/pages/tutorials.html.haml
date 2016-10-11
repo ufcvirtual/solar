@@ -150,10 +150,7 @@
 :javascript
   $(function(){
     $('#search_tutorial').keyup(function(e){
-      console.log('oi');
       var words = $(this).val().split(' ');
-
-      console.log(words);
 
       if(words.length == 0 || (words.length == 1 && words[0] == '')){
         $('.tutorial').show();
