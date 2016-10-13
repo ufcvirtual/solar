@@ -225,6 +225,7 @@ class ApplicationController < ActionController::Base
 
   #salva o log de navegação do usuário
   def log_navigation
+    puts 'teste log'
     context_id = params[:contexts].blank? ? params[:context] : params[:contexts]
     allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] rescue params[:allocation_tag_id]
 

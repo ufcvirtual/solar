@@ -18,6 +18,9 @@ class DiscussionsController < ApplicationController
       @discussions = Score.list_tool(@user.id, @allocation_tag_id, 'discussions', false, false, true)
     rescue
       @discussions = []
+      puts 'estou antes do raise'
+    #  raise 'error'
+
     end
   
     authorize! :index, Discussion, on: [@allocation_tag_id]
