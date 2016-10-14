@@ -3215,8 +3215,8 @@ en_US:
       f_option: F
       info:
         continue: Continue
-        add_images: Add more images
-        add_labels: Add more labels
+        add_images: Add images
+        add_labels: Add labels
       image:
         alt_desc: 'Alt: Mandatory description to accessibility (disabled people)'
         add_image: Add/update image

@@ -32,11 +32,11 @@
         var ckeditor = CKEDITOR.instances[name];
         if (!ckeditor)
           append_rich_text(name);
-        else{
-          CKEDITOR.remove(ckeditor);
-          ckeditor.updateElement();
-          append_rich_text(name);
-        }
+        // else{
+        //   CKEDITOR.remove(ckeditor);
+        //   ckeditor.updateElement();
+        //   append_rich_text(name);
+        // }
         $.getScript("/assets/tooltip.js");
       }
     });

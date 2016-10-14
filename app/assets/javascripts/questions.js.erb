@@ -163,7 +163,18 @@ function edit_question(icon, replace_list){
   if (!(!ids.length || ids.length > 1)) {
     $.get("<%=Rails.application.routes.url_helpers.verify_owners_question_path(':id')%>".replace(':id', questions_ids), function(data){
       var url_edit = $(icon).data('link-to-edit').replace(':id', ids);
-      $(icon).call_fancybox({ href : url_edit, open: true, width: '20%', maxHeight: '70%' });
+      $(icon).call_fancybox({
+          href : url_edit,
+          open: true,
+          width: '100%',
+          maxHeight: '70%',
+          beforeClose: function() {
+            for(name in CKEDITOR.instances){
+              CKEDITOR.instances[name].setData("");
+              CKEDITOR.remove(CKEDITOR.instances[name]);
+            }
+          }
+      });
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
@@ -490,9 +501,10 @@ function new_question(link){
     'autoSize': false,
     open: true,
     href: $(link).data('url'),
-    onClosed: function() {
+    beforeClose: function() {
       for(name in CKEDITOR.instances){
-        CKEDITOR.instances[name].destroy(true);
+        CKEDITOR.instances[name].setData("");
+        CKEDITOR.remove(CKEDITOR.instances[name]);
       }
     }
   });

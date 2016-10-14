@@ -3445,8 +3445,8 @@ pt_BR:
       f_option: F
       info:
         continue: Prosseguir
-        add_images: Adicionar mais imagens
-        add_labels: Adicionar mais palavras-chave
+        add_images: Adicionar imagens
+        add_labels: Adicionar palavras-chave
       image:
         alt_desc: 'Alt: Descrição obrigatória para acessibilidade (pessoas com deficiência)'
         add_image: Adicionar/alterar imagem

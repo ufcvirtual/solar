@@ -1,6 +1,11 @@
 %span#labels
+  - count = 0
+  - count_labels = f.object.question_labels.count
   = f.nested_fields_for :question_labels, wrapper_tag: :div do |label|
-    /- if label.object.persisted? || f.object.new_record?
-    .duplicatable_nested_form
-      = label.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
-      = label.input :name, label: false
+    - if (f.object.new_record? || label.object.persisted? || count == count_labels + 1)
+      - count += 1
+      .duplicatable_nested_form
+        = label.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
+        = label.input :name, label: false
+    -else
+      - count += 1
