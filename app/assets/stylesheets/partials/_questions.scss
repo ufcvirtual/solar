@@ -59,7 +59,7 @@
   }
 
   .description{
-    max-width: 242px
+    max-width: 242px;
   }
 }
 
@@ -363,5 +363,8 @@ tbody .question_items.preview{
 .questions_box{
   a.preview_question{
     text-decoration: none;
+  }
+  .description{
+    max-width: 209px;
   }
 }

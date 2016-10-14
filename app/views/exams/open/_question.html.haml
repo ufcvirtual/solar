@@ -1,6 +1,7 @@
+- disabled = @disabled || question.annulled
 %tbody
   %td.question_items
-    = form_for(@exam_responses, html: { :method => :put, id: 'responses_form', :'data-duration' => @exam_responses.duration}, :url => exam_response_path(@exam_responses), :remote => true, :'data-disabled' => @disabled) do |er|
+    = form_for(@exam_responses, html: { :method => :put, id: 'responses_form', :'data-duration' => @exam_responses.duration}, :url => exam_response_path(@exam_responses), :remote => true, :'data-disabled' => disabled) do |er|
       = er.hidden_field :exam_user_attempt_id, value: @last_attempt.id
       = er.hidden_field :question_id, value: question.id
       - arr_alf = ('A'..'Z').to_a
@@ -31,8 +32,8 @@
             - if i.object.item_image?  
               - image = @pdf !=1 ? image_tag(i.object.item_image, id: 'item_image', alt: i.object.img_alt) : wicked_pdf_image_tag(i.object.item_image, id: 'item_image', alt: i.object.img_alt) 
                
-            = i.check_box :value, {disabled: @disabled, onchange: 'update_radio(this); change();', class: 'invisible'}, true, ''
-            = radio_button_tag "radio_exam_response_exam_responses_question_items_attributes", :value, nil, {checked: i.object.value, class: "radio_exam_response_exam_responses_question_items_attributes_#{num_question}_value", disabled: @disabled}
+            = i.check_box :value, {disabled: disabled, onchange: 'update_radio(this); change();', class: 'invisible'}, true, ''
+            = radio_button_tag "radio_exam_response_exam_responses_question_items_attributes", :value, nil, {checked: i.object.value, class: "radio_exam_response_exam_responses_question_items_attributes_#{num_question}_value", disabled: disabled}
 
             = i.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
@@ -69,7 +70,7 @@
             - if b.object.item_image?     
               - image =  @pdf !=1 ? image_tag(b.object.item_image, id: 'item_image', alt: b.object.img_alt) : image = wicked_pdf_image_tag(b.object.item_image, id: 'item_image', alt: b.object.img_alt)
 
-            = b.check_box :value, {disabled: @disabled, onchange: 'change();'}, true, ''
+            = b.check_box :value, {disabled: disabled, onchange: 'change();'}, true, ''
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
               = raw image
@@ -111,7 +112,7 @@
               - unless b.object.comment.blank?
                 - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"
 
-            = b.select :value, options_for_select([['', nil], [t('questions.form.f_option'), false], [t('questions.form.t_option'), true]], b.object.value), disabled: @disabled, onchange: 'change();'
+            = b.select :value, options_for_select([['', nil], [t('questions.form.f_option'), false], [t('questions.form.t_option'), true]], b.object.value), disabled: disabled, onchange: 'change();'
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
               = raw image
@@ -141,7 +142,8 @@
   });
 
   function change(){
-    save_question('#{@exam_responses.try(:duration)}');
+    if("#{@disabled}" != 'true')
+      save_question('#{@exam_responses.try(:duration)}');
   }
 
   function update_radio(checkbox){

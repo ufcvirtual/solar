@@ -319,6 +319,16 @@ function expand_or_compress(link){
   }
 }
 
+function expand_or_compress_icon(icon){
+  if($(icon).hasClass("compress")){
+    $(icon).parents('.complete:first').hide();
+    $(icon).parents('.description:first').find('.minimun').show();
+  }else{
+    $(icon).parents('.minimun:first').hide();
+    $(icon).parents('.description:first').find('.complete').show();
+  }
+}
+
 function annul(icon){
   if ($(icon).prop('disabled'))
     return false;

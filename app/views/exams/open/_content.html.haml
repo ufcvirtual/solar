@@ -8,8 +8,8 @@
       - number_question = number_question+1
     - if @disabled
       - score = t('exams.open.scores', score: question.score)
-      - if question.annulled
-        - anull = t('exams.open.anull')
+    - if question.annulled
+      - anull = t('exams.open.anull')
     %table.questions
       %thead
         %tr.question
