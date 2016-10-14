@@ -15,7 +15,7 @@
         %span.draft{ class: (exam.status ? 'invisible' : '') }
           = content_tag(:i, nil, class: 'icon-warning')
           = label_tag :draft_exam, t('exams.list.draft_exam')
-        - hours = exam.start_hour.nil? ? '' : [exam.start_hour, exam.end_hour].join(t('exams.list.to'))
+        - hours = exam.start_hour.blank? ? '' : [exam.start_hour, exam.end_hour].join(t('exams.list.to'))
         = label_tag  t('exams.list.period', dstart: l(exam.schedule.start_date, format: :normal), dend: l(exam.schedule.end_date, format: :normal) , hours: hours)
         = label_tag t('exams.list.amount_questions', added: count, amount: exam.number_questions)
         - if show_buttons

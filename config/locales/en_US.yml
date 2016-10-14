@@ -2093,7 +2093,7 @@ en_US:
       questions: Questions bank
       questions_desc: 'Repository which questions about diverse topics can be created, stored, edited, removed or published.'
     evaluative_tools:
-      full_period: "%{dstart} à %{dend} %{hours}"
+      full_period: "%{dstart} to %{dend} %{hours}"
       expand_description: Expand description
       compress_description: Compress description
       discussions_call: 'Manage evaluative / frequency discussions'
