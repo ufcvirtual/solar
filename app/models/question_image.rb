@@ -4,6 +4,7 @@ class QuestionImage < ActiveRecord::Base
   validates :image, presence: true
 
   validates :img_alt, presence: true, if: 'img_alt.blank?'
+  validates :legend, length: { maximum: 100 }
 
   validates_attachment_size :image, less_than: 2.megabyte
   validates_attachment_content_type :image, content_type: /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/
