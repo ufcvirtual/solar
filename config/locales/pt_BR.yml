@@ -3707,6 +3707,7 @@ pt_BR:
     search: Pesquisar por palavras-chave
     file_tutorials: "Tutoriais em arquivo"
     file_tutorials_link: "<a href='tutorials.html' target='_blank'>Acessar os tutoriais em arquivo do Solar 2.0</a>"
+    file_tutorials_title: "Acessar os tutoriais em arquivo do Solar 2.0"
     questions:
       whats_solar: 'O que é o Solar?'
       whats_ava: 'O que é um AVA?'

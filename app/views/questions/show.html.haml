@@ -12,8 +12,11 @@
               - unless question_images.nil?
                 %tr.question_images
                   - question_images.each do |q_image|
-                    %td.image
-                      = image_tag q_image.image(get_image_size(question_images.count)), id: 'question_image', alt: q_image.img_alt
-                      %br
-                      = q_image.legend
+                    %td.image{class: q_image.legend.blank? ? '' : 'legend'}
+                      .image
+                        = image_tag q_image.image(get_image_size(question_images.count)), id: 'question_image', alt: q_image.img_alt
+                      - unless q_image.legend.blank?
+                        .legend
+                          = q_image.legend
+                        %br
         = render 'exams/open/question_preview', { question: @question}

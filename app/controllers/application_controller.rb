@@ -97,8 +97,10 @@ class ApplicationController < ActionController::Base
   end
 
   def set_active_tab_to_home
-    clear_breadcrumb_home
-    set_active_tab('Home')
+    unless current_user.blank?
+      clear_breadcrumb_home
+      set_active_tab('Home')
+    end
   end
 
   def active_tab

@@ -185,7 +185,10 @@
 %p.title_child_first=raw t(:video_tutorials_link)
 
 %h1= t('faq.file_tutorials')
-%p.title_child_first=raw t('faq.file_tutorials_link')
+- if current_user.blank?
+  %p.title_child_first= link_to t('faq.file_tutorials_title'), '#tutorials', class: 'panel-link'
+- else
+  %p.title_child_first=raw t('faq.file_tutorials_link')
 
 
 :javascript
@@ -219,4 +222,5 @@
         });
       }
     });
+
   });
