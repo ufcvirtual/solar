@@ -77,6 +77,7 @@ class User < ActiveRecord::Base
 
   validate :unique_cpf, if: "cpf_changed?"
   validate :login_differ_from_cpf
+  validate :can_change_cpf, if: '!new_record? && cpf_changed?'
 
   # paperclip uses: file_name, content_type, file_size e updated_at
   has_attached_file :photo,
@@ -123,6 +124,10 @@ class User < ActiveRecord::Base
   end
 
   ## metodos de validacoes
+
+  def can_change_cpf
+    errors.add(:base, I18n.t('users.errors.cpf_admin')) unless User.current.admin?
+  end
 
   def log_update_user
     LogAction.create(log_type: LogAction::TYPE[:update], user_id: id, description: "update_me: #{attributes.except('encrypted_password', 'reset_password_token', 'password_salt', 'authentication_token')} ")

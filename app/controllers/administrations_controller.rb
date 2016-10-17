@@ -43,12 +43,14 @@ class AdministrationsController < ApplicationController
   def edit_user
     authorize! :update_user, Administration
     @user = User.find(params[:id])
+    @user_admin = current_user.admin?
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def update_user
     authorize! :update_user, Administration
+    set_current_user
 
     @user = User.find(params[:id])
     if @user.update_attributes(user_params)
@@ -383,7 +385,7 @@ class AdministrationsController < ApplicationController
   private
 
     def user_params
-      params.require(:data).permit(:name, :email, :username, :active)
+      params.require(:data).permit(:name, :email, :username, :active, :cpf)
     end
 
     def save_log_into_file(logs)

@@ -2862,6 +2862,7 @@ pt_BR:
         email: 'Falha na conexão com o Módulo Acadêmico, definindo email como um endereço inválido. Tente defini-lo novamente.'
         login_email: 'ma_login_email_msg'
         synchronize: Erro ao sincronizar dados com o Módulo Acadêmico. Favor tentar novamente.
+      cpf_admin: 'Apenas administradores podem alterar CPF. Para fazer a mudança, entre em contato com o atendimento@virtual.ufc.br informando nome, CPF atual, novo CPF e o motivo para a mudança.'
     notices:
       ma:
         use_ma_data: "Seus dados de acesso foram importados do Módulo Acadêmico. Para alterar ou recuperar seus dados de acesso, vá ao endereço: <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>."
@@ -2871,6 +2872,7 @@ pt_BR:
         cpf_not_verified: "Não foi possível verificar o CPF no Módulo Acadêmico. Se faz necessário que você, após logado, sincronize seus dados."
         cpf_not_found: CPF não encontrado no Módulo Acadêmico
         not_possible_syncrhonize: Não foi possível sincronizar com o Módulo Acadêmico.
+      cpf: "Para alterar seu CPF, entre em contato com o atendimento@virtual.ufc.br informando seu nome, CPF atual, novo CPF e o motivo para a mudança."
     show:
       not_informed: Não informado
       detailed: "Informações Detalhadas"

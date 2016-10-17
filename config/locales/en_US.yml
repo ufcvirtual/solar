@@ -2636,6 +2636,7 @@ en_US:
         email: 'Connection with Módulo Acadêmico has failed, your email was set as an invalid value. Please try define it again.'
         login_email: 'ma_login_email_msg'
         synchronize: Error while synchronizing data with Módulo Acadêmico. Please try again.
+      cpf_admin: "Only Administrators can update a CPF. To do so, get in touch with atendimento@virtual.ufc.br informing name, current CPF, new CPF and the reason to change it."
     notices:
       ma:
         use_ma_data: "Your access data were imported from Módulo Acadêmico. To change or recover your access data, go to the address: <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>."
@@ -2645,6 +2646,7 @@ en_US:
         cpf_not_verified: "It wasn't possible to verify your CPF at Módulo Acadêmico. After logged in, synchronize your data."
         cpf_not_found: CPF not found at no Módulo Acadêmico
         not_possible_syncrhonize: It wasn't possible to syncrhonize with Módulo Acadêmico.
+      cpf: "To change your CPF, get in touch with atendimento@virtual.ufc.br informing your name, current CPF, new CPF and the reason to change it."
     show:
       not_informed: Not informed
       detailed: "Detailed Information"

@@ -45,7 +45,7 @@
           %span.form_error= msg_name 
         %li
           %span.form_label= f.label :cpf
-          %span.form_field= f.text_field :cpf, size: field_size, id: 'cpf'
+          %span.form_field{:'data-tooltip' => t('users.warnings.cpf')}= f.text_field :cpf, size: field_size, id: 'cpf', disabled: true
           %span.form_error= msg_cpf 
         %li
           %span.form_label= f.label :birthdate, class: 'label_usuario'
@@ -196,6 +196,8 @@
     = f.submit t(:confirm), id: "confirm", class: "btn btn_main user_data_form_buttons", alt:  t(:confirm)
 
   = hidden_field_tag :changeable_fields, User::CHANGEABLE_FIELDS
+
+= javascript_include_tag 'tooltip'
 
 :javascript
   if($(".base_msg").html() != "")

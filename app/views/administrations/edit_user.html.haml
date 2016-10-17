@@ -1,7 +1,7 @@
 %td= @user.integrated? ? @user.name : text_field_tag("name", @user.name, required: true)
 %td= @user.integrated? ? @user.email : text_field_tag("email", @user.email, required: true)
 %td= @user.integrated? ? @user.username : text_field_tag("username", @user.username, required: true)
-%td= @user.cpf
+%td= (@user.integrated? || !@user_admin) ? @user.cpf : text_field_tag("cpf", @user.cpf, required: true)
 %td= select(:status, :id, user_status.invert.to_a, {selected: @user.active? ? 1 : 0})
 %td{style: 'text-align:right'}
   .btn-group
@@ -9,4 +9,4 @@
     = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), "update_user(this)", :"save-link" => admin_user_path(@user), :"show-link" => admin_user_path(@user.id), class:  "btn btn_main btn_manage_cancel"
 
 :javascript
-  eval("#{show_flash}")
+  eval("#{show_flash}");
