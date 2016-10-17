@@ -44,8 +44,8 @@ class ApplicationController < ActionController::Base
   
 
   if Rails.env != 'development'
-    rescue_from ActiveRecord::RecordNotFound do |exception|
-      # logar: exception.message
+    rescue_from ActiveRecord::RecordNotFound do |exception| 
+      #logar: exception.message
       respond_to do |format|
         format.html { redirect_to home_path, alert: t(:object_not_found) }
         format.json { render json: { msg: t(:object_not_found)}, status: :not_found }
@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
         format.html { redirect_to((user_signed_in? ? home_path : login_path), alert: t(:cant_build_page)) }
         format.json { render json: { msg: t(:cant_build_page)}, status: :unauthorized }
       end
-    end
+     end
   end
 
   def start_user_session  
@@ -225,7 +225,7 @@ class ApplicationController < ActionController::Base
 
   #salva o log de navegação do usuário
   def log_navigation
-    puts 'teste log'
+
     context_id = params[:contexts].blank? ? params[:context] : params[:contexts]
     allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] rescue params[:allocation_tag_id]
 
@@ -268,6 +268,7 @@ class ApplicationController < ActionController::Base
 
   # salva o log de acesso ao submenu
   def log_navigation_sub(menu_log, discussion_log_id, user_log_id, sub_log_id, student_log_id, group_assignment_log_id, lesson_notes_id, digital_class_log, zip_download)
+
     case menu_log.id
       when 101
         unless params[:controller] == 'access_control'
@@ -285,10 +286,16 @@ class ApplicationController < ActionController::Base
         end
       when 103
         digital_class_url = digital_class_log
-      when 202 || 204
-        assignments_id = sub_log_id
+      when 202
+        assignments_id = sub_log_id 
       when 203
         exams_id = sub_log_id
+      when 204 
+        session[:tool_type] = params[:tool_type] if params[:tool_type]
+        assignments_id = sub_log_id if session[:tool_type] == 'Assignment'
+        webconferences_id = sub_log_id if session[:tool_type] == 'Webconference'
+        exams_id = sub_log_id if session[:tool_type] == 'Exam'
+        chat_rooms_id = sub_log_id if session[:tool_type] == 'ChatRoom' 
       when 205
         chat_rooms_id = sub_log_id
         unless params[:academic_allocation_id] # para acesso ao chat
@@ -297,6 +304,13 @@ class ApplicationController < ActionController::Base
       when 206
         webconferences_id = sub_log_id
         webconference = params[:action] == 'access'
+      when 208
+        score_professor = true if params[:tool]
+        session[:tool_type] = params[:tool_type] if params[:tool_type]
+        assignments_id = sub_log_id if session[:tool_type] == 'Assignment'
+        webconferences_id = sub_log_id if session[:tool_type] == 'Webconference'
+        exams_id = sub_log_id if session[:tool_type] == 'Exam'
+        chat_rooms_id = sub_log_id if session[:tool_type] == 'ChatRoom'
       when 303
         bibliography = if zip_download
           'zip'
@@ -304,11 +318,10 @@ class ApplicationController < ActionController::Base
           bib = Bibliography.find(sub_log_id)
           bib.attachment_file_name.blank? ? (bib.url.blank? ? bib.address : bib.url) : bib.attachment_file_name
         end
-      when 304 && params[:controller] == 'public_files'
+      when 304 #&& params[:controller] == 'public_files'
         if zip_download
           public_file_name = 'zip'
         else
-          user_log_id = user_log_id
           if sub_log_id
             public_file = PublicFile.find(sub_log_id) 
             public_file_name = public_file.attachment_file_name rescue nil
@@ -318,11 +331,12 @@ class ApplicationController < ActionController::Base
         public_area = true if user_log_id
     end
   
-    if (!support_material_file.blank? || assignments_id || exams_id || chat_rooms_id || webconferences_id || discussion_log_id || lesson_log_id || !bibliography.blank? || student_log_id || user_log_id || public_area || hist_chat_rooms_id || digital_class_url)
+    if (!support_material_file.blank? || assignments_id || exams_id || chat_rooms_id || webconferences_id || discussion_log_id || lesson_log_id || !bibliography.blank? || student_log_id || public_area || hist_chat_rooms_id || digital_class_url || (user_log_id && score_professor))
       # para o acompanhamento do professor
-      assignments_id = sub_log_id if student_log_id
+      #assignments_id = sub_log_id if student_log_id
       ultimo_log_nav = LogNavigation.where('user_id = ? AND menu_id = ?', current_user.id, menu_log.id).last # pega o log de navegação para o sub log. 
       LogNavigationSub.create(log_navigation_id: ultimo_log_nav.id, support_material_file: support_material_file, discussion_id: discussion_log_id, lesson_id: lesson_log_id, assignment_id: assignments_id, exam_id: exams_id, user_id: user_log_id, chat_room_id: chat_rooms_id, student_id: student_log_id, group_assignment_id: group_assignment_log_id, webconference_id: webconferences_id, bibliography: bibliography, public_area: public_area, lesson: lesson_name, public_file_name: public_file_name, hist_chat_room_id: hist_chat_rooms_id, webconference_record: webconference, lesson_notes: lesson_notes, digital_class_lesson: digital_class_url)
+      #session.delete(:tool_type)
     end
   rescue => error
     Rails.logger.info "Log Navigation Errror: #{error}"

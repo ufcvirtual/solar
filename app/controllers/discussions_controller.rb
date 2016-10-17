@@ -16,11 +16,9 @@ class DiscussionsController < ApplicationController
       @allocation_tag_id = (active_tab[:url].include?(:allocation_tag_id)) ? active_tab[:url][:allocation_tag_id] : AllocationTag.find_by_group_id(params[:group_id] || []).id
       @user = current_user
       @discussions = Score.list_tool(@user.id, @allocation_tag_id, 'discussions', false, false, true)
+  
     rescue
       @discussions = []
-      puts 'estou antes do raise'
-    #  raise 'error'
-
     end
   
     authorize! :index, Discussion, on: [@allocation_tag_id]
