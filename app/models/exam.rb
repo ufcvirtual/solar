@@ -291,7 +291,7 @@ class Exam < Event
   end
 
   def can_change_status?
-    raise 'minimum_questions' if !status && questions.where(status: true).count < number_questions
+    raise 'minimum_questions' if !status && exam_questions.joins(:question).where(questions:{ status: true }, annulled: false).count < number_questions
     raise 'started'           if status && on_going?
     raise 'has_answers'       if status && academic_allocation_users.any?
     raise 'imported'          if !status && !can_publish
@@ -357,7 +357,7 @@ class Exam < Event
     exam_questions.update_all use_question: false
     if status
       query_order = (random_questions ? 'RANDOM()' : 'exam_questions.order')
-      ExamQuestion.joins(:question).where(exam_questions: { exam_id: id }, questions: { status: true }).limit(number_questions).order(query_order).update_all use_question: true
+      ExamQuestion.joins(:question).where(exam_questions: { exam_id: id }, questions: { status: true }, annulled: false).limit(number_questions).order(query_order).update_all use_question: true
     end
   end
 

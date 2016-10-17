@@ -728,7 +728,6 @@ pt_BR:
   help: "Ajuda"
 
   #Submenu de ajuda
-  tutorials: "Tutoriais"
   context: "Contextual"
   contact: Entrar em contato
 
@@ -3446,8 +3445,8 @@ pt_BR:
       f_option: F
       info:
         continue: Prosseguir
-        add_images: Adicionar mais imagens
-        add_labels: Adicionar mais palavras-chave
+        add_images: Adicionar imagens
+        add_labels: Adicionar palavras-chave
       image:
         alt_desc: 'Alt: Descrição obrigatória para acessibilidade (pessoas com deficiência)'
         add_image: Adicionar/alterar imagem
@@ -3705,6 +3704,10 @@ pt_BR:
       evaluated: Estudante avaliado com sucesso.
 
   faq:
+    search: Pesquisar por palavras-chave
+    file_tutorials: "Tutoriais em arquivo"
+    file_tutorials_link: "<a href='tutorials.html' target='_blank'>Acessar os tutoriais em arquivo do Solar 2.0</a>"
+    file_tutorials_title: "Acessar os tutoriais em arquivo do Solar 2.0"
     questions:
       whats_solar: 'O que é o Solar?'
       whats_ava: 'O que é um AVA?'
@@ -3841,3 +3844,38 @@ pt_BR:
       files_portifolio: Quantidade de Arquivos Postados no Portfólio 
       number_of_students: Quantidade de alunos ativos matriculados
 
+  tutorials:
+    menu: "Tutoriais"
+    titles:
+      responsibles: Responsáveis
+    texts:
+      login: "Ao ter o primeiro contato com o Solar 2.0, faz-se necessário o cadastro e login. O objetivo deste tutorial é sanar dúvidas a respeito destes procedimentos. Também contem informações sobre as ações necessárias para recuperação de senha."
+      student: "Este tutorial explica e ilustra algumas funções básicas oferecidas pelo Solar 2.0 ao aluno como, por exemplo: as mensagens, a matrícula, a visualização do conteúdo da disciplina, atividades etc."
+      math_editor: "Algumas ferramentas como fórum, por exemplo, possuem um editor de texto com um editor matemático incluso. Sendo possível, assim, acrescentar e descrever símbolos e fórmulas em formato Latex. Este tutorial explica onde encontrá-lo em um editor de texto e como usá-lo."
+      scores_student: "O acompanhamento do aluno contém todas as informações das situações dele na turma: atividades, notas, acessos, arquivos públicos etc. Este tutorial fornecerá todas as informações necessárias para o uso desse acompanhamento."
+      scores_responsible: "O acompanhamento do responsável (tutor, professor etc) contém todas as informações das situações dos alunos da turma: atividades, notas, acessos, arquivos públicos etc. Na visão dos responsáveis, será possível ter uma visão geral da turma e visões específicas e detalhadas para cada aluno. Também será possível fazer avaliações no próprio acompanhamento. Este tutorial fornecerá todas as informações necessárias para o uso desse acompanhamento."
+      evaluation: "Todas as ações necessárias para realizar a avaliação ou definição de frequência para um aluno em uma atividade avaliativa ou de frequência serão aqui descritas, juntamente com todas as informações necessárias."
+      enrollment: "A matrícula é a ação que permite que um aluno possa se inscrever em um curso de seu interesse. Este tutorial fornecerá uma descrição dos passos para solicitação e cancelamento de matrículas no Solar 2.0. Lembramos que toda matrícula está sujeita a aceitação."
+      enrollment_management: "A matrícula é a ação que permite que um aluno possa se inscrever em um curso de seu interesse. Como toda matrícula está sujeita a aceitação, o Solar 2.0 fornece uma área para o gerenciamento dessas solicitações por parte dos responsáveis pela matrícula do curso. Todas as informações necessárias para aceitar ou rejeitar matrículas estão descritas neste tutorial."
+      exam_edition: "Prova é uma ferramenta que permite a realização totalmente online de avaliações pelos alunos. Os responsáveis têm a possibilidade de cadastrar ou reutilizar questões e cadastrar provas) definindo suas informações básicas. Todas as informações necessárias para entender como a edição de prova funciona estão disponíveis neste tutorial."
+      question_repository: "O repositório de questões funciona como um banco de questões, no qual são armazenadas todas as questões a serem usadas em provas no Solar 2.0. Os responsáveis têm a possibilidade de realizar várias ações disponíveis no banco de questões e todas essas ações são explicadas neste tutorial."
+      academic: "A edição acadêmica contempla todas níveis disponíveis no processo de criação de curso. Este tutorial contempla desde a criação do curso, até a da turma e todas etapas que fazem parte dessa edição."
+      content: "A edição de conteúdo contempla todas as ferramentas disponíveis para o curso. As opções disponíveis podem variar de acordo com o nível escolhido (curso, semestre, turma etc) e com a permissão concedida ao usuário em questão. Para entender como alguma das ferramentas disponíveis podem ser definidas, veja este tutorial. Esta versão contempla os seguintes módulos: Alocação, Fórum, Material de Apoio e Aula."
+      activity_management: "A gerência aqui descrita permite que os responsáveis pelas atividades possam definir determinadas atividades criadas como avaliativas ou não ou como de frequência, permitindo, assim, que as atividades aqui definidas como avaliativas, por exemplo, estejam sujeitas a avaliação por parte dos professores responsáveis. Este tutorial fornece todas as informações necessárias para entender as regras e para se tornar apto a gerenciar as atividades."
+      assignment_webconference: "Este tutorial possui todas as informações necessárias para o aluno utilizar a webconferência de portfólio (ou trabalho), cujo objetivo é poder enviar, como trabalho, uma gravação de webconferência, podendo ser utilizada como apresentação, áudio, conversação com membros de um grupo etc. A webconferência de portfolio também pode ser utilizada como 'treino' ou como meio de discussão entre os membros de um grupo."
+    files:
+      math_editor: Visualizar PDF de Editor Matemático
+      evaluation: Visualizar PDF de Avaliação e frequência de atividades
+      scores: Visualizar PDF de Acompanhamento
+      enrollment: Visualizar PDF de Matrícula
+      enrollment_management: Visualizar PDF de Gerência de Matrículas
+      exam_edition: Visualizar PDF de  Edição de provas
+      question_repository: Visualizar PDF de  Repositório de questões
+      activity_management: Visualizar PDF de  Gerência de atividades avaliativas e de frequência
+      content: Visualizar PDF de  Edição de Conteúdo
+      academic: Visualizar PDF de  Edição Acadêmica
+      assignment_webconference: Visualizar PDF de Webconferência de Portfólio
+      student: Visualizar PDF de Aluno
+      login: Visualizar PDF de Login
+    new_language_pt: " (Não foi possível encontrar o tutorial desejado em Português, veja nossa versão em Português)"
+    new_language_en: " (Não foi possível encontrar o tutorial desejado em Português, veja nossa versão em Inglês)"

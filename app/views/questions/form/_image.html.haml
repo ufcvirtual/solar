@@ -1,20 +1,26 @@
 #images
+  - count = 0
+  - count_images = f.object.question_images.count
   = f.nested_fields_for :question_images, wrapper_tag: :div do |img|
-    .duplicatable_nested_form
-      .upload-preview
-        - if img.object.image.nil?
-          %img{ src: '' }
-        - else
-          %img{ src: img.object.image.as_json }
+    - if (f.object.new_record? || img.object.persisted? || count == count_images + 1)
+      - count += 1
+      .duplicatable_nested_form
+        .upload-preview
+          - if img.object.image.nil?
+            %img{ src: '' }
+          - else
+            %img{ src: img.object.image.as_json }
 
-        = img.input :image, as: :file, label: false
-        = link_to_function t('.add_image'), 'add_file(this)', class: 'btn btn_main add_file'
+          = img.input :image, as: :file, label: false
+          = link_to_function t('.add_image'), 'add_file(this)', class: 'btn btn_main add_file'
 
-      .info
-        = img.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
-        = img.input :legend, as: :text
-        = img.input :img_alt
-        = img.label t('.alt_desc'), class: 'alt'
+        .info
+          = img.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
+          = img.input :legend, as: :text
+          = img.input :img_alt
+          = img.label t('.alt_desc'), class: 'alt'
+    -else
+      - count += 1
 
 :javascript
   $(function(){

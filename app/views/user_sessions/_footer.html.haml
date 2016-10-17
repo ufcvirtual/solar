@@ -12,6 +12,12 @@
     = render template: '/pages/faq'
   = image_tag('arrow.png', class: 'arrow')
 
+#tutorials.panel
+  .content
+    = render template: '/pages/tutorials'
+  = image_tag('arrow.png', class: 'arrow')
+
+
 %footer
   .menu_footer
     %ul
@@ -25,6 +31,7 @@
         %ul.choice-tutorial-menu
           %li= link_to t(:login_faq), '#faq', class: 'panel-link'
           %li= link_to t(:videos), 'video_tutorials.html', target: '_blank'
+          %li= link_to t('tutorials.menu'), '#tutorials', class: 'panel-link'
       %li.choice-language
         = link_to t(:login_language), '#', class: "link-arrow"
         %ul.choice-language-menu

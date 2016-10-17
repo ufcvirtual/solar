@@ -75,6 +75,8 @@
     #time, #question_count{
       padding-right: 0px;
     }
+
+
   }
 
   .block_content {
@@ -107,6 +109,11 @@
     .question_images {
       text-align: center;
 
+      #question_image{
+        max-width: 300px;
+        max-height: 200px;
+      }
+
       .image {
         padding: 15px 15px 0 15px;
         display: inline-block;
@@ -115,7 +122,28 @@
           border: solid 2px #CDD6E3;
         }
       }
-
+      td.image.legend{
+        display: block;
+        text-align: left;
+        width: 600px;
+        background-color: #CBD7E4;
+        margin-bottom: 10px;
+        margin-bottom: 10px;
+        img, .image{
+          margin-left: -15px;
+          margin-top: -15px;
+          margin-bottom: -5px;
+        }
+        .image{
+          width: 50%;
+        }
+        .legend{
+          width: 45%;
+          display: inline-block;
+          text-align: center;
+          vertical-align: top;
+        }
+      }
     }
 
   }

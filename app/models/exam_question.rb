@@ -44,7 +44,7 @@ class ExamQuestion < ActiveRecord::Base
 
       if responses.blank?
         exam_questions = ExamQuestion.joins(:question)
-          .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
+          .where(exam_questions: {exam_id: exam_id, use_question: true},
             questions: {status: true})
           .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
             questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
@@ -60,7 +60,7 @@ class ExamQuestion < ActiveRecord::Base
       end
 
       ExamQuestion.joins(:question).joins(:exam_responses)
-        .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
+        .where(exam_questions: {exam_id: exam_id, use_question: true},
           exam_responses: {exam_user_attempt_id: last_attempt.id},
           questions: {status: true})
         .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
@@ -68,16 +68,6 @@ class ExamQuestion < ActiveRecord::Base
         .order('exam_responses.id')
     end
   end
-
-  def self.question_current(exam_id, id)
-    exam_questions = ExamQuestion.joins(:question)
-      .where(exam_questions: {exam_id: exam_id, annulled: false, use_question: true},
-        questions: {status: true, id: id})
-      .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
-        questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
-
-    exam_questions
-  end  
 
   def self.list_correction(exam_id, raffle_order = false)
     ExamQuestion.joins(:question)

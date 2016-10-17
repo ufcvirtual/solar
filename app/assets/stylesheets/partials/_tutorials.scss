@@ -1,5 +1,18 @@
 //Tutoriais
 
 .description_tutorials{
-	color: #424242;
+  color: #424242;
+}
+
+.subtitle_tutorial{
+  font-style: italic;   
+  color: $text_grey;
+}
+
+.tutorials{
+  tr{
+    a{
+      text-decoration: none;
+    }
+  }
 }

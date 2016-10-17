@@ -2093,7 +2093,7 @@ en_US:
       questions: Questions bank
       questions_desc: 'Repository which questions about diverse topics can be created, stored, edited, removed or published.'
     evaluative_tools:
-      full_period: "%{dstart} à %{dend} %{hours}"
+      full_period: "%{dstart} to %{dend} %{hours}"
       expand_description: Expand description
       compress_description: Compress description
       discussions_call: 'Manage evaluative / frequency discussions'
@@ -3215,8 +3215,8 @@ en_US:
       f_option: F
       info:
         continue: Continue
-        add_images: Add more images
-        add_labels: Add more labels
+        add_images: Add images
+        add_labels: Add labels
       image:
         alt_desc: 'Alt: Mandatory description to accessibility (disabled people)'
         add_image: Add/update image
@@ -3476,6 +3476,10 @@ en_US:
       evaluated: Student successfully evaluated.
 
   faq:
+    search: Search by key words
+    file_tutorials: "File tutorials"
+    file_tutorials_link: "<a href='tutorials.html' target='_blank'>Access Solar 2.0 files tutorials</a>"
+    file_tutorials_title: "Access Solar 2.0 files tutorials"
     questions:
       whats_solar: 'What is Solar?'
       whats_ava: 'What is a LMS?'
@@ -3564,6 +3568,7 @@ en_US:
   ckeditor:
     confirms:
       question: "Item count is blank. Do you want to remove it?"
+
 # reports_add
   reports:
     index:
@@ -3611,3 +3616,38 @@ en_US:
       files_portifolio: Portfolio posts Amount
       number_of_students: Number of active registered students
 
+  tutorials:
+    menu: Tutorials
+    titles:
+      responsibles: "Responsibles"
+    texts:
+      login: " While having first contact with Solar 2.0, it's necessary that you register yourself and log in. This tutorial objective is to answer any questions about these procedures. The tutorial also have information about the needed actions to password recovery."
+      student: " This tutorial explains and show some of the basic functions offered by Solar 2.0 to the student such as, for example, messages, enrollment, activities, content access and others."
+      math_editor: " Some tools, such as discussions, have a text editor with a math editor in it. Therefore, the text editor allow to add and describe many symbols and formulas on Latex format. This tutorial explains where to find it and how to use it."
+      scores_student: " Student's scores have all the information about the current student on a group, information such as: activities, grades, access, public files and others. This tutorial will provide all the necessary information to the use of scores page."
+      scores_responsible: " Responsible's (tutor, professor etc) scores have all the information about all students on a group, information such as: activities, grades, accesses, public files and others. At responsible's view, it is possible to have a general view about a group and specific views about each student. It's also possible to evaluate at scores page. This tutorial will give you all the necessary information to use this tool."
+      evaluation: " Every action to evaluate or define frequency to a student at an evaluative or frequency activity will be described here, along with any other important information about it."
+      enrollment: " Enrollment is what allows student's enrolling at a course of it's interest. This tutorial will provide a description of all steps to request and cancel enrollments at Solar 2.0. It's important to remember that enrollments must wait for an acceptance."
+      enrollment_management: " Enrollment is what allows student's enrolling at a course of it's interest. All enrollment request may be accepted or rejected, so Solar 2.0 provides a area to manage this solicitations. All needed information about accept or reject an enrollment will be described at this tutorial."
+      question_repository: " Question's repository works as a question's bank, in which all questions to be used by exams are stored. This tutorial will explain all possible actions at the repository such as creation of questions, copy of questions and others."
+      academic: " Academic edition area have all the levels available to the process of course's creation. This is the place where the user creates a course or subject, a semester and their groups. Therefore, this tutorial explains every step from the start to the end."
+      content: " Content edition includes all tools available at Solar 2.0 to the course. Options available may vary with choosen level (course, semester, group and others) and with granted permission to the current user. So this tutorial will allow you to understand how some of the available tools may be defined, created, removed and others. This version talks about: Allocation, discussion, support material and lesson."
+      activity_management: " The Activity Management area allows that responsibles by activities can define some of them as evaluative or not or as frequency. This way, if an activity is defined as evaluative, for example, the student will be evaluated by it's participation at the activity, so it will receive a grade or working hours. This tutorial provides all informations needed to understand all rules so the user can be fit to manage activities."
+      assignment_webconference: "This tutorial have all necessary information so the students could use assignment webconference, which goal is send a webconference's recording as an assignment. A assignment webconference can also be used to trial practice or to discuss with group members."
+      exam_edition: "Exam is a tool that allows the execution of online tests by students. Responsibles can create or use questions and exams by defining it's basic informations. All information necessary to understand how exam's edition works are avealable in this tutorial."
+    files:
+      math_editor: View Math Editor PDF
+      evaluation: View Evaluation and frequency of activities PDF
+      scores: View Scores PDF
+      enrollment: View Enrollment PDF
+      enrollment_management: View Enrollment Management PDF
+      exam_edition: View  Exam's edition PDF
+      question_repository: View  Question's repository PDF
+      activity_management: View  Evaluative and frequency activities management PDF
+      content: View  Content edition PDF
+      academic: View  Academic edition PDF
+      assignment_webconference: View Assignment Webconference PDF
+      student: View Student PDF
+      login: View Login PDF
+    new_language_pt: " (It was not possible to find this tutorial in English, see our Portuguese version)"
+    new_language_en: " (It was not possible to find this tutorial in English, see our English version)"

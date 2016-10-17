@@ -1,7 +1,7 @@
 %h1= t(:faq_title)
 
 .search
-  = "Pesquisar por palavras-chave"
+  = t('faq.search')
   = text_field_tag :search_faq, nil
 
 .question
@@ -184,36 +184,43 @@
 %h1= t(:video_tutorials)
 %p.title_child_first=raw t(:video_tutorials_link)
 
+%h1= t('faq.file_tutorials')
+- if current_user.blank?
+  %p.title_child_first= link_to t('faq.file_tutorials_title'), '#tutorials', class: 'panel-link'
+- else
+  %p.title_child_first=raw t('faq.file_tutorials_link')
+
 
 :javascript
+  $(function(){
+    $("h4.title").click(function(){
+      if ($(this).next(".invisible").is(":hidden")) {
+        $(this).next(".invisible").toggle();
+      }
+      else {
+        $(this).next(".invisible").toggle();
+      }
+    });
 
-  $("h4.title").click(function(){
-    if ($(this).next(".invisible").is(":hidden")) {
-      $(this).next(".invisible").toggle();
-    }
-    else {
-      $(this).next(".invisible").toggle();
-    }
-  });
+    $('#search_faq').keyup(function(e){
+      var words = $(this).val().split(' ');
 
-  $('#search_faq').keyup(function(e){
-    var words = $(this).val().split(' ');
+      if(words.length == 0 || (words.length == 1 && words[0] == '')){
+        $('.question').show();
+      }else{
+        $('.question').each(function(a){
+          var text = $(this).prop('textContent');
 
-    if(words.length == 0 || (words.length == 1 && words[0] == '')){
-      $('.question').show();
-    }else{
-      $('.question').each(function(a){
-        var text = $(this).prop('textContent');
+          var result = words.every(function(a) {
+            return text.indexOf(a) != -1;
+          });
 
-        var result = words.every(function(a) {
-          return text.indexOf(a) != -1;
+          if(result)
+            $(this).show();
+          else
+            $(this).hide();
         });
+      }
+    });
 
-        if(result)
-          $(this).show();
-        else
-          $(this).hide();
-      });
-    }
   });
-

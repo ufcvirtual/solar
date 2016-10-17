@@ -57,6 +57,10 @@
       display: inline-block;
     }
   }
+
+  .description{
+    max-width: 242px;
+  }
 }
 
 .tb_questions{
@@ -359,5 +363,8 @@ tbody .question_items.preview{
 .questions_box{
   a.preview_question{
     text-decoration: none;
+  }
+  .description{
+    max-width: 209px;
   }
 }

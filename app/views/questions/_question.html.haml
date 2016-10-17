@@ -18,9 +18,11 @@
           = content_tag(:i, nil, class: 'icon-pictures', :'data-tooltip' => t('.has_images'))
       .description
         .minimun
-          = raw question.enunciation.truncate(100)
           - if question.enunciation.size > 100
+            = strip_tags(question.enunciation.truncate(100)).html_safe
             = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('.expand_enunciation'))
+          - else
+            = raw question.enunciation.truncate(100)
         .complete.invisible
           = raw question.enunciation
           = content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('.compress_enunciation'))

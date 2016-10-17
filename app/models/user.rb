@@ -63,7 +63,7 @@ class User < ActiveRecord::Base
   validates :birthdate, presence: true
   validates :username, presence: true, length: { within: 3..20 }, uniqueness: {case_sensitive: false}
   validates :password, presence: true, confirmation: true, unless: Proc.new { |a| a.password.blank? || a.integrated? }
-  validates :alternate_email, format: { with: email_format }, uniqueness: {case_sensitive: false}
+  validates :alternate_email, format: { with: email_format }, uniqueness: {case_sensitive: false}, unless: 'alternate_email.blank?'
   validates :email, presence: true, confirmation: true, uniqueness: {case_sensitive: false}, format: { with: email_format }, unless: Proc.new { |a| a.already_email_error_or_email_not_changed? }
   validates :special_needs, presence: true, if: :has_special_needs?
 
@@ -354,7 +354,7 @@ class User < ActiveRecord::Base
 
   def self.all_at_allocation_tags(allocation_tags_ids, status = Allocation_Activated, interacts = false)
     query = interacts ? "cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)" : ''
-    joins(allocations: :profile).where(allocations: { status: status, allocation_tag_id: allocation_tags_ids }).where(query)
+    joins(allocations: :profile).where(active: true, allocations: { status: status, allocation_tag_id: allocation_tags_ids }).where(query)
       .select('DISTINCT users.id').select('users.name, users.email')
   end
 

@@ -160,7 +160,9 @@ class Question < ActiveRecord::Base
               LEFT JOIN question_labels           AS l1  ON l1.id = qlq1.question_label_id
               LEFT JOIN question_labels           AS l2  ON l2.id = qlq2.question_label_id
               #{query}
-              GROUP BY questions.id, questions.enunciation, questions.type_question, questions.status, questions.updated_at, questions.privacy, authors.name, updated_by.name;
+              GROUP BY questions.id, questions.enunciation, questions.type_question, questions.status, questions.updated_at, questions.privacy, authors.name, updated_by.name
+              ORDER BY questions.updated_at DESC;
+
     SQL
   end
 
