@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
 
   validate :unique_cpf, if: "cpf_changed?"
   validate :login_differ_from_cpf
-  validate :can_change_cpf, if: '!new_record? && cpf_changed?'
+  validate :only_admin, if: '!new_record? && (cpf_changed? || active_changed?)'
 
   # paperclip uses: file_name, content_type, file_size e updated_at
   has_attached_file :photo,
@@ -125,7 +125,7 @@ class User < ActiveRecord::Base
 
   ## metodos de validacoes
 
-  def can_change_cpf
+  def only_admin
     errors.add(:base, I18n.t('users.errors.cpf_admin')) unless User.current.admin?
   end
 
