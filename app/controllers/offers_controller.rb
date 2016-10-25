@@ -64,7 +64,7 @@ class OffersController < ApplicationController
   def update
     @type_id =  params[:offer][:type_id].to_i
     @offer   = Offer.find(params[:id])
-
+   
     optional_authorize(:update)
 
     if @offer.update_attributes(offer_params)
