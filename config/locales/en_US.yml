@@ -3566,7 +3566,6 @@ en_US:
       idea: "Solar 2.0 have a button for 'Suggestions to Solar 2.0'. So you can access it, you just have to be logged in. The button will be available at the top right corner of the screen.<br/> By clicking it, you can send suggestions, complaints and similar."
       error: "Solar 2.0 doesn't make changes at previously files sent by it's users without informing them or without authorization. Therefore, if student's assignment is blank, we suggest that you get in touch with him and ask him to send again the right file."
       cant_find_faq: "Get in touch with atendimento@virtual.ufc.br explaining your situation. Remember of inform: <br/> ‣ Name <br/> ‣ Cpf <br/> ‣ Email<br/> ‣ The most information you can get about what have happened. If possible, images (print screens) too."
-
   ckeditor:
     confirms:
       question: "Item count is blank. Do you want to remove it?"
