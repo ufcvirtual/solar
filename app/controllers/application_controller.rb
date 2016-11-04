@@ -263,7 +263,7 @@ class ApplicationController < ActionController::Base
       LogNavigation.create(user_id: current_user.id, context_id: Context_General) if params[:id] == 'Home'
     end
   rescue => error
-    Rails.logger.info "Log Navigation Errror: #{error}"
+    Rails.logger.info "[Log Navigation Error] [#{Time.now}] #{error}"
   end 
 
   # salva o log de acesso ao submenu
@@ -339,7 +339,7 @@ class ApplicationController < ActionController::Base
       #session.delete(:tool_type)
     end
   rescue => error
-    Rails.logger.info "Log Navigation Errror: #{error}"
+    Rails.logger.info "[Log Navigation Errror] [#{Time.now}] #{error}"
   end
    #deleta logs antigos com mais de 1 ano
   def delete_log_navigation

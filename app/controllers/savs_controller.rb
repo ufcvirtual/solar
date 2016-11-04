@@ -19,7 +19,7 @@ class SavsController < ApplicationController
           response_url = response.as_json[:url_questionario_response][:url_questionario_result]
 
           sav_url = URI.parse(response_url).path rescue nil
-          (sav_url.nil? ? (Rails.logger.info "[SAV] [ERROR] message: #{response_url}" ) : (sav_url = response_url))
+          (sav_url.nil? ? (Rails.logger.info "[SAV] [ERROR] [#{Time.now}] message: #{response_url}" ) : (sav_url = response_url))
         end
       end
 
