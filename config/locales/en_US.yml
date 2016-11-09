@@ -1962,7 +1962,7 @@ en_US:
       up_until_: ""
       date_error: Date Error
       navigation_info: Download sucess
-      warning: "<b> Important: </b> <br/> 1. Access logs and actions have limit 100 records . <br/> 2. <b > Navigation Log < / b> <br/>2.1. filling one of the type fields date is required. <br/> 2.2. If not completed the course end date will be considered the current date to the field. <br/> 2.3 The navigation log possesses 10,000 records limit in the following formats : CSV and XLS and download it automatically."
+      warning: "<b> Important: </b> <br/> 1. Access logs and actions have limit 100 records . <br/> 2. <b> Navigation Log </b> <br/>2.1. filling one of the type fields date is required. <br/> 2.2. If not completed the course end date will be considered the current date to the field. <br/> 2.3 The navigation log possesses 10,000 records limit in the following formats : CSV and XLS and download it automatically."
     allocations_user:
       type: Type
       no_data: No allocation to informed semester
@@ -3637,6 +3637,8 @@ en_US:
       activity_management: " The Activity Management area allows that responsibles by activities can define some of them as evaluative or not or as frequency. This way, if an activity is defined as evaluative, for example, the student will be evaluated by it's participation at the activity, so it will receive a grade or working hours. This tutorial provides all informations needed to understand all rules so the user can be fit to manage activities."
       assignment_webconference: "This tutorial have all necessary information so the students could use assignment webconference, which goal is send a webconference's recording as an assignment. A assignment webconference can also be used to trial practice or to discuss with group members."
       exam_edition: "Exam is a tool that allows the execution of online tests by students. Responsibles can create or use questions and exams by defining it's basic informations. All information necessary to understand how exam's edition works are avealable in this tutorial."
+      registration: "So you can have access to Solar 2.0, registration is mandatory. The goal of this tutorial is to answer any doubts about this procedure with all required steps and relevant information. "
+      password_recovery: "After register at Solar 2.0, it may happen that you forgot your password to access or, even, your username. With the recovery password area, it's possible to generate a new password and all instructions to do so are explained at this tutorial."
     files:
       math_editor: View Math Editor PDF
       evaluation: View Evaluation and frequency of activities PDF

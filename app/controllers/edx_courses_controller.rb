@@ -6,7 +6,7 @@ class EdxCoursesController < ApplicationController
   before_filter :verify_integration
 
   def verify_integration
-    if ((not(EDX.nil?) and not(EDX["integrated"])) or (EDX.nil? or EDX_URLS.nil?))
+    if ((!EDX.nil? && !EDX["integrated"]) || (EDX.nil? || EDX_URLS.nil?))
       render json: {error: :ok, msg: "Sem integracao com edx"}
       return false
     end
