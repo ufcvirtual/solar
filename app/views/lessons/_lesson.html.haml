@@ -1,4 +1,6 @@
 - path = (@not_offer_area ? open_lesson_path(lesson.id, allocation_tags_ids: @allocation_tags_ids, offer_id: @offer.id) : open_lesson_path(lesson.id))
+- start_date = lesson.schedule.start_date
+- end_date = lesson.schedule.end_date
 %td
   - if lesson.closed?
     = (@not_offer_area ? (link_to_function lesson.name, 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path) : lesson.name)
@@ -16,8 +18,8 @@
       .test_lesson= "(#{ (lesson.is_file? ? t(:lesson_without_initial_file) : t(:lesson_without_url)) })"
 
 %td{ width: '30%' }
-  = "#{t(:since)}" if (lesson.schedule.end_date.nil?)
-  = [l(lesson.schedule.start_date, format: :normal), (lesson.schedule.end_date.nil? ? t(:no_end_date) : l(lesson.schedule.end_date, format: :normal))].join(' - ')
+  = "#{t(:since)}" if (end_date.nil?)
+  = [l(start_date, format: :normal), (end_date.nil? ? t(:no_end_date) : l(end_date, format: :normal))].join(' - ')
 
 - notes    = current_user.notes(lesson.id)
 - no_notes = notes.blank?

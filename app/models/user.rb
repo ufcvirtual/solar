@@ -277,6 +277,7 @@ class User < ActiveRecord::Base
 
     Menu.joins(:menus_contexts).includes(:resource, :parent).where(resource_id: resources_id, status: true)
       .where(query_contexts, contexts: args[:contexts]).order('parents_menus.order, menus.order')
+  
   end
 
   def profiles_with_access_on(action, controller, allocation_tag_id = nil, only_id = false, count = false)

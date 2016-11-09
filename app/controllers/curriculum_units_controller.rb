@@ -18,6 +18,7 @@ class CurriculumUnitsController < ApplicationController
     @discussion_posts = list_portlet_discussion_posts(@allocation_tags_ids)
     @scheduled_events = (!user_profiles.include?(agendas: :calendar) ? [] : Agenda.events(@allocation_tags_ids, nil, true))
     @researcher = current_user.is_researcher?(@allocation_tags_ids)
+
   end
 
   def index
@@ -149,9 +150,10 @@ class CurriculumUnitsController < ApplicationController
 
     def list_portlet_discussion_posts(allocation_tags)
       Post.joins(:academic_allocation)
+        .includes(:user)
         .where(academic_allocations: {allocation_tag_id: allocation_tags})
-        .select(%{substring("content" from 0 for 255) AS content}).select('*')
-        .order("updated_at DESC").limit(Rails.application.config.items_per_page.to_i)
+        .select(%{substring("content" from 0 for 255) AS content}).select('discussion_posts.*, users.nick')
+        .order("discussion_posts.updated_at DESC").limit(Rails.application.config.items_per_page.to_i)
     end
 
     def ucs_for_list
