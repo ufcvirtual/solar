@@ -13,7 +13,9 @@ class Assignment < Event
   
   before_destroy :can_destroy?
 
-  accepts_nested_attributes_for :schedule
+  accepts_nested_attributes_for :schedule 
+  before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # data final obrigatoria
+
   accepts_nested_attributes_for :enunciation_files, allow_destroy: true, reject_if: proc { |attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank? }
 
   validates :name, :enunciation, :type_assignment, presence: true

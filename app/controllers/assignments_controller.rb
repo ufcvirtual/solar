@@ -9,6 +9,7 @@ class AssignmentsController < ApplicationController
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
   before_filter :set_current_user, only: :student
 
+
   before_filter only: [:edit, :update, :show] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@assignment = Assignment.find(params[:id]))

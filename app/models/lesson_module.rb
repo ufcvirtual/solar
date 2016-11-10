@@ -58,17 +58,13 @@ class LessonModule < ActiveRecord::Base
     joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }).order("id").delete_if { |lmodule|
       lessons               = lmodule.lessons.eager_load(:schedule)
       has_open_lesson       = lessons.map(&:closed?).include?(false)
- 
-      only_responsible_sees = (lessons.collect{ |l| 
-        l if (l.will_open? || l.is_draft? || !(l.open_to_show? || list)) }.compact).size
-
+      only_responsible_sees = (lessons.collect{ |l| l if (l.will_open? || l.is_draft? || !(l.open_to_show? || list)) }.compact).size
       lessons.empty? || (
         # nao eh admin nem responsavel
         !@user_is_admin_or_editor && (!@user_responsible && (only_responsible_sees == lessons.size))
       ) || (
         !list && lessons.size == lessons.map{ |l| true if l.address.blank? }.compact.size
       ) || !(list || has_open_lesson)
-
     }.compact.uniq
     
   end
