@@ -1961,7 +1961,7 @@ en_US:
       up_until: Up until
       up_until_: ""
       date_error: Date Error
-      navigation_info: Download sucess
+      navigation_info: Downloaded successfully
       warning: "<b> Important: </b> <br/> 1. Access logs and actions have limit 100 records . <br/> 2. <b> Navigation Log </b> <br/>2.1. filling one of the type fields date is required. <br/> 2.2. If not completed the course end date will be considered the current date to the field. <br/> 2.3 The navigation log possesses 10,000 records limit in the following formats : CSV and XLS and download it automatically."
     allocations_user:
       type: Type

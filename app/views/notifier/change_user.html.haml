@@ -11,5 +11,8 @@
     %p= "Login: #{@user.username}"
     - unless @password.blank?
       %p= "Senha: #{@password}"
+    - else
+      %p= link_to('Não lembra sua senha?', edit_password_url(@user, reset_password_token: @token))
+    %br
     %p= link_to('Acesso ao Solar', home_url(only_path: false))
     %p{style: "color: #7C7C7C; font-size: 8pt; padding-top: 10px;"}= I18n.t("notifier.dont_reply_message")

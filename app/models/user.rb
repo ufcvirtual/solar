@@ -404,11 +404,14 @@ class User < ActiveRecord::Base
       user_exist = where(cpf: cpf).first
       user = user_exist.nil? ? new : user_exist
 
-      blacklist = UserBlacklist.where(cpf: user.cpf, name: user.name || row['Nome']).first_or_initialize
+      blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize
       can_add_to_blacklist = blacklist.valid?
 
       if !user.integrated || can_add_to_blacklist
-        blacklist.save if user.integrated && can_add_to_blacklist
+        if blacklist.new_record?
+          blacklist.name = user.name || row['Nome'] 
+          blacklist.save if user.integrated && can_add_to_blacklist
+        end
 
         params = {}
         params.merge!({ email: row['Email'].downcase })             if row.include?('Email') && !row['Email'].blank?
@@ -441,7 +444,7 @@ class User < ActiveRecord::Base
             Notifier.new_user(user, new_password).deliver
           end
         else
-          user.notify_by_email(new_password)
+          user.notify_by_email
         end
 
       else
@@ -463,7 +466,7 @@ class User < ActiveRecord::Base
                 Notifier.new_user(user, new_password).deliver
               end
             else
-              user.notify_by_email(new_password)
+              user.notify_by_email
             end
 
           else
@@ -478,9 +481,14 @@ class User < ActiveRecord::Base
     { imported: imported, log: log }
   end
 
-  def notify_by_email(password = nil)
+  def notify_by_email
+    raw_token, hashed_token = Devise.token_generator.generate(User, :reset_password_token)
+    self.reset_password_token = hashed_token
+    self.reset_password_sent_at = Time.now.utc
+    self.save(validate: false)
+
     Thread.new do
-      Notifier.change_user(self, password).deliver
+      Notifier.change_user(self, raw_token).deliver
     end
   end
 
