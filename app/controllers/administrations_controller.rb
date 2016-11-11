@@ -212,12 +212,12 @@ class AdministrationsController < ApplicationController
     date = Date.parse(params[:date]) rescue nil
     date_end = Date.parse(params[:date_end]) rescue Date.parse(Time.now.to_s)
     unless params[:user].blank?
-      text_search = [URI.unescape(params[:user]).split(' ').compact.join('%'), '%'].join
+      text_search = ['%', URI.unescape(params[:user]).split(' ').compact.join('%'), '%'].join
       user_ids    = User.where("lower(unaccent(name)) LIKE lower(unaccent(?)) OR lower(unaccent(cpf)) LIKE lower(unaccent(?))" , "%#{text_search}", "%#{text_search}").map(&:id).join(',')
       if (params[:type] == 'actions' || params[:type] == 'access')
         query << "(user_id IN (#{user_ids}))" unless user_ids.blank?   
       else
-         query << "log_navigations.user_id IN (#{user_ids})" unless user_ids.blank?
+        query << "log_navigations.user_id IN (#{user_ids})" unless user_ids.blank?
       end  
     end
 
