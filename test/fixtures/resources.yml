@@ -938,7 +938,7 @@ res186:
   id: 186
   controller: "webconferences"
   action: "preview"
-  description: "Visualizar webconferencias e gerenciar gravações"
+  description: "Visualizar todas as webconferencias"
 
 res187:
   id: 187
@@ -1179,3 +1179,9 @@ res226:
   controller: 'reports'
   action: 'index' 
   description: 'Gerar Relatórios'  
+
+res227:
+  id: 227
+  controller: 'webconferences'
+  action: 'manage_record'
+  description: 'Gerenciar gravações de webconferências'

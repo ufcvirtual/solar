@@ -117,6 +117,7 @@ class WebconferencesController < ApplicationController
     @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false }).paginate(page: params[:page])
     @online         = bbb_online?
     @can_see_access = can? :list_access, Webconference, { on: ats, accepts_general_profile: true }
+    @can_remove_record = (can? :manage_record, Webconference, { on: ats, accepts_general_profile: true })
     @meetings       = @online ? get_meetings : []
   end
 
@@ -125,14 +126,14 @@ class WebconferencesController < ApplicationController
     if params.include?(:webconference)
       webconferences = [Webconference.find(params[:webconference])]
       begin
-        authorize! :preview, Webconference, { on: webconferences.flatten.first.academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }
+        authorize! :manage_record, Webconference, { on: webconferences.flatten.first.academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }
       rescue
         raise CanCan::AccessDenied unless current_user.id == webconferences.first.user_id
       end
     else
       academic_allocations = AcademicAllocation.where(id: params[:id].split(',').flatten)
       webconferences      = Webconference.where(id: academic_allocations.map(&:academic_tool_id))
-      authorize! :preview, Webconference, { on: academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }
+      authorize! :manage_record, Webconference, { on: academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }
     end
 
     webconferences.map(&:can_remove_records?)
@@ -215,7 +216,7 @@ class WebconferencesController < ApplicationController
         authorize! :preview, Webconference, { on: @at_id, accepts_general_profile: true }
       end
 
-      @can_remove_record = (can? :preview, Webconference, { on: @webconference.academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }) || current_user.id == @webconference.user_id
+      @can_remove_record = (can? :manage_record, Webconference, { on: @webconference.academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }) || current_user.id == @webconference.user_id
 
       raise 'offline'          unless bbb_online?
       raise 'no_record'        unless @webconference.is_recorded? && @webconference.over?

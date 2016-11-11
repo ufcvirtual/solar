@@ -9,14 +9,15 @@
       .block_toolbar_left
         = label_tag :search, t('.search'), class: 'title'
         = text_field_tag :search, nil, :'data-column' => 'all', type: :search, class: 'search', placeholder: t('.placeholder'), size: 50
-      .block_toolbar_right
-        %a.btn.delete_record_btn{ href: nil, :'data-dropdown' => "#trash_dropdown", alt: t('.delete_record') }
-          = content_tag(:i, nil, class:'icon-trash')
-          %i.icon-arrow-down-triangle
-        #trash_dropdown.dropdown.dropdown-tip
-          %ul.dropdown-menu
-            %li
-              %a.delete_record{ href: nil, :'data-link-remove' => remove_record_webconference_path(':id') }= t('.delete_record')
+      - if @can_remove_record
+        .block_toolbar_right
+          %a.btn.delete_record_btn{ href: nil, :'data-dropdown' => "#trash_dropdown", alt: t('.delete_record') }
+            = content_tag(:i, nil, class:'icon-trash')
+            %i.icon-arrow-down-triangle
+          #trash_dropdown.dropdown.dropdown-tip
+            %ul.dropdown-menu
+              %li
+                %a.delete_record{ href: nil, :'data-link-remove' => remove_record_webconference_path(':id') }= t('.delete_record')
 
     %table.webconferences.tb_list
       %thead
