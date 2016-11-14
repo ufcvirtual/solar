@@ -61,7 +61,7 @@
     };
 
     $("#items").on("fields_added.nested_form_fields", function(event) {
-      change_inputs();
+      change_inputs(true, "#{f.object.nil? ? false : f.object.type_question}");
 
       $('.new_question .obs').unbind('click');
 

@@ -30,11 +30,11 @@ $(function(){
   update_nice_checkbox();
 });
 
-function save_question(exam_id){
+function save_question(exam_id, type_question = false){
   if(save_values_ckeditor("<%=I18n.t('ckeditor.confirms.question')%>")){
     return false;
   }
-  check_inputs();
+  check_inputs(type_question);
   if (exam_id != 0){
     var questions = $('.ckb_question:checked', $('#exam_'+exam_id+' .tb_questions tbody'));
     if(!!$('form.edit_exam_question').length && !!questions.length)
@@ -60,8 +60,10 @@ function save_question(exam_id){
       complement_success: function(data) {
         if (typeof(data.alert) != "undefined")
           $('form span.error').html(data.alert);
-        else
+        else {
           $('form span.error').html('');
+          flash_message("<%= I18n.t('questions.success.add') %>", "notice");
+        }
         update_tables_with_no_data();
       },
       call_function: 'update_nice_checkbox'
@@ -85,7 +87,7 @@ function back(){
   $('li.items').removeClass('active');
   $('#dot-items').removeClass('active');
 }
-    
+
 function change_status(icon, replace_list){
   if ($(icon).attr('disabled') == 'disabled'){
    flash_message("<%=I18n.t('questions.error.choose_at_least_one')%>", "alert");
@@ -418,8 +420,8 @@ function calcule_grade_exam(link){
   });
 }
 
-function check_inputs(){
-  var val = $('#exam_question_question_attributes_type_question').val();
+function check_inputs(type_question = false){
+  var val = $('#exam_question_question_attributes_type_question').val() || $('#question_type_question').val() || type_question;
   if(val != 2){
     $("#items .inputs input[type='checkbox']").each(function(){
       $('#items .inputs select#'+$(this).attr('id')+' option:first').prop('selected', !!$(this).prop('checked'));
@@ -432,9 +434,8 @@ function check_inputs(){
   }
 }
 
-function change_inputs(add_item){
-  add_item = (typeof add_item === "undefined" ? true : add_item);
-  var val = $('#exam_question_question_attributes_type_question').val();
+function change_inputs(add_item, type_question = false){
+  var val = $('#exam_question_question_attributes_type_question').val() || $('#question_type_question').val() || type_question;
   if(val == 2){
     $('#items .inputs input').hide();
     $('#items .inputs select').show();

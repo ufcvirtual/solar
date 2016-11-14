@@ -3245,6 +3245,7 @@ en_US:
     success:
       deleted: Questions removed successfully
       change_status: Status updated successfully
+      add: Question added/updated successfully
     show:
       title: Preview of question
     warning:

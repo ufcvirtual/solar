@@ -3475,6 +3475,7 @@ pt_BR:
     success:
       deleted: Questões removidas com sucesso
       change_status: Situação alterada com sucesso
+      add: Questão adicionada/alterada com sucesso
     show:
       title: Visualização prévia da questão
     warning:

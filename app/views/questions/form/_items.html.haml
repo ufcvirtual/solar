@@ -6,4 +6,4 @@
 
 .form-actions.right_buttons
   = button_to_function t(:back), 'back()', class: 'btn btn_default', type: 'button'
-  = button_to_function t(:save), "save_question(#{eq.nil? ? 0 : eq.object.exam_id})", class: 'btn btn_main', type: 'button'
+  = button_to_function t(:save), "save_question(#{eq.nil? ? 0 : eq.object.exam_id}, #{f.object.type_question.nil? ? false : f.object.type_question})", class: 'btn btn_main', type: 'button'

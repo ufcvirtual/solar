@@ -19,9 +19,13 @@
         config.width = '500px';
     };
 
-    change_inputs();
+    change_inputs(true, "#{f.object.nil? ? false : f.object.type_question}");
 
     $('select#exam_question_question_attributes_type_question').on('change', function () {
+      change_inputs(false);
+    });
+
+    $('select#question_type_question').on('change', function () {
       change_inputs(false);
     });
 
@@ -32,11 +36,6 @@
         var ckeditor = CKEDITOR.instances[name];
         if (!ckeditor)
           append_rich_text(name);
-        // else{
-        //   CKEDITOR.remove(ckeditor);
-        //   ckeditor.updateElement();
-        //   append_rich_text(name);
-        // }
         $.getScript("/assets/tooltip.js");
       }
     });
