@@ -2160,7 +2160,7 @@ pt_BR:
       search: Busca
       user: Usuário
       log_not_found: Sem logs para exibir
-      date_end: Data Final
+      date_end: Data final
       up_until: até
       up_until_: ""
       date_error: Data inicial maior que a data final
@@ -2205,6 +2205,7 @@ pt_BR:
       public_file: Arquivo público
       participant: Participante
       digital_class: Lição do Digital Class
+      yes: Sim
 
 
   editions:
@@ -3868,20 +3869,22 @@ pt_BR:
       assignment_webconference: "Este tutorial possui todas as informações necessárias para o aluno utilizar a webconferência de portfólio (ou trabalho), cujo objetivo é poder enviar, como trabalho, uma gravação de webconferência, podendo ser utilizada como apresentação, áudio, conversação com membros de um grupo etc. A webconferência de portfolio também pode ser utilizada como 'treino' ou como meio de discussão entre os membros de um grupo."
       registration: "Ao ter o primeiro contato com o Solar 2.0, faz-se necessário o cadastro. O objetivo deste tutorial é sanar dúvidas a respeito deste procedimento com todos os passos necessários e informações relevantes. "
       password_recovery: "Após ter um cadastro no Solar 2.0, pode acontecer da senha usada para realizar o acesso ser esquecida ou, até mesmo, o login. Para isto, existe a área de recuperação de senha no Solar, cujas informações necessárias são descritas neste tutorial."
+      home: "Após realizar o login no Solar 2.0, todo usuário se depara com a tela inicial do ambiente, a Home. O conteúdo desta tela pode variar de acordo com o papel de cada um no ambiente. Entretanto, há diversos elementos básicos e uma estrutura comum a qualquer perfil. Este tutorial trata destas áreas."
     files:
-      math_editor: Visualizar PDF de Editor Matemático
-      evaluation: Visualizar PDF de Avaliação e frequência de atividades
-      scores: Visualizar PDF de Acompanhamento
-      enrollment: Visualizar PDF de Matrícula
-      enrollment_management: Visualizar PDF de Gerência de Matrículas
-      exam_edition: Visualizar PDF de  Edição de provas
-      question_repository: Visualizar PDF de  Repositório de questões
-      activity_management: Visualizar PDF de  Gerência de atividades avaliativas e de frequência
-      content: Visualizar PDF de  Edição de Conteúdo
-      academic: Visualizar PDF de  Edição Acadêmica
+      math_editor: Visualizar PDF sobre o Editor Matemático
+      evaluation: Visualizar PDF sobre a Avaliação e frequência de atividades
+      scores: Visualizar PDF sobre o Acompanhamento
+      enrollment: Visualizar PDF sobre a Matrícula
+      enrollment_management: Visualizar PDF sobre a Gerência de Matrículas
+      exam_edition: Visualizar PDF sobre a Edição de provas
+      question_repository: Visualizar PDF sobre o Repositório de questões
+      activity_management: Visualizar PDF sobre a Gerência de atividades avaliativas e de frequência
+      content: Visualizar PDF sobre a Edição de Conteúdo
+      academic: Visualizar PDF sobre a Edição Acadêmica
       assignment_webconference: Visualizar PDF de Webconferência de Portfólio
-      student: Visualizar PDF de Aluno
-      registration: Visualizar PDF de Cadastro
+      student: Visualizar PDF sobre a visão do Aluno
+      registration: Visualizar PDF sobre o Cadastro
       password_recovery: Visualizar PDF de Esqueceu a sua senha?
+      home: Visualizar PDF sobre a Home
     new_language_pt: " (Não foi possível encontrar o tutorial desejado em Português, veja nossa versão em Português)"
     new_language_en: " (Não foi possível encontrar o tutorial desejado em Português, veja nossa versão em Inglês)"

@@ -181,10 +181,11 @@ class WebconferencesController < ApplicationController
     authorize! :list_access, Webconference, { on: at_id = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id), accepts_general_profile: true }
 
     academic_allocations_ids = (@webconference.shared_between_groups ? @webconference.academic_allocations.map(&:id) : @webconference.academic_allocations.where(allocation_tag_id: at_id).first.try(:id))
+    ats = AllocationTag.where(id: at_id).map(&:related)
 
-    @logs = @webconference.get_access(academic_allocations_ids, at_id, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
+    @logs = @webconference.get_access(academic_allocations_ids, ats, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
 
-    @researcher = current_user.is_researcher?(AllocationTag.where(id: at_id).map(&:related))
+    @researcher = current_user.is_researcher?(ats)
     @too_old    = @webconference.initial_time.to_date < Date.parse(YAML::load(File.open('config/webconference.yml'))['participant_log_date']) rescue false
 
     @can_evaluate = can? :evaluate, Webconference, {on: at_id}

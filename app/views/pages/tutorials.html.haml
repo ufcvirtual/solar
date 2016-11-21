@@ -32,6 +32,11 @@
               %p= t('tutorials.texts.password_recovery')
               %img{alt: t('tutorials.files.login'), src: "/assets/mimetypes/pdf.png"}/
               = raw get_file(locale, 'password_recovery', t('tutorials.files.password_recovery'))
+          %tr.lines
+            %td.description_tutorials{align: "left"}
+              %p= t('tutorials.texts.home')
+              %img{alt: t('tutorials.files.login'), src: "/assets/mimetypes/pdf.png"}/
+              = raw get_file(locale, 'home', t('tutorials.files.home'))
 
   .tutorial.block_wrapper#description
     .block_title
@@ -126,6 +131,7 @@
               %p=t('tutorials.texts.enrollment')
               %img{alt: t('tutorials.files.enrollment'), src: "/assets/mimetypes/pdf.png"}/
               = raw get_file(locale, 'enrollment', t('tutorials.files.enrollment'))
+
   .tutorial.block_wrapper#edition
     .block_title
       %h2

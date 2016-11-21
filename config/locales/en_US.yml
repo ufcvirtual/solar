@@ -1957,12 +1957,12 @@ en_US:
       search: Search
       user: User
       log_not_found: Log not found
-      date_end: Date End
+      date_end: End date
       up_until: Up until
       up_until_: ""
-      date_error: Date Error
+      date_error: Start date is bigger than final date
       navigation_info: Downloaded successfully
-      warning: "<b> Important: </b> <br/> 1. Access logs and actions have limit 100 records . <br/> 2. <b> Navigation Log </b> <br/>2.1. filling one of the type fields date is required. <br/> 2.2. If not completed the course end date will be considered the current date to the field. <br/> 2.3 The navigation log possesses 10,000 records limit in the following formats : CSV and XLS and download it automatically."
+      warning: "<b> Important: </b> <br/> 1. Access logs and actions have limit 100 records . <br/> 2. <b> Navigation Log </b> <br/>2.1. Filling one of the type fields date is required. <br/> 2.2. If not completed the course end date will be considered the current date to the field. <br/> 2.3 The navigation log possesses 10,000 records limit in the following formats : CSV and XLS and download it automatically."
     allocations_user:
       type: Type
       no_data: No allocation to informed semester
@@ -1995,13 +1995,14 @@ en_US:
       group_assignment: Assignment group
       chat_room: Chat room
       chat_history: Access to chat's history
-      exam: Prova
+      exam: Exam
       webconference: Webconferência
       webconference_record: Access to webconference's recordding
       public_area: Access to public area
       public_file: Public file
       participant: Participant
       digital_class: Digital Class Lesson
+      yes: Yes
   editions:
     alert: Fill the required fields
     show_questions: "Show Questions"
@@ -3640,6 +3641,7 @@ en_US:
       exam_edition: "Exam is a tool that allows the execution of online tests by students. Responsibles can create or use questions and exams by defining it's basic informations. All information necessary to understand how exam's edition works are avealable in this tutorial."
       registration: "So you can have access to Solar 2.0, registration is mandatory. The goal of this tutorial is to answer any doubts about this procedure with all required steps and relevant information. "
       password_recovery: "After register at Solar 2.0, it may happen that you forgot your password to access or, even, your username. With the recovery password area, it's possible to generate a new password and all instructions to do so are explained at this tutorial."
+      home: "After logged in at Solar 2.0, every user is redirected to environment's initial page, Home. This screen content can change accordly to it's role. However, there are many basic elements and a common structure to any profile. This tutorial aims to explain all these areas."
     files:
       math_editor: View Math Editor PDF
       evaluation: View Evaluation and frequency of activities PDF
@@ -3654,5 +3656,8 @@ en_US:
       assignment_webconference: View Assignment Webconference PDF
       student: View Student PDF
       login: View Login PDF
+      password_recovery: View Password Recovery PDF
+      registration: View Registration PDF
+      home: Vew Home PDF
     new_language_pt: " (It was not possible to find this tutorial in English, see our Portuguese version)"
     new_language_en: " (It was not possible to find this tutorial in English, see our English version)"
