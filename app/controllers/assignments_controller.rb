@@ -135,13 +135,19 @@ class AssignmentsController < ApplicationController
       authorize! :download, Assignment, on: [active_tab[:url][:allocation_tag_id]]
       if params[:zip].present?
         assignment = Assignment.find(params[:assignment_id])
+        assignment_started?(assignment)
         path_zip = compress({ files: assignment.enunciation_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
         download_file(:back, path_zip || nil)
       else
         file = AssignmentEnunciationFile.find(params[:id])
+        assignment_started?(file.assignment)
         download_file(:back, file.attachment.path, file.attachment_file_name)
       end
-    end  
+    end
+    rescue CanCan::AccessDenied
+      redirect_to :back, alert: t(:no_permission)
+    rescue => error
+      redirect_to :back, alert: (error.to_s == 'not_started' ? t('assignments.error.not_started') : t('assignments.error.download'))
   end
 
   def participants
@@ -159,6 +165,10 @@ class AssignmentsController < ApplicationController
 
     def render_assignment_success_json(method)
       render json: {success: true, notice: t(method, scope: 'assignments.success')}
+    end
+
+    def assignment_started?(assignment)
+      raise "not_started" unless assignment.started? || AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
     end
 
 end

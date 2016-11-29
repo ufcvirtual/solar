@@ -1606,6 +1606,7 @@ en_US:
       download: It was not possible to download file.
       general_message: It was not possible to execute action.
       dependencies: It was not possible to execute action. One or more assignments already have been sent or already have comments or already have been evaluated.
+      not_started: It was not possible to download file. This assignment hasn't started yet.
     show:
       name: Name
       enunciation: Enunciation
