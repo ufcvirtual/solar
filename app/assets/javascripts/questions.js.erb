@@ -30,7 +30,8 @@ $(function(){
   update_nice_checkbox();
 });
 
-function save_question(exam_id, type_question=false){
+function save_question(exam_id, type_question){
+  type_question = (typeof type_question === "undefined" ? false : type_question);
   if(save_values_ckeditor("<%=I18n.t('ckeditor.confirms.question')%>")){
     return false;
   }
@@ -420,7 +421,8 @@ function calcule_grade_exam(link){
   });
 }
 
-function check_inputs(type_question=false){
+function check_inputs(type_question){
+  type_question = (typeof type_question === "undefined" ? false : type_question);
   var val = $('#exam_question_question_attributes_type_question').val() || $('#question_type_question').val() || type_question;
   if(val != 2){
     $("#items .inputs input[type='checkbox']").each(function(){
@@ -434,7 +436,8 @@ function check_inputs(type_question=false){
   }
 }
 
-function change_inputs(add_item, type_question=false){
+function change_inputs(add_item, type_question){
+ type_question = (typeof type_question === "undefined" ? false : type_question);
   var val = $('#exam_question_question_attributes_type_question').val() || $('#question_type_question').val() || type_question;
   if(val == 2){
     $('#items .inputs input').hide();
