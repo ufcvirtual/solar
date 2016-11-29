@@ -70,6 +70,10 @@ function get_record(obj){
   });
 }
 
-$(function(){
-  $(".link_new_awebconference").not(".disabled").call_fancybox();
-});
+function add_awebconference(button){
+  if(!$(button).hasClass("disabled"))
+    $(button).call_fancybox({
+      href: $(button).data('url'),
+      open: true
+    });
+}

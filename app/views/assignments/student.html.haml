@@ -59,3 +59,11 @@
       parent: 'tr.lines'
     });
   }
+
+  function add_file(button){
+    if(!$(button).hasClass("disabled"))
+      $(button).call_fancybox({
+        href: "#{new_assignment_file_path(assignment_id: @assignment.id, student_id: @student_id, group_id: @group_id)}",
+        open: true
+      });
+  }
