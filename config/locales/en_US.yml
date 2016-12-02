@@ -3586,8 +3586,8 @@ en_US:
         id: 'Amount of Students by '
         document_title: 'Reports with Amount Studants by '
       report_three:
-        id: Disciplines Amount by Course
-        document_title: Reports with Disciplines Amount by Course
+        id: Curriculum Unit Amount by Course
+        document_title: Reports with Curriculum Unit Amount by Course
       report_four:
         id: 'Total of Responsables '
         document_title: 'Reports with Total of Responsables '
@@ -3595,17 +3595,17 @@ en_US:
         id: Total of Courses Responsables
         document_title: Reports with Total of Courses Responsables
       report_seven:
-        id: Total of Posted Files by Forum
-        document_title: Reports with Total of Posted Files by Forum
+        id: Total of Posts at Forum
+        document_title: Reports with Total of Posts at Forum
     commun_texts:
       period_reference: Document for the period of data
       select_period: Select the Related Research Period
       name_course: Course Name
-      name_disciplines: Avaliable Disciplines Name
+      name_disciplines: Avaliable Curriculum Unit's Names
       name_groups: Groups
       name_users: User Name
       number_students: Students Nº
-      number_disciplines: Disciplines Nº
+      number_disciplines: Curriculum Units Nº
       name_forum: Forum Name
       pages: page <page> of <total>
       count: Amount

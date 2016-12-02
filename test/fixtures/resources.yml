@@ -1185,3 +1185,6 @@ res227:
   controller: 'webconferences'
   action: 'manage_record'
   description: 'Gerenciar gravações de webconferências'
+
+
+  
