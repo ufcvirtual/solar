@@ -8,14 +8,12 @@
       - @lessons_modules.each do |lmodule|
         .module= lmodule.name
         - lmodule.lessons_to_open(current_user).each do |lesson|
-          - start_date = lesson.schedule.start_date
-          - end_date = lesson.schedule.end_date
           - lesson_closed_class = "block_content_line "
           - lesson_closed_class = lesson_closed_class + "period_ended" if (lesson.closed?)
           %div{class: lesson_closed_class}
             %span.block_content_gray
-              = "#{t(:since)}" if (end_date.nil?)
-              = [l(start_date, format: :normal), (end_date.nil? ? t(:no_end_date) : l(end_date, format: :normal))].join(" - ")
+              = "#{t(:since)}" if (lesson.schedule.end_date.nil?)
+              = [l(lesson.schedule.start_date, format: :normal), (lesson.schedule.end_date.nil? ? t(:no_end_date) : l(lesson.schedule.end_date, format: :normal))].join(" - ")
             = link_to lesson.name, open_lesson_path(lesson.id), class: "link_content lesson", "data-fancybox-type" => "iframe"
             -if lesson.is_draft?
               .test_lesson= "(#{t(:lesson_test)})"
