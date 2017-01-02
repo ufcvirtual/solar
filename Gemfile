@@ -67,7 +67,7 @@ gem 'coffee-rails'
 
 gem 'rest-client'
 
-gem 'rufus-scheduler', "~> 2.0.24"
+gem 'rufus-scheduler'
 
 group :development do
   gem "rb-readline", "~> 0.5.1"
@@ -79,6 +79,14 @@ group :development do
   gem "better_errors"
   gem "binding_of_caller" # better 'better errors'
   gem "quiet_assets" # nao mostra log de assets em development
+  gem 'rack-mini-profiler'
+  # For memory profiling (requires Ruby MRI 2.1+)
+  gem 'memory_profiler'
+
+  # For call-stack profiling flamegraphs (requires Ruby MRI 2.0.0+)
+  gem 'flamegraph'
+  gem 'stackprof'     # For Ruby MRI 2.1+
+  gem 'fast_stack'    # For Ruby MRI 2.0
 end
 
 group :development, :test do

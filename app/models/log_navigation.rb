@@ -14,4 +14,11 @@ class LogNavigation < ActiveRecord::Base
     end
   end
 
+  #deleta logs antigos com mais de 1 ano
+  def self.delete_log_navigation
+    Thread.new do
+      LogNavigation.where("created_at::date < (CURRENT_DATE -INTERVAL '400 day')::date").delete_all
+    end
+  end
+
 end

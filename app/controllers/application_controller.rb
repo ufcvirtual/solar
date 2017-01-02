@@ -154,11 +154,6 @@ class ApplicationController < ActionController::Base
     super
   end
 
-  def after_sign_out_path_for(resource_or_scope)
-    delete_log_navigation
-    super
-  end
-
   def get_groups_by_tool(tool)
     @groups = tool.groups
   end
@@ -341,11 +336,5 @@ class ApplicationController < ActionController::Base
   rescue => error
     Rails.logger.info "[ERROR] [Log Navigation] [#{Time.now}] #{error}"
   end
-   #deleta logs antigos com mais de 1 ano
-  def delete_log_navigation
-     logs_navi = LogNavigation.where("created_at::date < (CURRENT_DATE -INTERVAL '400 day')::date").order("id").limit(100)
-     LogNavigation.delete(logs_navi)
-     logs_navi_sub = LogNavigationSub.where("created_at::date < (CURRENT_DATE -INTERVAL '400 day')::date").order("id").limit(100)
-     LogNavigationSub.delete(logs_navi_sub)
-  end
+  
 end
