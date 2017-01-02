@@ -3,12 +3,7 @@ class ReportsController < ApplicationController
   include ReportsHelper
 
   $document_title
-  $colors_used = {
-    :black => "000000",
-    :light_yellow => "EEE8AA",
-    :gray => "EBE6DD",
-    :blue_solar_theme => "003E7A"
-  }
+  
   def index
     authorize! :index, Report
     @semesters = Semester.order('id ASC')
@@ -31,14 +26,13 @@ class ReportsController < ApplicationController
 
   def render_reports
     authorize! :index, Report
-      info = {  :Title => "Solar",
+      info = {  :Title        => "Solar",
                 :Author       => "UFC Virtual",
                 :Subject      => "Solar system reports examples",
                 :Keywords     => "reports",
                 :Creator      => "ACME Soft App",
                 :Producer     => "Prawn",
-                :CreationDate => Time.now}
-
+                :CreationDate => Time.now}          
 
     Prawn::Document.new(:info => info) do |pdf|
       pdf.font_families.update("Ubuntu Condensed" => {
@@ -70,66 +64,36 @@ class ReportsController < ApplicationController
       # document title
       pdf.move_down 15
       pdf.font("Ubuntu Condensed")
-      pdf.fill_color $colors_used[:blue_solar_theme]
+      pdf.fill_color '003E7A'
       pdf.text $document_title, :align => :center, :size => 14
 
       # period information
       pdf.move_down 30 # documento referente ao periodo tal......
       pdf.font("PT Sans", :style => :italic ,:size => 10)
-      pdf.fill_color $colors_used[:black]
+      pdf.fill_color '000000'
       pdf.text t('reports.commun_texts.period_reference')+ ": #{session[:period_name]}", :align=> :right
 
       pdf.font("PT Sans", :style => :italic ,:size => 12)
-
       # key
-      models_info = ReportsHelper::query(params[:query_type], session[:semester_id], session[:type_report])
-
-      # barra amarela
-      pdf.fill_color $colors_used[:light_yellow]
-      #pdf.fill_and_stroke_rectangle [0, 637.5], 540, 14.5       # para usar versão com linhas pretas em volta da barra amarela, descomentar essa linha
-      pdf.fill_rectangle [0, 637.5], 540, 14.5                   # e comentar essa
-
-      pdf.font("PT Sans", :style => :bold_italic ,:size => 11)
-      pdf.fill_color $colors_used[:black]
-      pdf.draw_text ReportsHelper::get_options_array[9], :at =>[10,pdf.cursor-12] #number simbol
-      pdf.draw_text ReportsHelper::get_options_array[3], :at =>[31,pdf.cursor-12] #main info
-      pdf.draw_text ReportsHelper::get_options_array[4], :at =>[445,pdf.cursor-12] #second column
-
+      models_info = Report.query(params[:query_type], session[:semester_id], session[:type_report])
+      @options_array = Report.get_options_array
+      
       pdf.font("PT Sans", :style => :italic ,:size => 10)
-      #if ReportsHelper::models_info.size > 0
-        index = 0
-        models_info.each do |model|
-          index = index +1
-          pdf.move_down 16 # posição...
-          if( pdf.cursor < 60.000) # exeplo de margem
-            pdf.start_new_page
-            pdf.move_down 50
-            pdf.font("PT Sans", :style => :bold_italic, :size => 9)
-            pdf.draw_text ReportsHelper::get_timestamp_pattern, :at => [0,0]
-          end
-          pdf.float do
-            pdf.font("PT Sans", :style => :italic ,:size => 10)
-            pdf.bounding_box([0, pdf.cursor], :width => 540,:height => 16) do
-            pdf.fill_color "EBE6DD"
-            pdf.fill_rectangle [0,pdf.cursor], 540, 15
-            pdf.fill_color "000000"
-            pdf.move_down 12
 
-            pdf.text_box " "+(index).to_s.rjust(3, "0")+"   "+
-            "#{model.name_model }", :at =>[0, 12], :width => 450
-            pdf.draw_text "#{ model.total }", :at =>[475,pdf.cursor]
+      header = [@options_array[9], @options_array[3], @options_array[4]]
+      table_data = []
+      table_data << header
+      
+      index = 0
+      models_info.each do |model|
+        index = index +1
+        table_data << [index ,model.name_model, model.total]
+      end
 
-            pdf.vertical_line pdf.cursor-4,pdf.cursor+12, :at => 29
-            pdf.vertical_line pdf.cursor-4,pdf.cursor+12, :at => ReportsHelper::get_options_array[0]
-            pdf.vertical_line pdf.cursor-4,pdf.cursor+12, :at => ReportsHelper::get_options_array[1]
-            pdf.vertical_line pdf.cursor-4,pdf.cursor+12, :at => ReportsHelper::get_options_array[2]
-
-            # pdf.stroke_bounds # documento com linhas pretas em volta de todos os dados? descomentar essa linha e ajustar a barra amarela acima.
-
-            end
-          end
-        end
-      #end
+      pdf.table(table_data, :header => true, :column_widths => [25, 425, 90], :row_colors => ["EBE6DD", "FFFFFF"]) do |t|
+        t.row(0).font_style = :bold
+        t.row(0).background_color = 'EEE8AA' #AMARELO
+      end
       # enumerando paginas
       string = t('reports.commun_texts.pages')
       options = { :at => [pdf.bounds.right - 150, 0],
