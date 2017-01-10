@@ -1,3 +1,1 @@
-.reports.index
-= form_for(:reports, :url => {:action => 'index'}) do |f|
-  = render(:partial => "form", :locals => {:f => f})
+= render partial: "form", locals: { back: true, list_class: "items_list", url: types_reports_reports_path, optionals: ["curriculum_unit", "course", "semester"], type_id: params[:type_id], types: @types }

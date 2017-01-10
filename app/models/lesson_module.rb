@@ -55,6 +55,7 @@ class LessonModule < ActiveRecord::Base
   end
 
   def self.to_select(allocation_tags_ids, user = nil, list = false)
+
     user_is_admin_or_editor    = user.nil? ? false : (user.admin? || user.editor?)
     user_responsible = user.nil? ? false : user.profiles_with_access_on('see_drafts', 'lessons', allocation_tags_ids, true).any?
        

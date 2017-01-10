@@ -22,7 +22,8 @@
 
   %body
     - active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-
+    - photo_user = current_user.user_photo(:small)
+    - photo_user.freeze
     #team.panel
       .content
         - @sectors = YAML::load(File.open('public/members.yml'))
@@ -43,7 +44,7 @@
             = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
           %ul#mysolar_top_options
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular
-              = image_tag current_user.user_photo(:small), alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", onclick: "mysolarTopSubmenuToggle();return false;"
+              = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", onclick: "mysolarTopSubmenuToggle();return false;"
               - if can? :update, current_user
                 %a#mysolar_top_user_nick.mysolar_top_link{href: "", onclick: "mysolarTopSubmenuToggle();return false;"}= current_user.nick
             %li#server_clock_wrapper
@@ -56,7 +57,7 @@
         / Submenu
         #mysolar_top_submenu
           %div
-            = image_tag current_user.photo.url(:forum), alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "mysolar_top_img_user"
+            = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "mysolar_top_img_user"
             #mysolar_top_submenu_username= current_user.name
             #mysolar_top_submenu_useremail= current_user.email
           %ul

@@ -643,8 +643,9 @@ Solar::Application.routes.draw do
   resources :reports do
     collection do
       get :index
-      post :create, as: :create
+      post :create
       get :render_reports
+      get :types_reports
     end
   end
 

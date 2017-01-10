@@ -3804,27 +3804,35 @@ pt_BR:
 
 # reports_add
   reports:
+    form:
     index:
       title: Relatórios
+      filter: Filtro
+      type: Tipo *
+      report_summary: Relatório geral do sistema
       main_document_title: UNIVERSIDADE FEDERAL DO CEARÁ - INSTITUTO UFC VIRTUAL
-      report_one:
+      summary: Sumário
+      report_summary_system:
         id: Sumário do Sistema
         document_title: Sumário com Informações do Sistema
       report_two:
-        id: "Quantidade de Alunos por "
-        document_title: "Relatório com Quantidade de Alunos por "
-      report_three:
-        id: Quantidade de Disciplinas por Curso
-        document_title: Relatório com Quantidade de Disciplinas por Curso
-      report_four:
-        id: 'Quantidade de Responsáveis por '
-        document_title: 'Relatório com Quantidade de Responsáveis por '
-      report_six:
-        id: Quantidade de Responsáveis por Curso
-        document_title: Relatório com Quantidade de Responsáveis por cada Curso
+        id: "Sumário"
+        document_title: "Sumário com Informações"
       report_seven:
-        id: 'Quantidade de Postagens por Fórum em '
-        document_title: 'Relatório com Quantidade de Postagens por Fórum em '
+        id: Quantidade de Mensagens por Chat
+        document_title: Relatório com Quantidade de Messagens por Chat
+      report_four:
+        id: 'Quantidade de Acessos a Webconferências'
+        document_title: 'Relatório com Quantidade de Acessos a Webconferência'
+      report_six:
+        id: Quantidade de Arquivos por Portfólio
+        document_title: Relatório com Quantidade de Arquivos por Portfólio
+      report_three:
+        id: 'Quantidade de Postagens por Fórum'
+        document_title: 'Relatório com Quantidade de Postagens por Fórum' 
+      report_summary_group:
+        id: Sumário da Turma
+        document_title: Sumário com Informações da Turma 
     commun_texts:
       period_reference: Documento referente ao período
       select_period: Selecione o Período para Referenciar a Pesquisa
@@ -3839,8 +3847,16 @@ pt_BR:
       count: Quantidade
       info: Informações
       timestamp_info: Documento Emitido em
+      webconference: Titulo Webconferência
+      access_number: Qtd de Acessos
+      access_number_distinct: Qtd de Acessos Distintos
+      access_number_responsables: Qtd de Acessos Responsáveis
+      title_chat: Titulo do Chat
+      title_portfolio: Portfólio
+      number_distinct_user_portfolio: Qtd Distinta por Usuário
     summary:
       courses_number: Quantidade de Cursos
+      groups_number: Quantidade de Turmas
       users_number: Quantidade de Usuários Cadastrados
       users_number_active: Quantidade de Usuários Ativos
       users_number_module_bound: Usuários Vinculados ao MA - Modulo Acadêmico
@@ -3848,6 +3864,24 @@ pt_BR:
       disciplines_amount: Quantidade de Disciplinas
       files_portifolio: Quantidade de Arquivos Postados no Portfólio 
       number_of_students: Quantidade de alunos ativos matriculados
+      web_portifolio: Quantidade de Webconferências Postados no Portfólio
+      webconferences_number: Quantidade de Webconferências
+      access_number: Quantidade de Acessos
+      post_number: Quantidade de Postagens nos Fóruns
+      number_of_responsible: Quantidade de Responsáveis
+      access_number_webconrence: Quantidade de Acessos a Webconferência
+      webconference_total: Webconferência Total
+      access_number_distinct_user_webconrence: Quantidade de Acessos de Usuários Distintos a Webconferência
+      discussion_number: Quantidade de Fóruns
+      lesson_number: Quantidade de Aulas
+      portifolio_number: Quantidade de Portfólios
+      material_number: Quantidade de Material de Apoio
+      chat_number: Quantidade de Chats
+      chat_message_number: Quantidade de Messages nos Chats
+      access_number_responsables: Quantidade de Acessos dos Responsáveis
+      exam_number: Quantidade de Provas
+      files_portifolio_distinct_user: Quantidade de Arquivos Distintos Postados no Portfólio por Usuário Distintos
+      groups_active_number: Quantidade de Turmas Ativas
 
   tutorials:
     menu: "Tutoriais"

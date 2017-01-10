@@ -3578,25 +3578,32 @@ en_US:
   reports:
     index:
       title: Reports
+      type: Type *
+      filter: Filter
+      report_summary: Report with System Information
       main_document_title: FEDERAL UNIVERSITY OF CEARÁ - VIRTUAL INSTITUTE UFC
-      report_one:
+      summary: Summary
+      report_summary:
         id: System Summary
         document_title: Reports with System Information
       report_two:
         id: 'Amount of Students by '
         document_title: 'Reports with Amount Studants by '
-      report_three:
-        id: Curriculum Unit Amount by Course
-        document_title: Reports with Curriculum Unit Amount by Course
+      report_seven:
+        id: Amount of Messages with Chats
+        document_title: Reports with Total Messages of Chats
       report_four:
         id: 'Total of Responsables '
         document_title: 'Reports with Total of Responsables '
       report_six:
-        id: Total of Courses Responsables
-        document_title: Reports with Total of Courses Responsables
-      report_seven:
+        id: Total of files with Portfolio
+        document_title: Reports with Total of files with Portfolio
+      report_three:
         id: Total of Posts at Forum
         document_title: Reports with Total of Posts at Forum
+      report_summary_group:
+        id: Summary Group
+        document_title: Reports with Group Information   
     commun_texts:
       period_reference: Document for the period of data
       select_period: Select the Related Research Period
@@ -3611,8 +3618,16 @@ en_US:
       count: Amount
       info: Information
       timestamp_info: Document Generated in
+      webconference: Title Webconference
+      access_number: Number Access
+      access_number_distinct: Number Access Distinct
+      access_number_responsables: Number Access Responsables
+      title_chat: Title of Chat
+      title_portfolio: Portfolio
+      number_distinct_user_portfolio: Amount Distinct User
     summary:
       courses_number: Amount of Courses
+      groups_number: Amount of Groups
       users_number: Amount of Registered Users
       users_number_active: Amount of Active Users
       users_number_module_bound: Users Linked to the MA - Academic Module
@@ -3620,6 +3635,24 @@ en_US:
       disciplines_amount: Disciplines Amount
       files_portifolio: Portfolio posts Amount
       number_of_students: Number of active registered students
+      web_portifolio: Portfolio webconferences Amount
+      webconferences_number: Webconferences Amount
+      access_number: Amount Access
+      post_number: Amount Posts at Forum
+      number_of_responsible: Number of Responsibles
+      access_number_webconrence: Amount Access Webconference
+      webconference_total: Webconference Total
+      access_number_distinct_user_webconrence: Amount Access Distinct Users Webconference
+      discussion_number: Amount Discussion
+      lesson_number: Amount Lessons
+      portifolio_number: Amount Portfolio
+      material_number: Amount of Material
+      chat_number: Amount Chats
+      chat_message_number: Amount Message (Chats)
+      access_number_responsables: Number Access Responsables
+      exam_number: Amount Exam
+      files_portifolio_distinct_user: Portfolio Files Amount Distinct (User)
+      groups_active_number: Amount of Groups Active
 
   tutorials:
     menu: Tutorials

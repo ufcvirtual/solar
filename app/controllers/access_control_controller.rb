@@ -21,7 +21,7 @@ class AccessControlController < ApplicationController
         when 'enunciation' # arquivo que faz parte da descrição da atividade
           file = AssignmentEnunciationFile.find(file_id)
           allocation_tags = active_tab[:url][:allocation_tag_id] || file.assignment.allocation_tags.pluck(:id)
-          can_access = (can? :download, Assignment, on: [allocation_tags].flatten) && (file.assignment.started? || AllocationTag.where(id: allocation_tags).first.is_observer_or_responsible?(current_user.id)))
+          can_access = (can? :download, Assignment, on: [allocation_tags].flatten) && (file.assignment.started? || AllocationTag.where(id: allocation_tags).first.is_observer_or_responsible?(current_user.id))
         when 'public_area' # área pública do aluno
           file = PublicFile.find(file_id)
           same_class = Allocation.find_all_by_user_id(current_user.id).map(&:allocation_tag_id).include?(file.allocation_tag_id)
