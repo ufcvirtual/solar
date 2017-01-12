@@ -16,6 +16,8 @@ Solar::Application.routes.draw do
 
   get :home, to: "users#mysolar", as: :home
   get :tutorials, to: "pages#tutorials", as: :tutorials
+  get :apps, to: 'pages#apps', as: :apps
+  get :privacy, to: 'pages#privacy', as: :privacy
 
   resources :users do
     member do
@@ -636,6 +638,7 @@ Solar::Application.routes.draw do
     member do
       delete :remove_record, only_recordings: true
       get :get_record
+      put :change_status
     end
   end
 

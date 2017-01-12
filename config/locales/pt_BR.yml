@@ -418,7 +418,7 @@ pt_BR:
         description: Descrição
         initial_time: Data
         duration: Duração
-        is_recorded: Gravar
+        is_recorded: Iniciar com gravação
         shared_between_groups: Compartilhado entre turmas
       user_blacklist:
         cpf: CPF
@@ -433,7 +433,7 @@ pt_BR:
         title: Título
         initial_time: Data
         duration: Duração
-        is_recorded: Gravar
+        is_recorded: Iniciar com gravação
       question_item:
         description: Descrição
       academic_allocation:
@@ -550,11 +550,15 @@ pt_BR:
   login_footer1: "Instituto UFC Virtual"
   login_footer2: "Universidade Federal do Ceará"
   login_footer3: "Equipe de Desenvolvimento"
+  login_footer4: "Privacidade"
+  login_app: "Baixe nosso App!"
   login_faq: FAQ
   faq_title: "Dúvidas frequentes"
   login_language: "Idioma"
   license_terms: "Termos de licença"
   UFC_virtual: "Universidade Virtual"
+  login_facebook: "Os dados coletados do Facebook são usados para fins exclusivamente educacionais pelo Instituto UFC Virtual - Universidade Federal do Ceará."
+  login_new: "Novo"
   #news: "Notícias"
   #tutorial: "Tutorial"
   home: "Início"
@@ -640,6 +644,9 @@ pt_BR:
   form_password_confirmation: "Confirmação da senha"
   form_email_confirmation: "Confirmação do e-mail"
   form_email: "E-mail"
+  form_google_play: 'Disponível no Google Play'
+  form_apple_store: 'Baixar na App Store'
+  back_home: "Voltar para Home"
 
   # pagina de cadastro de usuario
   new_user_cpf_in_use: "CPF já cadastrado no sistema"
@@ -1332,7 +1339,6 @@ pt_BR:
       removed_record: Gravação removida ou vazia
       moderator: Moderador
       recorded: Gravação ativada
-      record_available: Finalizada com gravação
       y: Sim
       n: Não
       shared_between_groups: Compartilhado entre turmas
@@ -1359,6 +1365,8 @@ pt_BR:
       offline: Webconferência indisponível
       still_processing: A gravação desta webconferência ainda está sendo processada. Favor aguardar.
       general_message: Não foi possível realizar a ação desejada
+      on_going: A webconferência ainda não finalizou. Favor aguardar.
+      date_range: O período do trabalho já foi encerrado.
     preview:
       delete_record: Remover gravação
       placeholder: Digite qualquer valor a ser buscado na tabela desta página
@@ -3071,7 +3079,6 @@ pt_BR:
       scheduled: "Agendada"
       finish: "Finalizada"
       processing: "Processando"
-      record_available: Finalizada com gravação
     access:
       date: Data
       time: Horário
@@ -3148,17 +3155,22 @@ pt_BR:
     list:
       name: Nome
       period: Período
-      record: Com Gravação
+      record: Gravação
       status: Situação
       title_group: Webconferências agendadas pelo grupo
       title_student: Webconferências agendadas pelo aluno
       new: Nova webconferência
+      final: "Versão Final <a id='final_version_explain' href='#fv_explain'>(?)</a>"
+      final2: Versão Final
+      fv_explain: "&nbsp;&nbsp;&nbsp;&nbsp;O tutor ou professor responsável pela avaliação tem, como papel, avaliar o aluno/grupo com base em seus arquivos enviados e webconferências criadas. Para avaliar uma webconferência, os responsáveis devem analisar as gravações existentes para, então, avaliar o desempenho do aluno. Entretanto, durante a execução do trabalho, o aluno ou o grupo de alunos pode agendar e gravar uma ou mais webconferências. Estas webconferências podem ser feitas, por exemplo, para reuniões entre os membros de uma equipe, para testes, para praticar uma apresentação etc. Ou seja, nem todas as webconferências cadastradas e gravadas precisam, necessariamente, servir para avaliação. <br/><br/> &nbsp;&nbsp;&nbsp;&nbsp;A fim de informar ao responsável qual ou quais das webconferências devem ser consideradas para avaliação, o aluno pode marcar uma ou mais webconferências como Versão Final. Desse modo, o responsável poderá avaliar apenas as webconferências marcadas dentre todas as agendadas e/ou gravadas. Se achar necessário, o responsável poderá analisar e avaliar todas as gravações disponíveis."
     webconference:
       edit: Editar
       record: Remover gravação
       delete: Remover
       aw_yes: Sim
       aw_no: Não
+    warning:
+      ended_recorded_web: "Esta webconferência já foi encerrada e possui gravação. Após alteração, todas as novas gravações serão adicionadas à já existente. Lembre-se de fazer o upload de uma nova apresentação para que a gravação prévia não seja sobrescrita pela nova"
 
   exams:
     title: Provas disponíveis

@@ -1,5 +1,6 @@
 @import "compass";
 @import "fonts/fonts";
+@import "fonts/icons";
 @import "partials/panels";
 
 $login_width: 287px;
@@ -68,6 +69,23 @@ a img {
   position: relative;
   margin: 0 auto;
   top: 3%;
+}
+
+.google-app{
+  visibility: visible;
+  display: inline;
+  img{
+    width: 170px;
+  }
+}
+
+.apple-app{
+  visibility: visible;
+  display: inline;
+  img{
+    width: 150px;
+    padding-bottom: 11px;
+  }
 }
 
 #login-form, #login-register {

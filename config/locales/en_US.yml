@@ -366,7 +366,7 @@ en_US:
         description: Description
         initial_time: Initial Time
         duration: Duration
-        is_recorded: Record
+        is_recorded: Start with Record
         shared_between_groups: Shared between groups
       user_blacklist:
         cpf: CPF
@@ -381,7 +381,7 @@ en_US:
         title: Title
         initial_time: Initial time
         duration: Duration
-        is_recorded: Record
+        is_recorded: Start with Record
       question_item:
         description: Description
       academic_allocation:
@@ -485,7 +485,11 @@ en_US:
   login_footer1: "UFC Virtual Institute"
   login_footer2: "Federal University of Ceará"
   login_footer3: "Development Team"
+  login_footer4: "Privacy"
+  login_facebook: "The data collected from facebook are used exclusively for educational purposes at UFC Virtual Institute - Federal University of Ceará."
+  login_app: "Download our App!"
   login_faq: FAQ
+  login_new: "New"
   faq_title: "Frequently asked questions"
   login_language: "Language"
   license_terms: "License Terms"
@@ -520,6 +524,9 @@ en_US:
   form_password_confirmation: "Password confirmation"
   form_email_confirmation: "E-mail confirmation"
   form_email: "E-mail"
+  form_google_play: 'Get it on Google Play'
+  form_apple_store: 'Download on the App Store'
+  back_home: "Back to Home"
   new_user_cpf_in_use: "CPF already in use"
   new_user_title: "New Register"
   new_user_msg_ok: "User created!"
@@ -1159,9 +1166,8 @@ en_US:
       removed_record: Removed or empty record
       moderator: Moderator
       recorded: Activated record
-      record_available: Finished with record
-      y: Yes
-      n: No
+      y: 'Yes'
+      n: 'No'
       shared_between_groups: Shared between groups
       watch: Watch record
       access: Access list
@@ -1175,8 +1181,8 @@ en_US:
       updated: "Webconference wasn't updated."
       deleted: "Webconference wasn't deleted."
       unavailable: "Can't remove record, webconference unavailable"
-      not_recorded: "Can't remove record, there are no record to one or more webconfereces selected"
-      not_ended: "Can't remove record, one or more webconfereces still on going"
+      not_recorded: "Can't remove record, there are no record to one or more webconferences selected"
+      not_ended: "Can't remove record, one or more webconferences still on going"
       record_not_deleted: "Can't remove record from webconferences"
       limit: "Student's limit for this day and time has been reached. Please choose other date/time or decrease amount of groups if necessary" 
       time_and_place: Already exists a webconference for this datetime and groups
@@ -1186,6 +1192,8 @@ en_US:
       offline: Unavailable webconference
       still_processing: This webconference's recording is still processing. Please wait.
       general_message: It was not possible to execute this action. 
+      on_going: This webconference hasn't finished yet. Please wait.
+      date_range: Assignment's date range already expired.
     preview:
       delete_record: Remove record
       placeholder: Type any value to be searched at the table of this page
@@ -2837,7 +2845,6 @@ en_US:
       scheduled: "Scheduled"
       finish: "Finish"
       processing: "Processing"
-      record_available: Finished with record
     reports:
       general_evaluative: Scores Report - Evaluative Activities
       general_frequency: Scores Report - Frequency Activities
@@ -2901,8 +2908,8 @@ en_US:
       deleted: "Webconference wasn't deleted."
       general_message: It was not possible to execute action
       unavailable: "Can't remove record, webconference unavailable"
-      not_recorded: "Can't remove record, there are no record to one or more webconfereces selected"
-      not_ended: "Can't remove record, one or more webconfereces still on going"
+      not_recorded: "Can't remove record, there are no record to one or more webconferences selected"
+      not_ended: "Can't remove record, one or more webconferences still on going"
       record_not_deleted: "Can't remove record from webconferences"
       limit: "Student's limit for this day and time has been reached. Please choose other date or time" 
       time_and_place: There's already a webconference for this group at this assignment at the choosen time.
@@ -2916,19 +2923,22 @@ en_US:
     list:
       name: Name
       period: Period
-      record: With Record
+      record: Record
       status: Status
       title_group: Webconferences scheduled by group
       title_student: Webconferences scheduled by student
       new: New webconference
+      final: "Final Version <a id='final_version_explain' href='#fv_explain'>(?)</a>"
+      final2: Versão Final
+      fv_explain: "&nbsp;&nbsp; The tutor or professor responsible by evaluation has, as role, evaluate the student or group based on it's sent files and created webconferences. To evaluate a webconference, responsibles must analyse the existing recordings to, then, evaluate the student. However, during the execution of the assignment, the student or group of students may schedule and record one or more webconferences. These webconferences may be used, for example, to meetings between group members, to tests, to practice etc. That is, not all webconferences scheduled and recorded need, necessarily, be used to evaluation. <br/><br/> &nbsp;&nbsp;To inform the responsible wich ones of the webconferences must be used to evaluation, the student can define one or more as Final Version.  That way, the responsible will be able to evaluate only the webconferences defined as final version within all the ones scheduled and/or recorded. If necessary, responsibles may evaluate all recordings available."
     webconference:
       edit: Edit
       record: Remove record
       delete: Remove
-      aw_yes: Yes
-      aw_no: No
+      aw_yes: 'Yes'
+      aw_no: 'No'
     warning:
-      ended_recorded_web: "This webconference was already recorded and is already over. After update, all new recordings will be added to the existing one. Rememeber of uploading a new presentation so the previous record wont be overwritten by the new on"
+      ended_recorded_web: "This webconference was already recorded and is already over. After update, all new recordings will be added to the existing one. Rememeber of uploading a new presentation so the previous record wont be overwritten by the new one"
   exams:
     title: Available tests
     not_started: Not Started

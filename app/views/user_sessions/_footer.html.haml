@@ -17,7 +17,6 @@
     = render template: '/pages/tutorials'
   = image_tag('arrow.png', class: 'arrow')
 
-
 %footer
   .menu_footer
     %ul
@@ -25,7 +24,13 @@
       %li= link_to t(:login_footer2), 'http://www.ufc.br', target: '_blank'
       %li= link_to t(:login_footer3), '#team', class: 'panel-link'
       %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', target: '_blank'
-      %li= link_to 'Privacidade', 'facebook.html', target: '_blank'
+      %li= link_to t(:login_footer4), privacy_path
+      %li.app
+        = link_to t(:login_app), apps_path
+        .new
+          = t(:login_new)
+          = content_tag :i, nil, class: "icon-star"     
+
       %li.choice-tutorial
         = link_to t(:help), '#', class: 'link-arrow'
         %ul.choice-tutorial-menu
@@ -43,3 +48,19 @@
 :javascript
   var div = '<footer><div class="menu_footer">'+ $('.menu_footer').html() +'</div></footer>';
   $('.panel').append(div);
+
+:css
+  .menu_footer .new, .menu_footer .new i{
+    display: inline-block;
+    color: #FFC50D;
+    font-size: 9pt;
+  }
+
+  .menu_footer li.app{
+    min-width: 93px;
+    display: inline-block;
+  }
+
+  .menu_footer .new i{
+    margin-left: -5px;
+  }
