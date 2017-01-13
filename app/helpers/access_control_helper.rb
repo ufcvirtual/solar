@@ -26,6 +26,8 @@ module AccessControlHelper
         "text/plain"
       when "flv"
         "video/x-flv"
+      when "mp3", "x-mp3"
+        "audio/mp3"  
       else
         "application/octet-stream"
     end

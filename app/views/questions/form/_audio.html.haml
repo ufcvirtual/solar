@@ -1,0 +1,29 @@
+#audios
+  - @count = 0
+  - count_audios = f.object.question_audios.count
+  = f.nested_fields_for :question_audios, wrapper_tag: :div do |aud|
+    - if (f.object.new_record? || aud.object.persisted? || @count == count_audios + 1)
+      - @count += 1
+      .duplicatable_nested_form
+        .upload-preview
+          - if aud.object.audio.nil?
+            %audio{ src: '' }
+          - else
+            = audio_tag(aud.object.audio, autoplay: false, controls: true)
+
+          = aud.input :audio, as: :file, label: false
+          = link_to_function t('.add_audio'), 'add_file(this)', class: 'btn btn_main add_file'
+
+        .info
+          = aud.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
+    -else
+      - @count += 1
+
+:javascript
+  $(function(){
+    set_audio_input();
+  });
+
+  function add_file(btn){
+    $(btn).parent().find('input.file').click();
+  }

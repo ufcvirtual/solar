@@ -18,6 +18,7 @@
           %td.enunciation
             = raw [question.enunciation, anull, score].compact.join(' ')
         - question_images = get_question_images(question.id)
+        - question_audios = get_question_audios(question.id)
         - unless question_images.nil?
           %tr.question_images
             - question_images.each do |q_image|
@@ -28,7 +29,14 @@
                   .legend
                     = q_image.legend
                   %br
-
+        - unless question_audios.nil?
+          %tr.question_audios
+            - question_audios.each do |q_audio|
+              %td.audio
+                .audio
+                  = audio_tag(q_audio.audio, autoplay: false, controls: true)     
+                %br
+                
         - if @preview
           = render 'exams/open/question_preview', { question: question }
         - else

@@ -12,16 +12,18 @@ class Question < ActiveRecord::Base
   has_many :exams, through: :exam_questions
   has_many :question_images, class_name: 'QuestionImage', dependent: :destroy
   has_many :question_items , class_name: 'QuestionItem' , dependent: :destroy
+  has_many :question_audios, class_name: 'QuestionAudio', dependent: :destroy
 
   has_and_belongs_to_many :question_labels
 
   accepts_nested_attributes_for :question_images, allow_destroy: true, reject_if: :reject_images
   accepts_nested_attributes_for :question_labels, allow_destroy: true, reject_if: :reject_labels
   accepts_nested_attributes_for :question_items, allow_destroy: true, reject_if: :reject_items
+  accepts_nested_attributes_for :question_audios, allow_destroy: true, reject_if: :reject_audios
 
   validates :enunciation, :type_question, presence: true
 
-  validate :verify_labels, :verify_images
+  validate :verify_labels, :verify_files
 
   validate :verify_privacy, if: 'privacy_changed? && privacy && !new_record?'
 
@@ -32,6 +34,10 @@ class Question < ActiveRecord::Base
 
   def reject_images(img)
     (img[:image].blank? && (new_record? || img[:id].blank?))
+  end
+
+  def reject_audios(aud)
+    (aud[:audio].blank? && (new_record? || aud[:id].blank?))
   end
 
   def reject_labels(label)
@@ -150,6 +156,11 @@ class Question < ActiveRecord::Base
                 FROM question_images 
                 WHERE questions.id = question_images.question_id
               )                                    AS has_images,
+              EXISTS(
+                SELECT question_audios.id 
+                FROM question_audios 
+                WHERE questions.id = question_audios.question_id
+              )                                    AS has_audios,
               replace(replace(translate(array_agg(distinct l2.name)::text,'{}', ''),'\"', ''),',',', ') AS labels
               FROM questions
               LEFT JOIN users AS authors    ON questions.user_id = authors.id
@@ -170,8 +181,9 @@ class Question < ActiveRecord::Base
     errors.add(:base, I18n.t('questions.error.max_labels')) if question_labels.size > 8
   end
 
-  def verify_images
-    errors.add(:base, I18n.t('questions.error.max_images')) if question_images.size > 4
+  def verify_files
+    total = question_images.size + question_audios.size
+    errors.add(:base, I18n.t('questions.error.max_files')) if total  > 4
   end
 
   def can_destroy?
@@ -225,7 +237,8 @@ class Question < ActiveRecord::Base
   end
 
   def validate_images
-    errors.add(:base, I18n.t('questions.error.max_images')) if question_images.any? && question_images.size > 4
+    total = question_images.size + question_audios.size
+    errors.add(:base, I18n.t('questions.error.max_files')) if question_images.any? && total > 4
   end
 
   def can_import_or_export?(current_user, exam = nil)
@@ -255,6 +268,7 @@ class Question < ActiveRecord::Base
     desc.merge!(images: question_images.collect{|img| img.attributes.except('image_updated_at' 'question_id')})
     desc.merge!(items: question_items.collect{|item| item.attributes.except('question_id', 'item_image_updated_at')})
     desc.merge!(labels: question_labels.collect{|item| item.attributes.except('created_at', 'updated_at')})
+    desc.merge!(audios: question_audios.collect{|audio| audio.attributes.except('audio_updated_at' 'question_id')})
   end
 
 end

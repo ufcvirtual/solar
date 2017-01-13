@@ -15,6 +15,7 @@
             - num_question =  num_question + 1
             - class_label = ''
             - image = ''
+            - audio = ''
             - coment = ''
 
             - if @disabled
@@ -31,6 +32,9 @@
                 
             - if i.object.item_image?  
               - image = @pdf !=1 ? image_tag(i.object.item_image, id: 'item_image', alt: i.object.img_alt) : wicked_pdf_image_tag(i.object.item_image, id: 'item_image', alt: i.object.img_alt) 
+
+            - if i.object.item_audio?  
+              - audio = audio_tag(i.object.item_audio.as_json, autoplay: false, controls: true)
                
             = i.check_box :value, {disabled: disabled, onchange: 'update_radio(this); change();', class: 'invisible'}, true, ''
             = radio_button_tag "radio_exam_response_exam_responses_question_items_attributes", :value, nil, {checked: i.object.value, class: "radio_exam_response_exam_responses_question_items_attributes_#{num_question}_value", disabled: disabled}
@@ -38,6 +42,7 @@
             = i.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
               = raw image
+              = raw audio
               %span= i.object.description.html_safe
               = raw(coment)
 
@@ -53,6 +58,7 @@
           - unless b.object.id.nil?
             - class_label = nil
             - image = nil
+            - audio = nil
             - num_question =  num_question + 1
             - if @disabled
               - coment = b.object.comment  
@@ -69,11 +75,15 @@
 
             - if b.object.item_image?     
               - image =  @pdf !=1 ? image_tag(b.object.item_image, id: 'item_image', alt: b.object.img_alt) : image = wicked_pdf_image_tag(b.object.item_image, id: 'item_image', alt: b.object.img_alt)
+  
+            - if b.object.item_audio?  
+              - audio = audio_tag(b.object.item_audio.as_json, autoplay: false, controls: true)
 
             = b.check_box :value, {disabled: disabled, onchange: 'change();'}, true, ''
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
               = raw image
+              = raw audio
               %span= b.object.description.html_safe
               = raw(coment)
 
@@ -93,6 +103,8 @@
             - selected = b.object.value
             - if b.object.item_image?
               - image = @pdf !=1 ? image_tag(b.object.item_image, id: 'item_image', alt: b.object.img_alt) : wicked_pdf_image_tag(b.object.item_image, id: 'item_image', alt: b.object.img_alt) 
+            - if b.object.item_audio?  
+              - audio = audio_tag(b.object.item_audio.as_json, autoplay: false, controls: true)  
      
             - if @disabled
               - coment = b.object.comment  
@@ -116,6 +128,7 @@
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
               = raw image
+              = raw audio
               %span= b.object.description.html_safe
               = raw(coment)
          

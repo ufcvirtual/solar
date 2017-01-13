@@ -14,6 +14,8 @@
             %span= arr_alf[num_question]+') '
             - if qi.item_image?     
               = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+            - if qi.item_audio?     
+              = audio_tag(qi.item_audio.as_json, autoplay: false, controls: true) rescue ''  
             %span= qi.description.html_safe
 
     - elsif question.type_question.to_i == Question::MULTIPLE
@@ -26,6 +28,8 @@
             %span= arr_alf[num_question]+') '
             - if qi.item_image?     
               = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+            - if qi.item_audio?     
+              = audio_tag(qi.item_audio, autoplay: false, controls: true) rescue ''    
             %span= qi.description.html_safe
 
     - else
@@ -38,4 +42,6 @@
             %span= arr_alf[num_question]+') '
             - if qi.item_image?     
               = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
+            - if qi.item_audio?     
+              = audio_tag(qi.item_audio.as_json, autoplay: false, controls: true) rescue ''    
             %span= qi.description.html_safe

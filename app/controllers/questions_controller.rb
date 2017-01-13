@@ -26,6 +26,7 @@ class QuestionsController < ApplicationController
     @question.question_images.build
     @question.question_labels.build
     @question.question_items.build
+    @question.question_audios.build
   end
 
   def create
@@ -69,6 +70,7 @@ class QuestionsController < ApplicationController
     @question.question_images.build
     @question.question_labels.build
     @question.question_items.build
+    @question.question_audios.build
   end
 
   def update
@@ -145,6 +147,7 @@ class QuestionsController < ApplicationController
     @question.question_images.build
     @question.question_labels.build
     @question.question_items.build
+    @question.question_audios.build
 
     render :edit
   end
@@ -153,9 +156,10 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:enunciation, :type_question, :privacy,
-      question_items_attributes: [:id, :item_image, :value, :description, :_destroy, :comment, :img_alt],
+      question_items_attributes: [:id, :item_image, :value, :description, :_destroy, :comment, :img_alt, :item_audio],
       question_images_attributes: [:id, :image, :legend, :img_alt, :_destroy],
-      question_labels_attributes: [:id, :name, :_destroy])
+      question_labels_attributes: [:id, :name, :_destroy],
+      question_audios_attributes: [:id, :audio, :_destroy])
   end
 
   def params_to_log

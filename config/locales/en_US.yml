@@ -269,18 +269,24 @@ en_US:
       question_items:
         img_alt: Alt
         item_image: Image
+        item_audio: Audio
         comment: Comment
       question_images:
         image: Image
         legend: Legend
         img_alt: Alt
+      question_audios:
+        audio: Audio  
       question_image:
         image: Image
         legend: Legend
         img_alt: Alt
+      question_audio:
+        audio: Audio  
       question_item:
         img_alt: Alt
         item_image: Image
+        item_audio: Audio
         comment: Comment
       assignment:
         name: Title
@@ -3215,15 +3221,20 @@ en_US:
         add: Add more options
         alt_desc: 'Alt: Mandatory description to accessibility (disabled people)'
         add_image: Add/update image
+        add_audio: Add/update audio
         comment: Comment
         alt: Alt
         choose_correct: '(Check to indicate item as correct)'
         remove: Remove item
         comments: Show/Hide comment
         images: Show/Hide image
+        audios: Show/Hide audio
         remove_image: Delete Image
+        remove_audio: Delete Audio
         info_remove_image: Image successfully removed
+        info_remove_audio: Audio successfully removed
         confirm_image_removal: 'Are you sure? Even if you cancel this form, this image will be deleted and will not be recovered.'
+        confirm_audio_removal: 'Are you sure? Even if you cancel this form, this audio will be deleted and will not be recovered.'
         empty: "The item %{count} is blank, you want to delete?"
       t_option: T
       f_option: F
@@ -3231,9 +3242,12 @@ en_US:
         continue: Continue
         add_images: Add images
         add_labels: Add labels
+        add_audios: Add audios
       image:
         alt_desc: 'Alt: Mandatory description to accessibility (disabled people)'
         add_image: Add/update image
+      audio:
+        add_audio: Add/update audio  
     labels:
       labels: 'labels: '
     error:
@@ -3246,7 +3260,7 @@ en_US:
       private: Private question, is not possible to execute this action
       min_public_questions: "To each public question created, you can create 10 private ones. By exceeding this limit, you don't have access to different authors public questions. The limit was exceeded."
       draft: Question as draft
-      max_images: cat have, at most, 4 images
+      max_files: cat have, at most, 4 files (imagesa and/or audios)
       general_message: It was not possible to execute this action
       permission: You don't have permission to execute this action
       alt: Mandatory Alt

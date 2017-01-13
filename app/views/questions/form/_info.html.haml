@@ -31,6 +31,7 @@
 
     $(document).on("fields_added.nested_form_fields", function(event) {
       set_image_input();
+      set_audio_input();
       if($(event.currentTarget.activeElement).hasClass('add_options')){
         var name = $(".desc textarea[id*='_question_items_']:visible:last").attr('id');
         var ckeditor = CKEDITOR.instances[name];
@@ -43,6 +44,7 @@
     $(document).on("fields_removed.nested_form_fields", function(event, param) {
       if($('.nested_fields.nested_question_question_images:visible').length < 4){
         $('.question_images .add_nested_fields_link').show();
+        $('.question_audios .add_nested_fields_link').show();
       }
       if($(event.currentTarget.activeElement).hasClass('add_options')){
         append_rich_text($(".desc textarea[id*='_question_items_']:visible:last").attr('id'));
@@ -70,6 +72,29 @@
 
     if($('.nested_fields.nested_question_question_images:visible').length == 4){
       $('.question_images .add_nested_fields_link').hide();
+    }
+  }
+
+  function set_audio_input(){
+    $("#audios input[type='file'], .audio input[type='file']").each(function(idx){
+
+    });
+
+    $("#audios input[type='file'], .audio input[type='file']").change(function(event){
+      var input = $(event.currentTarget);
+      var file = input[0].files[0];
+      var reader = new FileReader();
+      input.parent().find('.add_file').hide();
+      reader.onload = function(e){
+         audio_base = e.target.result;
+         input.parent().parent().find('audio').attr("src", audio_base);
+         input.parent().parent().find('audio').attr("controls", "controls");
+      };
+      reader.readAsDataURL(file);
+    });
+
+    if($('.nested_fields.nested_question_question_audios:visible').length == 4){
+      $('.question_audios .add_nested_fields_link').hide();
     }
   }
 
@@ -101,6 +126,11 @@
   = render partial: 'questions/form/image', locals: { f: f, eq: nil }
   .input.string
     = f.add_nested_fields_link :question_images, t('.add_images'), class: 'btn'
+
+.question_audios
+  = render partial: 'questions/form/audio', locals: { f: f, eq: nil }
+  .input.string
+    = f.add_nested_fields_link :question_audios, t('.add_audios'), class: 'btn'
 
 .form-actions.right_buttons
   = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'

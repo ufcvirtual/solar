@@ -86,6 +86,29 @@ class ExamQuestionsController < ApplicationController
     render_json_error(error, 'questions.error')
   end 
 
+  def remove_audio_item
+    authorize! :update, Question
+    @exam_question = ExamQuestion.find params[:exam_question_id]
+
+    @question_item = QuestionItem.find params[:id]
+    @question_item.item_audio_file_name = nil
+    @question_item.item_audio_content_type = nil
+    @question_item.item_audio_file_size = nil
+    @question_item.item_audio_updated_at = DateTime.now
+
+    if @question_item.save
+      render json: { success: true, notice: t('questions.form.items.info_remove_audio') }
+    else
+      render json: { success: false, alert: @exam_question.errors.full_messages.join(', ') }, status: :unprocessable_entity
+    end
+
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  rescue => error
+    render_json_error(error, 'questions.error')
+  end 
+
+
   def publish
     authorize! :change_status, Question
     ids = params[:id].split(',') rescue [params[:id]]
@@ -333,9 +356,10 @@ class ExamQuestionsController < ApplicationController
       :exam_id, :score, :order,
       question_attributes: [
         :id, :name, :enunciation, :type_question, 
-        question_items_attributes: [:id, :item_image, :value, :description, :_destroy, :comment, :img_alt],
+        question_items_attributes: [:id, :item_image, :value, :description, :_destroy, :comment, :img_alt, :item_audio],
         question_images_attributes: [:id, :image, :legend, :img_alt, :_destroy],
-        question_labels_attributes: [:id, :name, :_destroy]
+        question_labels_attributes: [:id, :name, :_destroy],
+        question_audios_attributes: [:id, :audio, :_destroy],
       ]
     )
   end
@@ -356,11 +380,13 @@ class ExamQuestionsController < ApplicationController
         q.question_images.build
         q.question_labels.build
         q.question_items.build
+        q.question_audios.build
       end
     else
       @exam_question.question.question_images.build
       @exam_question.question.question_labels.build
       @exam_question.question.question_items.build
+      @exam_question.question.question_audios.build
     end
   end
 

@@ -309,14 +309,18 @@ pt_BR:
       question_items:
         img_alt: Alt
         item_image: Imagem
+        item_audio: Áudio
         comment: Comentário
       question_images:
         image: Imagem
         legend: Legenda
         img_alt: Alt
+      question_audios:
+        audio: Audios  
       question_item:
         img_alt: Alt
         item_image: Imagem
+        item_audio: Áudio
         comment: Comentário
       question_image:
         image: Imagem
@@ -3447,15 +3451,20 @@ pt_BR:
         add: Adicionar mais opções
         alt_desc: 'Alt: Descrição obrigatória para acessibilidade (pessoas com deficiência)'
         add_image: Adicionar/alterar imagem
+        add_audio: Adicionar/alterar audio
         comment: Comentário
         alt: Alt
         choose_correct: '(Marque para indicar o item como correto)'
         remove: Remover item
         comments: Exibir/Ocultar comentário
         images: Exibir/Ocultar imagem
+        audios: Exibir/Ocultar audio
         remove_image: Remover Image
+        remove_audio: Remover Audio
         info_remove_image: Imagem removida com sucesso
+        info_remove_audio: Audio removido com sucesso
         confirm_image_removal: 'Você tem certeza? Mesmo que este formulário seja cancelado, a imagem será removida e não poderá ser recuperada.'
+        confirm_audio_removal: 'Você tem certeza? Mesmo que este formulário seja cancelado, o audio será removido e não poderá ser recuperada.'
         empty: "O item %{count} está em branco, deseja excluí-lo?"
       t_option: V
       f_option: F
@@ -3463,9 +3472,12 @@ pt_BR:
         continue: Prosseguir
         add_images: Adicionar imagens
         add_labels: Adicionar palavras-chave
+        add_audios: Adicionar áudios
       image:
         alt_desc: 'Alt: Descrição obrigatória para acessibilidade (pessoas com deficiência)'
         add_image: Adicionar/alterar imagem
+      audio:
+        add_audio: Adicionar/alterar áudio
     labels:
       labels: 'palavras-chave: '
     error:
@@ -3478,7 +3490,7 @@ pt_BR:
       private: Questão é privada, não é possível realizar a ação desejada.
       min_public_questions: A cada questão pública criada, você pode criar 10 privadas. Ao ultrapassar este limite, você não tem acesso a questões públicas de demais autores. O limite foi ultrapassado.
       draft: Questão ainda como rascunho.
-      max_images: pode ter, no máximo, 4 imagens
+      max_files: pode ter, no máximo, 4 arquivos (imagens e/ou áudios)
       general_message: Não foi possível realizar a ação desejada
       permission: Você não tem permissão para realizar esta ação
       alt: obrigatório

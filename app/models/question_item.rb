@@ -17,6 +17,13 @@ class QuestionItem < ActiveRecord::Base
                     path: ':rails_root/media/questions/items/:id_:basename.:extension',
                     url: '/media/questions/items/:id_:basename.:extension'
 
+  validates_attachment_size :item_audio, less_than: 10.megabyte, message: ''
+  validates_attachment_content_type :item_audio, content_type: /^audio\/(mpeg|x-mpeg|mp3|x-mp3|mpeg3|x-mpeg3|mpg|x-mpg|x-mpegaudio)$/, message: I18n.t('questions.error.wrong_type')
+
+  has_attached_file :item_audio,
+                    path: ':rails_root/media/questions/items/:id_:basename.:extension',
+                    url: '/media/questions/items/:id_:basename.:extension'
+
   before_destroy :can_destroy?
 
   def can_destroy?

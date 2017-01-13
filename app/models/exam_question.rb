@@ -104,6 +104,7 @@ class ExamQuestion < ActiveRecord::Base
     desc.merge!(images: question.question_images.collect{|img| img.attributes.except('image_updated_at' 'question_id')})
     desc.merge!(items: question.question_items.collect{|item| item.attributes.except('question_id', 'item_image_updated_at')})
     desc.merge!(labels: question.question_labels.collect{|label| label.attributes.except('created_at', 'updated_at')})
+    desc.merge!(audios: question.question_audios.collect{|aud| aud.attributes.except('audio_updated_at' 'question_id')})
   end
 
   def can_save?

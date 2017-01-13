@@ -25,4 +25,12 @@ class ExamResponsesQuestionItem < ActiveRecord::Base
   def img_alt
     question_item.img_alt
   end
+
+  def item_audio?
+    question_item.item_audio?
+  end
+
+  def item_audio
+    question_item.item_audio
+  end
 end

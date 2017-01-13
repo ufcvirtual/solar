@@ -1,9 +1,9 @@
 #images
-  - count = 0
+  - @count = 0
   - count_images = f.object.question_images.count
   = f.nested_fields_for :question_images, wrapper_tag: :div do |img|
-    - if (f.object.new_record? || img.object.persisted? || count == count_images + 1)
-      - count += 1
+    - if (f.object.new_record? || img.object.persisted? || @count == count_images + 1)
+      - @count += 1
       .duplicatable_nested_form
         .upload-preview
           - if img.object.image.nil?
@@ -20,7 +20,7 @@
           = img.input :img_alt
           = img.label t('.alt_desc'), class: 'alt'
     -else
-      - count += 1
+      - @count += 1
 
 :javascript
   $(function(){

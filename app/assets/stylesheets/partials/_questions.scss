@@ -127,7 +127,7 @@
       display: inline-block;
       width: 298px;
     }
-    i, a.comment, a.image_icon{
+    i, a.comment, a.image_icon, a.audio_icon{
       float: right;
       padding-bottom: 10px;
       padding-left: 2px;
@@ -166,6 +166,9 @@
     .image.hide{
       display: none;
     }
+    .audio.hide{
+      display: none;
+    }
     .image{
       margin-top: 10px;
       input[type='file'], .input.file{
@@ -197,6 +200,46 @@
         textarea{
           width: 271px;
           height: 90px;
+        }
+        label.alt{
+          text-align: left;
+          margin-top: -5px;
+          margin-left: 80px;
+          width: 281px;
+        }
+      }
+    }
+
+    .audio{
+      margin-top: 10px;
+      input[type='file'], .input.file{
+        display: none;
+      }
+      .upload-preview{
+        width: 136px;
+        display: inline-block;
+        text-align: center;
+        audio{
+          max-width: 150px;
+          max-height: 30px;
+        }
+        .add_file{
+          margin-left: -1px;
+        }
+      }
+      input[type='text']{
+        width: 316px;
+        margin-top: 5px;
+      }
+      .info{
+        display: inline-block;
+        vertical-align: top;
+        input{
+          margin-top: 5px;
+          width: 280px;
+        }
+        input{
+          width: 271px;
         }
         label.alt{
           text-align: left;
@@ -256,6 +299,46 @@
       }
     }
   }
+  #audios{
+    textarea{
+      height: 60px;
+    }
+    input[type='text']{
+      width: 294px;
+      margin-top: 5px;
+    }
+    .info{
+      text-align: right;
+      display: inline-block;
+      vertical-align: top;
+      input{
+        margin-top: 5px;
+      }
+      label.alt{
+        width: 300px;
+        text-align: left;
+        margin-top: -5px;
+      }
+    }
+    input[type='file'], .input.file{
+      display: none;
+    }
+    .upload-preview{
+      width: 190px;
+      display: inline-block;
+      text-align: center;
+      margin-left: 24px;
+      audio{
+        max-width: 150px;
+        max-height: 30px;
+      }
+      .add_file{
+        margin: 4px;
+        margin-bottom: 20px;
+      }
+    }
+  }
+
   .labels{
     input{
       width: 100px;
@@ -322,6 +405,9 @@ tbody .question_items{
   }
   overflow: hidden !important;
   img{
+    display: inline-block;
+  }
+  audio{
     display: inline-block;
   }
   label{

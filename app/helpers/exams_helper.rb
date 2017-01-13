@@ -11,6 +11,9 @@ module ExamsHelper
   def get_question_images(question_id)
     QuestionImage.list(question_id)
   end
+  def get_question_audios(question_id)
+    QuestionAudio.list(question_id)
+  end
 
   def get_image_size(count)
     case count
