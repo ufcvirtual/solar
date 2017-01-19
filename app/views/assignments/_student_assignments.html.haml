@@ -45,7 +45,10 @@
                   %i.icon-arrow-down-triangle
                 .dropdown.dropdown-tip{id: "dropdown_eq_#{assignment.academic_tool_id}"}
                   %ul{ class: 'dropdown-menu' }
-          %td.center= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
+          %td.center
+            %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
+            %div= [(assignment.start_hour), (assignment.end_hour)].join(' - ') unless assignment.start_hour.blank?
+
           %td.center
             - if assignment.situation == "without_group"
               %div{class: "assignment_#{assignment.situation}"}= t(assignment.situation.to_sym)

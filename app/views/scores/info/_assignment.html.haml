@@ -52,7 +52,8 @@
                           .dropdown.dropdown-tip{id: "dropdown_eq_1_#{assignment.id}"}
                             %ul{ class: 'dropdown-menu' }
                     %td.center
-                      = [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
+                      %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
+                      %div= [(assignment.start_hour), (assignment.end_hour)].compact.join(' - ')
                     %td.center{class: "assignment_#{assignment.situation}"}= t(assignment.situation.to_sym)
                     %td.center= assignment.grade
                     - if @can_evaluate_ass
@@ -105,7 +106,8 @@
                           .dropdown.dropdown-tip{id: "dropdown_eq_2_#{assignment.id}"}
                             %ul{ class: 'dropdown-menu' }
                     %td.center
-                      = [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
+                      %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
+                      %div= [(assignment.start_hour), (assignment.end_hour)].compact.join(' - ')
                     %td.center{class: "assignment_#{assignment.situation}"}= t(assignment.situation.to_sym)
                     %td.center= assignment.working_hours
                     - if @can_evaluate_ass
@@ -159,7 +161,8 @@
                           .dropdown.dropdown-tip{id: "dropdown_eq_3_#{assignment.id}"}
                             %ul{ class: 'dropdown-menu' }
                     %td.center
-                      = [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
+                      %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
+                      %div= [(assignment.start_hour), (assignment.end_hour)].compact.join(' - ')
                     %td.center{class: "assignment_#{assignment.situation}"}= t(assignment.situation.to_sym)
                     %td.center= assignment.grade
                     - if @can_evaluate_ass

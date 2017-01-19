@@ -21,7 +21,7 @@
             %input#all_assignments{type: "checkbox", :"data-children-names" => "ckb_assignment"}
           %th{style: 'text-align:left;'}= t(".name")
           %th.center= t(".type")
-          %th.center.no_sort= t(".availability")
+          %th.center.no_sort{style: "width: 21%"}= t(".availability")
           %th.center{style: "width: 12%"}= t(".answers")
 
       %tbody
@@ -56,7 +56,8 @@
             %td{style: 'text-align:center;'}
               %div.title= t(((assignment.type_assignment.to_i == Assignment_Type_Individual) ? ".individual" : ".group"))
             %td{style: 'text-align:center;'}
-              = [l(assignment.schedule.start_date, format: :normal), l(assignment.schedule.end_date, format: :normal)].join(" - ")
+              %div= [l(assignment.schedule.start_date, format: :normal), l(assignment.schedule.end_date, format: :normal)].join(" - ")
+              %div= t(".hour_period", start_hour: assignment.start_hour, end_hour: assignment.end_hour) unless assignment.start_hour.blank?
 
             %td{style: 'text-align:center;'}
               %div= can_delete ? t('.no_answers') : t('.has_answers')

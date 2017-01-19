@@ -12,10 +12,14 @@ class Assignment < Event
   has_many :group_assignments, through: :academic_allocations, dependent: :destroy
   
   before_destroy :can_destroy?
+ 
+  validates :start_hour, presence: true, if: lambda { |c| c[:start_hour].blank?  && !c[:end_hour].blank? }
+  validates :end_hour  , presence: true, if: lambda { |c| !c[:start_hour].blank? && c[:end_hour].blank?  }
+  validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
 
-  accepts_nested_attributes_for :schedule 
   before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # data final obrigatoria
 
+  accepts_nested_attributes_for :schedule 
   accepts_nested_attributes_for :enunciation_files, allow_destroy: true, reject_if: proc { |attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank? }
 
   validates :name, :enunciation, :type_assignment, presence: true
@@ -39,14 +43,6 @@ class Assignment < Event
     academic_allocations.map(&:academic_allocation_users).flatten.empty?
   end
 
-  def closed?
-    schedule.end_date.to_date < Date.today
-  end
-
-  def started?
-    schedule.start_date.to_date <= Date.today
-  end
-
   def will_open?(allocation_tag_id, user_id)
     AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(user_id) && schedule.start_date.to_date > Date.today
   end
@@ -62,7 +58,8 @@ class Assignment < Event
   end
 
   def verify_date_range(start_date, end_date, date)
-    (date >= start_date.to_date && date <= end_date.to_date)
+    on_going?
+    #(date >= start_date.to_date && date <= end_date.to_date)
   end
 
   def info(user_id, allocation_tag_id, group_id = nil)
@@ -82,15 +79,14 @@ class Assignment < Event
 
   end
 
-
   def situation(has_files, has_group, grade = nil)
     case
-    when schedule.start_date.to_date > Date.current                    then 'not_started'
+    when !started?                                                     then 'not_started'
     when (self.type_assignment == Assignment_Type_Group && !has_group) then 'without_group'
     when !grade.nil?                                                   then 'corrected'
     when has_files                                                     then 'sent'
-    when (schedule.end_date.to_date >= Date.today)                     then 'to_be_sent'
-    when (schedule.end_date.to_date < Date.today)                      then 'not_sent'
+    when on_going?                                                     then 'to_be_sent'
+    when closed?                                                       then 'not_sent'
     else
       '-'
     end
@@ -125,15 +121,69 @@ class Assignment < Event
                  .where(wq + "academic_allocations.allocation_tag_id= ?",  at.id )
                  .select("DISTINCT assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date, academic_allocation_users.grade, academic_allocation_users.working_hours, 
                           case
-                            when schedules.start_date > current_date                   then 'not_started'
+                            when (current_date < schedules.start_date AND (assignments.start_hour IS NULL OR assignments.start_hour = '')) OR  (current_date <= schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.end_hour != '' AND current_time<to_timestamp(assignments.start_hour, 'HH24:MI:SS')::time)) then 'not_started'
                             when assignments.type_assignment = 1 AND ga.id IS NULL         then 'without_group'
                             when grade IS NOT NULL                                         then 'corrected'
                             when attachment_updated_at IS NOT NULL OR (is_recorded AND (initial_time + (interval '1 mins')*duration) < now())  then 'sent'
-                            when schedules.end_date >= current_date                          then 'to_be_sent'
+                            when (current_date <= schedules.end_date AND (assignments.end_hour IS NULL OR assignments.end_hour = '')) OR (current_date <= schedules.end_date AND (assignments.end_hour IS NOT NULL AND assignments.end_hour != '' AND current_time<=to_timestamp(assignments.end_hour, 'HH24:MI:SS')::time))                          then 'to_be_sent'
                             when schedules.end_date < current_date                           then 'not_sent'
                             else  '-'
                           end AS status")
                  .order("start_date") if at.is_student?(user_id)
+  end  
+
+   def closed?
+    has_hours = (!start_hour.blank? && !end_hour.blank?)
+    endt      = (has_hours ? (schedule.end_date.beginning_of_day + end_hour.split(':')[0].to_i.hours + end_hour.split(':')[1].to_i.minutes) : schedule.end_date.end_of_day)
+    Time.now > endt
+  end
+
+  def started?
+    has_hours = (!start_hour.blank? && !end_hour.blank?)
+    startt    = (has_hours ? (schedule.start_date.beginning_of_day + start_hour.split(':')[0].to_i.hours + start_hour.split(':')[1].to_i.minutes) : schedule.start_date.beginning_of_day)
+    Time.now >= startt
+  end
+
+  def on_going?
+    has_hours = (!start_hour.blank? && !end_hour.blank?)
+    startt    = (has_hours ? (schedule.start_date.beginning_of_day + start_hour.split(':')[0].to_i.hours + start_hour.split(':')[1].to_i.minutes) : schedule.start_date.beginning_of_day)
+    endt      = (has_hours ? (schedule.end_date.beginning_of_day + end_hour.split(':')[0].to_i.hours + end_hour.split(':')[1].to_i.minutes) : schedule.end_date.end_of_day)
+    Time.now.between?(startt,endt)
+  end
+
+  def on_going_changed?
+    has_hours = (!start_hour_was.blank? && !start_hour_was.blank?)
+    startt    = (has_hours ? (schedule.start_date_was.beginning_of_day + start_hour_was.split(':')[0].to_i.hours + start_hour_was.split(':')[1].to_i.minutes) : schedule.start_date_was.beginning_of_day)
+    endt      = (has_hours ? (schedule.end_date_was.beginning_of_day + end_hour_was.split(':')[0].to_i.hours + end_hour_was.split(':')[1].to_i.minutes) : schedule.end_date_was.end_of_day)
+    Time.now.between?(startt,endt)
+  end
+
+  def check_hour
+    errors.add(:start_hour, I18n.t('exams.error.same_day')) if schedule.start_date != schedule.end_date
+    errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:chat_rooms, :error])) if (end_hour.rjust(5, '0') < start_hour.rjust(5, '0'))
+  end
+
+  def def_hour
+    if (schedule.start_date_changed? || schedule.end_date_changed?) && schedule.start_date_changed? != schedule.end_date_changed?
+      self.start_hour = nil
+      self.end_hour = nil
+    end
+  end
+
+  def assignment_started?(allocation_tag_id, current_user)
+    raise "not_started_up" unless started? || AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(current_user.id)
+  end
+
+  def verify_date_range_webconference?(initial_time, duration)
+    has_hours = (!start_hour_was.blank? && !start_hour_was.blank?)
+    startt    = (has_hours ? (schedule.start_date_was.beginning_of_day + start_hour_was.split(':')[0].to_i.hours + start_hour_was.split(':')[1].to_i.minutes) : schedule.start_date_was.beginning_of_day)
+    endt      = (has_hours ? (schedule.end_date_was.beginning_of_day + end_hour_was.split(':')[0].to_i.hours + end_hour_was.split(':')[1].to_i.minutes) : schedule.end_date_was.end_of_day)
+    time_webconference = initial_time + duration * 60
+    (initial_time.between?(startt,endt) && time_webconference.between?(startt,endt))
+  end  
+
+  def releases_webconference?(initial_time, duration)
+    raise "not_range_webconference" unless verify_date_range_webconference?(initial_time, duration)
   end  
 
   def groups_assignments(allocation_tag_id)

@@ -13,8 +13,13 @@
           %th.center.no_sort{ style: 'width:15%' }
     %tbody.info
       %tr.lines
-        %td.center= l(@assignment.schedule.start_date, format: :normal)
-        %td.center= l(@assignment.schedule.end_date, format: :normal)
+        - if @assignment.start_hour.blank?
+          %td.center= l(@assignment.schedule.start_date, format: :normal) 
+          %td.center= l(@assignment.schedule.end_date, format: :normal)
+        - else
+          %td.center= l(@assignment.schedule.start_date, format: :normal) + t(".at") + @assignment.start_hour
+          %td.center= l(@assignment.schedule.end_date, format: :normal) + t(".at") + @assignment.end_hour
+        
         %td.center{:class => "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
         = f.input :user_id, as: :hidden, input_html: { value: @student_id }
         = f.input :group_id, as: :hidden, input_html: { value: @group_id }

@@ -15,6 +15,12 @@
           .left= s.input :start_date, as: :string, input_html: {id: 'assignment_start_date', value: l(@assignment.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
           .right_form= s.input :end_date, as: :string, input_html: {id: 'assignment_end_date', value: l(@assignment.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
 
+        .schedule_dates.hour
+          .left
+            = f.input :start_hour
+          .right_form
+            = f.input :end_hour    
+
       - types = {:"#{t('.individual')}" => Assignment_Type_Individual, :"#{t('.group')}" => Assignment_Type_Group}
       = f.input :type_assignment, collection: types, include_blank: false, required: true
 
@@ -56,6 +62,8 @@
 :javascript
 
   $("#assignment_start_date, #assignment_end_date").mask("#{I18n.t('date.formats.mask')}");
+  $("#assignment_start_hour").mask("99:99");
+  $("#assignment_end_hour").mask("99:99");
 
   jQuery(function($){
 

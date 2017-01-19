@@ -21,15 +21,17 @@ class AssignmentWebconferencesController < ApplicationController
 
   def create
     verify_owner!(assignment_webconference_params)
-
     @assignment_webconference = AssignmentWebconference.new assignment_webconference_params
+    erro = @assignment_webconference.assignment.releases_webconference?(@assignment_webconference.initial_time, @assignment_webconference.duration)
     @assignment_webconference.save!
-      
+    
     render partial: 'webconference', locals: { webconference: @assignment_webconference }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue ActiveRecord::AssociationTypeMismatch
       render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
+  rescue => erro 
+    render_json_error(erro, 'assignments.error', 'not_range_webconference')    
   rescue => error
     if @assignment_webconference.errors.any?
       render :new

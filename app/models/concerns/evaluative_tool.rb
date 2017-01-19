@@ -26,14 +26,14 @@ module EvaluativeTool
         enunciation AS description,
         schedules.start_date AS start_date,
         schedules.end_date AS end_date,
-        '' AS start_hour,
-        '' AS end_hour
+        start_hour AS start_hour,
+        end_hour AS end_hour
       FROM academic_allocations 
       LEFT JOIN assignments ON assignments.id = academic_tool_id AND academic_tool_type = 'Assignment' 
       LEFT JOIN schedules ON schedules.id = schedule_id
       WHERE academic_tool_type = 'Assignment'
         AND allocation_tag_id IN (#{ats})
-      GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight, name, enunciation, start_date, end_date
+      GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight, name, enunciation, start_date, end_date, start_hour, end_hour
 
       UNION(
         SELECT DISTINCT

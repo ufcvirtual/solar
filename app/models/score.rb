@@ -350,8 +350,8 @@ class Score # < ActiveRecord::Base
                 eq_assig.name AS eq_name,
                 groups.group_id::text AS group_id,
                 assignments.type_assignment::text as type_tool,
-                '' AS start_hour,
-                '' AS end_hour,
+                assignments.start_hour AS start_hour,
+                assignments.end_hour AS end_hour,
                 NULL as count,
                 (select count(assignment_comments.id) FROM assignment_comments WHERE assignment_comments.academic_allocation_user_id = academic_allocation_users.id) AS count_all,
                 NULL as moderator,
@@ -369,9 +369,9 @@ class Score # < ActiveRecord::Base
                 case
                   #{evaluated_status}
                   when assignments.type_assignment = #{Assignment_Type_Group} AND groups.group_id IS NULL  then 'without_group'
-                  when schedules.start_date > current_date                       then 'not_started'
-                   when #{sent_status} OR academic_allocation_users.status = 1 OR academic_allocation_users.status = 1 OR attachment_updated_at IS NOT NULL OR (assignment_webconferences.id IS NOT NULL AND is_recorded AND (initial_time + (interval '1 mins')*duration) < now()) then 'sent'
-                  when schedules.end_date >= current_date                        then 'to_be_sent'
+                  when (current_date < schedules.start_date AND (assignments.start_hour IS NULL OR assignments.start_hour = '')) OR (current_date = schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.start_hour != '' AND current_time<to_timestamp(assignments.start_hour, 'HH24:MI:SS')::time)) OR (current_date < schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.start_hour != '')) then 'not_started'
+                  when #{sent_status} OR academic_allocation_users.status = 1 OR academic_allocation_users.status = 1 OR attachment_updated_at IS NOT NULL OR (assignment_webconferences.id IS NOT NULL AND is_recorded AND (initial_time + (interval '1 mins')*duration) < now()) then 'sent'
+                  when (current_date <= schedules.end_date AND current_date >= schedules.start_date AND (assignments.end_hour IS NULL OR assignments.end_hour = '' AND assignments.start_hour IS NULL OR assignments.start_hour = '')) OR (current_date <= schedules.end_date AND current_date >= schedules.start_date AND (assignments.end_hour IS NOT NULL AND assignments.end_hour != '' AND current_time<=to_timestamp(assignments.end_hour, 'HH24:MI:SS')::time)) then 'to_be_sent'
                   else  'not_sent'
                  end AS situation,
                  academic_allocations.evaluative,

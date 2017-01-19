@@ -295,6 +295,8 @@ en_US:
         end_evaluation_period: Final date to evaluation period
         start_date: Period
         end_date: To
+        start_hour: Schedule
+        end_hour: to
       assignment_enunciation_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment_file_name: File
@@ -1599,6 +1601,7 @@ en_US:
       none: No assignment registered
       individual: Individual
       group: Group
+      hour_period: "%{start_hour}h - %{end_hour}h"
     form:
       groups: Groups
       files: Files
@@ -1606,6 +1609,8 @@ en_US:
       group: Group
       edit: Edit assignment
       new: New assignment
+      start_hour: Schedule
+      end_hour: to
     success:
       created: Assignment was successfully created.
       updated: Assignment was successfully updated.
@@ -1621,6 +1626,7 @@ en_US:
       general_message: It was not possible to execute action.
       dependencies: It was not possible to execute action. One or more assignments already have been sent or already have comments or already have been evaluated.
       not_started: It was not possible to download file. This assignment hasn't started yet.
+      not_range_webconference: Webconference wasn't created.This Webconference hasn't period of Assignment.
     show:
       name: Name
       enunciation: Enunciation
@@ -1675,6 +1681,7 @@ en_US:
       working_hours: Working Hours
       begin: Begin
       end: End
+      at: ' at '
     files:
       title: Assignment's files
       download: Download zip

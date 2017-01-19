@@ -344,6 +344,8 @@ pt_BR:
         schedule: Período
         start_date: Período
         end_date: à
+        start_hour: Horário
+        end_hour: à
       assignment_enunciation_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
@@ -1797,6 +1799,7 @@ pt_BR:
       none: Nenhum trabalho cadastrado
       individual: Individual
       group: Grupo
+      hour_period: "%{start_hour}h - %{end_hour}h"
     form:
       groups: Turmas
       files: Arquivos
@@ -1804,6 +1807,8 @@ pt_BR:
       group: Grupo
       edit: Editar trabalho
       new: Novo trabalho
+      start_hour: Horário
+      end_hour: à
     success:
       created: Trabalho criado com sucesso.
       updated: Trabalho atualizado com sucesso.
@@ -1819,6 +1824,8 @@ pt_BR:
       general_message: Não foi possível realizar a ação desejada
       dependencies: Não é possível realizar esta ação, pois um ou mais trabalhos já foram enviados ou possuem comentários ou foram avaliados.
       not_started: Não é possível fazer o download do arquivo. O trabalho ainda não está iniciado.
+      not_started_up: Não é possível fazer o envio do arquivo. O trabalho ainda não está iniciado.
+      not_range_webconference: Não foi possível cadastrar a Webconferência.A webconferência deve está dentro do período do trabalho.
     show:
       name: Nome
       enunciation: Enunciado
@@ -1839,7 +1846,7 @@ pt_BR:
       no_participants: Grupo sem participantes
       situation: Situação
       grade: Nota
-      description: Descrição
+      description: Descrição 
     list:
       individual_assignments: Trabalhos individuais
       group_assignments: Trabalhos em grupo
@@ -1873,6 +1880,7 @@ pt_BR:
       working_hours: Carga Horária
       begin: Início
       end: Fim
+      at: ' ás '
     files:
       title: Arquivos da atividade
       download: Baixar zip

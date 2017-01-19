@@ -64,6 +64,7 @@ class AssignmentsController < ApplicationController
 
     @assignment = Assignment.new assignment_params
     @assignment.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten
+    @assignment.schedule.verify_today = true
 
     @assignment.save!
     render_assignment_success_json('created')
@@ -160,7 +161,7 @@ class AssignmentsController < ApplicationController
   private
 
     def assignment_params
-      params.require(:assignment).permit(:name, :enunciation, :type_assignment, schedule_attributes: [:id, :start_date, :end_date], enunciation_files_attributes: [:id, :attachment, :_destroy])
+      params.require(:assignment).permit(:name, :enunciation, :type_assignment, :start_hour, :end_hour, schedule_attributes: [:id, :start_date, :end_date], enunciation_files_attributes: [:id, :attachment, :_destroy])
     end
 
     def render_assignment_success_json(method)
