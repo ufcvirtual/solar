@@ -311,10 +311,6 @@ pt_BR:
         item_image: Imagem
         item_audio: Áudio
         comment: Comentário
-      question_images:
-        image: Imagem
-        legend: Legenda
-        img_alt: Alt
       question_audios:
         audio: Audios  
       question_item:
@@ -326,6 +322,14 @@ pt_BR:
         image: Imagem
         legend: Legenda
         img_alt: Alt
+        image_content_type: Tipo do arquivo
+        image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."  
+      question_images:
+          image: Imagem
+          legend: Legenda
+          img_alt: Alt
+          image_content_type: Tipo do arquivo
+          image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."   
       exam_user:
         grade: Nota
       exam_question:
@@ -333,6 +337,11 @@ pt_BR:
       question:
         name: 'Título'
         enunciation: Enunciado
+        question: Uma Questão 
+        question_images:
+          img_alt: Alt
+          image_content_type: Tipo do arquivo
+          image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB." 
       question_labels:
         name: 'Palavras-Chave'
       assignment:
@@ -527,6 +536,7 @@ pt_BR:
           attributes:
             attachment_content_type:
               invalid_type: inválido
+       
 
   ########### GERAL ###############
 
@@ -3388,7 +3398,14 @@ pt_BR:
       grade: 'Nota: '
     warning:
       title: '<b>Importante: </b>Não é possível criar, importar ou remover questões em provas publicadas'
-
+  question:  
+    question: 'Questão '  
+    question_images:
+      image: Imagem
+      legend: Legenda
+      img_alt: 'Alt '
+      image_content_type: 'Tipo do arquivo '
+      image_file_size: "Arquivo muito grande, " 
   questions:
     index:
       title: Banco de questões (%{count} encontradas)

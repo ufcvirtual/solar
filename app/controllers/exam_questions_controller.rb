@@ -54,7 +54,11 @@ class ExamQuestionsController < ApplicationController
     if @exam_question.update_attributes exam_question_params
       render partial: 'question', locals: { question: @exam_question.question, exam_question: @exam_question, exam: @exam_question.exam, hide_columns: false, can_see_preview: true }
     else
-      render json: { success: false, alert: @exam_question.errors.full_messages.join(', ') }, status: :unprocessable_entity
+     @errors = []
+      @exam_question.errors.each do |attribute, erro|
+        @errors << t(attribute) + erro
+      end  
+      render json: { success: false, alert: @errors.join(', ')}, status: :unprocessable_entity
     end
 
   rescue CanCan::AccessDenied

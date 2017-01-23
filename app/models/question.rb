@@ -178,12 +178,12 @@ class Question < ActiveRecord::Base
   end
 
   def verify_labels
-    errors.add(:base, I18n.t('questions.error.max_labels')) if question_labels.size > 8
+    errors.add(:question, I18n.t('questions.error.max_labels')) if question_labels.size > 8
   end
 
   def verify_files
     total = question_images.size + question_audios.size
-    errors.add(:base, I18n.t('questions.error.max_files')) if total  > 4
+    errors.add(:question, I18n.t('questions.error.max_files')) if total  > 4
   end
 
   def can_destroy?
@@ -238,7 +238,7 @@ class Question < ActiveRecord::Base
 
   def validate_images
     total = question_images.size + question_audios.size
-    errors.add(:base, I18n.t('questions.error.max_files')) if question_images.any? && total > 4
+    errors.add(:question, I18n.t('questions.error.max_files')) if question_images.any? && total > 4
   end
 
   def can_import_or_export?(current_user, exam = nil)

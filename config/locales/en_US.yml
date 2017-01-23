@@ -264,6 +264,7 @@ en_US:
       question:
         name: Title
         enunciation: Enunciation
+        question: One Question
       question_labels:
         name: Labels
       question_items:
@@ -477,6 +478,7 @@ en_US:
           attributes:
             attachment_content_type:
               invalid_type: invalid
+        
   all: "All"
   of: "Of"
   required_fields: "* required field(s)"
@@ -3157,7 +3159,14 @@ en_US:
       grade: 'Grade: '
     warning:
       title: "<b>Important: </b>You can't create, import or remove questions while exam's published"
-
+  question:  
+    question: 'Question '  
+    question_images:
+      image: Image
+      legend: Enunciation
+      img_alt: 'Alt '
+      image_content_type: 'Type of file '
+      image_file_size: "File size " 
   questions:
     index:
       title: Questions bank (%{count} found)
