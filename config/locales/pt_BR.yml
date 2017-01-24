@@ -312,7 +312,7 @@ pt_BR:
         item_audio: Áudio
         comment: Comentário
       question_audios:
-        audio: Audios  
+        audio: Áudios  
       question_item:
         img_alt: Alt
         item_image: Imagem
@@ -1354,7 +1354,7 @@ pt_BR:
       unavailable: "Indisponível"
       removed_record: Gravação removida ou vazia
       moderator: Moderador
-      recorded: Gravação ativada
+      recorded: Iniciar com gravação
       y: Sim
       n: Não
       shared_between_groups: Compartilhado entre turmas
@@ -1375,7 +1375,7 @@ pt_BR:
       record_not_deleted: 'Não foi possível remover gravação das webconferências'
       limit: 'Foi atingido o limite de participantes para este dia e horário. Favor escolher outro horário ou diminuir a quantidade de turmas se o caso.'
       time_and_place: Já existe uma webconferência para este dia/horário e turmas.
-      date: Esta webconferência já foi encerrada e possui gravação. Seu período não pode ser alterado.
+      date: Esta webconferência já foi encerrada. Seu período não pode ser alterado.
       access: Não é possível acessar esta webconferência. Verifique sua duração.
       no_record: Esta webconferência não possui gravações
       offline: Webconferência indisponível
@@ -1383,6 +1383,9 @@ pt_BR:
       general_message: Não foi possível realizar a ação desejada
       on_going: A webconferência ainda não finalizou. Favor aguardar.
       date_range: O período do trabalho já foi encerrado.
+      shared: Esta webconferência já foi encerrada. Este campo não pode ser alterado.
+      removed_record: Gravação removida ou vazia
+      copy: Não é possível remover a gravação desta webconferência, pois ela é uma cópia. É necessário remover a gravação da webconferência original.
     preview:
       delete_record: Remover gravação
       placeholder: Digite qualquer valor a ser buscado na tabela desta página
@@ -3522,7 +3525,8 @@ pt_BR:
       max_labels: Máximo de 8 palavras-chave
       choose_at_least_one: "Selecione, ao menos, uma questão"
       choose_one: Selecione uma questão
-      wrong_type: tipo de arquivo não permitido (apenas imagens jpeg/png/gif)
+      wrong_type: "tipo de arquivo não permitido (apenas imagens jpeg/png/gif)"
+      wrong_type_audio: "tipo de arquivo não permitido (apenas áudios mpeg/mp3/mpg)"
     success:
       deleted: Questões removidas com sucesso
       change_status: Situação alterada com sucesso
@@ -3972,3 +3976,7 @@ pt_BR:
       home: Visualizar PDF sobre a Home
     new_language_pt: " (Não foi possível encontrar o tutorial desejado em Português, veja nossa versão em Português)"
     new_language_en: " (Não foi possível encontrar o tutorial desejado em Português, veja nossa versão em Inglês)"
+
+  speech2text:
+    start: Iniciar transcrição automática de fala para texto
+    stop: Interromper transcrição automática de fala para texto

@@ -1175,7 +1175,7 @@ en_US:
       unavailable: "Unavailable"
       removed_record: Removed or empty record
       moderator: Moderator
-      recorded: Activated record
+      recorded: Start with record
       y: 'Yes'
       n: 'No'
       shared_between_groups: Shared between groups
@@ -1196,7 +1196,7 @@ en_US:
       record_not_deleted: "Can't remove record from webconferences"
       limit: "Student's limit for this day and time has been reached. Please choose other date/time or decrease amount of groups if necessary" 
       time_and_place: Already exists a webconference for this datetime and groups
-      date: This webconference already happened and was recorded. It's not possible to change it's period.
+      date: This webconference already happened. It's not possible to change it's period.
       access: Can't access this webconference. Verify it's period.
       no_record: This webconference has no recordings
       offline: Unavailable webconference
@@ -1204,6 +1204,9 @@ en_US:
       general_message: It was not possible to execute this action. 
       on_going: This webconference hasn't finished yet. Please wait.
       date_range: Assignment's date range already expired.
+      shared: This webconference already happened. It's not possible to change this field.
+      removed_record: Removed or empty record
+      copy: It's not possible to remove this webconference record. This webconferenceis a copy. It's necessary to remove original webconference's record.
     preview:
       delete_record: Remove record
       placeholder: Type any value to be searched at the table of this page
@@ -3284,6 +3287,7 @@ en_US:
       choose_at_least_one: Choose at least one question
       choose_one: Choose one question
       wrong_type: file type is not allowed (only jpeg/png/gif images)
+      wrong_type_audio: "fyle type is not allowed (only audio mpeg/mp3/mpg)"
     success:
       deleted: Questions removed successfully
       change_status: Status updated successfully
@@ -3735,3 +3739,7 @@ en_US:
       home: Vew Home PDF
     new_language_pt: " (It was not possible to find this tutorial in English, see our Portuguese version)"
     new_language_en: " (It was not possible to find this tutorial in English, see our English version)"
+
+  speech2text:
+    start: Start automatic transcription from speech to text
+    stop: Stop automatic transcription from speech to text

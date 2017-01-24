@@ -48,7 +48,9 @@ class AssignmentWebconference < ActiveRecord::Base
       moderatorPW: Digest::MD5.hexdigest(title+meeting_id),
       attendeePW: Digest::MD5.hexdigest(meeting_id),
       welcome: academic_allocation_user.assignment.enunciation,
-      record: is_recorded,
+      record: true,
+      autoStartRecording: is_recorded,
+      allowStartStopRecording: true,
       logoutURL: Rails.application.routes.url_helpers.home_url.to_s,
       maxParticipants: academic_allocation_user.users_count + 1 # students + 1 responsible
     }
@@ -67,7 +69,7 @@ class AssignmentWebconference < ActiveRecord::Base
   end
 
   def get_mettingID(at_id = nil)
-    (origin_meeting_id || ['aw', id.to_s].join('_'))
+    (origin_meeting_id || ['aw', id.to_s].join('_')).to_s
   end
 
   def get_bbb_url(user)
@@ -97,7 +99,7 @@ class AssignmentWebconference < ActiveRecord::Base
 
   def set_origin(from_id)
     obj = self.class.find(from_id)
-    self.origin_meeting_id = (obj.origin_meeting_id || obj.get_mettingID) if is_recorded? && (on_going? || over?)
+    self.origin_meeting_id = (obj.origin_meeting_id || obj.get_mettingID) if (on_going? || over?)
   end
 
   private
@@ -105,7 +107,11 @@ class AssignmentWebconference < ActiveRecord::Base
     def update_acu
       unless academic_allocation_user_id.blank?
         if (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?)
-          academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty] if academic_allocation_user.assignment_files.empty? && academic_allocation_user.assignment_webconferences.empty?
+          if academic_allocation_user.assignment_files.empty? && academic_allocation_user.assignment_webconferences.where(final: true).empty?
+            academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty] 
+          else
+            academic_allocation_user.status = AcademicAllocationUser::STATUS[:sent] 
+          end
         else
           academic_allocation_user.new_after_evaluation = true
         end

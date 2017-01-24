@@ -30,9 +30,6 @@ module V1::GroupsH
   def get_group_students_info(allocation_tag_id, group)
     related_ats_ids    = group.allocation_tag.related.join(',')
     msg_outbox_query   = Message.get_query('users.id', 'outbox', [allocation_tag_id], { ignore_trash: false, ignore_user: true })
-    online = Webconference.first.bbb_online?
-    Rails.logger.info "[API] [WARNING] [Webconference data access] [unavailable]" unless online
-    recorded_meetings  = online ? Webconference.first.bbb_all_recordings.map{|a| a[:meetingID]}.uniq : [] rescue []
     @students          = User.find_by_sql <<-SQL
       SELECT users.cpf, users.name, users.gender, users.birthdate, users.address, users.address_number, users.address_complement, users.address_neighborhood, users.zipcode, users.city, users.state,
              COUNT(DISTINCT public_files.id)            AS count_public_files,
@@ -123,12 +120,7 @@ module V1::GroupsH
             SELECT id
             FROM assignment_webconferences
             WHERE academic_allocation_user_id = academic_allocation_users.id
-            AND (initial_time + (interval '1 minutes')*duration)::date <= schedules.end_date 
-            AND (
-              (position(COALESCE(origin_meeting_id, ('aw_' || assignment_webconferences.id || ',')) in '#{recorded_meetings.join(',')}') > 0)
-              OR
-              (position(COALESCE(origin_meeting_id, ('aw_' || assignment_webconferences.id)) in '#{recorded_meetings.join(',')}') = (octet_length('#{recorded_meetings.join(',')}') - octet_length(COALESCE(origin_meeting_id, ('aw_' || assignment_webconferences.id)))))
-            )
+            AND assignment_webconferences.final = 't'
           )
           OR EXISTS (
             SELECT id 
@@ -148,9 +140,6 @@ module V1::GroupsH
   end
 
   def get_group_info(group)
-    online = Webconference.first.bbb_online?
-    Rails.logger.info "[API] [WARNING] [Webconference data access] [unavailable]" unless online
-    recorded_meetings  = online ? Webconference.first.bbb_all_recordings.map{|a| a[:meetingID]}.uniq : [] rescue []
     related_ats        = group.allocation_tag.related.join(',')
     @group             = Group.find_by_sql <<-SQL
       SELECT groups.id,
@@ -267,12 +256,7 @@ module V1::GroupsH
             SELECT id
             FROM assignment_webconferences
             WHERE academic_allocation_user_id = academic_allocation_users.id
-            AND (initial_time + (interval '1 minutes')*duration)::date <= schedules.end_date 
-            AND (
-              (position(COALESCE(origin_meeting_id, ('aw_' || assignment_webconferences.id || ',')) in '#{recorded_meetings.join(',')}') > 0)
-              OR
-              (position(COALESCE(origin_meeting_id, ('aw_' || assignment_webconferences.id)) in '#{recorded_meetings.join(',')}') = (octet_length('#{recorded_meetings.join(',')}') - octet_length(COALESCE(origin_meeting_id, ('aw_' || assignment_webconferences.id)))))
-            )
+            AND assignment_webconferences.final = 't'
           )
           OR EXISTS (
             SELECT id 
@@ -287,9 +271,6 @@ module V1::GroupsH
   def get_group_responsible_info(user_id, allocation_tag_id, group)
     related_ats_ids    = group.allocation_tag.related.join(',')
     msg_outbox_query   = Message.get_query('users.id', 'outbox', [allocation_tag_id], { ignore_trash: false, ignore_user: true })
-    online = Webconference.first.bbb_online?
-    Rails.logger.info "[API] [WARNING] [Webconference data access] [unavailable]" unless online
-    recorded_meetings  = online ? Webconference.first.bbb_all_recordings.map{|a| a[:meetingID]}.uniq : [] rescue []
     @user              = User.find_by_sql <<-SQL
       SELECT COUNT(DISTINCT public_files.id)            AS count_public_files,
              COALESCE(all_sent_messages.count,0)        AS all_sent_msgs,

@@ -1,4 +1,7 @@
 class Webconference < ActiveRecord::Base
+  
+  before_destroy :can_destroy?, :remove_records
+
   include Bbb
   include AcademicTool
   include EvaluativeTool
@@ -7,7 +10,6 @@ class Webconference < ActiveRecord::Base
 
   belongs_to :moderator, class_name: 'User', foreign_key: :user_id
 
-  before_destroy :can_destroy?, :remove_records
 
   has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :allocation_tags, through: :academic_allocations
@@ -18,7 +20,8 @@ class Webconference < ActiveRecord::Base
   validates :title, :description, length: { maximum: 255 }
   validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
 
-  validate :cant_change_date, only: :update, if: 'initial_time_changed? || duration_changed?'
+  validate :cant_change_date, on: :update, if: 'initial_time_changed? || duration_changed?'
+  validate :cant_change_shared, on: :update, if: 'shared_between_groups_changed?'
 
   validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed?)', on: :update
 
@@ -34,8 +37,7 @@ class Webconference < ActiveRecord::Base
       WHEN (acu.status = 1 OR (acu.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.count > 0))) THEN 'sent'
       when NOW()>webconferences.initial_time AND NOW()<(webconferences.initial_time + webconferences.duration* interval '1 min') then 'in_progress'
       when NOW() < webconferences.initial_time then 'scheduled'
-      when webconferences.is_recorded AND (NOW()>webconferences.initial_time + webconferences.duration* interval '1 min' + interval '10 mins') then'record_available' 
-      when webconferences.is_recorded AND (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '10 mins') then 'processing' 
+      when (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '15 mins') then 'processing' 
       else 'finish'
     END AS situation"
 
@@ -110,7 +112,9 @@ class Webconference < ActiveRecord::Base
       attendeePW: Digest::MD5.hexdigest(meeting_id),
       welcome: description,
       duration: duration,
-      record: is_recorded,
+      record: true,
+      autoStartRecording: is_recorded,
+      allowStartStopRecording: true,
       logoutURL: Rails.application.routes.url_helpers.home_url.to_s,
       maxParticipants: YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users']
     }
@@ -136,7 +140,7 @@ class Webconference < ActiveRecord::Base
   end
 
   def get_mettingID(at_id = nil)
-    (origin_meeting_id || ((shared_between_groups || at_id.nil?) ? id.to_s : [at_id.to_s, id.to_s].join('_')))
+    (origin_meeting_id || ((shared_between_groups || at_id.nil?) ? id.to_s : [at_id.to_s, id.to_s].join('_'))).to_s
   end
 
   def self.remove_record(academic_allocations)
@@ -144,20 +148,31 @@ class Webconference < ActiveRecord::Base
 
     academic_allocations.each do |academic_allocation|
       webconference = Webconference.find(academic_allocation.academic_tool_id)
-      meeting_id    = webconference.get_mettingID(academic_allocation.allocation_tag_id)
-      response      = api.get_recordings()
-      response[:recordings].each do |m|
-        api.delete_recordings(m[:recordID]) if m[:meetingID] == meeting_id
+      if webconference.origin_meeting_id.blank?
+        meeting_id    = webconference.get_mettingID(academic_allocation.allocation_tag_id)
+        response      = api.get_recordings()
+        response[:recordings].each do |m|
+          api.delete_recordings(m[:recordID]) if m[:meetingID] == meeting_id
+        end
       end
     end
   end
 
   def remove_records
-    Webconference.remove_record(academic_allocations)
+    Webconference.remove_record(academic_allocations) if origin_meeting_id.blank?
   end
 
   def can_add_group?(ats = [])
-    verify_quantity(ats) if ats.any?
+    if shared_between_groups
+      verify_quantity(ats) if ats.any?
+    else
+      if ats.any?
+        !over? && verify_quantity(ats) 
+      else 
+        !over?
+      end
+    end
+
     return true
   rescue 
     return false
@@ -171,7 +186,7 @@ class Webconference < ActiveRecord::Base
   def create_copy(to_at, from_at)
     unless (shared_between_groups && allocation_tags.map(&:id).include?(to_at))
       meeting_id = get_mettingID(from_at)
-      if is_recorded? && (on_going? || over?)
+      if (on_going? || over?)
         objs = Webconference.joins(:academic_allocations).where(attributes.except('id', 'origin_meeting_id', 'created_at', 'updated_at')).where(academic_allocations: { allocation_tag_id: to_at })
         obj = (objs.collect{|obj| obj if obj.get_mettingID(to_at) == meeting_id}).compact.first
         obj = Webconference.create attributes.except('id').merge!(origin_meeting_id: meeting_id) if obj.nil?
@@ -225,5 +240,9 @@ class Webconference < ActiveRecord::Base
 
   def self.verify_previous(acu_id)
     LogAction.where(academic_allocation_user_id: acu_id).any?
+  end
+
+  def cant_change_shared
+    errors.add(:shared_between_groups, I18n.t("webconferences.error.shared")) if (Time.now >= initial_time)
   end
 end

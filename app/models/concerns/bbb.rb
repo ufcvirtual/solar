@@ -41,7 +41,7 @@ module Bbb
   end
 
   def cant_change_date
-    errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.date")) if is_recorded_was && (Time.now > (initial_time_was+duration_was.minutes))
+    errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.date")) if (Time.now > (initial_time_was+duration_was.minutes))
   end
 
   def verify_time(allocation_tags_ids = [])
@@ -114,8 +114,7 @@ module Bbb
     case
     when on_going? then I18n.t('webconferences.list.in_progress')
     when (Time.now < initial_time) then I18n.t('webconferences.list.scheduled')
-    when is_recorded?
-      is_over? ? I18n.t('webconferences.list.record_available') : I18n.t('webconferences.list.processing')
+    when !is_over? then I18n.t('webconferences.list.processing')
     else
       I18n.t('webconferences.list.finish')
     end
@@ -136,6 +135,7 @@ module Bbb
 
   def remove_record(recordId, at=nil)
     raise 'error' if !at.nil? && at.class == Array
+    raise 'copy' unless self.class.to_s != 'Webconference' || origin_meeting_id.blank?
     ids = recordings([], at).collect{|a| a[:recordID]}
     raise CanCan::AccessDenied unless ids.include?(recordId)
     api = Bbb.bbb_prepare
@@ -157,7 +157,7 @@ module Bbb
   end
 
   def is_over?
-    Time.now > (initial_time+duration.minutes+10.minutes)
+    Time.now > (initial_time+duration.minutes+15.minutes)
   end
 
   def over?
@@ -167,16 +167,16 @@ module Bbb
   def can_destroy?
     raise raise CanCan::AccessDenied if respond_to?(:is_onwer?) && !is_onwer?
     raise 'date_range'               if respond_to?(:in_time?)  && !in_time?
-    raise 'unavailable'              if is_recorded? && !bbb_online?
-    raise 'not_ended'                if on_going? || (is_recorded? && started? && !is_over?)
+    raise 'unavailable'              unless bbb_online?
+    raise 'not_ended'                unless is_over?
   end
 
   def can_remove_records?
     raise raise CanCan::AccessDenied if respond_to?(:is_onwer?) && !is_onwer?
     raise 'date_range'               if respond_to?(:in_time?)  && !in_time?
-    raise 'not_recorded'             unless is_recorded?
     raise 'unavailable'              unless bbb_online?
-    raise 'not_ended'                if on_going? || (is_recorded? && started? && !is_over?)
+    raise 'not_ended'                unless is_over?
+    raise 'copy'                     unless self.class.to_s != 'Webconference' || origin_meeting_id.blank?
   end
 
   def meeting_info(user_id, at_id = nil, meetings = nil)

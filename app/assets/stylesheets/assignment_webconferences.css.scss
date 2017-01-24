@@ -1,4 +1,6 @@
 .student_webconferences{
+
+  padding-top: 10px;
   
   .right_buttons{
     .btn{
@@ -8,7 +10,22 @@
 
   .tb_list{
     th.aw_status{
-      width: 5px;
+      width: 20%;
+      text-align: center;
+    }
+
+    th.aw_record{
+      width: 13%;
+      text-align: center;
+    }
+
+    th.aw_final{
+      width: 16%;
+      text-align: center;
+    }
+
+    th.options{
+      width: 5%;
     }
 
     tbody{
@@ -35,4 +52,11 @@
     }
   }
 
+}
+
+.simple_form.awebconference_form{
+  min-width: 500px;
+  .input.assignment_webconference_title, .input.assignment_webconference_duration{
+    display: inline-block;
+  }
 }

@@ -27,7 +27,7 @@
 }
 
 .date_column {
-  width: 70px;
+  width: 20%;
 }
 
 .assignment_files_info, .assignment_comment_date {
@@ -110,7 +110,7 @@
   color: #CC0033;
 }
 
-.assignment_sent, .assignment_sent a, .assignment_corrected a, .assignment_finished, .assignment_finish, .assignment_record_available, .assignment_processing,
+.assignment_sent, .assignment_sent a, .assignment_corrected a, .assignment_finished, .assignment_finish, .assignment_processing,
 td.assignment_as a {
   color: #2900c2;
 }
@@ -128,7 +128,7 @@ td.assignment_as a {
 }
 
 .assignment_to_be_sent, .assignment_to_be_sent a, .assignment_started,
-.assignment_pending, .assignment_to_answer, .assignment_not_finished, .assignment_opened,
+.assignment_pending, .assignment_to_answer, .assignment_not_finished, .assignment_opened, .assignment_in_progress,
 td.assignment_an a {
   color: #003e7a;
 }
@@ -189,20 +189,8 @@ td.assignment_without_group a
   background-color: $color_main_light;
 }
 
-.student_files, .student_webconferences{
-  width: 47%;
-}
-
 .assignment_files.files td, .student_files.files td, .student_webconferences.files td{
   color: $text_grey;
-}
-
-.student_files{
-  float:left;
-}
-
-.student_webconferences{
-  float:right;
 }
 
 .upload_files{

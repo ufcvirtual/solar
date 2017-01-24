@@ -241,7 +241,22 @@ module EvaluativeTool
     when 'Exam'
       !(status && on_going?)
     when 'Webconference'
-      !(is_over? && is_recorded)
+      records = 0
+      if shared_between_groups?
+        records = recordings.size
+      elsif groups.blank?
+        allocation_tags.each do |at|
+          records += recordings([], at.id).size
+          return false if records > 0
+        end
+      else
+        groups.each do |group|
+          records += recordings([], group.allocation_tag.id).size
+          return false if records > 0
+        end
+      end
+
+      !started? || (is_over? && records == 0)
     else
       true
     end

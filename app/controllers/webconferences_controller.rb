@@ -138,6 +138,9 @@ class WebconferencesController < ApplicationController
 
     webconferences.map(&:can_remove_records?)
 
+    copies = webconferences.map(&:origin_meeting_id).reject{ |w| w.to_s.blank? }
+    raise 'copy' if copies.any?
+
     if params.include?(:recordID)
       webconferences.first.remove_record(params[:recordID], params[:at])
       save_log
@@ -220,7 +223,6 @@ class WebconferencesController < ApplicationController
       @can_remove_record = (can? :manage_record, Webconference, { on: @webconference.academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }) || current_user.id == @webconference.user_id
 
       raise 'offline'          unless bbb_online?
-      raise 'no_record'        unless @webconference.is_recorded? && @webconference.over?
       raise 'still_processing' unless @webconference.is_over?
 
       @recordings = @webconference.recordings([], (@at_id.class == Array ? nil : @at_id))

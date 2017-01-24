@@ -299,8 +299,7 @@ class AcademicAllocationUser < ActiveRecord::Base
         SELECT MAX(max_date) FROM (
           SELECT MAX(initial_time) AS max_date FROM assignment_webconferences 
           WHERE academic_allocation_user_id = #{id}
-          AND is_recorded = 't'
-          AND (initial_time + (interval '1 minutes')*duration) < now()
+          AND final = 't'
 
           UNION
 

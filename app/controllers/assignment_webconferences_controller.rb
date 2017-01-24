@@ -7,7 +7,7 @@ class AssignmentWebconferencesController < ApplicationController
   before_filter :set_current_user, except: [:edit, :show]
   before_filter :get_ac, only: :new
 
-  before_filter only: [:edit, :update, :destroy, :remove_record, :show] do |controller|
+  before_filter only: [:edit, :update, :destroy, :remove_record, :show, :change_status] do |controller|
     @assignment_webconference = AssignmentWebconference.find(params[:id])
   end
 
@@ -101,7 +101,6 @@ class AssignmentWebconferencesController < ApplicationController
     raise CanCan::AccessDenied if current_user.is_researcher?(AllocationTag.find(at_id).related)
 
     raise 'offline'          unless bbb_online?
-    raise 'no_record'        unless @assignment_webconference.is_recorded? && @assignment_webconference.over?
     raise 'still_processing' unless @assignment_webconference.is_over?
 
     begin
@@ -115,9 +114,28 @@ class AssignmentWebconferencesController < ApplicationController
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
   rescue URI::InvalidURIError
-    render json: { success: false, alert: t('webconferences.list.removed_record') }, status: :unprocessable_entity
+    render_json_error('removed_record', 'webconferences.list')
   rescue => error
     render_json_error(error, 'webconferences.error')
+  end
+
+  def change_status
+    verify_owner!(@assignment_webconference)
+    raise 'date_range' unless @assignment_webconference.in_time?
+    raise 'on_going' if @assignment_webconference.on_going?
+    @assignment_webconference.update_attributes final: !@assignment_webconference.final
+
+    respond_to do |format|
+      format.json { render json: {success: true} }
+      format.js
+    end
+  rescue => error
+    error_message = error == CanCan::AccessDenied ? t(:no_permission) : (I18n.translate!("webconferences.error.#{error}", raise: true) rescue t("webconferences.error.general_message"))
+    Rails.logger.info "[ERROR] [APP] [#{Time.now}] [#{error}] [#{(message.nil? ? error_message : error.message)}]"
+    respond_to do |format|
+      format.json { render json: { success: false, msg: error_message }, status: :unprocessable_entity }
+      format.js { render js: "flash_message('#{error_message}', 'alert');" }
+    end
   end
 
   private
