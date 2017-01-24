@@ -76,7 +76,7 @@ class Score # < ActiveRecord::Base
         #{evaluated_status}
         WHEN assignments.id IS NOT NULL AND assignments.type_assignment = #{Assignment_Type_Group} AND gp.id IS NULL THEN 'without_group'
         WHEN schedules.start_date  > current_date THEN 'not_started'
-        WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Assignment' AND (af.id IS NOT NULL OR (aw.id IS NOT NULL AND (is_recorded AND (initial_time + (interval '1 minutes')*duration) < now())))))) THEN 'sent'
+        WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Assignment' AND (af.id IS NOT NULL OR (aw.id IS NOT NULL AND aw.final = 't' ))))) THEN 'sent'
         WHEN schedules.end_date >= current_date THEN 'to_send'
         ELSE 
           'not_sent'
@@ -603,8 +603,7 @@ class Score # < ActiveRecord::Base
               WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
               when NOW()>webconferences.initial_time AND NOW()<(webconferences.initial_time + webconferences.duration* interval '1 min') then 'in_progress'
               when NOW() < webconferences.initial_time then 'scheduled'
-              when webconferences.is_recorded AND (NOW()>webconferences.initial_time + webconferences.duration* interval '1 min' + interval '10 mins') then'record_available' 
-              when webconferences.is_recorded AND (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '10 mins') then 'processing'
+              when (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '15 mins') then 'processing'
             ELSE 'finish' 
             END AS situation,
             academic_allocations.evaluative,
