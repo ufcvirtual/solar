@@ -170,6 +170,7 @@ class ScoresController < ApplicationController
       @webconferences_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'webconferences')
     when 'exam'
       @can_see_access = can? :evaluate, Exam, { on: @allocation_tag_id }
+      @can_open = can? :open, Exam, {on: @allocation_tag_id}
 
       @exams_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'exams', true)
       @exams_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'exams', false, true)
@@ -310,7 +311,7 @@ class ScoresController < ApplicationController
     tool_id = AcademicAllocation.find(params[:ac_id]).academic_tool_id
 
     unless ['started', 'opened', 'retake', 'to_answer', 'to_send', 'not_finished', 'sent', 'evaluated', 'to_be_sent', 'without_group'].include?(params[:situation])
-      if params[:situation] == 'not_started' && params[:tool_type] == 'Exam'
+      if ((params[:situation] == 'not_started' or params[:situation] == 'corrected') && params[:tool_type] == 'Exam')
         authorize! :show, Question, { on: active_tab[:url][:allocation_tag_id] }
         render json: { url: preview_exam_path(tool_id, allocation_tags_ids: active_tab[:url][:allocation_tag_id]) }
       else

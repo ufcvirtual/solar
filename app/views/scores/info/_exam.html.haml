@@ -27,7 +27,11 @@
                 %tr.lines
                   %td{align: "left"}
                     - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
-                      .title= exam.name
+                      - if is_user
+                        .title= exam.name
+                      - elsif !@can_open 
+                        = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
+                        %br
                       - if exam.closed == 't' || exam.situation == 'corrected'
                         = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content', class: 'exam-result'
                         - if is_user && exam.situation == 'corrected'
@@ -36,7 +40,8 @@
                     - elsif is_user
                       = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', id: 'open-exam'
                     - else
-                      .title= exam.name
+                      = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam' 
+                      
                     .description
                       .minimun= sanitize(truncate exam.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :'data-tooltip' => t('.expand_description'))}")
                       .complete.invisible
@@ -88,7 +93,11 @@
                 %tr.lines
                   %td{align: "left"}
                     - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
-                      .title= exam.name
+                      - if is_user
+                        .title= exam.name
+                      - elsif !@can_open 
+                        = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
+                        %br
                       - if exam.closed == 't' || exam.situation == 'corrected'
                         = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content', class: 'exam-result'
                         - if is_user && exam.situation == 'corrected'
@@ -97,7 +106,7 @@
                     - elsif is_user
                       = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', id: 'open-exam'
                     - else
-                      .title= exam.name
+                      = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
                     .description
                       .minimun= sanitize(truncate exam.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                       .complete.invisible
@@ -149,16 +158,21 @@
                 %tr.lines
                   %td{align: "left"}
                     - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
-                      .title= exam.name
+                      - if is_user
+                        .title= exam.name
+                      - elsif !@can_open 
+                        = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
+                        %br
                       - if exam.closed == 't' || exam.situation == 'corrected'
                         = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content', class: 'exam-result'
                         - if is_user && exam.situation == 'corrected'
                           |
                           = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), class: 'open_exam', id: 'open-result'
+                            
                     - elsif is_user
                       = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', id: 'open-exam'
                     - else
-                      .title= exam.name
+                      = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
                     .description
                       .minimun= raw(truncate exam.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                       .complete.invisible
@@ -198,9 +212,10 @@
 :javascript
 
   $(function(){
+
     $(".tab_exam").tabs();
 
-    $(".link_pre_exam, .open_exam").call_fancybox({
+    $(".link_pre_exam, .open_exam, .link_preview_exam").call_fancybox({
       minWidth: '50%',
       minheigth: '50%',
       closeBtn : true,

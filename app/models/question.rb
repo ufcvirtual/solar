@@ -78,6 +78,12 @@ class Question < ActiveRecord::Base
         question_labels << label
       end
     end
+    if question_to_copy.question_audios.any?
+      question_to_copy.question_audios.each do |file|
+        new_file = QuestionAudio.create! file.attributes.merge({ question_id: id })
+        copy_file(file, new_file, File.join('questions', 'audios'), 'audio')
+      end
+    end
   end
 
   def self.copy(question_to_copy, user_id = nil)

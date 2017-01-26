@@ -10,6 +10,7 @@
 
       #evaluative    
         - unless @tool_evaluative.empty?
+          - is_user = (@user.id == current_user.id)
           %table.tb_list
             %thead
               %tr.lines
@@ -30,7 +31,13 @@
                     - if tool.opened == 't' && tool.academic_tool_type != 'ScheduleEvent' && tool.situation != 'finished'
                       = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
                     - else
-                      .title= tool.name
+                      - if tool.academic_tool_type == 'Exam'
+                        - if is_user
+                          .title= tool.name
+                        - elsif !@can_open 
+                          = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
+                      - else 
+                        .title= tool.name
                     .equivalent
                       - unless tool.eq_name.blank?
                         %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{tool.id}" }
@@ -77,6 +84,7 @@
 
       #frequency
         - unless  @tool_frequency.empty?
+          - is_user = (@user.id == current_user.id)
           %table.tb_list
             %thead
               %tr.lines
@@ -97,7 +105,14 @@
                     - if tool.opened == 't' && tool.academic_tool_type != 'ScheduleEvent'
                       = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
                     - else
-                      .title= tool.name
+                      - if tool.academic_tool_type == 'Exam'
+                        - if is_user
+                          .title= tool.name
+                        - elsif !@can_open 
+                          = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
+                      - else 
+                        .title= tool.name
+                      
                     .equivalent
                       - unless tool.eq_name.blank?
                         %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{tool.id}" }
@@ -144,6 +159,7 @@
 
       #notevaluative
         - unless @tool_not_evaluative.empty?
+          - is_user = (@user.id == current_user.id)
           %table.tb_list
             %thead
               %tr.lines
@@ -162,7 +178,13 @@
                     - if tool.opened == 't' && tool.academic_tool_type != 'ScheduleEvent'
                       = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
                     - else
-                      .title= tool.name
+                      - if tool.academic_tool_type == 'Exam'
+                        - if is_user
+                          .title= tool.name
+                        - elsif !@can_open 
+                          = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
+                      - else 
+                        .title= tool.name
                     .equivalent
                       - unless tool.eq_name.blank?
                         %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{tool.id}" }
