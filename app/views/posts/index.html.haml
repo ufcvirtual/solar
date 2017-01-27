@@ -33,6 +33,7 @@
             = hidden_field_tag(:display_mode, @display_mode)
             = hidden_field_tag(:current_page, @current_page)
             = form.text_area :content
+            = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'discussion_post_content', number: ''}
             .new_post_dialog_buttons.btn-group
               = button_tag content_tag(:span, t(:cancel)), type: 'button', onclick: "cancel_posting(this)", class: 'btn btn_caution', id: 'btn_cancel_post'
               = button_tag t(:send), class: "btn btn_main", id: "submit_post", type: :button
@@ -41,7 +42,7 @@
   .forum_posts_wrapper
     - @posts = get_page_posts(@posts, @current_page) unless @display_mode == 'list'
     - @posts.each do |post|
-      = render partial: 'post', locals: { post: post, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false }
+      = render partial: 'post', locals: { post: post, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false, number: '' }
 .block_wrapper
   = link_to t(:back), :back, { class: 'btn' }
 

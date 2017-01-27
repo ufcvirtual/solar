@@ -54,6 +54,7 @@ function remove_ckeditor(){
   $('#new_post').parent().hide(300, function() {
     destroy_editor();
   });
+  stopDictationWithoutIcon();
 }
 
 function new_post(obj, parent) {

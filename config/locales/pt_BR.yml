@@ -3980,3 +3980,5 @@ pt_BR:
   speech2text:
     start: Iniciar transcrição automática de fala para texto
     stop: Interromper transcrição automática de fala para texto
+    browser: Seu navegador não dá suporte a esta ferramenta. Favor utilizar o Chrome para ter acesso a ela.
+    no_speech: A ferramenta de transcrição de fala foi interrompida, pois nenhuma fala foi recebida.

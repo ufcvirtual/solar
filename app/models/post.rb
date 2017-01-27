@@ -120,7 +120,11 @@ class Post < ActiveRecord::Base
     def update_acu
       unless academic_allocation_user_id.blank?
         if (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?)
-          academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty] if academic_allocation_user.discussion_posts.empty?
+          if academic_allocation_user.discussion_posts.empty?
+            academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty]
+          else
+            academic_allocation_user.status = AcademicAllocationUser::STATUS[:sent]
+          end
         else
           academic_allocation_user.new_after_evaluation = true
         end

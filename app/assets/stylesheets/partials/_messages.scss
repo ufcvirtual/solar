@@ -138,6 +138,15 @@
   font-size: 10pt;
 }
 
+.message_subject .message_new_textbox{
+  width: 90%;
+  display: inline-block;
+}
+
+.message_subject{
+  display: inline;
+}
+
 /* mensagem */
 .block_wrapper.messages {
 
@@ -236,6 +245,7 @@
 .message_new_text_to {
   margin-bottom: 0.5*$gutter;
   height: 30px;
+  display: inline-block;
 
   .label{
     width: 60px;
@@ -454,3 +464,4 @@
   background-color: #E8EFF6;
   text-decoration: underline;
 }
+

@@ -1,0 +1,35 @@
+.speech2text i{
+  font-size: 14pt;
+  color: #828282;
+}
+.speech2text i:hover{
+  color: #ee5f5b;
+}
+.speech2text .btn{
+  margin-top: 4px;
+}
+
+.speech2text.left{
+  float: left;
+}
+
+.speech2text.inline .btn{
+  margin-top: 0px;
+}
+
+.speech2text.middle .btn{
+  vertical-align: middle;
+}
+
+.speech2text.upper .btn{
+  margin-bottom:25px;
+}
+
+.speech2text{
+  display: inline-block;
+}
+
+.speech2text i.invisible{
+  display: none;
+}
+

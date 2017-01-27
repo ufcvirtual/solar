@@ -16,7 +16,9 @@
           .input.align-right= text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(', '), class: 'message_new_textbox', readonly: true, placeholder: t('.add_contacts')
         .message_new_text_to
           .label.align-left= t('.subject')
-          .input.align-right= f.input :subject, label: false, input_html: { class: 'message_new_textbox' }
+          .input.align-right
+            = f.input :subject, label: false, input_html: { class: 'message_new_textbox' }
+            = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline', ckeditor: false, div_id: 'message_subject', number: ''}
 
         .message_new_upload
 
@@ -46,6 +48,7 @@
     #div_new_message
       = f.input :content, label: false, as: :ckeditor
 
+    = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'message_content', number: '2'}
     .message_new_action
       = f.submit t(".send"), id: "send_message", class: "btn btn_main", alt: t(".send")
       = link_to t('.discard'), inbox_messages_path, { class: 'btn btn_caution' }

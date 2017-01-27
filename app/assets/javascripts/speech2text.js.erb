@@ -1,0 +1,192 @@
+// original code was obtained from https://developers.google.com/web/updates/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API
+// this code suffered some changes
+
+$(function(){
+  if ('webkitSpeechRecognition' in window) {
+    recognizing = false;
+    stopped = false;
+    recognition = new webkitSpeechRecognition();
+    recognition2 = new webkitSpeechRecognition();
+  }
+});
+
+function capitalize(s) {
+  return s.replace(s.substr(0,1), function(m) { return m.toUpperCase(); });
+}
+
+var two_line = /\n\n/g;
+var one_line = /\n/g;
+function linebreak(s) {
+  return s.replace(two_line, '').replace(one_line, '');
+}
+
+function change_icon(icon){
+  $(icon).toggleClass('invisible');
+  $(icon).siblings().toggleClass('invisible');
+}
+
+function startDictation(event, input, ckeditor, icon) {
+  event.preventDefault();
+
+  if ('webkitSpeechRecognition' in window) {
+
+    var final_transcript = '';
+
+    if(!!ckeditor)
+      var previous = CKEDITOR.instances[input].getData();
+    else
+      var previous = $('#'+input).val();
+
+    if (recognizing){
+      stopDictationWithoutIcon();
+      recognition.stop();
+    }else
+      change_icon(icon);
+
+    recognition.continuous = true;
+    recognition.interimResults = false;
+
+    recognition.onstart = function(event) {
+      event.preventDefault();
+      recognizing = true;
+      erase_flash_messages();
+    };
+
+    recognition.onerror = function(event) {
+      event.preventDefault();
+      console.log(event.error);
+    };
+
+    recognition.onend = function() {
+      event.preventDefault();
+      if(recognizing){
+        if(!stopped)
+          flash_message("<%=I18n.t('speech2text.no_speech')%>", 'warning');
+        $('.speech2text i.stop').each(function(){ 
+          var parent = $($(this).parent());
+          if(!parent.hasClass('invisible')){
+            parent.addClass('invisible');
+            parent.siblings().removeClass('invisible');
+          }
+        });
+      }else{
+        $('.speech2text i.stop').each(function(){ 
+          change_icon($(this).parent());
+        });
+      }
+      recognizing = false;
+      stopped = false;
+    };
+
+    recognition.onresult = function(event) {
+      event.preventDefault();
+      for (var i = event.resultIndex; i < event.results.length; ++i) {
+        partial_transcript = capitalize(event.results[i][0].transcript);
+        final_transcript += partial_transcript;
+      }
+      if(!!ckeditor)
+        CKEDITOR.instances[input].setData(previous + final_transcript);
+      else
+        $('#'+input).val(previous + final_transcript);
+    };
+
+    final_transcript = '';
+    recognition.lang = "<%=I18n.locale%>";
+
+    recognition.start();
+
+  }else{
+    flash_message("<%=I18n.t('speech2text.browser')%>", 'warning');
+  }
+}
+
+function stopDictation(icon){
+  event.preventDefault();
+  recognition.stop();
+  stopped = true;
+}
+
+function stopDictationWithoutIcon(){
+  event.preventDefault();
+  recognizing = false;
+}
+
+function startDictation2(event, input, ckeditor, icon) {
+  event.preventDefault();
+
+  if ('webkitSpeechRecognition' in window) {
+  
+    var final_transcript = '';
+
+    if(!!ckeditor)
+      var previous = CKEDITOR.instances[input].getData();
+    else
+      var previous = $('#'+input).val();
+
+    if (recognizing){
+      stopDictationWithoutIcon();
+      recognition2.stop();
+    }else
+      change_icon(icon);
+
+    recognition2.continuous = true;
+    recognition2.interimResults = false;
+
+    recognition2.onstart = function(event) {
+      event.preventDefault();
+      recognizing = true;
+      erase_flash_messages();
+    };
+
+    recognition2.onerror = function(event) {
+      event.preventDefault();
+      console.log(event.error);
+    };
+
+    recognition2.onend = function() {
+      event.preventDefault();
+      if(recognizing){
+        if(!stopped)
+          flash_message("<%=I18n.t('speech2text.no_speech')%>", 'warning');
+        $('.speech2text i.stop').each(function(){ 
+          var parent = $($(this).parent());
+          if(!parent.hasClass('invisible')){
+            parent.addClass('invisible');
+            parent.siblings().removeClass('invisible');
+          }
+        });
+      }else{
+        $('.speech2text i.stop').each(function(){ 
+          change_icon($(this).parent());
+        });
+      }
+      recognizing = false;
+      stopped = false;
+    };
+
+    recognition2.onresult = function(event) {
+      event.preventDefault();
+      for (var i = event.resultIndex; i < event.results.length; ++i) {
+        partial_transcript = capitalize(event.results[i][0].transcript);
+        final_transcript += partial_transcript;
+      }
+      if(!!ckeditor)
+        CKEDITOR.instances[input].setData(previous + final_transcript);
+      else
+        $('#'+input).val(previous + final_transcript);
+    };
+
+    final_transcript = '';
+    recognition2.lang = "<%=I18n.locale%>";
+    
+    recognition2.start();
+
+  }else
+    flash_message("<%=I18n.t('speech2text.browser')%>", 'warning');
+}
+
+function stopDictation2(icon){
+  event.preventDefault();
+  recognition2.stop();
+  stopped = true;
+}

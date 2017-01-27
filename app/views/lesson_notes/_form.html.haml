@@ -1,7 +1,11 @@
 = f.hidden_field :lesson_id, value: f.object.lesson_id
 
-.title= f.input :name, label: false
+.title
+  = f.input :name, label: false
+  = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline', ckeditor: false, div_id: 'lesson_note_name', number: ''}
 .description= f.input :description, as: :ckeditor, label: false, id: "lesson_note_description_#{f.object.try(:id)}"
+= render partial: 'extra_tools/speech2text', locals: {class_name: 'upper', ckeditor: true, div_id: 'lesson_note_description', number: '2'}
+
 .bottom
   = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), 'save_note(this)', :'data-tooltip' => t('.save')
   = link_to_function content_tag(:i, nil, class: 'icon-cross cancel_note'), 'cancel_note(this)', :'data-tooltip' => t('.cancel')

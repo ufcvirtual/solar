@@ -38,13 +38,20 @@
 
 // = require panels
 
+// = require speech2text
+
 /**
  * General
  */
 
 $(function() {
   $("#change_picture").fancybox({
-    maxWidth  : 500
+    maxWidth  : 500,
+    helpers: {
+      overlay: {
+        locked: false
+      }
+    }
   });
 
   $("body").click(function(e) {
