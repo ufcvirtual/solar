@@ -10,6 +10,7 @@ module V1
       params { requires :id, type: Integer, desc: "ID da turma" }
       get ":id/support_material_files" do
         authorize! :index, SupportMaterialFile, on: @ats, read: true
+        raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
 
         # get ":id/support_material_files", rabl: "support_material_files/list" do
         @material_files = SupportMaterialFile.list(@ats)
@@ -33,6 +34,7 @@ module V1
       params { requires :id, type: Integer, desc: "ID do material de apoio" }
       get ":id/support_material_files/:file_id/download" do
         authorize! :download, SupportMaterialFile, on: @ats, read: true
+        raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
 
         file = SupportMaterialFile.find(params[:file_id])
         send_file(file.attachment.path.to_s)

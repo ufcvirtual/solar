@@ -99,11 +99,16 @@ class AccessControlController < ApplicationController
     end
   end
 
-  def lesson
-    unless user_session[:blocking_content]
+  def lesson_media
+    guard_with_access_token_or_authenticate
+
+    unless (user_session[:blocking_content] rescue @user_session_exam)
       lessons = [lesson  = Lesson.find(params[:id])]
 
-      if user_session[:lessons].include?(params[:id])
+      if user_session.nil? && !@user_session_exam.nil?
+        ats = RelatedTaggable.related(group_id: params[:group_id])
+        raise CanCan::AccessDenied if User.current.profiles_with_access_on(:show, :lessons, ats).empty?
+      elsif user_session[:lessons].include?(params[:id])
         lessons << lesson.imported_to
         verify(lessons.flatten.map(&:allocation_tags).flatten.map(&:id).flatten.compact, Lesson, :show, true, true)
         user_session[:lessons] += lessons.flatten.map(&:id).flatten
@@ -150,6 +155,32 @@ class AccessControlController < ApplicationController
     def download_file(path)
       file_path = File.join("#{Rails.root}", 'media', path, "#{params[:file]}.#{params[:extension]}")  
       File.exist?(file_path) ? send_file(file_path, disposition: 'inline') : render(nothing: true) 
+    end
+
+    def guard_with_access_token_or_authenticate
+      if params[:access_token].present?
+        access_token = Doorkeeper::AccessToken.authenticate(params[:access_token])
+        case Oauth2::AccessTokenValidationService.validate(access_token, scopes: [])
+        when Oauth2::AccessTokenValidationService::INSUFFICIENT_SCOPE
+          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - INSUFFICIENT_SCOPE"
+          raise InsufficientScopeError.new(scopes)
+
+        when Oauth2::AccessTokenValidationService::EXPIRED
+          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - EXPIRED"
+          raise ExpiredError
+
+        when Oauth2::AccessTokenValidationService::REVOKED
+          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - REVOKED"
+          raise RevokedError
+
+        when Oauth2::AccessTokenValidationService::VALID
+          User.current = current_user = User.find(access_token.resource_owner_id) rescue nil
+          @user_session_exam = Exam.verify_blocking_content(current_user.id) || false
+        end
+      else
+        authenticate_user!
+      end
+      
     end
 
 end

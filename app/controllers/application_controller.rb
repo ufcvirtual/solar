@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  before_filter :authenticate_user!, except: [:verify_cpf, :api_download] # devise
+  before_filter :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media] # devise
   before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im
   after_filter :log_navigation
 

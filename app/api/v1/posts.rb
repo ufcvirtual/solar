@@ -8,6 +8,8 @@ module V1
       helpers do
         # return a @discussion object
         def verify_user_permission_on_discussion_and_set_obj(permission) # permission = [:index, :create, ...]
+          raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
+          
           @discussion = Discussion.find(params[:id])
           @group      = Group.find(params[:group_id])
           @profile_id = current_user.profiles_with_access_on(permission, :posts, @group.allocation_tag.related, true).first
@@ -167,6 +169,7 @@ module V1
       desc 'Files of a post.'
       params { requires :id, type: Integer, desc: 'Discussion ID.' }
       get ":id/files", rabl: "posts/files" do
+        raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
         raise ActiveRecord::RecordNotFound unless current_user.discussion_post_ids.include?(params[:id]) # user is owner
         @files = Post.find(params[:id]).files
       end
@@ -176,6 +179,7 @@ module V1
       desc 'Delete a post.'
       params { requires :id, type: Integer, desc: 'Post ID.' }
       delete ':id' do
+        raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
         current_user.discussion_posts.find(params[:id]).destroy # user posts
       end
 
@@ -183,7 +187,7 @@ module V1
       params { requires :id, type: Integer, desc: 'File Post ID.' }
       delete 'files/:id' do
         pfile = PostFile.find(params[:id])
-
+        raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
         raise ActiveRecord::RecordNotFound unless current_user.discussion_post_ids.include?(pfile.discussion_post_id) # user files
         pfile.destroy
       end
