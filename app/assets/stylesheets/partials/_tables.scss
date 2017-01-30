@@ -112,6 +112,9 @@ table.user-courses tbody.offers {
     cursor: pointer;
     color: #003e7a;
   }
+  .offer:focus {
+    background-color: $color_main_light_highlight;
+  }
 }
 
 .file_icon {
