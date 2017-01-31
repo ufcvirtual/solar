@@ -258,7 +258,7 @@ class WebconferencesController < ApplicationController
   end
 
   def webconference_params
-    params.require(:webconference).permit(:description, :duration, :initial_time, :title, :is_recorded, :shared_between_groups)
+    params.require(:webconference).permit(:description, :duration, :initial_time, :title, :is_recorded, :shared_between_groups, :server)
   end
 
 end

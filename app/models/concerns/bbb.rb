@@ -40,6 +40,45 @@ module Bbb
     end
   end
 
+  def verify_quantity_users_per_server(sv)
+    query = "(server = ?) AND
+             (
+                (initial_time BETWEEN ? AND ?) OR
+                (
+                  (initial_time + (interval '1 minutes')*duration) BETWEEN ? AND ?) OR
+                  (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration))) OR
+                  (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration)
+                  )
+                )
+              )"
+    end_time       = initial_time + duration.minutes
+    webconferences = Webconference.where(query, sv, initial_time, end_time, initial_time, end_time, initial_time, end_time)
+    assignment_webconferences = AssignmentWebconference.where(query, sv, initial_time, end_time, initial_time, end_time, initial_time, end_time)
+    webconferences            << self unless self.class == AssignmentWebconference || webconferences.include?(self)
+    assignment_webconferences << self unless self.class == Webconference || assignment_webconferences.include?(self)
+
+    unless webconferences.empty? && assignment_webconferences.empty?
+      ats      = webconferences.map(&:allocation_tags).flatten.map(&:related).flatten
+      students = 0
+      ats.flatten.each do |at|
+        allocations = Allocation.find_by_sql <<-SQL
+          SELECT COUNT(allocations.id)
+          FROM allocations
+          JOIN profiles ON profiles.id = allocations.profile_id
+          WHERE
+            cast( profiles.types & #{Profile_Type_Student} as boolean )
+          AND
+            allocations.allocation_tag_id = #{at}
+          AND
+            allocations.status = 1;
+        SQL
+      students += allocations.first['count'].to_i
+      end
+      students += assignment_webconferences.map(&:academic_allocation_user).flatten.map(&:users_count).flatten.sum unless assignment_webconferences.empty?
+      students
+    end
+  end
+
   def cant_change_date
     errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.date")) if (Time.now > (initial_time_was+duration_was.minutes))
   end
@@ -72,22 +111,32 @@ module Bbb
   end
 
   def bbb_prepare
+    choose_server if server.blank?
     Timeout::timeout(5) do
       @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
-      server  = @config['servers'][@config['servers'].keys.first]
+      bbb  = @config['servers'][@config['servers'].keys[server]]
       debug   = @config['debug']
-      BigBlueButton::BigBlueButtonApi.new(server['url'], server['salt'], server['version'].to_s, debug)
+      BigBlueButton::BigBlueButtonApi.new(bbb['url'], bbb['salt'], bbb['version'].to_s, debug)
     end
   rescue
     false
   end
 
-  def self.bbb_prepare
+  def self.bbb_prepare(server)
     Timeout::timeout(5) do
       @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
-      server  = @config['servers'][@config['servers'].keys.first]
+      bbb  = @config['servers'][@config['servers'].keys[server]]
       debug   = @config['debug']
-      BigBlueButton::BigBlueButtonApi.new(server['url'], server['salt'], server['version'].to_s, debug)
+      BigBlueButton::BigBlueButtonApi.new(bbb['url'], bbb['salt'], bbb['version'].to_s, debug)
+    end
+  rescue
+    false
+  end
+
+  def count_servers
+     Timeout::timeout(5) do
+      @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
+      @config['servers'].count
     end
   rescue
     false
@@ -138,7 +187,7 @@ module Bbb
     raise 'copy' unless self.class.to_s != 'Webconference' || origin_meeting_id.blank?
     ids = recordings([], at).collect{|a| a[:recordID]}
     raise CanCan::AccessDenied unless ids.include?(recordId)
-    api = Bbb.bbb_prepare
+    api = bbb_prepare
     api.delete_recordings(recordId)
   end
 

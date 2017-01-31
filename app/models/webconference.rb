@@ -120,13 +120,34 @@ class Webconference < ActiveRecord::Base
     }
 
     @api = bbb_prepare
-    @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
+    login_meeting(user, meeting_id, meeting_name, options)
+  end
 
-    if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
+  def login_meeting(user, meeting_id, meeting_name, options)
+    @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
+     if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
       @api.join_meeting_url(meeting_id, "#{user.name}*", options[:moderatorPW])
     else
       @api.join_meeting_url(meeting_id, user.name, options[:attendeePW])
     end
+  end
+
+  def choose_server
+    @server, best_server = nil
+
+    (0..(count_servers-1)).each do |sv| # Percorre os servers que existem no .yml
+      api = Bbb.bbb_prepare(sv)
+      if (api && bbb_online?(api)) # Online?
+        next_server = verify_quantity_users_per_server(sv) # Quantidade de usuarios por server, naquela faixa de horario
+
+        if (best_server.nil? or (next_server < best_server)) # Guarda se for menor que o atual
+          best_server = next_server
+          @server = sv
+        end
+      end
+    end
+    self.server = @server
+    self.save! # BD
   end
 
   def have_permission?(user, at_id = nil)
@@ -144,11 +165,10 @@ class Webconference < ActiveRecord::Base
   end
 
   def self.remove_record(academic_allocations)
-    api = Bbb.bbb_prepare
-
     academic_allocations.each do |academic_allocation|
       webconference = Webconference.find(academic_allocation.academic_tool_id)
       if webconference.origin_meeting_id.blank?
+        api = Bbb.bbb_prepare(webconference.server)
         meeting_id    = webconference.get_mettingID(academic_allocation.allocation_tag_id)
         response      = api.get_recordings()
         response[:recordings].each do |m|
