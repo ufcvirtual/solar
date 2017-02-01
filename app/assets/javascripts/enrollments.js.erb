@@ -1,6 +1,35 @@
-$(function(){
+$(function(){ 
 
-  $('[id^="enrollment_info"]').call_fancybox();
+  $('[id^="enrollment_info"]').call_fancybox({
+    afterShow : () => {
+              $('#lightBoxDialogTitle').attr("tabindex", "0");
+              $('#lightBoxDialogTitle').focus();
+            },
+    afterClose : () => {
+      $('.enrollment_list').attr("tabindex", "0");
+      $(".enrollment_list").focus();
+    }
+  });
+
+  var flag = false;
+
+  $('body').on('keyup',(e) => {
+      var code = e.keyCode || e.which;
+      if (code == '9') {
+
+        if(flag){
+          $('#lightBoxDialogTitle').focus();
+          flag = false;
+        }
+
+        if($(':focus').hasClass("fancybox-close")){
+          flag = true;
+        }
+        else{
+          flag = false;
+        }
+      }
+  });
 
   // requests
   function enroll_error_request(data) {
