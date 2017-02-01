@@ -70,7 +70,25 @@
 
   $(function(){
 
-    $('table.user-courses tbody.offers').on('click keypress', '.offer', function(event){
+    $('table.user-courses tbody.offers').on('click', '.offer', function(event){
+
+      var count_tabs_open = $('#mysolar_tabs_wrapper li').length;
+      var max_tabs_open = "#{Max_Tabs_Open.to_i}";
+
+      // limite de abas abertas atingido
+      if ((count_tabs_open >= max_tabs_open) && ($('#mysolar_tabs_wrapper li[data-tab-id=' + $(this).data('tab-id') + ']').length < 1))
+        flash_message("#{t(:curriculum_access_alert)}", 'warning');
+      else
+        window.location = $(this).data('tab-link');
+    });
+
+    // refazer codigo do edx
+
+    $.get("#{my_edx_courses_path}", function(data){
+      $("#mysolar_curriculum_unit_wrapper").append(data);
+    });
+
+    $('table.user-courses tbody.offers').on('keypress', '.offer', function(event){
 
       var keynum = event.which || event.keyCode;
 
