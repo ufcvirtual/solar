@@ -70,15 +70,20 @@
 
   $(function(){
 
-    $('table.user-courses tbody.offers').on('click keypress', '.offer', function(){
-      var count_tabs_open = $('#mysolar_tabs_wrapper li').length;
-      var max_tabs_open = "#{Max_Tabs_Open.to_i}";
+    $('table.user-courses tbody.offers').on('click keypress', '.offer', function(event){
 
-      // limite de abas abertas atingido
-      if ((count_tabs_open >= max_tabs_open) && ($('#mysolar_tabs_wrapper li[data-tab-id=' + $(this).data('tab-id') + ']').length < 1))
-        flash_message("#{t(:curriculum_access_alert)}", 'warning');
-      else
-        window.location = $(this).data('tab-link');
+      var keynum = event.which || event.keyCode;
+
+      if( keynum != 9 ) {
+        var count_tabs_open = $('#mysolar_tabs_wrapper li').length;
+        var max_tabs_open = "#{Max_Tabs_Open.to_i}";
+
+        // limite de abas abertas atingido
+        if ((count_tabs_open >= max_tabs_open) && ($('#mysolar_tabs_wrapper li[data-tab-id=' + $(this).data('tab-id') + ']').length < 1))
+          flash_message("#{t(:curriculum_access_alert)}", 'warning');
+        else
+          window.location = $(this).data('tab-link');
+      }
     });
 
     // refazer codigo do edx
