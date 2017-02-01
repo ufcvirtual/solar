@@ -36,8 +36,36 @@
     minheigth: '50%',
     closeBtn : true,
     height: 'auto',
-    maxHeight: '70%'
+    maxHeight: '70%',
+    afterShow : () => {
+        $('.fancybox-opened').attr("tabindex", "0");
+        $('.fancybox-opened').focus();
+        console.log("teste");
+      },
+      afterClose : () => {
+        $(".link_pre_exam").focus();
+      }
   });
+
+  var flag = false;
+
+    $('body').on('keyup',(e) => {
+        var code = e.keyCode || e.which;
+        if (code == '9') {
+
+          if(flag){
+            $('.fancybox-opened').focus();
+            flag = false;
+          }
+
+          if($(':focus').hasClass("fancybox-close")){
+            flag = true;
+          }
+          else{
+            flag = false;
+          }
+        }
+    });
 
   if("#{@preview}"!="true"){
     $('#finish_button').unbind('click').click( function(){

@@ -107,7 +107,7 @@
 
   $(function(){
 
-    $(".link_open_exam, .link_preview_exam").call_fancybox({
+    $(".link_open_exam").call_fancybox({
       minWidth: '50%',
       minheigth: '50%',
       closeBtn : true,
@@ -118,14 +118,48 @@
     $(".link_pre_exam").call_fancybox({
       minWidth: '50%',
       closeBtn : true,
-      height: 'auto'
+      height: 'auto',
+      afterShow : () => {
+        $('.fancybox-inner').attr("tabindex", "0");
+        $('.fancybox-inner').focus();
+      },
+      afterClose : () => {
+        $(".link_pre_exam").focus();
+      }
     });
 
     $(".open-exam-result").call_fancybox({
       minWidth: '50%',
       minHeight: '50%',
       height: 'auto',
-      closeBtn : true
+      closeBtn : true,
+      afterShow : () => {
+        $('.fancybox-inner').attr("tabindex", "0");
+        $('.fancybox-inner').focus();
+      },
+      afterClose : () => {
+        $(".open-exam-result").focus();
+      }
+    });
+
+    var flag = false;
+
+    $('body').on('keyup',(e) => {
+        var code = e.keyCode || e.which;
+        if (code == '9') {
+
+          if(flag){
+            $('.fancybox-inner').focus();
+            flag = false;
+          }
+
+          if($(':focus').hasClass("fancybox-close")){
+            flag = true;
+          }
+          else{
+            flag = false;
+          }
+        }
     });
 
     $(".description_more").click(function(){

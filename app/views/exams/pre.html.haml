@@ -49,6 +49,9 @@
       afterShow: function() {
         if (!#{@exam.uninterrupted})
           window.onbeforeunload = function () {}
+
+        $('.fancybox-inner').attr("tabindex", "0");
+        $('.fancybox-inner').focus();
       },
       beforeClose: function() {
         if(typeof(array_time) != 'undefined')
