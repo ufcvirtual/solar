@@ -26,5 +26,34 @@
 
 :javascript
   $(function(){
-    $('#request_profile').call_fancybox();
+     $('#request_profile').call_fancybox({
+            afterShow : () => {
+              $('#lightBoxDialogTitle').attr("tabindex", "0");
+              $('#lightBoxDialogTitle').focus();
+            },
+            afterClose : () => {
+              $("#request_profile").focus();
+            }
+      });    
+    
+    var flag = false;
+
+    $('body').on('keyup',(e) => {
+        var code = e.keyCode || e.which;
+        if (code == '9') {
+
+          if(flag){
+            $('#lightBoxDialogTitle').focus();
+            flag = false;
+          }
+
+          if($(':focus').hasClass("fancybox-close")){
+            flag = true;
+          }
+          else{
+            flag = false;
+          }
+        }
+    });
+
   });
