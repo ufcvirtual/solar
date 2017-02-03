@@ -5,7 +5,7 @@
 $btn-color: #ffffff;
 $btn_main-color: #005cc0;
 $btn_caution-color: #ee5f5b;
-$btn-width: 54px; 
+$btn-width: 54px;
 $btn-height: 28px;
 $btn-orange: #ffe6cc;
 
@@ -27,7 +27,7 @@ input::-moz-focus-inner {
     font-size: 11px; /* original: 14px */
     line-height: 18px; /* original: 20px */
     text-decoration: none !important;
-    color: #333333;
+    color: $font_color;
     text-align: center;
     text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
     vertical-align: middle;
@@ -137,7 +137,7 @@ input::-moz-focus-inner {
 }
 
 .btn:focus {
-    outline: thin dotted #333;
+    outline: thin dotted $font_color;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;
 }
@@ -151,7 +151,7 @@ input::-moz-focus-inner {
 }
 
 .btn_pressed {
-    color: #333333;
+    color: $font_color;
     background-color: #ffffff;
     background-image: none;
     @include box-shadow(#9a9a9a 0px 1px 2px inset);
@@ -316,7 +316,7 @@ input::-moz-focus-inner {
 }
 
 /* botão específico do lightbox de upload de arquivos de aula */
-$btn-initial-file-color: #f9db43;
+$btn-initial-file-color: $color_contrast;
 $btn-initial-file-color-final: #f9c143;
 #btn-initial-file {
     background: $btn-initial-file-color; /* Old browsers */

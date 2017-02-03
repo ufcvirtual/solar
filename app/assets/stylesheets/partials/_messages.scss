@@ -41,10 +41,10 @@
 }
 
 .td_subject, .td_sender, .td_time, .td_recipient{
-  color: $text_grey;
+  color: $color_grey_text;
 
   a{
-    color: $text_grey;
+    color: $color_grey_text;
   }
 }
 
@@ -207,7 +207,7 @@
 }
 
 .message_header_new, .message_div_show {
-  color: $text_grey;
+  color: $color_grey_text;
   padding: 0.5*$gutter 0.5*$gutter;
   font-size: 13px;
   width: auto; // FIXME: é auto ou 100% ?
@@ -218,7 +218,7 @@
   }
 
   span.email{
-    color: $text_blue;
+    color: $color_main;
     text-decoration: underline;
   }
 
@@ -292,7 +292,7 @@
     margin-top: 5px;
   }
   .active{
-    color: $text_blue;
+    color: $color_main;
   }
 }
 
@@ -464,4 +464,3 @@
   background-color: #E8EFF6;
   text-decoration: underline;
 }
-

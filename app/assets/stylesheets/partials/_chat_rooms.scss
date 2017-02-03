@@ -1,6 +1,6 @@
 .description, .description p{
   font-size: 11px;
-  color: $text_grey;
+  color: $color_grey_text;
   text-align: left;
 }
 
@@ -64,7 +64,7 @@
 }
 
 #define_participants label{
-  color: $text_grey;
+  color: $color_grey_text;
 }
 
 #chat_room_type{
@@ -116,7 +116,7 @@ a.chat_list {
       padding-right: 0;
     }
     td.message{
-      width: 40%; 
+      width: 40%;
       text-align: left;
     }
   }

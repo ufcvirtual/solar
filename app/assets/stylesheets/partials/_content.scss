@@ -54,7 +54,7 @@ div.block_module, div.block_exam{
     position: relative !important;
     display: block !important;
     border-bottom: 2px solid;
-    border-bottom-color: #003e7a;
+    border-bottom-color: $color_main;
   }
   .block_buttons{
     display: inline-block;
@@ -297,7 +297,7 @@ div.block_title {
 }
 
 .bibliography_volume, .bibliography_publication_year{
-  
+
 }
 
 /**
@@ -378,7 +378,7 @@ form .right_buttons {
   right: 8px;
   bottom: 3px;
   color: white;
-  background-color: #003E7A;
+  background-color: $color_main;
   border-radius: 4px;
   padding: 0px 2px;
   font-family: bold;
@@ -432,7 +432,7 @@ a.disabled {
   }
 
   .dot.done {
-    background: image-url('done.png') no-repeat; 
+    background: image-url('done.png') no-repeat;
   }
 }
 
