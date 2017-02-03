@@ -1,7 +1,7 @@
 // EDIÇÃO
 fieldset {
   border: 1px solid;
-  border-color: #D0D0D0;
+  border-color: $border;
   padding: 15px 20px 5px 20px;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -54,7 +54,7 @@ fieldset {
 
 .block_title.edition {
   border-bottom: solid 1px;
-  border-bottom-color: #D0D0D0;
+  border-bottom-color: $border;
   margin-bottom: 15px;
 }
 

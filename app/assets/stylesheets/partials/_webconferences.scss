@@ -51,7 +51,7 @@ table.webconferences{
         color: #828282;
       }
       [class^='icon-']:hover{
-        color: #333333;
+        color: $font_color;
       }
     }
   }
@@ -97,6 +97,6 @@ table.webconferences{
 .title-warning + .webconference_access{
   .text_none{
     border-top: solid 1px;
-    border-top-color: #D0D0D0;
+    border-top-color: $border;
   }
 }

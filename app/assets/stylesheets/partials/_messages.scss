@@ -88,7 +88,7 @@
   height: 28px;
 }
 .message_line:not(.no_border){
-  border-bottom: 1px solid #D0D0D0;
+  border-bottom: 1px solid $border;
 }
 
 .message_line_check {
@@ -331,7 +331,7 @@
 /* mensagem: cabecalho, area de titulo */
 #message_general_title {
   border-bottom: 1px solid;
-  border-bottom-color: #d0d0d0;
+  border-bottom-color: $border;
   padding-bottom: 0px !important;
   height: 25px;
 

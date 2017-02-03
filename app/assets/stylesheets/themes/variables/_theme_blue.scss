@@ -10,9 +10,7 @@ $color_contrast: #F9DB43;
 $color_contrast_light: adjust_color($color_contrast, $lightness: 33%);
 $color_contrast_text: #dca727;
 
-//TODO: organizar codigo abaixo
-
-$text_blue: #003E7A;
+$text_blue: $color_main;
 $text_grey: #7C7C7C;
 $font_color: #333;
 $background_blue: #F5F8FB;
