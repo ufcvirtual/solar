@@ -51,7 +51,7 @@ class AssignmentWebconference < ActiveRecord::Base
       record: true,
       autoStartRecording: is_recorded,
       allowStartStopRecording: true,
-      logoutURL: Rails.application.routes.url_helpers.home_url.to_s,
+      logoutURL: YAML::load(File.open('config/webconference.yml'))['feedback_url'] || Rails.application.routes.url_helpers.home_url.to_s,
       maxParticipants: academic_allocation_user.users_count + 1 # students + 1 responsible
     }
 

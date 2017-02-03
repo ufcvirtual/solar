@@ -210,6 +210,7 @@ class WebconferencesController < ApplicationController
       render text: t('exams.restrict')
     else
       @webconference = Webconference.find(params[:id])
+      api = @webconference.bbb_prepare
       @at_id         = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id)
 
       raise CanCan::AccessDenied if current_user.is_researcher?(AllocationTag.where(id: @at_id).map(&:related).flatten.uniq)
@@ -222,7 +223,7 @@ class WebconferencesController < ApplicationController
 
       @can_remove_record = (can? :manage_record, Webconference, { on: @webconference.academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }) || current_user.id == @webconference.user_id
 
-      raise 'offline'          unless bbb_online?
+      raise 'offline'          unless bbb_online?(api)
       raise 'still_processing' unless @webconference.is_over?
 
       @recordings = @webconference.recordings([], (@at_id.class == Array ? nil : @at_id))

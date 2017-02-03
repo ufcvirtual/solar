@@ -115,7 +115,7 @@ class Webconference < ActiveRecord::Base
       record: true,
       autoStartRecording: is_recorded,
       allowStartStopRecording: true,
-      logoutURL: Rails.application.routes.url_helpers.home_url.to_s,
+      logoutURL: YAML::load(File.open('config/webconference.yml'))['feedback_url'] || Rails.application.routes.url_helpers.home_url.to_s,
       maxParticipants: YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users']
     }
 
