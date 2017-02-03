@@ -5,7 +5,7 @@
 $btn-color: #ffffff;
 $btn_main-color: #005cc0;
 $btn_caution-color: #ee5f5b;
-$btn-width: 54px; 
+$btn-width: 54px;
 $btn-height: 28px;
 $btn-orange: #ffe6cc;
 
@@ -316,7 +316,7 @@ input::-moz-focus-inner {
 }
 
 /* botão específico do lightbox de upload de arquivos de aula */
-$btn-initial-file-color: #f9db43;
+$btn-initial-file-color: $color_contrast;
 $btn-initial-file-color-final: #f9c143;
 #btn-initial-file {
     background: $btn-initial-file-color; /* Old browsers */

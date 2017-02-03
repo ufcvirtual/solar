@@ -130,11 +130,11 @@ td.assignment_as a {
 .assignment_to_be_sent, .assignment_to_be_sent a, .assignment_started,
 .assignment_pending, .assignment_to_answer, .assignment_not_finished, .assignment_opened, .assignment_in_progress,
 td.assignment_an a {
-  color: #003e7a;
+  color: $color_main;
 }
 
 .assignment_an{
-  color: #003e7a;
+  color: $color_main;
 }
 .assignment_without_group, .assignment_without_group a,
 td.assignment_without_group a {
@@ -179,7 +179,7 @@ td.assignment_without_group a
           vertical-align: middle;
         }
       }
-    } 
+    }
   }
 }
 
@@ -190,7 +190,7 @@ td.assignment_without_group a
 }
 
 .assignment_files.files td, .student_files.files td, .student_webconferences.files td{
-  color: $text_grey;
+  color: $color_grey_text;
 }
 
 .upload_files{
@@ -227,13 +227,13 @@ td.assignment_without_group a
     margin-top: 1%;
     padding: 8px 0px 5px 44px;
   }
-  
+
   .title_user{
     float: left;
     font-weight: bold;
     margin-right: 7px;
   }
-} 
+}
 
 .block_user .participants_list{
   margin-left: 85px;

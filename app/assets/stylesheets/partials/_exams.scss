@@ -13,7 +13,7 @@
 
   #name{
     font-size: 13pt;
-    color: $text_grey;
+    color: $color_grey_text;
     padding: 5px;
   }
 
@@ -50,7 +50,7 @@
     font-family: 'PT Sans';
     margin: 0px;
     padding: 0px 0px 0px 5px;
-    color: $text_grey;
+    color: $color_grey_text;
     float: left;
   }
 
@@ -100,7 +100,7 @@
 
       .number {
         padding-right: 5px;
-        color: $text_blue;
+        color: $color_main;
         width: auto;
         vertical-align:top;
       }
@@ -172,7 +172,7 @@
         .audio{
           width: 50%;
         }
-        
+
       }
     }
 
@@ -205,14 +205,14 @@
 
     label{
       display: inline;
-      color: $text_blue;
+      color: $color_main;
       font-family: 'PT Sans', sans-serif;
     }
 
     .incorrect{
       color:#E03838;
     }
-    
+
     .hit{
       color:#0B610B;
     }
@@ -229,7 +229,7 @@
       margin-top: 5px;
     }
     .active{
-      color: $text_blue;
+      color: $color_main;
     }
   }
 
@@ -251,7 +251,7 @@
 #exam_form{
   .description, .description p{
     font-size: 11px;
-    color: $text_grey;
+    color: $color_grey_text;
     text-align: left;
   }
 
@@ -344,11 +344,11 @@
   }
 
   .to_answer, .not_finished, .retake {
-    color: #003e7a;
+    color: $color_main;
   }
   .ico-e{
     font-decoration: none;
-    text-decoration:none; 
+    text-decoration:none;
   }
 
   .block_exam h2{
@@ -390,12 +390,12 @@
     width: 30%;
   }
   .info{
-    width: 68%; 
+    width: 68%;
     .attempt{
       .input{
         label{
           width: 113px;
-        }  
+        }
       }
     }
   }
@@ -405,7 +405,7 @@
       padding: 5px;
     }
     a.active{
-      color: #dca727;
+      color: $color_contrast_text;
     }
     a.no_pointer{
       cursor: default;

@@ -172,7 +172,7 @@
   font-family: 'Ubuntu Condensed';
   padding: 4px;
   border-bottom: 1px solid #CCC;
-  color: $text_grey;
+  color: $color_grey_text;
   font-size: 11pt;
 }
 
@@ -201,7 +201,7 @@
 }
 
 @media only screen and (max-width: 641px) {
-  .lesson .header{ 
+  .lesson .header{
     display:none;
   }
 }
