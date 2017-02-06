@@ -41,10 +41,10 @@
 }
 
 .td_subject, .td_sender, .td_time, .td_recipient{
-  color: $color_grey_text;
+  color: $color_gray_text;
 
   a{
-    color: $color_grey_text;
+    color: $color_gray_text;
   }
 }
 
@@ -88,7 +88,7 @@
   height: 28px;
 }
 .message_line:not(.no_border){
-  border-bottom: 1px solid $border;
+  border-bottom: 1px solid $border_color;
 }
 
 .message_line_check {
@@ -154,7 +154,7 @@
     padding: 5px;
     padding-right: 5px;
     border-bottom: solid 1px;
-    border-bottom-color: $border;
+    border-bottom-color: $border_color;
     min-height: 28px;
 
     ul.message_menu_listbox li ul {
@@ -198,7 +198,7 @@
 
 .block_content.messages {
   padding: 5px 10px 5px 5px;
-  border-bottom: solid 1px $border;
+  border-bottom: solid 1px $border_color;
   overflow: hidden;
 
   .btn{
@@ -207,7 +207,7 @@
 }
 
 .message_header_new, .message_div_show {
-  color: $color_grey_text;
+  color: $color_gray_text;
   padding: 0.5*$gutter 0.5*$gutter;
   font-size: 13px;
   width: auto; // FIXME: é auto ou 100% ?
@@ -331,7 +331,7 @@
 /* mensagem: cabecalho, area de titulo */
 #message_general_title {
   border-bottom: 1px solid;
-  border-bottom-color: $border;
+  border-bottom-color: $border_color;
   padding-bottom: 0px !important;
   height: 25px;
 

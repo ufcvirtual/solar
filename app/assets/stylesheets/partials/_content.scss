@@ -241,7 +241,7 @@ div.block_title {
   > block_left {
     width: 369px;
     border-right: 1px solid;
-    border-right-color: $border; /* adicionando a borda divisoria */
+    border-right-color: $border_color; /* adicionando a borda divisoria */
   }
   > block_right {
     padding: 6px 10px 6px 8px; /* ajustando o espaçamento do bloco direito */
@@ -292,7 +292,7 @@ div.block_title {
 }
 
 .block_messages_opt {
-  color: $border;
+  color: $border_color;
   background-color: $color_main_light;
 }
 

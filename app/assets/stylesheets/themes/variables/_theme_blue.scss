@@ -5,30 +5,30 @@ $color_main_light_highlight: adjust_color($color_main, $lightness: 73%);
 $color_main_medium: lighten(desaturate($color_main, 70%),30%);
 
 $color_main_text: $color_main;
-$color_grey_text: #7C7C7C;
+$color_gray_text: #7C7C7C;
 
 $color_contrast: #F9DB43;
 $color_contrast_light: adjust_color($color_contrast, $lightness: 33%);
 $color_contrast_text: #dca727;
 
-<<<<<<< HEAD
 $text_blue: $color_main;
-$text_grey: #7C7C7C;
-=======
-//TODO: organizar codigo abaixo
+$text_gray: #7C7C7C;
 
->>>>>>> 3da0421b3b8da46827c59714e5ee6d9049d123ce
 $font_color: #333;
-$background_blue: #F5F8FB;
-$background_grey: #EFEFEF;
-$border: #D0D0D0;
-
-$light_grey: #A3A3A3;
+$border_color: #D0D0D0;
 
 hr {
-  border-top-color: $border;
+  border-top-color: $border_color;
   border-bottom-color: #ffffff;
 }
+
+$background_blue: #F5F8FB;
+$background_gray: #EFEFEF;
+
+$lesson_color: #A3A3A3;
+
+$event_color: #A3A3A3;
+$border_event_list_color: $event_color;
 
 $label_color: $color_main_text;
 

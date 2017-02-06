@@ -164,15 +164,15 @@
 
 .test_lesson{
   display: inline-block;
-  color: $light_grey;
+  color: $lesson_color;
 }
 
 .lesson_portlet .module{
-  background-color: $background_grey;
+  background-color: $background_gray;
   font-family: 'Ubuntu Condensed';
   padding: 4px;
   border-bottom: 1px solid #CCC;
-  color: $color_grey_text;
+  color: $color_gray_text;
   font-size: 11pt;
 }
 

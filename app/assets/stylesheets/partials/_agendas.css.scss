@@ -1,4 +1,4 @@
-/* Calendário */
+  /* Calendário */
 
 #calendar .block_wrapper{
   margin-top: 0;
@@ -17,12 +17,12 @@
 }
 
 .list_events .day h3{
-  background-color: $background_grey;
-  color: $light_grey;
+  background-color: $background_gray;
+  color: $event_color;
 }
 
 .list_events .day_events{
-  border: solid 1px $light_grey;
+  border: solid 1px $border_event_list_color;
   padding: 3px;
 }
 
@@ -45,7 +45,7 @@
 }
 
 .list_events .line{
-  border-bottom: dashed 1px $light_grey;
+  border-bottom: dashed 1px $border_event_list_color;
 }
 
 .list_events .line.today{
@@ -113,7 +113,7 @@
   font-size: 11pt;
   text-align: center;
   label{
-    color: $color_grey_text;
+    color: $color_gray_text;
     font-size: 10pt;
     width: auto;
     text-align: center;
@@ -140,7 +140,7 @@
         font-size: 11pt;
       }
       h2, h3, .group_label label, h3 p{
-        color: $color_grey_text;
+        color: $color_gray_text;
         font-size: 10pt;
         font-weight: normal;
         text-align: left;
@@ -149,7 +149,7 @@
         margin: 6px;
       }
       .line{
-        border-bottom: solid 1px $background_grey;
+        border-bottom: solid 1px $background_gray;
         padding-bottom: 5px;
         margin-bottom: 5px;
       }

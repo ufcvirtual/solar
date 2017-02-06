@@ -225,7 +225,7 @@ a.mysolar_top_link {
   width: 100%;
   height: 33px;
   border-bottom: 1px solid;
-  border-bottom-color: $border;
+  border-bottom-color: $border_color;
 }
 
 #mysolar_tabs_wrapper {
@@ -316,7 +316,7 @@ a.mysolar_top_link {
   width: 130px;
   padding: 0 20px 0 2px;
   margin-right: 4px;
-  border-color: $border;
+  border-color: $border_color;
   background: url('/assets/images/search.png') no-repeat right bottom #fff;
 }
 

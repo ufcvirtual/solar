@@ -13,7 +13,7 @@
 
   #name{
     font-size: 13pt;
-    color: $color_grey_text;
+    color: $color_gray_text;
     padding: 5px;
   }
 
@@ -50,7 +50,7 @@
     font-family: 'PT Sans';
     margin: 0px;
     padding: 0px 0px 0px 5px;
-    color: $color_grey_text;
+    color: $color_gray_text;
     float: left;
   }
 
@@ -82,9 +82,9 @@
   .block_content {
     padding: 5px;
     border-bottom: solid 1px;
-    border-bottom-color: $border;
+    border-bottom-color: $border_color;
     border-top: solid 1px;
-    border-top-color: $border;
+    border-top-color: $border_color;
     min-height: 28px;
     display: block;
 
@@ -251,7 +251,7 @@
 #exam_form{
   .description, .description p{
     font-size: 11px;
-    color: $color_grey_text;
+    color: $color_gray_text;
     text-align: left;
   }
 

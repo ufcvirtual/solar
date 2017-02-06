@@ -1,7 +1,7 @@
 // EDIÇÃO
 fieldset {
   border: 1px solid;
-  border-color: $border;
+  border-color: $border_color;
   padding: 15px 20px 5px 20px;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -54,7 +54,7 @@ fieldset {
 
 .block_title.edition {
   border-bottom: solid 1px;
-  border-bottom-color: $border;
+  border-bottom-color: $border_color;
   margin-bottom: 15px;
 }
 
@@ -94,7 +94,7 @@ fieldset {
 }
 
 label[for="all"], .type_description {
-  color: $color_grey_text;
+  color: $color_gray_text;
 }
 
 label[for="all"]{
