@@ -17,10 +17,13 @@ class WebconferencesController < ApplicationController
 
   def index
     authorize! :index, Webconference, on: [at = active_tab[:url][:allocation_tag_id]]
-    api             = bbb_prepare
-    @online         = bbb_online?(api)
+    # api             = bbb_prepare
+    # @online         = bbb_online?(api)
+    # @meetings       = @online ? get_meetings(api) : []
+    api = Array.new(count_servers) {|a| Bbb.bbb_prepare(a)}
+    @online = api.map {|api| bbb_online?(api)}
+
     @can_see_access = can? :list_access, Webconference, { on: at }
-    @meetings       = @online ? get_meetings(api) : []
     @user = current_user
     @is_student = @user.is_student?([at])
     @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true), {asc: true}, (@can_see_access ? nil : current_user.id))
@@ -115,10 +118,12 @@ class WebconferencesController < ApplicationController
   def preview
     ats = current_user.allocation_tags_ids_with_access_on('preview', 'webconferences', false, true)
     @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false }).paginate(page: params[:page])
-    @online         = bbb_online?
     @can_see_access = can? :list_access, Webconference, { on: ats, accepts_general_profile: true }
     @can_remove_record = (can? :manage_record, Webconference, { on: ats, accepts_general_profile: true })
-    @meetings       = @online ? get_meetings : []
+    # @online         = bbb_online?
+    # @meetings       = @online ? get_meetings : []
+    api = Array.new(count_servers) {|a| Bbb.bbb_prepare(a)}
+    @online = api.map {|api| bbb_online?(api)}
   end
 
   # DELETE /webconferences/remove_record/1
@@ -227,7 +232,7 @@ class WebconferencesController < ApplicationController
       raise 'still_processing' unless @webconference.is_over?
 
       @recordings = @webconference.recordings([], (@at_id.class == Array ? nil : @at_id))
-    end  
+    end
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
   rescue URI::InvalidURIError

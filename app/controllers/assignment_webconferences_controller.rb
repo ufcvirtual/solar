@@ -94,13 +94,14 @@ class AssignmentWebconferencesController < ApplicationController
 
   def get_record
     @assignment_webconference = AssignmentWebconference.find(params[:id])
+    api = @assignment_webconference.bbb_prepare
     academic_allocation_user = AcademicAllocationUser.find(params[:academic_allocation_user_id])
     at_id                    = active_tab[:url][:allocation_tag_id]
     verify_owner_or_responsible!(at_id, academic_allocation_user)
 
     raise CanCan::AccessDenied if current_user.is_researcher?(AllocationTag.find(at_id).related)
 
-    raise 'offline'          unless bbb_online?
+    raise 'offline'          unless bbb_online?(api)
     raise 'still_processing' unless @assignment_webconference.is_over?
 
     begin
