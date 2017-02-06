@@ -1,8 +1,10 @@
 !!!
 %html{xmlns: "http://www.w3.org/1999/xhtml"}
+  - if is_curriculum_unit_selected?
+    - group_selection = render_group_selection
   %head
     %meta{content: "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
-    %title Solar
+    %title= show_breadcrumb_title
 
     = javascript_include_tag "application"
     = javascript_tag '$.fx.off = true;' if Rails.env.test?
@@ -39,7 +41,7 @@
     #body_wrapper
       / topbar
       #mysolar_topbar
-        #mysolar_identity
+        #mysolar_identity{role: 'banner'}
           #mysolar_logo
             = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
           %ul#mysolar_top_options
@@ -76,7 +78,7 @@
             %li= link_to t(:videos), "../../video_tutorials.html", target: "_blank"
             %li= link_to t(:contact), support_new_messages_path
         / tabs
-        #mysolar_tabs
+        #mysolar_tabs{role: 'navigation menubar'}
           %ul#mysolar_tabs_wrapper= raw render_tabs
           %ul#mysolar_extras
             %li#mysolar_suggestions
@@ -85,7 +87,7 @@
               %button.btn.btn_main.disabled{"data-tooltip" => t(:mysolar_open_lesson), name: t(:mysolar_open_lesson), onclick: "javascript:maximize_lesson(this);", type: "button", "data-fancybox-type" => "iframe"}
                 %i.icon-class
       / sidebar
-      #mysolar_sidebar
+      #mysolar_sidebar{role: 'navigation menu'}
         #mysolar_menu_accordion{style: "z-index:10"}
           .mysolar_menu
             - if active_tab[:url][:context] == Context_Curriculum_Unit
@@ -97,7 +99,7 @@
             = raw menu_list
 
       / content
-      #mysolar_content
+      #mysolar_content{role: 'main'}
         / page titles
         .block_wrapper
           .flash_message_wrapper
@@ -110,7 +112,7 @@
           - if is_curriculum_unit_selected?
             #page_title
               %h1=t(name, default: name.try(:titleize))
-              .block_content_text= raw(render_group_selection)
+              .block_content_text= raw(group_selection)
           - elsif not(in_mysolar?)
             #page_title
               %h1=t(name, default: name.titleize)

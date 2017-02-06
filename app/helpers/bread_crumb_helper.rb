@@ -22,4 +22,23 @@ module BreadCrumbHelper
     return text_bread
   end
 
+  def show_breadcrumb_title
+    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+    breadcrumb = active_tab[:breadcrumb]
+    
+    text_bread = []
+    [breadcrumb].flatten.each_with_index do |bread, idx|
+      unless bread.nil?
+        text_bread << t((bread[:name].to_sym rescue nil), default: (bread[:name].titleize rescue nil))
+        text_bread <<  bread[:url][:selected_group] rescue nil
+      end
+    end
+
+    ['Solar', text_bread.compact].compact.join(' - ')
+  end
+
+  def set_title(page_title)
+    provide(:title, ['Solar', page_title].join(' - '))
+  end
+
 end
