@@ -156,10 +156,10 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:enunciation, :type_question, :privacy,
-      question_items_attributes: [:id, :item_image, :value, :description, :_destroy, :comment, :img_alt, :item_audio],
+      question_items_attributes: [:id, :item_image, :value, :description, :_destroy, :comment, :img_alt, :item_audio, :audio_description],
       question_images_attributes: [:id, :image, :legend, :img_alt, :_destroy],
       question_labels_attributes: [:id, :name, :_destroy],
-      question_audios_attributes: [:id, :audio, :_destroy])
+      question_audios_attributes: [:id, :audio, :description, :audio_description, :_destroy])
   end
 
   def params_to_log

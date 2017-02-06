@@ -278,12 +278,16 @@ en_US:
         img_alt: Alt
       question_audios:
         audio: Audio  
+        description: Legend
+        audio_description: Audio Description
       question_image:
         image: Image
         legend: Legend
         img_alt: Alt
       question_audio:
         audio: Audio  
+        description: Legend
+        audio_description: Audio Description
       question_item:
         img_alt: Alt
         item_image: Image
@@ -3170,6 +3174,9 @@ en_US:
       img_alt: 'Alt '
       image_content_type: 'Type of file '
       image_file_size: "File size " 
+    question_audios:
+      audio_description: "Audio Description "  
+      description: "Audio Legend "  
   questions:
     index:
       title: Questions bank (%{count} found)
@@ -3204,6 +3211,11 @@ en_US:
       used_at_exams: Used at exams
       none: No question found
       order: Order
+      control_audio: 'Speed: '
+      up_speed: 'Increase audio playback speed'
+      up_down: 'Lowers audio playback speed'
+      hide: "- Text version"
+      show: "+ Text version" 
     question:
       preview: Preview
       public: Public
@@ -3243,6 +3255,8 @@ en_US:
         add_audio: Add/update audio
         comment: Comment
         alt: Alt
+        description: Description/Subtitle
+        audio_description: Audio Description
         choose_correct: '(Check to indicate item as correct)'
         remove: Remove item
         comments: Show/Hide comment
@@ -3266,7 +3280,8 @@ en_US:
         alt_desc: 'Alt: Mandatory description to accessibility (disabled people)'
         add_image: Add/update image
       audio:
-        add_audio: Add/update audio  
+        add_audio: Add/update audio
+        aud_desc: 'Alt: Mandatory description to accessibility (disabled people)'  
     labels:
       labels: 'labels: '
     error:

@@ -128,7 +128,6 @@
         width: 600px;
         background-color: #CBD7E4;
         margin-bottom: 10px;
-        margin-bottom: 10px;
         img, .image{
           margin-left: -15px;
           margin-top: -15px;
@@ -147,37 +146,54 @@
     }
     .question_audios {
       text-align: center;
+      margin-left: 1px;
 
       #question_audio{
-        max-width: 200px;
-        max-height: 30px;
+        max-width: 150px;
+        max-height: 25px;
       }
-
+      .hide{
+        display: none;
+      }
       .audio {
-        padding: 15px 15px 0 15px;
+        padding: 10px 0 0 10px;
         display: inline-block;
-
-      }
-      td.audio{
-        display: block;
-        text-align: left;
-        width: 20px;
-        margin-bottom: 10px;
-        margin-bottom: 10px;
+        
+        a i{
+          margin-bottom: 30px;
+          display: inline-block;
+          vertical-align: middle;
+        }
         .audio{
-          margin-left: -15px;
+          text-align: left;      
+        }
+      }
+      td.audio.legend{
+        display: block;
+        text-align: center;
+        width: 620px;
+        margin-bottom: 10px;
+        background-color: #CBD7E4;
+        .audio{
+          margin-left: -20px;
           margin-top: -15px;
           margin-bottom: -5px;
+          width: 57%;
         }
-        .audio{
-          width: 50%;
+        .legend{
+          margin-top: -15px;
+          width: 43%;
+          display: inline-block;
+          text-align: center;
+          vertical-align: top;
         }
-        
+        #text, #hide{
+          display: none;
+        }
       }
     }
 
   }
-
   .question_items{
     padding: 10px 0px 10px 15px;
 
@@ -188,6 +204,10 @@
           display: inline-block;
         }
       }
+    }
+
+    #text, .hide{
+      display: none;
     }
 
     #item_image, .item_checkbox img{
@@ -215,6 +235,19 @@
     
     .hit{
       color:#0B610B;
+    }
+    .audio_description{
+      padding: 5px 2px 5px 2px;
+      margin-bottom: 10px;
+      width: 200px;
+      font-size: 12px;
+      display: inline-block;
+      text-align: center;
+      vertical-align: top;
+      background-color: #CBD7E4;
+    }
+    #text{
+      color: #4c4a4a;
     }
   }
 

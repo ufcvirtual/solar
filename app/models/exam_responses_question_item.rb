@@ -33,4 +33,12 @@ class ExamResponsesQuestionItem < ActiveRecord::Base
   def item_audio
     question_item.item_audio
   end
+
+  def audio_description
+    question_item.audio_description
+  end
+
+  def audio_description?
+    question_item.audio_description?
+  end
 end

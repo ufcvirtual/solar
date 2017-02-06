@@ -51,6 +51,9 @@
                 = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_audio_item_tmp(this)'
 
               = link_to_function t('questions.form.items.add_audio'), 'add_file(this)', class: 'btn btn_main add_file'
+            .info
+              = i.input :audio_description, as: :text, label: t('questions.form.items.audio_description')
+              = i.label t('questions.form.audio.aud_desc'), class: 'alt'
               
     -else
       - count += 1

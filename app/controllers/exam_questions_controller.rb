@@ -33,7 +33,11 @@ class ExamQuestionsController < ApplicationController
         redirect_to exam_questions_path(exam_id: @exam_question.exam_id, allocation_tags_ids: at_ids)
       end
     else
-      render json: { success: false, alert: @exam_question.errors.full_messages.join(', ') }, status: :unprocessable_entity
+      @errors = []
+      @exam_question.errors.each do |attribute, erro|
+        @errors << t(attribute) + erro
+      end  
+      render json: { success: false, alert: @errors.join(', ')}, status: :unprocessable_entity
     end
 
   rescue CanCan::AccessDenied
@@ -99,6 +103,7 @@ class ExamQuestionsController < ApplicationController
     @question_item.item_audio_content_type = nil
     @question_item.item_audio_file_size = nil
     @question_item.item_audio_updated_at = DateTime.now
+    @question_item.audio_description = nil
 
     if @question_item.save
       render json: { success: true, notice: t('questions.form.items.info_remove_audio') }
@@ -360,10 +365,10 @@ class ExamQuestionsController < ApplicationController
       :exam_id, :score, :order,
       question_attributes: [
         :id, :name, :enunciation, :type_question, 
-        question_items_attributes: [:id, :item_image, :value, :description, :_destroy, :comment, :img_alt, :item_audio],
+        question_items_attributes: [:id, :item_image, :value, :description, :_destroy, :comment, :img_alt, :item_audio, :audio_description],
         question_images_attributes: [:id, :image, :legend, :img_alt, :_destroy],
         question_labels_attributes: [:id, :name, :_destroy],
-        question_audios_attributes: [:id, :audio, :_destroy],
+        question_audios_attributes: [:id, :audio, :description, :audio_description, :_destroy],
       ]
     )
   end

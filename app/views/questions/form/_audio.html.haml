@@ -16,6 +16,9 @@
 
         .info
           = aud.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
+          = aud.input :audio_description, as: :text
+          = aud.input :description
+          = aud.label t('.aud_desc'), class: 'alt'
     -else
       - @count += 1
 

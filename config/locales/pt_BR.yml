@@ -313,6 +313,12 @@ pt_BR:
         comment: Comentário
       question_audios:
         audio: Áudios  
+        description: Legenda
+        audio_description: Áudio Descrição
+      question_audio:
+        audio: Áudios  
+        description: Legenda 
+        audio_description: Áudio Descrição  
       question_item:
         img_alt: Alt
         item_image: Imagem
@@ -3409,6 +3415,9 @@ pt_BR:
       img_alt: 'Alt '
       image_content_type: 'Tipo do arquivo '
       image_file_size: "Arquivo muito grande, " 
+    question_audios:
+      audio_description: "Áudio Descrição "  
+      description: "Áudio Legenda "
   questions:
     index:
       title: Banco de questões (%{count} encontradas)
@@ -3443,6 +3452,11 @@ pt_BR:
       used_at_exams: Usada em provas
       none: Nenhuma questão encontrada
       order: Ordem
+      control_audio: 'Velocidade: '
+      up_speed: 'Aumenta a velocidade de reprodução do Áudio'
+      up_down: 'Diminuir a velocidade de reprodução do Áudio'
+      hide: "- Versão textual"
+      show: "+ Versão textual" 
     question:
       preview: Visualização
       public: Pública
@@ -3482,6 +3496,8 @@ pt_BR:
         add_audio: Adicionar/alterar audio
         comment: Comentário
         alt: Alt
+        description: Descrição/Legenda
+        audio_description: Áudio Descrição
         choose_correct: '(Marque para indicar o item como correto)'
         remove: Remover item
         comments: Exibir/Ocultar comentário
@@ -3506,6 +3522,7 @@ pt_BR:
         add_image: Adicionar/alterar imagem
       audio:
         add_audio: Adicionar/alterar áudio
+        aud_desc: 'Se houver algum deficiente auditivo na turma, por favor realizar a  áudio descrição de modo que este aluno não seja prejudicado.'
     labels:
       labels: 'palavras-chave: '
     error:

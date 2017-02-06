@@ -12,6 +12,8 @@ class QuestionItem < ActiveRecord::Base
 
   validates :img_alt, presence: true, if: '(!item_image_file_name.blank? && img_alt.blank?)'
 
+  validates :audio_description, presence: true, if: '(!item_audio_file_name.blank?)'
+
   has_attached_file :item_image,
                     styles: { small: '120x120'},
                     path: ':rails_root/media/questions/items/:id_:basename.:extension',
