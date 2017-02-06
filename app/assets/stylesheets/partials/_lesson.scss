@@ -37,7 +37,7 @@
   border: none;
   overflow-x: hidden;
   overflow-Y: hidden;
-  background-color: #eee;
+  background-color: $high_contrast_background_color;
 }
 
 #lesson_header {
@@ -48,8 +48,8 @@
   min-height: 24px;
   margin: 0px;
   padding: 6px 0px 7px 8px;
-  background-color: #1d4786;
-  color: #fff;
+  background-color: $high_contrast_background_color;
+  color: $high_contrast_font_color;
   select{
     margin-left: 3px;
     margin-right: 3px;
@@ -57,14 +57,14 @@
   }
   .lesson_status{
     float: right;
-    color: white;
+    color: $high_contrast_font_color;
     width: 131px;
     margin-top: -23px;
     .draft{
-      background-color: #B41717;
+      background-color: $high_contrast_background_color;
     }
     .released{
-      background-color: #7DC43F;
+      background-color: $high_contrast_background_color;
     }
     .draft, .released{
       padding: 11px 10px 9px 4px;
@@ -164,15 +164,15 @@
 
 .test_lesson{
   display: inline-block;
-  color: $light_grey;
+  color: $high_contrast_font_color;
 }
 
 .lesson_portlet .module{
-  background-color: $background_grey;
+  background-color: $high_contrast_background_color;
   font-family: 'Ubuntu Condensed';
   padding: 4px;
-  border-bottom: 1px solid #CCC;
-  color: $text_grey;
+  border-bottom: 1px solid $high_contrast_border_color;
+  color: $high_contrast_font_color;
   font-size: 11pt;
 }
 
@@ -186,7 +186,7 @@
   width: 775px;
   display: block;
   padding: 5px;
-  border: 1px dashed #808080;
+  border: 1px dashed $high_contrast_border_color;
   text-align: center;
 }
 

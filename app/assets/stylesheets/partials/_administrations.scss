@@ -6,7 +6,7 @@
     vertical-align: top;
   }
   .block_photo {
-    border: 1px solid #dedede;
+    border: 1px solid $high_contrast_border_color;
     margin-top: 3px;
   }
   div {
@@ -22,7 +22,7 @@ tr.lines {
   }
 }
 .border {
-  border-top: 1px solid #dedede;
+  border-top: 1px solid $high_contrast_border_color;
 }
 
 .added-permission {
@@ -38,7 +38,7 @@ tr.lines {
 }
 
 .edition-enabled {
-  background-color: #fefae6;
+  background-color: $high_contrast_background_color;
 }
 
 label.permissions-search-text {
@@ -68,39 +68,39 @@ table.tb_allocation .dropdown ul li a{
     position: relative;
     text-align: center;
     top: -6px;
-    color: #dca727;
+    color: $high_contrast_link_color;
   }
 }
 
 .title-warning {
-  background-color: #E8EFF6;
-  color: #4B4B4B;
+  background-color: $high_contrast_background_color;
+  color: $high_contrast_font_color;
   padding: 7px 5px 7px 5px;
   font-size: 10pt;
   margin-bottom: 15px;
 }
 .comment-blue {
-  background-color: #E8EFF6;
+  background-color: $high_contrast_background_color;
   border-radius: 8px;
-  color: #4B4B4B;
+  color: $high_contrast_font_color;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
   margin-bottom: 10px;
   width: 450px;
 }
 .comment-red {
-  background-color: #fff6f6;
+  background-color: $high_contrast_background_color;
   border-radius: 8px;
-  color: #4B4B4B;
+  color: $high_contrast_font_color;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
   margin-bottom: 10px;
   width: 450px;
 }
 .comment-green {
-  background-color: #F5FFE3;
+  background-color: $high_contrast_background_color;
   border-radius: 8px;
-  color: #4B4B4B;
+  color: $high_contrast_font_color;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
   margin-bottom: 10px;

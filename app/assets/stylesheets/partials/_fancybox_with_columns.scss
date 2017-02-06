@@ -2,7 +2,7 @@
   .block_content{
     max-height: 350px;
     overflow: auto;
-    background-color: white;
+    background-color: $high_contrast_background_color;
   }
   
   table{
@@ -24,7 +24,7 @@
     float: left;
     margin-left: 40px;
     td i{
-      color: #DC5869;
+      color: $high_contrast_background_color;
     }
   }
 
@@ -63,8 +63,8 @@
       width: auto;
       word-wrap: break-word;
       padding: 5px;
-      background-color: $color_main_light;
-      border: 1px solid #CBCED1;
+      background-color: $high_contrast_background_color;
+      border: 1px solid $high_contrast_border_color;
       cursor: pointer;
       .buttons{
         float: right;
@@ -76,7 +76,7 @@
           line-height: 0.9;
         }
         .cant_remove{
-          color: #C0C0C0;
+          color: $high_contrast_font_color;
         }
       }
       form{
@@ -93,18 +93,18 @@
       }
     }
     .selected{
-      background-color: #FDFBE9;
-      border: 1px solid #F9E993; 
+      background-color: $high_contrast_background_color;
+      border: 1px solid $high_contrast_border_color; 
     }
     .disabled{
-      background-color: #F7F7F7;
-      border: 1px solid #dcdcdc;
-      color: #434343;
+      background-color: $high_contrast_background_color;
+      border: 1px solid $high_contrast_border_color;
+      color: $high_contrast_font_color;
       font-family: Ubuntu;
       font-size: 13px;
     }
     .disabled.selected{
-      background-color: #F0F0F0;
+      background-color: $high_contrast_background_color;
     }
   }  
 

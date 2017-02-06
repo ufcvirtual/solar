@@ -153,8 +153,8 @@ form #cell_phone{
 
 select[disabled] {
   color: red;
-  border: 1px solid #D0D0D0;
-  background-color: #F2F2F2;
+  border: 1px solid $high_contrast_border_color;
+  background-color: $high_contrast_background_color;
 }
 
 .radio_options label{ // TODO: usado apenas em editions

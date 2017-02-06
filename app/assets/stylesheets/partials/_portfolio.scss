@@ -15,7 +15,7 @@
   word-wrap: break-word;
   padding: 5px 5px 0px 5px;
   min-height: 27px;
-  background-color: $color_main_light;
+  background-color: $high_contrast_background_color;
 }
 
 .comments_files {
@@ -39,7 +39,7 @@
   margin-right: 8px;
   margin-left: 10px;
   float: right;
-  color: #888;
+  color: $high_contrast_font_color;
 }
 
 .assignment_comment_date {
@@ -74,7 +74,7 @@
   text-align: left;
   border-bottom: 1px solid;
   border-bottom-color: $color_main;
-  background-color: white;
+  background-color: $high_contrast_background_color;
 }
 
 .comments_files_div .btn {

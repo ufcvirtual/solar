@@ -11,7 +11,7 @@
   padding-left: 5px;
   padding-right: 5px;
   cursor: pointer;
-  background-color: #fbb03b;
+  background-color: $high_contrast_background_color;
 }
 
 #mysolar_chat_contatos {
@@ -19,8 +19,8 @@
 }
 
 #mysolar_chat_list {
-  border: 1px solid #bbb;
-  background-color: #fff;
+  border: 1px solid $high_contrast_border_color;
+  background-color: $high_contrast_background_color;
   display: none;
 }
 
@@ -34,5 +34,5 @@
   width: 87%;
   border: none;
   height: 1px;
-  background-color: #bbb;
+  background-color: $high_contrast_background_color;
 }

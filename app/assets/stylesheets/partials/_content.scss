@@ -7,7 +7,7 @@
   display: inline-block;
   zoom: 1;
   *display: inline;
-  background-color: #fff;
+  background-color: $high_contrast_font_color;
 }
 
 #block_locale {
@@ -17,7 +17,7 @@
   clear: both;
 
   a {
-    color: #666;
+    color: $high_contrast_link_color;
   }
 }
 
@@ -54,7 +54,7 @@ div.block_module, div.block_exam{
     position: relative !important;
     display: block !important;
     border-bottom: 2px solid;
-    border-bottom-color: #003e7a;
+    border-bottom-color: $high_contrast_border_color;
   }
   .block_buttons{
     display: inline-block;
@@ -66,7 +66,7 @@ div.block_module, div.block_exam{
     font-size: 12px !important;
 
     .title label{
-      color: #000;
+      color: $high_contrast_font_color;
     }
   }
 }
@@ -95,7 +95,7 @@ div.block_module, div.block_exam{
   margin: 0;
   font-size: 12pt;
   font-weight: normal;
-  color: #000;
+  color: $high_contrast_font_color;
 }
 
 /**
@@ -153,25 +153,21 @@ div.legend h1 {
     border: none;
     font-size: 9pt;
     padding: 4px 0 0 4px;
-    color: #666666;
+    color: $high_contrast_font_color;
     position: absolute;
     right: 0;
     bottom: 5px;
   }
   > .block_content_text:hover, > .block_content_text:hover select {
-    color: #000000;
+    color: $high_contrast_link_color;
   }
   select {
     font-size: 9pt;
     border: none;
-    color: #666666;
+    color: $high_contrast_font_color;
     max-width: 145px;
   }
 }
-
-/*#page_title > .block_content_text:hover {
-    border: 1px solid #666666;
-}*/
 
 /**
 * Titulo do bloco
@@ -182,7 +178,7 @@ div.block_title {
   border-bottom-color: $color_main_text;
   padding-bottom: 1px !important;
   position: relative;
-  overflow: hidden; // FIXME: em outro local estava definido como auto, verificar se está ok assim
+  overflow: hidden; 
   height: 26px;
   vertical-align: bottom;
 
@@ -223,7 +219,7 @@ div.block_title {
 }
 
 /* icone que fica ao lado do titulo do bloco */
-.block_title_icon { // FIXME: parece ser utilizado em uma única página, verificar se é mesmo necessário
+.block_title_icon { 
   margin-right: 5px;
   margin-bottom: 2px;
   width: 18px;
@@ -267,7 +263,7 @@ div.block_title {
 .block_content_line {
   /*    font-size: 10pt;*/
   border-bottom: 1px solid;
-  border-bottom-color: #CCCCCC;
+  border-bottom-color: $high_contrast_border_color;
   padding: 6px 10px;
 }
 
@@ -278,13 +274,13 @@ div.block_title {
 .block_content_gray {
   font-size: 8pt;
   padding-right: 5px;
-  color: #999;
+  color: $high_contrast_font_color;
 }
 
 .block_content_text, .block_content_toolbar.block_content_text {
   /*    font-size: 10pt;*/
   padding: 6px 10px;
-  color: #000;
+  color: $high_contrast_font_color;
 }
 
 .block_title_button img {
@@ -292,8 +288,8 @@ div.block_title {
 }
 
 .block_messages_opt {
-  color: #d0d0d0;
-  background-color: $color_main_light;
+  color: $high_contrast_font_color;
+  background-color: $high_contrast_background_color;
 }
 
 .bibliography_volume, .bibliography_publication_year{
@@ -377,8 +373,8 @@ form .right_buttons {
   position: relative;
   right: 8px;
   bottom: 3px;
-  color: white;
-  background-color: #003E7A;
+  color: $high_contrast_font_color;
+  background-color: $high_contrast_background_color;
   border-radius: 4px;
   padding: 0px 2px;
   font-family: bold;
@@ -392,7 +388,7 @@ a.disabled {
 /*Steps*/
 
 #steps {
-  background-color: darken(#F5F5F5, 5%);
+  background-color: darken($high_contrast_background_color, 5%);
   width: 525px;
   margin: 0 auto;
   padding: 0;
@@ -410,11 +406,11 @@ a.disabled {
       text-align: center;
       font-family: Ubuntu;
       font-size: 12px;
-      color:#919191;
+      color:$high_contrast_font_color;
     }
     li.active{
-      color:#004B81;
-      background-color: white;
+      color:$high_contrast_link_color;
+      background-color: $high_contrast_background_color;
       border-radius: 5px;
       box-shadow: 0px 0px 4px rgba(240, 207, 101, 1);
     }

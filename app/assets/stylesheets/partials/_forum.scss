@@ -80,7 +80,7 @@ div.forum_navigation {
 .forum_post_icon {
   border-right: 2px solid;
   border-right-color: $color_main;
-  background-color: #ffffff;
+  background-color: $high_contrast_background_color;
   vertical-align: top;
   padding-right: 5px;
   width: 40px;
@@ -95,7 +95,7 @@ div.forum_navigation {
   .forum_post_icon {
     padding-left: 5px;
 
-    img { // FIXME: antes ele nao ficava explicitamente dentro de forum_post_content, verificar funcionamento
+    img { 
       width: 40px;
       height: 40px;
     }
@@ -117,11 +117,11 @@ div.forum_navigation {
 }
 
 .forum_post_head.new, .forum_post_icon.new{
-  background-color: #E9F3FF;
+  background-color: $high_contrast_background_color;
 }
 
 .forum_post_wrapper.new, .forum_post_attachment.new{
-  background-color: #b0cce8; 
+  background-color: $high_contrast_background_color; 
 }
 
 .forum_post_author {
@@ -161,7 +161,7 @@ div.forum_navigation {
 
 .forum_post_attachment {
   padding: 5px 0 5px 5px;
-  background-color: $color_main_light;
+  background-color: $high_contrast_background_color;
 
   h3 {
     padding-bottom: 0px;

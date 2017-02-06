@@ -1,6 +1,6 @@
 .expand.icon-ellipsis{
   color: white;
-  background-color: #7c7c7c;
+  background-color: $high_contrast_border_color;
   border-radius: 3px;
   padding-top: 0;
   padding-bottom: 0;
@@ -13,7 +13,7 @@
 
 .compress.icon-arrow-up-triangle{
   color: white;
-  background-color: #7c7c7c;
+  background-color: $high_contrast_background_color;
   border-radius: 3px;
   font-size: 13px;
   display: inline;

@@ -2,7 +2,7 @@
   padding-top: 3px;
   padding-bottom: 3px;
   font-weight: bold;
-  color: $text_grey;
+  color: $high_contrast_font_color;
  }
 
 .digital_classes {
@@ -29,7 +29,7 @@
 
   i.remove_file{
     padding: 5px;
-    color: #DC5869;
+    color: $high_contrast_font_color;
     cursor: pointer;
   }
 }

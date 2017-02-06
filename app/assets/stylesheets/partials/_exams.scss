@@ -50,7 +50,7 @@
     font-family: 'PT Sans';
     margin: 0px;
     padding: 0px 0px 0px 5px;
-    color: $text_grey;
+    color: $high_contrast_font_color;
     float: left;
   }
 
@@ -82,9 +82,9 @@
   .block_content {
     padding: 5px;
     border-bottom: solid 1px;
-    border-bottom-color: #D0D0D0;
+    border-bottom-color: $high_contrast_border_color;
     border-top: solid 1px;
-    border-top-color: #D0D0D0;
+    border-top-color: $high_contrast_border_color;
     min-height: 28px;
     display: block;
 
@@ -100,7 +100,7 @@
 
       .number {
         padding-right: 5px;
-        color: $text_blue;
+        color: $high_contrast_font_color;
         width: auto;
         vertical-align:top;
       }
@@ -119,14 +119,14 @@
         display: inline-block;
 
         #question_image {
-          border: solid 2px #CDD6E3;
+          border: solid 2px $high_contrast_border_color;
         }
       }
       td.image.legend{
         display: block;
         text-align: left;
         width: 600px;
-        background-color: #CBD7E4;
+        background-color: $high_contrast_background_color;
         margin-bottom: 10px;
         margin-bottom: 10px;
         img, .image{
@@ -196,7 +196,7 @@
     }
 
     #item_image{
-      border: solid 2px #CDD6E3;
+      border: solid 2px $high_contrast_border_color;
     }
 
     label input{
@@ -205,7 +205,7 @@
 
     label{
       display: inline;
-      color: $text_blue;
+      color: $high_contrast_font_color;
       font-family: 'PT Sans', sans-serif;
     }
 
@@ -214,14 +214,14 @@
     }
     
     .hit{
-      color:#0B610B;
+      color:$high_contrast_font_color;
     }
   }
 
   .message_div_navigation {
     text-align: center;
     padding: 0.25*$gutter;
-    color: #B4B3B7;
+    color: $high_contrast_background_color;
     font-size: 13pt;
 
 
@@ -229,7 +229,7 @@
       margin-top: 5px;
     }
     .active{
-      color: $text_blue;
+      color: $high_contrast_font_color;
     }
   }
 
@@ -251,7 +251,7 @@
 #exam_form{
   .description, .description p{
     font-size: 11px;
-    color: $text_grey;
+    color: $high_contrast_font_color;
     text-align: left;
   }
 
@@ -280,7 +280,7 @@
     width: 775px;
     display: block;
     padding: 5px;
-    border: 1px dashed #808080;
+    border: 1px dashed $high_contrast_border_color;
     text-align: center;
   }
 

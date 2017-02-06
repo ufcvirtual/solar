@@ -1,0 +1,36 @@
+$high_contrast_link_color: #FBBD0A;
+$high_contrast_font_color: #ffffff;
+$high_contrast_border_color: $high_contrast_font_color;
+$high_contrast_background_color: #000;
+
+$color_main: $high_contrast_font_color;
+$color_main_light: desaturate(lighten($color_main, 74.5%),20%);
+$color_main_light_highlight: adjust_color($color_main, $lightness: 73%);
+
+$color_main_medium: lighten(desaturate($color_main, 70%),30%);
+
+$color_main_text: $color_main;
+
+$color_contrast: #F9DB43;
+$color_contrast_light: adjust_color($color_contrast, $lightness: 33%);
+$color_contrast_text: #dca727;
+
+$text_blue: $high_contrast_font_color;
+$text_grey: #7C7C7C;
+$font_color: $high_contrast_font_color;
+$background_blue: $high_contrast_background_color;
+$background_grey: $high_contrast_background_color;
+$border: $high_contrast_border_color;
+
+$light_grey: #A3A3A3;
+
+hr {
+  border-top-color: $border;
+  border-bottom-color: #ffffff;
+}
+
+$label_color: $color_main_text;
+
+/* Facebook */
+$facebook_main_color: #3b5c9a;
+$color_disabled: #777777;

@@ -5,7 +5,7 @@
 */
 th {
   border-bottom: 1px solid;
-  border-bottom-color: #B4B2B1;
+  border-bottom-color: $high_contrast_border_color;
 }
 
 th, tr.lines td {
@@ -15,26 +15,26 @@ th, tr.lines td {
 
 tbody tr.lines {
   border-bottom: 1px solid;
-  border-bottom-color: #B4B2B1;
-  background-color: $color_main_light;
+  border-bottom-color: $high_contrast_border_color;
+  background-color: $high_contrast_background_color;
 
   &:hover {
-    background-color: $color_main_light_highlight; /* #FFF5ED*/
+    background-color: $high_contrast_background_color;
   }
 }
 
 tbody tr.lines.active {
   border-bottom: 1px solid;
-  border-bottom-color: #B4B2B1;
-  background-color: $color_contrast_light;
+  border-bottom-color: $high_contrast_border_color;
+  background-color: $high_contrast_background_color;
 
   &:hover {
-    background-color: #fffbd1;
+    background-color: $high_contrast_background_color;
   }
 }
 
 tbody tr.lines.period_ended:hover {
-  background-color: #f1f1f1;
+  background-color: $high_contrast_background_color;
 }
 
 tr.lines td img {
@@ -50,7 +50,7 @@ table.tb_list {
   th {
     /*    font-weight: bold;*/
     // white-space: nowrap;
-    background-color: white;
+    background-color: $high_contrast_background_color;
   }
 
   a {
@@ -75,7 +75,7 @@ table.tb_list {
   }
 
   tbody {
-    background-color: $color_main_light;
+    background-color: $high_contrast_background_color;
   }
 
   tbody tr:last-child {
@@ -113,7 +113,7 @@ table.user-courses tbody.offers {
     color: #003e7a;
   }
   .offer:focus {
-    background-color: $color_main_light_highlight;
+    background-color: $high_contrast_background_color;
   }
 }
 
@@ -133,7 +133,7 @@ table .file_data_icon {
 }
 
 tr.post_content {
-  background-color: $color_main_light;
+  background-color: $high_contrast_background_color;
 }
 
 /**
@@ -142,10 +142,10 @@ tr.post_content {
 /* header */
 .tablesorter-default th,
 .tablesorter-default thead td {
-  border-bottom: rgb(180, 178, 177) 1px solid;
+  border-bottom: $high_contrast_border_color 1px solid;
   /*font: bold;
   color: #000;
-  background-color: #fff;
+  background-color: $high_contrast_background_color;
   border-collapse: collapse;
   padding: 0;*/
 }
@@ -168,7 +168,7 @@ tr.post_content {
 .tablesorter-default thead .tablesorter-headerSortUp,
 .tablesorter-default thead .tablesorter-headerAsc {
   background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
-  background-color: $color_contrast_light;
+  background-color: $high_contrast_background_color;
   border-bottom: $color_contrast 1px solid;
   color: #000;
 }
@@ -177,7 +177,7 @@ tr.post_content {
 .tablesorter-default thead .tablesorter-headerSortDown,
 .tablesorter-default thead .tablesorter-headerDesc {
   background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
-  background-color: $color_contrast_light;
+  background-color: $high_contrast_background_color;
   border-bottom: $color_contrast 1px solid;
   color: #000;
 }

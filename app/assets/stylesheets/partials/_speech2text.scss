@@ -1,9 +1,9 @@
 .speech2text i{
   font-size: 14pt;
-  color: #828282;
+  color: $high_contrast_font_color;
 }
 .speech2text i:hover{
-  color: #ee5f5b;
+  color: $high_contrast_link_color;
 }
 .speech2text .btn{
   margin-top: 4px;

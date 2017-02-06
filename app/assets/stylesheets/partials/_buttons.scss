@@ -2,12 +2,12 @@
 @import "compass/css3/images";
 @import "compass/css3/box-shadow";
 
-$btn-color: #ffffff;
-$btn_main-color: #005cc0;
-$btn_caution-color: #ee5f5b;
+$btn-color: $high_contrast_link_color;
+$btn_main-color: $high_contrast_font_color;
+$btn_caution-color: #c30;
 $btn-width: 54px; 
 $btn-height: 28px;
-$btn-orange: #ffe6cc;
+$btn-orange: $high_contrast_link_color;
 
 /* codigo para remover padding extra que o firefox adiciona automaticamente */
 button::-moz-focus-inner {
@@ -27,7 +27,7 @@ input::-moz-focus-inner {
     font-size: 11px; /* original: 14px */
     line-height: 18px; /* original: 20px */
     text-decoration: none !important;
-    color: #333333;
+    color: $high_contrast_background_color;
     text-align: center;
     text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
     vertical-align: middle;
@@ -36,7 +36,7 @@ input::-moz-focus-inner {
     @include filter-gradient($btn-color, darken($btn-color,7%)); /* IE */
     @include background-image(linear-gradient($btn-color, darken($btn-color,7%))); /* CSS3 */
     background-repeat: repeat-x;
-    border: 1px solid #cccccc;
+    border: 1px solid $high_contrast_border_color;
     *border: 1px;
     border-color: #e6e6e6 #e6e6e6 #bfbfbf;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
@@ -108,7 +108,7 @@ input::-moz-focus-inner {
 }
 
 .btn i {
-    color: #000000;
+    color: $high_contrast_link_color;
     @include opacity(0.5);
     filter:alpha(opacity=50);
 }
@@ -137,7 +137,7 @@ input::-moz-focus-inner {
 }
 
 .btn:focus {
-    outline: thin dotted #333;
+    outline: thin dotted $high_contrast_font_color;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;
 }
@@ -158,7 +158,7 @@ input::-moz-focus-inner {
 }
 
 .btn_main {
-    color: #ffffff;
+    color: $high_contrast_link_color;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
     background: $btn_main-color; /* Old browsers */
     @include filter-gradient($btn_main-color, darken($btn_main-color, 10%)); /* IE */
@@ -168,7 +168,7 @@ input::-moz-focus-inner {
 }
 
 .btn_main i {
-    color: #ffffff;
+    color: $high_contrast_link_color;
     @include opacity(0.85);
     filter:alpha(opacity=85);
 }

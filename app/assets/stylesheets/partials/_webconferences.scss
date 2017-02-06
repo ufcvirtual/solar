@@ -48,10 +48,10 @@ table.webconferences{
       [class^='icon-']:not(.evaluate){
         font-size: 18px;
         padding-top: 7px;
-        color: #828282;
+        color: $high_contrast_font_color;
       }
       [class^='icon-']:hover{
-        color: #333333;
+        color: $high_contrast_font_color;
       }
     }
   }
@@ -64,13 +64,13 @@ table.webconferences{
     }
     text-align: center;
     td.profile{
-      color: #989898;
+      color: $high_contrast_font_color;
       font-size: 9pt;
       font-style: italic;
       padding-right: 0;
     }
     tr.evaluative_form{
-      background-color: $color_main_light_highlight;
+      background-color: $high_contrast_background_color;
       height: 70px;
       .left{
         float: left;
@@ -97,6 +97,6 @@ table.webconferences{
 .title-warning + .webconference_access{
   .text_none{
     border-top: solid 1px;
-    border-top-color: #D0D0D0;
+    border-top-color: $high_contrast_border_color;
   }
 }
