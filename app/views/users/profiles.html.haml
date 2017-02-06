@@ -27,18 +27,18 @@
 :javascript
   $(function(){
      $('#request_profile').call_fancybox({
-            afterShow : () => {
+            afterShow: function(){
               $('#lightBoxDialogTitle').attr("tabindex", "0");
               $('#lightBoxDialogTitle').focus();
             },
-            afterClose : () => {
+            afterClose: function(){
               $("#request_profile").focus();
             }
       });    
     
     var flag = false;
 
-    $('body').on('keyup',(e) => {
+    $('body').on('keyup',function(e) {
         var code = e.keyCode || e.which;
         if (code == '9') {
 

@@ -1,11 +1,11 @@
 $(function(){ 
 
   $('[id^="enrollment_info"]').call_fancybox({
-    afterShow : () => {
+    afterShow: function(){
               $('#lightBoxDialogTitle').attr("tabindex", "0");
               $('#lightBoxDialogTitle').focus();
             },
-    afterClose : () => {
+    afterClose: function(){
       $('.enrollment_list').attr("tabindex", "0");
       $(".enrollment_list").focus();
     }
@@ -13,7 +13,7 @@ $(function(){
 
   var flag = false;
 
-  $('body').on('keyup',(e) => {
+  $('body').on('keyup', function(e) {
       var code = e.keyCode || e.which;
       if (code == '9') {
 

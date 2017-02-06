@@ -119,11 +119,11 @@
       minWidth: '50%',
       closeBtn : true,
       height: 'auto',
-      afterShow : () => {
+      afterShow: function(){
         $('.fancybox-inner').attr("tabindex", "0");
         $('.fancybox-inner').focus();
       },
-      afterClose : () => {
+      afterClose: function(){
         $(".link_pre_exam").focus();
       }
     });
@@ -133,18 +133,18 @@
       minHeight: '50%',
       height: 'auto',
       closeBtn : true,
-      afterShow : () => {
+      afterShow: function(){
         $('.fancybox-inner').attr("tabindex", "0");
         $('.fancybox-inner').focus();
       },
-      afterClose : () => {
+      afterClose: function(){
         $(".open-exam-result").focus();
       }
     });
 
     var flag = false;
 
-    $('body').on('keyup',(e) => {
+    $('body').on('keyup',function(e) {
         var code = e.keyCode || e.which;
         if (code == '9') {
 
