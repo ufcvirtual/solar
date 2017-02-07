@@ -207,7 +207,7 @@
   font-size: 11px;
   margin-right: 2px;
   float: right;
-  color: #4b6380;
+  color: $high_contrast_font_color;
 }
 
 .agenda_left {
@@ -273,7 +273,7 @@
 
 .agenda_ajax {
   font-size: 9pt;
-  color: #4B6380;
+  color: $high_contrast_font_color;
 }
 
 .agenda_left_month_year .year_left {

@@ -7,7 +7,7 @@
   display: inline-block;
   zoom: 1;
   *display: inline;
-  background-color: $high_contrast_font_color;
+  background-color: $high_contrast_background_color;
 }
 
 #block_locale {
@@ -61,7 +61,7 @@ div.block_module, div.block_exam{
   }
 
   .groups_tags{
-    background-color: rgb(243, 243, 243);
+    background-color: $high_contrast_background_color;
     min-height: 28px;
     font-size: 12px !important;
 
@@ -231,7 +231,7 @@ div.block_title {
 * Bloco de conteúdo
 */
 .block_content {
-  background-color: $color_main_light;
+  background-color: $high_contrast_background_color;
   font-size: 10pt;
 
   > block_left {
@@ -300,7 +300,7 @@ div.block_title {
 * Barra de ferramentas
 */
 .block_content_toolbar {
-  background-color: rgb(232, 239, 246);
+  background-color: $high_contrast_background_color;
   border-bottom: 1px solid;
   border-bottom-color: rgba(0, 62, 122, 0.3);
   padding: 2px;

@@ -87,7 +87,7 @@ table.tb_list {
   }
 
   td.file_data_info {
-    color: #787878;
+    color: $high_contrast_font_color;
   }
 
   td.center, th.center{
@@ -95,7 +95,7 @@ table.tb_list {
   }
 
   td .title{
-    color: #21578B;
+    color: $high_contrast_font_color;
   }
 
   td .title-yellow{
@@ -103,14 +103,14 @@ table.tb_list {
   }
 
   thead tr.lines{
-    color: #6B6B6B;
+    color: $high_contrast_border_color;
   }
 }
 
 table.user-courses tbody.offers {
   .offer, .open-edx-class{
     cursor: pointer;
-    color: #003e7a;
+    color: $high_contrast_font_color;
   }
   .offer:focus {
     background-color: $high_contrast_background_color;

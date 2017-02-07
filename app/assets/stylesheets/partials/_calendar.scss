@@ -16,8 +16,8 @@
 
 .highlight-date-mark {
     a.ui-state-default {
-        background-color: $color_main_medium;
-        color: #fff;
+        background-color: #1793E6;
+        color: $high_contrast_background_color;
     }
 }
 .ui-helper-hidden-accessible { display: none; }
@@ -27,7 +27,7 @@
   font-size: 0.9em;
   width: 100%;
   padding-bottom: 2px;
-  background-color: $color_main_light;
+  background-color: $high_contrast_background_color;
   .ui-datepicker .ui-datepicker-next,
   .ui-datepicker .ui-datepicker-prev{
     margin-top: 0;
@@ -41,8 +41,8 @@
 
 /* cabecalho do calendario */
   .ui-datepicker-header {
-    background: #fff;
-    color: #000;
+    background: $high_contrast_background_color;
+    color: $high_contrast_font_color;
     height: 1.2em;
     padding: .3em;
     font-weight: bold;
@@ -70,7 +70,7 @@
   height: 15%;
   padding: 3px 8px 2px 8px;
   overflow: auto;
-  background: $color_main_light;
+  background: $high_contrast_background_color;
 }
 
 /* ... Component containers ... */
@@ -78,7 +78,7 @@
 /* corpo do calendario */
 .ui-datepicker-content {
     left: 0px;
-    color: #222222;
+    color: $high_contrast_font_color;
     padding-bottom: 3px; }
 
 .ui-datepicker-calendar {
@@ -88,7 +88,7 @@
 }
 
 #ui-datepicker-div{
-    background-color: #fff;
+    background-color: $high_contrast_background_color;
     padding-top: 5px;
     padding-bottom: 5px; 
     padding-left: 10px;
@@ -108,16 +108,16 @@
     /* ... Interaction Cues ... */
     /* celula ativa */
     .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
-        border: 1px solid $color_contrast;
-        background: $color_contrast_light;
+        border: 1px solid $high_contrast_border_color;
+        background: $high_contrast_background_color;
         font-weight: normal;
-        color: #000;
+        color: $high_contrast_font_color;
     }
 
     /* data atual */
     .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {
         // background: none;
-        color: $color_contrast_text;
+        color: $high_contrast_font_color;
         // border: none;
         font-weight: bold;
     }
