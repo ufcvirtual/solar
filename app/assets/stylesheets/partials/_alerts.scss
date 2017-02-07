@@ -1,11 +1,11 @@
 // Mensagens flash e alertas
 
 .alert {
-  color: #660000;
+  color: $alert_color;
 }
 
 .notice {
-  color: #2F4F2F;
+  color: $notice_color;
 }
 
 .warning {
@@ -27,25 +27,25 @@
   font-size: 12pt;
   min-height: 20px;
   &.notice {
-    background: url('/assets/notice.gif') no-repeat 5px center #f5ffec;
+    background: url('/assets/notice.gif') no-repeat 5px center $background_light_green;
   }
   &.alert {
-    background: url('/assets/alert.gif') no-repeat 5px center #fff6f6;
+    background: url('/assets/alert.gif') no-repeat 5px center $background_light_red;
   }
   &.warning {
-    background: url('/assets/warning.png') no-repeat 5px center #FFFFDE;
+    background: url('/assets/warning.png') no-repeat 5px center $warning_background;
   }
   &.blue_warning{
-    background: #E9F3FF;
+    background: $blue_warning_background;
     cursor: pointer;
     padding: 5px 10px 4px 10px;
     .icon-plus-circle{
-      color: #00448D;
+      color: $icon_color;
       vertical-align: top;
       margin-right: 4px;
     }
     .icon-arrow-up-thin, .icon-arrow-down-thin, .icon-arrow-right-thin, .icon-arrow-left-thin{
-      color: #00448D;
+      color: $icon_color;
       vertical-align: top;
       position: relative;
     }
@@ -71,7 +71,7 @@
 
 .sticky-float {
   .flash_message_wrapper {
-    background-color: rgba(255,255,255,0.8);
+    background-color: rgba($color_white, 0.8);
     width: 785px;
     z-index: 1000;
   }
@@ -96,7 +96,7 @@ label {
 .text_alert { // FIXME: verificar se é realmente necessário
   font-size: 10pt;
   width: auto;
-  color: #e64d4d;
+  color: $text_alert_color;
 }
 
 #undefined-sticky-wrapper{

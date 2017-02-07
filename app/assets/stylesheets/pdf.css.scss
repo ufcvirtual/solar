@@ -12,27 +12,27 @@
 @import "fonts/icons";
 
 .comment-blue {
-  background-color: #E8EFF6;
+  background-color: $background_dark_gray;
   border-radius: 8px;
-  color: #4B4B4B;
+  color: $comment_color;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
   margin-bottom: 10px;
   width: 450px;
 }
 .comment-red {
-  background-color: #fff6f6;
+  background-color: $background_light_red;
   border-radius: 8px;
-  color: #4B4B4B;
+  color: $comment_color;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
   margin-bottom: 10px;
   width: 450px;
 }
 .comment-green {
-  background-color: #F5FFE3;
+  background-color: $background_light_green;
   border-radius: 8px;
-  color: #4B4B4B;
+  color: $comment_color;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
   margin-bottom: 10px;
@@ -142,7 +142,7 @@
 	    .incorrect{
 	      color:#E03838;
 	    }
-	    
+
 	    .hit{
 	      color:#0B610B;
 	    }
@@ -198,7 +198,7 @@
 	  }
 
 	table td {
-		text-align:center; 
+		text-align:center;
     vertical-align:middle;
 	}
 }
@@ -371,7 +371,7 @@ td.new_after_evaluation{
     font-size: 10pt;
     padding: 5px;
     background-color: #e6f0fc;
-} 
+}
 
 .invisible {
     display: none;

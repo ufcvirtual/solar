@@ -116,7 +116,7 @@ select {
   /*    min-width: 180px;*/
   color: #222;
   background-color: #fff;
-  border-color: #dedede;
+  border-color: $border_color_another_gray;
 }
 
 input {
@@ -126,7 +126,7 @@ input {
   font-family: 'PT Sans', sans-serif;
   /*    font-size: 13px;*/
   color: #222;
-  border-color: #dedede;
+  border-color: $border_color_another_gray;
 }
 
 button {
@@ -146,7 +146,7 @@ textarea {
   font-size: 10pt;
   color: #222;
   background-color: #fff;
-  border-color: #dedede;
+  border-color: $border_color_another_gray;
 }
 
 #footer {

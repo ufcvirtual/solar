@@ -16,15 +16,14 @@ $text_gray: #7C7C7C;
 
 $font_color: #333;
 $border_color: #D0D0D0;
+$border_color_another_gray: #dedede;
 
 hr {
   border-top-color: $border_color;
   border-bottom-color: #ffffff;
 }
 
-$background_blue: #F5F8FB;
-$background_gray: #EFEFEF;
-
+$comment_color: #4B4B4B;
 $lesson_color: #A3A3A3;
 
 $event_color: #A3A3A3;
@@ -32,6 +31,55 @@ $border_event_list_color: $event_color;
 
 $label_color: $color_main_text;
 
+$color_black: black;
+$color_white: white;
+$color_light_gray: #888;
+
 /* Facebook */
 $facebook_main_color: #3b5c9a;
-$color_disabled: #777777;
+$color_disabled: #777;
+
+// administrations colors
+$added_permission_color: blue;
+$removed_permission_color: red;
+$permission_color: green;
+
+// background colors
+$background_blue: #F5F8FB;
+$background_gray: #EFEFEF;
+$background_dark_gray: #E8EFF6;
+$background_light_beige: #fefae6;
+$background_light_red: #fff6f6;
+$background_light_green: #F5FFE3;
+
+// Agendas colors
+$agenda_color: #4b6380;
+$event_assignment_background: #FCEBCA;
+$event_chat_background: #A7C1F0;
+$event_discussion_background: #CAFCCC;
+$event_presential_test_background: #F5D5EF;
+$event_presential_meeting_background: #FFD9E0;
+$event_recess_holiday_background: #E3E3E3;
+$event_webconferencelesson_background: #F5DA81;
+$event_lessons_background: #A9F0F7;
+$event_other_background: #CCCCFF;
+
+// Alerts colors
+$icon_color: #00448D;
+$alert_color: #660000;
+$notice_color: #2F4F2F;
+$warning_background: #FFFFDE;
+$blue_warning_background: #E9F3FF;
+$text_alert_color: #e64d4d;
+
+// Buttons colors
+$btn_color: #ffffff;
+$btn_main_color: #005cc0;
+$btn_caution_color: #ee5f5b;
+$btn_orange: #ffe6cc;
+$btn_initial_file_color_final: #f9c143;
+$btn_border_color: #cccccc;
+$btn_border_light_gray: #e6e6e6;
+$btn_border_dark_gray: #bfbfbf;
+$btn_border_botton_color: #b3b3b3;
+$btn_box_shadow: #9a9a9a;

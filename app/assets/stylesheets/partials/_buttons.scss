@@ -2,12 +2,8 @@
 @import "compass/css3/images";
 @import "compass/css3/box-shadow";
 
-$btn-color: #ffffff;
-$btn_main-color: #005cc0;
-$btn_caution-color: #ee5f5b;
 $btn-width: 54px;
 $btn-height: 28px;
-$btn-orange: #ffe6cc;
 
 /* codigo para remover padding extra que o firefox adiciona automaticamente */
 button::-moz-focus-inner {
@@ -29,20 +25,20 @@ input::-moz-focus-inner {
     text-decoration: none !important;
     color: $font_color;
     text-align: center;
-    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    text-shadow: 0 1px 1px rgba($color_white, 0.75);
     vertical-align: middle;
     cursor: pointer;
-    background-color: $btn-color; /* Old browsers */
-    @include filter-gradient($btn-color, darken($btn-color,7%)); /* IE */
-    @include background-image(linear-gradient($btn-color, darken($btn-color,7%))); /* CSS3 */
+    background-color: $btn_color; /* Old browsers */
+    @include filter-gradient($btn_color, darken($btn_color,7%)); /* IE */
+    @include background-image(linear-gradient($btn_color, darken($btn_color,7%))); /* CSS3 */
     background-repeat: repeat-x;
-    border: 1px solid #cccccc;
+    border: 1px solid $btn_border_color;
     *border: 1px;
-    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-    border-bottom-color: #b3b3b3;
+    border-color: $btn_border_light_gray $btn_border_light_gray $btn_border_dark_gray;
+    border-color: rgba($color_black, 0.1) rgba($color_black, 0.1) rgba($color_black, 0.25);
+    border-bottom-color: $btn_border_botton_color;
     *zoom: 1;
-    @include box-shadow(rgba(255, 255, 255, 0.2) 0 1px 0 inset, rgba(0, 0, 0, 0.05) 0 1px 2px inset);
+    @include box-shadow(rgba($color_white, 0.2) 0 1px 0 inset, rgba($color_white, 0.05) 0 1px 2px inset);
 }
 
 .btn_lightbox,.btn_form{
@@ -104,11 +100,11 @@ input::-moz-focus-inner {
 .btn_disabled,
 .btn[disabled],
 .btn.dropdown-open {
-    background-color: darken($btn-color,7%);
+    background-color: darken($btn_color,7%);
 }
 
 .btn i {
-    color: #000000;
+    color: $color_black;
     @include opacity(0.5);
     filter:alpha(opacity=50);
 }
@@ -147,19 +143,19 @@ input::-moz-focus-inner {
 .btn.dropdown-open {
     background-image: none;
     outline: 0;
-    @include box-shadow(rgba(0, 0, 0, 0.15) 0 2px 4px inset, rgba(0, 0, 0, 0.05) 0 1px 2px inset);
+    @include box-shadow(rgba($color_black, 0.15) 0 2px 4px inset, rgba($color_black, 0.05) 0 1px 2px inset);
 }
 
 .btn_pressed {
     color: $font_color;
-    background-color: #ffffff;
+    background-color: $color_white;
     background-image: none;
-    @include box-shadow(#9a9a9a 0px 1px 2px inset);
+    @include box-shadow($btn_box_shadow 0px 1px 2px inset);
 }
 
 .btn_main {
-    color: #ffffff;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    color: $color_white;
+    text-shadow: 0 -1px 0 rgba($color_black, 0.25);
     background: $btn_main-color; /* Old browsers */
     @include filter-gradient($btn_main-color, darken($btn_main-color, 10%)); /* IE */
     @include background-image(linear-gradient($btn_main-color, darken($btn_main-color, 15%))); /* CSS3 */
@@ -168,7 +164,7 @@ input::-moz-focus-inner {
 }
 
 .btn_main i {
-    color: #ffffff;
+    color: $color_white;
     @include opacity(0.85);
     filter:alpha(opacity=85);
 }
@@ -188,8 +184,8 @@ input::-moz-focus-inner {
 .btn_main.btn_disabled,
 .btn_main[disabled],
 .btn_main.dropdown-open {
-    background-color: desaturate($btn_main-color, 30%);
-    @include background-image(linear-gradient(lighten($btn_main-color, 10%), darken($btn_main-color,10%))); /* CSS3 */
+    background-color: desaturate($btn_main_color, 30%);
+    @include background-image(linear-gradient(lighten($btn_main_color, 10%), darken($btn_main_color,10%))); /* CSS3 */
 }
 
 .btn_main.disabled i,
@@ -209,20 +205,20 @@ input::-moz-focus-inner {
 .btn_caution:hover i,
 .btn_caution:focus i,
 .btn_caution:active i {
-    color: #ffffff;
+    color: $color_white;
 }
 
 .btn_warning,
 .btn_caution:hover,
 .btn_caution:focus,
 .btn_caution:active {
-    color: #ffffff;
-    background: $btn_caution-color; /* Old browsers */
-    @include filter-gradient($btn_caution-color, darken($btn_caution-color, 20%)); /* IE */
-    @include background-image(linear-gradient($btn_caution-color, darken($btn_caution-color, 20%))); /* CSS3 */
+    color: $color_white;
+    background: $btn_caution_color; /* Old browsers */
+    @include filter-gradient($btn_caution_color, darken($btn_caution_color, 20%)); /* IE */
+    @include background-image(linear-gradient($btn_caution_color, darken($btn_caution_color, 20%))); /* CSS3 */
     background-repeat: repeat-x;
     border-color: #bd362f #bd362f #802420;
-    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    border-color: rgba($color_black, 0.1) rgba($color_black, 0.1) rgba($color_black, 0.25);
     text-shadow: none;
 }
 
@@ -231,7 +227,7 @@ input::-moz-focus-inner {
 }
 
 .btn_caution[disabled] i {
-    color: #ffffff;
+    color: $color_white;
     text-shadow: none;
     @include box-shadow(none);
 }
@@ -239,7 +235,7 @@ input::-moz-focus-inner {
 .btn_warning i {
     @include opacity(0.9);
     filter:alpha(opacity=90);
-    color: #ffffff;
+    color: $color_white;
 }
 
 .btn_caution:hover i,
@@ -256,7 +252,7 @@ input::-moz-focus-inner {
 .btn_caution.btn_disabled
 .btn_caution[disabled] {
     border-color: #bd362f #bd362f #802420;
-    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    border-color: rgba($color_black, 0.1) rgba($color_black, 0.1) rgba($color_black, 0.25);
 }
 
 .btn_caution.disabled i,
@@ -271,7 +267,7 @@ input::-moz-focus-inner {
 .btn_warning[disabled]:focus i,
 .btn_warning[disabled]:active i,
 .btn_warning[disabled]:hover i {
-    color: #fff;
+    color: $color_white;
     @include opacity(0.5);
     filter:alpha(opacity=50);
     text-shadow: none;
@@ -290,9 +286,9 @@ input::-moz-focus-inner {
 .btn_warning.disabled,
 .btn_warning.btn_disabled,
 .btn_warning[disabled] {
-    color: #ffffff;
-    background-color: darken($btn_caution-color, 20%);
-    *background-color: darken($btn_caution-color, 20%);
+    color: $color_white;
+    background-color: darken($btn_caution_color, 20%);
+    *background-color: darken($btn_caution_color, 20%);
 }
 
 .btn_warning:active {
@@ -316,12 +312,10 @@ input::-moz-focus-inner {
 }
 
 /* botão específico do lightbox de upload de arquivos de aula */
-$btn-initial-file-color: $color_contrast;
-$btn-initial-file-color-final: #f9c143;
 #btn-initial-file {
-    background: $btn-initial-file-color; /* Old browsers */
-    @include filter-gradient($btn-initial-file-color, $btn-initial-file-color-final); /* IE */
-    @include background-image(linear-gradient($btn-initial-file-color, $btn-initial-file-color-final)); /* CSS3 */
+    background: $color_contrast; /* Old browsers */
+    @include filter-gradient($color_contrast, $btn-initial-file-color-final); /* IE */
+    @include background-image(linear-gradient($color_contrast, $btn-initial-file-color-final)); /* CSS3 */
     background-repeat: repeat-x;
     @include opacity(0.9);
     filter:alpha(opacity=45);
@@ -368,8 +362,8 @@ $btn-initial-file-color-final: #f9c143;
 }
 
 .btn-orange{
-  background: $btn-orange;
-  @include filter-gradient($btn-orange, darken($btn-orange, 10%));
-  @include background-image(linear-gradient($btn-orange, darken($btn-orange, 15%)));
+  background: $btn_orange;
+  @include filter-gradient($btn_orange, darken($btn_orange, 10%));
+  @include background-image(linear-gradient($btn_orange, darken($btn_orange, 15%)));
   background-repeat: repeat-x;
 }

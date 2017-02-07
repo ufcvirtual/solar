@@ -189,7 +189,7 @@ table#list_of_students thead{
       border-left: solid 1px #aaaaaa;
     }
     li a.active{
-      background-color: #fefae6;
+      background-color: $background_light_beige;
     }
     a{
       text-decoration: none;
@@ -265,7 +265,7 @@ table.general{
     border: none;
     .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, .ui-state-hover, .ui-state-focus{
       border: none;
-      background-color: #fefae6;
+      background-color: $background_light_beige;
     }
     ul{
       li{
@@ -279,7 +279,7 @@ table.general{
         text-decoration: none;
       }
       li.active, li a:active, li a:hover, li a::selection{
-        background-color: #fefae6;
+        background-color: $background_light_beige;
         border: none;
       }
     }
