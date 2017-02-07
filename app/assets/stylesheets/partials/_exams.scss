@@ -138,9 +138,13 @@
         }
         .legend{
           width: 45%;
+          top: 50%;
           display: inline-block;
           text-align: center;
           vertical-align: top;
+          -webkit-transform: translateY(150%);
+          -ms-transform: translateY(150%);
+          transform: translateY(150%);
         }
       }
     }
@@ -156,7 +160,6 @@
         display: none;
       }
       .audio {
-        padding: 10px 0 0 10px;
         display: inline-block;
         
         a i{
@@ -169,28 +172,45 @@
         }
       }
       td.audio.legend{
+        padding: 0 0 0 10px;
         display: block;
         text-align: center;
         width: 620px;
         margin-bottom: 10px;
         background-color: #CBD7E4;
         .audio{
-          margin-left: -20px;
-          margin-top: -15px;
-          margin-bottom: -5px;
-          width: 57%;
+          margin: 5px 0 5px -15px;
+          background: #FAFAFA;
+          background: -moz-linear-gradient(left, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%);
+          height: 32px;
+          width: 56%;
+          position: relative;
+          top: 50%;
+          left: 0.5%;
+          -webkit-transform: translateY(0.5%);
+          -ms-transform: translateY(0.5%);
+          transform: translateY(0.5%);
         }
         .legend{
-          margin-top: -15px;
-          width: 43%;
+          padding-top: 13px;
+          width: 44%;
           display: inline-block;
           text-align: center;
           vertical-align: top;
+          top: 50%;
+         
+          p{
+            margin-bottom: 2px;
+          }
         }
         #text, #hide{
           display: none;
         }
+        .legend-description{
+          margin-top: -8px;
+        }
       }
+
     }
 
   }
@@ -236,18 +256,42 @@
     .hit{
       color:#0B610B;
     }
-    .audio_description{
-      padding: 5px 2px 5px 2px;
-      margin-bottom: 10px;
-      width: 200px;
-      font-size: 12px;
-      display: inline-block;
+    
+    .audio.legend{
+      padding: 0 0 6px 14px;
+      display: block;
       text-align: center;
-      vertical-align: top;
+      width: 600px;
+      margin-bottom: 10px;
       background-color: #CBD7E4;
-    }
+
+      .audio{
+        margin: 5px 0 5px -15px;
+        padding-top: 10px;
+        background-color: #FAFAFA;
+        background: -moz-linear-gradient(left, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%);
+        height: 27px;
+        width: 58%;
+        position: relative;
+        top: 50%;
+        left: 0.5%;
+        float:left;
+      }
+      .audio_description{
+        padding: 14px 0 0 0;
+        margin-bottom: 11px;
+        width: 42%;
+        display: inline-block;
+        text-align: center;
+        vertical-align: top;
+      }
+    }    
+    
     #text{
       color: #4c4a4a;
+    }
+    #text, #hide{
+      display: none;
     }
   }
 

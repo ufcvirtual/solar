@@ -23,24 +23,23 @@
               - unless @question_audios.nil?
                 %tr.question_audios
                   - @question_audios.each do |q_audio|
-                    - t_desc = 1
-                    - if q_audio.description.blank? && q_audio.audio_description.blank? 
-                      - t_desc = nil
-                    %td.audio{class: t_desc.blank? ? '' : 'legend'}
+                    - class_ = nil    
+                    - if !q_audio.description.blank? && !q_audio.audio_description.blank?
+                      - class_ = 1
+                    %td.audio.legend
                       .audio
                         = audio_tag(q_audio.audio, autoplay: false, controls: true, name: 'audioQuestion')
                         = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
                         = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
-                      - unless t_desc.nil? 
-                        .legend   
-                          - unless q_audio.description.blank?
-                            %p= q_audio.description
-                          - unless q_audio.audio_description.blank?
-                            =link_to_function t('questions.questions.show'), "show_audio_description(this)", id: 'show'
-                            =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", id: 'hide'
-                            %p
-                              #text
-                                = q_audio.audio_description       
+                      .legend{class: class_.blank? ? '' : 'legend-description'}
+                        - unless q_audio.description.blank?
+                          %p= q_audio.description
+                        - unless q_audio.audio_description.blank?
+                          =link_to_function t('questions.questions.show'), "show_audio_description(this)", id: 'show'
+                          =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", id: 'hide'
+                          %p
+                            #text
+                              = q_audio.audio_description       
                       %br          
         = render 'exams/open/question_preview', { question: @question}
 = javascript_include_tag 'tooltip'        
