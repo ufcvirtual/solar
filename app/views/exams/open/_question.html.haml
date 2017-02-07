@@ -37,19 +37,22 @@
 
             = i.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
+              %span= i.object.description.html_safe
+              %br
               = raw image
               - if i.object.item_audio?  
-                = raw audio_tag(i.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion')
-                = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
-                = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
-                - audio_is = 1
-                - if b.object.audio_description?
-                  .audio_description
-                    =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
-                    =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide' 
-                    #text
-                      = raw b.object.audio_description.html_safe
-              %span= i.object.description.html_safe
+                .audio.legend
+                  .audio 
+                    = raw audio_tag(i.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion')
+                    = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
+                    = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
+                    - audio_is = 1
+                  - if b.object.audio_description?
+                    .audio_description
+                      =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
+                      =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide' 
+                      #text
+                        = raw b.object.audio_description.html_safe
               = raw(coment)
 
         - if @disabled
@@ -85,19 +88,23 @@
             = b.check_box :value, {disabled: disabled, onchange: 'change();'}, true, ''
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
+              %span= b.object.description.html_safe
+              %br
               = raw image
               - if b.object.item_audio?  
-                = raw  audio_tag(b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion')
-                = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
-                = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
-                - audio_is = 1
-                - if b.object.audio_description?
-                  .audio_description
-                    =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
-                    =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide' 
-                    #text
-                      = raw b.object.audio_description.html_safe
-              %span= b.object.description.html_safe
+                .audio.legend
+                  .audio
+                    = raw  audio_tag(b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion')
+                    = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
+                    = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
+                    - audio_is = 1
+                  - if b.object.audio_description?
+                    .audio_description
+                      =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
+                      =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide' 
+                      #text
+                        = raw b.object.audio_description.html_safe
+             
               = raw(coment)
 
         - if @disabled
@@ -138,19 +145,23 @@
             = b.select :value, options_for_select([['', nil], [t('questions.form.f_option'), false], [t('questions.form.t_option'), true]], b.object.value), {}, { disabled: disabled, onchange: 'change();' }
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
+              %span= b.object.description.html_safe
+              %br
               = raw image
               - if b.object.item_audio?  
-                = raw audio_tag(b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion') 
-                = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
-                = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
-                - audio_is = 1 
-                - if b.object.audio_description?
-                  .audio_description
-                    =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
-                    =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide' 
-                    #text
-                      = raw b.object.audio_description.html_safe
-              %span= b.object.description.html_safe
+                .audio.legend
+                  .audio
+                    = raw audio_tag(b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion') 
+                    = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
+                    = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
+                    - audio_is = 1 
+                  - if b.object.audio_description?
+                    .audio_description
+                      =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
+                      =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide' 
+                      #text
+                        = raw b.object.audio_description.html_safe
+              
               = raw(coment)
          
         - if @disabled

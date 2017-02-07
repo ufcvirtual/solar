@@ -13,20 +13,23 @@
           = radio_button_tag 'item', :value, nil, disabled: true
           = label_tag 'item', class: '' do
             %span= arr_alf[num_question]+') '
+            %span= qi.description.html_safe
+            %br
             - if qi.item_image?     
               = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
-            - if qi.item_audio?     
-              = audio_tag(qi.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion') rescue ''  
-              = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
-              = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
-              - audio_is = 1 
-              - if qi.audio_description?
-                .audio_description
-                  =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
-                  =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide'
-                  #text
-                    = raw qi.audio_description.html_safe
-            %span= qi.description.html_safe
+            - if qi.item_audio?  
+              .audio.legend
+                .audio   
+                  = audio_tag(qi.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion') rescue ''  
+                  = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
+                  = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
+                  - audio_is = 1 
+                - if qi.audio_description?
+                  .audio_description
+                    =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
+                    =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide'
+                    #text
+                      = raw qi.audio_description.html_safe
 
     - elsif question.type_question.to_i == Question::MULTIPLE
       - question_items.each do |qi|
@@ -36,20 +39,23 @@
           = check_box_tag "item#{qi.id}", true, false, {disabled: true}
           = label_tag "item#{qi.id}", class: '' do
             %span= arr_alf[num_question]+') '
+            %span= qi.description.html_safe
+            %br
             - if qi.item_image?     
               = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
-            - if qi.item_audio?     
-              = audio_tag(qi.item_audio, autoplay: false, controls: true, name: 'audioQuestion') rescue '' 
-              = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
-              = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()' 
-              - audio_is = 1 
-              - if qi.audio_description?
-                .audio_description
-                  =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
-                  =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide' 
-                  #text
-                    = raw qi.audio_description.html_safe 
-            %span= qi.description.html_safe
+            - if qi.item_audio? 
+              .audio.legend
+                .audio     
+                  = audio_tag(qi.item_audio, autoplay: false, controls: true, name: 'audioQuestion') rescue '' 
+                  = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
+                  = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()' 
+                  - audio_is = 1 
+                - if qi.audio_description?
+                  .audio_description
+                    =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
+                    =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide' 
+                    #text
+                      = raw qi.audio_description.html_safe 
             
     - else
       - question_items.each do |qi|
@@ -59,20 +65,24 @@
           = select_tag "item#{qi.id}", options_for_select(['', t('questions.form.f_option'), t('questions.form.t_option')]) , {disabled: true}
           = label_tag "item#{qi.id}", class: '' do
             %span= arr_alf[num_question]+') '
+            %span= qi.description.html_safe
+            %br
             - if qi.item_image?     
               = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
-            - if qi.item_audio?     
-              = audio_tag(qi.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion') rescue '' 
-              = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
-              = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
-              - audio_is = 1    
-              - if qi.audio_description?
-                .audio_description
-                  =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
-                  =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide'
-                  #text
-                    = raw qi.audio_description.html_safe
-            %span= qi.description.html_safe
+            - if qi.item_audio?  
+              .audio.legend
+                .audio   
+                  = audio_tag(qi.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion') rescue '' 
+                  = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
+                  = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
+                  - audio_is = 1    
+                - if qi.audio_description?
+                  .audio_description
+                    =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
+                    =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide'
+                    #text
+                      = raw qi.audio_description.html_safe
+            
 
 - unless @question_audios.nil? or audio_is.nil?
   %tr.question_audios
