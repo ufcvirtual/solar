@@ -16,7 +16,7 @@
 
 .highlight-date-mark {
     a.ui-state-default {
-        background-color: #1793E6;
+        background-color: $high_contrast_font_color; //Uma opção seria #1793E6
         color: $high_contrast_background_color;
     }
 }
@@ -179,7 +179,7 @@
     border: 0; padding: 0em; width: 14.25%; min-height: 1.2em; }
 .ui-datepicker td span, .ui-datepicker td a {
     display: block; padding: 0px; text-align: right; text-decoration: none; }
-.ui-datepicker-week-end {color: $color_contrast_text;}
+.ui-datepicker-week-end {color: $high_contrast_font_color;}
 
 
 /* IE6 IFRAME FIX (taken from datepicker 1.5.3 */

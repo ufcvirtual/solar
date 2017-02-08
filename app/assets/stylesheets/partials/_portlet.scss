@@ -170,7 +170,7 @@ table tr.block_title th {
     &.active {
       font-weight: bold;
       background-color: #d8dfe9;
-      color: #000;
+      color: $high_contrast_font_color;
     }
     .counter {
       position: absolute;

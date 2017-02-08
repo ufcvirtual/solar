@@ -10,7 +10,7 @@
   top: 0;
   left: 0;
   z-index: -10;
-  background-color: $color_main;
+  background-color: $high_contrast_background_color;
 }
 
 #mysolar_topbar {
@@ -251,7 +251,7 @@ a.mysolar_top_link {
 }
 
 .mysolar_unit_tab a {
-  color: $color_main_medium;
+  color: $high_contrast_link_color;
 }
 
 .mysolar_unit_active_tab {

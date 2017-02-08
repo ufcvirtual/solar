@@ -2,8 +2,8 @@
 @import "compass/css3/images";
 @import "compass/css3/box-shadow";
 
-$btn-color: $high_contrast_link_color;
-$btn_main-color: $high_contrast_font_color;
+$btn-color: $high_contrast_font_color;
+$btn_main-color: $high_contrast_link_color;
 $btn_caution-color: #c30;
 $btn-width: 54px; 
 $btn-height: 28px;
@@ -108,7 +108,7 @@ input::-moz-focus-inner {
 }
 
 .btn i {
-    color: $high_contrast_link_color;
+    color: $high_contrast_background_color;
     @include opacity(0.5);
     filter:alpha(opacity=50);
 }
@@ -158,7 +158,7 @@ input::-moz-focus-inner {
 }
 
 .btn_main {
-    color: $high_contrast_link_color;
+    color: $high_contrast_font_color;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
     background: $btn_main-color; /* Old browsers */
     @include filter-gradient($btn_main-color, darken($btn_main-color, 10%)); /* IE */
@@ -168,7 +168,7 @@ input::-moz-focus-inner {
 }
 
 .btn_main i {
-    color: $high_contrast_link_color;
+    color: $high_contrast_font_color;
     @include opacity(0.85);
     filter:alpha(opacity=85);
 }

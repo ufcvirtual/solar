@@ -8,6 +8,7 @@
   zoom: 1;
   *display: inline;
   background-color: $high_contrast_background_color;
+  color: $high_contrast_font_color;
 }
 
 #block_locale {
@@ -192,6 +193,7 @@ div.block_title {
     vertical-align: bottom;
     position: absolute;
     bottom: 2px;
+    color: $high_contrast_font_color;
   }
   > .block_right {
     padding-left: 6px;
@@ -233,6 +235,7 @@ div.block_title {
 .block_content {
   background-color: $high_contrast_background_color;
   font-size: 10pt;
+  color: $high_contrast_font_color;
 
   > block_left {
     width: 369px;
