@@ -136,3 +136,12 @@
   font-size: 14px;
   color:#2b5088;
 }
+
+.dropdown-panel .close{
+  float: right;
+  button{
+    background-color: white;
+    border: none;
+    cursor: pointer;
+  }
+}

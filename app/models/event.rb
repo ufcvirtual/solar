@@ -50,6 +50,7 @@ class Event < ActiveRecord::Base
       end_hour: (has_end_hour ? end_hour : nil),
       color: verify_type,
       type: self.class.name,
+      type_full: (self.class.name == 'ScheduleEvent' ? I18n.t("schedule_events.types.#{type_name}") : I18n.t('fullcalendar.type_full', type: I18n.t(self.class.name.tableize.singularize.to_sym, scope: [:activerecord, :models]))),
       dropdown_path: Rails.application.routes.url_helpers.send("dropdown_content_of_#{self.class.name.to_s.tableize.singularize}_path", id: id, allocation_tags_ids: 'all_params')
     }
   end

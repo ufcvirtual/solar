@@ -16,6 +16,10 @@
   padding-top: 3px;
 }
 
+.list_events h4, .fc-widget-header{
+  font-family: 'Ubuntu Condensed', sans-serif;
+}
+
 .list_events .day h3{
   background-color: $background_grey;
   color: $light_grey;
@@ -24,6 +28,10 @@
 .list_events .day_events{
   border: solid 1px $light_grey;
   padding: 3px;
+}
+
+a.fc-event-title{
+  color: black;
 }
 
 .list_events .day.today{
@@ -52,16 +60,17 @@
   border-bottom: dashed 1px $color_contrast;
 }
 
-.list_events .time h2{
+.list_events .time h2, .list_events .time h4{
   margin-top: 10px;
   margin-left: 10px;
 }
 
-.day_events .event{
+.day_events a.event{
   margin-left: 80px;
   top: -16px;
   position: relative;
   margin-top: 4px;
+  display: block;
 }
 
 .fc-event.assignment{
@@ -107,7 +116,9 @@
 
 .list_events .fc-event.fc-event-title{
   font-size: 10pt;
+  cursor: pointer;
 }
+
 
 .calendar_schedules .legend{
   font-size: 11pt;
@@ -129,23 +140,23 @@
         margin-bottom: 10px;
       }
     .event_details_dropdown{
-      h1, h2, h3, .group_label label{
+      h1, h2, h3, h4, .group_label label{
         font-family: 'PT Sans', sans-serif;
         background-color: white;
         border-bottom: none;
       }
-      h1{
+      h2{
         font-weight: bold;
         text-align: left;
         font-size: 11pt;
       }
-      h2, h3, .group_label label, h3 p{
+      h3, h4, .group_label label, h3 p{
         color: $text_grey;
         font-size: 10pt;
         font-weight: normal;
         text-align: left;
       }
-      h2{
+      h4{
         margin: 6px;
       }
       .line{

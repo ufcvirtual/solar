@@ -2558,6 +2558,15 @@ en_US:
       day: 'dddd M/d'
     listFormat: 'ddddd, MMMMM dS, yyyy'
     noEvents: There is no future event
+    type_full: "(Type %{type})"
+    buttons:
+      prevAlt: Previous period
+      nextAlt: Next period
+      todayAlt: Today's period
+      agendaDayAlt: View by day
+      agendaWeekAlt: View by week
+      monthAlt: View by month
+      listAlt: View next events list
   schedule_events:
     types:
       presential_test: Presential Test
@@ -2613,14 +2622,21 @@ en_US:
       discussions: "Discussion: "
       schedule_events: "Event: "
       lessons: "Lesson: "
+      exams: "Exam: "
       all_day: all day
       groups: Groups
       remove: Remove
       edit: Edit
       details: See details
+      details_about: See details about %{name}
+      close_details_about: Close detalhes sobre %{name}
       see_groups: See groups
       cant_change: "Integrated event, can't be changed."
       groups: " groups"
+      period: "Period: "
+      description: "Description: "
+      duration: "Duration: "
+      to: ' to '
     close: Close
     calendar:
       new_chat: New Chat
@@ -2638,6 +2654,7 @@ en_US:
       other: Others
       legend: Legend
       all_day: all day
+      time: Time
     end_of: "End of: "
     begin_of: "Begin of: "
   edx:

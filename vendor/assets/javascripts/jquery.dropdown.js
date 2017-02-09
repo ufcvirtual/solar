@@ -31,7 +31,6 @@ if(jQuery) (function($) {
   });
 
   function show(event) {
-
     var trigger = $(this),
       dropdown = $(trigger.attr('data-dropdown')),
       isOpen = trigger.hasClass('dropdown-open');
@@ -44,6 +43,7 @@ if(jQuery) (function($) {
     hide();
 
     if( isOpen || trigger.hasClass('dropdown-disabled') ) return;
+
 
     // Show it
     trigger.addClass('dropdown-open');
@@ -61,10 +61,26 @@ if(jQuery) (function($) {
         trigger: trigger
       });
 
+    var div = $(this).parent().find($(this).data('dropdown')).first();
+      if(!$(div).data('focus')){
+        $(div).find('h2').attr("tabindex", "0");
+        $(div).find('h2').focus();
+        $(div).data('focus', true);
+      }
+
+    $('.dropdown').on('keyup',(e) => {
+      var code = e.keyCode || e.which;
+      if(!div.data('focus')){
+        if (code == '9'){
+          $('h2:first', div).attr("tabindex", "0");
+          $('h2:first', div).focus();
+          div.data('focus', true);
+        }
+      }
+    });
   }
 
   function hide(event) {
-
     // In some cases we don't hide them
     var targetGroup = event ? $(event.target).parents().andSelf() : null;
 
@@ -79,9 +95,18 @@ if(jQuery) (function($) {
         return;
       }
     }
-
+    
     // Hide any dropdown that may be showing
     $(document).find('.dropdown:visible').each( function() {
+      if(!!$(this).data('focus')){
+        var parent = $(this).parents().eq(8);
+        var id = $(this).prop('id');
+        var div = $(parent).find("[data-dropdown='#"+id+"']").first();
+        $(div).attr("tabindex", "0");
+        $(div).focus();
+        $(this).data('focus', false);
+      }
+
       var dropdown = $(this);
       dropdown
         .hide()
@@ -89,13 +114,13 @@ if(jQuery) (function($) {
         .trigger('hide', { dropdown: dropdown });
     });
 
+
+
     // Remove all dropdown-open classes
     $(document).find('.dropdown-open').removeClass('dropdown-open');
-
   }
 
   function position() {
-
     var dropdown = $('.dropdown:visible').eq(0),
       trigger = dropdown.data('dropdown-trigger'),
       hOffset = trigger ? parseInt(trigger.attr('data-horizontal-offset') || 0) : null,
@@ -117,5 +142,6 @@ if(jQuery) (function($) {
     $(document).on('click.dropdown', hide);
     $(window).on('resize', position);
   });
+
 
 })(jQuery);

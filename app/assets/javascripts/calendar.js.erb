@@ -4,6 +4,7 @@ $(function() {
   var edition_param      = $("#calendar").attr("data-edition");
   var ids_to_forms_param = $("#calendar").attr("data-ids");
   var lastView;
+  var beforeLast;
 
   // Sources para recuperar os eventos
   var fcSources = {
@@ -31,7 +32,10 @@ $(function() {
             center: 'title',
             right: 'month,agendaWeek,agendaDay,list'
         },
-        defaultView: 'agendaWeek',
+        defaultView: 'list',
+        buttonText: {
+          list: 'icon-calendar-list'
+        },
         height: 500,
         slotMinutes: 15,
         
@@ -55,41 +59,67 @@ $(function() {
         dayNames: dayNames,
         dayNamesShort: dayNamesShort,
 
-        eventRender: function(event, element) { 
-        },
-
         eventClick: function(event, jsEvent, view){
           show_info_dropdown(event, jsEvent.currentTarget);
         },
 
         viewDisplay: function(view) {
-          if(lastView!=null && lastView!=view.name){ // se mudou de visão
-            if (view.name != 'list' && lastView == 'list'){ // se não for lista e a anterior for lista
-              $("#no_events").remove();
-              $('#calendar').fullCalendar('removeEventSource', fcSources.list)
-                            .fullCalendar( 'addEventSource', fcSources.calendar);
+          if(lastView == 'list'&& beforeLast == undefined && lastView!=view.name){
+            console.log('entrou');
+            $("#no_events").remove();
+            $('#calendar').fullCalendar('removeEventSource', fcSources.list);
+          }else{
+            if(lastView!=undefined && lastView!=view.name){ // se mudou de visão
+              if (view.name != 'list' && lastView == 'list'){ // se não for lista e a anterior for lista
+                $("#no_events").remove();
+                $('#calendar').fullCalendar('removeEventSource', fcSources.list)
+                              .fullCalendar('addEventSource', fcSources.calendar);
+              }
+              if(view.name == 'list') //se for lista
+                $('#calendar').fullCalendar('removeEventSource', fcSources.calendar)
+                              .fullCalendar( 'addEventSource', fcSources.list);
+            }else{
+              if(lastView == undefined){ // primeira vez que abre calendário
+                $('#calendar').fullCalendar( 'addEventSource', fcSources.calendar);
+              }
+              
             }
-            if(view.name == 'list') //se for lista
-              $('#calendar').fullCalendar('removeEventSource', fcSources.calendar)
-                            .fullCalendar( 'addEventSource', fcSources.list);
           }
-          if(lastView == null) // primeira vez que abre calendário
-            $('#calendar').fullCalendar( 'addEventSource', fcSources.calendar);  
 
+
+          if(lastView != null)
+            beforeLast = lastView;
           lastView = view.name;
-         }
+        }
   });
 
 });
 
 function show_info_dropdown(event, div){
+  if ($(div).hasClass('today'))
+    var today = true;
+  else
+    var today = false;
+
   var dropdown_panel = $(div).next('.dropdown');
   if(!dropdown_panel.length){
     var dropdown_content = $('<div class="dropdown-panel"></div>');
     var url = event.dropdown_path.replace('all_params', $("#allocation_tags_ids").val().replace(/ /g, ","));
     $.get(url, function(data){ $(dropdown_content).append(data); });
-    var dropdown = $("<div class='dropdown dropdown-tip' id='dropdown_details_"+event.type+"_"+event.id+"' style='z-index: 999;'></div>");
+    var dropdown = $("<div class='dropdown dropdown-tip' id='dropdown_details_"+event.type+"_"+event.id+"_"+today+"' style='z-index: 999;'></div>");
+
     $(dropdown).append(dropdown_content);
     $(div).after(dropdown);
   }
+}
+
+function close_dropdown(div, focus_on){
+  var dropdown = $(div).parents('.dropdown:first');
+  parent = dropdown.parent();
+  dropdown.data('focus', false);
+  var link = $("[data-dropdown='#"+dropdown.prop('id')+"']", parent);
+  dropdown.hide();
+
+  if(focus_on == undefined)
+    link.focus();
 }

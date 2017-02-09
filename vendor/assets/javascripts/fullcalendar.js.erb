@@ -29,7 +29,7 @@
 var defaults = {
 
   // display
-  defaultView: 'month',
+  defaultView: 'list',
   aspectRatio: 1.35,
   header: {
     left: 'title',
@@ -81,12 +81,25 @@ var defaults = {
     month: 'icon-calendar-month',
     list: 'icon-calendar-list'
   },
+
+  buttonAlt: {
+    prev: prevAlt,
+    next: nextAlt,
+    prevYear: '',
+    nextYear: '',
+    today: todayAlt,
+    agendaDay: agendaDayAlt,
+    agendaWeek: agendaWeekAlt,
+    month: monthAlt,
+    list: listAlt
+  },
   
   // jquery-ui theming
   theme: false,
   buttonIcons: {
     prev: 'circle-triangle-w',
-    next: 'circle-triangle-e'
+    next: 'circle-triangle-e',
+    list: 'icon-calendar-list'
   },
   
   //selectable: false,
@@ -114,7 +127,8 @@ var rtlDefaults = {
   },
   buttonIcons: {
     prev: 'circle-triangle-e',
-    next: 'circle-triangle-w'
+    next: 'circle-triangle-w',
+    list: 'icon-calendar-list'
   }
 };
 
@@ -317,6 +331,7 @@ function Calendar(element, options, eventSources) {
       content.css('overflow', 'hidden');
       
       currentView = viewInstances[newViewName];
+
       if (currentView) {
         currentView.element.show();
       }else{
@@ -757,7 +772,7 @@ function Header(calendar, options) {
                 );
               }else {
                 var button = $(
-                  "<button class='btn' ><i class='"+options.buttonText[buttonName]+"'></i></button>"
+                  "<button class='btn' aria-label='"+options.buttonAlt[buttonName]+"'><i class='"+options.buttonText[buttonName]+"'></i></button>"
                 );
               }
               if (button) {
@@ -770,6 +785,8 @@ function Header(calendar, options) {
                         buttonClick();
                       }
                     }
+                    $('.fc-header-title').find('h2').prop('tabindex', '0');
+                    $('.fc-header-title').find('h2').focus();
                   })
                   .mousedown(function() {
                     $(".fc-state-down").removeClass("fc-state-down");
@@ -785,6 +802,7 @@ function Header(calendar, options) {
         });
       });
     }
+
     return e;
   }
   
@@ -816,7 +834,6 @@ function Header(calendar, options) {
     element.find('span.fc-button-' + buttonName)
       .removeClass(tm + '-state-disabled');
   }
-
 
 }
 
@@ -990,6 +1007,7 @@ function EventManager(options, _sources) {
                     "end_hour": event.end_hour,
                     "color": event.color,
                     "type": event.type,
+                    "type_full": event.type_full,
                     "dropdown_path": event.dropdown_path
                   };
                   events.push(new_event);
@@ -1010,7 +1028,8 @@ function EventManager(options, _sources) {
           error: function() {
             applyAll(error, this, arguments);
             callback();
-          },
+          }
+          ,
           complete: function() {
             applyAll(complete, this, arguments);
             popLoading();
@@ -1098,6 +1117,7 @@ function EventManager(options, _sources) {
         e.backgroudColor = event.backgroudColor;
         e.borderColor = event.borderColor;
         e.textColor = event.textColor;
+        e.type_full = e.type_full;
         normalizeEvent(e);
       }
     }
@@ -3019,13 +3039,13 @@ function AgendaView(element, calendar, viewName) {
       "<table style='width:100%' class='fc-agenda-days fc-border-separate' cellspacing='0'>" +
       "<thead>" +
       "<tr>" +
-      "<th class='fc-agenda-axis " + headerClass + "'>&nbsp;</th>";
+      "<th class='fc-agenda-axis " + headerClass + "'>"+ time +"</th>";
     for (i=0; i<colCnt; i++) {
       s +=
         "<th class='fc- fc-col" + i + ' ' + headerClass + "'/>"; // fc- needed for setDayID
     }
     s +=
-      "<th class='fc-agenda-gutter " + headerClass + "'>&nbsp;</th>" +
+      "<th class='fc-agenda-gutter " + headerClass + "'></th>" +
       "</tr>" +
       "</thead>" +
       "<tbody>" +
@@ -3042,7 +3062,7 @@ function AgendaView(element, calendar, viewName) {
         "</td>";
     }
     s +=
-      "<td class='fc-agenda-gutter " + contentClass + "'>&nbsp;</td>" +
+      "<td class='fc-agenda-gutter " + contentClass + "'></td>" +
       "</tr>" +
       "</tbody>" +
       "</table>";
@@ -3944,7 +3964,7 @@ function AgendaEventRenderer() {
     if (url) {
       html += "a href='" + htmlEscape(event.url) + "'";
     }else{
-      html += "div";
+      html += "a href='#'";
     }
     html +=
       " class='" + classes.join(' ') + "'" +
@@ -3960,6 +3980,7 @@ function AgendaEventRenderer() {
       "<div class='fc-event-content'>" +
       "<div class='fc-event-title'>" +
       htmlEscape(event.title) +
+      "<span class='visuallyhidden'>"+event.type_full+"</span>"+
       "</div>" +
       "</div>" +
       "<div class='fc-event-bg'></div>" +
@@ -3969,7 +3990,7 @@ function AgendaEventRenderer() {
         "<div class='ui-resizable-handle ui-resizable-s'>=</div>";
     }
     html +=
-      "</" + (url ? "a" : "div") + ">";
+      "</a>";
     return html;
   }
   
@@ -4684,24 +4705,24 @@ function DayEventRenderer() {
       if (url)
         html += "<a href='" + htmlEscape(url) + "'";
       else
-        html += "<div";
+        html += "<a href='#'";
       html +=
         " class='" + classes.join(' ') + "'" +
-        " style='position:absolute;z-index:8;left:"+left+"px;" + skinCss + "'" +
-        " data-dropdown='#dropdown_details_" + event.type + "_" + event.id + "'" +
+        " style='position:absolute;z-index:8;left:"+left+"px; cursor: pointer;" + skinCss + "'" +
+        " data-dropdown='#dropdown_details_" + event.type + "_" + event.id + "_false'" + 
         ">" +
-        "<div" +
+        "<div " +
         " class='fc-event-inner fc-event-skin'" +
         (skinCss ? " style='" + skinCss + "'" : '') +
         ">";
       if (!event.allDay && seg.isStart) {
         html +=
-          "<span class='fc-event-time'>" +
+          "<div class='fc-event-time'>" +
           htmlEscape(formatDates(event.start, event.end, opt('timeFormat'))) +
-          "</span>";
+          "</div>";
       }
       html +=
-        "<span class='fc-event-title'>" + htmlEscape(event.title) + "</span>" +
+        "<div class='fc-event-title'>" + htmlEscape(event.title) + "<span class='visuallyhidden'>"+event.type_full+"</span></div>" +
         "</div>";
       if (seg.isEnd && isEventResizable(event)) {
         html +=
@@ -4710,7 +4731,7 @@ function DayEventRenderer() {
           "</div>";
       }
       html +=
-        "</" + (url ? "a" : "div" ) + ">";
+        "</a>";
 
       seg.left = left;
       seg.outerWidth = right - left;
@@ -5239,11 +5260,12 @@ function HorizontalPositionCache(getElement) {
     lefts = {};
     rights = {};
   };
+}
 
 fcViews.list = listView;
 defaults.buttonText.list='list';
  
-function listView(element, calendar) {
+    function listView(element, calendar) {
         date = new Date();
         var t = this;
  
@@ -5396,6 +5418,7 @@ function listView(element, calendar) {
                     "end_hour": event.end_hour,
                     "color": event.color,
                     "type": event.type,
+                    "type_full": event.type_full,
                     "dropdown_path": event.dropdown_path
                   };
                   list_events.push(today_event);
@@ -5417,6 +5440,7 @@ function listView(element, calendar) {
                       "end_hour": event.end_hour,
                       "color": event.color,
                       "type": event.type,
+                      "type_full": event.type_full,
                       "dropdown_path": event.dropdown_path
                     };  
                     list_events.push(end_event);
@@ -5468,18 +5492,22 @@ function listView(element, calendar) {
                 if(tm !== oldtm || dt != olddt){
                   if(evt != 0 && olddt == dt)
                     $("<div class='line "+(first_day ? 'today' : '')+"'></div>").appendTo(day_events);
-                  time = $("<div class='time'> <h2>" + tm + "</h2></div>");
+                  time = $("<div class='time'> <h4>" + tm + "</h4></div>");
                   // adiciona horário à data
                   time.appendTo(day_events);
                 }
 
                 // gera div do evento
-                eventelem = $("<div class='event"+(first_day ? ' today' : '')+"' data-dropdown='#dropdown_details_" + list_events[evt].type + "_" + list_events[evt].id + "' >");
+                eventelem = $("<a href='#' class='event"+(first_day ? ' today' : '')+"' data-dropdown='#dropdown_details_" + list_events[evt].type + "_" + list_events[evt].id + "_" + first_day +"' >");
 
                 eventelem.append(
-                    "<span class='fc-event fc-event-title' style='color: black; background-color: "+list_events[evt].color+"; width: auto; border-color: "+list_events[evt].color
+                    "<div class='fc-event fc-event-title' style='color: black; background-color: "+list_events[evt].color+"; width: auto; border-color: "+list_events[evt].color
                     +"'>" 
                     + list_events[evt].title + "</div>");
+
+                eventelem.append(
+                  "<span class='visuallyhidden'>"+list_events[evt].type_full+"</span>"
+                  );
 
                 // adiciona evento ao horário certo
                 eventelem.appendTo(time);
@@ -5496,6 +5524,11 @@ function listView(element, calendar) {
               $(".block_content_toolbar").after("<div class='block_content block_content_text' id='no_events'>"+noEventsMessage+"</div>");
             else
               $("#no_events").remove();
+
+
+
+          $('.icon-calendar-week').parent().removeClass("fc-state-down");
+          $('.icon-calendar-list').parent().addClass("fc-state-down");
         }
  
  
@@ -5505,6 +5538,5 @@ function listView(element, calendar) {
 
     };
 
-}
 
 })(jQuery);

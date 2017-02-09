@@ -1,5 +1,5 @@
 .event_details_dropdown
-  %h1
+  %h2
     = t ".#{@model_name.to_s.tableize}"
     = @event.respond_to?(:name) ? @event.name : @event.title
   / se for a visualização de aluno/professor
@@ -9,11 +9,13 @@
       - if @groups.count > 1
         = content_tag(:i, nil, class: 'toggle_groups icon-arrow-down-triangle', :"data-tooltip" => t('.see_groups'))
   - recurring = (@event.respond_to?(:start_hour) && @event.respond_to?(:end_hour) && !(@event.start_hour.blank? || @event.end_hour.blank?))
-  %h3= (recurring ? "#{@event.start_hour} - #{@event.end_hour}" : t('.all_day'))
+  %h3= t('.duration') + (recurring ? "#{@event.start_hour} - #{@event.end_hour}" : t('.all_day'))
   - same_day, start_date, end_date = (@event.schedule.end_date.nil? || @event.schedule.start_date == @event.schedule.end_date), @event.schedule.start_date, @event.schedule.end_date
-  %h3= (same_day ? (end_date.nil? ? [l(start_date, format: :normal), t(:no_end_date)].join(' - ') : l(start_date, format: :normal)) : [l(start_date, format: :normal), l(end_date, format: :normal)].join(' - '))
+  %h3= t('.period') + (same_day ? (end_date.nil? ? [l(start_date, format: :normal), t(:no_end_date)].join(t('.to')) : l(start_date, format: :normal)) : [l(start_date, format: :normal), l(end_date, format: :normal)].join(t('.to')))
 
-  %h3=sanitize simple_format(truncate((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || '', length: 200, omission: '...'))
+  %h3
+    = t('.description')
+    =sanitize simple_format(truncate((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || '', length: 200, omission: "..."))
 
   .edition_groups.invisible
     - if (can? :edit, @model_name)
@@ -32,7 +34,9 @@
         = link_to_if can_change, (content_tag(:i, nil, class: 'icon-edit')), edit_polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids, calendar: true), class: 'btn edit_event', :'data-tooltip' => t('.edit'), id: @event.id do
           = button_tag (content_tag(:i, nil, class: 'icon-edit')), class: 'btn disabled', :'data-tooltip' => t(".cant_change")
       - if can? :show, @model_name, on: @allocation_tags_ids
-        = link_to (content_tag(:i, nil, class: 'icon-eye')), polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), class: 'btn btn_main show_event', :'data-tooltip' => t('.details'), id: @event.id
+        = link_to content_tag(:i, nil, class: 'icon-eye', :'aria-hidden'=>true), polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), class: 'btn btn_main show_event', :'data-tooltip' => t('.details'), id: @event.id, :'aria-label'=> t('.details_about', name: @event.respond_to?(:name) ? @event.name : @event.title)
+      = link_to content_tag(:i, nil, class: 'icon-cross', :'aria-hidden'=>true), '#', class: 'btn close_dropdown', :'data-tooltip' => t(:close), id: @event.id, :'aria-label'=> t('.close_details_about', name: @event.respond_to?(:name) ? @event.name : @event.title), onclick: 'close_dropdown(this);'
+          
 
 = javascript_include_tag 'tooltip'
 
@@ -41,6 +45,24 @@
 :javascript
 
   $(function(){
+
+    var this_div = $('.event_details_dropdown').parent().parent();
+
+    $('h2:first', this_div).attr("tabindex", "0");
+    $('h2:first', this_div).focus();
+    this_div.data('focus', true);
+
+    $('.close_dropdown').on('keydown', function(e){
+      if (e.which == 13){
+        close_dropdown($(this).parents('.dropdown').find('h2')); 
+      }
+    });
+
+    $( ".fc-content a.event" ).focus(function() {
+      var div = $('.close_dropdown:visible');
+      close_dropdown(div.parents('.dropdown').find('h2'), $(this)); 
+    });
+
     // se não for a área de edição
     if (!$(".filter").length){
       $(".edition_groups, .delete_event, .edit_event").remove();
@@ -91,4 +113,4 @@
       maxHeight: 500
     });
   });
-  
+

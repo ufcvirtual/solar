@@ -1,5 +1,5 @@
 !!!
-%html{xmlns: "http://www.w3.org/1999/xhtml"}
+%html{xmlns: "http://www.w3.org/1999/xhtml", lang: I18n.locale.to_s.gsub('_', '-')}
   - if is_curriculum_unit_selected?
     - group_selection = render_group_selection
   %head
@@ -78,7 +78,7 @@
             %li= link_to t(:videos), "../../video_tutorials.html", target: "_blank"
             %li= link_to t(:contact), support_new_messages_path
         / tabs
-        #mysolar_tabs{role: 'navigation menubar'}
+        #mysolar_tabs{role: 'navigation'}
           %ul#mysolar_tabs_wrapper= raw render_tabs
           %ul#mysolar_extras
             %li#mysolar_suggestions
@@ -87,7 +87,7 @@
               %button.btn.btn_main.disabled{"data-tooltip" => t(:mysolar_open_lesson), name: t(:mysolar_open_lesson), onclick: "javascript:maximize_lesson(this);", type: "button", "data-fancybox-type" => "iframe"}
                 %i.icon-class
       / sidebar
-      #mysolar_sidebar{role: 'navigation menu'}
+      #mysolar_sidebar{role: 'navigation'}
         #mysolar_menu_accordion{style: "z-index:10"}
           .mysolar_menu
             - if active_tab[:url][:context] == Context_Curriculum_Unit
