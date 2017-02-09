@@ -1,7 +1,7 @@
 .lesson_portlet.block_wrapper
   .block_title
     %h2
-      %i.icon-lesson
+      %i.icon-lesson{:'aria-hidden' =>'true'}
       = t(:curriculum_access_lesson)
   .block_content{:id => 'block_lessons'}
     - unless @lessons_modules.empty?

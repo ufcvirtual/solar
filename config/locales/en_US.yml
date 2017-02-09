@@ -612,10 +612,13 @@ en_US:
   mysolar_mn_enrollment: "Enrollment"
   mysolar_search: "Search"
   mysolar_open_lesson: "Show opened lesson"
+  mysolar_open_lesson_alt: "Show opened lesson %{disabled}"
+  open_lesson_no_lesson: "( No lesson opened )"
   mysolar_languages: "Languages"
   mysolar_suggestions: 'Suggestions for Solar 2.0'
   date_name: Date
   help: "Help"
+  new_window: This link will open a new window
   tutorials: "Tutorials"
   context: "Contextual"
   contact: Contact us
@@ -858,8 +861,10 @@ en_US:
       draft: Draft
       lesson_details: Lesson's details
     lesson:
-      no_note: No lesson notes
-      notes: Lesson notes
+      no_note: Access lesson notes (none registred)
+      notes: Access lesson notes (%{count} registred)
+      no_note_alt: Access lesson notes of %{lesson} (none registred)
+      notes_alt: Access lesson notes of %{lesson} (%{count} registred)
     import:
       conclude:
         order: Order
@@ -2510,6 +2515,7 @@ en_US:
       filter_selected: "View: "
       placeholder_subject: 'Subject to be searched'
       placeholder_user: 'Recipient or sender to be searched'
+    message_to: Send message to %{name}
   profiles:
     form:
       select_template: Select a template
@@ -3777,3 +3783,7 @@ en_US:
     stop: Stop automatic transcription from speech to text
     browser: Your browser doesn't support this tool. Please use Chrome to have access to it.
     no_speech: Speech trancription tool was interrupted. No speech received.
+
+  tabs:
+    close: Close tab %{name}
+    access: Access tab %{name}

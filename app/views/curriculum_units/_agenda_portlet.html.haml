@@ -1,7 +1,7 @@
 #block_schedule.block_small.portlet
   .block_title
     %h2
-      %i.icon-calendar
+      %i.icon-calendar{:'aria-hidden' =>'true'}
       = t(:curriculum_access_agenda)
   .calendar#agenda{url_for: agendas_path}
   .calendar_events

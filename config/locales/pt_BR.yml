@@ -751,10 +751,13 @@ pt_BR:
   mysolar_mn_enrollment: "Matrícula"
   mysolar_search: "Busca"
   mysolar_open_lesson: "Exibir aula aberta"
+  mysolar_open_lesson_alt: "Exibir aula aberta %{disabled}"
+  open_lesson_no_lesson: "( Nenhuma aula aberta )"
   mysolar_languages: "Idiomas"
   mysolar_suggestions: 'Sugestões para o Solar 2.0'
   date_name: Data
   help: "Ajuda"
+  new_window: Este link abrirá uma nova janela
 
   #Submenu de ajuda
   context: "Contextual"
@@ -1028,8 +1031,10 @@ pt_BR:
       draft: Rascunho
       lesson_details: Detalhes da aula
     lesson:
-      no_note: Nenhuma nota de aula
-      notes: Notas de aula
+      no_note: Acessar notas de aula (nenhuma cadastrada)
+      notes: Acessar notas de aula (%{count} cadastradas)
+      no_note_alt: Acessar notas de aula de %{lesson} (nenhuma cadastrada)
+      notes_alt: Acessar notas de aula de %{lesson} (%{count} cadastradas)
     import:
       conclude:
         order: Ordem
@@ -2734,6 +2739,7 @@ pt_BR:
       filter_selected: "Visualizar: "
       placeholder_subject: 'Assunto a pesquisar'
       placeholder_user: 'Remetente ou destinatário a pesquisar'
+    message_to: Enviar mensagem para %{name}
 
   profiles:
     form:
@@ -4016,3 +4022,7 @@ pt_BR:
     stop: Interromper transcrição automática de fala para texto
     browser: Seu navegador não dá suporte a esta ferramenta. Favor utilizar o Chrome para ter acesso a ela.
     no_speech: A ferramenta de transcrição de fala foi interrompida, pois nenhuma fala foi recebida.
+
+  tabs:
+    close: Fechar aba %{name}
+    access: Acessar aba %{name}

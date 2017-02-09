@@ -2,7 +2,7 @@
 #block_messages.block_small.portlet
   .block_title
     %h2
-      %i.icon-mail
+      %i.icon-mail{:'aria-hidden' =>'true'}
       = t(:curriculum_access_message)
       - if message_is_present
         %span.text_alert

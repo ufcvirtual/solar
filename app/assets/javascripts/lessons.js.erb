@@ -18,14 +18,22 @@ function minimize_lesson() {
 
     $(".fancybox-skin").effect( "transfer", { to: $("#mysolar_open_lesson") }, 750 ); // transfer effect
     $("#mysolar_open_lesson button").removeClass("disabled");
+    $("#mysolar_open_lesson button").removeAttr("disabled");
+    $("#mysolar_open_lesson button").attr("aria-label", "<%=I18n.t(:mysolar_open_lesson_alt, disabled: '')%>");
+    $("#mysolar_open_lesson button").focus();
   }
-  else
+  else{
     $("#mysolar_open_lesson button").addClass("disabled");
+    $("#mysolar_open_lesson button").prop("disabled", true);
+    $("#mysolar_open_lesson button").attr("aria-label", "<%=I18n.t(:mysolar_open_lesson_alt, disabled: I18n.t(:open_lesson_no_lesson))%>");
+  }
   $.fancybox.close();
 }
 
 function close_lesson() {
   $("#mysolar_open_lesson button").addClass("disabled");
+  $("#mysolar_open_lesson button").prop("disabled", true);
+  $("#mysolar_open_lesson button").attr("aria-label", "<%=I18n.t(:mysolar_open_lesson_alt, disabled: I18n.t(:open_lesson_no_lesson))%>");
   $.removeCookie(lesson_cookie_id);
 }
 
