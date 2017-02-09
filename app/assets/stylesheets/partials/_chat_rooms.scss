@@ -5,7 +5,7 @@
 }
 
 .complete{
-  border-left: 2px solid #C0C0C0;
+  border-left: 2px solid $complete_border_left_color;
   padding-left: 10px;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -28,8 +28,8 @@
 }
 
 .box, #tab label{
-  border: 1px solid gray;
-  background-color: white;
+  border: 1px solid $color_gray;
+  background-color: $color_white;
 }
 
 #tab label{
@@ -110,7 +110,7 @@ a.chat_list {
     }
     text-align: center;
     td.profile{
-      color: #989898;
+      color: $period_ended_color;
       font-size: 9pt;
       font-style: italic;
       padding-right: 0;

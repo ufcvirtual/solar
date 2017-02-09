@@ -12,7 +12,7 @@
 
 #lesson_files_select_all {
   font-size: 10pt;
-  color: #8D8D8D;
+  color: $lesson_files_select_all_color;
 }
 
 .lesson_module,
@@ -89,7 +89,7 @@
 #save_automatically_message {  // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico
   font-size: 10pt;
   margin-top: 13px;
-  color: #da1124;
+  color: $save_automatically_message_color;
 }
 
 #attention_message { // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico

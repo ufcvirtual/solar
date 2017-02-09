@@ -36,7 +36,7 @@ tr#activities{
   float: left;
   width: 30%;
   font-size: 10pt;
-  color: #787878;
+  color: $info_color;
 
   a.tool_dropdown{
     float: left;
@@ -51,7 +51,7 @@ tr#activities{
     }
     label:hover, label{
       background-color: transparent;
-      color: #555;
+      color: $color_little_dark_gray;
       cursor: pointer;
       display: inline;
     }
@@ -106,34 +106,34 @@ tr#activities{
     }
   }
   #assignment_title{
-    background-color: white;
+    background-color: $color_white;
     float: right;
     font-size: 10pt;
-    color: #787878;
+    color: $info_color;
   }
 
 }
 
 #scores_notes.legend_score_footer, .tb_list_students{
   .evaluated {
-    color: #378941;
+    color: $evaluated_color;
   }
 
   .sent, .sent a, .evaluated a
   td.assignment_as a {
-    color: #2900c2;
+    color: $sent_color;
   }
 
   .assignment_as, .assignment_as a{
-    color: #2900c2;
+    color: $sent_color;
   }
 
   .not_sent, .not_sent a{
-    color: #e12227;
+    color: $not_sent_color;
   }
 
   .not_started, .not_started a {
-    color: #787878;
+    color: $not_started_color;
   }
 
   .to_send, .to_send a{
@@ -141,7 +141,7 @@ tr#activities{
   }
 
   .without_group, .without_group a{
-    color: #e37073;
+    color: $without_group_color;
   }
 
   .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
@@ -164,14 +164,14 @@ table.users#list_of_students{
 
 table#list_of_students{
   td.new_after_evaluation{
-    background-color: #e6f0fc;
+    background-color: $score_table_background;
   }
 }
 
 #scores_notes table{
   td.new_after_evaluation{
     padding: 5px;
-    background-color: #e6f0fc;
+    background-color: $score_table_background;
   }
 }
 
@@ -181,12 +181,12 @@ table#list_of_students thead{
     float: left;
     border: none;
     li a{
-      color: #aaaaaa;
+      color: $score_table_head_color;
       cursor: pointer;
-      border-top: solid 1px #aaaaaa;
+      border-top: solid 1px $score_table_head_color;
     }
     li a:not(.ui-tabs-anchor){
-      border-left: solid 1px #aaaaaa;
+      border-left: solid 1px $score_table_head_color;
     }
     li a.active{
       background-color: $background_light_beige;
@@ -195,7 +195,7 @@ table#list_of_students thead{
       text-decoration: none;
     }
     li a:last-of-type{
-      border-right: solid 1px #aaaaaa;
+      border-right: solid 1px $score_table_head_color;
     }
   }
   a.tool_dropdown{
@@ -241,7 +241,7 @@ table.general{
     }
     img{
       border-radius: 58px;
-      box-shadow: 4px 4px 7px #929792;
+      box-shadow: 4px 4px 7px $scores_info_img_box_shadow;
       margin-bottom: 10px;
     }
   }
@@ -254,7 +254,7 @@ table.general{
     }
     label:hover, label{
       background-color: transparent;
-      color: #555;
+      color: $color_little_dark_gray;
       cursor: pointer;
       display: inline;
       font-size: 12pt;
@@ -269,12 +269,12 @@ table.general{
     }
     ul{
       li{
-        border-top: solid 1px #aaaaaa;
-        border-left: solid 1px #aaaaaa;
-        border-right: solid 1px #aaaaaa;
+        border-top: solid 1px $score_table_head_color;
+        border-left: solid 1px $score_table_head_color;
+        border-right: solid 1px $score_table_head_color;
       }
       li a{
-        color: #aaaaaa;
+        color: $score_table_head_color;
         cursor: pointer;
         text-decoration: none;
       }
@@ -290,7 +290,7 @@ tbody{
   .equivalent{
     a{
       text-decoration: none;
-      color: #21578B;
+      color: $score_tbody_link;
       font-size: 9pt;
     }
     .dropdown-menu{

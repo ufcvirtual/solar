@@ -156,11 +156,11 @@ input::-moz-focus-inner {
 .btn_main {
     color: $color_white;
     text-shadow: 0 -1px 0 rgba($color_black, 0.25);
-    background: $btn_main-color; /* Old browsers */
-    @include filter-gradient($btn_main-color, darken($btn_main-color, 10%)); /* IE */
-    @include background-image(linear-gradient($btn_main-color, darken($btn_main-color, 15%))); /* CSS3 */
+    background: $btn_main_color; /* Old browsers */
+    @include filter-gradient($btn_main_color, darken($btn_main_color, 10%)); /* IE */
+    @include background-image(linear-gradient($btn_main_color, darken($btn_main_color, 15%))); /* CSS3 */
     background-repeat: repeat-x;
-    border-color: #0044cc #0044cc #002a80;
+    border-color: $btn_border_light_blue $btn_border_light_blue $btn_border_dark_blue;
 }
 
 .btn_main i {
@@ -217,13 +217,13 @@ input::-moz-focus-inner {
     @include filter-gradient($btn_caution_color, darken($btn_caution_color, 20%)); /* IE */
     @include background-image(linear-gradient($btn_caution_color, darken($btn_caution_color, 20%))); /* CSS3 */
     background-repeat: repeat-x;
-    border-color: #bd362f #bd362f #802420;
+    border-color: $btn_border_light_red $btn_border_light_red $btn_border_dark_red;
     border-color: rgba($color_black, 0.1) rgba($color_black, 0.1) rgba($color_black, 0.25);
     text-shadow: none;
 }
 
 .btn_caution[disabled] {
-    border-color: #bd362f #bd362f #802420;
+    border-color: $btn_border_light_red $btn_border_light_red $btn_border_dark_red;
 }
 
 .btn_caution[disabled] i {
@@ -251,7 +251,7 @@ input::-moz-focus-inner {
 .btn_caution.disabled,
 .btn_caution.btn_disabled
 .btn_caution[disabled] {
-    border-color: #bd362f #bd362f #802420;
+    border-color: $btn_border_light_red $btn_border_light_red $btn_border_dark_red;
     border-color: rgba($color_black, 0.1) rgba($color_black, 0.1) rgba($color_black, 0.25);
 }
 
@@ -276,8 +276,8 @@ input::-moz-focus-inner {
 .btn_caution.disabled,
 .btn_caution.btn_disabled,
 .btn_caution[disabled] {
-    background-color: #CE1A15;
-    *background-color: #CE1A15;
+    background-color: $btn_disabled_background;
+    *background-color: $btn_disabled_background;
 }
 
 .btn_warning:hover,
@@ -292,7 +292,7 @@ input::-moz-focus-inner {
 }
 
 .btn_warning:active {
-    background-color: #942a25;
+    background-color: $btn_warning_background;
 }
 
 .btn.disabled,

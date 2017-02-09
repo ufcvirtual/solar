@@ -2,7 +2,7 @@
   .block_content{
     margin-top: 0px;
     padding-top: 1px;
-    background-color: #ffffff;
+    background-color: $color_white;
   }
 
   .block_title{
@@ -10,7 +10,7 @@
       padding-top: 12px;
     }
   }
-  
+
   #steps{
     width: auto;
     margin: 20px;
@@ -42,14 +42,14 @@
     }
     tr.disabled, [id^='exam_'].disabled{
       i, label{
-        color: #B4B2B1;
+        color: $step_list_color;
       }
       .collection_check_boxes{
-        background-color: #B4B2B1;
+        background-color: $step_list_color;
       }
     }
     .text_none.disabled{
-      color: #B4B2B1;
+      color: $step_list_color;
     }
   }
 

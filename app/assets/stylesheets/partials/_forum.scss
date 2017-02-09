@@ -24,7 +24,7 @@ div.forum_navigation {
   /*background: url('../images/error.gif') no-repeat left center;*/
   padding-top: 7px;
   font-family: 'Ubuntu Condensed', sans-serif;
-  color: red;
+  color: $color_red;
 }
 
 #forum_view_mode {
@@ -80,7 +80,7 @@ div.forum_navigation {
 .forum_post_icon {
   border-right: 2px solid;
   border-right-color: $color_main;
-  background-color: #ffffff;
+  background-color: $color_white;
   vertical-align: top;
   padding-right: 5px;
   width: 40px;
@@ -117,11 +117,11 @@ div.forum_navigation {
 }
 
 .forum_post_head.new, .forum_post_icon.new{
-  background-color: #E9F3FF;
+  background-color: $forum_post_background;
 }
 
 .forum_post_wrapper.new, .forum_post_attachment.new{
-  background-color: #b0cce8;
+  background-color: $forum_post_background_blue;
 }
 
 .forum_post_author {

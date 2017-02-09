@@ -31,26 +31,51 @@ $border_event_list_color: $event_color;
 
 $label_color: $color_main_text;
 
-$color_black: black;
-$color_white: white;
+$color_white: #fff;
+$color_black: #000;
+$color_red: #FF0000;
+$color_gray: #808080;
+$color_almost_black: #222;
+$color_little_dark_gray: #555;
+$color_almost_gray: #666;
 $color_light_gray: #888;
+$color_light_light_gray: #999;
+
+// Cores com significados
+$evaluated_color: #378941;
+$sent_color: #2900c2;
+$not_sent_color: #e12227;
+$not_started_color: #787878;
+$without_group_color: #e37073;
+$error_color: #E03838;
 
 /* Facebook */
 $facebook_main_color: #3b5c9a;
 $color_disabled: #777;
 
-// administrations colors
-$added_permission_color: blue;
-$removed_permission_color: red;
-$permission_color: green;
-
-// background colors
+// Background colors
 $background_blue: #F5F8FB;
 $background_gray: #EFEFEF;
 $background_dark_gray: #E8EFF6;
 $background_light_beige: #fefae6;
 $background_light_red: #fff6f6;
 $background_light_green: #F5FFE3;
+
+// Base colors
+$body_background: #f9f9f9;
+$period_ended_background: #f6f6f6;
+$period_ended_color: #989898;
+$current_background: #E7EDED;
+$current_color: #214684;
+$disabled_color: #B4B3B7;
+$language_border_color: #ccc;
+$language_color: #234a84;
+$language_background_color: #e7e9eb;
+
+// administrations colors
+$added_permission_color: blue;
+$removed_permission_color: red;
+$permission_color: green;
 
 // Agendas colors
 $agenda_color: #4b6380;
@@ -73,13 +98,168 @@ $blue_warning_background: #E9F3FF;
 $text_alert_color: #e64d4d;
 
 // Buttons colors
-$btn_color: #ffffff;
+$btn_color: $color_white;
 $btn_main_color: #005cc0;
 $btn_caution_color: #ee5f5b;
 $btn_orange: #ffe6cc;
 $btn_initial_file_color_final: #f9c143;
-$btn_border_color: #cccccc;
+$btn_border_color: $language_border_color;
 $btn_border_light_gray: #e6e6e6;
 $btn_border_dark_gray: #bfbfbf;
 $btn_border_botton_color: #b3b3b3;
 $btn_box_shadow: #9a9a9a;
+$btn_border_light_blue: #0044cc;
+$btn_border_dark_blue: #002a80;
+$btn_border_light_red: #bd362f;
+$btn_border_dark_red: #802420;
+$btn_disabled_background: #CE1A15;
+$btn_warning_background: #942a25;
+
+// Calendar colors
+$datepicker_color: #cfcfcf;
+
+// Chat e Chat_rooms colors
+$complete_border_left_color: #C0C0C0;
+$mysolar_chat_color: #bbb;
+$mysolar_chat_barra_background: #fbb03b;
+
+// Content colors
+$block_border_color: $color_main;
+$block_groups_background: #f3f3f3;
+$block_content_color: $language_border_color;
+$block_content_toolbar_background: #e8eff6;
+$steps_background: #f5f5f5;
+$steps_list_color: #919191;
+$steps_list_active_color: #004B81;
+$steps_list_box_shadow: #f0cf65;
+
+// Digital class
+$remove_file_color: #DC5869;
+
+// Editions colors
+$edition_color: #D5031C;
+$list_exams_btn_color: $color_gray;
+$list_exams_exam_box_color: #005cc0;
+$list_exams_background: #f3f3f3;
+
+// Exams colors
+$notice_exams_color: #b30602;
+$question_image_border_color: #CDD6E3;
+$question_image_legend_background: #CBD7E4;
+$question_iten_incorrect: $error_color;
+$question_iten_hit_color: #0B610B;
+$list_exams_corrected_color: $evaluated_color;
+$list_exams_finished_color: $sent_color;
+$list_exams_not_answered_color: $not_sent_color;
+$list_exams_not_started_color: $not_started_color;
+
+// Fancybox colors
+$label_border_color: #CBCED1;
+$label_selected_background: #FDFBE9;
+$label_selected_border_color: #F9E993;
+$label_disabled_background: #F7F7F7;
+$label_disabled_border_color: #dcdcdc;
+$label_disabled_color: #434343;
+$label_disabled_selected_background: #F0F0F0;
+
+// Form colors
+$form_error_color: $error_color;
+$form_select_disabled_background: #F2F2F2;
+
+// Forum colors
+$forum_post_background: #E9F3FF;
+$forum_post_background_blue: #b0cce8;
+
+// Groups Tags colors
+$groups_forms_background: #0e7dd8;
+
+// Imports colors
+$step_list_color: #B4B2B1;
+
+// Lesson Files colors
+$lesson_files_select_all_color: #8D8D8D;
+$save_automatically_message_color: #da1124;
+
+// Lessons colors
+$lesson_area_background: #eee;
+$lesson_header_background: #1d4786;
+$lesson_status_draft_background: #B41717;
+$lesson_status_released_background: #7DC43F;
+$lesson_portlet_border_color: $language_border_color;
+$lesson_notes_background: #FFC0CB;
+
+// Lightbox colors
+$lightbox_dialog_title_color: #4c4c4c;
+
+// Messages colors
+$block_content_background: #0074f3;
+$message_label_background: #F9C153;
+$contacts_edition_block_content_background: #F8FBFE;
+$contacts_list_border_color: #ddd;
+$receiver_already_added_color: #FF9900;
+
+// My Solar colors
+$mysolar_border_color: #EBEBEB;
+$search_keyword_inactive_color: #b0b0b0;
+
+// Panels colors
+// $panel_background: #eceef0;
+// $panel_box_shadow: #323232;
+// $faq_color: #363636;
+// $faq_border_color: #d3d3d3;
+// $panel_title_color: #135696;
+// $panel_content_color: #616161;
+// $panel_menu_footer_color: #2b5088;
+
+// Participants colors
+$participants_list_none_background: #f2f6f6;
+
+// Portfolio colors
+$portfolio_assignment_without_group_color: $without_group_color;
+$portfolio_assignment_corrected_color: $evaluated_color;
+$portfolio_assignment_not_answered_color: #CC0033;
+$portfolio_assignment_color: $sent_color;
+$portfolio_assignment_not_sent_color: $not_sent_color;
+$portfolio_assignment_not_started: $not_started_color;
+$portfolio_block_wrapper_groups: #929792;
+
+// Portlet colors
+$slide_settings_title_color: #666;
+$slide_settings_hover_background: #eef3f9;
+$slide_settings_active_background: #d8dfe9;
+$slide_settings_counter_background: #d7dfea;
+$slide_settings_counter_color: #3b5e9a;
+
+// Questions colors
+$questions_link_color: #C0C0C0;
+
+// Score colors
+$info_color: $not_started_color;
+$score_table_background: #e6f0fc;
+$score_table_head_color: #aaa;
+$scores_info_img_box_shadow: $portfolio_block_wrapper_groups;
+$score_tbody_link: #21578B;
+
+// Semesters colors
+$semester_color: #56585E;
+$block_content_text_background: $contacts_edition_block_content_background;
+
+// Speech to text
+$speech2text_color: #828282;
+$speech2text_hover_color: $btn_caution_color;
+
+// Tables colors
+$table_border_color: $step_list_color;
+$table_line_hover: #fffbd1;
+$table_line_period_ended_hover: #f1f1f1;
+$table_file_data_info_color: $not_started_color;
+$table_data_line_title: $score_tbody_link;
+$table_head_line_title: #6B6B6B;
+$table_sort_border_color: $step_list_color;
+
+// Tutorials colors
+$tutorials_description_color: #424242;
+
+// Webconference colors
+$webconference_table_body_color: $speech2text_color;
+$webconference_access_profile_color: $period_ended_color;

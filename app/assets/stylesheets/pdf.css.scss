@@ -1,3 +1,30 @@
+$comment_color: #4B4B4B;
+
+$exam_open_question_color: #1c5ec9;
+$exam_open_question_border: #CDD6E3;
+$exam_open_question_incorrect: #E03838;
+$exam_open_question_hit: #0B610B;
+
+$background_dark_gray: #E8EFF6;
+$background_light_red: #fff6f6;
+$background_light_green: #F5FFE3;
+
+$tool_table_body_odd_background: #D3D3D3;
+$tool_table_title_background: #FFEFDB;
+
+$evaluated_corrected_color: #378941;
+$evaluated_sent_color: #2900c2;
+$evaluated_not_sent_color: #e12227;
+$evaluated_not_started_color: #787878;
+$evaluated_to_send_color: #003e7a;
+$evaluated_without_group_color: #e37073;
+
+$assignment_not_answered_color: #CC0033;
+$assignment_opened_color: #006666;
+$assignment_to_answer_color: #0099FF;
+
+$new_after_evaluation_background: #e6f0fc;
+
 @font-face {
     font-family: 'Solar';
     src:url('/assets/fonts/Solar.eot');
@@ -98,7 +125,7 @@
 
 	      .number {
 	        padding-right: 5px;
-	        color: #1c5ec9;
+	        color: $exam_open_question_color;
 	        width: auto;
 	        vertical-align:top;
 	      }
@@ -112,7 +139,7 @@
 	        display: inline-block;
 
 	        #question_image {
-	          border: solid 2px #CDD6E3;
+	          border: solid 2px $exam_open_question_border;
 	        }
 	      }
 
@@ -125,7 +152,7 @@
 
 	    img{
 	      margin-right: 10px;
-	      border: solid 2px #CDD6E3;
+	      border: solid 2px $exam_open_question_border;
 	      vertical-align: top;
 	    }
 
@@ -135,16 +162,16 @@
 
 	    label{
 	      display: inline;
-	      color: #1c5ec9;
+	      color: $exam_open_question_color;
 	      font-family: 'PT Sans', sans-serif;
 	    }
 
 	    .incorrect{
-	      color:#E03838;
+	      color: $exam_open_question_incorrect;
 	    }
 
 	    .hit{
-	      color:#0B610B;
+	      color: $exam_open_question_hit;
 	    }
 	  }
 
@@ -158,39 +185,39 @@
 		width: 100%;
 	}
 	table tbody tr:nth-child(odd) {
-		background:lightgray;
+		background: $tool_table_body_odd_background;
 	}
 	table thead tr th {
-    background: #FFEFDB;
+    background: $tool_table_title_background;
     border: 1px;
 	}
 	.evaluated {
-	    color: #378941;
+	    color: $evaluated_corrected_color;
 	  }
 
 	  .sent, .sent a, .evaluated a
 	  td.assignment_as a {
-	    color: #2900c2;
+	    color: $evaluated_sent_color;
 	  }
 
 	  .assignment_as, .assignment_as a{
-	    color: #2900c2;
+	    color: $evaluated_sent_color;
 	  }
 
 	  .not_sent, .not_sent a{
-	    color: #e12227;
+	    color: $evaluated_not_sent_color;
 	  }
 
 	  .not_started, .not_started a {
-	    color: #787878;
+	    color: $evaluated_not_started_color;
 	  }
 
 	  .to_send, .to_send a{
-	    color: #003e7a;
+	    color: $evaluated_to_send_color;
 	  }
 
 	  .without_group, .without_group a{
-	    color: #e37073;
+	    color: $evaluated_without_group_color;
 	  }
 
 	  .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
@@ -208,50 +235,50 @@
 */
 
 .assignment_corrected {
-  color: #378941;
+  color: $evaluated_corrected_color;
 }
 
 .assignment_not_answered {
-  color: #CC0033;
+  color: $assignment_not_answered_color;
 }
 
 .assignment_opened {
-  color: #006666;
+  color: $assignment_opened_color;
 }
 .assignment_to_answer {
-  color: #0099FF;
+  color: $assignment_to_answer_color;
 }
 
 .assignment_sent, .assignment_sent a, .assignment_corrected a
 td.assignment_as a {
-  color: #2900c2;
+  color: $evaluated_sent_color;
 }
 
 .assignment_as, .assignment_as a{
-  color: #2900c2;
+  color: $evaluated_sent_color;
 }
 
 .assignment_not_sent, .assignment_not_sent a,
 .expired {
-  color: #e12227;
+  color: $evaluated_not_sent_color;
 }
 
 .assignment_not_started, .assignment_not_started a {
-  color: #787878;
+  color: $evaluated_not_started_color;
 }
 
 .assignment_to_be_sent, .assignment_to_be_sent a,
 .assignment_pending,
 td.assignment_an a {
-  color: #003e7a;
+  color: $evaluated_to_send_color;
 }
 
 .assignment_an{
-  color: #003e7a;
+  color: $evaluated_to_send_color;
 }
 .assignment_without_group, .assignment_without_group a,
 td.assignment_without_group a {
-  color: #e37073;
+  color: $evaluated_without_group_color;
 }
 
 .assignment_corrected,
@@ -276,43 +303,43 @@ td.assignment_without_group a
 }
 
 .assignment_corrected, .assignment_evaluated {
-  color: #378941;
+  color: $evaluated_corrected_color;
 }
 
 .assignment_not_answered {
-  color: #CC0033;
+  color: $assignment_not_answered_color;
 }
 
 .assignment_sent, .assignment_sent a, .assignment_corrected a, .assignment_finished,
 td.assignment_as a {
-  color: #2900c2;
+  color: $evaluated_sent_color;
 }
 
 .assignment_as, .assignment_as a{
-  color: #2900c2;
+  color: $evaluated_sent_color;
 }
 
 .assignment_not_sent, .assignment_not_sent a,
 .expired, .assignment_closed {
-  color: #e12227;
+  color: $evaluated_not_sent_color;
 }
 
 .assignment_not_started, .assignment_not_started a {
-  color: #787878;
+  color: $evaluated_not_started_color;
 }
 
 .assignment_to_be_sent, .assignment_to_be_sent a,
 .assignment_pending, .assignment_to_answer, .assignment_not_finished, .assignment_opened,
 td.assignment_an a {
-  color: #003e7a;
+  color: $evaluated_to_send_color;
 }
 
 .assignment_an{
-  color: #003e7a;
+  color: $evaluated_to_send_color;
 }
 .assignment_without_group, .assignment_without_group a,
 td.assignment_without_group a {
-  color: #e37073;
+  color: $evaluated_without_group_color;
 }
 
 .assignment_corrected,
@@ -334,32 +361,32 @@ td.assignment_without_group a
 
 #scores_notes.legend_score_footer, .tb_list_students{
   .evaluated {
-    color: #378941;
+    color: $evaluated_corrected_color;
   }
 
   .sent, .sent a, .evaluated a
   td.assignment_as a {
-    color: #2900c2;
+    color: $evaluated_sent_color;
   }
 
   .assignment_as, .assignment_as a{
-    color: #2900c2;
+    color: $evaluated_sent_color;
   }
 
   .not_sent, .not_sent a{
-    color: #e12227;
+    color: $evaluated_not_sent_color;
   }
 
   .not_started, .not_started a {
-    color: #787878;
+    color: $evaluated_not_started_color;
   }
 
   .to_send, .to_send a{
-    color: #003e7a;
+    color: $evaluated_to_send_color;
   }
 
   .without_group, .without_group a{
-    color: #e37073;
+    color: $evaluated_without_group_color;
   }
 
   .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
@@ -370,7 +397,7 @@ td.assignment_without_group a
 td.new_after_evaluation{
     font-size: 10pt;
     padding: 5px;
-    background-color: #e6f0fc;
+    background-color: $new_after_evaluation_background;
 }
 
 .invisible {

@@ -1,5 +1,5 @@
 .expand.icon-ellipsis{
-  color: white;
+  color: $color_white;
   background-color: $color_gray_text;
   border-radius: 3px;
   padding-top: 0;
@@ -12,7 +12,7 @@
 }
 
 .compress.icon-arrow-up-triangle{
-  color: white;
+  color: $color_white;
   background-color: $color_gray_text;
   border-radius: 3px;
   font-size: 13px;

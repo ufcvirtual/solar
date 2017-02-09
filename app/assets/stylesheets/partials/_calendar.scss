@@ -17,7 +17,7 @@
 .highlight-date-mark {
     a.ui-state-default {
         background-color: $color_main_medium;
-        color: #fff;
+        color: $color_white;
     }
 }
 .ui-helper-hidden-accessible { display: none; }
@@ -41,8 +41,8 @@
 
 /* cabecalho do calendario */
   .ui-datepicker-header {
-    background: #fff;
-    color: #000;
+    background: $color_white;
+    color: $color_black;
     height: 1.2em;
     padding: .3em;
     font-weight: bold;
@@ -78,7 +78,7 @@
 /* corpo do calendario */
 .ui-datepicker-content {
     left: 0px;
-    color: #222222;
+    color: $color_almost_black;
     padding-bottom: 3px; }
 
 .ui-datepicker-calendar {
@@ -88,9 +88,9 @@
 }
 
 #ui-datepicker-div{
-    background-color: #fff;
+    background-color: $color_white;
     padding-top: 5px;
-    padding-bottom: 5px; 
+    padding-bottom: 5px;
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -111,7 +111,7 @@
         border: 1px solid $color_contrast;
         background: $color_contrast_light;
         font-weight: normal;
-        color: #000;
+        color: $color_black;
     }
 
     /* data atual */
@@ -141,18 +141,18 @@
 .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
     position:absolute; top: 3px; width: 1.8em; height: 1.2em; }
 .ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover { top: 3px; }
-.ui-datepicker .ui-datepicker-prev { 
+.ui-datepicker .ui-datepicker-prev {
     left: 37px;
     margin-top: 2px;
-    color: #cfcfcf;
+    color: $datepicker_color;
     width: 9px;
     height: 11px;
     cursor: pointer;
     background-image: url(/assets/calendar_arrow_left.png) !important }
-.ui-datepicker .ui-datepicker-next { 
+.ui-datepicker .ui-datepicker-next {
     right: 37px;
     margin-top: 2px;
-    color: #cfcfcf;
+    color: $datepicker_color;
     width: 9px;
     height: 11px;
     cursor: pointer;

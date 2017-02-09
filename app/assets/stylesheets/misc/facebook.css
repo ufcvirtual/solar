@@ -44,7 +44,7 @@ body, a {
   width: 255px;
   padding: 4px;
   margin: 0px;
-  background-color: #f6f7f8; 
+  background-color: #f6f7f8;
   border-bottom-width: 2px;
   border-bottom-style: solid;
   border-bottom-color: #CFCFCF;
@@ -202,7 +202,7 @@ form{
 
 .new_feed{
   color: #ffffff;
-  background-color: #3F6488;;
+  background-color: #3F6488;
   padding: 2px;
 }
 

@@ -13,7 +13,7 @@
 
   .collection_check_boxes {
     .icon{
-      color: white;
+      color: $color_white;
       padding-right: 0;
       padding-left: 0;
       margin-top: -16px;
@@ -38,10 +38,10 @@
     font-size: 11pt;
     cursor: pointer;
   }
-  
+
   .add_group, .unbind_groups{
-    border: 1px solid #C0C0C0;
-    color: gray;
+    border: 1px solid $complete_border_left_color;
+    color: $color_gray;
   }
 
   .tags{
@@ -52,8 +52,8 @@
 
 .groups .collection_check_boxes, .groups_tags .collection_check_boxes, .group_checkbox .collection_check_boxes, .group_checkbox .collection_check_boxes label, .labels_tags .collection_check_boxes{
   @include collection_check_boxes_layout;
-  background-color: #0e7dd8;
-  color: #fff;
+  background-color: $groups_forms_background;
+  color: $color_white;
   white-space: nowrap;
   display:inline-block;
 }
@@ -74,8 +74,8 @@
 }
 
 .no_tags .collection_check_boxes{
-  color: black;
-  background-color: white;
+  color: $color_black;
+  background-color: $color_white;
   border: 0;
   padding: 0;
 }
@@ -83,17 +83,17 @@
 .new_groups{
   display: inline-block;
   .dropdown{
-    background-color: white;
+    background-color: $color_white;
     padding: 5px;
-    border: 1px solid #C0C0C0;
+    border: 1px solid $complete_border_left_color;
     max-height: 400px;
     overflow-y: auto;
-    
+
     .btn{
       margin: 5px;
       float: right;
     }
-    
+
   }
 }
 
@@ -108,7 +108,7 @@
 .groups{
   .no_groups {
     display: none;
-    color: #003E7A;
+    color: $color_main;
     font-size: 10pt;
   }
 }
@@ -125,7 +125,7 @@ tbody .groups, .input .groups{
 }
 
 .groups_tags .collection_check_boxes#disabled, .group_label .groups .collection_check_boxes#disabled, .group_checkbox .collection_check_boxes#disabled, .group_checkbox .collection_check_boxes#disabled label{
-  background-color: #C0C0C0;
+  background-color: $complete_border_left_color;
 }
 
 .group_checkbox .collection_check_boxes label{
