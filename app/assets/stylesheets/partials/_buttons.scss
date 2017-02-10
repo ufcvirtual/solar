@@ -63,6 +63,10 @@ input::-moz-focus-inner {
     white-space: nowrap;
     vertical-align: middle;
     *zoom: 1;
+    ul {
+      list-style:none;
+      li { display: inline; }
+    }
 }
 
 .btn-group:first-child {
