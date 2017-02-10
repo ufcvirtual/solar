@@ -1,0 +1,16 @@
+## facebook settings
+
+app_id: "166687823495491"
+secret_key: "a8bf7e087213170d0462ef9f24b924c0"
+data-fanpage: "http://www.facebook.com/solar2ufc"
+#data-href: "http://apolo11.virtual.ufc.br/social_networks/fb_authenticate"
+data-href: "http://www.solar.virtual.ufc.br/social_networks/fb_authenticate"
+tags:
+  - <meta property="og:title" content="SOLAR 2.0" />
+  - <meta property="og:description" content="SOLAR 2.0 é o Ambiente Virtual de Aprendizagem da Universidade Federal do Ceará." />
+  - <meta property="og:type" content="university" />
+  - <meta property="og:url" content="http://www.solar.virtual.ufc.br" />
+  - <meta property="og:image" content="http://www.solar.virtual.ufc.br/assets/logintopo.png" />
+  - <meta property="og:site_name" content="SOLAR 2.0" />
+  - <meta property="fb:app_id" content="166687823495491" />
+~                                                                 
