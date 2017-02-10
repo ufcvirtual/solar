@@ -3,6 +3,8 @@ function edit_note(icon){
 
   $.get($(icon).data('link'), function(data){
     $(icon).parents('.note:first').html(data);
+    $('#lesson_note_name').prop('tabindex', 0);
+    $('#lesson_note_name').focus();
   });
 }
 
@@ -12,9 +14,16 @@ function cancel_note(icon){
     if(note.data('link-item') != undefined)
       $.get(note.data('link-item'), function(data){
         note.html(data);
+        $(note).find('h3').prop('tabindex', 0);
+        $(note).find('h3').focus();
       });
-    else
-      note.fadeOut('slow', function() { $(this).remove(); });
+    else{
+      note.fadeOut('slow', function() { 
+        $(this).remove(); 
+        // focus_on_fancybox_header();
+      });
+
+    }
   }
 }
 
@@ -42,6 +51,8 @@ function add_note(icon){
     $('.text_none').remove();
     $.get($(icon).data('url'), function(data){
       $(".lesson_notes .block_content").prepend($(data).fadeIn('slow').css('background-color', pastelColors()));
+      $('#lesson_note_name').prop('tabindex', 0);
+      $('#lesson_note_name').focus();
     });
   }
   else

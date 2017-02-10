@@ -758,6 +758,8 @@ en_US:
       draft: Draft
       released: Released
       lesson_notes: Lesson notes
+      summary: Table which content includes access links to available lessons and text name of unavailable lessons, also access periods and access links to lesson's notes for each one of them. All lessons are related to lesson module %{module_name}.
+      caption: Lesson module %{module_name} lesson's list
     list:
       lesson: Lesson
       order: Order
@@ -1300,6 +1302,7 @@ en_US:
   legend: "Legend"
   to: "to"
   for: "To:"
+  disabled: " Disabled link"
   no_permission: "You haven't permission to access this page"
   no_permission_groups: "Since you don't have access to all groups of this object, you don't have permission to access this page. Please access edition."
   not_associated: This tool isn't associated to the informed data
@@ -2505,6 +2508,8 @@ en_US:
       no_content: The message has no content. Continue?
       discard: "Discard"
       add_contacts: "Click here to add contacts"
+      content_speech: to message's content field
+      subject_speech: to subject field
     header:
       inbox: "Inbox"
       outbox: "Outbox"
@@ -2937,15 +2942,25 @@ en_US:
       edit: Edit
       remove: Remove
       download: Download
+      edit_alt: Edit note %{note}
+      remove_alt: Remove note %{note}
+      download_alt: Download pdf with note's %{note} content
+      name: Name
+      description: Description
     form:
       yellow_marker: Yellow marker
       green_marker: Green marker
       save: Save
       cancel: Cancel
+      name: to Name field
+      description: to Description field
+      save_alt: Save note's creation or edition
+      cancel_alt: Cancel note's criation or edition
+      name_placeholder: Note's name
     index:
       new: New note
       download: Download all notes
-      title: Lesson notes
+      title: Lesson notes (Lesson %{lesson})
     pdf:
       lesson: 'Lesson: '
 
@@ -2955,6 +2970,8 @@ en_US:
       edit: Edit Webconference
       minutes: " minutes"
       record_tooltip: "By checking it will be possible to access a record of this webconference after it happens"
+      title: to Title field
+      duration: to Duration field
     error:
       date_range: It was not possible to evaluate. Date range expired.
       deleted: "Webconference wasn't deleted."
@@ -3786,8 +3803,8 @@ en_US:
     new_language_en: " (It was not possible to find this tutorial in English, see our English version)"
 
   speech2text:
-    start: Start automatic transcription from speech to text
-    stop: Stop automatic transcription from speech to text
+    start: Start automatic transcription from speech to text %{field}
+    stop: Stop automatic transcription from speech to text %{field}
     browser: Your browser doesn't support this tool. Please use Chrome to have access to it.
     no_speech: Speech trancription tool was interrupted. No speech received.
 

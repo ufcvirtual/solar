@@ -4,7 +4,7 @@
   .assignment_inner_content.comment_area= f.input :comment, as: :ckeditor, label: false
   .forum_post_attachment
     = button_tag t('.attach_file'), class: 'btn btn-orange new_file'
-    = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline', ckeditor: true, div_id: 'assignment_comment_comment', number: ''}
+    = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline', ckeditor: true, div_id: 'assignment_comment_comment', number: '', field: ''}
 
     .portfolio_comment_button
       = button_tag t(:cancel), class: 'btn btn_caution cancel_comment', type: :button

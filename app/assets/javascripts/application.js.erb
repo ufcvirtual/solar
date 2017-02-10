@@ -69,6 +69,12 @@ $(function() {
       $('#mysolar_top_help').addClass('mysolar_top_submenu_label_regular');
     }
   });
+
+  $('a').not('.ignore_keydown').on('keypress, keydown', function(e){
+    if (e.which == 13){
+      $(this).click();
+    }
+  });
 });
 
 /**

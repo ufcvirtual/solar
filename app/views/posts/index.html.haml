@@ -33,7 +33,7 @@
             = hidden_field_tag(:display_mode, @display_mode, :id=>'display_mode_1')
             = hidden_field_tag(:current_page, @current_page, :id=>'current_page_1')
             = form.text_area :content
-            = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'discussion_post_content', number: ''}
+            = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'discussion_post_content', number: '', field: ''}
             .new_post_dialog_buttons.btn-group
               = button_tag content_tag(:span, t(:cancel)), type: 'button', onclick: "cancel_posting(this)", class: 'btn btn_caution', id: 'btn_cancel_post'
               = button_tag t(:send), class: "btn btn_main", id: "submit_post", type: :button

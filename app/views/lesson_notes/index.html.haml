@@ -3,9 +3,9 @@
   .block_title
     %h2
       %i.icon-book2
-      = t('.title')
+      = t('.title', lesson: Lesson.find(@lesson_id).name)
     .right_buttons
-      = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_note(this)', class: 'btn btn_main', :"data-tooltip" => t('.new'), :'data-url' => new_lnote_path(lesson_id: @lesson_id)
+      = link_to_function content_tag(:i, nil, class: 'icon-plus', :'aria-hidden' => 'true'), 'add_note(this)', class: 'btn btn_main', :"data-tooltip" => t('.new'), :'data-url' => new_lnote_path(lesson_id: @lesson_id), :'aria-label' => t('.new')
       /- unless @lesson_notes.blank?
       /  = link_to content_tag(:i, nil, class: 'icon-printer'), download_lnotes_path(lesson_id: @lesson_id), class: 'btn', :"data-tooltip" => t('.download')
   .block_content

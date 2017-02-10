@@ -18,7 +18,7 @@
           .label.align-left= t('.subject')
           .input.align-right
             = f.input :subject, label: false, input_html: { class: 'message_new_textbox' }
-            = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline', ckeditor: false, div_id: 'message_subject', number: ''}
+            = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline', ckeditor: false, div_id: 'message_subject', number: '', field: t('.subject_speech')}
 
         .message_new_upload
 
@@ -48,7 +48,7 @@
     #div_new_message
       = f.input :content, label: false, as: :ckeditor
 
-    = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'message_content', number: '2'}
+    = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'message_content', number: '2', field: t('.content_speech')}
     .message_new_action
       = f.submit t(".send"), id: "send_message", class: "btn btn_main", alt: t(".send")
       = link_to t('.discard'), inbox_messages_path, { class: 'btn btn_caution' }

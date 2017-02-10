@@ -7,13 +7,13 @@
     = f.hidden_field :academic_allocation_user_id, value: @assignment_webconference.academic_allocation_user_id
     .input
       = f.input :title
-      = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline.middle', ckeditor: false, div_id: 'assignment_webconference_title', number: ''}
+      = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline.middle', ckeditor: false, div_id: 'assignment_webconference_title', number: '', field: t('.title')}
 
     = f.input :initial_time, start_year: Date.today.year
 
     .input
       = f.input :duration, hint: t('.minutes')
-      = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline.middle', ckeditor: false, div_id: 'assignment_webconference_duration', number: '2'}
+      = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline.middle', ckeditor: false, div_id: 'assignment_webconference_duration', number: '2', t('.duration')}
 
     = f.input :is_recorded, as: :boolean, boolean_style: :inline, input_html: { :'data-tooltip' => t('.record_tooltip') }
     

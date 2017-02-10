@@ -205,3 +205,31 @@
     display:none;
   }
 }
+
+.list_lessons{
+  table.tb_list{
+    cellpadding: 10;
+    cellspacing: 0; 
+    width: 100%; 
+    border: 0;
+
+    th[id^=name]{
+      align: left;
+    }
+    th[id^=period]{
+      width: 30%;
+    }
+    th[id^=notes]{
+      width: 10%; 
+      text-align: center;
+    }
+    th[id^=accept]{
+      width: '12%';
+    }
+
+  }
+  a.disabled{
+    pointer-events: none;
+    text-decoration: none;
+  }
+}

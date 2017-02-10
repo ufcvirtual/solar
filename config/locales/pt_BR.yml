@@ -928,6 +928,8 @@ pt_BR:
       draft: Rascunho
       released: Liberada
       lesson_notes: Notas de aula
+      summary: Tabela contendo link de acesso às aulas disponíveis e nome em texto das aulas indisponíveis, bem como períodos de acesso e link de acesso às notas de aula para cada aula. Todas as aulas são referentes ao módulo %{module_name}.
+      caption: Lista de aulas para o módulo %{module_name}
     list:
       lesson: Aula
       order: Ordem
@@ -2729,6 +2731,8 @@ pt_BR:
       no_content: Mensagem sem conteúdo. Continuar?
       discard: "Descartar"
       add_contacts: "Clique aqui para adicionar contatos"
+      content_speech: para o campo de conteúdo da mensagem
+      subject_speech: para o campo assunto
     header:
       inbox: "Entrada"
       outbox: "Saída"
@@ -3172,15 +3176,25 @@ pt_BR:
       edit: Editar
       remove: Remover
       download: Download
+      edit_alt: Editar nota %{note}
+      remove_alt: Remover nota %{note}
+      download_alt: Download de pdf com o conteúdo da nota %{note}
+      name: Nome
+      description: Descrição
     form:
       yellow_marker: Marcador amarelo
       green_marker: Marcador verde
       save: Salvar
       cancel: Cancelar
+      name: para o campo Nome
+      description: para o campo Descrição
+      save_alt: Salvar criação ou editção de nota
+      cancel_alt: Cancelar criação ou edição de nota
+      name_placeholder: Nome da nota
     index:
       new: Nova nota
       download: Download de todas as notas
-      title: Notas de aula
+      title: Notas de aula (Aula %{lesson})
     pdf:
       lesson: 'Aula: '
 
@@ -3189,6 +3203,7 @@ pt_BR:
   legend: "Legenda"
   to: "a"
   for: "Para:"
+  disabled: " Link desabilitado"
 
   assignment_webconferences:
     form:
@@ -3196,6 +3211,8 @@ pt_BR:
       edit: Editar Webconferência
       minutes: " minutos"
       record_tooltip: "Ao marcar, será possível acessar uma gravação da webconferência após seu acontecimento"
+      title: para o campo Título
+      duration: para o campo Duração
     error:
       date_range: Não foi possível realizar ação. Período encerrado.
       remove: Não foi possível deletar webconferência
@@ -4025,8 +4042,8 @@ pt_BR:
     new_language_en: " (Não foi possível encontrar o tutorial desejado em Português, veja nossa versão em Inglês)"
 
   speech2text:
-    start: Iniciar transcrição automática de fala para texto
-    stop: Interromper transcrição automática de fala para texto
+    start: Iniciar transcrição automática de fala para texto %{field}
+    stop: Interromper transcrição automática de fala para texto %{field}
     browser: Seu navegador não dá suporte a esta ferramenta. Favor utilizar o Chrome para ter acesso a ela.
     no_speech: A ferramenta de transcrição de fala foi interrompida, pois nenhuma fala foi recebida.
 
