@@ -68,7 +68,7 @@ if(jQuery) (function($) {
         $(div).data('focus', true);
       }
 
-    $('.dropdown').on('keyup',(e) => {
+    $('.dropdown').on('keyup', function(e){
       var code = e.keyCode || e.which;
       if(!div.data('focus')){
         if (code == '9'){

@@ -1028,8 +1028,7 @@ function EventManager(options, _sources) {
           error: function() {
             applyAll(error, this, arguments);
             callback();
-          }
-          ,
+          },
           complete: function() {
             applyAll(complete, this, arguments);
             popLoading();

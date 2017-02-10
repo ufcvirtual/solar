@@ -65,7 +65,6 @@ $(function() {
 
         viewDisplay: function(view) {
           if(lastView == 'list'&& beforeLast == undefined && lastView!=view.name){
-            console.log('entrou');
             $("#no_events").remove();
             $('#calendar').fullCalendar('removeEventSource', fcSources.list);
           }else{
