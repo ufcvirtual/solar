@@ -1,0 +1,116 @@
+// MATRICULA
+.enrollment_list {
+
+  label {
+  margin: 5px 0 3px 0;
+  }
+
+  tr.lines td {
+    vertical-align: middle;
+  }
+}
+
+.enrollment_search {
+  height: 12px;
+  font-size: 12px;
+}
+
+.enrollment_search_icon {
+  vertical-align: middle;
+  border: 0px;
+  cursor: pointer;
+}
+
+.filter_enrollment {
+
+  label {
+    width: auto;
+  }
+
+  width:800px;
+
+  input#type{
+    width: 33%;
+  }
+
+  input#search{
+    width: 50%;
+  }
+}
+
+.any_found{
+  padding: 5px;
+  padding-right: 5px;
+  border-bottom: solid 1px;
+  border-bottom-color: $high_contrast_border_color;
+  height: 28px;
+}
+
+#offer_category {
+  height: 29px;
+  padding: 3px;
+  width: 210px;
+}
+
+#offer_search {
+  height: 17px;
+  width: 210px;
+}
+
+.enrollment_link {
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  border: 0;
+}
+
+.enrollment_right {
+  float: right;
+  position: relative;
+  margin-right: 0px;
+  right: 0;
+  top: 5px;
+}
+
+.select_category {
+  height: 19px;
+  font-size: 10px;
+}
+
+.enrollment_label {
+  font-size: 10pt;
+  width: auto;
+  color: $high_contrast_font_color;
+}
+
+.enrollment_bar {
+  padding: 2px 4px;
+}
+
+.allocations_list {
+  max-height: 260px;
+  overflow: auto;
+ }
+
+#show_enrollment_info{
+  .input{
+    margin-bottom: 10px;
+  }
+  .form_label{
+    width: 75px;  
+  }
+  .right_buttons{
+    margin-right: auto;
+  }
+}
+
+.tb_list.enrollments{
+  %tr.lines{
+    %th.student, %th.group{
+      width: 130px;
+    }
+  }
+  select#group_id{
+    width: 130px;
+  }
+}

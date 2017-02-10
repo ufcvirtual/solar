@@ -15,7 +15,7 @@
   word-wrap: break-word;
   padding: 5px 5px 0px 5px;
   min-height: 27px;
-  background-color: $high_contrast_background_color;
+  background-color: $color_main_light;
 }
 
 .comments_files {
@@ -39,7 +39,7 @@
   margin-right: 8px;
   margin-left: 10px;
   float: right;
-  color: $high_contrast_font_color;
+  color: #888;
 }
 
 .assignment_comment_date {
@@ -74,7 +74,7 @@
   text-align: left;
   border-bottom: 1px solid;
   border-bottom-color: $color_main;
-  background-color: $high_contrast_background_color;
+  background-color: white;
 }
 
 .comments_files_div .btn {
@@ -112,11 +112,11 @@
 
 .assignment_sent, .assignment_sent a, .assignment_corrected a, .assignment_finished, .assignment_finish, .assignment_processing,
 td.assignment_as a {
-  color: #176DF6;
+  color: #2900c2;
 }
 
 .assignment_as, .assignment_as a{
-  color: #176DF6;
+  color: #2900c2;
 }
 
 .assignment_not_sent, .assignment_not_sent a, .expired, .assignment_closed {
@@ -124,17 +124,17 @@ td.assignment_as a {
 }
 
 .assignment_not_started, .assignment_not_started a, .assignment_scheduled {
-  color: #fff;
+  color: #787878;
 }
 
 .assignment_to_be_sent, .assignment_to_be_sent a, .assignment_started,
 .assignment_pending, .assignment_to_answer, .assignment_not_finished, .assignment_opened, .assignment_in_progress,
 td.assignment_an a {
-  color: #176DF6;
+  color: #003e7a;
 }
 
 .assignment_an{
-  color: #176DF6;
+  color: #003e7a;
 }
 .assignment_without_group, .assignment_without_group a,
 td.assignment_without_group a {
@@ -164,7 +164,7 @@ td.assignment_without_group a
 
 .tb_list{
   tr > td > .participants_box:not(.invisible){
-    border-bottom: 1px solid $high_contrast_border_color;
+    border-bottom: 1px solid #B4B2B1;
   }
 
   td{
@@ -173,7 +173,7 @@ td.assignment_without_group a
       max-height: 200px;
       overflow: auto;
       tbody{
-        background-color: $high_contrast_background_color;
+        background-color: white;
         td{
           padding: 6px 10px 4px 10px;
           vertical-align: middle;
@@ -186,11 +186,11 @@ td.assignment_without_group a
 .assignment_comment_wrapper, .assignment_files > .block_content{
   max-height: 300px;
   overflow-y: auto;
-  background-color: $high_contrast_background_color;
+  background-color: $color_main_light;
 }
 
 .assignment_files.files td, .student_files.files td, .student_webconferences.files td{
-  color: $high_contrast_font_color;
+  color: $text_grey;
 }
 
 .upload_files{
@@ -216,7 +216,7 @@ td.assignment_without_group a
     box-shadow: 4px 4px 7px #929792;
   }
   .block_user{
-    background-color: $high_contrast_background_color;
+    background-color: #FCEBCA;
     font-size: 10pt;
   }
 
@@ -242,7 +242,7 @@ td.assignment_without_group a
 .assignment_info{
   .title {
     border-bottom: 2px solid;
-    border-bottom-color: $high_contrast_border_color;
+    border-bottom-color: $color_main_text;
     position: relative;
     overflow: hidden; // FIXME: em outro local estava definido como auto, verificar se está ok assim
     padding-top: 13px;

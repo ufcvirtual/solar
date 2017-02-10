@@ -1,0 +1,456 @@
+.questions, [class^='list_questions_exam_']{
+  .search{
+    label{
+      word-wrap: break-word;
+      max-width: 60px;
+      vertical-align: middle;
+      margin-right: -3px;
+      margin-left: -3px;
+    }
+    .block_content_toolbar{
+      padding: 9px;
+      text-align: center;
+    }
+  }
+  table.tb_questions{
+    td .title, td .description{
+      display: inline-block;
+    }
+    td a.preview_question{
+      text-decoration: none;
+      cursor: pointer;
+    }
+    td a.preview_question:disabled{
+      i{
+        color:  $high_contrast_link_color;
+      }
+    }
+    th.name{
+      text-align:left;
+      width: 20%;
+    }
+    th.type{
+      width: 5%;
+    }
+    th.updated_at{
+      width: 10%;
+    }
+    th.preview{
+      width: 5%;
+    }
+    th.privacy{
+      width: 5%;
+    }
+    th.used_at_exams{
+      width: 5%;
+    }
+    th.items{
+      width: 5%;
+    }
+    th.published{
+      width: 10%;
+    }
+  }
+
+  td.enunciation{
+    .inline{
+      display: inline-block;
+    }
+  }
+
+  .description{
+    max-width: 242px;
+  }
+}
+
+.tb_questions{
+  td a.preview_question:disabled{
+    i{
+      color:  $high_contrast_link_color;
+    }
+  }
+}
+
+.new_question{
+  textarea{
+    resize: none;
+  }
+  #cke_exam_question_question_attributes_enunciation, #cke_question_attributes_enunciation{
+    display: inline-block;
+  }
+  #steps{
+    width: 258px;
+    margin-bottom: 20px;
+  }
+  .question_type{
+    margin-left: -3px;
+    margin-bottom: 10px;
+  }
+  #question_enunciation, #exam_question_question_enunciation{
+    width: 510px;
+  }
+  .exam_question_score{
+    display: inline-block;
+    input{
+      width: 25px;
+      margin-right: 14px;
+    }
+  }
+  .step-images.hidden, .step-info.hidden{
+    visibility: hidden;
+  }
+  .step-images.show, .step-info.show{
+    visibility: visible;
+  }
+  #cke_question_enunciation{
+    width: 544px;
+    display: inline-block;
+  }
+  .fields{
+    margin-top: 13px;
+  }
+  .question_items{
+    padding-top: 5px;
+  }
+  #items{
+    .obs{
+      color: $high_contrast_font_color;
+      display: inline-block;
+    }
+    width: 343px;
+    display: inline-block;
+    padding-top: 10px;
+    input.string{
+      max-width: 277px;
+    }
+    .question_question_items_items_description{
+      display: inline-block;
+      width: 298px;
+    }
+    i, a.comment, a.image_icon, a.audio_icon{
+      float: right;
+      padding-bottom: 10px;
+      padding-left: 2px;
+    }
+    a.comment{
+      margin-right: 20px;
+    }
+    [id^='cke_question_items_attributes_']{
+      width: 316px;
+      margin-left: 8px;
+    }
+    .duplicatable_nested_form{
+      padding-bottom: 20px;
+    }
+    .label, .edit{
+      display: none;
+    }
+    .label.show{
+      display: inline-block;
+    }
+    .label label{
+      margin-top: -24px;
+      margin-left: -36px;
+      color: black;
+    }
+    .question_question_items_comment textarea{
+      height: 30px;
+    }
+    textarea{
+      width: 500px;
+      height: 200px;
+    }
+    .duplicatable_nested_form{
+      width: 515px;
+    }
+    .image.hide{
+      display: none;
+    }
+    .audio.hide{
+      display: none;
+    }
+    .image{
+      margin-top: 10px;
+      input[type='file'], .input.file{
+        display: none;
+      }
+      .upload-preview{
+        width: 136px;
+        display: inline-block;
+        text-align: center;
+        img{
+          max-width: 130px;
+          max-height: 130px;
+        }
+        .add_file{
+          margin-left: -1px;
+        }
+      }
+      input[type='text']{
+        width: 316px;
+        margin-top: 5px;
+      }
+      .info{
+        display: inline-block;
+        vertical-align: top;
+        input{
+          margin-top: 5px;
+          width: 280px;
+        }
+        textarea{
+          width: 271px;
+          height: 90px;
+        }
+        label.alt{
+          text-align: left;
+          margin-top: -5px;
+          margin-left: 80px;
+          width: 281px;
+        }
+      }
+    }
+
+    .audio{
+      margin-top: 10px;
+      input[type='file'], .input.file{
+        display: none;
+      }
+      .upload-preview{
+        width: 136px;
+        display: inline-block;
+        text-align: center;
+        audio{
+          max-width: 150px;
+          max-height: 30px;
+        }
+        .add_file{
+          margin-left: -1px;
+        }
+      }
+      input[type='text']{
+        width: 316px;
+        margin-top: 5px;
+      }
+      .info{
+        display: inline-block;
+        vertical-align: top;
+        input{
+          margin-top: 5px;
+          width: 280px;
+        }
+        input{
+          width: 271px;
+        }
+        label.alt{
+          text-align: left;
+          margin-top: -5px;
+          margin-left: 80px;
+          width: 281px;
+        }
+      }
+    }
+    .comment_area.hide{
+      display: none;
+    }
+    .comment_area{
+      display: inline-block;
+      textarea{
+        width: 409px;
+        height: 30px;
+      }
+    }
+  }
+  #images{
+    textarea{
+      height: 60px;
+    }
+    input[type='text']{
+      width: 294px;
+      margin-top: 5px;
+    }
+    .info{
+      text-align: right;
+      display: inline-block;
+      vertical-align: top;
+      input{
+        margin-top: 5px;
+      }
+      label.alt{
+        width: 300px;
+        text-align: left;
+        margin-top: -5px;
+      }
+    }
+    input[type='file'], .input.file{
+      display: none;
+    }
+    .upload-preview{
+      width: 190px;
+      display: inline-block;
+      text-align: center;
+      margin-left: 24px;
+      img{
+        max-width: 200px;
+        max-height: 200px;
+      }
+      .add_file{
+        margin: 4px;
+        margin-bottom: 20px;
+      }
+    }
+  }
+  #audios{
+    textarea{
+      height: 60px;
+    }
+    input[type='text']{
+      width: 294px;
+      margin-top: 5px;
+    }
+    .info{
+      text-align: right;
+      display: inline-block;
+      vertical-align: top;
+      input{
+        margin-top: 5px;
+      }
+      label.alt{
+        width: 300px;
+        text-align: left;
+        margin-top: -5px;
+      }
+    }
+    input[type='file'], .input.file{
+      display: none;
+    }
+    .upload-preview{
+      width: 190px;
+      display: inline-block;
+      text-align: center;
+      margin-left: 24px;
+      audio{
+        max-width: 150px;
+        max-height: 30px;
+      }
+      .add_file{
+        margin: 4px;
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  .labels{
+    input{
+      width: 100px;
+    }
+    .nested_question_question_labels, .nested_exam_question_question_question_labels{
+      display: inline-block;
+      margin-right: 10px;
+      a.remove_nested_fields_link{
+        float:right;
+      }
+    }
+  }
+  .add_nested_fields_link{
+    margin: 10px;
+    margin-left: 35px
+  }
+}
+
+.import_something.questions{
+  .block_wrapper{
+    width: auto;
+  }
+  .search{
+    .block_content_toolbar{
+      background-color: $high_contrast_background_color;
+      border-bottom: none;
+    }
+    label{
+      width: 75px;
+      text-align: right;
+    }
+    label#only_owner{
+      text-align: left;
+    }
+
+    .fancybox-inner .compress{
+      float: right !important;
+      display: block !important;
+    }
+  }
+
+  .radio{
+    text-align: center;
+    margin-right: 60px;
+    margin-bottom: 20px;
+    label{
+      text-align: right;
+      width: 125px;
+    }
+  }
+  .step-conclude{
+    input[id^='score_']{
+      width: 50px;
+    }
+    input.hasDatepicker{
+      width: 80px;
+    }
+  }
+}
+
+tbody .question_items{
+  .nested_fields{
+    margin-top: 10px;
+  }
+  overflow: hidden !important;
+  img{
+    display: inline-block;
+  }
+  audio{
+    display: inline-block;
+  }
+  label{
+    span{
+      display: inline-block;
+      vertical-align: top;
+    }
+  }
+  select{
+    width: 43px;
+    option{
+      height: 10px;
+    }
+  }
+
+  select, input{
+    vertical-align: top !important;
+  }
+}
+
+tbody .question_items.preview{
+  .item{
+    margin-top: 10px;
+  }
+  p:nth-of-type(2), p:first-of-type, span{
+    display: inline-block;
+  }
+
+  p:first-of-type{
+    vertical-align: top;
+  }
+
+  select, input{
+    vertical-align: top !important;
+  }
+}
+
+
+.questions_box{
+  a.preview_question{
+    text-decoration: none;
+  }
+  .description{
+    max-width: 209px;
+  }
+}

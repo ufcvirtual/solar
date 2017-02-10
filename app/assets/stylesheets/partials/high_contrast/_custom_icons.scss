@@ -1,0 +1,24 @@
+.expand.icon-ellipsis{
+  color: white;
+  background-color: $high_contrast_border_color;
+  border-radius: 3px;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 3px;
+  margin-left: 3px;
+  padding-right: 3px;
+  font-size: 8px;
+  cursor: pointer;
+}
+
+.compress.icon-arrow-up-triangle{
+  color: white;
+  background-color: $high_contrast_background_color;
+  border-radius: 3px;
+  font-size: 13px;
+  display: inline;
+  float: right;
+  width: 13px;
+  height: 12px;
+  cursor: pointer;
+}

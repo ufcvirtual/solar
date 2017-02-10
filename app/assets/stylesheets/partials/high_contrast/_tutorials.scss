@@ -1,0 +1,18 @@
+//Tutoriais
+
+.description_tutorials{
+  color: $high_contrast_font_color;
+}
+
+.subtitle_tutorial{
+  font-style: italic;   
+  color: $high_contrast_font_color;
+}
+
+.tutorials{
+  tr{
+    a{
+      text-decoration: none;
+    }
+  }
+}

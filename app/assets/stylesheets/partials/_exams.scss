@@ -50,7 +50,7 @@
     font-family: 'PT Sans';
     margin: 0px;
     padding: 0px 0px 0px 5px;
-    color: $high_contrast_font_color;
+    color: $text_grey;
     float: left;
   }
 
@@ -82,9 +82,9 @@
   .block_content {
     padding: 5px;
     border-bottom: solid 1px;
-    border-bottom-color: $high_contrast_border_color;
+    border-bottom-color: #D0D0D0;
     border-top: solid 1px;
-    border-top-color: $high_contrast_border_color;
+    border-top-color: #D0D0D0;
     min-height: 28px;
     display: block;
 
@@ -100,7 +100,7 @@
 
       .number {
         padding-right: 5px;
-        color: $high_contrast_font_color;
+        color: $text_blue;
         width: auto;
         vertical-align:top;
       }
@@ -119,15 +119,14 @@
         display: inline-block;
 
         #question_image {
-          border: solid 2px $high_contrast_border_color;
+          border: solid 2px #CDD6E3;
         }
       }
       td.image.legend{
         display: block;
         text-align: left;
         width: 600px;
-        background-color: $high_contrast_background_color;
-        margin-bottom: 10px;
+        background-color: #CBD7E4;
         margin-bottom: 10px;
         img, .image{
           margin-left: -15px;
@@ -139,45 +138,82 @@
         }
         .legend{
           width: 45%;
+          top: 50%;
           display: inline-block;
           text-align: center;
           vertical-align: top;
+          -webkit-transform: translateY(150%);
+          -ms-transform: translateY(150%);
+          transform: translateY(150%);
         }
       }
     }
     .question_audios {
       text-align: center;
+      margin-left: 1px;
 
       #question_audio{
-        max-width: 200px;
-        max-height: 30px;
+        max-width: 150px;
+        max-height: 25px;
       }
-
+      .hide{
+        display: none;
+      }
       .audio {
-        padding: 15px 15px 0 15px;
         display: inline-block;
-
-      }
-      td.audio{
-        display: block;
-        text-align: left;
-        width: 20px;
-        margin-bottom: 10px;
-        margin-bottom: 10px;
-        .audio{
-          margin-left: -15px;
-          margin-top: -15px;
-          margin-bottom: -5px;
-        }
-        .audio{
-          width: 50%;
-        }
         
+        a i{
+          margin-bottom: 30px;
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .audio{
+          text-align: left;      
+        }
       }
+      td.audio.legend{
+        padding: 0 0 0 10px;
+        display: block;
+        text-align: center;
+        width: 620px;
+        margin-bottom: 10px;
+        background-color: #CBD7E4;
+        .audio{
+          margin: 5px 0 5px -15px;
+          background: #FAFAFA;
+          background: -moz-linear-gradient(left, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%);
+          height: 32px;
+          width: 56%;
+          position: relative;
+          top: 50%;
+          left: 0.5%;
+          -webkit-transform: translateY(0.5%);
+          -ms-transform: translateY(0.5%);
+          transform: translateY(0.5%);
+        }
+        .legend{
+          padding-top: 13px;
+          width: 44%;
+          display: inline-block;
+          text-align: center;
+          vertical-align: top;
+          top: 50%;
+         
+          p{
+            margin-bottom: 2px;
+          }
+        }
+        #text, #hide{
+          display: none;
+        }
+        .legend-description{
+          margin-top: -8px;
+        }
+      }
+
     }
 
   }
-
   .question_items{
     padding: 10px 0px 10px 15px;
 
@@ -190,13 +226,17 @@
       }
     }
 
+    #text, .hide{
+      display: none;
+    }
+
     #item_image, .item_checkbox img{
       margin-right: 10px;
       vertical-align: top;
     }
 
     #item_image{
-      border: solid 2px $high_contrast_border_color;
+      border: solid 2px #CDD6E3;
     }
 
     label input{
@@ -205,7 +245,7 @@
 
     label{
       display: inline;
-      color: $high_contrast_font_color;
+      color: $text_blue;
       font-family: 'PT Sans', sans-serif;
     }
 
@@ -214,14 +254,51 @@
     }
     
     .hit{
-      color:$high_contrast_font_color;
+      color:#0B610B;
+    }
+    
+    .audio.legend{
+      padding: 0 0 6px 14px;
+      display: block;
+      text-align: center;
+      width: 600px;
+      margin-bottom: 10px;
+      background-color: #CBD7E4;
+
+      .audio{
+        margin: 5px 0 5px -15px;
+        padding-top: 10px;
+        background-color: #FAFAFA;
+        background: -moz-linear-gradient(left, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%);
+        height: 27px;
+        width: 58%;
+        position: relative;
+        top: 50%;
+        left: 0.5%;
+        float:left;
+      }
+      .audio_description{
+        padding: 14px 0 0 0;
+        margin-bottom: 11px;
+        width: 42%;
+        display: inline-block;
+        text-align: center;
+        vertical-align: top;
+      }
+    }    
+    
+    #text{
+      color: #4c4a4a;
+    }
+    #text, #hide{
+      display: none;
     }
   }
 
   .message_div_navigation {
     text-align: center;
     padding: 0.25*$gutter;
-    color: $high_contrast_background_color;
+    color: #B4B3B7;
     font-size: 13pt;
 
 
@@ -229,7 +306,7 @@
       margin-top: 5px;
     }
     .active{
-      color: $high_contrast_font_color;
+      color: $text_blue;
     }
   }
 
@@ -251,7 +328,7 @@
 #exam_form{
   .description, .description p{
     font-size: 11px;
-    color: $high_contrast_font_color;
+    color: $text_grey;
     text-align: left;
   }
 
@@ -280,7 +357,7 @@
     width: 775px;
     display: block;
     padding: 5px;
-    border: 1px dashed $high_contrast_border_color;
+    border: 1px dashed #808080;
     text-align: center;
   }
 
@@ -332,7 +409,7 @@
   }
 
   .finished, .not_corrected {
-    color: #176DF6;
+    color: #2900c2;
   }
 
   .not_answered {
@@ -344,7 +421,7 @@
   }
 
   .to_answer, .not_finished, .retake {
-    color: #176DF6;
+    color: #003e7a;
   }
   .ico-e{
     font-decoration: none;

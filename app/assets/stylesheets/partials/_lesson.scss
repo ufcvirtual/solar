@@ -37,7 +37,7 @@
   border: none;
   overflow-x: hidden;
   overflow-Y: hidden;
-  background-color: $high_contrast_background_color;
+  background-color: #eee;
 }
 
 #lesson_header {
@@ -48,8 +48,8 @@
   min-height: 24px;
   margin: 0px;
   padding: 6px 0px 7px 8px;
-  background-color: $high_contrast_background_color;
-  color: $high_contrast_font_color;
+  background-color: #1d4786;
+  color: #fff;
   select{
     margin-left: 3px;
     margin-right: 3px;
@@ -57,14 +57,14 @@
   }
   .lesson_status{
     float: right;
-    color: $high_contrast_font_color;
+    color: white;
     width: 131px;
     margin-top: -23px;
     .draft{
-      background-color: $high_contrast_background_color;
+      background-color: #B41717;
     }
     .released{
-      background-color: $high_contrast_background_color;
+      background-color: #7DC43F;
     }
     .draft, .released{
       padding: 11px 10px 9px 4px;
@@ -164,15 +164,15 @@
 
 .test_lesson{
   display: inline-block;
-  color: $high_contrast_font_color;
+  color: $light_grey;
 }
 
 .lesson_portlet .module{
-  background-color: $high_contrast_background_color;
+  background-color: $background_grey;
   font-family: 'Ubuntu Condensed';
   padding: 4px;
-  border-bottom: 1px solid $high_contrast_border_color;
-  color: $high_contrast_font_color;
+  border-bottom: 1px solid #CCC;
+  color: $text_grey;
   font-size: 11pt;
 }
 
@@ -186,7 +186,7 @@
   width: 775px;
   display: block;
   padding: 5px;
-  border: 1px dashed $high_contrast_border_color;
+  border: 1px dashed #808080;
   text-align: center;
 }
 
@@ -203,5 +203,33 @@
 @media only screen and (max-width: 641px) {
   .lesson .header{ 
     display:none;
+  }
+}
+
+.list_lessons{
+  table.tb_list{
+    cellpadding: 10;
+    cellspacing: 0; 
+    width: 100%; 
+    border: 0;
+
+    th[id^=name]{
+      align: left;
+    }
+    th[id^=period]{
+      width: 30%;
+    }
+    th[id^=notes]{
+      width: 10%; 
+      text-align: center;
+    }
+    th[id^=accept]{
+      width: '12%';
+    }
+
+  }
+  a.disabled{
+    pointer-events: none;
+    text-decoration: none;
   }
 }

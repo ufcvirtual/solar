@@ -1,0 +1,189 @@
+// TABELAS
+
+/**
+* Tratando linhas das tabelas
+*/
+th {
+  border-bottom: 1px solid;
+  border-bottom-color: $high_contrast_border_color;
+}
+
+th, tr.lines td {
+  padding: 6px 10px 4px 10px;
+  vertical-align: middle;
+}
+
+tbody tr.lines {
+  border-bottom: 1px solid;
+  border-bottom-color: $high_contrast_border_color;
+  background-color: $high_contrast_background_color;
+
+  &:hover {
+    background-color: $high_contrast_background_color;
+  }
+}
+
+tbody tr.lines.active {
+  border-bottom: 1px solid;
+  border-bottom-color: $high_contrast_border_color;
+  background-color: $high_contrast_background_color;
+
+  &:hover {
+    background-color: $high_contrast_background_color;
+  }
+}
+
+tbody tr.lines.period_ended:hover {
+  background-color: $high_contrast_background_color;
+}
+
+tr.lines td img {
+  margin: 0;
+  padding: 0;
+  vertical-align: text-top;
+}
+
+table.tb_list {
+  width: 100%;
+  font-size: 10pt;
+  color: $high_contrast_font_color;
+
+  th {
+    /*    font-weight: bold;*/
+    // white-space: nowrap;
+    background-color: $high_contrast_background_color;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  h4 {
+    margin-bottom: 4px;
+    overflow: hidden;
+    word-wrap: break-word;
+    max-width: 410px;
+  }
+
+  td {
+    /*    border-right: 1px solid #d0d0d0;*/
+    // white-space: normal;
+    word-wrap: break-word;
+  }
+
+  td:last-child {
+    border-right: none;
+  }
+
+  tbody {
+    background-color: $high_contrast_background_color;
+  }
+
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  tr.block_title th {
+    padding-bottom: 2px;
+  }
+
+  td.file_data_info {
+    color: $high_contrast_font_color;
+  }
+
+  td.center, th.center{
+    text-align: center;
+  }
+
+  td .title{
+    color: $high_contrast_font_color;
+  }
+
+  td .title-yellow{
+    color: $high_contrast_font_color;
+  }
+
+  thead tr.lines{
+    color: $high_contrast_border_color;
+  }
+}
+
+table.user-courses tbody.offers {
+  .offer, .open-edx-class{
+    cursor: pointer;
+    color: $high_contrast_font_color;
+  }
+  .offer:focus {
+    background-color: $high_contrast_background_color;
+  }
+}
+
+.file_icon {
+  margin-right: 3px;
+  vertical-align: bottom;
+  width: 18px;
+  height: 18px;
+}
+
+/**
+* Icones de arquivos em tabelas
+*/
+// FIXME: aparentemente só é utilizado em um local, verificar se é necessário
+table .file_data_icon {
+  text-align: center;
+}
+
+tr.post_content {
+  background-color: $high_contrast_background_color;
+}
+
+/**
+* Tablesorter
+*/
+/* header */
+.tablesorter-default th,
+.tablesorter-default thead td {
+  border-bottom: $high_contrast_border_color 1px solid;
+  /*font: bold;
+  color: #000;
+  background-color: $high_contrast_background_color;
+  border-collapse: collapse;
+  padding: 0;*/
+}
+
+.tablesorter-default tfoot th,
+.tablesorter-default tfoot td {
+  border: 0;
+}
+
+.tablesorter-default .header,
+.tablesorter-default .tablesorter-header {
+  background-image: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
+  background-position: center right;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  white-space: normal;
+}
+
+.tablesorter-default thead .headerSortUp,
+.tablesorter-default thead .tablesorter-headerSortUp,
+.tablesorter-default thead .tablesorter-headerAsc {
+  background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
+  background-color: $high_contrast_background_color;
+  border-bottom: $high_contrast_link_color 1px solid;
+  color: #000;
+}
+
+.tablesorter-default thead .headerSortDown,
+.tablesorter-default thead .tablesorter-headerSortDown,
+.tablesorter-default thead .tablesorter-headerDesc {
+  background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
+  background-color: $high_contrast_background_color;
+  border-bottom: $high_contrast_link_color 1px solid;
+  color: #000;
+}
+
+.tablesorter-default thead .sorter-false {
+  background-image: none;
+  padding: 4px;
+}

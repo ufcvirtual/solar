@@ -2,7 +2,7 @@
   .block_content{
     margin-top: 0px;
     padding-top: 1px;
-    background-color: $high_contrast_background_color;
+    background-color: #ffffff;
   }
 
   .block_title{
@@ -42,14 +42,14 @@
     }
     tr.disabled, [id^='exam_'].disabled{
       i, label{
-        color: $high_contrast_font_color;
+        color: #B4B2B1;
       }
       .collection_check_boxes{
-        background-color: $high_contrast_background_color;
+        background-color: #B4B2B1;
       }
     }
     .text_none.disabled{
-      color: $high_contrast_font_color;
+      color: #B4B2B1;
     }
   }
 

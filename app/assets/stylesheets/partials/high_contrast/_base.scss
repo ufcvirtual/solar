@@ -1,0 +1,306 @@
+// Layout Básico
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  cursor: default;
+  font-family: 'PT Sans', sans-serif;
+  height: 100%;
+  background-color: $high_contrast_background_color;
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+img {
+  border: none;
+}
+
+.center {
+  text-align: center;
+}
+
+ul {
+  list-style-type: none;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Ubuntu Light', sans-serif;
+}
+
+h1 {
+  font-weight: 300;
+  &.page_title {
+    /*font-weight: bold;*/
+    /*font-variant: small-caps;*/
+    /*text-transform: capitalize;*/
+    font-size: 12pt;
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    padding-bottom: 2px !important;
+    color: $high_contrast_font_color;
+    border-bottom-color: $high_contrast_border_color;
+  }
+}
+
+h2 {
+  font-family: 'Ubuntu Condensed', sans-serif;
+  font-weight: 500;
+}
+
+h3 {
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: bold;
+}
+
+/**
+* Div que envolve tudo
+*/
+
+#body_wrapper {
+  width: 980px;
+  margin: 0 auto;
+  min-height: 99.5%;
+  position: relative;
+  background-color: $high_contrast_background_color;
+}
+
+/**
+* Tratando links
+*/
+a, a.menor, a.link_content {
+  text-decoration: none;
+  //color: #222;
+  color: $high_contrast_font_color;
+}
+
+a.link_content, .forum_post_attachment_list a {
+  text-decoration: underline;
+  color: $high_contrast_link_color;
+}
+
+a.link_content:visited, .forum_post_attachment_list a:visited {
+  color: $high_contrast_link_color;
+}
+
+a.link_content_gray {
+  font-size: 9pt;
+  text-decoration: underline;
+  color: $high_contrast_link_color;
+}
+
+a.menor {
+  font-size: 8pt;
+  text-decoration: underline;
+}
+
+.more_or_less {
+  text-align: right;
+  display: block;
+}
+
+/**
+* Formulários (inputs, botões, etc)
+*/
+
+select {
+  font-family: 'PT Sans', sans-serif;
+  border-width: 1px;
+  border-style: solid;
+  padding-top: 2px;
+  /*    min-width: 180px;*/
+  color: $high_contrast_border_color;
+  background-color: $high_contrast_background_color;
+  border-color: $high_contrast_border_color;
+}
+
+input {
+  border-width: 1px;
+  border-style: solid;
+  padding: 5px;
+  font-family: 'PT Sans', sans-serif;
+  /*    font-size: 13px;*/
+  color: $high_contrast_font_color;
+  border-color: $high_contrast_border_color;
+}
+
+button {
+  font-family: 'PT Sans', sans-serif;
+}
+
+input[type="file"] {
+  border: 0px;
+  padding: 0px;
+}
+
+textarea {
+  border-width: 1px;
+  border-style: solid;
+  padding: 5px;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 10pt;
+  color: #222;
+  background-color: $high_contrast_background_color;
+  border-color: $high_contrast_border_color;
+}
+
+#footer {
+  overflow: visible;
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px 0;
+  width: 980px;
+  bottom: 0;
+  position: absolute;
+  background-color: $high_contrast_background_color;
+  color: $high_contrast_link_color;
+
+  &, & a {
+    color: $high_contrast_link_color;
+    font-size: 9pt;
+  }
+  a:hover{
+    text-decoration: underline;
+  }
+  & > ul > li {
+    margin: 0 5px;
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
+  }
+}
+
+/**
+* Campos de data, hora e períodos
+*/
+.date_text_field {
+  margin-top: 0px;
+  margin-left: -2px;
+  margin-bottom: 10px;
+}
+
+.date_text_field + .field_with_errors {
+  line-height: 26px;
+}
+
+#from-date {
+  margin-right: 4px;
+}
+
+#until-date {
+  margin-left: 5px;
+}
+
+.lines.period_ended, .period_ended {
+  background-color: $high_contrast_background_color;
+  color: $high_contrast_font_color;
+  a {
+    color: $high_contrast_link_color;
+  }
+}
+
+/**
+*Paginacao
+*/
+// FIXME: verificar se todo esse código de paginação é realmente utilizado
+.current {
+  text-decoration: none;
+  font-weight: bold;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: $high_contrast_background_color;
+  color: $high_contrast_font_color;
+}
+
+.disabled {
+  color: #966;
+}
+.current, .fnavigation {
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.link_navigation {
+  color: $high_contrast_link_color;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.disabled, .message_div_navigation {
+  font-size: 10pt;
+  text-decoration: none;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/**
+* Estilo para item invisivel
+*/
+.invisible {
+  display: none;
+}
+
+/**
+* Breadcrumb - migalha de pão
+*/
+#breadcrumb {
+  font-size: 10pt;
+  margin-bottom: 10px;
+  margin-top: 10px;
+
+  a {
+    text-decoration: underline;
+    color: $high_contrast_link_color;
+  }
+}
+
+/**
+/* Menu de idiomas
+*/
+
+.choice-language {
+
+  .link-arrow{
+    background: url("/assets/language-arrow.png") right no-repeat;
+    padding-right: 15px;
+  }
+
+  ul {
+    position: absolute;
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid $high_contrast_border_color;
+    background-color: $high_contrast_border_color;
+
+    li {
+      display: block !important;
+      padding: 5px 6px 5px 20px;
+      margin: 0;
+
+      a {
+        color: $high_contrast_link_color;
+        font-size: 12px;
+        text-decoration: none;
+      }
+    }
+
+    li:hover {
+      background-color: $high_contrast_font_color;
+      color: $high_contrast_background_color;
+    }
+  }
+}
+
+.language.selected {
+  background: url("/assets/check-language.png") no-repeat 5px 5px;
+}

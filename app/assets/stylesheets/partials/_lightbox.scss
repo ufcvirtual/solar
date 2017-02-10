@@ -10,15 +10,15 @@
   left: 50%;
   padding: 10px;
   overflow: auto;
-  border-color: $high_contrast_border_color;
-  background-color: $high_contrast_background_color;
+  border-color: #000;
+  background-color: #FFF;
 }
 
 #lightBoxDialogTitle {
   @extend %page-title;
 
   h1 {
-    color: $high_contrast_font_color;
+    color: #4c4c4c;
   }
   i{
     padding-left: 10px;
@@ -56,7 +56,7 @@
 
 .fancybox-wrap {
   .fancybox-skin {
-    background-color: $high_contrast_background_color;
+    background-color: white;
   }
 
   .fancybox-inner{

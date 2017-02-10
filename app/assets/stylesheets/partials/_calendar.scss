@@ -16,8 +16,8 @@
 
 .highlight-date-mark {
     a.ui-state-default {
-        background-color: $high_contrast_font_color; //Uma opção seria #1793E6
-        color: $high_contrast_background_color;
+        background-color: $color_main_medium;
+        color: #fff;
     }
 }
 .ui-helper-hidden-accessible { display: none; }
@@ -27,7 +27,7 @@
   font-size: 0.9em;
   width: 100%;
   padding-bottom: 2px;
-  background-color: $high_contrast_background_color;
+  background-color: $color_main_light;
   .ui-datepicker .ui-datepicker-next,
   .ui-datepicker .ui-datepicker-prev{
     margin-top: 0;
@@ -41,8 +41,8 @@
 
 /* cabecalho do calendario */
   .ui-datepicker-header {
-    background: $high_contrast_background_color;
-    color: $high_contrast_font_color;
+    background: #fff;
+    color: #000;
     height: 1.2em;
     padding: .3em;
     font-weight: bold;
@@ -70,7 +70,7 @@
   height: 15%;
   padding: 3px 8px 2px 8px;
   overflow: auto;
-  background: $high_contrast_background_color;
+  background: $color_main_light;
 }
 
 /* ... Component containers ... */
@@ -78,7 +78,7 @@
 /* corpo do calendario */
 .ui-datepicker-content {
     left: 0px;
-    color: $high_contrast_font_color;
+    color: #222222;
     padding-bottom: 3px; }
 
 .ui-datepicker-calendar {
@@ -88,7 +88,7 @@
 }
 
 #ui-datepicker-div{
-    background-color: $high_contrast_background_color;
+    background-color: #fff;
     padding-top: 5px;
     padding-bottom: 5px; 
     padding-left: 10px;
@@ -108,16 +108,16 @@
     /* ... Interaction Cues ... */
     /* celula ativa */
     .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
-        border: 1px solid $high_contrast_border_color;
-        background: $high_contrast_background_color;
+        border: 1px solid $color_contrast;
+        background: $color_contrast_light;
         font-weight: normal;
-        color: $high_contrast_font_color;
+        color: #000;
     }
 
     /* data atual */
     .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {
         // background: none;
-        color: $high_contrast_font_color;
+        color: $color_contrast_text;
         // border: none;
         font-weight: bold;
     }
@@ -179,7 +179,7 @@
     border: 0; padding: 0em; width: 14.25%; min-height: 1.2em; }
 .ui-datepicker td span, .ui-datepicker td a {
     display: block; padding: 0px; text-align: right; text-decoration: none; }
-.ui-datepicker-week-end {color: $high_contrast_font_color;}
+.ui-datepicker-week-end {color: $color_contrast_text;}
 
 
 /* IE6 IFRAME FIX (taken from datepicker 1.5.3 */

@@ -1,0 +1,39 @@
+.assignments .attached_files{
+  padding-top: 3px;
+  padding-bottom: 3px;
+  font-weight: bold;
+  color: $high_contrast_font_color;
+ }
+
+.assignments .file{
+  margin-left: 10px;
+}
+
+.schedule_dates .right{
+  margin-right: 100px;
+}
+
+.tb_list{
+  td{
+    .participants_box{
+      max-height: 300px;
+      overflow: auto;
+      padding: 10px;
+    } 
+  }
+}
+
+.new_assignment{
+  .input.files{
+    #file{
+      padding: 10px;
+      margin-left: -150px;
+    }
+  }
+
+  i.remove_file{
+    padding: 5px;
+    color: #C06;
+    cursor: pointer;
+  }
+}

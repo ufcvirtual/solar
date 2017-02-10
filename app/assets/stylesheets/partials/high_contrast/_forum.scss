@@ -1,0 +1,214 @@
+// FORUM
+#forum_description .block_content {
+  white-space: normal;
+  margin-bottom: 10px;
+}
+
+div.forum_navigation {
+  text-align: center;
+  min-height: 28px;
+  padding-bottom: 0;
+  height: auto;
+}
+
+#forum_new_message {
+  float: left;
+
+  button {
+    text-align: center;
+  }
+}
+
+#forum_closed {
+  /*font-weight: bold;*/
+  /*background: url('../images/error.gif') no-repeat left center;*/
+  padding-top: 7px;
+  font-family: 'Ubuntu Condensed', sans-serif;
+  color: red;
+}
+
+#forum_view_mode {
+  float: right;
+}
+
+#forum_pagination {
+  font-size: 11pt;
+  min-height: 28px;
+  display: block;
+
+  form {
+    padding-top: 7px;
+  }
+}
+
+.forum_post {
+  min-height: 40px;
+  white-space: normal;
+  max-width: 785px;
+  width: 100%;
+  margin-top: 5px;
+
+  .forum_post_wrapper {
+    max-width: $forum_post_width;
+    background-color: $high_contrast_background_color;//$high_contrast_font_color_light; // FIXME: antes ele nao ficava explicitamente dentro de forum_post, verificar funcionamento
+  }
+  .forum_post {
+    margin-top: 5px;
+
+    .forum_post_wrapper {
+      max-width: $forum_post_width - $forum_indentation;
+    }
+    .forum_post {
+
+      .forum_post_wrapper {
+        max-width: $forum_post_width - $forum_indentation*2;
+      }
+      .forum_post {
+
+        .forum_post_wrapper {
+          max-width: $forum_post_width - $forum_indentation*3;
+        }
+      }
+    }
+  }
+}
+
+.forum_post_wrapper {
+  padding: 7px 5px 4px 5px;
+}
+
+.forum_post_icon {
+  border-right: 2px solid;
+  border-right-color: $high_contrast_font_color;
+  background-color: $high_contrast_background_color;
+  vertical-align: top;
+  padding-right: 5px;
+  width: 40px;
+}
+
+.forum_post_content {
+  width: 100%;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 10pt;
+  vertical-align: top;
+  color: $high_contrast_font_color;
+
+  .forum_post_icon {
+    padding-left: 5px;
+
+    img { 
+      width: 40px;
+      height: 40px;
+    }
+  }
+}
+
+.forum_post_head {
+  /*background-color:$high_contrast_font_color_light;*/
+  border-bottom-color: $high_contrast_font_color;
+  height: 35px;
+  font-size: 13px;
+  white-space: normal;
+  font-family: 'Ubuntu';
+  font-weight: bold;
+  width: 100%;
+  display: block;
+  text-align: left;
+  border-bottom: 1px solid;
+}
+
+.forum_post_head.new, .forum_post_icon.new{
+  background-color: $high_contrast_background_color;
+}
+
+.forum_post_wrapper.new, .forum_post_attachment.new{
+  background-color: $high_contrast_background_color; 
+}
+
+.forum_post_author {
+  float: left;
+  padding-left: 5px;
+  color: $high_contrast_font_color;
+}
+
+.forum_post_date {
+  color: $high_contrast_font_color;
+  text-align: right;
+}
+
+.block_title > .forum_post_new {
+  /*margin: 10px auto 8px auto;*/
+  width: auto;
+  padding: 0;
+  display: none;
+  margin-top: 1px;
+}
+
+.forum_post_reply {
+  /* padding-top: 5px;*/
+  width: auto;
+  overflow: hidden;
+  position: relative;
+  display: none;
+}
+
+.forum_participant_profile {
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.forum_post_buttons {
+  text-align: right;
+}
+
+.forum_post_attachment {
+  padding: 5px 0 5px 5px;
+  background-color: $high_contrast_background_color;
+
+  h3 {
+    padding-bottom: 0px;
+  }
+}
+
+.forum_post_attachment_list {
+  list-style: circle;
+}
+
+.forum_post_attachment_list,
+.comments_files_div {
+  padding-left: 15px;
+
+  li {
+    padding-bottom: 4px;
+    list-style-type: none;
+
+    img {
+      width: 12px;
+      vertical-align: middle;
+    }
+  }
+}
+
+#new_post {
+  display: none;
+  padding-top: 5px;
+}
+
+.new_post_dialog_buttons {
+  margin-top: 5px;
+  padding-bottom: 3px;
+  float: right;
+}
+
+.forum_post_inner_content, .message_div_show {
+  @include ckeditor_content;
+}
+
+.embeddedContent{
+  width: 100%;
+}
+
+.user_posts{
+  min-width: 700px;
+  max-width: 800px;
+}

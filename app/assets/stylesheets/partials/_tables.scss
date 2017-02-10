@@ -5,7 +5,7 @@
 */
 th {
   border-bottom: 1px solid;
-  border-bottom-color: $high_contrast_border_color;
+  border-bottom-color: #B4B2B1;
 }
 
 th, tr.lines td {
@@ -15,26 +15,26 @@ th, tr.lines td {
 
 tbody tr.lines {
   border-bottom: 1px solid;
-  border-bottom-color: $high_contrast_border_color;
-  background-color: $high_contrast_background_color;
+  border-bottom-color: #B4B2B1;
+  background-color: $color_main_light;
 
   &:hover {
-    background-color: $high_contrast_background_color;
+    background-color: $color_main_light_highlight; /* #FFF5ED*/
   }
 }
 
 tbody tr.lines.active {
   border-bottom: 1px solid;
-  border-bottom-color: $high_contrast_border_color;
-  background-color: $high_contrast_background_color;
+  border-bottom-color: #B4B2B1;
+  background-color: $color_contrast_light;
 
   &:hover {
-    background-color: $high_contrast_background_color;
+    background-color: #fffbd1;
   }
 }
 
 tbody tr.lines.period_ended:hover {
-  background-color: $high_contrast_background_color;
+  background-color: #f1f1f1;
 }
 
 tr.lines td img {
@@ -50,7 +50,7 @@ table.tb_list {
   th {
     /*    font-weight: bold;*/
     // white-space: nowrap;
-    background-color: $high_contrast_background_color;
+    background-color: white;
   }
 
   a {
@@ -75,7 +75,7 @@ table.tb_list {
   }
 
   tbody {
-    background-color: $high_contrast_background_color;
+    background-color: $color_main_light;
   }
 
   tbody tr:last-child {
@@ -87,7 +87,7 @@ table.tb_list {
   }
 
   td.file_data_info {
-    color: $high_contrast_font_color;
+    color: #787878;
   }
 
   td.center, th.center{
@@ -95,7 +95,7 @@ table.tb_list {
   }
 
   td .title{
-    color: $high_contrast_font_color;
+    color: #21578B;
   }
 
   td .title-yellow{
@@ -103,17 +103,17 @@ table.tb_list {
   }
 
   thead tr.lines{
-    color: $high_contrast_border_color;
+    color: #6B6B6B;
   }
 }
 
 table.user-courses tbody.offers {
   .offer, .open-edx-class{
     cursor: pointer;
-    color: $high_contrast_font_color;
+    color: #003e7a;
   }
   .offer:focus {
-    background-color: $high_contrast_background_color;
+    background-color: $color_main_light_highlight;
   }
 }
 
@@ -133,7 +133,7 @@ table .file_data_icon {
 }
 
 tr.post_content {
-  background-color: $high_contrast_background_color;
+  background-color: $color_main_light;
 }
 
 /**
@@ -142,10 +142,10 @@ tr.post_content {
 /* header */
 .tablesorter-default th,
 .tablesorter-default thead td {
-  border-bottom: $high_contrast_border_color 1px solid;
+  border-bottom: rgb(180, 178, 177) 1px solid;
   /*font: bold;
   color: #000;
-  background-color: $high_contrast_background_color;
+  background-color: #fff;
   border-collapse: collapse;
   padding: 0;*/
 }
@@ -168,7 +168,7 @@ tr.post_content {
 .tablesorter-default thead .tablesorter-headerSortUp,
 .tablesorter-default thead .tablesorter-headerAsc {
   background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
-  background-color: $high_contrast_background_color;
+  background-color: $color_contrast_light;
   border-bottom: $color_contrast 1px solid;
   color: #000;
 }
@@ -177,7 +177,7 @@ tr.post_content {
 .tablesorter-default thead .tablesorter-headerSortDown,
 .tablesorter-default thead .tablesorter-headerDesc {
   background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
-  background-color: $high_contrast_background_color;
+  background-color: $color_contrast_light;
   border-bottom: $color_contrast 1px solid;
   color: #000;
 }

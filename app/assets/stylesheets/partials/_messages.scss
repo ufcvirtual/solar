@@ -41,10 +41,10 @@
 }
 
 .td_subject, .td_sender, .td_time, .td_recipient{
-  color: $high_contrast_font_color;
+  color: $text_grey;
 
   a{
-    color: $high_contrast_link_color;
+    color: $text_grey;
   }
 }
 
@@ -69,8 +69,8 @@
 }
 
 #message_list > .message_link:hover {
-  border-bottom: 2px solid; 
-  border-bottom-color: $high_contrast_border_color;
+  border-bottom: 2px solid; /* FIXME: localizar onde isso está sendo utilizado */
+  border-bottom-color: #214684;
 }
 
 .message_div {
@@ -84,15 +84,16 @@
 }
 
 .message_line{
-  
+  /*background-color: #f9f9f9;*/
   height: 28px;
 }
 .message_line:not(.no_border){
-  border-bottom: 1px solid $high_contrast_border_color;
+  border-bottom: 1px solid #D0D0D0;
 }
 
 .message_line_check {
-  width: 12px; 
+  width: 12px; // FIXME: é 30 ou 12?
+  //width: 30px;
   text-align: center;
 }
 
@@ -106,12 +107,12 @@
 }
 
 .message_read {
-  color: $high_contrast_font_color;
+  color: #666;
 }
 
 .message_unread {
   font-weight: bold;
-  color: $high_contrast_font_color;
+  color: #000;
 }
 
 .message_label {
@@ -123,9 +124,9 @@
   padding-right: 2px;
   border: 1px solid;
   -moz-border-radius: 4px;
-  color: $high_contrast_font_color;
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
+  color: #000;
+  background-color: $color_contrast;
+  border-color: $color_contrast;
 }
 
 .message_new {
@@ -153,7 +154,7 @@
     padding: 5px;
     padding-right: 5px;
     border-bottom: solid 1px;
-    border-bottom-color: $high_contrast_border_color;
+    border-bottom-color: $border;
     min-height: 28px;
 
     ul.message_menu_listbox li ul {
@@ -165,13 +166,13 @@
 
         &:hover{
           background: rgb(0, 116, 243);
-          color: $high_contrast_font_color;
+          color: white;
         }
       }
     }
   }
   .block_white{
-    background: $high_contrast_background_color;
+    background: white;
   }
   .block_white.index{
     height: 38px;
@@ -197,7 +198,7 @@
 
 .block_content.messages {
   padding: 5px 10px 5px 5px;
-  border-bottom: solid 1px $high_contrast_border_color;
+  border-bottom: solid 1px $border;
   overflow: hidden;
 
   .btn{
@@ -206,7 +207,7 @@
 }
 
 .message_header_new, .message_div_show {
-  color: $high_contrast_font_color;
+  color: $text_grey;
   padding: 0.5*$gutter 0.5*$gutter;
   font-size: 13px;
   width: auto; // FIXME: é auto ou 100% ?
@@ -217,7 +218,7 @@
   }
 
   span.email{
-    color: $high_contrast_font_color;
+    color: $text_blue;
     text-decoration: underline;
   }
 
@@ -285,13 +286,13 @@
 .message_div_navigation {
   text-align: center;
   padding: 0.25*$gutter;
-  color: $high_contrast_font_color;
+  color: #B4B3B7;
 
   .message_page{
     margin-top: 5px;
   }
   .active{
-    color: $high_contrast_font_color;
+    color: $text_blue;
   }
 }
 
@@ -359,9 +360,9 @@
 }
 
 .message_label {
-  color: $high_contrast_font_color;
-  background-color: $high_contrast_background_color;
-  border: 1px solid $high_contrast_border_color;
+  color: #000;
+  background-color: #F9C153;
+  border: 1px solid #F9C153;
 }
 
 // contatos
@@ -377,7 +378,7 @@
   line-height: 15px;
   margin-bottom: 5px;
   .edition.block_content{
-    background-color: $high_contrast_background_color;
+    background-color: #F8FBFE;
   }
   .select{
     margin-top: 5px;
@@ -391,7 +392,7 @@
 #content-div{
   .block_content p{
     text-align: right;
-    color: $high_contrast_font_color;
+    color: #D5031C;
     margin-bottom: 0;
   }
 }
@@ -404,10 +405,10 @@
   margin-bottom: 5px;
   border: 1px solid;
   height: 150px;
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
+  background-color: #fff;
+  border-color: #ddd;
   .already_added{
-    color: $high_contrast_font_color;
+    color: red;
     display: inline-block;
     padding-left: 3px;
   }
@@ -416,11 +417,11 @@
 .contacts-selected {
   font-size: 10pt;
   border: 1px solid;
-  border-color: $high_contrast_border_color;
+  border-color: #ccc;
   height: 100px;
   white-space: normal;
   overflow: auto;
-  background-color: $high_contrast_background_color;
+  background-color: #fff;
   margin-bottom: 10px;
 }
 
@@ -433,7 +434,7 @@
   display: inline-block;
   margin-left: 5px;
   font-size: 11px;
-  color: $high_contrast_font_color;
+  color: #FF9900;
 }
 
 .message_new_upload{
@@ -460,7 +461,7 @@
 .help_link {
   padding: 7px;
   text-align: center;
-  background-color: $high_contrast_background_color;
+  background-color: #E8EFF6;
   text-decoration: underline;
 }
 

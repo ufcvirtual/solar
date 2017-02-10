@@ -1,7 +1,7 @@
 // EDIÇÃO
 fieldset {
   border: 1px solid;
-  border-color: $high_contrast_border_color;
+  border-color: #D0D0D0;
   padding: 15px 20px 5px 20px;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -13,7 +13,7 @@ fieldset {
 
   .block_content_alt {
     margin-bottom: 20px;
-    background-color: $high_contrast_background_color;
+    background-color: #ffffff;
 
     li {
       margin-bottom: 10px;
@@ -54,7 +54,7 @@ fieldset {
 
 .block_title.edition {
   border-bottom: solid 1px;
-  border-bottom-color: $high_contrast_border_color;
+  border-bottom-color: #D0D0D0;
   margin-bottom: 15px;
 }
 
@@ -63,7 +63,7 @@ fieldset {
   font-size: 11px;
   margin-bottom: 15px;
   margin-top: -20px;
-  color: $high_contrast_font_color;
+  color: gray;
 }
 
 .edition .filter .groups{
@@ -82,26 +82,26 @@ fieldset {
 }
 
 .edition.block_content{
-  background-color: $high_contrast_background_color;
+  background-color: white;
 }
 
 .offer_groups_options {
   overflow: hidden;
 
   .collection_check_boxes {
-    color: $high_contrast_font_color;
+    color: white;
   }
 }
 
 label[for="all"], .type_description {
-  color: $high_contrast_font_color;
+  color: $text_grey;
 }
 
 label[for="all"]{
   font-size: 10pt;
 }
 
-.radio_options { 
+.radio_options { // FIXME: nome genérico demais
   float: left;
 }
 
@@ -175,7 +175,7 @@ label[for="all"]{
       }
       .tools_by_tool_type{
         tr.red{
-          background-color: $high_contrast_background_color;
+          background-color: #fff6f6;
         }
       }
       .icons{
@@ -225,14 +225,14 @@ label[for="all"]{
       display: inline-block;
       padding: 20px 0px 20px 0px;
       width: 250px;
-      border: 1px dashed $high_contrast_border_color;
+      border: 1px dashed #808080;
     }
   }
   .exam_box{
     width: 775px;
     padding: 5px 0px 5px 4px;
-    border-left: 6px solid $high_contrast_border_color;
-    background-color: $high_contrast_background_color;
+    border-left: 6px solid #005cc0;
+    background-color: #f3f3f3;
   }
   .block_wrapper .block_content_toolbar{
     margin-top: 10px;
@@ -262,6 +262,6 @@ label[for="all"]{
 
 .filter{
   li.ui-menu-item a{
-    color: $high_contrast_link_color;
+    color: #222222;
   }
 }

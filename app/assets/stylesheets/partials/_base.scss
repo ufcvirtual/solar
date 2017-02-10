@@ -10,7 +10,7 @@ body {
   cursor: default;
   font-family: 'PT Sans', sans-serif;
   height: 100%;
-  background-color: $high_contrast_background_color;
+  background-color: #f9f9f9;
 }
 
 p {
@@ -43,8 +43,8 @@ h1 {
     border-bottom-width: 3px;
     border-bottom-style: solid;
     padding-bottom: 2px !important;
-    color: $high_contrast_font_color;
-    border-bottom-color: $high_contrast_border_color;
+    color: #000;
+    border-bottom-color: $color_main;
   }
 }
 
@@ -67,7 +67,7 @@ h3 {
   margin: 0 auto;
   min-height: 99.5%;
   position: relative;
-  background-color: $high_contrast_background_color;
+  background-color: #ffffff;
 }
 
 /**
@@ -91,7 +91,7 @@ a.link_content:visited, .forum_post_attachment_list a:visited {
 a.link_content_gray {
   font-size: 9pt;
   text-decoration: underline;
-  color: $high_contrast_link_color;
+  color: #999;
 }
 
 a.menor {
@@ -114,9 +114,9 @@ select {
   border-style: solid;
   padding-top: 2px;
   /*    min-width: 180px;*/
-  color: $high_contrast_border_color;
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
+  color: #222;
+  background-color: #fff;
+  border-color: #dedede;
 }
 
 input {
@@ -125,8 +125,8 @@ input {
   padding: 5px;
   font-family: 'PT Sans', sans-serif;
   /*    font-size: 13px;*/
-  color: $high_contrast_font_color;
-  border-color: $high_contrast_border_color;
+  color: #222;
+  border-color: #dedede;
 }
 
 button {
@@ -145,8 +145,8 @@ textarea {
   font-family: 'PT Sans', sans-serif;
   font-size: 10pt;
   color: #222;
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
+  background-color: #fff;
+  border-color: #dedede;
 }
 
 #footer {
@@ -157,11 +157,11 @@ textarea {
   width: 980px;
   bottom: 0;
   position: absolute;
-  background-color: $high_contrast_background_color;
-  color: $high_contrast_link_color;
+  background-color: #f9f9f9;
+  color: #666;
 
   &, & a {
-    color: $high_contrast_link_color;
+    color: #666;
     font-size: 9pt;
   }
   a:hover{
@@ -197,10 +197,10 @@ textarea {
 }
 
 .lines.period_ended, .period_ended {
-  background-color: $high_contrast_background_color;
-  color: $high_contrast_font_color;
+  background-color: #f6f6f6;
+  color: #989898;
   a {
-    color: $high_contrast_link_color;
+    color: #989898;
   }
 }
 
@@ -213,12 +213,12 @@ textarea {
   font-weight: bold;
   padding-left: 5px;
   padding-right: 5px;
-  background-color: $high_contrast_background_color;
-  color: $high_contrast_font_color;
+  background-color: #E7EDED;
+  color: #214684;
 }
 
 .disabled {
-  color: #966;
+  color: #B4B3B7;
 }
 .current, .fnavigation {
   font-size: 12px;
@@ -229,7 +229,7 @@ textarea {
 }
 
 .link_navigation {
-  color: $high_contrast_link_color;
+  color: #214684;
   text-decoration: none;
   cursor: pointer;
 }
@@ -258,7 +258,7 @@ textarea {
 
   a {
     text-decoration: underline;
-    color: $high_contrast_link_color;
+    color: #666;
   }
 }
 
@@ -279,8 +279,8 @@ textarea {
     list-style: none;
     margin: 0;
     padding: 0;
-    border: 1px solid $high_contrast_border_color;
-    background-color: $high_contrast_border_color;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
 
     li {
       display: block !important;
@@ -288,19 +288,30 @@ textarea {
       margin: 0;
 
       a {
-        color: $high_contrast_link_color;
+        color: #234a84;
         font-size: 12px;
         text-decoration: none;
       }
     }
 
     li:hover {
-      background-color: $high_contrast_font_color;
-      color: $high_contrast_background_color;
+      background-color: #e7e9eb;
+      color: #234a84;
     }
   }
 }
 
 .language.selected {
   background: url("/assets/check-language.png") no-repeat 5px 5px;
+}
+
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
 }

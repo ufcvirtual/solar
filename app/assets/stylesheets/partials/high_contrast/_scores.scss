@@ -1,0 +1,310 @@
+// ACOMPANHAMENTO, NOTAS E HISTÓRICO DE ACESSOS
+
+#history_search_content {
+  padding-bottom: 6px;
+  border-bottom: 1px solid;
+  border-bottom-color: $high_contrast_border_color;
+}
+
+#history-body {
+  max-height: 200px;
+  overflow: auto;
+}
+
+tr#activities{
+  th{
+    text-align: center;
+  }
+}
+
+.info_right{
+  font-size: 10pt;
+  height: 100%;
+  text-align: center;
+  margin-top: 14px;
+  .links{
+    margin-left: -28%;
+  }
+  label{
+    font-weight: bold;
+    display: block;
+    margin-left: 20%;
+  }
+}
+
+.info_left{
+  float: left; 
+  width: 30%;
+  font-size: 10pt;
+  color: $high_contrast_font_color;
+
+  a.tool_dropdown{
+    float: left;
+
+    margin-top: 6px;
+  }
+  ul.dropdown-menu{
+    li{
+      padding: 10px;
+      padding-bottom: 0px;
+      padding-top: 8px;
+    }
+    label:hover, label{
+      background-color: transparent;
+      color: $high_contrast_link_color;
+      cursor: pointer;
+      display: inline;
+    }
+  }
+
+}
+
+.print_pdf{
+  float:left;
+  padding-left: 6px;
+  margin-top: 6px;
+}
+
+.link_pdf{
+  float:left;
+  padding-left: 6px;
+  font-weight: normal;
+}
+.tb_list_students{
+  overflow-y: auto;
+  margin-top: 10px;
+
+  table{
+    th, td{
+      text-align: center;
+      min-width: 25px;
+    }
+    th.td_student{
+      text-align: left;
+      width: 140px;
+      min-width: 60px;
+    }
+    th.tool{
+      min-width: 20px;
+    }
+    th#student {
+      width: 120px;
+
+    }
+    th#profile {
+      width: 100px;
+    }
+    th#assignment {
+      width: 15px;
+      text-decoration: underline;
+    }
+    th.access_history, th#public_files,  th#exams{
+      width: 60px;
+    }
+    th.participation {
+      width: 80px;
+    }
+  }
+  #assignment_title{
+    background-color: $high_contrast_background_color;
+    float: right;
+    font-size: 10pt;
+    color: $high_contrast_font_color;
+  }
+  
+}
+
+#scores_notes.legend_score_footer, .tb_list_students{
+  .evaluated {
+    color: $high_contrast_font_color;
+  }
+
+  .sent, .sent a, .evaluated a
+  td.assignment_as a {
+    color: $high_contrast_font_color;
+  }
+
+  .assignment_as, .assignment_as a{
+    color: $high_contrast_font_color;
+  }
+
+  .not_sent, .not_sent a{
+    color: $high_contrast_font_color;
+  }
+
+  .not_started, .not_started a {
+    color: $high_contrast_font_color;
+  }
+
+  .to_send, .to_send a{
+    color: $high_contrast_font_color;
+  }
+
+  .without_group, .without_group a{
+    color: $high_contrast_font_color;
+  }
+
+  .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
+    white-space: nowrap;
+  }
+}
+
+table.scores#list_of_students{
+  overflow-x: auto;
+  display: inline-block;
+}
+
+table.users#list_of_students{
+  width: 20%;
+  display: inline-block;
+  th{
+    height: 64px;
+  }
+}
+
+table#list_of_students{
+  td.new_after_evaluation{
+    background-color: $high_contrast_background_color;
+  }
+}
+
+#scores_notes table{
+  td.new_after_evaluation{
+    padding: 5px;
+    background-color: $high_contrast_background_color;
+  } 
+}
+
+table#list_of_students thead{
+  height: 48px;
+  #tabs{
+    float: left;
+    border: none;
+    li a{
+      color: $high_contrast_font_color;
+      cursor: pointer;
+      border-top: solid 1px $high_contrast_border_color;
+    }
+    li a:not(.ui-tabs-anchor){
+      border-left: solid 1px $high_contrast_font_color;
+    }
+    li a.active{
+      background-color: $high_contrast_background_color;
+    }
+    a{
+      text-decoration: none;
+    }
+    li a:last-of-type{
+      border-right: solid 1px $high_contrast_border_color;
+    }
+  }
+  a.tool_dropdown{
+    float: left;
+    padding: 4px;
+    margin-top: 6px;
+  }
+  ul.dropdown-menu{
+    label:hover, label{
+      background-color: transparent;
+      color: $high_contrast_font_color;
+      cursor: pointer;
+      display: inline;
+    }
+  }
+}
+
+table.general{
+  th{
+    min-width: 40px;
+  }
+}
+
+#scores{
+  .evaluation_info{
+    margin: 15px;
+    width: 50%;
+    padding-right: 0;
+    display: inline-block;
+  }
+  .scores_menu{
+    text-align: center;
+  }
+  .info{
+    padding: 24px;
+    padding-left: 22%;
+    padding-right: 17%;
+    .left{
+      float: left;
+      .grade,.frequency{
+        text-align: center;
+      }
+    }
+    img{
+      border-radius: 58px;
+      box-shadow: 4px 4px 7px $high_contrast_font_color;
+      margin-bottom: 10px;
+    }
+  }
+
+  ul.dropdown-menu{
+    li{
+      padding: 10px;
+      padding-bottom: 0px;
+      padding-top: 8px;
+    }
+    label:hover, label{
+      background-color: transparent;
+      color: $high_contrast_font_color;
+      cursor: pointer;
+      display: inline;
+      font-size: 12pt;
+    }
+  }
+
+  #tabs{
+    border: none;
+    .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, .ui-state-hover, .ui-state-focus{
+      border: none;
+      background-color: $high_contrast_background_color;
+    }
+    ul{
+      li{
+        border-top: solid 1px $high_contrast_border_color;
+        border-left: solid 1px $high_contrast_border_color;
+        border-right: solid 1px $high_contrast_border_color;
+        background-color: $high_contrast_background_color;
+      }
+      li a{
+        color: $high_contrast_font_color;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      li.active, li a:active, li a:hover, li a::selection{
+        background-color: $high_contrast_background_color;
+        color: $high_contrast_link_color;
+        border: none;
+      }
+    }
+  }
+}
+
+tbody{
+  .equivalent{
+    a{
+      text-decoration: none;
+      color: $high_contrast_link_color;
+      font-size: 9pt;
+    }
+    .dropdown-menu{
+      padding: 10px;
+    }
+  } 
+}
+
+#parent {
+  height: 599px;
+}
+.parent {
+  height: 599px;
+}
+

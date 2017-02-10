@@ -42,7 +42,7 @@
   padding: 5px;
   padding-right: 5px;
   border-bottom: solid 1px;
-  border-bottom-color: $high_contrast_border_color;
+  border-bottom-color: #d0d0d0;
   height: 28px;
 }
 
@@ -80,7 +80,7 @@
 .enrollment_label {
   font-size: 10pt;
   width: auto;
-  color: $high_contrast_font_color;
+  color: #000;
 }
 
 .enrollment_bar {

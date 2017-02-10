@@ -1,0 +1,40 @@
+.new_bibliography, .edit_bibliography {
+
+  .form_label:first-child {
+    width: 95px;
+  }
+  .error {
+    margin-left: 100px;
+    margin-bottom: 0;
+    padding-left: 0;
+  }
+}
+
+.bibliography_publication_year .form_label:first-child{
+    width: 125px;
+}
+
+#bibliography_form, #support_material_form{
+  .files{
+    width: 500px;
+    .error{
+      margin-left: 0;
+    }
+    text-align: center;
+    .add_files{
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .files_list{
+      padding: 20px;
+      word-wrap: break-word;
+      #file{
+        padding-top: 5px;
+      }
+    }
+    #files_{
+      display: none;
+    }
+  }
+  
+}

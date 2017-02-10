@@ -1,0 +1,39 @@
+.digital_classes {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  font-weight: bold;
+  color: $high_contrast_font_color;
+ }
+
+.digital_classes {
+  margin-left: 10px;
+}
+
+.tb_list{
+  td{
+    .participants_box{
+      max-height: 300px;
+      overflow: auto;
+      padding: 10px;
+    } 
+  }
+}
+
+.new_digital_class{
+  .input.files{
+    #file{
+      padding: 10px;
+      margin-left: -150px;
+    }
+  }
+
+  i.remove_file{
+    padding: 5px;
+    color: $high_contrast_font_color;
+    cursor: pointer;
+  }
+}
+.input{
+    width: 510px;
+    height: 300px
+}
