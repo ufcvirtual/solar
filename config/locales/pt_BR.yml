@@ -1660,6 +1660,8 @@ pt_BR:
   support_material_sent_on: Enviado em
   support_material_size: Tamanho
   support_material_name: Nome
+  link_site_img: Link para site externo %{site} será aberto em uma nova aba ou janela
+  support_material_summary: "Tabela contendo todos os links e arquivos postados pelo professor para download. Além do arquivo a tabela contém a data que o arquivo foi enviado."
 
   # Support Material File Editor
   support_send_document: DOCUMENTO

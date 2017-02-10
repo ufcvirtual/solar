@@ -1491,6 +1491,8 @@ en_US:
   file_error_nonexistent_file: File not found
   send_file_obs: Wait for the complete submission of the file. The size should not exceed 5MB.
   send_file_text: "Allowed file example:<br /> &nbsp;&nbsp;- Microsoft Office Documents<br /> &nbsp;&nbsp;- OpenOffice.org Documents (ODF)<br /> &nbsp;&nbsp;- Archives (.zip, .rar...)<br /> &nbsp;&nbsp;- PDF Documents<br /> &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br /> &nbsp;&nbsp;- Audio Files (mp3, wma...)"
+  link_site_img: Link to external site %{site} will open in a new tab or window
+  support_material_summary: "Table containing all the links and files posted by the teacher for download. In addition to the file the table contains the date the file was sent."
 
   general_message: It was not possible to execute action.
 
