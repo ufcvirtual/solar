@@ -11,7 +11,7 @@
     %span#forum_new_message
       - if @can_interact
         - if @can_post
-          = button_tag(type: 'button', onclick: "javascript:new_post(this);", class: 'btn btn_main', id: 'button_new_post', :'data-tooltip' => t(:forum_new_message)) do
+          = button_tag(type: 'button', onclick: "javascript:new_post(this);", class: 'btn btn_main', id: 'button_new_post', :'data-tooltip' => t(:forum_new_message), :'aria-label'=> t(:forum_new_message)) do
             = content_tag(:i, nil, class: 'icon-edit')
       - else
         #forum_closed= t("forum_closed")
@@ -21,8 +21,8 @@
       - class_t = (@display_mode == 'tree') ? 'btn_pressed' : 'btn_default'
 
       .btn-group
-        = link_to(content_tag(:i, nil, class: 'icon-list'), discussion_posts_path(@discussion, {display_mode: 'list'}), {class: "btn #{class_l}", id: 'forum_view_mode-list', :"data-tooltip" => t(".show_plainlist")})
-        = link_to(content_tag(:i, nil, class: 'icon-flow-cascade'), discussion_posts_path(@discussion, {display_mode: 'tree'}), {class: "btn #{class_t}", id: 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread")})
+        = link_to content_tag(:i, nil, class: 'icon-list'), discussion_posts_path(@discussion, {display_mode: 'list'}), {class: "btn #{class_l}", id: 'forum_view_mode-list', :"data-tooltip" => t(".show_plainlist"), :"aria-label" => t(".show_plainlist")}
+        = link_to(content_tag(:i, nil, class: 'icon-flow-cascade'), discussion_posts_path(@discussion, {display_mode: 'tree'}), {class: "btn #{class_t}", id: 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread"), :'aria-label' => t(".show_thread")})
 
     #forum_pagination
       = raw render_pagination_bar(@discussion.discussion_posts_count(@display_mode == "list", @allocation_tags).to_s, "display_mode=#{@display_mode}")
@@ -30,8 +30,8 @@
         #new_post
           = form_for(:discussion_post, html: { id: 'new_post_form', :'action-to-edit' => discussion_post_path(@discussion.id, ':id'), :"action-default" => discussion_posts_path(@discussion.id), method: :put }) do |form|
             = hidden_field(:discussion_post, :parent_id, { value: '' })
-            = hidden_field_tag(:display_mode, @display_mode)
-            = hidden_field_tag(:current_page, @current_page)
+            = hidden_field_tag(:display_mode, @display_mode, :id=>'display_mode_1')
+            = hidden_field_tag(:current_page, @current_page, :id=>'current_page_1')
             = form.text_area :content
             = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'discussion_post_content', number: ''}
             .new_post_dialog_buttons.btn-group
@@ -40,17 +40,20 @@
     .forum_post_new
 
   .forum_posts_wrapper
+    - @count = 0
+    - @hash = { } unless @display_mode == 'list'
     - @posts = get_page_posts(@posts, @current_page) unless @display_mode == 'list'
     - @posts.each do |post|
       = render partial: 'post', locals: { post: post, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false, number: '' }
 .block_wrapper
-  = link_to t(:back), :back, { class: 'btn' }
+  = link_to t(:back), :back, { class: 'btn' , id: 'back' }, :'aria-label' => t(:back)
 
 = javascript_include_tag 'ckeditor/init', 'discussions', 'jwplayer/jwplayer.js', 'contextual_help/discussion_posts'
 
 :javascript
 
   var locale = "#{I18n.locale}";
+  $("#button_new_post").focus();
 
   $(function(){
 
@@ -58,7 +61,12 @@
     var websocket_host = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["host"]}";
     var websocket_port = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["port"]}"
 
-    $(".forum_button_attachment").call_fancybox();
+    $(".forum_button_attachment").call_fancybox({
+      afterShow: function(){
+        $('#focu').attr("tabindex", "0");
+        $('#focu').focus();
+      }
+    });
     var display_list = ("#{escape_once(@display_mode) == 'list'}" == "true");
     var ac = "#{@academic_allocation_id}";
 
@@ -149,7 +157,12 @@
                 parent_table.find(".forum_post_buttons:first").find(".update_post:first, .forum_button_attachment:first, .btn_caution:first").remove();
               }else
                 $(".forum_posts_wrapper").prepend(data2);
-            $(".forum_button_attachment").call_fancybox();
+            $(".forum_button_attachment").call_fancybox({
+              afterShow: function(){
+                $('#focu').attr("tabindex", "0");
+                $('#focu').focus();
+              }
+            });
             add_post_count_warning();
           });
 

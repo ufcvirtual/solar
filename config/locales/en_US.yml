@@ -996,6 +996,7 @@ en_US:
   forum_closed: "Discussion closed"
   forum_closed_short: "closed"
   discussion_closed_to_students: "closed to students"
+  forum_table_summary: "Table containing the forums with various information such as: name of the forum, period that can make posts, number of posts, situation of forum, check if it is evaluating and its notes and frequency beyond the hour."
   posts:
     index:
       show_plainlist: "Show as List"
@@ -1017,6 +1018,9 @@ en_US:
       to_evaluate: To_evaluate
       grade: '(Grade: %{grade})'
       frequency: '(Frequency: %{wh})'
+      download: "Download %{file}, size %{size}"
+      post: "%{number}ª Post: "
+      answer_post: "Answer of %{answer}"
     create:
       created: "Post was successfully created"
       not_created: "Post was not created"
@@ -1060,6 +1064,8 @@ en_US:
       compress_description: Compress description
       discussions: Dicussions
       posts: Posts
+      more: "More information enunciation of forum %{forum}"
+      less: "Less information enunciation of forum %{forum}"
     success:
       created: Discussion was successfully created.
       updated: Discussion was successfully updated.
@@ -2303,6 +2309,7 @@ en_US:
       name: Name
       cant_edit: Can't edit this course
       cant_delete: Can't delete this course
+      close: Close of %{course}
     form:
       name: Name
       code: Code

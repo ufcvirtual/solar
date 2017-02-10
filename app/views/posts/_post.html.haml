@@ -4,7 +4,8 @@
 - files    = post.files
 - evaluate = @can_evaluate || ((post.user_id == current_user.id) && @academic_allocation.try(:evaluative))
 - frequency = @can_evaluate || ((post.user_id == current_user.id) && @academic_allocation.try(:frequency))
-
+- @count +=1 unless can_post==true
+- @hash[post.id] = t('.post', number: @count) unless @display_mode == 'list' or can_post==true
 %table.forum_post{ border: '0', cellpadding: '0', cellspacing: '0', id: "#{post.id}" }
   %tr
     %td.forum_post_icon{ rowspan: 3, class: new_post_class }
@@ -14,7 +15,7 @@
         .forum_participant_nick{ alt: "#{user.info(:nick, @researcher)}" }
           = user.info(:nick, @researcher) 
           - unless @class_participants.include? user.id
-            %span{ :"data-tooltip" => t('.moved_allocation') }= content_tag :i, nil, class: 'icon-warning moved_allocation'
+            %span{ :"data-tooltip" => t('.moved_allocation') }= content_tag :i, nil, class: 'icon-warning moved_allocation',  :'aria-label'=> t('.moved_allocation')
           - if evaluate || frequency
             - info = AcademicAllocationUser.get_grade_and_wh(post.user_id, 'Discussion', post.discussion.id)
             - if evaluate && !info[:grade].blank?
@@ -30,15 +31,21 @@
     %td.forum_post_content{ colspan: 2 }
       .forum_post_wrapper{ class: new_post_class }
         .forum_post_inner_content
+          %span{ :'aria-label' => t('.post', number: @count) }
+          - unless post.parent_id.nil? or @display_mode == 'list'
+            %span{ :'aria-label' => t('.answer_post', answer: @hash[post.parent_id].to_s)}
           = sanitize post.content
+
         - if files.any?
           .forum_post_attachment
             %h3= t('.file_list')
             %ul.forum_post_attachment_list
               - files.each do |file|
+                - size = format('%.2f KB', file.attachment_file_size.to_i/1024.0)
                 - mimetype_icon  = image_tag( icon_attachment(file.attachment_file_name) )
-                - link_to_down   = (link_to file.attachment_file_name, download_post_post_file_path(post, file))
-                - link_to_remove = (editable && can_interact) ? (link_to (content_tag(:i, nil, class: 'icon-cross-circle warning')), post_post_file_path(post, file), confirm: t(".remove_file_confirm"), method: :delete, :'data-tooltip' => t('.remove_file'), class: 'nodecoration') : ''
+                - link_to_down   = (link_to file.attachment_file_name, download_post_post_file_path(post, file), :'aria-label'=> t('.download', file: file.attachment_file_name, size: size))
+
+                - link_to_remove = (editable && can_interact) ? (link_to (content_tag(:i, nil, class: 'icon-cross-circle warning')), post_post_file_path(post, file), confirm: t(".remove_file_confirm"), method: :delete, :'data-tooltip' => t('.remove_file'), :'aria-label'=> t('.remove_file'), class: 'nodecoration') : ''
                 %li
                   = raw "#{mimetype_icon}&nbsp;&nbsp;#{link_to_down}&nbsp;&nbsp;#{link_to_remove}"
                   - if file.attachment_content_type.index('audio') || file.attachment_file_name.last(4).eql?('.aac') || file.attachment_file_name.last(4).eql?('.m4a') || file.attachment_content_type.index('video') || file.attachment_file_name.last(4).eql?('.mp4') || file.attachment_file_name.last(4).eql?('.m4v')
@@ -49,17 +56,17 @@
               = link_to content_tag(:i, nil, class: 'icon-write'), user_discussion_posts_path(post.discussion.id, post.user_id), class: 'btn to_evaluate_post', :'data-tooltip'=> t('.to_evaluate')
             - if can_interact
               - if editable
-                = link_to content_tag(:i, nil, class: 'icon-paperclip'), new_post_post_file_path(post), class: 'btn forum_button_attachment', :'data-tooltip'=> t('.attach_file')
+                = link_to content_tag(:i, nil, class: 'icon-paperclip'), new_post_post_file_path(post), class: 'btn forum_button_attachment', :'data-tooltip'=> t('.attach_file'), :'aria-label'=> t('.attach_file')
                 - path = discussion_post_path(post.discussion, post)
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'delete_post(this)', class: 'btn btn_caution', :'data-url' => path, :'data-post' => post.id, :'data-tooltip'=> t('.remove')
-                = link_to_function content_tag(:i, nil, class: 'icon-edit'), "update_post(this, #{post.id}, #{post.parent_id || 0})", class: 'btn update_post', :'data-tooltip'=> t('.edit')
+                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'delete_post(this)', class: 'btn btn_caution', :'data-url' => path, :'data-post' => post.id, :'data-tooltip'=> t('.remove'), :'aria-label'=> t('.remove')
+                = link_to_function content_tag(:i, nil, class: 'icon-edit'), "update_post(this, #{post.id}, #{post.parent_id || 0})", class: 'btn update_post', :'data-tooltip'=> t('.edit'), :'aria-label'=> t('.edit')
               - if post.can_be_answered? && can_post
-                = link_to_function content_tag(:i, nil, class: 'icon-reply'), "new_post(this, #{post.id});", class: 'btn response_post', level: post.level, :'data-tooltip'=> t('.answer')
+                = link_to_function content_tag(:i, nil, class: 'icon-reply'), "new_post(this, #{post.id});", class: 'btn response_post', level: post.level, :'data-tooltip'=> t('.answer'), :'aria-label'=> t('.answer')
             - else
-              = button_tag content_tag(:i, nil, class: 'icon-paperclip'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.attach_file')
-              = button_tag content_tag(:i, nil, class: 'icon-trash'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.remove')
-              = button_tag content_tag(:i, nil, class: 'icon-edit'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.edit')
-              = button_tag content_tag(:i, nil, class: 'icon-reply'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.answer')
+              = button_tag content_tag(:i, nil, class: 'icon-paperclip'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.attach_file'), :'aria-label'=> t('.attach_file')
+              = button_tag content_tag(:i, nil, class: 'icon-trash'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.remove'), :'aria-label'=> t('.remove')
+              = button_tag content_tag(:i, nil, class: 'icon-edit'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.edit'), :'aria-label'=> t('.edit')
+              = button_tag content_tag(:i, nil, class: 'icon-reply'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.answer'), :'aria-label'=> t('.answer')
         .forum_post_reply
       - unless display_mode == 'list'
         - children.each do |child|
@@ -79,3 +86,4 @@
     height: 'auto',
     closeBtn : true
   });
+  

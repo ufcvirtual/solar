@@ -8,7 +8,8 @@
 %h1#lightBoxDialogTitle= t("posts.index.attach_file_title")
 .block_content{style: "padding: 5px;"}
   = form_for([@post, PostFile.new], :html => { :multipart => true, :id => 'form_post_new_file' }) do |f|
-    = f.file_field :attachment1, {:link_id => '1'} 
+    = f.file_field :attachment1, {:link_id => '1', autofocus: true, id: 'focu'}
     %a.btn.forum_button_attachment{:href => "#", :onclick => "add_another_file(this);", :style => "float:none"}= t(".attach_another_file")
     .form-actions.right_buttons
+      = button_to_function t(:cancel), "jQuery.fancybox.close()", type: 'button', class: 'btn btn_caution', id: 'btn_cancel_post'
       %a.UploadFileSubmit.btn.btn_main.forum_button{:href => "#", :onclick => "$('#form_post_new_file').submit(); return false;"}= t(".attach_save")

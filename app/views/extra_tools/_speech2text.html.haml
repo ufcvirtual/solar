@@ -1,3 +1,3 @@
 .speech2text{class: class_name}
-  = link_to_function content_tag(:i, nil, class: 'icon-microphone btn'), "startDictation#{number}(event, '#{div_id}', #{ckeditor}, this)", alt: t('speech2text.start'), :'data-tooltip' => t('speech2text.start')
-  = link_to_function content_tag(:i, nil, class: 'icon-cross btn stop'), "stopDictation#{number}(this)", alt: t('speech2text.stop'), :'data-tooltip' => t('speech2text.stop'), class: 'invisible'
+  = link_to_function content_tag(:i, nil, class: 'icon-microphone btn'), "startDictation#{number}(event, '#{div_id}', #{ckeditor}, this)", alt: t('speech2text.start'), :'data-tooltip' => t('speech2text.start'), :'aria-label'=> t('speech2text.start')
+  = link_to_function content_tag(:i, nil, class: 'icon-cross btn stop'), "stopDictation#{number}(this)", alt: t('speech2text.stop'), :'data-tooltip' => t('speech2text.stop'), class: 'invisible', :'aria-label'=> t('speech2text.stop')

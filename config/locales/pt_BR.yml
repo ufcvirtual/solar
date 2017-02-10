@@ -1169,7 +1169,8 @@ pt_BR:
   forum_closed: "Fórum encerrado"
   forum_closed_short: "encerrado"
   discussion_closed_to_students: "encerrado para alunos"
-
+  forum_table_summary: "Tabela contendo os fóruns com diversas informações como: nome do fórun, período que poderá realizar postagens, quantidade de postagens, situação do fórum, verificar se é avalitivo e suas notas e frequência além da carga horária."
+  
   # FORUNS
   posts:
     index:
@@ -1192,6 +1193,9 @@ pt_BR:
       to_evaluate: Avaliar
       grade: '(Nota: %{grade})'
       frequency: '(Frequência: %{wh}hs)'
+      download: "Download %{file}, tamanho: %{size}"
+      post: "%{number}ª postagem: "
+      answer_post: "Reposta da %{answer}"
     create:
       created: "Postagem criada com sucesso"
       not_created: "A postagem não foi criada"
@@ -1236,6 +1240,8 @@ pt_BR:
       compress_description: Comprimir descrição
       discussions: Fóruns
       posts: Postagens
+      more: "Mais informações sobre o enunciado do fórun %{forum}"
+      less: "Menos informações sobre o enunciado do fórun %{forum}"
     success:
       created: Fórum criado com sucesso.
       updated: Fórum atualizado com sucesso.
@@ -2522,6 +2528,7 @@ pt_BR:
       name: Nome
       cant_edit: Não é possível editar este curso
       cant_delete: Não é possível remover este curso
+      close: Sair de %{course}
     form:
       name: Nome
       code: Código
