@@ -118,12 +118,13 @@ class WebconferencesController < ApplicationController
   def preview
     ats = current_user.allocation_tags_ids_with_access_on('preview', 'webconferences', false, true)
     @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false }).paginate(page: params[:page])
+    # @count = @webconferences.count
     @can_see_access = can? :list_access, Webconference, { on: ats, accepts_general_profile: true }
     @can_remove_record = (can? :manage_record, Webconference, { on: ats, accepts_general_profile: true })
     # @online         = bbb_online?
     # @meetings       = @online ? get_meetings : []
-    api = Array.new(count_servers) {|a| Bbb.bbb_prepare(a)}
-    @online = api.map {|api| bbb_online?(api)}
+    @api = Array.new(count_servers) {|a| Bbb.bbb_prepare(a)}
+    @online = @api.map {|api| bbb_online?(api)}
   end
 
   # DELETE /webconferences/remove_record/1
@@ -148,10 +149,10 @@ class WebconferencesController < ApplicationController
 
     if params.include?(:recordID)
       webconferences.first.remove_record(params[:recordID], params[:at])
-      save_log
+      save_log(webconferences.first)
     else
       Webconference.remove_record(academic_allocations)
-      save_log(academic_allocations)
+      save_log(webconferences.first, academic_allocations)
     end
 
     render json: { success: true, notice: t(:record_deleted, scope: [:webconferences, :success]) }
@@ -245,11 +246,11 @@ class WebconferencesController < ApplicationController
 
   private
 
-  def save_log(acs=nil)
+  def save_log(webconference, acs=nil)
     logs = []
 
     if acs.nil?
-      logs << { allocation_tag_id: params[:at], description: "webconference: #{webconferences.first.id} removing recording #{params[:recordID]} by user #{current_user.id}" }
+      logs << { allocation_tag_id: params[:at], description: "webconference: #{webconference.id} removing recording #{params[:recordID]} by user #{current_user.id}" }
     else
       acs.each do |ac|
         logs << { academic_allocation_id: ac.id, description: "webconferences: #{ac.academic_tool_id} removing all recordings by user #{current_user.id}" }

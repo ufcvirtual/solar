@@ -79,6 +79,7 @@
             %td.center
               %div= l(webconference.start_date.to_date)
               %div= [l(webconference.start_hour.to_datetime, format: :today), l(webconference.end_hour.to_datetime, format: :today)].join(' - ')
+            - webconference.choose_server if webconference.server.blank?
             %td.center{ class: @online[webconference.server] ? "assignment_#{webconference.situation}" : "assignment_not_started"}= (@online[webconference.server] ? t(webconference.situation, scope: [:scores, :situation]) : t(:unavailable, scope: [:webconferences, :list]))
             %td.invisible= location
             %td.center= webconference.meeting_info(current_user, webconference.at_id, @meetings)
