@@ -23,9 +23,9 @@ module ApplicationHelper
         }
       else
         %{
-          <li data-tooltip='#{name}' data-tab-context="#{Context_Curriculum_Unit}" data-tab-id="#{active_tab}" class="#{tab_active_class} mysolar_unit_tab">
-            #{link_to((name.truncate(30) rescue ''), activate_tab_path(id: id), :'aria-label' => t('tabs.access', name: name))}
-            #{link_to('', close_tab_path(id: id), {class: 'tabs_close', id: "#{active_tab}", :'aria-label' => t('tabs.close', name: name)})}
+          <li data-tab-context="#{Context_Curriculum_Unit}" data-tab-id="#{active_tab}" class="#{tab_active_class} mysolar_unit_tab">
+            #{link_to((name.truncate(30) rescue ''), activate_tab_path(id: id), :'aria-label' => t('tabs.access', name: name), :'data-tooltip'=>name)}
+            #{link_to('',close_tab_path(id: id), {class: 'tabs_close', id: "#{active_tab}", :'aria-label' => t('tabs.close', name: name), :'data-tooltip' => t('tabs.close', name: name)})}
           </li>
         }
       end
