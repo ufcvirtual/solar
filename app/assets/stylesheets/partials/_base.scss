@@ -76,7 +76,7 @@ h3 {
 a, a.menor, a.link_content {
   text-decoration: none;
   //color: $color_almost_black;
-  color: $color_main_text;
+  color: $color_main;
 }
 
 a.link_content, .forum_post_attachment_list a {
@@ -85,13 +85,13 @@ a.link_content, .forum_post_attachment_list a {
 }
 
 a.link_content:visited, .forum_post_attachment_list a:visited {
-  color: $color_main_text;
+  color: $color_main;
 }
 
 a.link_content_gray {
   font-size: 9pt;
   text-decoration: underline;
-  color: $color_light_light_gray;
+  color: $color_black;
 }
 
 a.menor {

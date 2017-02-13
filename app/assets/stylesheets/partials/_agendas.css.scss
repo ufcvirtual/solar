@@ -18,11 +18,11 @@
 
 .list_events .day h3{
   background-color: $background_gray;
-  color: $event_color;
+  color: $color_almost_black;
 }
 
 .list_events .day_events{
-  border: solid 1px $border_event_list_color;
+  border: solid 1px $color_gray_light;
   padding: 3px;
 }
 
@@ -32,7 +32,7 @@
   h3{
     background-color: $color_contrast_light;
     border-bottom: solid 1px $color_contrast;
-    color: $color_contrast;
+    color: $color_almost_black;
   }
 }
 
@@ -45,7 +45,7 @@
 }
 
 .list_events .line{
-  border-bottom: dashed 1px $border_event_list_color;
+  border-bottom: dashed 1px $color_gray_light;
 }
 
 .list_events .line.today{

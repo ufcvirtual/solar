@@ -242,7 +242,7 @@ td.assignment_without_group a
 .assignment_info{
   .title {
     border-bottom: 2px solid;
-    border-bottom-color: $color_main_text;
+    border-bottom-color: $color_main;
     position: relative;
     overflow: hidden; // FIXME: em outro local estava definido como auto, verificar se está ok assim
     padding-top: 13px;

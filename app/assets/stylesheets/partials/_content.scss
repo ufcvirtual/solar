@@ -76,7 +76,7 @@ div.block_module, div.block_exam{
   font-variant: small-caps;
   height: 26px;
   border-bottom: 2px solid;
-  border-bottom-color: $color_main_text;
+  border-bottom-color: $color_main;
 }
 
 .mysolar_header img {
@@ -179,7 +179,7 @@ div.legend h1 {
 
 div.block_title {
   border-bottom: 2px solid;
-  border-bottom-color: $color_main_text;
+  border-bottom-color: $color_main;
   padding-bottom: 1px !important;
   position: relative;
   overflow: hidden; // FIXME: em outro local estava definido como auto, verificar se está ok assim
@@ -278,7 +278,7 @@ div.block_title {
 .block_content_gray {
   font-size: 8pt;
   padding-right: 5px;
-  color: $color_light_light_gray;
+  color: $color_black;
 }
 
 .block_content_text, .block_content_toolbar.block_content_text {

@@ -10,7 +10,7 @@
 }
 
 .form_label {
-  color: $label_color;
+  color: $color_main;
   text-align: right;
 }
 
@@ -148,7 +148,7 @@ form #cell_phone{
 }
 
 .label_color {
-  color: $label_color;
+  color: $color_main;
 }
 
 select[disabled] {
@@ -244,7 +244,7 @@ select[disabled] {
 }
 
 .checkbox_label label{
-  color: $label_color;
+  color: $color_main;
   width: auto;
 }
 

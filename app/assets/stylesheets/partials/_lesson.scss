@@ -137,7 +137,7 @@
 
 .select_end_date {
   text-align: left;
-  color: $color_main_text;
+  color: $color_main;
   margin-bottom: 6px;
 }
 
@@ -159,12 +159,12 @@
 
 .lesson_dates{
   display: inline-block;
-  color: $label_color;
+  color: $color_main;
 }
 
 .test_lesson{
   display: inline-block;
-  color: $lesson_color;
+  color: $color_gray_light;
 }
 
 .lesson_portlet .module{

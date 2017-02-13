@@ -29,7 +29,7 @@
     text-align: left;
     margin-top: 5px;
     margin-bottom: 5px;
-    color: $label_color;
+    color: $color_main;
   }
 
   .end_date_check_box { // TODO: usado em offers e semesters
@@ -39,13 +39,13 @@
 }
 
 .period_date{
-  color: $label_color;
+  color: $color_main;
   margin-left: 76px;
 }
 
 .offer_schedule_dates, .enrollment_schedule_dates { // TODO: usado em offers e semesters
   display: inline-block;
-  color: $label_color;
+  color: $color_main;
 }
 
 .offer_schedule_dates .error, .enrollment_schedule_dates .error { // TODO: usado em offers e semesters
