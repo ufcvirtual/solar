@@ -3813,3 +3813,13 @@ en_US:
   tabs:
     close: Close tab %{name}
     access: Access tab %{name}
+
+  login:
+    username: Type your username
+    password: Type your password
+
+  fancybox:
+    close: Close modal window to 
+    begin: Modal window begin
+    end: Modal window end
+    open: (Will open modal window)

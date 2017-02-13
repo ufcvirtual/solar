@@ -4052,3 +4052,13 @@ pt_BR:
   tabs:
     close: Fechar aba %{name}
     access: Acessar aba %{name}
+
+  login:
+    username: Digite seu login
+    password: Digite sua senha
+
+  fancybox:
+    close: Fechar janela modal para 
+    begin: Início da janela modal
+    end: Fim da janela modal
+    open: (Abrirá janela modal)
