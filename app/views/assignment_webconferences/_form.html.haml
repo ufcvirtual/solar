@@ -13,7 +13,7 @@
 
     .input
       = f.input :duration, hint: t('.minutes')
-      = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline.middle', ckeditor: false, div_id: 'assignment_webconference_duration', number: '2', t('.duration')}
+      = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline.middle', ckeditor: false, div_id: 'assignment_webconference_duration', number: '2', field: t('.duration')}
 
     = f.input :is_recorded, as: :boolean, boolean_style: :inline, input_html: { :'data-tooltip' => t('.record_tooltip') }
     
