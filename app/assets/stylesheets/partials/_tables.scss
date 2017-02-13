@@ -5,7 +5,7 @@
 */
 th {
   border-bottom: 1px solid;
-  border-bottom-color: #B4B2B1;
+  border-bottom-color: $table_border_color;
 }
 
 th, tr.lines td {
@@ -15,7 +15,7 @@ th, tr.lines td {
 
 tbody tr.lines {
   border-bottom: 1px solid;
-  border-bottom-color: #B4B2B1;
+  border-bottom-color: $table_border_color;
   background-color: $color_main_light;
 
   &:hover {
@@ -25,16 +25,16 @@ tbody tr.lines {
 
 tbody tr.lines.active {
   border-bottom: 1px solid;
-  border-bottom-color: #B4B2B1;
+  border-bottom-color: $table_border_color;
   background-color: $color_contrast_light;
 
   &:hover {
-    background-color: #fffbd1;
+    background-color: $table_line_hover;
   }
 }
 
 tbody tr.lines.period_ended:hover {
-  background-color: #f1f1f1;
+  background-color: $table_line_period_ended_hover;
 }
 
 tr.lines td img {
@@ -50,7 +50,7 @@ table.tb_list {
   th {
     /*    font-weight: bold;*/
     // white-space: nowrap;
-    background-color: white;
+    background-color: $color_white;
   }
 
   a {
@@ -65,7 +65,7 @@ table.tb_list {
   }
 
   td {
-    /*    border-right: 1px solid #d0d0d0;*/
+    /*    border-right: 1px solid $border_color;*/
     // white-space: normal;
     word-wrap: break-word;
   }
@@ -87,7 +87,7 @@ table.tb_list {
   }
 
   td.file_data_info {
-    color: #787878;
+    color: $table_file_data_info_color;
   }
 
   td.center, th.center{
@@ -95,22 +95,22 @@ table.tb_list {
   }
 
   td .title{
-    color: #21578B;
+    color: $table_data_line_title;
   }
 
   td .title-yellow{
-    color: #DCA727;
+    color: $color_contrast_text;
   }
 
   thead tr.lines{
-    color: #6B6B6B;
+    color: $table_head_line_title;
   }
 }
 
 table.user-courses tbody.offers {
   .offer, .open-edx-class{
     cursor: pointer;
-    color: #003e7a;
+    color: $color_main;
   }
   .offer:focus {
     background-color: $color_main_light_highlight;
@@ -142,7 +142,7 @@ tr.post_content {
 /* header */
 .tablesorter-default th,
 .tablesorter-default thead td {
-  border-bottom: rgb(180, 178, 177) 1px solid;
+  border-bottom: $table_sort_border_color 1px solid;
   /*font: bold;
   color: #000;
   background-color: #fff;
@@ -170,7 +170,7 @@ tr.post_content {
   background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
   background-color: $color_contrast_light;
   border-bottom: $color_contrast 1px solid;
-  color: #000;
+  color: $color_black;
 }
 
 .tablesorter-default thead .headerSortDown,
@@ -179,7 +179,7 @@ tr.post_content {
   background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
   background-color: $color_contrast_light;
   border-bottom: $color_contrast 1px solid;
-  color: #000;
+  color: $color_black;
 }
 
 .tablesorter-default thead .sorter-false {

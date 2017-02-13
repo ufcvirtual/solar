@@ -19,7 +19,7 @@
 
   i.remove_file{
     padding: 5px;
-    color: #DC5869;
+    color: $remove_file_color;
     cursor: pointer;
   }
 }

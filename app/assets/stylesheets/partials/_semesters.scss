@@ -1,7 +1,7 @@
 // SEMESTRES E OFERTAS
 
 .semester_same_dates, #semester_period { // TODO: usado em offers
-  color: #56585E;
+  color: $semester_color;
 }
 
 #semester_period { // TODO usado em semesters
@@ -16,9 +16,9 @@
     padding: 5px;
     padding-right: 5px;
     border-bottom: solid 1px;
-    border-bottom-color: $border;
+    border-bottom-color: $border_color;
     min-height: 20px;
-    background-color: #f8fbfe;
+    background-color: $block_content_text_background;
     padding-top: 12px;
 }
 
@@ -29,7 +29,7 @@
     text-align: left;
     margin-top: 5px;
     margin-bottom: 5px;
-    color: $label_color;
+    color: $color_main;
   }
 
   .end_date_check_box { // TODO: usado em offers e semesters
@@ -39,13 +39,13 @@
 }
 
 .period_date{
-  color: $label_color;
+  color: $color_main;
   margin-left: 76px;
 }
 
 .offer_schedule_dates, .enrollment_schedule_dates { // TODO: usado em offers e semesters
   display: inline-block;
-  color: $label_color;
+  color: $color_main;
 }
 
 .offer_schedule_dates .error, .enrollment_schedule_dates .error { // TODO: usado em offers e semesters
@@ -54,12 +54,12 @@
 
 .offer_schedule_dates.error, .enrollment_schedule_dates.error { // TODO: usado em offers e semesters
   vertical-align: inherit;
-  color: #E03838;
+  color: $error_color;
 }
 
 .offer_schedule_dates.info, .enrollment_schedule_dates.info {  // TODO: usado em offers e semesters
   vertical-align: bottom;
-  color: black;
+  color: $color_black;
 }
 
 .link_edit_offer{

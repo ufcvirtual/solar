@@ -42,7 +42,7 @@
   padding: 5px;
   padding-right: 5px;
   border-bottom: solid 1px;
-  border-bottom-color: #d0d0d0;
+  border-bottom-color: $border_color;
   height: 28px;
 }
 
@@ -80,7 +80,7 @@
 .enrollment_label {
   font-size: 10pt;
   width: auto;
-  color: #000;
+  color: $color_black;
 }
 
 .enrollment_bar {
@@ -97,7 +97,7 @@
     margin-bottom: 10px;
   }
   .form_label{
-    width: 75px;  
+    width: 75px;
   }
   .right_buttons{
     margin-right: auto;

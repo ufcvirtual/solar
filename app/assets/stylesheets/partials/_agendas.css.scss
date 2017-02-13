@@ -1,4 +1,4 @@
-/* Calendário */
+  /* Calendário */
 
 #calendar .block_wrapper{
   margin-top: 0;
@@ -21,12 +21,12 @@
 }
 
 .list_events .day h3{
-  background-color: $background_grey;
-  color: $light_grey;
+  background-color: $background_gray;
+  color: $color_almost_black;
 }
 
 .list_events .day_events{
-  border: solid 1px $light_grey;
+  border: solid 1px $color_gray_light;
   padding: 3px;
 }
 
@@ -40,7 +40,7 @@ a.fc-event-title{
   h3{
     background-color: $color_contrast_light;
     border-bottom: solid 1px $color_contrast;
-    color: $color_contrast;
+    color: $color_almost_black;
   }
 }
 
@@ -53,7 +53,7 @@ a.fc-event-title{
 }
 
 .list_events .line{
-  border-bottom: dashed 1px $light_grey;
+  border-bottom: dashed 1px $color_gray_light;
 }
 
 .list_events .line.today{
@@ -74,44 +74,44 @@ a.fc-event-title{
 }
 
 .fc-event.assignment{
-  background-color: #FCEBCA; 
-  border-color: #FCEBCA;
+  background-color: $event_assignment_background;
+  border-color: $event_assignment_background;
 }
 .fc-event.chat{
-  background-color: #A7C1F0; 
-  border-color: #A7C1F0;
+  background-color: $event_chat_background;
+  border-color: $event_chat_background;
 }
 .fc-event.discussion{
-  background-color: #CAFCCC; 
-  border-color: #CAFCCC;
+  background-color: $event_discussion_background;
+  border-color: $event_discussion_background;
 }
 .fc-event.presential_test{
-  background-color: #F5D5EF; 
-  border-color: #F5D5EF;
+  background-color: $event_presential_test_background;
+  border-color: $event_presential_test_background;
 }
 .fc-event.presential_meeting{
-  background-color: #FFD9E0; 
-  border-color: #FFD9E0;
+  background-color: $event_presential_meeting_background;
+  border-color: $event_presential_meeting_background;
 }
 .fc-event.recess_holiday{
-  background-color: #E3E3E3; 
-  border-color: #E3E3E3;
+  background-color: $event_recess_holiday_background;
+  border-color: $event_recess_holiday_background;
 }
 .fc-event.webconferencelesson{
-  background-color: #F5DA81;
-  border-color: #F5DA81;
+  background-color: $event_webconferencelesson_background;
+  border-color: $event_webconferencelesson_background;
 }
 .fc-event.lessons{
-  background-color: #A9F0F7; 
-  border-color: #A9F0F7;
+  background-color: $event_lessons_background;
+  border-color: $event_lessons_background;
 }
 .fc-event.other{
-  background-color: #CCCCFF; 
-  border-color: #CCCCFF;
+  background-color: $event_other_background;
+  border-color: $event_other_background;
 }
 
 .fc-event.fc-event-title{
-  color: black;
+  color: $color_black;
 }
 
 .list_events .fc-event.fc-event-title{
@@ -124,7 +124,7 @@ a.fc-event-title{
   font-size: 11pt;
   text-align: center;
   label{
-    color: $text_grey;
+    color: $color_gray_text;
     font-size: 10pt;
     width: auto;
     text-align: center;
@@ -142,7 +142,7 @@ a.fc-event-title{
     .event_details_dropdown{
       h1, h2, h3, h4, .group_label label{
         font-family: 'PT Sans', sans-serif;
-        background-color: white;
+        background-color: $color_white;
         border-bottom: none;
       }
       h2{
@@ -150,8 +150,9 @@ a.fc-event-title{
         text-align: left;
         font-size: 11pt;
       }
-      h3, h4, .group_label label, h3 p{
-        color: $text_grey;
+
+      h2, h3, .group_label label, h3 p{
+        color: $color_gray_text;
         font-size: 10pt;
         font-weight: normal;
         text-align: left;
@@ -160,7 +161,7 @@ a.fc-event-title{
         margin: 6px;
       }
       .line{
-        border-bottom: solid 1px $background_grey;
+        border-bottom: solid 1px $background_gray;
         padding-bottom: 5px;
         margin-bottom: 5px;
       }
@@ -186,7 +187,7 @@ a.fc-event-title{
 
 
 .label_info{
-  color: black;
+  color: $color_black;
   margin-left: 5px;
   display: inline-block;
   font-size: 10pt;
@@ -218,7 +219,7 @@ a.fc-event-title{
   font-size: 11px;
   margin-right: 2px;
   float: right;
-  color: #4b6380;
+  color: $agenda_color;
 }
 
 .agenda_left {
@@ -284,7 +285,7 @@ a.fc-event-title{
 
 .agenda_ajax {
   font-size: 9pt;
-  color: #4B6380;
+  color: $agenda_color;
 }
 
 .agenda_left_month_year .year_left {

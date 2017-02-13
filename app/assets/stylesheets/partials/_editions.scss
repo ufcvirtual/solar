@@ -1,7 +1,7 @@
 // EDIÇÃO
 fieldset {
   border: 1px solid;
-  border-color: #D0D0D0;
+  border-color: $border_color;
   padding: 15px 20px 5px 20px;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -13,7 +13,7 @@ fieldset {
 
   .block_content_alt {
     margin-bottom: 20px;
-    background-color: #ffffff;
+    background-color: $color_white;
 
     li {
       margin-bottom: 10px;
@@ -54,7 +54,7 @@ fieldset {
 
 .block_title.edition {
   border-bottom: solid 1px;
-  border-bottom-color: #D0D0D0;
+  border-bottom-color: $border_color;
   margin-bottom: 15px;
 }
 
@@ -63,7 +63,7 @@ fieldset {
   font-size: 11px;
   margin-bottom: 15px;
   margin-top: -20px;
-  color: gray;
+  color: $color_gray;
 }
 
 .edition .filter .groups{
@@ -73,7 +73,7 @@ fieldset {
 
 .edition p{
   text-align: right;
-  color: #D5031C;
+  color: $edition_color;
   margin-bottom: 0;
 }
 
@@ -82,19 +82,19 @@ fieldset {
 }
 
 .edition.block_content{
-  background-color: white;
+  background-color: $color_white;
 }
 
 .offer_groups_options {
   overflow: hidden;
 
   .collection_check_boxes {
-    color: white;
+    color: $color_white;
   }
 }
 
 label[for="all"], .type_description {
-  color: $text_grey;
+  color: $color_gray_text;
 }
 
 label[for="all"]{
@@ -175,7 +175,7 @@ label[for="all"]{
       }
       .tools_by_tool_type{
         tr.red{
-          background-color: #fff6f6;
+          background-color: $background_light_red;
         }
       }
       .icons{
@@ -225,14 +225,14 @@ label[for="all"]{
       display: inline-block;
       padding: 20px 0px 20px 0px;
       width: 250px;
-      border: 1px dashed #808080;
+      border: 1px dashed $list_exams_btn_color;
     }
   }
   .exam_box{
     width: 775px;
     padding: 5px 0px 5px 4px;
-    border-left: 6px solid #005cc0;
-    background-color: #f3f3f3;
+    border-left: 6px solid $list_exams_exam_box_color;
+    background-color: $list_exams_background;
   }
   .block_wrapper .block_content_toolbar{
     margin-top: 10px;
@@ -262,6 +262,6 @@ label[for="all"]{
 
 .filter{
   li.ui-menu-item a{
-    color: #222222;
+    color: $color_almost_black;
   }
 }

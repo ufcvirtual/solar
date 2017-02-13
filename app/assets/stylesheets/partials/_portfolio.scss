@@ -39,7 +39,7 @@
   margin-right: 8px;
   margin-left: 10px;
   float: right;
-  color: #888;
+  color: $color_light_gray;
 }
 
 .assignment_comment_date {
@@ -74,7 +74,7 @@
   text-align: left;
   border-bottom: 1px solid;
   border-bottom-color: $color_main;
-  background-color: white;
+  background-color: $color_white;
 }
 
 .comments_files_div .btn {
@@ -91,7 +91,7 @@
 
 .assignment_without_group, td.assignment_without_group a {
   white-space: nowrap;
-  color: #e37073;
+  color: $portfolio_assignment_without_group_color;
 }
 
 .activity_grade {
@@ -103,42 +103,42 @@
 */
 
 .assignment_corrected, .assignment_evaluated {
-  color: #378941;
+  color: $portfolio_assignment_corrected_color;
 }
 
 .assignment_not_answered {
-  color: #CC0033;
+  color: $portfolio_assignment_not_answered_color;
 }
 
 .assignment_sent, .assignment_sent a, .assignment_corrected a, .assignment_finished, .assignment_finish, .assignment_processing,
 td.assignment_as a {
-  color: #2900c2;
+  color: $portfolio_assignment_color;
 }
 
 .assignment_as, .assignment_as a{
-  color: #2900c2;
+  color: $portfolio_assignment_color;
 }
 
 .assignment_not_sent, .assignment_not_sent a, .expired, .assignment_closed {
-  color: #e12227;
+  color: $portfolio_assignment_not_sent_color;
 }
 
 .assignment_not_started, .assignment_not_started a, .assignment_scheduled {
-  color: #787878;
+  color: $portfolio_assignment_not_started;
 }
 
 .assignment_to_be_sent, .assignment_to_be_sent a, .assignment_started,
 .assignment_pending, .assignment_to_answer, .assignment_not_finished, .assignment_opened, .assignment_in_progress,
 td.assignment_an a {
-  color: #003e7a;
+  color: $color_main;
 }
 
 .assignment_an{
-  color: #003e7a;
+  color: $color_main;
 }
 .assignment_without_group, .assignment_without_group a,
 td.assignment_without_group a {
-  color: #e37073;
+  color: $portfolio_assignment_without_group_color;
 }
 
 .assignment_corrected,
@@ -164,7 +164,7 @@ td.assignment_without_group a
 
 .tb_list{
   tr > td > .participants_box:not(.invisible){
-    border-bottom: 1px solid #B4B2B1;
+    border-bottom: 1px solid $step_list_color;
   }
 
   td{
@@ -173,13 +173,13 @@ td.assignment_without_group a
       max-height: 200px;
       overflow: auto;
       tbody{
-        background-color: white;
+        background-color: $color_white;
         td{
           padding: 6px 10px 4px 10px;
           vertical-align: middle;
         }
       }
-    } 
+    }
   }
 }
 
@@ -190,7 +190,7 @@ td.assignment_without_group a
 }
 
 .assignment_files.files td, .student_files.files td, .student_webconferences.files td{
-  color: $text_grey;
+  color: $color_gray_text;
 }
 
 .upload_files{
@@ -213,10 +213,10 @@ td.assignment_without_group a
     width: 50px;
     height: 50px;
     border-radius: 30px;
-    box-shadow: 4px 4px 7px #929792;
+    box-shadow: 4px 4px 7px $portfolio_block_wrapper_groups;
   }
   .block_user{
-    background-color: #FCEBCA;
+    background-color: $event_assignment_background;
     font-size: 10pt;
   }
 
@@ -227,13 +227,13 @@ td.assignment_without_group a
     margin-top: 1%;
     padding: 8px 0px 5px 44px;
   }
-  
+
   .title_user{
     float: left;
     font-weight: bold;
     margin-right: 7px;
   }
-} 
+}
 
 .block_user .participants_list{
   margin-left: 85px;
@@ -242,7 +242,7 @@ td.assignment_without_group a
 .assignment_info{
   .title {
     border-bottom: 2px solid;
-    border-bottom-color: $color_main_text;
+    border-bottom-color: $color_main;
     position: relative;
     overflow: hidden; // FIXME: em outro local estava definido como auto, verificar se está ok assim
     padding-top: 13px;

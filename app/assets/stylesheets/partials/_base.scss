@@ -10,7 +10,7 @@ body {
   cursor: default;
   font-family: 'PT Sans', sans-serif;
   height: 100%;
-  background-color: #f9f9f9;
+  background-color: $body_background;
 }
 
 p {
@@ -43,7 +43,7 @@ h1 {
     border-bottom-width: 3px;
     border-bottom-style: solid;
     padding-bottom: 2px !important;
-    color: #000;
+    color: $color_black;
     border-bottom-color: $color_main;
   }
 }
@@ -67,7 +67,7 @@ h3 {
   margin: 0 auto;
   min-height: 99.5%;
   position: relative;
-  background-color: #ffffff;
+  background-color: $color_white;
 }
 
 /**
@@ -75,8 +75,8 @@ h3 {
 */
 a, a.menor, a.link_content {
   text-decoration: none;
-  //color: #222;
-  color: $color_main_text;
+  //color: $color_almost_black;
+  color: $color_main;
 }
 
 a.link_content, .forum_post_attachment_list a {
@@ -85,13 +85,13 @@ a.link_content, .forum_post_attachment_list a {
 }
 
 a.link_content:visited, .forum_post_attachment_list a:visited {
-  color: $color_main_text;
+  color: $color_main;
 }
 
 a.link_content_gray {
   font-size: 9pt;
   text-decoration: underline;
-  color: #999;
+  color: $color_black;
 }
 
 a.menor {
@@ -114,9 +114,9 @@ select {
   border-style: solid;
   padding-top: 2px;
   /*    min-width: 180px;*/
-  color: #222;
-  background-color: #fff;
-  border-color: #dedede;
+  color: $color_almost_black;
+  background-color: $color_white;
+  border-color: $border_color_another_gray;
 }
 
 input {
@@ -125,8 +125,8 @@ input {
   padding: 5px;
   font-family: 'PT Sans', sans-serif;
   /*    font-size: 13px;*/
-  color: #222;
-  border-color: #dedede;
+  color: $color_almost_black;
+  border-color: $border_color_another_gray;
 }
 
 button {
@@ -144,9 +144,9 @@ textarea {
   padding: 5px;
   font-family: 'PT Sans', sans-serif;
   font-size: 10pt;
-  color: #222;
-  background-color: #fff;
-  border-color: #dedede;
+  color: $color_almost_black;
+  background-color: $color_white;
+  border-color: $border_color_another_gray;
 }
 
 #footer {
@@ -157,11 +157,11 @@ textarea {
   width: 980px;
   bottom: 0;
   position: absolute;
-  background-color: #f9f9f9;
-  color: #666;
+  background-color: $body_background;
+  color: $color_almost_gray;
 
   &, & a {
-    color: #666;
+    color: $color_almost_gray;
     font-size: 9pt;
   }
   a:hover{
@@ -197,10 +197,10 @@ textarea {
 }
 
 .lines.period_ended, .period_ended {
-  background-color: #f6f6f6;
-  color: #989898;
+  background-color: $period_ended_background;
+  color: $period_ended_color;
   a {
-    color: #989898;
+    color: $period_ended_color;
   }
 }
 
@@ -213,12 +213,12 @@ textarea {
   font-weight: bold;
   padding-left: 5px;
   padding-right: 5px;
-  background-color: #E7EDED;
-  color: #214684;
+  background-color: $current_background;
+  color: $current_color;
 }
 
 .disabled {
-  color: #B4B3B7;
+  color: $disabled_color;
 }
 .current, .fnavigation {
   font-size: 12px;
@@ -229,7 +229,7 @@ textarea {
 }
 
 .link_navigation {
-  color: #214684;
+  color: $current_color;
   text-decoration: none;
   cursor: pointer;
 }
@@ -258,7 +258,7 @@ textarea {
 
   a {
     text-decoration: underline;
-    color: #666;
+    color: $color_almost_gray;
   }
 }
 
@@ -279,8 +279,8 @@ textarea {
     list-style: none;
     margin: 0;
     padding: 0;
-    border: 1px solid #ccc;
-    background-color: #ffffff;
+    border: 1px solid $language_border_color;
+    background-color: $color_white;
 
     li {
       display: block !important;
@@ -288,15 +288,15 @@ textarea {
       margin: 0;
 
       a {
-        color: #234a84;
+        color: $language_color;
         font-size: 12px;
         text-decoration: none;
       }
     }
 
     li:hover {
-      background-color: #e7e9eb;
-      color: #234a84;
+      background-color: $language_background_color;
+      color: $language_color;
     }
   }
 }

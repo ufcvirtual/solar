@@ -6,7 +6,7 @@
     vertical-align: top;
   }
   .block_photo {
-    border: 1px solid #dedede;
+    border: 1px solid $border_color_another_gray;
     margin-top: 3px;
   }
   div {
@@ -22,23 +22,23 @@ tr.lines {
   }
 }
 .border {
-  border-top: 1px solid #dedede;
+  border-top: 1px solid $border_color_another_gray;
 }
 
 .added-permission {
-  color: blue !important;
+  color: $added_permission_color !important;
 }
 
 .removed-permission {
-  color: red !important;
+  color: $removed_permission_color !important;
 }
 
 .permission {
-  color: green;
+  color: $permission_color;
 }
 
 .edition-enabled {
-  background-color: #fefae6;
+  background-color: $background_light_beige;
 }
 
 label.permissions-search-text {
@@ -68,39 +68,39 @@ table.tb_allocation .dropdown ul li a{
     position: relative;
     text-align: center;
     top: -6px;
-    color: #dca727;
+    color: $color_contrast_text;
   }
 }
 
 .title-warning {
-  background-color: #E8EFF6;
-  color: #4B4B4B;
+  background-color: $background_dark_gray;
+  color: $comment_color;
   padding: 7px 5px 7px 5px;
   font-size: 10pt;
   margin-bottom: 15px;
 }
 .comment-blue {
-  background-color: #E8EFF6;
+  background-color: $background_dark_gray;
   border-radius: 8px;
-  color: #4B4B4B;
+  color: $comment_color;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
   margin-bottom: 10px;
   width: 450px;
 }
 .comment-red {
-  background-color: #fff6f6;
+  background-color: $background_light_red;
   border-radius: 8px;
-  color: #4B4B4B;
+  color: $comment_color;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
   margin-bottom: 10px;
   width: 450px;
 }
 .comment-green {
-  background-color: #F5FFE3;
+  background-color: $background_light_green;
   border-radius: 8px;
-  color: #4B4B4B;
+  color: $comment_color;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
   margin-bottom: 10px;

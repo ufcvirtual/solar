@@ -13,13 +13,13 @@
 
   #name{
     font-size: 13pt;
-    color: $text_grey;
+    color: $color_gray_text;
     padding: 5px;
   }
 
   .notice{
       padding-top: 10px;
-      color: rgba(179, 6, 2, 0.81);
+      color: rgba($notice_exams_color, 0.81);
   }
 
   .start_button{
@@ -50,7 +50,7 @@
     font-family: 'PT Sans';
     margin: 0px;
     padding: 0px 0px 0px 5px;
-    color: $text_grey;
+    color: $color_gray_text;
     float: left;
   }
 
@@ -82,9 +82,9 @@
   .block_content {
     padding: 5px;
     border-bottom: solid 1px;
-    border-bottom-color: #D0D0D0;
+    border-bottom-color: $border_color;
     border-top: solid 1px;
-    border-top-color: #D0D0D0;
+    border-top-color: $border_color;
     min-height: 28px;
     display: block;
 
@@ -100,7 +100,7 @@
 
       .number {
         padding-right: 5px;
-        color: $text_blue;
+        color: $color_main;
         width: auto;
         vertical-align:top;
       }
@@ -119,14 +119,14 @@
         display: inline-block;
 
         #question_image {
-          border: solid 2px #CDD6E3;
+          border: solid 2px $question_image_border_color;
         }
       }
       td.image.legend{
         display: block;
         text-align: left;
         width: 600px;
-        background-color: #CBD7E4;
+        background-color: $question_image_legend_background;
         margin-bottom: 10px;
         img, .image{
           margin-left: -15px;
@@ -161,14 +161,14 @@
       }
       .audio {
         display: inline-block;
-        
+
         a i{
           margin-bottom: 30px;
           display: inline-block;
           vertical-align: middle;
         }
         .audio{
-          text-align: left;      
+          text-align: left;
         }
       }
       td.audio.legend{
@@ -177,11 +177,11 @@
         text-align: center;
         width: 620px;
         margin-bottom: 10px;
-        background-color: #CBD7E4;
+        background-color: $question_image_legend_background;
         .audio{
           margin: 5px 0 5px -15px;
-          background: #FAFAFA;
-          background: -moz-linear-gradient(left, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%);
+          background: $questions_audios_background;
+          background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
           height: 32px;
           width: 56%;
           position: relative;
@@ -198,7 +198,7 @@
           text-align: center;
           vertical-align: top;
           top: 50%;
-         
+
           p{
             margin-bottom: 2px;
           }
@@ -236,7 +236,7 @@
     }
 
     #item_image{
-      border: solid 2px #CDD6E3;
+      border: solid 2px $question_image_border_color;
     }
 
     label input{
@@ -245,31 +245,31 @@
 
     label{
       display: inline;
-      color: $text_blue;
+      color: $color_main;
       font-family: 'PT Sans', sans-serif;
     }
 
     .incorrect{
-      color:#E03838;
+      color: $question_iten_incorrect;
     }
-    
+
     .hit{
-      color:#0B610B;
+      color: $question_iten_hit_color;
     }
-    
+
     .audio.legend{
       padding: 0 0 6px 14px;
       display: block;
       text-align: center;
       width: 600px;
       margin-bottom: 10px;
-      background-color: #CBD7E4;
+      background-color: $question_image_legend_background;
 
       .audio{
         margin: 5px 0 5px -15px;
         padding-top: 10px;
-        background-color: #FAFAFA;
-        background: -moz-linear-gradient(left, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%, rgba(31,30,31,1) 100%);
+        background-color: $questions_audios_background;
+        background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
         height: 27px;
         width: 58%;
         position: relative;
@@ -285,10 +285,10 @@
         text-align: center;
         vertical-align: top;
       }
-    }    
-    
+    }
+
     #text{
-      color: #4c4a4a;
+      color: $lightbox_dialog_title_color;
     }
     #text, #hide{
       display: none;
@@ -298,7 +298,7 @@
   .message_div_navigation {
     text-align: center;
     padding: 0.25*$gutter;
-    color: #B4B3B7;
+    color: $disabled_color;
     font-size: 13pt;
 
 
@@ -306,7 +306,7 @@
       margin-top: 5px;
     }
     .active{
-      color: $text_blue;
+      color: $color_main;
     }
   }
 
@@ -328,7 +328,7 @@
 #exam_form{
   .description, .description p{
     font-size: 11px;
-    color: $text_grey;
+    color: $color_gray_text;
     text-align: left;
   }
 
@@ -357,7 +357,7 @@
     width: 775px;
     display: block;
     padding: 5px;
-    border: 1px dashed #808080;
+    border: 1px dashed $list_exams_btn_color;
     text-align: center;
   }
 
@@ -405,27 +405,27 @@
   }
 
   .corrected {
-    color: #378941;
+    color: $list_exams_corrected_color;
   }
 
   .finished, .not_corrected {
-    color: #2900c2;
+    color: $list_exams_finished_color;
   }
 
   .not_answered {
-    color: #e12227;
+    color: $list_exams_not_answered_color;
   }
 
   .not_started {
-    color: #787878;
+    color: $list_exams_not_started_color;
   }
 
   .to_answer, .not_finished, .retake {
-    color: #003e7a;
+    color: $color_main;
   }
   .ico-e{
     font-decoration: none;
-    text-decoration:none; 
+    text-decoration:none;
   }
 
   .block_exam h2{
@@ -467,12 +467,12 @@
     width: 30%;
   }
   .info{
-    width: 68%; 
+    width: 68%;
     .attempt{
       .input{
         label{
           width: 113px;
-        }  
+        }
       }
     }
   }
@@ -482,7 +482,7 @@
       padding: 5px;
     }
     a.active{
-      color: #dca727;
+      color: $color_contrast_text;
     }
     a.no_pointer{
       cursor: default;

@@ -1,6 +1,6 @@
 table.notifications {
   tr.unread {
-    background-color: #fefae6;
+    background-color: $background_light_beige;
   }
 
   tr {
@@ -27,7 +27,7 @@ table.notifications {
 .show_notification{
   #lightBoxDialogTitle{
     .prev, .next{
-      float: right;  
+      float: right;
     }
   }
 }

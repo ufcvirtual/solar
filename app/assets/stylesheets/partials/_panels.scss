@@ -1,3 +1,17 @@
+// Default colors
+$white: #fff;
+$black: #000;
+$background_light: #f5f5f5;
+
+// Panels colors
+$panel_background: #eceef0;
+$panel_box_shadow: #323232;
+$panel_color: #363636;
+$panel_border_color: #d3d3d3;
+$panel_title_color: #135696;
+$panel_content_color: #616161;
+$panel_menu_footer_color: #2b5088;
+
 /*Páginas dos paineis do rodapé*/
 .panel{
   display: none;
@@ -6,15 +20,15 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgb(236,238,240);
-  -webkit-box-shadow:0px -5px 19px rgba(50, 50, 50, 0.75);
-  -moz-box-shadow:0px -5px 19px rgba(50, 50, 50, 0.75);
-  box-shadow:0px -5px 19px rgba(50, 50, 50, 0.75);
+  background-color: $panel_background;
+  -webkit-box-shadow:0px -5px 19px rgba($panel_box_shadow, 0.75);
+  -moz-box-shadow:0px -5px 19px rgba($panel_box_shadow, 0.75);
+  box-shadow:0px -5px 19px rgba($panel_box_shadow, 0.75);
   z-index: 50;
 }
 
 #team, #license-terms, #faq {
-  background: #ffffff image-url('ufc-virtual.png') 10% 16% no-repeat;
+  background: $white image-url('ufc-virtual.png') 10% 16% no-repeat;
 }
 
 .panel .content {
@@ -23,7 +37,7 @@
   overflow: auto;
   margin: 30px auto;
   text-align: left;
-  background-color: rgba(255,255,255,0.8);
+  background-color: rgba($white,0.8);
   padding: 5px 10px;
 }
 
@@ -66,7 +80,7 @@
 
 #faq .search, .tutorials .search{
   text-align: center;
-  color: #363636;
+  color: $panel_color;
   font-weight: bold;
   input{
     vertical-align: middle;
@@ -75,16 +89,16 @@
 }
 
 #faq .title{
-  border: 1px solid #d3d3d3;
-  background: rgba(245,245,245,1);
-  background: -moz-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
-  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(245,245,245,1)), color-stop(100%, rgba(255,255,255,1)));
-  background: -webkit-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
-  background: -o-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
-  background: -ms-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
-  background: linear-gradient(to bottom, rgba(245,245,245,1) 0%, rgba(255,255,255,1) 100%);
+  border: 1px solid $panel_border_color;
+  background: $background_light;
+  background: -moz-linear-gradient(top, $background_light 0%, $background_light 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, $background_light), color-stop(100%, $background_light));
+  background: -webkit-linear-gradient(top, $background_light 0%, $white 100%);
+  background: -o-linear-gradient(top, $background_light 0%, $white 100%);
+  background: -ms-linear-gradient(top, $background_light 0%, $white 100%);
+  background: linear-gradient(to bottom, $background_light 0%, $white 100%);
   font-weight: normal;
-  color: #363636;
+  color: $panel_color;
   margin: 10px 0 0 0;
   padding: .5em .5em .5em .7em;
   cursor: pointer;
@@ -114,7 +128,7 @@
 .panel h1{
   font-family: Ubuntu Condensed;
   font-size: 25px;
-  color:#135696;
+  color: $panel_title_color;
   padding-bottom: 10px;
 }
 
@@ -127,20 +141,20 @@
 .panel h4, .panel p{
   font-family:PT Sans;
   font-size: 16px;
-  color:#616162;
+  color: $panel_content_color;
 }
 
 .panel .menu_footer ul li a{
   text-decoration: none;
   font-family: Ubuntu;
   font-size: 14px;
-  color:#2b5088;
+  color: $panel_menu_footer_color;
 }
 
 .dropdown-panel .close{
   float: right;
   button{
-    background-color: white;
+    background-color: $white;
     border: none;
     cursor: pointer;
   }

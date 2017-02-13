@@ -41,10 +41,10 @@
 }
 
 .td_subject, .td_sender, .td_time, .td_recipient{
-  color: $text_grey;
+  color: $color_gray_text;
 
   a{
-    color: $text_grey;
+    color: $color_gray_text;
   }
 }
 
@@ -70,7 +70,7 @@
 
 #message_list > .message_link:hover {
   border-bottom: 2px solid; /* FIXME: localizar onde isso está sendo utilizado */
-  border-bottom-color: #214684;
+  border-bottom-color: $current_color;
 }
 
 .message_div {
@@ -88,7 +88,7 @@
   height: 28px;
 }
 .message_line:not(.no_border){
-  border-bottom: 1px solid #D0D0D0;
+  border-bottom: 1px solid $border_color;
 }
 
 .message_line_check {
@@ -107,12 +107,12 @@
 }
 
 .message_read {
-  color: #666;
+  color: $color_almost_gray;
 }
 
 .message_unread {
   font-weight: bold;
-  color: #000;
+  color: $color_black;
 }
 
 .message_label {
@@ -124,7 +124,7 @@
   padding-right: 2px;
   border: 1px solid;
   -moz-border-radius: 4px;
-  color: #000;
+  color: $color_white;
   background-color: $color_contrast;
   border-color: $color_contrast;
 }
@@ -154,7 +154,7 @@
     padding: 5px;
     padding-right: 5px;
     border-bottom: solid 1px;
-    border-bottom-color: $border;
+    border-bottom-color: $border_color;
     min-height: 28px;
 
     ul.message_menu_listbox li ul {
@@ -165,14 +165,14 @@
         padding: 2px 0px;
 
         &:hover{
-          background: rgb(0, 116, 243);
-          color: white;
+          background: $block_content_background;
+          color: $color_white;
         }
       }
     }
   }
   .block_white{
-    background: white;
+    background: $color_white;
   }
   .block_white.index{
     height: 38px;
@@ -198,7 +198,7 @@
 
 .block_content.messages {
   padding: 5px 10px 5px 5px;
-  border-bottom: solid 1px $border;
+  border-bottom: solid 1px $border_color;
   overflow: hidden;
 
   .btn{
@@ -207,7 +207,7 @@
 }
 
 .message_header_new, .message_div_show {
-  color: $text_grey;
+  color: $color_gray_text;
   padding: 0.5*$gutter 0.5*$gutter;
   font-size: 13px;
   width: auto; // FIXME: é auto ou 100% ?
@@ -218,7 +218,7 @@
   }
 
   span.email{
-    color: $text_blue;
+    color: $color_main;
     text-decoration: underline;
   }
 
@@ -286,13 +286,13 @@
 .message_div_navigation {
   text-align: center;
   padding: 0.25*$gutter;
-  color: #B4B3B7;
+  color: $disabled_color;
 
   .message_page{
     margin-top: 5px;
   }
   .active{
-    color: $text_blue;
+    color: $color_main;
   }
 }
 
@@ -325,13 +325,13 @@
 }
 
 .text_alert_message, #count_msgs_unread {
-  color: #e64d4d;
+  color: $text_alert_color;
 }
 
 /* mensagem: cabecalho, area de titulo */
 #message_general_title {
   border-bottom: 1px solid;
-  border-bottom-color: #d0d0d0;
+  border-bottom-color: $border_color;
   padding-bottom: 0px !important;
   height: 25px;
 
@@ -356,13 +356,13 @@
 
 .message_general_div_option_active {
   border-bottom: 2px solid;
-  border-bottom-color: #214684;
+  border-bottom-color: $current_color;
 }
 
 .message_label {
-  color: #000;
-  background-color: #F9C153;
-  border: 1px solid #F9C153;
+  color: $color_black;
+  background-color: $message_label_background;
+  border: 1px solid $message_label_background;
 }
 
 // contatos
@@ -378,7 +378,7 @@
   line-height: 15px;
   margin-bottom: 5px;
   .edition.block_content{
-    background-color: #F8FBFE;
+    background-color: $contacts_edition_block_content_background;
   }
   .select{
     margin-top: 5px;
@@ -392,7 +392,7 @@
 #content-div{
   .block_content p{
     text-align: right;
-    color: #D5031C;
+    color: $edition_color;
     margin-bottom: 0;
   }
 }
@@ -405,10 +405,10 @@
   margin-bottom: 5px;
   border: 1px solid;
   height: 150px;
-  background-color: #fff;
-  border-color: #ddd;
+  background-color: $color_white;
+  border-color: $contacts_list_border_color;
   .already_added{
-    color: red;
+    color: $color_red;
     display: inline-block;
     padding-left: 3px;
   }
@@ -417,11 +417,11 @@
 .contacts-selected {
   font-size: 10pt;
   border: 1px solid;
-  border-color: #ccc;
+  border-color: $lesson_portlet_border_color;
   height: 100px;
   white-space: normal;
   overflow: auto;
-  background-color: #fff;
+  background-color: $color_white;
   margin-bottom: 10px;
 }
 
@@ -434,7 +434,7 @@
   display: inline-block;
   margin-left: 5px;
   font-size: 11px;
-  color: #FF9900;
+  color: $receiver_already_added_color;
 }
 
 .message_new_upload{
@@ -461,7 +461,6 @@
 .help_link {
   padding: 7px;
   text-align: center;
-  background-color: #E8EFF6;
+  background-color: $background_dark_gray;
   text-decoration: underline;
 }
-

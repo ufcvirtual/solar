@@ -1,11 +1,11 @@
 .description, .description p{
   font-size: 11px;
-  color: $text_grey;
+  color: $color_gray_text;
   text-align: left;
 }
 
 .complete{
-  border-left: 2px solid #C0C0C0;
+  border-left: 2px solid $complete_border_left_color;
   padding-left: 10px;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -28,13 +28,13 @@
 }
 
 .box, #tab label{
-  border: 1px solid grey;
-  background-color: white;
+  border: 1px solid $color_gray;
+  background-color: $color_white;
 }
 
 #tab label{
   padding-top: 2px;
-  color: $label_color;
+  color: $color_main;
   border-bottom: none;
   height: auto;
   padding-right: 5px;
@@ -64,7 +64,7 @@
 }
 
 #define_participants label{
-  color: $text_grey;
+  color: $color_gray_text;
 }
 
 #chat_room_type{
@@ -110,13 +110,13 @@ a.chat_list {
     }
     text-align: center;
     td.profile{
-      color: #989898;
+      color: $period_ended_color;
       font-size: 9pt;
       font-style: italic;
       padding-right: 0;
     }
     td.message{
-      width: 40%; 
+      width: 40%;
       text-align: left;
     }
   }

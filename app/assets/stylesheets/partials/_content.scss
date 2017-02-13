@@ -7,7 +7,7 @@
   display: inline-block;
   zoom: 1;
   *display: inline;
-  background-color: #fff;
+  background-color: $color_white;
 }
 
 #block_locale {
@@ -17,7 +17,7 @@
   clear: both;
 
   a {
-    color: #666;
+    color: $color_almost_gray;
   }
 }
 
@@ -48,25 +48,25 @@ div.block_module, div.block_exam{
   padding-top: 6px !important;
   overflow: visible !important;
   border-bottom: 1px solid;
-  border-bottom-color: rgba(0, 62, 122, 0.3);
+  border-bottom-color: rgba($block_border_color, 0.3);
 
   h2{
     position: relative !important;
     display: block !important;
     border-bottom: 2px solid;
-    border-bottom-color: #003e7a;
+    border-bottom-color: $color_main;
   }
   .block_buttons{
     display: inline-block;
   }
 
   .groups_tags{
-    background-color: rgb(243, 243, 243);
+    background-color: $block_groups_background;
     min-height: 28px;
     font-size: 12px !important;
 
     .title label{
-      color: #000;
+      color: $color_black;
     }
   }
 }
@@ -76,7 +76,7 @@ div.block_module, div.block_exam{
   font-variant: small-caps;
   height: 26px;
   border-bottom: 2px solid;
-  border-bottom-color: $color_main_text;
+  border-bottom-color: $color_main;
 }
 
 .mysolar_header img {
@@ -95,7 +95,7 @@ div.block_module, div.block_exam{
   margin: 0;
   font-size: 12pt;
   font-weight: normal;
-  color: #000;
+  color: $color_black;
 }
 
 /**
@@ -153,18 +153,18 @@ div.legend h1 {
     border: none;
     font-size: 9pt;
     padding: 4px 0 0 4px;
-    color: #666666;
+    color: $color_almost_gray;
     position: absolute;
     right: 0;
     bottom: 5px;
   }
   > .block_content_text:hover, > .block_content_text:hover select {
-    color: #000000;
+    color: $color_black;
   }
   select {
     font-size: 9pt;
     border: none;
-    color: #666666;
+    color: $color_almost_gray;
     max-width: 145px;
   }
 }
@@ -179,7 +179,7 @@ div.legend h1 {
 
 div.block_title {
   border-bottom: 2px solid;
-  border-bottom-color: $color_main_text;
+  border-bottom-color: $color_main;
   padding-bottom: 1px !important;
   position: relative;
   overflow: hidden; // FIXME: em outro local estava definido como auto, verificar se está ok assim
@@ -241,7 +241,7 @@ div.block_title {
   > block_left {
     width: 369px;
     border-right: 1px solid;
-    border-right-color: #d0d0d0; /* adicionando a borda divisoria */
+    border-right-color: $border_color; /* adicionando a borda divisoria */
   }
   > block_right {
     padding: 6px 10px 6px 8px; /* ajustando o espaçamento do bloco direito */
@@ -267,7 +267,7 @@ div.block_title {
 .block_content_line {
   /*    font-size: 10pt;*/
   border-bottom: 1px solid;
-  border-bottom-color: #CCCCCC;
+  border-bottom-color: $block_content_color;
   padding: 6px 10px;
 }
 
@@ -278,13 +278,13 @@ div.block_title {
 .block_content_gray {
   font-size: 8pt;
   padding-right: 5px;
-  color: #999;
+  color: $color_black;
 }
 
 .block_content_text, .block_content_toolbar.block_content_text {
   /*    font-size: 10pt;*/
   padding: 6px 10px;
-  color: #000;
+  color: $color_black;
 }
 
 .block_title_button img {
@@ -292,21 +292,21 @@ div.block_title {
 }
 
 .block_messages_opt {
-  color: #d0d0d0;
+  color: $border_color;
   background-color: $color_main_light;
 }
 
 .bibliography_volume, .bibliography_publication_year{
-  
+
 }
 
 /**
 * Barra de ferramentas
 */
 .block_content_toolbar {
-  background-color: rgb(232, 239, 246);
+  background-color: $block_content_toolbar_background;
   border-bottom: 1px solid;
-  border-bottom-color: rgba(0, 62, 122, 0.3);
+  border-bottom-color: rgba($block_border_color, 0.3);
   padding: 2px;
 
   img {
@@ -377,8 +377,8 @@ form .right_buttons {
   position: relative;
   right: 8px;
   bottom: 3px;
-  color: white;
-  background-color: #003E7A;
+  color: $color_white;
+  background-color: $color_main;
   border-radius: 4px;
   padding: 0px 2px;
   font-family: bold;
@@ -392,7 +392,7 @@ a.disabled {
 /*Steps*/
 
 #steps {
-  background-color: darken(#F5F5F5, 5%);
+  background-color: darken($steps_background, 5%);
   width: 525px;
   margin: 0 auto;
   padding: 0;
@@ -410,13 +410,13 @@ a.disabled {
       text-align: center;
       font-family: Ubuntu;
       font-size: 12px;
-      color:#919191;
+      color: $steps_list_color;
     }
     li.active{
-      color:#004B81;
-      background-color: white;
+      color: $steps_list_active_color;
+      background-color: $color_white;
       border-radius: 5px;
-      box-shadow: 0px 0px 4px rgba(240, 207, 101, 1);
+      box-shadow: 0px 0px 4px $steps_list_box_shadow;
     }
   }
   .dot {
@@ -432,7 +432,7 @@ a.disabled {
   }
 
   .dot.done {
-    background: image-url('done.png') no-repeat; 
+    background: image-url('done.png') no-repeat;
   }
 }
 

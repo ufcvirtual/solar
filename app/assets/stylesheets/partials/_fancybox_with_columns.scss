@@ -2,9 +2,9 @@
   .block_content{
     max-height: 350px;
     overflow: auto;
-    background-color: white;
+    background-color: $color_white;
   }
-  
+
   table{
     margin-bottom: 50px;
   }
@@ -24,7 +24,7 @@
     float: left;
     margin-left: 40px;
     td i{
-      color: #DC5869;
+      color: $remove_file_color;
     }
   }
 
@@ -46,7 +46,7 @@
 
   .first_column{
     width: 46%;
-    float: left; 
+    float: left;
   }
 
   .first_column.of_three{
@@ -64,7 +64,7 @@
       word-wrap: break-word;
       padding: 5px;
       background-color: $color_main_light;
-      border: 1px solid #CBCED1;
+      border: 1px solid $label_border_color;
       cursor: pointer;
       .buttons{
         float: right;
@@ -76,7 +76,7 @@
           line-height: 0.9;
         }
         .cant_remove{
-          color: #C0C0C0;
+          color: $complete_border_left_color;
         }
       }
       form{
@@ -93,20 +93,20 @@
       }
     }
     .selected{
-      background-color: #FDFBE9;
-      border: 1px solid #F9E993; 
+      background-color: $label_selected_background;
+      border: 1px solid $label_selected_border_color;
     }
     .disabled{
-      background-color: #F7F7F7;
-      border: 1px solid #dcdcdc;
-      color: #434343;
+      background-color: $label_disabled_background;
+      border: 1px solid $label_disabled_border_color;
+      color: $label_disabled_color;
       font-family: Ubuntu;
       font-size: 13px;
     }
     .disabled.selected{
-      background-color: #F0F0F0;
+      background-color: $label_disabled_selected_background;
     }
-  }  
+  }
 
   .text_none.empty_message{
     text-align: center;
