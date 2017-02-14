@@ -1,6 +1,6 @@
 .exam_pre
   .title
-    #name= @exam.name
+    %h1#name= @exam.name
     #description= raw @exam.description
 
   %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
@@ -46,23 +46,28 @@
       closeBtn : !#{@exam.uninterrupted},
       height: 'auto',
       maxHeight: '70%',
-      afterShow: function() {
+      dont_focus_back: true,
+      element_selector: 'tr.question',
+      complementary_after_show: function() {
         if (!#{@exam.uninterrupted})
           window.onbeforeunload = function () {}
-
-        $('.fancybox-inner').attr("tabindex", "0");
-        $('.fancybox-inner').focus();
       },
-      beforeClose: function() {
+      complementary_before_close: function() {
         if(typeof(array_time) != 'undefined')
           stop_save_chronometer(duration);
         if (#{@exam.uninterrupted}) {
           var resp = window.confirm("#{I18n.t('exams.open.refresh')}");
-          if (resp)
+          if (resp){
+            location.hash = 'reload';
             location.reload();
-          else {return resp }
+          }
+          else
+            return resp;
         }
-        else{ location.reload(); }
+        else{ 
+          location.hash = 'reload';
+          location.reload();
+        }
       }
     });
 

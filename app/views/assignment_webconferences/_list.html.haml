@@ -14,7 +14,7 @@
         %th.date_column.center= t('.period')
         %th.aw_status= t('.status')
         %th.aw_record= t('.record')
-        %th.aw_final= raw t('.final')
+        %th.aw_final{:'aria-label' => t('.final2') + t('fancybox.open')}= raw t('.final')
         - if @own_assignment
           %th.no_sort.options
           %th.no_sort.options
@@ -34,12 +34,7 @@
 
 :javascript
   $(function(){
-    $('#final_version_explain').fancybox({
-      'maxWidth': '700px',
-      helpers: {
-        overlay: {
-          locked: false
-        }
-      }
+    $('#final_version_explain').call_fancybox({
+      'maxWidth': '700px'
     });
   });

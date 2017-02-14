@@ -1918,6 +1918,8 @@ pt_BR:
     files:
       title: Arquivos da atividade
       download: Baixar zip
+      name: Nome
+      size: Tamanho
   assignment_files:
     list:
       title_group: Arquivos enviados pelo grupo
@@ -4059,6 +4061,8 @@ pt_BR:
 
   fancybox:
     close: Fechar janela modal para 
-    begin: Início da janela modal
-    end: Fim da janela modal
+    begin: Início da janela modal para 
+    begin_automatically: Início da janela modal aberta automaticamente para 
+    end: Fim da janela modal para 
+    click_to_close: (clique para fechar)
     open: (Abrirá janela modal)

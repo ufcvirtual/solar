@@ -183,18 +183,21 @@
 
 
 :javascript
-  $(document.body).on('change','select',function(){
-    change();
-  });
-
-  $('input[type="radio"]').click(function(){
-    $("input[type='checkbox']:checked").each(function(){
-      $(this).prop('checked', false);
+  $(function(){
+    $(document.body).on('change','select',function(){
+      change();
     });
 
-    $("input[type='checkbox']#"+$(this).prop('class').replace('radio_', '')).prop('checked', true);
-    change();
+    $('input[type="radio"]').click(function(){
+      $("input[type='checkbox']:checked").each(function(){
+        $(this).prop('checked', false);
+      });
+
+      $("input[type='checkbox']#"+$(this).prop('class').replace('radio_', '')).prop('checked', true);
+      change();
+    });
   });
+
 
   function change(){
     if("#{@disabled}" != 'true')

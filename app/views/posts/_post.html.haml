@@ -54,15 +54,15 @@
           .btn-group
             %ul
               - if @can_evaluate && (post.profile.types & Profile_Type_Student) > 0
-                %li= link_to content_tag(:i, nil, class: 'icon-write'), user_discussion_posts_path(post.discussion.id, post.user_id), class: 'btn to_evaluate_post', :'data-tooltip'=> t('.to_evaluate')
+                %li= link_to content_tag(:i, nil, class: 'icon-write'), user_discussion_posts_path(post.discussion.id, post.user_id), class: 'btn to_evaluate_post', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate') + t('fancybox.open')
               - if can_interact
                 - if editable
-                  %li= link_to content_tag(:i, nil, class: 'icon-paperclip'), new_post_post_file_path(post), class: 'btn forum_button_attachment', :'data-tooltip'=> t('.attach_file'), :'aria-label'=> t('.attach_file')
+                  %li= link_to content_tag(:i, nil, class: 'icon-paperclip'), new_post_post_file_path(post), class: 'btn forum_button_attachment', :'data-tooltip'=> t('.attach_file'), :'aria-label'=> t('.attach_file') + t('fancybox.open')
                   - path = discussion_post_path(post.discussion, post)
                   %li= link_to_function content_tag(:i, nil, class: 'icon-trash'), 'delete_post(this)', class: 'btn btn_caution', :'data-url' => path, :'data-post' => post.id, :'data-tooltip'=> t('.remove'), :'aria-label'=> t('.remove')
                   %li= link_to_function content_tag(:i, nil, class: 'icon-edit'), "update_post(this, #{post.id}, #{post.parent_id || 0})", class: 'btn update_post', :'data-tooltip'=> t('.edit'), :'aria-label'=> t('.edit')
                 - if post.can_be_answered? && can_post
-                  = link_to_function content_tag(:i, nil, class: 'icon-reply'), "new_post(this, #{post.id});", class: 'btn response_post', level: post.level, :'data-tooltip'=> t('.answer'), :'aria-label'=> t('.answer')
+                  %li= link_to_function content_tag(:i, nil, class: 'icon-reply'), "new_post(this, #{post.id});", class: 'btn response_post', level: post.level, :'data-tooltip'=> t('.answer'), :'aria-label'=> t('.answer')
               - else
                 %li= button_tag content_tag(:i, nil, class: 'icon-paperclip'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.attach_file'), :'aria-label'=> t('.attach_file')
                 %li= button_tag content_tag(:i, nil, class: 'icon-trash'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.remove'), :'aria-label'=> t('.remove')
@@ -81,6 +81,7 @@
       add_post_count_warning();
     });
   });
+  
   $(".to_evaluate_post").call_fancybox({
     minWidth: '50%',
     minHeight: '50%',

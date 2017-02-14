@@ -1,6 +1,6 @@
 #exam_topbar
   #title
-    = @exam.name
+    %h2= @exam.name
     - if @disabled
       - link = open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: @situation, pdf: 1, :format => "pdf", exam_user_attempt_id: @exam_user_attempt_id)
       = link_to  content_tag(:i, nil, class: 'icon-printer'), link, id: 'open-exam', :target => "_blank", class: 'ico-e'

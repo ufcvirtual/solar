@@ -3,6 +3,7 @@
     var link_id = parseInt($('[id^=post_file_attachment]').last().attr('link_id')) + 1;
     var element_html = '<input id="post_file_attachment' + link_id + '" link_id="' + link_id + '" name="post_file[attachment' + link_id + ']" type="file">';
     $(target).before(element_html);
+    focus_element(element_html);
   }
 
 %h1#lightBoxDialogTitle= t("posts.index.attach_file_title")

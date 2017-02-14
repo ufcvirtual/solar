@@ -62,11 +62,9 @@
     var websocket_port = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["port"]}"
 
     $(".forum_button_attachment").call_fancybox({
-      afterShow: function(){
-        $('#focu').attr("tabindex", "0");
-        $('#focu').focus();
-      }
+      element_selector: '#focu'
     });
+    
     var display_list = ("#{escape_once(@display_mode) == 'list'}" == "true");
     var ac = "#{@academic_allocation_id}";
 

@@ -45,13 +45,8 @@
  */
 
 $(function() {
-  $("#change_picture").fancybox({
-    maxWidth  : 500,
-    helpers: {
-      overlay: {
-        locked: false
-      }
-    }
+  $("#change_picture").call_fancybox({
+    maxWidth  : 500
   });
 
   $("body").click(function(e) {
@@ -70,7 +65,7 @@ $(function() {
     }
   });
 
-  $('a').not('.ignore_keydown').on('keypress, keydown', function(e){
+  $('a').not('.ignore_keydown').on('keypress', function(e){
     if (e.which == 13){
       $(this).click();
     }

@@ -10,8 +10,8 @@
     %table.tb_list
       %thead
         %tr.lines
-          %th= t(:name, scope: [:assignment, :files])
-          %th{align: "right", style: "width: 30px;"}= t(:size, scope: [:assignment, :files])
+          %th= t('.name')
+          %th{align: "right", style: "width: 30px;"}= t('.size')
       %tbody
         - files.each do |file|
           %tr.lines

@@ -1,34 +1,7 @@
 $(function(){ 
 
   $('[id^="enrollment_info"]').call_fancybox({
-    afterShow: function(){
-              $('#lightBoxDialogTitle').attr("tabindex", "0");
-              $('#lightBoxDialogTitle').focus();
-            },
-    afterClose: function(){
-      $('.enrollment_list').attr("tabindex", "0");
-      $(".enrollment_list").focus();
-    }
-  });
-
-  var flag = false;
-
-  $('body').on('keyup', function(e) {
-      var code = e.keyCode || e.which;
-      if (code == '9') {
-
-        if(flag){
-          $('#lightBoxDialogTitle').focus();
-          flag = false;
-        }
-
-        if($(':focus').hasClass("fancybox-close")){
-          flag = true;
-        }
-        else{
-          flag = false;
-        }
-      }
+    element_selector_back: '.enrollment_list h2'
   });
 
   // requests

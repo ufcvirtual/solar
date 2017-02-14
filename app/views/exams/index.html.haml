@@ -118,48 +118,14 @@
     $(".link_pre_exam").call_fancybox({
       minWidth: '50%',
       closeBtn : true,
-      height: 'auto',
-      afterShow: function(){
-        $('.fancybox-inner').attr("tabindex", "0");
-        $('.fancybox-inner').focus();
-      },
-      afterClose: function(){
-        $(".link_pre_exam").focus();
-      }
+      height: 'auto'
     });
 
     $(".open-exam-result").call_fancybox({
       minWidth: '50%',
       minHeight: '50%',
       height: 'auto',
-      closeBtn : true,
-      afterShow: function(){
-        $('.fancybox-inner').attr("tabindex", "0");
-        $('.fancybox-inner').focus();
-      },
-      afterClose: function(){
-        $(".open-exam-result").focus();
-      }
-    });
-
-    var flag = false;
-
-    $('body').on('keyup',function(e) {
-        var code = e.keyCode || e.which;
-        if (code == '9') {
-
-          if(flag){
-            $('.fancybox-inner').focus();
-            flag = false;
-          }
-
-          if($(':focus').hasClass("fancybox-close")){
-            flag = true;
-          }
-          else{
-            flag = false;
-          }
-        }
+      closeBtn : true
     });
 
     $(".description_more").click(function(){
@@ -173,6 +139,9 @@
       $(".description_complete, .description_less", $(this).parent().parent()).css("display", "none");
       return false;
     });
+
+    if(location.hash == "#reload")
+      focus_element('.list_exams .block_title h2');
 
   });
 

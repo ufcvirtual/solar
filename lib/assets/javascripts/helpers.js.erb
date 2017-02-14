@@ -43,18 +43,22 @@ function flash_message(msg, css_class, div_to_show, onclick_function) {
     div_to_show = $(".flash_message_wrapper");
     if(!div_to_show.parents('.undefined-sticky-wrapper').length())
       div_to_show.height($("#flash_message").height() + 20);
-  }
+}
 
   erase_flash_messages();
 
   if(typeof msg != 'undefined'){
     if (typeof onclick_function != "undefined")
       var onclick_function = onclick_function + "()";
-    var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span>' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages()" href="#"><i class="icon-cross"></i></a></span></div>';
+    var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span>' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages()" href="#" aria-hidden="true"><i class="icon-cross" aria-hidden="true"></i></a></span></div>';
     div_to_show.prepend($(html));
     $("#flash_message").closest(".sticky-wrapper").css("height","40px").css("width", "auto");
     $("#flash_message").effect("highlight","slow");
+    
+    // $('#flash_message').prop('tabindex', 0);
+    // $('#flash_message').focus();
   }
+
 }
 
 function erase_flash_messages() {
@@ -128,6 +132,7 @@ $.fn.call_fancybox = function (options) {
 
   $(this).addClass("fancybox.ajax");
 
+
   /**
   * live: false
   *   é necessário para que, ao abrir um fancybox x vezes em uma determinada página, não sejam realizados x+1 requests a cada nova chamada
@@ -135,7 +140,57 @@ $.fn.call_fancybox = function (options) {
   *   como janela modal, o usuário só vai poder fechar o fancybox ao clicar no botão de "cancelar"
   **/
 
-  $.extend( options, { live: false, modal: false, helpers: { overlay: { locked: false, closeClick: false }, autoDimensions: true, width: '100px' } } );
+  $.extend( options, 
+    { 
+      live: false, 
+      modal: false, 
+      helpers: { 
+        overlay: { 
+          locked: false, 
+          closeClick: false
+        }, 
+        autoDimensions: true, 
+        width: '100px' 
+      },
+      afterShow:  function(event){
+        add_description_to_close_fancybox_btn();
+        if(options.element_selector != undefined)
+          focus_on_fancybox_element(options.element_selector, options.automatically);
+        else
+          focus_on_fancybox_element(undefined, options.automatically);
+        remove_focus_from_back();
+        if(typeof(options.complementary_after_show) == "function")
+          options.complementary_after_show();
+      },
+      beforeClose: function(event){
+        if(typeof(options.complementary_before_close) == "function")
+          options.complementary_before_close();
+      },
+      afterClose:  function(event){
+        if(typeof(options.complementary_after_close) == "function")
+          options.complementary_after_close();
+
+        if(options.dont_focus_back == undefined || !!$('.fancybox-wrap').length){
+          give_focus_to_back();
+          if(!!event.element.is(":visible")){
+            if(options.element_selector_back != undefined){
+              focus_on_fancybox_element(options.element_selector_back);
+            }else{
+              event.element.prop('tabindex', 0);
+              event.element.focus();
+            }
+          }else{
+            var parent = event.element.parents('.dropdown');
+            if(!!parent.length){
+              $('[data-dropdown = "#'+$(parent).prop('id')+'"]:first').click();
+              event.element.prop('tabindex', 0);
+              event.element.focus();
+            }
+          }
+        }
+      }
+    }
+  );
 
   if (typeof(options.open) != "undefined") // abrir na chamada
     $.fancybox.open($(this), options);
@@ -143,6 +198,47 @@ $.fn.call_fancybox = function (options) {
     $(this).fancybox(options);
 
   return false;
+}
+
+function add_description_to_close_fancybox_btn(){
+  var close_txt = ("<%=I18n.t('fancybox.close')%>" + $('.fancybox-inner h2, .fancybox-inner h1').first().text());
+  $("a.fancybox-close").prop("title", close_txt);
+  $("a.fancybox-close").prop("aria-label", close_txt);
+}
+
+function focus_on_fancybox_element(selector, automatically){
+  var fancybox_txt = $('.fancybox-inner h2, .fancybox-inner h1').first().text();
+  if(automatically == undefined)
+    $('.fancybox-wrap').prepend("<a href='#' id='fancybox-begin' class='visuallyhidden'><%=I18n.t('fancybox.begin')%>"+fancybox_txt+"</a>");
+  else
+    $('.fancybox-wrap').prepend("<a href='#' id='fancybox-begin' class='visuallyhidden'><%=I18n.t('fancybox.begin_automatically')%>"+fancybox_txt+"</a>");
+
+  $('.fancybox-wrap').append("<a href='#' id='fancybox-end' onclick='$.fancybox.close()' class='visuallyhidden'><%=I18n.t('fancybox.end')%>"+fancybox_txt+"<%=I18n.t('fancybox.click_to_close')%></div>");
+
+  if(selector == undefined)
+    var element = $('#fancybox-begin');
+  else
+    var element = $(selector);
+
+  element.prop('tabindex', '0');
+  element.focus();
+}
+
+function remove_focus_from_back(){
+  $('*').not('.fancybox-wrap *').each(function(){
+    $(this).prop('tabindex', -1);
+  });
+}
+
+function give_focus_to_back(){
+  $('*').not('.fancybox-wrap *').each(function(){
+    $(this).removeAttr('tabindex');
+  });
+}
+
+function focus_element(element){
+  $(element).prop('tabindex', 0);
+  $(element).focus();
 }
 
 // Catch the click of a link to undo action in a flash_message

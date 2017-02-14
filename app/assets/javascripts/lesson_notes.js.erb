@@ -20,7 +20,7 @@ function cancel_note(icon){
     else{
       note.fadeOut('slow', function() { 
         $(this).remove(); 
-        // focus_on_fancybox_header();
+        focus_on_fancybox_element('.fancybox-wrap h2');
       });
 
     }

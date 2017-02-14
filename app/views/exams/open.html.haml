@@ -10,75 +10,56 @@
 = javascript_include_tag 'exams'
 
 :javascript
-  
-  $.fancybox.update();
 
-  if("#{@disabled}"=="false"){
-    window.onbeforeunload = function () {
-      return "#{I18n.t('exams.open.refresh')}";
+  jQuery(function($){
+
+    $.fancybox.update();
+
+    if("#{@disabled}"=="false"){
+      window.onbeforeunload = function () {
+        return "#{I18n.t('exams.open.refresh')}";
+      }
     }
-  }
 
-  $('.content_exam').html("#{escape_javascript( render 'exams/open/content', { preview: @preview } )}");
+    $('.content_exam').html("#{escape_javascript( render 'exams/open/content', { preview: @preview } )}");
 
-  init_chronometer(#{@exam_questions.current_page}, #{@exam.number_questions});
+    init_chronometer(#{@exam_questions.current_page}, #{@exam.number_questions});
 
-  $(".content_exam").unbind('click').on("click", ".pagination a",
-    function(){
-    stop_save_chronometer(#{@exam_responses.try(:duration)});
-    var url = this.href;
-    $('.content_exam').load(url);
-    return false;
-  });
+    $(".content_exam").unbind('click').on("click", ".pagination a",
+      function(){
+      stop_save_chronometer(#{@exam_responses.try(:duration)});
+      var url = this.href;
+      $('.content_exam').load(url, function(){
+        $('.content_exam').ready(function(){
+          focus_on_fancybox_element('tr.question');
+        });
+      });
+      return false;
+    });
 
-  $(".link_open_exam").call_fancybox({
-    minWidth: '50%',
-    minheigth: '50%',
-    closeBtn : true,
-    height: 'auto',
-    maxHeight: '70%',
-    afterShow: function(){
-        $('.fancybox-opened').attr("tabindex", "0");
-        $('.fancybox-opened').focus();
-        console.log("teste");
-      },
-      afterClose: function(){
-        $(".link_pre_exam").focus();
-      }
-  });
+    $(".link_open_exam").call_fancybox({
+      minWidth: '50%',
+      minheigth: '50%',
+      closeBtn : true,
+      height: 'auto',
+      maxHeight: '70%',
+      dont_focus_back: true,
+      element_selector: 'tr.question'
+    });
 
-  var flag = false;
-
-    $('body').on('keyup',function(e) {
-        var code = e.keyCode || e.which;
-        if (code == '9') {
-
-          if(flag){
-            $('.fancybox-opened').focus();
-            flag = false;
-          }
-
-          if($(':focus').hasClass("fancybox-close")){
-            flag = true;
-          }
-          else{
-            flag = false;
-          }
+    if("#{@preview}"!="true"){
+      $('#finish_button').unbind('click').click( function(){
+        response = confirm("#{I18n.t('exams.finish.confirm')}");
+        if (response) {
+            finish_exam(#{@exam_responses.try(:duration)});
+            $.get("#{complete_exam_path}", {id: "#{@exam.id}"}, function(data){
+              flash_message(data.notice, 'notice');
+            });
+            $.fancybox.close();
         }
-    });
+      });
+    }
 
-  if("#{@preview}"!="true"){
-    $('#finish_button').unbind('click').click( function(){
-      response = confirm("#{I18n.t('exams.finish.confirm')}");
-      if (response) {
-          finish_exam(#{@exam_responses.try(:duration)});
-          $.get("#{complete_exam_path}", {id: "#{@exam.id}"}, function(data){
-            flash_message(data.notice, 'notice');
-          });
-          $.fancybox.close();
-      }
-    });
-  }
-
-  load_components(#{@exam_questions.current_page});
-  
+    load_components(#{@exam_questions.current_page});
+    
+  });

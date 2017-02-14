@@ -19,30 +19,5 @@
 :javascript
 
   $(function(){
-     $('.link_content, .history').call_fancybox({
-      afterShow: function(){
-        $('#lightBoxDialogTitle').attr("tabindex", "0");
-        $('#lightBoxDialogTitle').focus();
-      }
-    });
-
-    var flag = false;
-
-    $('body').on('keyup',function(e) {
-        var code = e.keyCode || e.which;
-        if (code == '9') {
-
-          if(flag){
-            $('#lightBoxDialogTitle').focus();
-            flag = false;
-          }
-
-          if($(':focus').hasClass("fancybox-close")){
-            flag = true;
-          }
-          else{
-            flag = false;
-          }
-        }
-    });
+    $('.link_content, .history').call_fancybox();
   });

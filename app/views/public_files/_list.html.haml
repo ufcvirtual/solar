@@ -26,5 +26,7 @@
 
 :javascript
   $(function(){
-    $("#new_public_file").call_fancybox();
+    $("#new_public_file").call_fancybox({
+      element_selector: '#public_file_attachment'
+    });
   });

@@ -34,7 +34,7 @@
         = link_to_if can_change, (content_tag(:i, nil, class: 'icon-edit')), edit_polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids, calendar: true), class: 'btn edit_event', :'data-tooltip' => t('.edit'), id: @event.id do
           = button_tag (content_tag(:i, nil, class: 'icon-edit')), class: 'btn disabled', :'data-tooltip' => t(".cant_change")
       - if can? :show, @model_name, on: @allocation_tags_ids
-        = link_to content_tag(:i, nil, class: 'icon-eye', :'aria-hidden'=>'true'), polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), class: 'btn btn_main show_event', :'data-tooltip' => t('.details'), id: @event.id, :'aria-label'=> t('.details_about', name: @event.respond_to?(:name) ? @event.name : @event.title)
+        = link_to content_tag(:i, nil, class: 'icon-eye', :'aria-hidden'=>'true'), polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), class: 'btn btn_main show_event', :'data-tooltip' => t('.details'), id: @event.id, :'aria-label'=> t('.details_about', name: @event.respond_to?(:name) ? @event.name : @event.title) + t('fancybox.open')
       = link_to content_tag(:i, nil, class: 'icon-cross', :'aria-hidden'=>'true'), '#', class: 'btn close_dropdown', :'data-tooltip' => t(:close), id: @event.id, :'aria-label'=> t('.close_details_about', name: @event.respond_to?(:name) ? @event.name : @event.title), onclick: 'close_dropdown(this);'
           
 

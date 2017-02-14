@@ -1710,6 +1710,8 @@ en_US:
     files:
       title: Assignment's files
       download: Download zip
+      name: Name
+      size: Size
   assignment_files:
     list:
       title_group: Files sent by group
@@ -3820,6 +3822,8 @@ en_US:
 
   fancybox:
     close: Close modal window to 
-    begin: Modal window begin
-    end: Modal window end
+    begin: Modal window begin to 
+    begin_automatically: Automatically opened modal window begin to
+    end: Modal window end to 
+    click_to_close: (click to close)
     open: (Will open modal window)

@@ -152,7 +152,8 @@
       $('.questions_content:last').addClass('invisible');
     });
 
-    $('#search_questions').click(function(){
+    $('#search_questions').click(function(e){
+      e.preventDefault();    
       $.get($(this).data('url'), {
         search: {
           only_owner: $('#only_owner').prop('checked'),
