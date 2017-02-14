@@ -1892,6 +1892,15 @@ pt_BR:
       sent_on: Enviado em
       situation: Situação
       grade: Nota
+      more_enuc: "Mais informações sobre o enunciado da atividade %{assing}"
+      less_enuc: "Menos informações sobre o enunciado da atividade %{assing}"
+      summary: "Está tabela contém as seguintes informações: Descrição da atividade, período que poderá ser realizada, situação, se é avalitiva ou não, se é uma atividade que vale frequência ou não, nota, carga horária e comentários."
+      summary_info: "Está tabela contém as seguintes informações: Data de inicio e Fim sendo este o período que o aluno poderá enviar sua atividade, além da situação da atividade e nota caso tenha sido corrigida."
+      summary_descricao: "Está tabela contém uma descrição da atividade a ser realizada."
+      summary_files: "Está tabela contém os arquivos enviados pelo professor/tutor para download."
+      summary_comments: "Está tabela contém os comentários realizados acerca da atividade. Os comentários podem ter arquivos anexados."
+      summary_student_files: "Está tabela contém os arquivos enviado pelo aluno, com as seguintes informações: Nome, tamanho, data de envio e quem envio o arquivo além do tamanho do mesmo."
+      summary_web: "Está tabela contém as webconferências agendadas pelos alunos, com as seguintes informações: Nome, período, sitação, se foi gravada e finalizada."
     assignments:
       participants: Ver participantes
       groups: Ver grupos
@@ -1915,6 +1924,8 @@ pt_BR:
       begin: Início
       end: Fim
       at: ' ás '
+      date_begin: Data de início para envio da atividade
+      date_end: data final para envio da atividade
     files:
       title: Arquivos da atividade
       download: Baixar zip
@@ -2016,6 +2027,7 @@ pt_BR:
       size: Tamanho
       sent_on: Enviado em
       new: Novo arquivo público
+      summary: "Está tabela contém os arquivos publicos."
     new:
       title: Enviar novo arquivo público
     success:

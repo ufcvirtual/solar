@@ -313,7 +313,7 @@ function save_values_ckeditor(blank_message){
   }
 }
 
-function open_dropdown(link){
+function open_dropdown(link){ 
   $.get($(link).data('url'), function(data){
     $($(link).data('dropdown')).find('ul').html(data);
   });

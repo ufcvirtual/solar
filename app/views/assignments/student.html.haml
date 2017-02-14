@@ -13,7 +13,7 @@
             %li
               = participant.name
               - unless @class_participants.include? participant.id
-                %span{:"data-tooltip" => t('.moved_allocation')}= content_tag :i, nil, class: 'icon-warning moved_allocation' 
+                %span{:"data-tooltip" => t('.moved_allocation'), :'aria-label' => t(".moved_allocation")}= content_tag :i, nil, class: 'icon-warning moved_allocation' 
       - else
         = t(".no_participants")
   - else
@@ -29,7 +29,7 @@
       %i.icon-suitcase
       = @assignment.name
   .block_content
-    %table.tb_list
+    %table.tb_list{:summary=> t("assignments.list.summary_descricao")}
       %thead
         %tr.lines
           %th.no_sort=t('.description')
@@ -51,9 +51,12 @@
   = render partial: 'assignment_webconferences/list', locals: { webconferences: @acu.try(:assignment_webconferences) }
 
 .block_wrapper{ style: 'float:left' }
-  = link_to t(:back), :back, { class: "btn" }
+  = link_to t(:back), :back, { class: "btn", id: 'back'  }
 
 :javascript
+  $('#page_title').attr("tabindex", "0");
+  $('#page_title').focus();
+  
   function delete_file(button){
     $(button).nice_delete({
       parent: 'tr.lines'

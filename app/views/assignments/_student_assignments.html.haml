@@ -1,20 +1,20 @@
 - if assignments.any?
-  %table.tb_list
+  %table.tb_list{:summary=> t("assignments.list.summary")}
     %thead
       %tr.lines
-        %th.medium= t("assignments.list.description")
-        %th.center.date{style: "width: 22%;"}= t("assignments.list.date_range")
-        %th{align: "right", style: "width:11%"}= t("assignments.list.situation")
-        %th.center{style: "width: 8%;"}= t(:evaluative, scope: [:scores, :index])
-        %th.center{style: "width: 8%;"}= t(:frequency, scope: [:scores, :info])  
-        %th.center{style: "width: 8%;"}= t("assignments.list.grade")
-        %th.center{style: "width: 8%;"}= t(:workload, scope: [:scores, :info])
-        %th.center.no_sort{style: "width:80px"}= t("assignments.list.comments")
+        %th.medium{id: "description#{type}"}= t("assignments.list.description")
+        %th.center.date{style: "width: 22%;", id: "date_range#{type}"}= t("assignments.list.date_range")
+        %th{align: "right", style: "width:11%", id: "situation#{type}"}= t("assignments.list.situation")
+        %th.center{style: "width: 8%;", id: "evaluative#{type}"}= t(:evaluative, scope: [:scores, :index])
+        %th.center{style: "width: 8%;", id: "frequency#{type}"}= t(:frequency, scope: [:scores, :info])  
+        %th.center{style: "width: 8%;", id: "grade#{type}"}= t("assignments.list.grade")
+        %th.center{style: "width: 8%;", id: "workload#{type}"}= t(:workload, scope: [:scores, :info])
+        %th.center.no_sort{style: "width:80px", id: "comments#{type}"}= t("assignments.list.comments")
     %tbody
       - assignments.each do |assignment|
         - link    = student_assignment_path(assignment.academic_tool_id, student_id: assignment.user_id || current_user.id, group_id: assignment.group_id)
         %tr.lines
-          %td
+          %td{headers: "description#{type}" }
             %div
               - if assignment.situation == "without_group"
                 .title= assignment.name
@@ -25,8 +25,8 @@
                 .enunciation_slice= assignment.description.slice(0..150) << "..."
                 .enunciation_complete= assignment.description
                 .more_or_less
-                  %a.enunciation_more.link_content{href: "#"}= t("assignments.list.more")
-                  %a.enunciation_less.link_content{href: "#"}= t("assignments.list.less")
+                  %a.enunciation_more.link_content{href: "#", :'aria-label' => t("assignments.list.more_enuc", assing: assignment.name) }= t("assignments.list.more")
+                  %a.enunciation_less.link_content{href: "#", :'aria-label' => t("assignments.list.less_enuc", assing: assignment.name)}= t("assignments.list.less")
             - else
               = assignment.description
             .equivalent
@@ -39,28 +39,41 @@
                   %ul{ class: 'dropdown-menu' }
                     = raw t('scores.info.equivalent', name: assignment.eq_name)
               - else
-                %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{assignment.academic_tool_id}", :'data-url' => equalities_tools_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id), onclick: 'open_dropdown(this);' }
+                %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{assignment.academic_tool_id}", :'data-url' => equalities_tools_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id), onclick: 'open_dropdown(this);'}
                   %i.icon-flow-parallel
                   =t('scores.info.equalities')
                   %i.icon-arrow-down-triangle
                 .dropdown.dropdown-tip{id: "dropdown_eq_#{assignment.academic_tool_id}"}
                   %ul{ class: 'dropdown-menu' }
-          %td.center
+          %td.center{headers: "date_range#{type}" }
             %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
             %div= [(assignment.start_hour), (assignment.end_hour)].join(' - ') unless assignment.start_hour.blank?
 
-          %td.center
+          %td.center{headers: "situation#{type}"}
             - if assignment.situation == "without_group"
               %div{class: "assignment_#{assignment.situation}"}= t(assignment.situation.to_sym)
             - else
               = link_to t(assignment.situation.to_sym), link, class: "assignment_#{assignment.situation}"
-          %td.center= t(assignment.evaluative, scope: [:scores, :info])
-          %td.center= t(assignment.frequency, scope: [:scores, :info])
-          %td.center
+          %td.center{headers: "evaluative#{type}" }= t(assignment.evaluative, scope: [:scores, :info])
+          %td.center{headers: "frequency#{type}" }= t(assignment.frequency, scope: [:scores, :info])
+          %td.center{headers: "grade#{type}" }
             %span.activity_grade= assignment.grade || "-"
-          %td.center   
+          %td.center{headers: "workload#{type}" }   
             %span.activity_grade= assignment.working_hours || "-"  
-          %td.center= content_tag :i, nil, class: "icon-comment big #{assignment.count_all.to_i > 0 ? '' : 'empty'}"
+          %td.center{headers: "comments#{type}" }= content_tag :i, nil, class: "icon-comment big #{assignment.count_all.to_i > 0 ? '' : 'empty'}"
 
 - else
   .text_none.empty_message= t(:itens_not_found)
+
+:javascript
+
+  $(function(){
+    $(".enunciation_more").click(function(){
+      $('.enunciation_complete').attr("tabindex", "0");
+      $('.enunciation_complete').focus();
+    }):
+    $(".enunciation_less").click(function(){
+      $('.enunciation_slice').attr("tabindex", "0");
+      $('.enunciation_slice').focus();
+    });
+  });  

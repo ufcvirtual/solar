@@ -1,25 +1,26 @@
 .block_title
   %h2
     %i.icon-suitcase
-    = (@assignment.type_assignment == Assignment_Type_Group ? t('.title_group') : t('.title_student'))
+    - title =(@assignment.type_assignment == Assignment_Type_Group ? t('.title_group') : t('.title_student'))
+    = title
   .right_buttons
     - unless files.blank?
-      = link_to content_tag(:i, nil, class: 'icon-install'), zip_download_assignment_files_path(assignment_id: @assignment.id, student_id: @student_id, group_id: @group_id), class: 'btn', :"data-tooltip" => t('.download')
+      = link_to content_tag(:i, nil, class: 'icon-install'), zip_download_assignment_files_path(assignment_id: @assignment.id, student_id: @student_id, group_id: @group_id), class: 'btn', :"data-tooltip" => t('.download'), :'aria-label' => t(".download")+ title
     - if @own_assignment
-      = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_file(this)', class: "btn btn_main #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.send')
+      = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_file(this)', class: "btn btn_main #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.send'), :'aria-label' => t(".send")
 .block_content
   - no_files = (files.blank?)
-  %table.tb_list
-    %thead{ style: (no_files ? 'display: none' : '') }
+  %table.tb_list{ style: (no_files ? 'display: none' : ''), :summary=> t("assignments.list.summary_student_files") }
+    %thead
       %tr.lines
-        %th= t('.name')
-        %th{ align: 'right', style: 'width: 80px' }= t('.size')
-        %th.date_column.center= t('.sent_on')
-        %th.date_column.center= t('.sent_by')
+        %th{id: "name_file"}= t('.name')
+        %th{ align: 'right', style: 'width: 80px', id: "size_file" }= t('.size')
+        %th.date_column.center{id: "sent_on_file" }= t('.sent_on')
+        %th.date_column.center{id: "sent_by_file" }= t('.sent_by')
         - if @own_assignment
-          %th.no_sort
-    %tbody
-      - unless no_files
+          %th.no_sort{id: "delete_file" }
+    - unless no_files
+      %tbody
         - files.each do |file|
           = render partial: 'assignment_files/file', locals: { file: file }
   .text_none.empty_message{ class: (no_files ? '' : 'hide_message') }= t(:itens_not_found)

@@ -5,7 +5,7 @@
       = t('.title')
     - if can? :create, AssignmentComment, on: [@allocation_tag_id]
       %span.right_buttons
-        = button_tag content_tag(:i, nil, class: 'icon-plus'), class: "btn btn_main #{@in_time ? '' : 'disabled'}", id: 'new_comment', disabled: !@in_time, :"data-tooltip" => t('.new')
+        = button_tag content_tag(:i, nil, class: 'icon-plus'), class: "btn btn_main #{@in_time ? '' : 'disabled'}", id: 'new_comment', disabled: !@in_time, :"data-tooltip" => t('.new'), :'aria-label' => t(".new")
   .assignment_comment_wrapper
     .comment_form
     .comments_list

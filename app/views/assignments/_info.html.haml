@@ -1,29 +1,29 @@
 - info = @assignment.info(@student_id, @allocation_tag_id, @group_id)
 = simple_form_for :academic_allocation_user, url: evaluate_assignment_path(@assignment), html: { method: :put } do |f|
-  %table.tb_list
+  %table.tb_list{:summary=> t("assignments.list.summary_info")}
     %thead
       %tr.lines{ style: 'border-top: 1px solid #c0c0c0;' }
-        %th.center.date_column.no_sort= t('.begin')
-        %th.center.date_column.no_sort= t('.end')
-        %th.center.no_sort{ style: 'width:20%' }= t('.situation')
-        %th.center.no_sort{ style: 'width:15%' }= t('.grade')
+        %th.center.date_column.no_sort{id: "begin", :'aria-label' => t(".date_begin")}= t('.begin')
+        %th.center.date_column.no_sort{id: "end", :'aria-label' => t(".date_end")}= t('.end')
+        %th.center.no_sort{ style: 'width:20%', id: "situation" }= t('.situation')
+        %th.center.no_sort{ style: 'width:15%', id: "grade" }= t('.grade')
         - if @ac.frequency
-          %th.center.no_sort{ style: 'width:15%' }= t('.working_hours')
+          %th.center.no_sort{ style: 'width:15%', id: "working_hours" }= t('.working_hours')
         - if @can_evaluate
-          %th.center.no_sort{ style: 'width:15%' }
+          %th.center.no_sort{ style: 'width:15%',id: "evaluate" }
     %tbody.info
       %tr.lines
         - if @assignment.start_hour.blank?
-          %td.center= l(@assignment.schedule.start_date, format: :normal) 
-          %td.center= l(@assignment.schedule.end_date, format: :normal)
+          %td.center{headers: "begin" }= l(@assignment.schedule.start_date, format: :normal) 
+          %td.center{headers: "end" }= l(@assignment.schedule.end_date, format: :normal)
         - else
-          %td.center= l(@assignment.schedule.start_date, format: :normal) + t(".at") + @assignment.start_hour
-          %td.center= l(@assignment.schedule.end_date, format: :normal) + t(".at") + @assignment.end_hour
+          %td.center{headers: "begin" }= l(@assignment.schedule.start_date, format: :normal) + t(".at") + @assignment.start_hour
+          %td.center{headers: "end" }= l(@assignment.schedule.end_date, format: :normal) + t(".at") + @assignment.end_hour
         
-        %td.center{:class => "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
+        %td.center{:class => "assignment_#{info[:situation]}", headers: "situation"}= t(info[:situation].to_sym)
         = f.input :user_id, as: :hidden, input_html: { value: @student_id }
         = f.input :group_id, as: :hidden, input_html: { value: @group_id }
-        %td.center.evaluation
+        %td.center.evaluation{headers: "grade" }
           .student_assignment_evaluation
             .text
               = @acu.try(:grade)
@@ -31,7 +31,7 @@
               .input.invisible
                 = f.input :grade, required: true, as: :float, step: 0.01, label: false, input_html: {  value: @acu.try(:grade), min:0, max:10, style: 'width: 50px' } 
         - if @ac.frequency
-          %td.center.frequency
+          %td.center.frequency{headers: "working_hours" }
             .student_assignment_evaluation
               .text
                 = @acu.try(:working_hours)
@@ -39,11 +39,11 @@
                 .input.invisible
                   = f.input :working_hours, required: true, as: :float, label: false, input_html: { style: 'width: 90px', value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) }
         - if @can_evaluate && @in_time
-          %td.center
-            .edit_button= link_to_function content_tag(:i, nil, class: 'icon-write'), 'edit_button(this)', class: "btn edit", :"data-tooltip" => t('.edit')
+          %td.center{headers: "evaluate" }
+            .edit_button= link_to_function content_tag(:i, nil, class: 'icon-write'), 'edit_button(this)', class: "btn edit", :"data-tooltip" => t('.edit'), :'aria-label' => t(".edit")
             .evaluation_buttons.invisible
-              = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), 'finish_evaluation(this)', class: 'btn btn_main', :"data-tooltip" => t('.save')
-              = link_to_function content_tag(:i, nil, class: 'icon-cross'), 'cancel_button(this)', class: "btn btn_caution cancel_evaluation", :"data-tooltip" => t('.cancel')
+              = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), 'finish_evaluation(this)', class: 'btn btn_main', :"data-tooltip" => t('.save'), :'aria-label' => t(".save")
+              = link_to_function content_tag(:i, nil, class: 'icon-cross'), 'cancel_button(this)', class: "btn btn_caution cancel_evaluation", :"data-tooltip" => t('.cancel'), :'aria-label' => t(".cancel")
 
 = javascript_include_tag "tooltip"
 

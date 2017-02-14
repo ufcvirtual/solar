@@ -2,11 +2,12 @@
 .block_content{style: "padding: 5px;"}
   = form_for @assignment_file do |f|
     = f.hidden_field :academic_allocation_user_id, value: @assignment_file.academic_allocation_user_id
-    = f.file_field :attachment
+    = f.file_field :attachment, id: "focu"
     .block_content_gray{style: "padding: 5px;"}
       %p=raw t(:send_file_obs)
       %p=raw t(:send_file_text)
     .right_buttons
+      = button_to_function t(:cancel), "jQuery.fancybox.close()", type: 'button', class: 'btn btn_caution', id: 'btn_cancel_post'
       = button_tag t(:save), class: "btn btn_main save_file", type: :button
 
 :javascript

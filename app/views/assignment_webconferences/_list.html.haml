@@ -4,21 +4,21 @@
     = (@assignment.type_assignment == Assignment_Type_Group ? t('.title_group') : t('.title_student'))
   .right_buttons
     - if @own_assignment
-      = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_awebconference(this)', :'data-url' => new_assignment_webconference_path(assignment_id: @assignment.id), class: "btn btn_main link_new_awebconference #{@in_time && @bbb_online ? '' : 'disabled'}", :"data-tooltip" => t('.new')
+      = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_awebconference(this)', :'data-url' => new_assignment_webconference_path(assignment_id: @assignment.id), class: "btn btn_main link_new_awebconference #{@in_time && @bbb_online ? '' : 'disabled'}", :"data-tooltip" => t('.new'), :'aria-label' => t(".new")
 .block_content
   - no_webconferences = (webconferences.blank?)
-  %table.tb_list
-    %thead{ style: (no_webconferences ? 'display: none' : '') }
+  %table.tb_list{style: (no_webconferences ? "display: none" : ""),:summary=> t("assignments.list.summary_web") }
+    %thead
       %tr.lines
-        %th= t('.name')
-        %th.date_column.center= t('.period')
-        %th.aw_status= t('.status')
-        %th.aw_record= t('.record')
-        %th.aw_final{:'aria-label' => t('.final2') + t('fancybox.open')}= raw t('.final')
+        %th{id: "name_web"}= t('.name')
+        %th.date_column.center{id: "period_web"}= t('.period')
+        %th.aw_status{id: "status_web"}= t('.status')
+        %th.aw_record{id: "record_web"}= t('.record')
+        %th.aw_final{id: "final_web", :'aria-label' => t('.final2') + t('fancybox.open')}= raw t('.final')
         - if @own_assignment
-          %th.no_sort.options
-          %th.no_sort.options
-          %th.no_sort.options
+          %th.no_sort.options{id: "edit_web"}
+          %th.no_sort.options{id: "record_link_web"}
+          %th.no_sort.options{id: "delete_web"}
     %tbody
       - unless no_webconferences
         - webconferences.each do |webconference|
