@@ -161,7 +161,7 @@ class ScoresController < ApplicationController
       @chat_rooms_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'chat_rooms', false, true)
       @chat_rooms_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'chat_rooms')
     when 'webconference'
-      @online = bbb_online?(bbb_prepare)
+      #@online = bbb_online?(bbb_prepare)
       @can_evaluate = can? :evaluate, Webconference, { on: @allocation_tag_id }
       @can_see_access = can? :list_access, Webconference, { on: @allocation_tag_id }
      

@@ -24,13 +24,13 @@ class AssignmentWebconferencesController < ApplicationController
     @assignment_webconference = AssignmentWebconference.new assignment_webconference_params
     erro = @assignment_webconference.assignment.releases_webconference?(@assignment_webconference.initial_time, @assignment_webconference.duration)
     @assignment_webconference.save!
-    
+
     render partial: 'webconference', locals: { webconference: @assignment_webconference }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue ActiveRecord::AssociationTypeMismatch
-      render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
-  rescue => erro 
+    render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
+  rescue => erro
     render_json_error(erro, 'assignments.error', 'not_range_webconference')    
   rescue => error
     if @assignment_webconference.errors.any?
@@ -143,16 +143,16 @@ class AssignmentWebconferencesController < ApplicationController
 
     def save_log(assignment_webconference)
       log = if params.include?(:recordID)
-        { description: "assignment_webconference: #{@assignment_webconference.id}  removing recording #{params[:recordID]} by user #{current_user.id}" }
+        { description: "assignment_webconference: #{assignment_webconference.id}  removing recording #{params[:recordID]} by user #{current_user.id}" }
       else
-        { description: "assignment_webconference: #{@assignment_webconference.id}  removing all recordings by user #{current_user.id}" }
+        { description: "assignment_webconference: #{assignment_webconference.id}  removing all recordings by user #{current_user.id}" }
       end
 
       LogAction.create({ log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: get_remote_ip, allocation_tag_id: assignment_webconference.allocation_tag.id, academic_allocation_id: assignment_webconference.academic_allocation.id }.merge!(log))
     end
 
     def assignment_webconference_params
-      params.require(:assignment_webconference).permit(:academic_allocation_user_id, :title, :initial_time, :duration, :is_recorded)
+      params.require(:assignment_webconference).permit(:academic_allocation_user_id, :title, :initial_time, :duration, :is_recorded, :server)
     end
 
 end

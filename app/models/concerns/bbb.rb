@@ -80,7 +80,9 @@ module Bbb
   end
 
   def cant_change_date
-    errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.date")) if (Time.now > (initial_time_was+duration_was.minutes))
+    if (initial_time_was && duration_was)
+      errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.date")) if (Time.now > (initial_time_was+duration_was.minutes))
+    end
   end
 
   def verify_time(allocation_tags_ids = [])
@@ -140,6 +142,33 @@ module Bbb
     end
   rescue
     false
+  end
+
+  def choose_server
+    @server, best_server = nil
+
+    (0..(count_servers-1)).to_a.shuffle.each do |sv| # Percorre os servers (aleatoriamente) que existem no .yml
+      api = Bbb.bbb_prepare(sv)
+      if (api && bbb_online?(api)) # Online?
+        next_server = verify_quantity_users_per_server(sv) # Quantidade de usuarios por server, naquela faixa de horario
+
+        if (next_server == 0 || next_server.nil?) #Encerra o loop se o server estiver vazio
+          @server = sv
+          break
+        end
+
+        if (best_server.nil? or (next_server < best_server)) # Continua a procura pelo menos sobrecarregado
+          best_server = next_server
+          @server = sv
+        end
+      end
+    end
+    self.server = @server
+    self.save! # BD
+  end
+
+  def exist_and_offline?(server)
+    ( !server.blank? && !bbb_online?(Bbb.bbb_prepare(server)) )
   end
 
   def bbb_all_recordings(api = nil)

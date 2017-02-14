@@ -125,7 +125,7 @@ class AssignmentsController < ApplicationController
       @acu = AcademicAllocationUser.find_one(@ac.id, @student_id, @group_id)
 
       @can_evaluate = can?(:evaluate, Assignment, on: [@allocation_tag_id] )
-      @bbb_online   = bbb_online?
+      #@bbb_online   = bbb_online?
     end
   end
 

@@ -132,24 +132,6 @@ class Webconference < ActiveRecord::Base
     end
   end
 
-  def choose_server
-    @server, best_server = nil
-
-    (0..(count_servers-1)).each do |sv| # Percorre os servers que existem no .yml
-      api = Bbb.bbb_prepare(sv)
-      if (api && bbb_online?(api)) # Online?
-        next_server = verify_quantity_users_per_server(sv) # Quantidade de usuarios por server, naquela faixa de horario
-
-        if (best_server.nil? or (next_server < best_server)) # Guarda se for menor que o atual
-          best_server = next_server
-          @server = sv
-        end
-      end
-    end
-    self.server = @server
-    self.save! # BD
-  end
-
   def have_permission?(user, at_id = nil)
     (student_or_responsible?(user.id, at_id) || 
       (

@@ -4,7 +4,8 @@
     = (@assignment.type_assignment == Assignment_Type_Group ? t('.title_group') : t('.title_student'))
   .right_buttons
     - if @own_assignment
-      = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_awebconference(this)', :'data-url' => new_assignment_webconference_path(assignment_id: @assignment.id), class: "btn btn_main link_new_awebconference #{@in_time && @bbb_online ? '' : 'disabled'}", :"data-tooltip" => t('.new'), :'aria-label' => t(".new")
+      //= link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_awebconference(this)', :'data-url' => new_assignment_webconference_path(assignment_id: @assignment.id), class: "btn btn_main link_new_awebconference #{@in_time && @bbb_online ? '' : 'disabled'}", :"data-tooltip" => t('.new'), :'aria-label' => t(".new")
+      = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_awebconference(this)', :'data-url' => new_assignment_webconference_path(assignment_id: @assignment.id), class: "btn btn_main link_new_awebconference #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.new'), :'aria-label' => t(".new")
 .block_content
   - no_webconferences = (webconferences.blank?)
   %table.tb_list{style: (no_webconferences ? "display: none" : ""),:summary=> t("assignments.list.summary_web") }
