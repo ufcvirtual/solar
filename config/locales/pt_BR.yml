@@ -642,6 +642,12 @@ pt_BR:
   expired: "Prazo encerrado"
   name: "Nome"
   size: "Tamanho"
+  information_access_website: "Portal de acesso a informação"
+  states_brazil_website: "Portal dos estados do brasil"
+  user_place_holder: "Digite seu login"
+  password_place_holder: "Digite sua senha"
+  cpf_place_holder: "Digite seu cpf"
+  solar_faq: "Assistência ao solar"
 
   #load_itens
   load_items: "Carregar mais itens"

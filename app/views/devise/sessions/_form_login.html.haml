@@ -1,12 +1,12 @@
 #screen-login
   %ul#login-header
-    %li#login-bt= link_to_function t(:sign_in), "open_login_tab()"
-    %li#register-bt.inactive= link_to_function t(:sign_up), "open_registration_tab()"
+    %li#login-bt= link_to_function t(:sign_in), "open_login_tab()", id: "login-tab"
+    %li#register-bt.inactive= link_to_function t(:sign_up), "open_registration_tab()", id: "register-tab"
 
   #login-form
     = form_for(resource_name) do |f|
-      .form-field= f.text_field :login, id: "login", placeholder: t(:user), tabindex: "1"
-      .form-field= f.password_field :password, id: "password", placeholder: t(:password), tabindex: "2"
+      .form-field= f.text_field :login, id: "login-input", placeholder: t(:user_place_holder), tabindex: "1"
+      .form-field= f.password_field :password, id: "password", placeholder: t(:password_place_holder), tabindex: "2"
       = f.submit t(:signin), id: "submit-login", tabindex: "3"
     #link
       %a#link-password{href: new_user_password_path}= t(:pwd_recovery_subtitle)
@@ -14,7 +14,7 @@
     = form_tag(verify_cpf_users_path, method: :get) do
       = hidden_field_tag :locale, params[:locale]
       .form-field
-        %input#cpf-register{name: "cpf", placeholder: "CPF", type: "text"}/
+        %input#cpf-register{name: "cpf", placeholder: t(:cpf_place_holder), type: "text"}/
       = submit_tag(t(:verify), id: "submit-cpf")
 
   .flash_message_wrapper
@@ -22,7 +22,7 @@
       - unless name == :timedout
         #flash_message{class: name}= content_tag :span, msg
 
-  = link_to image_tag("help-solar-grande.png"), "#faq", :class => 'panel-link'
+  = link_to image_tag("help-solar-grande.png", alt: t(:solar_faq)), "#faq", :class => 'panel-link', id: "faq-button"
 
 
   .fb-like
@@ -34,3 +34,21 @@
     $(".instructions").hide();
     $("#screen-login").removeClass("invisible");
   }
+
+  $("#login-tab").on('blur', function(){
+    $("#login-input").focus();
+  });
+
+  $("#submit-login").on('blur', function(){
+    $("#link-password").focus();
+  });
+
+  $("#link-password").on('blur', function(){
+    $("#register-tab").focus();
+  });
+
+  $("#register-tab").on('blur', function(){
+    if($("#register-tab").parent().hasClass("inactive")){
+      $("#faq-faq-button").focus();  
+    }
+  });

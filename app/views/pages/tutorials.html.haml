@@ -19,7 +19,7 @@
         = t('tutorials.titles.access')
       %span.block_actions
     .block_content
-      %table#assignments_list.tb_list
+      %table.tb_list
         %thead
           %tr.lines
             %th{align: "left"}= t(:description)
@@ -47,7 +47,7 @@
         = t(:student)
       %span.block_actions
     .block_content
-      %table#assignments_list.tb_list
+      %table.tb_list
         %thead
           %tr.lines
             %th{align: "left"}= t(:description)
@@ -73,14 +73,14 @@
               %img{alt: t('tutorials.files.assignment_webconference'), src: "/assets/mimetypes/pdf.png"}/
               = raw get_file(locale, 'assignment_webconference', t('tutorials.files.assignment_webconference'))
 
-  .tutorial.block_wrapper#edition
+  .tutorial.block_wrapper
     .block_title
       %h2
         %i.icon-folder
         = t(:edition)
       %span.block_actions
     .block_content
-      %table#assignments_list.tb_list
+      %table.tb_list
         %thead
           %tr.lines
             %th{align: "left"}= t(:description)
@@ -111,14 +111,14 @@
               %img{alt: t('tutorials.files.exam_edition'), src: "/assets/mimetypes/pdf.png"}/
               = raw get_file(locale, 'exam_edition', t('tutorials.files.exam_edition'))
 
-  .tutorial.block_wrapper#edition
+  .tutorial.block_wrapper
     .block_title
       %h2
         %i.icon-folder
         = t(:enrollment)
       %span.block_actions
     .block_content
-      %table#assignments_list.tb_list
+      %table.tb_list
         %thead
           %tr.lines
             %th{align: "left"}= t(:description)
@@ -134,14 +134,14 @@
               %img{alt: t('tutorials.files.enrollment'), src: "/assets/mimetypes/pdf.png"}/
               = raw get_file(locale, 'enrollment', t('tutorials.files.enrollment'))
 
-  .tutorial.block_wrapper#edition
+  .tutorial.block_wrapper
     .block_title
       %h2
         %i.icon-folder
         = t('tutorials.titles.responsibles')
       %span.block_actions
     .block_content
-      %table#assignments_list.tb_list
+      %table.tb_list
         %thead
           %tr.lines
             %th{align: "left"}= t(:description)

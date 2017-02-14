@@ -653,6 +653,12 @@ en_US:
   url: "Enter here the URL of the image in the textbox above."
   send: "Send"
   select_files: Select files
+  information_access_website: "Information access website"
+  states_brazil_website: "States of Brazil website"
+  user_place_holder: "Type your login"
+  password_place_holder: "Type your password"
+  cpf_place_holder: "Type your cpf"
+  solar_faq: "Assistance to the Solar website"
 
   enrollments:
     all: All
