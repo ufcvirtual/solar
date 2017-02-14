@@ -32,7 +32,7 @@
       .forum_post_wrapper{ class: new_post_class }
         .forum_post_inner_content
           %span{ :'aria-label' => t('.post', number: @count) }
-          - unless post.parent_id.nil? or @display_mode == 'list'
+          - unless post.parent_id.nil? or @display_mode == 'list' or can_post==true
             %span{ :'aria-label' => t('.answer_post', answer: @hash[post.parent_id].to_s)}
           = sanitize post.content
 

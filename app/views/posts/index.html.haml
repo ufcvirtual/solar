@@ -147,14 +147,18 @@
 
           $.get("#{discussion_post_path(@discussion.id, ':id')}".replace(':id', data.post_id), {can_post: "#{@can_post}"}, function(data2){
             var post_table = $("table#"+data.post_id);
-            if (!!post_table.length)
+            if (!!post_table.length){
               post_table.html(data2);
-            else
+              msg = "#{t('posts.update.updated')}";
+            }else{
               if (parent_table != undefined && !!parent_table.length && !display_list){
                 $(parent_table.find("td.forum_post_content .forum_post_wrapper")[0]).after(data2);
                 parent_table.find(".forum_post_buttons:first").find(".update_post:first, .forum_button_attachment:first, .btn_caution:first").remove();
+                
               }else
                 $(".forum_posts_wrapper").prepend(data2);
+              msg = "#{t('posts.create.created')}";  
+            }  
             $(".forum_button_attachment").call_fancybox({
               afterShow: function(){
                 $('#focu').attr("tabindex", "0");
@@ -162,6 +166,7 @@
               }
             });
             add_post_count_warning();
+            flash_message(msg, "notice");
           });
 
           // only send message if is a new post
