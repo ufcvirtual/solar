@@ -15,7 +15,8 @@
     = javascript_include_tag "converse/converse"
     = stylesheet_link_tag "converse/converse"
     / IM \
-    = stylesheet_link_tag "application", "themes/theme_blue", "fancybox"
+    = stylesheet_link_tag "application", "fancybox"
+    = stylesheet_link_tag "themes/theme_blue", id: "theme"
 
 
     = csrf_meta_tag
@@ -43,8 +44,9 @@
           #mysolar_logo
             = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
           %ul#mysolar_top_options
-            %li#mysolar_high_contrast_option
-              /FIXME: = stylesheet_link_tag "#{theme_blue}"
+            //FIXME: Alterar a cor
+            %li#mysolar_high_contrast_option.mysolar_top_link
+              = link_to "Alto Contraste", onclick: "theme_toggle()" 
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular
               = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", onclick: "mysolarTopSubmenuToggle();return false;"
               - if can? :update, current_user
@@ -357,3 +359,15 @@
 
       $($("#page_title h1").children("span")[0]).removeAttr("title")
     });
+      //High Contrast Toggle
+      if($.cookie("css")){
+        $('link[id="theme"]').attr("href", $.cookie("css"));
+      }
+      $(document).ready(function() { 
+        $('#mysolar_high_contrast_option').click(function(){
+          $('link[id="theme"]').attr({href: '/assets/themes/theme_high_contrast.css'});
+          $.cookie("css", $(this).attr('rel'), {expires: 365, path: '/'});
+          return false;
+        });
+      });
+      

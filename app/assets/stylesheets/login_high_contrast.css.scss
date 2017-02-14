@@ -2,9 +2,9 @@
 @import "fonts/fonts";
 @import "fonts/icons";
 @import "partials/panels";
+@import "themes/variables/theme_high_contrast";
 
 $login_width: 287px;
-$login_main_blue: #000 ;
 $login_light_blue: #285596;
 
 html {
@@ -12,12 +12,7 @@ html {
 }
 
 body {
-  background: $login_main_blue;
-  // background: -moz-radial-gradient(center, circle cover,  #56729c 0%, $login_main_blue 100%); /* FF3.6+ */
-  // background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#56729c), color-stop(100%,$login_main_blue)); /* Chrome,Safari4+ */
-  // background: -webkit-radial-gradient(center, circle cover,  #56729c 0%,$login_main_blue 100%); /* Chrome10+,Safari5.1+ */
-  // background: -ms-radial-gradient(center, circle cover,  #56729c 0%,$login_main_blue 100%); /* IE10+ */
-  // background: radial-gradient(circle at center,  #56729c 0%,$login_main_blue 100%); /* W3C */
+  background: $high_contrast_background_color;
   margin: 0 auto;
   padding: 0;
   height: auto;
@@ -32,12 +27,12 @@ body {
   height: 25px;
   margin: 0 auto 10px auto;
   z-index: 1;
-  background-color: $login_main_blue
+  background-color: $high_contrast_background_color;
 }
 
 input{
-  color: #fff;
-  background-color: #000;
+  color: $high_contrast_font_color;
+  background-color: $high_contrast_background_color;
 }
 
 #all{
@@ -93,7 +88,8 @@ a img {
 #login-form, #login-register {
   width: $login_width;
   text-align: center;
-  background-color: #000
+  background-color: $high_contrast_background_color;
+  //FIXME: border: 1px solid $high_contrast_border_color; 
 }
 
 /*caixa de cadastro*/
@@ -107,8 +103,8 @@ a img {
   width: 196px;
   padding-top: 12px;
   padding-bottom: 12px;
-  border:1px solid #fff;
-  background-color: #000;
+  border:1px solid $high_contrast_font_color;
+  background-color: $high_contrast_background_color;
   font-family: Ubuntu;
   font-size: 16px;
   padding-left: 10px;
@@ -116,15 +112,15 @@ a img {
 
 /*Botões de submissão da tela de login*/
 #submit-login, #submit-cpf {
-  @include filter-gradient(#000, #000); /* IE */
-  @include background-image(linear-gradient(#000, #000));
+  //@include filter-gradient(#000, #000); /* IE */
+  //@include background-image(linear-gradient(#000, #000));
   width: 205px;
   height: 40px;
   font-family: Ubuntu Condensed;
   font-size: 25px;
-  color:#fff;
-  border:1px solid #fff;
-  @include border-radius(5px);
+  color: $high_contrast_font_color;
+  border:1px solid $high_contrast_border_color;
+  //@include border-radius(5px);
   margin-top: 28px;
   margin-bottom: 20px;
   padding-top: 2px;
@@ -135,16 +131,16 @@ a img {
 }
 
 #submit-login:hover, #submit-cpf:hover{
-  @include filter-gradient(#fff, #fff); /* IE */
+  //@include filter-gradient(#fff, #fff); /* IE */
   @include background-image(linear-gradient(#1a3e79, #1a3e79));
   cursor: pointer;
-  border:1px solid #ffffff;
+  border:1px solid $high_contrast_border_color;
 }
 
 #submit-login:active, #submit-cpf:active{
   background-color: #f1cf65;
   cursor: pointer;
-  border:1px solid #ffffff;
+  border:1px solid $high_contrast_border_color;
   -webkit-box-shadow:  inset 0px 1px 2px 0px rgba(0, 0, 0, .4), inset 0px -2px 2px 0px rgba(0, 0, 0, .1);
   box-shadow:  inset 0 2px 0px rgba(0, 0, 0, .4), inset 0px -2px 2px 0px rgba(0, 0, 0, .1);
 }
@@ -152,7 +148,7 @@ a img {
 #login-bt, #register-bt, .label-register, #login-bt a, #register-bt a {
   font-family: 'Ubuntu', sans-serif;
   font-size: 20px;
-  color: #fff;
+  color: $high_contrast_font_color;
   padding-top: 5px;
   text-shadow: 0 0 0.1em rgba(255, 255, 190, 0.60)#ffffbe;
 }
@@ -167,8 +163,8 @@ a img {
 #login-bt, #register-bt, #register-header {
   @include border-top-right-radius(5px);
   @include border-top-left-radius(5px);
-  border:1px solid #F4F4F5;
-  background-color: #000
+  border:1px solid $high_contrast_border_color;
+  background-color: $high_contrast_background_color
 }
 
 .label-register{
@@ -205,8 +201,8 @@ $header-tab-height: 36px;
 }
 
 #login-header .inactive {
-  background-color: #000;
-  border:1px solid #D5D6D6;
+  background-color: $high_contrast_background_color;
+  border:1px solid $high_contrast_border_color;
 }
 
 #login-header .inactive a {
@@ -214,9 +210,9 @@ $header-tab-height: 36px;
 }
 
 #login-header .inactive:hover {
-  background-color: #000; 
+  background-color: $high_contrast_background_color; 
   cursor: pointer;
-  border:1px solid #fff;
+  border:1px solid $high_contrast_border_color;
 }
 
 /*Logo*/
@@ -234,11 +230,11 @@ $header-tab-height: 36px;
 #link-password{
   font-family: Ubuntu;
   font-size: 12px;
-  color: #fff333;
+  color: $high_contrast_link_color;
 }
 
 #link-password:hover{
-  color: #fff333;
+  color: $high_contrast_link_color;
 }
 
 #login_content, #login_content_password_recovery{
@@ -258,9 +254,9 @@ $header-tab-height: 36px;
   margin:0 auto;
   width: 400px;
   overflow: hidden;
-  border:1px solid #D5D5D5;
+  border:1px solid $high_contrast_border_color;
   @include border-radius(10px);
-  background: #000; /* Old browsers */
+  background: $high_contrast_border_color; /* Old browsers */
   @include filter-gradient(#ffffff, #e6e8ec); /* IE */
   @include background-image(linear-gradient(#000, #000));
   -webkit-box-shadow:0px 3px 6px rgba(50, 50, 50, 0.64);
@@ -273,7 +269,7 @@ $header-tab-height: 36px;
   font-family: Ubuntu, sans-serif;
   font-weight: 400;
   font-size: 20px;
-  color: #ffffff;
+  color: $high_contrast_font_color;
   text-align: justify;
   margin-left: 27px;
 }
@@ -305,7 +301,7 @@ $header-tab-height: 36px;
 #password_recovery p{
   font-family: 'PT Sans', sans-serif;
   font-size: 11pt;
-  color: #ffffff;
+  color: $high_contrast_font_color;
   text-align: justify;
   padding-left: 28px;
   padding-right: 28px;
@@ -337,11 +333,11 @@ $header-tab-height: 36px;
  }
 
 #send {
-  background-color: #000;
+  background-color: $high_contrast_background_color;
   @include filter-gradient(#000, #000); /* IE */
   @include background-image(linear-gradient(#000, #000));
-  color:#fff;
-  border: 1px solid #fff;
+  color:$high_contrast_font_color;
+  border: 1px solid $high_contrast_border_color;
 }
 
 #send:hover{
@@ -353,8 +349,8 @@ $header-tab-height: 36px;
 .btn_default {
   @include filter-gradient(#000, #000); /* IE */
   @include background-image(linear-gradient(#000, #000));
-  color:#7A7A7A;
-  border:1px solid #ffffff;
+  color: $high_contrast_font_color;
+  border:1px solid $high_contrast_border_color;
 }
 
 #give-up:hover {
@@ -372,13 +368,13 @@ $header-tab-height: 36px;
 /*mensagem de erro*/
 #error_explanation ul li{
   list-style: none;
-  color: #ffffff;
+  color: $high_contrast_font_color;
   margin: 0 auto;
   width: 400px;
   @include filter-gradient(#f5f5f5, #e6e8ec); /* IE */
   @include background-image(linear-gradient(#000, #000)); /* CSS3 */
   @include border-radius(6px);
-  box-shadow:0px 2px 8px #222427;
+  // box-shadow:0px 2px 8px #222427;
 }
 
 #error_explanation ul{
@@ -416,11 +412,11 @@ footer{
   text-decoration: none;
   font-family: Ubuntu;
   font-size: 14px;
-  color:#fff333;
+  color:$high_contrast_link_color;
 }
 
 .menu_footer ul li a:hover{
-  color:#fff333;
+  color:$high_contrast_link_color;
 }
 
 /* Menu de idiomas */
@@ -448,11 +444,11 @@ footer{
 .choice-language ul li a, .choice-tutorial ul li a {
   display: block;
   text-decoration: none;
-  color: #fff;
+  color: $high_contrast_font_color;
   font-size: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid $high_contrast_border_color;
   border-bottom: 0;
-  background-color: #000;
+  background-color: $high_contrast_background_color;
 }
 
 .choice-language ul li a{
@@ -464,7 +460,7 @@ footer{
 }
 
 .choice-language ul li+li a {
-  border-bottom: 1px solid #ffffff;
+  border-bottom: 1px solid $high_contrast_border_color;
 }
 
 .selected {
@@ -472,8 +468,8 @@ footer{
 }
 
 .choice-language ul li a:hover, .choice-tutorial ul li a:hover {
-  background-color: #000;
-  color: #ffffff;
+  background-color: $high_contrast_background_color;
+  color: $high_contrast_font_color;
 }
 
 #menu-language li:hover ul {
@@ -491,7 +487,7 @@ footer{
 /*Página de cadastro*/
 /*página de dados pessoais*/
 .field_with_errors input {
-  border: 1px solid #ffffff !important;
+  border: 1px solid $high_contrast_border_color !important;
 }
 
 #register{
@@ -511,7 +507,7 @@ footer{
 .form_label{
   font-family: Ubuntu;
   font-size: 13px;
-  color: #ffffff;
+  color: $high_contrast_font_color;
   padding-right: 10px;
   width: 112px;
   display:inline-block;
@@ -647,7 +643,7 @@ select option{
 
 /*menu de cadastro*/
 #register-steps {
-  background-color: #000;
+  background-color: $high_contrast_background_color;
   width: 525px;
   margin: 0 auto;
   padding: 0;
@@ -669,7 +665,7 @@ select option{
   text-align: center;
   font-family: Ubuntu;
   font-size: 12px;
-  color:#fff;
+  color:$high_contrast_font_color;
 }
 
 #register-steps ul li.active{
