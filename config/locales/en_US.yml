@@ -3815,6 +3815,7 @@ en_US:
   tabs:
     close: Close tab %{name}
     access: Access tab %{name}
+    close_confirm: Are you sure that you want to close tab %{name}?
 
   login:
     username: Type your username

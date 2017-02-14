@@ -4054,6 +4054,7 @@ pt_BR:
   tabs:
     close: Fechar aba %{name}
     access: Acessar aba %{name}
+    close_confirm: Tem certeza que deseja fechar a aba %{name}?
 
   login:
     username: Digite seu login
