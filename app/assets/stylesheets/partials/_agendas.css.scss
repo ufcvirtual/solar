@@ -146,12 +146,13 @@ a.fc-event-title{
         border-bottom: none;
       }
       h2{
+        color: $color_black;
         font-weight: bold;
         text-align: left;
         font-size: 11pt;
       }
 
-      h2, h3, .group_label label, h3 p{
+      h3, .group_label label, h3 p{
         color: $color_gray_text;
         font-size: 10pt;
         font-weight: normal;
