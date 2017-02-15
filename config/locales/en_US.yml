@@ -2374,6 +2374,7 @@ en_US:
       title_other_chats: Other Chats
       message_no_chat: No chat registered
       students: Students
+      summary: "This table contains all system chats with the following information: Chat name, availability, frequency status, note, time and history where you can access chat history."
     chats:
       detail: Details
       availability: Availability
@@ -2443,6 +2444,7 @@ en_US:
       to_evaluate: To_evaluate
       grade: Grade
       wh: Working hours
+      summary: "This table contains all sent messages with the following information: Profile of who sent, who sent, whom it sent, message, date and time it was sent."
     user_messages:
       title: Messages of %{user} in %{chat_rooms}  
       message: Message

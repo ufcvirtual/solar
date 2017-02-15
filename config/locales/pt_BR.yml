@@ -2592,6 +2592,7 @@ pt_BR:
       title_other_chats: Outros Chats
       message_no_chat: Nenhum chat cadastrado
       students: Participantes
+      summary: "Está tabela contém todos os chats do sistema com as seguintes informações: Nome do chat, disponibilidade, situação frequência, nota, carga horária e histórico onde você poderá ter acesso ao histórico de mensagens do chat."
     chats:
       detail: Detalhes
       availability: Disponibilidade
@@ -2661,6 +2662,7 @@ pt_BR:
       to_evaluate: Avaliar
       grade: Nota
       wh: Carga horária
+      summary: "Está tabela contém todas mensagens enviadas com as seguintes informações: Perfil de quem enviou, quem enviou, para quem enviou, mensagem, data e hora do enviou."
     user_messages:
       title: Messagens do %{user} em %{chat_rooms}
       message: Mensagem
