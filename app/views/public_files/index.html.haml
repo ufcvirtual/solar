@@ -5,16 +5,16 @@
       = t('.title', name: @user.name)
     .right_buttons
       - unless @public_files.empty?
-        = link_to content_tag(:i, nil, class: 'icon-install'), zip_download_public_files_path(user_id: @user.id), class: 'btn'
+        = link_to content_tag(:i, nil, class: 'icon-install', :'aria-hidden' => 'true'), zip_download_public_files_path(user_id: @user.id), class: 'btn', :'aria-label' => t('.download_alt', name: @user.name), :'data-tooltip' => t('.download')
   .block_content
     - unless @public_files.blank?
-      %table.tb_list
+      %table.tb_list{summary: t('.summary')}
         %thead
           %tr.lines
-            %th.no_sort
-            %th= t('.file')
-            %th= t('.size')
-            %th= t('.sent_on')
+            %th.no_sort{:'aria-hidden' => 'true'}
+            %th#file= t('.file')
+            %th#size= t('.size')
+            %th#sent_on= t('.sent_on')
         %tbody
           - @public_files.each do |file|
             = render partial: 'file', locals: { file: file, destroy: false }

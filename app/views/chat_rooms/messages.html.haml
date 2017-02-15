@@ -3,41 +3,41 @@
   .title-warning= raw t('chat_rooms.user_messages.evaluation_info')
 .chat_messages
   - unless @messages.empty?
-    %table.tb_list
+    %table.tb_list{:summary=> t("chat_rooms.messages.summary")}
       %thead
         %tr.lines
           - if (@evaluative || @frequency)
-            %th= t('.to_evaluate')
-          %th{colspan: 2}= t(".from")
-          %th= t(".to")
-          %th= t(".message")
-          %th= t(".date")
-          %th= t(".time")
+            %th{id: "to_evaluate"}= t('.to_evaluate')
+          %th{colspan: 2, id: "from"}= t(".from")
+          %th{id: "to"}= t(".to")
+          %th{id: "message"}= t(".message")
+          %th{id: "date"}= t(".date")
+          %th{id: "time"}= t(".time")
           - if @academic_allocation.evaluative
-            %th= t('.grade')
+            %th{id: "grade"}= t('.grade')
           - if @academic_allocation.frequency
-            %th= t('.wh')
+            %th{id: "wh"}= t('.wh')
       %tbody
         - @messages.each do |message|
           - user = message.user
           - name, nick = user.nil? ? ["", t(".all")] : [user.info(:name, @researcher), user.info(:nick, @researcher)]
           %tr.lines 
             - if @evaluative || @frequency
-              %td
+              %td{headers: "to_evaluate" }
                 - if message.is_student == 't' && message.message_type == 1
-                  = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(@chat_room, user_id: message.u_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t('.to_evaluate')
-            %td.profile= "(" + message.profile_name + ")"
-            %td.user{:'data-tooltip' => (@researcher ? t(:hidden_info) : message.user_name)}= (@researcher ? t(:hidden_info) : message.user_nick)
-            %td{:'data-tooltip' => name}= nick
-            %td.message= message.text.try(:html_safe)
-            %td= l(message.created_at.to_datetime, format: :normal)
-            %td= l(message.created_at.to_datetime, format: :clock_time)
+                  = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(@chat_room, user_id: message.u_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate')+t('fancybox.open')
+            %td.profile{headers: "from", :'aria-label' => 'perfil:'+ message.profile_name }= "(" + message.profile_name + ")"
+            %td.user{:'data-tooltip' => (@researcher ? t(:hidden_info) : message.user_name), headers: "from"}= (@researcher ? t(:hidden_info) : message.user_nick)
+            %td{:'data-tooltip' => name, :'aria-label' => name, headers: "to"}= nick
+            %td.message{headers: "message" }= message.text.try(:html_safe)
+            %td{headers: "date" }= l(message.created_at.to_datetime, format: :normal)
+            %td{headers: "time" }= l(message.created_at.to_datetime, format: :clock_time)
             - if @academic_allocation.evaluative
-              %td
+              %td{headers: "grade" }
                 - if @evaluative || (message.u_id.to_i == current_user.id)
                   = message.grade
             - if @academic_allocation.frequency
-              %td
+              %td{headers: "wh" }
                 - if @frequency || (message.u_id.to_i == current_user.id)
                   = message.wh
 

@@ -60,37 +60,36 @@ class Bibliography < ActiveRecord::Base
     btype = case type_bibliography
             when TYPE_BOOK
               r = [resume_authors]
-              r << "<b>#{title}</b>"  if title
+              r << "<cite><strong>#{title}</strong></cite>"  if title
               r << subtitle           if subtitle
               r << "#{edition}. ed"   if edition
-              r << "#{address}: #{publisher}, #{publication_year}" if address && publisher && publication_year
+              r << "#{address}: #{publisher}, <date datetime=#{publication_year}>#{publication_year}</time>" if address && publisher && publication_year
               r << "#{count_pages} p" if count_pages
               r << "v. #{volume}"     if volume
               r.join('. ')
             when TYPE_PERIODICAL
-              r = ["<b>#{title}</b>"]
+              r = ["<cite><strong>#{title}</strong></cite>"]
               r << subtitle                   if subtitle
               r << "#{address}: #{publisher}" if address && publisher
-              r << periodicity_year_end ? "#{periodicity_year_start} - #{periodicity_year_end}" : periodicity_year_start
+              r << periodicity_year_end ? "<time datetime=#{periodicity_year_start}>#{periodicity_year_start}</time> - <time datetime=#{periodicity_year_end}>#{periodicity_year_end}</time>" : periodicity_year_start
               r << periodicity                if periodicity
               r << "ISSN: #{issn}"            if issn
               r.join('. ')
             when TYPE_ARTICLE
               r = [resume_authors]
-              r << "<b>#{title}</b>"         if title
+              r << "<cite><strong>#{title}</strong></cite>"         if title
               r << subtitle                  if subtitle
               r << article_periodicity_title if article_periodicity_title
               r << address                   if address
               r << "v. #{volume}"            if volume
               r << "n. #{fascicle}"          if fascicle
-              r << "p. #{pages}, #{publication_month}, #{publication_year}" if pages && publication_month && publication_year
-              r.join('. ')
+              r << "p. #{pages}, #{publication_month}, <time datetime=#{publication_year}>#{publication_year}</time>" if pages && publication_month && publication_year
             when TYPE_ELECTRONIC_DOC
               r = [resume_authors]
-              r << "<b>#{title}</b>"      if title
+              r << "<cite><strong>#{title}</strong></cite>"      if title
               r << additional_information if additional_information
               r << "#{I18n.t(:available_in, scope: [:bibliographies, :list])} #{url}" if url
-              r << "#{I18n.t(:accessed_in, scope: [:bibliographies, :list])} #{I18n.l(accessed_in, format: :bibliography)}" if accessed_in
+              r << "<time datetime=#{I18n.t(:accessed_in, scope: [:bibliographies, :list])} #{I18n.l(accessed_in, format: :bibliography)}>#{I18n.t(:accessed_in, scope: [:bibliographies, :list])} #{I18n.l(accessed_in, format: :bibliography)}</time>" if accessed_in
               r.join('. ')
             when TYPE_FREE then title
             when TYPE_FILE then [attachment_file_name, "( #{format('%.2f KB', attachment_file_size/1024.0)} )"].join(' ')

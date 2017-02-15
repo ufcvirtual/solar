@@ -603,6 +603,7 @@ en_US:
   mysolar_forum: "Forum"
   mysolar_chat: "Chat"
   mysolar_alt_img_user: "User image of"
+  mysolar_alt_img_user_alt: "User image of %{name}"
   mysolar_alt_img_solar: "Solar Logo"
   mysolar_alt_img_support: "Support"
   mysolar_alt_img_exit: "Exit"
@@ -1116,6 +1117,8 @@ en_US:
       description: Description
     index:
       items: Bibliography Items
+      download: Download zip with file's type bibliographies
+      summary: Table which content is all registered bibliography to this group. It has the complete bibliographic reference and it's type to inform if it is a book, an article etc.
     list:
       new: New Bibliography
       item: Item
@@ -1657,7 +1660,7 @@ en_US:
       general_message: It was not possible to execute action.
       dependencies: It was not possible to execute action. One or more assignments already have been sent or already have comments or already have been evaluated.
       not_started: It was not possible to download file. This assignment hasn't started yet.
-      not_range_webconference: Webconference wasn't created.This Webconference hasn't period of Assignment.
+      not_range_webconference: must be in date range of Assignment
     show:
       name: Name
       enunciation: Enunciation
@@ -1748,6 +1751,7 @@ en_US:
       date_range_expired: It was not possible to execute action. Date range expired.
       remove: It was not possible to remove file
       new: It was not possible to send file.
+      not_started_up: It was not possible to send file. Assignment not started yet.
     success:
       removed: File removed successfully
   assignment_comments:
@@ -1816,7 +1820,9 @@ en_US:
       file: Name
       size: Size
       sent_on: Sent on
-      download: Download zip
+      download: Download zip with all public files
+      download_alt: Download zip with all public files sent by %{name}
+      summary: Table which content have links to download public files sent by a user. There's links to download and information about the file, such as name, file type, size and date of upload.
     file:
       remove: Remove file
     list:
@@ -2230,10 +2236,13 @@ en_US:
       edit_curriculum_unit: Edit Subject
     informations:
       warning: "<b>Important:</b> This course has no subject, therefore some information is not available."
+      summary: Table which content have all basic information about course or curriculum_unit such syllabus, objectives, passing grade, period, resume, prerequisites and responsibles.
     users:
       message: Send message
       public_files: See public files
       no_public_files: No public files
+      public_files_alt: Access public files of %{name} (%{count} registered)
+      no_public_files_alt: Access public files of %{name} (none registered - disabled link)
   semesters:
     success:
       created: Semester was successfully created.
@@ -2366,6 +2375,7 @@ en_US:
       title_other_chats: Other Chats
       message_no_chat: No chat registered
       students: Students
+      summary: "This table contains all system chats with the following information: Chat name, availability, frequency status, note, time and history where you can access chat history."
     chats:
       detail: Details
       availability: Availability
@@ -2435,6 +2445,7 @@ en_US:
       to_evaluate: To_evaluate
       grade: Grade
       wh: Working hours
+      summary: "This table contains all sent messages with the following information: Profile of who sent, who sent, whom it sent, message, date and time it was sent."
     user_messages:
       title: Messages of %{user} in %{chat_rooms}  
       message: Message

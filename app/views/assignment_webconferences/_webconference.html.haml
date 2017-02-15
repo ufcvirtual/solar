@@ -14,9 +14,9 @@
   - if @own_assignment
     //- disabled = !(@in_time && @bbb_online)
     - disabled = !(@in_time)
-    %td{headers: "edit_web"}.icon.center{ :"data-link-edit" => edit_assignment_webconference_path(webconference), :"data-tooltip" => t('.edit'), :'aria-label' => t(".edit"), onclick: 'edit_awebconference(this)', class: "#{disabled ? 'disabled' : ''}" }= content_tag(:i, nil, class: 'icon-edit')
-    %td{headers: "record_link_web"}.icon.center{ :"data-link-records" => remove_record_assignment_webconference_path(webconference), :"data-link-show" => assignment_webconference_path(webconference), :"data-tooltip" => t('.record'), :'aria-label' => t(".record"), onclick: 'remove_record_awebconference(this)', class: "#{disabled ? 'disabled' : ''}" }= content_tag(:i, nil, class: 'icon-cross')
-    %td{headers: "delete_web"}.icon.center{ :"data-link-delete" => assignment_webconference_path(webconference), :"data-tooltip" => t('.delete'), :'aria-label' => t(".delete"), onclick: 'delete_awebconference(this)', class: "#{disabled ? 'disabled' : ''}" }= content_tag(:i, nil, class: 'icon-trash')
+    %td.icon.center{ :"data-link-edit" => edit_assignment_webconference_path(webconference), :"data-tooltip" => t('.edit'), :'aria-label' => t(".edit"), onclick: 'edit_awebconference(this)', class: "#{disabled ? 'disabled' : ''}", headers: "edit_web" }= content_tag(:i, nil, class: 'icon-edit')
+    %td.icon.center{ :"data-link-records" => remove_record_assignment_webconference_path(webconference), :"data-link-show" => assignment_webconference_path(webconference), :"data-tooltip" => t('.record'), :'aria-label' => t(".record"), onclick: 'remove_record_awebconference(this)', class: "#{disabled ? 'disabled' : ''}", headers: "record_link_web" }= content_tag(:i, nil, class: 'icon-cross')
+    %td.icon.center{ :"data-link-delete" => assignment_webconference_path(webconference), :"data-tooltip" => t('.delete'), :'aria-label' => t(".delete"), onclick: 'delete_awebconference(this)', class: "#{disabled ? 'disabled' : ''}",headers: "delete_web" }= content_tag(:i, nil, class: 'icon-trash')
 
 = javascript_include_tag 'tooltip'
 

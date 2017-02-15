@@ -6,22 +6,22 @@
     
 .blcok_content
   - unless @bibliographies.blank?
-    %table.tb_list
+    %table.tb_list{summary: t('.summary')}
       %thead
         %tr.lines
-          %th{ align: 'left' }=t(:item, scope: [:bibliographies, :list])
-          %th{ align: 'center', style: 'width: 15%;' }=t(:type, scope: [:bibliographies, :list])
+          %th#item{ align: 'left' }=t(:item, scope: [:bibliographies, :list])
+          %th#type{ align: 'center', style: 'width: 15%;' }=t(:type, scope: [:bibliographies, :list])
       %tbody
         - @bibliographies.each do |bibliography|
           %tr.lines{ id: "tr_#{bibliography.id}" }
-            %td
+            %td{headers: 'item'}
               - resume = bibliography.resume
               - if bibliography.is_file?
                 = link_to image_tag(icon_attachment(bibliography.attachment_file_name)), download_bibliography_path(bibliography), class: 'file_icon'
                 = link_to resume, download_bibliography_path(bibliography), class: 'file_icon'
               - else
                 =raw resume
-            %td= bibliography.type
+            %td{headers: 'type'}= bibliography.type
 
   - else
     .block_content_text.block_content_text_list.text_none= t(:no_data, scope: [:bibliographies, :list])

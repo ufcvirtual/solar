@@ -14,9 +14,11 @@ class AssignmentWebconference < ActiveRecord::Base
   validates :duration, numericality: { only_integer: true, less_than_or_equal_to: 60,  greater_than_or_equal_to: 1 }
   validates :title, length: { maximum: 255 }
 
-  validate :cant_change_date, on: :update, if: 'initial_time_changed? || duration_changed?'
+  validate :cant_change_date, on: :update, if: '(!duration.nil? && !initial_time.nil?) && (initial_time_changed? || duration_changed?)'
 
-  validate :verify_quantity_users, :verify_time, if: '((!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed?)) || new_record?) && merge.nil?'
+  validate :verify_quantity_users, :verify_time, if: '(((initial_time_changed? || duration_changed?)) || new_record?) && merge.nil? && (!duration.nil? && !initial_time.nil?)'
+
+  validate :verify_assignment_time, if: '(!duration.nil? && !initial_time.nil?) && (duration_changed? || initial_time_changed? || new_record?) && merge.nil?'
 
   validates :academic_allocation_user_id, presence: true
   
@@ -100,6 +102,15 @@ class AssignmentWebconference < ActiveRecord::Base
   def set_origin(from_id)
     obj = self.class.find(from_id)
     self.origin_meeting_id = (obj.origin_meeting_id || obj.get_mettingID) if (on_going? || over?)
+  end
+
+  def verify_assignment_time
+    has_hours = (!assignment.start_hour.blank? && !assignment.end_hour.blank?)
+    startt    = (has_hours ? (assignment.schedule.start_date.beginning_of_day + assignment.start_hour.split(':')[0].to_i.hours + assignment.start_hour.split(':')[1].to_i.minutes) : assignment.schedule.start_date.beginning_of_day)
+    endt      = (has_hours ? (assignment.schedule.end_date.beginning_of_day + assignment.end_hour.split(':')[0].to_i.hours + assignment.end_hour.split(':')[1].to_i.minutes) : assignment.schedule.end_date.end_of_day)
+    time_webconference = initial_time + duration * 60
+
+    errors.add(:initial_time, I18n.t('assignments.error.not_range_webconference')) unless (initial_time.between?(startt,endt) && time_webconference.between?(startt,endt))
   end
 
   private

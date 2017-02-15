@@ -6,32 +6,32 @@
       %i.icon-docs
       = t(:curriculum_unit_information_title)
 
-  %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+  %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%", summary: t('.summary')}
     %tbody
       %tr.lines
-        %td{:style => "width: 20%;"}= t(:syllabus) 
-        %td= @curriculum_unit.try(:syllabus)
+        %th.act_like_td#syllabus{:style => "width: 20%;"}= t(:syllabus) 
+        %td{headers: 'syllabus'}= @curriculum_unit.try(:syllabus)
       %tr.lines
-        %td= t(:objectives)
-        %td= @curriculum_unit.try(:objectives)
+        %th.act_like_td#objectives= t(:objectives)
+        %td{headers: 'objectives'}= @curriculum_unit.try(:objectives)
       %tr.lines
-        %td= t(:prerequisites) 
-        %td= @curriculum_unit.try(:prerequisites)
+        %th.act_like_td#prerequisites= t(:prerequisites) 
+        %td{headers: 'prerequisites'}= @curriculum_unit.try(:prerequisites)
       %tr.lines
-        %td= t(:resume) 
-        %td= @curriculum_unit.try(:resume)
+        %th.act_like_td#resume= t(:resume) 
+        %td{headers: 'resume'}= @curriculum_unit.try(:resume)
       - unless @offer.nil?
         %tr.lines
-          %td= t(:semester_date) 
-          %td= [l(@offer.start_date), l(@offer.end_date)].join(" - ")
+          %th.act_like_td#semester= t(:semester_date) 
+          %td{headers: 'semester'}= [l(@offer.start_date), l(@offer.end_date)].join(" - ")
       %tr.lines
-        %td= t(:passing_grade) 
-        %td= @curriculum_unit.try(:passing_grade)
-      %tr.lines
-        %td= t(:curriculum_unit_responsible) 
-        %td
+        %th.act_like_td#grade= t(:passing_grade) 
+        %td{headers: 'grade'}= @curriculum_unit.try(:passing_grade)
+      %tr.lines.responsibles
+        %th.act_like_td#responsibles= t(:curriculum_unit_responsible) 
+        %td{headers: 'responsibles'}
           - if @responsible
             - @responsible.each do |resp|
-              =resp.name + ' (' + resp.profile_name + ') '
-              %span= link_to(content_tag(:i, nil, class: 'icon-mail'), new_message_path(user_id: resp.id), class: "nodecoration")
-              %br
+              %p
+                = resp.name + ' (' + resp.profile_name + ') '
+                = link_to (content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true')), new_message_path(user_id: resp.id), class: 'nodecoration', :'aria-label' => t('messages.message_to', name: resp.name)

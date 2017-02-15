@@ -19,7 +19,7 @@ class AssignmentFilesController < ApplicationController
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
     verify_owner!(assignment_file_params)
     @assignment_file = AssignmentFile.new assignment_file_params
-    erro = @assignment_file.assignment.assignment_started?(allocation_tag_id, @assignment_file.user)
+    @assignment_file.assignment.assignment_started?(allocation_tag_id, @assignment_file.user)
     @assignment_file.user = current_user
 
     if @assignment_file.save
@@ -29,10 +29,8 @@ class AssignmentFilesController < ApplicationController
     end
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
-  rescue => erro 
-    render_json_error(erro, 'assignments.error', 'not_started_up')
   rescue => error
-    render_json_error(error, 'assignment_files.error', 'new')
+    render_json_error(error, 'assignment_files.error', (error == 'not_started_up' ? 'not_started_up' : 'new'))
   end
 
   def destroy
