@@ -46,7 +46,7 @@
           %ul#mysolar_top_options
             //FIXME: Alterar a cor
             %li#mysolar_high_contrast_option.mysolar_top_link
-              = link_to "Alto Contraste", onclick: "theme_toggle()" 
+              = link_to "Alto Contraste"
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular
               = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", onclick: "mysolarTopSubmenuToggle();return false;"
               - if can? :update, current_user
@@ -359,15 +359,16 @@
 
       $($("#page_title h1").children("span")[0]).removeAttr("title")
     });
-      //High Contrast Toggle
+    
+    //High Contrast Toggle
       if($.cookie("css")){
         $('link[id="theme"]').attr("href", $.cookie("css"));
       }
       $(document).ready(function() { 
         $('#mysolar_high_contrast_option').click(function(){
           $('link[id="theme"]').attr({href: '/assets/themes/theme_high_contrast.css'});
-          $.cookie("css", $(this).attr('rel'), {expires: 365, path: '/'});
+          $.cookie("css", "/assets/themes/theme_high_contrast.css", {expires: 365, path: '/'});
           return false;
         });
       });
-      
+       
