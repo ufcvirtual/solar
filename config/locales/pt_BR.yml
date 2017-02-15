@@ -748,6 +748,7 @@ pt_BR:
   mysolar_forum: "Fórum"
   mysolar_chat: "Chat"
   mysolar_alt_img_user: "Imagem do usuário"
+  mysolar_alt_img_user_name: "Imagem do usuário %{name}"
   mysolar_alt_img_solar: "Logo do Solar"
   mysolar_alt_img_support: "Suporte"
   mysolar_alt_img_exit: "Sair"
@@ -1294,6 +1295,7 @@ pt_BR:
     index:
       items: Itens Bibliográficos
       download: Download de zip com bibliografias de tipo arquivo
+      summary: Tabela contendo toda a bibliografia cadastrada para a turma, contendo a referência bibliográfica completa e o tipo da bibliografia para indicar se é livro, artigo, periódico etc.
     list:
       new: Nova Bibliografia
       item: Item
@@ -2024,7 +2026,9 @@ pt_BR:
       file: Nome
       size: Tamanho
       sent_on: Enviado em
-      download: Baixar zip
+      download: Baixar zip com todos os arquivos públicos
+      download_alt: Baixar zip com todos os arquivos públicos enviados por %{name}
+      summary: Tabela contendo links para download dos arquivos públicos de um aluno. Há o link para download, bem como o nome do arquivo, extensão, tamanho e data de upload.
     file:
       remove: Remover arquivo
     list:
@@ -2444,11 +2448,13 @@ pt_BR:
       edit_curriculum_unit: Editar Disciplina
     informations:
       warning: "<b>Importante:</b> Este curso não possui uma disciplina, portanto algumas informações não estão disponíveis."
+      summary: "Tabela contendo todas as informações básicas do curso e/ou disciplina, como ementa, objetivos, média, período, resumo, pré-requisitos e responsáveis."
     users:
       message: Enviar mensagem
       public_files: Visualizar arquivos públicos
       no_public_files: Nenhum arquivo público
-
+      public_files_alt: Acessar arquivos públicos de %{name} (%{count} cadastrados)
+      no_public_files_alt: Acessar arquivos públicos de %{name} (nenhum cadastrado - link desabilitado)
   semesters:
     success:
       created: Semestre criado com sucesso.

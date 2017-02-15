@@ -7,6 +7,10 @@
   width: 155px;
   text-align: center;
   white-space: nowrap;
+
+  li{
+    display: inline-block;
+  }
 }
 
 .participants_list_item > img {

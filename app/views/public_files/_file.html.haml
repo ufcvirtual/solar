@@ -1,6 +1,6 @@
 - size =format('%.2f KB', file.attachment_file_size.to_i/1024.0)
 %tr.lines
-  %td.file_data_icon{style: "width: 10px;"}= image_tag icon_attachment(file.attachment_file_name), alt: file.attachment_file_name
+  %td.file_data_icon{style: "width: 10px;", :'aria-hidden' => 'true'}= image_tag icon_attachment(file.attachment_file_name), alt: file.attachment_file_name
   %td{headers: "file" }= link_to file.attachment_file_name, download_public_files_path(id: file.id), {class: 'link_content', :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
   %td.center.file_data_info{style: "width: 80px;", headers: "size"}= size
   %td.center.file_data_info{style: "width: 100px;", headers: "sent_on"}

@@ -603,6 +603,7 @@ en_US:
   mysolar_forum: "Forum"
   mysolar_chat: "Chat"
   mysolar_alt_img_user: "User image of"
+  mysolar_alt_img_user_alt: "User image of %{name}"
   mysolar_alt_img_solar: "Solar Logo"
   mysolar_alt_img_support: "Support"
   mysolar_alt_img_exit: "Exit"
@@ -1116,6 +1117,8 @@ en_US:
       description: Description
     index:
       items: Bibliography Items
+      download: Download zip with file's type bibliographies
+      summary: Table which content is all registered bibliography to this group. It has the complete bibliographic reference and it's type to inform if it is a book, an article etc.
     list:
       new: New Bibliography
       item: Item
@@ -1816,7 +1819,9 @@ en_US:
       file: Name
       size: Size
       sent_on: Sent on
-      download: Download zip
+      download: Download zip with all public files
+      download_alt: Download zip with all public files sent by %{name}
+      summary: Table which content have links to download public files sent by a user. There's links to download and information about the file, such as name, file type, size and date of upload.
     file:
       remove: Remove file
     list:
@@ -2230,10 +2235,13 @@ en_US:
       edit_curriculum_unit: Edit Subject
     informations:
       warning: "<b>Important:</b> This course has no subject, therefore some information is not available."
+      summary: Table which content have all basic information about course or curriculum_unit such syllabus, objectives, passing grade, period, resume, prerequisites and responsibles.
     users:
       message: Send message
       public_files: See public files
       no_public_files: No public files
+      public_files_alt: Access public files of %{name} (%{count} registered)
+      no_public_files_alt: Access public files of %{name} (none registered - disabled link)
   semesters:
     success:
       created: Semester was successfully created.

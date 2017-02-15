@@ -3,12 +3,12 @@
 /**
 * Tratando linhas das tabelas
 */
-th {
+th:not(.act_like_td) {
   border-bottom: 1px solid;
   border-bottom-color: $table_border_color;
 }
 
-th, tr.lines td {
+th, tr.lines td, tr.lines th.act_like_td {
   padding: 6px 10px 4px 10px;
   vertical-align: middle;
 }
@@ -47,7 +47,7 @@ table.tb_list {
   width: 100%;
   font-size: 10pt;
 
-  th {
+  th:not(.act_like_td) {
     /*    font-weight: bold;*/
     // white-space: nowrap;
     background-color: $color_white;
@@ -64,13 +64,13 @@ table.tb_list {
     max-width: 410px;
   }
 
-  td {
+  td, tr.lines th.act_like_td {
     /*    border-right: 1px solid $border_color;*/
     // white-space: normal;
     word-wrap: break-word;
   }
 
-  td:last-child {
+  td:last-child, th.act_like_td:last-child {
     border-right: none;
   }
 
@@ -185,4 +185,10 @@ tr.post_content {
 .tablesorter-default thead .sorter-false {
   background-image: none;
   padding: 4px;
+}
+
+tr.responsibles{
+  p{
+    margin-bottom: 0;
+  }
 }

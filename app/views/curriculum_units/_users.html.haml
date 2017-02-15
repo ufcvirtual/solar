@@ -1,21 +1,24 @@
 - if users.blank?
   .text_none= t(:participants_none)
 - else
-  - users.each do |user|
-    .participants_list_item
-      = image_tag user.user_photo, alt: t(:mysolar_alt_img_user) 
-      .options
-        - no_public_files = user.u_public_files.to_i.zero?
-        = link_to (content_tag(:i, nil, class: 'icon-mail')), new_message_path(user_id: user.id, bread: 'menu_messages'), class: 'can-update-menu', :'data-menu-bread' => 'menu_messages', :'data-tooltip' => t(".message") # mensagem ao usuário
-        = content_tag(:a, class: "can-update-menu #{no_public_files ? 'disabled' : ''}", href: public_files_path(user_id: user.id, bread: 'menu_participants'), :'data-menu-bread' => 'menu_participants', :'data-tooltip' => no_public_files ? t(".no_public_files") : t(".public_files")) do # área pública do usuário
-          %i.icon-folder
-          - unless no_public_files
-            %span.count_icon= user.u_public_files
-        / futuramente link para visualizar o perfil do usuário
-      .participant_name{ :'data-tooltip' => user.name }
-        = (user.name.length > 20 ? user.name.truncate(14) : user.name)
-      .participant_role{ :'data-tooltip' => user.profile_name }
-        = (user.profile_name.length > 20 ? ['(',user.profile_name,')'].join.truncate(23) : raw("(#{user.profile_name})") )
+  %ul
+    - users.each do |user|
+      %li.participants_list_item
+        = image_tag user.user_photo, alt: t(:mysolar_alt_img_user_name, name: user.name) 
+        .options
+          %ul
+            - no_public_files = user.u_public_files.to_i.zero?
+            %li= link_to (content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true')), new_message_path(user_id: user.id, bread: 'menu_messages'), class: 'can-update-menu', :'data-menu-bread' => 'menu_messages', :'data-tooltip' => t(".message"), :'aria-label' => t('messages.message_to', name: user.name)
+            %li
+              = content_tag(:a, class: "can-update-menu #{no_public_files ? 'disabled' : ''}", href: public_files_path(user_id: user.id, bread: 'menu_participants'), :'data-menu-bread' => 'menu_participants', :'data-tooltip' => no_public_files ? t(".no_public_files") : t(".public_files"), :'aria-label' => no_public_files ? t(".no_public_files_alt", name: user.name) : t(".public_files_alt", name: user.name, count: user.u_public_files))  do # área pública do usuário
+                %i.icon-folder{:'aria-hidden' => 'true'}
+                - unless no_public_files
+                  %span.count_icon{:'aria-hidden' => 'true'}= user.u_public_files
+          / futuramente link para visualizar o perfil do usuário
+        .participant_name{ :'data-tooltip' => user.name, :'aria-label' => user.name }
+          = (user.name.length > 20 ? user.name.truncate(14) : user.name)
+        .participant_role{ :'data-tooltip' => user.profile_name, :'aria-label' => user.profile_name }
+          = (user.profile_name.length > 20 ? ['(',user.profile_name,')'].join.truncate(23) : raw("(#{user.profile_name})") )
 
 = javascript_include_tag 'tooltip'
 
