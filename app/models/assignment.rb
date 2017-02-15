@@ -174,18 +174,6 @@ class Assignment < Event
     raise "not_started_up" unless started? || AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(current_user.id)
   end
 
-  def verify_date_range_webconference?(initial_time, duration)
-    has_hours = (!start_hour_was.blank? && !start_hour_was.blank?)
-    startt    = (has_hours ? (schedule.start_date_was.beginning_of_day + start_hour_was.split(':')[0].to_i.hours + start_hour_was.split(':')[1].to_i.minutes) : schedule.start_date_was.beginning_of_day)
-    endt      = (has_hours ? (schedule.end_date_was.beginning_of_day + end_hour_was.split(':')[0].to_i.hours + end_hour_was.split(':')[1].to_i.minutes) : schedule.end_date_was.end_of_day)
-    time_webconference = initial_time + duration * 60
-    (initial_time.between?(startt,endt) && time_webconference.between?(startt,endt))
-  end  
-
-  def releases_webconference?(initial_time, duration)
-    raise "not_range_webconference" unless verify_date_range_webconference?(initial_time, duration)
-  end  
-
   def groups_assignments(allocation_tag_id)
     GroupAssignment.joins(:academic_allocation).where(academic_allocations: {academic_tool_id: self.id, allocation_tag_id: allocation_tag_id})
   end

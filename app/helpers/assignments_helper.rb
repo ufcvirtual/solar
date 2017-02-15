@@ -63,7 +63,10 @@ module AssignmentsHelper
     acu_id = (aparams[:academic_allocation_user_id] || aparams.academic_allocation_user_id)
     raise CanCan::AccessDenied if acu_id.blank?
     acu = AcademicAllocationUser.find(acu_id)
-    redirect_to list_assignments_path, alert: t('exams.restrict') if @group.blank? && acu.assignment.type_assignment == Assignment_Type_Group
+    if acu.assignment.type_assignment == Assignment_Type_Group && @group.blank?
+      @group = acu.group_assignment
+      redirect_to list_assignments_path, alert: t('exams.restrict') if @group.blank? 
+    end
     @own_assignment = Assignment.owned_by_user?(current_user.id,  { student_id: @student_id, group: @group, academic_allocation_user: acu })
     #@bbb_online = bbb_online?
     @in_time    = acu.assignment.in_time?

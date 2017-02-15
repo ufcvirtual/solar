@@ -1660,7 +1660,7 @@ en_US:
       general_message: It was not possible to execute action.
       dependencies: It was not possible to execute action. One or more assignments already have been sent or already have comments or already have been evaluated.
       not_started: It was not possible to download file. This assignment hasn't started yet.
-      not_range_webconference: Webconference wasn't created.This Webconference hasn't period of Assignment.
+      not_range_webconference: must be in date range of Assignment
     show:
       name: Name
       enunciation: Enunciation
@@ -1751,6 +1751,7 @@ en_US:
       date_range_expired: It was not possible to execute action. Date range expired.
       remove: It was not possible to remove file
       new: It was not possible to send file.
+      not_started_up: It was not possible to send file. Assignment not started yet.
     success:
       removed: File removed successfully
   assignment_comments:
