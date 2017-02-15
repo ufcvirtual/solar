@@ -17,12 +17,6 @@ class WebconferencesController < ApplicationController
 
   def index
     authorize! :index, Webconference, on: [at = active_tab[:url][:allocation_tag_id]]
-    # api             = bbb_prepare
-    # @online         = bbb_online?(api)
-    # @meetings       = @online ? get_meetings(api) : []
-    api = Array.new(count_servers) {|a| Bbb.bbb_prepare(a)}
-    @online = api.map {|api| bbb_online?(api)}
-
     @can_see_access = can? :list_access, Webconference, { on: at }
     @user = current_user
     @is_student = @user.is_student?([at])
@@ -118,13 +112,8 @@ class WebconferencesController < ApplicationController
   def preview
     ats = current_user.allocation_tags_ids_with_access_on('preview', 'webconferences', false, true)
     @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false }).paginate(page: params[:page])
-    # @count = @webconferences.count
     @can_see_access = can? :list_access, Webconference, { on: ats, accepts_general_profile: true }
     @can_remove_record = (can? :manage_record, Webconference, { on: ats, accepts_general_profile: true })
-    # @online         = bbb_online?
-    # @meetings       = @online ? get_meetings : []
-    @api = Array.new(count_servers) {|a| Bbb.bbb_prepare(a)}
-    @online = @api.map {|api| bbb_online?(api)}
   end
 
   # DELETE /webconferences/remove_record/1
