@@ -78,7 +78,7 @@ module ApplicationHelper
     # Se o group_select estiver vazio, ou seja, nenhum grupo foi selecionado pelo usuário,
     # o grupo a ter seus fóruns exibidos será o primeiro grupo encontrado para o usuário em questão
     selected_group_id = groups.first.id if selected_group_id.blank?
-    
+
     active_tab[:breadcrumb].first[:url][:selected_group] = Group.find(selected_group_id).code
 
     result = ''
@@ -120,6 +120,17 @@ module ApplicationHelper
     error_message = error == CanCan::AccessDenied ? t(:no_permission) : (I18n.translate!("#{path}.#{error}", raise: true) rescue t("#{path}.#{default_error}"))
     Rails.logger.info "[ERROR] [APP] [#{Time.now}] [#{error}] [#{(message.nil? ? error_message : error.message)}]"
     render json: { success: false, alert: (message.nil? ? error_message : error.message) }, status: :unprocessable_entity
+  end
+
+  def theme
+    if cookies[:theme].nil?
+      cookies[:theme] = {
+        value: "theme_blue",
+        expires: 1.year.from_now,
+        path: "/"
+      }
+    end
+    cookies[:theme]
   end
 
 end

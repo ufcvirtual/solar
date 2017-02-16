@@ -53,6 +53,10 @@
   margin-left: 5px;
 }
 
+#mysolar_high_contrast_option {
+  color: $color_white !important;
+}
+
 #mysolar_top_options {
   height: $mysolar_topbar_height;
   line-height: $mysolar_topbar_height;
@@ -113,7 +117,7 @@
   text-align: left;
   overflow: hidden;
   box-shadow: 3px 3px 15px 0px $mysolar_chat_color;
-  color: $color_main;;
+  color: $color_main;
   background-color: $color_white;
   border-bottom-color: $color_contrast;
   border-left-color: $color_contrast;
