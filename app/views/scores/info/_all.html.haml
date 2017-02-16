@@ -40,27 +40,27 @@
                         .title= tool.name
                     .equivalent
                       - unless tool.eq_name.blank?
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{tool.id}" }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{tool.academic_tool_type}_#{tool.id}" }
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{tool.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{tool.academic_tool_type}_#{tool.id}"}
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: tool.eq_name)
                       - else
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{tool.id}", :'data-url' => equalities_tools_path(tool_type: tool.academic_tool_type, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => equalities_tools_path(tool_type: tool.academic_tool_type, ac_id: tool.id), onclick: 'open_dropdown(this);' }
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{tool.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{tool.academic_tool_type}_#{tool.id}"}
                           %ul{ class: 'dropdown-menu' }
                     - if tool.academic_tool_type == 'ChatRoom' && tool.type_tool == '1'
                       .participants.equivalent
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_1_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_1_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);' }
                           %i.icon-users
                           =t('scores.info.participants')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_p_1_#{tool.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_p_1_#{tool.academic_tool_type}_#{tool.id}"}
                           %ul{ class: 'dropdown-menu' }  
                   %td.center
                     - if tool.academic_tool_type.downcase == 'webconference'
@@ -115,27 +115,27 @@
                       
                     .equivalent
                       - unless tool.eq_name.blank?
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{tool.id}" }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{tool.academic_tool_type}_#{tool.id}" }
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{tool.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{tool.academic_tool_type}_#{tool.id}"}
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: tool.eq_name)
                       - else
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{tool.id}", :'data-url' => equalities_tools_path(tool_type: tool.academic_tool_type, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => equalities_tools_path(tool_type: tool.academic_tool_type, ac_id: tool.id), onclick: 'open_dropdown(this);' }
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{tool.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{tool.academic_tool_type}_#{tool.id}"}
                           %ul{ class: 'dropdown-menu' }
                     - if tool.academic_tool_type == 'ChatRoom' && tool.type_tool == '1'
                       .participants.equivalent
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_2_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_2_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);' }
                           %i.icon-users
                           =t('scores.info.participants')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_p_2_#{tool.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_p_2_#{tool.academic_tool_type}_#{tool.id}"}
                           %ul{ class: 'dropdown-menu' }
                   %td.center
                     - if tool.academic_tool_type.downcase == 'webconference'
@@ -187,11 +187,11 @@
                         .title= tool.name
                     .equivalent
                       - unless tool.eq_name.blank?
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{tool.id}" }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{tool.academic_tool_type}_#{tool.id}" }
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{tool.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{tool.academic_tool_type}_#{tool.id}"}
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: tool.eq_name)
                       - else
@@ -199,15 +199,15 @@
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{tool.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{tool.academic_tool_type}_#{tool.id}"}
                           %ul{ class: 'dropdown-menu' }
                     - if tool.academic_tool_type == 'ChatRoom' && tool.type_tool == '1'
                       .participants.equivalent
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_3_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_3_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);' }
                           %i.icon-users
                           =t('scores.info.participants')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_p_3_#{tool.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_p_3_#{tool.academic_tool_type}_#{tool.id}"}
                           %ul{ class: 'dropdown-menu' }  
                   %td.center
                     - if tool.academic_tool_type.downcase == 'webconference'

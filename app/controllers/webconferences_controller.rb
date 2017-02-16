@@ -176,7 +176,12 @@ class WebconferencesController < ApplicationController
 
   def list_access
     @webconference = Webconference.find(params[:id])
-    authorize! :list_access, Webconference, { on: at_id = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id), accepts_general_profile: true }
+    begin
+      authorize! :list_access, Webconference, { on: at_id = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id), accepts_general_profile: true }
+    rescue
+      raise CanCan::AccessDenied unless params.include?(:user_id) && params[:user_id].to_i == current_user.id
+    end
+
 
     academic_allocations_ids = (@webconference.shared_between_groups ? @webconference.academic_allocations.map(&:id) : @webconference.academic_allocations.where(allocation_tag_id: at_id).first.try(:id))
     ats = AllocationTag.where(id: at_id).map(&:related)
