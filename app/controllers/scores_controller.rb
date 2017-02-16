@@ -310,7 +310,7 @@ class ScoresController < ApplicationController
   def redirect_to_open
     tool_id = AcademicAllocation.find(params[:ac_id]).academic_tool_id
 
-    unless ['started', 'opened', 'retake', 'to_answer', 'to_send', 'not_finished', 'sent', 'evaluated', 'to_be_sent', 'without_group'].include?(params[:situation])
+    unless ['started', 'opened', 'retake', 'to_answer', 'to_send', 'not_finished', 'sent', 'evaluated', 'to_be_sent', 'without_group', 'in_progress'].include?(params[:situation])
       if ((params[:situation] == 'not_started' or params[:situation] == 'corrected') && params[:tool_type] == 'Exam')
         authorize! :show, Question, { on: active_tab[:url][:allocation_tag_id] }
         render json: { url: preview_exam_path(tool_id, allocation_tags_ids: active_tab[:url][:allocation_tag_id]) }
@@ -326,13 +326,13 @@ class ScoresController < ApplicationController
           render json: { url: student_assignment_path(tool_id, student_id: params[:user_id], group_id: params[:group_id]), method: :get }
         end
       when 'ChatRoom'
-        profiles = current_user.profiles_with_access_on(:show, 'chat_rooms', active_tab[:url][:allocation_tag_id], true)
+        profiles = current_user.profiles_with_access_on(:show, 'chat_rooms', [active_tab[:url][:allocation_tag_id]].flatten, true)
         allocation = Allocation.where(profile_id: profiles, status: Allocation_Activated, user_id: current_user.id).first.try(:id)
         raise CanCan::AccessDenied if allocation.blank?
         render json: { url: access_chat_room_path(tool_id, academic_allocation_id: params[:ac_id], allocation_id: allocation) } 
       when 'Webconference'
         authorize! :interact, Webconference, { on: active_tab[:url][:allocation_tag_id] }
-        render json: { url: access_webconference_path(tool_id), method: :get }
+        render json: { url: access_webconference_path(tool_id), method: :get, web: true }
       when 'Discussion'
         render json: { url: discussion_posts_path(discussion_id: tool_id), method: :get }
       when 'Exam'

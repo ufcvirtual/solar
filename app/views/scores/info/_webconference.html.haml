@@ -117,7 +117,7 @@
                   %td.center
                     %div= l(webconference.start_date.to_date, format: :normal)
                     %div= [l(webconference.start_hour.to_time, format: :today), l(webconference.end_hour.to_time, format: :today)].join(' - ')
-                  %td.center{class: (exist_and_offline?(webconference.server) ? 'assignment_not_started' : "assignment_#{webconference.situation}")}= exist_and_offline?(webconference.server) ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
+                  %td.center{class: (exist_and_offline?(webconference.server.to_i) ? 'assignment_not_started' : "assignment_#{webconference.situation}")}= exist_and_offline?(webconference.server.to_i) ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
                   - if @is_student
                     %td.center= webconference.working_hours
                   %td.center{ class: "#{webconference.situation == 'finish' ? '' : 'disabled'}", :'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: 'record'
@@ -172,7 +172,7 @@
                   %td.center
                     %div= l(webconference.start_date.to_date, format: :normal)
                     %div= [l(webconference.start_hour.to_time, format: :today), l(webconference.end_hour.to_time, format: :today)].join(' - ')
-                  %td.center{class: (exist_and_offline?(webconference.server) ? 'assignment_not_started' : "assignment_#{webconference.situation}")}= exist_and_offline?(webconference.server) ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
+                  %td.center{class: (exist_and_offline?(webconference.server.to_i) ? 'assignment_not_started' : "assignment_#{webconference.situation}")}= exist_and_offline?(webconference.server.to_i) ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
                   %td.center{ class: "#{webconference.situation == 'finish' ? '' : 'disabled'}", :'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: 'record'
                   - if @can_see_access
                     %td.center{ :'data-url' => list_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]) }= link_to_function content_tag(:i, nil, class: "icon-users btn"), 'list_access(this)'

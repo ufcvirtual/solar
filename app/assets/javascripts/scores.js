@@ -27,13 +27,19 @@ function open_evaluation(link){
 
 function open_tool(link){
   $.get($(link).data('url'), function(data){
-    if(typeof data.method == 'undefined'){
+    if(typeof(data.method) == 'undefined'){
       $(link).call_fancybox({
         href: data.url,
         open: true
       }); 
     }else{
-      window.location.href = data.url;
+      if(data.web != undefined){
+        $.get(data.url, function(data2){
+          window.open(data2.url, '_blank');
+        });
+      }else{
+        window.location.href = data.url;
+      }
     }
   }).error(function(data){
     var data = $.parseJSON(data.responseText);
