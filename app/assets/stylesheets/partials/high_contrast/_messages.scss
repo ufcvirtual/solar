@@ -1,0 +1,469 @@
+/* Index - Caixa de Entrada */
+.padding-checkbox{
+  padding-top: 5px;
+  font-size: 10pt;
+  height: 28px;
+
+  select{
+    margin-left: 5px;
+  }
+
+  input{
+    margin-right: 5px;
+  }
+}
+
+.td_time{
+  text-align: right;
+  width: 100px;
+}
+
+.td_sender{
+  width: 150px;
+  text-align: left;
+}
+
+.td_recipient{
+  text-align: left;
+  width: 300px;
+}
+
+.td_attachment{
+   width: 30px;
+
+  i{
+    font-size: 14px;
+  }
+}
+
+.td_subject {
+  padding-left: 0.5*$gutter;
+}
+
+.td_subject, .td_sender, .td_time, .td_recipient{
+  color: $high_contrast_font_color;
+
+  a{
+    color: $high_contrast_link_color;
+  }
+}
+
+/* mensagem: links do menu */
+#link_to_contacts {
+  cursor: pointer;
+}
+
+.message_link, .message_link_menu {
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+}
+
+.message_link {
+  font-size: 10pt;
+}
+
+.message_link, .message_menu_listbox {
+  padding: 5px 10px 5px 10px;
+}
+
+#message_list > .message_link:hover {
+  border-bottom: 2px solid; 
+  border-bottom-color: $high_contrast_border_color;
+}
+
+.message_div {
+  font-size: 10pt;
+  text-decoration: none;
+}
+
+/* mensagem: listagem das mensagens */
+.message_div_list {
+  width: 100%;
+}
+
+.message_line{
+  
+  height: 28px;
+}
+.message_line:not(.no_border){
+  border-bottom: 1px solid $high_contrast_border_color;
+}
+
+.message_line_check {
+  width: 12px; 
+  text-align: center;
+}
+
+.message_read, .message_unread{
+  font-weight: normal;
+  white-space: normal;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.message_read {
+  color: $high_contrast_font_color;
+}
+
+.message_unread {
+  font-weight: bold;
+  color: $high_contrast_font_color;
+}
+
+.message_label {
+  font-size: 8pt;
+  font-weight: normal;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 2px;
+  padding-right: 2px;
+  border: 1px solid;
+  -moz-border-radius: 4px;
+  color: $high_contrast_font_color;
+  background-color: $high_contrast_background_color;
+  border-color: $high_contrast_border_color;
+}
+
+.message_new {
+  padding-top: 4px;
+}
+
+.message_new_textbox {
+  width: 95%;
+  font-size: 10pt;
+  background-color: $high_contrast_background_color;
+}
+
+.message_subject .message_new_textbox{
+  width: 90%;
+  display: inline-block;
+}
+
+.message_subject{
+  display: inline;
+}
+
+/* mensagem */
+.block_wrapper.messages {
+
+  .block_content, .block_white {
+    padding: 5px;
+    padding-right: 5px;
+    border-bottom: solid 1px;
+    border-bottom-color: $high_contrast_border_color;
+    min-height: 28px;
+
+    ul.message_menu_listbox li ul {
+      width: 100px;
+      padding: 5px 0px;
+
+      li{
+        padding: 2px 0px;
+
+        &:hover{
+          background: rgb(0, 116, 243);
+          color: $high_contrast_font_color;
+        }
+      }
+    }
+  }
+  .block_white{
+    background: $high_contrast_background_color;
+  }
+  .block_white.index{
+    height: 38px;
+
+    .align-middle{
+      float: left;
+      margin-left: 5%;
+      input{
+        width: 120px;
+        margin-top: 5px;
+        background-color: $high_contrast_background_color;
+      }
+      #user{
+        width: 220px;
+      }
+    }
+
+    .btn-group{
+      padding-top: 4px;
+    }
+
+  }
+}
+
+.block_content.messages {
+  padding: 5px 10px 5px 5px;
+  border-bottom: solid 1px $high_contrast_border_color;
+  overflow: hidden;
+
+  .btn{
+    margin-right: -5px;
+  }
+}
+
+.message_header_new, .message_div_show {
+  color: $high_contrast_font_color;
+  padding: 0.5*$gutter 0.5*$gutter;
+  font-size: 13px;
+  width: auto; // FIXME: é auto ou 100% ?
+  //width: 100%;
+
+  .label-show{
+    margin-right: 5px;
+  }
+
+  span.email{
+    color: $high_contrast_font_color;
+    text-decoration: underline;
+  }
+
+  .message_text_from{
+    font-weight: 700;
+    margin-bottom: 0.5*$gutter;
+  }
+
+  .message_text_to{
+    margin-bottom: 0.5*$gutter;
+  }
+
+  .message_attachments{
+    .icon-paperclip{
+      font-size: 12px;
+    }
+    .new-attach{
+      margin-top: 5px;
+      margin-left: 20px;
+    }
+  }
+}
+
+.message_new_text_to {
+  margin-bottom: 0.5*$gutter;
+  height: 30px;
+  display: inline-block;
+  background-color: $high_contrast_background_color;
+
+  .label{
+    width: 60px;
+    margin-top: 5px;
+    font-size: $font_size;
+  }
+  .input{
+    width: 705px;
+  }
+}
+
+#new_message_file {
+  padding-bottom: 5px;
+  .label{
+    width: 60px;
+    margin-top: 5px;
+    font-size: $font_size;
+  }
+}
+
+#div_new_message{
+  textarea{
+    width: 100%;
+  }
+}
+
+.message_new_action {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.message_link_menu {
+  text-decoration: none;
+  font-size: 11pt;
+  margin-left: 3px;
+}
+
+.message_div_navigation {
+  text-align: center;
+  padding: 0.25*$gutter;
+  color: $high_contrast_font_color;
+
+  .message_page{
+    margin-top: 5px;
+  }
+  .active{
+    color: $high_contrast_font_color;
+  }
+}
+
+.message_div_show {
+  padding-right: 100px;
+  min-height: 100px;
+  white-space: normal;
+  font-size: 10pt;
+  padding: 20px;
+}
+
+.message_external_div {
+  margin-bottom: $gutter;
+}
+
+.text_none { // FIXME: verificar se é realmente necessário
+  font-size: 10pt;
+  padding: 5px;
+  color: $high_contrast_font_color;
+}
+
+.hide_message{
+  display: none;
+}
+
+.text_alert_message {
+  vertical-align: top;
+  font-size: 10pt;
+  width: auto;
+}
+
+.text_alert_message, #count_msgs_unread {
+  color: #e64d4d;
+}
+
+/* mensagem: cabecalho, area de titulo */
+#message_general_title {
+  border-bottom: 1px solid;
+  border-bottom-color: #d0d0d0;
+  padding-bottom: 0px !important;
+  height: 25px;
+
+  h2 {
+    position: relative;
+    bottom: 0px;
+  }
+  > div {
+    height: 23px;
+  }
+}
+
+.message_general_div_option, .message_general_div_option_active {
+  display: inline-block;
+  padding: 0 8px;
+  z-index: 20;
+
+  img {
+    vertical-align: bottom;
+  }
+}
+
+.message_general_div_option_active {
+  border-bottom: 2px solid;
+  border-bottom-color: #214684;
+}
+
+.message_label {
+  color: $high_contrast_font_color;
+  background-color: $high_contrast_background_color;
+  border: 1px solid $high_contrast_border_color;
+}
+
+// contatos
+
+#content-div {
+  height: 300px;
+  width: 500px;
+}
+
+.contacts-uc {
+  font-size: 10pt;
+  text-decoration: none;
+  line-height: 15px;
+  margin-bottom: 5px;
+  .edition.block_content{
+    background-color: $high_contrast_background_color;
+  }
+  .select{
+    margin-top: 5px;
+  }
+}
+
+.contacts-type, .contacts-uc .filter{
+  padding-left: 10px;
+}
+
+#content-div{
+  .block_content p{
+    text-align: right;
+    color: $high_contrast_font_color;
+    margin-bottom: 0;
+  }
+}
+
+.contacts-list {
+  font-size: 10pt;
+  overflow: auto;
+  margin-right: 3px;
+  margin-top: 1px;
+  margin-bottom: 5px;
+  border: 1px solid;
+  height: 150px;
+  background-color: $high_contrast_background_color;
+  border-color: $high_contrast_border_color;
+  .already_added{
+    color: $high_contrast_font_color;
+    display: inline-block;
+    padding-left: 3px;
+  }
+}
+
+.contacts-selected {
+  font-size: 10pt;
+  border: 1px solid;
+  border-color: $high_contrast_border_color;
+  height: 100px;
+  white-space: normal;
+  overflow: auto;
+  background-color: $high_contrast_background_color;
+  margin-bottom: 10px;
+}
+
+.contacts-list, .contacts-selected{
+  margin: 5px;
+  padding: 5px;
+}
+
+#receiver_already_added {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 11px;
+  color: $high_contrast_font_color;
+}
+
+.message_new_upload{
+  .files{
+    .file_attached {
+      padding-top: 5px;
+
+      i{
+        margin-left: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.list_files_to_send {
+  margin-left: 60px;
+}
+
+.remove-file {
+  cursor: pointer;
+}
+
+.help_link {
+  padding: 7px;
+  text-align: center;
+  background-color: $high_contrast_background_color;
+  text-decoration: underline;
+}
+

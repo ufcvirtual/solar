@@ -1,0 +1,102 @@
+form{
+  .webconference > .input > select {
+    width: initial;
+    max-width: 100px;
+  }
+}
+
+.preview_webconferences{
+  .block_toolbar_right{
+    .delete_record_btn{
+      margin-top: 7px;
+    }
+  }
+  [id^="groups_codes"]{
+    .dropdown-menu{
+      max-height: 250px;
+      overflow-y: auto;
+    }
+  }
+}
+
+table.webconferences{
+  thead{
+    tr.lines{
+      th.no_sort{
+        text-align: center;
+        width: 5px;
+      }
+      th.default_width{
+        width: 20%;
+      }
+      th.bigger_width{
+        width: 25%;
+      }
+      th.smaller_width{
+        width: 10%;
+      }
+      th.medium_width{
+        width: 15%;
+      }
+      th.greater_width{
+        width: 30%;
+      }
+    }
+  }
+  tbody{
+    td{
+      [class^='icon-']:not(.evaluate){
+        font-size: 18px;
+        padding-top: 7px;
+        //color: $high_contrast_font_color;
+      }
+      [class^='icon-']:hover{
+        color: $high_contrast_background_color;
+      }
+    }
+  }
+}
+
+.webconference_access{
+  table{
+    th{
+      text-align: center;
+    }
+    text-align: center;
+    td.profile{
+      color: $high_contrast_font_color;
+      font-size: 9pt;
+      font-style: italic;
+      padding-right: 0;
+    }
+    tr.evaluative_form{
+      background-color: $high_contrast_background_color;
+      height: 70px;
+      .left{
+        float: left;
+      }
+      .right{
+        float: right;
+      }
+      .middle{
+        float: left;
+        padding-left: 13%;
+      }
+      form{
+        padding-left: 20px;
+        padding-right: 20px;
+        label{
+          width: auto;
+        }
+      }
+    }
+  }
+
+}
+ 
+.title-warning + .webconference_access{
+  .text_none{
+    border-top: solid 1px;
+    border-top-color: $high_contrast_border_color;
+  }
+}

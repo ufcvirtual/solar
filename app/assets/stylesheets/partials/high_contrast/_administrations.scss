@@ -1,0 +1,142 @@
+.info_user {
+  .block_left {
+    width: auto;
+  }
+  .block_left {
+    vertical-align: top;
+  }
+  .block_photo {
+    border: 1px solid $high_contrast_border_color;
+    margin-top: 3px;
+  }
+  div {
+    padding-top: 3px;
+  }
+}
+tr.lines {
+  // input {
+  //  padding: 5px 0 0 5px;
+  // }
+  td {
+    padding: 6px 8px 4px;
+  }
+}
+.border {
+  border-top: 1px solid $high_contrast_border_color;
+}
+
+.added-permission {
+  color: blue !important;
+}
+
+.removed-permission {
+  color: red !important;
+}
+
+.permission {
+  color: green;
+}
+
+.edition-enabled {
+  background-color: $high_contrast_background_color;
+}
+
+label.permissions-search-text {
+  font-size: 10pt;
+  vertical-align: text-bottom;
+}
+
+table.tb_allocation .dropdown ul li a{
+  white-space: inherit;
+}
+
+.allocation_requested_list{
+  .block_toolbar_left{
+    select{
+      vertical-align: top;
+    }
+    input{
+      padding: 2px;
+      vertical-align: middle;
+    }
+    .btn{
+      padding-bottom: 2px;
+    }
+  }
+
+  .form_requirement {
+    position: relative;
+    text-align: center;
+    top: -6px;
+    color: $high_contrast_link_color;
+  }
+}
+
+.title-warning {
+  background-color: $high_contrast_background_color;
+  color: $high_contrast_font_color;
+  padding: 7px 5px 7px 5px;
+  font-size: 10pt;
+  margin-bottom: 15px;
+}
+.comment-blue {
+  background-color: $high_contrast_background_color;
+  border-radius: 8px;
+  color: $high_contrast_font_color;
+  padding: 7px 5px 7px 5px;
+  font-size: 9pt;
+  margin-bottom: 10px;
+  width: 450px;
+}
+.comment-red {
+  background-color: $high_contrast_background_color;
+  border-radius: 8px;
+  color: $high_contrast_font_color;
+  padding: 7px 5px 7px 5px;
+  font-size: 9pt;
+  margin-bottom: 10px;
+  width: 450px;
+}
+.comment-green {
+  background-color: $high_contrast_background_color;
+  border-radius: 8px;
+  color: $high_contrast_font_color;
+  padding: 7px 5px 7px 5px;
+  font-size: 9pt;
+  margin-bottom: 10px;
+  width: 450px;
+}
+
+.responsibles_list .block_content_toolbar{
+  padding: 0;
+  input#search{
+    margin-left: 0;
+  }
+}
+
+#list_users{
+  input{
+    font-size: 9pt;
+  }
+  input#name{
+    width: 120px;
+  }
+  input#username{
+    width: 69px;
+  }
+  input#email{
+    width: 145px;
+  }
+}
+
+.global_item, .specific_item {
+  @include item_button;
+}
+
+.global, .specific{
+  height: 111px;
+}
+
+.global_text, .specific_text{
+  padding-top: 13px;
+}

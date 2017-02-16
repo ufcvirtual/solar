@@ -1,0 +1,272 @@
+// FORMULARIOS (registro, edição de perfil, etc)
+
+/**
+* Geral
+*/
+
+.form-inputs > .input > textarea {
+  height: 120px;
+  width: 340px;
+}
+
+.form_label {
+  color: $high_contrast_font_color;
+  text-align: right;
+}
+
+.form_label:first-child {
+  width: $form_label_width - 1px;
+}
+
+.form_label label, .form-inputs .control-label {
+  padding-right: 5px;
+  padding-top: 5px;
+  vertical-align: top;
+}
+
+.form_field input[type="text"] {
+  width: 413px;
+}
+
+.date_text_field,
+.form_field input,
+.form_field select,
+.form-inputs .input input,
+.form-inputs > .input > select {
+  padding: 2px;
+  margin-bottom: 4px;
+  font-size: 10pt;
+}
+
+.form-inputs.block_content {
+  padding-top: 5px;
+  padding-right: 10px;
+  padding-left: 5px;
+}
+
+.right_form label.form_label{
+  width: 20px !important;
+}
+
+.form-inputs .form_label:first-child {
+  width: 76px;
+}
+
+
+.space .form_label:first-child{
+  width: 80px;
+}
+
+.form-inputs div.input {
+  margin-bottom: 5px;
+}
+
+.form-inputs .input input, .form-inputs > .input > textarea {
+  max-width: 340px;
+  min-width: 80px;
+}
+
+.form-inputs > .input > select {
+  width: 81%;
+}
+
+.form_inner_label {
+  padding: 0 10px 0 0;
+  width: auto;
+}
+
+.form_field div.field_with_errors {
+  display: inline-block;
+}
+
+.required + .error, .optional + .error {
+  display: block;
+  margin-left: 125px;
+  margin-bottom: 5px;
+}
+
+.form_field + .form_error {
+  display: block;
+  margin-left: $form_label_width - 20px;
+}
+
+.form_error, .error, span.field_with_errors {
+  padding-left: 10px;
+  vertical-align: top;
+  color: #E03838;
+}
+
+.field_with_errors input, .field_with_errors textarea {
+  border: 1px solid;
+  border-color: red;
+}
+
+#special_needs_line {
+  display: none;
+}
+
+.form_requirement, .filter_counter { // FIXME: filter_counter é usado apenas em allocations
+  font-style: italic;
+  font-size: 9pt;
+  margin-right: 2px;
+  margin-top: 2px;
+  color: #E03838;
+}
+
+.form_requirement {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.form_requirement.warning{
+  position: static;
+}
+
+.form_requirement.blue_warning{
+  position: static;
+  color: $high_contrast_font_color;
+}
+
+.label_usuario {
+  white-space: pre-wrap;
+}
+
+form #address_number,
+form #address_neighborhood,
+form #country,
+form #telephone,
+form #address_complement,
+form #zipcode,
+form #cell_phone{
+  width: 128px;
+}
+
+#user_state {
+  width: 134px;
+}
+
+.label_color {
+  color: $high_contrast_font_color;
+}
+
+select[disabled] {
+  color: red;
+  border: 1px solid $high_contrast_border_color;
+  background-color: $high_contrast_background_color;
+}
+
+.radio_options label{ // TODO: usado apenas em editions
+  width: auto;
+  margin: 5px;
+}
+
+/**
+* alinhamento do form
+*/
+
+#module_form, #discussion_form{
+  width: auto;
+}
+
+#lesson_form,{
+  width: auto;
+}
+
+#module_form{
+  height: auto;
+}
+
+#exam_form{
+  height: auto;
+}
+
+#exam_question_form{
+  height: auto;
+}
+
+.lesson_module_name{
+  float: left;
+}
+
+#curriculum_unit_form{
+  width: auto;
+}
+
+/**
+* Posicionando botões do form
+*/
+.block_content.form-actions {
+  padding-left: 143px;
+  padding-bottom: 5px;
+
+}
+  .button-align {
+    text-align: right;
+    margin-top: 10px;
+  }
+
+/**
+* Registration
+*/
+.user_data_form_buttons {
+  text-align: center;
+  font-size: 9pt;
+}
+
+.form_user_content textarea {
+  width: 413px; /*425px;*/
+}
+
+.form_user_content textarea, .form-inputs > .input > textarea {
+  margin-bottom: 0px;
+  padding: 2px;
+}
+
+.form_label_multiline {
+  vertical-align: top;
+}
+
+.label_gender {
+  text-align: right;
+}
+
+/**
+* Perfil
+*/
+.form_user_table {
+  margin-top: 5px;
+}
+
+.form_user_table td {
+  padding: 2px 0;
+}
+
+.checkbox_label label{
+  color: $high_contrast_font_color;
+  width: auto;
+}
+
+.form-inputs .inline {
+  & > div {
+    display: inline-block;
+    vertical-align: top;
+
+    &:first-child {
+      min-width: 255px;
+    }
+  }
+}
+
+.form-inputs .inline_bibliography {
+  & > div {
+    &:first-child {
+      min-width: 225px;
+    }
+  }
+}
+
+form .schedule_dates input{
+  width: 85px;
+}

@@ -1,0 +1,207 @@
+// Lesson: content and navigation
+
+.fancybox-minimize {
+  position: absolute;
+  top: -18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  background-image: url("/assets/fancybox_minimize.png");
+}
+
+.ui-effects-transfer {
+  border: 1px dotted black;
+  z-index: 9999999;
+}
+
+.lesson {
+  display: table;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  select{
+    max-width: 400px;
+  }
+  .header {
+    display: table-row;
+    height: 32px;
+  }
+  .content {
+    display: table-row;
+    height: 100%;
+  }
+}
+
+#lesson_area {
+  border: none;
+  overflow-x: hidden;
+  overflow-Y: hidden;
+  background-color: $high_contrast_background_color;
+}
+
+#lesson_header {
+  font-size: 12pt;
+  font-family: 'PT Sans';
+  width: 100%;
+  /*height: 32px;*/
+  min-height: 24px;
+  margin: 0px;
+  padding: 6px 0px 7px 8px;
+  background-color: $high_contrast_background_color;
+  color: $high_contrast_font_color;
+  select{
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+  }
+  .lesson_status{
+    float: right;
+    color: $high_contrast_font_color;
+    width: 131px;
+    margin-top: -23px;
+    .draft{
+      background-color: $high_contrast_background_color;
+    }
+    .released{
+      background-color: $high_contrast_background_color;
+    }
+    .draft, .released{
+      padding: 11px 10px 9px 4px;
+      height: 38px;
+      img{
+        margin-right: 5px;
+        vertical-align: middle;
+      }
+      .type{
+        font-size: 11pt;
+        margin-right: 7px;
+      }
+    }
+  }
+}
+
+#lesson_goto {
+  display: inline;
+  float: right;
+  height: 20px;
+  margin-right: 50px;
+  margin-top: 4px;
+  text-align: center;
+  vertical-align: top;
+  width: auto;
+}
+
+#lesson_click_area {
+  display: inline-block;
+  width: 50%;
+  height: 22px;
+}
+
+.lesson_back, .lesson_next {
+  width: 9px;
+  display: inline-block;
+  cursor: pointer;
+  height: 20px;
+  vertical-align: bottom;
+}
+
+.lesson_description {
+  text-transform: capitalize;
+}
+
+.lesson_arrows {
+  display: inline-block;
+  position: relative;
+  min-height: 15px;
+}
+
+.lesson_arrow_up, .lesson_arrow_down {
+  display: block;
+  margin: 0;
+  padding: 0;
+  height: 10px;
+}
+
+.lesson_img_nav {
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+#lesson_text_goto {
+  height: 16px;
+  width: 22px;
+  font-size: 11px;
+  padding: 0px;
+}
+
+.select_end_date {
+  text-align: left;
+  color: $high_contrast_font_color;
+  margin-bottom: 6px;
+}
+
+/**
+* rolagem da lista de aulas
+*/
+#content-scroll {
+  width: 270px;
+  height: 22px;
+  overflow: hidden;
+  padding-top: 2px;
+  display: inline-block;
+}
+
+#content-holder {
+  width: 360px;
+  height: 25px;
+}
+
+.lesson_dates{
+  display: inline-block;
+  color: $high_contrast_font_color;
+}
+
+.test_lesson{
+  display: inline-block;
+  color: $high_contrast_font_color;
+}
+
+.lesson_portlet .module{
+  background-color: $high_contrast_background_color;
+  font-family: 'Ubuntu Condensed';
+  padding: 4px;
+  border-bottom: 1px solid $high_contrast_border_color;
+  color: $high_contrast_font_color;
+  font-size: 11pt;
+}
+
+.lesson_list .collection_check_boxes{
+  font-size: 9pt;
+  margin-top: 4px;
+}
+
+.title_link{
+  text-decoration: underline;
+  width: 775px;
+  display: block;
+  padding: 5px;
+  border: 1px dashed $high_contrast_border_color;
+  text-align: center;
+}
+
+.link_content.lesson{
+  display: inline;
+}
+
+#lesson_form{
+  .lesson_privacy{
+    display: inline;
+  }
+}
+
+@media only screen and (max-width: 641px) {
+  .lesson .header{ 
+    display:none;
+  }
+}

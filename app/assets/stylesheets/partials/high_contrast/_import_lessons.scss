@@ -1,0 +1,32 @@
+.list_lessons_import.block_wrapper, .list_lessons_conclude{
+  width: auto;
+
+  table{
+    th, td{
+      text-align: center;
+      input.hasDatepicker{
+        width: 70px;
+      }
+    }
+
+    th.icon{
+      width: 5%;
+    }
+
+    a{
+      text-decoration: none;
+    }
+  }
+
+}
+
+.lesson_form{
+  .imported{
+    input{
+      margin-top: 12px;
+    }
+  }
+  .hint{
+    vertical-align: bottom;
+  }
+}

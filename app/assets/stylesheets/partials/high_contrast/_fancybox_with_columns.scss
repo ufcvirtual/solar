@@ -1,0 +1,114 @@
+.label_display{
+  .block_content{
+    max-height: 350px;
+    overflow: auto;
+    background-color: $high_contrast_background_color;
+  }
+  
+  table{
+    margin-bottom: 50px;
+  }
+
+  .final_buttons{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+
+  td,th{
+    text-align: center;
+  }
+
+  .middle_column{
+    width: 35%;
+    float: left;
+    margin-left: 40px;
+    td i{
+      color: $high_contrast_background_color;
+    }
+  }
+
+  .middle_column, .first_column, .last_column{
+    max-height: 500px;
+    i {
+      cursor: pointer;
+    }
+  }
+
+  .last_column{
+    width: 46%;
+    float: right;
+  }
+
+  .last_column.of_three{
+    width: 30%;
+  }
+
+  .first_column{
+    width: 46%;
+    float: left; 
+  }
+
+  .first_column.of_three{
+    width: 25%;
+  }
+
+  .labels{
+    font-family: Ubuntu;
+    font-size: 13px;
+    text-align: center;
+    .label{
+      border-radius: 7px;
+      margin: 8px;
+      width: auto;
+      word-wrap: break-word;
+      padding: 5px;
+      background-color: $high_contrast_background_color;
+      border: 1px solid $high_contrast_border_color;
+      cursor: pointer;
+      .buttons{
+        float: right;
+        .edit{
+          vertical-align: top;
+          font-size: 11pt;
+        }
+        .remove, .cant_remove{
+          line-height: 0.9;
+        }
+        .cant_remove{
+          color: $high_contrast_font_color;
+        }
+      }
+      form{
+        input{
+          height: 14px;
+          width: 115px;
+        }
+        i.save{
+          font-size: 12pt;
+        }
+        i{
+          line-height: 1.7;
+        }
+      }
+    }
+    .selected{
+      background-color: $high_contrast_background_color;
+      border: 1px solid $high_contrast_border_color; 
+    }
+    .disabled{
+      background-color: $high_contrast_background_color;
+      border: 1px solid $high_contrast_border_color;
+      color: $high_contrast_font_color;
+      font-family: Ubuntu;
+      font-size: 13px;
+    }
+    .disabled.selected{
+      background-color: $high_contrast_background_color;
+    }
+  }  
+
+  .text_none.empty_message{
+    text-align: center;
+  }
+}

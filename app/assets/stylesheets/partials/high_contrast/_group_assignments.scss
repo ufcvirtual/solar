@@ -1,0 +1,16 @@
+.label_display{
+  .groups_column.middle_column, .students_without_groups_column{
+    td i{
+      color: $high_contrast_font_color;
+    }
+  }
+
+  .students_without_groups_column{
+    input{
+      width: 105px;
+    }
+    .text_none.empty_message{
+      margin-top: -50px;
+    }
+  }
+}
