@@ -155,9 +155,9 @@ $.fn.call_fancybox = function (options) {
       afterShow:  function(event){
         add_description_to_close_fancybox_btn();
         if(options.element_selector != undefined)
-          focus_on_fancybox_element(options.element_selector, options.automatically);
+          focus_on_fancybox_element(options.element_selector, options.automatically, options.text_link);
         else
-          focus_on_fancybox_element(undefined, options.automatically);
+          focus_on_fancybox_element(undefined, options.automatically, options.text_link);
         remove_focus_from_back();
         if(typeof(options.complementary_after_show) == "function")
           options.complementary_after_show();
@@ -174,7 +174,7 @@ $.fn.call_fancybox = function (options) {
           give_focus_to_back();
           if(!!event.element.is(":visible")){
             if(options.element_selector_back != undefined){
-              focus_on_fancybox_element(options.element_selector_back);
+              focus_on_fancybox_element(options.element_selector_back, options.automatically, options.text_link);
             }else{
               event.element.prop('tabindex', 0);
               event.element.focus();
@@ -200,27 +200,32 @@ $.fn.call_fancybox = function (options) {
   return false;
 }
 
-function add_description_to_close_fancybox_btn(){
-  var close_txt = ("<%=I18n.t('fancybox.close')%>" + $('.fancybox-inner h2, .fancybox-inner h1').first().text());
+function add_description_to_close_fancybox_btn(text){
+  if(text ==undefined)
+    var text = $('.fancybox-inner h2, .fancybox-inner h1').first().text()
+  
+  var close_txt = ("<%=I18n.t('fancybox.close')%> " + text);
   $("a.fancybox-close").prop("title", close_txt);
   $("a.fancybox-close").prop("aria-label", close_txt);
 }
 
-function focus_on_fancybox_element(selector, automatically){
-  var fancybox_txt = $('.fancybox-inner h2, .fancybox-inner h1').first().text();
-  if(automatically == undefined)
-    $('.fancybox-wrap').prepend("<a href='#' id='fancybox-begin' class='visuallyhidden'><%=I18n.t('fancybox.begin')%>"+fancybox_txt+"</a>");
-  else
-    $('.fancybox-wrap').prepend("<a href='#' id='fancybox-begin' class='visuallyhidden'><%=I18n.t('fancybox.begin_automatically')%>"+fancybox_txt+"</a>");
+function focus_on_fancybox_element(selector, automatically, text){
+  if(text == undefined)
+    var text = $('.fancybox-inner h2, .fancybox-inner h1').first().text();
 
-  $('.fancybox-wrap').append("<a href='#' id='fancybox-end' onclick='$.fancybox.close()' class='visuallyhidden'><%=I18n.t('fancybox.end')%>"+fancybox_txt+"<%=I18n.t('fancybox.click_to_close')%></div>");
+  if(automatically == undefined)
+    $('.fancybox-wrap').prepend("<a href='#' id='fancybox-begin' class='visuallyhidden' onclick='$.fancybox.close()'><%=I18n.t('fancybox.begin')%>"+text+"<%=I18n.t('fancybox.click_to_close')%></a>");
+  else
+    $('.fancybox-wrap').prepend("<a href='#' id='fancybox-begin' class='visuallyhidden' onclick='$.fancybox.close()'><%=I18n.t('fancybox.begin_automatically')%>"+text+"<%=I18n.t('fancybox.click_to_close')%></a>");
+
+  $('.fancybox-wrap').append("<a href='#' id='fancybox-end' onclick='$.fancybox.close()' class='visuallyhidden'><%=I18n.t('fancybox.end')%>"+text+"<%=I18n.t('fancybox.click_to_close')%></div>");
 
   if(selector == undefined)
     var element = $('#fancybox-begin');
   else
     var element = $(selector);
 
-  element.prop('tabindex', '0');
+  element.prop('tabindex', 0);
   element.focus();
 }
 

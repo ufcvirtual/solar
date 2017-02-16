@@ -1,5 +1,11 @@
-- lessons   = lesson_module.lessons_to_open(current_user)
+- lessons   = @lessons.nil? ? lesson_module.lessons_to_open(current_user) : @lessons
 - selected  = @lesson.nil? ? lessons.first.id : @lesson.id
 - lessons_c = lessons.collect { |l| [l.name, l.id, { :'data-path' => l.path, :'data-draft' => l.is_draft? }] }
 
-= select_tag :lesson, options_for_select(lessons_c, selected)
+%a.btn.btn_dropdown#lesson-selected{ href: '#', :"data-dropdown" => '#lesson-options-dropdown', :'aria-label' => t('lessons.open.lesson_menu', lesson: @lesson.name) }
+  = @lesson.name
+  %i.icon-arrow-down-triangle
+.dropdown.dropdown-tip#lesson-options-dropdown
+  %ul.dropdown-menu
+    - lessons_c.each do |lesson|
+      %li{role: 'menuitem'}= link_to lesson[0], '#', {:'data-path' => lesson[2][:'data-path'], :'data-id' => lesson[1], class: (lesson[1] == @lesson.id ? 'selected' : '')}

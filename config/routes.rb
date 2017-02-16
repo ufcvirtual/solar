@@ -296,6 +296,7 @@ Solar::Application.routes.draw do
       get :open
     end
     collection do
+      get 'open_module/:lesson_module_id', action: :open_module, as: :open_module
       get :list, action: :list
       get :download_files
       get :verify_download

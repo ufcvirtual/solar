@@ -1,8 +1,15 @@
 %span.course
-  %span= @offer.parent_name
-%span.modules
-  %span= '>'
-  = select_tag :lesson_module, options_from_collection_for_select(@modules, 'id', 'name', @lesson.lesson_module_id)
-  %span= '>'
-%span.lessons
-  = render partial: "lessons/open/lessons", locals: { lesson_module: @lesson.lesson_module }
+  %h2{tabindex: 0}
+    = t('lessons.open.you_are', name: @offer.parent_name)
+    = " > "
+    %span.modules{role: 'menubar'}
+      %a.btn.btn_dropdown{ href: '#', :"data-dropdown" => '#lmodule-options-dropdown', :'aria-label' => t('lessons.open.lmodule_menu', lmodule: @lesson.lesson_module.name) }
+        = @lesson.lesson_module.name
+        %i.icon-arrow-down-triangle
+      .dropdown.dropdown-tip#lmodule-options-dropdown
+        %ul.dropdown-menu
+          - @modules.each do |lmodule|
+            %li{role: 'menuitem'}= link_to lmodule[:name], '#', :'data-id' => lmodule[:id], class: (lmodule[:id] == @lesson.lesson_module_id ? 'selected' : '')
+    = " > "
+    %span.lessons{role: 'menubar'}
+      = render partial: "lessons/open/lessons", locals: { lesson_module: @lesson.lesson_module }

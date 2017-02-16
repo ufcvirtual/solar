@@ -8,7 +8,7 @@ class LessonsController < ApplicationController
   include LessonsHelper
 
   before_filter :prepare_for_group_selection, only: :download_files
-  before_filter :offer_data, only: :open
+  before_filter :offer_data, only: [:open, :open_module]
   before_filter :set_current_user, only: :update
 
   before_filter only: [:new, :create, :edit, :update] do |controller|
@@ -45,9 +45,26 @@ class LessonsController < ApplicationController
     render nothing: true, status: 500
   end
 
+  def open_module
+    if user_session[:blocking_content]
+      render text: t('exams.restrict')
+    else
+     authorize! :show, Lesson, { on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true }
+      user_session[:lessons] << params[:id].to_i
+    
+      at_ids = (params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
+      @lessons = LessonModule.find(params[:lesson_module_id]).lessons_to_open(current_user)
+      @modules = LessonModule.to_select(at_ids, current_user)
+      @lesson  = @lessons.first
+      render 'open', layout: 'lesson'
+    end
+  rescue => error
+    Rails.logger.info "[ERROR] [APP] [#{Time.now}] [#{error}] [open lesson: #{@lesson.id}]"
+    render text: t('lessons.no_data'), status: :unprocessable_entity
+  end
+
   # GET /lessons/:id
   def open
-
     if user_session[:blocking_content]
       render text: t('exams.restrict')
     else
@@ -59,7 +76,8 @@ class LessonsController < ApplicationController
       @lesson  = Lesson.find(params[:id])
       render layout: 'lesson'
     end
-  rescue
+  rescue => error
+    Rails.logger.info "[ERROR] [APP] [#{Time.now}] [#{error}] [open lesson: #{@lesson.id}]"
     render text: t('lessons.no_data'), status: :unprocessable_entity
   end
 

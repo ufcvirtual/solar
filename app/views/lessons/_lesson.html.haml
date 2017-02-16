@@ -1,5 +1,5 @@
 - path = (@not_offer_area ? open_lesson_path(lesson.id, allocation_tags_ids: @allocation_tags_ids, offer_id: @offer.id) : open_lesson_path(lesson.id))
-%td{headers: "#name_#{lesson.lesson_module_id}"}
+%td{headers: "name_#{lesson.lesson_module_id}"}
   - closed = " (#{t(:lesson_closed_short)})"
   - if lesson.closed?
     = (@not_offer_area ? (link_to_function lesson.name + closed, 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path) : link_to(lesson.name + closed, '#', disabled: true, class: 'disabled', :'aria-label' => lesson.name + closed + t(:disabled)))
@@ -15,13 +15,14 @@
         - text << "(#{t(:lesson_will_open)})"
 
       - text << lesson.name
+      - text << t('fancybox.open')
 
       = link_to_function lesson.name, 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, :'aria-label' => text.join(' ')
     - else
       = link_to(lesson.name, '#', disabled: true)
       .test_lesson= "(#{ (lesson.is_file? ? t(:lesson_without_initial_file) : t(:lesson_without_url)) })"
 
-%td{ width: '30%', headers: "#period_#{lesson.lesson_module_id}" }
+%td{ width: '30%', headers: "period_#{lesson.lesson_module_id}" }
   = "#{t(:since)}" if (lesson.schedule.end_date.nil?)
   = [l(lesson.schedule.start_date, format: :normal), (lesson.schedule.end_date.nil? ? t(:no_end_date) : l(lesson.schedule.end_date, format: :normal))].join(' - ')
 
@@ -30,7 +31,7 @@
 - notes_txt = no_notes ? t('.no_note') : t('.notes', count: notes.count)
 - notes_alt = no_notes ? t('.no_note_alt', lesson: lesson.name) : t('.notes_alt', count: notes.count, lesson: lesson.name)
 %td{ style: 'width: 10%; text-align: center', headers: "notes_#{lesson.lesson_module_id}" }
-  = link_to('#', class: "notes fancybox.ajax",:'data-link' => lesson_notes_path(lesson.id), :'data-tooltip' => notes_txt, onclick: 'open_lesson_notes(this)', :'aria-label' => notes_alt) do |l|
+  = link_to('#', class: "notes fancybox.ajax",:'data-link' => lesson_notes_path(lesson.id), :'data-tooltip' => notes_txt, onclick: 'open_lesson_notes(this)', :'aria-label' => notes_alt + t('fancybox.open')) do |l|
     %i.icon-book2{:'aria-hidden' => 'true'}
     - unless no_notes
       %span.count_icon{:'aria-hidden' => 'true'}= notes.count
@@ -38,7 +39,7 @@
 - if @responsible
   %td{ width: '12%' }
     - status = [Lesson_Test, Lesson_Approved].delete_if { |v| v == lesson.status }
-    = link_to (image_tag "#{lesson.is_draft? ? 'rejected' : 'released'}.png"), responsible_change_status_lesson_path(id: lesson.id, status: status, allocation_tags_ids: @allocation_tags_ids), remote: true, method: :put, class: 'change_lesson_status', :'data-tooltip' => (lesson.is_draft? ? t('lessons.index.draft') :  t('lessons.index.released')), :'data-module-id' => lesson.lesson_module_id
+    = link_to (image_tag "#{lesson.is_draft? ? 'rejected' : 'released'}.png", :'aria-hidden' => 'true'), responsible_change_status_lesson_path(id: lesson.id, status: status, allocation_tags_ids: @allocation_tags_ids), remote: true, method: :put, class: 'change_lesson_status', :'data-tooltip' => (lesson.is_draft? ? t('lessons.index.draft') :  t('lessons.index.released')), :'data-module-id' => lesson.lesson_module_id, :'aria-label' => (lesson.is_draft? ? t('lessons.index.draft_alt', lesson: lesson.name) :  t('lessons.index.released_alt', lesson: lesson.name))
 
 :css
   .list_lessons a.notes{

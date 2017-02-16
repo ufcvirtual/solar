@@ -101,6 +101,7 @@ $(function() {
         $.put(url, function(data){
           $.get($('.list_lessons').data('link-list'), function(data){
             $('.list_lessons:first').replaceWith(data);
+            focus_element($(data));
           });
         }).error(function(data) {
           if(typeof(module_id) != "undefined"){

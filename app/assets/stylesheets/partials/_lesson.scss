@@ -1,5 +1,8 @@
 // Lesson: content and navigation
 
+@import "fonts/fonts";
+@import "fonts/icons";
+
 .fancybox-minimize {
   position: absolute;
   top: -18px;
@@ -26,6 +29,12 @@
   .header {
     display: table-row;
     height: 32px;
+    .btn_dropdown{
+      padding: 4px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      font-size: 0.8em;
+    }
   }
   .content {
     display: table-row;
@@ -57,9 +66,10 @@
   }
   .lesson_status{
     float: right;
+    display: inline-block;
     color: $color_white;
     width: 131px;
-    margin-top: -23px;
+    margin-top: 3px;
     .draft{
       background-color: $lesson_status_draft_background;
     }
@@ -78,6 +88,22 @@
         margin-right: 7px;
       }
     }
+  }
+  .buttons{
+    display: inline-block;
+    float: right;
+    margin-right: 10px;
+    li{
+      display: inline-block;
+      a{
+        padding: 4px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+      }
+    }
+  }
+  .breadcrumb{
+    display: inline-block;
   }
 }
 

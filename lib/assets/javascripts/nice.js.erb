@@ -361,8 +361,19 @@ $.fn.nice_open_lesson = function(options) {
     autoScale: true,
     autoSize: true,
     afterShow: function() {
-      $("<a class='fancybox-minimize' title='minimize'></a>").appendTo(this.skin).click(minimize_lesson);
-      $(".fancybox-close").click(close_lesson);
+      $("<a class='fancybox-item fancybox-minimize'  title=<%=I18n.t('fancybox.minimize')%> aria-label=<%=I18n.t('fancybox.minimize')%>></a>").appendTo(this.skin).click(minimize_lesson);
+      
+      add_description_to_close_fancybox_btn("<%=I18n.t(:menu_lesson)%>");
+      focus_on_fancybox_element(undefined, undefined, "<%=I18n.t(:menu_lesson)%>");
+      remove_focus_from_back();
+
+      $('iframe').prop('title', "<%=I18n.t(:menu_lesson)%>");
+      $('iframe').contents().find('html').prop('lang', "<%=I18n.locale.to_s.gsub('_', '-')%>");
+    },
+    afterClose:  function(event) {
+      event.element.prop('tabindex', 0);
+      event.element.focus();
+      give_focus_to_back();
     }
   };
 

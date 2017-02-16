@@ -37,6 +37,11 @@ function close_lesson() {
   $.removeCookie(lesson_cookie_id);
 }
 
+function focus_element(element){
+  $(element).prop('tabindex', 0);
+  $(element).focus();
+}
+
 function open_new_lesson_on_fancybox(lesson_path, lesson_url) {
   $('.lesson .content').attr('data-url', lesson_url);
 
@@ -52,27 +57,32 @@ function open_new_lesson_on_fancybox(lesson_path, lesson_url) {
     $('.lesson_status .draft').addClass('invisible');
     $('.lesson_status .released').removeClass('invisible');
   }
+
+  focus_element('.lesson.open h2');
 }
 
 $(function(){
   // select modules
-  $("select#lesson_module").change(function(){
-    var lessons_url = get_module_lessons_url.replace('lesson_module_id', $(this).val());
+  $(".breadcrumb .modules #lmodule-options-dropdown a").on('click',function(){
+    var lessons_url = get_module_lessons_url.replace('lesson_module_id', $(this).data('id'));
     $.get(lessons_url, function(data){
-      $('.breadcrumb .lessons').html(data);
-
-      var lesson_path = $('option:selected', data).data('path');
-      var lesson_url  = get_lesson_url.replace('lesson_id', $('.breadcrumb .lessons #lesson').val());
-
-      open_new_lesson_on_fancybox(lesson_path, lesson_url);
+      $('.lesson.open').replaceWith(data);
+      focus_element('.lesson.open h2');
     });
   });
 
   // select lessons
-  $('.breadcrumb .lessons').on('change', '#lesson', function(){
-    var lesson_path = $('#lesson option:selected').data('path');
-    var lesson_url  = get_lesson_url.replace('lesson_id', $(this).val());
+  $('.breadcrumb .lessons #lesson-options-dropdown a').on('click', function(){
+    var lesson_path = $(this).data('path');
+    var lesson_url  = get_lesson_url.replace('lesson_id', $(this).data('id'));
+    $('#lesson-selected').html($(this).html() + '<i aria-hidden="true" class="icon-arrow-down-triangle"></i>');
 
     open_new_lesson_on_fancybox(lesson_path, lesson_url);
+  });
+
+  $('a').not('.ignore_keydown').on('keydown', function(e){
+    if (e.which == 13){
+      $(this).click();
+    }
   });
 });

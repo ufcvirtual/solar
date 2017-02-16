@@ -5,14 +5,13 @@
     - if can?(:change_status, @lesson) || current_user.admin?
       .lesson_status
         %span.draft{ class: @lesson.is_draft? ? '' : 'invisible' }
-          = image_tag 'rejected.png'
+          = image_tag 'rejected.png', :'aria-hidden' => 'true'
           %span.type= t('lessons.index.draft')
         %span.released{ class: @lesson.is_draft? ? 'invisible' : '' }
-          = image_tag 'released.png'
+          = image_tag 'released.png', :'aria-hidden' => 'true'
           %span.type= t('lessons.index.released')
 
 :javascript
 
   var get_lesson_url = "#{lesson_url('lesson_id')}";
-  var get_module_lessons_url = "#{lesson_module_lessons_path('lesson_module_id')}";
-
+  var get_module_lessons_url = "#{open_module_lessons_path('lesson_module_id')}";

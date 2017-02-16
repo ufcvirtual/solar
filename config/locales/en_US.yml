@@ -764,6 +764,8 @@ en_US:
       acceptance: Acceptance
       draft: Draft
       released: Released
+      draft_alt: Lesson %{lesson} is draft (click to release it)
+      released_alt: Lesson %{lesson} is released (click to change to draft)
       lesson_notes: Lesson notes
       summary: Table which content includes access links to available lessons and text name of unavailable lessons, also access periods and access links to lesson's notes for each one of them. All lessons are related to lesson module %{module_name}.
       caption: Lesson module %{module_name} lesson's list
@@ -908,6 +910,10 @@ en_US:
         conclude: Conclude
         back: Back
         original_lesson: '** about source lesson'
+    open:
+      you_are: "You are at: %{name} "
+      lmodule_menu: " %{lmodule} (Click to change lesson module. A selection lesson modules submenu will be available)"
+      lesson_menu: " %{lesson} (Click to change lesson. A selection lesson submenu will be available)"
   lesson_modules:
     general_of_offer: General
     general_of_group: General of group
@@ -3851,9 +3857,10 @@ en_US:
     password: Type your password
 
   fancybox:
-    close: Close modal window to 
-    begin: Modal window begin to 
+    close: "Close modal window to "
+    begin: "Modal window begin to "
     begin_automatically: Automatically opened modal window begin to
-    end: Modal window end to 
+    end: "Modal window end to "
     click_to_close: (click to close)
     open: (Will open modal window)
+    minimize: "Minimize modal window"

@@ -61,10 +61,12 @@ if(jQuery) (function($) {
         trigger: trigger
       });
 
+
+
     var div = $(this).parent().find($(this).data('dropdown')).first();
       if(!$(div).data('focus')){
-        $(div).find('h2').attr("tabindex", "0");
-        $(div).find('h2').focus();
+        $(div).find('h2, h3').first().attr("tabindex", "0");
+        $(div).find('h2, h3').first().focus();
         $(div).data('focus', true);
       }
 
