@@ -53,6 +53,10 @@
   margin-left: 5px;
 }
 
+#mysolar_high_contrast_option {
+  color: $high_contrast_link_color !important;
+}
+
 #mysolar_top_options {
   height: $mysolar_topbar_height;
   line-height: $mysolar_topbar_height;
