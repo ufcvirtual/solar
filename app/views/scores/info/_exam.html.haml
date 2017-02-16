@@ -72,7 +72,7 @@
                   %td
                     - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation))
                     %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled
-                  %td.center=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
+                  / %td.center=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
         - else
           .block_content.block_content_text= t(:itens_not_found)
           

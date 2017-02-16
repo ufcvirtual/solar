@@ -26,8 +26,7 @@
                   %th.center.no_sort{style: "width: 2%;"}
                 - else
                   %th.center.no_sort{style: "width: 2%;"}=t(:discussions_participation, scope: [:scores, :info])
-                - if @is_student
-                  %th.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
+                %th.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
             %tbody
               - @discussions_evaluative.each do |discussion|
                 %tr.lines
@@ -64,8 +63,7 @@
                   - if @is_student
                     %td.center= discussion.grade
                   %td.center= link_to content_tag(:i, nil, class: "icon-#{@can_evaluate && @is_student ? 'write' : 'text'}"), user_discussion_posts_path(discussion.academic_tool_id, @user.id), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]) 
-                  - if @is_student
-                    %td.center=(discussion.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
+                  %td.center=(discussion.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
         - else
           .block_content.block_content_text= t(:itens_not_found)
 
@@ -84,8 +82,7 @@
                   %th.center.no_sort{style: "width: 2%;"}
                 - else
                   %th.center.no_sort{style: "width: 2%;"}=t(:discussions_participation, scope: [:scores, :info])
-                - if @is_student
-                  %th.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
+                %th.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
             %tbody
               - @discussions_frequency.each do |discussion|
                 %tr.lines
@@ -121,8 +118,7 @@
                   - if @is_student
                     %td.center= discussion.working_hours
                   %td.center= link_to content_tag(:i, nil, class: "icon-#{@can_evaluate && @is_student ? 'write' : 'text'}"), user_discussion_posts_path(discussion.academic_tool_id, @user.id), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post])
-                  - if @is_student
-                    %td.center=(discussion.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
+                  %td.center=(discussion.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
         - else
           .block_content.block_content_text= t(:itens_not_found)
 

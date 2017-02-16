@@ -291,6 +291,7 @@ class Score # < ActiveRecord::Base
             (SELECT COUNT(id) FROM discussion_posts WHERE discussion_posts.academic_allocation_id = academic_allocations.id ) AS count_all,
             NULL as moderator,
             NULL as duration,
+            NULL as server,
             CASE 
               WHEN s.start_date <= current_date AND s.end_date >= current_date THEN true
               ELSE 
@@ -356,6 +357,7 @@ class Score # < ActiveRecord::Base
                 (select count(assignment_comments.id) FROM assignment_comments WHERE assignment_comments.academic_allocation_user_id = academic_allocation_users.id) AS count_all,
                 NULL as moderator,
                 NULL as duration,
+                NULL as server,
                 CASE 
                   WHEN schedules.start_date <= current_date AND schedules.end_date >= current_date THEN true
                   ELSE 
@@ -415,6 +417,7 @@ class Score # < ActiveRecord::Base
               0 as count_all,
               NULL as moderator,
               NULL as duration,
+              NULL as server,
               CASE 
               WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (chat_rooms.start_hour IS NULL OR current_time>to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time ) AND (chat_rooms.end_hour IS NULL OR current_time<=to_timestamp(chat_rooms.end_hour, 'HH24:MI:SS')::time) THEN true
               ELSE 
@@ -476,6 +479,7 @@ class Score # < ActiveRecord::Base
             0 as count_all,
             NULL as moderator,
             exams.duration::text,
+            NULL as server,
             CASE 
               WHEN (current_date >= s.start_date AND current_date <= s.end_date) AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time > to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time < to_timestamp(exams.end_hour, 'HH24:MI:SS')::time) THEN true
               ELSE 
@@ -538,6 +542,7 @@ class Score # < ActiveRecord::Base
             0 as count_all,
             NULL as moderator,
             NULL as duration,
+            NULL as server,
             CASE 
               WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (schedule_events.start_hour IS NULL OR current_time > to_timestamp(schedule_events.start_hour, 'HH24:MI:SS')::time) AND (schedule_events.end_hour IS NULL OR current_time<=to_timestamp(schedule_events.end_hour, 'HH24:MI:SS')::time) THEN true
               ELSE 
@@ -588,6 +593,7 @@ class Score # < ActiveRecord::Base
             0 as count_all,
             webconferences.user_id::text as moderator,
             webconferences.duration::text,
+            webconferences.server::text as server,
             CASE 
               when NOW()>webconferences.initial_time AND NOW()<=(webconferences.initial_time + webconferences.duration* interval '1 min') then true
               ELSE 
