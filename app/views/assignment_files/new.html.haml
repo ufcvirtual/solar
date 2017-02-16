@@ -20,6 +20,7 @@
           $.fancybox.close();
           flash_message("Arquivo enviado com sucesso", "notice");
           $(".assignment_to_be_sent").html("#{t(:sent)}").css("color","#2900C2");
+          update_tables_with_no_data();
         }
       });
     });

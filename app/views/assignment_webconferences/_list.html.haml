@@ -7,8 +7,8 @@
       = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_awebconference(this)', :'data-url' => new_assignment_webconference_path(assignment_id: @assignment.id), class: "btn btn_main link_new_awebconference #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.new'), :'aria-label' => t(".new")
 .block_content
   - no_webconferences = (webconferences.blank?)
-  %table.tb_list{style: (no_webconferences ? "display: none" : ""),:summary=> t("assignments.list.summary_web") }
-    %thead
+  %table.tb_list{:summary=> t("assignments.list.summary_web") }
+    %thead{style: (no_webconferences ? "display: none" : "")}
       %tr.lines
         %th#name_web= t('.name')
         %th.date_column.center#period_web= t('.period')
@@ -19,7 +19,7 @@
           %th.no_sort.options{id: "edit_web"}
           %th.no_sort.options{id: "record_link_web"}
           %th.no_sort.options{id: "delete_web"}
-    %tbody
+    %tbody.assign_web
       - unless no_webconferences
         - webconferences.each do |webconference|
           = render partial: 'assignment_webconferences/webconference', locals: { webconference: webconference }
