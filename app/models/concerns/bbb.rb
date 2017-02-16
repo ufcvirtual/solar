@@ -54,8 +54,6 @@ module Bbb
     end_time       = initial_time + duration.minutes
     webconferences = Webconference.where(query, sv, initial_time, end_time, initial_time, end_time, initial_time, end_time)
     assignment_webconferences = AssignmentWebconference.where(query, sv, initial_time, end_time, initial_time, end_time, initial_time, end_time)
-    webconferences            << self unless self.class == AssignmentWebconference || webconferences.include?(self)
-    assignment_webconferences << self unless self.class == Webconference || assignment_webconferences.include?(self)
 
     unless webconferences.empty? && assignment_webconferences.empty?
       ats      = webconferences.map(&:allocation_tags).flatten.map(&:related).flatten
@@ -76,6 +74,8 @@ module Bbb
       end
       students += assignment_webconferences.map(&:academic_allocation_user).flatten.map(&:users_count).flatten.sum unless assignment_webconferences.empty?
       students
+    else
+      false
     end
   end
 
@@ -151,12 +151,10 @@ module Bbb
       api = Bbb.bbb_prepare(sv)
       if (api && bbb_online?(api)) # Online?
         next_server = verify_quantity_users_per_server(sv) # Quantidade de usuarios por server, naquela faixa de horario
-
-        if (next_server == 0 || next_server.nil?) #Encerra o loop se o server estiver vazio
+        if (!next_server) #Encerra o loop se o server estiver vazio
           @server = sv
           break
         end
-
         if (best_server.nil? or (next_server < best_server)) # Continua a procura pelo menos sobrecarregado
           best_server = next_server
           @server = sv
