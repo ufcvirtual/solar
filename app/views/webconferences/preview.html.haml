@@ -35,6 +35,8 @@
             %th.smaller_width.no_sort= t('webconferences.index.access')
       %tbody
         - @webconferences.each_with_index do |webconference, idx|
+          - disabled = (webconference.situation == 'scheduled' || webconference.situation == 'in_progress' || webconference.situation == 'processing')
+          - unavailable = exist_and_offline?(webconference.server)
           %tr.lines
             %td{ style: 'text-align:center;' }= check_box_tag :ckb_webconference, webconference.ac_id || webconference.academic_allocations.first.id, false, { class: 'ckb_webconference' }
             %td= webconference.link_to_join(current_user, webconference.at_id)
@@ -79,10 +81,13 @@
             %td.center
               %div= l(webconference.start_date.to_date)
               %div= [l(webconference.start_hour.to_datetime, format: :today), l(webconference.end_hour.to_datetime, format: :today)].join(' - ')
-            %td.center{class: (exist_and_offline?(webconference.server) ? 'assignment_not_started' : "assignment_#{webconference.situation}")}= exist_and_offline?(webconference.server) ? t(:unavailable, scope: [:webconferences, :list]) : t(webconference.situation, scope: [:scores, :situation])
+            %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}")}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t(webconference.situation, scope: [:scores, :situation])
             %td.invisible= location
             %td.center= webconference.meeting_info(current_user, webconference.at_id)
-            %td.center{ :style => "#{ ((webconference.situation == I18n.t(:finish, scope: [:webconferences, :list], :locale => :en_US).downcase!) || (webconference.situation == I18n.t(:sent, scope: [:scores, :situation], :locale => :en_US).downcase!)) ? '' : 'visibility: hidden;'}", :'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference, at_id: webconference.at_id), class: 'record'
+            - if disabled
+              %td.center{:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false'
+            - else
+              %td.center{:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference, at_id: webconference.at_id), class: "record"
             - if @can_see_access
               %td{ :'data-url' => list_access_webconference_path(webconference, at_id: webconference.at_id), :'data-tooltip' => t('webconferences.list.access') }= link_to_function content_tag(:i, nil, class: 'icon-users btn'), 'list_access(this)'
             
