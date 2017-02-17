@@ -20,18 +20,17 @@
           .participant{:'data-tooltip'=> resp.name + " (" + resp.profile_name + ") "}
             = truncate( [resp.name, " (", resp.profile_name, " )"].join, length: 55, omission: '...' )
 
-    - if @is_student
-      .scores_menu
-        %a.btn.btn_main.tool_dropdown{href: '#', :'data-dropdown' => "#dropdown_menu"}
-          = content_tag(:i, nil, class: 'icon-list')
-          = t('scores.index.show_hide_tools')
-          %i.icon-arrow-down-triangle
-        %div{ id: "dropdown_menu", class: 'dropdown dropdown-tip' }
-          %ul.dropdown-menu
-            - @types.each_with_index do |tool, idx|
-              %li
-                = check_box_tag "#{tool.last}", tool.last, false, :"data-url-search" => search_tool_scores_path(type: tool.last)
-                = label_tag "#{tool.last}", tool.first
+    .scores_menu
+      %a.btn.btn_main.tool_dropdown{href: '#', :'data-dropdown' => "#dropdown_menu"}
+        = content_tag(:i, nil, class: 'icon-list')
+        = t('scores.index.show_hide_tools')
+        %i.icon-arrow-down-triangle
+      %div{ id: "dropdown_menu", class: 'dropdown dropdown-tip' }
+        %ul.dropdown-menu
+          - @types.each_with_index do |tool, idx|
+            %li
+              = check_box_tag "#{tool.last}", tool.last, false, :"data-url-search" => search_tool_scores_path(type: tool.last)
+              = label_tag "#{tool.last}", tool.first
 
     - if @is_student
       .info_right
@@ -137,7 +136,10 @@
         };
 
         $.get("#{search_tool_scores_path}", params, function(data) {
-          $('#list_tools').prepend(data);       
+          if(!!$('#list_tools').length)
+            $('#list_tools').prepend(data);
+          else
+            $('#resp_list').prepend(data);       
 
         }).error(function(data){
           var data = $.parseJSON(data.responseText);
@@ -145,40 +147,20 @@
             flash_message(data.alert, 'alert');
          });
       }else{
-        $('#list_tools .'+$(this).val()).remove();
+        if(!!$('#list_tools').length)
+          $('#list_tools .'+$(this).val()).remove();
+        else
+          $('#resp_list .'+$(this).val()).remove();
       }
 
     });
 
-    $('ul.dropdown-menu li input[type="checkbox"]#all').click();
-
     if(!!$('#resp_list').length){
-      $.get("#{search_tool_scores_path(tool: 'discussion', user_id: current_user.id)}", function(data) {
-        $('#resp_list').prepend(data);       
-
-      }).error(function(data){
-        var data = $.parseJSON(data.responseText);
-        if (typeof(data.alert) != "undefined")
-          flash_message(data.alert, 'alert');
-       });
-
-      $.get("#{search_tool_scores_path(tool: 'chat_room', user_id: current_user.id)}", function(data) {
-        $('#resp_list').prepend(data);       
-
-      }).error(function(data){
-        var data = $.parseJSON(data.responseText);
-        if (typeof(data.alert) != "undefined")
-          flash_message(data.alert, 'alert');
-      });
-
-      $.get("#{search_tool_scores_path(tool: 'webconference', user_id: current_user.id)}", function(data) {
-        $('#resp_list').prepend(data);       
-
-      }).error(function(data){
-        var data = $.parseJSON(data.responseText);
-        if (typeof(data.alert) != "undefined")
-          flash_message(data.alert, 'alert');
-       });
+      $('ul.dropdown-menu li input[type="checkbox"]#chat_room').click();
+      $('ul.dropdown-menu li input[type="checkbox"]#webconference').click();
+      $('ul.dropdown-menu li input[type="checkbox"]#discussion').click();
+    }else{
+      $('ul.dropdown-menu li input[type="checkbox"]#all').click();
     }
 
   });

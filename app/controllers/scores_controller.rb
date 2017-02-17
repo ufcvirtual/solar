@@ -126,13 +126,17 @@ class ScoresController < ApplicationController
     authorize! :info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @user = current_user
 
-    @types = [ [t(:exam, scope: [:scores, :info]), 'exam'], [t(:assignments, scope: [:scores, :info]), 'assignment'],[t(:discussions, scope: [:scores, :info]), 'discussion'], [t(:chat, scope: [:scores, :info]), 'chat_room'],[t(:webconference, scope: [:scores, :info]), 'webconference'],[t(:schedule_events, scope: [:scores, :info]), 'schedule_event'], [t(:all, scope: [:scores, :info]), 'all']]
-
     @allocation_tag = AllocationTag.find(@allocation_tag_id)
     @curriculum_unit = @allocation_tag.get_curriculum_unit
     @responsible = AllocationTag.get_participants(@allocation_tag_id, {responsibles: true})
 
     @is_student = @user.is_student?([@allocation_tag_id])
+
+    if @is_student
+      @types = [ [t(:exam, scope: [:scores, :info]), 'exam'], [t(:assignments, scope: [:scores, :info]), 'assignment'],[t(:discussions, scope: [:scores, :info]), 'discussion'], [t(:chat, scope: [:scores, :info]), 'chat_room'],[t(:webconference, scope: [:scores, :info]), 'webconference'],[t(:schedule_events, scope: [:scores, :info]), 'schedule_event'], [t(:all, scope: [:scores, :info]), 'all']]
+    else
+      @types = [ [t(:discussions, scope: [:scores, :info]), 'discussion'], [t(:chat, scope: [:scores, :info]), 'chat_room'],[t(:webconference, scope: [:scores, :info]), 'webconference']]
+    end
 
     @wh = Allocation.get_working_hours(@user.id, AllocationTag.find(@allocation_tag_id))
     @access, @public_files, @access_count = Score.informations(@user.id, @allocation_tag_id)
@@ -241,13 +245,18 @@ class ScoresController < ApplicationController
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @user = User.find(params[:user_id])
     @access, @public_files, @access_count = Score.informations(@user.id, @allocation_tag_id)
-    @types = [ [t(:exam, scope: [:scores, :info]), 'exam'], [t(:assignments, scope: [:scores, :info]), 'assignment'],[t(:discussions, scope: [:scores, :info]), 'discussion'], [t(:chat, scope: [:scores, :info]), 'chat_room'],[t(:webconference, scope: [:scores, :info]), 'webconference'],[t(:schedule_events, scope: [:scores, :info]), 'schedule_event'], [t(:all, scope: [:scores, :info]), 'all']]
 
     @allocation_tag = AllocationTag.find(@allocation_tag_id)
     @curriculum_unit = @allocation_tag.get_curriculum_unit
     @responsible = AllocationTag.get_participants(@allocation_tag_id, {responsibles: true})
 
     @is_student = @user.is_student?([@allocation_tag_id])
+
+    if @is_student
+      @types = [ [t(:exam, scope: [:scores, :info]), 'exam'], [t(:assignments, scope: [:scores, :info]), 'assignment'],[t(:discussions, scope: [:scores, :info]), 'discussion'], [t(:chat, scope: [:scores, :info]), 'chat_room'],[t(:webconference, scope: [:scores, :info]), 'webconference'],[t(:schedule_events, scope: [:scores, :info]), 'schedule_event'], [t(:all, scope: [:scores, :info]), 'all']]
+    else
+      @types = [ [t(:discussions, scope: [:scores, :info]), 'discussion'], [t(:chat, scope: [:scores, :info]), 'chat_room'],[t(:webconference, scope: [:scores, :info]), 'webconference']]
+    end
 
     @wh = Allocation.get_working_hours(@user.id, AllocationTag.find(@allocation_tag_id))
     render :info

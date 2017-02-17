@@ -224,11 +224,12 @@ table.general{
     }
   }
 
-  #list_tools{
+  #list_tools, #resp_list{
     section{
       .tools{
         display: none;
       }
+      padding-top: 11px;
       .tools.show{
         display: block;
       }
