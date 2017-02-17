@@ -1,22 +1,11 @@
+%div{ class: 'link_pdf' }    
+  = link_to t('scores.index.print_pdf'), general_scores_path(report: true, format: :pdf), :target => "_blank", class: "btn"
+
 .parent
   %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.list_of_students')}
     %thead
       %tr.lines
-        %td#student= t("scores.index.student")
-        %td.no_sort{colspan: 10}
-          #tabs.tabs_index
-            %ul
-              %li
-                %a.active{:'data-url' => general_scores_path}=t('scores.index.general')
-                %a{:'data-url' => evaluative_scores_path}=t('scores.index.evaluative')
-                %a{:'data-url' => not_evaluative_scores_path}=t('scores.index.not_evaluative')
-                - unless @wh.nil?
-                  %a{:'data-url' => frequency_scores_path}=t('scores.index.frequency')
-              %div{ class: 'link_pdf' }    
-                = link_to t('scores.index.print_pdf'), general_scores_path(report: true, format: :pdf), :target => "_blank", class: "btn"
-               
-      %tr.lines
-        %th#student.no_sort{style: "width: 100px;"}
+        %th#student{style: "width: 100px;"}= t("scores.index.student")
         %th= t('scores.index.access_to_the_course')
         - unless @wh.nil?
           %th= t('scores.index.frequency')
@@ -32,13 +21,8 @@
     %tbody.users
       - if @users.blank?
         %tr.lines
-          %td{colspan: 2}= t('scores.index.no_data')
+          %td{colspan: 10}= t('scores.index.no_data')
       - else
         = render partial: 'pending_general', locals: { users: @users }
 - unless @users.blank?
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), general_scores_path(page: @users.next_page), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items) if @users.next_page    
-
-
-
-
-

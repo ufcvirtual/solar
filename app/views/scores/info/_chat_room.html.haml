@@ -1,211 +1,208 @@
-.chat_room
+%section.chat_room
   .block_title
     %h2= t(:title_my_chats, scope: [:chat_rooms, :list])
-  .block_content
     #tabs.tab_chat
       %ul
-        %li.active 
-          = link_to t(:evaluative, scope: [:scores, :info]), "#evaluative"
-        %li 
-          = link_to t(:frequency, scope: [:scores, :info]), "#frequency"
-        %li 
-          = link_to t(:not_evaluative, scope: [:scores, :info]), "#notevaluative"
+        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative'
+        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency"
+        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative"
 
-      #evaluative          
-        - unless @chat_rooms_evaluative.empty?
-          %table.tb_list
-            %thead
+  .block_content
+    .tools.show#evaluative          
+      - unless @chat_rooms_evaluative.empty?
+        %table.tb_list
+          %thead
+            %tr.lines
+              %th{tyle: "width: 30%"}= t(:detail, scope: [:chat_rooms, :chats])
+              %th.center{style: "width: 30%"}= t(:availability, scope: [:chat_rooms, :chats])
+              %th.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
+              %th.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
+              - if @is_student
+                %th.center{style: "width: 2%;"}= t(:grade, scope: [:scores, :info])
+              %th.center.no_sort{style: "width: 5%;"}=t("chat_rooms.chats.message_history")
+              - if @is_student
+                %th.no_sort{style: "width: 2%;"}
+          %tbody
+            - @chat_rooms_evaluative.each do |chat|
               %tr.lines
-                %th{tyle: "width: 30%"}= t(:detail, scope: [:chat_rooms, :chats])
-                %th.center{style: "width: 30%"}= t(:availability, scope: [:chat_rooms, :chats])
-                %th.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
-                %th.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
-                - if @is_student
-                  %th.center{style: "width: 2%;"}= t(:grade, scope: [:scores, :info])
-                %th.center.no_sort{style: "width: 5%;"}=t("chat_rooms.chats.message_history")
-                - if @is_student
-                  %th.no_sort{style: "width: 2%;"}
-            %tbody
-              - @chat_rooms_evaluative.each do |chat|
-                %tr.lines
-                  %td
-                    - if chat.opened == 't'
-                      = link_to chat.name, access_chat_room_path(chat.academic_tool_id, allocation_id: @alloc, academic_allocation_id: chat.id), {class: 'link_content fancybox.iframe', target: '_blank' }
+                %td
+                  - if chat.opened == 't'
+                    = link_to chat.name, access_chat_room_path(chat.academic_tool_id, allocation_id: @alloc, academic_allocation_id: chat.id), {class: 'link_content fancybox.iframe', target: '_blank' }
+                  - else
+                    .title= chat.name
+                  .description
+                    .minimun= sanitize(truncate chat.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
+                    .complete.invisible
+                      = chat.description
+                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                  .equivalent
+                    - unless chat.eq_name.blank?
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{chat.id}" }
+                        %i.icon-flow-parallel
+                        = t('scores.info.equivalency')
+                        %i.icon-arrow-down-triangle
+                      .dropdown.dropdown-tip{id: "dropdown_eq_1_#{chat.id}"}
+                        %ul{ class: 'dropdown-menu' }
+                          = raw t('scores.info.equivalent', name: chat.eq_name)
                     - else
-                      .title= chat.name
-                    .description
-                      .minimun= sanitize(truncate chat.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
-                      .complete.invisible
-                        = chat.description
-                        = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
-                    .equivalent
-                      - unless chat.eq_name.blank?
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{chat.id}" }
-                          %i.icon-flow-parallel
-                          = t('scores.info.equivalency')
-                          %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{chat.id}"}
-                          %ul{ class: 'dropdown-menu' }
-                            = raw t('scores.info.equivalent', name: chat.eq_name)
-                      - else
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{chat.id}", :'data-url' => equalities_tools_path(tool_type: chat.academic_tool_type, ac_id: chat.id), onclick: 'open_dropdown(this);' }
-                          %i.icon-flow-parallel
-                          =t('scores.info.equalities')
-                          %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{chat.id}"}
-                          %ul{ class: 'dropdown-menu' }
-                    - if chat.academic_tool_type == 'ChatRoom' && chat.type_tool == '1'
-                      .participants.equivalent
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_1_#{chat.id}", :'data-url' => participants_chat_room_path(chat.academic_tool_id, ac_id: chat.id), onclick: 'open_dropdown(this);' }
-                          %i.icon-users
-                          =t('scores.info.participants')
-                          %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_p_1_#{chat.id}"}
-                          %ul{ class: 'dropdown-menu' }
-                  %td{ align: 'center' }
-                    %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
-                    %div= [(chat.start_hour), (chat.end_hour)].join(' - ')
-                  %td.center{class: "assignment_#{chat.situation}"}= t("scores.situation.#{chat.situation}")
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{chat.id}", :'data-url' => equalities_tools_path(tool_type: chat.academic_tool_type, ac_id: chat.id), onclick: 'open_dropdown(this);' }
+                        %i.icon-flow-parallel
+                        =t('scores.info.equalities')
+                        %i.icon-arrow-down-triangle
+                      .dropdown.dropdown-tip{id: "dropdown_eq_1_#{chat.id}"}
+                        %ul{ class: 'dropdown-menu' }
+                  - if chat.academic_tool_type == 'ChatRoom' && chat.type_tool == '1'
+                    .participants.equivalent
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_p_1_#{chat.id}", :'data-url' => participants_chat_room_path(chat.academic_tool_id, ac_id: chat.id), onclick: 'open_dropdown(this);' }
+                        %i.icon-users
+                        =t('scores.info.participants')
+                        %i.icon-arrow-down-triangle
+                      .dropdown.dropdown-tip{id: "dropdown_p_1_#{chat.id}"}
+                        %ul{ class: 'dropdown-menu' }
+                %td{ align: 'center' }
+                  %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
+                  %div= [(chat.start_hour), (chat.end_hour)].join(' - ')
+                %td.center{class: "assignment_#{chat.situation}"}= t("scores.situation.#{chat.situation}")
+                %td.center
+                  - unless chat.count.blank?
+                    = link_to_function chat.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: chat.academic_tool_type, ac_id: chat.id, user_id: @user.id, group_id: chat.group_id, situation: chat.situation, score_type: 'evaluative')
+                - if @is_student
+                  %td.center= chat.grade
+                %td.center= link_to content_tag(:i, nil, class: 'icon-users'), messages_chat_room_path(chat.academic_tool_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t("chat_rooms.chats.message_history")
+                - if @is_student
                   %td.center
-                    - unless chat.count.blank?
-                      = link_to_function chat.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: chat.academic_tool_type, ac_id: chat.id, user_id: @user.id, group_id: chat.group_id, situation: chat.situation, score_type: 'evaluative')
-                  - if @is_student
-                    %td.center= chat.grade
-                  %td.center= link_to content_tag(:i, nil, class: 'icon-users'), messages_chat_room_path(chat.academic_tool_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t("chat_rooms.chats.message_history")
-                  - if @is_student
-                    %td.center
-                      - if @can_evaluate  
-                        = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(chat.academic_tool_id, user_id: @user.id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post])
-        - else
-          .block_content.block_content_text= t(:message_no_chat, scope: [:chat_rooms, :list])
+                    - if @can_evaluate  
+                      = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(chat.academic_tool_id, user_id: @user.id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post])
+      - else
+        .block_content.block_content_text= t(:message_no_chat, scope: [:chat_rooms, :list])
 
-      #frequency
-        - unless @chat_rooms_frequency.empty?
-          %table.tb_list
-            %thead
+    .tools#frequency
+      - unless @chat_rooms_frequency.empty?
+        %table.tb_list
+          %thead
+            %tr.lines
+              %th{tyle: "width: 30%"}= t(:detail, scope: [:chat_rooms, :chats])
+              %th.center{style: "width: 30%"}= t(:availability, scope: [:chat_rooms, :chats])
+              %th.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
+              %th.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
+              - if @is_student
+                %th.center{style: "width: 2%;"}= t(:frequency, scope: [:scores, :info])
+              %th.center.no_sort{style: "width: 5%;"}=t("chat_rooms.chats.message_history")
+              - if @is_student
+                %th.no_sort{style: "width: 2%;"}
+          %tbody
+            - @chat_rooms_frequency.each do |chat|
               %tr.lines
-                %th{tyle: "width: 30%"}= t(:detail, scope: [:chat_rooms, :chats])
-                %th.center{style: "width: 30%"}= t(:availability, scope: [:chat_rooms, :chats])
-                %th.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
-                %th.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
-                - if @is_student
-                  %th.center{style: "width: 2%;"}= t(:frequency, scope: [:scores, :info])
-                %th.center.no_sort{style: "width: 5%;"}=t("chat_rooms.chats.message_history")
-                - if @is_student
-                  %th.no_sort{style: "width: 2%;"}
-            %tbody
-              - @chat_rooms_frequency.each do |chat|
-                %tr.lines
-                  %td
-                    - if chat.opened == 't'
-                      = link_to chat.name, access_chat_room_path(chat.academic_tool_id, allocation_id: @alloc, academic_allocation_id: chat.id), {class: 'link_content fancybox.iframe', target: '_blank' }
+                %td
+                  - if chat.opened == 't'
+                    = link_to chat.name, access_chat_room_path(chat.academic_tool_id, allocation_id: @alloc, academic_allocation_id: chat.id), {class: 'link_content fancybox.iframe', target: '_blank' }
+                  - else
+                    .title= chat.name
+                  .description
+                    .minimun= sanitize(truncate chat.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
+                    .complete.invisible
+                      = chat.description
+                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                  .equivalent
+                    - unless chat.eq_name.blank?
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{chat.id}" }
+                        %i.icon-flow-parallel
+                        = t('scores.info.equivalency')
+                        %i.icon-arrow-down-triangle
+                      .dropdown.dropdown-tip{id: "dropdown_eq_2_#{chat.id}"}
+                        %ul{ class: 'dropdown-menu' }
+                          = raw t('scores.info.equivalent', name: chat.eq_name)
                     - else
-                      .title= chat.name
-                    .description
-                      .minimun= sanitize(truncate chat.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
-                      .complete.invisible
-                        = chat.description
-                        = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
-                    .equivalent
-                      - unless chat.eq_name.blank?
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{chat.id}" }
-                          %i.icon-flow-parallel
-                          = t('scores.info.equivalency')
-                          %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{chat.id}"}
-                          %ul{ class: 'dropdown-menu' }
-                            = raw t('scores.info.equivalent', name: chat.eq_name)
-                      - else
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{chat.id}", :'data-url' => equalities_tools_path(tool_type: chat.academic_tool_type, ac_id: chat.id), onclick: 'open_dropdown(this);' }
-                          %i.icon-flow-parallel
-                          =t('scores.info.equalities')
-                          %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{chat.id}"}
-                          %ul{ class: 'dropdown-menu' }
-                    - if chat.academic_tool_type == 'ChatRoom' && chat.type_tool == '1'
-                      .participants.equivalent
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_2_#{chat.id}", :'data-url' => participants_chat_room_path(chat.academic_tool_id, ac_id: chat.id), onclick: 'open_dropdown(this);' }
-                          %i.icon-users
-                          =t('scores.info.participants')
-                          %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_p_2_#{chat.id}"}
-                          %ul{ class: 'dropdown-menu' }  
-                  %td{ align: 'center' }
-                    %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
-                    %div= [(chat.start_hour), (chat.end_hour)].join(' - ')
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{chat.id}", :'data-url' => equalities_tools_path(tool_type: chat.academic_tool_type, ac_id: chat.id), onclick: 'open_dropdown(this);' }
+                        %i.icon-flow-parallel
+                        =t('scores.info.equalities')
+                        %i.icon-arrow-down-triangle
+                      .dropdown.dropdown-tip{id: "dropdown_eq_2_#{chat.id}"}
+                        %ul{ class: 'dropdown-menu' }
+                  - if chat.academic_tool_type == 'ChatRoom' && chat.type_tool == '1'
+                    .participants.equivalent
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_p_2_#{chat.id}", :'data-url' => participants_chat_room_path(chat.academic_tool_id, ac_id: chat.id), onclick: 'open_dropdown(this);' }
+                        %i.icon-users
+                        =t('scores.info.participants')
+                        %i.icon-arrow-down-triangle
+                      .dropdown.dropdown-tip{id: "dropdown_p_2_#{chat.id}"}
+                        %ul{ class: 'dropdown-menu' }  
+                %td{ align: 'center' }
+                  %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
+                  %div= [(chat.start_hour), (chat.end_hour)].join(' - ')
 
-                  %td.center{class: "assignment_#{chat.situation}"}= t("scores.situation.#{chat.situation}")
+                %td.center{class: "assignment_#{chat.situation}"}= t("scores.situation.#{chat.situation}")
+                %td.center
+                  - unless chat.count.blank?
+                    = link_to_function chat.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: chat.academic_tool_type, ac_id: chat.id, user_id: @user.id, group_id: chat.group_id, situation: chat.situation, score_type: 'evaluative')
+                - if @is_student
+                  %td.center= chat.working_hours
+                %td.center= link_to content_tag(:i, nil, class: 'icon-users'), messages_chat_room_path(chat.academic_tool_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t("chat_rooms.chats.message_history")
+                - if @is_student
                   %td.center
-                    - unless chat.count.blank?
-                      = link_to_function chat.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: chat.academic_tool_type, ac_id: chat.id, user_id: @user.id, group_id: chat.group_id, situation: chat.situation, score_type: 'evaluative')
-                  - if @is_student
-                    %td.center= chat.working_hours
-                  %td.center= link_to content_tag(:i, nil, class: 'icon-users'), messages_chat_room_path(chat.academic_tool_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t("chat_rooms.chats.message_history")
-                  - if @is_student
-                    %td.center
-                      - if @can_evaluate
-                        = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(chat.academic_tool_id, user_id: @user.id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post])
-        - else
-          .block_content.block_content_text= t(:message_no_chat, scope: [:chat_rooms, :list])
-    
-      #notevaluative
-        - unless @chat_rooms_not_evaluative.empty?
-          %table.tb_list
-            %thead
+                    - if @can_evaluate
+                      = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(chat.academic_tool_id, user_id: @user.id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post])
+      - else
+        .block_content.block_content_text= t(:message_no_chat, scope: [:chat_rooms, :list])
+  
+    .tools#notevaluative
+      - unless @chat_rooms_not_evaluative.empty?
+        %table.tb_list
+          %thead
+            %tr.lines
+              %th{tyle: "width: 30%"}= t(:detail, scope: [:chat_rooms, :chats])
+              %th.center{style: "width: 30%"}= t(:availability, scope: [:chat_rooms, :chats])
+              %th.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
+              %th.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
+              %th.center.no_sort{style: "width: 5%;"}=t("chat_rooms.chats.message_history")
+          %tbody
+            - @chat_rooms_not_evaluative.each do |chat|
               %tr.lines
-                %th{tyle: "width: 30%"}= t(:detail, scope: [:chat_rooms, :chats])
-                %th.center{style: "width: 30%"}= t(:availability, scope: [:chat_rooms, :chats])
-                %th.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
-                %th.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
-                %th.center.no_sort{style: "width: 5%;"}=t("chat_rooms.chats.message_history")
-            %tbody
-              - @chat_rooms_not_evaluative.each do |chat|
-                %tr.lines
-                  %td
-                    - if chat.opened == 't'
-                      = link_to chat.name, access_chat_room_path(chat.academic_tool_id, allocation_id: @alloc, academic_allocation_id: chat.id), {class: 'link_content fancybox.iframe', target: '_blank' }
+                %td
+                  - if chat.opened == 't'
+                    = link_to chat.name, access_chat_room_path(chat.academic_tool_id, allocation_id: @alloc, academic_allocation_id: chat.id), {class: 'link_content fancybox.iframe', target: '_blank' }
+                  - else
+                    .title= chat.name
+                  .description
+                    .minimun= sanitize(truncate chat.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
+                    .complete.invisible
+                      = chat.description
+                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                  .equivalent
+                    - unless chat.eq_name.blank?
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{chat.id}" }
+                        %i.icon-flow-parallel
+                        = t('scores.info.equivalency')
+                        %i.icon-arrow-down-triangle
+                      .dropdown.dropdown-tip{id: "dropdown_eq_3_#{chat.id}"}
+                        %ul{ class: 'dropdown-menu' }
+                          = raw t('scores.info.equivalent', name: chat.eq_name)
                     - else
-                      .title= chat.name
-                    .description
-                      .minimun= sanitize(truncate chat.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
-                      .complete.invisible
-                        = chat.description
-                        = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
-                    .equivalent
-                      - unless chat.eq_name.blank?
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{chat.id}" }
-                          %i.icon-flow-parallel
-                          = t('scores.info.equivalency')
-                          %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{chat.id}"}
-                          %ul{ class: 'dropdown-menu' }
-                            = raw t('scores.info.equivalent', name: chat.eq_name)
-                      - else
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{chat.id}", :'data-url' => equalities_tools_path(tool_type: chat.academic_tool_type, ac_id: chat.id), onclick: 'open_dropdown(this);' }
-                          %i.icon-flow-parallel
-                          =t('scores.info.equalities')
-                          %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{chat.id}"}
-                          %ul{ class: 'dropdown-menu' }
-                    - if chat.academic_tool_type == 'ChatRoom' && chat.type_tool == '1'
-                      .participants.equivalent
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_p_3_#{chat.id}", :'data-url' => participants_chat_room_path(chat.academic_tool_id, ac_id: chat.id), onclick: 'open_dropdown(this);' }
-                          %i.icon-users
-                          =t('scores.info.participants')
-                          %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_p_3_#{chat.id}"}
-                          %ul{ class: 'dropdown-menu' }  
-                  %td{ align: 'center' }
-                    %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
-                    %div= [(chat.start_hour), (chat.end_hour)].join(' - ')
-                  %td.center{class: "assignment_#{chat.situation}"}= t("scores.situation.#{chat.situation}")
-                  %td.center
-                    - unless chat.count.blank?
-                      = link_to_function chat.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: chat.academic_tool_type, ac_id: chat.id, user_id: @user.id, group_id: chat.group_id, situation: chat.situation, score_type: 'evaluative')
-                  %td.center= link_to content_tag(:i, nil, class: 'icon-users'), messages_chat_room_path(chat.academic_tool_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t("chat_rooms.chats.message_history")
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{chat.id}", :'data-url' => equalities_tools_path(tool_type: chat.academic_tool_type, ac_id: chat.id), onclick: 'open_dropdown(this);' }
+                        %i.icon-flow-parallel
+                        =t('scores.info.equalities')
+                        %i.icon-arrow-down-triangle
+                      .dropdown.dropdown-tip{id: "dropdown_eq_3_#{chat.id}"}
+                        %ul{ class: 'dropdown-menu' }
+                  - if chat.academic_tool_type == 'ChatRoom' && chat.type_tool == '1'
+                    .participants.equivalent
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_p_3_#{chat.id}", :'data-url' => participants_chat_room_path(chat.academic_tool_id, ac_id: chat.id), onclick: 'open_dropdown(this);' }
+                        %i.icon-users
+                        =t('scores.info.participants')
+                        %i.icon-arrow-down-triangle
+                      .dropdown.dropdown-tip{id: "dropdown_p_3_#{chat.id}"}
+                        %ul{ class: 'dropdown-menu' }  
+                %td{ align: 'center' }
+                  %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
+                  %div= [(chat.start_hour), (chat.end_hour)].join(' - ')
+                %td.center{class: "assignment_#{chat.situation}"}= t("scores.situation.#{chat.situation}")
+                %td.center
+                  - unless chat.count.blank?
+                    = link_to_function chat.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: chat.academic_tool_type, ac_id: chat.id, user_id: @user.id, group_id: chat.group_id, situation: chat.situation, score_type: 'evaluative')
+                %td.center= link_to content_tag(:i, nil, class: 'icon-users'), messages_chat_room_path(chat.academic_tool_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t("chat_rooms.chats.message_history")
 
-        - else
-          .block_content.block_content_text= t(:message_no_chat, scope: [:chat_rooms, :list])
+      - else
+        .block_content.block_content_text= t(:message_no_chat, scope: [:chat_rooms, :list])
 
 
 = javascript_include_tag "chat_rooms", 'tablesorter', 'tooltip', 'scores'
@@ -213,7 +210,6 @@
 :javascript
 
   $(function(){
-    $(".tab_chat").tabs();
     $(".to_evaluate_chat").call_fancybox({
       minWidth: '50%',
       minHeight: '50%',

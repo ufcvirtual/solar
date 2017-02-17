@@ -2847,18 +2847,18 @@ en_US:
       responsibles: Responsibles
       profiles: Profiles
       responsible: Responsible
-      students: Students
+      students: Students / Tools
       no_responsible: No responsible
       sent_messages: Sent messages
       average_exam_grade: "Average exam grade %{link}"
       calcule: '(calcule)'
       general: General View
-      evaluative: Evaluative
-      not_evaluative: Not Evaluative
+      evaluative: Evaluatives
+      not_evaluative: Not Evaluatives
       frequency: Frequency
       final_grade: Final Grade
-      show_hide_tools: 'Show/Hide Activities'
-      no_data: No student or activity
+      show_hide_tools: 'Show/Hide Tools'
+      no_data: No student or tool
       curriculum_unit_working_hours: '(Curriculum Unit working hours: %{wh}w/h)'
       new_after_evaluation: Chages was made at the sent content after evaluation
       print_pdf: Print PDF
@@ -2914,6 +2914,8 @@ en_US:
       equalities_list: 'This activity has the following equalities:'
       no_equalities: 'This activty has no equality'
       participants: '(See participants)'
+      expand_description: Expand description
+      compress_description: Contract description
     situation:
       not_started: Not started
       to_answer: To answer

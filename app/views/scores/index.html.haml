@@ -1,5 +1,5 @@
 - unless @responsibles.nil?
-  .block_wrapper.user_requested_list
+  %section.block_wrapper.user_requested_list
     .block_title
       %h2
         %i.icon-suitcase
@@ -35,9 +35,20 @@
     - else
       .block_content_text_list.text_none= t(".no_responsible")
 
-.block_wrapper
+%section.block_wrapper
   .block_title
     %h2= t(".students")
+    #tabs.tabs_index{:'data-div' => '.tb_list_students'}
+      %ul
+        %li
+          %a.general.active{href: '#', :'data-url' => general_scores_path, onclick: 'change_tab(this); return false;'}=t('scores.index.general')
+        %li
+          %a.evaluative{href: '#', :'data-url' => evaluative_scores_path,onclick: 'change_tab(this); return false;'}=t('scores.index.evaluative')
+        %li
+          %a.not_evaluative{href: '#', :'data-url' => not_evaluative_scores_path,onclick: 'change_tab(this); return false;'}=t('scores.index.not_evaluative')
+          - unless @wh.nil?
+            %li
+              %a.frequency{href: '#', :'data-url' => frequency_scores_path, onclick: 'change_tab(this); return false;'}=t('scores.index.frequency')
 
   .tb_list_students
     = render partial: 'general'

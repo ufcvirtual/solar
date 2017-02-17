@@ -3075,7 +3075,7 @@ pt_BR:
       responsibles: Responsáveis
       profiles: Perfis
       responsible: Responsável
-      students: Alunos
+      students: Alunos / Ferramentas
       no_responsible: Nenhum responsável
       sent_messages: Mensagens enviadas
       average_exam_grade: "Média das provas %{link}"
@@ -3087,12 +3087,12 @@ pt_BR:
       without_group: SG
       to_send: AE
       general: Visão Geral
-      evaluative: Avaliativa
-      not_evaluative: Não Avaliativa
+      evaluative: Avaliativas
+      not_evaluative: Não Avaliativas
       frequency: Frequência
       final_grade: Média Final
-      show_hide_tools: 'Exibir/Ocultar Atividades'
-      no_data: Nenhum aluno ou atividade
+      show_hide_tools: 'Exibir/Ocultar Ferramentas'
+      no_data: Nenhum aluno ou ferramentas
       curriculum_unit_working_hours: '(Carga horária da disciplina: %{wh}h/a)'
       new_after_evaluation: Houve alteração no conteúdo enviado após avaliação
       print_pdf: Gerar PDF
@@ -3129,7 +3129,7 @@ pt_BR:
       uc_without_wh: "Disciplina sem carga horária"
       frequency_uc: "<b>Carga horária da disciplina:</b> %{wh} h/a"
       selected: "Selecione: "
-      all: Todos
+      all: Todas
       tools: 'Ferramentas'
       tool: 'Ferramenta'
       title: Titulo
@@ -3148,6 +3148,8 @@ pt_BR:
       equalities_list: 'Esta atividade tem as seguintes equivalências:'
       no_equalities: 'Esta atividade não possui equivalências.'
       participants: '(Ver participantes)'
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
     reports:
       general_evaluative: Relatório Acompanhamento - Atividades Avaliativas
       general_frequency: Relatório Acompanhamento - Atividades de Frequência

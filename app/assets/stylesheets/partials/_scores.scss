@@ -59,17 +59,6 @@ tr#activities{
 
 }
 
-.print_pdf{
-  float:left;
-  padding-left: 6px;
-  margin-top: 6px;
-}
-
-.link_pdf{
-  float:left;
-  padding-left: 6px;
-  font-weight: normal;
-}
 .tb_list_students{
   overflow-y: auto;
   margin-top: 10px;
@@ -177,32 +166,6 @@ table#list_of_students{
 
 table#list_of_students thead{
   height: 48px;
-  #tabs{
-    float: left;
-    border: none;
-    li a{
-      color: $score_table_head_color;
-      cursor: pointer;
-      border-top: solid 1px $score_table_head_color;
-    }
-    li a:not(.ui-tabs-anchor){
-      border-left: solid 1px $score_table_head_color;
-    }
-    li a.active{
-      background-color: $background_light_beige;
-    }
-    a{
-      text-decoration: none;
-    }
-    li a:last-of-type{
-      border-right: solid 1px $score_table_head_color;
-    }
-  }
-  a.tool_dropdown{
-    float: left;
-    padding: 4px;
-    margin-top: 6px;
-  }
   ul.dropdown-menu{
     label:hover, label{
       background-color: transparent;
@@ -261,26 +224,13 @@ table.general{
     }
   }
 
-  #tabs{
-    border: none;
-    .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, .ui-state-hover, .ui-state-focus{
-      border: none;
-      background-color: $background_light_beige;
-    }
-    ul{
-      li{
-        border-top: solid 1px $score_table_head_color;
-        border-left: solid 1px $score_table_head_color;
-        border-right: solid 1px $score_table_head_color;
+  #list_tools{
+    section{
+      .tools{
+        display: none;
       }
-      li a{
-        color: $score_table_head_color;
-        cursor: pointer;
-        text-decoration: none;
-      }
-      li.active, li a:active, li a:hover, li a::selection{
-        background-color: $background_light_beige;
-        border: none;
+      .tools.show{
+        display: block;
       }
     }
   }
@@ -298,3 +248,62 @@ tbody{
     }
   }
 }
+
+
+#tabs{
+  margin-left: 28%;
+  li{
+    display: inline-block;
+    padding: 2px;
+    padding-right: 5px;
+  }
+  li a{
+    color: $score_table_head_color;
+    cursor: pointer;
+    border-top: solid 2px $color_main;
+    
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 11px;
+    background-color: $background_gray;
+  }
+  li a:not(.ui-tabs-anchor){
+    border-left: solid 2px $color_main;
+  }
+  li a.active{
+    background-color: $color_main;
+    color: $color_white;
+  }
+  a{
+    text-decoration: none;
+  }
+  li a:last-of-type{
+    border-right: solid 2px $color_main;
+  }
+
+}
+
+.tb_list_students{
+  .top_elements{
+    margin-left: 35%;
+    display: inline-block;
+    a, .print_pdf, form{
+      display: inline-block;
+    }
+  }
+
+  .link_pdf{
+    margin-left: 45%;
+    display: inline-block;
+  }
+
+  .dropdown-menu{
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
+    label{
+      display: inline-block;
+    }
+  }
+}
+

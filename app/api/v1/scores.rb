@@ -16,8 +16,8 @@ module V1
       ## api/v1/groups/1/scores/info
       params do
           requires :id, type: Integer, desc: 'ID da turma'
-          optional :tool, type: Array[String], default: 'all', values: ['all', 'discussions', 'assignments', 'chat_rooms', 'webconferences', 'exams', 'schedule_events']
-          optional :list, type: String, default: 'all', values: ['all', 'evaluative', 'frequency', 'not_evaluative']
+          optional :tool, type: Array[String], default: 'all'#, values: ['all', 'discussions', 'assignments', 'chat_rooms', 'webconferences', 'exams', 'schedule_events']
+          optional :list, type: String, default: 'all'#, values: ['all', 'evaluative', 'frequency', 'not_evaluative']
           optional :user_id, type: Integer
         end
       get ':id/scores/info' do
@@ -77,7 +77,7 @@ module V1
       ## api/v1/groups/1/scores/
       params do
           requires :id, type: Integer, desc: 'ID da turma'
-          optional :list, type: String, default: 'all', values: ['general_view', 'all', 'evaluative', 'frequency', 'not_evaluative']
+          optional :list, type: String, default: 'all'#, values: ['general_view', 'all', 'evaluative', 'frequency', 'not_evaluative']
         end
       get ':id/scores' do
         authorize! :index, Score, on: [@at.id]

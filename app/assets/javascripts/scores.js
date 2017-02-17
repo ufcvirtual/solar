@@ -48,6 +48,27 @@ function open_tool(link){
   });
 }
 
+function change_tab(tab){
+  $.get($(tab).data('url'), function(data){
+    $('.tb_list_students').html(data);
+    $('#tabs a.active').removeClass('active');
+    $(tab).addClass('active');
+  }).error(function(data){
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert');
+  });
+}
+
+function change_tab_tool(tab){
+  var parent = $(tab).parents('section');
+  $('.tools', parent).removeClass('show');
+  $($(tab).data('div'), parent).addClass('show');
+  $('#tabs a.active', parent).removeClass('active');
+  $(tab).addClass('active');
+  return false;
+}
+
 $(function(){
    $('.tb_list_students ul.dropdown-menu li input[type="checkbox"]').change(function(){
     if(!!$(this).prop('checked'))
@@ -56,27 +77,9 @@ $(function(){
       $('.'+$(this).val()).addClass('invisible');
    });
 
-  $( ".tabs_index" ).tabs();
-  $('.tabs_index li a').unbind('click');
-  $('.tabs_index li a').click(function(){
-    $.get($(this).data('url'), function(data){
-      $('.parent').removeClass('parent');
-      $('.tb_list_students').html(data);
-    }).error(function(data){
-      var data = $.parseJSON(data.responseText);
-      if (typeof(data.alert) != "undefined")
-        flash_message(data.alert, 'alert');
-    });
-  });
-
   $(".expand, .compress").click(function(){
     $(this).parent().hide();
     $($(this).parent().siblings()[0]).show();
-  });
-
-  $('#scores #tabs li a').on('click', function(){
-    $(this).parent().siblings().removeClass('active');
-    $(this).parent().addClass('active');
   });
 
 });
