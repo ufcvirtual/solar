@@ -4,7 +4,7 @@
       %h2
         %i.icon-video-conference
         = t(:webconferences, scope: [:webconferences, :list])
-    %table.webconferences.tb_list
+    %table.webconferences.tb_list{summary: t('.summary')}
       %thead
         %tr.lines
           %th.greater_width#web_name= t(:name, scope: [:webconferences, :list])

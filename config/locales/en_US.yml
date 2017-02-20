@@ -1261,6 +1261,7 @@ en_US:
       less: See compressed description of %{web}
       groups: List of groups which webconference %{web} is shared between
       access_web: Access webconference %{web} (will open a new window)
+      summary: Table which content has webconference access links, and also information about it such as moderator, group sharing, equivalencies, date and time, working hours, grade, situation, amount of online users and a link to access recordings.
     list_access:
       no_log: No participant accessed this webconference
       too_old: This webconference happened before the access start to be saved
@@ -1278,6 +1279,7 @@ en_US:
       evaluation_info: '<b> About evaluation: </b>All grades and frequency here defined are to each student, not for each access. Therefore, by evaluating/seting frequency of an access, all other access of this student will have the same grade and working hours.'
       working_hours: Working hours
       profile: Profile
+      summary: Table which content has all access list with profile, name of user, complete name of group, date and time info. As well you can evaluate all access of a student, if you're a teatcher.
     get_record:
       recordings: "%{name}'s recordings"
       access: Access to recording

@@ -2,7 +2,7 @@
 
 .dc_lesson_access
   - unless @logs.blank? || @logs.nil?
-    %table.tb_list
+    %table.tb_list{t('.summary')}
       %thead
         %tr.lines
           %th{ colspan: 2 }= t('.user')
