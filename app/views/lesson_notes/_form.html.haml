@@ -8,8 +8,8 @@
 
 .bottom
   %ul
-    %li= link_to_function content_tag(:i, nil, class: 'icon-checkmark', :'aria-hidden' => 'true'), 'save_note(this)', :'data-tooltip' => t('.save'), :'aria-label' => t('.save_alt')
-    %li= link_to_function content_tag(:i, nil, class: 'icon-cross cancel_note', :'aria-hidden' => 'true'), 'cancel_note(this)', :'data-tooltip' => t('.cancel'), :'aria-label' => t('.cancel_alt')
+    %li= link_to_function content_tag(:i, nil, class: 'icon-checkmark', :'aria-hidden' => 'true'), 'save_note(this)', :'data-tooltip' => t('.save'), :'aria-label' => t('.save_alt'), onkeydown: 'click_on_keypress(event, this);'
+    %li= link_to_function content_tag(:i, nil, class: 'icon-cross cancel_note', :'aria-hidden' => 'true'), 'cancel_note(this)', :'data-tooltip' => t('.cancel'), :'aria-label' => t('.cancel_alt'), onkeydown: 'click_on_keypress(event, this);'
 
 = javascript_include_tag 'ckeditor/init', 'tooltip'
 

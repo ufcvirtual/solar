@@ -21,11 +21,11 @@
             = truncate( [resp.name, " (", resp.profile_name, " )"].join, length: 55, omission: '...' )
 
     .scores_menu
-      %a.btn.btn_main.tool_dropdown{href: '#', :'data-dropdown' => "#dropdown_menu"}
+      %a.btn.btn_main.tool_dropdown{href: '#', :'data-dropdown' => "#dropdown_menu", onkeydown: 'click_on_keypress(event, this);'}
         = content_tag(:i, nil, class: 'icon-list')
         = t('scores.index.show_hide_tools')
         %i.icon-arrow-down-triangle
-      %div{ id: "dropdown_menu", class: 'dropdown dropdown-tip' }
+      #dropdown_menu.dropdown.dropdown-tip
         %ul.dropdown-menu
           - @types.each_with_index do |tool, idx|
             %li

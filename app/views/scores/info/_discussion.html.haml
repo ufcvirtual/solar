@@ -3,9 +3,9 @@
     %h2= t(:discussions_participation, :scope => [:scores, :info])
     #tabs.tab_discussion
       %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative'
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency"
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative"
+        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative', onkeydown: 'click_on_keypress(event, this);'
+        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency", onkeydown: 'click_on_keypress(event, this);'
+        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative", onkeydown: 'click_on_keypress(event, this);'
 
   .block_content
     .tools.show#evaluative    
@@ -29,7 +29,7 @@
               %tr.lines
                 %td
                   - if discussion.opened == 't'
-                    = link_to discussion.name, discussion_posts_path(discussion.academic_tool_id), {class: 'link_content'}
+                    = link_to discussion.name, discussion_posts_path(discussion.academic_tool_id), {class: 'link_content', onkeydown: 'click_on_keypress(event, this);'}
                   - else
                     .title= discussion.name
                   .description
@@ -39,7 +39,7 @@
                       = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                   .equivalent
                     - unless discussion.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{discussion.id}" }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{discussion.id}", onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -47,7 +47,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: discussion.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{discussion.id}", :'data-url' => equalities_tools_path(tool_type: discussion.academic_tool_type, ac_id: discussion.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{discussion.id}", :'data-url' => equalities_tools_path(tool_type: discussion.academic_tool_type, ac_id: discussion.id), onclick: 'open_dropdown(this);' , onkeydown: 'click_on_keypress(event, this);'}
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -59,7 +59,7 @@
                 %td.center= discussion.count
                 - if @is_student
                   %td.center= discussion.grade
-                %td.center= link_to content_tag(:i, nil, class: "icon-#{@can_evaluate && @is_student ? 'write' : 'text'}"), user_discussion_posts_path(discussion.academic_tool_id, @user.id), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]) 
+                %td.center= link_to content_tag(:i, nil, class: "icon-#{@can_evaluate && @is_student ? 'write' : 'text'}"), user_discussion_posts_path(discussion.academic_tool_id, @user.id), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]) , onkeydown: 'click_on_keypress(event, this);'
                 %td.center=(discussion.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)
@@ -85,7 +85,7 @@
               %tr.lines
                 %td
                   - if discussion.opened == 't'
-                    = link_to discussion.name, discussion_posts_path(discussion.academic_tool_id), {class: 'link_content'}
+                    = link_to discussion.name, discussion_posts_path(discussion.academic_tool_id), {class: 'link_content', onkeydown: 'click_on_keypress(event, this);'}
                   - else
                     .title= discussion.name
                   .description
@@ -95,7 +95,7 @@
                       = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                   .equivalent
                     - unless discussion.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{discussion.id}" }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{discussion.id}", onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -103,7 +103,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: discussion.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{discussion.id}", :'data-url' => equalities_tools_path(tool_type: discussion.academic_tool_type, ac_id: discussion.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{discussion.id}", :'data-url' => equalities_tools_path(tool_type: discussion.academic_tool_type, ac_id: discussion.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -114,7 +114,7 @@
                 %td.center= discussion.count
                 - if @is_student
                   %td.center= discussion.working_hours
-                %td.center= link_to content_tag(:i, nil, class: "icon-#{@can_evaluate && @is_student ? 'write' : 'text'}"), user_discussion_posts_path(discussion.academic_tool_id, @user.id), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post])
+                %td.center= link_to content_tag(:i, nil, class: "icon-#{@can_evaluate && @is_student ? 'write' : 'text'}"), user_discussion_posts_path(discussion.academic_tool_id, @user.id), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);'
                 %td.center=(discussion.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)
@@ -134,7 +134,7 @@
               %tr.lines
                 %td
                   - if discussion.opened == 't'
-                    = link_to discussion.name, discussion_posts_path(discussion.academic_tool_id), {class: 'link_content'}
+                    = link_to discussion.name, discussion_posts_path(discussion.academic_tool_id), {class: 'link_content', onkeydown: 'click_on_keypress(event, this);'}
                   - else
                     .title= discussion.name
                   .description
@@ -144,7 +144,7 @@
                       = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                   .equivalent
                     - unless discussion.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{discussion.id}" }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{discussion.id}", onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -152,7 +152,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: discussion.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{discussion.id}", :'data-url' => equalities_tools_path(tool_type: discussion.academic_tool_type, ac_id: discussion.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{discussion.id}", :'data-url' => equalities_tools_path(tool_type: discussion.academic_tool_type, ac_id: discussion.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -162,7 +162,7 @@
                   = [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(' - ')   
                 %td.center{class: "assignment_#{discussion.situation}"}= t("scores.situation.#{discussion.situation}")
                 %td.center= discussion.count
-                %td.center= link_to content_tag(:i, nil, class: 'icon-text'), user_discussion_posts_path(discussion.academic_tool_id, @user.id), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:discussions_participation, scope: [:scores, :info])
+                %td.center= link_to content_tag(:i, nil, class: 'icon-text'), user_discussion_posts_path(discussion.academic_tool_id, @user.id), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:discussions_participation, scope: [:scores, :info]), onkeydown: 'click_on_keypress(event, this);'
                 
       - else
         .block_content.block_content_text= t(:itens_not_found)

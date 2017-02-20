@@ -25,24 +25,24 @@
                 .enunciation_slice= assignment.description.slice(0..150) << "..."
                 .enunciation_complete= assignment.description
                 .more_or_less
-                  %a.enunciation_more.link_content{href: "#", :'aria-label' => t("assignments.list.more_enuc", assing: assignment.name) }= t("assignments.list.more")
-                  %a.enunciation_less.link_content{href: "#", :'aria-label' => t("assignments.list.less_enuc", assing: assignment.name)}= t("assignments.list.less")
+                  %a.enunciation_more.link_content{href: "#", :'aria-label' => t("assignments.list.more_enuc", assing: assignment.name), onkeydown: 'click_on_keypress(event, this);' }= t("assignments.list.more")
+                  %a.enunciation_less.link_content{href: "#", :'aria-label' => t("assignments.list.less_enuc", assing: assignment.name), onkeydown: 'click_on_keypress(event, this);'}= t("assignments.list.less")
             - else
               = assignment.description
             .equivalent
               - unless assignment.eq_name.blank?
-                %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{assignment.academic_tool_id}" }
-                  %i.icon-flow-parallel
+                %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{assignment.academic_tool_id}", onkeydown: 'click_on_keypress(event, this);' }
+                  %i.icon-flow-parallel{:'aria-hidden'=> 'true'}
                   = t('scores.info.equivalency')
-                  %i.icon-arrow-down-triangle
+                  %i.icon-arrow-down-triangle{:'aria-hidden'=>'true'}
                 .dropdown.dropdown-tip{id: "dropdown_eq_#{assignment.academic_tool_id}"}
                   %ul{ class: 'dropdown-menu' }
                     = raw t('scores.info.equivalent', name: assignment.eq_name)
               - else
-                %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{assignment.academic_tool_id}", :'data-url' => equalities_tools_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id), onclick: 'open_dropdown(this);'}
-                  %i.icon-flow-parallel
+                %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{assignment.academic_tool_id}", :'data-url' => equalities_tools_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);'}
+                  %i.icon-flow-parallel{:'aria-hidden'=>'true'}
                   =t('scores.info.equalities')
-                  %i.icon-arrow-down-triangle
+                  %i.icon-arrow-down-triangle{:'aria-hidden'=>'true'}
                 .dropdown.dropdown-tip{id: "dropdown_eq_#{assignment.academic_tool_id}"}
                   %ul{ class: 'dropdown-menu' }
           %td.center{headers: "date_range#{type}" }
@@ -64,16 +64,3 @@
 
 - else
   .text_none.empty_message= t(:itens_not_found)
-
-:javascript
-
-  $(function(){
-    $(".enunciation_more").click(function(){
-      $('.enunciation_complete').attr("tabindex", "0");
-      $('.enunciation_complete').focus();
-    }):
-    $(".enunciation_less").click(function(){
-      $('.enunciation_slice').attr("tabindex", "0");
-      $('.enunciation_slice').focus();
-    });
-  });  

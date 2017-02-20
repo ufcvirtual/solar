@@ -61,6 +61,13 @@ function open_new_lesson_on_fancybox(lesson_path, lesson_url) {
   focus_element('.lesson.open h2');
 }
 
+
+function click_on_keypress(event, element){
+  if(event.which == 13)
+    $(element).click();
+  return false;
+}
+
 $(function(){
   // select modules
   $(".breadcrumb .modules #lmodule-options-dropdown a").on('click',function(){
@@ -80,9 +87,4 @@ $(function(){
     open_new_lesson_on_fancybox(lesson_path, lesson_url);
   });
 
-  $('a').not('.ignore_keydown').on('keydown', function(e){
-    if (e.which == 13){
-      $(this).click();
-    }
-  });
 });

@@ -3,9 +3,9 @@
     %h2= t(:exam, :scope => [:scores, :info])
     #tabs.tab_exam
       %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative'
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency"
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative"
+        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative', onkeydown: 'click_on_keypress(event, this);'
+        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency", onkeydown: 'click_on_keypress(event, this);'
+        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative", onkeydown: 'click_on_keypress(event, this);'
 
   .block_content
     .tools.show#evaluative      
@@ -46,7 +46,7 @@
                       = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t("scores.info.compress_description"))
                   .equivalent
                     - unless exam.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{exam.id}" }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{exam.id}", onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -54,7 +54,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: exam.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -68,7 +68,7 @@
                 %td.center.grade= exam.grade
                 %td
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation))
-                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled
+                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);'
                 / %td.center=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)
@@ -111,7 +111,7 @@
                       = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t("scores.info.compress_description"))
                   .equivalent
                     - unless exam.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{exam.id}" }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{exam.id}", onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -119,7 +119,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: exam.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -133,7 +133,7 @@
                 %td.center= exam.working_hours
                 %td.center
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake'].include?(exam.situation))
-                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled
+                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);'
                 %td.center=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)
@@ -177,7 +177,7 @@
                       = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t("scores.info.compress_description"))
                   .equivalent
                     - unless exam.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{exam.id}" }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{exam.id}", onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -185,7 +185,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: exam.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -199,7 +199,7 @@
                 %td.center=exam.grade
                 %td.center.grade
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation))
-                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled
+                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);'
                 %td.center=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)   

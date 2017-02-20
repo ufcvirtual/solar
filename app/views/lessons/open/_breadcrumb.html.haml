@@ -5,11 +5,11 @@
     %span.modules{role: 'menubar'}
       %a.btn.btn_dropdown{ href: '#', :"data-dropdown" => '#lmodule-options-dropdown', :'aria-label' => t('lessons.open.lmodule_menu', lmodule: @lesson.lesson_module.name) }
         = @lesson.lesson_module.name
-        %i.icon-arrow-down-triangle
+        %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
       .dropdown.dropdown-tip#lmodule-options-dropdown
         %ul.dropdown-menu
           - @modules.each do |lmodule|
-            %li{role: 'menuitem'}= link_to lmodule[:name], '#', :'data-id' => lmodule[:id], class: (lmodule[:id] == @lesson.lesson_module_id ? 'selected' : '')
+            %li{role: 'menuitem'}= link_to lmodule[:name], '#', :'data-id' => lmodule[:id], class: (lmodule[:id] == @lesson.lesson_module_id ? 'selected' : ''), onkeydown: 'click_on_keypress(event, this);'
     = " > "
     %span.lessons{role: 'menubar'}
       = render partial: "lessons/open/lessons", locals: { lesson_module: @lesson.lesson_module }

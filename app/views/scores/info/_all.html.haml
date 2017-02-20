@@ -3,9 +3,9 @@
     %h2= t(:all, :scope => [:scores, :info])
     #tabs.tabs_all
       %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative'
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency"
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative"
+        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative', onkeydown: 'click_on_keypress(event, this);'
+        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency", onkeydown: 'click_on_keypress(event, this);'
+        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative", onkeydown: 'click_on_keypress(event, this);'
   
   .block_content
     .tools.show#evaluative
@@ -30,18 +30,18 @@
                   = t(tool.academic_tool_type.downcase, scope: [:activerecord, :models])
                 %td
                   - if tool.opened == 't' && tool.academic_tool_type != 'ScheduleEvent' && tool.situation != 'finished' &&  available
-                    = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
+                    = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);'
                   - else
                     - if tool.academic_tool_type == 'Exam'
                       - if is_user
                         .title= tool.name
                       - elsif !@can_open 
-                        = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
+                        = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);'
                     - else 
                       .title= tool.name
                   .equivalent
                     - unless tool.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{tool.academic_tool_type}_#{tool.id}" }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{tool.academic_tool_type}_#{tool.id}", onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -49,7 +49,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: tool.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => equalities_tools_path(tool_type: tool.academic_tool_type, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => equalities_tools_path(tool_type: tool.academic_tool_type, ac_id: tool.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -57,7 +57,7 @@
                         %ul{ class: 'dropdown-menu' }
                   - if tool.academic_tool_type == 'ChatRoom' && tool.type_tool == '1'
                     .participants.equivalent
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_p_1_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_p_1_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-users
                         =t('scores.info.participants')
                         %i.icon-arrow-down-triangle
@@ -73,12 +73,12 @@
                   %div{class: "assignment_#{(available ? tool.situation : 'not_started')}"}= (available ? t(tool.situation, :scope => [:scores, :situation]) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
                 %td.center
                   - unless tool.count.blank?
-                    = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative')
+                    = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), onkeydown: 'click_on_keypress(event, this);'
                 %td.center
                   = tool.grade.blank? ? ' - ' : tool.grade.to_f
                 %td
                   - if (tool.academic_tool_type != 'Exam' && @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate)) || @can_evaluate.include?(tool.academic_tool_type.to_s.tableize => :calcule_grades)
-                    = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), class: 'btn'
+                    = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), class: 'btn', onkeydown: 'click_on_keypress(event, this);'
                 %td.center=(tool.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)
@@ -105,19 +105,19 @@
                   = t(tool.academic_tool_type.downcase, scope: [:activerecord, :models])
                 %td
                   - if tool.opened == 't' && tool.academic_tool_type != 'ScheduleEvent' && available
-                    = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
+                    = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);'
                   - else
                     - if tool.academic_tool_type == 'Exam'
                       - if is_user
                         .title= tool.name
                       - elsif !@can_open 
-                        = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
+                        = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);'
                     - else 
                       .title= tool.name
                     
                   .equivalent
                     - unless tool.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{tool.academic_tool_type}_#{tool.id}" }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{tool.academic_tool_type}_#{tool.id}", onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -125,7 +125,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: tool.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => equalities_tools_path(tool_type: tool.academic_tool_type, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => equalities_tools_path(tool_type: tool.academic_tool_type, ac_id: tool.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -133,7 +133,7 @@
                         %ul{ class: 'dropdown-menu' }
                   - if tool.academic_tool_type == 'ChatRoom' && tool.type_tool == '1'
                     .participants.equivalent
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_p_2_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_p_2_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-users
                         =t('scores.info.participants')
                         %i.icon-arrow-down-triangle
@@ -149,12 +149,12 @@
                   %div{class: "assignment_#{(available ? tool.situation : 'not_started')}"}= (available ? t(tool.situation, :scope => [:scores, :situation]) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
                 %td.center
                   - unless tool.count.blank?
-                    = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'frequency')
+                    = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'frequency'), onkeydown: 'click_on_keypress(event, this);'
                 %td.center
                   = tool.working_hours.blank? ? ' - ' : tool.working_hours.to_i
                 %td
                   - if (tool.academic_tool_type != 'Exam' && @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate)) || @can_evaluate.include?(tool.academic_tool_type.to_s.tableize => :calcule_grades)
-                    = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), class: 'btn'
+                    = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), class: 'btn', onkeydown: 'click_on_keypress(event, this);'
                 %td.center=(tool.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)
@@ -179,18 +179,18 @@
                   = t(tool.academic_tool_type.downcase, scope: [:activerecord, :models])
                 %td
                   - if tool.opened == 't' && tool.academic_tool_type != 'ScheduleEvent' && available
-                    = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
+                    = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);'
                   - else
                     - if tool.academic_tool_type == 'Exam'
                       - if is_user
                         .title= tool.name
                       - elsif !@can_open 
-                        = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation)
+                        = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);'
                     - else 
                       .title= tool.name
                   .equivalent
                     - unless tool.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{tool.academic_tool_type}_#{tool.id}" }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{tool.academic_tool_type}_#{tool.id}", onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -198,7 +198,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: tool.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => equalities_tools_path(tool_type: tool.academic_tool_type, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => equalities_tools_path(tool_type: tool.academic_tool_type, ac_id: tool.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -206,7 +206,7 @@
                         %ul{ class: 'dropdown-menu' }
                   - if tool.academic_tool_type == 'ChatRoom' && tool.type_tool == '1'
                     .participants.equivalent
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_p_3_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_p_3_#{tool.academic_tool_type}_#{tool.id}", :'data-url' => participants_chat_room_path(tool.academic_tool_id, ac_id: tool.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-users
                         =t('scores.info.participants')
                         %i.icon-arrow-down-triangle
@@ -222,10 +222,10 @@
                   %div{class: "assignment_#{(available ? tool.situation : 'not_started')}"}= (available ? t(tool.situation, :scope => [:scores, :situation]) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
                 %td.center
                   - unless tool.count.blank?
-                    = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative')
+                    = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), onkeydown: 'click_on_keypress(event, this);'
                 %td
                   - if ['Assignment', 'Exam'].include?(tool.academic_tool_type) && ((tool.academic_tool_type != 'Exam' && @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate)) || @can_evaluate.include?(tool.academic_tool_type.to_s.tableize => :calcule_grades))
-                    = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), class: 'btn'
+                    = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), class: 'btn', onkeydown: 'click_on_keypress(event, this);'
                         
       - else
         .block_content.block_content_text= t(:itens_not_found)

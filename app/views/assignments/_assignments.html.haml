@@ -18,8 +18,8 @@
                 .enunciation_slice= assignment.description.slice(0..180) << '...'
                 .enunciation_complete= assignment.description
                 .more_or_less
-                  %a.enunciation_more.link_content{ href: '#' }= t('assignments.list.more')
-                  %a.enunciation_less.link_content{ href: '#' }= t('assignments.list.less')
+                  %a.enunciation_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);' }= t('assignments.list.more')
+                  %a.enunciation_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);' }= t('assignments.list.less')
             - else
               = assignment.description
             .equivalent

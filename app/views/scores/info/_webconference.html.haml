@@ -3,9 +3,9 @@
     %h2= t(:webconference, :scope => [:scores, :info])
     #tabs.tab_web
       %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative'
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency"
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative"
+        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative', onkeydown: 'click_on_keypress(event, this);'
+        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency", onkeydown: 'click_on_keypress(event, this);'
+        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative", onkeydown: 'click_on_keypress(event, this);'
   .block_content
     .tools.show#evaluative
       - unless @webconferences_evaluative.blank?
@@ -24,8 +24,8 @@
                 %th.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
           %tbody
             - @webconferences_evaluative.each do |webconference|
-              - disabled = (webconference.situation == 'scheduled' || webconference.situation == 'in_progress' || webconference.situation == 'processing')
               - unavailable = exist_and_offline?(webconference.server.to_i)
+              - disabled = (webconference.situation == 'scheduled' || webconference.situation == 'in_progress' || webconference.situation == 'processing' || unavailable)
               %tr.lines
                 %td.webconference_access.title{ :'data-url' => access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id) }
                   - if (webconference.opened == 't' && webconference.closed == 'f') 
@@ -39,7 +39,7 @@
                       = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                   .equivalent
                     - unless webconference.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{webconference.id}" }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{webconference.id}", onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -47,7 +47,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: webconference.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{webconference.id}", :'data-url' => equalities_tools_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{webconference.id}", :'data-url' => equalities_tools_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -62,9 +62,9 @@
                 - if disabled
                   %td.center{:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false'
                 - else
-                  %td.center{:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: "record"
+                  %td.center{:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: "record", onkeydown: 'click_on_keypress(event, this);'
                 - if @can_see_access || @can_evaluate
-                  %td.center{ :'data-url' => list_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]) }= link_to_function content_tag(:i, nil, class: "icon-#{@can_evaluate && @is_student ? 'write' : 'users'} btn"), 'list_access(this)'
+                  %td.center{ :'data-url' => list_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]) }= link_to_function content_tag(:i, nil, class: "icon-#{@can_evaluate && @is_student ? 'write' : 'users'} btn"), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);'
                 - if @is_student
                   %td.center=(webconference.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
                   
@@ -88,8 +88,8 @@
                 %th.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
           %tbody
             - @webconferences_frequency.each do |webconference|
-              - disabled = (webconference.situation == 'scheduled' || webconference.situation == 'in_progress' || webconference.situation == 'processing')
               - unavailable = exist_and_offline?(webconference.server.to_i)
+              - disabled = (webconference.situation == 'scheduled' || webconference.situation == 'in_progress' || webconference.situation == 'processing' || unavailable)
               %tr.lines
                 %td.webconference_access{ :'data-url' => access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id) }
                   - if (webconference.opened == 't' && webconference.closed == 'f') 
@@ -103,7 +103,7 @@
                       = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                   .equivalent
                     - unless webconference.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{webconference.id}" }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{webconference.id}", onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -111,7 +111,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: webconference.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{webconference.id}", :'data-url' => equalities_tools_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{webconference.id}", :'data-url' => equalities_tools_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -126,9 +126,9 @@
                 - if disabled
                   %td.center{:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false'
                 - else
-                  %td.center{:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: "record"
+                  %td.center{:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: "record", onkeydown: 'click_on_keypress(event, this);'
                 - if @can_see_access || @can_evaluate
-                  %td.center{ :'data-url' => list_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]) }= link_to_function content_tag(:i, nil, class: "icon-#{@can_evaluate && @is_student ? 'write' : 'users'} btn"), 'list_access(this)'
+                  %td.center{ :'data-url' => list_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]) }= link_to_function content_tag(:i, nil, class: "icon-#{@can_evaluate && @is_student ? 'write' : 'users'} btn"), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);'
                 - if @is_student
                   %td.center=(webconference.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
                   
@@ -148,8 +148,8 @@
                 %th.center.no_sort{style: 'width: 2%;'}= t('webconferences.index.access')
           %tbody
             - @webconferences_not_evaluative.each do |webconference|
-              - disabled = (webconference.situation == 'scheduled' || webconference.situation == 'in_progress' || webconference.situation == 'processing')
               - unavailable = exist_and_offline?(webconference.server.to_i)
+              - disabled = (webconference.situation == 'scheduled' || webconference.situation == 'in_progress' || webconference.situation == 'processing' || unavailable)
               %tr.lines
                 %td.webconference_access{ :'data-url' => access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id) }
                   - if (webconference.opened == 't' && webconference.closed == 'f') 
@@ -163,7 +163,7 @@
                       = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                   .equivalent
                     - unless webconference.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{webconference.id}" }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{webconference.id}", onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -171,7 +171,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: webconference.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{webconference.id}", :'data-url' => equalities_tools_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id), onclick: 'open_dropdown(this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{webconference.id}", :'data-url' => equalities_tools_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -184,9 +184,9 @@
                 - if disabled
                   %td.center{:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false'
                 - else
-                  %td.center{:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: "record"
+                  %td.center{:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: "record", onkeydown: 'click_on_keypress(event, this);'
                 - if @can_see_access
-                  %td.center{ :'data-url' => list_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]) }= link_to_function content_tag(:i, nil, class: "icon-users btn"), 'list_access(this)'
+                  %td.center{ :'data-url' => list_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]) }= link_to_function content_tag(:i, nil, class: "icon-users btn"), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);'
                 
       - else
         .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])    

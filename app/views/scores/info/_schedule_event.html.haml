@@ -3,9 +3,9 @@
     %h2= t(:schedule_event, :scope => [:scores, :info])
     #tabs.tab_event
       %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative'
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency"
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative"
+        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative', onkeydown: 'click_on_keypress(event, this);'
+        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency", onkeydown: 'click_on_keypress(event, this);'
+        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative", onkeydown: 'click_on_keypress(event, this);'
   .block_content
     .tools.show#evaluative
       .block_content
@@ -31,7 +31,7 @@
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                     .equivalent
                       - unless schedule_event.eq_name.blank?
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{schedule_event.id}" }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{schedule_event.id}", onkeydown: 'click_on_keypress(event, this);' }
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
@@ -39,7 +39,7 @@
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: schedule_event.eq_name)
                       - else
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{schedule_event.id}", :'data-url' => equalities_tools_path(tool_type: schedule_event.academic_tool_type, ac_id: schedule_event.id), onclick: 'open_dropdown(this);' }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{schedule_event.id}", :'data-url' => equalities_tools_path(tool_type: schedule_event.academic_tool_type, ac_id: schedule_event.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle
@@ -54,7 +54,7 @@
                     = schedule_event.grade
                   - if @can_evaluate_ev 
                     %td.center
-                      = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post])   
+                      = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);'
         - else
           .block_content.block_content_text= t(:itens_not_found)
 
@@ -82,7 +82,7 @@
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                     .equivalent
                       - unless schedule_event.eq_name.blank?
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{schedule_event.id}" }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{schedule_event.id}", onkeydown: 'click_on_keypress(event, this);' }
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
@@ -90,7 +90,7 @@
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: schedule_event.eq_name)
                       - else
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{schedule_event.id}", :'data-url' => equalities_tools_path(tool_type: schedule_event.academic_tool_type, ac_id: schedule_event.id), onclick: 'open_dropdown(this);' }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{schedule_event.id}", :'data-url' => equalities_tools_path(tool_type: schedule_event.academic_tool_type, ac_id: schedule_event.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle
@@ -105,7 +105,7 @@
                     = schedule_event.working_hours
                   - if @can_evaluate_ev
                     %td.center
-                      = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post])   
+                      = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);'
         - else
           .block_content.block_content_text= t(:itens_not_found)
   
@@ -131,7 +131,7 @@
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                     .equivalent
                       - unless schedule_event.eq_name.blank?
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{schedule_event.id}" }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{schedule_event.id}", onkeydown: 'click_on_keypress(event, this);' }
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
@@ -139,7 +139,7 @@
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: schedule_event.eq_name)
                       - else
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{schedule_event.id}", :'data-url' => equalities_tools_path(tool_type: schedule_event.academic_tool_type, ac_id: schedule_event.id), onclick: 'open_dropdown(this);' }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{schedule_event.id}", :'data-url' => equalities_tools_path(tool_type: schedule_event.academic_tool_type, ac_id: schedule_event.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle

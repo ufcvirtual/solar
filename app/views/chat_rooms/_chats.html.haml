@@ -28,28 +28,28 @@
 
           .equivalent
             - unless chat.eq_name.blank?
-              %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{chat.id}", :'aria-label' => "#dropdown_eq_#{chat.id}" }
-                %i.icon-flow-parallel
+              %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{chat.id}", :'aria-label' => t('scores.info.equivalency'), onkeydown: 'click_on_keypress(event, this);' }
+                %i.icon-flow-parallel{:'aria-hidden' => 'true'}
                 = t('scores.info.equivalency')
-                %i.icon-arrow-down-triangle
+                %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
               .dropdown.dropdown-tip{id: "dropdown_eq_#{chat.id}"}
                 %ul{ class: 'dropdown-menu' }
                   = raw t('scores.info.equivalent', name: chat.eq_name)
             - else
-              %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{chat.id}", :'data-url' => equalities_tools_path(tool_type: chat.academic_tool_type, ac_id: chat.id), onclick: 'open_dropdown(this);', :'aria-label' => "#dropdown_eq_#{chat.id}" }
-                %i.icon-flow-parallel
+              %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{chat.id}", :'data-url' => equalities_tools_path(tool_type: chat.academic_tool_type, ac_id: chat.id), onclick: 'open_dropdown(this);', :'aria-label' => t('scores.info.equalities'), onkeydown: 'click_on_keypress(event, this);' }
+                %i.icon-flow-parallel{:'aria-hidden' => 'true'}
                 =t('scores.info.equalities')
-                %i.icon-arrow-down-triangle
+                %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
               .dropdown.dropdown-tip{id: "dropdown_eq_#{chat.id}"}
                 %ul{ class: 'dropdown-menu' }
           - if chat.type_tool == '1'
             .participants.equivalent
-              %a{ href: '#', :"data-dropdown" => "#dropdown_p_#{chat.id}", :'data-url' => participants_chat_room_path(chat.academic_tool_id, ac_id: chat.id), onclick: 'open_dropdown(this);' , :'aria-label' => "#dropdown_p_#{chat.id}"}
-                %i.icon-users
+              %a{ href: '#', :"data-dropdown" => "#dropdown_p_#{chat.id}", :'data-url' => participants_chat_room_path(chat.academic_tool_id, ac_id: chat.id), onclick: 'open_dropdown(this);' , :'aria-label' => t('scores.info.participants'), onkeydown: 'click_on_keypress(event, this);'}
+                %i.icon-users{:'aria-hidden'=>'true'}
                 =t('scores.info.participants')
-                %i.icon-arrow-down-triangle
+                %i.icon-arrow-down-triangle{:'aria-hidden'=>'true'}
               .dropdown.dropdown-tip{id: "dropdown_p_#{chat.id}"}
-                %ul{ class: 'dropdown-menu' }  
+                %ul{ class: 'dropdown-menu', :'aria-label' => t('.participants_list', chat: chat.name) }  
 
         %td{ align: 'center', headers: "availability_#{@id_table}" }
           %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')

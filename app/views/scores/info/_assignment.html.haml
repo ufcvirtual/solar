@@ -3,9 +3,9 @@
     %h2= t(:assignments, :scope => [:scores, :info])
     #tabs.tab_assignment
       %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative'
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency"
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative"
+        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative', onkeydown: 'click_on_keypress(event, this);'
+        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency", onkeydown: 'click_on_keypress(event, this);'
+        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative", onkeydown: 'click_on_keypress(event, this);'
 
   .block_content
     .tools.show#evaluative
@@ -28,7 +28,7 @@
                     - if assignment.situation == 'without_group'
                       .title= assignment.name
                     - else
-                      = link_to assignment.name, student_assignment_path(assignment.academic_tool_id, student_id: @user.id, group_id: assignment.group_id), {class: 'link_content'}
+                      = link_to assignment.name, student_assignment_path(assignment.academic_tool_id, student_id: @user.id, group_id: assignment.group_id), {class: 'link_content'}, onkeydown: 'click_on_keypress(event, this);'
                     .description
                       .minimun= sanitize(truncate assignment.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                       .complete.invisible
@@ -36,7 +36,7 @@
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                     .equivalent
                       - unless assignment.eq_name.blank?
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{assignment.id}" }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{assignment.id}", onkeydown: 'click_on_keypress(event, this);' }
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
@@ -44,7 +44,7 @@
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: assignment.eq_name)
                       - else
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{assignment.id}", :'data-url' => equalities_tools_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id), onclick: 'open_dropdown(this);' }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{assignment.id}", :'data-url' => equalities_tools_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle
@@ -57,7 +57,7 @@
                   %td.center= assignment.grade
                   - if @can_evaluate_ass
                     %td.center
-                      = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'evaluative'), class: 'btn'
+                      = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'evaluative'), class: 'btn', onkeydown: 'click_on_keypress(event, this);'
                   %td.center=(assignment.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
         - else
           .block_content.block_content_text= t(:itens_not_found)
@@ -82,7 +82,7 @@
                     - if assignment.situation == 'without_group'
                       .title= assignment.name
                     - else
-                      = link_to assignment.name, student_assignment_path(assignment.academic_tool_id, student_id: @user.id, group_id: assignment.group_id), {class: 'link_content'}
+                      = link_to assignment.name, student_assignment_path(assignment.academic_tool_id, student_id: @user.id, group_id: assignment.group_id), {class: 'link_content', onkeydown: 'click_on_keypress(event, this);'}
                     .description
                       .minimun= sanitize(truncate assignment.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                       .complete.invisible
@@ -90,7 +90,7 @@
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                     .equivalent
                       - unless assignment.eq_name.blank?
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{assignment.id}" }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{assignment.id}", onkeydown: 'click_on_keypress(event, this);' }
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
@@ -98,7 +98,7 @@
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: assignment.eq_name)
                       - else
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{assignment.id}", :'data-url' => equalities_tools_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id), onclick: 'open_dropdown(this);' }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{assignment.id}", :'data-url' => equalities_tools_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle
@@ -111,7 +111,7 @@
                   %td.center= assignment.working_hours
                   - if @can_evaluate_ass
                     %td.center
-                      = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'evaluative'), class: 'btn'
+                      = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'evaluative'), class: 'btn', onkeydown: 'click_on_keypress(event, this);'
                   %td.center=(assignment.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
         - else
           .block_content.block_content_text= t(:itens_not_found)
@@ -137,7 +137,7 @@
                     - if assignment.situation == 'without_group'
                       .title= assignment.name
                     - else
-                      = link_to assignment.name, student_assignment_path(assignment.academic_tool_id, student_id: @user.id, group_id: assignment.group_id), {class: 'link_content'}
+                      = link_to assignment.name, student_assignment_path(assignment.academic_tool_id, student_id: @user.id, group_id: assignment.group_id), {class: 'link_content', onkeydown: 'click_on_keypress(event, this);'}
                     .description
                       .minimun= sanitize(truncate assignment.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                       .complete.invisible
@@ -145,7 +145,7 @@
                         = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                     .equivalent
                       - unless assignment.eq_name.blank?
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{assignment.id}" }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{assignment.id}", onkeydown: 'click_on_keypress(event, this);' }
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
@@ -153,7 +153,7 @@
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: assignment.eq_name)
                       - else
-                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{assignment.id}", :'data-url' => equalities_tools_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id), onclick: 'open_dropdown(this);' }
+                        %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{assignment.id}", :'data-url' => equalities_tools_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle

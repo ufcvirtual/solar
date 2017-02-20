@@ -345,3 +345,9 @@ function open_div(link, e){
       return false;
     });
 }
+
+function click_on_keypress(event, element){
+  if(event.which == 13)
+    $(element).click();
+  return false;
+}
