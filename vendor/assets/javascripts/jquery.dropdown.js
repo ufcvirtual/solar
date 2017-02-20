@@ -65,8 +65,14 @@ if(jQuery) (function($) {
 
     var div = $(this).parent().find($(this).data('dropdown')).first();
       if(!$(div).data('focus')){
-        $(div).find('h2, h3').first().attr("tabindex", "0");
-        $(div).find('h2, h3').first().focus();
+        var div_to_focus = $(div).find('h2, h3').first();
+
+        if(!div_to_focus.length){
+          div_to_focus = $(div).children().first();
+        }
+
+        $(div_to_focus).attr("tabindex", "0");
+        $(div_to_focus).focus();
         $(div).data('focus', true);
       }
 
