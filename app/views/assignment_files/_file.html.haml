@@ -5,4 +5,4 @@
   %td.center{headers: "name_file sent_on_file" }= l(file.attachment_updated_at, format: :at_date)
   %td.center{headers: "name_file sent_by_file" }= file.user.name
   - if @own_assignment
-    %td.center{:"data-link-delete" => assignment_file_path(file.id), :"data-tooltip" => t(".delete"), :'aria-label' => t(".delete"), onclick: "delete_file(this)", headers: "name_file delete_file"}= content_tag(:i, nil, class: "icon-trash")
+    %td.center{headers: "name_file delete_file"}= link_to content_tag(:i, nil, class: "icon-trash", :'aria-hidden' => true), '#', :"data-link-delete" => assignment_file_path(file.id), :"data-tooltip" => t(".delete"), :'aria-label' => t(".delete"), onclick: "return false; delete_file(this);"

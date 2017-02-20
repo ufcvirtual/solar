@@ -17,8 +17,11 @@
         %th.aw_final#final_web{:'aria-label' => t('.final2') + t('fancybox.open')}= raw t('.final')
         - if @own_assignment
           %th.no_sort.options{id: "edit_web"}
+            .visuallyhidden=t('assignment_webconferences.webconference.edit')
           %th.no_sort.options{id: "record_link_web"}
+            .visuallyhidden=t('webconferences.get_record.remove')
           %th.no_sort.options{id: "delete_web"}
+            .visuallyhidden=t('assignment_webconferences.webconference.delete')
     %tbody.assign_web
       - unless no_webconferences
         - webconferences.each do |webconference|

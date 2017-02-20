@@ -4,7 +4,7 @@
       %h2
         %i.icon-forum
         = t(:forum_table_title)
-    %table.tb_list{:summary=> t(:forum_table_summary)}
+    %table.tb_list{summary: t(:forum_table_summary)}
       %thead
         %tr.lines
           %th{style: "width: 20%;", id: "discussions"}= t(:discussions, scope: [:scores, :info])
@@ -31,8 +31,8 @@
                 .enunciation_slice= discussion.description.slice(0..180) << '...'
                 .enunciation_complete= discussion.description
                 .more_or_less
-                  %a.enunciation_more.link_content{ href: '#', :'aria-label' => t("discussions.list.more", forum: discussion.name) }= t('assignments.list.more')
-                  %a.enunciation_less.link_content{ href: '#', :'aria-label' => t("discussions.list.less", forum: discussion.name) }= t('assignments.list.less')
+                  %a.enunciation_more.link_content{ href: '#', :'aria-label' => t("discussions.list.more", forum: discussion.name), onkeydown: 'click_on_keypress(event, this);' }= t('assignments.list.more')
+                  %a.enunciation_less.link_content{ href: '#', :'aria-label' => t("discussions.list.less", forum: discussion.name), onkeydown: 'click_on_keypress(event, this);' }= t('assignments.list.less')
               .equivalent
                 - unless discussion.eq_name.blank?
                   %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{discussion.id}" }
@@ -77,11 +77,13 @@
     $(".enunciation_more").click(function(){
       $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "none");
       $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "block");
+      focus_element($(".enunciation_complete", $(this).parent().parent()));
       return false;
     });
     $(".enunciation_less").click(function(){
       $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "block");
       $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "none");
+      focus_element($(".enunciation_slice", $(this).parent().parent()));
       return false;
     });
     $(".tb_list").focus();

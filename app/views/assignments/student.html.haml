@@ -1,4 +1,4 @@
-.block_wrapper_groups
+%section.block_wrapper_groups
   - unless @group.nil?
     = image_tag 'group.png', alt: t(:mysolar_alt_img_user)
     .block_user
@@ -23,7 +23,7 @@
       .title_user= t('.student')
       = user.name
 
-.block_wrapper.assignment_info
+%section.block_wrapper.assignment_info
   .title
     %h2
       %i.icon-suitcase
@@ -38,16 +38,16 @@
           %td= @assignment.enunciation
     = render partial: 'info'
 
-.assignment_files.files
+%section.assignment_files.files
   = render partial: 'files', locals: { files: @assignment.try(:enunciation_files) }
 
-.assignment_comments
+%section.assignment_comments
   = render partial: 'assignment_comments/list', locals: { comments: @acu.try(:assignment_comments) }
 
-.student_files.files
+%section.student_files.files
   = render partial: 'assignment_files/list', locals: { files: @acu.try(:assignment_files) }
 
-.student_webconferences.files
+%section.student_webconferences.files
   = render partial: 'assignment_webconferences/list', locals: { webconferences: @acu.try(:assignment_webconferences) }
 
 .block_wrapper{ style: 'float:left' }

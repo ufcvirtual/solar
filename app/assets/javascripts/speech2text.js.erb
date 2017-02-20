@@ -7,6 +7,7 @@ $(function(){
     stopped = false;
     recognition = new webkitSpeechRecognition();
     recognition2 = new webkitSpeechRecognition();
+    error = '';
   }
 });
 
@@ -50,32 +51,47 @@ function startDictation(event, input, ckeditor, icon) {
       event.preventDefault();
       recognizing = true;
       erase_flash_messages();
+      error = '';
     };
 
     recognition.onerror = function(event) {
       event.preventDefault();
       console.log(event.error);
+      error = event.error;
     };
 
-    recognition.onend = function() {
+    recognition.onend = function(event) {
       event.preventDefault();
-      if(recognizing){
-        if(!stopped)
-          flash_message("<%=I18n.t('speech2text.no_speech')%>", 'warning');
-        $('.speech2text i.stop').each(function(){ 
-          var parent = $($(this).parent());
-          if(!parent.hasClass('invisible')){
-            parent.addClass('invisible');
-            parent.siblings().removeClass('invisible');
-          }
-        });
+      if(error != ''){
+        change_icon(icon);
+        if(error == 'not-allowed')
+          flash_message("<%=I18n.t('speech2text.not_allowed')%>", 'warning');
+        else{
+          if(error == 'no-speech')
+            flash_message("<%=I18n.t('speech2text.no_speech')%>", 'warning');
+          else
+            flash_message("<%=I18n.t('speech2text.general_error')%>", 'warning');
+        }
       }else{
-        $('.speech2text i.stop').each(function(){ 
-          change_icon($(this).parent());
-        });
+        if(recognizing){
+          if(!stopped)
+            flash_message("<%=I18n.t('speech2text.no_speech')%>", 'warning');
+          $('.speech2text i.stop').each(function(){ 
+            var parent = $($(this).parent());
+            if(!parent.hasClass('invisible')){
+              parent.addClass('invisible');
+              parent.siblings().removeClass('invisible');
+            }
+          });
+        }else{
+          $('.speech2text i.stop').each(function(){ 
+            change_icon($(this).parent());
+          });
+        }
       }
       recognizing = false;
       stopped = false;
+      error = '';
     };
 
     recognition.onresult = function(event) {
@@ -136,32 +152,47 @@ function startDictation2(event, input, ckeditor, icon) {
       event.preventDefault();
       recognizing = true;
       erase_flash_messages();
+      error = '';
     };
 
     recognition2.onerror = function(event) {
       event.preventDefault();
       console.log(event.error);
+      error = event.error;
     };
 
     recognition2.onend = function() {
       event.preventDefault();
-      if(recognizing){
-        if(!stopped)
-          flash_message("<%=I18n.t('speech2text.no_speech')%>", 'warning');
-        $('.speech2text i.stop').each(function(){ 
-          var parent = $($(this).parent());
-          if(!parent.hasClass('invisible')){
-            parent.addClass('invisible');
-            parent.siblings().removeClass('invisible');
-          }
-        });
+      if(error != ''){
+        change_icon(icon);
+        if(error == 'not-allowed')
+          flash_message("<%=I18n.t('speech2text.not_allowed')%>", 'warning');
+        else{
+          if(error == 'no-speech')
+            flash_message("<%=I18n.t('speech2text.no_speech')%>", 'warning');
+          else
+            flash_message("<%=I18n.t('speech2text.general_error')%>", 'warning');
+        }
       }else{
-        $('.speech2text i.stop').each(function(){ 
-          change_icon($(this).parent());
-        });
+        if(recognizing){
+          if(!stopped)
+            flash_message("<%=I18n.t('speech2text.no_speech')%>", 'warning');
+          $('.speech2text i.stop').each(function(){ 
+            var parent = $($(this).parent());
+            if(!parent.hasClass('invisible')){
+              parent.addClass('invisible');
+              parent.siblings().removeClass('invisible');
+            }
+          });
+        }else{
+          $('.speech2text i.stop').each(function(){ 
+            change_icon($(this).parent());
+          });
+        }
       }
       recognizing = false;
       stopped = false;
+      error = '';
     };
 
     recognition2.onresult = function(event) {

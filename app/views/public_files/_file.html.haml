@@ -6,4 +6,4 @@
   %td.center.file_data_info{style: "width: 100px;", headers: "sent_on"}
     = (file.attachment_updated_at.nil? ? " " : l(file.attachment_updated_at, format: :files))
   - if destroy
-    %td.center{style: "width: 60px", headers: "delete"}= link_to_function content_tag(:i, nil, class: "icon-trash"), "delete_file(this); return false;", class: "btn btn_caution", :"data-link-delete" => public_file_path(file), :"data-tooltip" => t(".remove"), :'aria-label' => t(".remove")
+    %td.center{style: "width: 60px", headers: "delete"}= link_to_function content_tag(:i, nil, class: "icon-trash"), "delete_file(this); return false;", class: "btn btn_caution", :"data-link-delete" => public_file_path(file), :"data-tooltip" => t(".remove"), :'aria-label' => t(".remove"), onkeydown: 'click_on_keypress(event, this);'

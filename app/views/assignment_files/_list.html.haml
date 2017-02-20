@@ -19,9 +19,10 @@
         %th.date_column.center{id: "sent_by_file" }= t('.sent_by')
         - if @own_assignment
           %th.no_sort{id: "delete_file" }
+            .visuallyhidden=t("assignment_files.file.delete")
     %tbody
       - unless no_files
         - files.each do |file|
           = render partial: 'assignment_files/file', locals: { file: file }
-  .text_none.empty_message{ class: (no_files ? '' : 'hide_message') }= t(:itens_not_found)
+  .text_none.empty_message{class: (no_files ? "" : "hide_message")}= t(:itens_not_found)
   

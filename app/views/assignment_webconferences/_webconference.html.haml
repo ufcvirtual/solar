@@ -1,22 +1,26 @@
 - status = webconference.status
+- unavailable = exist_and_offline?(webconference.server.to_i)
+- disabled_by_status = (webconference.status == t('scores.situation.scheduled') || webconference.status == t('scores.situation.in_progress') || webconference.status == t('scores.situation.processing') || unavailable)
 %tr.lines{ class: "web_#{webconference.id}" }
   %td.right{headers: "name_web" }= webconference.get_bbb_url(current_user)
   %td.center{headers: "period_web" }= [l(webconference.initial_time, format: :at_date), l(webconference.initial_time+webconference.duration.minutes, format: :at_date)].join(' - ')
   %td.center{headers: "status_web" }
-    //= (@bbb_online ? status : t(:unavailable, scope: [:webconferences, :list])) 
-    = (exist_and_offline?(webconference.server) ? t(:unavailable, scope: [:webconferences, :list]) : status)
-  %td.center.record{headers: "record_web" }= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_assignment_webconference_path(webconference.id, academic_allocation_user_id: webconference.academic_allocation_user_id), class: 'record_link', :'data-tooltip' => t('webconferences.list.watch')
+    = (unavailable ? t(:unavailable, scope: [:webconferences, :list]) : status)
+  - if disabled_by_status
+    %td.center.record{headers: "record_web" ,:'data-tooltip' => t('webconferences.list.watch_disabled')}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false' , :'aria-label' => t('webconferences.list.watch_disabled')
+  - else
+    %td.center.record{headers: "record_web" ,:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_assignment_webconference_path(webconference.id, academic_allocation_user_id: webconference.academic_allocation_user_id), class: 'record_link', :'aria-label' => t('webconferences.list.watch')
+
   %td.center{headers: "final_web" }
     - if @own_assignment
       = link_to (image_tag "#{webconference.final? ? 'released' : 'rejected'}.png"), change_status_assignment_webconference_path(webconference), remote: true, method: :put, class: 'change_lesson_status', :'data-tooltip' => (webconference.final ? t('.aw_yes') : t('.aw_no'))
     - else
       = (webconference.final ? t('.aw_yes') : t('.aw_no'))
   - if @own_assignment
-    //- disabled = !(@in_time && @bbb_online)
     - disabled = !(@in_time)
-    %td.icon.center{ :"data-link-edit" => edit_assignment_webconference_path(webconference), :"data-tooltip" => t('.edit'), :'aria-label' => t(".edit"), onclick: 'edit_awebconference(this)', class: "#{disabled ? 'disabled' : ''}", headers: "edit_web" }= content_tag(:i, nil, class: 'icon-edit')
-    %td.icon.center{ :"data-link-records" => remove_record_assignment_webconference_path(webconference), :"data-link-show" => assignment_webconference_path(webconference), :"data-tooltip" => t('.record'), :'aria-label' => t(".record"), onclick: 'remove_record_awebconference(this)', class: "#{disabled ? 'disabled' : ''}", headers: "record_link_web" }= content_tag(:i, nil, class: 'icon-cross')
-    %td.icon.center{ :"data-link-delete" => assignment_webconference_path(webconference), :"data-tooltip" => t('.delete'), :'aria-label' => t(".delete"), onclick: 'delete_awebconference(this)', class: "#{disabled ? 'disabled' : ''}",headers: "delete_web" }= content_tag(:i, nil, class: 'icon-trash')
+    %td.icon.center{ headers: "edit_web" }= link_to content_tag(:i, nil, class: 'icon-edit', :'aria-hidden'=>'true'), '#', :"data-link-edit" => edit_assignment_webconference_path(webconference), :"data-tooltip" => t('.edit'), :'aria-label' => t(".edit"), onclick: 'return false; edit_awebconference(this)', class: "#{disabled ? 'disabled' : ''}", onkeypress: 'click_on_keypress(event, this);'
+    %td.icon.center{ headers: "record_link_web" }= link_to content_tag(:i, nil, class: 'icon-cross', :'aria-hidden' => 'true'), '#', :"data-link-records" => remove_record_assignment_webconference_path(webconference), :"data-link-show" => assignment_webconference_path(webconference), :"data-tooltip" => t('webconferences.get_record.remove'), :'aria-label' => t("webconferences.get_record.remove"), onclick: 'return false; remove_record_awebconference(this)', class: "#{(disabled_by_status || disabled) ? 'disabled' : ''}", onkeypress: 'click_on_keypress(event, this);'
+    %td.icon.center{ headers: "delete_web" }= link_to content_tag(:i, nil, class: 'icon-trash', :'aria-hidden' => 'true'), '#', :"data-link-delete" => assignment_webconference_path(webconference), :"data-tooltip" => t('.delete'), :'aria-label' => t(".delete"), onclick: 'return false; delete_awebconference(this)', class: "#{disabled ? 'disabled' : ''}", onkeypress: 'click_on_keypress(event, this);'
 
 = javascript_include_tag 'tooltip'
 

@@ -15,11 +15,10 @@
       var tbody = $("tbody.public_files");
       $('form#new_public_file').serialize_and_submit({
         files: true,
-        prepend_to_list: tbody,
+        prepend_to_list: $('tbody.public_files'),
         complement_success: function(){
-          $.fancybox.close();
-          tbody.parent().find("thead").first().show();
           flash_message("#{t('public_files.success.new')}", "notice");
+          update_tables_with_no_data();
         }
       });
     });

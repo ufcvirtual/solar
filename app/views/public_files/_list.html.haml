@@ -2,14 +2,14 @@
   .block_wrapper
     .block_title
       %h2
-        %i.icon-suitcase
+        %i.icon-suitcase{:'aria-hidden' => 'true'}
         = t(".title")
       .right_buttons
         = link_to content_tag(:i, nil, class: "icon-plus"), new_public_file_path, class: "btn btn_main", id: "new_public_file", :"data-tooltip" => t(".new"), :'aria-label' => t(".new")
     .block_content
       - no_files = (public_files.blank?)
-      %table.tb_list{style: (no_files ? "display: none" : ""), :summary=> t("public_files.list.summary") }
-        %thead
+      %table.tb_list{summary: t("public_files.list.summary") }
+        %thead{style: (no_files ? "display: none" : "")}
           %tr.lines
             %th.no_sort
             %th{id: "file"}= t(".file")

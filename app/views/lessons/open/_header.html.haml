@@ -2,14 +2,14 @@
   .inline
     .breadcrumb
       = render 'lessons/open/breadcrumb'
-    - if can?(:change_status, @lesson) || current_user.admin?
-      .lesson_status
-        %span.draft{ class: @lesson.is_draft? ? '' : 'invisible' }
-          = image_tag 'rejected.png', :'aria-hidden' => 'true'
-          %span.type= t('lessons.index.draft')
-        %span.released{ class: @lesson.is_draft? ? 'invisible' : '' }
-          = image_tag 'released.png', :'aria-hidden' => 'true'
-          %span.type= t('lessons.index.released')
+  - if can?(:change_status, @lesson) || current_user.admin?
+    .lesson_status
+      %span.draft{ class: @lesson.is_draft? ? '' : 'invisible' }
+        = image_tag 'rejected.png', :'aria-hidden' => 'true'
+        %span.type= t('lessons.index.draft')
+      %span.released{ class: @lesson.is_draft? ? 'invisible' : '' }
+        = image_tag 'released.png', :'aria-hidden' => 'true'
+        %span.type= t('lessons.index.released')
 
 :javascript
 

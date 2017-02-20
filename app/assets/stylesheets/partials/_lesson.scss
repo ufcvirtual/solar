@@ -34,7 +34,11 @@
       padding-top: 2px;
       padding-bottom: 2px;
       font-size: 0.8em;
-      max-width: 440px;
+      max-width: 40%;
+    }
+    .inline{
+      display: inline-block;
+      width: 80%;
     }
   }
   .content {
@@ -66,11 +70,11 @@
     margin-bottom: 3px;
   }
   .lesson_status{
-    float: right;
     display: inline-block;
     color: $color_white;
-    width: 131px;
-    margin-top: 3px;
+    /*width: 131px;*/
+    text-align: right;
+    width: 19%;
     .draft{
       background-color: $lesson_status_draft_background;
     }
@@ -104,7 +108,7 @@
     }
   }
   .breadcrumb{
-    display: inline-block;
+    display: inline;
   }
 }
 

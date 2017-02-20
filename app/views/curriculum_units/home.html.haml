@@ -1,5 +1,5 @@
 %div
-  .block_wrapper#subject_info_portlet
+  %section.block_wrapper#subject_info_portlet
     .block_title
       .block_left
         %h2= t(:curriculum_access_curriculum_unit)
@@ -17,12 +17,13 @@
               = truncate( [name, " (", profile, " )"].join, length: 55, omission: '...' )
               - if can_send_message
                 %span= link_to (content_tag(:i, nil, class: 'icon-mail participants_messages', :'aria-hidden' => 'true')), new_message_path(user_id: resp.id, bread: 'menu_messages'), class: 'can-update-menu', 'data-menu-bread' => 'menu_messages', :'aria-label' => t('messages.message_to', name: name)
-  = render 'lesson_portlet'
+  
+  %secton= render 'lesson_portlet'
 
   .block_wrapper.block_wrapper_small
-    = render 'message_portlet'
-    = render 'discussion_posts_portlet'
-    = render 'agenda_portlet'
+    %secton= render 'message_portlet'
+    %secton= render 'discussion_posts_portlet'
+    %secton= render 'agenda_portlet'
 
 = javascript_include_tag 'contextual_help/subject'
 
