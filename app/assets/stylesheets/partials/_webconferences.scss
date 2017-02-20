@@ -55,6 +55,11 @@ table.webconferences{
       }
     }
   }
+  a.disabled{
+    pointer-events: none;
+    text-decoration: none;
+    color: $table_data_line_title;
+  }
 }
 
 .webconference_access{
@@ -68,6 +73,10 @@ table.webconferences{
       font-size: 9pt;
       font-style: italic;
       padding-right: 0;
+      text-align: center;
+    }
+    th.profile{
+      text-align: center;
     }
     tr.evaluative_form{
       background-color: $color_main_light_highlight;

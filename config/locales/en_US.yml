@@ -1260,6 +1260,7 @@ en_US:
       more: See complete description of %{web}
       less: See compressed description of %{web}
       groups: List of groups which webconference %{web} is shared between
+      access_web: Access webconference %{web} (will open a new window)
     list_access:
       no_log: No participant accessed this webconference
       too_old: This webconference happened before the access start to be saved
@@ -1276,6 +1277,7 @@ en_US:
       finish_evaluation: Evaluate
       evaluation_info: '<b> About evaluation: </b>All grades and frequency here defined are to each student, not for each access. Therefore, by evaluating/seting frequency of an access, all other access of this student will have the same grade and working hours.'
       working_hours: Working hours
+      profile: Profile
     get_record:
       recordings: "%{name}'s recordings"
       access: Access to recording
@@ -1285,6 +1287,8 @@ en_US:
       warning: '<b>Importat: </b> To each prolonged absence from webconference participants, a new recording is made.'
       no_message: Removed or empty recordings or webconference does not have any recordings
       remove: Remove recording
+    warning:
+      blocked: "Your browser has popup permissions blocked. Please allow it."
   navigation_of: " of "
   navigation_next: "Next >"
   navigation_previous: "< Previous"

@@ -6,7 +6,10 @@ function save_webconference(){
 
 function access_webconference(obj){
   $.get($(obj).parent().data('url'), function(data){
-    window.open(data.url,'_blank');
+    var web = window.open(data.url,'_blank');
+    if(!web || web.closed || typeof web.closed=='undefined'){ 
+      flash_message("<%= I18n.t('webconferences.warning.blocked')%>", 'warning');
+    }
   }).error(function(data){
     var response = JSON.parse(data.responseText);
     if (typeof(response.alert) != "undefined")
@@ -38,11 +41,13 @@ $(function(){
   $(".enunciation_more").click(function(){
     $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "none");
     $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "block");
+    focus_element($(".enunciation_complete", $(this).parent().parent()));
     return false;
   });
   $(".enunciation_less").click(function(){
     $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "block");
     $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "none");
+    focus_element($(".enunciation_slice", $(this).parent().parent()));
     return false;
   });
 
