@@ -55,8 +55,8 @@ function flash_message(msg, css_class, div_to_show, onclick_function) {
     $("#flash_message").closest(".sticky-wrapper").css("height","40px").css("width", "auto");
     $("#flash_message").effect("highlight","slow");
     
-    // $('#flash_message').prop('tabindex', 0);
-    // $('#flash_message').focus();
+    $('#flash_message').prop('tabindex', 0);
+    $('#flash_message').focus();
   }
 
 }
