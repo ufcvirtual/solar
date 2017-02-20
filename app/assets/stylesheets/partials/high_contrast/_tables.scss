@@ -171,7 +171,7 @@ tr.post_content {
   background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
   background-color: $high_contrast_background_color;
   border-bottom: $high_contrast_link_color 1px solid;
-  color: #000;
+  color: $high_contrast_font_color;
 }
 
 .tablesorter-default thead .headerSortDown,
@@ -180,7 +180,7 @@ tr.post_content {
   background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
   background-color: $high_contrast_background_color;
   border-bottom: $high_contrast_link_color 1px solid;
-  color: #000;
+  color: $high_contrast_font_color;
 }
 
 .tablesorter-default thead .sorter-false {
