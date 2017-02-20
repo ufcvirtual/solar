@@ -370,8 +370,10 @@
 
       if( theme == "theme_blue"){
         $.cookie("theme", "theme_high_contrast", {path : "/"});
+        $("#mysolar_high_contrast_option").text("Remover Alto Contraste");
       } else {
         $.cookie("theme", "theme_blue", {path : "/"});
+        $("#mysolar_high_contrast_option").text("Alto Contraste");
       }
 
       var theme_path = "/assets/themes/" + $.cookie("theme") + ".css";

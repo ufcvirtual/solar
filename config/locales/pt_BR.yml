@@ -556,7 +556,7 @@ pt_BR:
   dont_destroy_with_many_allocations: "Possui associações com outros usuários"
   dont_destroy_with_content: "Possui conteúdo"
   item_search_no_found: "Nenhum item encontrado"
-  high_contrast_link: "Alto contraste"
+  high_contrast_link: "Alto Contraste"
 
   #Página de Login
   login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
