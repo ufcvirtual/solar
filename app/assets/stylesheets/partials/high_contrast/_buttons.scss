@@ -5,7 +5,7 @@
 $btn-color: $high_contrast_font_color;
 $btn_main-color: $high_contrast_font_color;
 $btn_caution-color: $high_contrast_font_color;
-$btn-width: 54px; 
+$btn-width: 54px;
 $btn-height: 28px;
 $btn-orange: $high_contrast_link_color;
 
@@ -168,7 +168,7 @@ input::-moz-focus-inner {
 }
 
 .btn_main i {
-    color: $high_contrast_background_color;
+    color: $high_contrast_background_color !important;
     @include opacity(0.85);
     filter:alpha(opacity=85);
 }

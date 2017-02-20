@@ -54,6 +54,10 @@
     }
   }
 
+.ui-state-hover {
+  color: $high_contrast_background_color !important;
+}
+
 .ui-datepicker-prev.ui-state-hover,
 .ui-datepicker-next.ui-state-hover {
     background-color: transparent !important;
@@ -91,7 +95,7 @@
 #ui-datepicker-div{
     background-color: $high_contrast_background_color;
     padding-top: 5px;
-    padding-bottom: 5px; 
+    padding-bottom: 5px;
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -105,13 +109,13 @@
         min-height: 1.1em;
         text-align: center;
         color: $high_contrast_font_color;
-
+        // background-color: $high_contrast_background_color;
     }
     /* ... Interaction Cues ... */
     /* celula ativa */
     .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
         border: 1px solid $high_contrast_border_color;
-        background: $high_contrast_background_color;
+        background-color: $high_contrast_background_color;
         font-weight: normal;
         color: $high_contrast_font_color;
     }
@@ -119,7 +123,8 @@
     /* data atual */
     .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {
         // background: none;
-        color: $high_contrast_font_color;
+        color: $high_contrast_background_color;
+        background-color: $high_contrast_font_color;
         // border: none;
         font-weight: bold;
     }
@@ -143,7 +148,7 @@
 .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
     position:absolute; top: 3px; width: 1.8em; height: 1.2em; }
 .ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover { top: 3px; }
-.ui-datepicker .ui-datepicker-prev { 
+.ui-datepicker .ui-datepicker-prev {
     left: 37px;
     margin-top: 2px;
     color: #cfcfcf;
@@ -151,7 +156,7 @@
     height: 11px;
     cursor: pointer;
     background-image: url(/assets/calendar_arrow_left.png) !important }
-.ui-datepicker .ui-datepicker-next { 
+.ui-datepicker .ui-datepicker-next {
     right: 37px;
     margin-top: 2px;
     color: #cfcfcf;
