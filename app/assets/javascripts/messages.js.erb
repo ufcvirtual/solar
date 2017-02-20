@@ -28,20 +28,34 @@ function selected_messages() {
   return $('[type=checkbox]:checked.selected_messages').map(function(){ return $(this).data('message-id') }).get();
 }
 
-function message_menu_dropdown() {
-  $(".message_status").change(function() {
-    select_none();
-    if ( $( "select option:selected" ).hasClass("check_all") )
-      show_all();
-    if ( $( "select option:selected" ).hasClass("check_read") )
-    {
+function change_messages_view(view){
+  select_none();
+  $('#views-dropdown a').removeClass('selected');
+  if($(view).hasClass('all')){
+    show_all();
+    $('#views-dropdown a.all').addClass('selected');
+    $(view).parents('.views').find('a.btn').html("<%=I18n.t('messages.index.view_messages', type: I18n.t('messages.select_all'))%>"+" <i aria-hidden='true' class='icon-arrow-down-triangle'></i>")
+  }else{
+    if($(view).hasClass('reads')){
       hide_unreads();
-      show_reads();
-    }
-    if ( $( "select option:selected" ).hasClass("check_unread") )
-    {
-      show_unreads();
+      show_reads(); 
+      $('#views-dropdown a.reads').addClass('selected');
+      $(view).parents('.views').find('a.btn').html("<%=I18n.t('messages.index.view_messages', type: I18n.t('messages.select_read'))%>"+" <i aria-hidden='true' class='icon-arrow-down-triangle'></i>")
+    }else{
       hide_reads();
+      show_unreads();
+      $('#views-dropdown a.unreads').addClass('selected');
+      $(view).parents('.views').find('a.btn').html("<%=I18n.t('messages.index.view_messages', type: I18n.t('messages.select_unread'))%>"+" <i aria-hidden='true' class='icon-arrow-down-triangle'></i>")
     }
+  }
+  focus_element($('table'));
+}
+
+function open_contacts_selection(link){
+  var url = $(link).data('url').replace('reply_params', $("#message_contacts").val());
+  $(link).call_fancybox({
+    href: url,
+    open: true
   });
 }
+    

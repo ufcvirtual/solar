@@ -1393,6 +1393,7 @@ pt_BR:
       shared_between_groups: Compartilhado entre turmas
       watch: Assistir gravação
       access: Lista de acessos
+      watch_disabled: Assistir gravação (link desabilitado)
     success:
       created: Webconferência criada com sucesso.
       updated: Webconferência atualizada com sucesso.
@@ -1434,6 +1435,11 @@ pt_BR:
       recording: Gravação
       frequency: Carga Horária
       grade: Nota
+      recordings: Acessar lista de gravações de %{web}
+      recordings_disabled: Acessar lista de gravações de %{web} (desabilitado)
+      more: Ver descrição completa de %{web}
+      less: Ver descrição resumida de %{web}
+      groups: Lista de turmas para as quais a webconferência %{web} é compartilhada
     list_access:
       no_log: Nenhum participante acessou esta webconferência
       too_old: Esta webconferência ocorreu antes dos acessos começarem a ser gravados
@@ -2608,6 +2614,7 @@ pt_BR:
       message_ended: Encerrado
       message_did_not_start: Não iniciou
       message_history: Histórico de mensagens
+      participants_list: Lista de participantes do chat %{chat}
     index:
       chats: Chats
       new_chat: Novo Chat
@@ -2725,14 +2732,14 @@ pt_BR:
     file_too_big: "Arquivo muito grande!"
     mail_header: "Mensagem enviada por: "
     mail_sent: "Mensagem enviada com sucesso."
-    new: "Nova"
-    delete: "Excluir"
-    restore: "Restaurar"
+    new: "Nova mensagem"
+    delete: "Excluir mensagens selecionadas"
+    restore: "Restaurar mensagens selecionadas"
     select_all: "Todas"
     select_read: "Lidas"
     select_unread: "Não lidas"
-    mark_as_read: "Marcar como lida"
-    mark_as_unread: "Marcar como não lida"
+    mark_as_read: "Marcar mensagens selecionadas como lidas"
+    mark_as_unread: "Marcar mensagens selecionadas como não lidas"
     already_added: já adicionado
     none: "Nenhuma mensagem encontrada"
     no_new: "Sem novas mensagens"
@@ -2742,8 +2749,8 @@ pt_BR:
     contacts:
       title: "Seleção de contatos"
       contacts: "Contatos"
-      select: "Selecionar: "
-      to: "Para: "
+      select: "Lista de usuários para seleção de destinatários "
+      to: "Lista de destinatários selecionados "
       system_contacts: Contatos do Sistema
       personal_contacts: Contatos Pessoais
       add_all: Adicionar todos
@@ -2751,6 +2758,8 @@ pt_BR:
     users:
       add_all: Adicionar todos
       no_user_found: Nenhum usuário encontrado
+      add_all_alt: Clique para adicionar todos os usuários à lista de destinatários
+      user_alt: "%{name} (Clique para adicionar o usuário %{name} de email %{email} à lista de destinatários)"
     errors:
       recipients: "Uma mensagem deve possuir, no mínimo, 1 destinatário."
       permission: Você não tem acesso aos dados informados.
@@ -2758,7 +2767,7 @@ pt_BR:
       reply: "Res: "
       forward: "Enc: "
     form:
-      message_to: "Para"
+      message_to: "Destinatários"
       subject: "Assunto"
       attach: "Anexar"
       attach_file: "Anexar um arquivo"
@@ -2766,13 +2775,19 @@ pt_BR:
       without_recipient: "Necessário pelo menos um destinatário."
       no_content: Mensagem sem conteúdo. Continuar?
       discard: "Descartar"
-      add_contacts: "Clique aqui para adicionar contatos"
+      add_contacts: "Adicionar destinatários"
       content_speech: para o campo de conteúdo da mensagem
       subject_speech: para o campo assunto
+      remove_attachment: "Remover %{file} %{size} da lista de anexos"
+      attachment_list: Lista de arquivos anexados
+      go_to_ckeditor: 'Ir para campo com conteúdo da mensagem'
     header:
       inbox: "Entrada"
       outbox: "Saída"
       trashbox: "Lixeira"
+      inbox_alt: Caixa de Entrada (%{unreads} mensagens não lidas)
+      outbox_alt: Caixa de Saída
+      trashbox_alt: Lixeira
     show:
       from: "De: "
       date: "Data: "
@@ -2782,10 +2797,31 @@ pt_BR:
       reply: "Responder"
       reply_all: "Responder a todos"
       forward: "Encaminhar"
+      sent_to: "Destinatários "
+      sent_by: "Rementente "
+      date2: Data
+      subject2: Assunto
+      attachment: Anexos
+      at_yes: 'Sim'
+      at_no: 'Não'
+      trash: Excluir mensagem
+      unread: Marcar mensagem como não lida
+      restore: Restaurar mensagem
+      size: " (%{size})"
+      download_file: Fazer download do anexo %{name} de tamanho %{size}
     index:
       filter_selected: "Visualizar: "
       placeholder_subject: 'Assunto a pesquisar'
       placeholder_user: 'Remetente ou destinatário a pesquisar'
+      select_all: Selecionar todas
+      view_messages: 'Visualizar: %{type}'
+      search: Pesquisar
+      select_message: Selecionar mensagem
+      summary: Tabela contendo todas as mensagens enviadas, recebidas ou removidas de acordo com as opções selecionadas. Nesta tabela, há o assunto da mensagem, data, a informação se possui ou não anexos e, dependendo da visualização, remetentes ou destinatários.
+      read_success: Mensagens marcadas como lida com sucesso
+      unread_success: Mensagens marcadas como não lida com sucesso
+      remove_success: Mensagens movidas para a lixeira com sucesso
+      restore_success: Mensagens restauradas com sucesso
     message_to: Enviar mensagem para %{name}
 
   profiles:
@@ -4084,6 +4120,8 @@ pt_BR:
     stop: Interromper transcrição automática de fala para texto %{field}
     browser: Seu navegador não dá suporte a esta ferramenta. Favor utilizar o Chrome para ter acesso a ela.
     no_speech: A ferramenta de transcrição de fala foi interrompida, pois nenhuma fala foi recebida.
+    general_error: 'Não foi possível iniciar a transcrição automática de fala para texto'
+    not_allowed: 'Seu navegador está com a permissão de microfone bloqueada. Favor desbloquear.'
 
   tabs:
     close: Fechar aba %{name}

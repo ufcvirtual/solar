@@ -3,27 +3,22 @@
     %h2= @message.subject
   .block_content.messages
     .align-left
-      = link_to reply_message_path(@message), class: 'btn btn_main', :'data-tooltip' => t(".reply") do
-        %i.icon-reply
-      = link_to reply_all_message_path(@message), class: 'btn', :'data-tooltip' => t(".reply_all") do
-        %i.icon-reply-all
-      = link_to forward_message_path(@message), class: 'btn', :'data-tooltip' => t(".forward") do
-        %i.icon-forward
+      %ul
+        %li= link_to content_tag(:i, nil, class: 'icon-reply', :"aria-hidden" => 'true'), reply_message_path(@message), class: 'btn btn_main', :'data-tooltip' => t(".reply"), :'aria-label'=> t(".reply")
+        %li= link_to  content_tag(:i, nil, class: 'icon-reply-all', :"aria-hidden" => 'true'), reply_all_message_path(@message), class: 'btn', :'data-tooltip' => t(".reply_all"), :'aria-label'=> t(".reply_all")
+        %li= link_to content_tag(:i, nil, class: 'icon-forward', :"aria-hidden" => 'true'), forward_message_path(@message), class: 'btn', :'data-tooltip' => t(".forward"), :'aria-label'=> t(".forward")
 
     .align-right
-      = link_to new_message_path, :class =>'btn', 'data-tooltip' => t(:new, scope: :messages) do
-        %i.icon-plus
+      %ul
+        %li= link_to content_tag(:i, nil, class: 'icon-plus', :"aria-hidden" => 'true'),  new_message_path, :class =>'btn', 'data-tooltip' => t(:new, scope: :messages), :'aria-label'=> t("messages.new")
 
-      - if @box != "trashbox"
-        #mark_as_unread.btn{:"data-tooltip" => t(:mark_as_unread, scope: :messages), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "unread", box: @box)}
-          %i.icon-mail-read
+        - if @box != "trashbox"
+          %li#mark_as_unread.btn=link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'), '#', {:"data-tooltip" => t('.unread'), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "unread", box: @box), :'aria-label'=> t(".unread"), onkeydown: 'click_on_keypress(event, this);'}
 
-        #remove_message.btn{:"data-tooltip" => t(:delete, scope: :messages), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "trash", box: @box)}
-          %i.icon-trash
+          %li#remove_message.btn=link_to content_tag(:i, nil, class: 'icon-trash', :'aria-hidden' => 'true'), '#', {:"data-tooltip" => t('.trash'), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "trash", box: @box), :'aria-label'=> t(".trash"), onkeydown: 'click_on_keypress(event, this);', class: 'remove_btn'}
 
-      - if @box == "trashbox"
-        #restore_message.btn{:"data-tooltip" => t(:restore, scope: :messages), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "restore", box: @box)}
-          %i.icon-restore
+        - if @box == "trashbox"
+          %li#restore_message.btn=link_to content_tag(:i, nil, class: 'icon-restore', :'aria-hidden' => 'true'), '#', {:"data-tooltip" => t('.restore'), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "restore", box: @box), :'aria-label'=> t(".restore"), onkeydown: 'click_on_keypress(event, this);'}
 
     .clearfix
 
@@ -43,12 +38,13 @@
     - unless (attachments = @message.files).empty?
       .message_attachments
         .label-show.align-left
-          %i.icon-paperclip
+          %i.icon-paperclip{:'aria-hidden' => 'true'}
           = t(".attachments")
         %br
         - attachments.each do |file|
-          .new-attach
-            = link_to ['-', file.attachment_file_name].join, download_file_messages_path(file_id: file.id)
+          %ul.new-attach
+            - size = format('%.2f KB', file.attachment_file_size/1024.0)
+            %li= link_to file.attachment_file_name + t('.size', size: size), download_file_messages_path(file_id: file.id), :'aria-label' => t('.download_file', name: file.attachment_file_name, size: size)
 
   %hr
   .message_div_show
@@ -57,13 +53,18 @@
 
   .message_div_navigation
     %a.btn.align-left{href: messages_path}
-      %i.icon-arrow-left
+      %i.icon-arrow-left{:'aria-hidden' => 'true'}
       = t(:back)
 
 :javascript
 
   $(function(){
-    $('#remove_message, #restore_message, #mark_as_unread').click(function(){
+    $('#remove_message a, #restore_message a, #mark_as_unread a').click(function(){
+      if($(this).hasClass('remove_btn')){
+        if(!confirm("#{t(:message_confirm)}"))
+          return false;
+      }
+
       $.ajax({
         type: 'PUT',
         url: $(this).data('link-udpate-status'),

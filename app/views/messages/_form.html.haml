@@ -12,10 +12,13 @@
       .message_header_new
         .message_new_text_to
           .label.align-left
-            %a#link_to_contacts.link_content= t('.message_to')
-          .input.align-right= text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(', '), class: 'message_new_textbox', readonly: true, placeholder: t('.add_contacts')
+            = label_tag :message_to, t('.message_to')
+          .input.align-right
+            = text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(', '), disabled: true
+            = link_to t('.add_contacts'), '#', :'aria-label' => (t('.add_contacts') + t('fancybox.open')), onkeydown: 'click_on_keypress(event, this);', class: 'message_new_textbox', :'data-url' => contacts_messages_path(allocation_tag_id: @allocation_tag_id, reply_to: 'reply_params'), onclick: 'open_contacts_selection(this);'
+
         .message_new_text_to
-          .label.align-left= t('.subject')
+          .label.align-left= label_tag :subject, t('.subject'), for: 'message_subject'
           .input.align-right
             = f.input :subject, label: false, input_html: { class: 'message_new_textbox' }
             = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline', ckeditor: false, div_id: 'message_subject', number: '', field: t('.subject_speech')}
@@ -23,10 +26,10 @@
         .message_new_upload
 
           #new_message_file
-            .label.align-left= t('.attach')
+            .label.align-left= label_tag t('.attach')
 
-            %button#link_upload.btn.btn_default.duplicate_nested_form{ :'data-tooltip' => t('.attach_file') }
-              %i.icon-paperclip
+            %button#link_upload.btn.btn_default.duplicate_nested_form{ :'data-tooltip' => t('.attach_file'),  :'aria-label' => t('.attach_file') }
+              %i.icon-paperclip{:'aria-hidden' => 'true'}
 
             - if @files
               .list_files_to_send.original_files
@@ -34,7 +37,7 @@
                   .attach
                     = hidden_field :message, :original_files, value: file.id, multiple: true
                     = link_to ['-', file.attachment_file_name].join, download_file_messages_path(file_id: file.id)
-                    = link_to content_tag(:i, nil, class: 'icon-minus-square'), '', remote: true, class: 'destroy_original_file'
+                    = link_to content_tag(:i, nil, class: 'icon-minus-square'), '#', remote: true, class: 'destroy_original_file', :'aria-label' => t('.remove_attachment', file: file.attachment_file_name , size: file.attachment_file_size), :'data-tooltip' => t('.remove_attachment', file: file.attachment_file_name , size: file.attachment_file_size)
 
             .invisible
               = f.simple_fields_for :files do |f_file|
@@ -43,9 +46,11 @@
                     = f_file.file_field :attachment
 
             .list_files_to_send
-              .files_to_send
+              %ul.files_to_send{:'aria-label' => t('.attachment_list')}
+
 
     #div_new_message
+      .visuallyhidden= link_to t('.go_to_ckeditor'), '#', onclick: "focus_element('#cke_1_contents');", onkeydown: 'click_on_keypress(event, this);'
       = f.input :content, label: false, as: :ckeditor
 
     = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'message_content', number: '2', field: t('.content_speech')}
@@ -83,15 +88,6 @@
         if (!confirm("#{I18n.t(:no_content, scope: [:messages, :form])}"))
           event.preventDefault();
       }
-    });
-
-    // abrir lista de contatos
-    $("#link_to_contacts, #message_to").click(function(){
-      var url = "#{contacts_messages_path(allocation_tag_id: @allocation_tag_id, reply_to: 'reply_params')}".replace('reply_params', $("#message_contacts").val());
-      $(this).call_fancybox({
-        href: url,
-        open: true
-      });
     });
 
     // retirar anexos da msg original
@@ -146,12 +142,16 @@
           return false;
         }
 
-        var new_file_name = "<div class='input files file_attached'>" + this.files[0].name + "&nbsp;&nbsp;&nbsp;<i class='icon-minus-square remove-file'></i> </span> </div>";
+        var file_size = (this.files[0].size/1024).toFixed(2) + "KB";
+        var remove_file_label = "#{t('messages.form.remove_attachment', file: 'file', size: 'size')}".replace('file', this.files[0].name).replace('size', file_size);
+
+        var new_file_name = "<li class='input files file_attached'>" + this.files[0].name + "(" + file_size + ") <a href='#' aria-label='"+remove_file_label+" data-dropdown='"+remove_file_label+"' onkeydown='click_on_keypress(event, this);' class='remove-file'><i class='icon-minus-square'></i></i> </span> </li>";
         $(".files_to_send").append(new_file_name);
 
         $('.remove-file:last').click(function(){
           $(this).closest('.files.file_attached').slideUp().remove();
           $(newfile).closest('.duplicatable_nested_form').slideUp().remove();
+          focus_element('ul.files_to_send');
         });
       });
 

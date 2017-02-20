@@ -3,14 +3,7 @@
   padding-top: 5px;
   font-size: 10pt;
   height: 28px;
-
-  select{
-    margin-left: 5px;
-  }
-
-  input{
-    margin-right: 5px;
-  }
+  width: 24%;
 }
 
 .td_time{
@@ -81,6 +74,12 @@
 /* mensagem: listagem das mensagens */
 .message_div_list {
   width: 100%;
+}
+
+table.tb_list.message_div_list{
+  a{
+    text-decoration: none;
+  }
 }
 
 .message_line{
@@ -179,7 +178,6 @@
 
     .align-middle{
       float: left;
-      margin-left: 5%;
       input{
         width: 120px;
         margin-top: 5px;
@@ -191,6 +189,14 @@
 
     .btn-group{
       padding-top: 4px;
+    }
+
+    label{
+      width: 28%;
+      vertical-align: middle;
+      text-align: center;
+      margin-right: 5px;
+      color: $color_almost_gray;
     }
 
   }
@@ -246,14 +252,30 @@
   margin-bottom: 0.5*$gutter;
   height: 30px;
   display: inline-block;
+  width: 100%;
 
   .label{
-    width: 60px;
+    width: 12%;
     margin-top: 5px;
     font-size: $font_size;
   }
+  label{
+    width: auto;
+  }
+
   .input{
-    width: 705px;
+    width: 88%;
+    display: inline-block;
+  }
+
+  input{
+    width: 77%;
+  }
+
+  .message_subject {
+    input{
+      width: 97%;
+    }
   }
 }
 
@@ -306,6 +328,19 @@
 
 .message_external_div {
   margin-bottom: $gutter;
+  li{
+    display: inline-block;
+  }
+
+  ul.new_attach li{
+    display: block;
+  }
+}
+
+ul.files_to_send{
+  li{
+    display: block;
+  }
 }
 
 .text_none { // FIXME: verificar se é realmente necessário
@@ -385,6 +420,12 @@
   }
 }
 
+.contacts-selection{
+  h3.select, h3.selected{
+    font-weight: normal;
+  }  
+}
+
 .contacts-type, .contacts-uc .filter{
   padding-left: 10px;
 }
@@ -438,6 +479,9 @@
 }
 
 .message_new_upload{
+  label{
+    width: 12%;
+  }
   .files{
     .file_attached {
       padding-top: 5px;
@@ -452,6 +496,10 @@
 
 .list_files_to_send {
   margin-left: 60px;
+}
+
+.duplicate_nested_form#link_upload{
+  margin-left: 4%;
 }
 
 .remove-file {

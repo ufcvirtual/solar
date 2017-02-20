@@ -1,26 +1,41 @@
 .block_content
   - if @messages.any?
-    %table.message_div_list
-      - @messages.each do |message|
-        - msg_path = message_path(id: message.id, box: @box)
-        %tr.message_line{ class: (message == @messages.last) ? 'no_border' : '' }
-          %td.message_line_check
-            = check_box_tag 'checkbox_message', message.id, checked = false, { class: 'selected_messages', :"data-message-id" => message.id }
-            - css_class = message.was_read != '0' ? 'message_read' : 'message_unread'
-            = hidden_field_tag 'message_style', css_class
-          %td.td_subject
-            - message.labels(current_user.id, system_label = @show_system_label).each do |label|
-              %span.message_label= label
-            = link_to message.subject, msg_path, class: css_class
-
-          %td.td_attachment= content_tag(:i, nil, class: 'icon-paperclip') if message.count_files != '0'
+    %table.tb_list.message_div_list{summary: t('messages.index.summary')}
+      %thead
+        %tr
+          %th#th_select_msgs.no_sort{:'aria-label' => t('messages.index.select_message')}
+            %input#ckb_all{ type: "checkbox", :"data-children-names" => "checkbox_message",:'aria-label' => t('messages.index.select_all') }
+          %th#th_subject= t('messages.show.subject2')
+          %th#th_attachment.center= t('messages.show.attachment')
           - if 'outbox' == @box
-            %td.td_recipient{ :'data-tooltip' => message.sent_to_names }= link_to message.sent_to_names.truncate(100), msg_path
+            %th#th_sent_to= t('messages.show.sent_to')
           - else
-            %td.td_sender= link_to message.sent_by_name, msg_path
-          %td.td_time= link_to l(message.created_at, format: :short), msg_path
-  - else
-    .text_none= t(:none, scope: :messages)
+            %th#th_sent_by.center= t('messages.show.sent_by')
+          %th#date.center= t('messages.show.date2')
+      %tbody
+      
+        - @messages.each do |message|
+          - msg_path = message_path(id: message.id, box: @box)
+          %tr.message_line{ class: (message == @messages.last) ? 'no_border' : '' }
+            %td.message_line_check{headers: 'th_ckb_all'}
+              = check_box_tag 'checkbox_message', message.id, checked = false, { class: 'selected_messages', :"data-message-id" => message.id, :'aria-label' => t('messages.index.select_message'), id: "ckb_#{message.id}", :'aria-labelledby' => 'th_select_msgs'  }
+              - css_class = message.was_read != '0' ? 'message_read' : 'message_unread'
+            %td.td_subject{headers: 'th_subject'}
+              - message.labels(current_user.id, system_label = @show_system_label).each do |label|
+                %span.message_label= label
+              = link_to message.subject, msg_path, class: css_class
+
+            %td.td_attachment.center{headers: 'th_attachment'}
+              - if message.count_files != '0'
+                = content_tag(:i, nil, class: 'icon-paperclip', :'aria-hidden'=>'true')
+              .visuallyhidden= message.count_files != '0' ? t('messages.show.at_yes') : t('messages.show.at_no')
+            - if 'outbox' == @box
+              %td.td_recipient{ :'data-tooltip' => message.sent_to_names, headers: 'th_sent_to' }= link_to message.sent_to_names.truncate(100), msg_path
+            - else
+              %td.td_sender.center{headers: 'th_sent_by'}= link_to message.sent_by_name, msg_path
+            %td.td_time.center{headers: 'th_date'}= link_to l(message.created_at, format: :short), msg_path
+
+  .text_none.empty_message{ class: (@messages.empty? ? '' : 'hide_message') }= t('messages.none')
 
 .message_div_navigation
   = will_paginate @messages

@@ -1213,6 +1213,7 @@ en_US:
       shared_between_groups: Shared between groups
       watch: Watch record
       access: Access list
+      watch_disabled: Watch record (link disabled)
     success:
       created: Webconference was successfully created.
       updated: Webconference was successfully updated.
@@ -1254,6 +1255,11 @@ en_US:
       recording: Recording
       frequency: Working Hours
       grade: Grade
+      recordings: Access recordings list of %{web}
+      recordings_disabled: Access recordings list of %{web} (disabled)
+      more: See complete description of %{web}
+      less: See compressed description of %{web}
+      groups: List of groups which webconference %{web} is shared between
     list_access:
       no_log: No participant accessed this webconference
       too_old: This webconference happened before the access start to be saved
@@ -2389,8 +2395,9 @@ en_US:
       compress_description: Compress description
       students: Students
       message_ended: Ended
-      message_did_not_start: Did not start
+      message_did_not_start: Did not started
       message_history: Message's history
+      participants_list: Lista de participantes do chat %{chat}
     index:
       chats: Chats
       new_chat: New Chat
@@ -2505,14 +2512,14 @@ en_US:
     file_too_big: "File too big"
     mail_header: "Sent by: "
     mail_sent: "Message was successfully sent"
-    new: "New"
-    delete: "Delete"
-    restore: "Restore"
+    new: "New message"
+    delete: "Delete selected messages"
+    restore: "Restore selected messages"
     select_all: "All"
     select_read: "Read"
     select_unread: "Unread"
-    mark_as_read: "Marck as read"
-    mark_as_unread: "Mark as unread"
+    mark_as_read: "Mark selected messages as read"
+    mark_as_unread: "Mark selected messages as unread"
     already_added: already added
     none: "No message found"
     no_new: "No new messages"
@@ -2522,8 +2529,8 @@ en_US:
     contacts:
       title: "Selection of contacts"
       contacts: "Contacts"
-      select: "Select: "
-      to: "To: "
+      select: "User's list to select as receivers"
+      to: "List of selected receivers"
       system_contacts: System Contacts
       personal_contacts: Personal Contacts
       add_all: Add all
@@ -2531,6 +2538,8 @@ en_US:
     users:
       add_all: Add all
       no_user_found: No user found
+      add_all_alt: Click to add all users to receiver's list
+      user_alt: "%{name} (Click to add user %{name} with email %{email} to receiver's list)"
     errors:
       recipients: "A message must have at least 1 recipient."
       permission: You don't have access to informed data.
@@ -2546,13 +2555,19 @@ en_US:
       without_recipient: "Need at least one recipient."
       no_content: The message has no content. Continue?
       discard: "Discard"
-      add_contacts: "Click here to add contacts"
+      add_contacts: "Add receivers"
       content_speech: to message's content field
       subject_speech: to subject field
+      remove_attachment: Remove %{file} %{size} from attachment list
+      attachment_list: Attachment file's list
+      go_to_ckeditor: "Go to field with message's content"
     header:
       inbox: "Inbox"
       outbox: "Outbox"
       trashbox: "Trashbox"
+      inbox_alt: Inbox (%{unreads} unread messages)
+      outbox_alt: Outbox
+      trashbox_alt: Trashbox
     show:
       from: "From: "
       date: "Date: "
@@ -2562,10 +2577,30 @@ en_US:
       reply: "Reply"
       reply_all: "Reply to all"
       forward: "Forward"
+      sent_to: "Receivers "
+      sent_by: "Sent by "
+      date2: Date
+      subject2: Subject
+      attachment: Attachments
+      at_yes: 'Yes'
+      at_no: 'No'
+      trash: Delete message
+      unread: Mark message as read
+      restore: Restore message
+      size: " (%{size})"
+      download_file: Download attachment %{name} with size %{size}
     index:
       filter_selected: "View: "
       placeholder_subject: 'Subject to be searched'
       placeholder_user: 'Recipient or sender to be searched'
+      view_messages: 'View messages: %{type}'
+      search: Search
+      select_message: Select message
+      summary: Table which content has all sent, received or deleted messages. In this table, you have subject, date, informatou about attachments and, depending on selected view, receivers or the one who sent the message.
+      read_success: Messages marked as read successfully
+      unread_success: Messages marked as unread successfully
+      remove_success: Messages moved to trash successfully
+      restore_success: Messages restored successfully
     message_to: Send message to %{name}
   profiles:
     form:
@@ -3848,6 +3883,8 @@ en_US:
     stop: Stop automatic transcription from speech to text %{field}
     browser: Your browser doesn't support this tool. Please use Chrome to have access to it.
     no_speech: Speech trancription tool was interrupted. No speech received.
+    general_error: 'It was not possible to start automatic transcription from speech to text.'
+    not_allowed: "Your browser has microphone permissions blocked. Please allow it."
 
   tabs:
     close: Close tab %{name}

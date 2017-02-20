@@ -6,7 +6,7 @@
     .flash_message_wrapper
 
     .block_content
-      .help_link= link_to t('.help_message'), "#"
+      .help_link= link_to t('.help_message'), "#", onkeydown: 'click_on_keypress(event, this);'
       .contacts-type
         = label_tag :contacts_type, t('.contacts') + "*"
         = select_tag :contacts_type, options_for_select([[t('.system_contacts'),1],[t('.personal_contacts'),2]]), selected: 1
@@ -18,7 +18,7 @@
             - unless @contacts.empty?
               = render partial: 'users', object: @users = @contacts, object: @allocation_tags_ids = ''
 
-      = t('.to')
+      %h3.selected= t('.to')
       .contacts-selected
         - [@reply_to].flatten.compact.each do |contact|
           .contact{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume], "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-selected" => true
@@ -81,6 +81,7 @@
     $('.contacts-selected').append(html.join(""));
 
     add_all_message();
+    focus_element('.block_content h3.selected');
   }
 
   function add_all_message(){
@@ -98,10 +99,10 @@
     $("legend").remove();
     $(".filter").unwrap();
     $($(".edition.block_content").find("p")[0]).remove();
-    $(".contacts-list").before("<div class='select'>#{t('.select')}</div>");
+    $(".contacts-list").before("<h3 class='select'>#{t('.select')}</h3>");
     var allocation_tag_id = "#{@allocation_tag_id}";
 
-    $(".help_link a").click(function(){
+    $(".help_link a").click(function(event){
       if (!$(".contact.help:visible").length){
         $('<div class="contact help"><a data-at="" data-selected="true" href="#" onclick="$(this).parent().remove(); return false;">#{I18n.t(".messages.support_html")}</a></div>').appendTo(".contacts-selected");
       }

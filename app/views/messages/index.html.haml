@@ -4,32 +4,35 @@
 
   .block_white.index
     .align-left.padding-checkbox
-      %input#ckb_all{ type: "checkbox", :"data-children-names" => "checkbox_message" }
-      = t(".filter_selected")
-      %select.message_status
-        %option.check_all= t(:select_all, scope: :messages)
-        %option.check_read= t(:select_read, scope: :messages)
-        %option.check_unread= t(:select_unread, scope: :messages)
+      %span.views{role: 'menubar'}
+        %a.btn.btn_dropdown{ href: '#', :"data-dropdown" => '#views-dropdown' }
+          = t('.view_messages', type: t('messages.select_all'))
+          %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
+        .dropdown.dropdown-tip#views-dropdown
+          %ul.dropdown-menu
+            %li{role: 'menuitem'}= link_to t('messages.select_all'), '#', class: 'selected all', onclick: 'change_messages_view(this);'
+            %li{role: 'menuitem'}= link_to t('messages.select_read'), '#', class: 'reads', onclick: 'change_messages_view(this);'
+            %li{role: 'menuitem'}= link_to t('messages.select_unread'), '#', class: 'unreads', onclick: 'change_messages_view(this);'
 
     .align-middle.search_messages
-      = text_field_tag :subject, nil, placeholder: t('.placeholder_subject')
-      = text_field_tag :user, nil, placeholder: t('.placeholder_user')
-      = link_to (content_tag(:i, nil, class: 'icon-search')), '#', class: 'btn', :'data-tooltip' => t(:search), id: 'search_messages', :'data-url' => search_messages_path
+      .hide_label
+        = label_tag :subject, t('.placeholder_subject')
+        = text_field_tag :subject, nil, placeholder: t('.placeholder_subject')
+      .hide_label
+        = label_tag :user, t('.placeholder_user')
+        = text_field_tag :user, nil, placeholder: t('.placeholder_user')
+      = link_to (content_tag(:i, nil, class: 'icon-search')), '#', class: 'btn', :'data-tooltip' => t('.search'), id: 'search_messages', :'data-url' => search_messages_path, :'aria-label' => t('.search')
 
     .align-right.btn-group
-      = link_to new_message_path, class: "btn btn_main", :"data-tooltip" => t(:new, scope: :messages) do
-        %i.icon-plus
-      - unless ['trashbox', 'outbox'].include?(@box)
-        #mark_as_unread.btn{ "data-tooltip" => t(:mark_as_unread, scope: :messages), :"data-new-status" => 'unread', :"data-link-udpate-status" => change_status_message_path(id: ':id', new_status: 'unread', box: @box) }
-          %i.icon-mail
-        #mark_as_read.btn{ "data-tooltip" => t(:mark_as_read, scope: :messages), :"data-new-status" => 'read', :"data-link-udpate-status" => change_status_message_path(id: ':id', new_status: 'read', box: @box) }
-          %i.icon-mail-read
-      - unless @box == "trashbox"
-        #remove_message.btn{:"data-tooltip" => t(:delete, scope: :messages), :"data-new-status" => 'trash', :"data-link-udpate-status" => change_status_message_path(id: ':id', new_status: 'trash', box: @box)}
-          %i.icon-trash
-      - else
-        #restore_message.btn{:"data-tooltip" => t(:restore, scope: :messages), :"data-new-status" => 'restore', :"data-link-udpate-status" => change_status_message_path(id: ':id', new_status: 'restore', box: @box)}
-          %i.icon-restore
+      %ul
+        %li= link_to content_tag(:i, nil, class: 'icon-plus', :'aria-hidden' => 'true'), new_message_path, class: "btn btn_main", :"data-tooltip" => t('messages.new'), :'aria-label' => t('messages.new')
+        - unless ['trashbox', 'outbox'].include?(@box)
+          %li= link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'), '#', class: 'btn', id: 'mark_as_unread', :'data-tooltip' => t(:mark_as_unread, scope: :messages), :"data-new-status" => 'unread', :"data-link-udpate-status" => change_status_message_path(id: ':id', new_status: 'unread', box: @box) , onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:mark_as_unread, scope: :messages)
+          %li= link_to content_tag(:i, nil, class: 'icon-mail-read', :'aria-hidden' => 'true'), '#', class: 'btn', id: 'mark_as_read',:"data-tooltip" => t(:mark_as_read, scope: :messages), :"data-new-status" => 'read', :"data-link-udpate-status" => change_status_message_path(id: ':id', new_status: 'read', box: @box), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:mark_as_read, scope: :messages)
+        - unless @box == "trashbox"
+          %li= link_to content_tag(:i, nil, class: 'icon-trash', :'aria-hidden' => 'true'), '#', class: 'btn remove_btn', id: 'remove_message', :"data-tooltip" => t(:delete, scope: :messages), :"data-new-status" => 'trash', :"data-link-udpate-status" => change_status_message_path(id: ':id', new_status: 'trash', box: @box), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:delete, scope: :messages)
+        - else
+          %li= link_to content_tag(:i, nil, class: 'icon-restore', :'aria-hidden' => 'true'), '#', id: 'restore_message', class: 'btn', :"data-tooltip" => t(:restore, scope: :messages), :"data-new-status" => 'restore', :"data-link-udpate-status" => change_status_message_path(id: ':id', new_status: 'restore', box: @box), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:restore, scope: :messages)
 
   .messages_list
     = render partial: 'list'
@@ -37,11 +40,10 @@
 :javascript
 
   $(function(){
-    message_menu_dropdown();
-
     function search_messages(){
       $.get($('#search_messages').data('url'), { subject: $('#subject').val(), user: $('#user').val(), box: "#{@box}" }, function(data){
         $('.messages_list').html(data);
+        focus_element($('table'));
       });
     }
 
@@ -58,7 +60,14 @@
 
     $('#ckb_all').nice_checkbox();
 
-    $('div#mark_as_read, div#mark_as_unread, div#remove_message, div#restore_message').click(function(){
+    $('a#mark_as_read, a#mark_as_unread, a#remove_message, a#restore_message').click(function(){
+      var link = $(this);
+
+      if($(this).hasClass('remove_btn')){
+        if(!confirm("#{t(:message_confirm)}"))
+          return false;
+      }
+
       var message_ids = selected_messages();
       if (!message_ids.length)
         return false;
@@ -69,18 +78,35 @@
 
       $.put(url, function(response){
         if ($.inArray(new_status, ['trash', 'restore']) != -1) // comportamento diferente
-          msgs.parents('tr').fadeOut(500, function(){ $(this).remove() });
+          msgs.parents('tr').fadeOut(500, function(){ $(this).remove(); update_tables_with_no_data(); });
         else {
           var links = $('.td_subject a', msgs.parents('tr'));
           if (new_status == "read")
             links.addClass('message_read').removeClass('message_unread');
           else
             links.addClass('message_unread').removeClass('message_read');
+          update_tables_with_no_data();
         }
       }).complete(function(){
         // contar msgs da caixa de entrada
         $.get("#{count_unread_messages_path}", function(data){
           $('span#count_msgs_unread').html(['(', data.unread, ')'].join(''));
+
+          switch($(link).prop('id')) {
+            case 'mark_as_read':
+              flash_message("#{t('.read_success')}", 'notice');
+              break;
+            case 'mark_as_unread':
+              flash_message("#{t('.unread_success')}", 'notice');
+              break;
+            case 'remove_message':
+              flash_message("#{t('.remove_success')}", 'notice');
+              break;
+            case 'restore_message':
+              flash_message("#{t('.restore_success')}", 'notice');
+              break;
+          }
+
         });
       });
     });
