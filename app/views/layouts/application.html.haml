@@ -86,6 +86,18 @@
             %li#mysolar_open_lesson
               %button.btn.btn_main.disabled{"data-tooltip" => t(:mysolar_open_lesson), name: t(:mysolar_open_lesson), onclick: "javascript:maximize_lesson(this);", type: "button", "data-fancybox-type" => "iframe", :'aria-label' => t(:mysolar_open_lesson_alt, disabled: t(:open_lesson_no_lesson)), disabled: true}
                 %i.icon-class{:'aria-hidden' => 'true'}
+            - unless @shortcut.blank?
+              %li#mysolar_open_shortcut
+                %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_2", onkeydown: 'click_on_keypress(event, this);', :'aria-label' =>  t('scores.info.shortcut')}
+                  %i.icon-arrow-down-triangle
+                    .dropdown.dropdown-tip{id: "dropdown_eq_1_2"}
+                      %ul{ class: 'dropdown-menu' }
+                        %h2= t('scores.info.shortcut')
+                        %br
+                        - @shortcut.each do |sh|
+                          %li.shortcut= t("shortcut.#{sh.first}") + ' '+ sh.last 
+                          %br
+   
 
       / sidebar
       #mysolar_sidebar{role: 'navigation'}
@@ -358,4 +370,11 @@
       });
 
       $($("#page_title h1").children("span")[0]).removeAttr("title")
+    });
+
+    $("#shortcut").call_fancybox({
+      minWidth: '50%',
+      minHeight: '50%',
+      height: 'auto',
+      closeBtn : true
     });

@@ -52,6 +52,7 @@ function change_tab(tab){
   $.get($(tab).data('url'), function(data){
     $('.tb_list_students').html(data);
     $('#tabs a.active').removeClass('active');
+    $('.tabs a.active').removeClass('active');
     $(tab).addClass('active');
   }).error(function(data){
     var data = $.parseJSON(data.responseText);
@@ -65,6 +66,7 @@ function change_tab_tool(tab){
   $('.tools', parent).removeClass('show');
   $($(tab).data('div'), parent).addClass('show');
   $('#tabs a.active', parent).removeClass('active');
+  $('.tabs a.active', parent).removeClass('active');
   $(tab).addClass('active');
   return false;
 }

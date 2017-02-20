@@ -1,12 +1,12 @@
 - if @access.any?
   %thead
-    %th.center= t(".date")
-    %th.center= t(".time")
+    %th#date.center= t(".date")
+    %th#time.center= t(".time")
   %tbody
     - @access.each do |access|
       %tr.lines
-        %td.center= l(access.created_at.to_datetime, format: :normal)
-        %td.center= l(access.created_at.to_datetime, format: :clock_time)
+        %td.center{headers: 'date'}= l(access.created_at.to_datetime, format: :normal)
+        %td.center{headers: 'time'}= l(access.created_at.to_datetime, format: :clock_time)
 - else
   %tbody
     %tr.block_content.block_content_text.text_none

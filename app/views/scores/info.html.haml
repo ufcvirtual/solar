@@ -27,19 +27,25 @@
         %i.icon-arrow-down-triangle
       #dropdown_menu.dropdown.dropdown-tip
         %ul.dropdown-menu
+          - @shortcut = Hash.new
+          - @shortcut['evaluative'] = t("shortcut.number_evaluative").to_s
+          - @shortcut['frequency'] = t("shortcut.number_frequency").to_s
+          - @shortcut['notevaluative'] = t("shortcut.number_notevaluative").to_s
           - @types.each_with_index do |tool, idx|
+            - @shortcut[tool.last] = t('.shortcut_'+ "#{tool.last}")
             %li
               = check_box_tag "#{tool.last}", tool.last, false, :"data-url-search" => search_tool_scores_path(type: tool.last)
-              = label_tag "#{tool.last}", tool.first
+              = label_tag "#{tool.last}", tool.first 
+              
 
     - if @is_student
       .info_right
         = label_tag t(:reports, scope: [:scores, :info]) 
         .links
-          = link_to t(:all, scope: [:scores, :info]), reports_pdf_scores_path(tool: true, user_id: @user.id, format: "pdf", type: '',), :target => "_blank", class: "btn"
-          = link_to t(:evaluative, scope: [:scores, :info]), reports_pdf_scores_path(evaluative: true, type: '_evaluative', user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn"
-          = link_to t(:frequency, scope: [:scores, :info]), reports_pdf_scores_path(frequency: true, user_id: @user.id, type: '_frequency', format: "pdf"), :target => "_blank", class: "btn"
-          = link_to t(:not_evaluative, scope: [:scores, :info]), reports_pdf_scores_path(user_id: @user.id, type: '_not_evaluative', format: "pdf"), :target => "_blank", class: "btn"
+          = link_to t(:all, scope: [:scores, :info]), reports_pdf_scores_path(tool: true, user_id: @user.id, format: "pdf", type: '',), :target => "_blank", class: "btn", :'aria-label' => t(:report_all, scope: [:scores, :info])
+          = link_to t(:evaluative, scope: [:scores, :info]), reports_pdf_scores_path(evaluative: true, type: '_evaluative', user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn", :'aria-label' => t(:report_evaluative, scope: [:scores, :info])
+          = link_to t(:frequency, scope: [:scores, :info]), reports_pdf_scores_path(frequency: true, user_id: @user.id, type: '_frequency', format: "pdf"), :target => "_blank", class: "btn", :'aria-label' => t(:report_frequency, scope: [:scores, :info])
+          = link_to t(:not_evaluative, scope: [:scores, :info]), reports_pdf_scores_path(user_id: @user.id, type: '_not_evaluative', format: "pdf"), :target => "_blank", class: "btn", :'aria-label' => t(:report_not_evaluative, scope: [:scores, :info])
 
   - if @is_student
     #list_tools
@@ -52,9 +58,9 @@
       %h2= t(".history_access", amount: @access_count)
     .block_content.block_content_text
       #history_search_content
-        %input{type: "text", id: "from-date", size: "9"}
+        %input{type: "text", id: "from-date", size: "9", :'aria-label'=> t('.date_begin')}
         = t(:to)
-        %input{type: "text", id: "until-date", size: "9"}
+        %input{type: "text", id: "until-date", size: "9", :'aria-label'=> t('.date_end')}
         %span= button_tag t(".search"), id: "bt-amount-history-access", class: "btn"
         #amount_found{style: "float: right; margin-top: 7px; width: 66%;"}
           %h2=t('.access_info')
@@ -71,9 +77,9 @@
         %thead{style: (no_files ? "display: none" : "")}
           %tr.lines
             %th.no_sort
-            %th= t(".file")
-            %th= t(".size")
-            %th= t(".sent_on")
+            %th#file= t(".file")
+            %th#size= t(".size")
+            %th#sent_on= t(".sent_on")
             %th.no_sort
         %tbody.public_files
           - unless no_files
@@ -83,8 +89,7 @@
 
   .block_wrapper{style: "float:left"}
     = link_to t(:back), :back, {class: "btn"}
-    
-
+  
 = javascript_include_tag 'tooltip', 'tablesorter', 'scores'
 
 :css
@@ -92,8 +97,53 @@
 
 :javascript
 
+
+  $(document).keydown(function (e) {
+    if(!$("input").is(":focus")){
+      if (e.which === 97) {
+        $('li a.evaluative').trigger('click');
+        $('li a.evaluative').attr("tabindex", "0");
+        $('li a.evaluative').focus();
+      }
+      if (e.which === 98) { 
+        $('li a.frequency').trigger('click');
+        $('li a.frequency').attr("tabindex", "0");
+        $('li a.frequency').focus();
+      }
+      if (e.which === 99) { 
+        $('li a.notevaluative').trigger('click');
+        $('li a.notevaluative').attr("tabindex", "0");
+        $('li a.notevaluative').focus();
+      }
+      //CHECKBOX
+      if (e.which === parseInt("#{t("scores.checkbox.chat_room")}")) { 
+        $('#chat_room').trigger('click');
+      }
+      if (e.which === parseInt("#{t("scores.checkbox.schedule_event")}")) { 
+        $('#schedule_event').trigger('click');
+      }
+      if (e.which === parseInt("#{t("scores.checkbox.discussion")}")) { 
+        $('#discussion').trigger('click');
+      }
+      if (e.which === parseInt("#{t("scores.checkbox.all")}")) { 
+        $('#all').trigger('click');
+      }
+      if (e.which === parseInt("#{t("scores.checkbox.exam")}")) { 
+        $('#exam').trigger('click');
+      }
+      if (e.which === parseInt("#{t("scores.checkbox.assignment")}")) { 
+        $('#assignment').trigger('click');
+      }
+      if (e.which === parseInt("#{t("scores.checkbox.webconference")}")) { 
+        $('#webconference').trigger('click');
+      }
+    }  
+  });
+
+
   $(function(){   
     var options = $.extend($.datepicker.regional["#{I18n.locale}"]);
+    
     $('#from-date, #until-date').datepicker(options);
     $('#from-date, #until-date').mask("#{I18n.t(:mask, scope: "date.formats")}");
 

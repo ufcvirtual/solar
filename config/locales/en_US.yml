@@ -1081,6 +1081,9 @@ en_US:
       posts: Posts
       more: "More information enunciation of forum %{forum}"
       less: "Less information enunciation of forum %{forum}"
+      summary_evaluative: "This table contains all the evaluation discussions."
+      summary_frequency: "This table contains all the frequency discussions."
+      summary_notevaluative: "This table contains all the not evaluation discussions."
     success:
       created: Discussion was successfully created.
       updated: Discussion was successfully updated.
@@ -1214,6 +1217,9 @@ en_US:
       watch: Watch record
       access: Access list
       watch_disabled: Watch record (link disabled)
+      summary_evaluative: "This table contains all the evaluation Webconferences"
+      summary_frequency: "This table contains all the frequency Webconferences"
+      summary_notevaluative: "This table contains all the not evaluation Webconferences"
     success:
       created: Webconference was successfully created.
       updated: Webconference was successfully updated.
@@ -1720,6 +1726,9 @@ en_US:
       summary_comments: "This table contains comments made about the activity. Comments may have attached files."
       summary_student_files: "This table contains the files sent by the student, with the following information: Name, size, date of sending and who sent the file in addition to the size of the file."
       summary_web: "This table contains the webconferences scheduled by the students, with the following information: Name, period, sitation, if it was recorded and finished."
+      summary_evaluative: "This table contains all the evaluation activity"
+      summary_frequency: "This table contains all the frequency activity"
+      summary_notevaluative: "This table contains all the not evaluation activity"
     assignments:
       participants: See participants
       groups: See groups
@@ -2394,6 +2403,9 @@ en_US:
       message_no_chat: No chat registered
       students: Students
       summary: "This table contains all system chats with the following information: Chat name, availability, frequency status, note, time and history where you can access chat history."
+      summary_evaluative: "This table contains all the evaluation chats with the following information: Chat name, availability, situation, total interactions, notes and history where you can have access to chat messages history."
+      summary_frequency: "This table contains all frequency chats with the following information: Chat name, availability, status, total interactions, frequency obtained and history where you can have access to the chat message history."
+      summary_notevaluative: "This table contains all non-evaluative chats with the following information: Chat name, availability, status, total interactions and history where you can access chat history."
     chats:
       detail: Details
       availability: Availability
@@ -2711,7 +2723,11 @@ en_US:
     status:
       not_started: Not started
       closed: Closed
-      started: Started 
+      started: Started
+    list:
+      summary_evaluative: "This table contains all the evaluation shedule events."
+      summary_frequency: "This table contains all the frequency shedule events."
+      summary_notevaluative: "This table contains all the not evaluation shedule events."   
 
   agendas:
     dropdown_content:
@@ -2863,6 +2879,22 @@ en_US:
       search: "Search:"
       filter: "Filter:"
       filter_data: Filter data
+
+  shortcut:
+    assignment: Assignments
+    webconference: Webconferences
+    exam: Exams
+    chat_room: Chat
+    schedule_event: Shedule events
+    discussion: Discussions
+    all: All
+    frequency: Frequency 
+    evaluative: Evaluatives
+    notevaluative: Not Evaluatives
+    number_evaluative: [1]
+    number_frequency: [2]
+    number_notevaluative: [3]
+        
   scores:
     index:
       assignments: Assignments
@@ -2957,6 +2989,21 @@ en_US:
       participants: '(See participants)'
       expand_description: Expand description
       compress_description: Contract description
+      date_begin: Begin date
+      date_end: End date
+      report_all: "Download: Report all toll."
+      report_not_evaluative: "Download: Download: Report all toll not evaluative."
+      report_evaluative: "Download: Download: Report all toll evaluative."
+      report_frequency: "Download: Download: Report all toll frequency."
+      shortcut: "Shortcut: Number: 1 - Activities evaluative, Number: 2 - Activities frequency, Number: 3 - Activities not evaluative."
+      shortcut_exam: "[E] "
+      shortcut_webconference: "[W] "
+      shortcut_schedule_event: "[V] "
+      shortcut_all: "[L] "
+      shortcut_chat_room: "[C] "
+      shortcut_discussion: "[D] "
+      shortcut_assignment: "[A] "
+      shortcut: Shortcut
     situation:
       not_started: Not started
       to_answer: To answer
@@ -3004,6 +3051,19 @@ en_US:
       not_possible: It's not possible to access this page.
     pdf:
       time: "This report was generated at %{time}"
+    list:
+      summary_evaluative: "This table contains all the evaluation tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
+      summary_frequency: "This table contains all the frequency tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
+      summary_notevaluative: "This table contains all the not evaluation tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
+    checkbox:
+      exam: 69 
+      assignment: 65
+      discussion: 68
+      chat_room: 67
+      webconference: 87
+      schedule_event: 86
+      all: 76
+          
   lesson_notes:
     error:
       general_message: Can't do action
@@ -3117,6 +3177,9 @@ en_US:
       amount_questions: "%{added} added of %{amount} questions"
       calculate: Calculation notes
       calcule_grade: Successfully calculated notes
+      summary_evaluative: "This table contains all the evaluation exams."
+      summary_frequency: "This table contains all the frequency exams."
+      summary_notevaluative: "This table contains all the not evaluation exams."
     success:
       created: Exam was successfully created
       updated: Exam was successfully updated

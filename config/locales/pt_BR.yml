@@ -1257,6 +1257,9 @@ pt_BR:
       posts: Postagens
       more: "Mais informações sobre o enunciado do fórun %{forum}"
       less: "Menos informações sobre o enunciado do fórun %{forum}"
+      summary_evaluative: "Está tabela contém todos os fóruns avaliativas."
+      summary_frequency: "Está tabela contém todos os fóruns de frequência."
+      summary_notevaluative: "Está tabela contém todos os fóruns não avaliativas."
     success:
       created: Fórum criado com sucesso.
       updated: Fórum atualizado com sucesso.
@@ -1394,6 +1397,9 @@ pt_BR:
       watch: Assistir gravação
       access: Lista de acessos
       watch_disabled: Assistir gravação (link desabilitado)
+      summary_evaluative: "Está tabela contém todas as webconferências avaliativas."
+      summary_frequency: "Está tabela contém todas as webconferências de frequência."
+      summary_notevaluative: "Está tabela contém todas as webconferências não avaliativas."
     success:
       created: Webconferência criada com sucesso.
       updated: Webconferência atualizada com sucesso.
@@ -1926,6 +1932,9 @@ pt_BR:
       summary_comments: "Está tabela contém os comentários realizados acerca da atividade. Os comentários podem ter arquivos anexados."
       summary_student_files: "Está tabela contém os arquivos enviado pelo aluno, com as seguintes informações: Nome, tamanho, data de envio e quem envio o arquivo além do tamanho do mesmo."
       summary_web: "Está tabela contém as webconferências agendadas pelos alunos, com as seguintes informações: Nome, período, sitação, se foi gravada e finalizada."
+      summary_evaluative: "Está tabela contém todas as atividades avaliativas com as seguintes informações: Descrição da atividade, período que poderá ser realizada, situação, nota e se foi alterada após o envio."
+      summary_frequency: "Está tabela contém todas as atividades de frequência com as seguintes informações: Descrição da atividade, período que poderá ser realizada, situação, frequência obtida e se foi alterada após o envio."
+      summary_notevaluative: "Está tabela contém todas as atividades não avaliativas com as seguintes informações: Descrição da atividade, período que poderá ser realizada, situação, nota e se foi alterada após o envio."
     assignments:
       participants: Ver participantes
       groups: Ver grupos
@@ -2610,7 +2619,10 @@ pt_BR:
       title_other_chats: Outros Chats
       message_no_chat: Nenhum chat cadastrado
       students: Participantes
-      summary: "Está tabela contém todos os chats do sistema com as seguintes informações: Nome do chat, disponibilidade, situação frequência, nota, carga horária e histórico onde você poderá ter acesso ao histórico de mensagens do chat."
+      summary: "Está tabela contém todos os chats do sistema com as seguintes informações: Nome do chat, disponibilidade, situação, frequência, nota, carga horária e histórico onde você poderá ter acesso ao histórico de mensagens do chat."
+      summary_evaluative: "Está tabela contém todos os chats avaliativos com as seguintes informações: Nome do chat, disponibilidade, situação, total de interações, notas e histórico onde você poderá ter acesso ao histórico de mensagens do chat."
+      summary_frequency: "Está tabela contém todos os chats de frequência com as seguintes informações: Nome do chat, disponibilidade, situação, total de interações, frequência obtida e histórico onde você poderá ter acesso ao histórico de mensagens do chat."
+      summary_notevaluative: "Está tabela contém todos os chats não avaliativos com as seguintes informações: Nome do chat, disponibilidade, situação, total de interações e histórico onde você poderá ter acesso ao histórico de mensagens do chat."
     chats:
       detail: Detalhes
       availability: Disponibilidade
@@ -2941,7 +2953,11 @@ pt_BR:
     status:
       not_started: Não Iniciou
       closed: Encerrado
-      started: Iniciado  
+      started: Iniciado 
+    list:
+      summary_evaluative: "Está tabela contém todos os eventos agendados avaliativas."
+      summary_frequency: "Está tabela contém todos os eventos agendados de frequência."
+      summary_notevaluative: "Está tabela contém todos os eventos agendados não avaliativas."  
 
   agendas:
     dropdown_content:
@@ -3098,6 +3114,21 @@ pt_BR:
       filter: "Filtro:"
       filter_data: Filtrar dados
 
+  shortcut:
+    assignment: Trabalhos
+    webconference: Webconferências
+    exam: Provas
+    chat_room: Chats
+    schedule_event: Eventos
+    discussion: Fóruns
+    all: Todas
+    frequency: Frequência 
+    evaluative: Avaliativas
+    notevaluative: Não Avaliativas
+    number_evaluative: [1]
+    number_frequency: [2]
+    number_notevaluative: [3]
+
   scores:
     index:
       assignments: "Trabalhos"
@@ -3192,6 +3223,20 @@ pt_BR:
       participants: '(Ver participantes)'
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
+      date_begin: Data Inicial
+      date_end: Data Final
+      report_all: "Download: Relatório em PDF com todas as ferramentas."
+      report_not_evaluative: "Download: Relatório em PDF com todas as ferramentas não avaliativas."
+      report_evaluative: "Download: Relatório em PDF com todas as ferramentas avaliativas."
+      report_frequency: "Download: Relatório em PDF com todas as ferramentas de frequência."
+      shortcut_exam: "[P]"
+      shortcut_webconference: "[W]"
+      shortcut_schedule_event: "[E]"
+      shortcut_all: "[O]"
+      shortcut_chat_room: "[C]"
+      shortcut_discussion: "[F]"
+      shortcut_assignment: "[T]"
+      shortcut: Atalhos
     reports:
       general_evaluative: Relatório Acompanhamento - Atividades Avaliativas
       general_frequency: Relatório Acompanhamento - Atividades de Frequência
@@ -3235,6 +3280,18 @@ pt_BR:
       not_possible: Não é possível acessar a página desejada.
     pdf:
       time: "Este relatório foi gerado em %{time}"
+    list:
+      summary_evaluative: "Está tabela contém todas as ferramentas avaliativas: (provas, atividades, chats, fóruns, webconferências e eventos agendados)."
+      summary_frequency: "Está tabela contém todas as ferramentas de frequência: (provas, atividades, chats, fóruns, webconferências e eventos agendados)."
+      summary_notevaluative: "Está tabela contém todas as ferramentas não avaliativas: (provas, atividades, chats, fóruns, webconferências e eventos agendados)."
+    checkbox:
+      exam: 80 
+      assignment: 84
+      discussion: 70
+      chat_room: 67
+      webconference: 87
+      schedule_event: 69
+      all: 79   
 
   lesson_notes:
     error:
@@ -3357,6 +3414,9 @@ pt_BR:
       amount_questions: "%{added} adicionadas de %{amount} questões"
       calculate: Calcular Notas
       calcule_grade: Notas calculadas com sucesso
+      summary_evaluative: "Está tabela contém todas as provas avaliativas."
+      summary_frequency: "Está tabela contém todas as provas de frequência."
+      summary_notevaluative: "Está tabela contém todas as provas não avaliativas."
     success:
       created: Prova criada com sucesso
       updated: Prova atualizada com sucesso

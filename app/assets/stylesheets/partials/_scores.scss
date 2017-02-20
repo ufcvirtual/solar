@@ -10,6 +10,9 @@
   max-height: 200px;
   overflow: auto;
 }
+.shortcut{
+  font-size: 10pt;
+}
 
 tr#activities{
   th{
@@ -252,6 +255,39 @@ tbody{
 
 
 #tabs{
+  margin-left: 28%;
+  li{
+    display: inline-block;
+    padding: 2px;
+    padding-right: 5px;
+  }
+  li a{
+    color: $score_table_head_color;
+    cursor: pointer;
+    border-top: solid 2px $color_main;
+    
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 11px;
+    background-color: $background_gray;
+  }
+  li a:not(.ui-tabs-anchor){
+    border-left: solid 2px $color_main;
+  }
+  li a.active{
+    background-color: $color_main;
+    color: $color_white;
+  }
+  a{
+    text-decoration: none;
+  }
+  li a:last-of-type{
+    border-right: solid 2px $color_main;
+  }
+
+}
+
+.tabs{
   margin-left: 28%;
   li{
     display: inline-block;
