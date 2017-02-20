@@ -34,7 +34,7 @@ tr.lines {
 }
 
 .permission {
-  color: green;
+  color: #00FF00;
 }
 
 .edition-enabled {
@@ -44,6 +44,14 @@ tr.lines {
 label.permissions-search-text {
   font-size: 10pt;
   vertical-align: text-bottom;
+}
+
+input#permission_search,
+input#text_search,
+input#autocomplete-input,
+input#search_user,
+input#search_date {
+  color: #000000;
 }
 
 table.tb_allocation .dropdown ul li a{
