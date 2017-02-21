@@ -25,12 +25,17 @@
           %tbody.offers
             - unless @offers.empty?
               - @offers.each do |offer|
-                - c_un =[offer.uc_code, offer.uc_name].join(' - ')
-                - c_un = c_un.nil? ? [offer.c_code, offer.c_name].join(' - ') : c_un
-                - link = add_tab_path(id: offer.offer_id, context: Context_Curriculum_Unit, allocation_tag_id: offer.at_id)
                 - livre = offer.uc_type_id.to_i == 3
+                - uc_code = [offer.uc_code, offer.uc_name].join(' - ') rescue nil
+                - u_code = [offer.c_code, offer.c_name].join(' - ') rescue nil
+                - if livre
+                  - c_un = offer.uc_type
+                -else
+                  - c_un = uc_code.nil? ? offer.uc_type : offer.uc_type+ " - "+ uc_code
+                - c_un = u_code.nil? ? c_un : c_un+ " - "+ u_code+ " - "+offer.s_name
+                - link = add_tab_path(id: offer.offer_id, context: Context_Curriculum_Unit, allocation_tag_id: offer.at_id)
 
-                %tr.lines.offer{'data-tab-id' => offer.id, 'data-tab-link' => link, 'tabindex' => 0}
+                %tr.lines.offer{'data-tab-id' => offer.id, 'data-tab-link' => link}
 
                   %td.type{'data-tooltip' => offer.uc_type, headers: 'tb_type' }
                     - unless offer.uc_type.blank?
@@ -44,7 +49,7 @@
 
                   %td.course{headers: 'tb_course' }= [offer.c_code, offer.c_name].join(' - ') rescue ' - '
                   %td.semester{headers: 'tb_semester' }= offer.s_name
-                  %td.link{headers: 'tb_link' }= link_to_function content_tag(:i, nil, class: 'icon-arrow-right'), link, class: 'nodecoration',:'data-tooltip'=> c_un, :'aria-label'=> t(".link_tool", un_cur: c_un), onkeydown: 'click_on_keypress(event, this);'
+                  %td.link{headers: 'tb_link' }= link_to_function content_tag(:i, nil, class: 'icon-arrow-right'), link, class: 'nodecoration',:'data-tooltip'=> c_un, :'aria-label'=> c_un, onkeydown: 'click_on_keypress(event, this);'
                   %td.profiles{style: "display: none", headers: 'tb_bla' }= offer.profiles
 
               .block_content_text_list.text_none.empty_message.hide_message
