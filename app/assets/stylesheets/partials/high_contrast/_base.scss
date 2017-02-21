@@ -114,8 +114,8 @@ select {
   border-style: solid;
   padding-top: 2px;
   /*    min-width: 180px;*/
-  color: $high_contrast_border_color;
-  background-color: $high_contrast_background_color;
+  color: $high_contrast_background_color;
+  background-color: $high_contrast_font_color;
   border-color: $high_contrast_border_color;
 }
 
@@ -125,7 +125,7 @@ input {
   padding: 5px;
   font-family: 'PT Sans', sans-serif;
   /*    font-size: 13px;*/
-  color: $high_contrast_font_color;
+  color: $high_contrast_background_color;
   border-color: $high_contrast_border_color;
 }
 
@@ -144,8 +144,8 @@ textarea {
   padding: 5px;
   font-family: 'PT Sans', sans-serif;
   font-size: 10pt;
-  color: #222;
-  background-color: $high_contrast_background_color;
+  color: $high_contrast_background_color;
+  background-color: $high_contrast_font_color;
   border-color: $high_contrast_border_color;
 }
 

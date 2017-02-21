@@ -62,8 +62,8 @@
 }
 
 .form-inputs .input input, .form-inputs > .input > textarea {
-  color: #000000;
-  background-color: #FFFFFF;
+  color: $high_contrast_background_color;
+  background-color: $high_contrast_font_color;
   max-width: 340px;
   min-width: 80px;
 }
@@ -112,7 +112,7 @@
   font-size: 9pt;
   margin-right: 2px;
   margin-top: 2px;
-  color: #E03838;
+  color: $high_contrast_font_color;
 }
 
 .form_requirement {
