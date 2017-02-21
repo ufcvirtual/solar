@@ -9,7 +9,11 @@
 
 :javascript
   $(function(){
-    $('a').bind("keypress click", function(){
+    $('.unread').bind("keypress click", function(){
+      $(this).removeClass("unread").addClass("read");
+      $(this).call_fancybox({href : $(this).data('link-show'), open: true});
+    });
+    $('.read').bind("keypress click", function(){
       $(this).removeClass("unread").addClass("read");
       $(this).call_fancybox({href : $(this).data('link-show'), open: true});
     });
