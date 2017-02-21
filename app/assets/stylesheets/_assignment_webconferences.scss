@@ -55,6 +55,13 @@ $webconference_table_body_color: #828282;
     }
   }
 
+  td{
+    a.title{
+      color: $table_data_line_title;
+      text-decoration: none;
+    }
+  }
+
 }
 
 .simple_form.awebconference_form{

@@ -29,9 +29,9 @@
               %tr.lines
                 %td.webconference_access.title{ :'data-url' => access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), headers: "we_eva_nam" }
                   - if (webconference.opened == 't' && webconference.closed == 'f') 
-                    = link_to_function(webconference.name, 'access_webconference(this)') 
+                    = link_to_function webconference.name, 'access_webconference(this)', :'aria-label' => t('webconferences.index.access_web', web: webconference.name), onkeydown: 'click_on_keypress(event, this);'
                   - else
-                    .title= webconference.name
+                    .title= link_to webconference.name, '#', {disabled: true, class: 'disabled', :'aria-label' => t('webconferences.index.access_web', web: webconference.name) + t(:disabled), onclick: 'return false;'}
                   .description
                     .minimun= sanitize(truncate webconference.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                     .complete.invisible
@@ -93,9 +93,9 @@
               %tr.lines
                 %td.webconference_access{ :'data-url' => access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), headers: "we_fre_nam" }
                   - if (webconference.opened == 't' && webconference.closed == 'f') 
-                    = link_to_function(webconference.name, 'access_webconference(this)') 
+                    = link_to_function webconference.name, 'access_webconference(this)', :'aria-label' => t('webconferences.index.access_web', web: webconference.name), onkeydown: 'click_on_keypress(event, this);'
                   - else
-                    .title= webconference.name
+                    .title= link_to webconference.name, '#', {disabled: true, class: 'disabled', :'aria-label' => t('webconferences.index.access_web', web: webconference.name) + t(:disabled), onclick: 'return false;'}
                   .description
                     .minimun= sanitize(truncate webconference.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                     .complete.invisible
@@ -153,9 +153,9 @@
               %tr.lines
                 %td.webconference_access{ :'data-url' => access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), headers: "we_not_nam" }
                   - if (webconference.opened == 't' && webconference.closed == 'f') 
-                    = link_to_function(webconference.name, 'access_webconference(this)') 
+                    = link_to_function webconference.name, 'access_webconference(this)', :'aria-label' => t('webconferences.index.access_web', web: webconference.name), onkeydown: 'click_on_keypress(event, this);'
                   - else
-                    .title= webconference.name
+                    .title= link_to webconference.name, '#', {disabled: true, class: 'disabled', :'aria-label' => t('webconferences.index.access_web', web: webconference.name) + t(:disabled), onclick: 'return false;'}
                   .description
                     .minimun= sanitize(truncate webconference.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                     .complete.invisible

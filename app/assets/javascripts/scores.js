@@ -35,7 +35,9 @@ function open_tool(link){
     }else{
       if(data.web != undefined){
         $.get(data.url, function(data2){
-          window.open(data2.url, '_blank');
+          var web = window.open(data2.url, '_blank');
+          if(!web || web.closed || typeof web.closed=='undefined')
+            flash_message("<%= I18n.t('webconferences.warning.blocked')%>", 'warning');
         });
       }else{
         window.location.href = data.url;

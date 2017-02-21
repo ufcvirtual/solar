@@ -75,7 +75,7 @@ class AssignmentWebconference < ActiveRecord::Base
   end
 
   def get_bbb_url(user)
-    ((on_going? && bbb_online? && owner_or_responsible(user.id)) ? ActionController::Base.helpers.link_to(title, bbb_join(user), target: '_blank') : title)
+    ((on_going? && bbb_online? && owner_or_responsible(user.id)) ? bbb_join(user) : nil)
   end
 
   def owner(user_id)

@@ -48,7 +48,10 @@ function change_messages_view(view){
       $(view).parents('.views').find('a.btn').html("<%=I18n.t('messages.index.view_messages', type: I18n.t('messages.select_unread'))%>"+" <i aria-hidden='true' class='icon-arrow-down-triangle'></i>")
     }
   }
-  focus_element($('table'));
+  if(!!$('table').length)
+    focus_element($('table'));
+  else
+    focus_element($('.text_none.empty_message'));
 }
 
 function open_contacts_selection(link){

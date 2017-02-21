@@ -88,13 +88,14 @@ class MessagesController < ApplicationController
         @message.sender = current_user
         @message.allocation_tag_id = @allocation_tag_id
 
-        raise "error" if params[:message_to].empty?
+        raise "error" if params[:message][:contacts].empty?
+        emails = User.where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
 
         @message.files << original_files if original_files and not original_files.empty?
         @message.save!
 
         Thread.new do
-          Notifier.send_mail(params[:message_to], @message.subject, new_msg_template, @message.files, current_user.email).deliver
+          Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files, current_user.email).deliver
         end
       end
 

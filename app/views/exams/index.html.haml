@@ -45,21 +45,21 @@
                     .description_slice= raw exam.description.slice(0..80) << "..."
                     .description_complete= raw exam.description
                     .more_or_less
-                      %a.description_more.link_content{ href: '#' }= t('exams.index.more')
-                      %a.description_less.link_content{ href: '#' }= t('exams.index.less')
+                      %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);' }= t('exams.index.more')
+                      %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);' }= t('exams.index.less')
                 - else
                   = raw exam.description
                 .equivalent
                   - unless exam.eq_name.blank?
-                    %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{exam.id}" }
-                      %i.icon-flow-parallel
+                    %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{exam.id}", onkeydown: 'click_on_keypress(event, this);' }
+                      %i.icon-flow-parallel{:'aria-hidden' => 'true'}
                       = t('scores.info.equivalency')
-                      %i.icon-arrow-down-triangle
+                      %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
                     .dropdown.dropdown-tip{id: "dropdown_eq_#{exam.id}"}
                       %ul{ class: 'dropdown-menu' }
                         = raw t('scores.info.equivalent', name: exam.eq_name)
                   - else
-                    %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);' }
+                    %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                       %i.icon-flow-parallel
                       =t('scores.info.equalities')
                       %i.icon-arrow-down-triangle
@@ -74,9 +74,9 @@
               - if @can_open
                 - if exam.situation == 'not_finished'
                   .equivalent
-                    %a{ href: '#', :"data-dropdown" => "#dropdown_#{exam.id}", :'data-url' => percentage_exam_path(exam.academic_tool_id), onclick: 'open_dropdown(this);' }
+                    %a{ href: '#', :"data-dropdown" => "#dropdown_#{exam.id}", :'data-url' => percentage_exam_path(exam.academic_tool_id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
                       %span{class: "#{exam.situation}"}= I18n.t("scores.situation.#{exam.situation}")
-                      %i.icon-arrow-down-triangle
+                      %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
                     .dropdown.dropdown-tip{id: "dropdown_#{exam.id}"}
                       %ul{ class: 'dropdown-menu' }
                 - else
@@ -131,14 +131,17 @@
     $(".description_more").click(function(){
       $(".description_slice, .description_more", $(this).parent().parent()).css("display", "none");
       $(".description_complete, .description_less", $(this).parent().parent()).css("display", "block");
+      focus_element($(".description_complete", $(this).parent().parent()));
       return false;
     });
 
     $(".description_less").click(function(){
       $(".description_slice, .description_more", $(this).parent().parent()).css("display", "block");
       $(".description_complete, .description_less", $(this).parent().parent()).css("display", "none");
+      focus_element($(".description_slice", $(this).parent().parent()));
       return false;
     });
+
 
     if(location.hash == "#reload")
       focus_element('.list_exams .block_title h2');

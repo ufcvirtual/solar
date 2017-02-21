@@ -7,7 +7,7 @@
     - unless files.blank?
       = link_to content_tag(:i, nil, class: 'icon-install'), zip_download_assignment_files_path(assignment_id: @assignment.id, student_id: @student_id, group_id: @group_id), class: 'btn', :"data-tooltip" => t('.download'), :'aria-label' => t(".download")+ title
     - if @own_assignment
-      = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_file(this)', class: "btn btn_main #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.send'), :'aria-label' => t(".send")
+      = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_file(this)', class: "btn btn_main #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.send'), :'aria-label' => t(".send"), onkeydown: 'click_on_keypress(event, this);'
 .block_content
   - no_files = (files.blank?)
   %table.tb_list{:summary=> t("assignments.list.summary_student_files") }

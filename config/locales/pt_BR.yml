@@ -3378,8 +3378,8 @@ pt_BR:
       title_group: Webconferências agendadas pelo grupo
       title_student: Webconferências agendadas pelo aluno
       new: Nova webconferência
-      final: "Versão Final <a id='final_version_explain' href='#fv_explain'>(?)</a>"
-      final2: Versão Final
+      final: "Versão Final <a id='final_version_explain' aria-label='%{aria}' href='#fv_explain' onkeydown='click_on_keypress(event, this);'>(?)</a>"
+      final2: Explicação sobre a versão final
       fv_explain: "&nbsp;&nbsp;&nbsp;&nbsp;O tutor ou professor responsável pela avaliação tem, como papel, avaliar o aluno/grupo com base em seus arquivos enviados e webconferências criadas. Para avaliar uma webconferência, os responsáveis devem analisar as gravações existentes para, então, avaliar o desempenho do aluno. Entretanto, durante a execução do trabalho, o aluno ou o grupo de alunos pode agendar e gravar uma ou mais webconferências. Estas webconferências podem ser feitas, por exemplo, para reuniões entre os membros de uma equipe, para testes, para praticar uma apresentação etc. Ou seja, nem todas as webconferências cadastradas e gravadas precisam, necessariamente, servir para avaliação. <br/><br/> &nbsp;&nbsp;&nbsp;&nbsp;A fim de informar ao responsável qual ou quais das webconferências devem ser consideradas para avaliação, o aluno pode marcar uma ou mais webconferências como Versão Final. Desse modo, o responsável poderá avaliar apenas as webconferências marcadas dentre todas as agendadas e/ou gravadas. Se achar necessário, o responsável poderá analisar e avaliar todas as gravações disponíveis."
     webconference:
       edit: Editar

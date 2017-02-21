@@ -3142,8 +3142,8 @@ en_US:
       title_group: Webconferences scheduled by group
       title_student: Webconferences scheduled by student
       new: New webconference
-      final: "Final Version <a id='final_version_explain' href='#fv_explain'>(?)</a>"
-      final2: Final Version
+      final: "Final Version <a id='final_version_explain' aria-label='%{aria}' href='#fv_explain' onkeydown='click_on_keypress(event, this);'>(?)</a>"
+      final2: Explanation about final version
       fv_explain: "&nbsp;&nbsp; The tutor or professor responsible by evaluation has, as role, evaluate the student or group based on it's sent files and created webconferences. To evaluate a webconference, responsibles must analyse the existing recordings to, then, evaluate the student. However, during the execution of the assignment, the student or group of students may schedule and record one or more webconferences. These webconferences may be used, for example, to meetings between group members, to tests, to practice etc. That is, not all webconferences scheduled and recorded need, necessarily, be used to evaluation. <br/><br/> &nbsp;&nbsp;To inform the responsible wich ones of the webconferences must be used to evaluation, the student can define one or more as Final Version.  That way, the responsible will be able to evaluate only the webconferences defined as final version within all the ones scheduled and/or recorded. If necessary, responsibles may evaluate all recordings available."
     webconference:
       edit: Edit

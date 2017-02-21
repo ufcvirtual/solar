@@ -62,7 +62,9 @@ function delete_awebconference(td){
 function get_record(obj){
   erase_flash_messages();
   $.get($(obj).parent().data('url'), function(data){
-    window.open(data.url,'_blank');
+    var web = window.open(data.url,'_blank');
+    if(!web || web.closed || typeof web.closed=='undefined')
+      flash_message("<%= I18n.t('webconferences.warning.blocked')%>", 'warning');
   }).error(function(data){
     var response = JSON.parse(data.responseText);
     if (typeof(response.alert) != "undefined")

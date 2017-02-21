@@ -10,9 +10,9 @@
           %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
         .dropdown.dropdown-tip#views-dropdown
           %ul.dropdown-menu
-            %li{role: 'menuitem'}= link_to t('messages.select_all'), '#', class: 'selected all', onclick: 'change_messages_view(this);'
-            %li{role: 'menuitem'}= link_to t('messages.select_read'), '#', class: 'reads', onclick: 'change_messages_view(this);'
-            %li{role: 'menuitem'}= link_to t('messages.select_unread'), '#', class: 'unreads', onclick: 'change_messages_view(this);'
+            %li{role: 'menuitem'}= link_to t('messages.select_all'), '#', class: 'selected all', onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);'
+            %li{role: 'menuitem'}= link_to t('messages.select_read'), '#', class: 'reads', onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);'
+            %li{role: 'menuitem'}= link_to t('messages.select_unread'), '#', class: 'unreads', onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);'
 
     .align-middle.search_messages
       .hide_label
@@ -43,7 +43,10 @@
     function search_messages(){
       $.get($('#search_messages').data('url'), { subject: $('#subject').val(), user: $('#user').val(), box: "#{@box}" }, function(data){
         $('.messages_list').html(data);
-        focus_element($('table'));
+        if(!!$('table').length)
+          focus_element($('table'));
+        else
+          focus_element($('.text_none.empty_message'));
       });
     }
 

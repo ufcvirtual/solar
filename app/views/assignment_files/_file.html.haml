@@ -1,8 +1,8 @@
 - size =format('%.2f KB', file.attachment_file_size/1024.0)
 %tr.lines
-  %td{ :"data-tooltip" => file.attachment_file_name, headers: "name_file" }= link_to file.attachment_file_name.truncate(15), download_assignment_files_path(id: file.id), {class: "link_content", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
+  %td{ :"data-tooltip" => file.attachment_file_name, headers: "name_file" }= link_to file.attachment_file_name.truncate(60), download_assignment_files_path(id: file.id), {class: "link_content", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
   %td.right{headers: "name_file size_file" }= size
   %td.center{headers: "name_file sent_on_file" }= l(file.attachment_updated_at, format: :at_date)
   %td.center{headers: "name_file sent_by_file" }= file.user.name
   - if @own_assignment
-    %td.center{headers: "name_file delete_file", :"data-link-delete" => assignment_file_path(file.id), :"data-tooltip" => t(".delete"), :'aria-label' => t(".delete"), onclick: "delete_file(this);"}= content_tag(:i, nil, class: "icon-trash", :'aria-hidden' => true)
+    %td.center{headers: "name_file delete_file"}= link_to content_tag(:i, nil, class: "icon-trash btn", :'aria-hidden' => true), '#', :"data-link-delete" => assignment_file_path(file.id), :"data-tooltip" => t(".delete"), :'aria-label' => t(".delete"), onclick: "delete_file(this);", onkeydown: 'click_on_keypress(event, this);'
