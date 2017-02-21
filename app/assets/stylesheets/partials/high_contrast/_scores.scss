@@ -70,6 +70,10 @@ tr#activities{
   padding-left: 6px;
   font-weight: normal;
 }
+
+.tablesorter-header-inner, td#student, td.tablesorter-header, ul.ui-tabs-nav{
+  background-color: $high_contrast_background_color;
+}
 .tb_list_students{
   overflow-y: auto;
   margin-top: 10px;
@@ -83,6 +87,8 @@ tr#activities{
       text-align: left;
       width: 140px;
       min-width: 60px;
+      color: $high_contrast_link_color;
+      background-color: $high_contrast_background_color;
     }
     th.tool{
       min-width: 20px;
@@ -206,7 +212,7 @@ table#list_of_students thead{
   ul.dropdown-menu{
     label:hover, label{
       background-color: transparent;
-      color: $high_contrast_font_color;
+      color: $high_contrast_background_color;
       cursor: pointer;
       display: inline;
     }
