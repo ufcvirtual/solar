@@ -3112,7 +3112,7 @@ pt_BR:
       all: Todos
       search: "Busca:"
       filter: "Filtro:"
-      filter_data: Filtrar dados
+      filter_data: Pesquisar dados
       curricular_unit: Unidade Curricular
       link: Acesso
 

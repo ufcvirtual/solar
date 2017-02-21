@@ -251,5 +251,9 @@ table tr.block_title th {
   i.icon-settings, i.icon-search{
     cursor: pointer;
   }
+  i.icon-search{
+    cursor: pointer;
+    font-size: 20px;
+  }
 }
 
