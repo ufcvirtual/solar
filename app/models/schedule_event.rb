@@ -16,6 +16,8 @@ class ScheduleEvent < Event
 
   before_destroy :can_remove_groups_with_raise
 
+  attr_accessor :api
+
   def verify_hours
     errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:schedule_events, :error])) if end_hour.rjust(5, '0') < start_hour.rjust(5, '0')
   end
@@ -33,7 +35,7 @@ class ScheduleEvent < Event
   end
 
   def can_change?
-    new_record? || !integrated
+    api || new_record? || !integrated
   end
 
   def self.verify_previous(acu_id)
