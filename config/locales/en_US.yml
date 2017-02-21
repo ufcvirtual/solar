@@ -2879,6 +2879,9 @@ en_US:
       search: "Search:"
       filter: "Filter:"
       filter_data: Filter data
+      curricular_unit: Curriculum Unit
+      link: Access
+      link_tool: "Link for access a %{un_cur}"
 
   shortcut:
     assignment: Assignments

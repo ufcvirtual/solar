@@ -3113,6 +3113,9 @@ pt_BR:
       search: "Busca:"
       filter: "Filtro:"
       filter_data: Filtrar dados
+      curricular_unit: Unidade Curricular
+      link: Acesso
+      link_tool: "Link para acesso a %{un_cur}"
 
   shortcut:
     assignment: Trabalhos
