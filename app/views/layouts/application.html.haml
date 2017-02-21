@@ -370,10 +370,10 @@
 
       if( theme == "theme_blue"){
         $.cookie("theme", "theme_high_contrast", {path : "/"});
-        $("#mysolar_high_contrast_option").text("Remover Alto Contraste");
+        $("#mysolar_high_contrast_option").text("#{I18n.t :remove_high_contrast_link}");
       } else {
         $.cookie("theme", "theme_blue", {path : "/"});
-        $("#mysolar_high_contrast_option").text("Alto Contraste");
+        $("#mysolar_high_contrast_option").text("#{I18n.t :high_contrast_link}");
       }
 
       var theme_path = "/assets/themes/" + $.cookie("theme") + ".css";
