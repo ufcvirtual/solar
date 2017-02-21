@@ -1,15 +1,17 @@
-%table.notifications.tb_list{ "data-notifications-count" => @notifications.count }
+%ul.notifications.tb_list{ "data-notifications-count" => @notifications.count }
   - @notifications.each_with_index do |notification, idx|
     - tr_class = notification.read ? "read" : "unread"
-    %tr.lines{ id: notification.id, class: tr_class, "data-link-show" => notification_path(notification), "data-notification-idx" => idx }
-      %td
+    %li.lines
+      %a{ href: '#', id: notification.id, class: tr_class, "data-link-show" => notification_path(notification), "data-notification-idx" => idx }
         .title= sanitize truncate(notification.title, length: 150)
         .description= sanitize truncate(notification.description, length: 200)
+        %span.visuallyhidden= t('fancybox.open')
 
 :javascript
   $(function(){
-    $('table.notifications tr').click(function(){
+    $('a').bind("keypress click", function(){
       $(this).removeClass("unread").addClass("read");
       $(this).call_fancybox({href : $(this).data('link-show'), open: true});
     });
+    
   });
