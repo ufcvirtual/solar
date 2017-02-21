@@ -30,10 +30,12 @@
   width:800px;
 
   input#type{
+    color: $high_contrast_background_color;
     width: 33%;
   }
 
   input#search{
+    color: $high_contrast_background_color;
     width: 50%;
   }
 }
@@ -97,7 +99,7 @@
     margin-bottom: 10px;
   }
   .form_label{
-    width: 75px;  
+    width: 75px;
   }
   .right_buttons{
     margin-right: auto;
