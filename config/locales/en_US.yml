@@ -1268,6 +1268,8 @@ en_US:
       groups: List of groups which webconference %{web} is shared between
       access_web: Access webconference %{web} (will open a new window)
       summary: Table which content has webconference access links, and also information about it such as moderator, group sharing, equivalencies, date and time, working hours, grade, situation, amount of online users and a link to access recordings.
+      accessibility_title: <b>Accessibility (screen reader access)</b>
+      accessibility: "<div> To join the webconference using screen readers, we recommend the latest version of the <b>Mozilla Firefox</b> (with the updated flash-player plugin) and the following screen readers: <b>NVDA ou Window-eyes.</b> </div><br/><div> The load of all the components of the tool takes approximately <b>10 seconds</b>. You will hear a 'beep' when everything is ready. </div>"
     list_access:
       no_log: No participant accessed this webconference
       too_old: This webconference happened before the access start to be saved

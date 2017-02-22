@@ -1448,6 +1448,8 @@ pt_BR:
       groups: Lista de turmas para as quais a webconferência %{web} é compartilhada
       access_web: Acessar webconferência %{web} (abrirá uma nova janela)
       summary: Tabela cujo conteúdo há links de acesso às webconferências, com seus dados de moderação, compartilhamento entre turmas, equivalências, data e horário, nota, frequência, situação, quantidade de usuários online e link para acessar gravação.
+      accessibility_title: <b>Acessibilidade (acesso com leitor de tela)</b>
+      accessibility: "<div> Para participar da webconferência utilizando leitores de tela, recomendamos a versão mais recente do navegador <b>Mozilla Firefox</b> (com o plugin flash-player atualizado) e os seguintes leitores de tela: <b>NVDA ou Window-eyes.</b> </div><br/><div> O carregamento de todos os componentes da ferramenta leva aproximadamente <b>10 segundos</b>. Você ouvirá um 'bip' quando tudo estiver pronto. </div>"
     list_access:
       no_log: Nenhum participante acessou esta webconferência
       too_old: Esta webconferência ocorreu antes dos acessos começarem a ser gravados

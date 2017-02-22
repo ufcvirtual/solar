@@ -5,6 +5,12 @@
         %i.icon-video-conference
         = t(:webconferences, scope: [:webconferences, :list])
     %table.webconferences.tb_list{summary: t('.summary')}
+      %caption.title-warning
+        %div.accessibility_title
+          = link_to_function raw(t('.accessibility_title')), 'hide_or_show_info(this)'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        %div.accessibility.invisible{tabindex: 0}= raw t('.accessibility')
       %thead
         %tr.lines
           %th.greater_width#web_name= t(:name, scope: [:webconferences, :list])
@@ -97,3 +103,19 @@
   $(function(){
     $('.record').call_fancybox();
   });
+
+  function hide_or_show_info(name){
+    var parent = $(name).parent();
+    parent.siblings().slideToggle('slow', function() {
+      parent.siblings().toggleClass('invisible');
+      parent.siblings().focus();
+    });
+
+    if(parent.siblings().first().hasClass('invisible')){
+      parent.find('i.icon-arrow-up-triangle').removeClass('invisible');
+      parent.find('i.icon-arrow-down-triangle').addClass('invisible');
+    }else{
+      parent.find('i.icon-arrow-up-triangle').addClass('invisible');
+      parent.find('i.icon-arrow-down-triangle').removeClass('invisible');
+    }
+  }
