@@ -135,6 +135,7 @@ class EditionsController < ApplicationController
   end
 
   def manage_tools
+    params[:academic_allocations] = params[:academic_allocations].collect{|key,value| value}
     params[:academic_allocations] = params[:academic_allocations].delete_if{|a| a.nil? || a['acs'].blank?}
     allocation_tags_ids = params[:academic_allocations].collect{|data| data['allocation_tags_ids'].delete('[]').split(',')}.flatten.map(&:to_i).uniq
 

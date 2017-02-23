@@ -1761,6 +1761,8 @@ en_US:
       download: Download zip
       name: Name
       size: Size
+    notification:
+      final_date_smaller_than_offer: "Final date can't be posterior to offer's period"
   assignment_files:
     list:
       title_group: Files sent by group

@@ -1967,6 +1967,8 @@ pt_BR:
       download: Baixar zip
       name: Nome
       size: Tamanho
+    notification:
+      final_date_smaller_than_offer: Data final não pode ser maior do que o período oferta.
   assignment_files:
     list:
       title_group: Arquivos enviados pelo grupo

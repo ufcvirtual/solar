@@ -162,7 +162,7 @@ class AcademicAllocation < ActiveRecord::Base
     ## datas da atividade devem estar no intervalo de datas da oferta
     def verify_assignment_offer_date_range
       if allocation_tag.group && academic_tool.schedule.end_date.to_date > (offer_end_date = allocation_tag.group.offer.end_date)
-        message = I18n.t('assignment.notifications.final_date_smaller_than_offer', end_date_offer: I18n.l(offer_end_date)).to_s
+        message = I18n.t('assignments.notifications.final_date_smaller_than_offer', end_date_offer: I18n.l(offer_end_date)).to_s
         errors.add(:base, message)
         raise "academic_allocation #{message}"
       end
