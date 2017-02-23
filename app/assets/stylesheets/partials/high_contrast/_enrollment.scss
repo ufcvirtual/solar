@@ -1,0 +1,18 @@
+.filter_enrollment {
+
+  input#type{
+    color: $high_contrast_background_color;
+  }
+
+  input#search{
+    color: $high_contrast_background_color;
+  }
+}
+
+.any_found{
+  border-bottom-color: $high_contrast_border_color;
+}
+
+.enrollment_label {
+  color: $high_contrast_font_color;
+}

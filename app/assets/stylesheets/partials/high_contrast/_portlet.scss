@@ -1,0 +1,36 @@
+.mysolar_portlets_content {
+  background-color: $high_contrast_background_color;
+}
+
+.slide-main {
+  background-color: $high_contrast_background_color;
+}
+
+.slide-settings {
+  background-color: $high_contrast_background_color;
+
+  h3 {
+    color: $high_contrast_font_color;
+  }
+  li {
+    &:hover {
+      background-color: $slide_settings_hover_background;
+    }
+    &.active {
+      background-color: $slide_settings_active_background;
+      color: $high_contrast_font_color;
+    }
+    .counter {
+      background-color: $high_contrast_background_color;
+      color: $high_contrast_font_color;
+    }
+  }
+}
+
+.slide-block{
+  background-color: $high_contrast_background_color;
+
+  label{
+    color: $high_contrast_font_color;
+  }
+}

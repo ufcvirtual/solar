@@ -1,0 +1,127 @@
+#mysolar_topbar_wide_background {
+  background-color: $high_contrast_background_color;
+}
+
+#mysolar_topbar {
+  color: $high_contrast_font_color;
+}
+
+#mysolar_identity {
+  background-color: $high_contrast_background_color;
+}
+
+#mysolar_logo {
+  background-color: $high_contrast_background_color;
+}
+
+#mysolar_top_help {
+  background-color: $high_contrast_background_color;
+}
+
+#mysolar_high_contrast_option {
+  color: $high_contrast_link_color !important;
+}
+
+#mysolar_top_options #mysolar_top_submenu_label:hover,
+#mysolar_top_options #mysolar_top_logout:hover,
+#mysolar_top_options #mysolar_top_help:hover {
+  border-bottom-color: $high_contrast_font_color;
+  background-color: $high_contrast_background_color !important;
+  color: $high_contrast_font_color;
+}
+
+#mysolar_top_options li:hover a {
+  color: $high_contrast_font_color;
+}
+
+#mysolar_top_submenu, #mysolar_submenu_help{
+  box-shadow: 3px 3px 15px 0px #bbb;
+  color: $high_contrast_font_color;;
+  background-color: $high_contrast_background_color;
+  border-bottom-color: $high_contrast_border_color;
+  border-left-color: $high_contrast_border_color;
+  border-right-color: $high_contrast_border_color;
+}
+
+#mysolar_top_submenu{
+  ul {
+    border-top-color: $high_contrast_border_color;
+  }
+}
+
+#mysolar_submenu_help{
+  border-top-color: $high_contrast_border_color;
+}
+
+#mysolar_top_submenu_label {
+  background-color: $high_contrast_background_color;
+}
+
+.mysolar_top_submenu_label_selected {
+  background-color: $high_contrast_background_color !important;
+}
+
+.mysolar_top_submenu_label_selected a.mysolar_top_link {
+  color: $high_contrast_font_color;
+}
+
+a.mysolar_top_link {
+  color: $high_contrast_link_color;
+}
+
+#mysolar_tabs {
+  border-bottom-color: $high_contrast_border_color;
+}
+
+.mysolar_unit_tab a {
+  color: $high_contrast_link_color;
+}
+
+.mysolar_unit_active_tab {
+  border-bottom-color: $high_contrast_border_color;
+
+  a {
+    color: $high_contrast_link_color;
+  }
+}
+
+.search_keyword {
+  border-color: $high_contrast_border_color;
+  background: url('/assets/images/search.png') no-repeat right bottom $high_contrast_background_color;
+}
+
+.search_keyword_inactive {
+  color: $high_contrast_font_color;
+}
+
+.mysolar_menu_title_single_active {
+  border-bottom-color: $high_contrast_link_color;
+  a {
+    color: $high_contrast_link_color;
+  }
+}
+
+.mysolar_menu_title, .mysolar_menu_title_multiple{
+  color: $high_contrast_font_color;
+}
+
+.mysolar_menu_title_active > a {
+  color: $high_contrast_link_color;
+}
+
+.submenu {
+  border-top-color: $high_contrast_border_color;
+  background-color: $high_contrast_background_color;
+  a {
+    color: $high_contrast_font_color;
+  }
+}
+
+.mysolar_menu_title_single.mysolar_menu_active > a{
+  color: $high_contrast_font_color;
+}
+
+.mysolar_menu_active{
+  background-color: $high_contrast_background_color;
+  border-right-color: $high_contrast_border_color;
+}

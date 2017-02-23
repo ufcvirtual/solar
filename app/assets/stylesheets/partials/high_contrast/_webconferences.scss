@@ -1,0 +1,26 @@
+table.webconferences{
+  tbody{
+    td{
+      [class^='icon-']:hover{
+        color: $high_contrast_background_color;
+      }
+    }
+  }
+}
+
+.webconference_access{
+  table{
+    td.profile{
+      color: $high_contrast_font_color;
+    }
+    tr.evaluative_form{
+      background-color: $high_contrast_background_color;
+    }
+  }
+}
+
+.title-warning + .webconference_access{
+  .text_none{
+    border-top-color: $high_contrast_border_color;
+  }
+}

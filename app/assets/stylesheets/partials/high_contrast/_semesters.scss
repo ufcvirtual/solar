@@ -1,0 +1,30 @@
+.semester_same_dates, #semester_period {
+  color: $high_contrast_font_color;
+}
+
+.block_content_text_list{
+    border-bottom-color: $high_contrast_border_color;
+    background-color: $high_contrast_background_color;
+}
+
+.new_semester, .new_offer {
+  [class*="_check_box"] {
+    color: $high_contrast_font_color;
+  }
+}
+
+.period_date{
+  color: $high_contrast_font_color;
+}
+
+.offer_schedule_dates, .enrollment_schedule_dates {
+  color: $high_contrast_font_color;
+}
+
+.offer_schedule_dates.error, .enrollment_schedule_dates.error {
+  color: $error_color;
+}
+
+.offer_schedule_dates.info, .enrollment_schedule_dates.info {
+  color: $high_contrast_font_color;
+}

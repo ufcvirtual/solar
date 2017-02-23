@@ -1,0 +1,49 @@
+// Mensagens flash e alertas
+
+.alert {
+  color: #c00;
+}
+
+.notice {
+  color: #063;
+}
+
+.warning {
+  color: $high_contrast_link_color;
+}
+
+#flash_message {
+  border-color: $high_contrast_border_color;
+  &.notice {
+    background: url('/assets/notice.gif') no-repeat 5px center #f5ffec;
+  }
+  &.alert {
+    background: url('/assets/alert.gif') no-repeat 5px center #fff6f6;
+  }
+  &.warning {
+    background: url('/assets/warning.png') no-repeat 5px center #FFFFDE;
+  }
+  &.blue_warning{
+    background: $high_contrast_background_color;
+    .icon-plus-circle{
+      color: #009;
+    }
+    .icon-arrow-up-thin, .icon-arrow-down-thin, .icon-arrow-right-thin, .icon-arrow-left-thin{
+      color: #009;
+    }
+  }
+}
+
+.sticky-float {
+  .flash_message_wrapper {
+    background-color: $high_contrast_background_color;
+  }
+}
+
+label {
+  color: $high_contrast_font_color;
+}
+
+.text_alert {
+  color: #c00;
+}

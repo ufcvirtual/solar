@@ -1,0 +1,59 @@
+.highlight-date-mark {
+    a.ui-state-default {
+        background-color: $high_contrast_font_color;
+        color: $high_contrast_background_color;
+    }
+}
+
+.calendar {
+  background-color: $high_contrast_background_color;
+}
+
+.ui-datepicker-header {
+  background: $high_contrast_background_color;
+  color: $high_contrast_font_color;
+}
+
+.ui-state-hover {
+  color: $high_contrast_background_color !important;
+}
+
+.calendar_events {
+  background: $high_contrast_background_color;
+}
+
+.ui-datepicker-content {
+  color: $high_contrast_font_color;
+}
+
+.ui-datepicker-calendar {
+  color: $high_contrast_font_color;
+}
+
+#ui-datepicker-div{
+  background-color: $high_contrast_background_color;
+}
+
+.ui-datepicker-calendar {
+    .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+      color: $high_contrast_font_color;
+    }
+    .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+        border: 1px solid $high_contrast_border_color;
+        background-color: $high_contrast_background_color;
+        color: $high_contrast_font_color;
+    }
+
+    .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {
+        color: $high_contrast_background_color;
+        background-color: $high_contrast_font_color;
+    }
+}
+
+.ui-datepicker-week-end {
+  color: $high_contrast_font_color;
+}
+
+.fc-day-number {
+  background-color: $high_contrast_background_color;
+}

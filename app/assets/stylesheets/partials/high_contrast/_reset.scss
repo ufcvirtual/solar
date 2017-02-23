@@ -1,0 +1,11 @@
+strong {
+    color: $high_contrast_font_color;
+    background-color: $high_contrast_background_color;
+}
+h1,h2,h3,h4,h5,h6 {
+    color: $high_contrast_font_color;
+}
+hr {
+  border-top-color: $high_contrast_border_color;
+  border-bottom-color: $high_contrast_border_color;
+}

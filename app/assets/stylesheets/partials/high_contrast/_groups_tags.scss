@@ -1,0 +1,43 @@
+.groups_tags, .labels_tags {
+  .title label{
+    color: $high_contrast_font_color;
+  }
+
+  .collection_check_boxes {
+    .icon{
+      color: $high_contrast_font_color;
+    }
+  }
+
+  .add_group, .unbind_groups{
+    border: 1px solid $high_contrast_border_color;
+    color: $high_contrast_font_color;
+  }
+}
+
+.groups .collection_check_boxes, .groups_tags .collection_check_boxes, .group_checkbox .collection_check_boxes, .group_checkbox .collection_check_boxes label, .labels_tags .collection_check_boxes{
+  background-color: $high_contrast_background_color;
+  color: $high_contrast_font_color;
+}
+
+.no_tags .collection_check_boxes{
+  color: $high_contrast_font_color;
+  background-color: $high_contrast_background_color;
+}
+
+.new_groups{
+  .dropdown{
+    background-color: $high_contrast_background_color;
+    border: 1px solid $high_contrast_border_color;
+  }
+}
+
+.groups{
+  .no_groups {
+    color: $high_contrast_font_color;
+  }
+}
+
+.groups_tags .collection_check_boxes#disabled, .group_label .groups .collection_check_boxes#disabled, .group_checkbox .collection_check_boxes#disabled, .group_checkbox .collection_check_boxes#disabled label{
+  background-color: $high_contrast_background_color;
+}
