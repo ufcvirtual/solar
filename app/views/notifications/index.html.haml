@@ -1,8 +1,8 @@
 %ul.notifications.tb_list{ "data-notifications-count" => @notifications.count }
   - @notifications.each_with_index do |notification, idx|
     - tr_class = notification.read ? "read" : "unread"
-    %li.lines{class: tr_class}
-      %a{ href: '#', id: notification.id, "data-link-show" => notification_path(notification), "data-notification-idx" => idx }
+    %li.lines{class: tr_class, id: notification.id}
+      %a{ href: '#', "data-link-show" => notification_path(notification), "data-notification-idx" => idx }
         .title= sanitize truncate(notification.title, length: 150)
         .description= sanitize truncate(notification.description, length: 200)
         %span.visuallyhidden= t('fancybox.open')

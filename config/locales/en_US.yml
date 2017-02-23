@@ -1179,6 +1179,8 @@ en_US:
       deleted: Notification wasn't deleted.
     show:
       count_groups: "%{count} groups"
+      next: Next notification
+      prev: Previous notification
   webconferences:
     form:
       new: "New Webconference"

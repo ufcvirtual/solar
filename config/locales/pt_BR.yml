@@ -1357,6 +1357,8 @@ pt_BR:
       deleted: Não foi possível deletar aviso.
     show:
       count_groups: "%{count} turmas"
+      next: Próxima notícia
+      prev: Notícia anterior
 
   webconferences:
     form:
