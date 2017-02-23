@@ -1269,7 +1269,7 @@ en_US:
       access_web: Access webconference %{web} (will open a new window)
       summary: Table which content has webconference access links, and also information about it such as moderator, group sharing, equivalencies, date and time, working hours, grade, situation, amount of online users and a link to access recordings.
       accessibility_title: <b>Accessibility (screen reader access)</b>
-      accessibility: "<div> To join the webconference using screen readers, we recommend the latest version of the <b>Mozilla Firefox</b> (with the updated flash-player plugin) and the following screen readers: <b>NVDA ou Window-eyes.</b> </div><br/><div> The load of all the components of the tool takes approximately <b>10 seconds</b>. You will hear a 'beep' when everything is ready. </div>"
+      accessibility: "<p> To join the webconference using screen readers, we recommend the latest version of the <strong>Mozilla Firefox</strong> (with the updated flash-player plugin) and the following screen readers: <strong>NVDA or Window-eyes.</strong> </p><p> The load of all the components of the tool takes approximately <strong>10 seconds</strong>. You will hear a 'beep' when everything is ready. </p>"
     list_access:
       no_log: No participant accessed this webconference
       too_old: This webconference happened before the access start to be saved

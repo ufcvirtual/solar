@@ -20,6 +20,15 @@ form{
 }
 
 table.webconferences{
+  .title-warning{
+    margin-bottom: 0;
+    p:last-of-type{
+      margin-bottom: 0;
+    } 
+    p:first-of-type{
+      margin-top: 3px;
+    } 
+  }
   thead{
     tr.lines{
       th.no_sort{
