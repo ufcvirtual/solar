@@ -106,10 +106,8 @@
 
   function hide_or_show_info(name){
     var parent = $(name).parent();
-    parent.siblings().slideToggle('slow', function() {
-      parent.siblings().toggleClass('invisible');
-      parent.siblings().focus();
-    });
+    parent.siblings().toggleClass('invisible');
+    parent.siblings().focus();
 
     if(parent.siblings().first().hasClass('invisible')){
       parent.find('i.icon-arrow-up-triangle').removeClass('invisible');
