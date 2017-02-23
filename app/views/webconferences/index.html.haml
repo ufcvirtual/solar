@@ -7,7 +7,7 @@
     %table.webconferences.tb_list{summary: t('.summary')}
       %caption.title-warning
         %div.accessibility_title
-          = link_to_function raw(t('.accessibility_title')), 'hide_or_show_info(this)'
+          = link_to_function raw(t('.accessibility_title')), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
           %i.icon-arrow-down-triangle
           %i.icon-arrow-up-triangle.invisible
         %div.accessibility.invisible{tabindex: 0}= raw t('.accessibility')
