@@ -1,8 +1,9 @@
 ul.notifications {
+  li.unread{
+    background-color: $background_light_beige;
+  }
   li{
-    a.unread {
-      background-color: $background_light_beige;
-    }  
+    padding: 4px;
   }
 }
 
