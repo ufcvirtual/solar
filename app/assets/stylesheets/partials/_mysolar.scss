@@ -76,7 +76,8 @@
 
 #mysolar_top_options #mysolar_top_submenu_label:hover,
 #mysolar_top_options #mysolar_top_logout:hover,
-#mysolar_top_options #mysolar_top_help:hover {
+#mysolar_top_options #mysolar_top_help:hover,
+#mysolar_top_options #accessibility_top_menu:hover {
   height: $mysolar_topbar_height - 3px;
   border-bottom-width: 2px;
   border-bottom-style: solid;
@@ -99,7 +100,7 @@
 /**
 /* Foto do usuário
 */
-#mysolar_top_submenu, #mysolar_submenu_help{
+#mysolar_top_submenu, #mysolar_submenu_help, #mysolar_accessibility_submenu{
   font-size: 10pt;
   position: absolute;
   top: $mysolar_topbar_height;
@@ -131,14 +132,37 @@
   }
 }
 
-#mysolar_submenu_help{
+#mysolar_submenu_help {
   width: 80px;
+}
+
+#mysolar_accessibility_submenu {
+  width: 150px;
+}
+
+#mysolar_submenu_help, #mysolar_accessibility_submenu {
   margin-left: -7px;
   border-top-color: $mysolar_border_color;
 }
 
-#mysolar_top_submenu a:hover, #mysolar_submenu_help a:hover {
+#mysolar_top_submenu a:hover, #mysolar_submenu_help a:hover, #mysolar_accessibility_submenu a:hover {
   text-decoration: underline;
+}
+
+.menu_accessible {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.menu_accessible a {
+  left: -9999em;
+  position: absolute;
+}
+
+.menu_accessible a:focus {
+  left: 0;
+  position: absolute;
 }
 
 #mysolar_top_submenu ul {
@@ -151,7 +175,7 @@
   font-size: 9pt;
 }
 
-#mysolar_top_submenu ul li, #mysolar_submenu_help ul li {
+#mysolar_top_submenu ul li, #mysolar_submenu_help ul li, #mysolar_accessibility_submenu ul li {
   padding: 7px 7px 7px 0;
 }
 
@@ -458,4 +482,3 @@ a.mysolar_top_link {
 .link{
   text-align: center;
 }
-

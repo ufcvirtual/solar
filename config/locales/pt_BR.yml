@@ -312,13 +312,13 @@ pt_BR:
         item_audio: Áudio
         comment: Comentário
       question_audios:
-        audio: Áudios  
+        audio: Áudios
         description: Legenda
         audio_description: Áudio Descrição
       question_audio:
-        audio: Áudios  
-        description: Legenda 
-        audio_description: Áudio Descrição  
+        audio: Áudios
+        description: Legenda
+        audio_description: Áudio Descrição
       question_item:
         img_alt: Alt
         item_image: Imagem
@@ -329,13 +329,13 @@ pt_BR:
         legend: Legenda
         img_alt: Alt
         image_content_type: Tipo do arquivo
-        image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."  
+        image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
       question_images:
           image: Imagem
           legend: Legenda
           img_alt: Alt
           image_content_type: Tipo do arquivo
-          image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."   
+          image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
       exam_user:
         grade: Nota
       exam_question:
@@ -343,11 +343,11 @@ pt_BR:
       question:
         name: 'Título'
         enunciation: Enunciado
-        question: Uma Questão 
+        question: Uma Questão
         question_images:
           img_alt: Alt
           image_content_type: Tipo do arquivo
-          image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB." 
+          image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
       question_labels:
         name: 'Palavras-Chave'
       assignment:
@@ -469,7 +469,7 @@ pt_BR:
         grade: Nota
         working_hours: Carga horária
         group_assignment_id: Grupo
-      
+
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -542,7 +542,7 @@ pt_BR:
           attributes:
             attachment_content_type:
               invalid_type: inválido
-       
+
 
   ########### GERAL ###############
 
@@ -769,6 +769,17 @@ pt_BR:
   #Submenu de ajuda
   context: "Contextual"
   contact: Entrar em contato
+
+  # Barra de acessibilidade
+  accessibility: "Acessibilidade"
+  accessibility_menu: "Barra de acessibilidade"
+
+  # Submenu de acessibilidade
+  main_content: "Ir para o conteúdo [1]"
+  menu_aside: "Ir para o menu [2]"
+  search_box: "Ir para a busca [3]"
+  footer_site: "Ir para o rodapé [4]"
+  high_contrast_link: "Alto contraste [5]"
 
   # Página de tutoriais
   description: "Descrição"
@@ -1185,7 +1196,7 @@ pt_BR:
   forum_closed_short: "encerrado"
   discussion_closed_to_students: "encerrado para alunos"
   forum_table_summary: "Tabela contendo os fóruns com diversas informações como: nome do fórun, período que poderá realizar postagens, quantidade de postagens, situação do fórum, verificar se é avalitivo e suas notas e frequência além da carga horária."
-  
+
   # FORUNS
   posts:
     index:
@@ -1537,6 +1548,8 @@ pt_BR:
   hidden_info: Informação ocultada
 
   # Menu
+  menu_first_item: "*"
+  menu_last_item: "*"
   menu_dc_lesson: Digital Class
   menu_content: Conteúdo
   menu_lesson: Aulas
@@ -1915,7 +1928,7 @@ pt_BR:
       no_participants: Grupo sem participantes
       situation: Situação
       grade: Nota
-      description: Descrição 
+      description: Descrição
     list:
       individual_assignments: Trabalhos individuais
       group_assignments: Trabalhos em grupo
@@ -2959,11 +2972,11 @@ pt_BR:
     status:
       not_started: Não Iniciou
       closed: Encerrado
-      started: Iniciado 
+      started: Iniciado
     list:
       summary_evaluative: "Está tabela contém todos os eventos agendados avaliativas."
       summary_frequency: "Está tabela contém todos os eventos agendados de frequência."
-      summary_notevaluative: "Está tabela contém todos os eventos agendados não avaliativas."  
+      summary_notevaluative: "Está tabela contém todos os eventos agendados não avaliativas."
 
   agendas:
     dropdown_content:
@@ -3130,7 +3143,7 @@ pt_BR:
     schedule_event: Eventos
     discussion: Fóruns
     all: Todas
-    frequency: Frequência 
+    frequency: Frequência
     evaluative: Avaliativas
     notevaluative: Não Avaliativas
     number_evaluative: [1]
@@ -3263,11 +3276,11 @@ pt_BR:
       evaluated: Avaliado
       not_corrected: Não corrigido
       not_answered: Não respondido
-      retake: Refazer 
+      retake: Refazer
       message_ended: Encerrado
       message_did_not_start: Não iniciou
       closed: Encerrado
-      started: Iniciado 
+      started: Iniciado
       sent: Enviado
       not_sent: Não Enviado
       to_be_sent: A enviar
@@ -3293,13 +3306,13 @@ pt_BR:
       summary_frequency: "Está tabela contém todas as ferramentas de frequência: (provas, atividades, chats, fóruns, webconferências e eventos agendados)."
       summary_notevaluative: "Está tabela contém todas as ferramentas não avaliativas: (provas, atividades, chats, fóruns, webconferências e eventos agendados)."
     checkbox:
-      exam: 80 
+      exam: 80
       assignment: 84
       discussion: 70
       chat_room: 67
       webconference: 87
       schedule_event: 69
-      all: 79   
+      all: 79
 
   lesson_notes:
     error:
@@ -3544,7 +3557,7 @@ pt_BR:
       attempt: A quantidade máxima de tentativas para realização da prova já foi atingida.
       not_finished: Esta prova ainda não foi encerrada
       duration_and_hour: deve ser menor que a diferença de horários
-      no_attempt: Nenhuma tentativa realizada 
+      no_attempt: Nenhuma tentativa realizada
       cant_calcule_grade: A nota já foi calculada ou ainda não é possível realizar o cálculo.
       unique_choice: Deve ter apenas uma resposta
     show:
@@ -3560,7 +3573,7 @@ pt_BR:
       attempts: Quantidade de tentativas
       attempts_correction: Cálculo de nota
     result_exam_user:
-      exam_result: "  Prova " 
+      exam_result: "  Prova "
       number_question: Número de Questões
       description: Descrição
       time: Horário
@@ -3592,26 +3605,26 @@ pt_BR:
       frequency: Frequência
       working_hours: 'Carga horária: %{wh}'
       wh: Carga Horária
-    result_exam:  
+    result_exam:
       student: 'Aluno: '
       grade: 'Nota: '
       exam: 'Prova: '
       title_pdf: 'Correção da prova %{name}'
     open_result:
-      name: Correções  
+      name: Correções
       grade: 'Nota: '
     warning:
       title: '<b>Importante: </b>Não é possível criar, importar ou remover questões em provas publicadas'
-  question:  
-    question: 'Questão '  
+  question:
+    question: 'Questão '
     question_images:
       image: Imagem
       legend: Legenda
       img_alt: 'Alt '
       image_content_type: 'Tipo do arquivo '
-      image_file_size: "Arquivo muito grande, " 
+      image_file_size: "Arquivo muito grande, "
     question_audios:
-      audio_description: "Áudio Descrição "  
+      audio_description: "Áudio Descrição "
       description: "Áudio Legenda "
   questions:
     index:
@@ -3651,7 +3664,7 @@ pt_BR:
       up_speed: 'Aumenta a velocidade de reprodução do Áudio'
       up_down: 'Diminuir a velocidade de reprodução do Áudio'
       hide: "- Versão textual"
-      show: "+ Versão textual" 
+      show: "+ Versão textual"
     question:
       preview: Visualização
       public: Pública
@@ -3823,7 +3836,7 @@ pt_BR:
         conclude: Finalizar
         back: Voltar
         added: Prova(s) adicionada(s) com sucesso
-    success: 
+    success:
       exported: Questões exportadas com sucesso
       imported: Questões importadas com sucesso
       deleted: Questões removidas da prova com sucesso
@@ -3835,7 +3848,7 @@ pt_BR:
       edit: Editar questão
       publish: Publicar questões
     confirm:
-      annul: Tem certeza de que deseja anular esta questão? Esta ação não pode ser desfeita. 
+      annul: Tem certeza de que deseja anular esta questão? Esta ação não pode ser desfeita.
       status_exam: Tem certeza de que deseja alterar o status da prova?
       delete: Tem certeza de que deseja remover estas questões desta prova?
       delete_question: Tem certeza de que deseja remover estas questões?
@@ -4094,10 +4107,10 @@ pt_BR:
         document_title: Relatório com Quantidade de Arquivos por Portfólio
       report_three:
         id: 'Quantidade de Postagens por Fórum'
-        document_title: 'Relatório com Quantidade de Postagens por Fórum' 
+        document_title: 'Relatório com Quantidade de Postagens por Fórum'
       report_summary_group:
         id: Sumário da Turma
-        document_title: Sumário com Informações da Turma 
+        document_title: Sumário com Informações da Turma
     commun_texts:
       period_reference: Documento referente ao período
       select_period: Selecione o Período para Referenciar a Pesquisa
@@ -4127,7 +4140,7 @@ pt_BR:
       users_number_module_bound: Usuários Vinculados ao MA - Modulo Acadêmico
       users_number_module_unbound: Usuários Desvinculados ao MA - Modulo Acadêmico
       disciplines_amount: Quantidade de Disciplinas
-      files_portifolio: Quantidade de Arquivos Postados no Portfólio 
+      files_portifolio: Quantidade de Arquivos Postados no Portfólio
       number_of_students: Quantidade de alunos ativos matriculados
       web_portifolio: Quantidade de Webconferências Postados no Portfólio
       webconferences_number: Quantidade de Webconferências
@@ -4209,7 +4222,7 @@ pt_BR:
   fancybox:
     close: "Fechar janela modal para "
     begin: "Início da janela modal para "
-    begin_automatically: Início da janela modal aberta automaticamente para 
+    begin_automatically: Início da janela modal aberta automaticamente para
     end: "Fim da janela modal para "
     click_to_close: (clique para fechar)
     open: (Abrirá janela modal)

@@ -51,6 +51,9 @@
                 %a#mysolar_top_user_nick.mysolar_top_link{href: "", onclick: "mysolarTopSubmenuToggle();return false;"}= current_user.nick
             %li#server_clock_wrapper
               %span#server_clock{name: "server_clock"}
+            %li#accessibility_top_menu.mysolar_top_submenu_label_regular
+              %a#accessibility_top.mysolar_top_link{ href: "", onclick: "mysolarAccessibilitySubmenuToggle();return false;", :'aria-label' =>  t(:accessibility_menu)}
+                = t(:accessibility)
             %li#mysolar_top_help.mysolar_top_submenu_label_regular
               %a#help_top.mysolar_top_link{href: "", onclick: "mysolarTopSubmenuHelpToggle();return false;"}
                 = t(:help)
@@ -77,6 +80,14 @@
             %li= link_to t(:login_faq), '#faq', class: 'panel-link'
             %li= link_to t(:videos), "../../video_tutorials.html", target: "_blank"
             %li= link_to t(:contact), support_new_messages_path
+        #mysolar_accessibility_submenu
+          %ul
+            %li= link_to t(:main_content), "#main_content_accesskey", accesskey: "1"
+            %li= link_to t(:menu_aside), "#menu_accesskey", accesskey: "2"
+            -# %li= link_to t(:search_box), "#search_box_accesskey", accesskey: "3"
+            -# %li= link_to t(:footer_site), "#footer_site_accesskey", accesskey: "4"
+            -# %li= link_to t(:high_contrast_link), "#", accesskey: "5"
+
         / tabs
         #mysolar_tabs{role: 'menubar'}
           %ul#mysolar_tabs_wrapper= raw render_tabs
@@ -95,14 +106,16 @@
                         %h2= t('scores.info.shortcut')
                         %br
                         - @shortcut.each do |sh|
-                          %li.shortcut= t("shortcut.#{sh.first}") + ' '+ sh.last 
+                          %li.shortcut= t("shortcut.#{sh.first}") + ' '+ sh.last
                           %br
-   
+
 
       / sidebar
       #mysolar_sidebar{role: 'navigation'}
         #mysolar_menu_accordion{style: "z-index:10"}
           .mysolar_menu
+            %p.menu_accessible
+              %a#menu_accesskey{href: "#", :'aria-label' => "Início do menu" }= t(:menu_first_item)
             - if active_tab[:url][:context] == Context_Curriculum_Unit
               .mysolar_menu_group
                 %ul
@@ -111,6 +124,8 @@
 
             = raw menu_list
 
+            %p.menu_accessible
+              %a{href: "#", :'aria-label' => "Fim do menu" }= t(:menu_last_item)
       / content
       #mysolar_content{role: 'main'}
         / page titles
@@ -124,11 +139,11 @@
           #breadcrumb= raw show_breadcrumb
           - if is_curriculum_unit_selected?
             #page_title
-              %h1=t(name, default: name.try(:titleize))
+              %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name.try(:titleize))
               .block_content_text= raw(group_selection)
           - elsif not(in_mysolar?)
             #page_title
-              %h1=t(name, default: name.titleize)
+              %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name.titleize)
         = yield
 
         #lesson_external_div.invisible
@@ -200,9 +215,9 @@
                   find_and_open_sav(data.url);
                 }
               });
-              
+
               setTimeout(function() {
-                //se não abriu, cancelar fancybox 
+                //se não abriu, cancelar fancybox
                 if($("[id^='fancybox-frame']:first").height() < ($(window).height() - 300))
                   $.fancybox.close();
               }, 8000);
@@ -256,14 +271,14 @@
     xmpp_port = "#{@_porta}";
     xmpp_pass = "#{current_user.encrypted_password}";
     number_chatbox = 0;
-    
+
     //cookie IM_geral
     if(($.cookie("cookie_im")) && ($.cookie("cookie_im") != "null"))
       cookie_im = JSON.parse($.cookie("cookie_im"));
     else
       cookie_im = JSON.parse('{"IM" : false, "IM_toggle":true}');
 
-    $.cookie("cookie_im",JSON.stringify(cookie_im),{path : "/"});  
+    $.cookie("cookie_im",JSON.stringify(cookie_im),{path : "/"});
     function getCookie(){
       cookie_im = JSON.parse($.cookie("cookie_im"));
     }
@@ -303,7 +318,7 @@
       show_controlbox_by_default: false,
       xhr_user_search: false
     });
-    
+
     //show
     $(document).ready(function(e){
       if(cookie_im.IM){
@@ -322,7 +337,7 @@
           },10);
         delete time;
         }
-      } 
+      }
     });
     // trigger isShow
     $(function(){
