@@ -71,13 +71,13 @@
 
     $("input[id$='evaluative']").change(function(){
       var parent = $(this).parents('tr');
-      var value  = $(this).prop('checked');
+      var value  = !!$(this).prop('checked');
       var field = parent.find("input[id$='weight']");
       field.prop('disabled', !value);
       parent.find("input[id$='final_weight']").prop('disabled', !value);
       parent.find("input[id$='final_exam']").prop('disabled', !value);
-      if(!$("input[id$='frequency']").prop('checked'))
-      parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
+      if(!$("#"+$(this).prop('id').replace('evaluative', 'frequency')).prop('checked'))
+        parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
     });
 
     $("input[id$='final_exam']").change(function(){
@@ -110,7 +110,7 @@
       var field = parent.find("input[id$='max_working_hours']");
       field.prop('disabled', !value);
 
-      if(!$("input[id$='evaluative']").prop('checked'))
+      if(!$("#"+$(this).prop('id').replace('frequency', 'evaluative')).prop('checked'))
         parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
     });
   });
