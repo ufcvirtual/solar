@@ -3264,6 +3264,27 @@ pt_BR:
       shortcut_discussion: "[F]"
       shortcut_assignment: "[T]"
       shortcut: Atalhos
+      list_all_evaluative: Listar todos tipos avaliativos'
+      list_all_frequency: Listar todos tipos de frequências'
+      list_all_not_evaluative: Listar todos tipos não avaliativos'
+      list_assignments_evaluative: Listar trabalhos avaliativos'
+      list_assignments_frequency: Listar trabalhos de frequência'
+      list_assignments_not_evaluative: Listar trabalhos não avaliativos'
+      list_chats_evaluative: Listar chats avaliativos'
+      list_chats_frequency: Listar chats de frequência'
+      list_chats_not_evaluative: Listar chats não avaliativos'
+      list_discussion_evaluative: Listar fóruns avaliativos'
+      list_discussion_frequency: Listar fóruns de frequência'
+      list_discussion_not_evaluative: Listar fóruns não avaliativos'
+      list_exams_evaluative: Listar provas avaliativas'
+      list_exams_frequency: Listar provas de frequência'
+      list_exams_not_evaluative: Listar provas não avaliativas'
+      list_schedule_evaluative: Listar eventos avaliativas'
+      list_schedule_frequency: Listar eventos de frequência'
+      list_schedule_not_evaluative: Listar eventos não avaliativas'
+      list_web_conference_evaluative: Listar web conferências avaliativas'
+      list_web_conference_frequency: Listar web conferências de frequência'
+      list_web_conference_not_evaluative: Listar web conferências não avaliativas'
     reports:
       general_evaluative: Relatório Acompanhamento - Atividades Avaliativas
       general_frequency: Relatório Acompanhamento - Atividades de Frequência

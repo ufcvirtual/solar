@@ -86,4 +86,10 @@ $(function(){
     $($(this).parent().siblings()[0]).show();
   });
 
+  $('[data-div]').click(function(event){
+    var attributeValue = $(this).attr('data-div');
+    var $elementToReceiveFocus = $(attributeValue).children().first();
+    focus_element($elementToReceiveFocus);
+  });
+
 });

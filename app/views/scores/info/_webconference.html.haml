@@ -3,9 +3,9 @@
     %h2= t(:webconference, :scope => [:scores, :info])
     .tabs.tab_web
       %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative_web', onkeydown: 'click_on_keypress(event, this);'
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency_web", onkeydown: 'click_on_keypress(event, this);'
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_web", onkeydown: 'click_on_keypress(event, this);'
+        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative_web', onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_web_conference_evaluative')
+        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency_web", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_web_conference_frequency')
+        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_web", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_web_conference_not_evaluative')
   .block_content
     .tools.show#evaluative_web
       - unless @webconferences_evaluative.blank?
