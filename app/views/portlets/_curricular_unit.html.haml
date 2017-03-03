@@ -5,7 +5,7 @@
       = t(:my_solar_curriculum_units)
     - unless @offers.empty?
       %span.slider-block{style: 'float: right; margin-top: 4px'}
-        %a{ href: '#', :"data-tooltip" => t(".filter_data"), :'aria-label' => t(".filter_data")}
+        %a#search_box_accesskey{ href: '#', :"data-tooltip" => t(".filter_data"), :'aria-label' => t(".filter_data")}
           %i.icon-search{:"data-tooltip" => t(".filter_data"), :'aria-label' => t(".filter_data")}
 
   .mysolar_portlets_content

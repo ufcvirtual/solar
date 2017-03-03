@@ -15,7 +15,7 @@
             %li{role: 'menuitem'}= link_to t('messages.select_unread'), '#', class: 'unreads', onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);'
 
     .align-middle.search_messages
-      .hide_label
+      .hide_label#search_box_accesskey
         = label_tag :subject, t('.placeholder_subject')
         = text_field_tag :subject, nil, placeholder: t('.placeholder_subject')
       .hide_label
