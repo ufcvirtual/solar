@@ -31,6 +31,7 @@ Solar::Application.routes.draw do
       get :synchronize_ma
       get :profiles
       get :request_profile
+      put :select_theme
     end
   end
 
