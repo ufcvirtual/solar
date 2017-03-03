@@ -54,9 +54,22 @@
             %li#accessibility_top_menu.mysolar_top_submenu_label_regular
               %a#accessibility_top.mysolar_top_link{ href: "", onclick: "mysolarAccessibilitySubmenuToggle();return false;", :'aria-label' =>  t(:accessibility_menu)}
                 = t(:accessibility)
+              %ul#mysolar_accessibility_submenu
+                %li= link_to t(:main_content), "#main_content_accesskey", accesskey: "1"
+                %li= link_to t(:menu_aside), "#menu_accesskey", accesskey: "2"
+                - if active_tab[:url][:context] == 1
+                  %li#link_to_search_box= link_to t(:search_box), "#search_box_accesskey", accesskey: "3"
+                -# %li= link_to t(:footer_site), "#footer_site_accesskey", accesskey: "4"
+                -# %li= link_to t(:high_contrast_link), "#", accesskey: "5"
             %li#mysolar_top_help.mysolar_top_submenu_label_regular
               %a#help_top.mysolar_top_link{href: "", onclick: "mysolarTopSubmenuHelpToggle();return false;"}
                 = t(:help)
+              %ul#mysolar_submenu_help
+                %li= link_to t(:context), "#", id: 'help_context'
+                %li= link_to t('tutorials.menu'), tutorials_path, id: 'my_tutorials'
+                %li= link_to t(:login_faq), '#faq', class: 'panel-link'
+                %li= link_to t(:videos), "../../video_tutorials.html", target: "_blank"
+                %li= link_to t(:contact), support_new_messages_path
             %li#mysolar_top_logout
               = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, class: "mysolar_top_link logout")
         / Submenu
@@ -73,21 +86,6 @@
             %li= link_to t(:mysolar_change_picture), edit_photo_users_path, class: "fancybox.ajax", id: "change_picture", :'aria-label' => t(:mysolar_change_picture) + t('fancybox.open')
             %li= link_to t("mysolar.profiles"), profiles_users_path
             %li= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path)
-        #mysolar_submenu_help
-          %ul
-            %li= link_to t(:context), "#", id: 'help_context'
-            %li= link_to t('tutorials.menu'), tutorials_path, id: 'my_tutorials'
-            %li= link_to t(:login_faq), '#faq', class: 'panel-link'
-            %li= link_to t(:videos), "../../video_tutorials.html", target: "_blank"
-            %li= link_to t(:contact), support_new_messages_path
-        #mysolar_accessibility_submenu
-          %ul
-            %li= link_to t(:main_content), "#main_content_accesskey", accesskey: "1"
-            %li= link_to t(:menu_aside), "#menu_accesskey", accesskey: "2"
-            - if active_tab[:url][:context] == 1
-              %li#link_to_search_box= link_to t(:search_box), "#search_box_accesskey", accesskey: "3"
-            -# %li= link_to t(:footer_site), "#footer_site_accesskey", accesskey: "4"
-            -# %li= link_to t(:high_contrast_link), "#", accesskey: "5"
 
         / tabs
         #mysolar_tabs{role: 'menubar'}
@@ -116,7 +114,7 @@
         #mysolar_menu_accordion{style: "z-index:10"}
           .mysolar_menu
             %p.menu_accessible
-              %a#menu_accesskey{href: "#menu_accesskey", :'aria-label' => "Início do menu"}= t(:menu_first_item)
+              %a#menu_accesskey{href: "#menu_accesskey", :'aria-label' => t(:start_menu)}= t(:menu_first_item)
             - if active_tab[:url][:context] == Context_Curriculum_Unit
               .mysolar_menu_group
                 %ul
@@ -126,7 +124,7 @@
             = raw menu_list
 
             %p.menu_accessible
-              %a#menu_fim{href: "#menu_fim", :'aria-label' => "Fim do menu" }= t(:menu_last_item)
+              %a#menu_end{href: "#menu_end", :'aria-label' => t(:end_menu)}= t(:menu_last_item)
       / content
       #mysolar_content{role: 'main'}
         / page titles
@@ -340,6 +338,7 @@
         }
       }
     });
+
     // trigger isShow
     $(function(){
       $('#toggle-controlbox').click(function(e){
@@ -395,50 +394,16 @@
       closeBtn : true
     });
 
-    $("#link_to_search_box").click(function(event){
-      var url = $(location).attr("href");
-      var pathname = $(location).attr("pathname");
+    $(".slider-block").on("click keypress", function(event){
+      setTimeout(function() {
+        $("#search_offer").focus();
+      }, 100);
+    });
 
-      // Foco nas search box nas telas dos Alunos
-      if(pathname == "/" || pathname == "/home") {
-        $(".slider-block").trigger("click");
-        setTimeout(function() {
-          $("#search_offer").focus();
-        }, 100);
-      } else if(pathname == "/messages") {
-        setTimeout(function() {
-          $("#subject").focus();
-        }, 100);
-      } else if(pathname == "/enrollments") {
-        setTimeout(function() {
-          $("#search").focus();
-        }, 100);
-      }
+    $("#link_to_search_box").on("click keydown", function(event){
+      $(".slider-block").trigger("click");
 
-      // Foco nas search box nas telas dos Administradores
-      else if(pathname == "/admin/users" ||
-                pathname == "/administrations/allocation_approval" ||
-                pathname == "/admin/blacklist" ||
-                pathname == "/administrations/indication_users_global") {
-        setTimeout(function() {
-          $("#text_search").focus();
-        }, 100);
-      } else if(pathname == "/administrations/lessons" ||
-                pathname == "/admin/import/users/filter" ||
-                pathname == "/admin/responsibles/filter" ||
-                pathname == "/administrations/indication_users_specific" ||
-                pathname == "/reports") {
-        setTimeout(function() {
-          $("#autocomplete-input").focus();
-        }, 100);
-      } else if(pathname == "/admin/logs") {
-        setTimeout(function() {
-          $("#search_user").focus();
-        }, 100);
-      } else if (pathname == "/admin/profiles") {
-        setTimeout(function() {
-          $("#permission_search").focus();
-        }, 100);
-      }
-
+      setTimeout(function() {
+        $(".search_box_focus").focus();
+      }, 100);
     });

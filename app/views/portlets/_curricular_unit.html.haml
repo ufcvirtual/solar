@@ -61,7 +61,7 @@
 
           .slide.slide-block
             = label_tag :search_offer, t(".search"), class: "title"
-            = text_field_tag :search_offer, nil, :"data-column" => "all", type: :search, class: "search"
+            = text_field_tag :search_offer, nil, :"data-column" => "all", type: :search, class: "search search_box_focus"
             = label_tag :filter, t(".filter"), class: "title"
             = label_tag :type, t(".type"), class: "subtitle"
             = select_tag :type, options_for_select(@types.map{ |c| [c.description, c.description] }), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"1"

@@ -772,6 +772,9 @@ pt_BR:
   help: "Ajuda"
   new_window: Este link abrirá uma nova janela
 
+  start_menu: "Início do menu"
+  end_menu: "Fim do menu"
+
   #Submenu de ajuda
   context: "Contextual"
   contact: Entrar em contato
@@ -3642,16 +3645,16 @@ pt_BR:
       grade: 'Nota: '
     warning:
       title: '<b>Importante: </b>Não é possível criar, importar ou remover questões em provas publicadas'
-  score: 'Pontuação '    
-  question:  
+  score: 'Pontuação '
+  question:
     question: 'Questão '
-    enunciation: 'Enunciado ' 
+    enunciation: 'Enunciado '
     question_images:
       image: Imagem
       legend: Legenda
       img_alt: 'Alt '
       image_content_type: ' '
-      image_file_size: "Arquivo muito grande, " 
+      image_file_size: "Arquivo muito grande, "
     question_audios:
       audio_description: "Áudio Descrição "
       description: "Áudio Legenda "
@@ -3661,7 +3664,7 @@ pt_BR:
       img_alt: 'Alt '
       item_audio_content_type: ''
       item_image_content_type: ''
-      audio_description: 'Áudio Descrição ' 
+      audio_description: 'Áudio Descrição '
       item_audio_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 10MB."
       item_image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
   questions:
@@ -3701,7 +3704,7 @@ pt_BR:
       control_audio: 'Velocidade: '
       up_speed: 'Aumenta a velocidade de reprodução do Áudio'
       up_down: 'Diminuir a velocidade de reprodução do Áudio'
-      show: "Versão textual" 
+      show: "Versão textual"
     question:
       preview: Visualização
       public: Pública
