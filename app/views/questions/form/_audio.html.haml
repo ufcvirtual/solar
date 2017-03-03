@@ -9,7 +9,8 @@
           - if aud.object.audio.nil?
             %audio{ src: '' }
           - else
-            = audio_tag(aud.object.audio, autoplay: false, controls: true)
+            %audio{ src: aud.object.audio, autoplay: false, controls: true, name: 'audioQuestion'}   
+              %p= t("errors.messages.audio")
 
           = aud.input :audio, as: :file, label: false
           = link_to_function t('.add_audio'), 'add_file(this)', class: 'btn btn_main add_file'

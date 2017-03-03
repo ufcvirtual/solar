@@ -19,15 +19,17 @@
               = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
             - if qi.item_audio?  
               .audio.legend
-                .audio   
-                  = audio_tag(qi.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion') rescue ''  
+                .audio 
+                  %audio{ src: qi.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
+                    %p= t("errors.messages.audio")  
                   = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
                   = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
                   - audio_is = 1 
                 - if qi.audio_description?
                   .audio_description
-                    =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
-                    =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide'
+                    = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'show_questions_description_ico'
+                    = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
+                    =link_to_function t('questions.questions.show'), "show_audio_description(this)"
                     #text
                       = raw qi.audio_description.html_safe
 
@@ -45,15 +47,17 @@
               = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
             - if qi.item_audio? 
               .audio.legend
-                .audio     
-                  = audio_tag(qi.item_audio, autoplay: false, controls: true, name: 'audioQuestion') rescue '' 
+                .audio    
+                  %audio{ src: qi.item_audio, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
+                    %p= t("errors.messages.audio") 
                   = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
                   = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()' 
                   - audio_is = 1 
                 - if qi.audio_description?
                   .audio_description
-                    =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
-                    =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide' 
+                    = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'show_questions_description_ico'
+                    = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
+                    =link_to_function t('questions.questions.show'), "show_audio_description(this)"
                     #text
                       = raw qi.audio_description.html_safe 
             
@@ -72,14 +76,16 @@
             - if qi.item_audio?  
               .audio.legend
                 .audio   
-                  = audio_tag(qi.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion') rescue '' 
+                  %audio{ src: qi.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}
+                    %p= t("errors.messages.audio") 
                   = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
                   = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
                   - audio_is = 1    
                 - if qi.audio_description?
                   .audio_description
-                    =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'show'
-                    =link_to_function t('questions.questions.hide'), "hide_audio_description(this)", class: 'hide'
+                    = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'show_questions_description_ico'
+                    = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
+                    =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'link_text_audio'
                     #text
                       = raw qi.audio_description.html_safe
             
@@ -92,38 +98,3 @@
           %p
             = t(:control_audio, scope: [:questions, :questions])
             %span#aCurrentPbr= 1                    
-
-:javascript
-  function up_speed(){
-    var aPbr = document.getElementById("aPbr");
-    var valor = parseFloat(aPbr.value) + 0.1;
-    speed_control_audio(valor);
-  }
-
-  function down_speed(){
-    var aPbr = document.getElementById("aPbr");
-    var valor = parseFloat(aPbr.value) - 0.1;
-    speed_control_audio(valor);
-  }
-  
-  function speed_control_audio(valor){
-    var audioQuestion = document.getElementsByName("audioQuestion");   
-    var aCurrentPbr = document.getElementById("aCurrentPbr");
-    aCurrentPbr.innerHTML = valor;
-    aPbr.value = valor;
-
-    for (var i = 0; i < audioQuestion.length; i += 1) {
-      audioQuestion[i].playbackRate = valor;
-    }
-  } 
-
-  function hide_audio_description(element){
-    $(element).hide();
-    $($(element).prev()).show();
-    $($(element).parent().find('#text')).slideUp();
-  } 
-  function show_audio_description(element){
-    $(element).hide();
-    $($(element).next()).show();
-    $($(element).parent().find('#text')).slideDown();
-  } 

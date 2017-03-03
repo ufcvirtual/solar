@@ -198,9 +198,11 @@
           text-align: center;
           vertical-align: top;
           top: 50%;
-
           p{
             margin-bottom: 2px;
+          }
+          a i{
+            margin-bottom: 1px;
           }
         }
         #text, #hide{
@@ -284,6 +286,9 @@
         display: inline-block;
         text-align: center;
         vertical-align: top;
+        a i{
+          margin-top: -1px;
+        }
       }
     }
 

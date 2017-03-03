@@ -1,0 +1,77 @@
+
+function check(element){  
+  element.addEventListener('error', handleMediaError);
+}
+
+function handleEnterKey(e, element){
+  var key = e.keyCode || e.which;
+  if (key == 13){
+    handleMediaErrorFirefox(element);
+  }else{
+    return true;
+  }
+}
+
+function handleMediaError(e) {
+  switch (e.target.error.code){
+    case e.target.error.MEDIA_ERR_ABORTED:
+      alert("<%=I18n.t(:audio_aborted, scope: [:errors, :messages])%>"); break;
+    case e.target.error.MEDIA_ERR_NETWORK:
+      alert("<%=I18n.t(:audio_network, scope: [:errors, :messages])%>"); break;
+    case e.target.error.MEDIA_ERR_DECODE:
+      alert("<%=I18n.t(:audio_decode, scope: [:errors, :messages])%>"); break;
+    case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+      alert("<%=I18n.t(:audio_not_supported, scope: [:errors, :messages])%>"); break;
+    default:
+      alert("<%=I18n.t(:audio_others, scope: [:errors, :messages])%>");
+  }
+}
+
+function handleMediaErrorFirefox(e) {
+  if(e.error!=null){
+    switch (e.error.code) {
+      case e.error.MEDIA_ERR_ABORTED:
+        alert("<%=I18n.t(:audio_aborted, scope: [:errors, :messages])%>"); break;
+      case e.error.MEDIA_ERR_NETWORK:
+        alert("<%=I18n.t(:audio_network, scope: [:errors, :messages])%>"); break;
+      case e.error.MEDIA_ERR_DECODE:
+        alert("<%=I18n.t(:audio_decode, scope: [:errors, :messages])%>"); break;
+      case e.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+        alert("<%=I18n.t(:audio_not_supported, scope: [:errors, :messages])%>"); break;
+      default:
+        alert("<%=I18n.t(:audio_others, scope: [:errors, :messages])%>");
+    }
+  }    
+}
+
+function up_speed(){
+  var aPbr = document.getElementById("aPbr");
+  var valor = parseFloat(aPbr.value) + 0.1;
+  speed_control_audio(valor);
+}
+
+function down_speed(){
+  var aPbr = document.getElementById("aPbr");
+  var valor = parseFloat(aPbr.value) - 0.1;
+  speed_control_audio(valor);
+}
+  
+function speed_control_audio(valor){
+  var audioQuestion = document.getElementsByName("audioQuestion");   
+  var aCurrentPbr = document.getElementById("aCurrentPbr");
+  aCurrentPbr.innerHTML = valor;
+  aPbr.value = valor;
+
+  for (var i = 0; i < audioQuestion.length; i += 1) {
+    audioQuestion[i].playbackRate = valor;
+  }
+} 
+
+function show_audio_description(element){
+  var div = $($(element).parent().find('#text'));
+  div.stop().slideToggle();
+  $($(element).parent().find('.icon-arrow-down-triangle:first').toggleClass('invisible'));
+  $($(element).parent().find('.icon-arrow-up-triangle').toggleClass('invisible'));
+  $($(element).parent().find('.hide_questions_description_ico').toggleClass('invisible'));
+  $($(element).parent().find('.show_questions_description_ico:first').toggleClass('invisible'));
+} 

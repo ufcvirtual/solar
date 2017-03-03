@@ -131,6 +131,17 @@ en_US:
   support:
     array:
       words_connector: ","
+
+  errors:
+    messages:
+      not_saved: ""
+      audio: "It is because your browser does not support the audio element."
+      audio_aborted: 'You aborted the audio playback.'
+      audio_network: 'A network error caused the audio download to fail.'
+      audio_decode: 'The audio playback was aborted due to a corruption problem or because the audio used features your browser did not support.'
+      audio_not_supported: 'The audio not be loaded, either because the server or network failed or because the format is not supported.'
+      audio_others: 'An unknown error occurred.'
+
   activerecord:
     models:
       course: Course
@@ -280,6 +291,7 @@ en_US:
         audio: Audio  
         description: Legend
         audio_description: Audio Description
+        audio_file_size: ''
       question_image:
         image: Image
         legend: Legend
@@ -3367,16 +3379,26 @@ en_US:
     warning:
       title: "<b>Important: </b>You can't create, import or remove questions while exam's published"
   question:  
-    question: 'Question '  
+    question: 'Question '
+    enunciation: 'Enunciation '   
     question_images:
       image: Image
       legend: Enunciation
       img_alt: 'Alt '
-      image_content_type: 'Type of file '
+      image_content_type: ' '
       image_file_size: "File size " 
     question_audios:
       audio_description: "Audio Description "  
-      description: "Audio Legend "  
+      description: "Audio Legend "
+      audio_content_type: ' '
+      audio_file_size: "File too large. The maximum size should be up to 10MB."
+    question_items:
+      img_alt: 'Alt '
+      item_audio_content_type: ''
+      item_image_content_type: ''
+      audio_description: 'Audio Description '
+      item_audio_file_size: "File too large. The maximum size should be up to 10MB."
+      item_image_file_size: "File too large. The maximum size should be up to 2MB."  
   questions:
     index:
       title: Questions bank (%{count} found)
@@ -3414,8 +3436,7 @@ en_US:
       control_audio: 'Speed: '
       up_speed: 'Increase audio playback speed'
       up_down: 'Lowers audio playback speed'
-      hide: "- Text version"
-      show: "+ Text version" 
+      show: "Text version" 
     question:
       preview: Preview
       public: Public

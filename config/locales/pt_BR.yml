@@ -167,6 +167,12 @@ pt_BR:
   errors:
     messages:
       not_saved: ""
+      audio: "O seu navegador não suporta este elemento de áudio."
+      audio_aborted: 'Você abortou a reprodução do áudio.'
+      audio_network: 'Um erro de rede causou falha na transferência de áudio.'
+      audio_decode: 'A reprodução de áudio foi interrompida devido a um problema de corrupção ou porque o audio utilizado não foi suportado pelo seu navegador.'
+      audio_not_supported: 'O áudio não será carregado, porque o servidor ou a rede falhou ou porque o formato não é suportado.'
+      audio_others: 'Ocorreu um erro desconhecido.'
 
   # ActiveRecord
   activerecord:
@@ -3615,17 +3621,28 @@ pt_BR:
       grade: 'Nota: '
     warning:
       title: '<b>Importante: </b>Não é possível criar, importar ou remover questões em provas publicadas'
-  question:
+  score: 'Pontuação '    
+  question:  
     question: 'Questão '
+    enunciation: 'Enunciado ' 
     question_images:
       image: Imagem
       legend: Legenda
       img_alt: 'Alt '
-      image_content_type: 'Tipo do arquivo '
-      image_file_size: "Arquivo muito grande, "
+      image_content_type: ' '
+      image_file_size: "Arquivo muito grande, " 
     question_audios:
       audio_description: "Áudio Descrição "
       description: "Áudio Legenda "
+      audio_content_type: ' '
+      audio_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 10MB."
+    question_items:
+      img_alt: 'Alt '
+      item_audio_content_type: ''
+      item_image_content_type: ''
+      audio_description: 'Áudio Descrição ' 
+      item_audio_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 10MB."
+      item_image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
   questions:
     index:
       title: Banco de questões (%{count} encontradas)
@@ -3663,8 +3680,7 @@ pt_BR:
       control_audio: 'Velocidade: '
       up_speed: 'Aumenta a velocidade de reprodução do Áudio'
       up_down: 'Diminuir a velocidade de reprodução do Áudio'
-      hide: "- Versão textual"
-      show: "+ Versão textual"
+      show: "Versão textual" 
     question:
       preview: Visualização
       public: Pública
@@ -3750,8 +3766,8 @@ pt_BR:
       max_labels: Máximo de 8 palavras-chave
       choose_at_least_one: "Selecione, ao menos, uma questão"
       choose_one: Selecione uma questão
-      wrong_type: "tipo de arquivo não permitido (apenas imagens jpeg/png/gif)"
-      wrong_type_audio: "tipo de arquivo não permitido (apenas áudios mpeg/mp3/mpg)"
+      wrong_type: "Tipo de arquivo não permitido (apenas imagens jpeg/png/gif)"
+      wrong_type_audio: "Tipo de arquivo não permitido (apenas áudios mpeg/mp3/mpg)"
     success:
       deleted: Questões removidas com sucesso
       change_status: Situação alterada com sucesso
