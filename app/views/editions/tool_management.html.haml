@@ -61,6 +61,10 @@
     }
   }
 
+  function check_checkbox(object){
+    $('input', $(object)).last().click();
+  }
+
   function manage_tools(button){
     $(button).parents('form:first').serialize_and_submit({
       error_message: '',
