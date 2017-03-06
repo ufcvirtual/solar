@@ -142,6 +142,7 @@ class UsersController < ApplicationController
   end
 
   def select_theme
+    render :js =>  "alert('método select_theme no users_controller.rb')"
     unless params[:theme].blank? || !['theme_blue','theme_high_contrast'].includes?(params[:theme])
       theme = params[:theme]
       current_user.update_attributes theme: theme
