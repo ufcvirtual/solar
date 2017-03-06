@@ -51,15 +51,15 @@
                 %td
                   - hours = (ac.start_hour.blank?) ? '' : (ac.end_hour.blank?) ? ac.start_hour : [ac.start_hour, ac.end_hour].join(I18n.t('schedules.to')) 
                   = t('editions.evaluative_tools.full_period', dstart: ac.start_date.to_date, dend: ac.end_date.to_date , hours: hours)
-                %td= acf.check_box :evaluative, label: false
+                %td.ckb{onclick: 'check_checkbox(this)'}= acf.check_box :evaluative, label: false
                 %td.weight= acf.text_field :weight, label: false, disabled: !ac.evaluative || ac.final_exam
                 %td.final_weight= acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam
-                %td= acf.check_box :final_exam, label: false, disabled: !ac.evaluative
-                %td= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
+                %td.ckb{onclick: 'check_checkbox(this)'}= acf.check_box :final_exam, label: false, disabled: !ac.evaluative
+                %td.ckb{onclick: 'check_checkbox(this)'}= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
                 %td.working_hours
                   = acf.text_field :max_working_hours, label: false, disabled: !ac.frequency || ac.final_exam
                   = t('editions.tools.wh')
-                - select_tools = AcademicAllocation.where(id: (tools_ids - ac.acs)).select('DISTINCT academic_tool_id, academic_tool_type').select('id')
+                - select_tools = AcademicAllocation.where(id: (tools_ids - ac.acs), allocation_tag_id: ats_ids.map(&:to_i)).select('DISTINCT academic_tool_id, academic_tool_type').select('id')
                 %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_name, {include_blank: true}, {disabled: (!ac.evaluative && !ac.frequency) || ac.final_exam})
                 = acf.hidden_field "allocation_tags_ids", value: ats_ids.map(&:to_i)
                 = acf.hidden_field "acs", value: ac.acs.map(&:to_i)
