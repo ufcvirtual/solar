@@ -1,8 +1,11 @@
 .show_notification
   #lightBoxDialogTitle
     %h1= @notification.title
-    = link_to_function content_tag(:i, nil, class: 'icon-arrow-right-thin', :'aria-hidden'=>'true'), 'next_notification()', class: 'next', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('.next')
-    = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin', :'aria-hidden'=>'true'), 'prev_notification()', class: 'prev', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('.prev')
+    - if @size_notification > 1
+      - if @veri_last==false
+        = link_to_function content_tag(:i, nil, class: 'icon-arrow-right-thin', :'aria-hidden'=>'true'), 'next_notification()', class: 'next', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('.next')
+      - if @veri_first==false
+        = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin', :'aria-hidden'=>'true'), 'prev_notification()', class: 'prev', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('.prev')
 
   .title-warning
     = @allocation_tag.no_group_info

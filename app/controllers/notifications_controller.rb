@@ -25,7 +25,14 @@ class NotificationsController < ApplicationController
 
   # GET /notifications/1
   def show
+    @all_notification = Notification.of_user(current_user)
+    @size_notification = @all_notification.count
+    @last_notification = @all_notification.last
+    @first_notification = @all_notification.first
     @notification = Notification.find(params[:id])
+    @veri_first = @first_notification.id == @notification.id ? true : false
+    @veri_last = @last_notification.id == @notification.id ? true : false
+
     @notification.mark_as_read(current_user)
     @allocation_tag = @notification.allocation_tags
     if @allocation_tag.size > 1
