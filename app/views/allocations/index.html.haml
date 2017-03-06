@@ -1,9 +1,9 @@
 .block_wrapper
   .block_title{ style: 'height:0' }
-  .block_content_toolbar
+  .block_content_toolbar#search_box_accesskey
     .block_toolbar_left
       = select_tag :status, options_for_select(status_hash.invert.to_a, @status)
-      = text_field_tag :user_search, '', placeholder: t('.filter_user')
+      = text_field_tag :user_search, '', placeholder: t('.filter_user'), class: "search_box_focus"
       = button_tag t(:search), type: :button, class: 'btn btn_default', id: 'filter_enrollments', :'data-link' => enrollments_allocations_path
     .block_toolbar_right
       %span.block_actions= button_tag(t('.enroll_selected'), class: 'btn btn_default btn_enroll_selected')

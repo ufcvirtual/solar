@@ -4,8 +4,8 @@
   .block_content
     .block_left
       .enrollment_left
-        .filter_enrollment
-          = label_tag t(".search"), nil, class: "enrollment_label_search", for: "search", id: "search_box_accesskey"
+        .filter_enrollment#search_box_accesskey
+          = label_tag t(".search"), nil, class: "enrollment_label_search", for: "search"
           = text_field_tag :search, nil, :"data-column" => "all", type: :search, class: "search search_box_focus", placeholder: t(".search_for")
 
           = label_tag t(".of"), nil, class: "enrollment_label", for: "type"

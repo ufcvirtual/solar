@@ -1,8 +1,8 @@
-.block_content_toolbar
+.block_content_toolbar#search_box_accesskey
   = check_box_tag 'only_owner'
   %label{ for: 'only_owner' }= t('.only_owner')
   %label{ for: 'enun' }= t('.enun')
-  = text_field_tag 'enun', nil, size: 11, placeholder: t('.enun_hint')
+  = text_field_tag 'enun', nil, size: 11, placeholder: t('.enun_hint'), class: "search_box_focus"
   %label{ for: 'author' }= t('.author')
   = text_field_tag 'author', nil, size: 15, placeholder: t('.author_hint')
   %label{ for: 'label' }= t('.label')
