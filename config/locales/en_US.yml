@@ -2896,9 +2896,12 @@ en_US:
       all: All
       search: "Search:"
       filter: "Filter:"
+      filter_data_open: Open filter data.
+      filter_data_close: Close filter data.
       filter_data: Filter data
       curricular_unit: Curriculum Unit
       link: Access
+      search2: "Search"
 
   shortcut:
     assignment: Assignments

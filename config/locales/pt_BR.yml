@@ -3140,9 +3140,13 @@ pt_BR:
       all: Todos
       search: "Busca:"
       filter: "Filtro:"
+      filter_data_open: Abrir busca. O resultado da pesquisa é gerado automaticamente.
+      filter_data_close: Fechar busca. O resultado da pesquisa é gerado automaticamente.
       filter_data: Pesquisar dados
       curricular_unit: Unidade Curricular
       link: Acesso
+      search2: "Buscar"
+      result_search: "Ir para tabela com o resultado da busca"
 
   shortcut:
     assignment: Trabalhos

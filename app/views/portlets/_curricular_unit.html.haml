@@ -4,9 +4,10 @@
       %i.icon-docs
       = t(:my_solar_curriculum_units)
     - unless @offers.empty?
-      %span.slider-block{style: 'float: right; margin-top: 4px'}
-        %a#search_box_accesskey{ href: '#', :"data-tooltip" => t(".filter_data"), :'aria-label' => t(".filter_data")}
-          %i.icon-search{:"data-tooltip" => t(".filter_data"), :'aria-label' => t(".filter_data")}
+      %span.slider-block{classe: 'btn btn_main', style: 'float: right; margin-top: 6.5px; font-size: 12px;'}
+        %a#search_box_accesskey{ href: '#', style: 'color: #000;'}
+          =t(".search2")
+          %i.icon-search{:"data-tooltip" => t(".filter_data"), :'aria-label' => t(".filter_data_open")}
 
   .mysolar_portlets_content
 
@@ -62,12 +63,15 @@
           .slide.slide-block
             = label_tag :search_offer, t(".search"), class: "title"
             = text_field_tag :search_offer, nil, :"data-column" => "all", type: :search, class: "search search_box_focus"
+            %a#hide{ href: '#', :'aria-label' => t(".result_search"), class: 'search_hide' }
             = label_tag :filter, t(".filter"), class: "title"
             = label_tag :type, t(".type"), class: "subtitle"
             = select_tag :type, options_for_select(@types.map{ |c| [c.description, c.description] }), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"1"
+            %a#hide{ href: '#', :'aria-label' => t(".result_search"), class: 'search_hide' }
             = label_tag :profile, t(".profile"), class: "subtitle"
             - profiles = @user.profiles.where('allocations.allocation_tag_id IS NOT NULL')
             = select_tag :profile, options_from_collection_for_select(profiles, "id_to_unique_search", "name"), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"6"
+            %a#hide{ href: '#', :'aria-label' => t(".result_search"), class: 'search_hide' }
 
 = javascript_include_tag "tooltip"
 
@@ -99,3 +103,34 @@
     });
 
   });
+
+  $('#search_box_accesskey').on('keypress click', function() {
+    setTimeout(function() {
+      $("#search_offer").focus();
+    }, 100);
+  });
+
+  $('.slider-block').on('keypress click', function() {
+    setTimeout(function() {
+      $("#search_offer").focus();
+    }, 100);
+  });
+
+   $('.search_hide').on('keypress click', function() {
+    $(".slider-block").trigger("click");
+    setTimeout(function() {
+      $('.nodecoration:visible:eq(0)').focus();
+    }, 100);
+  });
+
+  $(".slider-block").click(function(){
+    var msg = null;
+    if ($(".slide.slide-block").is(":visible")) {
+      msg = "#{t('portlets.curricular_unit.filter_data_open')}"
+    }else{
+      msg = "#{t('portlets.curricular_unit.filter_data_close')}"
+    }
+    $('.icon-search').attr('aria-label', msg);
+  });
+
+
