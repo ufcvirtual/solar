@@ -391,7 +391,7 @@
         };
       var theme_path = "/assets/themes/" + $.cookie("theme") + ".css";
          $("link[id='themes']").attr("href", theme_path);
-       $.put($(this).data("url"), function(){
-        alert("Desejo mudar o tema!");
+       $.put($("#mysolar_high_contrast_option").data("url"), function(){
+        alert("Desejo mudar o tema para" + theme);
       });
     });
