@@ -9,7 +9,7 @@
       %p= t(:required_fields)
     %fieldset#allocation_tag_selection
       %legend= t(:filter, scope: [:reports, :index])
-      .filter
+      .filter#search_box_accesskey
         .curriculum_unit_type
           = label_tag :curriculum_unit_type, t(:type, scope: [:reports, :index])
           = select_tag :curriculum_unit_type, options_from_collection_for_select(types, 'id', 'description', type_id), include_blank: true
@@ -46,7 +46,7 @@
       - if back
         .back.invisible
           = render 'editions/back_items'
-          
+
       %div{ class: "#{list_class}" }
 
       - if back

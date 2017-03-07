@@ -56,7 +56,7 @@
                 = t(:accessibility)
               %ul#mysolar_accessibility_submenu
                 %li= link_to t(:main_content), "#main_content_accesskey", accesskey: "1"
-                %li= link_to t(:menu_aside), "#menu_accesskey", accesskey: "2"
+                %li#link_to_menu_accesskey= link_to t(:menu_aside), "#menu_accesskey", accesskey: "2"
                 - if active_tab[:url][:context] == 1
                   %li#link_to_search_box= link_to t(:search_box), "#search_box_accesskey", accesskey: "3"
                 -# %li= link_to t(:footer_site), "#footer_site_accesskey", accesskey: "4"
@@ -394,14 +394,19 @@
       closeBtn : true
     });
 
-    $(".slider-block").on("click keypress", function(event){
-      setTimeout(function() {
-        $("#search_offer").focus();
-      }, 100);
+    $("#link_to_menu_accesskey").on("click keypress", function(event){
+      var keynum = event.which || event.keyCode;
+      
+      if( keynum == 13 || event.type == 'click') {
+        setTimeout(function() {
+          $("#menu_accesskey").focus();
+        }, 100);
+      }
     });
 
     $("#link_to_search_box").on("click keydown", function(event){
-      $(".slider-block").trigger("click");
+      $(".slide-block").show("slide", {direction: "right"});
+      // $(".slider-block").trigger("click");
 
       setTimeout(function() {
         $(".search_box_focus").focus();

@@ -3,11 +3,11 @@
     = raw t('.warning')
   .block_title
     %h2= t('.title')
-  .block_content_toolbar
+  .block_content_toolbar#search_box_accesskey
     .block_toolbar_left
       = link_to content_tag(:i, nil, class: 'icon-plus'), new_blacklist_path, class: "btn btn_main link_new_user_blacklist", :"data-tooltip" => t(".new")
     .block_toolbar_left
-      = text_field_tag 'text_search', '', placeholder: t('.cpf_or_name')
+      = text_field_tag 'text_search', '', placeholder: t('.cpf_or_name'), class: "search_box_focus"
       = button_tag t(:search), type: :button, class: "btn btn_default", id: "search_user_in_blacklist", :"data-link" => search_blacklist_index_path
   .block_content.blacklist
     = render 'blacklist'
