@@ -47,7 +47,7 @@
             = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
           %ul#mysolar_top_options
             %li
-              = link_to t(:high_contrast_link), '#', :'data-url' => select_theme_users_path(theme: 'theme_blue'), id: "mysolar_high_contrast_option", remote: true
+              = link_to t(:high_contrast_link), '#', :'data-url' => select_theme_users_path(theme: 'theme_high_contrast'), id: "mysolar_high_contrast_option", remote: true
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular
               = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", onclick: "mysolarTopSubmenuToggle();return false;"
               - if can? :update, current_user
@@ -382,24 +382,16 @@
       closeBtn : true
     });
 
-    / $("#mysolar_high_contrast_option").click(function(e){
-    /   e.preventDefault();
-
-    /   var theme = $.cookie("theme");
-    /   $.removeCookie("theme");
-
-    /   if( theme == "theme_blue"){
-    /     $.cookie("theme", "theme_high_contrast", {path : "/"});
-    /   } else {
-    /     $.cookie("theme", "theme_blue", {path : "/"});
-    /   }
-
-    /   var theme_path = "/assets/themes/" + $.cookie("theme") + ".css";
-    /   $("link[id='themes']").attr("href", theme_path);
-    / });
-    function high_contrast("#mysolar_high_contrast_option"){
-      $.put($("#mysolar_high_contrast_option").data('url'), function(){
+    $("#mysolar_high_contrast_option").click(function(){
+      var theme = $.cookie("theme");
+        if( theme == "theme_blue"){
+          $.cookie("theme", "theme_high_contrast", {path : "/"});
+        } else {
+          $.cookie("theme", "theme_blue", {path : "/"});
+        };
+      var theme_path = "/assets/themes/" + $.cookie("theme") + ".css";
+         $("link[id='themes']").attr("href", theme_path);
+       $.put($(this).data("url"), function(){
         alert("Desejo mudar o tema!");
       });
-    }
-
+    });

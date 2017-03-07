@@ -58,7 +58,7 @@ class UsersController < ApplicationController
 
     end
   end
-  
+
   def mysolar
     set_active_tab_to_home
 
@@ -138,12 +138,16 @@ class UsersController < ApplicationController
   def reset_password_url
     authorize! :reset_password_user, Administration
     @user  = User.find(params[:id])
-    @token = params[:token] 
+    @token = params[:token]
   end
 
   def select_theme
-    render :js =>  "alert('método select_theme no users_controller.rb')"
-    unless params[:theme].blank? || !['theme_blue','theme_high_contrast'].includes?(params[:theme])
+
+    theme = params[:theme]
+    p "Estou no metodo selec_theme"
+    p theme
+
+    unless params[:theme].blank? || !['theme_blue','theme_high_contrast'].include?(params[:theme])
       theme = params[:theme]
       current_user.update_attributes theme: theme
     end
