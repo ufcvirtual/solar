@@ -26,9 +26,9 @@
     .block_title
       %h2= t(:new_designate, scope: 'allocations.designates')
 
-    .block_content_toolbar
+    .block_content_toolbar#search_box_accesskey
       %label{for: "text_search"}= t(:user, scope: 'allocations.designates')
-      = text_field_tag "text_search", @text_search
+      = text_field_tag "text_search", @text_search, class: "search_box_focus"
       = button_tag t(:search, scope: 'allocations.designates'), type: :button, class: "btn btn_default", id: "search_user", alt: t(:search_users, scope: 'allocations.designates')
 
     .block_content
@@ -50,8 +50,8 @@
     $("#search_user").click(function() {
       var url_for = "#{search_users_allocations_path(allocation_tags_ids: @allocation_tags_ids, admin: @admin)}";
       var data = { user: encodeURIComponent($("#text_search").val()) };
-      $.get(url_for, data, function(data) { 
-        $('#list_users').html(data); 
+      $.get(url_for, data, function(data) {
+        $('#list_users').html(data);
       }).error(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")

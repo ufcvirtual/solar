@@ -3,11 +3,11 @@
     %h2#main_content_accesskey{ tabindex: "0" }
       %i.icon-docs
       = t(:my_solar_curriculum_units)
-    - unless @offers.empty?
-      %span.slider-block{classe: 'btn btn_main', style: 'float: right; margin-top: 6.5px; font-size: 12px;'}
-        %a#search_box_accesskey{ href: '#', style: 'color: #000;'}
-          =t(".search2")
-          %i.icon-search{:"data-tooltip" => t(".filter_data"), :'aria-label' => t(".filter_data_open")}
+    -# - unless @offers.empty?
+    %span.slider-block{classe: 'btn btn_main', style: 'float: right; margin-top: 6.5px; font-size: 12px;'}
+      %a#search_box_accesskey{ href: '#', style: 'color: #000;'}
+        =t(".search2")
+        %i.icon-search{:"data-tooltip" => t(".filter_data"), :'aria-label' => t(".filter_data_open")}
 
   .mysolar_portlets_content
 

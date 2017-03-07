@@ -337,6 +337,12 @@
         delete time;
         }
       }
+
+      var pathname = $(location).attr("pathname");
+      if(pathname == "/editions/repositories" ||
+         pathname == "/administrations/indication_users") {
+        $("#link_to_search_box").hide();
+      }
     });
 
     // trigger isShow
@@ -396,7 +402,7 @@
 
     $("#link_to_menu_accesskey").on("click keypress", function(event){
       var keynum = event.which || event.keyCode;
-      
+
       if( keynum == 13 || event.type == 'click') {
         setTimeout(function() {
           $("#menu_accesskey").focus();
