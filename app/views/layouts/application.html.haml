@@ -57,7 +57,7 @@
               %ul#mysolar_accessibility_submenu
                 %li= link_to t(:main_content), "#main_content_accesskey", accesskey: "1"
                 %li#link_to_menu_accesskey= link_to t(:menu_aside), "#menu_accesskey", accesskey: "2"
-                - if active_tab[:url][:context] == 1
+                - if active_tab[:url][:context] == 1 || params[:bread] == "menu_messages"
                   %li#link_to_search_box= link_to t(:search_box), "#search_box_accesskey", accesskey: "3"
                 -# %li= link_to t(:footer_site), "#footer_site_accesskey", accesskey: "4"
                 -# %li= link_to t(:high_contrast_link), "#", accesskey: "5"
@@ -339,6 +339,7 @@
       }
 
       var pathname = $(location).attr("pathname");
+
       if(pathname == "/editions/repositories" ||
          pathname == "/administrations/indication_users") {
         $("#link_to_search_box").hide();
@@ -411,8 +412,12 @@
     });
 
     $("#link_to_search_box").on("click keydown", function(event){
-      $(".slide-block").show("slide", {direction: "right"});
-      // $(".slider-block").trigger("click");
+      var keynum = event.which || event.keyCode;
+
+      if(keynum == 13 || event.type == 'click') {
+        $(".slide-block").show("slide", {direction: "right"});
+        // $(".slider-block").trigger("click");
+      }
 
       setTimeout(function() {
         $(".search_box_focus").focus();
