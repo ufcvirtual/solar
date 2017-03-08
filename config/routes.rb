@@ -35,7 +35,9 @@ Solar::Application.routes.draw do
   end
 
   resources :personal_configurations do 
-    put :index
+    collection do
+      put :update
+    end
   end
 
 

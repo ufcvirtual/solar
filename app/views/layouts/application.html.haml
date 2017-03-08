@@ -47,7 +47,7 @@
             = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
           %ul#mysolar_top_options
             %li
-              = link_to t(:high_contrast_link), '#', :'data-url' => personal_configurations_path(theme: 'high_contrast'), id: "mysolar_high_contrast_option", remote: true
+              = link_to t(:high_contrast_link), '#', :'data-url' => personal_configurations_path(theme: 'blue'), id: "mysolar_high_contrast_option", remote: true
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular
               = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", onclick: "mysolarTopSubmenuToggle();return false;"
               - if can? :update, current_user
@@ -381,16 +381,16 @@
       height: 'auto',
       closeBtn : true
     });
-
+    //Select theme function
     $("#mysolar_high_contrast_option").click(function(){
-      var theme = $.cookie("theme");
-        if( theme == "theme_blue"){
-          $.cookie("theme", "theme_high_contrast", {path : "/"});
+      var theme = ;
+        if( theme == "blue"){
+          theme = "high_contrast";
         } else {
-          $.cookie("theme", "theme_blue", {path : "/"});
+          theme = "blue";
         };
-      var theme_path = "/assets/themes/" + $.cookie("theme") + ".css";
+      var theme_path = "/assets/themes/theme_" + $.cookie("theme")) + ".css";
          $("link[id='themes']").attr("href", theme_path);
-       $.get($("#mysolar_high_contrast_option").data("url"), function(){
+       $.put($("#mysolar_high_contrast_option").data("url"), function(){
       });
     });

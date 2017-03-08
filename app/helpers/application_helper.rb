@@ -122,15 +122,15 @@ module ApplicationHelper
     render json: { success: false, alert: (message.nil? ? error_message : error.message) }, status: :unprocessable_entity
   end
 
-  def theme
-    if cookies[:theme].nil?
-      cookies[:theme] = {
-        value: "theme_blue",
-        expires: 1.year.from_now,
-        path: "/"
-      }
-    end
-    cookies[:theme]
-  end
+  # def theme
+  #   if cookies[:theme].nil?
+  #     cookies[:theme] = {
+  #       value: "theme_blue",
+  #       expires: 1.year.from_now,
+  #       path: "/"
+  #     }
+  #   end
+  #   cookies[:theme]
+  # end
 
 end

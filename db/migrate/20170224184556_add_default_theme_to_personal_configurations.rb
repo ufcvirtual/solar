@@ -6,6 +6,5 @@ class AddDefaultThemeToPersonalConfigurations < ActiveRecord::Migration
 
   def self.down
   	change_column :personal_configurations, :theme, :string
-  	PersonalConfiguration.update_all(theme: nill)
   end
 end
