@@ -31,9 +31,13 @@ Solar::Application.routes.draw do
       get :synchronize_ma
       get :profiles
       get :request_profile
-      put :select_theme
     end
   end
+
+  resources :personal_configurations do 
+    put :index
+  end
+
 
   resources :social_networks, only: [] do
     collection do

@@ -141,17 +141,6 @@ class UsersController < ApplicationController
     @token = params[:token]
   end
 
-  def select_theme
-    unless params[:theme].blank? || !['theme_blue','theme_high_contrast'].include?(params[:theme])
-      theme = params[:theme]
-      current_user.update_attributes(:theme, theme)
-      respond_to do |format|
-        format.all { render :nothing => true, :status => 200 }
-      end
-    end
-    render json: {success: true}
-  end
-
   private
 
     def user_params
