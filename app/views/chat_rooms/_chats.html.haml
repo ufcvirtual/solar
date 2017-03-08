@@ -19,12 +19,14 @@
           - if opened && can_open_link && other == false
             = link_to chat.name, access_chat_room_path(chat.academic_tool_id, allocation_id: @alloc, academic_allocation_id: chat.id), {class: 'link_content fancybox.iframe', target: '_blank' }
           - else
-            = chat.name
+            = link_to chat.name, "#", disabled: true, onclick: 'return false', :'aria-label' => t('.chat_disabled', chat: chat.name)
           .description
-            .minimun= sanitize(truncate chat.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
-            .complete.invisible
-              = chat.description
-              = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"), :'aria-label' => t(".compress_description"))
+            .enunciation_slice= chat.description.truncate(180)
+            .enunciation_complete= chat.description
+            - if chat.description.size > 180
+              .more_or_less
+                %a.enunciation_more{ href: '#', :'aria-label' => t("chat_rooms.index.more", chat: chat.name), onkeydown: 'click_on_keypress(event, this);' }= t('chat_rooms.chats.more')
+                %a.enunciation_less{ href: '#', :'aria-label' => t("chat_rooms.index.less", chat: chat.name), onkeydown: 'click_on_keypress(event, this);' }= t('chat_rooms.chats.less')
 
           .equivalent
             - unless chat.eq_name.blank?
@@ -64,3 +66,21 @@
           %td{align: "center", headers: "message_history_#{@id_table}"}= link_to content_tag(:i, nil, class: 'icon-history'), messages_chat_room_path(chat.academic_tool_id), class: "btn history", :"data-tooltip" => t(".message_history"), :'aria-label' => t(".message_history")+t('fancybox.open')
         - else
           %td{headers: "message_history_#{@id_table}" }
+
+:javascript
+
+  $(function(){
+    $(".enunciation_more").click(function(){
+      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "none");
+      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "block");
+      focus_element($(".enunciation_complete", $(this).parent().parent()));
+      return false;
+    });
+    $(".enunciation_less").click(function(){
+      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "block");
+      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "none");
+      focus_element($(".enunciation_slice", $(this).parent().parent()));
+      return false;
+    });
+    $(".tb_list").focus();
+  });

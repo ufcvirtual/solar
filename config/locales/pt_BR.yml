@@ -2661,6 +2661,9 @@ pt_BR:
       message_did_not_start: Não iniciou
       message_history: Histórico de mensagens
       participants_list: Lista de participantes do chat %{chat}
+      chat_disabled: Acessar chat %{chat} (desabilitado)
+      more: "Mais"
+      less: "Menos"
     index:
       chats: Chats
       new_chat: Novo Chat
@@ -2678,6 +2681,8 @@ pt_BR:
       warning: "<b>Importante:</b> Apenas chats sem participantes poderão ser compartilhados com outras turmas."
       participants: Participantes do chat
       no_participants: Não há participantes
+      more: "Mais informações sobre o enunciado do chat %{chat}"
+      less: "Menos informações sobre o enunciado do chat %{chat}"
     form:
       participants: Participantes
       groups: Turmas
@@ -2711,7 +2716,8 @@ pt_BR:
       chat_details: Detalhes do chat
     messages:
       history: "Histórico de mensagens: %{chat_name}"
-      from: De
+      from_profile: De (Perfil)
+      from_name: De (Nome)
       to: Para
       message: Mensagem
       date: Data

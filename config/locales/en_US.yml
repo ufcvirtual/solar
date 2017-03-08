@@ -2434,6 +2434,9 @@ en_US:
       message_did_not_start: Did not started
       message_history: Message's history
       participants_list: Lista de participantes do chat %{chat}
+      chat_disabled: Access chat %{chat} (disabled)
+      more: "More"
+      less: "Less"
     index:
       chats: Chats
       new_chat: New Chat
@@ -2451,6 +2454,8 @@ en_US:
       warning: "<b>Important:</b> Only chat rooms without participants can be shared with other groups."
       participants: Chat's participants
       no_participants: There are no participant
+      more: "More information enunciation of chat %{chat}"
+      less: "Less information enunciation of chat %{chat}"
     form:
       participants: Participants
       groups: Groups
@@ -2484,7 +2489,8 @@ en_US:
       chat_details: Chat's details
     messages:
       history: "Message's history: %{chat_name}"
-      from: From
+      from_profile: From (Profile)
+      from_name: From (Name)
       to: To
       message: Message
       date: Date
