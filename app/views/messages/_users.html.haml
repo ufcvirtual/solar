@@ -1,7 +1,8 @@
-- unless @users.empty?
-  #users{ class: "users_at_#{@allocation_tags_ids}" }
-    = link_to_function t(".add_all"), "add_all_contacts(this)", id: "add_all", :'aria-label' => t('.add_all_alt'), onkeydown: 'click_on_keypress(event, this);'
-    - @users.each do |user|
-      .contact= link_to_function "#{user.name} <#{user.email}>", "add_contact(this, true)", "data-user-id" => user.id, "data-at" => @allocation_tags_ids, :'aria-label' => t('.user_alt', name: user.name, email: user.email), onkeydown: 'click_on_keypress(event, this);'
-- else
-  %div{ style: "margin-top:15%; margin-left:32%" }= t(".no_user_found")
+.list_user_contacts
+  - unless @users.empty?
+    #users{ class: "users_at_#{@allocation_tags_ids}" }
+      = link_to_function t(".add_all"), "add_all_contacts(this)", id: "add_all", :'aria-label' => t('.add_all_alt'), onkeydown: 'click_on_keypress(event, this);'
+      - @users.each do |user|
+        .contact= link_to_function "#{user.name} <#{user.email}>", "add_contact(this, true)", "data-user-id" => user.id, "data-at" => @allocation_tags_ids, :'aria-label' => t('.user_alt', name: user.name, email: user.email), onkeydown: 'click_on_keypress(event, this);'
+  - else
+    %div{ style: "margin-top:15%; margin-left:32%" }= t(".no_user_found")

@@ -19,10 +19,14 @@ function clear_radioboxes(disable){
 }
 
 function clear_content(){
-  var div_to_clear = 0;
-  if ($(".edition_content:last").children().length > 1)
-    div_to_clear = 1;
-  $($(".edition_content:last").children()[div_to_clear]).html('');
+  if(!!$('.list_users_contacts', $(".edition_content:last")).length)
+    $('.list_users_contacts', $(".edition_content:last")).html('');
+  else{
+    var div_to_clear = 0;
+    if ($(".edition_content:last").children().length > 1)
+      div_to_clear = 1;
+    $($(".edition_content:last").children()[div_to_clear]).html('');
+  }
 }
 
 function update_combobox(url, combobox){
@@ -176,6 +180,34 @@ $(function(){
     }
   });
 
+  // ----- msgs
+  if(!!$( "select#contacts_type" ).length){
+    $( "select#contacts_type" ).combobox({
+      change: function( event, ui ) {
+        if(ui.item == null)
+          $(this).combobox('value', 1);
+      },
+      select: function( event, ui ) {
+        if(ui.item == null)
+          $(this).combobox('value', 1);
+        else{
+          if(ui.item.value == 2){ // contatos pessoais
+            $(".edition.block_content").hide();
+            $(".user_contacts").addClass("invisible");
+          }else{
+            if(ui.item.value == 1){ // contatos do sistema
+              $(".edition.block_content").show();
+              $(".user_contacts").removeClass("invisible");
+            }
+          }
+        }
+      }
+    });
+    $("select#contacts_type").combobox('value', 1);
+  }
+
+
+
   // ----------------------------------------------------------------------------------------------------
 
   $("[name='radio[option]'][value='group']:last").click(function(){
@@ -223,6 +255,38 @@ $(function(){
   $('label[for="option_offer"]:last').click(function(){
     $(".offer_groups_options:last #radio_option_offer:enabled").click();
   });
+
+
+  // se estiver dentro de uma turma específica
+  if ($("#allocation_tag_id", $(".edition:last")).val() != undefined && $("#allocation_tag_id", $(".edition:last")).val() != ""){
+    $(".edition.block_content .select", $(".edition:last")).remove();
+    $(".edition.block_content .contacts-list", $(".edition:last")).remove();
+    $("#search", $(".edition:last")).remove();
+
+    //desabilitar todos os combobox
+    $("#curriculum_unit_type, #course, #curriculum_unit, #semester, #contacts_type", $(".edition:last")).each(function(){
+        if(!!$(this).length){
+          $(this).combobox( "option", { disabled: true });
+        }
+      });
+    $(".ui-combobox input", $(".edition:last")).each(function(){ $(this).prop("disabled", true) });
+
+    var group    = $("#group_code", $(".edition:last")).val();
+    var semester = $("#semester_name", $(".edition:last")).val();
+    var uc       = $("#uc_name", $(".edition:last")).val();
+    var course   = $("#course_name", $(".edition:last")).val();
+    var uc_type  = $("#uc_type", $(".edition:last")).val();
+
+    // colocar os valores nos selects
+    $(".curriculum_unit_type #autocomplete-input", $(".edition:last")).val(uc_type);
+    $(".curriculum_unit #autocomplete-input", $(".edition:last")).val(uc);
+    $(".course #autocomplete-input", $(".edition:last")).val(course);
+    $(".semester #autocomplete-input", $(".edition:last")).val(semester);
+    $(".curriculum_unit_type #autocomplete-input", $(".edition:last")).val(uc_type);
+
+    $("#radio_option_group", $(".edition:last")).prop("checked", true);
+    $(".groups", $(".edition:last")).append(group);
+  }
 
 });
 

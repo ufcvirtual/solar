@@ -41,13 +41,37 @@
 
         = link_to t(:search), '#', { class: 'btn btn_main', :"data-url-search" => url, id: 'search', :"data-load-to" => "#{list_class}" }
 
+
+    = hidden_field_tag :allocation_tag_id, @allocation_tag_id
+    - unless @group.nil? || (defined?(ignore_tab).nil? ? false : ignore_tab)
+      = hidden_field_tag :group_code,    @group.code
+      = hidden_field_tag :semester_name, @group.offer.semester.name
+      = hidden_field_tag :uc_name,       @group.offer.curriculum_unit.try(:name)
+      = hidden_field_tag :course_name,   @group.offer.course.try(:name)
+      = hidden_field_tag :uc_type,       @group.offer.curriculum_unit.try(:curriculum_unit_type).try(:description)
+
+
     .edition_content
 
       - if back
         .back.invisible
           = render 'editions/back_items'
-
-      %div{ class: "#{list_class}" }
+          
+      - if @allocation_tag_id.blank?
+        - if @contacts.nil?
+          %div{ class: "#{list_class}" }
+        - else
+          .user_contacts
+            %h3.select= t('messages.contacts.select')
+            .contacts-list
+              .list_users_contacts
+      - elsif @contacts.nil?
+        = render 'editions/items'
+      - else
+        .user_contacts
+          %h3.select= t('messages.contacts.select')
+          .contacts-list
+            = render partial: 'messages/users', object: @users = @contacts, object: @allocation_tags_ids = ''
 
       - if back
         .back.invisible
@@ -68,4 +92,6 @@
       $(".back").addClass("invisible");
       return false;
     });
+
+
   });

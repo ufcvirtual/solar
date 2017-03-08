@@ -12,11 +12,7 @@
         = select_tag :contacts_type, options_for_select([[t('.system_contacts'),1],[t('.personal_contacts'),2]]), selected: 1
 
       .contacts-uc
-        = render partial: "editions/content_filter", locals: { list_class: "contacts-list", url: find_users_messages_path, optionals: ['curriculum_unit', 'course', 'semester'], types: CurriculumUnitType.all, back: false, type_id: nil }
-        .user_contacts{ class: @group.nil? ? 'invisible' : '' }
-          .contacts-list
-            - unless @contacts.empty?
-              = render partial: 'users', object: @users = @contacts, object: @allocation_tags_ids = ''
+        = render partial: "editions/content_filter", locals: { list_class: "list_users_contacts", url: find_users_messages_path, optionals: ['curriculum_unit', 'course', 'semester'], types: CurriculumUnitType.all, back: false, type_id: nil }
 
       %h3.selected= t('.to')
       .contacts-selected
@@ -27,16 +23,6 @@
       .right
         = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: 'button', alt: t(:cancel)
         = button_to_function t(:save), "msg_add_contacts()", class: "btn btn_main btn_lightbox", alt: t(:save), type: 'button'
-
-- unless @group.nil?
-  = hidden_field_tag :group_code,    @group.code
-  = hidden_field_tag :semester_name, @group.offer.semester.name
-  = hidden_field_tag :uc_name,       @group.offer.curriculum_unit.try(:name)
-  = hidden_field_tag :course_name,   @group.offer.course.try(:name)
-  = hidden_field_tag :uc_type,       @group.offer.curriculum_unit.try(:curriculum_unit_type).try(:description)
-
-= stylesheet_link_tag 'autocomplete'
-= javascript_include_tag 'autocomplete'
 
 :javascript
   
@@ -99,8 +85,6 @@
     $("legend").remove();
     $(".filter").unwrap();
     $($(".edition.block_content").find("p")[0]).remove();
-    $(".contacts-list").before("<h3 class='select'>#{t('.select')}</h3>");
-    var allocation_tag_id = "#{@allocation_tag_id}";
 
     $(".help_link a").click(function(event){
       if (!$(".contact.help:visible").length){
@@ -111,59 +95,6 @@
     // nova msg dentro de uma UC
     if ($('select#uc option:selected').val() != "")
       msg_show_contacts($('select#uc'));
-
-    $( "select#contacts_type" ).combobox({
-      change: function( event, ui ) {
-        if(ui.item == null)
-          $(this).combobox('value', 1);
-      },
-      select: function( event, ui ) {
-        if(ui.item == null)
-          $(this).combobox('value', 1);
-        else{
-          if(ui.item.value == 2){ // contatos pessoais
-            $(".edition.block_content").hide();
-            $(".user_contacts").removeClass("invisible");
-          }else{
-            if(ui.item.value == 1){ // contatos do sistema
-              $(".edition.block_content").show();
-              $(".user_contacts").addClass("invisible");
-            }
-          }
-        }
-      }
-    });
-
-
-    $("select#contacts_type").combobox('value', 1);
-
-    // se estiver dentro de uma turma específica
-    if (allocation_tag_id != ""){
-      $(".edition.block_content .select").remove();
-      $(".edition.block_content .contacts-list").remove();
-      $("#search").remove();
-
-      //desabilitar todos os combobox
-      $("#curriculum_unit_type, #course, #curriculum_unit, #semester, #contacts_type").combobox( "option", { disabled: true } );
-      $(".ui-combobox input").each(function(){ $(this).prop("disabled", true) });
-
-      var group    = $("#group_code").val();
-      var semester = $("#semester_name").val();
-      var uc       = $("#uc_name").val();
-      var course   = $("#course_name").val();
-      var uc_type  = $("#uc_type").val();
-
-      // colocar os valores nos selects
-      $(".curriculum_unit_type #autocomplete-input").val(uc_type);
-      $(".curriculum_unit #autocomplete-input").val(uc);
-      $(".course #autocomplete-input").val(course);
-      $(".semester #autocomplete-input").val(semester);
-      $(".curriculum_unit_type #autocomplete-input").val(uc_type);
-
-      $("#radio_option_group").prop("checked", true);
-      $(".groups").append(group);
-    }
-
   });
 
   function msg_show_contacts(obj) {

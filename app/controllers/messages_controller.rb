@@ -148,7 +148,7 @@ class MessagesController < ApplicationController
     @users = User.all_at_allocation_tags(@allocation_tags_ids, Allocation_Activated, true)
     @allocation_tags_ids = @allocation_tags_ids.join('_')
     render partial: 'users'
-  rescue
+  rescue => error
     render json: { success: false, alert: t('messages.errors.permission') }, status: :unprocessable_entity
   end
 

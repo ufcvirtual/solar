@@ -1,5 +1,4 @@
 .edition_items
-
   - if @user_profiles.include?(editions: :tool_management) && (@selected == 'GROUP' || @selected == 'OFFER')
     .tool_management{ :"data-link" => tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids) }
       = link_to t('.tool_management'), '#' , :'data-tooltip' => t('.tool_management'), class: 'title_link'
