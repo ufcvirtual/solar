@@ -64,35 +64,47 @@ $(function() {
         },
 
         viewDisplay: function(view) {
-          if(lastView == 'list'&& beforeLast == undefined && lastView!=view.name){
-            $("#no_events").remove();
-            $('#calendar').fullCalendar('removeEventSource', fcSources.list);
-          }else{
-            if(lastView!=undefined && lastView!=view.name){ // se mudou de visão
-              if (view.name != 'list' && lastView == 'list'){ // se não for lista e a anterior for lista
-                $("#no_events").remove();
-                $('#calendar').fullCalendar('removeEventSource', fcSources.list)
-                              .fullCalendar('addEventSource', fcSources.calendar);
-              }
-              if(view.name == 'list') //se for lista
+          if(lastView != view.name){
+            if(lastView == undefined){
+              $("#no_events").remove();
+              $('#calendar').fullCalendar('removeEventSources')
+                            .fullCalendar( 'addEventSource', fcSources.list);
+            }else{
+              if(view.name == 'list'){
                 $('#calendar').fullCalendar('removeEventSource', fcSources.calendar)
                               .fullCalendar( 'addEventSource', fcSources.list);
-            }else{
-              if(lastView == undefined){ // primeira vez que abre calendário
-                $('#calendar').fullCalendar( 'addEventSource', fcSources.calendar);
+              }else{
+                $('#calendar').fullCalendar('removeEventSource', fcSources.list);
+                $('#calendar').fullCalendar( 'refetchEvents' );
+                if(lastView!='list' || (beforeLast!='list' && beforeLast!=null))
+                  $('#calendar').fullCalendar( 'addEventSource', fcSources.calendar);
+                else{
+                  if(lastView=='list' && beforeLast==null){
+                    $('#calendar').fullCalendar('removeEventSource', fcSources.list)
+                          .fullCalendar('removeEventSource', fcSources.calendar);
+                    $('#calendar').fullCalendar( 'refetchEvents' );
+                    $('#calendar').fullCalendar('addEventSource', fcSources.calendar);
+                    $('#calendar').fullCalendar( 'refetchEvents' );
+                  }
+                }
               }
-              
             }
+          }else{
+            $('#calendar').fullCalendar('removeEventSource', fcSources.list)
+                          .fullCalendar('removeEventSource', fcSources.calendar);
+            $('#calendar').fullCalendar( 'refetchEvents' );
+            $('#calendar').fullCalendar('addEventSource', fcSources.calendar);
+            $('#calendar').fullCalendar( 'refetchEvents' );
           }
-
 
           if(lastView != null)
             beforeLast = lastView;
           lastView = view.name;
         }
-  });
+    });
 
 });
+
 
 function show_info_dropdown(event, div){
   if ($(div).hasClass('today'))
