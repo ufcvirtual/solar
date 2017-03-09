@@ -1756,6 +1756,8 @@ pt_BR:
   general_message: Não foi possível realizar a ação desejada
 
   # Files
+  send_file_name: "Arquivo selecionado"
+  send_file_size: "Tamanho do arquivo"
   file_error_nonexistent_file: Arquivo não encontrado
   send_file_obs: Aguarde o envio completo do arquivo. O tamanho não deve exceder 5MB.
   send_file_text: "Exemplos de arquivos aceitos:<br />&nbsp;&nbsp;- Documentos do Microsoft Office<br />&nbsp;&nbsp;- Documentos do OpenOffice.org (ODF)<br />&nbsp;&nbsp;- Arquivos Compactados (.zip, .rar...)<br />&nbsp;&nbsp;- Documentos PDF<br />&nbsp;&nbsp;- Arquivos de Video (avi, mpeg,...)<br />&nbsp;&nbsp;- Arquivos de Audio (mp3, wma...)"
