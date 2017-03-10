@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials] # devise
-  before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im, :set_theme
+  before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im, :get_theme
   after_filter :log_navigation
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -174,10 +174,11 @@ class ApplicationController < ActionController::Base
     params.delete(:locale) if user_signed_in?
   end
 
-  def set_theme
+  def get_theme
     if user_signed_in?
-      @current_theme = PersonalConfiguration.find_by_user_id(current_user.id)
-      params[:theme] = @current_theme.theme
+      current_theme = PersonalConfiguration.find_by_user_id(current_user.id)
+      params[:theme] = current_theme.theme
+      #session[:theme] ||= params[:theme] #If session[:theme] is set it will be used, otherwise params[:theme]will be used
     end
   end
 
