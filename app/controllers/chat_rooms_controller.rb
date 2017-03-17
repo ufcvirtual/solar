@@ -127,7 +127,7 @@ class ChatRoomsController < ApplicationController
 
       @messages = @chat_room.get_messages(allocation_tag_id, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
             
-      @acu = AcademicAllocationUser.find_one(@academic_allocation.id, params[:user_id],nil, false)
+      @acu = AcademicAllocationUser.find_one(@academic_allocation.id, params[:user_id],nil, false, can_evaluate)
 
       respond_to do |format|
         format.html { render layout: false }

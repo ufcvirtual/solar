@@ -164,7 +164,7 @@ class AcademicAllocationUser < ActiveRecord::Base
       unless status.nil?
         if acu.grade.blank? && acu.working_hours.blank?
           acu.update_attributes status: status
-        elsif
+        else
           acu.update_attributes new_after_evaluation: new_object 
         end
       end
@@ -173,15 +173,11 @@ class AcademicAllocationUser < ActiveRecord::Base
     end
   end
 
-  # must be called whenever wants to get acu without being studen accessing own activity
-  def self.find_one(academic_allocation_id, user_id, group_id=nil, new_object=false, status=STATUS[:empty])
+  # must be called whenever wants to get acu without being studend accessing its own activity
+  def self.find_one(academic_allocation_id, user_id, group_id=nil, new_object=false, can_evaluate=false)
     acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: (group_id.nil? ? user_id : nil), group_assignment_id: group_id).first
-    unless acu.blank? || status.nil?
-      if (acu.grade.blank? && acu.working_hours.blank?)
-        acu.update_attributes status: status
-      else
-        acu.update_attributes new_after_evaluation: new_object
-      end
+    unless acu.blank? || !can_evaluate
+      acu.update_attributes new_after_evaluation: new_object
     end
     acu
   end 

@@ -72,8 +72,8 @@ class PostsController < ApplicationController
       @posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id).order('updated_at DESC')
 
       @academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: @allocation_tags).first
-      @alluser = AcademicAllocationUser.find_one(@academic_allocation.id, @user.id, nil, false) unless @posts.blank?
       @can_evaluate = can? :evaluate, Discussion, { on: at = active_tab[:url][:allocation_tag_id] }
+      @alluser = AcademicAllocationUser.find_one(@academic_allocation.id, @user.id, nil, false, @can_evaluate) unless @posts.blank?
 
       respond_to do |format|
         format.html { render layout: false }
@@ -137,7 +137,7 @@ class PostsController < ApplicationController
       allocation_tag_ids  = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
       academic_allocation = discussion.academic_allocations.where(allocation_tag_id: allocation_tag_ids).first
 
-      aau = AcademicAllocationUser.find_or_create_one(academic_allocation.id, active_tab[:url][:allocation_tag_id], current_user.id, nil, true)
+      aau = AcademicAllocationUser.find_or_create_one(academic_allocation.id, active_tab[:url][:allocation_tag_id], current_user.id, nil, true, AcademicAllocationUser::STATUS[:sent])
 
       @post = Post.new(post_params)
       @post.user_id = current_user.id
@@ -149,3 +149,6 @@ class PostsController < ApplicationController
     end
 
 end
+
+
+

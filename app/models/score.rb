@@ -22,7 +22,7 @@ class Score # < ActiveRecord::Base
       "WHEN academic_allocation_users.grade IS NOT NULL OR academic_allocation_users.working_hours IS NOT NULL THEN 'evaluated'"
     end
 
-    sent_status = if frequency
+    sent_status = if frequency || evaluative
       'academic_allocation_users.status = 1 OR (academic_allocation_users.status = 2 AND (academic_allocation_users.working_hours IS NULL OR academic_allocation_users.grade IS NULL))'
     else
       'academic_allocation_users.status = 1'
@@ -46,7 +46,7 @@ class Score # < ActiveRecord::Base
       "WHEN academic_allocation_users.grade IS NOT NULL THEN 'evaluated'"
     end
 
-    sent_status = if type_score == 'frequency'
+    sent_status = if type_score == 'frequency' || type_score == 'evaluative'
       'academic_allocation_users.status = 1 OR (academic_allocation_users.status = 2 AND (academic_allocation_users.working_hours IS NULL OR academic_allocation_users.grade IS NULL))'
     else
       'academic_allocation_users.status = 1'

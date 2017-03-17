@@ -24,7 +24,7 @@ class AssignmentWebconference < ActiveRecord::Base
   
   default_scope order: 'updated_at DESC'
 
-  after_save :update_acu, on: :update
+  after_save :update_acu
   after_destroy :update_acu
 
   attr_accessor :merge
@@ -118,7 +118,7 @@ class AssignmentWebconference < ActiveRecord::Base
     def update_acu
       unless academic_allocation_user_id.blank?
         if (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?)
-          if academic_allocation_user.assignment_files.empty? && academic_allocation_user.assignment_webconferences.where(final: true).empty?
+          if (academic_allocation_user.assignment_files.empty? && academic_allocation_user.assignment_webconferences.where(final: true).empty?)
             academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty] 
           else
             academic_allocation_user.status = AcademicAllocationUser::STATUS[:sent] 
