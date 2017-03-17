@@ -395,4 +395,5 @@
       var theme_path = "/assets/themes/theme_" + theme + ".css";
          $("link[id='themes']").attr("href", theme_path);
        //$.put($("#mysolar_high_contrast_option").data("url"), function(){
+       $.ajax("/personal_configurations/update");
       });
