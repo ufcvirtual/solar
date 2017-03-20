@@ -35,9 +35,7 @@ Solar::Application.routes.draw do
   end
 
   resources :personal_configurations do 
-    collection do
-      put :update
-    end
+      put :update_theme, on: :collection
   end
 
 

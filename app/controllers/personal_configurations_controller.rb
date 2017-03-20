@@ -17,14 +17,13 @@ class PersonalConfigurationsController < ApplicationController
     personal_options.save()
   end
 
-  def update
+  def update_theme
+    Rails.logger.info
     personal_configuration = PersonalConfiguration.find_by_user_id(current_user.id)
     unless params[:theme].blank? || !['blue','high_contrast'].include?(params[:theme])
-      session[:theme] = params[:theme]
+      Rails.logger.info
       personal_configuration.update_attribute(:theme, params[:theme])
-      respond_to do |format|
-        format.all {render :nothing => true, :status => 200}
-      end
+      render json: {success: true}
     end
   end
   
