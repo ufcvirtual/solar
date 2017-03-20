@@ -102,7 +102,7 @@ module Bbb
   end
 
   def bbb_online?(api = nil)
-    Timeout::timeout(5) do
+    Timeout::timeout(4) do
       api = bbb_prepare if api.nil?
       url  = URI(api.url)
       response = Net::HTTP.get_response(url)
@@ -114,7 +114,7 @@ module Bbb
 
   def bbb_prepare
     choose_server if server.blank?
-    Timeout::timeout(5) do
+    Timeout::timeout(4) do
       @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
       bbb  = @config['servers'][@config['servers'].keys[server]]
       debug   = @config['debug']
@@ -125,7 +125,7 @@ module Bbb
   end
 
   def self.bbb_prepare(server)
-    Timeout::timeout(5) do
+    Timeout::timeout(4) do
       @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
       bbb  = @config['servers'][@config['servers'].keys[server]]
       debug   = @config['debug']
@@ -136,7 +136,7 @@ module Bbb
   end
 
   def count_servers
-     Timeout::timeout(5) do
+     Timeout::timeout(4) do
       @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
       @config['servers'].count
     end
@@ -244,14 +244,14 @@ module Bbb
     raise raise CanCan::AccessDenied if respond_to?(:is_onwer?) && !is_onwer?
     raise 'date_range'               if respond_to?(:in_time?)  && !in_time?
     raise 'unavailable'              unless bbb_online?
-    raise 'not_ended'                unless is_over?
+    raise 'not_ended'                unless !started? || is_over?
   end
 
   def can_remove_records?
     raise raise CanCan::AccessDenied if respond_to?(:is_onwer?) && !is_onwer?
     raise 'date_range'               if respond_to?(:in_time?)  && !in_time?
     raise 'unavailable'              unless bbb_online?
-    raise 'not_ended'                unless is_over?
+    raise 'not_ended'                unless !started? || is_over?
     raise 'copy'                     unless self.class.to_s != 'Webconference' || origin_meeting_id.blank?
   end
 

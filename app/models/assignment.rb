@@ -34,11 +34,6 @@ class Assignment < Event
     end
   end
 
-  def can_remove_groups?(groups)
-    # nao pode dar unbind nem remover se assignment possuir acu
-    AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: self.id, allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).empty?
-  end
-
   def can_destroy?
     academic_allocations.map(&:academic_allocation_users).flatten.empty?
   end
@@ -186,7 +181,7 @@ class Assignment < Event
   end
 
   def self.verify_previous(acu_id)
-    return false
+    AssignmentFile.where(academic_allocation_user_id: acu_id).any? || AssignmentWebconference.where(academic_allocation_user_id: acu_id, final: true).any?
   end
 
   def self.update_previous(ac_id, users_ids, acu_id)
