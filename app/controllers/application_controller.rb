@@ -177,7 +177,7 @@ class ApplicationController < ActionController::Base
   def get_theme
     if user_signed_in?
       current_theme = PersonalConfiguration.find_by_user_id(current_user.id)
-      params[:theme] = current_theme.theme
+      user_session[:theme] = current_theme.theme
     end
   end
 

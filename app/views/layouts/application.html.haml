@@ -19,7 +19,7 @@
     = stylesheet_link_tag "converse/converse"
     / IM \
     = stylesheet_link_tag "application", "fancybox"
-    = stylesheet_link_tag "themes/theme_" + "#{params[:theme]}", id: "themes"
+    = stylesheet_link_tag "themes/theme_" + 'blue', id: "themes"
 
     = csrf_meta_tag
 
@@ -47,7 +47,7 @@
             = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
           %ul#mysolar_top_options
             %li
-              = link_to t(:high_contrast_link), '#', :'data-url' => update_theme_personal_configurations_path(theme: params[:theme]), id: "mysolar_high_contrast_option", remote: true
+              = link_to t(:high_contrast_link), '#', :data => {:'url' => update_theme_personal_configurations_path, :'theme' => "#{user_session[:theme]}"}, id: "mysolar_high_contrast_option", remote: true
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular
               = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", onclick: "mysolarTopSubmenuToggle();return false;"
               - if can? :update, current_user
@@ -149,7 +149,7 @@
       - locales  =  %w(pt_BR en_US)
       - selected = I18n.locale.to_s
       #footer
-        = params[:theme].inspect
+        = user_session[:theme].inspect
         %ul
           %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', target: '_blank'
           %li= link_to t(:login_footer2), 'http://www.ufc.br', target: '_blank'
@@ -383,11 +383,11 @@
       closeBtn : true
     });
 
-    //FIXME: manipulating params[:theme]
     //Select theme function
     $("#mysolar_high_contrast_option").click(function(){
-      $.put($(this).data("url"), function(){
-        var theme = "#{params[:theme]}";
+      $.put($(this).data("url"), {"theme": $(this).data("theme")}, function(data){
+        /console.log("JS");
+        var theme = theme;
         if( theme == "blue"){
           theme = "high_contrast";
         } else {
