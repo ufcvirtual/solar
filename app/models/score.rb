@@ -228,7 +228,7 @@ class Score # < ActiveRecord::Base
         #{evaluated_status}
         WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
         WHEN webconferences.initial_time > now() THEN 'not_started'
-        WHEN webconferences.initial_time + (interval '1 hours')*webconferences.duration > now() THEN 'to_send'
+        WHEN webconferences.initial_time + (interval '1 min')*webconferences.duration > now() THEN 'to_send'
         ELSE 
           'not_sent'
         END AS situation
