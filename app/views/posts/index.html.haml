@@ -40,7 +40,6 @@
     .forum_post_new
 
   .forum_posts_wrapper
-    - @count = 0
     - @hash = { } unless @display_mode == 'list'
     - @posts = get_page_posts(@posts, @current_page) unless @display_mode == 'list'
     - @posts.each do |post|
@@ -48,7 +47,7 @@
 .block_wrapper
   = link_to t(:back), :back, { class: 'btn' , id: 'back' }, :'aria-label' => t(:back)
 
-= javascript_include_tag 'ckeditor/init', 'discussions', 'jwplayer/jwplayer.js', 'contextual_help/discussion_posts'
+= javascript_include_tag 'ckeditor/init', 'discussions',  'contextual_help/discussion_posts', 'audios'
 
 :javascript
 
@@ -62,40 +61,11 @@
     var websocket_port = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["port"]}"
 
     $(".forum_button_attachment").call_fancybox({
-      element_selector: '#focu'
+      element_selector: '.focu'
     });
     
     var display_list = ("#{escape_once(@display_mode) == 'list'}" == "true");
     var ac = "#{@academic_allocation_id}";
-
-    $(".media").each(function(){
-      var mediaId = $(this).attr('id');
-      var mediaSrc = $(this).data('source');
-      var type = $(this).data('type');
-
-      if (type == 'm4a') {
-        type = 'aac'
-      }
-
-      if (type == 'mp4') {
-        mediaPlayer(mediaId, mediaSrc, 'mp4', 320, 240);
-      } else {
-        mediaPlayer(mediaId, mediaSrc, type, 240, 30);
-      };
-    });
-
-    function mediaPlayer(id, source, type, width, height) {
-      jwplayer(id).setup({
-        playlist: [{
-          sources: [{
-            file: source,
-            type: type
-          }]
-        }],
-        width: width,
-        height: height
-      });
-    }
 
     /*Conexão com o WebSocket*/
     var ws = new WebSocket('ws://'+websocket_host+':'+websocket_port+'/'+ac); // file websocket_server.rb
@@ -161,8 +131,8 @@
             }  
             $(".forum_button_attachment").call_fancybox({
               afterShow: function(){
-                $('#focu').attr("tabindex", "0");
-                $('#focu').focus();
+                $('.focu').attr("tabindex", "0");
+                $('.focu').focus();
               }
             });
             add_post_count_warning();
@@ -190,3 +160,4 @@
     });
 
   });
+ 

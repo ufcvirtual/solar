@@ -1,0 +1,26 @@
+%h3= t('posts.post.file_list')
+%ul.forum_post_attachment_list
+	- files.each do |file|
+		- size = format('%.2f KB', file.attachment_file_size.to_i/1024.0)
+		- mimetype_icon  = image_tag( icon_attachment(file.attachment_file_name), :'aria-hidden'=>'true' )
+		- link_to_down   = (link_to file.attachment_file_name, download_post_post_file_path(post, file), :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size))
+
+		- link_remove_file =  link_to_function content_tag(:i, nil, class: 'icon-cross-circle warning'), "delete_post_file(this, #{post.id})", class: 'nodecoration', :'data-url' => post_post_file_path(post, file), :'data-post' => file.id, :'data-tooltip' => t('posts.post.remove_attachment', file: file.attachment_file_name , size: size), :'aria-label'=> t('posts.post.remove_attachment', file: file.attachment_file_name , size: size), onkeydown: 'click_on_keypress(event, this);', confirm: t("posts.post.remove_file_confirm")
+		- link_to_remove = (editable && can_interact) ? link_remove_file : ''
+		%li
+			%span{id: file.id}
+				= raw "#{mimetype_icon}&nbsp;&nbsp;#{link_to_down}(#{size})&nbsp;&nbsp;#{link_to_remove}"
+				%br
+				- if file.attachment_content_type.index('audio')
+					.audios
+						.audio  
+							%audio{ src: download_post_post_file_url(post, file), autoplay: false, controls: 'true', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
+								%track{ kind: "captions"}  
+							= link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :"aria-label" => t('questions.questions.up_down')), 'down_speed()'
+							= link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :"aria-label" => t('questions.questions.up_speed')), 'up_speed()'
+					%br
+				- elsif file.attachment_file_name.last(4).eql?('.aac') || file.attachment_file_name.last(4).eql?('.m4a') || file.attachment_content_type.index('video') || file.attachment_file_name.last(4).eql?('.mp4') || file.attachment_file_name.last(4).eql?('.m4v')	 
+					%video{ src: download_post_post_file_url(post, file), autoplay: false, controls: 'true', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
+						%track{ kind: "captions"}  
+						%track{ kind: "descriptions"}
+	        

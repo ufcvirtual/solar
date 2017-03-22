@@ -17,21 +17,21 @@
             %td.center= l(post.updated_at.to_datetime, format: :normal)
             %td.center= l(post.updated_at.to_datetime, format: :clock_time)
 
-  
-    - if evaluate && @user.is_student?(@allocation_tags)
-      = simple_form_for :academic_allocation_user, url: evaluate_discussion_path(@discussion), html: { method: :put } do |f|
-      
-        = f.input :user_id, as: :hidden, input_html: { value: @user.id }
-        .form-inputs.block_content
-          .inline
-            - if @academic_allocation.evaluative
-              = f.input :grade, required: true, as: :float, step: 0.01, label: t(".grade"), input_html: { value: @alluser.try(:grade), min:0, max:10 } 
-            -  if @academic_allocation.frequency  
-              = f.input :working_hours, required: true, as: :float, label: t(".frequency"), input_html: { value: @alluser.try(:working_hours), min:0, max: @academic_allocation.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@academic_allocation.max_working_hours.to_s ) }
-            = link_to_function t(:save), 'finish_evaluation(this)', class: 'btn btn_main'
-
   - else
     .block_content_text_list.text_none= t(".no_posts")
+  
+  - if evaluate && @user.is_student?(@allocation_tags)
+    = simple_form_for :academic_allocation_user, url: evaluate_discussion_path(@discussion), html: { method: :put } do |f|
+    
+      = f.input :user_id, as: :hidden, input_html: { value: @user.id }
+      .form-inputs.block_content
+        .inline
+          - if @academic_allocation.evaluative
+            = f.input :grade, required: true, as: :float, step: 0.01, label: t(".grade"), input_html: { value: @alluser.try(:grade), min:0, max:10 } 
+          -  if @academic_allocation.frequency  
+            = f.input :working_hours, required: true, as: :float, label: t(".frequency"), input_html: { value: @alluser.try(:working_hours), min:0, max: @academic_allocation.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@academic_allocation.max_working_hours.to_s ) }
+          = link_to_function t(:save), 'finish_evaluation(this)', class: 'btn btn_main'
+
 
 :javascript
   function finish_evaluation(btn){

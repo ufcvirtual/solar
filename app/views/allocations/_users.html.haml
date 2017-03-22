@@ -1,4 +1,5 @@
-- access_indication = can? :indication_users, Administration, {on: @allocation_tags_ids.split(' '), accepts_general_profile: true }
+
+- access_indication = can? :indication_users, Administration, {on: @allocation_tags_ids.split(' '), accepts_general_profile: true } if @allocation_tags_ids
 
 - @users.each do |user|
   - user_profiles = user.allocations.where(allocation_tag_id: (@allocation_tags_ids.nil? ? nil : @allocation_tags_ids.split(" "))).map(&:profile)

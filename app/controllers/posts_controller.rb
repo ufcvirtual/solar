@@ -73,7 +73,7 @@ class PostsController < ApplicationController
 
       @academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: @allocation_tags).first
       @can_evaluate = can? :evaluate, Discussion, { on: at = active_tab[:url][:allocation_tag_id] }
-      @alluser = AcademicAllocationUser.find_one(@academic_allocation.id, @user.id, nil, false, @can_evaluate) unless @posts.blank?
+      @alluser = AcademicAllocationUser.find_one(@academic_allocation.id, @user.id, nil, false, @can_evaluate)# unless @posts.blank?
 
       respond_to do |format|
         format.html { render layout: false }
