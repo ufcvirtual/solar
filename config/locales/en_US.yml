@@ -1046,8 +1046,11 @@ en_US:
       grade: '(Grade: %{grade})'
       frequency: '(Frequency: %{wh})'
       download: "Download %{file}, size %{size}"
-      post: "%{number}ª Post: "
-      answer_post: "Answer of %{answer}"
+      post: "ª Post: "
+      answer_post: "Answer of "
+      res_post: "ª post"
+      remove_attachment: Remove %{file} %{size}
+      remove_post: "Post delete success"
     create:
       created: "Post was successfully created"
       not_created: "Post was not created"
@@ -1069,11 +1072,13 @@ en_US:
       evaluation_info: '<b> About evaluation: </b>All grades and frequency here defined are to each student, not for each post. Therefore, by evaluating/seting frequency of a post, all other posts of this student will have the same grade and working hours.'
     error:
       children: 'Post has answers'
+      new: It was not possible to send file.
 
   post_files:
     new:
       attach_save: "Save"
       attach_another_file: "Attach another file"
+      attach_size: 'Size: '
   discussions:
     form:
       save: Save

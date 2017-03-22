@@ -17,9 +17,11 @@ class PostFilesController < ApplicationController
     begin
       post       = Post.find(params[:post_id])
       discussion = post.discussion
+      can_interact = discussion.user_can_interact?(current_user.id)
+      editable = ((post.user_id == current_user.id) && (post.children_count == 0))
 
       file_names = []
-      if ((discussion.user_can_interact?(current_user.id)) and (post.user_id == current_user.id))
+      if ((can_interact) and (post.user_id == current_user.id))
         files = params[:post_file].is_a?(Hash) ? params[:post_file].values : params[:post_file] # {attachment1 => [valores1], attachment2 => [valores2]} => [valores1, valores2]
         [files].flatten.each do |file|
           f = PostFile.create!({ attachment: file, discussion_post_id: post.id })
@@ -40,13 +42,13 @@ class PostFilesController < ApplicationController
           if params.include?('auth_token')
             render :json => {:result => 1}, :status => :created
           else
-            redirect_to(discussion_posts_path(post.discussion), :notice => t(:updated, :scope => [:posts, :update]))
+            render partial: 'posts/file_post', locals:{ post: post, files: post.files, editable: editable, can_interact: can_interact}
           end
         else
           if params.include?('auth_token')
             render :json => {:result => 0}, :status => :unprocessable_entity
           else
-            redirect_to(discussion_posts_path(post.discussion), :alert => t(:not_updated, :scope => [:posts, :update]))
+            render_json_error(error, 'posts.error.new') 
           end
         end
       }
@@ -60,7 +62,6 @@ class PostFilesController < ApplicationController
     begin
       @post_file.delete
       File.delete(@post_file.attachment.path) if File.exist?(@post_file.attachment.path)
-
       LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: get_remote_ip, description: "post_file: #{@post_file.id} - #{@post_file.attachment_file_name}, post: #{@post_file.post.id}") rescue nil
     rescue
       error = true
@@ -68,10 +69,10 @@ class PostFilesController < ApplicationController
 
     respond_to do |format|
       unless error
-        format.html { redirect_to(discussion_posts_path(post.discussion), :notice => t(:updated, :scope => [:posts, :update])) }
+        format.html  { render json: {success: true, notice: t(:updated, :scope => [:posts, :update])}}
         format.json  { render :json => {:result => 1} }
       else
-        format.html { redirect_to(discussion_posts_path(post.discussion), :alert => t(:not_updated, :scope => [:posts, :update])) }
+        format.html  { render json: {success: false, :alert => t(:not_updated, :scope => [:posts, :update])}}
         format.json  { render :json => {:result => 0} }
       end
     end

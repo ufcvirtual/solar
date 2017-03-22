@@ -1,16 +1,56 @@
 :javascript
   function add_another_file(target) {
     var link_id = parseInt($('[id^=post_file_attachment]').last().attr('link_id')) + 1;
-    var element_html = '<input id="post_file_attachment' + link_id + '" link_id="' + link_id + '" name="post_file[attachment' + link_id + ']" type="file">';
+    var element_html = '<input id="post_file_attachment' + link_id + '" link_id="' + link_id + '" name="post_file[attachment' + link_id + ']" type="file" class="focu" aria-label= "#{I18n.t('posts.post.attach_file')}", onchange = "getFileName(this);" >';
+
+    var_name_file_class= '<div class="file"></div>'
     $(target).before(element_html);
-    focus_element(element_html);
+    $(target).before(var_name_file_class);
+
+    setTimeout(function() {
+      $( ".focu" ).focus();
+    }, 100);  
   }
+
+  function getFileName(elem) {
+    var arq = elem.files[0];
+    var nome_arquivo = $(elem).val().split("\\").pop();
+    $(elem).next().text(nome_arquivo + '  (' + "#{I18n.t('post_files.new.attach_size')}"+ humanFileSize(arq.size)+')');
+    setTimeout(function() {
+      $(elem).next().click();
+    }, 100);   
+  }
+
+  function humanFileSize(size){
+    var i = Math.floor( Math.log(size) / Math.log(1024) );
+    return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB'][i];
+  }
+
+  $(function(){
+    $(".save_file").click(function(){
+      var id= 'ul_'+"#{@post.id}";
+      $('form#form_post_new_file').serialize_and_submit({
+        files: true,
+        prepend_to_list: $("#"+id),
+        complement_success: function(){
+          $.fancybox.close();
+          $("#"+id).empty();
+          flash_message("Arquivo enviado com sucesso", "notice");
+          update_tables_with_no_data();
+          setTimeout(function() {
+            $("#"+id).click();
+          }, 100); 
+        }
+      });
+    });
+  });
 
 %h1#lightBoxDialogTitle= t("posts.index.attach_file_title")
 .block_content{style: "padding: 5px;"}
   = form_for([@post, PostFile.new], :html => { :multipart => true, :id => 'form_post_new_file' }) do |f|
-    = f.file_field :attachment1, {:link_id => '1', autofocus: true, id: 'focu'}
+    = f.file_field :attachment1, {:link_id => '1', autofocus: true, class: 'focu', :'aria-label' => t('posts.post.attach_file'), :onchange => "getFileName(this);"}
+    .file
     %a.btn.forum_button_attachment{:href => "#", :onclick => "add_another_file(this);", :style => "float:none"}= t(".attach_another_file")
     .form-actions.right_buttons
-      = button_to_function t(:cancel), "jQuery.fancybox.close()", type: 'button', class: 'btn btn_caution', id: 'btn_cancel_post'
-      %a.UploadFileSubmit.btn.btn_main.forum_button{:href => "#", :onclick => "$('#form_post_new_file').submit(); return false;"}= t(".attach_save")
+      = button_to_function t(:cancel), "jQuery.fancybox.close()", type: 'button', class: 'btn btn_caution', id: 'btn_cancel_post_2'
+      = button_tag t('.attach_save'), class: "btn btn_main save_file", type: :button

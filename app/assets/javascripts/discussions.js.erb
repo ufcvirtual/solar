@@ -110,6 +110,22 @@ function delete_post(button) {
     success: function(data) {
       $('#' + post_id).fadeOut(100, function() {
         $(this).remove();
+        $('.number_post').each(function(index){
+          var indice = index+1;
+          $(this).attr("id", "span_"+indice);
+          parent_id = $(this).html();
+          label = indice+"<%= I18n.t('posts.post.post') %>";
+          display_mode = "#{display_mode}";
+          if(parent_id && $("#"+parent_id).length && display_mode != 'list'){
+            var elemento = $("#"+parent_id).find('.number_post');
+            id_pai = $(elemento).attr('id');
+            label = label +"<%= I18n.t('posts.post.answer_post') %>"+ id_pai+"<%= I18n.t('posts.post.res_post') %>";
+            $(this).attr("aria-label", label);
+          }else{      
+            $(this).attr("aria-label", label);
+          }
+        }); 
+        flash_message("<%= I18n.t('posts.post.remove_post') %>", 'notice');
       });
     },
     error: function(data) {
@@ -155,3 +171,28 @@ function go_to_first_new_post(){
       $(window).scrollTop(new_post.top);
   });
 }
+
+function delete_post_file(button, post_id) {
+  var id      = $(button).data("post");
+  var url     = $(button).data("url");
+  var post_id_ul= 'ul_'+post_id;
+  var n = $( "#"+post_id_ul+" li" ).length;
+
+  if (!confirm("<%= I18n.t(:message_confirm) %>")) return;
+  $.ajax({
+    type: "DELETE",
+    url: url,
+    success: function(data) {
+      $('#' + id).remove();
+      if(n==1)
+        $( "#"+post_id_ul+" h3" ).remove();
+      flash_message("<%= I18n.t('posts.update.updated') %>", 'notice');
+    },
+    error: function(data) {
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    }
+  });
+}
+

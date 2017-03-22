@@ -1229,8 +1229,11 @@ pt_BR:
       grade: '(Nota: %{grade})'
       frequency: '(Frequência: %{wh}hs)'
       download: "Download %{file}, tamanho: %{size}"
-      post: "%{number}ª postagem: "
-      answer_post: "Reposta da %{answer}"
+      post: "ª postagem: "
+      answer_post: "Reposta da "
+      res_post: "ª postagem"
+      remove_attachment: "Remover %{file} %{size}"
+      remove_post: "Postagem removida com suceso"
     create:
       created: "Postagem criada com sucesso"
       not_created: "A postagem não foi criada"
@@ -1252,11 +1255,13 @@ pt_BR:
       evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por post. Deste modo, ao avaliar/informar a frequência de um post, todos os outros posts do aluno terão a mesma nota/carga horária.'
     error:
       children: 'Post possui respostas'
+      new: Não foi possível enviar arquivo.
 
   post_files:
     new:
       attach_save: "Salvar"
       attach_another_file: "Anexar outro arquivo"
+      attach_size: 'Tamanho: '
 
   discussions:
     form:

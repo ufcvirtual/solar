@@ -12,7 +12,6 @@
 :javascript
   $(function(){
     $(".save_file").click(function(){
-      var tbody = $("tbody.public_files");
       $('form#new_public_file').serialize_and_submit({
         files: true,
         prepend_to_list: $('tbody.public_files'),
