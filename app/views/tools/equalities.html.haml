@@ -1,6 +1,8 @@
-- if @equalities.blank?
+- if @equalities.blank? && @equal_to.blank?
   %b= t('scores.info.no_equalities')
-- else
+- elsif @equalities.any?
   %b= t('scores.info.equalities_list')
   - @equalities.each do |tool|
-    %div= (tool.respond_to?(:name) ? tool.name : tool.title)
+    %div= t("activerecord.models.#{tool.class.to_s.tableize.singularize}")+ ': ' + (tool.respond_to?(:name) ? tool.name : tool.title)
+- else
+  =raw t('scores.info.equivalent', name: t("activerecord.models.#{@equal_to.class.to_s.tableize.singularize}")+ ': ' + (@equal_to.respond_to?(:name) ? @equal_to.name : @equal_to.title))

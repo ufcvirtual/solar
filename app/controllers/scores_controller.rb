@@ -302,7 +302,7 @@ class ScoresController < ApplicationController
       when 'ChatRoom'
         render json: { url: user_messages_chat_room_path(tool_id, user_id: params[:user_id]) }
       when 'Webconference'
-        render json: { url: list_access_webconference_path(tool_id, user_id: params[:user_id]) }
+        render json: { url: user_access_webconference_path(tool_id, user_id: params[:user_id]) }
       when 'Discussion'
         render json: { url: user_discussion_posts_path(discussion_id: tool_id, user_id: params[:user_id]) }
       when 'ScheduleEvent'

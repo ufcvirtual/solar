@@ -1063,7 +1063,7 @@ en_US:
       update_grade: Note and successfully added Frequency
       edit: Edit
       new: New
-      info_frequency: "(Maximum: %{wh}Hs)"
+      info_frequency: "(Maximum: %{wh} Hs)"
       frequency: Frequency
       grade: Grade
       evaluation_info: '<b> About evaluation: </b>All grades and frequency here defined are to each student, not for each post. Therefore, by evaluating/seting frequency of a post, all other posts of this student will have the same grade and working hours.'
@@ -1298,7 +1298,6 @@ en_US:
       grade: Grade
       frequency: Frequency
       finish_evaluation: Evaluate
-      evaluation_info: '<b> About evaluation: </b>All grades and frequency here defined are to each student, not for each access. Therefore, by evaluating/seting frequency of an access, all other access of this student will have the same grade and working hours.'
       working_hours: Working hours
       profile: Profile
       summary: Table which content has all access list with profile, name of user, complete name of group, date and time info. As well you can evaluate all access of a student, if you're a teatcher.
@@ -1313,6 +1312,10 @@ en_US:
       remove: Remove recording
     warning:
       blocked: "Your browser has popup permissions blocked. Please allow it."
+    user_access:
+      evaluation_info: '<b> About evaluation: </b>All grades and frequency here defined are to each student, not for each access. Therefore, by evaluating/seting frequency of an access, all other access of this student will have the same grade and working hours.'
+      title: "%{user} access list to webconference %{webconference_name}"
+      no_log: No access to this webconference
   navigation_of: " of "
   navigation_next: "Next >"
   navigation_previous: "< Previous"
@@ -3376,7 +3379,7 @@ en_US:
       true_items: "True item(s): "
       false_items: "False item(s): "
       frequency: Frequency
-      working_hours: 'Working Hours: %{wh}Hs'
+      working_hours: 'Working Hours: %{wh} Hs'
       wh: Working hours
     result_exam:  
       student: 'Student: '

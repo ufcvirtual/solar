@@ -1246,7 +1246,7 @@ pt_BR:
       update_grade: Nota e Frequência adicionadas com sucesso
       edit: Editar
       new: Novo
-      info_frequency: "(Máximo: %{wh}Hs)"
+      info_frequency: "(Máximo: %{wh} Hs)"
       frequency: Frequência
       grade: Nota
       evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por post. Deste modo, ao avaliar/informar a frequência de um post, todos os outros posts do aluno terão a mesma nota/carga horária.'
@@ -1486,7 +1486,6 @@ pt_BR:
       grade: Nota
       frequency: Frequência
       finish_evaluation: Avaliar
-      evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por acesso. Deste modo, ao avaliar/informar a frequência de um acesso, todos os outros acessos do aluno terão a mesma nota/carga horária.'
       working_hours: Carga horária
       profile: Perfil
       summary: Tabela cujo conteúdo contém a lista com todos os acessos à webconferência com perfil, nome, horário e data da pessoa que acessou e o nome completo da turma. Bem como também há a possibilidade de avaliar os acessos de um aluno, no caso de professor.
@@ -1501,6 +1500,11 @@ pt_BR:
       remove: Remover gravação
     warning:
       blocked: 'Seu navegador está com a permissão de popups bloqueada. Favor desbloquear.'
+    user_access:
+      evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por acesso. Deste modo, ao avaliar/informar a frequência de um acesso, todos os outros acessos do aluno terão a mesma nota/carga horária.'
+      title: Lista de acessos de %{user} a webconferêcia %{webconference_name}
+      no_log: Nenhum acesso à esta webconferência
+
 
   navigation_of: " de "
   navigation_next: "Próxima >"
@@ -2739,7 +2743,7 @@ pt_BR:
       update_grade: Nota e Frequência adicionadas com sucesso
       edit: Editar
       new: Novo
-      info_frequency: "Máximo: %{wh}Hs"
+      info_frequency: "Máximo: %{wh} Hs"
       frequency: Frequência
       grade: Nota
       evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por mensagem. Deste modo, ao avaliar/informar a frequência de um acesso, todos as outras mensagens do aluno terão a mesma nota/carga horária.'

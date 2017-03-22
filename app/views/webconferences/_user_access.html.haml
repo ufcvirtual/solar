@@ -1,0 +1,82 @@
+%h1#lightBoxDialogTitle= t('.title', webconference_name: @webconference.title, user: @user.name)
+- if @webconference.on_going?
+  .title-warning= raw t('webconferences.list_access.on_going')
+- elsif !@webconference.over?
+  .title-warning= raw t('webconferences.list_access.not_started')
+- if @evaluate || @frequency
+  .title-warning= raw t('.evaluation_info')
+.webconference_access
+  - unless @logs.empty? || @too_old
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th#profile= t('webconferences.list_access.profile')
+          %th#user= t('webconferences.list_access.user')
+          %th#group= t('webconferences.list_access.group')
+          %th#date= t('webconferences.list_access.date')
+          %th#time= t('webconferences.list_access.time')
+          - if @evaluative
+            %th#grade= t('webconferences.list_access.grade')
+          - if @frequency
+            %th#wh= t('webconferences.list_access.frequency')
+      %tbody
+        - @logs.each_with_index do |log, idx|
+          %tr.lines
+            %td.profile{headers:'profile'}= '(' + log.profile_name + ')'
+            %td.user{headers:'user'}= (@researcher ? t(:hidden_info) : log.user_name)
+            %td{headers:'group'}= AllocationTag.find(log.at_id).info
+            %td{headers:'date'}
+              %date{datetime: l(log.created_at.to_datetime, format: :normal)}= l(log.created_at.to_datetime, format: :normal)
+            %td{headers:'time'}
+              %date{datetime: l(log.created_at.to_datetime, format: :clock_time)}= l(log.created_at.to_datetime, format: :clock_time)
+            - if @evaluative
+              %td.grade{class: "user_#{log.user_id} at_#{log.at_id}", headers:'grade'}
+                - if @can_evaluate || @user.id == current_user.id
+                  = log.try(:grade)
+            -if @frequency
+              %td.frequency{class: "user_#{log.user_id} at_#{log.at_id}", headers:'wh'}
+                - if @can_evaluate || @user.id == current_user.id
+                  = log.try(:wh)
+
+  - else
+    - if @too_old
+      .block_content_text_list.text_none= t('webconferences.list_access.too_old')
+    - else
+      .block_content_text_list.text_none= t('.no_log')
+
+
+  - if (@evaluative || @frequency) && @can_evaluate
+    = simple_form_for :academic_allocation_user, url: evaluate_webconference_path(@webconference), html: { method: :put } do |f|
+      = f.input :user_id, as: :hidden,  input_html: { value: @user.id }
+
+      .form-inputs.block_content
+        .inline
+          - if @evaluative
+            = f.input :grade, as: :numeric, step: 0.01, label: t('webconferences.list_access.grade'), input_html: { value: @acu.try(:grade), min: 0, max: 10}
+          - if @frequency
+            = f.input :working_hours, as: :numeric, label: t('webconferences.list_access.working_hours'), input_html: { value: @acu.try(:working_hours), min: 0, max: @maxwh, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@maxwh )} 
+          = link_to t(:back), list_access_webconference_path(@webconference), class: 'btn back_chat_history'
+          = link_to_function t('webconferences.list_access.finish_evaluation'), 'finish_evaluation(this)', class: 'btn btn_main', onkeydown: 'click_on_keypress(event, this);'
+
+
+:javascript
+  function finish_evaluation(btn){
+    var form = $(btn).parents('form:first');
+    $.put(form.attr('action'), form.serialize(), function(data){
+      flash_message(data.notice, 'notice', 'fancybox-outer');
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert', 'fancybox-outer');
+    });
+  }
+
+  $(function(){
+    $(".back_chat_history").call_fancybox({
+      minWidth: '50%',
+      minHeight: '50%',
+      height: 'auto',
+      closeBtn : true
+    });
+  }); 
+ 

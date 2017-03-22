@@ -176,29 +176,60 @@ class WebconferencesController < ApplicationController
 
   def list_access
     @webconference = Webconference.find(params[:id])
-    begin
       authorize! :list_access, Webconference, { on: at_id = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id), accepts_general_profile: true }
-    rescue
-      raise CanCan::AccessDenied unless params.include?(:user_id) && params[:user_id].to_i == current_user.id
-    end
-
 
     academic_allocations_ids = (@webconference.shared_between_groups ? @webconference.academic_allocations.map(&:id) : @webconference.academic_allocations.where(allocation_tag_id: at_id).first.try(:id))
     ats = AllocationTag.where(id: at_id).map(&:related)
 
-    @logs = @webconference.get_access(academic_allocations_ids, ats, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
+    @logs = @webconference.get_access(academic_allocations_ids, ats, {})
 
     @researcher = current_user.is_researcher?(ats)
     @too_old    = @webconference.initial_time.to_date < Date.parse(YAML::load(File.open('config/webconference.yml'))['participant_log_date']) rescue false
 
     @can_evaluate = can? :evaluate, Webconference, {on: at_id}
     acs = AcademicAllocation.where(id: academic_allocations_ids)
-    @evaluative = acs.where(evaluative: true).size == acs.size
-    @frequency = acs.where(frequency: true).size == acs.size
+    @evaluative = (acs.where(evaluative: true).size == acs.size)
+    @frequency = (acs.where(frequency: true).size == acs.size)
 
-    AcademicAllocationUser.set_new_after_evaluation(at_id, @webconference.id, 'Webconference', params.include?(:user_id) ? params[:user_id] : @logs.map(&:user_id).uniq, nil, false)
+    AcademicAllocationUser.set_new_after_evaluation(at_id, @webconference.id, 'Webconference', @logs.map(&:user_id).uniq, nil, false)
 
     render partial: 'list_access'
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+  rescue => error
+    render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
+  end
+
+  def user_access
+    @webconference = Webconference.find(params[:id])
+    begin
+      authorize! :list_access, Webconference, { on: at_id = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id), accepts_general_profile: true }
+    rescue
+      raise CanCan::AccessDenied unless params.include?(:user_id) && params[:user_id].to_i == current_user.id
+    end
+
+    academic_allocations_ids = (@webconference.shared_between_groups ? @webconference.academic_allocations.map(&:id) : @webconference.academic_allocations.where(allocation_tag_id: at_id).first.try(:id))
+    ats = AllocationTag.where(id: at_id).map(&:related)
+
+    @logs = @webconference.get_access(academic_allocations_ids, ats, {user_id: params[:user_id]})
+    @user = User.find(params[:user_id])
+
+    @researcher = current_user.is_researcher?(ats)
+    @too_old    = @webconference.initial_time.to_date < Date.parse(YAML::load(File.open('config/webconference.yml'))['participant_log_date']) rescue false
+
+    @can_evaluate = can? :evaluate, Webconference, {on: at_id}
+    acs = AcademicAllocation.where(id: academic_allocations_ids)
+    @evaluative = (acs.where(evaluative: true).size == acs.size)
+    @frequency = (acs.where(frequency: true).size == acs.size)
+
+    ac = acs.where(allocation_tag_id: at_id).first
+
+    @acu = AcademicAllocationUser.find_one(ac.id, params[:user_id],nil, false, @can_evaluate)
+
+
+    @maxwh = acs.first.max_working_hours
+
+    render partial: 'user_access'
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
   rescue => error
