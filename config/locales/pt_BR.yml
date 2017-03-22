@@ -556,7 +556,7 @@ pt_BR:
   dont_destroy_with_many_allocations: "Possui associações com outros usuários"
   dont_destroy_with_content: "Possui conteúdo"
   item_search_no_found: "Nenhum item encontrado"
-  high_contrast_link: "Alto Contraste"
+  high_contrast_link: "Contraste"
   remove_high_contrast_link: "Remover Alto Contraste"
 
   #Página de Login
