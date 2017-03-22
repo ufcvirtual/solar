@@ -21,7 +21,7 @@ class AssignmentWebconference < ActiveRecord::Base
   validate :verify_assignment_time, if: '(!duration.nil? && !initial_time.nil?) && (duration_changed? || initial_time_changed? || new_record?) && merge.nil?'
 
   validates :academic_allocation_user_id, presence: true
-  
+
   default_scope order: 'updated_at DESC'
 
   after_save :update_acu
@@ -111,6 +111,7 @@ class AssignmentWebconference < ActiveRecord::Base
     time_webconference = initial_time + duration * 60
 
     errors.add(:initial_time, I18n.t('assignments.error.not_range_webconference')) unless (initial_time.between?(startt,endt) && time_webconference.between?(startt,endt))
+    errors.add(:initial_time,  I18n.t('assignments.error.invalid_datetime')) if !(initial_time.blank?) && (initial_time < Date.current)
   end
 
   private
@@ -119,9 +120,9 @@ class AssignmentWebconference < ActiveRecord::Base
       unless academic_allocation_user_id.blank?
         if (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?)
           if (academic_allocation_user.assignment_files.empty? && academic_allocation_user.assignment_webconferences.where(final: true).empty?)
-            academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty] 
+            academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty]
           else
-            academic_allocation_user.status = AcademicAllocationUser::STATUS[:sent] 
+            academic_allocation_user.status = AcademicAllocationUser::STATUS[:sent]
           end
         else
           academic_allocation_user.new_after_evaluation = true

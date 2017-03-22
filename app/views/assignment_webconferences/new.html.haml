@@ -5,9 +5,10 @@
     $('form#awebconference_form').serialize_and_submit({
       prepend_to_list: $(".student_webconferences tbody"),
       complement_success: function(data){
-        flash_message("#{t('assignment_webconferences.success.created')}", "notice", 'block_wrapper:first');
+        setTimeout(function() {
+          flash_message("#{I18n.t('assignment_webconferences.success.created')}", "notice", 'block_wrapper:first');
+        }, 100);
         update_tables_with_no_data();
       }
     });
   }
-

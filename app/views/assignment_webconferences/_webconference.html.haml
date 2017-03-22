@@ -18,7 +18,7 @@
 
   %td.center{headers: "final_web" }
     - if @own_assignment
-      = link_to (image_tag "#{webconference.final? ? 'released' : 'rejected'}.png"), change_status_assignment_webconference_path(webconference), remote: true, method: :put, class: 'change_lesson_status', :'data-tooltip' => (webconference.final ? t('.aw_yes') : t('.aw_no'))
+      = link_to (image_tag "#{webconference.final? ? 'released' : 'rejected'}.png", :'aria-hidden' => 'true'), change_status_assignment_webconference_path(webconference), remote: true, method: :put, class: 'change_lesson_status', :'data-tooltip' => (webconference.final ? t('.aw_yes') : t('.aw_no')), :'aria-label' => (webconference.final ? t('assignment_webconferences.webconference.final', webconference: webconference.title) :  t('assignment_webconferences.webconference.not_final', webconference: webconference.title))
     - else
       = (webconference.final ? t('.aw_yes') : t('.aw_no'))
   - if @own_assignment
