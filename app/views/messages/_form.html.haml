@@ -157,4 +157,12 @@
 
     });
   });
-
+  
+  function open_contacts_selection(link){
+    var url = $(link).data('url').replace('reply_params', $("#message_contacts").val().replace( /\s/g, ""));
+    console.log(url);
+    $(link).call_fancybox({
+      href: url,
+      open: true
+    });
+  }
