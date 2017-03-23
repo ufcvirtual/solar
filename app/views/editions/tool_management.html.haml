@@ -69,8 +69,9 @@
     }
   }
 
-  function check_checkbox(object){
-    $('input', $(object)).last().click();
+  function check_checkbox(event, object){
+    if(event.target.tagName == 'TD')
+      $('input', $(object)).last().click();
   }
 
   function manage_tools(button){
