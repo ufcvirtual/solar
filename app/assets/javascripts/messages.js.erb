@@ -52,13 +52,4 @@ function change_messages_view(view){
     focus_element($('table'));
   else
     focus_element($('.text_none.empty_message'));
-}
-
-function open_contacts_selection(link){
-  var url = $(link).data('url').replace('reply_params', $("#message_contacts").val());
-  $(link).call_fancybox({
-    href: url,
-    open: true
-  });
-}
-    
+}  
