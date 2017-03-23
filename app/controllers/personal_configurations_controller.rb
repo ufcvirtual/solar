@@ -18,16 +18,13 @@ class PersonalConfigurationsController < ApplicationController
   end
 
   def update_theme
-    Rails.logger.info "\n\n#{user_session[:theme]}\n\n"
     personal_configuration = PersonalConfiguration.find_by_user_id(current_user.id)
     unless user_session[:theme].blank? || !['blue','high_contrast'].include?(user_session[:theme])
-      Rails.logger.info "\n\nentrou na condição\n\n"
       if user_session[:theme] == 'blue'
         user_session[:theme] = 'high_contrast'
       elsif user_session[:theme] == 'high_contrast'
         user_session[:theme] = 'blue'
       end
-      Rails.logger.info "\n\n#{user_session[:theme]}\n\n\n"
       personal_configuration.update_attribute(:theme, "#{user_session[:theme]}")
       render json: {success: true, theme: "#{user_session[:theme]}"}
     end
