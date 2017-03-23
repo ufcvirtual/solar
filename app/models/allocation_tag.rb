@@ -210,7 +210,7 @@ class AllocationTag < ActiveRecord::Base
     
     relations << <<-SQL
       LEFT JOIN allocations ON users.id    = allocations.user_id
-      LEFT JOIN allocations grades ON users.id    = grades.user_id AND grades.final_grade IS NOT NULL
+      LEFT JOIN allocations grades ON users.id    = grades.user_id AND grades.final_grade IS NOT NULL AND grades.allocation_tag_id IN (#{ats})
       LEFT JOIN profiles    ON profiles.id = allocations.profile_id
       LEFT JOIN public_files ON public_files.user_id = users.id AND public_files.allocation_tag_id IN (#{ats})
     SQL
