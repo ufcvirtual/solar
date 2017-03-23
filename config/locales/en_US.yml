@@ -2972,6 +2972,7 @@ en_US:
       curriculum_unit_working_hours: '(Curriculum Unit working hours: %{wh}w/h)'
       new_after_evaluation: Chages was made at the sent content after evaluation
       print_pdf: Print PDF
+      select_group: Select group
     info:
       assignments: Assignments
       date_range: Date range
@@ -3041,6 +3042,27 @@ en_US:
       shortcut_discussion: "[D] "
       shortcut_assignment: "[A] "
       shortcut: Shortcut
+      list_all_evaluative: List all evaluatives'
+      list_all_frequency: Listar all frequencies'
+      list_all_not_evaluative: Listar all not evaluatives'
+      list_assignments_evaluative: Listar evaluatives assignments'
+      list_assignments_frequency: Listar assignments of frequency'
+      list_assignments_not_evaluative: List assignments not evaluatives'
+      list_chats_evaluative: List evaluatives chats'
+      list_chats_frequency: List frequency chats'
+      list_chats_not_evaluative: List not evaluatives chats'
+      list_discussion_evaluative: Lista evaluative discussions'
+      list_discussion_frequency: List discussion of frequency'
+      list_discussion_not_evaluative: List not evaluatives discussions'
+      list_exams_evaluative: List evaluatives exams'
+      list_exams_frequency: List frequency exams'
+      list_exams_not_evaluative: List not evaluative exams'
+      list_schedule_evaluative: List schedule evaluatives'
+      list_schedule_frequency: List schedule of frequency'
+      list_schedule_not_evaluative: List not evaluative schedules'
+      list_web_conference_evaluative: List evaluative web conference'
+      list_web_conference_frequency: List web conference of frequency'
+      list_web_conference_not_evaluative: List not evaluative web conference'
     situation:
       not_started: Not started
       to_answer: To answer
