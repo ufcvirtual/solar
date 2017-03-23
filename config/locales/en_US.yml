@@ -3043,10 +3043,10 @@ en_US:
       shortcut_assignment: "[A] "
       shortcut: Shortcut
       list_all_evaluative: List all evaluatives'
-      list_all_frequency: Listar all frequencies'
-      list_all_not_evaluative: Listar all not evaluatives'
-      list_assignments_evaluative: Listar evaluatives assignments'
-      list_assignments_frequency: Listar assignments of frequency'
+      list_all_frequency: List all frequencies'
+      list_all_not_evaluative: List all not evaluatives'
+      list_assignments_evaluative: List evaluatives assignments'
+      list_assignments_frequency: List assignments of frequency'
       list_assignments_not_evaluative: List assignments not evaluatives'
       list_chats_evaluative: List evaluatives chats'
       list_chats_frequency: List frequency chats'
