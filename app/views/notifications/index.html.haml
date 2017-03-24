@@ -1,20 +1,19 @@
 %ul.notifications.tb_list{ "data-notifications-count" => @notifications.count }
   - @notifications.each_with_index do |notification, idx|
     - tr_class = notification.read ? "read" : "unread"
-    %li.lines
-      %a{ href: '#', id: notification.id, class: tr_class, "data-link-show" => notification_path(notification), "data-notification-idx" => idx }
+    %li.lines{class: tr_class, id: notification.id}
+      %a{ href: '#', "data-link-show" => notification_path(notification), "data-notification-idx" => idx }
         .title= sanitize truncate(notification.title, length: 150)
         .description= sanitize truncate(notification.description, length: 200)
         %span.visuallyhidden= t('fancybox.open')
 
 :javascript
   $(function(){
-    $('.unread').bind("keypress click", function(){
-      $(this).removeClass("unread").addClass("read");
+    $('li.unread a').bind("keypress click", function(){
+      $(this).parent().removeClass("unread").addClass("read");
       $(this).call_fancybox({href : $(this).data('link-show'), open: true});
     });
-    $('.read').bind("keypress click", function(){
-      $(this).removeClass("unread").addClass("read");
+    $('li.read a').bind("keypress click", function(){
       $(this).call_fancybox({href : $(this).data('link-show'), open: true});
     });
     

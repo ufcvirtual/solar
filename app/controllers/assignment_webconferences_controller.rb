@@ -15,7 +15,7 @@ class AssignmentWebconferencesController < ApplicationController
 
   def new
     group = GroupAssignment.by_user_id(current_user.id, @ac.id)
-    academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], current_user.id, group.try(:id), true)
+    academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], current_user.id, group.try(:id), true, nil)
     @assignment_webconference = AssignmentWebconference.new academic_allocation_user_id: academic_allocation_user.id
   end
 

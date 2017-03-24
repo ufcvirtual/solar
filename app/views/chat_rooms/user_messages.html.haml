@@ -15,21 +15,21 @@
             %td.profile= sanitize message.text
             %td.center= l(message.created_at.to_datetime, format: :normal)
             %td.center= l(message.created_at.to_datetime, format: :clock_time)
-
-    - if @academic_allocation.evaluative || @academic_allocation.frequency
-      = simple_form_for :academic_allocation_user, url: evaluate_chat_room_path(@chat_room), html: { method: :put, id: 'academic_allocation_user_grade_form' } do |f|
-        = f.input :user_id, as: :hidden, input_html: { value: @user.id }
-      
-        .form-inputs.block_content
-          .inline
-            = f.input :grade, required: true, as: :float, :step => 0.01, label: t(".grade"), input_html: { value: @acu.try(:grade), min:0, max:10 } if @evaluative
-            = f.input :working_hours, required: true, as: :float, label: t(".frequency"), input_html: { value: @acu.try(:working_hours), min:0, max: @academic_allocation.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@academic_allocation.max_working_hours.to_s ) } if @academic_allocation.frequency  
-            
-            = link_to t(:back), messages_chat_room_path(@chat_room), class: 'btn back_chat_history'
-            = link_to_function t(:save), 'finish_evaluation(this)', class: 'btn btn_main'
-
   - else
     .block_content_text_list.text_none= t(".no_posts")
+
+  - if @evaluative || @frequency
+    = simple_form_for :academic_allocation_user, url: evaluate_chat_room_path(@chat_room), html: { method: :put, id: 'academic_allocation_user_grade_form' } do |f|
+      = f.input :user_id, as: :hidden, input_html: { value: @user.id }
+    
+      .form-inputs.block_content
+        .inline
+          = f.input :grade, required: true, as: :float, :step => 0.01, label: t(".grade"), input_html: { value: @acu.try(:grade), min:0, max:10 } if @academic_allocation.evaluative
+          = f.input :working_hours, required: true, as: :float, label: t(".frequency"), input_html: { value: @acu.try(:working_hours), min:0, max: @academic_allocation.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@academic_allocation.max_working_hours.to_s ) } if @academic_allocation.frequency
+          
+          = link_to t(:back), messages_chat_room_path(@chat_room), class: 'btn back_chat_history'
+          = link_to_function t(:save), 'finish_evaluation(this)', class: 'btn btn_main'
+
 
 :javascript
   function finish_evaluation(btn){

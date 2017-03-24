@@ -77,7 +77,7 @@ class AcademicAllocation < ActiveRecord::Base
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.single_equivalent')) if AcademicAllocation.where(equivalent_academic_allocation_id: equivalent_academic_allocation_id).where('id != :id', { id: id }).any? && (academic_tool_type != 'ChatRoom' || ChatRoom.where(id: [academic_tool_id, eq_ac.academic_tool_id]).map(&:chat_type).include?(0))
 
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.nested')) if AcademicAllocation.where(equivalent_academic_allocation_id: id).any? && !equivalent_academic_allocation_id.nil?
-    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.same_type')) if academic_tool_type != eq_ac.academic_tool_type
+    # errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.same_type')) if academic_tool_type != eq_ac.academic_tool_type
 
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.eq_evaluative')) if evaluative != eq_ac.try(:evaluative)
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.eq_frequency')) if frequency != eq_ac.try(:frequency)
@@ -118,6 +118,14 @@ class AcademicAllocation < ActiveRecord::Base
   def tool_name
     tool = academic_tool_type.constantize.find(academic_tool_id)
     tool.respond_to?(:name) ? tool.name : tool.title
+  end
+
+  def tool_type_name
+    tool = academic_tool_type.constantize.find(academic_tool_id)
+
+
+
+    [I18n.t("activerecord.models.#{academic_tool_type.tableize.singularize}"), tool.respond_to?(:name) ? tool.name : tool.title].join(': ')
   end
 
   def verify_evaluative
@@ -162,7 +170,7 @@ class AcademicAllocation < ActiveRecord::Base
     ## datas da atividade devem estar no intervalo de datas da oferta
     def verify_assignment_offer_date_range
       if allocation_tag.group && academic_tool.schedule.end_date.to_date > (offer_end_date = allocation_tag.group.offer.end_date)
-        message = I18n.t('assignment.notifications.final_date_smaller_than_offer', end_date_offer: I18n.l(offer_end_date)).to_s
+        message = I18n.t('assignments.notifications.final_date_smaller_than_offer', end_date_offer: I18n.l(offer_end_date)).to_s
         errors.add(:base, message)
         raise "academic_allocation #{message}"
       end

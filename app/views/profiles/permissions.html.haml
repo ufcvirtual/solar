@@ -5,8 +5,8 @@
       = @profile.name
     .block_toolbar_right
       = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin'), "profile_permission_back()", "data-tooltip" => t(:back), class: "btn"
-  .block_content_toolbar
-    = label "permission", "search", t(".filter"), class: "permissions-search-text"
+  .block_content_toolbar#search_box_accesskey
+    = label "permission", "search", t(".filter"), class: "permissions-search-text search_box_focus"
     = text_field_tag "permission_search"
     .block_toolbar_right
       = link_to_function content_tag(:i, nil, class: 'icon-edit'), "profile_permission_enable_edition()", "data-tooltip" => t(".edit"), class: "btn edit-enable"

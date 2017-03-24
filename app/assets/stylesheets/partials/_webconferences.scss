@@ -19,6 +19,15 @@ form{
   }
 }
 
+.title-warning{
+  p:last-of-type{
+    margin-bottom: 0;
+  }
+  p:first-of-type{
+    margin-top: 3px;
+  }
+}
+
 table.webconferences{
   thead{
     tr.lines{

@@ -1,8 +1,11 @@
 .show_notification
   #lightBoxDialogTitle
     %h1= @notification.title
-    = link_to_function content_tag(:i, nil, class: 'icon-arrow-right-thin'), 'next_notification()', class: 'next'
-    = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin'), 'prev_notification()', class: 'prev'
+    - if @size_notification > 1
+      - if @veri_last==false
+        = link_to_function content_tag(:i, nil, class: 'icon-arrow-right-thin', :'aria-hidden'=>'true'), 'next_notification()', class: 'next', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('.next')
+      - if @veri_first==false
+        = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin', :'aria-hidden'=>'true'), 'prev_notification()', class: 'prev', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('.prev')
 
   .title-warning
     = @allocation_tag.no_group_info
@@ -13,7 +16,7 @@
         .equivalent
           %a{ href: '#', :"data-dropdown" => "#dropdown" }
             = t('.count_groups', count: @groups.size)
-            %i.icon-arrow-down-triangle
+            %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
           .dropdown.dropdown-tip{id: "dropdown"}
             %ul{ class: 'dropdown-menu' }  
               - @groups.each do |code|
@@ -30,21 +33,21 @@
 
 :javascript
   function load_fancy(id) {
-    $("table.notifications tr[id=" + id + "]").removeClass("unread").addClass("read").call_fancybox({href: "#{notification_path(':id')}".replace(':id', id), open: true});
+    $("ul.notifications li[id=" + id + "]").removeClass("unread").addClass("read").call_fancybox({href: "#{notification_path(':id')}".replace(':id', id), open: true});
   }
 
   function next_notification() {
-    load_fancy($("table.notifications tr[id=#{@notification.id}]").next().attr("id"));
+    load_fancy($("ul.notifications li[id=#{@notification.id}]").next().attr("id"));
   }
 
   function prev_notification() {
-    load_fancy($("table.notifications tr[id=#{@notification.id}]").prev().attr("id"));
+    load_fancy($("ul.notifications li[id=#{@notification.id}]").prev().attr("id"));
   }
 
   $(function(){
-    var notification_idx = parseInt($("table.notifications tr[id=#{@notification.id}]").data("notification-idx"));
+    var notification_idx = parseInt($("ul.notifications li[id=#{@notification.id}]").data("notification-idx"));
     var first = (notification_idx == 0);
-    var last = (notification_idx + 1) == parseInt($("table.notifications").data("notifications-count"));
+    var last = (notification_idx + 1) == parseInt($("ul.notifications").data("notifications-count"));
 
     if (first)
       $(".prev").hide();

@@ -4,8 +4,6 @@
 - files    = post.files
 - evaluate = @can_evaluate || ((post.user_id == current_user.id) && @academic_allocation.try(:evaluative))
 - frequency = @can_evaluate || ((post.user_id == current_user.id) && @academic_allocation.try(:frequency))
-- @count +=1 unless can_post==true
-- @hash[post.id] = t('.post', number: @count) unless @display_mode == 'list' or can_post==true
 %table.forum_post{ border: '0', cellpadding: '0', cellspacing: '0', id: "#{post.id}" }
   %tr
     %td.forum_post_icon{ rowspan: 3, class: new_post_class }
@@ -31,25 +29,13 @@
     %td.forum_post_content{ colspan: 2 }
       .forum_post_wrapper{ class: new_post_class }
         .forum_post_inner_content
-          %span{ :'aria-label' => t('.post', number: @count) }
-          - unless post.parent_id.nil? or @display_mode == 'list' or can_post==true
-            %span{ :'aria-label' => t('.answer_post', answer: @hash[post.parent_id].to_s)}
+          %span.hide.number_post=post.parent_id
           = sanitize post.content
+          
+        .forum_post_attachment{id: "ul_#{post.id}"}
+          - if files.any?
+            = render partial: 'file_post', locals: { post: post, files: files, editable: editable, can_interact: can_interact}
 
-        - if files.any?
-          .forum_post_attachment
-            %h3= t('.file_list')
-            %ul.forum_post_attachment_list
-              - files.each do |file|
-                - size = format('%.2f KB', file.attachment_file_size.to_i/1024.0)
-                - mimetype_icon  = image_tag( icon_attachment(file.attachment_file_name) )
-                - link_to_down   = (link_to file.attachment_file_name, download_post_post_file_path(post, file), :'aria-label'=> t('.download', file: file.attachment_file_name, size: size))
-
-                - link_to_remove = (editable && can_interact) ? (link_to (content_tag(:i, nil, class: 'icon-cross-circle warning')), post_post_file_path(post, file), confirm: t(".remove_file_confirm"), method: :delete, :'data-tooltip' => t('.remove_file'), :'aria-label'=> t('.remove_file'), class: 'nodecoration') : ''
-                %li
-                  = raw "#{mimetype_icon}&nbsp;&nbsp;#{link_to_down}&nbsp;&nbsp;#{link_to_remove}"
-                  - if file.attachment_content_type.index('audio') || file.attachment_file_name.last(4).eql?('.aac') || file.attachment_file_name.last(4).eql?('.m4a') || file.attachment_content_type.index('video') || file.attachment_file_name.last(4).eql?('.mp4') || file.attachment_file_name.last(4).eql?('.m4v')
-                    .media{id: "media-#{file.id}", :'data-type' => file.attachment_file_name.split(".").last, :'data-source'=> download_post_post_file_url(post, file)}
         .forum_post_buttons
           .btn-group
             %ul
@@ -88,4 +74,21 @@
     height: 'auto',
     closeBtn : true
   });
-  
+
+  $('.number_post').each(function(index){
+    var indice = index+1;
+    $(this).attr("id", "span_"+ indice);
+    parent_id = $(this).html();
+    label = indice+"#{t('.post')}";
+    display_mode = "#{display_mode}";
+    if(parent_id && $("#"+parent_id).length && display_mode != 'list'){
+      var elemento = $("#"+parent_id).find('.number_post');
+      id_pai = $(elemento).attr('id');
+      var id_pai = id_pai.replace(/[^0-9]/g,'');
+      id_pai = parseInt(id_pai);
+      label = label +"#{t('.answer_post')}"+ id_pai+"#{t('.res_post')}";
+      $(this).attr("aria-label", label);
+    }else{      
+      $(this).attr("aria-label", label);
+    }
+  }); 

@@ -34,4 +34,4 @@
 - if !@users.blank? && !@acs.empty?
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), not_evaluative_scores_path(page: @users.next_page, type: score_type), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items) if @users.next_page             
 
-                  
+= javascript_include_tag 'tooltip'

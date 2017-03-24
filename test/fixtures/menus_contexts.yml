@@ -202,3 +202,7 @@ edition_content:
 edition_repositories:
   menu_id: 133
   context_id: 1
+
+edition_content_uc:
+  menu_id: 132
+  context_id: 2

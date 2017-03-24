@@ -22,7 +22,7 @@ class Score # < ActiveRecord::Base
       "WHEN academic_allocation_users.grade IS NOT NULL OR academic_allocation_users.working_hours IS NOT NULL THEN 'evaluated'"
     end
 
-    sent_status = if frequency
+    sent_status = if frequency || evaluative
       'academic_allocation_users.status = 1 OR (academic_allocation_users.status = 2 AND (academic_allocation_users.working_hours IS NULL OR academic_allocation_users.grade IS NULL))'
     else
       'academic_allocation_users.status = 1'
@@ -46,7 +46,7 @@ class Score # < ActiveRecord::Base
       "WHEN academic_allocation_users.grade IS NOT NULL THEN 'evaluated'"
     end
 
-    sent_status = if type_score == 'frequency'
+    sent_status = if type_score == 'frequency' || type_score == 'evaluative'
       'academic_allocation_users.status = 1 OR (academic_allocation_users.status = 2 AND (academic_allocation_users.working_hours IS NULL OR academic_allocation_users.grade IS NULL))'
     else
       'academic_allocation_users.status = 1'
@@ -75,7 +75,7 @@ class Score # < ActiveRecord::Base
       CASE
         #{evaluated_status}
         WHEN assignments.id IS NOT NULL AND assignments.type_assignment = #{Assignment_Type_Group} AND gp.id IS NULL THEN 'without_group'
-        WHEN schedules.start_date  > current_date THEN 'not_started'
+        WHEN (current_date < schedules.start_date AND (assignments.start_hour IS NULL OR assignments.start_hour = '')) OR (current_date = schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.start_hour != '' AND current_time<to_timestamp(assignments.start_hour, 'HH24:MI:SS')::time)) OR (current_date < schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.start_hour != '')) then 'not_started'
         WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Assignment' AND (af.id IS NOT NULL OR (aw.id IS NOT NULL AND aw.final = 't' ))))) THEN 'sent'
         WHEN schedules.end_date >= current_date THEN 'to_send'
         ELSE 
@@ -228,7 +228,7 @@ class Score # < ActiveRecord::Base
         #{evaluated_status}
         WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
         WHEN webconferences.initial_time > now() THEN 'not_started'
-        WHEN webconferences.initial_time + (interval '1 hours')*webconferences.duration > now() THEN 'to_send'
+        WHEN webconferences.initial_time + (interval '1 min')*webconferences.duration > now() THEN 'to_send'
         ELSE 
           'not_sent'
         END AS situation

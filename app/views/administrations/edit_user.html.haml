@@ -2,7 +2,7 @@
 %td= @user.integrated? ? @user.email : text_field_tag("email", @user.email, required: true)
 %td= @user.integrated? ? @user.username : text_field_tag("username", @user.username, required: true)
 %td= (@user.integrated? || !@user_admin) ? @user.cpf : text_field_tag("cpf", @user.cpf, required: true)
-%td= @user_admin ? select(:status, :id, user_status.invert.to_a, {selected: @user.active? ? 1 : 0}) : user_status[@user.active? ? 1 : 0]
+%td= @user_admin ? select(:status, :id, user_status.invert.to_a, {selected: @user.active? ? 1 : 0}) : select(:status, :id, user_status.invert.to_a, {selected: @user.active? ? 1 : 0}, disabled: true)
 %td{style: 'text-align:right'}
   .btn-group
     = link_to_function content_tag(:i, nil, class: 'icon-cross'), "cancel(this)", :"show-link" => admin_user_path(@user.id), class: "btn btn_caution btn_manage_cancel"

@@ -42,7 +42,8 @@
               - if i.object.item_audio_file_name.blank?
                 %audio{ src: '' }
               - else
-                = audio_tag(i.object.item_audio.as_json, autoplay: false, controls: true)
+                %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion'}   
+                  %p= t("errors.messages.audio")
               = i.input :item_audio, as: :file, label: false
               - if i.object.item_audio_file_name
                 = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_audio_item(this)', :'data-url' => remove_audio_item_exam_question_path(i.object, exam_question_id: @exam_question.id)

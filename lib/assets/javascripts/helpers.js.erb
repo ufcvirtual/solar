@@ -37,7 +37,7 @@ function mysolarTopSubmenuHelpToggle(){
 function flash_message(msg, css_class, div_to_show, onclick_function) {
   var div_to_show = (typeof div_to_show == "undefined" || div_to_show == '') ? $(".flash_message_wrapper:last") : $("." + div_to_show);
   if(!div_to_show.length)
-    div_to_show = $(".flash_message_wrapper:last")    
+    div_to_show = $(".flash_message_wrapper:last")
 
   if(typeof div_to_show == "undefined"){
     div_to_show = $(".flash_message_wrapper");
@@ -54,7 +54,7 @@ function flash_message(msg, css_class, div_to_show, onclick_function) {
     div_to_show.prepend($(html));
     $("#flash_message").closest(".sticky-wrapper").css("height","40px").css("width", "auto");
     $("#flash_message").effect("highlight","slow");
-    
+
     $('#flash_message').prop('tabindex', 0);
     $('#flash_message').focus();
   }
@@ -140,17 +140,17 @@ $.fn.call_fancybox = function (options) {
   *   como janela modal, o usuário só vai poder fechar o fancybox ao clicar no botão de "cancelar"
   **/
 
-  $.extend( options, 
-    { 
-      live: false, 
-      modal: false, 
-      helpers: { 
-        overlay: { 
-          locked: false, 
+  $.extend( options,
+    {
+      live: false,
+      modal: false,
+      helpers: {
+        overlay: {
+          locked: false,
           closeClick: false
-        }, 
-        autoDimensions: true, 
-        width: '100px' 
+        },
+        autoDimensions: true,
+        width: '100px'
       },
       afterShow:  function(event){
         add_description_to_close_fancybox_btn();
@@ -203,7 +203,7 @@ $.fn.call_fancybox = function (options) {
 function add_description_to_close_fancybox_btn(text){
   if(text ==undefined)
     var text = $('.fancybox-inner h2, .fancybox-inner h1').first().text()
-  
+
   var close_txt = ("<%=I18n.t('fancybox.close')%> " + text);
   $("a.fancybox-close").prop("title", close_txt);
   $("a.fancybox-close").prop("aria-label", close_txt);
@@ -318,7 +318,7 @@ function save_values_ckeditor(blank_message){
   }
 }
 
-function open_dropdown(link){ 
+function open_dropdown(link){
   $.get($(link).data('url'), function(data){
     $($(link).data('dropdown')).find('ul').html(data);
   });
@@ -351,4 +351,14 @@ function click_on_keypress(event, element){
     $(element).trigger('click');
   // $(element).click();
   return false;
+}
+
+function mysolarAccessibilitySubmenuToggle(){
+  var left = $("#accessibility_top").offset().left;
+  var origin = $("#mysolar_topbar").offset().left;
+  left -= origin;
+  $("#mysolar_accessibility_submenu").css('left', left);
+  $("#mysolar_accessibility_submenu").slideToggle(150);
+  $('#accessibility_top_menu').toggleClass('mysolar_top_submenu_label_selected');
+  $('#accessibility_top_menu').toggleClass('mysolar_top_submenu_label_regular');
 }

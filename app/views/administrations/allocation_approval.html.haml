@@ -1,10 +1,10 @@
 .block_wrapper.allocation_requested_list
   .title-warning= t(".page_info", url: link_to(t(".user_indication").html_safe, "/administrations/indication_users_specific")).html_safe
   .block_title{style: "height:0"}
-  .block_content_toolbar
+  .block_content_toolbar#search_box_accesskey
     .block_toolbar_left
       = select_tag "type_search", options_for_select(@types, @type_search)
-      = text_field_tag "text_search", @text_search
+      = text_field_tag "text_search", @text_search, class: "search_box_focus"
       = button_tag t(:search, scope: [:administrations, :users]), type: :button, class: "btn btn_default", id: "search_allocation", :"data-link" => search_allocation_administrations_path
   .block_content
     - unless @allocations.empty?

@@ -22,6 +22,7 @@ module MenuHelper
       singles: [],
       parents: {}
     }
+
     menus.each_with_index do |menu, idx|
       contexts = menu.contexts.pluck(:id)
       menu_item_link = link_to(t(menu.name), url_for({controller: "/#{menu.resource.controller}", action: menu.resource.action,

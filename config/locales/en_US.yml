@@ -13,6 +13,7 @@ en_US:
       day_and_month: "%d/%b"
       bibliography: "%d %b, %Y"
       mask: "99/99/9999"
+      mask_with_time: "99/99/9999 99:99"
       normal: "%d/%m/%Y"
     day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
     abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
@@ -131,6 +132,17 @@ en_US:
   support:
     array:
       words_connector: ","
+
+  errors:
+    messages:
+      not_saved: ""
+      audio: "It is because your browser does not support the audio element."
+      audio_aborted: 'You aborted the audio playback.'
+      audio_network: 'A network error caused the audio download to fail.'
+      audio_decode: 'The audio playback was aborted due to a corruption problem or because the audio used features your browser did not support.'
+      audio_not_supported: 'The audio not be loaded, either because the server or network failed or because the format is not supported.'
+      audio_others: 'An unknown error occurred.'
+
   activerecord:
     models:
       course: Course
@@ -277,15 +289,16 @@ en_US:
         legend: Legend
         img_alt: Alt
       question_audios:
-        audio: Audio  
+        audio: Audio
         description: Legend
         audio_description: Audio Description
+        audio_file_size: ''
       question_image:
         image: Image
         legend: Legend
         img_alt: Alt
       question_audio:
-        audio: Audio  
+        audio: Audio
         description: Legend
         audio_description: Audio Description
       question_item:
@@ -482,7 +495,7 @@ en_US:
           attributes:
             attachment_content_type:
               invalid_type: invalid
-        
+
   all: "All"
   of: "Of"
   required_fields: "* required field(s)"
@@ -620,9 +633,18 @@ en_US:
   date_name: Date
   help: "Help"
   new_window: This link will open a new window
+  start_menu: "Begin of menu"
+  end_menu: "End of menu"
   tutorials: "Tutorials"
   context: "Contextual"
   contact: Contact us
+  accessibility: "Accessibility"
+  accessibility_menu: "Accessibility bar"
+  main_content: "Skip to the content [1]"
+  menu_aside: "Skip to menu [2]"
+  search_box: "Skip to Search [3]"
+  footer_site: "Skip to the footer [4]"
+  high_contrast_link: "High contrast [5]"
   description: "Description"
   edition: "Edition"
   enrollment: "Enrollment"
@@ -1034,8 +1056,11 @@ en_US:
       grade: '(Grade: %{grade})'
       frequency: '(Frequency: %{wh})'
       download: "Download %{file}, size %{size}"
-      post: "%{number}ª Post: "
-      answer_post: "Answer of %{answer}"
+      post: "ª Post: "
+      answer_post: "Answer of "
+      res_post: "ª post"
+      remove_attachment: Remove %{file} %{size}
+      remove_post: "Post delete success"
     create:
       created: "Post was successfully created"
       not_created: "Post was not created"
@@ -1051,17 +1076,19 @@ en_US:
       update_grade: Note and successfully added Frequency
       edit: Edit
       new: New
-      info_frequency: "(Maximum: %{wh}Hs)"
+      info_frequency: "(Maximum: %{wh} Hs)"
       frequency: Frequency
       grade: Grade
       evaluation_info: '<b> About evaluation: </b>All grades and frequency here defined are to each student, not for each post. Therefore, by evaluating/seting frequency of a post, all other posts of this student will have the same grade and working hours.'
     error:
       children: 'Post has answers'
+      new: It was not possible to send file.
 
   post_files:
     new:
       attach_save: "Save"
       attach_another_file: "Attach another file"
+      attach_size: 'Size: '
   discussions:
     form:
       save: Save
@@ -1179,6 +1206,8 @@ en_US:
       deleted: Notification wasn't deleted.
     show:
       count_groups: "%{count} groups"
+      next: Next notification
+      prev: Previous notification
   webconferences:
     form:
       new: "New Webconference"
@@ -1233,14 +1262,14 @@ en_US:
       not_recorded: "Can't remove record, there are no record to one or more webconferences selected"
       not_ended: "Can't remove record, one or more webconferences still on going"
       record_not_deleted: "Can't remove record from webconferences"
-      limit: "Student's limit for this day and time has been reached. Please choose other date/time or decrease amount of groups if necessary" 
+      limit: "Student's limit for this day and time has been reached. Please choose other date/time or decrease amount of groups if necessary"
       time_and_place: Already exists a webconference for this datetime and groups
       date: This webconference already happened. It's not possible to change it's period.
       access: Can't access this webconference. Verify it's period.
       no_record: This webconference has no recordings
       offline: Unavailable webconference
       still_processing: This webconference's recording is still processing. Please wait.
-      general_message: It was not possible to execute this action. 
+      general_message: It was not possible to execute this action.
       on_going: This webconference hasn't finished yet. Please wait.
       date_range: Assignment's date range already expired.
       shared: This webconference already happened. It's not possible to change this field.
@@ -1268,6 +1297,8 @@ en_US:
       groups: List of groups which webconference %{web} is shared between
       access_web: Access webconference %{web} (will open a new window)
       summary: Table which content has webconference access links, and also information about it such as moderator, group sharing, equivalencies, date and time, working hours, grade, situation, amount of online users and a link to access recordings.
+      accessibility_title: <b>Accessibility (screen reader access)</b>
+      accessibility: "<p> To join the webconference using screen readers, we recommend the latest version of the <strong>Mozilla Firefox</strong> (with the updated flash-player plugin) and the following screen readers: <strong>NVDA or Window-eyes.</strong> </p><p> The load of all the components of the tool takes approximately <strong>10 seconds</strong>. You will hear a 'beep' when everything is ready. </p>"
     list_access:
       no_log: No participant accessed this webconference
       too_old: This webconference happened before the access start to be saved
@@ -1282,7 +1313,6 @@ en_US:
       grade: Grade
       frequency: Frequency
       finish_evaluation: Evaluate
-      evaluation_info: '<b> About evaluation: </b>All grades and frequency here defined are to each student, not for each access. Therefore, by evaluating/seting frequency of an access, all other access of this student will have the same grade and working hours.'
       working_hours: Working hours
       profile: Profile
       summary: Table which content has all access list with profile, name of user, complete name of group, date and time info. As well you can evaluate all access of a student, if you're a teatcher.
@@ -1297,6 +1327,10 @@ en_US:
       remove: Remove recording
     warning:
       blocked: "Your browser has popup permissions blocked. Please allow it."
+    user_access:
+      evaluation_info: '<b> About evaluation: </b>All grades and frequency here defined are to each student, not for each access. Therefore, by evaluating/seting frequency of an access, all other access of this student will have the same grade and working hours.'
+      title: "%{user} access list to webconference %{webconference_name}"
+      no_log: No access to this webconference
   navigation_of: " of "
   navigation_next: "Next >"
   navigation_previous: "< Previous"
@@ -1521,6 +1555,9 @@ en_US:
   support_allocation_offer: Offer
   support_allocation_group: Class
   support_folder_temporary_message: 'This folder is temporary. To conclude it''s creation, send a file'
+  send_file_to_upload: "Choose a file to be send"
+  send_file_name: "Selected file"
+  send_file_size: "File size"
   file_error_nonexistent_file: File not found
   send_file_obs: Wait for the complete submission of the file. The size should not exceed 5MB.
   send_file_text: "Allowed file example:<br /> &nbsp;&nbsp;- Microsoft Office Documents<br /> &nbsp;&nbsp;- OpenOffice.org Documents (ODF)<br /> &nbsp;&nbsp;- Archives (.zip, .rar...)<br /> &nbsp;&nbsp;- PDF Documents<br /> &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br /> &nbsp;&nbsp;- Audio Files (mp3, wma...)"
@@ -1684,7 +1721,8 @@ en_US:
       general_message: It was not possible to execute action.
       dependencies: It was not possible to execute action. One or more assignments already have been sent or already have comments or already have been evaluated.
       not_started: It was not possible to download file. This assignment hasn't started yet.
-      not_range_webconference: must be in date range of Assignment
+      not_range_webconference: Must be in date range of Assignment
+      invalid_datetime: "Unable to schedule web conferencing on previous dates"
     show:
       name: Name
       enunciation: Enunciation
@@ -1759,6 +1797,8 @@ en_US:
       download: Download zip
       name: Name
       size: Size
+    notification:
+      final_date_smaller_than_offer: "Final date can't be posterior to offer's period"
   assignment_files:
     list:
       title_group: Files sent by group
@@ -2416,6 +2456,9 @@ en_US:
       message_did_not_start: Did not started
       message_history: Message's history
       participants_list: Lista de participantes do chat %{chat}
+      chat_disabled: Access chat %{chat} (disabled)
+      more: "More"
+      less: "Less"
     index:
       chats: Chats
       new_chat: New Chat
@@ -2433,6 +2476,8 @@ en_US:
       warning: "<b>Important:</b> Only chat rooms without participants can be shared with other groups."
       participants: Chat's participants
       no_participants: There are no participant
+      more: "More information enunciation of chat %{chat}"
+      less: "Less information enunciation of chat %{chat}"
     form:
       participants: Participants
       groups: Groups
@@ -2466,7 +2511,8 @@ en_US:
       chat_details: Chat's details
     messages:
       history: "Message's history: %{chat_name}"
-      from: From
+      from_profile: From (Profile)
+      from_name: From (Name)
       to: To
       message: Message
       date: Date
@@ -2478,7 +2524,7 @@ en_US:
       wh: Working hours
       summary: "This table contains all sent messages with the following information: Profile of who sent, who sent, whom it sent, message, date and time it was sent."
     user_messages:
-      title: Messages of %{user} in %{chat_rooms}  
+      title: Messages of %{user} in %{chat_rooms}
       message: Message
       date: Date
       no_posts: No messages
@@ -2727,7 +2773,7 @@ en_US:
     list:
       summary_evaluative: "This table contains all the evaluation shedule events."
       summary_frequency: "This table contains all the frequency shedule events."
-      summary_notevaluative: "This table contains all the not evaluation shedule events."   
+      summary_notevaluative: "This table contains all the not evaluation shedule events."
 
   agendas:
     dropdown_content:
@@ -2878,9 +2924,12 @@ en_US:
       all: All
       search: "Search:"
       filter: "Filter:"
+      filter_data_open: Open filter data.
+      filter_data_close: Close filter data.
       filter_data: Filter data
       curricular_unit: Curriculum Unit
       link: Access
+      search2: "Search"
 
   shortcut:
     assignment: Assignments
@@ -2890,13 +2939,13 @@ en_US:
     schedule_event: Shedule events
     discussion: Discussions
     all: All
-    frequency: Frequency 
+    frequency: Frequency
     evaluative: Evaluatives
     notevaluative: Not Evaluatives
     number_evaluative: [1]
     number_frequency: [2]
     number_notevaluative: [3]
-        
+
   scores:
     index:
       assignments: Assignments
@@ -2937,6 +2986,7 @@ en_US:
       curriculum_unit_working_hours: '(Curriculum Unit working hours: %{wh}w/h)'
       new_after_evaluation: Chages was made at the sent content after evaluation
       print_pdf: Print PDF
+      select_group: Select group
     info:
       assignments: Assignments
       date_range: Date range
@@ -3006,6 +3056,27 @@ en_US:
       shortcut_discussion: "[D] "
       shortcut_assignment: "[A] "
       shortcut: Shortcut
+      list_all_evaluative: List all evaluatives'
+      list_all_frequency: List all frequencies'
+      list_all_not_evaluative: List all not evaluatives'
+      list_assignments_evaluative: List evaluatives assignments'
+      list_assignments_frequency: List assignments of frequency'
+      list_assignments_not_evaluative: List assignments not evaluatives'
+      list_chats_evaluative: List evaluatives chats'
+      list_chats_frequency: List frequency chats'
+      list_chats_not_evaluative: List not evaluatives chats'
+      list_discussion_evaluative: Lista evaluative discussions'
+      list_discussion_frequency: List discussion of frequency'
+      list_discussion_not_evaluative: List not evaluatives discussions'
+      list_exams_evaluative: List evaluatives exams'
+      list_exams_frequency: List frequency exams'
+      list_exams_not_evaluative: List not evaluative exams'
+      list_schedule_evaluative: List schedule evaluatives'
+      list_schedule_frequency: List schedule of frequency'
+      list_schedule_not_evaluative: List not evaluative schedules'
+      list_web_conference_evaluative: List evaluative web conference'
+      list_web_conference_frequency: List web conference of frequency'
+      list_web_conference_not_evaluative: List not evaluative web conference'
     situation:
       not_started: Not started
       to_answer: To answer
@@ -3015,14 +3086,14 @@ en_US:
       evaluated: Evaluated
       not_corrected: Not corrected
       not_answered: Not answered
-      retake: Retake  
+      retake: Retake
       message_ended: Ended
       closed: Closed
       started: Started
       message_ended: Message ended
       message_did_not_start: Message did not start
       closed: Closed
-      started: Started 
+      started: Started
       not_started: Not started
       sent: Sent
       not_sent: Not sent
@@ -3058,14 +3129,14 @@ en_US:
       summary_frequency: "This table contains all the frequency tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
       summary_notevaluative: "This table contains all the not evaluation tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
     checkbox:
-      exam: 69 
+      exam: 69
       assignment: 65
       discussion: 68
       chat_room: 67
       webconference: 87
       schedule_event: 86
       all: 76
-          
+
   lesson_notes:
     error:
       general_message: Can't do action
@@ -3115,7 +3186,15 @@ en_US:
       minutes: " minutes"
       record_tooltip: "By checking it will be possible to access a record of this webconference after it happens"
       title: to Title field
+      title_placeholder: "Web Conferencing Title"
       duration: to Duration field
+      title_aria_label: "Enter with the title of the webconference"
+      date_aria_label: "Enter with the date and time of the webconference"
+      time_in_minutes: "The value entered will be in minutes"
+      date: "Web Conferencing Date"
+      date_label: "Date and Time"
+      date_placeholder: "Example: 04/08/2017 08:35"
+      duration_label: "Duration (minutes)"
     error:
       date_range: It was not possible to evaluate. Date range expired.
       deleted: "Webconference wasn't deleted."
@@ -3124,7 +3203,7 @@ en_US:
       not_recorded: "Can't remove record, there are no record to one or more webconferences selected"
       not_ended: "Can't remove record, one or more webconferences still on going"
       record_not_deleted: "Can't remove record from webconferences"
-      limit: "Student's limit for this day and time has been reached. Please choose other date or time" 
+      limit: "Student's limit for this day and time has been reached. Please choose other date or time"
       time_and_place: There's already a webconference for this group at this assignment at the choosen time.
       unavailable_or_date_range: It was not possible to execute action. Webconference's unavailable or date range expirded.
       date: This webconference already happened and was recorded. It's not possible to change it's period.
@@ -3141,8 +3220,8 @@ en_US:
       title_group: Webconferences scheduled by group
       title_student: Webconferences scheduled by student
       new: New webconference
-      final: "Final Version <a id='final_version_explain' href='#fv_explain'>(?)</a>"
-      final2: Final Version
+      final: "Final Version <a id='final_version_explain' href='#fv_explain' aria-label='%{aria} onkeydown='click_on_keypress(event, this);'>(?)</a>"
+      final2: Explanation about final version
       fv_explain: "&nbsp;&nbsp; The tutor or professor responsible by evaluation has, as role, evaluate the student or group based on it's sent files and created webconferences. To evaluate a webconference, responsibles must analyse the existing recordings to, then, evaluate the student. However, during the execution of the assignment, the student or group of students may schedule and record one or more webconferences. These webconferences may be used, for example, to meetings between group members, to tests, to practice etc. That is, not all webconferences scheduled and recorded need, necessarily, be used to evaluation. <br/><br/> &nbsp;&nbsp;To inform the responsible wich ones of the webconferences must be used to evaluation, the student can define one or more as Final Version.  That way, the responsible will be able to evaluate only the webconferences defined as final version within all the ones scheduled and/or recorded. If necessary, responsibles may evaluate all recordings available."
     webconference:
       edit: Edit
@@ -3150,6 +3229,8 @@ en_US:
       delete: Remove
       aw_yes: 'Yes'
       aw_no: 'No'
+      final: The webconference %{webconference} is finished (click for the webconference to stop being the final version)
+      not_final: The webconference %{webconference} is not in the final version (click to set as final version)
     warning:
       ended_recorded_web: "This webconference was already recorded and is already over. After update, all new recordings will be added to the existing one. Rememeber of uploading a new presentation so the previous record wont be overwritten by the new one"
   exams:
@@ -3317,8 +3398,8 @@ en_US:
       exam_details: Exam's details
       attempts: Attempt's amount
       attempts_correction: Grade calculation
-    result_exam_user: 
-      exam_result: " Exam " 
+    result_exam_user:
+      exam_result: " Exam "
       number_question: Number of Issues
       name: Name
       description: Description
@@ -3329,7 +3410,7 @@ en_US:
       start_date: Start date
       end_date: End date
       attempts: Attempt's amount
-      attempts_correction: Grade calculation 
+      attempts_correction: Grade calculation
       to: "%{from} to %{to}"
       student: 'Student:'
       grade: 'Grade: %{grade}'
@@ -3349,28 +3430,38 @@ en_US:
       true_items: "True item(s): "
       false_items: "False item(s): "
       frequency: Frequency
-      working_hours: 'Working Hours: %{wh}Hs'
+      working_hours: 'Working Hours: %{wh} Hs'
       wh: Working hours
-    result_exam:  
+    result_exam:
       student: 'Student: '
-      grade: 'Grade: '  
+      grade: 'Grade: '
       exam: 'Exam: '
     open_result:
       name: Corrections
       grade: 'Grade: '
     warning:
       title: "<b>Important: </b>You can't create, import or remove questions while exam's published"
-  question:  
-    question: 'Question '  
+  question:
+    question: 'Question '
+    enunciation: 'Enunciation '
     question_images:
       image: Image
       legend: Enunciation
       img_alt: 'Alt '
-      image_content_type: 'Type of file '
-      image_file_size: "File size " 
+      image_content_type: ' '
+      image_file_size: "File size "
     question_audios:
-      audio_description: "Audio Description "  
-      description: "Audio Legend "  
+      audio_description: "Audio Description "
+      description: "Audio Legend "
+      audio_content_type: ' '
+      audio_file_size: "File too large. The maximum size should be up to 10MB."
+    question_items:
+      img_alt: 'Alt '
+      item_audio_content_type: ''
+      item_image_content_type: ''
+      audio_description: 'Audio Description '
+      item_audio_file_size: "File too large. The maximum size should be up to 10MB."
+      item_image_file_size: "File too large. The maximum size should be up to 2MB."
   questions:
     index:
       title: Questions bank (%{count} found)
@@ -3408,8 +3499,7 @@ en_US:
       control_audio: 'Speed: '
       up_speed: 'Increase audio playback speed'
       up_down: 'Lowers audio playback speed'
-      hide: "- Text version"
-      show: "+ Text version" 
+      show: "Text version"
     question:
       preview: Preview
       public: Public
@@ -3475,7 +3565,7 @@ en_US:
         add_image: Add/update image
       audio:
         add_audio: Add/update audio
-        aud_desc: 'Alt: Mandatory description to accessibility (disabled people)'  
+        aud_desc: 'Alt: Mandatory description to accessibility (disabled people)'
     labels:
       labels: 'labels: '
     error:
@@ -3582,7 +3672,7 @@ en_US:
         conclude: Conclude
         back: Back
         added: Exam(s) added successfully
-    success: 
+    success:
       exported: Question(s) exported successfully
       imported: Question(s) imported successfully
       deleted: Question(s) removed from exam successfully
@@ -3594,7 +3684,7 @@ en_US:
       edit: Edit question
       publish: Publish questions
     confirm:
-      annul: "Are you sure that want to annull this question? Once the question is annulled, it can't be undone." 
+      annul: "Are you sure that want to annull this question? Once the question is annulled, it can't be undone."
       status_exam: Are you sure that want to change exam's status?
       delete: Are you sure that want to remove exam's questions?
       delete_question: Are you sure that want to remove these questions?
@@ -3856,7 +3946,7 @@ en_US:
         document_title: Reports with Total of Posts at Forum
       report_summary_group:
         id: Summary Group
-        document_title: Reports with Group Information   
+        document_title: Reports with Group Information
     commun_texts:
       period_reference: Document for the period of data
       select_period: Select the Related Research Period

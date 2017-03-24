@@ -6,6 +6,10 @@ $table_data_line_title: #21578B;
 
   padding-top: 10px;
 
+  .title-warning{
+    margin-bottom: 0;
+  }
+
   .right_buttons{
     .btn{
       cursor: pointer;
@@ -67,7 +71,7 @@ $table_data_line_title: #21578B;
 
 .simple_form.awebconference_form{
   min-width: 500px;
-  .input.assignment_webconference_title, .input.assignment_webconference_duration{
+  .input.assignment_webconference_title, .input.assignment_webconference_duration, .input.assignment_webconference_initial_time{
     display: inline-block;
   }
 }

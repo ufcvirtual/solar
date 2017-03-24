@@ -7,7 +7,7 @@ class QuestionImage < ActiveRecord::Base
   validates :legend, length: { maximum: 100 }
 
   validates_attachment_size :image, less_than: 2.megabyte
-  validates_attachment_content_type :image, content_type: /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/ 
+  validates_attachment_content_type :image, content_type: /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/ , message: I18n.t('questions.error.wrong_type')
   validates_attachment_content_type_in_black_list :image
 
   has_attached_file :image,

@@ -116,14 +116,13 @@ function startDictation(event, input, ckeditor, icon) {
   }
 }
 
-function stopDictation(icon){
+function stopDictation(event,icon){
   event.preventDefault();
   recognition.stop();
   stopped = true;
 }
 
 function stopDictationWithoutIcon(){
-  event.preventDefault();
   recognizing = false;
 }
 

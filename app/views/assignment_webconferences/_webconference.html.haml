@@ -7,7 +7,7 @@
     - if web_url.blank?
       = link_to webconference.title, '#', {disabled: true, :'aria-label' => t('webconferences.index.access_web', web: webconference.title) + t(:disabled), class: 'title'}
     - else
-      = link_to webconference.title, web_url, {:'aria-label' => t('webconferences.index.access_web', web: webconference.title) }
+      = link_to webconference.title, web_url, {:'aria-label' => t('webconferences.index.access_web', web: webconference.title), target: '_blank' }
   %td.center{headers: "period_web" }= [l(webconference.initial_time, format: :at_date), l(webconference.initial_time+webconference.duration.minutes, format: :at_date)].join(' - ')
   %td.center{headers: "status_web" }
     = (unavailable ? t(:unavailable, scope: [:webconferences, :list]) : status)
@@ -18,7 +18,7 @@
 
   %td.center{headers: "final_web" }
     - if @own_assignment
-      = link_to (image_tag "#{webconference.final? ? 'released' : 'rejected'}.png"), change_status_assignment_webconference_path(webconference), remote: true, method: :put, class: 'change_lesson_status', :'data-tooltip' => (webconference.final ? t('.aw_yes') : t('.aw_no'))
+      = link_to (image_tag "#{webconference.final? ? 'released' : 'rejected'}.png", :'aria-hidden' => 'true'), change_status_assignment_webconference_path(webconference), remote: true, method: :put, class: 'change_lesson_status', :'data-tooltip' => (webconference.final ? t('.aw_yes') : t('.aw_no')), :'aria-label' => (webconference.final ? t('assignment_webconferences.webconference.final', webconference: webconference.title) :  t('assignment_webconferences.webconference.not_final', webconference: webconference.title))
     - else
       = (webconference.final ? t('.aw_yes') : t('.aw_no'))
   - if @own_assignment

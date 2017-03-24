@@ -4,7 +4,13 @@
     = (@assignment.type_assignment == Assignment_Type_Group ? t('.title_group') : t('.title_student'))
   .right_buttons
     - if @own_assignment
-      = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_awebconference(this)', :'data-url' => new_assignment_webconference_path(assignment_id: @assignment.id), class: "btn btn_main link_new_awebconference #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.new'), :'aria-label' => t(".new"), onkeydown: 'click_on_keypress(event, this);'
+      = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_awebconference(this)', :'data-url' => new_assignment_webconference_path(assignment_id: @assignment.id), class: "btn btn_main link_new_awebconference #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.new'), :'aria-label' => t(".new") + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+%div.title-warning
+  %div.accessibility_title
+    = link_to_function raw(t('webconferences.index.accessibility_title')), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
+    %i.icon-arrow-down-triangle
+    %i.icon-arrow-up-triangle.invisible
+  %div.accessibility.invisible{tabindex: 0}= raw t('webconferences.index.accessibility')
 .block_content
   - no_webconferences = (webconferences.blank?)
   %table.tb_list{:summary=> t("assignments.list.summary_web") }
@@ -29,7 +35,7 @@
   .text_none.empty_message{ class: (no_webconferences ? '' : 'hide_message') }= t(:itens_not_found)
 
   #fv_explain.invisible
-    %h1#lightBoxDialogTitle= t('.final2')
+    %h1= t('.final2')
     .form-inputs.block_content
       = raw t('.fv_explain')
 
@@ -42,3 +48,17 @@
       content: $('#fv_explain').html()
     });
   });
+
+  function hide_or_show_info(name){
+    var parent = $(name).parent();
+    parent.siblings().toggleClass('invisible');
+    parent.siblings().focus();
+
+    if(parent.siblings().first().hasClass('invisible')){
+      parent.find('i.icon-arrow-up-triangle').removeClass('invisible');
+      parent.find('i.icon-arrow-down-triangle').addClass('invisible');
+    }else{
+      parent.find('i.icon-arrow-up-triangle').addClass('invisible');
+      parent.find('i.icon-arrow-down-triangle').removeClass('invisible');
+    }
+  }

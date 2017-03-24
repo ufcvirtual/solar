@@ -4,11 +4,11 @@
   .block_content
     .block_left
       .enrollment_left
-        .filter_enrollment
-          = label_tag t(".search"), nil, class: "enrollment_label_search"
-          = text_field_tag :search, nil, :"data-column" => "all", type: :search, class: "search", placeholder: t(".search_for")
+        .filter_enrollment#search_box_accesskey
+          = label_tag t(".search"), nil, class: "enrollment_label_search", for: "search"
+          = text_field_tag :search, nil, :"data-column" => "all", type: :search, class: "search search_box_focus", placeholder: t(".search_for")
 
-          = label_tag t(".of"), nil, class: "enrollment_label"
+          = label_tag t(".of"), nil, class: "enrollment_label", for: "type"
           = text_field_tag :type, nil, :"data-column" => "0", type: :search, class: "search", placeholder: t('.type')
 
 .allocations.list{'data-link-cancel-allocation' => cancel_allocation_path(':allocation_id'), 'data-link-cancel-request' => cancel_request_allocation_path(':allocation_id'), 'data-link-reactivate' => request_reactivate_allocation_path(':allocation_id'), 'data-link-enroll' => enroll_request_allocations_path(group_id: 'allocation_group_id')}

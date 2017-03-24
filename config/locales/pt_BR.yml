@@ -16,6 +16,7 @@ pt_BR:
       day_and_month: "%d/%b"
       bibliography: "%d %b, %Y"
       mask: "99/99/9999"
+      mask_with_time: "99/99/9999 99:99"
       normal: "%d/%m/%Y"
     day_names: [Domingo, Segunda, "Terça", Quarta, Quinta, Sexta, "Sábado"]
     abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, "Sáb"]
@@ -167,6 +168,12 @@ pt_BR:
   errors:
     messages:
       not_saved: ""
+      audio: "O seu navegador não suporta este elemento de áudio."
+      audio_aborted: 'Você abortou a reprodução do áudio.'
+      audio_network: 'Um erro de rede causou falha na transferência de áudio.'
+      audio_decode: 'A reprodução de áudio foi interrompida devido a um problema de corrupção ou porque o audio utilizado não foi suportado pelo seu navegador.'
+      audio_not_supported: 'O áudio não será carregado, porque o servidor ou a rede falhou ou porque o formato não é suportado.'
+      audio_others: 'Ocorreu um erro desconhecido.'
 
   # ActiveRecord
   activerecord:
@@ -556,7 +563,7 @@ pt_BR:
   dont_destroy_with_many_allocations: "Possui associações com outros usuários"
   dont_destroy_with_content: "Possui conteúdo"
   item_search_no_found: "Nenhum item encontrado"
-  high_contrast_link: "Contraste"
+  high_contrast_link: "Alto Contraste"
   remove_high_contrast_link: "Remover Alto Contraste"
 
   #Página de Login
@@ -768,9 +775,23 @@ pt_BR:
   help: "Ajuda"
   new_window: Este link abrirá uma nova janela
 
+  start_menu: "Início do menu"
+  end_menu: "Fim do menu"
+
   #Submenu de ajuda
   context: "Contextual"
   contact: Entrar em contato
+
+  # Barra de acessibilidade
+  accessibility: "Acessibilidade"
+  accessibility_menu: "Barra de acessibilidade"
+
+  # Submenu de acessibilidade
+  main_content: "Ir para o conteúdo [1]"
+  menu_aside: "Ir para o menu [2]"
+  search_box: "Ir para a busca [3]"
+  footer_site: "Ir para o rodapé [4]"
+  high_contrast_link: "Alto Contraste [5]"
 
   # Página de tutoriais
   description: "Descrição"
@@ -1211,8 +1232,11 @@ pt_BR:
       grade: '(Nota: %{grade})'
       frequency: '(Frequência: %{wh}hs)'
       download: "Download %{file}, tamanho: %{size}"
-      post: "%{number}ª postagem: "
-      answer_post: "Reposta da %{answer}"
+      post: "ª postagem: "
+      answer_post: "Reposta da "
+      res_post: "ª postagem"
+      remove_attachment: "Remover %{file} %{size}"
+      remove_post: "Postagem removida com suceso"
     create:
       created: "Postagem criada com sucesso"
       not_created: "A postagem não foi criada"
@@ -1228,17 +1252,19 @@ pt_BR:
       update_grade: Nota e Frequência adicionadas com sucesso
       edit: Editar
       new: Novo
-      info_frequency: "(Máximo: %{wh}Hs)"
+      info_frequency: "(Máximo: %{wh} Hs)"
       frequency: Frequência
       grade: Nota
       evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por post. Deste modo, ao avaliar/informar a frequência de um post, todos os outros posts do aluno terão a mesma nota/carga horária.'
     error:
       children: 'Post possui respostas'
+      new: Não foi possível enviar arquivo.
 
   post_files:
     new:
       attach_save: "Salvar"
       attach_another_file: "Anexar outro arquivo"
+      attach_size: 'Tamanho: '
 
   discussions:
     form:
@@ -1359,6 +1385,8 @@ pt_BR:
       deleted: Não foi possível deletar aviso.
     show:
       count_groups: "%{count} turmas"
+      next: Próxima notícia
+      prev: Notícia anterior
 
   webconferences:
     form:
@@ -1450,6 +1478,8 @@ pt_BR:
       groups: Lista de turmas para as quais a webconferência %{web} é compartilhada
       access_web: Acessar webconferência %{web} (abrirá uma nova janela)
       summary: Tabela cujo conteúdo há links de acesso às webconferências, com seus dados de moderação, compartilhamento entre turmas, equivalências, data e horário, nota, frequência, situação, quantidade de usuários online e link para acessar gravação.
+      accessibility_title: <b>Acessibilidade (acesso com leitor de tela)</b>
+      accessibility: "<p> Para participar da webconferência utilizando leitores de tela, recomendamos a versão mais recente do navegador <strong>Mozilla Firefox</strong> (com o plugin flash-player atualizado) e os seguintes leitores de tela: <strong>NVDA ou Window-eyes.</strong> </p><p> O carregamento de todos os componentes da ferramenta leva aproximadamente <strong>10 segundos</strong>. Você ouvirá um 'bip' quando tudo estiver pronto. </p>"
     list_access:
       no_log: Nenhum participante acessou esta webconferência
       too_old: Esta webconferência ocorreu antes dos acessos começarem a ser gravados
@@ -1464,7 +1494,6 @@ pt_BR:
       grade: Nota
       frequency: Frequência
       finish_evaluation: Avaliar
-      evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por acesso. Deste modo, ao avaliar/informar a frequência de um acesso, todos os outros acessos do aluno terão a mesma nota/carga horária.'
       working_hours: Carga horária
       profile: Perfil
       summary: Tabela cujo conteúdo contém a lista com todos os acessos à webconferência com perfil, nome, horário e data da pessoa que acessou e o nome completo da turma. Bem como também há a possibilidade de avaliar os acessos de um aluno, no caso de professor.
@@ -1479,6 +1508,11 @@ pt_BR:
       remove: Remover gravação
     warning:
       blocked: 'Seu navegador está com a permissão de popups bloqueada. Favor desbloquear.'
+    user_access:
+      evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por acesso. Deste modo, ao avaliar/informar a frequência de um acesso, todos os outros acessos do aluno terão a mesma nota/carga horária.'
+      title: Lista de acessos de %{user} a webconferêcia %{webconference_name}
+      no_log: Nenhum acesso à esta webconferência
+
 
   navigation_of: " de "
   navigation_next: "Próxima >"
@@ -1535,6 +1569,8 @@ pt_BR:
   hidden_info: Informação ocultada
 
   # Menu
+  menu_first_item: "*"
+  menu_last_item: "*"
   menu_dc_lesson: Digital Class
   menu_content: Conteúdo
   menu_lesson: Aulas
@@ -1732,6 +1768,9 @@ pt_BR:
   general_message: Não foi possível realizar a ação desejada
 
   # Files
+  send_file_to_upload: "Escolha um arquivo para enviar"
+  send_file_name: "Arquivo selecionado"
+  send_file_size: "Tamanho do arquivo"
   file_error_nonexistent_file: Arquivo não encontrado
   send_file_obs: Aguarde o envio completo do arquivo. O tamanho não deve exceder 5MB.
   send_file_text: "Exemplos de arquivos aceitos:<br />&nbsp;&nbsp;- Documentos do Microsoft Office<br />&nbsp;&nbsp;- Documentos do OpenOffice.org (ODF)<br />&nbsp;&nbsp;- Arquivos Compactados (.zip, .rar...)<br />&nbsp;&nbsp;- Documentos PDF<br />&nbsp;&nbsp;- Arquivos de Video (avi, mpeg,...)<br />&nbsp;&nbsp;- Arquivos de Audio (mp3, wma...)"
@@ -1892,7 +1931,8 @@ pt_BR:
       general_message: Não foi possível realizar a ação desejada
       dependencies: Não é possível realizar esta ação, pois um ou mais trabalhos já foram enviados ou possuem comentários ou foram avaliados.
       not_started: Não é possível fazer o download do arquivo. O trabalho ainda não está iniciado.
-      not_range_webconference: deve estar dentro do período do trabalho
+      not_range_webconference: Deve estar dentro do período do trabalho
+      invalid_datetime: "Não é possível agendar a webconferência em datas pretéritas"
     show:
       name: Nome
       enunciation: Enunciado
@@ -1967,6 +2007,8 @@ pt_BR:
       download: Baixar zip
       name: Nome
       size: Tamanho
+    notification:
+      final_date_smaller_than_offer: Data final não pode ser maior do que o período oferta.
   assignment_files:
     list:
       title_group: Arquivos enviados pelo grupo
@@ -2635,6 +2677,9 @@ pt_BR:
       message_did_not_start: Não iniciou
       message_history: Histórico de mensagens
       participants_list: Lista de participantes do chat %{chat}
+      chat_disabled: Acessar chat %{chat} (desabilitado)
+      more: "Mais"
+      less: "Menos"
     index:
       chats: Chats
       new_chat: Novo Chat
@@ -2652,6 +2697,8 @@ pt_BR:
       warning: "<b>Importante:</b> Apenas chats sem participantes poderão ser compartilhados com outras turmas."
       participants: Participantes do chat
       no_participants: Não há participantes
+      more: "Mais informações sobre o enunciado do chat %{chat}"
+      less: "Menos informações sobre o enunciado do chat %{chat}"
     form:
       participants: Participantes
       groups: Turmas
@@ -2685,7 +2732,8 @@ pt_BR:
       chat_details: Detalhes do chat
     messages:
       history: "Histórico de mensagens: %{chat_name}"
-      from: De
+      from_profile: De (Perfil)
+      from_name: De (Nome)
       to: Para
       message: Mensagem
       date: Data
@@ -2705,7 +2753,7 @@ pt_BR:
       update_grade: Nota e Frequência adicionadas com sucesso
       edit: Editar
       new: Novo
-      info_frequency: "Máximo: %{wh}Hs"
+      info_frequency: "Máximo: %{wh} Hs"
       frequency: Frequência
       grade: Nota
       evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por mensagem. Deste modo, ao avaliar/informar a frequência de um acesso, todos as outras mensagens do aluno terão a mesma nota/carga horária.'
@@ -3114,9 +3162,13 @@ pt_BR:
       all: Todos
       search: "Busca:"
       filter: "Filtro:"
+      filter_data_open: Abrir busca. O resultado da pesquisa é gerado automaticamente.
+      filter_data_close: Fechar busca. O resultado da pesquisa é gerado automaticamente.
       filter_data: Pesquisar dados
       curricular_unit: Unidade Curricular
       link: Acesso
+      search2: "Buscar"
+      result_search: "Ir para tabela com o resultado da busca"
 
   shortcut:
     assignment: Trabalhos
@@ -3241,6 +3293,27 @@ pt_BR:
       shortcut_discussion: "[F]"
       shortcut_assignment: "[T]"
       shortcut: Atalhos
+      list_all_evaluative: Listar todos tipos avaliativos'
+      list_all_frequency: Listar todos tipos de frequências'
+      list_all_not_evaluative: Listar todos tipos não avaliativos'
+      list_assignments_evaluative: Listar trabalhos avaliativos'
+      list_assignments_frequency: Listar trabalhos de frequência'
+      list_assignments_not_evaluative: Listar trabalhos não avaliativos'
+      list_chats_evaluative: Listar chats avaliativos'
+      list_chats_frequency: Listar chats de frequência'
+      list_chats_not_evaluative: Listar chats não avaliativos'
+      list_discussion_evaluative: Listar fóruns avaliativos'
+      list_discussion_frequency: Listar fóruns de frequência'
+      list_discussion_not_evaluative: Listar fóruns não avaliativos'
+      list_exams_evaluative: Listar provas avaliativas'
+      list_exams_frequency: Listar provas de frequência'
+      list_exams_not_evaluative: Listar provas não avaliativas'
+      list_schedule_evaluative: Listar eventos avaliativas'
+      list_schedule_frequency: Listar eventos de frequência'
+      list_schedule_not_evaluative: Listar eventos não avaliativas'
+      list_web_conference_evaluative: Listar web conferências avaliativas'
+      list_web_conference_frequency: Listar web conferências de frequência'
+      list_web_conference_not_evaluative: Listar web conferências não avaliativas'
     reports:
       general_evaluative: Relatório Acompanhamento - Atividades Avaliativas
       general_frequency: Relatório Acompanhamento - Atividades de Frequência
@@ -3353,7 +3426,15 @@ pt_BR:
       minutes: " minutos"
       record_tooltip: "Ao marcar, será possível acessar uma gravação da webconferência após seu acontecimento"
       title: para o campo Título
+      title_placeholder: "Título da webconferência"
       duration: para o campo Duração
+      title_aria_label: "Digite o título da webconferência"
+      date_aria_label: "Digite a data e a hora da webconferência"
+      time_in_minutes: "O valor digitado será em minutos"
+      date: "Data da webconferência"
+      date_label: "Data e Hora"
+      date_placeholder: "Exemplo: 04/08/2017 08:35"
+      duration_label: "Duração (minutos)"
     error:
       date_range: Não foi possível realizar ação. Período encerrado.
       remove: Não foi possível deletar webconferência
@@ -3379,8 +3460,8 @@ pt_BR:
       title_group: Webconferências agendadas pelo grupo
       title_student: Webconferências agendadas pelo aluno
       new: Nova webconferência
-      final: "Versão Final <a id='final_version_explain' href='#fv_explain'>(?)</a>"
-      final2: Versão Final
+      final: "Versão Final <a id='final_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>(?)</a>"
+      final2: Explicação sobre a versão final
       fv_explain: "&nbsp;&nbsp;&nbsp;&nbsp;O tutor ou professor responsável pela avaliação tem, como papel, avaliar o aluno/grupo com base em seus arquivos enviados e webconferências criadas. Para avaliar uma webconferência, os responsáveis devem analisar as gravações existentes para, então, avaliar o desempenho do aluno. Entretanto, durante a execução do trabalho, o aluno ou o grupo de alunos pode agendar e gravar uma ou mais webconferências. Estas webconferências podem ser feitas, por exemplo, para reuniões entre os membros de uma equipe, para testes, para praticar uma apresentação etc. Ou seja, nem todas as webconferências cadastradas e gravadas precisam, necessariamente, servir para avaliação. <br/><br/> &nbsp;&nbsp;&nbsp;&nbsp;A fim de informar ao responsável qual ou quais das webconferências devem ser consideradas para avaliação, o aluno pode marcar uma ou mais webconferências como Versão Final. Desse modo, o responsável poderá avaliar apenas as webconferências marcadas dentre todas as agendadas e/ou gravadas. Se achar necessário, o responsável poderá analisar e avaliar todas as gravações disponíveis."
     webconference:
       edit: Editar
@@ -3388,6 +3469,8 @@ pt_BR:
       delete: Remover
       aw_yes: Sim
       aw_no: Não
+      final: A Webconferência %{webconference} está finalizada (clique para a webconferência deixar de ser a versão final)
+      not_final: A Webconferência %{webconference} não está na versão final (clique para definir como versão final)
     warning:
       ended_recorded_web: "Esta webconferência já foi encerrada e possui gravação. Após alteração, todas as novas gravações serão adicionadas à já existente. Lembre-se de fazer o upload de uma nova apresentação para que a gravação prévia não seja sobrescrita pela nova"
 
@@ -3598,17 +3681,28 @@ pt_BR:
       grade: 'Nota: '
     warning:
       title: '<b>Importante: </b>Não é possível criar, importar ou remover questões em provas publicadas'
+  score: 'Pontuação '
   question:
     question: 'Questão '
+    enunciation: 'Enunciado '
     question_images:
       image: Imagem
       legend: Legenda
       img_alt: 'Alt '
-      image_content_type: 'Tipo do arquivo '
+      image_content_type: ' '
       image_file_size: "Arquivo muito grande, "
     question_audios:
       audio_description: "Áudio Descrição "
       description: "Áudio Legenda "
+      audio_content_type: ' '
+      audio_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 10MB."
+    question_items:
+      img_alt: 'Alt '
+      item_audio_content_type: ''
+      item_image_content_type: ''
+      audio_description: 'Áudio Descrição '
+      item_audio_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 10MB."
+      item_image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
   questions:
     index:
       title: Banco de questões (%{count} encontradas)
@@ -3646,8 +3740,7 @@ pt_BR:
       control_audio: 'Velocidade: '
       up_speed: 'Aumenta a velocidade de reprodução do Áudio'
       up_down: 'Diminuir a velocidade de reprodução do Áudio'
-      hide: "- Versão textual"
-      show: "+ Versão textual"
+      show: "Versão textual"
     question:
       preview: Visualização
       public: Pública
@@ -3733,8 +3826,8 @@ pt_BR:
       max_labels: Máximo de 8 palavras-chave
       choose_at_least_one: "Selecione, ao menos, uma questão"
       choose_one: Selecione uma questão
-      wrong_type: "tipo de arquivo não permitido (apenas imagens jpeg/png/gif)"
-      wrong_type_audio: "tipo de arquivo não permitido (apenas áudios mpeg/mp3/mpg)"
+      wrong_type: "Tipo de arquivo não permitido (apenas imagens jpeg/png/gif)"
+      wrong_type_audio: "Tipo de arquivo não permitido (apenas áudios mpeg/mp3/mpg)"
     success:
       deleted: Questões removidas com sucesso
       change_status: Situação alterada com sucesso

@@ -5,14 +5,18 @@ class EditionsController < ApplicationController
   layout false, only: [:tool_management]
 
   def items
-    allocation_tags = AllocationTag.get_by_params(params)
-    @allocation_tags_ids, @selected, @offer_id = allocation_tags.values_at(:allocation_tags, :selected, :offer_id)
+    if active_tab[:url][:allocation_tag_id].blank?
+      allocation_tags = AllocationTag.get_by_params(params)
+      @allocation_tags_ids, @selected, @offer_id = allocation_tags.values_at(:allocation_tags, :selected, :offer_id)
+    else
+      @allocation_tags_ids, @selected, @offer_id = [active_tab[:url][:allocation_tag_id]], 'GROUP', params[:offer_id]
+    end
     authorize! :content, Edition, on: @allocation_tags_ids
     @user_profiles       = current_user.resources_by_allocation_tags_ids(@allocation_tags_ids)
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
 
     render partial: 'items'
-  rescue
+  rescue=> error
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
@@ -109,7 +113,18 @@ class EditionsController < ApplicationController
   def content
     authorize! :content, Edition
     @types = ((!EDX.nil? && EDX['integrated']) ? CurriculumUnitType.all : CurriculumUnitType.where('id <> 7'))
-  rescue
+
+    @allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    unless @allocation_tag_id.nil?
+      allocation_tag      = AllocationTag.find(@allocation_tag_id)
+      @group              = allocation_tag.group
+
+      @allocation_tags_ids, @selected, @offer_id = [@allocation_tag_id], 'GROUP', @group.offer_id
+      @user_profiles       = current_user.resources_by_allocation_tags_ids(@allocation_tags_ids)
+      @allocation_tags_ids = @allocation_tags_ids.join(" ")
+    end
+
+  rescue => error
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end
 
@@ -135,6 +150,7 @@ class EditionsController < ApplicationController
   end
 
   def manage_tools
+    params[:academic_allocations] = params[:academic_allocations].collect{|key,value| value}
     params[:academic_allocations] = params[:academic_allocations].delete_if{|a| a.nil? || a['acs'].blank?}
     allocation_tags_ids = params[:academic_allocations].collect{|data| data['allocation_tags_ids'].delete('[]').split(',')}.flatten.map(&:to_i).uniq
 

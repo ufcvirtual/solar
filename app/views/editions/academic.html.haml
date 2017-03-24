@@ -5,10 +5,10 @@
   %p= t(:required_fields)
   %fieldset#allocation_tag_selection
     %legend= t(".filter")
-    .filter_type
+    .filter_type#search_box_accesskey
       = label_tag :type, t(".type")
       = select_tag :type, options_from_collection_for_select(@types, 'id', 'description', @type), include_blank: true
-      
+
       = link_to t(:search), "#", {class: 'btn btn_main', :"data-url-search" => groups_path, id: 'search'}
 
   %fieldset.academic.invisible
@@ -40,7 +40,7 @@
       .edx_courses
         .academic_item{:"data-link-to" => academic_edx_courses_editions_path(curriculum_unit_type_id: ':uc_type_id')}
           = link_to(content_tag(:i, nil, class: 'icon-book big'), "#", class: 'btn')
-          = link_to t(:course_edx_edition), "#"                
+          = link_to t(:course_edx_edition), "#"
 
 :javascript
 
@@ -51,9 +51,9 @@
     if ($("#type").combobox('value') != "")
       show_items();
 
-    $("#search").click(function() { 
+    $("#search").click(function() {
       if($("#type").combobox('value') != "" && $("#type").combobox('value') != null)
-        show_items(); 
+        show_items();
       else{
         $('.academic').hide();
         flash_message("#{I18n.t(:alert, scope: :editions)}", 'alert');
@@ -82,8 +82,8 @@
     }
      else if (id == 4){
       $('.curriculum_units a#uc_name').html("#{t('.modules')}");
-     } 
-      else if (id == 7) {  
+     }
+      else if (id == 7) {
         $('.courses').hide();
         $('.groups').hide();
         $('.semesters').hide();

@@ -1,10 +1,9 @@
-table.notifications {
-  tr.unread {
+ul.notifications {
+  li.unread{
     background-color: $background_light_beige;
   }
-
-  tr {
-    cursor: pointer;
+  li{
+    padding: 4px;
   }
 }
 

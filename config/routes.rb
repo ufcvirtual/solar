@@ -566,6 +566,7 @@ Solar::Application.routes.draw do
       delete :remove_record, only_recordings: true
       get :access
       get :list_access
+      get :user_access
       get :get_record
       put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Webconference', as: :evaluate
     end

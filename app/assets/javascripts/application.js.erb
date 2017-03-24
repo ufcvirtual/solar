@@ -40,6 +40,8 @@
 
 // = require speech2text
 
+// = require jquery-ui-timepicker-addon
+
 /**
  * General
  */
@@ -62,6 +64,14 @@ $(function() {
       $("#mysolar_submenu_help").slideUp(150);
       $('#mysolar_top_help').removeClass('mysolar_top_submenu_label_selected');
       $('#mysolar_top_help').addClass('mysolar_top_submenu_label_regular');
+    }
+  });
+
+  $("body").click(function(e) {
+    if((e.target.id !== 'mysolar_accessibility_submenu') && (e.target.id !== 'accessibility_top')){
+      $("#mysolar_accessibility_submenu").slideUp(150);
+      $('#accessibility_top_menu').removeClass('mysolar_top_submenu_label_selected');
+      $('#accessibility_top_menu').addClass('mysolar_top_submenu_label_regular');
     }
   });
 

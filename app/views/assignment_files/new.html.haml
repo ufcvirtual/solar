@@ -2,8 +2,9 @@
 .block_content{style: "padding: 5px;"}
   = form_for @assignment_file do |f|
     = f.hidden_field :academic_allocation_user_id, value: @assignment_file.academic_allocation_user_id
-    = f.file_field :attachment, id: "focu"
+    = f.file_field :attachment, id: "focu", :'aria-label' => t(:send_file_to_upload)
     .block_content_gray{style: "padding: 5px;"}
+      %p.file
       %p=raw t(:send_file_obs)
       %p=raw t(:send_file_text)
     .right_buttons
@@ -24,5 +25,26 @@
         }
       });
     });
+
+    $("#focu").on("change", function(){
+      var file_name_path = $(this).val();
+      var file_name = file_name_path.substr( (file_name_path.lastIndexOf('\\')+1) );
+
+      var file_size = this.files[0].size;
+      var file_size_extension = new Array('Bytes', 'KB', 'MB', 'GB');
+
+      i = 0;
+      while(file_size >= 1024) {
+        file_size /= 1024;
+        i++;
+      }
+
+      var file_size_human_readable = (Math.round(file_size*100)/100) + " " + file_size_extension[i];
+
+      $(".file").html( "#{I18n.t(:send_file_name)}: " + file_name + "<br>" + "#{I18n.t(:send_file_size)}: " + file_size_human_readable );
+
+      setTimeout(function() {
+        $(".file").click();
+      }, 100);
+    });
   });
-  

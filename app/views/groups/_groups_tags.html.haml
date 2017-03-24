@@ -1,5 +1,6 @@
 - all_groups = [] if all_groups.nil?
 - groups_size = groups.size
+- inside_tab = (user_session[:tabs][:active].to_i != 0)
 
 .groups_tags
   - if tool.kind_of? Integer 
@@ -12,7 +13,7 @@
   - else
     %span.title= link_to [groups_size.to_s, t('.groups')].join(' '), paths[:tags], class: 'tags', :"data-tooltip" => t('.groups_management')
 
-  - unless groups_size == 1 || paths.nil?
+  - unless inside_tab || groups_size == 1 || paths.nil?
     %span.new_groups
       - unless tool.kind_of? Integer 
         = content_tag(:i, nil, class: 'icon icon-cross unbind_groups', :"data-dropdown" => ".unbind_group_dropdown_#{tool_id}", :"data-tooltip" => t('.unbind_groups'))
@@ -28,7 +29,7 @@
 
   - new_groups = (all_groups - groups).in_groups(2, false)
   - can_add_groups = !tool.respond_to?(:can_add_group?) || tool.can_add_group?
-  - unless paths.blank? || new_groups.flatten.empty? || !can_add_groups
+  - unless inside_tab || paths.blank? || new_groups.flatten.empty? || !can_add_groups
     %span.new_groups
       = content_tag(:i, nil, class: 'icon icon-plus add_group', :"data-dropdown" => ".add_group_dropdown_#{tool_id}", :"data-tooltip" => t('.add_group'))
       #dropdown{class: "dropdown dropdown-tip add_group_dropdown_#{tool_id}"}

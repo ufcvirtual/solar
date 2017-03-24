@@ -21,13 +21,6 @@
             %th= t('editions.tools.equivalent')
 
         %tbody
-          - tools_ids = []
-          - tools.each do |tool|
-            - acs = tool.ids.delete('{}').split(',')
-            - tool['acs'] = acs.uniq
-            - tools_ids << acs.first
-          - tools_ids = tools_ids.flatten.uniq
-
           - tools.each do |ac|
             - ats_ids = ac.ats.delete('{}').split(',')
             - groups = Group.joins(:allocation_tag).where(allocation_tags: {id: ats_ids.map(&:to_i)}).compact
@@ -51,16 +44,16 @@
                 %td
                   - hours = (ac.start_hour.blank?) ? '' : (ac.end_hour.blank?) ? ac.start_hour : [ac.start_hour, ac.end_hour].join(I18n.t('schedules.to')) 
                   = t('editions.evaluative_tools.full_period', dstart: ac.start_date.to_date, dend: ac.end_date.to_date , hours: hours)
-                %td= acf.check_box :evaluative, label: false
+                %td.ckb{onclick: 'check_checkbox(event, this)'}= acf.check_box :evaluative, label: false
                 %td.weight= acf.text_field :weight, label: false, disabled: !ac.evaluative || ac.final_exam
                 %td.final_weight= acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam
-                %td= acf.check_box :final_exam, label: false, disabled: !ac.evaluative
-                %td= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
+                %td.ckb{onclick: 'check_checkbox(event, this)'}= acf.check_box :final_exam, label: false, disabled: !ac.evaluative
+                %td.ckb{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
                 %td.working_hours
                   = acf.text_field :max_working_hours, label: false, disabled: !ac.frequency || ac.final_exam
                   = t('editions.tools.wh')
-                - select_tools = AcademicAllocation.where(id: (tools_ids - ac.acs)).select('DISTINCT academic_tool_id, academic_tool_type').select('id')
-                %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_name, {include_blank: true}, {disabled: (!ac.evaluative && !ac.frequency) || ac.final_exam})
+                - select_tools = AcademicAllocation.where(id: (tools_ids - ac.acs), allocation_tag_id: ats_ids.map(&:to_i)).select('DISTINCT academic_tool_id, academic_tool_type').select('id')
+                %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_type_name, {include_blank: true}, {disabled: (!ac.evaluative && !ac.frequency) || ac.final_exam})
                 = acf.hidden_field "allocation_tags_ids", value: ats_ids.map(&:to_i)
                 = acf.hidden_field "acs", value: ac.acs.map(&:to_i)
 
@@ -71,14 +64,16 @@
 
     $("input[id$='evaluative']").change(function(){
       var parent = $(this).parents('tr');
-      var value  = $(this).prop('checked');
+      var value  = !!$(this).prop('checked');
       var field = parent.find("input[id$='weight']");
       field.prop('disabled', !value);
-      console.log(field);
       parent.find("input[id$='final_weight']").prop('disabled', !value);
       parent.find("input[id$='final_exam']").prop('disabled', !value);
-      if(!$("input[id$='frequency']").prop('checked'))
-      parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
+      if(!$("#"+$(this).prop('id').replace('evaluative', 'frequency')).prop('checked')){
+        parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
+        if(!value)
+          parent.find("select[id$='equivalent_academic_allocation_id']").val('');
+      }
     });
 
     $("input[id$='final_exam']").change(function(){
@@ -100,9 +95,7 @@
       parent.find("input[id$='weight']").prop('disabled', !value);
       parent.find("input[id$='final_exam']").prop('disabled', !value);
       parent.find("input[id$='final_weight']").prop('disabled', !value);
-      if(parent.find("input[id$='frequency']").data('change') == 'true'){
-       parent.find("input[id$='max_working_hours']").prop('disabled', !value);
-      }
+      parent.find("input[id$='max_working_hours']").prop('disabled', !value);
     });
 
     $("input[id$='frequency']").change(function(){
@@ -111,8 +104,11 @@
       var field = parent.find("input[id$='max_working_hours']");
       field.prop('disabled', !value);
 
-      if(!$("input[id$='evaluative']").prop('checked'))
+      if(!$("#"+$(this).prop('id').replace('frequency', 'evaluative')).prop('checked')){
         parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
+        if(!value)
+          parent.find("select[id$='equivalent_academic_allocation_id']").val('');
+      }
     });
   });
 

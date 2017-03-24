@@ -7,16 +7,17 @@
       %thead
         %tr.lines
           - if (@evaluative || @frequency)
-            %th{id: "to_evaluate"}= t('.to_evaluate')
-          %th{colspan: 2, id: "from"}= t(".from")
-          %th{id: "to"}= t(".to")
-          %th{id: "message"}= t(".message")
-          %th{id: "date"}= t(".date")
-          %th{id: "time"}= t(".time")
+            %th#to_evaluate= t('.to_evaluate')
+          %th#from_profile= t(".from_profile")
+          %th#from_name= t(".from_name")
+          %th#to= t(".to")
+          %th#message= t(".message")
+          %th#date= t(".date")
+          %th#time= t(".time")
           - if @academic_allocation.evaluative
-            %th{id: "grade"}= t('.grade')
+            %th#grade= t('.grade')
           - if @academic_allocation.frequency
-            %th{id: "wh"}= t('.wh')
+            %th#wh= t('.wh')
       %tbody
         - @messages.each do |message|
           - user = message.user
@@ -26,8 +27,8 @@
               %td{headers: "to_evaluate" }
                 - if message.is_student == 't' && message.message_type == 1
                   = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(@chat_room, user_id: message.u_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate')+t('fancybox.open')
-            %td.profile{headers: "from", :'aria-label' => 'perfil:'+ message.profile_name }= "(" + message.profile_name + ")"
-            %td.user{:'data-tooltip' => (@researcher ? t(:hidden_info) : message.user_name), headers: "from"}= (@researcher ? t(:hidden_info) : message.user_nick)
+            %td.profile{headers: "from_profile" }= "(" + message.profile_name + ")"
+            %td.user{:'data-tooltip' => (@researcher ? t(:hidden_info) : message.user_name), headers: "from_name"}= (@researcher ? t(:hidden_info) : message.user_nick)
             %td{:'data-tooltip' => name, :'aria-label' => name, headers: "to"}= nick
             %td.message{headers: "message" }= message.text.try(:html_safe)
             %td{headers: "date" }= l(message.created_at.to_datetime, format: :normal)

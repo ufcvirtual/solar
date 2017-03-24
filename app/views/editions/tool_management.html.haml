@@ -37,8 +37,16 @@
           .set_final_weight
             = link_to_function content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_final_weight')), 'set_final_weight()'
             .weight_link= link_to_function t('.default_final_weight'), 'set_final_weight()'
+
+          - tools_ids = []
+          - @tools.collect{|key, value| value}.flatten.each do |tool|
+            - acs = tool.ids.delete('{}').split(',')
+            - tool['acs'] = acs.uniq
+            - tools_ids << acs.first
+          - tools_ids = tools_ids.flatten.uniq
+
         - @tools.each do |key, value|
-          = render partial: 'editions/tools_management/tools', locals: { tool_name: key, tools: value, wh: @working_hours.blank? }
+          = render partial: 'editions/tools_management/tools', locals: { tool_name: key, tools: value, wh: @working_hours.blank?, tools_ids: tools_ids }
         = button_to_function t('.finish'), 'manage_tools(this)', class: 'btn'
       - else
         .text_none
@@ -59,6 +67,11 @@
       parent.find('i.icon-arrow-up-triangle').addClass('invisible');
       parent.find('i.icon-arrow-down-triangle').removeClass('invisible');
     }
+  }
+
+  function check_checkbox(event, object){
+    if(event.target.tagName == 'TD')
+      $('input', $(object)).last().click();
   }
 
   function manage_tools(button){

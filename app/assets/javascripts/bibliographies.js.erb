@@ -41,7 +41,7 @@ $(function(){
   });
 
   $(".btn_edit").click(function(){
-    if ($(this).attr('disabled') == 'disabled'){
+    if ($(this).prop('disabled') == 'disabled'){
       flash_message("<%=I18n.t(:choose_one, scope: 'bibliographies.list')%>", "alert");
       return false;
     }
@@ -49,7 +49,7 @@ $(function(){
     var bibliography_ids = $('.ckb_bibliography:checked', $(this).parents("div.list_bibliographies")).map(function() { return this.value; }).get();
     var url_edit = $(this).data('link-edit').replace(':id', bibliography_ids);
 
-    if($.inArray(true, $('.ckb_bibliography:checked', $(this).parents("div.list_bibliographies")).map(function() { return $(this).data('file'); }).get())){
+    if($.inArray(true, $('.ckb_bibliography:checked', $(this).parents("div.list_bibliographies")).map(function() { return $(this).data('file'); }).get()) >= 1){
       flash_message("<%=I18n.t('bibliographies.error.cant_edit_file')%>", "alert");
       return false;
     }else

@@ -12,6 +12,7 @@ module EvaluativeTool
     AcademicAllocation.find_by_sql <<-SQL
       SELECT DISTINCT
         array_agg(academic_allocations.id) AS ids, 
+        max(academic_allocations.id) AS id,
         academic_tool_id, 
         academic_tool_type,
         evaluative, 
@@ -38,6 +39,7 @@ module EvaluativeTool
       UNION(
         SELECT DISTINCT
           array_agg(academic_allocations.id) AS ids, 
+          max(academic_allocations.id) AS id,
           academic_tool_id, 
           academic_tool_type, 
           evaluative, 
@@ -65,6 +67,7 @@ module EvaluativeTool
       UNION(
         SELECT DISTINCT
           array_agg(academic_allocations.id) AS ids, 
+          max(academic_allocations.id) AS id,
           academic_tool_id, 
           academic_tool_type, 
           evaluative, 
@@ -92,6 +95,7 @@ module EvaluativeTool
       UNION(
         SELECT DISTINCT
           array_agg(academic_allocations.id) AS ids, 
+          max(academic_allocations.id) AS id,
           academic_tool_id, 
           academic_tool_type,
           evaluative, 
@@ -120,6 +124,7 @@ module EvaluativeTool
       UNION(
         SELECT DISTINCT
           array_agg(academic_allocations.id) AS ids, 
+          max(academic_allocations.id) AS id,
           academic_tool_id, 
           academic_tool_type, 
           evaluative, 
@@ -148,6 +153,7 @@ module EvaluativeTool
       UNION(
         SELECT DISTINCT
           array_agg(academic_allocations.id) AS ids, 
+          max(academic_allocations.id) AS id,
           academic_tool_id, 
           academic_tool_type, 
           evaluative, 

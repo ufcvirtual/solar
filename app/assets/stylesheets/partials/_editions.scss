@@ -169,6 +169,11 @@ label[for="all"]{
         input[type='text']{
           width: 25px;
         }
+        tbody{
+          td.ckb{
+            cursor: pointer;
+          }
+        }
       }
       .tools_by_tool_type.invisible{
         display: none;

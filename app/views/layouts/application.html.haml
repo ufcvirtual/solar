@@ -20,6 +20,8 @@
     / IM \
     = stylesheet_link_tag "application", "fancybox"
     = stylesheet_link_tag "themes/theme_" + "#{user_session[:theme]}", id: "themes"
+    / Datapicker with time
+    = stylesheet_link_tag 'jquery-ui-timepicker-addon'
 
     = csrf_meta_tag
 
@@ -54,9 +56,25 @@
                 %a#mysolar_top_user_nick.mysolar_top_link{href: "", onclick: "mysolarTopSubmenuToggle();return false;"}= current_user.nick
             %li#server_clock_wrapper
               %span#server_clock{name: "server_clock"}
+            %li#accessibility_top_menu.mysolar_top_submenu_label_regular
+              %a#accessibility_top.mysolar_top_link{ href: "", onclick: "mysolarAccessibilitySubmenuToggle();return false;", :'aria-label' =>  t(:accessibility_menu)}
+                = t(:accessibility)
+              %ul#mysolar_accessibility_submenu
+                %li= link_to t(:main_content), "#main_content_accesskey", accesskey: "1"
+                %li#link_to_menu_accesskey= link_to t(:menu_aside), "#menu_accesskey", accesskey: "2"
+                - if active_tab[:url][:context] == 1 || params[:bread] == "menu_messages"
+                  %li#link_to_search_box= link_to t(:search_box), "#search_box_accesskey", accesskey: "3"
+                -# %li= link_to t(:footer_site), "#footer_site_accesskey", accesskey: "4"
+                -# %li= link_to t(:high_contrast_link), "#", accesskey: "5"
             %li#mysolar_top_help.mysolar_top_submenu_label_regular
               %a#help_top.mysolar_top_link{href: "", onclick: "mysolarTopSubmenuHelpToggle();return false;"}
                 = t(:help)
+              %ul#mysolar_submenu_help
+                %li= link_to t(:context), "#", id: 'help_context'
+                %li= link_to t('tutorials.menu'), tutorials_path, id: 'my_tutorials'
+                %li= link_to t(:login_faq), '#faq', class: 'panel-link'
+                %li= link_to t(:videos), "../../video_tutorials.html", target: "_blank"
+                %li= link_to t(:contact), support_new_messages_path
             %li#mysolar_top_logout
               = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, class: "mysolar_top_link logout")
         / Submenu
@@ -73,13 +91,7 @@
             %li= link_to t(:mysolar_change_picture), edit_photo_users_path, class: "fancybox.ajax", id: "change_picture", :'aria-label' => t(:mysolar_change_picture) + t('fancybox.open')
             %li= link_to t("mysolar.profiles"), profiles_users_path
             %li= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path)
-        #mysolar_submenu_help
-          %ul
-            %li= link_to t(:context), "#", id: 'help_context'
-            %li= link_to t('tutorials.menu'), tutorials_path, id: 'my_tutorials'
-            %li= link_to t(:login_faq), '#faq', class: 'panel-link'
-            %li= link_to t(:videos), "../../video_tutorials.html", target: "_blank"
-            %li= link_to t(:contact), support_new_messages_path
+
         / tabs
         #mysolar_tabs{role: 'menubar'}
           %ul#mysolar_tabs_wrapper= raw render_tabs
@@ -106,6 +118,8 @@
       #mysolar_sidebar{role: 'navigation'}
         #mysolar_menu_accordion{style: "z-index:10"}
           .mysolar_menu
+            %p.menu_accessible
+              %a#menu_accesskey{href: "#menu_accesskey", :'aria-label' => t(:start_menu)}= t(:menu_first_item)
             - if active_tab[:url][:context] == Context_Curriculum_Unit
               .mysolar_menu_group
                 %ul
@@ -114,6 +128,8 @@
 
             = raw menu_list
 
+            %p.menu_accessible
+              %a#menu_end{href: "#menu_end", :'aria-label' => t(:end_menu)}= t(:menu_last_item)
       / content
       #mysolar_content{role: 'main'}
         / page titles
@@ -127,23 +143,23 @@
           #breadcrumb= raw show_breadcrumb
           - if is_curriculum_unit_selected?
             #page_title
-              %h1=t(name, default: name.try(:titleize))
+              %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name.try(:titleize))
               .block_content_text= raw(group_selection)
           - elsif not(in_mysolar?)
             #page_title
-              %h1=t(name, default: name.titleize)
+              %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name.titleize)
         = yield
 
         #lesson_external_div.invisible
 
         #sav_url.invisible= link_to "", "#", {class: 'link_content fancybox.iframe', target: '_blank' }
 
-        - if current_user
-          #chatpanel
-            #collective-xmpp-chat-data{style: "display: none"}
-            #toggle-controlbox
-              %a.chat.toggle-online-users{href: "#"}
-                %strong.conn-feedback="Bate-Papo"
+        / - if current_user
+        /   #chatpanel
+        /     #collective-xmpp-chat-data{style: "display: none"}
+        /     #toggle-controlbox
+        /       %a.chat.toggle-online-users{href: "#"}
+        /         %strong.conn-feedback="Bate-Papo"
 
       #footer_push{style: "height:35px"}
       - locales  =  %w(pt_BR en_US)
@@ -326,7 +342,15 @@
         delete time;
         }
       }
+
+      var pathname = $(location).attr("pathname");
+
+      if(pathname == "/editions/repositories" ||
+         pathname == "/administrations/indication_users") {
+        $("#link_to_search_box").hide();
+      }
     });
+
     // trigger isShow
     $(function(){
       $('#toggle-controlbox').click(function(e){
@@ -395,4 +419,28 @@
         $("link[id='themes']").attr("href", theme_path);
         location.reload();
       });
+    });
+
+    $("#link_to_menu_accesskey").on("click keypress", function(event){
+      var keynum = event.which || event.keyCode;
+
+      if( keynum == 13 || event.type == 'click') {
+        setTimeout(function() {
+          $("#menu_accesskey").focus();
+        }, 100);
+      }
+    });
+
+    $("#link_to_search_box").on("click keydown", function(event){
+      var keynum = event.which || event.keyCode;
+
+      if(keynum == 13 || event.type == 'click') {
+        $(".slide-block").show("slide", {direction: "right"});
+        // $(".slider-block").trigger("click");
+      }
+
+      setTimeout(function() {
+        $(".search_box_focus").focus();
+        $("#autocomplete-input").focus();
+      }, 100);
     });
