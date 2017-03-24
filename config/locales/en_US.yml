@@ -13,6 +13,7 @@ en_US:
       day_and_month: "%d/%b"
       bibliography: "%d %b, %Y"
       mask: "99/99/9999"
+      mask_with_time: "99/99/9999 99:99"
       normal: "%d/%m/%Y"
     day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
     abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
@@ -288,7 +289,7 @@ en_US:
         legend: Legend
         img_alt: Alt
       question_audios:
-        audio: Audio  
+        audio: Audio
         description: Legend
         audio_description: Audio Description
         audio_file_size: ''
@@ -297,7 +298,7 @@ en_US:
         legend: Legend
         img_alt: Alt
       question_audio:
-        audio: Audio  
+        audio: Audio
         description: Legend
         audio_description: Audio Description
       question_item:
@@ -494,7 +495,7 @@ en_US:
           attributes:
             attachment_content_type:
               invalid_type: invalid
-        
+
   all: "All"
   of: "Of"
   required_fields: "* required field(s)"
@@ -632,9 +633,18 @@ en_US:
   date_name: Date
   help: "Help"
   new_window: This link will open a new window
+  start_menu: "Begin of menu"
+  end_menu: "End of menu"
   tutorials: "Tutorials"
   context: "Contextual"
   contact: Contact us
+  accessibility: "Accessibility"
+  accessibility_menu: "Accessibility bar"
+  main_content: "Skip to the content [1]"
+  menu_aside: "Skip to menu [2]"
+  search_box: "Skip to Search [3]"
+  footer_site: "Skip to the footer [4]"
+  high_contrast_link: "High contrast [5]"
   description: "Description"
   edition: "Edition"
   enrollment: "Enrollment"
@@ -1252,14 +1262,14 @@ en_US:
       not_recorded: "Can't remove record, there are no record to one or more webconferences selected"
       not_ended: "Can't remove record, one or more webconferences still on going"
       record_not_deleted: "Can't remove record from webconferences"
-      limit: "Student's limit for this day and time has been reached. Please choose other date/time or decrease amount of groups if necessary" 
+      limit: "Student's limit for this day and time has been reached. Please choose other date/time or decrease amount of groups if necessary"
       time_and_place: Already exists a webconference for this datetime and groups
       date: This webconference already happened. It's not possible to change it's period.
       access: Can't access this webconference. Verify it's period.
       no_record: This webconference has no recordings
       offline: Unavailable webconference
       still_processing: This webconference's recording is still processing. Please wait.
-      general_message: It was not possible to execute this action. 
+      general_message: It was not possible to execute this action.
       on_going: This webconference hasn't finished yet. Please wait.
       date_range: Assignment's date range already expired.
       shared: This webconference already happened. It's not possible to change this field.
@@ -1545,6 +1555,9 @@ en_US:
   support_allocation_offer: Offer
   support_allocation_group: Class
   support_folder_temporary_message: 'This folder is temporary. To conclude it''s creation, send a file'
+  send_file_to_upload: "Choose a file to be send"
+  send_file_name: "Selected file"
+  send_file_size: "File size"
   file_error_nonexistent_file: File not found
   send_file_obs: Wait for the complete submission of the file. The size should not exceed 5MB.
   send_file_text: "Allowed file example:<br /> &nbsp;&nbsp;- Microsoft Office Documents<br /> &nbsp;&nbsp;- OpenOffice.org Documents (ODF)<br /> &nbsp;&nbsp;- Archives (.zip, .rar...)<br /> &nbsp;&nbsp;- PDF Documents<br /> &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br /> &nbsp;&nbsp;- Audio Files (mp3, wma...)"
@@ -1708,7 +1721,8 @@ en_US:
       general_message: It was not possible to execute action.
       dependencies: It was not possible to execute action. One or more assignments already have been sent or already have comments or already have been evaluated.
       not_started: It was not possible to download file. This assignment hasn't started yet.
-      not_range_webconference: must be in date range of Assignment
+      not_range_webconference: Must be in date range of Assignment
+      invalid_datetime: "Unable to schedule web conferencing on previous dates"
     show:
       name: Name
       enunciation: Enunciation
@@ -2510,7 +2524,7 @@ en_US:
       wh: Working hours
       summary: "This table contains all sent messages with the following information: Profile of who sent, who sent, whom it sent, message, date and time it was sent."
     user_messages:
-      title: Messages of %{user} in %{chat_rooms}  
+      title: Messages of %{user} in %{chat_rooms}
       message: Message
       date: Date
       no_posts: No messages
@@ -2759,7 +2773,7 @@ en_US:
     list:
       summary_evaluative: "This table contains all the evaluation shedule events."
       summary_frequency: "This table contains all the frequency shedule events."
-      summary_notevaluative: "This table contains all the not evaluation shedule events."   
+      summary_notevaluative: "This table contains all the not evaluation shedule events."
 
   agendas:
     dropdown_content:
@@ -2925,13 +2939,13 @@ en_US:
     schedule_event: Shedule events
     discussion: Discussions
     all: All
-    frequency: Frequency 
+    frequency: Frequency
     evaluative: Evaluatives
     notevaluative: Not Evaluatives
     number_evaluative: [1]
     number_frequency: [2]
     number_notevaluative: [3]
-        
+
   scores:
     index:
       assignments: Assignments
@@ -3072,14 +3086,14 @@ en_US:
       evaluated: Evaluated
       not_corrected: Not corrected
       not_answered: Not answered
-      retake: Retake  
+      retake: Retake
       message_ended: Ended
       closed: Closed
       started: Started
       message_ended: Message ended
       message_did_not_start: Message did not start
       closed: Closed
-      started: Started 
+      started: Started
       not_started: Not started
       sent: Sent
       not_sent: Not sent
@@ -3115,14 +3129,14 @@ en_US:
       summary_frequency: "This table contains all the frequency tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
       summary_notevaluative: "This table contains all the not evaluation tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
     checkbox:
-      exam: 69 
+      exam: 69
       assignment: 65
       discussion: 68
       chat_room: 67
       webconference: 87
       schedule_event: 86
       all: 76
-          
+
   lesson_notes:
     error:
       general_message: Can't do action
@@ -3172,7 +3186,15 @@ en_US:
       minutes: " minutes"
       record_tooltip: "By checking it will be possible to access a record of this webconference after it happens"
       title: to Title field
+      title_placeholder: "Web Conferencing Title"
       duration: to Duration field
+      title_aria_label: "Enter with the title of the webconference"
+      date_aria_label: "Enter with the date and time of the webconference"
+      time_in_minutes: "The value entered will be in minutes"
+      date: "Web Conferencing Date"
+      date_label: "Date and Time"
+      date_placeholder: "Example: 04/08/2017 08:35"
+      duration_label: "Duration (minutes)"
     error:
       date_range: It was not possible to evaluate. Date range expired.
       deleted: "Webconference wasn't deleted."
@@ -3181,7 +3203,7 @@ en_US:
       not_recorded: "Can't remove record, there are no record to one or more webconferences selected"
       not_ended: "Can't remove record, one or more webconferences still on going"
       record_not_deleted: "Can't remove record from webconferences"
-      limit: "Student's limit for this day and time has been reached. Please choose other date or time" 
+      limit: "Student's limit for this day and time has been reached. Please choose other date or time"
       time_and_place: There's already a webconference for this group at this assignment at the choosen time.
       unavailable_or_date_range: It was not possible to execute action. Webconference's unavailable or date range expirded.
       date: This webconference already happened and was recorded. It's not possible to change it's period.
@@ -3207,6 +3229,8 @@ en_US:
       delete: Remove
       aw_yes: 'Yes'
       aw_no: 'No'
+      final: The webconference %{webconference} is finished (click for the webconference to stop being the final version)
+      not_final: The webconference %{webconference} is not in the final version (click to set as final version)
     warning:
       ended_recorded_web: "This webconference was already recorded and is already over. After update, all new recordings will be added to the existing one. Rememeber of uploading a new presentation so the previous record wont be overwritten by the new one"
   exams:
@@ -3374,8 +3398,8 @@ en_US:
       exam_details: Exam's details
       attempts: Attempt's amount
       attempts_correction: Grade calculation
-    result_exam_user: 
-      exam_result: " Exam " 
+    result_exam_user:
+      exam_result: " Exam "
       number_question: Number of Issues
       name: Name
       description: Description
@@ -3386,7 +3410,7 @@ en_US:
       start_date: Start date
       end_date: End date
       attempts: Attempt's amount
-      attempts_correction: Grade calculation 
+      attempts_correction: Grade calculation
       to: "%{from} to %{to}"
       student: 'Student:'
       grade: 'Grade: %{grade}'
@@ -3408,26 +3432,26 @@ en_US:
       frequency: Frequency
       working_hours: 'Working Hours: %{wh} Hs'
       wh: Working hours
-    result_exam:  
+    result_exam:
       student: 'Student: '
-      grade: 'Grade: '  
+      grade: 'Grade: '
       exam: 'Exam: '
     open_result:
       name: Corrections
       grade: 'Grade: '
     warning:
       title: "<b>Important: </b>You can't create, import or remove questions while exam's published"
-  question:  
+  question:
     question: 'Question '
-    enunciation: 'Enunciation '   
+    enunciation: 'Enunciation '
     question_images:
       image: Image
       legend: Enunciation
       img_alt: 'Alt '
       image_content_type: ' '
-      image_file_size: "File size " 
+      image_file_size: "File size "
     question_audios:
-      audio_description: "Audio Description "  
+      audio_description: "Audio Description "
       description: "Audio Legend "
       audio_content_type: ' '
       audio_file_size: "File too large. The maximum size should be up to 10MB."
@@ -3437,7 +3461,7 @@ en_US:
       item_image_content_type: ''
       audio_description: 'Audio Description '
       item_audio_file_size: "File too large. The maximum size should be up to 10MB."
-      item_image_file_size: "File too large. The maximum size should be up to 2MB."  
+      item_image_file_size: "File too large. The maximum size should be up to 2MB."
   questions:
     index:
       title: Questions bank (%{count} found)
@@ -3475,7 +3499,7 @@ en_US:
       control_audio: 'Speed: '
       up_speed: 'Increase audio playback speed'
       up_down: 'Lowers audio playback speed'
-      show: "Text version" 
+      show: "Text version"
     question:
       preview: Preview
       public: Public
@@ -3541,7 +3565,7 @@ en_US:
         add_image: Add/update image
       audio:
         add_audio: Add/update audio
-        aud_desc: 'Alt: Mandatory description to accessibility (disabled people)'  
+        aud_desc: 'Alt: Mandatory description to accessibility (disabled people)'
     labels:
       labels: 'labels: '
     error:
@@ -3648,7 +3672,7 @@ en_US:
         conclude: Conclude
         back: Back
         added: Exam(s) added successfully
-    success: 
+    success:
       exported: Question(s) exported successfully
       imported: Question(s) imported successfully
       deleted: Question(s) removed from exam successfully
@@ -3660,7 +3684,7 @@ en_US:
       edit: Edit question
       publish: Publish questions
     confirm:
-      annul: "Are you sure that want to annull this question? Once the question is annulled, it can't be undone." 
+      annul: "Are you sure that want to annull this question? Once the question is annulled, it can't be undone."
       status_exam: Are you sure that want to change exam's status?
       delete: Are you sure that want to remove exam's questions?
       delete_question: Are you sure that want to remove these questions?
@@ -3922,7 +3946,7 @@ en_US:
         document_title: Reports with Total of Posts at Forum
       report_summary_group:
         id: Summary Group
-        document_title: Reports with Group Information   
+        document_title: Reports with Group Information
     commun_texts:
       period_reference: Document for the period of data
       select_period: Select the Related Research Period

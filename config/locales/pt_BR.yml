@@ -3467,8 +3467,8 @@ pt_BR:
       delete: Remover
       aw_yes: Sim
       aw_no: Não
-      final: A Webconferência %{webconference} está finalizada (clique para alterar para versão em aberto)
-      not_final: A Webconferência %{webconference} está em aberto (clique para alterar para versão final)
+      final: A Webconferência %{webconference} está finalizada (clique para a webconferência deixar de ser a versão final)
+      not_final: A Webconferência %{webconference} não está na versão final (clique para definir como versão final)
     warning:
       ended_recorded_web: "Esta webconferência já foi encerrada e possui gravação. Após alteração, todas as novas gravações serão adicionadas à já existente. Lembre-se de fazer o upload de uma nova apresentação para que a gravação prévia não seja sobrescrita pela nova"
 
