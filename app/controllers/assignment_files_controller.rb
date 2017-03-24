@@ -38,7 +38,7 @@ class AssignmentFilesController < ApplicationController
 
     render json: { success: true, notice: t('assignment_files.success.removed') }
   rescue => error
-    render_json_error(error, 'assignment_files.error', 'new')
+    render_json_error(error, 'assignment_files.error', 'remove')
   end
 
   def download
