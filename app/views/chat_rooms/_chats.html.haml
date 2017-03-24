@@ -56,7 +56,17 @@
         %td{ align: 'center', headers: "availability_#{@id_table}" }
           %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
           %div= [(chat.start_hour), (chat.end_hour)].join(' - ')
-        %td.center{class: "assignment_#{chat.situation}", headers: "situation_#{@id_table}"}= t("scores.situation.#{chat.situation}") 
+        - if @is_student
+          %td.center{class: "assignment_#{chat.situation}", headers: "situation_#{@id_table}"}= t("scores.situation.#{chat.situation}")
+        - else
+          - if chat.closed=='t'
+            %td.center{class: "assignment_closed", headers: "situation_#{@id_table}"}= t("scores.situation.closed") 
+          - elsif chat.opened=='t'    
+            %td.center{class: "assignment_opened", headers: "situation_#{@id_table}"}= t("scores.situation.opened")  
+          -else
+            %td.center{class: "assignment_not_started", headers: "situation_#{@id_table}"}= t("scores.situation.not_started")    
+
+
         %td.center{headers: "evaluative_#{@id_table}" }= t(chat.evaluative, scope: [:scores, :info])
         %td.center{headers: "frequency_#{@id_table}" }= t(chat.frequency, scope: [:scores, :info])
         - if @is_student && other==false
