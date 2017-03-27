@@ -1257,6 +1257,9 @@ pt_BR:
     error:
       children: 'Post possui respostas'
       new: Não foi possível enviar arquivo.
+      general_message: Não foi possível realizar a ação desejada
+      date_range_expired: Não foi possível realizar ação. Período encerrado.
+      permission: Não é possível alterar ou remover posts de outros usuários
 
   post_files:
     new:

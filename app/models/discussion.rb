@@ -35,6 +35,10 @@ class Discussion < Event
     schedule.start_date.to_date <= Date.today
   end
 
+  def in_time?
+    started? && schedule.end_date.to_date >= Date.today
+  end
+
   # Verifica se existe alguma ac para um forum de mesmo nome cuja allocation_tag esteja entre as allocation_tags informadas
   # Ex:
   # => Existe o forum Forum 1 com academic allocation para a allocation_tag 3

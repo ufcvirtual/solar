@@ -1083,6 +1083,9 @@ en_US:
     error:
       children: 'Post has answers'
       new: It was not possible to send file.
+      date_range_expired: It was not possible to execute action. Date range expired.
+      general_message: It was not possible to execute action
+      permission: It's not possible to change or remove posts from others users
 
   post_files:
     new:

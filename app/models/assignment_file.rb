@@ -8,7 +8,7 @@ class AssignmentFile < ActiveRecord::Base
   has_one :allocation_tag, through: :academic_allocation
 
   before_save :can_change?, if: 'merge.nil?'
-  before_destroy :can_change?, :can_destroy?
+  before_destroy :can_destroy?
   after_save :update_acu
   after_destroy :update_acu
 
