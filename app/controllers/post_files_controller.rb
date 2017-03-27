@@ -25,7 +25,7 @@ class PostFilesController < ApplicationController
       if ((can_interact) && (post.user_id == current_user.id))
         files = params[:post_file].is_a?(Hash) ? params[:post_file].values : params[:post_file] # {attachment1 => [valores1], attachment2 => [valores2]} => [valores1, valores2]
         [files].flatten.each do |file|
-          f = PostFile.create!({ attachment: file, discussion_post_id: post.id })
+          f = PostFile.create({ discussion_post_id: post.id, attachment: file })
           file_names << "#{f.id} - #{f.attachment_file_name}"
         end
       elsif (post.user_id != current_user.id)
@@ -60,11 +60,13 @@ class PostFilesController < ApplicationController
   end
 
   def destroy
-    @post_file.destroy
+    @post_file.can_change?
     File.delete(@post_file.attachment.path) if File.exist?(@post_file.attachment.path)
     LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: get_remote_ip, description: "post_file: #{@post_file.id} - #{@post_file.attachment_file_name}, post: #{@post_file.post.id}") rescue nil
+    @post_file.delete
+    render json: {result: 1}
   rescue => error
-    render json: { alert: @post_file.errors.full_messages.join('; ') }, status: :unprocessable_entity
+    render json: { result: 0, alert: @post_file.errors.full_messages.join('; ') }, status: :unprocessable_entity
   end
 
   def download
