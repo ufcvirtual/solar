@@ -5,6 +5,7 @@ class PostsController < ApplicationController
 
   # before_filter :authenticate_user!
   before_filter :prepare_for_pagination
+  before_filter :set_current_user, only: [:destroy]
 
   load_and_authorize_resource except: [:index, :user_posts, :create, :show, :evaluate]
 
@@ -89,8 +90,10 @@ class PostsController < ApplicationController
     if new_post_under_discussion(Discussion.find(params[:discussion_id]))
       render json: {result: 1, post_id: @post.id, parent_id: @post.parent_id}, status: :created
     else
-      render json: {result: 0}, status: :unprocessable_entity
+      render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
     end
+  rescue
+    render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
   end
 
   ## PUT /discussions/:id/posts/1
@@ -98,8 +101,10 @@ class PostsController < ApplicationController
     if @post.update_attributes(content: params[:discussion_post][:content])
       render json: {success: true, post_id: @post.id, parent_id: @post.parent_id}
     else
-      render json: { alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
+      render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
     end
+  rescue
+    render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
   end
 
   ## GET /discussions/:id/posts/1

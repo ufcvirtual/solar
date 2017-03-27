@@ -6,6 +6,7 @@ class PostFilesController < ApplicationController
 
   load_and_authorize_resource :except => [:new, :create, :api_download]
   authorize_resource :only => [:new, :create]
+  before_filter :set_current_user, only: [:destroy, :new]
 
   def new
     @post = Post.find(params[:post_id])
@@ -21,18 +22,21 @@ class PostFilesController < ApplicationController
       editable = ((post.user_id == current_user.id) && (post.children_count == 0))
 
       file_names = []
-      if ((can_interact) and (post.user_id == current_user.id))
+      if ((can_interact) && (post.user_id == current_user.id))
         files = params[:post_file].is_a?(Hash) ? params[:post_file].values : params[:post_file] # {attachment1 => [valores1], attachment2 => [valores2]} => [valores1, valores2]
         [files].flatten.each do |file|
-          f = PostFile.create!({ attachment: file, discussion_post_id: post.id })
+          f = PostFile.create({ discussion_post_id: post.id, attachment: file })
           file_names << "#{f.id} - #{f.attachment_file_name}"
         end
+      elsif (post.user_id != current_user.id)
+        raise "permission"
       else
-        raise "not_permited"
+        raise "date_range_expired"
       end
 
       LogAction.create(log_type: LogAction::TYPE[:create], user_id: current_user.id, ip: get_remote_ip, description: "post_file: #{file_names.join(', ')}, post: #{post.id}") rescue nil
     rescue => error
+      error_msg = error
       error = true
     end
 
@@ -48,7 +52,7 @@ class PostFilesController < ApplicationController
           if params.include?('auth_token')
             render :json => {:result => 0}, :status => :unprocessable_entity
           else
-            render_json_error(error, 'posts.error.new') 
+            render_json_error(error_msg, 'posts.error') 
           end
         end
       }
@@ -56,26 +60,13 @@ class PostFilesController < ApplicationController
   end
 
   def destroy
-    error = false
-    post  = @post_file.post
-
-    begin
-      @post_file.delete
-      File.delete(@post_file.attachment.path) if File.exist?(@post_file.attachment.path)
-      LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: get_remote_ip, description: "post_file: #{@post_file.id} - #{@post_file.attachment_file_name}, post: #{@post_file.post.id}") rescue nil
-    rescue
-      error = true
-    end
-
-    respond_to do |format|
-      unless error
-        format.html  { render json: {success: true, notice: t(:updated, :scope => [:posts, :update])}}
-        format.json  { render :json => {:result => 1} }
-      else
-        format.html  { render json: {success: false, :alert => t(:not_updated, :scope => [:posts, :update])}}
-        format.json  { render :json => {:result => 0} }
-      end
-    end
+    @post_file.can_change?
+    File.delete(@post_file.attachment.path) if File.exist?(@post_file.attachment.path)
+    LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: get_remote_ip, description: "post_file: #{@post_file.id} - #{@post_file.attachment_file_name}, post: #{@post_file.post.id}") rescue nil
+    @post_file.delete
+    render json: {result: 1}
+  rescue => error
+    render json: { result: 0, alert: @post_file.errors.full_messages.join('; ') }, status: :unprocessable_entity
   end
 
   def download

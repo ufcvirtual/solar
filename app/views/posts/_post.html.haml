@@ -50,10 +50,12 @@
                 - if post.can_be_answered? && can_post
                   %li= link_to_function content_tag(:i, nil, class: 'icon-reply'), "new_post(this, #{post.id});", class: 'btn response_post', level: post.level, :'data-tooltip'=> t('.answer'), :'aria-label'=> t('.answer'), onkeydown: 'click_on_keypress(event, this);'
               - else
-                %li= button_tag content_tag(:i, nil, class: 'icon-paperclip'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.attach_file'), :'aria-label'=> t('.attach_file')
-                %li= button_tag content_tag(:i, nil, class: 'icon-trash'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.remove'), :'aria-label'=> t('.remove')
-                %li= button_tag content_tag(:i, nil, class: 'icon-edit'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.edit'), :'aria-label'=> t('.edit')
-                %li= button_tag content_tag(:i, nil, class: 'icon-reply'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.answer'), :'aria-label'=> t('.answer')
+                - if editable
+                  %li= button_tag content_tag(:i, nil, class: 'icon-paperclip'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.attach_file'), :'aria-label'=> t('.attach_file')
+                  %li= button_tag content_tag(:i, nil, class: 'icon-trash'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.remove'), :'aria-label'=> t('.remove')
+                  %li= button_tag content_tag(:i, nil, class: 'icon-edit'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.edit'), :'aria-label'=> t('.edit')
+                - if post.can_be_answered? && can_post
+                  %li= button_tag content_tag(:i, nil, class: 'icon-reply'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.answer'), :'aria-label'=> t('.answer')
         .forum_post_reply
       - unless display_mode == 'list'
         - children.each do |child|

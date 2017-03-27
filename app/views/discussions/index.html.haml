@@ -19,7 +19,7 @@
           
       %tbody
         - @discussions.each do |discussion|
-          %tr{class: "lines #{'period_ended' if discussion.closed == 't' && (!discussion.situation.include?("extra_time"))} "}
+          %tr{class: "lines #{(discussion.closed == 't' && (!discussion.situation.include?("extra_time"))) ? 'period_ended' : '' } "}
             %td{headers: 'discussions' }
               - if discussion.opened == 't'
                 = link_to discussion.name, discussion_posts_path(discussion_id: discussion.academic_tool_id), {class: 'link_content'}

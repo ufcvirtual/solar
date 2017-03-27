@@ -8,7 +8,7 @@ class AssignmentFile < ActiveRecord::Base
   has_one :allocation_tag, through: :academic_allocation
 
   before_save :can_change?, if: 'merge.nil?'
-  before_destroy :can_change?, :can_destroy?
+  before_destroy :can_destroy?
   after_save :update_acu
   after_destroy :update_acu
 
@@ -27,12 +27,12 @@ class AssignmentFile < ActiveRecord::Base
   attr_accessor :merge
 
   def can_change?
-    raise 'date_range' unless assignment.in_time?
+    raise 'date_range_expired' unless assignment.in_time?
   end
 
   def can_destroy?
     raise CanCan::AccessDenied unless user_id == User.current.try(:id)
-    raise 'date_range' unless assignment.in_time?
+    raise 'date_range_expired' unless assignment.in_time?
   end
 
   def delete_with_dependents

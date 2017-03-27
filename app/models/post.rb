@@ -3,17 +3,17 @@ class Post < ActiveRecord::Base
   self.table_name = 'discussion_posts'
 
   belongs_to :profile
-  belongs_to :parent     , class_name: 'Post'
+  belongs_to :parent, class_name: 'Post'
   belongs_to :user
 
   belongs_to :academic_allocation, conditions: { academic_tool_type: 'Discussion' }
   belongs_to :academic_allocation_user
 
-  before_destroy :verify_children_with_raise
+  before_destroy :verify_children_with_raise, :can_change?, if: 'merge.nil?'
   validate :verify_children, on: :update
 
-  has_many :children     , class_name: 'Post', foreign_key: 'parent_id', dependent: :destroy
-  has_many :files        , class_name: 'PostFile', foreign_key: 'discussion_post_id', dependent: :destroy
+  has_many :children, class_name: 'Post', foreign_key: 'parent_id', dependent: :destroy
+  has_many :files, class_name: 'PostFile', foreign_key: 'discussion_post_id', dependent: :destroy
 
   before_create :set_level, :verify_level
   before_destroy :remove_all_files
@@ -23,6 +23,8 @@ class Post < ActiveRecord::Base
   after_save :update_acu, on: :update
 
   validates :content, :profile_id, presence: true
+
+  validate :can_change?, if: 'merge.nil?'
 
   attr_accessor :merge
 
@@ -35,9 +37,20 @@ class Post < ActiveRecord::Base
   end
 
   def verify_children_with_raise
-    if self.children.any? && merge.nil?
+    if self.children.any?
       errors.add(:base, I18n.t('posts.error.children'))
       raise 'children'
+    end
+  end
+
+  def can_change?
+    unless user_id == User.current.try(:id)
+      errors.add(:base, I18n.t('posts.error.permission'))
+      raise 'permission'
+    end
+    unless discussion.in_time?
+      errors.add(:base, I18n.t('posts.error.date_range_expired'))
+      raise 'date_range_expired'
     end
   end
   
