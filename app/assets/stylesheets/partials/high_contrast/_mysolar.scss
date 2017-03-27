@@ -19,12 +19,13 @@
 }
 
 #mysolar_high_contrast_option {
-  color: $high_contrast_link_color !important;
+  color: $high_contrast_font_color !important;
 }
 
 #mysolar_top_options #mysolar_top_submenu_label:hover,
 #mysolar_top_options #mysolar_top_logout:hover,
-#mysolar_top_options #mysolar_top_help:hover {
+#mysolar_top_options #mysolar_top_help:hover,
+#mysolar_top_options #accessibility_top_menu:hover {
   border-bottom-color: $high_contrast_font_color;
   background-color: $high_contrast_background_color !important;
   color: $high_contrast_font_color;
@@ -34,7 +35,7 @@
   color: $high_contrast_font_color;
 }
 
-#mysolar_top_submenu, #mysolar_submenu_help{
+#mysolar_top_submenu, #mysolar_submenu_help, #mysolar_accessibility_submenu{
   box-shadow: 3px 3px 15px 0px #bbb;
   color: $high_contrast_font_color;;
   background-color: $high_contrast_background_color;
@@ -51,6 +52,19 @@
 
 #mysolar_submenu_help{
   border-top-color: $high_contrast_border_color;
+}
+
+#mysolar_accessibility_submenu {
+  width: 150px;
+}
+
+#mysolar_submenu_help, #mysolar_accessibility_submenu {
+  margin-left: -7px;
+  border-top-color: $mysolar_border_color;
+}
+
+#mysolar_top_submenu a:hover, #mysolar_submenu_help a:hover, #mysolar_accessibility_submenu a:hover {
+  text-decoration: underline;
 }
 
 #mysolar_top_submenu_label {
