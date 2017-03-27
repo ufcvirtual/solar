@@ -952,6 +952,7 @@ pt_BR:
     index:
       lesson_table_date: Data de acesso
       lesson_table_title: "Aulas disponíveis"
+      lesson_number_modules: " com %{modules} módulos disponíveis"
       acceptance: Aprovação
       draft: Rascunho
       released: Liberada
@@ -960,6 +961,7 @@ pt_BR:
       lesson_notes: Notas de aula
       summary: Tabela contendo link de acesso às aulas disponíveis e nome em texto das aulas indisponíveis, bem como períodos de acesso e link de acesso às notas de aula para cada aula. Todas as aulas são referentes ao módulo %{module_name}.
       caption: Lista de aulas para o módulo %{module_name}
+      number_of_lessons: "%{module_name} possui %{lesson_number} aulas"
     list:
       lesson: Aula
       order: Ordem
@@ -3470,6 +3472,8 @@ pt_BR:
       delete: Remover
       aw_yes: Sim
       aw_no: Não
+      status_final_chance: A Webconferência %{webconference} foi retirada da versão final
+      status_not_final_chance: A Webconferência %{webconference} foi mudada para versão final
       final: A Webconferência %{webconference} está finalizada (clique para a webconferência deixar de ser a versão final)
       not_final: A Webconferência %{webconference} não está na versão final (clique para definir como versão final)
     warning:

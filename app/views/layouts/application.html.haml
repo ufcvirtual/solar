@@ -139,11 +139,11 @@
           #breadcrumb= raw show_breadcrumb
           - if is_curriculum_unit_selected?
             #page_title
-              %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name.try(:titleize))
+              %h1#main_content_accesskey{ tabindex: "0", :'aria-label' => t(name, default: name.try(:titleize)) + t('lessons.index.lesson_number_modules', modules: @lessons_modules.size) }= t(name, default: name.try(:titleize))
               .block_content_text= raw(group_selection)
           - elsif not(in_mysolar?)
             #page_title
-              %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name.titleize)
+              %h1#main_content_accesskey{ tabindex: "0" }= t(name, default: name.titleize)
         = yield
 
         #lesson_external_div.invisible
