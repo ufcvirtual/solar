@@ -2227,6 +2227,7 @@ en_US:
       semester: "Semester"
       offer: "Offer"
       group: "Group"
+      choice: Choice
     content:
       type: "Type*"
       course: "Course*"
@@ -2590,6 +2591,8 @@ en_US:
     mark_as_read: "Mark selected messages as read"
     mark_as_unread: "Mark selected messages as unread"
     already_added: already added
+    sucess_added: Successfully Added
+    sucess_removed: Removed successfully
     none: "No message found"
     no_new: "No new messages"
     no_subject: "(no subject)"
@@ -2609,6 +2612,7 @@ en_US:
       no_user_found: No user found
       add_all_alt: Click to add all users to receiver's list
       user_alt: "%{name} (Click to add user %{name} with email %{email} to receiver's list)"
+      user_remove_alt: "%{name} (Click to remove user %{name} with email %{email} to receiver's list)"
     errors:
       recipients: "A message must have at least 1 recipient."
       permission: You don't have access to informed data.

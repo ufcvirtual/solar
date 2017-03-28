@@ -32,10 +32,10 @@
         .offer_groups_options
           .radio_options
             = radio_button :radio, :option, 'offer', disabled: true
-            = label_tag :option_offer, t('.offer')
+            = label_tag :radio_option_offer, t('.offer')
 
             = radio_button :radio, :option, 'group', disabled: true, :'data-number' => filter_number
-            = label_tag :option_group, t('.group')
+            = label_tag :radio_option_group, t('.group')
 
           .groups
 

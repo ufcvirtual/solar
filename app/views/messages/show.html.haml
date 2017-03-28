@@ -41,10 +41,11 @@
           %i.icon-paperclip{:'aria-hidden' => 'true'}
           = t(".attachments")
         %br
-        - attachments.each do |file|
-          %ul.new-attach
+        %ul.new-attach
+          - attachments.each do |file|
             - size = format('%.2f KB', file.attachment_file_size/1024.0)
             %li= link_to file.attachment_file_name + t('.size', size: size), download_file_messages_path(file_id: file.id), :'aria-label' => t('.download_file', name: file.attachment_file_name, size: size)
+            %br
 
   %hr
   .message_div_show

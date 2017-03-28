@@ -20,7 +20,7 @@
   border: 1px solid #ccc;
 }
 
-#autocomplete-input{
+#autocomplete-input-curriculum_unit_type, #autocomplete-input-course, #autocomplete-input-curriculum_unit, #autocomplete-input-semester, #autocomplete-input-contacts_type{
   width: 300px;
   margin: 3px;
   font-size: 10pt;
