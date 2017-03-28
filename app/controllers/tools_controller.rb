@@ -17,18 +17,16 @@ class ToolsController < ApplicationController
         @equalities = []
       else
         @tool = params[:tool_type].constantize.find(params[:id])
-        acs   = @tool.academic_allocations.pluck(:id)
+        acs   = @tool.academic_allocations
+        eq_acs = AcademicAllocation.where(equivalent_academic_allocation_id: acs.map(&:id))
+        @equalities << eq_acs.collect{|ac| ac.academic_tool_type.constantize.find(ac.academic_tool_id)}
+        @equalities = @equalities.flatten.compact.uniq
 
-        acs.each do |ac|
-          @equalities << ac.academic_tool_type.constantize.joins(:academic_allocations).where(academic_allocations: {equivalent_academic_allocation_id: ac.id})
-        end
-
-
-        eq_id = @tool.academic_allocations.pluck(:equivalent_academic_allocation_id).first
-        @equal_to = ac.academic_tool_type.constantize.joins(:academic_allocations).where(academic_allocations: {id: eq_id})
+        eq_id = acs.map(&:equivalent_academic_allocation_id).first
+        ac = AcademicAllocation.find(eq_id) unless eq_id.blank?
+        @equal_to = ac.academic_tool_type.constantize.joins(:academic_allocations).where(academic_allocations: {id: eq_id}).first rescue []
       end
     else
-
       @tool = params[:tool_type].constantize.joins(:academic_allocations).where(academic_allocations: {id: params[:ac_id]}).first
 
       eq_acs = AcademicAllocation.where(equivalent_academic_allocation_id: params[:ac_id])
@@ -39,7 +37,8 @@ class ToolsController < ApplicationController
       eq_ac = AcademicAllocation.find(ac.equivalent_academic_allocation_id) rescue nil
       @equal_to = eq_ac.academic_tool_type.constantize.find(eq_ac.try(:academic_tool_id)) unless eq_ac.blank?
     end
-
+  rescue => error
+    Rails.logger.info "[APP] [ERROR] [#{Time.now}] [#{error}] params: #{params.as_json}"
   end
 
 end
