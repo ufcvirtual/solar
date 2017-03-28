@@ -50,6 +50,7 @@ $disabled_color: #B4B3B7;
 $language_border_color: #cccccc;
 $language_background_color: #e7e9eb;
 $event_recess_holiday_background: #E3E3E3;
+$event_recess_holiday_border: #E3E3E3;
 $btn_border_light_gray: #e6e6e6;
 $btn_border_dark_gray: #bfbfbf;
 $btn_border_botton_color: #b3b3b3;
@@ -131,6 +132,7 @@ $color_contrast_text: #dca727;
 // $color_contrast_text: #916E19;
 $steps_list_box_shadow: #f0cf65;
 $event_webconferencelesson_background: #F5DA81;
+$event_webconferencelesson_border: #F5DA81;
 $mysolar_chat_barra_background: #fbb03b;
 $btn_initial_file_color_final: #f9c143;
 $label_selected_border_color: #F9E993;
@@ -139,14 +141,21 @@ $receiver_already_added_color: #FF9900;
 
 // Cores Hipster
 $event_assignment_background: #FCEBCA;
+$event_assignment_border: #FCEBCA;
 $event_chat_background: #A7C1F0;
+$event_chat_border: #A7C1F0;
 $event_presential_test_background: #F5D5EF;
+$event_presential_test_border: #F5D5EF;
 $lesson_notes_background: #FFC0CB;
 $event_presential_meeting_background: #FFD9E0;
+$event_presential_meeting_border: #FFD9E0;
 $btn_orange: #ffe6cc;
 $event_lessons_background: #A9F0F7;
+$event_lessons_border: #A9F0F7;
 $event_discussion_background: #CAFCCC;
+$event_discussion_border: #CAFCCC;
 $event_other_background: #CCCCFF;
+$event_other_border: #CCCCFF;
 $alert_color: #660000;
 $forum_post_background_blue: #b0cce8;
 
@@ -206,3 +215,8 @@ $lesson_header_background: $current_color;
 $not_started_color: $color_almost_gray;
 $period_ended_color: $color_almost_gray;
 $score_table_head_color: $color_little_dark_gray;
+
+// Cores exclusivas
+
+$exclusive_background_color: false;
+$exclusive_font_color: false;
