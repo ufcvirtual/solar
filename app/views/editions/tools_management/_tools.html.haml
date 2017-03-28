@@ -52,7 +52,7 @@
                 %td.working_hours
                   = acf.text_field :max_working_hours, label: false, disabled: !ac.frequency || ac.final_exam
                   = t('editions.tools.wh')
-                - select_tools = AcademicAllocation.where(id: (tools_ids - ac.acs), allocation_tag_id: ats_ids.map(&:to_i)).select('DISTINCT academic_tool_id, academic_tool_type').select('id')
+                - select_tools = AcademicAllocation.where(id: (tools_ids - ac.acs), allocation_tag_id: ats_ids.map(&:to_i)).select('DISTINCT ON(academic_tool_id, academic_tool_type) id, academic_tool_id, academic_tool_type')
                 %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_type_name, {include_blank: true}, {disabled: (!ac.evaluative && !ac.frequency) || ac.final_exam})
                 = acf.hidden_field "allocation_tags_ids", value: ats_ids.map(&:to_i)
                 = acf.hidden_field "acs", value: ac.acs.map(&:to_i)
