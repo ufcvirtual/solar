@@ -5,8 +5,8 @@
 
   #login-form
     = form_for(resource_name) do |f|
-      .form-field= f.text_field :login, id: "login-input", placeholder: t(:user_place_holder), tabindex: "1"
-      .form-field= f.password_field :password, id: "password", placeholder: t(:password_place_holder), tabindex: "2"
+      .form-field= f.text_field :login, id: "login-input", placeholder: t(:user_place_holder), tabindex: "1", :'aria-label' => t(:user_place_holder)
+      .form-field= f.password_field :password, id: "password", placeholder: t(:password_place_holder), tabindex: "2", :'aria-label' => t(:password_place_holder)
       = f.submit t(:signin), id: "submit-login", tabindex: "3"
     #link
       %a#link-password{href: new_user_password_path}= t(:pwd_recovery_subtitle)
@@ -14,7 +14,7 @@
     = form_tag(verify_cpf_users_path, method: :get) do
       = hidden_field_tag :locale, params[:locale]
       .form-field
-        %input#cpf-register{name: "cpf", placeholder: t(:cpf_place_holder), type: "text"}/
+        %input#cpf-register{name: "cpf", placeholder: t(:cpf_place_holder), type: "text", :'aria-label' => t(:cpf_place_holder)}/
       = submit_tag(t(:verify), id: "submit-cpf")
 
   .flash_message_wrapper
