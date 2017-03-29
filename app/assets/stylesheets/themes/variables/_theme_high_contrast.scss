@@ -38,7 +38,6 @@ $lightbox_dialog_title_color: $high_contrast_font_color;
 $mysolar_top_submenu_label_selected: $color_black;
 $color_gray_text: $lightbox_dialog_title_color;
 
-
 // Cores escuras
 
 
@@ -52,7 +51,6 @@ $background_light_beige: $high_contrast_background_color;
 $background_dark_gray: $high_contrast_background_color;
 $event_assignment_background: $high_contrast_background_color;
 $event_chat_background: $high_contrast_background_color;
-
 
 
 // Cinza com letras brancas
@@ -176,8 +174,6 @@ $forum_post_background_blue: #b0cce8;
 // Cores modificadas por funções do Sass
 
 $color_main_medium: lighten(desaturate($color_main, 70%),30%);
-$color_main_light_highlight: adjust_color($color_main, $lightness: 73%);
-
 
 hr {
   border-top-color: $border_color;
@@ -218,7 +214,7 @@ $table_file_data_info_color: $color_almost_gray;
 $table_data_line_title: $score_tbody_link;
 $table_sort_border_color: $step_list_color;
 $webconference_table_body_color: $speech2text_color;
-$webconference_access_profile_color: $color_almost_gray;
+
 
 // Cores Enxugadas
 $label_disabled_color: $tutorials_description_color;
@@ -239,4 +235,9 @@ $exclusive_font_color: $high_contrast_font_color;
 
 
 // Emanoel
+
+
+//Danniel
+$webconference_access_profile_color: $high_contrast_font_color;
+$color_main_light_highlight: $high_contrast_background_color;
 
