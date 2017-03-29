@@ -14,15 +14,15 @@
         %table.tb_list.list_exams{:summary=> t("exams.list.summary_evaluative")}
           %thead
             %tr.lines
-              %th#ex_eva_exa{style: "width: 30%;"}= t(:exam, :scope => [:scores, :info])
-              %th#ex_eva_dat.center.date{style: "width: 30%;"}= t(:date_range, :scope => [:scores, :info])
-              %th#ex_eva_sit.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
-              %th#ex_eva_gra.center{style: "width: 2%;"}= t(:grade, :scope => [:scores, :info])
-              %th#ex_eva_bla.center.no_sort{style: "width: 2%;"}
+              %th#ex_eva_exa_evaluative{style: "width: 30%;"}= t(:exam, :scope => [:scores, :info])
+              %th#ex_eva_dat_evaluative.center.date{style: "width: 30%;"}= t(:date_range, :scope => [:scores, :info])
+              %th#ex_eva_sit_evaluative.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
+              %th#ex_eva_gra_evaluative.center{style: "width: 2%;"}= t(:grade, :scope => [:scores, :info])
+              %th#ex_eva_bla_evaluative.center.no_sort{style: "width: 2%;"}
           %tbody
             - @exams_evaluative.each do |exam|
               %tr.lines
-                %td{align: "left", headers: "ex_eva_exa"}
+                %td{align: "left", headers: "ex_eva_exa_evaluative"}
                   - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     - if is_user
                       .title= exam.name
@@ -35,7 +35,7 @@
                         |
                         = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), class: 'open_exam', id: 'open-result'
                   - elsif is_user
-                    = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', id: 'open-exam'
+                    = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam'
                   - else
                     = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam' 
                     
@@ -60,13 +60,13 @@
                         %i.icon-arrow-down-triangle
                       .dropdown.dropdown-tip{id: "dropdown_eq_1_#{exam.id}"}
                         %ul{ class: 'dropdown-menu' }
-                %td.center{headers: "ex_eva_dat"}
+                %td.center{headers: "ex_eva_dat_evaluative"}
                   %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
                   %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
-                %td.center.situation{headers: "ex_eva_sit"}
+                %td.center.situation{headers: "ex_eva_sit_evaluative"}
                   %div{class: "#{exam.situation}"}= I18n.t(exam.situation, :scope => [:scores, :situation])
-                %td.center.grade{headers: "ex_eva_gra"}= exam.grade
-                %td{headers: "ex_eva_bla"}
+                %td.center.grade{headers: "ex_eva_gra_evaluative"}= exam.grade
+                %td{headers: "ex_eva_bla_evaluative"}
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation))
                   %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate')
 
@@ -80,16 +80,16 @@
         %table.tb_list.list_exams{:summary=> t("exams.list.summary_frequency")}
           %thead
             %tr.lines
-              %th#ex_eva_exa{style: "width: 30%;"}= t(:exam, :scope => [:scores, :info])
-              %th#ex_eva_dat.center.date{style: "width: 30%;"}= t(:date_range, :scope => [:scores, :info])
-              %th#ex_eva_sit.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
-              %th#ex_eva_gra.center{style: "width: 2%;"}= t(:grade, :scope => [:scores, :info])
-              %th#ex_eva_bla.center.no_sort{style: "width: 2%;"}
-              %th#ex_eva_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
+              %th#ex_eva_exa_frequency{style: "width: 30%;"}= t(:exam, :scope => [:scores, :info])
+              %th#ex_eva_dat_frequency.center.date{style: "width: 30%;"}= t(:date_range, :scope => [:scores, :info])
+              %th#ex_eva_sit_frequency.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
+              %th#ex_eva_gra_frequency.center{style: "width: 2%;"}= t(:grade, :scope => [:scores, :info])
+              %th#ex_eva_bla_frequency.center.no_sort{style: "width: 2%;"}
+              %th#ex_eva_aft_frequency.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
           %tbody
             - @exams_frequency.each do |exam|
               %tr.lines
-                %td{align: "left", headers: "ex_eva_exa"}
+                %td{align: "left", headers: "ex_eva_exa_frequency"}
                   - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     - if is_user
                       .title= exam.name
@@ -102,7 +102,7 @@
                         |
                         = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), class: 'open_exam', id: 'open-result'
                   - elsif is_user
-                    = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', id: 'open-exam'
+                    = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam'
                   - else
                     = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
                   .description
@@ -126,13 +126,13 @@
                         %i.icon-arrow-down-triangle
                       .dropdown.dropdown-tip{id: "dropdown_eq_2_#{exam.id}"}
                         %ul{ class: 'dropdown-menu' }
-                %td.center{headers: "ex_eva_dat"}
+                %td.center{headers: "ex_eva_dat_frequency"}
                   %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
                   %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
-                %td.center.situation{headers: "ex_eva_sit"}
+                %td.center.situation{headers: "ex_eva_sit_frequency"}
                   %div{class: "#{exam.situation}"}= I18n.t(exam.situation, :scope => [:scores, :situation])
-                %td.center{headers: "ex_eva_gra"}= exam.working_hours
-                %td.center{headers: "ex_eva_bla"}
+                %td.center{headers: "ex_eva_gra_frequency"}= exam.working_hours
+                %td.center{headers: "ex_eva_bla_frequency"}
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake'].include?(exam.situation))
                   %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate')
                 %td.center{headers: "ex_eva_aft"}=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
@@ -168,7 +168,7 @@
                         = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), class: 'open_exam', id: 'open-result'
                           
                   - elsif is_user
-                    = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', id: 'open-exam'
+                    = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam'
                   - else
                     = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
                   .description
