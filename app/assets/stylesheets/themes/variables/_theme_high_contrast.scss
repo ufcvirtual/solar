@@ -8,14 +8,33 @@ $high_contrast_background_color: #000;
 $color_main: $high_contrast_font_color;
 $color_main_text: $high_contrast_font_color;
 
+//
+// Emanoel
+//
+
+$background_light_green: #F5FFEC;
+
+
+$color_black_alert: $high_contrast_font_color;
+$color_white_alert: $high_contrast_background_color;
+
+// alert
+$text_alert_color: #c00;
+
+// allocations
+$color_light_gray: #669;
+
+// assignment_comments
+$remove_file_color: #c00;
+
+
 // Variables imported from Theme Blue
 
 // Tons claros
-$color_white: $high_contrast_font_color;
+
 $color_black: $high_contrast_link_color;
 $background_light_red: #fff6f6;
-$background_light_green: #F5FFE3;
-$blue_warning_background: #E9F3FF;
+$color_white: $high_contrast_font_color;
 $label_selected_background: #FDFBE9;
 $warning_background: #FFFFDE;
 $table_line_hover: #fffbd1;
@@ -57,7 +76,7 @@ $event_chat_background: $high_contrast_background_color;
 $color_gray: #808080;
 
 $color_almost_gray: #666666;
-$color_light_gray: #888888;
+
 $color_disabled: #777777;
 $lesson_files_select_all_color: #8D8D8D;
 $portfolio_block_wrapper_groups: #929792;
@@ -104,10 +123,11 @@ $participants_list_none_background: #f2f6f6;
 $label_disabled_background: #F7F7F7;
 $form_select_disabled_background: #F2F2F2;
 $contacts_edition_block_content_background: #F8FBFE;
+$blue_warning_background: $high_contrast_background_color;
 
 // Tons azuis
 $color_main: #003E7A;
-
+$current_color: #009;
 $sent_color: #2900c2;
 $btn_border_dark_blue: #002a80;
 $btn_border_light_blue: #0044cc;
@@ -116,7 +136,7 @@ $btn_main_color: #005cc0;
 
 $facebook_main_color: #3b5c9a;
 $slide_settings_counter_color: #3b5e9a;
-$current_color: #214684;
+
 $block_content_background: #0074f3;
 $score_tbody_link: #21578B;
 
@@ -126,9 +146,9 @@ $color_red: #CE1A15;
 $not_sent_color: #e12227;
 $without_group_color: #B15759;
 $error_color: #E03838;
-$text_alert_color: #CD4444;
+
 $btn_caution_color: #ee5f5b;
-$remove_file_color: #DC5869;
+
 $edition_color: #D5031C;
 $btn_warning_background: #942a25;
 $notice_exams_color: #b30602;
@@ -228,13 +248,11 @@ $score_table_head_color: $color_little_dark_gray;
 $color_contrast_light: $high_contrast_background_color;
 $color_main_light: $high_contrast_background_color;
 
-// Cores exclusivas
+// Cores exclusivas do high contrast
 
 $exclusive_background_color: $high_contrast_background_color;
 $exclusive_font_color: $high_contrast_font_color;
 
-
-// Emanoel
 
 
 //Danniel
@@ -251,3 +269,5 @@ $color_gray_text: $high_contrast_font_color;
 $table_border_color: $high_contrast_border_color;
 $color_main_light: $high_contrast_background_color;
 $table_border_color: $high_contrast_border_color;
+
+$test_background_color: false;

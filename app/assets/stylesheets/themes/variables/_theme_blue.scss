@@ -1,5 +1,6 @@
 // Tons claros
 $color_white: #ffffff;
+
 $background_light_beige: #fefae6;
 $background_light_red: #fff6f6;
 $background_light_green: #F5FFE3;
@@ -216,7 +217,12 @@ $not_started_color: $color_almost_gray;
 $period_ended_color: $color_almost_gray;
 $score_table_head_color: $color_little_dark_gray;
 
-// Cores exclusivas
+// Cores exclusivas do high contrast
 
 $exclusive_background_color: false;
 $exclusive_font_color: false;
+
+// Emanoel
+
+$color_black_alert: $color_black;
+$color_white_alert: $color_white;
