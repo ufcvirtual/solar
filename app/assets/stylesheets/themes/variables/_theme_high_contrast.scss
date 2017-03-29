@@ -41,7 +41,7 @@ $color_gray_text: $lightbox_dialog_title_color;
 // Cores escuras
 
 
-$font_color: #333333;
+$font_color: $high_contrast_background_color;
 $questions_audios_background_firefox: #1f1e1f;
 $calendar_link_color: #370101;
 $background_gray: $high_contrast_background_color;
@@ -238,6 +238,7 @@ $exclusive_font_color: $high_contrast_font_color;
 
 
 //Danniel
+
+//webconference
 $webconference_access_profile_color: $high_contrast_font_color;
 $color_main_light_highlight: $high_contrast_background_color;
-
