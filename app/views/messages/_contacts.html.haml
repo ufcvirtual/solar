@@ -17,7 +17,7 @@
       %h3.selected= t('.to')
       .contacts-selected
         - [@reply_to].flatten.compact.each do |contact|
-          .contact{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume], "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-selected" => true
+          .contact{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume], "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email])
 
     .block_buttons
       .right
@@ -26,34 +26,43 @@
 
 :javascript
   
-  function add_contact(link, append, html){
-    var user = "<div class='contact'><a data-at='"+$(link).data('at')+"' data-user-id='"+$(link).data("user-id")+"' href='#' onclick='remove_contact(this); return false;'>"+$(link).html()+"</a></div>";
+  function add_contact(link, append, html, u_name, u_email){
 
+    var msg_arial_label = "#{t('messages.users.user_remove_alt', name: 'u_name', email: 'u_email')}".replace(/u_name/g, u_name).replace('u_email', u_email);
+
+    var user = "<div class='contact'><a aria-label='"+msg_arial_label+"' data-at='"+$(link).data('at')+"' data-user-id='"+$(link).data("user-id")+"' href='#' onclick='remove_contact(this, \""+u_name+"\", \""+u_email+"\"); return false;'>"+$(link).html()+"</a></div>";
+    
+  
     if (!!$('.contacts-selected .contact a[data-user-id="' + $(link).data("user-id") + '"]').length){
       var added_user_msg = $(link).siblings(".already_added");
       if(!added_user_msg.length){
         var already_added_msg = "<div class='already_added'>#{t('messages.already_added')}</div>";
         $(already_added_msg).appendTo($(link).parent()).delay(1000).fadeOut();
-      }else
+      }else{
         $(added_user_msg).first().show().delay(1000).fadeOut();
+      }
       return false; // usuario já foi selecionado
-    }else
+    }else{
+      $(link).parent().text("#{t('messages.sucess_added')}").click().delay(2000).fadeOut();
       $(link).parent().remove();
+    }
 
-    if (!append) // se não for pra dar o append
+    if (!append){ // se não for pra dar o append
       html.push(user);
-    else{
+    }else{
       $(".contacts-selected").prepend(user);
       add_all_message();
     }
   }
 
-  function remove_contact(link){
-    var user = "<div class='contact'><a data-at='"+$(link).data('at')+"' data-user-id='"+$(link).data("user-id")+"' href='#' onclick='add_contact(this, true); return false;'>"+$(link).html()+"</a></div>";
+  function remove_contact(link, u_name, u_email){
+    var msg_arial_label = "#{t('messages.users.user_alt', name: 'u_name', email: 'u_email')}".replace(/u_name/g, u_name).replace('u_email', u_email);
+    var user = "<div class='contact'><a aria-label = '"+msg_arial_label+"' data-at='"+$(link).data('at')+"' data-user-id='"+$(link).data("user-id")+"' href='#' onclick='add_contact(this, true, null, \""+u_name+"\", \""+u_email+"\"); return false;'>"+$(link).html()+"</a></div>";
 
     if (!$('.contacts-list .contact a[data-user-id="' + $(link).data("user-id") + '"]').length)
       $(".contacts-list .users_at_"+$(link).data("at")).append(user);
 
+    $(link).parent().text("#{t('messages.sucess_removed')}").click().delay(2000).fadeOut();  
     $(link).parent().remove();
     add_all_message();
   }

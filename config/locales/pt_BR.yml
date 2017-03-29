@@ -2443,6 +2443,7 @@ pt_BR:
       semester: "Semestre"
       offer: "Oferta"
       group: "Turma"
+      choice: Escolha
     content:
       type: "Tipo*"
       course: "Curso*"
@@ -2814,6 +2815,8 @@ pt_BR:
     mark_as_read: "Marcar mensagens selecionadas como lidas"
     mark_as_unread: "Marcar mensagens selecionadas como não lidas"
     already_added: já adicionado
+    sucess_added: Adicionado com sucesso
+    sucess_removed: Removido com sucesso
     none: "Nenhuma mensagem encontrada"
     no_new: "Sem novas mensagens"
     no_subject: "(sem assunto)"
@@ -2833,6 +2836,7 @@ pt_BR:
       no_user_found: Nenhum usuário encontrado
       add_all_alt: Clique para adicionar todos os usuários à lista de destinatários
       user_alt: "%{name} (Clique para adicionar o usuário %{name} de email %{email} à lista de destinatários)"
+      user_remove_alt: "%{name} (Clique para remover o usuário %{name} de email %{email} da lista de destinatários)"
     errors:
       recipients: "Uma mensagem deve possuir, no mínimo, 1 destinatário."
       permission: Você não tem acesso aos dados informados.
@@ -3230,6 +3234,7 @@ pt_BR:
       curriculum_unit_working_hours: '(Carga horária da disciplina: %{wh}h/a)'
       new_after_evaluation: Houve alteração no conteúdo enviado após avaliação
       print_pdf: Gerar PDF
+      select_group: Selecionar Turma
     info:
       assignments: Trabalhos
       date_range: Período

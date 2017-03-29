@@ -33,11 +33,14 @@
 
             - if @files
               .list_files_to_send.original_files
-                - @files.each do |file|
-                  .attach
-                    = hidden_field :message, :original_files, value: file.id, multiple: true
-                    = link_to ['-', file.attachment_file_name].join, download_file_messages_path(file_id: file.id)
-                    = link_to content_tag(:i, nil, class: 'icon-minus-square'), '#', remote: true, class: 'destroy_original_file', :'aria-label' => t('.remove_attachment', file: file.attachment_file_name , size: file.attachment_file_size), :'data-tooltip' => t('.remove_attachment', file: file.attachment_file_name , size: file.attachment_file_size)
+                %ul
+                  - @files.each do |file|
+                    %li
+                      .attach
+                        = hidden_field :message, :original_files, value: file.id, multiple: true
+                        = link_to ['-', file.attachment_file_name].join, download_file_messages_path(file_id: file.id)
+                        = link_to content_tag(:i, nil, class: 'icon-minus-square'), '#', remote: true, class: 'destroy_original_file', :'aria-label' => t('.remove_attachment', file: file.attachment_file_name , size: file.attachment_file_size), :'data-tooltip' => t('.remove_attachment', file: file.attachment_file_name , size: file.attachment_file_size)
+                    %br
 
             .invisible
               = f.simple_fields_for :files do |f_file|
@@ -50,7 +53,7 @@
 
 
     #div_new_message
-      .visuallyhidden= link_to t('.go_to_ckeditor'), '#', onclick: "focus_element('#cke_1_contents');", onkeydown: 'click_on_keypress(event, this);'
+      .visuallyhidden= link_to t('.go_to_ckeditor'), '#', onclick: "CKEDITOR.instances['message_content'].focus();", onkeydown: "CKEDITOR.instances['message_content'].focus();"
       = f.input :content, label: false, as: :ckeditor
 
     = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'message_content', number: '2', field: t('.content_speech')}
@@ -95,6 +98,11 @@
       $(this).closest('div.attach').slideUp().remove();
     });
   });
+
+  function focus_editor(){ 
+    CKEDITOR.instances['message_content'].focus();
+
+  }
 
   // add files
   jQuery(function($) {
@@ -147,11 +155,17 @@
 
         var new_file_name = "<li class='input files file_attached'>" + this.files[0].name + "(" + file_size + ") <a href='#' aria-label='"+remove_file_label+" data-dropdown='"+remove_file_label+"' onkeydown='click_on_keypress(event, this);' class='remove-file'><i class='icon-minus-square'></i></i> </span> </li>";
         $(".files_to_send").append(new_file_name);
-
+        setTimeout(function() {
+          $("ul.files_to_send").click();
+        }, 100);
+          
         $('.remove-file:last').click(function(){
           $(this).closest('.files.file_attached').slideUp().remove();
           $(newfile).closest('.duplicatable_nested_form').slideUp().remove();
-          focus_element('ul.files_to_send');
+          //focus_element('ul.files_to_send');
+          setTimeout(function() {
+            $("ul.files_to_send").click();
+          }, 100);
         });
       });
 
@@ -160,7 +174,6 @@
   
   function open_contacts_selection(link){
     var url = $(link).data('url').replace('reply_params', $("#message_contacts").val().replace( /\s/g, ""));
-    console.log(url);
     $(link).call_fancybox({
       href: url,
       open: true

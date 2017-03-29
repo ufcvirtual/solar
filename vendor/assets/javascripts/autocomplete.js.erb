@@ -44,18 +44,37 @@
       _wasOpen: false,
 
       _create: function() {
-
          var self = this,
              select = this.element.hide(),
              input, wrapper;
-
+         var id_element = this.element.attr('id');
          select.prop('selectedIndex', -1);
+         var aria_label = null;
+        switch (id_element) {
+          case 'curriculum_unit_type':
+            aria_label = "<%= I18n.t('editions.content_filter.type') %>";
+            break;
+          case 'course':
+            aria_label = "<%= I18n.t('editions.content_filter.course') %>";
+            break; 
+          case 'curriculum_unit':
+            aria_label = "<%= I18n.t('editions.content_filter.curriculum_unit') %>";
+            break;
+          case 'contacts_type':
+            aria_label = "<%= I18n.t('messages.contacts.contacts') %>";
+            break;  
+          default: // semester
+            aria_label = "<%= I18n.t('editions.content_filter.semester') %>";
+            break;
+        }
+         
 
          input = this.uiInput =
                   $( "<input />" )
                       .insertAfter(select)
                       .addClass("ui-widget-content ui-combobox-input")
-                      .attr("id", "autocomplete-input");
+                      .attr("id", "autocomplete-input-"+id_element)
+                      .attr("aria-label", aria_label);
 
          wrapper = this.uiCombo =
             input.wrap( '<div>' )

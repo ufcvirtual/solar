@@ -42,7 +42,7 @@
           - @tools.collect{|key, value| value}.flatten.each do |tool|
             - acs = tool.ids.delete('{}').split(',')
             - tool['acs'] = acs.uniq
-            - tools_ids << acs.first
+            - tools_ids << acs
           - tools_ids = tools_ids.flatten.uniq
 
         - @tools.each do |key, value|

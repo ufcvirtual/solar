@@ -43,8 +43,10 @@
     function search_messages(){
       $.get($('#search_messages').data('url'), { subject: $('#subject').val(), user: $('#user').val(), box: "#{@box}" }, function(data){
         $('.messages_list').html(data);
-        if(!!$('table').length)
+        if(!!$('table').length){
+          $('#ckb_all').nice_checkbox();
           focus_element($('table'));
+        }
         else
           focus_element($('.text_none.empty_message'));
       });
