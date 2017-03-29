@@ -1,17 +1,17 @@
 // Mensagens flash e alertas
 
-.alert {
-  color: #c00;
-}
+// .alert {
+//   color: #c00;
+// }
 
-.notice {
-  color: #063;
-}
-
-.warning {
-  color: $high_contrast_link_color;
-}
-
+// .notice {
+//   color: #063;
+// }
+//
+// .warning {
+//   color: $high_contrast_link_color;
+// }
+//
 #flash_message {
   border-color: $high_contrast_border_color;
   &.notice {
