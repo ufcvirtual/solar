@@ -18,6 +18,7 @@ button.btn {
     float:right;
     width: 319px;
     margin-top: 16px;
+    list-style-type: none;
 }
 
 #screen-login {

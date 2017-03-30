@@ -1,7 +1,13 @@
 @import "compass";
 @import "fonts/fonts";
 @import "fonts/icons";
+
+@import "themes/variables/theme_blue";
+
+@import "jquery-ui";
 @import "partials/panels";
+@import "partials/calendar";
+
 
 // Variáveis
 
@@ -850,6 +856,7 @@ select option{
 #bar-brazil .bar ul {
   float:right;
   width: 319px;
+  list-style-type: none;
 }
 
 #bar-brazil .bar ul .li {

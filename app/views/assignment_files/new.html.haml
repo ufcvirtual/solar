@@ -12,6 +12,13 @@
       = button_tag t(:save), class: "btn btn_main save_file", type: :button
 
 :javascript
+  $(document).on("keydown", function() {
+    var keynum = event.which || event.keyCode;
+    if(keynum == 27){
+      $.fancybox.close();
+    }
+  });
+
   $(function(){
     $(".save_file").click(function(){
       $('form#new_assignment_file').serialize_and_submit({

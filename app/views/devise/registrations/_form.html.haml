@@ -23,15 +23,14 @@
         = f.error_notification
         #personal-data.form-panel
           .field
-            = f.input :name
+            = f.input :name, :input_html => { autofocus: true}
           #inputCpf.field
             - if params[:cpf].present?
-              = f.input :cpf, readonly: true, input_html: {value: params[:cpf]}
+              = f.input :cpf, readonly: true, input_html: {value: params[:cpf], required: true}
             - else
               = f.input :cpf
           #birthdate.field
-            = f.input :birthdate do
-              = f.date_select :birthdate, start_year: Time.now.year - 10, end_year: 1900
+            = f.input :birthdate, as: :string, input_html: {id: 'user_birthdate', value: Date.today, format: :datepicker}
           #gender.field
             = f.input :gender do
               = f.select :gender, ([[t(:m), true], [t(:f), false]])
@@ -46,13 +45,13 @@
           %p.required_info
             = t(:required_fields)
           .buttons
-            %a.next{href: '#'}
+            %a.next{href: '#', onclick: "up_focus('user_nick')", keydown: "up_focus('user_nick')"}
               = t(:registration_next)
 
         #access.form-panel
           .field
             = f.input :nick
-          #login.field
+          #username.field
             = f.input :username
           #password.field
             = f.input :password, required: true
@@ -67,9 +66,9 @@
           %p.required_info
             = t(:required_fields)
           .buttons
-            %a.btn.back{href: "#"}
+            %a.btn.back{href: "#", onclick: "up_focus('user_name')", keydown: "up_focus('user_name')"}
               = t(:registration_previous)
-            %a.btn.next{href: "#"}
+            %a.btn.next{href: "#", onclick: "up_focus('user_address')", keydown: "up_focus('user_address')"}
               = t(:registration_next)
 
         #contact.form-panel
@@ -92,19 +91,19 @@
             = f.input :city
           #cell.contact2.field
             = f.input :telephone
-          #cell.contact2.field
+          #cell1.contact2.field
             = f.input :cell_phone
           .buttons
-            %a.btn.back{href: "#"}
+            %a.btn.back{href: "#", onclick: "up_focus('user_nick')", keydown: "up_focus('user_nick')"}
               = t(:registration_previous)
-            %a.btn.next{href: "#"}
+            %a.btn.next{href: "#", onclick: "up_focus('user_institution')", keydown: "up_focus('user_institution')"}
               = t(:registration_next)
 
         #other.form-panel
           #institution.contact.field
             = f.input :institution
           .buttons
-            %a.btn.back{href: "#"}
+            %a.btn.back{href: "#", onclick: "up_focus('user_address')", keydown: "up_focus('user_address')"}
               = t(:registration_previous)
             %button#complete{type: :submit, :value => t(:registration_done)}
               = t(:registration_done)
@@ -116,3 +115,21 @@
 #cancel
   %a{href: "/"}
     = t(:registration_cancel)
+
+= javascript_include_tag 'jquery.ui.datepicker-pt-BR', 'jquery.ui.datepicker-en-US'
+
+:javascript
+  
+  $('#user_name').focus();
+  $("#user_birthdate").mask("#{I18n.t('date.formats.mask')}");
+
+  $(function(){
+    var options = $.extend($.datepicker.regional["#{I18n.locale.to_s.gsub('_', '-')}"]);
+    $("#user_birthdate").datepicker(options);
+  });
+
+  function up_focus(id){
+    setTimeout(function() {
+      $('#'+id).focus();
+    }, 100);  
+  }
