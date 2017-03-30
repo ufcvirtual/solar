@@ -1,4 +1,4 @@
-%h1= t(:faq_title)
+%h2= t(:faq_title)
 
 .search
   = t('faq.search')
@@ -181,10 +181,10 @@
   .invisible
     %p.title_child_first= raw t('faq.answers.cant_find_faq')  
 
-%h1= t(:video_tutorials)
+%h2= t(:video_tutorials)
 %p.title_child_first=raw t(:video_tutorials_link)
 
-%h1= t('faq.file_tutorials')
+%h2= t('faq.file_tutorials')
 - if current_user.blank?
   %p.title_child_first= link_to t('faq.file_tutorials_title'), '#tutorials', class: 'panel-link'
 - else
