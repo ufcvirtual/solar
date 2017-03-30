@@ -33,6 +33,16 @@ $language_color_base: $high_contrast_link_color;
 $language_background_color: $high_contrast_font_color;
 $language_color_base_choice_language: $high_contrast_background_color;
 
+//buttons
+$btn_border_light_gray: #e6e6e6;
+$btn_border_dark_gray: #bfbfbf;
+$color_white_buttons: $high_contrast_background_color;
+$font_color_buttons: $high_contrast_font_color;
+$btn_main_color: $high_contrast_font_color;
+$btn_border_light_blue: $high_contrast_border_color;
+$btn_border_dark_blue: $high_contrast_border_color;
+$btn_caution_color: $high_contrast_font_color;
+
 // alert
 $color_black_alert: $high_contrast_font_color;
 $color_white_alert: $high_contrast_background_color;
@@ -111,8 +121,8 @@ $search_keyword_inactive_color: #b0b0b0;
 
 
 $event_recess_holiday_background: #E3E3E3;
-$btn_border_light_gray: #e6e6e6;
-$btn_border_dark_gray: #bfbfbf;
+
+
 $btn_border_botton_color: #b3b3b3;
 $datepicker_color: #cfcfcf;
 $complete_border_left_color: #C0C0C0;
@@ -145,10 +155,10 @@ $blue_warning_background: $high_contrast_background_color;
 
 
 $sent_color: #2900c2;
-$btn_border_dark_blue: #002a80;
-$btn_border_light_blue: #0044cc;
+
+
 $steps_list_active_color: #004B81;
-$btn_main_color: #005cc0;
+
 
 $facebook_main_color: #3b5c9a;
 $slide_settings_counter_color: #3b5e9a;
@@ -163,7 +173,7 @@ $not_sent_color: #e12227;
 $without_group_color: #B15759;
 $error_color: #E03838;
 
-$btn_caution_color: #ee5f5b;
+
 
 $edition_color: #D5031C;
 $btn_warning_background: #942a25;

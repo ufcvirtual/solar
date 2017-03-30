@@ -2,9 +2,7 @@
 @import "compass/css3/images";
 @import "compass/css3/box-shadow";
 
-$btn-color: $high_contrast_font_color;
-$btn_main-color: $high_contrast_font_color;
-$btn_caution-color: $high_contrast_font_color;
+
 $btn-orange: $high_contrast_link_color;
 
 .btn, .btn_caution {
@@ -43,9 +41,9 @@ $btn-orange: $high_contrast_link_color;
 .btn_main {
     color: $high_contrast_background_color;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    background: $btn_main-color; /* Old browsers */
-    @include filter-gradient($btn_main-color, darken($btn_main-color, 10%)); /* IE */
-    @include background-image(linear-gradient($btn_main-color, darken($btn_main-color, 15%))); /* CSS3 */
+    background: $btn_main_color; /* Old browsers */
+    @include filter-gradient($btn_main_color, darken($btn_main_color, 10%)); /* IE */
+    @include background-image(linear-gradient($btn_main_color, darken($btn_main_color, 15%))); /* CSS3 */
     background-repeat: repeat-x;
     border-color: $high_contrast_border_color;
 }
@@ -86,8 +84,8 @@ $btn-orange: $high_contrast_link_color;
 .btn_warning.btn_disabled,
 .btn_warning[disabled] {
     color: #ffffff;
-    background-color: darken($btn_caution-color, 20%);
-    *background-color: darken($btn_caution-color, 20%);
+    background-color: darken($btn_caution_color, 20%);
+    *background-color: darken($btn_caution_color, 20%);
 }
 
 .btn_warning:active {

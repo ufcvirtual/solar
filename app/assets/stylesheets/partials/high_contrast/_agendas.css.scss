@@ -1,130 +1,130 @@
-.list_events .day h3{
-  background-color: $high_contrast_background_color;
-  color: $high_contrast_font_color;
-}
+// .list_events .day h3{
+//   background-color: $high_contrast_background_color;
+//   color: $high_contrast_font_color;
+// }
 
-.list_events .day_events{
-  border: solid 1px $high_contrast_border_color;
-}
+// .list_events .day_events{
+//   border: solid 1px $high_contrast_border_color;
+// }
 
-a.fc-event-title{
-  color: $high_contrast_link_color;
-}
+// a.fc-event-title{
+//   color: $high_contrast_link_color;
+// }
 
-.list_events .day.today{
-  border: solid 1px $high_contrast_border_color;
-  background-color: $high_contrast_background_color;
-  h3{
-    background-color: $high_contrast_background_color;
-    border-bottom: solid 1px $high_contrast_link_color;
-    color: $high_contrast_link_color;
-  }
-}
+// .list_events .day.today{
+//   border: solid 1px $high_contrast_border_color;
+//   background-color: $high_contrast_background_color;
+//   h3{
+//     background-color: $high_contrast_background_color;
+//     border-bottom: solid 1px $high_contrast_link_color;
+//     color: $high_contrast_link_color;
+//   }
+// }
 
-.list_events .day_events.today{
-  background-color: $high_contrast_background_color;
-}
+// .list_events .day_events.today{
+//   background-color: $high_contrast_background_color;
+// }
 
-.list_events .line{
-  border-bottom: dashed 1px $high_contrast_border_color;
-}
+// .list_events .line{
+//   border-bottom: dashed 1px $high_contrast_border_color;
+// }
 
-.list_events .line.today{
-  border-bottom: dashed 1px $high_contrast_link_color;
-}
+// .list_events .line.today{
+//   border-bottom: dashed 1px $high_contrast_link_color;
+// }
 
-.list_events .time h2{
-  background-color: $high_contrast_background_color;
-}
+// .list_events .time h2{
+//   background-color: $high_contrast_background_color;
+// }
 
-.fc-event.assignment{
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
-}
-.fc-event.chat{
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
-}
-.fc-event.discussion{
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
-}
-.fc-event.presential_test{
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
-}
-.fc-event.presential_meeting{
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
-}
-.fc-event.recess_holiday{
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
-}
-.fc-event.webconferencelesson{
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
-}
-.fc-event.lessons{
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
-}
-.fc-event.other{
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
-}
+// .fc-event.assignment{
+//   background-color: $high_contrast_background_color;
+//   border-color: $high_contrast_border_color;
+// }
+// .fc-event.chat{
+//   background-color: $high_contrast_background_color;
+//   border-color: $high_contrast_border_color;
+// }
+// .fc-event.discussion{
+//   background-color: $high_contrast_background_color;
+//   border-color: $high_contrast_border_color;
+// }
+// .fc-event.presential_test{
+//   background-color: $high_contrast_background_color;
+//   border-color: $high_contrast_border_color;
+// }
+// .fc-event.presential_meeting{
+//   background-color: $high_contrast_background_color;
+//   border-color: $high_contrast_border_color;
+// }
+// .fc-event.recess_holiday{
+//   background-color: $high_contrast_background_color;
+//   border-color: $high_contrast_border_color;
+// }
+// .fc-event.webconferencelesson{
+//   background-color: $high_contrast_background_color;
+//   border-color: $high_contrast_border_color;
+// }
+// .fc-event.lessons{
+//   background-color: $high_contrast_background_color;
+//   border-color: $high_contrast_border_color;
+// }
+// .fc-event.other{
+//   background-color: $high_contrast_background_color;
+//   border-color: $high_contrast_border_color;
+// }
 
-.fc-event.fc-event-title{
-  color: $high_contrast_font_color;
-}
+// .fc-event.fc-event-title{
+//   color: $high_contrast_font_color;
+// }
 
-.list_events .fc-event.fc-event-title{
-  background-color: $high_contrast_background_color;
-}
+// .list_events .fc-event.fc-event-title{
+//   background-color: $high_contrast_background_color;
+// }
 
-.calendar_schedules .legend{
-  label{
-    color: $high_contrast_font_color;
-  }
-}
+// .calendar_schedules .legend{
+//   label{
+//     color: $high_contrast_font_color;
+//   }
+// }
 
 /* Dropdown */
 
-#calendar {
-  .dropdown-tip{
-    .dropdown-panel{
-        background-color: $high_contrast_background_color;
-      }
-    .event_details_dropdown{
-      h1, h2, h3, h4, .group_label label{
-        background-color: $high_contrast_background_color;
-        color: $high_contrast_font_color;
-      }
-      h2, h3, .group_label label, h3 p{
-        color: $high_contrast_font_color;
-      }
-      .line{
-        border-bottom: solid 1px $high_contrast_background_color;
-      }
-    }
-  }
-}
+// #calendar {
+//   .dropdown-tip{
+//     .dropdown-panel{
+//         background-color: $high_contrast_background_color;
+//       }
+//     .event_details_dropdown{
+//       h1, h2, h3, h4, .group_label label{
+//         background-color: $high_contrast_background_color;
+//         color: $high_contrast_font_color;
+//       }
+//       h2, h3, .group_label label, h3 p{
+//         color: $high_contrast_font_color;
+//       }
+//       .line{
+//         border-bottom: solid 1px $high_contrast_background_color;
+//       }
+//     }
+//   }
+// }
 
 
-.label_info{
-  color: $high_contrast_font_color;
-}
+// .label_info{
+//   color: $high_contrast_font_color;
+// }
 
-/* Lista atual para interagentes */
+// /* Lista atual para interagentes */
 
-.schedule_link_more {
-  color: $high_contrast_font_color;
-}
+// .schedule_link_more {
+//   color: $high_contrast_font_color;
+// }
 
-.agenda_left {
-  background-color: $high_contrast_background_color;
-}
+// .agenda_left {
+//   background-color: $high_contrast_background_color;
+// }
 
-.agenda_ajax {
-  color: $high_contrast_font_color;
-}
+// .agenda_ajax {
+//   color: $high_contrast_font_color;
+// }

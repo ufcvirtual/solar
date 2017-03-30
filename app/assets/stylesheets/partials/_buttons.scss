@@ -38,7 +38,7 @@ input::-moz-focus-inner {
     border-color: rgba($color_black, 0.1) rgba($color_black, 0.1) rgba($color_black, 0.25);
     border-bottom-color: $btn_border_botton_color;
     *zoom: 1;
-    @include box-shadow(rgba($color_white, 0.2) 0 1px 0 inset, rgba($color_white, 0.05) 0 1px 2px inset);
+    @include box-shadow(rgba($color_white, 0.2) 0 1px 0 inset, rgba($color_white_buttons, 0.05) 0 1px 2px inset);
 }
 
 .btn_lightbox,.btn_form{
@@ -137,7 +137,7 @@ input::-moz-focus-inner {
 }
 
 .btn:focus {
-    outline: thin dotted $font_color;
+    outline: thin dotted $font_color_buttons;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;
 }
@@ -158,7 +158,7 @@ input::-moz-focus-inner {
 }
 
 .btn_main {
-    color: $color_white;
+    color: $color_white_buttons;
     text-shadow: 0 -1px 0 rgba($color_black, 0.25);
     background: $btn_main_color; /* Old browsers */
     @include filter-gradient($btn_main_color, darken($btn_main_color, 10%)); /* IE */
@@ -168,7 +168,7 @@ input::-moz-focus-inner {
 }
 
 .btn_main i {
-    color: $color_white;
+    color: $color_white_buttons;
     @include opacity(0.85);
     filter:alpha(opacity=85);
 }
