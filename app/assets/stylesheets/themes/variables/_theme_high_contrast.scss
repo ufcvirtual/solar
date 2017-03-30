@@ -270,4 +270,34 @@ $table_border_color: $high_contrast_border_color;
 $color_main_light: $high_contrast_background_color;
 $table_border_color: $high_contrast_border_color;
 
+//speech2text
+$speech2text_color: $high_contrast_background_color;
+$speech2text_hover_color: $high_contrast_background_color;
+
+//semesters
+$semester_color: $high_contrast_font_color;
+$border_color: $high_contrast_border_color;
+$block_content_text_background: $high_contrast_background_color;
+$color_main: $high_contrast_font_color;
+$color_black: $high_contrast_font_color;
+
+//scores
+$info_color_score: $high_contrast_font_color;
+$color_little_dark_gray: $high_contrast_font_color;
+$color_white_background_score: $high_contrast_background_color;
+$evaluated_color_score: $high_contrast_font_color;
+$sent_color_score: $high_contrast_font_color;
+$not_sent_color_score: $high_contrast_font_color;
+$without_group_color_score: $high_contrast_font_color;
+$score_table_background: $high_contrast_background_color;
+$scores_info_img_box_shadow: $high_contrast_font_color;
+$score_tbody_link: $high_contrast_link_color;
+$score_table_head_color: $high_contrast_link_color;
+$color_little_dark_gray_dropdown_scores: $high_contrast_background_color;
+$color_main_border_score: $high_contrast_border_color;
+$color_main_li_active_score: $high_contrast_background_color;
+$color_white_font_color_score: $high_contrast_font_color;
+
+
+
 $test_background_color: false;
