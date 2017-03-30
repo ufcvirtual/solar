@@ -67,7 +67,7 @@ h3 {
   margin: 0 auto;
   min-height: 99.5%;
   position: relative;
-  background-color: $color_white;
+  background-color: $color_white_base;
 }
 
 /**
@@ -94,15 +94,6 @@ a.link_content_gray {
   color: $color_black;
 }
 
-a.menor {
-  font-size: 8pt;
-  text-decoration: underline;
-}
-
-.more_or_less {
-  text-align: right;
-  display: block;
-}
 
 /**
 * Formulários (inputs, botões, etc)
@@ -114,7 +105,7 @@ select {
   border-style: solid;
   padding-top: 2px;
   /*    min-width: 180px;*/
-  color: $color_almost_black;
+  color: $color_almost_black_base;
   background-color: $color_white;
   border-color: $border_color_another_gray;
 }
@@ -125,7 +116,7 @@ input {
   padding: 5px;
   font-family: 'PT Sans', sans-serif;
   /*    font-size: 13px;*/
-  color: $color_almost_black;
+  color: $color_almost_black_base;
   border-color: $border_color_another_gray;
 }
 
@@ -144,7 +135,7 @@ textarea {
   padding: 5px;
   font-family: 'PT Sans', sans-serif;
   font-size: 10pt;
-  color: $color_almost_black;
+  color: $color_almost_black_base;
   background-color: $color_white;
   border-color: $border_color_another_gray;
 }
@@ -198,7 +189,7 @@ textarea {
 
 .lines.period_ended, .period_ended {
   background-color: $period_ended_background;
-  color: $period_ended_color;
+  color: $period_ended_color_base;
   a {
     color: $period_ended_color;
   }
@@ -229,7 +220,7 @@ textarea {
 }
 
 .link_navigation {
-  color: $current_color;
+  color: $current_color_base;
   text-decoration: none;
   cursor: pointer;
 }
@@ -288,7 +279,7 @@ textarea {
       margin: 0;
 
       a {
-        color: $language_color;
+        color: $language_color_base;
         font-size: 12px;
         text-decoration: none;
       }
@@ -296,7 +287,7 @@ textarea {
 
     li:hover {
       background-color: $language_background_color;
-      color: $language_color;
+      color: $language_color_base_choice_language;
     }
   }
 }

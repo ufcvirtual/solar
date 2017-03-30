@@ -1,6 +1,6 @@
 // Tons claros
 $color_white: #ffffff;
-
+$color_white_base: $color_white;
 $background_light_beige: #fefae6;
 $background_light_red: #fff6f6;
 $background_light_green: #F5FFE3;
@@ -15,7 +15,9 @@ $mysolar_top_submenu_label_selected: $color_white;
 
 // Cores escuras
 $color_black: #000000;
+$color_black_base: $color_black;
 $color_almost_black: #222222;
+$color_almost_black_base: $color_almost_black;
 $font_color: #333333;
 $questions_audios_background_firefox: #1f1e1f;
 $calendar_link_color: #370101;
@@ -95,6 +97,7 @@ $agenda_color: #4b6380;
 $facebook_main_color: #3b5c9a;
 $slide_settings_counter_color: #3b5e9a;
 $current_color: #214684;
+$current_color_base: $current_color;
 $block_content_background: #0074f3;
 // $block_content_background: #0074a0;
 $score_tbody_link: #21578B;
@@ -211,10 +214,13 @@ $webconference_access_profile_color: $color_almost_gray;
 $label_disabled_color: $tutorials_description_color;
 $groups_forms_background: $block_content_background;
 $language_color: $current_color;
+$language_color_base: $language_color;
+$language_color_base_choice_language: $language_color;
 $icon_color: $current_color;
 $lesson_header_background: $current_color;
 $not_started_color: $color_almost_gray;
 $period_ended_color: $color_almost_gray;
+$period_ended_color_base: $period_ended_color;
 $score_table_head_color: $color_little_dark_gray;
 
 // Cores exclusivas do high contrast

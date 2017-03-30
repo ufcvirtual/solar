@@ -14,11 +14,28 @@ $color_main_text: $high_contrast_font_color;
 
 $background_light_green: #F5FFEC;
 
-
-$color_black_alert: $high_contrast_font_color;
-$color_white_alert: $high_contrast_background_color;
+//base
+$body_background: $high_contrast_background_color;
+$color_black: $high_contrast_font_color;
+$color_main: $high_contrast_border_color;
+$color_white_base: $high_contrast_background_color;
+$color_black_base: $high_contrast_link_color;
+$color_almost_black_base: $high_contrast_background_color;
+$color_almost_gray: $high_contrast_link_color;
+$period_ended_background: $high_contrast_background_color;
+$period_ended_color_base: $high_contrast_font_color;
+$current_background: $high_contrast_background_color;
+$current_color: $high_contrast_font_color;
+$current_color_base: $high_contrast_link_color;
+$disabled_color: #966;
+$language_border_color: $high_contrast_border_color;
+$language_color_base: $high_contrast_link_color;
+$language_background_color: $high_contrast_font_color;
+$language_color_base_choice_language: $high_contrast_background_color;
 
 // alert
+$color_black_alert: $high_contrast_font_color;
+$color_white_alert: $high_contrast_background_color;
 $text_alert_color: #c00;
 
 // allocations
@@ -32,7 +49,7 @@ $remove_file_color: #c00;
 
 // Tons claros
 
-$color_black: $high_contrast_link_color;
+
 $background_light_red: #fff6f6;
 $color_white: $high_contrast_font_color;
 $label_selected_background: #FDFBE9;
@@ -75,7 +92,7 @@ $event_chat_background: $high_contrast_background_color;
 // Cinza com letras brancas
 $color_gray: #808080;
 
-$color_almost_gray: #666666;
+
 
 $color_disabled: #777777;
 $lesson_files_select_all_color: #8D8D8D;
@@ -90,9 +107,9 @@ $steps_list_color: #919191;
 $step_list_color: #B4B2B1;
 $contacts_list_border_color: #dddddd;
 $search_keyword_inactive_color: #b0b0b0;
-$disabled_color: #B4B3B7;
-$language_border_color: #cccccc;
-$language_background_color: #e7e9eb;
+
+
+
 $event_recess_holiday_background: #E3E3E3;
 $btn_border_light_gray: #e6e6e6;
 $btn_border_dark_gray: #bfbfbf;
@@ -106,15 +123,14 @@ $label_border_color: #CBCED1;
 $question_image_border_color: #CDD6E3;
 $question_image_legend_background: #CBD7E4;
 $label_disabled_border_color: #dcdcdc;
-$current_background: #E7EDED;
+
 $slide_settings_active_background: #d8dfe9;
 $slide_settings_counter_background: #d7dfea;
 $block_groups_background: #f3f3f3;
 $lesson_area_background: #eeeeee;
 $background_blue: #F5F8FB;
 $agenda_color: $high_contrast_font_color;
-$body_background: #f9f9f9;
-$period_ended_background: #f6f6f6;
+
 $steps_background: #f5f5f5;
 $mysolar_border_color: #EBEBEB;
 $slide_settings_hover_background: #eef3f9;
@@ -126,8 +142,8 @@ $contacts_edition_block_content_background: #F8FBFE;
 $blue_warning_background: $high_contrast_background_color;
 
 // Tons azuis
-$color_main: #003E7A;
-$current_color: #009;
+
+
 $sent_color: #2900c2;
 $btn_border_dark_blue: #002a80;
 $btn_border_light_blue: #0044cc;
@@ -252,6 +268,7 @@ $color_main_light: $high_contrast_background_color;
 
 $exclusive_background_color: $high_contrast_background_color;
 $exclusive_font_color: $high_contrast_font_color;
+$exclusive_assigments_color: #C06;
 
 
 
