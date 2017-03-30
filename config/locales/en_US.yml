@@ -632,7 +632,7 @@ en_US:
   mysolar_suggestions: 'Suggestions for Solar 2.0'
   date_name: Date
   help: "Help"
-  new_window: This link will open a new window
+  new_window: " (This link will open a new window)"
   start_menu: "Begin of menu"
   end_menu: "End of menu"
   tutorials: "Tutorials"

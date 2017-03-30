@@ -773,7 +773,7 @@ pt_BR:
   mysolar_suggestions: 'Sugestões para o Solar 2.0'
   date_name: Data
   help: "Ajuda"
-  new_window: Este link abrirá uma nova janela
+  new_window: " (Este link abrirá uma nova janela)"
 
   start_menu: "Início do menu"
   end_menu: "Fim do menu"
