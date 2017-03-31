@@ -108,7 +108,7 @@ input::-moz-focus-inner {
 }
 
 .btn i {
-    color: $color_black;
+    color: $color_black_buttons;
     @include opacity(0.5);
     filter:alpha(opacity=50);
 }

@@ -36,12 +36,35 @@ $language_color_base_choice_language: $high_contrast_background_color;
 //buttons
 $btn_border_light_gray: #e6e6e6;
 $btn_border_dark_gray: #bfbfbf;
+$color_black_buttons: $high_contrast_background_color;
 $color_white_buttons: $high_contrast_background_color;
 $font_color_buttons: $high_contrast_font_color;
 $btn_main_color: $high_contrast_font_color;
 $btn_border_light_blue: $high_contrast_border_color;
 $btn_border_dark_blue: $high_contrast_border_color;
 $btn_caution_color: $high_contrast_font_color;
+$btn-initial-file-color: $high_contrast_font_color;
+$btn-initial-file-color-final: $high_contrast_font_color;
+$btn_orange: $high_contrast_link_color;
+
+
+//calendar
+
+$color_main_medium: $high_contrast_font_color;
+$color_white_calendar: $high_contrast_background_color;
+$color_black_calendar: $high_contrast_font_color;
+$color_contrast_text_calendar: $high_contrast_background_color;
+$complete_border_left_color: $high_contrast_border_color;
+
+//chat
+$mysolar_chat_barra_background: $high_contrast_background_color;
+$mysolar_chat_color: $high_contrast_border_color;
+$color_white_chat: $high_contrast_background_color;
+$mysolar_chat_color_chat: $high_contrast_background_color;
+
+//chat rooms
+$color_gray_chat_rooms: $high_contrast_border_color;
+$color_white_chat_rooms: $high_contrast_background_color;
 
 // alert
 $color_black_alert: $high_contrast_font_color;
@@ -104,6 +127,7 @@ $color_gray: #808080;
 
 
 
+
 $color_disabled: #777777;
 $lesson_files_select_all_color: #8D8D8D;
 $portfolio_block_wrapper_groups: #929792;
@@ -125,8 +149,8 @@ $event_recess_holiday_background: #E3E3E3;
 
 $btn_border_botton_color: #b3b3b3;
 $datepicker_color: #cfcfcf;
-$complete_border_left_color: #C0C0C0;
-$mysolar_chat_color: #bbbbbb;
+
+
 $border_color_another_gray: $high_contrast_border_color;
 $border_color: $high_contrast_border_color;
 $label_border_color: #CBCED1;
@@ -197,7 +221,7 @@ $color_contrast: $high_contrast_border_color;
 $color_contrast_text: $high_contrast_link_color;
 $steps_list_box_shadow: #f0cf65;
 $event_webconferencelesson_background: #F5DA81;
-$mysolar_chat_barra_background: #fbb03b;
+
 $btn_initial_file_color_final: #f9c143;
 $label_selected_border_color: #F9E993;
 $message_label_background: #F9C153;
@@ -210,7 +234,6 @@ $receiver_already_added_color: #FF9900;
 $event_presential_test_background: #F5D5EF;
 $lesson_notes_background: #FFC0CB;
 $event_presential_meeting_background: #FFD9E0;
-$btn_orange: #ffe6cc;
 $event_lessons_background: #A9F0F7;
 $event_discussion_background: #CAFCCC;
 $event_other_background: #CCCCFF;
@@ -219,7 +242,7 @@ $forum_post_background_blue: #b0cce8;
 
 // Cores modificadas por funções do Sass
 
-$color_main_medium: lighten(desaturate($color_main, 70%),30%);
+
 
 hr {
   border-top-color: $border_color;

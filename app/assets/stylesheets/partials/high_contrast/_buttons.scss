@@ -1,111 +1,116 @@
-@import "compass/css3";
-@import "compass/css3/images";
-@import "compass/css3/box-shadow";
+// @import "compass/css3";
+// @import "compass/css3/images";
+// @import "compass/css3/box-shadow";
 
 
-$btn-orange: $high_contrast_link_color;
 
-.btn, .btn_caution {
-    color: $high_contrast_background_color;
-    text-align: center;
-    text-shadow: 0 1px 1px rgba($high_contrast_font_color, 0.75);
-    vertical-align: middle;
-    cursor: pointer;
-    background-color: $btn-color; /* Old browsers */
-    @include filter-gradient($btn-color, darken($btn-color,7%)); /* IE */
-    @include background-image(linear-gradient($btn-color, darken($btn-color,7%))); /* CSS3 */
-    background-repeat: repeat-x;
-    border: 1px solid $high_contrast_border_color;
-    *border: 1px;
-    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-    border-bottom-color: #b3b3b3;
-    *zoom: 1;
-    @include box-shadow(rgba(255, 255, 255, 0.2) 0 1px 0 inset, rgba(0, 0, 0, 0.05) 0 1px 2px inset);
-}
 
-.btn:hover,
-.btn:focus,
-.btn:active,
-.btn.disabled,
-.btn_disabled,
-.btn[disabled],
-.btn.dropdown-open {
-    background-color: darken($btn-color,7%);
-}
+// .btn, .btn_caution {
+//     color: $high_contrast_background_color;
+//     text-align: center;
+//     text-shadow: 0 1px 1px rgba($high_contrast_font_color, 0.75);
+//     vertical-align: middle;
+//     cursor: pointer;
+//     background-color: $btn-color; /* Old browsers */
+//     @include filter-gradient($btn-color, darken($btn-color,7%)); /* IE */
+//     @include background-image(linear-gradient($btn-color, darken($btn-color,7%))); /* CSS3 */
+//     background-repeat: repeat-x;
+//     border: 1px solid $high_contrast_border_color;
+//     *border: 1px;
+//     border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+//     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+//     border-bottom-color: #b3b3b3;
+//     *zoom: 1;
+//     @include box-shadow(rgba(255, 255, 255, 0.2) 0 1px 0 inset, rgba(0, 0, 0, 0.05) 0 1px 2px inset);
+// }
 
-.btn:focus {
-    outline: thin dotted $high_contrast_font_color;
-}
+// .btn:hover,
+// .btn:focus,
+// .btn:active,
+// .btn.disabled,
+// .btn_disabled,
+// .btn[disabled],
+// .btn.dropdown-open {
+//     background-color: darken($btn-color,7%);
+// }
 
-.btn_main {
-    color: $high_contrast_background_color;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    background: $btn_main_color; /* Old browsers */
-    @include filter-gradient($btn_main_color, darken($btn_main_color, 10%)); /* IE */
-    @include background-image(linear-gradient($btn_main_color, darken($btn_main_color, 15%))); /* CSS3 */
-    background-repeat: repeat-x;
-    border-color: $high_contrast_border_color;
-}
+// .btn:focus {
+//     outline: thin dotted $high_contrast_font_color;
+// }
 
-.btn_main i {
-    color: $high_contrast_background_color !important;
-}
+// .btn_main {
+//     color: $high_contrast_background_color;
+//     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+//     background: $btn_main_color; /* Old browsers */
+//     @include filter-gradient($btn_main_color, darken($btn_main_color, 10%)); /* IE */
+//     @include background-image(linear-gradient($btn_main_color, darken($btn_main_color, 15%))); /* CSS3 */
+//     background-repeat: repeat-x;
+//     border-color: $high_contrast_border_color;
+// }
 
-.btn_main:hover,
-.btn_main:focus,
-.btn_main.active,
-.btn_main.disabled,
-.btn_main.btn_disabled,
-.btn_main[disabled],
-.btn_main.dropdown-open {
-    background-color: desaturate($btn_main-color, 30%);
-    @include background-image(linear-gradient(lighten($btn_main-color, 10%), darken($btn_main-color,10%))); /* CSS3 */
-}
+// .btn_main i {
+//     color: $high_contrast_background_color !important;
+// }
 
-.btn_warning,
-.btn_caution:hover,
-.btn_caution:focus,
-.btn_caution:active {
-    color: #ffffff;
-    background: $btn_caution-color; /* Old browsers */
-    @include filter-gradient($btn_caution-color, darken($btn_caution-color, 20%)); /* IE */
-    @include background-image(linear-gradient($btn_caution-color, darken($btn_caution-color, 20%))); /* CSS3 */
-    background-repeat: repeat-x;
-    border-color: #bd362f #bd362f #802420;
-    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-    text-shadow: none;
-}
+// .btn i {
+//     color: $color_black_buttons;
+//     @include opacity(0.5);
+//     filter:alpha(opacity=50);
+// }
 
-.btn_warning:hover,
-.btn_warning:focus,
-.btn_warning:active,
-.btn_warning.disabled,
-.btn_warning.btn_disabled,
-.btn_warning[disabled] {
-    color: #ffffff;
-    background-color: darken($btn_caution_color, 20%);
-    *background-color: darken($btn_caution_color, 20%);
-}
+// .btn_main:hover,
+// .btn_main:focus,
+// .btn_main.active,
+// .btn_main.disabled,
+// .btn_main.btn_disabled,
+// .btn_main[disabled],
+// .btn_main.dropdown-open {
+//     background-color: desaturate($btn_main-color, 30%);
+//     @include background-image(linear-gradient(lighten($btn_main-color, 10%), darken($btn_main-color,10%))); /* CSS3 */
+// }
 
-.btn_warning:active {
-    background-color: #942a25;
-}
+// .btn_warning,
+// .btn_caution:hover,
+// .btn_caution:focus,
+// .btn_caution:active {
+//     color: #ffffff;
+//     background: $btn_caution-color; /* Old browsers */
+//     @include filter-gradient($btn_caution-color, darken($btn_caution-color, 20%)); /* IE */
+//     @include background-image(linear-gradient($btn_caution-color, darken($btn_caution-color, 20%))); /* CSS3 */
+//     background-repeat: repeat-x;
+//     border-color: #bd362f #bd362f #802420;
+//     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+//     text-shadow: none;
+// }
 
-$btn-initial-file-color: $high_contrast_font_color;
-$btn-initial-file-color-final: $high_contrast_font_color;
-#btn-initial-file {
-    background: $btn-initial-file-color; /* Old browsers */
-    @include filter-gradient($btn-initial-file-color, $btn-initial-file-color-final); /* IE */
-    @include background-image(linear-gradient($btn-initial-file-color, $btn-initial-file-color-final)); /* CSS3 */
-    background-repeat: repeat-x;
-    @include opacity(0.9);
-    filter:alpha(opacity=45);
-}
+// .btn_warning:hover,
+// .btn_warning:focus,
+// .btn_warning:active,
+// .btn_warning.disabled,
+// .btn_warning.btn_disabled,
+// .btn_warning[disabled] {
+//     color: #ffffff;
+//     background-color: darken($btn_caution_color, 20%);
+//     *background-color: darken($btn_caution_color, 20%);
+// }
 
-.btn-orange{
-  background: $btn-orange;
-  @include filter-gradient($btn-orange, darken($btn-orange, 10%));
-  @include background-image(linear-gradient($btn-orange, darken($btn-orange, 15%)));
-  background-repeat: repeat-x;
-}
+// .btn_warning:active {
+//     background-color: #942a25;
+// }
+
+
+// #btn-initial-file {
+//     background: $btn-initial-file-color; /* Old browsers */
+//     @include filter-gradient($btn-initial-file-color, $btn-initial-file-color-final); /* IE */
+//     @include background-image(linear-gradient($btn-initial-file-color, $btn-initial-file-color-final)); /* CSS3 */
+//     background-repeat: repeat-x;
+//     @include opacity(0.9);
+//     filter:alpha(opacity=45);
+// }
+
+// .btn-orange{
+//   background: $btn-orange;
+//   @include filter-gradient($btn-orange, darken($btn-orange, 10%));
+//   @include background-image(linear-gradient($btn-orange, darken($btn-orange, 15%)));
+//   background-repeat: repeat-x;
+// }
