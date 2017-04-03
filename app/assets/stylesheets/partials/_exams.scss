@@ -126,7 +126,7 @@
         display: block;
         text-align: left;
         width: 600px;
-        background-color: $question_image_legend_background;
+        background-color: $question_image_legend_background_exams;
         margin-bottom: 10px;
         img, .image{
           margin-left: -15px;
@@ -251,11 +251,11 @@
     }
 
     .incorrect{
-      color: $question_iten_incorrect;
+      color: $question_iten_incorrect_exams;
     }
 
     .hit{
-      color: $question_iten_hit_color;
+      color: $question_iten_hit_color_exams;
     }
 
     .audio.legend{

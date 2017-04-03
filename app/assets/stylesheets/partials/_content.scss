@@ -7,7 +7,7 @@
   display: inline-block;
   zoom: 1;
   *display: inline;
-  background-color: $color_white;
+  background-color: $color_white_content;
 }
 
 #block_locale {
@@ -164,7 +164,7 @@ div.legend h1 {
   select {
     font-size: 9pt;
     border: none;
-    color: $color_almost_gray;
+    color: $color_almost_gray_content;
     max-width: 145px;
   }
 }
@@ -196,6 +196,7 @@ div.block_title {
     vertical-align: bottom;
     position: absolute;
     bottom: 2px;
+    color: $exclusive_font_color;
   }
   > .block_right {
     padding-left: 6px;
@@ -236,6 +237,7 @@ div.block_title {
 */
 .block_content {
   background-color: $color_main_light;
+  color: $exclusive_font_color;
   font-size: 10pt;
 
   > block_left {
@@ -378,7 +380,7 @@ form .right_buttons {
   right: 8px;
   bottom: 3px;
   color: $color_white;
-  background-color: $color_main;
+  background-color: $color_main_content;
   border-radius: 4px;
   padding: 0px 2px;
   font-family: bold;
@@ -414,7 +416,7 @@ a.disabled {
     }
     li.active{
       color: $steps_list_active_color;
-      background-color: $color_white;
+      background-color: $color_white_content;
       border-radius: 5px;
       box-shadow: 0px 0px 4px $steps_list_box_shadow;
     }

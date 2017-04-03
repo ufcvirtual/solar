@@ -13,10 +13,10 @@ $color_main_text: $high_contrast_font_color;
 //
 
 $background_light_green: #F5FFEC;
+$color_black: $high_contrast_font_color;
 
 //base
 $body_background: $high_contrast_background_color;
-$color_black: $high_contrast_font_color;
 $color_main: $high_contrast_border_color;
 $color_white_base: $high_contrast_background_color;
 $color_black_base: $high_contrast_link_color;
@@ -66,6 +66,38 @@ $mysolar_chat_color_chat: $high_contrast_background_color;
 $color_gray_chat_rooms: $high_contrast_border_color;
 $color_white_chat_rooms: $high_contrast_background_color;
 
+//content
+
+$color_white_content: $high_contrast_background_color;
+$block_groups_background: $high_contrast_background_color;
+$color_almost_gray_content: $high_contrast_font_color;
+$color_main_content: $high_contrast_background_color;
+$steps_background: $high_contrast_background_color;
+$steps_list_color: $high_contrast_font_color;
+$steps_list_active_color: high_contrast_link_color;
+
+//custom_icons
+
+$color_gray_text_custom_icons: $high_contrast_background_color; 
+
+//digital_classes
+
+$remove_file_color_digital_classes: $high_contrast_font_color;
+
+//editions
+
+$color_gray_editions: $high_contrast_font_color;
+$background_light_red_editions: $high_contrast_background_color;
+$list_exams_btn_color_editions: $high_contrast_border_color;
+$list_exams_exam_box_color_editions: $high_contrast_border_color;
+$color_almost_black_editions: $high_contrast_background_color;
+
+//exams
+
+$question_image_legend_background_exams: $high_contrast_background_color;
+$question_iten_incorrect_exams: $high_contrast_font_color;
+$question_iten_hit_color_exams: $high_contrast_font_color;
+
 // alert
 $color_black_alert: $high_contrast_font_color;
 $color_white_alert: $high_contrast_background_color;
@@ -74,7 +106,7 @@ $text_alert_color: #c00;
 // allocations
 $color_light_gray: #669;
 
-// assignment_comments
+// list_exams_btn_color
 $remove_file_color: #c00;
 
 
@@ -135,7 +167,7 @@ $semester_color: #56585E;
 $speech2text_color: #828282;
 $table_head_line_title: #6B6B6B;
 $btn_box_shadow: #9a9a9a;
-$steps_list_color: #919191;
+
 
 // Cinza com letras escuras
 $step_list_color: #B4B2B1;
@@ -160,12 +192,12 @@ $label_disabled_border_color: #dcdcdc;
 
 $slide_settings_active_background: #d8dfe9;
 $slide_settings_counter_background: #d7dfea;
-$block_groups_background: #f3f3f3;
+
 $lesson_area_background: #eeeeee;
 $background_blue: #F5F8FB;
 $agenda_color: $high_contrast_font_color;
 
-$steps_background: #f5f5f5;
+
 $mysolar_border_color: #EBEBEB;
 $slide_settings_hover_background: #eef3f9;
 $label_disabled_selected_background: #F0F0F0;
@@ -181,7 +213,7 @@ $blue_warning_background: $high_contrast_background_color;
 $sent_color: #2900c2;
 
 
-$steps_list_active_color: #004B81;
+
 
 
 $facebook_main_color: #3b5c9a;
