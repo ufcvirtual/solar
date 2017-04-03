@@ -330,8 +330,7 @@ class AdministrationsController < ApplicationController
 
     raise t(:invalid_file, scope: [:administrations, :import_users]) if (file = params[:batch][:file]).nil?
 
-    delimiter = [';', ','].include?(params[:batch][:delimiter]) ? params[:batch][:delimiter] : ';'
-    result = User.import(file, delimiter)
+    result = User.import(file)
     users = result[:imported]
     @log  = result[:log]
     @count_imported = result[:log][:success].count
@@ -352,7 +351,6 @@ class AdministrationsController < ApplicationController
     render json: { msg: t(:no_permission), alert: t(:no_permission) }, status: :unauthorized
   rescue => error
     error = t('administrations.import_users.other_extension') if error.to_s.include?('UTF-8')
-    error = t('administrations.import_users.other_delimiter') if error.to_s.include?('quoting')
     render json: { success: false, alert: "#{error}" }, status: :unprocessable_entity
   end
 

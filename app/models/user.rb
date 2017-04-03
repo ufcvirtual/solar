@@ -379,15 +379,17 @@ class User < ActiveRecord::Base
   ## import users from csv file ##
   ################################
 
-  def self.import(file, sep = ';')
+  def self.import(file)
+
+    raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) if (File.extname(file.original_filename) == '.csv')
 
     imported = []
     log = { error: [], success: [] }
 
-    spreadsheet = open_spreadsheet(file, sep)
+    spreadsheet = open_spreadsheet(file, ';')
     header      = spreadsheet.row(1)
-
-    raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) unless ((File.extname(file.original_filename) != '.csv') || (header & (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['import_users']['header'].split(';'))).size == header.size)
+    
+    raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) unless (['.xlsx', '.xls', '.odt'].include?(File.extname(file.original_filename)) && (header & (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['import_users']['header'].split(';'))).size == header.size)
 
     (2..spreadsheet.last_row).each do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
@@ -453,10 +455,10 @@ class User < ActiveRecord::Base
           log[:error] << I18n.t(:error, scope: [:administrations, :import_users, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(', '))
         else
           username = user.name.slice(' ')
-          user.username = [username[0].downcase, username[1].downcase].join('_') rescue user.email.split('@')[0]
+          user.username = [username[0].downcase, username[1].downcase].join('_')[0..19] rescue user.email.split('@')[0]
           user.username = user.cpf unless user.valid?
-          user.username = user.email.split('@')[0] unless user.valid?
-          user.username = [user.email.split('@')[0], 'tmp'].join('_') unless user.valid?
+          user.username = user.email.split('@')[0][0..19] unless user.valid?
+          user.username = [user.email.split('@')[0], 'tmp'].join('_')[0..19] unless user.valid?
           if user.save
             log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
             imported << user

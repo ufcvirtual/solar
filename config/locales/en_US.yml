@@ -2058,7 +2058,7 @@ en_US:
       not_specified: Not specified
     import_users:
       wait: "Wait..."
-      warning: "<b>Important:</b> To import users, you can upload .csv, .xls, .xlsx and .ods files. To do so, it's necessary  to follow the template at the sample worksheet (%{link}). Now that only the following fields are mandatory: Nome, Cpf, Email and Gênero. Optional fields: Endereço, País, Estado, Cidade e Instituição.Any column which doesn't exist at the template will be ignored."
+      warning: "<b>Important:</b> To import users, you can upload .xls, .xlsx and .ods files. To do so, it's necessary  to follow the template at the sample worksheet (%{link}). Now that only the following fields are mandatory: Nome, Cpf, Email and Gênero. Optional fields: Endereço, País, Estado, Cidade e Instituição.Any column which doesn't exist at the template will be ignored."
       model: "Download sample"
       registered_success: "%{count} registered users successfully"
       select_file: "File selection"

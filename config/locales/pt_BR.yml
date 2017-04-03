@@ -2268,7 +2268,7 @@ pt_BR:
       not_specified: Não especificado
     import_users:
       wait: "Carregando..."
-      warning: "<b>Importante:</b> Para importação de usuários, podem ser enviados arquivos .csv, .xls, .xlsx e .ods. Para isso, é necessário obedecer ao padrão que consta na planilha exemplo (%{link}), sendo que apenas os seguintes campos são obrigatórios: Nome, Cpf, Email e Gênero. Campos opcionais: Endereço, País, Estado, Cidade e Instituição. Toda coluna que não conste no exemplo será ignorada."
+      warning: "<b>Importante:</b> Para importação de usuários, podem ser enviados arquivos .xls, .xlsx e .ods. Para isso, é necessário obedecer ao padrão que consta na planilha exemplo (%{link}), sendo que apenas os seguintes campos são obrigatórios: Nome, Cpf, Email e Gênero. Campos opcionais: Endereço, País, Estado, Cidade e Instituição. Toda coluna que não conste no exemplo será ignorada."
       model: "Download do modelo"
       registered_success: "%{count} usuários importados com sucesso"
       select_file: "Seleção do arquivo"
