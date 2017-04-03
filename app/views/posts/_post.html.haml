@@ -28,8 +28,8 @@
   %tr
     %td.forum_post_content{ colspan: 2 }
       .forum_post_wrapper{ class: new_post_class }
+        %span.hide.number_post=post.parent_id
         .forum_post_inner_content
-          %span.hide.number_post=post.parent_id
           = sanitize post.content
           
         .forum_post_attachment{id: "ul_#{post.id}"}
