@@ -9,7 +9,6 @@
             .form-inputs
               .inline
                 = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
-                = f.input :delimiter, collection: [';', ','], include_blank: false, required: false, label: t(:delimiter, scope: [:administrations, :import_users])
                 = f.input :file, as: :file, required: false, label: false
                 = button_to_function t(:import, scope: [:administrations, :import_users]), "import_users(); return false;", class: "btn btn_main btn_lightbox", type: "button"
 

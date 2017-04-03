@@ -1,5 +1,5 @@
 .title-warning
-  - link = link_to(t(:model, scope: [:administrations, :import_users]), "/modelo-importacao.csv")
+  - link = link_to(t(:model, scope: [:administrations, :import_users]), "/modelo-importacao.xlsx")
   = raw t(:warning, scope: [:administrations, :import_users], link: link)
 
 = render partial: "editions/content_filter", locals: {list_class: "import-users", url: import_users_form_path, optionals: nil, types: @types, back: false, type_id: nil, permit_offer: false}
