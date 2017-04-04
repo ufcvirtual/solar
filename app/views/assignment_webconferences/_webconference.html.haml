@@ -14,7 +14,7 @@
   - if disabled_by_status
     %td.center.record{headers: "record_web" ,:'data-tooltip' => t('webconferences.list.watch_disabled')}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false' , :'aria-label' => t('webconferences.list.watch_disabled')
   - else
-    %td.center.record{headers: "record_web" ,:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_assignment_webconference_path(webconference.id, academic_allocation_user_id: webconference.academic_allocation_user_id), class: 'record_link', :'aria-label' => t('webconferences.list.watch') + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+    %td.center.record{headers: "record_web" ,:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_assignment_webconference_path(webconference.id, academic_allocation_user_id: webconference.academic_allocation_user_id, group_id: @group.id, student_id: @student_id), class: 'record_link', :'aria-label' => t('webconferences.list.watch') + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
 
   %td.center{headers: "final_web" }
     - if @own_assignment

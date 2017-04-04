@@ -58,8 +58,11 @@ class AssignmentWebconferencesController < ApplicationController
   end
 
   def destroy
+    verify_owner!(@assignment_webconference)
     @assignment_webconference.destroy
     render json: { success: true, notice: t('assignment_webconferences.success.removed') }
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
   rescue => error
     render_json_error(error, 'assignment_webconferences.error')
   end
@@ -78,6 +81,8 @@ class AssignmentWebconferencesController < ApplicationController
     end
 
     render json: { success: true, notice: t('assignment_webconferences.success.record') }
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
   rescue => error
     render_json_error(error, 'assignment_webconferences.error')
   end

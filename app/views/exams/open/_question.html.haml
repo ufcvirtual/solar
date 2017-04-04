@@ -43,16 +43,17 @@
               - if i.object.item_audio?  
                 .audio.legend
                   .audio
-                    %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
+                    %span.hide=t(:audio_suggestions)
+                    %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, preload: 'auto', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
                       %p= t("errors.messages.audio")
                     = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
                     = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
                     - audio_is = 1
                   - if b.object.audio_description?
                     .audio_description
-                      = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'show_questions_description_ico'
-                      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
-                      =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'link_text_audio'
+                      = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);'
+                      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'invisible hide_questions_description_ico', onkeydown: 'click_on_keypress(event, this);'
+                      =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'link_text_audio', onkeydown: 'click_on_keypress(event, this);'
                       #text
                         = raw b.object.audio_description.html_safe
               = raw(coment)
@@ -96,16 +97,17 @@
               - if b.object.item_audio?  
                 .audio.legend
                   .audio
-                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
+                    %span.hide=t(:audio_suggestions)
+                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, preload: 'auto', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
                       %p= t("errors.messages.audio")
                     = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
                     = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
                     - audio_is = 1
                   - if b.object.audio_description?
                     .audio_description
-                      = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'show_questions_description_ico'
-                      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
-                      =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'link_text_audio' 
+                      = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);'
+                      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'invisible hide_questions_description_ico', onkeydown: 'click_on_keypress(event, this);'
+                      =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'link_text_audio' , onkeydown: 'click_on_keypress(event, this);'
                       #text
                         = raw b.object.audio_description.html_safe
              
@@ -155,16 +157,17 @@
               - if b.object.item_audio?  
                 .audio.legend
                   .audio
-                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
+                    %span.hide=t(:audio_suggestions)
+                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, preload: 'auto', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
                       %p= t("errors.messages.audio")
                     = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
                     = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
                     - audio_is = 1 
                   - if b.object.audio_description?
                     .audio_description
-                      = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'show_questions_description_ico'
-                      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
-                      =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'link_text_audio' 
+                      = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);'
+                      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'invisible hide_questions_description_ico', onkeydown: 'click_on_keypress(event, this);'
+                      =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'link_text_audio' , onkeydown: 'click_on_keypress(event, this);'
                       #text
                         = raw b.object.audio_description.html_safe
               
