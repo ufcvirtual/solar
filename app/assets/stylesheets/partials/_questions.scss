@@ -22,7 +22,7 @@
     }
     td a.preview_question:disabled{
       i{
-        color:  $questions_link_color;
+        color:  $questions_link_color_contrast;
       }
     }
     th.name{
@@ -66,7 +66,7 @@
 .tb_questions{
   td a.preview_question:disabled{
     i{
-      color:  $questions_link_color;
+      color:  $questions_link_color_contrast;
     }
   }
 }
@@ -366,7 +366,7 @@
   }
   .search{
     .block_content_toolbar{
-      background-color: $color_white;
+      background-color: $color_white_questions;
       border-bottom: none;
     }
     label{

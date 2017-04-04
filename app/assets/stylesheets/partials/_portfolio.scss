@@ -39,7 +39,7 @@
   margin-right: 8px;
   margin-left: 10px;
   float: right;
-  color: $color_light_gray;
+  color: $color_light_gray_portfolio;
 }
 
 .assignment_comment_date {
@@ -74,7 +74,7 @@
   text-align: left;
   border-bottom: 1px solid;
   border-bottom-color: $color_main;
-  background-color: $color_white;
+  background-color: $color_white_background_portfolio;
 }
 
 .comments_files_div .btn {
@@ -103,11 +103,11 @@
 */
 
 .assignment_corrected, .assignment_evaluated {
-  color: $portfolio_assignment_corrected_color;
+  color: $portfolio_assignment_corrected_color_portfolio;
 }
 
 .assignment_not_answered {
-  color: $portfolio_assignment_not_answered_color;
+  color: $portfolio_assignment_not_answered_color_portfolio;
 }
 
 .assignment_sent, .assignment_sent a, .assignment_corrected a, .assignment_finished, .assignment_finish, .assignment_processing,
@@ -164,7 +164,7 @@ td.assignment_without_group a
 
 .tb_list{
   tr > td > .participants_box:not(.invisible){
-    border-bottom: 1px solid $step_list_color;
+    border-bottom: 1px solid $step_list_color_portfolio;
   }
 
   td{
@@ -173,7 +173,7 @@ td.assignment_without_group a
       max-height: 200px;
       overflow: auto;
       tbody{
-        background-color: $color_white;
+        background-color: $color_white_background_portfolio;
         td{
           padding: 6px 10px 4px 10px;
           vertical-align: middle;
@@ -216,7 +216,7 @@ td.assignment_without_group a
     box-shadow: 4px 4px 7px $portfolio_block_wrapper_groups;
   }
   .block_user{
-    background-color: $event_assignment_background;
+    background-color: $event_assignment_background_portfolio;
     font-size: 10pt;
   }
 
@@ -242,7 +242,7 @@ td.assignment_without_group a
 .assignment_info{
   .title {
     border-bottom: 2px solid;
-    border-bottom-color: $color_main;
+    border-bottom-color: $color_main_border_portfolio;
     position: relative;
     overflow: hidden; // FIXME: em outro local estava definido como auto, verificar se está ok assim
     padding-top: 13px;

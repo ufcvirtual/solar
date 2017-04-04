@@ -145,7 +145,7 @@ $permission_color: #008000;
 $evaluated_color: #2D7035;
 $notice_color: #2F4F2F;
 $question_iten_hit_color: #0B610B;
-question_iten_hit_color_exams: $question_iten_hit_color;
+$question_iten_hit_color_exams: $question_iten_hit_color;
 $lesson_status_released_background: #7DC43F;
 
 // Tons Amarelos e Laranjas
@@ -267,3 +267,25 @@ $evaluated_color_score: $evaluated_color;
 $sent_color_score: $sent_color;
 $not_sent_color_score: $not_sent_color;
 $without_group_color_score: $without_group_color;
+
+//questions
+$questions_link_color_contrast: $questions_link_color;
+$color_white_questions: $color_white;
+
+//portlets
+$color_white_portlets: $color_white;
+$slide_settings_title_color_portlets: $slide_settings_title_color;
+$color_black_portlets: $high_contrast_font_color;
+$slide_settings_counter_background_portlets: $slide_settings_counter_background;
+$slide_settings_counter_color_portlets: $slide_settings_counter_color;
+$color_black_background_color: $color_black;
+$color_white_background_portlets: $color_white;
+
+//portfolio
+$color_light_gray_portfolio: $color_light_gray;
+$color_white_background_portfolio: $color_white;
+$portfolio_assignment_corrected_color_portfolio: $portfolio_assignment_corrected_color;
+$portfolio_assignment_not_answered_color_portfolio: $portfolio_assignment_not_answered_color;
+$step_list_color_portfolio: $step_list_color;
+$event_assignment_background_portfolio: $event_assignment_background;
+$color_main_border_portfolio: $color_main;
