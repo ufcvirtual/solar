@@ -103,6 +103,7 @@ $contacts_edition_block_content_background: #F8FBFE;
 
 // Tons azuis
 $color_main: #003E7A;
+$color_main_content: $color_main;
 $added_permission_color: #0000FF;
 $sent_color: #2900c2;
 $btn_border_dark_blue: #002a80;
@@ -275,7 +276,7 @@ $color_white_questions: $color_white;
 //portlets
 $color_white_portlets: $color_white;
 $slide_settings_title_color_portlets: $slide_settings_title_color;
-$color_black_portlets: $high_contrast_font_color;
+$color_black_portlets: $color_black;
 $slide_settings_counter_background_portlets: $slide_settings_counter_background;
 $slide_settings_counter_color_portlets: $slide_settings_counter_color;
 $color_black_background_color: $color_black;
