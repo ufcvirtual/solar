@@ -1,63 +1,63 @@
-fieldset {
-  border-color: $high_contrast_border_color;
+// fieldset {
+//   border-color: $high_contrast_border_color;
 
-  legend {
-    color: $high_contrast_font_color;
-  }
+//   legend {
+//     color: $high_contrast_font_color;
+//   }
 
-  .block_content_alt {
-    background-color: $high_contrast_background_color;
-  }
-}
+//   .block_content_alt {
+//     background-color: $high_contrast_background_color;
+//   }
+// }
 
-.block_title.edition {
-  border-bottom-color: $high_contrast_border_color;
-}
+// .block_title.edition {
+//   border-bottom-color: $high_contrast_border_color;
+// }
 
-.filter_notice {
-  color: $high_contrast_font_color;
-}
+// .filter_notice {
+//   color: $high_contrast_font_color;
+// }
 
-.edition.block_content{
-  background-color: $high_contrast_background_color;
-}
+// .edition.block_content{
+//   background-color: $high_contrast_background_color;
+// }
 
-.offer_groups_options {
-  .collection_check_boxes {
-    color: $high_contrast_font_color;
-  }
-}
+// .offer_groups_options {
+//   .collection_check_boxes {
+//     color: $high_contrast_font_color;
+//   }
+// }
 
-label[for="all"], .type_description {
-  color: $high_contrast_font_color;
-}
+// label[for="all"], .type_description {
+//   color: $high_contrast_font_color;
+// }
 
-.tool_management{
-  .management{
-    .block_wrapper.tools{
-      .tools_by_tool_type{
-        tr.red{
-          background-color: $high_contrast_background_color;
-        }
-      }
-    }
-  }
-}
+// .tool_management{
+//   .management{
+//     .block_wrapper.tools{
+//       .tools_by_tool_type{
+//         tr.red{
+//           background-color: $high_contrast_background_color;
+//         }
+//       }
+//     }
+//   }
+// }
 
-.list_exams{
-  .btn_group{
-    .btn_item{
-      border: 1px dashed $high_contrast_border_color;
-    }
-  }
-  .exam_box{
-    border-left: 6px solid $high_contrast_border_color;
-    background-color: $high_contrast_background_color;
-  }
-}
+// .list_exams{
+//   .btn_group{
+//     .btn_item{
+//       border: 1px dashed $high_contrast_border_color;
+//     }
+//   }
+//   .exam_box{
+//     border-left: 6px solid $high_contrast_border_color;
+//     background-color: $high_contrast_background_color;
+//   }
+// }
 
-.filter{
-  li.ui-menu-item a{
-    color: $high_contrast_background_color;
-  }
-}
+// .filter{
+//   li.ui-menu-item a{
+//     color: $high_contrast_background_color;
+//   }
+// }

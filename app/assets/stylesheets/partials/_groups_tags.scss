@@ -41,7 +41,7 @@
 
   .add_group, .unbind_groups{
     border: 1px solid $complete_border_left_color;
-    color: $color_gray;
+    color: $color_gray_group_tags;
   }
 
   .tags{
@@ -74,7 +74,7 @@
 }
 
 .no_tags .collection_check_boxes{
-  color: $color_black;
+  color: $color_black_groups_tags;
   background-color: $color_white;
   border: 0;
   padding: 0;

@@ -24,7 +24,7 @@ div.forum_navigation {
   /*background: url('../images/error.gif') no-repeat left center;*/
   padding-top: 7px;
   font-family: 'Ubuntu Condensed', sans-serif;
-  color: $color_red;
+  color: $color_red_forum;
 }
 
 #forum_view_mode {
@@ -80,7 +80,7 @@ div.forum_navigation {
 .forum_post_icon {
   border-right: 2px solid;
   border-right-color: $color_main;
-  background-color: $color_white;
+  background-color: $color_white_forum;
   vertical-align: top;
   padding-right: 5px;
   width: 40px;
@@ -130,7 +130,7 @@ div.forum_navigation {
 }
 
 .forum_post_date {
-  color: $color_light_gray;
+  color: $color_light_gray_forum;
   text-align: right;
 }
 
