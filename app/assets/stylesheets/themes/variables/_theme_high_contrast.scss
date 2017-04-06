@@ -34,8 +34,8 @@ $language_background_color: $high_contrast_font_color;
 $language_color_base_choice_language: $high_contrast_background_color;
 
 //buttons
-$btn_border_light_gray: #e6e6e6;
-$btn_border_dark_gray: #bfbfbf;
+$btn_border_light_gray: $high_contrast_border_color;
+$btn_border_dark_gray: $high_contrast_border_color;
 $color_black_buttons: $high_contrast_background_color;
 $color_white_buttons: $high_contrast_background_color;
 $font_color_buttons: $high_contrast_font_color;
@@ -97,6 +97,55 @@ $color_almost_black_editions: $high_contrast_background_color;
 $question_image_legend_background_exams: $high_contrast_background_color;
 $question_iten_incorrect_exams: $high_contrast_font_color;
 $question_iten_hit_color_exams: $high_contrast_font_color;
+$question_image_border_color_exams: $high_contrast_border_color;
+$questions_audios_background_exams: $high_contrast_background_color;
+$disabled_color_exams: $high_contrast_background_color;
+$list_exams_btn_color_exams: $high_contrast_border_color;
+$list_exams_corrected_color_exams: $high_contrast_font_color;
+$list_exams_finished_color_exams: $high_contrast_font_color;
+$list_exams_not_answered_color_exams: $high_contrast_font_color;
+$list_exams_not_started_color_exams: $high_contrast_font_color;
+$color_contrast_text_exams: $high_contrast_font_color;
+
+//fancybox_with_columns
+
+$color_white_fancybox: $high_contrast_background_color;
+$remove_file_color_fancybox: $high_contrast_background_color;
+$label_selected_background_fancybox: $high_contrast_background_color;
+$label_disabled_background_fancybox: $high_contrast_background_color;
+$label_disabled_color_fancybox: $high_contrast_font_color;
+$label_disabled_selected_background_fancybox: $high_contrast_background_color;
+
+//forms
+
+$form_error_color_forms: $high_contrast_font_color;
+$form_select_disabled_background_forms: $high_contrast_background_color;
+
+//forum
+
+$color_red_forum: $high_contrast_font_color;
+$color_white_forum: $high_contrast_background_color;
+$forum_post_background_blue: $high_contrast_background_color;
+$color_light_gray_forum: $high_contrast_font_color;
+
+//groups_tags
+$color_gray_group_tags: $high_contrast_font_color;
+$groups_forms_background: $high_contrast_background_color;
+$color_black_groups_tags: $high_contrast_background_color;
+
+//import
+
+$color_white_import: $high_contrast_background_color;
+$step_list_color_import: $high_contrast_font_color;
+$step_list_color_import_black: $high_contrast_background_color;
+
+//lesson
+
+$lesson_area_background: $high_contrast_background_color;
+$lesson_header_background: $high_contrast_background_color;
+$lesson_status_draft_background: $high_contrast_background_color;
+$lesson_status_released_background: $high_contrast_background_color;
+$color_gray_lesson: $high_contrast_border_color;
 
 // alert
 $color_black_alert: $high_contrast_font_color;
@@ -193,7 +242,7 @@ $label_disabled_border_color: #dcdcdc;
 $slide_settings_active_background: #d8dfe9;
 $slide_settings_counter_background: #d7dfea;
 
-$lesson_area_background: #eeeeee;
+
 $background_blue: #F5F8FB;
 $agenda_color: $high_contrast_font_color;
 
@@ -236,7 +285,7 @@ $btn_warning_background: #942a25;
 $notice_exams_color: #b30602;
 $btn_border_light_red: #bd362f;
 $btn_border_dark_red: #802420;
-$lesson_status_draft_background: #B41717;
+
 $save_automatically_message_color: #da1124;
 $portfolio_assignment_not_answered_color: #CC0033;
 
@@ -245,7 +294,7 @@ $permission_color: #008000;
 $evaluated_color: #2D7035;
 $notice_color: #063;
 $question_iten_hit_color: #0B610B;
-$lesson_status_released_background: #7DC43F;
+
 $added_permission_color: #00FF00;
 
 // Tons Amarelos e Laranjas
@@ -270,7 +319,7 @@ $event_lessons_background: #A9F0F7;
 $event_discussion_background: #CAFCCC;
 $event_other_background: #CCCCFF;
 $alert_color: #c00;
-$forum_post_background_blue: #b0cce8;
+
 
 // Cores modificadas por funções do Sass
 
@@ -319,10 +368,10 @@ $webconference_table_body_color: $speech2text_color;
 
 // Cores Enxugadas
 $label_disabled_color: $tutorials_description_color;
-$groups_forms_background: $block_content_background;
+
 $language_color: $current_color;
 $icon_color: $current_color;
-$lesson_header_background: $current_color;
+
 $not_started_color: $color_almost_gray;
 $period_ended_color: $color_almost_gray;
 $score_table_head_color: $color_little_dark_gray;
