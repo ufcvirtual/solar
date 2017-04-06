@@ -1,9 +1,7 @@
 $('.scores').append('#{escape_javascript(render partial: "pending_evaluatives_frequency", locals: { users: @users })}');
 $('a.load-more-users').attr('href', '#{not_evaluative_scores_path page: @users.next_page, type: @score_type}');
+$('a.load-more-users').attr("aria-label", "#{t(:load_items)}"); 
 $(".tb_list").trigger("update");
 
 - unless @users.next_page
   $('a.load-more-users').remove();
-
-
- 

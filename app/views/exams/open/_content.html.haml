@@ -38,7 +38,7 @@
               %td.audio.legend
                 .audio
                   %span.hide=t(:audio_suggestions)
-                  %audio{ src: q_audio.audio, autoplay: false, controls: true, preload: 'auto', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}      
+                  %audio{ src: q_audio.audio, autoplay: false, controls: true, name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}      
                     %p= t("errors.messages.audio")
                   = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
                   = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
@@ -60,14 +60,16 @@
           = render 'exams/open/question', { question: question }
 
 .message_div_navigation
-- if @pdf != 1
-  = will_paginate @exam_questions
+  - if @pdf != 1
+    = will_paginate @exam_questions
 - if @disabled && @exam.attempts_correction == Exam::AVERAGE && @pdf!=1
   = link_to t(:back), link, { class: 'btn link_open_exam', id: 'open-exam-result'}
 
 = javascript_include_tag 'tooltip', 'audios'
 
 :javascript
+  $('.next_page').attr("aria-label", "#{t(:navigation_next_page)}");  
+  $('.previous_page').attr("aria-label", "#{t(:navigation_previous_page)}"); 
 
   var time = parseInt(#{@total_time});
   

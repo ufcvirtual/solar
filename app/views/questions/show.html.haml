@@ -29,7 +29,7 @@
                     %td.audio.legend
                       .audio
                         %span.hide=t(:audio_suggestions)
-                        %audio{ src: q_audio.audio, autoplay: false, controls: true, preload: 'auto', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", onkeyDown: "teste(this)"}   
+                        %audio{ src: q_audio.audio, autoplay: false, controls: true, preload: 'auto', name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", onkeyDown: "teste(this)"}   
                           %p= t("errors.messages.audio")
                         = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
                         = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'

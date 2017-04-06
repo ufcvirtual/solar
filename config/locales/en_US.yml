@@ -1044,6 +1044,7 @@ en_US:
       attach_file_title: "Send files"
       confirm_ckeditor: "Are you sure? Any other post with not finished edition or creation will have it's content lost."
       confirm_cancel: 'Are you sure you want to cancel?'
+      number_posts: 'Number of Posts %{n_post}'
     post:
       remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       answer: "Reply"
@@ -1382,6 +1383,9 @@ en_US:
   uri_too_long: "Information quantity too large. Reduce the quantity of data passed"
   cant_build_page: Wasn't possible to access informed page
   hidden_info: Hidden information
+  navigation_previous_page: "Page previous: "
+  navigation_next_page: "Page next: "
+  navigation_page: "Page: "
 
   menu_dc_lesson: Digital Class
   menu_content: Content
@@ -3359,6 +3363,7 @@ en_US:
       exit: Exit
       anull: " (Annulled question)"
       scores: '( %{score} scores )'
+      number_question: 'Proof of %{no_question} questions'
     finish:
       confirm: Are you sure you want to finish the exam?
     summary:

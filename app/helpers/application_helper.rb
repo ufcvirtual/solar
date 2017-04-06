@@ -55,14 +55,14 @@ module ApplicationHelper
         result << '<input id="' << individual_param[0] << '" name="' << individual_param[0] << '" value="' << v << '" type="hidden">'
       end
     end
-
+    text_pagination = ' ' << @current_page << t(:navigation_of) << total_pages << ' '
     unless (@current_page.eql? "1") # voltar uma página: <<
-      result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)-1).to_s << ');$(this).parent().submit();">&lt;&lt;</a>'
+      result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)-1).to_s << ');$(this).parent().submit();" aria-label="(' << text_pagination.to_s << ') '<< t(:navigation_previous_page) << ((@current_page.to_i)-1).to_s << '">&lt;&lt;</a>'
     end
-
-    result << ' ' << @current_page << t(:navigation_of) << total_pages << ' '
+    
+    result << text_pagination
     unless (@current_page.eql? total_pages) # avançar uma página: >>
-      result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)+1).to_s << ');$(this).parent().submit();">&gt;&gt;</a>'
+      result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)+1).to_s << ');$(this).parent().submit();" aria-label="(' << text_pagination.to_s << ') '<< t(:navigation_next_page) << ((@current_page.to_i)+1).to_s << '">&gt;&gt;</a>'
     end
 
     result << '<input type="hidden" id="current_page" name="current_page" value="' << @current_page << '"/>'

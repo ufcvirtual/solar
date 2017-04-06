@@ -8,6 +8,11 @@ function init_chronometer(page_question, total) {
 function save_question(duration) {
   get_duration(duration);
   $(".edit_exam_response").submit();
+  setTimeout(function() {
+    $('.next_page').attr('aria-label', "<%= I18n.t(:navigation_next_page) %>");  
+    $('.previous_page').attr('aria-label', "<%= I18n.t(:navigation_previous_page) %>");
+  }, 400);
+ 
 }
 
 function finish_exam(duration) {
