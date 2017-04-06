@@ -10,7 +10,7 @@
   top: 0;
   left: 0;
   z-index: -10;
-  background-color: $color_main;
+  background-color: $color_main_mysolar;
 }
 
 #mysolar_topbar {
@@ -36,18 +36,18 @@
 #mysolar_identity {
   width: 100%;
   height: $mysolar_topbar_height;
-  background-color: $color_main;
+  background-color: $color_main_mysolar;
 }
 
 #mysolar_logo {
   //width: 185px;
   height: $mysolar_topbar_height;
   float: left;
-  background-color: $color_main;
+  background-color: $color_main_mysolar;
 }
 
 #mysolar_top_help {
-  background-color: $color_main;
+  background-color: $color_main_mysolar;
 }
 
 #solar_logo {
@@ -84,7 +84,7 @@
   border-bottom-width: 2px;
   border-bottom-style: solid;
   border-bottom-color: $color_main;
-  background-color: $color_white !important;
+  background-color: $color_white_mysolar !important;
   color: $color_main;
 }
 
@@ -117,7 +117,7 @@
   overflow: hidden;
   box-shadow: 3px 3px 15px 0px $mysolar_chat_color;
   color: $color_main;
-  background-color: $color_white;
+  background-color: $color_white_mysolar;
   border-bottom-color: $color_contrast;
   border-left-color: $color_contrast;
   border-right-color: $color_contrast;
@@ -193,14 +193,14 @@
 }
 
 #mysolar_top_submenu_label {
-  background-color: $color_main;
+  background-color: $color_main_mysolar;
 }
 
 .mysolar_top_submenu_label_selected {
   border-top: none;
   border-bottom: none;
   vertical-align: top;
-  background-color: $color_white !important;
+  background-color: $color_white_mysolar !important;
 }
 
 .mysolar_top_submenu_label_regular {
@@ -216,7 +216,7 @@
 }
 
 a.mysolar_top_link {
-  color: $color_white;
+  color: $color_white_mysolar_link;
 }
 
 .mysolar_top_submenu_label_regular a {
@@ -458,7 +458,7 @@ a.mysolar_top_link {
 
   border-top: 2px solid;
   border-top-color: $current_color;
-  background-color: $contacts_edition_block_content_background; /* alternativa: f5f8fb */
+  background-color: $contacts_edition_block_content_background_mysolar; /* alternativa: f5f8fb */
 
   > li {
     padding: 8px 0 8px 10px;

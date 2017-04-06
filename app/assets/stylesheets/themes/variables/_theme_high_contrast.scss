@@ -147,6 +147,38 @@ $lesson_status_draft_background: $high_contrast_background_color;
 $lesson_status_released_background: $high_contrast_background_color;
 $color_gray_lesson: $high_contrast_border_color;
 
+//lesson_files
+
+$lesson_files_select_all_color: $high_contrast_font_color;
+$save_automatically_message_color: #da1124;
+
+//lightbox
+
+$color_white_lightbox: $high_contrast_background_color;
+$lightbox_dialog_title_color_lightbox: $high_contrast_background_color;
+
+//messages
+
+$color_gray_text_messages_link: $high_contrast_link_color;
+$color_almost_gray_messages: $high_contrast_font_color;
+$color_contrast_messages: $high_contrast_background_color;
+$color_white_messages: $high_contrast_background_color;
+$disabled_color_messages: $high_contrast_font_color;
+$message_label_background: $high_contrast_background_color;
+$message_label_background_border: $high_contrast_border_color;
+$contacts_edition_block_content_background_messages: $high_contrast_background_color;
+$edition_color_messages: $high_contrast_font_color;
+$color_red_messages: $high_contrast_font_color;
+$receiver_already_added_color_messages: $high_contrast_font_color;
+
+//mysolar
+
+$color_main_mysolar: $high_contrast_background_color;
+$color_white_mysolar: $high_contrast_background_color;
+$color_white_mysolar_link: $high_contrast_link_color;
+$search_keyword_inactive_color: $high_contrast_font_color;
+$contacts_edition_block_content_background_mysolar: $high_contrast_background_color;
+
 // alert
 $color_black_alert: $high_contrast_font_color;
 $color_white_alert: $high_contrast_background_color;
@@ -210,7 +242,7 @@ $color_gray: #808080;
 
 
 $color_disabled: #777777;
-$lesson_files_select_all_color: #8D8D8D;
+
 $portfolio_block_wrapper_groups: #929792;
 $semester_color: #56585E;
 $speech2text_color: #828282;
@@ -221,7 +253,7 @@ $btn_box_shadow: #9a9a9a;
 // Cinza com letras escuras
 $step_list_color: #B4B2B1;
 $contacts_list_border_color: #dddddd;
-$search_keyword_inactive_color: #b0b0b0;
+
 
 
 
@@ -247,7 +279,7 @@ $background_blue: #F5F8FB;
 $agenda_color: $high_contrast_font_color;
 
 
-$mysolar_border_color: #EBEBEB;
+$mysolar_border_color: $high_contrast_border_color;
 $slide_settings_hover_background: #eef3f9;
 $label_disabled_selected_background: #F0F0F0;
 $participants_list_none_background: #f2f6f6;
@@ -286,7 +318,7 @@ $notice_exams_color: #b30602;
 $btn_border_light_red: #bd362f;
 $btn_border_dark_red: #802420;
 
-$save_automatically_message_color: #da1124;
+
 $portfolio_assignment_not_answered_color: #CC0033;
 
 // Tons verdes
@@ -305,7 +337,7 @@ $event_webconferencelesson_background: #F5DA81;
 
 $btn_initial_file_color_final: #f9c143;
 $label_selected_border_color: #F9E993;
-$message_label_background: #F9C153;
+
 $receiver_already_added_color: #FF9900;
 
 
@@ -333,11 +365,11 @@ hr {
 // Cores repetidas
 $btn_color: $color_white;
 $forum_post_background: $blue_warning_background;
-$btn_border_color: $language_border_color;
+$btn_border_color: $high_contrast_border_color;
 $slide_settings_title_color: $color_almost_gray;
 $btn_disabled_background: $color_red;
 $block_border_color: $color_main;
-$block_content_color: $language_border_color;
+$block_content_color: $high_contrast_border_color;
 $list_exams_btn_color: $color_gray;
 $list_exams_exam_box_color: $btn_main_color;
 $list_exams_background: $block_groups_background;
@@ -347,7 +379,7 @@ $list_exams_finished_color: $sent_color;
 $list_exams_not_answered_color: $not_sent_color;
 $list_exams_not_started_color: $color_almost_gray;
 $form_error_color: $error_color;
-$lesson_portlet_border_color: $language_border_color;
+$lesson_portlet_border_color: $high_contrast_border_color;
 $portfolio_assignment_without_group_color: $without_group_color;
 $portfolio_assignment_corrected_color: $evaluated_color;
 $portfolio_assignment_color: $sent_color;
