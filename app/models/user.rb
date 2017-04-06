@@ -490,7 +490,7 @@ class User < ActiveRecord::Base
     self.save(validate: false)
 
     Thread.new do
-      Notifier.change_user(self, raw_token).deliver
+      Notifier.change_user(User.find(id), raw_token).deliver
     end
   end
 

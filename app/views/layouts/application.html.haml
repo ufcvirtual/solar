@@ -48,34 +48,34 @@
           #mysolar_logo
             = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
           %ul#mysolar_top_options
-            %li
-            %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular
+            %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular.nav_menu
               = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", onclick: "mysolarTopSubmenuToggle();return false;"
               - if can? :update, current_user
-                %a#mysolar_top_user_nick.mysolar_top_link{href: "", onclick: "mysolarTopSubmenuToggle();return false;"}= current_user.nick
-            %li#server_clock_wrapper
-              %span#server_clock{name: "server_clock"}
-            %li#accessibility_top_menu.mysolar_top_submenu_label_regular
-              %a#accessibility_top.mysolar_top_link{ href: "", onclick: "mysolarAccessibilitySubmenuToggle();return false;", :'aria-label' =>  t(:accessibility_menu)}
+                %a#mysolar_top_user_nick.mysolar_top_link.nav_item{href: "", onclick: "mysolarTopSubmenuToggle();return false;"}= current_user.nick
+            %li#server_clock_wrapper.nav_menu
+              %span#server_clock.nav_item{name: "server_clock", tabindex: "0"}
+            %li#accessibility_top_menu.mysolar_top_submenu_label_regular.nav_menu
+              %a#accessibility_top.mysolar_top_link.nav_item{ href: "", onclick: "mysolarAccessibilitySubmenuToggle();return false;", :'aria-label' =>  t(:accessibility_menu)}
                 = t(:accessibility)
               %ul#mysolar_accessibility_submenu
-                %li= link_to t(:main_content), "#main_content_accesskey", accesskey: "1"
-                %li#link_to_menu_accesskey= link_to t(:menu_aside), "#menu_accesskey", accesskey: "2"
+                %li.sub_nav_menu= link_to t(:main_content), "#main_content_accesskey", accesskey: "1", class: "sub_nav_item"
+                %li#link_to_menu_accesskey.sub_nav_menu= link_to t(:menu_aside), "#menu_accesskey", accesskey: "2", class: "sub_nav_item"
                 - if active_tab[:url][:context] == 1 || params[:bread] == "menu_messages"
-                  %li#link_to_search_box= link_to t(:search_box), "#search_box_accesskey", accesskey: "3"
+                  %li#link_to_search_box.sub_nav_menu= link_to t(:search_box), "#search_box_accesskey", accesskey: "3", class: "sub_nav_item"
                 -# %li= link_to t(:footer_site), "#footer_site_accesskey", accesskey: "4"
-                %li= link_to t(:high_contrast_link), "#", accesskey: "5", :'data-url' => update_theme_personal_configurations_path, :'data-theme' => "#{user_session[:theme]}", id: "mysolar_high_contrast_option", remote: true
-            %li#mysolar_top_help.mysolar_top_submenu_label_regular
-              %a#help_top.mysolar_top_link{href: "", onclick: "mysolarTopSubmenuHelpToggle();return false;"}
+
+                -# %li= link_to t(:high_contrast_link), "#", accesskey: "5"
+            %li#mysolar_top_help.mysolar_top_submenu_label_regular.nav_menu
+              %a#help_top.mysolar_top_link.nav_item{href: "", onclick: "mysolarTopSubmenuHelpToggle();return false;"}
                 = t(:help)
               %ul#mysolar_submenu_help
-                %li= link_to t(:context), "#", id: 'help_context'
-                %li= link_to t('tutorials.menu'), tutorials_path, id: 'my_tutorials'
-                %li= link_to t(:login_faq), '#faq', class: 'panel-link'
-                %li= link_to t(:videos), "../../video_tutorials.html", target: "_blank"
-                %li= link_to t(:contact), support_new_messages_path
-            %li#mysolar_top_logout
-              = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, class: "mysolar_top_link logout")
+                %li.sub_nav_menu= link_to t(:context), "#", id: 'help_context', class: "sub_nav_item"
+                %li.sub_nav_menu= link_to t('tutorials.menu'), tutorials_path, id: 'my_tutorials', class: "sub_nav_item"
+                %li.sub_nav_menu= link_to t(:login_faq), '#faq', class: 'panel-link', class: "sub_nav_item"
+                %li.sub_nav_menu= link_to t(:videos), "../../video_tutorials.html", target: "_blank", class: "sub_nav_item"
+                %li.sub_nav_menu= link_to t(:contact), support_new_messages_path, class: "sub_nav_item"
+            %li#mysolar_top_logout.nav_menu
+              = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, id: "logout", class: "mysolar_top_link logout nav_item")
         / Submenu
         #mysolar_top_submenu
           %div
@@ -85,11 +85,11 @@
           %ul
             /  icon-cycle
             - if current_user.can_synchronize?
-              %li= link_to t("mysolar.synchronize"), "#", :'data-url' => synchronize_ma_users_path, id: 'synchronize'
-            %li= link_to t(:mysolar_edit_profile), edit_user_registration_path, id: 'my_data'
-            %li= link_to t(:mysolar_change_picture), edit_photo_users_path, class: "fancybox.ajax", id: "change_picture", :'aria-label' => t(:mysolar_change_picture) + t('fancybox.open')
-            %li= link_to t("mysolar.profiles"), profiles_users_path
-            %li= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path)
+              %li.sub_nav_menu= link_to t("mysolar.synchronize"), "#", :'data-url' => synchronize_ma_users_path, id: 'synchronize', class: "sub_nav_item"
+            %li.sub_nav_menu= link_to t(:mysolar_edit_profile), edit_user_registration_path, id: 'my_data', class: "sub_nav_item"
+            %li.sub_nav_menu= link_to t(:mysolar_change_picture), edit_photo_users_path, class: "fancybox.ajax sub_nav_item", id: "change_picture", :'aria-label' => t(:mysolar_change_picture) + t('fancybox.open')
+            %li.sub_nav_menu= link_to t("mysolar.profiles"), profiles_users_path, class: "sub_nav_item"
+            %li.sub_nav_menu= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, class: "sub_nav_item")
 
         / tabs
         #mysolar_tabs{role: 'menubar'}
@@ -445,4 +445,42 @@
         $(".search_box_focus").focus();
         $("#autocomplete-input").focus();
       }, 100);
+
+    });
+
+    $(".nav_item").on("keydown", function(event){
+      var keynum = event.which || event.keyCode;
+
+      if(keynum == 39) {
+        goToRight(this);
+      } else if (keynum == 37) {
+        goToLeft(this);
+      } else if (keynum == 40 || keynum == 13 || keynum == 32) {
+        goInside(this);
+      }
+    });
+
+    $(".sub_nav_item").on("keydown", function(event){
+      var keynum = event.which || event.keyCode;
+
+      switch( keynum ) {
+        case 40:
+          goDown(this);
+          break;
+        case 39:
+          goOut(this);
+          break;
+        case 38:
+          goUp(this);
+          break;
+        case 37:
+          goOut(this);
+          break;
+        case 27:
+          goOut(this);
+          break;
+        case 13:
+          $(this).click();
+          break;
+      }
     });
