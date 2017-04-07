@@ -83,6 +83,21 @@ class Discussion < Event
                                                         offset: offset })
   end
 
+  def posts_not_limit(opts = {}, allocation_tags_ids = nil)
+    opts = { 'type' => 'new', 'order' => 'desc', 'limit' => Rails.application.config.items_per_page.to_i,
+      'display_mode' => 'list', 'page' => 1 }.merge(opts)
+    type = (opts['type'] == 'history') ? '<' : '>'
+
+    query = []
+    query << "updated_at::timestamp(0) #{type} '#{opts["date"]}'::timestamp(0)" if opts.include?('date') && (!opts['date'].blank?)
+    query << 'parent_id IS NULL' unless opts['display_mode'] == 'list'
+
+    offset = (opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i
+
+    posts_by_allocation_tags_ids(allocation_tags_ids, { grandparent: false, query: query.join(' AND '),
+                                                        order: "updated_at #{opts['order']}"})
+  end
+
   def discussion_posts_count(plain_list = true, allocation_tags_ids = nil)
     (plain_list ? posts_by_allocation_tags_ids(allocation_tags_ids, { grandparent: false }).count : posts_by_allocation_tags_ids(allocation_tags_ids).collect{ |a| a if a.parent.nil? }.compact.count)
   end

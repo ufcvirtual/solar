@@ -25,7 +25,8 @@
         = link_to(content_tag(:i, nil, class: 'icon-flow-cascade'), discussion_posts_path(@discussion, {display_mode: 'tree'}), {class: "btn #{class_t}", id: 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread"), :'aria-label' => t(".show_thread")})
 
     #forum_pagination
-      = raw render_pagination_bar(@discussion.discussion_posts_count(@display_mode == "list", @allocation_tags).to_s, "display_mode=#{@display_mode}")
+      = page_entries_info @posts
+      = will_paginate @posts
       .new_posts
         #new_post
           = form_for(:discussion_post, html: { id: 'new_post_form', :'action-to-edit' => discussion_post_path(@discussion.id, ':id'), :"action-default" => discussion_posts_path(@discussion.id), method: :put }) do |form|
@@ -53,6 +54,8 @@
 
   var locale = "#{I18n.locale}";
   $("#button_new_post").focus();
+  $('.next_page').attr("aria-label", "#{t(:navigation_next_page)}");  
+  $('.previous_page').attr("aria-label", "#{t(:navigation_previous_page)}");  
 
   $(function(){
 

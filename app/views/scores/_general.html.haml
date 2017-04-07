@@ -25,4 +25,4 @@
       - else
         = render partial: 'pending_general', locals: { users: @users }
 - unless @users.blank?
-  = link_to content_tag(:i, nil, class: "icon-ellipsis"), general_scores_path(page: @users.next_page), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items) if @users.next_page    
+  = link_to content_tag(:i, nil, class: "icon-ellipsis"), general_scores_path(page: @users.next_page), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items)  if @users.next_page    

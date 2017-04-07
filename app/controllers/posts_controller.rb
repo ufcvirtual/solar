@@ -38,10 +38,13 @@ class PostsController < ApplicationController
         p['page'] ||= @current_page
         p['type'] ||= "history"
         p['date'] = DateTime.parse(p['date']) if params[:format] == "json" && p.include?('date')
-        @posts    = @discussion.posts(p, @allocation_tags)
+        @posts    = @discussion.posts_not_limit(p, @allocation_tags).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
       else
-        @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
+        @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
       end
+      total_itens = @discussion.discussion_posts_count(@display_mode == "list", @allocation_tags).to_s
+      @total_pages = (total_itens.to_f/Rails.application.config.items_per_page.to_f).ceil.to_i
+      @total_pages = 1 unless total_itens.to_i > 0
 
       respond_to do |format|
         format.html

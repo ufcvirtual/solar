@@ -9,7 +9,7 @@
         %th.no_sort{style: 'width:105px'}= ""
         %th.no_sort{style: 'width:135px'}= ""
     %tbody.users= render partial: 'users', locals: {users: @users}
-  = link_to content_tag(:i, nil, class: "icon-ellipsis"), search_admin_users_path(page: @users.next_page, user: @text_search, type_search: @type_search), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items) if @users.next_page
+  = link_to content_tag(:i, nil, class: "icon-ellipsis"), search_admin_users_path(page: @users.next_page, user: @text_search, type_search: @type_search), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items) if @users.next_page
 
 - else
   .block_content_text_list.text_none

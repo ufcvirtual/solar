@@ -4,6 +4,17 @@ pt_BR:
     previous_label: "« Anterior"
     next_label: "Próximo »"
     page_gap: "..."
+    page_entries_info:
+      single_page:
+        zero:  "Nenhum(a) %{model} encontrado(a)."
+        one:   "Mostrando 1 %{model}."
+        other: "Mostrando %{count} %{model}."
+      single_page_html:
+        zero:  "Nenhum(a) %{model} encontrado(a)."
+        one:   "Mostrando <b>1</b> %{model}."
+        other: "Mostrando <b>%{count}</b> %{model}."
+      multi_page: "Mostrando %{model} %{from} a %{to} do total de %{count}."
+      multi_page_html: "Mostrando %{model} <b>%{from}&nbsp;a&nbsp;%{to}</b> do total de <b>%{count}</b>."
 
   # formatos de data e hora
   date:
@@ -1220,6 +1231,7 @@ pt_BR:
       attach_file_title: "Envio de arquivos"
       confirm_ckeditor: "Tem certeza? Qualquer outra postagem em aberto para edição ou criação terá seu conteúdo perdido."
       confirm_cancel: 'Tem certeza de que deseja cancelar?'
+      number_posts: 'Total de Posts %{n_post}'
     post:
       remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
       answer: "Responder"
@@ -1525,6 +1537,9 @@ pt_BR:
   navigation_previous: "< Anterior"
   navigation_first: "<< Primeira"
   navigation_last: "Última >>"
+  navigation_previous_page: "Ir para página anterior: "
+  navigation_next_page: "Ir para próxima página "
+  navigation_page: "Página: "
 
   icon_agenda: "Ícone da agenda"
   icon_forum: "Ícone do fórum"
@@ -3600,6 +3615,7 @@ pt_BR:
       exit: Sair
       anull: " (Questão Anulada)"
       scores: '( %{score} pontos )'
+      number_question: 'Prova com %{no_question} questões'
     finish:
       confirm: Tem certeza que deseja finalizar a prova?
     summary:

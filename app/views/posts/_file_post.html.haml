@@ -15,7 +15,7 @@
 					.audios
 						.audio  
 							%span.hide=t(:audio_suggestions)
-							%audio{ src: download_post_post_file_url(post, file), autoplay: false, controls: 'true', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
+							%audio{ src: download_post_post_file_url(post, file), autoplay: false, controls: 'true', name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
 								%track{ kind: "captions"}  	
 							= link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :"aria-label" => t('questions.questions.up_down')), 'down_speed()'
 							= link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :"aria-label" => t('questions.questions.up_speed')), 'up_speed()'
@@ -23,7 +23,7 @@
 					%br
 				- elsif file.attachment_file_name.last(4).eql?('.aac') || file.attachment_file_name.last(4).eql?('.m4a') || file.attachment_content_type.index('video') || file.attachment_file_name.last(4).eql?('.mp4') || file.attachment_file_name.last(4).eql?('.m4v')	 
 					%span.hide=t(:audio_suggestions)
-					%video{ src: download_post_post_file_url(post, file), autoplay: false, controls: 'true', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
+					%video{ src: download_post_post_file_url(post, file), autoplay: false, controls: 'true', name: 'audioQuestion', preload: 'none',onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
 						%track{ kind: "captions"}  
 						%track{ kind: "descriptions"}
 	        

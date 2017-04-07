@@ -38,4 +38,10 @@
   .text_none.empty_message{ class: (@messages.empty? ? '' : 'hide_message') }= t('messages.none')
 
 .message_div_navigation
+  = page_entries_info @messages
   = will_paginate @messages
+
+
+:javascript
+  $('.next_page').attr("aria-label", "#{t(:navigation_next_page)}");  
+  $('.previous_page').attr("aria-label", "#{t(:navigation_previous_page)}");  

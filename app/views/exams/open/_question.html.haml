@@ -44,7 +44,7 @@
                 .audio.legend
                   .audio
                     %span.hide=t(:audio_suggestions)
-                    %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, preload: 'auto', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
+                    %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, preload: 'none', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
                       %p= t("errors.messages.audio")
                     = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
                     = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
@@ -98,7 +98,7 @@
                 .audio.legend
                   .audio
                     %span.hide=t(:audio_suggestions)
-                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, preload: 'auto', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
+                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, preload: 'none', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
                       %p= t("errors.messages.audio")
                     = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
                     = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
@@ -158,7 +158,7 @@
                 .audio.legend
                   .audio
                     %span.hide=t(:audio_suggestions)
-                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, preload: 'auto', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
+                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, preload: 'none', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
                       %p= t("errors.messages.audio")
                     = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
                     = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
@@ -192,6 +192,9 @@
 
 
 :javascript
+  $('.next_page').attr("aria-label", "#{t(:navigation_next_page)}");  
+  $('.previous_page').attr("aria-label", "#{t(:navigation_previous_page)}"); 
+  
   $(function(){
     $(document.body).on('change','select',function(){
       change();

@@ -1,5 +1,6 @@
 $('tbody.users').append('#{escape_javascript(render partial: 'users', locals: { users: @users})}');
 $('a.load-more-users').attr('href', '#{search_admin_users_path(page: @users.next_page, type_search: @type_search, user: @text_search)}');
+$('a.load-more-users').attr("aria-label", "#{t(:load_items)}"); 
 $(".tb_list").trigger("update");
 
 - unless @users.next_page
