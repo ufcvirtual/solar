@@ -27,7 +27,7 @@ $panel_menu_footer_color: #2b5088;
   z-index: 50;
 }
 
-#team, #license-terms, #faq {
+#license-terms, #faq, #team, #tutorials {
   background: $white image-url('ufc-virtual.png') 10% 16% no-repeat;
 }
 
@@ -41,7 +41,25 @@ $panel_menu_footer_color: #2b5088;
   padding: 5px 10px;
 }
 
+.content {
+  width: 535px;
+  height: 85%;
+  overflow: auto;
+  margin: 30px auto;
+  text-align: left;
+  background-color: rgba($white,0.8);
+  padding: 5px 10px;
+}
+
 .panel .arrow {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  width: 85px;
+  height: 85px;
+  cursor: pointer;
+}
+.arrow {
   position: absolute;
   top: 5%;
   right: 5%;
