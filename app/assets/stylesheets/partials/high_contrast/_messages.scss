@@ -1,121 +1,121 @@
-.td_subject, .td_sender, .td_time, .td_recipient{
-  color: $high_contrast_font_color;
+// .td_subject, .td_sender, .td_time, .td_recipient{
+//   color: $high_contrast_font_color;
 
-  a{
-    color: $high_contrast_link_color;
-  }
-}
+//   a{
+//     color: $high_contrast_link_color;
+//   }
+// }
 
-#message_list > .message_link:hover {
-  border-bottom-color: $high_contrast_border_color;
-}
+// #message_list > .message_link:hover {
+//   border-bottom-color: $high_contrast_border_color;
+// }
 
-.message_line:not(.no_border){
-  border-bottom: 1px solid $high_contrast_border_color;
-}
+// .message_line:not(.no_border){
+//   border-bottom: 1px solid $high_contrast_border_color;
+// }
 
-.message_read {
-  color: $high_contrast_font_color;
-}
+// .message_read {
+//   color: $high_contrast_font_color;
+// }
 
-.message_unread {
-  color: $high_contrast_font_color;
-}
+// .message_unread {
+//   color: $high_contrast_font_color;
+// }
 
-.message_label {
-  color: $high_contrast_font_color;
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
-}
+// .message_label {
+//   color: $high_contrast_font_color;
+//   background-color: $high_contrast_background_color;
+//   border-color: $high_contrast_border_color;
+// }
 
-.message_new_textbox {
-  background-color: $high_contrast_font_color;
-}
+// .message_new_textbox {
+//   background-color: $high_contrast_font_color;
+// }
 
-.block_wrapper.messages {
-  .block_content, .block_white {
-    border-bottom-color: $high_contrast_border_color;
-  }
-  .block_white{
-    background: $high_contrast_background_color;
-  }
-}
+// .block_wrapper.messages {
+//   .block_content, .block_white {
+//     border-bottom-color: $high_contrast_border_color;
+//   }
+//   .block_white{
+//     background: $high_contrast_background_color;
+//   }
+// }
 
-.block_content.messages {
-  border-bottom: solid 1px $high_contrast_border_color;
-}
+// .block_content.messages {
+//   border-bottom: solid 1px $high_contrast_border_color;
+// }
 
-.message_header_new, .message_div_show {
-  color: $high_contrast_font_color;
+// .message_header_new, .message_div_show {
+//   color: $high_contrast_font_color;
 
-  span.email{
-    color: $high_contrast_font_color;
-  }
-}
+//   span.email{
+//     color: $high_contrast_font_color;
+//   }
+// }
 
-.message_new_text_to {
-  background-color: $high_contrast_background_color;
-}
+// .message_new_text_to {
+//   background-color: $high_contrast_background_color;
+// }
 
-.message_div_navigation {
-  color: $high_contrast_font_color;
+// .message_div_navigation {
+//   color: $high_contrast_font_color;
 
-  .active{
-    color: $high_contrast_font_color;
-  }
-}
+//   .active{
+//     color: $high_contrast_font_color;
+//   }
+// }
 
-.text_none {
-  color: $high_contrast_font_color;
-}
+// .text_none {
+//   color: $high_contrast_font_color;
+// }
 
-.text_alert_message, #count_msgs_unread {
-  color: #e64d4d;
-}
+// .text_alert_message, #count_msgs_unread {
+//   color: #e64d4d;
+// }
 
-#message_general_title {
-  border-bottom-color: $high_contrast_border_color;
-}
+// #message_general_title {
+//   border-bottom-color: $high_contrast_border_color;
+// }
 
-.message_general_div_option_active {
-  border-bottom-color: $current_color;
-}
+// .message_general_div_option_active {
+//   border-bottom-color: $current_color;
+// }
 
-.message_label {
-  color: $high_contrast_font_color;
-  background-color: $high_contrast_background_color;
-  border: 1px solid $high_contrast_border_color;
-}
+// .message_label {
+//   color: $high_contrast_font_color;
+//   background-color: $high_contrast_background_color;
+//   border: 1px solid $high_contrast_border_color;
+// }
 
-.contacts-uc {
-  .edition.block_content{
-    background-color: $high_contrast_background_color;
-  }
-}
+// .contacts-uc {
+//   .edition.block_content{
+//     background-color: $high_contrast_background_color;
+//   }
+// }
 
-#content-div{
-  .block_content p{
-    color: $high_contrast_font_color;
-  }
-}
+// #content-div{
+//   .block_content p{
+//     color: $high_contrast_font_color;
+//   }
+// }
 
-.contacts-list {
-  background-color: $high_contrast_background_color;
-  border-color: $high_contrast_border_color;
-  .already_added{
-    color: $high_contrast_font_color;
-  }
-}
+// .contacts-list {
+//   background-color: $high_contrast_background_color;
+//   border-color: $high_contrast_border_color;
+//   .already_added{
+//     color: $high_contrast_font_color;
+//   }
+// }
 
-.contacts-selected {
-  border-color: $high_contrast_border_color;
-  background-color: $high_contrast_background_color;
-}
+// .contacts-selected {
+//   border-color: $high_contrast_border_color;
+//   background-color: $high_contrast_background_color;
+// }
 
-#receiver_already_added {
-  color: $high_contrast_font_color;
-}
+// #receiver_already_added {
+//   color: $high_contrast_font_color;
+// }
 
-.help_link {
-  background-color: $high_contrast_background_color;
-}
+// .help_link {
+//   background-color: $high_contrast_background_color;
+// }

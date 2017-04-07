@@ -37,7 +37,7 @@
   color: $color_gray_text;
 
   a{
-    color: $color_gray_text;
+    color: $color_gray_text_messages_link;
   }
 }
 
@@ -106,7 +106,7 @@ table.tb_list.message_div_list{
 }
 
 .message_read {
-  color: $color_almost_gray;
+  color: $color_almost_gray_messages;
 }
 
 .message_unread {
@@ -124,7 +124,7 @@ table.tb_list.message_div_list{
   border: 1px solid;
   -moz-border-radius: 4px;
   color: $color_white;
-  background-color: $color_contrast;
+  background-color: $color_contrast_messages;
   border-color: $color_contrast;
 }
 
@@ -171,7 +171,7 @@ table.tb_list.message_div_list{
     }
   }
   .block_white{
-    background: $color_white;
+    background: $color_white_messages;
   }
   .block_white.index{
     height: 38px;
@@ -196,7 +196,7 @@ table.tb_list.message_div_list{
       vertical-align: middle;
       text-align: center;
       margin-right: 5px;
-      color: $color_almost_gray;
+      color: $color_almost_gray_messages;
     }
 
   }
@@ -308,7 +308,7 @@ table.tb_list.message_div_list{
 .message_div_navigation {
   text-align: center;
   padding: 0.25*$gutter;
-  color: $disabled_color;
+  color: $disabled_color_messages;
 
   .message_page{
     margin-top: 5px;
@@ -397,7 +397,7 @@ ul.files_to_send{
 .message_label {
   color: $color_black;
   background-color: $message_label_background;
-  border: 1px solid $message_label_background;
+  border: 1px solid $message_label_background_border;
 }
 
 // contatos
@@ -413,7 +413,7 @@ ul.files_to_send{
   line-height: 15px;
   margin-bottom: 5px;
   .edition.block_content{
-    background-color: $contacts_edition_block_content_background;
+    background-color: $contacts_edition_block_content_background_messages;
   }
   .select{
     margin-top: 5px;
@@ -433,7 +433,7 @@ ul.files_to_send{
 #content-div{
   .block_content p{
     text-align: right;
-    color: $edition_color;
+    color: $edition_color_messages;
     margin-bottom: 0;
   }
 }
@@ -446,10 +446,10 @@ ul.files_to_send{
   margin-bottom: 5px;
   border: 1px solid;
   height: 150px;
-  background-color: $color_white;
+  background-color: $color_white_messages;
   border-color: $contacts_list_border_color;
   .already_added{
-    color: $color_red;
+    color: $color_red_messages;
     display: inline-block;
     padding-left: 3px;
   }
@@ -462,7 +462,7 @@ ul.files_to_send{
   height: 100px;
   white-space: normal;
   overflow: auto;
-  background-color: $color_white;
+  background-color: $color_white_messages;
   margin-bottom: 10px;
 }
 
@@ -475,7 +475,7 @@ ul.files_to_send{
   display: inline-block;
   margin-left: 5px;
   font-size: 11px;
-  color: $receiver_already_added_color;
+  color: $receiver_already_added_color_messages;
 }
 
 .message_new_upload{
