@@ -1,7 +1,11 @@
 @import "compass";
 @import "fonts/fonts";
 @import "fonts/icons";
+
+@import "themes/variables/theme_high_contrast";
+
 @import "partials/panels";
+;
 
 $login_width: 287px;
 $login_main_blue: #000 ;

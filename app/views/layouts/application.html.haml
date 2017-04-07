@@ -64,7 +64,7 @@
                   %li#link_to_search_box.sub_nav_menu= link_to t(:search_box), "#search_box_accesskey", accesskey: "3", class: "sub_nav_item"
                 -# %li= link_to t(:footer_site), "#footer_site_accesskey", accesskey: "4"
 
-                -# %li= link_to t(:high_contrast_link), "#", accesskey: "5"
+                %li= link_to t(:high_contrast_link), "#", accesskey: "5", :'data-url' => update_theme_personal_configurations_path, :'data-theme' => "#{user_session[:theme]}", id: "mysolar_high_contrast_option", remote: true
             %li#mysolar_top_help.mysolar_top_submenu_label_regular.nav_menu
               %a#help_top.mysolar_top_link.nav_item{href: "", onclick: "mysolarTopSubmenuHelpToggle();return false;"}
                 = t(:help)

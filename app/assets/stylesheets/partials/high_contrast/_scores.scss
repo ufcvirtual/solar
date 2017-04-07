@@ -1,135 +1,135 @@
-#history_search_content {
-  border-bottom-color: $high_contrast_border_color;
-}
+// #history_search_content {
+//   border-bottom-color: $high_contrast_border_color;
+// }
 
-.info_left{
-  color: $high_contrast_font_color;
-  ul.dropdown-menu{
-    label:hover, label{
-      background-color: transparent;
-      color: $high_contrast_link_color;
-    }
-  }
-}
+// .info_left{
+//   color: $high_contrast_font_color;
+//   ul.dropdown-menu{
+//     label:hover, label{
+//       background-color: transparent;
+//       color: $high_contrast_link_color;
+//     }
+//   }
+// }
 
-.tb_list_students{
-  table{
-    th.td_student{
-      color: $high_contrast_link_color;
-      background-color: $high_contrast_background_color;
-    }
-  }
-  #assignment_title{
-    background-color: $high_contrast_background_color;
-    color: $high_contrast_font_color;
-  }
-}
+// .tb_list_students{
+//   table{
+//     th.td_student{
+//       color: $high_contrast_link_color;
+//       background-color: $high_contrast_background_color;
+//     }
+//   }
+//   #assignment_title{
+//     background-color: $high_contrast_background_color;
+//     color: $high_contrast_font_color;
+//   }
+// }
 
-#scores_notes.legend_score_footer, .tb_list_students{
-  .evaluated {
-    color: $high_contrast_font_color;
-  }
-  .sent, .sent a, .evaluated a
-  td.assignment_as a {
-    color: $high_contrast_font_color;
-  }
-  .assignment_as, .assignment_as a{
-    color: $high_contrast_font_color;
-  }
-  .not_sent, .not_sent a{
-    color: $high_contrast_font_color;
-  }
-  .not_started, .not_started a {
-    color: $high_contrast_font_color;
-  }
-  .to_send, .to_send a{
-    color: $high_contrast_font_color;
-  }
-  .without_group, .without_group a{
-    color: $high_contrast_font_color;
-  }
-}
+// #scores_notes.legend_score_footer, .tb_list_students{
+//   .evaluated {
+//     color: $high_contrast_font_color;
+//   }
+//   .sent, .sent a, .evaluated a
+//   td.assignment_as a {
+//     color: $high_contrast_font_color;
+//   }
+//   .assignment_as, .assignment_as a{
+//     color: $high_contrast_font_color;
+//   }
+//   .not_sent, .not_sent a{
+//     color: $high_contrast_font_color;
+//   }
+//   .not_started, .not_started a {
+//     color: $high_contrast_font_color;
+//   }
+//   .to_send, .to_send a{
+//     color: $high_contrast_font_color;
+//   }
+//   .without_group, .without_group a{
+//     color: $high_contrast_font_color;
+//   }
+// }
 
-table#list_of_students{
-  td.new_after_evaluation{
-    background-color: $high_contrast_background_color;
-  }
-}
+// table#list_of_students{
+//   td.new_after_evaluation{
+//     background-color: $high_contrast_background_color;
+//   }
+// }
 
-#scores_notes table{
-  td.new_after_evaluation{
-    background-color: $high_contrast_background_color;
-  }
-}
+// #scores_notes table{
+//   td.new_after_evaluation{
+//     background-color: $high_contrast_background_color;
+//   }
+// }
 
-table#list_of_students thead{
-  ul.dropdown-menu{
-    label:hover, label{
-      background-color: transparent;
-      color: $high_contrast_font_color;
-    }
-  }
-}
+// table#list_of_students thead{
+//   ul.dropdown-menu{
+//     label:hover, label{
+//       background-color: transparent;
+//       color: $high_contrast_font_color;
+//     }
+//   }
+// }
 
-#scores{
-  .info{
-    img{
-      box-shadow: 4px 4px 7px $high_contrast_font_color;
-    }
-  }
+// #scores{
+//   .info{
+//     img{
+//       box-shadow: 4px 4px 7px $high_contrast_font_color;
+//     }
+//   }
 
-  ul.dropdown-menu{
-    label:hover, label{
-      background-color: transparent;
-      color: $high_contrast_background_color;
-    }
-  }
-}
+//   ul.dropdown-menu{
+//     label:hover, label{
+//       background-color: transparent;
+//       color: $high_contrast_background_color;
+//     }
+//   }
+// }
 
-tbody{
-  .equivalent{
-    a{
-      color: $high_contrast_link_color;
-    }
-  }
-}
+// tbody{
+//   .equivalent{
+//     a{
+//       color: $high_contrast_link_color;
+//     }
+//   }
+// }
 
-#tabs{
-  li a{
-    color: $high_contrast_link_color;
-    border-top: solid 2px $high_contrast_border_color;
-    background-color: $high_contrast_background_color;
-  }
-  li a:not(.ui-tabs-anchor){
-    border-left: solid 2px $high_contrast_font_color;
-  }
-  li a.active{
-    background-color: $high_contrast_background_color;
-    color: $high_contrast_font_color;
-  }
-  li a:last-of-type{
-    border-right: solid 2px $high_contrast_border_color;
-  }
-}
+// #tabs{
+//   li a{
+//     color: $high_contrast_link_color;
+//     border-top: solid 2px $high_contrast_border_color;
+//     background-color: $high_contrast_background_color;
+//   }
+//   li a:not(.ui-tabs-anchor){
+//     border-left: solid 2px $high_contrast_font_color;
+//   }
+//   li a.active{
+//     background-color: $high_contrast_background_color;
+//     color: $high_contrast_font_color;
+//   }
+//   li a:last-of-type{
+//     border-right: solid 2px $high_contrast_border_color;
+//   }
+// }
 
-.tabs{
-  li a{
-    color: $high_contrast_link_color;
-    border-top: solid 2px $high_contrast_border_color;
-    background-color: $high_contrast_background_color;
-  }
-  li a:not(.ui-tabs-anchor){
-    border-left: solid 2px $high_contrast_border_color;
-  }
-  li a.active{
-    background-color: $high_contrast_background_color;
-    color: $high_contrast_font_color;
-  }
-  li a:last-of-type{
-    border-right: solid 2px $high_contrast_border_color;
-  }
-}
+// .tabs{
+//   li a{
+//     color: $high_contrast_link_color;
+//     border-top: solid 2px $high_contrast_border_color;
+//     background-color: $high_contrast_background_color;
+//   }
+//   li a:not(.ui-tabs-anchor){
+//     border-left: solid 2px $high_contrast_border_color;
+//   }
+//   li a.active{
+//     background-color: $high_contrast_background_color;
+//     color: $high_contrast_font_color;
+//   }
+//   li a:last-of-type{
+//     border-right: solid 2px $high_contrast_border_color;
+//   }
+// }
 
-.tablesorter-header-inner, td#student, td.tablesorter-header, ul.ui-tabs-nav{
-  background-color: $high_contrast_background_color;
-}
+// .tablesorter-header-inner, td#student, td.tablesorter-header, ul.ui-tabs-nav{
+//   background-color: $high_contrast_background_color;
+// }
