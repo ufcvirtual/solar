@@ -1,28 +1,12 @@
 - locales = ['pt_BR', 'en_US']
 - selected = "#{I18n.locale}"
 
-#team.panel
-  .content
-    - @sectors = YAML::load(File.open('public/members.yml'))
-    = render template: '/pages/team'
-  = image_tag('arrow.png', class: 'arrow')
-
-#faq.panel
-  .content
-    = render template: '/pages/faq'
-  = image_tag('arrow.png', class: 'arrow')
-
-#tutorials.panel
-  .content
-    = render template: '/pages/tutorials'
-  = image_tag('arrow.png', class: 'arrow')
-
 %footer
   .menu_footer
     %ul
       %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', target: '_blank', :'aria-label' => t(:login_footer1)+ t(:new_window)
       %li= link_to t(:login_footer2), 'http://www.ufc.br', target: '_blank', :'aria-label' => t(:login_footer2)+ t(:new_window)
-      %li= link_to t(:login_footer3), '#team', class: 'panel-link'
+      %li= link_to t(:login_footer3), team_path, target: '_blank', :'aria-label' => t(:login_footer3)+ t(:new_window)
       %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', target: '_blank', :'aria-label' => t(:license_terms)+ t(:new_window)
       %li= link_to t(:login_footer4), privacy_path
       %li.app
@@ -34,9 +18,9 @@
       %li.choice-tutorial
         = link_to t(:help), '#', class: 'link-arrow'
         %ul.choice-tutorial-menu
-          %li= link_to t(:login_faq), '#faq', class: 'panel-link'
+          %li= link_to t(:login_faq), faq_path, target: '_blank', :'aria-label' => t(:login_faq)+ t(:new_window)
           %li= link_to t(:videos), 'video_tutorials.html', target: '_blank', :'aria-label' => t(:videos)+ t(:new_window)
-          %li= link_to t('tutorials.menu'), '#tutorials', class: 'panel-link'
+          %li= link_to t('tutorials.menu'), tutorials_login_path, target: '_blank', :'aria-label' => t('tutorials.menu')+ t(:new_window)
       %li.choice-language
         = link_to t(:login_language), '#', class: "link-arrow"
         %ul.choice-language-menu
