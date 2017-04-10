@@ -35,12 +35,12 @@
             - @shortcut[tool.last] = t('.shortcut_'+ "#{tool.last}")
             %li
               = check_box_tag "#{tool.last}", tool.last, false, :"data-url-search" => search_tool_scores_path(type: tool.last)
-              = label_tag "#{tool.last}", tool.first 
-              
+              = label_tag "#{tool.last}", tool.first
+
 
     - if @is_student
       .info_right
-        = label_tag t(:reports, scope: [:scores, :info]) 
+        = label_tag t(:reports, scope: [:scores, :info])
         .links
           = link_to t(:all, scope: [:scores, :info]), reports_pdf_scores_path(tool: true, user_id: @user.id, format: "pdf", type: '',), :target => "_blank", class: "btn", :'aria-label' => t(:report_all, scope: [:scores, :info])
           = link_to t(:evaluative, scope: [:scores, :info]), reports_pdf_scores_path(evaluative: true, type: '_evaluative', user_id: @user.id, format: "pdf"), :target => "_blank", class: "btn", :'aria-label' => t(:report_evaluative, scope: [:scores, :info])
@@ -52,7 +52,7 @@
   - else
     #resp_list
 
-  %br    
+  %br
   .block_wrapper
     .block_title
       %h2= t(".history_access", amount: @access_count)
@@ -89,7 +89,7 @@
 
   .block_wrapper{style: "float:left"}
     = link_to t(:back), :back, {class: "btn"}
-  
+
 = javascript_include_tag 'tooltip', 'tablesorter', 'scores'
 
 :css
@@ -99,51 +99,55 @@
 
 
   $(document).keydown(function (e) {
+    if (e.which === 27) {
+      $("#dropdown_menu").slideUp(150);
+    }
+
     if(!$("input").is(":focus")){
       if (e.which === 97) {
         $('li a.evaluative').trigger('click');
         $('li a.evaluative').attr("tabindex", "0");
         $('li a.evaluative').focus();
       }
-      if (e.which === 98) { 
+      if (e.which === 98) {
         $('li a.frequency').trigger('click');
         $('li a.frequency').attr("tabindex", "0");
         $('li a.frequency').focus();
       }
-      if (e.which === 99) { 
+      if (e.which === 99) {
         $('li a.notevaluative').trigger('click');
         $('li a.notevaluative').attr("tabindex", "0");
         $('li a.notevaluative').focus();
       }
       //CHECKBOX
-      if (e.which === parseInt("#{t("scores.checkbox.chat_room")}")) { 
+      if (e.which === parseInt("#{t("scores.checkbox.chat_room")}")) {
         $('#chat_room').trigger('click');
       }
-      if (e.which === parseInt("#{t("scores.checkbox.schedule_event")}")) { 
+      if (e.which === parseInt("#{t("scores.checkbox.schedule_event")}")) {
         $('#schedule_event').trigger('click');
       }
-      if (e.which === parseInt("#{t("scores.checkbox.discussion")}")) { 
+      if (e.which === parseInt("#{t("scores.checkbox.discussion")}")) {
         $('#discussion').trigger('click');
       }
-      if (e.which === parseInt("#{t("scores.checkbox.all")}")) { 
+      if (e.which === parseInt("#{t("scores.checkbox.all")}")) {
         $('#all').trigger('click');
       }
-      if (e.which === parseInt("#{t("scores.checkbox.exam")}")) { 
+      if (e.which === parseInt("#{t("scores.checkbox.exam")}")) {
         $('#exam').trigger('click');
       }
-      if (e.which === parseInt("#{t("scores.checkbox.assignment")}")) { 
+      if (e.which === parseInt("#{t("scores.checkbox.assignment")}")) {
         $('#assignment').trigger('click');
       }
-      if (e.which === parseInt("#{t("scores.checkbox.webconference")}")) { 
+      if (e.which === parseInt("#{t("scores.checkbox.webconference")}")) {
         $('#webconference').trigger('click');
       }
-    }  
+    }
   });
 
 
-  $(function(){   
+  $(function(){
     var options = $.extend($.datepicker.regional["#{I18n.locale}"]);
-    
+
     $('#from-date, #until-date').datepicker(options);
     $('#from-date, #until-date').mask("#{I18n.t(:mask, scope: "date.formats")}");
 
@@ -189,7 +193,7 @@
           if(!!$('#list_tools').length)
             $('#list_tools').prepend(data);
           else
-            $('#resp_list').prepend(data);       
+            $('#resp_list').prepend(data);
 
         }).error(function(data){
           var data = $.parseJSON(data.responseText);
@@ -220,7 +224,7 @@
       flash_message("#{t('exams.error.cant_calcule_grade')}", 'alert');
       return false;
     }
-    
+
     $.put($(link).data('url'), function(data){
       flash_message(data.notice, 'notice');
       var tr = $(link).parents('tr:first');
