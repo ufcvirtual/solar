@@ -4,11 +4,11 @@
 - files    = post.files
 - evaluate = @can_evaluate || ((post.user_id == current_user.id) && @academic_allocation.try(:evaluative))
 - frequency = @can_evaluate || ((post.user_id == current_user.id) && @academic_allocation.try(:frequency))
-%table.forum_post{ border: '0', cellpadding: '0', cellspacing: '0', id: "#{post.id}" }
-  %tr
-    %td.forum_post_icon{ rowspan: 3, class: new_post_class }
+%article._post.forum_post{ border: '0', cellpadding: '0', cellspacing: '0', id: "#{post.id}" }
+  ._line
+    ._cell.forum_post_icon{class: new_post_class }
       = (@researcher ? image_tag('no_image.png', size: '40x40') : image_tag(user.user_photo(:forum), size: '40x40', alt: t(:mysolar_alt_img_user) + ' ' + user.nick))
-    %td.forum_post_head{class: new_post_class}
+    %li._cell.forum_post_head{class: new_post_class}
       .forum_post_author
         .forum_participant_nick{ alt: "#{user.info(:nick, @researcher)}" }
           = user.info(:nick, @researcher) 
@@ -25,8 +25,9 @@
       .forum_post_date
         = l(post.updated_at, format: :discussion_post_date)
         = l(post.updated_at, format: :discussion_post_hour)
-  %tr
-    %td.forum_post_content{ colspan: 2 }
+  ._line
+    ._cell.forum_post_icon
+    ._cell.forum_post_content
       .forum_post_wrapper{ class: new_post_class }
         %span.hide.number_post=post.parent_id
         .forum_post_inner_content
@@ -60,7 +61,7 @@
       - unless display_mode == 'list'
         - children.each do |child|
           = render partial: 'post', locals: { post: child, display_mode: display_mode, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: new_post }
-  %tr
+  ._line
 
 :javascript
   $(function(){
