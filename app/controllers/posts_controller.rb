@@ -5,7 +5,7 @@ class PostsController < ApplicationController
 
   # before_filter :authenticate_user!
   before_filter :prepare_for_pagination
-  before_filter :set_current_user, only: [:destroy]
+  before_filter :set_current_user, only: [:destroy, :create, :update]
 
   load_and_authorize_resource except: [:index, :user_posts, :create, :show, :evaluate]
 

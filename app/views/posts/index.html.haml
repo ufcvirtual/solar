@@ -79,8 +79,8 @@
     // new messages
      ws.onmessage = function (msg) {
       var data = JSON.parse(msg.data);
-      var post_table   = $("table#"+data.post_id);
-      var parent_table = $("table#"+data.parent_id);
+      var post_table   = $("article#"+data.post_id);
+      var parent_table = $("article#"+data.parent_id);
       // recover grandparent if has parent, but it doesn't exists at view (so it must render all tree of posts) and isn't list view and it is at first page
       var grandparent  = (data.parent_id != null && !parent_table.length && !display_list && (1 == parseInt("#{escape_once(@current_page)}")));
 
@@ -89,7 +89,7 @@
           post_table.html(data2);
         else
           if (!!parent_table.length && !display_list){ // if has parent and isn't list view
-            $(parent_table.find("td.forum_post_content .forum_post_wrapper")[0]).after(data2);
+            $(parent_table.find("._cell.forum_post_content .forum_post_wrapper")[0]).after(data2);
             parent_table.find(".forum_post_buttons:first").find(".update_post:first, .forum_button_attachment:first, .btn_caution:first").remove();
           }else // if hasn't parent and is at the same page or is list view
             if (data.parent_id == null && (1 == parseInt("#{escape_once(@current_page)}")) || !!display_list || !!grandparent)
@@ -105,7 +105,7 @@
 
       // get parent_id information
       if (form.attr("method") == "POST")
-        var parent_table = $($(this).parents("table")[0]);
+        var parent_table = $($(this).parents("article")[0]);
       if (parent_table == undefined)
         var parent_id = null;
       else
@@ -119,13 +119,13 @@
           remove_ckeditor(); // remove ckeditor options
 
           $.get("#{discussion_post_path(@discussion.id, ':id')}".replace(':id', data.post_id), {can_post: "#{@can_post}"}, function(data2){
-            var post_table = $("table#"+data.post_id);
+            var post_table = $("article#"+data.post_id);
             if (!!post_table.length){
               post_table.html(data2);
               msg = "#{t('posts.update.updated')}";
             }else{
               if (parent_table != undefined && !!parent_table.length && !display_list){
-                $(parent_table.find("td.forum_post_content .forum_post_wrapper")[0]).after(data2);
+                $(parent_table.find("._cell.forum_post_content .forum_post_wrapper")[0]).after(data2);
                 parent_table.find(".forum_post_buttons:first").find(".update_post:first, .forum_button_attachment:first, .btn_caution:first").remove();
                 
               }else

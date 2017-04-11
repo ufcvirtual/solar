@@ -63,7 +63,6 @@
                 - if active_tab[:url][:context] == 1 || params[:bread] == "menu_messages"
                   %li#link_to_search_box.sub_nav_menu= link_to t(:search_box), "#search_box_accesskey", accesskey: "3", class: "sub_nav_item"
                 -# %li= link_to t(:footer_site), "#footer_site_accesskey", accesskey: "4"
-
                 %li= link_to t(:high_contrast_link), "#", accesskey: "5", :'data-url' => update_theme_personal_configurations_path, :'data-theme' => "#{user_session[:theme]}", id: "mysolar_high_contrast_option", remote: true
             %li#mysolar_top_help.mysolar_top_submenu_label_regular.nav_menu
               %a#help_top.mysolar_top_link.nav_item{href: "", onclick: "mysolarTopSubmenuHelpToggle();return false;"}
@@ -102,10 +101,10 @@
                 %i.icon-class{:'aria-hidden' => 'true'}
             - unless @shortcut.blank?
               %li#mysolar_open_shortcut
-                %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_2", onkeydown: 'click_on_keypress(event, this);', :'aria-label' =>  t('scores.info.shortcut')}
+                %a#shortcut_accesskey{ href: '#', :"data-dropdown" => "#dropdown_eq_1_2", :'aria-label' =>  t('scores.info.shortcut'), accesskey: "4"}
                   %i.icon-arrow-down-triangle
-                    .dropdown.dropdown-tip{id: "dropdown_eq_1_2"}
-                      %ul{ class: 'dropdown-menu' }
+                    .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_2"}
+                      %ul.shortcut_floating_box{ class: 'dropdown-menu' }
                         %h2= t('scores.info.shortcut')
                         %br
                         - @shortcut.each do |sh|
@@ -482,5 +481,33 @@
         case 13:
           $(this).click();
           break;
+      }
+    });
+
+    $(".shortcut_floating_box").offset( {left: 30} );
+
+    var $sidebar   = $(".shortcut_floating_box"),
+        $window    = $(window),
+        offset     = $sidebar.offset();
+
+    $window.scroll(function() {
+      if (offset.top < $window.scrollTop()) {
+        $sidebar.stop().animate({
+          marginTop: $window.scrollTop() + offset.top
+        });
+      } else {
+        $sidebar.stop().animate({
+          marginTop: 0
+        });
+      }
+    });
+
+    $('#link_to_shortcut').on('keydown click', function(event) {
+      var keynum = event.which || event.keyCode;
+
+      if( keynum == 13 || keynum == 32 || event.type == 'click') {
+        setTimeout(function() {
+          $("#shortcut_accesskey").trigger("click");
+        }, 100);
       }
     });
