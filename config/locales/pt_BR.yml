@@ -3207,6 +3207,7 @@ pt_BR:
     number_evaluative: [1]
     number_frequency: [2]
     number_notevaluative: [3]
+    shortcut_link: "Abrir menu de atalhos [4]"
 
   scores:
     index:
