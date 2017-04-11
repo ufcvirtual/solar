@@ -192,10 +192,10 @@ $lesson_status_released_background: #7DC43F;
 // Tons Amarelos e Laranjas
 $color_contrast: #F9DB43;
 $color_contrast_text: #dca727;
-$color_contrast_text_exams: $color_contrast_text;
-$color_contrast_text_calendar: $color_contrast_text;
-$color_contrast_text_weekend_calendar: $color_contrast_text_calendar;
-$color_contrast_messages: $color_contrast;
+$color_contrast_text_exams: #dca727;
+$color_contrast_text_calendar: #dca727;
+$color_contrast_text_weekend_calendar: #dca727;
+$color_contrast_messages: #F9DB43;
 
 // $color_contrast_text: #916E19;
 $steps_list_box_shadow: #f0cf65;
@@ -205,9 +205,9 @@ $mysolar_chat_barra_background: #fbb03b;
 $btn_initial_file_color_final: #f9c143;
 $label_selected_border_color: #F9E993;
 $message_label_background: #F9C153;
-$message_label_background_border: $message_label_background;
+$message_label_background_border: #F9C153;
 $receiver_already_added_color: #FF9900;
-$receiver_already_added_color_messages: $receiver_already_added_color;
+$receiver_already_added_color_messages: #FF9900;
 
 // Cores Hipster
 $event_assignment_background: #FCEBCA;
