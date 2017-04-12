@@ -242,7 +242,7 @@ jQuery(function($){
       extension = extension[extension.length-1];
       if(jQuery.inArray(extension, extensions) != -1)
         var extension_error = true;
-      else if(file.size > "<%=200.megabytes%>")
+      else if(file.size > "<%=1.gigabytes%>")
           var size_error = true
         else if(!validName(selNodes[0], file.name))
             var name_error = true
