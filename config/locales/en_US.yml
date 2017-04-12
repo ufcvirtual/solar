@@ -1002,7 +1002,7 @@ en_US:
     existing_file_error: "Not sent, already exists a file with same name on selected destination"
     upload_error: It wasn't possible to upload
     bad_extension_error: "Not sent, invalid file type"
-    file_too_big_error: "Not sent, file too large. The maximum size should be up to 200MB."
+    file_too_big_error: "Not sent, file too large. The maximum size should be up to 1GB."
     must_be_a_file: Must be a file
     must_be_a_zip_file: Must be a zip file
     initial_file_error: It wasn't possibile to define initial file

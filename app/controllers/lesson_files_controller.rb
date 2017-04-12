@@ -53,7 +53,7 @@ class LessonFilesController < ApplicationController
         ActiveRecord::Base.transaction do # so executa se estiverem todos ok
           params[:lesson_files][:files].each do |file|
             # verificacoes caso "passe" pelas que existem no javascript
-            raise 'error' if file.tempfile.size > 200.megabytes # de tamanho
+            raise 'error' if file.tempfile.size > 1.gigabytes # de tamanho
             raise 'error' if Solar::Application.config.black_list[:extensions].include?(file.original_filename.split(".").last) # de extensão
             log_file_names << [params[:lesson_files][:path], file.original_filename].compact.join("/")
 

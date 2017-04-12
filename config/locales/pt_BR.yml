@@ -1184,7 +1184,7 @@ pt_BR:
     existing_file_error: "Não enviado, já existe um arquivo de mesmo nome no destino selecionado"
     upload_error: Não foi possível realizar o upload
     bad_extension_error: "Não enviado(s), tipo de arquivo inválido"
-    file_too_big_error: "Não enviado(s), arquivo muito grande. O tamanho máximo deve ser de até 200MB."
+    file_too_big_error: "Não enviado(s), arquivo muito grande. O tamanho máximo deve ser de até 1GB."
     must_be_a_file: Deve ser um arquivo
     must_be_a_zip_file: Deve ser um arquivo zip
     initial_file_error: Não foi possível definir o arquivo inicial
