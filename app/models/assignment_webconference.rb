@@ -119,7 +119,7 @@ class AssignmentWebconference < ActiveRecord::Base
     def update_acu
       unless academic_allocation_user_id.blank?
         if (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?)
-          if (academic_allocation_user.assignment_files.empty? && academic_allocation_user.assignment_webconferences.where(final: true).empty?)
+          if (academic_allocation_user.assignment_files.empty? && academic_allocation_user.assignment_webconferences.empty?)
             academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty]
           else
             academic_allocation_user.status = AcademicAllocationUser::STATUS[:sent]

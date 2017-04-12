@@ -120,7 +120,6 @@ module V1::GroupsH
             SELECT id
             FROM assignment_webconferences
             WHERE academic_allocation_user_id = academic_allocation_users.id
-            AND assignment_webconferences.final = 't'
           )
           OR EXISTS (
             SELECT id 
@@ -256,7 +255,6 @@ module V1::GroupsH
             SELECT id
             FROM assignment_webconferences
             WHERE academic_allocation_user_id = academic_allocation_users.id
-            AND assignment_webconferences.final = 't'
           )
           OR EXISTS (
             SELECT id 

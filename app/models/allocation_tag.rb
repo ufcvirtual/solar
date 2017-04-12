@@ -255,8 +255,7 @@ class AllocationTag < ActiveRecord::Base
            (SELECT assignment_files.academic_allocation_user_id FROM assignment_files)
            UNION
            (SELECT assignment_webconferences.academic_allocation_user_id 
-           FROM assignment_webconferences
-           WHERE final = 't')
+           FROM assignment_webconferences)
           ) files ON files.academic_allocation_user_id = academic_allocation_users.id
           JOIN academic_allocations ON academic_allocations.id = academic_allocation_users.academic_allocation_id AND academic_allocations.academic_tool_type = 'Assignment'
           LEFT JOIN group_participants gp ON gp.group_assignment_id = academic_allocation_users.group_assignment_id
