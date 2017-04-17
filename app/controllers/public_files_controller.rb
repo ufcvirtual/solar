@@ -19,14 +19,17 @@ class PublicFilesController < ApplicationController
   end
 
   def create
-    authorize! :create, PublicFile, { on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]] }
+    authorize! :create, PublicFile, { on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]] }
 
     @public_file = PublicFile.new public_file_params
     @public_file.user_id = current_user.id
-    @public_file.allocation_tag_id = allocation_tag_id
+    @public_file.allocation_tag_id = @allocation_tag_id
     @public_file.save!
 
-    render partial: 'file', locals: { file: @public_file, destroy: true }
+    @user = User.find(current_user.id)
+    @public_files = @user.public_files.where allocation_tag_id: @allocation_tag_id
+
+    render partial: 'list', locals: { public_files: @public_files}
   rescue => error
     render json: { success: false, alert: (@public_file.nil? ? t('public_files.error.new') : @public_file.errors.full_messages) }, status: :unprocessable_entity
   end

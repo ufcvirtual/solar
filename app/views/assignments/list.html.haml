@@ -14,8 +14,8 @@
         = t('.group_assignments')
     .block_content
       = render partial: (@student ? 'student_assignments' : 'assignments'), locals: { assignments: @assignments_group, type: 'group' }
-   
-  = render partial: 'public_files/list', locals: { public_files: @public_files }
+  #public_files 
+    = render partial: 'public_files/list', locals: { public_files: @public_files }
 
   .block_wrapper
     = link_to t(:back), :back, { class: 'btn', id: 'back'  }

@@ -25,16 +25,6 @@
     - active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
     - photo_user = current_user.user_photo(:small)
     - photo_user.freeze
-    #team.panel
-      .content
-        - @sectors = YAML::load(File.open('public/members.yml'))
-        = render template: "/pages/team"
-      = image_tag("arrow.png", :class => "arrow")
-
-    #faq.panel
-      .content
-        = render template: '/pages/faq'
-      = image_tag('arrow.png', class: 'arrow')
 
     #mysolar_topbar_wide_background
     #body_wrapper
@@ -142,7 +132,8 @@
                 %h1#main_content_accesskey{ tabindex: "0", :'aria-label' => t(name, default: name.try(:titleize)) + t('lessons.index.lesson_number_modules', modules: @lessons_modules.size) }= t(name, default: name.try(:titleize))
               - else
                 %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name.try(:titleize))
-              .block_content_text= raw(group_selection)
+              .block_content_text
+                %span.views{role: 'menubar'}= raw(group_selection)
           - elsif not(in_mysolar?)
             #page_title
               %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name.titleize)
@@ -158,7 +149,7 @@
         /     #toggle-controlbox
         /       %a.chat.toggle-online-users{href: "#"}
         /         %strong.conn-feedback="Bate-Papo"
-
+        
       #footer_push{style: "height:35px"}
       - locales  =  %w(pt_BR en_US)
       - selected = I18n.locale.to_s
@@ -200,6 +191,7 @@
         'dateFormat': "#{I18n.t :search_format_date}"
       }
     };
+
 
     function find_and_open_sav(url){
       if( "#{SavConfig::CONFIG.nil?}" == "false" ){
@@ -492,3 +484,10 @@
         }, 100);
       }
     });
+
+    function focusTitle(){
+      setTimeout(function() {
+        $('#main_content_accesskey').click();
+      }, 100);
+    }
+    

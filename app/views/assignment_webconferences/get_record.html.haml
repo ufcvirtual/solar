@@ -6,19 +6,19 @@
     %table.tb_list
       %thead
         %tr.lines
-          %th= t('webconferences.get_record.access')
-          %th= t("webconferences.get_record.start")
-          %th= t("webconferences.get_record.end")
+          %th#_access= t('webconferences.get_record.access')
+          %th#_start= t("webconferences.get_record.start")
+          %th#_end= t("webconferences.get_record.end")
           - if @can_remove_record
-            %th
+            %th#_remove
       %tbody
         - @recordings.each_with_index do |record, idx|
           %tr.lines
-            %td= link_to t('webconferences.get_record.record', number: idx+1), Bbb.get_recording_url(record), target: '_blank'
-            %td= l(record[:startTime].to_datetime)
-            %td= l(record[:endTime].to_datetime)
+            %td{headers: '_access'}= link_to t('webconferences.get_record.record', number: idx+1), Bbb.get_recording_url(record), target: '_blank', :'aria-label' => t('webconferences.get_record.record', number: idx+1)+t(:new_window)
+            %td{headers: '_end'}= l(record[:startTime].to_datetime)
+            %td{headers: '_access'}= l(record[:endTime].to_datetime)
             - if @can_remove_record
-              %td= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('webconferences.get_record.remove'), :'data-url' => remove_record_assignment_webconference_path(id: @assignment_webconference.id, recordID: record[:recordID])
+              %td{headers: '_remove'}= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('webconferences.get_record.remove'), :'data-url' => remove_record_assignment_webconference_path(id: @assignment_webconference.id, recordID: record[:recordID]), :'aria-label' => t('webconferences.get_record.remove')
 
   - else
     .block_content_text_list.text_none= t("webconferences.get_record.no_message")

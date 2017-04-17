@@ -26,7 +26,7 @@ module MenuHelper
     menus.each_with_index do |menu, idx|
       contexts = menu.contexts.pluck(:id)
       menu_item_link = link_to(t(menu.name), url_for({controller: "/#{menu.resource.controller}", action: menu.resource.action,
-        bread: menu.name, contexts: contexts.join(',')}), class: menu.parent.nil? ? 'mysolar_menu_title' : '')
+        bread: menu.name, contexts: contexts.join(',')}), onclick: 'focusTitle();', onkeypress: 'focusTitle();', onkeydown: 'click_on_keypress(event, this);', class: menu.parent.nil? ? 'mysolar_menu_title' : '')
       menu_item = {contexts: contexts, bread: menu.name, link: menu_item_link}
 
       if menu.parent.nil?

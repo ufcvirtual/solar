@@ -8,7 +8,7 @@
   ._line
     ._cell.forum_post_icon{class: new_post_class }
       = (@researcher ? image_tag('no_image.png', size: '40x40') : image_tag(user.user_photo(:forum), size: '40x40', alt: t(:mysolar_alt_img_user) + ' ' + user.nick))
-    %li._cell.forum_post_head{class: new_post_class}
+    ._cell.forum_post_head{class: new_post_class}
       .forum_post_author
         .forum_participant_nick{ alt: "#{user.info(:nick, @researcher)}" }
           = user.info(:nick, @researcher) 
