@@ -104,8 +104,10 @@ module Bbb
   def bbb_online?(api = nil)
     Timeout::timeout(4) do
       api = bbb_prepare if api.nil?
-      url  = URI(api.url)
-      response = Net::HTTP.get_response(url)
+      url = URI.parse(api.url)
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true if url.scheme.downcase == 'https'
+      response = http.get(url.request_uri)
       return (Net::HTTPSuccess === response)
     end
   rescue
