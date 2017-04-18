@@ -803,7 +803,8 @@ pt_BR:
   menu_aside: "Ir para o menu [2]"
   search_box: "Ir para a busca [3]"
   footer_site: "Ir para o rodapé [4]"
-  high_contrast_link: "Alto Contraste [5]"
+  high_contrast_link: "Alto contraste [5]"
+  libras: Tradução para Libras
 
   # Página de tutoriais
   description: "Descrição"

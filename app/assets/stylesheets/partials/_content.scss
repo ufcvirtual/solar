@@ -157,15 +157,22 @@ div.legend h1 {
     position: absolute;
     right: 0;
     bottom: 5px;
+    float: right;
   }
-  > .block_content_text:hover, > .block_content_text:hover select {
+  > .block_content_text:hover, > .block_content_text:hover li {
     color: $color_black;
   }
-  select {
+  ul{
+    min-width: 80px;
+  }
+  li {
     font-size: 9pt;
     border: none;
     color: $color_almost_gray_content;
     max-width: 145px;
+    a{
+      font-size: 9pt;
+    }
   }
 }
 

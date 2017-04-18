@@ -123,6 +123,7 @@ class AssignmentsController < ApplicationController
       @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
       @ac = AcademicAllocation.where(academic_tool_id: @assignment.id, allocation_tag_id: @allocation_tag_id, academic_tool_type: 'Assignment').first
       @can_evaluate = can?(:evaluate, Assignment, on: [@allocation_tag_id] )
+
       @acu = AcademicAllocationUser.find_one(@ac.id, @student_id, @group_id, false, @can_evaluate)
 
       #@bbb_online   = bbb_online?

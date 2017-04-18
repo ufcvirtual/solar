@@ -76,7 +76,7 @@ class Score # < ActiveRecord::Base
         #{evaluated_status}
         WHEN assignments.id IS NOT NULL AND assignments.type_assignment = #{Assignment_Type_Group} AND gp.id IS NULL THEN 'without_group'
         WHEN (current_date < schedules.start_date AND (assignments.start_hour IS NULL OR assignments.start_hour = '')) OR (current_date = schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.start_hour != '' AND current_time<to_timestamp(assignments.start_hour, 'HH24:MI:SS')::time)) OR (current_date < schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.start_hour != '')) then 'not_started'
-        WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Assignment' AND (af.id IS NOT NULL OR (aw.id IS NOT NULL AND aw.final = 't' ))))) THEN 'sent'
+        WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Assignment' AND (af.id IS NOT NULL OR (aw.id IS NOT NULL))))) THEN 'sent'
         WHEN schedules.end_date >= current_date THEN 'to_send'
         ELSE 
           'not_sent'

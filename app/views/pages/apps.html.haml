@@ -7,7 +7,7 @@
   #links
     %h1=t(:login_app)
     = link_to image_tag("apps/google-play-badge_#{I18n.locale}.png", alt: t(:form_google_play)), "https://play.google.com/store/apps/details?id=br.ufc.virtual.solarmobilis&hl=#{I18n.locale}&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1", class: 'google-app', target: '_blank'
-    /= link_to image_tag("apps/apple_#{I18n.locale}.svg", alt: t(:form_apple_store)), "https://play.google.com/store/apps/details?id=br.ufc.virtual.solarmobilis&hl=#{I18n.locale}&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1", class: 'apple-app', target: '_blank'
+    = link_to image_tag("apps/apple_#{I18n.locale}.svg", alt: t(:form_apple_store)), "https://itunes.apple.com/us/app/solar-mobilis/id1213025314?ls=1&mt=8", class: 'apple-app', target: '_blank'
     
   #link
     %a#link-password{href: home_path}= t(:back_home)

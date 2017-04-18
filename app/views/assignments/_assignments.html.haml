@@ -41,10 +41,10 @@
           %td.center{headers: "date_range#{type}" }
             %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(' - ')
             %div= [(assignment.start_hour), (assignment.end_hour)].join(' - ') unless assignment.start_hour.blank?
-          %td.center{headers: "evaluative" }= t(assignment.evaluative, scope: [:scores, :info])
-          %td.center{headers: "frequency" }= t(assignment.frequency, scope: [:scores, :info])
+          %td.center{headers: "evaluative#{type}" }= t(assignment.evaluative, scope: [:scores, :info])
+          %td.center{headers: "frequency#{type}" }= t(assignment.frequency, scope: [:scores, :info])
           %td.center{headers: "action#{type}" }
-            = link_to content_tag(:i, nil, class: 'icon-users'), '#', class: 'btn participants', :'data-url' => participants_assignment_path(assignment.academic_tool_id), :"data-tooltip" => (is_group_type ? t('.groups') : t('.participants')), onclick: 'open_div(this, event);', :'data-div' => '.participants_box', id: "assignment-#{assignment.academic_tool_id}", :'data-hide' => true
+            = link_to content_tag(:i, nil, class: 'icon-users'), '#', class: 'btn participants', :'data-url' => participants_assignment_path(assignment.academic_tool_id), :"data-tooltip" => (is_group_type ? t('.groups') : t('.participants')), onclick: 'open_div(this, event);', :'data-div' => '.participants_box', id: "assignment-#{assignment.academic_tool_id}", :'data-hide' => true, :'aria-label' => (is_group_type ? t('.groups') : t('.participants'))
             - if is_group_type
               - closed = (assignment.closed == 't')
               - if @can_manage
@@ -52,7 +52,7 @@
               - if @can_import
                 = link_to content_tag(:i, nil, class: 'icon-import'), '#', class: "btn import_groups #{!closed ? '' : 'disabled'}", :"data-tooltip" => t(".import_groups"), disabled: closed, :"data-url" => import_list_group_assignments_path(assignment_id: assignment.academic_tool_id), :'aria-label' => t(".import_groups")
           %tr
-            %td{ colspan: 5 }
+            %td{ headers: "description#{type}", colspan: 5 }
               .participants_box.invisible{ class: "assignment-#{assignment.academic_tool_id}" }
                 
 - else

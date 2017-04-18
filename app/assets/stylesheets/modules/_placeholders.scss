@@ -6,7 +6,7 @@
 %page-title {
   border-bottom: 1px solid;
   border-bottom-color: #d0d0d0;
-  overflow: hidden;
+ // overflow: hidden;
   padding-bottom: 5px;
   position: relative;
 
@@ -15,7 +15,6 @@
     zoom: 1;
     display: inline-block;
     *display: inline;
-    float: left;
     max-width: 590px;
   }
 }
