@@ -43,7 +43,7 @@
               - if can? :update, current_user
                 %a#mysolar_top_user_nick.mysolar_top_link.nav_item{href: "", onclick: "mysolarTopSubmenuToggle();return false;"}= current_user.nick
             %li#server_clock_wrapper.nav_menu
-              %span#server_clock.nav_item{name: "server_clock", tabindex: "0"}
+              %span#server_clock.nav_item{name: "server_clock"}
             %li#accessibility_top_menu.mysolar_top_submenu_label_regular.nav_menu
               %a#accessibility_top.mysolar_top_link.nav_item{ href: "", onclick: "mysolarAccessibilitySubmenuToggle();return false;", :'aria-label' =>  t(:accessibility_menu)}
                 = t(:accessibility)
@@ -443,6 +443,11 @@
     });
 
     $(".nav_item").on("keydown", function(event){
+      var attr = $('#server_clock').prop('tabindex');
+      if(attr == undefined) {
+        $('#server_clock').prop('tabindex', 0);
+      }
+
       var keynum = event.which || event.keyCode;
 
       if(keynum == 39) {
@@ -479,31 +484,35 @@
       }
     });
 
-    $(".shortcut_floating_box").offset( {left: 30} );
+    $(document).ready(function(){
+      if( $(".shortcut_floating_box").length ) {
+        $(".shortcut_floating_box").offset( {left: 30} );
 
-    var $sidebar   = $(".shortcut_floating_box"),
-        $window    = $(window),
-        offset     = $sidebar.offset();
+        var $sidebar   = $(".shortcut_floating_box"),
+            $window    = $(window),
+            offset     = $sidebar.offset();
 
-    $window.scroll(function() {
-      if (offset.top < $window.scrollTop()) {
-        $sidebar.stop().animate({
-          marginTop: $window.scrollTop() + offset.top
+        $window.scroll(function() {
+          if (offset.top < $window.scrollTop()) {
+            $sidebar.stop().animate({
+              marginTop: $window.scrollTop() + offset.top
+            });
+          } else {
+            $sidebar.stop().animate({
+              marginTop: 0
+            });
+          }
         });
-      } else {
-        $sidebar.stop().animate({
-          marginTop: 0
+
+        $('#link_to_shortcut').on('keydown click', function(event) {
+          var keynum = event.which || event.keyCode;
+
+          if( keynum == 13 || keynum == 32 || event.type == 'click') {
+            setTimeout(function() {
+              $("#shortcut_accesskey").trigger("click");
+            }, 100);
+          }
         });
-      }
-    });
-
-    $('#link_to_shortcut').on('keydown click', function(event) {
-      var keynum = event.which || event.keyCode;
-
-      if( keynum == 13 || keynum == 32 || event.type == 'click') {
-        setTimeout(function() {
-          $("#shortcut_accesskey").trigger("click");
-        }, 100);
       }
     });
 

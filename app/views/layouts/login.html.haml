@@ -4,6 +4,7 @@
     %meta{:charset => "utf-8"}
     %meta{"http-equiv" => "X-UA-Compatible", :content => "IE=edge,chrome=1"}
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1"}
+    %meta{:property => "creator.productor", :content => "http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/84732"}
     %title= content_for?(:title) ? yield(:title) : "Solar"
     = stylesheet_link_tag "login", :media => "all"
     = stylesheet_link_tag "fancybox"
@@ -38,3 +39,53 @@
       = yield
       #login_footer_push
       = render '/user_sessions/footer'
+
+    //= javascript_include_tag "//barra.brasil.gov.br/barra.js"
+    %script{:type => "text/javascript", :src => "http://barra.brasil.gov.br/barra.js", :defer=>"defer"}
+- selected = "#{I18n.locale}"
+
+:javascript
+
+  $(function() {
+    $('.link-barra').attr('target','_blank');
+    $('.logo-vlibras').attr('target','_blank');
+    var text_vlibras = $('.logo-vlibras').attr("aria-label"); 
+    $(".logo-vlibras").attr('aria-label', text_vlibras+" #{t(:new_window)}");
+
+    $('.link-barra').each(function(){ 
+      
+      var txt_link = $(this).text(); 
+      var text_link = txt_link.toLowerCase().replace(/[áàâã]/g,'a').replace(/[éèê]/g,'e').replace(/[óòôõ]/g,'o').replace(/[úùû]/g,'u').replace(/[ç]/g,'c').replace(/[ ]/g,'_'); 
+      
+      if("#{selected}"=='en_US'){
+        switch (text_link) {
+          case "brasil":
+            txt_link = "#{t(:brasil)}";
+            $(this).html("#{t(:brasil)}");
+            break;
+          case "servicos":
+            txt_link = "#{t(:services)}";
+            $(this).html("#{t(:services)}");
+            break;
+          case "participe":
+            txt_link = "#{t(:participate)}";
+            $(this).html("#{t(:participate)}");
+            break;
+          case "acesso_a_informacao":
+            txt_link = "#{t(:access)}";
+            $(this).html("#{t(:access)}");
+            break;
+          case "legislacao":
+            txt_link = "#{t(:legislation)}";
+            $(this).html("#{t(:legislation)}");
+            break;
+          case "canais":
+            txt_link = "#{t(:channel)}";
+            $(this).html("#{t(:channel)}");
+            break;
+        } 
+      }
+      $(this).attr('aria-label', txt_link+ " #{t(:new_window)}");
+    });
+   
+  });  

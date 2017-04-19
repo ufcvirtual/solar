@@ -684,6 +684,12 @@ en_US:
   cpf_place_holder: "Type your cpf"
   solar_faq: "Assistance to the Solar website"
   audio_suggestions: 'suggestion: navigation in TAB'
+  brasil: Brazil
+  services: Services
+  participate: To participate
+  access: Access Information
+  legislation: Legislation
+  channel: Channel
 
   enrollments:
     all: All

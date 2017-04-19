@@ -786,6 +786,12 @@ pt_BR:
   help: "Ajuda"
   new_window: " (Este link abrirá uma nova janela)"
   audio_suggestions: 'Sugestão: navegar com TAB'
+  brasil: Brasil
+  services: Serviços
+  participate: Participe
+  access: Acesso à Informação
+  legislation: Legislação
+  channel: Canais
 
   start_menu: "Início do menu"
   end_menu: "Fim do menu"
