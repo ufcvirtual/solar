@@ -52,7 +52,7 @@
                   %li#link_to_shortcut.sub_nav_menu= link_to t("shortcut.shortcut_link"), "#", class: "sub_nav_item"
                 -# %li= link_to t(:high_contrast_link), "#", accesskey: "5"
                 - if I18n.locale.to_s == 'pt_BR'
-                  %li=link_to t(:libras), 'http://www.vlibras.gov.br/', target: '_blank', 'aria-label'=> t(:libras) + t(:new_window)
+                  %li.sub_nav_menu=link_to t(:libras), 'http://www.vlibras.gov.br/', target: '_blank', 'aria-label'=> t(:libras) + t(:new_window), class: "sub_nav_item"
             %li#mysolar_top_help.mysolar_top_submenu_label_regular.nav_menu
               %a#help_top.mysolar_top_link.nav_item{href: "", onclick: "mysolarTopSubmenuHelpToggle();return false;"}
                 = t(:help)
@@ -151,7 +151,7 @@
         /     #toggle-controlbox
         /       %a.chat.toggle-online-users{href: "#"}
         /         %strong.conn-feedback="Bate-Papo"
-        
+
       #footer_push{style: "height:35px"}
       - locales  =  %w(pt_BR en_US)
       - selected = I18n.locale.to_s
@@ -501,4 +501,3 @@
         $('#main_content_accesskey').click();
       }, 100);
     }
-    
