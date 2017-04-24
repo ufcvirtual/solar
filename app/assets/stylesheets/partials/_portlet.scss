@@ -223,10 +223,12 @@ table tr.block_title th {
 
   input{
     height: 16px;
+    border-color: $exclusive_background_color;
   }
 
   select{
     height: 21px;
+    border-color: $exclusive_background_color;
   }
 
   #type, #profile{
