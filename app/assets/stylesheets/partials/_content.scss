@@ -210,6 +210,8 @@ div.block_title {
   }
 }
 
+
+
 /* zerando o espaçamento do titulo do bloco */
 .block_title, .block_title > .block_left, .block_title > .block_right {
   padding-top: 0;
@@ -307,6 +309,10 @@ div.block_title {
 
 .bibliography_volume, .bibliography_publication_year{
 
+}
+
+#search_box_accesskey{
+  color: $color_black_content;
 }
 
 /**

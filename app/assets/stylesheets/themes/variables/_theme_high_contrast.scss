@@ -69,12 +69,13 @@ $color_white_chat_rooms: $high_contrast_background_color;
 
 //content
 $color_white_content: $high_contrast_background_color;
+$color_black_content: $high_contrast_font_color;
 $block_groups_background: $high_contrast_background_color;
 $color_almost_gray_content: $high_contrast_font_color;
 $color_main_content: $high_contrast_background_color;
 $steps_background: $high_contrast_background_color;
 $steps_list_color: $high_contrast_font_color;
-$steps_list_active_color: high_contrast_link_color;
+$steps_list_active_color: $high_contrast_link_color;
 
 //custom_icons
 $color_gray_text_custom_icons: $high_contrast_background_color; 
