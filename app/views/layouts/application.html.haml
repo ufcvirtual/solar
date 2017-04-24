@@ -135,7 +135,7 @@
               - else
                 %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name.try(:titleize))
               .block_content_text
-                %span.views{role: 'menubar'}= raw(group_selection)
+                %span.views#classes{role: 'menubar'}= raw(group_selection)
           - elsif not(in_mysolar?)
             #page_title
               %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name.titleize)
@@ -501,3 +501,30 @@
         $('#main_content_accesskey').click();
       }, 100);
     }
+
+    $("#classes .btn_dropdown").on("keydown", function(event){
+      var keynum = event.which || event.keyCode;
+
+      if( keynum == 13 || keynum == 32 || keynum == 40 || event.type == 'click') {
+        $(this).trigger('click');
+        setTimeout(function() {
+          $(".views").find(".dropdown").find("li:first").find("a").focus();
+        }, 100);
+      }
+    });
+
+    $("#classes .dropdown-menu li a").on("keydown", function(event){
+      var keynum = event.which || event.keyCode;
+
+      switch( keynum ) {
+        case 40:
+          $(this).closest("li").next("li").find("a").focus();
+          break;
+        case 38:
+          $(this).closest("li").prev("li").find("a").focus();
+          break;
+        case 27:
+          $(this).closest(".dropdown-tip").siblings().click().focus();
+          break;
+      }
+    });
