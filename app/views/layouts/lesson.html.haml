@@ -6,7 +6,7 @@
     %meta{name: "viewport", content: "width=device-width, initial-scale=1"}
     %title= content_for?(:title) ? yield(:title) : 'Solar'
 
-    = javascript_include_tag 'jquery', 'jquery.cookie', 'jquery.dropdown', 'lessons'
+    = javascript_include_tag 'jquery', 'jquery.cookie', 'jquery.dropdown', 'lessons', 'breadcrumb'
 
     = stylesheet_link_tag 'themes/theme_blue', 'jquery.dropdown.css'
     = stylesheet_link_tag 'misc/div_layout', 'fonts/fonts', media: 'all'

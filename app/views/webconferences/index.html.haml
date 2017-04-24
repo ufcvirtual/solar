@@ -59,7 +59,7 @@
                   = t(:moderator, scope: [:webconferences, :list])
                   %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
                 .dropdown.dropdown-tip{id: "dropdown_m_#{webconference.id}"}
-                  %ul{ class: 'dropdown-menu' }  
+                  %ul{ class: 'dropdown-menu' }
                     = webconference.user_name
               .equivalent
                 - unless webconference.eq_name.blank?
@@ -97,15 +97,16 @@
   - else
     .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
 
-= javascript_include_tag 'tooltip', 'webconferences' 
+= javascript_include_tag 'tooltip', 'webconferences'
 
 :javascript
   $(function(){
     $('.record').call_fancybox();
   });
 
-  function hide_or_show_info(name){
-    var parent = $(name).parent();
+  function hide_or_show_info(link){
+    var parent = $(link).parent();
+
     parent.siblings().toggleClass('invisible');
     parent.siblings().focus();
 
@@ -117,3 +118,16 @@
       parent.find('i.icon-arrow-down-triangle').removeClass('invisible');
     }
   }
+
+
+  $(".accessibility").on("keydown", function(event){
+    var keynum = event.which || event.keyCode;
+
+    if ( keynum == 27 ) {
+      $(this).addClass('invisible');
+      $(this).siblings().find('i.icon-arrow-up-triangle').removeClass('invisible');
+      $(this).siblings().find('i.icon-arrow-down-triangle').addClass('invisible');
+    }
+
+    $(".accessibility_title").find("a").focus();
+  });
