@@ -4,7 +4,7 @@
 
   .block_white.index
     .align-left.padding-checkbox
-      %span.views{role: 'menubar'}
+      %span.views#dropdown_messages{role: 'menubar'}
         %a.btn.btn_dropdown{ href: '#', :"data-dropdown" => '#views-dropdown' }
           = t('.view_messages', type: t('messages.select_all'))
           %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
@@ -114,5 +114,32 @@
 
         });
       });
+    });
+
+    $("#dropdown_messages .btn_dropdown").on("keydown", function(event){
+      var keynum = event.which || event.keyCode;
+
+      if( keynum == 13 || keynum == 32 || keynum == 40 || event.type == 'click') {
+        $(this).trigger('click');
+        setTimeout(function() {
+          $("#views-dropdown").find("li:first").find("a").focus();
+        }, 100);
+      }
+    });
+
+    $("#views-dropdown .dropdown-menu li a").on("keydown", function(event){
+      var keynum = event.which || event.keyCode;
+
+      switch( keynum ) {
+        case 40:
+          $(this).closest("li").next("li").find("a").focus();
+          break;
+        case 38:
+          $(this).closest("li").prev("li").find("a").focus();
+          break;
+        case 27:
+          $(this).closest("#dropdown_messages").find(".btn_dropdown").click().focus();
+          break;
+      }
     });
   });
