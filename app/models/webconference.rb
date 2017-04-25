@@ -110,7 +110,7 @@ class Webconference < ActiveRecord::Base
     options = {
       moderatorPW: Digest::MD5.hexdigest((title rescue name)+meeting_id),
       attendeePW: Digest::MD5.hexdigest(meeting_id),
-      welcome: description,
+      welcome: description + YAML::load(File.open('config/webconference.yml'))['welcome'],
       duration: duration,
       record: true,
       autoStartRecording: is_recorded,
