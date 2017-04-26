@@ -407,13 +407,12 @@ class User < ActiveRecord::Base
       user = user_exist.nil? ? new : user_exist
 
       blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize
+      blacklist.name = (user.try(:name) || row['Nome']) if blacklist.new_record?
       can_add_to_blacklist = blacklist.valid?
+      new_password         = nil
 
       if !user.integrated || can_add_to_blacklist
-        if blacklist.new_record?
-          blacklist.name = user.name || row['Nome'] 
-          blacklist.save if user.integrated && can_add_to_blacklist
-        end
+        blacklist.save if blacklist.new_record? && user.integrated && can_add_to_blacklist
 
         params = {}
         params.merge!({ email: row['Email'].downcase })             if row.include?('Email') && !row['Email'].blank?
@@ -425,7 +424,7 @@ class User < ActiveRecord::Base
         params.merge!({ institution: row['Instituição'] })          if row.include?('Instituição') && !row['Instituição'].blank?
         params.merge!({ cpf: cpf })                                 if row.include?('CPF') || row.include?('Cpf')
         params.merge!({ gender: (row['Gênero'].downcase == 'masculino' || row['Gênero'].downcase == 'male' || row['Gênero'].downcase == 'm') }) if row.include?('Gênero') && !row['Gênero'].blank?
-        params.merge!({ username:  row['Email'].downcase.split('@')[0] || cpf || params['Cpf'] }) if user.username.nil?
+        params.merge!({ username:  row['Email'].downcase.split('@')[0][0..19] || cpf || params['Cpf'] }) if user.username.nil?
         params.merge!({ birthdate: '1970-01-01' })                  if user.birthdate.nil?
         params.merge!({ nick: user.username || params[:username] }) if user.nick.nil?
 
@@ -434,14 +433,14 @@ class User < ActiveRecord::Base
           user.password = new_password
         end
 
-        user.update_attributes params.merge!({ active: true })
+        user.attributes = user.attributes.merge!(params.merge!({ active: true }))
       end
 
       if user.save
         log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
         imported << user
 
-        if new_password
+        unless new_password.blank?
           Thread.new do
             Notifier.new_user(user, new_password).deliver
           end
@@ -571,7 +570,7 @@ class User < ActiveRecord::Base
   end
 
   def on_blacklist?
-    not(UserBlacklist.find_by_cpf(self.class.cpf_without_mask(cpf)).nil?)
+    !(UserBlacklist.find_by_cpf(self.class.cpf_without_mask(cpf)).nil?)
   end
 
   def add_to_blacklist(user_id = nil)

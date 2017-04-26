@@ -12,7 +12,10 @@
     - unless @password.blank?
       %p= "Senha: #{@password}"
     - else
-      %p= link_to('Não lembra sua senha?', edit_password_url(@user, reset_password_token: @token))
+      - if @user.integrated && !@user.on_blacklist?
+        %p= link_to('Não lembra sua senha?', "https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do")
+      - else
+        %p= link_to('Não lembra sua senha?', edit_password_url(@user, reset_password_token: @token))
     %br
     %p= link_to('Acesso ao Solar', home_url(only_path: false))
     %p{style: "color: #7C7C7C; font-size: 8pt; padding-top: 10px;"}= I18n.t("notifier.dont_reply_message")
