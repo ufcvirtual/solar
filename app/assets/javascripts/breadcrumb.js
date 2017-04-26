@@ -11,3 +11,7 @@ function openDropdown() {
 function closeDropdown() {
   dropdown_open = false;
 }
+
+function toggleDropdown() {
+  dropdown_open = !dropdown_open;
+}
