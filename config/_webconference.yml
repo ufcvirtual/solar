@@ -1,5 +1,11 @@
 debug: false
 
+# Google form (feedback)
+feedback_url: 'https://goo.gl/forms/...'
+
+# welcome message
+welcome: '<br><br>Bem-vindo à <b>%%CONFNAME%%</b>!<br><br>Para participar da webconferência, seu computador deve ter, no mínimo, um <u>processador dual-core com pelo menos 2G de memória, uma conexão de 1Mbits de download e 0.5 Mbits de upload</u>. Você pode testar sua conexão usando o <a href="event:http://www.speedtest.net"><u><b>speedtest.net</b></u></a>.<br><br>Se sua conexão estiver boa, o áudio tiver sido configurado corretamente e, mesmo assim, o seu áudio apresentar problemas, tente alternar de navegador. São recomendadas as últimas versões dos navegadores <a href="event:https://www.mozilla.org/pt-BR/firefox/new/"><u>Firefox</u></a> ou <a href="event:https://www.google.com.br/chrome/browser/desktop/"><u>Chrome</u></a>.<br><br>Ao final da webconferência, clique em sair, no canto superior direito, e responda ao nosso questionário de avaliação da ferramenta.<br><br>Qualquer dúvida na utilização da ferramenta, entre em contato através do email: webconferencia@virtual.ufc.br'
+
 # maximum wait for a response to any API request (secs)
 timeout_req: 60
 
@@ -9,8 +15,16 @@ timeout_ending: 600
 # maximum wait until the bot starts (secs)
 timeout_bot_start: 60
 
+max_simultaneous_users: ...
+participant_log_date: '2015-09-03'
+allowStartStopRecording: true
+
 servers:
-  bbb:
+  bbb-0:
     salt: "salt hash"
-    url: 'http://.../bigbluebutton/api'
-    version: '0.8'
+    url: 'https://.../bigbluebutton/api'
+    version: '1.0'
+  bbb-1:
+    salt: "salt hash"
+    url: 'https://.../bigbluebutton/api'
+    version: '1.0'

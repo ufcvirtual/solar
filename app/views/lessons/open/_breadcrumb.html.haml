@@ -13,3 +13,72 @@
     = " > "
     %span.lessons#nav_lessons{role: 'menubar'}
       = render partial: "lessons/open/lessons", locals: { lesson_module: @lesson.lesson_module }
+
+:javascript
+  $(function(){
+    $(document).on("keydown", function(event){
+      var keynum = event.which || event.keyCode;
+
+      if(keynum == 27 && !dropdownIsOpen()) {
+        parent.$.fancybox.close();
+      }
+    });
+
+    $("#nav_modules").on("keydown", function(event){
+      var keynum = event.which || event.keyCode;
+
+      if(keynum == 39) {
+        $("#nav_lessons").find(".btn_dropdown").focus();
+      } else if (keynum == 32 || keynum == 13) {
+        $(this).find(".btn_dropdown").trigger('click');
+
+        openDropdown();
+        setTimeout(function() {
+          $("#nav_modules").find("ul li").first().find("a").focus();
+        }, 100);
+      }
+    });
+
+    $("#nav_lessons").on("keydown", function(event){
+      var keynum = event.which || event.keyCode;
+
+      if(keynum == 37) {
+        $("#nav_modules").find(".btn_dropdown").focus();
+      } else if (keynum == 32 || keynum == 13) {
+        $(this).find(".btn_dropdown").trigger('click');
+
+        openDropdown();
+        setTimeout(function() {
+          $("#nav_lessons").find("ul li").first().find("a").focus();
+        }, 100);
+      }
+    });
+
+    $("#lmodule-options-dropdown ul li a").on("keydown", function(event) {
+      var keynum = event.which || event.keyCode;
+
+      switch( keynum ) {
+        case 40:
+          $(this).closest("li").next("li").find("a").focus();
+          break;
+        case 38:
+          $(this).closest("li").prev("li").find("a").focus();
+          break;
+        case 27:
+          $("#nav_modules").find(".btn_dropdown").trigger('click');
+          setTimeout(function() {
+            closeDropdown();
+          }, 250);
+          $("#nav_modules").find(".btn_dropdown").focus();
+          break;
+        case 13:
+          $(this).trigger('click');
+          $("#nav_modules").find(".btn_dropdown").trigger('click');
+          setTimeout(function() {
+            closeDropdown();
+          }, 250);
+          $("#nav_modules").find(".btn_dropdown").focus();
+          break;
+      }
+    });
+  });

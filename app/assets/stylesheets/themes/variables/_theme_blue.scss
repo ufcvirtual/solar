@@ -137,6 +137,7 @@ $contacts_edition_block_content_background_mysolar: $contacts_edition_block_cont
 
 // Tons azuis
 $color_main: #003E7A;
+$color_main_base_link: $color_main;
 $color_main_content: $color_main;
 $color_main_mysolar: $color_main;
 $added_permission_color: #0000FF;
@@ -273,6 +274,7 @@ $portfolio_assignment_corrected_color: $evaluated_color;
 $portfolio_assignment_color: $sent_color;
 $portfolio_assignment_not_sent_color: $not_sent_color;
 $portfolio_assignment_not_started: $color_almost_gray;
+$portfolio_assignment_to_be_sent: $color_main;
 $block_content_toolbar_background: $background_dark_gray;
 $questions_link_color: $complete_border_left_color;
 $info_color: $color_almost_gray;
