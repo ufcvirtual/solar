@@ -32,7 +32,7 @@ $current_color_base: $high_contrast_link_color;
 $disabled_color: #966;
 $language_border_color: $high_contrast_border_color;
 $language_color_base: $high_contrast_link_color;
-$language_background_color: $high_contrast_font_color;
+$language_background_color: $high_contrast_background_color;
 $language_color_base_choice_language: $high_contrast_background_color;
 
 //buttons
@@ -328,7 +328,7 @@ $sent_color: #2900c2;
 $facebook_main_color: #3b5c9a;
 $slide_settings_counter_color: #3b5e9a;
 $block_content_background: #0074f3;
-$score_tbody_link: #21578B;
+$score_tbody_link: $high_contrast_font_color;
 
 // Tons vermelhos
 $removed_permission_color: #FF0000;
@@ -389,16 +389,16 @@ $list_exams_exam_box_color: $btn_main_color;
 $list_exams_background: $block_groups_background;
 $question_iten_incorrect: $error_color;
 $list_exams_corrected_color: $evaluated_color;
-$list_exams_finished_color: $sent_color;
+$list_exams_finished_color: $high_contrast_font_color;
 $list_exams_not_answered_color: $not_sent_color;
 $list_exams_not_started_color: $color_almost_gray;
 $form_error_color: $error_color;
 $lesson_portlet_border_color: $high_contrast_border_color;
-$portfolio_assignment_without_group_color: $without_group_color;
-$portfolio_assignment_corrected_color: $evaluated_color;
-$portfolio_assignment_color: $sent_color;
-$portfolio_assignment_not_sent_color: $not_sent_color;
-$portfolio_assignment_not_started: $color_almost_gray;
+$portfolio_assignment_without_group_color: $high_contrast_font_color;
+$portfolio_assignment_corrected_color: $high_contrast_font_color;
+$portfolio_assignment_color: $high_contrast_font_color;
+$portfolio_assignment_not_sent_color: $high_contrast_font_color;
+$portfolio_assignment_not_started: $high_contrast_font_color;
 $block_content_toolbar_background: $background_dark_gray;
 $questions_link_color: $complete_border_left_color;
 $info_color: $color_almost_gray;

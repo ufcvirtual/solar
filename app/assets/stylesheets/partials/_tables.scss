@@ -17,6 +17,7 @@ tbody tr.lines {
   border-bottom: 1px solid;
   border-bottom-color: $table_border_color;
   background-color: $color_main_light;
+  color: $exclusive_font_color;
 
   &:hover {
     background-color: $color_main_light_highlight; /* #FFF5ED*/
