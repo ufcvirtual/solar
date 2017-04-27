@@ -121,6 +121,7 @@ class AcademicAllocationUser < ActiveRecord::Base
       allocation = allocations.where('final_grade IS NOT NULL').first || allocations.first
 
       allocation.calculate_final_grade
+      allocation.calculate_working_hours
     end
   end
 

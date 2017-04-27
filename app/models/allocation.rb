@@ -234,6 +234,10 @@ class Allocation < ActiveRecord::Base
     Allocation.get_working_hours(user_id, allocation_tag)
   end
 
+  def calculate_working_hours
+    update_attributes working_hours: Allocation.get_working_hours(user_id, allocation_tag)
+  end
+
   def self.get_working_hours(user_id, allocation_tag, tool=nil)
     # return 0 if allocation_tag.curriculum_unit.try(:working_hours).nil?
 
