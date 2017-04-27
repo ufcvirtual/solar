@@ -89,7 +89,7 @@
 }
 
 #mysolar_top_options li:hover a {
-  color: $color_main;
+  color: $color_main_mysolar_link;
 }
 
 #mysolar_top_img_user {
@@ -469,6 +469,12 @@ a.mysolar_top_link {
     font-variant: initial;
     font-family: 'PT Sans', sans-serif;
   }
+  .mysolar_menu_active > a { 
+    color: $exclusive_background_color !important;
+  }
+  a:hover {
+    color: $exclusive_link_color;
+  }
 }
 
 .mysolar_menu_title_single.mysolar_menu_active > a{
@@ -476,7 +482,7 @@ a.mysolar_top_link {
 }
 
 .mysolar_menu_active{
-  background-color: $color_contrast_light;
+  background-color: $color_contrast_light_mysolar_menu_active;
   border-right-color: $color_contrast;
   border-right-width: 2px;
   border-right-style: solid;

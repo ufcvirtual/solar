@@ -163,10 +163,13 @@ $receiver_already_added_color_messages: $high_contrast_font_color;
 
 //mysolar
 $color_main_mysolar: $high_contrast_background_color;
+$color_main_mysolar_link: $high_contrast_link_color;
 $color_white_mysolar: $high_contrast_background_color;
 $color_white_mysolar_link: $high_contrast_link_color;
 $search_keyword_inactive_color: $high_contrast_font_color;
 $contacts_edition_block_content_background_mysolar: $high_contrast_background_color;
+$color_black_mysolar_menu_active: $high_contrast_background_color;
+$color_contrast_light_mysolar_menu_active: $high_contrast_font_color;
 
 //panels
 $panel_background: $high_contrast_background_color;
@@ -237,14 +240,14 @@ $color_white_background_portlets: $high_contrast_background_color;
 //portfolio
 $color_light_gray_portfolio: $high_contrast_font_color;
 $color_white_background_portfolio: $high_contrast_background_color;
-$portfolio_assignment_corrected_color_portfolio: $high_contrast_link_color;
-$portfolio_assignment_not_answered_color_portfolio: $high_contrast_link_color;
-$portfolio_assignment_color: $high_contrast_link_color;
-$portfolio_assignment_color: $high_contrast_link_color;
-$portfolio_assignment_not_sent_color: $high_contrast_link_color;
-$portfolio_assignment_not_started: $high_contrast_link_color;
-$portfolio_assignment_without_group_color: $high_contrast_link_color;
-$portfolio_assignment_to_be_sent: $high_contrast_link_color;
+$portfolio_assignment_corrected_color_portfolio: $high_contrast_font_color;
+$portfolio_assignment_not_answered_color_portfolio: $high_contrast_font_color;
+$portfolio_assignment_color: $high_contrast_font_color;
+$portfolio_assignment_color: $high_contrast_font_color;
+$portfolio_assignment_not_sent_color: $high_contrast_font_color;
+$portfolio_assignment_not_started: $high_contrast_font_color;
+$portfolio_assignment_without_group_color: $high_contrast_font_color;
+$portfolio_assignment_to_be_sent: $high_contrast_font_color;
 $step_list_color_portfolio: $high_contrast_border_color;
 $event_assignment_background_portfolio: $high_contrast_background_color;
 $color_main_border_portfolio: $high_contrast_border_color;
@@ -422,6 +425,7 @@ $color_main_light: $high_contrast_background_color;
 // Cores exclusivas do high contrast
 $exclusive_background_color: $high_contrast_background_color;
 $exclusive_font_color: $high_contrast_font_color;
-$exclusive_assigments_color: #C06;
+$exclusive_link_color: $high_contrast_link_color;
+//$exclusive_assigments_color: #C06;
 
-$test_background_color: false;
+//$test_background_color: false;

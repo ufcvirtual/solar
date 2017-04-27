@@ -39,6 +39,7 @@ $color_black_content: $color_black;
 $color_black_calendar: $color_black;
 $color_black_buttons: $color_black;
 $color_black_groups_tags: $color_black;
+$color_black_mysolar_menu_active: $color_black;
 $color_almost_black: #222222;
 $color_almost_black_base: $color_almost_black;
 $color_almost_black_editions: $color_almost_black;
@@ -140,6 +141,7 @@ $color_main: #003E7A;
 $color_main_base_link: $color_main;
 $color_main_content: $color_main;
 $color_main_mysolar: $color_main;
+$color_main_mysolar_link: $color_main;
 $added_permission_color: #0000FF;
 $sent_color: #2900c2;
 $btn_border_dark_blue: #002a80;
@@ -236,6 +238,7 @@ $color_main_light: desaturate(lighten($color_main, 74.5%),20%);
 $color_main_medium: lighten(desaturate($color_main, 70%),30%);
 $color_main_light_highlight: adjust_color($color_main, $lightness: 73%);
 $color_contrast_light: adjust_color($color_contrast, $lightness: 33%);
+$color_contrast_light_mysolar_menu_active: $color_contrast_light;
 
 hr {
   border-top-color: $border_color;
@@ -306,6 +309,7 @@ $score_table_head_color: $color_little_dark_gray;
 
 $exclusive_background_color: false;
 $exclusive_font_color: false;
+$exclusive_link_color: false;
 
 //alert
 $color_black_alert: $color_black;
