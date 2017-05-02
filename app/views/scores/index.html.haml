@@ -5,7 +5,7 @@
         %i.icon-suitcase
         = t(:group)
         = @group.code
-        - unless @wh.nil?
+        - unless @wh.blank?
           = t('.curriculum_unit_working_hours', wh: @wh)
 
   .block_wrapper

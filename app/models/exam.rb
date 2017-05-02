@@ -37,16 +37,17 @@ class Exam < Event
   def recalculate_grades(user_id=nil, ats=nil, all=nil)
     if ended?
       grade = 0.00
+      wh = 0
       # chamar metodo de correção dos itens respondidos para todos os que existem
       list_exam_correction(user_id, ats, all).each do |acu|
         correction_exams(acu.id)
         grade = get_grade(acu.id)
         grade = grade ? grade : 0.00
-        acu.update_attributes grade: (grade > 10 ? 10 : grade.round(2)), status: AcademicAllocationUser::STATUS[:evaluated]
+        acu.update_attributes grade: (grade > 10 ? 10 : grade.round(2)), status: AcademicAllocationUser::STATUS[:evaluated], working_hours: (wh = acu.academic_allocation.max_working_hours)
         acu.recalculate_final_grade(acu.allocation_tag_id)
         send_result_emails(acu, grade) if result_email
       end
-      grade.round(2)
+      [grade.round(2), wh]
     else
       errors.add(:base, I18n.t('exams.errors.not_finished'))
     end
@@ -98,6 +99,7 @@ class Exam < Event
     list_attempt = attempts.where(complete: true)
     (list_attempt.any? ? list_attempt : [attempts.first]).compact.each do |exam_user_attempt|
       grade_exam = 0
+
       questions_exam.each do |question|
         if question.annulled
           grade_question =  question.score

@@ -194,7 +194,7 @@ class ExamsController < ApplicationController
     @frequency = @ac.frequency && (can? :calcule_grades, Exam, { on: @allocation_tag_id })
     raise 'empty' if @acu.nil? && !@frequency
 
-    @grade = ((@acu.try(:grade).blank? || @exam.can_correct?(@user_id, AllocationTag.find(@allocation_tag_id).related)) ? @exam.recalculate_grades(@user_id, nil, true) : @acu.grade)
+    @grade = ((@acu.try(:grade).blank? || @exam.can_correct?(@user_id, AllocationTag.find(@allocation_tag_id).related)) ? @exam.recalculate_grades(@user_id, nil, true).first : @acu.grade)
 
     @attempts = @acu.try(:exam_user_attempts) || []
     @attempt = case @exam.attempts_correction
@@ -234,8 +234,8 @@ class ExamsController < ApplicationController
       user_id = params[:user_id]
     end
     raise 'not_finished' unless exam.ended?
-    grade = exam.recalculate_grades(user_id, nil, true)
-    render json: { success: true, grade: grade, status: t('exams.situation.corrected'), notice: t('calcule_grade', scope: 'exams.list') }
+    grade, wh = exam.recalculate_grades(user_id, nil, true)
+    render json: { success: true, grade: grade, wh: wh, status: t('exams.situation.corrected'), notice: t('calcule_grade', scope: 'exams.list') }
   rescue => error
     render_json_error(error, 'exams.error')
   end 

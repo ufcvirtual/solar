@@ -305,11 +305,7 @@ class ScoresController < ApplicationController
       when 'ScheduleEvent'
         render json: { url: evaluate_user_schedule_event_path(tool_id, user_id: params[:user_id]) }
       when 'Exam'
-        if params[:score_type] == 'frequency'
-          render json: { url: result_user_exam_path(tool_id, user_id: params[:user_id])}
-        else
-          render json: { url: calcule_grade_exam_path(tool_id), method: :put }
-        end
+        render json: { url: calcule_grade_exam_path(tool_id), method: :put }
       end
     end
   end

@@ -74,8 +74,7 @@
                 %td.center{headers: "al_eva_int"}
                   - unless tool.count.blank?
                     = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), onkeydown: 'click_on_keypress(event, this);'
-                %td.center{headers: "al_eva_gra"}
-
+                %td.center.grade{headers: "al_eva_gra"}
                   = tool.grade.blank? ? ' - ' : tool.grade.to_f
                 %td{headers: "al_eva_bla"}
                   - if (tool.academic_tool_type != 'Exam' && @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate)) || @can_evaluate.include?(tool.academic_tool_type.to_s.tableize => :calcule_grades)
@@ -151,10 +150,10 @@
                 %td.center{headers: "al_fre_int"}
                   - unless tool.count.blank?
                     = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'frequency'), onkeydown: 'click_on_keypress(event, this);'
-                %td.center{headers: "al_fre_fre"}
+                %td.center.wh{headers: "al_fre_fre"}
                   = tool.working_hours.blank? ? ' - ' : tool.working_hours.to_i
                 %td{headers: "al_fre_bla"}
-                  - if (tool.academic_tool_type != 'Exam' && @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate)) || @can_evaluate.include?(tool.academic_tool_type.to_s.tableize => :calcule_grades)
+                  - if (tool.academic_tool_type != 'Exam' && @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate)) || @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :calcule_grades)
                     = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), class: 'btn', onkeydown: 'click_on_keypress(event, this);'
                 %td.center{headers: "al_fre_aft"}=(tool.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
