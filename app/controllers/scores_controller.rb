@@ -139,7 +139,6 @@ class ScoresController < ApplicationController
       @types = [ [t(:discussions, scope: [:scores, :info]), 'discussion'], [t(:chat, scope: [:scores, :info]), 'chat_room'],[t(:webconference, scope: [:scores, :info]), 'webconference']]
     end
 
-    @wh = Allocation.get_working_hours(@user.id, AllocationTag.find(@allocation_tag_id))
     @access, @public_files, @access_count = Score.informations(@user.id, @allocation_tag_id)
   end
 
@@ -229,8 +228,7 @@ class ScoresController < ApplicationController
     @curriculum_unit = at.get_curriculum_unit
              
     @ats = AllocationTag.find(allocation_tag_id)
-    @g = AcademicAllocationUser.get_grade_finish(@user.id, allocation_tag_id).final_grade
-    @wh = Allocation.get_working_hours(@user.id, at)
+    @g = AcademicAllocationUser.get_grade_finish(@user.id, allocation_tag_id)
 
     @tool = Score.list_tool(@user.id, allocation_tag_id, 'all', evaluative, frequency, (@type == 'all'))
     @access, @public_files, @access_count = Score.informations(@user.id, allocation_tag_id)
@@ -259,7 +257,6 @@ class ScoresController < ApplicationController
       @types = [ [t(:discussions, scope: [:scores, :info]), 'discussion'], [t(:chat, scope: [:scores, :info]), 'chat_room'],[t(:webconference, scope: [:scores, :info]), 'webconference']]
     end
 
-    @wh = Allocation.get_working_hours(@user.id, AllocationTag.find(@allocation_tag_id))
     render :info
   end 
 

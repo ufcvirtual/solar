@@ -23,7 +23,7 @@ class Score # < ActiveRecord::Base
     end
 
     sent_status = if frequency || evaluative
-      'academic_allocation_users.status = 1 OR (academic_allocation_users.status = 2 AND (academic_allocation_users.working_hours IS NULL OR academic_allocation_users.grade IS NULL))'
+      'academic_allocation_users.status = 1 OR (academic_allocation_users.status = 2 AND (academic_allocation_users.working_hours IS NOT NULL OR academic_allocation_users.grade IS NOT NULL))'
     else
       'academic_allocation_users.status = 1'
     end
@@ -47,7 +47,7 @@ class Score # < ActiveRecord::Base
     end
 
     sent_status = if type_score == 'frequency' || type_score == 'evaluative'
-      'academic_allocation_users.status = 1 OR (academic_allocation_users.status = 2 AND (academic_allocation_users.working_hours IS NULL OR academic_allocation_users.grade IS NULL))'
+      'academic_allocation_users.status = 1 OR (academic_allocation_users.status = 2 AND (academic_allocation_users.working_hours IS NOT NULL OR academic_allocation_users.grade IS NOT NULL))'
     else
       'academic_allocation_users.status = 1'
     end
@@ -372,7 +372,7 @@ class Score # < ActiveRecord::Base
                   #{evaluated_status}
                   when assignments.type_assignment = #{Assignment_Type_Group} AND groups.group_id IS NULL  then 'without_group'
                   when (current_date < schedules.start_date AND (assignments.start_hour IS NULL OR assignments.start_hour = '')) OR (current_date = schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.start_hour != '' AND current_time<to_timestamp(assignments.start_hour, 'HH24:MI:SS')::time)) OR (current_date < schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.start_hour != '')) then 'not_started'
-                  when #{sent_status} OR academic_allocation_users.status = 1 OR academic_allocation_users.status = 1 OR attachment_updated_at IS NOT NULL OR (assignment_webconferences.id IS NOT NULL AND is_recorded AND (initial_time + (interval '1 mins')*duration) < now()) then 'sent'
+                  when #{sent_status} OR academic_allocation_users.status = 1 OR attachment_updated_at IS NOT NULL OR (assignment_webconferences.id IS NOT NULL AND is_recorded AND (initial_time + (interval '1 mins')*duration) < now()) then 'sent'
                   when (current_date <= schedules.end_date AND current_date >= schedules.start_date AND (assignments.end_hour IS NULL OR assignments.end_hour = '' AND assignments.start_hour IS NULL OR assignments.start_hour = '')) OR (current_date <= schedules.end_date AND current_date >= schedules.start_date AND (assignments.end_hour IS NOT NULL AND assignments.end_hour != '' AND current_time<=to_timestamp(assignments.end_hour, 'HH24:MI:SS')::time)) then 'to_be_sent'
                   else  'not_sent'
                  end AS situation,

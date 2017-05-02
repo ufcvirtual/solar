@@ -211,6 +211,7 @@ class AllocationTag < ActiveRecord::Base
     relations << <<-SQL
       LEFT JOIN allocations ON users.id    = allocations.user_id
       LEFT JOIN allocations grades ON users.id    = grades.user_id AND grades.final_grade IS NOT NULL AND grades.allocation_tag_id IN (#{ats})
+      LEFT JOIN allocations wh     ON users.id    = wh.user_id     AND wh.working_hours IS NOT NULL AND wh.allocation_tag_id IN (#{ats})
       LEFT JOIN profiles    ON profiles.id = allocations.profile_id
       LEFT JOIN public_files ON public_files.user_id = users.id AND public_files.allocation_tag_id IN (#{ats})
     SQL
@@ -220,26 +221,9 @@ class AllocationTag < ActiveRecord::Base
     if scores
       msg_query = Message.get_query('users.id', 'outbox', ats, { ignore_trash: false, ignore_user: true })
 
-      select << 'users.name, COALESCE(posts.count,0) AS u_posts, COALESCE(posts.count_discussions,0) AS discussions, COALESCE(logs.count,0) AS u_logs, COALESCE(sent_msgs.count,0) AS u_sent_msgs, COALESCE(grades.final_grade, 0) AS u_grade, COALESCE(exams.count,0) AS exams, COALESCE(logs_a.count,0) AS webconferences, COALESCE(assignments.count,0) AS assignments, COALESCE(events.count,0) AS schedule_events, COALESCE(chats.count,0) AS chat_rooms, COALESCE(acu.working_hours, 0) AS working_hours'
+      select << 'users.name, COALESCE(posts.count,0) AS u_posts, COALESCE(posts.count_discussions,0) AS discussions, COALESCE(logs.count,0) AS u_logs, COALESCE(sent_msgs.count,0) AS u_sent_msgs, COALESCE(grades.final_grade, 0) AS u_grade, COALESCE(exams.count,0) AS exams, COALESCE(logs_a.count,0) AS webconferences, COALESCE(assignments.count,0) AS assignments, COALESCE(events.count,0) AS schedule_events, COALESCE(chats.count,0) AS chat_rooms, COALESCE(wh.working_hours, 0) AS working_hours'
 
       relations << <<-SQL
-        LEFT JOIN(
-          SELECT SUM(COALESCE(acu.working_hours, acu_eq.working_hours, 0)) AS working_hours, COALESCE(acu.user_id, acu_eq.user_id, gp.user_id) AS user_id
-          FROM academic_allocations
-          LEFT JOIN academic_allocations equivalent  ON academic_allocations.id = equivalent.equivalent_academic_allocation_id
-          LEFT JOIN academic_allocation_users acu    ON acu.academic_allocation_id = academic_allocations.id
-          LEFT JOIN academic_allocation_users acu_eq ON acu_eq.academic_allocation_id = equivalent.id AND (acu_eq.user_id = acu.user_id OR acu_eq.group_assignment_id = acu.group_assignment_id)
-          LEFT JOIN group_participants gp ON gp.group_assignment_id = acu.group_assignment_id OR gp.group_assignment_id = acu_eq.group_assignment_id
-          WHERE
-          academic_allocations.frequency = true
-          AND
-          academic_allocations.allocation_tag_id IN (#{ats})
-          AND
-          academic_allocations.equivalent_academic_allocation_id IS NULL
-          AND
-          academic_allocations.final_exam = false
-          GROUP BY COALESCE(acu.user_id, acu_eq.user_id, gp.user_id)
-        ) acu ON acu.user_id = users.id
         LEFT JOIN (
           SELECT  COUNT(DISTINCT exams.id) AS count, academic_allocation_users.user_id AS user_id
           FROM academic_allocation_users
@@ -309,7 +293,7 @@ class AllocationTag < ActiveRecord::Base
         ) chats ON chats.user_id = users.id
       SQL
 
-      group << 'posts.count, logs.count, sent_msgs.count, COALESCE(grades.final_grade, 0), posts.count_discussions, exams.count, logs_a.count, assignments.count, events.count, chats.count, acu.working_hours'
+      group << 'posts.count, logs.count, sent_msgs.count, COALESCE(grades.final_grade, 0), posts.count_discussions, exams.count, logs_a.count, assignments.count, events.count, chats.count, COALESCE(wh.working_hours, 0)'
     else
       select << "users.*, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name"
     end
@@ -330,7 +314,9 @@ class AllocationTag < ActiveRecord::Base
 
   def recalculate_students_grades
     ats = lower_related if group.nil?
-    allocations.includes(:profile).where(status: Allocation_Activated, allocation_tag_id: ats || id).where('cast(profiles.types & ? as boolean) AND final_grade IS NOT NULL', Profile_Type_Student).map(&:calculate_final_grade)
+    alls = allocations.includes(:profile).where(status: Allocation_Activated, allocation_tag_id: ats || id).where('cast(profiles.types & ? as boolean) AND final_grade IS NOT NULL', Profile_Type_Student)
+    alls.map(&:calculate_final_grade)
+    alls.map(&:calculate_working_hours)
   end
 
   ### triggers

@@ -28,8 +28,8 @@
             %br
             %div= raw @curriculum_unit.try(:working_hours).nil? ? t('scores.info.uc_without_wh') : t('scores.info.frequency_uc', wh: @curriculum_unit.try(:working_hours))
             - if @is_student
-              .grade= raw t('scores.info.grade_i', grade: (@g.blank? ? ' - ' : @g.round(2).to_s))
-              .frequency= raw t('scores.info.frequency_i', wh: @wh)
+              .grade= raw t('scores.info.grade_i', grade: (@g.final_grade.blank? ? ' - ' : @g.final_grade.round(2).to_s))
+              .frequency= raw t('scores.info.frequency_i', wh: @g.working_hours)
         %br
         %table.tb_list
           %thead
