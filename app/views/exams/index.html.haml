@@ -4,7 +4,7 @@
       %i.icon-suitcase
       = t(:title, scope: [:exams])
   - unless @exams.blank?
-    %table.tb_list
+    %table.tb_list.exams
       %thead
         %tr.lines
           %th{style: 'width: 25%;'}= t('exams.index.description')
