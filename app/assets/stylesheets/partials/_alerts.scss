@@ -9,7 +9,7 @@
 }
 
 .warning {
-  color: $color_contrast_text;
+  color: $color_contrast_text_alert;
 }
 
 .flash_message_wrapper {
@@ -81,7 +81,7 @@
 }
 
 label {
-  color: $color_black_alert;
+  color: $color_white_alert;
   display: inline-block;
   width: 140px;
   .menor {

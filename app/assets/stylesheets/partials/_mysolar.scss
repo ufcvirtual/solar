@@ -452,6 +452,10 @@ a.mysolar_top_link {
 
 .mysolar_menu_title_active > a {
   color: $color_contrast_text;
+  a:hover {
+    color: $exclusive_link_color;
+  }
+
 }
 
 .submenu {
