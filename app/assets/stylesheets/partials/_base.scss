@@ -188,10 +188,10 @@ textarea {
 }
 
 .lines.period_ended, .period_ended {
-  background-color: $period_ended_background;
-  color: $period_ended_color_base;
+  background-color: $period_ended_background; //#000;
+  color: $period_ended_color_base; //#fff;
   a {
-    color: $period_ended_color;
+    color: $period_ended_color; //#fff333;
   }
 }
 
