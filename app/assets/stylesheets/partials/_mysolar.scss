@@ -452,42 +452,38 @@ a.mysolar_top_link {
 
 .mysolar_menu_title_active > a {
   color: $color_contrast_text;
-  a:hover {
-    color: $exclusive_link_color;
-  }
-
 }
 
 .submenu {
 
   border-top: 2px solid;
-  border-top-color: $current_color;
-  background-color: $contacts_edition_block_content_background_mysolar; /* alternativa: f5f8fb */
+  border-top-color: $current_color; //#fff;
+  background-color: $contacts_edition_block_content_background_mysolar; /* alternativa: f5f8fb */ //#000;
 
   > li {
     padding: 8px 0 8px 10px;
   }
   a {
     font-size: 10pt;
-    color: $color_almost_black;
+    color: $color_almost_black; //#fff;
     font-variant: initial;
     font-family: 'PT Sans', sans-serif;
   }
   .mysolar_menu_active > a { 
-    color: $exclusive_background_color !important;
+    color: $exclusive_background_color !important; //#000;
   }
   a:hover {
-    color: $exclusive_link_color;
+    color: $exclusive_link_color; //#fff333;
   }
 }
 
 .mysolar_menu_title_single.mysolar_menu_active > a{
-  color: $color_black;
+  color: $color_black_mysolar_menu_active; //#000;
 }
 
 .mysolar_menu_active{
-  background-color: $color_contrast_light_mysolar_menu_active;
-  border-right-color: $color_contrast;
+  background-color: $color_contrast_light_mysolar_menu_active; //#fff;
+  border-right-color: $color_contrast; //#fff;
   border-right-width: 2px;
   border-right-style: solid;
 }
