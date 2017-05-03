@@ -37,3 +37,14 @@
     cursor: pointer;
   }
 }
+
+table.assignments {
+  thead{
+    tr.lines{
+      th {
+        background-color: $exclusive_background_color;
+        color: $exclusive_font_color;
+      }
+    }
+  }
+}
