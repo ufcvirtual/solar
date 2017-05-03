@@ -225,7 +225,7 @@ $without_group_color_score: $high_contrast_font_color;
 $score_table_background: $high_contrast_background_color;
 $scores_info_img_box_shadow: $high_contrast_font_color;
 $score_tbody_link: $high_contrast_link_color;
-$score_table_head_color: $high_contrast_link_color;
+$score_table_head_color: $high_contrast_font_color;
 $color_little_dark_gray_dropdown_scores: $high_contrast_background_color;
 $color_main_border_score: $high_contrast_border_color;
 $color_main_li_active_score: $high_contrast_background_color;
@@ -423,7 +423,6 @@ $language_color: $current_color;
 $icon_color: $current_color;
 $not_started_color: $color_almost_gray;
 $period_ended_color: $color_almost_gray;
-$score_table_head_color: $color_little_dark_gray;
 $color_contrast_light: $high_contrast_background_color;
 $color_main_light: $high_contrast_background_color;
 
