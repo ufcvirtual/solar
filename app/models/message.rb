@@ -17,6 +17,9 @@ class Message < ActiveRecord::Base
   accepts_nested_attributes_for :user_messages, allow_destroy: true
   accepts_nested_attributes_for :files, allow_destroy: true
 
+  validates :content, presence: true
+  validates :subject, length: {minimum: 0, maximum: 255}, presence: true
+
   self.per_page = Rails.application.config.items_per_page
 
   attr_accessor :contacts, :sender

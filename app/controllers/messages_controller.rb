@@ -110,8 +110,14 @@ class MessagesController < ApplicationController
         @contacts = current_user.user_contacts.map(&:user)
       end
       @message.files.build
-
-      flash[:alert] = t("messages.errors.recipients")
+      
+      @message.errors.each do |attribute, erro|
+        @attribute = attribute
+      end
+      @reply_to = []
+      @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume")
+     
+      flash.now[:alert] = @message.errors.full_messages.join(', ')
       render :new
     end
   end

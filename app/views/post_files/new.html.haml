@@ -38,7 +38,8 @@
           flash_message("Arquivo enviado com sucesso", "notice");
           update_tables_with_no_data();
           setTimeout(function() {
-            $("#"+id).click();
+            $('#flash_message').prop('tabindex', 0);
+            $('#flash_message').focus(); 
           }, 100); 
         }
       });

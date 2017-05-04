@@ -15,10 +15,10 @@
             = label_tag :message_to, t('.message_to')
           .input.align-right
             = text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(', '), disabled: true
-            = link_to t('.add_contacts'), '#', :'aria-label' => (t('.add_contacts') + t('fancybox.open')), onkeydown: 'click_on_keypress(event, this);', class: 'message_new_textbox', :'data-url' => contacts_messages_path(allocation_tag_id: @allocation_tag_id, reply_to: 'reply_params'), onclick: 'open_contacts_selection(this);'
+            = link_to t('.add_contacts'), '#', :'aria-label' => (t('.add_contacts') + t('fancybox.open')), onkeydown: 'click_on_keypress(event, this);', class: 'message_new_textbox', :'data-url' => contacts_messages_path(allocation_tag_id: @allocation_tag_id, reply_to: 'reply_params'), onclick: 'open_contacts_selection(this);', id: '_add_contacts'
 
         .message_new_text_to
-          .label.align-left= label_tag :subject, t('.subject'), for: 'message_subject'
+          .label.align-left= label_tag :subject, t('.subject'), for: 'message_subject', id: 'subject'
           .input.align-right
             = f.input :subject, label: false, input_html: { class: 'message_new_textbox' }
             = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline', ckeditor: false, div_id: 'message_subject', number: '', field: t('.subject_speech')}
@@ -53,6 +53,7 @@
 
 
     #div_new_message
+      .visuallyhidden= label_tag :content, t('.content'), id: 'content'
       .visuallyhidden= link_to t('.go_to_ckeditor'), '#', onclick: "CKEDITOR.instances['message_content'].focus();", onkeydown: "CKEDITOR.instances['message_content'].focus();"
       = f.input :content, label: false, as: :ckeditor
 
@@ -87,9 +88,7 @@
       if ($('#message_to').val() == ""){
         event.preventDefault();
         alert("#{I18n.t(:without_recipient, scope: [:messages, :form])}");
-      } else if ($(".cke_contents iframe").contents().find("body").text() == ""){
-        if (!confirm("#{I18n.t(:no_content, scope: [:messages, :form])}"))
-          event.preventDefault();
+        $('#_add_contacts').focus();
       }
     });
 
@@ -101,7 +100,6 @@
 
   function focus_editor(){ 
     CKEDITOR.instances['message_content'].focus();
-
   }
 
   // add files
@@ -179,3 +177,9 @@
       open: true
     });
   }
+  $(function(){
+    $('#flash_message').prop('tabindex', 0);
+    setTimeout(function() {
+      $('#flash_message').focus(); 
+    }, 400);  
+  });  

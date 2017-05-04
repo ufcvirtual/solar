@@ -13,7 +13,7 @@
   %div.accessibility.invisible{tabindex: 0}= raw t('webconferences.index.accessibility')
 .block_content
   - no_webconferences = (webconferences.blank?)
-  %table.tb_list{:summary=> t("assignments.list.summary_web"), style: (no_webconferences ? "display: none" : "") }
+  %table.tb_list#tb_lw{:summary=> t("assignments.list.summary_web"), style: (no_webconferences ? "display: none" : "") }
     %thead{style: (no_webconferences ? "display: none" : "")}
       %tr.lines
         %th#name_web= t('.name')

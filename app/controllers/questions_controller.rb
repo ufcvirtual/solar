@@ -38,7 +38,11 @@ class QuestionsController < ApplicationController
     if @question.save
       render partial: 'question', locals: { question: @question }
     else
-      render json: { success: false, alert: @question.errors.full_messages.join(', ') }, status: :unprocessable_entity
+      @errors = []
+      @question.errors.each do |attribute, erro|
+        @object = "question_"+attribute.to_s
+      end  
+      render json: { success: false, alert: @question.errors.full_messages.join(', '), object: @object.gsub('.', '_') }, status: :unprocessable_entity
     end
 
   rescue CanCan::AccessDenied
@@ -80,7 +84,11 @@ class QuestionsController < ApplicationController
     if @question.update_attributes question_params
       render partial: 'question', locals: { question: @question }
     else
-      render json: { success: false, alert: @question.errors.full_messages.join(', ') }, status: :unprocessable_entity
+      @errors = []
+      @question.errors.each do |attribute, erro|
+        @object = "question_"+attribute.to_s
+      end  
+      render json: { success: false, alert: @question.errors.full_messages.join(', '), object: @object.gsub('.', '_')  }, status: :unprocessable_entity
     end
 
   rescue CanCan::AccessDenied

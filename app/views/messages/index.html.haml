@@ -143,3 +143,10 @@
       }
     });
   });
+
+  $(function(){
+    $('#flash_message').prop('tabindex', 0);
+    setTimeout(function() {
+      $('#flash_message').focus(); 
+    }, 400);  
+  });  
