@@ -3215,6 +3215,8 @@ pt_BR:
     number_frequency: [2]
     number_notevaluative: [3]
     shortcut_link: "Abrir menu de atalhos [4]"
+    no_shortcuts: "Sem atalhos"
+    close: "Fechar"
 
   scores:
     index:

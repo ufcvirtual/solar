@@ -449,3 +449,14 @@ a.disabled {
     overflow-y: auto;
   }
 }
+
+.shortcut_floating_box{
+  color: $color_black;
+  font-family: 'PT Sans', sans-serif;
+}
+
+.close_dropdown{
+  float: right;
+  padding-right: 3px;
+  margin-top: -30px;
+}

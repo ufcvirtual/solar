@@ -545,3 +545,7 @@
   content: "\23e9";
   color: #696969;
 }
+
+.icon-cancel-circle:before {
+  content: "\2bbf";
+}

@@ -2967,6 +2967,8 @@ en_US:
     number_frequency: [2]
     number_notevaluative: [3]
     shortcut_link: "Open shortcut menu [4]"
+    no_shortcuts: "Sem No shortcuts"
+    close: "Close"
 
   scores:
     index:
