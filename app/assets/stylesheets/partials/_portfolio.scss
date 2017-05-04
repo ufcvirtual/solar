@@ -110,35 +110,56 @@
   color: $portfolio_assignment_not_answered_color_portfolio;
 }
 
-.assignment_sent, .assignment_sent a, .assignment_corrected a, .assignment_finished, .assignment_finish, .assignment_processing,
-td.assignment_as a {
+.assignment_sent, .assignment_finished, .assignment_finish, .assignment_processing {
   color: $portfolio_assignment_color;
 }
 
-.assignment_as, .assignment_as a{
+.assignment_sent a, .assignment_corrected a, td.assignment_as a {
+  color: $portfolio_assignment_color_link;
+}
+
+.assignment_as {
   color: $portfolio_assignment_color;
 }
 
-.assignment_not_sent, .assignment_not_sent a, .expired, .assignment_closed {
+.assignment_as a {
+  color: $portfolio_assignment_color_link;
+}
+
+.assignment_not_sent, .expired, .assignment_closed {
   color: $portfolio_assignment_not_sent_color;
 }
 
-.assignment_not_started, .assignment_not_started a, .assignment_scheduled {
+.assignment_not_sent a {
+  color: $portfolio_assignment_not_sent_color_link !important;
+}
+
+.assignment_not_started, .assignment_scheduled {
   color: $portfolio_assignment_not_started;
 }
 
-.assignment_to_be_sent, .assignment_to_be_sent a, .assignment_started,
-.assignment_pending, .assignment_to_answer, .assignment_not_finished, .assignment_opened, .assignment_in_progress,
-td.assignment_an a {
+.assignment_not_started a {
+  color: $portfolio_assignment_not_started_link;
+}
+
+.assignment_to_be_sent, .assignment_started,
+.assignment_pending, .assignment_to_answer, .assignment_not_finished, .assignment_opened, .assignment_in_progress {
   color: $portfolio_assignment_to_be_sent;
+}
+
+.assignment_to_be_sent a, td.assignment_an a {
+  color: $portfolio_assignment_to_be_sent_link;
 }
 
 .assignment_an{
   color: $color_main;
 }
-.assignment_without_group, .assignment_without_group a,
-td.assignment_without_group a {
+.assignment_without_group {
   color: $portfolio_assignment_without_group_color;
+}
+
+.assignment_without_group a, td.assignment_without_group a {
+  color: $portfolio_assignment_without_group_color_link;
 }
 
 .assignment_corrected,

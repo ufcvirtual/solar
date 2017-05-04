@@ -202,6 +202,7 @@ $table_border_color: $high_contrast_border_color;
 $color_main_light: $high_contrast_background_color;
 $table_border_color: $high_contrast_border_color;
 $table_line_period_ended_hover: $high_contrast_background_color;
+$table_td_student: $high_contrast_background_color;
 
 //speech2text
 $speech2text_color: $high_contrast_background_color;
@@ -247,14 +248,18 @@ $color_white_background_portlets: $high_contrast_background_color;
 //portfolio
 $color_light_gray_portfolio: $high_contrast_font_color;
 $color_white_background_portfolio: $high_contrast_background_color;
-$portfolio_assignment_corrected_color_portfolio: $high_contrast_link_color;
-$portfolio_assignment_not_answered_color_portfolio: $high_contrast_link_color;
-$portfolio_assignment_color: $high_contrast_link_color;
-$portfolio_assignment_color: $high_contrast_link_color;
-$portfolio_assignment_not_sent_color: $high_contrast_link_color;
-$portfolio_assignment_not_started: $high_contrast_link_color;
-$portfolio_assignment_without_group_color: $high_contrast_link_color;
-$portfolio_assignment_to_be_sent: $high_contrast_link_color;
+$portfolio_assignment_corrected_color_portfolio: $high_contrast_font_color;
+$portfolio_assignment_not_answered_color_portfolio: $high_contrast_font_color;
+$portfolio_assignment_color: $high_contrast_font_color;
+$portfolio_assignment_color_link: $high_contrast_link_color;
+$portfolio_assignment_not_sent_color: $high_contrast_font_color;
+$portfolio_assignment_not_sent_color_link: $high_contrast_link_color;
+$portfolio_assignment_not_started: $high_contrast_font_color;
+$portfolio_assignment_not_started_link: $high_contrast_link_color;
+$portfolio_assignment_to_be_sent: $high_contrast_font_color;
+$portfolio_assignment_to_be_sent_link: $high_contrast_link_color;
+$portfolio_assignment_without_group_color: $high_contrast_font_color;
+$portfolio_assignment_without_group_color_link: $high_contrast_link_color;
 $step_list_color_portfolio: $high_contrast_border_color;
 $event_assignment_background_portfolio: $high_contrast_background_color;
 $color_main_border_portfolio: $high_contrast_border_color;
