@@ -34,7 +34,7 @@ function mysolarTopSubmenuHelpToggle(){
  * Flash messages
  */
 
-function flash_message(msg, css_class, div_to_show, onclick_function) {
+function flash_message(msg, css_class, div_to_show, onclick_function, object) {
   var div_to_show = (typeof div_to_show == "undefined" || div_to_show == '') ? $(".flash_message_wrapper:last") : $("." + div_to_show);
   if(!div_to_show.length)
     div_to_show = $(".flash_message_wrapper:last")
@@ -43,29 +43,71 @@ function flash_message(msg, css_class, div_to_show, onclick_function) {
     div_to_show = $(".flash_message_wrapper");
     if(!div_to_show.parents('.undefined-sticky-wrapper').length())
       div_to_show.height($("#flash_message").height() + 20);
-}
+  }
 
   erase_flash_messages();
 
   if(typeof msg != 'undefined'){
     if (typeof onclick_function != "undefined")
       var onclick_function = onclick_function + "()";
-    var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span>' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages()" href="#" aria-hidden="true"><i class="icon-cross" aria-hidden="true"></i></a></span></div>';
+    if (typeof object != "undefined"){
+      var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span>' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages(true, '+ object +');" onkeydown="javascript:click_on_keypress(event, this);" href="#" aria-hidden="true"><i class="icon-cross" aria-hidden="true"></i></a></span></div>';
+    }else
+       var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span>' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages(true);" onkeydown="javascript:click_on_keypress(event, this);" href="#" aria-hidden="true"><i class="icon-cross" aria-hidden="true"></i></a></span></div>';
     div_to_show.prepend($(html));
     $("#flash_message").closest(".sticky-wrapper").css("height","40px").css("width", "auto");
     $("#flash_message").effect("highlight","slow");
 
     $('#flash_message').prop('tabindex', 0);
-    $('#flash_message').focus();
+    $('#flash_message').focus(); 
+   
   }
 
 }
 
-function erase_flash_messages() {
+function erase_flash_messages(focus=false, obj) {
   if ($('#flash_message')) {
     $('#flash_message').closest(".sticky-wrapper").css("height","0");
-    $(".flash_message_wrapper").children().remove()
+    $(".flash_message_wrapper").children().remove();
     $("#flash_message").remove();
+
+    if(obj){
+      if(typeof($("#"+obj.id)) !== "undefined"){        
+
+        if(obj.id != 'content'){
+          if($("#"+obj.id).is(":visible")){
+            setTimeout(function() {
+              $("#"+obj.id).focus();
+            }, 100);
+          }else{
+            if(typeof($("#_back")) !== "undefined"){
+              $("#_back").click();
+              if((obj.id != 'exam_question_question_enunciation') && (obj.id != 'question_enunciation')){
+                setTimeout(function() {
+                  $("#"+obj.id).focus();
+                }, 100);
+              }else if(obj.id == 'question_enunciation'){
+                CKEDITOR.instances['question_enunciation'].focus();
+              }else{
+                CKEDITOR.instances['exam_question_question_attributes_enunciation'].focus();
+              }  
+            }  
+          }  
+        }else{
+          CKEDITOR.instances['message_content'].focus();
+        }  
+      }
+    }else if(focus==true){
+      var cookieFocus = $.cookie("listIdFocu").split(/,/);
+      cookieFocus.forEach(function (item, index, array) {
+        if($("#"+item).is(":visible")){
+          setTimeout(function() {
+            $("#"+item).focus();
+          }, 100);
+        }
+      });
+    } 
+    return true; 
   }
 }
 
@@ -125,7 +167,6 @@ $.fn.is_empty = function(){
 
 // se for necessário abrir o fancybox no momento da chamada do método, se faz necessário passar um parâmetro "open"
 $.fn.call_fancybox = function (options) {
-  erase_flash_messages();
 
   if (typeof(options) == "undefined")
     options = {};
@@ -156,6 +197,7 @@ $.fn.call_fancybox = function (options) {
       },
       afterShow:  function(event){
         add_description_to_close_fancybox_btn();
+        erase_flash_messages();
         if(options.element_selector != undefined)
           focus_on_fancybox_element(options.element_selector, options.automatically, options.text_link);
         else

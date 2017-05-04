@@ -35,9 +35,10 @@ class ExamQuestionsController < ApplicationController
     else
       @errors = []
       @exam_question.errors.each do |attribute, erro|
+        @object = "exam_question_"+ attribute.to_s
         @errors << t(attribute) + erro
       end  
-      render json: { success: false, alert: @errors.join(', ')}, status: :unprocessable_entity
+      render json: { success: false, alert: @errors.join(', '), object: @object.gsub('.', '_')}, status: :unprocessable_entity
     end
 
   rescue CanCan::AccessDenied
@@ -60,9 +61,10 @@ class ExamQuestionsController < ApplicationController
     else
      @errors = []
       @exam_question.errors.each do |attribute, erro|
+        @object = "exam_question_"+ attribute.to_s
         @errors << t(attribute) + erro
       end  
-      render json: { success: false, alert: @errors.join(', ')}, status: :unprocessable_entity
+      render json: { success: false, alert: @errors.join(', '), object: @object.gsub('.', '_')}, status: :unprocessable_entity
     end
 
   rescue CanCan::AccessDenied

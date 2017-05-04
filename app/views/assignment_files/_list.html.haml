@@ -10,7 +10,7 @@
       = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_file(this)', class: "btn btn_main #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.send'), :'aria-label' => t(".send") + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
 .block_content
   - no_files = (files.blank?)
-  %table.tb_list{:summary=> t("assignments.list.summary_student_files"), style: (no_files ? 'display: none' : '') }
+  %table.tb_list#tb_lf{:summary=> t("assignments.list.summary_student_files"), style: (no_files ? 'display: none' : '') }
     %thead{ style: (no_files ? 'display: none' : '')}
       %tr.lines
         %th{id: "name_file"}= t('.name')

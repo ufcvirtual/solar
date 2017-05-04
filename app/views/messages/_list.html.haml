@@ -35,10 +35,9 @@
               %td.td_sender.center{headers: 'th_sent_by'}= link_to message.sent_by_name, msg_path
             %td.td_time.center{headers: 'th_date'}= link_to l(message.created_at, format: :short), msg_path
 
-  .text_none.empty_message{ class: (@messages.empty? ? '' : 'hide_message') }= t('messages.none')
 
 .message_div_navigation
-  = page_entries_info @messages
+  = page_entries_info @messages, :model => Message
   = will_paginate @messages
 
 

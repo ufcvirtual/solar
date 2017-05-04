@@ -10,7 +10,7 @@
       - if @is_student
         - g = AcademicAllocationUser.get_grade_finish(@user.id, @allocation_tag_id)
         .grade= raw t('.grade_i', grade: (g.final_grade.blank? ? ' - ' : g.final_grade.round(2).to_s))
-        .frequency= raw t('.frequency_i', wh: g.working_hours)
+        .frequency= raw t('.frequency_i', wh: g.working_hours || 0)
     .evaluation_info
       %div{style: 'font-weight: bold; font-size: 12pt'}= @user.name
       %div= raw @curriculum_unit.try(:working_hours).nil? ? t('.uc_without_wh') : t('.frequency_uc', wh: @curriculum_unit.try(:working_hours))
@@ -231,6 +231,7 @@
       var tr = $(link).parents('tr:first');
       $(tr).find('.situation:first').html(data.status);
       $(tr).find('.grade:first').html(data.grade);
+      $(tr).find('.wh:first').html(data.wh);
     }).error(function(data){
       var response = $.parseJSON(data.responseText);
       if (typeof(response.alert) != "undefined")
