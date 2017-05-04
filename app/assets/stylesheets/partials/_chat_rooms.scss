@@ -121,3 +121,14 @@ a.chat_list {
     }
   }
 }
+
+table.chats {
+  thead{
+    tr.lines{
+      th {
+        background-color: $exclusive_background_color;
+        color: $exclusive_font_color;
+      }
+    }
+  }
+}
