@@ -106,6 +106,10 @@
   color: $portfolio_assignment_corrected_color_portfolio;
 }
 
+a.assignment_corrected, a.assignment_evaluated {
+  color: $portfolio_assignment_corrected_color_portfolio_link;
+}
+
 .assignment_not_answered {
   color: $portfolio_assignment_not_answered_color_portfolio;
 }
@@ -114,7 +118,7 @@
   color: $portfolio_assignment_color;
 }
 
-.assignment_sent a, .assignment_corrected a, td.assignment_as a {
+a.assignment_sent, a.assignment_corrected, td.assignment_as a {
   color: $portfolio_assignment_color_link;
 }
 
@@ -122,7 +126,7 @@
   color: $portfolio_assignment_color;
 }
 
-.assignment_as a {
+a.assignment_as {
   color: $portfolio_assignment_color_link;
 }
 
@@ -130,7 +134,7 @@
   color: $portfolio_assignment_not_sent_color;
 }
 
-.assignment_not_sent a {
+a.assignment_not_sent {
   color: $portfolio_assignment_not_sent_color_link !important;
 }
 
@@ -138,7 +142,7 @@
   color: $portfolio_assignment_not_started;
 }
 
-.assignment_not_started a {
+a.assignment_not_started {
   color: $portfolio_assignment_not_started_link;
 }
 
@@ -147,7 +151,7 @@
   color: $portfolio_assignment_to_be_sent;
 }
 
-.assignment_to_be_sent a, td.assignment_an a {
+a.assignment_to_be_sent, td.assignment_an a {
   color: $portfolio_assignment_to_be_sent_link;
 }
 
