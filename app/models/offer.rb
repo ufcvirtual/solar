@@ -52,7 +52,7 @@ class Offer < ActiveRecord::Base
   def check_period
     self.period_schedule.check_end_date = true if period_schedule && period_schedule.start_date
     unless verify_current_date == false
-      self.period_schedule.verify_current_date     = true if period_schedule && (get_start_date != self.period_schedule.start_date)
+      self.period_schedule.verify_current_date     = true if period_schedule && (self.get_start_date != self.period_schedule.start_date)
       self.enrollment_schedule.verify_current_date = true if enrollment_schedule
     end
   end
@@ -62,11 +62,11 @@ class Offer < ActiveRecord::Base
   end
 
   def get_start_date
-    of = Offer.find(self.id)
-    if of.offer_schedule_id
-      start_date = Schedule.find(of.offer_schedule_id).start_date
+   # of = Offer.find(self.id)
+    if self.offer_schedule_id
+      start_date = Schedule.find(self.offer_schedule_id).start_date
     else
-      id = Semester.find(of.semester_id).offer_schedule_id
+      id = Semester.find(self.semester_id).offer_schedule_id
       start_date = Schedule.find(id).start_date
     end
     start_date  
