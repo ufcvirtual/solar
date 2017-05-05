@@ -99,11 +99,7 @@
 
 
   $(document).keydown(function (e) {
-    if (e.which === 27) {
-      $("#dropdown_menu").slideUp(150);
-      $(".dropdown_close").hide(150);
-    }
-
+    
     if(!$("input").is(":focus")){
       if (e.which === 97) {
         $('li a.evaluative').trigger('click');

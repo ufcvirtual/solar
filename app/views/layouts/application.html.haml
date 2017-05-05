@@ -87,22 +87,26 @@
         #mysolar_tabs{role: 'menubar'}
           %ul#mysolar_tabs_wrapper= raw render_tabs
           %ul#mysolar_extras
-            %li#mysolar_suggestions
-              = link_to t(:mysolar_suggestions), 'https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ', class: 'btn', target: '_blank', :'aria-label' => t(:mysolar_suggestions) + t(:new_window)
             %li#mysolar_open_lesson
               %button.btn.btn_main.disabled{"data-tooltip" => t(:mysolar_open_lesson), name: t(:mysolar_open_lesson), onclick: "javascript:maximize_lesson(this);", type: "button", "data-fancybox-type" => "iframe", :'aria-label' => t(:mysolar_open_lesson_alt, disabled: t(:open_lesson_no_lesson)), disabled: true}
                 %i.icon-class{:'aria-hidden' => 'true'}
-            - unless @shortcut.blank?
-              %li#mysolar_open_shortcut
-                %a#shortcut_accesskey{ href: '#', :"data-dropdown" => "#dropdown_eq_1_2", :'aria-label' =>  t('scores.info.shortcut'), accesskey: "4"}
-                  %i.icon-arrow-down-triangle
-                    .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_2"}
-                      %ul.shortcut_floating_box{ class: 'dropdown-menu' }
-                        %h2= t('scores.info.shortcut')
-                        %br
-                        - @shortcut.each do |sh|
-                          %li.shortcut= t("shortcut.#{sh.first}") + ' '+ sh.last
-                          %br
+            %li#mysolar_open_shortcut
+              %a.btn.btn_main#shortcut_accesskey{ href: '#', :"data-dropdown" => "#dropdown_eq_1_2", :'aria-label' => t('scores.info.shortcut'), accesskey: "4", "data-tooltip" => t('scores.info.shortcut')}
+                = t('scores.info.shortcut')
+                %i.icon-arrow-down-triangle
+              .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_2"}
+                %ul.shortcut_floating_box{ class: 'dropdown-menu' }
+                  - unless @shortcut.blank?
+                    %h2= t('scores.info.shortcut') 
+                    = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_dropdown', :'data-tooltip' => t("shortcut.close"), :'aria-label' => t("shortcut.close")
+                    - @shortcut.each do |sh|
+                      %li.shortcut= t("shortcut.#{sh.first}") + ' '+ sh.last
+                      %br    
+                  %h2= t('shortcut.no_shortcuts') if @shortcut.blank? 
+                  = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_dropdown', :'data-tooltip' => t("shortcut.close"), :'aria-label' => t("shortcut.close") if @shortcut.blank? 
+                  
+            %li#mysolar_suggestions
+            = link_to t(:mysolar_suggestions), 'https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ', class: 'btn', target: '_blank', :'aria-label' => t(:mysolar_suggestions) + t(:new_window)            
 
 
       / sidebar
@@ -457,7 +461,7 @@
         goToRight(this);
       } else if (keynum == 37) {
         goToLeft(this);
-      } else if (keynum == 40 || keynum == 13 || keynum == 32) {
+      } else if (keynum == 40 || keynum == 32) {
         goInside(this);
       }
     });
@@ -481,15 +485,12 @@
         case 27:
           goOut(this);
           break;
-        case 13:
-          $(this).click();
-          break;
       }
     });
 
     $(document).ready(function(){
       if( $(".shortcut_floating_box").length ) {
-        $(".shortcut_floating_box").offset( {left: 30} );
+       // $(".shortcut_floating_box").offset( {left: 70} );
 
         var $sidebar   = $(".shortcut_floating_box"),
             $window    = $(window),
@@ -574,4 +575,13 @@
         $.cookie("listIdFocu", arrIdFocus);  
       });
     });
-    
+
+    $(document).keydown(function (e) {
+      if (e.which === 27) {
+        $("#dropdown_menu").slideUp(150);
+        $(".dropdown_close").hide(150);
+      }
+    });  
+
+
+  

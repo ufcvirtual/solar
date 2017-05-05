@@ -462,7 +462,7 @@ class User < ActiveRecord::Base
             log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
             imported << user
 
-            if new_password
+            unless new_password.blank?
               Thread.new do
                 Notifier.new_user(user, new_password).deliver
               end
