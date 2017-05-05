@@ -298,7 +298,7 @@ $.fn.serialize_and_submit = function(options) {
   if (typeof(options) != "undefined" && typeof(options.error) == "undefined") { // definir error
     if (typeof(options) != "undefined" && typeof(options.error_message) != "undefined")
       name = options.error_message;
-      console.log(name);
+
     options.error = function(data) {
       var response = JSON.parse(data.responseText);
       if (typeof(response.alert) != "undefined"){
