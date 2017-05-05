@@ -17,7 +17,7 @@ $event_chat_background: #A7C1F0;
 // alerts
 $color_black_alert: $high_contrast_font_color;
 $color_white_alert: $high_contrast_background_color;
-$text_alert_color: #c00;
+$text_alert_color: $high_contrast_font_color;
 $color_contrast_text_alert: $high_contrast_background_color;
 
 // allocations
@@ -169,6 +169,7 @@ $contacts_edition_block_content_background_messages: $high_contrast_background_c
 $edition_color_messages: $high_contrast_font_color;
 $color_red_messages: $high_contrast_font_color;
 $receiver_already_added_color_messages: $high_contrast_font_color;
+$color_main_messages_text_none: $high_contrast_background_color;
 
 //mysolar
 $color_main_mysolar: $high_contrast_background_color;
