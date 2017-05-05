@@ -65,7 +65,10 @@ function flash_message(msg, css_class, div_to_show, onclick_function, object) {
 
 }
 
-function erase_flash_messages(focus=false, obj) {
+function erase_flash_messages(focus, obj) {
+  if(focus == undefined)
+    focus = false;
+  
   if ($('#flash_message')) {
     $('#flash_message').closest(".sticky-wrapper").css("height","0");
     $(".flash_message_wrapper").children().remove();
