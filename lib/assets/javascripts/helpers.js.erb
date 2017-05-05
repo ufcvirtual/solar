@@ -198,6 +198,9 @@ $.fn.call_fancybox = function (options) {
         autoDimensions: true,
         width: '100px'
       },
+      beforeShow: function(){
+          $("body").css({'overflow-y':'hidden'});
+      },
       afterShow:  function(event){
         add_description_to_close_fancybox_btn();
         erase_flash_messages();
@@ -235,6 +238,8 @@ $.fn.call_fancybox = function (options) {
             }
           }
         }
+
+        $("body").css({'overflow-y':'visible'});
       }
     }
   );
@@ -261,14 +266,14 @@ function focus_on_fancybox_element(selector, automatically, text){
     var text = $('.fancybox-inner h2, .fancybox-inner h1').first().text();
 
   if(automatically == undefined)
-    $('.fancybox-wrap').prepend("<a href='#' id='fancybox-begin' class='visuallyhidden' onclick='$.fancybox.close()'><%=I18n.t('fancybox.begin')%>"+text+"<%=I18n.t('fancybox.click_to_close')%></a>");
+    $('.fancybox-wrap').prepend("<a href='#' class='visuallyhidden fancybox-begin' onclick='$.fancybox.close()'><%=I18n.t('fancybox.begin')%>"+text+"<%=I18n.t('fancybox.click_to_close')%></a>");
   else
-    $('.fancybox-wrap').prepend("<a href='#' id='fancybox-begin' class='visuallyhidden' onclick='$.fancybox.close()'><%=I18n.t('fancybox.begin_automatically')%>"+text+"<%=I18n.t('fancybox.click_to_close')%></a>");
+    $('.fancybox-wrap').prepend("<a href='#' class='visuallyhidden fancybox-begin' onclick='$.fancybox.close()'><%=I18n.t('fancybox.begin_automatically')%>"+text+"<%=I18n.t('fancybox.click_to_close')%></a>");
 
-  $('.fancybox-wrap').append("<a href='#' id='fancybox-end' onclick='$.fancybox.close()' class='visuallyhidden'><%=I18n.t('fancybox.end')%>"+text+"<%=I18n.t('fancybox.click_to_close')%></div>");
+  $('.fancybox-wrap').append("<a href='#' onclick='$.fancybox.close()' class='visuallyhidden fancybox-end'><%=I18n.t('fancybox.end')%>"+text+"<%=I18n.t('fancybox.click_to_close')%></div>");
 
   if(selector == undefined)
-    var element = $('#fancybox-begin');
+    var element = $('.fancybox-begin:last');
   else
     var element = $(selector);
 
