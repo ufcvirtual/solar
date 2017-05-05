@@ -55,6 +55,9 @@ $btn_caution_color: $high_contrast_font_color;
 $btn-initial-file-color: $high_contrast_font_color;
 $btn-initial-file-color-final: $high_contrast_font_color;
 $btn_orange: $high_contrast_link_color;
+$slide_settings_title_color: $high_contrast_link_color;
+$list_exams_not_started_color: $high_contrast_link_color;
+$table_file_data_info_color: $high_contrast_link_color;
 
 //calendar
 $color_main_medium: $high_contrast_font_color;
@@ -396,7 +399,6 @@ hr {
 $btn_color: $color_white;
 $forum_post_background: $blue_warning_background;
 $btn_border_color: $high_contrast_border_color;
-$slide_settings_title_color: $color_almost_gray;
 $btn_disabled_background: $color_red;
 $block_border_color: $color_main;
 $block_content_color: $high_contrast_border_color;
@@ -407,7 +409,6 @@ $question_iten_incorrect: $error_color;
 $list_exams_corrected_color: $evaluated_color;
 $list_exams_finished_color: $high_contrast_font_color;
 $list_exams_not_answered_color: $not_sent_color;
-$list_exams_not_started_color: $color_almost_gray;
 $form_error_color: $error_color;
 $lesson_portlet_border_color: $high_contrast_border_color;
 $portfolio_assignment_corrected_color: $high_contrast_font_color;
@@ -418,7 +419,6 @@ $scores_info_img_box_shadow: $portfolio_block_wrapper_groups;
 $block_content_text_background: $contacts_edition_block_content_background;
 $speech2text_hover_color: $btn_caution_color;
 $table_border_color: $step_list_color;
-$table_file_data_info_color: $color_almost_gray;
 $table_data_line_title: $score_tbody_link;
 $table_sort_border_color: $step_list_color;
 $webconference_table_body_color: $speech2text_color;
