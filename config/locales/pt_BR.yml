@@ -15,6 +15,17 @@ pt_BR:
         other: "Mostrando <b>%{count}</b> %{model}."
       multi_page: "Mostrando %{model} %{from} a %{to} do total de %{count}."
       multi_page_html: "Mostrando %{model} <b>%{from}&nbsp;a&nbsp;%{to}</b> do total de <b>%{count}</b>."
+    models:
+      post:
+        zero: postagem
+        one: postagem
+        few: postagens
+        other: postagens
+      message:
+        zero: mensagem
+        one: mensagem
+        few: mensagens
+        other: mensagens
 
   # formatos de data e hora
   date:
@@ -210,8 +221,8 @@ pt_BR:
       lesson_module: Módulos de Aula
       message: Mensagem
       discussion: Fórum
-      post: Fórum - Postagem
-      post_file: Fórum - Arquivo
+      post: Postagem
+      post_file: Arquivo
       schedule_event: Evento
       score: Acompanhamento
       support_material_file: Material de Apoio
@@ -229,6 +240,7 @@ pt_BR:
       scheduleevent: Evento
       chatroom: Chat
       webconference: Webconferência
+      posts: Posts
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -282,6 +294,9 @@ pt_BR:
         code: Código
       discussion_post:
         content: Conteúdo
+      post:
+        content: Conteúdo
+        parent: Postagem pai
       public_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 20MB."

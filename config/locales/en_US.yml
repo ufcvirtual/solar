@@ -4,6 +4,28 @@ en_US:
     previous_label: "« Previous"
     next_label: "Next »"
     page_gap: "..."
+    page_entries_info:
+      single_page:
+        zero:  "No %{model} found."
+        one:   "Showing 1 %{model}."
+        other: "Showing %{count} %{model}."
+      single_page_html:
+        zero:  "No %{model} found."
+        one:   "Showing <b>1</b> %{model}."
+        other: "Showing <b>%{count}</b> %{model}."
+      multi_page: "Showing %{model} %{from} to %{to} from a total of %{count}."
+      multi_page_html: "Showing %{model} <b>%{from}&nbsp;a&nbsp;%{to}</b> from a total of <b>%{count}</b>."
+    models:
+      post:
+        zero: post
+        one: post
+        few: posts
+        other: posts
+      message:
+        zero: message
+        one: message
+        few: messages
+        other: messages
 
   date:
     formats:
@@ -166,8 +188,8 @@ en_US:
       lesson_module: Lesson Module
       message: Message
       discussion: Discussion
-      post: Discussion - Post
-      post_file: Discussion - File
+      post: Post
+      post_file: File
       schedule_event: Event
       score: Score
       support_material_file: Support Material
@@ -235,6 +257,9 @@ en_US:
         code: Code
       discussion_post:
         content: Content
+      post:
+        content: Content
+        parent: Parent post
       public_file:
         attachment_file_size: "File too large. The maximum size should be up to 20MB."
         attachment_file_name: File
