@@ -25,7 +25,7 @@
         = link_to(content_tag(:i, nil, class: 'icon-flow-cascade'), discussion_posts_path(@discussion, {display_mode: 'tree'}), {class: "btn #{class_t}", id: 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread"), :'aria-label' => t(".show_thread")})
 
     #forum_pagination
-      = page_entries_info @posts, :model => Post
+      = page_entries_info @posts, model: Post
       = will_paginate @posts
       .new_posts
         #new_post
@@ -68,7 +68,7 @@
     });
     
     var display_list = ("#{escape_once(@display_mode) == 'list'}" == "true");
-    var ac = "#{@academic_allocation_id}";
+    var ac = "#{@academic_allocation.id}";
 
     /*Conexão com o WebSocket*/
     var ws = new WebSocket('ws://'+websocket_host+':'+websocket_port+'/'+ac); // file websocket_server.rb
