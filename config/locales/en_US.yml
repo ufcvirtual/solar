@@ -1122,6 +1122,13 @@ en_US:
       date_range_expired: It was not possible to execute action. Date range expired.
       general_message: It was not possible to execute action
       permission: It's not possible to change or remove posts from others users
+    shortcut:
+      new: 78
+      list: 76
+      thread: 84
+      shortcut_new: "[N]"
+      shortcut_list: "[L]"
+      shortcut_thread: "[T]"
 
   post_files:
     new:

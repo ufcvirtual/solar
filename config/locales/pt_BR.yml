@@ -1297,6 +1297,13 @@ pt_BR:
       general_message: Não foi possível realizar a ação desejada
       date_range_expired: Não foi possível realizar ação. Período encerrado.
       permission: Não é possível alterar ou remover posts de outros usuários
+    shortcut:
+      new: 78
+      list: 76
+      thread: 65
+      shortcut_new: "[N]"
+      shortcut_list: "[L]"
+      shortcut_thread: "[A]"
 
   post_files:
     new:
