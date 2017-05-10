@@ -10,9 +10,9 @@
           %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
         .dropdown.dropdown-tip#views-dropdown
           %ul.dropdown-menu
-            %li{role: 'menuitem'}= link_to t('messages.select_all'), '#', class: 'selected all', onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);'
-            %li{role: 'menuitem'}= link_to t('messages.select_read'), '#', class: 'reads', onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);'
-            %li{role: 'menuitem'}= link_to t('messages.select_unread'), '#', class: 'unreads', onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);'
+            %li{role: 'menuitem'}= link_to t('messages.select_all'), '#', class: 'selected all', id: "all", onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);'
+            %li{role: 'menuitem'}= link_to t('messages.select_read'), '#', class: 'reads', id: "reads", onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);'
+            %li{role: 'menuitem'}= link_to t('messages.select_unread'), '#', class: 'unreads', id: "unreads", onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);'
 
     .align-middle.search_messages
       .hide_label#search_box_accesskey
@@ -25,7 +25,7 @@
 
     .align-right.btn-group
       %ul
-        %li= link_to content_tag(:i, nil, class: 'icon-plus', :'aria-hidden' => 'true'), new_message_path, class: "btn btn_main", :"data-tooltip" => t('messages.new'), :'aria-label' => t('messages.new')
+        %li= link_to content_tag(:i, nil, class: 'icon-plus', :'aria-hidden' => 'true'), new_message_path, class: "btn btn_main", id: "button_new_msg", :"data-tooltip" => t('messages.new'), :'aria-label' => t('messages.new')
         - unless ['trashbox', 'outbox'].include?(@box)
           %li= link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'), '#', class: 'btn', id: 'mark_as_unread', :'data-tooltip' => t(:mark_as_unread, scope: :messages), :"data-new-status" => 'unread', :"data-link-udpate-status" => change_status_message_path(id: ':id', new_status: 'unread', box: @box) , onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:mark_as_unread, scope: :messages)
           %li= link_to content_tag(:i, nil, class: 'icon-mail-read', :'aria-hidden' => 'true'), '#', class: 'btn', id: 'mark_as_read',:"data-tooltip" => t(:mark_as_read, scope: :messages), :"data-new-status" => 'read', :"data-link-udpate-status" => change_status_message_path(id: ':id', new_status: 'read', box: @box), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:mark_as_read, scope: :messages)
@@ -149,4 +149,24 @@
     setTimeout(function() {
       $('#flash_message').focus(); 
     }, 400);  
-  });  
+  }); 
+
+  $(function(){
+    $(document).keydown(function (e) {
+      console.log(e.which);
+      if(!$("input").is(":focus")){
+        if (e.which === parseInt("#{t("messages.shortcut.new")}")) {
+          $("#button_new_msg")[0].click();
+        }
+        if (e.which === parseInt("#{t("messages.shortcut.all")}")) { 
+          $("#all")[0].click();
+        }
+        if (e.which === parseInt("#{t("messages.shortcut.reads")}")) { 
+          $("#reads")[0].click();
+        }  
+        if (e.which === parseInt("#{t("messages.shortcut.unreads")}")) { 
+          $("#unreads")[0].click();
+        }  
+      }
+    });
+  });   

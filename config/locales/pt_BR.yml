@@ -2943,6 +2943,31 @@ pt_BR:
       remove_success: Mensagens movidas para a lixeira com sucesso
       restore_success: Mensagens restauradas com sucesso
     message_to: Enviar mensagem para %{name}
+    shortcut:
+      new: 78
+      all: 84
+      reads: 73
+      unreads: 65
+      inbox: 69
+      outbox: 83
+      trashbox: 76
+      trash: 88
+      reply: 82
+      reply_all: 80
+      forward: 69 
+      unread: 77
+      shortcut_new: "[N]"
+      shortcut_all: "[T]"
+      shortcut_reads: "[I]"
+      shortcut_unreads: "[A]"
+      shortcut_inbox: "[E]"
+      shortcut_outbox: "[S]"
+      shortcut_trashbox: "[L]"
+      shortcut_trash: "[X]"
+      shortcut_reply: "[R]"
+      shortcut_reply_all: "[P]"
+      shortcut_forward: "[E]"
+      shortcut_unread: "[M]"
 
   profiles:
     form:

@@ -2719,6 +2719,30 @@ en_US:
       remove_success: Messages moved to trash successfully
       restore_success: Messages restored successfully
     message_to: Send message to %{name}
+    shortcut:
+      new: 78
+      all: 65
+      reads: 82
+      unreads: 85
+      inbox: 73
+      outbox: 79
+      trashbox: 84
+      trash: 65
+      reply: 82
+      reply_all: 69
+      forward: 70 
+      shortcut_new: "[N]"
+      shortcut_all: "[A]"
+      shortcut_reads: "[R]"
+      shortcut_unreads: "[U]"
+      shortcut_inbox: "[I]"
+      shortcut_outbox: "[O]"
+      shortcut_trashbox: "[T]"
+      shortcut_trash: "[A]"
+      shortcut_reply: "[R]"
+      shortcut_reply_all: "[E]"
+      shortcut_forward: "[F]"
+
   profiles:
     form:
       select_template: Select a template
