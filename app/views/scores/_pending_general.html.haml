@@ -1,9 +1,12 @@
 - @users.each_with_index do |student, idx|
+  - af = AcademicAllocationUser.getAFUser(student.id, @allocation_tag_id) ? t('scores.info.t') : t('scores.info.f')
   %tr.lines
     %th.td_student{:'data-tooltip' => student.name}= link_to student.name, user_info_scores_path(student.id)
     %td=student.u_logs
     - unless @wh.nil?
       %td=student.working_hours
+      %td=@wh.to_i - student.working_hours.to_i
+    %td= af  
     %td=student.u_grade
     %td=student.u_public_files
     %td="#{student.assignments} de #{@tools.assignments_count}"
