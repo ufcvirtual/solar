@@ -34,6 +34,10 @@ tbody tr.lines.active {
   }
 }
 
+tbody tr.lines.period_ended {
+  color: #fff;
+}
+
 tbody tr.lines.period_ended:hover {
   background-color: $table_line_period_ended_hover;
 }
@@ -106,6 +110,11 @@ table.tb_list {
   thead tr.lines{
     color: $table_head_line_title;
   }
+
+  a.link_content.lesson {
+    color: #fff333;
+  }
+
 }
 
 table.user-courses tbody.offers {
