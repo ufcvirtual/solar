@@ -2057,6 +2057,12 @@ pt_BR:
       size: Tamanho
     notification:
       final_date_smaller_than_offer: Data final não pode ser maior do que o período oferta.
+    shortcut:
+      new_web: 87
+      new_file: 65
+      shortcut_new_web: "[W]"
+      shortcut_new_file: "[A]"
+        
   assignment_files:
     list:
       title_group: Arquivos enviados pelo grupo

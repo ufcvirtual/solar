@@ -1848,6 +1848,12 @@ en_US:
       size: Size
     notification:
       final_date_smaller_than_offer: "Final date can't be posterior to offer's period"
+    shortcut:
+      new_web: 87
+      new_file: 70
+      shortcut_new_web: "[W]"
+      shortcut_new_file: "[F]"
+
   assignment_files:
     list:
       title_group: Files sent by group
