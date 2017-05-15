@@ -908,6 +908,7 @@ pt_BR:
       no_curriculum_unit_found: "Nenhuma disciplina encontrada"
       enrollment_period_expired: Período encerrado
       search_for: "Semestre, disciplina, curso ou turma"
+      not_allowed_user_uab: "Aluno UAB: Para solicitar trancamento ou desistência entrar em contato com a secretaria do curso"
     show:
       course: Curso
       curriculum_unit: Disciplina

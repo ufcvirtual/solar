@@ -130,11 +130,17 @@ class AllocationsController < ApplicationController
   # aluno pode cancel
   # admin/editor change allocation
   def update
-    if @allocation.change_to_new_status(params[:type], current_user)
-      render json: { success: true, msg: success_msg, id: @allocation.id }
+    curriculum_unit_type_desc = AllocationTag.find(@allocation.allocation_tag.id).curriculum_unit_types
+    curriculum_unit_type_id = CurriculumUnitType.where(description: curriculum_unit_type_desc).first.id
+    if curriculum_unit_type_id == 2 && @allocation.status == Allocation_Activated
+      render json: { success: false, msg: t('enrollments.index.not_allowed_user_uab'), id: @allocation.id }, status: :unprocessable_entity
     else
-      render json: { success: false, msg: t(params[:type], scope: 'allocations.request.error') }, status: :unprocessable_entity
-    end
+      if @allocation.change_to_new_status(params[:type], current_user)
+        render json: { success: true, msg: success_msg, id: @allocation.id }
+      else
+        render json: { success: false, msg: t(params[:type], scope: 'allocations.request.error') }, status: :unprocessable_entity
+      end
+    end  
   end
 
   def show_profile

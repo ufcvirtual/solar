@@ -743,6 +743,7 @@ en_US:
       no_curriculum_unit_found: "No subject found"
       enrollment_period_expired: Expired period
       search_for: "Semester, subject, course or class"
+      not_allowed_user_uab: "Student UAB: To request a lockout or withdrawal, contact the course secretariat"
     show:
       course: Course
       curriculum_unit: Subject
