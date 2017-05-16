@@ -34,8 +34,8 @@ tbody tr.lines.active {
   }
 }
 
-tbody tr.lines.period_ended {
-  color: #fff;
+tbody tr.lines.period_ended a {
+  color: $table_period_ended;
 }
 
 tbody tr.lines.period_ended:hover {
