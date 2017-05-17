@@ -19,10 +19,12 @@
     %span#forum_view_mode
       - class_l = (@display_mode == 'list') ? 'btn_pressed' : 'btn_default'
       - class_t = (@display_mode == 'tree') ? 'btn_pressed' : 'btn_default'
+      - class_u = (@display_mode == 'user') ? 'btn_pressed' : 'btn_default'
 
       .btn-group
         = link_to content_tag(:i, nil, class: 'icon-list'), discussion_posts_path(@discussion, {display_mode: 'list'}), {class: "btn #{class_l}", id: 'forum_view_mode-list', :"data-tooltip" => t(".show_plainlist"), :"aria-label" => t(".show_plainlist")}, id: 'forum_view_mode_list'
         = link_to content_tag(:i, nil, class: 'icon-flow-cascade'), discussion_posts_path(@discussion, {display_mode: 'tree'}), {class: "btn #{class_t}", id: 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread"), :'aria-label' => t(".show_thread")},id: 'forum_view_mode_thread'
+        = link_to content_tag(:i, nil, class: 'icon-user'), discussion_posts_path(@discussion, {display_mode: 'user'}), {class: "btn #{class_u}", id: 'forum_view_mode-user', :"data-tooltip" => t(".show_my_post"), :'aria-label' => t(".show_my_post")},id: 'forum_view_mode_user'
 
     #forum_pagination
       = page_entries_info @posts, model: Post

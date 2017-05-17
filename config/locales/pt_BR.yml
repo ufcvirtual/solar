@@ -1253,6 +1253,7 @@ pt_BR:
       confirm_ckeditor: "Tem certeza? Qualquer outra postagem em aberto para edição ou criação terá seu conteúdo perdido."
       confirm_cancel: 'Tem certeza de que deseja cancelar?'
       number_posts: 'Total de Posts %{n_post}'
+      show_my_post: "Ver meus posts"
     post:
       remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
       answer: "Responder"

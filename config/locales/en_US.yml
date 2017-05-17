@@ -1078,6 +1078,7 @@ en_US:
       confirm_ckeditor: "Are you sure? Any other post with not finished edition or creation will have it's content lost."
       confirm_cancel: 'Are you sure you want to cancel?'
       number_posts: 'Number of Posts %{n_post}'
+      show_my_post: "Show my posts"
     post:
       remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       answer: "Reply"
