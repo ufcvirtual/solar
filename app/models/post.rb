@@ -9,11 +9,13 @@ class Post < ActiveRecord::Base
   belongs_to :academic_allocation, conditions: { academic_tool_type: 'Discussion' }
   belongs_to :academic_allocation_user
 
+  validates :parent, presence: true, unless: 'parent_id.blank?'
   before_destroy :verify_children_with_raise, :can_change?, if: 'merge.nil?'
   validate :verify_children, on: :update
 
   has_many :children, class_name: 'Post', foreign_key: 'parent_id', dependent: :destroy
   has_many :files, class_name: 'PostFile', foreign_key: 'discussion_post_id', dependent: :destroy
+
 
   before_create :set_level, :verify_level
   before_destroy :remove_all_files

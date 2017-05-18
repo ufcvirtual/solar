@@ -324,4 +324,8 @@ class AcademicAllocationUser < ActiveRecord::Base
     Allocation.where(user_id: user_id, allocation_tag_id: at_id).last
   end 
 
+  def self.getAFUser(user_id, allocation_tag_id)
+    AcademicAllocationUser.joins(:academic_allocation).where(user_id: user_id, academic_allocations: {final_exam: 'true', allocation_tag_id: allocation_tag_id}).pluck(:grade).first
+  end 
+
 end

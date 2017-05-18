@@ -12,6 +12,15 @@ class MessagesController < ApplicationController
     @show_system_label = allocation_tag_id.nil?
 
     @box = option_user_box(params[:box])
+    @shortcut = Hash.new
+    @shortcut[t("messages.new").to_s] = t("messages.shortcut.shortcut_new").to_s
+    @shortcut[t("messages.header.inbox").to_s] = t("messages.shortcut.shortcut_inbox").to_s
+    @shortcut[t("messages.header.outbox").to_s] = t("messages.shortcut.shortcut_outbox").to_s
+    @shortcut[t("messages.header.trashbox").to_s] = t("messages.shortcut.shortcut_trashbox").to_s
+    @shortcut[t("messages.select_all").to_s] = t("messages.shortcut.shortcut_all").to_s
+    @shortcut[t("messages.select_read").to_s] = t("messages.shortcut.shortcut_reads").to_s
+    @shortcut[t("messages.select_unread").to_s] = t("messages.shortcut.shortcut_unreads").to_s
+
     @messages = Message.by_box(current_user.id, @box, allocation_tag_id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
     @unreads  = Message.unreads(current_user.id, allocation_tag_id)
   end
@@ -28,12 +37,26 @@ class MessagesController < ApplicationController
     @message = Message.new
     @message.files.build
     @unreads = Message.unreads(current_user.id, @allocation_tag_id)
+
+    @shortcut = Hash.new
+    @shortcut[t("messages.header.inbox").to_s] = t("messages.shortcut.shortcut_inbox").to_s
+    @shortcut[t("messages.header.outbox").to_s] = t("messages.shortcut.shortcut_outbox").to_s
+    @shortcut[t("messages.header.trashbox").to_s] = t("messages.shortcut.shortcut_trashbox").to_s
+
     @reply_to = [User.find(params[:user_id]).to_msg] unless params[:user_id].nil? # se um usuário for passado, colocá-lo na lista de destinatários
     @reply_to = [{resume: t("messages.support")}] unless params[:support].nil?
   end
 
   def show
     @message = Message.find(params[:id])
+    @shortcut = Hash.new
+    @shortcut[t("messages.show.reply").to_s] = t("messages.shortcut.shortcut_reply").to_s
+    @shortcut[t("messages.show.reply_all").to_s] = t("messages.shortcut.shortcut_reply_all").to_s
+    @shortcut[t("messages.show.forward").to_s] = t("messages.shortcut.shortcut_forward").to_s
+    @shortcut[t("messages.new").to_s] = t("messages.shortcut.shortcut_new").to_s
+    @shortcut[t("messages.show.unread").to_s] = t("messages.shortcut.shortcut_unread").to_s
+    @shortcut[t("messages.show.trash").to_s] = t("messages.shortcut.shortcut_trash").to_s
+
     change_message_status(@message.id, "read", @box = params[:box] || "inbox")
   end
 
@@ -48,7 +71,10 @@ class MessagesController < ApplicationController
     @message.files.build
 
     @message.content = reply_msg_template
-
+    @shortcut = Hash.new
+    @shortcut[t("messages.header.inbox").to_s] = t("messages.shortcut.shortcut_inbox").to_s
+    @shortcut[t("messages.header.outbox").to_s] = t("messages.shortcut.shortcut_outbox").to_s
+    @shortcut[t("messages.header.trashbox").to_s] = t("messages.shortcut.shortcut_trashbox").to_s
     unless @allocation_tag_id.nil?
       allocation_tag      = AllocationTag.find(@allocation_tag_id)
       @group              = allocation_tag.group

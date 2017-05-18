@@ -4,6 +4,28 @@ en_US:
     previous_label: "« Previous"
     next_label: "Next »"
     page_gap: "..."
+    page_entries_info:
+      single_page:
+        zero:  "No %{model} found."
+        one:   "Showing 1 %{model}."
+        other: "Showing %{count} %{model}."
+      single_page_html:
+        zero:  "No %{model} found."
+        one:   "Showing <b>1</b> %{model}."
+        other: "Showing <b>%{count}</b> %{model}."
+      multi_page: "Showing %{model} %{from} to %{to} from a total of %{count}."
+      multi_page_html: "Showing %{model} <b>%{from}&nbsp;a&nbsp;%{to}</b> from a total of <b>%{count}</b>."
+    models:
+      post:
+        zero: post
+        one: post
+        few: posts
+        other: posts
+      message:
+        zero: message
+        one: message
+        few: messages
+        other: messages
 
   date:
     formats:
@@ -166,8 +188,8 @@ en_US:
       lesson_module: Lesson Module
       message: Message
       discussion: Discussion
-      post: Discussion - Post
-      post_file: Discussion - File
+      post: Post
+      post_file: File
       schedule_event: Event
       score: Score
       support_material_file: Support Material
@@ -235,6 +257,9 @@ en_US:
         code: Code
       discussion_post:
         content: Content
+      post:
+        content: Content
+        parent: Parent post
       public_file:
         attachment_file_size: "File too large. The maximum size should be up to 20MB."
         attachment_file_name: File
@@ -1097,6 +1122,13 @@ en_US:
       date_range_expired: It was not possible to execute action. Date range expired.
       general_message: It was not possible to execute action
       permission: It's not possible to change or remove posts from others users
+    shortcut:
+      new: 78
+      list: 76
+      thread: 84
+      shortcut_new: "[N]"
+      shortcut_list: "[L]"
+      shortcut_thread: "[T]"
 
   post_files:
     new:
@@ -1816,6 +1848,12 @@ en_US:
       size: Size
     notification:
       final_date_smaller_than_offer: "Final date can't be posterior to offer's period"
+    shortcut:
+      new_web: 87
+      new_file: 70
+      shortcut_new_web: "[W]"
+      shortcut_new_file: "[F]"
+
   assignment_files:
     list:
       title_group: Files sent by group
@@ -2687,6 +2725,30 @@ en_US:
       remove_success: Messages moved to trash successfully
       restore_success: Messages restored successfully
     message_to: Send message to %{name}
+    shortcut:
+      new: 78
+      all: 65
+      reads: 82
+      unreads: 85
+      inbox: 73
+      outbox: 79
+      trashbox: 84
+      trash: 65
+      reply: 82
+      reply_all: 69
+      forward: 70 
+      shortcut_new: "[N]"
+      shortcut_all: "[A]"
+      shortcut_reads: "[R]"
+      shortcut_unreads: "[U]"
+      shortcut_inbox: "[I]"
+      shortcut_outbox: "[O]"
+      shortcut_trashbox: "[T]"
+      shortcut_trash: "[A]"
+      shortcut_reply: "[R]"
+      shortcut_reply_all: "[E]"
+      shortcut_forward: "[F]"
+
   profiles:
     form:
       select_template: Select a template
@@ -3011,6 +3073,8 @@ en_US:
       new_after_evaluation: Chages was made at the sent content after evaluation
       print_pdf: Print PDF
       select_group: Select group
+      faults: Faults
+      af: A.F
     info:
       assignments: Assignments
       date_range: Date range

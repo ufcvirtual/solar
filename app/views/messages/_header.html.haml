@@ -5,19 +5,36 @@
 
   #menu_inbox{ class: css_class_inbox, role: 'menuitem' }
     %h2
-      = link_to(inbox_messages_path(bread: :menu_messages), :'aria-label' => t('.inbox_alt', unreads: @unreads)) do
+      = link_to(inbox_messages_path(bread: :menu_messages), :'aria-label' => t('.inbox_alt', unreads: @unreads), id: "inbox") do
         = content_tag(:i, nil, class: 'icon-inbox', :'aria-hidden' => 'true')
         %span.message_link_menu{:'aria-hidden' => 'true'}= t('.inbox')
         %span#count_msgs_unread.text_alert_message{:'aria-hidden' => 'true'}="(#{@unreads})"
 
   #menu_outbox{ class: css_class_outbox, role: 'menuitem' }
     %h2
-      = link_to(outbox_messages_path(bread: :menu_messages), :'aria-label' => t('.outbox_alt')) do
+      = link_to(outbox_messages_path(bread: :menu_messages), :'aria-label' => t('.outbox_alt'), id: "outbox") do
         = content_tag(:i, nil, class: 'icon-outbox', :'aria-hidden' => 'true')
         %span.message_link_menu{:'aria-hidden' => 'true'}= t('.outbox')
 
   #menu_trash{ class: css_class_trash, role: 'menuitem' }
     %h2
-      = link_to(trashbox_messages_path(bread: :menu_messages), :'aria-label' => t('.trashbox')) do
+      = link_to(trashbox_messages_path(bread: :menu_messages), :'aria-label' => t('.trashbox'), id: "trashbox") do
         = content_tag(:i, nil, class: 'icon-trash', :'aria-hidden' => 'true')
         %span.message_link_menu{:'aria-hidden' => 'true'}= t('.trashbox')
+
+:javascript
+  $(function(){
+    $(document).keydown(function (e) {
+      if(!$("input").is(":focus")){
+        if (e.which === parseInt("#{t("messages.shortcut.inbox")}")) { 
+          $("#inbox")[0].click();
+        }
+        if (e.which === parseInt("#{t("messages.shortcut.outbox")}")) { 
+          $("#outbox")[0].click();
+        }  
+        if (e.which === parseInt("#{t("messages.shortcut.trashbox")}")) { 
+          $("#trashbox")[0].click();
+        }  
+      }
+    });
+  }); 

@@ -21,11 +21,11 @@
       - class_t = (@display_mode == 'tree') ? 'btn_pressed' : 'btn_default'
 
       .btn-group
-        = link_to content_tag(:i, nil, class: 'icon-list'), discussion_posts_path(@discussion, {display_mode: 'list'}), {class: "btn #{class_l}", id: 'forum_view_mode-list', :"data-tooltip" => t(".show_plainlist"), :"aria-label" => t(".show_plainlist")}
-        = link_to(content_tag(:i, nil, class: 'icon-flow-cascade'), discussion_posts_path(@discussion, {display_mode: 'tree'}), {class: "btn #{class_t}", id: 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread"), :'aria-label' => t(".show_thread")})
+        = link_to content_tag(:i, nil, class: 'icon-list'), discussion_posts_path(@discussion, {display_mode: 'list'}), {class: "btn #{class_l}", id: 'forum_view_mode-list', :"data-tooltip" => t(".show_plainlist"), :"aria-label" => t(".show_plainlist")}, id: 'forum_view_mode_list'
+        = link_to content_tag(:i, nil, class: 'icon-flow-cascade'), discussion_posts_path(@discussion, {display_mode: 'tree'}), {class: "btn #{class_t}", id: 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread"), :'aria-label' => t(".show_thread")},id: 'forum_view_mode_thread'
 
     #forum_pagination
-      = page_entries_info @posts, :model => Post
+      = page_entries_info @posts, model: Post
       = will_paginate @posts
       .new_posts
         #new_post
@@ -68,7 +68,7 @@
     });
     
     var display_list = ("#{escape_once(@display_mode) == 'list'}" == "true");
-    var ac = "#{@academic_allocation_id}";
+    var ac = "#{@academic_allocation.id}";
 
     /*Conexão com o WebSocket*/
     var ws = new WebSocket('ws://'+websocket_host+':'+websocket_port+'/'+ac); // file websocket_server.rb
@@ -163,4 +163,21 @@
     });
 
   });
+  $(function(){
+    $(document).keydown(function (e) {
+      if(!$("input").is(":focus")){
+        if (e.which === parseInt("#{t("posts.shortcut.new")}")) {
+          $('#button_new_post').trigger('click');
+        }
+        if (e.which === parseInt("#{t("posts.shortcut.thread")}")) { 
+          $('#forum_view_mode-thread').focus();
+          $("#forum_view_mode-thread")[0].click();
+        }
+        if (e.which === parseInt("#{t("posts.shortcut.list")}")) { 
+          $('#forum_view_mode-list').focus();
+          $("#forum_view_mode-list")[0].click();
+        }   
+      }
+    });
+  });  
  

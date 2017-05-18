@@ -125,13 +125,6 @@ div.forum_navigation {
   border-bottom: 1px solid;
 }
 
-.forum_post_head.new, .forum_post_icon.new{
-  background-color: $forum_post_background;
-}
-
-.forum_post_wrapper.new, .forum_post_attachment.new{
-  background-color: $forum_post_background_blue;
-}
 
 .forum_post_author {
   float: left;
@@ -256,3 +249,13 @@ div.forum_navigation {
   }
 }
 
+.forum_post_head.new, .forum_post_icon.new{
+  background-color: $forum_post_background;
+}
+
+.forum_post_wrapper.new{
+  background-color: $forum_post_background_blue;
+  .forum_post_attachment{
+    background-color: $forum_post_background_blue;
+  }
+}

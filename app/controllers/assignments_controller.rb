@@ -118,7 +118,7 @@ class AssignmentsController < ApplicationController
     else
       @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
       verify_owner_or_responsible!(@allocation_tag_id)
-      @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
+      @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id) 
 
       @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
       @ac = AcademicAllocation.where(academic_tool_id: @assignment.id, allocation_tag_id: @allocation_tag_id, academic_tool_type: 'Assignment').first
@@ -127,6 +127,11 @@ class AssignmentsController < ApplicationController
       @acu = AcademicAllocationUser.find_one(@ac.id, @student_id, @group_id, false, @can_evaluate)
 
       #@bbb_online   = bbb_online?
+      if @own_assignment && @in_time
+        @shortcut = Hash.new
+        @shortcut[t("assignment_files.list.send").to_s] = t("assignments.shortcut.shortcut_new_file").to_s
+        @shortcut[t("assignment_webconferences.form.new").to_s] = t("assignments.shortcut.shortcut_new_web").to_s
+      end 
     end
   end
 
