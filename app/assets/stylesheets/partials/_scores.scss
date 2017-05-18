@@ -357,5 +357,18 @@ tbody{
   }
 }
 
+.public_files_info {
+  table {
+    thead{
+      tr.lines{
+        th {
+          background-color: $exclusive_background_color;
+          color: $exclusive_font_color;
+        }
+      }
+    }
+  }
+}
+
 
 
