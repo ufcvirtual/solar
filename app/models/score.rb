@@ -169,7 +169,7 @@ class Score # < ActiveRecord::Base
       CASE
         #{evaluated_status}
         WHEN #{sent_status} THEN 'sent'
-        WHEN (current_date < s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '')) OR  (current_date <= s.start_date AND (exams.start_hour IS NOT NULL AND exams.end_hour != '' AND current_time<to_timestamp(exams.start_hour, 'HH24:MI:SS')::time)) THEN 'not_started'
+        WHEN (current_date < s.start_date) OR  (current_date = s.start_date AND (exams.start_hour IS NOT NULL AND exams.end_hour != '' AND current_time<to_timestamp(exams.start_hour, 'HH24:MI:SS')::time)) THEN 'not_started'
         WHEN ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) THEN 'to_send'
         ELSE 
           'not_sent'
@@ -491,7 +491,7 @@ class Score # < ActiveRecord::Base
                 false
               END AS closed,
             case
-            when (current_date < s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '')) OR  (current_date <= s.start_date AND (exams.start_hour IS NOT NULL AND exams.end_hour != '' AND current_time<to_timestamp(exams.start_hour, 'HH24:MI:SS')::time)) then 'not_started'
+            when (current_date < s.start_date) OR (current_date = s.start_date AND ((exams.start_hour IS NOT NULL AND exams.end_hour != '' AND current_time<to_timestamp(exams.start_hour, 'HH24:MI:SS')::time))) then 'not_started'
             when ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) AND exam_responses.id IS NULL then 'to_answer'
             when ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) AND last_attempt.complete!=TRUE then 'not_finished'
             when ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) AND user_attempts.count < exams.attempts then 'retake'
