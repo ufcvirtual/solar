@@ -70,167 +70,183 @@ $new_after_evaluation_background: #e6f0fc;
 }
 .exam_open {
 
-	font-variant: initial;
-  	font-family: 'PT Sans', sans-serif;
+    font-variant: initial;
+    font-family: 'PT Sans', sans-serif;
 
-	  #exam_topbar {
-	    width: 100%;
-	    z-index: 2;
-	    display: inline-block;
-	    }
+      #exam_topbar {
+        width: 100%;
+        z-index: 2;
+        display: inline-block;
+        }
 
-	  #title {
-	    font-size: 14pt;
-	    font-family: 'PT Sans';
-	    margin: 0px;
-	    padding: 10px 0px 0px 220px;
+      #title h2{
+        font-size: 14pt;
+        font-family: 'PT Sans';
+        margin: 0px;
+        padding: 10px 0px 0px 220px;
 
-	    float: left;
-	  }
+        float: left;
+      }
 
-	  #exam_status {
-	    float: right;
-	    font-size: 10pt;
-	    list-style-type: none;
-	    padding: 0 0 0 0;
-	    margin: 0;
+      #exam_status {
+        float: right;
+        font-size: 10pt;
+        list-style-type: none;
+        padding: 0 0 0 0;
+        margin: 0;
 
 
-	    li {
-	      display: inline-block;
-	      padding: 3px 6px 0 4px;
-	      vertical-align: middle;
-	      float: left;
-	      /* necessario para funcionar ok no IE7 */
-	      /*    zoom: 1;
-	      *display: inline;*/
-	    }
+        li {
+          display: inline-block;
+          padding: 3px 6px 0 4px;
+          vertical-align: middle;
+          float: left;
+          /* necessario para funcionar ok no IE7 */
+          /*    zoom: 1;
+          *display: inline;*/
+        }
 
-	    #time, #question_count{
-	      padding-right: 0px;
-	    }
-	  }
+        .time, #question_count{
+          padding-right: 0px;
+        }
+      }
 
-	  .block_content {
-	    padding: 5px;
-	    min-height: 28px;
-	    display: block;
+      .block_content {
+        padding: 5px;
+        min-height: 28px;
+        display: block;
 
-	  }
+      }
 
-	  .questions{
-	    width: 100%;
+      .questions{
+        width: 100%;
 
-	    .question {
-	      padding-top: 10px;
-	      float: left;
-	      font-family: 'PT Sans', sans-serif;
+        h3.question {
+          padding-top: 10px;
+          font-family: 'PT Sans', sans-serif;
+          font-weight: normal;
+          margin-bottom: 1%;
+          display: inline-block;
 
-	      .number {
-	        padding-right: 5px;
-	        color: $exam_open_question_color;
-	        width: auto;
-	        vertical-align:top;
-	      }
-	    }
+          .number {
+            padding-right: 3px;
+            color: $exam_open_question_color;
+            width: auto;
+            vertical-align:top;
+            display: inline-block;
+          }
 
-	    .question_images {
-	      text-align: center;
+          .enunciation{
+            display: inline;
+            p:last-of-type {
+              display: inline-block;
+              margin-bottom: 0;
+              word-wrap: break-word;
+            }
+            .scores, .annulled{
+              display: inline-block;
+            }
+          }
+        }
 
-	      .image {
-	        padding: 15px 15px 0 15px;
-	        display: inline-block;
+        .question_images {
+          text-align: center;
 
-	        #question_image {
-	          border: solid 2px $exam_open_question_border;
-	        }
-	      }
+          .image {
+            #question_image {
+              border: solid 2px $exam_open_question_border;
+            }
+          }
 
-	    }
+        }
 
-	  }
+      }
 
-	  .question_items{
-	    padding: 10px 0px 10px 15px;
+      .question_items{
+        padding: 10px 0px 10px 15px;
 
-	    img{
-	      margin-right: 10px;
-	      border: solid 2px $exam_open_question_border;
-	      vertical-align: top;
-	    }
+        ul{
+          list-style-type: none;
+        }
 
-	    label input{
-	      margin-right: 5px;
-	    }
+        img{
+          margin-right: 10px;
+          border: solid 2px $exam_open_question_border;
+          vertical-align: top;
+        }
 
-	    label{
-	      display: inline;
-	      color: $exam_open_question_color;
-	      font-family: 'PT Sans', sans-serif;
-	    }
+        label input{
+          margin-right: 5px;
+        }
 
-	    .incorrect{
-	      color: $exam_open_question_incorrect;
-	    }
+        label{
+          display: inline;
+          color: $exam_open_question_color;
+          font-family: 'PT Sans', sans-serif;
+        }
 
-	    .hit{
-	      color: $exam_open_question_hit;
-	    }
-	  }
+        .incorrect{
+          color: $exam_open_question_incorrect;
+        }
+
+        .hit{
+          color: $exam_open_question_hit;
+        }
+      }
 
 }
 .tool_all{
-	font-size: 12px;
-	.tb_list{
-		font-size: 12px;
-	}
-	table{
-		width: 100%;
-	}
-	table tbody tr:nth-child(odd) {
-		background: $tool_table_body_odd_background;
-	}
-	table thead tr th {
+    font-size: 12px;
+    .tb_list{
+        font-size: 12px;
+    }
+    table{
+        width: 100%;
+    }
+    table tbody tr:nth-child(odd) {
+        background: $tool_table_body_odd_background;
+    }
+    table thead tr th {
     background: $tool_table_title_background;
     border: 1px;
-	}
-	.evaluated {
-	    color: $evaluated_corrected_color;
-	  }
+    }
+    .evaluated {
+        color: $evaluated_corrected_color;
+      }
 
-	  .sent, .sent a, .evaluated a
-	  td.assignment_as a {
-	    color: $evaluated_sent_color;
-	  }
+      .sent, .sent a, .evaluated a
+      td.assignment_as a {
+        color: $evaluated_sent_color;
+      }
 
-	  .assignment_as, .assignment_as a{
-	    color: $evaluated_sent_color;
-	  }
+      .assignment_as, .assignment_as a{
+        color: $evaluated_sent_color;
+      }
 
-	  .not_sent, .not_sent a{
-	    color: $evaluated_not_sent_color;
-	  }
+      .not_sent, .not_sent a{
+        color: $evaluated_not_sent_color;
+      }
 
-	  .not_started, .not_started a {
-	    color: $evaluated_not_started_color;
-	  }
+      .not_started, .not_started a {
+        color: $evaluated_not_started_color;
+      }
 
-	  .to_send, .to_send a{
-	    color: $evaluated_to_send_color;
-	  }
+      .to_send, .to_send a{
+        color: $evaluated_to_send_color;
+      }
 
-	  .without_group, .without_group a{
-	    color: $evaluated_without_group_color;
-	  }
+      .without_group, .without_group a{
+        color: $evaluated_without_group_color;
+      }
 
-	  .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
-	    white-space: nowrap;
-	  }
+      .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
+        white-space: nowrap;
+      }
 
-	table td {
-		text-align:center;
+    table td {
+        text-align:center;
     vertical-align:middle;
-	}
+    }
 }
 
 /**
@@ -299,10 +315,10 @@ td.assignment_without_group a
   white-space: nowrap;
 }
 .legend{
-	position:relative;
-	height:10px;
-	padding-bottom: 10px;
-	font-size: 13px;
+    position:relative;
+    height:10px;
+    padding-bottom: 10px;
+    font-size: 13px;
 }
 
 .assignment_corrected, .assignment_evaluated {
@@ -410,3 +426,20 @@ td.new_after_evaluation{
 .question_items label, .question_items label span p {
     display: inline;
 }
+
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.image_pdf, .audio_pdf{
+  text-align: justify;
+  display: block;
+  font-size: 13px;
+ }
