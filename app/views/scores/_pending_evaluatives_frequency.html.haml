@@ -18,4 +18,11 @@
 :javascript
   $(function () {
     $("#list_of_students").tableHeadFixer({'left' : 1}); 
+    $('.tb_list_students ul.dropdown-menu li input[type="checkbox"]').each(function(){
+      if(!!$(this).prop('checked'))
+        $('.'+$(this).val()).removeClass('invisible');
+      else
+        $('.'+$(this).val()).addClass('invisible');
+    });
+
   });
