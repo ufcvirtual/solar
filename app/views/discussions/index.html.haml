@@ -27,7 +27,7 @@
                 = link_to discussion.name, discussion_posts_path(discussion_id: discussion.academic_tool_id)
               - else 
                 .title= discussion.name
-              .enunciation
+              .description
                 .enunciation_slice= discussion.description.slice(0..180) << '...'
                 .enunciation_complete= discussion.description
                 .more_or_less

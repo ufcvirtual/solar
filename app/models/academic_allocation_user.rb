@@ -257,7 +257,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   def find_or_create_exam_user_attempt
     exam_user_attempt_last = exam_user_attempts.last
 
-    (exam_user_attempt_last.nil? || (exam_user_attempt_last.complete && exam_user_attempt_last.exam.attempts > exam_user_attempts.count)) ?  exam_user_attempts.create(academic_allocation_user_id: id, start: Time.now) : exam_user_attempt_last
+    (exam_user_attempt_last.nil? || (exam_user_attempt_last.complete && exam_user_attempt_last.exam.attempts > exam_user_attempts.count) && exam_user_attempt_last.exam.on_going?) ?  exam_user_attempts.create(academic_allocation_user_id: id, start: Time.now) : exam_user_attempt_last
   end
 
   def finish_attempt

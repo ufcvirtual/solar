@@ -18,35 +18,39 @@
               %th#ex_eva_dat_evaluative.center.date{style: "width: 30%;"}= t(:date_range, :scope => [:scores, :info])
               %th#ex_eva_sit_evaluative.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
               %th#ex_eva_gra_evaluative.center{style: "width: 2%;"}= t(:grade, :scope => [:scores, :info])
-              %th#ex_eva_bla_evaluative.center.no_sort{style: "width: 2%;"}
+              %th#ex_eva_bla_evaluative.center.no_sort{style: "width: 2%;"}= t('exams.list.calculate')
           %tbody
             - @exams_evaluative.each do |exam|
               %tr.lines
                 %td{align: "left", headers: "ex_eva_exa_evaluative"}
                   - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     - if is_user
-                      .title= exam.name
+                      .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name +  t(:disabled), class: 'disabled'
                     - elsif !@can_open 
-                      = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
+                      = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam', :'aria-label' => exam.name + t('fancybox.open')
                       %br
                     - if exam.closed == 't' || exam.situation == 'corrected'
-                      = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content', class: 'exam-result'
+                      = link_to I18n.t('exams.index.result'), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content', class: 'exam-result'
                       - if is_user && exam.situation == 'corrected'
                         |
-                        = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), class: 'open_exam', id: 'open-result'
+                        = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), class: 'open_exam', :'aria-label' => t('.mirror_results_alt', exam: exam.name) + t('fancybox.open')
                   - elsif is_user
-                    = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam'
+                    = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', :'aria-label' => exam.name + t('fancybox.open')
                   - else
                     = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam' 
                     
                   .description
-                    .minimun= sanitize(truncate exam.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :'data-tooltip' => t("scores.info.expand_description"))}")
-                    .complete.invisible
-                      = exam.description
-                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t("scores.info.compress_description"))
+                    - if exam.description.size > 80
+                      .description_slice= raw exam.description.slice(0..80) << "..."
+                      .description_complete= raw exam.description
+                      .more_or_less
+                        %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: exam.name) }= t('common_between_pages.more')
+                        %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: exam.name)}= t('common_between_pages.less')
+                    - else
+                      = raw exam.description
                   .equivalent
                     - unless exam.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{exam.id}", onkeydown: 'click_on_keypress(event, this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{exam.id}", onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('scores.info.equalities') + t(:of) + exam.name}
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -54,7 +58,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: exam.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('scores.info.equalities') + t(:of) + exam.name }
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -68,8 +72,7 @@
                 %td.center.grade{headers: "ex_eva_gra_evaluative"}= exam.grade
                 %td{headers: "ex_eva_bla_evaluative"}
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation))
-                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate')
-
+                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
                 / %td.center=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)
@@ -85,7 +88,7 @@
               %th#ex_eva_sit_frequency.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
               %th#ex_eva_gra_frequency.center{style: "width: 2%;"}= t(:grade, :scope => [:scores, :info])
               %th#ex_eva_wh_frequency.center{style: "width: 2%;"}= t(:workload, :scope => [:scores, :info])
-              %th#ex_eva_btn_frequency.center.no_sort{style: "width: 2%;"}
+              %th#ex_eva_btn_frequency.center.no_sort{style: "width: 2%;"}= t('exams.list.calculate')
               %th#ex_eva_aft_frequency.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
           %tbody
             - @exams_frequency.each do |exam|
@@ -93,27 +96,31 @@
                 %td{align: "left", headers: "ex_eva_exa_frequency"}
                   - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     - if is_user
-                      .title= exam.name
+                      .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name +  t(:disabled), class: 'disabled'
                     - elsif !@can_open 
-                      = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
+                      = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam', :'aria-label' => exam.name + t('fancybox.open')
                       %br
                     - if exam.closed == 't' || exam.situation == 'corrected'
-                      = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content', class: 'exam-result'
+                      = link_to t(:result, :scope => [:exams, :index]), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content', class: 'exam-result', :'aria-label' => exam.name + t('exams.index.result') + t('fancybox.open')
                       - if is_user && exam.situation == 'corrected'
                         |
-                        = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), class: 'open_exam', id: 'open-result'
+                        = link_to t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), class: 'open_exam', :'aria-label' => exam.name + t('exams.index.mirror_results') + t('fancybox.open')
                   - elsif is_user
-                    = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam'
+                    = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', :'aria-label' => exam.name + t('fancybox.open')
                   - else
-                    = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
+                    = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam', :'aria-label' => exam.name + t('fancybox.open')
                   .description
-                    .minimun= sanitize(truncate exam.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t("scores.info.expand_description"))}")
-                    .complete.invisible
-                      = exam.description
-                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t("scores.info.compress_description"))
+                    - if exam.description.size > 80
+                      .description_slice= raw exam.description.slice(0..80) << "..."
+                      .description_complete= raw exam.description
+                      .more_or_less
+                        %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: exam.name) }= t('common_between_pages.more')
+                        %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: exam.name)}= t('common_between_pages.less')
+                    - else
+                      = raw exam.description
                   .equivalent
                     - unless exam.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{exam.id}", onkeydown: 'click_on_keypress(event, this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{exam.id}", onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('scores.info.equalities') + t(:of) + exam.name }
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -121,7 +128,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: exam.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('scores.info.equalities') + t(:of) + exam.name }
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -136,7 +143,7 @@
                 %td.center.wh{headers: "ex_eva_wh_frequency"}= exam.working_hours
                 %td.center{headers: "ex_eva_btn_frequency"}
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake'].include?(exam.situation))
-                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate')
+                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write', :'aria-hidden' => 'true')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
                 %td.center{headers: "ex_eva_aft"}=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)
@@ -151,7 +158,7 @@
               %th#ex_not_dat.center.date{style: "width: 40%;"}= t(:date_range, :scope => [:scores, :info])
               %th#ex_not_sit.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
               %th#ex_not_gra.center{style: "width: 2%;"}= t(:grade, :scope => [:scores, :info])
-              %th#ex_not_bla.center.no_sort{style: "width: 2%;"}
+              %th#ex_not_bla.center.no_sort{style: "width: 2%;"}=t('exams.list.calculate')
               %th#ex_not_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
           %tbody
             - @exams_not_evaluative.each do |exam|
@@ -159,28 +166,31 @@
                 %td{align: "left", headers: "ex_not_exa"}
                   - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     - if is_user
-                      .title= exam.name
+                      .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name +  t(:disabled), class: 'disabled'
                     - elsif !@can_open 
-                      = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
+                      = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam', :'aria-label' => exam.name + t('fancybox.open')
                       %br
                     - if exam.closed == 't' || exam.situation == 'corrected'
-                      = link_to I18n.t(:result, :scope => [:exams, :index]), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content', class: 'exam-result'
+                      = link_to t(:result, :scope => [:exams, :index]), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content', class: 'exam-result', :'aria-label' => exam.name + t('exams.index.result') + t('fancybox.open')
                       - if is_user && exam.situation == 'corrected'
                         |
-                        = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), class: 'open_exam', id: 'open-result'
-                          
+                        = link_to t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), class: 'open_exam', :'aria-label' => exam.name + t('exams.index.mirror_results') + t('fancybox.open')
                   - elsif is_user
-                    = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam'
+                    = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', :'aria-label' => exam.name + t('fancybox.open')
                   - else
-                    = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
+                    = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam', :'aria-label' => exam.name + t('fancybox.open')
                   .description
-                    .minimun= raw(truncate exam.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t("scores.info.expand_description"))}")
-                    .complete.invisible
-                      = exam.description
-                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t("scores.info.compress_description"))
+                    - if exam.description.size > 80
+                      .description_slice= raw exam.description.slice(0..80) << "..."
+                      .description_complete= raw exam.description
+                      .more_or_less
+                        %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: exam.name) }= t('common_between_pages.more')
+                        %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: exam.name)}= t('common_between_pages.less')
+                    - else
+                      = raw exam.description
                   .equivalent
                     - unless exam.eq_name.blank?
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{exam.id}", onkeydown: 'click_on_keypress(event, this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{exam.id}", onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('scores.info.equalities') + t(:of) + exam.name }
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
@@ -188,7 +198,7 @@
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: exam.eq_name)
                     - else
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
+                      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{exam.id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('scores.info.equalities') + t(:of) + exam.name }
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
@@ -202,7 +212,7 @@
                 %td.center{headers: "ex_not_gra"}=exam.grade
                 %td.center.grade{headers: "ex_not_bla"}
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation))
-                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate')
+                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write', :'aria-hidden' => 'true')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
                 %td.center{headers: "ex_not_aft"}=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)   

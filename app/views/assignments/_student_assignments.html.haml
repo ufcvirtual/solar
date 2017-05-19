@@ -20,15 +20,15 @@
                 .title= assignment.name
               - else
                 = link_to assignment.name, link, {class: 'link_content'}
-            - if assignment.description.size > 150 
-              .enunciation
+            .description
+              - if assignment.description.size > 150 
                 .enunciation_slice= assignment.description.slice(0..150) << "..."
                 .enunciation_complete= assignment.description
                 .more_or_less
                   %a.enunciation_more.link_content{href: "#", :'aria-label' => t("assignments.list.more_enuc", assing: assignment.name), onkeydown: 'click_on_keypress(event, this);' }= t("assignments.list.more")
                   %a.enunciation_less.link_content{href: "#", :'aria-label' => t("assignments.list.less_enuc", assing: assignment.name), onkeydown: 'click_on_keypress(event, this);'}= t("assignments.list.less")
-            - else
-              = assignment.description
+              - else
+                = assignment.description
             .equivalent
               - unless assignment.eq_name.blank?
                 %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{assignment.academic_tool_id}", onkeydown: 'click_on_keypress(event, this);' }

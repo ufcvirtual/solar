@@ -210,6 +210,7 @@ class WebconferencesController < ApplicationController
 
     academic_allocations_ids = (@webconference.shared_between_groups ? @webconference.academic_allocations.map(&:id) : @webconference.academic_allocations.where(allocation_tag_id: at_id).first.try(:id))
     ats = AllocationTag.where(id: at_id).map(&:related)
+    @score_type = params[:score_type]
 
     @logs = @webconference.get_access(academic_allocations_ids, ats, {user_id: params[:user_id]})
     @user = User.find(params[:user_id])
@@ -225,8 +226,8 @@ class WebconferencesController < ApplicationController
     ac = acs.where(allocation_tag_id: at_id).first
 
     @acu = AcademicAllocationUser.find_one(ac.id, params[:user_id],nil, false, @can_evaluate)
-
-
+    @academic_allocation = ac
+    
     @maxwh = acs.first.max_working_hours
 
     render partial: 'user_access'

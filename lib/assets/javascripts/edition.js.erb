@@ -278,11 +278,11 @@ $(function(){
     var uc_type  = $("#uc_type", $(".edition:last")).val();
 
     // colocar os valores nos selects
-    $(".curriculum_unit_type #autocomplete-input", $(".edition:last")).val(uc_type);
-    $(".curriculum_unit #autocomplete-input", $(".edition:last")).val(uc);
-    $(".course #autocomplete-input", $(".edition:last")).val(course);
-    $(".semester #autocomplete-input", $(".edition:last")).val(semester);
-    $(".curriculum_unit_type #autocomplete-input", $(".edition:last")).val(uc_type);
+    $(".curriculum_unit_type [id^='autocomplete-input']", $(".edition:last")).val(uc_type);
+    $(".curriculum_unit [id^='autocomplete-input']", $(".edition:last")).val(uc);
+    $(".course [id^='autocomplete-input']", $(".edition:last")).val(course);
+    $(".semester [id^='autocomplete-input']", $(".edition:last")).val(semester);
+    $(".curriculum_unit_type [id^='autocomplete-input']", $(".edition:last")).val(uc_type);
 
     $("#radio_option_group", $(".edition:last")).prop("checked", true);
     $(".groups", $(".edition:last")).append(group);

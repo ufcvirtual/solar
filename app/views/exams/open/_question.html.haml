@@ -1,22 +1,20 @@
 - disabled = @disabled || question.annulled
 - audio_is = nil
-%tbody
-  %td.question_items
-    = form_for(@exam_responses, html: { :method => :put, id: 'responses_form', :'data-duration' => @exam_responses.duration}, :url => exam_response_path(@exam_responses), :remote => true, :'data-disabled' => disabled) do |er|
-      = er.hidden_field :exam_user_attempt_id, value: @last_attempt.id
-      = er.hidden_field :question_id, value: question.id
+
+.question_items
+  = form_for(@exam_responses, html: { :method => :put, id: 'responses_form', :'data-duration' => @exam_responses.duration}, :url => exam_response_path(@exam_responses), :remote => true, :'data-disabled' => disabled) do |er|
+    = er.hidden_field :exam_user_attempt_id, value: @last_attempt.id
+    = er.hidden_field :question_id, value: question.id
+    %ul{role: ((question.type_question.to_i == Question::UNIQUE) ? 'radiogroup' : nil), class: ((question.type_question.to_i == Question::UNIQUE) ? 'unique' : '')}
       - arr_alf = ('A'..'Z').to_a
       - arra_correted, arra_correted2 = [], []
       - if question.type_question.to_i == Question::UNIQUE
         - num_question = -1
         - right_answer = question.question_items.where(value: true).pluck(:id).first
-        = er.nested_fields_for :exam_responses_question_items, wrapper_tag: :div do |i|
+        = er.nested_fields_for :exam_responses_question_items, wrapper_tag: :li do |i|
           - class_comment = 'comment-blue' #default
           - unless i.object.id.nil?
             - num_question =  num_question + 1
-            - class_label = ''
-            - image = ''
-            - coment = ''
             - if @disabled
               - if right_answer==i.object.question_item_id
                 - arra_correted.push(arr_alf[num_question])
@@ -30,47 +28,49 @@
                 - coment = "<div class='#{class_comment}'> #{i.object.comment} </div>"  
 
             - if i.object.item_image?  
-              - image = @pdf !=1 ? image_tag(i.object.item_image, id: 'item_image', alt: i.object.img_alt) : wicked_pdf_image_tag(i.object.item_image, id: 'item_image', alt: i.object.img_alt) 
-               
-            = i.check_box :value, {disabled: disabled, onchange: 'update_radio(this); change();', class: 'invisible'}, true, ''
-            = radio_button_tag "radio_exam_response_exam_responses_question_items_attributes", :value, nil, {checked: i.object.value, class: "radio_exam_response_exam_responses_question_items_attributes_#{num_question}_value", disabled: disabled}
+              - image = if @pdf !=1 
+                - image_tag(i.object.item_image, class: 'item_image', alt: i.object.img_alt, :'aria-label' => t('exams.open.image_item', alt: i.object.img_alt, item: arr_alf[num_question])) 
+              - else
+                - t('exams.open.image_item', alt: i.object.img_alt, item: arr_alf[num_question])
 
-            = i.label :value, class: class_label do
+            = i.check_box :value, {disabled: disabled, onchange: 'change();', class: 'invisible', role: 'radio', :'aria-checked' => i.object.value}, true, ''
+            = radio_button_tag "radio_exam_response_exam_responses_question_items_attributes_#{num_question}_value", :value, nil, {checked: i.object.value, class: "radio_exam_response_exam_responses_question_items_attributes_#{num_question}_value", disabled: disabled, name: "radio_exam_response_exam_responses_question_items_attributes", onchange: 'update_radio(this);'}
+
+            = i.label :value, {for: "radio_exam_response_exam_responses_question_items_attributes_#{num_question}_value_value"}, class: class_label do
               %span= arr_alf[num_question]+') '
-              %span= i.object.description.html_safe
-              %br
+              = i.object.description.html_safe
               = raw image
-              - if i.object.item_audio?  
-                .audio.legend
-                  .audio
-                    %span.hide=t(:audio_suggestions)
-                    %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, preload: 'none', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
-                      %p= t("errors.messages.audio")
-                    = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
-                    = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
-                    - audio_is = 1
-                  - if b.object.audio_description?
-                    .audio_description
-                      = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);'
-                      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'invisible hide_questions_description_ico', onkeydown: 'click_on_keypress(event, this);'
-                      =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'link_text_audio', onkeydown: 'click_on_keypress(event, this);'
-                      #text
-                        = raw b.object.audio_description.html_safe
+              - unless @pdf == 1
+                - if i.object.item_audio?  
+                  .audio.legend
+                    .audio
+                      %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
+                        %p= t("errors.messages.audio")
+                      = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), 'down_speed()'
+                      = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), 'up_speed()'
+                      - audio_is = 1
+                    - if i.object.audio_description?
+                      .audio_description
+                        = link_to('#', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
+                          =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
+                          =t('questions.questions.show')
+                        = link_to('#', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
+                          =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
+                          =t('questions.questions.show')
+                        .text= raw i.object.audio_description.html_safe
+              - else
+                %p=t('exams.open.audio_item', item: arr_alf[num_question]) + (i.object.audio_description.blank? ? '' : t('exams.open.audio_text', desc: i.object.audio_description))
               = raw(coment)
 
         - if @disabled
-          %br
           = t('exams.result_exam_user.itens_corrected') + arra_correted.join(", ")        
-          
+        
       - elsif question.type_question.to_i == Question::MULTIPLE
         - num_question = -1
         - right_items = question.question_items.where(value: true).pluck(:id)
-        = er.nested_fields_for :exam_responses_question_items, wrapper_tag: :div do |b|
+        = er.nested_fields_for :exam_responses_question_items, wrapper_tag: :li do |b|
           - class_comment = 'comment-blue' #default
           - unless b.object.id.nil?
-            - class_label = nil
-            - image = nil
-            - audio = nil
             - num_question =  num_question + 1
             - if @disabled
               - coment = b.object.comment  
@@ -86,49 +86,55 @@
                 - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"
 
             - if b.object.item_image?     
-              - image =  @pdf !=1 ? image_tag(b.object.item_image, id: 'item_image', alt: b.object.img_alt) : image = wicked_pdf_image_tag(b.object.item_image, id: 'item_image', alt: b.object.img_alt)
+              - image =  if @pdf !=1 
+                - image_tag(b.object.item_image, class: 'item_image', alt: b.object.img_alt, :'aria-label' => t('exams.open.image_item', alt: b.object.img_alt, item: arr_alf[num_question]))
+              - else
+                - t('exams.open.image_item', alt: b.object.img_alt, item: arr_alf[num_question])
 
-            = b.check_box :value, {disabled: disabled, onchange: 'change();'}, true, ''
+            = b.check_box :value, {disabled: disabled, onchange: 'change();', role: 'checkbox', :'aria-checked' => b.object.value}, true, ''
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
-              %span= b.object.description.html_safe
-              %br
+              = b.object.description.html_safe
               = raw image
-              - if b.object.item_audio?  
-                .audio.legend
-                  .audio
-                    %span.hide=t(:audio_suggestions)
-                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, preload: 'none', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
-                      %p= t("errors.messages.audio")
-                    = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
-                    = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
-                    - audio_is = 1
-                  - if b.object.audio_description?
-                    .audio_description
-                      = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);'
-                      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'invisible hide_questions_description_ico', onkeydown: 'click_on_keypress(event, this);'
-                      =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'link_text_audio' , onkeydown: 'click_on_keypress(event, this);'
-                      #text
-                        = raw b.object.audio_description.html_safe
-             
+              - unless @pdf == 1
+                - if b.object.item_audio?  
+                  .audio.legend
+                    .audio
+                      %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
+                        %p= t("errors.messages.audio")
+                      = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), 'down_speed()'
+                      = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), 'up_speed()'
+                      - audio_is = 1
+                    - if b.object.audio_description?
+                      .audio_description
+                        = link_to('#', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
+                          =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
+                          =t('questions.questions.show')
+                        = link_to('#', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
+                          =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
+                          =t('questions.questions.show')
+                        .text=raw b.object.audio_description.html_safe
+              - else
+                %p=t('exams.open.audio_item', item: arr_alf[num_question]) + (b.object.audio_description.blank? ? '' : t('exams.open.audio_text', desc: b.object.audio_description))
               = raw(coment)
 
         - if @disabled
-          %br
           = t('exams.result_exam_user.itens_corrected') + arra_correted.join(", ")
       - else
         - num_question = -1
         - items = question.question_items
         - true_items = items.where(value: true).pluck(:id)
         - false_items = items.where(value: false).pluck(:id)
-        = er.nested_fields_for :exam_responses_question_items, wrapper_tag: :div do |b|
+        = er.nested_fields_for :exam_responses_question_items, wrapper_tag: :li do |b|
           - class_comment = 'comment-blue' #default
           - unless b.object.id.nil?
-            - class_label = nil
             - num_question =  num_question + 1
             - selected = b.object.value
             - if b.object.item_image?
-              - image = @pdf !=1 ? image_tag(b.object.item_image, id: 'item_image', alt: b.object.img_alt) : wicked_pdf_image_tag(b.object.item_image, id: 'item_image', alt: b.object.img_alt) 
+              - image = if @pdf !=1 
+                - image_tag(b.object.item_image, class: 'item_image', alt: b.object.img_alt, :'aria-label' => t('exams.open.image_item', alt: b.object.img_alt, item: arr_alf[num_question])) 
+              - else
+                - t('exams.open.image_item', alt: b.object.img_alt, item: arr_alf[num_question]) 
      
             - if @disabled
               - coment = b.object.comment  
@@ -151,41 +157,41 @@
             = b.select :value, options_for_select([['', nil], [t('questions.form.f_option'), false], [t('questions.form.t_option'), true]], b.object.value), {}, { disabled: disabled, onchange: 'change();' }
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
-              %span= b.object.description.html_safe
-              %br
+              = b.object.description.html_safe
               = raw image
-              - if b.object.item_audio?  
-                .audio.legend
-                  .audio
-                    %span.hide=t(:audio_suggestions)
-                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, preload: 'none', name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
-                      %p= t("errors.messages.audio")
-                    = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
-                    = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
-                    - audio_is = 1 
-                  - if b.object.audio_description?
-                    .audio_description
-                      = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);'
-                      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'invisible hide_questions_description_ico', onkeydown: 'click_on_keypress(event, this);'
-                      =link_to_function t('questions.questions.show'), "show_audio_description(this)", class: 'link_text_audio' , onkeydown: 'click_on_keypress(event, this);'
-                      #text
-                        = raw b.object.audio_description.html_safe
-              
+              - unless @pdf == 1
+                - if b.object.item_audio?  
+                  .audio.legend
+                    .audio
+                      %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
+                        %p= t("errors.messages.audio")
+                      = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), 'down_speed()'
+                      = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), 'up_speed()'
+                      - audio_is = 1 
+                    - if b.object.audio_description?
+                      .audio_description
+                        = link_to('#', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
+                          =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
+                          =t('questions.questions.show')
+                        = link_to('#', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
+                          =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
+                          =t('questions.questions.show')
+                        .text= raw b.object.audio_description.html_safe
+              - else
+                %p=t('exams.open.audio_item', item: arr_alf[num_question]) + (b.object.audio_description.blank? ? '' : t('exams.open.audio_text', desc: b.object.audio_description))
               = raw(coment)
          
         - if @disabled
-          %br
           = t('exams.result_exam_user.true_items') + arra_correted.join(", ")
-          %br
           = t('exams.result_exam_user.false_items') + arra_correted2.join(", ")
 
-      = er.hidden_field :duration, {:id => "duration"}
+    = er.hidden_field :duration, {id: 'duration'}
 
-- unless @question_audios.nil? or audio_is.nil?
-  %tr.question_audios
-    %td.audio
+- unless @question_audios.blank? || audio_is.blank?
+  .question_audios{:'aria-hidden' => 'true'}
+    .audio
       %form.hide
-        %input.aPbr{id: "aPbr", type: "range", value: 1, min: 0, max: 5, step: 0.1 }
+        %input.aPbr{id: 'aPbr', type: 'range', value: 1, min: 0, max: 5, step: 0.1 }
           %p
             = t(:control_audio, scope: [:questions, :questions])
             %span#aCurrentPbr= 1        
@@ -200,13 +206,42 @@
       change();
     });
 
-    $('input[type="radio"]').click(function(){
+    $(".unique input[type='checkbox']").click(function(){
       $("input[type='checkbox']:checked").each(function(){
         $(this).prop('checked', false);
       });
 
-      $("input[type='checkbox']#"+$(this).prop('class').replace('radio_', '')).prop('checked', true);
+      $("input[type='checkbox']#"+$(this).prop('id')).prop('checked', true);
       change();
+    });
+
+    $(document).keydown(function (e) {
+      switch(e.which) {
+        case parseInt("#{t("questions.shortcut.enunciation")}"):
+          focus_element($('h3.question'));
+          break;
+        case parseInt("#{t("questions.shortcut.items")}"):
+          if(!!$('.question_items input').filter(':disabled:first').length)
+            focus_element($('.question_items input').filter(':disabled:first'));
+          else
+            focus_element($('.question_items select').filter(':disabled:first'));
+          break;
+        case parseInt("#{t("questions.shortcut.questions")}"):
+          focus_element($('#question_count'));
+          break;
+        case parseInt("#{t("questions.shortcut.time")}"):
+          focus_element($('.time'));
+            break;
+        case parseInt("#{t("questions.shortcut.next")}"):
+          $('.exam_open .next_page').click();
+            break;
+        case parseInt("#{t("questions.shortcut.previous")}"):
+          $('.exam_open .previous_page').click();
+            break;
+        case parseInt("#{t("questions.shortcut.audio")}"):
+          focus_element($('.exam_open .questions .audio:first'));
+            break;
+      }
     });
   });
 
@@ -217,10 +252,12 @@
   }
 
   function update_radio(checkbox){
-    $('.radio_'+$(checkbox).prop('id')+':first').prop('checked', $(checkbox).prop('checked'));
+    ckb = $('#'+$(checkbox).prop('id').replace('radio_', '').replace('value_value', 'value')+':first');
+    ckb.prop('checked', $(checkbox).prop('checked'));
+    ckb.prop('aria-checked', $(checkbox).prop('checked'));
 
     if(!!$(checkbox).prop('checked'))
-      $('input[type="checkbox"]').each(function(){
+      $('input[type="radio"]').each(function(){
         if($(this).prop('id') != $(checkbox).prop('id')){
           $(this).prop('checked', false);
           update_radio($(this));

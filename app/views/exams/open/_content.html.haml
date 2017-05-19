@@ -7,63 +7,65 @@
       - @unique_id = ExamResponse.is_unique?(@exam_responses) ? ExamResponse.get_question_item_id(@exam_responses) : false rescue false
       - number_question = number_question+1
     - if @disabled
-      - score = t('exams.open.scores', score: question.score)
+      - score = '<div class="scores">'+t('exams.open.scores', score: question.score)+'</div>'
     - if question.annulled
-      - anull = t('exams.open.anull')
-    %table.questions
-      %thead
-        %tr.question
-          %td.number
-            = number_question.to_s + ')'
-          %td.enunciation
-            = raw [question.enunciation, anull, score].compact.join(' ')
-        - question_images = get_question_images(question.id)
-        - @question_audios = get_question_audios(question.id)
-        - unless question_images.nil?
-          %tr.question_images
-            - question_images.each do |q_image|
-              %td.image{class: q_image.legend.blank? ? '' : 'legend'}
+      - anull = '<div class="annulled">'+t('exams.open.anull')+'</div>'
+    .questions
+      %h3.question
+        .number= number_question.to_s + ')'
+        .enunciation{id: "radio_#{number_question}"}= raw [question.enunciation, anull, score].compact.join(' ')
+      - question_images = get_question_images(question.id)
+      - @question_audios = get_question_audios(question.id)
+      - unless question_images.nil?
+        %ul.question_images
+          - question_images.each do |q_image|
+            %li.image{class: (q_image.legend.blank? || @pdf == 1) ? '' : 'legend'}
+              - unless @pdf == 1
                 .image
-                  = image_tag q_image.image(get_image_size(question_images.count)), id: 'question_image', alt: q_image.img_alt
+                  = image_tag q_image.image(get_image_size(question_images.count)), alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend))
                 - unless q_image.legend.blank?
-                  .legend
-                    = q_image.legend
-                  %br
-        - unless @question_audios.nil?
-          %tr.question_audios    
-            - @question_audios.each do |q_audio|
-              - class_ = nil    
-              - if !q_audio.description.blank? && !q_audio.audio_description.blank?
-                - class_ = 1
-              %td.audio.legend
+                  .legend{:'aria-hidden' => 'true'}= q_image.legend
+              - else
+                %p.image_pdf= [t('exams.open.image', alt: q_image.img_alt), (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend))].join(' ')
+      - unless @question_audios.blank?
+        %ul.question_audios
+          - @question_audios.each do |q_audio|
+            .visuallyhidden=t(:audio_suggestions)
+            - class_ = nil    
+            - if !q_audio.description.blank? && !q_audio.audio_description.blank?
+              - class_ = 1
+            %li.audio{class: (@pdf == 1 ? '' : 'legend')}
+              - unless @pdf == 1
                 .audio
-                  %span.hide=t(:audio_suggestions)
-                  %audio{ src: q_audio.audio, autoplay: false, controls: true, name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}      
+                  %audio{ src: q_audio.audio, autoplay: false, controls: true, name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' => (q_audio.description.blank? ? '' : t('exams.open.audio', alt: q_audio.description))}
                     %p= t("errors.messages.audio")
-                  = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), 'down_speed()'
-                  = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), 'up_speed()'
+                  = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), 'down_speed()'
+                  = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), 'up_speed()'
                 .legend{class: class_.blank? ? '' : 'legend-description'}
                   - unless q_audio.description.blank?
-                    %p= q_audio.description
+                    %p{:'aria-hidden' => 'true'}= q_audio.description
                   - unless q_audio.audio_description.blank?  
-                    = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'show_questions_description_ico'
-                    = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
-                    =link_to_function t('questions.questions.show'), "show_audio_description(this)"
-                    %p
-                      #text
-                        = q_audio.audio_description          
-                %br
-                
-        - if @preview
-          = render 'exams/open/question_preview', { question: question }
-        - else
-          = render 'exams/open/question', { question: question }
+                    = link_to('#', onclick: 'show_audio_description(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
+                      =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
+                      =t('questions.questions.show')
+                    = link_to('#', onclick: 'show_audio_description(this)', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
+                      =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
+                      =t('questions.questions.show')
+
+                  %p.text= q_audio.audio_description
+              - else
+                .audio_pdf=t('exams.open.audio2', desc: q_audio.description) + (q_audio.audio_description.blank? ? '' : t('exams.open.audio_text', desc: q_audio.audio_description))
+
+      - if @preview
+        = render 'exams/open/question_preview', { question: question }
+      - else
+        = render 'exams/open/question', { question: question }
 
 .message_div_navigation
   - if @pdf != 1
     = will_paginate @exam_questions
 - if @disabled && @exam.attempts_correction == Exam::AVERAGE && @pdf!=1
-  = link_to t(:back), link, { class: 'btn link_open_exam', id: 'open-exam-result'}
+  = link_to t(:back), link, { class: 'btn link_open_exam open-exam-result'}
 
 = javascript_include_tag 'tooltip', 'audios'
 
@@ -79,11 +81,11 @@
 
   var clock_switch;
 
-  jQuery(function($) {
+  $(function() {
     if (typeof clock_switch == 'undefined') {
       new updateTime("clock", [time_h, time_min, time_s]);
       clock_switch = true;
-      }
+    }
   });
 
  

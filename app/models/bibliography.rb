@@ -63,7 +63,7 @@ class Bibliography < ActiveRecord::Base
               r << "<cite><strong>#{title}</strong></cite>"  if title
               r << subtitle           if subtitle
               r << "#{edition}. ed"   if edition
-              r << "#{address}: #{publisher}, <date datetime=#{publication_year}>#{publication_year}</time>" if address && publisher && publication_year
+              r << "#{address}: #{publisher}, <time datetime=#{publication_year}>#{publication_year}</time>" if address && publisher && publication_year
               r << "#{count_pages} p" if count_pages
               r << "v. #{volume}"     if volume
               r.join('. ')

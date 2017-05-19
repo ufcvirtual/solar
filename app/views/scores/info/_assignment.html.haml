@@ -30,10 +30,14 @@
                     - else
                       = link_to assignment.name, student_assignment_path(assignment.academic_tool_id, student_id: @user.id, group_id: assignment.group_id), {class: 'link_content'}, onkeydown: 'click_on_keypress(event, this);'
                     .description
-                      .minimun= sanitize(truncate assignment.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
-                      .complete.invisible
-                        = assignment.description
-                        = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                      - if assignment.description.size > 80
+                        .description_slice= raw assignment.description.slice(0..80) << "..."
+                        .description_complete= raw assignment.description
+                        .more_or_less
+                          %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: assignment.name) }= t('common_between_pages.more')
+                          %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: assignment.name)}= t('common_between_pages.less')
+                      - else
+                        = raw assignment.description
                     .equivalent
                       - unless assignment.eq_name.blank?
                         %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{assignment.id}", onkeydown: 'click_on_keypress(event, this);' }
@@ -84,10 +88,14 @@
                     - else
                       = link_to assignment.name, student_assignment_path(assignment.academic_tool_id, student_id: @user.id, group_id: assignment.group_id), {class: 'link_content', onkeydown: 'click_on_keypress(event, this);'}
                     .description
-                      .minimun= sanitize(truncate assignment.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
-                      .complete.invisible
-                        = assignment.description
-                        = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                      - if assignment.description.size > 80
+                        .description_slice= raw assignment.description.slice(0..80) << "..."
+                        .description_complete= raw assignment.description
+                        .more_or_less
+                          %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: assignment.name) }= t('common_between_pages.more')
+                          %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: assignment.name)}= t('common_between_pages.less')
+                      - else
+                        = raw assignment.description
                     .equivalent
                       - unless assignment.eq_name.blank?
                         %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{assignment.id}", onkeydown: 'click_on_keypress(event, this);' }
@@ -139,10 +147,14 @@
                     - else
                       = link_to assignment.name, student_assignment_path(assignment.academic_tool_id, student_id: @user.id, group_id: assignment.group_id), {class: 'link_content', onkeydown: 'click_on_keypress(event, this);'}
                     .description
-                      .minimun= sanitize(truncate assignment.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
-                      .complete.invisible
-                        = assignment.description
-                        = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                      - if assignment.description.size > 80
+                        .description_slice= raw assignment.description.slice(0..80) << "..."
+                        .description_complete= raw assignment.description
+                        .more_or_less
+                          %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: assignment.name) }= t('common_between_pages.more')
+                          %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: assignment.name)}= t('common_between_pages.less')
+                      - else
+                        = raw assignment.description
                     .equivalent
                       - unless assignment.eq_name.blank?
                         %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{assignment.id}", onkeydown: 'click_on_keypress(event, this);' }

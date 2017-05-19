@@ -114,7 +114,8 @@ class ChatRoomsController < ApplicationController
     else
       @user = User.find(params[:user_id])
       @chat_room = ChatRoom.find(params[:id])
-
+      @score_type = params[:score_type]
+     
       allocation_tag_id = active_tab[:url][:allocation_tag_id]
 
       authorize! :show, ChatRoom, on: [allocation_tag_id]

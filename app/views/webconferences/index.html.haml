@@ -1,6 +1,12 @@
 .block_wrapper
   - unless @webconferences.blank?
     %div.title-warning
+      %div.information_title
+        = link_to_function raw(t('.information_title')), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
+        %i.icon-arrow-down-triangle
+        %i.icon-arrow-up-triangle.invisible
+      %div.information.invisible{tabindex: 0}= raw t('.information')
+    %div.title-warning
       %div.accessibility_title
         = link_to_function raw(t('.accessibility_title')), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
         %i.icon-arrow-down-triangle
@@ -35,7 +41,7 @@
                 = link_to_function webconference.title, 'access_webconference(this)', {class: 'link_content', :'aria-label' => t('.access_web', web: webconference.title), onkeydown: 'click_on_keypress(event, this);'}
               - else
                 .title= link_to webconference.title, '#', {disabled: true, class: 'disabled', :'aria-label' => t('.access_web', web: webconference.title) + t(:disabled)}
-              .enunciation
+              .description
                 .enunciation_slice= webconference.description.truncate(180)
                 .enunciation_complete= webconference.description
                 - if webconference.description.size > 180
@@ -120,14 +126,14 @@
   }
 
 
-  $(".accessibility").on("keydown", function(event){
-    var keynum = event.which || event.keyCode;
+  // $(".accessibility").on("keydown", function(event){
+  //   var keynum = event.which || event.keyCode;
 
-    if ( keynum == 27 ) {
-      $(this).addClass('invisible');
-      $(this).siblings().find('i.icon-arrow-up-triangle').removeClass('invisible');
-      $(this).siblings().find('i.icon-arrow-down-triangle').addClass('invisible');
-    }
+  //   if ( keynum == 27 ) {
+  //     $(this).addClass('invisible');
+  //     $(this).siblings().find('i.icon-arrow-up-triangle').removeClass('invisible');
+  //     $(this).siblings().find('i.icon-arrow-down-triangle').addClass('invisible');
+  //   }
 
-    $(".accessibility_title").find("a").focus();
-  });
+  //   $(".accessibility_title").find("a").focus();
+  // });

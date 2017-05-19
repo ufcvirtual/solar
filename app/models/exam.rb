@@ -43,7 +43,8 @@ class Exam < Event
         correction_exams(acu.id)
         grade = get_grade(acu.id)
         grade = grade ? grade : 0.00
-        acu.update_attributes grade: (grade > 10 ? 10 : grade.round(2)), status: AcademicAllocationUser::STATUS[:evaluated], working_hours: (wh = acu.academic_allocation.max_working_hours)
+        working_hours = (acu.academic_allocation.frequency ? (wh = acu.academic_allocation.max_working_hours) : {})
+        acu.update_attributes({grade: (grade > 10 ? 10 : grade.round(2)), status: AcademicAllocationUser::STATUS[:evaluated]}.merge!(working_hours))
         acu.recalculate_final_grade(acu.allocation_tag_id)
         send_result_emails(acu, grade) if result_email
       end
@@ -90,7 +91,7 @@ class Exam < Event
     AcademicAllocationUser.joins(academic_allocation: [exam: :schedule])
             .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id")
             .where(exams: { id: id, status: true }).where(query.join(' AND '), { user_id: user_id })
-            .select("DISTINCT academic_allocation_users.*, academic_allocations.allocation_tag_id") 
+            .select("DISTINCT academic_allocation_users.*, academic_allocations.allocation_tag_id")
   end  
 
   def correction_exams(acu_id)
@@ -326,7 +327,7 @@ class Exam < Event
     case attempts_correction
     when Exam::GREATER; I18n.t('exams.form.config.greater')
     when Exam::AVERAGE; I18n.t('exams.form.config.average')
-    when Exam::LAST; I18n.t('exams.form.config.laast')
+    when Exam::LAST; I18n.t('exams.form.config.last')
     end
   end
 

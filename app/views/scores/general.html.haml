@@ -31,7 +31,7 @@
             %tr.lines
               %th#student= t("scores.index.student")
               %th{style: "width: 8%;"}= t('scores.index.access_to_the_course')
-              - unless @wh.nil?
+              - unless @wh.blank?
                 %th{style: "width: 8%;"}= t('scores.index.frequency')
               %th{style: "width: 8%;"}= t('scores.index.final_grade')
               %th{style: "width: 8%;"}= t('scores.index.public_files')
@@ -51,7 +51,7 @@
                 %tr.lines
                   %td.td_student=student.name
                   %td=student.u_logs
-                  - unless @wh.nil?
+                  - unless @wh.blank?
                     %td=student.working_hours
                   %td=student.u_grade
                   %td=student.u_public_files

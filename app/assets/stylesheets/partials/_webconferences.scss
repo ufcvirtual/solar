@@ -19,7 +19,12 @@ form{
   }
 }
 
+.title-warning:first-of-type{
+  margin-bottom: 0;
+}
+
 .title-warning{
+  /* text-align: center; */
   p:last-of-type{
     margin-bottom: 0;
   }
