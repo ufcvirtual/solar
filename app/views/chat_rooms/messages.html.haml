@@ -13,7 +13,7 @@
           %th#to= t(".to")
           %th#message= t(".message")
           %th#date= t(".date")
-          %th#time= t(".time")
+          %th#time_msg= t(".time")
           - if @academic_allocation.evaluative
             %th#grade= t('.grade')
           - if @academic_allocation.frequency
@@ -32,7 +32,7 @@
             %td{:'data-tooltip' => name, :'aria-label' => name, headers: "to"}= nick
             %td.message{headers: "message" }= message.text.try(:html_safe)
             %td{headers: "date" }= l(message.created_at.to_datetime, format: :normal)
-            %td{headers: "time" }= l(message.created_at.to_datetime, format: :clock_time)
+            %td{headers: "time_msg" }= l(message.created_at.to_datetime, format: :clock_time)
             - if @academic_allocation.evaluative
               %td{headers: "grade" }
                 - if @evaluative || (message.u_id.to_i == current_user.id)
