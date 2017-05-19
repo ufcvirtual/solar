@@ -35,7 +35,7 @@
                 = link_to_function webconference.title, 'access_webconference(this)', {class: 'link_content', :'aria-label' => t('.access_web', web: webconference.title), onkeydown: 'click_on_keypress(event, this);'}
               - else
                 .title= link_to webconference.title, '#', {disabled: true, class: 'disabled', :'aria-label' => t('.access_web', web: webconference.title) + t(:disabled)}
-              .enunciation
+              .description
                 .enunciation_slice= webconference.description.truncate(180)
                 .enunciation_complete= webconference.description
                 - if webconference.description.size > 180
