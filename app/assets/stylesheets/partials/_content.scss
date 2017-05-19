@@ -460,8 +460,11 @@ a.disabled {
 }
 
 .shortcut_floating_box{
-  color: $color_black;
+  color: $color_black_floating_box;
   font-family: 'PT Sans', sans-serif;
+  h2 {
+    color: $color_black_floating_box;
+  }
 }
 
 .close_dropdown{
