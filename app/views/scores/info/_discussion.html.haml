@@ -31,12 +31,16 @@
                   - if discussion.opened == 't'
                     = link_to discussion.name, discussion_posts_path(discussion.academic_tool_id), {class: 'link_content', onkeydown: 'click_on_keypress(event, this);'}
                   - else
-                    .title= discussion.name
+                    .title= link_to discussion.name, '#', disabled: true, :'aria-label' => discussion.name +  t(:disabled), class: 'disabled'
                   .description
-                    .minimun= sanitize(truncate discussion.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
-                    .complete.invisible
-                      = discussion.description
-                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    - if discussion.description.size > 80
+                      .description_slice= raw discussion.description.slice(0..80) << "..."
+                      .description_complete= raw discussion.description
+                      .more_or_less
+                        %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: discussion.name) }= t('common_between_pages.more')
+                        %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: discussion.name)}= t('common_between_pages.less')
+                    - else
+                      = raw discussion.description
                   .equivalent
                     - unless discussion.eq_name.blank?
                       %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{discussion.id}", onkeydown: 'click_on_keypress(event, this);' }
@@ -88,12 +92,16 @@
                   - if discussion.opened == 't'
                     = link_to discussion.name, discussion_posts_path(discussion.academic_tool_id), {class: 'link_content', onkeydown: 'click_on_keypress(event, this);'}
                   - else
-                    .title= discussion.name
+                    .title= link_to discussion.name, '#', disabled: true, :'aria-label' => discussion.name +  t(:disabled), class: 'disabled'
                   .description
-                    .minimun= sanitize(truncate discussion.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
-                    .complete.invisible
-                      = discussion.description
-                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    - if discussion.description.size > 80
+                      .description_slice= raw discussion.description.slice(0..80) << "..."
+                      .description_complete= raw discussion.description
+                      .more_or_less
+                        %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: discussion.name) }= t('common_between_pages.more')
+                        %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: discussion.name)}= t('common_between_pages.less')
+                    - else
+                      = raw discussion.description
                   .equivalent
                     - unless discussion.eq_name.blank?
                       %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{discussion.id}", onkeydown: 'click_on_keypress(event, this);' }
@@ -137,12 +145,16 @@
                   - if discussion.opened == 't'
                     = link_to discussion.name, discussion_posts_path(discussion.academic_tool_id), {class: 'link_content', onkeydown: 'click_on_keypress(event, this);'}
                   - else
-                    .title= discussion.name
+                    .title= link_to discussion.name, '#', disabled: true, :'aria-label' => discussion.name +  t(:disabled), class: 'disabled'
                   .description
-                    .minimun= sanitize(truncate discussion.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
-                    .complete.invisible
-                      = discussion.description
-                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    - if discussion.description.size > 80
+                      .description_slice= raw discussion.description.slice(0..80) << "..."
+                      .description_complete= raw discussion.description
+                      .more_or_less
+                        %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: discussion.name) }= t('common_between_pages.more')
+                        %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: discussion.name)}= t('common_between_pages.less')
+                    - else
+                      = raw discussion.description
                   .equivalent
                     - unless discussion.eq_name.blank?
                       %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{discussion.id}", onkeydown: 'click_on_keypress(event, this);' }

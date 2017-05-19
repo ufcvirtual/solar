@@ -27,6 +27,9 @@
       %tr.lines
         %th.act_like_td#grade= t(:passing_grade) 
         %td{headers: 'grade'}= @curriculum_unit.try(:passing_grade)
+      %tr.lines
+        %th.act_like_td#wh= t(:working_hours) 
+        %td{headers: 'wh'}= @curriculum_unit.try(:working_hours)
       %tr.lines.responsibles
         %th.act_like_td#responsibles= t(:curriculum_unit_responsible) 
         %td{headers: 'responsibles'}

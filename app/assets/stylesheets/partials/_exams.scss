@@ -7,7 +7,7 @@
   font-family: 'PT Sans', sans-serif;
 
   #description{
-    font-size: 8pt;
+    font-size: 10pt;
     padding-bottom: 10px;
   }
 
@@ -32,6 +32,45 @@
     text-align: center;
   }
 
+  table{
+    border: 0;
+    cellpadding: 0;
+    cellspacing: 0;
+    width: 100%;
+  }
+
+  .correction_info, .shortcuts_info{
+    border-top: 1px solid $table_border_color;
+    background-color: $color_main_light;
+    padding: 3px;
+    tabindex: -1;
+
+    &:hover {
+      background-color: $color_main_light_highlight; /* #FFF5ED*/
+    }
+
+    [class*='_text']{
+      font-size: 0.8em;
+      text-align: center;
+      padding: 3px;
+      width: 60%;
+      margin-left: 18%;
+    }
+
+    a{
+      color: $color_little_dark_gray;
+    }
+
+    [class^='expand_']{
+      text-align: center; 
+      cursor: pointer;
+    }
+  }
+
+}
+
+.shortcuts_info{
+  border-bottom: 1px solid $table_border_color;
 }
 
 .exam_open {
@@ -60,22 +99,35 @@
     list-style-type: none;
     padding: 0 0 0 0;
     margin: 0;
+    margin-top: -1%;
 
-
-    li {
+    #question_count, #total, #time, #time_final, #clock, #order{
       display: inline-block;
       padding: 3px 6px 0 4px;
-      vertical-align: middle;
-      float: left;
+      font-weight: normal;
       /* necessario para funcionar ok no IE7 */
       /*    zoom: 1;
       *display: inline;*/
     }
 
-    #time, #question_count{
-      padding-right: 0px;
+    #clock, .time_final, #order, #total{
+      margin-top: 4%;
     }
 
+    .time_final, #total{
+      margin-left: -6%;
+    }
+
+    .time, #question_count{
+      padding-right: 0px;
+      display: inline-block;
+    }
+
+    .time_final{
+      display: inline-block;
+      font-weight: normal;
+      padding-left: 5px;
+    }
 
   }
 
@@ -95,19 +147,35 @@
 
     .question {
       padding-top: 10px;
-      float: left;
       font-family: 'PT Sans', sans-serif;
+      font-weight: normal;
+      margin-bottom: 1%;
 
       .number {
-        padding-right: 5px;
+        padding-right: 3px;
         color: $color_main;
         width: auto;
         vertical-align:top;
+        display: inline-block;
+      }
+
+      .enunciation{
+        display: inline;
+        p:last-of-type {
+          display: inline-block;
+          margin-bottom: 0;
+          word-wrap: break-word;
+        }
+        .scores, .annulled{
+          display: inline-block;
+        }
       }
     }
 
     .question_images {
       text-align: center;
+      margin-left: 10%;
+      margin-left: 15%;
 
       #question_image{
         max-width: 300px;
@@ -122,7 +190,7 @@
           border: solid 2px $question_image_border_color_exams;
         }
       }
-      td.image.legend{
+      .image.legend{
         display: block;
         text-align: left;
         width: 600px;
@@ -150,7 +218,7 @@
     }
     .question_audios {
       text-align: center;
-      margin-left: 1px;
+      margin-left: 15%;
 
       #question_audio{
         max-width: 150px;
@@ -170,7 +238,7 @@
           text-align: left;
         }
       }
-      td.audio.legend{
+      .audio.legend{
         padding: 0 0 0 10px;
         display: block;
         text-align: center;
@@ -197,6 +265,7 @@
           text-align: center;
           vertical-align: top;
           top: 50%;
+          padding-bottom: 1%;
           p{
             margin-bottom: 2px;
           }
@@ -204,7 +273,7 @@
             margin-bottom: 1px;
           }
         }
-        #text, #hide{
+        p.text, #hide{
           display: none;
         }
         .legend-description{
@@ -215,19 +284,25 @@
     }
 
   }
+
   .question_items{
     padding: 10px 0px 10px 15px;
 
-    .item_checkbox{
+    .item_image{
+      border: solid 2px $question_image_border_color;
+      display: block;
+    }
+
+    li{
       margin-top: 10px;
       label{
-        p:first-of-type {
+        :nth-child(2):not(.invisible){
           display: inline-block;
         }
       }
     }
 
-    #text, .hide{
+    p.text, .hide{
       display: none;
     }
 
@@ -259,6 +334,7 @@
     }
 
     .audio.legend{
+      margin-top: 1%;
       padding: 0 0 6px 14px;
       display: block;
       text-align: center;
@@ -271,10 +347,9 @@
         padding-top: 5px;
         background-color: $questions_audios_background_exams;
         background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
-        height: 30px;
+        height: 31px;
         width: 58%;
         position: relative;
-        top: 50%;
         left: 0.5%;
         float: left;
         audio{
@@ -290,11 +365,8 @@
       }
       .audio_description{
         padding-top: 13px;
-        width: 42%;
-        display: inline-block;
-        text-align: center;
-        vertical-align: top;
         top: 50%;
+        width: 42%;
         a i{
           margin-top: 4px;
           margin-bottom: 4px;
@@ -302,10 +374,10 @@
       }
     }
 
-    #text{
+    .text{
       color: $lightbox_dialog_title_color;
     }
-    #text, #hide{
+    .text, #hide{
       display: none;
     }
 
@@ -345,6 +417,15 @@
     #text, #hide{
       display: none;
     }
+
+    video::-webkit-media-controls-enclosure, audio::-webkit-media-controls-enclosure {
+        overflow:hidden;
+    }
+
+    video::-webkit-media-controls-panel, audio::-webkit-media-controls-panel {
+        width: calc(100% + 30px); /* Adjust as needed */
+    }
+
   }
 
   .message_div_navigation {
@@ -375,6 +456,20 @@
   .pagination{
     text-align: center;
   }
+
+  video::-internal-media-controls-download-button, audio::-internal-media-controls-download-button {
+    display:none;
+  }
+
+  video::-webkit-media-controls-enclosure, audio::-webkit-media-controls-enclosure {
+    overflow:hidden;
+  }
+
+  video::-webkit-media-controls-panel, audio::-webkit-media-controls-panel {
+    width: calc(100% + 30px); /* Adjust as needed */
+  }
+    
+
 }
 
 #exam_form{
@@ -442,7 +537,7 @@
 
 .list_exams{
   .tb_list{
-    td.center, th.medium, th.large, th.small{
+    td.center, th.medium, th.large, th.small, td.grade{
       text-align: center;
     }
     th.medium{
@@ -453,6 +548,19 @@
     }
     th.small{
       width: 10%;
+    }
+    td{
+      .title a{
+        color: $table_data_line_title;
+        text-decoration: none;
+      }
+      a.disabled{
+        cursor: default;
+        text-decoration:none;
+        color: $table_data_line_title;
+        padding-left: 0;
+        padding-right: 0;
+      }
     }
   }
 
@@ -529,6 +637,11 @@
     }
   }
   .attempts{
+    .block_content{
+      padding: 5px;
+      color: $color_main;
+    }
+
     a{
       display: block;
       padding: 5px;

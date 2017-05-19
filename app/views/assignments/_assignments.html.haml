@@ -13,15 +13,15 @@
         %tr.assignment.lines
           %td{headers: "description#{type}" }
             %div.title-yellow= assignment.name
-            - if assignment.description.size > 180 
-              .enunciation
+            .description
+              - if assignment.description.size > 180 
                 .enunciation_slice= assignment.description.slice(0..180) << '...'
                 .enunciation_complete= assignment.description
                 .more_or_less
                   %a.enunciation_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);' }= t('assignments.list.more')
                   %a.enunciation_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);' }= t('assignments.list.less')
-            - else
-              = assignment.description
+              - else
+                = assignment.description
             .equivalent
               - unless assignment.eq_name.blank?
                 %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{assignment.academic_tool_id}" }

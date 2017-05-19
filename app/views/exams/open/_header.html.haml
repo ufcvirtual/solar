@@ -2,26 +2,45 @@
   #title
     %h2= @exam.name
     - if @disabled
-      - link = open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: @situation, pdf: 1, :format => "pdf", exam_user_attempt_id: @exam_user_attempt_id)
-      = link_to  content_tag(:i, nil, class: 'icon-printer'), link, id: 'open-exam', :target => "_blank", class: 'ico-e'
-  %ul#exam_status
-    %li#question_count
+      = link_to content_tag(:i, nil, class: 'icon-printer', :'aria-hidden' => 'true'), open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: @situation, pdf: 1, :format => "pdf", exam_user_attempt_id: @exam_user_attempt_id), target: "_blank", class: 'ico-e', :'data-tooltip' => t('exams.print'), :'aria-label' => t('exams.print')
+  %h3#exam_status
+    #question_count
       %i.icon-list
-      %span#order{name: "order"} 
-    %li#total
-      = t('exams.open.to') + @exam.number_questions.to_s + t('exams.open.questions')
+      %span#order{name: "order"}
+      #total
+        = t('exams.open.to') + @exam.number_questions.to_s + t('exams.open.questions')
 
     - unless @disabled || @preview
-      %li#time
-        %i.icon-clock
+      .time
+        %i.icon-clock{:'aria-hidden' => 'true'}
         %span#clock{name: "clock"}
-      %li#time_final
-        = t('exams.open.to') + Time.at(@exam.duration*60).utc.strftime("%H:%M:%S")
+        .time_final
+          = t('exams.open.to') + Time.at(@exam.duration*60).utc.strftime("%H:%M:%S")
 - if @preview
   .form_requirement.blue_warning= t('questions.warning.questions')
 - elsif @disabled
-  .form_requirement.blue_warning= t('questions.warning.corrected')
+  .form_requirement.blue_warning{:'aria-hidden' => 'true'}= t('questions.warning.corrected')
 - else
   .form_requirement.blue_warning= t('questions.warning.save_automatically')
 
   
+:javascript
+  $(function(){
+    $(document).keydown(function (e) {
+      var context = document.activeElement;
+      if(!$("input").is(":focus")){
+        if (e.which === 97) {
+          $('#exam_status #order').attr("tabindex", "0");
+          $('#exam_status #order').focus();
+        }
+        if (e.which === 98) { 
+          $('#exam_status #order').attr("tabindex", "0");
+          $('#exam_status #order').focus();
+        }
+        if (e.which === 99) { 
+          $('.questions h3').attr("tabindex", "0");
+          $('.questions h3').focus();
+        }
+      }  
+    });
+  });

@@ -39,7 +39,9 @@ class PostsController < ApplicationController
         p['type'] ||= "history"
         p['date'] = DateTime.parse(p['date']) if params[:format] == "json" && p.include?('date')
         @posts    = @discussion.posts_not_limit(p, @allocation_tags).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
-      else
+      elsif (@display_mode == 'user' )
+        @posts = @discussion.posts_by_allocation_tags_ids_user(@allocation_tags, current_user.id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
+      else  
         @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
       end
       total_itens = @discussion.discussion_posts_count(@display_mode == "list", @allocation_tags).to_s
@@ -74,6 +76,7 @@ class PostsController < ApplicationController
     else
       @user = User.find(params[:user_id])
       @discussion = Discussion.find(params[:discussion_id])
+      @score_type = params[:score_type]
 
       @allocation_tags = AllocationTag.find(at = active_tab[:url][:allocation_tag_id]).related
       raise CanCan::AccessDenied if params[:user_id].to_i != current_user.id && !AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)

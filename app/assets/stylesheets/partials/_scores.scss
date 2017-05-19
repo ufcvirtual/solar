@@ -344,6 +344,16 @@ tbody{
   }
 }
 
+.tools table{
+  a.disabled{
+    cursor: default;
+    text-decoration:none;
+    color: $table_data_line_title;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 #history-body {
   table {
     thead{
@@ -369,6 +379,4 @@ tbody{
     }
   }
 }
-
-
 

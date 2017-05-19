@@ -1,24 +1,25 @@
 .show_exam
-  %h1#lightBoxDialogTitle= @exam.name
+  %h1#lightBoxDialogTitle= t('.title', exam: @exam.name)
 
   .attempts.block_wrapper
     - if @ac.frequency
       .block_title
         %h2= t('.frequency')
       .block_content
-        = link_to t('.working_hours', wh: @acu.try(:working_hours)), '#', class: 'no_pointer'
+        = t('.working_hours', wh: @acu.try(:working_hours))
 
     - if @exam.attempts_correction == Exam::AVERAGE
       .block_title
         %h2= t('.average', grade: @grade)
       .block_content
-        - @attempts.each_with_index do |attempt, idx|
-          = link_to_function t('.attempt', attempt: idx+1), "show_attempt(#{attempt.id})", class: "#{idx == 0 ? 'active' : ''}", id: "a_#{attempt.id}"
+        %ul
+          - @attempts.each_with_index do |attempt, idx|
+            %li= link_to_function t('.attempt', attempt: idx+1), "show_attempt(#{attempt.id})", class: "#{idx == 0 ? 'active' : ''}", id: "a_#{attempt.id}", :'aria-label' => t('.view_attempt', attempt: t('.attempt', attempt: idx+1)) + (idx == 0 ? t('.current') : ''), onkeydown: 'click_on_keypress(event, this);'
     - else
       .block_title
         %h2= t('.grade_without_number')
       .block_content
-        = link_to t('.grade', grade: @grade), '#', class: 'no_pointer'
+        = t('.grade', grade: @grade)
 
   .info.block_wrapper
     .block_title
@@ -37,19 +38,19 @@
                   %span.label_info= @exam.number_questions
                 .input
                   = label_tag t(".start_date"), nil, class: "form_label"
-                  %span.label_info= l(attempt.start, format: :at_date)
+                  %time.label_info{datetime: l(attempt.start, format: :at_date)}= l(attempt.start, format: :at_date)
 
                 .input
                   = label_tag t(".end_date"), nil, class: "form_label"
-                  %span.label_info= l(attempt.end, format: :at_date) rescue ''
+                  %time.label_info{datetime: (l(attempt.end, format: :at_date) rescue '')}= l(attempt.end, format: :at_date) rescue ''
 
                 .input
                   = label_tag t(".average_time"), nil, class: "form_label"
-                  %span.label_info= Time.at(total_time/@exam.number_questions).utc.strftime("%H:%M:%S")
+                  %time.label_info{datetime: Time.at(total_time/@exam.number_questions).utc.strftime("%H:%M:%S")}= Time.at(total_time/@exam.number_questions).utc.strftime("%H:%M:%S")
 
                 .input
                   = label_tag t(".exam_time"), nil, class: "form_label"
-                  %span.label_info= Time.at(total_time).utc.strftime("%H:%M:%S")
+                  %time.label_info{datetime: Time.at(total_time).utc.strftime("%H:%M:%S")}= Time.at(total_time).utc.strftime("%H:%M:%S")
 
                 .input
                   = label_tag t(".punctuation"), nil, class: "form_label"
@@ -68,19 +69,20 @@
 
               .input
                 = label_tag t(".start_date"), nil, class: "form_label"
-                %span.label_info= l(@attempt.start, format: :at_date)
+                %time.label_info{datetime: l(@attempt.start, format: :at_date)}= l(@attempt.start, format: :at_date)
 
               .input
                 = label_tag t(".end_date"), nil, class: "form_label"
-                %span.label_info= l(@attempt.end, format: :at_date) rescue ''
+                - unless @attempt.try(:end).blank? 
+                  %time.label_info{datetime: l(@attempt.try(:end), format: :at_date)}= l(@attempt.try(:end), format: :at_date) rescue ''
 
               .input
                 = label_tag t(".average_time"), nil, class: "form_label"
-                %span.label_info= Time.at(total_time/@exam.number_questions).utc.strftime("%H:%M:%S")
+                %time.label_info{datetime: Time.at(total_time/@exam.number_questions).utc.strftime("%H:%M:%S")}= Time.at(total_time/@exam.number_questions).utc.strftime("%H:%M:%S")
 
               .input
                 = label_tag t(".exam_time"), nil, class: "form_label"
-                %span.label_info= Time.at(total_time).utc.strftime("%H:%M:%S")
+                %time.label_info{datetime: Time.at(total_time).utc.strftime("%H:%M:%S")}= Time.at(total_time).utc.strftime("%H:%M:%S")
 
               .input
                 = label_tag t(".punctuation"), nil, class: "form_label"
@@ -102,6 +104,8 @@
     $('.attempts a#a_'+id).addClass('active');
     $('.info .attempt').addClass('invisible');
     $('.info .attempt#'+id).removeClass('invisible');
+
+    focus_element($('.info.block_wrapper h2:last'));
   }
 
   function finish_evaluation(btn){

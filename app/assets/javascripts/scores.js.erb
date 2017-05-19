@@ -81,11 +81,6 @@ $(function(){
       $('.'+$(this).val()).addClass('invisible');
    });
 
-  $(".expand, .compress").click(function(){
-    $(this).parent().hide();
-    $($(this).parent().siblings()[0]).show();
-  });
-
   $('[data-div]').click(function(event){
     var attributeValue = $(this).attr('data-div');
     var $elementToReceiveFocus = $(attributeValue).children().first();
@@ -97,6 +92,20 @@ $(function(){
 
   $("[data-div='.tb_list_students']").click(function(event){
     focus_element($(".tb_list_students"));
+  });
+
+  $(".description_more").click(function(){
+    $(".description_slice, .description_more", $(this).parent().parent()).css("display", "none");
+    $(".description_complete, .description_less", $(this).parent().parent()).css("display", "block");
+    focus_element($(".description_complete", $(this).parent().parent()));
+    return false;
+  });
+
+  $(".description_less").click(function(){
+    $(".description_slice, .description_more", $(this).parent().parent()).css("display", "block");
+    $(".description_complete, .description_less", $(this).parent().parent()).css("display", "none");
+    focus_element($(".description_slice", $(this).parent().parent()));
+    return false;
   });
 
 });

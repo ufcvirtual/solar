@@ -33,10 +33,14 @@
                   - else
                     .title= link_to webconference.name, '#', {disabled: true, class: 'disabled', :'aria-label' => t('webconferences.index.access_web', web: webconference.name) + t(:disabled), onclick: 'return false;'}
                   .description
-                    .minimun= sanitize(truncate webconference.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
-                    .complete.invisible
-                      = webconference.description
-                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    - if webconference.description.size > 80
+                      .description_slice= raw webconference.description.slice(0..80) << "..."
+                      .description_complete= raw webconference.description
+                      .more_or_less
+                        %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: webconference.name) }= t('common_between_pages.more')
+                        %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: webconference.name)}= t('common_between_pages.less')
+                    - else
+                      = raw webconference.description
                   .equivalent
                     - unless webconference.eq_name.blank?
                       %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{webconference.id}", onkeydown: 'click_on_keypress(event, this);' }
@@ -97,10 +101,14 @@
                   - else
                     .title= link_to webconference.name, '#', {disabled: true, class: 'disabled', :'aria-label' => t('webconferences.index.access_web', web: webconference.name) + t(:disabled), onclick: 'return false;'}
                   .description
-                    .minimun= sanitize(truncate webconference.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
-                    .complete.invisible
-                      = webconference.description
-                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    - if webconference.description.size > 80
+                      .description_slice= raw webconference.description.slice(0..80) << "..."
+                      .description_complete= raw webconference.description
+                      .more_or_less
+                        %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: webconference.name) }= t('common_between_pages.more')
+                        %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: webconference.name)}= t('common_between_pages.less')
+                    - else
+                      = raw webconference.description
                   .equivalent
                     - unless webconference.eq_name.blank?
                       %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{webconference.id}", onkeydown: 'click_on_keypress(event, this);' }
@@ -157,10 +165,14 @@
                   - else
                     .title= link_to webconference.name, '#', {disabled: true, class: 'disabled', :'aria-label' => t('webconferences.index.access_web', web: webconference.name) + t(:disabled), onclick: 'return false;'}
                   .description
-                    .minimun= sanitize(truncate webconference.description, length: 100, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
-                    .complete.invisible
-                      = webconference.description
-                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                    - if webconference.description.size > 80
+                      .description_slice= raw webconference.description.slice(0..80) << "..."
+                      .description_complete= raw webconference.description
+                      .more_or_less
+                        %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: webconference.name) }= t('common_between_pages.more')
+                        %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: webconference.name)}= t('common_between_pages.less')
+                    - else
+                      = raw webconference.description
                   .equivalent
                     - unless webconference.eq_name.blank?
                       %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{webconference.id}", onkeydown: 'click_on_keypress(event, this);' }

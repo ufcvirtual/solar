@@ -64,8 +64,6 @@
 
   function finish_evaluation(btn){
     var form = $(btn).parents('form:first');
-    console.log(form);
-    console.log(form.attr('action'));
     $.put(form.attr('action'), form.serialize(), function(data){
       flash_message(data.notice, 'notice');
       var td = form.find('td.evaluation');

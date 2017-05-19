@@ -5,11 +5,10 @@ function check(element){
 
 function handleEnterKey(e, element){
   var key = e.keyCode || e.which;
-  if (key == 13 || key == 32){
+  if (key == 13 || key == 32)
     handleMediaErrorFirefox(element);
-  }else{
+  else
     return true;
-  }
 }
 
 function handleMediaError(e) {
@@ -68,10 +67,12 @@ function speed_control_audio(valor){
 } 
 
 function show_audio_description(element){
-  var div = $($(element).parent().find('#text'));
+  var div = $($(element).parent().find('.text'));
+
   div.stop().slideToggle();
-  $($(element).parent().find('.icon-arrow-down-triangle:first').toggleClass('invisible'));
-  $($(element).parent().find('.icon-arrow-up-triangle').toggleClass('invisible'));
-  $($(element).parent().find('.hide_questions_description_ico').toggleClass('invisible'));
-  $($(element).parent().find('.show_questions_description_ico:first').toggleClass('invisible'));
+  $('.show_questions_description_ico', $(element).parent()).each(function(){$(this).toggleClass('invisible')});
+  if(div.is(':visible'))
+    focus_element(div);
+  else
+    focus_element($('.show_questions_description_ico:visible', $(element).parent()));
 } 

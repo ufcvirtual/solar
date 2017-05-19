@@ -127,6 +127,13 @@ class Discussion < Event
     (opt[:grandparent] ? posts_list.map(&:grandparent).uniq.compact : posts_list.compact.uniq)
   end
 
+  def posts_by_allocation_tags_ids_user(allocation_tags_ids = nil, user_id= nil, opt = { grandparent: true, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'DISTINCT discussion_posts.id, discussion_posts.*' })
+    allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids).map(&:related).flatten.compact.uniq
+    posts_list = discussion_posts.where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
+    posts_list = posts_list.joins(academic_allocation: :allocation_tag).where(user_id: user_id, allocation_tags: { id: allocation_tags_ids }) unless allocation_tags_ids.blank?
+    (opt[:grandparent] ? posts_list.map(&:grandparent).uniq.compact : posts_list.compact.uniq)
+  end
+
   def resume(allocation_tags_ids = nil)
     {
       id: id,

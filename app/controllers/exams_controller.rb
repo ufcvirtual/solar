@@ -111,6 +111,15 @@ class ExamsController < ApplicationController
     raise 'time' unless @exam.on_going?
     raise 'attempt' unless @acu.has_attempt(@exam)
     @total_attempts  = @acu.count_attempts rescue 0
+
+    @shortcut = Hash.new
+    @shortcut[t("shortcut.nextq")] = t("questions.shortcut.shortcut_next")
+    @shortcut[t("shortcut.previousq")] = t("questions.shortcut.shortcut_previous")
+    @shortcut[t("shortcut.enunciation")] = t("questions.shortcut.shortcut_enunciation")
+    @shortcut[t("shortcut.first_item")] = t("questions.shortcut.shortcut_items")
+    @shortcut[t("shortcut.timeq")] = t("questions.shortcut.shortcut_time")
+    @shortcut[t("shortcut.questions")] = t("questions.shortcut.shortcut_questions")
+    @shortcut[t("shortcut.audio")] = t("questions.shortcut.shortcut_audio")
     
     if (last_attempt.try(:uninterrupted_or_ended, @exam)) && @total_attempts == @exam.attempts
       redirect_to result_user_exam_path(@exam)
@@ -140,7 +149,7 @@ class ExamsController < ApplicationController
       @exam_user_attempt_id = params[:exam_user_attempt_id]
       @disabled = true
 
-      @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
+      @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.blank?
       if(mod_correct_exam != 1)
         @exam_user_attempt_id = Exam.get_id_exam_user_attempt(mod_correct_exam, @acu.id)
       end  
@@ -156,12 +165,13 @@ class ExamsController < ApplicationController
           @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order) unless @exam.nil?
           @pdf = 1
 
+
           render pdf: t('exams.result_exam.title_pdf', name: @exam.name),
              template: 'exams/result_exam.html.haml',
              layout: false,
              disposition: 'attachment'
 
-        else  
+        else
          render :open 
         end
       end 

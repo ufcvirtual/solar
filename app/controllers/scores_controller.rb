@@ -297,13 +297,13 @@ class ScoresController < ApplicationController
           render json: { url: student_assignment_path(tool_id, student_id: params[:user_id], group_id: params[:group_id]), method: :get }
         end
       when 'ChatRoom'
-        render json: { url: user_messages_chat_room_path(tool_id, user_id: params[:user_id]) }
+        render json: { url: user_messages_chat_room_path(tool_id, user_id: params[:user_id], score_type: params[:score_type], situation: params[:situation]) }
       when 'Webconference'
-        render json: { url: user_access_webconference_path(tool_id, user_id: params[:user_id]) }
+        render json: { url: user_access_webconference_path(tool_id, user_id: params[:user_id], score_type: params[:score_type], situation: params[:situation]) }
       when 'Discussion'
-        render json: { url: user_discussion_posts_path(discussion_id: tool_id, user_id: params[:user_id]) }
+        render json: { url: user_discussion_posts_path(discussion_id: tool_id, user_id: params[:user_id], score_type: params[:score_type], situation: params[:situation]) }
       when 'ScheduleEvent'
-        render json: { url: evaluate_user_schedule_event_path(tool_id, user_id: params[:user_id]) }
+        render json: { url: evaluate_user_schedule_event_path(tool_id, user_id: params[:user_id], score_type: params[:score_type], situation: params[:situation]) }
       when 'Exam'
         render json: { url: calcule_grade_exam_path(tool_id), method: :put }
       end
