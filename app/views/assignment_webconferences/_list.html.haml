@@ -6,6 +6,12 @@
     - if @own_assignment
       = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_awebconference(this)', :'data-url' => new_assignment_webconference_path(assignment_id: @assignment.id), class: "btn btn_main link_new_awebconference #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.new'), :'aria-label' => t(".new") + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);', id: 'add_awebconference'
 %div.title-warning
+  %div.information_title
+    = link_to_function raw(t('webconferences.index.information_title')), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
+    %i.icon-arrow-down-triangle
+    %i.icon-arrow-up-triangle.invisible
+  %div.information.invisible{tabindex: 0}= raw t('webconferences.index.information')
+%div.title-warning
   %div.accessibility_title
     = link_to_function raw(t('webconferences.index.accessibility_title')), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
     %i.icon-arrow-down-triangle

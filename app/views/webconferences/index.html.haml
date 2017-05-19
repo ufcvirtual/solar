@@ -1,6 +1,12 @@
 .block_wrapper
   - unless @webconferences.blank?
     %div.title-warning
+      %div.information_title
+        = link_to_function raw(t('.information_title')), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
+        %i.icon-arrow-down-triangle
+        %i.icon-arrow-up-triangle.invisible
+      %div.information.invisible{tabindex: 0}= raw t('.information')
+    %div.title-warning
       %div.accessibility_title
         = link_to_function raw(t('.accessibility_title')), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
         %i.icon-arrow-down-triangle
@@ -120,14 +126,14 @@
   }
 
 
-  $(".accessibility").on("keydown", function(event){
-    var keynum = event.which || event.keyCode;
+  // $(".accessibility").on("keydown", function(event){
+  //   var keynum = event.which || event.keyCode;
 
-    if ( keynum == 27 ) {
-      $(this).addClass('invisible');
-      $(this).siblings().find('i.icon-arrow-up-triangle').removeClass('invisible');
-      $(this).siblings().find('i.icon-arrow-down-triangle').addClass('invisible');
-    }
+  //   if ( keynum == 27 ) {
+  //     $(this).addClass('invisible');
+  //     $(this).siblings().find('i.icon-arrow-up-triangle').removeClass('invisible');
+  //     $(this).siblings().find('i.icon-arrow-down-triangle').addClass('invisible');
+  //   }
 
-    $(".accessibility_title").find("a").focus();
-  });
+  //   $(".accessibility_title").find("a").focus();
+  // });
