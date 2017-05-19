@@ -11,7 +11,7 @@
 
 :javascript
 
-  jQuery(function($){
+  $(function(){
 
     $.fancybox.update();
 
@@ -23,15 +23,17 @@
 
     $('.content_exam').html("#{escape_javascript( render 'exams/open/content', { preview: @preview } )}");
 
-    init_chronometer(#{@exam_questions.current_page}, #{@exam.number_questions});
+    if('#{@preview}' != 'true')
+      init_chronometer(#{@exam_questions.current_page}, #{@exam.number_questions});
 
     $(".content_exam").unbind('click').on("click", ".pagination a",
       function(){
-      stop_save_chronometer(#{@exam_responses.try(:duration)});
+      if("#{@preview}"!="true" && "#{@disabled}" != "true")
+        stop_save_chronometer(#{@exam_responses.try(:duration)});
       var url = this.href;
       $('.content_exam').load(url, function(){
         $('.content_exam').ready(function(){
-          focus_on_fancybox_element('tr.question');
+          focus_on_fancybox_element('h3.question');
         });
       });
       return false;
@@ -44,7 +46,7 @@
       height: 'auto',
       maxHeight: '70%',
       dont_focus_back: true,
-      element_selector: 'tr.question'
+      element_selector: 'h3.question'
     });
 
     if("#{@preview}"!="true"){
