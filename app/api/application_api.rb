@@ -33,7 +33,7 @@ class ApplicationAPI < Grape::API
     end
   end
 
-  before { Rails.logger.info "[API] [INFO] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{request.headers['Solar']}] params: #{ActionController::Parameters.new(params).except("route_info", "access_token").as_json}" }
+  before { Rails.logger.info "[API] [INFO] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{request.headers['HTTP_CLIENT_IP']}] params: #{ActionController::Parameters.new(params).except("route_info", "access_token").as_json}" }
 
   helpers Helpers::V1::All
   mount V1::Base
