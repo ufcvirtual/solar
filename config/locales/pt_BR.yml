@@ -581,7 +581,7 @@ pt_BR:
 
   all: "Todos"
   home: "Home"
-  of: "de"
+  of: " de "
   required_fields: "* campo(s) obrigatório(s)"
   object_not_found: "Objeto não encontrado"
   search: "Filtrar"
@@ -798,7 +798,8 @@ pt_BR:
   date_name: Data
   help: "Ajuda"
   new_window: " (Este link abrirá uma nova janela)"
-  audio_suggestions: 'Sugestão: navegar com TAB'
+  audio_suggestions: "Sugestão: aperte U e navegue entre os áudios usando o TAB"
+  audio_suggestions_item: "Sugestão: aperte TAB para acessar o áudio"
   brasil: Brasil
   services: Serviços
   participate: Participe
@@ -1330,8 +1331,8 @@ pt_BR:
       compress_description: Comprimir descrição
       discussions: Fóruns
       posts: Postagens
-      more: "Mais informações sobre o enunciado do fórun %{forum}"
-      less: "Menos informações sobre o enunciado do fórun %{forum}"
+      more: "Ver descrição completa de %{forum}"
+      less: "Ver descrição resumida de %{forum}"
       summary_evaluative: "Está tabela contém todos os fóruns avaliativas."
       summary_frequency: "Está tabela contém todos os fóruns de frequência."
       summary_notevaluative: "Está tabela contém todos os fóruns não avaliativas."
@@ -3272,6 +3273,13 @@ pt_BR:
     shortcut_link: "Abrir menu de atalhos [4]"
     no_shortcuts: "Sem atalhos"
     close: "Fechar"
+    nextq: Próxima questão
+    previousq: Questão anterior
+    enunciation: Foco no enunciado
+    first_item: Foco no primeiro item
+    timeq: Foco no tempo
+    questions: Foco na quantidade de questões
+    audio: Foco no primeiro áudio do enunciado
 
   scores:
     index:
@@ -3576,6 +3584,11 @@ pt_BR:
     none: "Nenhuma prova cadastrada"
     restrict: "Aluno em prova: Conteúdo não permitido"
     percentage: "<b>%{percent}% da prova feito</b>"
+    print: Imprimir resultado
+    selected_correctly: Item selecionado corretamente
+    selected_incorrectly: Item selecionado incorretamente
+    not_selected_incorrectly: Item não selecionado incorretamente
+    comment: Comentário sobre o item
     list:
       new_exam: Nova Prova
       edit_exam: Editar Prova
@@ -3612,12 +3625,14 @@ pt_BR:
       min: min
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
-      more: Mais
-      less: Menos
       result: 'Resultado '
       mirror_results: ' Correção '
+      result_alt: 'Acessar resultado na prova %{exam}'
+      mirror_results_alt: ' Acessar correção da prova %{exam} '
       result_pdf: Correção em PDF
       calculate: Calcular Nota
+      summary: 'Tabela cujo conteúdo há acesso à todas as provas abertas para realização e informações de todas as provas, abertas ou não, tais como: data e horário, duração máxima, situação, se é avaliativa ou de frequência e a nota do aluno ou sua carga horária'
+      not_evaluated: Não avaliada
     situation:
       not_started: Não iniciada
       to_answer: A responder
@@ -3670,8 +3685,10 @@ pt_BR:
       uninterrupted__tooltip: 'A prova pode ser interrompida e continuada, quantas vezes forem necessárias, desde que esteja no período de disponibilidade. Provas onde essa opção não está disponível, ao ser interrompida, a tentativa atual será finalizada.'
       button: Iniciar Prova
       continue: Continuar Prova
-      correction: 'A prova será corrigida automaticamente pelo Solar 2.0, portanto a nota será obtida através da soma do resultado do aluno em cada questão, as quais possuem suas respectivas pontuações. <br/> A seguinte estratégia será utilizada: <br/> <b> Questões de única escolha: </b> O aluno receberá a pontuação total apenas se selecionar a única opção correta. <br/> <b> Questões de V ou F: </b> Para cada item correto, o aluno receberá a pontuação equivalente ao item. Cada item tem um valor igual ao obtido pela divisão do valor total da questão pela quantidade de itens. </br> <b> Questões de múltipla escolha: </b> O aluno receberá a pontuação total apenas se selecionar todos os itens corretos. Para cada item incorreto selecionado, o aluno perderá a pontuação de um item correto. Cada item tem um valor igual ao obtido pela divisão do valor total da questão pela quantidade de itens corretos. <br/>'
+      correction: '<p>A prova será corrigida automaticamente pelo Solar 2.0, portanto a nota será obtida através da soma do resultado do aluno em cada questão, as quais possuem suas respectivas pontuações.</p><p> A seguinte estratégia será utilizada: </p> <ul><li><strong> Questões de única escolha: </strong> O aluno receberá a pontuação total apenas se selecionar a única opção correta.</li> <li><strong> Questões de V ou F: </strong> Para cada item correto, o aluno receberá a pontuação equivalente ao item. Cada item tem um valor igual ao obtido pela divisão do valor total da questão pela quantidade de itens. </li> <li><strong> Questões de múltipla escolha: </strong> O aluno receberá a pontuação total apenas se selecionar todos os itens corretos. Para cada item incorreto selecionado, o aluno perderá a pontuação de um item correto. Cada item tem um valor igual ao obtido pela divisão do valor total da questão pela quantidade de itens corretos. </li>'
       correction_title: 'Como será feita a correção da prova?'
+      summary: Tabela com informações gerais a respeito da prova para confirmação do aluno antes de iniciá-la. Informações como tempo restante, quantidade de questões, número de tentativas realizadas e totais, se a prova é ininterrupta e se bloqueia o acesso do aluno aos demais conteúdos do Solar durante sua execução.
+      shortcuts_title: Atalhos da tela de prova
     open:
       to: " de "
       questions: " questões"
@@ -3681,6 +3698,13 @@ pt_BR:
       anull: " (Questão Anulada)"
       scores: '( %{score} pontos )'
       number_question: 'Prova com %{no_question} questões'
+      image: "Imagem %{alt}."
+      legend: " Legenda: %{legend}"
+      image_item: "Imagem do item %{item}: %{alt}."
+      audio: "Legenda do áudio: %{alt}."
+      audio_item: "Áudio do item %{item}."
+      audio2: "Áudio %{desc}."
+      audio_text: "Versão textual do áudio: %{desc}."
     finish:
       confirm: Tem certeza que deseja finalizar a prova?
     summary:
@@ -3747,7 +3771,10 @@ pt_BR:
       to: "%{from} de %{to}"
       student: 'Aluno: '
       grade: 'Nota: %{grade}'
+      current: (Visualização atual)
       grade_without_number: 'Nota'
+      title: Resultado da prova %{exam}
+      view_attempt: Visualizar %{attempt}
       attempt: 'Tentativa %{attempt}'
       average: 'Média: %{grade}'
       result: Resultado
@@ -3771,8 +3798,9 @@ pt_BR:
       exam: 'Prova: '
       title_pdf: 'Correção da prova %{name}'
     open_result:
-      name: Correções
+      name: Visualizar correções
       grade: 'Nota: '
+      link: "Tentativa %{number} (Nota: %{grade})"
     warning:
       title: '<b>Importante: </b>Não é possível criar, importar ou remover questões em provas publicadas'
   score: 'Pontuação '
@@ -3798,6 +3826,21 @@ pt_BR:
       item_audio_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 10MB."
       item_image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
   questions:
+    shortcut:
+      shortcut_time: [T]
+      time: 84
+      shortcut_questions: [Q]
+      questions: 81
+      shortcut_enunciation: [E]
+      enunciation: 69
+      shortcut_items: [I]
+      items: 73
+      shortcut_next: [P]
+      next: 80
+      shortcut_previous: [A]
+      previous: 65
+      shortcut_audio: [U]
+      audio: 85
     index:
       title: Banco de questões (%{count} encontradas)
       new: Nova questão
@@ -3832,9 +3875,11 @@ pt_BR:
       none: Nenhuma questão encontrada
       order: Ordem
       control_audio: 'Velocidade: '
-      up_speed: 'Aumenta a velocidade de reprodução do Áudio'
+      up_speed: 'Aumentar a velocidade de reprodução do Áudio'
       up_down: 'Diminuir a velocidade de reprodução do Áudio'
       show: "Versão textual"
+      show_alt: Expandir versão textual do áudio
+      hide_alt: Ocultar versão textual do áudio
     question:
       preview: Visualização
       public: Pública
@@ -3843,6 +3888,7 @@ pt_BR:
       compress_enunciation: Comprimir enunciado
       has_items: Possui %{count} itens
       has_images: Possui imagens
+      has_audios: Possui áudios
       images: Imagens
     types:
       unique_choice: Escolha única
@@ -4397,3 +4443,9 @@ pt_BR:
     click_to_close: (clique para fechar)
     open: (Abrirá janela modal)
     minimize: "Minimizar janela modal"
+
+  common_between_pages:
+    more: 'Mais'
+    less: 'Menos'
+    more_alt: Ver descrição completa de %{tool}
+    less_alt: Ver descrição resumida de %{tool}
