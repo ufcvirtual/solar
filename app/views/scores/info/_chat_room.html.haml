@@ -29,14 +29,16 @@
                   - if chat.opened == 't'
                     = link_to chat.name, access_chat_room_path(chat.academic_tool_id, allocation_id: @alloc, academic_allocation_id: chat.id), {class: 'link_content fancybox.iframe', target: '_blank', onkeydown: 'click_on_keypress(event, this);' }
                   - else
-                    = link_to chat.name, "#", disabled: true, onclick: 'return false', :'aria-label' => t('chat_rooms.chats.chat_disabled', chat: chat.name)
+                    .title= link_to chat.name, "#", disabled: true, onclick: 'return false', :'aria-label' => t('chat_rooms.chats.chat_disabled', chat: chat.name), class: 'disabled'
                   .description
-                    .enunciation_slice= chat.description.truncate(180)
-                    .enunciation_complete= chat.description
-                    - if chat.description.size > 180
+                    - if chat.description.size > 80
+                      .description_slice= raw chat.description.slice(0..80) << "..."
+                      .description_complete= raw chat.description
                       .more_or_less
-                        %a.enunciation_more{ href: '#', :'aria-label' => t("chat_rooms.index.more", chat: chat.name), onkeydown: 'click_on_keypress(event, this);' }= t('chat_rooms.chats.more')
-                        %a.enunciation_less{ href: '#', :'aria-label' => t("chat_rooms.index.less", chat: chat.name), onkeydown: 'click_on_keypress(event, this);' }= t('chat_rooms.chats.less')
+                        %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: chat.name) }= t('common_between_pages.more')
+                        %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: chat.name)}= t('common_between_pages.less')
+                    - else
+                      = raw chat.description
                   .equivalent
                     - unless chat.eq_name.blank?
                       %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{chat.id}", onkeydown: 'click_on_keypress(event, this);' }
@@ -101,14 +103,16 @@
                   - if chat.opened == 't'
                     = link_to chat.name, access_chat_room_path(chat.academic_tool_id, allocation_id: @alloc, academic_allocation_id: chat.id), {class: 'link_content fancybox.iframe', target: '_blank', onkeydown: 'click_on_keypress(event, this);' }
                   - else
-                    = link_to chat.name, "#", disabled: true, onclick: 'return false', :'aria-label' => t('chat_rooms.chats.chat_disabled', chat: chat.name)
+                    .title= link_to chat.name, "#", disabled: true, onclick: 'return false', :'aria-label' => t('chat_rooms.chats.chat_disabled', chat: chat.name), class: 'disabled'
                   .description
-                    .enunciation_slice= chat.description.truncate(180)
-                    .enunciation_complete= chat.description
-                    - if chat.description.size > 180
+                    - if chat.description.size > 80
+                      .description_slice= raw chat.description.slice(0..80) << "..."
+                      .description_complete= raw chat.description
                       .more_or_less
-                        %a.enunciation_more{ href: '#', :'aria-label' => t("chat_rooms.index.more", chat: chat.name), onkeydown: 'click_on_keypress(event, this);' }= t('chat_rooms.chats.more')
-                        %a.enunciation_less{ href: '#', :'aria-label' => t("chat_rooms.index.less", chat: chat.name), onkeydown: 'click_on_keypress(event, this);' }= t('chat_rooms.chats.less')
+                        %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: chat.name) }= t('common_between_pages.more')
+                        %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: chat.name)}= t('common_between_pages.less')
+                    - else
+                      = raw chat.description
                   .equivalent
                     - unless chat.eq_name.blank?
                       %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{chat.id}", onkeydown: 'click_on_keypress(event, this);' }
@@ -168,14 +172,16 @@
                   - if chat.opened == 't'
                     = link_to chat.name, access_chat_room_path(chat.academic_tool_id, allocation_id: @alloc, academic_allocation_id: chat.id), {class: 'link_content fancybox.iframe', target: '_blank', onkeydown: 'click_on_keypress(event, this);' }
                   - else
-                    = link_to chat.name, "#", disabled: true, onclick: 'return false', :'aria-label' => t('chat_rooms.chats.chat_disabled', chat: chat.name)
+                    .title= link_to chat.name, "#", disabled: true, onclick: 'return false', :'aria-label' => t('chat_rooms.chats.chat_disabled', chat: chat.name), class: 'disabled'
                   .description
-                    .enunciation_slice= chat.description.truncate(180)
-                    .enunciation_complete= chat.description
-                    - if chat.description.size > 180
+                    - if chat.description.size > 80
+                      .description_slice= raw chat.description.slice(0..80) << "..."
+                      .description_complete= raw chat.description
                       .more_or_less
-                        %a.enunciation_more{ href: '#', :'aria-label' => t("chat_rooms.index.more", chat: chat.name), onkeydown: 'click_on_keypress(event, this);' }= t('chat_rooms.chats.more')
-                        %a.enunciation_less{ href: '#', :'aria-label' => t("chat_rooms.index.less", chat: chat.name), onkeydown: 'click_on_keypress(event, this);' }= t('chat_rooms.chats.less')
+                        %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: chat.name) }= t('common_between_pages.more')
+                        %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: chat.name)}= t('common_between_pages.less')
+                    - else
+                      = raw chat.description
                   .equivalent
                     - unless chat.eq_name.blank?
                       %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{chat.id}", onkeydown: 'click_on_keypress(event, this);' }
