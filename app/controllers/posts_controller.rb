@@ -76,6 +76,7 @@ class PostsController < ApplicationController
     else
       @user = User.find(params[:user_id])
       @discussion = Discussion.find(params[:discussion_id])
+      @score_type = params[:score_type]
 
       @allocation_tags = AllocationTag.find(at = active_tab[:url][:allocation_tag_id]).related
       raise CanCan::AccessDenied if params[:user_id].to_i != current_user.id && !AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
