@@ -1,5 +1,6 @@
 - has_items   = (question.respond_to?(:count_items)  ? !question.count_items.to_i.zero? : question.question_items.any?)
 - has_images  = (question.respond_to?(:has_images)   ? (question.has_images == 't') : question.question_images.any?)
+- has_audios  = (question.respond_to?(:has_audios)   ? (question.has_audios == 't') : question.question_audios.any?)
 - items       = (question.respond_to?(:count_items)  ? question.count_items : question.question_items.size)
 - labels      = (question.respond_to?(:labels)       ? question.labels.delete('NULL').split(',') : question.question_labels.map(&:name))
 - author_name = (question.respond_to?(:author_name)) ? question.author_name : question.user.name
@@ -21,6 +22,8 @@
           = content_tag(:i, nil, class: 'icon-list', :'data-tooltip' => t('questions.question.has_items', count: items))
         - if has_images
           = content_tag(:i, nil, class: 'icon-pictures', :'data-tooltip' => t('questions.question.has_images'))
+        - if has_audios
+          = content_tag(:i, nil, class: 'icon-music', :'data-tooltip' => t('questions.question.has_audios'))
       .description
         .minimun
           - if question.enunciation.size > 100
