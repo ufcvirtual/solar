@@ -242,6 +242,7 @@ td.assignment_without_group a
   }
   .block_user{
     background-color: $event_assignment_background_portfolio;
+    color: $exclusive_font_color;
     font-size: 10pt;
   }
 
@@ -257,6 +258,7 @@ td.assignment_without_group a
     float: left;
     font-weight: bold;
     margin-right: 7px;
+    color: $exclusive_font_color; 
   }
 }
 
