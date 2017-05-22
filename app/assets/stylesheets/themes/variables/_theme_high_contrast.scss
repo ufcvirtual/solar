@@ -219,7 +219,7 @@ $table_period_ended: $high_contrast_font_color;
 
 //speech2text
 $speech2text_color: $high_contrast_background_color;
-$speech2text_hover_color: $high_contrast_background_color;
+$speech2text_hover_color: red;
 
 //semesters
 $semester_color: $high_contrast_font_color;
@@ -427,7 +427,6 @@ $questions_link_color: $complete_border_left_color;
 $info_color: $color_almost_gray;
 $scores_info_img_box_shadow: $portfolio_block_wrapper_groups;
 $block_content_text_background: $contacts_edition_block_content_background;
-$speech2text_hover_color: $btn_caution_color;
 $table_border_color: $step_list_color;
 $table_data_line_title: $score_tbody_link;
 $table_sort_border_color: $step_list_color;
@@ -446,6 +445,3 @@ $color_main_light: $high_contrast_background_color;
 $exclusive_background_color: $high_contrast_background_color;
 $exclusive_font_color: $high_contrast_font_color;
 $exclusive_link_color: $high_contrast_link_color;
-//$exclusive_assigments_color: #C06;
-
-//$test_background_color: false;
