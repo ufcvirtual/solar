@@ -380,3 +380,23 @@ tbody{
   }
 }
 
+#evaluative_exa, #frequency_exa, #notevaluative_exa,
+#evaluative_eve, #frequency_eve, #notevaluative_eve,
+#evaluative_chat, #frequency_chat, #notevaluative_chat,
+#evaluative_dis, #frequency_dis, #notevaluative_dis,
+#evaluative_assig, #frequency_assig, #notevaluative_assig,
+#evaluative_web, #frequency_web, #notevaluative_web,
+#evaluative_all, #frequency_all, #notevaluative_all,
+.public_files_info {
+  table {
+    thead{
+      tr.lines{
+        th {
+          background-color: $exclusive_background_color;
+          color: $exclusive_font_color;
+        }
+      }
+    }
+  }
+}
+
