@@ -61,7 +61,7 @@ module V1
           ScheduleEvent.transaction do
             ScheduleEvent.where(id: params[:ids].split(",")).each do |event|
               event.api = true
-              event.destroy
+              raise event.errors.full_messages unless event.destroy
             end
           end
 
