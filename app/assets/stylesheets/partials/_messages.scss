@@ -261,6 +261,7 @@ table.tb_list.message_div_list{
   }
   label{
     width: auto;
+    color: $message_label_color;
   }
 
   .input{
@@ -481,6 +482,7 @@ ul.files_to_send{
 .message_new_upload{
   label{
     width: 12%;
+    color: $message_label_color;
   }
   .files{
     .file_attached {
