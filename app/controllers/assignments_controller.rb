@@ -89,8 +89,7 @@ class AssignmentsController < ApplicationController
       render :edit
     end
   rescue => error
-    request.format = :json
-    raise error.class
+    render_json_error(error, 'assignments.error')
   end
 
   def destroy

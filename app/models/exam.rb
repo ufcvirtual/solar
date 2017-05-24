@@ -43,7 +43,7 @@ class Exam < Event
         correction_exams(acu.id)
         grade = get_grade(acu.id)
         grade = grade ? grade : 0.00
-        working_hours = (acu.academic_allocation.frequency ? (wh = acu.academic_allocation.max_working_hours) : {})
+        working_hours = (acu.academic_allocation.frequency ? ({working_hours: (wh = acu.academic_allocation.max_working_hours)}) : {})
         acu.update_attributes({grade: (grade > 10 ? 10 : grade.round(2)), status: AcademicAllocationUser::STATUS[:evaluated]}.merge!(working_hours))
         acu.recalculate_final_grade(acu.allocation_tag_id)
         send_result_emails(acu, grade) if result_email
@@ -392,7 +392,7 @@ class Exam < Event
     AcademicAllocationUser.joins("LEFT JOIN academic_allocations ON academic_allocation_users.academic_allocation_id = academic_allocations.id")
                     .joins("LEFT JOIN exams ON exams.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Exam' AND exams.status=TRUE")
                     .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id")
-                    .where("block_content=true AND complete=false AND user_id = ? ", user_id)
+                    .where("block_content=true AND complete=false AND user_id = ?  AND academic_allocation_users.status != 2", user_id)
                     .select("DISTINCT block_content").any?
   end
 

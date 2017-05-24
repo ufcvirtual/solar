@@ -119,6 +119,9 @@
         files: true,
         replace_list: (("#{escape_once(params[:calendar])}" == "") ? $(".list_assignments") : $(".calendar_schedules"))
       });
+      setTimeout(function() {
+        focuInpuErro();
+      }, 700);  
     });
 
     // datepicker //

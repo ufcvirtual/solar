@@ -2,6 +2,9 @@ function save_webconference(){
   $('form#webconference_form').serialize_and_submit({
     replace_list: $('.list_webconferences')
   });
+  setTimeout(function() {
+    focuInpuErro();
+  }, 700);
 }
 
 function access_webconference(obj){
@@ -122,3 +125,4 @@ $(function(){
 
   $(".all_webconferences").nice_checkbox();
 });
+
