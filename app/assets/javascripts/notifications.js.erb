@@ -7,6 +7,9 @@ function save_notification(){
   $('form#notification_form').serialize_and_submit({
     replace_list: $('.list_notifications')
   });
+  setTimeout(function() {
+    focuInpuErro();
+  }, 700);
 }
 
 $(function(){

@@ -37,6 +37,9 @@ $(function(){
     $('#event_form:last').serialize_and_submit({
       replace_list: $(".calendar_schedules")
     });
+    setTimeout(function() {
+      focuInpuErro();
+    }, 700);
   });
 
 });

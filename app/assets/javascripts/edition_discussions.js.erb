@@ -4,6 +4,9 @@ function save_discussion(){
   $('form#discussion_form').serialize_and_submit({
     replace_list: div_to_replace
   });
+  setTimeout(function() {
+    focuInpuErro();
+  }, 700);  
 }
 
 $(function(){

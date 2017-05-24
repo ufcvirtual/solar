@@ -479,4 +479,21 @@ function goOut(element) {
   }
 }
 
-
+function focuInpuErro(){
+  if (typeof($(".error")) !== "undefined") { 
+    var el = $(".error").siblings()[0];
+    var er =$(".error")[0];
+    var text = $(el).text()+': '+$(er).text();
+    if($(el).is(":visible")){
+      $(el).attr("aria-label",text);
+      $(".error").siblings()[0].focus();  
+    }else{
+      if(typeof($("#_continue")) !== "undefined"){
+        $("#_continue").click();
+        $(el).attr("aria-label",text);
+        $(".error").siblings()[0].focus();
+        CKEDITOR.instances['notification_description'].focus();
+      }  
+    }  
+  }
+}

@@ -23,4 +23,7 @@
     $('form#module_form').serialize_and_submit({
       replace_list: $('.list_lessons:last')
     });
+    setTimeout(function() {
+      focuInpuErro();
+    }, 700);
   }

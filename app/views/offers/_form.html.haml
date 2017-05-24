@@ -107,6 +107,9 @@
         replace_list: $("#offers-#{escape_once(@offer.semester_id)}"),
         error_message: 'simple_form.new_offer'
       });
+      setTimeout(function() {
+        focuInpuErro();
+      }, 700);
     });
 
     $('input#have_end_date').click(function(){

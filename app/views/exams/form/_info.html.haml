@@ -20,7 +20,7 @@
 
 .form-actions.right_buttons
   = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
-  = button_to_function t('.continue'), 'go_to_config()', class: 'btn btn_main btn_lightbox', alt: 'continuar', type: 'button'
+  = button_to_function t('.continue'), 'go_to_config()', class: 'btn btn_main btn_lightbox', alt: 'continuar', type: 'button', id: '_continue'
 
 = javascript_include_tag 'ckeditor/init'
 
@@ -82,6 +82,9 @@
     $('form#exam_form').serialize_and_submit({
       replace_list: $('.list_exams:last')
     });
+    setTimeout(function() {
+      focuInpuErro();
+    }, 700);
   }
 
   function go_to_config() {
