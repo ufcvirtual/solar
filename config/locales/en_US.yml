@@ -774,6 +774,7 @@ en_US:
   resume: "Resume"
   semester_date: "Date"
   passing_grade: "Passing Grade"
+  working_hours: "Working Hours"
   error_no_item_selected: No item selected
   curriculum_unit_type_id: Type
   curriculum_unit_new_button: New
