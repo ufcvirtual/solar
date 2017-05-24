@@ -34,23 +34,7 @@
   function finish_evaluation(btn){
     var form = $(btn).parents('form:first');
     $.put(form.attr('action'), form.serialize(), function(data){
-      jQuery.fancybox.close();
-      scoreType = "#{@score_type}";
-      id_elem = "#{@ac.id}_#{@user.id}";
-
-      if(scoreType=='evaluative')
-        grade = $('#academic_allocation_user_grade').val();
-      else
-        grade = $('#academic_allocation_user_working_hours').val();  
- 
-      grad_ = $.isNumeric(grade) ? grade : data.situation;
-
-      $('a#'+id_elem).text(grad_);
-      var td = $('a#'+id_elem).closest('td');
-      td.attr( "class", data.class_td);
-      td.addClass("ScheduleEvent");
-
-      flash_message(data.notice, 'notice');
+      after_evaluate('ScheduleEvent', "#{@score_type}", "#{@ac.id}", "#{@user.id}", data);
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")

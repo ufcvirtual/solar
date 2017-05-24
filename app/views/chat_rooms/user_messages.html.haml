@@ -27,7 +27,8 @@
           = f.input :grade, required: true, as: :float, :step => 0.01, label: t(".grade"), input_html: { value: @acu.try(:grade), min:0, max:10 } if @academic_allocation.evaluative
           = f.input :working_hours, required: true, as: :float, label: t(".frequency"), input_html: { value: @acu.try(:working_hours), min:0, max: @academic_allocation.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@academic_allocation.max_working_hours.to_s ) } if @academic_allocation.frequency
           
-          = link_to t(:back), messages_chat_room_path(@chat_room), class: 'btn back_chat_history'
+          - if @back
+            = link_to t(:back), messages_chat_room_path(@chat_room), class: 'btn back_chat_history'
           = link_to_function t(:save), 'finish_evaluation(this)', class: 'btn btn_main'
 
 
@@ -35,23 +36,10 @@
   function finish_evaluation(btn){
     var form = $(btn).parents('form:first');
     $.put(form.attr('action'), form.serialize(), function(data){
-      jQuery.fancybox.close();
-      scoreType = "#{@score_type}";
-      id_elem = "#{@academic_allocation.id}_#{@user.id}";
-
-      if(scoreType=='evaluative')
-        grade = $('#academic_allocation_user_grade').val();
+      if("#{@back}" == 'true')
+        flash_message(data.notice, 'notice', 'fancybox-outer');
       else
-        grade = $('#academic_allocation_user_working_hours').val();  
-
-      grad_ = $.isNumeric(grade) ? grade : data.situation;
-
-      $('a#'+id_elem).text(grad_);
-      var td = $('a#'+id_elem).closest('td');
-      td.attr( "class", data.class_td);
-      td.addClass("ChatRoom");
-
-      flash_message(data.notice, 'notice');
+        after_evaluate('ChatRoom', "#{@score_type}", "#{@academic_allocation.id}", "#{@user.id}", data);
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")

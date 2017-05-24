@@ -130,6 +130,8 @@ class ChatRoomsController < ApplicationController
             
       @acu = AcademicAllocationUser.find_one(@academic_allocation.id, params[:user_id],nil, false, can_evaluate)
 
+      @back = params.include?(:back)
+
       respond_to do |format|
         format.html { render layout: false }
         format.json { render json: @messages }

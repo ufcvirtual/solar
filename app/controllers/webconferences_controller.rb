@@ -223,12 +223,12 @@ class WebconferencesController < ApplicationController
     @evaluative = (acs.where(evaluative: true).size == acs.size)
     @frequency = (acs.where(frequency: true).size == acs.size)
 
-    ac = acs.where(allocation_tag_id: at_id).first
+    @academic_allocation = acs.where(allocation_tag_id: at_id).first
 
-    @acu = AcademicAllocationUser.find_one(ac.id, params[:user_id],nil, false, @can_evaluate)
-    @academic_allocation = ac
+    @acu = AcademicAllocationUser.find_one(@academic_allocation.id, params[:user_id],nil, false, @can_evaluate)
     
     @maxwh = acs.first.max_working_hours
+    @back = params.include?(:back)
 
     render partial: 'user_access'
   rescue CanCan::AccessDenied

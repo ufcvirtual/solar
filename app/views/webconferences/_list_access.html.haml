@@ -27,7 +27,7 @@
             - if (@evaluative || @frequency) && !@too_old
               %td{headers:'evaluate'}
                 - if log.is_student == 't' 
-                  = link_to_function content_tag(:i, nil, class: 'icon-write'), 'evaluate_web(this)', :'data-url' => user_access_webconference_path(@webconference, user_id: log.user_id), class: 'btn evaluate', :'data-tooltip'=> t('.evaluate')
+                  = link_to_function content_tag(:i, nil, class: 'icon-write'), 'evaluate_web(this)', :'data-url' => user_access_webconference_path(@webconference, user_id: log.user_id, back:true), class: 'btn evaluate', :'data-tooltip'=> t('.evaluate')
             %td.profile{headers:'profile'}= '(' + log.profile_name + ')'
             %td.user{headers:'user'}= (@researcher ? t(:hidden_info) : log.user_name)
             %td{headers:'group'}= AllocationTag.find(log.at_id).info
