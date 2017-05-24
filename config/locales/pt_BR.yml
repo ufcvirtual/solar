@@ -944,6 +944,7 @@ pt_BR:
   resume: "Resumo"
   semester_date: "Período"
   passing_grade: "Média"
+  working_hours: "Carga Horária"
   error_no_item_selected: Nenhum registro selecionado
   curriculum_unit_type_id: Categoria
   curriculum_unit_new_button: Nova

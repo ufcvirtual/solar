@@ -26,7 +26,7 @@
             - if @evaluative || @frequency
               %td{headers: "to_evaluate" }
                 - if message.is_student == 't' && message.message_type == 1
-                  = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(@chat_room, user_id: message.u_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate')+t('fancybox.open')
+                  = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(@chat_room, user_id: message.u_id, back:true), class: 'btn to_evaluate_chat', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate')+t('fancybox.open')
             %td.profile{headers: "from_profile" }= "(" + message.profile_name + ")"
             %td.user{:'data-tooltip' => (@researcher ? t(:hidden_info) : message.user_name), headers: "from_name"}= (@researcher ? t(:hidden_info) : message.user_nick)
             %td{:'data-tooltip' => name, :'aria-label' => name, headers: "to"}= nick

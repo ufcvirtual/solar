@@ -40,7 +40,7 @@ class PostsController < ApplicationController
         p['date'] = DateTime.parse(p['date']) if params[:format] == "json" && p.include?('date')
         @posts    = @discussion.posts_not_limit(p, @allocation_tags).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
       elsif (@display_mode == 'user' )
-        @posts = @discussion.posts_by_allocation_tags_ids_user(@allocation_tags, current_user.id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
+        @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags, current_user.id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
       else  
         @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
       end

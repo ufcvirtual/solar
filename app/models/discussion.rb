@@ -78,7 +78,7 @@ class Discussion < Event
 
     offset = (opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i
 
-    posts_by_allocation_tags_ids(allocation_tags_ids, { grandparent: false, query: query.join(' AND '),
+    posts_by_allocation_tags_ids(allocation_tags_ids, nil, { grandparent: false, query: query.join(' AND '),
                                                         order: "updated_at #{opts['order']}", limit: opts['limit'],
                                                         offset: offset })
   end
@@ -94,12 +94,12 @@ class Discussion < Event
 
     offset = (opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i
 
-    posts_by_allocation_tags_ids(allocation_tags_ids, { grandparent: false, query: query.join(' AND '),
+    posts_by_allocation_tags_ids(allocation_tags_ids, nil, { grandparent: false, query: query.join(' AND '),
                                                         order: "updated_at #{opts['order']}"})
   end
 
   def discussion_posts_count(plain_list = true, allocation_tags_ids = nil)
-    (plain_list ? posts_by_allocation_tags_ids(allocation_tags_ids, { grandparent: false }).count : posts_by_allocation_tags_ids(allocation_tags_ids).collect{ |a| a if a.parent.nil? }.compact.count)
+    (plain_list ? posts_by_allocation_tags_ids(allocation_tags_ids, nil, { grandparent: false }).count : posts_by_allocation_tags_ids(allocation_tags_ids).collect{ |a| a if a.parent.nil? }.compact.count)
   end
 
   def count_posts_after_and_before_period(period, allocation_tags_ids = nil)
@@ -108,29 +108,24 @@ class Discussion < Event
   end
 
   def count_posts_before_period(period, allocation_tags_ids = nil)
-    posts_by_allocation_tags_ids(allocation_tags_ids, { query: "date_trunc('seconds', updated_at) < '#{period.first}'" }).count # trunc seconds - discard miliseconds
+    posts_by_allocation_tags_ids(allocation_tags_ids, nil, { query: "date_trunc('seconds', updated_at) < '#{period.first}'" }).count # trunc seconds - discard miliseconds
   end
 
   def count_posts_after_period(period, allocation_tags_ids = nil)
-    posts_by_allocation_tags_ids(allocation_tags_ids, { query: "date_trunc('seconds', updated_at) > '#{period.last}'" }).count
+    posts_by_allocation_tags_ids(allocation_tags_ids, nil, { query: "date_trunc('seconds', updated_at) > '#{period.last}'" }).count
   end
 
   # devolve a lista com todos os posts de uma discussion em ordem decrescente de updated_at, apenas o filho mais recente de cada post sera adiconado a lista
   def latest_posts(allocation_tags_ids = nil)
-    posts_by_allocation_tags_ids(allocation_tags_ids, { select: 'DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level' })
+    posts_by_allocation_tags_ids(allocation_tags_ids, nil, { select: 'DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level' })
   end
 
-  def posts_by_allocation_tags_ids(allocation_tags_ids = nil, opt = { grandparent: true, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'DISTINCT discussion_posts.id, discussion_posts.*' })
+  def posts_by_allocation_tags_ids(allocation_tags_ids = nil, user_id = nil, opt = { grandparent: true, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'DISTINCT discussion_posts.id, discussion_posts.*' })
     allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids).map(&:related).flatten.compact.uniq
     posts_list = discussion_posts.where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
-    posts_list = posts_list.joins(academic_allocation: :allocation_tag).where(allocation_tags: { id: allocation_tags_ids }) unless allocation_tags_ids.blank?
-    (opt[:grandparent] ? posts_list.map(&:grandparent).uniq.compact : posts_list.compact.uniq)
-  end
-
-  def posts_by_allocation_tags_ids_user(allocation_tags_ids = nil, user_id= nil, opt = { grandparent: true, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'DISTINCT discussion_posts.id, discussion_posts.*' })
-    allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids).map(&:related).flatten.compact.uniq
-    posts_list = discussion_posts.where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
-    posts_list = posts_list.joins(academic_allocation: :allocation_tag).where(user_id: user_id, allocation_tags: { id: allocation_tags_ids }) unless allocation_tags_ids.blank?
+    query_hash = {allocation_tags: { id: allocation_tags_ids }}
+    query_hash.merge!({user_id: user_id}) unless user_id.blank?
+    posts_list = posts_list.joins(academic_allocation: :allocation_tag).where(query_hash) unless allocation_tags_ids.blank?
     (opt[:grandparent] ? posts_list.map(&:grandparent).uniq.compact : posts_list.compact.uniq)
   end
 
