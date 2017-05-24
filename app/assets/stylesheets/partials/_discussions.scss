@@ -59,8 +59,8 @@ table.discussions {
   thead{
     tr.lines{
       th {
-        background-color: $color_white_forum;
-        color: $color_light_gray_forum;
+        background-color: $thead_background_color;
+        color: $thead_color;
       }
     }
   }

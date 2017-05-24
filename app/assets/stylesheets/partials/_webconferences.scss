@@ -37,8 +37,8 @@ table.webconferences{
   thead{
     tr.lines{
       th{
-        background-color: $color_main_light_highlight;
-        color: $webconference_access_profile_color;
+        background-color: $thead_background_color;
+        color: $thead_color;
       }
       th.no_sort{
         text-align: center;
