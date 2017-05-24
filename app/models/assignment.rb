@@ -25,11 +25,27 @@ class Assignment < Event
   validates :name, :enunciation, :type_assignment, presence: true
   validates :name, length: { maximum: 1024 }
 
+  validate :verify_date, on: :update, if: 'type_assignment_changed?'
+
+  after_save :update_groups, on: :update, if: 'type_assignment_changed?'
+
   def copy_dependencies_from(assignment_to_copy)
     unless assignment_to_copy.enunciation_files.empty?
       assignment_to_copy.enunciation_files.each do |file|
         new_file = AssignmentEnunciationFile.create! file.attributes.merge({ assignment_id: self.id })
         copy_file(file, new_file, File.join('assignment', 'enunciation'))
+      end
+    end
+  end
+
+  def update_groups
+    if type_assignment == Assignment_Type_Individual
+      academic_allocations.each do |ac|
+        ac.group_to_individual
+      end
+    else
+      academic_allocations.each do |ac|
+        ac.individual_to_group
       end
     end
   end
@@ -163,6 +179,10 @@ class Assignment < Event
       self.start_hour = nil
       self.end_hour = nil
     end
+  end
+
+  def verify_date
+    errors.add(:type_assignment, I18n.t('assignments.error.change_type_after_period')) if closed?
   end
 
   def assignment_started?(allocation_tag_id, current_user)

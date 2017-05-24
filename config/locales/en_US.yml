@@ -1777,6 +1777,7 @@ en_US:
       not_started: It was not possible to download file. This assignment hasn't started yet.
       not_range_webconference: Must be in date range of Assignment
       invalid_datetime: "Unable to schedule web conferencing on previous dates"
+      change_type_after_period: "can't change after assignment's ending"
     show:
       name: Name
       enunciation: Enunciation

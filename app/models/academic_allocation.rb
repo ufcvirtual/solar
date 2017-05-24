@@ -71,6 +71,41 @@ class AcademicAllocation < ActiveRecord::Base
     end
   end
 
+  def group_to_individual
+    academic_allocation_users.each do |acu|
+      ga = acu.group_assignment
+      unless ga.blank?
+        gp = ga.group_participants
+        if gp.size == 1
+          acu.update_attributes user_id: gp.first.user_id, group_assignment_id: nil
+          gp.first.delete
+          ga.delete
+        else
+          gp.each_with_index do |p, idx|
+            if idx == (gp.size-1)
+              acu.update_attributes group_assignment_id: nil, user_id: p.user_id
+            else
+              new_acu = AcademicAllocationUser.create(acu.attributes.except('id', 'group_assignment_id', 'user_id').merge!({user_id: p.user_id}))
+              copy_objects(acu.assignment_comments, { 'academic_allocation_user_id' => new_acu.id }, true, :files)
+              copy_objects(acu.assignment_files, { 'academic_allocation_user_id' => new_acu.id }, true)
+              copy_objects(acu.assignment_webconferences, { 'academic_allocation_user_id' => new_acu.id }, true, nil, { to: :set_origin, from: :id })
+            end
+            p.delete
+          end
+        end
+        ga.delete
+      end
+    end
+  end
+
+  def individual_to_group
+    academic_allocation_users.each do |acu|
+      ga = GroupAssignment.create academic_allocation_id: id, group_name: acu.user.name
+      gp = GroupParticipant.create user_id: acu.user_id, group_assignment_id: ga.id
+      acu.update_attributes group_assignment_id: ga.id
+    end
+  end
+
   def verify_equivalents
     eq_ac = AcademicAllocation.find(equivalent_academic_allocation_id)
 
@@ -195,5 +230,32 @@ class AcademicAllocation < ActiveRecord::Base
       end
     end
 
+    def copy_file(file_to_copy_path, file_copied_path)
+      unless File.exists? file_copied_path || !(File.exists? file_to_copy_path)
+        file = File.new file_copied_path, 'w'
+        FileUtils.cp file_to_copy_path, file # copy file content to new file
+      end
+    end
+
+    def copy_objects(objects_to_copy, merge_attributes={}, is_file = false, nested = nil, call_methods = {})
+      objects_to_copy.each do |object_to_copy|
+        copy_object(object_to_copy, merge_attributes, is_file, nested, call_methods)
+      end
+    end
+
+    def copy_object(object_to_copy, merge_attributes={}, is_file = false, nested = nil, call_methods = {})
+      new_object = object_to_copy.class.where(object_to_copy.attributes.except('id', 'academic_allocation_user_id').merge!(merge_attributes)).first_or_initialize
+      new_object.merge = true if new_object.respond_to?(:merge) # used so call save without callbacks (before_save, before_create)
+
+      new_object.send(call_methods[:to], object_to_copy.send(call_methods[:from])) unless call_methods.empty?
+      new_object.save
+
+      copy_file(object_to_copy.attachment.path, new_object.attachment.path) if is_file && object_to_copy.respond_to?(:attachment)
+      copy_objects(object_to_copy.send(nested.to_sym), {"#{new_object.class.to_s.tableize.singularize}_id" => new_object.id}, is_file) unless nested.nil?
+
+      new_object
+    rescue
+      nil
+    end
 
 end

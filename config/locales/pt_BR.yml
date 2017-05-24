@@ -1986,6 +1986,7 @@ pt_BR:
       not_started: Não é possível fazer o download do arquivo. O trabalho ainda não está iniciado.
       not_range_webconference: Deve estar dentro do período do trabalho
       invalid_datetime: "Não é possível agendar a webconferência em datas pretéritas"
+      change_type_after_period: não pode ser alterado após término do trabalho
     show:
       name: Nome
       enunciation: Enunciado

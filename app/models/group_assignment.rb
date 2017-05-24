@@ -23,7 +23,7 @@ class GroupAssignment < ActiveRecord::Base
   end
 
   def evaluated?
-    !(academic_allocation_user.nil? || academic_allocation_user.grade.blank?)
+    !(academic_allocation_user.nil? || (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?))
   end
 
   def user_in_group?(user_id)
