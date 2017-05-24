@@ -682,8 +682,8 @@ table.exams {
   thead{
     tr.lines{
       th {
-        background-color: $exclusive_background_color;
-        color: $exclusive_font_color;
+        background-color: $thead_background_color;
+        color: $thead_color;
       }
     }
   }
