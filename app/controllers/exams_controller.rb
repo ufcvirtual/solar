@@ -146,12 +146,12 @@ class ExamsController < ApplicationController
     
     if (@situation == 'finished' || @situation == 'corrected')
       mod_correct_exam = @exam.attempts_correction
-      @exam_user_attempt_id = params[:exam_user_attempt_id]
+      @exam_user_attempt = ExamUserAttempt.where(id: params[:exam_user_attempt_id]).first
       @disabled = true
 
       @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.blank?
       if(mod_correct_exam != 1)
-        @exam_user_attempt_id = Exam.get_id_exam_user_attempt(mod_correct_exam, @acu.id)
+        @exam_user_attempt = Exam.get_exam_user_attempt(mod_correct_exam, @acu.id)
       end  
 
       @list_eua = ExamUserAttempt.where(academic_allocation_user_id: @acu.id)
@@ -160,7 +160,7 @@ class ExamsController < ApplicationController
       else  
         @last_attempt = @exam.responses_question_user(@acu.id, params[:exam_user_attempt_id]) 
         if params[:pdf].to_i == 1
-          @grade_pdf = ExamUserAttempt.find(@exam_user_attempt_id).grade
+          @grade_pdf = @exam_user_attempt.grade
           @ats = AllocationTag.find(@allocation_tag_id)
           @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order) unless @exam.nil?
           @pdf = 1
@@ -204,7 +204,7 @@ class ExamsController < ApplicationController
     @frequency = @ac.frequency && (can? :calcule_grades, Exam, { on: @allocation_tag_id })
     raise 'empty' if @acu.nil? && !@frequency
 
-    @grade = ((@acu.try(:grade).blank? || @exam.can_correct?(@user_id, AllocationTag.find(@allocation_tag_id).related)) ? @exam.recalculate_grades(@user_id, nil, true).first : @acu.grade)
+    @grade = ((@acu.try(:grade).blank? || @exam.can_correct?(@user_id, AllocationTag.find(@allocation_tag_id).related)) ? @exam.recalculate_grades(@user_id, "#{@allocation_tag_id.join(',')}", true).first : @acu.grade)
 
     @attempts = @acu.try(:exam_user_attempts) || []
     @attempt = case @exam.attempts_correction

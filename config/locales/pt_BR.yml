@@ -3796,6 +3796,8 @@ pt_BR:
       frequency: Frequência
       working_hours: 'Carga horária: %{wh}'
       wh: Carga Horária
+      incomplete: Tentativa não finalizada
+      situation: Situação
     result_exam:
       student: 'Aluno: '
       grade: 'Nota: '

@@ -33,6 +33,10 @@
             - total_time = attempt.exam_responses.sum(:duration)
             .attempt{id: "#{attempt.id}", class: "#{idx == 0 ? '' : 'invisible'}"}
               .form-inputs.block_content
+                - unless attempt.complete
+                  .input
+                    = label_tag t(".situation"), nil, class: "form_label"
+                    %span.label_info= t(".inclomplete")
                 .input
                   = label_tag t(".number_question"), nil, class: "form_label"
                   %span.label_info= @exam.number_questions
@@ -54,11 +58,18 @@
 
                 .input
                   = label_tag t(".punctuation"), nil, class: "form_label"
-                  %span.label_info= label_tag t(".to", from: attempt.grade.to_s, to:@scores_exam.to_s)
+                  - unless attempt.grade.blank?
+                    %span.label_info= label_tag t(".to", from: attempt.grade.to_s, to:@scores_exam.to_s)
+                  - else
+                    = ' - '
         - else
           - total_time = @attempt.exam_responses.sum(:duration)
           .attempt{id: "#{@attempt.id}"}
             .form-inputs.block_content
+              - unless @attempt.complete
+                .input
+                  = label_tag t('.situation'), nil, class: "form_label"
+                  %span.label_info= t(".inclomplete")
               .input
                 = label_tag t(".number_question"), nil, class: "form_label"
                 %span.label_info= @exam.number_questions
@@ -86,7 +97,10 @@
 
               .input
                 = label_tag t(".punctuation"), nil, class: "form_label"
-                %span.label_info= label_tag t(".to", from: @attempt.grade.to_s, to:@scores_exam.to_s)
+                - unless @attempt.grade.blank?
+                  %span.label_info= label_tag t(".to", from: @attempt.grade.to_s, to:@scores_exam.to_s)
+                - else
+                  = ' - '
               
   - if @frequency
     .frequency_form

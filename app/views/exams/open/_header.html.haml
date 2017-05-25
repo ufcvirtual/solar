@@ -2,7 +2,9 @@
   #title
     %h2= @exam.name
     - if @disabled
-      = link_to content_tag(:i, nil, class: 'icon-printer', :'aria-hidden' => 'true'), open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: @situation, pdf: 1, :format => "pdf", exam_user_attempt_id: @exam_user_attempt_id), target: "_blank", class: 'ico-e', :'data-tooltip' => t('exams.print'), :'aria-label' => t('exams.print')
+      - unless @exam_user_attempt.complete
+        = '('+t('exams.result_exam_user.incomplete')+')'
+      = link_to content_tag(:i, nil, class: 'icon-printer', :'aria-hidden' => 'true'), open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: @situation, pdf: 1, format: "pdf", exam_user_attempt_id: @exam_user_attempt.id), target: "_blank", class: 'ico-e', :'data-tooltip' => t('exams.print'), :'aria-label' => t('exams.print')
   %h3#exam_status
     #question_count
       %i.icon-list

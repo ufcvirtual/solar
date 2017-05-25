@@ -84,9 +84,9 @@ class Exam < Event
   def list_exam_correction(user_id=nil, ats=nil, all=nil)
     query = []
     query << "academic_allocation_users.user_id = :user_id "   unless user_id.blank? 
-    query << "academic_allocations.allocation_tag_id  IN (#{ats}) "  unless ats.blank?  
+    query << "academic_allocations.allocation_tag_id IN (#{ats}) "  unless ats.blank?  
     query << "exam_user_attempts.grade IS NULL" unless all.blank?
-    query << "schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour IS NOT NULL AND end_hour != '' AND end_hour::time < current_time)"
+    query << "(schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour IS NOT NULL AND end_hour != '' AND end_hour::time < current_time))"
 
     AcademicAllocationUser.joins(academic_allocation: [exam: :schedule])
             .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id")
@@ -378,14 +378,13 @@ class Exam < Event
     end
   end
   
-  def self.get_id_exam_user_attempt(mod_correct_exam, acu_id)
+  def self.get_exam_user_attempt(mod_correct_exam, acu_id)
     if mod_correct_exam == Exam::GREATER
       max_grade = ExamUserAttempt.where(academic_allocation_user_id: acu_id).maximum(:grade)
-      id =  ExamUserAttempt.where(academic_allocation_user_id: acu_id, grade: max_grade).last.id
+      ExamUserAttempt.where(academic_allocation_user_id: acu_id, grade: max_grade).last
     elsif mod_correct_exam == Exam::LAST
-      id = ExamUserAttempt.where(academic_allocation_user_id: acu_id).last.id
+      ExamUserAttempt.where(academic_allocation_user_id: acu_id).last
     end 
-    id
   end
 
   def self.verify_blocking_content(user_id)

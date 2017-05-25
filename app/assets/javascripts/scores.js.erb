@@ -12,6 +12,11 @@ function open_evaluation(link){
           url: data.url,
           success: function(data){ 
             flash_message(data.notice, 'notice');
+          },
+          error: function(data){
+            var data = $.parseJSON(data.responseText);
+            if (typeof(data.alert) != "undefined")
+              flash_message(data.alert, 'alert');
           }
         })
       }else{

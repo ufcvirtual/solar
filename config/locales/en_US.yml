@@ -3555,6 +3555,8 @@ en_US:
       frequency: Frequency
       working_hours: 'Working Hours: %{wh} Hs'
       wh: Working hours
+      incomplete: Not finished attempt
+      situation: Situation
     result_exam:
       student: 'Student: '
       grade: 'Grade: '
