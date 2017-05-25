@@ -204,7 +204,7 @@ class ExamsController < ApplicationController
     @frequency = @ac.frequency && (can? :calcule_grades, Exam, { on: @allocation_tag_id })
     raise 'empty' if @acu.nil? && !@frequency
 
-    @grade = ((@acu.try(:grade).blank? || @exam.can_correct?(@user_id, AllocationTag.find(@allocation_tag_id).related)) ? @exam.recalculate_grades(@user_id, "#{@allocation_tag_id.join(',')}", true).first : @acu.grade)
+    @grade = ((@acu.try(:grade).blank? || @exam.can_correct?(@user_id, AllocationTag.find(@allocation_tag_id).related)) ? @exam.recalculate_grades(@user_id, "#{[@allocation_tag_id].flatten.join(',')}", true).first : @acu.grade)
 
     @attempts = @acu.try(:exam_user_attempts) || []
     @attempt = case @exam.attempts_correction
