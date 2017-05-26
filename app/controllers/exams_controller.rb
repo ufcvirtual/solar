@@ -24,6 +24,10 @@ class ExamsController < ApplicationController
     @exam.build_schedule(start_date: Date.today, end_date: Date.today)
   end
 
+  def client_network_ip
+    render json: { network_ip: get_remote_ip }
+  end
+
   def create
     authorize! :create, Exam, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @exam = Exam.new exam_params
@@ -33,7 +37,19 @@ class ExamsController < ApplicationController
     if @exam.save
       render_exam_success_json('created')
     else
-      render :new
+      mandatory_ip = false
+      erro_mensage = ""
+      @exam.errors.each do |attribute, erro|
+        if attribute.to_s == "exam"
+          mandatory_ip = true
+          erro_mensage += erro
+        end
+      end
+      if mandatory_ip || @exam.errors.size == 1
+        render json: { success: false, alert: erro_mensage, outer: 'fancybox-outer' }, status: :unprocessable_entity
+      else
+        render :new
+      end
     end
   rescue => error
     render_json_error(error, 'exams.error')
@@ -69,7 +85,19 @@ class ExamsController < ApplicationController
     if @exam.update_attributes(exam_params)
       render_exam_success_json('updated')
     else
-      render :edit
+      mandatory_ip = false
+      erro_mensage = ""
+      @exam.errors.each do |attribute, erro|
+        if attribute.to_s == "exam"
+          mandatory_ip = true
+          erro_mensage += erro
+        end
+      end
+      if mandatory_ip || @exam.errors.size == 1
+        render json: { success: false, alert: erro_mensage, outer: 'fancybox-outer' }, status: :unprocessable_entity
+      else
+        render :edit
+      end
     end
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
@@ -80,7 +108,6 @@ class ExamsController < ApplicationController
   def destroy
     authorize! :destroy, Exam, { on: params[:allocation_tags_ids] }
     exam = Exam.find(params[:id])
-
     evaluative = exam.verify_evaluatives
     if exam.can_remove_groups?
       exam.destroy
@@ -101,84 +128,93 @@ class ExamsController < ApplicationController
     @exam = Exam.find(params[:id])
     @situation = params[:situation]
 
-    acs = @exam.academic_allocations
-    ac_id = (acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: @allocation_tag_id).first.id)
-
-    @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user.id, nil, true)
-
-    last_attempt = @acu.exam_user_attempts.last
-
-    raise 'time' unless @exam.on_going?
-    raise 'attempt' unless @acu.has_attempt(@exam)
-    @total_attempts  = @acu.count_attempts rescue 0
-
-    @shortcut = Hash.new
-    @shortcut[t("shortcut.nextq")] = t("questions.shortcut.shortcut_next")
-    @shortcut[t("shortcut.previousq")] = t("questions.shortcut.shortcut_previous")
-    @shortcut[t("shortcut.enunciation")] = t("questions.shortcut.shortcut_enunciation")
-    @shortcut[t("shortcut.first_item")] = t("questions.shortcut.shortcut_items")
-    @shortcut[t("shortcut.timeq")] = t("questions.shortcut.shortcut_time")
-    @shortcut[t("shortcut.questions")] = t("questions.shortcut.shortcut_questions")
-    @shortcut[t("shortcut.audio")] = t("questions.shortcut.shortcut_audio")
-    
-    if (last_attempt.try(:uninterrupted_or_ended, @exam)) && @total_attempts == @exam.attempts
-      redirect_to result_user_exam_path(@exam)
+    if @exam.controlled && @exam.network_ips_permited_to_do_the_exams(get_remote_ip).blank?
+      render text: t('exams.restrict_test')
     else
-      @total_time = (last_attempt.try(:complete) ? 0 : last_attempt.try(:get_total_time)) || 0
+      acs = @exam.academic_allocations
+      ac_id = (acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: @allocation_tag_id).first.id)
 
-      @text = if !last_attempt.nil? && !last_attempt.try(:complete)
-        t("exams.pre.continue")
+      @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user.id, nil, true)
+
+      last_attempt = @acu.exam_user_attempts.last
+
+      raise 'time' unless @exam.on_going?
+      raise 'attempt' unless @acu.has_attempt(@exam)
+      @total_attempts  = @acu.count_attempts rescue 0
+
+      @shortcut = Hash.new
+      @shortcut[t("shortcut.nextq")] = t("questions.shortcut.shortcut_next")
+      @shortcut[t("shortcut.previousq")] = t("questions.shortcut.shortcut_previous")
+      @shortcut[t("shortcut.enunciation")] = t("questions.shortcut.shortcut_enunciation")
+      @shortcut[t("shortcut.first_item")] = t("questions.shortcut.shortcut_items")
+      @shortcut[t("shortcut.timeq")] = t("questions.shortcut.shortcut_time")
+      @shortcut[t("shortcut.questions")] = t("questions.shortcut.shortcut_questions")
+      @shortcut[t("shortcut.audio")] = t("questions.shortcut.shortcut_audio")
+
+      if (last_attempt.try(:uninterrupted_or_ended, @exam)) && @total_attempts == @exam.attempts
+        redirect_to result_user_exam_path(@exam)
       else
-        t("exams.pre.button")
+        @total_time = (last_attempt.try(:complete) ? 0 : last_attempt.try(:get_total_time)) || 0
+
+        @text = if !last_attempt.nil? && !last_attempt.try(:complete)
+          t("exams.pre.continue")
+        else
+          t("exams.pre.button")
+        end
+        render :pre
       end
-      render :pre
     end
   rescue => error
     render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
 
   def open
-    @disabled = false
-    @situation = params[:situation]
-    @last_attempt = @acu.find_or_create_exam_user_attempt
-    @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
-    @total_time = (@last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)) || 0
-    
-    if (@situation == 'finished' || @situation == 'corrected')
-      mod_correct_exam = @exam.attempts_correction
-      @exam_user_attempt = ExamUserAttempt.where(id: params[:exam_user_attempt_id]).first
-      @disabled = true
+    @exam = Exam.find(params[:id])
+    if @exam.controlled && @exam.network_ips_permited_to_do_the_exams(get_remote_ip).blank?
+      render text: t('exams.restrict_test')
+    else
+      @disabled = false
+      @situation = params[:situation]
+      @last_attempt = @acu.find_or_create_exam_user_attempt
+      @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
+      @total_time = (@last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)) || 0
 
-      @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.blank?
-      if(mod_correct_exam != 1)
-        @exam_user_attempt = Exam.get_exam_user_attempt(mod_correct_exam, @acu.id)
-      end  
+      if (@situation == 'finished' || @situation == 'corrected')
+        mod_correct_exam = @exam.attempts_correction
+        @exam_user_attempt = ExamUserAttempt.where(id: params[:exam_user_attempt_id]).first
+        @disabled = true
 
-      @list_eua = ExamUserAttempt.where(academic_allocation_user_id: @acu.id)
-      if mod_correct_exam == 1 && !params[:exam_user_attempt_id]  && params[:pdf].to_i != 1  
-        render :open_result 
-      else  
-        @last_attempt = @exam.responses_question_user(@acu.id, params[:exam_user_attempt_id]) 
-        if params[:pdf].to_i == 1
-          @grade_pdf = @exam_user_attempt.grade
-          @ats = AllocationTag.find(@allocation_tag_id)
-          @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order) unless @exam.nil?
-          @pdf = 1
-
-
-          render pdf: t('exams.result_exam.title_pdf', name: @exam.name),
-             template: 'exams/result_exam.html.haml',
-             layout: false,
-             disposition: 'attachment'
-
-        else
-         render :open 
+        @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.blank?
+        if(mod_correct_exam != 1)
+          @exam_user_attempt = Exam.get_exam_user_attempt(mod_correct_exam, @acu.id)
         end
-      end 
-    else  
-      respond_to do |format|
-        format.html
-        format.js
+
+        @list_eua = ExamUserAttempt.where(academic_allocation_user_id: @acu.id)
+        if mod_correct_exam == 1 && !params[:exam_user_attempt_id]  && params[:pdf].to_i != 1
+          render :open_result
+        else
+          @last_attempt = @exam.responses_question_user(@acu.id, params[:exam_user_attempt_id])
+          if params[:pdf].to_i == 1
+            @grade_pdf = @exam_user_attempt.grade
+            @ats = AllocationTag.find(@allocation_tag_id)
+            @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order) unless @exam.nil?
+            @pdf = 1
+
+
+            render pdf: t('exams.result_exam.title_pdf', name: @exam.name),
+               template: 'exams/result_exam.html.haml',
+               layout: false,
+               disposition: 'attachment'
+
+          else
+           render :open
+          end
+        end
+      else
+        respond_to do |format|
+          format.html
+          format.js
+        end
       end
     end
   rescue CanCan::AccessDenied
@@ -248,7 +284,7 @@ class ExamsController < ApplicationController
     render json: { success: true, grade: grade, wh: wh, status: t('exams.situation.corrected'), notice: t('calcule_grade', scope: 'exams.list') }
   rescue => error
     render_json_error(error, 'exams.error')
-  end 
+  end
 
   def calcule_grade
     allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : active_tab[:url][:allocation_tag_id]
@@ -318,11 +354,12 @@ class ExamsController < ApplicationController
   private
 
   def exam_params
-    params.require(:exam).permit(:name, :description, :duration, :start_hour, :end_hour, 
-                                 :random_questions, :raffle_order, :auto_correction, 
-                                 :block_content, :number_questions, :attempts, 
+    params.require(:exam).permit(:name, :description, :duration, :start_hour, :end_hour,
+                                 :random_questions, :raffle_order, :auto_correction,
+                                 :block_content, :number_questions, :attempts, :controlled,
                                  :attempts_correction, :result_email, :uninterrupted,
-                                 schedule_attributes: [:id, :start_date, :end_date])
+                                 :use_local_network, schedule_attributes: [:id, :start_date, :end_date],
+                                 ip_reals_attributes: [:id, :ip_v4, :ip_v6, :_destroy])
   end
 
   def render_exam_success_json(method)
@@ -345,7 +382,7 @@ class ExamsController < ApplicationController
     unless user_session[:exams].include?(params[:id])
       authorize! :open, Exam, { on: @allocation_tag_id }
       user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
-      verify_time 
+      verify_time
       user_session[:exams] << params[:id]
 
       @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user.id, nil, true)

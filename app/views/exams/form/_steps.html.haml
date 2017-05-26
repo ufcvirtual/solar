@@ -1,12 +1,13 @@
 .new_exam
   = simple_form_for(@exam, html: { id: 'exam_form' }) do |f|
+    = f.hidden_field :controlled, value: @exam.controlled, id: "exam_controlled_edit"
     %span.form_requirement= t(:required_fields)
     %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit_exam : :new_exam), scope: [:exams, :list])
 
     .form-inputs.block_content
       = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
       .form-inputs.block_content
-        #steps
+        #steps.steps
           %ul
             %li.info.active
               = t('.info')
@@ -14,7 +15,33 @@
             %li.config
               = t('.config')
               .dot#dot-config
+            %li.control#controlled_step
+              = t('.control')
+              .dot#dot-control
         .step-info
           = render partial: 'exams/form/info', locals: { f: f }
         .step-config.hidden
           = render partial: 'exams/form/config', locals: { f: f }
+        .step-control.hidden
+          = render partial: 'exams/form/control', locals: { f: f }
+
+:javascript
+  $(document).ready(function(){
+    $("#controlled_step").toggle();
+
+    $('a[data-id="controlled"]').on('click', function(event){
+      open_form_control();
+    });
+
+    if( $("#exam_controlled_edit").val() === "true" ) {
+      $('a[data-id="controlled"]').trigger('click');
+    }
+  });
+
+  function open_form_control() {
+    $("#without_control").toggleClass("hidden");
+    $("#with_control").toggleClass("hidden");
+    $("#steps").toggleClass("steps");
+    $("#steps").toggleClass("steps_controlled");
+    $("#controlled_step").toggle();
+  }

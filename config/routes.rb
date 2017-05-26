@@ -353,12 +353,12 @@ Solar::Application.routes.draw do
       get :update_members_and_roles, to: :update_members_and_roles_page
       put :update_members_and_roles
 
-      get :lesson, to: :new, lesson: true 
+      get :lesson, to: :new, lesson: true
     end
-    
+
     member do
       get :authenticate
-      get :list_access 
+      get :list_access
       get :access
     end
   end
@@ -426,8 +426,8 @@ Solar::Application.routes.draw do
       put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: "add"   , tool_type: "ChatRoom", as: :add_group_to
       get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "ChatRoom", as: :group_tags_from
     end
-    
-    member do 
+
+    member do
       get :user_messages
       put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ChatRoom', as: :evaluate
       get :messages
@@ -561,7 +561,7 @@ Solar::Application.routes.draw do
       get ':tool_id/group/tags'       , to: 'groups#tags'                       , tool_type: 'Webconference', as: :group_tags_from
     end
 
-    member do    
+    member do
       delete :remove_record, only_recordings: true
       get :access
       get :list_access
@@ -575,13 +575,14 @@ Solar::Application.routes.draw do
     collection do
       get :list
       get :calcule_all
-      put ':tool_id/unbind/group/:id', to: 'groups#change_tool', type: 'unbind', tool_type: 'Exam', as: :unbind_group_from
-      put ':tool_id/remove/group/:id', to: 'groups#change_tool', type: 'remove', tool_type: 'Exam', as: :remove_group_from
-      put ':tool_id/add/group/:id'   , to: 'groups#change_tool', type: 'add'   , tool_type: 'Exam', as: :add_group_to
+      get :client_network_ip
+      put ':tool_id/unbind/group/:id', to: 'groups#change_tool'  , type: 'unbind', tool_type: 'Exam', as: :unbind_group_from
+      put ':tool_id/remove/group/:id', to: 'groups#change_tool'  , type: 'remove', tool_type: 'Exam', as: :remove_group_from
+      put ':tool_id/add/group/:id'   , to: 'groups#change_tool'  , type: 'add'   , tool_type: 'Exam', as: :add_group_to
       get ':tool_id/group/tags'      , to: 'groups#tags'                       , tool_type: 'Exam', as: :group_tags_from
     end
 
-    member do 
+    member do
       put :change_status
       get :open
       get :pre, to: 'exams#pre'
@@ -601,7 +602,7 @@ Solar::Application.routes.draw do
       get :search, to: :index
     end
 
-    member do 
+    member do
       put :change_status
       put :publish, to: :change_status, status: true
       get :verify_owners, update: true
@@ -612,7 +613,7 @@ Solar::Application.routes.draw do
   end
 
   resources :exam_questions do
-    member do 
+    member do
       put "order/:change_id", action: :order, as: :change_order
       put :annul
       get '/export/exam_questions/steps',   to: 'exam_questions#export_steps',   as: :export_steps
@@ -636,7 +637,7 @@ Solar::Application.routes.draw do
   end
 
   resources :tools, only: [] do
-    get :equalities, on: :collection 
+    get :equalities, on: :collection
   end
 
   resources :exam_responses, except: [:show]

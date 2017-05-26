@@ -7,7 +7,7 @@
       = s.input :start_date, as: :string, input_html: { id: 'exam_start_date', value: l(f.object.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
     .right_form
       = s.input :end_date, as: :string, input_html: { id: 'exam_end_date', value:  l(f.object.schedule.end_date.try(:to_date) || Date.today, format: :datepicker) }
-  
+
   .schedule_dates.hour
     .left
       = f.input :start_hour
@@ -23,6 +23,7 @@
   = button_to_function t('.continue'), 'go_to_config()', class: 'btn btn_main btn_lightbox', alt: 'continuar', type: 'button', id: '_continue'
 
 = javascript_include_tag 'ckeditor/init'
+= javascript_include_tag 'jquery.mask'
 
 :javascript
   $(function(){
@@ -90,8 +91,12 @@
   function go_to_config() {
     $('.step-info').addClass('hidden');
     $('.step-config').removeClass('hidden');
+    $('.step-control').addClass('hidden');
+
     $('li.info').removeClass('active');
     $('#dot-info').removeClass('active');
     $('li.config').addClass('active');
     $('#dot-config').addClass('active');
+    $('li.control').removeClass('active');
+    $('#dot-control').removeClass('active');
   }

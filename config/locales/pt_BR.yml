@@ -339,6 +339,10 @@ pt_BR:
         attempts_correction: Modo de cálculo de nota
         block_content: Bloquear conteúdo do Solar durante a prova
         uninterrupted: Ininterrupta
+        controlled: Controlada
+      ip_real:
+        ip_v4: "Digite o IP V4"
+        ip_v6: "Digite o IP V6"
       question_items:
         img_alt: Alt
         item_image: Imagem
@@ -2069,7 +2073,7 @@ pt_BR:
       new_file: 65
       shortcut_new_web: "[W]"
       shortcut_new_file: "[A]"
-        
+
   assignment_files:
     list:
       title_group: Arquivos enviados pelo grupo
@@ -2967,7 +2971,7 @@ pt_BR:
       trash: 88
       reply: 82
       reply_all: 80
-      forward: 69 
+      forward: 69
       unread: 77
       shortcut_new: "[N]"
       shortcut_all: "[T]"
@@ -3587,6 +3591,8 @@ pt_BR:
     status: Situação
     none: "Nenhuma prova cadastrada"
     restrict: "Aluno em prova: Conteúdo não permitido"
+    restrict_test: "Local de prova não permitido"
+    controlled: "Prova controlada: É necessário pelo menos um IP"
     percentage: "<b>%{percent}% da prova feito</b>"
     print: Imprimir resultado
     selected_correctly: Item selecionado corretamente
@@ -3660,14 +3666,30 @@ pt_BR:
         dont_send_mail: Não enviar email
         can_interrupt: A prova pode ser interrompida e continuada em outro momento (dentro dos limites de tempo e prazo)
         cant_interrupt: 'A prova não pode ser interrompida: ao ser iniciada, deve ser finalizada. Salvo se a interrupção for forçada (por ex: problemas de conexão)'
+        environment_controlled: 'Você pode controlar o local de onde o aluno irá realizar a prova (por exemplo: laboratórios, blocos, etc)'
+        environment_not_controlled: 'O aluno poderá realizar a prova em qualquer local (por exemplo: laboratórios, casa, lan houses, etc)'
         block: Bloquear conteúdo
         dont_block: Não bloquear conteúdo
+        continue: Continuar
       steps:
         info: Informações
         config: Configurações
+        control: Controles
       info:
         continue: Continuar
         duration: Tempo que o aluno terá para responder a prova após iniciá-la.
+      control:
+        continue: Continuar
+        previous: Anterior
+        current_ip: O IP da rede local será usado
+        not_current_ip: Não será usado o IP da rede local
+        current_ip_real: "Usar IP da rede atual:"
+        add_others_ip_reals: "Adicionar novo IP"
+        network_ip_registred: "IP registrado"
+        link_to_remove_fields: "Remover Formulário de IPs"
+      ip_real_fields:
+        legend_description_new_ip: "Novo IP onde será realizada a prova"
+        link_to_remove_fields: "Remover Formulário de IPs"
     pre:
       alert_save: Todas as questões são salvas automaticamente.
       alert_start: Clique no link abaixo se você tem certeza que deseja iniciar a prova.
@@ -4083,6 +4105,10 @@ pt_BR:
     error:
       validate: 'Ocorreram erros de validação. \n\n Não foi possivel finalizar a operação'
       duration: 'Prova já encerrada! \n\n Não foi possivel finalizar a operação'
+
+  ip_reals:
+    errors:
+      ip: "IP inválido"
 
   digital_classes:
     index:

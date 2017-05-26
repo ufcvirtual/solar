@@ -62,7 +62,7 @@
     }
 
     [class^='expand_']{
-      text-align: center; 
+      text-align: center;
       cursor: pointer;
     }
   }
@@ -429,7 +429,7 @@
   video::-webkit-media-controls-panel, audio::-webkit-media-controls-panel {
     width: calc(100% + 30px); /* Adjust as needed */
   }
-    
+
 
 }
 
@@ -473,6 +473,10 @@
     width: 85px;
   }
 
+  #new_form_ip, .fields_for_remove{
+    clear: both;
+  }
+
   .ckb{
     margin: 20px;
     .input.boolean{
@@ -481,7 +485,21 @@
     label{
       display: inline;
     }
-    a, input, select{
+    .select_ip_label, .select_ip_type, .ip_v4, .ip_v6 {
+      float: left;
+    }
+    .select_ip_type, .ip_v4, .ip_v6 {
+      margin-left: 10px;
+      margin-bottom: 15px;
+    }
+    .select_ip_label {
+      width: 100px;
+      padding-top: 2px;
+    }
+    .ip_v6 {
+      display: none;
+    }
+    a, input, select, .remove_fields{
       display: inline-block;
       float: right;
     }
@@ -490,9 +508,16 @@
     }
   }
 
-  #steps{
-    width: 259px;
+  .steps, .steps_controlled{
     margin-bottom: 20px;
+  }
+
+  .steps{
+    width: 259px;
+  }
+
+  .steps_controlled{
+    width: 390px;
   }
 }
 
