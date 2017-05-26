@@ -88,7 +88,7 @@
                   .text= raw qi.audio_description.html_safe
           
 
-- unless @question_audios.blank? || audio_is.blank?
+- if @question_audios.blank? || audio_is.blank?
   %tr.question_audios
     %td.audio
       %form.hide
