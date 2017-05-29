@@ -63,7 +63,7 @@ fieldset {
   font-size: 11px;
   margin-bottom: 15px;
   margin-top: -20px;
-  color: $color_gray;
+  color: $color_gray_editions;
 }
 
 .edition .filter .groups{
@@ -180,7 +180,7 @@ label[for="all"]{
       }
       .tools_by_tool_type{
         tr.red{
-          background-color: $background_light_red;
+          background-color: $background_light_red_editions;
         }
       }
       .icons{
@@ -230,13 +230,13 @@ label[for="all"]{
       display: inline-block;
       padding: 20px 0px 20px 0px;
       width: 250px;
-      border: 1px dashed $list_exams_btn_color;
+      border: 1px dashed $list_exams_btn_color_editions;
     }
   }
   .exam_box{
     width: 775px;
     padding: 5px 0px 5px 4px;
-    border-left: 6px solid $list_exams_exam_box_color;
+    border-left: 6px solid $list_exams_exam_box_color_editions;
     background-color: $list_exams_background;
   }
   .block_wrapper .block_content_toolbar{
@@ -267,6 +267,6 @@ label[for="all"]{
 
 .filter{
   li.ui-menu-item a{
-    color: $color_almost_black;
+    color: $color_almost_black_editions;
   }
 }

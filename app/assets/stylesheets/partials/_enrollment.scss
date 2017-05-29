@@ -31,10 +31,12 @@
 
   input#type{
     width: 33%;
+    color: $exclusive_background_color;
   }
 
   input#search{
     width: 50%;
+    color: $exclusive_background_color;
   }
 }
 

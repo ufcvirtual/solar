@@ -38,6 +38,11 @@ Solar::Application.routes.draw do
     end
   end
 
+  resources :personal_configurations do 
+      put :update_theme, on: :collection
+  end
+
+
   resources :social_networks, only: [] do
     collection do
       get :fb_authenticate

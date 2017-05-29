@@ -78,7 +78,7 @@ module ApplicationHelper
     # Se o group_select estiver vazio, ou seja, nenhum grupo foi selecionado pelo usuário,
     # o grupo a ter seus fóruns exibidos será o primeiro grupo encontrado para o usuário em questão
     selected_group_id = groups.first.id if selected_group_id.blank?
-    
+
     active_tab[:breadcrumb].first[:url][:selected_group] = Group.find(selected_group_id).code
 
     result = ''
@@ -234,5 +234,4 @@ module ApplicationHelper
     Rails.logger.info "[ERROR] [APP] [#{Time.now}] [#{error}] [#{(message.nil? ? error_message : error.message)}]"
     render json: { success: false, alert: (message.nil? ? error_message : error.message) }, status: :unprocessable_entity
   end
-
 end

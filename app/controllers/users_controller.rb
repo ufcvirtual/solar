@@ -58,7 +58,7 @@ class UsersController < ApplicationController
 
     end
   end
-  
+
   def mysolar
     set_active_tab_to_home
 
@@ -138,7 +138,7 @@ class UsersController < ApplicationController
   def reset_password_url
     authorize! :reset_password_user, Administration
     @user  = User.find(params[:id])
-    @token = params[:token] 
+    @token = params[:token]
   end
 
   private

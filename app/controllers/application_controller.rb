@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials] # devise
-  before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im
+  before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im, :get_theme
   after_filter :log_navigation
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -172,6 +172,13 @@ class ApplicationController < ActionController::Base
 
     I18n.locale = ['pt_BR', 'en_US'].include?(params[:locale]) ? params[:locale] : I18n.default_locale
     params.delete(:locale) if user_signed_in?
+  end
+
+  def get_theme
+    if user_signed_in?
+      current_theme = PersonalConfiguration.find_by_user_id(current_user.id)
+      user_session[:theme] = current_theme.theme
+    end
   end
 
   ## Parametros de locale para paginas externas

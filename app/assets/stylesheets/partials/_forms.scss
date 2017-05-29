@@ -93,12 +93,12 @@
 .form_error, .error, span.field_with_errors {
   padding-left: 10px;
   vertical-align: top;
-  color: $form_error_color;
+  color: $form_error_color_forms;
 }
 
 .field_with_errors input, .field_with_errors textarea {
   border: 1px solid;
-  border-color: $form_error_color;
+  border-color: $form_error_color_forms;
 }
 
 #special_needs_line {
@@ -110,7 +110,7 @@
   font-size: 9pt;
   margin-right: 2px;
   margin-top: 2px;
-  color: $form_error_color;
+  color: $form_error_color_forms;
 }
 
 .form_requirement {
@@ -152,9 +152,9 @@ form #cell_phone{
 }
 
 select[disabled] {
-  color: $form_error_color;
+  color: $form_error_color_forms;
   border: 1px solid $border_color;
-  background-color: $form_select_disabled_background;
+  background-color: $form_select_disabled_background_forms;
 }
 
 .radio_options label{ // TODO: usado apenas em editions

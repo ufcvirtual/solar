@@ -11,14 +11,14 @@
   padding: 10px;
   overflow: auto;
   border-color: $color_black;
-  background-color: $color_white;
+  background-color: $color_white_lightbox;
 }
 
 #lightBoxDialogTitle {
   @extend %page-title;
 
   h1 {
-    color: $lightbox_dialog_title_color;
+    color: $lightbox_dialog_title_color_lightbox;
   }
   i{
     padding-left: 10px;
@@ -56,12 +56,13 @@
 
 .fancybox-wrap {
   .fancybox-skin {
-    background-color: $color_white;
+    background-color: $color_white_lightbox;
   }
 
   .fancybox-inner{
     max-height: 1000px;
     overflow-y: auto;
+    color: $lightbox_fancybox_inner_color;
   }
 
   // fixme andrei

@@ -9,7 +9,7 @@
 }
 
 .warning {
-  color: $color_contrast_text;
+  color: $color_contrast_text_alert;
 }
 
 .flash_message_wrapper {
@@ -70,7 +70,7 @@
 
 .sticky-float {
   .flash_message_wrapper {
-    background-color: rgba($color_white, 0.8);
+    background-color: rgba($color_white_alert, 0.8);
     width: 785px;
     z-index: 1000;
   }
@@ -80,7 +80,7 @@
 }
 
 label {
-  color: $color_black;
+  color: $color_white_alert;
   display: inline-block;
   width: 140px;
   .menor {

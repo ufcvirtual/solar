@@ -36,6 +36,10 @@ form{
 table.webconferences{
   thead{
     tr.lines{
+      th{
+        background-color: $thead_background_color;
+        color: $thead_color;
+      }
       th.no_sort{
         text-align: center;
         width: 5px;

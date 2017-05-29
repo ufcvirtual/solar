@@ -28,8 +28,8 @@
 }
 
 .box, #tab label{
-  border: 1px solid $color_gray;
-  background-color: $color_white;
+  border: 1px solid $color_gray_chat_rooms;
+  background-color: $color_white_chat_rooms;
 }
 
 #tab label{
@@ -118,6 +118,17 @@ a.chat_list {
     td.message{
       width: 40%;
       text-align: left;
+    }
+  }
+}
+
+table.chats {
+  thead{
+    tr.lines{
+      th {
+        background-color: $thead_background_color;
+        color: $thead_color;
+      }
     }
   }
 }

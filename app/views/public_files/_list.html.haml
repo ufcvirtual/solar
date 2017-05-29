@@ -9,7 +9,7 @@
     .block_content
       - no_files = (public_files.blank?)
       - unless no_files
-        %table.tb_list{summary: t("public_files.list.summary") }
+        %table.tb_list.assignments{summary: t("public_files.list.summary") }
           %thead{style: (no_files ? "display: none" : "")}
             %tr.lines
               %th.no_sort
