@@ -24,10 +24,6 @@ class ExamsController < ApplicationController
     @exam.build_schedule(start_date: Date.today, end_date: Date.today)
   end
 
-  def client_network_ip
-    render json: { network_ip: get_remote_ip }
-  end
-
   def create
     authorize! :create, Exam, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @exam = Exam.new exam_params

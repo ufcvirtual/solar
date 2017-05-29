@@ -33,17 +33,18 @@
     var remove_button_network_ip = "";
     var click_remove_button_network_ip = false;
 
-    var url = "#{Rails.application.routes.url_helpers.client_network_ip_exams_path}";
+    var url = "#{Rails.application.routes.url_helpers.client_network_ip_path}";
     $.get(url, function(data) {
       current_network_ip = data.network_ip;
+      // Para teste
+      if( !current_network_ip ) {
+        $.get("https://api.ipify.org", function(data) {
+          current_network_ip = data;
+        });
+      }
     }, "json");
 
-    // Para teste
-    if( !current_network_ip ) {
-      $.get("https://api.ipify.org", function(data) {
-        current_network_ip = data;
-      });
-    }
+   
 
     $("#current_ip > a").on("click", function(event){
       // Verifica se o ip da rede local já foi incluido manualmente

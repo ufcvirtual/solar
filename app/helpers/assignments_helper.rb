@@ -72,4 +72,18 @@ module AssignmentsHelper
     @in_time    = acu.assignment.in_time?
   end
 
+   def link_to_add_fields(name, f, association, html_options={})
+    new_object = f.object.class.reflect_on_association(association).klass.new
+
+    fields = f.fields_for(association, new_object, :child_index => "new_#{association}") do |builder|
+      render("assignments/form/" + association.to_s.singularize + "_fields", :f => builder)
+    end
+
+    link_to_function(name, "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")", html_options)
+  end
+
+  def link_to_remove_fields(name, f, html_options={})
+    link_to_function(name, "remove_fields(this)", html_options)
+  end
+
 end
