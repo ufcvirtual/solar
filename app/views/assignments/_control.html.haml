@@ -1,0 +1,60 @@
+.input
+  = f.fields_for :ip_reals do |ip_form|
+    .fields_for_remove
+      = ip_form.hidden_field :_destroy
+      = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields",  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
+      = label_tag t(".select_type"), nil, class: "select_ip_label"
+      = select_tag "ip_type", options_for_select([["IPV4", "ipv4"], ["IPV6", "ipv6"]]), class: "select_ip_type"
+      = ip_form.input :ip_v4, as: :string, label: false, input_html: { size: 15, class: "ip_v4" }
+      = ip_form.input :ip_v6, as: :string, label: false, input_html: { size: 40, class: "ip_v6" }
+
+.input.duplicatable_nested_form
+
+.input#new_form_ip
+  = f.label t('.add_new_ip_reals')
+  = link_to_add_fields_ip content_tag(:i, nil, class: 'icon-plus'), f, :ip_reals, class: "btn btn_main add_fields", :'data-tooltip' => t('.add_new_ip_reals'), :'aria-label' => t('.add_new_ip_reals')
+
+.right_buttons.clear
+  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
+  = button_to_function t('.previous'), 'back()', class: 'btn btn_default btn_main btn_lightbox', type: 'button'
+  = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "save"
+
+:css
+  .schedule_dates .input input, #assignment_type_assignment {
+    width: 85px;
+  }
+
+  .schedule_dates .left, .right {
+    float: left;
+  }
+  .ckb {
+    display: inline-block;
+    float: left;
+  }
+  .input.boolean{
+    display: none;
+  }
+  .clear{
+    clear: both;
+  }
+
+:javascript
+  function back(){
+    $('#basic_info').removeClass('hidden');
+    $('#control_info').addClass('hidden');
+  }
+
+  function masck_ip(input){
+    var id = $(input).attr("id");
+    var patt_v4 = /ip_v4/i;
+
+    if ( patt_v4.test(id) ) {
+      $(input).mask('0ZZ.0ZZ.0ZZ.0ZZ', {
+        translation: {
+          'Z': {
+            pattern: /[0-9]/, optional: true
+          }
+        }
+      });
+    }
+  }

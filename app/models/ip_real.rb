@@ -2,6 +2,7 @@ class IpReal < ActiveRecord::Base
   require "resolv"
 
   belongs_to :exam
+  belongs_to :assignment
   # has_many :ip_fakes, dependent: :destroy
   attr_accessible :id, :ip_v4, :ip_v6, :_destroy
 

@@ -6,7 +6,7 @@
 
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
-    .form-inputs.block_content.assignments_box
+    .form-inputs.block_content.assignments_box#basic_info
       = f.input :name, required: true
       = f.input :enunciation, required: true
 
@@ -19,7 +19,7 @@
           .left
             = f.input :start_hour
           .right_form
-            = f.input :end_hour    
+            = f.input :end_hour
 
       - types = {:"#{t('.individual')}" => Assignment_Type_Individual, :"#{t('.group')}" => Assignment_Type_Group}
       = f.input :type_assignment, collection: types, include_blank: false, required: true
@@ -46,9 +46,21 @@
 
       = render "groups/codes"
 
-      .right_buttons
+      .input
+        = f.label :controller
+        = f.input :controller, as: :boolean, label: false
+        = link_to_function (image_tag "#{@assignment.controller ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (@assignment.controller ? t('.environment_controlled') : t('.environment_not_controlled')), :'data-id' => 'controlled', :'data-active' => t('.environment_controlled'), :'data-not-active' => t('.environment_not_controlled')
+
+      .right_buttons.clear#without_control
         = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
         = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "save"
+
+      .right_buttons.clear.hidden#with_control
+        = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', alt: t(:cancel), type: 'button'
+        = button_to_function t('.continue'), 'controls()', class: 'btn btn_main btn_lightbox', alt: t('.continue'), type: 'button'
+
+    .form-control.hidden#control_info
+      = render partial: 'control', locals: { f: f }
 
 :css
   .schedule_dates .input input, #assignment_type_assignment {
@@ -57,6 +69,16 @@
 
   .schedule_dates .left, .right {
     float: left;
+  }
+  .ckb {
+    display: inline-block;
+    float: left;
+  }
+  .input.boolean{
+    display: none;
+  }
+  .clear{
+    clear: both;
   }
 
 :javascript
@@ -121,7 +143,7 @@
       });
       setTimeout(function() {
         focuInpuErro();
-      }, 700);  
+      }, 700);
     });
 
     // datepicker //
@@ -142,3 +164,26 @@
     $('#assignment_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#assignment_start_date').datepicker("option", "maxDate", selected); } }) );
 
   });
+
+  function change(img){
+    var checkbox = $(img).siblings('.input').find('input');
+    checkbox.prop('checked', !checkbox.prop('checked'));
+
+    if(!!checkbox.prop('checked')){
+      $(img).html('<img alt="Released" src="/assets/released.png"/>');
+      $(img).attr('data-tooltip', $(img).data('active'));
+      $("#without_control").hide();
+      $("#with_control").show();
+    }else{
+      $(img).html('<img alt="Rejected" src="/assets/rejected.png"/>');
+      $(img).attr('data-tooltip', $(img).data('not-active'));
+      $("#without_control").show();
+      $("#with_control").hide();
+    }
+    $.getScript("/assets/tooltip.js");
+  }
+
+  function controls() {
+    $('#basic_info').addClass('hidden');
+    $('#control_info').removeClass('hidden');
+  }
