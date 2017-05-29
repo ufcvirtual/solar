@@ -642,6 +642,9 @@ class User < ActiveRecord::Base
       result[:error] << I18n.t(:no_permission)
       return result
     end
+    if Profile.find(profile).has_type?(Profile_Type_Student) && !by_user.blank?
+      result[:error] << I18n.t('enrollments.index.uab_enrollment')
+    end
     Allocation.transaction do
       allocation_tag_ids.each do |at|
         al = allocations.build(allocation_tag_id: at, profile_id: profile)

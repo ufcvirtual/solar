@@ -147,24 +147,23 @@ a.fc-event-title{
     width: 435px;
     .dropdown-panel{
         margin-bottom: 10px;
-        background-color: $exclusive_background_color
+        background-color: $schedule_event_background_color;
       }
     .event_details_dropdown{
       h1, h2, h3, h4, .group_label label{
         font-family: 'PT Sans', sans-serif;
         background-color: $color_white;
-        color: $exclusive_font_color;
+        color: $schedule_event_color_text;
         border-bottom: none;
       }
       h2{
-        color: $color_black;
         font-weight: bold;
         text-align: left;
         font-size: 11pt;
       }
 
       h3, .group_label label, h3 p{
-        color: $color_gray_text;
+        color: $schedule_event_color_gray_text;
         font-size: 10pt;
         font-weight: normal;
         text-align: left;
