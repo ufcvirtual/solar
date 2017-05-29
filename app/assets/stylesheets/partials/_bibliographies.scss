@@ -43,8 +43,8 @@ table.bibliography {
   thead{
     tr.lines{
       th {
-        background-color: $exclusive_background_color;
-        color: $exclusive_font_color;
+        background-color: $exclusive_font_color;
+        color: $exclusive_background_color;
       }
     }
   }
