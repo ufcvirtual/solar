@@ -24,7 +24,7 @@
         %table.tb_list.general#list_of_students{cellspacing: "0", border: "0", summary: t('.list_of_students')}
           %thead
             %tr.lines
-              %th.no_sort{colspan: 11}
+              %th.no_sort{colspan: 13}
                 #tabs
                   =t('scores.index.general')
 
@@ -33,7 +33,9 @@
               %th{style: "width: 8%;"}= t('scores.index.access_to_the_course')
               - unless @wh.blank?
                 %th{style: "width: 8%;"}= t('scores.index.frequency')
+                %th{style: "width: 8%;"}= t('scores.index.faults')
               %th{style: "width: 8%;"}= t('scores.index.final_grade')
+              %th{style: "width: 8%;"}= t('scores.index.af')  
               %th{style: "width: 8%;"}= t('scores.index.public_files')
               %th{style: "width: 8%;"}= t("activerecord.models.assignment")
               %th{style: "width: 8%;"}= t("activerecord.models.exam")
@@ -48,12 +50,15 @@
                 %td{colspan: 2}= t('scores.index.no_data')
             - else
               - @users.each_with_index do |student, idx|
+                - af = AcademicAllocationUser.getAFUser(student.id, @allocation_tag_id) ? t('scores.info.t') : t('scores.info.f')
                 %tr.lines
                   %td.td_student=student.name
                   %td=student.u_logs
-                  - unless @wh.blank?
+                  - unless @wh.nil?
                     %td=student.working_hours
+                    %td=@wh.to_i - student.working_hours.to_i
                   %td=student.u_grade
+                  %td= af
                   %td=student.u_public_files
                   %td="#{student.assignments} de #{@tools.assignments_count}"
                   %td="#{student.exams} de #{@tools.exams_count}"
