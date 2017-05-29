@@ -94,7 +94,7 @@ class Allocation < ActiveRecord::Base
   def change_to_new_status(type, by_user)
     uc = allocation_tag.get_curriculum_unit
     if (!uc.blank? && uc.curriculum_unit_type_id == 2)
-      raise 'not_allowed_user_uab' if self.status ==  Allocation_Activated)
+      raise 'not_allowed_user_uab' if self.status ==  Allocation_Activated
       raise 'uab_general'
     end
     self.updated_by_user_id = by_user.try(:id)
