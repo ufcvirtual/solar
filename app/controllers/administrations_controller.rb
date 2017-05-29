@@ -123,6 +123,8 @@ class AdministrationsController < ApplicationController
     end
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue => error
+    render_json_error(error, 'enrollments.index')
   end
 
   ## INDICATION USERS
