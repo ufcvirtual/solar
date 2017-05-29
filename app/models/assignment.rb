@@ -10,17 +10,20 @@ class Assignment < Event
   has_many :allocations, through: :allocation_tags
   has_many :enunciation_files, class_name: 'AssignmentEnunciationFile', dependent: :destroy
   has_many :group_assignments, through: :academic_allocations, dependent: :destroy
+  has_many :ip_reals, dependent: :destroy
   
   before_destroy :can_destroy?
  
   validates :start_hour, presence: true, if: lambda { |c| c[:start_hour].blank?  && !c[:end_hour].blank? }
   validates :end_hour  , presence: true, if: lambda { |c| !c[:start_hour].blank? && c[:end_hour].blank?  }
   validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
+  validates_associated :ip_reals, if: 'controlled'
 
   before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # data final obrigatoria
 
   accepts_nested_attributes_for :schedule 
   accepts_nested_attributes_for :enunciation_files, allow_destroy: true, reject_if: proc { |attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank? }
+  accepts_nested_attributes_for :ip_reals, allow_destroy: true, reject_if: lambda { |e| e[:ip_v4].blank? && e[:ip_v6].blank?  }
 
   validates :name, :enunciation, :type_assignment, presence: true
   validates :name, length: { maximum: 1024 }
@@ -206,6 +209,14 @@ class Assignment < Event
 
   def self.update_previous(ac_id, users_ids, acu_id)
     return false
+  end
+
+  def network_ips_permited_to_do_the_assignment(user_ip)
+    IpReal.where(ip_v4: user_ip, assignment_id: self.id)
+  end
+
+  def controlled_network_ip_validates
+    errors.add(:assignment, I18n.t("exams.controlled")) if self.ip_reals.size < 1
   end
 
 end
