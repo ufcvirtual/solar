@@ -220,4 +220,11 @@ class Assignment < Event
     errors.add(:assignment, I18n.t("exams.controlled")) if self.ip_reals.size < 1
   end
 
+  def using_local_network
+    ip_reals = IpReal.all
+    ip_reals.each do |ip|
+      return true if ip.use_local_network
+    end
+    return false
+  end
 end

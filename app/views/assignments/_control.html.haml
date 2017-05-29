@@ -1,16 +1,21 @@
-.input
+.input#current_ip
+  = f.label :using_local_network, t(".current_ip_real")
+  = f.input :using_local_network, as: :boolean, label: false
+  = link_to_function (image_tag "#{f.object.using_local_network ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.using_local_network ? t('.current_ip') : t('.not_current_ip')), :'data-id' => 'current_ip', :'data-active' => t('.current_ip'), :'data-not-active' => t('.not_current_ip')
+
+.input.clear
   = f.fields_for :ip_reals do |ip_form|
     .fields_for_remove
       = ip_form.hidden_field :_destroy
       = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields",  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
       = label_tag t(".select_type"), nil, class: "select_ip_label"
-      = select_tag "ip_type", options_for_select([["IPV4", "ipv4"], ["IPV6", "ipv6"]]), class: "select_ip_type"
-      = ip_form.input :ip_v4, as: :string, label: false, input_html: { size: 15, class: "ip_v4" }
-      = ip_form.input :ip_v6, as: :string, label: false, input_html: { size: 40, class: "ip_v6" }
+      = select_tag "ip_type", options_for_select([["IPV4", "ipv4"], ["IPV6", "ipv6"]]), class: "select_ip_type", onchange: "toggleIP(this)"
+      = ip_form.input :ip_v4, as: :string, label: false, input_html: { size: 15, class: "ip_v4 left" }
+      = ip_form.input :ip_v6, as: :string, label: false, input_html: { size: 40, class: "ip_v6 left" }
 
-.input.duplicatable_nested_form
+.input.clear.duplicatable_nested_form
 
-.input#new_form_ip
+.input.clear#new_form_ip
   = f.label t('.add_new_ip_reals')
   = link_to_add_fields_ip content_tag(:i, nil, class: 'icon-plus'), f, :ip_reals, class: "btn btn_main add_fields", :'data-tooltip' => t('.add_new_ip_reals'), :'aria-label' => t('.add_new_ip_reals')
 
@@ -27,7 +32,7 @@
   .schedule_dates .left, .right {
     float: left;
   }
-  .ckb {
+  .ip_v4, .ip_v6 {
     display: inline-block;
     float: left;
   }
@@ -36,6 +41,22 @@
   }
   .clear{
     clear: both;
+  }
+  #current_ip {
+    margin-top: 15px;
+  }
+  #current_ip label {
+    width: 200px;
+  }
+  #current_ip a, .fields_for_remove a, #new_form_ip a {
+    float: right;
+  }
+  #new_form_ip {
+    margin: 15px 0;
+  }
+  #new_form_ip label {
+    display: inline-block;
+    float: left;
   }
 
 :javascript
@@ -58,7 +79,19 @@
       });
     }
   }
+
+  function toggleIP(selected){
+    if( $(selected).val() === "ipv4" ) {
+      $(selected).closest(".fields_for_remove").find(".ip_v4").show();
+      $(selected).closest(".fields_for_remove").find(".ip_v6").hide();
+    } else if( $(selected).val() === "ipv6" ) {
+      $(selected).closest(".fields_for_remove").find(".ip_v4").hide();
+      $(selected).closest(".fields_for_remove").find(".ip_v6").show();
+    }
+  }
+
   jQuery(function($){
+    $(".ip_v6").hide();
 
     if ($(".file_input:last").length)
       var nested_form = $(".file_input:first");
@@ -116,4 +149,4 @@
         focuInpuErro();
       }, 700);
     });
-  });  
+  });

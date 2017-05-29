@@ -9,7 +9,7 @@
   -#   = f.hidden_field :_destroy
   -#   = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields",  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
 
-.fields_for_remove
+.fields_for_remove.clear
   = f.hidden_field :_destroy
   = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields",  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
   = label_tag "Selecione o tipo:", nil,class: "select_ip_label"
@@ -18,6 +18,24 @@
   = f.input :ip_v6, as: :string, label: false, input_html: { size: 40, class: "ip_v6" }
 
 = javascript_include_tag 'jquery.mask'
+:css
+  .clear{
+    clear: both;
+  }
+  .select_ip_label, .select_ip_type, .ip_v4, .ip_v6 {
+    float: left;
+  }
+  .select_ip_type, .ip_v4, .ip_v6 {
+    margin-left: 10px;
+    margin-bottom: 15px;
+  }
+  .select_ip_label {
+    width: 100px;
+    padding-top: 2px;
+  }
+  .ip_v6 {
+    display: none;
+  }
 
 :javascript
   $(document).ready(function(){
