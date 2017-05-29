@@ -9,12 +9,12 @@
     %td=student.u_grade
     %td= af
     %td=student.u_public_files
-    %td="#{student.assignments} de #{@tools.assignments_count}"
-    %td="#{student.exams} de #{@tools.exams_count}"
-    %td="#{student.discussions} de #{@tools.discussions_count}"
-    %td="#{student.chat_rooms} de #{@tools.chat_rooms_count}"
-    %td="#{student.webconferences} de #{@tools.webconferences_count}"
-    %td="#{student.schedule_events} de #{@tools.events_count}"
+    %td=[student.assignments, t(:of), @tools.assignments_count].join(' ')
+    %td=[student.exams, t(:of), @tools.exams_count]. join(' ')
+    %td=[student.discussions, t(:of), @tools.discussions_count]. join(' ')
+    %td=[student.chat_rooms, t(:of), @tools.chat_rooms_count]. join(' ')
+    %td=[student.webconferences, t(:of), @tools.webconferences_count]. join(' ')
+    %td=[student.schedule_events, t(:of), @tools.events_count]. join(' ')
 
 
 = javascript_include_tag 'tableHeadFixer','tooltip', 'tablesorter', 'scores'

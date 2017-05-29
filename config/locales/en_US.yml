@@ -522,7 +522,7 @@ en_US:
               invalid_type: invalid
 
   all: "All"
-  of: "Of"
+  of: "of"
   required_fields: "* required field(s)"
   object_not_found: "Object not found"
   search: "Search"
