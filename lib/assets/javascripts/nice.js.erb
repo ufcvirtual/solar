@@ -70,7 +70,7 @@ $.fn.nice_checkbox = function(options) {
           }
         }
       } // end if
-      
+
       children = $('input:checkbox[name*="' + children_names + '"]:not(".disabled")', parent_block_div);
 
       var icon = $('i', parent), check_parent = (kid.checked && children.length == children_checked.length);
@@ -304,9 +304,11 @@ $.fn.serialize_and_submit = function(options) {
       if (typeof(response.alert) != "undefined"){
         if (typeof(response.object) != "undefined"){
           flash_message(response.alert, 'alert', name, null, response.object);
+        }else if(response.outer != "undefined"){
+          flash_message(response.alert, 'alert', response.outer);
         }else{
           flash_message(response.alert, 'alert', name);
-        }  
+        }
       }
 
       if (typeof(options.complement_error) == "function"){
@@ -366,7 +368,7 @@ $.fn.nice_open_lesson = function(options) {
     autoSize: true,
     afterShow: function() {
       $("<a class='fancybox-item fancybox-minimize'  title=<%=I18n.t('fancybox.minimize')%> aria-label=<%=I18n.t('fancybox.minimize')%>></a>").appendTo(this.skin).click(minimize_lesson);
-      
+
       add_description_to_close_fancybox_btn("<%=I18n.t(:menu_lesson)%>");
       focus_on_fancybox_element(undefined, undefined, "<%=I18n.t(:menu_lesson)%>");
       remove_focus_from_back();

@@ -13,19 +13,24 @@ class Exam < Event
   has_many :questions     , through: :exam_questions
   has_many :exam_user_attempts, through: :academic_allocation_users
   has_many :exam_responses, through: :exam_user_attempts
+  has_many :ip_reals, dependent: :destroy
+  # has_many :ip_fakes, through: :ip_reals
 
   validates :name, :duration, :number_questions, :attempts, presence: true
   validates :name, length: { maximum: 99 }
   validates :number_questions, :attempts, :duration, numericality: { greater_than_or_equal_to: 1, allow_blank: false }
   validates :start_hour, presence: true, if: lambda { |c| c[:start_hour].blank?  && !c[:end_hour].blank? }
   validates :end_hour  , presence: true, if: lambda { |c| !c[:start_hour].blank? && c[:end_hour].blank?  }
+  validates_associated :ip_reals, if: 'controlled'
 
   validate :can_edit?, only: :update
   validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
+  validate :controlled_network_ip_validates, if: 'controlled' # mandatory at least one ip if the exam is controlled
 
   before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # mandatory final date
 
   accepts_nested_attributes_for :schedule
+  accepts_nested_attributes_for :ip_reals, allow_destroy: true, reject_if: lambda { |e| e[:ip_v4].blank? && e[:ip_v6].blank?  }
 
   before_destroy :can_destroy?
 
@@ -83,8 +88,8 @@ class Exam < Event
 
   def list_exam_correction(user_id=nil, ats=nil, all=nil)
     query = []
-    query << "academic_allocation_users.user_id = :user_id "   unless user_id.blank? 
-    query << "academic_allocations.allocation_tag_id IN (#{ats}) "  unless ats.blank?  
+    query << "academic_allocation_users.user_id = :user_id "   unless user_id.blank?
+    query << "academic_allocations.allocation_tag_id IN (#{ats}) "  unless ats.blank?
     query << "exam_user_attempts.grade IS NULL" unless all.blank?
     query << "(schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour IS NOT NULL AND end_hour != '' AND end_hour::time < current_time))"
 
@@ -92,7 +97,7 @@ class Exam < Event
             .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id")
             .where(exams: { id: id, status: true }).where(query.join(' AND '), { user_id: user_id })
             .select("DISTINCT academic_allocation_users.*, academic_allocations.allocation_tag_id")
-  end  
+  end
 
   def correction_exams(acu_id)
     questions_exam = ExamQuestion.list_correction(id, raffle_order)
@@ -104,7 +109,7 @@ class Exam < Event
       questions_exam.each do |question|
         if question.annulled
           grade_question =  question.score
-        else  
+        else
           if question.type_question.to_i == Question::UNIQUE
             grade_question = count_correct_items(exam_user_attempt, question, true) * question.score
           elsif question.type_question.to_i == Question::MULTIPLE
@@ -117,19 +122,19 @@ class Exam < Event
             score_item = question.score / question.question_items.count
             count_correct_items = count_correct_items(exam_user_attempt, question)
             grade_question = count_correct_items * score_item
-          end  
-        end  
+          end
+        end
         grade_exam = grade_exam + grade_question
       end
-      grade_exam = grade_exam > 10 ? 10.00 : grade_exam 
+      grade_exam = grade_exam > 10 ? 10.00 : grade_exam
 
       if exam_user_attempt.end
-        ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), complete: true) 
-      else  
-        ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), end: DateTime.now, complete: true)  
+        ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), complete: true)
+      else
+        ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), end: DateTime.now, complete: true)
       end
     end
-  end 
+  end
 
   def count_correct_items(exam_user_attempt, question, t=nil)
     query = t.blank? ? '' : " AND question_items.value = #{t}"
@@ -148,14 +153,14 @@ class Exam < Event
 
   def can_correct?(user_id, ats)
     AcademicAllocationUser.joins(academic_allocation: [exam: :schedule]).joins('LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id').where("schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour::time < current_time)").where(user_id: user_id, exams: { status: true, id: id }, academic_allocations: { allocation_tag_id: ats }).where('exam_user_attempts.grade IS NULL').any?
-  end                  
+  end
 
   def self.correction_cron
     list_exam = Exam.includes(:schedule).where("schedules.end_date<current_date AND auto_correction=TRUE")
     list_exam.each do |exam|
       exam.recalculate_grades(nil, nil, true)
     end
-  end  
+  end
 
   def copy_dependencies_from(exam_to_copy)
     unless exam_to_copy.exam_questions.empty?
@@ -257,12 +262,12 @@ class Exam < Event
         .group('exams.id')
         .uniq('exams.id')
   end
-  
+
   def self.my_exams(allocation_tag_ids)
   	Exam.joins(:academic_allocations, :schedule)
       .where(academic_allocations: {allocation_tag_id: allocation_tag_ids},
           status: true)
-      .select('DISTINCT exams.*, schedules.start_date as start_date, schedules.end_date as end_date, evaluative, frequency') 
+      .select('DISTINCT exams.*, schedules.start_date as start_date, schedules.end_date as end_date, evaluative, frequency')
       .order('id DESC')
   end
 
@@ -336,14 +341,14 @@ class Exam < Event
 
     if mod_correct_exam == Exam::GREATER
       grade = ExamUserAttempt.where(academic_allocation_user_id: acu_id).maximum(:grade)
-      @exam_user_attempt =  ExamUserAttempt.where(academic_allocation_user_id: acu_id, grade: grade).last        
+      @exam_user_attempt =  ExamUserAttempt.where(academic_allocation_user_id: acu_id, grade: grade).last
     elsif mod_correct_exam == Exam::LAST
       @exam_user_attempt = ExamUserAttempt.where(academic_allocation_user_id: acu_id).last
     else
       @exam_user_attempt = ExamUserAttempt.find(id)
-    end 
+    end
     @exam_user_attempt
-  end 
+  end
 
   def log_description
     desc = {}
@@ -373,18 +378,18 @@ class Exam < Event
     case attempts_correction
     when Exam::GREATER; attempts.maximum(:grade)
     when Exam::AVERAGE; attempts.average(:grade)
-    else 
+    else
       attempts.last.grade
     end
   end
-  
+
   def self.get_exam_user_attempt(mod_correct_exam, acu_id)
     if mod_correct_exam == Exam::GREATER
       max_grade = ExamUserAttempt.where(academic_allocation_user_id: acu_id).maximum(:grade)
       ExamUserAttempt.where(academic_allocation_user_id: acu_id, grade: max_grade).last
     elsif mod_correct_exam == Exam::LAST
       ExamUserAttempt.where(academic_allocation_user_id: acu_id).last
-    end 
+    end
   end
 
   def self.verify_blocking_content(user_id)
@@ -414,10 +419,18 @@ class Exam < Event
                  .where(wq + "academic_allocations.allocation_tag_id= ?",  at.id )
                  .select("exams.*, schedules.start_date AS start_date, schedules.end_date AS end_date")
                  .order("start_date")
-  end  
+  end
 
   def self.percent(total, answered)
     ((answered.to_f/total.to_f)*100).round(2)
+  end
+
+  def network_ips_permited_to_do_the_exams(user_ip)
+    IpReal.where(ip_v4: user_ip, exam_id: self.id)
+  end
+
+  def controlled_network_ip_validates
+    errors.add(:exam, I18n.t("exams.controlled")) if self.ip_reals.size < 1
   end
 
 end

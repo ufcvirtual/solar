@@ -522,7 +522,7 @@ en_US:
               invalid_type: invalid
 
   all: "All"
-  of: "Of"
+  of: "of"
   required_fields: "* required field(s)"
   object_not_found: "Object not found"
   search: "Search"
@@ -2743,7 +2743,7 @@ en_US:
       trash: 65
       reply: 82
       reply_all: 69
-      forward: 70 
+      forward: 70
       shortcut_new: "[N]"
       shortcut_all: "[A]"
       shortcut_reads: "[R]"
@@ -3345,6 +3345,8 @@ en_US:
     status: Status
     none: No registered test
     restrict: student in test content not allowed
+    restrict_test: "This place is not permit to do the test"
+    controlled: "Proof controlled: At least one IP is required"
     percentage: "<b>%{percent}% of exam was made</b>"
     print: Print result
     selected_correctly: Correctly selected item
@@ -3418,15 +3420,30 @@ en_US:
         dont_send_mail: Don't send mail
         can_interrupt: Exam can be interrupted and continued at another time (within the limits of time and period)
         cant_interrupt: "Exam can't be interrupted, after start must be finished. Unless the interruption is forced (such as connection problems)"
+        environment_controlled: 'You can control where the student will take the test (for example: labs, academic blocks, etc.)'
+        environment_not_controlled: 'The student can take the test in any place (for example: laboratories, home, lan houses, etc.)'
         block: Block content
         dont_block: Don't block content
-      steps:
+        continue: Continue
       steps:
         info: Information
         config: Configuration
+        control: Controls
       info:
         continue: Continue
         duration: Student's time to respond the exam after start it.
+      control:
+        continue: Continue
+        previous: Previous
+        current_ip: The IP of the local network will be used
+        not_current_ip: The IP of the local network will NOT be used.
+        current_ip_real: "Use current network IP:"
+        add_others_ip_reals: "Add new IP"
+        network_ip_registred: "Local network registered"
+        link_to_remove_fields: "Remove form of IPs"
+      ip_real_fields:
+        legend_description_new_ip: "New IP where the test will be performed"
+        link_to_remove_fields: "Remove form of IPs"
     pre:
       alert_save: All questions are automatically saved.
       alert_start: Click the link below if you are sure you want to start the exam.
@@ -3841,6 +3858,10 @@ en_US:
     error:
       validate: 'Validation errors have occurred. \n\n Could not complete the operation'
       duration: 'Exam already closed! \n\n Could not complete the operation'
+
+  ip_reals:
+    errors:
+      ip: "Invalid IP"
 
   digital_classes:
     index:
