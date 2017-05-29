@@ -27,6 +27,7 @@ class Assignment < Event
 
   validates :name, :enunciation, :type_assignment, presence: true
   validates :name, length: { maximum: 1024 }
+  validate :controlled_network_ip_validates, if: 'controller' # mandatory at least one ip if the assignment is controller
 
   validate :verify_date, on: :update, if: 'type_assignment_changed?'
 

@@ -52,11 +52,13 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.new
     @assignment.build_schedule(start_date: Date.today, end_date: Date.today)
     @assignment.enunciation_files.build
+    @assignment.ip_reals.build
   end
 
   def edit
     authorize! :update, Assignment, on: @allocation_tags_ids
     @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
+    @assignment.ip_reals.build
   end
 
   def create
@@ -68,6 +70,7 @@ class AssignmentsController < ApplicationController
 
     @assignment.save!
     render_assignment_success_json('created')
+    
   rescue => error
     if @assignment.errors.empty?
       request.format = :json
@@ -75,7 +78,19 @@ class AssignmentsController < ApplicationController
     else
       @files_errors = @assignment.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
-      render :new
+      mandatory_ip = false
+      erro_mensage = ""
+      @assignment.errors.each do |attribute, erro|
+        if attribute.to_s == "assignment"
+          mandatory_ip = true
+          erro_mensage += erro
+        end
+      end
+      if mandatory_ip && @assignment.errors.size == 1
+        render json: { success: false, alert: erro_mensage, outer: 'fancybox-outer' }, status: :unprocessable_entity
+      else
+        render :new
+      end  
     end
   end
 
@@ -86,7 +101,20 @@ class AssignmentsController < ApplicationController
     else
       @files_errors = @assignment.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
-      render :edit
+      @assignment.ip_reals.build
+      mandatory_ip = false
+      erro_mensage = ""
+      @assignment.errors.each do |attribute, erro|
+        if attribute.to_s == "assignment"
+          mandatory_ip = true
+          erro_mensage += erro
+        end
+      end
+      if mandatory_ip && @assignment.errors.size == 1
+        render json: { success: false, alert: erro_mensage, outer: 'fancybox-outer' }, status: :unprocessable_entity
+      else
+        render :edit
+      end  
     end
   rescue => error
     render_json_error(error, 'assignments.error')
@@ -112,10 +140,13 @@ class AssignmentsController < ApplicationController
   end
 
   def student
+    @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
     if user_session[:blocking_content]
       redirect_to list_assignments_path, alert: t('exams.restrict')
+    elsif @assignment.controller && @assignment.network_ips_permited_to_do_the_assignment(get_remote_ip).blank?
+      redirect_to list_assignments_path, alert: t('exams.restrict_test')
     else
-      @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
+     # @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
       verify_owner_or_responsible!(@allocation_tag_id)
       @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id) 
 
@@ -135,17 +166,27 @@ class AssignmentsController < ApplicationController
   end
 
   def download
+    
+    if params[:zip].present?
+      assignment = Assignment.find(params[:assignment_id])  
+    else
+      file = AssignmentEnunciationFile.find(params[:id])
+      assignment = Assignment.find(file.assignment_id)
+    end  
+   
     if Exam.verify_blocking_content(current_user.id)
       redirect_to :back, alert: t('exams.restrict')
+    elsif assignment.controller && assignment.network_ips_permited_to_do_the_assignment(get_remote_ip).blank?
+      redirect_to list_assignments_path, alert: t('exams.restrict_test')  
     else
       authorize! :download, Assignment, on: [active_tab[:url][:allocation_tag_id]]
       if params[:zip].present?
-        assignment = Assignment.find(params[:assignment_id])
+        #assignment = Assignment.find(params[:assignment_id])
         assignment_started?(assignment)
         path_zip = compress({ files: assignment.enunciation_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
         download_file(:back, path_zip || nil)
       else
-        file = AssignmentEnunciationFile.find(params[:id])
+        #file = AssignmentEnunciationFile.find(params[:id])
         assignment_started?(file.assignment)
         download_file(:back, file.attachment.path, file.attachment_file_name)
       end
@@ -166,7 +207,10 @@ class AssignmentsController < ApplicationController
   private
 
     def assignment_params
-      params.require(:assignment).permit(:name, :enunciation, :type_assignment, :start_hour, :end_hour, schedule_attributes: [:id, :start_date, :end_date], enunciation_files_attributes: [:id, :attachment, :_destroy])
+      params.require(:assignment).permit(:name, :enunciation, :type_assignment, :start_hour, :end_hour, :controller,
+        schedule_attributes: [:id, :start_date, :end_date], 
+        enunciation_files_attributes: [:id, :attachment, :_destroy],
+        ip_reals_attributes: [:id, :ip_v4, :ip_v6, :use_local_network, :_destroy])
     end
 
     def render_assignment_success_json(method)

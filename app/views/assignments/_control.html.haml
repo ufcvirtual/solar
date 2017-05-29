@@ -17,7 +17,7 @@
 .right_buttons.clear
   = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
   = button_to_function t('.previous'), 'back()', class: 'btn btn_default btn_main btn_lightbox', type: 'button'
-  = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "save"
+  = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "_save"
 
 :css
   .schedule_dates .input input, #assignment_type_assignment {
@@ -58,3 +58,62 @@
       });
     }
   }
+  jQuery(function($){
+
+    if ($(".file_input:last").length)
+      var nested_form = $(".file_input:first");
+
+    // clona um arquivo existente e atualiza o nome
+    function add_new_file() {
+      var new_form = nested_form.clone();
+      var forms_on_page = $(".file_input").length;
+      var input_name = $("input[type='file']", new_form).attr("name");
+      input_name = input_name.replace(new RegExp(/\[[0-9]+\]/), "[" + forms_on_page + "]");
+      $("input", new_form).attr("name", input_name);
+
+      $(new_form).insertAfter( nested_form.last() );
+      $("input[type='file']", new_form).click();
+
+      $("input[type='file']", new_form).change(function(){
+        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-square warning remove_file'></i> </span> </div>";
+
+        if ($(".list_files_to_send .files:last").lenght)
+          $(".list_files_to_send .files:last").after(new_file_name);
+        else
+          $(".list_files_to_send").append(new_file_name);
+
+        $(".remove_file").click(function(){
+          var span_file = $(this).parents('span#file');
+
+          $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove();
+          $(span_file).parents('div.input.files').remove();
+        });
+      });
+    }
+
+    //// edicao
+
+    $(".remove_file").click(function(){
+      var span_file = $(this).parents('span#file');
+
+      $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove(); // pra edicao nao serve
+      $("input[data-file-id=" + span_file.data("file-id") + "]").val(1); // edicao: colocar o _destroy com valor 1
+      $(span_file).parents('div.input.files').remove();
+    });
+
+
+    $(".new_file").click(function(e){
+      e.preventDefault();
+      add_new_file();
+    });
+
+    $('#_save').click(function(){
+      $('#assignment_form:last').serialize_and_submit({
+        files: true,
+        replace_list: (("#{escape_once(params[:calendar])}" == "") ? $(".list_assignments") : $(".calendar_schedules"))
+      });
+      setTimeout(function() {
+        focuInpuErro();
+      }, 700);
+    });
+  });  

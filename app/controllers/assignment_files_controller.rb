@@ -10,9 +10,14 @@ class AssignmentFilesController < ApplicationController
   layout false
 
   def new
-    group = GroupAssignment.by_user_id(current_user.id, @ac.id)
-    academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], current_user.id, group.try(:id), true, nil)
-    @assignment_file = AssignmentFile.new academic_allocation_user_id: academic_allocation_user.id
+    @assignment = Assignment.find(params['assignment_id'])
+    if @assignment.controller && @assignment.network_ips_permited_to_do_the_assignment(get_remote_ip).blank?
+      render text: t('exams.restrict_test')
+    else
+      group = GroupAssignment.by_user_id(current_user.id, @ac.id)
+      academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], current_user.id, group.try(:id), true, nil)
+      @assignment_file = AssignmentFile.new academic_allocation_user_id: academic_allocation_user.id
+    end
   end
 
   def create
