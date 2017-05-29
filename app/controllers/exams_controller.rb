@@ -45,7 +45,7 @@ class ExamsController < ApplicationController
           erro_mensage += erro
         end
       end
-      if mandatory_ip || @exam.errors.size == 1
+      if mandatory_ip && @exam.errors.size == 1
         render json: { success: false, alert: erro_mensage, outer: 'fancybox-outer' }, status: :unprocessable_entity
       else
         render :new
@@ -93,7 +93,7 @@ class ExamsController < ApplicationController
           erro_mensage += erro
         end
       end
-      if mandatory_ip || @exam.errors.size == 1
+      if mandatory_ip && @exam.errors.size == 1
         render json: { success: false, alert: erro_mensage, outer: 'fancybox-outer' }, status: :unprocessable_entity
       else
         render :edit
