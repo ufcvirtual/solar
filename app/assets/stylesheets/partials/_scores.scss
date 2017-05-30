@@ -111,29 +111,53 @@ tr#activities{
     color: $evaluated_color_score;
   }
 
-  .sent, .sent a, .evaluated a
+  .sent {
+    color: $portfolio_assignment_color;
+  }
+
+  .sent a, .evaluated a
   td.assignment_as a {
-    color: $sent_color_score;
+    color: $portfolio_assignment_color_link;
   }
 
-  .assignment_as, .assignment_as a{
-    color: $sent_color_score;
+  .assignment_as {
+    color: $portfolio_assignment_color;
   }
 
-  .not_sent, .not_sent a{
-    color: $not_sent_color;
+  .assignment_as a{
+    color: $portfolio_assignment_color_link;
   }
 
-  .not_started, .not_started a {
-    color: $not_started_color;
+  .not_sent {
+    color: $portfolio_assignment_not_sent_color;
   }
 
-  .to_send, .to_send a{
-    color: $color_white_font_color_score;
+  .not_sent a{
+   color: $portfolio_assignment_not_sent_color_link;
   }
 
-  .without_group, .without_group a{
-    color: $without_group_color_score;
+  .not_started {
+    color: $portfolio_assignment_not_started;
+  }
+
+  .not_started a {
+    color: $portfolio_assignment_not_started_link;
+  }
+
+  .to_send {
+    color: $portfolio_assignment_to_be_sent;
+  }
+
+  .to_send a{
+    color: $portfolio_assignment_to_be_sent_link;
+  }
+
+  .without_group {
+    color: $portfolio_assignment_without_group_color;
+  }
+
+  .without_group a{
+    color: $portfolio_assignment_without_group_color_link;
   }
 
   .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
