@@ -180,7 +180,7 @@ class AllocationsController < ApplicationController
 
     if result[:error].any?
       # apresenta apenas o erro do primeiro problema
-      render json: { success: false, msg: result[:error].first.errors.full_messages.uniq.join(', ') }, status: :unprocessable_entity
+      render json: { success: false, msg: (result[:error].first.errors.full_messages.uniq.join(', ') rescue result[:error]) }, status: :unprocessable_entity
     else
       render json: { success: true, msg: success_message, id: result[:success].map(&:id) }
     end
