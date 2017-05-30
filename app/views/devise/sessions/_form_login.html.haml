@@ -22,7 +22,7 @@
       - unless name == :timedout
         #flash_message{class: name}= content_tag :span, msg
 
-  = link_to image_tag("help-solar-grande.png", alt: t(:solar_faq)), "#faq", :class => 'panel-link', id: "faq-button"
+  = link_to image_tag("help-solar-grande.png", alt: t(:solar_faq)), faq_path, target: '_blank', :'aria-label' => t(:login_faq)+ t(:new_window)
 
 
   .fb-like

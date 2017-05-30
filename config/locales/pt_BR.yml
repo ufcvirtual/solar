@@ -1264,9 +1264,10 @@ pt_BR:
       confirm_ckeditor: "Tem certeza? Qualquer outra postagem em aberto para edição ou criação terá seu conteúdo perdido."
       confirm_cancel: 'Tem certeza de que deseja cancelar?'
       number_posts: 'Total de Posts %{n_post}'
-      show_my_post: "Ver meus posts"
+      show_my_post: "Ver minhas discussões"
     post:
       remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
+      new: Nova postagem
       answer: "Responder"
       edit: "Editar"
       remove: "Excluir"
@@ -1314,9 +1315,11 @@ pt_BR:
       new: 78
       list: 76
       thread: 65
+      discussion: 68
       shortcut_new: "[N]"
       shortcut_list: "[L]"
       shortcut_thread: "[A]"
+      shortcut_discussion: "[D]"
 
   post_files:
     new:

@@ -7,6 +7,10 @@
 
 :javascript
 
+  $(function(){
+    document.domain = "#{YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['domain']}";
+  });
+
   function find_note(name){
     var comment = '';
     var data =  {  
