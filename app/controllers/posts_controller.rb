@@ -49,9 +49,10 @@ class PostsController < ApplicationController
       @total_pages = 1 unless total_itens.to_i > 0
 
       @shortcut = Hash.new
-      @shortcut[t("posts.post.new_posts").to_s] = t("posts.shortcut.shortcut_new").to_s
+      @shortcut[t("posts.post.new").to_s] = t("posts.shortcut.shortcut_new").to_s
       @shortcut[t("posts.index.show_thread").to_s] = t("posts.shortcut.shortcut_thread").to_s
       @shortcut[t("posts.index.show_plainlist").to_s] = t("posts.shortcut.shortcut_list").to_s
+      @shortcut[t("posts.index.show_my_post").to_s] = t("posts.shortcut.shortcut_discussion").to_s
       
       respond_to do |format|
         format.html

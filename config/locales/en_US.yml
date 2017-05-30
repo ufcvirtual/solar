@@ -1078,6 +1078,7 @@ en_US:
   posts:
     index:
       show_plainlist: "Show as List"
+      new: New post
       show_thread: "Show as Thread"
       attach_file_title: "Send files"
       confirm_ckeditor: "Are you sure? Any other post with not finished edition or creation will have it's content lost."
@@ -1133,9 +1134,11 @@ en_US:
       new: 78
       list: 76
       thread: 84
+      discussion: 68
       shortcut_new: "[N]"
       shortcut_list: "[L]"
       shortcut_thread: "[T]"
+      shortcut_discussion: "[D]"
 
   post_files:
     new:

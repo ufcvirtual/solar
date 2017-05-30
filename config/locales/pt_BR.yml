@@ -1265,6 +1265,7 @@ pt_BR:
       show_my_post: "Ver minhas discussões"
     post:
       remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
+      new: Nova postagem
       answer: "Responder"
       edit: "Editar"
       remove: "Excluir"
@@ -1312,9 +1313,11 @@ pt_BR:
       new: 78
       list: 76
       thread: 65
+      discussion: 68
       shortcut_new: "[N]"
       shortcut_list: "[L]"
       shortcut_thread: "[A]"
+      shortcut_discussion: "[D]"
 
   post_files:
     new:
