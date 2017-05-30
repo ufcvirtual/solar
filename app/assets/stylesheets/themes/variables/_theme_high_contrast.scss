@@ -246,7 +246,7 @@ $info_color_score: $high_contrast_font_color;
 $color_little_dark_gray_score: $high_contrast_font_color;
 $color_white_background_score: $high_contrast_background_color;
 $evaluated_color_score: $high_contrast_font_color;
-$sent_color_score: $high_contrast_font_color;
+$sent_color_score: $high_contrast_link_color;
 $not_sent_color_score: $high_contrast_font_color;
 $without_group_color_score: $high_contrast_font_color;
 $score_table_background: $high_contrast_background_color;
@@ -257,6 +257,7 @@ $color_little_dark_gray_dropdown_scores: $high_contrast_background_color;
 $color_main_border_score: $high_contrast_border_color;
 $color_main_li_active_score: $high_contrast_font_color;
 $color_white_font_color_score: $high_contrast_background_color;
+$not_sent_color: $high_contrast_link_color;
 
 //questions
 $questions_link_color_contrast: $high_contrast_link_color;
@@ -378,7 +379,7 @@ $score_tbody_link: $high_contrast_font_color;
 // Tons vermelhos
 $removed_permission_color: #FF0000;
 $color_red: #CE1A15;
-$not_sent_color: #e12227;
+
 $without_group_color: #B15759;
 $error_color: #E03838;
 $edition_color: #D5031C;
