@@ -10,6 +10,16 @@
   }
 }
 
+.enrollment_list_enrolled {
+
+  tr.lines td {
+
+    a.allocation_cancel_enroll.btn_caution:hover{
+      color: $enrollment_cancel_button_hover_font_color;
+    }
+  }
+}
+
 .enrollment_search {
   height: 12px;
   font-size: 12px;
@@ -85,6 +95,10 @@
   color: $color_black;
 }
 
+.enrollment_label_search {
+  color: $enrollment_label_search_font_color;
+}
+
 .enrollment_bar {
   padding: 2px 4px;
 }
@@ -116,3 +130,4 @@
     width: 130px;
   }
 }
+
