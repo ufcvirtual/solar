@@ -84,6 +84,7 @@ class Bibliography < ActiveRecord::Base
               r << "v. #{volume}"            if volume
               r << "n. #{fascicle}"          if fascicle
               r << "p. #{pages}, #{publication_month}, <time datetime=#{publication_year}>#{publication_year}</time>" if pages && publication_month && publication_year
+              r.join('. ')
             when TYPE_ELECTRONIC_DOC
               r = [resume_authors]
               r << "<cite><strong>#{title}</strong></cite>"      if title
