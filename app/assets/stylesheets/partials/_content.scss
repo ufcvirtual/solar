@@ -260,6 +260,9 @@ div.block_title {
   > block_left, > block_right {
     vertical-align: top; /* garantindo que o conteudo do bloco fique proximo a linha superior */
   }
+  label {
+    color: $color_black_content;
+  }
 }
 
 .block_left, .block_right { /* largura dos blocos internos */
