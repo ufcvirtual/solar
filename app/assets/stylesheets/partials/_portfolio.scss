@@ -54,6 +54,7 @@
 .assignment_user_comment {
   float: left;
   padding-left: 10px;
+  color: $exclusive_font_color;
 }
 
 .assignment_comment {
@@ -62,6 +63,7 @@
   max-width: 785px;
   width: 100%;
   margin-top: 5px;
+  color: $exclusive_font_color;
 }
 
 .assignment_comment_head {
