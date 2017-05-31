@@ -3708,6 +3708,7 @@ pt_BR:
         network_ip_registred: "IP registrado"
         link_to_remove_fields: "Remover Formulário de IPs"
       ip_real_fields:
+        type_select: "Selecione o tipo:"
         legend_description_new_ip: "Novo IP onde será realizada a prova"
         link_to_remove_fields: "Remover Formulário de IPs"
     pre:

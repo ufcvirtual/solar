@@ -3,11 +3,11 @@
   = f.input :using_local_network, as: :boolean, label: false
   = link_to_function (image_tag "#{f.object.using_local_network ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.using_local_network ? t('.current_ip') : t('.not_current_ip')), :'data-id' => 'current_ip', :'data-active' => t('.current_ip'), :'data-not-active' => t('.not_current_ip')
 
-.input.clear
+.ip_fiels.clear
   = f.fields_for :ip_reals do |ip_form|
     - select_ip = ip_form.object.ip_v6.blank? ? 'ipv4' : 'ipv6'
     - very_ipv6 = select_ip == 'ipv6' ? 'ipv6' : false
-    .fields_for_remove
+    .fields_for_remove.clear
       = ip_form.hidden_field :_destroy
       = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields",  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
       = label_tag t(".select_type"), nil, class: "select_ip_label"
@@ -17,7 +17,7 @@
       = ip_form.input :use_local_network, as: :boolean, label: false
       = ip_form.hidden_field :very_ipv6, value: very_ipv6, class: "_very_ipv6"
 
-.input.clear.duplicatable_nested_form
+.ip_fiels.duplicatable_nested_form
 
 .input.clear#new_form_ip
   = f.label t('.add_new_ip_reals')
@@ -39,7 +39,7 @@
     float: left;
   }
   .ip_v4, .ip_v6 {
-   
+
     float: left;
   }
   .input.boolean{
@@ -84,7 +84,7 @@
       if( $(vIp6[i]).val()==='ipv6' ) {
         toggleIP($(vIp6[i]));
       }
-    }    
+    }
 
     if ($(".file_input:last").length)
       var nested_form = $(".file_input:first");

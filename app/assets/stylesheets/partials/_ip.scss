@@ -1,0 +1,88 @@
+#assignment_form {
+  label {
+    color: $color_main;
+  }
+  #current_ip {
+    margin-bottom: 15px;
+  }
+  #new_form_ip {
+    height: 30px;
+  }
+  #new_form_ip label {
+    text-align: left;
+  }
+  #current_ip, #new_form_ip {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  .ip_fiels {
+    margin-left: 20px;
+    margin-right: 20px;
+
+    .input.boolean{
+      display: none;
+    }
+    .select_ip_label {
+      display: inline-block;
+      margin-top: 3px;
+      width: 120px;
+    }
+    .select_ip_type {
+      padding-top: 3px;
+    }
+    .select_ip_label, .select_ip_type {
+      margin-right: 10px;
+    }
+    .ip_v4, .ip_v6, .select_ip_label, .select_ip_type {
+      float: left;
+    }
+    .remove_fields {
+      display: inline-block;
+      float: right;
+    }
+  }
+}
+
+#exam_form {
+  #current_ip label {
+    color: $color_main;
+  }
+  .ip_fiels{
+    margin-left: 20px;
+    margin-right: 20px;
+
+    .input.boolean{
+      display: none;
+    }
+    .select_ip_label {
+      display: inline-block;
+      width: 100px;
+      margin-top: 3px;
+    }
+    .select_ip_label, .select_ip_type {
+      margin-right: 10px;
+    }
+    label{
+      color: $color_main;
+      display: inline;
+    }
+    .ip_v4, .ip_v6, .select_ip_label, .select_ip_type {
+      float: left;
+    }
+    a, input, select, .remove_fields {
+      display: inline-block;
+      float: right;
+    }
+    input[type='number']{
+      width: 80px;
+    }
+  }
+}
+
+.clear{
+  clear: both;
+}
+
+.fields_for_remove {
+  height: 30px;
+}

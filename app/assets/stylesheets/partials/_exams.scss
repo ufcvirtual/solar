@@ -473,19 +473,25 @@
     width: 85px;
   }
 
-  #new_form_ip {
-    clear: both;
-  }
-
   .ckb{
     margin: 20px;
     .input.boolean{
       display: none;
     }
+    .select_ip_label {
+      display: inline-block;
+      width: 100px;
+    }
+    .select_ip_label, .select_ip_type {
+      margin-right: 10px;
+    }
     label{
       display: inline;
     }
-    a, input, select, .remove_fields{
+    .ip_v4, .ip_v6, .select_ip_label, .select_ip_type {
+      float: left;
+    }
+    a, input, select, .remove_fields {
       display: inline-block;
       float: right;
     }

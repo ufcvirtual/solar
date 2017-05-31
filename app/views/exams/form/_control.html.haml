@@ -3,11 +3,11 @@
   = f.input :use_local_network, as: :boolean, label: false
   = link_to_function (image_tag "#{f.object.use_local_network ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.use_local_network ? t('.current_ip') : t('.not_current_ip')), :'data-id' => 'current_ip', :'data-active' => t('.current_ip'), :'data-not-active' => t('.not_current_ip')
 
-.ckb
+.ip_fiels
   = f.fields_for :ip_reals do |ip_form|
     - select_ip = ip_form.object.ip_v6.blank? ? 'ipv4' : 'ipv6'
     - very_ipv6 = select_ip == 'ipv6' ? 'ipv6' : false
-    .fields_for_remove
+    .fields_for_remove.clear
       = ip_form.hidden_field :_destroy
       = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields",  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
       = label_tag "Selecione o tipo:", nil,class: "select_ip_label"
@@ -16,10 +16,9 @@
       = ip_form.input :ip_v6, as: :string, label: false, input_html: { size: 40, class: "ip_v6" }
       = ip_form.hidden_field :very_ipv6, value: very_ipv6, class: "_very_ipv6"
 
+.ip_fiels.duplicatable_nested_form
 
-.ckb.duplicatable_nested_form
-
-.ckb#new_form_ip
+.ckb.clear#new_form_ip
   = f.label t('.add_others_ip_reals')
   = link_to_add_fields content_tag(:i, nil, class: 'icon-plus'), f, :ip_reals, class: "btn btn_main add_fields", :'data-tooltip' => t('.add_others_ip_reals'), :'aria-label' => t('.add_others_ip_reals')
 
@@ -41,6 +40,5 @@
       if( $(vIp6[i]).val()==='ipv6' ) {
         toggleIP($(vIp6[i]));
       }
-    }  
-  });  
-
+    }
+  });
