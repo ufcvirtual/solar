@@ -16,8 +16,8 @@
   = select_tag "ip_type", options_for_select([["IPV4", "ipv4"], ["IPV6", "ipv6"]]), class: "select_ip_type", onchange: "toggleIP(this)"
   = f.input :ip_v4, as: :string, label: false, input_html: { size: 15, class: "ip_v4" }
   = f.input :ip_v6, as: :string, label: false, input_html: { size: 40, class: "ip_v6" }
+  = f.input :use_local_network, as: :boolean, label: false
 
-= javascript_include_tag 'jquery.mask'
 :css
   .clear{
     clear: both;
@@ -40,31 +40,8 @@
 :javascript
   $(document).ready(function(){
     $.getScript("/assets/tooltip.js");
-    mask_ip($(".ip_v4"));
-    mask_ip($(".ip_v6"));
+    masck_ip($(".ip_v4"));
+    masck_ip($(".ip_v6"));
   });
+  
 
-  function mask_ip(input){
-    var id = $(input).attr("id");
-    var patt_v4 = /ip_v4/i;
-
-    if ( patt_v4.test(id) ) {
-      $(input).mask('0ZZ.0ZZ.0ZZ.0ZZ', {
-        translation: {
-          'Z': {
-            pattern: /[0-9]/, optional: true
-          }
-        }
-      });
-    }
-  }
-
-  function toggleIP(selected){
-    if( $(selected).val() === "ipv4" ) {
-      $(selected).closest(".fields_for_remove").find(".ip_v4").show();
-      $(selected).closest(".fields_for_remove").find(".ip_v6").hide();
-    } else if( $(selected).val() === "ipv6" ) {
-      $(selected).closest(".fields_for_remove").find(".ip_v4").hide();
-      $(selected).closest(".fields_for_remove").find(".ip_v6").show();
-    }
-  }

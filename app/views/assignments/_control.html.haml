@@ -5,13 +5,17 @@
 
 .input.clear
   = f.fields_for :ip_reals do |ip_form|
+    - select_ip = ip_form.object.ip_v6.blank? ? 'ipv4' : 'ipv6'
+    - very_ipv6 = select_ip == 'ipv6' ? 'ipv6' : false
     .fields_for_remove
       = ip_form.hidden_field :_destroy
       = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields",  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
       = label_tag t(".select_type"), nil, class: "select_ip_label"
-      = select_tag "ip_type", options_for_select([["IPV4", "ipv4"], ["IPV6", "ipv6"]]), class: "select_ip_type", onchange: "toggleIP(this)"
-      = ip_form.input :ip_v4, as: :string, label: false, input_html: { size: 15, class: "ip_v4 left" }
-      = ip_form.input :ip_v6, as: :string, label: false, input_html: { size: 40, class: "ip_v6 left" }
+      = select_tag "ip_type", options_for_select([["IPV4", "ipv4"], ["IPV6", "ipv6"]], :selected => select_ip), class: "select_ip_type", onchange: "toggleIP(this)"
+      = ip_form.input :ip_v4, as: :string, label: false, input_html: { size: 15, class: 'ip_v4 left'}
+      = ip_form.input :ip_v6, as: :string, label: false, input_html: { size: 40, class: 'ip_v6 left'}
+      = ip_form.input :use_local_network, as: :boolean, label: false
+      = ip_form.hidden_field :very_ipv6, value: very_ipv6, class: "_very_ipv6"
 
 .input.clear.duplicatable_nested_form
 
@@ -24,6 +28,8 @@
   = button_to_function t('.previous'), 'back()', class: 'btn btn_default btn_main btn_lightbox', type: 'button'
   = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "_save"
 
+= javascript_include_tag 'jquery.mask', 'ip'
+
 :css
   .schedule_dates .input input, #assignment_type_assignment {
     width: 85px;
@@ -33,7 +39,7 @@
     float: left;
   }
   .ip_v4, .ip_v6 {
-    display: inline-block;
+   
     float: left;
   }
   .input.boolean{
@@ -58,6 +64,9 @@
     display: inline-block;
     float: left;
   }
+  .hidden {
+    display: none;
+  }
 
 :javascript
   function back(){
@@ -65,33 +74,17 @@
     $('#control_info').addClass('hidden');
   }
 
-  function masck_ip(input){
-    var id = $(input).attr("id");
-    var patt_v4 = /ip_v4/i;
-
-    if ( patt_v4.test(id) ) {
-      $(input).mask('0ZZ.0ZZ.0ZZ.0ZZ', {
-        translation: {
-          'Z': {
-            pattern: /[0-9]/, optional: true
-          }
-        }
-      });
-    }
-  }
-
-  function toggleIP(selected){
-    if( $(selected).val() === "ipv4" ) {
-      $(selected).closest(".fields_for_remove").find(".ip_v4").show();
-      $(selected).closest(".fields_for_remove").find(".ip_v6").hide();
-    } else if( $(selected).val() === "ipv6" ) {
-      $(selected).closest(".fields_for_remove").find(".ip_v4").hide();
-      $(selected).closest(".fields_for_remove").find(".ip_v6").show();
-    }
-  }
-
   jQuery(function($){
     $(".ip_v6").hide();
+    masck_ip($(".ip_v4"));
+    masck_ip($(".ip_v6"));
+
+    vIp6 = $("._very_ipv6");
+    for(var i = 0; i < vIp6.length ; i++) {
+      if( $(vIp6[i]).val()==='ipv6' ) {
+        toggleIP($(vIp6[i]));
+      }
+    }    
 
     if ($(".file_input:last").length)
       var nested_form = $(".file_input:first");

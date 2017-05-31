@@ -3,7 +3,7 @@
   = simple_form_for @assignment, html: { id: 'assignment_form' } do |f|
     %h1#lightBoxDialogTitle= t((@assignment.persisted? ? ".edit" : ".new"))
     %span.form_requirement= t(:required_fields)
-
+    = f.hidden_field :controller, value: @assignment.controller, id: "assignment_controller_edit"
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
     .form-inputs.block_content.assignments_box#basic_info
@@ -91,6 +91,10 @@
 
     if ($(".file_input:last").length)
       var nested_form = $(".file_input:first");
+
+    if( $("#assignment_controller_edit").val() === "true" ) {
+      $('a[data-id="controlled"]').trigger('click');
+    }
 
     // clona um arquivo existente e atualiza o nome
     function add_new_file() {

@@ -101,7 +101,7 @@ class AssignmentsController < ApplicationController
     else
       @files_errors = @assignment.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
-      @assignment.ip_reals.build
+      #@assignment.ip_reals.build
       mandatory_ip = false
       erro_mensage = ""
       @assignment.errors.each do |attribute, erro|
