@@ -8,8 +8,8 @@
         = button_tag content_tag(:i, nil, class: 'icon-plus'), class: "btn btn_main #{@in_time ? '' : 'disabled'}", id: 'new_comment', disabled: !@in_time, :"data-tooltip" => t('.new'), :'aria-label' => t(".new")
   .assignment_comment_wrapper
     .comment_form
-    .comments_list
-      - unless comments.nil? or comments.empty?
+    %ul.comments_list
+      - unless comments.blank?
         - comments, academic_allocation_user_id = comments, comments.first.academic_allocation_user_id
         - comments.each do |comment|
           = render partial: 'assignment_comments/comment', locals: { comment: comment }

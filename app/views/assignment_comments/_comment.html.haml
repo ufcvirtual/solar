@@ -1,10 +1,9 @@
-%table.assignment_comment.tb_comments{ :"data-link-list" => assignment_comment_path(comment), :summary=> t("assignments.list.summary_comments") }
-  %tr
-    %td.assignment_comment_head
-      .assignment_user_comment= comment.user.nick
-      .assignment_comment_date= (comment.updated_at.blank? ? l(comment.created_at, format: :long) : l(comment.updated_at, format: :long))
-  %tr.comment
-    %td.assignment_comment_form.assignment_comment{ class: "comment_#{comment.id}", colspan: '2' }
+%li.assignment_comment.tb_comments{ :"data-link-list" => assignment_comment_path(comment), summary: t("assignments.list.summary_comments") }
+  .assignment_comment_head
+    .assignment_user_comment= comment.user.nick
+    .assignment_comment_date= (comment.updated_at.blank? ? l(comment.created_at, format: :long) : l(comment.updated_at, format: :long))
+  .comment
+    .assignment_comment_form.assignment_comment{ class: "comment_#{comment.id}", colspan: '2' }
       .assignment_inner_content
         %span{class: "comment_#{comment.id}", :'data-value' => comment.comment}=simple_format comment.comment
         - if comment.user_id == current_user.id
@@ -22,3 +21,5 @@
                 = link_to comment_file.attachment_file_name, download_assignment_comments_path(file_id: comment_file.id), class: 'file_icon', :'aria-label'=> t('posts.post.download', file: comment_file.attachment_file_name, size: size)
                 .assignment_files_info= l(comment_file.attachment_updated_at, format: :at_date)
                 .assignment_files_info= size
+
+= javascript_include_tag 'assignment_comments'
