@@ -217,14 +217,10 @@ class Assignment < Event
   end
 
   def controlled_network_ip_validates
-    errors.add(:assignment, I18n.t("exams.controlled")) if self.ip_reals.size < 1
+    errors.add(:assignment, I18n.t("assignments.controlled")) if self.ip_reals.size < 1
   end
 
   def using_local_network
-    ip_reals = IpReal.all
-    ip_reals.each do |ip|
-      return true if ip.use_local_network
-    end
-    return false
+    IpReal.where(use_local_network: true).any? ? true : false
   end
 end

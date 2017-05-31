@@ -1949,6 +1949,8 @@ pt_BR:
       user: "Caro(a) %{user},"
       subject: '[SOLAR] Aula privada'
   assignments:
+    controlled: "Trabalho controlado: É necessário pelo menos um IP"
+    restrict_assignment: "Local de trabalho não permitido"
     index:
       expand_enunciation: Expandir enunciado
       compress_enunciation: Comprimir enunciado
@@ -3707,6 +3709,7 @@ pt_BR:
         add_others_ip_reals: "Adicionar novo IP"
         network_ip_registred: "IP registrado"
         link_to_remove_fields: "Remover Formulário de IPs"
+        type_select: "Selecione o tipo:"
       ip_real_fields:
         type_select: "Selecione o tipo:"
         legend_description_new_ip: "Novo IP onde será realizada a prova"

@@ -17,7 +17,7 @@
       = ip_form.input :use_local_network, as: :boolean, label: false
       = ip_form.hidden_field :very_ipv6, value: very_ipv6, class: "_very_ipv6"
 
-.ip_fiels.duplicatable_nested_form
+.ip_fiels.clear.duplicatable_nested_form
 
 .input.clear#new_form_ip
   = f.label t('.add_new_ip_reals')
@@ -38,31 +38,8 @@
   .schedule_dates .left, .right {
     float: left;
   }
-  .ip_v4, .ip_v6 {
-
-    float: left;
-  }
   .input.boolean{
     display: none;
-  }
-  .clear{
-    clear: both;
-  }
-  #current_ip {
-    margin-top: 15px;
-  }
-  #current_ip label {
-    width: 200px;
-  }
-  #current_ip a, .fields_for_remove a, #new_form_ip a {
-    float: right;
-  }
-  #new_form_ip {
-    margin: 15px 0;
-  }
-  #new_form_ip label {
-    display: inline-block;
-    float: left;
   }
   .hidden {
     display: none;
