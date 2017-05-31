@@ -82,11 +82,11 @@ module ApplicationHelper
     active_tab[:breadcrumb].first[:url][:selected_group] = Group.find(selected_group_id).code
 
     result = ''
-    if (groups.length > 1 and @can_select_group)
+    if (groups.length > 1 && @can_select_group)
        result = "#{t(:group)}: "
        result << "<a class='btn btn_dropdown' href='#' data-dropdown= '#group-options-dropdown'> #{active_tab[:breadcrumb].first[:url][:selected_group]}"
        result << "<i class='icon-arrow-down-triangle' aria-hidden='true'></i> </a>"
-       result << "<div class='dropdown dropdown-tip' id='group-options-dropdown'>"
+       result << "<div class='dropdown dropdown-tip right' id='group-options-dropdown'>"
        result <<  "<ul class='dropdown-menu'>"
       groups.each do |g|
         class_li = selected_group_id==g.id ? 'selected' : 'null';

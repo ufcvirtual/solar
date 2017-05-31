@@ -88,7 +88,7 @@
   text-decoration: none;
   line-height: 18px;
   padding: 5px 15px 3px 15px;
-  white-space: nowrap;
+  word-wrap: break-word;
 }
 
 .dropdown .dropdown-menu LI > A:hover, .dropdown .dropdown-menu LI > A:focus, .dropdown .dropdown-menu LI > A.selected ,
@@ -132,4 +132,14 @@
 #lesson_header .breadcrumb .dropdown-menu li a{
   word-wrap: break-word;
   white-space: normal;
+}
+
+.dropdown.right{
+  max-height: 300px;
+  right: -10%;
+}
+
+.dropdown.right ul{
+  overflow-y: auto;
+  max-height: 300px;
 }
