@@ -294,6 +294,7 @@ en_US:
         result_email: Send result by email
         attempts_correction: Grade calculation method
         block_content: Block Solar's content during exam
+        controlled: Controlled
       exam_user:
         grade: Grade
       exam_question:
@@ -340,6 +341,7 @@ en_US:
         end_date: To
         start_hour: Schedule
         end_hour: to
+        controller: Controlled
       assignment_enunciation_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment_file_name: File
@@ -1735,6 +1737,8 @@ en_US:
       subject: '[SOLAR] Private lesson'
 
   assignments:
+    controlled: "Controlled assignment: At least one IP is required"
+    restrict_assignment: "This place is not permit to do the assignment"
     index:
       expand_enunciation: Expand enunciation
       compress_enunciation: Compress enunciation
@@ -1761,6 +1765,25 @@ en_US:
       new: New assignment
       start_hour: Schedule
       end_hour: to
+      environment_controlled: 'You can control where the student will take the assignment (for example: labs, academic blocks, etc.)'
+      environment_not_controlled: 'The student can take the assignment in any place (for example: laboratories, home, lan houses, etc.)'
+      continue: Continue
+      previous: Previous
+    control:
+      continue: Continue
+      previous: Previous
+      current_ip: Use current network IP
+      not_current_ip: "Don't use current network IP"
+      current_ip_real: "Use current network IP:"
+      add_others_ip_reals: Add new IP
+      network_ip_registred: "Registered IP"
+      link_to_remove_fields: "Remove form of IPs"
+      add_new_ip_reals: Add new IP
+      select_type: "Select type:"
+      link_to_remove_fields: Remove ip field
+    ip_real_fields:
+      legend_description_new_ip: "New IP where the assignment will be performed"
+      link_to_remove_fields: "Remove form of IPs"
     success:
       created: Assignment was successfully created.
       updated: Assignment was successfully updated.
@@ -3441,7 +3464,9 @@ en_US:
         add_others_ip_reals: "Add new IP"
         network_ip_registred: "Local network registered"
         link_to_remove_fields: "Remove form of IPs"
+        type_select: "Select type:"
       ip_real_fields:
+        type_select: "Select type:"
         legend_description_new_ip: "New IP where the test will be performed"
         link_to_remove_fields: "Remove form of IPs"
     pre:
