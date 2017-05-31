@@ -7,57 +7,68 @@
       = text_field_tag :search_faq, nil, :'aria-label'=>t('faq.search')
 
     .question
-      %h4.title= t('faq.questions.whats_solar')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title=t('faq.questions.whats_solar')
       .invisible
         %p.title_child_first=raw t('faq.answers.whats_solar')
 
     .question
-      %h4.title= t('faq.questions.whats_ava')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.whats_ava')
       .invisible
         %p.title_child_first= raw t('faq.answers.whats_ava')
       
     .question
-      %h4.title= t('faq.questions.uab_forgot_login_password')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.uab_forgot_login_password')
       .invisible
         %p.title_child_first= raw t('faq.answers.uab_forgot_login_password')
       
     .question
-      %h4.title= t('faq.questions.forgot_login_password_ma')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.forgot_login_password_ma')
       .invisible
         %p.title_child_first= raw t('faq.answers.forgot_login_password_ma')
 
     .question
-      %h4.title= t('faq.questions.forgot_login_password_sync1')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.forgot_login_password_sync1')
       .invisible
         %p.title_child_first= raw t('faq.answers.forgot_login_password_sync')
       
     .question
-      %h4.title= t('faq.questions.forgot_login_password_sync2')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.forgot_login_password_sync2')
       .invisible
         %p.title_child_first= raw t('faq.answers.forgot_login_password_sync')
       
     .question
-      %h4.title= t('faq.questions.forgot_login_password_sync3')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.forgot_login_password_sync3')
       .invisible
         %p.title_child_first= raw t('faq.answers.forgot_login_password_sync')
       
     .question
-      %h4.title= t('faq.questions.forgot_login_password')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.forgot_login_password')
       .invisible
         %p.title_child_first= raw t('faq.answers.forgot_login_password')
       
     .question
-      %h4.title= t('faq.questions.recovery_password_email')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.recovery_password_email')
       .invisible
         %p.title_child_first= raw t('faq.answers.recovery_password_email')
       
     .question
-      %h4.title= t('faq.questions.verify_registration')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.verify_registration')
       .invisible
         %p.title_child_first= raw t('faq.answers.verify_registration')
       
     .question
-      %h4.title= t('faq.questions.update_data')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.update_data')
       .invisible
         %h4.title_child_first= raw t('faq.answers.ma')
         %p.title_child_second= raw t('faq.answers.update_data')
@@ -65,7 +76,8 @@
         %p.title_child_second=raw t('faq.answers.update_data_ma')
 
     .question
-      %h4.title= t('faq.questions.update_data_ma_cant')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.update_data_ma_cant')
       .invisible
         %p.title_child_first= raw t('faq.answers.update_data_ma_cant')
         %h4.title_child_first= raw t('faq.answers.have_access')
@@ -74,17 +86,20 @@
         %p.title_child_second=raw t('faq.answers.update_data_ma_cant2')
 
     .question
-      %h4.title= t('faq.questions.invalid_token')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.invalid_token')
       .invisible
         %p.title_child_first= raw t('faq.answers.invalid_token')
 
     .question
-      %h4.title= t('faq.questions.how_to_enroll')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.how_to_enroll')
       .invisible
         %p.title_child_first= raw t('faq.answers.how_to_enroll')
 
     .question
-      %h4.title= t('faq.questions.cant_access_uc')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.cant_access_uc')
       .invisible
         %h4.title_child_first= raw t('faq.questions.cant_access_uc_date')
         %p.title_child_second= raw t('faq.answers.cant_access_uc_date')
@@ -100,7 +115,8 @@
         %p.title_child_second=raw t('faq.answers.cant_access_uc_what_else')
 
     .question
-      %h4.title= t('faq.questions.activity')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.activity')
       .invisible
         %h4.title_child_first= raw t('faq.questions.activity_date')
         %p.title_child_second= raw t('faq.answers.activity_date')
@@ -110,17 +126,20 @@
         %p.title_child_second=raw t('faq.answers.activity_no_error')
 
     .question
-      %h4.title= t('faq.questions.activity_lost_date')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.activity_lost_date')
       .invisible
         %p.title_child_first= raw t('faq.answers.activity_lost_date')  
 
     .question
-      %h4.title= t('faq.questions.maintenance')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.maintenance')
       .invisible
         %p.title_child_first= raw t('faq.answers.maintenance')
 
     .question
-      %h4.title= t('faq.questions.uc_profile')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.uc_profile')
       .invisible
         %h4.title_child_first= raw t('faq.questions.cant_access_uc_date')
         %p.title_child_second= raw t('faq.answers.cant_access_uc_date')
@@ -136,7 +155,8 @@
         %p.title_child_second=raw t('faq.answers.cant_access_uc_what_else')
 
     .question
-      %h4.title= t('faq.questions.lesson_notes')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.lesson_notes')
       .invisible
         %h4.title_child_first= raw t('faq.questions.lesson_notes_inside')
         %p.title_child_second= raw t('faq.answers.lesson_notes_inside')
@@ -144,42 +164,50 @@
         %p.title_child_second=raw t('faq.answers.lesson_notes_outside')
 
     .question
-      %h4.title= t('faq.questions.uc_document')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.uc_document')
       .invisible
         %p.title_child_first= raw t('faq.answers.uc_document')  
 
     .question
-      %h4.title= t('faq.questions.course_document')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.course_document')
       .invisible
         %p.title_child_first= raw t('faq.answers.course_document')  
 
     .question
-      %h4.title= t('faq.questions.photo')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.photo')
       .invisible
         %p.title_child_first= raw t('faq.answers.photo')  
 
     .question
-      %h4.title= t('faq.questions.nick_login')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.nick_login')
       .invisible
         %p.title_child_first= raw t('faq.answers.nick_login')  
 
     .question
-      %h4.title= t('faq.questions.finished_ucs')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.finished_ucs')
       .invisible
         %p.title_child_first= raw t('faq.answers.finished_ucs')  
 
     .question
-      %h4.title= t('faq.questions.idea')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.idea')
       .invisible
         %p.title_child_first= raw t('faq.answers.idea')  
 
     .question
-      %h4.title= t('faq.questions.error')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.error')
       .invisible
         %p.title_child_first= raw t('faq.answers.error')  
 
     .question
-      %h4.title= t('faq.questions.cant_find_faq')
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title= t('faq.questions.cant_find_faq')
       .invisible
         %p.title_child_first= raw t('faq.answers.cant_find_faq')  
 
@@ -188,19 +216,18 @@
 
     %h2= t('faq.file_tutorials')
     - if current_user.blank?
-      %p.title_child_first= link_to t('faq.file_tutorials_title'), '#tutorials', class: 'panel-link'
+      %p.title_child_first= raw t('faq.file_tutorials_title', url: tutorials_login_path)
     - else
       %p.title_child_first=raw t('faq.file_tutorials_link')
 
 
 :javascript
   $(function(){
-    $("h4.title").click(function(){
-      if ($(this).next(".invisible").is(":hidden")) {
-        $(this).next(".invisible").toggle();
-      }
-      else {
-        $(this).next(".invisible").toggle();
+    $("a.title").click(function(){
+      event.preventDefault();
+      $(this).next(".invisible").toggle();
+      if ($(this).next(".invisible").is(":visible")) {
+        focus_element($(this).next());
       }
     });
 
@@ -226,3 +253,14 @@
     });
 
   });
+
+  function click_on_keypress(event, element){
+    if(event.which == 13)
+      $(element).click();
+    return false;
+  }
+
+  function focus_element(element){
+    $(element).prop('tabindex', 0);
+    $(element).focus();
+  }

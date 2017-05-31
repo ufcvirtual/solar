@@ -17,7 +17,6 @@ Solar::Application.routes.draw do
   get :home, to: "users#mysolar", as: :home
   get :tutorials, to: "pages#tutorials", as: :tutorials
   get :apps, to: 'pages#apps', as: :apps
-  get :privacy, to: 'pages#privacy', as: :privacy
   get :team, to: 'pages#team', as: :team
   get :faq, to: 'pages#faq', as: :faq
   get :tutorials_login, to: "pages#tutorials_login", as: :tutorials_login
