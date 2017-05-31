@@ -12,7 +12,7 @@ class AcademicAllocationUsersController < ApplicationController
     @academic_allocation_user = AcademicAllocationUser.where(id: result[:id]).first
     errors = result[:errors]
 
-    score = Score.evaluative_frequency_situacion(at_id, acu_params[:user_id], params[:id], params[:tool].downcase, acu_params[:score_type]).first.situation
+    score = Score.evaluative_frequency_situation(at_id, acu_params[:user_id], acu_params[:group_id], params[:id], params[:tool].downcase, acu_params[:score_type]).first.situation
 
     if errors.any?
       render json: { success: false, alert: errors.join("<br/>") }, status: :unprocessable_entity
