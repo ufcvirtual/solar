@@ -1,168 +1,167 @@
 #tutorials
-  .content
-    - locale = I18n.locale
+  - locale = I18n.locale
 
-    = set_title(t('tutorials.menu'))
+  = set_title(t('tutorials.menu'))
 
-    .tutorials
+  .tutorials
 
-      - if current_user.blank?
-        %h2= t('tutorials.menu')
+    - if current_user.blank?
+      %h2= t('tutorials.menu')
 
-      .search
-        = t('faq.search')
-        = text_field_tag :search_tutorial, nil, :'aria-label' => t('faq.search')
+    .search
+      = t('faq.search')
+      = text_field_tag :search_tutorial, nil, :'aria-label' => t('faq.search')
 
 
-      .tutorial.block_wrapper#login
-        .block_title
-          %h2
-            %i.icon-folder
-            = t('tutorials.titles.access')
-          %span.block_actions
-        .block_content
-          %table.tb_list
-            %thead
-              %tr.lines
-                %th{align: "left"}= t(:description)
-            %tbody
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p= t('tutorials.texts.registration')
-                  %img{alt: t('tutorials.files.login'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'registration', t('tutorials.files.registration'))
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p= t('tutorials.texts.password_recovery')
-                  %img{alt: t('tutorials.files.login'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'password_recovery', t('tutorials.files.password_recovery'))
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p= t('tutorials.texts.home')
-                  %img{alt: t('tutorials.files.login'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'home', t('tutorials.files.home'))
+    .tutorial.block_wrapper#login
+      .block_title
+        %h2
+          %i.icon-folder
+          = t('tutorials.titles.access')
+        %span.block_actions
+      .block_content
+        %table.tb_list
+          %thead
+            %tr.lines
+              %th{align: "left"}= t(:description)
+          %tbody
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p= t('tutorials.texts.registration')
+                %img{alt: t('tutorials.files.login'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'registration', t('tutorials.files.registration'))
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p= t('tutorials.texts.password_recovery')
+                %img{alt: t('tutorials.files.login'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'password_recovery', t('tutorials.files.password_recovery'))
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p= t('tutorials.texts.home')
+                %img{alt: t('tutorials.files.login'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'home', t('tutorials.files.home'))
 
-      .tutorial.block_wrapper#description
-        .block_title
-          %h2
-            %i.icon-folder
-            = t(:student)
-          %span.block_actions
-        .block_content
-          %table.tb_list
-            %thead
-              %tr.lines
-                %th{align: "left"}= t(:description)
-            %tbody
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p= t('tutorials.texts.student')
-                  %img{alt: t('tutorials.files.student'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'aluno', t('tutorials.files.student'))
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p= t('tutorials.texts.math_editor')
-                  %img{alt: t('tutorials.files.math_editor'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'editor_matematico', t('tutorials.files.math_editor'))
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p= t('tutorials.texts.scores_student')
-                  %img{alt: t('tutorials.files.scores'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'scores_student_view', t('tutorials.files.scores'))
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p= t('tutorials.texts.assignment_webconference')
-                  %img{alt: t('tutorials.files.assignment_webconference'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'assignment_webconference', t('tutorials.files.assignment_webconference'))
+    .tutorial.block_wrapper#description
+      .block_title
+        %h2
+          %i.icon-folder
+          = t(:student)
+        %span.block_actions
+      .block_content
+        %table.tb_list
+          %thead
+            %tr.lines
+              %th{align: "left"}= t(:description)
+          %tbody
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p= t('tutorials.texts.student')
+                %img{alt: t('tutorials.files.student'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'aluno', t('tutorials.files.student'))
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p= t('tutorials.texts.math_editor')
+                %img{alt: t('tutorials.files.math_editor'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'editor_matematico', t('tutorials.files.math_editor'))
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p= t('tutorials.texts.scores_student')
+                %img{alt: t('tutorials.files.scores'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'scores_student_view', t('tutorials.files.scores'))
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p= t('tutorials.texts.assignment_webconference')
+                %img{alt: t('tutorials.files.assignment_webconference'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'assignment_webconference', t('tutorials.files.assignment_webconference'))
 
-      .tutorial.block_wrapper
-        .block_title
-          %h2
-            %i.icon-folder
-            = t(:edition)
-          %span.block_actions
-        .block_content
-          %table.tb_list
-            %thead
-              %tr.lines
-                %th{align: "left"}= t(:description)
-            %tbody
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p=t('tutorials.texts.academic')
-                  %img{alt: t('tutorials.files.academic'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'edicao_academica', t('tutorials.files.academic'))
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p=t('tutorials.texts.content')
-                  %img{alt: t('tutorials.files.content'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'edicao_conteudo', t('tutorials.files.content'))
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p=t('tutorials.texts.activity_management')
-                  %img{alt: t('tutorials.files.activity_management'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'activity_management', t('tutorials.files.activity_management'))
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p=t('tutorials.texts.question_repository')
-                  %img{alt: t('tutorials.files.question_repository'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'question_repository', t('tutorials.files.question_repository'))
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p=t('tutorials.texts.exam_edition')
-                  %img{alt: t('tutorials.files.exam_edition'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'exam_edition', t('tutorials.files.exam_edition'))
+    .tutorial.block_wrapper
+      .block_title
+        %h2
+          %i.icon-folder
+          = t(:edition)
+        %span.block_actions
+      .block_content
+        %table.tb_list
+          %thead
+            %tr.lines
+              %th{align: "left"}= t(:description)
+          %tbody
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p=t('tutorials.texts.academic')
+                %img{alt: t('tutorials.files.academic'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'edicao_academica', t('tutorials.files.academic'))
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p=t('tutorials.texts.content')
+                %img{alt: t('tutorials.files.content'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'edicao_conteudo', t('tutorials.files.content'))
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p=t('tutorials.texts.activity_management')
+                %img{alt: t('tutorials.files.activity_management'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'activity_management', t('tutorials.files.activity_management'))
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p=t('tutorials.texts.question_repository')
+                %img{alt: t('tutorials.files.question_repository'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'question_repository', t('tutorials.files.question_repository'))
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p=t('tutorials.texts.exam_edition')
+                %img{alt: t('tutorials.files.exam_edition'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'exam_edition', t('tutorials.files.exam_edition'))
 
-      .tutorial.block_wrapper
-        .block_title
-          %h2
-            %i.icon-folder
-            = t(:enrollment)
-          %span.block_actions
-        .block_content
-          %table.tb_list
-            %thead
-              %tr.lines
-                %th{align: "left"}= t(:description)
-            %tbody
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p=t('tutorials.texts.enrollment_management')
-                  %img{alt: t('tutorials.files.enrollment_management'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'enrollment_management', t('tutorials.files.enrollment_management'))
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p=t('tutorials.texts.enrollment')
-                  %img{alt: t('tutorials.files.enrollment'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'enrollment', t('tutorials.files.enrollment'))
+    .tutorial.block_wrapper
+      .block_title
+        %h2
+          %i.icon-folder
+          = t(:enrollment)
+        %span.block_actions
+      .block_content
+        %table.tb_list
+          %thead
+            %tr.lines
+              %th{align: "left"}= t(:description)
+          %tbody
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p=t('tutorials.texts.enrollment_management')
+                %img{alt: t('tutorials.files.enrollment_management'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'enrollment_management', t('tutorials.files.enrollment_management'))
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p=t('tutorials.texts.enrollment')
+                %img{alt: t('tutorials.files.enrollment'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'enrollment', t('tutorials.files.enrollment'))
 
-      .tutorial.block_wrapper
-        .block_title
-          %h2
-            %i.icon-folder
-            = t('tutorials.titles.responsibles')
-          %span.block_actions
-        .block_content
-          %table.tb_list
-            %thead
-              %tr.lines
-                %th{align: "left"}= t(:description)
-            %tbody
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p= t('tutorials.texts.scores_responsible')
-                  %img{alt: t('tutorials.files.scores'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'scores_responsible_view', t('tutorials.files.scores'))
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p= t('tutorials.texts.evaluation')
-                  %img{alt: t('tutorials.files.evaluation'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'evaluating_activities', t('tutorials.files.evaluation'))
-              %tr.lines
-                %td.description_tutorials{align: "left"}
-                  %p= t('tutorials.texts.math_editor')
-                  %img{alt: t('tutorials.files.math_editor'), src: "/assets/mimetypes/pdf.png"}/
-                  = raw get_file(locale, 'editor_matematico', t('tutorials.files.math_editor'))
+    .tutorial.block_wrapper
+      .block_title
+        %h2
+          %i.icon-folder
+          = t('tutorials.titles.responsibles')
+        %span.block_actions
+      .block_content
+        %table.tb_list
+          %thead
+            %tr.lines
+              %th{align: "left"}= t(:description)
+          %tbody
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p= t('tutorials.texts.scores_responsible')
+                %img{alt: t('tutorials.files.scores'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'scores_responsible_view', t('tutorials.files.scores'))
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p= t('tutorials.texts.evaluation')
+                %img{alt: t('tutorials.files.evaluation'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'evaluating_activities', t('tutorials.files.evaluation'))
+            %tr.lines
+              %td.description_tutorials{align: "left"}
+                %p= t('tutorials.texts.math_editor')
+                %img{alt: t('tutorials.files.math_editor'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
+                = raw get_file(locale, 'editor_matematico', t('tutorials.files.math_editor'))
 
 
 :javascript

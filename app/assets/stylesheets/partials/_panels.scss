@@ -27,7 +27,7 @@
   padding: 5px 10px;
 }
 
-.content {
+.content, #login_wrapper #tutorials{
   width: 535px;
   height: 85%;
   overflow: auto;
@@ -35,6 +35,8 @@
   text-align: left;
   background-color: rgba($color_white_panels,0.8);
   padding: 5px 10px;
+  padding-bottom: 5%;
+  margin-bottom: 5%;
 }
 
 .panel .arrow {
@@ -92,7 +94,12 @@
   }
 }
 
-#faq .title{
+#faq .question a{
+  text-decoration: none;
+  color: $panel_color;
+}
+
+#faq h4.title{
   border: 1px solid $panel_border_color;
   background: $background_light;
   background: -moz-linear-gradient(top, $background_light 0%, $background_light 100%);

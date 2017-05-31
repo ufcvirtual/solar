@@ -624,7 +624,7 @@ en_US:
   f: Female
   videos: Video tutorials
   video_tutorials: "Video tutorials"
-  video_tutorials_link: "<a href='video_tutorials.html' target= '_blank'>Access Solar 2.0 video tutorials</a>"
+  video_tutorials_link: "<a href='video_tutorials.html'>Access Solar 2.0 video tutorials</a>"
   empty_old_password: "Old password is empty"
   bad_password_confirmation: "Bad password confirmation"
   incorrect_old_password: "Old password is incorrect"
@@ -3997,8 +3997,8 @@ en_US:
   faq:
     search: Search by key words
     file_tutorials: "File tutorials"
-    file_tutorials_link: "<a href='tutorials.html' target='_blank'>Access Solar 2.0 files tutorials</a>"
-    file_tutorials_title: "Access Solar 2.0 files tutorials"
+    file_tutorials_link: "<a href='tutorials.html'>Access Solar 2.0 files tutorials</a>"
+    file_tutorials_title: "<a href=%{url}> Access Solar 2.0 files tutorials</a>"
     questions:
       whats_solar: 'What is Solar?'
       whats_ava: 'What is a LMS?'

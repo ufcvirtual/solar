@@ -308,7 +308,7 @@ function Calendar(element, options, eventSources) {
   
   function changeView(newViewName) {
     // limpa todos os dropdowns da página para não haver conflitos
-    $(".dropdown").not("#dropdown_options").remove();
+    $("#calendar .dropdown").not("#dropdown_options").remove();
 
     // se for listagem, não permite ir para "hoje" ou utilizar as setas de navegação
     $(".block_toolbar_left button").prop("disabled", (newViewName == 'list'));
