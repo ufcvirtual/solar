@@ -354,6 +354,10 @@ div.block_title {
   }
 }
 
+.block_content_toolbar label{
+  color: $color_black;
+}
+
 .block_toolbar_left, .block_toolbar_right {
   display: inline-block;
   position: relative;
