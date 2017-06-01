@@ -398,6 +398,7 @@ pt_BR:
         end_date: à
         start_hour: Horário
         end_hour: à
+        controller: "Controlado"
       assignment_enunciation_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
@@ -1956,6 +1957,8 @@ pt_BR:
       user: "Caro(a) %{user},"
       subject: '[SOLAR] Aula privada'
   assignments:
+    controlled: "Trabalho controlado: É necessário pelo menos um IP"
+    restrict_assignment: "Local de trabalho não permitido"
     index:
       expand_enunciation: Expandir enunciado
       compress_enunciation: Comprimir enunciado
@@ -1982,6 +1985,25 @@ pt_BR:
       new: Novo trabalho
       start_hour: Horário
       end_hour: à
+      environment_controlled: 'Você pode controlar o local de onde o aluno irá realizar o trabalho (por exemplo: laboratórios, blocos, etc)'
+      environment_not_controlled: 'O aluno poderá realizar este trabalho em qualquer local (por exemplo: laboratórios, casa, lan houses, etc)'
+      continue: Continuar
+      previous: Voltar
+    control:
+      continue: Continuar
+      previous: Anterior
+      current_ip: O IP da rede local será usado
+      not_current_ip: Não será usado o IP da rede local
+      current_ip_real: "Usar IP da rede atual:"
+      add_others_ip_reals: "Adicionar novo IP"
+      network_ip_registred: "IP registrado"
+      link_to_remove_fields: "Remover Formulário de IPs"
+      add_new_ip_reals: "Adicionar novo IP"
+      select_type: "Selecione o tipo:"
+      link_to_remove_fields: "Remover campo de ip"
+    ip_real_fields:
+      legend_description_new_ip: "Novo IP onde será realizada a prova"
+      link_to_remove_fields: "Remover Formulário de IPs"
     success:
       created: Trabalho criado com sucesso.
       updated: Trabalho atualizado com sucesso.
@@ -3695,7 +3717,9 @@ pt_BR:
         add_others_ip_reals: "Adicionar novo IP"
         network_ip_registred: "IP registrado"
         link_to_remove_fields: "Remover Formulário de IPs"
+        type_select: "Selecione o tipo:"
       ip_real_fields:
+        type_select: "Selecione o tipo:"
         legend_description_new_ip: "Novo IP onde será realizada a prova"
         link_to_remove_fields: "Remover Formulário de IPs"
     pre:

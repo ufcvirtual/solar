@@ -1,14 +1,14 @@
 function edit_comment(button){
   $("#new_comment, .edit_comment").attr("disabled", "disabled");
-  $($(button).parents("tr.comment")[0]).hide();
+  $($(button).parents(".comment")[0]).hide();
   $.get($(button).data("url"), function(data){
-    $($(button).parents("table")[0]).append(data);
+    $($(button).parents("li")[0]).append(data);
   });
 }
 
 function remove_comment(button){
-  var button_table = $($(button).parents("table")[0]);
-  if (confirm("Certeza?"))
+  var button_table = $($(button).parents("li")[0]);
+  if (confirm("<%=I18n.t(:are_you_sure)%>"))
     $.delete($(button).data("url"), function(data){
       flash_message(data.notice, "notice");
       var parent = button_table.parent();

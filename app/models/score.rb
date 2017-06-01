@@ -247,7 +247,7 @@ class Score # < ActiveRecord::Base
   end
 
 
-  def self.evaluative_frequency_situacion(ats, user_id, tool_id, tool_type, type_score='evaluative')
+  def self.evaluative_frequency_situation(ats, user_id, group_id, tool_id, tool_type, type_score='evaluative')
     evaluated_status = if type_score == 'frequency'
       "WHEN academic_allocation_users.working_hours IS NOT NULL THEN 'evaluated'"
     else
@@ -268,12 +268,14 @@ class Score # < ActiveRecord::Base
           ''
          end
     case tool_type
-      when 'assignment'     
+      when 'assignment'
+        user = (group_id.blank? ? "users.id = #{user_id}" : "ga.id = #{group_id}")
+        acu = (group_id.blank? ? "academic_allocation_users.user_id = #{user_id}" : "academic_allocation_users.group_assignment_id = #{group_id}")
         User.find_by_sql <<-SQL
           SELECT 
             CASE
               #{evaluated_status}
-              WHEN assignments.id IS NOT NULL AND assignments.type_assignment = #{Assignment_Type_Group} AND gp.id IS NULL THEN 'without_group'
+              WHEN assignments.id IS NOT NULL AND assignments.type_assignment = #{Assignment_Type_Group} AND ga.id IS NULL THEN 'without_group'
               WHEN (current_date < schedules.start_date AND (assignments.start_hour IS NULL OR assignments.start_hour = '')) OR (current_date = schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.start_hour != '' AND current_time<to_timestamp(assignments.start_hour, 'HH24:MI:SS')::time)) OR (current_date < schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.start_hour != '')) then 'not_started'
               WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Assignment' AND (af.id IS NOT NULL OR (aw.id IS NOT NULL))))) THEN 'sent'
               WHEN schedules.end_date >= current_date THEN 'to_send'
@@ -281,17 +283,14 @@ class Score # < ActiveRecord::Base
                 'not_sent'
               END AS situation     
           FROM users
-          JOIN allocations ON users.id = allocations.user_id AND allocations.allocation_tag_id IN (#{ats})
-          JOIN profiles ON allocations.profile_id = profiles.id
           JOIN academic_allocations ON academic_allocations.allocation_tag_id IN (#{ats}) AND academic_tool_type='Assignment'
           JOIN assignments ON academic_allocations.academic_tool_id = assignments.id 
           JOIN schedules ON assignments.schedule_id = schedules.id
           LEFT JOIN group_assignments ga ON ga.academic_allocation_id = academic_allocations.id AND assignments.type_assignment = #{Assignment_Type_Group}
-          LEFT JOIN group_participants gp ON gp.group_assignment_id = ga.id AND gp.user_id = users.id
-          LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND (academic_allocation_users.user_id = users.id OR academic_allocation_users.group_assignment_id = gp.group_assignment_id)
+          LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND #{acu}
           LEFT JOIN assignment_files af ON af.academic_allocation_user_id = academic_allocation_users.id
           LEFT JOIN assignment_webconferences aw ON aw.academic_allocation_user_id = academic_allocation_users.id
-          WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) AND users.id=#{user_id} AND academic_allocations.academic_tool_id=#{tool_id} #{wq} 
+          WHERE #{user} AND academic_allocations.academic_tool_id=#{tool_id} #{wq} 
         SQL
       when 'chatroom'     
         User.find_by_sql <<-SQL   

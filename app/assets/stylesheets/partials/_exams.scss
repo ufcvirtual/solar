@@ -514,33 +514,25 @@
     width: 85px;
   }
 
-  #new_form_ip, .fields_for_remove{
-    clear: both;
-  }
-
   .ckb{
     margin: 20px;
     .input.boolean{
       display: none;
     }
+    .select_ip_label {
+      display: inline-block;
+      width: 100px;
+    }
+    .select_ip_label, .select_ip_type {
+      margin-right: 10px;
+    }
     label{
       display: inline;
     }
-    .select_ip_label, .select_ip_type, .ip_v4, .ip_v6 {
+    .ip_v4, .ip_v6, .select_ip_label, .select_ip_type {
       float: left;
     }
-    .select_ip_type, .ip_v4, .ip_v6 {
-      margin-left: 10px;
-      margin-bottom: 15px;
-    }
-    .select_ip_label {
-      width: 100px;
-      padding-top: 2px;
-    }
-    .ip_v6 {
-      display: none;
-    }
-    a, input, select, .remove_fields{
+    a, input, select, .remove_fields {
       display: inline-block;
       float: right;
     }

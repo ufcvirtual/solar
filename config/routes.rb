@@ -104,6 +104,8 @@ Solar::Application.routes.draw do
     end
   end
 
+  get '/client_network_ip', to: 'application#client_network_ip'
+
   ## curriculum_units/:id/participants
   ## curriculum_units/:id/informations
   resources :curriculum_units do
