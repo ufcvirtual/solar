@@ -10,20 +10,24 @@ class Assignment < Event
   has_many :allocations, through: :allocation_tags
   has_many :enunciation_files, class_name: 'AssignmentEnunciationFile', dependent: :destroy
   has_many :group_assignments, through: :academic_allocations, dependent: :destroy
-  
+  has_many :ip_reals, dependent: :destroy
+
   before_destroy :can_destroy?
- 
+
   validates :start_hour, presence: true, if: lambda { |c| c[:start_hour].blank?  && !c[:end_hour].blank? }
   validates :end_hour  , presence: true, if: lambda { |c| !c[:start_hour].blank? && c[:end_hour].blank?  }
   validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
+  validates_associated :ip_reals, if: 'controller'
 
   before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # data final obrigatoria
 
-  accepts_nested_attributes_for :schedule 
+  accepts_nested_attributes_for :schedule
   accepts_nested_attributes_for :enunciation_files, allow_destroy: true, reject_if: proc { |attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank? }
+  accepts_nested_attributes_for :ip_reals, allow_destroy: true, reject_if: lambda { |e| e[:ip_v4].blank? && e[:ip_v6].blank?  }
 
   validates :name, :enunciation, :type_assignment, presence: true
   validates :name, length: { maximum: 1024 }
+  validate :controlled_network_ip_validates, if: 'controller' # mandatory at least one ip if the assignment is controller
 
   validate :verify_date, on: :update, if: 'type_assignment_changed?'
 
@@ -83,7 +87,7 @@ class Assignment < Event
               else
                 { user_id: user_id }
               end
-       
+
     info = academic_allocation.academic_allocation_users.where(params).first.try(:info) || { has_files: false, file_sent_date: ' - ' }
 
    { situation: situation(info[:has_files], !group_id.nil?, info[:grade]), has_comments: (!info[:comments].nil? && info[:comments].any?), group_id: group_id }.merge(info)
@@ -130,7 +134,7 @@ class Assignment < Event
                  .joins("LEFT JOIN assignment_files ON assignment_files.academic_allocation_user_id = academic_allocation_users.id ")
                  .joins("LEFT JOIN assignment_webconferences ON assignment_webconferences.academic_allocation_user_id = academic_allocation_users.id")
                  .where(wq + "academic_allocations.allocation_tag_id= ?",  at.id )
-                 .select("DISTINCT assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date, academic_allocation_users.grade, academic_allocation_users.working_hours, 
+                 .select("DISTINCT assignments.*, schedules.start_date AS start_date, schedules.end_date AS end_date, academic_allocation_users.grade, academic_allocation_users.working_hours,
                           case
                             when (current_date < schedules.start_date AND (assignments.start_hour IS NULL OR assignments.start_hour = '')) OR  (current_date <= schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.end_hour != '' AND current_time<to_timestamp(assignments.start_hour, 'HH24:MI:SS')::time)) then 'not_started'
                             when assignments.type_assignment = 1 AND ga.id IS NULL         then 'without_group'
@@ -141,7 +145,7 @@ class Assignment < Event
                             else  '-'
                           end AS status")
                  .order("start_date") if at.is_student?(user_id)
-  end  
+  end
 
    def closed?
     has_hours = (!start_hour.blank? && !end_hour.blank?)
@@ -208,4 +212,15 @@ class Assignment < Event
     return false
   end
 
+  def network_ips_permited_to_do_the_assignment(user_ip)
+    IpReal.where(ip_v4: user_ip, assignment_id: self.id)
+  end
+
+  def controlled_network_ip_validates
+    errors.add(:assignment, I18n.t("assignments.controlled")) if self.ip_reals.size < 1
+  end
+
+  def using_local_network
+    IpReal.where(assignment_id: self.id, use_local_network: true).any? if !self.id.blank?
+  end
 end

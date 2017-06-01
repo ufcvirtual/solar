@@ -194,6 +194,10 @@ class ApplicationController < ActionController::Base
     request.headers['HTTP_CLIENT_IP'] || request.remote_ip
   end
 
+  def client_network_ip
+    render json: { network_ip: get_remote_ip }
+  end
+
   private
 
     def opened_or_new_tab?(tab_id)
@@ -343,5 +347,6 @@ class ApplicationController < ActionController::Base
   rescue => error
     Rails.logger.info "[ERROR] [Log Navigation] [#{Time.now}] #{error}"
   end
+
   
 end

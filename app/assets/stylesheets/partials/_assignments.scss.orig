@@ -1,0 +1,53 @@
+.assignments .attached_files{
+  padding-top: 3px;
+  padding-bottom: 3px;
+  font-weight: bold;
+  color: $color_gray_text;
+ }
+
+.assignments .file{
+  margin-left: 10px;
+}
+
+.schedule_dates .right{
+  margin-right: 100px;
+}
+
+.tb_list{
+  td{
+    .participants_box{
+      max-height: 300px;
+      overflow: auto;
+      padding: 10px;
+    }
+  }
+}
+
+.new_assignment{
+  .input.files{
+    #file{
+      padding: 10px;
+      margin-left: -150px;
+    }
+  }
+
+  i.remove_file{
+    padding: 5px;
+    color: $remove_file_color;
+    cursor: pointer;
+  }
+}
+
+<<<<<<< HEAD
+table.assignments {
+  thead{
+    tr.lines{
+      th {
+        background-color: $thead_background_color;
+        color: $thead_color;
+      }
+    }
+  }
+}
+=======
+>>>>>>> e94c7ea01acf48a6be1c6475d6c48ed846d21740
