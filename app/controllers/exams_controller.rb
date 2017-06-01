@@ -354,8 +354,8 @@ class ExamsController < ApplicationController
                                  :random_questions, :raffle_order, :auto_correction,
                                  :block_content, :number_questions, :attempts, :controlled,
                                  :attempts_correction, :result_email, :uninterrupted,
-                                 :use_local_network, schedule_attributes: [:id, :start_date, :end_date],
-                                 ip_reals_attributes: [:id, :ip_v4, :ip_v6, :_destroy])
+                                 schedule_attributes: [:id, :start_date, :end_date],
+                                 ip_reals_attributes: [:id, :ip_v4, :ip_v6, :use_local_network, :_destroy])
   end
 
   def render_exam_success_json(method)

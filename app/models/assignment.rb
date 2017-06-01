@@ -221,6 +221,6 @@ class Assignment < Event
   end
 
   def using_local_network
-    IpReal.where(use_local_network: true).any? ? true : false
+    IpReal.where(assignment_id: self.id, use_local_network: true).any? if !self.id.blank?
   end
 end

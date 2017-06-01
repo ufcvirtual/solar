@@ -433,4 +433,8 @@ class Exam < Event
     errors.add(:exam, I18n.t("exams.controlled")) if self.ip_reals.size < 1
   end
 
+  def using_local_network
+    IpReal.where(exam_id: self.id, use_local_network: true).any? if !self.id.blank?
+  end
+
 end

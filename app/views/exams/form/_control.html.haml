@@ -1,7 +1,7 @@
 .ckb#current_ip
-  = f.label :use_local_network, t(".current_ip_real")
-  = f.input :use_local_network, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.use_local_network ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.use_local_network ? t('.current_ip') : t('.not_current_ip')), :'data-id' => 'current_ip', :'data-active' => t('.current_ip'), :'data-not-active' => t('.not_current_ip')
+  = f.label :using_local_network, t(".current_ip_real")
+  = f.input :using_local_network, as: :boolean, label: false
+  = link_to_function (image_tag "#{f.object.using_local_network ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.using_local_network ? t('.current_ip') : t('.not_current_ip')), :'data-id' => 'current_ip', :'data-active' => t('.current_ip'), :'data-not-active' => t('.not_current_ip')
 
 .ip_fiels
   = f.fields_for :ip_reals do |ip_form|
@@ -14,6 +14,7 @@
       = select_tag "ip_type", options_for_select([["IPV4", "ipv4"], ["IPV6", "ipv6"]], :selected => select_ip), class: "select_ip_type", onchange: "toggleIP(this)"
       = ip_form.input :ip_v4, as: :string, label: false, input_html: { size: 15, class: "ip_v4" }
       = ip_form.input :ip_v6, as: :string, label: false, input_html: { size: 40, class: "ip_v6" }
+      = ip_form.input :use_local_network, as: :boolean, label: false
       = ip_form.hidden_field :very_ipv6, value: very_ipv6, class: "_very_ipv6"
 
 .ip_fiels.duplicatable_nested_form
