@@ -765,7 +765,7 @@ pt_BR:
   f: Feminino
   videos: Vídeos tutoriais
   video_tutorials: "Tutoriais em vídeos"
-  video_tutorials_link: "<a href='video_tutorials.html' target= '_blank'>Acessar os tutoriais em vídeo do Solar 2.0</a>"
+  video_tutorials_link: "<a href='video_tutorials.html'>Acessar os tutoriais em vídeo do Solar 2.0</a>"
   empty_old_password: "Senha antiga vazia"
   bad_password_confirmation: "A nova senha e a confirmação não conferem!"
   incorrect_old_password: "Senha antiga incorreta"
@@ -914,7 +914,10 @@ pt_BR:
       no_curriculum_unit_found: "Nenhuma disciplina encontrada"
       enrollment_period_expired: Período encerrado
       search_for: "Semestre, disciplina, curso ou turma"
-      not_allowed_user_uab: "Aluno UAB: Para solicitar trancamento ou desistência entrar em contato com a secretaria do curso"
+      not_allowed_user_uab: "Aluno UAB: Para solicitar trancamento ou desistência, entrar em contato com a secretaria do curso"
+      general_message: Não foi possível realizar a ação desejada
+      uab_enrollment: A matrícula de disciplinas a distância não pode ser realizada através do Solar
+      uab_general: Não é possível alterar matrícula de disciplinas à distância pelo Solar
     show:
       course: Curso
       curriculum_unit: Disciplina
@@ -1260,9 +1263,10 @@ pt_BR:
       confirm_ckeditor: "Tem certeza? Qualquer outra postagem em aberto para edição ou criação terá seu conteúdo perdido."
       confirm_cancel: 'Tem certeza de que deseja cancelar?'
       number_posts: 'Total de Posts %{n_post}'
-      show_my_post: "Ver meus posts"
+      show_my_post: "Ver minhas discussões"
     post:
       remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
+      new: Nova postagem
       answer: "Responder"
       edit: "Editar"
       remove: "Excluir"
@@ -1310,9 +1314,11 @@ pt_BR:
       new: 78
       list: 76
       thread: 65
+      discussion: 68
       shortcut_new: "[N]"
       shortcut_list: "[L]"
       shortcut_thread: "[A]"
+      shortcut_discussion: "[D]"
 
   post_files:
     new:
@@ -4261,8 +4267,8 @@ pt_BR:
   faq:
     search: Pesquisar por palavras-chave
     file_tutorials: "Tutoriais em arquivo"
-    file_tutorials_link: "<a href='tutorials.html' target='_blank'>Acessar os tutoriais em arquivo do Solar 2.0</a>"
-    file_tutorials_title: "Acessar os tutoriais em arquivo do Solar 2.0"
+    file_tutorials_link: "<a href='tutorials.html'>Acessar os tutoriais em arquivo do Solar 2.0</a>"
+    file_tutorials_title: "<a href=%{url}> Acessar os tutoriais em arquivo do Solar 2.0</a>"
     questions:
       whats_solar: 'O que é o Solar?'
       whats_ava: 'O que é um AVA?'

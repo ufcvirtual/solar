@@ -103,8 +103,10 @@ class AllocationsController < ApplicationController
     authorize! :manage_profiles, Allocation, { on: [@allocation_tags_ids], accepts_general_profile: true }
 
     allocate_and_render_result(User.find(params[:user_id]), params[:profile_id], params[:status])
-  rescue
-    render json: { success: false, msg: t(:no_permission) }, status: :unprocessable_entity
+  rescue CanCan::AccessDenied
+    render json: { msg: t(:no_permission), alert: t(:no_permission) }, status: :unauthorized
+  rescue => error
+    render_json_error(error, 'enrollments.index')
   end
 
   def search_users
@@ -130,17 +132,16 @@ class AllocationsController < ApplicationController
   # aluno pode cancel
   # admin/editor change allocation
   def update
-    curriculum_unit_type_desc = AllocationTag.find(@allocation.allocation_tag.id).curriculum_unit_types
-    curriculum_unit_type_id = CurriculumUnitType.where(description: curriculum_unit_type_desc).first.id
-    if curriculum_unit_type_id == 2 && @allocation.status == Allocation_Activated
-      render json: { success: false, msg: t('enrollments.index.not_allowed_user_uab'), id: @allocation.id }, status: :unprocessable_entity
+    if @allocation.change_to_new_status(params[:type], current_user)
+      render json: { success: true, msg: success_msg, id: @allocation.id }
     else
-      if @allocation.change_to_new_status(params[:type], current_user)
-        render json: { success: true, msg: success_msg, id: @allocation.id }
-      else
-        render json: { success: false, msg: t(params[:type], scope: 'allocations.request.error') }, status: :unprocessable_entity
-      end
-    end  
+      render json: { success: false, msg: t(params[:type], scope: 'allocations.request.error') }, status: :unprocessable_entity
+    end
+
+  rescue CanCan::AccessDenied
+    render json: { msg: t(:no_permission), alert: t(:no_permission) }, status: :unauthorized
+  rescue => error
+    render_json_error(error, 'enrollments.index')
   end
 
   def show_profile
@@ -179,7 +180,7 @@ class AllocationsController < ApplicationController
 
     if result[:error].any?
       # apresenta apenas o erro do primeiro problema
-      render json: { success: false, msg: result[:error].first.errors.full_messages.uniq.join(', ') }, status: :unprocessable_entity
+      render json: { success: false, msg: (result[:error].first.errors.full_messages.uniq.join(', ') rescue result[:error]) }, status: :unprocessable_entity
     else
       render json: { success: true, msg: success_message, id: result[:success].map(&:id) }
     end

@@ -178,6 +178,10 @@
         if (e.which === parseInt("#{t("posts.shortcut.list")}")) { 
           $('#forum_view_mode-list').focus();
           $("#forum_view_mode-list")[0].click();
+        }
+        if (e.which === parseInt("#{t("posts.shortcut.discussion")}")) { 
+          $('#forum_view_mode-user').focus();
+          $("#forum_view_mode-user")[0].click();
         }   
       }
     });

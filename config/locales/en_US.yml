@@ -524,7 +524,7 @@ en_US:
               invalid_type: invalid
 
   all: "All"
-  of: "Of"
+  of: "of"
   required_fields: "* required field(s)"
   object_not_found: "Object not found"
   search: "Search"
@@ -626,7 +626,7 @@ en_US:
   f: Female
   videos: Video tutorials
   video_tutorials: "Video tutorials"
-  video_tutorials_link: "<a href='video_tutorials.html' target= '_blank'>Access Solar 2.0 video tutorials</a>"
+  video_tutorials_link: "<a href='video_tutorials.html'>Access Solar 2.0 video tutorials</a>"
   empty_old_password: "Old password is empty"
   bad_password_confirmation: "Bad password confirmation"
   incorrect_old_password: "Old password is incorrect"
@@ -747,6 +747,9 @@ en_US:
       enrollment_period_expired: Expired period
       search_for: "Semester, subject, course or class"
       not_allowed_user_uab: "Student UAB: To request a lockout or withdrawal, contact the course secretariat"
+      general_message: It was not possible to execute action
+      uab_enrollment: It's not possible to enroll at a distance curriculum unit by Solar
+      uab_general: It's not possible to change an enrollment for a distance curriculum unit by Solar
     show:
       course: Course
       curriculum_unit: Subject
@@ -1077,12 +1080,13 @@ en_US:
   posts:
     index:
       show_plainlist: "Show as List"
+      new: New post
       show_thread: "Show as Thread"
       attach_file_title: "Send files"
       confirm_ckeditor: "Are you sure? Any other post with not finished edition or creation will have it's content lost."
       confirm_cancel: 'Are you sure you want to cancel?'
       number_posts: 'Number of Posts %{n_post}'
-      show_my_post: "Show my posts"
+      show_my_post: "Show my discussions"
     post:
       remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       answer: "Reply"
@@ -1132,9 +1136,11 @@ en_US:
       new: 78
       list: 76
       thread: 84
+      discussion: 68
       shortcut_new: "[N]"
       shortcut_list: "[L]"
       shortcut_thread: "[T]"
+      shortcut_discussion: "[D]"
 
   post_files:
     new:
@@ -4016,8 +4022,8 @@ en_US:
   faq:
     search: Search by key words
     file_tutorials: "File tutorials"
-    file_tutorials_link: "<a href='tutorials.html' target='_blank'>Access Solar 2.0 files tutorials</a>"
-    file_tutorials_title: "Access Solar 2.0 files tutorials"
+    file_tutorials_link: "<a href='tutorials.html'>Access Solar 2.0 files tutorials</a>"
+    file_tutorials_title: "<a href=%{url}> Access Solar 2.0 files tutorials</a>"
     questions:
       whats_solar: 'What is Solar?'
       whats_ava: 'What is a LMS?'
