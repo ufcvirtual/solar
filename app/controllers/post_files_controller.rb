@@ -4,9 +4,9 @@ class PostFilesController < ApplicationController
 
   doorkeeper_for :api_download
 
-  load_and_authorize_resource :except => [:new, :create, :api_download]
-  authorize_resource :only => [:new, :create]
-  before_filter :set_current_user, only: [:destroy, :new]
+  load_and_authorize_resource except: [:new, :create, :api_download]
+  authorize_resource only: [:new, :create]
+  before_filter :set_current_user, only: [:destroy, :create]
 
   def new
     @post = Post.find(params[:post_id])
