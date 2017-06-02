@@ -17,7 +17,6 @@
     - if view_disabled
       %td.center.record{headers: "record_web" ,:'data-tooltip' => t('webconferences.list.watch')}
         = link_to content_tag(:i, nil, class: 'icon-play btn'), '#', onclick: 'show_recordings_inline(this, event)', :'aria-label' => t('webconferences.list.watch'), onkeydown: 'click_on_keypress(event, this);', :'data-url' => get_record_assignment_webconference_path(webconference.id, academic_allocation_user_id: webconference.academic_allocation_user_id, group_id: @group.try(:id), student_id: @student_id), :'data-name' => webconference.title
-        .bla
     - else
       %td.center.record{headers: "record_web" ,:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_assignment_webconference_path(webconference.id, academic_allocation_user_id: webconference.academic_allocation_user_id, group_id: @group.try(:id), student_id: @student_id), class: 'record_link', :'aria-label' => t('webconferences.list.watch') + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
 

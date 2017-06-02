@@ -38,10 +38,7 @@
   function finish_evaluation(btn){
     var form = $(btn).parents('form:first');
     $.put(form.attr('action'), form.serialize(), function(data){
-      if("#{@back}" =='true')
-        flash_message(data.notice, 'notice', 'fancybox-outer');
-      else
-        after_evaluate('Assignment', "#{@score_type}", "#{@ac.id}", "#{@student_id}", data, "#{@group_id}");
+      after_evaluate('Assignment', "#{@score_type}", "#{@ac.id}", "#{@student_id}", data, "#{@group_id}");
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
