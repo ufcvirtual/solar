@@ -53,7 +53,7 @@
 .groups .collection_check_boxes, .groups_tags .collection_check_boxes, .group_checkbox .collection_check_boxes, .group_checkbox .collection_check_boxes label, .labels_tags .collection_check_boxes{
   @include collection_check_boxes_layout;
   background-color: $groups_forms_background;
-  color: $color_white;
+  color: $groups_tags_collecion_check_box;
   white-space: nowrap;
   display:inline-block;
 }
@@ -130,4 +130,5 @@ tbody .groups, .input .groups{
 
 .group_checkbox .collection_check_boxes label{
   margin: 0;
+  color: $groups_tags_collecion_check_box;
 }
