@@ -11,7 +11,7 @@
           - if ['not_started', 'to_send'].include?(score.first.situation)
             = (@score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}")
           - else
-            = link_to_function (@score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}"), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: ac.tool_type, ac_id: ac.id, user_id: student.id, group_id: score.first.group, situation: score.first.situation, score_type: @score_type), id: ac.id.to_s+"_"+student.id.to_s
+            = link_to_function (@score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}"), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: ac.tool_type, ac_id: ac.id, user_id: student.id, group_id: score.first.group, situation: score.first.situation, score_type: @score_type), id: ac.id.to_s+"_"+student.id.to_s, class: "#{['u', ac.id.to_s, student.id.to_s].join('_')} #{['g', ac.id.to_s, score.first.group.try(:to_s)].join('_')}"
 
 
 = javascript_include_tag 'tableHeadFixer','tooltip', 'tablesorter', 'scores'

@@ -15,13 +15,12 @@
               %th#we_eva_nam.default_width.center= t(:name, scope: [:webconferences, :list])
               %th#we_eva_ava.default_width.center= t(:availability, scope: [:webconferences, :list])
               %th#we_eva_sit.smaller_width.center= t(:situation, scope: [:scores, :info])
-              - if @is_student
-                %th#we_eva_gra.center{style: "width: 2%;"}= t(:grade, :scope => [:scores, :info])
+              %th#we_eva_int.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
+              %th#we_eva_gra.center{style: "width: 2%;"}= t(:grade, :scope => [:scores, :info])
               %th#we_eva_rec.smaller_width.center.no_sort= t(:recording, scope: [:webconferences, :index])
-              - if @can_see_access || @can_evaluate
+              - if @can_evaluate
                 %th#we_eva_acc.smaller_width.center.no_sort{style: "width: 2%;"}
-              - if @is_student
-                %th#we_eva_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
+              %th#we_eva_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
           %tbody
             - @webconferences_evaluative.each do |webconference|
               - unavailable = exist_and_offline?(webconference.server.to_i)
@@ -61,16 +60,17 @@
                   %div= l(webconference.start_date.to_date, format: :normal)
                   %div= [l(webconference.start_hour.to_time, format: :today), l(webconference.end_hour.to_time, format: :today)].join(' - ')
                 %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}"), headers: "we_eva_sit"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
-                - if @is_student
-                  %td.center{headers: "we_eva_gra"}= webconference.grade
+                %td.center{headers: "we_eva_int"}
+                  - unless webconference.count.blank?
+                    = link_to_function webconference.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id, user_id: @user.id, group_id: webconference.group_id, situation: webconference.situation, score_type: 'evaluative'), onkeydown: 'click_on_keypress(event, this);'
+                %td.center{headers: "we_eva_gra", class: "#{['u', webconference.id.to_s, webconference.user_id.to_s].join('_')} #{['g', webconference.id.to_s, webconference.group_id.to_s].join('_')}"}= webconference.grade
                 - if disabled
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_eva_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false', :'aria-label' => t('webconferences.list.watch')
                 - else
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_eva_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: "record", onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('webconferences.list.watch')
-                - if @can_see_access || @can_evaluate
-                  %td.center{ :'data-url' => list_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]), headers: "we_eva_acc" }= link_to_function content_tag(:i, nil, class: "icon-#{@can_evaluate && @is_student ? 'write' : 'users'} btn"), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
-                - if @is_student
-                  %td.center{headers: "we_eva_aft"}=(webconference.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
+                - if @can_evaluate
+                  %td.center{ :'data-url' => user_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id, score_type: 'evaluative'), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]), headers: "we_eva_acc" }= link_to_function content_tag(:i, nil, class: "icon-write btn"), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
+                %td.center{headers: "we_eva_aft"}=(webconference.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
                   
       - else
         .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
@@ -83,13 +83,12 @@
               %th#we_fre_nam.default_width.center= t(:name, scope: [:webconferences, :list])
               %th#we_fre_ava.default_width.center= t(:availability, scope: [:webconferences, :list])
               %th#we_fre_sit.smaller_width.center= t(:situation, scope: [:webconferences, :list])
-              - if @is_student
-                %th#we_fre_fre.center{style: "width: 2%;"}= t(:frequency, :scope => [:scores, :info])
+              %th#we_fre_int.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
+              %th#we_fre_fre.center{style: "width: 2%;"}= t(:frequency, :scope => [:scores, :info])
               %th#we_fre_rec.smaller_width.center.no_sort= t(:recording, scope: [:webconferences, :index])
-              - if @can_see_access || @can_evaluate
+              - if @can_evaluate
                 %th#we_fre_acc.smaller_width.center.no_sort{style: "width: 2%;"}
-              - if @is_student
-                %th#we_fre_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
+              %th#we_fre_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
           %tbody
             - @webconferences_frequency.each do |webconference|
               - unavailable = exist_and_offline?(webconference.server.to_i)
@@ -129,16 +128,17 @@
                   %div= l(webconference.start_date.to_date, format: :normal)
                   %div= [l(webconference.start_hour.to_time, format: :today), l(webconference.end_hour.to_time, format: :today)].join(' - ')
                 %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}"), headers: "we_fre_sit"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
-                - if @is_student
-                  %td.center{headers: "we_fre_fre"}= webconference.working_hours
+                %td.center{headers: "we_fre_int"}
+                  - unless webconference.count.blank?
+                    = link_to_function webconference.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id, user_id: @user.id, group_id: webconference.group_id, situation: webconference.situation, score_type: 'frequency'), onkeydown: 'click_on_keypress(event, this);'
+                %td.center{headers: "we_fre_fre", class: "#{['u', webconference.id.to_s, webconference.user_id.to_s].join('_')} #{['g', webconference.id.to_s, webconference.group_id.to_s].join('_')}"}= webconference.working_hours
                 - if disabled
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_fre_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false', :'aria-label' => t('webconferences.list.watch')
                 - else
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_fre_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: "record", onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('webconferences.list.watch')
-                - if @can_see_access || @can_evaluate
-                  %td.center{ :'data-url' => list_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]), headers: "we_fre_acc" }= link_to_function content_tag(:i, nil, class: "icon-#{@can_evaluate && @is_student ? 'write' : 'users'} btn"), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
-                - if @is_student
-                  %td.center{headers: "we_fre_aft"}=(webconference.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
+                - if @can_evaluate
+                  %td.center{ :'data-url' => user_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id, score_type: 'frequency'), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]), headers: "we_fre_acc" }= link_to_function content_tag(:i, nil, class: "icon-write btn"), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
+                %td.center{headers: "we_fre_aft"}=(webconference.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
                   
       - else
         .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
@@ -151,9 +151,8 @@
               %th#we_not_nam.default_width.center= t(:name, scope: [:webconferences, :list])
               %th#we_not_ava.default_width.center= t(:availability, scope: [:webconferences, :list])
               %th#we_not_sta.smaller_width.center= t(:status, scope: [:webconferences, :list])
+              %th#we_not_int.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
               %th#we_not_rec.smaller_width.center.no_sort= t(:recording, scope: [:webconferences, :index])
-              - if @can_see_access
-                %th#we_not_acc.center.no_sort{style: 'width: 2%;'}= t('webconferences.index.access')
           %tbody
             - @webconferences_not_evaluative.each do |webconference|
               - unavailable = exist_and_offline?(webconference.server.to_i)
@@ -193,12 +192,13 @@
                   %div= l(webconference.start_date.to_date, format: :normal)
                   %div= [l(webconference.start_hour.to_time, format: :today), l(webconference.end_hour.to_time, format: :today)].join(' - ')
                 %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}"), headers: "we_not_sta"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
+                %td.center{headers: "we_not_int"}
+                  - unless webconference.count.blank?
+                    = link_to_function webconference.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id, user_id: @user.id, group_id: webconference.group_id, situation: webconference.situation), onkeydown: 'click_on_keypress(event, this);'
                 - if disabled
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_not_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false', :'aria-label' => t('webconferences.list.watch')
                 - else
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_not_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: "record", onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('webconferences.list.watch')
-                - if @can_see_access
-                  %td.center{ :'data-url' => list_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]), headers: "we_not_acc" }= link_to_function content_tag(:i, nil, class: "icon-users btn"), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
                 
       - else
         .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])    

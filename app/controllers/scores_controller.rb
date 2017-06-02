@@ -294,7 +294,7 @@ class ScoresController < ApplicationController
         if params[:situation] == 'without_group'
           render json: { url: group_assignments_path(assignment_id: tool_id) }
         else
-          render json: { url: student_assignment_path(tool_id, student_id: params[:user_id], group_id: params[:group_id]), method: :get }
+          render json: { url: summarized_assignment_path(tool_id, student_id: params[:user_id], group_id: params[:group_id], score_type: params[:score_type], situation: params[:situation]) }
         end
       when 'ChatRoom'
         render json: { url: user_messages_chat_room_path(tool_id, user_id: params[:user_id], score_type: params[:score_type], situation: params[:situation]) }

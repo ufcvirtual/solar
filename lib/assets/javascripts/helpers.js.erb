@@ -196,7 +196,8 @@ $.fn.call_fancybox = function (options) {
           closeClick: false
         },
         autoDimensions: true,
-        width: '100px'
+        width: '100px',
+        maxHeight: '60%'
       },
       beforeShow: function(){
           $("body").css({'overflow-y':'hidden'});
@@ -582,4 +583,29 @@ function getIPs(callback){
               handleCandidate(line);
       });
     }, 1000);
+}
+
+function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
+  jQuery.fancybox.close();
+  if(group_id == undefined || group_id == null || group_id == '')
+    class_elem = 'u_'+ac_id.toString()+'_'+user_id.toString();
+  else
+    class_elem = 'g_'+ac_id.toString()+'_'+group_id.toString();
+
+  if(score_type=='evaluative' || score_type=='not_evaluative')
+    grade = $('#academic_allocation_user_grade').val();
+  else
+    grade = $('#academic_allocation_user_working_hours').val();  
+
+  
+  if(!!$('a.'+class_elem).length){
+    grade_or_status = $.isNumeric(grade) ? grade : data.situation;
+    $('a.'+class_elem+':visible').text(grade_or_status);
+    $('a.'+class_elem+':visible').closest('td').attr( "class", data.class_td).addClass(class_name);
+  }else{
+    grade_or_status = $.isNumeric(grade) ? grade : '';
+    $('td.'+class_elem+':visible').text(grade_or_status);
+  }
+
+  flash_message(data.notice, 'notice');
 }

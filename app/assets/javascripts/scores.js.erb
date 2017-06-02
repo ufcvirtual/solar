@@ -78,23 +78,6 @@ function change_tab_tool(tab){
   return false;
 }
 
-function after_evaluate(class_name, score_type, ac_id, user_id, data){
-  jQuery.fancybox.close();
-  id_elem = ac_id.toString()+'_'+user_id.toString();
-
-  if(score_type=='evaluative')
-    grade = $('#academic_allocation_user_grade').val();
-  else
-    grade = $('#academic_allocation_user_working_hours').val();  
-
-  grade_or_status = $.isNumeric(grade) ? grade : data.situation;
-
-  $('a#'+id_elem).text(grade_or_status);
-  $('a#'+id_elem).closest('td').attr( "class", data.class_td).addClass(class_name);
-
-  flash_message(data.notice, 'notice');
-}
-
 $(function(){
    $('.tb_list_students ul.dropdown-menu li input[type="checkbox"]').change(function(){
     if(!!$(this).prop('checked'))
