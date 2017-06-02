@@ -49,7 +49,7 @@ $period_ended_color_base: $high_contrast_font_color;
 $current_background: $high_contrast_background_color;
 $current_color: $high_contrast_font_color;
 $current_color_base: $high_contrast_link_color;
-$disabled_color: #966;
+$disabled_color: $high_contrast_font_color;
 $language_border_color: $high_contrast_border_color;
 $language_color_base: $high_contrast_link_color;
 $language_background_color: $high_contrast_background_color;
