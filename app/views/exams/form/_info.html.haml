@@ -19,8 +19,8 @@
 = render 'groups/codes'
 
 .form-actions.right_buttons
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
-  = button_to_function t('.continue'), 'go_to_config()', class: 'btn btn_main btn_lightbox', alt: 'continuar', type: 'button', id: '_continue'
+  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button', onkeypress: 'jQuery.fancybox.close()'
+  = button_to_function t('.continue'), 'go_to_config()', class: 'btn btn_main btn_lightbox', alt: 'continuar', type: 'button', id: '_continue', onkeypress: 'go_to_config()'
 
 = javascript_include_tag 'ckeditor/init'
 = javascript_include_tag 'jquery.mask'

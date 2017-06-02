@@ -39,9 +39,9 @@
   = button_to_function t(:save), 'save_exam()', class: 'btn btn_main btn_main', alt: t(:save), type: 'button'
 
 .form-actions.right_buttons.hidden#with_control
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', alt: t(:cancel), type: 'button'
-  = button_to_function t('.previous'), 'back_to_info()', class: 'btn btn_default btn_main btn_lightbox', alt: t('.previous'), type: 'button'
-  = button_to_function t('.continue'), 'go_to_controls()', class: 'btn btn_main btn_lightbox', alt: t('.continue'), type: 'button'
+  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', alt: t(:cancel), type: 'button', onkeypress: 'jQuery.fancybox.close()'
+  = button_to_function t('.previous'), 'back_to_info()', class: 'btn btn_default btn_main btn_lightbox', alt: t('.previous'), type: 'button', onkeypress: 'back_to_info()'
+  = button_to_function t('.continue'), 'go_to_controls()', class: 'btn btn_main btn_lightbox', alt: t('.continue'), type: 'button', onkeypress: 'go_to_controls()'
 
 :javascript
 

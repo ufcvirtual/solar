@@ -24,9 +24,9 @@
   = link_to_add_fields content_tag(:i, nil, class: 'icon-plus'), f, :ip_reals, class: "btn btn_main add_fields", :'data-tooltip' => t('.add_others_ip_reals'), :'aria-label' => t('.add_others_ip_reals')
 
 .form-actions.right_buttons
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
-  = button_to_function t('.previous'), 'back_to_config()', class: 'btn btn_default btn_main btn_lightbox', type: 'button'
-  = button_to_function t(:save), 'save_exam()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button'
+  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button', onkeypress: 'jQuery.fancybox.close()'
+  = button_to_function t('.previous'), 'back_to_config()', class: 'btn btn_default btn_main btn_lightbox', type: 'button', onkeypress: 'back_to_config()'
+  = button_to_function t(:save), 'save_exam()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button', onkeypress: 'save_exam()'
 
 = javascript_include_tag 'jquery.mask', 'ip'
 
