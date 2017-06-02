@@ -1,0 +1,50 @@
+%h1#lightBoxDialogTitle= t('.title', assignment_name: @assignment.name, name: (@group.blank? ? (user = User.find(@student_id)).name : @group.group_name ))
+
+.assignment_summarized
+  %section.block_wrapper_groups
+    - unless @group.blank?
+      .block_user.fancybox
+        .title_user= t('.participants')
+        - participants = @group.users
+        - unless participants.empty?
+          %ul.participants_list
+            - participants.each do |participant|
+              %li
+                = participant.name
+                - unless @class_participants.include? participant.id
+                  %span{:"data-tooltip" => t('.moved_allocation'), :'aria-label' => t(".moved_allocation")}= content_tag :i, nil, class: 'icon-warning moved_allocation' 
+
+  %section.student_files.files
+    = render partial: 'assignment_files/list', locals: { files: @acu.try(:assignment_files), disabled: true }
+
+  %section.student_webconferences.files
+    = render partial: 'assignment_webconferences/list', locals: { webconferences: @acu.try(:assignment_webconferences), disabled: true }
+
+  %section.assignment_comments
+    = render partial: 'assignment_comments/list', locals: { comments: @acu.try(:assignment_comments) }
+  
+  - if @can_evaluate
+    = simple_form_for :academic_allocation_user, url: evaluate_assignment_path(@assignment), html: { method: :put, id: 'academic_allocation_user_grade_form' } do |f|
+      = f.input :user_id, as: :hidden, input_html: { value: @student_id }
+      = f.input :group_id, as: :hidden, input_html: { value: @group_id }
+      = f.input :score_type, as: :hidden,  input_html: { value: @score_type }
+      .form-inputs.block_content
+        .inline
+          = f.input :grade, required: true, as: :float, :step => 0.01, label: t(".grade"), input_html: { value: @acu.try(:grade), min:0, max:10 }
+          = f.input :working_hours, required: true, as: :float, label: t(".frequency"), input_html: { value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh: @ac.max_working_hours.to_s ) } if @frequency
+          = link_to_function t('webconferences.list_access.finish_evaluation'), 'finish_evaluation(this)', class: 'btn btn_main', onkeydown: 'click_on_keypress(event, this);'
+
+:javascript
+  function finish_evaluation(btn){
+    var form = $(btn).parents('form:first');
+    $.put(form.attr('action'), form.serialize(), function(data){
+      if("#{@back}" =='true')
+        flash_message(data.notice, 'notice', 'fancybox-outer');
+      else
+        after_evaluate('Assignment', "#{@score_type}", "#{@ac.id}", "#{@student_id}", data, "#{@group_id}");
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert', 'fancybox-outer');
+    });
+  }

@@ -45,10 +45,10 @@
   = render partial: 'assignment_comments/list', locals: { comments: @acu.try(:assignment_comments) }
 
 %section.student_files.files
-  = render partial: 'assignment_files/list', locals: { files: @acu.try(:assignment_files) }
+  = render partial: 'assignment_files/list', locals: { files: @acu.try(:assignment_files), disabled: false }
 
 %section.student_webconferences.files
-  = render partial: 'assignment_webconferences/list', locals: { webconferences: @acu.try(:assignment_webconferences) }
+  = render partial: 'assignment_webconferences/list', locals: { webconferences: @acu.try(:assignment_webconferences), disabled: false }
 
 .block_wrapper{ style: 'float:left' }
   = link_to t(:back), :back, { class: "btn", id: 'back'  }

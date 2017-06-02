@@ -367,6 +367,7 @@ Solar::Application.routes.draw do
   resources :assignments do
     member do
       get :student
+      get :summarized
       get :participants
       put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Assignment', as: :evaluate
     end

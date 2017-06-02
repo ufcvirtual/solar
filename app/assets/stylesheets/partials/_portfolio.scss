@@ -222,10 +222,14 @@ td.assignment_without_group a
 
   .block_user{
     display: inline-block;
-    width: 92%;
+    width: 93%;
     margin-left: 19px;
     margin-top: 1%;
     padding: 8px 0px 5px 44px;
+  }
+
+  .block_user.fancybox{
+    margin-left: 0;
   }
 
   .title_user{
@@ -247,5 +251,46 @@ td.assignment_without_group a
     overflow: hidden; // FIXME: em outro local estava definido como auto, verificar se está ok assim
     padding-top: 13px;
 
+  }
+}
+
+
+.assignment_summarized .student_files.files, .assignment_summarized .student_webconferences.files{
+  width: 99%;
+}
+
+.assignment_summarized .assignment_comments .block_wrapper{
+  width: 99%;
+}
+
+.assignment_summarized .assignment_comment_wrapper{
+  overflow-y: hidden;
+  max-height: none;
+}
+
+.assignment_summarized{
+  width: 700px;
+}
+
+/* assignment webconference's table */
+#tb_lw{
+  text-align: center;
+}
+
+.assignment_summarized{
+  .recordings{
+    .title{
+      padding: 1%;
+    }
+    .back{
+      float: right;
+      margin-top: 1%;
+    }
+    h3{
+      padding: 2%;
+      display: inline-block;
+      max-width: 70%;
+      word-wrap: break-word;
+    }
   }
 }

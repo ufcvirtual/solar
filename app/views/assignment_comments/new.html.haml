@@ -24,9 +24,13 @@
       $('#comment_form').serialize_and_submit({
         files: true,
         prepend_to_list: $(".comments_list"),
+        dont_remove_lightbox: true,
         complement_success: function(){
           cancel_new_comment();
-          flash_message("#{t('assignment_comments.success.new')}", "notice");
+          if(!!$('.fancybox-outer').length)
+            flash_message("#{t('assignment_comments.success.new')}", "notice", 'fancybox-outer');
+          else
+            flash_message("#{t('assignment_comments.success.new')}", "notice");
         }
       });
     });

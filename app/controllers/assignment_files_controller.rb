@@ -28,7 +28,7 @@ class AssignmentFilesController < ApplicationController
     @assignment_file.user = current_user
 
     if @assignment_file.save
-      render partial: 'file', locals: { file: @assignment_file }
+      render partial: 'file', locals: { file: @assignment_file, disabled: false }
     else
       render json: { success: false, alert: @assignment_file.errors.full_messages.join(', ') }, status: :unprocessable_entity
     end

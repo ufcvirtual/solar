@@ -14,14 +14,19 @@
   - if disabled_by_status || unavailable
     %td.center.record{headers: "record_web" ,:'data-tooltip' => t('webconferences.list.watch_disabled')}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false' , :'aria-label' => t('webconferences.list.watch_disabled')
   - else
-    %td.center.record{headers: "record_web" ,:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_assignment_webconference_path(webconference.id, academic_allocation_user_id: webconference.academic_allocation_user_id, group_id: @group.try(:id), student_id: @student_id), class: 'record_link', :'aria-label' => t('webconferences.list.watch') + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+    - if view_disabled
+      %td.center.record{headers: "record_web" ,:'data-tooltip' => t('webconferences.list.watch')}
+        = link_to content_tag(:i, nil, class: 'icon-play btn'), '#', onclick: 'show_recordings_inline(this, event)', :'aria-label' => t('webconferences.list.watch'), onkeydown: 'click_on_keypress(event, this);', :'data-url' => get_record_assignment_webconference_path(webconference.id, academic_allocation_user_id: webconference.academic_allocation_user_id, group_id: @group.try(:id), student_id: @student_id), :'data-name' => webconference.title
+        .bla
+    - else
+      %td.center.record{headers: "record_web" ,:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_assignment_webconference_path(webconference.id, academic_allocation_user_id: webconference.academic_allocation_user_id, group_id: @group.try(:id), student_id: @student_id), class: 'record_link', :'aria-label' => t('webconferences.list.watch') + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
 
   %td.center{headers: "final_web" }
-    - if @own_assignment
+    - if @own_assignment && !view_disabled
       = link_to (image_tag "#{webconference.final? ? 'released' : 'rejected'}.png", :'aria-hidden' => 'true'), change_status_assignment_webconference_path(webconference), remote: true, method: :put, class: 'change_lesson_status', :'data-tooltip' => (webconference.final ? t('.aw_yes') : t('.aw_no')), :'aria-label' => (webconference.final ? t('assignment_webconferences.webconference.final', webconference: webconference.title) :  t('assignment_webconferences.webconference.not_final', webconference: webconference.title))
     - else
       = (webconference.final ? t('.aw_yes') : t('.aw_no'))
-  - if @own_assignment
+  - if @own_assignment && !view_disabled
     - disabled = !(@in_time)
     %td.icon.center{ headers: "edit_web", class: 'icon' }= link_to content_tag(:i, nil, class: 'icon-edit btn', :'aria-hidden'=>'true'), '#', :"data-link-edit" => edit_assignment_webconference_path(webconference), :"data-tooltip" => t('.edit'), :'aria-label' => t(".edit") + t('fancybox.open'), onclick: 'edit_awebconference(this)', class: "#{disabled ? 'disabled' : ''}", onkeydown: 'click_on_keypress(event, this);'
     %td.icon.center{ headers: "record_link_web", class: "#{(disabled_by_status || disabled) ? 'disabled' : ''}" }= link_to content_tag(:i, nil, class: 'icon-cross btn', :'aria-hidden' => 'true'), '#', :"data-link-records" => remove_record_assignment_webconference_path(webconference), :"data-link-show" => assignment_webconference_path(webconference), :"data-tooltip" => t('webconferences.get_record.remove'), :'aria-label' => t("webconferences.get_record.remove"), onclick: 'remove_record_awebconference(this)', onkeydown: 'click_on_keypress(event, this);'
@@ -31,7 +36,6 @@
 
 :javascript
   $(function(){
-    $('.record_link').call_fancybox();
     $('.change_lesson_status').on("click presskey", function(){
       flash_message("#{webconference.final? ? I18n.t('assignment_webconferences.webconference.status_final_chance', webconference: webconference.title) : I18n.t('assignment_webconferences.webconference.status_not_final_chance', webconference: webconference.title)}", "notice", 'block_wrapper:first');
     });

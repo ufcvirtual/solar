@@ -1805,6 +1805,7 @@ en_US:
       general_message: It was not possible to execute action.
       dependencies: It was not possible to execute action. One or more assignments already have been sent or already have comments or already have been evaluated.
       not_started: It was not possible to download file. This assignment hasn't started yet.
+      not_started2: This assignment hasn't started yet.
       not_range_webconference: Must be in date range of Assignment
       invalid_datetime: "Unable to schedule web conferencing on previous dates"
       change_type_after_period: "can't change after assignment's ending"
@@ -1889,6 +1890,11 @@ en_US:
       new_file: 70
       shortcut_new_web: "[W]"
       shortcut_new_file: "[F]"
+    summarized:
+      title: Student/group %{name} assignment %{assignment_name}'s info
+      participants: 'Participants: '
+      grade: Grade
+      frequency: Frequency
 
   assignment_files:
     list:
@@ -1904,6 +1910,7 @@ en_US:
       delete: Remove file
     new:
       title: Send new file
+      send_file_obs: Wait for the complete submission of the file. The size should not exceed 26MB.
     error:
       download: It was not possible to download
       date_range_expired: It was not possible to execute action. Date range expired.
@@ -1912,6 +1919,7 @@ en_US:
       not_started_up: It was not possible to send file. Assignment not started yet.
     success:
       removed: File removed successfully
+      uploaded: File uploaded successfully
   assignment_comments:
     list:
       new: New comment
@@ -3138,6 +3146,7 @@ en_US:
       file: File
       exam: Exam
       chat: Chat Room
+      chats: Chat Rooms
       webconference: Webconference
       schedule_events: Events
       schedule_event: Event
@@ -3354,6 +3363,9 @@ en_US:
       final: "Final Version <a id='final_version_explain' href='#fv_explain' aria-label='%{aria} onkeydown='click_on_keypress(event, this);'>(?)</a>"
       final2: Explanation about final version
       fv_explain: "&nbsp;&nbsp; The tutor or professor responsible by evaluation has, as role, evaluate the student or group based on it's sent files and created webconferences. To evaluate a webconference, responsibles must analyse the existing recordings to, then, evaluate the student. However, during the execution of the assignment, the student or group of students may schedule and record one or more webconferences. These webconferences may be used, for example, to meetings between group members, to tests, to practice etc. That is, not all webconferences scheduled and recorded need, necessarily, be used to evaluation. <br/><br/> &nbsp;&nbsp;To inform the responsible wich ones of the webconferences must be used to evaluation, the student can define one or more as Final Version.  That way, the responsible will be able to evaluate only the webconferences defined as final version within all the ones scheduled and/or recorded. If necessary, responsibles may evaluate all recordings available."
+      back: 'Back to webconferences list'
+      name: "Webconference's recordings:"
+      final_tr: Final Version
     webconference:
       edit: Edit
       record: Remove record

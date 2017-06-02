@@ -2017,6 +2017,7 @@ pt_BR:
       general_message: Não foi possível realizar a ação desejada
       dependencies: Não é possível realizar esta ação, pois um ou mais trabalhos já foram enviados ou possuem comentários ou foram avaliados.
       not_started: Não é possível fazer o download do arquivo. O trabalho ainda não está iniciado.
+      not_started2: O trabalho ainda não está iniciado.
       not_range_webconference: Deve estar dentro do período do trabalho
       invalid_datetime: "Não é possível agendar a webconferência em datas pretéritas"
       change_type_after_period: não pode ser alterado após término do trabalho
@@ -2101,6 +2102,11 @@ pt_BR:
       new_file: 65
       shortcut_new_web: "[W]"
       shortcut_new_file: "[A]"
+    summarized:
+      title: Informações do trabalho %{assignment_name} do aluno/grupo %{name}
+      participants: 'Participantes: '
+      grade: Nota
+      frequency: Frequência
 
   assignment_files:
     list:
@@ -2116,6 +2122,7 @@ pt_BR:
       delete: Deletar arquivo
     new:
       title: Enviar novo arquivo
+      send_file_obs: Aguarde o envio completo do arquivo. O tamanho não deve exceder 26MB.
     error:
       download: Não foi possível realizar o download
       date_range_expired: Não foi possível realizar ação. Período encerrado.
@@ -2124,6 +2131,7 @@ pt_BR:
       not_started_up: Não é possível fazer o envio do arquivo. O trabalho ainda não está iniciado.
     success:
       removed: Arquivo deletado com sucesso
+      uploaded: Arquivo enviado com sucesso
   assignment_comments:
     list:
       new: Novo comentário
@@ -3380,6 +3388,7 @@ pt_BR:
       file: Arquivo
       exam: Prova
       chat: Chat
+      chats: Chats
       webconference: Webconferência
       schedule_events: Eventos
       schedule_event: Evento
@@ -3598,6 +3607,9 @@ pt_BR:
       final: "Versão Final <a id='final_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>(?)</a>"
       final2: Explicação sobre a versão final
       fv_explain: "&nbsp;&nbsp;&nbsp;&nbsp;O tutor ou professor responsável pela avaliação tem, como papel, avaliar o aluno/grupo com base em seus arquivos enviados e webconferências criadas. Para avaliar uma webconferência, os responsáveis devem analisar as gravações existentes para, então, avaliar o desempenho do aluno. Entretanto, durante a execução do trabalho, o aluno ou o grupo de alunos pode agendar e gravar uma ou mais webconferências. Estas webconferências podem ser feitas, por exemplo, para reuniões entre os membros de uma equipe, para testes, para praticar uma apresentação etc. Ou seja, nem todas as webconferências cadastradas e gravadas precisam, necessariamente, servir para avaliação. <br/><br/> &nbsp;&nbsp;&nbsp;&nbsp;A fim de informar ao responsável qual ou quais das webconferências devem ser consideradas para avaliação, o aluno pode marcar uma ou mais webconferências como Versão Final. Desse modo, o responsável poderá avaliar apenas as webconferências marcadas dentre todas as agendadas e/ou gravadas. Se achar necessário, o responsável poderá analisar e avaliar todas as gravações disponíveis."
+      back: 'Voltar à lista de webconferências'
+      name: 'Gravações de '
+      final_tr: Versão Final
     webconference:
       edit: Editar
       record: Remover gravação
