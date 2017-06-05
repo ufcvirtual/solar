@@ -35,6 +35,8 @@
 
 :javascript
   $(function(){
+    $('.record_link').call_fancybox();
+
     $('.change_lesson_status').on("click presskey", function(){
       flash_message("#{webconference.final? ? I18n.t('assignment_webconferences.webconference.status_final_chance', webconference: webconference.title) : I18n.t('assignment_webconferences.webconference.status_not_final_chance', webconference: webconference.title)}", "notice", 'block_wrapper:first');
     });
