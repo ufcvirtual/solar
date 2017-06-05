@@ -488,12 +488,18 @@ function focuInpuErro(){
     if($(el).is(":visible")){
       $(el).attr("aria-label",text);
       $(".error").siblings()[0].focus();
-    }else{
+    } else {
       if(typeof($("#_continue")) !== "undefined"){
         $("#_continue").click();
-        $(el).attr("aria-label",text);
-        $(".error").siblings()[0].focus();
-        CKEDITOR.instances['notification_description'].focus();
+        if ( typeof($("#__continue")) !== "undefined" ){
+          $("#__continue").click();
+          $(el).attr("aria-label",text);
+          $(".error").siblings()[0].focus();
+        } else {
+          $(el).attr("aria-label",text);
+          $(".error").siblings()[0].focus();
+          CKEDITOR.instances['notification_description'].focus();
+        }
       }
     }
   }

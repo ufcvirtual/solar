@@ -11,7 +11,7 @@
 
 .fields_for_remove.clear
   = f.hidden_field :_destroy
-  = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields",  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
+  = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields", onkeydown: 'doClick(event, this)',  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
   = label_tag t(".type_select"), nil,class: "select_ip_label"
   = select_tag "ip_type", options_for_select([["IPV4", "ipv4"], ["IPV6", "ipv6"]]), class: "select_ip_type", onchange: "toggleIP(this)"
   = f.input :ip_v4, as: :string, label: false, input_html: { size: 15, class: "ip_v4" }

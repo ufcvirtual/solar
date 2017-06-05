@@ -19,11 +19,11 @@
 = render 'groups/codes'
 
 .form-actions.right_buttons
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button', onkeypress: 'jQuery.fancybox.close()'
-  = button_to_function t('.continue'), 'go_to_config()', class: 'btn btn_main btn_lightbox', alt: 'continuar', type: 'button', id: '_continue', onkeypress: 'go_to_config()'
+  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox cancel', type: 'button', onkeypress: 'exit(event)'
+  = button_to_function t('.continue'), 'go_to_config(event)', class: 'btn btn_main btn_lightbox', alt: 'continuar', type: 'button', id: '_continue', onkeypress: 'go_to_config(event)'
 
 = javascript_include_tag 'ckeditor/init'
-= javascript_include_tag 'jquery.mask'
+= javascript_include_tag 'jquery.mask', 'ip'
 
 :javascript
   $(function(){
@@ -78,25 +78,38 @@
   //         $('.schedule_dates.hour').removeClass('invisible');
   // }
 
-  function save_exam() {
-    save_values_ckeditor();
-    $('form#exam_form').serialize_and_submit({
-      replace_list: $('.list_exams:last')
-    });
-    setTimeout(function() {
-      focuInpuErro();
-    }, 700);
+  function save_exam(event) {
+    var keynum = event.which || event.keyCode;
+    if(keynum == 13 || event.type == 'click') {
+      save_values_ckeditor();
+      $('form#exam_form').serialize_and_submit({
+        replace_list: $('.list_exams:last')
+      });
+      setTimeout(function() {
+        focuInpuErro();
+      }, 700);
+    }
   }
 
-  function go_to_config() {
-    $('.step-info').addClass('hidden');
-    $('.step-config').removeClass('hidden');
-    $('.step-control').addClass('hidden');
+  function go_to_config(event) {
+    var keynum = event.which || event.keyCode;
+    if(keynum == 13 || event.type == 'click') {
+      $('.step-info').addClass('hidden');
+      $('.step-config').removeClass('hidden');
+      $('.step-control').addClass('hidden');
 
-    $('li.info').removeClass('active');
-    $('#dot-info').removeClass('active');
-    $('li.config').addClass('active');
-    $('#dot-config').addClass('active');
-    $('li.control').removeClass('active');
-    $('#dot-control').removeClass('active');
+      $('li.info').removeClass('active');
+      $('#dot-info').removeClass('active');
+      $('li.config').addClass('active');
+      $('#dot-config').addClass('active');
+      $('li.control').removeClass('active');
+      $('#dot-control').removeClass('active');
+    }
+  }
+
+  function exit(event) {
+    var keynum = event.which || event.keyCode;
+    if(keynum == 13 || event.type == 'click') {
+      jQuery.fancybox.close();
+    }
   }

@@ -1,11 +1,11 @@
 .ckb
   = f.label :random_questions
   = f.input :random_questions, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.random_questions ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.random_questions ? t('.random') : t('.not_random')), :'data-id' => 'exam_random_questions', :'data-active' => t('.random'), :'data-not-active' => t('.not_random')
+  = link_to_function (image_tag "#{f.object.random_questions ? 'released' : 'rejected'}.png"), 'change(this)', onkeydown: 'doClick(event, this)', :'data-tooltip' => (f.object.random_questions ? t('.random') : t('.not_random')), :'data-id' => 'exam_random_questions', :'data-active' => t('.random'), :'data-not-active' => t('.not_random')
 .ckb
   = f.label :raffle_order
   = f.input :raffle_order, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.raffle_order ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.raffle_order ? t('.raffle') : t('.not_raffle')), :'data-id' => 'exam_raffle_order', :'data-active' => t('.raffle'), :'data-not-active' => t('.not_raffle')
+  = link_to_function (image_tag "#{f.object.raffle_order ? 'released' : 'rejected'}.png"), 'change(this)', onkeydown: 'doClick(event, this)', :'data-tooltip' => (f.object.raffle_order ? t('.raffle') : t('.not_raffle')), :'data-id' => 'exam_raffle_order', :'data-active' => t('.raffle'), :'data-not-active' => t('.not_raffle')
 / .ckb
 /   = f.label :auto_correction
 /   = f.input :auto_correction, as: :boolean, label: false
@@ -13,7 +13,7 @@
 .ckb
   = f.label :block_content
   = f.input :block_content, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.block_content ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.block_content ? t('.block') : t('.dont_block')), :'data-id' => 'exam_block_content', :'data-active' => t('.block'), :'data-not-active' => t('.dont_block')
+  = link_to_function (image_tag "#{f.object.block_content ? 'released' : 'rejected'}.png"), 'change(this)', onkeydown: 'doClick(event, this)', :'data-tooltip' => (f.object.block_content ? t('.block') : t('.dont_block')), :'data-id' => 'exam_block_content', :'data-active' => t('.block'), :'data-not-active' => t('.dont_block')
 .ckb
   = f.input :number_questions
 .ckb
@@ -23,25 +23,25 @@
 .ckb
   = f.label :result_email
   = f.input :result_email, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.result_email ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.result_email ? t('.send_mail') : t('.dont_send_mail')), :'data-id' => 'exam_result_email', :'data-active' => t('.send_mail'), :'data-not-active' => t('.dont_send_mail')
+  = link_to_function (image_tag "#{f.object.result_email ? 'released' : 'rejected'}.png"), 'change(this)', onkeydown: 'doClick(event, this)', :'data-tooltip' => (f.object.result_email ? t('.send_mail') : t('.dont_send_mail')), :'data-id' => 'exam_result_email', :'data-active' => t('.send_mail'), :'data-not-active' => t('.dont_send_mail')
 .ckb
   = f.label :uninterrupted
   = f.input :uninterrupted, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.uninterrupted ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.uninterrupted ? t('.cant_interrupt') : t('.can_interrupt')), :'data-id' => 'uninterrupted', :'data-active' => t('.cant_interrupt'), :'data-not-active' => t('.can_interrupt')
+  = link_to_function (image_tag "#{f.object.uninterrupted ? 'released' : 'rejected'}.png"), 'change(this)', onkeydown: 'doClick(event, this)', :'data-tooltip' => (f.object.uninterrupted ? t('.cant_interrupt') : t('.can_interrupt')), :'data-id' => 'uninterrupted', :'data-active' => t('.cant_interrupt'), :'data-not-active' => t('.can_interrupt')
 .ckb
   = f.label :controlled
   = f.input :controlled, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.controlled ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.controlled ? t('.environment_controlled') : t('.environment_not_controlled')), :'data-id' => 'controlled', :'data-active' => t('.environment_controlled'), :'data-not-active' => t('.environment_not_controlled')
+  = link_to_function (image_tag "#{f.object.controlled ? 'released' : 'rejected'}.png"), 'change(this)', onkeydown: 'doClick(event, this)', :'data-tooltip' => (f.object.controlled ? t('.environment_controlled') : t('.environment_not_controlled')), :'data-id' => 'controlled', :'data-active' => t('.environment_controlled'), :'data-not-active' => t('.environment_not_controlled')
 
 .form-actions.right_buttons#without_control
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default', type: 'button'
-  = button_to_function t('.previous'), 'back()', class: 'btn btn_default btn_main', type: 'button'
-  = button_to_function t(:save), 'save_exam()', class: 'btn btn_main btn_main', alt: t(:save), type: 'button'
+  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default cancel', type: 'button'
+  = button_to_function t('.previous'), 'back(event)', class: 'btn btn_default btn_main', type: 'button', onkeypress: 'back(event)'
+  = button_to_function t(:save), 'save_exam(event)', class: 'btn btn_main btn_main', alt: t(:save), type: 'button', onkeypress: 'save_exam(event)'
 
 .form-actions.right_buttons.hidden#with_control
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', alt: t(:cancel), type: 'button', onkeypress: 'jQuery.fancybox.close()'
-  = button_to_function t('.previous'), 'back_to_info()', class: 'btn btn_default btn_main btn_lightbox', alt: t('.previous'), type: 'button', onkeypress: 'back_to_info()'
-  = button_to_function t('.continue'), 'go_to_controls()', class: 'btn btn_main btn_lightbox', alt: t('.continue'), type: 'button', onkeypress: 'go_to_controls()'
+  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox cancel', alt: t(:cancel), type: 'button', onkeydown: 'exit(event)'
+  = button_to_function t('.previous'), 'back_to_info(event)', class: 'btn btn_default btn_main btn_lightbox', alt: t('.previous'), type: 'button', onkeypress: 'back_to_info(event)'
+  = button_to_function t('.continue'), 'go_to_controls(event)', id: "__continue", class: 'btn btn_main btn_lightbox', alt: t('.continue'), type: 'button', onkeypress: 'go_to_controls(event)'
 
 :javascript
 
@@ -57,51 +57,46 @@
     });
   });
 
-  function back(){
-    $('.step-info').removeClass('hidden');
-    $('.step-config').addClass('hidden');
-    $('li.info').addClass('active');
-    $('#dot-info').addClass('active');
-    $('li.config').removeClass('active');
-    $('#dot-config').removeClass('active');
-  }
-
-  function back_to_info(){
-    $('.step-info').removeClass('hidden');
-    $('.step-config').addClass('hidden');
-    $('.step-control').addClass('hidden');
-
-    $('li.info').addClass('active');
-    $('#dot-info').addClass('active');
-    $('li.config').removeClass('active');
-    $('#dot-config').removeClass('active');
-    $('li.control').removeClass('active');
-    $('#dot-control').removeClass('active');
-  }
-
-  function go_to_controls() {
-    $('.step-info').addClass('hidden');
-    $('.step-config').addClass('hidden');
-    $('.step-control').removeClass('hidden');
-
-    $('li.info').removeClass('active');
-    $('#dot-info').removeClass('active');
-    $('li.config').removeClass('active');
-    $('#dot-config').removeClass('active');
-    $('li.control').addClass('active');
-    $('#dot-control').addClass('active');
-  }
-
-  function change(img){
-    var checkbox = $(img).siblings('.input').find('input');
-    checkbox.prop('checked', !checkbox.prop('checked'));
-
-    if(!!checkbox.prop('checked')){
-      $(img).html('<img alt="Released" src="/assets/released.png"/>');
-      $(img).attr('data-tooltip', $(img).data('active'));
-    }else{
-      $(img).html('<img alt="Rejected" src="/assets/rejected.png"/>');
-      $(img).attr('data-tooltip', $(img).data('not-active'));
+  function back(event){
+    var keynum = event.which || event.keyCode;
+    if(keynum == 13 || event.type == 'click') {
+      $('.step-info').removeClass('hidden');
+      $('.step-config').addClass('hidden');
+      $('li.info').addClass('active');
+      $('#dot-info').addClass('active');
+      $('li.config').removeClass('active');
+      $('#dot-config').removeClass('active');
     }
-    $.getScript("/assets/tooltip.js");
+  }
+
+  function back_to_info(event){
+    var keynum = event.which || event.keyCode;
+    if(keynum == 13 || event.type == 'click') {
+      $('.step-info').removeClass('hidden');
+      $('.step-config').addClass('hidden');
+      $('.step-control').addClass('hidden');
+
+      $('li.info').addClass('active');
+      $('#dot-info').addClass('active');
+      $('li.config').removeClass('active');
+      $('#dot-config').removeClass('active');
+      $('li.control').removeClass('active');
+      $('#dot-control').removeClass('active');
+    }
+  }
+
+  function go_to_controls(event) {
+    var keynum = event.which || event.keyCode;
+    if(keynum == 13 || event.type == 'click') {
+      $('.step-info').addClass('hidden');
+      $('.step-config').addClass('hidden');
+      $('.step-control').removeClass('hidden');
+
+      $('li.info').removeClass('active');
+      $('#dot-info').removeClass('active');
+      $('li.config').removeClass('active');
+      $('#dot-config').removeClass('active');
+      $('li.control').addClass('active');
+      $('#dot-control').addClass('active');
+    }
   }
