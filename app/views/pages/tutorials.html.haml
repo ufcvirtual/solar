@@ -1,7 +1,12 @@
+- if current_user.blank? || @verify_route_tutorial
+  = render '/user_sessions/header'
 #tutorials
   - locale = I18n.locale
-
   = set_title(t('tutorials.menu'))
+  - if current_user.blank? || @verify_route_tutorial
+    %br
+    #link
+      %a#link-password{href: home_path}= t(:back_home)
 
   .tutorials
 

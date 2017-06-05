@@ -5,6 +5,7 @@ class PagesController < ApplicationController
   layout 'login', only: [:apps, :team, :faq, :tutorials_login]
 
   def tutorials
+    @verify_route_tutorial = false
   end
 
   def apps
@@ -18,6 +19,7 @@ class PagesController < ApplicationController
   end
 
   def tutorials_login
+    @verify_route_tutorial = true
   	render 'tutorials'
   end
 

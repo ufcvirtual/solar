@@ -59,7 +59,7 @@
               %ul#mysolar_submenu_help
                 %li.sub_nav_menu= link_to t(:context), "#", id: 'help_context', class: "sub_nav_item"
                 %li.sub_nav_menu= link_to t('tutorials.menu'), tutorials_path, id: 'my_tutorials', class: "sub_nav_item"
-                %li.sub_nav_menu= link_to t(:login_faq), faq_path, target: "_blank", class: "sub_nav_item", :'aria-label' => t(:login_faq)+ t(:new_window)
+                %li.sub_nav_menu= link_to t(:login_faq), faq_path, class: "sub_nav_item", :'aria-label' => t(:login_faq)
                 %li.sub_nav_menu= link_to t(:videos), "../../video_tutorials.html", target: "_blank", class: "sub_nav_item", :'aria-label' => t(:videos)+ t(:new_window)
                 %li.sub_nav_menu= link_to t(:contact), support_new_messages_path, class: "sub_nav_item"
             %li#mysolar_top_logout.nav_menu
@@ -169,7 +169,7 @@
           %li= link_to t(:login_footer3), team_path, target: '_blank', :'aria-label' => t(:login_footer3)+ t(:new_window)
           %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank', :'aria-label' => t(:license_terms)+ t(:new_window)
           %li= link_to t(:login_app), apps_path
-          %li= link_to t(:login_faq), faq_path, target: '_blank', :'aria-label' => t(:login_faq)+ t(:new_window)
+          %li= link_to t(:login_faq), faq_path, :'aria-label' => t(:login_faq)
           %li.choice-language
             = link_to t(:login_language), '#', class: "link-arrow"
             %ul.choice-language-menu

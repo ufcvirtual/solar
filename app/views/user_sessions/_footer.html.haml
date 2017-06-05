@@ -17,9 +17,9 @@
       %li.choice-tutorial
         = link_to t(:help), '#', class: 'link-arrow'
         %ul.choice-tutorial-menu
-          %li= link_to t(:login_faq), faq_path, target: '_blank', :'aria-label' => t(:login_faq)+ t(:new_window)
+          %li= link_to t(:login_faq), faq_path, :'aria-label' => t(:login_faq)
           %li= link_to t(:videos), 'video_tutorials.html', target: '_blank', :'aria-label' => t(:videos)+ t(:new_window)
-          %li= link_to t('tutorials.menu'), tutorials_login_path, target: '_blank', :'aria-label' => t('tutorials.menu')+ t(:new_window)
+          %li= link_to t('tutorials.menu'), tutorials_login_path, :'aria-label' => t('tutorials.menu')
       %li.choice-language
         = link_to t(:login_language), '#', class: "link-arrow"
         %ul.choice-language-menu
