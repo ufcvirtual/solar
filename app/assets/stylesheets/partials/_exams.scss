@@ -169,13 +169,25 @@
         .scores, .annulled{
           display: inline-block;
         }
+        ol{
+          list-style-type: decimal;
+          li{
+            margin-left: 1.6em;
+          }
+        }
+        ul{
+          list-style-type: disc;
+          li{
+            margin-left: 1.6em;
+          }
+        }
       }
     }
 
     .question_images {
       text-align: center;
-      margin-left: 10%;
-      margin-left: 15%;
+      //margin-left: 10%;
+      //margin-left: 15%;
 
       #question_image{
         max-width: 300px;
@@ -218,7 +230,7 @@
     }
     .question_audios {
       text-align: center;
-      margin-left: 15%;
+      //margin-left: 15%;
 
       #question_audio{
         max-width: 150px;
@@ -297,8 +309,12 @@
     li{
       margin-top: 10px;
       label{
-        :nth-child(2):not(.invisible){
+        :nth-child(2):not(.invisible):not(ol):not(ul):not(li){
           display: inline-block;
+        }   
+
+        ol > li, ul > li{
+          margin-left: 2.0em;
         }
       }
     }

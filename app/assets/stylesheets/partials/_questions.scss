@@ -425,6 +425,16 @@
       display: inline-block;
       vertical-align: middle;
     }
+    ol{
+      list-style-type: decimal;
+      padding-left: 10px;
+      display: inline;
+    }
+    ul{
+      list-style-type: disc;
+      padding-left: 10px;
+      display: inline;
+    }
   }
   select{
     width: 43px;
@@ -441,6 +451,16 @@
 .question_items.preview{
   .item{
     margin-top: 10px;
+    span{
+      ol{
+        list-style-type: decimal;
+        padding-left: 10px;
+      }
+      ul{
+        list-style-type: disc;
+        padding-left: 10px;
+      }
+    }  
   }
   p:nth-of-type(2), p:first-of-type, span{
     display: inline-block;
