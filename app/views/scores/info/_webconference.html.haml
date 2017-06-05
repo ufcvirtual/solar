@@ -59,7 +59,7 @@
                 %td.center{headers: "we_eva_ava"}
                   %div= l(webconference.start_date.to_date, format: :normal)
                   %div= [l(webconference.start_hour.to_time, format: :today), l(webconference.end_hour.to_time, format: :today)].join(' - ')
-                %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}"), headers: "we_eva_sit"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
+                %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}") + " situation #{['u', webconference.id.to_s, @user.id.to_s].join('_')}", headers: "we_eva_sit"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
                 %td.center{headers: "we_eva_int"}
                   - unless webconference.count.blank?
                     = link_to_function webconference.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id, user_id: @user.id, group_id: webconference.group_id, situation: webconference.situation, score_type: 'evaluative'), onkeydown: 'click_on_keypress(event, this);'
@@ -127,7 +127,7 @@
                 %td.center{headers: "we_fre_ava"}
                   %div= l(webconference.start_date.to_date, format: :normal)
                   %div= [l(webconference.start_hour.to_time, format: :today), l(webconference.end_hour.to_time, format: :today)].join(' - ')
-                %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}"), headers: "we_fre_sit"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
+                %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}") + " situation #{['u', webconference.id.to_s, @user.id.to_s].join('_')}", headers: "we_fre_sit"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
                 %td.center{headers: "we_fre_int"}
                   - unless webconference.count.blank?
                     = link_to_function webconference.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id, user_id: @user.id, group_id: webconference.group_id, situation: webconference.situation, score_type: 'frequency'), onkeydown: 'click_on_keypress(event, this);'
@@ -191,7 +191,7 @@
                 %td.center{headers: "we_not_ava"}
                   %div= l(webconference.start_date.to_date, format: :normal)
                   %div= [l(webconference.start_hour.to_time, format: :today), l(webconference.end_hour.to_time, format: :today)].join(' - ')
-                %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}"), headers: "we_not_sta"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
+                %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}") + " situation #{['u', webconference.id.to_s, @user.id.to_s].join('_')}", headers: "we_not_sta"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
                 %td.center{headers: "we_not_int"}
                   - unless webconference.count.blank?
                     = link_to_function webconference.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id, user_id: @user.id, group_id: webconference.group_id, situation: webconference.situation), onkeydown: 'click_on_keypress(event, this);'

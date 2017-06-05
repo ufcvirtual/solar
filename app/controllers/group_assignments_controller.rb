@@ -70,7 +70,8 @@ class GroupAssignmentsController < ApplicationController
       situation = situation(group_assignment.assignment, (!acu.try(:assignment_files).blank? || !acu.try(:assignment_webconferences).blank?), params[:add], acu )
     end
 
-    render json: { success: true, class_td: situation, situation: t("scores.index.#{situation}"), ac: group_assignment.academic_allocation.id, grade: situation, group_assignment: !!params[:add], user_id: params[:user_id] }
+    ac = group_assignment.academic_allocation.id
+    render json: { success: true, class_td: situation, situation: t("scores.index.#{situation}"), ac: ac, grade: situation, group_assignment: !!params[:add], user_id: params[:user_id], situation_complete: t(situation.to_sym), url: redirect_to_evaluate_scores_path(tool_type: 'Assignment', ac_id: ac, user_id: params[:user_id], group_id: params[:id], situation: situation, score_type: params[:score_type]) }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error

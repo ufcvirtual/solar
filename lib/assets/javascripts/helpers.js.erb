@@ -612,6 +612,7 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
   if(!$('#academic_allocation_user_grade').length && !$('#academic_allocation_user_working_hours').length)
     grade = data.grade;
 
+
   if(!!$('a.'+class_elem).length){
     grade_or_status = $.isNumeric(grade) ? grade : data.situation;
     $('a.'+class_elem+':visible').text(grade_or_status);
@@ -621,15 +622,18 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
         $('a.'+class_elem+':visible').addClass('disabled');
         $('a.'+class_elem+':visible').removeAttr('data-url');
       }else{
-        var bkp = $('a.'+class_elem+':visible').data('url-bkp').replace('update_situation', data.class_td).replace('update_group', group_id);
-        $('a.'+class_elem+':visible').attr('data-url', bkp);
-        $('a.'+class_elem+':visible').data('url', bkp);
+        $('a.'+class_elem+':visible').data('url', data.url);
         $('a.'+class_elem+':visible').removeClass('disabled');
       }
     }
   }else{
     grade_or_status = $.isNumeric(grade) ? grade : '';
     $('.'+class_elem+':visible').text(grade_or_status);
+
+    var element = $('.situation.'+class_elem+':visible');
+    element.text(data.situation_complete);
+    element.prop('class', 'center situation assignment_'+data.class_td + ' ' + class_elem);
+    $('a.open_evaluation', element.parent().parent()).data('url', data.url);
   }
 
   flash_message(data.notice, 'notice');
