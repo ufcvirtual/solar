@@ -96,12 +96,12 @@ class Assignment < Event
 
   def situation(has_files, has_group, grade = nil)
     case
-    when !started?                                                     then 'not_started'
+    when !started? then 'not_started'
     when (self.type_assignment == Assignment_Type_Group && !has_group) then 'without_group'
-    when !grade.nil?                                                   then 'corrected'
-    when has_files                                                     then 'sent'
-    when on_going?                                                     then 'to_be_sent'
-    when closed?                                                       then 'not_sent'
+    when !grade.nil? then 'corrected'
+    when has_files then 'sent'
+    when on_going? then 'to_be_sent'
+    when closed? then 'not_sent'
     else
       '-'
     end

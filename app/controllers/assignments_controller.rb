@@ -168,10 +168,12 @@ class AssignmentsController < ApplicationController
   end
 
   def summarized
-    if user_session[:blocking_content]
+    @allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    if (current_user.is_student?([@allocation_tag_id]) && user_session[:blocking_content])
+      Rails.logger.info "\n\n\n Entrou \n\n\n"
       render text: t('exams.restrict')
     else
-      @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
+      @assignment = Assignment.find(params[:id])
       @score_type = params[:score_type]
       verify_owner_or_responsible!(@allocation_tag_id)
       @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id) 

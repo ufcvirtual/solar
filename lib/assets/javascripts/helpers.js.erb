@@ -586,25 +586,44 @@ function getIPs(callback){
 }
 
 function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
-  jQuery.fancybox.close();
+  if(data.group_assignment == undefined)
+    jQuery.fancybox.close();
+
   if(group_id == undefined || group_id == null || group_id == '')
     class_elem = 'u_'+ac_id.toString()+'_'+user_id.toString();
-  else
-    class_elem = 'g_'+ac_id.toString()+'_'+group_id.toString();
+  else{
+    if(data.user_id != undefined)
+      class_elem = 'u_'+ac_id.toString()+'_'+user_id.toString();
+    else
+      class_elem = 'g_'+ac_id.toString()+'_'+group_id.toString();
+  }
 
   if(score_type=='evaluative' || score_type=='not_evaluative')
     grade = $('#academic_allocation_user_grade').val();
   else
     grade = $('#academic_allocation_user_working_hours').val();  
 
-  
+  if(!$('#academic_allocation_user_grade').length && !$('#academic_allocation_user_working_hours').length)
+    grade = data.grade;
+
   if(!!$('a.'+class_elem).length){
     grade_or_status = $.isNumeric(grade) ? grade : data.situation;
     $('a.'+class_elem+':visible').text(grade_or_status);
     $('a.'+class_elem+':visible').closest('td').attr( "class", data.class_td).addClass(class_name);
+    if(data.group_assignment != undefined){
+      if(data.class_td == 'to_send' || data.class_td == 'not_started'){
+        $('a.'+class_elem+':visible').addClass('disabled');
+        $('a.'+class_elem+':visible').removeAttr('data-url');
+      }else{
+        var bkp = $('a.'+class_elem+':visible').data('url-bkp').replace('update_situation', data.class_td).replace('update_group', group_id);
+        $('a.'+class_elem+':visible').attr('data-url', bkp);
+        $('a.'+class_elem+':visible').data('url', bkp);
+        $('a.'+class_elem+':visible').removeClass('disabled');
+      }
+    }
   }else{
     grade_or_status = $.isNumeric(grade) ? grade : '';
-    $('td.'+class_elem+':visible').text(grade_or_status);
+    $('.'+class_elem+':visible').text(grade_or_status);
   }
 
   flash_message(data.notice, 'notice');

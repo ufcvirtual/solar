@@ -1,33 +1,36 @@
 function open_evaluation(link){
-  $.get($(link).data('url'), function(data){
-    if(typeof data.method == 'undefined'){
-      $(link).call_fancybox({
-        href: data.url,
-        open: true
-      }); 
-    }else{
-      if(data.method != 'get'){
-        $.ajax({
-          type: data.method,
-          url: data.url,
-          success: function(data){ 
-            flash_message(data.notice, 'notice');
-          },
-          error: function(data){
-            var data = $.parseJSON(data.responseText);
-            if (typeof(data.alert) != "undefined")
-              flash_message(data.alert, 'alert');
-          }
-        })
+  if($(link).data('url') != undefined && !$(link).hasClass('disabled')){
+    $.get($(link).data('url'), function(data){
+      if(typeof data.method == 'undefined'){
+        $(link).call_fancybox({
+          href: data.url,
+          open: true
+        }); 
       }else{
-        window.location.href = data.url;
+        if(data.method != 'get'){
+          $.ajax({
+            type: data.method,
+            url: data.url,
+            success: function(data){ 
+              flash_message(data.notice, 'notice');
+            },
+            error: function(data){
+              var data = $.parseJSON(data.responseText);
+              if (typeof(data.alert) != "undefined")
+                flash_message(data.alert, 'alert');
+            }
+          })
+        }else{
+          window.location.href = data.url;
+        }
       }
-    }
-  }).error(function(data){
-    var data = $.parseJSON(data.responseText);
-    if (typeof(data.alert) != "undefined")
-      flash_message(data.alert, 'alert');
-  });
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    });
+  }else
+    return false;
 }
 
 function open_tool(link){
@@ -85,6 +88,10 @@ $(function(){
     else
       $('.'+$(this).val()).addClass('invisible');
    });
+
+  $('a.disabled').click(function(){
+    return false;
+  });
 
   $('[data-div]').click(function(event){
     var attributeValue = $(this).attr('data-div');
