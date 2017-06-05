@@ -3121,7 +3121,7 @@ en_US:
       show_hide_tools: 'Show/Hide Tools'
       no_data: No student or tool
       curriculum_unit_working_hours: '(Curriculum Unit working hours: %{wh}w/h)'
-      new_after_evaluation: Chages was made at the sent content after evaluation
+      new_after_evaluation: '* Some change was made at the sent content after evaluation'
       print_pdf: Print PDF
       select_group: Select group
       faults: Faults

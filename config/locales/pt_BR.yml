@@ -3363,7 +3363,7 @@ pt_BR:
       show_hide_tools: 'Exibir/Ocultar Ferramentas'
       no_data: Nenhum aluno ou ferramentas
       curriculum_unit_working_hours: '(Carga horária da disciplina: %{wh}h/a)'
-      new_after_evaluation: Houve alteração no conteúdo enviado após avaliação
+      new_after_evaluation: '* Houve alteração no conteúdo enviado após avaliação'
       print_pdf: Gerar PDF
       select_group: Selecionar Turma
       faults: Faltas
