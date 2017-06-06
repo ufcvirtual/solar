@@ -1974,6 +1974,7 @@ pt_BR:
       individual: Individual
       group: Grupo
       hour_period: "%{start_hour}h - %{end_hour}h"
+      controlled: Controlada
     form:
       groups: Turmas
       files: Arquivos

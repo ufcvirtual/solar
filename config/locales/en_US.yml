@@ -1762,6 +1762,7 @@ en_US:
       individual: Individual
       group: Group
       hour_period: "%{start_hour}h - %{end_hour}h"
+      controlled: Controlled
     form:
       groups: Groups
       files: Files
