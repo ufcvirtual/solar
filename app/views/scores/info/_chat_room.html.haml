@@ -1,6 +1,6 @@
 %section.chat_room
   .block_title
-    %h2= t(:title_my_chats, scope: [:chat_rooms, :list])
+    %h2= t(:chats, scope: [:scores, :info])
     .tabs.tab_chat
       %ul
         %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative_chat', onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_chats_evaluative')
@@ -17,10 +17,9 @@
               %th#ch_eva_ava.center{style: "width: 30%"}= t(:availability, scope: [:chat_rooms, :chats])
               %th#ch_eva_sit.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
               %th#ch_eva_int.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
-              - if @is_student
-                %th#ch_eva_gra.center{style: "width: 2%;"}= t(:grade, scope: [:scores, :info])
+              %th#ch_eva_gra.center{style: "width: 2%;"}= t(:grade, scope: [:scores, :info])
               %th#ch_eva_his.center.no_sort{style: "width: 5%;"}=t("chat_rooms.chats.message_history")
-              - if @is_student
+              - if @can_evaluate
                 %th#ch_eva_stu.no_sort{style: "width: 2%;"}
           %tbody
             - @chat_rooms_evaluative.each do |chat|
@@ -66,18 +65,15 @@
                 %td{ align: 'center', headers: "ch_eva_ava" }
                   %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
                   %div= [(chat.start_hour), (chat.end_hour)].join(' - ')
-                %td.center{class: "assignment_#{chat.situation}", headers: "ch_eva_sit"}= t("scores.situation.#{chat.situation}")
+                %td.center{class: "assignment_#{chat.situation} #{['u', chat.id.to_s, @user.id.to_s].join('_')} situation", headers: "ch_eva_sit"}= t("scores.situation.#{chat.situation}")
                 %td.center{headers: "ch_eva_int"}
                   - unless chat.count.blank?
                     = link_to_function chat.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: chat.academic_tool_type, ac_id: chat.id, user_id: @user.id, group_id: chat.group_id, situation: chat.situation, score_type: 'evaluative'), onkeydown: 'click_on_keypress(event, this);'
-                - if @is_student
-                  %td.center{headers: "ch_eva_gra"}= chat.grade
-                %td.center{headers: "ch_eva_his"}= link_to content_tag(:i, nil, class: 'icon-users'), messages_chat_room_path(chat.academic_tool_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t("chat_rooms.chats.message_history"), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t("chat_rooms.chats.message_history") 
-
-                - if @is_student
+                %td.center{headers: "ch_eva_gra", class: "#{['u', chat.id.to_s, @user.id.to_s].join('_')} #{['g', chat.id.to_s, chat.group_id.to_s].join('_')}"}= chat.grade
+                %td.center{headers: "ch_eva_his"}= link_to content_tag(:i, nil, class: 'icon-users'), messages_chat_room_path(chat.academic_tool_id, score_type: 'evaluative'), class: 'btn to_evaluate_chat', :'data-tooltip'=> t("chat_rooms.chats.message_history"), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t("chat_rooms.chats.message_history") 
+                - if @can_evaluate  
                   %td.center{headers: "ch_eva_stu"}
-                    - if @can_evaluate  
-                      = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(chat.academic_tool_id, user_id: @user.id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
+                    = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(chat.academic_tool_id, user_id: @user.id, score_type: 'evaluative'), class: 'btn to_evaluate_chat', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
 
       - else
         .block_content.block_content_text= t(:message_no_chat, scope: [:chat_rooms, :list])
@@ -91,10 +87,9 @@
               %th#ch_freq_ava.center{style: "width: 30%"}= t(:availability, scope: [:chat_rooms, :chats])
               %th#ch_freq_sit.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
               %th#ch_freq_int.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
-              - if @is_student
-                %th#ch_freq_fre.center{style: "width: 2%;"}= t(:frequency, scope: [:scores, :info])
+              %th#ch_freq_fre.center{style: "width: 2%;"}= t(:frequency, scope: [:scores, :info])
               %th#ch_freq_his.center.no_sort{style: "width: 5%;"}=t("chat_rooms.chats.message_history")
-              - if @is_student
+              - if @can_evaluate
                 %th#ch_freq_stu.no_sort{style: "width: 2%;"}
           %tbody
             - @chat_rooms_frequency.each do |chat|
@@ -141,17 +136,15 @@
                   %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
                   %div= [(chat.start_hour), (chat.end_hour)].join(' - ')
 
-                %td.center{class: "assignment_#{chat.situation}", headers: "ch_freq_sit"}= t("scores.situation.#{chat.situation}")
+                %td.center{class: "assignment_#{chat.situation} #{['u', chat.id.to_s, @user.id.to_s].join('_')} situation", headers: "ch_freq_sit"}= t("scores.situation.#{chat.situation}")
                 %td.center{headers: "ch_freq_int"}
                   - unless chat.count.blank?
-                    = link_to_function chat.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: chat.academic_tool_type, ac_id: chat.id, user_id: @user.id, group_id: chat.group_id, situation: chat.situation, score_type: 'evaluative'), onkeydown: 'click_on_keypress(event, this);'
-                - if @is_student
-                  %td.center{headers: "ch_freq_fre"}=chat.working_hours
-                %td.center{headers: "ch_freq_his"}= link_to content_tag(:i, nil, class: 'icon-users'), messages_chat_room_path(chat.academic_tool_id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t("chat_rooms.chats.message_history"), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t("chat_rooms.chats.message_history") 
-                - if @is_student
+                    = link_to_function chat.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: chat.academic_tool_type, ac_id: chat.id, user_id: @user.id, group_id: chat.group_id, situation: chat.situation, score_type: 'frequency'), onkeydown: 'click_on_keypress(event, this);'
+                %td.center{headers: "ch_freq_fre", class: "#{['u', chat.id.to_s, @user.id.to_s].join('_')} #{['g', chat.id.to_s, chat.group_id.to_s].join('_')}"}=chat.working_hours
+                %td.center{headers: "ch_freq_his"}= link_to content_tag(:i, nil, class: 'icon-users'), messages_chat_room_path(chat.academic_tool_id, score_type: 'frequency'), class: 'btn to_evaluate_chat', :'data-tooltip'=> t("chat_rooms.chats.message_history"), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t("chat_rooms.chats.message_history") 
+                - if @can_evaluate
                   %td.center{headers: "ch_freq_stu"}
-                    - if @can_evaluate
-                      = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(chat.academic_tool_id, user_id: @user.id), class: 'btn to_evaluate_chat', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
+                    = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(chat.academic_tool_id, user_id: @user.id, score_type: 'frequency'), class: 'btn to_evaluate_chat', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
       - else
         .block_content.block_content_text= t(:message_no_chat, scope: [:chat_rooms, :list])
   
@@ -209,7 +202,7 @@
                 %td{ align: 'center', headers: "ch_not_ava" }
                   %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
                   %div= [(chat.start_hour), (chat.end_hour)].join(' - ')
-                %td.center{class: "assignment_#{chat.situation}", headers: "ch_not_sit"}= t("scores.situation.#{chat.situation}")
+                %td.center{class: "assignment_#{chat.situation} #{['u', chat.id.to_s, @user.id.to_s].join('_')} situation", headers: "ch_not_sit"}= t("scores.situation.#{chat.situation}")
                 %td.center{headers: "ch_not_int"}
                   - unless chat.count.blank?
                     = link_to_function chat.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: chat.academic_tool_type, ac_id: chat.id, user_id: @user.id, group_id: chat.group_id, situation: chat.situation, score_type: 'evaluative'), onkeydown: 'click_on_keypress(event, this);'

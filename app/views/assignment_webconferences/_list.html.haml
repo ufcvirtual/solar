@@ -3,7 +3,7 @@
     %i.icon-video-conference
     = (@assignment.type_assignment == Assignment_Type_Group ? t('.title_group') : t('.title_student'))
   .right_buttons
-    - if @own_assignment
+    - if @own_assignment && !disabled
       = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_awebconference(this)', :'data-url' => new_assignment_webconference_path(assignment_id: @assignment.id), class: "btn btn_main link_new_awebconference #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.new'), :'aria-label' => t(".new") + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);', id: 'add_awebconference'
 %div.title-warning
   %div.information_title
@@ -19,15 +19,18 @@
   %div.accessibility.invisible{tabindex: 0}= raw t('webconferences.index.accessibility')
 .block_content
   - no_webconferences = (webconferences.blank?)
-  %table.tb_list#tb_lw{:summary=> t("assignments.list.summary_web"), style: (no_webconferences ? "display: none" : "") }
+  %table.tb_list#tb_lw{summary: t("assignments.list.summary_web"), style: (no_webconferences ? "display: none" : "") }
     %thead{style: (no_webconferences ? "display: none" : "")}
       %tr.lines
         %th#name_web= t('.name')
         %th.date_column.center#period_web= t('.period')
         %th.aw_status#status_web= t('.status')
         %th.aw_record#record_web= t('.record')
-        %th.aw_final#final_web= raw t('.final', aria: t('.final2') + t('fancybox.open'))
-        - if @own_assignment
+        - if disabled
+          %th.aw_final#final_web= raw t('.final_tr')
+        - else
+          %th.aw_final#final_web= raw t('.final', aria: t('.final2') + t('fancybox.open'))
+        - if @own_assignment && !disabled
           %th.no_sort.options{id: "edit_web"}
             .visuallyhidden=t('assignment_webconferences.webconference.edit')
           %th.no_sort.options{id: "record_link_web"}
@@ -37,7 +40,13 @@
     %tbody.assign_web
       - unless no_webconferences
         - webconferences.each do |webconference|
-          = render partial: 'assignment_webconferences/webconference', locals: { webconference: webconference }
+          = render partial: 'assignment_webconferences/webconference', locals: { webconference: webconference, view_disabled: disabled }
+  - if disabled
+    .recordings.invisible
+      .title
+        %h3
+        .back= link_to t('.back'), '#', class: 'btn back', onclick: 'back_to_table(event)'
+
   .text_none.empty_message{ class: (no_webconferences ? '' : 'hide_message') }= t(:itens_not_found)
 
   #fv_explain.invisible
@@ -55,16 +64,21 @@
     });
   });
 
-  function hide_or_show_info(name){
-    var parent = $(name).parent();
-    parent.siblings().toggleClass('invisible');
-    parent.siblings().focus();
+  function back_to_table(event){
+    event.preventDefault();
+    $('.recordings').addClass('invisible');
+    $('.recordings .chat_messages').remove();
+    $('#tb_lw').removeClass('invisible');
+  }
 
-    if(parent.siblings().first().hasClass('invisible')){
-      parent.find('i.icon-arrow-up-triangle').removeClass('invisible');
-      parent.find('i.icon-arrow-down-triangle').addClass('invisible');
-    }else{
-      parent.find('i.icon-arrow-up-triangle').addClass('invisible');
-      parent.find('i.icon-arrow-down-triangle').removeClass('invisible');
-    }
+  function show_recordings_inline(web, event){
+    event.preventDefault();
+    $.get($(web).data('url'), function(data){
+      $(web).parents('table').addClass('invisible');
+      var div = $(web).parents('.block_content').find('.recordings');
+      div.append($(data)[2]);
+      div.removeClass('invisible');
+
+      div.find('h3').html("#{t('.name')}" + $(web).data('name'));
+    });
   }

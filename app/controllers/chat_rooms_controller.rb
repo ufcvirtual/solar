@@ -144,6 +144,7 @@ class ChatRoomsController < ApplicationController
       render text: t('exams.restrict')
     else
       @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
+      @score_type = params[:score_type]
       authorize! :show, ChatRoom, on: [allocation_tag_id]
       @academic_allocation = AcademicAllocation.where(academic_tool_id: @chat_room.id, academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag_id).first
       all_participants = @chat_room.participants.where(academic_allocations: { allocation_tag_id: allocation_tag_id })

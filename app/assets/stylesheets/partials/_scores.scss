@@ -70,6 +70,9 @@ tr#activities{
     th, td{
       text-align: center;
       min-width: 25px;
+      a.disabled{
+        text-decoration: none; 
+      }
     }
     th.td_student{
       text-align: left;

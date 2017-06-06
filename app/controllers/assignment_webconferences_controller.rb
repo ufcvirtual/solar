@@ -24,7 +24,7 @@ class AssignmentWebconferencesController < ApplicationController
     @assignment_webconference = AssignmentWebconference.new assignment_webconference_params
     @assignment_webconference.save!
 
-    render partial: 'webconference', locals: { webconference: @assignment_webconference }
+    render partial: 'webconference', locals: { webconference: @assignment_webconference, view_disabled: false }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue ActiveRecord::AssociationTypeMismatch
@@ -44,7 +44,7 @@ class AssignmentWebconferencesController < ApplicationController
     owner(assignment_webconference_params)
     @assignment_webconference.update_attributes! assignment_webconference_params
 
-    render partial: 'webconference', locals: { webconference: @assignment_webconference }
+    render partial: 'webconference', locals: { webconference: @assignment_webconference, view_disabled: false }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue ActiveRecord::AssociationTypeMismatch
@@ -89,7 +89,7 @@ class AssignmentWebconferencesController < ApplicationController
 
   def show
     verify_owner!(@assignment_webconference)
-    render partial: 'webconference', locals: { webconference: @assignment_webconference }
+    render partial: 'webconference', locals: { webconference: @assignment_webconference, view_disabled: false }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end

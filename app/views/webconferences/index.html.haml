@@ -109,31 +109,3 @@
   $(function(){
     $('.record').call_fancybox();
   });
-
-  function hide_or_show_info(link){
-    var parent = $(link).parent();
-
-    parent.siblings().toggleClass('invisible');
-    parent.siblings().focus();
-
-    if(parent.siblings().first().hasClass('invisible')){
-      parent.find('i.icon-arrow-up-triangle').removeClass('invisible');
-      parent.find('i.icon-arrow-down-triangle').addClass('invisible');
-    }else{
-      parent.find('i.icon-arrow-up-triangle').addClass('invisible');
-      parent.find('i.icon-arrow-down-triangle').removeClass('invisible');
-    }
-  }
-
-
-  // $(".accessibility").on("keydown", function(event){
-  //   var keynum = event.which || event.keyCode;
-
-  //   if ( keynum == 27 ) {
-  //     $(this).addClass('invisible');
-  //     $(this).siblings().find('i.icon-arrow-up-triangle').removeClass('invisible');
-  //     $(this).siblings().find('i.icon-arrow-down-triangle').addClass('invisible');
-  //   }
-
-  //   $(".accessibility_title").find("a").focus();
-  // });

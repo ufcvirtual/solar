@@ -1,7 +1,9 @@
+= render partial: 'ip_control/info'
+
 .ckb#current_ip
   = f.label :using_local_network, t(".current_ip_real")
   = f.input :using_local_network, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.using_local_network ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.using_local_network ? t('.current_ip') : t('.not_current_ip')), :'data-id' => 'current_ip', :'data-active' => t('.current_ip'), :'data-not-active' => t('.not_current_ip')
+  = link_to_function (image_tag "#{f.object.using_local_network ? 'released' : 'rejected'}.png"), 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => (f.object.using_local_network ? t('.current_ip') : t('.not_current_ip')), :'data-id' => 'current_ip', :'data-active' => t('.current_ip'), :'data-not-active' => t('.not_current_ip')
 
 .ip_fiels
   = f.fields_for :ip_reals do |ip_form|
@@ -9,7 +11,7 @@
     - very_ipv6 = select_ip == 'ipv6' ? 'ipv6' : false
     .fields_for_remove.clear
       = ip_form.hidden_field :_destroy
-      = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields",  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
+      = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields", onkeydown: 'click_on_keypress(event, this)',  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
       = label_tag t(".type_select"), nil,class: "select_ip_label"
       = select_tag "ip_type", options_for_select([["IPV4", "ipv4"], ["IPV6", "ipv6"]], :selected => select_ip), class: "select_ip_type", onchange: "toggleIP(this)"
       = ip_form.input :ip_v4, as: :string, label: false, input_html: { size: 15, class: "ip_v4" }
@@ -21,14 +23,12 @@
 
 .ckb.clear#new_form_ip
   = f.label t('.add_others_ip_reals')
-  = link_to_add_fields content_tag(:i, nil, class: 'icon-plus'), f, :ip_reals, class: "btn btn_main add_fields", :'data-tooltip' => t('.add_others_ip_reals'), :'aria-label' => t('.add_others_ip_reals')
+  = link_to_add_fields content_tag(:i, nil, class: 'icon-plus'), f, :ip_reals, class: "btn btn_main add_fields", onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => t('.add_others_ip_reals'), :'aria-label' => t('.add_others_ip_reals')
 
 .form-actions.right_buttons
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
-  = button_to_function t('.previous'), 'back_to_config()', class: 'btn btn_default btn_main btn_lightbox', type: 'button'
-  = button_to_function t(:save), 'save_exam()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button'
-
-= javascript_include_tag 'jquery.mask', 'ip'
+  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox cancel', type: 'button', onkeypress: 'exit(event)'
+  = button_to_function t('.previous'), 'back_to_config(event)', class: 'btn btn_default btn_main btn_lightbox', type: 'button', onkeypress: 'back_to_config(event)'
+  = button_to_function t(:save), 'save_exam(event)', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button', onkeypress: 'save_exam(event)'
 
 :javascript
   jQuery(function($){
@@ -43,3 +43,19 @@
       }
     }
   });
+
+  function back_to_config(event){
+    var keynum = event.which || event.keyCode;
+    if(keynum == 13 || event.type == 'click') {
+      $('.step-info').addClass('hidden');
+      $('.step-config').removeClass('hidden');
+      $('.step-control').addClass('hidden');
+
+      $('li.info').removeClass('active');
+      $('#dot-info').removeClass('active');
+      $('li.config').addClass('active');
+      $('#dot-config').addClass('active');
+      $('li.control').removeClass('active');
+      $('#dot-control').removeClass('active');
+    }
+  }

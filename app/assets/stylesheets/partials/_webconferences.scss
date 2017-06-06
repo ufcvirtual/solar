@@ -19,8 +19,10 @@ form{
   }
 }
 
-.title-warning:first-of-type{
-  margin-bottom: 0;
+.block_wrapper{
+  .title-warning:first-of-type{
+    margin-bottom: 0;
+  }
 }
 
 .title-warning{

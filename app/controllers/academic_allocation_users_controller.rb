@@ -17,7 +17,7 @@ class AcademicAllocationUsersController < ApplicationController
     if errors.any?
       render json: { success: false, alert: errors.join("<br/>") }, status: :unprocessable_entity
     else
-      render json: { success: true, notice: t('academic_allocation_users.success.evaluated'), situation: t("scores.index.#{score}"), class_td: score }
+      render json: { success: true, notice: t('academic_allocation_users.success.evaluated'), situation: t("scores.index.#{score}"), class_td: score, situation_complete: t(score.to_sym) }
     end
   end
 

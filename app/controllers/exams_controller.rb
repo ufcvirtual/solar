@@ -22,6 +22,7 @@ class ExamsController < ApplicationController
     @allocation_tags_ids = params[:allocation_tags_ids]
     @exam = Exam.new
     @exam.build_schedule(start_date: Date.today, end_date: Date.today)
+    @exam.ip_reals.build
   end
 
   def create
@@ -33,19 +34,7 @@ class ExamsController < ApplicationController
     if @exam.save
       render_exam_success_json('created')
     else
-      mandatory_ip = false
-      erro_mensage = ""
-      @exam.errors.each do |attribute, erro|
-        if attribute.to_s == "exam"
-          mandatory_ip = true
-          erro_mensage += erro
-        end
-      end
-      if mandatory_ip && @exam.errors.size == 1
-        render json: { success: false, alert: erro_mensage, outer: 'fancybox-outer' }, status: :unprocessable_entity
-      else
-        render :new
-      end
+      render :new
     end
   rescue => error
     render_json_error(error, 'exams.error')
@@ -72,6 +61,7 @@ class ExamsController < ApplicationController
 
   def edit
     @exam = Exam.find(params[:id])
+    @exam.ip_reals.build if @exam.ip_reals.empty?
   end
 
   def update
@@ -81,19 +71,7 @@ class ExamsController < ApplicationController
     if @exam.update_attributes(exam_params)
       render_exam_success_json('updated')
     else
-      mandatory_ip = false
-      erro_mensage = ""
-      @exam.errors.each do |attribute, erro|
-        if attribute.to_s == "exam"
-          mandatory_ip = true
-          erro_mensage += erro
-        end
-      end
-      if mandatory_ip && @exam.errors.size == 1
-        render json: { success: false, alert: erro_mensage, outer: 'fancybox-outer' }, status: :unprocessable_entity
-      else
-        render :edit
-      end
+      render :edit
     end
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized

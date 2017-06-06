@@ -2,6 +2,16 @@
   label {
     color: $color_main;
   }
+
+  .input.boolean{
+    visibility: hidden;
+    display: inline-block;
+    width: 0;
+    .error{
+      position: fixed;
+    }
+  }
+
   #current_ip label {
     width: 200px;
   }
@@ -23,13 +33,19 @@
     margin-left: 20px;
     margin-right: 20px;
   }
+
+  .form-control{
+    padding-top: 1%;
+    width: 100%;
+    .input.boolean{
+      display: none;
+    }
+  }
+
   .ip_fiels {
     margin-left: 20px;
     margin-right: 20px;
 
-    .input.boolean{
-      display: none;
-    }
     .select_ip_label {
       display: inline-block;
       margin-top: 3px;
@@ -41,10 +57,21 @@
     .ip_v4, .ip_v6, .select_ip_label, .select_ip_type {
       float: left;
     }
-    .remove_fields {
-      display: inline-block;
-      float: right;
-    }
+  }
+  .remove_fields {
+    display: inline-block;
+    float: right;
+  }
+  .select_ip_label, .select_ip_type, .ip_v4, .ip_v6 {
+    float: left;
+  }
+  .select_ip_type, .ip_v4, .ip_v6 {
+    margin-left: 10px;
+    margin-bottom: 15px;
+  }
+  .select_ip_label {
+    width: 100px;
+    padding-top: 2px;
   }
 }
 
@@ -52,13 +79,20 @@
   #current_ip label {
     color: $color_main;
   }
+
+  .input.boolean{
+    visibility: hidden;
+    display: inline-block;
+    width: 0;
+    .error{
+      position: fixed;
+    }
+  }
+
   .ip_fiels{
     margin-left: 20px;
     margin-right: 20px;
 
-    .input.boolean{
-      display: none;
-    }
     .select_ip_label {
       display: inline-block;
       width: 100px;

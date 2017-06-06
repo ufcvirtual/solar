@@ -1,9 +1,12 @@
 function edit_comment(button){
+  if($(button).attr('disabled') == 'disabled')
+    return false;
   $("#new_comment, .edit_comment").attr("disabled", "disabled");
   $($(button).parents(".comment")[0]).hide();
   $.get($(button).data("url"), function(data){
     $($(button).parents("li")[0]).append(data);
   });
+  return false;
 }
 
 function remove_comment(button){

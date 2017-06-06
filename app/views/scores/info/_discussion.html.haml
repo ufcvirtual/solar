@@ -1,6 +1,6 @@
 %section.discussion
   .block_title
-    %h2= t(:discussions_participation, :scope => [:scores, :info])
+    %h2= t(:discussions, :scope => [:scores, :info])
     .tabs.tab_discussion
       %ul
         %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative_dis', onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_discussion_evaluative')
@@ -16,13 +16,10 @@
               %th#di_eva_dis{style: "width: 30%;"}= t(:discussions, scope: [:scores, :info])
               %th#di_eva_dat.center.date{style: "width: 30%;"}= t(:date_range, scope: [:scores, :info])
               %th#di_eva_sit.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
-              %th#di_eva_amo.center{style: "width: 2%;"}= t(:amount, scope: [:scores, :info])
-              - if @is_student
-                %th#di_eva_gra.center{style: "width: 2%;"}= t(:grade, scope: [:scores, :info])
-              - if @can_evaluate && @is_student
+              %th#di_eva_amo.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
+              %th#di_eva_gra.center{style: "width: 2%;"}= t(:grade, scope: [:scores, :info])
+              - if @can_evaluate
                 %th#di_eva_par.center.no_sort{style: "width: 2%;"}
-              - else
-                %th#di_eva_par.center.no_sort{style: "width: 2%;"}=t(:discussions_participation, scope: [:scores, :info])
               %th#di_eva_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
           %tbody
             - @discussions_evaluative.each do |discussion|
@@ -59,12 +56,12 @@
                         %ul{ class: 'dropdown-menu' }
                 %td.center{headers: "di_eva_dat"}
                   = [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(' - ')
-                %td.center{class: "assignment_#{discussion.situation}", headers: "di_eva_sit"}= t("scores.situation.#{discussion.situation}")
-                %td.center{headers: "di_eva_amo"}= discussion.count
-                - if @is_student
-                  %td.center{headers: "di_eva_gra"}= discussion.grade
-                %td.center= link_to content_tag(:i, nil, class: "icon-#{@can_evaluate && @is_student ? 'write' : 'text'}"), user_discussion_posts_path(discussion.academic_tool_id, @user.id), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]) , onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post]) 
-                %td.center{headers: "di_eva_par"}=(discussion.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
+                %td.center{class: "assignment_#{discussion.situation} #{['u', discussion.id.to_s, @user.id.to_s].join('_')} situation", headers: "di_eva_sit"}= t("scores.situation.#{discussion.situation}")
+                %td.center{headers: "di_eva_amo"}= link_to discussion.count, user_discussion_posts_path(discussion.academic_tool_id, @user.id, score_type: 'evaluative'), class: 'to_evaluate_post', :'data-tooltip'=> t(:discussions_participation, scope: [:scores, :info]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:discussions_participation, scope: [:scores, :info])
+                %td.center{headers: "di_eva_gra", class: "#{['u', discussion.id.to_s, @user.id.to_s].join('_')} #{['g', discussion.id.to_s, discussion.group_id.to_s].join('_')}"}=discussion.grade
+                - if @can_evaluate  
+                  %td.center{headers: 'di_eva_par'}= link_to content_tag(:i, nil, class: "icon-write"), user_discussion_posts_path(discussion.academic_tool_id, @user.id, score_type: 'evaluative'), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]) , onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post]) 
+                %td.center{headers: "di_eva_aft"}=(discussion.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
 
       - else
         .block_content.block_content_text= t(:itens_not_found)
@@ -77,13 +74,10 @@
               %th#di_fre_dis{style: "width: 30%;"}= t(:discussions, scope: [:scores, :info])
               %th#di_fre_dat.center.date{style: "width: 30%;"}= t(:date_range, scope: [:scores, :info])
               %th#di_fre_sit.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
-              %th#di_fre_amo.center{style: "width: 2%;"}= t(:amount, scope: [:scores, :info])
-              - if @is_student
-                %th#di_fre_fre.center{style: "width: 2%;"}= t(:frequency, scope: [:scores, :info])
-              - if @can_evaluate && @is_student
+              %th#di_fre_amo.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
+              %th#di_fre_fre.center{style: "width: 2%;"}= t(:frequency, scope: [:scores, :info])
+              - if @can_evaluate
                 %th#di_fre_par.center.no_sort{style: "width: 2%;"}
-              - else
-                %th#di_fre_par.center.no_sort{style: "width: 2%;"}=t(:discussions_participation, scope: [:scores, :info])
               %th#di_fre_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
           %tbody
             - @discussions_frequency.each do |discussion|
@@ -119,11 +113,11 @@
                       .dropdown.dropdown-tip{id: "dropdown_eq_2_#{discussion.id}"}
                         %ul{ class: 'dropdown-menu' }
                 %td.center{headers: "di_fre_dat"}= [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(' - ')   
-                %td.center{class: "assignment_#{discussion.situation}", headers: "di_fre_sit"}= t("scores.situation.#{discussion.situation}")
-                %td.center{headers: "di_fre_amo"}= discussion.count
-                - if @is_student
-                  %td.center{headers: "di_fre_fre"}= discussion.working_hours
-                %td.center{headers: "di_fre_par"}= link_to content_tag(:i, nil, class: "icon-#{@can_evaluate && @is_student ? 'write' : 'text'}"), user_discussion_posts_path(discussion.academic_tool_id, @user.id), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
+                %td.center{class: "assignment_#{discussion.situation} #{['u', discussion.id.to_s, @user.id.to_s].join('_')} situation", headers: "di_fre_sit"}= t("scores.situation.#{discussion.situation}")
+                %td.center{headers: "di_fre_amo"}= link_to discussion.count, user_discussion_posts_path(discussion.academic_tool_id, @user.id, score_type: 'frequency'), class: 'to_evaluate_post', :'data-tooltip'=> t(:discussions_participation, scope: [:scores, :info]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:discussions_participation, scope: [:scores, :info])
+                %td.center{headers: "di_fre_fre", class: "#{['u', discussion.id.to_s, @user.id.to_s].join('_')} #{['g', discussion.id.to_s, discussion.group_id.to_s].join('_')}"}=discussion.working_hours
+                - if @can_evaluate  
+                  %td.center{headers: "di_fre_par"}= link_to content_tag(:i, nil, class: "icon-write"), user_discussion_posts_path(discussion.academic_tool_id, @user.id, score_type: 'frequency'), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
                 %td.center{headers: "di_fre_aft"}=(discussion.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)
@@ -136,8 +130,7 @@
               %th#di_not_dis{style: "width: 60%;"}= t(:discussions, scope: [:scores, :info])
               %th#di_not_dat.center.date{style: "width: 40%;"}= t(:date_range, scope: [:scores, :info])
               %th#di_not_sit.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
-              %th#di_not_amo.center{style: "width: 2%;"}= t(:amount, scope: [:scores, :info])
-              %th#di_not_par.center.no_sort{style: "width: 2%;"}=t(:discussions_participation, scope: [:scores, :info])
+              %th#di_not_amo.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
           %tbody
             - @discussions_not_evaluative.each do |discussion|
               %tr.lines
@@ -173,9 +166,8 @@
                         %ul{ class: 'dropdown-menu' }
                 %td.center{headers: "di_not_dat"}
                   = [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(' - ')   
-                %td.center{class: "assignment_#{discussion.situation}", headers: "di_not_sit"}= t("scores.situation.#{discussion.situation}")
-                %td.center{headers: "di_not_amo"}= discussion.count
-                %td.center{headers: "di_not_par"}= link_to content_tag(:i, nil, class: 'icon-text'), user_discussion_posts_path(discussion.academic_tool_id, @user.id), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:discussions_participation, scope: [:scores, :info]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:discussions_participation, scope: [:scores, :info])
+                %td.center{class: "assignment_#{discussion.situation} #{['u', discussion.id.to_s, @user.id.to_s].join('_')} situation", headers: "di_not_sit"}= t("scores.situation.#{discussion.situation}")
+                %td.center{headers: "di_not_amo"}= link_to discussion.count, user_discussion_posts_path(discussion.academic_tool_id, @user.id), class: 'to_evaluate_post', :'data-tooltip'=> t(:discussions_participation, scope: [:scores, :info]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:discussions_participation, scope: [:scores, :info])
                 
       - else
         .block_content.block_content_text= t(:itens_not_found)

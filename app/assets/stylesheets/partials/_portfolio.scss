@@ -144,18 +144,6 @@ a.assignment_not_sent {
   color: $portfolio_assignment_not_started;
 }
 
-a.assignment_not_started {
-  color: $portfolio_assignment_not_started_link;
-}
-
-.assignment_to_be_sent, .assignment_started,
-.assignment_pending, .assignment_to_answer, .assignment_not_finished, .assignment_opened, .assignment_in_progress {
-  color: $portfolio_assignment_to_be_sent;
-}
-
-a.assignment_to_be_sent, td.assignment_an a {
-  color: $portfolio_assignment_to_be_sent_link;
-}
 
 .assignment_an{
   color: $color_main;
@@ -250,10 +238,14 @@ td.assignment_without_group a
 
   .block_user{
     display: inline-block;
-    width: 92%;
+    width: 93%;
     margin-left: 19px;
     margin-top: 1%;
     padding: 8px 0px 5px 44px;
+  }
+
+  .block_user.fancybox{
+    margin-left: 0;
   }
 
   .title_user{
@@ -279,6 +271,4 @@ td.assignment_without_group a
   }
 }
 
-.student_webconferences td a.title{
-  color: $exclusive_font_color !important;
-}
+

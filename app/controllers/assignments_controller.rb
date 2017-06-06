@@ -52,11 +52,13 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.new
     @assignment.build_schedule(start_date: Date.today, end_date: Date.today)
     @assignment.enunciation_files.build
+    @assignment.ip_reals.build
   end
 
   def edit
     authorize! :update, Assignment, on: @allocation_tags_ids
     @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
+    @assignment.ip_reals.build if @assignment.ip_reals.empty?
   end
 
   def create
@@ -71,24 +73,11 @@ class AssignmentsController < ApplicationController
 
   rescue => error
     if @assignment.errors.empty?
-      request.format = :json
-      raise error.class
+      render_json_error(error, 'assignments.error')
     else
       @files_errors = @assignment.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
-      mandatory_ip = false
-      erro_mensage = ""
-      @assignment.errors.each do |attribute, erro|
-        if attribute.to_s == "assignment"
-          mandatory_ip = true
-          erro_mensage += erro
-        end
-      end
-      if mandatory_ip && @assignment.errors.size == 1
-        render json: { success: false, alert: erro_mensage, outer: 'fancybox-outer' }, status: :unprocessable_entity
-      else
-        render :new
-      end
+      render :new
     end
   end
 
@@ -99,20 +88,7 @@ class AssignmentsController < ApplicationController
     else
       @files_errors = @assignment.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
-      #@assignment.ip_reals.build
-      mandatory_ip = false
-      erro_mensage = ""
-      @assignment.errors.each do |attribute, erro|
-        if attribute.to_s == "assignment"
-          mandatory_ip = true
-          erro_mensage += erro
-        end
-      end
-      if mandatory_ip && @assignment.errors.size == 1
-        render json: { success: false, alert: erro_mensage, outer: 'fancybox-outer' }, status: :unprocessable_entity
-      else
-        render :edit
-      end
+      render :edit
     end
   rescue => error
     render_json_error(error, 'assignments.error')
@@ -144,7 +120,7 @@ class AssignmentsController < ApplicationController
     elsif @assignment.controller && @assignment.network_ips_permited_to_do_the_assignment(get_remote_ip).blank?
       redirect_to list_assignments_path, alert: t('assignments.restrict_assignment')
     else
-     # @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
+      assignment_started?(@assignment)
       verify_owner_or_responsible!(@allocation_tag_id)
       @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
 
@@ -161,10 +137,35 @@ class AssignmentsController < ApplicationController
         @shortcut[t("assignment_webconferences.form.new").to_s] = t("assignments.shortcut.shortcut_new_web").to_s
       end
     end
+  rescue CanCan::AccessDenied
+    redirect_to :back, alert: t(:no_permission)
+  rescue => error
+    redirect_to :back, alert: (error.to_s == 'not_started' ? t('assignments.error.not_started2') : t('assignments.error.general_message'))
+  end
+
+  def summarized
+    @allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    if (current_user.is_student?([@allocation_tag_id]) && user_session[:blocking_content])
+      Rails.logger.info "\n\n\n Entrou \n\n\n"
+      render text: t('exams.restrict')
+    else
+      @assignment = Assignment.find(params[:id])
+      @score_type = params[:score_type]
+      verify_owner_or_responsible!(@allocation_tag_id)
+      @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id) 
+      @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
+
+      @ac = AcademicAllocation.where(academic_tool_id: @assignment.id, allocation_tag_id: @allocation_tag_id, academic_tool_type: 'Assignment').first
+      @can_evaluate = can?(:evaluate, Assignment, on: [@allocation_tag_id] )
+      @frequency = @can_evaluate && @ac.frequency
+
+      @acu = AcademicAllocationUser.find_one(@ac.id, @student_id, @group_id, false, @can_evaluate)
+    end
+  rescue CanCan::AccessDenied
+    render text: t(:no_permission)
   end
 
   def download
-
     if params[:zip].present?
       assignment = Assignment.find(params[:assignment_id])
     else

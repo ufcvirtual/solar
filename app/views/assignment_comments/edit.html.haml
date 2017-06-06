@@ -21,9 +21,10 @@
       $('#comment_form').serialize_and_submit({
         files: true,
         replace_list: $($(this).parents("li")[0]),
+        dont_remove_lightbox: true,
+        flash_msg: 'fancybox-outer',
         complement_success: function(){
           $("#new_comment, .edit_comment").removeAttr("disabled");
-          flash_message("#{t('assignment_comments.success.edit')}", "notice");
         }
       });
     });

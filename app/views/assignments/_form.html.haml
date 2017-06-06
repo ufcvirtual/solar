@@ -44,12 +44,14 @@
         - if @files_errors
           %span.field_with_errors.error= @files_errors
 
-      = render "groups/codes"
-
       .input
         = f.label :controller
         = f.input :controller, as: :boolean, label: false
         = link_to_function (image_tag "#{@assignment.controller ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (@assignment.controller ? t('.environment_controlled') : t('.environment_not_controlled')), :'data-id' => 'controlled', :'data-active' => t('.environment_controlled'), :'data-not-active' => t('.environment_not_controlled')
+        - if @assignment.errors[:controller].any?
+          %span.field_with_errors.error= @assignment.errors[:controller].first
+
+      = render "groups/codes"
 
       .right_buttons.clear#without_control
         = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
@@ -57,9 +59,10 @@
 
       .right_buttons.clear.hidden#with_control
         = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', alt: t(:cancel), type: 'button'
-        = button_to_function t('.continue'), 'controls()', class: 'btn btn_main btn_lightbox', alt: t('.continue'), type: 'button'
+        = button_to_function t('.continue'), 'controls()', id: '_continue', class: 'btn btn_main btn_lightbox', alt: t('.continue'), type: 'button'
 
-    .form-control.hidden#control_info
+
+    .form-control.block_content.hidden#control_info
       = render partial: 'control', locals: { f: f }
 
 :css
@@ -70,6 +73,8 @@
   .schedule_dates .left, .right {
     float: left;
   }
+
+= javascript_include_tag 'tooltip'
 
 :javascript
 
@@ -174,7 +179,6 @@
       $("#without_control").show();
       $("#with_control").hide();
     }
-    $.getScript("/assets/tooltip.js");
   }
 
   function controls() {

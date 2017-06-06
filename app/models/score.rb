@@ -267,6 +267,7 @@ class Score # < ActiveRecord::Base
          else
           ''
          end
+
     case tool_type
       when 'assignment'
         user = (group_id.blank? ? "users.id = #{user_id}" : "ga.id = #{group_id}")
@@ -506,7 +507,7 @@ class Score # < ActiveRecord::Base
                 assignments.type_assignment::text as type_tool,
                 assignments.start_hour AS start_hour,
                 assignments.end_hour AS end_hour,
-                NULL as count,
+                ((select count(assignment_files.id) FROM assignment_files WHERE assignment_files.academic_allocation_user_id = academic_allocation_users.id) + (select count(assignment_webconferences.id) FROM assignment_webconferences WHERE assignment_webconferences.academic_allocation_user_id = academic_allocation_users.id))::text AS count,
                 (select count(assignment_comments.id) FROM assignment_comments WHERE assignment_comments.academic_allocation_user_id = academic_allocation_users.id) AS count_all,
                 NULL as moderator,
                 NULL as duration,
@@ -541,6 +542,7 @@ class Score # < ActiveRecord::Base
               WHERE 
                 academic_allocations.academic_tool_id = assignments.id AND academic_allocations.academic_tool_type='Assignment' AND assignments.schedule_id=schedules.id #{wq} #{type} AND academic_allocations.allocation_tag_id IN (#{ats}) AND 
                 (academic_allocation_users.id IS NULL OR (academic_allocation_users.user_id = #{user_id} OR (academic_allocation_users.group_assignment_id = groups.group_id AND assignments.type_assignment = #{Assignment_Type_Group}) OR (groups.group_id IS NULL AND assignments.type_assignment = #{Assignment_Type_Group})) OR (academic_allocation_users.user_id IS NULL AND academic_allocation_users.group_assignment_id IS NULL))
+                GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, assignments.name,  schedules.start_date,  schedules.end_date, assignments.enunciation, new_after_evaluation, academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, assignments.start_hour, assignments.end_hour, academic_allocations.evaluative, academic_allocations.frequency, eq_assig.name, groups.group_id, assignments.type_assignment, academic_allocation_users.id, assignment_webconferences.id, assignment_files.attachment_updated_at
           )"
         when 'chat_rooms'
           others =  if others

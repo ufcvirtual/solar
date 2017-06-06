@@ -24,11 +24,11 @@ function select_group(element){
 }
 
 function add_participant(td){
-  change_participant(td, "<%=Rails.application.routes.url_helpers.add_participant_group_assignment_path(':id', user_id: 'uid')%>", "participants_column", "cross-square", "remove");
+  change_participant(td, "<%=Rails.application.routes.url_helpers.add_participant_group_assignment_path(':id', user_id: 'uid', score_type: 'scoretype')%>", "participants_column", "cross-square", "remove");
 }
 
 function remove_participant(td){
-  change_participant(td, "<%=Rails.application.routes.url_helpers.remove_participant_group_assignment_path(':id', user_id: 'uid')%>", "students_without_groups_column", "plus-square", "add");
+  change_participant(td, "<%=Rails.application.routes.url_helpers.remove_participant_group_assignment_path(':id', user_id: 'uid', score_type: 'scoretype')%>", "students_without_groups_column", "plus-square", "add");
 }
 
 function edit_group(icon){
@@ -107,7 +107,10 @@ function change_participant(td, url, tbody, icon, method){
   if (group_id == null)
     show_error("", '<%=I18n.t("group_assignments.index.select_a_group")%>', "group_assignments.header");
   else{
-    $.put(url.replace(":id", group_id).replace("uid", tr.data("user-id")), function(data){
+    $.put(url.replace(":id", group_id).replace("uid", tr.data("user-id")).replace('scoretype', $('.group_assignments.header').data('score')), function(data){
+
+      after_evaluate('Assignment', $('.group_assignments.header').data('score'), data.ac, tr.data('user-id'), data, group_id);
+
       var new_table = $("." + tbody + " tbody");
       $(tr).appendTo(new_table);
       update_tables_with_no_data();
@@ -121,6 +124,7 @@ function change_participant(td, url, tbody, icon, method){
     });
   }
 }
+
 
 function update_list(message){
   $.get("<%=Rails.application.routes.url_helpers.list_without_layout_assignments_path%>", function(data){

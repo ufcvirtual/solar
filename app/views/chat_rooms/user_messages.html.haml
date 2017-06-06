@@ -36,7 +36,7 @@
   function finish_evaluation(btn){
     var form = $(btn).parents('form:first');
     $.put(form.attr('action'), form.serialize(), function(data){
-      if("#{@back}" == 'true')
+      if("#{@back}" == 'true' && "#{@score_type}" == '')
         flash_message(data.notice, 'notice', 'fancybox-outer');
       else
         after_evaluate('ChatRoom', "#{@score_type}", "#{@academic_allocation.id}", "#{@user.id}", data);

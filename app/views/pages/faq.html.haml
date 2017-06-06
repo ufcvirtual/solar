@@ -1,5 +1,10 @@
+= render '/user_sessions/header'
 #faq
   .content
+    %br
+    #link
+      %a#link-password{href: home_path}= t(:back_home)
+
     %h2= t(:faq_title)
 
     .search

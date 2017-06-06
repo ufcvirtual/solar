@@ -11,6 +11,7 @@ class GroupAssignmentsController < ApplicationController
   def index
     @assignment, allocation_tag_id = Assignment.find(params[:assignment_id]), active_tab[:url][:allocation_tag_id]
     @groups, @students_without_group = @assignment.groups_assignments(allocation_tag_id), @assignment.students_without_groups(allocation_tag_id)
+    @score_type = params[:score_type]
   end
 
   def list
@@ -52,7 +53,7 @@ class GroupAssignmentsController < ApplicationController
   end
 
   def change_participant
-    authorize! :index, GroupAssignment, on: [active_tab[:url][:allocation_tag_id]]
+    authorize! :index, GroupAssignment, on: [at = active_tab[:url][:allocation_tag_id]]
 
     @participant = GroupParticipant.where(group_assignment_id: params[:id], user_id: params[:user_id]).first_or_create!
     @participant.destroy unless params[:add].present?
@@ -63,7 +64,14 @@ class GroupAssignmentsController < ApplicationController
     else
       LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: get_remote_ip, description: "delete_participant: #{@participant.attributes} in #{group_assignment.attributes} ", academic_allocation_id: group_assignment.academic_allocation_id)
     end  
-    render json: { success: true }
+
+    unless params[:score_type].blank?
+      acu = group_assignment.academic_allocation_user
+      situation = situation(group_assignment.assignment, (!acu.try(:assignment_files).blank? || !acu.try(:assignment_webconferences).blank?), params[:add], acu )
+    end
+
+    ac = group_assignment.academic_allocation.id
+    render json: { success: true, class_td: situation, situation: t("scores.index.#{situation}"), ac: ac, grade: situation, group_assignment: !!params[:add], user_id: params[:user_id], situation_complete: t(situation.to_sym), url: redirect_to_evaluate_scores_path(tool_type: 'Assignment', ac_id: ac, user_id: params[:user_id], group_id: params[:id], situation: situation, score_type: params[:score_type]) }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
@@ -112,6 +120,19 @@ class GroupAssignmentsController < ApplicationController
 
     def group_assignment_params
       params.require(:group_assignment).permit(:group_name)
+    end
+
+    def situation(assignment, has_files, has_group, acu)
+      case
+      when !assignment.started? then 'not_started'
+      when (assignment.type_assignment == Assignment_Type_Group && !has_group) then 'without_group'
+      when (!acu.try(:grade).blank? || !acu.try(:working_hours).blank?) then (score_type == 'frequency' ? acu.working_hours : acu.grade)
+      when has_files then 'sent'
+      when assignment.on_going? then 'to_send'
+      when assignment.closed? then 'not_sent'
+      else
+        '-'
+      end
     end
 
 end
