@@ -4280,3 +4280,14 @@ en_US:
     less: Less
     more_alt: See complete description of %{tool}
     less_alt: See compressed description of %{tool}
+
+  ip_control:
+    info:
+      whats_ip_title: "<b>What's IP?</b>"
+      whats_ip: "<p>An IP, or internet protocolo address, is an unique identifier existing to your device or router connected to the internet.</p> <p>Defining which IPs can have access to an activity implies that it should only be made by the students accessing the defined network. It's possible, therefore, that students only can make an activty if at a laboratory, for example.</p> <p>It's important that the place which network will be registrated uses a wired network and not Wifi.</p>"
+      find_my_ip_title: "<b>How do I find my network's IP?</b>"
+      find_my_ip: "<p>If you are at the place (laboratory, for example) in wich the activity will take place, just click at 'Use current network IP', that Solar will detect your network IP.</p>"
+      find_other_ip_title: "<b>How do I find another network's IP?</b>"
+      find_other_ip: "<p>It's important that someone are available at the desired network locale to tell you it's IP. To this person, that are at the desired network, find out the IP, it should access websites such as <a target='_blank' href='http://whatismyipaddress.com/'>http://whatismyipaddress.com/</a> and inform you the number that shows up at the screen.</p>"
+      ipv_title: '<b>IPV4 or IPV6?</b>'
+      ipv: "<p>IPV4 and IPV6 are versions of the internet protocol.</p><p>If you click at 'Use current network IP', the IP found already will fit the field.  By accessing the website suggested at 'How do I find another network IP?', you will be able to find out if the IP is or not IPV4 by field's format. If it wont fit, you should click at the selector and change to IPV6.</p>"

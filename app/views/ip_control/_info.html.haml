@@ -1,0 +1,28 @@
+.ip_control
+  .title-warning
+    %div.whats_ip_title
+      = link_to_function raw(t('.whats_ip_title')), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
+      = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show_info(this)'
+      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show_info(this)'
+    %div.whats_ip.invisible= raw t('.whats_ip')
+
+  .title-warning
+    %div.find_my_ip_title
+      = link_to_function raw(t('.find_my_ip_title')), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
+      = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show_info(this)'
+      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show_info(this)'
+    %div.find_my_ip.invisible=raw t('.find_my_ip')
+
+  .title-warning
+    %div.find_other_ip_title
+      = link_to_function raw(t('.find_other_ip_title')), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
+      = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show_info(this)'
+      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show_info(this)'
+    %div.find_other_ip.invisible=raw t('.find_other_ip')
+
+  .title-warning
+    %div.ipv_title
+      = link_to_function raw(t('.ipv_title')), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
+      = link_to_function content_tag(:i, nil, class: ' icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show_info(this)'
+      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show_info(this)'
+    %div.ipv.invisible=raw t('.ipv')

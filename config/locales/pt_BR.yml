@@ -4525,3 +4525,14 @@ pt_BR:
     less: 'Menos'
     more_alt: Ver descrição completa de %{tool}
     less_alt: Ver descrição resumida de %{tool}
+
+  ip_control:
+    info:
+      whats_ip_title: '<b>O que é IP?</b>'
+      whats_ip: '<p>Um IP, ou endereço de protocolo de internet, é um identificador único existente para o seu dispositivo ou roteador conectado à internet.</p> <p>Definindo quais IPs podem ter acesso a uma atividade implica que ela poderá ser realizada apenas pelos alunos nas redes definidas. Sendo possível, portanto, definir que alunos realizem uma atividade apenas se estiverem em determinado laboratório, por exemplo.</p> <p>É importante que o local cuja rede será cadastrada possua internet cabeada e não por Wifi.</p>'
+      find_my_ip_title: '<b>Como descubro o IP da minha rede?</b>'
+      find_my_ip: '<p>Se você estiver no local (laboratório, por exemplo) no qual a atividade deverá ser realizada, basta clicar em "Usar IP da rede atual", que o Solar irá detectar o IP da sua rede.</p>'
+      find_other_ip_title: '<b>Como descubro o IP de outra rede?</b>'
+      find_other_ip: '<p>É importante que alguém esteja disponível na rede desejada para te informar o IP dela. Para a pessoa, que estiver em uma outra rede a ser cadastrada nesta atividade, descubra seu IP, basta acessar sites como <a target="_blank" href="http://whatismyipaddress.com/">http://whatismyipaddress.com/</a> e informar o número que irá aparecer na tela.</p>'
+      ipv_title: '<b>IPV4 ou IPV6?</b>'
+      ipv: '<p>IPV4 e IPV6 são versões do protocolo de internet.</p><p>Se você clicar em "Usar IP da rede atual", o IP encontrado já irá alterar para o tipo de IP correto. Ao acessar o site informado em "Como descubro o IP de outra rede?", você poderá saber se o endereço não é IPV4 se ele não for compatível com a formatação do campo. Se não for compatível, basta clicar no seletor e alterar para IPV6.</p>'
