@@ -52,6 +52,7 @@
           %span.field_with_errors.error= @assignment.errors[:controller].first
 
       = render "groups/codes"
+
       .right_buttons.clear#without_control
         = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
         = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "save"
@@ -61,7 +62,7 @@
         = button_to_function t('.continue'), 'controls()', id: '_continue', class: 'btn btn_main btn_lightbox', alt: t('.continue'), type: 'button'
 
 
-    .form-control.hidden#control_info
+    .form-control.block_content.hidden#control_info
       = render partial: 'control', locals: { f: f }
 
 :css
