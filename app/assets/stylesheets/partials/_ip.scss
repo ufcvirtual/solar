@@ -2,6 +2,16 @@
   label {
     color: $color_main;
   }
+
+  .input.boolean{
+    visibility: hidden;
+    display: inline-block;
+    width: 0;
+    .error{
+      position: fixed;
+    }
+  }
+
   #current_ip label {
     width: 200px;
   }
@@ -23,13 +33,17 @@
     margin-left: 20px;
     margin-right: 20px;
   }
+
+  .form-control{
+    .input.boolean{
+      display: none;
+    }
+  }
+
   .ip_fiels {
     margin-left: 20px;
     margin-right: 20px;
 
-    .input.boolean{
-      display: none;
-    }
     .select_ip_label {
       display: inline-block;
       margin-top: 3px;
@@ -63,13 +77,20 @@
   #current_ip label {
     color: $color_main;
   }
+
+  .input.boolean{
+    visibility: hidden;
+    display: inline-block;
+    width: 0;
+    .error{
+      position: fixed;
+    }
+  }
+
   .ip_fiels{
     margin-left: 20px;
     margin-right: 20px;
 
-    .input.boolean{
-      display: none;
-    }
     .select_ip_label {
       display: inline-block;
       width: 100px;

@@ -1743,7 +1743,7 @@ en_US:
       subject: '[SOLAR] Private lesson'
 
   assignments:
-    controlled: "Controlled assignment: At least one IP is required"
+    controlled: "at least one IP is required"
     restrict_assignment: "This place is not permit to do the assignment"
     index:
       expand_enunciation: Expand enunciation
@@ -3389,7 +3389,7 @@ en_US:
     none: No registered test
     restrict: student in test content not allowed
     restrict_test: "This place is not permit to do the test"
-    controlled: "Proof controlled: At least one IP is required"
+    controlled: "at least one IP is required"
     percentage: "<b>%{percent}% of exam was made</b>"
     print: Print result
     selected_correctly: Correctly selected item

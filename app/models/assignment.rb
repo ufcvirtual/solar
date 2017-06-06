@@ -23,7 +23,7 @@ class Assignment < Event
 
   accepts_nested_attributes_for :schedule
   accepts_nested_attributes_for :enunciation_files, allow_destroy: true, reject_if: proc { |attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank? }
-  accepts_nested_attributes_for :ip_reals, allow_destroy: true, reject_if: lambda { |e| e[:ip_v4].blank? && e[:ip_v6].blank?  }
+  accepts_nested_attributes_for :ip_reals, allow_destroy: true, reject_if: lambda { |e| e[:ip_v4].blank? && e[:ip_v6].blank? }
 
   validates :name, :enunciation, :type_assignment, presence: true
   validates :name, length: { maximum: 1024 }
@@ -73,8 +73,7 @@ class Assignment < Event
   end
 
   def verify_date_range(start_date, end_date, date)
-    on_going?
-    #(date >= start_date.to_date && date <= end_date.to_date)
+    on_going? #(date >= start_date.to_date && date <= end_date.to_date)
   end
 
   def info(user_id, allocation_tag_id, group_id = nil)
@@ -217,10 +216,10 @@ class Assignment < Event
   end
 
   def controlled_network_ip_validates
-    errors.add(:assignment, I18n.t("assignments.controlled")) if self.ip_reals.size < 1
+    errors.add(:controller, I18n.t("assignments.controlled")) if ip_reals.blank?
   end
 
   def using_local_network
-    IpReal.where(assignment_id: self.id, use_local_network: true).any? if !self.id.blank?
+    IpReal.where(assignment_id: id, use_local_network: true).any? unless new_record?
   end
 end

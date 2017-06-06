@@ -52,11 +52,13 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.new
     @assignment.build_schedule(start_date: Date.today, end_date: Date.today)
     @assignment.enunciation_files.build
+    @assignment.ip_reals.build
   end
 
   def edit
     authorize! :update, Assignment, on: @allocation_tags_ids
     @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
+    @assignment.ip_reals.build if @assignment.ip_reals.empty?
   end
 
   def create
@@ -71,24 +73,11 @@ class AssignmentsController < ApplicationController
 
   rescue => error
     if @assignment.errors.empty?
-      request.format = :json
-      raise error.class
+      render_json_error(error, 'assignments.error')
     else
       @files_errors = @assignment.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
-      mandatory_ip = false
-      erro_mensage = ""
-      @assignment.errors.each do |attribute, erro|
-        if attribute.to_s == "assignment"
-          mandatory_ip = true
-          erro_mensage += erro
-        end
-      end
-      if mandatory_ip && @assignment.errors.size == 1
-        render json: { success: false, alert: erro_mensage, outer: 'fancybox-outer' }, status: :unprocessable_entity
-      else
-        render :new
-      end
+      render :new
     end
   end
 
@@ -99,20 +88,7 @@ class AssignmentsController < ApplicationController
     else
       @files_errors = @assignment.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
-      #@assignment.ip_reals.build
-      mandatory_ip = false
-      erro_mensage = ""
-      @assignment.errors.each do |attribute, erro|
-        if attribute.to_s == "assignment"
-          mandatory_ip = true
-          erro_mensage += erro
-        end
-      end
-      if mandatory_ip && @assignment.errors.size == 1
-        render json: { success: false, alert: erro_mensage, outer: 'fancybox-outer' }, status: :unprocessable_entity
-      else
-        render :edit
-      end
+      render :edit
     end
   rescue => error
     render_json_error(error, 'assignments.error')

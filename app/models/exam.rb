@@ -430,11 +430,11 @@ class Exam < Event
   end
 
   def controlled_network_ip_validates
-    errors.add(:exam, I18n.t("exams.controlled")) if self.ip_reals.size < 1
+    errors.add(:controlled, I18n.t("exams.controlled")) if ip_reals.blank?
   end
 
   def using_local_network
-    IpReal.where(exam_id: self.id, use_local_network: true).any? if !self.id.blank?
+    IpReal.where(exam_id: id, use_local_network: true).any? unless new_record?
   end
 
 end

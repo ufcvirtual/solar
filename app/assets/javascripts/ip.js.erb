@@ -90,13 +90,6 @@ function change(img){
   $.getScript("/assets/tooltip.js");
 }
 
-function doClick(event, link) {
-  var keynum = event.which || event.keyCode;
-  if(keynum == 13) {
-    $(link).trigger('click');
-  }
-}
-
 function masck_ip(input){
   var id = $(input).attr("id");
   var patt_v4 = /ip_v4/i;

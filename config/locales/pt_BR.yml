@@ -1955,7 +1955,7 @@ pt_BR:
       user: "Caro(a) %{user},"
       subject: '[SOLAR] Aula privada'
   assignments:
-    controlled: "Trabalho controlado: É necessário pelo menos um IP"
+    controlled: "é necessário pelo menos um IP"
     restrict_assignment: "Local de trabalho não permitido"
     index:
       expand_enunciation: Expandir enunciado
@@ -3634,7 +3634,7 @@ pt_BR:
     none: "Nenhuma prova cadastrada"
     restrict: "Aluno em prova: Conteúdo não permitido"
     restrict_test: "Local de prova não permitido"
-    controlled: "Prova controlada: É necessário pelo menos um IP"
+    controlled: "é necessário pelo menos um IP"
     percentage: "<b>%{percent}% da prova feito</b>"
     print: Imprimir resultado
     selected_correctly: Item selecionado corretamente

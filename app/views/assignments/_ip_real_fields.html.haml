@@ -7,9 +7,10 @@
   = f.input :ip_v6, as: :string, label: false, input_html: { size: 40, class: "ip_v6", style: "display: none;" }
   = f.input :use_local_network, as: :boolean, label: false
 
+= javascript_include_tag 'tooltip'
+
 :javascript
   $(document).ready(function(){
-    $.getScript("/assets/tooltip.js");
     masck_ip($(".ip_v4"));
     masck_ip($(".ip_v6"));
   });

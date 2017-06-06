@@ -491,7 +491,7 @@
 
   .ckb{
     margin: 20px;
-    .input.boolean{
+    .input.boolean:not(.exam_controlled){
       display: none;
     }
     .select_ip_label {

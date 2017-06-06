@@ -400,9 +400,9 @@ function open_div(link, e){
 }
 
 function click_on_keypress(event, element){
-  if(event.which == 13)
+  var keynum = event.which || event.keyCode;
+  if(keynum == 13)
     $(element).trigger('click');
-  // $(element).click();
   return false;
 }
 
