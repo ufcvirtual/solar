@@ -37,7 +37,14 @@ fieldset {
 
 .filter_type .ui-autocomplete, .filter .ui-autocomplete{
   width: 306px !important;
- }
+  background-color: $edition_background_color;
+  a {
+    color: $color_main;
+  }
+  a:hover {
+    color: $color_main_content;
+  }
+}
 
 .offer_course .ui-autocomplete, .offer_curriculum_unit .ui-autocomplete{
   width: 300px !important;
