@@ -2000,6 +2000,7 @@ pt_BR:
       select_type: "Selecione o tipo:"
       link_to_remove_fields: "Remover campo de ip"
     ip_real_fields:
+      select_type: "Selecione o tipo:"
       legend_description_new_ip: "Novo IP onde será realizada a prova"
       link_to_remove_fields: "Remover Formulário de IPs"
     success:
