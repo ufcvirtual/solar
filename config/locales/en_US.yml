@@ -1788,6 +1788,7 @@ en_US:
       select_type: "Select type:"
       link_to_remove_fields: Remove ip field
     ip_real_fields:
+      select_type: "Select type:"
       legend_description_new_ip: "New IP where the assignment will be performed"
       link_to_remove_fields: "Remove form of IPs"
     success:
