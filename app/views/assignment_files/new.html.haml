@@ -28,7 +28,12 @@
           $('#tb_lf').show();
           $.fancybox.close();
           flash_message("Arquivo enviado com sucesso", "notice");
-          $(".assignment_to_be_sent").html("#{t(:sent)}").css("color","#2900C2");
+          $(".assignment_to_be_sent").html("#{t(:sent)}");
+
+          if(!$("link[id='themes']").attr("href").includes("theme_high_contrast")){
+            $(".assignment_to_be_sent").html("#{t(:sent)}").css("color","#2900C2");
+          }
+          
           update_tables_with_no_data();
           setTimeout(function() {
             $('#flash_message').prop('tabindex', 0);
