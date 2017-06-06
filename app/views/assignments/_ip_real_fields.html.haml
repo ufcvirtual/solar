@@ -1,14 +1,3 @@
--# %fieldset.fields_for_remove
-  -# %legend= t(".legend_description_new_ip")
-  -# .ckb
-  -#   = f.input :ip_v4, as: :string, input_html: { size: 15 }
-  -# .ckb
-  -#   = f.input :ip_v6, as: :string, input_html: { size: 40 }
-  -# .ckb
-  -#   = f.label t('.link_to_remove_fields')
-  -#   = f.hidden_field :_destroy
-  -#   = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields",  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
-
 .fields_for_remove.clear
   = f.hidden_field :_destroy
   = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields",  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
