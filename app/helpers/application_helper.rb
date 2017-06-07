@@ -59,7 +59,7 @@ module ApplicationHelper
     unless (@current_page.eql? "1") # voltar uma página: <<
       result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)-1).to_s << ');$(this).parent().submit();" aria-label="(' << text_pagination.to_s << ') '<< t(:navigation_previous_page) << ((@current_page.to_i)-1).to_s << '">&lt;&lt;</a>'
     end
-    
+
     result << text_pagination
     unless (@current_page.eql? total_pages) # avançar uma página: >>
       result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)+1).to_s << ');$(this).parent().submit();" aria-label="(' << text_pagination.to_s << ') '<< t(:navigation_next_page) << ((@current_page.to_i)+1).to_s << '">&gt;&gt;</a>'
@@ -78,7 +78,7 @@ module ApplicationHelper
     # Se o group_select estiver vazio, ou seja, nenhum grupo foi selecionado pelo usuário,
     # o grupo a ter seus fóruns exibidos será o primeiro grupo encontrado para o usuário em questão
     selected_group_id = groups.first.id if selected_group_id.blank?
-    
+
     active_tab[:breadcrumb].first[:url][:selected_group] = Group.find(selected_group_id).code
 
     result = ''
@@ -90,11 +90,11 @@ module ApplicationHelper
        result <<  "<ul class='dropdown-menu'>"
       groups.each do |g|
         class_li = selected_group_id==g.id ? 'selected' : 'null';
-        link_groups = link_to g.code, select_group_path(selected_group: g.id), :'aria-label' => t('scores.index.select_group'), :class => class_li 
+        link_groups = link_to g.code, select_group_path(selected_group: g.id), :'aria-label' => t('scores.index.select_group'), :class => class_li
         result << "<li role='menuitem' onclick='focusTitle();'>"+link_groups+"</li>"
       end
       result << "</ul> </div>"
-     
+
     else
       result = t(:group) << ":&nbsp #{Group.find(selected_group_id).code}"
     end
@@ -114,6 +114,20 @@ module ApplicationHelper
     error_message = error == CanCan::AccessDenied ? t(:no_permission) : (I18n.translate!("#{path}.#{error}", raise: true) rescue t("#{path}.#{default_error}"))
     Rails.logger.info "[ERROR] [APP] [#{Time.now}] [#{error}] [#{(message.nil? ? error_message : error.message)}]"
     render json: { success: false, alert: (message.nil? ? error_message : error.message) }, status: :unprocessable_entity
+  end
+
+  def link_to_add_fields_ip(name, f, association, html_options={})
+    new_object = f.object.class.reflect_on_association(association).klass.new
+
+    fields = f.fields_for(association, new_object, :child_index => "new_#{association}") do |builder|
+      render("ip_control/" + association.to_s.singularize + "_fields", :f => builder)
+    end
+
+    link_to_function(name, "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")", html_options)
+  end
+
+  def link_to_remove_fields(name, f, html_options={})
+    link_to_function(name, "remove_fields(this)", html_options)
   end
 
 end

@@ -7,23 +7,13 @@
 
 .ip_fiels
   = f.fields_for :ip_reals do |ip_form|
-    - select_ip = ip_form.object.ip_v6.blank? ? 'ipv4' : 'ipv6'
-    - very_ipv6 = select_ip == 'ipv6' ? 'ipv6' : false
-    .fields_for_remove.clear
-      = ip_form.hidden_field :_destroy
-      = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields", onkeydown: 'click_on_keypress(event, this)',  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
-      = label_tag t(".type_select"), nil,class: "select_ip_label"
-      = select_tag "ip_type", options_for_select([["IPV4", "ipv4"], ["IPV6", "ipv6"]], :selected => select_ip), class: "select_ip_type", onchange: "toggleIP(this)"
-      = ip_form.input :ip_v4, as: :string, label: false, input_html: { size: 15, class: "ip_v4" }
-      = ip_form.input :ip_v6, as: :string, label: false, input_html: { size: 40, class: "ip_v6" }
-      = ip_form.input :use_local_network, as: :boolean, label: false
-      = ip_form.hidden_field :very_ipv6, value: very_ipv6, class: "_very_ipv6"
+    = render partial: 'ip_control/ip_real_fields', locals: { f: ip_form }
 
 .ip_fiels.duplicatable_nested_form
 
 .ckb.clear#new_form_ip
   = f.label t('.add_others_ip_reals')
-  = link_to_add_fields content_tag(:i, nil, class: 'icon-plus'), f, :ip_reals, class: "btn btn_main add_fields", onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => t('.add_others_ip_reals'), :'aria-label' => t('.add_others_ip_reals')
+  = link_to_add_fields_ip content_tag(:i, nil, class: 'icon-plus'), f, :ip_reals, class: "btn btn_main add_fields", onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => t('.add_others_ip_reals'), :'aria-label' => t('.add_others_ip_reals')
 
 .form-actions.right_buttons
   = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox cancel', type: 'button', onkeypress: 'exit(event)'

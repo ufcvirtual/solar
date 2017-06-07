@@ -1784,7 +1784,6 @@ en_US:
       current_ip_real: "Use current network IP:"
       add_others_ip_reals: Add new IP
       network_ip_registred: "Registered IP"
-      link_to_remove_fields: "Remove form of IPs"
       add_new_ip_reals: Add new IP
       select_type: "Select type:"
       link_to_remove_fields: Remove ip field
@@ -4291,3 +4290,6 @@ en_US:
       find_other_ip: "<p>It's important that someone are available at the desired network locale to tell you it's IP. To this person, that are at the desired network, find out the IP, it should access websites such as <a target='_blank' href='http://whatismyipaddress.com/'>http://whatismyipaddress.com/</a> and inform you the number that shows up at the screen.</p>"
       ipv_title: '<b>IPV4 or IPV6?</b>'
       ipv: "<p>IPV4 and IPV6 are versions of the internet protocol.</p><p>If you click at 'Use current network IP', the IP found already will fit the field.  By accessing the website suggested at 'How do I find another network IP?', you will be able to find out if the IP is or not IPV4 by field's format. If it wont fit, you should click at the selector and change to IPV6.</p>"
+    ip_real_fields:
+      link_to_remove_fields: Remove ip field
+      select_type: "Select type:"
