@@ -17,7 +17,9 @@ class IpReal < ActiveRecord::Base
     errors.add(:ip_v6, I18n.t(:ip, scope: [:ip_reals, :errors])) unless Resolv::IPv6::Regex =~ ip_v6
   end
 
-  def network_ips_permited(id, user_ip)
-    IpReal.where("(exam_id = ? OR assignment_id = ?) AND (ip_v4 = ? OR ip_v6 = ?)", id, id, user_ip, user_ip)
+  def self.network_ips_permited(id, user_ip, obj)
+    sql = (obj == :exam) ? "(exam_id = ? AND ip_v4 = ?) OR (exam_id = ? AND ip_v6 = ?)" : "(assignment_id = ? AND ip_v4 = ?) OR (assignment_id = ? AND ip_v6 = ?)"
+
+    IpReal.where(sql, id, user_ip, id, user_ip)
   end
 end

@@ -102,7 +102,7 @@ class ExamsController < ApplicationController
     @exam = Exam.find(params[:id])
     @situation = params[:situation]
 
-    if @exam.controlled && @exam.ip_reals.network_ips_permited(@exam.id, get_remote_ip).blank?
+    if @exam.controlled && IpReal.network_ips_permited(@exam.id, get_remote_ip, :exam).blank?
       render text: t('exams.restrict_test')
     else
       acs = @exam.academic_allocations
@@ -144,7 +144,7 @@ class ExamsController < ApplicationController
 
   def open
     @exam = Exam.find(params[:id])
-    if @exam.controlled && @exam.ip_reals.network_ips_permited(@exam.id, get_remote_ip).blank?
+    if @exam.controlled && IpReal.network_ips_permited(@exam.id, get_remote_ip, :exam).blank?
       render text: t('exams.restrict_test')
     else
       @disabled = false
