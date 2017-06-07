@@ -104,8 +104,12 @@ class PostsController < ApplicationController
     else
       render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
     end
-  rescue
-    render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
+  rescue => error
+    if @post
+      render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
+    else
+      render_json_error(error, 'discussions.error')
+    end
   end
 
   ## PUT /discussions/:id/posts/1
@@ -115,8 +119,12 @@ class PostsController < ApplicationController
     else
       render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
     end
-  rescue
-    render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
+  rescue => error
+    if @post
+      render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
+    else
+      render_json_error(error, 'discussions.error')
+    end
   end
 
   ## GET /discussions/:id/posts/1
