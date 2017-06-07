@@ -8,7 +8,7 @@ class ExamResponsesController < ApplicationController
     exam_response = ExamResponse.find(params[:id])
     exam_user_attempt = exam_response.exam_user_attempt
     exam = Exam.find(exam_user_attempt.exam.id)
-    if exam.controlled && exam.network_ips_permited_to_do_the_exams(get_remote_ip).blank?
+    if exam.controlled && exam.ip_reals.network_ips_permited(exam.id, get_remote_ip).blank?
       render text: t('exams.restrict_test')
     else
       total_time = exam_user_attempt.get_total_time(params[:id], exam_response_params[:duration].to_i)
