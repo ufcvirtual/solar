@@ -103,7 +103,11 @@
 
     $("#submit_post").click(function(){
       var form    = $($(this).parents("form")[0]);
-      var content = CKEDITOR.instances["discussion_post_content"].getData();
+      try{
+        var content = CKEDITOR.instances["discussion_post_content"].getData();
+      } catch(exception){
+        var content = $('#discussion_post_content').val();
+      }
 
       // get parent_id information
       if (form.attr("method") == "POST")
