@@ -1,6 +1,10 @@
-#assignment_form {
+#ip_form {
+  padding-left: 5%;
+  padding-right: 5%;
+
   label {
     color: $color_main;
+    width: 101px;
   }
 
   .input.boolean{
@@ -12,120 +16,60 @@
     }
   }
 
-  #current_ip label {
-    width: 200px;
-  }
-  #current_ip {
-    margin: 15px 0;
-  }
-  #new_form_ip {
-    height: 30px;
-  }
-  #new_form_ip label {
+  .input{
     display: inline-block;
-    float: left;
-    text-align: left;
   }
-  #current_ip a, .fields_for_remove a, #new_form_ip a {
+
+  .btn{
     float: right;
   }
-  #current_ip, #new_form_ip {
-    margin-left: 20px;
-    margin-right: 20px;
-  }
 
-  .form-control{
-    padding-top: 1%;
-    width: 100%;
-    .input.boolean{
-      display: none;
-    }
-  }
-
-  .ip_fiels {
-    margin-left: 20px;
-    margin-right: 20px;
-
-    .select_ip_label {
-      display: inline-block;
-      margin-top: 3px;
-      width: 120px;
-    }
-    .select_ip_label, .select_ip_type {
-      margin-right: 10px;
-    }
-    .ip_v4, .ip_v6, .select_ip_label, .select_ip_type {
-      float: left;
-    }
-  }
-  .remove_fields {
+  .optional + .error{
     display: inline-block;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    vertical-align: middle;
+  }
+
+  .nested_fields{
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .input.add{
     float: right;
   }
-  .select_ip_label, .select_ip_type, .ip_v4, .ip_v6 {
-    float: left;
-  }
-  .select_ip_type, .ip_v4, .ip_v6 {
-    margin-left: 10px;
-    margin-bottom: 15px;
-  }
-  .select_ip_label {
-    width: 100px;
-    padding-top: 2px;
-  }
-}
 
-#exam_form {
-  #current_ip label {
-    color: $color_main;
+  .top{
+    padding-bottom: 3%;
   }
 
-  .input.boolean{
-    visibility: hidden;
-    display: inline-block;
-    width: 0;
-    .error{
-      position: fixed;
-    }
-  }
-
-  .ip_fiels{
-    margin-left: 20px;
-    margin-right: 20px;
-
-    .select_ip_label {
-      display: inline-block;
-      width: 100px;
-      margin-top: 3px;
-    }
-    .select_ip_label, .select_ip_type {
-      margin-right: 10px;
-    }
+  #current_ip{
     label{
-      color: $color_main;
-      display: inline;
-    }
-    .ip_v4, .ip_v6, .select_ip_label, .select_ip_type {
-      float: left;
-    }
-    a, input, select, .remove_fields {
-      display: inline-block;
-      float: right;
-    }
-    input[type='number']{
-      width: 80px;
+      width: 125px;
     }
   }
+
 }
 
 .clear{
   clear: both;
 }
 
-.hidden {
-  display: none;
+.controller{
+  .input.boolean{
+    visibility: hidden;
+    display: inline-block;
+    width: 0;
+    .error{
+      position: fixed;
+    }
+  }
 }
 
-.fields_for_remove {
-  height: 30px;
+.form-control{
+  .right_buttons{
+    padding: 1%;
+    padding-top: 5%;
+  }
 }

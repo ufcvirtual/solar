@@ -1,26 +1,11 @@
 = render partial: 'ip_control/info'
 
-.input#current_ip
-  = f.label :using_local_network, t(".current_ip_real")
-  = f.input :using_local_network, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.using_local_network ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.using_local_network ? t('.current_ip') : t('.not_current_ip')), :'data-id' => 'current_ip', :'data-active' => t('.current_ip'), :'data-not-active' => t('.not_current_ip')
-
-.ip_fiels.clear
-  = f.fields_for :ip_reals do |ip_form|
-    = render partial: 'ip_control/ip_real_fields', locals: { f: ip_form }
-
-.ip_fiels.clear.duplicatable_nested_form
-
-.input.clear#new_form_ip
-  = f.label t('.add_new_ip_reals')
-  = link_to_add_fields_ip content_tag(:i, nil, class: 'icon-plus'), f, :ip_reals, class: "btn btn_main add_fields", :'data-tooltip' => t('.add_new_ip_reals'), :'aria-label' => t('.add_new_ip_reals')
+= render partial: 'ip_control/ip_real_fields', locals: { f: f }
 
 .right_buttons.clear
   = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
   = button_to_function t('.previous'), 'back()', class: 'btn btn_default btn_main btn_lightbox', type: 'button'
   = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "_save"
-
-= javascript_include_tag 'ip'
 
 :css
   .schedule_dates .input input, #assignment_type_assignment {
@@ -31,38 +16,14 @@
     float: left;
   }
 
-  .hidden {
-    display: none;
-  }
-
 :javascript
   function back(){
-    $('#basic_info').removeClass('hidden');
-    $('#control_info').addClass('hidden');
+    $('#basic_info').removeClass('invisible');
+    $('#control_info').addClass('invisible');
   }
 
   jQuery(function($){
-    $(".ip_v6").hide();
-
-    vIp6 = $("._very_ipv6");
-    for(var i = 0; i < vIp6.length ; i++) {
-      if( $(vIp6[i]).val()==='ipv6' ) {
-        toggleIP($(vIp6[i]));
-      }
-    }
-
     $('#_save').click(function(){
-      var ips_v4 = $(".assignment_ip_reals_ip_v4 input");
-      var ips_v6 = $(".assignment_ip_reals_ip_v6 input");
-
-      for(var i = 0; i < ips_v4.length; i++) {
-        if( $(ips_v6[i]).is(":visible") ){
-          $(ips_v4[i]).val("");
-        } else{
-          $(ips_v6[i]).val("");
-        }
-      }
-
       $('#assignment_form:last').serialize_and_submit({
         files: true,
         replace_list: (("#{escape_once(params[:calendar])}" == "") ? $(".list_assignments") : $(".calendar_schedules"))

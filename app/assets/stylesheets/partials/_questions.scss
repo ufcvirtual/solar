@@ -96,9 +96,7 @@
       margin-right: 14px;
     }
   }
-  .step-images.hidden, .step-info.hidden{
-    visibility: hidden;
-  }
+  
   .step-images.show, .step-audios.show, .step-info.show{
     visibility: visible;
   }
@@ -162,12 +160,6 @@
     }
     .duplicatable_nested_form{
       width: 515px;
-    }
-    .image.hide{
-      display: none;
-    }
-    .audio.hide{
-      display: none;
     }
     .image{
       margin-top: 10px;
@@ -250,9 +242,6 @@
           width: 281px;
         }
       }
-    }
-    .comment_area.hide{
-      display: none;
     }
     .comment_area{
       display: inline-block;

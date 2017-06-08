@@ -23,7 +23,6 @@
   = button_to_function t('.continue'), 'go_to_config(event)', class: 'btn btn_main btn_lightbox', alt: 'continuar', type: 'button', id: '_continue', onkeypress: 'go_to_config(event)'
 
 = javascript_include_tag 'ckeditor/init'
-= javascript_include_tag 'jquery.mask', 'ip'
 
 :javascript
   $(function(){
@@ -81,17 +80,6 @@
   function save_exam(event) {
     var keynum = event.which || event.keyCode;
     if(keynum == 13 || event.type == 'click') {
-      var ips_v4 = $(".exam_ip_reals_ip_v4 input");
-      var ips_v6 = $(".exam_ip_reals_ip_v6 input");
-
-      for(var i = 0; i < ips_v4.length; i++) {
-        if( $(ips_v6[i]).is(":visible") ){
-          $(ips_v4[i]).val("");
-        } else{
-          $(ips_v6[i]).val("");
-        }
-      }
-
       save_values_ckeditor();
       $('form#exam_form').serialize_and_submit({
         replace_list: $('.list_exams:last')
@@ -105,9 +93,9 @@
   function go_to_config(event) {
     var keynum = event.which || event.keyCode;
     if(keynum == 13 || event.type == 'click') {
-      $('.step-info').addClass('hidden');
-      $('.step-config').removeClass('hidden');
-      $('.step-control').addClass('hidden');
+      $('.step-info').addClass('invisible');
+      $('.step-config').removeClass('invisible');
+      $('.step-control').addClass('invisible');
 
       $('li.info').removeClass('active');
       $('#dot-info').removeClass('active');

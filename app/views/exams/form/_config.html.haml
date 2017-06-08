@@ -40,7 +40,7 @@
   = button_to_function t('.previous'), 'back(event)', class: 'btn btn_default btn_main', type: 'button', onkeypress: 'back(event)'
   = button_to_function t(:save), 'save_exam(event)', class: 'btn btn_main btn_main', alt: t(:save), type: 'button', onkeypress: 'save_exam(event)'
 
-.form-actions.right_buttons.hidden#with_control
+.form-actions.right_buttons.invisible#with_control
   = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox cancel', alt: t(:cancel), type: 'button', onkeydown: 'exit(event)'
   = button_to_function t('.previous'), 'back_to_info(event)', class: 'btn btn_default btn_main btn_lightbox', alt: t('.previous'), type: 'button', onkeypress: 'back_to_info(event)'
   = button_to_function t('.continue'), 'go_to_controls(event)', id: "__continue", class: 'btn btn_main btn_lightbox', alt: t('.continue'), type: 'button', onkeypress: 'go_to_controls(event)'
@@ -62,8 +62,8 @@
   function back(event){
     var keynum = event.which || event.keyCode;
     if(keynum == 13 || event.type == 'click') {
-      $('.step-info').removeClass('hidden');
-      $('.step-config').addClass('hidden');
+      $('.step-info').removeClass('invisible');
+      $('.step-config').addClass('invisible');
       $('li.info').addClass('active');
       $('#dot-info').addClass('active');
       $('li.config').removeClass('active');
@@ -74,9 +74,9 @@
   function back_to_info(event){
     var keynum = event.which || event.keyCode;
     if(keynum == 13 || event.type == 'click') {
-      $('.step-info').removeClass('hidden');
-      $('.step-config').addClass('hidden');
-      $('.step-control').addClass('hidden');
+      $('.step-info').removeClass('invisible');
+      $('.step-config').addClass('invisible');
+      $('.step-control').addClass('invisible');
 
       $('li.info').addClass('active');
       $('#dot-info').addClass('active');
@@ -90,9 +90,9 @@
   function go_to_controls(event) {
     var keynum = event.which || event.keyCode;
     if(keynum == 13 || event.type == 'click') {
-      $('.step-info').addClass('hidden');
-      $('.step-config').addClass('hidden');
-      $('.step-control').removeClass('hidden');
+      $('.step-info').addClass('invisible');
+      $('.step-config').addClass('invisible');
+      $('.step-control').removeClass('invisible');
 
       $('li.info').removeClass('active');
       $('#dot-info').removeClass('active');

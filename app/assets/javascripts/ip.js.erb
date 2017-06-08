@@ -1,9 +1,7 @@
 $(document).ready(function(event){
   var current_network_ip = "";
   var input_id_current_network_ip = "";
-  var using_current_network_ip = false;
   var remove_button_network_ip = "";
-  var click_remove_button_network_ip = false;
 
   var url = "<%= Rails.application.routes.url_helpers.client_network_ip_path %>";
 
@@ -18,99 +16,66 @@ $(document).ready(function(event){
   }, "json");
 
   $("#current_ip > a").on("click keydown", function(event){
+    event.preventDefault();
     var keynum = event.which || event.keyCode;
     if(keynum == 13 || event.type == 'click') {
-      // Verifica se o ip da rede local já foi incluido manualmente
-      verify_exists_ip(4);
-      verify_exists_ip(6);
-      if( !using_current_network_ip ) {
+      if(!verify_exists_ip(4) && !verify_exists_ip(6))
         add_fields_ip();
-      } else if( !$("#"+input_id_current_network_ip).is(":visible") ) {
-        $("#"+input_id_current_network_ip).closest(".fields_for_remove").show();
-        $("#"+input_id_current_network_ip).closest(".fields_for_remove").find('input[type=hidden]').val('false');
-      } else if( !$(this).siblings('.input').find('input').prop('checked') ){
-        $("#"+input_id_current_network_ip).closest(".fields_for_remove").find(".remove_fields").trigger('click');
-        change(this);
-      }
-
-      if( !click_remove_button_network_ip ){
-        click_remove_button_network_ip = true;
-        $("#"+remove_button_network_ip).on('click', function(){
-          change($("#current_ip > a"));
-        });
-      }
-    }
-
-    function verify_exists_ip(ip_version) {
-      fields = $(".exam_ip_reals_ip_v" + ip_version);
-      if(fields.length==0)
-        fields = $(".assignment_ip_reals_ip_v" + ip_version);
-      for(var i = 0; i < fields.length ; i++) {
-        if( $(fields[i]).find("input").val() === current_network_ip ) {
-          using_current_network_ip = true;
-          input_id_current_network_ip = $(fields[i]).find("input").attr("id");
-          remove_button_network_ip = input_id_current_network_ip.match(/\d+/)[0];
-          $("#"+input_id_current_network_ip).closest(".fields_for_remove").find(".remove_fields").attr("id", remove_button_network_ip);
-          return true;
-        }
-      }
-    }
-
-    function add_fields_ip(){
-      $(".add_fields").trigger("click");
-      using_current_network_ip = true;
-      var allFormsIps = $(".exam_ip_reals_ip_v4");
-      var allLocalNet = $(".exam_ip_reals_use_local_network");
-      if($(allFormsIps).length==0){
-        allFormsIps = $(".assignment_ip_reals_ip_v4");
-        allLocalNet = $(".assignment_ip_reals_use_local_network");
-      }
-
-      $(allFormsIps[allFormsIps.length - 1]).find("input").val(current_network_ip);
-      $(allLocalNet[allLocalNet.length - 1]).find("input").val(1);
-      input_id_current_network_ip = $(allFormsIps[allFormsIps.length - 1]).find("input").attr("id");
-      remove_button_network_ip = input_id_current_network_ip.match(/\d+/)[0];
-      $("#"+input_id_current_network_ip).closest(".fields_for_remove").find(".remove_fields").attr("id", remove_button_network_ip);
-      masck_ip(input_id_current_network_ip);
     }
   });
+
+  function add_fields_ip(){
+    $(".add_nested_fields_link").trigger("click");
+    var allFormsIps = $(".string.optional.ip_v4");
+    var allLocalNet = $("[class$='_ip_reals_use_local_network]");
+    $(allFormsIps[allFormsIps.length - 1]).val(current_network_ip);
+    $(allLocalNet[allLocalNet.length - 1]).find('input').val(1);
+    input_id_current_network_ip = $(allFormsIps[allFormsIps.length - 1]).attr("id");
+    remove_button_network_ip = input_id_current_network_ip.match(/\d+/)[0];
+    $("#"+input_id_current_network_ip).closest(".nested_fields").find(".remove_nested_fields_link").attr("id", remove_button_network_ip);
+    mask_ip(input_id_current_network_ip);
+    mask_ip($(".ip_v4"));
+  }
+
+  function verify_exists_ip(ip_version) {
+    fields = $(".string.optional.ip_v"+ ip_version+":visible");
+    for(var i = 0; i < fields.length ; i++) {
+      if( $(fields[i]).val() === current_network_ip ){
+        input_id_current_network_ip = $(fields[i]).prop('id');
+        $(fields[i]).prop('use_local_network', true);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  $(document).on("fields_added.nested_form_fields", function(event) {
+    mask_ip($(".ip_v4"));
+  });
+
 });
 
-function change(img){
-  var checkbox = $(img).siblings('.input').find('input');
-  checkbox.prop('checked', !checkbox.prop('checked'));
+  function toggleIP(selected){
+    if( $(selected).val() === "ipv4" ) {
+      $(selected).parent().find(".ip_v4").show();
+      $(selected).parent().find(".ip_v6").hide();
+      $(selected).parent().find(".ip_v6").val('');
+    } else if( $(selected).val() === "ipv6" ) {
+      $(selected).parent().find(".ip_v4").hide();
+      $(selected).parent().find(".ip_v4").val('');
+      $(selected).parent().find(".ip_v6").show();
+    }
 
-  if(!!checkbox.prop('checked')){
-    $(img).html('<img alt="Released" src="/assets/released.png"/>');
-    $(img).attr('data-tooltip', $(img).data('active'));
-  }else{
-    $(img).html('<img alt="Rejected" src="/assets/rejected.png"/>');
-    $(img).attr('data-tooltip', $(img).data('not-active'));
   }
-  $.getScript("/assets/tooltip.js");
-}
 
-function masck_ip(input){
-  var id = $(input).attr("id");
-  var patt_v4 = /ip_v4/i;
-
-  if ( patt_v4.test(id) ) {
-    $(input).mask('0ZZ.0ZZ.0ZZ.0ZZ', {
-      translation: {
-        'Z': {
-          pattern: /[0-9]/, optional: true
+  function mask_ip(input){
+    if ( (/ip_v4/i).test($(input).attr("id")) ) {
+      $(input).mask('0ZZ.0ZZ.0ZZ.0ZZ', {
+        translation: {
+          'Z': {
+            pattern: /[0-9]/, optional: true
+          }
         }
-      }
-    });
+      });
+    }
   }
-}
-
-function toggleIP(selected){
-  if( $(selected).val() === "ipv4" ) {
-    $(selected).closest(".fields_for_remove").find(".ip_v4").show();
-    $(selected).closest(".fields_for_remove").find(".ip_v6").hide();
-  } else if( $(selected).val() === "ipv6" ) {
-    $(selected).closest(".fields_for_remove").find(".ip_v4").hide();
-    $(selected).closest(".fields_for_remove").find(".ip_v6").show();
-  }
-}

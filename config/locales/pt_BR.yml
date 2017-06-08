@@ -1992,12 +1992,8 @@ pt_BR:
     control:
       continue: Continuar
       previous: Anterior
-      current_ip: O IP da rede local será usado
-      not_current_ip: Não será usado o IP da rede local
-      current_ip_real: "Usar IP da rede atual:"
       add_others_ip_reals: "Adicionar novo IP"
       network_ip_registred: "IP registrado"
-      add_new_ip_reals: "Adicionar novo IP"
       select_type: "Selecione o tipo:"
       link_to_remove_fields: "Remover campo de ip"
     ip_real_fields:
@@ -3724,9 +3720,6 @@ pt_BR:
       control:
         continue: Continuar
         previous: Anterior
-        current_ip: O IP da rede local será usado
-        not_current_ip: Não será usado o IP da rede local
-        current_ip_real: "Usar IP da rede atual:"
         add_others_ip_reals: "Adicionar novo IP"
         network_ip_registred: "IP registrado"
         link_to_remove_fields: "Remover Formulário de IPs"
@@ -4540,3 +4533,5 @@ pt_BR:
     ip_real_fields:
       link_to_remove_fields: "Remover campo de ip"
       select_type: "Selecione o tipo:"
+      current_ip_real: "Usar IP da rede atual"
+      add_new_ip_reals: "Adicionar novo IP"

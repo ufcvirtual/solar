@@ -1780,12 +1780,8 @@ en_US:
     control:
       continue: Continue
       previous: Previous
-      current_ip: Use current network IP
-      not_current_ip: "Don't use current network IP"
-      current_ip_real: "Use current network IP:"
       add_others_ip_reals: Add new IP
       network_ip_registred: "Registered IP"
-      add_new_ip_reals: Add new IP
       select_type: "Select type:"
       link_to_remove_fields: Remove ip field
     ip_real_fields:
@@ -3479,9 +3475,6 @@ en_US:
       control:
         continue: Continue
         previous: Previous
-        current_ip: The IP of the local network will be used
-        not_current_ip: The IP of the local network will NOT be used.
-        current_ip_real: "Use current network IP:"
         add_others_ip_reals: "Add new IP"
         network_ip_registred: "Local network registered"
         link_to_remove_fields: "Remove form of IPs"
@@ -4295,3 +4288,5 @@ en_US:
     ip_real_fields:
       link_to_remove_fields: Remove ip field
       select_type: "Select type:"
+      current_ip_real: "Use current network IP"
+      add_new_ip_reals: Add new IP
