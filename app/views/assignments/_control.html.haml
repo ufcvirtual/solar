@@ -52,6 +52,17 @@
     }
 
     $('#_save').click(function(){
+      var ips_v4 = $(".assignment_ip_reals_ip_v4 input");
+      var ips_v6 = $(".assignment_ip_reals_ip_v6 input");
+
+      for(var i = 0; i < ips_v4.length; i++) {
+        if( $(ips_v6[i]).is(":visible") ){
+          $(ips_v4[i]).val("");
+        } else{
+          $(ips_v6[i]).val("");
+        }
+      }
+
       $('#assignment_form:last').serialize_and_submit({
         files: true,
         replace_list: (("#{escape_once(params[:calendar])}" == "") ? $(".list_assignments") : $(".calendar_schedules"))
