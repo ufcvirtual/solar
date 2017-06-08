@@ -56,27 +56,42 @@ $(document).ready(function(event){
 
 });
 
-  function toggleIP(selected){
-    if( $(selected).val() === "ipv4" ) {
-      $(selected).parent().find(".ip_v4").show();
-      $(selected).parent().find(".ip_v6").hide();
-      $(selected).parent().find(".ip_v6").val('');
-    } else if( $(selected).val() === "ipv6" ) {
-      $(selected).parent().find(".ip_v4").hide();
-      $(selected).parent().find(".ip_v4").val('');
-      $(selected).parent().find(".ip_v6").show();
-    }
-
+function toggleIP(selected){
+  if( $(selected).val() === "ipv4" ) {
+    $(selected).parent().find(".ip_v4").show();
+    $(selected).parent().find(".ip_v6").hide();
+    $(selected).parent().find(".ip_v6").val('');
+  } else if( $(selected).val() === "ipv6" ) {
+    $(selected).parent().find(".ip_v4").hide();
+    $(selected).parent().find(".ip_v4").val('');
+    $(selected).parent().find(".ip_v6").show();
   }
 
-  function mask_ip(input){
-    if ( (/ip_v4/i).test($(input).attr("id")) ) {
-      $(input).mask('0ZZ.0ZZ.0ZZ.0ZZ', {
-        translation: {
-          'Z': {
-            pattern: /[0-9]/, optional: true
-          }
+}
+
+function mask_ip(input){
+  if ( (/ip_v4/i).test($(input).attr("id")) ) {
+    $(input).mask('0ZZ.0ZZ.0ZZ.0ZZ', {
+      translation: {
+        'Z': {
+          pattern: /[0-9]/, optional: true
         }
-      });
-    }
+      }
+    });
   }
+}
+
+function change(img){
+  var checkbox = $(img).siblings('.input').find('input');
+  checkbox.prop('checked', !checkbox.prop('checked'));
+
+  if(!!checkbox.prop('checked')){
+    $(img).html('<img alt="Released" src="/assets/released.png"/>');
+    $(img).attr('data-tooltip', $(img).data('active'));
+  }else{
+    $(img).html('<img alt="Rejected" src="/assets/rejected.png"/>');
+    $(img).attr('data-tooltip', $(img).data('not-active'));
+    $('#ip_form .nested_fields').remove();
+  }
+  $.getScript("/assets/tooltip.js");
+}

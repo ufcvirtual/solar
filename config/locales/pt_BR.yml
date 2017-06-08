@@ -398,7 +398,7 @@ pt_BR:
         end_date: à
         start_hour: Horário
         end_hour: à
-        controller: "Controlado"
+        controlled: "Controlado"
       assignment_enunciation_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
@@ -1958,7 +1958,6 @@ pt_BR:
       user: "Caro(a) %{user},"
       subject: '[SOLAR] Aula privada'
   assignments:
-    controlled: "é necessário pelo menos um IP"
     restrict_assignment: "Local de trabalho não permitido"
     index:
       expand_enunciation: Expandir enunciado
@@ -3633,7 +3632,6 @@ pt_BR:
     none: "Nenhuma prova cadastrada"
     restrict: "Aluno em prova: Conteúdo não permitido"
     restrict_test: "Local de prova não permitido"
-    controlled: "é necessário pelo menos um IP"
     percentage: "<b>%{percent}% da prova feito</b>"
     print: Imprimir resultado
     selected_correctly: Item selecionado corretamente
@@ -4538,3 +4536,5 @@ pt_BR:
       current_ip_real: "Usar IP da rede atual (%{ip})"
       add_new_ip_reals: "Adicionar novo IP"
       updated_at: "Cadastrado em %{date}"
+    errors:
+      controlled: "é necessário pelo menos um IP"

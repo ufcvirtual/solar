@@ -341,7 +341,7 @@ en_US:
         end_date: To
         start_hour: Schedule
         end_hour: to
-        controller: Controlled
+        controlled: Controlled
       assignment_enunciation_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment_file_name: File
@@ -1744,7 +1744,6 @@ en_US:
       subject: '[SOLAR] Private lesson'
 
   assignments:
-    controlled: "at least one IP is required"
     restrict_assignment: "This place is not permit to do the assignment"
     index:
       expand_enunciation: Expand enunciation
@@ -3386,7 +3385,6 @@ en_US:
     none: No registered test
     restrict: student in test content not allowed
     restrict_test: "This place is not permit to do the test"
-    controlled: "at least one IP is required"
     percentage: "<b>%{percent}% of exam was made</b>"
     print: Print result
     selected_correctly: Correctly selected item
@@ -4291,3 +4289,5 @@ en_US:
       current_ip_real: "Use current network IP (%{ip})"
       add_new_ip_reals: Add new IP
       updated_at: "Registered at %{date}"
+    errors:
+      controlled: "at least one IP is required"

@@ -117,7 +117,7 @@ class AssignmentsController < ApplicationController
     @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
     if user_session[:blocking_content]
       redirect_to list_assignments_path, alert: t('assignments.restrict_assignment')
-    elsif @assignment.controller && IpReal.network_ips_permited(@assignment.id, get_remote_ip, :assignment).blank?
+    elsif @assignment.controlled && IpReal.network_ips_permited(@assignment.id, get_remote_ip, :assignment).blank?
       redirect_to list_assignments_path, alert: t('assignments.restrict_assignment')
     else
       assignment_started?(@assignment)
@@ -175,7 +175,7 @@ class AssignmentsController < ApplicationController
 
     if Exam.verify_blocking_content(current_user.id)
       redirect_to :back, alert: t('exams.restrict')
-    elsif assignment.controller && IpReal.network_ips_permited(assignment.id, get_remote_ip, :assignment).blank?
+    elsif assignment.controlled && IpReal.network_ips_permited(assignment.id, get_remote_ip, :assignment).blank?
       redirect_to list_assignments_path, alert: t('exams.restrict_test')
     else
       authorize! :download, Assignment, on: [active_tab[:url][:allocation_tag_id]]
@@ -206,7 +206,7 @@ class AssignmentsController < ApplicationController
   private
 
     def assignment_params
-      params.require(:assignment).permit(:name, :enunciation, :type_assignment, :start_hour, :end_hour, :controller,
+      params.require(:assignment).permit(:name, :enunciation, :type_assignment, :start_hour, :end_hour, :controlled,
         schedule_attributes: [:id, :start_date, :end_date],
         enunciation_files_attributes: [:id, :attachment, :_destroy],
         ip_reals_attributes: [:id, :ip_v4, :ip_v6, :use_local_network, :_destroy])
