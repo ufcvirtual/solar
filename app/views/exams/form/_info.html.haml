@@ -81,6 +81,17 @@
   function save_exam(event) {
     var keynum = event.which || event.keyCode;
     if(keynum == 13 || event.type == 'click') {
+      var ips_v4 = $(".exam_ip_reals_ip_v4 input");
+      var ips_v6 = $(".exam_ip_reals_ip_v6 input");
+
+      for(var i = 0; i < ips_v4.length; i++) {
+        if( $(ips_v6[i]).is(":visible") ){
+          $(ips_v4[i]).val("");
+        } else{
+          $(ips_v6[i]).val("");
+        }
+      }
+
       save_values_ckeditor();
       $('form#exam_form').serialize_and_submit({
         replace_list: $('.list_exams:last')
