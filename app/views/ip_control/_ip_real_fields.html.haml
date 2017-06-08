@@ -10,10 +10,9 @@
   = f.input :use_local_network, as: :boolean, label: false
   = f.hidden_field :very_ipv6, value: very_ipv6, class: "_very_ipv6"
 
-= javascript_include_tag 'tooltip', 'ip'
+= javascript_include_tag 'jquery.mask', 'tooltip', 'ip'
 
 :javascript
   $(document).ready(function(){
     masck_ip($(".ip_v4"));
-    masck_ip($(".ip_v6"));
   });
