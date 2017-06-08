@@ -50,7 +50,7 @@ class Post < ActiveRecord::Base
       errors.add(:base, I18n.t('posts.error.permission'))
       raise 'permission'
     end
-    unless discussion.in_time?
+    unless discussion.user_can_interact?(user_id)
       errors.add(:base, I18n.t('posts.error.date_range_expired'))
       raise 'date_range_expired'
     end
