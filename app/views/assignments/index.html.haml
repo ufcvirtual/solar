@@ -62,7 +62,7 @@
 
             %td{style: 'text-align:center;'}
               %div= can_delete ? t('.no_answers') : t('.has_answers')
-            %td{style: 'text-align:center;'}= assignment.controller ? t('.has_answers') : t('.no_answers')
+            %td{style: 'text-align:center;'}= assignment.controlled ? t('.has_answers') : t('.no_answers')
 
   - else
     .block_content_text_list.text_none= t(".none")

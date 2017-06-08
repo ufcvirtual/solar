@@ -1,6 +1,7 @@
 class Exam < Event
   include AcademicTool
   include EvaluativeTool
+  include Controlled
 
   GREATER, AVERAGE, LAST = 0, 1, 2
   OFFER_PERMISSION, GROUP_PERMISSION = true, true
@@ -13,7 +14,6 @@ class Exam < Event
   has_many :questions     , through: :exam_questions
   has_many :exam_user_attempts, through: :academic_allocation_users
   has_many :exam_responses, through: :exam_user_attempts
-  has_many :ip_reals, dependent: :destroy
   # has_many :ip_fakes, through: :ip_reals
 
   validates :name, :duration, :number_questions, :attempts, presence: true
@@ -21,16 +21,13 @@ class Exam < Event
   validates :number_questions, :attempts, :duration, numericality: { greater_than_or_equal_to: 1, allow_blank: false }
   validates :start_hour, presence: true, if: lambda { |c| c[:start_hour].blank?  && !c[:end_hour].blank? }
   validates :end_hour  , presence: true, if: lambda { |c| !c[:start_hour].blank? && c[:end_hour].blank?  }
-  validates_associated :ip_reals, if: 'controlled'
-
+  
   validate :can_edit?, only: :update
   validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
-  validate :controlled_network_ip_validates, if: 'controlled' # mandatory at least one ip if the exam is controlled
-
+  
   before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # mandatory final date
 
   accepts_nested_attributes_for :schedule
-  accepts_nested_attributes_for :ip_reals, allow_destroy: true, reject_if: lambda { |e| e[:ip_v4].blank? && e[:ip_v6].blank?  }
 
   before_destroy :can_destroy?
 
@@ -423,14 +420,6 @@ class Exam < Event
 
   def self.percent(total, answered)
     ((answered.to_f/total.to_f)*100).round(2)
-  end
-
-  def controlled_network_ip_validates
-    errors.add(:controlled, I18n.t("exams.controlled")) if ip_reals.blank?
-  end
-
-  def using_local_network
-    IpReal.where(exam_id: id, use_local_network: true).any? unless new_record?
   end
 
 end

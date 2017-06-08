@@ -3,7 +3,7 @@
   = simple_form_for @assignment, html: { id: 'assignment_form' } do |f|
     %h1#lightBoxDialogTitle= t((@assignment.persisted? ? ".edit" : ".new"))
     %span.form_requirement= t(:required_fields)
-    = f.hidden_field :controller, value: @assignment.controller, id: "assignment_controller_edit"
+    = f.hidden_field :controlled, value: @assignment.controlled, id: "assignment_controlled_edit"
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
     .form-inputs.block_content.assignments_box#basic_info
@@ -45,11 +45,11 @@
           %span.field_with_errors.error= @files_errors
 
       .input
-        = f.label :controller
-        = f.input :controller, as: :boolean, label: false
-        = link_to_function (image_tag "#{@assignment.controller ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (@assignment.controller ? t('.environment_controlled') : t('.environment_not_controlled')), :'data-id' => 'controlled', :'data-active' => t('.environment_controlled'), :'data-not-active' => t('.environment_not_controlled')
-        - if @assignment.errors[:controller].any?
-          %span.field_with_errors.error= @assignment.errors[:controller].first
+        = f.label :controlled
+        = f.input :controlled, as: :boolean, label: false
+        = link_to_function (image_tag "#{@assignment.controlled ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (@assignment.controlled ? t('.environment_controlled') : t('.environment_not_controlled')), :'data-id' => 'controlled', :'data-active' => t('.environment_controlled'), :'data-not-active' => t('.environment_not_controlled')
+        - if @assignment.errors[:controlled].any?
+          %span.field_with_errors.error= @assignment.errors[:controlled].first
 
       = render "groups/codes"
 
@@ -87,7 +87,7 @@
     if ($(".file_input:last").length)
       var nested_form = $(".file_input:first");
 
-    if( $("#assignment_controller_edit").val() === "true" ) {
+    if( $("#assignment_controlled_edit").val() === "true" ) {
       $('a[data-id="controlled"]').trigger('click');
     }
 

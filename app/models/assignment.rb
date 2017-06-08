@@ -2,6 +2,7 @@ class Assignment < Event
   include AcademicTool
   include FilesHelper
   include EvaluativeTool
+  include Controlled
 
   GROUP_PERMISSION = true
 
@@ -10,25 +11,21 @@ class Assignment < Event
   has_many :allocations, through: :allocation_tags
   has_many :enunciation_files, class_name: 'AssignmentEnunciationFile', dependent: :destroy
   has_many :group_assignments, through: :academic_allocations, dependent: :destroy
-  has_many :ip_reals, dependent: :destroy
 
   before_destroy :can_destroy?
 
   validates :start_hour, presence: true, if: lambda { |c| c[:start_hour].blank?  && !c[:end_hour].blank? }
   validates :end_hour  , presence: true, if: lambda { |c| !c[:start_hour].blank? && c[:end_hour].blank?  }
   validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
-  validates_associated :ip_reals, if: 'controller'
 
   before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # data final obrigatoria
 
   accepts_nested_attributes_for :schedule
   accepts_nested_attributes_for :enunciation_files, allow_destroy: true, reject_if: proc { |attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank? }
-  accepts_nested_attributes_for :ip_reals, allow_destroy: true, reject_if: lambda { |e| e[:ip_v4].blank? && e[:ip_v6].blank? }
 
   validates :name, :enunciation, :type_assignment, presence: true
   validates :name, length: { maximum: 1024 }
-  validate :controlled_network_ip_validates, if: 'controller' # mandatory at least one ip if the assignment is controller
-
+  
   validate :verify_date, on: :update, if: 'type_assignment_changed?'
 
   after_save :update_groups, on: :update, if: 'type_assignment_changed?'
@@ -209,13 +206,5 @@ class Assignment < Event
 
   def self.update_previous(ac_id, users_ids, acu_id)
     return false
-  end
-
-  def controlled_network_ip_validates
-    errors.add(:controller, I18n.t("assignments.controlled")) if ip_reals.blank?
-  end
-
-  def using_local_network
-    IpReal.where(assignment_id: id, use_local_network: true).any? unless new_record?
   end
 end
