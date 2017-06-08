@@ -216,7 +216,7 @@ input::-moz-focus-inner {
 .btn_caution:hover,
 .btn_caution:focus,
 .btn_caution:active {
-    color: $color_white;
+    color: $color_white_buttons;
     background: $btn_caution_color; /* Old browsers */
     @include filter-gradient($btn_caution_color, darken($btn_caution_color, 20%)); /* IE */
     @include background-image(linear-gradient($btn_caution_color, darken($btn_caution_color, 20%))); /* CSS3 */
