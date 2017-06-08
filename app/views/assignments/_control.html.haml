@@ -20,7 +20,7 @@
   = button_to_function t('.previous'), 'back()', class: 'btn btn_default btn_main btn_lightbox', type: 'button'
   = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "_save"
 
-= javascript_include_tag 'jquery.mask', 'ip'
+= javascript_include_tag 'ip'
 
 :css
   .schedule_dates .input input, #assignment_type_assignment {
@@ -43,8 +43,6 @@
 
   jQuery(function($){
     $(".ip_v6").hide();
-    masck_ip($(".ip_v4"));
-    masck_ip($(".ip_v6"));
 
     vIp6 = $("._very_ipv6");
     for(var i = 0; i < vIp6.length ; i++) {
