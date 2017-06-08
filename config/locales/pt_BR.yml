@@ -4532,6 +4532,7 @@ pt_BR:
       ipv: '<p>IPV4 e IPV6 são versões do protocolo de internet.</p><p>Se você clicar em "Usar IP da rede atual", o IP encontrado já irá alterar para o tipo de IP correto. Ao acessar o site informado em "Como descubro o IP de outra rede?", você poderá saber se o endereço não é IPV4 se ele não for compatível com a formatação do campo. Se não for compatível, basta clicar no seletor e alterar para IPV6.</p>'
     ip_real_fields:
       link_to_remove_fields: "Remover campo de ip"
-      select_type: "Selecione o tipo:"
-      current_ip_real: "Usar IP da rede atual"
+      select_type: "Informe o IP:"
+      current_ip_real: "Usar IP da rede atual (%{ip})"
       add_new_ip_reals: "Adicionar novo IP"
+      updated_at: "Cadastrado em %{date}"

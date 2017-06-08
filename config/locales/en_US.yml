@@ -4287,6 +4287,7 @@ en_US:
       ipv: "<p>IPV4 and IPV6 are versions of the internet protocol.</p><p>If you click at 'Use current network IP', the IP found already will fit the field.  By accessing the website suggested at 'How do I find another network IP?', you will be able to find out if the IP is or not IPV4 by field's format. If it wont fit, you should click at the selector and change to IPV6.</p>"
     ip_real_fields:
       link_to_remove_fields: Remove ip field
-      select_type: "Select type:"
-      current_ip_real: "Use current network IP"
+      select_type: "Inform IP:"
+      current_ip_real: "Use current network IP (%{ip})"
       add_new_ip_reals: Add new IP
+      updated_at: "Registered at %{date}"

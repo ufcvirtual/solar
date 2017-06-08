@@ -1,7 +1,7 @@
 #ip_form
   .top
     .input#current_ip
-      = link_to t('.current_ip_real'), '#', class: 'btn'
+      = link_to t('.current_ip_real', ip: ':get_remote_ip'), '#', class: 'btn'
 
     .input.string.add
       = f.add_nested_fields_link :ip_reals, t('.add_new_ip_reals'), class: 'btn btn_main'
@@ -14,6 +14,8 @@
     = select_tag "ip_type", options_for_select([["IPV4", "ipv4"], ["IPV6", "ipv6"]], selected: select_ip), class: "select_ip_type", onchange: "toggleIP(this)"
     = ip.input :ip_v4, as: :string, label: false, input_html: { size: 15, class: "ip_v4 left #{(very_ipv6 ? 'invisible' : '')}"}
     = ip.input :ip_v6, as: :string, label: false, input_html: { size: 40, class: "ip_v6 left #{(very_ipv6 ? '' : 'invisible')}"}
+    - unless ip.object.updated_at.blank?
+      = content_tag(:i, nil, class: 'icon-clock', :'data-tooltip' => t('.updated_at', date: l(ip.object.updated_at, format: :clock)), :'aria-label' => t('.updated_at', date: l(ip.object.updated_at, format: :clock)))
     = ip.hidden_field :very_ipv6, value: very_ipv6, class: "_very_ipv6"
     = ip.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash btn')
 
