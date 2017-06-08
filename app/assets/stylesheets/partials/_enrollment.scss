@@ -131,3 +131,10 @@
   }
 }
 
+table.tb_list.enrollments {
+  .allocations {
+    tr.lines.active:hover {
+      background-color: $enrollment_active_line_table_hover;
+    }
+  }
+}
