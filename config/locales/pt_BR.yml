@@ -1264,6 +1264,7 @@ pt_BR:
       confirm_cancel: 'Tem certeza de que deseja cancelar?'
       number_posts: 'Total de Posts %{n_post}'
       show_my_post: "Ver minhas discussões"
+      primary: " primárias"
     post:
       remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
       new: Nova postagem
