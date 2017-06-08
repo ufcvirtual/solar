@@ -2674,6 +2674,7 @@ en_US:
   message_confirm: "Are you sure you want to delete this?"
   confirm_acceptance: "Confirm request acceptance?"
   confirm_cancel: 'Are you sure you want to cancel?'
+  message_confirm_user: 'Are you sure?'
   messages:
     file_too_big: "File too big"
     mail_header: "Sent by: "

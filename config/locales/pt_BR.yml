@@ -2899,6 +2899,7 @@ pt_BR:
   message_confirm: "Tem certeza de que deseja excluir?"
   confirm_acceptance: "Confirma aceitação de solicitação?"
   confirm_cancel: 'Tem certeza de que deseja cancelar?'
+  message_confirm_user: "Tem certeza?"
 
   messages:
     file_too_big: "Arquivo muito grande!"
