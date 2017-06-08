@@ -34,6 +34,7 @@
   }
 
   function add_user_in_blacklist(user) {
+    if (!confirm("#{I18n.t(:message_confirm_user)}")) return;
     $.post($(user).data('url'), function(data){
       flash_message(data.notice, "notice");
       $(user).closest('tr').html(data.user);
@@ -45,6 +46,7 @@
   }
 
   function remove_user_from_blacklist(user) {
+    if (!confirm("#{I18n.t(:message_confirm_user)}")) return;
     $.delete($(user).data('url'), function(data){
       flash_message(data.notice, 'notice');
       $(user).closest('tr').html(data.user);
