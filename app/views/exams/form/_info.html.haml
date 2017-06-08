@@ -23,7 +23,6 @@
   = button_to_function t('.continue'), 'go_to_config(event)', class: 'btn btn_main btn_lightbox', alt: 'continuar', type: 'button', id: '_continue', onkeypress: 'go_to_config(event)'
 
 = javascript_include_tag 'ckeditor/init'
-= javascript_include_tag 'jquery.mask', 'ip'
 
 :javascript
   $(function(){
@@ -94,9 +93,9 @@
   function go_to_config(event) {
     var keynum = event.which || event.keyCode;
     if(keynum == 13 || event.type == 'click') {
-      $('.step-info').addClass('hidden');
-      $('.step-config').removeClass('hidden');
-      $('.step-control').addClass('hidden');
+      $('.step-info').addClass('invisible');
+      $('.step-config').removeClass('invisible');
+      $('.step-control').addClass('invisible');
 
       $('li.info').removeClass('active');
       $('#dot-info').removeClass('active');

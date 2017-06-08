@@ -425,10 +425,6 @@ class Exam < Event
     ((answered.to_f/total.to_f)*100).round(2)
   end
 
-  def network_ips_permited_to_do_the_exams(user_ip)
-    IpReal.where(ip_v4: user_ip, exam_id: self.id)
-  end
-
   def controlled_network_ip_validates
     errors.add(:controlled, I18n.t("exams.controlled")) if ip_reals.blank?
   end

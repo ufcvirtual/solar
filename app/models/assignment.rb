@@ -211,10 +211,6 @@ class Assignment < Event
     return false
   end
 
-  def network_ips_permited_to_do_the_assignment(user_ip)
-    IpReal.where(ip_v4: user_ip, assignment_id: self.id)
-  end
-
   def controlled_network_ip_validates
     errors.add(:controller, I18n.t("assignments.controlled")) if ip_reals.blank?
   end

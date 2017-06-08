@@ -27,6 +27,9 @@
         = link_to content_tag(:i, nil, class: 'icon-user'), discussion_posts_path(@discussion, {display_mode: 'user'}), {class: "btn #{class_u}", id: 'forum_view_mode-user', :"data-tooltip" => t(".show_my_post"), :'aria-label' => t(".show_my_post")},id: 'forum_view_mode_user'
 
     #forum_pagination
+      / - if @display_mode == 'user'
+      /   %p= 'Total de postagens '+ @total_itens.to_s 
+      / -else
       = page_entries_info @posts, model: Post
       = will_paginate @posts
       .new_posts
@@ -56,10 +59,11 @@
 
   var locale = "#{I18n.locale}";
   $("#button_new_post").focus();
-  $('.next_page').attr("aria-label", "#{t(:navigation_next_page)}");  
-  $('.previous_page').attr("aria-label", "#{t(:navigation_previous_page)}");  
+  //$('.next_page').attr("aria-label", "#{t(:navigation_next_page)}");  
+  //$('.previous_page').attr("aria-label", "#{t(:navigation_previous_page)}");  
 
   $(function(){
+    
 
     CKEDITOR_BASEPATH  = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
     var websocket_host = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["host"]}";
@@ -71,7 +75,20 @@
     
     var display_list = ("#{escape_once(@display_mode) == 'list'}" == "true");
     var ac = "#{@academic_allocation.id}";
-
+    
+    if(display_list==false){
+      qtdB = $('#forum_pagination').children("b").length;
+      var text = "#{t('.primary')} ";
+      if(qtdB==2){
+        var b = $('#forum_pagination').children("b")[0];
+        $(b).html(text + $(b).text());
+        var b1 = $('#forum_pagination').children("b")[1];
+        $(b1).html($(b1).text()+text);
+      }else{  
+        var b = $('#forum_pagination').text().split(".");
+        $('#forum_pagination').html(b[0] + "#{t('.primary')}.");
+      }  
+    }
     /*Conexão com o WebSocket*/
     var ws = new WebSocket('ws://'+websocket_host+':'+websocket_port+'/'+ac); // file websocket_server.rb
     ws.onopen = function (){ }; // ao iniciar ws
@@ -103,7 +120,11 @@
 
     $("#submit_post").click(function(){
       var form    = $($(this).parents("form")[0]);
-      var content = CKEDITOR.instances["discussion_post_content"].getData();
+      try{
+        var content = CKEDITOR.instances["discussion_post_content"].getData();
+      } catch(exception){
+        var content = $('#discussion_post_content').val();
+      }
 
       // get parent_id information
       if (form.attr("method") == "POST")

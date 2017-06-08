@@ -1,4 +1,4 @@
-.new_assignment
+.new_assignment.controller
 
   = simple_form_for @assignment, html: { id: 'assignment_form' } do |f|
     %h1#lightBoxDialogTitle= t((@assignment.persisted? ? ".edit" : ".new"))
@@ -57,12 +57,12 @@
         = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
         = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "save"
 
-      .right_buttons.clear.hidden#with_control
+      .right_buttons.clear.invisible#with_control
         = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', alt: t(:cancel), type: 'button'
         = button_to_function t('.continue'), 'controls()', id: '_continue', class: 'btn btn_main btn_lightbox', alt: t('.continue'), type: 'button'
 
 
-    .form-control.block_content.hidden#control_info
+    .form-control.block_content.invisible#control_info
       = render partial: 'control', locals: { f: f }
 
 :css
@@ -182,6 +182,6 @@
   }
 
   function controls() {
-    $('#basic_info').addClass('hidden');
-    $('#control_info').removeClass('hidden');
+    $('#basic_info').addClass('invisible');
+    $('#control_info').removeClass('invisible');
   }

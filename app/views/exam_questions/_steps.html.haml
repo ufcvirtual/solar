@@ -16,5 +16,5 @@
         = eq.simple_fields_for :question do |f|
           .step-info
             = render partial: 'questions/form/info', locals: { f: f, eq: eq }
-          .step-items.hidden
+          .step-items.invisible
             = render partial: 'questions/form/items', locals: { f: f, eq: eq }

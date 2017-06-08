@@ -582,7 +582,6 @@ Solar::Application.routes.draw do
     collection do
       get :list
       get :calcule_all
-      get :client_network_ip
       put ':tool_id/unbind/group/:id', to: 'groups#change_tool'  , type: 'unbind', tool_type: 'Exam', as: :unbind_group_from
       put ':tool_id/remove/group/:id', to: 'groups#change_tool'  , type: 'remove', tool_type: 'Exam', as: :remove_group_from
       put ':tool_id/add/group/:id'   , to: 'groups#change_tool'  , type: 'add'   , tool_type: 'Exam', as: :add_group_to

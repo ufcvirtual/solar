@@ -1,4 +1,4 @@
-.new_exam
+.new_exam.controller
   = simple_form_for(@exam, html: { id: 'exam_form' }) do |f|
     = f.hidden_field :controlled, value: @exam.controlled, id: "exam_controlled_edit"
     %span.form_requirement= t(:required_fields)
@@ -20,9 +20,9 @@
               .dot#dot-control
         .step-info
           = render partial: 'exams/form/info', locals: { f: f }
-        .step-config.hidden
+        .step-config.invisible
           = render partial: 'exams/form/config', locals: { f: f }
-        .step-control.hidden
+        .step-control.invisible
           = render partial: 'exams/form/control', locals: { f: f }
 
 :javascript
@@ -39,8 +39,8 @@
   });
 
   function open_form_control() {
-    $("#without_control").toggleClass("hidden");
-    $("#with_control").toggleClass("hidden");
+    $("#without_control").toggleClass("invisible");
+    $("#with_control").toggleClass("invisible");
     $("#steps").toggleClass("steps");
     $("#steps").toggleClass("steps_controlled");
     $("#controlled_step").toggle();

@@ -493,28 +493,20 @@ function focuInpuErro(){
         $("#_continue").click();
         if ( typeof($("#__continue")) !== "undefined" ){
           $("#__continue").click();
-          $(el).attr("aria-label",text);
-          $(".error").siblings()[0].focus();
+          if ($(el).is(":visible")) {
+            $(el).attr("aria-label",text);
+            $(".error").siblings()[0].focus();
+          }
         } else {
-          $(el).attr("aria-label",text);
-          $(".error").siblings()[0].focus();
+          if ($(el).is(":visible")) {
+            $(el).attr("aria-label",text);
+            $(".error").siblings()[0].focus();
+          }
           CKEDITOR.instances['notification_description'].focus();
         }
       }
     }
   }
-}
-
-function add_fields(link, association, content) {
-  var new_id = new Date().getTime();
-  var regexp = new RegExp("new_" + association, "g");
-
-  $('.duplicatable_nested_form').append( content.replace(regexp, new_id) );
-}
-
-function remove_fields(link) {
-  $(link).prev('input[type=hidden]').val('true');
-  $(link).closest('.fields_for_remove').hide();
 }
 
 function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){

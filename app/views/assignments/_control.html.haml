@@ -1,36 +1,11 @@
 = render partial: 'ip_control/info'
 
-.input#current_ip
-  = f.label :using_local_network, t(".current_ip_real")
-  = f.input :using_local_network, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.using_local_network ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (f.object.using_local_network ? t('.current_ip') : t('.not_current_ip')), :'data-id' => 'current_ip', :'data-active' => t('.current_ip'), :'data-not-active' => t('.not_current_ip')
-
-.ip_fiels.clear
-  = f.fields_for :ip_reals do |ip_form|
-    - select_ip = ip_form.object.ip_v6.blank? ? 'ipv4' : 'ipv6'
-    - very_ipv6 = select_ip == 'ipv6' ? 'ipv6' : false
-    .fields_for_remove.clear
-      = ip_form.hidden_field :_destroy
-      = link_to_remove_fields content_tag(:i, nil, class: 'icon-trash'), f, class: "btn btn_caution remove_fields",  :'data-tooltip'=> t('.link_to_remove_fields'), :'aria-label'=> t('.link_to_remove_fields')
-      = label_tag t(".select_type"), nil, class: "select_ip_label"
-      = select_tag "ip_type", options_for_select([["IPV4", "ipv4"], ["IPV6", "ipv6"]], :selected => select_ip), class: "select_ip_type", onchange: "toggleIP(this)"
-      = ip_form.input :ip_v4, as: :string, label: false, input_html: { size: 15, class: 'ip_v4 left'}
-      = ip_form.input :ip_v6, as: :string, label: false, input_html: { size: 40, class: 'ip_v6 left'}
-      = ip_form.input :use_local_network, as: :boolean, label: false
-      = ip_form.hidden_field :very_ipv6, value: very_ipv6, class: "_very_ipv6"
-
-.ip_fiels.clear.duplicatable_nested_form
-
-.input.clear#new_form_ip
-  = f.label t('.add_new_ip_reals')
-  = link_to_add_fields_ip content_tag(:i, nil, class: 'icon-plus'), f, :ip_reals, class: "btn btn_main add_fields", :'data-tooltip' => t('.add_new_ip_reals'), :'aria-label' => t('.add_new_ip_reals')
+= render partial: 'ip_control/ip_real_fields', locals: { f: f }
 
 .right_buttons.clear
   = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
   = button_to_function t('.previous'), 'back()', class: 'btn btn_default btn_main btn_lightbox', type: 'button'
   = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "_save"
-
-= javascript_include_tag 'jquery.mask', 'ip'
 
 :css
   .schedule_dates .input input, #assignment_type_assignment {
@@ -40,76 +15,14 @@
   .schedule_dates .left, .right {
     float: left;
   }
-  
-  .hidden {
-    display: none;
-  }
 
 :javascript
   function back(){
-    $('#basic_info').removeClass('hidden');
-    $('#control_info').addClass('hidden');
+    $('#basic_info').removeClass('invisible');
+    $('#control_info').addClass('invisible');
   }
 
   jQuery(function($){
-    $(".ip_v6").hide();
-    masck_ip($(".ip_v4"));
-    masck_ip($(".ip_v6"));
-
-    vIp6 = $("._very_ipv6");
-    for(var i = 0; i < vIp6.length ; i++) {
-      if( $(vIp6[i]).val()==='ipv6' ) {
-        toggleIP($(vIp6[i]));
-      }
-    }
-
-    if ($(".file_input:last").length)
-      var nested_form = $(".file_input:first");
-
-    // clona um arquivo existente e atualiza o nome
-    function add_new_file() {
-      var new_form = nested_form.clone();
-      var forms_on_page = $(".file_input").length;
-      var input_name = $("input[type='file']", new_form).attr("name");
-      input_name = input_name.replace(new RegExp(/\[[0-9]+\]/), "[" + forms_on_page + "]");
-      $("input", new_form).attr("name", input_name);
-
-      $(new_form).insertAfter( nested_form.last() );
-      $("input[type='file']", new_form).click();
-
-      $("input[type='file']", new_form).change(function(){
-        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-square warning remove_file'></i> </span> </div>";
-
-        if ($(".list_files_to_send .files:last").lenght)
-          $(".list_files_to_send .files:last").after(new_file_name);
-        else
-          $(".list_files_to_send").append(new_file_name);
-
-        $(".remove_file").click(function(){
-          var span_file = $(this).parents('span#file');
-
-          $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove();
-          $(span_file).parents('div.input.files').remove();
-        });
-      });
-    }
-
-    //// edicao
-
-    $(".remove_file").click(function(){
-      var span_file = $(this).parents('span#file');
-
-      $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove(); // pra edicao nao serve
-      $("input[data-file-id=" + span_file.data("file-id") + "]").val(1); // edicao: colocar o _destroy com valor 1
-      $(span_file).parents('div.input.files').remove();
-    });
-
-
-    $(".new_file").click(function(e){
-      e.preventDefault();
-      add_new_file();
-    });
-
     $('#_save').click(function(){
       $('#assignment_form:last').serialize_and_submit({
         files: true,

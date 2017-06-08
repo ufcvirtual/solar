@@ -1266,6 +1266,7 @@ pt_BR:
       confirm_cancel: 'Tem certeza de que deseja cancelar?'
       number_posts: 'Total de Posts %{n_post}'
       show_my_post: "Ver minhas discussões"
+      primary: " primárias"
     post:
       remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
       new: Nova postagem
@@ -1993,13 +1994,8 @@ pt_BR:
     control:
       continue: Continuar
       previous: Anterior
-      current_ip: O IP da rede local será usado
-      not_current_ip: Não será usado o IP da rede local
-      current_ip_real: "Usar IP da rede atual:"
       add_others_ip_reals: "Adicionar novo IP"
       network_ip_registred: "IP registrado"
-      link_to_remove_fields: "Remover Formulário de IPs"
-      add_new_ip_reals: "Adicionar novo IP"
       select_type: "Selecione o tipo:"
       link_to_remove_fields: "Remover campo de ip"
     ip_real_fields:
@@ -2901,6 +2897,7 @@ pt_BR:
   message_confirm: "Tem certeza de que deseja excluir?"
   confirm_acceptance: "Confirma aceitação de solicitação?"
   confirm_cancel: 'Tem certeza de que deseja cancelar?'
+  message_confirm_user: "Tem certeza?"
 
   messages:
     file_too_big: "Arquivo muito grande!"
@@ -3725,9 +3722,6 @@ pt_BR:
       control:
         continue: Continuar
         previous: Anterior
-        current_ip: O IP da rede local será usado
-        not_current_ip: Não será usado o IP da rede local
-        current_ip_real: "Usar IP da rede atual:"
         add_others_ip_reals: "Adicionar novo IP"
         network_ip_registred: "IP registrado"
         link_to_remove_fields: "Remover Formulário de IPs"
@@ -4538,3 +4532,9 @@ pt_BR:
       find_other_ip: '<p>É importante que alguém esteja disponível na rede desejada para te informar o IP dela. Para a pessoa, que estiver em uma outra rede a ser cadastrada nesta atividade, descubra seu IP, basta acessar sites como <a target="_blank" href="http://whatismyipaddress.com/">http://whatismyipaddress.com/</a> e informar o número que irá aparecer na tela.</p>'
       ipv_title: '<b>IPV4 ou IPV6?</b>'
       ipv: '<p>IPV4 e IPV6 são versões do protocolo de internet.</p><p>Se você clicar em "Usar IP da rede atual", o IP encontrado já irá alterar para o tipo de IP correto. Ao acessar o site informado em "Como descubro o IP de outra rede?", você poderá saber se o endereço não é IPV4 se ele não for compatível com a formatação do campo. Se não for compatível, basta clicar no seletor e alterar para IPV6.</p>'
+    ip_real_fields:
+      link_to_remove_fields: "Remover campo de ip"
+      select_type: "Informe o IP:"
+      current_ip_real: "Usar IP da rede atual (%{ip})"
+      add_new_ip_reals: "Adicionar novo IP"
+      updated_at: "Cadastrado em %{date}"

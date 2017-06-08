@@ -72,8 +72,8 @@ function save_question(exam_id, type_question){
 }
 
 function go_to_items(){
-  $('.step-info').addClass('hidden');
-  $('.step-items').removeClass('hidden');
+  $('.step-info').addClass('invisible');
+  $('.step-items').removeClass('invisible');
   $('li.info').removeClass('active');
   $('#dot-info').removeClass('active');
   $('li.items').addClass('active');
@@ -81,8 +81,8 @@ function go_to_items(){
 }
 
 function back(){
-  $('.step-info').removeClass('hidden');
-  $('.step-items').addClass('hidden');
+  $('.step-info').removeClass('invisible');
+  $('.step-items').addClass('invisible');
   $('li.info').addClass('active');
   $('#dot-info').addClass('active');
   $('li.items').removeClass('active');

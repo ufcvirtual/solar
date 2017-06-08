@@ -132,6 +132,7 @@ module V1
         @post.user = current_user
         @post.profile_id = @profile_id
         @post.academic_allocation_id = academic_allocation.id
+        User.current = current_user
 
         if @post.save
           { id: @post.id }
@@ -153,6 +154,7 @@ module V1
 
         raise ActiveRecord::RecordNotFound if (post.user_id != current_user.id)
         raise CanCan::AccessDenied unless post.discussion.user_can_interact?(current_user.id)
+        User.current = current_user
 
         ids = []
         [params[:file]].flatten.each do |file|
@@ -179,6 +181,7 @@ module V1
       desc 'Delete a post.'
       params { requires :id, type: Integer, desc: 'Post ID.' }
       delete ':id' do
+        User.current = current_user
         raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
         current_user.discussion_posts.find(params[:id]).destroy # user posts
       end
@@ -187,6 +190,7 @@ module V1
       params { requires :id, type: Integer, desc: 'File Post ID.' }
       delete 'files/:id' do
         pfile = PostFile.find(params[:id])
+        User.current = current_user
         raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
         raise ActiveRecord::RecordNotFound unless current_user.discussion_post_ids.include?(pfile.discussion_post_id) # user files
         pfile.destroy

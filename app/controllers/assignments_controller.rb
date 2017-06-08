@@ -117,7 +117,7 @@ class AssignmentsController < ApplicationController
     @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
     if user_session[:blocking_content]
       redirect_to list_assignments_path, alert: t('assignments.restrict_assignment')
-    elsif @assignment.controller && @assignment.network_ips_permited_to_do_the_assignment(get_remote_ip).blank?
+    elsif @assignment.controller && IpReal.network_ips_permited(@assignment.id, get_remote_ip, :assignment).blank?
       redirect_to list_assignments_path, alert: t('assignments.restrict_assignment')
     else
       assignment_started?(@assignment)
@@ -152,7 +152,7 @@ class AssignmentsController < ApplicationController
       @assignment = Assignment.find(params[:id])
       @score_type = params[:score_type]
       verify_owner_or_responsible!(@allocation_tag_id)
-      @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id) 
+      @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
       @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 
       @ac = AcademicAllocation.where(academic_tool_id: @assignment.id, allocation_tag_id: @allocation_tag_id, academic_tool_type: 'Assignment').first
@@ -175,7 +175,7 @@ class AssignmentsController < ApplicationController
 
     if Exam.verify_blocking_content(current_user.id)
       redirect_to :back, alert: t('exams.restrict')
-    elsif assignment.controller && assignment.network_ips_permited_to_do_the_assignment(get_remote_ip).blank?
+    elsif assignment.controller && IpReal.network_ips_permited(assignment.id, get_remote_ip, :assignment).blank?
       redirect_to list_assignments_path, alert: t('exams.restrict_test')
     else
       authorize! :download, Assignment, on: [active_tab[:url][:allocation_tag_id]]

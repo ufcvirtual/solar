@@ -11,7 +11,7 @@ class AssignmentFilesController < ApplicationController
 
   def new
     @assignment = Assignment.find(params['assignment_id'])
-    if @assignment.controller && @assignment.network_ips_permited_to_do_the_assignment(get_remote_ip).blank?
+    if @assignment.controller && IpReal.network_ips_permited(@assignment.id, get_remote_ip, :assignment).blank?
       render text: t('assignments.restrict_assignment')
     else
       group = GroupAssignment.by_user_id(current_user.id, @ac.id)

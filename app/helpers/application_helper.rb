@@ -59,7 +59,7 @@ module ApplicationHelper
     unless (@current_page.eql? "1") # voltar uma página: <<
       result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)-1).to_s << ');$(this).parent().submit();" aria-label="(' << text_pagination.to_s << ') '<< t(:navigation_previous_page) << ((@current_page.to_i)-1).to_s << '">&lt;&lt;</a>'
     end
-    
+
     result << text_pagination
     unless (@current_page.eql? total_pages) # avançar uma página: >>
       result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)+1).to_s << ');$(this).parent().submit();" aria-label="(' << text_pagination.to_s << ') '<< t(:navigation_next_page) << ((@current_page.to_i)+1).to_s << '">&gt;&gt;</a>'
@@ -78,7 +78,7 @@ module ApplicationHelper
     # Se o group_select estiver vazio, ou seja, nenhum grupo foi selecionado pelo usuário,
     # o grupo a ter seus fóruns exibidos será o primeiro grupo encontrado para o usuário em questão
     selected_group_id = groups.first.id if selected_group_id.blank?
-    
+
     active_tab[:breadcrumb].first[:url][:selected_group] = Group.find(selected_group_id).code
 
     result = ''
@@ -90,11 +90,11 @@ module ApplicationHelper
        result <<  "<ul class='dropdown-menu'>"
       groups.each do |g|
         class_li = selected_group_id==g.id ? 'selected' : 'null';
-        link_groups = link_to g.code, select_group_path(selected_group: g.id), :'aria-label' => t('scores.index.select_group'), :class => class_li 
+        link_groups = link_to g.code, select_group_path(selected_group: g.id), :'aria-label' => t('scores.index.select_group'), :class => class_li
         result << "<li role='menuitem' onclick='focusTitle();'>"+link_groups+"</li>"
       end
       result << "</ul> </div>"
-     
+
     else
       result = t(:group) << ":&nbsp #{Group.find(selected_group_id).code}"
     end
