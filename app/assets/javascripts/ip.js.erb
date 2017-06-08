@@ -91,6 +91,7 @@ function change(img){
   }else{
     $(img).html('<img alt="Rejected" src="/assets/rejected.png"/>');
     $(img).attr('data-tooltip', $(img).data('not-active'));
+    $('#ip_form .nested_fields').remove();
   }
   $.getScript("/assets/tooltip.js");
 }
