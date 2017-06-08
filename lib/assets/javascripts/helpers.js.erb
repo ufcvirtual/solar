@@ -493,11 +493,15 @@ function focuInpuErro(){
         $("#_continue").click();
         if ( typeof($("#__continue")) !== "undefined" ){
           $("#__continue").click();
-          $(el).attr("aria-label",text);
-          $(".error").siblings()[0].focus();
+          if ($(el).is(":visible")) {
+            $(el).attr("aria-label",text);
+            $(".error").siblings()[0].focus();
+          }
         } else {
-          $(el).attr("aria-label",text);
-          $(".error").siblings()[0].focus();
+          if ($(el).is(":visible")) {
+            $(el).attr("aria-label",text);
+            $(".error").siblings()[0].focus();
+          }
           CKEDITOR.instances['notification_description'].focus();
         }
       }
