@@ -47,7 +47,7 @@
       .input
         = f.label :controlled
         = f.input :controlled, as: :boolean, label: false
-        = link_to_function (image_tag "#{@assignment.controlled ? 'released' : 'rejected'}.png"), 'change(this)', :'data-tooltip' => (@assignment.controlled ? t('.environment_controlled') : t('.environment_not_controlled')), :'data-id' => 'controlled', :'data-active' => t('.environment_controlled'), :'data-not-active' => t('.environment_not_controlled')
+        = link_to_function (image_tag "#{@assignment.controlled ? 'released' : 'rejected'}.png"), 'change(this, ["#with_control", "#without_control"])', :'data-tooltip' => (@assignment.controlled ? t('.environment_controlled') : t('.environment_not_controlled')), :'data-id' => 'controlled', :'data-active' => t('.environment_controlled'), :'data-not-active' => t('.environment_not_controlled')
         - if @assignment.errors[:controlled].any?
           %span.field_with_errors.error= @assignment.errors[:controlled].first
 
@@ -64,15 +64,6 @@
 
     .form-control.block_content.invisible#control_info
       = render partial: 'control', locals: { f: f }
-
-:css
-  .schedule_dates .input input, #assignment_type_assignment {
-    width: 85px;
-  }
-
-  .schedule_dates .left, .right {
-    float: left;
-  }
 
 = javascript_include_tag 'tooltip'
 
@@ -163,23 +154,6 @@
     $('#assignment_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#assignment_start_date').datepicker("option", "maxDate", selected); } }) );
 
   });
-
-  function change(img){
-    var checkbox = $(img).siblings('.input').find('input');
-    checkbox.prop('checked', !checkbox.prop('checked'));
-
-    if(!!checkbox.prop('checked')){
-      $(img).html('<img alt="Released" src="/assets/released.png"/>');
-      $(img).attr('data-tooltip', $(img).data('active'));
-      $("#without_control").hide();
-      $("#with_control").show();
-    }else{
-      $(img).html('<img alt="Rejected" src="/assets/rejected.png"/>');
-      $(img).attr('data-tooltip', $(img).data('not-active'));
-      $("#without_control").show();
-      $("#with_control").hide();
-    }
-  }
 
   function controls() {
     $('#basic_info').addClass('invisible');
