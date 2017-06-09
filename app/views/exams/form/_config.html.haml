@@ -31,7 +31,7 @@
 .ckb
   = f.label :controlled
   = f.input :controlled, as: :boolean, label: false
-  = link_to_function (image_tag "#{f.object.controlled ? 'released' : 'rejected'}.png"), 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => (f.object.controlled ? t('.environment_controlled') : t('.environment_not_controlled')), :'data-id' => 'controlled', :'data-active' => t('.environment_controlled'), :'data-not-active' => t('.environment_not_controlled')
+  = link_to_function (image_tag "#{f.object.controlled ? 'released' : 'rejected'}.png"), 'change(this, ["#without_control", "#with_control", "#controlled_step"])', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => (f.object.controlled ? t('.environment_controlled') : t('.environment_not_controlled')), :'data-id' => 'controlled', :'data-active' => t('.environment_controlled'), :'data-not-active' => t('.environment_not_controlled')
   - if @exam.errors[:controlled].any?
     %span.field_with_errors.error= @exam.errors[:controlled].first
 
