@@ -768,11 +768,11 @@ function Header(calendar, options) {
               var text = smartProperty(options.buttonText, buttonName);
               if(buttonName == 'today'){
                 var button = $(
-                  "<button class='btn btn_default'>"+today+"</button>"
+                  "<button class='btn btn_default' type='button'>"+today+"</button>"
                 );
               }else {
                 var button = $(
-                  "<button class='btn' aria-label='"+options.buttonAlt[buttonName]+"'><i class='"+options.buttonText[buttonName]+"'></i></button>"
+                  "<button class='btn' aria-label='"+options.buttonAlt[buttonName]+"' type='button'><i class='"+options.buttonText[buttonName]+"'></i></button>"
                 );
               }
               if (button) {
