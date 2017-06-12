@@ -209,7 +209,7 @@ class AssignmentsController < ApplicationController
       params.require(:assignment).permit(:name, :enunciation, :type_assignment, :start_hour, :end_hour, :controlled,
         schedule_attributes: [:id, :start_date, :end_date],
         enunciation_files_attributes: [:id, :attachment, :_destroy],
-        ip_reals_attributes: [:id, :ip_v4, :ip_v6, :use_local_network, :_destroy])
+        ip_reals_attributes: [:id, :ip_v4, :ip_v6, :_destroy])
     end
 
     def render_assignment_success_json(method)

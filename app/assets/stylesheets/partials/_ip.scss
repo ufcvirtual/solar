@@ -18,6 +18,9 @@
 
   .input{
     display: inline-block;
+    input.ip_v4{
+      width: 100px;
+    }
   }
 
   .btn{
