@@ -3092,6 +3092,7 @@ pt_BR:
       recess: Recesso
       holiday: Feriado
       webconference_lesson: Aula de Webconferência
+      other: Outros
     form:
       groups: Turmas
       new: Novo evento
@@ -3171,7 +3172,7 @@ pt_BR:
       presential_meeting: Encontro Presencial
       presential_test: Prova Presencial
       webconference_lesson: Aula de Webconferência
-      recess_or_holiday: Recesso ou Feriado
+      recess_or_holiday_or_other: Recesso ou Feriado ou Outro
       lesson: Aula
       other: Outros
       legend: Legenda

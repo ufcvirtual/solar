@@ -1,4 +1,4 @@
-- show_fields = [Presential_Meeting, Presential_Test, WebConferenceLesson].include?(@schedule_event.type_event)
+- show_fields = [Presential_Meeting, Presential_Test, WebConferenceLesson, Other].include?(@schedule_event.type_event)
 
 .show_event
   %h1#lightBoxDialogTitle= t(".event_details")
@@ -11,10 +11,10 @@
     .input
       = label_tag t(".type_event"), nil, class: "form_label"
       %span.label_info= @schedule_event.type_name
-
-    .input{style: show_fields ? "" : "display: none"}
-      = label_tag t(".place"), nil, class: "form_label"
-      %span.label_info= @schedule_event.place
+    - unless @schedule_event.place.blank?  
+      .input{style: show_fields ? "" : "display: none"}
+        = label_tag t(".place"), nil, class: "form_label"
+        %span.label_info= @schedule_event.place
 
     .input
       = label_tag t(".description"), nil, class: "form_label"
@@ -26,11 +26,12 @@
     .input
       = label_tag t(".end_date"), nil, class: "form_label"
       %span.label_info= l(@schedule_event.schedule.end_date.to_date, format: :datepicker)
-
-    %div{style: "#{show_fields ? "" : "display: none"}"}
-      .input
-        = label_tag t(".time"), nil, class: "form_label"
-        %span.label_info= [@schedule_event.start_hour, @schedule_event.end_hour].join(t(".to"))
+      
+    - unless @schedule_event.start_hour.blank? 
+      %div{style: "#{show_fields ? "" : "display: none"}"}
+        .input
+          = label_tag t(".time"), nil, class: "form_label"
+          %span.label_info= [@schedule_event.start_hour, @schedule_event.end_hour].join(t(".to"))
       
     = render "groups/codes"
 

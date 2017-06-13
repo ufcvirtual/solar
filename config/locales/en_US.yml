@@ -2855,6 +2855,7 @@ en_US:
       recess: Recess
       holiday: Holiday
       webconference_lesson: Webconference Lesson
+      other: Other
     form:
       groups: Groups
       new: New event
@@ -2934,7 +2935,7 @@ en_US:
       presential_meeting: Presential Meeting
       presential_test: Presential Test
       webconference_lesson: Webconference Lesson
-      recess_or_holiday: Recess or Holiday
+      recess_or_holiday_or_other: Recess or Holiday or Other
       lesson: Lesson
       other: Others
       legend: Legend

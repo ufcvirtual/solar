@@ -1,4 +1,5 @@
-- show_fields = [Presential_Meeting, Presential_Test, WebConferenceLesson].include?(@schedule_event.type_event)
+- show_fields = [Presential_Meeting, Presential_Test, WebConferenceLesson, Other].include?(@schedule_event.type_event)
+- required_fields = [Presential_Meeting, Presential_Test, WebConferenceLesson].include?(@schedule_event.type_event)
 
 .new_event
   = simple_form_for @schedule_event, html: {id: 'event_form', multipart: true} do |f|
@@ -13,7 +14,8 @@
         :"#{t(:presential_test, scope: [:schedule_events, :types])}" => Presential_Test,
         :"#{t(:webconference_lesson, scope: [:schedule_events, :types])}" => WebConferenceLesson,
         :"#{t(:recess, scope: [:schedule_events, :types])}" => Recess,
-        :"#{t(:holiday, scope: [:schedule_events, :types])}" => Holiday}
+        :"#{t(:holiday, scope: [:schedule_events, :types])}" => Holiday,
+        :"#{t(:other, scope: [:schedule_events, :types])}" => Other}
       - if @schedule_event.persisted?
         .input
           = f.label :type_event
@@ -21,18 +23,18 @@
       - else
         = f.input :type_event, collection: types, include_blank: false, required: true
       %span{style: show_fields ? "" : "display: none"}
-        = f.input :place, maxlength: 250, required: true
+        = f.input :place, maxlength: 250, required: required_fields
       = f.input :description
 
       = f.fields_for :schedule, defaults: {required: true, input_html: {size: 10}} do |s|
         .schedule_dates
           .left
             = s.input :start_date, as: :string, input_html: {id: 'start_date', value: l(@schedule_event.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
-            = f.input :start_hour, input_html: {size: 10}, required: true
+            = f.input :start_hour, input_html: {size: 10}, required: required_fields
           
           .right_form{style: "margin-left: 60px; margin-right: 30px; #{show_fields ? "" : "display: none"}"}
             = s.input :end_date, as: :string, input_html: {id: 'end_date', value: l(@schedule_event.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
-            = f.input :end_hour, input_html: {size: 10}, required: true
+            = f.input :end_hour, input_html: {size: 10}, required: required_fields
 
       = render "groups/codes"
 
