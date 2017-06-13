@@ -503,9 +503,10 @@ function focuInpuErro(){
           }
         }
       }
-    }
-    if (CKEDITOR.instances['notification_description'] !== undefined) {
-      CKEDITOR.instances['notification_description'].focus();
+
+      if (CKEDITOR.instances['notification_description'] !== undefined) {
+        CKEDITOR.instances['notification_description'].focus();
+      }
     }
   }
 }
