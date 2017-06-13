@@ -4538,3 +4538,5 @@ pt_BR:
       updated_at: "Cadastrado em %{date}"
     errors:
       controlled: "é necessário pelo menos um IP"
+      date: já iniciado
+      date_end: já encerrado

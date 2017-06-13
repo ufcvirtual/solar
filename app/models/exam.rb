@@ -208,7 +208,7 @@ class Exam < Event
 
   def can_edit?
     return true if !status # if draft
-    return true if schedule.start_date_was > Date.today # if has not started yet
+    return true unless started? # if has not started yet
     if on_going_changed?
       unless start_hour.blank? || start_hour_was.blank?
         sh  = start_hour.split(':')

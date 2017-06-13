@@ -4291,3 +4291,5 @@ en_US:
       updated_at: "Registered at %{date}"
     errors:
       controlled: "at least one IP is required"
+      date: already started
+      date_end: already ended

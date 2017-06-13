@@ -129,7 +129,7 @@ class GroupAssignmentsController < ApplicationController
       when (!acu.try(:grade).blank? || !acu.try(:working_hours).blank?) then (score_type == 'frequency' ? acu.working_hours : acu.grade)
       when has_files then 'sent'
       when assignment.on_going? then 'to_send'
-      when assignment.closed? then 'not_sent'
+      when assignment.ended? then 'not_sent'
       else
         '-'
       end

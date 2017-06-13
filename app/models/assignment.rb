@@ -143,7 +143,7 @@ class Assignment < Event
                  .order("start_date") if at.is_student?(user_id)
   end
 
-   def closed?
+   def ended?
     has_hours = (!start_hour.blank? && !end_hour.blank?)
     endt      = (has_hours ? (schedule.end_date.beginning_of_day + end_hour.split(':')[0].to_i.hours + end_hour.split(':')[1].to_i.minutes) : schedule.end_date.end_of_day)
     Time.now > endt
