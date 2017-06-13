@@ -26,8 +26,8 @@
 
   table th {
     padding: 6px 6px 4px;
-    background-color: $color_white_background_portlets; //teste
-    color: $color_black_background_color; //teste
+    background-color: $color_white_background_portlets;
+    color: $color_black_background_color; 
   }
   .type, .semester {
     text-align: center;
@@ -215,13 +215,15 @@ table tr.block_title th {
     font-family: 'Ubuntu Condensed';
     font-size: 14px;
     padding-top: 4px;
-   }
+    color: $color_white_portlets;
+  }
 
-   label.subtitle{
-      font-family: 'PT Sans';
-      font-size: 12px;
-      padding-left: 8px;
-   }
+  label.subtitle{
+    font-family: 'PT Sans';
+    font-size: 12px;
+    padding-left: 8px;
+    color: $color_white_portlets;
+  }
 
   input{
     height: 16px;
