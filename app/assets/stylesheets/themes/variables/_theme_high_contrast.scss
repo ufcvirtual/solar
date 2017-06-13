@@ -317,7 +317,7 @@ $background_light_red: #fff6f6;
 $color_white: $high_contrast_font_color;
 $label_selected_background: #FDFBE9;
 $warning_background: #FFFFDE;
-$table_line_hover: #fffbd1;
+$table_line_hover: $high_contrast_background_color;
 
 $questions_audios_background: #FAFAFA;
 $comment_color: $high_contrast_font_color;
