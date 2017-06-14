@@ -7,6 +7,7 @@ class ScheduleEventTest < ActiveSupport::TestCase
     event_meeting = ScheduleEvent.create(title: nil, type_event: Presential_Meeting, start_hour: "10:30", end_hour: "11:30", place: "Polo A") 
     event_recess  = ScheduleEvent.create(title: nil, type_event: Recess) 
     event_holiday = ScheduleEvent.create(title: nil, type_event: Holiday) 
+    event_other   = ScheduleEvent.create(title: nil, type_event: Other)
 
     assert (event_test.invalid? and event_meeting.invalid? and event_holiday.invalid? and event_recess.invalid?)
 

@@ -80,6 +80,7 @@ Presential_Meeting  = 2 # encontro presencial
 Recess              = 3 # recesso
 Holiday             = 4 # feriado
 WebConferenceLesson = 5 # aula por web conferência
+Other				= 6 # other
 
 # número máximo de turmas exibidas sem expansão da div
 Max_Groups_Shown_Filter = 30 # no filtro

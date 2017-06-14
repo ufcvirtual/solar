@@ -29,6 +29,7 @@ class ScheduleEvent < Event
       when WebConferenceLesson; :webconference_lesson
       when Recess; :recess
       when Holiday; :holiday
+      when Other; :other  
     end
 
     I18n.t(te, scope: "schedule_events.types")

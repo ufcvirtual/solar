@@ -489,21 +489,23 @@ function focuInpuErro(){
       $(el).attr("aria-label",text);
       $(".error").siblings()[0].focus();
     } else {
-      if(typeof($("#_continue")) !== "undefined"){
+      if(typeof($("#_continue")) !== "undefined" && $("#_continue").is(":visible")){
         $("#_continue").click();
-        if ( typeof($("#__continue")) !== "undefined" ){
-          $("#__continue").click();
-          if ($(el).is(":visible")) {
-            $(el).attr("aria-label",text);
-            $(".error").siblings()[0].focus();
-          }
+        if ($(el).is(":visible")) {
+          $(el).attr("aria-label",text);
+          $(".error").siblings()[0].focus();
         } else {
-          if ($(el).is(":visible")) {
-            $(el).attr("aria-label",text);
-            $(".error").siblings()[0].focus();
+          if (typeof($("#__continue")) !== "undefined" && $("#__continue").is(":visible")) {
+            if ($(el).is(":visible")) {
+              $(el).attr("aria-label", text);
+              $(".error").siblings()[0].focus();
+            }
           }
-          CKEDITOR.instances['notification_description'].focus();
         }
+      }
+
+      if (CKEDITOR.instances['notification_description'] !== undefined) {
+        CKEDITOR.instances['notification_description'].focus();
       }
     }
   }

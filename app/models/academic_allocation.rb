@@ -65,7 +65,7 @@ class AcademicAllocation < ActiveRecord::Base
   end
 
   def verify_type
-    if [Recess, Holiday].include? ScheduleEvent.find(academic_tool_id).type_event
+    if [Recess, Holiday, Other].include? ScheduleEvent.find(academic_tool_id).type_event
       errors.add(:evaluative, I18n.t('evaluative_tools.errors.event_evaluative')) if evaluative
       errors.add(:frequency, I18n.t('evaluative_tools.errors.event_frequency')) if frequency
     end
