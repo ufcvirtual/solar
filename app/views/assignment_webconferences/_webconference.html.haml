@@ -2,12 +2,11 @@
 - unavailable = exist_and_offline?(webconference.server.to_i)
 - disabled_by_status = (webconference.status == t('scores.situation.scheduled') || webconference.status == t('scores.situation.in_progress') || webconference.status == t('scores.situation.processing') || unavailable)
 %tr.lines{ class: "web_#{webconference.id}" }
-  - web_url = webconference.get_bbb_url(current_user)
   %td.right{headers: "name_web" }
-    - if web_url.blank?
+    - unless webconference.on_going?
       = link_to webconference.title, '#', {disabled: true, :'aria-label' => t('webconferences.index.access_web', web: webconference.title) + t(:disabled), class: 'title'}
     - else
-      = link_to webconference.title, web_url, {:'aria-label' => t('webconferences.index.access_web', web: webconference.title)+t(:new_window), target: '_blank' }
+      = link_to_function webconference.title, 'access_awebconference(this)', {:'aria-label' => t('webconferences.index.access_web', web: webconference.title)+t(:new_window), onkeydown: 'click_on_keypress(event, this);', :'data-url' => access_assignment_webconference_path(webconference.id)}
   %td.center{headers: "period_web" }= [l(webconference.initial_time, format: :at_date), l(webconference.initial_time+webconference.duration.minutes, format: :at_date)].join(' - ')
   %td.center{headers: "status_web" }
     = (unavailable ? t(:unavailable, scope: [:webconferences, :list]) : status)

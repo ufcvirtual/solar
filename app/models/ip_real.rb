@@ -25,6 +25,10 @@ class IpReal < ActiveRecord::Base
     IpReal.where("(#{obj.to_s}_id = ? AND ip_v4 = ?) OR (#{obj.to_s}_id = ? AND ip_v6 = ?)", id, user_ip, id, user_ip)
   end
 
+  def self.verify_ip(id, user_ip, obj, controlled)
+    (controlled && self.network_ips_permited(id, user_ip, obj).blank?)
+  end
+
   def can_create?
     errors.add(:ip_v4, I18n.t('ip_control.errors.date_end')) if !ip_v4.blank? && parent.ended?
     errors.add(:ip_v6, I18n.t('ip_control.errors.date_end')) if !ip_v6.blank? && parent.ended?

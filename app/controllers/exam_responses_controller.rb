@@ -1,12 +1,13 @@
 class ExamResponsesController < ApplicationController
 
   include SysLog::Actions
+  include IpRealHelper
 
   layout false
 
   def update
-    exam_response = ExamResponse.find(params[:id])
-    exam_user_attempt = exam_response.exam_user_attempt
+    @exam_response = ExamResponse.find(params[:id])
+    exam_user_attempt = @exam_response.exam_user_attempt
     exam = Exam.find(exam_user_attempt.exam.id)
     if exam.controlled && IpReal.network_ips_permited(exam.id, get_remote_ip, :exam).blank?
       render text: t('exams.restrict_test')
@@ -19,7 +20,8 @@ class ExamResponsesController < ApplicationController
       date_validate     = exam_user_attempt.exam.on_going?
 
       if (user_validate && attempt_validate && duration_validate && date_validate)
-        if exam_response.update_attributes(exam_response_params)
+        set_ip_user('exam_response')
+        if @exam_response.update_attributes(exam_response_params)
           render_exam_response_success_json('updated')
         end
       else

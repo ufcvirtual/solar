@@ -79,3 +79,15 @@ function add_awebconference(button){
       open: true
     });
 }
+
+function access_awebconference(obj){
+  $.get($(obj).data('url'), function(data){
+    var web = window.open(data.url,'_blank');
+    if(!web || web.closed || typeof web.closed=='undefined')
+      flash_message("<%= I18n.t('webconferences.warning.blocked')%>", 'warning');
+  }).error(function(data){
+    var response = JSON.parse(data.responseText);
+    if (typeof(response.alert) != "undefined")
+      flash_message(response.alert, 'alert');
+  });
+}

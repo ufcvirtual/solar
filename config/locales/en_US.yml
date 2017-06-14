@@ -3561,6 +3561,7 @@ en_US:
       no_attempt: No attempt made
       cant_calcule_grade: Grade already calculated or still not possible to calcule.
       unique_choice: Must have only one choice
+      restrict: "Location not allowed"
     show:
       groups: Groups
       empty_group: Empty group
@@ -4294,3 +4295,4 @@ en_US:
       controlled: "at least one IP is required"
       date: already started
       date_end: already ended
+      restrict: "location not allowed"

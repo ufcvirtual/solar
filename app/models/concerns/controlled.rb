@@ -4,7 +4,7 @@ module Controlled
   extend ActiveSupport::Concern
 
   included do
-    has_many :ip_reals, dependent: :destroy
+    has_many :ip_reals, dependent: :delete_all
 
     validates_associated :ip_reals, if: 'controlled'
     validate :controlled_network_ip_validates, if: 'controlled' # mandatory at least one ip if the activity is controlled

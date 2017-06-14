@@ -3809,6 +3809,7 @@ pt_BR:
       no_attempt: Nenhuma tentativa realizada
       cant_calcule_grade: A nota já foi calculada ou ainda não é possível realizar o cálculo.
       unique_choice: Deve ter apenas uma resposta
+      restrict: "Localização não permitida"
     show:
       groups: Turmas
       empty_group: Turma vazia
@@ -4541,3 +4542,4 @@ pt_BR:
       controlled: "é necessário pelo menos um IP"
       date: já iniciado
       date_end: já encerrado
+      restrict: "Localização não permitida"
