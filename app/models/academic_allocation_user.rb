@@ -254,16 +254,17 @@ class AcademicAllocationUser < ActiveRecord::Base
     count
   end
 
-  def find_or_create_exam_user_attempt
+  def find_or_create_exam_user_attempt(ip=nil)
     exam_user_attempt_last = exam_user_attempts.last
 
-    (exam_user_attempt_last.nil? || (exam_user_attempt_last.complete && exam_user_attempt_last.exam.attempts > exam_user_attempts.count) && exam_user_attempt_last.exam.on_going?) ?  exam_user_attempts.create(academic_allocation_user_id: id, start: Time.now) : exam_user_attempt_last
+    (exam_user_attempt_last.nil? || (exam_user_attempt_last.complete && exam_user_attempt_last.exam.attempts > exam_user_attempts.count) && exam_user_attempt_last.exam.on_going?) ?  exam_user_attempts.create(academic_allocation_user_id: id, start: Time.now, user_ip: ip) : exam_user_attempt_last
   end
 
-  def finish_attempt
+  def finish_attempt(ip = nil)
     last_attempt = exam_user_attempts.last
     last_attempt.end = DateTime.now
     last_attempt.complete = true
+    last_attempt.user_ip = ip
     last_attempt.save
 
     self.update_attributes status: STATUS[:sent]

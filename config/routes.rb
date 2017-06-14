@@ -648,6 +648,7 @@ Solar::Application.routes.draw do
       delete :remove_record, only_recordings: true
       get :get_record
       put :change_status
+      get :access
     end
   end
 

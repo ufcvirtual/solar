@@ -3,11 +3,12 @@ class AssignmentWebconferencesController < ApplicationController
   include SysLog::Actions
   include AssignmentsHelper
   include Bbb
+  include IpRealHelper
 
   before_filter :set_current_user, except: [:edit, :show]
   before_filter :get_ac, only: :new
 
-  before_filter only: [:edit, :update, :destroy, :remove_record, :show, :change_status] do |controller|
+  before_filter only: [:edit, :update, :destroy, :remove_record, :show, :change_status, :access] do |controller|
     @assignment_webconference = AssignmentWebconference.find(params[:id])
   end
 
@@ -17,11 +18,13 @@ class AssignmentWebconferencesController < ApplicationController
     group = GroupAssignment.by_user_id(current_user.id, @ac.id)
     academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], current_user.id, group.try(:id), true, nil)
     @assignment_webconference = AssignmentWebconference.new academic_allocation_user_id: academic_allocation_user.id
+    verify_ip!(@assignment_webconference.assignment.id, :assignment, @assignment_webconference.assignment.controlled, :text)
   end
 
   def create
     verify_owner!(assignment_webconference_params)
     @assignment_webconference = AssignmentWebconference.new assignment_webconference_params
+    set_ip_user
     @assignment_webconference.save!
 
     render partial: 'webconference', locals: { webconference: @assignment_webconference, view_disabled: false }
@@ -38,10 +41,12 @@ class AssignmentWebconferencesController < ApplicationController
   end
 
   def edit
+    verify_ip!(@assignment_webconference.assignment.id, :assignment, @assignment_webconference.assignment.controlled, :text)
   end
 
   def update
     owner(assignment_webconference_params)
+    set_ip_user
     @assignment_webconference.update_attributes! assignment_webconference_params
 
     render partial: 'webconference', locals: { webconference: @assignment_webconference, view_disabled: false }
@@ -59,6 +64,7 @@ class AssignmentWebconferencesController < ApplicationController
 
   def destroy
     verify_owner!(@assignment_webconference)
+    set_ip_user
     @assignment_webconference.destroy
     render json: { success: true, notice: t('assignment_webconferences.success.removed') }
   rescue CanCan::AccessDenied
@@ -70,7 +76,9 @@ class AssignmentWebconferencesController < ApplicationController
   def remove_record
     verify_owner!(@assignment_webconference)
 
+    verify_ip!(@assignment_webconference.assignment.id, :assignment, @assignment_webconference.assignment.controlled, :raise)
     @assignment_webconference.can_remove_records?
+
 
     if params.include?(:recordID)
       @assignment_webconference.remove_record(params[:recordID])
@@ -107,7 +115,7 @@ class AssignmentWebconferencesController < ApplicationController
     raise 'still_processing' unless @assignment_webconference.is_over?
 
     begin
-      verify_owner!(@assignment_webconference)
+      raise CanCan::AccessDenied unless @own_assignment
       @can_remove_record = true
     rescue
       @can_remove_record = false
@@ -126,6 +134,7 @@ class AssignmentWebconferencesController < ApplicationController
     verify_owner!(@assignment_webconference)
     raise 'date_range' unless @assignment_webconference.in_time?
     raise 'on_going' if @assignment_webconference.on_going?
+    set_ip_user
     @assignment_webconference.update_attributes final: !@assignment_webconference.final
 
     respond_to do |format|
@@ -139,6 +148,20 @@ class AssignmentWebconferencesController < ApplicationController
       format.json { render json: { success: false, msg: error_message }, status: :unprocessable_entity }
       format.js { render js: "flash_message('#{error_message}', 'alert');" }
     end
+  end
+
+  def access
+    verify_owner_or_responsible!(active_tab[:url][:allocation_tag_id], @assignment_webconference.academic_allocation_user, :raise)
+    raise 'on_going' unless @assignment_webconference.on_going?
+
+    url = @assignment_webconference.get_bbb_url(current_user)
+    URI.parse(url).path
+    
+    render json: { success: true, url: url }
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+  rescue => error
+    render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
   end
 
   private

@@ -1,6 +1,7 @@
 class ExamsController < ApplicationController
 
   include SysLog::Actions
+  include IpRealHelper
 
   before_filter :prepare_for_group_selection, only: :index
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
@@ -102,93 +103,90 @@ class ExamsController < ApplicationController
     @exam = Exam.find(params[:id])
     @situation = params[:situation]
 
-    if @exam.controlled && IpReal.network_ips_permited(@exam.id, get_remote_ip, :exam).blank?
-      render text: t('exams.restrict_test')
+    verify_ip!(@exam.id, :exam, @exam.controlled, :error_text_min)
+    acs = @exam.academic_allocations
+    ac_id = (acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: @allocation_tag_id).first.id)
+
+    @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user.id, nil, true)
+
+    last_attempt = @acu.exam_user_attempts.last
+
+    raise 'time' unless @exam.on_going?
+    raise 'attempt' unless @acu.has_attempt(@exam)
+    @total_attempts  = @acu.count_attempts rescue 0
+
+    @shortcut = Hash.new
+    @shortcut[t("shortcut.nextq")] = t("questions.shortcut.shortcut_next")
+    @shortcut[t("shortcut.previousq")] = t("questions.shortcut.shortcut_previous")
+    @shortcut[t("shortcut.enunciation")] = t("questions.shortcut.shortcut_enunciation")
+    @shortcut[t("shortcut.first_item")] = t("questions.shortcut.shortcut_items")
+    @shortcut[t("shortcut.timeq")] = t("questions.shortcut.shortcut_time")
+    @shortcut[t("shortcut.questions")] = t("questions.shortcut.shortcut_questions")
+    @shortcut[t("shortcut.audio")] = t("questions.shortcut.shortcut_audio")
+
+    if (last_attempt.try(:uninterrupted_or_ended, @exam)) && @total_attempts == @exam.attempts
+      redirect_to result_user_exam_path(@exam)
     else
-      acs = @exam.academic_allocations
-      ac_id = (acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: @allocation_tag_id).first.id)
+      @total_time = (last_attempt.try(:complete) ? 0 : last_attempt.try(:get_total_time)) || 0
 
-      @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user.id, nil, true)
-
-      last_attempt = @acu.exam_user_attempts.last
-
-      raise 'time' unless @exam.on_going?
-      raise 'attempt' unless @acu.has_attempt(@exam)
-      @total_attempts  = @acu.count_attempts rescue 0
-
-      @shortcut = Hash.new
-      @shortcut[t("shortcut.nextq")] = t("questions.shortcut.shortcut_next")
-      @shortcut[t("shortcut.previousq")] = t("questions.shortcut.shortcut_previous")
-      @shortcut[t("shortcut.enunciation")] = t("questions.shortcut.shortcut_enunciation")
-      @shortcut[t("shortcut.first_item")] = t("questions.shortcut.shortcut_items")
-      @shortcut[t("shortcut.timeq")] = t("questions.shortcut.shortcut_time")
-      @shortcut[t("shortcut.questions")] = t("questions.shortcut.shortcut_questions")
-      @shortcut[t("shortcut.audio")] = t("questions.shortcut.shortcut_audio")
-
-      if (last_attempt.try(:uninterrupted_or_ended, @exam)) && @total_attempts == @exam.attempts
-        redirect_to result_user_exam_path(@exam)
+      @text = if !last_attempt.nil? && !last_attempt.try(:complete)
+        t("exams.pre.continue")
       else
-        @total_time = (last_attempt.try(:complete) ? 0 : last_attempt.try(:get_total_time)) || 0
-
-        @text = if !last_attempt.nil? && !last_attempt.try(:complete)
-          t("exams.pre.continue")
-        else
-          t("exams.pre.button")
-        end
-        render :pre
+        t("exams.pre.button")
       end
+      render :pre
     end
+    
   rescue => error
     render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
 
   def open
     @exam = Exam.find(params[:id])
-    if @exam.controlled && IpReal.network_ips_permited(@exam.id, get_remote_ip, :exam).blank?
-      render text: t('exams.restrict_test')
-    else
-      @disabled = false
-      @situation = params[:situation]
-      @last_attempt = @acu.find_or_create_exam_user_attempt
-      @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
-      @total_time = (@last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)) || 0
 
-      if (@situation == 'finished' || @situation == 'corrected')
-        mod_correct_exam = @exam.attempts_correction
-        @exam_user_attempt = ExamUserAttempt.where(id: params[:exam_user_attempt_id]).first
-        @disabled = true
+    @disabled = false
+    @situation = params[:situation]
+    @last_attempt = @acu.find_or_create_exam_user_attempt(get_remote_ip)
+    @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
+    @total_time = (@last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)) || 0
 
-        @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.blank?
-        if(mod_correct_exam != 1)
-          @exam_user_attempt = Exam.get_exam_user_attempt(mod_correct_exam, @acu.id)
-        end
+    if (@situation == 'finished' || @situation == 'corrected')
+      mod_correct_exam = @exam.attempts_correction
+      @exam_user_attempt = ExamUserAttempt.where(id: params[:exam_user_attempt_id]).first
+      @disabled = true
 
-        @list_eua = ExamUserAttempt.where(academic_allocation_user_id: @acu.id)
-        if mod_correct_exam == 1 && !params[:exam_user_attempt_id]  && params[:pdf].to_i != 1
-          render :open_result
-        else
-          @last_attempt = @exam.responses_question_user(@acu.id, params[:exam_user_attempt_id])
-          if params[:pdf].to_i == 1
-            @grade_pdf = @exam_user_attempt.grade
-            @ats = AllocationTag.find(@allocation_tag_id)
-            @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order) unless @exam.nil?
-            @pdf = 1
+      @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.blank?
+      if(mod_correct_exam != 1)
+        @exam_user_attempt = Exam.get_exam_user_attempt(mod_correct_exam, @acu.id)
+      end
 
-
-            render pdf: t('exams.result_exam.title_pdf', name: @exam.name),
-               template: 'exams/result_exam.html.haml',
-               layout: false,
-               disposition: 'attachment'
-
-          else
-           render :open
-          end
-        end
+      @list_eua = ExamUserAttempt.where(academic_allocation_user_id: @acu.id)
+      if mod_correct_exam == 1 && !params[:exam_user_attempt_id]  && params[:pdf].to_i != 1
+        render :open_result
       else
-        respond_to do |format|
-          format.html
-          format.js
+        @last_attempt = @exam.responses_question_user(@acu.id, params[:exam_user_attempt_id])
+        if params[:pdf].to_i == 1
+          @grade_pdf = @exam_user_attempt.grade
+          @ats = AllocationTag.find(@allocation_tag_id)
+          @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order) unless @exam.nil?
+          @pdf = 1
+
+
+          render pdf: t('exams.result_exam.title_pdf', name: @exam.name),
+             template: 'exams/result_exam.html.haml',
+             layout: false,
+             disposition: 'attachment'
+
+        else
+         render :open
         end
+      end
+    else
+      verify_ip!(@exam.id, :exam, @exam.controlled, :error_text)
+      
+      respond_to do |format|
+        format.html
+        format.js
       end
     end
   rescue CanCan::AccessDenied
@@ -232,7 +230,7 @@ class ExamsController < ApplicationController
     exam = Exam.find(params[:id])
     acs = exam.academic_allocations
     acu = AcademicAllocationUser.find_one((acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: active_tab[:url][:allocation_tag_id]).first.id), current_user.id, nil, true)
-    if acu.finish_attempt
+    if acu.finish_attempt(get_remote_ip)
       user_session[:blocking_content] = false
       if (params[:error])
         respond_to do |format|

@@ -3,27 +3,26 @@ class AssignmentFilesController < ApplicationController
   include SysLog::Actions
   include FilesHelper
   include AssignmentsHelper
+  include IpRealHelper
 
-  before_filter :set_current_user, only: [:destroy, :new]
+  before_filter :set_current_user, only: [:destroy, :create]
   before_filter :get_ac, only: :new
 
   layout false
 
   def new
     @assignment = Assignment.find(params['assignment_id'])
-    if @assignment.controlled && IpReal.network_ips_permited(@assignment.id, get_remote_ip, :assignment).blank?
-      render text: t('assignments.restrict_assignment')
-    else
-      group = GroupAssignment.by_user_id(current_user.id, @ac.id)
-      academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], current_user.id, group.try(:id), true, nil)
-      @assignment_file = AssignmentFile.new academic_allocation_user_id: academic_allocation_user.id
-    end
+    verify_ip!(@assignment.id, :assignment, @assignment.controlled, :text)
+    group = GroupAssignment.by_user_id(current_user.id, @ac.id)
+    academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], current_user.id, group.try(:id), true, nil)
+    @assignment_file = AssignmentFile.new academic_allocation_user_id: academic_allocation_user.id
   end
 
   def create
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
     verify_owner!(assignment_file_params)
     @assignment_file = AssignmentFile.new assignment_file_params
+    set_ip_user
     @assignment_file.assignment.assignment_started?(allocation_tag_id, @assignment_file.user)
     @assignment_file.user = current_user
 
@@ -39,9 +38,13 @@ class AssignmentFilesController < ApplicationController
   end
 
   def destroy
-    AssignmentFile.find(params[:id]).destroy
+    @assignment_file = AssignmentFile.find(params[:id])
+    set_ip_user
+    @assignment_file.destroy
 
     render json: { success: true, notice: t('assignment_files.success.removed') }
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
     render_json_error(error, 'assignment_files.error', 'remove')
   end
