@@ -25,7 +25,7 @@
 :javascript
   $(function(){
     $(document).keydown(function (e) {
-      if(!$("input").is(":focus")){
+      if(!$("input").is(":focus") && !$('#CClatex1').is(":focus")){
         if (e.which === parseInt("#{t("messages.shortcut.inbox")}")) { 
           $("#inbox")[0].click();
         }
