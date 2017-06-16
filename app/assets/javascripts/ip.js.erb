@@ -8,12 +8,6 @@ $(document).ready(function(event){
   $.get(url, function(data) {
     current_network_ip = data.network_ip;
     $('#current_ip a').text($('#current_ip a').text().replace(':get_remote_ip', current_network_ip));
-    // Para teste
-    if( !current_network_ip ) {
-      $.get("https://api.ipify.org", function(data) {
-        current_network_ip = data;
-      });
-    }
   }, "json");
 
   $("#current_ip > a").on("click keydown", function(event){
@@ -81,9 +75,15 @@ function mask_ip(input){
   }
 }
 
-function change(img){
+function change(img, toggleDiv){
   var checkbox = $(img).siblings('.input').find('input');
   checkbox.prop('checked', !checkbox.prop('checked'));
+
+  if(toggleDiv != undefined){
+    $.each(toggleDiv,function(idx) {
+      $(toggleDiv[idx]).toggle();
+    });
+  }
 
   if(!!checkbox.prop('checked')){
     $(img).html('<img alt="Released" src="/assets/released.png"/>');

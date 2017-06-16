@@ -9,6 +9,10 @@ class IpReal < ActiveRecord::Base
   validate :validate_ip_v4, unless: 'ip_v4.blank?'
   validate :validade_ip_v6, unless: 'ip_v6.blank?'
 
+  validate :can_create?, on: :create, unless: 'parent.blank?'
+  validate :can_change?, on: :update
+  before_destroy :can_destroy?
+
   def validate_ip_v4
     errors.add(:ip_v4, I18n.t(:ip, scope: [:ip_reals, :errors])) unless Resolv::IPv4::Regex =~ ip_v4
   end
@@ -18,8 +22,28 @@ class IpReal < ActiveRecord::Base
   end
 
   def self.network_ips_permited(id, user_ip, obj)
-    sql = (obj == :exam) ? "(exam_id = ? AND ip_v4 = ?) OR (exam_id = ? AND ip_v6 = ?)" : "(assignment_id = ? AND ip_v4 = ?) OR (assignment_id = ? AND ip_v6 = ?)"
+    IpReal.where("(#{obj.to_s}_id = ? AND ip_v4 = ?) OR (#{obj.to_s}_id = ? AND ip_v6 = ?)", id, user_ip, id, user_ip)
+  end
 
-    IpReal.where(sql, id, user_ip, id, user_ip)
+  def self.verify_ip(id, user_ip, obj, controlled)
+    (controlled && self.network_ips_permited(id, user_ip, obj).blank?)
+  end
+
+  def can_create?
+    errors.add(:ip_v4, I18n.t('ip_control.errors.date_end')) if !ip_v4.blank? && parent.ended?
+    errors.add(:ip_v6, I18n.t('ip_control.errors.date_end')) if !ip_v6.blank? && parent.ended?
+  end
+
+  def can_change?
+    errors.add(:ip_v4, I18n.t('ip_control.errors.date')) if !ip_v4.blank? && parent.started? && ip_v4_changed?
+    errors.add(:ip_v6, I18n.t('ip_control.errors.date')) if !ip_v6.blank? && parent.started? && ip_v6_changed?
+  end
+
+  def can_destroy?
+    return false if (!ip_v4_was.blank? || !ip_v6_was.blank?) && parent.started?
+  end
+
+  def parent
+    (exam || assignment)
   end
 end

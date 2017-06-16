@@ -4,6 +4,7 @@ class AssignmentsController < ApplicationController
   include FilesHelper
   include AssignmentsHelper
   include Bbb
+  include IpRealHelper
 
   before_filter :prepare_for_group_selection, only: :list
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
@@ -117,11 +118,9 @@ class AssignmentsController < ApplicationController
     @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
     if user_session[:blocking_content]
       redirect_to list_assignments_path, alert: t('assignments.restrict_assignment')
-    elsif @assignment.controlled && IpReal.network_ips_permited(@assignment.id, get_remote_ip, :assignment).blank?
-      redirect_to list_assignments_path, alert: t('assignments.restrict_assignment')
     else
       assignment_started?(@assignment)
-      verify_owner_or_responsible!(@allocation_tag_id)
+      verify_owner_or_responsible!(@allocation_tag_id, nil, :html)
       @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
 
       @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
@@ -138,20 +137,19 @@ class AssignmentsController < ApplicationController
       end
     end
   rescue CanCan::AccessDenied
-    redirect_to :back, alert: t(:no_permission)
+    redirect_to list_assignments_path, alert: t(:no_permission)
   rescue => error
-    redirect_to :back, alert: (error.to_s == 'not_started' ? t('assignments.error.not_started2') : t('assignments.error.general_message'))
+    redirect_to list_assignments_path, alert: (error.to_s == 'not_started' ? t('assignments.error.not_started2') : t('assignments.error.general_message'))
   end
 
   def summarized
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     if (current_user.is_student?([@allocation_tag_id]) && user_session[:blocking_content])
-      Rails.logger.info "\n\n\n Entrou \n\n\n"
       render text: t('exams.restrict')
     else
       @assignment = Assignment.find(params[:id])
       @score_type = params[:score_type]
-      verify_owner_or_responsible!(@allocation_tag_id)
+      verify_owner_or_responsible!(@allocation_tag_id, nil, :text)
       @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
       @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 
@@ -172,26 +170,22 @@ class AssignmentsController < ApplicationController
       file = AssignmentEnunciationFile.find(params[:id])
       assignment = Assignment.find(file.assignment_id)
     end
-
     if Exam.verify_blocking_content(current_user.id)
       redirect_to :back, alert: t('exams.restrict')
-    elsif assignment.controlled && IpReal.network_ips_permited(assignment.id, get_remote_ip, :assignment).blank?
-      redirect_to list_assignments_path, alert: t('exams.restrict_test')
     else
-      authorize! :download, Assignment, on: [active_tab[:url][:allocation_tag_id]]
+      verify_ip!(assignment.id, :assignment, assignment.controlled, :raise) unless AllocationTag.find(allocation_tag_id = active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id) || assignment.ended?
+      authorize! :download, Assignment, on: [allocation_tag_id]
       if params[:zip].present?
-        #assignment = Assignment.find(params[:assignment_id])
         assignment_started?(assignment)
         path_zip = compress({ files: assignment.enunciation_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
         download_file(:back, path_zip || nil)
       else
-        #file = AssignmentEnunciationFile.find(params[:id])
         assignment_started?(file.assignment)
         download_file(:back, file.attachment.path, file.attachment_file_name)
       end
     end
     rescue CanCan::AccessDenied
-      redirect_to :back, alert: t(:no_permission)
+      redirect_to list_assignments_path, alert: t(:no_permission)
     rescue => error
       redirect_to :back, alert: (error.to_s == 'not_started' ? t('assignments.error.not_started') : t('assignments.error.download'))
   end
@@ -209,7 +203,7 @@ class AssignmentsController < ApplicationController
       params.require(:assignment).permit(:name, :enunciation, :type_assignment, :start_hour, :end_hour, :controlled,
         schedule_attributes: [:id, :start_date, :end_date],
         enunciation_files_attributes: [:id, :attachment, :_destroy],
-        ip_reals_attributes: [:id, :ip_v4, :ip_v6, :use_local_network, :_destroy])
+        ip_reals_attributes: [:id, :ip_v4, :ip_v6, :_destroy])
     end
 
     def render_assignment_success_json(method)

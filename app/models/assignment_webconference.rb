@@ -1,5 +1,8 @@
 class AssignmentWebconference < ActiveRecord::Base
+  
   include Bbb
+  include ControlledDependency
+
   belongs_to :academic_allocation_user
 
   has_one :academic_allocation, through: :academic_allocation_user, autosave: false
@@ -26,8 +29,6 @@ class AssignmentWebconference < ActiveRecord::Base
 
   after_save :update_acu
   after_destroy :update_acu
-
-  attr_accessor :merge
 
   def can_change?
     raise CanCan::AccessDenied unless is_owner?

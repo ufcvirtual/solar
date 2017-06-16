@@ -21,10 +21,66 @@ $(function(){
   $("#schedule_event_end_hour").mask("99:99");
 
   $("#schedule_event_type_event").change(function(){
-    if($(this).val() == "<%= Presential_Test %>" || $(this).val() == "<%= Presential_Meeting %>" || $(this).val() == "<%= WebConferenceLesson %>"){
+    if($(this).val() == "<%= Presential_Test %>" || $(this).val() == "<%= Presential_Meeting %>" || $(this).val() == "<%= WebConferenceLesson %>" || $(this).val() == "<%= Other %>"){
       $(".schedule_event_place").parent().show();
       $(".schedule_event_start_hour").show();
       $(".schedule_event_end_hour").show();
+      if($(this).val() == "<%= Other %>"){
+        $(".schedule_event_place").parent().attr('required', false);
+        $(".schedule_event_start_hour").attr('required', false);
+        $(".schedule_event_end_hour").attr('required', false);
+
+        $(".schedule_event_place").toggleClass("required");
+        $(".schedule_event_start_hour").toggleClass("required");
+        $(".schedule_event_end_hour").toggleClass("required");
+
+        $(".schedule_event_place").children().each(function() {
+          $(this).children().each(function() {
+            $(this).hide();
+          });
+          $(this).toggleClass("required");
+        });  
+        $(".schedule_event_start_hour").children().each(function() {
+          $(this).children().each(function() {
+            $(this).hide();
+          });
+          $(this).toggleClass("required");
+        }); 
+        $(".schedule_event_end_hour").children().each(function() {
+          $(this).children().each(function() {
+            $(this).hide();
+          });
+          $(this).toggleClass("required");
+        }); 
+      }else{
+        $(".schedule_event_place").parent().attr('required', true);
+        $(".schedule_event_start_hour").attr('required', true);
+        $(".schedule_event_end_hour").attr('required', true);
+
+        $(".schedule_event_place").toggleClass("required");
+        $(".schedule_event_start_hour").toggleClass("required");
+        $(".schedule_event_end_hour").toggleClass("required");
+
+        $(".schedule_event_place").children().each(function() {
+          $(this).children().each(function() {
+            $(this).show();
+          });
+          $(this).toggleClass("required");
+        });
+        $(".schedule_event_start_hour").children().each(function() {
+          $(this).children().each(function() {
+            $(this).show();
+          });
+          $(this).toggleClass("required");
+        });
+
+        $(".schedule_event_end_hour").children().each(function() {
+          $(this).children().each(function() {
+            $(this).show();
+          });
+          $(this).toggleClass("required");
+        });  
+      }
     }else{
       $(".schedule_event_place").parent().hide();
       $(".schedule_event_start_hour").hide();

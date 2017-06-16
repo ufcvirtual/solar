@@ -27,22 +27,19 @@
         = link_to content_tag(:i, nil, class: 'icon-user'), discussion_posts_path(@discussion, {display_mode: 'user'}), {class: "btn #{class_u}", id: 'forum_view_mode-user', :"data-tooltip" => t(".show_my_post"), :'aria-label' => t(".show_my_post")},id: 'forum_view_mode_user'
 
     #forum_pagination
-      / - if @display_mode == 'user'
-      /   %p= 'Total de postagens '+ @total_itens.to_s 
-      / -else
       = page_entries_info @posts, model: Post
       = will_paginate @posts
-      .new_posts
-        #new_post
-          = form_for(:discussion_post, html: { id: 'new_post_form', :'action-to-edit' => discussion_post_path(@discussion.id, ':id'), :"action-default" => discussion_posts_path(@discussion.id), method: :put }) do |form|
-            = hidden_field(:discussion_post, :parent_id, { value: '' })
-            = hidden_field_tag(:display_mode, @display_mode, :id=>'display_mode_1')
-            = hidden_field_tag(:current_page, @current_page, :id=>'current_page_1')
-            = form.text_area :content
-            = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'discussion_post_content', number: '', field: ''}
-            .new_post_dialog_buttons.btn-group
-              = button_tag content_tag(:span, t(:cancel)), type: 'button', onclick: "cancel_posting(this)", class: 'btn btn_caution', id: 'btn_cancel_post'
-              = button_tag t(:send), class: "btn btn_main", id: "submit_post", type: :button
+    .new_posts{style: "display: block;"}
+      #new_post
+        = form_for(:discussion_post, html: { id: 'new_post_form', :'action-to-edit' => discussion_post_path(@discussion.id, ':id'), :"action-default" => discussion_posts_path(@discussion.id), method: :put }) do |form|
+          = hidden_field(:discussion_post, :parent_id, { value: '' })
+          = hidden_field_tag(:display_mode, @display_mode, :id=>'display_mode_1')
+          = hidden_field_tag(:current_page, @current_page, :id=>'current_page_1')
+          = form.text_area :content
+          = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'discussion_post_content', number: '', field: ''}
+          .new_post_dialog_buttons.btn-group
+            = button_tag content_tag(:span, t(:cancel)), type: 'button', onclick: "cancel_posting(this)", class: 'btn btn_caution', id: 'btn_cancel_post'
+            = button_tag t(:send), class: "btn btn_main", id: "submit_post", type: :button
     .forum_post_new
 
   .forum_posts_wrapper
@@ -75,7 +72,7 @@
     
     var display_list = ("#{escape_once(@display_mode) == 'list'}" == "true");
     var ac = "#{@academic_allocation.id}";
-    
+
     if(display_list==false){
       qtdB = $('#forum_pagination').children("b").length;
       var text = "#{t('.primary')} ";
@@ -89,6 +86,8 @@
         $('#forum_pagination').html(b[0] + "#{t('.primary')}.");
       }  
     }
+    
+    
     /*Conexão com o WebSocket*/
     var ws = new WebSocket('ws://'+websocket_host+':'+websocket_port+'/'+ac); // file websocket_server.rb
     ws.onopen = function (){ }; // ao iniciar ws
@@ -188,7 +187,8 @@
   });
   $(function(){
     $(document).keydown(function (e) {
-      if(!$("input").is(":focus")){
+
+      if(!$("input").is(":focus") && !$('#CClatex1').is(":focus")){
         if (e.which === parseInt("#{t("posts.shortcut.new")}")) {
           $('#button_new_post').trigger('click');
         }

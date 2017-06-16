@@ -2855,6 +2855,7 @@ en_US:
       recess: Recess
       holiday: Holiday
       webconference_lesson: Webconference Lesson
+      other: Other
     form:
       groups: Groups
       new: New event
@@ -2934,7 +2935,7 @@ en_US:
       presential_meeting: Presential Meeting
       presential_test: Presential Test
       webconference_lesson: Webconference Lesson
-      recess_or_holiday: Recess or Holiday
+      recess_or_holiday_or_other: Recess or Holiday or Other
       lesson: Lesson
       other: Others
       legend: Legend
@@ -3560,6 +3561,7 @@ en_US:
       no_attempt: No attempt made
       cant_calcule_grade: Grade already calculated or still not possible to calcule.
       unique_choice: Must have only one choice
+      restrict: "Location not allowed"
     show:
       groups: Groups
       empty_group: Empty group
@@ -4291,3 +4293,6 @@ en_US:
       updated_at: "Registered at %{date}"
     errors:
       controlled: "at least one IP is required"
+      date: already started
+      date_end: already ended
+      restrict: "location not allowed"

@@ -3,8 +3,8 @@ require 'test_helper'
 class AssignmentTest < ActiveSupport::TestCase
 
   test "retorna se a atividade ja terminou seu prazo" do    
-    assert assignments(:a7).closed?
-    assert not(assignments(:a2).closed?)
+    assert assignments(:a7).ended?
+    assert not(assignments(:a2).ended?)
   end
 
   test "retorna se o usuario tem tempo extra na atividade" do

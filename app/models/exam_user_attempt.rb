@@ -1,5 +1,7 @@
 class ExamUserAttempt < ActiveRecord::Base
 
+  include ControlledDependency
+
   belongs_to :academic_allocation_user
   belongs_to :academic_allocation, conditions: { academic_tool_type: 'Exam' }
 

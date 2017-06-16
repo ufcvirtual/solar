@@ -1,6 +1,7 @@
 module AssignmentsHelper
 
   include Bbb
+  include IpRealHelper
 
   ## recupera o icone correspondente ao tipo de arquivo
   def icon_attachment(file)
@@ -51,12 +52,15 @@ module AssignmentsHelper
     raise CanCan::AccessDenied unless @own_assignment
   end
 
-  def verify_owner_or_responsible!(allocation_tag_id = nil, academic_allocation_user = nil)
+  def verify_owner_or_responsible!(allocation_tag_id = nil, academic_allocation_user = nil, method)
     @student_id, @group_id = (params[:group_id].nil? ? [params[:student_id], nil] : [nil, params[:group_id]])
+    assignment = (academic_allocation_user.try(:assignment) || Assignment.find(params[:id])) rescue @assignment
     @group = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
     @own_assignment = Assignment.owned_by_user?(current_user.id, { student_id: @student_id, group: @group, academic_allocation_user: academic_allocation_user })
-    redirect_to list_assignments_path, alert: t('exams.restrict') if @group.blank? && (academic_allocation_user.try(:assignment) || Assignment.find(params[:id])).type_assignment == Assignment_Type_Group
-    raise CanCan::AccessDenied unless (@own_assignment || AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(current_user.id)) && (@student_id.nil? && academic_allocation_user.try(:user_id).nil? ? true : User.find(@student_id || academic_allocation_user.user_id).has_profile_type_at(allocation_tag_id))
+    raise CanCan::AccessDenied if @group.blank? && assignment.try(:type_assignment) == Assignment_Type_Group
+
+    raise CanCan::AccessDenied unless (@own_assignment || AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(current_user.id)) && ((@student_id.nil? && academic_allocation_user.try(:user_id).nil?) ? true : User.find(@student_id || academic_allocation_user.user_id).has_profile_type_at(allocation_tag_id))
+    verify_ip!(assignment.id, :assignment, assignment.controlled, (method rescue :raise) ) if @own_assignment && (!assignment.blank? && !assignment.ended?)
   end
 
   def owner(aparams)

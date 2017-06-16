@@ -60,7 +60,7 @@ class Assignment < Event
   end
 
   def extra_time?(allocation_tag, user_id)
-    return false unless (allocation_tag.is_observer_or_responsible?(user_id) && closed?)
+    return false unless (allocation_tag.is_observer_or_responsible?(user_id) && ended?)
 
     allocation_tag.offers.first.end_date.to_date >= Date.today
   end
@@ -97,7 +97,7 @@ class Assignment < Event
     when !grade.nil? then 'corrected'
     when has_files then 'sent'
     when on_going? then 'to_be_sent'
-    when closed? then 'not_sent'
+    when ended? then 'not_sent'
     else
       '-'
     end
@@ -143,7 +143,7 @@ class Assignment < Event
                  .order("start_date") if at.is_student?(user_id)
   end
 
-   def closed?
+   def ended?
     has_hours = (!start_hour.blank? && !end_hour.blank?)
     endt      = (has_hours ? (schedule.end_date.beginning_of_day + end_hour.split(':')[0].to_i.hours + end_hour.split(':')[1].to_i.minutes) : schedule.end_date.end_of_day)
     Time.now > endt
@@ -182,7 +182,7 @@ class Assignment < Event
   end
 
   def verify_date
-    errors.add(:type_assignment, I18n.t('assignments.error.change_type_after_period')) if closed?
+    errors.add(:type_assignment, I18n.t('assignments.error.change_type_after_period')) if ended?
   end
 
   def assignment_started?(allocation_tag_id, current_user)

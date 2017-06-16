@@ -202,7 +202,7 @@
   $('.previous_page').attr("aria-label", "#{t(:navigation_previous_page)}"); 
   
   $(function(){
-    $(document.body).on('change','select',function(){
+    $(document.body).on('change','select, input',function(){
       change();
     });
 
