@@ -23,11 +23,11 @@ module IpRealHelper
     return true
   end
 
-  def set_ip_user(variable_name)
+  def set_ip_user(variable_name = nil)
     if variable_name.blank?
-      instance_variable_get("@#{variable_name}").user_ip = get_remote_ip
-    else
       instance_variable_get("@#{params[:controller].singularize.downcase}").user_ip = get_remote_ip
+    else
+      instance_variable_get("@#{variable_name}").user_ip = get_remote_ip
     end
   end
 end

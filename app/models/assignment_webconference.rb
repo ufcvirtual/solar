@@ -11,7 +11,7 @@ class AssignmentWebconference < ActiveRecord::Base
 
   before_save :can_change?, if: 'merge.nil?'
 
-  before_destroy :can_destroy?, :remove_records
+  before_destroy :can_destroy?, :remove_records, if: 'merge.nil?'
 
   validates :title, :initial_time, :duration, :academic_allocation_user_id, presence: true
   validates :duration, numericality: { only_integer: true, less_than_or_equal_to: 60,  greater_than_or_equal_to: 1 }
@@ -33,6 +33,10 @@ class AssignmentWebconference < ActiveRecord::Base
   def can_change?
     raise CanCan::AccessDenied unless is_owner?
     raise 'date_range'         unless assignment.in_time?
+  end
+
+  def delete_with_dependents
+    self.delete
   end
 
   def is_owner?

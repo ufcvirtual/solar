@@ -45,7 +45,7 @@ class AssignmentWebconferencesController < ApplicationController
   end
 
   def update
-    owner(assignment_webconference_params)
+    verify_owner!(assignment_webconference_params)
     set_ip_user
     @assignment_webconference.update_attributes! assignment_webconference_params
 

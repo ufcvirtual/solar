@@ -28,13 +28,11 @@ module V1::Contents
     from_academic_allocation_users.each do |from_academic_allocation_user|
       to_ac      = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Assignment', academic_tool_id: from_academic_allocation_user.academic_allocation.academic_tool_id).first
       attributes = from_academic_allocation_user.attributes.except('id', 'grade', 'working_hours', 'status', 'new_after_evaluation', 'created_at', 'updated_at').merge('academic_allocation_id' => to_ac.id)
-
-      unless from_academic_allocation_user.group_assignment_id.nil?
-        new_group  = copy_object(from_academic_allocation_user.group_assignment, {'academic_allocation_id' => to_ac.id}, false, :group_participants)
+      unless from_academic_allocation_user.group_assignment_id.blank?
+        new_group  = copy_object(GroupAssignment.find(from_academic_allocation_user.group_assignment_id), {'academic_allocation_id' => to_ac.id}, false, :group_participants)
         attributes.merge!('group_assignment_id' => new_group.id)
       end
-
-      new_acu = get_acu(to_ac.id, from_academic_allocation_user, from_academic_allocation_user.user_id, from_academic_allocation_user.group_assignment_id)
+      new_acu = get_acu(to_ac.id, from_academic_allocation_user, from_academic_allocation_user.user_id, new_group.try(:id))
 
       copy_objects(from_academic_allocation_user.assignment_comments, { 'academic_allocation_user_id' => new_acu }, true, :files)
       copy_objects(from_academic_allocation_user.assignment_files, { 'academic_allocation_user_id' => new_acu }, true)
@@ -75,7 +73,7 @@ module V1::Contents
       replicate_webconferences(from_academic_allocations, to_at, from_group.allocation_tag.id)
       replicate_exams(from_academic_allocations, to_at)
       replicate_schedule_events(from_academic_allocations, from_group.allocation_tag.id, to_at)
-
+      
       from_ats.each do |from_at|
         replicate_messages(from_at, to_at)
         replicate_public_files(from_at, to_at)

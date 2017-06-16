@@ -5,7 +5,7 @@ module ControlledDependency
 
   included do
     before_save :verify_ip, if: 'merge.nil? && !user_ip.blank?'
-    before_destroy :verify_ip, unless: 'user_ip.blank?'
+    before_destroy :verify_ip, if: 'merge.nil? && !user_ip.blank?'
 
     attr_accessor :user_ip, :merge
   end
