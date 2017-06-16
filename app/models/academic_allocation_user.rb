@@ -232,7 +232,7 @@ class AcademicAllocationUser < ActiveRecord::Base
       assignment_comments.map(&:delete_with_dependents)
       assignment_files.map(&:delete_with_dependents)
       assignment_webconferences.map(&:remove_records) rescue nil
-      assignment_webconferences.delete_all
+      assignment_webconferences.map(&:delete_with_dependents)
       self.delete
     when 'ChatRoom'
       chat_messages.delete_all

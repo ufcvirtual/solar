@@ -3,7 +3,7 @@ class AssignmentComment < ActiveRecord::Base
   default_scope order: 'updated_at DESC'
 
   before_save :can_save?, if: 'merge.nil?'
-  before_destroy :can_save?
+  before_destroy :can_save?, if: 'merge.nil?'
   before_create :define_user, if: 'merge.nil?'
 
   belongs_to :academic_allocation_user

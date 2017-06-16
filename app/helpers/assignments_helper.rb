@@ -53,9 +53,9 @@ module AssignmentsHelper
   end
 
   def verify_owner_or_responsible!(allocation_tag_id = nil, academic_allocation_user = nil, method)
-    @student_id, @group_id = (params[:group_id].nil? ? [params[:student_id], nil] : [nil, params[:group_id]])
+    @student_id, @group_id = (params[:group_id].blank? ? [params[:student_id], nil] : [nil, params[:group_id]])
     assignment = (academic_allocation_user.try(:assignment) || Assignment.find(params[:id])) rescue @assignment
-    @group = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
+    @group = GroupAssignment.find(params[:group_id]) unless @group_id.blank?
     @own_assignment = Assignment.owned_by_user?(current_user.id, { student_id: @student_id, group: @group, academic_allocation_user: academic_allocation_user })
     raise CanCan::AccessDenied if @group.blank? && assignment.try(:type_assignment) == Assignment_Type_Group
 
@@ -74,6 +74,8 @@ module AssignmentsHelper
     @own_assignment = Assignment.owned_by_user?(current_user.id,  { student_id: @student_id, group: @group, academic_allocation_user: acu })
     #@bbb_online = bbb_online?
     @in_time    = acu.assignment.in_time?
+    @group_id   = acu.group_assignment_id
+    @student_id = acu.user_id
   end
   
 end
