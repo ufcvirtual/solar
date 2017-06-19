@@ -67,7 +67,8 @@ class Event < ActiveRecord::Base
               when Presential_Test; 'presential_test'
               when Presential_Meeting; 'presential_meeting'
               when WebConferenceLesson; 'web_conference_lesson'
-              else 'recess_or_holiday_or_other'; end
+              when Other; 'other'
+              else 'recess_or_holiday'; end
     end
     api_t
   end
@@ -81,7 +82,7 @@ class Event < ActiveRecord::Base
     when 'presential_test'; '#F5D5EF'
     when 'presential_meeting'; '#FFD9E0'
     when 'web_conference_lesson'; '#F5DA81'
-    when 'recess_or_holiday_or_other'; '#E3E3E3'
+    when 'recess_or_holiday'; '#E3E3E3'
     else
       '#CCCCFF'
     end
