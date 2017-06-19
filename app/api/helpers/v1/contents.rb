@@ -89,7 +89,10 @@ module V1::Contents
   def remove_all_content(allocation_tag)
     AcademicAllocation.where(academic_tool_type: 'Discussion', allocation_tag_id: allocation_tag).map{ |ac| ac.discussion_posts.map(&:delete_with_dependents) }
     AcademicAllocation.where(academic_tool_type: 'Assignment', allocation_tag_id: allocation_tag).map{ |ac|
-      ac.academic_allocation_users.map(&:delete_with_dependents)
+      ac.academic_allocation_users.map do |acu|
+        acu.merge = true
+        acu.delete_with_dependents
+      end
       ac.group_assignments.map(&:delete_with_dependents)
     }
     AcademicAllocation.where(academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag).map{ |ac| 

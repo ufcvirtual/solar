@@ -120,6 +120,7 @@ class AssignmentWebconferencesController < ApplicationController
     rescue
       @can_remove_record = false
     end
+    @view_disabled = false
 
     @recordings = @assignment_webconference.recordings([], (at_id.class == Array ? nil : at_id))
   rescue CanCan::AccessDenied
