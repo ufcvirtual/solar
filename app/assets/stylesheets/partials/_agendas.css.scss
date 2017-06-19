@@ -302,3 +302,9 @@ a.fc-event-title{
 .agenda_left_month_year .year_left {
   margin-right: 30px;
 }
+
+// Dias do mês e da semana na visão mensal
+
+.fc-day-number, .fc-widget-header {
+  color: $color_black_calendar;
+}
