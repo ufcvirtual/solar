@@ -117,6 +117,7 @@ $edition_color: $high_contrast_font_color;
 
 //exams
 $color_little_dark_gray: $high_contrast_font_color;
+$question_image_legend_background: $high_contrast_background_color;
 $question_image_legend_background_exams: $high_contrast_background_color;
 $question_iten_incorrect_exams: $high_contrast_font_color;
 $question_iten_hit_color_exams: $high_contrast_font_color;
@@ -363,7 +364,6 @@ $border_color_another_gray: $high_contrast_border_color;
 $border_color: $high_contrast_border_color;
 $label_border_color: #CBCED1;
 $question_image_border_color: #CDD6E3;
-$question_image_legend_background: #CBD7E4;
 $label_disabled_border_color: #dcdcdc;
 $slide_settings_active_background: #d8dfe9;
 $slide_settings_counter_background: #d7dfea;
