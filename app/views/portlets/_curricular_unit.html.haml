@@ -32,8 +32,8 @@
                 - if livre
                   - c_un = offer.uc_type
                 -else
-                  - c_un = uc_code.nil? ? offer.uc_type : offer.uc_type+ " - "+ uc_code
-                - c_un = u_code.nil? ? c_un : c_un+ " - "+ u_code+ " - "+offer.s_name
+                  - c_un = uc_code.nil? ? offer.uc_type : [offer.uc_type, uc_code].join(' - ')
+                - c_un = u_code.nil? ? c_un : [c_un, u_code, offer.s_name].join(' - ')
                 - link = add_tab_path(id: offer.offer_id, context: Context_Curriculum_Unit, allocation_tag_id: offer.at_id)
 
                 %tr.lines.offer{'data-tab-id' => offer.id, 'data-tab-link' => link}
