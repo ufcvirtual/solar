@@ -304,7 +304,11 @@ a.fc-event-title{
 }
 
 // Dias do mês e da semana na visão mensal
-
 .fc-day-number, .fc-widget-header {
   color: $color_black_calendar;
+}
+
+//A data atual deve ser preto para contrastar com o fundo branco. Tanto para o alto contraste quanto o tema padrão.
+.fc-today .fc-day-number {
+  color: black;
 }
