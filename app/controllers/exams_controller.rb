@@ -136,7 +136,7 @@ class ExamsController < ApplicationController
       end
       render :pre
     end
-    
+
   rescue => error
     render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
@@ -155,7 +155,7 @@ class ExamsController < ApplicationController
       @exam_user_attempt = ExamUserAttempt.where(id: params[:exam_user_attempt_id]).first
       @disabled = true
 
-      @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.blank?
+      @exam_questions = ExamQuestion.list_correction(@exam.id).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.blank?
       if(mod_correct_exam != 1)
         @exam_user_attempt = Exam.get_exam_user_attempt(mod_correct_exam, @acu.id)
       end
@@ -183,7 +183,7 @@ class ExamsController < ApplicationController
       end
     else
       verify_ip!(@exam.id, :exam, @exam.controlled, :error_text)
-      
+
       respond_to do |format|
         format.html
         format.js
