@@ -1,1 +1,1 @@
-$("tr.web_#{@assignment_webconference.id}").replaceWith('#{j render partial: 'assignment_webconferences/webconference', locals: { webconference: @assignment_webconference }}');
+$("tr.web_#{@assignment_webconference.id}").replaceWith('#{j render partial: 'assignment_webconferences/webconference', locals: { webconference: @assignment_webconference, view_disabled: false }}');
