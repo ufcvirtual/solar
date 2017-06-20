@@ -35,7 +35,7 @@ fieldset {
   overflow-y: auto;
 }
 
-.filter_type .ui-autocomplete, .filter .ui-autocomplete{
+.filter_type .ui-autocomplete, .filter .ui-autocomplete, li.ui-menu-item {
   width: 306px !important;
   background-color: $edition_background_color;
   a {
