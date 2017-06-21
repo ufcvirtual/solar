@@ -4285,6 +4285,8 @@ en_US:
       find_other_ip: "<p>It's important that someone are available at the desired network locale to tell you it's IP. To this person, that are at the desired network, find out the IP, it should access websites such as <a target='_blank' href='http://whatismyipaddress.com/'>http://whatismyipaddress.com/</a> and inform you the number that shows up at the screen.</p>"
       ipv_title: '<b>IPV4 or IPV6?</b>'
       ipv: "<p>IPV4 and IPV6 are versions of the internet protocol.</p><p>If you click at 'Use current network IP', the IP found already will fit the field.  By accessing the website suggested at 'How do I find another network IP?', you will be able to find out if the IP is or not IPV4 by field's format. If it wont fit, you should click at the selector and change to IPV6.</p>"
+      ufc_title: "<b>Activity's place is at UFC</b>"
+      ufc: "<p>If destinated place to the activity is at UFC, you have to verify if the lab or class room has a router or if it uses a sector router.</p> <p>If it has a router, talk to the technician responsible for the lab to see if the router uses NAT or don't. If the answer is yes, you just have to follow the instructions at 'How do I find my network's IP?'. If the answer is no, you will have to register each machine's IP. Ask to the technician for assistance.</p> <p>If it doesn't have a router, you will have to register each IP of each machine. </p><p>It will be also necessary ask to the technician for the life's duration of the IPs, because if the IP live less than the time between the registration to the execution of the activity, the IP registered will no longer fit.</p>"
     ip_real_fields:
       link_to_remove_fields: Remove ip field
       select_type: "Inform IP:"
