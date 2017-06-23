@@ -1973,6 +1973,8 @@ en_US:
       cant_remove: It was not possible to execute action. Group already evaluated or with files.
       date_range_expired: It was not possible to execute action. Date range expired.
       unique_name: must be unique.
+      alone: Student is alone at this group and can't be without any group after assignment's end.
+      already_exists: Already exists a group with student's name. Please rename that group.
     success:
       imported: Groups and participants imported successfully.
     new:
