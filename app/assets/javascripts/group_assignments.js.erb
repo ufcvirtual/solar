@@ -111,14 +111,21 @@ function change_participant(td, url, tbody, icon, method){
 
       after_evaluate('Assignment', $('.group_assignments.header').data('score'), data.ac, tr.data('user-id'), data, group_id);
 
-      var new_table = $("." + tbody + " tbody");
-      $(tr).appendTo(new_table);
-      update_tables_with_no_data();
-      if (method == "add")
-        var tooltip = '<%=I18n.t("group_assignments.index.add")%>';
-      else
-        var tooltip = '<%=I18n.t("group_assignments.index.remove")%>';
-      $($(tr).find("td.icon")[0]).replaceWith('<td class="icon" onclick="'+method+'_participant(this)" title="'+tooltip+'" data-tooltip="'+tooltip+'"><i class="icon-'+icon+'"></i></td>');
+      if(data.call_url == undefined){
+        var new_table = $("." + tbody + " tbody");
+        $(tr).appendTo(new_table);
+        update_tables_with_no_data();
+        if (method == "add")
+          var tooltip = '<%=I18n.t("group_assignments.index.add")%>';
+        else
+          var tooltip = '<%=I18n.t("group_assignments.index.remove")%>';
+        $($(tr).find("td.icon")[0]).replaceWith('<td class="icon" onclick="'+method+'_participant(this)" title="'+tooltip+'" data-tooltip="'+tooltip+'"><i class="icon-'+icon+'"></i></td>');
+      }else{
+        $(tr).remove();
+        $.get(data.call_url, function(data){
+          $(".groups_column .labels").prepend(data);
+        });
+      }
     }).error(function(data){
       show_error(data, null, "group_assignments.header");
     });
