@@ -2187,6 +2187,8 @@ pt_BR:
       cant_remove: Não foi possível realizar ação. Grupo já foi avaliado ou possui arquivos.
       date_range_expired: Não foi possível realizar ação. Período encerrado.
       unique_name: deve ser único.
+      alone: Aluno está sozinho no grupo e não pode ficar sem grupo após o término da atividade.
+      already_exists: Já existe um grupo com o nome deste aluno. Favor renomear o grupo.
     success:
       imported: Grupos e participantes importados com sucesso.
     new:

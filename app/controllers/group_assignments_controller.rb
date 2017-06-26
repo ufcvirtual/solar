@@ -37,6 +37,10 @@ class GroupAssignmentsController < ApplicationController
     @group_assignment = GroupAssignment.find(params[:id])
   end
 
+  def new
+    @group_assignment = GroupAssignment.find(params[:id])
+  end
+
   def update
     authorize! :index, GroupAssignment, on: [active_tab[:url][:allocation_tag_id]]
 
@@ -71,7 +75,12 @@ class GroupAssignmentsController < ApplicationController
     end
 
     ac = group_assignment.academic_allocation.id
-    render json: { success: true, class_td: situation, situation: t("scores.index.#{situation}"), ac: ac, grade: situation, group_assignment: !!params[:add], user_id: params[:user_id], situation_complete: t(situation.to_sym), url: redirect_to_evaluate_scores_path(tool_type: 'Assignment', ac_id: ac, user_id: params[:user_id], group_id: params[:id], situation: situation, score_type: params[:score_type]) }
+    gp = GroupParticipant.joins(:group_assignment).where(group_assignments: {academic_allocation_id: group_assignment.academic_allocation_id}, user_id: params[:user_id]).first
+    if group_assignment.assignment.ended? && !params[:add] && !gp.blank?
+      render json: { success: true, class_td: situation, situation: t("scores.index.#{situation}"), ac: ac, grade: situation, group_assignment: !!params[:add], user_id: params[:user_id], situation_complete: t(situation.to_sym), url: redirect_to_evaluate_scores_path(tool_type: 'Assignment', ac_id: ac, user_id: params[:user_id], group_id: gp.group_assignment_id, situation: situation, score_type: params[:score_type]), call_url: new_group_assignment_path(id: gp.group_assignment_id) }
+    else
+      render json: { success: true, class_td: situation, situation: t("scores.index.#{situation}"), ac: ac, grade: situation, group_assignment: !!params[:add], user_id: params[:user_id], situation_complete: t(situation.to_sym), url: redirect_to_evaluate_scores_path(tool_type: 'Assignment', ac_id: ac, user_id: params[:user_id], group_id: params[:id], situation: situation, score_type: params[:score_type]) }
+    end
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error

@@ -408,7 +408,7 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :group_assignments, except: [:new] do
+  resources :group_assignments do
     collection do
       get :students_with_no_group
       get :import_list

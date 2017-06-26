@@ -47,14 +47,6 @@ module V1::Contents
     end
   end
 
-  def copy_acu_to_exam(from_acus, to_at)
-    from_acus.each do |from_acu|
-      to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Exam', academic_tool_id: from_acu.academic_allocation.academic_tool_id).first
-      new_acu = copy_object(from_acu, 'academic_allocation_id' => to_ac.id)
-      new_acu.copy_dependencies_from(from_acu)
-    end
-  end
-
   def replicate_content(from_group, to_group, merge = true)
     raise ActiveRecord::RecordNotFound if from_group.nil? || to_group.nil?
     from_ats, to_at = ((from_group.offer_id == to_group.offer_id) ? [from_group.allocation_tag.id] : from_group.allocation_tag.related), to_group.allocation_tag.id
@@ -123,7 +115,7 @@ module V1::Contents
   end
 
   def copy_object(object_to_copy, merge_attributes={}, is_file = false, nested = nil, call_methods = {}, acu=false)
-    new_object = object_to_copy.class.where(object_to_copy.attributes.except('id', 'children_count', 'updated_at', 'new_after_evaluation', 'academic_allocation_user_id').merge!(merge_attributes)).first_or_initialize
+    new_object = object_to_copy.class.where(object_to_copy.attributes.except('id', 'children_count', 'updated_at', 'new_after_evaluation', 'academic_allocation_user_id', 'created_at').merge!(merge_attributes)).first_or_initialize
 
     new_object.created_at = object_to_copy.created_at if object_to_copy.respond_to?(:created_at)
     new_object.updated_at = object_to_copy.updated_at if object_to_copy.respond_to?(:updated_at)
@@ -214,7 +206,13 @@ module V1::Contents
   def replicate_exams(from_academic_allocations, to_at)
     from_exams_academic_allocations = from_academic_allocations.where(academic_tool_type: 'Exam')
     create_missing_tools(from_exams_academic_allocations.pluck(:academic_tool_id), to_at, 'Exam')
-    copy_acu_to_exam(AcademicAllocationUser.where(academic_allocation_id: from_exams_academic_allocations.pluck(:id)), to_at)
+
+    AcademicAllocationUser.where(academic_allocation_id: from_exams_academic_allocations).each do |from_acu|
+      to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Exam', academic_tool_id: from_acu.academic_allocation.academic_tool_id).first
+      
+      new_acu = get_acu(to_ac.id, from_acu, from_acu.user_id, nil)
+      AcademicAllocationUser.find(new_acu).copy_dependencies_from(from_acu)
+    end
   end
 
   def get_related_acs(from_acs, from_at, to_at)

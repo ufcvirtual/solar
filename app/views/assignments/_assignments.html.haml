@@ -48,7 +48,7 @@
             - if is_group_type
               - closed = (assignment.closed == 't')
               - if @can_manage
-                = link_to content_tag(:i, nil, class: 'icon-user-add'), '#', class: "btn manage_groups #{!closed ? '' : 'disabled'}", :"data-tooltip" => t(".manage_groups"), disabled: closed, :"data-url" => group_assignments_path(assignment_id: assignment.academic_tool_id), :'aria-label' => t(".manage_groups")
+                = link_to content_tag(:i, nil, class: 'icon-user-add'), '#', class: "btn manage_groups", :"data-tooltip" => t(".manage_groups"), :"data-url" => group_assignments_path(assignment_id: assignment.academic_tool_id), :'aria-label' => t(".manage_groups")
               - if @can_import
                 = link_to content_tag(:i, nil, class: 'icon-import'), '#', class: "btn import_groups #{!closed ? '' : 'disabled'}", :"data-tooltip" => t(".import_groups"), disabled: closed, :"data-url" => import_list_group_assignments_path(assignment_id: assignment.academic_tool_id), :'aria-label' => t(".import_groups")
           %tr
