@@ -184,7 +184,7 @@ $.fn.call_fancybox = function (options) {
   *   como janela modal, o usuário só vai poder fechar o fancybox ao clicar no botão de "cancelar"
   **/
 
-  $.extend( options,
+  $.extend(
     {
       live: false,
       modal: false,
@@ -242,7 +242,7 @@ $.fn.call_fancybox = function (options) {
 
         $("body").css({'overflow-y':'visible'});
       }
-    }
+    }, options
   );
 
   if (typeof(options.open) != "undefined") // abrir na chamada
