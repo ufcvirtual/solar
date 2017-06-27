@@ -471,7 +471,11 @@ a.mysolar_top_link {
     padding: 8px 0px 8px 10px;
   }
 }
-
+.mysolar_menu_title_single {
+  a {
+    display: block;
+  }
+}
 .mysolar_menu_title_single.mysolar_menu_active > a{
   color: $color_black;
 }
