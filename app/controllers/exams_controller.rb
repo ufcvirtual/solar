@@ -307,8 +307,16 @@ class ExamsController < ApplicationController
     authorize! :show, Question, { on: params[:allocation_tags_ids] }
     @exam = Exam.find(params[:id])
     @preview = true
-   # @exam_questions = Question.where(id: ExamQuestion.list(@exam.id, @exam.raffle_order).map(&:question_id)).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
-    @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
+    # @exam_questions = Question.where(id: ExamQuestion.list(@exam.id, @exam.raffle_order).map(&:question_id)).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
+
+    if @exam.raffle_order && params[:page].nil? # Primeira requisição do preview
+      questions = ExamQuestion.list_preview(@exam.id, @exam.raffle_order)
+      session[:preview_random_questions] = questions_order(questions).slice(0, @exam.number_questions)
+    end
+
+    # ExamQuestion.list(@exam.id, @exam.raffle_order, @last_attempt)
+    @exam_questions = ExamQuestion.list_preview(@exam.id, @exam.raffle_order, session[:preview_random_questions]).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
+
     render :open
   end
 
@@ -362,6 +370,14 @@ class ExamsController < ApplicationController
     else
       @acu = AcademicAllocationUser.find_one(ac_id, current_user.id, nil, true)
     end
+  end
+
+  def questions_order(questions)
+    order = []
+    questions.each do |question|
+      order << question.order
+    end
+    order
   end
 
 end

@@ -29,6 +29,37 @@ class ExamQuestion < ActiveRecord::Base
     exam_question
   end
 
+  def self.list_preview(exam_id, raffle_order = false, questions_order = nil)
+    exam = Exam.find(exam_id)
+    query = {exam_id: exam_id, annulled: false}
+    query.merge!(use_question: true, questions: {status: true}) if exam.status
+
+    if raffle_order
+      if questions_order.nil? # Primeira requisição aleatória do preview
+        ExamQuestion.joins(:question).where(query)
+          .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
+            questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
+          .order("RANDOM()")
+      else # Segunda requisição aleatória, em diante, do preview
+        order_clause = "CASE exam_questions.order "
+        questions_order.each.with_index do |order, index|
+          order_clause << sanitize_sql_array(["WHEN ? THEN ? ", order, index])
+        end
+        order_clause << sanitize_sql_array(["ELSE ? END", questions_order.length])
+
+        ExamQuestion.joins(:question).where(query)
+          .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
+            questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
+          .order(order_clause)
+      end
+    else # NÃO Aleatório
+      ExamQuestion.joins(:question).where(query)
+        .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
+          questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
+        .order("exam_questions.order")
+    end
+  end
+
   def self.list(exam_id, raffle_order = false, last_attempt=nil)
     if last_attempt.blank? # preview
       exam = Exam.find(exam_id)
@@ -80,7 +111,7 @@ class ExamQuestion < ActiveRecord::Base
 
   def set_order
     if order.nil?
-      self.order = exam.next_question_order 
+      self.order = exam.next_question_order
     else
       self.order += 1 while exam.exam_questions.where(order: self.order).any?
     end
