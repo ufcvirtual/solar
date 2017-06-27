@@ -459,13 +459,16 @@ a.mysolar_top_link {
   background-color: $contacts_edition_block_content_background; /* alternativa: f5f8fb */
 
   > li {
-    padding: 8px 0 8px 10px;
+    // padding: 8px 0 8px 10px;
   }
   a {
     font-size: 10pt;
     color: $color_almost_black;
     font-variant: initial;
     font-family: 'PT Sans', sans-serif;
+    // display: inline-block;
+    display: block;
+    padding: 8px 0px 8px 10px;
   }
 }
 
