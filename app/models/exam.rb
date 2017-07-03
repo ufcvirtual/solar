@@ -393,7 +393,8 @@ class Exam < Event
     AcademicAllocationUser.joins("LEFT JOIN academic_allocations ON academic_allocation_users.academic_allocation_id = academic_allocations.id")
                     .joins("LEFT JOIN exams ON exams.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Exam' AND exams.status=TRUE")
                     .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id")
-                    .where("block_content=true AND complete=false AND user_id = ?  AND academic_allocation_users.status != 2", user_id)
+                    .joins("LEFT JOIN schedules s ON exams.schedule_id = s.id")
+                    .where("block_content=true AND complete=false AND user_id=? AND academic_allocation_users.status != 2 AND (uninterrupted = false OR (exam_user_attempts.start + ((interval '1 mins')*duration) >= now())) AND (((current_date > s.start_date) OR (current_date = s.start_date AND (exams.start_hour IS NOT NULL AND exams.end_hour != '' AND current_time>=to_timestamp(exams.start_hour, 'HH24:MI:SS')::time))) AND ((current_date < s.end_date) OR (current_date = s.end_date AND (exams.end_hour IS NOT NULL AND exams.end_hour != '' AND current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) )", user_id)
                     .select("DISTINCT block_content").any?
   end
 

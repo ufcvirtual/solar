@@ -84,7 +84,7 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def download
-    if user_session[:blocking_content]
+    if Exam.verify_blocking_content(current_user.id)
         redirect_to :back, alert: t('exams.restrict')
     else  
       file = SupportMaterialFile.find(params[:id]) unless params[:id].blank?

@@ -46,7 +46,7 @@ class LessonsController < ApplicationController
   end
 
   def open_module
-    if user_session[:blocking_content]
+    if Exam.verify_blocking_content(current_user.id)
       render text: t('exams.restrict')
     else
      authorize! :show, Lesson, { on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true }
@@ -65,7 +65,7 @@ class LessonsController < ApplicationController
 
   # GET /lessons/:id
   def open
-    if user_session[:blocking_content]
+    if Exam.verify_blocking_content(current_user.id)
       render text: t('exams.restrict')
     else
      authorize! :show, Lesson, { on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true }

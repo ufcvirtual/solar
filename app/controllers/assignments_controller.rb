@@ -116,7 +116,7 @@ class AssignmentsController < ApplicationController
 
   def student
     @assignment, @allocation_tag_id = Assignment.find(params[:id]), active_tab[:url][:allocation_tag_id]
-    if user_session[:blocking_content]
+    if Exam.verify_blocking_content(current_user.id)
       redirect_to list_assignments_path, alert: t('assignments.restrict_assignment')
     else
       assignment_started?(@assignment)
@@ -144,7 +144,7 @@ class AssignmentsController < ApplicationController
 
   def summarized
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
-    if (current_user.is_student?([@allocation_tag_id]) && user_session[:blocking_content])
+    if (current_user.is_student?([@allocation_tag_id]) && Exam.verify_blocking_content(current_user.id))
       render text: t('exams.restrict')
     else
       @assignment = Assignment.find(params[:id])

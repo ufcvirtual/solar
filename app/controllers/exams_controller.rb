@@ -204,6 +204,7 @@ class ExamsController < ApplicationController
       @user_id = params[:user_id]
     end
     @exam = Exam.find(params[:id])
+    raise 'uninterrupted' if @exam.uninterrupted && !@exam.ended?
     raise 'dates' unless @exam.ended?
 
     acs = @exam.academic_allocations
@@ -223,6 +224,7 @@ class ExamsController < ApplicationController
   rescue CanCan::AccessDenied
     render text: t(:no_permission)
   rescue => error
+    Rails.logger.info "\n\n\n ERRO RESULT: #{error}\n\n\n"
     render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
 
@@ -231,7 +233,6 @@ class ExamsController < ApplicationController
     acs = exam.academic_allocations
     acu = AcademicAllocationUser.find_one((acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: active_tab[:url][:allocation_tag_id]).first.id), current_user.id, nil, true)
     if acu.finish_attempt(get_remote_ip)
-      user_session[:blocking_content] = false
       if (params[:error])
         respond_to do |format|
           format.js { render :js => "validation_error('#{I18n.t('exam_responses.error.' + params[:error] + '')}');" }
@@ -361,7 +362,6 @@ class ExamsController < ApplicationController
     ac_id = (acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: @allocation_tag_id).first.id)
     unless user_session[:exams].include?(params[:id])
       authorize! :open, Exam, { on: @allocation_tag_id }
-      user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
       verify_time
       user_session[:exams] << params[:id]
 

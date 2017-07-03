@@ -129,7 +129,7 @@ class DigitalClassesController < ApplicationController
   end
 
   def access
-    if user_session[:blocking_content]
+    if Exam.verify_blocking_content(current_user.id)
       render text: t('exams.restrict')
     else
       authorize! :access, DigitalClass, on: @allocation_tags_ids = params[:allocation_tags_ids]

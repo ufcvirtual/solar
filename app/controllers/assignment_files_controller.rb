@@ -50,20 +50,24 @@ class AssignmentFilesController < ApplicationController
   end
 
   def download
-    allocation_tag_id = active_tab[:url][:allocation_tag_id]
-
-    if params[:zip].present?
-      assignment = Assignment.find(params[:assignment_id])
-      academic_allocation_user = assignment.academic_allocation_users.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocations: {allocation_tag_id: allocation_tag_id}).first
-      path_zip   = compress({ files: academic_allocation_user.assignment_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
+    if Exam.verify_blocking_content(current_user.id)
+      redirect_to list_assignments_path, alert: t('assignments.restrict_assignment')
     else
-      file = AssignmentFile.find(params[:id])
-      academic_allocation_user = file.academic_allocation_user
-      path_zip  = file.attachment.path
-      file_name = file.attachment_file_name
+      allocation_tag_id = active_tab[:url][:allocation_tag_id]
+
+      if params[:zip].present?
+        assignment = Assignment.find(params[:assignment_id])
+        academic_allocation_user = assignment.academic_allocation_users.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocations: {allocation_tag_id: allocation_tag_id}).first
+        path_zip   = compress({ files: academic_allocation_user.assignment_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
+      else
+        file = AssignmentFile.find(params[:id])
+        academic_allocation_user = file.academic_allocation_user
+        path_zip  = file.attachment.path
+        file_name = file.attachment_file_name
+      end
+      raise CanCan::AccessDenied unless Assignment.owned_by_user?(current_user.id, { academic_allocation_user: academic_allocation_user }) || AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(current_user.id)
+      download_file(:back, path_zip, file_name)
     end
-    raise CanCan::AccessDenied unless Assignment.owned_by_user?(current_user.id, { academic_allocation_user: academic_allocation_user }) || AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(current_user.id)
-    download_file(:back, path_zip, file_name)
   end
 
   private
