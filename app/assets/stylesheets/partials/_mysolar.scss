@@ -477,7 +477,7 @@ a.mysolar_top_link {
   a {
     display: block;
   }
-  .mysolar_menu_active > a { 
+  .mysolar_menu_active > a {
     color: $exclusive_background_color !important; //#000;
   }
   a:hover {
@@ -493,6 +493,9 @@ a.mysolar_top_link {
   border-right-color: $color_contrast; //#fff;
   border-right-width: 2px;
   border-right-style: solid;
+  a {
+    color: black
+  }
 }
 .link{
   text-align: center;
