@@ -224,7 +224,6 @@ class ExamsController < ApplicationController
   rescue CanCan::AccessDenied
     render text: t(:no_permission)
   rescue => error
-    Rails.logger.info "\n\n\n ERRO RESULT: #{error}\n\n\n"
     render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
 
