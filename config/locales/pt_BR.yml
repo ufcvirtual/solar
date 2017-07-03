@@ -3756,6 +3756,8 @@ pt_BR:
       correction_title: 'Como será feita a correção da prova?'
       summary: Tabela com informações gerais a respeito da prova para confirmação do aluno antes de iniciá-la. Informações como tempo restante, quantidade de questões, número de tentativas realizadas e totais, se a prova é ininterrupta e se bloqueia o acesso do aluno aos demais conteúdos do Solar durante sua execução.
       shortcuts_title: Atalhos da tela de prova
+      blocked2: Uma vez iniciada, o conteúdo do curso (aulas, fóruns etc) ficará inacessível até o término da prova.
+      uninterrupted2: Uma vez iniciada, esta prova não poderá ser interrompida. Do contrário, será finalizada.
     open:
       to: " de "
       questions: " questões"
@@ -3812,6 +3814,7 @@ pt_BR:
       cant_calcule_grade: A nota já foi calculada ou ainda não é possível realizar o cálculo.
       unique_choice: Deve ter apenas uma resposta
       restrict: "Localização não permitida"
+      uninterrupted: Você não pode continuar a prova, pois ela é ininterrupta e já foi iniciada. Aguarde o fim da prova para visualizar o resultado.
     show:
       groups: Turmas
       empty_group: Turma vazia

@@ -16,7 +16,6 @@ class PostsController < ApplicationController
     if Exam.verify_blocking_content(current_user.id)
       redirect_to :back, alert: t('exams.restrict')
     else
-
       @discussion, @user = Discussion.find(params[:discussion_id]), current_user
 
       @academic_allocation = AcademicAllocation.where(academic_tool_id: @discussion.id, academic_tool_type: 'Discussion', allocation_tag_id: [active_tab[:url][:allocation_tag_id], AllocationTag.find_by_offer_id(active_tab[:url][:id]).id]).first
@@ -34,8 +33,8 @@ class PostsController < ApplicationController
 
       @display_mode = p['display_mode'] ||= 'tree'
       #@total_itens = @discussion.discussion_posts_count(@display_mode, @allocation_tags, current_user.id)
-     # @total_pages = (total_itens.to_f/Rails.application.config.items_per_page.to_f).ceil.to_i
-     # @total_pages = 1 unless total_itens.to_i > 0
+      #@total_pages = (total_itens.to_f/Rails.application.config.items_per_page.to_f).ceil.to_i
+      #@total_pages = 1 unless total_itens.to_i > 0
 
       if (p['display_mode'] == "list" || params[:format] == "json")
         # se for em forma de lista ou para o mobilis, pesquisa pelo método posts
@@ -75,7 +74,7 @@ class PostsController < ApplicationController
   ## GET /discussions/1/posts/user/1
   ## all posts of the user
   def user_posts
-    if user_session[:blocking_content]
+    if Exam.verify_blocking_content(current_user.id)
       render text: t('exams.restrict')
     else
       @user = User.find(params[:user_id])

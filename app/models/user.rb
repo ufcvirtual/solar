@@ -403,12 +403,12 @@ class User < ActiveRecord::Base
 
       cpf = (row['CPF'] || row['Cpf']).is_a?(String) ? (row['CPF'] || row['Cpf']).strip.delete('.').delete('-').rjust(11, '0') : (row['CPF'] || row['Cpf']).to_i.to_s.strip.rjust(11, '0')
 
-      user_exist = where(cpf: cpf).first
-      user = user_exist.nil? ? new : user_exist
-
+      user = where(cpf: cpf).first_or_initialize
+      user.synchronize # synchronize with modulo academico
+      
       blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize
       blacklist.name = (user.try(:name) || row['Nome']) if blacklist.new_record?
-      can_add_to_blacklist = blacklist.valid?
+      can_add_to_blacklist = blacklist.valid? || !blacklist.new_record?
       new_password         = nil
 
       if !user.integrated || can_add_to_blacklist

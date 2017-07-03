@@ -43,6 +43,10 @@
   .notice
     #save= t("exams.pre.alert_save")
     #start= t("exams.pre.alert_start")
+    - if @exam.block_content
+      #blocked= t("exams.pre.blocked2")
+    - if @exam.uninterrupted
+      #uninterrupted= t("exams.pre.uninterrupted2")
 
   .start_button
     = link_to @text, open_exam_path(@exam, situation: @situation), :'data-tooltip' => @exam.name, class: 'link_content link_open_exam'
@@ -56,6 +60,7 @@
       minWidth: '50%',
       minheigth: '50%',
       closeBtn : !#{@exam.uninterrupted},
+      modal: !!#{@exam.uninterrupted},
       height: 'auto',
       maxHeight: '70%',
       dont_focus_back: true,

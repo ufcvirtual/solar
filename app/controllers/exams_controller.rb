@@ -204,6 +204,7 @@ class ExamsController < ApplicationController
       @user_id = params[:user_id]
     end
     @exam = Exam.find(params[:id])
+    raise 'uninterrupted' if @exam.uninterrupted && !@exam.ended?
     raise 'dates' unless @exam.ended?
 
     acs = @exam.academic_allocations
@@ -231,7 +232,6 @@ class ExamsController < ApplicationController
     acs = exam.academic_allocations
     acu = AcademicAllocationUser.find_one((acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: active_tab[:url][:allocation_tag_id]).first.id), current_user.id, nil, true)
     if acu.finish_attempt(get_remote_ip)
-      user_session[:blocking_content] = false
       if (params[:error])
         respond_to do |format|
           format.js { render :js => "validation_error('#{I18n.t('exam_responses.error.' + params[:error] + '')}');" }
@@ -307,8 +307,16 @@ class ExamsController < ApplicationController
     authorize! :show, Question, { on: params[:allocation_tags_ids] }
     @exam = Exam.find(params[:id])
     @preview = true
-   # @exam_questions = Question.where(id: ExamQuestion.list(@exam.id, @exam.raffle_order).map(&:question_id)).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
-    @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
+    # @exam_questions = Question.where(id: ExamQuestion.list(@exam.id, @exam.raffle_order).map(&:question_id)).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
+
+    if @exam.raffle_order && params[:page].nil? # Primeira requisição do preview
+      questions = ExamQuestion.list_preview(@exam.id, @exam.raffle_order)
+      session[:preview_random_questions] = questions_order(questions).slice(0, @exam.number_questions)
+    end
+
+    # ExamQuestion.list(@exam.id, @exam.raffle_order, @last_attempt)
+    @exam_questions = ExamQuestion.list_preview(@exam.id, @exam.raffle_order, session[:preview_random_questions]).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
+
     render :open
   end
 
@@ -353,7 +361,6 @@ class ExamsController < ApplicationController
     ac_id = (acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: @allocation_tag_id).first.id)
     unless user_session[:exams].include?(params[:id])
       authorize! :open, Exam, { on: @allocation_tag_id }
-      user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
       verify_time
       user_session[:exams] << params[:id]
 
@@ -362,6 +369,14 @@ class ExamsController < ApplicationController
     else
       @acu = AcademicAllocationUser.find_one(ac_id, current_user.id, nil, true)
     end
+  end
+
+  def questions_order(questions)
+    order = []
+    questions.each do |question|
+      order << question.order
+    end
+    order
   end
 
 end

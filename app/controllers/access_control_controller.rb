@@ -4,8 +4,8 @@ class AccessControlController < ApplicationController
   before_filter :set_current_user
 
   ## Verificação de acesso ao realizar download de um arquivo relacionado à atividades ou um arquivo público
-  def assignment
-    unless user_session[:blocking_content]
+  def assignment  
+    unless Exam.verify_blocking_content(current_user.id)
       file_id            = params[:file].split('_')[0]
       current_path_split = request.env['PATH_INFO'].split('/') #ex: /media/assignment/public_area/20_crimescene.png => ["", "media", "assignment", "public_area", "20_crimescene.png"]
 
@@ -48,7 +48,7 @@ class AccessControlController < ApplicationController
   end
 
   def support_material
-    unless user_session[:blocking_content]
+    unless Exam.verify_blocking_content(current_user.id)
       get_file(SupportMaterialFile, 'support_material_files')
     end  
   end
@@ -75,7 +75,7 @@ class AccessControlController < ApplicationController
   #end
 
   def message
-    unless user_session[:blocking_content]
+    unless Exam.verify_blocking_content(current_user.id)
       file = MessageFile.find(params[:file].split('_')[0])
       raise CanCan::AccessDenied unless file.message.user_has_permission?(current_user.id)
       download_file('messages')
@@ -83,7 +83,7 @@ class AccessControlController < ApplicationController
   end
 
   def exam
-    if session[:blocking_content]==false
+    unless Exam.verify_blocking_content(current_user.id)
       exams = [exam  = Exam.find(params[:id])]
       verify(exams.flatten.map(&:allocation_tags).flatten.map(&:id).flatten.compact, Exam, :show, true, true)
       if exam.path(false).index('.html')
@@ -102,6 +102,7 @@ class AccessControlController < ApplicationController
   def lesson_media
     guard_with_access_token_or_authenticate
 
+    # Exam.verify_blocking_content(current_user.id)
     unless (user_session[:blocking_content] rescue @user_session_exam)
       lessons = [lesson  = Lesson.find(params[:id])]
 

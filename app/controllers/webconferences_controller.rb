@@ -152,7 +152,7 @@ class WebconferencesController < ApplicationController
   end
 
   def access
-    if user_session[:blocking_content]
+    if Exam.verify_blocking_content(current_user.id)
       render text: t('exams.restrict')
     else
       authorize! :interact, Webconference, { on: [at_id = active_tab[:url][:allocation_tag_id] || params[:at_id]] }
@@ -238,7 +238,7 @@ class WebconferencesController < ApplicationController
   end
 
   def get_record
-    if user_session[:blocking_content]
+    if Exam.verify_blocking_content(current_user.id)
       render text: t('exams.restrict')
     else
       @webconference = Webconference.find(params[:id])

@@ -91,26 +91,30 @@ class BibliographiesController < ApplicationController
   end
 
   def download
-    if params.include?(:id)
-      bibliographies_to_download = Bibliography.find(params[:id])
-      allocation_tags_ids        = (active_tab[:url][:allocation_tag_id].blank? ? (params[:allocation_tags_ids] || bibliographies_to_download.allocation_tags.pluck(:id)) : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
+    if Exam.verify_blocking_content(current_user.id)
+      redirect_to :back, alert: t('exams.restrict')
     else
-      allocation_tags_ids        = (active_tab[:url][:allocation_tag_id].blank? ? params[:allocation_tags_ids] : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
-      bibliographies_to_download = Bibliography.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }, type_bibliography: Bibliography::TYPE_FILE).uniq
-    end
-
-    authorize! :download, Bibliography, on: [allocation_tags_ids].flatten, read: true
-    redirect_error = bibliographies_path
-
-    if bibliographies_to_download.respond_to?(:length)
-      path_zip = compress({ files: bibliographies_to_download, table_column_name: 'attachment_file_name', name_zip_file: t('bibliographies.zip', info: AllocationTag.where(id: allocation_tags_ids).first.offers.first.info) })
-      if path_zip
-        download_file(redirect_error, path_zip)
+      if params.include?(:id)
+        bibliographies_to_download = Bibliography.find(params[:id])
+        allocation_tags_ids        = (active_tab[:url][:allocation_tag_id].blank? ? (params[:allocation_tags_ids] || bibliographies_to_download.allocation_tags.pluck(:id)) : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
       else
-        redirect_to redirect_error, alert: t(:file_error_nonexistent_file)
+        allocation_tags_ids        = (active_tab[:url][:allocation_tag_id].blank? ? params[:allocation_tags_ids] : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
+        bibliographies_to_download = Bibliography.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }, type_bibliography: Bibliography::TYPE_FILE).uniq
       end
-    else
-      download_file(redirect_error, bibliographies_to_download.attachment.path, bibliographies_to_download.attachment_file_name)
+
+      authorize! :download, Bibliography, on: [allocation_tags_ids].flatten, read: true
+      redirect_error = bibliographies_path
+
+      if bibliographies_to_download.respond_to?(:length)
+        path_zip = compress({ files: bibliographies_to_download, table_column_name: 'attachment_file_name', name_zip_file: t('bibliographies.zip', info: AllocationTag.where(id: allocation_tags_ids).first.offers.first.info) })
+        if path_zip
+          download_file(redirect_error, path_zip)
+        else
+          redirect_to redirect_error, alert: t(:file_error_nonexistent_file)
+        end
+      else
+        download_file(redirect_error, bibliographies_to_download.attachment.path, bibliographies_to_download.attachment_file_name)
+      end
     end
   end
 
