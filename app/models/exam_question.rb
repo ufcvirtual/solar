@@ -24,7 +24,7 @@ class ExamQuestion < ActiveRecord::Base
 
   def self.copy(exam_question_to_copy, user_id = nil)
     question = Question.copy(exam_question_to_copy.question, user_id)
-    exam_question = ExamQuestion.create exam_question_to_copy.attributes.except('id', 'question_id').merge({ question_id: question.id })
+    exam_question = ExamQuestion.create exam_question_to_copy.attributes.except('id', 'question_id', 'annulled').merge({ question_id: question.id, annulled: false })
     exam_question_to_copy.update_attributes annulled: true
     exam_question
   end
