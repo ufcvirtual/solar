@@ -204,6 +204,9 @@ $.fn.call_fancybox = function (options) {
         width: '100px',
         maxHeight: '60%'
       },
+      'onUpdate': function(){
+        $('.fancybox-inner').css({'max-height':'38em'});
+      },
       beforeShow: function(){
           $("body").css({'overflow-y':'hidden'});
       },
