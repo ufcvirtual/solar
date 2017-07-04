@@ -132,3 +132,12 @@ tbody .groups, .input .groups{
   margin: 0;
   color: $groups_tags_collecion_check_box;
 }
+
+div#dropdown.dropdown.dropdown-tip.add_group_dropdown_1 {
+  h1 {
+    color: $color_black_groups_tags;
+  }
+  label {
+    color: $color_black_groups_tags;
+  }
+}

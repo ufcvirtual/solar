@@ -249,6 +249,7 @@ select[disabled] {
 }
 
 .form-inputs .inline {
+  background-color: $form_background_color;
   & > div {
     display: inline-block;
     vertical-align: top;

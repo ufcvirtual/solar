@@ -146,6 +146,7 @@ $empty_message_fancybox_with_columns: $high_contrast_font_color;
 //forms
 $form_error_color_forms: $high_contrast_font_color;
 $form_select_disabled_background_forms: $high_contrast_background_color;
+$form_background_color: $high_contrast_background_color;
 
 //forum
 $color_red_forum: $high_contrast_font_color;
@@ -160,6 +161,9 @@ $groups_forms_background: $high_contrast_font_color;
 $color_black_groups_tags: $high_contrast_background_color;
 $color_main_groups_tag: $high_contrast_background_color;
 $groups_tags_collecion_check_box: $high_contrast_background_color;
+
+//icons
+$del_semester_icon_trash: $high_contrast_font_color;
 
 //import
 $color_white_import: $high_contrast_background_color;
@@ -349,7 +353,6 @@ $background_dark_gray: $high_contrast_background_color;
 $color_gray: #808080;
 $color_disabled: #777777;
 $portfolio_block_wrapper_groups: #929792;
-$semester_color: #56585E;
 $speech2text_color: #828282;
 $table_head_line_title: #000; //FIXME mudar para branco #fff
 $btn_box_shadow: #9a9a9a;
