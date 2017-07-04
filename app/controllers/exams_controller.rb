@@ -129,7 +129,7 @@ class ExamsController < ApplicationController
     else
       @total_time = (last_attempt.try(:complete) ? 0 : last_attempt.try(:get_total_time)) || 0
 
-      @text = if !last_attempt.nil? && !last_attempt.try(:complete)
+      @text = if !last_attempt.blank? && !last_attempt.try(:complete) && !@exam.uninterrupted
         t("exams.pre.continue")
       else
         t("exams.pre.button")
@@ -146,7 +146,7 @@ class ExamsController < ApplicationController
 
     @disabled = false
     @situation = params[:situation]
-    @last_attempt = @acu.find_or_create_exam_user_attempt(get_remote_ip)
+    @last_attempt = @acu.find_or_create_exam_user_attempt(get_remote_ip, !params[:page].blank?)
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @total_time = (@last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)) || 0
 
