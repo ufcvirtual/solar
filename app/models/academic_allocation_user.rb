@@ -220,7 +220,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   end
 
   def has_attempt(exam)
-    (exam_user_attempts.empty? || !exam_user_attempts.last.complete || (exam.attempts > exam_user_attempts.count))
+    (exam_user_attempts.empty? || (!exam_user_attempts.last.complete && !exam.uninterrupted) || (exam.attempts > exam_user_attempts.count))
   end
 
   def delete_with_dependents
@@ -256,10 +256,10 @@ class AcademicAllocationUser < ActiveRecord::Base
     count
   end
 
-  def find_or_create_exam_user_attempt(ip=nil)
+  def find_or_create_exam_user_attempt(ip=nil, ignore_uninterrupted=false)
     exam_user_attempt_last = exam_user_attempts.last
 
-    (exam_user_attempt_last.nil? || (exam_user_attempt_last.complete && exam_user_attempt_last.exam.attempts > exam_user_attempts.count) && exam_user_attempt_last.exam.on_going?) ?  exam_user_attempts.create(academic_allocation_user_id: id, start: Time.now, user_ip: ip) : exam_user_attempt_last
+    (exam_user_attempt_last.nil? || ((exam_user_attempt_last.complete || (exam_user_attempt_last.exam.uninterrupted && !ignore_uninterrupted)) && exam_user_attempt_last.exam.attempts > exam_user_attempts.count) && exam_user_attempt_last.exam.on_going?) ?  exam_user_attempts.create(academic_allocation_user_id: id, start: Time.now, user_ip: ip) : exam_user_attempt_last
   end
 
   def finish_attempt(ip = nil)
