@@ -22,31 +22,31 @@
 
 :javascript
   var date = new moment();
-  var monthNames      = '#{t("date.month_names").join(",")}'.split(",").filter(Boolean); // retirar strings vazias
-  var monthNamesShort = '#{t("date.abbr_month_names").join(",")}'.split(",").filter(Boolean);
-  var dayNames        = '#{t("date.day_names").join(",")}'.split(",");
-  var dayNamesShort   = '#{t("date.abbr_day_names").join(",")}'.split(",");
-  var allDay          = '#{t(".all_day")}';
-  var today           = '#{t("fullcalendar.today")}';
-  var monthTitle      = '#{t("fullcalendar.titleFormat.month")}';
-  var weekTitle       = '#{t("fullcalendar.titleFormat.week")}';
-  var dayTitle        = '#{t("fullcalendar.titleFormat.day")}';
-  var monthColumn     = '#{t("fullcalendar.columnFormat.month")}';
-  var weekColumn      = '#{t("fullcalendar.columnFormat.week")}';
-  var dayColumn       = '#{t("fullcalendar.columnFormat.day")}';
-  var futureEvents    = '#{t("fullcalendar.future_events")}';
-  var listFormat      = '#{t("fullcalendar.listFormat")}';
-  var noEventsMessage = '#{t("fullcalendar.noEvents")}';
-  var begin_of        = '#{t("agendas.begin_of")}';
-  var end_of          = '#{t("agendas.end_of")}';
-  var time            = '#{t(".time")}';
-  var prevAlt         = '#{t("fullcalendar.buttons.prevAlt")}';
-  var nextAlt         = '#{t("fullcalendar.buttons.nextAlt")}';
-  var todayAlt        = '#{t("fullcalendar.buttons.todayAlt")}';
-  var agendaDayAlt    = '#{t("fullcalendar.buttons.agendaDayAlt")}';
-  var agendaWeekAlt   = '#{t("fullcalendar.buttons.agendaWeekAlt")}';
-  var monthAlt        = '#{t("fullcalendar.buttons.monthAlt")}';
-  var listAlt         = '#{t("fullcalendar.buttons.listAlt")}';
+  var monthNames      = "#{t("date.month_names").join(",")}".split(",").filter(Boolean); // retirar strings vazias
+  var monthNamesShort = "#{t("date.abbr_month_names").join(",")}".split(",").filter(Boolean);
+  var dayNames        = "#{t("date.day_names").join(",")}".split(",");
+  var dayNamesShort   = "#{t("date.abbr_day_names").join(",")}".split(",");
+  var allDay          = "#{t(".all_day")}";
+  var today           = "#{t("fullcalendar.today")}";
+  var monthTitle      = "#{t("fullcalendar.titleFormat.month")}";
+  var weekTitle       = "#{t("fullcalendar.titleFormat.week")}";
+  var dayTitle        = "#{t("fullcalendar.titleFormat.day")}";
+  var monthColumn     = "#{t("fullcalendar.columnFormat.month")}";
+  var weekColumn      = "#{t("fullcalendar.columnFormat.week")}";
+  var dayColumn       = "#{t("fullcalendar.columnFormat.day")}";
+  var futureEvents    = "#{t("fullcalendar.future_events")}";
+  var listFormat      = "#{t("fullcalendar.listFormat")}";
+  var noEventsMessage = "#{t("fullcalendar.noEvents")}";
+  var begin_of        = "#{t("agendas.begin_of")}";
+  var end_of          = "#{t("agendas.end_of")}";
+  var time            = "#{t(".time")}";
+  var prevAlt         = "#{t("fullcalendar.buttons.prevAlt")}";
+  var nextAlt         = "#{t("fullcalendar.buttons.nextAlt")}";
+  var todayAlt        = "#{t("fullcalendar.buttons.todayAlt")}";
+  var agendaDayAlt    = "#{t("fullcalendar.buttons.agendaDayAlt")}";
+  var agendaWeekAlt   = "#{t("fullcalendar.buttons.agendaWeekAlt")}";
+  var monthAlt        = "#{t("fullcalendar.buttons.monthAlt")}";
+  var listAlt         = "#{t("fullcalendar.buttons.listAlt")}";
 
 = javascript_include_tag 'fullcalendar', 'calendar'
 
