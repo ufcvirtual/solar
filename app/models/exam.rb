@@ -99,7 +99,7 @@ class Exam < Event
   def correction_exams(acu_id)
     questions_exam = ExamQuestion.list_correction(id, raffle_order)
     attempts = ExamUserAttempt.where(academic_allocation_user_id: acu_id)
-    list_attempt = attempts.where(complete: true)
+    list_attempt = (uninterrupted ? attempts : attempts.where(complete: true))
     (list_attempt.any? ? list_attempt : [attempts.first]).compact.each do |exam_user_attempt|
       grade_exam = 0
 

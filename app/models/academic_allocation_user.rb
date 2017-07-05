@@ -251,7 +251,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   end
 
   def count_attempts
-    count = exam_user_attempts.where(complete: true).count
+    count = (exam.uninterrupted ? exam_user_attempts.count : exam_user_attempts.where(complete: true).count)
     count = 1 if count.zero?
     count
   end
