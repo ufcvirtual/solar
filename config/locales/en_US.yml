@@ -2845,7 +2845,7 @@ en_US:
     buttons:
       prevAlt: Previous period
       nextAlt: Next period
-      todayAlt: Today's period
+      todayAlt: "Today's period"
       agendaDayAlt: View by day
       agendaWeekAlt: View by week
       monthAlt: View by month
