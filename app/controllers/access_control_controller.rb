@@ -102,7 +102,6 @@ class AccessControlController < ApplicationController
   def lesson_media
     guard_with_access_token_or_authenticate
 
-    # Exam.verify_blocking_content(current_user.id)
     unless (user_session[:blocking_content] rescue @user_session_exam)
       lessons = [lesson  = Lesson.find(params[:id])]
 
@@ -127,6 +126,9 @@ class AccessControlController < ApplicationController
         params[:extension] = path.split('.').last if params[:extension].nil?
         send_file(path, { disposition: 'inline', type: return_type(params[:extension]) })
       end
+    else
+      user_session[:blocking_content] = nil
+      render text: t('exams.restrict')
     end
   end
 
@@ -179,7 +181,9 @@ class AccessControlController < ApplicationController
           @user_session_exam = Exam.verify_blocking_content(current_user.id) || false
         end
       else
+        @user_session_exam = false
         authenticate_user!
+        user_session[:blocking_content] = Exam.verify_blocking_content(current_user.try(:id) || User.current.try(:id)) if user_session[:blocking_content].blank?
       end
       
     end

@@ -150,6 +150,7 @@ class ApplicationController < ActionController::Base
     LogAccess.login(user_id: current_user.id, ip: get_remote_ip) rescue nil
     user_session[:lessons] = []
     user_session[:exams] = []
+    user_session[:blocking_content] = []
     super
   end
 

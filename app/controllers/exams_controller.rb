@@ -149,6 +149,7 @@ class ExamsController < ApplicationController
     @last_attempt = @acu.find_or_create_exam_user_attempt(get_remote_ip, !params[:page].blank?)
     @exam_questions = ExamQuestion.list(@exam.id, @exam.raffle_order, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @total_time = (@last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)) || 0
+    user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id) if params[:page].blank?
 
     if (@situation == 'finished' || @situation == 'corrected')
       mod_correct_exam = @exam.attempts_correction
@@ -237,6 +238,7 @@ class ExamsController < ApplicationController
           format.js { render :js => "validation_error('#{I18n.t('exam_responses.error.' + params[:error] + '')}');" }
         end
       else
+        user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
         render_exam_success_json('finish')
       end
     end
