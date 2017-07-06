@@ -195,3 +195,12 @@
     height: 200px; /*must have*/
 }
 /** ----------------------- **/
+
+.ui-timepicker-div{
+    dt.ui_tpicker_time_label,
+    dt.ui_tpicker_hour_label,
+    dt.ui_tpicker_minute_label,
+    .ui_tpicker_time input.ui_tpicker_time_input {
+      color: $color_black;
+    }
+}
