@@ -403,8 +403,10 @@ class User < ActiveRecord::Base
 
       cpf = (row['CPF'] || row['Cpf']).is_a?(String) ? (row['CPF'] || row['Cpf']).strip.delete('.').delete('-').rjust(11, '0') : (row['CPF'] || row['Cpf']).to_i.to_s.strip.rjust(11, '0')
 
-      user = where(cpf: cpf).first_or_initialize
-      user.synchronize # synchronize with modulo academico
+      user_exist = where(cpf: cpf).first
+      user = user_exist.nil? ? new(cpf: cpf) : user_exist
+      user_data = User.connect_and_import_user(cpf) # try to import
+      user.synchronize(user_data) # synchronize user with new MA data
       
       blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize
       blacklist.name = (user.try(:name) || row['Nome']) if blacklist.new_record?
@@ -428,7 +430,7 @@ class User < ActiveRecord::Base
         params.merge!({ birthdate: '1970-01-01' })                  if user.birthdate.nil?
         params.merge!({ nick: user.username || params[:username] }) if user.nick.nil?
 
-        if user.encrypted_password.blank?
+        if user.new_record?
           new_password  = ('0'..'z').to_a.shuffle.first(8).join
           user.password = new_password
         end
@@ -439,47 +441,56 @@ class User < ActiveRecord::Base
       if user.save
         log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
         imported << user
-
-        unless new_password.blank?
-          Thread.new do
-            Notifier.new_user(user, new_password).deliver
-          end
-        else
-          user.notify_by_email
-        end
-
+        user.notify_user(new_password)
       else
-
-        if user.errors[:username].blank? || (user.integrated && !can_add_to_blacklist)
+        if user.errors[:username].blank? || (user.integrated && !can_add_to_blacklist) # if no error with username happens or cant unbind user from modulo
           log[:error] << I18n.t(:error, scope: [:administrations, :import_users, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(', '))
-        else
-          username = user.name.slice(' ')
-          user.username = [username[0].downcase, username[1].downcase].join('_')[0..19] rescue user.email.split('@')[0]
-          user.username = user.cpf unless user.valid?
-          user.username = user.email.split('@')[0][0..19] unless user.valid?
-          user.username = [user.email.split('@')[0], 'tmp'].join('_')[0..19] unless user.valid?
+        else # if some error with username happens
+          # set a new username
+          username = user.name.slice(' ') # by name
+          user.username = [username[0].downcase, username[1].downcase].join('_')[0..19] rescue user.email.split('@')[0] # by email
+          user.username = user.cpf unless user.valid? # by cpf
+          user.username = user.email.split('@')[0][0..19] unless user.valid? # by email
+          user.username = [user.email.split('@')[0], 'tmp'].join('_')[0..19] unless user.valid? # by email
+
           if user.save
             log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
             imported << user
+            user.notify_user(new_password)
 
-            unless new_password.blank?
-              Thread.new do
-                Notifier.new_user(user, new_password).deliver
-              end
+          elsif user.errors[:email].first == I18n.t('users.errors.ma.already_exists') || user.errors[:username].first == I18n.t('users.errors.ma.already_exists') # if still have errors with MA
+            UserBlacklist.where(cpf: cpf).delete_all # remove from blacklist so it can be imported
+
+            if user.save
+              log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
+              imported << user
+
+              blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize # add again to blacklist
+              blacklist.name = user.name
+              blacklist.save
+
+              user.notify_user(new_password)
             else
-              user.notify_by_email
+              log[:error] << I18n.t(:error, scope: [:administrations, :import_users, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(', '))
             end
-
           else
             log[:error] << I18n.t(:error, scope: [:administrations, :import_users, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(', '))
           end
         end
-
-
       end
     end ## each
 
     { imported: imported, log: log }
+  end
+
+  def notify_user(new_password)
+    unless new_password.blank?
+      Thread.new do
+        Notifier.new_user(self, new_password).deliver
+      end
+    else
+      notify_by_email
+    end
   end
 
   def notify_by_email
