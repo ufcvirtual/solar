@@ -29,57 +29,35 @@ class ExamQuestion < ActiveRecord::Base
     exam_question
   end
 
-  def self.list_preview(exam_id, raffle_order = false, questions_order = nil)
-    exam = Exam.find(exam_id)
-    query = {exam_id: exam_id, annulled: false}
-    query.merge!(use_question: true, questions: {status: true}) if exam.status
-
-    if raffle_order
-      if questions_order.nil? # Primeira requisição aleatória do preview
-        ExamQuestion.joins(:question).where(query)
-          .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
-            questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
-          .order("RANDOM()")
-      else # Segunda requisição aleatória, em diante, do preview
-        order_clause = "CASE exam_questions.order "
-        questions_order.each.with_index do |order, index|
-          order_clause << sanitize_sql_array(["WHEN ? THEN ? ", order, index])
-        end
-        order_clause << sanitize_sql_array(["ELSE ? END", questions_order.length])
-
-        ExamQuestion.joins(:question).where(query)
-          .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
-            questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
-          .order(order_clause)
-      end
-    else # NÃO Aleatório
-      ExamQuestion.joins(:question).where(query)
-        .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
-          questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
-        .order("exam_questions.order")
-    end
-  end
-
-  def self.list(exam_id, raffle_order = false, last_attempt=nil)
-    if last_attempt.blank? # preview
-      exam = Exam.find(exam_id)
-      query = {exam_id: exam_id, annulled: false}
+  def self.list(exam, last_attempt=nil, preview = false, questions_order = nil)
+    if preview || last_attempt.blank?
+      query = {exam_id: exam.id, annulled: false}
       query.merge!(use_question: true, questions: {status: true}) if exam.status
 
+      unless questions_order.blank? || !exam.raffle_order
+        order = "CASE exam_questions.order "
+        questions_order.each.with_index do |qorder, index|
+          order << sanitize_sql_array(["WHEN ? THEN ? ", qorder, index])
+        end
+        order << sanitize_sql_array(["ELSE ? END", questions_order.length])
+      else
+        order = (exam.raffle_order ? "RANDOM()" : "exam_questions.order")
+      end
+
       ExamQuestion.joins(:question).where(query)
         .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
           questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
-        .order((raffle_order ? "RANDOM()" : "exam_questions.order"))
+        .order(order)
     else
       responses = last_attempt.try(:complete) ? nil : last_attempt.try(:exam_responses)
 
       if responses.blank?
         exam_questions = ExamQuestion.joins(:question)
-          .where(exam_questions: {exam_id: exam_id, use_question: true},
+          .where(exam_questions: {exam_id: exam.id, use_question: true},
             questions: {status: true})
           .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
             questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
-          .order((raffle_order ? "RANDOM()" : "exam_questions.order"))
+          .order((exam.raffle_order ? "RANDOM()" : "exam_questions.order"))
 
         exam_questions.each do |exam_question|
           response = last_attempt.exam_responses.where(question_id: exam_question.question_id).first_or_create!(duration: 0)
@@ -91,7 +69,7 @@ class ExamQuestion < ActiveRecord::Base
       end
 
       ExamQuestion.joins(:question).joins(:exam_responses)
-        .where(exam_questions: {exam_id: exam_id, use_question: true},
+        .where(exam_questions: {exam_id: exam.id, use_question: true},
           exam_responses: {exam_user_attempt_id: last_attempt.id},
           questions: {status: true})
         .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
