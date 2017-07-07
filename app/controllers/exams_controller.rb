@@ -313,9 +313,9 @@ class ExamsController < ApplicationController
 
     @exam_questions = ExamQuestion.list(@exam, nil, true, (params[:page].blank? ? nil : session[:preview_random_questions]))
 
-    session[:preview_random_questions] = (@exam_questions.map(&:order) - [@exam_questions.first.order]).insert(0, @exam_questions.first.order) if @exam.raffle_order && params[:page].blank?
+    session[:preview_random_questions] = (@exam_questions.map(&:order) - [@exam_questions.first.order]).insert(0, @exam_questions.first.order) if (@exam.raffle_order && params[:page].blank?)
 
-    if session[:preview_random_questions] && params[:page].blank?
+    if !session[:preview_random_questions].blank? && params[:page].blank?
       @exam_questions = [@exam_questions.first].paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions)
     else
       @exam_questions = @exam_questions.paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions)

@@ -34,7 +34,7 @@ class ExamQuestion < ActiveRecord::Base
       query = {exam_id: exam.id, annulled: false}
       query.merge!(use_question: true, questions: {status: true}) if exam.status
 
-      unless questions_order.blank?
+      unless questions_order.blank? || !exam.raffle_order
         order = "CASE exam_questions.order "
         questions_order.each.with_index do |qorder, index|
           order << sanitize_sql_array(["WHEN ? THEN ? ", qorder, index])
