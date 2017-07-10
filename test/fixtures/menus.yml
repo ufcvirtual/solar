@@ -244,6 +244,13 @@ admin_reports:
   order: 14
   resource_id: 226
 
+admin_notifications:
+  id: 804
+  parent_id: 60
+  name: menu_admin_notifications
+  order: 15
+  resource_id: 228  
+
 # MENU PAI - 70
 disco_virtual:
   id: 70

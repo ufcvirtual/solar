@@ -1690,6 +1690,7 @@ pt_BR:
   menu_admin_reports: Relatórios # reports_add
   menu_responsibles: Consultar Responsáveis
   menu_home: Início
+  menu_admin_notifications: Avisos Gerais
 
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"

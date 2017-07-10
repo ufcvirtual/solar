@@ -8,7 +8,7 @@
         = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin', :'aria-hidden'=>'true'), 'prev_notification()', class: 'prev', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('.prev')
 
   .title-warning
-    = @allocation_tag.no_group_info
+    = @allocation_tag.no_group_info unless @allocation_tag.blank?
     - unless @groups.blank? 
       - if @groups.size == 1
         = @groups.first.code

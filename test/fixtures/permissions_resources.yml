@@ -1872,6 +1872,26 @@ admin_blacklist2:
   resource_id: 179
   per_id: false
 
+# avisos do Admin
+admin_notifications1:
+  profile_id: 6
+  resource_id: 228
+  per_id: false  
+
+admin_notifications2:
+  profile_id: 6
+  resource_id: 139
+  per_id: false 
+
+admin_notifications3:
+  profile_id: 6
+  resource_id: 140
+  per_id: false 
+
+admin_notifications4:
+  profile_id: 6
+  resource_id: 141
+  per_id: false     
 # webconference Admin
 
 admin_webconference1:

@@ -1492,6 +1492,7 @@ en_US:
   menu_admin_reports: Reports # reports_add
   menu_responsibles: Consult Responsibles
   menu_home: Home
+  menu_admin_notifications: General notifications
 
   places_nav_panel_course_hint: "Type the course's name or part of it"
   places_nav_panel_semester_hint: "Type the semester or part of it"

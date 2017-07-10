@@ -1186,5 +1186,10 @@ res227:
   action: 'manage_record'
   description: 'Gerenciar gravações de webconferências'
 
+res228:
+  id: 228
+  controller: 'administrations'
+  action: 'list_notifications'
+  description: 'Administracao - lista todas as notificações'
 
   
