@@ -76,6 +76,9 @@ Solar::Application.routes.draw do
     get "responsibles/filter", to: "administrations#responsibles", as: :admin_responsibles_filter
     get "responsibles", to: "administrations#responsibles_list", as: :admin_responsibles
 
+    ## notifications
+    get :list_notifications_admin, to: "administrations#list_notifications", as: :list_notifications_admin
+
     ## logs
     get :logs, to: "administrations#logs", as: :logs
     get "logs/type/:type", to: "administrations#search_logs", as: :search_logs

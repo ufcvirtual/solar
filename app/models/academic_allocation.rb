@@ -11,6 +11,7 @@ class AcademicAllocation < ActiveRecord::Base
   belongs_to :webconference,  foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Webconference'"]
   belongs_to :discussion,     foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Discussion'"]
   belongs_to :schedule_event, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'ScheduleEvent'"]
+  belongs_to :notification,   foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Notification'"]
 
   has_many :group_assignments, dependent: :destroy
 
@@ -18,7 +19,7 @@ class AcademicAllocation < ActiveRecord::Base
   has_many :chat_messages, dependent: :destroy
   has_many :chat_participants, inverse_of: :academic_allocation, dependent: :destroy
 
-  before_save :verify_association_with_allocation_tag
+  before_save :verify_association_with_allocation_tag, unless: 'allocation_tag_id.blank?'
 
   before_destroy :move_lessons_to_default, if: :lesson_module?
 

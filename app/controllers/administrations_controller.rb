@@ -4,7 +4,7 @@ class AdministrationsController < ApplicationController
   include SysLog::Devise
   include SysLog::Actions
 
-  layout false, except: [:users, :indication_users, :indication_users_specific, :indication_users_global, :allocation_approval, :lessons, :logs, :import_users, :responsibles]
+  layout false, except: [:users, :indication_users, :indication_users_specific, :indication_users_global, :allocation_approval, :lessons, :logs, :import_users, :responsibles, :list_notifications]
 
   def users
     authorize! :users, Administration
@@ -60,6 +60,12 @@ class AdministrationsController < ApplicationController
     end
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  end
+
+   def list_notifications
+    authorize! :list_notifications, Administration, {on: nil, accepts_general_profile: true}
+    @notifications = Notification.general_warnings
+
   end
 
   def reset_password_user

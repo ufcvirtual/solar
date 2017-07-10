@@ -34,35 +34,40 @@ class NotificationsController < ApplicationController
     @veri_last = @last_notification.id == @notification.id ? true : false
 
     @notification.mark_as_read(current_user)
-    @allocation_tag = @notification.allocation_tags
-    if @allocation_tag.size > 1
-      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tag.pluck(:id)}).pluck(:code)
-    end
-    @allocation_tag = @allocation_tag.first
+    unless @notification.allocation_tags.blank?
+      @allocation_tag = @notification.allocation_tags 
+      if @allocation_tag.size > 1
+        @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tag.pluck(:id)}).pluck(:code)
+      end
+      @allocation_tag = @allocation_tag.first
+    end  
+    
   end
 
   # GET /notifications/new
   def new
-    authorize! :create, Notification, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
+    authorize! :create, Notification, {on: @allocation_tags_ids = params[:allocation_tags_ids], accepts_general_profile: true} 
+    
     @notification = Notification.new
+
     @notification.build_schedule(start_date: Date.today, end_date: Date.today)
   end
 
   # GET /notifications/1/edit
   def edit
-    authorize! :update, Notification, on: @allocation_tags_ids
+    authorize! :update, Notification, {on: @allocation_tags_ids, accepts_general_profile: true} 
   end
 
   # POST /notifications
   def create
-    authorize! :create, Notification, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :create, Notification, {on: @allocation_tags_ids = params[:allocation_tags_ids], accepts_general_profile: true} 
 
     @notification = Notification.new notification_params
-    @notification.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten
+    @notification.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten 
 
     if @notification.save
-      render_notification_success_json('created')
+      all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
+      render partial: "notification", locals: {notification: @notification, all_groups: all_groups, destroy: true}
     else
       render :new
     end
@@ -73,10 +78,11 @@ class NotificationsController < ApplicationController
 
   # PUT /notifications/1
   def update
-    authorize! :update, Notification, on: @notification.academic_allocations.pluck(:allocation_tag_id)
+    authorize! :update, Notification, {on: @notification.academic_allocations.pluck(:allocation_tag_id), accepts_general_profile: true} 
 
     if @notification.update_attributes(notification_params)
-      render_notification_success_json('updated')
+      all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
+      render partial: "notification", locals: {notification: @notification, all_groups: all_groups, destroy: true}
     else
       render :edit
     end
@@ -87,10 +93,10 @@ class NotificationsController < ApplicationController
 
   # DELETE /notifications/1
   def destroy
-    @notifications = Notification.where(id: params[:id].split(","))
+    @notifications = Notification.where(id: params[:id].split(",")) 
 
-    authorize! :destroy, Notification, on: @notifications.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
-
+    authorize! :destroy, Notification, {on: @notifications.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true} if params[:allocation_tags_ids].blank?
+    
     @notifications.destroy_all
     render_notification_success_json('deleted')
   rescue => error

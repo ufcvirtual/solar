@@ -5,7 +5,17 @@ function save_notification(){
     $('textarea.ckeditor').html(content); // ckeditor nao envia conteudo quando se usa o serialize_and_submit
 
   $('form#notification_form').serialize_and_submit({
-    replace_list: $('.list_notifications')
+    prepend_to_list: $(".tb_notifications tbody"),
+    complement_success: function(data){
+      setTimeout(function() {
+        if($("[name='_method']").val()=='put'){
+          flash_message("<%= I18n.t(:updated, scope: 'notifications.success') %>", "notice");
+        }else{
+          flash_message("<%= I18n.t(:created, scope: 'notifications.success') %>", "notice");
+        }  
+      }, 100);
+      update_tables_with_no_data();
+    }
   });
   setTimeout(function() {
     focuInpuErro();

@@ -54,8 +54,18 @@ class Notification < ActiveRecord::Base
       JOIN schedules ON schedules.id = notifications.schedule_id
       JOIN academic_allocations ac ON ac.academic_tool_id = notifications.id AND ac.academic_tool_type = 'Notification'
       LEFT JOIN read_notifications rn ON rn.notification_id = notifications.id AND rn.user_id = #{user.id}
-      WHERE ac.allocation_tag_id IN (select id FROM ats)
-      AND schedules.start_date::date <= current_date AND schedules.end_date::date >= current_date ;
+      WHERE ac.allocation_tag_id IN (select id FROM ats) OR ac.allocation_tag_id IS NULL
+      AND schedules.start_date::date <= current_date AND schedules.end_date::date >= current_date
+    SQL
+  end
+
+  def self.general_warnings
+    Notification.find_by_sql <<-SQL
+      SELECT DISTINCT notifications.id, notifications.*
+      FROM notifications
+      JOIN schedules ON schedules.id = notifications.schedule_id
+      JOIN academic_allocations ac ON ac.academic_tool_id = notifications.id AND ac.academic_tool_type = 'Notification'
+      WHERE ac.allocation_tag_id IS NULL
     SQL
   end
 
