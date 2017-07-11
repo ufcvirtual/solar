@@ -198,10 +198,13 @@
 
 
 :javascript
-  $('.next_page').attr("aria-label", "#{t(:navigation_next_page)}");  
-  $('.previous_page').attr("aria-label", "#{t(:navigation_previous_page)}"); 
   
   $(function(){
+
+    $('.next_page').attr("aria-label", "#{t(:navigation_next_page)}");  
+    $('.previous_page').attr("aria-label", "#{t(:navigation_previous_page)}"); 
+    pagination_aria_label();
+
     $(document.body).on('change','select, input',function(){
       change();
     });
@@ -252,6 +255,7 @@
     if("#{@disabled}" != 'true')
       save_question('#{@exam_responses.try(:duration)}');
   }
+
 
   function update_radio(checkbox){
     ckb = $('#'+$(checkbox).prop('id').replace('radio_', '').replace('value_value', 'value')+':first');

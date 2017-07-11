@@ -70,9 +70,7 @@
 = javascript_include_tag 'tooltip', 'audios'
 
 :javascript
-  $('.next_page').attr("aria-label", "#{t(:navigation_next_page)}");  
-  $('.previous_page').attr("aria-label", "#{t(:navigation_previous_page)}"); 
-
+  
   var time = parseInt(#{@total_time});
   
   var time_h = Math.floor(time/3600);
