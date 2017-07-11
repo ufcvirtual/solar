@@ -1214,6 +1214,7 @@ en_US:
       items: Bibliography Items
       download: Download zip with file's type bibliographies
       summary: Table which content is all registered bibliography to this group. It has the complete bibliographic reference and it's type to inform if it is a book, an article etc.
+      download_file: Download file %{file}
     list:
       new: New Bibliography
       item: Item

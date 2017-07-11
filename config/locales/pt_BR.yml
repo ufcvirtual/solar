@@ -1394,6 +1394,7 @@ pt_BR:
       items: Itens Bibliográficos
       download: Download de zip com bibliografias de tipo arquivo
       summary: Tabela contendo toda a bibliografia cadastrada para a turma, contendo a referência bibliográfica completa e o tipo da bibliografia para indicar se é livro, artigo, periódico etc.
+      download_file: Download do arquivo %{file}
     list:
       new: Nova Bibliografia
       item: Item
