@@ -1977,6 +1977,8 @@ pt_BR:
       group: Grupo
       hour_period: "%{start_hour}h - %{end_hour}h"
       controlled: Controlada
+      choose_at_least_one: "Selecione, ao menos, um trabalho"
+      choose_one: Selecione um trabalho
     form:
       groups: Turmas
       files: Arquivos
@@ -2020,6 +2022,8 @@ pt_BR:
       not_range_webconference: Deve estar dentro do período do trabalho
       invalid_datetime: "Não é possível agendar a webconferência em datas pretéritas"
       change_type_after_period: não pode ser alterado após término do trabalho
+      controlled: Trabalho controlado deve ter, pelo menos, um IP
+      controlled_date: Não é possível remover IPs de trabalhos já iniciados ou encerrados
     show:
       name: Nome
       enunciation: Enunciado
@@ -3821,6 +3825,8 @@ pt_BR:
       uninterrupted: Você não pode continuar a prova, pois ela é ininterrupta e já foi iniciada. Aguarde o fim da prova para visualizar o resultado.
       liberated_date: A data de liberação do resultado da prova deve ser pelo menos 1 dia após o final da prova
       liberated_date_hour: O horário de liberação do resultado deve ser igual ou posterior ao horário de término da prova
+      controlled: Prova controlada deve ter, pelo menos, um IP
+      controlled_date: Não é possível remover IPs de provas já iniciadas ou encerradas
     show:
       groups: Turmas
       empty_group: Turma vazia

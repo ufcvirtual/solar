@@ -1765,6 +1765,8 @@ en_US:
       group: Group
       hour_period: "%{start_hour}h - %{end_hour}h"
       controlled: Controlled
+      choose_at_least_one: "Choose at least one assignment"
+      choose_one: Choose an assignment
     form:
       groups: Groups
       files: Files
@@ -1808,6 +1810,8 @@ en_US:
       not_range_webconference: Must be in date range of Assignment
       invalid_datetime: "Unable to schedule web conferencing on previous dates"
       change_type_after_period: "can't change after assignment's ending"
+      controlled: Controlled assignment must have, at least, one IP
+      controlled_date: "It's not possible to remove IPs of ended or started assignments"
     show:
       name: Name
       enunciation: Enunciation
@@ -3575,6 +3579,8 @@ en_US:
       uninterrupted: You can't continue this exam, because it's uninterrupted and was already started. Wait until it's end to view your result.
       liberated_date: The date of release the result must be at least 1 day after the end of the test
       liberated_date_hour: The time of release the result must be equal or after the end of the test
+      controlled: Controlled exam must have, at least, one IP
+      controlled_date: "It's not possible to remove IPs of ended or started exams"
     show:
       groups: Groups
       empty_group: Empty group

@@ -129,6 +129,7 @@
     $('#save').click(function(){
       $('#assignment_form:last').serialize_and_submit({
         files: true,
+        outer: 'fancybox-outer',
         replace_list: (("#{escape_once(params[:calendar])}" == "") ? $(".list_assignments") : $(".calendar_schedules"))
       });
       setTimeout(function() {

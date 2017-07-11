@@ -88,7 +88,8 @@
     if(keynum == 13 || event.type == 'click') {
       save_values_ckeditor();
       $('form#exam_form').serialize_and_submit({
-        replace_list: $('.list_exams:last')
+        replace_list: $('.list_exams:last'),
+        outer: 'fancybox-outer'
       });
       setTimeout(function() {
         focuInpuErro();
