@@ -34,6 +34,7 @@
       $('.content_exam').load(url, function(){
         $('.content_exam').ready(function(){
           focus_on_fancybox_element('h3.question');
+          pagination_aria_label();
         });
       });
       return false;

@@ -41,16 +41,4 @@
   = will_paginate @messages
 
 
-:javascript
-   
-  $(function(){
-    $('.next_page').attr("aria-label", "#{t(:navigation_next_page)}");  
-    $('.previous_page').attr("aria-label", "#{t(:navigation_previous_page)}"); 
-
-    $('.pagination').children("a").each(function() {
-        var num = $(this).text();
-        if(!isNaN(num)){
-          $(this).attr('aria-label', "#{t(:navigation_page)}" +num);
-        }
-    });
-  });  
+= javascript_include_tag 'pagination'

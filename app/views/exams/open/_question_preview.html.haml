@@ -97,6 +97,8 @@
             = t(:control_audio, scope: [:questions, :questions])
             %span#aCurrentPbr= 1                    
 
+= javascript_include_tag 'pagination'
+
 :javascript
   $(function(){
     $(document).keydown(function (e) {

@@ -9,8 +9,6 @@ function save_question(duration) {
   get_duration(duration);
   $(".edit_exam_response").submit();
   setTimeout(function() {
-    $('.next_page').attr('aria-label', "<%= I18n.t(:navigation_next_page) %>");
-    $('.previous_page').attr('aria-label', "<%= I18n.t(:navigation_previous_page) %>");
     pagination_aria_label();
   }, 400);
 
@@ -80,13 +78,4 @@ function validation_error(resp){
   window.onbeforeunload = function () {}
   alert(resp);
   location.reload(true);
-}
-
-function pagination_aria_label(){
-  $('.pagination').children("a").each(function() {
-    var num = $(this).text();
-    if(!isNaN(num)){
-      $(this).attr('aria-label', "<%= I18n.t(:navigation_page) %>" +num);
-    }
-  }); 
 }
