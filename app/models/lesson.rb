@@ -22,6 +22,8 @@ class Lesson < ActiveRecord::Base #< Event
   before_save :set_receive_updates, if: 'receive_updates_changed?'
   before_save :receive_changes,     if: :must_receive_changes?
 
+  before_validation :set_schedule, if: 'schedule'
+
   after_save :send_changes,         if: :must_send_changes?
   after_save :create_or_update_folder
   after_save :lesson_privacy,       if: 'privacy_changed?'
@@ -289,6 +291,10 @@ class Lesson < ActiveRecord::Base #< Event
 
     def remove_dir_files
       FileUtils.rm_rf Dir.glob(File.join(directory, '*')) if Dir.exists?(directory)
+    end
+
+    def set_schedule
+      self.schedule.verify_offer_ats = lesson_module.allocation_tags.map(&:id)
     end
 
 end

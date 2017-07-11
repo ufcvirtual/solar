@@ -25,6 +25,8 @@ class Webconference < ActiveRecord::Base
 
   validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed?)', on: :update
 
+  validate :verify_offer, if: '!(duration.nil? || initial_time.nil?) && (new_record? || initial_time_changed? || duration_changed?)'
+
   def link_to_join(user, at_id = nil, url = false)
     ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to((title rescue name), bbb_join(user, at_id), target: '_blank')) : (title rescue name)) 
   end
@@ -246,5 +248,11 @@ class Webconference < ActiveRecord::Base
 
   def cant_change_shared
     errors.add(:shared_between_groups, I18n.t("webconferences.error.shared")) if (Time.now >= initial_time)
+  end
+
+  def verify_offer
+    offer = AllocationTag.find(allocation_tag_ids_associations).first.offers.first
+    errors.add(:initial_time, I18n.t('schedules.errors.offer_end')) if offer.end_date < (initial_time + duration.minutes).to_date
+    errors.add(:initial_time, I18n.t('schedules.errors.offer_start')) if offer.start_date > initial_time.to_date
   end
 end

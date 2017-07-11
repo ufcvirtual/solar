@@ -2494,8 +2494,10 @@ en_US:
     schedule_error: must be smaller than end of date range
   schedules:
     errors:
-      current_year: can't precede current year
+      current_year: can't be after current year
       current_date: can't be earlier than today
+      offer_end: can't be after offer's end
+      offer_start: can't be earlier than offer's start
     to: "to "
     list:
       assignments: Assignment

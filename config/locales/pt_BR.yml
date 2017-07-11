@@ -2714,8 +2714,10 @@ pt_BR:
 
   schedules:
     errors:
-      current_year: não deve preceder o ano atual
-      current_date: não deve preceder o dia de hoje
+      current_year: não deve ser posterior ao ano atual
+      current_date: não deve ser anterior ao dia de hoje
+      offer_end: não deve ser posterior à oferta
+      offer_start: não deve ser anterior à oferta
     to: "à "
     list:
       assignments: Trabalho

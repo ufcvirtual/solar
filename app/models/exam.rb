@@ -25,8 +25,6 @@ class Exam < Event
   validate :can_edit?, only: :update
   validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
   
-  before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # mandatory final date
-
   accepts_nested_attributes_for :schedule
 
   before_destroy :can_destroy?
