@@ -73,7 +73,7 @@
     $("form#exam_form .form-inputs").keypress(function(e) { if (e.which == 13) e.preventDefault(); });
 
     // datetimepicker form para liberação do resultado de prova
-    $("#exam_liberated_date").on("focusin", edit_liberated_date(event));
+    $("#exam_liberated_date").on("focusin", edit_liberated_date);
   });
 
   // function verify_dates(){
@@ -112,7 +112,7 @@
     }
   }
 
-  function edit_liberated_date(event) {
+  function edit_liberated_date() {
     var liberated_date = $("#exam_liberated_date").val();
 
     if( liberated_date !== "" && liberated_date.includes("-") ) {
