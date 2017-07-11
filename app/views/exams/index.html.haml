@@ -12,7 +12,7 @@
           %th#e_duration.center.small= t('exams.index.duration')
           %th#e_status.medium= t('exams.index.status')
           %th#e_evaluative.center.small= t(:evaluative, scope: [:scores, :index])
-          %th#e_frequency.center.small= t(:frequency, scope: [:scores, :info])  
+          %th#e_frequency.center.small= t(:frequency, scope: [:scores, :info])
           - if @can_open
             %th#e_grade.center.small= t('exams.index.grade')
             %th#e_wh.center.small= t(:workload, scope: [:scores, :info])
@@ -20,7 +20,7 @@
             %th#e_calcule.small.no_sort
       %tbody
         - @exams.each do |exam|
-          - if exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation)
+          - if exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation) && Exam.show_calcule_grade_by_tools?(exam.academic_tool_id)
             - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id), :"aria-label" => t('exams.index.calculate'), class: 'ico-e'
           %tr.lines{ id: "tr_#{exam.id}" }
             %td{headers: 'e_description'}
@@ -28,7 +28,7 @@
                 - if @can_open
                   - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name + t('fancybox.open') +  t(:disabled), class: 'disabled'
-                    - if exam.closed == 't' || exam.situation == 'corrected'
+                    - if (exam.closed == 't' || exam.situation == 'corrected') && Exam.show_calcule_grade_by_tools?(exam.academic_tool_id)
                       = link_to t('.result'), result_user_exam_path(exam.academic_tool_id), class: 'link_content', class: 'open-exam-result', :'aria-label' => t('.result', exam: exam.name) + t('fancybox.open')
                       - if exam.situation == 'corrected'
                         |
@@ -38,8 +38,8 @@
                   - else
                     .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name + t('fancybox.open') +  t(:disabled), class: 'disabled'
                 - else
-                  = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam' 
-                 
+                  = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
+
                 .description_exam
                   - if exam.description.size > 80
                     .description_slice= raw exam.description.slice(0..80) << "..."
@@ -98,7 +98,7 @@
                 = exam.working_hours
             - elsif @can_evaluate
               %td.center{headers: 'e_calcule'}
-                - if exam.closed == 't'
+                - if exam.closed == 't' && Exam.show_calcule_grade_by_tools?(exam.academic_tool_id)
                   = link_to_function content_tag(:i, nil, class: 'icon-exam'), 'calcule_grade_exam(this)', class: "ico-e", :'data-url' => calcule_grade_exam_path(exam.academic_tool_id), :"data-tooltip" => t('exams.index.calculate'), :"aria-label" => t('exams.index.calculate')
   - else
     .block_content_text.block_content_text_list.text_none= t(:none, scope: [:exams] )
@@ -153,12 +153,12 @@
       flash_message("#{t('exams.error.calcule_grade')}", 'alert');
       return false;
     }
-    
+
     $.put($(link).data('url'), function(data){
       var success = data.success;
       var grade = data.grade;
       var wh = data.wh;
-      
+
       flash_message(data.notice, 'notice');
       $(link).attr('disabled', true);
       $(link).html("<span class='activity_grade'>"+grade+"</span");
@@ -184,6 +184,6 @@
   $(function(){
     $('#flash_message').prop('tabindex', 0);
     setTimeout(function() {
-      $('#flash_message').focus(); 
-    }, 400);  
-  });  
+      $('#flash_message').focus();
+    }, 400);
+  });

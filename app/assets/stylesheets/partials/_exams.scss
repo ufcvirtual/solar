@@ -312,7 +312,7 @@
       label{
         :nth-child(2):not(.invisible):not(ol):not(ul):not(li){
           display: inline-block;
-        }   
+        }
 
         ol > li, ul > li{
           margin-left: 2.0em;
@@ -490,6 +490,10 @@
     width: 85px;
   }
 
+  #exam_liberated_date {
+    width: 200px;
+  }
+
   .ckb{
     margin: 20px;
     .input.boolean:not(.exam_controlled){
@@ -585,6 +589,7 @@
 
   .block_exam h2{
     min-height: 36px;
+    // border-bottom: none;
     .text{
       max-width: 150px;
       display: inline-block;

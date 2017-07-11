@@ -3419,6 +3419,7 @@ en_US:
       summary_evaluative: "This table contains all the evaluation exams."
       summary_frequency: "This table contains all the frequency exams."
       summary_notevaluative: "This table contains all the not evaluation exams."
+      liberated: "Result release: %{datetime}"
     success:
       created: Exam was successfully created
       updated: Exam was successfully updated
@@ -3477,6 +3478,7 @@ en_US:
       info:
         continue: Continue
         duration: Student's time to respond the exam after start it.
+        liberated_date: Test result release
       control:
         continue: Continue
         previous: Previous
@@ -3571,6 +3573,8 @@ en_US:
       unique_choice: Must have only one choice
       restrict: "Location not allowed"
       uninterrupted: You can't continue this exam, because it's uninterrupted and was already started. Wait until it's end to view your result.
+      liberated_date: The date of release the result must be at least 1 day after the end of the test
+      liberated_date_hour: The time of release the result must be equal or after the end of the test
     show:
       groups: Groups
       empty_group: Empty group

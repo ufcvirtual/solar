@@ -3664,6 +3664,7 @@ pt_BR:
       summary_evaluative: "Está tabela contém todas as provas avaliativas."
       summary_frequency: "Está tabela contém todas as provas de frequência."
       summary_notevaluative: "Está tabela contém todas as provas não avaliativas."
+      liberated: "Resultado liberado: %{datetime}"
     success:
       created: Prova criada com sucesso
       updated: Prova atualizada com sucesso
@@ -3722,6 +3723,7 @@ pt_BR:
       info:
         continue: Continuar
         duration: Tempo que o aluno terá para responder a prova após iniciá-la.
+        liberated_date: Resultado de prova
       control:
         continue: Continuar
         previous: Anterior
@@ -3817,6 +3819,8 @@ pt_BR:
       unique_choice: Deve ter apenas uma resposta
       restrict: "Localização não permitida"
       uninterrupted: Você não pode continuar a prova, pois ela é ininterrupta e já foi iniciada. Aguarde o fim da prova para visualizar o resultado.
+      liberated_date: A data de liberação do resultado da prova deve ser pelo menos 1 dia após o final da prova
+      liberated_date_hour: O horário de liberação do resultado deve ser igual ou posterior ao horário de término da prova
     show:
       groups: Turmas
       empty_group: Turma vazia
