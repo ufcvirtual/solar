@@ -3727,7 +3727,7 @@ pt_BR:
       info:
         continue: Continuar
         duration: Tempo que o aluno terá para responder a prova após iniciá-la.
-        liberated_date: Resultado de prova
+        liberated_date: Liberação do resultado
       control:
         continue: Continuar
         previous: Anterior
