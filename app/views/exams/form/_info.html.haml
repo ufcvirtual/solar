@@ -73,6 +73,7 @@
     $("form#exam_form .form-inputs").keypress(function(e) { if (e.which == 13) e.preventDefault(); });
 
     // datetimepicker form para liberação do resultado de prova
+    edit_liberated_date();
     $("#exam_liberated_date").on("focusin", edit_liberated_date);
   });
 
@@ -117,12 +118,12 @@
     var liberated_date = $("#exam_liberated_date").val();
 
     if( liberated_date !== "" && liberated_date.includes("-") ) {
-        var array_libarated_date = liberated_date.split(" ");
-        var array_date = array_libarated_date[0].split("-");
+      var array_libarated_date = liberated_date.split(" ");
+      var array_date = array_libarated_date[0].split("-");
 
-        var formatted_date_time = array_date[2] + "/" + array_date[1] + "/" + array_date[0] + " " + array_libarated_date [1];
+      var formatted_date_time = array_date[2] + "/" + array_date[1] + "/" + array_date[0] + " " + array_libarated_date [1];
 
-        $("#exam_liberated_date").val(formatted_date_time);
+      $("#exam_liberated_date").val(formatted_date_time);
     }
 
     $("#exam_liberated_date").mask("#{I18n.t('date.formats.mask_with_time')}");
