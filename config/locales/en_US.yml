@@ -1214,6 +1214,7 @@ en_US:
       items: Bibliography Items
       download: Download zip with file's type bibliographies
       summary: Table which content is all registered bibliography to this group. It has the complete bibliographic reference and it's type to inform if it is a book, an article etc.
+      download_file: Download file %{file}
     list:
       new: New Bibliography
       item: Item
@@ -1764,6 +1765,8 @@ en_US:
       group: Group
       hour_period: "%{start_hour}h - %{end_hour}h"
       controlled: Controlled
+      choose_at_least_one: "Choose at least one assignment"
+      choose_one: Choose an assignment
     form:
       groups: Groups
       files: Files
@@ -1807,6 +1810,8 @@ en_US:
       not_range_webconference: Must be in date range of Assignment
       invalid_datetime: "Unable to schedule web conferencing on previous dates"
       change_type_after_period: "can't change after assignment's ending"
+      controlled: Controlled assignment must have, at least, one IP
+      controlled_date: "It's not possible to remove IPs of ended or started assignments"
     show:
       name: Name
       enunciation: Enunciation
@@ -2493,8 +2498,10 @@ en_US:
     schedule_error: must be smaller than end of date range
   schedules:
     errors:
-      current_year: can't precede current year
+      current_year: can't be after current year
       current_date: can't be earlier than today
+      offer_end: can't be after offer's end
+      offer_start: can't be earlier than offer's start
     to: "to "
     list:
       assignments: Assignment
@@ -3416,6 +3423,7 @@ en_US:
       summary_evaluative: "This table contains all the evaluation exams."
       summary_frequency: "This table contains all the frequency exams."
       summary_notevaluative: "This table contains all the not evaluation exams."
+      liberated: "Result release: %{datetime}"
     success:
       created: Exam was successfully created
       updated: Exam was successfully updated
@@ -3474,6 +3482,7 @@ en_US:
       info:
         continue: Continue
         duration: Student's time to respond the exam after start it.
+        liberated_date: Test result release
       control:
         continue: Continue
         previous: Previous
@@ -3568,6 +3577,10 @@ en_US:
       unique_choice: Must have only one choice
       restrict: "Location not allowed"
       uninterrupted: You can't continue this exam, because it's uninterrupted and was already started. Wait until it's end to view your result.
+      liberated_date: The date of release the result must be at least 1 day after the end of the test
+      liberated_date_hour: The time of release the result must be equal or after the end of the test
+      controlled: Controlled exam must have, at least, one IP
+      controlled_date: "It's not possible to remove IPs of ended or started exams"
     show:
       groups: Groups
       empty_group: Empty group

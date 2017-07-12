@@ -1396,6 +1396,7 @@ pt_BR:
       items: Itens Bibliográficos
       download: Download de zip com bibliografias de tipo arquivo
       summary: Tabela contendo toda a bibliografia cadastrada para a turma, contendo a referência bibliográfica completa e o tipo da bibliografia para indicar se é livro, artigo, periódico etc.
+      download_file: Download do arquivo %{file}
     list:
       new: Nova Bibliografia
       item: Item
@@ -1978,6 +1979,8 @@ pt_BR:
       group: Grupo
       hour_period: "%{start_hour}h - %{end_hour}h"
       controlled: Controlada
+      choose_at_least_one: "Selecione, ao menos, um trabalho"
+      choose_one: Selecione um trabalho
     form:
       groups: Turmas
       files: Arquivos
@@ -2021,6 +2024,8 @@ pt_BR:
       not_range_webconference: Deve estar dentro do período do trabalho
       invalid_datetime: "Não é possível agendar a webconferência em datas pretéritas"
       change_type_after_period: não pode ser alterado após término do trabalho
+      controlled: Trabalho controlado deve ter, pelo menos, um IP
+      controlled_date: Não é possível remover IPs de trabalhos já iniciados ou encerrados
     show:
       name: Nome
       enunciation: Enunciado
@@ -2715,8 +2720,10 @@ pt_BR:
 
   schedules:
     errors:
-      current_year: não deve preceder o ano atual
-      current_date: não deve preceder o dia de hoje
+      current_year: não deve ser posterior ao ano atual
+      current_date: não deve ser anterior ao dia de hoje
+      offer_end: não deve ser posterior à oferta
+      offer_start: não deve ser anterior à oferta
     to: "à "
     list:
       assignments: Trabalho
@@ -3663,6 +3670,7 @@ pt_BR:
       summary_evaluative: "Está tabela contém todas as provas avaliativas."
       summary_frequency: "Está tabela contém todas as provas de frequência."
       summary_notevaluative: "Está tabela contém todas as provas não avaliativas."
+      liberated: "Resultado liberado: %{datetime}"
     success:
       created: Prova criada com sucesso
       updated: Prova atualizada com sucesso
@@ -3721,6 +3729,7 @@ pt_BR:
       info:
         continue: Continuar
         duration: Tempo que o aluno terá para responder a prova após iniciá-la.
+        liberated_date: Resultado de prova
       control:
         continue: Continuar
         previous: Anterior
@@ -3816,6 +3825,10 @@ pt_BR:
       unique_choice: Deve ter apenas uma resposta
       restrict: "Localização não permitida"
       uninterrupted: Você não pode continuar a prova, pois ela é ininterrupta e já foi iniciada. Aguarde o fim da prova para visualizar o resultado.
+      liberated_date: A data de liberação do resultado da prova deve ser pelo menos 1 dia após o final da prova
+      liberated_date_hour: O horário de liberação do resultado deve ser igual ou posterior ao horário de término da prova
+      controlled: Prova controlada deve ter, pelo menos, um IP
+      controlled_date: Não é possível remover IPs de provas já iniciadas ou encerradas
     show:
       groups: Turmas
       empty_group: Turma vazia

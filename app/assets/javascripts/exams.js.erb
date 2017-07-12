@@ -9,8 +9,7 @@ function save_question(duration) {
   get_duration(duration);
   $(".edit_exam_response").submit();
   setTimeout(function() {
-    $('.next_page').attr('aria-label', "<%= I18n.t(:navigation_next_page) %>");
-    $('.previous_page').attr('aria-label', "<%= I18n.t(:navigation_previous_page) %>");
+    pagination_aria_label();
   }, 400);
 
 }

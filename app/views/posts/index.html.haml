@@ -50,17 +50,14 @@
 .block_wrapper
   = link_to t(:back), :back, { class: 'btn' , id: 'back' }, :'aria-label' => t(:back)
 
-= javascript_include_tag 'ckeditor/init', 'discussions',  'contextual_help/discussion_posts', 'audios'
+= javascript_include_tag 'ckeditor/init', 'discussions',  'contextual_help/discussion_posts', 'audios', 'pagination'
 
 :javascript
 
   var locale = "#{I18n.locale}";
   $("#button_new_post").focus();
-  //$('.next_page').attr("aria-label", "#{t(:navigation_next_page)}");  
-  //$('.previous_page').attr("aria-label", "#{t(:navigation_previous_page)}");  
 
   $(function(){
-    
 
     CKEDITOR_BASEPATH  = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
     var websocket_host = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["host"]}";
@@ -86,8 +83,7 @@
         $('#forum_pagination').html(b[0] + "#{t('.primary')}.");
       }  
     }
-    
-    
+        
     /*Conexão com o WebSocket*/
     var ws = new WebSocket('ws://'+websocket_host+':'+websocket_port+'/'+ac); // file websocket_server.rb
     ws.onopen = function (){ }; // ao iniciar ws

@@ -4,7 +4,7 @@
 = f.simple_fields_for :schedule do |s|
   .schedule_dates
     .left
-      = s.input :start_date, as: :string, input_html: { id: 'exam_start_date', value: l(f.object.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
+      = s.input :start_date, as: :string, input_html: { id: 'exam_start_date', value: l(f.object.schedule.start_date.try(:to_date) || Date.today, format: :datepicker) }
     .right_form
       = s.input :end_date, as: :string, input_html: { id: 'exam_end_date', value:  l(f.object.schedule.end_date.try(:to_date) || Date.today, format: :datepicker) }
 
@@ -16,6 +16,8 @@
 
 = f.input :duration, input_html: { :"data-tooltip" => t('exams.form.info.duration') }
 
+= f.input :liberated_date, as: :string, label: t('exams.form.info.liberated_date')
+
 = render 'groups/codes'
 
 .form-actions.right_buttons
@@ -23,6 +25,7 @@
   = button_to_function t('.continue'), 'go_to_config(event)', class: 'btn btn_main btn_lightbox', alt: 'continuar', type: 'button', id: '_continue', onkeypress: 'go_to_config(event)'
 
 = javascript_include_tag 'ckeditor/init'
+= javascript_include_tag 'jquery-ui-timepicker-addon'
 
 :javascript
   $(function(){
@@ -68,6 +71,9 @@
 
     // evento de keypress do fancybox nao funciona pra esse form
     $("form#exam_form .form-inputs").keypress(function(e) { if (e.which == 13) e.preventDefault(); });
+
+    // datetimepicker form para liberação do resultado de prova
+    $("#exam_liberated_date").on("focusin", edit_liberated_date);
   });
 
   // function verify_dates(){
@@ -82,7 +88,8 @@
     if(keynum == 13 || event.type == 'click') {
       save_values_ckeditor();
       $('form#exam_form').serialize_and_submit({
-        replace_list: $('.list_exams:last')
+        replace_list: $('.list_exams:last'),
+        outer: 'fancybox-outer'
       });
       setTimeout(function() {
         focuInpuErro();
@@ -104,4 +111,23 @@
       $('li.control').removeClass('active');
       $('#dot-control').removeClass('active');
     }
+  }
+
+  function edit_liberated_date() {
+    var liberated_date = $("#exam_liberated_date").val();
+
+    if( liberated_date !== "" && liberated_date.includes("-") ) {
+        var array_libarated_date = liberated_date.split(" ");
+        var array_date = array_libarated_date[0].split("-");
+
+        var formatted_date_time = array_date[2] + "/" + array_date[1] + "/" + array_date[0] + " " + array_libarated_date [1];
+
+        $("#exam_liberated_date").val(formatted_date_time);
+    }
+
+    $("#exam_liberated_date").mask("#{I18n.t('date.formats.mask_with_time')}");
+    $("#exam_liberated_date").datetimepicker({
+      timeInput: true,
+      controlType: 'select'
+    });
   }

@@ -12,8 +12,6 @@ class Notification < ActiveRecord::Base
 
   accepts_nested_attributes_for :schedule
 
-  before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # data final obrigatoria
-
   validates :title, :description, :schedule, presence: true
   validates :title, length: { maximum: 255 }
 

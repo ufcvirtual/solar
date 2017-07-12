@@ -197,11 +197,12 @@
             %span#aCurrentPbr= 1        
 
 
+= javascript_include_tag 'pagination'
+
 :javascript
-  $('.next_page').attr("aria-label", "#{t(:navigation_next_page)}");  
-  $('.previous_page').attr("aria-label", "#{t(:navigation_previous_page)}"); 
   
   $(function(){
+
     $(document.body).on('change','select, input',function(){
       change();
     });

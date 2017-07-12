@@ -21,11 +21,10 @@ class Exam < Event
   validates :number_questions, :attempts, :duration, numericality: { greater_than_or_equal_to: 1, allow_blank: false }
   validates :start_hour, presence: true, if: lambda { |c| c[:start_hour].blank?  && !c[:end_hour].blank? }
   validates :end_hour  , presence: true, if: lambda { |c| !c[:start_hour].blank? && c[:end_hour].blank?  }
-  
+
   validate :can_edit?, only: :update
   validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
-  
-  before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # mandatory final date
+  validate :check_liberate_date, if: '!liberated_date.blank?'
 
   accepts_nested_attributes_for :schedule
 
@@ -88,6 +87,7 @@ class Exam < Event
     query << "academic_allocation_users.user_id = :user_id "   unless user_id.blank?
     query << "academic_allocations.allocation_tag_id IN (#{ats}) "  unless ats.blank?
     query << "exam_user_attempts.grade IS NULL" unless all.blank?
+    query << "exams.liberated_date <= NOW()" unless liberated_date.blank?
     query << "(schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour IS NOT NULL AND end_hour != '' AND end_hour::time < current_time))"
 
     AcademicAllocationUser.joins(academic_allocation: [exam: :schedule])
@@ -153,7 +153,8 @@ class Exam < Event
   end
 
   def self.correction_cron
-    list_exam = Exam.includes(:schedule).where("schedules.end_date<current_date AND auto_correction=TRUE")
+    query = "schedules.end_date < current_date AND auto_correction = TRUE AND (liberated_date IS NULL OR (liberated_date IS NOT NULL AND liberated_date <= NOW()))"
+    list_exam = Exam.includes(:schedule).where(query)
     list_exam.each do |exam|
       exam.recalculate_grades(nil, nil, true)
     end
@@ -421,6 +422,33 @@ class Exam < Event
 
   def self.percent(total, answered)
     ((answered.to_f/total.to_f)*100).round(2)
+  end
+
+  def show_calcule_grade?
+    return true if liberated_date.blank?
+    Time.parse(liberated_date.to_s) - Time.now() < 0
+  end
+
+  def self.show_calcule_grade_by_tools?(exam_id)
+    exam = Exam.find(exam_id)
+    exam.show_calcule_grade?
+  end
+
+  def check_liberate_date
+    unless end_hour.blank? # start_date == end_date
+      errors.add(:liberated_date, I18n.t('exams.error.liberated_date_hour')) if Time.parse(liberated_date.to_s) - Time.parse(schedule.end_date.to_s + " " + end_hour.to_s) < 0
+    else # start_date != end_date
+      date_liberated = Time.parse(liberated_date.to_s)
+      date_end = Time.parse(schedule.end_date.to_s)
+      if date_liberated.year < date_end.year
+        errors.add(:liberated_date, I18n.t('exams.error.liberated_date'))
+      elsif date_liberated.year == date_end.year && date_liberated.mon < date_end.mon
+        errors.add(:liberated_date, I18n.t('exams.error.liberated_date'))
+      elsif date_liberated.year == date_end.year && date_liberated.mon == date_end.mon && date_liberated.day <= date_end.day
+        errors.add(:liberated_date, I18n.t('exams.error.liberated_date'))
+      end
+    end
+    # errors.add(:liberated_date, I18n.t('exams.error.liberated_date')) if Time.parse(liberated_date.to_s) - Time.parse(schedule.end_date.to_s) < 0
   end
 
 end
