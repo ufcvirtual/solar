@@ -6,7 +6,7 @@
       - @exam_responses = find_exam_responses(@last_attempt, question.id)
       - @unique_id = ExamResponse.is_unique?(@exam_responses) ? ExamResponse.get_question_item_id(@exam_responses) : false rescue false
       - number_question = number_question+1
-    - if @disabled
+    - if @disabled || @preview
       - score = '<div class="scores">'+t('exams.open.scores', score: question.score)+'</div>'
     - if question.annulled
       - anull = '<div class="annulled">'+t('exams.open.anull')+'</div>'

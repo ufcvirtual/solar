@@ -3967,6 +3967,7 @@ pt_BR:
       show: "Versão textual"
       show_alt: Expandir versão textual do áudio
       hide_alt: Ocultar versão textual do áudio
+      score: Pontuação
     question:
       preview: Visualização
       public: Pública

@@ -3718,6 +3718,7 @@ en_US:
       show: "Text version"
       show_alt: "Expand audio's text version"
       hide_alt: "Hide audio's text version"
+      score: Scores
     question:
       preview: Preview
       public: Public
