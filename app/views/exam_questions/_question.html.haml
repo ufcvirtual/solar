@@ -54,6 +54,7 @@
       - unless labels.blank?
         .group_label= render 'questions/labels', labels: labels
   %td{ style: 'text-align:center;' }= question.type
+  %td{ style: 'text-align:center;' }= question.score
   %td{ style: 'text-align:center;' }= l(question.updated_at, format: :normal)
   %td{ style: 'text-align:center;', class: hide_columns ? 'invisible' : '' }= link_to_function content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('questions.question.preview')), 'preview_question(this)', :'data-url' => question_path(question), class: 'preview_question', disabled: !(can_see_preview && question.can_see?(true))
   %td{ style: 'text-align:center;' }= question.privacy? ? content_tag(:i, nil, class: 'icon-lock', :'data-tooltip' => t('questions.question.private')) : content_tag(:i, nil, class: 'icon-minus', :"data-tooltip" => t('questions.question.public'))
