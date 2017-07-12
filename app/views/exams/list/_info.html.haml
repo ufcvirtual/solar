@@ -17,12 +17,14 @@
           = label_tag :draft_exam, t('exams.list.draft_exam')
         - hours = exam.start_hour.blank? ? '' : [exam.start_hour, exam.end_hour].join(t('exams.list.to'))
         = label_tag  t('exams.list.period', dstart: l(exam.schedule.start_date, format: :normal), dend: l(exam.schedule.end_date, format: :normal) , hours: hours)
+        -# - unless exam.liberated_date.blank?
+          = label_tag t('exams.list.liberated', datetime: l(exam.liberated_date, format: :at_date))
         = label_tag t('exams.list.amount_questions', added: count, amount: exam.number_questions)
         - if show_buttons
-          - if exam.status && exam.ended?
+          - if exam.status && exam.ended? && exam.show_calcule_grade?
             = link_to_function (t('exams.list.calculate')), 'calcule_grade_exam(this)', class: "btn btn_main calculate", :'data-url' => calcule_grade_exam_path(exam, allocation_tags_ids: @allocation_tags_ids)
 
           = link_to_function (exam.status ? t('exams.list.published') : t('exams.list.unpublished')), 'change_status_exam(this)', class: "btn btn_main #{(exam.status ? 'published' : 'unpublished')}", :'data-url' => change_status_exam_path(exam, allocation_tags_ids: @allocation_tags_ids)
-         
+
   - if has_group
     = render 'groups/groups_tags', tags

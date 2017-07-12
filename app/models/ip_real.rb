@@ -11,7 +11,7 @@ class IpReal < ActiveRecord::Base
 
   validate :can_create?, on: :create, unless: 'parent.blank?'
   validate :can_change?, on: :update
-  before_destroy :can_destroy?
+  before_destroy :can_destroy_callback?
 
   def validate_ip_v4
     errors.add(:ip_v4, I18n.t(:ip, scope: [:ip_reals, :errors])) unless Resolv::IPv4::Regex =~ ip_v4
@@ -40,7 +40,18 @@ class IpReal < ActiveRecord::Base
   end
 
   def can_destroy?
-    return false if (!ip_v4_was.blank? || !ip_v6_was.blank?) && parent.started?
+    if ((!ip_v4_was.blank? || !ip_v6_was.blank?) && (parent.started? && (!parent.respond_to?(:status) || parent.status)))
+      return false
+    end
+    return true
+  end
+
+  def can_destroy_callback?
+    Rails.logger.info "\n\nOI\n\n"
+    if parent.ip_reals.size == 1
+      raise 'controlled'
+    end
+    raise 'controlled_date' unless can_destroy?
   end
 
   def parent

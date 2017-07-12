@@ -341,7 +341,7 @@ class ExamsController < ApplicationController
     params.require(:exam).permit(:name, :description, :duration, :start_hour, :end_hour,
                                  :random_questions, :raffle_order, :auto_correction,
                                  :block_content, :number_questions, :attempts, :controlled,
-                                 :attempts_correction, :result_email, :uninterrupted,
+                                 :attempts_correction, :result_email, :uninterrupted, :liberated_date,
                                  schedule_attributes: [:id, :start_date, :end_date],
                                  ip_reals_attributes: [:id, :ip_v4, :ip_v6, :use_local_network, :_destroy])
   end

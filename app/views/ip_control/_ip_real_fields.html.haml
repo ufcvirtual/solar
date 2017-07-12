@@ -7,7 +7,7 @@
       = f.add_nested_fields_link :ip_reals, t('.add_new_ip_reals'), class: 'btn btn_main'
 
   = f.nested_fields_for :ip_reals, wrapper_tag: :div do |ip|
-    - can_destroy = ip.object.new_record? || ip.object.can_destroy?
+    - can_destroy = (ip.object.new_record? || ip.object.can_destroy?)
     - select_ip = ip.object.ip_v6.blank? ? 'ipv4' : 'ipv6'
     - very_ipv6 = select_ip == 'ipv6' ? 'ipv6' : false
     = label_tag t(".select_type"), nil, class: "select_ip_label"

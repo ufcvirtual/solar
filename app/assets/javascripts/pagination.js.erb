@@ -1,0 +1,14 @@
+$(function(){
+  pagination_aria_label();
+});
+
+function pagination_aria_label(){
+  $('.next_page').attr("aria-label", "<%=I18n.t(:navigation_next_page)%>");  
+  $('.previous_page').attr("aria-label", "<%=I18n.t(:navigation_previous_page)%>"); 
+
+  $('.pagination').children("a").each(function() {
+      var num = $(this).text();
+      if(!isNaN(num))
+        $(this).attr('aria-label', "<%=I18n.t(:navigation_page)%>" +num);
+  });
+}

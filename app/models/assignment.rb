@@ -18,8 +18,6 @@ class Assignment < Event
   validates :end_hour  , presence: true, if: lambda { |c| !c[:start_hour].blank? && c[:end_hour].blank?  }
   validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
 
-  before_validation proc { self.schedule.check_end_date = true }, if: 'schedule' # data final obrigatoria
-
   accepts_nested_attributes_for :schedule
   accepts_nested_attributes_for :enunciation_files, allow_destroy: true, reject_if: proc { |attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank? }
 

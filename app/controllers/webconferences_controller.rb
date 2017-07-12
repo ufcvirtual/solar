@@ -57,11 +57,8 @@ class WebconferencesController < ApplicationController
     @webconference.moderator = current_user
 
     begin
-      Webconference.transaction do
-        @webconference.save!
-        @webconference.academic_allocations.create! @allocation_tags_ids.map { |at| { allocation_tag_id: at } }
-        @webconference.verify_quantity(@allocation_tags_ids)
-      end
+      @webconference.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten
+      @webconference.save!
       render json: { success: true, notice: t(:created, scope: [:webconferences, :success]) }
     rescue ActiveRecord::AssociationTypeMismatch
       render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity

@@ -11,6 +11,8 @@ module AcademicTool
 
     after_create :define_academic_associations, unless: 'allocation_tag_ids_associations.nil?'
 
+    before_validation :set_schedule, if: 'respond_to?(:schedule)'
+
     attr_accessor :allocation_tag_ids_associations
   end
 
@@ -22,6 +24,11 @@ module AcademicTool
       else
         academic_allocations.create
       end  
+    end
+
+    def set_schedule
+      self.schedule.check_end_date = true # mandatory final date
+      self.schedule.verify_offer_ats = allocation_tag_ids_associations
     end
 
 end

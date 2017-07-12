@@ -9,7 +9,7 @@ class ExamQuestion < ActiveRecord::Base
   accepts_nested_attributes_for :question
 
   validates :score, presence: true
-  validates :score, numericality: { greater_than_or_equal_to: 0.5, allow_blank: false, less_than_or_equal_to: 10 }
+  validates :score, numericality: { greater_than_or_equal_to: 0.1, allow_blank: false, less_than_or_equal_to: 10 }
 
   before_create :set_order
 

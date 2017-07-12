@@ -9,7 +9,7 @@
       - num_question =  num_question + 1
 
       %li.item
-        = radio_button_tag 'item', :value, nil, disabled: true
+        = radio_button_tag 'item', :value, qi.value, disabled: true
         = label_tag 'item', class: '' do
           %span= arr_alf[num_question]+') '
           %span= qi.description.html_safe
@@ -36,7 +36,7 @@
       - num_question =  num_question + 1
 
       %li.item
-        = check_box_tag "item#{qi.id}", true, false, {disabled: true}
+        = check_box_tag "item#{qi.id}", true, qi.value, {disabled: true}
         = label_tag "item#{qi.id}", class: '' do
           %span= arr_alf[num_question]+') '
           %span= qi.description.html_safe
@@ -64,7 +64,7 @@
       - num_question =  num_question + 1
 
       %li.item
-        = select_tag "item#{qi.id}", options_for_select(['', t('questions.form.f_option'), t('questions.form.t_option')]) , {disabled: true}
+        = select_tag "item#{qi.id}", options_for_select(['', [t('questions.form.f_option'), false], [t('questions.form.t_option'), true]], selected: qi.value) , {disabled: true}
         = label_tag "item#{qi.id}", class: '' do
           %span= arr_alf[num_question]+') '
           %span= qi.description.html_safe
@@ -96,6 +96,8 @@
           %p
             = t(:control_audio, scope: [:questions, :questions])
             %span#aCurrentPbr= 1                    
+
+= javascript_include_tag 'pagination'
 
 :javascript
   $(function(){
