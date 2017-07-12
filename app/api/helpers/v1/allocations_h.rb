@@ -4,6 +4,7 @@ module V1::AllocationsH
   def allocate_professors(group, cpfs)
     group.allocations.where(profile_id: 17).update_all(status: 2) # cancel all previous allocations
 
+    cpfs = cpfs.reject { |c| c.empty? }
     cpfs.each do |cpf|
       professor = verify_or_create_user(cpf)
       group.allocate_user(professor.id, 17)
