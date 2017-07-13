@@ -133,8 +133,8 @@ class GroupAssignmentsController < ApplicationController
 
     def situation(assignment, has_files, has_group, acu)
       case
-      when !assignment.started? then 'not_started'
       when (assignment.type_assignment == Assignment_Type_Group && !has_group) then 'without_group'
+      when !assignment.started? then 'not_started'
       when (!acu.try(:grade).blank? || !acu.try(:working_hours).blank?) then (score_type == 'frequency' ? acu.working_hours : acu.grade)
       when has_files then 'sent'
       when assignment.on_going? then 'to_send'

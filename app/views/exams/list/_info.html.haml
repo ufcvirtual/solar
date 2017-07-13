@@ -8,6 +8,12 @@
       - if show_buttons
         - if @can_see_preview
           = link_to_function content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('questions.question.preview')), 'preview_exam(this)', :'data-url' => preview_exam_path(exam, allocation_tags_ids: @allocation_tags_ids), class: 'preview_exam'
+        - unless exam.liberated_date.blank?
+          %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{exam.id}", :'data-tooltip' => t('exams.list.info_exam'), onkeydown: 'click_on_keypress(event, this);' }
+            %i.icon-info2
+          .dropdown.dropdown-tip{ id: "dropdown_eq_#{exam.id}" }
+            %ul{ class: 'dropdown-menu' }
+              = raw t('exams.list.liberated', datetime: l(exam.liberated_date, format: :at_date))
         = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_exam_path(exam, allocation_tags_ids: @allocation_tags_ids), class: 'block_title_button edit_exam', :'data-tooltip' => t('exams.list.edit_exam')
         = link_to_function (content_tag(:i, nil, class: 'icon-trash')), 'delete_exam(this)', class: 'block_title_button delete_exam', :'data-link-delete' => exam_path(exam, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('exams.list.delete_exam'), :"data-parent" => "exam_#{exam.id}"
 
@@ -17,8 +23,6 @@
           = label_tag :draft_exam, t('exams.list.draft_exam')
         - hours = exam.start_hour.blank? ? '' : [exam.start_hour, exam.end_hour].join(t('exams.list.to'))
         = label_tag  t('exams.list.period', dstart: l(exam.schedule.start_date, format: :normal), dend: l(exam.schedule.end_date, format: :normal) , hours: hours)
-        -# - unless exam.liberated_date.blank?
-          = label_tag t('exams.list.liberated', datetime: l(exam.liberated_date, format: :at_date))
         = label_tag t('exams.list.amount_questions', added: count, amount: exam.number_questions)
         - if show_buttons
           - if exam.status && exam.ended? && exam.show_calcule_grade?

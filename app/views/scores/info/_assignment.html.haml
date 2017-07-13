@@ -8,7 +8,7 @@
         %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_assig", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_assignments_not_evaluative')
 
   .block_content
-    .tools.show#evaluative_assig
+    .tools.show.evaluative#evaluative_assig
       .block_content
         - unless @assigments_evaluative.blank?
           %table.tb_list{:summary=> t("assignments.list.summary_evaluative")}
@@ -58,10 +58,10 @@
                   %td.center{headers: "as_eval_date"}
                     %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
                     %div= [(assignment.start_hour), (assignment.end_hour)].compact.join(' - ')
-                  %td.center{class: "assignment_#{assignment.situation} #{['u', assignment.id.to_s, @user.id.to_s].join('_')} #{['g', assignment.id.to_s, assignment.group_id.to_s].join('_')} situation", headers: "as_eval_sit"}= t(assignment.situation.to_sym)
+                  %td.center{class: "assignment_#{assignment.situation} #{['assignment', 'u', assignment.id.to_s, @user.id.to_s].join('_')} #{['assignment', 'g', assignment.id.to_s, assignment.group_id.to_s].join('_')} situation", headers: "as_eval_sit"}= t(assignment.situation.to_sym)
                   %td.center{headers: "as_eval_int"}
                     = link_to_function assignment.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'evaluative'), onkeydown: 'click_on_keypress(event, this);', class: 'open_evaluation'
-                  %td.center{headers: "as_eval_gra", class: "#{['u', assignment.id.to_s, @user.id.to_s].join('_')} #{['g', assignment.id.to_s, assignment.group_id.to_s].join('_')}"}= assignment.grade
+                  %td.center{headers: "as_eval_gra", class: "#{['assignment','u', assignment.id.to_s, @user.id.to_s].join('_')} #{['assignment','g', assignment.id.to_s, assignment.group_id.to_s].join('_')}"}= assignment.grade
                   - if @can_evaluate_ass
                     %td.center{headers: "as_eval_ass"}
                       = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'evaluative'), class: 'btn open_evaluation', onkeydown: 'click_on_keypress(event, this);'
@@ -69,7 +69,7 @@
         - else
           .block_content.block_content_text= t(:itens_not_found)
 
-    .tools#frequency_assig
+    .tools.frequency#frequency_assig
       .block_content
         - unless @assigments_frequency.blank?
           %table.tb_list{:summary=> t("assignments.list.summary_frequency")}
@@ -119,10 +119,10 @@
                   %td.center{headers: "as_freq_date"}
                     %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
                     %div= [(assignment.start_hour), (assignment.end_hour)].compact.join(' - ')
-                  %td.center{class: "assignment_#{assignment.situation} #{['u', assignment.id.to_s, @user.id.to_s].join('_')} #{['g', assignment.id.to_s, assignment.group_id.to_s].join('_')} situation", headers: "as_freq_sit"}= t(assignment.situation.to_sym)
+                  %td.center{class: "assignment_#{assignment.situation} #{['assignment','u', assignment.id.to_s, @user.id.to_s].join('_')} #{['g', assignment.id.to_s, assignment.group_id.to_s].join('_')} situation", headers: "as_freq_sit"}= t(assignment.situation.to_sym)
                   %td.center{headers: "as_freq_int"}
                     = link_to_function assignment.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'frequency'), onkeydown: 'click_on_keypress(event, this);', class: 'open_evaluation'
-                  %td.center{headers: "as_freq_freq", class: "#{['u', assignment.id.to_s, @user.id.to_s].join('_')} #{['g', assignment.id.to_s, assignment.group_id.to_s].join('_')}"}= assignment.working_hours
+                  %td.center{headers: "as_freq_freq", class: "#{['assignment','u', assignment.id.to_s, @user.id.to_s].join('_')} #{['assignment','g', assignment.id.to_s, assignment.group_id.to_s].join('_')}"}= assignment.working_hours
                   - if @can_evaluate_ass
                     %td.center{headers: "as_freq_ass"}
                       = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'frequency'), class: 'btn open_evaluation', onkeydown: 'click_on_keypress(event, this);'
@@ -130,7 +130,7 @@
         - else
           .block_content.block_content_text= t(:itens_not_found)
   
-    .tools#notevaluative_assig
+    .tools.notevaluative#notevaluative_assig
       .block_content
         - unless @assigments_not_evaluative.blank?
           %table.tb_list{:summary=> t("assignments.list.summary_notevaluative")}
@@ -181,10 +181,10 @@
                   %td.center{headers: "as_not_date"}
                     %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
                     %div= [(assignment.start_hour), (assignment.end_hour)].compact.join(' - ')
-                  %td.center{class: "assignment_#{assignment.situation} #{['u', assignment.id.to_s, @user.id.to_s].join('_')} #{['g', assignment.id.to_s, assignment.group_id.to_s].join('_')} situation", headers: "as_not_sit"}= t(assignment.situation.to_sym)
+                  %td.center{class: "assignment_#{assignment.situation} #{['assignment','u', assignment.id.to_s, @user.id.to_s].join('_')} #{['assignment','g', assignment.id.to_s, assignment.group_id.to_s].join('_')} situation", headers: "as_not_sit"}= t(assignment.situation.to_sym)
                   %td.center{headers: "as_not_int"}
                     = link_to_function assignment.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'not_evaluative'), onkeydown: 'click_on_keypress(event, this);', class: 'open_evaluation'
-                  %td.center{headers: "as_not_gra", class: "#{['u', assignment.id.to_s, @user.id.to_s].join('_')} #{['g', assignment.id.to_s, assignment.group_id.to_s].join('_')}"}= assignment.grade
+                  %td.center{headers: "as_not_gra", class: "#{['assignment','u', assignment.id.to_s, @user.id.to_s].join('_')} #{['assignment','g', assignment.id.to_s, assignment.group_id.to_s].join('_')}"}= assignment.grade
                   - if @can_evaluate_ass
                     %td.center{headers: "as_not_ass"}
                       = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'not_evaluative'), class: 'btn open_evaluation'

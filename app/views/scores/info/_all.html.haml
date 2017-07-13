@@ -8,7 +8,7 @@
         %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_all", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_all_not_evaluative')
   
   .block_content
-    .tools.show#evaluative_all
+    .tools.show.evaluative#evaluative_all
       - unless @tool_evaluative.empty?
         - is_user = (@user.id == current_user.id)
         %table.tb_list{:summary=> t("scores.list.summary_evaluative")}
@@ -70,11 +70,11 @@
                     %div= [l(tool.start_date.to_date), l(tool.end_date.to_date)].join(' - ')
                     %div= [(tool.start_hour), (tool.end_hour)].join(' - ') unless tool.start_hour.blank?
                 %td.center{headers: "al_eva_sit"}
-                  %div{class: "assignment_#{(available ? tool.situation : 'not_started')} #{['u', tool.id.to_s, @user.id.to_s].join('_')} #{['g', tool.id.to_s, tool.group_id.to_s].join('_')} situation"}= (available ? t(tool.situation, :scope => [:scores, :situation]) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
+                  %div{class: "assignment_#{(available ? tool.situation : 'not_started')} #{[tool.academic_tool_type.downcase.delete('_'), 'u', tool.id.to_s, @user.id.to_s].join('_')} #{[tool.academic_tool_type.downcase.delete('_'), 'g', tool.id.to_s, tool.group_id.to_s].join('_')} situation"}= (available ? t(tool.situation, :scope => [:scores, :situation]) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
                 %td.center{headers: "al_eva_int"}
                   - unless tool.count.blank?
                     = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.count.to_s + t('scores.info.interactions') + t(:of) + tool.name + t('fancybox.open')), class: 'open_evaluation'
-                %td.center.grade{headers: "al_eva_gra", class: "#{['u', tool.id.to_s, @user.id.to_s].join('_')} #{['g', tool.id.to_s, tool.group_id.to_s].join('_')}"}
+                %td.center.grade{headers: "al_eva_gra", class: "#{[tool.academic_tool_type.downcase.delete('_'), 'u', tool.id.to_s, @user.id.to_s].join('_')} #{[tool.academic_tool_type.downcase.delete('_'), 'g', tool.id.to_s, tool.group_id.to_s].join('_')}"}
                   = tool.grade.blank? ? ' - ' : tool.grade.to_f
                 %td{headers: "al_eva_bla"}
                   - if (tool.academic_tool_type != 'Exam' && @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate)) || @can_evaluate.include?(tool.academic_tool_type.to_s.tableize => :calcule_grades)
@@ -83,8 +83,8 @@
       - else
         .block_content.block_content_text= t(:itens_not_found)
 
-    .tools#frequency_all
-      - unless  @tool_frequency.empty?
+    .tools.frequency#frequency_all
+      - unless @tool_frequency.empty?
         - is_user = (@user.id == current_user.id)
         %table.tb_list{:summary=> t("scores.list.summary_frequency")}
           %thead
@@ -146,11 +146,11 @@
                     %div= [l(tool.start_date.to_date), l(tool.end_date.to_date)].join(' - ')
                     %div= [(tool.start_hour), (tool.end_hour)].join(' - ') unless tool.start_hour.blank?
                 %td.center{headers: "al_fre_sit"}
-                  %div{class: "assignment_#{(available ? tool.situation : 'not_started')} #{['u', tool.id.to_s, @user.id.to_s].join('_')} #{['g', tool.id.to_s, tool.group_id.to_s].join('_')} situation"}= (available ? t(tool.situation, :scope => [:scores, :situation]) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
+                  %div{class: "assignment_#{(available ? tool.situation : 'not_started')} #{[tool.academic_tool_type.downcase.delete('_'), 'u', tool.id.to_s, @user.id.to_s].join('_')} #{[tool.academic_tool_type.downcase.delete('_'), 'g', tool.id.to_s, tool.group_id.to_s].join('_')} situation"}= (available ? t(tool.situation, :scope => [:scores, :situation]) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
                 %td.center{headers: "al_fre_int"}
                   - unless tool.count.blank?
                     = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'frequency'), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.count.to_s + t('scores.info.interactions') + t(:of) + tool.name + t('fancybox.open')), class: 'open_evaluation'
-                %td.center.wh{headers: "al_fre_fre", class: "#{['u', tool.id.to_s, @user.id.to_s].join('_')} #{['g', tool.id.to_s, tool.group_id.to_s].join('_')}"}= (tool.working_hours.blank? ? ' - ' : tool.working_hours.to_i)
+                %td.center.wh{headers: "al_fre_fre", class: "#{[tool.academic_tool_type.downcase.delete('_'), 'u', tool.id.to_s, @user.id.to_s].join('_')} #{[tool.academic_tool_type.downcase.delete('_'), 'g', tool.id.to_s, tool.group_id.to_s].join('_')}"}= (tool.working_hours.blank? ? ' - ' : tool.working_hours.to_i)
                 %td{headers: "al_fre_bla"}
                   - if (tool.academic_tool_type != 'Exam' && @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate)) || @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :calcule_grades)
                     = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'frequency'), class: 'btn open_evaluation', onkeydown: 'click_on_keypress(event, this);'
@@ -158,7 +158,7 @@
       - else
         .block_content.block_content_text= t(:itens_not_found)
 
-    .tools#notevaluative_all
+    .tools.not_evaluative#notevaluative_all
       - unless @tool_not_evaluative.empty?
         - is_user = (@user.id == current_user.id)
         %table.tb_list{:summary=> t("scores.list.summary_notevaluative")}
@@ -218,7 +218,7 @@
                     %div= [l(tool.start_date.to_date), l(tool.end_date.to_date)].join(' - ')
                     %div= [(tool.start_hour), (tool.end_hour)].join(' - ') unless tool.start_hour.blank?
                 %td.center{headers: "al_not_sit"}
-                  %div{class: "assignment_#{(available ? tool.situation : 'not_started')} #{['u', tool.id.to_s, @user.id.to_s].join('_')} #{['g', tool.id.to_s, tool.group_id.to_s].join('_')} situation"}= (available ? t(tool.situation, :scope => [:scores, :situation]) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
+                  %div{class: "assignment_#{(available ? tool.situation : 'not_started')} #{[tool.academic_tool_type.downcase.delete('_'), 'u', tool.id.to_s, @user.id.to_s].join('_')} #{[tool.academic_tool_type.downcase.delete('_'), 'g', tool.id.to_s, tool.group_id.to_s].join('_')} situation"}= (available ? t(tool.situation, :scope => [:scores, :situation]) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
                 %td.center{headers: "al_not_int"}
                   - unless tool.count.blank?
                     = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'not_evaluative'), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.count.to_s + t('scores.info.interactions') + t(:of) + tool.name + t('fancybox.open')), class: 'open_evaluation'

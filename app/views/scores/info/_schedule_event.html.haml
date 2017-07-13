@@ -7,7 +7,7 @@
         %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency_eve", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_schedule_frequency') 
         %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_eve", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_schedule_not_evaluative') 
   .block_content
-    .tools.show#evaluative_eve
+    .tools.show.evaluative#evaluative_eve
       .block_content
         - unless @schedules_event_evaluative.blank?
           %table.tb_list{:summary=> t("schedule_events.list.summary_evaluative")}
@@ -53,8 +53,8 @@
                     %div= [l(schedule_event.start_date.to_date, format: :normal), l(schedule_event.end_date.to_date, format: :normal)].join(" - ")
                     - if !schedule_event.start_hour.blank?
                       %div= [(schedule_event.start_hour), (schedule_event.end_hour)].join(' - ')
-                  %td.center{class: "assignment_#{schedule_event.situation} #{['u', schedule_event.id.to_s, @user.id.to_s].join('_')} situation", headers: "ev_eva_sit"}= t("scores.situation.#{schedule_event.situation}")
-                  %td.center{headers: "ev_eva_gra", class: "#{['u', schedule_event.id.to_s, @user.id.to_s].join('_')} #{['g', schedule_event.id.to_s, schedule_event.group_id.to_s].join('_')}"}= schedule_event.grade
+                  %td.center{class: "assignment_#{schedule_event.situation} #{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} situation", headers: "ev_eva_sit"}= t("scores.situation.#{schedule_event.situation}")
+                  %td.center{headers: "ev_eva_gra", class: "#{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} #{['g', schedule_event.id.to_s, schedule_event.group_id.to_s].join('_')}"}= schedule_event.grade
                   - if @can_evaluate_ev 
                     %td.center{headers: "ev_eva_eva"}
                       = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id, score_type: 'evaluative'), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])   
@@ -62,7 +62,7 @@
         - else
           .block_content.block_content_text= t(:itens_not_found)
 
-    .tools#frequency_eve
+    .tools.frequency#frequency_eve
       .block_content
         - unless @schedules_event_frequency.blank?
           %table.tb_list{:summary=> t("schedule_events.list.summary_frequency")}
@@ -108,8 +108,8 @@
                     %div= [l(schedule_event.start_date.to_date, format: :normal), l(schedule_event.end_date.to_date, format: :normal)].join(" - ")
                     - if !schedule_event.start_hour.blank?
                       %div= [(schedule_event.start_hour), (schedule_event.end_hour)].join(' - ')
-                  %td.center{class: "assignment_#{schedule_event.situation} #{['u', schedule_event.id.to_s, @user.id.to_s].join('_')} situation", headers: "ev_fre_sit"}= t("scores.situation.#{schedule_event.situation}")
-                  %td.center{headers: "ev_fre_fre", class: "#{['u', schedule_event.id.to_s, @user.id.to_s].join('_')} #{['g', schedule_event.id.to_s, schedule_event.group_id.to_s].join('_')}"}= schedule_event.working_hours
+                  %td.center{class: "assignment_#{schedule_event.situation} #{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} situation", headers: "ev_fre_sit"}= t("scores.situation.#{schedule_event.situation}")
+                  %td.center{headers: "ev_fre_fre", class: "#{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} #{['g', schedule_event.id.to_s, schedule_event.group_id.to_s].join('_')}"}= schedule_event.working_hours
                   - if @can_evaluate_ev
                     %td.center{headers: "ev_fre_eva"}
                       = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id, score_type: 'frequency'), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
@@ -117,7 +117,7 @@
         - else
           .block_content.block_content_text= t(:itens_not_found)
   
-    .tools#notevaluative_eve 
+    .tools.notevaluative#notevaluative_eve 
       .block_content
         - unless @schedules_event_not_evaluative.blank?
           %table.tb_list{:summary=> t("schedule_events.list.summary_notevaluative")}
@@ -161,7 +161,7 @@
                     %div= [l(schedule_event.start_date.to_date, format: :normal), l(schedule_event.end_date.to_date, format: :normal)].join(" - ")
                     - if !schedule_event.start_hour.blank?
                       %div= [(schedule_event.start_hour), (schedule_event.end_hour)].join(' - ')
-                  %td.center{class: "assignment_#{schedule_event.situation} #{['u', schedule_event.id.to_s, @user.id.to_s].join('_')} situation", headers: "ev_not_sit"}= t("scores.situation.#{schedule_event.situation}")
+                  %td.center{class: "assignment_#{schedule_event.situation} #{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} situation", headers: "ev_not_sit"}= t("scores.situation.#{schedule_event.situation}")
         - else
           .block_content.block_content_text= t(:itens_not_found)
 

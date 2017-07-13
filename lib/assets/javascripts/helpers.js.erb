@@ -520,6 +520,7 @@ function focuInpuErro(){
 }
 
 function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
+
   if(data.group_assignment == undefined)
     jQuery.fancybox.close();
 
@@ -532,36 +533,46 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
       class_elem = 'g_'+ac_id.toString()+'_'+group_id.toString();
   }
 
+  var real_grade = '';
+  var real_hours = '';
+
   if(score_type=='evaluative' || score_type=='not_evaluative')
     grade = $('#academic_allocation_user_grade').val();
   else
     grade = $('#academic_allocation_user_working_hours').val();
 
+  real_grade = $('#academic_allocation_user_grade').val();
+  real_hours = $('#academic_allocation_user_working_hours').val();
+  
   if(!$('#academic_allocation_user_grade').length && !$('#academic_allocation_user_working_hours').length)
     grade = data.grade;
 
-
   if(!!$('a.'+class_elem).length){
     grade_or_status = $.isNumeric(grade) ? grade : data.situation;
-    $('a.'+class_elem+':visible').text(grade_or_status);
-    $('a.'+class_elem+':visible').closest('td').attr( "class", data.class_td).addClass(class_name);
+    var element = $('a.'+class_elem+':visible');
+    element.text(grade_or_status);
+    element.closest('td').attr( "class", data.class_td).addClass(class_name);
     if(data.group_assignment != undefined){
       if(data.class_td == 'to_send' || data.class_td == 'not_started'){
-        $('a.'+class_elem+':visible').addClass('disabled');
-        $('a.'+class_elem+':visible').removeAttr('data-url');
+        element.addClass('disabled');
+        element.removeAttr('data-url');
       }else{
-        $('a.'+class_elem+':visible').data('url', data.url);
-        $('a.'+class_elem+':visible').removeClass('disabled');
+        element.data('url', data.url);
+        element.removeClass('disabled');
       }
     }
   }else{
     grade_or_status = $.isNumeric(grade) ? grade : '';
-    $('.'+class_elem+':visible').text(grade_or_status);
 
-    var element = $('.situation.'+class_elem+':visible');
+    $('.'+class_name.toLowerCase()+'_'+class_elem, $('[id^="'+score_type+'"]')).text(grade_or_status);
+
+    $('.tools.evaluative td.'+class_name.toLowerCase()+'_'+class_elem).text(real_grade);
+    $('.tools.frequency td.'+class_name.toLowerCase()+'_'+class_elem).text(real_hours);
+
+    var element = $('.situation.'+class_name.toLowerCase()+'_'+class_elem);
     element.text(data.situation_complete);
-    element.prop('class', 'center situation assignment_'+data.class_td + ' ' + class_elem);
-    $('a.open_evaluation', element.parent().parent()).data('url', data.url);
+    element.prop('class', 'center situation assignment_'+data.class_td + ' ' + class_name.toLowerCase()+'_'+ class_elem);
+    $('a.open_evaluation', element.parent()).data('url', data.url);
   }
 
   flash_message(data.notice, 'notice');
