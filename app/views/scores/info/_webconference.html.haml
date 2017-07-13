@@ -7,7 +7,7 @@
         %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency_web", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_web_conference_frequency')
         %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_web", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_web_conference_not_evaluative')
   .block_content
-    .tools.show#evaluative_web
+    .tools.show.evaluative#evaluative_web
       - unless @webconferences_evaluative.blank?
         %table.webconferences.tb_list{:summary=> t("webconferences.list.summary_evaluative")}
           %thead
@@ -59,11 +59,11 @@
                 %td.center{headers: "we_eva_ava"}
                   %div= l(webconference.start_date.to_date, format: :normal)
                   %div= [l(webconference.start_hour.to_time, format: :today), l(webconference.end_hour.to_time, format: :today)].join(' - ')
-                %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}") + " situation #{['u', webconference.id.to_s, @user.id.to_s].join('_')}", headers: "we_eva_sit"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
+                %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}") + " situation #{['webconference','u', webconference.id.to_s, @user.id.to_s].join('_')}", headers: "we_eva_sit"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
                 %td.center{headers: "we_eva_int"}
                   - unless webconference.count.blank?
                     = link_to_function webconference.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id, user_id: @user.id, group_id: webconference.group_id, situation: webconference.situation, score_type: 'evaluative'), onkeydown: 'click_on_keypress(event, this);'
-                %td.center{headers: "we_eva_gra", class: "#{['u', webconference.id.to_s, webconference.user_id.to_s].join('_')} #{['g', webconference.id.to_s, webconference.group_id.to_s].join('_')}"}= webconference.grade
+                %td.center{headers: "we_eva_gra", class: "#{['webconference','u', webconference.id.to_s, webconference.user_id.to_s].join('_')} #{['g', webconference.id.to_s, webconference.group_id.to_s].join('_')}"}= webconference.grade
                 - if disabled
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_eva_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false', :'aria-label' => t('webconferences.list.watch')
                 - else
@@ -75,7 +75,7 @@
       - else
         .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
 
-    .tools#frequency_web
+    .tools.frequency#frequency_web
       - unless @webconferences_frequency.blank?
         %table.webconferences.tb_list{:summary=> t("webconferences.list.summary_frequency")}
           %thead
@@ -127,11 +127,11 @@
                 %td.center{headers: "we_fre_ava"}
                   %div= l(webconference.start_date.to_date, format: :normal)
                   %div= [l(webconference.start_hour.to_time, format: :today), l(webconference.end_hour.to_time, format: :today)].join(' - ')
-                %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}") + " situation #{['u', webconference.id.to_s, @user.id.to_s].join('_')}", headers: "we_fre_sit"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
+                %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}") + " situation #{['webconference','u', webconference.id.to_s, @user.id.to_s].join('_')}", headers: "we_fre_sit"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
                 %td.center{headers: "we_fre_int"}
                   - unless webconference.count.blank?
                     = link_to_function webconference.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id, user_id: @user.id, group_id: webconference.group_id, situation: webconference.situation, score_type: 'frequency'), onkeydown: 'click_on_keypress(event, this);'
-                %td.center{headers: "we_fre_fre", class: "#{['u', webconference.id.to_s, webconference.user_id.to_s].join('_')} #{['g', webconference.id.to_s, webconference.group_id.to_s].join('_')}"}= webconference.working_hours
+                %td.center{headers: "we_fre_fre", class: "#{['webconference','u', webconference.id.to_s, webconference.user_id.to_s].join('_')} #{['g', webconference.id.to_s, webconference.group_id.to_s].join('_')}"}= webconference.working_hours
                 - if disabled
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_fre_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false', :'aria-label' => t('webconferences.list.watch')
                 - else
@@ -143,7 +143,7 @@
       - else
         .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
     
-    .tools#notevaluative_web 
+    .tools.notevaluative#notevaluative_web 
       - unless @webconferences_not_evaluative.blank?
         %table.webconferences.tb_list{:summary=> t("webconferences.list.summary_notevaluative")}
           %thead
@@ -191,7 +191,7 @@
                 %td.center{headers: "we_not_ava"}
                   %div= l(webconference.start_date.to_date, format: :normal)
                   %div= [l(webconference.start_hour.to_time, format: :today), l(webconference.end_hour.to_time, format: :today)].join(' - ')
-                %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}") + " situation #{['u', webconference.id.to_s, @user.id.to_s].join('_')}", headers: "we_not_sta"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
+                %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}") + " situation #{['webconference','u', webconference.id.to_s, @user.id.to_s].join('_')}", headers: "we_not_sta"}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t("scores.situation.#{webconference.situation}")
                 %td.center{headers: "we_not_int"}
                   - unless webconference.count.blank?
                     = link_to_function webconference.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: webconference.academic_tool_type, ac_id: webconference.id, user_id: @user.id, group_id: webconference.group_id, situation: webconference.situation), onkeydown: 'click_on_keypress(event, this);'

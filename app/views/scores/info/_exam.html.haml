@@ -8,7 +8,7 @@
         %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_exa", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_exams_not_evaluative')
 
   .block_content
-    .tools.show#evaluative_exa      
+    .tools.show.evaluative#evaluative_exa      
       - unless @exams_evaluative.empty?
         - is_user = (@user.id == current_user.id)
         %table.tb_list.list_exams{:summary=> t("exams.list.summary_evaluative")}
@@ -68,7 +68,7 @@
                   %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
                   %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
                 %td.center.situation{headers: "ex_eva_sit_evaluative"}
-                  %div{class: "#{exam.situation} #{['u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
+                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
                 %td.center.grade{headers: "ex_eva_gra_evaluative"}= exam.grade
                 %td{headers: "ex_eva_bla_evaluative"}
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation))
@@ -77,7 +77,7 @@
       - else
         .block_content.block_content_text= t(:itens_not_found)
         
-    .tools#frequency_exa
+    .tools.frequency#frequency_exa
       - unless @exams_frequency.empty?
         - is_user = (@user.id == current_user.id)
         %table.tb_list.list_exams{:summary=> t("exams.list.summary_frequency")}
@@ -138,7 +138,7 @@
                   %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
                   %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
                 %td.center.situation{headers: "ex_eva_sit_frequency"}
-                  %div{class: "#{exam.situation} #{['u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
+                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
                 %td.center.grade{headers: "ex_eva_gra_frequency"}= exam.grade
                 %td.center.wh{headers: "ex_eva_wh_frequency"}= exam.working_hours
                 %td.center{headers: "ex_eva_btn_frequency"}
@@ -148,7 +148,7 @@
       - else
         .block_content.block_content_text= t(:itens_not_found)
     
-    .tools#notevaluative_exa 
+    .tools.notevaluative#notevaluative_exa 
       - unless @exams_not_evaluative.empty?
         - is_user = (@user.id == current_user.id)
         %table.tb_list.list_exams{:summary=> t("exams.list.summary_notevaluative")}
@@ -208,7 +208,7 @@
                   %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
                   %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
                 %td.center.situation{headers: "ex_not_sit"}
-                  %div{class: "#{exam.situation} #{['u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
+                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
                 %td.center{headers: "ex_not_gra"}=exam.grade
                 %td.center.grade{headers: "ex_not_bla"}
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation))
