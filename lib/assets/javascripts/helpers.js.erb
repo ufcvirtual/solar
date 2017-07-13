@@ -532,10 +532,16 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
       class_elem = 'g_'+ac_id.toString()+'_'+group_id.toString();
   }
 
+  var real_grade = '';
+  var real_hours = '';
+
   if(score_type=='evaluative' || score_type=='not_evaluative')
     grade = $('#academic_allocation_user_grade').val();
   else
     grade = $('#academic_allocation_user_working_hours').val();
+
+  real_grade = $('#academic_allocation_user_grade').val();
+  real_hours = $('#academic_allocation_user_working_hours').val();
 
   if(!$('#academic_allocation_user_grade').length && !$('#academic_allocation_user_working_hours').length)
     grade = data.grade;
@@ -557,6 +563,9 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
   }else{
     grade_or_status = $.isNumeric(grade) ? grade : '';
     $('.'+class_elem+':visible').text(grade_or_status);
+
+    $('[id^="evaluative_"] td.'+class_elem+':hidden').text(real_grade);
+    $('[id^="frequency_"] td.'+class_elem+':hidden').text(real_hours);
 
     var element = $('.situation.'+class_elem+':visible');
     element.text(data.situation_complete);
