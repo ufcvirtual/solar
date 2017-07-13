@@ -39,7 +39,7 @@
               %label.string.optional.form_label
                 = t(:form_special_needs)
               - f.collection_radio_buttons :has_special_needs, [[true, t('special_needs_yes')] ,[false, t('special_needs_no')]], :first, :last, default: false do |b|
-                =b.label(:"data-value" => b.value, :'aria-label' => t(:form_special_needs)+ b.text) { b.radio_button + b.text }
+                =b.label(:"data-value" => b.value, :'aria-label' => t(:form_special_needs)+ ': '+ b.text) { b.radio_button + b.text }
            
           #special_needs_line.field.invisible
             = f.input :special_needs
