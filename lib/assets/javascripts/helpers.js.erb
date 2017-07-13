@@ -549,7 +549,7 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
 
   if(!!$('a.'+class_elem).length){
     grade_or_status = $.isNumeric(grade) ? grade : data.situation;
-    var element = $('a.'+class_elem+':visible', $('[id^="'+score_type+'"]'));
+    var element = $('a.'+class_elem+':visible');
     element.text(grade_or_status);
     element.closest('td').attr( "class", data.class_td).addClass(class_name);
     if(data.group_assignment != undefined){
