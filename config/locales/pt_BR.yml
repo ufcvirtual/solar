@@ -3668,7 +3668,8 @@ pt_BR:
       summary_evaluative: "Está tabela contém todas as provas avaliativas."
       summary_frequency: "Está tabela contém todas as provas de frequência."
       summary_notevaluative: "Está tabela contém todas as provas não avaliativas."
-      liberated: "Resultado liberado: %{datetime}"
+      liberated: "Resultado da prova liberado em %{datetime}"
+      info_exam: Informações
     success:
       created: Prova criada com sucesso
       updated: Prova atualizada com sucesso

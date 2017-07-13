@@ -3423,7 +3423,8 @@ en_US:
       summary_evaluative: "This table contains all the evaluation exams."
       summary_frequency: "This table contains all the frequency exams."
       summary_notevaluative: "This table contains all the not evaluation exams."
-      liberated: "Result release: %{datetime}"
+      liberated: "Result of test release in %{datetime}"
+      info_exam: Informations
     success:
       created: Exam was successfully created
       updated: Exam was successfully updated

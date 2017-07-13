@@ -589,7 +589,9 @@
 
   .block_exam h2{
     min-height: 36px;
-    // border-bottom: none;
+    .dropdown-menu {
+      padding: 10px;
+    }
     .text{
       max-width: 150px;
       display: inline-block;
