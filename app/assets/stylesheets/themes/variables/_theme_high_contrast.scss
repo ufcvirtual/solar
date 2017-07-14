@@ -68,7 +68,7 @@ $btn_border_dark_blue: $high_contrast_border_color;
 $btn_caution_color: $high_contrast_font_color;
 $btn-initial-file-color: $high_contrast_font_color;
 $btn-initial-file-color-final: $high_contrast_font_color;
-$btn_orange: $high_contrast_link_color;
+$btn_orange: $high_contrast_font_color;
 $slide_settings_title_color: $high_contrast_link_color;
 $list_exams_not_started_color: $high_contrast_link_color;
 $table_file_data_info_color: $high_contrast_link_color;
@@ -136,7 +136,7 @@ $notice_exams_color: $high_contrast_font_color;
 
 //fancybox_with_columns
 $color_white_fancybox: $high_contrast_background_color;
-$remove_file_color_fancybox: $high_contrast_background_color;
+$remove_file_color_fancybox: $high_contrast_font_color;
 $label_selected_background_fancybox: $high_contrast_background_color;
 $label_disabled_background_fancybox: $high_contrast_background_color;
 $label_disabled_color_fancybox: $high_contrast_font_color;
