@@ -18,9 +18,9 @@
     border-bottom: solid 1px;
     border-bottom-color: $border_color;
     min-height: 20px;
-    //background-color: $block_content_text_background;
+    background-color: $block_content_text_list_background;
     padding-top: 12px;
-    color: $color_black;
+    color: $empty_message_fancybox_with_columns;
 }
 
 .new_semester, .new_offer {
