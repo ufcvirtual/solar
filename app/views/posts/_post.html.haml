@@ -15,7 +15,7 @@
           - unless @class_participants.include? user.id
             %span{ :"data-tooltip" => t('.moved_allocation') }= content_tag :i, nil, class: 'icon-warning moved_allocation',  :'aria-label'=> t('.moved_allocation')
           - if evaluate || frequency
-            - info = AcademicAllocationUser.get_grade_and_wh(post.user_id, 'Discussion', post.discussion.id)
+            - info = AcademicAllocationUser.get_grade_and_wh(post.user_id, 'Discussion', post.discussion.id, @academic_allocation.allocation_tag_id)
             - if evaluate && !info[:grade].blank?
               = t(:grade, scope: [:posts, :post], grade: info[:grade])
             - if frequency && !info[:wh].blank?
