@@ -16,6 +16,7 @@
       $('form#new_public_file').serialize_and_submit({
         files: true,
         prepend_to_list: $('#public_files'),
+        outer: 'fancybox-outer',
         complement_success: function(){
           flash_message("#{t('public_files.success.new')}", "notice");
           update_tables_with_no_data();

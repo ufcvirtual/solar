@@ -34,6 +34,7 @@ Solar::Application.routes.draw do
       get :synchronize_ma
       get :profiles
       get :request_profile
+      get :get_history_offers
     end
   end
 

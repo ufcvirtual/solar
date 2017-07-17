@@ -1,0 +1,97 @@
+%tbody.offers
+  - unless @offers.empty?
+    - @offers.each do |offer|
+      - livre = offer.uc_type_id.to_i == 3
+      - uc_code = [offer.uc_code, offer.uc_name].join(' - ') rescue nil
+      - u_code = [offer.c_code, offer.c_name].join(' - ') rescue nil
+      - if livre
+        - c_un = offer.uc_type
+      -else
+        - c_un = uc_code.nil? ? offer.uc_type : [offer.uc_type, uc_code].join(' - ')
+      - c_un = u_code.nil? ? c_un : [c_un, u_code, offer.s_name].join(' - ')
+      - link = add_tab_path(id: offer.offer_id, context: Context_Curriculum_Unit, allocation_tag_id: offer.at_id)
+
+      %tr.lines.offer{'data-tab-id' => offer.id, 'data-tab-link' => link}
+
+        %td.center.type{'data-tooltip' => offer.uc_type, headers: 'tb_type' }
+          - unless offer.uc_type.blank?
+            = image_tag(offer.uc_type_icon, alt: "#{offer.uc_type}")
+        %td.center{style: "display: none", headers: 'tb_none' }= offer.uc_type
+
+        - if livre
+          %td.center.uc-name{style: "text-align: center", headers: 'tb_curricular_unit' }= ' - '
+        - else
+          %td.center.uc-name{headers: 'tb_curricular_unit' }= [offer.uc_code, offer.uc_name].join(' - ') rescue ' - '
+
+        %td.center.course{headers: 'tb_course' }= [offer.c_code, offer.c_name].join(' - ') rescue ' - '
+        %td.center.semester{headers: 'tb_semester' }= offer.s_name
+        %td.center.link{headers: 'tb_link' }= link_to_function content_tag(:i, nil, class: 'icon-arrow-right'), link, class: 'nodecoration',:'data-tooltip'=> c_un, :'aria-label'=> c_un, onkeydown: 'click_on_keypress(event, this);'
+        %td.center.profiles{style: "display: none", headers: 'tb_search' }= offer.profiles
+
+    .block_content_text_list.text_none.empty_message.hide_message
+      = t(:my_solar_curriculum_without)
+
+  - else
+    %tr.lines
+      %td.block_content_text_list.text_none{colspan: 5, align: "center"}= t(:my_solar_curriculum_without)
+
+.slide.slide-block
+  = label_tag :search_offer, t(".search"), class: "title"
+  = text_field_tag :search_offer, nil, :"data-column" => "all", type: :search, class: "search search_box_focus", placeholder: 'ex: 2015.1'
+  %a.hide{ href: '#', :'aria-label' => t(".result_search"), class: 'search_hide' }
+  = label_tag :filter, t(".filter"), class: "title"
+  = label_tag :type, t(".type"), class: "subtitle"
+  = select_tag :type, options_for_select(@types.map{ |c| [c.description, c.description] }), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"1"
+  %a.hide{ href: '#', :'aria-label' => t(".result_search"), class: 'search_hide' }
+  = label_tag :profile, t(".profile"), class: "subtitle"
+  - profiles = @user.profiles.where('allocations.allocation_tag_id IS NOT NULL')
+  = select_tag :profile, options_from_collection_for_select(profiles, "id_to_unique_search", "name"), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"6"
+  %a.hide{ href: '#', :'aria-label' => t(".result_search"), class: 'search_hide' }
+
+:javascript
+  $(function(){
+    $('.slider-block').on('keypress click', function() {
+      setTimeout(function() {
+        $("#search_offer").focus();
+      }, 100);
+    });
+
+     $('.search_hide').on('keypress click', function() {
+      $(".slider-block").trigger("click");
+      setTimeout(function() {
+        $('.nodecoration:visible:eq(0)').focus();
+      }, 100);
+    });
+
+    $(".slider-block").click(function(){
+      var msg = null;
+      if ($(".slide.slide-block").is(":visible")) {
+        msg = "#{t('portlets.curricular_unit.filter_data_open')}"
+      }else{
+        msg = "#{t('portlets.curricular_unit.filter_data_close')}"
+      }
+      $('.icon-search').attr('aria-label', msg);
+    });
+
+    $('input.search').keyup(function(){
+      $(this).change();
+    });
+
+    $("input.search").change(function(){
+      update_tables_with_no_data();
+    });
+
+    $('table.user-courses tbody.offers').on('click keypress', '.offer', function(event){
+      var keynum = event.which || event.keyCode;
+      if( keynum == 13 || event.type == 'click') {
+        var count_tabs_open = $('#mysolar_tabs_wrapper li').length;
+        var max_tabs_open = "#{Max_Tabs_Open.to_i}";
+
+        // limite de abas abertas atingido
+        if ((count_tabs_open >= max_tabs_open) && ($('#mysolar_tabs_wrapper li[data-tab-id=' + $(this).data('tab-id') + ']').length < 1))
+          flash_message("#{t(:curriculum_access_alert)}", 'warning');
+        else
+          window.location = $(this).data('tab-link');
+      }
+    });
+  });

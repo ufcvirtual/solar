@@ -1,14 +1,22 @@
 .block_large#mysolar_curriculum_unit_portlet
   .block_title
     %h2#main_content_accesskey{ tabindex: "0" }
-      %i.icon-docs
+      %i.icon-docs{:'aria-hidden' => 'true'}
       = t(:my_solar_curriculum_units)
-    -# - unless @offers.empty?
-    %span.slider-block{classe: 'btn btn_main', style: 'float: right; margin-top: 6.5px; font-size: 12px;'}
+      .offer_period= ' ativas'
+      .offer_period.hide= ' encerradas'
+    %div{style: 'float: right; margin-top: 6.5px; font-size: 12px; '}
+      %a.change_offer#history{ href: '#', style: 'color: #000;', :'data-url' => get_history_offers_users_path(history: true)}
+        %i.icon-history{:"data-tooltip" => t('.closed_complete'), :'aria-label' => t('.closed_complete')}
+        = t('.closed')
+      %a.change_offer.hide#current{ href: '#', style: 'color: #000;', :'data-url' => get_history_offers_users_path}
+        %i.icon-history{:"data-tooltip" => t('.opened_complete'), :'aria-label' => t('.opened_complete')}
+        = t('.opened')
+        
+    .slider-block{style: 'float: right; margin-top: 6.5px; font-size: 12px;margin-right: 10px'}
       %a#search_box_accesskey{ href: '#', style: 'color: #000;'}
-        =t(".search2")
         %i.icon-search{:"data-tooltip" => t(".filter_data"), :'aria-label' => t(".filter_data_open")}
-
+        =t(".search2")
   .mysolar_portlets_content
 
     .block_wrapper#mysolar_curriculum_unit_wrapper
@@ -16,115 +24,39 @@
         %table.tb_list.user-courses
           %thead
             %tr.lines
-              %th#tb_type.no_sort{style: "width: 9.5%"}= t(".type")
-              %th#tb_none{style: "display: none"}
-              %th#tb_curricular_unit{style: "width: 40%"}= t(".curricular_unit")
-              %th#tb_course{style: "width: 33%"}= t(".course")
-              %th#tb_semester{style: "width: 15%"}= t(".semester")
-              %th#tb_link.no_sort{style: "width: 9.5%"}= t(".link")
-              %th#tb_bla{style: "display: none"}
-          %tbody.offers
-            - unless @offers.empty?
-              - @offers.each do |offer|
-                - livre = offer.uc_type_id.to_i == 3
-                - uc_code = [offer.uc_code, offer.uc_name].join(' - ') rescue nil
-                - u_code = [offer.c_code, offer.c_name].join(' - ') rescue nil
-                - if livre
-                  - c_un = offer.uc_type
-                -else
-                  - c_un = uc_code.nil? ? offer.uc_type : [offer.uc_type, uc_code].join(' - ')
-                - c_un = u_code.nil? ? c_un : [c_un, u_code, offer.s_name].join(' - ')
-                - link = add_tab_path(id: offer.offer_id, context: Context_Curriculum_Unit, allocation_tag_id: offer.at_id)
-
-                %tr.lines.offer{'data-tab-id' => offer.id, 'data-tab-link' => link}
-
-                  %td.type{'data-tooltip' => offer.uc_type, headers: 'tb_type' }
-                    - unless offer.uc_type.blank?
-                      = image_tag(offer.uc_type_icon, alt: "#{offer.uc_type}")
-                  %td{style: "display: none", headers: 'tb_none' }= offer.uc_type
-
-                  - if livre
-                    %td.uc-name{style: "text-align: center", headers: 'tb_curricular_unit' }= ' - '
-                  - else
-                    %td.uc-name{headers: 'tb_curricular_unit' }= [offer.uc_code, offer.uc_name].join(' - ') rescue ' - '
-
-                  %td.course{headers: 'tb_course' }= [offer.c_code, offer.c_name].join(' - ') rescue ' - '
-                  %td.semester{headers: 'tb_semester' }= offer.s_name
-                  %td.link{headers: 'tb_link' }= link_to_function content_tag(:i, nil, class: 'icon-arrow-right'), link, class: 'nodecoration',:'data-tooltip'=> c_un, :'aria-label'=> c_un, onkeydown: 'click_on_keypress(event, this);'
-                  %td.profiles{style: "display: none", headers: 'tb_bla' }= offer.profiles
-
-              .block_content_text_list.text_none.empty_message.hide_message
-                = t(:my_solar_curriculum_without)
-
-            - else
-              %tr.lines
-                %td.block_content_text_list.text_none{colspan: 5, align: "center"}= t(:my_solar_curriculum_without)
-
-          .slide.slide-block
-            = label_tag :search_offer, t(".search"), class: "title"
-            = text_field_tag :search_offer, nil, :"data-column" => "all", type: :search, class: "search search_box_focus"
-            %a#hide{ href: '#', :'aria-label' => t(".result_search"), class: 'search_hide' }
-            = label_tag :filter, t(".filter"), class: "title"
-            = label_tag :type, t(".type"), class: "subtitle"
-            = select_tag :type, options_for_select(@types.map{ |c| [c.description, c.description] }), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"1"
-            %a#hide{ href: '#', :'aria-label' => t(".result_search"), class: 'search_hide' }
-            = label_tag :profile, t(".profile"), class: "subtitle"
-            - profiles = @user.profiles.where('allocations.allocation_tag_id IS NOT NULL')
-            = select_tag :profile, options_from_collection_for_select(profiles, "id_to_unique_search", "name"), prompt: t(".all"), class: "tablesorter-filter search", :"data-column"=>"6"
-            %a#hide{ href: '#', :'aria-label' => t(".result_search"), class: 'search_hide' }
-
+              %th.center#tb_type.no_sort{style: "width: 9.5%"}= t(".type")
+              %th.center#tb_none{style: "display: none"}
+              %th.center#tb_curricular_unit{style: "width: 40%"}= t(".curricular_unit")
+              %th.center#tb_course{style: "width: 33%"}= t(".course")
+              %th.center#tb_semester{style: "width: 15%"}= t(".semester")
+              %th.center#tb_link.no_sort{style: "width: 9.5%"}= t(".link")
+              %th.center#tb_search{style: "display: none"}
+          = render partial: 'portlets/curriculum_units_list'
+          
 = javascript_include_tag "tooltip"
 
 :javascript
 
   $(function(){
 
-    $('table.user-courses tbody.offers').on('click keypress', '.offer', function(event){
+    $('a.change_offer').click(function(){
+      var div = $(this);
+      $.get($(this).data('url'), function(data){
+        $('.mysolar_portlets_content tbody.offers').replaceWith(data);
+        $('a.change_offer.hide').removeClass('hide');
+        div.addClass('hide');
 
-      var keynum = event.which || event.keyCode;
+        div.parents(".block_title").find('.offer_period').toggleClass('hide');
 
-      if( keynum == 13 || event.type == 'click') {
+        update_tables_with_no_data();
+        $(".mysolar_portlets_content tbody.offers").trigger("update");
 
-        var count_tabs_open = $('#mysolar_tabs_wrapper li').length;
-        var max_tabs_open = "#{Max_Tabs_Open.to_i}";
-
-        // limite de abas abertas atingido
-        if ((count_tabs_open >= max_tabs_open) && ($('#mysolar_tabs_wrapper li[data-tab-id=' + $(this).data('tab-id') + ']').length < 1))
-          flash_message("#{t(:curriculum_access_alert)}", 'warning');
-        else
-          window.location = $(this).data('tab-link');
-      }
+        focus_element(".mysolar_portlets_content tbody.offers");
+      });
     });
-
-    // refazer codigo do edx
 
     $.get("#{my_edx_courses_path}", function(data){
       $("#mysolar_curriculum_unit_wrapper").append(data);
     });
-
   });
-
-  $('.slider-block').on('keypress click', function() {
-    setTimeout(function() {
-      $("#search_offer").focus();
-    }, 100);
-  });
-
-   $('.search_hide').on('keypress click', function() {
-    $(".slider-block").trigger("click");
-    setTimeout(function() {
-      $('.nodecoration:visible:eq(0)').focus();
-    }, 100);
-  });
-
-  $(".slider-block").click(function(){
-    var msg = null;
-    if ($(".slide.slide-block").is(":visible")) {
-      msg = "#{t('portlets.curricular_unit.filter_data_open')}"
-    }else{
-      msg = "#{t('portlets.curricular_unit.filter_data_close')}"
-    }
-    $('.icon-search').attr('aria-label', msg);
-  });
-
  

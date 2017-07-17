@@ -16,6 +16,7 @@ module BreadCrumbHelper
 
         text_bread << '&nbsp;>&nbsp;' if idx > 0
         text_bread << %{<span data-level="#{idx}">#{link}</span>}
+        text_bread << "&nbsp; #{I18n.t('mysolar.closed_uc')}" if idx == [breadcrumb].flatten.size - 1 && !AllocationTag.find(active_tab[:url][:allocation_tag_id]).verify_offer_period
       end
     end
 

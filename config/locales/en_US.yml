@@ -676,7 +676,7 @@ en_US:
   description: "Description"
   edition: "Edition"
   enrollment: "Enrollment"
-  my_solar_curriculum_units: "Subject"
+  my_solar_curriculum_units: "Subjects"
   my_solar_curriculum_without: "No subjects found."
   my_solar_uc_without_group: There are no groups
   my_solar_uc_without_offer: There are no offers
@@ -2011,6 +2011,8 @@ en_US:
     error:
       new: It was not possible to upload file.
       remove: It was not possible to remove file.
+      offer_end: Can't be sent after offer's ending
+      offer_start: Can't be sent before offer's beginning
   groups:
     list:
       all: All
@@ -3049,6 +3051,7 @@ en_US:
   mysolar:
     synchronize: Synchronize with Módulo Acadêmico
     profiles: Profiles
+    closed_uc: (closed subject)
   portlets:
     curricular_unit:
       type: Type
@@ -3056,16 +3059,19 @@ en_US:
       name: Name
       course: Course
       semester: Semester
-      profile: Profile
-      all: All
-      search: "Search:"
-      filter: "Filter:"
       filter_data_open: Open filter data.
       filter_data_close: Close filter data.
-      filter_data: Filter data
       curricular_unit: Curriculum Unit
       link: Access
       search2: "Search"
+      filter_data: Filter data
+    curriculum_units_list:
+      all: All
+      search: "Search:"
+      filter: "Filter:"
+      type: Type
+      profile: Profile  
+      result_search: "Access table with search's result"
 
   shortcut:
     assignment: Assignments

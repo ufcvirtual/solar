@@ -23,7 +23,7 @@ module AcademicTool
         academic_allocations.create allocation_tag_ids_associations.map {|at| { allocation_tag_id: at }}
       else
         academic_allocations.create
-      end  
+      end
     end
 
     def set_schedule
