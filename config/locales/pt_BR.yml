@@ -3309,6 +3309,8 @@ pt_BR:
       closed: '(visualizar encerradas)'
       opened_complete: 'Visualizar disciplinas ativas'
       opened: '(visualizar ativas)'
+      opened_short: ' ativas'
+      closed_short: ' encerradas'
       filter_data: Pesquisar dados
     curriculum_units_list:
       search: "Busca:"

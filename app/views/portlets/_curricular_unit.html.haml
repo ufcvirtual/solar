@@ -3,8 +3,8 @@
     %h2#main_content_accesskey{ tabindex: "0" }
       %i.icon-docs{:'aria-hidden' => 'true'}
       = t(:my_solar_curriculum_units)
-      .offer_period= ' ativas'
-      .offer_period.hide= ' encerradas'
+      .offer_period= t(".opened_short")
+      .offer_period.hide= t('.closed_short')
     %div{style: 'float: right; margin-top: 6.5px; font-size: 12px; '}
       %a.change_offer#history{ href: '#', style: 'color: #000;', :'data-url' => get_history_offers_users_path(history: true)}
         %i.icon-history{:"data-tooltip" => t('.closed_complete'), :'aria-label' => t('.closed_complete')}

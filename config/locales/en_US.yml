@@ -3065,6 +3065,12 @@ en_US:
       link: Access
       search2: "Search"
       filter_data: Filter data
+      closed_complete: 'View closed curriculum units'
+      closed: '(view closed)'
+      opened_complete: 'View opened curriculum units'
+      opened: '(view opened)'
+      opened_short: ' opened'
+      closed_short: ' closed'
     curriculum_units_list:
       all: All
       search: "Search:"
