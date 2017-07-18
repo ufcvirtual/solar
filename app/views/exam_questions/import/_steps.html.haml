@@ -39,7 +39,7 @@
     .step-preview
       .content-preview
       .right_buttons
-        = link_to_function t('.back'), 'slideBack()', class: 'btn', alt: t('.back')
+        = link_to_function t('.back'), 'slideBack()', class: 'btn preview-back-button', alt: t('.back')
 
     .step-conclude
       = render partial: 'exam_questions/import/conclude', locals: { allocation_tags_ids: @ats, exam_id: @exam_id }
@@ -171,4 +171,11 @@
           flash_message(data.alert, 'alert');
       });
     });
+
+    $(".preview-back-button").click(function(e){
+      setTimeout(function(){
+        $(".step-preview").siblings(".footer").css("display", "block");
+       }, 500);
+    });    
+
   });
