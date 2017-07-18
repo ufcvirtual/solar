@@ -80,6 +80,7 @@ module ApplicationHelper
     selected_group_id = groups.first.id if selected_group_id.blank?
 
     active_tab[:breadcrumb].first[:url][:selected_group] = Group.find(selected_group_id).code
+    active_tab[:breadcrumb].first[:url][:allocation_tag_id] = active_tab[:url][:allocation_tag_id]
 
     result = ''
     if (groups.length > 1 && @can_select_group)
