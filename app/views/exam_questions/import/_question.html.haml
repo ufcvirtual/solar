@@ -10,16 +10,26 @@
     %td= raw question.enunciation
     %td= question.type
     %td= exam.allocation_tag_info
-    %td= number_field_tag "score_#{question.id}", (question.respond_to?(:score) ? question.score : 0.0), { min: 0, max: 10 }
+    %td= number_field_tag "score_#{question.id}", (question.respond_to?(:score) ? question.score : 0.00), { min: 0, max: 10 }
     %td.icon= link_to_function content_tag(:i, nil, class: 'icon-eye'), 'preview_question(this);', :'data-tooltip' => t('.preview_tooltip'),:'data-url' => question_path(question), class: 'preview_question', disabled: !(@can_see_preview && question.can_see?(true))
     %td.icon= link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_question(this);', :'data-tooltip' => t('.delete')
     = hidden_field_tag "exam_#{question.id}", exam.id
 
-= javascript_include_tag 'tooltip'
+= javascript_include_tag 'tooltip', 'jquery.mask'
 
 :javascript
   $(function(){
-    $('[id^="score_"]').mask("#0.00",{reverse: true});
+    $('[id^="score_"]').mask('A0.0B', {
+      translation: {
+        'A': {
+          pattern: /[0-1]/, optional: true
+        },
+        'B': {
+          pattern: /[0-9]/, optional: true
+        }
+      }
+    });
+
   });
 
   function remove_question(icon){

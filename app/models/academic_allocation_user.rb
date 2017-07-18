@@ -187,8 +187,8 @@ class AcademicAllocationUser < ActiveRecord::Base
     AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: {academic_tool_id: tool_id, academic_tool_type: tool_type, allocation_tag_id: allocation_tag_id}, user_id: (group_id.nil? ? users_ids : nil), group_assignment_id: group_id).update_all new_after_evaluation: false
   end
 
-  def self.get_grade_and_wh(user_id, tool, tool_id)
-    acu = joins(:academic_allocation).where(academic_allocations: {academic_tool_id: tool_id, academic_tool_type: tool}, user_id: user_id).last
+  def self.get_grade_and_wh(user_id, tool, tool_id, at)
+    acu = joins(:academic_allocation).where(academic_allocations: {academic_tool_id: tool_id, academic_tool_type: tool, allocation_tag_id: at}, user_id: user_id).last
     {grade: acu.try(:grade), wh: acu.try(:working_hours)}
   end 
 

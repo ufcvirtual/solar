@@ -12,7 +12,7 @@ class LessonModule < ActiveRecord::Base
   has_many :groups, through: :allocation_tags
   has_many :offers, through: :allocation_tags
 
-  validates :name, presence: true
+  validates :name, presence: true, length: { maximum: 100 }
 
   accepts_nested_attributes_for :academic_allocations
 

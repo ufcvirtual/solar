@@ -145,6 +145,12 @@ class AllocationTag < ActiveRecord::Base
     RelatedTaggable.where(offer_id: offer_id).pluck(:group_at_id).uniq.compact
   end
 
+  def verify_offer_period
+    offer = offers.first
+    return !(offer.end_date < Date.current)
+    # return !(offer.end_date < Date.current || offer.start_date > Date.current)
+  end
+
   def self.get_by_params(params, related = false, lower_related = false)
     allocation_tags_ids, selected, offer_id = unless params[:allocation_tags_ids].blank? # o proprio params ja contem as ats
       [params.fetch(:allocation_tags_ids, '').split(' ').flatten.map(&:to_i), params.fetch(:selected, nil), params.fetch(:offer_id, nil)]

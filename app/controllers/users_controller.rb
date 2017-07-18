@@ -69,6 +69,14 @@ class UsersController < ApplicationController
     @scheduled_events = Agenda.events(allocation_tags, nil, true) unless allocation_tags.empty?
   end
 
+  def get_history_offers
+    @user   = current_user
+    @types  = ((!EDX.nil? && EDX['integrated']) ? CurriculumUnitType.all : CurriculumUnitType.where("id <> 7"))
+    @offers = Offer.offers_info_from_user(@user, params[:history])
+
+    render partial: 'portlets/curriculum_units_list'
+  end
+
   def photo
     file_path = User.find(params[:id]).photo.path(params[:style] || :small)
     head(:not_found) and return unless !file_path.nil? && File.exist?(file_path)

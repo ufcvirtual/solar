@@ -840,7 +840,7 @@ pt_BR:
 
   # portlets do meu solar
   # Disciplina
-  my_solar_curriculum_units: "Disciplina"
+  my_solar_curriculum_units: "Disciplinas"
   my_solar_curriculum_without: "Nenhuma disciplina encontrada."
   my_solar_uc_without_group: Não há turmas
   my_solar_uc_without_offer: Não há ofertas
@@ -2225,6 +2225,8 @@ pt_BR:
     error:
       new: Não foi possível enviar arquivo.
       remove: Não foi possível remover arquivo.
+      offer_end: Não pode ser enviado após fim da oferta
+      offer_start: Não pode ser enviado antes do início da oferta
   groups:
     list:
       all: Selecionar Todos
@@ -3291,6 +3293,7 @@ pt_BR:
   mysolar:
     synchronize: Sincronizar com Módulo Acadêmico
     profiles: Perfis
+    closed_uc: (disciplina encerrada)
 
   portlets:
     curricular_unit:
@@ -3298,17 +3301,25 @@ pt_BR:
       code: Código
       name: Nome
       course: Curso
-      semester: Semestre
-      profile: Perfil
-      all: Todos
-      search: "Busca:"
-      filter: "Filtro:"
-      filter_data_open: Abrir busca. O resultado da pesquisa é gerado automaticamente.
-      filter_data_close: Fechar busca. O resultado da pesquisa é gerado automaticamente.
-      filter_data: Pesquisar dados
+      semester: Semestre     
       curricular_unit: Unidade Curricular
       link: Acesso
       search2: "Buscar"
+      filter_data_open: Abrir busca. O resultado da pesquisa é gerado automaticamente.
+      filter_data_close: Fechar busca. O resultado da pesquisa é gerado automaticamente.
+      closed_complete: 'Visualizar disciplinas encerradas'
+      closed: '(visualizar encerradas)'
+      opened_complete: 'Visualizar disciplinas ativas'
+      opened: '(visualizar ativas)'
+      opened_short: ' ativas'
+      closed_short: ' encerradas'
+      filter_data: Pesquisar dados
+    curriculum_units_list:
+      search: "Busca:"
+      filter: "Filtro:"
+      type: Tipo
+      profile: Perfil
+      all: Todos
       result_search: "Ir para tabela com o resultado da busca"
 
   shortcut:

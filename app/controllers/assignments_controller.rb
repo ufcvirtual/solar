@@ -28,7 +28,9 @@ class AssignmentsController < ApplicationController
   def list
     authorize! :list, Assignment, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
-    @student      = !AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id)
+    at = AllocationTag.find(@allocation_tag_id)
+
+    @student      = !at.is_observer_or_responsible?(current_user.id)
     @public_files = PublicFile.where(user_id: current_user.id, allocation_tag_id: @allocation_tag_id)
 
     @assignments_indiv = Score.list_tool(current_user.id, @allocation_tag_id, 'assignments', false, false, true, false, Assignment_Type_Individual)
@@ -36,8 +38,10 @@ class AssignmentsController < ApplicationController
 
     user_profiles = current_user.resources_by_allocation_tags_ids([@allocation_tag_id])
 
-    @can_manage   = user_profiles.include?(group_assignments: :index)
-    @can_import   = user_profiles.include?(group_assignments: :import)
+    offer_ok = at.verify_offer_period
+
+    @can_manage   = user_profiles.include?(group_assignments: :index) && offer_ok
+    @can_import   = user_profiles.include?(group_assignments: :import) && offer_ok
     @can_evaluate = user_profiles.include?(assignments: :evaluate)
 
     render layout: false if params[:layout].present?

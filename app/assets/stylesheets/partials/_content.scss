@@ -201,10 +201,19 @@ div.block_title {
   h2 {
     display: inline;
     vertical-align: bottom;
-    position: absolute;
     bottom: 2px;
     color: $exclusive_font_color;
+
+    .offer_period{
+      display: inline-block;
+      vertical-align: bottom;
+    }
+
+    .offer_period.hide{
+      display: none;
+    }
   }
+
   > .block_right {
     padding-left: 6px;
   }

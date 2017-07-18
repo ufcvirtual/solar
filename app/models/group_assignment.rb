@@ -14,6 +14,10 @@ class GroupAssignment < ActiveRecord::Base
   validate :define_name
   validate :unique_group_name
 
+  before_save :verify_offer, if: 'merge.nil?'
+
+  attr_accessor :merge
+
   def can_remove?
     (academic_allocation_user.nil? || (academic_allocation_user.assignment_files.empty? && academic_allocation_user.grade.blank?))
   end
@@ -73,6 +77,12 @@ class GroupAssignment < ActiveRecord::Base
 
         self.group_name = group.group_name
       end
+    end
+
+    def verify_offer
+      offer = academic_allocation.allocation_tag.offers.first
+      raise 'offer_end'  if offer.end_date < Date.current
+      # raise 'offer_start' if offer.start_date > Date.current
     end
 
 end
