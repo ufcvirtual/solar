@@ -39,6 +39,7 @@ class Lesson < ActiveRecord::Base #< Event
 
   validate :address_is_ok?
   validate :can_change_privacy?, if: '!new_record? && privacy_changed?'
+  validate :can_change_status?, if: '!new_record? && status_changed?'
  
   # Na expressao regular os protocolos http, https e ftp podem aparecer somente uma vez ou nao aparecer
   validates_format_of :address, with: /\A((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z/ix,
@@ -195,6 +196,10 @@ class Lesson < ActiveRecord::Base #< Event
 
   def directory
     File.join(Lesson::FILES_PATH, id.to_s)
+  end
+
+  def can_change_status?
+    errors.add(:base, I18n.t('lessons.errors.blank_address')) if address.blank?
   end
 
   private

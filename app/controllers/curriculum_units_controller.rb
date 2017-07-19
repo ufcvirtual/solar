@@ -82,7 +82,7 @@ class CurriculumUnitsController < ApplicationController
     @curriculum_unit = CurriculumUnit.new(curriculum_unit_params.merge!({user_id: current_user.id}))
 
     if @curriculum_unit.save
-      render json: {success: true, notice: t('curriculum_units.success.created'), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
+      render json: {success: true, message: t('curriculum_units.success.created'), type_message: 'notice', code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
       render :new
     end
