@@ -203,7 +203,7 @@ div.block_title {
     vertical-align: bottom;
     bottom: 2px;
     color: $exclusive_font_color;
-
+    position: absolute;
     .offer_period{
       display: inline-block;
       vertical-align: bottom;
@@ -218,8 +218,6 @@ div.block_title {
     padding-left: 6px;
   }
 }
-
-
 
 /* zerando o espaçamento do titulo do bloco */
 .block_title, .block_title > .block_left, .block_title > .block_right {
