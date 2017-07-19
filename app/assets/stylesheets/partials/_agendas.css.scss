@@ -109,6 +109,10 @@ a.fc-event-title{
   background-color: $event_other_background;
   border-color: $event_other_background;
 }
+.fc-event.exam{
+  background-color: $event_exam_background;
+  border-color: $event_exam_background;
+}
 
 .fc-event.fc-event-title{
   color: $color_black;

@@ -1073,6 +1073,7 @@ pt_BR:
       private_lesson: Não é possível importar uma aula privada a não ser que você seja o dono
       draft_lesson: Não é possível importar uma aula rascunho
       owner: só pode ser alterada pelo dono
+      blank_address: Deve ter URL ou arquivo principal
     success:
       saved_as_draft: Aulas deletadas ou salvas como rascunho com sucesso.
       deleted: Aulas deletadas com sucesso.
@@ -3190,6 +3191,7 @@ pt_BR:
       legend: Legenda
       all_day: dia todo
       time: Horário
+      exam: Prova
     end_of: "Término de: "
     begin_of: "Início de: "
 
