@@ -28,6 +28,8 @@
       $(data.id).each(function(){
         $.get(url_list.replace(":id", $(this)[0]), function(data){
           $(".allocations_list table").prepend(data);
+          $('.text_none').addClass('hide_message');
+          $('.tb_allocation thead').show();
          });
       });
       flash_message(data.msg, 'notice');
