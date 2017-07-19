@@ -92,10 +92,12 @@ class CurriculumUnit < ActiveRecord::Base
       before_code = changes[:code].nil? ? code : changes[:code].first
 
       course = Course.find_by_name_and_code(before_name, before_code)
-      course.ignore_uc = true
-      if course && !course.update_attributes(code: code, name: name)
-        errors.messages.merge!(course.errors.messages)
-        return false
+      unless course.blank?
+        course.ignore_uc = true
+        if course && !course.update_attributes(code: code, name: name)
+          errors.messages.merge!(course.errors.messages)
+          return false
+        end
       end
 
       true
