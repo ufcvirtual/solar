@@ -105,7 +105,8 @@
     $("#save").click(function(){
       $('form#offer_form').serialize_and_submit({
         replace_list: $("#offers-#{escape_once(@offer.semester_id)}"),
-        error_message: 'simple_form.new_offer'
+        error_message: 'simple_form.new_offer',
+        flash_msg: 'block_wrapper'
       });
       setTimeout(function() {
         focuInpuErro();
