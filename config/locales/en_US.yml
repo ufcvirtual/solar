@@ -900,6 +900,7 @@ en_US:
       private_lesson: You can't import a private lesson unless you're the owner
       general_message: It was not possible to execute action
       draft_lesson: You can't import a draft lesson
+      blank_address: Must have an URL or main file
     success:
       saved_as_draft: Lessons were sucessfully created or saved as draft
       deleted: Lessons were successfully created
@@ -2953,6 +2954,7 @@ en_US:
       legend: Legend
       all_day: all day
       time: Time
+      exam: Exam
     end_of: "End of: "
     begin_of: "Begin of: "
   edx:

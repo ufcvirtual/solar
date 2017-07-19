@@ -83,6 +83,7 @@ class Event < ActiveRecord::Base
     when 'presential_meeting'; '#FFD9E0'
     when 'web_conference_lesson'; '#F5DA81'
     when 'recess_or_holiday'; '#E3E3E3'
+    when 'exam'; '#E4FFA5'
     else
       '#CCCCFF'
     end
