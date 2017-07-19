@@ -13,8 +13,11 @@ function save_notification(){
         }else{
           flash_message("<%= I18n.t(:created, scope: 'notifications.success') %>", "notice");
         }  
+        update_tables_with_no_data();
+        $(".all_notifications").nice_checkbox({parent_div: $('.list_notifications')});
+        $('input.all_notifications').prop("checked", false);
       }, 100);
-      update_tables_with_no_data();
+
     }
   });
   setTimeout(function() {
@@ -48,6 +51,7 @@ $(function(){
         notifications.parents('tr').fadeOut().remove();
 
         $(".btn_edit, .btn_del").attr("disabled", true);
+        update_tables_with_no_data();
       }).error(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
@@ -68,5 +72,5 @@ $(function(){
 
   });
 
-  $(".all_notifications").nice_checkbox();
+  $(".all_notifications").nice_checkbox({parent_div: $('.list_notifications')});
 });

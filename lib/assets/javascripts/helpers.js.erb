@@ -139,11 +139,11 @@ function update_tables_with_no_data() {
   $('.tb_list').each(function(){
     var rowCount = $('tbody>tr:visible', $(this)).length;
     if (rowCount == 0){
-      $('.empty_message', $(this).closest('.block_content')).removeClass('hide_message');
+      $('.empty_message', $(this).closest('.block_content')).removeClass('hide_message').removeClass('invisible');
       $('thead', $(this)).hide();
     } else {
       $('thead', $(this)).show();
-      $('.empty_message', $(this).closest('.block_content')).addClass('hide_message');
+      $('.empty_message', $(this).closest('.block_content')).addClass('hide_message').removeClass('invisible');
     }
   });
 }
