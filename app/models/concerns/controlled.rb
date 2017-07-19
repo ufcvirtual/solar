@@ -9,10 +9,12 @@ module Controlled
     validates_associated :ip_reals, if: 'controlled'
     accepts_nested_attributes_for :ip_reals, allow_destroy: true, reject_if: lambda { |e| e[:ip_v4].blank? && e[:ip_v6].blank? }
 
-    validate :controlled_network_ip_validates, if: 'controlled' # mandatory at least one ip if the activity is controlled
+    validate :controlled_network_ip_validates, if: 'controlled && merge.nil?' # mandatory at least one ip if the activity is controlled
     validate :can_change?, if: 'controlled_changed? && !new_record?'
     
     after_save :remove_ips, unless: 'controlled'
+
+    attr_accessor :merge
   end
 
   def controlled_network_ip_validates

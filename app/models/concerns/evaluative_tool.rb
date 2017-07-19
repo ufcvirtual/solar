@@ -245,7 +245,12 @@ module EvaluativeTool
   def can_unbind?(groups=[])
     case self.class.to_s
     when 'Exam'
-      !(status && on_going?)
+      return false if (status && on_going?)
+      if groups.any?
+        academic_allocation_users.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: id, academic_tool_type: 'Exam', allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).empty?
+      else
+        academic_allocation_users.empty?
+      end
     when 'Webconference'
       records = 0
       if shared_between_groups?

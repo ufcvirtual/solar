@@ -25,7 +25,7 @@ class Webconference < ActiveRecord::Base
 
   validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed?)', on: :update
 
-  validate :verify_offer, if: '!(duration.nil? || initial_time.nil?) && (new_record? || initial_time_changed? || duration_changed?)'
+  validate :verify_offer, if: '!(duration.nil? || initial_time.nil?) && (new_record? || initial_time_changed? || duration_changed?) && !allocation_tag_ids_associations.blank?'
 
   def link_to_join(user, at_id = nil, url = false)
     ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to((title rescue name), bbb_join(user, at_id), target: '_blank')) : (title rescue name)) 

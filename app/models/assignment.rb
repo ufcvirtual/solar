@@ -35,6 +35,13 @@ class Assignment < Event
         copy_file(file, new_file, File.join('assignment', 'enunciation'))
       end
     end
+    unless assignment_to_copy.ip_reals.empty?
+      assignment_to_copy.ip_reals.each do |ip|
+        new_ip = IpReal.new ip.attributes.except('id', 'assignment_id', 'created_at', 'updated_at').merge({ assignment_id: id })
+        new_ip.merge = true
+        new_ip.save!
+      end
+    end
   end
 
   def update_groups

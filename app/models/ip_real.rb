@@ -3,15 +3,15 @@ class IpReal < ActiveRecord::Base
 
   belongs_to :exam
   belongs_to :assignment
-  # has_many :ip_fakes, dependent: :destroy
-  attr_accessible :id, :ip_v4, :ip_v6, :_destroy, :use_local_network
 
   validate :validate_ip_v4, unless: 'ip_v4.blank?'
   validate :validade_ip_v6, unless: 'ip_v6.blank?'
 
-  validate :can_create?, on: :create, unless: 'parent.blank?'
-  validate :can_change?, on: :update
+  validate :can_create?, on: :create, unless: 'parent.blank? || !merge.nil?'
+  validate :can_change?, on: :update, if: 'merge.nil?'
   before_destroy :can_destroy_callback?
+
+  attr_accessor :merge
 
   def validate_ip_v4
     errors.add(:ip_v4, I18n.t(:ip, scope: [:ip_reals, :errors])) unless Resolv::IPv4::Regex =~ ip_v4
@@ -47,7 +47,6 @@ class IpReal < ActiveRecord::Base
   end
 
   def can_destroy_callback?
-    Rails.logger.info "\n\nOI\n\n"
     if parent.ip_reals.size == 1
       raise 'controlled'
     end
