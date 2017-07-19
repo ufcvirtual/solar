@@ -130,7 +130,7 @@ class GroupsController < ApplicationController
         end
       else
         academic_allocations = AcademicAllocation.where(allocation_tag_id: groups.map(&:allocation_tag).map(&:id), academic_tool_type: params[:tool_type], academic_tool_id: params[:tool_id])
-        evaluative = academic_allocations.map(&:verify_evaluative).include?(true)
+        evaluative = academic_allocations.map(&:verify_evaluative).include?(true) rescue false
 
         unless tool.groups.size == groups.size # se nao for deixar a ferramenta sem turmas
           case params[:type]
@@ -139,7 +139,9 @@ class GroupsController < ApplicationController
               raise 'must_have_group' if tool.academic_allocations.size == academic_allocations.size
               raise 'cant_unbind' unless (!tool.respond_to?(:can_unbind?) || tool.can_unbind?(groups))
 
-              new_tool = tool_model.create(tool.attributes)
+              new_tool = tool_model.new(tool.attributes)
+              new_tool.merge = true
+              new_tool.save
               academic_allocations.update_all(academic_tool_id: new_tool.id)
 
               # se a ferramenta possuir um schedule, cria um igual para a nova

@@ -22,13 +22,13 @@ class Exam < Event
   validates :start_hour, presence: true, if: lambda { |c| c[:start_hour].blank?  && !c[:end_hour].blank? }
   validates :end_hour  , presence: true, if: lambda { |c| !c[:start_hour].blank? && c[:end_hour].blank?  }
 
-  validate :can_edit?, only: :update
+  validate :can_edit?, only: :update, if: 'merge.nil?'
   validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
-  validate :check_liberate_date, if: '!liberated_date.blank?'
+  validate :check_liberate_date, if: '!liberated_date.blank? && merge.nil?'
 
   accepts_nested_attributes_for :schedule
 
-  before_destroy :can_destroy?
+  before_destroy :can_destroy?, if: 'merge.nil?'
 
   before_save :set_status, :set_can_publish, on: :update
 
@@ -163,7 +163,16 @@ class Exam < Event
   def copy_dependencies_from(exam_to_copy)
     unless exam_to_copy.exam_questions.empty?
       exam_to_copy.exam_questions.each do |eq|
-        ExamQuestion.create! eq.attributes.except('id').merge({ exam_id: id })
+        new_eq = ExamQuestion.new eq.attributes.except('id').merge({ "exam_id" => id })
+        new_eq.merge = true
+        new_eq.save!
+      end
+    end
+    unless exam_to_copy.ip_reals.empty?
+      exam_to_copy.ip_reals.each do |ip|
+        new_ip = IpReal.new ip.attributes.except('id', 'exam_id', 'created_at', 'updated_at').merge({ exam_id: id })
+        new_ip.merge = true
+        new_ip.save!
       end
     end
   end
