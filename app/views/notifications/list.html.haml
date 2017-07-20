@@ -11,10 +11,10 @@
         = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit', :"data-link-edit" => edit_notification_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".edit")
         = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_notification',  :"data-link-delete" => notification_path(id: ':id', :allocation_tags_ids => @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
 
-  - unless @notifications.nil? or @notifications.empty?
-    - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
+  - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
+  .block_content
     %table.tb_list.tb_notifications
-      %thead
+      %thead{style: (@notifications.blank? ? "display: none" : "")}
         %tr.lines
           %th.no_sort{style: 'text-align:center; width: 25px;'}= check_box_tag :all_notifications, false, false, :"data-children-names" => "ckb_notification", class: "all_notifications"
           %th{align: "left"}=t(".notification")
@@ -22,9 +22,7 @@
       %tbody
         - @notifications.each do |notification|
           = render partial: "notifications/notification", locals: {notification: notification, all_groups: all_groups, destroy: true}
-
-  - else
-    .block_content_text.block_content_text_list.text_none= t(".no_data")
+    .text_none.empty_message{class: (@notifications.blank? ? "" : "hide_message")}= t(".no_data")
 
 = javascript_include_tag "tablesorter", "notifications", "tooltip", "groups_tags"
 

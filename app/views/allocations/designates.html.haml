@@ -4,22 +4,20 @@
     %h2= t(".designate_users")
 
   .block_content.allocations_list
-    - unless @allocations.nil? or @allocations.empty?
-      %table.tb_list
-        %thead
-          %tr.lines
-            %th= t(".name")
-            %th{style: 'width:80px'}= t(".cpf")
-            %th{style: 'width:200px'}= t(".email")
-            %th{style: 'width:120px'}= t(".profile")
-            %th{style: 'width: 80px'}= t(".designated_on")
-            %th{style: 'width: 80px'}= t(".designated_by")
-            %th.no_sort
-        %tbody
-          - @allocations.each do |allocation|
-            = render partial: "show", locals: {allocation: allocation}
-    - else
-      .block_content_text_list.text_none= t(".no_allocated_user")
+    %table.tb_list
+      %thead{style: (@allocations.blank? ? "display: none" : "")}
+        %tr.lines
+          %th= t(".name")
+          %th{style: 'width:80px'}= t(".cpf")
+          %th{style: 'width:200px'}= t(".email")
+          %th{style: 'width:120px'}= t(".profile")
+          %th{style: 'width: 80px'}= t(".designated_on")
+          %th{style: 'width: 80px'}= t(".designated_by")
+          %th.no_sort
+      %tbody
+        - @allocations.each do |allocation|
+          = render partial: "show", locals: {allocation: allocation}
+    .text_none.empty_message{class: (@allocations.blank? ? "" : "hide_message")}= t(".no_allocated_user")
 
 
 .block_wrapper.search
