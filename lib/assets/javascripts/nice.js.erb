@@ -247,11 +247,10 @@ $.fn.serialize_and_submit = function(options) {
         $('' + form_id).replaceWith(data);
       } else {
         // se nao houver opção indicando que o lightbox deve se manter aberto, o default é fechá-lo
-        if (typeof(options.complement_success) == "function"){
+        if (typeof(options.complement_success) == "function")
           options.complement_success(data);
-        }
 
-        if((typeof(options.dont_remove_lightbox) == "undefined" || !options.dont_remove_lightbox) && (typeof($("span.error:first")) == "undefined" || $("span.error").is_empty())){
+        if((typeof(options.dont_remove_lightbox) == "undefined" || !options.dont_remove_lightbox) && (typeof($("span.error:first")) == "undefined" || ($("span.error").is_empty() && $($("span.error")[0]).html() == ''))){
           $.fancybox.close();
         }
 

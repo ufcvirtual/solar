@@ -36,6 +36,7 @@
     $('#save').click(function(){
       $('#support_material_form:first').serialize_and_submit({
         files: true,
+        outer: 'fancybox-outer',
         replace_list: $('.list_support_material:last'),
         complement_success: function(data) {
           if (typeof(data.alert) != "undefined")

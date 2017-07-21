@@ -33,7 +33,13 @@ class SupportMaterialFilesController < ApplicationController
 
   def create
     authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    (params[:support_material_file][:material_type].to_i == Material_Type_File) ? create_many : create_one
+    if params[:support_material_file][:material_type].to_i == Material_Type_File
+      raise 'empty' if params[:files].blank?
+      create_many
+    else
+      create_one
+     end
+
 
     render json: { success: true, notice: t('support_materials.success.created') }
   rescue ActiveRecord::AssociationTypeMismatch
@@ -44,7 +50,7 @@ class SupportMaterialFilesController < ApplicationController
     @allocation_tags_ids = @allocation_tags_ids.join(' ')
     params[:success] = false
     if @support_material.nil? || @support_material.is_file?
-      render json: { success: false, alert: t('support_material.error.file') }
+      render json: { success: false, alert: t('support_material_files.error.file') }
     else
       render :new
     end
@@ -143,14 +149,20 @@ class SupportMaterialFilesController < ApplicationController
         @support_material.allocation_tag_ids_associations = @allocation_tags_ids
         @support_material.save!
       end
+    rescue => error
+      raise error
     end
 
     def create_many
       SupportMaterialFile.transaction do
-        params[:files].each do |file|
-          create_one(support_material_file_params.merge!(attachment: file, title: params[:support_material_file][:title]))
+        unless params[:files].blank?
+          params[:files].each do |file|
+            create_one(support_material_file_params.merge!(attachment: file, title: params[:support_material_file][:title]))
+          end
         end
       end
+    rescue => error
+      raise error
     end
 
 end
