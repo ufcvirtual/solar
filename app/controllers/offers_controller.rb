@@ -13,7 +13,7 @@ class OffersController < ApplicationController
     @semester = Semester.find(params[:semester_id])
     @allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], 'offers').join(' ')
     @offers   = @semester.offers_by_allocation_tags(@allocation_tags_ids.split(' '),
-      { curriculum_units: {curriculum_unit_type_id: @type_id}, course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id] })
+      { course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id] }).where("curriculum_units.curriculum_unit_type_id = :type_id OR curriculum_units.id IS NULL", {type_id: @type_id})
       .paginate(page: params[:page])
 
     respond_to do |format|
