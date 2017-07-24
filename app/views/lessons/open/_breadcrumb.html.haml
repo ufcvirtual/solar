@@ -9,7 +9,7 @@
       .dropdown.dropdown-tip#lmodule-options-dropdown
         %ul.dropdown-menu
           - @modules.each do |lmodule|
-            %li= link_to lmodule[:name], '#', :'data-id' => lmodule[:id], class: (lmodule[:id] == @lesson.lesson_module_id ? 'selected' : ''), onkeydown: 'click_on_keypress(event, this);'
+            %li= link_to lmodule[:name], '#', :'data-id' => lmodule[:id], class: (lmodule[:id] == @lesson.lesson_module_id ? 'selected' : ''), onkeydown: 'click_on_keypress(event, this);', :'data-ats' => @lesson.allocation_tags.map(&:id)
     = " > "
     %span.lessons#nav_lessons{role: 'menubar'}
       = render partial: "lessons/open/lessons", locals: { lesson_module: @lesson.lesson_module }

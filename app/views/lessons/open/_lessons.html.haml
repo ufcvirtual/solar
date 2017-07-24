@@ -8,7 +8,7 @@
 .dropdown.dropdown-tip#lesson-options-dropdown
   %ul.dropdown-menu
     - lessons_c.each do |lesson|
-      %li{role: 'menuitem'}= link_to lesson[0], '#', {:'data-path' => lesson[2][:'data-path'], :'data-id' => lesson[1], class: (lesson[1] == @lesson.id ? 'selected' : ''), onkeydown: 'click_on_keypress(event, this);'}
+      %li{role: 'menuitem'}= link_to lesson[0], '#', {:'data-path' => lesson[2][:'data-path'], :'data-id' => lesson[1], class: (lesson[1] == @lesson.id ? 'selected' : ''), onkeydown: 'click_on_keypress(event, this);', :'data-draft' => lesson[2][:'data-draft']}
 
 :javascript
   $(function(){

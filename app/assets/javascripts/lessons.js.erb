@@ -44,15 +44,12 @@ function focus_element(element){
   $(element).focus();
 }
 
-function open_new_lesson_on_fancybox(lesson_path, lesson_url) {
+function open_new_lesson_on_fancybox(lesson_path, lesson_url, draft) {
   $('.lesson .content').attr('data-url', lesson_url);
 
   $('.lesson .content iframe').attr('src', lesson_path);
 
-  // update status da lesson
-  var lesson_draft = $('.breadcrumb .lessons #lesson option:selected').data('draft');
-
-  if (lesson_draft) {
+  if (draft) {
     $('.lesson_status .draft').removeClass('invisible');
     $('.lesson_status .released').addClass('invisible');
   } else {
@@ -73,7 +70,7 @@ function click_on_keypress(event, element){
 $(function(){
   // select modules
   $(".breadcrumb .modules #lmodule-options-dropdown a").on('click',function(){
-    var lessons_url = get_module_lessons_url.replace('lesson_module_id', $(this).data('id'));
+    var lessons_url = get_module_lessons_url.replace('lesson_module_id', $(this).data('id')).replace('allocation_tags_ids_value', $(this).data('ats'));
     $.get(lessons_url, function(data){
       $('.lesson.open').replaceWith(data);
       focus_element('.lesson.open h2');
@@ -86,7 +83,7 @@ $(function(){
     var lesson_url  = get_lesson_url.replace('lesson_id', $(this).data('id'));
     $('#lesson-selected').html($(this).html() + '<i aria-hidden="true" class="icon-arrow-down-triangle"></i>');
 
-    open_new_lesson_on_fancybox(lesson_path, lesson_url);
+    open_new_lesson_on_fancybox(lesson_path, lesson_url, $(this).data('draft'));
   });
 
 });
