@@ -48,9 +48,8 @@ class SupportMaterialFilesController < ApplicationController
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
     @allocation_tags_ids = @allocation_tags_ids.join(' ')
-    params[:success] = false
     if @support_material.nil? || @support_material.is_file?
-      render json: { success: false, alert: t('support_material_files.error.file') }
+      render json: { success: false, alert: t('support_material_files.error.file') }, status: :unprocessable_entity
     else
       render :new
     end

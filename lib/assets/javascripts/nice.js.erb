@@ -250,7 +250,7 @@ $.fn.serialize_and_submit = function(options) {
         if (typeof(options.complement_success) == "function")
           options.complement_success(data);
 
-        if((typeof(options.dont_remove_lightbox) == "undefined" || !options.dont_remove_lightbox) && (typeof($("span.error:first")) == "undefined" || ($("span.error").is_empty() && $($("span.error")[0]).html() == ''))){
+        if((typeof(options.dont_remove_lightbox) == "undefined" || !options.dont_remove_lightbox) && (typeof($("span.error:first")) == "undefined" || ($("span.error").is_empty()))){
           $.fancybox.close();
         }
 
