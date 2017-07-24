@@ -12,11 +12,11 @@
       - unless @type.id == 3
         .course
           = label_tag :course, t(".course")
-          = select_tag :course, options_from_collection_for_select(@courses, "id", "name"), include_blank: true, :"data-optional" => true
+          = select_tag :course, options_from_collection_for_select(@courses, "id", "code_name"), include_blank: true, :"data-optional" => true
       .curriculum_unit
         - t_tool_name = @type.id == 4 ? t("editions.academic.module") : @type.tool_name 
         = label_tag :curriculum_unit, t_tool_name
-        = select_tag :curriculum_unit, options_from_collection_for_select(@curriculum_units, "id", "name"), include_blank: true, :"data-optional" => true
+        = select_tag :curriculum_unit, options_from_collection_for_select(@curriculum_units, "id", "code_name"), include_blank: true, :"data-optional" => true
       .period
         = label_tag :period, t(".period")
         = select_tag :period, options_for_select(@periods, @periods.first)
