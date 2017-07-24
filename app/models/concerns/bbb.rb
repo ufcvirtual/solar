@@ -4,6 +4,10 @@ require 'bigbluebutton_api'
 module Bbb
   extend ActiveSupport::Concern
 
+  included do
+    attr_accessor :merge
+  end
+
   def verify_quantity_users( allocation_tags_ids = [])
     query = "(initial_time BETWEEN ? AND ?) OR ((initial_time + (interval '1 minutes')*duration) BETWEEN ? AND ?) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration))) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration)))"
     end_time       = initial_time + duration.minutes
@@ -164,6 +168,7 @@ module Bbb
       end
     end
     self.server = @server
+    self.merge = true
     self.save! # BD
   end
 
