@@ -7,9 +7,9 @@
     %tr.lines
       %td= check_box_tag "ckb_offers_#{@semester.try(:id)}", offer.id, checked = false, {class: 'ckb_offers', :"data-offers-id" => offer.id}
       %td= offer.curriculum_unit.try(:curriculum_unit_type).try(:description)
-      %td= offer.course.try(:name)
+      %td= offer.course.try(:code_name)
       - if @type_id != 3
-        %td= offer.curriculum_unit.try(:name)
+        %td= offer.curriculum_unit.try(:code_name)
       - if offer.period_schedule.nil?
         %td.semester_same_dates= t("offers.list.same_dates_from_offer")
       - else

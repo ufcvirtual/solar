@@ -23,7 +23,7 @@ class Webconference < ActiveRecord::Base
   validate :cant_change_date, on: :update, if: 'initial_time_changed? || duration_changed?'
   validate :cant_change_shared, on: :update, if: 'shared_between_groups_changed?'
 
-  validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed?)', on: :update
+  validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed? || new_record?)'
 
   validate :verify_offer, if: '!(duration.nil? || initial_time.nil?) && (new_record? || initial_time_changed? || duration_changed?) && !allocation_tag_ids_associations.blank?'
 

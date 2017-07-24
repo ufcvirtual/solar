@@ -49,10 +49,10 @@ class LessonsController < ApplicationController
     if Exam.verify_blocking_content(current_user.id)
       render text: t('exams.restrict')
     else
-     authorize! :show, Lesson, { on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true }
+      at_ids = (active_tab[:url][:allocation_tag_id].blank? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
+      authorize! :show, Lesson, { on: [(@offer.allocation_tag.id rescue at_ids)].flatten, read: true, accepts_general_profile: true }
       user_session[:lessons] << params[:id].to_i
     
-      at_ids = (params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
       @lessons = LessonModule.find(params[:lesson_module_id]).lessons_to_open(current_user)
       @modules = LessonModule.to_select(at_ids, current_user)
       @lesson  = @lessons.first
@@ -367,7 +367,9 @@ class LessonsController < ApplicationController
     end
 
     def offer_data
-      @offer = Offer.find(params[:offer_id] || active_tab[:url][:id])
+      @offer = Offer.find(params[:offer_id] || active_tab[:url][:id]) 
+    rescue
+      @offer = AllocationTag.where(id: params[:allocation_tags_ids]).first.offers.first
     end
 
     def lessons_to_open(allocation_tags_ids = nil)
