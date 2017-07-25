@@ -40,6 +40,8 @@ function save_note(icon){
     error_message: 'lesson_notes',
     complement_success: function(data){
       form.parents('.note:first').removeClass('new');
+      form.parents('.note:first').data('link-item', data.url);
+      
       flash_message(data.notice, 'success', 'lesson_notes');
     }
   });
