@@ -2507,6 +2507,7 @@ en_US:
       current_date: can't be earlier than today
       offer_end: can't be after offer's end
       offer_start: can't be earlier than offer's start
+      offer_start_end: can't be after than offer's end
     to: "to "
     list:
       assignments: Assignment
@@ -3884,6 +3885,7 @@ en_US:
       draft: Question as draft
       already_exists: You can't repeat questions to an exam
       cant_change_after_published: You can't do this action after publishing the exam. You need to unpublish it first.
+      published: Exam already published
     export:
       conclude:
         title: Export questions

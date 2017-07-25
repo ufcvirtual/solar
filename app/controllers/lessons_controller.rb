@@ -320,7 +320,7 @@ class LessonsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
-    render_json_error(error, 'lessons.errors')
+    render_json_error(error, 'lessons.errors', 'general_message', (error.to_s.length > 20 ? error : nil))
   end
 
   def import_preview

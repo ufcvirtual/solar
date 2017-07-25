@@ -54,5 +54,6 @@ class Schedule < ActiveRecord::Base
     offer = AllocationTag.find(verify_offer_ats).first.offers.first
     errors.add(:end_date, I18n.t('schedules.errors.offer_end')) if !end_date.blank? && offer.end_date < end_date
     errors.add(:start_date, I18n.t('schedules.errors.offer_start')) if offer.start_date > start_date
+    errors.add(:start_date, I18n.t('schedules.errors.offer_start_end')) if offer.end_date < start_date
   end
 end

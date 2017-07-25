@@ -2727,6 +2727,7 @@ pt_BR:
       current_date: não deve ser anterior ao dia de hoje
       offer_end: não deve ser posterior à oferta
       offer_start: não deve ser anterior à oferta
+      offer_start_end: não deve ser posterior ao fim da oferta
     to: "à "
     list:
       assignments: Trabalho
@@ -4129,6 +4130,7 @@ pt_BR:
       min_public_questions: A cada questão pública criada, você pode criar 10 privadas. Ao ultrapassar este limite, você não tem acesso a questões públicas de demais autores. O limite foi ultrapassado.
       draft: Questão ainda como rascunho.
       cant_change_after_published: Não é possível realizar ação após publicação da prova. É necessário despublicá-la antes.
+      published: Prova já foi publicada
     export:
       conclude:
         title: Exportar questões
