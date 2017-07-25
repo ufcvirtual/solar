@@ -592,3 +592,17 @@ function hide_or_show_info(link){
     parent.find('i.icon-arrow-down-triangle').removeClass('invisible');
   }
 }
+
+function set_datetime_masked(id){
+  var currentDate = new Date();
+
+  $("#"+id).mask("<%=I18n.t('date.formats.mask_with_time')%>");
+   $("#"+id).datetimepicker({
+     hour: currentDate.getHours(),
+     minute: currentDate.getMinutes(),
+
+     timeInput: true,
+     controlType: 'select',
+     minDateTime: currentDate
+  });
+}

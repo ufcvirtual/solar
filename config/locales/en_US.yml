@@ -36,6 +36,7 @@ en_US:
       bibliography: "%d %b, %Y"
       mask: "99/99/9999"
       mask_with_time: "99/99/9999 99:99"
+      mask_with_time_form: "%m/%d/%Y %H:%M"
       normal: "%d/%m/%Y"
     day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
     abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
@@ -63,6 +64,7 @@ en_US:
       simple_day_and_month: "%d/%b"
       at_date: "%d/%m/%Y at %H:%M"
       log: "%d%m%Y%H%M%S"
+      mask_with_time_form: "%m/%d/%Y %H:%M"
 
   datetime:
     distance_in_words:

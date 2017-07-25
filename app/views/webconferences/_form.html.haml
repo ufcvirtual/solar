@@ -7,7 +7,7 @@
 
     = f.input :title
     = f.input :description
-    = f.input :initial_time, start_year: Date.today.year
+    = f.input :initial_time, as: :string, label: t('assignment_webconferences.form.date_label'), placeholder: t('assignment_webconferences.form.date_placeholder'), :'aria-label' => t('assignment_webconferences.form.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue '')}
     = f.input :duration, hint: t('.minutes')
     = f.input :is_recorded, as: :boolean, boolean_style: :inline
     
@@ -19,3 +19,10 @@
     .form-actions.right_buttons
       = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button', alt: t(:cancel)
       = button_to_function t(:save), 'save_webconference()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button'
+
+= javascript_include_tag 'jquery-ui-timepicker-addon'
+
+:javascript
+  $(function(){
+    set_datetime_masked('webconference_initial_time');
+  });
