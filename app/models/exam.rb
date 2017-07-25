@@ -168,6 +168,11 @@ class Exam < Event
         new_eq.save!
       end
     end
+
+    copy_ips_from(exam_to_copy)
+  end
+
+  def copy_ips_from(exam_to_copy)
     unless exam_to_copy.ip_reals.empty?
       exam_to_copy.ip_reals.each do |ip|
         new_ip = IpReal.new ip.attributes.except('id', 'exam_id', 'created_at', 'updated_at').merge({ exam_id: id })
@@ -176,6 +181,7 @@ class Exam < Event
       end
     end
   end
+
 
   def ended?
     has_hours = (!start_hour.blank? && !end_hour.blank?)

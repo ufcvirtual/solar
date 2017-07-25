@@ -244,10 +244,12 @@ class ExamQuestionsController < ApplicationController
             exam_id = exams.first.id
           else
             schedule = Schedule.create exam.schedule.attributes.except('id') 
-            exam     = Exam.new exam.attributes.except('id', 'schedule_id', 'status').merge({ status: false, schedule_id: schedule.id })
-            exam.allocation_tag_ids_associations = params[:allocation_tags_ids].split(' ').flatten
-            exam.save!
-            exam_id = exam.id
+            new_exam = Exam.new exam.attributes.except('id', 'schedule_id', 'status').merge({ status: false, schedule_id: schedule.id })
+            new_exam.allocation_tag_ids_associations = params[:allocation_tags_ids].split(' ').flatten
+            new_exam.merge = true
+            new_exam.save!
+            new_exam.copy_ips_from(exam)
+            exam_id = new_exam.id
             created_exam = true
           end
         else
