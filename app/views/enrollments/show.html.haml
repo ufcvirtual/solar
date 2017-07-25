@@ -4,14 +4,14 @@
   .form-inputs.block_content.show
     .input
       = label_tag t(".category"), nil, class: "form_label"
-      %span.label_info= (@course.nil? ? @curriculum_unit.curriculum_unit_type.description : CurriculumUnitType.find(7).description)
+      %span.label_info= ((@course.nil? ? @curriculum_unit.curriculum_unit_type.description : CurriculumUnitType.find(7).description) rescue '')
     .input
       = label_tag t(".course"), nil, class: "form_label"
-      %span.label_info= (@course.nil? ? @group.offer.course.code_name : @course[:name])
+      %span.label_info= (@course.nil? ? @group.offer.course.try(:code_name) : @course[:name])
     - if @course.nil?
       .input
         = label_tag t(".curriculum_unit"), nil, class: "form_label"
-        %span.label_info= @curriculum_unit.code_name
+        %span.label_info= @curriculum_unit.try(:code_name)
     .input
       = label_tag t(".semester"), nil, class: "form_label"
       %span.label_info= (@course.nil? ? @group.offer.semester.name : @course[:semester])
@@ -24,19 +24,19 @@
         %span.label_info= (@responsibles.empty? ? t(".not_defined") : @responsibles.map{|r| "#{r.name} (#{r.profile_name})"}.join(", "))
       - else
         %span.label_info= (@course[:responsibles].empty? ? t(".not_defined") : @course[:responsibles].join(", "))
-    - if @course.nil?
+    - if @course.nil? && !@curriculum_unit.blank? 
       .input
         = label_tag t(".syllabus"), nil, class: "form_label"
         %span.label_info= @curriculum_unit.syllabus
-      - unless @curriculum_unit.working_hours.nil?
+      - unless @curriculum_unit.working_hours.blank?
         .input
           = label_tag t(".working_hours"), nil, class: "form_label"
           %span.label_info= @curriculum_unit.working_hours
-      - unless @curriculum_unit.credits.nil?
+      - unless @curriculum_unit.credits.blank?
         .input
           = label_tag t(".credits"), nil, class: "form_label"
           %span.label_info= @curriculum_unit.credits
-      - unless @curriculum_unit.prerequisites.nil?
+      - unless @curriculum_unit.prerequisites.blank?
         .input
           = label_tag t(".prerequisites"), nil, class: "form_label"
           %span.label_info= @curriculum_unit.prerequisites
