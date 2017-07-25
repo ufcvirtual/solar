@@ -42,7 +42,7 @@
             %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(' - ')
             %div= [(assignment.start_hour), (assignment.end_hour)].join(' - ') unless assignment.start_hour.blank?
           %td.center{headers: "evaluative#{type}" }= t(assignment.evaluative, scope: [:scores, :info])
-          %td.center{headers: "frequency#{type}" }= t(assignment.frequency, scope: [:scores, :info])
+          %td.center{headers: "frequency#{type}" }=raw t(assignment.frequency, scope: [:common_between_pages, :frequency], hours: assignment.max_working_hours)
           %td.center{headers: "action#{type}" }
             = link_to content_tag(:i, nil, class: 'icon-users'), '#', class: 'btn participants', :'data-url' => participants_assignment_path(assignment.academic_tool_id), :"data-tooltip" => (is_group_type ? t('.groups') : t('.participants')), onclick: 'open_div(this, event);', :'data-div' => '.participants_box', id: "assignment-#{assignment.academic_tool_id}", :'data-hide' => true, :'aria-label' => (is_group_type ? t('.groups') : t('.participants'))
             - if is_group_type

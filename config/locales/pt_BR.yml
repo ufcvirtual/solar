@@ -4555,6 +4555,9 @@ pt_BR:
     less: 'Menos'
     more_alt: Ver descrição completa de %{tool}
     less_alt: Ver descrição resumida de %{tool}
+    frequency:
+      t: 'Sim <br/>(máx: %{hours}h)'
+      f: Não
 
   ip_control:
     info:

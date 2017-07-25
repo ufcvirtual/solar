@@ -4311,6 +4311,9 @@ en_US:
     less: Less
     more_alt: See complete description of %{tool}
     less_alt: See compressed description of %{tool}
+    frequency:
+      t: 'Yes <br/>(max: %{hours}h)'
+      f: 'No'
 
   ip_control:
     info:
