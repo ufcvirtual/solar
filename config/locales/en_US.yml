@@ -36,6 +36,7 @@ en_US:
       bibliography: "%d %b, %Y"
       mask: "99/99/9999"
       mask_with_time: "99/99/9999 99:99"
+      mask_with_time_form: "%m/%d/%Y %H:%M"
       normal: "%d/%m/%Y"
     day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
     abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
@@ -63,6 +64,7 @@ en_US:
       simple_day_and_month: "%d/%b"
       at_date: "%d/%m/%Y at %H:%M"
       log: "%d%m%Y%H%M%S"
+      mask_with_time_form: "%m/%d/%Y %H:%M"
 
   datetime:
     distance_in_words:
@@ -2505,6 +2507,7 @@ en_US:
       current_date: can't be earlier than today
       offer_end: can't be after offer's end
       offer_start: can't be earlier than offer's start
+      offer_start_end: can't be after than offer's end
     to: "to "
     list:
       assignments: Assignment
@@ -3882,6 +3885,7 @@ en_US:
       draft: Question as draft
       already_exists: You can't repeat questions to an exam
       cant_change_after_published: You can't do this action after publishing the exam. You need to unpublish it first.
+      published: Exam already published
     export:
       conclude:
         title: Export questions
@@ -4309,6 +4313,9 @@ en_US:
     less: Less
     more_alt: See complete description of %{tool}
     less_alt: See compressed description of %{tool}
+    frequency:
+      t: 'Yes <br/>(max: %{hours}h)'
+      f: 'No'
 
   ip_control:
     info:

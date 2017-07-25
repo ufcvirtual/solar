@@ -254,6 +254,7 @@ class Question < ActiveRecord::Base
     raise 'min_public_questions' if !owners?(true) && !user_questions.empty? && ((user_questions.where(privacy: true).count/user_questions.where(privacy: false).count > 10 rescue false) || (user_up_questions.where(privacy: true).count/user_up_questions.where(privacy: false).count > 10 rescue false))
     raise 'draft' if !privacy && !owner?(true) && !status 
     raise 'already_exists' if !exam.nil? && exam.questions.where(id: id).any?
+    raise 'published' if !exam.nil? && exam.status
   end
 
   def can_destroy?

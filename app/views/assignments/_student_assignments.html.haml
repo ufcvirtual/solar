@@ -55,7 +55,7 @@
             - else
               = link_to t(assignment.situation.to_sym), link, class: "assignment_#{assignment.situation}"
           %td.center{headers: "evaluative#{type}" }= t(assignment.evaluative, scope: [:scores, :info])
-          %td.center{headers: "frequency#{type}" }= t(assignment.frequency, scope: [:scores, :info])
+          %td.center{headers: "frequency#{type}" }= raw t(assignment.frequency, scope: [:common_between_pages, :frequency], hours: assignment.max_working_hours)
           %td.center{headers: "grade#{type}" }
             %span.activity_grade= assignment.grade || "-"
           %td.center{headers: "workload#{type}" }   

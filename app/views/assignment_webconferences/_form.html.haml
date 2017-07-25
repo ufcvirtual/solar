@@ -10,7 +10,7 @@
       = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline.middle', ckeditor: false, div_id: 'assignment_webconference_title', number: '', field: t('.title')}
 
     .input
-      = f.input :initial_time, as: :string, label: t('.date_label'), placeholder: t('.date_placeholder'), :'aria-label' => t('.date_aria_label')
+      = f.input :initial_time, as: :string, label: t('.date_label'), placeholder: t('.date_placeholder'), :'aria-label' => t('.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue '')}
 
     .input
       = f.input :duration, label: t('.duration_label'), :'aria-label' => t('assignment_webconferences.form.time_in_minutes')
@@ -22,32 +22,10 @@
       = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button', alt: t(:cancel)
       = button_to_function t(:save), 'save_assignment_awebconference()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button'
 
-= javascript_include_tag 'tooltip'
-= javascript_include_tag 'jquery-ui-timepicker-addon'
+= javascript_include_tag 'tooltip', 'jquery-ui-timepicker-addon'
 
 :javascript
 
   $(function(){
-    var input_initial_time = $("#assignment_webconference_initial_time").val();
-
-    if( input_initial_time !== "") {
-      var array_initial_time = input_initial_time.split(" ");
-      var array_date = array_initial_time[0].split("-");
-
-      var formatted_date_time = array_date[2] + "/" + array_date[1] + "/" + array_date[0] + " " + array_initial_time [1];
-
-      $("#assignment_webconference_initial_time").val(formatted_date_time);
-    }
-
-    var currentDate = new Date();
-
-    $("#assignment_webconference_initial_time").mask("#{I18n.t('date.formats.mask_with_time')}");
-    $("#assignment_webconference_initial_time").datetimepicker({
-      hour: currentDate.getHours(),
-      minute: currentDate.getMinutes(),
-
-      timeInput: true,
-      controlType: 'select',
-      minDateTime: currentDate
-    });
+    set_datetime_masked('assignment_webconference_initial_time');
   });

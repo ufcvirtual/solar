@@ -90,7 +90,7 @@
                   - status = 'not_started'
                 %div{class: "assignment_#{status}"}= I18n.t("scores.situation.#{status}")
             %td.center{headers: 'e_evaluative'}= t(exam.evaluative, scope: [:scores, :info])
-            %td.center{headers: 'e_frequency'}= t(exam.frequency, scope: [:scores, :info])
+            %td.center{headers: 'e_frequency'}= raw t(exam.frequency, scope: [:common_between_pages, :frequency], hours: exam.max_working_hours)
             - if @can_open
               %td.center.activity_grade{headers: 'e_grade', :'aria-label' => exam.grade || t('.not_evaluated')}
                 = exam.grade || bt_correction

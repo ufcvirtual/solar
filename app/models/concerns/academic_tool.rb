@@ -11,9 +11,9 @@ module AcademicTool
 
     after_create :define_academic_associations, unless: 'allocation_tag_ids_associations.nil?'
 
-    before_validation :set_schedule, if: 'respond_to?(:schedule)'
+    before_validation :set_schedule, if: 'respond_to?(:schedule) && merge.nil?'
 
-    attr_accessor :allocation_tag_ids_associations
+    attr_accessor :allocation_tag_ids_associations, :merge
   end
 
   private

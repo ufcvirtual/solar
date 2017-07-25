@@ -68,7 +68,7 @@
 
 
         %td.center{headers: "evaluative_#{@id_table}" }= t(chat.evaluative, scope: [:scores, :info])
-        %td.center{headers: "frequency_#{@id_table}" }= t(chat.frequency, scope: [:scores, :info])
+        %td.center{headers: "frequency_#{@id_table}" }= raw t(chat.frequency, scope: [:common_between_pages, :frequency], hours: chat.max_working_hours)
         - if @is_student && other==false
           %td.center{headers: "grade_#{@id_table}" }= chat.grade
           %td.center{headers: "workload_#{@id_table}" }= chat.working_hours
