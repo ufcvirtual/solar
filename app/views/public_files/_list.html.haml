@@ -5,7 +5,7 @@
         %i.icon-suitcase{:'aria-hidden' => 'true'}
         = t(".title")
       .right_buttons
-        = link_to content_tag(:i, nil, class: "icon-plus"), new_public_file_path, class: "btn btn_main", id: "new_public_file", :"data-tooltip" => t(".new"), :'aria-label' => t(".new")
+        = link_to content_tag(:i, nil, class: "icon-plus"), new_public_file_path, class: "btn btn_main", id: "new_public_file", :"data-tooltip" => t(".new"), :'aria-label' => t(".new") + t('fancybox.open')
     .block_content
       - no_files = (public_files.blank?)
       - unless no_files
