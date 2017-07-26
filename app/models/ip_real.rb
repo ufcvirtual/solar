@@ -9,7 +9,7 @@ class IpReal < ActiveRecord::Base
 
   validate :can_create?, on: :create, unless: 'parent.blank? || !merge.nil?'
   validate :can_change?, on: :update, if: 'merge.nil?'
-  before_destroy :can_destroy_callback?
+  before_destroy :can_destroy_callback?, if: 'parent.controlled'
 
   attr_accessor :merge
 
@@ -30,13 +30,13 @@ class IpReal < ActiveRecord::Base
   end
 
   def can_create?
-    errors.add(:ip_v4, I18n.t('ip_control.errors.date_end')) if !ip_v4.blank? && parent.ended?
-    errors.add(:ip_v6, I18n.t('ip_control.errors.date_end')) if !ip_v6.blank? && parent.ended?
+    errors.add(:ip_v4, I18n.t('ip_control.errors.date_end')) if !ip_v4.blank? && parent.ended? && (!parent.respond_to?(:status) || parent.status)
+    errors.add(:ip_v6, I18n.t('ip_control.errors.date_end')) if !ip_v6.blank? && parent.ended? && (!parent.respond_to?(:status) || parent.status)
   end
 
   def can_change?
-    errors.add(:ip_v4, I18n.t('ip_control.errors.date')) if !ip_v4.blank? && parent.started? && ip_v4_changed?
-    errors.add(:ip_v6, I18n.t('ip_control.errors.date')) if !ip_v6.blank? && parent.started? && ip_v6_changed?
+    errors.add(:ip_v4, I18n.t('ip_control.errors.date')) if !ip_v4.blank? && parent.started? && ip_v4_changed? && (!parent.respond_to?(:status) || parent.status)
+    errors.add(:ip_v6, I18n.t('ip_control.errors.date')) if !ip_v6.blank? && parent.started? && ip_v6_changed? && (!parent.respond_to?(:status) || parent.status)
   end
 
   def can_destroy?
