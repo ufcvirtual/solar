@@ -1362,7 +1362,7 @@ en_US:
       less: See compressed description of %{web}
       groups: List of groups which webconference %{web} is shared between
       access_web: Access webconference %{web} (will open a new window)
-      access_web_recording: Access %{name} recording of webconference (will open a new window)
+      access_web_recording: Access %{name} of webconference (will open a new window)
       summary: Table which content has webconference access links, and also information about it such as moderator, group sharing, equivalencies, date and time, working hours, grade, situation, amount of online users and a link to access recordings.
       accessibility_title: <b>Accessibility (screen reader access)</b>
       accessibility: "<p> To join the webconference using screen readers, we recommend the latest version of the <strong>Mozilla Firefox</strong> (with the updated flash-player plugin) and the following screen readers: <strong>NVDA or Window-eyes.</strong> </p><p> The load of all the components of the tool takes approximately <strong>10 seconds</strong>. You will hear a 'beep' when everything is ready. </p>"
