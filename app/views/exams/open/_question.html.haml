@@ -223,10 +223,7 @@
             focus_element($('h3.question'));
             break;
           case parseInt("#{t("questions.shortcut.items")}"):
-            if(!!$('.question_items input').filter(':disabled:first').length)
-              focus_element($('.question_items input').filter(':disabled:first'));
-            else
-              focus_element($('.question_items select').filter(':disabled:first'));
+            focus_element($('.question_items li:first'));
             break;
           case parseInt("#{t("questions.shortcut.questions")}"):
             focus_element($('#question_count'));
