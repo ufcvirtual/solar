@@ -509,6 +509,9 @@ pt_BR:
         grade: Nota
         working_hours: Carga horária
         group_assignment_id: Grupo
+      message:
+        content: Conteúdo
+        subject: Assunto
 
     errors:
       uniqueness: "Registro já existe no sistema"
@@ -1542,6 +1545,7 @@ pt_BR:
       less: Ver descrição resumida de %{web}
       groups: Lista de turmas para as quais a webconferência %{web} é compartilhada
       access_web: Acessar webconferência %{web} (abrirá uma nova janela)
+      access_web_recording: Acessar gravação %{name} da webconferência (abrirá uma nova janela)
       summary: Tabela cujo conteúdo há links de acesso às webconferências, com seus dados de moderação, compartilhamento entre turmas, equivalências, data e horário, nota, frequência, situação, quantidade de usuários online e link para acessar gravação.
       accessibility_title: <b>Acessibilidade (acesso com leitor de tela)</b>
       accessibility: "<p> Para participar da webconferência utilizando leitores de tela, recomendamos a versão mais recente do navegador <strong>Mozilla Firefox</strong> (com o plugin flash-player atualizado) e os seguintes leitores de tela: <strong>NVDA ou Window-eyes.</strong> </p><p> O carregamento de todos os componentes da ferramenta leva aproximadamente <strong>10 segundos</strong>. Você ouvirá um 'bip' quando tudo estiver pronto. </p>"
