@@ -15,7 +15,7 @@
       %tbody
         - @recordings.each_with_index do |record, idx|
           %tr.lines
-            %td{headers: '_access'}= link_to t('webconferences.get_record.record', number: idx+1), Bbb.get_recording_url(record), target: '_blank', :'aria-label' => t('webconferences.get_record.record', number: idx+1)+t(:new_window)
+            %td{headers: '_access'}= link_to t('webconferences.get_record.record', number: idx+1), Bbb.get_recording_url(record), target: '_blank', :'aria-label' => t('webconferences.index.access_web_recording', name: t('webconferences.get_record.record', number: idx+1) )
             %td{headers: '_end'}= l(record[:startTime].to_datetime)
             %td{headers: '_access'}= l(record[:endTime].to_datetime)
             - if @can_remove_record && !view_disabled
