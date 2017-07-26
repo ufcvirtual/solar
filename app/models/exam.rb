@@ -145,7 +145,7 @@ class Exam < Event
     ExamUserAttempt.joins("LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id")
                    .joins("LEFT JOIN exam_responses_question_items ON exam_responses_question_items.exam_response_id = exam_responses.id")
                    .joins("LEFT JOIN question_items ON  question_items.id = exam_responses_question_items.question_item_id")
-                   .where('question_items.question_id = ? AND exam_user_attempts.id = ? AND (exam_responses_question_items.value != question_items.value OR exam_responses_question_items.question_item_id IS NULL)', question.id, exam_user_attempt.id).count
+                   .where('question_items.question_id = ? AND exam_user_attempts.id = ? AND (exam_responses_question_items.value != question_items.value OR exam_responses_question_items.question_item_id IS NULL OR (question_items.value = 't' AND exam_responses_question_items.value IS NULL))', question.id, exam_user_attempt.id).count
   end
 
   def can_correct?(user_id, ats)
