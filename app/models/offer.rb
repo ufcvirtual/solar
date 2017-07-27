@@ -289,20 +289,21 @@ class Offer < ActiveRecord::Base
 
   ## triggers
 
-  # trigger.after(:update) do
   trigger.after(:update).of(:curriculum_unit_id, :course_id, :semester_id, :offer_schedule_id) do
     <<-SQL
 
       -- curriculum unit id
-      IF NEW.curriculum_unit_id <> OLD.curriculum_unit_id THEN
+      IF ((NEW.curriculum_unit_id <> OLD.curriculum_unit_id) OR ((NEW.curriculum_unit_id IS NULL) <> (OLD.curriculum_unit_id IS NULL))) THEN
         UPDATE related_taggables
            SET curriculum_unit_id = NEW.curriculum_unit_id,
-               curriculum_unit_at_id = (SELECT id FROM allocation_tags WHERE curriculum_unit_id = NEW.curriculum_unit_id)
+               curriculum_unit_at_id = (SELECT id FROM allocation_tags WHERE curriculum_unit_id = NEW.curriculum_unit_id),
+               curriculum_unit_type_id = (SELECT curriculum_unit_type_id FROM curriculum_units WHERE curriculum_units.id = NEW.curriculum_unit_id),
+               curriculum_unit_type_at_id = (SELECT allocation_tags.id FROM allocation_tags JOIN curriculum_units ON allocation_tags.curriculum_unit_type_id = curriculum_units.curriculum_unit_type_id WHERE curriculum_units.id = NEW.curriculum_unit_id)
          WHERE offer_id = OLD.id;
       END IF;
 
       -- course
-      IF NEW.course_id <> OLD.course_id THEN
+      IF ((NEW.course_id <> OLD.course_id) OR ((NEW.course_id IS NULL) <> (OLD.course_id IS NULL))) THEN
         UPDATE related_taggables
            SET course_id = NEW.course_id,
                course_at_id = (SELECT id FROM allocation_tags WHERE course_id = NEW.course_id)
