@@ -96,4 +96,12 @@ class LessonModule < ActiveRecord::Base
       Lesson.where(lesson_module_id: id).where('privacy = false OR user_id = ?', user_id).order('lessons.order ASC')
     end
   end
+
+  def copy_dependencies_from(module_to_copy)
+    unless module_to_copy.lessons.empty?
+      module_to_copy.lessons.each do |lesson_to_copy|
+        lesson = Lesson.create! lesson_to_copy.attributes.merge({ lesson_module_id: self.id, imported_from_id: lesson_to_copy.id, receive_updates: false })
+      end
+    end
+  end
 end
