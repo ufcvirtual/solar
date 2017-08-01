@@ -187,7 +187,7 @@
 
     = er.hidden_field :duration, {id: 'duration'}
 
-- if @question_audios.blank? || audio_is.blank?
+- if @question_audios || audio_is==1
   .question_audios{:'aria-hidden' => 'true'}
     .audio
       %form.hide
