@@ -1190,6 +1190,6 @@ res228:
   id: 228
   controller: 'administrations'
   action: 'list_notifications'
-  description: 'Administracao - lista todas as notificações'
+  description: 'Avisos Gerais'
 
   

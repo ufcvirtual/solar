@@ -1,26 +1,27 @@
 .show_notification
   #lightBoxDialogTitle
     %h1= @notification.title
-    - if @size_notification > 1
-      - if @veri_last==false
+    - if @all_notification.count > 1
+      - unless @all_notification.last.id == @notification.id
         = link_to_function content_tag(:i, nil, class: 'icon-arrow-right-thin', :'aria-hidden'=>'true'), 'next_notification()', class: 'next', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('.next')
-      - if @veri_first==false
+      - unless @all_notification.first.id == @notification.id
         = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin', :'aria-hidden'=>'true'), 'prev_notification()', class: 'prev', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('.prev')
 
-  .title-warning
-    = @allocation_tag.no_group_info unless @allocation_tag.blank?
-    - unless @groups.blank? 
-      - if @groups.size == 1
-        = @groups.first.code
-      - else
-        .equivalent
-          %a{ href: '#', :"data-dropdown" => "#dropdown" }
-            = t('.count_groups', count: @groups.size)
-            %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-          .dropdown.dropdown-tip{id: "dropdown"}
-            %ul{ class: 'dropdown-menu' }  
-              - @groups.each do |code|
-                %li= code
+  - unless @groups.blank? && @allocation_tag.blank?
+    .title-warning
+      = @allocation_tag.no_group_info unless @allocation_tag.blank?
+      - unless @groups.blank? 
+        - if @groups.size == 1
+          = @groups.first.code
+        - else
+          .equivalent
+            %a{ href: '#', :"data-dropdown" => "#dropdown" }
+              = t('.count_groups', count: @groups.size)
+              %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
+            .dropdown.dropdown-tip{id: "dropdown"}
+              %ul{ class: 'dropdown-menu' }  
+                - @groups.each do |code|
+                  %li= code
 
   .block_content
     .notification

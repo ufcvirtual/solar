@@ -26,22 +26,14 @@ class NotificationsController < ApplicationController
   # GET /notifications/1
   def show
     @all_notification = Notification.of_user(current_user)
-    @size_notification = @all_notification.count
-    @last_notification = @all_notification.last
-    @first_notification = @all_notification.first
     @notification = Notification.find(params[:id])
-    @veri_first = @first_notification.id == @notification.id ? true : false
-    @veri_last = @last_notification.id == @notification.id ? true : false
-
     @notification.mark_as_read(current_user)
-    unless @notification.allocation_tags.blank?
-      @allocation_tag = @notification.allocation_tags 
-      if @allocation_tag.size > 1
-        @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tag.pluck(:id)}).pluck(:code)
-      end
-      @allocation_tag = @allocation_tag.first
-    end  
     
+    unless @notification.allocation_tags.blank?
+      allocation_tags = @notification.allocation_tags
+      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags.pluck(:id)}).pluck(:code) if allocation_tags.size > 1
+      @allocation_tag = allocation_tags.first
+    end  
   end
 
   # GET /notifications/new
@@ -49,7 +41,6 @@ class NotificationsController < ApplicationController
     authorize! :create, Notification, {on: @allocation_tags_ids = params[:allocation_tags_ids], accepts_general_profile: true} 
     
     @notification = Notification.new
-
     @notification.build_schedule(start_date: Date.today, end_date: Date.today)
   end
 
