@@ -3487,6 +3487,8 @@ pt_BR:
       list_web_conference_evaluative: Listar web conferências avaliativas'
       list_web_conference_frequency: Listar web conferências de frequência'
       list_web_conference_not_evaluative: Listar web conferências não avaliativas'
+      final_exam: Avaliação Final (AF)
+      hours: Carga Horária Máxima
     reports:
       general_evaluative: Relatório Acompanhamento - Atividades Avaliativas
       general_frequency: Relatório Acompanhamento - Atividades de Frequência
@@ -4564,6 +4566,13 @@ pt_BR:
     frequency:
       t: 'Sim <br/>(máx: %{hours}h)'
       f: Não
+    ev_final_exam:
+      t: 'Sim <br/>(AF)'
+      f: Não
+    final_exam:
+      t: 'Sim'
+      f: Não
+    hours: '%{hours}h'
 
   ip_control:
     info:

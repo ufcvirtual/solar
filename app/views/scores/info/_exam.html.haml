@@ -18,7 +18,8 @@
               %th#ex_eva_dat_evaluative.center.date{style: "width: 30%;"}= t(:date_range, :scope => [:scores, :info])
               %th#ex_eva_sit_evaluative.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
               %th#ex_eva_gra_evaluative.center{style: "width: 2%;"}= t(:grade, :scope => [:scores, :info])
-              %th#ex_eva_bla_evaluative.center.no_sort{style: "width: 2%;"}= t('exams.list.calculate')
+              %th#ex_eva_btn_evaluative.center.no_sort{style: "width: 2%;"}= t('exams.list.calculate')
+              %th#ex_eva_af.center.no_sort{style: "width: 2%;"}=t('scores.info.final_exam')
           %tbody
             - @exams_evaluative.each do |exam|
               %tr.lines
@@ -70,9 +71,10 @@
                 %td.center.situation{headers: "ex_eva_sit_evaluative"}
                   %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
                 %td.center.grade{headers: "ex_eva_gra_evaluative"}= exam.grade
-                %td{headers: "ex_eva_bla_evaluative"}
+                %td{headers: "ex_eva_btn_evaluative"}
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation))
                   %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
+                %td.center{headers: 'ex_eva_af' }=raw t(exam.final_exam, scope: [:common_between_pages, :final_exam])
                 / %td.center=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)
@@ -89,6 +91,7 @@
               %th#ex_eva_gra_frequency.center{style: "width: 2%;"}= t(:grade, :scope => [:scores, :info])
               %th#ex_eva_wh_frequency.center{style: "width: 2%;"}= t(:workload, :scope => [:scores, :info])
               %th#ex_eva_btn_frequency.center.no_sort{style: "width: 2%;"}= t('exams.list.calculate')
+              %th#ex_freq_hours.center.no_sort{style: "width: 2%;"}=t('scores.info.hours')
               %th#ex_eva_aft_frequency.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
           %tbody
             - @exams_frequency.each do |exam|
@@ -144,6 +147,7 @@
                 %td.center{headers: "ex_eva_btn_frequency"}
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake'].include?(exam.situation))
                   %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write', :'aria-hidden' => 'true')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
+                %td.center{headers:'ex_freq_hours'}=raw t('common_between_pages.hours', hours: exam.max_working_hours)
                 %td.center{headers: "ex_eva_aft"}=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)

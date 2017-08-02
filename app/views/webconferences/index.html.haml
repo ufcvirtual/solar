@@ -93,7 +93,7 @@
             - else
               %td.center{:'data-tooltip' => t('.recordings', web: webconference.title), headers: 'web_recording'}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference, at_id: webconference.at_id), class: "record", onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('.recordings', web: webconference.title) + t('fancybox.open')
 
-            %td.center{headers:'web_evaluative'}= t(webconference.evaluative, scope: [:scores, :info])
+            %td.center{headers:'web_evaluative'}=raw webconference.final_exam ? t(webconference.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(webconference.evaluative, scope: [:scores, :info])
             %td.center{headers:'web_frequency'}= raw t(webconference.frequency, scope: [:common_between_pages, :frequency], hours: webconference.max_working_hours)
             - if @can_see_access
               %td{headers: 'web_access',:'data-url' => list_access_webconference_path(webconference, at_id: webconference.at_id), :'data-tooltip' => t('webconferences.list.access') }= link_to_function content_tag(:i, nil, class: 'icon-users btn'), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('webconferences.list.access') + t('fancybox.open')

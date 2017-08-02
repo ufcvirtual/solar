@@ -21,6 +21,7 @@
               %th#ch_eva_his.center.no_sort{style: "width: 5%;"}=t("chat_rooms.chats.message_history")
               - if @can_evaluate
                 %th#ch_eva_stu.no_sort{style: "width: 2%;"}
+              %th#ch_eva_af.center.no_sort{style: "width: 2%;"}=t('scores.info.final_exam')
           %tbody
             - @chat_rooms_evaluative.each do |chat|
               %tr.lines
@@ -74,6 +75,7 @@
                 - if @can_evaluate  
                   %td.center{headers: "ch_eva_stu"}
                     = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(chat.academic_tool_id, user_id: @user.id, score_type: 'evaluative'), class: 'btn to_evaluate_chat', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
+                %td.center{headers: 'ch_eva_af' }=raw t(chat.final_exam, scope: [:common_between_pages, :final_exam])
 
       - else
         .block_content.block_content_text= t(:message_no_chat, scope: [:chat_rooms, :list])
@@ -91,6 +93,7 @@
               %th#ch_freq_his.center.no_sort{style: "width: 5%;"}=t("chat_rooms.chats.message_history")
               - if @can_evaluate
                 %th#ch_freq_stu.no_sort{style: "width: 2%;"}
+              %th#ch_freq_hours.center.no_sort{style: "width: 2%;"}=t('scores.info.hours')
           %tbody
             - @chat_rooms_frequency.each do |chat|
               %tr.lines
@@ -145,6 +148,7 @@
                 - if @can_evaluate
                   %td.center{headers: "ch_freq_stu"}
                     = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(chat.academic_tool_id, user_id: @user.id, score_type: 'frequency'), class: 'btn to_evaluate_chat', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
+                %td.center{headers:'ch_freq_hours'}=raw t('common_between_pages.hours', hours: chat.max_working_hours)
       - else
         .block_content.block_content_text= t(:message_no_chat, scope: [:chat_rooms, :list])
   

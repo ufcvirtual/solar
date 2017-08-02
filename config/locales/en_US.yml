@@ -3247,6 +3247,8 @@ en_US:
       list_web_conference_evaluative: List evaluative web conference'
       list_web_conference_frequency: List web conference of frequency'
       list_web_conference_not_evaluative: List not evaluative web conference'
+      final_exam: Final Exam
+      hours: Maximum Working Hours
     situation:
       not_started: Not started
       to_answer: To answer
@@ -4320,6 +4322,13 @@ en_US:
     frequency:
       t: 'Yes <br/>(max: %{hours}h)'
       f: 'No'
+    ev_final_exam: 
+      t: 'Yes <br/>(Final Exam)'
+      f: 'No'
+    final_exam:
+      t: 'Yes'
+      f:  'No'
+    hours: '%{hours}h'
 
   ip_control:
     info:
