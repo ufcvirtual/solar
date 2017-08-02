@@ -130,7 +130,7 @@
     $("#user_birthdate").datepicker(options);
 
     setTimeout(function(){
-      focuInputErro();
+      focuErro();
     }, 400);    
     
   });
@@ -138,26 +138,32 @@
   function up_focus(id){
     setTimeout(function() {
       $('#'+id).focus();
-      focuInputErro();
+      focuErro();
     }, 100); 
 
    
   }
 
-  function focuInputErro(){
+  function focuErro(){
 
     if($(".error").val() != undefined) {
+      $(".error").each( function(index, value) {         
+        var label = $(this).siblings()[0];
+        var text = $(label).text()+': '+$(this).text();
+        $(label).attr("aria-label",text);
+      });
+
       var el = $(".error").siblings()[0];
-      var er =$(".error")[0];
-      var text = $(el).text()+': '+$(er).text();
+     // var er = $(".error")[0];
+     //var text = $(el).text()+': '+$(er).text();
       if($(el).is(":visible")){
-        $(el).attr("aria-label",text);
+        //$(el).attr("aria-label",text);
         $(".error").siblings()[0].focus();
       }else{
         if(typeof($("#next_1")) !== "undefined" && $("#next_1").is(":visible")){
           $("#next_1").click();
           if ($(el).is(":visible")) {
-            $(el).attr("aria-label",text);
+            //$(el).attr("aria-label",text);
             $(".error").siblings()[0].focus();
           } 
         }

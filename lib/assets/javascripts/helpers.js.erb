@@ -490,22 +490,28 @@ function goOut(element) {
 
 function focuInpuErro(){
   if (typeof($(".error")) !== "undefined") {
+    $(".error").each( function(index, value){   
+        var label = $(this).siblings()[0];
+        var text = $(label).text()+': '+$(this).text();
+        $(label).attr("aria-label",text);
+    });
+
     var el = $(".error").siblings()[0];
-    var er =$(".error")[0];
-    var text = $(el).text()+': '+$(er).text();
+    //var er =$(".error")[0];
+    //var text = $(el).text()+': '+$(er).text();
     if($(el).is(":visible")){
-      $(el).attr("aria-label",text);
+      //$(el).attr("aria-label",text);
       $(".error").siblings()[0].focus();
     } else {
       if(typeof($("#_continue")) !== "undefined" && $("#_continue").is(":visible")){
         $("#_continue").click();
         if ($(el).is(":visible")) {
-          $(el).attr("aria-label",text);
+          //$(el).attr("aria-label",text);
           $(".error").siblings()[0].focus();
         } else {
-          if (typeof($("#__continue")) !== "undefined" && $("#__continue").is(":visible")) {
+          if (typeof($("#__continue")) !== "undefined" && $("#__continue").is(":visible")){
             if ($(el).is(":visible")) {
-              $(el).attr("aria-label", text);
+              //$(el).attr("aria-label", text);
               $(".error").siblings()[0].focus();
             }
           }
