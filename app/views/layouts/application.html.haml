@@ -152,12 +152,12 @@
 
         #sav_url.invisible= link_to "", "#", {class: 'link_content fancybox.iframe', target: '_blank' }
 
-        / - if current_user
-        /   #chatpanel
-        /     #collective-xmpp-chat-data{style: "display: none"}
-        /     #toggle-controlbox
-        /       %a.chat.toggle-online-users{href: "#"}
-        /         %strong.conn-feedback="Bate-Papo"
+        - if current_user
+          #chatpanel
+            #collective-xmpp-chat-data{style: "display: none"}
+            #toggle-controlbox
+              %a.chat.toggle-online-users{href: "#"}
+                %strong.conn-feedback="Bate-Papo"
 
       #footer_push{style: "height:35px"}
       - locales  =  %w(pt_BR en_US)
