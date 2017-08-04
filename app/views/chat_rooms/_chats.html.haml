@@ -67,7 +67,7 @@
             %td.center{class: "assignment_not_started", headers: "situation_#{@id_table}"}= t("scores.situation.not_started")    
 
 
-        %td.center{headers: "evaluative_#{@id_table}" }= t(chat.evaluative, scope: [:scores, :info])
+        %td.center{headers: "evaluative_#{@id_table}" }=raw chat.final_exam ? t(chat.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(chat.evaluative, scope: [:scores, :info])
         %td.center{headers: "frequency_#{@id_table}" }= raw t(chat.frequency, scope: [:common_between_pages, :frequency], hours: chat.max_working_hours)
         - if @is_student && other==false
           %td.center{headers: "grade_#{@id_table}" }= chat.grade

@@ -19,6 +19,7 @@
                 %th#ev_eva_gra.center{style: "width: 2%;"}= t(:grade, scope: [:scores, :info])
                 - if @can_evaluate_ev
                   %th#ev_eva_eva.center.no_sort{style: "width: 2%;"}
+                %th#ev_eva_af.center.no_sort{style: "width: 2%;"}=t('scores.info.final_exam')
             %tbody
               - @schedules_event_evaluative.each do |schedule_event|
                 %tr.lines
@@ -58,6 +59,7 @@
                   - if @can_evaluate_ev 
                     %td.center{headers: "ev_eva_eva"}
                       = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id, score_type: 'evaluative'), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])   
+                  %td.center{headers: 'ev_eva_af' }=raw t(schedule_event.final_exam, scope: [:common_between_pages, :final_exam])
 
         - else
           .block_content.block_content_text= t(:itens_not_found)
@@ -74,6 +76,7 @@
                 %th#ev_fre_fre.center{style: "width: 2%;"}= t(:frequency, scope: [:scores, :info])
                 - if @can_evaluate_ev
                   %th#ev_fre_eva.center.no_sort{style: "width: 2%;"}
+                %th#ev_freq_hours.center.no_sort{style: "width: 2%;"}=t('scores.info.hours')
             %tbody
               - @schedules_event_frequency.each do |schedule_event|
                 %tr.lines
@@ -113,6 +116,7 @@
                   - if @can_evaluate_ev
                     %td.center{headers: "ev_fre_eva"}
                       = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id, score_type: 'frequency'), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
+                  %td.center{headers:'ev_freq_hours'}=raw t('common_between_pages.hours', hours: schedule_event.max_working_hours)
 
         - else
           .block_content.block_content_text= t(:itens_not_found)

@@ -75,6 +75,8 @@ class OffersController < ApplicationController
 
       render :edit
     end
+  rescue => error
+    render_json_error(error, 'offers.error')
   end
 
   def destroy

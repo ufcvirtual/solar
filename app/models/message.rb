@@ -57,7 +57,7 @@ class Message < ActiveRecord::Base
     query << "messages.allocation_tag_id IN (#{ats.join(',')})"                                           unless ats.blank?
     query << "user_messages.user_id = #{user_id}"                                                         unless options[:ignore_user]
     query << "position(lower(unaccent('#{search[:subject]}')) in lower(unaccent(messages.subject))) > 0 " unless search[:subject].blank?
-    query << (box == 'outbox' ? "position(lower(unaccent('#{search[:user]}')) in lower(unaccent(sent_to2.name))) > 0" : "position(lower(unaccent('#{search[:user]}')) in lower(unaccent(sent_by.name))) > 0") unless search[:user].blank?
+    query << (box == 'outbox' ? "position(lower(unaccent('#{search[:user]}')) in lower(unaccent(sent_to.name))) > 0" : "position(lower(unaccent('#{search[:user]}')) in lower(unaccent(sent_by.name))) > 0") unless search[:user].blank?
 
     query.join(' AND ')
   end
@@ -68,7 +68,7 @@ class Message < ActiveRecord::Base
     Message.find_by_sql <<-SQL
       SELECT DISTINCT messages.id, messages.*, 
         sent_by.name AS sent_by_name,
-        replace(replace(translate(array_agg(distinct sent_to.name)::text,'{}', ''),'\"', ''),',',', ') AS sent_to_names,
+        sent_to.name AS sent_to_names,
         COUNT(message_files.id) AS count_files,
         COUNT(readed_messages.id) AS was_read
       FROM messages
@@ -89,16 +89,17 @@ class Message < ActiveRecord::Base
           WHERE cast(um.status & #{Message_Filter_Sender} as boolean)
       ) sent_by ON sent_by.id = messages.id
       LEFT JOIN (
-        SELECT users.name AS name, um1.message_id AS id
+        SELECT replace(replace(translate(array_agg(distinct users.name)::text,'{}', ''),'\"', ''),',',', ') AS name, um1.message_id AS id
           FROM users
           JOIN user_messages um1 ON um1.user_id    = users.id
           JOIN user_messages um2 ON um2.message_id = um1.message_id
           WHERE cast(um2.status & #{Message_Filter_Sender} as boolean)
           AND (um1.status = 0 OR um1.status = 2 OR cast(um2.status & #{Message_Filter_Read + Message_Filter_Trash} as boolean))
           AND um2.user_id = #{user_id}
+          GROUP BY um1.message_id
       ) sent_to ON sent_to.id = messages.id
       WHERE #{query}
-      GROUP BY user_messages.status, user_messages.user_id, sent_by.name, messages.id
+      GROUP BY user_messages.status, user_messages.user_id, sent_by.name, messages.id, sent_to.name
       ORDER BY created_at DESC;
     SQL
   end

@@ -10,6 +10,7 @@
 
     .block_content
       .message_header_new
+        = hidden_field_tag(:allocation_tag_id_hidden, @allocation_tag_id)
         .message_new_text_to
           .label.align-left
             = label_tag :message_to, t('.message_to')
@@ -181,5 +182,5 @@
     $('#flash_message').prop('tabindex', 0);
     setTimeout(function() {
       $('#flash_message').focus(); 
-    }, 400);  
-  });  
+    }, 400);
+  });

@@ -63,9 +63,9 @@ class AdministrationsController < ApplicationController
   end
 
    def list_notifications
-    authorize! :list_notifications, Administration, {on: nil, accepts_general_profile: true}
+    authorize! :list_notifications, Administration, {global: true}
     @notifications = Notification.general_warnings
-
+    render 'notifications/list'
   end
 
   def reset_password_user

@@ -88,9 +88,9 @@
                   .text= raw qi.audio_description.html_safe
           
 
-- if @question_audios.blank? || audio_is.blank?
-  %tr.question_audios
-    %td.audio
+- if @question_audios || audio_is==1
+  .question_audios
+    .audio
       %form.hide
         %input.aPbr{id: "aPbr", type: "range", value: 1, min: 0, max: 5, step: 0.1 }
           %p

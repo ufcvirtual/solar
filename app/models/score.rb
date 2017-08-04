@@ -429,6 +429,7 @@ class Score # < ActiveRecord::Base
             academic_allocations.academic_tool_id, 
             academic_allocations.academic_tool_type,
             academic_allocations.max_working_hours,
+            academic_allocations.final_exam,
             discussions.name AS name,
             discussions.description,
             s.start_date,
@@ -447,6 +448,7 @@ class Score # < ActiveRecord::Base
             NULL as moderator,
             NULL as duration,
             NULL as server,
+            NULL::timestamp as release_date,
             CASE 
               WHEN s.start_date <= current_date AND s.end_date >= current_date THEN true
               ELSE 
@@ -496,6 +498,7 @@ class Score # < ActiveRecord::Base
                 academic_allocations.academic_tool_id, 
                 academic_allocations.academic_tool_type,
                 academic_allocations.max_working_hours,
+                academic_allocations.final_exam,
                 assignments.name AS name,
                 assignments.enunciation AS description,
                 schedules.start_date,
@@ -514,6 +517,7 @@ class Score # < ActiveRecord::Base
                 NULL as moderator,
                 NULL as duration,
                 NULL as server,
+                NULL::timestamp as release_date,
                 CASE 
                   WHEN schedules.start_date <= current_date AND schedules.end_date >= current_date THEN true
                   ELSE 
@@ -558,6 +562,7 @@ class Score # < ActiveRecord::Base
               academic_allocations.academic_tool_id, 
               academic_allocations.academic_tool_type,
               academic_allocations.max_working_hours,
+              academic_allocations.final_exam,
               chat_rooms.title AS name,
               chat_rooms.description,
               schedules.start_date,
@@ -576,6 +581,7 @@ class Score # < ActiveRecord::Base
               NULL as moderator,
               NULL as duration,
               NULL as server,
+              NULL::timestamp as release_date,
               CASE 
               WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (chat_rooms.start_hour IS NULL OR current_time>to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time ) AND (chat_rooms.end_hour IS NULL OR current_time<=to_timestamp(chat_rooms.end_hour, 'HH24:MI:SS')::time) THEN true
               ELSE 
@@ -621,6 +627,7 @@ class Score # < ActiveRecord::Base
             academic_allocations.academic_tool_id, 
             academic_allocations.academic_tool_type,
             academic_allocations.max_working_hours,
+            academic_allocations.final_exam,
             exams.name AS name,
             exams.description,
             s.start_date,
@@ -639,13 +646,14 @@ class Score # < ActiveRecord::Base
             NULL as moderator,
             exams.duration::text,
             NULL as server,
+            COALESCE(exams.result_release::timestamp, ((s.end_date || ' ' || COALESCE(exams.end_hour, '23:59'))::timestamp + interval '1 min')::timestamp) AS release_date,
             CASE 
               WHEN (current_date >= s.start_date AND current_date <= s.end_date) AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time > to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time < to_timestamp(exams.end_hour, 'HH24:MI:SS')::time) THEN true
               ELSE 
                 false
               END AS opened,
             CASE 
-              WHEN (current_date > s.end_date) OR (current_date = s.end_date AND exams.end_hour IS NOT NULL AND exams.end_hour != '' AND current_time > to_timestamp(exams.end_hour, 'HH24:MI:SS')::time) THEN true
+              WHEN ((current_date > s.end_date) OR (current_date = s.end_date AND exams.end_hour IS NOT NULL AND exams.end_hour != '' AND current_time > to_timestamp(exams.end_hour, 'HH24:MI:SS')::time) AND (exams.result_release IS NULL OR exams.result_release <= current_timestamp)) THEN true
               ELSE 
                 false
               END AS closed,
@@ -675,7 +683,7 @@ class Score # < ActiveRecord::Base
             LEFT JOIN ( (SELECT COUNT(exam_user_attempts.id), acu.academic_allocation_id AS ac_id FROM exam_user_attempts LEFT JOIN academic_allocation_users acu ON exam_user_attempts.academic_allocation_user_id = acu.id WHERE acu.user_id = #{user_id} GROUP BY acu.academic_allocation_id)) user_attempts ON user_attempts.ac_id = academic_allocations.id
           WHERE 
             academic_allocations.academic_tool_id = exams.id AND academic_allocations.academic_tool_type='Exam' AND exams.schedule_id=s.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats}) AND exams.status = 't'
-            GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, exams.name,  s.start_date,  s.end_date, exams.description, new_after_evaluation, academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, exams.start_hour, exams.end_hour, exam_responses.id, exams.attempts, eq_exam.name, exams.duration, academic_allocations.evaluative, academic_allocations.frequency, user_attempts.count, last_attempt.complete, exams.uninterrupted
+            GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, exams.name,  s.start_date,  s.end_date, exams.description, new_after_evaluation, academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, exams.start_hour, exams.end_hour, exam_responses.id, exams.attempts, eq_exam.name, exams.duration, academic_allocations.evaluative, academic_allocations.frequency, user_attempts.count, last_attempt.complete, exams.uninterrupted, exams.result_release
           ) "
 
         when 'schedule_events'
@@ -685,6 +693,7 @@ class Score # < ActiveRecord::Base
             academic_allocations.academic_tool_id, 
             academic_allocations.academic_tool_type,
             academic_allocations.max_working_hours,
+            academic_allocations.final_exam,
             schedule_events.title AS name,
             schedule_events.description,
             schedules.start_date,
@@ -703,6 +712,7 @@ class Score # < ActiveRecord::Base
             NULL as moderator,
             NULL as duration,
             NULL as server,
+            NULL::timestamp as release_date,
             CASE 
               WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (schedule_events.start_hour IS NULL OR current_time > to_timestamp(schedule_events.start_hour, 'HH24:MI:SS')::time) AND (schedule_events.end_hour IS NULL OR current_time<=to_timestamp(schedule_events.end_hour, 'HH24:MI:SS')::time) THEN true
               ELSE 
@@ -736,7 +746,8 @@ class Score # < ActiveRecord::Base
             academic_allocations.allocation_tag_id, 
             academic_allocations.academic_tool_id, 
             academic_allocations.academic_tool_type, 
-            academic_allocations.max_working_hours, 
+            academic_allocations.max_working_hours,
+            academic_allocations.final_exam,
             webconferences.title AS name,
             webconferences.description,
             webconferences.initial_time AS start_date,
@@ -755,6 +766,7 @@ class Score # < ActiveRecord::Base
             webconferences.user_id::text as moderator,
             webconferences.duration::text,
             webconferences.server::text as server,
+            NULL::timestamp as release_date,
             CASE 
               when NOW()>webconferences.initial_time AND NOW()<=(webconferences.initial_time + webconferences.duration* interval '1 min') then true
               ELSE 

@@ -24,7 +24,7 @@ class Exam < Event
 
   validate :can_edit?, only: :update, if: 'merge.nil?'
   validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
-  validate :check_liberate_date, if: '!liberated_date.blank? && merge.nil?'
+  validate :check_result_release_date, if: '!result_release.blank? && merge.nil?'
 
   accepts_nested_attributes_for :schedule
 
@@ -41,7 +41,7 @@ class Exam < Event
       wh = 0
       # chamar metodo de correção dos itens respondidos para todos os que existem
       list_exam_correction(user_id, ats, all).each do |acu|
-        correction_exams(acu.id)
+        correct_exam(acu.id)
         grade = get_grade(acu.id)
         grade = grade ? grade : 0.00
         working_hours = (acu.academic_allocation.frequency ? ({working_hours: (wh = acu.academic_allocation.max_working_hours)}) : {})
@@ -56,7 +56,7 @@ class Exam < Event
   end
 
   def send_result_emails(acu, grade)
-    # enviar email com notas se já tiver encerrado período
+    # send email with grades if period have already ended
     user = User.find(acu.user_id)
     subject = I18n.t('exams.result_exam_user.subject')
     recipients = "#{user.name} <#{user.email}>"
@@ -87,7 +87,7 @@ class Exam < Event
     query << "academic_allocation_users.user_id = :user_id "   unless user_id.blank?
     query << "academic_allocations.allocation_tag_id IN (#{ats}) "  unless ats.blank?
     query << "exam_user_attempts.grade IS NULL" unless all.blank?
-    query << "exams.liberated_date <= NOW()" unless liberated_date.blank?
+    query << "exams.result_release <= NOW()" unless result_release.blank?
     query << "(schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour IS NOT NULL AND end_hour != '' AND end_hour::time < current_time))"
 
     AcademicAllocationUser.joins(academic_allocation: [exam: :schedule])
@@ -96,7 +96,7 @@ class Exam < Event
             .select("DISTINCT academic_allocation_users.*, academic_allocations.allocation_tag_id")
   end
 
-  def correction_exams(acu_id)
+  def correct_exam(acu_id)
     questions_exam = ExamQuestion.list_correction(id, raffle_order)
     attempts = ExamUserAttempt.where(academic_allocation_user_id: acu_id)
     list_attempt = (uninterrupted ? attempts : attempts.where(complete: true))
@@ -153,7 +153,7 @@ class Exam < Event
   end
 
   def self.correction_cron
-    query = "schedules.end_date < current_date AND auto_correction = TRUE AND (liberated_date IS NULL OR (liberated_date IS NOT NULL AND liberated_date <= NOW()))"
+    query = "schedules.end_date < current_date AND auto_correction = TRUE AND (result_release IS NULL OR result_release <= NOW())"
     list_exam = Exam.includes(:schedule).where(query)
     list_exam.each do |exam|
       exam.recalculate_grades(nil, nil, true)
@@ -253,6 +253,7 @@ class Exam < Event
       errors.add(:attempts, I18n.t('exams.error.cant_be_smaller'))     if attempts < attempts_was
       errors.add(:block_content, I18n.t('exams.error.cant_change'))    if block_content_changed?
       errors.add(:attempts_correction, I18n.t('exams.error.cant_change')) if attempts_correction_changed?
+      errors.add(:result_release, I18n.t('exams.error.cant_change_release_result')) if result_release_changed? && (result_release_was <= DateTime.now)
     end
   end
 
@@ -423,6 +424,10 @@ class Exam < Event
     # ExamUserAttempt only exists if ACU exists, no need to update previous
     return false
   end
+  
+  def release_date
+    result_release || ([schedule.end_date.to_s, (end_hour || '23:59')].join(' ').to_time + 1.minute)
+  end
 
   def self.list_exams(at_id, evaluative=false, frequency=false)
     at = at_id.is_a?(AllocationTag) ? at_id : AllocationTag.find(at_id)
@@ -440,31 +445,12 @@ class Exam < Event
     ((answered.to_f/total.to_f)*100).round(2)
   end
 
-  def show_calcule_grade?
-    return true if liberated_date.blank?
-    Time.parse(liberated_date.to_s) - Time.now() < 0
+  def allow_calculate_grade?
+    (result_release.blank? || (result_release <= DateTime.now()))
   end
 
-  def self.show_calcule_grade_by_tools?(exam_id)
-    exam = Exam.find(exam_id)
-    exam.show_calcule_grade?
-  end
-
-  def check_liberate_date
-    unless end_hour.blank? # start_date == end_date
-      errors.add(:liberated_date, I18n.t('exams.error.liberated_date_hour')) if Time.parse(liberated_date.to_s) - Time.parse(schedule.end_date.to_s + " " + end_hour.to_s) < 0
-    else # start_date != end_date
-      date_liberated = Time.parse(liberated_date.to_s)
-      date_end = Time.parse(schedule.end_date.to_s)
-      if date_liberated.year < date_end.year
-        errors.add(:liberated_date, I18n.t('exams.error.liberated_date'))
-      elsif date_liberated.year == date_end.year && date_liberated.mon < date_end.mon
-        errors.add(:liberated_date, I18n.t('exams.error.liberated_date'))
-      elsif date_liberated.year == date_end.year && date_liberated.mon == date_end.mon && date_liberated.day <= date_end.day
-        errors.add(:liberated_date, I18n.t('exams.error.liberated_date'))
-      end
-    end
-    # errors.add(:liberated_date, I18n.t('exams.error.liberated_date')) if Time.parse(liberated_date.to_s) - Time.parse(schedule.end_date.to_s) < 0
+  def check_result_release_date
+    errors.add(:result_release, I18n.t('exams.error.result_release')) if ((end_hour.blank? && result_release.to_date < schedule.end_date.to_date) || (!end_hour.blank? && result_release <= [schedule.end_date.to_s, end_hour.to_s].join(' ').to_time))
   end
 
 end

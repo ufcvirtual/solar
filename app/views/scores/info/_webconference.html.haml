@@ -20,6 +20,7 @@
               %th#we_eva_rec.smaller_width.center.no_sort= t(:recording, scope: [:webconferences, :index])
               - if @can_evaluate
                 %th#we_eva_acc.smaller_width.center.no_sort{style: "width: 2%;"}
+              %th#we_eva_af.center.no_sort{style: "width: 2%;"}=t('scores.info.final_exam')
               %th#we_eva_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
           %tbody
             - @webconferences_evaluative.each do |webconference|
@@ -70,6 +71,7 @@
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_eva_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: "record", onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('webconferences.list.watch')
                 - if @can_evaluate
                   %td.center{ :'data-url' => user_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id, score_type: 'evaluative'), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]), headers: "we_eva_acc" }= link_to_function content_tag(:i, nil, class: "icon-write btn"), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
+                %td.center{headers: 'we_eva_af' }=raw t(webconference.final_exam, scope: [:common_between_pages, :final_exam])
                 %td.center{headers: "we_eva_aft"}=(webconference.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
                   
       - else
@@ -88,6 +90,7 @@
               %th#we_fre_rec.smaller_width.center.no_sort= t(:recording, scope: [:webconferences, :index])
               - if @can_evaluate
                 %th#we_fre_acc.smaller_width.center.no_sort{style: "width: 2%;"}
+              %th#we_freq_hours.center.no_sort{style: "width: 2%;"}=t('scores.info.hours')
               %th#we_fre_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
           %tbody
             - @webconferences_frequency.each do |webconference|
@@ -138,6 +141,7 @@
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_fre_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: "record", onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('webconferences.list.watch')
                 - if @can_evaluate
                   %td.center{ :'data-url' => user_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id, score_type: 'frequency'), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]), headers: "we_fre_acc" }= link_to_function content_tag(:i, nil, class: "icon-write btn"), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
+                %td.center{headers:'we_freq_hours'}=raw t('common_between_pages.hours', hours: webconference.max_working_hours)
                 %td.center{headers: "we_fre_aft"}=(webconference.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
                   
       - else

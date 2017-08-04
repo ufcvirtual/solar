@@ -52,7 +52,7 @@ class Offer < ActiveRecord::Base
   def check_period
     self.period_schedule.check_end_date = true if period_schedule && period_schedule.start_date
     unless verify_current_date == false
-      self.period_schedule.verify_current_date     = true if period_schedule && (self.get_start_date != self.period_schedule.start_date)
+      self.period_schedule.verify_current_date     = true if period_schedule && (self.start_date_was != self.period_schedule.start_date)
       self.enrollment_schedule.verify_current_date = true if enrollment_schedule
     end
   end
@@ -61,16 +61,10 @@ class Offer < ActiveRecord::Base
     groups.any?
   end
 
-  def get_start_date
-   # of = Offer.find(self.id)
-    if self.offer_schedule_id
-      start_date = Schedule.find(self.offer_schedule_id).start_date
-    else
-      id = Semester.find(self.semester_id).offer_schedule_id
-      start_date = Schedule.find(id).start_date
-    end
-    start_date  
-  end  
+  def start_date_was
+    return (self.offer_schedule_id ? self.period_schedule.start_date_was : self.semester.offer_schedule.start_date)
+  end
+
   def set_default_lesson_module
     create_default_lesson_module(I18n.t(:general_of_offer, scope: :lesson_modules))
   end
@@ -289,20 +283,21 @@ class Offer < ActiveRecord::Base
 
   ## triggers
 
-  # trigger.after(:update) do
   trigger.after(:update).of(:curriculum_unit_id, :course_id, :semester_id, :offer_schedule_id) do
     <<-SQL
 
       -- curriculum unit id
-      IF NEW.curriculum_unit_id <> OLD.curriculum_unit_id THEN
+      IF ((NEW.curriculum_unit_id <> OLD.curriculum_unit_id) OR ((NEW.curriculum_unit_id IS NULL) <> (OLD.curriculum_unit_id IS NULL))) THEN
         UPDATE related_taggables
            SET curriculum_unit_id = NEW.curriculum_unit_id,
-               curriculum_unit_at_id = (SELECT id FROM allocation_tags WHERE curriculum_unit_id = NEW.curriculum_unit_id)
+               curriculum_unit_at_id = (SELECT id FROM allocation_tags WHERE curriculum_unit_id = NEW.curriculum_unit_id),
+               curriculum_unit_type_id = (SELECT curriculum_unit_type_id FROM curriculum_units WHERE curriculum_units.id = NEW.curriculum_unit_id),
+               curriculum_unit_type_at_id = (SELECT allocation_tags.id FROM allocation_tags JOIN curriculum_units ON allocation_tags.curriculum_unit_type_id = curriculum_units.curriculum_unit_type_id WHERE curriculum_units.id = NEW.curriculum_unit_id)
          WHERE offer_id = OLD.id;
       END IF;
 
       -- course
-      IF NEW.course_id <> OLD.course_id THEN
+      IF ((NEW.course_id <> OLD.course_id) OR ((NEW.course_id IS NULL) <> (OLD.course_id IS NULL))) THEN
         UPDATE related_taggables
            SET course_id = NEW.course_id,
                course_at_id = (SELECT id FROM allocation_tags WHERE course_id = NEW.course_id)
