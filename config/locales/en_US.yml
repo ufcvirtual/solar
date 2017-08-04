@@ -3441,8 +3441,8 @@ en_US:
       draft_exam: Exam as draft
       period: "Application date in %{dstart} to %{dend} %{hours}"
       amount_questions: "%{added} added of %{amount} questions"
-      calculate: Calculation notes
-      calculate_grade: Successfully calculated notes
+      calculate: Calculate grades
+      calculate_grade: Successfully calculated grades
       summary_evaluative: "This table contains all the evaluation exams."
       summary_frequency: "This table contains all the frequency exams."
       summary_notevaluative: "This table contains all the not evaluation exams."
