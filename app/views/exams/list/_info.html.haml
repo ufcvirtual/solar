@@ -8,12 +8,12 @@
       - if show_buttons
         - if @can_see_preview
           = link_to_function content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('questions.question.preview')), 'preview_exam(this)', :'data-url' => preview_exam_path(exam, allocation_tags_ids: @allocation_tags_ids), class: 'preview_exam'
-        - unless exam.liberated_date.blank?
+        - unless exam.result_release.blank?
           %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{exam.id}", :'data-tooltip' => t('exams.list.info_exam'), onkeydown: 'click_on_keypress(event, this);' }
             %i.icon-info2
           .dropdown.dropdown-tip{ id: "dropdown_eq_#{exam.id}" }
             %ul{ class: 'dropdown-menu' }
-              = raw t('exams.list.liberated', datetime: l(exam.liberated_date, format: :at_date))
+              = raw t('exams.list.liberated', datetime: l(exam.result_release, format: :at_date))
         = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_exam_path(exam, allocation_tags_ids: @allocation_tags_ids), class: 'block_title_button edit_exam', :'data-tooltip' => t('exams.list.edit_exam')
         = link_to_function (content_tag(:i, nil, class: 'icon-trash')), 'delete_exam(this)', class: 'block_title_button delete_exam', :'data-link-delete' => exam_path(exam, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('exams.list.delete_exam'), :"data-parent" => "exam_#{exam.id}"
 
@@ -25,8 +25,8 @@
         = label_tag  t('exams.list.period', dstart: l(exam.schedule.start_date, format: :normal), dend: l(exam.schedule.end_date, format: :normal) , hours: hours)
         = label_tag t('exams.list.amount_questions', added: count, amount: exam.number_questions)
         - if show_buttons
-          - if exam.status && exam.ended? && exam.show_calcule_grade?
-            = link_to_function (t('exams.list.calculate')), 'calcule_grade_exam(this)', class: "btn btn_main calculate", :'data-url' => calcule_grade_exam_path(exam, allocation_tags_ids: @allocation_tags_ids)
+          - if exam.status && exam.ended? && exam.allow_calculate_grade?
+            = link_to_function (t('exams.list.calculate')), 'calcule_grade_exam(this)', class: "btn btn_main calculate", :'data-url' => calculate_grade_exam_path(exam, allocation_tags_ids: @allocation_tags_ids)
 
           = link_to_function (exam.status ? t('exams.list.published') : t('exams.list.unpublished')), 'change_status_exam(this)', class: "btn btn_main #{(exam.status ? 'published' : 'unpublished')}", :'data-url' => change_status_exam_path(exam, allocation_tags_ids: @allocation_tags_ids)
 

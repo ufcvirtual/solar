@@ -3686,7 +3686,7 @@ pt_BR:
       period: "Aplicação: %{dstart} à %{dend} %{hours}"
       amount_questions: "%{added} adicionadas de %{amount} questões"
       calculate: Calcular Notas
-      calcule_grade: Notas calculadas com sucesso
+      calculate_grade: Notas calculadas com sucesso
       summary_evaluative: "Está tabela contém todas as provas avaliativas."
       summary_frequency: "Está tabela contém todas as provas de frequência."
       summary_notevaluative: "Está tabela contém todas as provas não avaliativas."
@@ -3750,7 +3750,8 @@ pt_BR:
       info:
         continue: Continuar
         duration: Tempo que o aluno terá para responder a prova após iniciá-la.
-        liberated_date: Liberação do resultado
+        result_release: Liberação do resultado
+        result_release_explain: Data e hora nas quais o resultado da prova será liberado. Quando em branco, o resultado será liberado imediatamente após o término da prova.
       control:
         continue: Continuar
         previous: Anterior
@@ -3762,6 +3763,10 @@ pt_BR:
         type_select: "Selecione o tipo:"
         legend_description_new_ip: "Novo IP onde será realizada a prova"
         link_to_remove_fields: "Remover Formulário de IPs"
+    result_release:
+      info: 'O resultado ficará disponível em %{date}'
+      title: '(Resultado)'
+      aria: 'Visualizar data de liberação do resultado'
     pre:
       alert_save: Todas as questões são salvas automaticamente.
       alert_start: Clique no link abaixo se você tem certeza que deseja iniciar a prova.
@@ -3789,6 +3794,8 @@ pt_BR:
       shortcuts_title: Atalhos da tela de prova
       blocked2: Uma vez iniciada, o conteúdo do curso (aulas, fóruns etc) ficará inacessível até o término da prova.
       uninterrupted2: Uma vez iniciada, esta prova não poderá ser interrompida. Do contrário, será finalizada.
+      result_release: 'Liberação do resultado:'
+      result_release2: "Data e hora nas quais o resultado da prova será liberado"
     open:
       to: " de "
       questions: " questões"
@@ -3835,7 +3842,7 @@ pt_BR:
       empty: Não há resultados disponíveis para esta prova
       dates: Esta prova ainda está em andamento
       general_message: Não foi possível realizar a ação desejada
-      calcule_grade: A nota já foi calculada
+      calculate_grade: A nota já foi calculada
       time: A prova deve estar em andamento para realização.
       time_is_up: Duração máxima já atingida.
       attempt: A quantidade máxima de tentativas para realização da prova já foi atingida.
@@ -3846,10 +3853,11 @@ pt_BR:
       unique_choice: Deve ter apenas uma resposta
       restrict: "Localização não permitida"
       uninterrupted: Você não pode continuar a prova, pois ela é ininterrupta e já foi iniciada. Aguarde o fim da prova para visualizar o resultado.
-      liberated_date: A data de liberação do resultado da prova deve ser pelo menos 1 dia após o final da prova
-      liberated_date_hour: O horário de liberação do resultado deve ser igual ou posterior ao horário de término da prova
+      result_release: deve ser posterior ao final da prova
       controlled: Prova controlada deve ter, pelo menos, um IP
       controlled_date: Não é possível remover IPs de provas já iniciadas ou encerradas
+      result_release_date: Só será possível calcular a nota a partir da data e horário cadastrados para sua liberação
+      cant_change_release_result: resultados já foram liberados
     show:
       groups: Turmas
       empty_group: Turma vazia

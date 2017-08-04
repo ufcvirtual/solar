@@ -1,0 +1,8 @@
+- unless ['corrected', 'not_answered'].include? exam.situation
+  .equivalent
+    %a{ href: '#', :"data-dropdown" => "#dropdown_result_release#{exam.id}#{id}", :'data-url' => equalities_tools_path(tool_type: exam.academic_tool_type, ac_id: exam.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('.aria') + t(:of) + exam.name }
+      = t('.title')
+      %i.icon-arrow-down-triangle
+    .dropdown.dropdown-tip{id: "dropdown_result_release#{exam.id}#{id}"}
+      .dropdown-menu
+        = t('.info', date: l(exam.release_date.to_datetime, format: :at_date))

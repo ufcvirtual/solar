@@ -216,7 +216,7 @@
 
   });
 
-  function calcule_grade_user_exam(link){
+  function calculate_user_grade_exam(link){
     if ($(link).attr('disabled') == 'disabled'){
       flash_message("#{t('exams.error.cant_calcule_grade')}", 'alert');
       return false;

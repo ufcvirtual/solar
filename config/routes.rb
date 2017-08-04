@@ -580,7 +580,6 @@ Solar::Application.routes.draw do
   resources :exams do
     collection do
       get :list
-      get :calcule_all
       put ':tool_id/unbind/group/:id', to: 'groups#change_tool'  , type: 'unbind', tool_type: 'Exam', as: :unbind_group_from
       put ':tool_id/remove/group/:id', to: 'groups#change_tool'  , type: 'remove', tool_type: 'Exam', as: :remove_group_from
       put ':tool_id/add/group/:id'   , to: 'groups#change_tool'  , type: 'add'   , tool_type: 'Exam', as: :add_group_to
@@ -595,8 +594,8 @@ Solar::Application.routes.draw do
       get :result_user, to: :result_exam_user
       get :complete
       get :percentage
-      put :calcule_grade
-      put :calcule_grade_user
+      put :calculate_grade
+      put :calculate_user_grade
       put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Exam', as: :evaluate
     end
   end

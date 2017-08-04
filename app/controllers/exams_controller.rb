@@ -246,43 +246,31 @@ class ExamsController < ApplicationController
     render_json_error(error, 'exams.error')
   end
 
-  def calcule_grade_user
+  def calculate_user_grade
     exam = Exam.find(params[:id])
     user_id = current_user.id
-    if params.include?(:user_id)
+    if params.include?(:user_id) && params[:user_id].to_i != current_user.id
       authorize! :calcule_grades, Exam, { on: active_tab[:url][:allocation_tag_id] }
       user_id = params[:user_id]
     end
     raise 'not_finished' unless exam.ended?
+    raise 'result_release_date' unless exam.allow_calculate_grade?
     grade, wh = exam.recalculate_grades(user_id, nil, true)
-    render json: { success: true, grade: grade, wh: wh, status: t('exams.situation.corrected'), notice: t('calcule_grade', scope: 'exams.list') }
+    render json: { success: true, grade: grade, wh: wh, status: t('exams.situation.corrected'), notice: t('calculate_grade', scope: 'exams.list') }
   rescue => error
     render_json_error(error, 'exams.error')
   end
 
-  def calcule_grade
+  def calculate_grade
     allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : active_tab[:url][:allocation_tag_id]
     authorize! :calcule_grades, Exam, { on: allocation_tags_ids }
     ats = allocation_tags_ids.gsub(' ', ",") rescue allocation_tags_ids
 
     exam = Exam.find(params[:id])
     raise 'not_finished' unless exam.ended?
+    raise 'result_release_date' unless exam.allow_calculate_grade?
     exam.recalculate_grades(nil, ats, true)
-    render json: { success: true, notice: t('calcule_grade', scope: 'exams.list') }
-  rescue => error
-    render_json_error(error, 'exams.error')
-  end
-
-  def calcule_all
-    authorize! :calcule_grades, Exam, { on: active_tab[:url][:allocation_tag_id] }
-    ats = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
-    ats_string = ats.join(',')
-
-    Exam.joins(:academic_allocations).where(status: true, academic_allocations: { allocation_tag_id: ats }).each do |exam|
-      exam.recalculate_grades(nil, ats_string, true)
-    end
-
-    redirect_to scores_path#, notice: t('calcule_grade', scope: 'exams.list')
+    render json: { success: true, notice: t('calculate_grade', scope: 'exams.list') }
   rescue => error
     render_json_error(error, 'exams.error')
   end
@@ -341,7 +329,7 @@ class ExamsController < ApplicationController
     params.require(:exam).permit(:name, :description, :duration, :start_hour, :end_hour,
                                  :random_questions, :raffle_order, :auto_correction,
                                  :block_content, :number_questions, :attempts, :controlled,
-                                 :attempts_correction, :result_email, :uninterrupted, :liberated_date,
+                                 :attempts_correction, :result_email, :uninterrupted, :result_release,
                                  schedule_attributes: [:id, :start_date, :end_date],
                                  ip_reals_attributes: [:id, :ip_v4, :ip_v6, :use_local_network, :_destroy])
   end

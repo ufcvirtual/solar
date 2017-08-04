@@ -16,7 +16,7 @@
 
 = f.input :duration, input_html: { :"data-tooltip" => t('exams.form.info.duration') }
 
-= f.input :liberated_date, as: :string, label: t('exams.form.info.liberated_date')
+= f.input :result_release, as: :string, label: t('exams.form.info.result_release'), placeholder: t('assignment_webconferences.form.date_placeholder'), label_html: { :'data-tooltip' => t('.result_release_explain') }, input_html: {value: (l(f.object.result_release, format: :mask_with_time_form) rescue '')}
 
 = render 'groups/codes'
 
@@ -24,8 +24,7 @@
   = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox cancel', type: 'button', onkeypress: 'click_on_keypress(event, this)'
   = button_to_function t('.continue'), 'go_to_config(event)', class: 'btn btn_main btn_lightbox', alt: 'continuar', type: 'button', id: '_continue', onkeypress: 'go_to_config(event)'
 
-= javascript_include_tag 'ckeditor/init'
-= javascript_include_tag 'jquery-ui-timepicker-addon'
+= javascript_include_tag 'ckeditor/init', 'jquery-ui-timepicker-addon'
 
 :javascript
   $(function(){
@@ -44,6 +43,8 @@
         config.resize_enabled = false;
     };
 
+    set_datetime_masked('exam_result_release');
+
     $("#exam_start_date, #exam_end_date").mask("#{I18n.t('date.formats.mask')}");
     $("#exam_start_hour").mask("99:99");
     $("#exam_end_hour").mask("99:99");
@@ -58,31 +59,17 @@
     $('#exam_end_date').blur(function(){
       if ($(this).datepicker("getDate") == null)
         $(this).datepicker("setDate", new Date(end_date));
-      //else
-      //  verify_dates();
     });
 
     $('#exam_start_date').blur(function(){
       if($(this).datepicker("getDate") == null)
         $(this).datepicker("setDate", new Date(start_date));
-      //else
-      //  verify_dates();
     });
 
     // evento de keypress do fancybox nao funciona pra esse form
     $("form#exam_form .form-inputs").keypress(function(e) { if (e.which == 13) e.preventDefault(); });
-
-    // datetimepicker form para liberação do resultado de prova
-    edit_liberated_date();
-    $("#exam_liberated_date").on("focusin", edit_liberated_date);
   });
 
-  // function verify_dates(){
-  //   if ($('#exam_end_date').datepicker("getDate") != $('#exam_start_date').datepicker("getDate"))
-  //         $('.schedule_dates.hour').addClass('invisible');
-  //       else
-  //         $('.schedule_dates.hour').removeClass('invisible');
-  // }
 
   function save_exam(event) {
     var keynum = event.which || event.keyCode;
@@ -112,23 +99,4 @@
       $('li.control').removeClass('active');
       $('#dot-control').removeClass('active');
     }
-  }
-
-  function edit_liberated_date() {
-    var liberated_date = $("#exam_liberated_date").val();
-
-    if( liberated_date !== "" && liberated_date.includes("-") ) {
-      var array_libarated_date = liberated_date.split(" ");
-      var array_date = array_libarated_date[0].split("-");
-
-      var formatted_date_time = array_date[2] + "/" + array_date[1] + "/" + array_date[0] + " " + array_libarated_date [1];
-
-      $("#exam_liberated_date").val(formatted_date_time);
-    }
-
-    $("#exam_liberated_date").mask("#{I18n.t('date.formats.mask_with_time')}");
-    $("#exam_liberated_date").datetimepicker({
-      timeInput: true,
-      controlType: 'select'
-    });
   }

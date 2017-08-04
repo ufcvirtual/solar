@@ -70,10 +70,11 @@
                   %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
                 %td.center.situation{headers: "ex_eva_sit_evaluative"}
                   %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
+                  = render partial: 'exams/result_release', locals: {exam: exam, id: 'ex_eva_'}
                 %td.center.grade{headers: "ex_eva_gra_evaluative"}= exam.grade
                 %td{headers: "ex_eva_btn_evaluative"}
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation))
-                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
+                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write')), 'calculate_user_grade_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calculate_user_grade_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
                 %td.center{headers: 'ex_eva_af' }=raw t(exam.final_exam, scope: [:common_between_pages, :final_exam])
                 / %td.center=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
@@ -142,11 +143,12 @@
                   %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
                 %td.center.situation{headers: "ex_eva_sit_frequency"}
                   %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
+                  = render partial: 'exams/result_release', locals: {exam: exam, id: 'ex_freq_'}
                 %td.center.grade{headers: "ex_eva_gra_frequency"}= exam.grade
                 %td.center.wh{headers: "ex_eva_wh_frequency"}= exam.working_hours
                 %td.center{headers: "ex_eva_btn_frequency"}
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake'].include?(exam.situation))
-                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write', :'aria-hidden' => 'true')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
+                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write', :'aria-hidden' => 'true')), 'calculate_user_grade_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calculate_user_grade_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
                 %td.center{headers:'ex_freq_hours'}=raw t('common_between_pages.hours', hours: exam.max_working_hours)
                 %td.center{headers: "ex_eva_aft"}=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
@@ -213,10 +215,11 @@
                   %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
                 %td.center.situation{headers: "ex_not_sit"}
                   %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
+                  = render partial: 'exams/result_release', locals: {exam: exam, id: 'ex_not_'}
                 %td.center{headers: "ex_not_gra"}=exam.grade
                 %td.center.grade{headers: "ex_not_bla"}
                   - disabled = !(exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation))
-                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write', :'aria-hidden' => 'true')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
+                  %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write', :'aria-hidden' => 'true')), 'calculate_user_grade_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calculate_user_grade_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
                 %td.center{headers: "ex_not_aft"}=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)   

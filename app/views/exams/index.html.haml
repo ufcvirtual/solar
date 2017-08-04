@@ -20,15 +20,15 @@
             %th#e_calcule.small.no_sort
       %tbody
         - @exams.each do |exam|
-          - if exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation) && Exam.show_calcule_grade_by_tools?(exam.academic_tool_id)
-            - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calcule_grade_user_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calcule_grade_user_exam_path(exam.academic_tool_id), :"aria-label" => t('exams.index.calculate'), class: 'ico-e'
+          - if exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation)
+            - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calculate_user_grade_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calculate_user_grade_exam_path(exam.academic_tool_id), :"aria-label" => t('exams.index.calculate'), class: 'ico-e'
           %tr.lines{ id: "tr_#{exam.id}" }
             %td{headers: 'e_description'}
               %div
                 - if @can_open
                   - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name + t('fancybox.open') +  t(:disabled), class: 'disabled'
-                    - if (exam.closed == 't' || exam.situation == 'corrected') && Exam.show_calcule_grade_by_tools?(exam.academic_tool_id)
+                    - if (exam.closed == 't' || exam.situation == 'corrected')
                       = link_to t('.result'), result_user_exam_path(exam.academic_tool_id), class: 'link_content', class: 'open-exam-result', :'aria-label' => t('.result', exam: exam.name) + t('fancybox.open')
                       - if exam.situation == 'corrected'
                         |
@@ -89,6 +89,7 @@
                 - else
                   - status = 'not_started'
                 %div{class: "assignment_#{status}"}= I18n.t("scores.situation.#{status}")
+              = render partial: 'result_release', locals: {exam: exam, id: ''}
             %td.center{headers: 'e_evaluative'}=raw exam.final_exam ? t(exam.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(exam.evaluative, scope: [:scores, :info])
             %td.center{headers: 'e_frequency'}= raw t(exam.frequency, scope: [:common_between_pages, :frequency], hours: exam.max_working_hours)
             - if @can_open
@@ -98,8 +99,8 @@
                 = exam.working_hours
             - elsif @can_evaluate
               %td.center{headers: 'e_calcule'}
-                - if exam.closed == 't' && Exam.show_calcule_grade_by_tools?(exam.academic_tool_id)
-                  = link_to_function content_tag(:i, nil, class: 'icon-exam'), 'calcule_grade_exam(this)', class: "ico-e", :'data-url' => calcule_grade_exam_path(exam.academic_tool_id), :"data-tooltip" => t('exams.index.calculate'), :"aria-label" => t('exams.index.calculate')
+                - if exam.closed == 't'
+                  = link_to_function content_tag(:i, nil, class: 'icon-exam'), 'calcule_grade_exam(this)', class: "ico-e", :'data-url' => calculate_grade_exam_path(exam.academic_tool_id), :"data-tooltip" => t('exams.index.calculate'), :"aria-label" => t('exams.index.calculate')
   - else
     .block_content_text.block_content_text_list.text_none= t(:none, scope: [:exams] )
 
@@ -148,9 +149,9 @@
 
   });
 
-  function calcule_grade_user_exam(link){
+  function calculate_user_grade_exam(link){
     if ($(link).attr('disabled') == 'disabled'){
-      flash_message("#{t('exams.error.calcule_grade')}", 'alert');
+      flash_message("#{t('exams.error.calculate_grade')}", 'alert');
       return false;
     }
 

@@ -22,6 +22,10 @@
         %th.act_like_td#uninterrupted= t("exams.pre.uninterrupted")
         - uninterrupted = @exam.uninterrupted ? t("exams.pre.aw_no") : t("exams.pre.aw_yes")
         %td{headers: 'uninterrupted'}= uninterrupted
+      %tr.lines{:"data-tooltip" => t('exams.pre.result_release2')}
+        %th.act_like_td#uninterrupted= t("exams.pre.result_release")
+        %td{headers: 'result_release'}= l(@exam.release_date, format: :at_date) 
+  
   
   .correction_info
     .expand_correction
