@@ -100,7 +100,8 @@ class MessagesController < ApplicationController
   end
 
   def create
-    @allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    #@allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    @allocation_tag_id = params[:allocation_tag_id_hidden]
 
     # is an answer
     if params[:message][:original].present?
