@@ -15,5 +15,8 @@ end
 require ::File.expand_path('../config/environment',  __FILE__)
 
 run Solar::Application
-system "ruby lib/websockets/websocket_server.rb&"
+
+if (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['run_websocket'] rescue false)
+  system "ruby lib/websockets/websocket_server.rb&"
+end
 
