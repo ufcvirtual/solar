@@ -117,3 +117,6 @@ group :assets do
 end
 # new relic
  #gem 'newrelic_rpm'
+
+gem "daemons", "~> 1.1.9"
+gem "delayed_job_active_record", "~> 4.1.2"
