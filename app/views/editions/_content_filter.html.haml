@@ -93,5 +93,22 @@
       return false;
     });
 
+    $(".ui-helper-hidden-accessible").removeAttr("display");
 
+    $(".ui-autocomplete-input").on('keydown', function(){
+      var that = this;
+      setTimeout(function() {
+        var text = null;
+        var element = $(that).closest('.ui-combobox').find('.ui-helper-hidden-accessible');
+        var qtd = element.text().replace(/[^0-9]/g,'');
+        if(qtd==1){
+          text = qtd + "#{I18n.t(:filter_result_singular, scope: "editions.content_filter")}";
+        }else if(qtd>1){
+          text = qtd +"#{I18n.t(:filter_result_plural, scope: "editions.content_filter")}";
+        }else{
+          text = "#{I18n.t(:not_result_filter, scope: "editions.content_filter")}";
+        }
+        element.text(text);
+      }, 100);
+    });  
   });

@@ -2553,7 +2553,11 @@ pt_BR:
       semester: "Semestre"
       offer: "Oferta"
       group: "Turma"
-      choice: Escolha
+      choice: Escolha 
+      course_modality: "Modalidade do curso*"
+      filter_result_singular: " resultado está disponível, use teclas de setas para cima e para baixo para navegar."
+      filter_result_plural: " resultados estão disponíveis, use teclas de setas para cima e para baixo para navegar."
+      not_result_filter: "Nenhum resultado de pesquisa."
     content:
       type: "Tipo*"
       course: "Curso*"

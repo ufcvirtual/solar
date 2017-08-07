@@ -2336,6 +2336,10 @@ en_US:
       offer: "Offer"
       group: "Group"
       choice: Choice
+      course_modality: "Course modality*"
+      filter_msg_singular: " result is available, use up and down arrow keys to navigate."
+      filter_msg_plural: " results are available, use up and down arrow keys to navigate."
+      not_result_filter: "No search results."
     content:
       type: "Type*"
       course: "Course*"
