@@ -3262,7 +3262,7 @@ en_US:
       evaluated: Evaluated
       not_corrected: Not corrected
       not_answered: Not answered
-      retake: Retake
+      retake: '%{count} of %{count_all} attempts'
       message_ended: Ended
       closed: Closed
       started: Started

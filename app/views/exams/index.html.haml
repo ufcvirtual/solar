@@ -80,7 +80,7 @@
                     .dropdown.dropdown-tip{id: "dropdown_#{exam.id}"}
                       %ul{ class: 'dropdown-menu' }
                 - else
-                  %div{class: "#{exam.situation}"}= I18n.t("scores.situation.#{exam.situation}")
+                  %div{class: "#{exam.situation}"}= I18n.t("scores.situation.#{exam.situation}", count: exam.count, count_all: exam.count_all)
               - else
                 - if ['corrected', 'not_answered'].include? exam.situation
                   - status = 'finished'

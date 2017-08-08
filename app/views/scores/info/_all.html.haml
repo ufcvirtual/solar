@@ -71,7 +71,7 @@
                     %div= [l(tool.start_date.to_date), l(tool.end_date.to_date)].join(' - ')
                     %div= [(tool.start_hour), (tool.end_hour)].join(' - ') unless tool.start_hour.blank?
                 %td.center{headers: "al_eva_sit"}
-                  %div{class: "assignment_#{(available ? tool.situation : 'not_started')} #{[tool.academic_tool_type.downcase.delete('_'), 'u', tool.id.to_s, @user.id.to_s].join('_')} #{[tool.academic_tool_type.downcase.delete('_'), 'g', tool.id.to_s, tool.group_id.to_s].join('_')} situation"}= (available ? t(tool.situation, :scope => [:scores, :situation]) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
+                  %div{class: "assignment_#{(available ? tool.situation : 'not_started')} #{[tool.academic_tool_type.downcase.delete('_'), 'u', tool.id.to_s, @user.id.to_s].join('_')} #{[tool.academic_tool_type.downcase.delete('_'), 'g', tool.id.to_s, tool.group_id.to_s].join('_')} situation"}= (available ? t(tool.situation, scope: [:scores, :situation], count: tool.count, count_all: tool.count_all) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
                   - if tool.academic_tool_type == 'Exam'
                     = render partial: 'exams/result_release', locals: {exam: tool, id: 'al_ev_'}
                 %td.center{headers: "al_eva_int"}
@@ -151,7 +151,7 @@
                     %div= [l(tool.start_date.to_date), l(tool.end_date.to_date)].join(' - ')
                     %div= [(tool.start_hour), (tool.end_hour)].join(' - ') unless tool.start_hour.blank?
                 %td.center{headers: "al_fre_sit"}
-                  %div{class: "assignment_#{(available ? tool.situation : 'not_started')} #{[tool.academic_tool_type.downcase.delete('_'), 'u', tool.id.to_s, @user.id.to_s].join('_')} #{[tool.academic_tool_type.downcase.delete('_'), 'g', tool.id.to_s, tool.group_id.to_s].join('_')} situation"}= (available ? t(tool.situation, :scope => [:scores, :situation]) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
+                  %div{class: "assignment_#{(available ? tool.situation : 'not_started')} #{[tool.academic_tool_type.downcase.delete('_'), 'u', tool.id.to_s, @user.id.to_s].join('_')} #{[tool.academic_tool_type.downcase.delete('_'), 'g', tool.id.to_s, tool.group_id.to_s].join('_')} situation"}= (available ? t(tool.situation, scope: [:scores, :situation], count: tool.count, count_all: tool.count_all) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
                   - if tool.academic_tool_type == 'Exam'
                     = render partial: 'exams/result_release', locals: {exam: tool, id: 'al_freq_'}
                 %td.center{headers: "al_fre_int"}
@@ -226,7 +226,7 @@
                     %div= [l(tool.start_date.to_date), l(tool.end_date.to_date)].join(' - ')
                     %div= [(tool.start_hour), (tool.end_hour)].join(' - ') unless tool.start_hour.blank?
                 %td.center{headers: "al_not_sit"}
-                  %div{class: "assignment_#{(available ? tool.situation : 'not_started')} #{[tool.academic_tool_type.downcase.delete('_'), 'u', tool.id.to_s, @user.id.to_s].join('_')} #{[tool.academic_tool_type.downcase.delete('_'), 'g', tool.id.to_s, tool.group_id.to_s].join('_')} situation"}= (available ? t(tool.situation, :scope => [:scores, :situation]) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
+                  %div{class: "assignment_#{(available ? tool.situation : 'not_started')} #{[tool.academic_tool_type.downcase.delete('_'), 'u', tool.id.to_s, @user.id.to_s].join('_')} #{[tool.academic_tool_type.downcase.delete('_'), 'g', tool.id.to_s, tool.group_id.to_s].join('_')} situation"}= (available ? t(tool.situation, scope: [:scores, :situation], count: tool.count, count_all: tool.count_all) : t(:unavailable, scope: [:webconferences, :list])) unless tool.situation.blank?
                   - if tool.academic_tool_type == 'Exam'
                     = render partial: 'exams/result_release', locals: {exam: tool, id: 'al_not_'}
                 %td.center{headers: "al_not_int"}

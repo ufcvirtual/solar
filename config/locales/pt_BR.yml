@@ -3511,7 +3511,7 @@ pt_BR:
       evaluated: Avaliado
       not_corrected: Não corrigido
       not_answered: Não respondido
-      retake: Refazer
+      retake: '%{count} de %{count_all} tentativas'
       message_ended: Encerrado
       message_did_not_start: Não iniciou
       closed: Encerrado

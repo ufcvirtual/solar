@@ -69,7 +69,7 @@
                   %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
                   %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
                 %td.center.situation{headers: "ex_eva_sit_evaluative"}
-                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
+                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, scope: [:scores, :situation], count: exam.count, count_all: exam.count_all)
                   = render partial: 'exams/result_release', locals: {exam: exam, id: 'ex_eva_'}
                 %td.center.grade{headers: "ex_eva_gra_evaluative"}= exam.grade
                 %td{headers: "ex_eva_btn_evaluative"}
@@ -142,7 +142,7 @@
                   %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
                   %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
                 %td.center.situation{headers: "ex_eva_sit_frequency"}
-                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
+                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, scope: [:scores, :situation], count: exam.count, count_all: exam.count_all)
                   = render partial: 'exams/result_release', locals: {exam: exam, id: 'ex_freq_'}
                 %td.center.grade{headers: "ex_eva_gra_frequency"}= exam.grade
                 %td.center.wh{headers: "ex_eva_wh_frequency"}= exam.working_hours
@@ -214,7 +214,7 @@
                   %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
                   %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
                 %td.center.situation{headers: "ex_not_sit"}
-                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
+                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, scope: [:scores, :situation], count: exam.count, count_all: exam.count_all)
                   = render partial: 'exams/result_release', locals: {exam: exam, id: 'ex_not_'}
                 %td.center{headers: "ex_not_gra"}=exam.grade
                 %td.center.grade{headers: "ex_not_bla"}
