@@ -8,7 +8,7 @@
       %a.btn.btn_main{ href: '#', :"data-dropdown" => '#dropdown_bibliography' }
         = content_tag(:i, nil, class: 'icon-plus')
         %i.icon-arrow-down-triangle
-      .dropdown.dropdown-tip#dropdown_bibliography
+      .dropdown.dropdown-tip.dropdown_close#dropdown_bibliography
         %ul.dropdown-menu
           - scope = {scope: [:bibliographies, :type]}
           - li_class = "link_new_bibliography"

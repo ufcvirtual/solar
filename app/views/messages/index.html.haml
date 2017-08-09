@@ -8,7 +8,7 @@
         %a.btn.btn_dropdown{ href: '#', :"data-dropdown" => '#views-dropdown' }
           = t('.view_messages', type: t('messages.select_all'))
           %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-        .dropdown.dropdown-tip#views-dropdown
+        .dropdown.dropdown-tip.dropdown_close#views-dropdown
           %ul.dropdown-menu
             %li{role: 'menuitem'}= link_to t('messages.select_all'), '#', class: 'selected all', id: "all", onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);'
             %li{role: 'menuitem'}= link_to t('messages.select_read'), '#', class: 'reads', id: "reads", onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);'
@@ -147,9 +147,9 @@
   $(function(){
     $('#flash_message').prop('tabindex', 0);
     setTimeout(function() {
-      $('#flash_message').focus(); 
-    }, 400);  
-  }); 
+      $('#flash_message').focus();
+    }, 400);
+  });
 
   $(function(){
     $(document).keydown(function (e) {
@@ -157,15 +157,15 @@
         if (e.which === parseInt("#{t("messages.shortcut.new")}")) {
           $("#button_new_msg")[0].click();
         }
-        if (e.which === parseInt("#{t("messages.shortcut.all")}")) { 
+        if (e.which === parseInt("#{t("messages.shortcut.all")}")) {
           $("#all")[0].click();
         }
-        if (e.which === parseInt("#{t("messages.shortcut.reads")}")) { 
+        if (e.which === parseInt("#{t("messages.shortcut.reads")}")) {
           $("#reads")[0].click();
-        }  
-        if (e.which === parseInt("#{t("messages.shortcut.unreads")}")) { 
+        }
+        if (e.which === parseInt("#{t("messages.shortcut.unreads")}")) {
           $("#unreads")[0].click();
-        }  
+        }
       }
     });
-  });   
+  });

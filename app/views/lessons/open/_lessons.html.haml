@@ -5,7 +5,7 @@
 %a.btn.btn_dropdown#lesson-selected{ href: '#', :"data-dropdown" => '#lesson-options-dropdown', :'aria-label' => t('lessons.open.lesson_menu', lesson: @lesson.name) }
   = @lesson.name
   %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-.dropdown.dropdown-tip#lesson-options-dropdown
+.dropdown.dropdown-tip.dropdown_close#lesson-options-dropdown
   %ul.dropdown-menu
     - lessons_c.each do |lesson|
       %li{role: 'menuitem'}= link_to lesson[0], '#', {:'data-path' => lesson[2][:'data-path'], :'data-id' => lesson[1], class: (lesson[1] == @lesson.id ? 'selected' : ''), onkeydown: 'click_on_keypress(event, this);', :'data-draft' => lesson[2][:'data-draft']}

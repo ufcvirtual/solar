@@ -10,7 +10,7 @@
   - unless @groups.blank? && @allocation_tag.blank?
     .title-warning
       = @allocation_tag.no_group_info unless @allocation_tag.blank?
-      - unless @groups.blank? 
+      - unless @groups.blank?
         - if @groups.size == 1
           = @groups.first.code
         - else
@@ -18,8 +18,8 @@
             %a{ href: '#', :"data-dropdown" => "#dropdown" }
               = t('.count_groups', count: @groups.size)
               %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-            .dropdown.dropdown-tip{id: "dropdown"}
-              %ul{ class: 'dropdown-menu' }  
+            .dropdown.dropdown-tip.dropdown_close{id: "dropdown"}
+              %ul{ class: 'dropdown-menu' }
                 - @groups.each do |code|
                   %li= code
 

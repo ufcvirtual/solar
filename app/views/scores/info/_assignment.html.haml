@@ -46,7 +46,7 @@
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{assignment.id}"}
+                        .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_#{assignment.id}"}
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: assignment.eq_name)
                       - else
@@ -54,7 +54,7 @@
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{assignment.id}"}
+                        .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_#{assignment.id}"}
                           %ul{ class: 'dropdown-menu' }
                   %td.center{headers: "as_eval_date"}
                     %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
@@ -109,7 +109,7 @@
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{assignment.id}"}
+                        .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_2_#{assignment.id}"}
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: assignment.eq_name)
                       - else
@@ -117,7 +117,7 @@
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{assignment.id}"}
+                        .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_2_#{assignment.id}"}
                           %ul{ class: 'dropdown-menu' }
                   %td.center{headers: "as_freq_date"}
                     %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
@@ -133,7 +133,7 @@
                   %td.center{headers: "as_freq_aft"}=(assignment.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
         - else
           .block_content.block_content_text= t(:itens_not_found)
-  
+
     .tools.notevaluative#notevaluative_assig
       .block_content
         - unless @assigments_not_evaluative.blank?
@@ -148,7 +148,7 @@
                 - if @can_evaluate_ass
                   %th#as_not_ass.center.no_sort{style: "width: 2%;"}
                 %th#as_not_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
-      
+
             %tbody
               - @assigments_not_evaluative.each do |assignment|
                 %tr.lines
@@ -172,7 +172,7 @@
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{assignment.id}"}
+                        .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_3_#{assignment.id}"}
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: assignment.eq_name)
                       - else
@@ -180,7 +180,7 @@
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{assignment.id}"}
+                        .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_3_#{assignment.id}"}
                           %ul{ class: 'dropdown-menu' }
                   %td.center{headers: "as_not_date"}
                     %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
@@ -193,8 +193,8 @@
                     %td.center{headers: "as_not_ass"}
                       = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'not_evaluative'), class: 'btn open_evaluation'
                   %td.center{headers: "as_not_aft"}=(assignment.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
-              
+
         - else
-          .block_content.block_content_text= t(:itens_not_found)          
+          .block_content.block_content_text= t(:itens_not_found)
 
 = javascript_include_tag 'tablesorter', 'tooltip', 'scores'

@@ -14,11 +14,11 @@
         %a.btn.btn_main{href: "#", :"data-dropdown" => "#dropdown_dc"}
           = content_tag(:i, nil, class: 'icon-plus')
           %i.icon-arrow-down-triangle
-        .dropdown.dropdown-tip#dropdown_dc
+        .dropdown.dropdown-tip.dropdown_close#dropdown_dc
           %ul.dropdown-menu
             %li= link_to t('.new_data'), new_digital_class_path, class: "link_new_lesson_dc", id: "new_digital_class"
             %li= link_to t('.lesson_data'), lesson_digital_classes_path, id: 'new_lesson_dc_lesson'
-    
+
       .block_toolbar_right
         .btn-group
           = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_digital_class', :"data-link-to-edit" => edit_digital_class_path(':id'), "data-edit-title" => t(".edit"), disabled: true, :"data-tooltip" => t(".edit")
@@ -67,7 +67,7 @@
     - else
       .block_content_text.block_content_text_list.text_none= t(:no_data, scope: [:digital_classes])
 
-= javascript_include_tag 'tooltip', 'digital_classes' 
+= javascript_include_tag 'tooltip', 'digital_classes'
 
 :javascript
 

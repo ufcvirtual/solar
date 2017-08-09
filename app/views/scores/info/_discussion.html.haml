@@ -8,7 +8,7 @@
         %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_dis", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_discussion_not_evaluative')
 
   .block_content
-    .tools.show.evaluative#evaluative_dis    
+    .tools.show.evaluative#evaluative_dis
       - unless @discussions_evaluative.empty?
         %table.tb_list{:summary=> t("discussions.list.summary_evaluative")}
           %thead
@@ -45,7 +45,7 @@
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip{id: "dropdown_eq_1_#{discussion.id}"}
+                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_#{discussion.id}"}
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: discussion.eq_name)
                     - else
@@ -53,15 +53,15 @@
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip{id: "dropdown_eq_1_#{discussion.id}"}
+                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_#{discussion.id}"}
                         %ul{ class: 'dropdown-menu' }
                 %td.center{headers: "di_eva_dat"}
                   = [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(' - ')
                 %td.center{class: "assignment_#{discussion.situation} #{['discussion','u', discussion.id.to_s, @user.id.to_s].join('_')} situation", headers: "di_eva_sit"}= t("scores.situation.#{discussion.situation}")
                 %td.center{headers: "di_eva_amo"}= link_to discussion.count, user_discussion_posts_path(discussion.academic_tool_id, @user.id, score_type: 'evaluative'), class: 'to_evaluate_post', :'data-tooltip'=> t(:discussions_participation, scope: [:scores, :info]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:discussions_participation, scope: [:scores, :info])
                 %td.center{headers: "di_eva_gra", class: "#{['discussion','u', discussion.id.to_s, @user.id.to_s].join('_')} #{['g', discussion.id.to_s, discussion.group_id.to_s].join('_')}"}=discussion.grade
-                - if @can_evaluate  
-                  %td.center{headers: 'di_eva_par'}= link_to content_tag(:i, nil, class: "icon-write"), user_discussion_posts_path(discussion.academic_tool_id, @user.id, score_type: 'evaluative'), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]) , onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post]) 
+                - if @can_evaluate
+                  %td.center{headers: 'di_eva_par'}= link_to content_tag(:i, nil, class: "icon-write"), user_discussion_posts_path(discussion.academic_tool_id, @user.id, score_type: 'evaluative'), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]) , onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
                 %td.center{headers: 'di_eva_af' }=raw t(discussion.final_exam, scope: [:common_between_pages, :final_exam])
                 %td.center{headers: "di_eva_aft"}=(discussion.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
 
@@ -105,7 +105,7 @@
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip{id: "dropdown_eq_2_#{discussion.id}"}
+                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_2_#{discussion.id}"}
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: discussion.eq_name)
                     - else
@@ -113,13 +113,13 @@
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip{id: "dropdown_eq_2_#{discussion.id}"}
+                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_2_#{discussion.id}"}
                         %ul{ class: 'dropdown-menu' }
-                %td.center{headers: "di_fre_dat"}= [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(' - ')   
+                %td.center{headers: "di_fre_dat"}= [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(' - ')
                 %td.center{class: "assignment_#{discussion.situation} #{['discussion','u', discussion.id.to_s, @user.id.to_s].join('_')} situation", headers: "di_fre_sit"}= t("scores.situation.#{discussion.situation}")
                 %td.center{headers: "di_fre_amo"}= link_to discussion.count, user_discussion_posts_path(discussion.academic_tool_id, @user.id, score_type: 'frequency'), class: 'to_evaluate_post', :'data-tooltip'=> t(:discussions_participation, scope: [:scores, :info]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:discussions_participation, scope: [:scores, :info])
                 %td.center{headers: "di_fre_fre", class: "#{['discussion','u', discussion.id.to_s, @user.id.to_s].join('_')} #{['g', discussion.id.to_s, discussion.group_id.to_s].join('_')}"}=discussion.working_hours
-                - if @can_evaluate  
+                - if @can_evaluate
                   %td.center{headers: "di_fre_par"}= link_to content_tag(:i, nil, class: "icon-write"), user_discussion_posts_path(discussion.academic_tool_id, @user.id, score_type: 'frequency'), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
                 %td.center{headers:'di_freq_hours'}=raw t('common_between_pages.hours', hours: discussion.max_working_hours)
                 %td.center{headers: "di_fre_aft"}=(discussion.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
@@ -158,7 +158,7 @@
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip{id: "dropdown_eq_3_#{discussion.id}"}
+                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_3_#{discussion.id}"}
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: discussion.eq_name)
                     - else
@@ -166,13 +166,13 @@
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip{id: "dropdown_eq_3_#{discussion.id}"}
+                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_3_#{discussion.id}"}
                         %ul{ class: 'dropdown-menu' }
                 %td.center{headers: "di_not_dat"}
-                  = [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(' - ')   
+                  = [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(' - ')
                 %td.center{class: "assignment_#{discussion.situation} #{['discussion','u', discussion.id.to_s, @user.id.to_s].join('_')} situation", headers: "di_not_sit"}= t("scores.situation.#{discussion.situation}")
                 %td.center{headers: "di_not_amo"}= link_to discussion.count, user_discussion_posts_path(discussion.academic_tool_id, @user.id), class: 'to_evaluate_post', :'data-tooltip'=> t(:discussions_participation, scope: [:scores, :info]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:discussions_participation, scope: [:scores, :info])
-                
+
       - else
         .block_content.block_content_text= t(:itens_not_found)
 
@@ -182,4 +182,4 @@
 
   $(function(){
     $("a.to_evaluate_post").call_fancybox();
-  });      
+  });

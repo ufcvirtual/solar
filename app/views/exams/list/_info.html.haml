@@ -11,7 +11,7 @@
         - unless exam.result_release.blank?
           %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{exam.id}", :'data-tooltip' => t('exams.list.info_exam'), onkeydown: 'click_on_keypress(event, this);' }
             %i.icon-info2
-          .dropdown.dropdown-tip{ id: "dropdown_eq_#{exam.id}" }
+          .dropdown.dropdown-tip.dropdown_close{ id: "dropdown_eq_#{exam.id}" }
             %ul{ class: 'dropdown-menu' }
               = raw t('exams.list.liberated', datetime: l(exam.result_release, format: :at_date))
         = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_exam_path(exam, allocation_tags_ids: @allocation_tags_ids), class: 'block_title_button edit_exam', :'data-tooltip' => t('exams.list.edit_exam')

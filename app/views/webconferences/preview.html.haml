@@ -14,7 +14,7 @@
           %a.btn.delete_record_btn{ href: nil, :'data-dropdown' => "#trash_dropdown", alt: t('.delete_record') }
             = content_tag(:i, nil, class:'icon-trash')
             %i.icon-arrow-down-triangle
-          #trash_dropdown.dropdown.dropdown-tip
+          #trash_dropdown.dropdown.dropdown-tip.dropdown_close
             %ul.dropdown-menu
               %li
                 %a.delete_record{ href: nil, :'data-link-remove' => remove_record_webconference_path(':id') }= t('.delete_record')
@@ -50,8 +50,8 @@
                     %i.icon-shuffle
                     = t('.shared_with', link: groups_codes.count)
                     %i.icon-arrow-down-triangle
-                  .dropdown.dropdown-tip{id: "dropdown_t_#{idx}"}
-                    %ul{ class: 'dropdown-menu' }  
+                  .dropdown.dropdown-tip.dropdown_close{id: "dropdown_t_#{idx}"}
+                    %ul{ class: 'dropdown-menu' }
                       - groups_codes.each do |code|
                         %li= code
               .participants.equivalent
@@ -59,8 +59,8 @@
                   %i.icon-user
                   = t(:moderator, scope: [:webconferences, :list])
                   %i.icon-arrow-down-triangle
-                .dropdown.dropdown-tip{id: "dropdown_m_#{idx}"}
-                  %ul{ class: 'dropdown-menu' }  
+                .dropdown.dropdown-tip.dropdown_close{id: "dropdown_m_#{idx}"}
+                  %ul{ class: 'dropdown-menu' }
                     = webconference.user_name
               .equivalent
                 - unless webconference.eq_name.blank?
@@ -68,7 +68,7 @@
                     %i.icon-flow-parallel
                     = t('scores.info.equivalency')
                     %i.icon-arrow-down-triangle
-                  .dropdown.dropdown-tip{id: "dropdown_eq_#{idx}"}
+                  .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_#{idx}"}
                     %ul{ class: 'dropdown-menu' }
                       = raw t('scores.info.equivalent', name: webconference.eq_name)
                 - else
@@ -76,7 +76,7 @@
                     %i.icon-flow-parallel
                     =t('scores.info.equalities')
                     %i.icon-arrow-down-triangle
-                  .dropdown.dropdown-tip{id: "dropdown_eq_#{idx}"}
+                  .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_#{idx}"}
                     %ul{ class: 'dropdown-menu' }
             %td.center
               %div= l(webconference.start_date.to_date)
@@ -90,10 +90,10 @@
               %td.center{:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference, at_id: webconference.at_id), class: "record"
             - if @can_see_access
               %td{ :'data-url' => list_access_webconference_path(webconference, at_id: webconference.at_id), :'data-tooltip' => t('webconferences.list.access') }= link_to_function content_tag(:i, nil, class: 'icon-users btn'), 'list_access(this)'
-            
+
     .message_div_navigation
       = will_paginate @webconferences
-      
+
   - else
     .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
 

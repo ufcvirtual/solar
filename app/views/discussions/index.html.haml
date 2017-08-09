@@ -16,7 +16,7 @@
           - if @is_student
             %th.center{style: "width: 2%;", id: "grade"}= t(:grade, scope: [:scores, :info])
             %th.center{style: "width: 2%;", id: "workload"}= t(:workload, scope: [:scores, :info])
-          
+
       %tbody
         - @discussions.each do |discussion|
           %tr{class: "lines #{(discussion.closed == 't' && (!discussion.situation.include?("extra_time"))) ? 'period_ended' : '' } "}
@@ -25,7 +25,7 @@
                 = link_to discussion.name, discussion_posts_path(discussion_id: discussion.academic_tool_id), {class: 'link_content'}
               - elsif discussion.closed == 't'
                 = link_to discussion.name, discussion_posts_path(discussion_id: discussion.academic_tool_id)
-              - else 
+              - else
                 .title= discussion.name
               .description
                 .enunciation_slice= discussion.description.slice(0..180) << '...'
@@ -39,7 +39,7 @@
                     %i.icon-flow-parallel
                     = t('scores.info.equivalency')
                     %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-                  .dropdown.dropdown-tip{id: "dropdown_eq_#{discussion.id}"}
+                  .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_#{discussion.id}"}
                     %ul{ class: 'dropdown-menu' }
                       = raw t('scores.info.equivalent', name: discussion.eq_name)
                 - else
@@ -47,25 +47,25 @@
                     %i.icon-flow-parallel{:'aria-hidden'=>'true'}
                     =t('scores.info.equalities')
                     %i.icon-arrow-down-triangle{:'aria-hidden'=>'true'}
-                  .dropdown.dropdown-tip{id: "dropdown_eq_#{discussion.id}"}
+                  .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_#{discussion.id}"}
                     %ul{ class: 'dropdown-menu' }
-            %td.center{headers: 'date_range' }= [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(" - ") 
+            %td.center{headers: 'date_range' }= [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(" - ")
             %td.center{headers: 'amount' }= discussion.count_all
             - if @is_student
               %td.center{class: "assignment_#{discussion.situation}", headers: 'situation'}= t("scores.situation.#{discussion.situation}")
             - else
               - if discussion.closed=='t'
-                %td.center{class: "assignment_closed", headers: 'situation'}= t("scores.situation.closed") 
-              - elsif discussion.opened=='t'    
-                %td.center{class: "assignment_opened", headers: 'situation'}= t("scores.situation.opened")  
+                %td.center{class: "assignment_closed", headers: 'situation'}= t("scores.situation.closed")
+              - elsif discussion.opened=='t'
+                %td.center{class: "assignment_opened", headers: 'situation'}= t("scores.situation.opened")
               -else
-                %td.center{class: "assignment_not_started", headers: 'situation'}= t("scores.situation.not_started")    
+                %td.center{class: "assignment_not_started", headers: 'situation'}= t("scores.situation.not_started")
             %td.center{headers: 'evaluative' }=raw (discussion.final_exam ? t(discussion.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(discussion.evaluative, scope: [:scores, :info]))
             %td.center{headers: 'frequency' }= raw t(discussion.frequency, scope: [:common_between_pages, :frequency], hours: discussion.max_working_hours)
             - if @is_student
               %td.center{headers: 'grade' }= discussion.grade
               %td.center{headers: 'workload' }= discussion.working_hours
-            
+
   - else
     .block_content.block_content_text= t(:forum_message)
 
@@ -88,6 +88,3 @@
     });
     $(".tb_list").focus();
   });
-
-
-
