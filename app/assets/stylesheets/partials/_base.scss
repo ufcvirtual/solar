@@ -266,7 +266,7 @@ textarea {
 /* Menu de idiomas
 */
 
-.choice-language {
+.choice-language, .choice-tutorial {
 
   .link-arrow{
     background: url("/assets/language-arrow.png") right no-repeat;
@@ -297,6 +297,14 @@ textarea {
     li:hover {
       background-color: $language_background_color;
       color: $language_color;
+    }
+  }
+}
+
+.choice-tutorial{
+  ul{
+    li{
+      padding: 5px 6px 5px 6px;
     }
   }
 }

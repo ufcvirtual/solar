@@ -1,8 +1,8 @@
 class PagesController < ApplicationController
 
-  before_filter :authenticate_user!, except: [:index, :team, :apps, :tutorials, :faq, :tutorials_login]
+  before_filter :authenticate_user!, except: [:index, :privacy_policy, :apps, :tutorials, :faq, :tutorials_login]
   before_filter :set_active_tab_to_home, only: :tutorials
-  layout 'login', only: [:apps, :team, :faq, :tutorials_login]
+  layout 'login', only: [:apps, :faq, :tutorials_login, :privacy_policy]
 
   def tutorials
     @verify_route_tutorial = false
@@ -11,11 +11,10 @@ class PagesController < ApplicationController
   def apps
   end
 
-  def team
-  	@sectors = YAML::load(File.open('public/members.yml'))
+  def faq
   end
 
-  def faq
+  def privacy_policy
   end
 
   def tutorials_login
