@@ -7,10 +7,10 @@
     - if params[:support].blank?
       = f.input :contacts, as: :hidden, input_html: { value: [@reply_to].flatten.compact.map { |c| c[:id] }.join(', ') }
     = hidden_field_tag :support, params[:support]
+    = hidden_field_tag :allocation_tag_id, @allocation_tag_id
 
     .block_content
       .message_header_new
-        = hidden_field_tag(:allocation_tag_id_hidden, @allocation_tag_id)
         .message_new_text_to
           .label.align-left
             = label_tag :message_to, t('.message_to')
