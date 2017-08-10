@@ -2780,6 +2780,7 @@ en_US:
       restore: Restore message
       size: " (%{size})"
       download_file: Download attachment %{name} with size %{size}
+      sent_at: 'Sent at: '
     index:
       filter_selected: "View: "
       placeholder_subject: 'Subject to be searched'

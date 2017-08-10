@@ -3006,6 +3006,7 @@ pt_BR:
       restore: Restaurar mensagem
       size: " (%{size})"
       download_file: Fazer download do anexo %{name} de tamanho %{size}
+      sent_at: 'Enviada em: '
     index:
       filter_selected: "Visualizar: "
       placeholder_subject: 'Assunto a pesquisar'
