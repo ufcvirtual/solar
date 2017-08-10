@@ -1,0 +1,97 @@
+= render '/user_sessions/header'
+
+#privacy
+  .content
+    %br
+    #link
+      %a#link-password{href: home_path}= t(:back_home)
+
+    %h2= t('privacy_policies.title')
+
+    .search
+      = t('faq.search')
+      = text_field_tag :search_policy, nil, :'aria-label'=>t('faq.search')
+
+    .policy
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title=t('privacy_policies.about_title')
+      .title_child_first=raw t('privacy_policies.about')
+
+    .policy
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title=t('privacy_policies.collected_info_title')
+      .title_child_first=raw t('privacy_policies.collected_info')
+
+    .policy
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title=t('privacy_policies.why_title')
+      .title_child_first=raw t('privacy_policies.why')
+
+    .policy
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title=t('privacy_policies.how_title')
+      .title_child_first=raw t('privacy_policies.how')
+
+    .policy
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title=t('privacy_policies.third_title')
+      .title_child_first=raw t('privacy_policies.third')
+
+    .policy
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title=t('privacy_policies.other_info_title')
+      .title_child_first=raw t('privacy_policies.other_info')
+
+    .policy
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title=t('privacy_policies.update_title')
+      .title_child_first=raw t('privacy_policies.update')
+
+    .policy
+      = link_to '#', onkeypress: 'click_on_keypress(event, this);', class: 'title' do
+        %h4.title=t('privacy_policies.subtitles_title')
+      .title_child_first=raw t('privacy_policies.subtitles')
+
+:javascript
+  $(function(){
+    $("a.title").click(function(){
+      event.preventDefault();
+      $(this).next(".title_child_first").toggle();
+      if ($(this).next(".title_child_first").is(":visible")) {
+        focus_element($(this).next());
+      }
+    });
+
+    $('#search_policy').keyup(function(e){
+      var words = $(this).val().split(' ');
+
+      if(words.length == 0 || (words.length == 1 && words[0] == '')){
+        $('.policy').show();
+      }else{
+        $('.policy').each(function(a){
+          var text = $(this).prop('textContent');
+
+          var result = words.every(function(a) {
+            return text.indexOf(a) != -1;
+          });
+
+          if(result)
+            $(this).show();
+          else
+            $(this).hide();
+        });
+      }
+    });
+
+  });
+
+  function click_on_keypress(event, element){
+    if(event.which == 13)
+      $(element).click();
+    return false;
+  }
+
+  function focus_element(element){
+    $(element).prop('tabindex', 0);
+    $(element).focus();
+  }

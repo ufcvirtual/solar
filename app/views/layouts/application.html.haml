@@ -164,10 +164,18 @@
       - selected = I18n.locale.to_s
       #footer
         %ul
-          %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', target: '_blank', :'aria-label' => t(:login_footer1)+ t(:new_window)
-          %li= link_to t(:login_footer2), 'http://www.ufc.br', target: '_blank', :'aria-label' => t(:login_footer2)+ t(:new_window)
-          %li= link_to t(:login_footer3), team_path, target: '_blank', :'aria-label' => t(:login_footer3)+ t(:new_window)
-          %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank', :'aria-label' => t(:license_terms)+ t(:new_window)
+          %li.choice-tutorial
+            = link_to t(:login_footer3), '#', class: "link-arrow"
+            %ul.choice-tutorial-menu
+              %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', target: '_blank', :'aria-label' => t(:login_footer1)+ t(:new_window)
+              %li= link_to t(:login_footer2), 'http://www.ufc.br', target: '_blank', :'aria-label' => t(:login_footer2)+ t(:new_window)
+          %li.choice-tutorial
+            = link_to t(:login_footer4), '#', class: "link-arrow"
+            %ul.choice-tutorial-menu
+              %li= link_to t(:login_footer5), 'http://github.com/wwagner33/solar', :target => '_blank', :'aria-label' => 'Código' + t(:new_window)
+              %li= link_to t(:login_footer6), 'https://github.com/wwagner33/solar/blob/master/README', :target => '_blank', :'aria-label' => 'Equipe' + t(:new_window)
+              %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank', :'aria-label' => t(:license_terms)+ t(:new_window)
+          %li= link_to t('privacy_policies.title'), privacy_policy_path, target: '_blank', :'aria-label' => t('privacy_policies.title') + t(:new_window)
           %li= link_to t(:login_app), apps_path
           %li= link_to t(:login_faq), faq_path, :'aria-label' => t(:login_faq)
           %li.choice-language
