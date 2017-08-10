@@ -22,7 +22,7 @@ module BulkEmailHelper
     end
 
     count = 0
-    while time < (offset + emails.size)
+    while count < emails.size
       Notifier.delay(run_at: (time/16).minutes.from_now).send_mail(emails.slice(count, max_size), message.subject, new_msg_template, message.files, message.sender.email)
       time += quantum_time
       count += max_size
