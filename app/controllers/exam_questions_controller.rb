@@ -2,7 +2,7 @@ class ExamQuestionsController < ApplicationController
 
   include SysLog::Actions
 
-  before_filter :set_current_user, only: [:order, :annul, :import, :export, :copy]
+  before_filter :set_current_user, only: [:order, :annul, :import, :export, :copy, :publish]
 
   layout false, except: :index
 

@@ -31,9 +31,11 @@
       %span.email
         = sanitize "<#{link_to(user.email, new_message_path(to: user.email))}>"
     .message_text_to
-      .label-show.align-left
-        = t(".to")
+      .label-show.align-left= t(".to")
       = sanitize @message.recipients.map { |r| "#{r.nick} <span class='email'>&lt;#{link_to(r.email, new_message_path(to: r.email))}&gt;</span>" }.join(', ')
+    .message_time
+      .label-show.align-left=t('.sent_at')
+      =l(@message.created_at, format: :at_date)
 
     - unless (attachments = @message.files).empty?
       .message_attachments
