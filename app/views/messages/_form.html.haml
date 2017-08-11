@@ -179,8 +179,23 @@
     });
   }
   $(function(){
-    $('#flash_message').prop('tabindex', 0);
-    setTimeout(function() {
-      $('#flash_message').focus(); 
-    }, 400);
+    inputFocuErroMsg();
   });
+
+  function inputFocuErroMsg(){
+    if (typeof($(".error")) !== "undefined") {
+      $(".error").each( function(index, value){   
+          var label = $(this).closest('.message_new_text_to').find('label');
+          var text = $(label).text()+': '+$(this).text();
+          $(label).attr("aria-label", text);
+      });
+      var lab = $(".error").closest('.message_new_text_to').find('label');
+      setTimeout(function() {
+        if($(lab).length==1){
+          $(lab).focus();
+        }else{
+            focus_editor(); 
+        }
+      }, 300);   
+    }  
+  }

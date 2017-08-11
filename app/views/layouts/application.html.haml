@@ -128,11 +128,11 @@
           .flash_message_wrapper
             - flash.each do |name, msg|
               #flash_message{ class: name }
-                = content_tag :span, msg
+                = content_tag(:span, msg, id: "flash_message_span")
                 - if @attribute.blank?
-                  = link_to_function content_tag(:i, nil, class: 'icon-cross'), "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)'
+                  = link_to_function content_tag(:i, nil, class: 'icon-cross'), "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
                 - else
-                  = link_to_function content_tag(:i, nil, class: 'icon-cross'), "erase_flash_messages(true, "+@attribute.to_s+")", onkeydown: 'click_on_keypress(event, this)'
+                  = link_to_function content_tag(:i, nil, class: 'icon-cross'), "erase_flash_messages(true, "+@attribute.to_s+")", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
           - name = active_tab[:breadcrumb].last[:name].gsub(".", "-") unless active_tab[:breadcrumb].last[:name].nil?
           #breadcrumb= raw show_breadcrumb
           - if is_curriculum_unit_selected?
@@ -544,23 +544,8 @@
 
     //focus do flash message
     $(function(){
-      var arrIdFocus = [];
-      $('*').on("focus", function(){
-        var _id = $(this).attr('id');
-        if(_id){
-          var idRand = _id;
-        }else{
-          var idRand = 'id_'+Math.floor(Math.random() * 65536).toString();
-          $(this).attr('id', idRand);
-        }
-        if(arrIdFocus.length==20){
-          arrIdFocus.shift();
-          arrIdFocus.push(idRand);
-        }else{
-          arrIdFocus.push(idRand);
-        }
-        $.cookie("listIdFocu", arrIdFocus);
-      });
+      loadFocus();
+      focus_element_time('#flash_message_span');
     });
 
     $(document).keydown(function (e) {
@@ -572,3 +557,4 @@
         }, 100);
       }
     });
+

@@ -4573,6 +4573,9 @@ pt_BR:
     open: (Abrirá janela modal)
     minimize: "Minimizar janela modal"
 
+  flash_message:
+    close: "Fechar mensage"
+
   common_between_pages:
     more: 'Mais'
     less: 'Menos'

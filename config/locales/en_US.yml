@@ -4329,6 +4329,9 @@ en_US:
     open: (Will open modal window)
     minimize: "Minimize modal window"
 
+  flash_message:
+    close: "Close message"  
+
   common_between_pages:
     more: More
     less: Less

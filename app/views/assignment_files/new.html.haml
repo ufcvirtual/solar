@@ -32,10 +32,7 @@
           flash_message("#{t('assignment_files.success.uploaded')}", "notice");
           $(".assignment_to_be_sent").html("#{t(:sent)}").css("color","#2900C2");
           update_tables_with_no_data();
-          setTimeout(function() {
-            $('#flash_message').prop('tabindex', 0);
-            $('#flash_message').focus(); 
-          }, 100); 
+          focus_element_time('#flash_message_span'); 
         }
       });
     });

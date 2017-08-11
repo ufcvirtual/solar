@@ -183,8 +183,5 @@
   }
 
   $(function(){
-    $('#flash_message').prop('tabindex', 0);
-    setTimeout(function() {
-      $('#flash_message').focus();
-    }, 400);
+    focus_element_time('#flash_message_span');
   });

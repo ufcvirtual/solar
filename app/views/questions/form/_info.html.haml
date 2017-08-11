@@ -99,14 +99,23 @@
       $('.question_audios .add_nested_fields_link').hide();
     }
   }
-
-  function upFocus(p1, p2){
+  //Envia o focu para o audio ou imagem com erro
+  function sendFocusAudioError(initialID, endID, total){
     var i = 0;
-    var total = 6;
     while(i<total){
-      if($("#"+p1+i+p2).is(":visible") && ($("#"+p1+i+p2).val()=='')){
-        $("#"+p1+i+p2).focus();
-        return true;
+      var id = initialID+i+endID;
+      var id_desc = initialID+i+"_description";
+      
+      if($("#"+id).is(":visible") && $("#"+id_desc).is(":visible")) {
+        if($("#"+id).val()=='' && $("#"+id_desc).val()==''){
+          $("#"+id).focus();
+          return true;
+        }  
+      }else{
+        if($("#"+id).is(":visible") && $("#"+id).val()==''){
+          $("#"+id).focus();
+          return true;
+        }
       }
       i++;
     }    
@@ -137,9 +146,9 @@
 = label_tag 'question_enunciation', '', id: 'exam_question_question_enunciation'
 
 .question_images
-  .visuallyhidden= label_tag :img_alt, '', id: 'exam_question_question_question_images_img_alt', onfocus: 'upFocus("exam_question_question_attributes_question_images_attributes_", "_img_alt")', tabindex: '0'
+  .visuallyhidden= label_tag :img_alt, '', id: 'exam_question_question_question_images_img_alt', onfocus: 'sendFocusAudioError("exam_question_question_attributes_question_images_attributes_", "_img_alt", 6)', tabindex: '0'
   .visuallyhidden= label_tag :img_alt, '', id: 'exam_question_question_question_images_image_content_type'
-  .visuallyhidden= label_tag :img_alt, '', id: 'question_question_images_img_alt', onfocus: 'upFocus("question_question_images_attributes_", "_img_alt")', tabindex: '0'
+  .visuallyhidden= label_tag :img_alt, '', id: 'question_question_images_img_alt', onfocus: 'sendFocusAudioError("question_question_images_attributes_", "_img_alt", 6)', tabindex: '0'
   .visuallyhidden= label_tag :img_alt, '', id: 'question_question_images_image_content_type'
   
   = render partial: 'questions/form/image', locals: { f: f, eq: nil }
@@ -147,9 +156,9 @@
     = f.add_nested_fields_link :question_images, t('.add_images'), class: 'btn'
 
 .question_audios
-  .visuallyhidden= label_tag :audio_description, '', id: 'exam_question_question_question_audios_description', onfocus: 'upFocusDescAudio("exam_question_question_attributes_question_audios_attributes_", "_audio_description")', tabindex: '0'
+  .visuallyhidden= label_tag :audio_description, '', id: 'exam_question_question_question_audios_description', onfocus: 'sendFocusAudioError("exam_question_question_attributes_question_audios_attributes_", "_audio_description", 6)', tabindex: '0'
   .visuallyhidden= label_tag :audio_description, '', id: 'exam_question_question_question_audios_audio_content_type'
-  .visuallyhidden= label_tag :audio_description, '', id: 'question_question_audios_description', onfocus: 'upFocusDescAudio("question_question_audios_attributes_", "_audio_description")', tabindex: '0'
+  .visuallyhidden= label_tag :audio_description, '', id: 'question_question_audios_description', onfocus: 'sendFocusAudioError("question_question_audios_attributes_", "_audio_description", 6)', tabindex: '0'
   .visuallyhidden= label_tag :audio_description, '', id: 'question_question_audios_audio_content_type'
   .visuallyhidden= label_tag :audio_description, '', id: 'exam_question_question_question'
 

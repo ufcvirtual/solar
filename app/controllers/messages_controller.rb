@@ -101,6 +101,7 @@ class MessagesController < ApplicationController
   end
 
   def create
+
     @allocation_tag_id = params[:allocation_tag_id].blank? ? active_tab[:url][:allocation_tag_id] : params[:allocation_tag_id]
 
     # is an answer
@@ -146,7 +147,7 @@ class MessagesController < ApplicationController
       @reply_to = []
       @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume")
 
-      flash.now[:alert] = @message.errors.full_messages.join(', ')
+      #flash.now[:alert] = @message.errors.full_messages.join(', ')
       render :new
     end
   end

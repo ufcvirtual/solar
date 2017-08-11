@@ -168,7 +168,7 @@
               parent_id: data.parent_id,
               academic_allocation_id: ac
             }));
-
+          loadFocus();
         },
         error: function(data){
           var data = $.parseJSON(data.responseText);

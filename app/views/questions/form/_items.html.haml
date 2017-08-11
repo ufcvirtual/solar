@@ -1,7 +1,7 @@
-.visuallyhidden= label_tag :img_alt, '', id: 'question_question_items_img_alt', onfocus: 'upFocus("question_question_items_attributes_", "_img_alt")', tabindex: '0'
-.visuallyhidden= label_tag :audio_description, '', id: 'question_question_items_audio_description', onfocus: 'upFocusItem("question_question_items_attributes_", "_audio_description")', tabindex: '0'
-.visuallyhidden= label_tag :audio_description, '', id: 'exam_question_question_question_items_audio_description', onfocus: 'upFocusItem("exam_question_question_attributes_question_items_attributes_", "_audio_description")', tabindex: '0'
-.visuallyhidden= label_tag :img_alt, '', id: 'exam_question_question_question_items_img_alt', onfocus: 'upFocusItem("exam_question_question_attributes_question_items_attributes_", "_img_alt")', tabindex: '0'
+.visuallyhidden= label_tag :img_alt, '', id: 'question_question_items_img_alt', onfocus: 'sendFocusAudioError("question_question_items_attributes_", "_img_alt", 6)', tabindex: '0'
+.visuallyhidden= label_tag :audio_description, '', id: 'question_question_items_audio_description', onfocus: 'sendFocusAudioError("question_question_items_attributes_", "_audio_description", 20)', tabindex: '0'
+.visuallyhidden= label_tag :audio_description, '', id: 'exam_question_question_question_items_audio_description', onfocus: 'sendFocusAudioError("exam_question_question_attributes_question_items_attributes_", "_audio_description", 20)', tabindex: '0'
+.visuallyhidden= label_tag :img_alt, '', id: 'exam_question_question_question_items_img_alt', onfocus: 'sendFocusAudioError("exam_question_question_attributes_question_items_attributes_", "_img_alt", 20)', tabindex: '0'
 
 .question_items
   = f.label t('.answer'), class: 'label_answer'
@@ -12,18 +12,3 @@
 .form-actions.right_buttons
   = button_to_function t(:back), 'back()', class: 'btn btn_default', type: 'button', id: '_back'
   = button_to_function t(:save), "save_question(#{eq.nil? ? 0 : eq.object.exam_id}, #{f.object.type_question.nil? ? false : f.object.type_question})", class: 'btn btn_main', type: 'button'
-
-
-:javascript
-
-  function upFocusItem(p1, p2){
-    var i = 0;
-    var total = 20;
-    while(i<total){
-      if($("#"+p1+i+p2).is(":visible") && ($("#"+p1+i+p2).val()=='')){
-        $("#"+p1+i+p2).focus();
-        return true;
-      }
-      i++;
-    }    
-  }
