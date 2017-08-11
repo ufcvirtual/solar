@@ -27,10 +27,6 @@ $panel_menu_footer_color: #2b5088;
   z-index: 50;
 }
 
-#license-terms, #faq, #team, #tutorials {
-  background: $white image-url('ufc-virtual.png') 10% 16% no-repeat;
-}
-
 .panel .content {
   width: 535px;
   height: 85%;
@@ -70,17 +66,17 @@ $panel_menu_footer_color: #2b5088;
   cursor: pointer;
 }
 
-#faq h4{
+#faq h4, #privacy h4{
   margin-bottom: 2px;
 }
 
-#faq p{
+#faq p, #privacy p{
   margin-top: 10px;
   margin-bottom: 0;
   text-align: initial;
 }
 
-#faq h4.title_child_first{
+#faq h4.title_child_first, #privacy h4.title_child_first{
   padding-bottom: 0px;
 }
 
@@ -88,17 +84,17 @@ $panel_menu_footer_color: #2b5088;
   margin-top: 2px;
 }
 
-#faq .content {
+#faq .content, #privacy .content{
   width: 650px;
 }
 
-#faq h1{
+#faq h1, #privacy h1{
   font-weight: bold;
   margin-top: 5%;
 
 }
 
-#faq .search, .tutorials .search{
+#faq .search, .tutorials .search, #privacy .search{
   text-align: center;
   color: $panel_color;
   font-weight: bold;
@@ -108,12 +104,12 @@ $panel_menu_footer_color: #2b5088;
   }
 }
 
-#faq .question a{
+#faq .question a, #privacy .policy a{
   text-decoration: none;
   color: $panel_color;
 }
 
-#faq h4.title{
+#faq h4.title, #privacy h4.title{
   border: 1px solid $panel_border_color;
   background: $background_light;
   background: -moz-linear-gradient(top, $background_light 0%, $background_light 100%);
