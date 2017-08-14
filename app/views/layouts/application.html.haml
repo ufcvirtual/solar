@@ -543,19 +543,19 @@
       loadFocus();
       focus_element_time('#flash_message_span');
 
-      $(".equivalent").keydown(function (e) {
+      $(document).keydown(function (e) {
         if (e.which === 27) {
           $("#dropdown_menu").slideUp(150);
-          $(".dropdown_close").hide(150);
+          $(".dropdown").hide(150);
           setTimeout(function() {
-            $(e.target).closest(".dropdown_close").prev("a").focus();
+            $(e.target).closest(".dropdown").prev("a").focus();
           }, 100);
         }
 
         setTimeout(function() {
           var dropdown = $(".dropdown:visible").closest(".equivalent");
           if( $(dropdown).find(":focus").length === 0 ) {
-            $(dropdown).find(".dropdown_close").hide();
+            $(dropdown).find(".dropdown").hide();
           }
         }, 250);
       });
