@@ -554,7 +554,6 @@
       }
 
       setTimeout(function() {
-        console.log( $(".dropdown:visible").closest(".equivalent").length !== 0 );
         var dropdown = $(".dropdown:visible").closest(".equivalent");
         if( $(dropdown).closest(".equivalent").length !== 0 && $(dropdown).find(":focus").length === 0 ) {
           $(".dropdown:visible").hide();
