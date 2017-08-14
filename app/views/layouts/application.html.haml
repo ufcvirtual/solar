@@ -542,21 +542,21 @@
     $(function(){
       loadFocus();
       focus_element_time('#flash_message_span');
-    });
 
-    $(document).keydown(function (e) {
-      if (e.which === 27) {
-        $("#dropdown_menu").slideUp(150);
-        $(".dropdown_close").hide(150);
-        setTimeout(function() {
-          $(e.target).closest(".dropdown_close").prev("a").focus();
-        }, 100);
-      }
-
-      setTimeout(function() {
-        var dropdown = $(".dropdown:visible").closest(".equivalent");
-        if( $(dropdown).closest(".equivalent").length !== 0 && $(dropdown).find(":focus").length === 0 ) {
-          $(".dropdown:visible").hide();
+      $(".equivalent").keydown(function (e) {
+        if (e.which === 27) {
+          $("#dropdown_menu").slideUp(150);
+          $(".dropdown_close").hide(150);
+          setTimeout(function() {
+            $(e.target).closest(".dropdown_close").prev("a").focus();
+          }, 100);
         }
-      }, 250);
+
+        setTimeout(function() {
+          var dropdown = $(".dropdown:visible").closest(".equivalent");
+          if( $(dropdown).find(":focus").length === 0 ) {
+            $(dropdown).find(".dropdown_close").hide();
+          }
+        }, 250);
+      });
     });
