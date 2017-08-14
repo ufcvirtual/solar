@@ -58,7 +58,7 @@ function flash_message(msg, css_class, div_to_show, onclick_function, object) {
     $("#flash_message").closest(".sticky-wrapper").css("height","40px").css("width", "auto");
     $("#flash_message").effect("highlight","slow");
 
-    focus_element_time('#flash_message_span'); 
+    focus_element_time('#flash_message_span');
   }
 
 }
@@ -454,7 +454,7 @@ function goInside(element) {
     $("#mysolar_top_submenu").slideDown(150);
     $('#mysolar_top_submenu_label').addClass('mysolar_top_submenu_label_selected');
     $('#mysolar_top_submenu_label').addClass('mysolar_top_submenu_label_regular');
-    $("#synchronize").focus();
+    $("#my_data").focus();
   } else if (elementID == "accessibility_top") {
     $(element).closest("ul").css('left', offset);
     $("#mysolar_accessibility_submenu").slideDown(150);
@@ -496,7 +496,7 @@ function goOut(element) {
 function focuInpuErro(){
 
   if (typeof($(".error")) !== "undefined") {
-    $(".error").each( function(index, value){   
+    $(".error").each( function(index, value){
         var label = $(this).siblings()[0];
         var text = $(label).text()+': '+$(this).text();
         $(label).attr("aria-label", text);
@@ -551,7 +551,7 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
 
   real_grade = $('#academic_allocation_user_grade').val();
   real_hours = $('#academic_allocation_user_working_hours').val();
-  
+
   if(!$('#academic_allocation_user_grade').length && !$('#academic_allocation_user_working_hours').length)
     grade = data.grade;
 
@@ -635,7 +635,6 @@ function loadFocus(){
     }else{
       arrIdFocus.push(idRand);
     }
-    $.cookie("listIdFocu", arrIdFocus);  
-   
+    $.cookie("listIdFocu", arrIdFocus);
   });
 }

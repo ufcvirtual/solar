@@ -439,7 +439,7 @@
 
     $(".nav_item").on("keydown", function(event){
       var attr = $('#server_clock').prop('tabindex');
-      if(attr == undefined) {
+      if(attr == undefined || attr == -1) {
         $('#server_clock').prop('tabindex', 0);
       }
 
@@ -449,7 +449,7 @@
         goToRight(this);
       } else if (keynum == 37) {
         goToLeft(this);
-      } else if (keynum == 40 || keynum == 32) {
+      } else if (keynum == 40 || keynum == 32 || keynum == 13) {
         goInside(this);
       }
     });
@@ -556,5 +556,12 @@
           $(e.target).closest(".dropdown_close").prev("a").focus();
         }, 100);
       }
-    });
 
+      setTimeout(function() {
+        console.log( $(".dropdown:visible").closest(".equivalent").length !== 0 );
+        var dropdown = $(".dropdown:visible").closest(".equivalent");
+        if( $(dropdown).closest(".equivalent").length !== 0 && $(dropdown).find(":focus").length === 0 ) {
+          $(".dropdown:visible").hide();
+        }
+      }, 250);
+    });
