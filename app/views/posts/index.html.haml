@@ -11,7 +11,7 @@
     %span#forum_new_message
       - if @can_interact
         - if @can_post
-          = button_tag(type: 'button', onclick: "javascript:new_post(this);", class: 'btn btn_main', id: 'button_new_post', :'data-tooltip' => t(:forum_new_message), :'aria-label'=> t(:forum_new_message)) do
+          = button_tag(type: 'button', onclick: "javascript:new_post(this);", class: 'btn btn_main', id: 'button_new_post', :'data-tooltip' => t(:forum_new_message), :'aria-label'=> t(:forum_new_message), :'data-shortcut' => t("shortcut.discussion.code.new"), :'data-shortcut-name' => t("shortcut.discussion.name.new")) do
             = content_tag(:i, nil, class: 'icon-edit')
       - else
         #forum_closed= t("forum_closed")
@@ -22,9 +22,9 @@
       - class_u = (@display_mode == 'user') ? 'btn_pressed' : 'btn_default'
 
       .btn-group
-        = link_to content_tag(:i, nil, class: 'icon-list'), discussion_posts_path(@discussion, {display_mode: 'list'}), {class: "btn #{class_l}", id: 'forum_view_mode-list', :"data-tooltip" => t(".show_plainlist"), :"aria-label" => t(".show_plainlist")}, id: 'forum_view_mode_list'
-        = link_to content_tag(:i, nil, class: 'icon-flow-cascade'), discussion_posts_path(@discussion, {display_mode: 'tree'}), {class: "btn #{class_t}", id: 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread"), :'aria-label' => t(".show_thread")},id: 'forum_view_mode_thread'
-        = link_to content_tag(:i, nil, class: 'icon-user'), discussion_posts_path(@discussion, {display_mode: 'user'}), {class: "btn #{class_u}", id: 'forum_view_mode-user', :"data-tooltip" => t(".show_my_post"), :'aria-label' => t(".show_my_post")},id: 'forum_view_mode_user'
+        = link_to content_tag(:i, nil, class: 'icon-list'), discussion_posts_path(@discussion, {display_mode: 'list'}), {class: "btn #{class_l}", id: 'forum_view_mode-list', :"data-tooltip" => t(".show_plainlist"), :"aria-label" => t(".show_plainlist"), :'data-shortcut' => t("shortcut.discussion.code.list"), :'data-shortcut-name' => t("shortcut.discussion.name.list")}
+        = link_to content_tag(:i, nil, class: 'icon-flow-cascade'), discussion_posts_path(@discussion, {display_mode: 'tree'}), {class: "btn #{class_t}", id: 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread"), :'aria-label' => t(".show_thread"), :'data-shortcut' => t("shortcut.discussion.code.thread"), :'data-shortcut-name' => t("shortcut.discussion.name.thread")}
+        = link_to content_tag(:i, nil, class: 'icon-user'), discussion_posts_path(@discussion, {display_mode: 'user'}), {class: "btn #{class_u}", id: 'forum_view_mode-user', :"data-tooltip" => t(".show_my_post"), :'aria-label' => t(".show_my_post"), :'data-shortcut' => t("shortcut.discussion.code.discussion"), :'data-shortcut-name' => t("shortcut.discussion.name.discussion")}
 
     #forum_pagination
       = page_entries_info @posts, model: Post
@@ -181,26 +181,3 @@
     });
 
   });
-  $(function(){
-    $(document).keydown(function (e) {
-
-      if(!$("input").is(":focus") && $(".cke_dialog_title").is(":visible") == false){
-        if (e.which === parseInt("#{t("posts.shortcut.new")}")) {
-          $('#button_new_post').trigger('click');
-        }
-        if (e.which === parseInt("#{t("posts.shortcut.thread")}")) { 
-          $('#forum_view_mode-thread').focus();
-          $("#forum_view_mode-thread")[0].click();
-        }
-        if (e.which === parseInt("#{t("posts.shortcut.list")}")) { 
-          $('#forum_view_mode-list').focus();
-          $("#forum_view_mode-list")[0].click();
-        }
-        if (e.which === parseInt("#{t("posts.shortcut.discussion")}")) { 
-          $('#forum_view_mode-user').focus();
-          $("#forum_view_mode-user")[0].click();
-        }   
-      }
-    });
-  });  
- 

@@ -115,15 +115,6 @@ class ExamsController < ApplicationController
     raise 'attempt' unless @acu.has_attempt(@exam)
     @total_attempts  = @acu.count_attempts rescue 0
 
-    @shortcut = Hash.new
-    @shortcut[t("shortcut.nextq")] = t("questions.shortcut.shortcut_next")
-    @shortcut[t("shortcut.previousq")] = t("questions.shortcut.shortcut_previous")
-    @shortcut[t("shortcut.enunciation")] = t("questions.shortcut.shortcut_enunciation")
-    @shortcut[t("shortcut.first_item")] = t("questions.shortcut.shortcut_items")
-    @shortcut[t("shortcut.timeq")] = t("questions.shortcut.shortcut_time")
-    @shortcut[t("shortcut.questions")] = t("questions.shortcut.shortcut_questions")
-    @shortcut[t("shortcut.audio")] = t("questions.shortcut.shortcut_audio")
-
     if (last_attempt.try(:uninterrupted_or_ended, @exam)) && @total_attempts == @exam.attempts
       redirect_to result_user_exam_path(@exam)
     else

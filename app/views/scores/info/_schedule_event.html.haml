@@ -1,13 +1,10 @@
 %section.schedule_event
   .block_title
     %h2= t(:schedule_event, :scope => [:scores, :info])
-    .tabs.tab_event
-      %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative_eve', onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_schedule_evaluative')
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency_eve", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_schedule_frequency')
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_eve", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_schedule_not_evaluative')
+    = render partial: 'scores/info/tabs', locals: {tool: 'schedule_event'}
+
   .block_content
-    .tools.show.evaluative#evaluative_eve
+    .tools.show.evaluative#evaluative_schedule_event
       .block_content
         - unless @schedules_event_evaluative.blank?
           %table.tb_list{:summary=> t("schedule_events.list.summary_evaluative")}
@@ -64,7 +61,7 @@
         - else
           .block_content.block_content_text= t(:itens_not_found)
 
-    .tools.frequency#frequency_eve
+    .tools.frequency#frequency_schedule_event
       .block_content
         - unless @schedules_event_frequency.blank?
           %table.tb_list{:summary=> t("schedule_events.list.summary_frequency")}
@@ -121,7 +118,7 @@
         - else
           .block_content.block_content_text= t(:itens_not_found)
 
-    .tools.notevaluative#notevaluative_eve
+    .tools.notevaluative#notevaluative_schedule_event
       .block_content
         - unless @schedules_event_not_evaluative.blank?
           %table.tb_list{:summary=> t("schedule_events.list.summary_notevaluative")}

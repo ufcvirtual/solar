@@ -11,4 +11,10 @@ function pagination_aria_label(){
       if(!isNaN(num))
         $(this).attr('aria-label', "<%=I18n.t(:navigation_page)%>" +num);
   });
+
+  shortcut_to_element($('.question_items li:first'), "<%=I18n.t('shortcut.exam.code.items')%>", "<%=I18n.t('shortcut.exam.name.items')%>", true);
+  shortcut_to_element($('.exam_open .questions .audio:first'), "<%=I18n.t('shortcut.exam.audio.code')%>", "<%=I18n.t('shortcut.exam.audio.name')%>", true);
+  shortcut_to_element($('.next_page:last'), "<%=I18n.t('shortcut.pagination.code.next')%>", "<%=I18n.t('shortcut.pagination.name.next')%>", false, false, true);
+  shortcut_to_element($('.previous_page:last'), "<%=I18n.t('shortcut.pagination.code.previous')%>", "<%=I18n.t('shortcut.pagination.name.previous')%>", false, false, true);
+  shortcut();
 }

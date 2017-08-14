@@ -1,13 +1,10 @@
 %section.webconference
   .block_title
     %h2= t(:webconference, :scope => [:scores, :info])
-    .tabs.tab_web
-      %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative_web', onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_web_conference_evaluative')
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency_web", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_web_conference_frequency')
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_web", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_web_conference_not_evaluative')
+    = render partial: 'scores/info/tabs', locals: {tool: 'webconference'}
+
   .block_content
-    .tools.show.evaluative#evaluative_web
+    .tools.show.evaluative#evaluative_webconference
       - unless @webconferences_evaluative.blank?
         %table.webconferences.tb_list{:summary=> t("webconferences.list.summary_evaluative")}
           %thead
@@ -77,7 +74,7 @@
       - else
         .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
 
-    .tools.frequency#frequency_web
+    .tools.frequency#frequency_webconference
       - unless @webconferences_frequency.blank?
         %table.webconferences.tb_list{:summary=> t("webconferences.list.summary_frequency")}
           %thead
@@ -147,7 +144,7 @@
       - else
         .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
 
-    .tools.notevaluative#notevaluative_web
+    .tools.notevaluative#notevaluative_webconference
       - unless @webconferences_not_evaluative.blank?
         %table.webconferences.tb_list{:summary=> t("webconferences.list.summary_notevaluative")}
           %thead

@@ -1141,15 +1141,6 @@ en_US:
       date_range_expired: It was not possible to execute action. Date range expired.
       general_message: It was not possible to execute action
       permission: It's not possible to change or remove posts from others users
-    shortcut:
-      new: 78
-      list: 76
-      thread: 84
-      discussion: 68
-      shortcut_new: "[N]"
-      shortcut_list: "[L]"
-      shortcut_thread: "[T]"
-      shortcut_discussion: "[D]"
 
   post_files:
     new:
@@ -1897,11 +1888,6 @@ en_US:
       size: Size
     notification:
       final_date_smaller_than_offer: "Final date can't be posterior to offer's period"
-    shortcut:
-      new_web: 87
-      new_file: 70
-      shortcut_new_web: "[W]"
-      shortcut_new_file: "[F]"
     summarized:
       title: Student/group %{name} assignment %{assignment_name}'s info
       participants: 'Participants: '
@@ -2794,29 +2780,6 @@ en_US:
       remove_success: Messages moved to trash successfully
       restore_success: Messages restored successfully
     message_to: Send message to %{name}
-    shortcut:
-      new: 78
-      all: 65
-      reads: 82
-      unreads: 85
-      inbox: 73
-      outbox: 79
-      trashbox: 84
-      trash: 65
-      reply: 82
-      reply_all: 69
-      forward: 70
-      shortcut_new: "[N]"
-      shortcut_all: "[A]"
-      shortcut_reads: "[R]"
-      shortcut_unreads: "[U]"
-      shortcut_inbox: "[I]"
-      shortcut_outbox: "[O]"
-      shortcut_trashbox: "[T]"
-      shortcut_trash: "[A]"
-      shortcut_reply: "[R]"
-      shortcut_reply_all: "[E]"
-      shortcut_forward: "[F]"
 
   profiles:
     form:
@@ -3096,29 +3059,97 @@ en_US:
       result_search: "Access table with search's result"
 
   shortcut:
-    assignment: Assignments
-    webconference: Webconferences
-    exam: Exams
-    chat_room: Chat
-    schedule_event: Shedule events
-    discussion: Discussions
-    all: All
-    frequency: Frequency
-    evaluative: Evaluatives
-    notevaluative: Not Evaluatives
-    number_evaluative: [1]
-    number_frequency: [2]
-    number_notevaluative: [3]
     shortcut_link: "Open shortcut menu [4]"
     no_shortcuts: "No shortcuts"
     close: "Close"
-    nextq: Next question
-    previousq: Previous question
-    enunciation: Focus on enunciation
-    first_item: Focus on first item
-    timeq: Focus on time
-    questions: Focus on question amount
-    audio: Focus on first enunciation's audio
+    discussion:
+      code:
+        new: 80
+        list: 76
+        thread: 84
+        discussion: 68
+      name:
+        new: "New post [P]"
+        list: "Show as list [L]"
+        thread: "Show as thread [T]"
+        discussion: "Show my discussions [D]"
+    scores:
+      name:
+        exam: "Exams [E]"
+        webconference: "Webconferences [W]"
+        schedule_event: "Events [V]"
+        all: "All [L]"
+        chat_room: "Chat Rooms [C]"
+        discussion: "Discussions [D]"
+        assignment: "Assignments [A]"
+        evaluative: 'Evaluative [1]'
+        frequency: 'Frequency [2]'
+        notevaluative: 'Not Evaluative [3]'
+      code:
+        exam: 69
+        webconference: 87
+        schedule_event: 86
+        all: 76
+        chat_room: 67
+        discussion: 68
+        assignment: 65
+        evaluative: 97
+        frequency: 98
+        notevaluative: 99
+    exam:
+      name:
+        time: 'Focus on time [T]'
+        questions: 'Focus on question amount [Q]'
+        enunciation: 'Focus on enunciation [E]'
+        items: 'Focus on first item [I]'
+        audio: "Focus on first enunciation's audio [A]"
+      code:
+        time: 84
+        questions: 81
+        enunciation: 69
+        items: 73
+        audio: 65
+    assignment:
+      code:
+        web: 87
+        file: 70
+      name:
+        web: "New Webconference [W]"
+        file: "Send File [F]"
+    message:
+      code:
+        new: 77
+        all: 76
+        reads: 69
+        unreads: 85
+        inbox: 73
+        outbox: 79
+        trashbox: 84
+        trash: 88
+        reply: 82
+        reply_all: 65
+        forward: 70
+        unread: 78
+      name:
+        new: "New message [M]"
+        all: "All [L]"
+        reads: "Read [E]"
+        unreads: "Unread [U]"
+        inbox: "Inbox [I]"
+        outbox: "Outbox [O]"
+        trashbox: "Trashbox [T]"
+        trash: "Remove [X]"
+        reply: "Reply [R]"
+        reply_all: "Reply All [A]"
+        forward: "Foward [F]"
+        unread: 'Mark as unread [N]'
+    pagination:
+      name:
+        next: 'Next page [SHIFT + right arrow]'
+        previous: 'Previous page [SHIFT + left arrow]'
+      code:
+        next: 39
+        previous: 37     
 
   scores:
     index:
@@ -3225,35 +3256,28 @@ en_US:
       report_evaluative: "Download: Download: Report all toll evaluative."
       report_frequency: "Download: Download: Report all toll frequency."
       shortcut: "Shortcut: Number: 1 - Activities evaluative, Number: 2 - Activities frequency, Number: 3 - Activities not evaluative."
-      shortcut_exam: "[E] "
-      shortcut_webconference: "[W] "
-      shortcut_schedule_event: "[V] "
-      shortcut_all: "[L] "
-      shortcut_chat_room: "[C] "
-      shortcut_discussion: "[D] "
-      shortcut_assignment: "[A] "
       shortcut: Shortcut
-      list_all_evaluative: List all evaluatives'
-      list_all_frequency: List all frequencies'
-      list_all_not_evaluative: List all not evaluatives'
+      list_alls_evaluative: List all evaluative activities'
+      list_alls_frequency: List all frequency activities'
+      list_alls_not_evaluative: List all not evaluative activities'
       list_assignments_evaluative: List evaluatives assignments'
       list_assignments_frequency: List assignments of frequency'
       list_assignments_not_evaluative: List assignments not evaluatives'
       list_chats_evaluative: List evaluatives chats'
       list_chats_frequency: List frequency chats'
       list_chats_not_evaluative: List not evaluatives chats'
-      list_discussion_evaluative: Lista evaluative discussions'
-      list_discussion_frequency: List discussion of frequency'
-      list_discussion_not_evaluative: List not evaluatives discussions'
+      list_discussions_evaluative: Lista evaluative discussions'
+      list_discussions_frequency: List discussion of frequency'
+      list_discussions_not_evaluative: List not evaluatives discussions'
       list_exams_evaluative: List evaluatives exams'
       list_exams_frequency: List frequency exams'
       list_exams_not_evaluative: List not evaluative exams'
-      list_schedule_evaluative: List schedule evaluatives'
-      list_schedule_frequency: List schedule of frequency'
-      list_schedule_not_evaluative: List not evaluative schedules'
-      list_web_conference_evaluative: List evaluative web conference'
-      list_web_conference_frequency: List web conference of frequency'
-      list_web_conference_not_evaluative: List not evaluative web conference'
+      list_schedule_events_evaluative: List schedule evaluatives'
+      list_schedule_events_frequency: List schedule of frequency'
+      list_schedule_events_not_evaluative: List not evaluative schedules'
+      list_webconferences_evaluative: List evaluative webconferences'
+      list_webconferences_frequency: List webconferences of frequency'
+      list_webconferences_not_evaluative: List not evaluative webconferences'
       final_exam: Final Exam
       hours: Maximum Working Hours
     situation:
@@ -3307,14 +3331,6 @@ en_US:
       summary_evaluative: "This table contains all the evaluation tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
       summary_frequency: "This table contains all the frequency tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
       summary_notevaluative: "This table contains all the not evaluation tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
-    checkbox:
-      exam: 69
-      assignment: 65
-      discussion: 68
-      chat_room: 67
-      webconference: 87
-      schedule_event: 86
-      all: 76
 
   lesson_notes:
     error:
@@ -3703,21 +3719,6 @@ en_US:
       item_audio_file_size: "File too large. The maximum size should be up to 10MB."
       item_image_file_size: "File too large. The maximum size should be up to 2MB."
   questions:
-    shortcut:
-      shortcut_time: [T]
-      time: 84
-      shortcut_questions: [Q]
-      questions: 81
-      shortcut_enunciation: [E]
-      enunciation: 69
-      shortcut_items: [I]
-      items: 73
-      shortcut_next: [N]
-      next: 78
-      shortcut_previous: [P]
-      previous: 80
-      shortcut_audio: [A]
-      audio: 85
     index:
       title: Questions bank (%{count} found)
       new: New question

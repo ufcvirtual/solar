@@ -1,14 +1,10 @@
 %section.discussion
   .block_title
     %h2= t(:discussions, :scope => [:scores, :info])
-    .tabs.tab_discussion
-      %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative_dis', onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_discussion_evaluative')
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency_dis", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_discussion_frequency')
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_dis", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_discussion_not_evaluative')
-
+    = render partial: 'scores/info/tabs', locals: {tool: 'discussion'}
+    
   .block_content
-    .tools.show.evaluative#evaluative_dis
+    .tools.show.evaluative#evaluative_discussion
       - unless @discussions_evaluative.empty?
         %table.tb_list{:summary=> t("discussions.list.summary_evaluative")}
           %thead
@@ -68,7 +64,7 @@
       - else
         .block_content.block_content_text= t(:itens_not_found)
 
-    .tools.frequency#frequency_dis
+    .tools.frequency#frequency_discussion
       - unless @discussions_frequency.empty?
         %table.tb_list{:summary=> t("discussions.list.summary_frequency")}
           %thead
@@ -126,7 +122,7 @@
       - else
         .block_content.block_content_text= t(:itens_not_found)
 
-    .tools.notevaluative#notevaluative_dis
+    .tools.notevaluative#notevaluative_discussion
       - unless @discussions_not_evaluative.empty?
         %table.tb_list{:summary=> t("discussions.list.summary_notevaluative")}
           %thead
