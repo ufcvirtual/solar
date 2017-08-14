@@ -27,14 +27,9 @@
         %i.icon-arrow-down-triangle
       #dropdown_menu.dropdown.dropdown-tip
         %ul.dropdown-menu
-          - @shortcut = Hash.new
-          - @shortcut['evaluative'] = t("shortcut.number_evaluative").to_s
-          - @shortcut['frequency'] = t("shortcut.number_frequency").to_s
-          - @shortcut['notevaluative'] = t("shortcut.number_notevaluative").to_s
           - @types.each_with_index do |tool, idx|
-            - @shortcut[tool.last] = t('.shortcut_'+ "#{tool.last}")
             %li
-              = check_box_tag "#{tool.last}", tool.last, false, :"data-url-search" => search_tool_scores_path(type: tool.last)
+              = check_box_tag "#{tool.last}", tool.last, false, :"data-url-search" => search_tool_scores_path(type: tool.last), :'data-shortcut' => t("shortcut.scores.code.#{tool.last}"), :'data-shortcut-name' => t("shortcut.scores.name.#{tool.last}")
               = label_tag "#{tool.last}", tool.first
 
 
@@ -97,51 +92,6 @@
 
 :javascript
 
-
-  $(document).keydown(function (e) {
-
-    if(!$("input").is(":focus")){
-      if (e.which === 97) {
-        $('li a.evaluative').trigger('click');
-        $('li a.evaluative').attr("tabindex", "0");
-        $('li a.evaluative').focus();
-      }
-      if (e.which === 98) {
-        $('li a.frequency').trigger('click');
-        $('li a.frequency').attr("tabindex", "0");
-        $('li a.frequency').focus();
-      }
-      if (e.which === 99) {
-        $('li a.notevaluative').trigger('click');
-        $('li a.notevaluative').attr("tabindex", "0");
-        $('li a.notevaluative').focus();
-      }
-      //CHECKBOX
-      if (e.which === parseInt("#{t("scores.checkbox.chat_room")}")) {
-        $('#chat_room').trigger('click');
-      }
-      if (e.which === parseInt("#{t("scores.checkbox.schedule_event")}")) {
-        $('#schedule_event').trigger('click');
-      }
-      if (e.which === parseInt("#{t("scores.checkbox.discussion")}")) {
-        $('#discussion').trigger('click');
-      }
-      if (e.which === parseInt("#{t("scores.checkbox.all")}")) {
-        $('#all').trigger('click');
-      }
-      if (e.which === parseInt("#{t("scores.checkbox.exam")}")) {
-        $('#exam').trigger('click');
-      }
-      if (e.which === parseInt("#{t("scores.checkbox.assignment")}")) {
-        $('#assignment').trigger('click');
-      }
-      if (e.which === parseInt("#{t("scores.checkbox.webconference")}")) {
-        $('#webconference').trigger('click');
-      }
-    }
-  });
-
-
   $(function(){
     var options = $.extend($.datepicker.regional["#{I18n.locale}"]);
 
@@ -192,11 +142,14 @@
           else
             $('#resp_list').prepend(data);
 
+          reload_shortcut_list();
+
         }).error(function(data){
           var data = $.parseJSON(data.responseText);
           if (typeof(data.alert) != "undefined")
             flash_message(data.alert, 'alert');
-         });
+        });
+
       }else{
         if(!!$('#list_tools').length)
           $('#list_tools .'+$(this).val()).remove();
@@ -213,7 +166,6 @@
     }else{
       $('ul.dropdown-menu li input[type="checkbox"]#all').click();
     }
-
   });
 
   function calculate_user_grade_exam(link){

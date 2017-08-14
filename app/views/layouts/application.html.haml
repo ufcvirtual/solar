@@ -92,14 +92,8 @@
                 %i.icon-arrow-down-triangle
               .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_2"}
                 %ul.shortcut_floating_box{ class: 'dropdown-menu' }
-                  - unless @shortcut.blank?
-                    %h2= t('scores.info.shortcut')
-                    = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_dropdown', :'data-tooltip' => t("shortcut.close"), :'aria-label' => t("shortcut.close")
-                    - @shortcut.each do |sh|
-                      %li.shortcut= t("shortcut.#{sh.first}") + ' '+ sh.last
-                      %br
-                  %h2= t('shortcut.no_shortcuts') if @shortcut.blank?
-                  = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_dropdown', :'data-tooltip' => t("shortcut.close"), :'aria-label' => t("shortcut.close") if @shortcut.blank?
+                  %h2= t('scores.info.shortcut')
+                  = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_dropdown', :'data-tooltip' => t("shortcut.close"), :'aria-label' => t("shortcut.close")
 
             %li#mysolar_suggestions
               = link_to t(:mysolar_suggestions), 'https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ', class: 'btn', target: '_blank', :'aria-label' => t(:mysolar_suggestions) + t(:new_window)
@@ -242,6 +236,8 @@
     }
 
     jQuery(function($) {
+
+      generate_shortcut_list();
 
       /**
        * System clock

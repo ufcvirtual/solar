@@ -1,14 +1,10 @@
 %section.exam
   .block_title
     %h2= t(:exam, :scope => [:scores, :info])
-    .tabs.tab_exam
-      %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative_exa', onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_exams_evaluative')
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency_exa", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_exams_frequency')
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_exa", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_exams_not_evaluative')
+    = render partial: 'scores/info/tabs', locals: {tool: 'exam'}
 
   .block_content
-    .tools.show.evaluative#evaluative_exa
+    .tools.show.evaluative#evaluative_exam
       - unless @exams_evaluative.empty?
         - is_user = (@user.id == current_user.id)
         %table.tb_list.list_exams{:summary=> t("exams.list.summary_evaluative")}
@@ -80,7 +76,7 @@
       - else
         .block_content.block_content_text= t(:itens_not_found)
 
-    .tools.frequency#frequency_exa
+    .tools.frequency#frequency_exam
       - unless @exams_frequency.empty?
         - is_user = (@user.id == current_user.id)
         %table.tb_list.list_exams{:summary=> t("exams.list.summary_frequency")}
@@ -154,7 +150,7 @@
       - else
         .block_content.block_content_text= t(:itens_not_found)
 
-    .tools.notevaluative#notevaluative_exa
+    .tools.notevaluative#notevaluative_exam
       - unless @exams_not_evaluative.empty?
         - is_user = (@user.id == current_user.id)
         %table.tb_list.list_exams{:summary=> t("exams.list.summary_notevaluative")}

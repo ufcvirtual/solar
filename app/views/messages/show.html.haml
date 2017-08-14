@@ -76,30 +76,4 @@
         }
       });
     });
-
-    $(document).keydown(function (e) {
-      if(!$("input").is(":focus")){
-        if (e.which === parseInt("#{t("messages.shortcut.new")}")) {
-          $("#button_new_msg")[0].click();
-        }
-        if (e.which === parseInt("#{t("messages.shortcut.unread")}")) { 
-          $("#unread")[0].click();
-        }  
-        if (e.which === parseInt("#{t("messages.shortcut.trashbox")}")) { 
-          $("#trashbox")[0].click();
-        }  
-        if (e.which === parseInt("#{t("messages.shortcut.trash")}")) { 
-          $("#trash")[0].click();
-        }
-        if (e.which === parseInt("#{t("messages.shortcut.reply")}")) { 
-          $("#reply")[0].click();
-        }  
-        if (e.which === parseInt("#{t("messages.shortcut.reply_all")}")) { 
-          $("#reply_all")[0].click();
-        }  
-        if (e.which === parseInt("#{t("messages.shortcut.forward")}")) { 
-          $("#forward")[0].click();
-        }  
-      }
-    });
   });

@@ -1,14 +1,10 @@
 %section.assignment
   .block_title
     %h2= t(:assignments, :scope => [:scores, :info])
-    .tabs.tab_assignment
-      %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative_assig', onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_assignments_evaluative')
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency_assig", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_assignments_frequency')
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_assig", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_assignments_not_evaluative')
+    = render partial: 'scores/info/tabs', locals: {tool: 'assignment'}
 
   .block_content
-    .tools.show.evaluative#evaluative_assig
+    .tools.show.evaluative#evaluative_assignment
       .block_content
         - unless @assigments_evaluative.blank?
           %table.tb_list{:summary=> t("assignments.list.summary_evaluative")}
@@ -71,7 +67,7 @@
         - else
           .block_content.block_content_text= t(:itens_not_found)
 
-    .tools.frequency#frequency_assig
+    .tools.frequency#frequency_assignment
       .block_content
         - unless @assigments_frequency.blank?
           %table.tb_list{:summary=> t("assignments.list.summary_frequency")}
@@ -134,7 +130,7 @@
         - else
           .block_content.block_content_text= t(:itens_not_found)
 
-    .tools.notevaluative#notevaluative_assig
+    .tools.notevaluative#notevaluative_assignment
       .block_content
         - unless @assigments_not_evaluative.blank?
           %table.tb_list{:summary=> t("assignments.list.summary_notevaluative")}

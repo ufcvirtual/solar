@@ -1,11 +1,7 @@
 %section.chat_room
   .block_title
     %h2= t(:chats, scope: [:scores, :info])
-    .tabs.tab_chat
-      %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative_chat', onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_chats_evaluative')
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency_chat", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_chats_frequency')
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_chat", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_chats_not_evaluative')
+    = render partial: 'scores/info/tabs', locals: {tool: 'chat'}
 
   .block_content
     .tools.evaluative.show#evaluative_chat

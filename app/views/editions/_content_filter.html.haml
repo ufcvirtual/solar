@@ -31,11 +31,11 @@
 
         .offer_groups_options
           .radio_options
-            = radio_button :radio, :option, 'offer', disabled: true
-            = label_tag :radio_option_offer, t('.offer')
+            = radio_button_tag "radio_option_offer_#{filter_number}", 'offer', false, name: 'radio[option]', disabled: true
+            = label_tag "radio_option_offer_#{filter_number}_offer", t('.offer')
 
-            = radio_button :radio, :option, 'group', disabled: true, :'data-number' => filter_number
-            = label_tag :radio_option_group, t('.group')
+            = radio_button_tag "radio_option_group_#{filter_number}", 'group', false, name: 'radio[option]', disabled: true, :'data-number' => filter_number
+            = label_tag "radio_option_group_#{filter_number}_group", t('.group')
 
           .groups
 

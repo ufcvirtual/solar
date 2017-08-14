@@ -47,9 +47,10 @@ module Taggable
   ## Alocações
 
   # creates or activates user allocation
-  def allocate_user(user_id, profile_id)
+  def allocate_user(user_id, profile_id, updated_by_user_id=nil)
     allocation = Allocation.where(user_id: user_id, allocation_tag_id: self.allocation_tag.id, profile_id: profile_id).first_or_initialize
     allocation.status = Allocation_Activated
+    allocation.updated_by_user_id = updated_by_user_id # if nil, was updated by system
     allocation.save!
     allocation
   end

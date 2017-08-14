@@ -132,13 +132,6 @@ class AssignmentsController < ApplicationController
       @can_evaluate = can?(:evaluate, Assignment, on: [@allocation_tag_id] )
 
       @acu = AcademicAllocationUser.find_one(@ac.id, @student_id, @group_id, false, @can_evaluate)
-
-      #@bbb_online   = bbb_online?
-      if @own_assignment && @in_time
-        @shortcut = Hash.new
-        @shortcut[t("assignment_files.list.send").to_s] = t("assignments.shortcut.shortcut_new_file").to_s
-        @shortcut[t("assignment_webconferences.form.new").to_s] = t("assignments.shortcut.shortcut_new_web").to_s
-      end
     end
   rescue CanCan::AccessDenied
     redirect_to list_assignments_path, alert: t(:no_permission)

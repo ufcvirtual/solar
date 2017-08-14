@@ -7,7 +7,7 @@
     - unless files.blank?
       = link_to content_tag(:i, nil, class: 'icon-install'), zip_download_assignment_files_path(assignment_id: @assignment.id, student_id: @student_id, group_id: @group_id), class: 'btn', :"data-tooltip" => t('.download'), :'aria-label' => t(".download")+ title
     - if @own_assignment && !disabled
-      = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_file(this)', class: "btn btn_main #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.send'), :'aria-label' => t(".send") + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);', id: 'add_file'
+      = link_to_function content_tag(:i, nil, class: 'icon-plus'), 'add_file(this)', class: "btn btn_main #{@in_time ? '' : 'disabled'}", :"data-tooltip" => t('.send'), :'aria-label' => t(".send") + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);', id: 'add_file', :'data-shortcut' => t("shortcut.assignment.code.file"), :'data-shortcut-name' => t("shortcut.assignment.name.file")
 .block_content
   - no_files = (files.blank?)
   %table.tb_list#tb_lf{:summary=> t("assignments.list.summary_student_files"), style: (no_files ? 'display: none' : '') }
