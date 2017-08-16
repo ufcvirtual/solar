@@ -198,14 +198,14 @@ class Report
                             .joins("LEFT JOIN webconferences ON webconferences.id = academic_allocations.academic_tool_id")
                             .where("academic_allocations.allocation_tag_id IN (#{allocation_tags_ids}) AND academic_allocations.academic_tool_type='Webconference' AND log_actions.log_type=#{LogAction::TYPE[:access_webconference]} AND (cast( profiles.types & '#{Profile_Type_Student}' as boolean ) OR cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )) AND profiles.status= 't'").count                
                                              
-  
+        # Quantidade de acessos por responsáveis a webconferencia
         models_info[8] =  LogAction.joins("LEFT JOIN academic_allocations ON log_actions.academic_allocation_id = academic_allocations.id")
                             .joins("LEFT JOIN users ON users.id = log_actions.user_id") 
                             .joins("LEFT JOIN allocations ON users.id = allocations.user_id AND allocations.allocation_tag_id = academic_allocations.allocation_tag_id") 
                             .joins("LEFT JOIN profiles ON profiles.id = allocations.profile_id")
                             .joins("LEFT JOIN webconferences ON webconferences.id = academic_allocations.academic_tool_id")
                             .where("academic_allocations.allocation_tag_id IN (#{allocation_tags_ids}) AND academic_allocations.academic_tool_type='Webconference' AND log_actions.log_type=#{LogAction::TYPE[:access_webconference]} AND (cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )) AND profiles.status= 't'")
-                            .select(" DISTINCT webconferences.id ").count 
+                            .select(" DISTINCT users.id ").count 
 
         models_info[9] =  LogAction.joins("LEFT JOIN academic_allocations ON log_actions.academic_allocation_id = academic_allocations.id")
                             .joins("LEFT JOIN users ON users.id = log_actions.user_id") 
@@ -214,13 +214,12 @@ class Report
                             .joins("LEFT JOIN webconferences ON webconferences.id = academic_allocations.academic_tool_id")
                             .where("academic_allocations.allocation_tag_id IN (#{allocation_tags_ids}) AND academic_allocations.academic_tool_type='Webconference' AND log_actions.log_type=#{LogAction::TYPE[:access_webconference]} AND (cast( profiles.types & '#{Profile_Type_Student}' as boolean ) OR cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )) AND profiles.status= 't'")
                             .select(" DISTINCT users.id ").count   
-        # Quantidade de acessos por responsáveis a webconferencia
-        models_info[10] =  LogAction.joins("LEFT JOIN academic_allocations ON log_actions.academic_allocation_id = academic_allocations.id")
-                            .joins("LEFT JOIN users ON users.id = log_actions.user_id") 
-                            .joins("LEFT JOIN allocations ON users.id = allocations.user_id AND allocations.allocation_tag_id = academic_allocations.allocation_tag_id") 
+       
+        models_info[10] =  LogAccess.joins("LEFT JOIN users ON users.id = log_accesses.user_id") 
+                            .joins("LEFT JOIN allocations ON users.id = allocations.user_id AND allocations.allocation_tag_id = log_accesses.allocation_tag_id") 
                             .joins("LEFT JOIN profiles ON profiles.id = allocations.profile_id")
-                            .joins("LEFT JOIN webconferences ON webconferences.id = academic_allocations.academic_tool_id")
-                            .where("academic_allocations.allocation_tag_id IN (#{allocation_tags_ids}) AND academic_allocations.academic_tool_type='Webconference' AND log_actions.log_type=#{LogAction::TYPE[:access_webconference]} AND (cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )) AND profiles.status= 't'").count 
+                            .where("log_accesses.allocation_tag_id IN (#{allocation_tags_ids}) AND log_type=#{LogAccess::TYPE[:group_access]} AND (cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )) AND profiles.status= 't'")
+                            .select(" users.id ").count   
 
         #quantidade de fóruns
         models_info[11] = Discussion.joins("LEFT JOIN academic_allocations ON academic_allocations.academic_tool_id = discussions.id")
@@ -288,7 +287,7 @@ class Report
           index = index + 1
         end
         return list  
-      when '3'
+    when '3'
         @options_array[0] = 430
         @options_array[1] = @options_array[2] = 0
         @options_array[3] = I18n.t('reports.commun_texts.name_forum')
@@ -323,7 +322,7 @@ class Report
     when '5'
         @options_array[0] = 430
         @options_array[1] = @options_array[2] = 0
-        @options_array[3] = I18n.t('reports.commun_texts.webconference')
+        @options_array[3] = I18n.t('reports.commun_texts.title_chat')
         @options_array[4] = I18n.t('reports.commun_texts.count')
         @options_array[9] = "#" #sempre o último todos os documentos tem
        

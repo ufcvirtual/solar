@@ -1,26 +1,26 @@
 %fieldset.academic
 	.items
 		.academic_item{:"data-link-to" => render_reports_reports_path(:query_type => 1), :target => "_blank"}
-			= link_to(content_tag(:i, nil, class: 'icon-book big'), "#", class: 'btn')
+			= link_to(content_tag(:i, nil, class: 'icon-book big'), render_reports_reports_path(:query_type => 1), class: 'btn', :target => "_blank")
 			= link_to t('reports.index.report_summary_system.id'), render_reports_reports_path(:query_type => 1), :target => "_blank"
+		- unless  @is_semester.blank?
+			.academic_item{:"data-link-to" => render_reports_reports_path(:query_type => 2, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"}
+				= link_to(content_tag(:i, nil, class: 'icon-book big'), render_reports_reports_path(:query_type => 2, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank", class: 'btn')
+				= link_to t('reports.index.report_summary_group.id'), render_reports_reports_path(:query_type => 2, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"	
 
-		.academic_item{:"data-link-to" => render_reports_reports_path(:query_type => 2, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"}
-			= link_to(content_tag(:i, nil, class: 'icon-book big'), render_reports_reports_path(:query_type => 2, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank", class: 'btn')
-			= link_to t('reports.index.report_summary_group.id'), render_reports_reports_path(:query_type => 2, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"	
+			.academic_item{:"data-link-to" => render_reports_reports_path(:query_type => 3, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"}
+				= link_to(content_tag(:i, nil, class: 'icon-book big'), render_reports_reports_path(:query_type => 3, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank", class: 'btn')
+				= link_to t('reports.index.report_three.id'), render_reports_reports_path(:query_type => 3, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"
 
-		.academic_item{:"data-link-to" => render_reports_reports_path(:query_type => 3, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"}
-			= link_to(content_tag(:i, nil, class: 'icon-book big'), render_reports_reports_path(:query_type => 3, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank", class: 'btn')
-			= link_to t('reports.index.report_three.id'), render_reports_reports_path(:query_type => 3, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"
+			.academic_item{:"data-link-to" => render_reports_reports_path(:query_type => 6, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"}
+				= link_to(content_tag(:i, nil, class: 'icon-book big'), render_reports_reports_path(:query_type => 6, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank", class: 'btn')
+				= link_to t('reports.index.report_six.id'), render_reports_reports_path(:query_type => 6, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"
 
-		.academic_item{:"data-link-to" => render_reports_reports_path(:query_type => 6, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"}
-			= link_to(content_tag(:i, nil, class: 'icon-book big'), render_reports_reports_path(:query_type => 6, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank", class: 'btn')
-			= link_to t('reports.index.report_six.id'), render_reports_reports_path(:query_type => 6, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"
+			.academic_item{:"data-link-to" => render_reports_reports_path(:query_type => 4, :allocation_tags_ids => @allocation_tags_ids,:groups => @is_group), :target => "_blank"}
+				= link_to(content_tag(:i, nil, class: 'icon-book big'), render_reports_reports_path(:query_type => 4, :allocation_tags_ids => @allocation_tags_ids,:groups => @is_group), :target => "_blank", class: 'btn')
+				= link_to t('reports.index.report_four.id'), render_reports_reports_path(:query_type => 4, :allocation_tags_ids => @allocation_tags_ids,:groups => @is_group), :target => "_blank"	
 
-		.academic_item{:"data-link-to" => render_reports_reports_path(:query_type => 4, :allocation_tags_ids => @allocation_tags_ids,:groups => @is_group), :target => "_blank"}
-			= link_to(content_tag(:i, nil, class: 'icon-book big'), render_reports_reports_path(:query_type => 4, :allocation_tags_ids => @allocation_tags_ids,:groups => @is_group), :target => "_blank", class: 'btn')
-			= link_to t('reports.index.report_four.id'), render_reports_reports_path(:query_type => 4, :allocation_tags_ids => @allocation_tags_ids,:groups => @is_group), :target => "_blank"	
-
-		.academic_item{:"data-link-to" => render_reports_reports_path(:query_type => 5, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"}
-			= link_to(content_tag(:i, nil, class: 'icon-book big'), render_reports_reports_path(:query_type => 5, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank", class: 'btn')
-			= link_to t('reports.index.report_seven.id'), render_reports_reports_path(:query_type => 5, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"
+			.academic_item{:"data-link-to" => render_reports_reports_path(:query_type => 5, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"}
+				= link_to(content_tag(:i, nil, class: 'icon-book big'), render_reports_reports_path(:query_type => 5, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank", class: 'btn')
+				= link_to t('reports.index.report_seven.id'), render_reports_reports_path(:query_type => 5, :allocation_tags_ids => @allocation_tags_ids, :groups => @is_group), :target => "_blank"
 	
