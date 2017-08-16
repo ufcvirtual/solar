@@ -16,6 +16,10 @@
 
 :javascript
   $(function(){
+    if (typeof($("#error_explanation")) !== "undefined") {
+      var text = $("#error_explanation").text().trim();
+      $("#email_password_recovery").attr("aria-label", text);
+    }
     setTimeout(function() {
       $("#email_password_recovery").focus();
     }, 250);
