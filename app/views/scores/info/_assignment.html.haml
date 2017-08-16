@@ -42,7 +42,7 @@
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_#{assignment.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{assignment.id}"}
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: assignment.eq_name)
                       - else
@@ -50,7 +50,7 @@
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_#{assignment.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_eq_1_#{assignment.id}"}
                           %ul{ class: 'dropdown-menu' }
                   %td.center{headers: "as_eval_date"}
                     %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
@@ -105,7 +105,7 @@
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_2_#{assignment.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{assignment.id}"}
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: assignment.eq_name)
                       - else
@@ -113,7 +113,7 @@
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_2_#{assignment.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_eq_2_#{assignment.id}"}
                           %ul{ class: 'dropdown-menu' }
                   %td.center{headers: "as_freq_date"}
                     %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
@@ -168,7 +168,7 @@
                           %i.icon-flow-parallel
                           = t('scores.info.equivalency')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_3_#{assignment.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{assignment.id}"}
                           %ul{ class: 'dropdown-menu' }
                             = raw t('scores.info.equivalent', name: assignment.eq_name)
                       - else
@@ -176,7 +176,7 @@
                           %i.icon-flow-parallel
                           =t('scores.info.equalities')
                           %i.icon-arrow-down-triangle
-                        .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_3_#{assignment.id}"}
+                        .dropdown.dropdown-tip{id: "dropdown_eq_3_#{assignment.id}"}
                           %ul{ class: 'dropdown-menu' }
                   %td.center{headers: "as_not_date"}
                     %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")

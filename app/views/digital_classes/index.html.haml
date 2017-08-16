@@ -14,7 +14,7 @@
         %a.btn.btn_main{href: "#", :"data-dropdown" => "#dropdown_dc"}
           = content_tag(:i, nil, class: 'icon-plus')
           %i.icon-arrow-down-triangle
-        .dropdown.dropdown-tip.dropdown_close#dropdown_dc
+        .dropdown.dropdown-tip#dropdown_dc
           %ul.dropdown-menu
             %li= link_to t('.new_data'), new_digital_class_path, class: "link_new_lesson_dc", id: "new_digital_class"
             %li= link_to t('.lesson_data'), lesson_digital_classes_path, id: 'new_lesson_dc_lesson'

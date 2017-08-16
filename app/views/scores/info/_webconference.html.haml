@@ -44,7 +44,7 @@
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_#{webconference.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_1_#{webconference.id}"}
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: webconference.eq_name)
                     - else
@@ -52,7 +52,7 @@
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_#{webconference.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_1_#{webconference.id}"}
                         %ul{ class: 'dropdown-menu' }
                 %td.center{headers: "we_eva_ava"}
                   %div= l(webconference.start_date.to_date, format: :normal)
@@ -114,7 +114,7 @@
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_2_#{webconference.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_2_#{webconference.id}"}
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: webconference.eq_name)
                     - else
@@ -122,7 +122,7 @@
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_2_#{webconference.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_2_#{webconference.id}"}
                         %ul{ class: 'dropdown-menu' }
                 %td.center{headers: "we_fre_ava"}
                   %div= l(webconference.start_date.to_date, format: :normal)
@@ -179,7 +179,7 @@
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_3_#{webconference.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_3_#{webconference.id}"}
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: webconference.eq_name)
                     - else
@@ -187,7 +187,7 @@
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_3_#{webconference.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_3_#{webconference.id}"}
                         %ul{ class: 'dropdown-menu' }
                 %td.center{headers: "we_not_ava"}
                   %div= l(webconference.start_date.to_date, format: :normal)

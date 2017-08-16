@@ -8,7 +8,7 @@
         %a.btn.btn_dropdown{ href: '#', :"data-dropdown" => '#views-dropdown' }
           = t('.view_messages', type: t('messages.select_all'))
           %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-        .dropdown.dropdown-tip.dropdown_close#views-dropdown
+        .dropdown.dropdown-tip#views-dropdown
           %ul.dropdown-menu
             %li{role: 'menuitem'}= link_to t('messages.select_all'), '#', class: 'selected all', id: "all", onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.message.code.all"), :'data-shortcut-name' => t("shortcut.message.name.all")
             %li{role: 'menuitem'}= link_to t('messages.select_read'), '#', class: 'reads', id: "reads", onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.message.code.reads"), :'data-shortcut-name' => t("shortcut.message.name.reads")
@@ -143,5 +143,5 @@
       }
     });
 
-    focus_element_time('#flash_message_span');  
+    focus_element_time('#flash_message_span');
   });

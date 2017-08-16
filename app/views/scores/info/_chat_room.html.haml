@@ -41,7 +41,7 @@
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_#{chat.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_1_#{chat.id}"}
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: chat.eq_name)
                     - else
@@ -49,7 +49,7 @@
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_#{chat.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_1_#{chat.id}"}
                         %ul{ class: 'dropdown-menu' }
                   - if chat.academic_tool_type == 'ChatRoom' && chat.type_tool == '1'
                     .participants.equivalent
@@ -57,7 +57,7 @@
                         %i.icon-users
                         =t('scores.info.participants')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_p_1_#{chat.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_p_1_#{chat.id}"}
                         %ul{ class: 'dropdown-menu' }
                 %td{ align: 'center', headers: "ch_eva_ava" }
                   %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
@@ -113,7 +113,7 @@
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_2_#{chat.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_2_#{chat.id}"}
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: chat.eq_name)
                     - else
@@ -121,7 +121,7 @@
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_2_#{chat.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_2_#{chat.id}"}
                         %ul{ class: 'dropdown-menu' }
                   - if chat.academic_tool_type == 'ChatRoom' && chat.type_tool == '1'
                     .participants.equivalent
@@ -129,7 +129,7 @@
                         %i.icon-users
                         =t('scores.info.participants')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_p_2_#{chat.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_p_2_#{chat.id}"}
                         %ul{ class: 'dropdown-menu' }
                 %td{ align: 'center', headers: "ch_freq_ava" }
                   %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')
@@ -181,7 +181,7 @@
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_3_#{chat.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_3_#{chat.id}"}
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: chat.eq_name)
                     - else
@@ -189,7 +189,7 @@
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_3_#{chat.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_3_#{chat.id}"}
                         %ul{ class: 'dropdown-menu' }
                   - if chat.academic_tool_type == 'ChatRoom' && chat.type_tool == '1'
                     .participants.equivalent
@@ -197,7 +197,7 @@
                         %i.icon-users
                         =t('scores.info.participants')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_p_3_#{chat.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_p_3_#{chat.id}"}
                         %ul{ class: 'dropdown-menu' }
                 %td{ align: 'center', headers: "ch_not_ava" }
                   %div= [l(chat.start_date.to_date), l(chat.end_date.to_date)].join(' - ')

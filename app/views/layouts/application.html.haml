@@ -90,7 +90,7 @@
               %a.btn.btn_main#shortcut_accesskey{ href: '#', :"data-dropdown" => "#dropdown_eq_1_2", :'aria-label' => t('scores.info.shortcut'), accesskey: "4", "data-tooltip" => t('scores.info.shortcut')}
                 = t('scores.info.shortcut')
                 %i.icon-arrow-down-triangle
-              .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_2"}
+              .dropdown.dropdown-tip{id: "dropdown_eq_1_2"}
                 %ul.shortcut_floating_box{ class: 'dropdown-menu' }
                   %h2= t('scores.info.shortcut')
                   = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_dropdown', :'data-tooltip' => t("shortcut.close"), :'aria-label' => t("shortcut.close")

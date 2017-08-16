@@ -42,7 +42,7 @@
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_#{tool.academic_tool_type}_#{tool.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_1_#{tool.academic_tool_type}_#{tool.id}"}
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: tool.eq_name)
                     - else
@@ -50,7 +50,7 @@
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_#{tool.academic_tool_type}_#{tool.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_1_#{tool.academic_tool_type}_#{tool.id}"}
                         %ul{ class: 'dropdown-menu' }
                   - if tool.academic_tool_type == 'ChatRoom' && tool.type_tool == '1'
                     .participants.equivalent
@@ -58,7 +58,7 @@
                         %i.icon-users
                         =t('scores.info.participants')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_p_1_#{tool.academic_tool_type}_#{tool.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_p_1_#{tool.academic_tool_type}_#{tool.id}"}
                         %ul{ class: 'dropdown-menu' }
                 %td.center{headers: "al_eva_dat"}
                   - if tool.academic_tool_type.downcase == 'webconference'
@@ -122,7 +122,7 @@
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_2_#{tool.academic_tool_type}_#{tool.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_2_#{tool.academic_tool_type}_#{tool.id}"}
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: tool.eq_name)
                     - else
@@ -130,7 +130,7 @@
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_2_#{tool.academic_tool_type}_#{tool.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_2_#{tool.academic_tool_type}_#{tool.id}"}
                         %ul{ class: 'dropdown-menu' }
                   - if tool.academic_tool_type == 'ChatRoom' && tool.type_tool == '1'
                     .participants.equivalent
@@ -138,7 +138,7 @@
                         %i.icon-users
                         =t('scores.info.participants')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_p_2_#{tool.academic_tool_type}_#{tool.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_p_2_#{tool.academic_tool_type}_#{tool.id}"}
                         %ul{ class: 'dropdown-menu' }
                 %td.center{headers: "al_fre_dat"}
                   - if tool.academic_tool_type.downcase == 'webconference'
@@ -197,7 +197,7 @@
                         %i.icon-flow-parallel
                         = t('scores.info.equivalency')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_3_#{tool.academic_tool_type}_#{tool.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_3_#{tool.academic_tool_type}_#{tool.id}"}
                         %ul{ class: 'dropdown-menu' }
                           = raw t('scores.info.equivalent', name: tool.eq_name)
                     - else
@@ -205,7 +205,7 @@
                         %i.icon-flow-parallel
                         =t('scores.info.equalities')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_3_#{tool.academic_tool_type}_#{tool.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_eq_3_#{tool.academic_tool_type}_#{tool.id}"}
                         %ul{ class: 'dropdown-menu' }
                   - if tool.academic_tool_type == 'ChatRoom' && tool.type_tool == '1'
                     .participants.equivalent
@@ -213,7 +213,7 @@
                         %i.icon-users
                         =t('scores.info.participants')
                         %i.icon-arrow-down-triangle
-                      .dropdown.dropdown-tip.dropdown_close{id: "dropdown_p_3_#{tool.academic_tool_type}_#{tool.id}"}
+                      .dropdown.dropdown-tip{id: "dropdown_p_3_#{tool.academic_tool_type}_#{tool.id}"}
                         %ul{ class: 'dropdown-menu' }
                 %td.center{headers: "al_not_dat"}
                   - if tool.academic_tool_type.downcase == 'webconference'
