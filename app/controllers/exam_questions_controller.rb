@@ -73,52 +73,23 @@ class ExamQuestionsController < ApplicationController
     render_json_error(error, 'questions.error')
   end
 
-  def remove_image_item
+  def remove_file_item
     authorize! :update, Question
-    @exam_question = ExamQuestion.find params[:exam_question_id]
 
-    @question_item = QuestionItem.find params[:id]
-    @question_item.item_image_file_name = nil
-    @question_item.item_image_content_type = nil
-    @question_item.item_image_file_size = nil
-    @question_item.item_image_updated_at = DateTime.now
-    @question_item.img_alt = nil
+    question_item = QuestionItem.find(params[:id])
 
-    if @question_item.save
-      render json: { success: true, notice: t('questions.form.items.info_remove_image') }
+    if question_item.send("item_#{params[:type]}").destroy
+      (params[:type] == 'audio') ? (question_item.update_attributes(audio_description: nil)) : (question_item.update_attributes(img_alt: nil))
     else
-      render json: { success: false, alert: @exam_question.errors.full_messages.join(', ') }, status: :unprocessable_entity
+      raise question_item.errors.full_messages
     end
 
+    render json: { success: true, notice: t("questions.form.items.info_remove_#{params[:type]}") }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
     render_json_error(error, 'questions.error')
   end 
-
-  def remove_audio_item
-    authorize! :update, Question
-    @exam_question = ExamQuestion.find params[:exam_question_id]
-
-    @question_item = QuestionItem.find params[:id]
-    @question_item.item_audio_file_name = nil
-    @question_item.item_audio_content_type = nil
-    @question_item.item_audio_file_size = nil
-    @question_item.item_audio_updated_at = DateTime.now
-    @question_item.audio_description = nil
-
-    if @question_item.save
-      render json: { success: true, notice: t('questions.form.items.info_remove_audio') }
-    else
-      render json: { success: false, alert: @exam_question.errors.full_messages.join(', ') }, status: :unprocessable_entity
-    end
-
-  rescue CanCan::AccessDenied
-    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
-  rescue => error
-    render_json_error(error, 'questions.error')
-  end 
-
 
   def publish
     authorize! :change_status, Question

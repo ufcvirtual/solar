@@ -623,8 +623,8 @@ Solar::Application.routes.draw do
       get '/export/exam_questions/steps',   to: 'exam_questions#export_steps',   as: :export_steps
       put :publish
       get :copy
-      put :remove_image_item
-      put :remove_audio_item
+      put :remove_image_item, to: 'exam_questions#remove_file_item', type: 'image'
+      put :remove_audio_item, to: 'exam_questions#remove_file_item', type: 'audio'
     end
 
     collection do
