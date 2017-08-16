@@ -35,9 +35,8 @@
       set_image_input();
       set_audio_input();
       if($(event.currentTarget.activeElement).hasClass('add_options')){
-        var name = $(".desc textarea[id*='_question_items_']:visible:last").attr('id');      
+        var name = $(".desc textarea[id*='_question_items_']:visible:last").attr('id');
         var ckeditor = CKEDITOR.instances[name];
-        //if (!ckeditor)
         append_rich_text(name);
         $.getScript("/assets/tooltip.js");
       }
