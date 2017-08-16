@@ -4445,7 +4445,7 @@ pt_BR:
         document_title: Relatório com Quantidade de Messagens por Chat
       report_four:
         id: 'Quantidade de Acessos a Webconferências'
-        document_title: 'Relatório com Quantidade de Acessos a Webconferência'
+        document_title: 'Relatório com Quantidade de Acessos à Webconferência'
       report_six:
         id: Quantidade de Arquivos por Portfólio
         document_title: Relatório com Quantidade de Arquivos por Portfólio
@@ -4470,12 +4470,12 @@ pt_BR:
       info: Informações
       timestamp_info: Documento Emitido em
       webconference: Titulo Webconferência
-      access_number: Qtd de Acessos
-      access_number_distinct: Qtd de Acessos Distintos
-      access_number_responsables: Qtd de Acessos Responsáveis
+      access_number: Quantidade de Acessos
+      access_number_distinct: Quantidade de Acessos Distintos
+      access_number_responsables: Quantidade de Acessos Responsáveis
       title_chat: Titulo do Chat
       title_portfolio: Portfólio
-      number_distinct_user_portfolio: Qtd Distinta por Usuário
+      number_distinct_user_portfolio: Quantidade Distinta por Usuário
     summary:
       courses_number: Quantidade de Cursos
       groups_number: Quantidade de Turmas
@@ -4486,20 +4486,20 @@ pt_BR:
       disciplines_amount: Quantidade de Disciplinas
       files_portifolio: Quantidade de Arquivos Postados no Portfólio
       number_of_students: Quantidade de alunos ativos matriculados
-      web_portifolio: Quantidade de Webconferências Postados no Portfólio
+      web_portifolio: Quantidade de Webconferências Postadas no Portfólio
       webconferences_number: Quantidade de Webconferências
       access_number: Quantidade de Acessos
       post_number: Quantidade de Postagens nos Fóruns
       number_of_responsible: Quantidade de Responsáveis
       access_number_webconrence: Quantidade de Acessos a Webconferência
-      webconference_total: Webconferência Total
+      webconference_total: Quantidade de Acessos de Responsáveis Distintos a Webconferência
       access_number_distinct_user_webconrence: Quantidade de Acessos de Usuários Distintos a Webconferência
       discussion_number: Quantidade de Fóruns
       lesson_number: Quantidade de Aulas
       portifolio_number: Quantidade de Portfólios
       material_number: Quantidade de Material de Apoio
       chat_number: Quantidade de Chats
-      chat_message_number: Quantidade de Messages nos Chats
+      chat_message_number: Quantidade de Messagens nos Chats
       access_number_responsables: Quantidade de Acessos dos Responsáveis
       exam_number: Quantidade de Provas
       files_portifolio_distinct_user: Quantidade de Arquivos Distintos Postados no Portfólio por Usuário Distintos
