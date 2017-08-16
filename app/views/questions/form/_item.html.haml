@@ -27,10 +27,10 @@
                 %img{ src: i.object.item_image.as_json, id: 'image_item' }
               = i.input :item_image, as: :file, label: false
               - if i.object.item_image_file_name
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_image_item(this)', :'data-url' => remove_image_item_exam_question_path(i.object, exam_question_id: @exam_question.id)
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_image_item_tmp(this)', class: 'trash-tmp', style: 'display: none'
+                = link_to_function content_tag(:i, nil, class: 'icon-trash'), "remove_file_item(this, 'img')", :'data-url' => remove_image_item_exam_question_path(i.object, question_id: i.object.question.id)
+                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_file_item_tmp(this, "img")', class: 'trash-tmp', style: 'display: none'
               - else
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_image_item_tmp(this)'
+                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_file_item_tmp(this, "img")'
 
               = link_to_function t('questions.form.items.add_image'), 'add_file(this)', class: 'btn btn_main add_file'
 
@@ -46,10 +46,10 @@
                   %p= t("errors.messages.audio")
               = i.input :item_audio, as: :file, label: false
               - if i.object.item_audio_file_name
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_audio_item(this)', :'data-url' => remove_audio_item_exam_question_path(i.object, exam_question_id: @exam_question.id)
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_audio_item_tmp(this)', class: 'trash-tmp', style: 'display: none'
+                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_file_item(this, "audio")', :'data-url' => remove_audio_item_exam_question_path(i.object, question_id: i.object.question.id)
+                = link_to_function content_tag(:i, nil, class: 'icon-trash'), "remove_file_item_tmp(this, 'audio')", class: 'trash-tmp', style: 'display: none'
               - else
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_audio_item_tmp(this)'
+                = link_to_function content_tag(:i, nil, class: 'icon-trash'), "remove_file_item_tmp(this, 'audio')"
 
               = link_to_function t('questions.form.items.add_audio'), 'add_file(this)', class: 'btn btn_main add_file'
             .info
@@ -113,17 +113,22 @@
     });
   }
 
-  function remove_image_item(link){
-    if (!confirm("#{t('questions.form.items.confirm_image_removal')}"))
-      return false;
+  function remove_file_item(link, type){
+    if(type == 'audio'){
+      if (!confirm("#{I18n.t('questions.form.items.confirm_audio_removal')}"))
+        return false;
+    }else{
+      if (!confirm("#{t('questions.form.items.confirm_image_removal')}"))
+        return false;
+    }
 
     $.put($(link).data('url'), function(data){
       var success = data.success;
       flash_message(data.notice, 'notice', 'new_question');
-
       $(link).hide();
       $(link).next().show();
-      $('#image_item').attr('src','');
+
+      remove_file_item_tmp($(link), type);
       
     }).error(function(data){
       var response = $.parseJSON(data.responseText);
@@ -132,9 +137,14 @@
     });
   }
 
-  function remove_image_item_tmp(link){
-    $(link).parents('.upload-preview:first').find('img').attr('src', '');
+  function remove_file_item_tmp(link, type){
+    $(link).parents('.upload-preview:first').find(type).attr('src', '');
     $(link).parents('.upload-preview:first').find('input.file').val('');
+
+    if(type == 'audio')
+      $(link).parents('.upload-preview:first').parent().find('.info .text textarea').val('');
+    else
+      $(link).parents('.upload-preview:first').parent().find('.info .string input').val('');
   }
 
   function add_image(btn){
@@ -143,30 +153,6 @@
         $(this).css('display','inline-block');
       $(this).toggleClass('hide');
     });
-  }
-
-  function remove_audio_item(link){
-    if (!confirm("#{I18n.t('questions.form.items.confirm_audio_removal')}"))
-      return false;
-
-    $.put($(link).data('url'), function(data){
-      var success = data.success;
-      flash_message(data.notice, 'notice', 'new_question');
-
-      $(link).hide();
-      $(link).next().show();
-      $('#audio_item').attr('src','');
-      
-    }).error(function(data){
-      var response = $.parseJSON(data.responseText);
-      if (typeof(response.alert) != "undefined")
-       flash_message(response.alert, 'alert', 'new_question');
-    });
-  }
-
-  function remove_audio_item_tmp(link){
-    $(link).parents('.upload-preview:first').find('audio').attr('src', '');
-    $(link).parents('.upload-preview:first').find('input.file').val('');
   }
 
   function add_audio(btn){
