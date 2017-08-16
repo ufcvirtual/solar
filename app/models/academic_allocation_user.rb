@@ -201,13 +201,15 @@ class AcademicAllocationUser < ActiveRecord::Base
   # begin exam stuff #
 
   def copy_dependencies_from(acu)
-    unless acu.exam_user_attempts.empty?
-      acu.exam_user_attempts.each do |attempt|
-        new_attempt = ExamUserAttempt.where(academic_allocation_user_id: self.id, start: attempt.start).last
-        if new_attempt.blank?
-          new_attempt = ExamUserAttempt.create(attempt.attributes.except('id', 'created_at', 'updated_at').merge!({ academic_allocation_user_id: self.id }))
+    if exam_user_attempts.empty? # only replicates if destination acu doesn't already have exam attempts
+      unless acu.exam_user_attempts.empty?
+        acu.exam_user_attempts.each do |attempt|
+          new_attempt = ExamUserAttempt.where(academic_allocation_user_id: self.id, start: attempt.start).last
+          if new_attempt.blank?
+            new_attempt = ExamUserAttempt.create(attempt.attributes.except('id', 'created_at', 'updated_at').merge!({ academic_allocation_user_id: self.id }))
+          end
+          new_attempt.copy_dependencies_from(attempt)
         end
-        new_attempt.copy_dependencies_from(attempt)
       end
     end
   end
