@@ -1,5 +1,5 @@
 collection @users
 
 @user.each do |user|
-  attributes: name: :message.sent_by,  
+  attributes name: :name, email: :email
 end

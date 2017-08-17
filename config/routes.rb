@@ -503,6 +503,7 @@ Solar::Application.routes.draw do
       get :search
 
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
+      get "download/file/:file_id", to: "messages#api_download", as: :api_download
 
       get :support_new, to: "messages#new", as: :support_new, support: true
     end

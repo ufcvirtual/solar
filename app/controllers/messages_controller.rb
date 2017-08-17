@@ -166,10 +166,11 @@ class MessagesController < ApplicationController
   end
 
   def download_files
-    file = MessageFile.find(params[:file_id])
-    raise CanCan::AccessDenied unless file.message.user_has_permission?(current_user.id)
+     download_message_files
+  end
 
-    download_file(inbox_messages_path, file.attachment.path, file.attachment_file_name)
+  def api_download
+     download_message_files
   end
 
   def find_users
@@ -199,6 +200,14 @@ class MessagesController < ApplicationController
   end
 
   private
+
+    def download_message_files
+      file = MessageFile.find(params[:file_id])
+    raise CanCan::AccessDenied unless file.message.user_has_permission?(current_user.id)
+
+    download_file(inbox_messages_path, file.attachment.path, file.attachment_file_name)
+    end
+
 
     def new_msg_template
       system_label = not(@allocation_tag_id.nil?)
