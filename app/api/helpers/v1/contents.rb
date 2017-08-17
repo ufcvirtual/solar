@@ -20,9 +20,8 @@ module V1::Contents
           new_acu.new_after_evaluation = from_acu.new_after_evaluation
           new_acu.merge = true
           new_acu.save
-        # end
-        new_acu.id
       end
+      new_acu.id
     end
   end
 
@@ -123,7 +122,7 @@ module V1::Contents
     new_object.updated_at = object_to_copy.updated_at if object_to_copy.respond_to?(:updated_at)
     new_object.merge = true if new_object.respond_to?(:merge) # used so call save without callbacks (before_save, before_create)
 
-    if acu
+    if acu && !object_to_copy.academic_allocation_user.blank?
       new_object.academic_allocation_user_id = get_acu(new_object.academic_allocation.id, object_to_copy.academic_allocation_user, (object_to_copy.user_id || object_to_copy.allocation.user_id)) #rescue nil
     end
 
