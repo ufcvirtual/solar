@@ -3,7 +3,7 @@ Solar::Application.routes.draw do
   devise_for :users, controllers: { registrations: "devise/users", passwords: "devise/users_passwords" }
 
   authenticated :user do
-    get "/", to: "users#mysolar"
+    get "/", to: "users#mysolar", as: :solar_home
   end
 
   devise_scope :user do
