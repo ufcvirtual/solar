@@ -1844,7 +1844,7 @@ adminapproval1:
 
 adminlessons1:
   profile_id: 6
-  resource_id: 19
+  resource_id: 102
   per_id: false
 
 adminlessons2:
