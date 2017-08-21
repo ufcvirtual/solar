@@ -549,6 +549,7 @@
           $(".dropdown").hide(150);
           setTimeout(function() {
             $(e.target).closest(".dropdown").prev("a").focus();
+            $(e.target).closest(".dropdown").prev("a").removeClass("dropdown-open");
           }, 100);
         }
 
