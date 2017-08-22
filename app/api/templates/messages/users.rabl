@@ -1,5 +1,5 @@
-collection @users
+object @users
 
-@user.each do |user|
-  attributes name: :name, email: :email
-end
+# @users.each do |user_message|
+  attributes :id
+# end
