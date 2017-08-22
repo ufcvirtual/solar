@@ -23,7 +23,7 @@ module V1
         end # before
 
         # messages/10
-        desc 'Exibir mensagens'
+        desc 'Exibir mensagem'
         params do
           requires :group_id, type: Integer, desc: 'Group ID.'
         end
