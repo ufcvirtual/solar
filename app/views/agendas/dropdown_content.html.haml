@@ -36,7 +36,7 @@
       - if can? :show, @model_name, on: @allocation_tags_ids
         = link_to content_tag(:i, nil, class: 'icon-eye', :'aria-hidden'=>'true'), polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), class: 'btn btn_main show_event', :'data-tooltip' => t('.details'), id: @event.id, :'aria-label'=> t('.details_about', name: @event.respond_to?(:name) ? @event.name : @event.title) + t('fancybox.open')
       = link_to content_tag(:i, nil, class: 'icon-cross', :'aria-hidden'=>'true'), '#', class: 'btn close_dropdown', :'data-tooltip' => t(:close), id: @event.id, :'aria-label'=> t('.close_details_about', name: @event.respond_to?(:name) ? @event.name : @event.title), onclick: 'close_dropdown(this);'
-          
+
 
 = javascript_include_tag 'tooltip'
 
@@ -54,13 +54,13 @@
 
     $('.close_dropdown').on('keydown', function(e){
       if (e.which == 13){
-        close_dropdown($(this).parents('.dropdown').find('h2')); 
+        close_dropdown($(this).parents('.dropdown').find('h2'));
       }
     });
 
     $( ".fc-content a.event" ).focus(function() {
       var div = $('.close_dropdown:visible');
-      close_dropdown(div.parents('.dropdown').find('h2'), $(this)); 
+      close_dropdown(div.parents('.dropdown').find('h2'), $(this));
     });
 
     // se não for a área de edição
@@ -112,5 +112,15 @@
       maxWidth: 402,
       maxHeight: 500
     });
-  });
 
+
+    $("a.fc-event").on("focus", function(event) {
+      var dropdown = $(".dropdown:visible");
+      var link_dropdown = $(event.target).attr("data-dropdown");
+
+      if( $(dropdown).find(":focus").length === 0 && link_dropdown !== ("#"+$(dropdown).attr("id")) ) {
+        $(dropdown).hide();
+        $("a.fc-event").removeClass("dropdown-open");
+      }
+    });
+  });
