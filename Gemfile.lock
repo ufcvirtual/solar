@@ -305,7 +305,7 @@ GEM
       pry
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
-    rabl (0.13.1)
+    rabl (0.13.0)
       activesupport (>= 2.3.14)
     rack (1.4.7)
     rack-accept (0.4.5)

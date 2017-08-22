@@ -1,17 +1,12 @@
 object @message 
 attributes :id, :subject, :content, :created_at, :updated_at
 
-# node(:sent_by) { |message| message.sent_by.address }
-# node(:recipients) { |message| message.recipients }
-
-node :sent_by do |message|
-  # extends 'messages/users', locals: { users: message.sent_by }
-  message.sent_by.name
+node(:sent_by) { { name: @message.sent_by.name, email: @message.sent_by.email, address: @message.sent_by.address } }
+node :recipients do |msg|
+  msg.recipients.map{|m| {name: m.name, email: m.email}}.each do |msg|
+    [msg[:name], msg[:email]].join(' - ')
+  end
 end
-
-# node :recipients do |user_message|
-#   extends 'messages/users', locals: { users: user_message}
-# end
 
 child files: :files do |files|
   extends 'messages/files', locals: { files: files}
