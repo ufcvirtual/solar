@@ -31,7 +31,7 @@
 }
 
 a.fc-event-title{
-  color: black;
+  color: $color_black;
 }
 
 .list_events .day.today{
@@ -60,6 +60,10 @@ a.fc-event-title{
   border-bottom: dashed 1px $color_contrast;
 }
 
+.list_events .time h2{
+  background-color: $exclusive_background_color;
+}
+
 .list_events .time h2, .list_events .time h4{
   margin-top: 10px;
   margin-left: 10px;
@@ -75,39 +79,39 @@ a.fc-event-title{
 
 .fc-event.assignment{
   background-color: $event_assignment_background;
-  border-color: $event_assignment_background;
+  border-color: $event_assignment_border;
 }
 .fc-event.chat{
   background-color: $event_chat_background;
-  border-color: $event_chat_background;
+  border-color: $event_chat_border;
 }
 .fc-event.discussion{
   background-color: $event_discussion_background;
-  border-color: $event_discussion_background;
+  border-color: $event_discussion_border;
 }
 .fc-event.presential_test{
   background-color: $event_presential_test_background;
-  border-color: $event_presential_test_background;
+  border-color: $event_presential_test_border;
 }
 .fc-event.presential_meeting{
   background-color: $event_presential_meeting_background;
-  border-color: $event_presential_meeting_background;
+  border-color: $event_presential_meeting_border;
 }
 .fc-event.recess_holiday{
   background-color: $event_recess_holiday_background;
-  border-color: $event_recess_holiday_background;
+  border-color: $event_recess_holiday_border;
 }
 .fc-event.webconferencelesson{
   background-color: $event_webconferencelesson_background;
-  border-color: $event_webconferencelesson_background;
+  border-color: $event_webconferencelesson_border;
 }
 .fc-event.lessons{
   background-color: $event_lessons_background;
-  border-color: $event_lessons_background;
+  border-color: $event_lessons_border;
 }
 .fc-event.other{
   background-color: $event_other_background;
-  border-color: $event_other_background;
+  border-color: $event_other_border;
 }
 .fc-event.exam{
   background-color: $event_exam_background;
@@ -115,7 +119,12 @@ a.fc-event-title{
 }
 
 .fc-event.fc-event-title{
-  color: $color_black;
+  color: $fc_event_title_agenda;
+}
+
+//By high contrast theme
+.list_events .fc-event.fc-event-title{
+  background-color: $exclusive_background_color;
 }
 
 .list_events .fc-event.fc-event-title{
@@ -142,22 +151,23 @@ a.fc-event-title{
     width: 435px;
     .dropdown-panel{
         margin-bottom: 10px;
+        background-color: $schedule_event_background_color;
       }
     .event_details_dropdown{
       h1, h2, h3, h4, .group_label label{
         font-family: 'PT Sans', sans-serif;
         background-color: $color_white;
+        color: $schedule_event_color_text;
         border-bottom: none;
       }
       h2{
-        color: $color_black;
         font-weight: bold;
         text-align: left;
         font-size: 11pt;
       }
 
       h3, .group_label label, h3 p{
-        color: $color_gray_text;
+        color: $schedule_event_color_gray_text;
         font-size: 10pt;
         font-weight: normal;
         text-align: left;
@@ -295,4 +305,14 @@ a.fc-event-title{
 
 .agenda_left_month_year .year_left {
   margin-right: 30px;
+}
+
+// Dias do mês e da semana na visão mensal
+.fc-day-number, .fc-widget-header {
+  color: $color_black_calendar;
+}
+
+//A data atual deve ser preto para contrastar com o fundo branco. Tanto para o alto contraste quanto o tema padrão.
+.fc-today .fc-day-number {
+  color: black;
 }

@@ -10,6 +10,16 @@
   }
 }
 
+.enrollment_list_enrolled {
+
+  tr.lines td {
+
+    a.allocation_cancel_enroll.btn_caution:hover{
+      color: $enrollment_cancel_button_hover_font_color;
+    }
+  }
+}
+
 .enrollment_search {
   height: 12px;
   font-size: 12px;
@@ -31,10 +41,12 @@
 
   input#type{
     width: 33%;
+    color: $exclusive_background_color;
   }
 
   input#search{
     width: 50%;
+    color: $exclusive_background_color;
   }
 }
 
@@ -83,6 +95,10 @@
   color: $color_black;
 }
 
+.enrollment_label_search {
+  color: $enrollment_label_search_font_color;
+}
+
 .enrollment_bar {
   padding: 2px 4px;
 }
@@ -112,5 +128,13 @@
   }
   select#group_id{
     width: 130px;
+  }
+}
+
+table.tb_list.enrollments {
+  .allocations {
+    tr.lines.active:hover {
+      background-color: $enrollment_active_line_table_hover;
+    }
   }
 }

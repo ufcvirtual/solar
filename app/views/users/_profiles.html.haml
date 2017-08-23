@@ -20,7 +20,7 @@
             .collection_check_boxes= allocation_tag_info[:group]
         - else
           = t(".not_specified")
-    %td{style: "color: #{status_color}"}= name_of(allocation.status, false)
+    %td.allocation_status_info= name_of(allocation.status, false)
     %td= link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_cancel', :"data-link-cancel" => cancel_profile_request_allocation_path(allocation), :"data-tooltip" => t(".cancel_profile"), disabled: allocation.profile_id == Profile.student_profile
 
 :javascript

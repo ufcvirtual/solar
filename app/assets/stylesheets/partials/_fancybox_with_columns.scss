@@ -2,7 +2,7 @@
   .block_content{
     max-height: 350px;
     overflow: auto;
-    background-color: $color_white;
+    background-color: $color_white_fancybox;
   }
 
   table{
@@ -24,7 +24,7 @@
     float: left;
     margin-left: 40px;
     td i{
-      color: $remove_file_color;
+      color: $remove_file_color_fancybox;
     }
   }
 
@@ -93,22 +93,23 @@
       }
     }
     .selected{
-      background-color: $label_selected_background;
+      background-color: $label_selected_background_fancybox;
       border: 1px solid $label_selected_border_color;
     }
     .disabled{
-      background-color: $label_disabled_background;
+      background-color: $label_disabled_background_fancybox;
       border: 1px solid $label_disabled_border_color;
-      color: $label_disabled_color;
+      color: $label_disabled_color_fancybox;
       font-family: Ubuntu;
       font-size: 13px;
     }
     .disabled.selected{
-      background-color: $label_disabled_selected_background;
+      background-color: $label_disabled_selected_background_fancybox;
     }
   }
 
   .text_none.empty_message{
     text-align: center;
+    color: $empty_message_fancybox_with_columns;
   }
 }

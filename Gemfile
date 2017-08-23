@@ -67,7 +67,7 @@ gem 'coffee-rails'
 
 gem 'rest-client'
 
-gem 'rufus-scheduler'
+gem 'rufus-scheduler', "~> 2.0.24"
 
 group :development do
   gem "rb-readline", "~> 0.5.1"

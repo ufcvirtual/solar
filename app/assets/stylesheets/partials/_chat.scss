@@ -20,7 +20,7 @@
 
 #mysolar_chat_list {
   border: 1px solid $mysolar_chat_color;
-  background-color: $color_white;
+  background-color: $color_white_chat;
   display: none;
 }
 
@@ -34,5 +34,5 @@
   width: 87%;
   border: none;
   height: 1px;
-  background-color: $mysolar_chat_color;
+  background-color: $mysolar_chat_color_chat;
 }

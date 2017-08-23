@@ -3,7 +3,7 @@
 #history_search_content {
   padding-bottom: 6px;
   border-bottom: 1px solid;
-  border-bottom-color: $border_color;
+  border-bottom-color: $color_main_border_score;
 }
 
 #history-body {
@@ -39,7 +39,7 @@ tr#activities{
   float: left;
   width: 30%;
   font-size: 10pt;
-  color: $info_color;
+  color: $info_color_score;
 
   a.tool_dropdown{
     float: left;
@@ -54,7 +54,7 @@ tr#activities{
     }
     label:hover, label{
       background-color: transparent;
-      color: $color_little_dark_gray;
+      color: $color_little_dark_gray_score;
       cursor: pointer;
       display: inline;
     }
@@ -101,7 +101,7 @@ tr#activities{
     }
   }
   #assignment_title{
-    background-color: $color_white;
+    background-color: $color_white_background_score;
     float: right;
     font-size: 10pt;
     color: $info_color;
@@ -111,32 +111,56 @@ tr#activities{
 
 #scores_notes.legend_score_footer, .tb_list_students{
   .evaluated {
-    color: $evaluated_color;
+    color: $evaluated_color_score;
   }
 
-  .sent, .sent a, .evaluated a
+  .sent {
+    color: $portfolio_assignment_color;
+  }
+
+  .sent a, .evaluated a
   td.assignment_as a {
-    color: $sent_color;
+    color: $portfolio_assignment_color_link;
   }
 
-  .assignment_as, .assignment_as a{
-    color: $sent_color;
+  .assignment_as {
+    color: $portfolio_assignment_color;
   }
 
-  .not_sent, .not_sent a{
-    color: $not_sent_color;
+  .assignment_as a{
+    color: $portfolio_assignment_color_link;
   }
 
-  .not_started, .not_started a {
-    color: $not_started_color;
+  .not_sent {
+    color: $portfolio_assignment_not_sent_color;
   }
 
-  .to_send, .to_send a{
-    color: $color_main;
+  .not_sent a{
+   color: $portfolio_assignment_not_sent_color_link;
   }
 
-  .without_group, .without_group a{
-    color: $without_group_color;
+  .not_started {
+    color: $portfolio_assignment_not_started;
+  }
+
+  .not_started a {
+    color: $portfolio_assignment_not_started_link;
+  }
+
+  .to_send {
+    color: $portfolio_assignment_to_be_sent;
+  }
+
+  .to_send a{
+    color: $portfolio_assignment_to_be_sent_link;
+  }
+
+  .without_group {
+    color: $portfolio_assignment_without_group_color;
+  }
+
+  .without_group a{
+    color: $portfolio_assignment_without_group_color_link;
   }
 
   .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
@@ -167,6 +191,7 @@ table#list_of_students{
   td.new_after_evaluation{
     padding: 5px;
     background-color: $score_table_background;
+    color: $color_black;
   }
 }
 
@@ -223,7 +248,7 @@ table.general{
     }
     label:hover, label{
       background-color: transparent;
-      color: $color_little_dark_gray;
+      color: $color_little_dark_gray_dropdown_scores;
       cursor: pointer;
       display: inline;
       font-size: 12pt;
@@ -267,7 +292,7 @@ tbody{
   li a{
     color: $score_table_head_color;
     cursor: pointer;
-    border-top: solid 2px $color_main;
+    border-top: solid 2px $color_main_border_score;
     
     padding-left: 10px;
     padding-right: 10px;
@@ -278,14 +303,14 @@ tbody{
     border-left: solid 2px $color_main;
   }
   li a.active{
-    background-color: $color_main;
-    color: $color_white;
+    background-color: $color_main_li_active_score;
+    color: $color_white_font_color_score;
   }
   a{
     text-decoration: none;
   }
   li a:last-of-type{
-    border-right: solid 2px $color_main;
+    border-right: solid 2px $color_main_border_score;
   }
 
 }
@@ -300,7 +325,7 @@ tbody{
   li a{
     color: $score_table_head_color;
     cursor: pointer;
-    border-top: solid 2px $color_main;
+    border-top: solid 2px $color_main_border_score;
     
     padding-left: 10px;
     padding-right: 10px;
@@ -308,17 +333,17 @@ tbody{
     background-color: $background_gray;
   }
   li a:not(.ui-tabs-anchor){
-    border-left: solid 2px $color_main;
+    border-left: solid 2px $color_main_border_score;
   }
   li a.active{
-    background-color: $color_main;
-    color: $color_white;
+    background-color: $color_main_li_active_score;
+    color: $color_white_font_color_score;
   }
   a{
     text-decoration: none;
   }
   li a:last-of-type{
-    border-right: solid 2px $color_main;
+    border-right: solid 2px $color_main_border_score;
   }
 
 }
@@ -354,6 +379,39 @@ tbody{
     color: $table_data_line_title;
     padding-left: 0;
     padding-right: 0;
+  }
+}
+
+.public_files_info {
+  table {
+    thead{
+      tr.lines{
+        th {
+          background-color: $exclusive_background_color;
+          color: $exclusive_font_color;
+        }
+      }
+    }
+  }
+}
+
+#evaluative_exa, #frequency_exa, #notevaluative_exa,
+#evaluative_eve, #frequency_eve, #notevaluative_eve,
+#evaluative_chat, #frequency_chat, #notevaluative_chat,
+#evaluative_dis, #frequency_dis, #notevaluative_dis,
+#evaluative_assig, #frequency_assig, #notevaluative_assig,
+#evaluative_web, #frequency_web, #notevaluative_web,
+#evaluative_all, #frequency_all, #notevaluative_all,
+.public_files_info {
+  table {
+    thead{
+      tr.lines{
+        th {
+          background-color: $thead_background_color;
+          color: $thead_color;
+        }
+      }
+    }
   }
 }
 

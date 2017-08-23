@@ -8,7 +8,8 @@
 
     = javascript_include_tag 'jquery', 'jquery.cookie', 'jquery.dropdown', 'lessons', 'breadcrumb'
 
-    = stylesheet_link_tag 'themes/theme_blue', 'jquery.dropdown.css'
+    = stylesheet_link_tag 'jquery.dropdown.css'
+    = stylesheet_link_tag "themes/theme_" + "#{user_session[:theme]}", id: "themes"
     = stylesheet_link_tag 'misc/div_layout', 'fonts/fonts', media: 'all'
 
     = csrf_meta_tags

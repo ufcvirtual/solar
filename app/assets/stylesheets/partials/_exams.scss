@@ -9,6 +9,7 @@
   #description{
     font-size: 10pt;
     padding-bottom: 10px;
+    color: $color_little_dark_gray;
   }
 
   #name{
@@ -55,6 +56,7 @@
       padding: 3px;
       width: 60%;
       margin-left: 18%;
+      color: $color_little_dark_gray;
     }
 
     a{
@@ -200,14 +202,14 @@
         display: inline-block;
 
         #question_image {
-          border: solid 2px $question_image_border_color;
+          border: solid 2px $question_image_border_color_exams;
         }
       }
       .image.legend{
         display: block;
         text-align: left;
         width: 600px;
-        background-color: $question_image_legend_background;
+        background-color: $question_image_legend_background_exams;
         margin-bottom: 10px;
         img, .image{
           margin-left: -15px;
@@ -242,7 +244,6 @@
       }
       .audio {
         display: inline-block;
-
         a i{
           margin-bottom: 30px;
           display: inline-block;
@@ -329,6 +330,9 @@
       vertical-align: top;
     }
 
+    #item_image{
+      border: solid 2px $question_image_border_color_exams;
+    }
 
     label input{
       margin-right: 5px;
@@ -341,11 +345,11 @@
     }
 
     .incorrect{
-      color: $question_iten_incorrect;
+      color: $question_iten_incorrect_exams;
     }
 
     .hit{
-      color: $question_iten_hit_color;
+      color: $question_iten_hit_color_exams;
     }
 
     .audio.legend{
@@ -355,12 +359,12 @@
       text-align: center;
       width: 600px;
       margin-bottom: 10px;
-      background-color: $question_image_legend_background;
+      background-color: $question_image_legend_background_exams;
 
       .audio{
         margin: 5px 0 5px -15px;
         padding-top: 5px;
-        background-color: $questions_audios_background;
+        background-color: $questions_audios_background_exams;
         background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
         height: 31px;
         width: 58%;
@@ -396,6 +400,43 @@
       display: none;
     }
 
+    .audio.legend{
+      padding: 0 0 6px 14px;
+      display: block;
+      text-align: center;
+      width: 600px;
+      margin-bottom: 10px;
+      background-color: $question_image_legend_background;
+
+      .audio{
+        margin: 5px 0 5px -15px;
+        padding-top: 10px;
+        background-color: $questions_audios_background;
+        background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
+        height: 27px;
+        width: 58%;
+        position: relative;
+        top: 50%;
+        left: 0.5%;
+        float:left;
+      }
+      .audio_description{
+        padding: 14px 0 0 0;
+        margin-bottom: 11px;
+        width: 42%;
+        display: inline-block;
+        text-align: center;
+        vertical-align: top;
+      }
+    }
+
+    #text{
+      color: $lightbox_dialog_title_color;
+    }
+    #text, #hide{
+      display: none;
+    }
+
     video::-webkit-media-controls-enclosure, audio::-webkit-media-controls-enclosure {
         overflow:hidden;
     }
@@ -409,7 +450,7 @@
   .message_div_navigation {
     text-align: center;
     padding: 0.25*$gutter;
-    color: $disabled_color;
+    color: $disabled_color_exams;
     font-size: 13pt;
 
 
@@ -482,7 +523,7 @@
     width: 775px;
     display: block;
     padding: 5px;
-    border: 1px dashed $list_exams_btn_color;
+    border: 1px dashed $list_exams_btn_color_exams;
     text-align: center;
   }
 
@@ -564,19 +605,19 @@
   }
 
   .corrected {
-    color: $list_exams_corrected_color;
+    color: $list_exams_corrected_color_exams;
   }
 
   .finished, .not_corrected {
-    color: $list_exams_finished_color;
+    color: $list_exams_finished_color_exams;
   }
 
   .not_answered {
-    color: $list_exams_not_answered_color;
+    color: $list_exams_not_answered_color_exams;
   }
 
   .not_started {
-    color: $list_exams_not_started_color;
+    color: $list_exams_not_started_color_exams;
   }
 
   .to_answer, .not_finished, .retake {
@@ -610,7 +651,7 @@
           margin-right: -5px;
         }
         label[for='draft_exam']{
-          vertical_align: middle;
+          vertical-align: middle;
         }
       }
 
@@ -649,7 +690,7 @@
       padding: 5px;
     }
     a.active{
-      color: $color_contrast_text;
+      color: $color_contrast_text_exams;
     }
     a.no_pointer{
       cursor: default;
@@ -677,4 +718,21 @@
   a, a i{
     display: inline;
   }
+}
+
+
+table.exams {
+  thead{
+    tr.lines{
+      th {
+        background-color: $thead_background_color;
+        color: $thead_color;
+      }
+    }
+  }
+}
+
+#exam_form .steps {
+  border: 1px solid white;
+  //width: auto;
 }

@@ -66,7 +66,7 @@
   .block_wrapper
     .block_title
       %h2= t(".public_files")
-    .block_content
+    .block_content.public_files_info
       - no_files = (@public_files.blank?)
       %table.tb_list
         %thead{style: (no_files ? "display: none" : "")}

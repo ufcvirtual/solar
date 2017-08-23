@@ -174,6 +174,13 @@ class ApplicationController < ActionController::Base
     params.delete(:locale) if user_signed_in?
   end
 
+  def get_theme
+    if user_signed_in?
+      current_theme = PersonalConfiguration.find_by_user_id(current_user.id)
+      user_session[:theme] = current_theme.theme
+    end
+  end
+
   ## Parametros de locale para paginas externas
   def default_url_options(options={})
     params.include?('locale') ? {locale: params[:locale]} : {}

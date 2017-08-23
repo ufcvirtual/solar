@@ -17,7 +17,7 @@
 .highlight-date-mark {
     a.ui-state-default {
         background-color: $color_main_medium;
-        color: $color_white;
+        color: $color_white_calendar;
     }
 }
 //.ui-helper-hidden-accessible { display: none; }
@@ -41,8 +41,8 @@
 
 /* cabecalho do calendario */
   .ui-datepicker-header {
-    background: $color_white;
-    color: $color_black;
+    background: $color_white_calendar;
+    color: $color_black_calendar;
     height: 1.2em;
     padding: .3em;
     font-weight: bold;
@@ -88,7 +88,7 @@
 }
 
 #ui-datepicker-div{
-    background-color: $color_white;
+    background-color: $color_white_calendar;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 10px;
@@ -103,7 +103,7 @@
         font-weight: normal;
         min-height: 1.1em;
         text-align: center;
-
+        color: $exclusive_font_color;
     }
     /* ... Interaction Cues ... */
     /* celula ativa */
@@ -111,13 +111,13 @@
         border: 1px solid $color_contrast;
         background: $color_contrast_light;
         font-weight: normal;
-        color: $color_black;
+        color: $color_black_calendar;
     }
 
     /* data atual */
     .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {
         // background: none;
-        color: $color_contrast_text;
+        color: $color_contrast_text_calendar;
         // border: none;
         font-weight: bold;
     }
@@ -174,12 +174,12 @@
     font-size: .9em;
 }
 .ui-datepicker th {
-    padding: .1em .1em ; text-align: center; font-weight: bold; border: 0; min-height: 1.2em; font-size: .9em; }
+    padding: .1em .1em ; text-align: center; font-weight: bold; border: 0; min-height: 1.2em; font-size: .9em; color: $exclusive_font_color;}
 .ui-datepicker td {
     border: 0; padding: 0em; width: 14.25%; min-height: 1.2em; }
 .ui-datepicker td span, .ui-datepicker td a {
     display: block; padding: 0px; text-align: right; text-decoration: none; }
-.ui-datepicker-week-end {color: $color_contrast_text;}
+.ui-datepicker-week-end {color: $color_contrast_text_weekend_calendar;}
 
 
 /* IE6 IFRAME FIX (taken from datepicker 1.5.3 */
@@ -195,3 +195,12 @@
     height: 200px; /*must have*/
 }
 /** ----------------------- **/
+
+.ui-timepicker-div{
+    dt.ui_tpicker_time_label,
+    dt.ui_tpicker_hour_label,
+    dt.ui_tpicker_minute_label,
+    .ui_tpicker_time input.ui_tpicker_time_input {
+      color: $color_black;
+    }
+}

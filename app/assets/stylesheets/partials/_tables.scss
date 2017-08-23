@@ -17,6 +17,7 @@ tbody tr.lines {
   border-bottom: 1px solid;
   border-bottom-color: $table_border_color;
   background-color: $color_main_light;
+  color: $exclusive_font_color;
 
   &:hover {
     background-color: $color_main_light_highlight; /* #FFF5ED*/
@@ -31,6 +32,10 @@ tbody tr.lines.active {
   &:hover {
     background-color: $table_line_hover;
   }
+}
+
+tbody tr.lines.period_ended a {
+  color: $table_period_ended;
 }
 
 tbody tr.lines.period_ended:hover {
@@ -106,6 +111,11 @@ table.tb_list {
   thead tr.lines{
     color: $table_head_line_title;
   }
+
+  a.link_content.lesson {
+    color: $table_link_content_lesson;
+  }
+
 }
 
 table.user-courses tbody.offers {
@@ -144,8 +154,8 @@ tr.post_content {
 .tablesorter-default th,
 .tablesorter-default thead td {
   border-bottom: $table_sort_border_color 1px solid;
-  /*font: bold;
   color: #000;
+  /*font: bold;
   background-color: #fff;
   border-collapse: collapse;
   padding: 0;*/
@@ -192,4 +202,8 @@ tr.responsibles{
   p{
     margin-bottom: 0;
   }
+}
+
+th.td_student{
+  background-color: $table_td_student !important;
 }

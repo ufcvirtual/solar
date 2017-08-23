@@ -41,7 +41,7 @@
 
   .add_group, .unbind_groups{
     border: 1px solid $complete_border_left_color;
-    color: $color_gray;
+    color: $color_gray_group_tags;
   }
 
   .tags{
@@ -53,7 +53,7 @@
 .groups .collection_check_boxes, .groups_tags .collection_check_boxes, .group_checkbox .collection_check_boxes, .group_checkbox .collection_check_boxes label, .labels_tags .collection_check_boxes{
   @include collection_check_boxes_layout;
   background-color: $groups_forms_background;
-  color: $color_white;
+  color: $groups_tags_collecion_check_box;
   white-space: nowrap;
   display:inline-block;
 }
@@ -74,7 +74,7 @@
 }
 
 .no_tags .collection_check_boxes{
-  color: $color_black;
+  color: $color_black_groups_tags;
   background-color: $color_white;
   border: 0;
   padding: 0;
@@ -130,4 +130,14 @@ tbody .groups, .input .groups{
 
 .group_checkbox .collection_check_boxes label{
   margin: 0;
+  color: $groups_tags_collecion_check_box;
+}
+
+div#dropdown.dropdown.dropdown-tip.add_group_dropdown_1 {
+  h1 {
+    color: $color_black_groups_tags;
+  }
+  label {
+    color: $color_black_groups_tags;
+  }
 }
