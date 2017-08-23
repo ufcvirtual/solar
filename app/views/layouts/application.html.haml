@@ -94,19 +94,13 @@
               %a.btn.btn_main#shortcut_accesskey{ href: '#', :"data-dropdown" => "#dropdown_eq_1_2", :'aria-label' => t('scores.info.shortcut'), accesskey: "4", "data-tooltip" => t('scores.info.shortcut')}
                 = t('scores.info.shortcut')
                 %i.icon-arrow-down-triangle
-              .dropdown.dropdown-tip.dropdown_close{id: "dropdown_eq_1_2"}
+              .dropdown.dropdown-tip{id: "dropdown_eq_1_2"}
                 %ul.shortcut_floating_box{ class: 'dropdown-menu' }
-                  - unless @shortcut.blank?
-                    %h2= t('scores.info.shortcut') 
-                    = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_dropdown', :'data-tooltip' => t("shortcut.close"), :'aria-label' => t("shortcut.close")
-                    - @shortcut.each do |sh|
-                      %li.shortcut= t("shortcut.#{sh.first}") + ' '+ sh.last
-                      %br    
-                  %h2= t('shortcut.no_shortcuts') if @shortcut.blank? 
-                  = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_dropdown', :'data-tooltip' => t("shortcut.close"), :'aria-label' => t("shortcut.close") if @shortcut.blank? 
-                  
+                  %h2= t('scores.info.shortcut')
+                  = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_dropdown', :'data-tooltip' => t("shortcut.close"), :'aria-label' => t("shortcut.close")
+
             %li#mysolar_suggestions
-              = link_to t(:mysolar_suggestions), 'https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ', class: 'btn', target: '_blank', :'aria-label' => t(:mysolar_suggestions) + t(:new_window)            
+              = link_to t(:mysolar_suggestions), 'https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ', class: 'btn', target: '_blank', :'aria-label' => t(:mysolar_suggestions) + t(:new_window)
 
 
       / sidebar
@@ -132,11 +126,11 @@
           .flash_message_wrapper
             - flash.each do |name, msg|
               #flash_message{ class: name }
-                = content_tag :span, msg
+                = content_tag(:span, msg, id: "flash_message_span")
                 - if @attribute.blank?
-                  = link_to_function content_tag(:i, nil, class: 'icon-cross'), "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)'
+                  = link_to_function content_tag(:i, nil, class: 'icon-cross'), "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
                 - else
-                  = link_to_function content_tag(:i, nil, class: 'icon-cross'), "erase_flash_messages(true, "+@attribute.to_s+")", onkeydown: 'click_on_keypress(event, this)'
+                  = link_to_function content_tag(:i, nil, class: 'icon-cross'), "erase_flash_messages(true, "+@attribute.to_s+")", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
           - name = active_tab[:breadcrumb].last[:name].gsub(".", "-") unless active_tab[:breadcrumb].last[:name].nil?
           #breadcrumb= raw show_breadcrumb
           - if is_curriculum_unit_selected?
@@ -168,10 +162,18 @@
       - selected = I18n.locale.to_s
       #footer
         %ul
-          %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', target: '_blank', :'aria-label' => t(:login_footer1)+ t(:new_window)
-          %li= link_to t(:login_footer2), 'http://www.ufc.br', target: '_blank', :'aria-label' => t(:login_footer2)+ t(:new_window)
-          %li= link_to t(:login_footer3), team_path, target: '_blank', :'aria-label' => t(:login_footer3)+ t(:new_window)
-          %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank', :'aria-label' => t(:license_terms)+ t(:new_window)
+          %li.choice-tutorial
+            = link_to t(:login_footer3), '#', class: "link-arrow"
+            %ul.choice-tutorial-menu
+              %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', target: '_blank', :'aria-label' => t(:login_footer1)+ t(:new_window)
+              %li= link_to t(:login_footer2), 'http://www.ufc.br', target: '_blank', :'aria-label' => t(:login_footer2)+ t(:new_window)
+          %li.choice-tutorial
+            = link_to t(:login_footer4), '#', class: "link-arrow"
+            %ul.choice-tutorial-menu
+              %li= link_to t(:login_footer5), 'http://github.com/wwagner33/solar', :target => '_blank', :'aria-label' => 'Código' + t(:new_window)
+              %li= link_to t(:login_footer6), 'https://github.com/wwagner33/solar/blob/master/README', :target => '_blank', :'aria-label' => 'Equipe' + t(:new_window)
+              %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank', :'aria-label' => t(:license_terms)+ t(:new_window)
+          %li= link_to t('privacy_policies.title'), privacy_policy_path, target: '_blank', :'aria-label' => t('privacy_policies.title') + t(:new_window)
           %li= link_to t(:login_app), apps_path
           %li= link_to t(:login_faq), faq_path, :'aria-label' => t(:login_faq)
           %li.choice-language
@@ -238,6 +240,8 @@
     }
 
     jQuery(function($) {
+
+      generate_shortcut_list();
 
       /**
        * System clock
@@ -451,7 +455,7 @@
 
     $(".nav_item").on("keydown", function(event){
       var attr = $('#server_clock').prop('tabindex');
-      if(attr == undefined) {
+      if(attr == undefined || attr == -1) {
         $('#server_clock').prop('tabindex', 0);
       }
 
@@ -461,7 +465,7 @@
         goToRight(this);
       } else if (keynum == 37) {
         goToLeft(this);
-      } else if (keynum == 40 || keynum == 32) {
+      } else if (keynum == 40 || keynum == 32 || keynum == 13) {
         goInside(this);
       }
     });
@@ -556,31 +560,24 @@
 
     //focus do flash message
     $(function(){
-      var arrIdFocus = [];
-      $('*').on("focus", function(){
-        var _id = $(this).attr('id');
-        if(_id){
-          var idRand = _id;
-        }else{
-          var idRand = 'id_'+Math.floor(Math.random() * 65536).toString();
-          $(this).attr('id', idRand);
+      loadFocus();
+      focus_element_time('#flash_message_span');
+
+      $(document).keydown(function (e) {
+        if (e.which === 27) {
+          $("#dropdown_menu").slideUp(150);
+          $(".dropdown").hide(150);
+          setTimeout(function() {
+            $(e.target).closest(".dropdown").prev("a").focus();
+            $(e.target).closest(".dropdown").prev("a").removeClass("dropdown-open");
+          }, 100);
         }
-        if(arrIdFocus.length==20){
-          arrIdFocus.shift();
-          arrIdFocus.push(idRand);
-        }else{
-          arrIdFocus.push(idRand);
-        }
-        $.cookie("listIdFocu", arrIdFocus);  
+
+        setTimeout(function() {
+          var dropdown = $(".dropdown:visible").closest(".equivalent");
+          if( $(dropdown).find(":focus").length === 0 ) {
+            $(dropdown).find(".dropdown").hide();
+          }
+        }, 250);
       });
     });
-
-    $(document).keydown(function (e) {
-      if (e.which === 27) {
-        $("#dropdown_menu").slideUp(150);
-        $(".dropdown_close").hide(150);
-      }
-    });  
-
-
-  

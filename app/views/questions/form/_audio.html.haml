@@ -31,18 +31,3 @@
   function add_file(btn){
     $(btn).parent().find('input.file').click();
   }
-
-  function upFocusDescAudio(p1, p2){
-    var i = 0;
-    var total = 6;
-    while(i<total){
-      if($("#"+p1+i+p2).is(":visible")){
-        if($("#"+p1+i+p2).val()=='' && $("#"+p1+i+"_description").val()==''){
-          $("#"+p1+i+p2).focus();
-          return true;
-        } 
-      } 
-      i++;
-    }    
-  }
-

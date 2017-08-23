@@ -249,11 +249,11 @@ $(function(){
   });
 
   $('label[for="option_group"]:last').click(function(){
-    $(".offer_groups_options:last #radio_option_group:enabled").click();
+    $(".offer_groups_options:last [id^='radio_option_group']:enabled").click();
   });
 
   $('label[for="option_offer"]:last').click(function(){
-    $(".offer_groups_options:last #radio_option_offer:enabled").click();
+    $(".offer_groups_options:last [id^='radio_option_offer']:enabled").click();
   });
 
 
@@ -284,7 +284,7 @@ $(function(){
     $(".semester [id^='autocomplete-input']", $(".edition:last")).val(semester);
     $(".curriculum_unit_type [id^='autocomplete-input']", $(".edition:last")).val(uc_type);
 
-    $("#radio_option_group", $(".edition:last")).prop("checked", true);
+    $("[id^='radio_option_group']", $(".edition:last")).prop("checked", true);
     $(".groups", $(".edition:last")).append(group);
   }
 

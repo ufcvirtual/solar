@@ -30,10 +30,7 @@
           $('#tb_lf').show();
           $.fancybox.close();
           update_tables_with_no_data();
-          setTimeout(function() {
-            $('#flash_message').prop('tabindex', 0);
-            $('#flash_message').focus(); 
-          }, 100); 
+          focus_element_time('#flash_message_span'); 
         }
       });
     });

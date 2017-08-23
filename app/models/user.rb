@@ -664,12 +664,12 @@ class User < ActiveRecord::Base
     result
   end
 
-  def cancel_allocations(profile_id = nil, allocation_tag_id = nil)
+  def cancel_allocations(profile_id = nil, allocation_tag_id = nil, updated_by_user_id = nil)
     query = {}
     query.merge!(profile_id: profile_id)               unless profile_id.nil?
     query.merge!(allocation_tag_id: allocation_tag_id) unless allocation_tag_id.nil?
 
-    allocations.where(query).update_all(status: Allocation_Cancelled)
+    allocations.where(query).update_all(status: Allocation_Cancelled, updated_by_user_id: updated_by_user_id)
   end
 
   def info(method, researcher = false)

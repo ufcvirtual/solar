@@ -49,6 +49,14 @@
 
   $("#register-tab").on('blur', function(){
     if($("#register-tab").parent().hasClass("inactive")){
-      $("#faq-button").focus();  
+      $("#faq-button").focus();
+    }
+  });
+
+  $(function(){
+    var text = $("#flash_message span").text().trim();
+    if(text.length !== 0) {
+      $("#flash_message").prop('tabindex', 0);
+      $("#flash_message").focus();
     }
   });

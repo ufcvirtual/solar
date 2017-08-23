@@ -129,7 +129,7 @@ class Post < ActiveRecord::Base
     end
 
     def decrement_counter
-      Post.decrement_counter('children_count', parent_id) unless parent.children_count == 0
+      Post.decrement_counter('children_count', parent_id) unless parent.blank? || parent.try(:children_count) == 0
     end
 
     def update_acu

@@ -20,3 +20,6 @@ if (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['run_websocket'] 
   system "ruby lib/websockets/websocket_server.rb&"
 end
 
+if (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['run_delayed_job'] rescue false)
+  system "script/delayed_job start"
+end

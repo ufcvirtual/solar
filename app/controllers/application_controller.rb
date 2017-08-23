@@ -22,8 +22,8 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  before_filter :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials] # devise
-  before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im, :get_theme
+  before_filter :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials, :privacy_policy] # devise
+  before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im
   after_filter :log_navigation
 
   rescue_from CanCan::AccessDenied do |exception|

@@ -6,6 +6,7 @@ function save_discussion(){
   });
   setTimeout(function() {
     focuInpuErro();
+    loadFocus();
   }, 700);  
 }
 
@@ -38,6 +39,7 @@ $(function(){
         discussions.parents('tr').fadeOut().remove();
 
         $(".btn_edit, .btn_del").attr("disabled", true);
+
       }).error(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")

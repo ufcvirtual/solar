@@ -1,0 +1,43 @@
+$(function(){
+  shortcut();
+});
+
+function shortcut_to_element(element, shortcut, name, focus, alt, shift){
+  $(element).attr('data-shortcut', shortcut);
+  $(element).attr('data-shortcut-name', name);
+  $(element).attr('data-shortcut-focus', focus);
+  $(element).attr('data-shortcut-alt', alt);
+  $(element).attr('data-shortcut-shift', shift);
+}
+
+function shortcut(){
+  $(document).off('keydown');
+  $(document).keydown(function (e) {
+    if(!$("input").is(":focus")){
+      var element = $('[data-shortcut="'+e.which+'"]:first').not(".disabled");
+
+      if(!!element.length && (($(element).data('shortcut-alt') == undefined || $(element).data('shortcut-alt') == false || e.altKey) && ($(element).data('shortcut-shift') == undefined || $(element).data('shortcut-shift') == false || e.shiftKey))){
+        if(element.data('shortcut-focus') == undefined || element.data('shortcut-focus') != true){
+          $(element)[0].click();
+        }
+        else
+          focus_element($(element)[0]);
+      }
+    }
+  });
+}
+
+function generate_shortcut_list(){
+  var shortcuts = $('[data-shortcut-name]').not(".disabled");
+  if(!!shortcuts.length)
+    shortcuts.each(function(){
+      $('.shortcut_floating_box').append("<li class='shortcut'>"+$(this).data('shortcut-name')+"</li><br/>");
+    });
+  else
+    $('.shortcut_floating_box').append("<li class='shortcut'><%=I18n.t('shortcut.no_shortcuts')%></li>");
+}
+
+function reload_shortcut_list(){
+  $('.shortcut_floating_box').children(':not(h2, .close_dropdown)').remove();
+  generate_shortcut_list();
+}

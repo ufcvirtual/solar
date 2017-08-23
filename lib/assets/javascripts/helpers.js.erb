@@ -51,16 +51,14 @@ function flash_message(msg, css_class, div_to_show, onclick_function, object) {
     if (typeof onclick_function != "undefined")
       var onclick_function = onclick_function + "()";
     if (typeof object != "undefined"){
-      var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span>' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages(true, '+ object +');" onkeydown="javascript:click_on_keypress(event, this);" href="#" aria-hidden="true"><i class="icon-cross" aria-hidden="true"></i></a></span></div>';
+      var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span id="flash_message_span">' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages(true, '+ object +');" onkeydown="javascript:click_on_keypress(event, this);" href="#" aria-label="<%=I18n.t('flash_message.close')%>" ><i class="icon-cross" aria-hidden="true"></i></a></span></div>';
     }else
-       var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span>' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages(true);" onkeydown="javascript:click_on_keypress(event, this);" href="#" aria-hidden="true"><i class="icon-cross" aria-hidden="true"></i></a></span></div>';
+       var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span id="flash_message_span">' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages(true);" onkeydown="javascript:click_on_keypress(event, this);" href="#" aria-label="<%=I18n.t('flash_message.close')%>" ><i class="icon-cross" aria-hidden="true"></i></a></span></div>';
     div_to_show.prepend($(html));
     $("#flash_message").closest(".sticky-wrapper").css("height","40px").css("width", "auto");
     $("#flash_message").effect("highlight","slow");
 
-    $('#flash_message').prop('tabindex', 0);
-    $('#flash_message').focus();
-
+    focus_element_time('#flash_message_span');
   }
 
 }
@@ -307,6 +305,13 @@ function focus_element(element){
   $(element).focus();
 }
 
+function focus_element_time(element){
+  setTimeout(function() {
+    focus_element(element);
+  }, 500);
+}
+
+
 // Catch the click of a link to undo action in a flash_message
 $.fn.undo_action_by_flash_message = function(options){
   if (typeof options == "undefined")
@@ -449,7 +454,7 @@ function goInside(element) {
     $("#mysolar_top_submenu").slideDown(150);
     $('#mysolar_top_submenu_label').addClass('mysolar_top_submenu_label_selected');
     $('#mysolar_top_submenu_label').addClass('mysolar_top_submenu_label_regular');
-    $("#synchronize").focus();
+    $("#my_data").focus();
   } else if (elementID == "accessibility_top") {
     $(element).closest("ul").css('left', offset);
     $("#mysolar_accessibility_submenu").slideDown(150);
@@ -489,29 +494,25 @@ function goOut(element) {
 }
 
 function focuInpuErro(){
+
   if (typeof($(".error")) !== "undefined") {
-    $(".error").each( function(index, value){   
+    $(".error").each( function(index, value){
         var label = $(this).siblings()[0];
         var text = $(label).text()+': '+$(this).text();
-        $(label).attr("aria-label",text);
+        $(label).attr("aria-label", text);
     });
 
     var el = $(".error").siblings()[0];
-    //var er =$(".error")[0];
-    //var text = $(el).text()+': '+$(er).text();
     if($(el).is(":visible")){
-      //$(el).attr("aria-label",text);
       $(".error").siblings()[0].focus();
     } else {
       if(typeof($("#_continue")) !== "undefined" && $("#_continue").is(":visible")){
         $("#_continue").click();
         if ($(el).is(":visible")) {
-          //$(el).attr("aria-label",text);
           $(".error").siblings()[0].focus();
         } else {
           if (typeof($("#__continue")) !== "undefined" && $("#__continue").is(":visible")){
             if ($(el).is(":visible")) {
-              //$(el).attr("aria-label", text);
               $(".error").siblings()[0].focus();
             }
           }
@@ -550,7 +551,7 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
 
   real_grade = $('#academic_allocation_user_grade').val();
   real_hours = $('#academic_allocation_user_working_hours').val();
-  
+
   if(!$('#academic_allocation_user_grade').length && !$('#academic_allocation_user_working_hours').length)
     grade = data.grade;
 
@@ -610,5 +611,30 @@ function set_datetime_masked(id){
      timeInput: true,
      controlType: 'select',
      minDateTime: currentDate
+  });
+}
+
+function loadFocus(){
+  if (typeof $.cookie('listIdFocu') === 'undefined'){
+    var arrIdFocus = [];
+  } else {
+   var arrIdFocus = $.cookie("listIdFocu").split(/,/);
+  }
+
+  $('*').on("focus", function(){
+    var _id = $(this).attr('id');
+    if(_id){
+      var idRand = _id;
+    }else{
+      var idRand = 'id_'+Math.floor(Math.random() * 65536).toString();
+      $(this).attr('id', idRand);
+    }
+    if(arrIdFocus.length==20){
+      arrIdFocus.shift();
+      arrIdFocus.push(idRand);
+    }else{
+      arrIdFocus.push(idRand);
+    }
+    $.cookie("listIdFocu", arrIdFocus);
   });
 }

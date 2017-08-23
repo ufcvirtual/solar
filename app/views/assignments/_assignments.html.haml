@@ -5,7 +5,7 @@
         %th{id: "description#{type}"}= t('assignments.list.description')
         %th.center.date{ style: 'width: 22%;', id: "date_range#{type}" }= t('assignments.list.date_range')
         %th.center{style: "width: 8%;", id: "evaluative#{type}"}= t(:evaluative, scope: [:scores, :index])
-        %th.center{style: "width: 8%;", id: "frequency#{type}"}= t(:frequency, scope: [:scores, :info])  
+        %th.center{style: "width: 8%;", id: "frequency#{type}"}= t(:frequency, scope: [:scores, :info])
         %th.no_sort{ style: 'width: 19%;', id: "action#{type}" }
     %tbody
       - assignments.each do |assignment|
@@ -14,7 +14,7 @@
           %td{headers: "description#{type}" }
             %div.title-yellow= assignment.name
             .description
-              - if assignment.description.size > 180 
+              - if assignment.description.size > 180
                 .enunciation_slice= assignment.description.slice(0..180) << '...'
                 .enunciation_complete= assignment.description
                 .more_or_less
@@ -54,12 +54,12 @@
           %tr
             %td{ headers: "description#{type}", colspan: 5 }
               .participants_box.invisible{ class: "assignment-#{assignment.academic_tool_id}" }
-                
+
 - else
   .text_none.empty_message= t(:itens_not_found)
 
 = javascript_include_tag 'group_assignments'
- 
+
 :javascript
   $(function(){
     $(".manage_groups").not(".disabled").click(function(){

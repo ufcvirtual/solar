@@ -20,3 +20,9 @@
             = render partial: 'file', locals: { file: file, destroy: false }
     - else
       .block_content_text.text_none= t(:itens_not_found)
+
+:javascript
+
+  $(function(){
+    focus_element_time('#flash_message_span'); 
+  }); 

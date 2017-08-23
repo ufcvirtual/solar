@@ -102,6 +102,7 @@
       $.get($($(this).parent()).data("link"), function(data){
         $(".edition_items").html(data);
         $(".back").removeClass("invisible");
+        loadFocus();
       }).error(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")

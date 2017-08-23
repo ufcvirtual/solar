@@ -41,8 +41,13 @@
         = t('exams.pre.shortcuts_title')
         %i.icon-arrow-down-triangle{:'aria-hidden'=>'true'}
     %ul.shortcut_text.invisible
-      - @shortcut.each do |sh|
-        %li.shortcut= [sh.first, ['[',sh.last,']'].join('')].join(' ')
+      %li.shortcut= t('shortcut.exam.name.time')
+      %li.shortcut= t('shortcut.exam.name.questions')
+      %li.shortcut= t('shortcut.exam.name.enunciation')
+      %li.shortcut= t('shortcut.exam.name.items')
+      %li.shortcut= t('shortcut.pagination.name.next')
+      %li.shortcut= t('shortcut.pagination.name.previous')
+      %li.shortcut= t('shortcut.exam.name.audio')
   
   .notice
     #save= t("exams.pre.alert_save")

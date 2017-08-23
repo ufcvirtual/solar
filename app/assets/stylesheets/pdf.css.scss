@@ -231,7 +231,7 @@ $new_after_evaluation_background: #e6f0fc;
         color: $evaluated_not_started_color;
       }
 
-      .to_send, .to_send a{
+      .to_send, .to_send a, .retake, .retake a{
         color: $evaluated_to_send_color;
       }
 
@@ -287,7 +287,7 @@ td.assignment_as a {
 }
 
 .assignment_to_be_sent, .assignment_to_be_sent a,
-.assignment_pending,
+.assignment_pending, .assignment_retake
 td.assignment_an a {
   color: $evaluated_to_send_color;
 }

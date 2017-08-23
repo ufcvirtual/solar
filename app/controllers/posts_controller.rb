@@ -32,9 +32,6 @@ class PostsController < ApplicationController
       p = params.slice(:date, :type, :order, :limit, :display_mode, :page)
 
       @display_mode = p['display_mode'] ||= 'tree'
-      #@total_itens = @discussion.discussion_posts_count(@display_mode, @allocation_tags, current_user.id)
-      #@total_pages = (total_itens.to_f/Rails.application.config.items_per_page.to_f).ceil.to_i
-      #@total_pages = 1 unless total_itens.to_i > 0
 
       if (p['display_mode'] == "list" || params[:format] == "json")
         # se for em forma de lista ou para o mobilis, pesquisa pelo método posts
@@ -47,15 +44,7 @@ class PostsController < ApplicationController
       else  
         @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
       end
-      
-
-
-      @shortcut = Hash.new
-      @shortcut[t("posts.post.new").to_s] = t("posts.shortcut.shortcut_new").to_s
-      @shortcut[t("posts.index.show_thread").to_s] = t("posts.shortcut.shortcut_thread").to_s
-      @shortcut[t("posts.index.show_plainlist").to_s] = t("posts.shortcut.shortcut_list").to_s
-      @shortcut[t("posts.index.show_my_post").to_s] = t("posts.shortcut.shortcut_discussion").to_s
-      
+            
       respond_to do |format|
         format.html
         format.json  {
