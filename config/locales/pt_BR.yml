@@ -1273,6 +1273,8 @@ pt_BR:
       number_posts: 'Total de Posts %{n_post}'
       show_my_post: "Ver minhas discussões"
       primary: " primárias"
+      save_draft: Salvar Rascunho
+      publish: Publicar
     post:
       remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
       new: Nova postagem
@@ -1294,12 +1296,21 @@ pt_BR:
       res_post: "ª postagem"
       remove_attachment: "Remover %{file} %{size}"
       remove_post: "Postagem removida com suceso"
+      draft: "Rascunho <a class='draft_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>(?)</a>"
+      draft2: Explicação sobre o Rascunho do post
+      fv_explain: "&nbsp;&nbsp;&nbsp;&nbsp; Um post rascunho está visível apenas para o usuário que o criou, poderá ser publicado a qualquer momento, desde que o fórum esteja no seu período de postage e caso o rascunho seja filho único e o post pai seja apagado o rascunho também será apagado."
     create:
       created: "Postagem criada com sucesso"
       not_created: "A postagem não foi criada"
+      draft: "Rascunho criado com sucesso, se este rascunho for o único filho e o post pai for removido, ele também será removido."
+      not_draft: "O rascunho não foi criada"
+      save_draft: "Deseja salvar o seu post como rascunho?"
+      save_post: "Deseja salvar o seu post?"  
     update:
       updated: "Postagem atualizada com sucesso"
       not_updated: "A postagem não foi atualizada"
+      draft: "Rascunho atualizada com sucesso"
+      not_draft: "A rascunho não foi atualizada"
     user_posts:
       title: Postagens do %{user} em %{discussion}
       message: Post

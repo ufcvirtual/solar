@@ -39,7 +39,8 @@
           = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'discussion_post_content', number: '', field: ''}
           .new_post_dialog_buttons.btn-group
             = button_tag content_tag(:span, t(:cancel)), type: 'button', onclick: "cancel_posting(this)", class: 'btn btn_caution', id: 'btn_cancel_post'
-            = button_tag t(:send), class: "btn btn_main", id: "submit_post", type: :button
+            = button_tag t('.publish'), class: "btn btn_main", id: "submit_post", type: :button
+            = button_tag t('.save_draft'), class: "btn btn-orange", id: "submit_post_draft", type: :button
     .forum_post_new
 
   .forum_posts_wrapper
@@ -58,6 +59,32 @@
   $("#button_new_post").focus();
 
   $(function(){
+    $('a').not(".draft_version_explain, .update_post, .btn_caution, .forum_button_attachment, .response_post, .dropdown-open, .close_dropdown, #mysolar_top_user_nick, #accessibility_top, #help_top, .link-arrow, #shortcut_accesskey").click(function(){
+      if( typeof(CKEDITOR) !== "undefined" && CKEDITOR != undefined ){
+        if (CKEDITOR.instances['discussion_post_content'] !== undefined){
+          try{
+            var content = CKEDITOR.instances["discussion_post_content"].getData();
+          } catch(exception){
+            var content = $('#discussion_post_content').val();
+          }
+          if(content){
+            if (typeof($("#submit_post_draft")) !== "undefined" && $("#submit_post_draft").is(":visible")){
+              var result = window.confirm("#{t('posts.create.save_draft')}");
+              if (result == true) {
+                $("#submit_post_draft").click();
+              }  
+            }else{
+              if (typeof($("#submit_post")) !== "undefined" && $("#submit_post").is(":visible")){
+                var result = window.confirm("#{t('posts.create.save_post')}");
+                if (result == true) {
+                  $("#submit_post").click();
+                }  
+              } 
+            }  
+          }
+        }
+      }
+    });
 
     CKEDITOR_BASEPATH  = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
     var websocket_host = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["host"]}";
@@ -132,7 +159,7 @@
       $.ajax({
         type: form.attr("method"),
         url: form.attr("action"),
-        data: {discussion_post: {parent_id: parent_id, content: content}},
+        data: {discussion_post: {parent_id: parent_id, content: content, draft: false}},
         success: function(data){
           remove_ckeditor(); // remove ckeditor options
 
@@ -180,4 +207,99 @@
       });
     });
 
+    $("#button_new_post").click(function(){
+      setTimeout(function(){
+        var editor = CKEDITOR.instances["discussion_post_content"];
+
+        var lastSaveTime = 0;
+        var currentTime = 0;
+        editor.on('change', function( evt ) {
+          window.setTimeout(function() {
+            currentTime = new Date().getTime();
+
+            if ((currentTime - lastSaveTime) > 8000 || lastSaveTime == 0) {
+              try{
+                var content = CKEDITOR.instances["discussion_post_content"].getData();
+              } catch(exception){
+                var content = $('#discussion_post_content').val();
+              }
+              console.log( content );
+              
+              lastSaveTime = new Date().getTime();
+            }
+          }, 8000);
+        });
+         
+      }, 300 );   
+    });
+
+    $("#submit_post_draft").click(function(){
+      var form    = $($(this).parents("form")[0]);
+      try{
+        var content = CKEDITOR.instances["discussion_post_content"].getData();
+      } catch(exception){
+        var content = $('#discussion_post_content').val();
+      }
+
+
+      // get parent_id information
+      if (form.attr("method") == "POST")
+        var parent_table = $($(this).parents("article")[0]);
+      if (parent_table == undefined)
+        var parent_id = null;
+      else
+        var parent_id = parent_table.attr("id");
+
+      $.ajax({
+        type: form.attr("method"),
+        url: form.attr("action"),
+        data: {discussion_post: {parent_id: parent_id, content: content, draft: true}},
+        success: function(data){
+          remove_ckeditor(); // remove ckeditor options
+
+          $.get("#{discussion_post_path(@discussion.id, ':id')}".replace(':id', data.post_id), {can_post: "#{@can_post}"}, function(data2){
+            var post_table = $("article#"+data.post_id);
+            if (!!post_table.length){
+              post_table.html(data2);
+              msg = "#{t('posts.update.draft')}";
+            }else{
+              if (parent_table != undefined && !!parent_table.length && !display_list){
+                $(parent_table.find("._cell.forum_post_content .forum_post_wrapper")[0]).after(data2);
+                parent_table.find(".forum_post_buttons:first").find(".update_post:first, .forum_button_attachment:first, .btn_caution:first").remove();
+                
+              }else
+                $(".forum_posts_wrapper").prepend(data2);
+              msg = "#{t('posts.create.draft')}";  
+            }  
+            $(".forum_button_attachment").call_fancybox({
+              afterShow: function(){
+                $('.focu').attr("tabindex", "0");
+                $('.focu').focus();
+              }
+            });
+            add_post_count_warning();
+            flash_message(msg, "notice");
+          });
+
+          // only send message if is a new post
+          if (form.attr("method") == "POST")
+            ws.send(JSON.stringify({
+              msg: content,
+              post_id: data.post_id,
+              parent_id: data.parent_id,
+              academic_allocation_id: ac
+            }));
+          loadFocus();
+        },
+        error: function(data){
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+          else
+            flash_message("#{t('posts.create.not_draft')}", "alert");
+        }
+      });
+    });
+
   });
+

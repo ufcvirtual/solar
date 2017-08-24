@@ -81,7 +81,7 @@ function new_post(obj, parent) {
   return false;
 };
 
-function update_post(obj, post, parent) {
+function update_post(obj, post, parent, draft) {
   if($("#new_post:visible").length > 0)
     if (!confirm("<%= I18n.t('posts.index.confirm_ckeditor') %>")) return; 
   form_post_reset_parameters();
@@ -90,6 +90,10 @@ function update_post(obj, post, parent) {
   var action = $('form#new_post_form').attr('action-to-edit').replace(':id', post);
   $('form#new_post_form').attr('action', action);
   $('form#new_post_form').attr('method', "PUT");
+
+  if(draft==false){
+    $("#submit_post_draft").remove();
+  }
 
   postEdit = $(obj).closest('.forum_post_wrapper').children(".forum_post_reply");
   $(postEdit).show();

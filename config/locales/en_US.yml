@@ -1096,6 +1096,8 @@ en_US:
       number_posts: 'Number of Posts %{n_post}'
       show_my_post: "Show my discussions"
       primary: " primary"
+      save_draft: Save draft
+      publish: Publish
     post:
       remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       answer: "Reply"
@@ -1116,6 +1118,9 @@ en_US:
       res_post: "ª post"
       remove_attachment: Remove %{file} %{size}
       remove_post: "Post delete success"
+      draft: "Draft <a class='draft_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>(?)</a>"
+      draft2: Explanation of the post Draft
+      fv_explain: "&nbsp;&nbsp;&nbsp;&nbsp; A draft post is visible only to the user who created it, it can be published at any time, as long as the forum is in its posting period and if the draft is an only child and the parent post is deleted, the draft will also be erased."
     create:
       created: "Post was successfully created"
       not_created: "Post was not created"

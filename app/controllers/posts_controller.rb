@@ -38,11 +38,12 @@ class PostsController < ApplicationController
         p['page'] ||= @current_page
         p['type'] ||= "history"
         p['date'] = DateTime.parse(p['date']) if params[:format] == "json" && p.include?('date')
-        @posts    = @discussion.posts_not_limit(p, @allocation_tags).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
+        @posts    = @discussion.posts_not_limit(p, @allocation_tags, current_user.id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
       elsif (@display_mode == 'user' )
-        @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags, current_user.id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
+        my_list = true
+        @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags, current_user.id, my_list).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
       else  
-        @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
+        @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags, current_user.id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
       end
             
       respond_to do |format|
@@ -73,7 +74,7 @@ class PostsController < ApplicationController
       @allocation_tags = AllocationTag.find(at = active_tab[:url][:allocation_tag_id]).related
       raise CanCan::AccessDenied if params[:user_id].to_i != current_user.id && !AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
 
-      @posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id).order('updated_at DESC')
+      @posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id, draft: false).order('updated_at DESC')
 
       @academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: @allocation_tags).first
       @can_evaluate = can? :evaluate, Discussion, { on: at = active_tab[:url][:allocation_tag_id] }
@@ -105,7 +106,7 @@ class PostsController < ApplicationController
 
   ## PUT /discussions/:id/posts/1
   def update
-    if @post.update_attributes(content: params[:discussion_post][:content])
+    if @post.update_attributes(content: params[:discussion_post][:content], draft: params[:discussion_post][:draft])
       render json: {success: true, post_id: @post.id, parent_id: @post.parent_id}
     else
       render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
@@ -136,17 +137,20 @@ class PostsController < ApplicationController
 
   ## DELETE /posts/1
   def destroy
+    @children_draft = @post.children.where(draft: true)
+    puts @children_draft
+    @children_draft.destroy_all
     @post.destroy
 
     render json: {result: :ok}
-  rescue => error
-    render json: { alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
+  #rescue => error
+   # render json: { alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
   end
 
   private
 
     def post_params
-      params.require(:discussion_post).permit(:content, :parent_id, :discussion_id)
+      params.require(:discussion_post).permit(:content, :parent_id, :discussion_id, :draft)
     end
 
     def new_post_under_discussion(discussion)
