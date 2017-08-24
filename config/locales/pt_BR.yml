@@ -4573,7 +4573,7 @@ pt_BR:
     minimize: "Minimizar janela modal"
 
   flash_message:
-    close: "Fechar mensage"
+    close: "Fechar aviso"
 
   common_between_pages:
     more: 'Mais'

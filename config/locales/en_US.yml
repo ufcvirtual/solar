@@ -4331,7 +4331,7 @@ en_US:
     minimize: "Minimize modal window"
 
   flash_message:
-    close: "Close message"  
+    close: "Close notification"  
 
   common_between_pages:
     more: More
