@@ -4473,9 +4473,9 @@ pt_BR:
       access_number: Quantidade de Acessos
       access_number_distinct: Quantidade de Acessos Distintos
       access_number_responsables: Quantidade de Acessos Responsáveis
-      title_chat: Titulo do Chat
+      title_chat: Chat
       title_portfolio: Portfólio
-      number_distinct_user_portfolio: Quantidade Distinta por Usuário
+      number_distinct_user_portfolio: Quantidade por Usuários distintos
     summary:
       courses_number: Quantidade de Cursos
       groups_number: Quantidade de Turmas
@@ -4502,7 +4502,7 @@ pt_BR:
       chat_message_number: Quantidade de Messagens nos Chats
       access_number_responsables: Quantidade de Acessos dos Responsáveis
       exam_number: Quantidade de Provas
-      files_portifolio_distinct_user: Quantidade de Arquivos Distintos Postados no Portfólio por Usuário Distintos
+      files_portifolio_distinct_user: Quantidade de Arquivos Postados no Portfólio por Usuário Distintos
       groups_active_number: Quantidade de Turmas Ativas
 
   tutorials:
