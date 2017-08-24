@@ -2,10 +2,6 @@ function profile_save() {
   $('form#profile_form').serialize_and_submit({
     replace_list: $('.list_profiles')
   });
-  setTimeout(function() {
-    focuInpuErro();
-    loadFocus();
-  }, 700);
 }
 
 function profile_delete(profile_id) {

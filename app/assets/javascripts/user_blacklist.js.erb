@@ -2,10 +2,6 @@ function user_blacklist_save(){
   $('form#user_blacklist_form').serialize_and_submit({
     replace_list: $('.list_user_blacklist')
   });
-  setTimeout(function() {
-    focuInpuErro();
-    loadFocus();
-  }, 700);
 }
 
 $(function(){

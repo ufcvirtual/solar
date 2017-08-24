@@ -2,10 +2,6 @@ function save_webconference(){
   $('form#webconference_form').serialize_and_submit({
     replace_list: $('.list_webconferences')
   });
-  setTimeout(function() {
-    focuInpuErro();
-    loadFocus();
-  }, 700);
 }
 
 function access_webconference(obj){
