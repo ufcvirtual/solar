@@ -33,15 +33,15 @@ module V1::OffersAndSemesters
   end
 
   def verify_dates(offer, semester, offer_period, enrollment_period = {})
-    s_diff_period = different_dates?(semester.offer_schedule, offer_period)           # semester offer  period != params offer  period
+    s_diff_period = different_dates?(semester.offer_schedule, offer_period) # semester offer  period != params offer  period
     s_diff_enroll = different_dates?(semester.enrollment_schedule, enrollment_period) # semester enroll period != params enroll period
 
-    o_diff_period = different_dates?(offer.period_schedule, offer_period)          # offer  period != params offer  period
+    o_diff_period = different_dates?(offer.period_schedule, offer_period) # offer  period != params offer  period
     o_diff_enroll = different_dates?(offer.enrollment_schedule, enrollment_period) # enroll period != params enroll period
 
     dates = {}
-    dates.merge!({offer_start: offer_period[:start_date], offer_end: offer_period[:end_date]})                     if (o_diff_period.nil? and s_diff_period) or (not(o_diff_period.nil?) and o_diff_period)
-    dates.merge!({enrollment_start: enrollment_period[:start_date], enrollment_end: enrollment_period[:end_date]}) if (o_diff_enroll.nil? and s_diff_enroll) or (not(o_diff_enroll.nil?) and o_diff_enroll) and not(enrollment_period.empty?)
+    dates.merge!({offer_start: offer_period[:start_date], offer_end: offer_period[:end_date]}) if (o_diff_period.nil? && s_diff_period) || (!(o_diff_period.nil?) && o_diff_period)
+    dates.merge!({enrollment_start: enrollment_period[:start_date], enrollment_end: enrollment_period[:end_date]}) if (o_diff_enroll.nil? && s_diff_enroll) || (!(o_diff_enroll.nil?) && o_diff_enroll) && !(enrollment_period.empty?)
     update_dates(offer, dates) unless dates.empty?
   end
 

@@ -55,7 +55,7 @@ module Taggable
     allocation
   end
 
-  def cancel_allocations(user_id = nil, profile_id = nil, opts = {})
+  def cancel_allocations(user_id = nil, profile_id = nil, updated_by_user_id=nil, opts = {})
     query = {}
     query.merge!({user_id: user_id})       unless user_id.nil?
     query.merge!({profile_id: profile_id}) unless profile_id.nil?
@@ -67,7 +67,7 @@ module Taggable
     end
 
     all.where(query).each do |al|
-      al.update_attributes(status: Allocation_Cancelled)
+      al.update_attributes(status: Allocation_Cancelled, updated_by_user_id: updated_by_user_id)
     end
   end
 
