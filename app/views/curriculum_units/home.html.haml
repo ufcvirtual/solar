@@ -2,9 +2,9 @@
   %section.block_wrapper#subject_info_portlet
     .block_title
       .block_left
-        %h2= t(:curriculum_access_curriculum_unit)
+        %h2.subject_title= t(:curriculum_access_curriculum_unit)
       .block_right
-        %h2= t(:curriculum_unit_responsible)
+        %h2.responsible_title= t(:curriculum_unit_responsible)
     .block_content
       .block_left
         = @curriculum_unit.try(:resume)
@@ -17,7 +17,7 @@
               = truncate( [name, " (", profile, " )"].join, length: 55, omission: '...' )
               - if can_send_message
                 %span= link_to (content_tag(:i, nil, class: 'icon-mail participants_messages', :'aria-hidden' => 'true')), new_message_path(user_id: resp.id, bread: 'menu_messages'), class: 'can-update-menu', 'data-menu-bread' => 'menu_messages', :'aria-label' => t('messages.message_to', name: name)
-  
+
   %secton= render 'lesson_portlet'
 
   .block_wrapper.block_wrapper_small
@@ -29,5 +29,8 @@
 
 :javascript
   $(function(){
+    $(document).keydown(function (event) {
+      shortcut_focus_home(event);
+    });
     find_and_open_sav();
   });

@@ -1,7 +1,7 @@
 - message_is_present = @messages.any?
 #block_messages.block_small.portlet
   .block_title
-    %h2
+    %h2.messages_title
       %i.icon-mail{:'aria-hidden' =>'true'}
       = t(:curriculum_access_message)
       - if message_is_present
