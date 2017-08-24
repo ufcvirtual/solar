@@ -31,11 +31,7 @@ jQuery(function($){
   $('#save').click(function(){
     $('#chat_form:last').serialize_and_submit({
       replace_list: div_to_replace
-    });
-    setTimeout(function() {
-      focuInpuErro();
-      loadFocus();
-    }, 700);  
+    });  
   });
 
   /* se a data ficar vazia, recebe a data que veio ao carregar o formulário ou uma data permitida de acordo com a relação data final - data inicial */

@@ -29,9 +29,5 @@
         outer: 'fancybox-outer',
         replace_list: (("#{escape_once(params[:calendar])}" == "") ? $(".list_assignments") : $(".calendar_schedules"))
       });
-      setTimeout(function() {
-        focuInpuErro();
-        loadFocus();
-      }, 700);
     });
   });
