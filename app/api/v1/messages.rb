@@ -31,6 +31,25 @@ module V1
         get "/:id" , rabl: 'messages/show' do   
         end
       end #segment
+
+      segment do
+        before do
+          verify_user_permission_and_set_obj(:index)
+        end # before
+
+        # messages/list
+        desc 'Listar todas as mensagens'
+        params do
+          requires :group_id, type: Integer, desc: 'Group ID.'
+          requires :user_id, type: Integer, desc: 'User ID.'
+          optional :limit, type: Integer, desc: 'Messages limit.', default: Rails.application.config.items_per_page.to_i
+          optional :page, type: Integer, desc: 'Page', default: 1
+        end
+
+        get ":id/all", rabl: 'messages/list' do
+        end
+      end #segment 
+
     end #namespace
   end #class Messages
 end #module v1

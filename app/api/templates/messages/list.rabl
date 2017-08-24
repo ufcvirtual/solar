@@ -1,5 +1,7 @@
 collection @messages
 
-@messages.each do |message|
-  extends 'messages/show', locals: {message: message}
-end 
+attributes :id, :subject
+
+# @messages.each do |message|
+#   extends 'messages/show', locals: {message: message}
+# end 
