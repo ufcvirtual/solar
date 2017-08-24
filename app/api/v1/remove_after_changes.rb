@@ -81,7 +81,7 @@ module V1
             load_group    = params[:turmas]
             cpfs          = load_group[:professores]
             semester_name = load_group[:periodo].blank? ? load_group[:ano] : "#{load_group[:ano]}.#{load_group[:periodo]}"
-            offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: (load_group[:dtFim].to_date + 6.month) }
+            offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: (load_group[:dtFim].to_date) }
             course        = Course.find_by_code! load_group[:codGraduacao]
             uc            = CurriculumUnit.find_by_code! load_group[:codDisciplina]
 
