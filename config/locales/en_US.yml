@@ -1096,6 +1096,8 @@ en_US:
       number_posts: 'Number of Posts %{n_post}'
       show_my_post: "Show my discussions"
       primary: " primary"
+      save_draft: Save draft
+      publish: Publish
     post:
       remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       answer: "Reply"
@@ -1116,6 +1118,9 @@ en_US:
       res_post: "ª post"
       remove_attachment: Remove %{file} %{size}
       remove_post: "Post delete success"
+      draft: "Draft <a class='draft_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>(?)</a>"
+      draft2: Explanation of the post Draft
+      fv_explain: "&nbsp;&nbsp;&nbsp;&nbsp; A draft post is visible only to the user who created it, it can be published at any time, as long as the forum is in its posting period and if the draft is an only child and the parent post is deleted, the draft will also be erased."
     create:
       created: "Post was successfully created"
       not_created: "Post was not created"
@@ -4228,11 +4233,11 @@ en_US:
       timestamp_info: Document Generated in
       webconference: Title Webconference
       access_number: Number Access
-      access_number_distinct: Number Access Distinct
-      access_number_responsables: Number Access Responsables
-      title_chat: Title of Chat
-      title_portfolio: Portfolio
-      number_distinct_user_portfolio: Amount Distinct User
+      access_number_distinct: Number Distinct Access 
+      access_number_responsables: Number Access Responsibles
+      title_chat: Chat
+      title_portfolio: Assignment
+      number_distinct_user_portfolio: Amount Distinct Users
     summary:
       courses_number: Amount of Courses
       groups_number: Amount of Groups
@@ -4241,15 +4246,15 @@ en_US:
       users_number_module_bound: Users Linked to the MA - Academic Module
       users_number_module_unbound: Users Unlinked to the MA - Academic Module
       disciplines_amount: Disciplines Amount
-      files_portifolio: Portfolio posts Amount
+      files_portifolio: Assignment files Amount
       number_of_students: Number of active registered students
-      web_portifolio: Portfolio webconferences Amount
+      web_portifolio: Assignment webconferences Amount
       webconferences_number: Webconferences Amount
       access_number: Amount Access
       post_number: Amount Posts at Forum
       number_of_responsible: Number of Responsibles
       access_number_webconrence: Amount Access Webconference
-      webconference_total: Amount Access Distinct Responsibles Webconference
+      webconference_total: Amount Access by Distinct Responsibles Webconference
       access_number_distinct_user_webconrence: Amount Access Distinct Users Webconference
       discussion_number: Amount Discussion
       lesson_number: Amount Lessons
@@ -4259,8 +4264,8 @@ en_US:
       chat_message_number: Amount Message (Chats)
       access_number_responsables: Number Access Responsables
       exam_number: Amount Exam
-      files_portifolio_distinct_user: Portfolio Files Amount Distinct (User)
-      groups_active_number: Amount of Groups Active
+      files_portifolio_distinct_user: Assignment Files Amount by Distinct Users
+      groups_active_number: Active Groups Amount
 
   tutorials:
     menu: Tutorials
@@ -4331,7 +4336,7 @@ en_US:
     minimize: "Minimize modal window"
 
   flash_message:
-    close: "Close message"  
+    close: "Close notification"  
 
   common_between_pages:
     more: More

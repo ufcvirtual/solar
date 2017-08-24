@@ -39,14 +39,15 @@ class Post < ActiveRecord::Base
   end
 
   def verify_children_with_raise
-    if self.children.any?
+
+    if self.children.any? && self.draft == false
       errors.add(:base, I18n.t('posts.error.children'))
       raise 'children'
     end
   end
 
   def can_change?
-    unless user_id == User.current.try(:id)
+    unless user_id == User.current.try(:id) || draft == true
       errors.add(:base, I18n.t('posts.error.permission'))
       raise 'permission'
     end

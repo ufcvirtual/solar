@@ -250,7 +250,7 @@ class Report
        
         #Quantidade de Provas
         models_info[17] = Exam.joins("LEFT JOIN academic_allocations ON exams.id = academic_allocations.academic_tool_id")
-                          .where("academic_allocations.academic_tool_type='Exam' AND academic_allocations.allocation_tag_id IN (#{allocation_tags_ids})").count                                     
+                          .where("academic_allocations.academic_tool_type='Exam' AND exams.status = 't' AND academic_allocations.allocation_tag_id IN (#{allocation_tags_ids})").count                                     
 
         #Quantidade de acessos
         models_info[18] = LogAccess.where("allocation_tag_id IN (#{allocation_tags_ids})").count

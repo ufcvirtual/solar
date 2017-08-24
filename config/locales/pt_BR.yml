@@ -1275,6 +1275,8 @@ pt_BR:
       number_posts: 'Total de Posts %{n_post}'
       show_my_post: "Ver minhas discussões"
       primary: " primárias"
+      save_draft: Salvar Rascunho
+      publish: Publicar
     post:
       remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
       new: Nova postagem
@@ -1296,12 +1298,21 @@ pt_BR:
       res_post: "ª postagem"
       remove_attachment: "Remover %{file} %{size}"
       remove_post: "Postagem removida com suceso"
+      draft: "Rascunho <a class='draft_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>(?)</a>"
+      draft2: Explicação sobre o Rascunho do post
+      fv_explain: "&nbsp;&nbsp;&nbsp;&nbsp; Um post rascunho está visível apenas para o usuário que o criou, poderá ser publicado a qualquer momento, desde que o fórum esteja no seu período de postage e caso o rascunho seja filho único e o post pai seja apagado o rascunho também será apagado."
     create:
       created: "Postagem criada com sucesso"
       not_created: "A postagem não foi criada"
+      draft: "Rascunho criado com sucesso, se este rascunho for o único filho e o post pai for removido, ele também será removido."
+      not_draft: "O rascunho não foi criada"
+      save_draft: "Deseja salvar o seu post como rascunho?"
+      save_post: "Deseja salvar o seu post?"  
     update:
       updated: "Postagem atualizada com sucesso"
       not_updated: "A postagem não foi atualizada"
+      draft: "Rascunho atualizada com sucesso"
+      not_draft: "A rascunho não foi atualizada"
     user_posts:
       title: Postagens do %{user} em %{discussion}
       message: Post
@@ -4446,7 +4457,7 @@ pt_BR:
         id: Quantidade de Mensagens por Chat
         document_title: Relatório com Quantidade de Messagens por Chat
       report_four:
-        id: 'Quantidade de Acessos a Webconferências'
+        id: 'Quantidade de Acessos às Webconferências'
         document_title: 'Relatório com Quantidade de Acessos à Webconferência'
       report_six:
         id: Quantidade de Arquivos por Portfólio
@@ -4475,9 +4486,9 @@ pt_BR:
       access_number: Quantidade de Acessos
       access_number_distinct: Quantidade de Acessos Distintos
       access_number_responsables: Quantidade de Acessos Responsáveis
-      title_chat: Titulo do Chat
+      title_chat: Chat
       title_portfolio: Portfólio
-      number_distinct_user_portfolio: Quantidade Distinta por Usuário
+      number_distinct_user_portfolio: Quantidade por Usuários distintos
     summary:
       courses_number: Quantidade de Cursos
       groups_number: Quantidade de Turmas
@@ -4493,8 +4504,8 @@ pt_BR:
       access_number: Quantidade de Acessos
       post_number: Quantidade de Postagens nos Fóruns
       number_of_responsible: Quantidade de Responsáveis
-      access_number_webconrence: Quantidade de Acessos a Webconferência
-      webconference_total: Quantidade de Acessos de Responsáveis Distintos a Webconferência
+      access_number_webconrence: Quantidade de Acessos à Webconferência
+      webconference_total: Quantidade de Acessos de Responsáveis Distintos à Webconferência
       access_number_distinct_user_webconrence: Quantidade de Acessos de Usuários Distintos a Webconferência
       discussion_number: Quantidade de Fóruns
       lesson_number: Quantidade de Aulas
@@ -4504,7 +4515,7 @@ pt_BR:
       chat_message_number: Quantidade de Messagens nos Chats
       access_number_responsables: Quantidade de Acessos dos Responsáveis
       exam_number: Quantidade de Provas
-      files_portifolio_distinct_user: Quantidade de Arquivos Distintos Postados no Portfólio por Usuário Distintos
+      files_portifolio_distinct_user: Quantidade de Arquivos Postados no Portfólio por Usuário Distintos
       groups_active_number: Quantidade de Turmas Ativas
 
   tutorials:
@@ -4575,7 +4586,7 @@ pt_BR:
     minimize: "Minimizar janela modal"
 
   flash_message:
-    close: "Fechar mensage"
+    close: "Fechar aviso"
 
   common_between_pages:
     more: 'Mais'

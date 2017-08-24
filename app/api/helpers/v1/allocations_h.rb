@@ -28,7 +28,7 @@ module V1::AllocationsH
     params = { curriculum_unit_id: ucs }
     params.merge!(semester_id: semester_id) #unless config not defined
     taggables = RelatedTaggable.joins(:offer).where(offers: params).select('COALESCE(group_at_id, offer_at_id) AS at').map(&:at).map(&:to_i)
-    Allocation.where(allocation_tag_id: taggables, profile_id: profile_id).update_all updated_at: Time.now, status: Allocation_Cancelled
+    Allocation.where(allocation_tag_id: taggables, profile_id: profile_id).update_all updated_at: Time.now, status: Allocation_Cancelled, updated_by_user_id: nil
   end
 
   def get_profile_id(profile)
@@ -74,7 +74,7 @@ module V1::AllocationsH
     end
 
 
-    users << import_users(params) if (params[:cpf].present? or params[:cpfs].present?) and params[:ma]
+    users << import_users(params) if (params[:cpf].present? || params[:cpfs].present?) && params[:ma]
     users.compact.flatten
   end
 
