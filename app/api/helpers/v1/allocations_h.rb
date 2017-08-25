@@ -12,16 +12,22 @@ module V1::AllocationsH
   end
 
   # cancel all previous allocations and create new ones to groups
-  def cancel_previous_and_create_allocations(groups, user, profile_id)
-    # only curriculum units which type is 2
-    # user.groups([profile_id], nil, nil, 2).each do |group|
-    #   group.change_allocation_status(user.id, 2, profile_id: profile_id) # cancel all users previous allocations as profile_id
-    # end
-
-    groups.each do |group|
-      group.allocate_user(user.id, profile_id)
+  def create_allocations(groups, user, profile_id)
+    ActiveRecord::Base.transaction do
+      groups.each do |group|
+        group.allocate_user(user.id, profile_id)
+      end
     end
   end
+
+  def cancel_allocations(groups, user, profile_id)
+    ActiveRecord::Base.transaction do
+      groups.each do |group|
+        group.change_allocation_status(user.id, 2, profile_id: profile_id) # cancel all users previous allocations as profile_id
+      end
+    end
+  end
+
 
   def cancel_all_allocations(profile_id, semester_id)
     ucs = CurriculumUnitType.find(2).curriculum_units.map(&:id)
