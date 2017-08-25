@@ -1,5 +1,4 @@
 $(function(){
-  $(".block_title").find("h2").prop("tabindex", 0);
   shortcut(); // call shortcut after page load
 });
 
@@ -18,10 +17,10 @@ $(function(){
 // add shortcut to dynamically created elements. That is, if a element is created after the page is loaded, and it must call a shortcut, this method should be called
 function shortcut_to_element(element, shortcut, name, focus, alt, shift){
   $(element).attr('data-shortcut', shortcut);
-  $(element).attr('data-shortcut-name', name); 
+  $(element).attr('data-shortcut-name', name);
   $(element).attr('data-shortcut-focus', focus);
   $(element).attr('data-shortcut-alt', alt);
-  $(element).attr('data-shortcut-shift', shift); 
+  $(element).attr('data-shortcut-shift', shift);
 }
 
 // function to verify and execute shortcuts
@@ -64,36 +63,4 @@ function generate_shortcut_list(){
 function reload_shortcut_list(){
   $('.shortcut_floating_box').children(':not(h2, .close_dropdown)').remove();
   generate_shortcut_list();
-}
-
-function shortcut_focus_home(event) {
-  $(".block_title").find("h2").prop("tabindex", 0);
-
-  var keynum = event.which || event.keyCode;
-  switch( keynum ) {
-    case 68:
-      $(".subject_title").focus();
-      break;
-    case 83:
-      $(".subject_title").focus();
-      break;
-    case 82:
-      $(".responsible_title").focus();
-      break;
-    case 65:
-      $(".lessons_title").focus();
-      break;
-    case 76:
-      $(".lessons_title").focus();
-      break;
-    case 77:
-      $(".messages_title").focus();
-      break;
-    case 70:
-      $(".forum_title").focus();
-      break;
-    case 71:
-      $(".agenda_title").focus();
-      break;
-  }
 }

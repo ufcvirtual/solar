@@ -1,6 +1,6 @@
 .lesson_portlet.block_wrapper
   .block_title
-    %h2.lessons_title
+    %h2{:'data-shortcut'=> t("shortcut.curricular_unit.code.lessons"), :'data-shortcut-name'=> t("shortcut.curricular_unit.name.lessons"), :'data-shortcut-focus' => 'true'}
       %i.icon-lesson{:'aria-hidden' =>'true'}
       %span{ :'aria-label' => t(:curriculum_access_lesson) + t('lessons.index.lesson_number_modules', modules: @lessons_modules.size) }= t(:curriculum_access_lesson)
   .block_content{:id => 'block_lessons'}

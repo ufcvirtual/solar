@@ -1305,7 +1305,7 @@ pt_BR:
       draft: "Rascunho criado com sucesso, se este rascunho for o único filho e o post pai for removido, ele também será removido."
       not_draft: "O rascunho não foi criada"
       save_draft: "Deseja salvar o seu post como rascunho?"
-      save_post: "Deseja salvar o seu post?"  
+      save_post: "Deseja salvar o seu post?"
     update:
       updated: "Postagem atualizada com sucesso"
       not_updated: "A postagem não foi atualizada"
@@ -2552,7 +2552,7 @@ pt_BR:
       semester: "Semestre"
       offer: "Oferta"
       group: "Turma"
-      choice: Escolha 
+      choice: Escolha
       course_modality: "Modalidade do curso*"
       filter_result_singular: " resultado está disponível, use teclas de setas para cima e para baixo para navegar."
       filter_result_plural: " resultados estão disponíveis, use teclas de setas para cima e para baixo para navegar."
@@ -3287,7 +3287,7 @@ pt_BR:
       code: Código
       name: Nome
       course: Curso
-      semester: Semestre     
+      semester: Semestre
       curricular_unit: Unidade Curricular
       link: Acesso
       search2: "Buscar"
@@ -3312,6 +3312,21 @@ pt_BR:
     shortcut_link: "Abrir menu de atalhos [4]"
     no_shortcuts: "Sem atalhos"
     close: "Fechar"
+    curricular_unit:
+      code:
+        subject: 68
+        responsibles: 82
+        lessons: 65
+        messages: 77
+        forum: 70
+        agenda: 71
+      name:
+        subject: "Disciplina [D]"
+        responsibles: "Responsáveis [R]"
+        lessons: "Aulas [A]"
+        messages: "Mensagens [M]"
+        forum: "Fórum [F]"
+        agenda: "Agenda [G]"
     message:
       code:
         new: 77
@@ -3358,7 +3373,7 @@ pt_BR:
         web: 87
         file: 65
     scores:
-      name: 
+      name:
         exam: "Provas [P]"
         webconference: "Webconferências [W]"
         schedule_event: "Eventos [E]"
@@ -3399,7 +3414,7 @@ pt_BR:
         previous: 'Página anterior [SHIFT + seta esquerda]'
       code:
         next: 39
-        previous: 37      
+        previous: 37
 
   scores:
     index:

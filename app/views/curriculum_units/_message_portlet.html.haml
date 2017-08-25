@@ -1,7 +1,7 @@
 - message_is_present = @messages.any?
 #block_messages.block_small.portlet
   .block_title
-    %h2.messages_title
+    %h2{:'data-shortcut'=> t("shortcut.curricular_unit.code.messages"), :'data-shortcut-name'=> t("shortcut.curricular_unit.name.messages"), :'data-shortcut-focus' => 'true'}
       %i.icon-mail{:'aria-hidden' =>'true'}
       = t(:curriculum_access_message)
       - if message_is_present

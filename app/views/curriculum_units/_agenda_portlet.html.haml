@@ -1,6 +1,6 @@
 #block_schedule.block_small.portlet
   .block_title
-    %h2.agenda_title
+    %h2{:'data-shortcut'=> t("shortcut.curricular_unit.code.agenda"), :'data-shortcut-name'=> t("shortcut.curricular_unit.name.agenda"), :'data-shortcut-focus' => 'true'}
       %i.icon-calendar{:'aria-hidden' =>'true'}
       = t(:curriculum_access_agenda)
   .calendar#agenda{url_for: agendas_path}

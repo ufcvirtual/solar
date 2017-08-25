@@ -2,9 +2,9 @@
   %section.block_wrapper#subject_info_portlet
     .block_title
       .block_left
-        %h2.subject_title= t(:curriculum_access_curriculum_unit)
+        %h2{:'data-shortcut'=> t("shortcut.curricular_unit.code.subject"), :'data-shortcut-name'=> t("shortcut.curricular_unit.name.subject"), :'data-shortcut-focus' => 'true'}= t(:curriculum_access_curriculum_unit)
       .block_right
-        %h2.responsible_title= t(:curriculum_unit_responsible)
+        %h2.responsible_title{:'data-shortcut'=> t("shortcut.curricular_unit.code.responsibles"), :'data-shortcut-name'=> t("shortcut.curricular_unit.name.responsibles"), :'data-shortcut-focus' => 'true'}= t(:curriculum_unit_responsible)
     .block_content
       .block_left
         = @curriculum_unit.try(:resume)
@@ -29,8 +29,5 @@
 
 :javascript
   $(function(){
-    $(document).keydown(function (event) {
-      shortcut_focus_home(event);
-    });
     find_and_open_sav();
   });

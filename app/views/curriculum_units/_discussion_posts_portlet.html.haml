@@ -1,7 +1,7 @@
 / Portlet da Unidade Curricular que exibe as postagens dos fóruns ligados a ela mais recentes.
 .block_small#forum_portlet
   .block_title
-    %h2.forum_title
+    %h2{:'data-shortcut'=> t("shortcut.curricular_unit.code.forum"), :'data-shortcut-name'=> t("shortcut.curricular_unit.name.forum"), :'data-shortcut-focus' => 'true'}
       %i.icon-forum{:'aria-hidden' =>'true'}
       = t(:curriculum_access_forum)
 
