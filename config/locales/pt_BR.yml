@@ -3397,11 +3397,11 @@ pt_BR:
         notevaluative: 99
     exam:
       name:
-        time: 'Foco no tempo [T]'
-        questions: 'Foco na quantidade de questões [Q]'
-        enunciation: 'Foco no enunciado [E]'
-        items: 'Foco no primeiro item [I]'
-        audio: 'Foco no primeiro áudio do enunciado [U]'
+        time: 'Tempo [T]'
+        questions: 'Quantidade de questões [Q]'
+        enunciation: 'Enunciado [E]'
+        items: 'Primeiro item [I]'
+        audio: 'Primeiro áudio do enunciado [U]'
       code:
         time: 84
         questions: 81

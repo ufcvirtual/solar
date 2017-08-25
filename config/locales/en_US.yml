@@ -3073,14 +3073,14 @@ en_US:
         responsibles: 82
         lessons: 76
         messages: 77
-        forum: 70
+        forum: 68
         agenda: 65
       name:
         subject: "Subject [S]"
         responsibles: "Responsibles [R]"
         lessons: "Lessons [L]"
         messages: "Messages [M]"
-        forum: "Forum [F]"
+        forum: "Discussions [D]"
         agenda: "Agenda [A]"
     discussion:
       code:
@@ -3118,11 +3118,11 @@ en_US:
         notevaluative: 99
     exam:
       name:
-        time: 'Focus on time [T]'
-        questions: 'Focus on question amount [Q]'
-        enunciation: 'Focus on enunciation [E]'
-        items: 'Focus on first item [I]'
-        audio: "Focus on first enunciation's audio [A]"
+        time: 'Time [T]'
+        questions: 'Question amount [Q]'
+        enunciation: 'Enunciation [E]'
+        items: 'First item [I]'
+        audio: "First enunciation's audio [A]"
       code:
         time: 84
         questions: 81
