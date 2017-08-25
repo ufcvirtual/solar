@@ -1,23 +1,42 @@
 $(function(){
-  shortcut();
   $(".block_title").find("h2").prop("tabindex", 0);
+  shortcut(); // call shortcut after page load
 });
 
+/**
+  To add a shortcut to an element, you must:
+  1. Define its keycode and name at locales files nested to shortcut
+  2. Add data-shortcut attribute to the element with its keycode (using locales)
+  3. Add data-shortcut-name attribute to the element with its name (using locales)
+
+  You could also use the following attributes:
+  1. data-shortcut-focus: by default, the action is a click. if focus is 'true', then shortcut will focus on element
+  2. data-shortcut-alt: if set true, alt will be mandatory with shortcut keycode
+  3. data-shortcut-shift: if set true, shift will be mandatory with shortcut keycode
+**/
+
+// add shortcut to dynamically created elements. That is, if a element is created after the page is loaded, and it must call a shortcut, this method should be called
 function shortcut_to_element(element, shortcut, name, focus, alt, shift){
   $(element).attr('data-shortcut', shortcut);
-  $(element).attr('data-shortcut-name', name);
+  $(element).attr('data-shortcut-name', name); 
   $(element).attr('data-shortcut-focus', focus);
   $(element).attr('data-shortcut-alt', alt);
-  $(element).attr('data-shortcut-shift', shift);
+  $(element).attr('data-shortcut-shift', shift); 
 }
 
+// function to verify and execute shortcuts
 function shortcut(){
+  // remove previous keydown observers - used when shortcut is called a second time after a shortcut_to_element
   $(document).off('keydown');
   $(document).keydown(function (e) {
+    // if no input is on focus
     if(!$("input").is(":focus")){
+      // verify if exists some html element which is not disabled and its data-shortcut code is the same as the pressed key
       var element = $('[data-shortcut="'+e.which+'"]:first').not(".disabled");
 
+      // if exists some element AND (alt is not defined or alt was pressed) AND (shift is not defined or shift was pressed)
       if(!!element.length && (($(element).data('shortcut-alt') == undefined || $(element).data('shortcut-alt') == false || e.altKey) && ($(element).data('shortcut-shift') == undefined || $(element).data('shortcut-shift') == false || e.shiftKey))){
+        // if focus is not defined or not true
         if(element.data('shortcut-focus') == undefined || element.data('shortcut-focus') != true){
           $(element)[0].click();
         }
@@ -28,8 +47,11 @@ function shortcut(){
   });
 }
 
+// method to generate shortcut list with its names to user
 function generate_shortcut_list(){
+  // get all shortcuts names which elements are not disableds
   var shortcuts = $('[data-shortcut-name]').not(".disabled");
+  // if any, add each one to shortcut floating box
   if(!!shortcuts.length)
     shortcuts.each(function(){
       $('.shortcut_floating_box').append("<li class='shortcut'>"+$(this).data('shortcut-name')+"</li><br/>");
@@ -38,6 +60,7 @@ function generate_shortcut_list(){
     $('.shortcut_floating_box').append("<li class='shortcut'><%=I18n.t('shortcut.no_shortcuts')%></li>");
 }
 
+// reload shortcut list method in case of dynamically created elements
 function reload_shortcut_list(){
   $('.shortcut_floating_box').children(':not(h2, .close_dropdown)').remove();
   generate_shortcut_list();
