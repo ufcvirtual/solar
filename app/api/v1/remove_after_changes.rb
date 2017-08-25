@@ -98,26 +98,40 @@ module V1
             end
           end
 
-          # POST load/groups/enrollments
-          post :enrollments do
-            load_enrollments = params[:matriculas]
-            user             = verify_or_create_user(load_enrollments[:cpf])
-            groups           = JSON.parse(load_enrollments[:turmas])
-            student_profile  = 1 # Aluno => 1
+          segment do
+            params{ requires :matriculas }
+            before do
+              load_enrollments = params[:matriculas]
+              @user             = verify_or_create_user(load_enrollments[:cpf])
+              @groups           = JSON.parse(load_enrollments[:turmas])
+              @student_profile  = 1 # Aluno => 1
 
-            begin
-              ActiveRecord::Base.transaction do
+              @groups = @groups.collect do |group_info|
+                get_group_by_codes(group_info["codDisciplina"], group_info["codGraduacao"], group_info["codigo"], (group_info["periodo"].blank? ? group_info["ano"] : "#{group_info["ano"]}.#{group_info["periodo"]}")) unless group_info["codDisciplina"] == 78
+              end # Se cód. graduação for 78, desconsidera (por hora, vem por engano).
 
-                groups = groups.collect do |group_info|
-                  get_group_by_codes(group_info["codDisciplina"], group_info["codGraduacao"], group_info["codigo"], (group_info["periodo"].blank? ? group_info["ano"] : "#{group_info["ano"]}.#{group_info["periodo"]}")) unless group_info["codDisciplina"] == 78
-                end # Se cód. graduação for 78, desconsidera (por hora, vem por engano).
+              raise ActiveRecord::RecordNotFound if @groups.include?(nil)
+            end # before
 
-                cancel_previous_and_create_allocations(groups.compact, user, student_profile)
+            # POST load/groups/enrollments
+            post :enrollments do
+              begin
+                create_allocations(@groups.compact, @user, @student_profile)
+
+                { ok: :ok }
               end
-
-              { ok: :ok }
             end
-          end
+
+            # DELETE load/groups/enrollments
+            delete :enrollments do
+              begin
+                cancel_allocations(@groups.compact, @user, @student_profile)
+
+                { ok: :ok }
+              end
+            end
+
+          end # segment
 
           # PUT load/groups/cancel_students_enrollments
           params{ requires :semester, type: String }

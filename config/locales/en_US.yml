@@ -3060,13 +3060,28 @@ en_US:
       search: "Search:"
       filter: "Filter:"
       type: Type
-      profile: Profile  
+      profile: Profile
       result_search: "Access table with search's result"
 
   shortcut:
     shortcut_link: "Open shortcut menu [4]"
     no_shortcuts: "No shortcuts"
     close: "Close"
+    curricular_unit:
+      code:
+        subject: 83
+        responsibles: 82
+        lessons: 76
+        messages: 77
+        forum: 68
+        agenda: 65
+      name:
+        subject: "Subject [S]"
+        responsibles: "Responsibles [R]"
+        lessons: "Lessons [L]"
+        messages: "Messages [M]"
+        forum: "Discussions [D]"
+        agenda: "Agenda [A]"
     discussion:
       code:
         new: 80
@@ -3103,11 +3118,11 @@ en_US:
         notevaluative: 99
     exam:
       name:
-        time: 'Focus on time [T]'
-        questions: 'Focus on question amount [Q]'
-        enunciation: 'Focus on enunciation [E]'
-        items: 'Focus on first item [I]'
-        audio: "Focus on first enunciation's audio [A]"
+        time: 'Time [T]'
+        questions: 'Question amount [Q]'
+        enunciation: 'Enunciation [E]'
+        items: 'First item [I]'
+        audio: "First enunciation's audio [A]"
       code:
         time: 84
         questions: 81
@@ -3154,7 +3169,7 @@ en_US:
         previous: 'Previous page [SHIFT + left arrow]'
       code:
         next: 39
-        previous: 37     
+        previous: 37
 
   scores:
     index:
@@ -4233,7 +4248,7 @@ en_US:
       timestamp_info: Document Generated in
       webconference: Title Webconference
       access_number: Number Access
-      access_number_distinct: Number Distinct Access 
+      access_number_distinct: Number Distinct Access
       access_number_responsables: Number Access Responsibles
       title_chat: Chat
       title_portfolio: Assignment
@@ -4336,7 +4351,7 @@ en_US:
     minimize: "Minimize modal window"
 
   flash_message:
-    close: "Close notification"  
+    close: "Close notification"
 
   common_between_pages:
     more: More
@@ -4346,7 +4361,7 @@ en_US:
     frequency:
       t: 'Yes <br/>(max: %{hours}h)'
       f: 'No'
-    ev_final_exam: 
+    ev_final_exam:
       t: 'Yes <br/>(Final Exam)'
       f: 'No'
     final_exam:

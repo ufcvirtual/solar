@@ -2,9 +2,9 @@
   %section.block_wrapper#subject_info_portlet
     .block_title
       .block_left
-        %h2= t(:curriculum_access_curriculum_unit)
+        %h2{:'data-shortcut'=> t("shortcut.curricular_unit.code.subject"), :'data-shortcut-name'=> t("shortcut.curricular_unit.name.subject"), :'data-shortcut-focus' => 'true'}= t(:curriculum_access_curriculum_unit)
       .block_right
-        %h2= t(:curriculum_unit_responsible)
+        %h2.responsible_title{:'data-shortcut'=> t("shortcut.curricular_unit.code.responsibles"), :'data-shortcut-name'=> t("shortcut.curricular_unit.name.responsibles"), :'data-shortcut-focus' => 'true'}= t(:curriculum_unit_responsible)
     .block_content
       .block_left
         = @curriculum_unit.try(:resume)
@@ -17,7 +17,7 @@
               = truncate( [name, " (", profile, " )"].join, length: 55, omission: '...' )
               - if can_send_message
                 %span= link_to (content_tag(:i, nil, class: 'icon-mail participants_messages', :'aria-hidden' => 'true')), new_message_path(user_id: resp.id, bread: 'menu_messages'), class: 'can-update-menu', 'data-menu-bread' => 'menu_messages', :'aria-label' => t('messages.message_to', name: name)
-  
+
   %secton= render 'lesson_portlet'
 
   .block_wrapper.block_wrapper_small
@@ -25,7 +25,7 @@
     %secton= render 'discussion_posts_portlet'
     %secton= render 'agenda_portlet'
 
-= javascript_include_tag 'contextual_help/subject'
+= javascript_include_tag 'contextual_help/subject', 'shortcut'
 
 :javascript
   $(function(){
