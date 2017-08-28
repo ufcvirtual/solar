@@ -7,6 +7,7 @@
 .icon-trash, .icon-cancel-circle {
   color: #000000;
   opacity: 0.5;
+  @include opacity(0.5);
   filter:alpha(opacity=50);
 }
 
